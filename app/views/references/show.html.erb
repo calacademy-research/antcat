@@ -1,0 +1,51 @@
+<% title "Reference" %>
+
+<p>
+  <strong>Authors:</strong>
+  <%=h @reference.authors %>
+</p>
+<p>
+  <strong>Year:</strong>
+  <%=h @reference.year %>
+</p>
+<p>
+  <strong>Title:</strong>
+  <%=h @reference.title %>
+</p>
+<p>
+  <strong>Citation:</strong>
+  <%=h @reference.citation %>
+</p>
+<p>
+  <strong>Notes:</strong>
+  <%=h @reference.notes %>
+</p>
+<p>
+  <strong>Possess:</strong>
+  <%=h @reference.possess %>
+</p>
+<p>
+  <strong>Date:</strong>
+  <%=h @reference.date %>
+</p>
+<p>
+  <strong>Excel File Name:</strong>
+  <%=h @reference.excel_file_name %>
+</p>
+<p>
+  <strong>Created At:</strong>
+  <%=h @reference.created_at %>
+</p>
+<p>
+  <strong>Updated At:</strong>
+  <%=h @reference.updated_at %>
+</p>
+<p>
+  <strong>Cite Code:</strong>
+  <%=h @reference.cite_code %>
+</p>
+
+<p>
+  <%= link_to "Destroy", @reference, :confirm => 'Are you sure?', :method => :delete %> |
+  <%= link_to "View All", references_path %>
+</p>
