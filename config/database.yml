@@ -1,5 +1,6 @@
 common: &common
   adapter: mysql
+  encoding: utf8
   user: localhost
 
 development:
