@@ -35,6 +35,6 @@ class ReferencesController < ApplicationController
   end
   
   def index
-    @references = Reference.all(:limit => 10)
+    @references = Reference.paginate :page => params[:page]
   end
 end

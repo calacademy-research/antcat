@@ -1,14 +1,17 @@
 <% title "ANTBIB" %>
 
+<%= will_paginate @references %>
+
 <table>
   <% for reference in @references %>
       <tr>
         <td><%= h reference.authors %> <%= h reference.year %> <%= h reference.title %>
           <%= h reference.citation %> <%= h reference.notes %>
-          <%= link_to "Show", reference %> <%= link_to "Delete", reference, :confirm => 'Are you sure?', :method => :delete %>
         </td>
       </tr>
   <% end %>
 </table>
+
+<%= will_paginate @references %>
 
 <p><%= link_to "New Reference", new_reference_path %></p>
