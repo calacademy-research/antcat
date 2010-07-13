@@ -36,5 +36,6 @@ class ReferencesController < ApplicationController
   
   def index
     @references = Reference.paginate :page => params[:page]
+    render :template => 'references/index'
   end
 end
