@@ -7,10 +7,6 @@ Rails::Initializer.run do |config|
 
   config.gem 'erector'
   config.gem 'will_paginate'
-  
-  if ['test', 'cucumber', 'development'].include? RAILS_ENV
-    config.gem 'lll'
-  end
 end
 
 require 'erector'
