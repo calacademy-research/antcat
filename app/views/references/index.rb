@@ -11,6 +11,14 @@ class Views::References::Index < Erector::Widgets::Page
     'ANTBIB'
   end
 
+  def format_reference reference
+    "#{italicize(reference.authors)} #{reference.year} #{italicize(reference.title)} #{italicize(reference.citation)} #{italicize(reference.notes)}"
+  end
+
+  def italicize s
+    s.gsub /\*(.*?)\*/, '<span class=taxon>\1</span>' if s
+  end
+
   def body_content
     div :id => 'container' do
       h3 'ANTBIB'
@@ -18,7 +26,7 @@ class Views::References::Index < Erector::Widgets::Page
         for reference in @references
           tr do
             td do
-              text "#{reference.authors} #{reference.year} #{reference.title} #{reference.citation} #{reference.notes}"
+              rawtext format_reference(reference)
             end
           end
         end

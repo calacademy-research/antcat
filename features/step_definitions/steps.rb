@@ -3,3 +3,7 @@ Given 'the following entry exists in the bibliography' do |table|
     Reference.create! hash
   end
 end
+
+Then /I should see "([^"]*)" in italics/ do |italicized_text|
+  page.should have_css('span.taxon', :text => italicized_text)  
+end
