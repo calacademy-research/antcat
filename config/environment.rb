@@ -6,6 +6,8 @@ Rails::Initializer.run do |config|
   config.time_zone = 'UTC'
 
   config.gem 'erector'
+  config.gem 'haml' # for Sass
+  config.gem 'less'
   config.gem 'will_paginate'
 end
 
