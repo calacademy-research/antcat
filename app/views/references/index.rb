@@ -16,7 +16,8 @@ class Views::References::Index < Erector::Widgets::Page
   end
 
   def italicize s
-    s.gsub /\*(.*?)\*/, '<span class=taxon>\1</span>' if s
+    return unless s
+    s.html_escape.gsub /\*(.*?)\*/, '<span class=taxon>\1</span>'
   end
 
   def body_content

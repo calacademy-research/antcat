@@ -17,3 +17,9 @@ Feature: View bibliography
     When I go to the main page
     Then I should see "Azteca trigona" in italics
 
+  Scenario: Dangerous text
+    Given the following entry exists in the bibliography
+      |title|
+      |<script>|
+    When I go to the main page
+    Then I should see "<script>"
