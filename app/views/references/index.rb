@@ -26,8 +26,10 @@ class Views::References::Index < Erector::Widgets::Page
       table do
         for reference in @references
           tr do
-            td do
-              rawtext format_reference(reference)
+            td :class => 'reference' do
+              a :href => reference_path(reference) do
+                rawtext format_reference(reference)
+              end 
             end
           end
         end

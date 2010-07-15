@@ -3,6 +3,8 @@ module NavigationHelpers
     case page_name
     when /the main page/
       '/'
+    when /the page for that reference/
+      reference_path(@reference || Reference.first)    
     end
   end
 end
