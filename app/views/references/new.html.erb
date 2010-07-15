@@ -1,53 +1,5 @@
 <% title "New Reference" %>
 
-<% form_for @reference do |f| %>
-  <%= f.error_messages %>
-  <p>
-    <%= f.label :authors %><br />
-    <%= f.text_field :authors %>
-  </p>
-  <p>
-    <%= f.label :year %><br />
-    <%= f.text_field :year %>
-  </p>
-  <p>
-    <%= f.label :title %><br />
-    <%= f.text_field :title %>
-  </p>
-  <p>
-    <%= f.label :citation %><br />
-    <%= f.text_field :citation %>
-  </p>
-  <p>
-    <%= f.label :notes %><br />
-    <%= f.text_field :notes %>
-  </p>
-  <p>
-    <%= f.label :possess %><br />
-    <%= f.text_field :possess %>
-  </p>
-  <p>
-    <%= f.label :date %><br />
-    <%= f.text_field :date %>
-  </p>
-  <p>
-    <%= f.label :excel_file_name %><br />
-    <%= f.text_field :excel_file_name %>
-  </p>
-  <p>
-    <%= f.label :created_at %><br />
-    <%= f.datetime_select :created_at %>
-  </p>
-  <p>
-    <%= f.label :updated_at %><br />
-    <%= f.text_field :updated_at %>
-  </p>
-  <p>
-    <%= f.label :cite_code %><br />
-    <%= f.text_field :cite_code %>
-  </p>
-  <p><%= f.submit %></p>
-<% end %>
-
+<%= render :partial => 'form' %>
 
 <p><%= link_to "Back to List", references_path %></p>
