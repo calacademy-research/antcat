@@ -81,6 +81,15 @@ describe Reference do
         Reference.import(@filename)
         Reference.first.title.should == 'Interaction between the ants *Zacryptocerus maculatus* and *Azteca trigona*.'
       end
+
+      it "should convert entities to characters" do
+        file_contents = "<html><body><table><tr></tr><tr><td>123</td><td></td><td></td><td></td>
+            <td>Love &amp; Death</td>
+          <td></td><td></td><td></td></tr></table></body></html>"
+        File.should_receive(:read).with(@filename).and_return(file_contents)
+        Reference.import(@filename)
+        Reference.first.title.should == 'Love & Death'
+      end
     end
   end
 end

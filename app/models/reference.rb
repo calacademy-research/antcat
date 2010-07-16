@@ -41,6 +41,7 @@ class Reference < ActiveRecord::Base
     # translate | to *
     s = s.gsub(/\|/, '*')
     s = s.squish
+    CGI.unescapeHTML(s)
   end
 
 
