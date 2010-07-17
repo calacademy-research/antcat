@@ -1,5 +1,6 @@
 class ReferencesController < ApplicationController
   def index
+    params[:author] = '' if params[:commit] == 'clear'
     @references = Reference.search(params).paginate(:page => params[:page])
     render :template => 'references/index'
   end

@@ -36,3 +36,13 @@ Feature: Searching references
     Then I should not see "Brian Fisher"
       And I should not see "Barry Bolton"
       And I should see "No results found"
+
+  Scenario: Clearing the search
+    When I go to the main page
+    When I fill in "author" with "zzzzzz"
+      And I press "Search"
+    Then I should see "No results found"
+    When I press "Clear"
+    Then I should not see "No results found"
+      And I should see "Brian Fisher"
+      And I should see "Barry Bolton"

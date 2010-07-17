@@ -4,7 +4,9 @@ class Views::References::Index < Erector::Widgets::Page
 
   def head_content
     super
+    javascript_include_tag 'ext/jquery-1.4.2.js'
     css 'stylesheets/application.css'
+    jquery "$('#author').focus()"
   end
 
   def page_title
@@ -29,8 +31,9 @@ class Views::References::Index < Erector::Widgets::Page
       div :id => 'search' do
         widget Form, :action => '/references', :method => 'get' do
           label 'Author', :for => 'author'
-          input :name => 'author', :type => 'text', :value => h(params[:author])
-          button 'Search', :type => 'submit'
+          input :name => 'author', :id => 'author', :type => 'text', :value => h(params[:author])
+          button 'Search', :value => 'search', :name => 'commit', :type => 'submit'
+          button 'Clear', :value => 'clear', :name => 'commit', :type => 'submit'
         end
       end
 
