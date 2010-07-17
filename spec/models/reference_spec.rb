@@ -92,4 +92,17 @@ describe Reference do
       end
     end
   end
+
+  describe "searching" do
+    it "should return an empty array if nothing is found" do
+      Factory(:reference, :authors => 'Bolton')
+      Reference.search(:author => 'foo').should be_empty
+    end
+
+    it "should find the reference for a given author if it exists" do
+      reference = Factory(:reference, :authors => 'Bolton')
+      Factory(:reference, :authors => 'Fisher')
+      Reference.search(:author => 'Bolton').should == [reference]
+    end
+  end
 end

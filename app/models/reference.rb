@@ -2,6 +2,12 @@ class Reference < ActiveRecord::Base
   set_table_name 'refs'
   attr_accessible :authors, :year, :title, :citation, :notes, :possess, :date, :excel_file_name, :created_at, :updated_at, :cite_code
 
+  def self.search params
+    scope = scoped({})
+    scope = scope.scoped :conditions => ['authors LIKE ?', "%#{params[:author]}%"] unless params[:author].blank?
+    scope
+  end
+  
 #  How to import an ANTBIB spreadsheet from Phil Ward:
 #  1) Open the spreadsheet in Excel
 #  2) Make each column wide enough to fit its contents. The easiest way is to double-click the dividing line between columns up at the top,

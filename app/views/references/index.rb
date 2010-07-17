@@ -23,13 +23,30 @@ class Views::References::Index < Erector::Widgets::Page
   def body_content
     div :id => 'container' do
       h3 'ANTBIB'
-      table do
-        for reference in @references
-          tr do
-            td :class => 'reference' do
-              a :href => reference_path(reference) do
-                rawtext format_reference(reference)
-              end 
+
+      hr
+      
+      div :id => 'search' do
+        widget Form, :action => '/references', :method => 'get' do
+          label 'Author', :for => 'author'
+          input :name => 'author', :type => 'text', :value => h(params[:author])
+          button 'Search', :type => 'submit'
+        end
+      end
+
+      hr
+      
+      unless @references.present?
+        rawtext 'No results found'
+      else
+        table do
+          for reference in @references
+            tr do
+              td :class => 'reference' do
+                a :href => reference_path(reference) do
+                  rawtext format_reference(reference)
+                end
+              end
             end
           end
         end

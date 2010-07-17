@@ -55,3 +55,8 @@ if defined?(ActiveRecord::Base)
   rescue LoadError => ignore_if_database_cleaner_not_present
   end
 end
+
+require 'factory_girl'
+require 'factory_girl/step_definitions'
+
+Dir[File.expand_path(File.join(Rails.root, 'spec/support','**','*.rb'))].each {|f| require f}

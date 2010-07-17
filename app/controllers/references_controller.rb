@@ -1,4 +1,9 @@
 class ReferencesController < ApplicationController
+  def index
+    @references = Reference.search(params).paginate(:page => params[:page])
+    render :template => 'references/index'
+  end
+
   def show
     @reference = Reference.find(params[:id])
   end
@@ -36,10 +41,5 @@ class ReferencesController < ApplicationController
     @reference.destroy
     flash[:notice] = "Successfully destroyed reference."
     redirect_to references_url
-  end
-  
-  def index
-    @references = Reference.paginate :page => params[:page], :order => :year
-    render :template => 'references/index'
   end
 end
