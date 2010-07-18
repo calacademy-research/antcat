@@ -3,8 +3,9 @@ class Reference < ActiveRecord::Base
   attr_accessible :authors, :year, :title, :citation, :notes, :possess, :date, :excel_file_name, :created_at, :updated_at, :cite_code
 
   def self.search params
-    scope = scoped({})
+    scope = scoped(:order => 'authors')
     scope = scope.scoped :conditions => ['authors LIKE ?', "%#{params[:author]}%"] unless params[:author].blank?
+    scope = scope.scoped :conditions => ['year LIKE ?', "%#{params[:year]}%"] unless params[:year].blank?
     scope
   end
   

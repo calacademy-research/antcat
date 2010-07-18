@@ -32,6 +32,8 @@ class Views::References::Index < Erector::Widgets::Page
         widget Form, :action => '/references', :method => 'get' do
           label 'Author', :for => 'author'
           input :name => 'author', :id => 'author', :type => 'text', :value => h(params[:author])
+          label 'Year', :for => 'year'
+          input :name => 'year', :id => 'year', :type => 'text', :value => h(params[:year])
           button 'Search', :value => 'search', :name => 'commit', :type => 'submit'
           button 'Clear', :value => 'clear', :name => 'commit', :type => 'submit'
         end

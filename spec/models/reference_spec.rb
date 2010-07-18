@@ -94,9 +94,14 @@ describe Reference do
   end
 
   describe "searching" do
-    it "should return an empty array if nothing is found" do
+    it "should return an empty array if nothing is found for author" do
       Factory(:reference, :authors => 'Bolton')
       Reference.search(:author => 'foo').should be_empty
+    end
+
+    it "should return an empty array if nothing is found for year" do
+      Factory(:reference, :year => '2010')
+      Reference.search(:year => '1995').should be_empty
     end
 
     it "should find the reference for a given author if it exists" do
@@ -104,5 +109,29 @@ describe Reference do
       Factory(:reference, :authors => 'Fisher')
       Reference.search(:author => 'Bolton').should == [reference]
     end
+
+    it "should find the reference for a given year if it exists" do
+      reference = Factory(:reference, :year => '2010')
+      Factory(:reference, :year => '1995')
+      Reference.search(:year => '2010').should == [reference]
+    end
+
+    it "should return an empty array if nothing is found for a given year and author" do
+      Factory(:reference, :authors => 'Bolton', :year => '2010')
+      Factory(:reference, :authors => 'Bolton', :year => '1995')
+      Factory(:reference, :authors => 'Fisher', :year => '2011')
+      Factory(:reference, :authors => 'Fisher', :year => '1996')
+      Reference.search(:year => '1995', :author => 'Fisher').should be_empty
+    end
+
+
+    it "should return the one reference for a given year and author" do
+      Factory(:reference, :authors => 'Bolton', :year => '2010')
+      Factory(:reference, :authors => 'Bolton', :year => '1995')
+      Factory(:reference, :authors => 'Fisher', :year => '2011')
+      reference = Factory(:reference, :authors => 'Fisher', :year => '1996')
+      Reference.search(:year => '1996', :author => 'Fisher').should == [reference]
+    end
+
   end
 end

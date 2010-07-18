@@ -6,9 +6,9 @@ Feature: Searching references
 
   Background:
     Given the following entries exist in the bibliography
-       |authors|
-       |Brian Fisher|
-       |Barry Bolton|
+       |authors     |year|
+       |Brian Fisher|1995|
+       |Barry Bolton|2010|
 
   Scenario: Not searching yet
     When I go to the main page
@@ -17,21 +17,21 @@ Feature: Searching references
 
   Scenario: Finding one reference for an author
     When I go to the main page
-    When I fill in "author" with "Brian"
+      And I fill in "author" with "Brian"
       And I press "Search"
     Then I should see "Brian Fisher"
       And I should not see "Barry Bolton"
 
   Scenario: Finding two references for a string
     When I go to the main page
-    When I fill in "author" with "b"
+      And I fill in "author" with "b"
       And I press "Search"
     Then I should see "Brian Fisher"
       And I should see "Barry Bolton"
 
   Scenario: Finding nothing
     When I go to the main page
-    When I fill in "author" with "zzzzzz"
+      And I fill in "author" with "zzzzzz"
       And I press "Search"
     Then I should not see "Brian Fisher"
       And I should not see "Barry Bolton"
@@ -39,10 +39,33 @@ Feature: Searching references
 
   Scenario: Clearing the search
     When I go to the main page
-    When I fill in "author" with "zzzzzz"
+      And I fill in "author" with "zzzzzz"
       And I press "Search"
     Then I should see "No results found"
     When I press "Clear"
     Then I should not see "No results found"
       And I should see "Brian Fisher"
       And I should see "Barry Bolton"
+
+  Scenario: Searching by year
+    When I go to the main page
+      And I fill in "year" with "1995"
+      And I press "Search"
+    Then I should see "Brian Fisher 1995"
+      And I should not see "Barry Bolton 2010"
+
+  Scenario: Searching by author and year
+    Given the following entries exist in the bibliography
+       |authors     |year|
+       |Brian Fisher|1995|
+       |Brian Fisher|2010|
+       |Barry Bolton|2010|
+       |Barry Bolton|1995|
+    When I go to the main page
+      And I fill in "author" with "fisher"
+      And I fill in "year" with "1995"
+      And I press "Search"
+    Then I should see "Brian Fisher 1995"
+      And I should not see "Brian Fisher 2010"
+      And I should not see "Barry Bolton 2010"
+      And I should not see "Barry Bolton 1995"
