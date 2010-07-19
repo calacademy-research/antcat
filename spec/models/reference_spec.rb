@@ -99,21 +99,10 @@ describe Reference do
       Reference.search(:author => 'foo').should be_empty
     end
 
-    it "should return an empty array if nothing is found for year" do
-      Factory(:reference, :year => '2010')
-      Reference.search(:year => '1995').should be_empty
-    end
-
     it "should find the reference for a given author if it exists" do
       reference = Factory(:reference, :authors => 'Bolton')
       Factory(:reference, :authors => 'Fisher')
       Reference.search(:author => 'Bolton').should == [reference]
-    end
-
-    it "should find the reference for a given year if it exists" do
-      reference = Factory(:reference, :year => '2010')
-      Factory(:reference, :year => '1995')
-      Reference.search(:year => '2010').should == [reference]
     end
 
     it "should return an empty array if nothing is found for a given year and author" do
@@ -121,7 +110,7 @@ describe Reference do
       Factory(:reference, :authors => 'Bolton', :year => '1995')
       Factory(:reference, :authors => 'Fisher', :year => '2011')
       Factory(:reference, :authors => 'Fisher', :year => '1996')
-      Reference.search(:year => '1995', :author => 'Fisher').should be_empty
+      Reference.search(:start_year => '2012', :end_year => '2013', :author => 'Fisher').should be_empty
     end
 
 
@@ -130,7 +119,39 @@ describe Reference do
       Factory(:reference, :authors => 'Bolton', :year => '1995')
       Factory(:reference, :authors => 'Fisher', :year => '2011')
       reference = Factory(:reference, :authors => 'Fisher', :year => '1996')
-      Reference.search(:year => '1996', :author => 'Fisher').should == [reference]
+      Reference.search(:start_year => '1996', :end_year => '1996', :author => 'Fisher').should == [reference]
+    end
+
+    describe "searching by year" do
+      before do
+        Factory(:reference, :year => '1994')
+        Factory(:reference, :year => '1995')
+        Factory(:reference, :year => '1996')
+        Factory(:reference, :year => '1997')
+        Factory(:reference, :year => '1998')
+      end
+
+      it "should return an empty array if nothing is found for year" do
+        Reference.search(:start_year => '1992', :end_year => '1993').should be_empty
+      end
+
+      it "should find entries less than or equal to the end year" do
+        Reference.search(:end_year => '1995').map(&:year).should =~ ['1994', '1995']
+      end
+
+      it "should find entries greater than or equal to the start year" do
+        Reference.search(:start_year => '1998').map(&:year).should =~ ['1998']
+      end
+
+      it "should find entries in between the start year and the end year (inclusive)" do
+        Reference.search(:start_year => '1995', :end_year => '1996').map(&:year).should =~ ['1995', '1996']
+      end
+
+      it "should find references in the year of the end range, even if they have extra characters" do
+        Factory(:reference, :year => '2004.')
+        Reference.search(:start_year => '2004', :end_year => '2004').map(&:year).should =~ ['2004.']
+      end
+
     end
 
   end

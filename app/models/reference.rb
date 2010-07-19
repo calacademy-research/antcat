@@ -5,7 +5,9 @@ class Reference < ActiveRecord::Base
   def self.search params
     scope = scoped(:order => 'authors')
     scope = scope.scoped :conditions => ['authors LIKE ?', "%#{params[:author]}%"] unless params[:author].blank?
-    scope = scope.scoped :conditions => ['year LIKE ?', "%#{params[:year]}%"] unless params[:year].blank?
+    scope = scope.scoped :conditions => ['year >= ?', params[:start_year]] unless params[:start_year].blank?
+    # year often has a letter or a period at the end
+    scope = scope.scoped :conditions => ['year <= ?', "#{params[:end_year]}Z"] unless params[:end_year].blank?
     scope
   end
   
