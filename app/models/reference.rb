@@ -26,7 +26,7 @@ class Reference < ActiveRecord::Base
     (1..(trs.length - 1)).each do |i|
       tds = trs[i].css('td')
       if tds && !tds[0].inner_html.empty?
-        Reference.create!(
+        reference = Reference.new(
                 :cite_code        => node_to_text(tds[0]),
                 :authors          => node_to_text(tds[1]),
                 :year             => node_to_text(tds[2]),
@@ -36,8 +36,37 @@ class Reference < ActiveRecord::Base
                 :notes            => node_to_text(tds[6]),
                 :possess          => node_to_text(tds[7]),
                 :excel_file_name  => filename)
+        reference.parse_citation
+        reference.save!
       end
     end
+  end
+
+  def parse_citation
+    parse_nested_citation || parse_journal_citation || parse_book_citation
+  end
+
+  def parse_nested_citation
+    match = citation.match /(.*?) (\d+):(\d+)-(\d+)\.?/
+    return unless match
+  end
+
+  def parse_journal_citation
+    match = citation.match /(.*?) (\d+):(\d+)-(\d+)\.?/
+    return unless match
+    self.journal_short_title = match[1] 
+    self.volume = match[2]
+    self.start_page = match[3]
+    self.end_page = match[4]
+  end
+
+  def parse_book_citation
+    match = citation.match /(.*?): (.*?), (.+?)$/
+    return unless match
+    self.place = match[1]
+    self.publisher = match[2]
+    self.pagination = match[3]
+    puts "Parsed \"#{citation}\" to \"#{place}\" \"#{publisher}\" \"#{pagination}\""
   end
 
   def self.node_to_text node
