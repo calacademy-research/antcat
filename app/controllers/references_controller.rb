@@ -4,7 +4,6 @@ class ReferencesController < ApplicationController
       params[:author] = params[:start_year] = params[:end_year] = ''
     end
     @references = Reference.search(params).paginate(:page => params[:page])
-    render :template => 'references/index'
   end
 
   def show

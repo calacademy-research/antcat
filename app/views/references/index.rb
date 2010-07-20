@@ -5,8 +5,8 @@ class Views::References::Index < Erector::Widgets::Page
   def head_content
     super
     javascript_include_tag 'ext/jquery-1.4.2.js'
-    css 'stylesheets/application.css'
-    jquery "$('#author').focus()"
+    css '/stylesheets/application.css'
+    jquery "$('input').first().focus()"
   end
 
   def page_title
