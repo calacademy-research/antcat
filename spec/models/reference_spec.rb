@@ -202,6 +202,14 @@ describe Reference do
         reference.kind.should == 'book'
       end
     end
+
+    describe "parsing an unknown format" do
+      it "should consider it an unknown format" do
+        reference = Factory(:reference, :citation => 'asdf')
+        reference.parse_citation
+        reference.kind.should == 'unknown'
+      end
+    end
   end
 
   describe "searching" do
