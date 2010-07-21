@@ -43,30 +43,45 @@ class Reference < ActiveRecord::Base
   end
 
   def parse_citation
-    parse_nested_citation || parse_journal_citation || parse_book_citation
+    return if citation.blank?
+    parse_nested_citation || parse_book_citation || parse_journal_citation
   end
 
   def parse_nested_citation
-    match = citation.match /(.*?) (\d+):(\d+)-(\d+)\.?/
-    return unless match
-  end
-
-  def parse_journal_citation
-    match = citation.match /(.*?) (\d+):(\d+)-(\d+)\.?/
-    return unless match
-    self.journal_short_title = match[1] 
-    self.volume = match[2]
-    self.start_page = match[3]
-    self.end_page = match[4]
+    match = citation.match(/ in: /) or return
+    true
   end
 
   def parse_book_citation
-    match = citation.match /(.*?): (.*?), (.+?)$/
-    return unless match
+    match = citation.match(/(.*?): (.*?), (.+?)$/) or return
+    self.kind = 'book'
     self.place = match[1]
     self.publisher = match[2]
     self.pagination = match[3]
-    puts "Parsed \"#{citation}\" to \"#{place}\" \"#{publisher}\" \"#{pagination}\""
+    true
+  end
+
+  def parse_journal_citation
+    parts = citation.match(/(.+?)(\S+)$/) or return
+    self.kind = 'journal'
+    self.journal_short_title = parts[1].strip
+
+    parts = parts[2].match(/(.+?):(.+)$/) or return
+    parse_series_volume_issue(parts[1])
+    parse_pagination(parts[2])
+  end
+
+  def parse_series_volume_issue series_volume_issue
+    parts = series_volume_issue.match(/(\(\w+\))?(\w+)(\(\w+\))?/)
+    self.series = parts[1].match(/\((\w+)\)/)[1] if parts[1].present?
+    self.volume = parts[2]
+    self.issue = parts[3].match(/\((\w+)\)/)[1] if parts[3].present?
+  end
+
+  def parse_pagination pagination
+    parts = pagination.match(/(.+?)(?:-(.+?))?\.?$/) or return
+    self.start_page = parts[1]
+    self.end_page = parts[2] if parts.length == 3
   end
 
   def self.node_to_text node

@@ -46,6 +46,11 @@ describe Reference do
         reference.date.should == '197804'
         reference.title.should == 'Records of insect collection.'
         reference.citation.should == 'Bull. Nat. Hist. Res. Cent. Univ. Baghdad 7(2):1-6.'
+        reference.journal_short_title.should == 'Bull. Nat. Hist. Res. Cent. Univ. Baghdad'
+        reference.volume.should == '7'
+        reference.issue.should == '2'
+        reference.start_page.should == '1'
+        reference.end_page.should == '6'
         reference.notes.should == '{Formicidae pp. 4-6.}'
         reference.cite_code.should == '5523'
         reference.possess.should == 'PSW'
@@ -95,120 +100,170 @@ describe Reference do
   end
 
   describe "parsing the citation" do
-    describe "parsing a journal citation"
-    before do
-      @reference = Factory(:reference, :citation => 'Behav. Ecol. Sociobiol. 4:163-181.')
+    describe "parsing a journal citation" do
+      before do
+        @reference = Factory(:reference, :citation => 'Behav. Ecol. Sociobiol. 4:163-181.')
+      end
+
+      it "should extract the journal title" do
+        @reference.parse_citation
+        @reference.journal_short_title.should == 'Behav. Ecol. Sociobiol.'
+      end
+
+      it "should extract the journal volume" do
+        @reference.parse_citation
+        @reference.volume.should == '4'
+      end
+      it "should extract the beginning page number" do
+        @reference.parse_citation
+        @reference.start_page.should == '163'
+      end
+      it "should extract the ending page number" do
+        @reference.parse_citation
+        @reference.end_page.should == '181'
+      end
+      it "should recognize it as a journal" do
+        @reference.parse_citation
+        @reference.kind.should == 'journal'
+      end
+
+      describe "parsing a citation with just a single page number" do
+        it "should work" do
+          reference = Factory(:reference, :citation => "Entomol. Mon. Mag. 92:8.")
+          reference.parse_citation
+          reference.journal_short_title.should == 'Entomol. Mon. Mag.'
+          reference.volume.should == '92'
+          reference.start_page.should == '8'
+          reference.end_page.should be_nil
+        end
+      end
+
+      describe "parsing a citation with an issue number" do
+        it "should work" do
+          reference = Factory(:reference, :citation => "Entomol. Mon. Mag. 92(32):8.")
+          reference.parse_citation
+          reference.volume.should == '92'
+          reference.issue.should == '32'
+          reference.start_page.should == '8'
+          reference.end_page.should be_nil
+        end
+      end
+
+      describe "parsing a citation with a series number" do
+        it "should work" do
+          reference = Factory(:reference, :citation => 'Ann. Mag. Nat. Hist. (10)8:129-131.')
+          reference.parse_citation
+          reference.journal_short_title.should == 'Ann. Mag. Nat. Hist.'
+        end
+      end
+
+      describe "parsing a citation with series, volume and issue" do
+        it "should work" do
+          reference = Factory(:reference, :citation => 'Ann. Mag. Nat. Hist. (I)C(xix):129-131.')
+          reference.parse_citation
+          reference.series.should == 'I'
+          reference.volume.should == 'C'
+          reference.issue.should == 'xix'
+        end
+      end
     end
 
-    it "should extract the journal title" do
-      @reference.parse_citation
-      @reference.journal_short_title.should == 'Behav. Ecol. Sociobiol.'
+    describe "parsing a book citation" do
+      before do
+        @reference = Factory(:reference, :citation => 'Melbourne: CSIRO Publications, vii + 70 pp.')
+      end
+
+      it "should extract the place of publication" do
+        @reference.parse_citation
+        @reference.place.should == 'Melbourne'
+      end
+
+      it "should extract the publisher" do
+        @reference.parse_citation
+        @reference.publisher.should == 'CSIRO Publications'
+      end
+      it "should extract the pagination" do
+        @reference.parse_citation
+        @reference.pagination.should == 'vii + 70 pp.'
+      end
+      it "should recognize it as a book" do
+        @reference.parse_citation
+        @reference.kind.should == 'book'
+      end
     end
 
-    it "should extract the journal volume" do
-      @reference.parse_citation
-      @reference.volume.should == '4'
-    end
-    it "should extract the beginning page number" do
-      @reference.parse_citation
-      @reference.start_page.should == '163'
-    end
-    it "should extract the ending page number" do
-      @reference.parse_citation
-      @reference.end_page.should == '181'
+    describe "parsing a book citation with complicate pagination" do
+      it "should work" do
+        reference = Factory(:reference, :citation => 'Tokyo: Keishu-sha, 247 pp. + 14 pl. + 4 pp. (index).')
+        reference.parse_citation
+        reference.place.should == 'Tokyo'
+        reference.publisher.should == 'Keishu-sha'
+        reference.pagination.should == '247 pp. + 14 pl. + 4 pp. (index).'
+        reference.kind.should == 'book'
+      end
     end
   end
 
-  describe "parsing a book citation" do
-    before do
-      @reference = Factory(:reference, :citation => 'Melbourne: CSIRO Publications, vii + 70 pp.')
+  describe "searching" do
+    it "should return an empty array if nothing is found for author" do
+      Factory(:reference, :authors => 'Bolton')
+      Reference.search(:author => 'foo').should be_empty
     end
 
-    it "should extract the place of publication" do
-      @reference.parse_citation
-      @reference.place.should == 'Melbourne'
+    it "should find the reference for a given author if it exists" do
+      reference = Factory(:reference, :authors => 'Bolton')
+      Factory(:reference, :authors => 'Fisher')
+      Reference.search(:author => 'Bolton').should == [reference]
     end
 
-    it "should extract the publisher" do
-      @reference.parse_citation
-      @reference.publisher.should == 'CSIRO Publications'
-    end
-    it "should extract the pagination" do
-      @reference.parse_citation
-      @reference.pagination.should == 'vii + 70 pp.'
-    end
-  end
-
-  describe "parsing a book citation with complication pagination" do
-    it "should work" do
-      reference = Factory(:reference, :citation => 'Tokyo: Keishu-sha, 247 pp. + 14 pl. + 4 pp. (index).')
-      reference.parse_citation
-      reference.place.should == 'Tokyo'
-      reference.publisher.should == 'Keishu-sha'
-      reference.pagination.should == '247 pp. + 14 pl. + 4 pp. (index).'
-    end
-  end
-end
-
-describe "searching" do
-  it "should return an empty array if nothing is found for author" do
-    Factory(:reference, :authors => 'Bolton')
-    Reference.search(:author => 'foo').should be_empty
-  end
-
-  it "should find the reference for a given author if it exists" do
-    reference = Factory(:reference, :authors => 'Bolton')
-    Factory(:reference, :authors => 'Fisher')
-    Reference.search(:author => 'Bolton').should == [reference]
-  end
-
-  it "should return an empty array if nothing is found for a given year and author" do
-    Factory(:reference, :authors => 'Bolton', :year => '2010')
-    Factory(:reference, :authors => 'Bolton', :year => '1995')
-    Factory(:reference, :authors => 'Fisher', :year => '2011')
-    Factory(:reference, :authors => 'Fisher', :year => '1996')
-    Reference.search(:start_year => '2012', :end_year => '2013', :author => 'Fisher').should be_empty
-  end
-
-
-  it "should return the one reference for a given year and author" do
-    Factory(:reference, :authors => 'Bolton', :year => '2010')
-    Factory(:reference, :authors => 'Bolton', :year => '1995')
-    Factory(:reference, :authors => 'Fisher', :year => '2011')
-    reference = Factory(:reference, :authors => 'Fisher', :year => '1996')
-    Reference.search(:start_year => '1996', :end_year => '1996', :author => 'Fisher').should == [reference]
-  end
-
-  describe "searching by year" do
-    before do
-      Factory(:reference, :year => '1994')
-      Factory(:reference, :year => '1995')
-      Factory(:reference, :year => '1996')
-      Factory(:reference, :year => '1997')
-      Factory(:reference, :year => '1998')
+    it "should return an empty array if nothing is found for a given year and author" do
+      Factory(:reference, :authors => 'Bolton', :year => '2010')
+      Factory(:reference, :authors => 'Bolton', :year => '1995')
+      Factory(:reference, :authors => 'Fisher', :year => '2011')
+      Factory(:reference, :authors => 'Fisher', :year => '1996')
+      Reference.search(:start_year => '2012', :end_year => '2013', :author => 'Fisher').should be_empty
     end
 
-    it "should return an empty array if nothing is found for year" do
-      Reference.search(:start_year => '1992', :end_year => '1993').should be_empty
+
+    it "should return the one reference for a given year and author" do
+      Factory(:reference, :authors => 'Bolton', :year => '2010')
+      Factory(:reference, :authors => 'Bolton', :year => '1995')
+      Factory(:reference, :authors => 'Fisher', :year => '2011')
+      reference = Factory(:reference, :authors => 'Fisher', :year => '1996')
+      Reference.search(:start_year => '1996', :end_year => '1996', :author => 'Fisher').should == [reference]
     end
 
-    it "should find entries less than or equal to the end year" do
-      Reference.search(:end_year => '1995').map(&:year).should =~ ['1994', '1995']
-    end
+    describe "searching by year" do
+      before do
+        Factory(:reference, :year => '1994')
+        Factory(:reference, :year => '1995')
+        Factory(:reference, :year => '1996')
+        Factory(:reference, :year => '1997')
+        Factory(:reference, :year => '1998')
+      end
 
-    it "should find entries greater than or equal to the start year" do
-      Reference.search(:start_year => '1998').map(&:year).should =~ ['1998']
-    end
+      it "should return an empty array if nothing is found for year" do
+        Reference.search(:start_year => '1992', :end_year => '1993').should be_empty
+      end
 
-    it "should find entries in between the start year and the end year (inclusive)" do
-      Reference.search(:start_year => '1995', :end_year => '1996').map(&:year).should =~ ['1995', '1996']
-    end
+      it "should find entries less than or equal to the end year" do
+        Reference.search(:end_year => '1995').map(&:year).should =~ ['1994', '1995']
+      end
 
-    it "should find references in the year of the end range, even if they have extra characters" do
-      Factory(:reference, :year => '2004.')
-      Reference.search(:start_year => '2004', :end_year => '2004').map(&:year).should =~ ['2004.']
+      it "should find entries greater than or equal to the start year" do
+        Reference.search(:start_year => '1998').map(&:year).should =~ ['1998']
+      end
+
+      it "should find entries in between the start year and the end year (inclusive)" do
+        Reference.search(:start_year => '1995', :end_year => '1996').map(&:year).should =~ ['1995', '1996']
+      end
+
+      it "should find references in the year of the end range, even if they have extra characters" do
+        Factory(:reference, :year => '2004.')
+        Reference.search(:start_year => '2004', :end_year => '2004').map(&:year).should =~ ['2004.']
+      end
+
     end
 
   end
-
 end

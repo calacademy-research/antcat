@@ -24,12 +24,15 @@ ActiveRecord::Schema.define(:version => 20100720185403) do
     t.string   "cite_code"
     t.datetime "updated_at"
     t.string   "journal_short_title"
+    t.string   "series"
     t.string   "volume"
+    t.string   "issue"
     t.string   "start_page"
     t.string   "end_page"
     t.string   "place"
     t.string   "publisher"
     t.string   "pagination"
+    t.string   "kind"
   end
 
 end
