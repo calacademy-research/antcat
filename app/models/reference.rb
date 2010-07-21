@@ -48,7 +48,8 @@ class Reference < ActiveRecord::Base
   end
 
   def parse_nested_citation
-    match = citation.match(/ in: /) or return
+    match = citation.match(/\bin: /i) or return
+    self.kind = 'nested'
     true
   end
 
@@ -90,7 +91,6 @@ class Reference < ActiveRecord::Base
 
   def parse_unknown_citation
     self.kind = 'unknown'
-    puts "Couldn't parse: #{citation}"
     true
   end
 

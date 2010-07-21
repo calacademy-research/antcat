@@ -203,6 +203,24 @@ describe Reference do
       end
     end
 
+    describe "parsing a nested citation" do
+      describe "without page numbers" do
+        it "should work" do
+          reference = Factory(:reference, :citation => 'In: Michaelsen, W., Hartmeyer, R. (eds.)  Die Fauna SŸdwest-Australiens. Band I, Lieferung 7.  Jena: Gustav Fischer, pp. 263-310.')
+          reference.parse_citation
+          reference.kind.should == 'nested'
+        end
+      end
+      describe "with page numbers" do
+        it "should work" do
+          reference = Factory(:reference, :citation => 'Pp. 191-210 in: Presl, J. S., Presl, K. B.  Deliciae Pragenses, historiam naturalem spectantes. Tome 1.  Pragae: Calve, 244 pp.')
+          reference.parse_citation
+          reference.kind.should == 'nested'
+        end
+      end
+
+    end
+
     describe "parsing an unknown format" do
       it "should consider it an unknown format" do
         reference = Factory(:reference, :citation => 'asdf')

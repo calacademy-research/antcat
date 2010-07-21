@@ -38,7 +38,6 @@ class Views::References::Index < Views::Base
     rawtext will_paginate @references
     p
     rawtext link_to "New Reference", new_reference_path
-    lll { 'self.class.dependencies(:js)' }
   end
 
   def format_reference reference
