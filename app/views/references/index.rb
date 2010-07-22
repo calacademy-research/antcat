@@ -28,6 +28,7 @@ class Views::References::Index < Views::Base
               a :href => reference_path(reference) do
                 rawtext format_reference(reference)
               end
+              widget Views::Coins.new :reference => reference
             end
           end
         end
