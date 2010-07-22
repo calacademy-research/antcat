@@ -5,7 +5,7 @@ describe "COinS widget" do
     @widget = Views::Coins.new(:reference => Factory(:reference, {
       :kind => 'journal',
       :title => 'A title',
-      :journal_short_title => 'Sh. Jrnl. Title',
+      :short_journal_title => 'Sh. Jrnl. Title',
       :volume => '1',
       :issue => '2',
       :start_page => '3',

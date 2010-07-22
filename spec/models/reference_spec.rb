@@ -46,7 +46,7 @@ describe Reference do
         reference.date.should == '197804'
         reference.title.should == 'Records of insect collection.'
         reference.citation.should == 'Bull. Nat. Hist. Res. Cent. Univ. Baghdad 7(2):1-6.'
-        reference.journal_short_title.should == 'Bull. Nat. Hist. Res. Cent. Univ. Baghdad'
+        reference.short_journal_title.should == 'Bull. Nat. Hist. Res. Cent. Univ. Baghdad'
         reference.volume.should == '7'
         reference.issue.should == '2'
         reference.start_page.should == '1'
@@ -107,7 +107,7 @@ describe Reference do
 
       it "should extract the journal title" do
         @reference.parse_citation
-        @reference.journal_short_title.should == 'Behav. Ecol. Sociobiol.'
+        @reference.short_journal_title.should == 'Behav. Ecol. Sociobiol.'
       end
 
       it "should extract the journal volume" do
@@ -131,7 +131,7 @@ describe Reference do
         it "should work" do
           reference = Factory(:reference, :citation => "Entomol. Mon. Mag. 92:8.")
           reference.parse_citation
-          reference.journal_short_title.should == 'Entomol. Mon. Mag.'
+          reference.short_journal_title.should == 'Entomol. Mon. Mag.'
           reference.volume.should == '92'
           reference.start_page.should == '8'
           reference.end_page.should be_nil
@@ -153,7 +153,7 @@ describe Reference do
         it "should work" do
           reference = Factory(:reference, :citation => 'Ann. Mag. Nat. Hist. (10)8:129-131.')
           reference.parse_citation
-          reference.journal_short_title.should == 'Ann. Mag. Nat. Hist.'
+          reference.short_journal_title.should == 'Ann. Mag. Nat. Hist.'
         end
       end
 

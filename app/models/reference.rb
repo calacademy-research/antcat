@@ -63,7 +63,7 @@ class Reference < ActiveRecord::Base
 
   def parse_journal_citation
     parts = citation.match(/(.+?)(\S+)$/) or return false
-    self.journal_short_title = parts[1].strip
+    self.short_journal_title = parts[1].strip
 
     parts = parts[2].match(/(.+?):(.+)$/) or return false
     parse_series_volume_issue(parts[1]) or return false
