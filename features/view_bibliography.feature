@@ -13,9 +13,10 @@ Feature: View bibliography
   Scenario: View one entry with italics
     Given the following entries exist in the bibliography
       |title|
-      |Territory defense by the ant *Azteca trigona*|
+      |Territory \|defense\| by the ant *Azteca trigona*|
     When I go to the main page
     Then I should see "Azteca trigona" in italics
+      And I should see "defense" in italics
 
   Scenario: Dangerous text
     Given the following entries exist in the bibliography

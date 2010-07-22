@@ -31,6 +31,7 @@ class Views::Coins < Erector::Widget
 
   private
   def treat s
+    s = s.gsub(/[|*]/, '')
     html_escape = CGI::escape(s)
     raw html_escape
   end

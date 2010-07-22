@@ -25,11 +25,13 @@ class Reference < ActiveRecord::Base
 #  4) With the web page output in data/ANTBIB.htm, run 'rake import'.
 #     This will delete all references and import them from the web page output.
 
-  def self.import(filename)
+  def self.import(filename, show_progress = false)
     html = File.read(filename)
     doc = Nokogiri::HTML(html)
     trs = doc.css('tr')
+    $stderr.print "Importing #{filename}" if show_progress
     (1..(trs.length - 1)).each do |i|
+      $stderr.print '.' if show_progress
       tds = trs[i].css('td')
       if tds && !tds[0].inner_html.empty?
         reference = Reference.new(
@@ -46,6 +48,7 @@ class Reference < ActiveRecord::Base
         reference.save!
       end
     end
+    $stderr.puts if show_progress
   end
 
   def parse_citation

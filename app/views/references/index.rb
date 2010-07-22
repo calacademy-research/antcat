@@ -36,7 +36,9 @@ class Views::References::Index < Views::Base
 
   def italicize s
     return unless s
-    s.html_escape.gsub /\*(.*?)\*/, '<span class=taxon>\1</span>'
+    s = s.html_escape
+    s = s.gsub /\*(.*?)\*/, '<span class=taxon>\1</span>'
+    s = s.gsub /\|(.*?)\|/, '<span class=taxon>\1</span>'
   end
 
 end

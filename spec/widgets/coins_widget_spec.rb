@@ -27,6 +27,32 @@ describe "COinS widget" do
     ]
   end
 
+  it "should strip out italics formatting" do
+    @widget = Views::Coins.new(:reference => Factory(:reference, {
+      :kind => 'journal',
+      :title => '*A title*',
+      :short_journal_title => '|Sh. Jrnl. Title|',
+      :volume => '1',
+      :issue => '2',
+      :start_page => '3',
+      :end_page => '4',
+      :year => '1941',
+    }))
+    check_parameters [
+      "ctx_ver=Z39.88-2004",
+      "rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal",
+      "rfr_id=antcat.org",
+      "rft.genre=article",
+      "rft.atitle=A+title",
+      "rft.jtitle=Sh.+Jrnl.+Title",
+      "rft.volume=1",
+      "rft.issue=2",
+      "rft.spage=3",
+      "rft.epage=4",
+      "rft.date=1941"
+    ]
+  end
+
   it "should format a book reference correctly" do
     @widget = Views::Coins.new(:reference => Factory(:reference, {
       :kind => 'book',
