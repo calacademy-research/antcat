@@ -13,7 +13,7 @@ class Views::Base < Erector::Widgets::Page
 
   def body_content
     div :id => 'container' do
-      a (:href => references_path) {h3 'ANTBIB'}
+      a(:href => references_path) {h3 'ANTBIB'}
       hr
       container_content
     end
