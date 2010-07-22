@@ -31,7 +31,7 @@ class Views::References::Index < Views::Base
   end
 
   def format_reference reference
-    "#{italicize(reference.authors)} #{reference.year} #{italicize(reference.title)} #{italicize(reference.citation)} #{italicize(reference.notes)}"
+    "#{italicize(reference.authors)} #{reference.year}. #{italicize(reference.title)} #{italicize(reference.citation)} #{italicize(reference.notes)}"
   end
 
   def italicize s

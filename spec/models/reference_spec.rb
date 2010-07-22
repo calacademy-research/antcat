@@ -42,7 +42,7 @@ describe Reference do
         Reference.import(@filename)
         reference = Reference.first
         reference.authors.should == "Abdul-Rassoul, M. S.; Dawah, H. A.; Othman, N. Y."
-        reference.year.should == "1978."
+        reference.year.should == "1978"
         reference.date.should == '197804'
         reference.title.should == 'Records of insect collection.'
         reference.citation.should == 'Bull. Nat. Hist. Res. Cent. Univ. Baghdad 7(2):1-6.'
@@ -94,6 +94,15 @@ describe Reference do
         File.should_receive(:read).with(@filename).and_return(file_contents)
         Reference.import(@filename)
         Reference.first.title.should == 'Love & Death'
+      end
+
+      it "should remove period from end of year" do
+        file_contents = "<html><body><table><tr></tr><tr><td>123</td><td></td>
+            <td>1978.</td><td></td><td></td>
+          <td></td><td></td><td></td></tr></table></body></html>"
+        File.should_receive(:read).with(@filename).and_return(file_contents)
+        Reference.import(@filename)
+        Reference.first.year.should == '1978'
       end
     end
 
@@ -276,8 +285,8 @@ describe Reference do
         Reference.search(:end_year => '1995').map(&:year).should =~ ['1994', '1995']
       end
 
-      it "should find entries greater than or equal to the start year" do
-        Reference.search(:start_year => '1998').map(&:year).should =~ ['1998']
+      it "should find entries equal to the start year" do
+        Reference.search(:start_year => '1995').map(&:year).should =~ ['1995']
       end
 
       it "should find entries in between the start year and the end year (inclusive)" do
@@ -285,6 +294,11 @@ describe Reference do
       end
 
       it "should find references in the year of the end range, even if they have extra characters" do
+        Factory(:reference, :year => '2004.')
+        Reference.search(:start_year => '2004', :end_year => '2004').map(&:year).should =~ ['2004.']
+      end
+
+      it "should find references in the year of the start year, even if they have extra characters" do
         Factory(:reference, :year => '2004.')
         Reference.search(:start_year => '2004', :end_year => '2004').map(&:year).should =~ ['2004.']
       end

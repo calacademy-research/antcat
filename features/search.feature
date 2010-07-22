@@ -55,6 +55,13 @@ Feature: Searching references
     Then I should see "Brian Fisher 1995"
       And I should not see "Barry Bolton 2010"
 
+  Scenario: Searching by one year
+    When I go to the main page
+      And I fill in "start_year" with "1995"
+      And I press "Search"
+    Then I should see "Brian Fisher 1995"
+      And I should not see "Barry Bolton 2010"
+
   Scenario: Searching by a year range
     Given the following entries exist in the bibliography
      |year |

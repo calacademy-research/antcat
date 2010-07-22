@@ -4,8 +4,15 @@ class Reference < ActiveRecord::Base
   def self.search params
     scope = scoped(:order => 'authors')
     scope = scope.scoped :conditions => ['authors LIKE ?', "%#{params[:author]}%"] unless params[:author].blank?
-    scope = scope.scoped :conditions => ['year >= ?', params[:start_year]] unless params[:start_year].blank?
-    # year often has a letter or a period at the end
+
+    # year often has a letter or a period at the end, so append Z to value for the end of the range
+    if params[:start_year].present?
+      if params[:end_year].blank?
+        scope = scope.scoped :conditions => ['year >= ? AND year < ?', params[:start_year], "#{params[:start_year]}Z"]
+      else
+        scope = scope.scoped :conditions => ['year >= ?', params[:start_year]] unless params[:start_year].blank?
+      end
+    end
     scope = scope.scoped :conditions => ['year <= ?', "#{params[:end_year]}Z"] unless params[:end_year].blank?
     scope
   end
@@ -28,7 +35,7 @@ class Reference < ActiveRecord::Base
         reference = Reference.new(
                 :cite_code        => node_to_text(tds[0]),
                 :authors          => node_to_text(tds[1]),
-                :year             => node_to_text(tds[2]),
+                :year             => remove_period_from(node_to_text(tds[2])),
                 :date             => node_to_text(tds[3]),
                 :title            => node_to_text(tds[4]),
                 :citation         => node_to_text(tds[5]),
@@ -106,5 +113,7 @@ class Reference < ActiveRecord::Base
     CGI.unescapeHTML(s)
   end
 
-
+  def self.remove_period_from text
+    text[-1..-1] == '.' ? text[0..-2] : text 
+  end
 end
