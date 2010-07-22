@@ -34,18 +34,15 @@ table
 span.taxon
   font-style: italic
 
-a
+a, a:active, a:hover, a:focus, a:visited
   color: green
   text-decoration: none
+  outline: none
+  &:active
+    color: lightgreen
 
-.reference
-  a
-    text-decoration: none
-    color: black
-  a:visited
-    color: black
-  a:active, a:hover
-    color: green
+.reference a
+  color: black
 
 #flash_notice, #flash_error
   padding: 5px 8px
