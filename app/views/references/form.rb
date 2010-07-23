@@ -7,7 +7,12 @@ class Views::References::Form < Erector::Widget
 
     table(:class => 'reference-fields') do
       tr do
-        td(:style => "width: 70px") {@f.label :authors}
+        td
+        td {span "Use vertical bars or asterisks around italicized text", :class => 'instructions'}
+      end
+
+      tr do
+        td {@f.label :authors}
         td {@f.text_field :authors, :class => "wide"}
       end
       tr do

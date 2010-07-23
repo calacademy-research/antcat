@@ -17,8 +17,8 @@ class ReferencesController < ApplicationController
   def update
     @reference = Reference.find(params[:id])
     if @reference.update_attributes(params[:reference])
-      flash[:notice] = "Successfully updated reference."
-      redirect_to references_url
+      flash[:notice] = "Reference has been updated"
+      redirect_to reference_url(@reference)
     else
       render :action => 'edit'
     end

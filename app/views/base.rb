@@ -14,6 +14,11 @@ class Views::Base < Erector::Widgets::Page
   def body_content
     div :id => 'container' do
       a(:href => references_path) {h3 'ANTBIB'}
+
+      p :id => 'flash' do
+        text flash[:notice]
+      end
+
       hr
       container_content
       hr

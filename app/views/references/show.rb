@@ -22,6 +22,11 @@ class Views::References::Show < Views::Base
     end
 
     p do
+      b "Year "
+      text @reference.year
+    end
+
+    p do
       b "Notes "
       text @reference.notes
     end
