@@ -42,8 +42,7 @@ class Reference < ActiveRecord::Base
                 :title            => node_to_text(tds[4]),
                 :citation         => node_to_text(tds[5]),
                 :notes            => node_to_text(tds[6]),
-                :possess          => node_to_text(tds[7]),
-                :excel_file_name  => filename)
+                :possess          => node_to_text(tds[7]))
         reference.parse_citation
         reference.save!
       end

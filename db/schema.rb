@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100722172054) do
+ActiveRecord::Schema.define(:version => 20100723173841) do
 
   create_table "refs", :force => true do |t|
     t.string   "authors"
@@ -19,7 +19,6 @@ ActiveRecord::Schema.define(:version => 20100722172054) do
     t.string   "notes"
     t.string   "possess"
     t.string   "date"
-    t.string   "excel_file_name"
     t.datetime "created_at"
     t.string   "cite_code"
     t.datetime "updated_at"

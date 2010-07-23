@@ -37,11 +37,6 @@ class Views::References::Show < Views::Base
     end
 
     p do
-      b "Excel file name "
-      text @reference.excel_file_name
-    end
-
-    p do
       b "Cite code "
       text @reference.cite_code
     end

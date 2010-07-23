@@ -54,7 +54,6 @@ describe Reference do
         reference.notes.should == '{Formicidae pp. 4-6.}'
         reference.cite_code.should == '5523'
         reference.possess.should == 'PSW'
-        reference.excel_file_name.should == @filename
       end
 
       it "should collapse lines" do
