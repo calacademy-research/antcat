@@ -16,6 +16,8 @@ class Views::Base < Erector::Widgets::Page
       a(:href => references_path) {h3 'ANTBIB'}
       hr
       container_content
+      hr
+      img :src => '/images/zotero_logo_tiny.png', :width => '50px', :align => 'right'
     end
   end
 end
