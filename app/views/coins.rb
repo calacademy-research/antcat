@@ -26,10 +26,25 @@ class Views::Coins < Erector::Widget
     end
     title << "rft.date=#{treat @reference.year}" if @reference.year
 
+    title.concat authors if @reference.authors.present?
+
     span :class => "Z3988", :title => raw(title.join("&amp;"))
   end
 
   private
+  def authors
+    authors = @reference.authors.split(/; ?/)
+    authors.inject([]) do |a,e|
+      parts = e.match(/(.*?), (.*)/)
+      unless parts
+        a << "rft.au=#{treat(e)}"
+      else
+        a << "rft.aulast=#{treat(parts[1])}" if parts[1]
+        a << "rft.aufirst=#{treat(parts[2])}" if parts[2]
+      end
+    end
+  end
+  
   def treat s
     s = s.gsub(/[|*]/, '')
     html_escape = CGI::escape(s)
