@@ -1,5 +1,7 @@
 class Views::Search < Erector::Widget
   def content
+    jquery '$("#journal").autocomplete({source: "/journals"});'
+
     div :id => 'search' do
       widget Form, :action => '/references', :method => 'get' do
         label 'Author', :for => 'author'
