@@ -14,6 +14,8 @@ class Reference < ActiveRecord::Base
       end
     end
     scope = scope.scoped :conditions => ['year <= ?', "#{params[:end_year]}Z"] unless params[:end_year].blank?
+
+    scope = scope.scoped :conditions => ['short_journal_title = ?', params[:journal]] unless params[:journal].blank?
     scope
   end
   

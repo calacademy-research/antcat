@@ -3,15 +3,15 @@ class Views::References::Index < Views::Base
   include ActionController::UrlWriter
 
   def container_content
-    div :style => 'float: left' do
+    div do
       widget Views::Search.new
     end
-    div :style => 'float: right;margin-top: 3px' do
+    div :style => 'float:right;margin-top: 5px' do
       rawtext will_paginate @references
     end
 
     div :style => 'clear:both'
-
+    
     hr
 
     unless @references.present?

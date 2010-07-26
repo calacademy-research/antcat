@@ -304,5 +304,16 @@ describe Reference do
 
     end
 
+    describe "searching by journal" do
+      it "should find by journal" do
+        reference = Factory(:reference, :short_journal_title => "Mathematica")
+        Reference.search(:journal => 'Mathematica').should == [reference]
+      end
+      it "should only do an exact match" do
+        Factory(:reference, :short_journal_title => "Mathematica")
+        Reference.search(:journal => 'Math').should be_empty
+      end
+    end
+
   end
 end
