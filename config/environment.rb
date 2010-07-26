@@ -7,7 +7,6 @@ Rails::Initializer.run do |config|
 
   config.gem 'erector'
   config.gem 'haml' # for Sass
-  config.gem 'less'
   config.gem 'nokogiri'
   config.gem 'will_paginate'
 end
