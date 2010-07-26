@@ -3,7 +3,14 @@ class Views::References::Index < Views::Base
   include ActionController::UrlWriter
 
   def container_content
-    widget Views::Search.new
+    div :style => 'float: left' do
+      widget Views::Search.new
+    end
+    div :style => 'float: right;margin-top: 3px' do
+      rawtext will_paginate @references
+    end
+
+    div :style => 'clear:both'
 
     hr
 
@@ -24,8 +31,6 @@ class Views::References::Index < Views::Base
       end
     end
 
-    p
-    rawtext will_paginate @references
     p
     rawtext link_to "New Reference", new_reference_path
   end

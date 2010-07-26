@@ -3,7 +3,7 @@ class ReferencesController < ApplicationController
     if params[:commit] == 'clear'
       params[:author] = params[:start_year] = params[:end_year] = ''
     end
-    @references = Reference.search(params).paginate(:page => params[:page])
+    @references = Reference.search(params).paginate(:page => params[:page], :per_page => 10)
   end
 
   def show
