@@ -23,6 +23,7 @@ class Views::Coins < Erector::Widget
       title << "rft.btitle=#{treat @reference.title}" if @reference.title
       title << "rft.pub=#{treat @reference.publisher}" if @reference.publisher
       title << "rft.place=#{treat @reference.place}" if @reference.place
+      title << "rft.pages=#{treat @reference.pagination}" if @reference.pagination
     end
     title << "rft.date=#{@reference.numeric_year}" if @reference.numeric_year
 

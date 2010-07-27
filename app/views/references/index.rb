@@ -6,9 +6,6 @@ class Views::References::Index < Views::Base
     div do
       widget Views::Search.new
     end
-    div :style => 'float:right;margin-top: 5px' do
-      rawtext will_paginate @references
-    end
 
     div :style => 'clear:both'
     
@@ -31,6 +28,9 @@ class Views::References::Index < Views::Base
       end
     end
 
+    div do
+      rawtext will_paginate @references
+    end
     p
     rawtext link_to "New Reference", new_reference_path
   end

@@ -15,7 +15,22 @@ class Views::Base < Erector::Widgets::Page
 
   def body_content
     div :id => 'container' do
-      a(:href => references_path) {h3 'ANTBIB'}
+
+      div :class => 'heading' do
+        div :style => 'float:left' do
+          a(:href => references_path) { h1 'ANTBIB' }
+        end
+        div :style => 'float:left' do
+          h2 do
+            text 'A Bibliography of Ant Systematics'
+          end
+        end
+        div(:style => 'float:right') do
+          h3 'by Philip S. Ward, et al.'
+        end
+      end
+
+      div :style => 'clear:both'
 
       p :id => 'flash' do
         text flash[:notice]
@@ -26,9 +41,9 @@ class Views::Base < Erector::Widgets::Page
       hr
       table(:style => 'width: 100%') do
         tr do
-          td(:style => 'width:358px') {img :style => "height:44px", :src => '/images/rails.png'}
-          td(:style => 'width:412px') {img :src => '/images/calacademy.gif'}
-          td() {img :src => '/images/zotero_logo_tiny.png'}
+          td(:style => 'width:358px') { img :style => "height:44px", :src => '/images/rails.png' }
+          td(:style => 'width:412px') { img :src => '/images/calacademy.gif' }
+          td() { img :src => '/images/zotero_logo_tiny.png' }
 
         end
       end
@@ -36,6 +51,7 @@ class Views::Base < Erector::Widgets::Page
   end
 
   def container_content
-    
+
   end
+
 end

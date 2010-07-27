@@ -151,6 +151,7 @@ describe "COinS widget" do
       :numeric_year => 1933,
       :publisher => 'Springer, Verlag',
       :place => 'Dresden',
+      :pagination => 'ix + 33pp.'
     }))
     check_parameters [
       "ctx_ver=Z39.88-2004",
@@ -161,6 +162,7 @@ describe "COinS widget" do
       "rft.pub=Springer%2C+Verlag",
       "rft.place=Dresden",
       "rft.date=1933",
+      "rft.pages=ix+%2B+33pp.",
     ]
   end
 
