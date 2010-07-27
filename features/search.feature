@@ -6,9 +6,9 @@ Feature: Searching references
 
   Background:
     Given the following entries exist in the bibliography
-       |authors     |year|
-       |Brian Fisher|1995|
-       |Barry Bolton|2010|
+       |authors     |year         |numeric_year|
+       |Brian Fisher|1995b        |1995        |
+       |Barry Bolton|2010 ("2011")|2010        |
 
   Scenario: Not searching yet
     When I go to the main page
@@ -75,19 +75,19 @@ Feature: Searching references
 
   Scenario: Searching by a year range
     Given the following entries exist in the bibliography
-     |year |
-     |2009.|
-     |2010.|
-     |2011.|
-     |2012.|
+     |year  |numeric_year|
+     |2009a.|2009        |
+     |2010c.|2010        |
+     |2011d.|2011        |
+     |2012e.|2012        |
     When I go to the main page
       And I fill in "start_year" with "2010"
       And I fill in "end_year" with "2011"
       And I press "Search"
-    Then I should see "2010."
-      And I should see "2011."
-      And I should not see "2009."
-      And I should not see "2012."
+    Then I should see "2010c."
+      And I should see "2011d."
+      And I should not see "2009a."
+      And I should not see "2012e."
 
   Scenario: Searching by end year
     When I go to the main page
@@ -105,11 +105,11 @@ Feature: Searching references
     
   Scenario: Searching by author and year
     Given the following entries exist in the bibliography
-       |authors     |year|
-       |Brian Fisher|1995|
-       |Brian Fisher|2010|
-       |Barry Bolton|2010|
-       |Barry Bolton|1995|
+       |authors     |year |numeric_year|
+       |Brian Fisher|1995a|1995        |
+       |Brian Fisher|2010b|2010        |
+       |Barry Bolton|2010e|2010        |
+       |Barry Bolton|1995d|1995        |
     When I go to the main page
       And I fill in "author" with "fisher"
       And I fill in "start_year" with "1995"

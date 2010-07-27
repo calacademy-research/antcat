@@ -11,6 +11,34 @@ describe "COinS widget" do
       :start_page => '3',
       :end_page => '4',
       :year => '1941',
+      :numeric_year => 1941,
+    }))
+    check_parameters [
+      "ctx_ver=Z39.88-2004",
+      "rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal",
+      "rfr_id=antcat.org",
+      "rft.genre=article",
+      "rft.atitle=A+title",
+      "rft.jtitle=Sh.+Jrnl.+Title",
+      "rft.volume=1",
+      "rft.issue=2",
+      "rft.spage=3",
+      "rft.epage=4",
+      "rft.date=1941"
+    ]
+  end
+
+  it "should use the numeric year" do
+    @widget = Views::Coins.new(:reference => Factory(:reference, {
+      :kind => 'journal',
+      :title => 'A title',
+      :short_journal_title => 'Sh. Jrnl. Title',
+      :volume => '1',
+      :issue => '2',
+      :start_page => '3',
+      :end_page => '4',
+      :year => '1941a ("1942")',
+      :numeric_year => 1941,
     }))
     check_parameters [
       "ctx_ver=Z39.88-2004",
@@ -38,6 +66,7 @@ describe "COinS widget" do
       :start_page => '3',
       :end_page => '4',
       :year => '1941',
+      :numeric_year => 1941,
     }))
     check_parameters [
       "ctx_ver=Z39.88-2004",
@@ -69,6 +98,7 @@ describe "COinS widget" do
       :start_page => '3',
       :end_page => '4',
       :year => '1941',
+      :numeric_year => 1941,
     }))
     check_parameters [
       "ctx_ver=Z39.88-2004",
@@ -96,6 +126,7 @@ describe "COinS widget" do
       :start_page => '3',
       :end_page => '4',
       :year => '1941',
+      :numeric_year => 1941,
     }))
     check_parameters [
       "ctx_ver=Z39.88-2004",
@@ -117,6 +148,7 @@ describe "COinS widget" do
       :kind => 'book',
       :title => 'Another title',
       :year => '1933',
+      :numeric_year => 1933,
       :publisher => 'Springer, Verlag',
       :place => 'Dresden',
     }))

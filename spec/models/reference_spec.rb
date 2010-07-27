@@ -103,6 +103,16 @@ describe Reference do
         Reference.import(@filename)
         Reference.first.year.should == '1978'
       end
+
+      it "should import the numeric year" do
+        file_contents = "<html><body><table><tr></tr><tr><td>123</td><td></td>
+            <td>1978a (\"2005\").</td><td></td><td></td>
+          <td></td><td></td><td></td></tr></table></body></html>"
+        File.should_receive(:read).with(@filename).and_return(file_contents)
+        Reference.import(@filename)
+        Reference.first.year.should == '1978a ("2005")'
+        Reference.first.numeric_year.should == 1978
+      end
     end
 
   end
@@ -251,29 +261,29 @@ describe Reference do
     end
 
     it "should return an empty array if nothing is found for a given year and author" do
-      Factory(:reference, :authors => 'Bolton', :year => '2010')
-      Factory(:reference, :authors => 'Bolton', :year => '1995')
-      Factory(:reference, :authors => 'Fisher', :year => '2011')
-      Factory(:reference, :authors => 'Fisher', :year => '1996')
+      Factory(:reference, :authors => 'Bolton', :numeric_year => 2010)
+      Factory(:reference, :authors => 'Bolton', :numeric_year => 1995)
+      Factory(:reference, :authors => 'Fisher', :numeric_year => 2011)
+      Factory(:reference, :authors => 'Fisher', :numeric_year => 1996)
       Reference.search(:start_year => '2012', :end_year => '2013', :author => 'Fisher').should be_empty
     end
 
 
     it "should return the one reference for a given year and author" do
-      Factory(:reference, :authors => 'Bolton', :year => '2010')
-      Factory(:reference, :authors => 'Bolton', :year => '1995')
-      Factory(:reference, :authors => 'Fisher', :year => '2011')
-      reference = Factory(:reference, :authors => 'Fisher', :year => '1996')
+      Factory(:reference, :authors => 'Bolton', :numeric_year => 2010)
+      Factory(:reference, :authors => 'Bolton', :numeric_year => 1995)
+      Factory(:reference, :authors => 'Fisher', :numeric_year => 2011)
+      reference = Factory(:reference, :authors => 'Fisher', :numeric_year => 1996)
       Reference.search(:start_year => '1996', :end_year => '1996', :author => 'Fisher').should == [reference]
     end
 
     describe "searching by year" do
       before do
-        Factory(:reference, :year => '1994')
-        Factory(:reference, :year => '1995')
-        Factory(:reference, :year => '1996')
-        Factory(:reference, :year => '1997')
-        Factory(:reference, :year => '1998')
+        Factory(:reference, :numeric_year => 1994)
+        Factory(:reference, :numeric_year => 1995)
+        Factory(:reference, :numeric_year => 1996)
+        Factory(:reference, :numeric_year => 1997)
+        Factory(:reference, :numeric_year => 1998)
       end
 
       it "should return an empty array if nothing is found for year" do
@@ -281,25 +291,25 @@ describe Reference do
       end
 
       it "should find entries less than or equal to the end year" do
-        Reference.search(:end_year => '1995').map(&:year).should =~ ['1994', '1995']
+        Reference.search(:end_year => '1995').map(&:numeric_year).should =~ [1994, 1995]
       end
 
       it "should find entries equal to the start year" do
-        Reference.search(:start_year => '1995').map(&:year).should =~ ['1995']
+        Reference.search(:start_year => '1995').map(&:numeric_year).should =~ [1995]
       end
 
       it "should find entries in between the start year and the end year (inclusive)" do
-        Reference.search(:start_year => '1995', :end_year => '1996').map(&:year).should =~ ['1995', '1996']
+        Reference.search(:start_year => '1995', :end_year => '1996').map(&:numeric_year).should =~ [1995, 1996]
       end
 
       it "should find references in the year of the end range, even if they have extra characters" do
-        Factory(:reference, :year => '2004.')
-        Reference.search(:start_year => '2004', :end_year => '2004').map(&:year).should =~ ['2004.']
+        Factory(:reference, :year => '2004.', :numeric_year => 2004)
+        Reference.search(:start_year => '2004', :end_year => '2004').map(&:numeric_year).should =~ [2004]
       end
 
       it "should find references in the year of the start year, even if they have extra characters" do
-        Factory(:reference, :year => '2004.')
-        Reference.search(:start_year => '2004', :end_year => '2004').map(&:year).should =~ ['2004.']
+        Factory(:reference, :year => '2004.', :numeric_year => 2004)
+        Reference.search(:start_year => '2004', :end_year => '2004').map(&:numeric_year).should =~ [2004]
       end
 
     end

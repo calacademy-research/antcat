@@ -3,19 +3,19 @@ class Reference < ActiveRecord::Base
 
   def self.search params
     scope = scoped(:order => 'authors')
+
     scope = scope.scoped :conditions => ['authors LIKE ?', "%#{params[:author]}%"] unless params[:author].blank?
 
-    # year often has a letter or a period at the end, so append Z to value for the end of the range
-    if params[:start_year].present?
-      if params[:end_year].blank?
-        scope = scope.scoped :conditions => ['year >= ? AND year < ?', params[:start_year], "#{params[:start_year]}Z"]
-      else
-        scope = scope.scoped :conditions => ['year >= ?', params[:start_year]] unless params[:start_year].blank?
-      end
+    if params[:start_year].present? and params[:end_year].blank?
+      scope = scope.scoped :conditions => ['numeric_year = ?', params[:start_year]]
+    elsif params[:start_year].present? and params[:end_year].present?
+      scope = scope.scoped :conditions => ['numeric_year >= ? AND numeric_year <= ?', params[:start_year], params[:end_year]]
+    elsif params[:start_year].blank? and params[:end_year].present?
+      scope = scope.scoped :conditions => ['numeric_year <= ?', params[:end_year]]
     end
-    scope = scope.scoped :conditions => ['year <= ?', "#{params[:end_year]}Z"] unless params[:end_year].blank?
 
     scope = scope.scoped :conditions => ['short_journal_title = ?', params[:journal]] unless params[:journal].blank?
+
     scope
   end
   
@@ -44,7 +44,8 @@ class Reference < ActiveRecord::Base
                 :title            => node_to_text(tds[4]),
                 :citation         => node_to_text(tds[5]),
                 :notes            => node_to_text(tds[6]),
-                :possess          => node_to_text(tds[7]))
+                :possess          => node_to_text(tds[7]),
+                :numeric_year     => node_to_integer(tds[2]))
         reference.parse_citation
         reference.save!
       end
@@ -58,7 +59,7 @@ class Reference < ActiveRecord::Base
   end
 
   def parse_nested_citation
-    match = citation.match(/\bin: /i) or return
+    citation.match(/\bin: /i) or return
     self.kind = 'nested'
     true
   end
@@ -115,6 +116,10 @@ class Reference < ActiveRecord::Base
     s = s.gsub(/\|/, '*')
     s = s.squish
     CGI.unescapeHTML(s)
+  end
+
+  def self.node_to_integer node
+    node.inner_html.to_i
   end
 
   def self.remove_period_from text

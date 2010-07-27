@@ -24,7 +24,7 @@ class Views::Coins < Erector::Widget
       title << "rft.pub=#{treat @reference.publisher}" if @reference.publisher
       title << "rft.place=#{treat @reference.place}" if @reference.place
     end
-    title << "rft.date=#{treat @reference.year}" if @reference.year
+    title << "rft.date=#{@reference.numeric_year}" if @reference.numeric_year
 
     title.concat authors if @reference.authors.present?
 
