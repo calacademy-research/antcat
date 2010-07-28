@@ -5,15 +5,8 @@ class Reference < ActiveRecord::Base
     scope = scoped(:order => 'authors')
 
     scope = scope.scoped :conditions => ['authors LIKE ?', "%#{params[:author]}%"] unless params[:author].blank?
-
-    if params[:start_year].present? and params[:end_year].blank?
-      scope = scope.scoped :conditions => ['numeric_year = ?', params[:start_year]]
-    elsif params[:start_year].present? and params[:end_year].present?
-      scope = scope.scoped :conditions => ['numeric_year >= ? AND numeric_year <= ?', params[:start_year], params[:end_year]]
-    elsif params[:start_year].blank? and params[:end_year].present?
-      scope = scope.scoped :conditions => ['numeric_year <= ?', params[:end_year]]
-    end
-
+    scope = scope.scoped :conditions => ['numeric_year >= ?', params[:start_year]] if params[:start_year].present?
+    scope = scope.scoped :conditions => ['numeric_year <= ?', params[:end_year]] if params[:end_year].present?
     scope = scope.scoped :conditions => ['short_journal_title = ?', params[:journal]] unless params[:journal].blank?
 
     scope

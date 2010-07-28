@@ -3,8 +3,9 @@ class Views::Search < Erector::Widget
     jquery '$("#journal").autocomplete({source: "/journals"});'
 
     jquery <<-JQUERY
-      $("#start_year").keypress(function(event) {
-        $("#end_year").val($("#start_year").val());
+      $("#start_year").keyup(function(event) {
+        if (event.which != 9)
+          $("#end_year").val($(this).val());
       })
     JQUERY
 

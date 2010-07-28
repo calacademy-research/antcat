@@ -294,8 +294,8 @@ describe Reference do
         Reference.search(:end_year => '1995').map(&:numeric_year).should =~ [1994, 1995]
       end
 
-      it "should find entries equal to the start year" do
-        Reference.search(:start_year => '1995').map(&:numeric_year).should =~ [1995]
+      it "should find entries equal to or greater than the start year" do
+        Reference.search(:start_year => '1995').map(&:numeric_year).should =~ [1995, 1996, 1997, 1998]
       end
 
       it "should find entries in between the start year and the end year (inclusive)" do
