@@ -1,11 +1,8 @@
-#<span
-#   class="Z3988"
-#   title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rfr_id=info%3Asid%2Focoins.info%3Agenerator&amp;rft.genre=article&amp;rft.atitle=Records+of+insect+collection+%28Part+I%29+in+the+Natural+History+Research+Centre%2C+Baghdad&amp;rft.title=Bull.+Nat.+Hist.+Res.+Cent.+Univ.+Baghdad&amp;rft.stitle=Bull+Nat+Hist+Res+Cent+Univ+Baghdad">
-#      (Insert Default Text Here)
-#</span>
-
 class Views::References::Show < Views::Base
   def container_content
+
+    widget Views::Coins.new :reference => @reference
+
     p do
       b "Authors "
       text @reference.authors

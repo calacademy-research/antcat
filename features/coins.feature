@@ -12,3 +12,11 @@ Feature: COinS formatting
     Then there should be the HTML "<span class="Z3988" title="ctx_ver=Z39.88-2004"
       And there should be the HTML "rft.atitle=TITLE"
 
+  Scenario: Including COinS on show page
+    Given the following entries exist in the bibliography
+      |authors|kind|title|year|
+      |AUTHORS|journal|TITLE|1999|
+    When I go to the page for that reference
+    Then there should be the HTML "<span class="Z3988" title="ctx_ver=Z39.88-2004"
+      And there should be the HTML "rft.atitle=TITLE"
+
