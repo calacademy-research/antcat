@@ -31,8 +31,8 @@ class ReferencesController < ApplicationController
   def create
     @reference = Reference.new(params[:reference])
     if @reference.save
-      flash[:notice] = "Successfully created reference."
-      redirect_to references_url
+      flash[:notice] = "Reference has been added"
+      redirect_to reference_url(@reference)
     else
       render :action => 'new'
     end
@@ -41,7 +41,7 @@ class ReferencesController < ApplicationController
   def destroy
     @reference = Reference.find(params[:id])
     @reference.destroy
-    flash[:notice] = "Successfully destroyed reference."
+    flash[:notice] = "Reference has been deleted"
     redirect_to references_url
   end
 end
