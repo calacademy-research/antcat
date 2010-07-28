@@ -15,6 +15,11 @@ class ReferencesController < ApplicationController
   end
 
   def update
+    if params[:commit] == 'Cancel'
+      redirect_to reference_url(@reference)
+      return
+    end
+
     @reference = Reference.find(params[:id])
     if @reference.update_attributes(params[:reference])
       flash[:notice] = "Reference has been updated"
@@ -29,6 +34,11 @@ class ReferencesController < ApplicationController
   end
   
   def create
+    if params[:commit] == 'Cancel'
+      redirect_to references_url
+      return
+    end
+
     @reference = Reference.new(params[:reference])
     if @reference.save
       flash[:notice] = "Reference has been added"

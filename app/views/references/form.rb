@@ -113,7 +113,10 @@ class Views::References::Form < Erector::Widget
       end
       tr do
         td
-        td { @f.submit @submit_text }
+        td do
+          @f.submit @submit_text, :name => 'commit'
+          @f.submit 'Cancel', :name => 'commit', :value => 'Cancel'
+        end
       end
 
     end
