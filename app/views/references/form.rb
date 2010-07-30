@@ -50,10 +50,6 @@ class Views::References::Form < Erector::Widget
         td(:style => 'font-style: italic') {text "Journal"}
       end
       tr do
-        td { @f.label :short_journal_title }
-        td { @f.text_field :short_journal_title, :class => "wide" }
-      end
-      tr do
         td { @f.label :series }
         td { @f.text_field :series, :class => "small" }
       end
