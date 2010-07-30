@@ -28,20 +28,19 @@ class Reference < ActiveRecord::Base
     (1..(trs.length - 1)).each do |i|
       $stderr.print '.' if show_progress
       tds = trs[i].css('td')
-      if tds && !tds[0].inner_html.empty?
-        reference = Reference.new(
-                :cite_code        => node_to_text(tds[0]),
-                :authors          => node_to_text(tds[1]),
-                :year             => remove_period_from(node_to_text(tds[2])),
-                :date             => node_to_text(tds[3]),
-                :title            => node_to_text(tds[4]),
-                :citation         => node_to_text(tds[5]),
-                :notes            => node_to_text(tds[6]),
-                :possess          => node_to_text(tds[7]),
-                :numeric_year     => node_to_integer(tds[2]))
-        reference.parse_citation
-        reference.save!
-      end
+      break unless tds && tds[1] && !tds[1].inner_html.empty?
+      reference = Reference.new(
+                    :cite_code        => node_to_text(tds[1]),
+                    :authors          => node_to_text(tds[2]),
+                    :year             => remove_period_from(node_to_text(tds[3])),
+                    :date             => node_to_text(tds[4]),
+                    :title            => node_to_text(tds[5]),
+                    :citation         => node_to_text(tds[6]),
+                    :notes            => node_to_text(tds[7]),
+                    :possess          => node_to_text(tds[8]),
+                    :numeric_year     => node_to_integer(tds[3]))
+      reference.parse_citation
+      reference.save!
     end
     $stderr.puts if show_progress
   end

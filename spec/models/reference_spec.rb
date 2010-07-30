@@ -25,6 +25,7 @@ describe Reference do
                 <tr>
                 </tr>
                 <tr height=12>
+                  <td></td>
                   <td height=12 class=xl65 align=right>5523</td>
                   <td class=xl65>Abdul-Rassoul, M. S.; Dawah, H. A.; Othman, N. Y.</td>
                   <td class=xl65>1978.</td>
@@ -56,8 +57,36 @@ describe Reference do
         reference.possess.should == 'PSW'
       end
 
+      it "should read from the second row of the first table it finds and continue until first blank row" do
+        @file_contents = "
+          <html><body><table><tr></tr>
+            <tr>
+              <td></td>
+              <td>1</td>
+              <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>2</td>
+              <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            </tr>
+            <tr>
+              <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>3</td>
+              <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            </tr>
+          </table></body></html>"
+        File.should_receive(:read).with(@filename).and_return(@file_contents)
+        Reference.import(@filename)
+        Reference.count.should == 2
+        Reference.all.map(&:cite_code).should =~ ['1', '2']
+      end
+
       it "should collapse lines" do
-        file_contents = "<html><body><table><tr></tr><tr><td>123</td><td></td><td></td><td></td>
+        file_contents = "<html><body><table><tr></tr><tr><td></td><td>123</td><td></td><td></td><td></td>
             <td>Records of insect collection (Part I) in the Natural History
             Research Centre, Baghdad.</td>
           <td></td><td></td><td></td></tr></table></body></html>"
@@ -67,7 +96,7 @@ describe Reference do
       end
 
       it "should convert vertical bars (Phil's indication of italics) to asterisks (Markdown)" do
-        file_contents = "<html><body><table><tr></tr><tr><td>123</td><td></td><td></td><td></td>
+        file_contents = "<html><body><table><tr></tr><tr><td></td><td>123</td><td></td><td></td><td></td>
             <td>Records of |Formicidae|.</td>
           <td></td><td></td><td></td></tr></table></body></html>"
         File.should_receive(:read).with(@filename).and_return(file_contents)
@@ -76,7 +105,7 @@ describe Reference do
       end
 
       it "should convert Microsoft's indication of italics to asterisks" do
-        file_contents = "<html><body><table><tr></tr><tr><td>123</td><td></td><td></td><td></td>
+        file_contents = "<html><body><table><tr></tr><tr><td></td><td>123</td><td></td><td></td><td></td>
             <td>Interaction between the ants <font class=font7>Zacryptocerus
   maculatus</font><font class=font0> and </font><font class=font7>Azteca
   trigona</font><font class=font0>.</font></td>
@@ -87,7 +116,7 @@ describe Reference do
       end
 
       it "should convert entities to characters" do
-        file_contents = "<html><body><table><tr></tr><tr><td>123</td><td></td><td></td><td></td>
+        file_contents = "<html><body><table><tr></tr><tr><td></td><td>123</td><td></td><td></td><td></td>
             <td>Love &amp; Death</td>
           <td></td><td></td><td></td></tr></table></body></html>"
         File.should_receive(:read).with(@filename).and_return(file_contents)
@@ -96,7 +125,7 @@ describe Reference do
       end
 
       it "should remove period from end of year" do
-        file_contents = "<html><body><table><tr></tr><tr><td>123</td><td></td>
+        file_contents = "<html><body><table><tr></tr><tr><td></td><td>123</td><td></td>
             <td>1978.</td><td></td><td></td>
           <td></td><td></td><td></td></tr></table></body></html>"
         File.should_receive(:read).with(@filename).and_return(file_contents)
@@ -105,7 +134,7 @@ describe Reference do
       end
 
       it "should import the numeric year" do
-        file_contents = "<html><body><table><tr></tr><tr><td>123</td><td></td>
+        file_contents = "<html><body><table><tr></tr><tr><td></td><td>123</td><td></td>
             <td>1978a (\"2005\").</td><td></td><td></td>
           <td></td><td></td><td></td></tr></table></body></html>"
         File.should_receive(:read).with(@filename).and_return(file_contents)
