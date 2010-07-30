@@ -3,6 +3,8 @@ class Views::References::Form < Erector::Widget
   needs :f, :submit_text => "Update"
 
   def content
+    jquery '$("#reference_journal_title").autocomplete({source: "/journals", minLength: 3});'
+
     @f.error_messages
 
     table(:class => 'reference-fields') do
