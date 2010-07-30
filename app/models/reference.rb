@@ -1,16 +1,13 @@
 class Reference < ActiveRecord::Base
   set_table_name 'refs'
 
-  belongs_to :journal
-
   def self.search params
     scope = scoped(:order => 'authors')
 
     scope = scope.scoped :conditions => ['authors LIKE ?', "%#{params[:author]}%"] unless params[:author].blank?
     scope = scope.scoped :conditions => ['numeric_year >= ?', params[:start_year]] if params[:start_year].present?
     scope = scope.scoped :conditions => ['numeric_year <= ?', params[:end_year]] if params[:end_year].present?
-    scope = scope.scoped :conditions => ['journals.title = ?', params[:journal]],
-                         :include => :journal unless params[:journal].blank?
+    scope = scope.scoped :conditions => ['short_journal_title = ?', params[:journal]] unless params[:journal].blank?
 
     scope
   end
@@ -71,10 +68,7 @@ class Reference < ActiveRecord::Base
 
   def parse_journal_citation
     parts = citation.match(/(.+?)(\S+)$/) or return false
-
-    short_journal_title = parts[1].strip
-    self.journal = Journal.find_by_short_title(short_journal_title) ||
-                   Journal.create!(:title => short_journal_title, :short_title => short_journal_title)
+    self.short_journal_title = parts[1].strip
 
     parts = parts[2].match(/(.+?):(.+)$/) or return false
     parse_series_volume_issue(parts[1]) or return false

@@ -9,8 +9,6 @@ describe Reference do
     describe "importing from a file" do
       before do
         @filename = 'foo.htm'
-        Factory(:journal, :title => 'Bulletin of the Natural History Resource Center of the University of Baghdad',
-                :short_title => 'Bull. Nat. Hist. Res. Cent. Univ. Baghdad')
       end
 
       it "should do nothing if file is empty" do
@@ -48,8 +46,7 @@ describe Reference do
         reference.date.should == '197804'
         reference.title.should == 'Records of insect collection.'
         reference.citation.should == 'Bull. Nat. Hist. Res. Cent. Univ. Baghdad 7(2):1-6.'
-        reference.journal.short_title.should == 'Bull. Nat. Hist. Res. Cent. Univ. Baghdad'
-        reference.journal.title.should == 'Bulletin of the Natural History Resource Center of the University of Baghdad'
+        reference.short_journal_title.should == 'Bull. Nat. Hist. Res. Cent. Univ. Baghdad'
         reference.volume.should == '7'
         reference.issue.should == '2'
         reference.start_page.should == '1'
@@ -126,9 +123,9 @@ describe Reference do
         @reference = Factory(:reference, :citation => 'Behav. Ecol. Sociobiol. 4:163-181.')
       end
 
-      it "should link to a journal" do
+      it "should extract the journal title" do
         @reference.parse_citation
-        @reference.journal.short_title.should == 'Behav. Ecol. Sociobiol.'
+        @reference.short_journal_title.should == 'Behav. Ecol. Sociobiol.'
       end
 
       it "should extract the journal volume" do
@@ -152,7 +149,7 @@ describe Reference do
         it "should work" do
           reference = Factory(:reference, :citation => "Entomol. Mon. Mag. 92:8.")
           reference.parse_citation
-          reference.journal.short_title.should == 'Entomol. Mon. Mag.'
+          reference.short_journal_title.should == 'Entomol. Mon. Mag.'
           reference.volume.should == '92'
           reference.start_page.should == '8'
           reference.end_page.should be_nil
@@ -319,11 +316,11 @@ describe Reference do
 
     describe "searching by journal" do
       it "should find by journal" do
-        reference = Factory(:reference, :journal => Factory(:journal, :title => "Mathematica"))
+        reference = Factory(:reference, :short_journal_title => "Mathematica")
         Reference.search(:journal => 'Mathematica').should == [reference]
       end
       it "should only do an exact match" do
-        Factory(:reference, :journal => Factory(:journal, :title => "Mathematica"))
+        Factory(:reference, :short_journal_title => "Mathematica")
         Reference.search(:journal => 'Math').should be_empty
       end
     end

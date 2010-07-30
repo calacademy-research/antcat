@@ -119,15 +119,15 @@ Feature: Searching references
       And I should not see "Brian Fisher 2010"
       And I should not see "Barry Bolton 2010"
       And I should not see "Barry Bolton 1995"
-#
-#  Scenario: Searching by journal title
-#    Given the following entries exist in the bibliography
-#       |citation|short_journal_title|
-#       |Acta Informatica 1:222|Acta Informatica|
-#       |Science (3)1:444|Science|
-#    When I go to the main page
-#      And I fill in "journal" with "Science"
-#      And I press "Search"
-#    Then I should see "Science"
-#      And I should not see "Acta Informatica"
+
+  Scenario: Searching by journal title
+    Given the following entries exist in the bibliography
+       |citation|short_journal_title|
+       |Acta Informatica 1:222|Acta Informatica|
+       |Science (3)1:444|Science|
+    When I go to the main page
+      And I fill in "journal" with "Science"
+      And I press "Search"
+    Then I should see "Science"
+      And I should not see "Acta Informatica"
 

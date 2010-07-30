@@ -14,7 +14,7 @@ class Views::Coins < Erector::Widget
     case @reference.kind
     when'journal'
       title << "rft.atitle=#{treat @reference.title}" if @reference.title
-      title << "rft.jtitle=#{treat @reference.journal.title}" if @reference.journal
+      title << "rft.jtitle=#{treat @reference.short_journal_title}" if @reference.short_journal_title
       title << "rft.volume=#{treat @reference.volume}" if @reference.volume
       title << "rft.issue=#{treat @reference.issue}" if @reference.issue
       title << "rft.spage=#{treat @reference.start_page}" if @reference.start_page
