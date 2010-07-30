@@ -1,6 +1,6 @@
 class Views::Search < Erector::Widget
   def content
-    jquery '$("#journal").autocomplete({source: "/journals"});'
+    jquery '$("#journal").autocomplete({source: "/journals", minLength: 3});'
 
     jquery <<-JQUERY
       $("#start_year").keyup(function(event) {
