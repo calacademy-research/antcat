@@ -171,7 +171,8 @@ describe Reference do
         it "should work" do
           reference = Factory(:reference, :citation => 'Ann. Mag. Nat. Hist. (10)8:129-131.')
           reference.parse_citation
-          reference.short_journal_title.should == 'Ann. Mag. Nat. Hist.'
+          reference.series.should == '10'
+          reference.volume.should == '8'
         end
       end
 
