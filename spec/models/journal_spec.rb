@@ -4,8 +4,8 @@ describe Journal do
 
   describe "searching" do
     it "do fuzzy matching of journal names" do
-      Factory(:reference, :short_journal_title => 'American Bibliographic Proceedings')
-      Factory(:reference, :short_journal_title => 'Playboy')
+      Factory(:reference, :journal_title => 'American Bibliographic Proceedings')
+      Factory(:reference, :journal_title => 'Playboy')
       Journal.search('ABP').should == ['American Bibliographic Proceedings']
     end
   end

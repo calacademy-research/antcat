@@ -122,7 +122,7 @@ Feature: Searching references
 
   Scenario: Searching by journal title
     Given the following entries exist in the bibliography
-       |citation|short_journal_title|
+       |citation|journal_title|
        |Acta Informatica 1:222|Acta Informatica|
        |Science (3)1:444|Science|
     When I go to the main page

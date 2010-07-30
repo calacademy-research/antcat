@@ -47,7 +47,7 @@ describe Reference do
         reference.date.should == '197804'
         reference.title.should == 'Records of insect collection.'
         reference.citation.should == 'Bull. Nat. Hist. Res. Cent. Univ. Baghdad 7(2):1-6.'
-        reference.short_journal_title.should == 'Bull. Nat. Hist. Res. Cent. Univ. Baghdad'
+        reference.journal_title.should == 'Bull. Nat. Hist. Res. Cent. Univ. Baghdad'
         reference.volume.should == '7'
         reference.issue.should == '2'
         reference.start_page.should == '1'
@@ -154,7 +154,7 @@ describe Reference do
 
       it "should extract the journal title" do
         @reference.parse_citation
-        @reference.short_journal_title.should == 'Behav. Ecol. Sociobiol.'
+        @reference.journal_title.should == 'Behav. Ecol. Sociobiol.'
       end
 
       it "should extract the journal volume" do
@@ -178,7 +178,7 @@ describe Reference do
         it "should work" do
           reference = Factory(:reference, :citation => "Entomol. Mon. Mag. 92:8.")
           reference.parse_citation
-          reference.short_journal_title.should == 'Entomol. Mon. Mag.'
+          reference.journal_title.should == 'Entomol. Mon. Mag.'
           reference.volume.should == '92'
           reference.start_page.should == '8'
           reference.end_page.should be_nil
@@ -346,11 +346,11 @@ describe Reference do
 
     describe "searching by journal" do
       it "should find by journal" do
-        reference = Factory(:reference, :short_journal_title => "Mathematica")
+        reference = Factory(:reference, :journal_title => "Mathematica")
         Reference.search(:journal => 'Mathematica').should == [reference]
       end
       it "should only do an exact match" do
-        Factory(:reference, :short_journal_title => "Mathematica")
+        Factory(:reference, :journal_title => "Mathematica")
         Reference.search(:journal => 'Math').should be_empty
       end
     end
