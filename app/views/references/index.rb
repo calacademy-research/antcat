@@ -20,6 +20,8 @@ class Views::References::Index < Views::Base
             td :class => 'reference' do
               a :href => reference_path(reference) do
                 rawtext format_reference(reference)
+                p(:class => 'notes') {rawtext italicize(reference.public_notes)}
+                p(:class => 'private notes') {rawtext italicize(reference.private_notes)}
               end
               widget Views::Coins.new :reference => reference
             end
@@ -36,7 +38,7 @@ class Views::References::Index < Views::Base
   end
 
   def format_reference reference
-    "#{italicize(reference.authors)} #{reference.year}. #{italicize(reference.title)} #{italicize(reference.citation)} #{italicize(reference.notes)}"
+    "#{italicize(reference.authors)} #{reference.year}. #{italicize(reference.title)} #{italicize(reference.citation)}"
   end
 
   def italicize s

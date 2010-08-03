@@ -36,10 +36,10 @@ class Reference < ActiveRecord::Base
                     :date             => node_to_text(tds[4]),
                     :title            => node_to_text(tds[5]),
                     :citation         => node_to_text(tds[6]),
-                    :notes            => node_to_text(tds[7]),
                     :possess          => node_to_text(tds[8]),
                     :numeric_year     => node_to_integer(tds[3]))
       reference.parse_citation
+      reference.parse_notes node_to_text(tds[7])
       reference.save!
     end
     $stderr.puts if show_progress
@@ -48,6 +48,12 @@ class Reference < ActiveRecord::Base
   def parse_citation
     return if citation.blank?
     parse_nested_citation || parse_book_citation || parse_journal_citation || parse_unknown_citation
+  end
+
+  def parse_notes notes
+    match = notes.match(/(?:\{(.+?)\})?(?:\s*(.*))?/) or return
+    self.public_notes = match[1]
+    self.private_notes = match[2]
   end
 
   def parse_nested_citation

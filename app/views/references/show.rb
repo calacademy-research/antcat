@@ -24,8 +24,13 @@ class Views::References::Show < Views::Base
     end
 
     p do
-      b "Notes "
-      text @reference.notes
+      b "Public notes "
+      text @reference.public_notes
+    end
+
+    p do
+      b "Private notes "
+      text @reference.private_notes
     end
 
     p do

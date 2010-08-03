@@ -5,10 +5,12 @@ Feature: View bibliography
 
   Scenario: View one entry
     Given the following entries exist in the bibliography
-      |authors|citation|cite_code|created_at|date    |notes|possess|title|updated_at|year|
-      |Authors|Citation|CiteCode |today     |20100712|Notes|Possess|Title|today     |2010|
+      |authors|citation|cite_code|created_at|date    |public_notes|private_notes|possess|title|updated_at|year|
+      |Authors|Citation|CiteCode |today     |20100712|Public notes|Private notes|Possess|Title|today     |2010|
     When I go to the main page
-    Then I should see "Authors 2010. Title Citation Notes"
+    Then I should see "Authors 2010. Title Citation"
+      And I should see "Public notes"
+      And I should see "Private notes"
 
   Scenario: View one entry with italics
     Given the following entries exist in the bibliography

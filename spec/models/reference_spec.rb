@@ -32,7 +32,7 @@ describe Reference do
                   <td class=xl65>197804</td>
                   <td class=xl65>Records of insect collection.</td>
                   <td class=xl65>Bull. Nat. Hist. Res. Cent. Univ. Baghdad 7(2):1-6.</td>
-                  <td class=xl65>{Formicidae pp. 4-6.}</td>
+                  <td class=xl65>{Formicidae pp. 4-6.}At least, I think so</td>
                   <td class=xl65>PSW</td>
                 </tr>
               </table>
@@ -52,7 +52,8 @@ describe Reference do
         reference.issue.should == '2'
         reference.start_page.should == '1'
         reference.end_page.should == '6'
-        reference.notes.should == '{Formicidae pp. 4-6.}'
+        reference.public_notes.should == 'Formicidae pp. 4-6.'
+        reference.private_notes.should == 'At least, I think so'
         reference.cite_code.should == '5523'
         reference.possess.should == 'PSW'
       end
@@ -93,6 +94,54 @@ describe Reference do
         File.should_receive(:read).with(@filename).and_return(file_contents)
         Reference.import(@filename)
         Reference.first.title.should == 'Records of insect collection (Part I) in the Natural History Research Centre, Baghdad.'
+      end
+
+      describe "parsing notes" do
+        it "reads public notes" do
+          file_contents = "<html><body><table><tr></tr><tr><td></td><td>123</td><td></td><td></td><td></td>
+            <td>title</td><td>journal</td>
+            <td>{Notes}</td>
+            <td></td><td></td></tr></table></body></html>"
+          File.should_receive(:read).with(@filename).and_return(file_contents)
+          Reference.import(@filename)
+          Reference.first.public_notes.should == 'Notes'
+          Reference.first.private_notes.should be_blank
+        end
+        it "reads private notes" do
+          file_contents = "<html><body><table><tr></tr><tr><td></td><td>123</td><td></td><td></td><td></td>
+            <td>title</td><td>journal</td>
+            <td>Notes</td>
+            <td></td><td></td></tr></table></body></html>"
+          File.should_receive(:read).with(@filename).and_return(file_contents)
+          Reference.import(@filename)
+          Reference.first.public_notes.should be_blank
+          Reference.first.private_notes.should == 'Notes'
+        end
+        it "reads public and private notes" do
+          file_contents = "<html><body><table><tr></tr><tr><td></td><td>123</td><td></td><td></td><td></td>
+            <td>title</td><td>journal</td>
+            <td>{Public} Private</td>
+            <td></td><td></td></tr></table></body></html>"
+          File.should_receive(:read).with(@filename).and_return(file_contents)
+          Reference.import(@filename)
+          Reference.first.public_notes.should == 'Public'
+          Reference.first.private_notes.should == 'Private'
+        end
+        it "handles linebreaks and italics" do
+          file_contents = "<html><body><table><tr></tr><tr><td></td><td>123</td><td></td><td></td><td></td>
+            <td>title</td><td>journal</td>
+            <td>
+  {Page 53: <font class=font7>Myrmicium</font><font class=font0>.}
+  And </font><font class=font7>Myrmecium</font><font class=font0>
+  (misspelling).</font>
+            </td>
+            <td></td><td></td></tr></table></body></html>"
+          File.should_receive(:read).with(@filename).and_return(file_contents)
+          Reference.import(@filename)
+          Reference.first.public_notes.should == 'Page 53: *Myrmicium*.'
+          Reference.first.private_notes.should == 'And *Myrmecium* (misspelling).'
+        end
+
       end
 
       it "should convert vertical bars (Phil's indication of italics) to asterisks (Markdown)" do

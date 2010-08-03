@@ -9,14 +9,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100730220212) do
+ActiveRecord::Schema.define(:version => 20100802224649) do
 
   create_table "refs", :force => true do |t|
     t.string   "authors"
     t.string   "year"
     t.string   "title"
     t.string   "citation"
-    t.string   "notes"
+    t.string   "public_notes"
     t.string   "possess"
     t.string   "date"
     t.datetime "created_at"
@@ -33,6 +33,7 @@ ActiveRecord::Schema.define(:version => 20100730220212) do
     t.string   "pagination"
     t.string   "kind"
     t.integer  "numeric_year"
+    t.string   "private_notes"
   end
 
 end
