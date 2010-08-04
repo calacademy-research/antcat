@@ -99,11 +99,11 @@ class Views::References::Form < Erector::Widget
     table(:class => 'reference-fields') do
       tr do
         td { @f.label :public_notes }
-        td { @f.text_field :public_notes, :class => 'wide' }
+        td { @f.text_area :public_notes, :rows => 2, :class => 'wide' }
       end
       tr do
         td { @f.label :private_notes }
-        td { @f.text_field :private_notes, :class => 'wide' }
+        td { @f.text_area :private_notes, :rows => 2, :class => 'wide' }
       end
       tr do
         td { @f.label :cite_code }
