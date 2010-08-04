@@ -392,6 +392,18 @@ describe Reference do
       end
 
     end
+    
+    describe "sorting search results" do
+      it "should sort by author plus year plus letter" do
+        fisher1910b = Factory :reference, :authors => 'Fisher', :year => '1910b'
+        wheeler1874 = Factory :reference, :authors => 'Wheeler', :year => '1874'
+        fisher1910a = Factory :reference, :authors => 'Fisher', :year => '1910a'
+
+        results = Reference.search
+
+        results.should == [fisher1910a, fisher1910b, wheeler1874]
+      end
+    end
 
     describe "searching by journal" do
       it "should find by journal" do

@@ -1,8 +1,8 @@
 class Reference < ActiveRecord::Base
   set_table_name 'refs'
 
-  def self.search params
-    scope = scoped(:order => 'authors')
+  def self.search params = {}
+    scope = scoped(:order => 'authors, year')
 
     scope = scope.scoped :conditions => ['authors LIKE ?', "%#{params[:author]}%"] unless params[:author].blank?
     scope = scope.scoped :conditions => ['numeric_year >= ?', params[:start_year]] if params[:start_year].present?

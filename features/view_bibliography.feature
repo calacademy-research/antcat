@@ -26,3 +26,17 @@ Feature: View bibliography
       |<script>|
     When I go to the main page
     Then I should see "<script>"
+
+  Scenario: Viewing more than one entry, sorted by author + date (including slug)
+    Given the following entries exist in the bibliography
+      |authors       |year |title                      |citation                    |
+      |Wheeler, W. M.|1910b|Ants.                      |New York.                   |
+      |Forel, A.     |1874 |Les fourmis de la Suisse.  |Neue Denkschriften 26:1-452.|
+      |Wheeler, W. M.|1910a|Small artificial ant-nests.|Psyche.                     |
+    When I go to the main page
+    Then I should see these entries in this order:
+      |entry|
+      |Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.|
+      |Wheeler, W. M. 1910a. Small artificial ant-nests. Psyche.|
+      |Wheeler, W. M. 1910b. Ants. New York.|
+

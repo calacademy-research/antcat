@@ -14,7 +14,7 @@ class Views::References::Index < Views::Base
     unless @references.present?
       rawtext 'No results found'
     else
-      table do
+      table :class => 'references' do
         for reference in @references
           tr do
             td :class => 'reference' do
