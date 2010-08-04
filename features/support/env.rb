@@ -60,3 +60,6 @@ require 'factory_girl'
 require 'factory_girl/step_definitions'
 
 Dir[File.expand_path(File.join(Rails.root, 'spec/support','**','*.rb'))].each {|f| require f}
+
+Capybara.save_and_open_page_path = '/tmp'
+
