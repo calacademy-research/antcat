@@ -1,0 +1,19 @@
+common: &common
+  adapter: mysql
+  encoding: utf8
+  user: localhost
+
+development:
+  <<: *common
+  database: antcat_development
+
+test: &TEST
+  <<: *common
+  database: antcat_test
+
+production:
+  <<: *common
+  database: antcat
+
+cucumber:
+  <<: *TEST
