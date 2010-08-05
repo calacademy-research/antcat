@@ -34,6 +34,11 @@ class Views::References::Show < Views::Base
     end
 
     p do
+      b "Taxonomic notes "
+      text @reference.taxonomic_notes
+    end
+
+    p do
       b "Possess "
       text @reference.possess
     end

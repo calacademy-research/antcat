@@ -19,9 +19,12 @@ class Reference < ActiveRecord::Base
 #  3) Do File | Save as Web Page..., selecting the Sheet radio button
 #  4) With the web page output in data/ANTBIB.htm, run 'rake import'.
 #     This will delete all references and import them from the web page output.
+#  Use ANTBIB96.htm for the post-1995 spreadsheet. The presence of
+#  '96' in the name will enable the import to handle an extra column
 
   def self.import(filename, show_progress = false)
     html = File.read(filename)
+    new_format = filename.match /96/
     doc = Nokogiri::HTML(html)
     trs = doc.css('tr')
     $stderr.print "Importing #{filename}" if show_progress
@@ -29,17 +32,26 @@ class Reference < ActiveRecord::Base
       $stderr.print '.' if show_progress
       tds = trs[i].css('td')
       break unless tds && tds[1] && !tds[1].inner_html.empty?
-      reference = Reference.new(
-                    :cite_code        => node_to_text(tds[1]),
-                    :authors          => node_to_text(tds[2]),
-                    :year             => remove_period_from(node_to_text(tds[3])),
-                    :date             => node_to_text(tds[4]),
-                    :title            => node_to_text(tds[5]),
-                    :citation         => node_to_text(tds[6]),
-                    :possess          => node_to_text(tds[8]),
-                    :numeric_year     => node_to_integer(tds[3]))
+
+      col = 0;
+      cite_code       = node_to_text(tds[col += 1])
+      authors         = node_to_text(tds[col += 1])
+      year_td         = tds[col += 1]
+      date            = node_to_text(tds[col += 1])
+      title           = node_to_text(tds[col += 1])
+      citation        = node_to_text(tds[col += 1])
+      taxonomic_notes = new_format ? node_to_text(tds[col += 1]) : nil
+      notes           = node_to_text(tds[col += 1])
+      possess         = node_to_text(tds[col += 1])
+
+      year = remove_period_from(node_to_text(year_td))
+      numeric_year = node_to_integer(year_td)
+
+      reference = Reference.new(:cite_code => cite_code, :authors => authors, :year => year, :date => date, :title => title,
+                                :citation  => citation, :possess => possess, :numeric_year => numeric_year,
+                                :taxonomic_notes => taxonomic_notes)
       reference.parse_citation
-      reference.parse_notes node_to_text(tds[7])
+      reference.parse_notes notes
       reference.save!
     end
     $stderr.puts if show_progress

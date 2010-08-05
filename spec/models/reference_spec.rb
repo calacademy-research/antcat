@@ -1,11 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Reference do
-  it "should be able create a new instance" do
-    Reference.create!
-  end
-
-  describe "importing" do
+  describe "importing 1995 and prior data" do
     describe "importing from a file" do
       before do
         @filename = 'foo.htm'
@@ -18,7 +14,7 @@ describe Reference do
       end
 
       it "should import a record from the second row of the first table it finds" do
-        @file_contents = "
+        file_contents = "
           <html>
             <body>
               <table>
@@ -39,7 +35,7 @@ describe Reference do
             </body>
           </html>
         "
-        File.should_receive(:read).with(@filename).and_return(@file_contents)
+        File.should_receive(:read).with(@filename).and_return(file_contents)
         Reference.import(@filename)
         reference = Reference.first
         reference.authors.should == "Abdul-Rassoul, M. S.; Dawah, H. A.; Othman, N. Y."
@@ -59,7 +55,7 @@ describe Reference do
       end
 
       it "should read from the second row of the first table it finds and continue until first blank row" do
-        @file_contents = "
+        file_contents = "
           <html><body><table><tr></tr>
             <tr>
               <td></td>
@@ -80,7 +76,7 @@ describe Reference do
               <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
             </tr>
           </table></body></html>"
-        File.should_receive(:read).with(@filename).and_return(@file_contents)
+        File.should_receive(:read).with(@filename).and_return(file_contents)
         Reference.import(@filename)
         Reference.count.should == 2
         Reference.all.map(&:cite_code).should =~ ['1', '2']
@@ -98,10 +94,19 @@ describe Reference do
 
       describe "parsing notes" do
         it "reads public notes" do
-          file_contents = "<html><body><table><tr></tr><tr><td></td><td>123</td><td></td><td></td><td></td>
-            <td>title</td><td>journal</td>
-            <td>{Notes}</td>
-            <td></td><td></td></tr></table></body></html>"
+          file_contents = "<html><body><table><tr></tr><tr>
+              <td></td>
+              <td>123</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>title</td>
+              <td>journal</td>
+              <td>{Notes}</td>
+              <td></td>
+              <td></td>
+          </tr></table></body></html>"
+
           File.should_receive(:read).with(@filename).and_return(file_contents)
           Reference.import(@filename)
           Reference.first.public_notes.should == 'Notes'
@@ -193,6 +198,52 @@ describe Reference do
       end
     end
 
+  end
+
+  describe "importing post-1995 data" do
+    it "should import a record" do
+      filename = 'ANTBIB96.htm'
+      file_contents = "
+        <html>
+          <body>
+            <table>
+              <tr>
+              </tr>
+              <tr height=12>
+                <td></td>
+                <td height=12 class=xl65 align=right>96-1828</td>
+                <td class=xl65>Schlick-Steiner, B. C.; Steiner, F. M.; Seifert, B.; Stauffer, C.; Christian, E.; Crozier, R. H.</td>
+                <td class=xl65>1978.</td>
+                <td class=xl65>197804</td>
+                <td class=xl65>Records of insect collection.</td>
+                <td class=xl65>Bull. Nat. Hist. Res. Cent. Univ. Baghdad 7(2):1-6.</td>
+                <td>Austromorium</td>
+                <td class=xl65>Published online: 2005102</td>
+                <td class=xl65>PSW</td>
+              </tr>
+            </table>
+          </body>
+        </html>
+      "
+      File.should_receive(:read).with(filename).and_return(file_contents)
+      Reference.import(filename)
+      reference = Reference.first
+      reference.authors.should == "Schlick-Steiner, B. C.; Steiner, F. M.; Seifert, B.; Stauffer, C.; Christian, E.; Crozier, R. H."
+      reference.year.should == "1978"
+      reference.date.should == '197804'
+      reference.title.should == 'Records of insect collection.'
+      reference.citation.should == 'Bull. Nat. Hist. Res. Cent. Univ. Baghdad 7(2):1-6.'
+      reference.journal_title.should == 'Bull. Nat. Hist. Res. Cent. Univ. Baghdad'
+      reference.volume.should == '7'
+      reference.issue.should == '2'
+      reference.start_page.should == '1'
+      reference.end_page.should == '6'
+      reference.public_notes.should be_blank
+      reference.private_notes.should == 'Published online: 2005102'
+      reference.taxonomic_notes.should == 'Austromorium'
+      reference.cite_code.should == '96-1828'
+      reference.possess.should == 'PSW'
+    end
   end
 
   describe "parsing the citation" do
