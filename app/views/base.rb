@@ -41,9 +41,10 @@ class Views::Base < Erector::Widgets::Page
       hr
       table(:style => 'width: 100%') do
         tr do
-          td(:style => 'width:358px') { img :style => "height:44px", :src => '/images/rails.png' }
-          td(:style => 'width:412px') { img :src => '/images/calacademy.gif' }
-          td() { img :src => '/images/zotero_logo_tiny.png' }
+          td(:width => '25%', :align => :left) { img :style => "height:44px", :src => '/images/rails.png' }
+          td(:width => '25%', :align => :center) { img :style => "height:44px", :src => '/images/nsf1.gif' }
+          td(:width => '25%', :align => :center) { img :src => '/images/calacademy.gif' }
+          td(:width => '25%', :align => :right) { img :src => '/images/zotero_logo_tiny.png' }
 
         end
       end
