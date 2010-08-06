@@ -15,3 +15,8 @@ end
 Then /^there should be the HTML "(.*)"$/ do |html|
   body.should =~ /#{html}/
 end
+
+Then /I should (not )?see an edit form/ do |should_not|
+  selector = should_not ? :should_not : :should
+  page.send(selector, have_css('form.edit_reference'))
+end
