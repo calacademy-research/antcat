@@ -4,8 +4,9 @@ class Views::Base < Erector::Widgets::Page
     super
     css '/stylesheets/application.css'
     css '/stylesheets/jquery-ui/ui-lightness/jquery-ui-1.8.2.custom.css'
-    javascript_include_tag '/javascripts/ext/jquery-1.4.2.js'
-    javascript_include_tag '/javascripts/ext/jquery-ui-1.8.2.custom.min.js'
+    javascript_include_tag 'ext/jquery-1.4.2.js'
+    javascript_include_tag 'ext/jquery-ui-1.8.2.custom.min.js'
+    javascript_include_tag 'application.js'
     jquery '$(":input:visible:enabled:first").focus();'
   end
 
@@ -39,12 +40,15 @@ class Views::Base < Erector::Widgets::Page
       hr
       container_content
       hr
-      table(:style => 'width: 100%') do
+      table(:id => 'images', :style => 'padding-top: 0; width: 100%') do
         tr do
-          td(:width => '25%', :align => :left) { img :style => "height:44px", :src => '/images/rails.png' }
-          td(:width => '25%', :align => :center) { img :style => "height:44px", :src => '/images/nsf1.gif' }
-          td(:width => '25%', :align => :center) { img :src => '/images/calacademy.gif' }
-          td(:width => '25%', :align => :right) { img :src => '/images/zotero_logo_tiny.png' }
+          td { img :style => "height: 50px", :src => '/images/nsf1.gif', :title => "Supported in part by NSF Award DBI-0642321" }
+          td :class => :spacer
+          td { img :style => "height: 40px", :src => '/images/calacademy.gif' }
+          td :class => :spacer
+          td { img :style => "height: 40px", :src => '/images/rails.png' }
+          td :class => :spacer
+          td { img :style => "height: 20px", :src => '/images/zotero_logo_tiny.png' }
 
         end
       end
