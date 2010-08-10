@@ -3,7 +3,12 @@ $(function() {
 
   $('.reference_form').hide();
 
+//$('.reference_display').first().hide();
+//$('.reference_form').first().show();
+
   $('.reference_link').live('click', function() {
+    if ($('.reference_form').is(':visible'))
+      return false;
     id = $(this).closest('.reference').attr('id');
     id = /\d+$/.exec(id)[0];
     $('#reference_display_' + id).hide();

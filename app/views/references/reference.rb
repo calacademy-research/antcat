@@ -15,14 +15,24 @@ class Views::References::Reference < Erector::Widget
     div :id => "reference_form_#{@reference.id}", :class => 'reference_form' do
       form_for([:reference, @reference], :url => reference_path(@reference)) do |f|
         table :style => 'width:100%' do
+          col :width => '*'
+          col :width => '100px'
           tr do 
-            td {f.text_field :authors, :style => 'width: 200px'}
-            td {f.text_field :year, :style => 'width: 100px'}
-            td {f.text_field :citation, :style => 'width: 400px'}
+            td(:style => 'padding-bottom: 3px; padding-right: 8px') {f.text_field :authors, :style => 'width: 100%'}
+            td(:style => 'padding-bottom: 3px;') {f.text_field :year, :style => 'width: 100%'}
           end
-          tr {td(:colspan => 3) {f.text_field :public_notes, :style => 'width: 100%'}}
-          tr {td(:colspan => 3) {f.text_field :private_notes, :style => 'width: 100%'}}
-          tr {td(:colspan => 3) {f.text_field :taxonomic_notes, :style => 'width: 100%'}}
+          tr {td(:style => 'padding-bottom: 3px', :colspan => 2) {f.text_field :title, :style => 'width: 100%'}}
+          tr {td(:style => 'padding-bottom: 3px', :colspan => 3) {f.text_field :citation, :style => 'width: 100%'}}
+          tr {td(:style => 'padding-bottom: 3px', :colspan => 3) {f.text_field :public_notes, :style => 'width: 100%'}}
+          tr {td(:style => 'padding-bottom: 3px', :colspan => 3) {f.text_field :private_notes, :style => 'width: 100%'}}
+          tr {td(:style => 'padding-bottom: 3px', :colspan => 3) {f.text_field :taxonomic_notes, :style => 'width: 100%'}}
+          tr do 
+            td { table { tr {
+              td(:style => 'padding-bottom: 3px; padding-right: 8px') {f.text_field :cite_code, :style => 'width: 50px'}
+              td(:style => 'padding-bottom: 3px;') {f.text_field :possess, :style => 'width: 100px'}
+              td(:style => 'padding-bottom: 3px; padding-left: 8px') {f.text_field :date, :style => 'width: 75px'}
+            } } }
+          end
           tr do
             td(:colspan => 3) do
               f.submit 'OK', :name => 'commit'
