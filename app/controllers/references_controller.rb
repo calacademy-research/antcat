@@ -15,17 +15,11 @@ class ReferencesController < ApplicationController
   end
 
   def update
-    if params[:commit] == 'Cancel'
-      redirect_to reference_url(@reference)
-      return
-    end
-
     @reference = Reference.find(params[:id])
     if @reference.update_attributes(params[:reference])
-      flash[:notice] = "Reference has been updated"
-      redirect_to reference_url(@reference)
+      flash[:notice] = "This reference has been updated"
     else
-      render :action => 'edit'
+      flash[:error] = "There was an error updating this reference"
     end
   end
   

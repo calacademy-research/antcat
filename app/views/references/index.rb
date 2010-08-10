@@ -1,3 +1,4 @@
+
 class Views::References::Index < Views::Base
 
   include ActionController::UrlWriter
@@ -7,8 +8,6 @@ class Views::References::Index < Views::Base
       widget Views::Search.new
     end
 
-    div :style => 'clear:both'
-    
     hr
 
     unless @references.present?
@@ -16,37 +15,17 @@ class Views::References::Index < Views::Base
     else
       table :class => 'references' do
         for reference in @references
-          tr do
-            td :class => 'reference' do
-              a :href => reference_path(reference) do
-                rawtext format_reference(reference)
-                p(:class => 'notes')          {rawtext italicize(reference.public_notes)}
-                p(:class => 'private notes')  {rawtext italicize(reference.private_notes)}
-                p(:class => 'notes')          {rawtext italicize(reference.taxonomic_notes)}
-              end
-              widget Views::Coins.new :reference => reference
+          tr { td do
+            div :id => "reference_#{reference.id}", :class => 'reference' do
+              widget Views::References::Reference.new :reference => reference
             end
-          end
+          end }
         end
       end
     end
 
-    div do
-      rawtext will_paginate @references
-    end
+    div { rawtext will_paginate @references }
     p
     rawtext link_to "New Reference", new_reference_path
   end
-
-  def format_reference reference
-    "#{italicize(reference.authors)} #{reference.year}. #{italicize(reference.title)} #{italicize(reference.citation)}"
-  end
-
-  def italicize s
-    return unless s
-    s = s.html_escape
-    s = s.gsub /\*(.*?)\*/, '<span class=taxon>\1</span>'
-    s = s.gsub /\|(.*?)\|/, '<span class=taxon>\1</span>'
-  end
-
 end

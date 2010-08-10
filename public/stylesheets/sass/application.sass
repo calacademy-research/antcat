@@ -1,3 +1,12 @@
+.reference_form
+  table
+    padding: 0
+  td
+    padding: 0
+
+.reference
+  padding-bottom: 5px
+
 p.notes
   margin: 0 20px
 
@@ -62,16 +71,13 @@ body
   #author
     margin-right: 10px
 
-form tr td:first-child
+asdf form tr td:first-child
   vertical-align: top
   padding-top: 4px
   width: 70px
 
 #flash
   color: blue
-
-td
-  padding-bottom: 10px
 
 table
   padding-top: 10px
@@ -93,20 +99,21 @@ a, a:active, a:hover, a:focus, a:visited
   &:active
     color: lightgreen
 
-.reference a
+a.reference_link
   color: black
   &:hover
-    color: green
+    color: black
   &:active
-    color: lightgreen
+    color: black
 
-#flash_notice, #flash_error
+#flash_error
   padding: 5px 8px
   margin: 10px 0
 
 #flash_notice
-  background-color: #CFC
-  border: solid 1px #6C6
+  color: blue
+  font-style: italic
+  padding-bottom: 5px
 
 #flash_error
   background-color: #FCC
