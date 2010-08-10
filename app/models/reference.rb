@@ -1,6 +1,8 @@
 class Reference < ActiveRecord::Base
   set_table_name 'refs'
 
+    before_save :parse
+
   def self.search params = {}
     scope = scoped(:order => 'authors, year')
 
@@ -45,11 +47,9 @@ class Reference < ActiveRecord::Base
       possess         = node_to_text(tds[col += 1])
 
       year = remove_period_from(node_to_text(year_td))
-      numeric_year = node_to_integer(year_td)
 
       reference = Reference.new(:cite_code => cite_code, :authors => authors, :year => year, :date => date, :title => title,
-                                :citation  => citation, :possess => possess, :numeric_year => numeric_year,
-                                :taxonomic_notes => taxonomic_notes)
+                                :citation  => citation, :possess => possess, :taxonomic_notes => taxonomic_notes)
       reference.parse_citation
       reference.parse_notes notes
       reference.save!
@@ -134,5 +134,9 @@ class Reference < ActiveRecord::Base
 
   def self.remove_period_from text
     text[-1..-1] == '.' ? text[0..-2] : text 
+  end
+
+  def parse
+    self.numeric_year = year.to_i if year
   end
 end

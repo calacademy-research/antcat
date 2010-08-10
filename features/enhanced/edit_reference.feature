@@ -18,3 +18,16 @@ Feature: Edit reference
       And I should not see an edit form
       And I should see "Mark Wilden"
       And I should see "This reference has been updated"
+
+  Scenario: Change a reference's year
+    Given the following entries exist in the bibliography
+      |authors|title|citation|year|
+      |Fisher |Ants |New York|2010|
+    When I go to the main page
+      And I follow "Fisher 2010. Ants New York"
+      And I fill in "reference_year" with "1910a"
+      And I press "OK"
+      And I fill in "start_year" with "1910"
+      And I press "Search"
+    Then I should see "Fisher 1910a"
+

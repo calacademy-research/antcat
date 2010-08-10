@@ -468,4 +468,18 @@ describe Reference do
     end
 
   end
+
+  describe "parsing after editing" do
+    it "should parse out the numeric year" do
+      reference = Factory(:reference, :year => '1910a', :numeric_year => 1910)
+      reference.update_attribute(:year, '2000a')
+      reference.numeric_year.should == 2000
+    end
+  end
+  describe "parsing after creating" do
+    it "should parse out the numeric year" do
+      reference = Factory(:reference, :year => '1910a')
+      reference.numeric_year.should == 1910
+    end
+  end
 end
