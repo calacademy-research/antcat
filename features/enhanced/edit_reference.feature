@@ -9,7 +9,7 @@ Feature: Edit reference
       |Authors|Citation|CiteCode |today     |20100712|Possess|Title|today     |2010|
     When I go to the main page
       Then I should not see an edit form
-      When I follow "Edit"
+    When I follow "Authors 2010. Title Citation"
       Then I should see an edit form
       And I should not see a reference
     When I fill in "reference_authors" with "Mark Wilden"
@@ -17,4 +17,4 @@ Feature: Edit reference
     Then I should be on the main page
       And I should not see an edit form
       And I should see "Mark Wilden"
-      And I should see "Reference has been updated"
+      And I should see "This reference has been updated"
