@@ -16,9 +16,7 @@ class ReferencesController < ApplicationController
 
   def update
     @reference = Reference.find(params[:id])
-    if @reference.update_attributes(params[:reference])
-      flash[:notice] = "This reference has been updated"
-    else
+    unless @reference.update_attributes(params[:reference])
       flash[:error] = "There was an error updating this reference"
     end
   end

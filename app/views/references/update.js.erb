@@ -3,4 +3,4 @@ var html = '<%= escape_javascript(render(:file => "/references/reference")) %>';
 $('#reference_' + id).html(html);
 $('#reference_display_' + id).show();
 $('#reference_form_' + id).hide();
-$('#reference_display_' + id).before('<div id="flash_notice"><%= escape_javascript(flash.delete(:notice)) %></div>');
+$('#reference_display_' + id).effect("highlight", {}, 3000);
