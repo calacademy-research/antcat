@@ -1,6 +1,14 @@
 var id = <%= @reference.id %>;
+var $form = $('#reference_form_' + id);
+var $reference = $('#reference_' + id);
 var html = '<%= escape_javascript(render(:file => "/references/reference")) %>';
-$('#reference_' + id).html(html);
-$('#reference_display_' + id).show();
-$('#reference_form_' + id).hide();
-$('#reference_display_' + id).effect("highlight", {}, 3000);
+
+$spinnerContainer = $('button', $form).parent();
+$spinnerContainer.spinner('remove');
+
+$reference.html(html);
+var $display = $('#reference_display_' + id);
+$display.show();
+var $form = $('#reference_form_' + id);
+$form.hide();
+$display.effect("highlight", {}, 3000);

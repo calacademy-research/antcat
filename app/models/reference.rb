@@ -138,5 +138,6 @@ class Reference < ActiveRecord::Base
 
   def parse
     self.numeric_year = year.to_i if year
+    parse_citation
   end
 end

@@ -35,8 +35,10 @@ class Views::References::Reference < Erector::Widget
           end
           tr do
             td(:colspan => 3) do
-              f.submit 'OK', :name => 'commit'
-              button 'Cancel', :class => 'cancel'
+              span :id => 'buttons' do
+                f.submit 'OK', :name => 'commit'
+                button 'Cancel', :class => 'cancel'
+              end
             end
           end
         end

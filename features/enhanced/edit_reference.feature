@@ -17,7 +17,6 @@ Feature: Edit reference
     Then I should be on the main page
       And I should not see an edit form
       And I should see "Mark Wilden"
-      And I should see "This reference has been updated"
 
   Scenario: Change a reference's year
     Given the following entries exist in the bibliography
@@ -31,3 +30,12 @@ Feature: Edit reference
       And I press "Search"
     Then I should see "Fisher 1910a"
 
+  Scenario: Change a reference's journal title
+    Given the following entries exist in the bibliography
+      |citation|
+      |Esakia 31:1-115|
+    When I go to the main page
+      And I follow "Esakia 31:1-115"
+      And I fill in "reference_citation" with "Mad Magazine 33:12"
+      And I press "OK"
+    Then there should be the HTML "rft.jtitle=Mad\+Magazine"

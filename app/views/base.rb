@@ -6,6 +6,8 @@ class Views::Base < Erector::Widgets::Page
     css '/stylesheets/jquery-ui/ui-lightness/jquery-ui-1.8.2.custom.css'
     javascript_include_tag 'ext/jquery-1.4.2.js'
     javascript_include_tag 'ext/jquery-ui-1.8.2.custom.min.js'
+    javascript_include_tag 'ext/jquery.watermark.min.js'
+    javascript_include_tag 'ext/jquery.spinner.js'
     javascript_include_tag 'application.js'
     jquery '$(":input:visible:enabled:first").focus();'
   end

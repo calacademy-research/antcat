@@ -475,6 +475,11 @@ describe Reference do
       reference.update_attribute(:year, '2000a')
       reference.numeric_year.should == 2000
     end
+    it "should parse out the journal title" do
+      reference = Factory(:reference, :citation => 'Ecology Letters 12:324-333.', :journal_title => 'Ecology Letters')
+      reference.update_attribute(:citation, 'Playboy 3:1-5')
+      reference.journal_title.should == 'Playboy'
+    end
   end
   describe "parsing after creating" do
     it "should parse out the numeric year" do

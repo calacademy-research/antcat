@@ -14,7 +14,18 @@ $(function() {
     $('#reference_display_' + id).hide();
     $('#flash_notice').remove();
     $('.reference_form').hide();
-    $('#reference_form_' + id).show();
+
+    var $form = $('#reference_form_' + id);
+    $form.show();
+    $('#reference_authors', $form).watermark('Authors');
+    $('#reference_authors', $form).focus();
+    $('#reference_year', $form).watermark('Year');
+    $('#reference_title', $form).watermark('Title');
+    $('#reference_citation', $form).watermark('Citation');
+    $('#reference_public_notes', $form).watermark('Published notes');
+    $('#reference_private_notes', $form).watermark('Private notes');
+    $('#reference_taxonomic_notes', $form).watermark('Taxonomic notes');
+
     return false;
   });
 
@@ -23,11 +34,18 @@ $(function() {
     id = /\d+$/.exec(href)[0];
     $('#reference_display_' + id).show();
     $('#reference_form_' + id).hide();
+
     return false;
   });
 
   $('.reference_form form').live('submit', function(event) {
-    $.post(this.action, $(this).serialize(), null, 'script');
+    var $spinnerElement = $('button', $(this)).parent();
+    $spinnerElement.spinner({img: '/images/spinner.gif'});
+    $('input', $spinnerElement).attr('disabled', 'disabled');
+    $('button', $spinnerElement).attr('disabled', 'disabled');
+
+    $.post(this.action, $(this).serialize(), {}, 'script');
+
     return false;
   });
 })
