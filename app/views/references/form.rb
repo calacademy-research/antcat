@@ -102,8 +102,8 @@ class Views::References::Form < Erector::Widget
         td { @f.text_area :public_notes, :rows => 2, :class => 'wide' }
       end
       tr do
-        td { @f.label :private_notes }
-        td { @f.text_area :private_notes, :rows => 2, :class => 'wide' }
+        td { @f.label :editor_notes }
+        td { @f.text_area :editor_notes, :rows => 2, :class => 'wide' }
       end
       tr do
         td { @f.label :taxonomic_notes }

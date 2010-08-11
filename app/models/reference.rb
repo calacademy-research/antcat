@@ -65,7 +65,7 @@ class Reference < ActiveRecord::Base
   def parse_notes notes
     match = notes.match(/(?:\{(.+?)\})?(?:\s*(.*))?/) or return
     self.public_notes = match[1]
-    self.private_notes = match[2]
+    self.editor_notes = match[2]
   end
 
   def parse_nested_citation

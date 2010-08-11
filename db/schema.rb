@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100804195040) do
+ActiveRecord::Schema.define(:version => 20100811194625) do
 
   create_table "refs", :force => true do |t|
     t.string   "authors"
@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(:version => 20100804195040) do
     t.string   "pagination"
     t.string   "kind"
     t.integer  "numeric_year"
-    t.string   "private_notes"
+    t.string   "editor_notes"
     t.string   "taxonomic_notes"
   end
 

@@ -23,7 +23,7 @@ $(function() {
     $('#reference_title', $form).watermark('Title');
     $('#reference_citation', $form).watermark('Citation');
     $('#reference_public_notes', $form).watermark('Published notes');
-    $('#reference_private_notes', $form).watermark('Private notes');
+    $('#reference_editor_notes', $form).watermark("Editor's notes");
     $('#reference_taxonomic_notes', $form).watermark('Taxonomic notes');
 
     return false;

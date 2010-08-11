@@ -49,7 +49,7 @@ describe Reference do
         reference.start_page.should == '1'
         reference.end_page.should == '6'
         reference.public_notes.should == 'Formicidae pp. 4-6.'
-        reference.private_notes.should == 'At least, I think so'
+        reference.editor_notes.should == 'At least, I think so'
         reference.cite_code.should == '5523'
         reference.possess.should == 'PSW'
       end
@@ -110,9 +110,9 @@ describe Reference do
           File.should_receive(:read).with(@filename).and_return(file_contents)
           Reference.import(@filename)
           Reference.first.public_notes.should == 'Notes'
-          Reference.first.private_notes.should be_blank
+          Reference.first.editor_notes.should be_blank
         end
-        it "reads private notes" do
+        it "reads editor's notes" do
           file_contents = "<html><body><table><tr></tr><tr><td></td><td>123</td><td></td><td></td><td></td>
             <td>title</td><td>journal</td>
             <td>Notes</td>
@@ -120,17 +120,17 @@ describe Reference do
           File.should_receive(:read).with(@filename).and_return(file_contents)
           Reference.import(@filename)
           Reference.first.public_notes.should be_blank
-          Reference.first.private_notes.should == 'Notes'
+          Reference.first.editor_notes.should == 'Notes'
         end
-        it "reads public and private notes" do
+        it "reads public and editor's notes" do
           file_contents = "<html><body><table><tr></tr><tr><td></td><td>123</td><td></td><td></td><td></td>
             <td>title</td><td>journal</td>
-            <td>{Public} Private</td>
+            <td>{Public} Editor</td>
             <td></td><td></td></tr></table></body></html>"
           File.should_receive(:read).with(@filename).and_return(file_contents)
           Reference.import(@filename)
           Reference.first.public_notes.should == 'Public'
-          Reference.first.private_notes.should == 'Private'
+          Reference.first.editor_notes.should == 'Editor'
         end
         it "handles linebreaks and italics" do
           file_contents = "<html><body><table><tr></tr><tr><td></td><td>123</td><td></td><td></td><td></td>
@@ -144,7 +144,7 @@ describe Reference do
           File.should_receive(:read).with(@filename).and_return(file_contents)
           Reference.import(@filename)
           Reference.first.public_notes.should == 'Page 53: *Myrmicium*.'
-          Reference.first.private_notes.should == 'And *Myrmecium* (misspelling).'
+          Reference.first.editor_notes.should == 'And *Myrmecium* (misspelling).'
         end
 
       end
@@ -239,7 +239,7 @@ describe Reference do
       reference.start_page.should == '1'
       reference.end_page.should == '6'
       reference.public_notes.should be_blank
-      reference.private_notes.should == 'Published online: 2005102'
+      reference.editor_notes.should == 'Published online: 2005102'
       reference.taxonomic_notes.should == 'Austromorium'
       reference.cite_code.should == '96-1828'
       reference.possess.should == 'PSW'

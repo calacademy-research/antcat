@@ -7,7 +7,7 @@ class Views::References::Reference < Erector::Widget
         rawtext format_reference(@reference)
         rawtext ' '
         p(:class => 'notes')          {rawtext italicize(@reference.public_notes)}
-        p(:class => 'private notes')  {rawtext italicize(@reference.private_notes)}
+        p(:class => 'editor notes')  {rawtext italicize(@reference.editor_notes)}
         p(:class => 'notes')          {rawtext italicize(@reference.taxonomic_notes)}
       end
     end
@@ -24,7 +24,7 @@ class Views::References::Reference < Erector::Widget
           tr {td(:style => 'padding-bottom: 3px', :colspan => 2) {f.text_field :title, :style => 'width: 100%'}}
           tr {td(:style => 'padding-bottom: 3px', :colspan => 3) {f.text_field :citation, :style => 'width: 100%'}}
           tr {td(:style => 'padding-bottom: 3px', :colspan => 3) {f.text_field :public_notes, :style => 'width: 100%'}}
-          tr {td(:style => 'padding-bottom: 3px', :colspan => 3) {f.text_field :private_notes, :style => 'width: 100%'}}
+          tr {td(:style => 'padding-bottom: 3px', :colspan => 3) {f.text_field :editor_notes, :style => 'width: 100%'}}
           tr {td(:style => 'padding-bottom: 3px', :colspan => 3) {f.text_field :taxonomic_notes, :style => 'width: 100%'}}
           tr do 
             td { table { tr {
