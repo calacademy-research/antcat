@@ -9,7 +9,6 @@ class Views::Base < Erector::Widgets::Page
     javascript_include_tag 'ext/jquery.watermark.min.js'
     javascript_include_tag 'ext/jquery.spinner.js'
     javascript_include_tag 'application.js'
-    jquery '$(":input:visible:enabled:first").focus();'
   end
 
   def page_title
