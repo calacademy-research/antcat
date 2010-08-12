@@ -19,6 +19,7 @@ class ReferencesController < ApplicationController
     unless @reference.update_attributes(params[:reference])
       flash[:error] = "There was an error updating this reference"
     end
+    render :javascript => 'references/update'
   end
   
   def new
@@ -26,18 +27,11 @@ class ReferencesController < ApplicationController
   end
   
   def create
-    if params[:commit] == 'Cancel'
-      redirect_to references_url
-      return
-    end
-
     @reference = Reference.new(params[:reference])
-    if @reference.save
-      flash[:notice] = "Reference has been added"
-      redirect_to reference_url(@reference)
-    else
-      render :action => 'new'
+    unless @reference.save
+      flash[:error] = "There was an error adding this reference"
     end
+    render :javascript => 'references/update'
   end
   
   def destroy

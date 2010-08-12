@@ -4,26 +4,39 @@ $(function() {
 //$('.reference_display').first().hide();
 //$('.reference_form').first().show();
 
-  $('.reference .reference_link').live('click', showReferenceForm);
+  $('.reference .reference_link').live('click', clickReference);
   $('.reference .reference_form form').live('submit', submitReferenceForm);
   $('.reference .reference_form .cancel').live('click', cancelReferenceForm);
+
+//insertReferenceForm();
 })
 
-function showReferenceForm() {
-  if ($('.reference_form').is(':visible'))
-    return false;
+function insertReferenceForm() {
+  $referenceTemplateRow = $('.reference_template_row');
+  $newReferenceRow = $referenceTemplateRow.clone(true);
+  $newReferenceRow.removeClass('reference_template_row');
+  $('.reference_template', $newReferenceRow).removeClass('reference_template').addClass('reference');
+  $('.references').prepend($newReferenceRow);
+  $newReference = $('.reference', $newReferenceRow);
+  showReferenceForm($newReference, false);
+}
 
-  $reference = $(this).closest('.reference')
+function clickReference() {
+  if (!$('.reference_form').is(':visible'))
+    showReferenceForm($(this).closest('.reference'), true);
+  return false;
+}
 
+function showReferenceForm($reference, focusFirstField)
+{
   $('.reference_display', $reference).hide();
 
   var $form = $('.reference_form', $reference);
   setWatermarks($form);
   $form.show();
 
-  $('#reference_authors', $form).focus();
-
-  return false;
+  if (focusFirstField)
+    $('#reference_authors', $form).focus();
 }
 
 function submitReferenceForm() {
@@ -32,7 +45,7 @@ function submitReferenceForm() {
   $('input', $spinnerElement).attr('disabled', 'disabled');
   $('button', $spinnerElement).attr('disabled', 'disabled');
 
-  $.post(this.action, $(this).serialize(), {}, 'script');
+  $.post(this.action, $(this).serialize(), null, 'script');
 
   return false;
 }
