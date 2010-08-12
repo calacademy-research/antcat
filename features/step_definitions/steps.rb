@@ -18,9 +18,9 @@ end
 
 Then /I should (not )?see an edit form/ do |should_not|
   selector = should_not ? :should_not : :should
-  find('.reference_form').send(selector, be_visible)
+  find('.reference .reference_form').send(selector, be_visible)
 end
 
 Then 'I should not see a reference' do
-  find('.reference_display').should_not be_visible
+  find('.reference .reference_display').should_not be_visible
 end

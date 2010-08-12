@@ -1,8 +1,9 @@
 class Views::References::Reference < Erector::Widget
-  needs :reference
+  needs :reference => nil, :class => 'reference'
 
   def content
-    div :id => "reference_#{@reference.id}", :class => 'reference' do
+    @reference ||= Reference.new
+    div :id => "reference_#{@reference.id}", :class => @class do
       widget Views::References::ReferenceDisplay.new :reference => @reference
       widget Views::References::ReferenceForm.new :reference => @reference
       widget Views::Coins.new :reference => @reference

@@ -21,5 +21,7 @@ class Views::References::Index < Views::Base
     end
 
     div {rawtext will_paginate @references}
+
+    widget Views::References::Reference.new :class => 'reference_template'
   end
 end

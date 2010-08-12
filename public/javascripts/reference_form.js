@@ -4,9 +4,9 @@ $(function() {
 //$('.reference_display').first().hide();
 //$('.reference_form').first().show();
 
-  $('.reference_link').live('click', showReferenceForm);
-  $('.reference_form form').live('submit', submitReferenceForm);
-  $('.reference_form .cancel').live('click', cancelReferenceForm);
+  $('.reference .reference_link').live('click', showReferenceForm);
+  $('.reference .reference_form form').live('submit', submitReferenceForm);
+  $('.reference .reference_form .cancel').live('click', cancelReferenceForm);
 })
 
 function showReferenceForm() {
