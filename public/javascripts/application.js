@@ -22,7 +22,7 @@ $(function() {
     $('input', $spinnerElement).attr('disabled', 'disabled');
     $('button', $spinnerElement).attr('disabled', 'disabled');
 
-    $.post(this.action, $(this).serialize(), {}, 'script');
+    $.post(this.action, $(this).serialize(), null, 'script');
 
     return false;
   });
