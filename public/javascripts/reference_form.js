@@ -1,31 +1,12 @@
 $(function() {
-  spaceOutImages();
-
   $('.reference_form').hide();
 
 //$('.reference_display').first().hide();
 //$('.reference_form').first().show();
 
   $('.reference_link').live('click', showReferenceForm);
-
-  $('.reference_form .cancel').live('click', function(event) {
-    $reference = $(this).closest('.reference')
-    $('.reference_display', $reference).show();
-    $('.reference_form', $reference).hide();
-
-    return false;
-  });
-
-  $('.reference_form form').live('submit', function(event) {
-    var $spinnerElement = $('button', $(this)).parent();
-    $spinnerElement.spinner({img: '/images/spinner.gif'});
-    $('input', $spinnerElement).attr('disabled', 'disabled');
-    $('button', $spinnerElement).attr('disabled', 'disabled');
-
-    $.post(this.action, $(this).serialize(), {}, 'script');
-
-    return false;
-  });
+  $('.reference_form form').live('submit', submitReferenceForm);
+  $('.reference_form .cancel').live('click', cancelReferenceForm);
 })
 
 function showReferenceForm() {
@@ -45,16 +26,23 @@ function showReferenceForm() {
   return false;
 }
 
-$(window).resize(function() {
-  spaceOutImages();
-});
+function submitReferenceForm() {
+  var $spinnerElement = $('button', $(this)).parent();
+  $spinnerElement.spinner({img: '/images/spinner.gif'});
+  $('input', $spinnerElement).attr('disabled', 'disabled');
+  $('button', $spinnerElement).attr('disabled', 'disabled');
 
-function spaceOutImages() {
-  var totalImageWidth = 271;
-  var imageCount = 4;
-  var availableWidth = $('#images').width();
-  var marginInBetween = (availableWidth - totalImageWidth) / (imageCount - 1);
-  $(".spacer").width(marginInBetween);
+  $.post(this.action, $(this).serialize(), {}, 'script');
+
+  return false;
+}
+
+function cancelReferenceForm() {
+  $reference = $(this).closest('.reference')
+  $('.reference_display', $reference).show();
+  $('.reference_form', $reference).hide();
+
+  return false;
 }
 
 function setWatermarks($form) {

@@ -1,13 +1,13 @@
 
 class Views::References::Index < Views::Base
 
-  include ActionController::UrlWriter
+  def head_content
+    super
+    javascript_include_tag 'reference_form'
+  end
 
   def container_content
-    div do
-      widget Views::Search.new
-    end
-
+    div {widget Views::Search.new}
     hr
 
     unless @references.present?
@@ -15,17 +15,11 @@ class Views::References::Index < Views::Base
     else
       table :class => 'references' do
         for reference in @references
-          tr { td do
-            div :id => "reference_#{reference.id}", :class => 'reference' do
-              widget Views::References::Reference.new :reference => reference
-            end
-          end }
+          tr {td {widget Views::References::Reference.new :reference => reference}}
         end
       end
     end
 
-    div { rawtext will_paginate @references }
-    p
-    rawtext link_to "New Reference", new_reference_path
+    div {rawtext will_paginate @references}
   end
 end
