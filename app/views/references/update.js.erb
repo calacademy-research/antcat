@@ -4,7 +4,8 @@ var $form = $('.reference_form', $reference);
 $('button', $form).parent().spinner('remove');
 
 var html = '<%= escape_javascript(render(:file => "/references/reference")) %>';
-$reference.html(html);
+$reference.parent().html(html);
+$reference = $('#reference_<%= @reference.id %>');
 
 var $display = $('.reference_display', $reference);
 $display.show();
