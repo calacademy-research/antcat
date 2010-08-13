@@ -1,16 +1,35 @@
 $(function() {
   $('.reference_form').hide();
 
-//$('.reference_display').first().hide();
-//$('.reference_form').first().show();
-
   $('.reference .reference_link').live('click', clickReference);
   $('.reference .reference_form form').live('submit', submitReferenceForm);
   $('.reference .reference_form .cancel').live('click', cancelReferenceForm);
   $('.add_reference_link').click(showAddReferenceForm);
 
-//insertReferenceForm();
+  setupDelete();
 })
+
+function setupDelete() {
+  $('.reference_link').live('mouseenter',
+    function() { $('.reference_action_link', $(this)).removeClass('hidden'); }
+    ).live('mouseleave',
+    function() { $('.reference_action_link').addClass('hidden'); }
+  );
+
+  $('.reference_action_link').live('click', deleteReference);
+  $('.reference .reference_form .delete').live('click', deleteReference);
+}
+
+function deleteReference() {
+  $reference = $(this).closest('.reference');
+  $reference.addClass('about_to_be_deleted');
+  if (confirm('Do you want to delete this reference?')) {
+    $.post($reference.find('form').attr('action'), {'_method': 'delete'})
+    $reference.closest('tr').remove();
+  } else
+    $reference.removeClass('about_to_be_deleted');
+  return false;
+}
 
 function showAddReferenceForm() {
   $('.add_reference_link').hide();

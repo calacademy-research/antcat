@@ -37,7 +37,6 @@ class ReferencesController < ApplicationController
   def destroy
     @reference = Reference.find(params[:id])
     @reference.destroy
-    flash[:notice] = "Reference has been deleted"
-    redirect_to references_url
+    render :nothing => true
   end
 end
