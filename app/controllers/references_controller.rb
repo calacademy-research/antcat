@@ -30,6 +30,8 @@ class ReferencesController < ApplicationController
     unless @reference.save
       flash[:error] = "There was an error adding this reference"
     end
+    @new = true
+    render :file => 'references/update'
   end
   
   def destroy

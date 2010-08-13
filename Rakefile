@@ -15,9 +15,11 @@ begin
     Cucumber::Rake::Task.new(:selenium, "Run features that use Selenium") do |t|
       t.profile = 'selenium'
     end
+    desc "Run both plain and enhanced features"
+    task :all_features => [:cucumber, 'cucumber:selenium']
   end
 
   # add to default tasks (not override)
-  task :default => [:cucumber, 'cucumber:selenium']
+  task :default => ['cucumber:all_features']
 rescue NameError
 end
