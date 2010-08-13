@@ -5,7 +5,7 @@ Feature: Add reference
 
   Scenario: Add a reference
     When I go to the main page
-    #      And I follow "Add reference"
+      And I follow "Add reference"
       Then I should see an edit form
     When I fill in "reference_authors" with "Mark Wilden"
       And I press "OK"

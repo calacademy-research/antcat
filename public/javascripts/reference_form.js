@@ -7,9 +7,15 @@ $(function() {
   $('.reference .reference_link').live('click', clickReference);
   $('.reference .reference_form form').live('submit', submitReferenceForm);
   $('.reference .reference_form .cancel').live('click', cancelReferenceForm);
+  $('.add_reference_link').click(showAddReferenceForm);
 
 //insertReferenceForm();
 })
+
+function showAddReferenceForm() {
+  $('.add_reference_link').hide();
+  insertReferenceForm();
+}
 
 function insertReferenceForm() {
   $referenceTemplateRow = $('.reference_template_row');
@@ -30,6 +36,7 @@ function clickReference() {
 function showReferenceForm($reference, focusFirstField)
 {
   $('.reference_display', $reference).hide();
+  $('.add_reference_link').hide();
 
   var $form = $('.reference_form', $reference);
   setWatermarks($form);
@@ -54,6 +61,7 @@ function cancelReferenceForm() {
   $reference = $(this).closest('.reference')
   $('.reference_display', $reference).show();
   $('.reference_form', $reference).hide();
+  $('.add_reference_link').show();
 
   return false;
 }
