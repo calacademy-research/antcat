@@ -5,8 +5,6 @@ module NavigationHelpers
       '/references'
     when /the page for that reference/
       reference_path(@reference || Reference.first)    
-    when /the edit page for that reference/
-      edit_reference_path(@reference || Reference.first)    
     end
   end
 end
