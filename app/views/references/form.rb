@@ -1,4 +1,4 @@
-class Views::References::ReferenceForm < Erector::Widget
+class Views::References::Form < Erector::Widget
   needs :reference => nil, :class => 'reference_form'
 
   def content

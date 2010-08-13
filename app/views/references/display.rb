@@ -1,4 +1,4 @@
-class Views::References::ReferenceDisplay < Erector::Widget
+class Views::References::Display < Erector::Widget
   needs :reference
 
   def content
