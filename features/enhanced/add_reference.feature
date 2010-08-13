@@ -12,3 +12,10 @@ Feature: Add reference
     Then I should be on the main page
       And I should not see an edit form
       And I should see "Mark Wilden"
+
+  Scenario: Adding a reference but then cancelling
+    When I go to the main page
+      And I follow "Add reference"
+    When I fill in "reference_authors" with "Mark Wilden"
+      And I press "Cancel"
+    Then there should not be any references

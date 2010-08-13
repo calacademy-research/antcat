@@ -58,9 +58,13 @@ function submitReferenceForm() {
 }
 
 function cancelReferenceForm() {
-  $reference = $(this).closest('.reference')
-  $('.reference_display', $reference).show();
-  $('.reference_form', $reference).hide();
+  $reference = $(this).closest('.reference');
+  if ($reference.attr('id') == 'reference_')
+    $reference.closest('tr').remove();
+  else {
+    $('.reference_display', $reference).show();
+    $('.reference_form', $reference).hide();
+  }
   $('.add_reference_link').show();
 
   return false;

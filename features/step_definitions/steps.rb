@@ -24,3 +24,7 @@ end
 Then 'I should not see a reference' do
   find('.reference .reference_display').should_not be_visible
 end
+
+Then 'there should not be any references' do
+  find('.reference').should be_nil
+end
