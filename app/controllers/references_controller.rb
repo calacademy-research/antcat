@@ -19,7 +19,6 @@ class ReferencesController < ApplicationController
     unless @reference.update_attributes(params[:reference])
       flash[:error] = "There was an error updating this reference"
     end
-    render :javascript => 'references/update'
   end
   
   def new
@@ -31,7 +30,6 @@ class ReferencesController < ApplicationController
     unless @reference.save
       flash[:error] = "There was an error adding this reference"
     end
-    render :javascript => 'references/update'
   end
   
   def destroy

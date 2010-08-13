@@ -16,7 +16,6 @@ Feature: Edit reference
       And I press "OK"
     Then I should be on the main page
       And I should not see an edit form
-      And show me the page
       And I should see "Mark Wilden"
 
   Scenario: Change a reference's year
