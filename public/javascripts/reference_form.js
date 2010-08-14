@@ -1,7 +1,7 @@
 $(function() {
   $('.reference_form').hide();
 
-  $('.reference .reference_link').live('click', clickReference);
+  $('.reference .reference_display').live('click', clickReference);
   $('.reference .reference_form form').live('submit', submitReferenceForm);
   $('.reference .reference_form .cancel').live('click', cancelReferenceForm);
   $('.add_reference_link').click(showAddReferenceForm);
@@ -9,12 +9,20 @@ $(function() {
   setupDelete();
 })
 
+function isEditing() {
+  return $('.reference_form').is(':visible');
+}
+
 function setupDelete() {
-  $('.reference_link').live('mouseenter',
-    function() { $('.reference_action_link', $(this)).removeClass('hidden'); }
-    ).live('mouseleave',
-    function() { $('.reference_action_link').addClass('hidden'); }
-  );
+  $('.reference_display').live('mouseenter',
+    function() {
+      if (!isEditing())
+        $('.reference_action_link', $(this)).removeClass('hidden');
+    }).live('mouseleave',
+    function() {
+      if (!isEditing())
+        $('.reference_action_link').addClass('hidden');
+    });
 
   $('.reference_action_link').live('click', deleteReference);
   $('.reference .reference_form .delete').live('click', deleteReference);
@@ -47,7 +55,7 @@ function insertReferenceForm() {
 }
 
 function clickReference() {
-  if (!$('.reference_form').is(':visible'))
+  if (!isEditing())
     showReferenceForm($(this).closest('.reference'), true);
   return false;
 }

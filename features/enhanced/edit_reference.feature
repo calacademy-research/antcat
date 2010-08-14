@@ -9,7 +9,7 @@ Feature: Edit reference
       |Authors|Citation|CiteCode |today     |20100712|Possess|Title|today     |2010|
     When I go to the main page
       Then I should not see an edit form
-    When I follow "Authors 2010. Title Citation"
+    When I click the reference
       Then I should see an edit form
       And I should not see a reference
     When I fill in "reference_authors" with "Mark Wilden"
@@ -23,7 +23,7 @@ Feature: Edit reference
       |authors|title|citation|year|
       |Fisher |Ants |New York|2010|
     When I go to the main page
-      And I follow "Fisher 2010. Ants New York"
+      And I click the reference
       And I fill in "reference_year" with "1910a"
       And I press "OK"
       And I fill in "start_year" with "1910"
@@ -35,7 +35,7 @@ Feature: Edit reference
       |citation|
       |Esakia 31:1-115|
     When I go to the main page
-      And I follow "Esakia 31:1-115"
+      And I click the reference
       And I fill in "reference_citation" with "Mad Magazine 33:12"
       And I press "OK"
     Then there should be the HTML "rft.jtitle=Mad\+Magazine"

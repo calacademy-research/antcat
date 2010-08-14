@@ -28,3 +28,7 @@ end
 Then 'there should not be any references' do
   find('.reference').should be_nil
 end
+
+When 'I click the reference' do
+  find('.reference .reference_display').click
+end

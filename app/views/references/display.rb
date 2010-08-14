@@ -3,14 +3,12 @@ class Views::References::Display < Erector::Widget
 
   def content
     div :class => 'reference_display' do
-      a :href => "#", :class => 'reference_link' do
-        rawtext format_reference(@reference)
-        rawtext ' '
-        span 'Delete', :class => 'reference_action_link hidden'
-        p(:class => 'notes')        {rawtext italicize(@reference.public_notes)}
-        p(:class => 'editor notes') {rawtext italicize(@reference.editor_notes)}
-        p(:class => 'notes')        {rawtext italicize(@reference.taxonomic_notes)}
-      end
+      rawtext format_reference(@reference)
+      rawtext ' '
+      span 'Delete', :class => 'reference_action_link hidden'
+      p(:class => 'notes')        {rawtext italicize(@reference.public_notes)}
+      p(:class => 'editor notes') {rawtext italicize(@reference.editor_notes)}
+      p(:class => 'notes')        {rawtext italicize(@reference.taxonomic_notes)}
     end
   end
 
