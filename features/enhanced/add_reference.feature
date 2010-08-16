@@ -3,7 +3,7 @@ Feature: Add reference
   I want to add new references
   So that the bibliography continues to be up-to-date
 
-  Scenario: Add a reference
+  Scenario: Add a reference when there are no others
     When I go to the main page
       And I follow "Add reference"
       Then I should see an edit form
