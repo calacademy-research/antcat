@@ -26,6 +26,9 @@ function setupDelete() {
 
   $('.reference_action_link').live('click', deleteReference);
   $('.reference .reference_form .delete').live('click', deleteReference);
+
+  if (usingCucumber)
+    $('.reference_action_link').show();
 }
 
 function deleteReference() {

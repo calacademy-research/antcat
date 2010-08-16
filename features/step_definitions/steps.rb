@@ -32,3 +32,7 @@ end
 When 'I click the reference' do
   find('.reference .reference_display').click
 end
+
+When 'I click the "Add" link' do
+  find('.reference_action_add').click
+end
