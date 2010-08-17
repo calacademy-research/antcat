@@ -1,5 +1,5 @@
 Given /the following entries exist in the bibliography/ do |table|
-  table.hashes.each {|hash| Reference.create! hash}
+  table.hashes.each {|hash| @reference = Reference.create! hash}
 end
 
 Then 'I should see these entries in this order:' do |entries|
@@ -16,23 +16,36 @@ Then /^there should be the HTML "(.*)"$/ do |html|
   body.should =~ /#{html}/
 end
 
-Then /I should (not )?see an edit form/ do |should_not|
+Then /I should (not )?see the edit form/ do |should_not|
   selector = should_not ? :should_not : :should
-  find('.reference .reference_form').send(selector, be_visible)
+  find("#reference_#{@reference.id} .reference_form").send(selector, be_visible)
 end
 
-Then 'I should not see a reference' do
-  find('.reference .reference_display').should_not be_visible
+Then /I should (not )?see a new edit form/ do |should_not|
+  selector = should_not ? :should_not : :should
+  find("#reference_ .reference_form").send(selector, be_visible)
 end
 
-Then 'there should not be any references' do
-  find('.reference').should be_nil
+Then 'I should not see the reference' do
+  find("#reference_#{@reference.id} .reference_display").should_not be_visible
+end
+
+Then '"Add reference" should not be visible' do
+  find_link('Add reference').should_not be_visible
+end
+
+Then 'there should be just the existing reference' do
+  all('.reference').size.should == 1
 end
 
 When 'I click the reference' do
-  find('.reference .reference_display').click
+  find("#reference_#{@reference.id} .reference_display").click
 end
 
-When 'I click the "Add" link' do
-  find('.reference_action_add').click
+When /in the new edit form I fill in "(.*?)" with "(.*?)"/ do |field, value|
+  When "I fill in \"#{field}\" with \"#{value}\" within \"#reference_\""
+end
+
+When /in the new edit form I press "(.*?)"/ do |button|
+  When "I press \"#{button}\" within \"#reference_\""
 end

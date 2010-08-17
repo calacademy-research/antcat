@@ -8,14 +8,14 @@ Feature: Edit reference
       |authors|citation|cite_code|created_at|date    |possess|title|updated_at|year|
       |Authors|Citation|CiteCode |today     |20100712|Possess|Title|today     |2010|
     When I go to the main page
-      Then I should not see an edit form
+      Then I should not see the edit form
     When I click the reference
-      Then I should see an edit form
-      And I should not see a reference
+      Then I should see the edit form
+      And I should not see the reference
     When I fill in "reference_authors" with "Mark Wilden"
       And I press "OK"
     Then I should be on the main page
-      And I should not see an edit form
+      And I should not see the edit form
       And I should see "Mark Wilden"
 
   Scenario: Change a reference's year
