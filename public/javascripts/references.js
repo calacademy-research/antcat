@@ -48,6 +48,9 @@ function setupActionLinks() {
   $('.reference_action_delete').live('click', deleteReference);
   $('.reference .reference_form .delete').live('click', deleteReference);
 
+  if (usingCucumber)
+    $('.reference_action_link').show();
+
   $('.reference_action_link').live('mouseenter',
     function() {
       $(this).addClass('hovering');
