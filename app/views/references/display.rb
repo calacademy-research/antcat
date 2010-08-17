@@ -6,9 +6,11 @@ class Views::References::Display < Erector::Widget
       rawtext format_reference(@reference)
       rawtext ' '
 
-      span 'add', :class => 'reference_action_link reference_action_add'
+      a 'add', :href => '#', :class => 'reference_action_link reference_action_add'
       rawtext ' '
-      span 'delete', :class => 'reference_action_link reference_action_delete'
+      a 'copy', :href => '#', :class => 'reference_action_link reference_action_copy'
+      rawtext ' '
+      a 'delete', :href => '#', :class => 'reference_action_link reference_action_delete'
 
       p(:class => 'notes')        {rawtext italicize(@reference.public_notes)}
       p(:class => 'editor notes') {rawtext italicize(@reference.editor_notes)}
