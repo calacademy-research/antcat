@@ -35,7 +35,7 @@ class Views::References::Form < Erector::Widget
               span :id => 'buttons' do
                 f.submit 'OK', :name => 'commit'
                 button 'Cancel', :class => 'cancel'
-                button 'Delete', :class => 'cancel'
+                button 'Delete', :class => 'delete'
               end
             end
           end

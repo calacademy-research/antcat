@@ -49,3 +49,11 @@ end
 When /in the new edit form I press "(.*?)"/ do |button|
   When "I press \"#{button}\" within \"#reference_\""
 end
+
+Given 'I will confirm on the next step' do
+  begin
+    evaluate_script("window.alert = function(msg) { return true; }")
+    evaluate_script("window.confirm = function(msg) { return true; }")
+  rescue Capybara::NotSupportedByDriverError
+  end
+end
