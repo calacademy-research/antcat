@@ -11,8 +11,7 @@ function setupAddReferenceLink() {
   $('.add_reference_link').click(addReference);
 }
 
-function showAddReferenceLink()
-{
+function showAddReferenceLink() {
   if ($('.reference').size() == 0)
     $('.add_reference_link').show();
   else
@@ -25,8 +24,7 @@ function hideAddReferenceLink() {
 
 /////////////////////////////////////////////////////////////////////////
 
-function setupDisplays()
-{
+function setupDisplays() {
   $('.reference_display').live('click', clickReference);
 
   $('.reference_display').live('mouseenter',
@@ -46,16 +44,16 @@ function setupActionLinks() {
   if (!usingCucumber)
     $('.reference_action_link').hide();
 
-  $('.reference_action_add').live('click', insertReference);
-  $('.reference_action_copy').live('click', copyReference);
-  $('.reference_action_delete').live('click', deleteReference);
+  $('.reference_action_link.add').live('click', insertReference);
+  $('.reference_action_link.copy').live('click', copyReference);
+  $('.reference_action_link.delete').live('click', deleteReference);
 }
 
 function setupForms() {
   $('.reference_form').hide();
-  $('.reference .reference_form form').live('submit', submitReferenceForm);
-  $('.reference .reference_form .cancel').live('click', cancelReferenceForm);
-  $('.reference .reference_form .delete').live('click', deleteReference);
+  $('.reference_form form').live('submit', submitReferenceForm);
+  $('.reference_form .cancel').live('click', cancelReferenceForm);
+  $('.reference_form .delete').live('click', deleteReference);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -116,8 +114,7 @@ function copyReference() {
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-function showReferenceForm($reference, focusFirstField)
-{
+function showReferenceForm($reference, focusFirstField) {
   hideAddReferenceLink();
   $('.reference_display', $reference).hide();
   $('.reference_action_link').hide();
