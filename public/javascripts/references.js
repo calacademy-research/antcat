@@ -43,27 +43,19 @@ function setupDisplays()
 }
 
 function setupActionLinks() {
-  $('.reference_action_link').hide();
+  if (!usingCucumber)
+    $('.reference_action_link').hide();
+
   $('.reference_action_add').live('click', insertReference);
+  $('.reference_action_copy').live('click', copyReference);
   $('.reference_action_delete').live('click', deleteReference);
-  $('.reference .reference_form .delete').live('click', deleteReference);
-
-  if (usingCucumber)
-    $('.reference_action_link').show();
-
-  $('.reference_action_link').live('mouseenter',
-    function() {
-      $(this).addClass('hovering');
-    }).live('mouseleave',
-    function() {
-      $(this).removeClass('hovering');
-    });
 }
 
 function setupForms() {
   $('.reference_form').hide();
   $('.reference .reference_form form').live('submit', submitReferenceForm);
   $('.reference .reference_form .cancel').live('click', cancelReferenceForm);
+  $('.reference .reference_form .delete').live('click', deleteReference);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -109,6 +101,17 @@ function addOrInsertReferenceForm($reference) {
 
   $newReference = $('.reference', $newReferenceRow);
   showReferenceForm($newReference, false);
+}
+
+function copyReference() {
+  $rowToCopyFrom = $(this).closest('tr');
+  $newRow = $rowToCopyFrom.clone(true);
+  $rowToCopyFrom.after($newRow);
+  $newReference = $('.reference', $newRow);
+  $newReference.attr("id", "reference_");
+  $('form', $newReference).attr("action", "/references");
+  $('[name=_method]', $newReference).attr("value", "post");
+  showReferenceForm($newReference, true);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
