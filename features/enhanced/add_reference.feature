@@ -45,3 +45,9 @@ Feature: Add reference
     When in the new edit form I fill in "reference_authors" with "Mark Wilden"
       And in the new edit form I press "Cancel"
     Then there should be just the existing reference
+
+  Scenario: Hide Delete button while adding
+    When I go to the main page
+      And I follow "Add reference"
+      Then I should see a new edit form
+        And I should not see a "Delete" button

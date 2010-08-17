@@ -25,7 +25,7 @@ function hideAddReferenceLink() {
 /////////////////////////////////////////////////////////////////////////
 
 function setupDisplays() {
-  $('.reference_display').live('click', clickReference);
+  $('.reference_display').live('click', editReference);
 
   $('.reference_display').live('mouseenter',
     function() {
@@ -58,9 +58,9 @@ function setupForms() {
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-function clickReference() {
+function editReference() {
   if (!isEditing())
-    showReferenceForm($(this).closest('.reference'), true);
+    showReferenceForm($(this).closest('.reference'), {focusFirstField: true, showDeleteButton: true});
   return false;
 }
 
@@ -98,7 +98,7 @@ function addOrInsertReferenceForm($reference) {
     $reference.closest('tr').after($newReferenceRow);
 
   $newReference = $('.reference', $newReferenceRow);
-  showReferenceForm($newReference, false);
+  showReferenceForm($newReference);
 }
 
 function copyReference() {
@@ -109,12 +109,15 @@ function copyReference() {
   $newReference.attr("id", "reference_");
   $('form', $newReference).attr("action", "/references");
   $('[name=_method]', $newReference).attr("value", "post");
-  showReferenceForm($newReference, true);
+  showReferenceForm($newReference, {focusFirstField: true});
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-function showReferenceForm($reference, focusFirstField) {
+function showReferenceForm($reference, options) {
+  if (!options)
+    options = {}
+
   hideAddReferenceLink();
   $('.reference_display', $reference).hide();
   $('.reference_action_link').hide();
@@ -123,8 +126,11 @@ function showReferenceForm($reference, focusFirstField) {
   setWatermarks($form);
   $form.show();
 
-  if (focusFirstField)
+  if (options.focusFirstField)
     $('#reference_authors', $form).focus();
+
+  if (!options.showDeleteButton)
+    $('.delete', $form).hide();
 }
 
 function setWatermarks($form) {

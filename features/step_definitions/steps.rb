@@ -57,3 +57,7 @@ Given 'I will confirm on the next step' do
   rescue Capybara::NotSupportedByDriverError
   end
 end
+
+Then 'I should not see a "Delete" button' do
+  find('button', :text => 'Delete').should be_nil
+end
