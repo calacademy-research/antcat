@@ -43,7 +43,7 @@ class Views::Base < Erector::Widgets::Page
       hr
       container_content
       hr
-      table(:id => 'images', :style => 'padding-top: 0; width: 100%') do
+      table(:id => 'images') do
         tr do
           td { img :style => "height: 50px", :src => '/images/nsf1.gif', :title => "Supported in part by NSF Award DBI-0642321" }
           td :class => :spacer
