@@ -11,24 +11,26 @@ class Views::References::Form < Erector::Widget
 
     div :class => @class do
       form_for([:reference, @reference], form_options) do |f|
-        table :style => 'width:100%' do
-          col :width => '*'
-          col :width => '100px'
-          tr do 
-            td(:style => 'padding-bottom: 3px; padding-right: 8px') {f.text_field :authors, :style => 'width: 100%'}
-            td(:style => 'padding-bottom: 3px;') {f.text_field :year, :style => 'width: 100%'}
+        table do
+          colgroup do
+            col :width => '*'
+            col :width => '100px'
           end
-          tr {td(:style => 'padding-bottom: 3px', :colspan => 2) {f.text_field :title, :style => 'width: 100%'}}
-          tr {td(:style => 'padding-bottom: 3px', :colspan => 3) {f.text_field :citation, :style => 'width: 100%'}}
-          tr {td(:style => 'padding-bottom: 3px', :colspan => 3) {f.text_field :public_notes, :style => 'width: 100%'}}
-          tr {td(:style => 'padding-bottom: 3px', :colspan => 3) {f.text_field :editor_notes, :style => 'width: 100%'}}
-          tr {td(:style => 'padding-bottom: 3px', :colspan => 3) {f.text_field :taxonomic_notes, :style => 'width: 100%'}}
           tr do 
-            td { table { tr {
-              td(:style => 'padding-bottom: 3px; padding-right: 8px') {f.text_field :cite_code, :style => 'width: 70px'}
-              td(:style => 'padding-bottom: 3px;')                    {f.text_field :possess, :style => 'width: 100px'}
-              td(:style => 'padding-bottom: 3px; padding-left: 8px')  {f.text_field :date, :style => 'width: 75px'}
-            } } }
+            td(:class => 'authors') {f.text_field :authors}
+            td(:class => 'year')    {f.text_field :year}
+          end
+          tr {td(:colspan => 2) {f.text_field :title}}
+          tr {td(:colspan => 3) {f.text_field :citation}}
+          tr {td(:colspan => 3) {f.text_field :public_notes}}
+          tr {td(:colspan => 3) {f.text_field :editor_notes}}
+          tr {td(:colspan => 3) {f.text_field :taxonomic_notes}}
+          tr do 
+            td { table(:class => 'small_fields') { tr {
+              td(:class => 'cite_code') {f.text_field :cite_code}
+              td(:class => 'possess')   {f.text_field :possess}
+              td(:class => 'date')      {f.text_field :date}
+            }}}
           end
           tr do
             td(:colspan => 3) do

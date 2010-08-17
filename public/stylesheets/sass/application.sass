@@ -29,9 +29,29 @@ table.references
 .reference_form
   table
     padding: 0
-  td
-    padding: 0
-
+    width: 100%
+    td
+      padding: 0 0 3px 0
+      input[type=text]
+        width: 100%
+      &.authors
+        padding-right: 8px
+      &.year
+        input
+          width: 100%
+      table.small_fields
+        width: auto
+        td.cite_code
+          padding-right: 8px
+          input
+            width: 70px
+        td.possess
+          input
+            width: 100px
+        td.date
+          padding-left: 8px
+          input
+            width: 75px
 
 .reference
   padding-bottom: 5px
