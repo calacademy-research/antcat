@@ -1,31 +1,74 @@
 $(function() {
-  $('.reference_form').hide();
-
-  $('.reference .reference_display').live('click', clickReference);
-  $('.reference .reference_form form').live('submit', submitReferenceForm);
-  $('.reference .reference_form .cancel').live('click', cancelReferenceForm);
-  $('.add_reference_link').click(showAddReferenceForm);
-
-  setupDelete();
+  setupAddReferenceLink();
+  setupDisplays();
+  setupForms();
 })
 
-function isEditing() {
-  return $('.reference_form').is(':visible');
+/////////////////////////////////////////////////////////////////////////
+
+function setupAddReferenceLink() {
+  showAddReferenceLink();
+  $('.add_reference_link').click(addReference);
 }
 
-function setupDelete() {
+function showAddReferenceLink()
+{
+  if ($('.reference').size() == 0)
+    $('.add_reference_link').show();
+  else
+    hideAddReferenceLink();
+}
+
+function hideAddReferenceLink() {
+  $('.add_reference_link').hide();
+}
+
+/////////////////////////////////////////////////////////////////////////
+
+function setupDisplays()
+{
+  $('.reference_display').live('click', clickReference);
+
   $('.reference_display').live('mouseenter',
     function() {
       if (!isEditing())
-        $('.reference_action_link', $(this)).removeClass('hidden');
+        $('.reference_action_link', $(this)).show();
     }).live('mouseleave',
     function() {
       if (!isEditing())
-        $('.reference_action_link').addClass('hidden');
+        $('.reference_action_link').hide();
     });
 
-  $('.reference_action_link').live('click', deleteReference);
+  setupActionLinks();
+}
+
+function setupActionLinks() {
+  $('.reference_action_link').hide();
+  $('.reference_action_add').live('click', insertReference);
+  $('.reference_action_delete').live('click', deleteReference);
   $('.reference .reference_form .delete').live('click', deleteReference);
+
+  $('.reference_action_link').live('mouseenter',
+    function() {
+      $(this).addClass('hovering');
+    }).live('mouseleave',
+    function() {
+      $(this).removeClass('hovering');
+    });
+}
+
+function setupForms() {
+  $('.reference_form').hide();
+  $('.reference .reference_form form').live('submit', submitReferenceForm);
+  $('.reference .reference_form .cancel').live('click', cancelReferenceForm);
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+
+function clickReference() {
+  if (!isEditing())
+    showReferenceForm($(this).closest('.reference'), true);
+  return false;
 }
 
 function deleteReference() {
@@ -36,34 +79,42 @@ function deleteReference() {
     $reference.closest('tr').remove();
   } else
     $reference.removeClass('about_to_be_deleted');
+
+  showAddReferenceLink();
+
   return false;
 }
 
-function showAddReferenceForm() {
-  $('.add_reference_link').hide();
-  insertReferenceForm();
+function addReference() {
+  addOrInsertReferenceForm(null);
 }
 
-function insertReferenceForm() {
+function insertReference() {
+  addOrInsertReferenceForm($(this).closest('.reference'));
+}
+
+function addOrInsertReferenceForm($reference) {
   $referenceTemplateRow = $('.reference_template_row');
   $newReferenceRow = $referenceTemplateRow.clone(true);
   $newReferenceRow.removeClass('reference_template_row');
   $('.reference_template', $newReferenceRow).removeClass('reference_template').addClass('reference');
-  $('.references').prepend($newReferenceRow);
+
+  if ($reference == null)
+    $('.references').prepend($newReferenceRow);
+  else
+    $reference.closest('tr').after($newReferenceRow);
+
   $newReference = $('.reference', $newReferenceRow);
   showReferenceForm($newReference, false);
 }
 
-function clickReference() {
-  if (!isEditing())
-    showReferenceForm($(this).closest('.reference'), true);
-  return false;
-}
+///////////////////////////////////////////////////////////////////////////////////
 
 function showReferenceForm($reference, focusFirstField)
 {
+  hideAddReferenceLink();
   $('.reference_display', $reference).hide();
-  $('.add_reference_link').hide();
+  $('.reference_action_link').hide();
 
   var $form = $('.reference_form', $reference);
   setWatermarks($form);
@@ -71,30 +122,6 @@ function showReferenceForm($reference, focusFirstField)
 
   if (focusFirstField)
     $('#reference_authors', $form).focus();
-}
-
-function submitReferenceForm() {
-  var $spinnerElement = $('button', $(this)).parent();
-  $spinnerElement.spinner({img: '/images/spinner.gif'});
-  $('input', $spinnerElement).attr('disabled', 'disabled');
-  $('button', $spinnerElement).attr('disabled', 'disabled');
-
-  $.post(this.action, $(this).serialize(), null, 'script');
-
-  return false;
-}
-
-function cancelReferenceForm() {
-  $reference = $(this).closest('.reference');
-  if ($reference.attr('id') == 'reference_')
-    $reference.closest('tr').remove();
-  else {
-    $('.reference_display', $reference).show();
-    $('.reference_form', $reference).hide();
-  }
-  $('.add_reference_link').show();
-
-  return false;
 }
 
 function setWatermarks($form) {
@@ -109,3 +136,37 @@ function setWatermarks($form) {
   $('#reference_possess', $form).watermark('Possess');
   $('#reference_date', $form).watermark('Date');
 }
+
+function submitReferenceForm() {
+  var $spinnerElement = $('button', $(this)).parent();
+  $spinnerElement.spinner({img: '/images/spinner.gif'});
+  $('input', $spinnerElement).attr('disabled', 'disabled');
+  $('button', $spinnerElement).attr('disabled', 'disabled');
+
+  $.post(this.action, $(this).serialize(), null, 'script');
+
+  showAddReferenceLink();
+
+  return false;
+}
+
+function cancelReferenceForm() {
+  $reference = $(this).closest('.reference');
+  if ($reference.attr('id') == 'reference_')
+    $reference.closest('tr').remove();
+  else {
+    $('.reference_display', $reference).show();
+    $('.reference_form', $reference).hide();
+  }
+
+  showAddReferenceLink();
+
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+function isEditing() {
+  return $('.reference_form').is(':visible');
+}
+

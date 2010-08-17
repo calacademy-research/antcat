@@ -12,7 +12,7 @@ class Views::References::Index < Views::Base
 
     rawtext 'No results found' unless @references.present?
 
-    p {a "Add reference", :href => '#', :class => 'add_reference_link'} if @references.empty?
+    p {a "Add reference", :href => '#', :class => 'add_reference_link'}
 
     table :class => 'references' do
       for reference in @references

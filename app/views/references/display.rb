@@ -5,7 +5,11 @@ class Views::References::Display < Erector::Widget
     div :class => 'reference_display' do
       rawtext format_reference(@reference)
       rawtext ' '
-      span 'Delete', :class => 'reference_action_link hidden'
+
+      span 'add', :class => 'reference_action_link reference_action_add'
+      rawtext ' '
+      span 'delete', :class => 'reference_action_link reference_action_delete'
+
       p(:class => 'notes')        {rawtext italicize(@reference.public_notes)}
       p(:class => 'editor notes') {rawtext italicize(@reference.editor_notes)}
       p(:class => 'notes')        {rawtext italicize(@reference.taxonomic_notes)}
