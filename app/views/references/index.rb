@@ -3,7 +3,7 @@ class Views::References::Index < Views::Base
 
   def head_content
     super
-    javascript_include_tag 'reference_form'
+    javascript_include_tag 'references'
   end
 
   def container_content
