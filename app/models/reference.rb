@@ -40,7 +40,7 @@ class Reference < ActiveRecord::Base
       authors         = node_to_text(tds[col += 1])
       year_td         = tds[col += 1]
       date            = node_to_text(tds[col += 1])
-      title           = node_to_text(tds[col += 1])
+      title           = remove_period_from(node_to_text(tds[col += 1]))
       citation        = node_to_text(tds[col += 1])
       taxonomic_notes = new_format ? node_to_text(tds[col += 1]) : nil
       notes           = node_to_text(tds[col += 1])

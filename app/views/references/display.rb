@@ -20,7 +20,14 @@ class Views::References::Display < Erector::Widget
 
   private
   def format_reference reference
-    "#{italicize(reference.authors)} #{reference.year}. #{italicize(reference.title)} #{italicize(reference.citation)}"
+    "#{italicize(reference.authors)} #{reference.year}. #{italicize(add_period_if_necessary(reference.title))} #{italicize(reference.citation)}"
+  end
+
+  def add_period_if_necessary s
+    return unless s
+    return s if s.empty?
+    return s + '.' unless s[-1..-1] == '.'
+    s
   end
 
   def italicize s

@@ -41,7 +41,7 @@ describe Reference do
         reference.authors.should == "Abdul-Rassoul, M. S.; Dawah, H. A.; Othman, N. Y."
         reference.year.should == "1978"
         reference.date.should == '197804'
-        reference.title.should == 'Records of insect collection.'
+        reference.title.should == 'Records of insect collection'
         reference.citation.should == 'Bull. Nat. Hist. Res. Cent. Univ. Baghdad 7(2):1-6.'
         reference.journal_title.should == 'Bull. Nat. Hist. Res. Cent. Univ. Baghdad'
         reference.volume.should == '7'
@@ -89,7 +89,7 @@ describe Reference do
           <td></td><td></td><td></td></tr></table></body></html>"
         File.should_receive(:read).with(@filename).and_return(file_contents)
         Reference.import(@filename)
-        Reference.first.title.should == 'Records of insect collection (Part I) in the Natural History Research Centre, Baghdad.'
+        Reference.first.title.should == 'Records of insect collection (Part I) in the Natural History Research Centre, Baghdad'
       end
 
       describe "parsing notes" do
@@ -155,7 +155,7 @@ describe Reference do
           <td></td><td></td><td></td></tr></table></body></html>"
         File.should_receive(:read).with(@filename).and_return(file_contents)
         Reference.import(@filename)
-        Reference.first.title.should == 'Records of *Formicidae*.'
+        Reference.first.title.should == 'Records of *Formicidae*'
       end
 
       it "should convert Microsoft's indication of italics to asterisks" do
@@ -166,7 +166,7 @@ describe Reference do
           <td></td><td></td><td></td></tr></table></body></html>"
         File.should_receive(:read).with(@filename).and_return(file_contents)
         Reference.import(@filename)
-        Reference.first.title.should == 'Interaction between the ants *Zacryptocerus maculatus* and *Azteca trigona*.'
+        Reference.first.title.should == 'Interaction between the ants *Zacryptocerus maculatus* and *Azteca trigona*'
       end
 
       it "should convert entities to characters" do
@@ -185,6 +185,24 @@ describe Reference do
         File.should_receive(:read).with(@filename).and_return(file_contents)
         Reference.import(@filename)
         Reference.first.year.should == '1978'
+      end
+
+      it "should remove period from end of title" do
+          file_contents = "<html><body><table><tr></tr><tr>
+              <td></td>
+              <td>123</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>Title with period.</td>
+              <td>journal</td>
+              <td>{Notes}</td>
+              <td></td>
+              <td></td>
+          </tr></table></body></html>"
+        File.should_receive(:read).with(@filename).and_return(file_contents)
+        Reference.import(@filename)
+        Reference.first.title.should == 'Title with period'
       end
 
       it "should import the numeric year" do
@@ -231,7 +249,7 @@ describe Reference do
       reference.authors.should == "Schlick-Steiner, B. C.; Steiner, F. M.; Seifert, B.; Stauffer, C.; Christian, E.; Crozier, R. H."
       reference.year.should == "1978"
       reference.date.should == '197804'
-      reference.title.should == 'Records of insect collection.'
+      reference.title.should == 'Records of insect collection'
       reference.citation.should == 'Bull. Nat. Hist. Res. Cent. Univ. Baghdad 7(2):1-6.'
       reference.journal_title.should == 'Bull. Nat. Hist. Res. Cent. Univ. Baghdad'
       reference.volume.should == '7'
