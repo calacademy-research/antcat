@@ -45,13 +45,13 @@ class Views::Base < Erector::Widgets::Page
       hr
       table(:id => 'images') do
         tr do
-          td { img :style => "height: 50px", :src => '/images/nsf1.gif', :title => "Supported in part by NSF Award DBI-0642321" }
+          td {a(:href => 'http://www.nsf.gov/') {img :style => "height: 50px", :src => '/images/nsf1.gif', :title => "Supported in part by NSF Award DBI-0642321"}}
           td :class => :spacer
-          td { img :style => "height: 40px", :src => '/images/calacademy.gif' }
+          td {a(:href => 'http://www.calacademy.org/') {img :style => "height: 40px", :src => '/images/calacademy.gif'}}
           td :class => :spacer
-          td { img :style => "height: 40px", :src => '/images/rails.png' }
+          td {a(:href => 'http://rubyonrails.org/') {img :style => "height: 40px", :src => '/images/rails.png' }}
           td :class => :spacer
-          td { img :style => "height: 20px", :src => '/images/zotero_logo_tiny.png' }
+          td {a(:href => 'http://www.zotero.org/') {img :style => "height: 20px", :src => '/images/zotero_logo_tiny.png'}}
 
         end
       end
