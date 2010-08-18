@@ -19,6 +19,7 @@ class ReferencesController < ApplicationController
     unless @reference.update_attributes(params[:reference])
       flash[:error] = "There was an error updating this reference"
     end
+    render_json
   end
   
   def new
@@ -30,13 +31,17 @@ class ReferencesController < ApplicationController
     unless @reference.save
       flash[:error] = "There was an error adding this reference"
     end
-    @new = true
-    render :file => 'references/update'
+    render_json true
   end
   
   def destroy
     @reference = Reference.find(params[:id])
     @reference.destroy
     render :nothing => true
+  end
+
+  private
+  def render_json new = false
+    render :json => {:isNew => new, :content => render_to_string(:file => 'references/reference'), :id => @reference.id}
   end
 end

@@ -152,11 +152,29 @@ function submitReferenceForm() {
   $('input', $spinnerElement).attr('disabled', 'disabled');
   $('button', $spinnerElement).attr('disabled', 'disabled');
 
-  $.post(this.action, $(this).serialize(), null, 'script');
+  $.post(this.action, $(this).serialize(), updateReference, 'json');
 
   showAddReferenceLink();
 
   return false;
+}
+
+function updateReference(data) {
+  var id = data.isNew ? '' : data.id;
+  var $reference = $('#reference_' + id);
+
+  var $form = $('.reference_form', $reference);
+  $('button', $form).parent().spinner('remove');
+
+  var html = data.content;
+  $reference.parent().html(html);
+
+  $reference = $('#reference_' + data.id);
+  $('.reference_form', $reference).hide();
+
+  var $display = $('.reference_display', $reference);
+  $display.show();
+  $display.effect("highlight", {}, 3000);
 }
 
 function cancelReferenceForm() {
