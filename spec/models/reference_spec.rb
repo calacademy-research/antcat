@@ -42,7 +42,7 @@ describe Reference do
         reference.year.should == "1978"
         reference.date.should == '197804'
         reference.title.should == 'Records of insect collection'
-        reference.citation.should == 'Bull. Nat. Hist. Res. Cent. Univ. Baghdad 7(2):1-6.'
+        reference.citation.should == 'Bull. Nat. Hist. Res. Cent. Univ. Baghdad 7(2):1-6'
         reference.journal_title.should == 'Bull. Nat. Hist. Res. Cent. Univ. Baghdad'
         reference.volume.should == '7'
         reference.issue.should == '2'
@@ -268,7 +268,7 @@ describe Reference do
       reference.year.should == "1978"
       reference.date.should == '197804'
       reference.title.should == 'Records of insect collection'
-      reference.citation.should == 'Bull. Nat. Hist. Res. Cent. Univ. Baghdad 7(2):1-6.'
+      reference.citation.should == 'Bull. Nat. Hist. Res. Cent. Univ. Baghdad 7(2):1-6'
       reference.journal_title.should == 'Bull. Nat. Hist. Res. Cent. Univ. Baghdad'
       reference.volume.should == '7'
       reference.issue.should == '2'

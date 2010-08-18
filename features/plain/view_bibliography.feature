@@ -8,7 +8,7 @@ Feature: View bibliography
       |authors|citation|cite_code|created_at|date    |public_notes|editor_notes|possess|title|updated_at|year|
       |Authors|Citation|CiteCode |today     |20100712|Public notes|Editor's notes|Possess|Title|today     |2010|
     When I go to the main page
-    Then I should see "Authors 2010. Title. Citation"
+    Then I should see "Authors 2010. Title. Citation."
       And I should see "Public notes"
       And I should see "Editor's notes"
 
@@ -29,10 +29,10 @@ Feature: View bibliography
 
   Scenario: Viewing more than one entry, sorted by author + date (including slug)
     Given the following entries exist in the bibliography
-      |authors       |year |title                      |citation                    |
-      |Wheeler, W. M.|1910b|Ants.                      |New York.                   |
-      |Forel, A.     |1874 |Les fourmis de la Suisse.  |Neue Denkschriften 26:1-452.|
-      |Wheeler, W. M.|1910a|Small artificial ant-nests.|Psyche.                     |
+      |authors       |year |title                     |citation                   |
+      |Wheeler, W. M.|1910b|Ants                      |New York                   |
+      |Forel, A.     |1874 |Les fourmis de la Suisse  |Neue Denkschriften 26:1-452|
+      |Wheeler, W. M.|1910a|Small artificial ant-nests|Psyche                     |
     When I go to the main page
     Then I should see these entries in this order:
       |entry|

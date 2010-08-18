@@ -22,7 +22,7 @@ class Views::References::Display < Erector::Widget
     "#{self.class.italicize(@reference.authors)} " +
     "#{@reference.year}. " +
     "#{self.class.italicize(self.class.add_period_if_necessary(@reference.title))} " +
-    "#{self.class.italicize(@reference.citation)}"
+    "#{self.class.italicize(self.class.add_period_if_necessary(@reference.citation))}"
   end
 
   private
