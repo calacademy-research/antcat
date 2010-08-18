@@ -205,6 +205,24 @@ describe Reference do
         Reference.first.title.should == 'Title with period'
       end
 
+      it "should remove period from end of citation" do
+          file_contents = "<html><body><table><tr></tr><tr>
+              <td></td>
+              <td>123</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>Title</td>
+              <td>Citation with period.</td>
+              <td>{Notes}</td>
+              <td></td>
+              <td></td>
+          </tr></table></body></html>"
+        File.should_receive(:read).with(@filename).and_return(file_contents)
+        Reference.import(@filename)
+        Reference.first.citation.should == 'Citation with period'
+      end
+
       it "should import the numeric year" do
         file_contents = "<html><body><table><tr></tr><tr><td></td><td>123</td><td></td>
             <td>1978a (\"2005\").</td><td></td><td></td>

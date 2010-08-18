@@ -27,24 +27,6 @@ Feature: View bibliography
     When I go to the main page
     Then I should see "<script>"
 
-  Scenario: Title without period
-    Given the following entries exist in the bibliography
-      |authors       |year |title                      |citation                    |
-      |Forel, A.     |1874 |Les fourmis de la Suisse|Neue Denkschriften 26:1-452.|
-    When I go to the main page
-    Then I should see these entries in this order:
-      |entry|
-      |Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.|
-
-  Scenario: Title with period
-    Given the following entries exist in the bibliography
-      |authors       |year |title                      |citation                    |
-      |Forel, A.     |1874 |Les fourmis de la Suisse.  |Neue Denkschriften 26:1-452.|
-    When I go to the main page
-    Then I should see these entries in this order:
-      |entry|
-      |Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.|
-
   Scenario: Viewing more than one entry, sorted by author + date (including slug)
     Given the following entries exist in the bibliography
       |authors       |year |title                      |citation                    |
