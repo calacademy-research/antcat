@@ -8,6 +8,9 @@ Feature: Add reference
       And I follow "Add reference"
       Then I should see a new edit form
     When I fill in "reference_authors" with "Mark Wilden"
+      And I fill in "reference_title" with "title"
+      And I fill in "reference_year" with "1981"
+      And I fill in "reference_citation" with "citation"
       And I press "OK"
     Then I should be on the main page
       And I should not see a new edit form
@@ -23,23 +26,25 @@ Feature: Add reference
 
   Scenario: Add a reference when there are others
     Given the following entries exist in the bibliography
-      |authors   |title         |
-      |Ward, P.S.|Annals of Ants|
+      |authors   |title         |year|citation|
+      |Ward, P.S.|Annals of Ants|year|citation|
     When I go to the main page
       Then "Add reference" should not be visible
     When I follow "add"
       Then I should see a new edit form
     When in the new edit form I fill in "reference_authors" with "Mark Wilden"
       And in the new edit form I fill in "reference_title" with "Between Pacific Tides"
+      And in the new edit form I fill in "reference_citation" with "New York"
+      And in the new edit form I fill in "reference_year" with "1992"
       And in the new edit form I press "OK"
     Then I should be on the main page
       And I should not see a new edit form
-      And I should see "Mark Wilden . Between Pacific Tides"
+      And I should see "Mark Wilden 1992. Between Pacific Tides. New York."
 
   Scenario: Adding a reference but then cancelling
     Given the following entries exist in the bibliography
-      |authors   |title         |
-      |Ward, P.S.|Annals of Ants|
+      |authors   |title         |citation|year|
+      |Ward, P.S.|Annals of Ants|citation|year|
     When I go to the main page
     When I follow "add"
     When in the new edit form I fill in "reference_authors" with "Mark Wilden"

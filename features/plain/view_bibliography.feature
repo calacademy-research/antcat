@@ -14,16 +14,16 @@ Feature: View bibliography
 
   Scenario: View one entry with italics
     Given the following entries exist in the bibliography
-      |title|
-      |Territory \|defense\| by the ant *Azteca trigona*|
+      |title|authors|citation|year|
+      |Territory \|defense\| by the ant *Azteca trigona*|authors|citation|year|
     When I go to the main page
     Then I should see "Azteca trigona" in italics
       And I should see "defense" in italics
 
   Scenario: Dangerous text
     Given the following entries exist in the bibliography
-      |title|
-      |<script>|
+      |title|authors|citation|year|
+      |<script>|authors|citation|year|
     When I go to the main page
     Then I should see "<script>"
 

@@ -6,9 +6,9 @@ Feature: Searching references
 
   Background:
     Given the following entries exist in the bibliography
-       |authors     |year         |numeric_year|
-       |Brian Fisher|1995b        |1995        |
-       |Barry Bolton|2010 ("2011")|2010        |
+       |authors     |year         |numeric_year|title|citation|
+       |Brian Fisher|1995b        |1995        |title|citation|
+       |Barry Bolton|2010 ("2011")|2010        |title|citation|
 
   Scenario: Not searching yet
     When I go to the main page
@@ -75,11 +75,11 @@ Feature: Searching references
 
   Scenario: Searching by a year range
     Given the following entries exist in the bibliography
-     |year  |numeric_year|
-     |2009a.|2009        |
-     |2010c.|2010        |
-     |2011d.|2011        |
-     |2012e.|2012        |
+     |year  |numeric_year|authors|title|citation|
+     |2009a.|2009        |authors|title|citation|
+     |2010c.|2010        |authors|title|citation|
+     |2011d.|2011        |authors|title|citation|
+     |2012e.|2012        |authors|title|citation|
     When I go to the main page
       And I fill in "start_year" with "2010"
       And I fill in "end_year" with "2011"
@@ -105,11 +105,11 @@ Feature: Searching references
     
   Scenario: Searching by author and year
     Given the following entries exist in the bibliography
-       |authors     |year |numeric_year|
-       |Brian Fisher|1995a|1995        |
-       |Brian Fisher|2010b|2010        |
-       |Barry Bolton|2010e|2010        |
-       |Barry Bolton|1995d|1995        |
+       |authors     |year |numeric_year|title|citation|
+       |Brian Fisher|1995a|1995        |title|citation|
+       |Brian Fisher|2010b|2010        |title|citation|
+       |Barry Bolton|2010e|2010        |title|citation|
+       |Barry Bolton|1995d|1995        |title|citation|
     When I go to the main page
       And I fill in "author" with "fisher"
       And I fill in "start_year" with "1995"
@@ -122,9 +122,9 @@ Feature: Searching references
 
   Scenario: Searching by journal title
     Given the following entries exist in the bibliography
-       |citation|journal_title|
-       |Acta Informatica 1:222|Acta Informatica|
-       |Science (3)1:444|Science|
+       |citation|journal_title|authors|title|year|
+       |Acta Informatica 1:222|Acta Informatica|authors|title|year|
+       |Science (3)1:444|Science|authors|title|year|
     When I go to the main page
       And I fill in "journal" with "Science"
       And I press "Search"

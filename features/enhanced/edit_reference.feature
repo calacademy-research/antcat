@@ -6,7 +6,7 @@ Feature: Edit reference
   Scenario: Edit a reference
     Given the following entries exist in the bibliography
       |authors|citation|cite_code|created_at|date    |possess|title|updated_at|year|
-      |Authors|Citation|CiteCode |today     |20100712|Possess|Title|today     |2010|
+      |authors|citation|CiteCode |today     |20100712|Possess|title|today     |2010|
     When I go to the main page
       Then I should not see the edit form
     When I click the reference
@@ -32,8 +32,8 @@ Feature: Edit reference
 
   Scenario: Change a reference's journal title
     Given the following entries exist in the bibliography
-      |citation|
-      |Esakia 31:1-115|
+      |citation|authors|title|year|
+      |Esakia 31:1-115|authors|title|year|
     When I go to the main page
       And I click the reference
       And I fill in "reference_citation" with "Mad Magazine 33:12"

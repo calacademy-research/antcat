@@ -3,6 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe "COinS widget" do
   it "should format a journal reference correctly" do
     @widget = Views::Coins.new(:reference => Factory(:reference, {
+      :authors => 'MacKay, W.',
       :kind => 'journal',
       :title => 'A title',
       :journal_title => 'Journal Title',
@@ -17,6 +18,8 @@ describe "COinS widget" do
       "ctx_ver=Z39.88-2004",
       "rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal",
       "rfr_id=antcat.org",
+      "rft.aulast=MacKay",
+      "rft.aufirst=W.",
       "rft.genre=article",
       "rft.atitle=A+title",
       "rft.jtitle=Journal+Title",
@@ -30,6 +33,7 @@ describe "COinS widget" do
 
   it "should use the numeric year" do
     @widget = Views::Coins.new(:reference => Factory(:reference, {
+      :authors => 'MacKay, W.',
       :kind => 'journal',
       :title => 'A title',
       :volume => '1',
@@ -42,6 +46,8 @@ describe "COinS widget" do
     check_parameters [
       "ctx_ver=Z39.88-2004",
       "rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal",
+      "rft.aulast=MacKay",
+      "rft.aufirst=W.",
       "rfr_id=antcat.org",
       "rft.genre=article",
       "rft.atitle=A+title",
@@ -112,6 +118,7 @@ describe "COinS widget" do
 
   it "should strip out italics formatting" do
     @widget = Views::Coins.new(:reference => Factory(:reference, {
+      :authors => 'MacKay, W.',
       :kind => 'journal',
       :title => '*A title*',
       :volume => '1',
@@ -124,6 +131,8 @@ describe "COinS widget" do
     check_parameters [
       "ctx_ver=Z39.88-2004",
       "rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal",
+      "rft.aulast=MacKay",
+      "rft.aufirst=W.",
       "rfr_id=antcat.org",
       "rft.genre=article",
       "rft.atitle=A+title",
@@ -137,6 +146,7 @@ describe "COinS widget" do
 
   it "should format a book reference correctly" do
     @widget = Views::Coins.new(:reference => Factory(:reference, {
+      :authors => 'MacKay, W.',
       :kind => 'book',
       :title => 'Another title',
       :year => '1933',
@@ -148,6 +158,8 @@ describe "COinS widget" do
     check_parameters [
       "ctx_ver=Z39.88-2004",
       "rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Abook",
+      "rft.aulast=MacKay",
+      "rft.aufirst=W.",
       "rfr_id=antcat.org",
       "rft.genre=book",
       "rft.btitle=Another+title",
@@ -163,6 +175,8 @@ describe "COinS widget" do
     check_parameters [
       "ctx_ver=Z39.88-2004",
       "rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Aunknown",
+      "rft.aulast=Fisher",
+      "rft.aufirst=B.L.",
       "rfr_id=antcat.org",
       "rft.genre=",
     ]

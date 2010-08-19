@@ -11,6 +11,7 @@ class Views::References::Form < Erector::Widget
 
     div :class => @class do
       form_for([:reference, @reference], form_options) do |f|
+        errors_for @reference
         table do
           colgroup do
             col :width => '*'
@@ -45,4 +46,13 @@ class Views::References::Form < Erector::Widget
       end
     end
   end
+
+  def errors_for object
+    return unless object.errors.present?
+    ul(:class => 'error_messages') do
+      object.errors.full_messages.each do |error|
+        li error
+      end
+    end
+  end  
 end

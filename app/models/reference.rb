@@ -1,7 +1,9 @@
 class Reference < ActiveRecord::Base
   set_table_name 'refs'
 
-    before_save :parse
+  before_save :parse
+
+  validates_presence_of :authors, :citation, :year, :title
 
   def self.search params = {}
     scope = scoped(:order => 'authors, year')
@@ -48,9 +50,13 @@ class Reference < ActiveRecord::Base
 
       year = remove_period_from(node_to_text(year_td))
 
+      authors = '[Authors missing from import]' if authors.blank?
+      citation = '[Citation missing from import]' if citation.blank?
+      title = '[Title missing from import]' if title.blank?
+      year = '[Year missing from import]' if year.blank?
+
       reference = Reference.new(:cite_code => cite_code, :authors => authors, :year => year, :date => date, :title => title,
                                 :citation  => citation, :possess => possess, :taxonomic_notes => taxonomic_notes)
-      reference.parse_citation
       reference.parse_notes notes
       reference.save!
     end

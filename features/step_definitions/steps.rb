@@ -1,4 +1,4 @@
-Given /the following entries exist in the bibliography/ do |table|
+Given /the following entr(?:ies|y) exists? in the bibliography/ do |table|
   table.hashes.each {|hash| @reference = Reference.create! hash}
 end
 
@@ -36,6 +36,14 @@ end
 
 Then 'there should be just the existing reference' do
   all('.reference').size.should == 1
+end
+
+Then /"(.*?)" should be marked as an error/ do |id|
+  find(".fieldWithErrors ##{id}").should_not be_nil
+end
+
+Then "I should not see any error messages" do
+  find('.error_messages li').should be_nil
 end
 
 When 'I click the reference' do

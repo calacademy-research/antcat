@@ -6,11 +6,11 @@ Feature: Copy reference
 
   Scenario: Copy a reference
     Given the following entries exist in the bibliography
-      |authors   |title         |
-      |Ward, P.S.|Annals of Ants|
+      |authors   |title         |citation|year|
+      |Ward, P.S.|Annals of Ants|Ants 1:2|1910|
     When I go to the main page
     When I follow "copy"
       Then I should see a new edit form
     When in the new edit form I fill in "reference_authors" with "Mark Wilden"
       And in the new edit form I press "OK"
-    Then I should see "Mark Wilden . Annals of Ants"
+    Then I should see "Mark Wilden 1910. Annals of Ants. Ants 1:2."

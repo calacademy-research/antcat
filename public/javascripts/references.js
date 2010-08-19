@@ -59,8 +59,13 @@ function setupForms() {
 ///////////////////////////////////////////////////////////////////////////////////
 
 function editReference() {
-  if (!isEditing())
-    showReferenceForm($(this).closest('.reference'), {focusFirstField: true, showDeleteButton: true});
+  if (isEditing())
+    return false;
+
+  $reference = $(this).closest('.reference');
+  saveReferenceForm($reference);
+  showReferenceForm($reference, {focusFirstField: true, showDeleteButton: true});
+
   return false;
 }
 
@@ -114,6 +119,20 @@ function copyReference() {
 
 ///////////////////////////////////////////////////////////////////////////////////
 
+function saveReferenceForm($reference) {
+  var $savedForm = $('.reference_form', $reference).clone(true);
+  $savedForm.attr('id', 'saved_reference_form');
+  $('.references').append($savedForm);
+}
+
+function restoreReferenceForm($reference) {
+  var $form = $('.reference_form', $reference);
+  var id = $form.attr('id');
+  var $savedForm = $('#saved_reference_form');
+  $form.replaceWith($savedForm);
+  $savedForm.attr('id', id);
+}
+
 function showReferenceForm($reference, options) {
   if (!options)
     options = {}
@@ -160,14 +179,22 @@ function submitReferenceForm() {
 }
 
 function updateReference(data) {
-  var id = data.isNew ? '' : data.id;
-  var $reference = $('#reference_' + id);
+  var $reference = $('#reference_' + (data.isNew ? '' : data.id));
 
   var $form = $('.reference_form', $reference);
-  $('button', $form).parent().spinner('remove');
 
-  var html = data.content;
-  $reference.parent().html(html);
+  var $spinnerElement = $('button', $form).parent();
+  $('input', $spinnerElement).attr('disabled', '');
+  $('button', $spinnerElement).attr('disabled', '');
+  $spinnerElement.spinner('remove');
+
+  $reference.parent().html(data.content);
+
+  if (!data.success) {
+    $reference = $('#reference_' + (data.isNew ? '' : data.id));
+    $reference.find('.reference_display').hide();
+    return;
+  }
 
   $reference = $('#reference_' + data.id);
   $('.reference_form', $reference).hide();
@@ -183,6 +210,7 @@ function cancelReferenceForm() {
     $reference.closest('tr').remove();
   else {
     $('.reference_display', $reference).show();
+    restoreReferenceForm($reference);
     $('.reference_form', $reference).hide();
   }
 

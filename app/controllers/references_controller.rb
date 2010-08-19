@@ -16,9 +16,7 @@ class ReferencesController < ApplicationController
 
   def update
     @reference = Reference.find(params[:id])
-    unless @reference.update_attributes(params[:reference])
-      flash[:error] = "There was an error updating this reference"
-    end
+    @reference.update_attributes(params[:reference])
     render_json
   end
   
@@ -28,9 +26,7 @@ class ReferencesController < ApplicationController
   
   def create
     @reference = Reference.new(params[:reference])
-    unless @reference.save
-      flash[:error] = "There was an error adding this reference"
-    end
+    @reference.save
     render_json true
   end
   
@@ -42,6 +38,6 @@ class ReferencesController < ApplicationController
 
   private
   def render_json new = false
-    render :json => {:isNew => new, :content => render_to_string(:file => 'references/reference'), :id => @reference.id}
+    render :json => {:isNew => new, :content => render_to_string(:file => 'references/reference'), :id => @reference.id, :success => @reference.valid?}
   end
 end
