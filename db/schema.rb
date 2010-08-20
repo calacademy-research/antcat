@@ -9,7 +9,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100811194625) do
+ActiveRecord::Schema.define(:version => 20100819232401) do
+
+  create_table "bolton_refs", :force => true do |t|
+    t.string   "authors"
+    t.string   "year"
+    t.string   "title_and_citation"
+    t.string   "date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "refs", :force => true do |t|
     t.string   "authors"
