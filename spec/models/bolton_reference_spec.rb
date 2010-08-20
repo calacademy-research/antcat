@@ -83,6 +83,14 @@ normal'>31</b>: 1-115. [31.vii.1991.]"
   end
 
   describe "matching Bolton's references against Ward's" do
+    it "should not match an obvious mismatch" do
+      reference = Reference.create!(:authors => 'Fisher, B.L.', :title => "My life among the ants", :citation => "Playboy", :year => '2009')
+      bolton = BoltonReference.new(:authors => 'Dlussky, G.M.', :title_and_citation =>
+                                   "Ants of the genus Formica L. of Mongolia and northeast Tibet. Annales Zoologici 23: 15-43", :year => '1965a')
+
+      bolton.match.should be_nil
+    end
+
     it "should find an exact match" do
       reference = Reference.create!(:authors => 'Dlussky, G.M.',
                                     :title => "Ants of the genus Formica L. of Mongolia and northeast Tibet",
@@ -92,7 +100,28 @@ normal'>31</b>: 1-115. [31.vii.1991.]"
 
       bolton.match.should == reference
     end
+
+    it "should find a match when Ward has markup" do
+      reference = Reference.create!(:authors => 'Dlussky, G.M.',
+                                    :title => "Ants of the genus *Formica* L. of Mongolia and northeast Tibet",
+                                    :citation => "Annales Zoologici 23: 15-43", :year => '1965a')
+      bolton = BoltonReference.new(:authors => 'Dlussky, G.M.', :title_and_citation =>
+                                   "Ants of the genus Formica L. of Mongolia and northeast Tibet. Annales Zoologici 23: 15-43", :year => '1965a')
+
+      bolton.match.should == reference
+    end
+
+    it "should find a match when Ward has extra text" do
+      reference = Reference.create!(:authors => 'Dlussky, G.M.',
+                                    :title => "Ants of the genus *Formica* L. of Mongolia and northeast Tibet (Hymenoptera, Formicidae)",
+                                    :citation => "Annales Zoologici 23: 15-43", :year => '1965a')
+      bolton = BoltonReference.new(:authors => 'Dlussky, G.M.', :title_and_citation =>
+                                   "Ants of the genus Formica L. of Mongolia and northeast Tibet. Annales Zoologici 23: 15-43", :year => '1965a')
+
+      bolton.match.should == reference
+    end
   end
+
   def make_contents content
     "<html>
         <body>
