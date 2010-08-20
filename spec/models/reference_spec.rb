@@ -558,4 +558,12 @@ describe Reference do
       reference.should_not be_valid
     end
   end
+
+  describe "string representation" do
+    it "should be readable and informative" do
+      reference = Reference.new(:authors => "Abdul-Rassoul, M. S.", :year => "1978", :title => 'Records of insect collection',
+                                :citation => 'Bull. Nat. Hist. Res. Cent. Univ. Baghdad 7(2):1-6')
+      reference.to_s.should == "Abdul-Rassoul, M. S. 1978. Records of insect collection. Bull. Nat. Hist. Res. Cent. Univ. Baghdad 7(2):1-6."
+    end
+  end
 end

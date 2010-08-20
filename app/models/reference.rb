@@ -146,4 +146,8 @@ class Reference < ActiveRecord::Base
     self.numeric_year = year.to_i if year
     parse_citation
   end
+
+  def to_s
+    "#{authors} #{year}. #{title}. #{citation}."
+  end
 end

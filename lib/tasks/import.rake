@@ -10,3 +10,11 @@ task :import_bolton => :environment do
   BoltonReference.delete_all
   BoltonReference.import 'data/NGC-REFS_a-d.htm', true
 end
+
+desc 'Match Bolton against Ward'
+task :match_bolton_against_ward => :environment do
+  BoltonReference.match_all true
+end
+
+desc 'Import and match Bolton against Ward'
+task :import_and_match_bolton => [:environment, :import_bolton, :match_bolton_against_ward]

@@ -1,5 +1,6 @@
 class BoltonReference < ActiveRecord::Base
   set_table_name 'bolton_refs'
+  belongs_to :reference, :foreign_key => 'ward'
 
 #  How to import a references file from Bolton
 #  1) Open the file in Word
@@ -45,23 +46,68 @@ class BoltonReference < ActiveRecord::Base
     return parts
   end
 
-  def match
-    Reference.all.find do |reference|
-      string_similarity(remove_punctuation(reference.title + reference.citation), remove_punctuation(title_and_citation)) > 0.85
+  def self.match_all show_progress = false
+
+    unmatched = 0
+    $stderr.print "Setting up" if show_progress
+    wards = Reference.all.map do |e|
+      title_and_citation = remove_punctuation(e.title + e.citation)
+      {:reference => e, :title_and_citation => title_and_citation, :pairs => make_pairs(title_and_citation)}
     end
+    $stderr.puts if show_progress
+
+    start = Time.now
+    all_count = count
+    all.each_with_index do |bolton, i|
+      title_and_citation = remove_punctuation(bolton.title_and_citation)
+      max_similarity = 0
+      best_match = nil
+      ward = wards.find do |ward|
+        similarity = string_similarity(title_and_citation, ward[:pairs])
+        if similarity > max_similarity
+          max_similarity = similarity
+          best_match = ward
+        end
+        similarity > 0.85
+      end
+      bolton.update_attribute(:ward_id, ward && ward[:reference].id)
+      unmatched += 1 unless ward
+      if show_progress
+        elapsed = Time.now - start
+        rate = ((i + 1) / elapsed)
+        rate_s = sprintf("%.2f", rate) + "/sec"
+        time_left = sprintf("%.0f", (count - i + 1) / rate / 60) + " mins left"
+        $stderr.puts "#{i + 1}/#{all_count} (#{unmatched} unmatched) #{rate_s} #{time_left}" if show_progress
+        $stderr.puts bolton if show_progress
+        if ward
+          $stderr.puts "Ward: " + ward[:reference].to_s if show_progress
+        else
+          $stderr.puts "No match: best was #{max_similarity}:\n#{best_match[:reference]}" if show_progress
+          $stderr.puts "B: " + title_and_citation
+          $stderr.puts "W: " + best_match[:title_and_citation]
+        end
+        $stderr.puts
+      end
+    end
+    $stderr.puts if show_progress
   end
 
-  def remove_punctuation s
+  def self.remove_punctuation s
     s.gsub(/\W/, '')
   end
 
-  def string_similarity str1, str2
-    str1.downcase! 
-    pairs1 = (0..str1.length-2).collect {|i| str1[i,2]}.reject {
-      |pair| pair.include? " "}
-    str2.downcase! 
-    pairs2 = (0..str2.length-2).collect {|i| str2[i,2]}.reject {
-      |pair| pair.include? " "}
+  def self.make_pairs str1
+    str1.downcase 
+    (0..str1.length-2).collect {|i| str1[i,2]}.reject { |pair| pair.include? " "}
+  end
+
+  def self.full_string_similarity str1, str2
+    string_similarity(str1, make_pairs(str2))
+  end
+
+  def self.string_similarity str1, pairs2
+    pairs1 = make_pairs str1
+    pairs2 = pairs2.clone
     union = pairs1.size + pairs2.size 
     intersection = 0 
     pairs1.each do |p1| 
@@ -74,5 +120,9 @@ class BoltonReference < ActiveRecord::Base
       end 
     end 
     (2.0 * intersection) / union
+  end
+
+  def to_s
+    "#{authors} #{year}. #{title_and_citation}."
   end
 end
