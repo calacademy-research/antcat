@@ -13,7 +13,7 @@ end
 
 desc 'Match Bolton against Ward'
 task :match_bolton_against_ward => :environment do
-  BoltonReference.match_all true
+  BoltonReference.match_against_ward true
 end
 
 desc 'Import and match Bolton against Ward'

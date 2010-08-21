@@ -82,50 +82,6 @@ normal'>31</b>: 1-115. [31.vii.1991.]"
     end
   end
 
-  describe "matching Bolton's references against Ward's" do
-    it "should not match an obvious mismatch" do
-      reference = Reference.create!(:authors => 'Fisher, B.L.', :title => "My life among the ants", :citation => "Playboy", :year => '2009')
-      bolton = BoltonReference.create!(:authors => 'Dlussky, G.M.', :title_and_citation =>
-                                   "Ants of the genus Formica L. of Mongolia and northeast Tibet. Annales Zoologici 23: 15-43", :year => '1965a')
-
-      BoltonReference.match_all
-      BoltonReference.first.ward_id.should be_nil
-    end
-
-    it "should find an exact match" do
-      reference = Reference.create!(:authors => 'Dlussky, G.M.',
-                                    :title => "Ants of the genus Formica L. of Mongolia and northeast Tibet",
-                                    :citation => "Annales Zoologici 23: 15-43", :year => '1965a')
-      bolton = BoltonReference.create!(:authors => 'Dlussky, G.M.', :title_and_citation =>
-                                   "Ants of the genus Formica L. of Mongolia and northeast Tibet. Annales Zoologici 23: 15-43", :year => '1965a')
-
-      BoltonReference.match_all
-      BoltonReference.first.ward_id.should == reference.id
-    end
-
-    it "should find a match when Ward has markup" do
-      reference = Reference.create!(:authors => 'Dlussky, G.M.',
-                                    :title => "Ants of the genus *Formica* L. of Mongolia and northeast Tibet",
-                                    :citation => "Annales Zoologici 23: 15-43", :year => '1965a')
-      bolton = BoltonReference.create!(:authors => 'Dlussky, G.M.', :title_and_citation =>
-                                   "Ants of the genus Formica L. of Mongolia and northeast Tibet. Annales Zoologici 23: 15-43", :year => '1965a')
-
-      BoltonReference.match_all
-      BoltonReference.first.ward_id.should == reference.id
-    end
-
-    it "should find a match when Ward has extra text" do
-      reference = Reference.create!(:authors => 'Dlussky, G.M.',
-                                    :title => "Ants of the genus *Formica* L. of Mongolia and northeast Tibet (Hymenoptera, Formicidae)",
-                                    :citation => "Annales Zoologici 23: 15-43", :year => '1965a')
-      bolton = BoltonReference.create!(:authors => 'Dlussky, G.M.', :title_and_citation =>
-                                   "Ants of the genus Formica L. of Mongolia and northeast Tibet. Annales Zoologici 23: 15-43", :year => '1965a')
-
-      BoltonReference.match_all
-      BoltonReference.first.ward_id.should == reference.id
-    end
-  end
-
   describe "string representation" do
     it "should be readable and informative" do
       bolton = BoltonReference.new(:authors => 'Allred, D.M.', :title_and_citation =>
