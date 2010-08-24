@@ -30,7 +30,8 @@ Feature: Error handling
       And I press "OK"
     Then I should see "Authors can't be blank"
     When I press "Cancel"
-      And I click the reference
+    Then I should see "Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452."
+    When I click the reference
     Then I should not see any error messages
     When I press "OK"
     Then I should not see any error messages

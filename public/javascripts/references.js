@@ -63,7 +63,7 @@ function editReference() {
     return false;
 
   $reference = $(this).closest('.reference');
-  saveReferenceForm($reference);
+  saveReference($reference);
   showReferenceForm($reference, {focusFirstField: true, showDeleteButton: true});
 
   return false;
@@ -119,18 +119,17 @@ function copyReference() {
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-function saveReferenceForm($reference) {
-  var $savedForm = $('.reference_form', $reference).clone(true);
-  $savedForm.attr('id', 'saved_reference_form');
-  $('.references').append($savedForm);
+function saveReference($reference) {
+  var $savedReference = $reference.clone(true);
+  $savedReference.attr('id', 'saved_reference');
+  $('.references').append($savedReference);
 }
 
-function restoreReferenceForm($reference) {
-  var $form = $('.reference_form', $reference);
-  var id = $form.attr('id');
-  var $savedForm = $('#saved_reference_form');
-  $form.replaceWith($savedForm);
-  $savedForm.attr('id', id);
+function restoreReference($reference) {
+  var id = $reference.attr('id');
+  $savedReference = $('#saved_reference');
+  $reference.replaceWith($savedReference);
+  $savedReference.attr('id', id);
 }
 
 function showReferenceForm($reference, options) {
@@ -192,7 +191,7 @@ function updateReference(data) {
 
   if (!data.success) {
     $reference = $('#reference_' + (data.isNew ? '' : data.id));
-    $reference.find('.reference_display').hide();
+    showReferenceForm($reference);
     return;
   }
 
@@ -209,8 +208,8 @@ function cancelReferenceForm() {
   if ($reference.attr('id') == 'reference_')
     $reference.closest('tr').remove();
   else {
+    restoreReference($reference);
     $('.reference_display', $reference).show();
-    restoreReferenceForm($reference);
     $('.reference_form', $reference).hide();
   }
 
