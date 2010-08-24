@@ -123,6 +123,7 @@ function saveReference($reference) {
   var $savedReference = $reference.clone(true);
   $savedReference.attr('id', 'saved_reference');
   $('.references').append($savedReference);
+  $savedReference.hide();
 }
 
 function restoreReference($reference) {
@@ -130,6 +131,7 @@ function restoreReference($reference) {
   $savedReference = $('#saved_reference');
   $reference.replaceWith($savedReference);
   $savedReference.attr('id', id);
+  $savedReference.show();
 }
 
 function showReferenceForm($reference, options) {
