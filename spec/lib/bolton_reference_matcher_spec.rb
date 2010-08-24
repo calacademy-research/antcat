@@ -67,11 +67,36 @@ describe BoltonReferenceMatcher do
       BoltonReferenceMatcher.new.match(bolton).should == ward
     end
 
+    it "should find a match when Ward includes taxon names, as long as one of them is one we know about" do
+      ward = Reference.create! :authors => "Dlusski, G. M.; Soyunov, O. S.", :year => "1987",
+        :title => "Ants of the genus *Temnothorax* Mayr (Hymenoptera, Chrysidoidea, Vespoidea and Apoidea) of the USSR. [In Russian.]",
+        :citation => "Izvestiya Akademii Nauk Turkmenskoi SSR. Seriya Biologicheskikh N."
+      bolton = BoltonReference.new :authors => "Dlussky, G.M. & Soyunov, O.S.", :year => "1988",
+        :title_and_citation => "Murav'i roda Temnothorax Mayr SSSR. Izvestiya Akademii Nauk Turkmenskoi SSR. Seriya Biologicheskikh Nauk"
+      BoltonReferenceMatcher.new.match(bolton).should == ward
+    end
+
     it "should find a match when the author and year are the same, and a sufficient number of digits in the title + citation are the same" do
       ward = Reference.create! :authors => 'De Geer, C.', :year => '1778', :title => "Mémoires pour servir à l'histoire des insectes. Tome septième (7)",
         :citation => "Stockholm: Pierre Hesselberg, 950 pp"
       bolton = BoltonReference.new :authors => 'De Geer, C.', :year => '1778', :title_and_citation => "Memoirs pour Servir à l'Histoire des Insectes 7: 950 pp. Stockholm."
       BoltonReferenceMatcher.new.match(bolton).should == ward
     end
+
+    it "should mark matches as 'suspect' if the authors and year don't match exactly" do
+      ward = Reference.create! :authors => 'De Geer, C.', :year => '1777', :title => "Ants", :citation => "Stockholm: Pierre Hesselberg, 950 pp"
+      bolton = BoltonReference.new :authors => 'De Geer, C.', :year => '1778', :title_and_citation => "Ants. Stockholm: Pierre Hesselberg, 950 pp"
+      matcher = BoltonReferenceMatcher.new
+      matcher.match(bolton).should == ward
+      matcher.should be_suspect
+    end
+
+    it "should find the best match, not just the first match above the threshold" do
+      Reference.create! :authors => 'De Geer, C.', :year => '1777', :title => "Ants 2", :citation => "Stockholm: Pierre Hesselberg, 950 pp"
+      ward = Reference.create! :authors => 'De Geer, C.', :year => '1777', :title => "Ants 1", :citation => "Stockholm: Pierre Hesselberg, 950 pp"
+      bolton = BoltonReference.new :authors => 'De Geer, C.', :year => '1777', :title_and_citation => "Ants 1. Stockholm: Pierre Hesselberg, 950 pp"
+      BoltonReferenceMatcher.new.match(bolton).should == ward
+    end
+
   end
 end

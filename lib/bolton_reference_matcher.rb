@@ -4,16 +4,20 @@ class BoltonReferenceMatcher
   def initialize show_progress = false
     @show_progress = show_progress
     @all_count = BoltonReference.count
-    @unmatched_count = 0
+    @unmatched_count = @suspect_count = 0
     make_ward_index
     @start = Time.now
   end
 
   def match_all
     BoltonReference.all.each_with_index do |bolton, i|
-      bolton.update_attribute :ward, match(bolton, i)
+      bolton.update_attributes :ward => match(bolton, i), :suspect => suspect?
     end
     show_results
+  end
+
+  def suspect?
+    @suspect
   end
 
   def match bolton, i = 0
@@ -29,7 +33,15 @@ class BoltonReferenceMatcher
       @found_ward = match_similarity || match_suffix || match_author_year_and_digits
     end
 
-    @unmatched_count += 1 unless @found_ward
+    if @found_ward
+      ward = @found_ward[:reference]
+      @suspect ||= ward.numeric_year != @bolton.year.to_i
+      @suspect ||= normalize(ward.authors) != normalize(@bolton.authors)
+    else
+      @unmatched_count += 1
+    end
+
+    @suspect_count += 1 if @suspect
 
     show_progress i
 
@@ -40,14 +52,14 @@ class BoltonReferenceMatcher
   private
 
   def match_similarity
-    @wards.find do |ward|
+    @wards.each do |ward|
       similarity = string_similarity(@title_and_citation, ward[:pairs])
       if similarity > @max_similarity
         @max_similarity = similarity
         @best_match = ward
       end
-      similarity >= SUFFICIENT_SIMILARITY
     end
+    @max_similarity >= SUFFICIENT_SIMILARITY ? @best_match : nil
   end
 
   SUFFICIENT_MATCHING_SUFFIX_LENGTH = 10
@@ -65,7 +77,6 @@ class BoltonReferenceMatcher
         break if bolton_string[bolton_index] != ward_string[ward_index]
         matching_suffix_length += 1
         if matching_suffix_length >= SUFFICIENT_MATCHING_SUFFIX_LENGTH
-          @suspect = true
           return ward
         end
         bolton_index -= 1
@@ -114,12 +125,11 @@ class BoltonReferenceMatcher
     b = match.begin(0)
     e = match.end(0) - 1
     possible_taxon_names = match.to_s.strip.gsub(/[(),:]/, '').split(/[ ]/)
-    is_wards_taxon_names = possible_taxon_names.all? do |possible_taxon_name|
+    is_wards_taxon_names = possible_taxon_names.any? do |possible_taxon_name|
       ['Formicidae', 'Hymenoptera'].include? possible_taxon_name
     end
     if is_wards_taxon_names
       s[b..e] = ''
-      puts "Removed #{possible_taxon_names}"
     end
     s
   end
@@ -128,15 +138,6 @@ class BoltonReferenceMatcher
     s = s.gsub(/\(No\. (\d+)\)/, '\1') # "(No. 1)" => "(1)"
     s = remove_punctuation s
     s
-  end
-
-  def show_results
-    if @show_progress
-      $stderr.puts
-      elapsed = Time.now - @start
-      $stderr.puts sprintf("%.0f mins", elapsed / 60)
-      $stderr.puts sprintf("%.0f%% unmatched_count", @unmatched_count * 100.0 / @all_count)
-    end
   end
 
   def remove_punctuation s
@@ -170,27 +171,36 @@ class BoltonReferenceMatcher
   end
 
   def show_progress i
-    return unless @show_progress && !@found_ward
+    return unless @show_progress && (!@found_ward || @suspect)
 
     elapsed = Time.now - @start
     rate = ((i + 1) / elapsed)
     rate_s = sprintf("%.2f", rate) + "/sec"
     time_left = sprintf("%.0f", (@all_count - i + 1) / rate / 60) + " mins left"
 
-    $stderr.puts "#{i + 1}/#{@all_count} (#{@unmatched_count} unmatched) #{rate_s} #{time_left}"
-
-    $stderr.puts "@@@ Suspect" if @suspect
+    $stderr.puts "******************** No match" unless @found_ward
+    $stderr.puts "???????????????????? Suspect" if @suspect
     $stderr.puts @bolton
 
     if @found_ward
-      $stderr.puts "Ward: " + @found_ward[:reference].to_s
+      $stderr.puts "WARD: "
+      $stderr.puts @found_ward[:reference].to_s
     else
-      $stderr.print "*** No match"
-      $stderr.print ": best was #{@max_similarity}:\n#{@best_match[:reference]}" if @best_match
-      $stderr.puts
-      $stderr.puts "B: " + @title_and_citation
-      $stderr.puts "W: " + @best_match[:title_and_citation] if @best_match
+      $stderr.puts "Best was #{@max_similarity}:\n#{@best_match[:reference]}" if @best_match
     end
+    $stderr.puts "#{i + 1}/#{@all_count} (#{@unmatched_count} unmatched, #{@suspect_count} suspect) #{rate_s} #{time_left}"
     $stderr.puts
   end
+
+  def show_results
+    if @show_progress
+      $stderr.puts
+      elapsed = Time.now - @start
+      elapsed = sprintf("%.0f mins", elapsed / 60)
+      unmatched_percent = sprintf("%.0f%%", @unmatched_count * 100.0 / @all_count)
+      suspect_percent = sprintf("%.0f%%", @suspect_count * 100.0 / @all_count)
+      $stderr.puts "#{elapsed}. #{@all_count} processed, #{@unmatched_count} unmatched (#{unmatched_percent}), #{@suspect_count} suspect (#{suspect_percent})"
+    end
+  end
+
 end
