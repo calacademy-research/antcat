@@ -1,0 +1,5 @@
+- reference ||= Reference.new
+%div{:id => "reference_#{reference.id}", :class => css_class}
+  = render :partial => 'display', :locals => {:reference => reference}
+  = render :partial => 'form', :locals => {:reference => reference}
+  = render :partial => 'shared/coins', :locals => {:reference => reference}

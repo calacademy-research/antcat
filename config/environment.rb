@@ -5,10 +5,7 @@ require File.join(File.dirname(__FILE__), 'boot')
 Rails::Initializer.run do |config|
   config.time_zone = 'UTC'
 
-  config.gem 'erector'
-  config.gem 'haml' # for Sass
+  config.gem 'haml'
   config.gem 'nokogiri'
   config.gem 'will_paginate'
 end
-
-require 'erector'

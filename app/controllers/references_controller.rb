@@ -33,11 +33,17 @@ class ReferencesController < ApplicationController
   def destroy
     @reference = Reference.find(params[:id])
     @reference.destroy
-    render :nothing => true
+    head :ok
   end
 
   private
   def render_json new = false
-    render :json => {:isNew => new, :content => render_to_string(:file => 'references/reference'), :id => @reference.id, :success => @reference.valid?}
+    render :json => {
+      :isNew => new,
+      :content => render_to_string(:partial => 'reference',
+                                   :locals => {:reference => @reference, :css_class => 'reference'}),
+      :id => @reference.id,
+      :success => @reference.valid?
+    }
   end
 end

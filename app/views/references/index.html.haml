@@ -1,0 +1,20 @@
+= render :partial => 'shared/search'
+%hr
+
+- unless @references.present?
+  No results found
+
+%p
+  %a.add_reference_link{:href => '#'}
+    Add reference
+
+%table.references
+  - for reference in @references
+    %tr
+      %td
+        = render :partial => 'reference', :locals => {:reference => reference, :css_class => 'reference'}
+  %tr.reference_template_row
+    %td
+      = render :partial => 'reference', :locals => {:reference => nil, :css_class => 'reference_template'}
+
+%div= will_paginate @references

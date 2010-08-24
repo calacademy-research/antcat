@@ -1,8 +1,8 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe "COinS widget" do
+describe CoinsHelper do
   it "should format a journal reference correctly" do
-    @widget = Views::Coins.new(:reference => Factory(:reference, {
+    coins = helper.coins(Factory(:reference,
       :authors => 'MacKay, W.',
       :kind => 'journal',
       :title => 'A title',
@@ -12,9 +12,9 @@ describe "COinS widget" do
       :start_page => '3',
       :end_page => '4',
       :year => '1941',
-      :numeric_year => 1941,
-    }))
-    check_parameters [
+      :numeric_year => 1941
+    ))
+    check_parameters coins, [
       "ctx_ver=Z39.88-2004",
       "rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal",
       "rfr_id=antcat.org",
@@ -32,7 +32,7 @@ describe "COinS widget" do
   end
 
   it "should use the numeric year" do
-    @widget = Views::Coins.new(:reference => Factory(:reference, {
+    coins = helper.coins(Factory(:reference,
       :authors => 'MacKay, W.',
       :kind => 'journal',
       :title => 'A title',
@@ -41,9 +41,9 @@ describe "COinS widget" do
       :start_page => '3',
       :end_page => '4',
       :year => '1941a ("1942")',
-      :numeric_year => 1941,
-    }))
-    check_parameters [
+      :numeric_year => 1941
+    ))
+    check_parameters coins, [
       "ctx_ver=Z39.88-2004",
       "rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal",
       "rft.aulast=MacKay",
@@ -60,7 +60,7 @@ describe "COinS widget" do
   end
 
   it "should add multiple authors" do
-    @widget = Views::Coins.new(:reference => Factory(:reference, {
+    coins = helper.coins(Factory(:reference,
       :kind => 'journal',
       :title => 'A title',
       :authors => 'MacKay, W. P.; Lowrie, D.',
@@ -69,9 +69,9 @@ describe "COinS widget" do
       :start_page => '3',
       :end_page => '4',
       :year => '1941',
-      :numeric_year => 1941,
-    }))
-    check_parameters [
+      :numeric_year => 1941
+    ))
+    check_parameters coins, [
       "ctx_ver=Z39.88-2004",
       "rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal",
       "rfr_id=antcat.org",
@@ -90,7 +90,7 @@ describe "COinS widget" do
   end
 
   it "should handle authors without commas" do
-    @widget = Views::Coins.new(:reference => Factory(:reference, {
+    coins = helper.coins(Factory(:reference,
       :kind => 'journal',
       :title => 'A title',
       :authors => 'author',
@@ -99,9 +99,9 @@ describe "COinS widget" do
       :start_page => '3',
       :end_page => '4',
       :year => '1941',
-      :numeric_year => 1941,
-    }))
-    check_parameters [
+      :numeric_year => 1941
+    ))
+    check_parameters coins, [
       "ctx_ver=Z39.88-2004",
       "rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal",
       "rfr_id=antcat.org",
@@ -117,7 +117,7 @@ describe "COinS widget" do
   end
 
   it "should strip out italics formatting" do
-    @widget = Views::Coins.new(:reference => Factory(:reference, {
+    coins = helper.coins(Factory(:reference,
       :authors => 'MacKay, W.',
       :kind => 'journal',
       :title => '*A title*',
@@ -126,9 +126,9 @@ describe "COinS widget" do
       :start_page => '3',
       :end_page => '4',
       :year => '1941',
-      :numeric_year => 1941,
-    }))
-    check_parameters [
+      :numeric_year => 1941
+    ))
+    check_parameters coins, [
       "ctx_ver=Z39.88-2004",
       "rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal",
       "rft.aulast=MacKay",
@@ -145,7 +145,7 @@ describe "COinS widget" do
   end
 
   it "should format a book reference correctly" do
-    @widget = Views::Coins.new(:reference => Factory(:reference, {
+    coins = helper.coins(Factory(:reference,
       :authors => 'MacKay, W.',
       :kind => 'book',
       :title => 'Another title',
@@ -154,8 +154,8 @@ describe "COinS widget" do
       :publisher => 'Springer, Verlag',
       :place => 'Dresden',
       :pagination => 'ix + 33pp.'
-    }))
-    check_parameters [
+    ))
+    check_parameters coins, [
       "ctx_ver=Z39.88-2004",
       "rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Abook",
       "rft.aulast=MacKay",
@@ -171,8 +171,8 @@ describe "COinS widget" do
   end
 
   it "should format an unknown/nested reference correctly" do
-    @widget = Views::Coins.new(:reference => Factory(:reference, :kind => 'unknown'))
-    check_parameters [
+    coins = helper.coins(Factory(:reference, :kind => 'unknown'))
+    check_parameters coins, [
       "ctx_ver=Z39.88-2004",
       "rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Aunknown",
       "rft.aulast=Fisher",
@@ -182,9 +182,8 @@ describe "COinS widget" do
     ]
   end
 
-  def check_parameters expected_parameters
-    html = @widget.to_html
-    match = html.match(/<span class="Z3988" title="(.*)"/)
+  def check_parameters coins, expected_parameters
+    match = coins.match(/<span class="Z3988" title="(.*)"/)
     match.should_not be_nil
     match[1].should_not be_nil
     parameters = match[1].split("&amp;")

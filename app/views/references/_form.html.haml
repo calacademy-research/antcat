@@ -1,0 +1,38 @@
+- reference ||= Reference.new
+.reference_form
+  - form_for reference do |f|
+    - if reference.errors.present?
+      %ul.error_messages
+        - reference.errors.full_messages.each do |error|
+          %li= error
+
+    %table
+      %colgroup
+        %col{:width => '*'}
+        %col{:width => '100px'}
+      %tr
+        %td.authors= f.text_field :authors
+        %td.year= f.text_field :year
+      %tr
+        %td{:colspan => 2}= f.text_field :title
+      %tr
+        %td{:colspan => 2}= f.text_field :citation
+      %tr
+        %td{:colspan => 2}= f.text_field :public_notes
+      %tr
+        %td{:colspan => 2}= f.text_field :editor_notes
+      %tr
+        %td{:colspan => 2}= f.text_field :taxonomic_notes
+      %tr
+        %td
+          %table.small_fields
+            %tr
+              %td.cite_code= f.text_field :cite_code
+              %td.possess= f.text_field :possess
+              %td.date= f.text_field :date
+      %tr
+        %td{:colspan => 3}
+          %span#buttons
+            = f.submit 'OK', :name => 'commit'
+            %button.cancel Cancel
+            %button.delete Delete
