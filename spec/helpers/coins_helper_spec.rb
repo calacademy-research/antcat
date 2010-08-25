@@ -144,6 +144,34 @@ describe CoinsHelper do
     ]
   end
 
+  it "should escape HTML" do
+    coins = helper.coins(Factory(:reference,
+      :authors => 'MacKay, W.',
+      :kind => 'journal',
+      :title => '<script>',
+      :volume => '1',
+      :issue => '2',
+      :start_page => '3',
+      :end_page => '4',
+      :year => '1941',
+      :numeric_year => 1941
+    ))
+    check_parameters coins, [
+      "ctx_ver=Z39.88-2004",
+      "rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal",
+      "rft.aulast=MacKay",
+      "rft.aufirst=W.",
+      "rfr_id=antcat.org",
+      "rft.genre=article",
+      "rft.atitle=%3Cscript%3E",
+      "rft.volume=1",
+      "rft.issue=2",
+      "rft.spage=3",
+      "rft.epage=4",
+      "rft.date=1941"
+    ]
+  end
+
   it "should format a book reference correctly" do
     coins = helper.coins(Factory(:reference,
       :authors => 'MacKay, W.',

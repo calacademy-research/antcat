@@ -1,9 +1,9 @@
 module ReferenceHelper
   def format_reference reference
-    "#{italicize(reference.authors)} " +
-    "#{reference.year}. " +
-    "#{italicize(add_period_if_necessary(reference.title))} " +
-    "#{italicize(add_period_if_necessary(reference.citation))}"
+    "#{italicize(h reference.authors)} " +
+    "#{h reference.year}. " +
+    "#{italicize(add_period_if_necessary(h reference.title))} " +
+    "#{italicize(add_period_if_necessary(h reference.citation))}"
   end
 
   def italicize s
