@@ -8,4 +8,5 @@ Rails::Initializer.run do |config|
   config.gem 'haml'
   config.gem 'nokogiri'
   config.gem 'will_paginate'
+  config.gem 'devise', :version => "1.0.8"
 end
