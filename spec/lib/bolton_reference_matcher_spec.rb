@@ -1,6 +1,39 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe BoltonReferenceMatcher do
+  describe "matching all references" do
+    it "should set the appropriate Ward reference for each" do
+      # exact match
+      exact_ward = Reference.create! :authors => 'Dlussky, G.M.',
+                        :title => "Ants of the genus Formica L. of Mongolia and northeast Tibet",
+                        :citation => "Annales Zoologici 23: 15-43", :year => '1965a'
+      exact_bolton = BoltonReference.create! :authors => 'Dlussky, G.M.', :title_and_citation =>
+                            "Ants of the genus Formica L. of Mongolia and northeast Tibet. Annales Zoologici 23: 15-43", :year => '1965a'
+      # non-match
+      Reference.create! :authors => 'Fisher, B.L.', :title => "My life among the ants", :citation => "Playboy", :year => '2009'
+      unmatched_bolton = BoltonReference.create! :authors => 'Wheeler, W.M.', :title_and_citation => "Ants, ants, ants!", :year => '1965a'
+
+      # suspect match
+      suspect_ward = Reference.create! :authors => 'De Geer, C.', :year => '1777', :title => "Ants",
+        :citation => "Stockholm: Pierre Hesselberg, 950 pp"
+      suspect_bolton = BoltonReference.create! :authors => 'De Geer, C.', :year => '1778',
+        :title_and_citation => "Ants. Stockholm: Pierre Hesselberg, 950 pp"
+
+      BoltonReferenceMatcher.new.match_all
+
+      exact_bolton.reload
+      exact_bolton.ward.should == exact_ward
+      exact_bolton.should_not be_suspect
+
+      unmatched_bolton.reload
+      unmatched_bolton.ward.should be_nil
+      exact_bolton.should_not be_suspect
+
+      suspect_bolton.reload
+      suspect_bolton.ward.should == suspect_ward
+      suspect_bolton.should be_suspect
+    end
+  end
   describe "matching Bolton's references against Ward's" do
     it "should not match an obvious mismatch" do
       Reference.create!(:authors => 'Fisher, B.L.', :title => "My life among the ants", :citation => "Playboy", :year => '2009')
@@ -16,9 +49,7 @@ describe BoltonReferenceMatcher do
                                :citation => "Annales Zoologici 23: 15-43", :year => '1965a')
       bolton = BoltonReference.new(:authors => 'Dlussky, G.M.', :title_and_citation =>
                                     "Ants of the genus Formica L. of Mongolia and northeast Tibet. Annales Zoologici 23: 15-43", :year => '1965a')
-      foo = BoltonReferenceMatcher.new
-      bar = foo.match(bolton)
-      bar.should == ward
+      BoltonReferenceMatcher.new.match(bolton).should == ward
     end
 
     it "should find a match when Ward has markup" do
