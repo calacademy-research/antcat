@@ -1,4 +1,8 @@
+- content_for :head do
+  = javascript_include_tag 'references'
+
 = render :partial => 'shared/search'
+
 %hr
 
 - unless @references.present?
