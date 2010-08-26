@@ -1,7 +1,9 @@
 $(function() {
-  setupAddReferenceLink();
-  setupDisplays();
-  setupForms();
+  if (loggedIn) {
+    setupAddReferenceLink();
+    setupDisplays();
+    setupForms();
+  }
 })
 
 /////////////////////////////////////////////////////////////////////////
@@ -27,6 +29,8 @@ function hideAddReferenceLink() {
 function setupDisplays() {
   $('.reference_display').live('click', editReference);
 
+  $('.reference_display').addClass('editable');
+
   $('.reference_display').live('mouseenter',
     function() {
       if (!isEditing())
@@ -43,6 +47,8 @@ function setupDisplays() {
 function setupActionLinks() {
   if (!usingCucumber)
     $('.reference_action_link').hide();
+  else
+    $('.reference_action_link').show();
 
   $('.reference_action_link.add').live('click', insertReference);
   $('.reference_action_link.copy').live('click', copyReference);

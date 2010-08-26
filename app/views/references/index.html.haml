@@ -2,23 +2,29 @@
   = javascript_include_tag 'references'
 
 = render :partial => 'shared/search'
+= render :partial => 'shared/login'
+
+%div{:style => 'clear:both'}
 
 %hr
 
 - unless @references.present?
   No results found
 
-%p
-  %a.add_reference_link{:href => '#'}
-    Add reference
+- if user_signed_in?
+  %p
+    %a.add_reference_link{:href => '#'}
+      Add reference
 
 %table.references
   - for reference in @references
     %tr
       %td
         = render :partial => 'reference', :locals => {:reference => reference, :css_class => 'reference'}
-  %tr.reference_template_row
-    %td
-      = render :partial => 'reference', :locals => {:reference => nil, :css_class => 'reference_template'}
+
+  - if user_signed_in?
+    %tr.reference_template_row
+      %td
+        = render :partial => 'reference', :locals => {:reference => nil, :css_class => 'reference_template'}
 
 %div= will_paginate @references

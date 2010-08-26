@@ -5,10 +5,14 @@
   img
     border: none
 
-.reference_display
+.reference_display.editable
   cursor: pointer
 
 .reference_action_link
+  display: none
+
+.reference_action_link.editable
+  display: normal
   color: green
   font-size: smaller
 
@@ -79,8 +83,9 @@ h1
 
 h2
   font-size: 20px
-  margin-left: 16px
 
+.heading h2
+  margin-left: 16px
 
 h3
   font-size: 16px
@@ -113,6 +118,7 @@ body
   margin-top: 20px
 
 #search
+  float: left
   input[type=text]
     margin-right: 5px
   button
@@ -122,8 +128,16 @@ body
   #author
     margin-right: 10px
 
-#flash
+#login
+  float: right
+  font-size: smaller
+  text-align: right
+
+.notice
   color: blue
+
+.alert
+  color: red
 
 table.reference-fields
   width: 800px

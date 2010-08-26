@@ -21,6 +21,10 @@ Then /I should (not )?see the edit form/ do |should_not|
   find("#reference_#{@reference.id} .reference_form").send(selector, be_visible)
 end
 
+Then /there should not be an edit form/ do
+  find("#reference_#{@reference.id} .reference_form").should be_nil
+end
+
 Then /I should (not )?see a new edit form/ do |should_not|
   selector = should_not ? :should_not : :should
   find("#reference_ .reference_form").send(selector, be_visible)
@@ -30,8 +34,10 @@ Then 'I should not see the reference' do
   find("#reference_#{@reference.id} .reference_display").should_not be_visible
 end
 
-Then '"Add reference" should not be visible' do
-  find_link('Add reference').should_not be_visible
+Then /"(.+)" should not be visible/ do |text|
+  text = find("*", :text => text)
+  missing_or_invisible = text.nil? || !text.visible?
+  missing_or_invisible.should be_true
 end
 
 Then 'there should be just the existing reference' do
@@ -68,4 +74,21 @@ end
 
 Then 'I should not see a "Delete" button' do
   find('button', :text => 'Delete').should be_nil
+end
+
+Given 'I am not logged in' do
+end
+
+Given 'I am logged in' do
+  email = 'mark@example.com'
+  password = 'password'
+  User.create! :email => email, :password => password, :password_confirmation => password
+  visit('/users/sign_in')
+  And %{I fill in "user_email" with "#{email}"}
+  And %{I fill in "user_password" with "#{password}"}
+  And %{I press "Sign in"}
+end
+
+Then 'I should not see the "Delete" button' do
+  page.should_not have_css "button", :text => 'Delete'
 end

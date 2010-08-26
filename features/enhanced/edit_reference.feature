@@ -3,8 +3,18 @@ Feature: Edit reference
   I want to change previously entered references
   So that I can fix mistakes
 
+  Scenario: Not logged in
+    Given I am not logged in
+      And the following entries exist in the bibliography
+      |authors|citation|cite_code|created_at|date    |possess|title|updated_at|year|
+      |authors|citation|CiteCode |today     |20100712|Possess|title|today     |2010|
+    When I go to the main page
+      And I click the reference
+      Then there should not be an edit form
+
   Scenario: Edit a reference
-    Given the following entries exist in the bibliography
+    Given I am logged in
+      And the following entries exist in the bibliography
       |authors|citation|cite_code|created_at|date    |possess|title|updated_at|year|
       |authors|citation|CiteCode |today     |20100712|Possess|title|today     |2010|
     When I go to the main page
@@ -19,7 +29,8 @@ Feature: Edit reference
       And I should see "Mark Wilden"
 
   Scenario: Change a reference's year
-    Given the following entries exist in the bibliography
+    Given I am logged in
+      And the following entries exist in the bibliography
       |authors|title|citation|year|
       |Fisher |Ants |New York|2010|
     When I go to the main page
@@ -31,7 +42,8 @@ Feature: Edit reference
     Then I should see "Fisher 1910a"
 
   Scenario: Change a reference's journal title
-    Given the following entries exist in the bibliography
+    Given I am logged in
+      And the following entries exist in the bibliography
       |citation|authors|title|year|
       |Esakia 31:1-115|authors|title|year|
     When I go to the main page

@@ -1,0 +1,35 @@
+en:
+  devise:
+    sessions:
+      link: 'Sign in'
+      signed_in: 'Signed in'
+      signed_out: 'Signed out'
+      unauthenticated: 'You need to sign in or sign up before continuing'
+      unconfirmed: 'You need to confirm your account before continuing'
+      locked: 'Your account is locked'
+      invalid: 'Invalid email or password'
+      invalid_token: 'Invalid authentication token'
+      timeout: 'Your session expired. Please sign in again to continue.'
+      inactive: 'Your account has not been activated yet'
+    passwords:
+      link: 'Forgot password?'
+      send_instructions: 'You will receive an email with instructions about how to reset your password in a few minutes'
+      updated: 'Your password has been changed. You are now signed in.'
+    confirmations:
+      link: "Didn't receive confirmation instructions?"
+      send_instructions: 'You will receive an email with instructions about how to confirm your account in a few minutes'
+      confirmed: 'Your account has been confirmed. You are now signed in.'
+    registrations:
+      link: 'Sign up'
+      signed_up: 'You are now registered'
+      updated: 'Your account has been updated'
+      destroyed: 'Your account has been cancelled'
+    unlocks:
+      link: "Didn't receive unlock instructions?"
+      send_instructions: 'You will receive an email with instructions about how to unlock your account in a few minutes'
+      unlocked: 'Your account was unlocked. You are now signed in.'
+    mailer:
+      confirmation_instructions: 'Confirmation instructions'
+      reset_password_instructions: 'Reset password instructions'
+      unlock_instructions: 'Unlock Instructions'
+

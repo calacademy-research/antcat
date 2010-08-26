@@ -11,6 +11,7 @@
 
     :javascript
       var usingCucumber = #{Rails.env == 'cucumber'};
+      var loggedIn = #{user_signed_in?};
 
     = yield :head
 
@@ -27,8 +28,10 @@
 
       %div{:style => 'clear:both'}
 
-      %p#flash
+      .notice
         =flash[:notice]
+      .alert
+        =flash[:alert]
 
       %hr
 

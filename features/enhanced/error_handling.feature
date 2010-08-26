@@ -4,7 +4,8 @@ Feature: Error handling
   So that I can fix mistakes
 
   Scenario: Error when editing a reference
-    Given the following entry exists in the bibliography
+    Given I am logged in
+      And the following entry exists in the bibliography
       |authors       |year |title                     |citation                   |
       |Forel, A.     |1874 |Les fourmis de la Suisse  |Neue Denkschriften 26:1-452|
     When I go to the main page
@@ -21,7 +22,8 @@ Feature: Error handling
       And I should see "Wheeler, D.M. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452."
 
   Scenario: Cancelling edit after an error
-    Given the following entry exists in the bibliography
+    Given I am logged in
+      And the following entry exists in the bibliography
       |authors       |year |title                     |citation                   |
       |Forel, A.     |1874 |Les fourmis de la Suisse  |Neue Denkschriften 26:1-452|
     When I go to the main page

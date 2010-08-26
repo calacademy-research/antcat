@@ -3,7 +3,13 @@ Feature: Add reference
   I want to add new references
   So that the bibliography continues to be up-to-date
 
+  Scenario: Not logged in
+    Given I am not logged in
+    When I go to the main page
+      Then I should not see "Add reference"
+
   Scenario: Add a reference when there are no others
+    Given I am logged in
     When I go to the main page
       And I follow "Add reference"
       Then I should see a new edit form
@@ -18,6 +24,7 @@ Feature: Add reference
       And "Add reference" should not be visible
 
   Scenario: Add but cancel a reference when there are no others
+    Given I am logged in
     When I go to the main page
       And I follow "Add reference"
     When I fill in "reference_authors" with "Mark Wilden"
@@ -25,7 +32,8 @@ Feature: Add reference
       And I should not see "Mark Wilden"
 
   Scenario: Add a reference when there are others
-    Given the following entries exist in the bibliography
+    Given I am logged in
+      And the following entries exist in the bibliography
       |authors   |title         |year|citation|
       |Ward, P.S.|Annals of Ants|year|citation|
     When I go to the main page
@@ -42,7 +50,8 @@ Feature: Add reference
       And I should see "Mark Wilden 1992. Between Pacific Tides. New York."
 
   Scenario: Adding a reference but then cancelling
-    Given the following entries exist in the bibliography
+    Given I am logged in
+      And the following entries exist in the bibliography
       |authors   |title         |citation|year|
       |Ward, P.S.|Annals of Ants|citation|year|
     When I go to the main page
@@ -52,6 +61,7 @@ Feature: Add reference
     Then there should be just the existing reference
 
   Scenario: Hide Delete button while adding
+    Given I am logged in
     When I go to the main page
       And I follow "Add reference"
       Then I should see a new edit form
