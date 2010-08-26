@@ -1,9 +1,12 @@
 module ReferenceHelper
   def format_reference reference
-    "#{italicize(h reference.authors)} " +
-    "#{h reference.year}. " +
-    "#{italicize(add_period_if_necessary(h reference.title))} " +
-    "#{italicize(add_period_if_necessary(h reference.citation))}"
+    s = ''
+    s << "#{italicize(h reference.authors)} "
+    s << "#{h reference.year}. "
+    s << "#{italicize(add_period_if_necessary(h reference.title))} "
+    s << "#{italicize(add_period_if_necessary(h reference.citation))}"
+    s << " [#{format_date(reference.date)}]" if reference.date.present?
+    s
   end
 
   def italicize s
@@ -20,4 +23,20 @@ module ReferenceHelper
     s
   end
 
+  def format_date input
+    date = input
+    return date if input.length < 4
+
+    match = input.match(/(.*?)(\d{4,8})(.*)/)
+    prefix = match[1]
+    input = match[2]
+    suffix = match[3]
+
+    date = input[0, 4]
+    return prefix + date + suffix if input.length < 6
+    date << '-' << input[4, 2]
+    return prefix + date + suffix if input.length < 8
+    date << '-' << input[6, 2]
+    prefix + date + suffix
+  end
 end

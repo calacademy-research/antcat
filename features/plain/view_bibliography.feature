@@ -8,7 +8,7 @@ Feature: View bibliography
       |authors|citation|cite_code|created_at|date    |public_notes|editor_notes|possess|title|updated_at|year|
       |Authors|Citation|CiteCode |today     |20100712|Public notes|Editor's notes|Possess|Title|today     |2010|
     When I go to the main page
-    Then I should see "Authors 2010. Title. Citation."
+    Then I should see "Authors 2010. Title. Citation. [2010-07-12]"
       And I should see "Public notes"
       And I should see "Editor's notes"
 

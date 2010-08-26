@@ -29,6 +29,34 @@ describe ReferenceHelper do
     end
   end
 
+  describe "formatting the date" do
+    it "should use ISO 8601 format for calendar dates" do
+      make '20101213'; check ' [2010-12-13]'
+    end
+    it "should handle years without months and days" do
+      make '201012'; check ' [2010-12]'
+    end
+    it "should handle years with months but without days" do
+      make '2010'; check ' [2010]'
+    end
+    it "should handle missing date" do
+      make nil; check ''
+      make ''; check ''
+    end 
+    it "should handle dates with other symbols/characters" do
+      make '201012>'; check ' [2010-12>]'
+    end
+
+
+    def make date
+      @reference = Factory(:reference, :date => date, :authors => "authors", :year => "year", :title => "title", :citation => "With period.")
+    end
+
+    def check expected
+      helper.format_reference(@reference).should == "authors year. title. With period.#{expected}"
+    end
+  end
+
   describe "italicizing" do
     it "should replace asterisks and bars with spans of a certain class" do
       helper.italicize("|Hymenoptera| *Formicidae*").should == "<span class=taxon>Hymenoptera</span> <span class=taxon>Formicidae</span>"
