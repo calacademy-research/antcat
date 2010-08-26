@@ -2,6 +2,10 @@ Given /the following entr(?:ies|y) exists? in the bibliography/ do |table|
   table.hashes.each {|hash| @reference = Reference.create! hash}
 end
 
+Given /the following user exists/ do |table|
+  table.hashes.each {|hash| User.create! hash}
+end
+
 Then 'I should see these entries in this order:' do |entries|
   entries.hashes.each_with_index do |e, i|
     page.should have_css "table.references tr:nth-of-type(#{i + 1}) td", :text => e['entry']
@@ -81,7 +85,7 @@ end
 
 Given 'I am logged in' do
   email = 'mark@example.com'
-  password = 'password'
+  password = 'secret'
   User.create! :email => email, :password => password, :password_confirmation => password
   visit('/users/sign_in')
   And %{I fill in "user_email" with "#{email}"}

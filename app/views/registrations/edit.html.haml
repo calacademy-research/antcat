@@ -1,0 +1,25 @@
+%h2 Edit User
+
+- form_for resource_name, resource, :url => registration_path(resource_name), :html => { :method => :put, :class => 'full_form' } do |f|
+  - if resource.errors.present?
+    %ul.error_messages
+      - resource.errors.full_messages.each do |error|
+        %li= error
+
+  %p= f.label :email
+  %p= f.text_field :email
+
+  %p
+    = f.label :password  
+    %span.help (leave blank if you don't want to change it)
+  %p= f.password_field :password
+
+  %p= f.label :password_confirmation
+  %p= f.password_field :password_confirmation
+
+  %p
+    = f.label :current_password
+    %span.help (we need your current password to confirm your changes)
+  %p= f.password_field :current_password
+
+  %p= f.submit "Update"
