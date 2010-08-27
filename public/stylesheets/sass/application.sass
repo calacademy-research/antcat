@@ -28,14 +28,12 @@ span.help
 table.references
   width: 100%
 
-.reference_form
-  input[type=text]
-    background-color: lightyellow
-
 .watermark
   color: #999
 
 .reference_form
+  ul.error_messages
+    margin: 0 0 3px 5px
   table
     padding: 0
     width: 100%
@@ -43,6 +41,7 @@ table.references
       padding: 0 0 3px 0
       input[type=text]
         width: 100%
+        background-color: lightyellow
       &.authors
         padding-right: 8px
       &.year
@@ -164,13 +163,10 @@ a, a:active, a:hover, a:focus, a:visited
     background: mistyrose
 
 ul.error_messages
-  margin: 0 0 3px 5px
+  margin: 15px 0 0 0
   padding: 0
   li
     list-style-type: none
     font-size: small
     color: red
     font-style: italic
-
-.full_form ul.error_messages
-  margin: 15px 0 0 0

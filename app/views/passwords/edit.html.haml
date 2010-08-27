@@ -1,10 +1,7 @@
 %h2 Change your password
 
-- form_for resource_name, resource, :url => password_path(resource_name), :html => { :class => 'full_form', :method => :put } do |f|
-  - if resource.errors.present?
-    %ul.error_messages
-      - resource.errors.full_messages.each do |error|
-        %li= error
+- form_for resource_name, resource, :url => password_path(resource_name), :html => { :method => :put } do |f|
+  = render :partial => 'shared/errors_for', :locals => { :resource => resource }
 
   = f.hidden_field :reset_password_token
 

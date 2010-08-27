@@ -1,10 +1,7 @@
 - reference ||= Reference.new
 .reference_form
   - form_for reference do |f|
-    - if reference.errors.present?
-      %ul.error_messages
-        - reference.errors.full_messages.each do |error|
-          %li= error
+    = render :partial => 'shared/errors_for', :locals => { :resource => reference }
 
     %table
       %colgroup

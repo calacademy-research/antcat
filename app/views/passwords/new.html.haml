@@ -1,10 +1,7 @@
 %h2 Forgot your password?
 
-- form_for resource_name, resource, :url => password_path(resource_name), :html => {:class => 'full_form'} do |f|
-  - if resource.errors.present?
-    %ul.error_messages
-      - resource.errors.full_messages.each do |error|
-        %li= error
+- form_for resource_name, resource, :url => password_path(resource_name) } do |f|
+  = render :partial => 'shared/errors_for', :locals => { :resource => resource }
 
   %p= f.label :email
   %p= f.text_field :email
