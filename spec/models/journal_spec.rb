@@ -8,6 +8,11 @@ describe Journal do
       Factory.create(:reference, :citation => 'Playboy 1:2')
       Journal.search('ABP').should == ['American Bibliographic Proceedings']
     end
+    it "should only return one journal title per journal" do
+      Factory.create(:reference, :citation => 'American Bibliographic Proceedings 1:2')
+      Factory.create(:reference, :citation => 'American Bibliographic Proceedings 1:2')
+      Journal.search('ABP').should == ['American Bibliographic Proceedings']
+    end
   end
 
 end

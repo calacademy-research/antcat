@@ -90,6 +90,15 @@ normal'>31</b>: 1-115. [31.vii.1991.]"
     end
   end
 
+  describe "matching against ward" do
+    it "should create and call a matcher" do
+      matcher = mock
+      BoltonReferenceMatcher.should_receive(:new).and_return(matcher)
+      matcher.should_receive(:match_all)
+      BoltonReference.match_against_ward
+    end
+  end
+
   def make_contents content
     "<html>
         <body>
