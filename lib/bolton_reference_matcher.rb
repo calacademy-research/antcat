@@ -45,12 +45,10 @@ class BoltonReferenceMatcher
 
     show_progress i
 
-    rc = @found_ward && @found_ward[:reference]
-    rc
+    @found_ward && @found_ward[:reference]
   end
 
   private
-
   def match_similarity
     @wards.each do |ward|
       similarity = string_similarity(@title_and_citation, ward[:pairs])
@@ -147,10 +145,6 @@ class BoltonReferenceMatcher
   def make_pairs str1
     str1.downcase 
     (0..str1.length-2).collect {|i| str1[i,2]}.reject { |pair| pair.include? " "}
-  end
-
-  def full_string_similarity str1, str2
-    string_similarity(str1, make_pairs(str2))
   end
 
   def string_similarity str1, pairs2

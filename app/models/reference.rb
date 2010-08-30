@@ -134,10 +134,6 @@ class Reference < ActiveRecord::Base
     CGI.unescapeHTML(s)
   end
 
-  def self.node_to_integer node
-    node.inner_html.to_i
-  end
-
   def self.remove_period_from text
     text[-1..-1] == '.' ? text[0..-2] : text 
   end

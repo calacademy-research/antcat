@@ -1,50 +1,63 @@
 module CoinsHelper
   def coins reference
-    title = ["ctx_ver=Z39.88-2004"]
-    title << "rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3A#{reference.kind}"
-    title << "rfr_id=antcat.org"
-    title << "rft.genre=" +
-            case reference.kind
+    @reference = reference
+    @title = ["ctx_ver=Z39.88-2004"]
+    @title << "rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3A#{@reference.kind}"
+    @title << "rfr_id=antcat.org"
+    @title << "rft.genre=" +
+            case @reference.kind
             when 'journal': 'article'
             when 'book': 'book'
             else ''
             end
-    case reference.kind
+    case @reference.kind
     when'journal'
-      title << "rft.atitle=#{treat reference.title}" if reference.title
-      title << "rft.jtitle=#{treat reference.journal_title}" if reference.journal_title
-      title << "rft.volume=#{treat reference.volume}" if reference.volume
-      title << "rft.issue=#{treat reference.issue}" if reference.issue
-      title << "rft.spage=#{treat reference.start_page}" if reference.start_page
-      title << "rft.epage=#{treat reference.end_page}" if reference.end_page
+      add_journal
     when 'book'
-      title << "rft.btitle=#{treat reference.title}" if reference.title
-      title << "rft.pub=#{treat reference.publisher}" if reference.publisher
-      title << "rft.place=#{treat reference.place}" if reference.place
-      title << "rft.pages=#{treat reference.pagination}" if reference.pagination
+      add_book
     end
-    title << "rft.date=#{reference.numeric_year}" if reference.numeric_year
+    @title << "rft.date=#{@reference.numeric_year}" if @reference.numeric_year
 
-    title.concat authors(reference) if reference.authors.present?
+    @title.concat authors if @reference.authors.present?
 
-    content_tag(:span, "", :class => "Z3988", :title => title.join("&amp;"))
+    content_tag(:span, "", :class => "Z3988", :title => @title.join("&amp;"))
   end
 
   private
-  def authors reference
-    authors = reference.authors.split(/; ?/)
-    authors.inject([]) do |a,e|
-      parts = e.match(/(.*?), (.*)/)
+  def add_journal
+    add 'rft.atitle', @reference.title
+    add 'rft.jtitle', @reference.journal_title
+    add 'rft.volume', @reference.volume
+    add 'rft.issue', @reference.issue
+    add 'rft.spage', @reference.start_page
+    add 'rft.epage', @reference.end_page
+  end
+
+  def add_book
+    add 'rft.btitle', @reference.title
+    add 'rft.pub', @reference.publisher
+    add 'rft.place', @reference.place
+    add 'rft.pages', @reference.pagination
+  end
+
+  def add tag, value
+    @title << "#{tag}=#{treat(value)}" if value
+  end
+
+  def authors
+    authors = @reference.authors.split(/; ?/)
+    authors.inject([]) do |authors, author|
+      parts = author.match(/(.*?), (.*)/)
       unless parts
-        a << "rft.au=#{treat(e)}"
+        authors << "rft.au=#{treat(author)}"
       else
-        a << "rft.aulast=#{treat(parts[1])}" if parts[1]
-        a << "rft.aufirst=#{treat(parts[2])}" if parts[2]
+        authors << "rft.aulast=#{treat(parts[1])}" if parts[1]
+        authors << "rft.aufirst=#{treat(parts[2])}" if parts[2]
       end
     end
   end
   
-  def treat s
-    CGI::escape(s.gsub(/[|*]/, ''))
+  def treat string
+    CGI::escape(string.gsub(/[|*]/, ''))
   end
 end

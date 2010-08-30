@@ -28,13 +28,6 @@ class BoltonReference < ActiveRecord::Base
 
     match = s.match /(\D+) ?(\d\w+)\.? ?(.+)[,.]/
 
-    unless match && match.size >= 4
-      puts
-      puts s
-      puts match
-      next
-    end
-
     authors = match[1].strip
     year = match[2].strip
     title_and_citation = match[3].strip

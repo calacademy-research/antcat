@@ -21,5 +21,11 @@ begin
 
   # add to default tasks (not override)
   task :default => ['cucumber:all_features']
+
 rescue NameError
+end
+
+begin
+  require 'metric_fu'
+rescue MissingSourceFile
 end
