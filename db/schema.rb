@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100825211057) do
+ActiveRecord::Schema.define(:version => 20100827224204) do
 
   create_table "bolton_refs", :force => true do |t|
     t.string   "authors"
@@ -20,6 +20,11 @@ ActiveRecord::Schema.define(:version => 20100825211057) do
     t.datetime "updated_at"
     t.integer  "ward_id"
     t.boolean  "suspect"
+  end
+
+  create_table "genera", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "refs", :force => true do |t|
