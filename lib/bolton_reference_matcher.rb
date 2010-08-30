@@ -2,7 +2,7 @@ class BoltonReferenceMatcher
   SUFFICIENT_SIMILARITY = 0.75
 
   def initialize show_progress = false
-    @show_progress = show_progress
+    $stderr = File.open('/dev/null', 'w') unless show_progress
     @all_count = BoltonReference.count
     @unmatched_count = @suspect_count = 0
     make_ward_index
@@ -100,7 +100,7 @@ class BoltonReferenceMatcher
   end
 
   def make_ward_index
-    $stderr.print "Setting up..." if @show_progress
+    $stderr.print "Setting up..."
     @ward_index = Reference.all.inject({}) do |index, reference|
       s = remove_parenthesized_taxon_names(reference.title + reference.citation)
       s = normalize s
@@ -114,7 +114,7 @@ class BoltonReferenceMatcher
       index[key] << entry
       index
     end
-    $stderr.puts 'done' if @show_progress
+    $stderr.puts 'done'
   end
 
   def remove_parenthesized_taxon_names s
@@ -165,7 +165,7 @@ class BoltonReferenceMatcher
   end
 
   def show_progress i
-    return unless @show_progress && (!@found_ward || @suspect)
+    return unless !@found_ward || @suspect
 
     elapsed = Time.now - @start
     rate = ((i + 1) / elapsed)
@@ -187,14 +187,12 @@ class BoltonReferenceMatcher
   end
 
   def show_results
-    if @show_progress
-      $stderr.puts
-      elapsed = Time.now - @start
-      elapsed = sprintf("%.0f mins", elapsed / 60)
-      unmatched_percent = sprintf("%.0f%%", @unmatched_count * 100.0 / @all_count)
-      suspect_percent = sprintf("%.0f%%", @suspect_count * 100.0 / @all_count)
-      $stderr.puts "#{elapsed}. #{@all_count} processed, #{@unmatched_count} unmatched (#{unmatched_percent}), #{@suspect_count} suspect (#{suspect_percent})"
-    end
+    $stderr.puts
+    elapsed = Time.now - @start
+    elapsed = sprintf("%.0f mins", elapsed / 60)
+    unmatched_percent = sprintf("%.0f%%", @unmatched_count * 100.0 / @all_count)
+    suspect_percent = sprintf("%.0f%%", @suspect_count * 100.0 / @all_count)
+    $stderr.puts "#{elapsed}. #{@all_count} processed, #{@unmatched_count} unmatched (#{unmatched_percent}), #{@suspect_count} suspect (#{suspect_percent})"
   end
 
 end
