@@ -1,8 +1,8 @@
 desc "Import HTML files of references"
 task :import => :environment do
   Reference.delete_all
-  Reference.import 'data/ANTBIB.htm', true
-  Reference.import 'data/ANTBIB96.htm', true
+  Reference.import 'data/ward/ANTBIB.htm', true
+  Reference.import 'data/ward/ANTBIB96.htm', true
 end
 
 desc "Import HTML files of references from Bolton"
@@ -18,3 +18,8 @@ end
 
 desc 'Import and match Bolton against Ward'
 task :import_and_match_bolton => [:environment, :import_bolton, :match_bolton_against_ward]
+
+desc "Import Bolton's genera"
+task :import_genera => :environment do
+  BoltonImporter.new.get_subfamilies('data/bolton/subfamily_genus.html')
+end
