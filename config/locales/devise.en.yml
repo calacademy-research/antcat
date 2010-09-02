@@ -32,4 +32,6 @@ en:
       confirmation_instructions: 'Confirmation instructions'
       reset_password_instructions: 'Reset password instructions'
       unlock_instructions: 'Unlock Instructions'
+      user:
+        invitation: 'Invitation to AntCat'
 
