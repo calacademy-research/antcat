@@ -1,5 +1,0 @@
-# This updates and restarts a local installation of AntCat
-cd /antcat
-/usr/local/git/bin/git pull origin master
-touch tmp/restart.txt
-open http://antcat.local
