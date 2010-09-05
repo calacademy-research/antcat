@@ -1,8 +1,8 @@
 desc "Import HTML files of references from Ward"
 task :import_ward => :environment do
   WardReference.delete_all
-  WardReference.import 'data/ward/ANTBIB.htm', true
-  WardReference.import 'data/ward/ANTBIB96.htm', true
+  WardBibliography.new.import_file 'data/ward/ANTBIB.htm', true
+  WardBibliography.new.import_file 'data/ward/ANTBIB96.htm', true
 end
 
 desc "Import HTML files of references from Bolton"
