@@ -1,5 +1,5 @@
 Given /the following entr(?:ies|y) exists? in the bibliography/ do |table|
-  table.hashes.each {|hash| @reference = Reference.create! hash}
+  table.hashes.each {|hash| @reference = WardReference.create! hash}
 end
 
 Given /the following user exists/ do |table|

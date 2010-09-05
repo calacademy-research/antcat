@@ -1,4 +1,4 @@
-- reference ||= Reference.new
+- reference ||= WardReference.new
 %div{:id => "reference_#{reference.id}", :class => css_class}
   = render :partial => 'display', :locals => {:reference => reference}
   - if user_signed_in?

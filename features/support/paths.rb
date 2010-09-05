@@ -4,7 +4,7 @@ module NavigationHelpers
     when /the main page/
       '/'
     when /the page for that reference/
-      reference_path(@reference || Reference.first)    
+      reference_path(@reference || WardReference.first)    
     when /the edit user page/
       '/users/edit'
     end

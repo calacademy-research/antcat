@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe CoinsHelper do
   it "should format a journal reference correctly" do
-    coins = helper.coins(Factory(:reference,
+    coins = helper.coins(Factory(:ward_reference,
       :authors => 'MacKay, W.',
       :kind => 'journal',
       :title => 'A title',
@@ -32,7 +32,7 @@ describe CoinsHelper do
   end
 
   it "should use the numeric year" do
-    coins = helper.coins(Factory(:reference,
+    coins = helper.coins(Factory(:ward_reference,
       :authors => 'MacKay, W.',
       :kind => 'journal',
       :title => 'A title',
@@ -60,7 +60,7 @@ describe CoinsHelper do
   end
 
   it "should add multiple authors" do
-    coins = helper.coins(Factory(:reference,
+    coins = helper.coins(Factory(:ward_reference,
       :kind => 'journal',
       :title => 'A title',
       :authors => 'MacKay, W. P.; Lowrie, D.',
@@ -90,7 +90,7 @@ describe CoinsHelper do
   end
 
   it "should handle authors without commas" do
-    coins = helper.coins(Factory(:reference,
+    coins = helper.coins(Factory(:ward_reference,
       :kind => 'journal',
       :title => 'A title',
       :authors => 'author',
@@ -117,7 +117,7 @@ describe CoinsHelper do
   end
 
   it "should strip out italics formatting" do
-    coins = helper.coins(Factory(:reference,
+    coins = helper.coins(Factory(:ward_reference,
       :authors => 'MacKay, W.',
       :kind => 'journal',
       :title => '*A title*',
@@ -145,7 +145,7 @@ describe CoinsHelper do
   end
 
   it "should escape HTML" do
-    coins = helper.coins(Factory(:reference,
+    coins = helper.coins(Factory(:ward_reference,
       :authors => 'MacKay, W.',
       :kind => 'journal',
       :title => '<script>',
@@ -173,7 +173,7 @@ describe CoinsHelper do
   end
 
   it "should format a book reference correctly" do
-    coins = helper.coins(Factory(:reference,
+    coins = helper.coins(Factory(:ward_reference,
       :authors => 'MacKay, W.',
       :kind => 'book',
       :title => 'Another title',
@@ -199,7 +199,7 @@ describe CoinsHelper do
   end
 
   it "should format an unknown/nested reference correctly" do
-    coins = helper.coins(Factory(:reference, :kind => 'unknown'))
+    coins = helper.coins(Factory(:ward_reference, :kind => 'unknown'))
     check_parameters coins, [
       "ctx_ver=Z39.88-2004",
       "rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Aunknown",

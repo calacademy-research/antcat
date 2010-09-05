@@ -11,7 +11,7 @@ class BoltonReferenceMatcher
 
   def match_all
     BoltonReference.all.each_with_index do |bolton, i|
-      bolton.update_attributes :ward => match(bolton, i), :suspect => suspect?
+      bolton.update_attributes :ward_reference => match(bolton, i), :suspect => suspect?
     end
     show_results
   end
@@ -101,7 +101,7 @@ class BoltonReferenceMatcher
 
   def make_ward_index
     $stderr.print "Setting up..."
-    @ward_index = Reference.all.inject({}) do |index, reference|
+    @ward_index = WardReference.all.inject({}) do |index, reference|
       s = remove_parenthesized_taxon_names(reference.title + reference.citation)
       s = normalize s
       entry = {

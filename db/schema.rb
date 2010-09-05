@@ -9,48 +9,22 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100902180816) do
+ActiveRecord::Schema.define(:version => 20100905170310) do
 
-  create_table "bolton_refs", :force => true do |t|
+  create_table "bolton_references", :force => true do |t|
     t.string   "authors"
     t.string   "year"
     t.string   "title_and_citation"
     t.string   "date"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "ward_id"
+    t.integer  "ward_reference_id"
     t.boolean  "suspect"
   end
 
   create_table "genera", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "refs", :force => true do |t|
-    t.string   "authors"
-    t.string   "year"
-    t.string   "title"
-    t.string   "citation"
-    t.string   "public_notes"
-    t.string   "possess"
-    t.string   "date"
-    t.datetime "created_at"
-    t.string   "cite_code"
-    t.datetime "updated_at"
-    t.string   "journal_title"
-    t.string   "series"
-    t.string   "volume"
-    t.string   "issue"
-    t.string   "start_page"
-    t.string   "end_page"
-    t.string   "place"
-    t.string   "publisher"
-    t.string   "pagination"
-    t.string   "kind"
-    t.integer  "numeric_year"
-    t.string   "editor_notes"
-    t.string   "taxonomic_notes"
   end
 
   create_table "users", :force => true do |t|
@@ -74,5 +48,33 @@ ActiveRecord::Schema.define(:version => 20100902180816) do
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["invitation_token"], :name => "index_users_on_invitation_token"
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
+
+  create_table "ward_references", :force => true do |t|
+    t.string   "authors"
+    t.string   "year"
+    t.string   "title"
+    t.string   "citation"
+    t.string   "public_notes"
+    t.string   "possess"
+    t.string   "date"
+    t.datetime "created_at"
+    t.string   "cite_code"
+    t.datetime "updated_at"
+    t.string   "journal_title"
+    t.string   "series"
+    t.string   "volume"
+    t.string   "issue"
+    t.string   "start_page"
+    t.string   "end_page"
+    t.string   "place"
+    t.string   "publisher"
+    t.string   "pagination"
+    t.string   "kind"
+    t.integer  "numeric_year"
+    t.string   "editor_notes"
+    t.string   "taxonomic_notes"
+    t.string   "pdf_link"
+    t.boolean  "tried_to_get_pdf_link"
+  end
 
 end

@@ -4,5 +4,6 @@ ActionController::Routing::Routes.draw do |map|
   map.devise_for :users
 
   map.resources :references, :only => [:index, :update, :create, :destroy]
+  map.resources :ward_references, :controller => :references
   map.resources :journals, :only => [:index]
 end

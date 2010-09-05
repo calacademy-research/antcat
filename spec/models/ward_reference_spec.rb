@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe Reference do
+describe WardReference do
   describe "importing 1995 and prior data" do
     describe "importing from a file" do
       before do
@@ -9,8 +9,8 @@ describe Reference do
 
       it "should do nothing if file is empty" do
         File.should_receive(:read).with(@filename).and_return('')
-        Reference.import(@filename)
-        Reference.all.should be_empty
+        WardReference.import(@filename)
+        WardReference.all.should be_empty
       end
 
       it "should import a record from the second row of the first table it finds" do
@@ -36,8 +36,8 @@ describe Reference do
           </html>
         "
         File.should_receive(:read).with(@filename).and_return(file_contents)
-        Reference.import(@filename)
-        reference = Reference.first
+        WardReference.import(@filename)
+        reference = WardReference.first
         reference.authors.should == "Abdul-Rassoul, M. S.; Dawah, H. A.; Othman, N. Y."
         reference.year.should == "1978"
         reference.date.should == '197804'
@@ -77,9 +77,9 @@ describe Reference do
             </tr>
           </table></body></html>"
         File.should_receive(:read).with(@filename).and_return(file_contents)
-        Reference.import(@filename)
-        Reference.count.should == 2
-        Reference.all.map(&:cite_code).should =~ ['1', '2']
+        WardReference.import(@filename)
+        WardReference.count.should == 2
+        WardReference.all.map(&:cite_code).should =~ ['1', '2']
       end
 
       it "should collapse lines" do
@@ -88,8 +88,8 @@ describe Reference do
             Research Centre, Baghdad.</td>
           <td></td><td></td><td></td></tr></table></body></html>"
         File.should_receive(:read).with(@filename).and_return(file_contents)
-        Reference.import(@filename)
-        Reference.first.title.should == 'Records of insect collection (Part I) in the Natural History Research Centre, Baghdad'
+        WardReference.import(@filename)
+        WardReference.first.title.should == 'Records of insect collection (Part I) in the Natural History Research Centre, Baghdad'
       end
 
       describe "parsing notes" do
@@ -108,9 +108,9 @@ describe Reference do
           </tr></table></body></html>"
 
           File.should_receive(:read).with(@filename).and_return(file_contents)
-          Reference.import(@filename)
-          Reference.first.public_notes.should == 'Notes'
-          Reference.first.editor_notes.should be_blank
+          WardReference.import(@filename)
+          WardReference.first.public_notes.should == 'Notes'
+          WardReference.first.editor_notes.should be_blank
         end
         it "reads editor's notes" do
           file_contents = "<html><body><table><tr></tr><tr><td></td><td>123</td><td></td><td></td><td></td>
@@ -118,9 +118,9 @@ describe Reference do
             <td>Notes</td>
             <td></td><td></td></tr></table></body></html>"
           File.should_receive(:read).with(@filename).and_return(file_contents)
-          Reference.import(@filename)
-          Reference.first.public_notes.should be_blank
-          Reference.first.editor_notes.should == 'Notes'
+          WardReference.import(@filename)
+          WardReference.first.public_notes.should be_blank
+          WardReference.first.editor_notes.should == 'Notes'
         end
         it "reads public and editor's notes" do
           file_contents = "<html><body><table><tr></tr><tr><td></td><td>123</td><td></td><td></td><td></td>
@@ -128,9 +128,9 @@ describe Reference do
             <td>{Public} Editor</td>
             <td></td><td></td></tr></table></body></html>"
           File.should_receive(:read).with(@filename).and_return(file_contents)
-          Reference.import(@filename)
-          Reference.first.public_notes.should == 'Public'
-          Reference.first.editor_notes.should == 'Editor'
+          WardReference.import(@filename)
+          WardReference.first.public_notes.should == 'Public'
+          WardReference.first.editor_notes.should == 'Editor'
         end
         it "handles linebreaks and italics" do
           file_contents = "<html><body><table><tr></tr><tr><td></td><td>123</td><td></td><td></td><td></td>
@@ -142,9 +142,9 @@ describe Reference do
             </td>
             <td></td><td></td></tr></table></body></html>"
           File.should_receive(:read).with(@filename).and_return(file_contents)
-          Reference.import(@filename)
-          Reference.first.public_notes.should == 'Page 53: *Myrmicium*.'
-          Reference.first.editor_notes.should == 'And *Myrmecium* (misspelling).'
+          WardReference.import(@filename)
+          WardReference.first.public_notes.should == 'Page 53: *Myrmicium*.'
+          WardReference.first.editor_notes.should == 'And *Myrmecium* (misspelling).'
         end
 
       end
@@ -154,8 +154,8 @@ describe Reference do
             <td>Records of |Formicidae|.</td>
           <td></td><td></td><td></td></tr></table></body></html>"
         File.should_receive(:read).with(@filename).and_return(file_contents)
-        Reference.import(@filename)
-        Reference.first.title.should == 'Records of *Formicidae*'
+        WardReference.import(@filename)
+        WardReference.first.title.should == 'Records of *Formicidae*'
       end
 
       it "should default the authors, citation, year, and title field" do
@@ -163,11 +163,11 @@ describe Reference do
             <td></td><td></td><td></td>
           <td></td><td></td><td></td></tr></table></body></html>"
         File.should_receive(:read).with(@filename).and_return(file_contents)
-        Reference.import(@filename)
-        Reference.first.authors.should == '[Authors missing from import]'
-        Reference.first.title.should == '[Title missing from import]'
-        Reference.first.year.should == '[Year missing from import]'
-        Reference.first.citation.should == '[Citation missing from import]'
+        WardReference.import(@filename)
+        WardReference.first.authors.should == '[Authors missing from import]'
+        WardReference.first.title.should == '[Title missing from import]'
+        WardReference.first.year.should == '[Year missing from import]'
+        WardReference.first.citation.should == '[Citation missing from import]'
       end
 
       it "should convert Microsoft's indication of italics to asterisks" do
@@ -177,8 +177,8 @@ describe Reference do
   trigona</font><font class=font0>.</font></td>
           <td></td><td></td><td></td></tr></table></body></html>"
         File.should_receive(:read).with(@filename).and_return(file_contents)
-        Reference.import(@filename)
-        Reference.first.title.should == 'Interaction between the ants *Zacryptocerus maculatus* and *Azteca trigona*'
+        WardReference.import(@filename)
+        WardReference.first.title.should == 'Interaction between the ants *Zacryptocerus maculatus* and *Azteca trigona*'
       end
 
       it "should convert entities to characters" do
@@ -186,8 +186,8 @@ describe Reference do
             <td>Love &amp; Death</td>
           <td></td><td></td><td></td></tr></table></body></html>"
         File.should_receive(:read).with(@filename).and_return(file_contents)
-        Reference.import(@filename)
-        Reference.first.title.should == 'Love & Death'
+        WardReference.import(@filename)
+        WardReference.first.title.should == 'Love & Death'
       end
 
       it "should remove period from end of year" do
@@ -195,8 +195,8 @@ describe Reference do
             <td>1978.</td><td></td><td></td>
           <td></td><td></td><td></td></tr></table></body></html>"
         File.should_receive(:read).with(@filename).and_return(file_contents)
-        Reference.import(@filename)
-        Reference.first.year.should == '1978'
+        WardReference.import(@filename)
+        WardReference.first.year.should == '1978'
       end
 
       it "should remove period from end of title" do
@@ -213,8 +213,8 @@ describe Reference do
               <td></td>
           </tr></table></body></html>"
         File.should_receive(:read).with(@filename).and_return(file_contents)
-        Reference.import(@filename)
-        Reference.first.title.should == 'Title with period'
+        WardReference.import(@filename)
+        WardReference.first.title.should == 'Title with period'
       end
 
       it "should remove period from end of citation" do
@@ -231,8 +231,8 @@ describe Reference do
               <td></td>
           </tr></table></body></html>"
         File.should_receive(:read).with(@filename).and_return(file_contents)
-        Reference.import(@filename)
-        Reference.first.citation.should == 'Citation with period'
+        WardReference.import(@filename)
+        WardReference.first.citation.should == 'Citation with period'
       end
 
       it "should import the numeric year" do
@@ -240,9 +240,9 @@ describe Reference do
             <td>1978a (\"2005\").</td><td></td><td></td>
           <td></td><td></td><td></td></tr></table></body></html>"
         File.should_receive(:read).with(@filename).and_return(file_contents)
-        Reference.import(@filename)
-        Reference.first.year.should == '1978a ("2005")'
-        Reference.first.numeric_year.should == 1978
+        WardReference.import(@filename)
+        WardReference.first.year.should == '1978a ("2005")'
+        WardReference.first.numeric_year.should == 1978
       end
     end
 
@@ -274,8 +274,8 @@ describe Reference do
         </html>
       "
       File.should_receive(:read).with(filename).and_return(file_contents)
-      Reference.import(filename)
-      reference = Reference.first
+      WardReference.import(filename)
+      reference = WardReference.first
       reference.authors.should == "Schlick-Steiner, B. C.; Steiner, F. M.; Seifert, B.; Stauffer, C.; Christian, E.; Crozier, R. H."
       reference.year.should == "1978"
       reference.date.should == '197804'
@@ -297,7 +297,7 @@ describe Reference do
   describe "parsing the citation" do
     describe "parsing a journal citation" do
       before do
-        @reference = Factory(:reference, :citation => 'Behav. Ecol. Sociobiol. 4:163-181.')
+        @reference = Factory(:ward_reference, :citation => 'Behav. Ecol. Sociobiol. 4:163-181.')
       end
 
       it "should extract the journal title" do
@@ -324,7 +324,7 @@ describe Reference do
 
       describe "parsing a citation with just a single page number" do
         it "should work" do
-          reference = Factory(:reference, :citation => "Entomol. Mon. Mag. 92:8.")
+          reference = Factory(:ward_reference, :citation => "Entomol. Mon. Mag. 92:8.")
           reference.parse_citation
           reference.journal_title.should == 'Entomol. Mon. Mag.'
           reference.volume.should == '92'
@@ -335,7 +335,7 @@ describe Reference do
 
       describe "parsing a citation with an issue number" do
         it "should work" do
-          reference = Factory(:reference, :citation => "Entomol. Mon. Mag. 92(32):8.")
+          reference = Factory(:ward_reference, :citation => "Entomol. Mon. Mag. 92(32):8.")
           reference.parse_citation
           reference.volume.should == '92'
           reference.issue.should == '32'
@@ -346,7 +346,7 @@ describe Reference do
 
       describe "parsing a citation with a series number" do
         it "should work" do
-          reference = Factory(:reference, :citation => 'Ann. Mag. Nat. Hist. (10)8:129-131.')
+          reference = Factory(:ward_reference, :citation => 'Ann. Mag. Nat. Hist. (10)8:129-131.')
           reference.parse_citation
           reference.series.should == '10'
           reference.volume.should == '8'
@@ -355,7 +355,7 @@ describe Reference do
 
       describe "parsing a citation with series, volume and issue" do
         it "should work" do
-          reference = Factory(:reference, :citation => 'Ann. Mag. Nat. Hist. (I)C(xix):129-131.')
+          reference = Factory(:ward_reference, :citation => 'Ann. Mag. Nat. Hist. (I)C(xix):129-131.')
           reference.parse_citation
           reference.series.should == 'I'
           reference.volume.should == 'C'
@@ -366,7 +366,7 @@ describe Reference do
 
     describe "parsing a book citation" do
       before do
-        @reference = Factory(:reference, :citation => 'Melbourne: CSIRO Publications, vii + 70 pp.')
+        @reference = Factory(:ward_reference, :citation => 'Melbourne: CSIRO Publications, vii + 70 pp.')
       end
 
       it "should extract the place of publication" do
@@ -390,7 +390,7 @@ describe Reference do
 
     describe "parsing a book citation with complicate pagination" do
       it "should work" do
-        reference = Factory(:reference, :citation => 'Tokyo: Keishu-sha, 247 pp. + 14 pl. + 4 pp. (index).')
+        reference = Factory(:ward_reference, :citation => 'Tokyo: Keishu-sha, 247 pp. + 14 pl. + 4 pp. (index).')
         reference.parse_citation
         reference.place.should == 'Tokyo'
         reference.publisher.should == 'Keishu-sha'
@@ -402,14 +402,14 @@ describe Reference do
     describe "parsing a nested citation" do
       describe "without page numbers" do
         it "should work" do
-          reference = Factory(:reference, :citation => 'In: Michaelsen, W., Hartmeyer, R. (eds.)  Die Fauna SŸdwest-Australiens. Band I, Lieferung 7.  Jena: Gustav Fischer, pp. 263-310.')
+          reference = Factory(:ward_reference, :citation => 'In: Michaelsen, W., Hartmeyer, R. (eds.)  Die Fauna SŸdwest-Australiens. Band I, Lieferung 7.  Jena: Gustav Fischer, pp. 263-310.')
           reference.parse_citation
           reference.kind.should == 'nested'
         end
       end
       describe "with page numbers" do
         it "should work" do
-          reference = Factory(:reference, :citation => 'Pp. 191-210 in: Presl, J. S., Presl, K. B.  Deliciae Pragenses, historiam naturalem spectantes. Tome 1.  Pragae: Calve, 244 pp.')
+          reference = Factory(:ward_reference, :citation => 'Pp. 191-210 in: Presl, J. S., Presl, K. B.  Deliciae Pragenses, historiam naturalem spectantes. Tome 1.  Pragae: Calve, 244 pp.')
           reference.parse_citation
           reference.kind.should == 'nested'
         end
@@ -419,7 +419,7 @@ describe Reference do
 
     describe "parsing an unknown format" do
       it "should consider it an unknown format" do
-        reference = Factory(:reference, :citation => 'asdf')
+        reference = Factory(:ward_reference, :citation => 'asdf')
         reference.parse_citation
         reference.kind.should == 'unknown'
       end
@@ -428,77 +428,77 @@ describe Reference do
 
   describe "searching" do
     it "should return an empty array if nothing is found for author" do
-      Factory(:reference, :authors => 'Bolton')
-      Reference.search(:author => 'foo').should be_empty
+      Factory(:ward_reference, :authors => 'Bolton')
+      WardReference.search(:author => 'foo').should be_empty
     end
 
     it "should find the reference for a given author if it exists" do
-      reference = Factory.create(:reference, :authors => 'Bolton')
-      Factory.create(:reference, :authors => 'Fisher')
-      Reference.search(:author => 'Bolton').should == [reference]
+      reference = Factory.create(:ward_reference, :authors => 'Bolton')
+      Factory.create(:ward_reference, :authors => 'Fisher')
+      WardReference.search(:author => 'Bolton').should == [reference]
     end
 
     it "should return an empty array if nothing is found for a given year and author" do
-      Factory(:reference, :authors => 'Bolton', :year => 2010)
-      Factory(:reference, :authors => 'Bolton', :year => 1995)
-      Factory(:reference, :authors => 'Fisher', :year => 2011)
-      Factory(:reference, :authors => 'Fisher', :year => 1996)
-      Reference.search(:start_year => '2012', :end_year => '2013', :author => 'Fisher').should be_empty
+      Factory(:ward_reference, :authors => 'Bolton', :year => 2010)
+      Factory(:ward_reference, :authors => 'Bolton', :year => 1995)
+      Factory(:ward_reference, :authors => 'Fisher', :year => 2011)
+      Factory(:ward_reference, :authors => 'Fisher', :year => 1996)
+      WardReference.search(:start_year => '2012', :end_year => '2013', :author => 'Fisher').should be_empty
     end
 
 
     it "should return the one reference for a given year and author" do
-      Factory(:reference, :authors => 'Bolton', :year => 2010)
-      Factory(:reference, :authors => 'Bolton', :year => 1995)
-      Factory(:reference, :authors => 'Fisher', :year => 2011)
-      reference = Factory.create(:reference, :authors => 'Fisher', :year => 1996)
-      Reference.search(:start_year => '1996', :end_year => '1996', :author => 'Fisher').should == [reference]
+      Factory(:ward_reference, :authors => 'Bolton', :year => 2010)
+      Factory(:ward_reference, :authors => 'Bolton', :year => 1995)
+      Factory(:ward_reference, :authors => 'Fisher', :year => 2011)
+      reference = Factory.create(:ward_reference, :authors => 'Fisher', :year => 1996)
+      WardReference.search(:start_year => '1996', :end_year => '1996', :author => 'Fisher').should == [reference]
     end
 
     describe "searching by year" do
       before do
-        Factory.create(:reference, :year => 1994)
-        Factory.create(:reference, :year => 1995)
-        Factory.create(:reference, :year => 1996)
-        Factory.create(:reference, :year => 1997)
-        Factory.create(:reference, :year => 1998)
+        Factory.create(:ward_reference, :year => 1994)
+        Factory.create(:ward_reference, :year => 1995)
+        Factory.create(:ward_reference, :year => 1996)
+        Factory.create(:ward_reference, :year => 1997)
+        Factory.create(:ward_reference, :year => 1998)
       end
 
       it "should return an empty array if nothing is found for year" do
-        Reference.search(:start_year => '1992', :end_year => '1993').should be_empty
+        WardReference.search(:start_year => '1992', :end_year => '1993').should be_empty
       end
 
       it "should find entries less than or equal to the end year" do
-        Reference.search(:end_year => '1995').map(&:numeric_year).should =~ [1994, 1995]
+        WardReference.search(:end_year => '1995').map(&:numeric_year).should =~ [1994, 1995]
       end
 
       it "should find entries equal to or greater than the start year" do
-        Reference.search(:start_year => '1995').map(&:numeric_year).should =~ [1995, 1996, 1997, 1998]
+        WardReference.search(:start_year => '1995').map(&:numeric_year).should =~ [1995, 1996, 1997, 1998]
       end
 
       it "should find entries in between the start year and the end year (inclusive)" do
-        Reference.search(:start_year => '1995', :end_year => '1996').map(&:numeric_year).should =~ [1995, 1996]
+        WardReference.search(:start_year => '1995', :end_year => '1996').map(&:numeric_year).should =~ [1995, 1996]
       end
 
       it "should find references in the year of the end range, even if they have extra characters" do
-        Factory.create(:reference, :year => '2004.', :year => 2004)
-        Reference.search(:start_year => '2004', :end_year => '2004').map(&:numeric_year).should =~ [2004]
+        Factory.create(:ward_reference, :year => '2004.', :year => 2004)
+        WardReference.search(:start_year => '2004', :end_year => '2004').map(&:numeric_year).should =~ [2004]
       end
 
       it "should find references in the year of the start year, even if they have extra characters" do
-        Factory.create(:reference, :year => '2004.', :year => 2004)
-        Reference.search(:start_year => '2004', :end_year => '2004').map(&:numeric_year).should =~ [2004]
+        Factory.create(:ward_reference, :year => '2004.', :year => 2004)
+        WardReference.search(:start_year => '2004', :end_year => '2004').map(&:numeric_year).should =~ [2004]
       end
 
     end
     
     describe "sorting search results" do
       it "should sort by author plus year plus letter" do
-        fisher1910b = Factory.create :reference, :authors => 'Fisher', :year => '1910b'
-        wheeler1874 = Factory.create :reference, :authors => 'Wheeler', :year => '1874'
-        fisher1910a = Factory.create :reference, :authors => 'Fisher', :year => '1910a'
+        fisher1910b = Factory.create :ward_reference, :authors => 'Fisher', :year => '1910b'
+        wheeler1874 = Factory.create :ward_reference, :authors => 'Wheeler', :year => '1874'
+        fisher1910a = Factory.create :ward_reference, :authors => 'Fisher', :year => '1910a'
 
-        results = Reference.search
+        results = WardReference.search
 
         results.should == [fisher1910a, fisher1910b, wheeler1874]
       end
@@ -506,12 +506,12 @@ describe Reference do
 
     describe "searching by journal" do
       it "should find by journal" do
-        reference = Factory.create(:reference, :citation => "Mathematica 1:2")
-        Reference.search(:journal => 'Mathematica').should == [reference]
+        reference = Factory.create(:ward_reference, :citation => "Mathematica 1:2")
+        WardReference.search(:journal => 'Mathematica').should == [reference]
       end
       it "should only do an exact match" do
-        Factory.create(:reference, :citation => "Mathematica 1:2")
-        Reference.search(:journal => 'Math').should be_empty
+        Factory.create(:ward_reference, :citation => "Mathematica 1:2")
+        WardReference.search(:journal => 'Math').should be_empty
       end
     end
 
@@ -519,49 +519,49 @@ describe Reference do
 
   describe "parsing after editing" do
     it "should parse out the numeric year" do
-      reference = Factory(:reference, :year => '1910a', :numeric_year => 1910)
+      reference = Factory(:ward_reference, :year => '1910a', :numeric_year => 1910)
       reference.update_attribute(:year, '2000a')
       reference.numeric_year.should == 2000
     end
     it "should parse out the journal title" do
-      reference = Factory(:reference, :citation => 'Ecology Letters 12:324-333.', :journal_title => 'Ecology Letters')
+      reference = Factory(:ward_reference, :citation => 'Ecology Letters 12:324-333.', :journal_title => 'Ecology Letters')
       reference.update_attribute(:citation, 'Playboy 3:1-5')
       reference.journal_title.should == 'Playboy'
     end
   end
   describe "parsing after creating" do
     it "should parse out the numeric year" do
-      reference = Factory.create(:reference, :year => '1910a')
+      reference = Factory.create(:ward_reference, :year => '1910a')
       reference.numeric_year.should == 1910
     end
   end
 
   describe "validations" do
     it "should allow valid contents" do
-      reference = Reference.create(:authors => 'Ward, P.S.', :citation => 'asdf', :year => '1229', :title => 'asdf')
+      reference = WardReference.create(:authors => 'Ward, P.S.', :citation => 'asdf', :year => '1229', :title => 'asdf')
       reference.should be_valid
     end
     it "should not allow blank authors" do
-      reference = Reference.create(:authors => nil, :citation => 'asdf', :year => '1229', :title => 'asdf')
+      reference = WardReference.create(:authors => nil, :citation => 'asdf', :year => '1229', :title => 'asdf')
       reference.should_not be_valid
     end
     it "should not allow blank citation" do
-      reference = Reference.create(:authors => 'asdf', :citation => nil, :year => '1229', :title => 'asdf')
+      reference = WardReference.create(:authors => 'asdf', :citation => nil, :year => '1229', :title => 'asdf')
       reference.should_not be_valid
     end
     it "should not allow blank year" do
-      reference = Reference.create(:authors => 'asdaf', :citation => 'asdf', :year => nil, :title => 'asdf')
+      reference = WardReference.create(:authors => 'asdaf', :citation => 'asdf', :year => nil, :title => 'asdf')
       reference.should_not be_valid
     end
     it "should not allow blank title" do
-      reference = Reference.create(:authors => 'asdaf', :citation => 'asdf', :year => '323', :title => nil)
+      reference = WardReference.create(:authors => 'asdaf', :citation => 'asdf', :year => '323', :title => nil)
       reference.should_not be_valid
     end
   end
 
   describe "string representation" do
     it "should be readable and informative" do
-      reference = Reference.new(:authors => "Abdul-Rassoul, M. S.", :year => "1978", :title => 'Records of insect collection',
+      reference = WardReference.new(:authors => "Abdul-Rassoul, M. S.", :year => "1978", :title => 'Records of insect collection',
                                 :citation => 'Bull. Nat. Hist. Res. Cent. Univ. Baghdad 7(2):1-6')
       reference.to_s.should == "Abdul-Rassoul, M. S. 1978. Records of insect collection. Bull. Nat. Hist. Res. Cent. Univ. Baghdad 7(2):1-6."
     end

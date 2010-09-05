@@ -1,6 +1,4 @@
-class Reference < ActiveRecord::Base
-  set_table_name 'refs'
-
+class WardReference < ActiveRecord::Base
   before_save :parse
 
   validates_presence_of :authors, :citation, :year, :title
@@ -55,8 +53,9 @@ class Reference < ActiveRecord::Base
       title = '[Title missing from import]' if title.blank?
       year = '[Year missing from import]' if year.blank?
 
-      reference = Reference.new(:cite_code => cite_code, :authors => authors, :year => year, :date => date, :title => title,
-                                :citation  => citation, :possess => possess, :taxonomic_notes => taxonomic_notes)
+      reference = WardReference.new(:cite_code => cite_code, :authors => authors, :year => year, :date => date,
+                                    :title => title, :citation  => citation, :possess => possess,
+                                    :taxonomic_notes => taxonomic_notes)
       reference.parse_notes notes
       reference.save!
     end

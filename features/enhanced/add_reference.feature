@@ -13,10 +13,10 @@ Feature: Add reference
     When I go to the main page
       And I follow "Add reference"
       Then I should see a new edit form
-    When I fill in "reference_authors" with "Mark Wilden"
-      And I fill in "reference_title" with "title"
-      And I fill in "reference_year" with "1981"
-      And I fill in "reference_citation" with "citation"
+    When I fill in "ward_reference_authors" with "Mark Wilden"
+      And I fill in "ward_reference_title" with "title"
+      And I fill in "ward_reference_year" with "1981"
+      And I fill in "ward_reference_citation" with "citation"
       And I press "OK"
     Then I should be on the main page
       And I should not see a new edit form
@@ -27,7 +27,7 @@ Feature: Add reference
     Given I am logged in
     When I go to the main page
       And I follow "Add reference"
-    When I fill in "reference_authors" with "Mark Wilden"
+    When I fill in "ward_reference_authors" with "Mark Wilden"
       And I press "Cancel"
       And I should not see "Mark Wilden"
 
@@ -40,10 +40,10 @@ Feature: Add reference
       Then "Add reference" should not be visible
     When I follow "add"
       Then I should see a new edit form
-    When in the new edit form I fill in "reference_authors" with "Mark Wilden"
-      And in the new edit form I fill in "reference_title" with "Between Pacific Tides"
-      And in the new edit form I fill in "reference_citation" with "New York"
-      And in the new edit form I fill in "reference_year" with "1992"
+    When in the new edit form I fill in "ward_reference_authors" with "Mark Wilden"
+      And in the new edit form I fill in "ward_reference_title" with "Between Pacific Tides"
+      And in the new edit form I fill in "ward_reference_citation" with "New York"
+      And in the new edit form I fill in "ward_reference_year" with "1992"
       And in the new edit form I press "OK"
     Then I should be on the main page
       And I should not see a new edit form
@@ -56,7 +56,7 @@ Feature: Add reference
       |Ward, P.S.|Annals of Ants|citation|year|
     When I go to the main page
     When I follow "add"
-    When in the new edit form I fill in "reference_authors" with "Mark Wilden"
+    When in the new edit form I fill in "ward_reference_authors" with "Mark Wilden"
       And in the new edit form I press "Cancel"
     Then there should be just the existing reference
 

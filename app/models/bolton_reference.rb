@@ -1,6 +1,5 @@
 class BoltonReference < ActiveRecord::Base
-  set_table_name 'bolton_refs'
-  belongs_to :ward, :class_name => 'Reference'
+  belongs_to :ward_reference
 
 #  How to import a references file from Bolton
 #  1) Open the file in Word
