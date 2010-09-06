@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100906160345) do
+ActiveRecord::Schema.define(:version => 20100906164621) do
 
   create_table "authors", :force => true do |t|
     t.string   "name"
@@ -36,8 +36,6 @@ ActiveRecord::Schema.define(:version => 20100906160345) do
 
   create_table "references", :force => true do |t|
     t.string   "type"
-    t.string   "publisher"
-    t.integer  "year"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "source_id"
