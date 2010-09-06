@@ -15,10 +15,14 @@ class WardReference < ActiveRecord::Base
   
   def parse
     parse = parse_citation
-    parse[:authors] = authors
+    parse[:authors] = parse_authors
     parse[:year] = parse_year
     parse[:title] = title
     parse
+  end
+
+  def parse_authors
+    authors.split(/; ?/)
   end
 
   def parse_year

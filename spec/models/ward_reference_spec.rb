@@ -1,6 +1,16 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe WardReference do
+  describe "parsing authors" do
+    it "should parse a single author into a one-element array" do
+      reference = Factory(:ward_reference, :authors => 'Fisher, B.L.')
+      reference.parse_authors.should == ['Fisher, B.L.']
+    end
+    it "should parse multiple authors" do
+      reference = Factory(:ward_reference, :authors => 'Fisher, B.L.; Wheeler, W.M.')
+      reference.parse_authors.should == ['Fisher, B.L.', 'Wheeler, W.M.']
+    end
+  end
   describe "parsing the citation" do
 
     describe "parsing a journal citation" do
@@ -88,7 +98,7 @@ describe WardReference do
   describe "importing to Reference" do
     it "after creation, it passes its parsed components to Reference and gets back its Reference" do
       reference = Factory.create(:reference)
-      Reference.should_receive(:import).with({:year => 1910, :authors => 'Fisher, B.L.', :title => 'Ants',
+      Reference.should_receive(:import).with({:year => 1910, :authors => ['Fisher, B.L.'], :title => 'Ants',
         :article => {
           :issue => {:journal => {:title => 'Ecology Letters'}, :series => nil, :volume => '12', :issue => nil},
           :start_page => '324', :end_page => '333'}}).and_return reference
@@ -106,7 +116,7 @@ describe WardReference do
                             :title => 'Ants',
                             :public_notes => 'This is public', :editor_notes => 'Editor notes',
                             :taxonomic_notes => 'Taxonomic notes', :cite_code => '32', :possess => 'PSW', :date => '19100201')
-      reference.should_receive(:import).with({:authors => 'Fisher, B.L.', :year => 2010, :title => 'Ants',
+      reference.should_receive(:import).with({:authors => ['Fisher, B.L.'], :year => 2010, :title => 'Ants',
         :article => {
           :issue => {:journal => {:title => 'Ecology Letters'}, :series => nil, :volume => '12', :issue => nil},
           :start_page => '324', :end_page => '333'}})
