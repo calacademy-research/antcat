@@ -3,7 +3,7 @@ class Author < ActiveRecord::Base
 
   def self.import data
     data.inject([]) do |authors, author_name|
-      authors << create!(:name => author_name)
+      authors << find_or_create_by_name(author_name)
     end
   end
 end

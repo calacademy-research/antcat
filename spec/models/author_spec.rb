@@ -16,5 +16,11 @@ describe Author do
       Author.import(['Fisher, B.L.', 'Wheeler, W.M.']).map(&:name).should =~
       ['Fisher, B.L.', 'Wheeler, W.M.']
     end
+
+    it "should reuse existing authors" do
+      Author.import(['Fisher, B.L.', 'Wheeler, W.M.'])
+      Author.import(['Fisher, B.L.', 'Wheeler, W.M.'])
+      Author.count.should == 2
+    end
   end
 end
