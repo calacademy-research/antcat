@@ -7,3 +7,6 @@ Factory.define :ward_reference, :default_strategy => :build do |reference|
   reference.citation "Informatica 21:3"
 end
 
+Factory.define :reference, :default_strategy => :build do |reference|
+  
+end

@@ -1,22 +1,28 @@
 class WardReference < ActiveRecord::Base
-  before_save :parse
+  belongs_to :reference
+  before_create :create_reference
+  before_update :update_reference
 
   validates_presence_of :authors, :citation, :year, :title
 
-  def self.search params = {}
-    scope = scoped(:order => 'authors, year')
+  def create_reference
+    self.reference = Reference.import parse
+  end
 
-    scope = scope.scoped :conditions => ['authors LIKE ?', "%#{params[:author]}%"] unless params[:author].blank?
-    scope = scope.scoped :conditions => ['numeric_year >= ?', params[:start_year]] if params[:start_year].present?
-    scope = scope.scoped :conditions => ['numeric_year <= ?', params[:end_year]] if params[:end_year].present?
-    scope = scope.scoped :conditions => ['journal_title = ?', params[:journal]] unless params[:journal].blank?
-
-    scope
+  def update_reference
+    reference.import parse
   end
   
   def parse
-    self.numeric_year = year.to_i if year
-    parse_citation
+    parse = parse_citation
+    parse[:authors] = authors
+    parse[:year] = parse_year
+    parse[:title] = title
+    parse
+  end
+
+  def parse_year
+    year.to_i if year
   end
 
   def parse_citation
@@ -26,49 +32,56 @@ class WardReference < ActiveRecord::Base
 
   def parse_nested_citation
     citation.match(/\bin: /i) or return
-    self.kind = 'nested'
-    true
+    {:nested => {:citation => citation}}
   end
 
   def parse_book_citation
-    match = citation.match(/(.*?): (.*?), (.+?)$/) or return false
-    self.kind = 'book'
-    self.place = match[1]
-    self.publisher = match[2]
-    self.pagination = match[3]
-    true
+    match = citation.match(/(.*?): (.*?), (.+?)$/) or return
+    {:book => {
+      :publisher => {:name => match[2], :place => match[1]},
+      :pagination => match[3]}}
   end
 
   def parse_journal_citation
-    parts = citation.match(/(.+?)(\S+)$/) or return false
-    self.journal_title = parts[1].strip
+    parts = citation.match(/(.+?)(\S+)$/) or return
+    journal_title = parts[1].strip
 
-    parts = parts[2].match(/(.+?):(.+)$/) or return false
-    parse_series_volume_issue(parts[1]) or return false
-    parse_pagination(parts[2]) or return false
+    parts = parts[2].match(/(.+?):(.+)$/) or return
+    series_volume_issue = parse_series_volume_issue(parts[1]) or return
+    pagination = parse_pagination(parts[2]) or return
 
-    self.kind = 'journal'
-    true
+    {:article => {
+      :issue => {
+        :journal => {:title => journal_title},
+        :series => series_volume_issue[:series],
+        :volume => series_volume_issue[:volume],
+        :issue => series_volume_issue[:issue],
+      },
+      :start_page => pagination[:start_page],
+      :end_page => pagination[:end_page],
+      }
+    }
   end
 
   def parse_series_volume_issue series_volume_issue
-    parts = series_volume_issue.match(/(\(\w+\))?(\w+)(\(\w+\))?/) or return false
-    self.series = parts[1].match(/\((\w+)\)/)[1] if parts[1].present?
-    self.volume = parts[2]
-    self.issue = parts[3].match(/\((\w+)\)/)[1] if parts[3].present?
-    true
+    parse = {}
+    parts = series_volume_issue.match(/(\(\w+\))?(\w+)(\(\w+\))?/) or return
+    parse[:series] = parts[1].match(/\((\w+)\)/)[1] if parts[1].present?
+    parse[:volume] = parts[2]
+    parse[:issue] = parts[3].match(/\((\w+)\)/)[1] if parts[3].present?
+    parse
   end
 
   def parse_pagination pagination
-    parts = pagination.match(/(.+?)(?:-(.+?))?\.?$/) or return false
-    self.start_page = parts[1]
-    self.end_page = parts[2] if parts.length == 3
-    true
+    parse = {}
+    parts = pagination.match(/(.+?)(?:-(.+?))?\.?$/) or return
+    parse[:start_page] = parts[1]
+    parse[:end_page] = parts[2] if parts.length == 3
+    parse
   end
 
   def parse_unknown_citation
-    self.kind = 'unknown'
-    true
+    {:unknown => {:citation => citation}}
   end
 
   def to_s

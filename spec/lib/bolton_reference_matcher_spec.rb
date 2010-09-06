@@ -1,5 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
+=begin
 describe BoltonReferenceMatcher do
   describe "matching all references" do
     it "should set the appropriate Ward reference for each" do
@@ -131,3 +132,4 @@ describe BoltonReferenceMatcher do
 
   end
 end
+=end

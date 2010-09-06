@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100905170310) do
+ActiveRecord::Schema.define(:version => 20100906023401) do
 
   create_table "bolton_references", :force => true do |t|
     t.string   "authors"
@@ -25,6 +25,25 @@ ActiveRecord::Schema.define(:version => 20100905170310) do
   create_table "genera", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "references", :force => true do |t|
+    t.string   "type"
+    t.string   "publisher"
+    t.integer  "year"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "source_id"
+  end
+
+  create_table "sources", :force => true do |t|
+    t.string  "authors"
+    t.integer "year"
+    t.string  "title"
+    t.string  "place"
+    t.string  "publisher"
+    t.string  "pagination"
+    t.string  "type"
   end
 
   create_table "users", :force => true do |t|
@@ -60,21 +79,11 @@ ActiveRecord::Schema.define(:version => 20100905170310) do
     t.datetime "created_at"
     t.string   "cite_code"
     t.datetime "updated_at"
-    t.string   "journal_title"
-    t.string   "series"
-    t.string   "volume"
-    t.string   "issue"
-    t.string   "start_page"
-    t.string   "end_page"
-    t.string   "place"
-    t.string   "publisher"
-    t.string   "pagination"
-    t.string   "kind"
-    t.integer  "numeric_year"
     t.string   "editor_notes"
     t.string   "taxonomic_notes"
     t.string   "pdf_link"
     t.boolean  "tried_to_get_pdf_link"
+    t.integer  "reference_id"
   end
 
 end

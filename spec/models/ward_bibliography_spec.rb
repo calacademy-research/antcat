@@ -8,13 +8,13 @@ describe WardBibliography do
   describe "importing from a file" do
     it "should pass the file contents to the import method" do
       File.stub!(:read).and_return('contents')
-      @bibliography.should_receive(:import).with('contents', false)
+      @bibliography.should_receive(:import).with('contents', false, false)
       @bibliography.import_file('filename')
     end
 
     it "should detect a post-95 format file" do
       File.stub!(:read).and_return('contents')
-      @bibliography.should_receive(:import).with('contents', true)
+      @bibliography.should_receive(:import).with('contents', true, false)
       @bibliography.import_file('filename96')
     end
   end

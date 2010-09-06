@@ -1,5 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
+=begin
 describe CoinsHelper do
   it "should format a journal reference correctly" do
     coins = helper.coins(Factory(:ward_reference,
@@ -218,3 +219,4 @@ describe CoinsHelper do
     parameters.should =~ expected_parameters
   end
 end
+=end

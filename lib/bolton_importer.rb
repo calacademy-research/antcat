@@ -7,7 +7,6 @@ class BoltonImporter
       span = p.css('b i span')
       if span.present?
         genus = span.inner_html.titleize
-puts genus
         genera << { :genus => genus }
       end
       genera
