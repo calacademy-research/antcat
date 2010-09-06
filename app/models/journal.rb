@@ -1,9 +1,7 @@
-class Journal
-  def self.search term
-    search_expression = '%' + term.split('').join('%') + '%'
-    journal_titles = WardReference.all(
-      :select => 'distinct journal_title',
-      :conditions => "journal_title LIKE '#{search_expression}'",
-      :order => :journal_title).map(&:journal_title)
+class Journal < ActiveRecord::Base
+  has_many :issues
+
+  def self.import data
+    find_or_create_by_title(data[:title])
   end
 end

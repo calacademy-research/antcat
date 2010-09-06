@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100906164827) do
+ActiveRecord::Schema.define(:version => 20100906173624) do
 
   create_table "authors", :force => true do |t|
     t.string   "name"
@@ -34,6 +34,21 @@ ActiveRecord::Schema.define(:version => 20100906164827) do
     t.datetime "updated_at"
   end
 
+  create_table "issues", :force => true do |t|
+    t.string   "series"
+    t.string   "volume"
+    t.string   "issue"
+    t.integer  "journal_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "journals", :force => true do |t|
+    t.string   "title"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "references", :force => true do |t|
     t.string   "type"
     t.datetime "created_at"
@@ -48,6 +63,9 @@ ActiveRecord::Schema.define(:version => 20100906164827) do
     t.string  "publisher"
     t.string  "pagination"
     t.string  "type"
+    t.string  "start_page"
+    t.string  "end_page"
+    t.integer "issue_id"
   end
 
   create_table "users", :force => true do |t|

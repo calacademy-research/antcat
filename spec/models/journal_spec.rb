@@ -1,20 +1,15 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Journal do
-
-=begin
-  describe "searching" do
-    it "do fuzzy matching of journal names" do
-      Factory.create(:ward_reference, :citation => 'American Bibliographic Proceedings 1:2')
-      Factory.create(:ward_reference, :citation => 'Playboy 1:2')
-      Journal.search('ABP').should == ['American Bibliographic Proceedings']
+  describe "importing" do
+    it "should create and return the journal" do
+      Journal.import(:title => 'Antucopia').title.should == 'Antucopia'
     end
-    it "should only return one journal title per journal" do
-      Factory.create(:ward_reference, :citation => 'American Bibliographic Proceedings 1:2')
-      Factory.create(:ward_reference, :citation => 'American Bibliographic Proceedings 1:2')
-      Journal.search('ABP').should == ['American Bibliographic Proceedings']
+
+    it "should reuse and existing journal" do
+      Journal.import(:title => 'Antucopia')
+      Journal.import(:title => 'Antucopia')
+      Journal.count.should == 1
     end
   end
-=end
-
 end

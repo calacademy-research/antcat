@@ -20,6 +20,19 @@ describe Reference do
 
 =begin
   describe "searching" do
+    it "do fuzzy matching of journal names" do
+      Factory.create(:ward_reference, :citation => 'American Bibliographic Proceedings 1:2')
+      Factory.create(:ward_reference, :citation => 'Playboy 1:2')
+      Journal.search('ABP').should == ['American Bibliographic Proceedings']
+    end
+    it "should only return one journal title per journal" do
+      Factory.create(:ward_reference, :citation => 'American Bibliographic Proceedings 1:2')
+      Factory.create(:ward_reference, :citation => 'American Bibliographic Proceedings 1:2')
+      Journal.search('ABP').should == ['American Bibliographic Proceedings']
+    end
+  end
+
+  describe "searching" do
     it "should return an empty array if nothing is found for author" do
       Factory(:ward_reference, :authors => 'Bolton')
       WardReference.search(:author => 'foo').should be_empty
