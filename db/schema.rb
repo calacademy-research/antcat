@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100907190807) do
+ActiveRecord::Schema.define(:version => 20100907200406) do
 
   create_table "author_participations", :force => true do |t|
     t.integer  "author_id"
@@ -18,11 +18,15 @@ ActiveRecord::Schema.define(:version => 20100907190807) do
     t.datetime "updated_at"
   end
 
+  add_index "author_participations", ["author_id"], :name => "author_participations_author_id_idx"
+
   create_table "authors", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "authors", ["name"], :name => "author_name_idx"
 
   create_table "bolton_references", :force => true do |t|
     t.string   "authors"
