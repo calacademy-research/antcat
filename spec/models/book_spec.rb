@@ -21,5 +21,14 @@ describe Book do
       book.publisher.should == 'Oxford'
       book.pagination.should == '26 pp'
     end
+
+    it "should find an existing book" do
+      data = {:authors => ['Fisher, B.L.', 'Wheeler, W.M.'], :year => 2010, :title => 'Ants',
+        :book => {:publisher => {:place => 'New York', :name => 'Oxford'}, :pagination => '26 pp'}}
+      Book.import(data)
+      Book.import(data)
+      Book.count.should == 1
+    end
+
   end
 end

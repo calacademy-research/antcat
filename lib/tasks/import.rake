@@ -3,6 +3,7 @@ task :import_ward => :environment do
   WardReference.delete_all
   Reference.delete_all
   Source.delete_all
+  Issue.delete_all
   Author.delete_all
   WardBibliography.new.import_file 'data/ward/ANTBIB.htm', true
   WardBibliography.new.import_file 'data/ward/ANTBIB96.htm', true

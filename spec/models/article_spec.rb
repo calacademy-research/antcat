@@ -43,5 +43,16 @@ describe Article do
       article.start_page.should == '324'
       article.end_page.should == '333'
     end
+
+    it "should find an existing article" do
+      data = {:authors => ['Fisher, B.L.'], :year => 2010, :title => 'Ants',
+        :article => {
+          :issue => {:journal => {:title => 'Ecology Letters'}, :series => nil, :volume => '12', :issue => nil},
+          :start_page => '324', :end_page => '333'}}
+      Article.import(data)
+      Article.import(data)
+      Article.count.should == 1
+    end
+
   end
 end
