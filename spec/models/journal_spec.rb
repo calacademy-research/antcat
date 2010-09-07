@@ -12,4 +12,13 @@ describe Journal do
       Journal.count.should == 1
     end
   end
+
+  describe "searching" do
+    it "should do fuzzy matching of journal names" do
+      Factory(:journal, :title => 'American Bibliographic Proceedings')
+      Factory(:journal, :title => 'Playboy')
+      Journal.search('ABP').should == ['American Bibliographic Proceedings']
+    end
+  end
+
 end

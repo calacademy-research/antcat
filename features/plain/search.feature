@@ -6,9 +6,9 @@ Feature: Searching references
 
   Background:
     Given the following entries exist in the bibliography
-       |authors     |year         |title|citation|
-       |Brian Fisher|1995b        |title|citation|
-       |Barry Bolton|2010 ("2011")|title|citation|
+       |authors     |year         |title|citation  |
+       |Brian Fisher|1995b        |title|Ants 1:1-2|
+       |Barry Bolton|2010 ("2011")|title|Ants 1:1-2|
 
   Scenario: Not searching yet
     When I go to the main page
@@ -75,11 +75,11 @@ Feature: Searching references
 
   Scenario: Searching by a year range
     Given the following entries exist in the bibliography
-     |year  |authors|title|citation|
-     |2009a.|authors|title|citation|
-     |2010c.|authors|title|citation|
-     |2011d.|authors|title|citation|
-     |2012e.|authors|title|citation|
+     |year  |authors|title|citation  |
+     |2009a.|authors|title|Ants 1:1-2|
+     |2010c.|authors|title|Ants 1:1-2|
+     |2011d.|authors|title|Ants 1:1-2|
+     |2012e.|authors|title|Ants 1:1-2|
     When I go to the main page
       And I fill in "start_year" with "2010"
       And I fill in "end_year" with "2011"
@@ -105,11 +105,11 @@ Feature: Searching references
     
   Scenario: Searching by author and year
     Given the following entries exist in the bibliography
-       |authors     |year |title|citation|
-       |Brian Fisher|1995a|title|citation|
-       |Brian Fisher|2010b|title|citation|
-       |Barry Bolton|2010e|title|citation|
-       |Barry Bolton|1995d|title|citation|
+       |authors     |year |title|citation  |
+       |Brian Fisher|1995a|title|Ants 1:1-2|
+       |Brian Fisher|2010b|title|Ants 1:1-2|
+       |Barry Bolton|2010e|title|Ants 1:1-2|
+       |Barry Bolton|1995d|title|Ants 1:1-2|
     When I go to the main page
       And I fill in "author" with "fisher"
       And I fill in "start_year" with "1995"

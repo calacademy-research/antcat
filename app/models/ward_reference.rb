@@ -1,7 +1,8 @@
 class WardReference < ActiveRecord::Base
-  belongs_to :reference
   before_create :create_reference
   before_update :update_reference
+
+  belongs_to :reference
 
   validates_presence_of :authors, :citation, :year, :title
 
@@ -14,7 +15,16 @@ class WardReference < ActiveRecord::Base
   end
 
   def self.search terms
-    all
+    author_term = terms[:author]
+    find_by_sql <<-SQL
+      SELECT ward_references.*
+        FROM ward_references
+        JOIN `references` ON ward_references.reference_id = `references`.id
+        JOIN sources ON `references`.source_id = sources.id
+        JOIN author_participations ON sources.id = author_participations.source_id
+        JOIN authors ON author_participations.author_id = authors.id
+        WHERE authors.name LIKE '#{author_term}%'
+      SQL
   end
   
   def parse

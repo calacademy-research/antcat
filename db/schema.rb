@@ -9,11 +9,17 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100906173624) do
+ActiveRecord::Schema.define(:version => 20100907190807) do
+
+  create_table "author_participations", :force => true do |t|
+    t.integer  "author_id"
+    t.integer  "source_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "authors", :force => true do |t|
     t.string   "name"
-    t.integer  "source_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -3,7 +3,7 @@ module CoinsHelper
     title = case reference.reference
     when ArticleReference then ArticleCoinsHelper
     when BookReference then BookCoinsHelper
-    else raise "Don't know what kind of reference this is: #{reference.reference.inspect}"
+    else return '' #raise "Don't know what kind of reference this is: #{reference.reference.inspect}"
     end.new(reference).coins
 
     content_tag(:span, "", :class => "Z3988", :title => title.join("&amp;"))
