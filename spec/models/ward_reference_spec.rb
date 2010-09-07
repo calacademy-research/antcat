@@ -1,6 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe WardReference do
+
   describe "parsing authors" do
     it "should parse a single author into a one-element array" do
       reference = Factory(:ward_reference, :authors => 'Fisher, B.L.')
@@ -11,8 +12,8 @@ describe WardReference do
       reference.parse_authors.should == ['Fisher, B.L.', 'Wheeler, W.M.']
     end
   end
-  describe "parsing the citation" do
 
+  describe "parsing the citation" do
     describe "parsing a journal citation" do
       it "should extract article, issue and journal information" do
         reference = Factory(:ward_reference, :citation => 'Behav. Ecol. Sociobiol. 4:163-181.')
@@ -97,7 +98,7 @@ describe WardReference do
 
   describe "importing to Reference" do
     it "after creation, it passes its parsed components to Reference and gets back its Reference" do
-      reference = Factory.create(:reference)
+      reference = Factory(:reference)
       Reference.should_receive(:import).with({:year => 1910, :authors => ['Fisher, B.L.'], :title => 'Ants',
         :article => {
           :issue => {:journal => {:title => 'Ecology Letters'}, :series => nil, :volume => '12', :issue => nil},
@@ -110,7 +111,7 @@ describe WardReference do
     end
 
     it "after editing, it passes its parsed components to Reference" do
-      reference = Factory.create(:reference)
+      reference = Factory(:reference)
       Reference.should_receive(:import).and_return reference
       ward = WardReference.create!(:authors => 'Fisher, B.L.', :citation => 'Ecology Letters 12:324-333', :year => '1910d',
                             :title => 'Ants',
@@ -153,5 +154,8 @@ describe WardReference do
                                 :citation => 'Bull. Nat. Hist. Res. Cent. Univ. Baghdad 7(2):1-6')
       reference.to_s.should == "Abdul-Rassoul, M. S. 1978. Records of insect collection. Bull. Nat. Hist. Res. Cent. Univ. Baghdad 7(2):1-6."
     end
+  end
+
+  describe "searching" do
   end
 end

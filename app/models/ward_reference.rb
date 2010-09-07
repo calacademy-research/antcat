@@ -12,6 +12,10 @@ class WardReference < ActiveRecord::Base
   def update_reference
     reference.import parse
   end
+
+  def self.search terms
+    all
+  end
   
   def parse
     parse = parse_citation

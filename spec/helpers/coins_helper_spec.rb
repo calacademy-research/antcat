@@ -1,19 +1,12 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-=begin
 describe CoinsHelper do
   it "should format a journal reference correctly" do
     coins = helper.coins(Factory(:ward_reference,
       :authors => 'MacKay, W.',
-      :kind => 'journal',
-      :title => 'A title',
-      :journal_title => 'Journal Title',
-      :volume => '1',
-      :issue => '2',
-      :start_page => '3',
-      :end_page => '4',
       :year => '1941',
-      :numeric_year => 1941
+      :title => 'A title',
+      :citation => 'Journal Title 1(2):3-4'
     ))
     check_parameters coins, [
       "ctx_ver=Z39.88-2004",
@@ -35,14 +28,9 @@ describe CoinsHelper do
   it "should use the numeric year" do
     coins = helper.coins(Factory(:ward_reference,
       :authors => 'MacKay, W.',
-      :kind => 'journal',
-      :title => 'A title',
-      :volume => '1',
-      :issue => '2',
-      :start_page => '3',
-      :end_page => '4',
       :year => '1941a ("1942")',
-      :numeric_year => 1941
+      :title => 'A title',
+      :citation => 'Journal Title 1(2):3-4'
     ))
     check_parameters coins, [
       "ctx_ver=Z39.88-2004",
@@ -52,6 +40,7 @@ describe CoinsHelper do
       "rfr_id=antcat.org",
       "rft.genre=article",
       "rft.atitle=A+title",
+      "rft.jtitle=Journal+Title",
       "rft.volume=1",
       "rft.issue=2",
       "rft.spage=3",
@@ -62,15 +51,10 @@ describe CoinsHelper do
 
   it "should add multiple authors" do
     coins = helper.coins(Factory(:ward_reference,
-      :kind => 'journal',
-      :title => 'A title',
       :authors => 'MacKay, W. P.; Lowrie, D.',
-      :volume => '1',
-      :issue => '2',
-      :start_page => '3',
-      :end_page => '4',
       :year => '1941',
-      :numeric_year => 1941
+      :title => 'A title',
+      :citation => 'Journal Title 1(2):3-4'
     ))
     check_parameters coins, [
       "ctx_ver=Z39.88-2004",
@@ -78,6 +62,7 @@ describe CoinsHelper do
       "rfr_id=antcat.org",
       "rft.genre=article",
       "rft.atitle=A+title",
+      "rft.jtitle=Journal+Title",
       "rft.volume=1",
       "rft.issue=2",
       "rft.spage=3",
@@ -92,15 +77,10 @@ describe CoinsHelper do
 
   it "should handle authors without commas" do
     coins = helper.coins(Factory(:ward_reference,
-      :kind => 'journal',
-      :title => 'A title',
       :authors => 'author',
-      :volume => '1',
-      :issue => '2',
-      :start_page => '3',
-      :end_page => '4',
       :year => '1941',
-      :numeric_year => 1941
+      :title => 'A title',
+      :citation => 'Journal Title 1(2):3-4'
     ))
     check_parameters coins, [
       "ctx_ver=Z39.88-2004",
@@ -108,6 +88,7 @@ describe CoinsHelper do
       "rfr_id=antcat.org",
       "rft.genre=article",
       "rft.atitle=A+title",
+      "rft.jtitle=Journal+Title",
       "rft.volume=1",
       "rft.issue=2",
       "rft.spage=3",
@@ -119,70 +100,56 @@ describe CoinsHelper do
 
   it "should strip out italics formatting" do
     coins = helper.coins(Factory(:ward_reference,
-      :authors => 'MacKay, W.',
-      :kind => 'journal',
-      :title => '*A title*',
-      :volume => '1',
-      :issue => '2',
-      :start_page => '3',
-      :end_page => '4',
+      :authors => 'author',
       :year => '1941',
-      :numeric_year => 1941
+      :title => 'A *title*',
+      :citation => 'Journal Title 1(2):3-4'
     ))
     check_parameters coins, [
       "ctx_ver=Z39.88-2004",
       "rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal",
-      "rft.aulast=MacKay",
-      "rft.aufirst=W.",
       "rfr_id=antcat.org",
       "rft.genre=article",
       "rft.atitle=A+title",
+      "rft.jtitle=Journal+Title",
       "rft.volume=1",
       "rft.issue=2",
       "rft.spage=3",
       "rft.epage=4",
-      "rft.date=1941"
+      "rft.date=1941",
+      "rft.au=author",
     ]
   end
 
   it "should escape HTML" do
     coins = helper.coins(Factory(:ward_reference,
-      :authors => 'MacKay, W.',
-      :kind => 'journal',
-      :title => '<script>',
-      :volume => '1',
-      :issue => '2',
-      :start_page => '3',
-      :end_page => '4',
+      :authors => 'author',
       :year => '1941',
-      :numeric_year => 1941
+      :title => '<script>',
+      :citation => 'Journal Title 1(2):3-4'
     ))
     check_parameters coins, [
       "ctx_ver=Z39.88-2004",
       "rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal",
-      "rft.aulast=MacKay",
-      "rft.aufirst=W.",
       "rfr_id=antcat.org",
       "rft.genre=article",
       "rft.atitle=%3Cscript%3E",
+      "rft.jtitle=Journal+Title",
       "rft.volume=1",
       "rft.issue=2",
       "rft.spage=3",
       "rft.epage=4",
-      "rft.date=1941"
+      "rft.date=1941",
+      "rft.au=author",
     ]
   end
 
   it "should format a book reference correctly" do
     coins = helper.coins(Factory(:ward_reference,
       :authors => 'MacKay, W.',
-      :kind => 'book',
-      :title => 'Another title',
       :year => '1933',
-      :numeric_year => 1933,
-      :publisher => 'Springer, Verlag',
-      :place => 'Dresden',
-      :pagination => 'ix + 33pp.'
+      :title => 'Another title',
+      :citation => 'Dresden: Springer Verlag, ix + 33pp.'
     ))
     check_parameters coins, [
       "ctx_ver=Z39.88-2004",
@@ -192,15 +159,16 @@ describe CoinsHelper do
       "rfr_id=antcat.org",
       "rft.genre=book",
       "rft.btitle=Another+title",
-      "rft.pub=Springer%2C+Verlag",
+      "rft.pub=Springer+Verlag",
       "rft.place=Dresden",
       "rft.date=1933",
       "rft.pages=ix+%2B+33pp.",
     ]
   end
 
+=begin
   it "should format an unknown/nested reference correctly" do
-    coins = helper.coins(Factory(:ward_reference, :kind => 'unknown'))
+    coins = helper.coins(Factory(:ward_reference, :citation => 'Unknown'))
     check_parameters coins, [
       "ctx_ver=Z39.88-2004",
       "rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Aunknown",
@@ -210,6 +178,7 @@ describe CoinsHelper do
       "rft.genre=",
     ]
   end
+=end
 
   def check_parameters coins, expected_parameters
     match = coins.match(/<span class="Z3988" title="(.*)"/)
@@ -219,4 +188,3 @@ describe CoinsHelper do
     parameters.should =~ expected_parameters
   end
 end
-=end

@@ -21,13 +21,13 @@ describe Reference do
 =begin
   describe "searching" do
     it "do fuzzy matching of journal names" do
-      Factory.create(:ward_reference, :citation => 'American Bibliographic Proceedings 1:2')
-      Factory.create(:ward_reference, :citation => 'Playboy 1:2')
+      Factory(:ward_reference, :citation => 'American Bibliographic Proceedings 1:2')
+      Factory(:ward_reference, :citation => 'Playboy 1:2')
       Journal.search('ABP').should == ['American Bibliographic Proceedings']
     end
     it "should only return one journal title per journal" do
-      Factory.create(:ward_reference, :citation => 'American Bibliographic Proceedings 1:2')
-      Factory.create(:ward_reference, :citation => 'American Bibliographic Proceedings 1:2')
+      Factory(:ward_reference, :citation => 'American Bibliographic Proceedings 1:2')
+      Factory(:ward_reference, :citation => 'American Bibliographic Proceedings 1:2')
       Journal.search('ABP').should == ['American Bibliographic Proceedings']
     end
   end
@@ -39,8 +39,8 @@ describe Reference do
     end
 
     it "should find the reference for a given author if it exists" do
-      reference = Factory.create(:ward_reference, :authors => 'Bolton')
-      Factory.create(:ward_reference, :authors => 'Fisher')
+      reference = Factory(:ward_reference, :authors => 'Bolton')
+      Factory(:ward_reference, :authors => 'Fisher')
       WardReference.search(:author => 'Bolton').should == [reference]
     end
 
@@ -57,17 +57,17 @@ describe Reference do
       Factory(:ward_reference, :authors => 'Bolton', :year => 2010)
       Factory(:ward_reference, :authors => 'Bolton', :year => 1995)
       Factory(:ward_reference, :authors => 'Fisher', :year => 2011)
-      reference = Factory.create(:ward_reference, :authors => 'Fisher', :year => 1996)
+      reference = Factory(:ward_reference, :authors => 'Fisher', :year => 1996)
       WardReference.search(:start_year => '1996', :end_year => '1996', :author => 'Fisher').should == [reference]
     end
 
     describe "searching by year" do
       before do
-        Factory.create(:ward_reference, :year => 1994)
-        Factory.create(:ward_reference, :year => 1995)
-        Factory.create(:ward_reference, :year => 1996)
-        Factory.create(:ward_reference, :year => 1997)
-        Factory.create(:ward_reference, :year => 1998)
+        Factory(:ward_reference, :year => 1994)
+        Factory(:ward_reference, :year => 1995)
+        Factory(:ward_reference, :year => 1996)
+        Factory(:ward_reference, :year => 1997)
+        Factory(:ward_reference, :year => 1998)
       end
 
       it "should return an empty array if nothing is found for year" do
@@ -87,12 +87,12 @@ describe Reference do
       end
 
       it "should find references in the year of the end range, even if they have extra characters" do
-        Factory.create(:ward_reference, :year => '2004.', :year => 2004)
+        Factory(:ward_reference, :year => '2004.', :year => 2004)
         WardReference.search(:start_year => '2004', :end_year => '2004').map(&:numeric_year).should =~ [2004]
       end
 
       it "should find references in the year of the start year, even if they have extra characters" do
-        Factory.create(:ward_reference, :year => '2004.', :year => 2004)
+        Factory(:ward_reference, :year => '2004.', :year => 2004)
         WardReference.search(:start_year => '2004', :end_year => '2004').map(&:numeric_year).should =~ [2004]
       end
 
@@ -100,9 +100,9 @@ describe Reference do
     
     describe "sorting search results" do
       it "should sort by author plus year plus letter" do
-        fisher1910b = Factory.create :ward_reference, :authors => 'Fisher', :year => '1910b'
-        wheeler1874 = Factory.create :ward_reference, :authors => 'Wheeler', :year => '1874'
-        fisher1910a = Factory.create :ward_reference, :authors => 'Fisher', :year => '1910a'
+        fisher1910b = Factory(:ward_reference, :authors => 'Fisher', :year => '1910b')
+        wheeler1874 = Factory(:ward_reference, :authors => 'Wheeler', :year => '1874')
+        fisher1910a = Factory(:ward_reference, :authors => 'Fisher', :year => '1910a')
 
         results = WardReference.search
 
@@ -112,11 +112,11 @@ describe Reference do
 
     describe "searching by journal" do
       it "should find by journal" do
-        reference = Factory.create(:ward_reference, :citation => "Mathematica 1:2")
+        reference = Factory(:ward_reference, :citation => "Mathematica 1:2")
         WardReference.search(:journal => 'Mathematica').should == [reference]
       end
       it "should only do an exact match" do
-        Factory.create(:ward_reference, :citation => "Mathematica 1:2")
+        Factory(:ward_reference, :citation => "Mathematica 1:2")
         WardReference.search(:journal => 'Math').should be_empty
       end
     end
