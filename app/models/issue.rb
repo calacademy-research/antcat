@@ -2,10 +2,8 @@ class Issue < ActiveRecord::Base
   belongs_to :journal
 
   def self.import data
-    Issue.create!(
-      :journal => Journal.import(data[:journal]),
-      :series => data[:series],
-      :volume => data[:volume],
-      :issue => data[:issue])
+    journal = Journal.import(data[:journal])
+    Issue.find_or_create_by_journal_id_and_series_and_volume_and_issue(
+      journal.id, data[:series], data[:volume], data[:issue])
   end
 end

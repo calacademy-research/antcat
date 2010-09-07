@@ -22,5 +22,11 @@ describe Issue do
       journal = issue.journal
       journal.title.should == 'Ecology Letters'
     end
+
+    it "should find an existing issue" do
+      Issue.import(:journal => {:title => 'Ecology Letters'}, :series => nil, :volume => '12', :issue => nil)
+      Issue.import(:journal => {:title => 'Ecology Letters'}, :series => nil, :volume => '12', :issue => nil)
+      Issue.count.should == 1
+    end
   end
 end
