@@ -1,5 +1,4 @@
 class Article < Source
-  belongs_to :issue
 
   def self.import data
     issue = Issue.import(data[:article][:issue])

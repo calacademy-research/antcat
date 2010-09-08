@@ -14,17 +14,36 @@ class WardReference < ActiveRecord::Base
     reference.import parse
   end
 
-  def self.search terms
-    author_term = terms[:author]
-    find_by_sql <<-SQL
-      SELECT ward_references.*
-        FROM ward_references
-        JOIN `references` ON ward_references.reference_id = `references`.id
-        JOIN sources ON `references`.source_id = sources.id
-        JOIN author_participations ON sources.id = author_participations.source_id
-        JOIN authors ON author_participations.author_id = authors.id
-        WHERE authors.name LIKE '#{author_term}%'
-      SQL
+  def self.search terms = {}
+    conditions = []
+    conditions_arguments = {}
+    source_joins = []
+
+    if terms[:author].present?
+      conditions << 'authors.name LIKE :author'
+      conditions_arguments[:author] = "#{terms[:author]}%"
+      source_joins << :authors
+    end
+
+    if terms[:journal].present?
+      conditions << 'journals.title LIKE :journal'
+      conditions_arguments[:journal] = terms[:journal]
+      source_joins << {:issue => :journal}
+    end
+
+    if terms[:start_year].present?
+      conditions << 'sources.year >= :start_year'
+      conditions_arguments[:start_year] = terms[:start_year]
+    end
+
+    if terms[:end_year].present?
+      conditions << 'sources.year <= :end_year'
+      conditions_arguments[:end_year] = terms[:end_year]
+    end
+
+    all :joins => {:reference => {:source => source_joins}},
+        :conditions => [conditions.join(' AND '), conditions_arguments],
+        :order => 'authors, ward_references.year'
   end
   
   def parse

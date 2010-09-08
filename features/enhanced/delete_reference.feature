@@ -8,7 +8,7 @@ Feature: Delete reference
     Given I am not logged in
       Given the following entries exist in the bibliography
       |authors   |citation|year|title|
-      |Fisher, B.|citation|year|title|
+      |Fisher, B.|Psyche 1:1|year|title|
     When I go to the main page
       Then I should see "Fisher, B."
     Given I will confirm on the next step
@@ -19,7 +19,7 @@ Feature: Delete reference
     Given I am logged in
       And the following entries exist in the bibliography
       |authors   |citation|year|title|
-      |Fisher, B.|citation|year|title|
+      |Fisher, B.|Psyche 2:1|year|title|
     When I go to the main page
       Then I should see "Fisher, B."
     Given I will confirm on the next step

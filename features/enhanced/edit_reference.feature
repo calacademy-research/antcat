@@ -7,7 +7,7 @@ Feature: Edit reference
     Given I am not logged in
       And the following entries exist in the bibliography
       |authors|citation|cite_code|created_at|date    |possess|title|updated_at|year|
-      |authors|citation|CiteCode |today     |20100712|Possess|title|today     |2010|
+      |authors|Psyche 3:3|CiteCode |today     |20100712|Possess|title|today     |2010|
     When I go to the main page
       And I click the reference
       Then there should not be an edit form
@@ -16,7 +16,7 @@ Feature: Edit reference
     Given I am logged in
       And the following entries exist in the bibliography
       |authors|citation|cite_code|created_at|date    |possess|title|updated_at|year|
-      |authors|citation|CiteCode |today     |20100712|Possess|title|today     |2010|
+      |authors|Psyche 5:3|CiteCode |today     |20100712|Possess|title|today     |2010|
     When I go to the main page
       Then I should not see the edit form
     When I click the reference
@@ -32,7 +32,7 @@ Feature: Edit reference
     Given I am logged in
       And the following entries exist in the bibliography
       |authors|title|citation|year|
-      |Fisher |Ants |New York|2010|
+      |Fisher |Ants |Psyche 6:4|2010|
     When I go to the main page
       And I click the reference
       And I fill in "ward_reference_year" with "1910a"

@@ -168,6 +168,12 @@ describe WardReference do
       WardReference.search(:author => 'Bolton').should == [reference]
     end
 
+    it "should find the reference for a given author prefix if it exists" do
+      reference = Factory(:ward_reference, :authors => 'Bolton')
+      Factory(:ward_reference, :authors => 'Fisher')
+      WardReference.search(:author => 'Bolt').should == [reference]
+    end
+
     it "should return an empty array if nothing is found for a given year and author" do
       Factory(:ward_reference, :authors => 'Bolton', :year => 2010)
       Factory(:ward_reference, :authors => 'Bolton', :year => 1995)
@@ -175,7 +181,6 @@ describe WardReference do
       Factory(:ward_reference, :authors => 'Fisher', :year => 1996)
       WardReference.search(:start_year => '2012', :end_year => '2013', :author => 'Fisher').should be_empty
     end
-
 
     it "should return the one reference for a given year and author" do
       Factory(:ward_reference, :authors => 'Bolton', :year => 2010)
@@ -199,25 +204,25 @@ describe WardReference do
       end
 
       it "should find entries less than or equal to the end year" do
-        WardReference.search(:end_year => '1995').map(&:numeric_year).should =~ [1994, 1995]
+        WardReference.search(:end_year => '1995').map(&:year).should =~ ['1994', '1995']
       end
 
       it "should find entries equal to or greater than the start year" do
-        WardReference.search(:start_year => '1995').map(&:numeric_year).should =~ [1995, 1996, 1997, 1998]
+        WardReference.search(:start_year => '1995').map(&:year).should =~ ['1995', '1996', '1997', '1998']
       end
 
       it "should find entries in between the start year and the end year (inclusive)" do
-        WardReference.search(:start_year => '1995', :end_year => '1996').map(&:numeric_year).should =~ [1995, 1996]
+        WardReference.search(:start_year => '1995', :end_year => '1996').map(&:year).should =~ ['1995', '1996']
       end
 
       it "should find references in the year of the end range, even if they have extra characters" do
         Factory(:ward_reference, :year => '2004.', :year => 2004)
-        WardReference.search(:start_year => '2004', :end_year => '2004').map(&:numeric_year).should =~ [2004]
+        WardReference.search(:start_year => '2004', :end_year => '2004').map(&:year).should =~ ['2004']
       end
 
       it "should find references in the year of the start year, even if they have extra characters" do
         Factory(:ward_reference, :year => '2004.', :year => 2004)
-        WardReference.search(:start_year => '2004', :end_year => '2004').map(&:numeric_year).should =~ [2004]
+        WardReference.search(:start_year => '2004', :end_year => '2004').map(&:year).should =~ ['2004']
       end
 
     end
@@ -237,6 +242,7 @@ describe WardReference do
     describe "searching by journal" do
       it "should find by journal" do
         reference = Factory(:ward_reference, :citation => "Mathematica 1:2")
+        Factory(:ward_reference, :citation => "Ants Monthly 1:3")
         WardReference.search(:journal => 'Mathematica').should == [reference]
       end
       it "should only do an exact match" do
