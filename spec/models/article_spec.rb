@@ -20,7 +20,7 @@ describe Article do
     article.reload.issue.should == issue
   end
 
-  describe "importing" do
+  describe "importing a new Article" do
     it "should create the article and set its issue, authors and other information" do
       article = Article.import({:authors => ['Fisher, B.L.'], :year => 2010, :title => 'Ants',
         :article => {
@@ -54,5 +54,46 @@ describe Article do
       Article.count.should == 1
     end
 
+  end
+
+  describe "importing into an existing article" do
+    describe "when the volume number of the issue changes" do
+      it "should create and link to a new issue" do
+        data = {:authors => ['Fisher, B.L.'], :year => 2010, :title => 'Ants',
+          :article => {
+            :issue => {:journal => {:title => 'Ants'}, :series => nil, :volume => '1', :issue => nil},
+            :start_page => '324', :end_page => '333'}}
+        article = Article.import data
+        issue = article.issue
+        journal = issue.journal
+
+        data[:article][:issue][:volume] = '2'
+        new_article = article.import data
+
+        Issue.count.should == 1
+        Issue.find_by_id(issue.id).should be_nil
+        new_article.issue.journal.should == journal
+        new_article.issue.volume.should == '2'
+      end
+    end
+
+    it "should create a new journal, linked to a new issue, if a new journal title is passed" do
+        data = {:authors => ['Fisher, B.L.'], :year => 2010, :title => 'Ants',
+          :article => {
+            :issue => {:journal => {:title => 'Ants'}, :series => nil, :volume => '1', :issue => nil},
+            :start_page => '324', :end_page => '333'}}
+        article = Article.import data
+        issue = article.issue
+        journal = issue.journal
+
+        data[:article][:issue][:journal][:title] = 'Bees'
+        new_article = article.import data
+
+        new_article.issue.should_not == issue
+        new_article.issue.journal.should_not == journal
+        new_article.issue.journal.title.should == 'Bees'
+        Journal.count.should == 1
+        Issue.count.should == 1
+    end
   end
 end

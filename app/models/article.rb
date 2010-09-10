@@ -11,4 +11,10 @@ class Article < Source
       :issue => issue
     )
   end
+
+  def import data
+    old_issue = issue
+    update_attribute(:issue, issue.import(data[:article][:issue]))
+    old_issue.delete if old_issue.articles.count.zero?
+  end
 end

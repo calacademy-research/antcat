@@ -1,17 +1,12 @@
 class WardReference < ActiveRecord::Base
-  before_create :create_reference
-  before_update :update_reference
+  before_save :save_reference
 
   belongs_to :reference
 
   validates_presence_of :authors, :citation, :year, :title
 
-  def create_reference
+  def save_reference
     self.reference = Reference.import parse
-  end
-
-  def update_reference
-    reference.import parse
   end
 
   def self.search terms = {}

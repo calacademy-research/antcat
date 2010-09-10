@@ -5,7 +5,4 @@ class ArticleReference < Reference
     create! :article => Article.import(data)
   end
 
-  def import data
-
-  end
 end

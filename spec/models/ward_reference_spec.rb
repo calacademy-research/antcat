@@ -250,6 +250,15 @@ describe WardReference do
         WardReference.search(:journal => 'Math').should be_empty
       end
     end
+  end
 
+  describe "changing the journal name" do
+    it "should create a new journal" do
+      reference = Factory(:ward_reference, :citation => "Mathematica 1:2")
+      Journal.find_by_title('Mathematica').should_not be_nil
+      reference.update_attribute(:citation, "Ants 1:1")
+      Journal.count.should == 1
+      Journal.find_by_title('Ants').should_not be_nil
+    end
   end
 end

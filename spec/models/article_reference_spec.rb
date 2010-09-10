@@ -13,4 +13,5 @@ describe ArticleReference do
       reference.article.should == article
     end
   end
+
 end
