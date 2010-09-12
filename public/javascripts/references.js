@@ -160,16 +160,16 @@ function showReferenceForm($reference, options) {
 }
 
 function setWatermarks($form) {
-  $('#ward_reference_authors', $form).watermark('Authors');
-  $('#ward_reference_year', $form).watermark('Year');
-  $('#ward_reference_title', $form).watermark('Title');
-  $('#ward_reference_citation', $form).watermark('Citation');
-  $('#ward_reference_public_notes', $form).watermark('Published notes');
-  $('#ward_reference_editor_notes', $form).watermark("Editor's notes");
-  $('#ward_reference_taxonomic_notes', $form).watermark('Taxonomic notes');
-  $('#ward_reference_cite_code', $form).watermark('Cite code');
-  $('#ward_reference_possess', $form).watermark('Possess');
-  $('#ward_reference_date', $form).watermark('Date');
+  $('#reference_authors', $form).watermark('Authors');
+  $('#reference_year', $form).watermark('Year');
+  $('#reference_title', $form).watermark('Title');
+  $('#reference_citation', $form).watermark('Citation');
+  $('#reference_public_notes', $form).watermark('Published notes');
+  $('#reference_editor_notes', $form).watermark("Editor's notes");
+  $('#reference_taxonomic_notes', $form).watermark('Taxonomic notes');
+  $('#reference_cite_code', $form).watermark('Cite code');
+  $('#reference_possess', $form).watermark('Possess');
+  $('#reference_date', $form).watermark('Date');
 }
 
 function submitReferenceForm() {

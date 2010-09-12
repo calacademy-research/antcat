@@ -1,4 +1,4 @@
 class AuthorParticipation < ActiveRecord::Base
-  belongs_to :source
+  belongs_to :reference
   belongs_to :author
 end

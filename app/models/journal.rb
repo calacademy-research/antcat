@@ -1,14 +1,8 @@
 class Journal < ActiveRecord::Base
   has_many :issues
 
-  def self.import data, existing_journal = nil
-    journal = find_or_create_by_title(data[:title])
-    existing_journal.delete if existing_journal && journal != existing_journal && existing_journal.issues.count < 2
-    journal
-  end
-
-  def import data
-    self.class.import data, self
+  def self.import title
+    find_or_create_by_title(title)
   end
 
   def self.search term

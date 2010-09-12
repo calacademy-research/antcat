@@ -2,16 +2,14 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe ArticleReference do
 
-  describe "importing a new reference" do
-    it "should create and return an ArticleReference with the passed-in data" do
-      article = mock_model Article
-      Article.should_receive(:import).with({}).and_return article
+  describe "importing" do
 
-      reference = ArticleReference.import({})
-
-      ArticleReference.first.should == reference
-      reference.article.should == article
+    it "should create the reference and set its data" do
+      reference = ArticleReference.import({}, {:issue => '12', :pagination => '32-33', :journal => 'Ecology Letters'})
+      reference.issue.should == '12'
+      reference.pagination.should == '32-33'
+      reference.journal.title.should == 'Ecology Letters'
     end
-  end
 
+  end
 end

@@ -1,11 +1,10 @@
 class BookReference < Reference
-  belongs_to :book, :foreign_key => :source_id
+  belongs_to :publisher
 
-  def self.import data
-    create! :book => Book.import(data)
-  end
-
-  def import data
-
+  def self.import create_data, data
+    BookReference.create! create_data.merge(
+      :pagination => data[:pagination],
+      :publisher => Publisher.import(data[:publisher])
+    )
   end
 end

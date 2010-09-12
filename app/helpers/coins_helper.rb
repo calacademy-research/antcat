@@ -11,8 +11,8 @@ module CoinsHelper
 end
 
 class CoinsHelperBase
-  def initialize ward_reference
-    @source = ward_reference.reference.source
+  def initialize reference
+    @reference = reference.reference
   end
 
   def coins
@@ -21,7 +21,7 @@ class CoinsHelperBase
     @title << "rfr_id=antcat.org"
     @title << "rft.genre=#{genre}"
     add_contents
-    @title << "rft.date=#{@source.year}"
+    @title << "rft.date=#{@reference.year}"
     @title.concat authors
   end
 
@@ -35,7 +35,7 @@ class CoinsHelperBase
   end
 
   def authors
-    @source.authors.inject([]) do |authors, author|
+    @reference.authors.inject([]) do |authors, author|
       name = author.name
       parts = name.match(/(.*?), (.*)/)
       unless parts
@@ -56,12 +56,12 @@ class ArticleCoinsHelper < CoinsHelperBase
     'article'
   end
   def add_contents
-    add 'rft.atitle', @source.title
-    add 'rft.jtitle', @source.issue.journal.title
-    add 'rft.volume', @source.issue.volume
-    add 'rft.issue', @source.issue.issue
-    add 'rft.spage', @source.start_page
-    add 'rft.epage', @source.end_page
+    add 'rft.atitle', @reference.title
+    add 'rft.jtitle', @reference.issue.journal.title
+    add 'rft.volume', @reference.issue.volume
+    add 'rft.issue', @reference.issue.issue
+    add 'rft.spage', @reference.start_page
+    add 'rft.epage', @reference.end_page
   end
 end
 
@@ -73,9 +73,9 @@ class BookCoinsHelper < CoinsHelperBase
     'book'
   end
   def add_contents
-    add 'rft.btitle', @source.title
-    add 'rft.pub', @source.publisher
-    add 'rft.place', @source.place
-    add 'rft.pages', @source.pagination
+    add 'rft.btitle', @reference.title
+    add 'rft.pub', @reference.publisher
+    add 'rft.place', @reference.place
+    add 'rft.pages', @reference.pagination
   end
 end

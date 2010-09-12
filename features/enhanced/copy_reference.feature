@@ -20,6 +20,6 @@ Feature: Copy reference
     When I go to the main page
     When I follow "copy"
       Then I should see a new edit form
-    When in the new edit form I fill in "ward_reference_authors" with "Mark Wilden"
+    When in the new edit form I fill in "reference_authors" with "Mark Wilden"
       And in the new edit form I press "OK"
     Then I should see "Mark Wilden 1910. Annals of Ants. Ants 1:2."

@@ -9,11 +9,11 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100907200406) do
+ActiveRecord::Schema.define(:version => 20100910222411) do
 
   create_table "author_participations", :force => true do |t|
     t.integer  "author_id"
-    t.integer  "source_id"
+    t.integer  "reference_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -59,23 +59,37 @@ ActiveRecord::Schema.define(:version => 20100907200406) do
     t.datetime "updated_at"
   end
 
-  create_table "references", :force => true do |t|
-    t.string   "type"
+  create_table "publishers", :force => true do |t|
+    t.string   "name"
+    t.string   "place"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "source_id"
   end
 
-  create_table "sources", :force => true do |t|
-    t.integer "year"
-    t.string  "title"
-    t.string  "place"
-    t.string  "publisher"
-    t.string  "pagination"
-    t.string  "type"
-    t.string  "start_page"
-    t.string  "end_page"
-    t.integer "issue_id"
+  create_table "references", :force => true do |t|
+    t.string   "year"
+    t.string   "title"
+    t.string   "citation"
+    t.string   "public_notes"
+    t.string   "possess"
+    t.string   "date"
+    t.datetime "created_at"
+    t.string   "cite_code"
+    t.datetime "updated_at"
+    t.string   "journal_title"
+    t.string   "series"
+    t.string   "volume"
+    t.string   "start_page"
+    t.string   "end_page"
+    t.string   "place"
+    t.string   "editor_notes"
+    t.string   "taxonomic_notes"
+    t.string   "citation_year"
+    t.string   "type"
+    t.integer  "publisher_id"
+    t.integer  "journal_id"
+    t.string   "issue"
+    t.string   "pagination"
   end
 
   create_table "users", :force => true do |t|
@@ -99,23 +113,5 @@ ActiveRecord::Schema.define(:version => 20100907200406) do
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["invitation_token"], :name => "index_users_on_invitation_token"
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
-
-  create_table "ward_references", :force => true do |t|
-    t.string   "authors"
-    t.string   "year"
-    t.string   "title"
-    t.string   "citation"
-    t.string   "public_notes"
-    t.string   "possess"
-    t.string   "date"
-    t.datetime "created_at"
-    t.string   "cite_code"
-    t.datetime "updated_at"
-    t.string   "editor_notes"
-    t.string   "taxonomic_notes"
-    t.string   "pdf_link"
-    t.boolean  "tried_to_get_pdf_link"
-    t.integer  "reference_id"
-  end
 
 end

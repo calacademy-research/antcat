@@ -22,7 +22,7 @@ Feature: Edit reference
     When I click the reference
       Then I should see the edit form
       And I should not see the reference
-    When I fill in "ward_reference_authors" with "Mark Wilden"
+    When I fill in "reference_authors" with "Mark Wilden"
       And I press "OK"
     Then I should be on the main page
       And I should not see the edit form
@@ -35,7 +35,7 @@ Feature: Edit reference
       |Fisher |Ants |Psyche 6:4|2010|
     When I go to the main page
       And I click the reference
-      And I fill in "ward_reference_year" with "1910a"
+      And I fill in "reference_year" with "1910a"
       And I press "OK"
       And I fill in "start_year" with "1910"
       And I press "Search"
@@ -48,6 +48,6 @@ Feature: Edit reference
       |Esakia 31:1-115|authors|title|year|
     When I go to the main page
       And I click the reference
-      And I fill in "ward_reference_citation" with "Mad Magazine 33:12"
+      And I fill in "reference_citation" with "Mad Magazine 33:12"
       And I press "OK"
     Then there should be the HTML "rft.jtitle=Mad\+Magazine"

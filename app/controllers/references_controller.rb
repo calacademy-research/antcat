@@ -4,23 +4,23 @@ class ReferencesController < ApplicationController
     if params[:commit] == 'clear'
       params[:author] = params[:start_year] = params[:end_year] = params[:journal] = ''
     end
-    @references = WardReference.search(params).paginate(:page => params[:page])
+    @references = Reference.search(params).paginate(:page => params[:page])
   end
 
   def update
-    @reference = WardReference.find(params[:id])
-    @reference.update_attributes(params[:ward_reference])
+    @reference = Reference.find(params[:id])
+    @reference.update_attributes(params[:reference])
     render_json
   end
   
   def create
-    @reference = WardReference.new(params[:ward_reference])
+    @reference = Reference.new(params[:reference])
     @reference.save
     render_json true
   end
   
   def destroy
-    @reference = WardReference.find(params[:id])
+    @reference = Reference.find(params[:id])
     @reference.destroy
     head :ok
   end

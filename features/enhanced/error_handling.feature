@@ -10,12 +10,12 @@ Feature: Error handling
       |Forel, A.     |1874 |Les fourmis de la Suisse  |Neue Denkschriften 26:1-452|
     When I go to the main page
       And I click the reference
-      And I fill in "ward_reference_authors" with ""
+      And I fill in "reference_authors" with ""
       And I press "OK"
     Then I should see the edit form
       And I should see "Authors can't be blank"
-      And "ward_reference_authors" should be marked as an error
-    When I fill in "ward_reference_authors" with "Wheeler, D.M."
+      And "reference_authors" should be marked as an error
+    When I fill in "reference_authors" with "Wheeler, D.M."
       And I press "OK"
     Then I should not see the edit form
       And I should not see any error messages
@@ -28,7 +28,7 @@ Feature: Error handling
       |Forel, A.     |1874 |Les fourmis de la Suisse  |Neue Denkschriften 26:1-452|
     When I go to the main page
       And I click the reference
-      And I fill in "ward_reference_authors" with ""
+      And I fill in "reference_authors" with ""
       And I press "OK"
     Then I should see "Authors can't be blank"
     When I press "Cancel"

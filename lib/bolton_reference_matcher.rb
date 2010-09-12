@@ -101,7 +101,7 @@ class BoltonReferenceMatcher
 
   def make_ward_index
     $stderr.print "Setting up..."
-    @ward_index = WardReference.all.inject({}) do |index, reference|
+    @ward_index = Reference.all.inject({}) do |index, reference|
       s = remove_parenthesized_taxon_names(reference.title + reference.citation)
       s = normalize s
       entry = {

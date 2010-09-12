@@ -1,8 +1,7 @@
 class RemoveWardReferenceFields < ActiveRecord::Migration
   def self.up
     change_table :ward_references do |t|
-      t.remove :journal_title, :series, :volume, :issue, :start_page, :end_page, :place,
-        :publisher, :pagination, :kind, :numeric_year
+      t.remove :pagination, :kind, :numeric_year
     end
   end
 
