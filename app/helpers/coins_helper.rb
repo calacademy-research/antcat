@@ -1,6 +1,6 @@
 module CoinsHelper
   def coins reference
-    title = case reference.reference
+    title = case reference
     when ArticleReference then ArticleCoinsHelper
     when BookReference then BookCoinsHelper
     else return '' #raise "Don't know what kind of reference this is: #{reference.reference.inspect}"
@@ -12,7 +12,7 @@ end
 
 class CoinsHelperBase
   def initialize reference
-    @reference = reference.reference
+    @reference = reference
   end
 
   def coins
@@ -57,9 +57,9 @@ class ArticleCoinsHelper < CoinsHelperBase
   end
   def add_contents
     add 'rft.atitle', @reference.title
-    add 'rft.jtitle', @reference.issue.journal.title
-    add 'rft.volume', @reference.issue.volume
-    add 'rft.issue', @reference.issue.issue
+    add 'rft.jtitle', @reference.journal.title
+    add 'rft.volume', @reference.volume
+    add 'rft.issue', @reference.issue
     add 'rft.spage', @reference.start_page
     add 'rft.epage', @reference.end_page
   end

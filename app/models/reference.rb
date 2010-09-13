@@ -1,6 +1,7 @@
 class Reference < ActiveRecord::Base
   has_many :author_participations
   has_many :authors, :through => :author_participations
+  belongs_to :journal
 
   def self.import data
     create_data = {
@@ -26,18 +27,18 @@ class Reference < ActiveRecord::Base
   def self.search terms = {}
     conditions = []
     conditions_arguments = {}
-    source_joins = []
+    joins = []
 
     if terms[:author].present?
       conditions << 'authors.name LIKE :author'
       conditions_arguments[:author] = "#{terms[:author]}%"
-      source_joins << :authors
+      joins << :authors
     end
 
     if terms[:journal].present?
       conditions << 'journals.title LIKE :journal'
       conditions_arguments[:journal] = terms[:journal]
-      source_joins << {:issue => :journal}
+      joins << :journal
     end
 
     if terms[:start_year].present?
@@ -50,9 +51,7 @@ class Reference < ActiveRecord::Base
       conditions_arguments[:end_year] = terms[:end_year]
     end
 
-    all :joins => {:reference => {:source => source_joins}},
-        :conditions => [conditions.join(' AND '), conditions_arguments],
-        :order => 'authors, year'
+    all :joins => joins, :conditions => [conditions.join(' AND '), conditions_arguments]
   end
 
 end

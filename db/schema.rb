@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100913005614) do
+ActiveRecord::Schema.define(:version => 20100913164259) do
 
   create_table "author_participations", :force => true do |t|
     t.integer  "author_id"
@@ -69,26 +69,19 @@ ActiveRecord::Schema.define(:version => 20100913005614) do
   create_table "references", :force => true do |t|
     t.integer  "year"
     t.string   "title"
-    t.string   "citation"
     t.string   "public_notes"
     t.string   "possess"
     t.string   "date"
     t.datetime "created_at"
     t.string   "cite_code"
     t.datetime "updated_at"
-    t.string   "journal_title"
-    t.string   "series"
-    t.string   "volume"
-    t.string   "start_page"
-    t.string   "end_page"
-    t.string   "place"
     t.string   "editor_notes"
     t.string   "taxonomic_notes"
     t.string   "citation_year"
     t.string   "type"
     t.integer  "publisher_id"
     t.integer  "journal_id"
-    t.string   "issue"
+    t.string   "series_volume_issue"
     t.string   "pagination"
   end
 

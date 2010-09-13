@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe CoinsHelper do
   it "should format a journal reference correctly" do
-    coins = helper.coins(Factory(:reference,
+    coins = helper.coins(ward_reference_factory(
       :authors => 'MacKay, W.',
       :year => '1941',
       :title => 'A title',
@@ -26,7 +26,7 @@ describe CoinsHelper do
   end
 
   it "should use the numeric year" do
-    coins = helper.coins(Factory(:reference,
+    coins = helper.coins(ward_reference_factory(
       :authors => 'MacKay, W.',
       :year => '1941a ("1942")',
       :title => 'A title',
@@ -50,7 +50,7 @@ describe CoinsHelper do
   end
 
   it "should add multiple authors" do
-    coins = helper.coins(Factory(:reference,
+    coins = helper.coins(ward_reference_factory(
       :authors => 'MacKay, W. P.; Lowrie, D.',
       :year => '1941',
       :title => 'A title',
@@ -76,7 +76,7 @@ describe CoinsHelper do
   end
 
   it "should handle authors without commas" do
-    coins = helper.coins(Factory(:reference,
+    coins = helper.coins(ward_reference_factory(
       :authors => 'author',
       :year => '1941',
       :title => 'A title',
@@ -99,7 +99,7 @@ describe CoinsHelper do
   end
 
   it "should strip out italics formatting" do
-    coins = helper.coins(Factory(:reference,
+    coins = helper.coins(ward_reference_factory(
       :authors => 'author',
       :year => '1941',
       :title => 'A *title*',
@@ -122,7 +122,7 @@ describe CoinsHelper do
   end
 
   it "should escape HTML" do
-    coins = helper.coins(Factory(:reference,
+    coins = helper.coins(ward_reference_factory(
       :authors => 'author',
       :year => '1941',
       :title => '<script>',
@@ -145,7 +145,7 @@ describe CoinsHelper do
   end
 
   it "should format a book reference correctly" do
-    coins = helper.coins(Factory(:reference,
+    coins = helper.coins(ward_reference_factory(
       :authors => 'MacKay, W.',
       :year => '1933',
       :title => 'Another title',
@@ -168,7 +168,7 @@ describe CoinsHelper do
 
 =begin
   it "should format an unknown/nested reference correctly" do
-    coins = helper.coins(Factory(:reference, :citation => 'Unknown'))
+    coins = helper.coins(ward_reference_factory(
     check_parameters coins, [
       "ctx_ver=Z39.88-2004",
       "rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Aunknown",

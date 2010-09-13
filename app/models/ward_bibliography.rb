@@ -116,10 +116,10 @@ class WardBibliography
     journal_title = parts[1].strip
 
     parts = parts[2].match(/(.+?):(.+)$/) or return
-    issue = parts[1]
+    series_volume_issue = parts[1]
     pagination = remove_period_from parts[2]
 
-    {:article => {:journal => journal_title, :issue => issue, :pagination => pagination}}
+    {:article => {:journal => journal_title, :series_volume_issue => series_volume_issue, :pagination => pagination}}
   end
 
   def parse_unknown_citation citation

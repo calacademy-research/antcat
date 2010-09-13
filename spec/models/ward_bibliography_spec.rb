@@ -312,7 +312,7 @@ describe WardBibliography do
           :year => 1978,
           :date => '197804',
           :title => 'Records of insect collection',
-          :article => {:journal => "Bull. Nat. Hist. Res. Cent. Univ. Baghdad", :issue => "7(2)", :pagination => "1-6"},
+          :article => {:journal => "Bull. Nat. Hist. Res. Cent. Univ. Baghdad", :series_volume_issue => "7(2)", :pagination => "1-6"},
           :public_notes => 'Formicidae pp. 4-6.',
           :editor_notes => 'At least, I think so',
           :taxonomic_notes => nil,
@@ -375,27 +375,27 @@ describe WardBibliography do
         describe "parsing a journal citation" do
           it "should extract article, issue and journal information" do
             @bibliography.parse_citation('Behav. Ecol. Sociobiol. 4:163-181.').should == 
-              {:article => {:journal => 'Behav. Ecol. Sociobiol.', :issue => '4', :pagination => '163-181'}}
+              {:article => {:journal => 'Behav. Ecol. Sociobiol.', :series_volume_issue => '4', :pagination => '163-181'}}
           end
 
           it "should parse a citation with just a single page issue" do
             @bibliography.parse_citation("Entomol. Mon. Mag. 92:8.").should == 
-              {:article => {:journal => 'Entomol. Mon. Mag.', :issue => '92', :pagination => '8'}}
+              {:article => {:journal => 'Entomol. Mon. Mag.', :series_volume_issue => '92', :pagination => '8'}}
           end
 
           it "should parse a citation with an issue issue" do
             @bibliography.parse_citation("Entomol. Mon. Mag. 92(32):8.").should == 
-              {:article => {:journal => 'Entomol. Mon. Mag.', :issue => '92(32)', :pagination => '8'}}
+              {:article => {:journal => 'Entomol. Mon. Mag.', :series_volume_issue => '92(32)', :pagination => '8'}}
           end
 
           it "should parse a citation with a series issue" do
             @bibliography.parse_citation('Ann. Mag. Nat. Hist. (10)8:129-131.').should == 
-              {:article => {:journal => 'Ann. Mag. Nat. Hist.', :issue => '(10)8', :pagination => '129-131'}}
+              {:article => {:journal => 'Ann. Mag. Nat. Hist.', :series_volume_issue => '(10)8', :pagination => '129-131'}}
           end
 
           it "should parse a citation with series, volume and issue" do
             @bibliography.parse_citation('Ann. Mag. Nat. Hist. (I)C(xix):129-131.').should ==
-              {:article => {:journal => 'Ann. Mag. Nat. Hist.', :issue => '(I)C(xix)', :pagination => '129-131'}}
+              {:article => {:journal => 'Ann. Mag. Nat. Hist.', :series_volume_issue => '(I)C(xix)', :pagination => '129-131'}}
           end
         end
 

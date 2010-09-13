@@ -1,12 +1,24 @@
 require 'factory_girl'
 
+def ward_reference_factory attributes
+  attributes.reverse_merge!(:authors => 'Fisher')
+  WardBibliography.new.import_reference attributes
+end
+
 Factory.define :reference do |reference|
   reference.citation_year    "2010"
   reference.title   "Ants are my life"
   reference.year  2010
-  reference.after_build do |article|
-    source.authors << Factory(:author)
-  end
+end
+
+def reference_factory attributes = {}
+  author = attributes.delete(:author)
+  reference = Factory(:reference, attributes)
+  reference.authors << Factory(:author, :name => author)
+  reference
+end
+
+Factory.define :article_reference do |reference|
 end
 
 Factory.define :author do |author|
