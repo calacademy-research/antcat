@@ -1,6 +1,4 @@
 class Journal < ActiveRecord::Base
-  has_many :issues
-
   def self.import title
     find_or_create_by_title(title)
   end
