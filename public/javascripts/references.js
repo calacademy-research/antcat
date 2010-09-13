@@ -160,10 +160,8 @@ function showReferenceForm($reference, options) {
 }
 
 function setWatermarks($form) {
-  $('#reference_authors', $form).watermark('Authors');
   $('#reference_year', $form).watermark('Year');
   $('#reference_title', $form).watermark('Title');
-  $('#reference_citation', $form).watermark('Citation');
   $('#reference_public_notes', $form).watermark('Published notes');
   $('#reference_editor_notes', $form).watermark("Editor's notes");
   $('#reference_taxonomic_notes', $form).watermark('Taxonomic notes');

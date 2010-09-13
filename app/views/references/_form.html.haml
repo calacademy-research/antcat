@@ -1,6 +1,9 @@
 - reference ||= Reference.new
 .reference_form
-  - form_for reference do |f|
+  - url = reference.new_record? ? references_path : reference_path(reference)
+  - method = reference.new_record? ? 'post' : 'put'
+  - form_for :reference, reference, :url => url do |f|
+    %input{:type => 'hidden', :name => '_method', :value => method}
     = render :partial => 'shared/errors_for', :locals => { :resource => reference }
 
     %table
@@ -8,12 +11,9 @@
         %col{:width => '*'}
         %col{:width => '100px'}
       %tr
-        %td.authors= f.text_field :authors
         %td.year= f.text_field :year
       %tr
         %td{:colspan => 2}= f.text_field :title
-      %tr
-        %td{:colspan => 2}= f.text_field :citation
       %tr
         %td{:colspan => 2}= f.text_field :public_notes
       %tr
