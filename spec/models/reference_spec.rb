@@ -158,4 +158,48 @@ describe Reference do
     reference.authors.first.should == author
   end
 
+  describe "authors_string, used for sorting in the database" do
+    before do
+      @reference = Factory(:reference)
+    end
+
+    describe "formatting" do
+      it "should be empty if there are no authors" do
+        @reference.authors_string.should be_blank
+      end
+
+      it "should consist of one author if that's all there is" do
+        @reference.authors << Factory(:author, :name => 'Fisher, B.L.')
+        @reference.authors_string.should == 'Fisher, B.L.'
+      end
+
+      it "should separate multiple authors with semicolons" do
+        @reference.authors << Factory(:author, :name => 'Fisher, B.L.')
+        @reference.authors << Factory(:author, :name => 'Ward, P.S.')
+        @reference.authors_string.should == 'Fisher, B.L.; Ward, P.S.'
+      end
+    end
+
+    describe "updating, when things change" do
+      it "should update its authors_string when an author is added" do
+        @reference.authors_string.should be_blank
+        @reference.authors << Factory(:author, :name => 'Ward')
+        @reference.authors_string.should == 'Ward'
+      end
+      it "should update its authors_string when an author is removed" do
+        @reference.authors << Factory(:author, :name => 'Ward')
+        @reference.authors_string.should == 'Ward'
+        @reference.authors = []
+        @reference.authors_string.should be_blank
+      end
+      it "should update its authors_string when an author's name is changed" do
+        author = Factory(:author, :name => 'Ward')
+        @reference.authors << author
+        @reference.authors_string.should == 'Ward'
+        author.update_attribute :name, 'Fisher'
+        @reference.reload.authors_string.should == 'Fisher'
+      end
+    end
+  end
+
 end

@@ -22,4 +22,14 @@ describe Author do
       Author.count.should == 2
     end
   end
+
+  describe "editing" do
+    it "should update associated references when the name is changed" do
+      author = Factory(:author, :name => 'Ward')
+      reference = Factory(:reference)
+      reference.authors << author
+      author.update_attribute :name, 'Fisher'
+      reference.reload.authors_string.should == 'Fisher'
+    end
+  end
 end

@@ -1,6 +1,6 @@
 class Reference < ActiveRecord::Base
   has_many :author_participations
-  has_many :authors, :through => :author_participations
+  has_many :authors, :through => :author_participations, :after_add => :update_authors_string, :after_remove => :update_authors_string
   belongs_to :journal
 
   def self.import data
@@ -52,6 +52,10 @@ class Reference < ActiveRecord::Base
     end
 
     all :joins => joins, :conditions => [conditions.join(' AND '), conditions_arguments]
+  end
+
+  def update_authors_string _ = nil
+    update_attribute(:authors_string, authors.map(&:name).join('; '))
   end
 
 end

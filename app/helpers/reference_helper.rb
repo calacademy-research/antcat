@@ -1,8 +1,8 @@
 module ReferenceHelper
   def format_reference reference
     s = ''
-    s << "#{italicize(h reference.authors)} "
-    s << "#{h reference.year}. "
+    s << "#{h reference.authors_string} "
+    s << "#{h reference.citation_year}. "
     s << "#{italicize(add_period_if_necessary(h reference.title))} "
     s << "#{italicize(add_period_if_necessary(h reference.citation))}"
     s << " [#{format_date(reference.date)}]" if reference.date.present?
