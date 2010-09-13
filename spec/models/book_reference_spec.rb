@@ -12,4 +12,13 @@ describe BookReference do
     end
 
   end
+
+  describe "citation" do
+    it "should format a citation" do
+      publisher = Publisher.create! :name => "Wiley", :place => 'New York'
+      reference = BookReference.new :publisher => publisher, :pagination => '32 pp.'
+      reference.citation.should == 'New York: Wiley. 32 pp.'
+    end
+  end
+
 end

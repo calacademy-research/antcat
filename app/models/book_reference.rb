@@ -7,4 +7,9 @@ class BookReference < Reference
       :publisher => Publisher.import(data[:publisher])
     )
   end
+
+  def citation
+    add_period_if_necessary "#{publisher.place}: #{publisher.name}. #{pagination}"
+  end
+
 end

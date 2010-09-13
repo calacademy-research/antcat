@@ -47,4 +47,13 @@ describe ArticleReference do
       reference.end_page.should be_nil
     end
   end
+
+  describe "citation" do
+    it "should format a citation" do
+      journal = Journal.create! :title => 'Ants'
+      reference = ArticleReference.new :journal => journal, :series_volume_issue => '(2)1(2)', :pagination => '34-46'
+      reference.citation.should == 'Ants (2)1(2):34-46.'
+    end
+  end
+
 end

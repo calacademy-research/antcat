@@ -9,6 +9,10 @@ class ArticleReference < Reference
     )
   end
 
+  def citation
+    add_period_if_necessary "#{journal.title} #{series_volume_issue}:#{pagination}"
+  end
+
   def start_page
     parse_pagination
     @start_page
