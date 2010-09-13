@@ -89,11 +89,11 @@ describe Reference do
 
     describe "searching by year" do
       before do
-        Factory(:reference, :year => 1994)
-        Factory(:reference, :year => 1995)
-        Factory(:reference, :year => 1996)
-        Factory(:reference, :year => 1997)
-        Factory(:reference, :year => 1998)
+        reference_factory(:author => 'Bolton', :year => 1994)
+        reference_factory(:author => 'Bolton', :year => 1995)
+        reference_factory(:author => 'Bolton', :year => 1996)
+        reference_factory(:author => 'Bolton', :year => 1997)
+        reference_factory(:author => 'Bolton', :year => 1998)
       end
 
       it "should return an empty array if nothing is found for year" do
@@ -113,12 +113,12 @@ describe Reference do
       end
 
       it "should find references in the year of the end range, even if they have extra characters" do
-        Factory(:reference, :year => '2004.', :year => 2004)
+        reference_factory(:author => 'Bolton', :year => '2004.', :year => 2004)
         Reference.search(:start_year => '2004', :end_year => '2004').map(&:year).should =~ [2004]
       end
 
       it "should find references in the year of the start year, even if they have extra characters" do
-        Factory(:reference, :year => '2004.', :year => 2004)
+        reference_factory(:author => 'Bolton', :year => '2004.', :year => 2004)
         Reference.search(:start_year => '2004', :end_year => '2004').map(&:year).should =~ [2004]
       end
 
@@ -150,7 +150,7 @@ describe Reference do
   end
 
   it "has many authors" do
-    reference = Reference.create!
+    reference = Reference.create! :title => 'asdf'
 
     author = Author.create! :name => 'Fisher, B.L.'
     reference.authors << author
@@ -199,6 +199,15 @@ describe Reference do
         author.update_attribute :name, 'Fisher'
         @reference.reload.authors_string.should == 'Fisher'
       end
+    end
+  end
+
+  describe "validations" do
+    it "validates that the title is present" do
+      reference = Factory(:reference)
+      reference.should be_valid
+      reference.title = nil
+      reference.should_not be_valid
     end
   end
 

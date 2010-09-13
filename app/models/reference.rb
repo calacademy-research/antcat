@@ -3,6 +3,8 @@ class Reference < ActiveRecord::Base
   has_many :authors, :through => :author_participations
   belongs_to :journal
 
+  validates_presence_of :title
+
   def self.import data
     create_data = {
       :authors => Author.import(data[:authors]),

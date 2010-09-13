@@ -8,7 +8,7 @@ Feature: View bibliography
       |authors   |year |title    |citation|cite_code|possess|date    |public_notes|editor_notes  |
       |Ward, P.S.|2010d|Ant Facts|Ants 1:1|232      |PSW    |20100712|Public notes|Editor's notes|
     When I go to the main page
-    Then I should see "Authors 2010. Title. Ants 1:1. [2010-07-12]"
+    Then I should see "Ward, P.S. 2010d. Ant Facts. Ants 1:1. [2010-07-12]"
       And I should see "Public notes"
       And I should see "Editor's notes"
 

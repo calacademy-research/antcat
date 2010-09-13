@@ -4,7 +4,7 @@ describe Author do
   it "has many references" do
     author = Author.create! :name => 'Fisher, B.L.'
 
-    reference = Reference.create!
+    reference = Factory(:reference)
     author.references << reference
 
     author.references.first.should == reference
