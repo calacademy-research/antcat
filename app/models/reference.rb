@@ -1,6 +1,6 @@
 class Reference < ActiveRecord::Base
   has_many :author_participations
-  has_many :authors, :through => :author_participations, :after_add => :update_authors_string, :after_remove => :update_authors_string
+  has_many :authors, :through => :author_participations
   belongs_to :journal
 
   def self.import data
@@ -27,12 +27,11 @@ class Reference < ActiveRecord::Base
   def self.search terms = {}
     conditions = []
     conditions_arguments = {}
-    joins = []
+    joins = [:authors]
 
     if terms[:author].present?
       conditions << 'authors.name LIKE :author'
       conditions_arguments[:author] = "#{terms[:author]}%"
-      joins << :authors
     end
 
     if terms[:journal].present?
@@ -51,12 +50,18 @@ class Reference < ActiveRecord::Base
       conditions_arguments[:end_year] = terms[:end_year]
     end
 
-    all :joins => joins, :conditions => [conditions.join(' AND '), conditions_arguments],
-        :order => 'authors_string, citation_year'
+    all :select => "`references`.*, GROUP_CONCAT(authors.name SEPARATOR '; ') AS authors_string",
+        :joins => joins,
+        :conditions => [conditions.join(' AND '), conditions_arguments],
+        :order => 'authors_string, citation_year',
+        :group => 'references.id'
   end
 
-  def update_authors_string _ = nil
-    update_attribute(:authors_string, authors.map(&:name).join('; '))
+  def citation
+  end
+
+  def authors_string
+    authors.map(&:name).join('; ')
   end
 
   def add_period_if_necessary string
