@@ -51,7 +51,8 @@ class Reference < ActiveRecord::Base
       conditions_arguments[:end_year] = terms[:end_year]
     end
 
-    all :joins => joins, :conditions => [conditions.join(' AND '), conditions_arguments]
+    all :joins => joins, :conditions => [conditions.join(' AND '), conditions_arguments],
+        :order => 'authors_string, citation_year'
   end
 
   def update_authors_string _ = nil

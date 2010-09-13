@@ -126,9 +126,9 @@ describe Reference do
 
     describe "sorting search results" do
       it "should sort by author plus year plus letter" do
-        fisher1910b = reference_factory(:author => 'Fisher', :year => '1910b')
-        wheeler1874 = reference_factory(:author => 'Wheeler', :year => '1874')
-        fisher1910a = reference_factory(:author => 'Fisher', :year => '1910a')
+        fisher1910b = reference_factory(:author => 'Fisher', :citation_year => '1910b')
+        wheeler1874 = reference_factory(:author => 'Wheeler', :citation_year => '1874')
+        fisher1910a = reference_factory(:author => 'Fisher', :citation_year => '1910a')
 
         results = Reference.search
 
