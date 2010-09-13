@@ -1,6 +1,6 @@
 Given /the following entr(?:ies|y) exists? in the bibliography/ do |table|
   table.hashes.each do |hash|
-    @reference = Reference.import hash
+    @reference = WardBibliography.new.import_reference hash
   end
 end
 

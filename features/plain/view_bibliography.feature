@@ -5,8 +5,8 @@ Feature: View bibliography
 
   Scenario: View one entry
     Given the following entries exist in the bibliography
-      |authors|citation|cite_code|created_at|date    |public_notes|editor_notes|possess|title|updated_at|year|
-      |Authors|Ants 1:1|CiteCode |today     |20100712|Public notes|Editor's notes|Possess|Title|today     |2010|
+      |authors   |year |title    |citation|cite_code|possess|date    |public_notes|editor_notes  |
+      |Ward, P.S.|2010d|Ant Facts|Ants 1:1|232      |PSW    |20100712|Public notes|Editor's notes|
     When I go to the main page
     Then I should see "Authors 2010. Title. Ants 1:1. [2010-07-12]"
       And I should see "Public notes"

@@ -25,8 +25,7 @@ class WardBibliography
     rows = doc.css('tr')
     (1..(rows.length - 1)).each do |i|
       break unless columns = parse_html_columns(rows[i].css('td'))
-      reference_data = parse(columns)
-      Reference.import reference_data
+      import_reference columns
       Progress.print '.'
     end
     Progress.puts
@@ -63,6 +62,10 @@ class WardBibliography
      :public_notes => public_notes,
      :editor_notes => editor_notes,
      :taxonomic_notes => taxonomic_notes}
+  end
+
+  def import_reference columns
+    Reference.import parse(columns)
   end
 
   def parse data
