@@ -4,23 +4,22 @@ class Reference < ActiveRecord::Base
 
   def self.import data
     create_data = {
+      :authors => Author.import(data[:authors]),
       :citation_year => data[:citation_year],
+      :year => data[:year],
+      :title => data[:title],
       :cite_code => data[:cite_code],
-      :date => data[:date],
-      :editor_notes => data[:editor_notes],
       :possess => data[:possess],
+      :date => data[:date],
       :public_notes => data[:public_notes],
       :taxonomic_notes => data[:taxonomic_notes],
-      :title => data[:title],
-      :year => data[:year],
-      :authors => Author.import(data[:authors]),
-
+      :editor_notes => data[:editor_notes],
     }
     case
-    when data.has_key?(:book)
-      reference = BookReference.import create_data[:book], data
-    when data.has_key?(:article)
-      reference = ArticleReference.import create_data[:article], data
+    when data[:book]
+      BookReference.import create_data, data[:book]
+    when data[:article]
+      ArticleReference.import create_data, data[:article]
     end
   end
 

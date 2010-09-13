@@ -3,15 +3,53 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe Reference do
 
   describe "importing a new reference" do
+    before do
+      @reference_data = {
+        :authors => ['Author'],
+        :citation_year => '2010d',
+        :year => 2010,
+        :title => 'Ants',
+        :cite_code => '345',
+        :possess => 'PSW',
+        :date => '120134',
+        :public_notes => 'Notes',
+        :editor_notes => 'Editor notes',
+        :taxonomic_notes => 'Tax. notes',
+      }
+    end
     it "should import a book reference" do
-      data = {:year => 2010, :book => {}}
-      BookReference.should_receive(:import).with(data)
-      Reference.import data
+      author = mock_model Author
+      Author.should_receive(:import).with(['Author']).and_return [author]
+      @reference_data[:book] = 1
+      BookReference.should_receive(:import).with({
+        :authors => [author],
+        :citation_year => '2010d',
+        :year => 2010,
+        :title => 'Ants',
+        :cite_code => '345',
+        :possess => 'PSW',
+        :date => '120134',
+        :public_notes => 'Notes',
+        :editor_notes => 'Editor notes',
+        :taxonomic_notes => 'Tax. notes'}, 1)
+      Reference.import @reference_data
     end
     it "should import an article reference" do
-      data = {:year => 2010, :article => {}}
-      ArticleReference.should_receive(:import).with(data)
-      Reference.import data
+      author = mock_model Author
+      Author.should_receive(:import).with(['Author']).and_return [author]
+      @reference_data[:article] = 1
+      ArticleReference.should_receive(:import).with({
+        :authors => [author],
+        :citation_year => '2010d',
+        :year => 2010,
+        :title => 'Ants',
+        :cite_code => '345',
+        :possess => 'PSW',
+        :date => '120134',
+        :public_notes => 'Notes',
+        :editor_notes => 'Editor notes',
+        :taxonomic_notes => 'Tax. notes'}, 1)
+      Reference.import @reference_data
     end
   end
 
