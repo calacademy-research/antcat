@@ -7,7 +7,7 @@ describe Author do
     reference = Reference.create!
     author.references << reference
 
-    author.references.first.should_not == reference
+    author.references.first.should == reference
   end
 
   describe "importing" do
