@@ -4,7 +4,7 @@ describe CoinsHelper do
   it "should format a journal reference correctly" do
     coins = helper.coins(ward_reference_factory(
       :authors => 'MacKay, W.',
-      :citation_year => '1941',
+      :year => '1941',
       :title => 'A title',
       :citation => 'Journal Title 1(2):3-4'
     ))
@@ -28,7 +28,7 @@ describe CoinsHelper do
   it "should use the numeric year" do
     coins = helper.coins(ward_reference_factory(
       :authors => 'MacKay, W.',
-      :citation_year => '1941a ("1942")',
+      :year => '1941a ("1942")',
       :title => 'A title',
       :citation => 'Journal Title 1(2):3-4'
     ))
@@ -52,7 +52,7 @@ describe CoinsHelper do
   it "should add multiple authors" do
     coins = helper.coins(ward_reference_factory(
       :authors => 'MacKay, W. P.; Lowrie, D.',
-      :citation_year => '1941',
+      :year => '1941',
       :title => 'A title',
       :citation => 'Journal Title 1(2):3-4'
     ))
@@ -78,7 +78,7 @@ describe CoinsHelper do
   it "should handle authors without commas" do
     coins = helper.coins(ward_reference_factory(
       :authors => 'author',
-      :citation_year => '1941',
+      :year => '1941',
       :title => 'A title',
       :citation => 'Journal Title 1(2):3-4'
     ))
@@ -101,7 +101,7 @@ describe CoinsHelper do
   it "should strip out italics formatting" do
     coins = helper.coins(ward_reference_factory(
       :authors => 'author',
-      :citation_year => '1941',
+      :year => '1941',
       :title => 'A *title*',
       :citation => 'Journal Title 1(2):3-4'
     ))
@@ -124,7 +124,7 @@ describe CoinsHelper do
   it "should escape HTML" do
     coins = helper.coins(ward_reference_factory(
       :authors => 'author',
-      :citation_year => '1941',
+      :year => '1941',
       :title => '<script>',
       :citation => 'Journal Title 1(2):3-4'
     ))
@@ -147,7 +147,7 @@ describe CoinsHelper do
   it "should format a book reference correctly" do
     coins = helper.coins(ward_reference_factory(
       :authors => 'MacKay, W.',
-      :citation_year => '1933',
+      :year => '1933',
       :title => 'Another title',
       :citation => 'Dresden: Springer Verlag, ix + 33pp.'
     ))

@@ -1,13 +1,14 @@
 #  How to import an ANTBIB spreadsheet from Phil Ward:
-#  1) Open the spreadsheet in Excel
+#  1) Open the spreadsheet (e.g. ANTBIB_v1V.xls) in Excel
 #  2) Make each column wide enough to fit its contents. The easiest way is to
 #     double-click the dividing line between columns up at the top,
 #     between the column letters.
 #  3) Do File | Save as Web Page..., selecting the Sheet radio button
-#  4) With the web page output in data/ANTBIB.htm, run 'rake import'.
+#  4) Choose a file name with the same base as the spreadsheet, e.g.
+#     ANTBIB_v1V.htm. If the file has '96' in its name, the import will
+#     handle one extra column - taxonomic_notes
+#  4) Run 'rake import_ward'.
 #     This will delete all data and import it from the web page output.
-#  Use ANTBIB96.htm for the post-1995 spreadsheet. The presence of
-#  '96' in the name will enable the import to handle an extra column
 
 class WardBibliography
   def initialize filename, show_progress = false

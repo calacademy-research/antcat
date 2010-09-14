@@ -2,7 +2,7 @@ require 'factory_girl'
 
 def ward_reference_factory attributes
   attributes.reverse_merge!(:authors => 'Fisher', :title => 'Ants')
-  WardBibliography.new.import_reference attributes
+  WardReference.new(attributes).export
 end
 
 Factory.define :reference do |reference|

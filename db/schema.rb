@@ -108,17 +108,19 @@ ActiveRecord::Schema.define(:version => 20100914171206) do
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
   create_table "ward_references", :force => true do |t|
-    t.string  "authors"
-    t.string  "citation"
-    t.string  "cite_code"
-    t.string  "date"
-    t.string  "filename"
-    t.string  "notes"
-    t.string  "possess"
-    t.string  "taxonomic_notes"
-    t.string  "title"
-    t.string  "year"
-    t.integer "reference_id"
+    t.string   "authors"
+    t.string   "citation"
+    t.string   "cite_code"
+    t.string   "date"
+    t.string   "filename"
+    t.string   "notes"
+    t.string   "possess"
+    t.string   "taxonomic_notes"
+    t.string   "title"
+    t.string   "year"
+    t.integer  "reference_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
 end

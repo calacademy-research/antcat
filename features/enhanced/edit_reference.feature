@@ -6,8 +6,8 @@ Feature: Edit reference
   Scenario: Not logged in
     Given I am not logged in
       And the following entries exist in the bibliography
-      |authors|citation  |cite_code|created_at|date    |possess|title|updated_at|citation_year|
-      |authors|Psyche 3:3|CiteCode |today     |20100712|Possess|title|today     |2010         |
+      |authors|citation  |cite_code|created_at|date    |possess|title|updated_at|year|
+      |authors|Psyche 3:3|CiteCode |today     |20100712|Possess|title|today     |2010|
     When I go to the main page
       And I click the reference
       Then there should not be an edit form
@@ -15,8 +15,8 @@ Feature: Edit reference
   Scenario: Edit a reference
     Given I am logged in
       And the following entries exist in the bibliography
-      |authors|citation  |cite_code|created_at|date    |possess|title|updated_at|citation_year|
-      |authors|Psyche 5:3|CiteCode |today     |20100712|Possess|title|today     |2010         |
+      |authors|citation  |cite_code|created_at|date    |possess|title|updated_at|year|
+      |authors|Psyche 5:3|CiteCode |today     |20100712|Possess|title|today     |2010|
     When I go to the main page
       Then I should not see the edit form
     When I click the reference
@@ -30,8 +30,8 @@ Feature: Edit reference
   Scenario: Change a reference's year
     Given I am logged in
       And the following entries exist in the bibliography
-      |authors|title|citation  |citation_year|
-      |Fisher |Ants |Psyche 6:4|2010         |
+      |authors|title|citation  |year|
+      |Fisher |Ants |Psyche 6:4|2010|
     When I go to the main page
       And I click the reference
       And I fill in "reference_citation_year" with "1910a"

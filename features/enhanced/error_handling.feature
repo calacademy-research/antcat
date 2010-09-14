@@ -6,8 +6,8 @@ Feature: Error handling
   Scenario: Error when editing a reference
     Given I am logged in
       And the following entry exists in the bibliography
-      |authors       |citation_year |title                     |citation                   |
-      |Forel, A.     |1874          |Les fourmis de la Suisse  |Neue Denkschriften 26:1-452|
+      |authors       |year|title                     |citation                   |
+      |Forel, A.     |1874|Les fourmis de la Suisse  |Neue Denkschriften 26:1-452|
     When I go to the main page
       And I click the reference
       And I fill in "reference_title" with ""
@@ -24,8 +24,8 @@ Feature: Error handling
   Scenario: Cancelling edit after an error
     Given I am logged in
       And the following entry exists in the bibliography
-      |authors       |citation_year |title                     |citation                   |
-      |Forel, A.     |1874          |Les fourmis de la Suisse  |Neue Denkschriften 26:1-452|
+      |authors       |year|title                     |citation                   |
+      |Forel, A.     |1874|Les fourmis de la Suisse  |Neue Denkschriften 26:1-452|
     When I go to the main page
       And I click the reference
       And I fill in "reference_title" with ""
