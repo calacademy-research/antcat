@@ -13,10 +13,11 @@ class WardReference < ActiveRecord::Base
   def export
     reference = Reference.import to_import_format
     update_attribute(:reference, reference)
+    reference
   end
 
   def to_import_format
-    data = {}
+    data = {:id => id, :class => self.class.to_s}
     parse_authors data
     parse_citation data
     data[:citation_year] = remove_period_from year

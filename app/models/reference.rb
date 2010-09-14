@@ -2,6 +2,7 @@ class Reference < ActiveRecord::Base
   has_many :author_participations
   has_many :authors, :through => :author_participations
   belongs_to :journal
+  belongs_to :source_reference, :polymorphic => true
 
   before_save :set_year
 
@@ -18,6 +19,8 @@ class Reference < ActiveRecord::Base
       :public_notes => data[:public_notes],
       :taxonomic_notes => data[:taxonomic_notes],
       :editor_notes => data[:editor_notes],
+      :source_reference_id => data[:id],
+      :source_reference_type => data[:class], 
     }
     case
     when data[:book]

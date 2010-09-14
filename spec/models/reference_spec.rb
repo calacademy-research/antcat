@@ -14,6 +14,8 @@ describe Reference do
         :public_notes => 'Notes',
         :editor_notes => 'Editor notes',
         :taxonomic_notes => 'Tax. notes',
+        :id => 1,
+        :class => 'WardReference', 
       }
     end
     it "should import a book reference" do
@@ -29,7 +31,9 @@ describe Reference do
         :date => '120134',
         :public_notes => 'Notes',
         :editor_notes => 'Editor notes',
-        :taxonomic_notes => 'Tax. notes'}, 1)
+        :taxonomic_notes => 'Tax. notes',
+        :source_reference_id => 1,
+        :source_reference_type => 'WardReference'}, 1)
         Reference.import @reference_data
     end
     it "should import an article reference" do
@@ -45,7 +49,9 @@ describe Reference do
         :date => '120134',
         :public_notes => 'Notes',
         :editor_notes => 'Editor notes',
-        :taxonomic_notes => 'Tax. notes'}, 1)
+        :taxonomic_notes => 'Tax. notes',
+        :source_reference_id => 1,
+        :source_reference_type => 'WardReference'}, 1)
         Reference.import @reference_data
     end
   end
@@ -215,6 +221,14 @@ describe Reference do
       reference.citation_year = '2010b'
       reference.save!
       reference.year.should == 2010
+    end
+  end
+
+  describe "polymorphic association to source of reference" do
+    it "should work" do
+      ward_reference = Factory(:ward_reference)
+      reference = Reference.create! :source_reference => ward_reference, :title => 'asdf'
+      reference.reload.source_reference.should == ward_reference
     end
   end
 

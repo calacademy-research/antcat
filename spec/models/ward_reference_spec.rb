@@ -29,7 +29,7 @@ describe WardReference do
         ward_reference = WardReference.new :authors => 'Fisher', :citation => 'Ants 1:1'
         Reference.should_receive(:import).with(hash_including(:article => {:journal => 'Ants', :pagination => '1',
                                                               :series_volume_issue => '1'})).and_return reference
-        ward_reference.export
+        ward_reference.export.should == reference
         ward_reference.reference.should == reference
       end
     end
@@ -53,6 +53,11 @@ describe WardReference do
 
       it "should remove period from end of title" do
         WardReference.new(:title => 'Title with period.').to_import_format.should include(:title => 'Title with period')
+      end
+
+      it "send itself along" do
+        ward_reference = WardReference.create!(:title => 'Title with period.')
+        ward_reference.to_import_format.should include(:id => ward_reference.id, :class => 'WardReference')
       end
 
       describe "parsing authors" do
@@ -127,7 +132,7 @@ describe WardReference do
       end
 
       it "should convert to import format" do
-        WardReference.new({
+        ward_reference = WardReference.create!({
           :authors => "Abdul-Rassoul, M. S.; Dawah, H. A.; Othman, N. Y.",
           :citation => "Bull. Nat. Hist. Res. Cent. Univ. Baghdad 7(2):1-6",
           :cite_code => '5523',
@@ -137,13 +142,16 @@ describe WardReference do
           :taxonomic_notes => 'Tapinoma',
           :title => 'Records of insect collection',
           :year => "1978d",
-        }).to_import_format.should == {
+        })
+        ward_reference.to_import_format.should == {
           :article => {:journal => "Bull. Nat. Hist. Res. Cent. Univ. Baghdad", :series_volume_issue => "7(2)", :pagination => "1-6"},
           :authors => ["Abdul-Rassoul, M. S.", "Dawah, H. A.", "Othman, N. Y."],
           :citation_year => "1978d",
           :cite_code => '5523',
+          :class => ward_reference.class.to_s,
           :date => '197804',
           :editor_notes => 'At least, I think so',
+          :id => ward_reference.id,
           :possess => 'PSW',
           :public_notes => 'Formicidae pp. 4-6.',
           :taxonomic_notes => 'Tapinoma',
