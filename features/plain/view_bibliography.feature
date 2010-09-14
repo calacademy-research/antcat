@@ -5,8 +5,8 @@ Feature: View bibliography
 
   Scenario: View one entry
     Given the following entries exist in the bibliography
-      |authors   |year |title    |citation|cite_code|possess|date    |public_notes|editor_notes  |
-      |Ward, P.S.|2010d|Ant Facts|Ants 1:1|232      |PSW    |20100712|Public notes|Editor's notes|
+      |authors   |citation_year|title    |citation|cite_code|possess|date    |public_notes|editor_notes  |
+      |Ward, P.S.|2010d        |Ant Facts|Ants 1:1|232      |PSW    |20100712|Public notes|Editor's notes|
     When I go to the main page
     Then I should see "Ward, P.S. 2010d. Ant Facts. Ants 1:1. [2010-07-12]"
       And I should see "Public notes"
@@ -14,26 +14,26 @@ Feature: View bibliography
 
   Scenario: View one entry with italics
     Given the following entries exist in the bibliography
-      |title|authors|citation|year|
-      |Territory \|defense\| by the ant *Azteca trigona*|authors|Ants 2:2|year|
+      |title                                            |authors|citation|citation_year|
+      |Territory \|defense\| by the ant *Azteca trigona*|authors|Ants 2:2|year         |
     When I go to the main page
     Then I should see "Azteca trigona" in italics
       And I should see "defense" in italics
 
   Scenario: Dangerous text
     Given the following entries exist in the bibliography
-      |title   |authors|citation|year|public_notes|
-      |<script>|authors|Ants 3:3|year|<html>      |
+      |title   |authors|citation|citation_year|public_notes|
+      |<script>|authors|Ants 3:3|year         |<html>      |
     When I go to the main page
     Then I should see "<script>"
       And I should see "<html>"
 
   Scenario: Viewing more than one entry, sorted by author + date (including slug)
     Given the following entries exist in the bibliography
-      |authors       |year |title                     |citation                   |
-      |Wheeler, W. M.|1910b|Ants                      |Psyche 2:2|
-      |Forel, A.     |1874 |Les fourmis de la Suisse  |Neue Denkschriften 26:1-452|
-      |Wheeler, W. M.|1910a|Small artificial ant-nests|Psyche 1:1                 |
+      |authors       |citation_year |title                     |citation                   |
+      |Wheeler, W. M.|         1910b|Ants                      |Psyche 2:2                 |
+      |Forel, A.     |         1874 |Les fourmis de la Suisse  |Neue Denkschriften 26:1-452|
+      |Wheeler, W. M.|         1910a|Small artificial ant-nests|Psyche 1:1                 |
     When I go to the main page
     Then I should see these entries in this order:
       |entry|

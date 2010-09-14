@@ -41,13 +41,3 @@ Feature: Edit reference
       And I press "Search"
     Then I should see "Fisher 1910a"
 
-  Scenario: Change a reference's journal title
-    Given I am logged in
-      And the following entries exist in the bibliography
-      |citation|authors|title|year|
-      |Esakia 31:1-115|authors|title|year|
-    When I go to the main page
-      And I click the reference
-      And I fill in "reference_citation" with "Mad Magazine 33:12"
-      And I press "OK"
-    Then there should be the HTML "rft.jtitle=Mad\+Magazine"
