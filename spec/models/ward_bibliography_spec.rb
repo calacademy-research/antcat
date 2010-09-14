@@ -7,7 +7,7 @@ describe WardBibliography do
       bibliography = WardBibliography.new filename
 
       File.should_receive(:read).with(filename.to_s).and_return('contents')
-      bibliography.should_receive(:import_html).with('contents', false)
+      bibliography.should_receive(:import_html).with 'contents'
 
       bibliography.import_file
     end

@@ -10,21 +10,19 @@
 #  '96' in the name will enable the import to handle an extra column
 
 class WardBibliography
-  def initialize filename
+  def initialize filename, show_progress = false
+    Progress.init show_progress
     @filename = filename.to_s
     @base_filename = File.basename(@filename, File.extname(@filename))
     @new_format = @base_filename.match(/96/).present?
   end
 
-  def import_file show_progress = false
-    Progress.init show_progress
+  def import_file
     Progress.print "Importing #{@filename}"
-    html = File.read(@filename)
-    import_html html, show_progress
+    import_html File.read(@filename)
   end
 
-  def import_html html, show_progress = false
-    Progress.init show_progress
+  def import_html html
     doc = Nokogiri::HTML(html)
     rows = doc.css('tr')
     (1..(rows.length - 1)).each do |i|
