@@ -11,7 +11,8 @@ class WardReference < ActiveRecord::Base
   end
 
   def export
-    Reference.import to_import_format
+    reference = Reference.import to_import_format
+    update_attribute(:reference, reference)
   end
 
   def to_import_format

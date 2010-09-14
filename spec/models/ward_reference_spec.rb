@@ -25,10 +25,12 @@ describe WardReference do
 
     describe "exporting a reference" do
       it "should convert each to the right format, then send them to Reference" do
+        reference = Factory(:reference)
         ward_reference = WardReference.new :authors => 'Fisher', :citation => 'Ants 1:1'
-        Reference.should_receive(:import).with hash_including(:article => {:journal => 'Ants', :pagination => '1',
-                                                              :series_volume_issue => '1'})
+        Reference.should_receive(:import).with(hash_including(:article => {:journal => 'Ants', :pagination => '1',
+                                                              :series_volume_issue => '1'})).and_return reference
         ward_reference.export
+        ward_reference.reference.should == reference
       end
     end
 
