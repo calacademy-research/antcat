@@ -125,7 +125,7 @@ describe WardBibliography do
         CONTENTS
         @bibliography.should_receive(:parse).with(
           :authors => "Abdul-Rassoul, M. S.; Dawah, H. A.; Othman, N. Y.",
-          :year => "1978d",
+          :citation_year => "1978d",
           :date => '197804',
           :title => 'Records of insect collection',
           :citation => "Bull. Nat. Hist. Res. Cent. Univ. Baghdad 7(2):1-6",
@@ -253,7 +253,7 @@ describe WardBibliography do
         contents = "<html><body><table><tr></tr><tr><td></td><td>123</td><td></td>
           <td>1978.</td><td></td><td></td>
         <td></td><td></td><td></td></tr></table></body></html>"
-        @bibliography.should_receive(:parse).with(hash_including(:year => '1978'))
+        @bibliography.should_receive(:parse).with(hash_including(:citation_year => '1978'))
         @bibliography.import_html contents, false
       end
 
@@ -297,7 +297,7 @@ describe WardBibliography do
       it "should parse out the authors and citation information" do
         @bibliography.parse(
           :authors => "Abdul-Rassoul, M. S.; Dawah, H. A.; Othman, N. Y.",
-          :year => "1978d",
+          :citation_year => "1978d",
           :date => '197804',
           :title => 'Records of insect collection',
           :citation => "Bull. Nat. Hist. Res. Cent. Univ. Baghdad 7(2):1-6",
@@ -309,7 +309,6 @@ describe WardBibliography do
         ).should == {
           :authors => ["Abdul-Rassoul, M. S.", "Dawah, H. A.", "Othman, N. Y."],
           :citation_year => "1978d",
-          :year => 1978,
           :date => '197804',
           :title => 'Records of insect collection',
           :article => {:journal => "Bull. Nat. Hist. Res. Cent. Univ. Baghdad", :series_volume_issue => "7(2)", :pagination => "1-6"},
@@ -347,7 +346,7 @@ describe WardBibliography do
         CONTENTS
         @bibliography.should_receive(:parse).with(
           :authors => "Schlick-Steiner, B. C.; Steiner, F. M.; Seifert, B.; Stauffer, C.; Christian, E.; Crozier, R. H.",
-          :year => "1978",
+          :citation_year => "1978",
           :date => '197804',
           :title => 'Records of insect collection',
           :citation => 'Bull. Nat. Hist. Res. Cent. Univ. Baghdad 7(2):1-6',

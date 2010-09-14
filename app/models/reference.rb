@@ -3,13 +3,14 @@ class Reference < ActiveRecord::Base
   has_many :authors, :through => :author_participations
   belongs_to :journal
 
+  before_save :set_year
+
   validates_presence_of :title
 
   def self.import data
     create_data = {
       :authors => Author.import(data[:authors]),
       :citation_year => data[:citation_year],
-      :year => data[:year],
       :title => data[:title],
       :cite_code => data[:cite_code],
       :possess => data[:possess],
@@ -69,6 +70,10 @@ class Reference < ActiveRecord::Base
   def add_period_if_necessary string
     string << '.' unless string[-1..-1] == '.'
     string
+  end
+
+  def set_year
+    self.year = citation_year.to_i
   end
 
 end

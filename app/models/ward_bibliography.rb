@@ -44,7 +44,7 @@ class WardBibliography
     notes           = node_to_text(columns[col += 1])
     possess         = node_to_text(columns[col += 1])
 
-    year = remove_period_from(node_to_text(year_td))
+    citation_year = remove_period_from(node_to_text(year_td))
 
     public_notes = editor_notes = nil
     if match = notes.match(/(?:\{(.+?)\})?(?:\s*(.*))?/)
@@ -53,7 +53,7 @@ class WardBibliography
     end
 
     {:authors => authors,
-     :year => year,
+     :citation_year => citation_year,
      :title => title,
      :citation  => citation,
      :cite_code => cite_code,
@@ -71,8 +71,7 @@ class WardBibliography
   def parse data
     parsed_data = parse_citation data[:citation]
     parsed_data[:authors] = parse_authors data[:authors]
-    parsed_data[:citation_year] = data[:year]
-    parsed_data[:year] = parse_year data[:year]
+    parsed_data[:citation_year] = data[:citation_year]
     parsed_data[:title] = data[:title]
     parsed_data[:cite_code] = data[:cite_code]
     parsed_data[:date] = data[:date]
@@ -85,10 +84,6 @@ class WardBibliography
 
   def parse_authors authors
     authors.split(/; ?/)
-  end
-
-  def parse_year year
-    year.to_i if year
   end
 
   def parse_citation citation

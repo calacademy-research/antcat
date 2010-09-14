@@ -7,7 +7,6 @@ describe Reference do
       @reference_data = {
         :authors => ['Author'],
         :citation_year => '2010d',
-        :year => 2010,
         :title => 'Ants',
         :cite_code => '345',
         :possess => 'PSW',
@@ -24,7 +23,6 @@ describe Reference do
       BookReference.should_receive(:import).with({
         :authors => [author],
         :citation_year => '2010d',
-        :year => 2010,
         :title => 'Ants',
         :cite_code => '345',
         :possess => 'PSW',
@@ -41,7 +39,6 @@ describe Reference do
       ArticleReference.should_receive(:import).with({
         :authors => [author],
         :citation_year => '2010d',
-        :year => 2010,
         :title => 'Ants',
         :cite_code => '345',
         :possess => 'PSW',
@@ -72,28 +69,28 @@ describe Reference do
     end
 
     it "should return an empty array if nothing is found for a given year and author" do
-      reference_factory(:author => 'Bolton', :year => 2010)
-      reference_factory(:author => 'Bolton', :year => 1995)
-      reference_factory(:author => 'Fisher', :year => 2011)
-      reference_factory(:author => 'Fisher', :year => 1996)
+      reference_factory(:author => 'Bolton', :citation_year => 2010)
+      reference_factory(:author => 'Bolton', :citation_year => 1995)
+      reference_factory(:author => 'Fisher', :citation_year => 2011)
+      reference_factory(:author => 'Fisher', :citation_year => 1996)
       Reference.search(:start_year => '2012', :end_year => '2013', :author => 'Fisher').should be_empty
     end
 
     it "should return the one reference for a given year and author" do
-      reference_factory(:author => 'Bolton', :year => 2010)
-      reference_factory(:author => 'Bolton', :year => 1995)
-      reference_factory(:author => 'Fisher', :year => 2011)
-      reference = reference_factory(:author => 'Fisher', :year => 1996)
+      reference_factory(:author => 'Bolton', :citation_year => 2010)
+      reference_factory(:author => 'Bolton', :citation_year => 1995)
+      reference_factory(:author => 'Fisher', :citation_year => 2011)
+      reference = reference_factory(:author => 'Fisher', :citation_year => 1996)
       Reference.search(:start_year => '1996', :end_year => '1996', :author => 'Fisher').should == [reference]
     end
 
     describe "searching by year" do
       before do
-        reference_factory(:author => 'Bolton', :year => 1994)
-        reference_factory(:author => 'Bolton', :year => 1995)
-        reference_factory(:author => 'Bolton', :year => 1996)
-        reference_factory(:author => 'Bolton', :year => 1997)
-        reference_factory(:author => 'Bolton', :year => 1998)
+        reference_factory(:author => 'Bolton', :citation_year => 1994)
+        reference_factory(:author => 'Bolton', :citation_year => 1995)
+        reference_factory(:author => 'Bolton', :citation_year => 1996)
+        reference_factory(:author => 'Bolton', :citation_year => 1997)
+        reference_factory(:author => 'Bolton', :citation_year => 1998)
       end
 
       it "should return an empty array if nothing is found for year" do
@@ -113,12 +110,12 @@ describe Reference do
       end
 
       it "should find references in the year of the end range, even if they have extra characters" do
-        reference_factory(:author => 'Bolton', :year => '2004.', :year => 2004)
+        reference_factory(:author => 'Bolton', :citation_year => '2004.')
         Reference.search(:start_year => '2004', :end_year => '2004').map(&:year).should =~ [2004]
       end
 
       it "should find references in the year of the start year, even if they have extra characters" do
-        reference_factory(:author => 'Bolton', :year => '2004.', :year => 2004)
+        reference_factory(:author => 'Bolton', :citation_year => '2004.')
         Reference.search(:start_year => '2004', :end_year => '2004').map(&:year).should =~ [2004]
       end
 
@@ -208,6 +205,16 @@ describe Reference do
       reference.should be_valid
       reference.title = nil
       reference.should_not be_valid
+    end
+  end
+
+  describe "changing the citation year" do
+    it "should change the year" do
+      reference = Factory(:reference, :citation_year => '1910a')
+      reference.year.should == 1910
+      reference.citation_year = '2010b'
+      reference.save!
+      reference.year.should == 2010
     end
   end
 
