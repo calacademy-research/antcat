@@ -43,7 +43,6 @@ Feature: Add reference
       And in the new edit form I press "OK"
     Then I should be on the main page
       And I should not see a new edit form
-      And show me the page
       And I should see "1992. Between Pacific Tides."
 
   Scenario: Adding a reference but then cancelling
