@@ -1,6 +1,7 @@
 class Reference < ActiveRecord::Base
   has_many :author_participations, :order => :position
-  has_many :authors, :through => :author_participations, :order => :position
+  has_many :authors, :through => :author_participations, :order => :position,
+           :after_add => :update_authors_string, :after_remove => :update_authors_string
   belongs_to :journal
   belongs_to :source_reference, :polymorphic => true
 
@@ -33,11 +34,12 @@ class Reference < ActiveRecord::Base
   def self.search terms = {}
     conditions = []
     conditions_arguments = {}
-    joins = [:authors]
+    joins = []
 
     if terms[:author].present?
       conditions << 'authors.name LIKE :author'
       conditions_arguments[:author] = "#{terms[:author]}%"
+      joins << :authors
     end
 
     if terms[:journal].present?
@@ -56,18 +58,15 @@ class Reference < ActiveRecord::Base
       conditions_arguments[:end_year] = terms[:end_year]
     end
 
-    all :select => "`references`.*, GROUP_CONCAT(authors.name ORDER BY author_participations.position SEPARATOR '; ') AS authors_string",
-        :joins => joins,
-        :conditions => [conditions.join(' AND '), conditions_arguments],
-        :group => 'references.id',
+    all :joins => joins, :conditions => [conditions.join(' AND '), conditions_arguments],
         :order => 'authors_string, citation_year'
   end
 
   def citation
   end
 
-  def authors_string
-    authors.map(&:name).join('; ')
+  def update_authors_string _ = nil
+    update_attribute :authors_string, authors.map(&:name).join('; ')
   end
 
   def add_period_if_necessary string

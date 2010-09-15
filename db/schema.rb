@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100915165929) do
+ActiveRecord::Schema.define(:version => 20100915193020) do
 
   create_table "author_participations", :force => true do |t|
     t.integer  "author_id"
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(:version => 20100915165929) do
   end
 
   add_index "author_participations", ["author_id"], :name => "author_participations_author_id_idx"
+  add_index "author_participations", ["reference_id"], :name => "foo"
 
   create_table "authors", :force => true do |t|
     t.string   "name"
@@ -77,6 +78,7 @@ ActiveRecord::Schema.define(:version => 20100915165929) do
     t.string   "pagination"
     t.integer  "source_reference_id"
     t.string   "source_reference_type"
+    t.string   "authors_string"
   end
 
   create_table "users", :force => true do |t|
