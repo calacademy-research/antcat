@@ -137,6 +137,17 @@ describe Reference do
 
         results.should == [fisher1910a, fisher1910b, wheeler1874]
       end
+
+      it "should sort by multiple authors using their order in each reference" do
+        v = ward_reference_factory(:authors => "Vinson, S. B.; MacKay, W. P.; Rebeles M.; A.; Arredondo B.; H. C.; Rodríguez R.; A. D.; González, D. A.",
+                                   :citation => 'Ants 1:1')
+        a = ward_reference_factory(:authors => 'Abdalla, F. C.; Cruz-Landim, C. da.', :citation => 'Ants 2:2')
+        m = ward_reference_factory(:authors => 'Mueller, U. G.; Mikheyev, A. S.; Abbot, P.', :citation => 'Ants 3:3')
+
+        results = Reference.search
+
+        results.should == [a, m, v]
+      end
     end
 
     describe "searching by journal" do
@@ -161,7 +172,7 @@ describe Reference do
     reference.authors.first.should == author
   end
 
-  describe "authors_string, used for sorting in the database" do
+  describe "authors_string" do
     before do
       @reference = Factory(:reference)
     end
@@ -201,6 +212,19 @@ describe Reference do
         @reference.authors_string.should == 'Ward'
         author.update_attribute :name, 'Fisher'
         @reference.reload.authors_string.should == 'Fisher'
+      end
+    end
+
+    describe "maintaining its order" do
+      it "should show the authors in the order in which they were added to the reference" do
+        ward = Author.create!(:name => 'Ward')
+        wilden = Author.create!(:name => 'Wilden')
+        fisher = Author.create!(:name => 'Fisher')
+        reference = Factory(:reference)
+        reference.authors << wilden
+        reference.authors << fisher
+        reference.authors << ward
+        reference.authors_string.should == 'Wilden; Fisher; Ward'
       end
     end
   end

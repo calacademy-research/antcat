@@ -1,6 +1,6 @@
 class Reference < ActiveRecord::Base
-  has_many :author_participations
-  has_many :authors, :through => :author_participations
+  has_many :author_participations, :order => :position
+  has_many :authors, :through => :author_participations, :order => :position
   belongs_to :journal
   belongs_to :source_reference, :polymorphic => true
 
@@ -56,11 +56,11 @@ class Reference < ActiveRecord::Base
       conditions_arguments[:end_year] = terms[:end_year]
     end
 
-    all :select => "`references`.*, GROUP_CONCAT(authors.name SEPARATOR '; ') AS authors_string",
+    all :select => "`references`.*, GROUP_CONCAT(authors.name ORDER BY author_participations.position SEPARATOR '; ') AS authors_string",
         :joins => joins,
         :conditions => [conditions.join(' AND '), conditions_arguments],
-        :order => 'authors_string, citation_year',
-        :group => 'references.id'
+        :group => 'references.id',
+        :order => 'authors_string, citation_year'
   end
 
   def citation

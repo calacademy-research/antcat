@@ -9,13 +9,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100914231140) do
+ActiveRecord::Schema.define(:version => 20100915165929) do
 
   create_table "author_participations", :force => true do |t|
     t.integer  "author_id"
     t.integer  "reference_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "position"
   end
 
   add_index "author_participations", ["author_id"], :name => "author_participations_author_id_idx"
