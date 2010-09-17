@@ -13,12 +13,13 @@ Feature: Add reference
     When I go to the main page
       And I follow "Add reference"
       Then I should see a new edit form
-    When I fill in "reference_title" with "A reference title"
+    When I fill in "reference_authors_string" with "Ward, B.L.;Bolton, B."
+      And I fill in "reference_title" with "A reference title"
       And I fill in "reference_citation_year" with "1981"
       And I press "OK"
     Then I should be on the main page
       And I should not see a new edit form
-      And I should see "A reference title"
+      And I should see "Ward, B.L.; Bolton, B. 1981. A reference title"
       And "Add reference" should not be visible
 
   Scenario: Add but cancel a reference when there are no others
@@ -38,12 +39,13 @@ Feature: Add reference
       Then "Add reference" should not be visible
     When I follow "add"
       Then I should see a new edit form
-    When in the new edit form I fill in "reference_title" with "Between Pacific Tides"
+    When in the new edit form I fill in "reference_authors_string" with "Ward, B.L.;Bolton, B."
+      And in the new edit form I fill in "reference_title" with "Between Pacific Tides"
       And in the new edit form I fill in "reference_citation_year" with "1992"
       And in the new edit form I press "OK"
     Then I should be on the main page
       And I should not see a new edit form
-      And I should see "1992. Between Pacific Tides."
+      And I should see "Ward, B.L.; Bolton, B. 1992. Between Pacific Tides."
 
   Scenario: Adding a reference but then cancelling
     Given I am logged in

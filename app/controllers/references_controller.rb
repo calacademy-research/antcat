@@ -8,14 +8,15 @@ class ReferencesController < ApplicationController
   end
 
   def update
+    set_authors
     @reference = Reference.find(params[:id])
     @reference.update_attributes(params[:reference])
     render_json
   end
   
   def create
-    @reference = Reference.new(params[:reference])
-    @reference.save
+    set_authors
+    @reference = Reference.create!(params[:reference])
     render_json true
   end
   
@@ -26,6 +27,11 @@ class ReferencesController < ApplicationController
   end
 
   private
+  def set_authors
+    authors_string = params[:reference].delete :authors_string
+    params[:reference][:authors] = Author.parse_authors_string authors_string
+  end
+
   def render_json new = false
     render :json => {
       :isNew => new,

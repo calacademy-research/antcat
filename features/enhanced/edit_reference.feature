@@ -22,10 +22,11 @@ Feature: Edit reference
     When I click the reference
       Then I should see the edit form
       And I should not see the reference
-    When I fill in "reference_title" with "Ant Title"
+    When I fill in "reference_authors_string" with "Ward, B.L.;Bolton, B."
+    And I fill in "reference_title" with "Ant Title"
       And I press "OK"
     Then I should be on the main page
-      And I should see "Ant Title"
+      And I should see "Ward, B.L.; Bolton, B. 2010. Ant Title"
 
   Scenario: Change a reference's year
     Given I am logged in
