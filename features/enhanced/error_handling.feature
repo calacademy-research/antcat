@@ -21,6 +21,16 @@ Feature: Error handling
       And I should not see any error messages
       And I should see "Forel, A. 1874. Ants. Neue Denkschriften 26:1-452."
 
+  Scenario: Error when adding a reference
+    Given I am logged in
+    When I go to the main page
+      And I follow "Add reference"
+      And I fill in "reference_title" with ""
+      And I press "OK"
+    Then I should see the edit form
+      And I should see "Title can't be blank"
+      And "reference_title" should be marked as an error
+
   Scenario: Cancelling edit after an error
     Given I am logged in
       And the following entry exists in the bibliography

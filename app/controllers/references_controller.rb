@@ -16,7 +16,7 @@ class ReferencesController < ApplicationController
   
   def create
     set_authors
-    @reference = Reference.create!(params[:reference])
+    @reference = Reference.create(params[:reference])
     render_json true
   end
   
