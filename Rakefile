@@ -20,7 +20,7 @@ begin
   end
 
   # add to default tasks (not override)
-  task :default => ['cucumber:all_features']
+  task :default => ['cucumber:all_features', 'jasmine:ci']
 
 rescue NameError
 end

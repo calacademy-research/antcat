@@ -8,8 +8,8 @@ class ReferencesController < ApplicationController
   end
 
   def update
-    set_authors
     @reference = Reference.find(params[:id])
+    set_authors
     @reference.update_attributes(params[:reference])
     render_json
   end
@@ -28,6 +28,7 @@ class ReferencesController < ApplicationController
 
   private
   def set_authors
+    @reference.author_participations.delete_all if @reference
     authors_string = params[:reference].delete :authors_string
     params[:reference][:authors] = Author.parse_authors_string authors_string
   end

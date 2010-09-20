@@ -4,6 +4,8 @@ $(function() {
     setupDisplays();
     setupForms();
   }
+  //addReference();
+  //$('#reference_ .authors input').focus();
 })
 
 /////////////////////////////////////////////////////////////////////////
@@ -157,6 +159,8 @@ function showReferenceForm($reference, options) {
 
   if (!options.showDeleteButton)
     $('.delete', $form).hide();
+
+  setupAuthorAutocomplete($reference);
 }
 
 function setWatermarks($form) {
