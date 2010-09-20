@@ -5,4 +5,5 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :references, :only => [:index, :update, :create, :destroy]
   map.resources :journals, :only => [:index]
+  map.resources :authors, :only => [:index]
 end

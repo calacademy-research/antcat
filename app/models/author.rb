@@ -9,6 +9,10 @@ class Author < ActiveRecord::Base
     end
   end
 
+  def self.search term
+    all(:conditions => ["name LIKE ?", "%#{term}%"], :order => 'created_at, name').map(&:name)
+  end
+
   def update_references
     references.each {|reference| reference.update_authors_string}
   end

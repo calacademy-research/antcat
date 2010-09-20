@@ -43,4 +43,21 @@ describe Author do
     end
   end
 
+  describe "searching" do
+    it "should find a prefix" do
+      Author.create! :name => 'Bolton'
+      Author.create! :name => 'Fisher'
+      results = Author.search('Bol')
+      results.count.should == 1
+      results.first.should == 'Bolton'
+    end
+
+    it "should find an internal string" do
+      Author.create! :name => 'Bolton'
+      Author.create! :name => 'Fisher'
+      results = Author.search('ol')
+      results.count.should == 1
+      results.first.should == 'Bolton'
+    end
+  end
 end
