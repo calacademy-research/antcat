@@ -62,6 +62,7 @@ function setupForms() {
   $('.reference_form form').live('submit', submitReferenceForm);
   $('.reference_form .cancel').live('click', cancelReferenceForm);
   $('.reference_form .delete').live('click', deleteReference);
+  $('.tabs').tabs();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -180,6 +181,7 @@ function submitReferenceForm() {
   $('input', $spinnerElement).attr('disabled', 'disabled');
   $('button', $spinnerElement).attr('disabled', 'disabled');
 
+  var selectedTab = $(this).closest('.reference .ui-tabs-selected a').text();
   $.post(this.action, $(this).serialize(), updateReference, 'json');
 
   showAddReferenceLink();
