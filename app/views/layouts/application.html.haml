@@ -4,10 +4,19 @@
     %title ANTBIB
     %meta{'http-equiv' => "content-type", :content => "text/html;charset=UTF-8"}/
 
-    = javascript_include_tag 'ext/jquery-1.4.2', 'ext/jquery-ui-1.8.2.custom.min', 'ext/jquery.watermark.min', 'ext/jquery.spinner', 'ext/jquery.ui.autocomplete.selectFirst', :cache => true
-    = javascript_include_tag 'application', 'AuthorAutocompletion'
+    = javascript_include_tag |
+                             'ext/jquery-1.4.2.min',                    |
+                             'ext/jquery-ui-1.8.5.custom.min',          |
+                             'ext/jquery.watermark.min',                |
+                             'ext/jquery.spinner',                      |
+                             'ext/jquery.ui.autocomplete.selectFirst',  |
+                             :cache => true                             |
+    = javascript_include_tag 'application'
 
-    = stylesheet_link_tag 'application', 'jquery-ui/ui-lightness/jquery-ui-1.8.2.custom', :cache => true
+    = stylesheet_link_tag |
+                            'application',                          |
+                            'ext/jquery-ui/jquery-ui-1.8.5.custom', |
+                            :cache => true                          |
 
     :javascript
       var usingCucumber = #{Rails.env == 'cucumber'};

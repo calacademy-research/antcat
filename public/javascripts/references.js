@@ -176,7 +176,7 @@ function setWatermarks($form) {
 
 function submitReferenceForm() {
   var $spinnerElement = $('button', $(this)).parent();
-  $spinnerElement.spinner({img: '/images/spinner.gif'});
+  $spinnerElement.spinner({img: '/stylesheets/ext/jquery-ui/images/ui-anim_basic_16x16.gif'});
   $('input', $spinnerElement).attr('disabled', 'disabled');
   $('button', $spinnerElement).attr('disabled', 'disabled');
 
