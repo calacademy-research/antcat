@@ -25,11 +25,14 @@ table.references
 .icon.edit
   background-position: -64px -112px
 .icon.add
-  background-position: -16px -128px
+  background-position: -17px -128px
 .icon.copy
   background-position: -49px -80px
 .icon.delete
   background-position: -81px -128px
+
+.icon.highlighted
+  background-image: url(/stylesheets/ext/jquery-ui/images/ui-icons_8dc262_256x240_highlighted.png)
 
 span.help
   font-style: italic
@@ -43,14 +46,6 @@ span.help
 
 .reference_display.editable
   cursor: pointer
-
-.reference_action_link
-  display: none
-
-.reference_action_link.editable
-  display: normal
-  color: green
-  font-size: smaller
 
 .reference.about_to_be_deleted
   background-color: lightyellow
@@ -90,9 +85,6 @@ span.help
           padding-left: 8px
           input
             width: 75px
-
-.reference
-  padding-bottom: 5px
 
 p.notes
   margin: 0 20px
@@ -192,3 +184,9 @@ ul.error_messages
     font-size: small
     color: red
     font-style: italic
+
+tr.reference_row
+  padding: 0
+  td
+    padding: 0
+

@@ -33,28 +33,38 @@ function setupDisplays() {
 
   $('.reference_display').addClass('editable');
 
-  $('.reference_display').live('mouseenter',
+  $('.icon').hide();
+  $('.reference').live('mouseenter',
     function() {
       if (!isEditing())
-        $('.reference_action_link', $(this)).show();
+        $('.icon', $(this)).show();
     }).live('mouseleave',
     function() {
       if (!isEditing())
-        $('.reference_action_link').hide();
+        $('.icon').hide();
     });
 
-  setupActionLinks();
+  $('.icon').live('mouseenter',
+    function() {
+      $(this).addClass('highlighted');
+    }).live('mouseleave',
+    function() {
+      $(this).removeClass('highlighted');
+    });
+
+  setupIcons();
 }
 
-function setupActionLinks() {
+function setupIcons() {
   if (!usingCucumber)
-    $('.reference_action_link').hide();
+    $('.icon').hide();
   else
-    $('.reference_action_link').show();
+    $('.icon').show();
 
-  $('.reference_action_link.add').live('click', insertReference);
-  $('.reference_action_link.copy').live('click', copyReference);
-  $('.reference_action_link.delete').live('click', deleteReference);
+  $('.icon.edit').live('click', editReference);
+  $('.icon.add').live('click', insertReference);
+  $('.icon.copy').live('click', copyReference);
+  $('.icon.delete').live('click', deleteReference);
 }
 
 function setupForms() {
@@ -149,7 +159,7 @@ function showReferenceForm($reference, options) {
 
   hideAddReferenceLink();
   $('.reference_display', $reference).hide();
-  $('.reference_action_link').hide();
+  $('.icon').hide();
 
   var $form = $('.reference_form', $reference);
   setWatermarks($form);

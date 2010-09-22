@@ -1,13 +1,6 @@
 .reference_display
   = format_reference reference
 
-  = ' '
-  %a.reference_action_link.add{:href => '#'} add
-  = ' '
-  %a.reference_action_link.copy{:href => '#'} copy
-  = ' '
-  %a.reference_action_link.delete{:href => '#'} delete
-
   %p.notes= italicize h reference.public_notes
   %p.editor.notes= italicize h reference.editor_notes
   %p.notes= italicize h reference.taxonomic_notes

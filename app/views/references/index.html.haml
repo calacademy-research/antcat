@@ -17,7 +17,7 @@
 
 %table.references
   - for reference in @references
-    %tr
+    %tr.reference_row
       %td
         = render :partial => 'reference', :locals => {:reference => reference, :css_class => 'reference'}
 
