@@ -64,3 +64,20 @@ Feature: Add reference
       And I follow "Add reference"
       Then I should see a new edit form
         And I should not see a "Delete" button
+
+  Scenario: Adding a book
+    Given I am logged in
+    When I go to the main page
+    And show me the page
+      And I follow "Add reference"
+      Then I should see a new edit form
+    When I fill in "reference_authors_string" with "Ward, B.L.;Bolton, B."
+      And I fill in "reference_title" with "A reference title"
+      And I fill in "reference_citation_year" with "1981"
+      And I follow "Book"
+      And I fill in "publisher_name" with "Houghton Mifflin"
+      And I press "OK"
+    Then I should be on the main page
+      And I should not see a new edit form
+      And I should see "Ward, B.L.; Bolton, B. 1981. A reference title. Houghton Mifflin."
+

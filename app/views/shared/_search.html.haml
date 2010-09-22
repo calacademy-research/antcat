@@ -1,7 +1,7 @@
 #search
   %form{:action => '/references', :method => :get}
     %label{:for => 'author'} Author
-    %input#author{:name => 'author', :type => 'text', :value => params[:author]}
+    = text_field_tag 'author', params[:author]
 
     %label{:for => 'start_year'} Year 
     %input#start_year.year{:name => 'start_year', :type => 'text', :value => params[:start_year]}

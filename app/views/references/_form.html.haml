@@ -1,4 +1,5 @@
 - reference ||= Reference.new
+- publisher_name = reference.respond_to?(:publisher) ? (reference.publisher && reference.publisher.name) : ''
 .reference_form
   - url = reference.new_record? ? references_path : reference_path(reference)
   - method = reference.new_record? ? 'post' : 'put'

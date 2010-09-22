@@ -40,4 +40,3 @@ Feature: Edit reference
       And I fill in "start_year" with "1910"
       And I press "Search"
     Then I should see "Fisher 1910a"
-
