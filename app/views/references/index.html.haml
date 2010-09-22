@@ -1,12 +1,11 @@
 - content_for :head do
   = javascript_include_tag 'references', 'author_autocompletion'
 
-= render :partial => 'shared/search'
-= render :partial => 'shared/login'
-
-%div{:style => 'clear:both'}
-
-%hr
+#subheader
+  = render :partial => 'shared/search'
+  = render :partial => 'shared/login'
+  %div{:style => 'clear:both'}
+  %hr
 
 - unless @references.present?
   No results found

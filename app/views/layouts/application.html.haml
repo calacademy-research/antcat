@@ -25,8 +25,8 @@
     = yield :head
 
   %body
-    #container
-      .heading
+    #page
+      #header
         %div{:style => 'float:left'}
           %a{:href => references_path}
             %h1 ANTBIB
@@ -35,32 +35,34 @@
         %div{:style => 'float:right'}
           %h3 by Philip S. Ward, et al.
 
-      %div{:style => 'clear:both'}
+        %div{:style => 'clear:both'}
 
-      .notice
-        =flash[:notice]
-      .alert
-        =flash[:alert]
+        .notice
+          =flash[:notice]
+        .alert
+          =flash[:alert]
 
-      %hr
+        %hr
 
-      = yield
+      #contents
+        = yield
 
-      %hr
-      %table#images
-        %tr
-          %td
-            %a{:href => 'http://www.nsf.gov/'}
-              %img{:style => "height: 50px", :src => '/images/nsf1.gif', :title => "Supported in part by NSF Award DBI-0642321"}
-          %td.spacer
+      #footer
+        %hr
+        %table#images
+          %tr
             %td
-              %a{:href => 'http://www.calacademy.org/'}
-                %img{:style => "height: 40px", :src => '/images/calacademy.gif'}
-          %td.spacer
-          %td
-            %a{:href => 'http://rubyonrails.org/'}
-              %img{:style => "height: 40px", :src => '/images/rails.png' }
-          %td.spacer
-          %td
-            %a{:href => 'http://www.zotero.org/'}
-              %img{:style => "height: 20px", :src => '/images/zotero_logo_tiny.png'}
+              %a{:href => 'http://www.nsf.gov/'}
+                %img{:style => "height: 50px", :src => '/images/nsf1.gif', :title => "Supported in part by NSF Award DBI-0642321"}
+            %td.spacer
+              %td
+                %a{:href => 'http://www.calacademy.org/'}
+                  %img{:style => "height: 40px", :src => '/images/calacademy.gif'}
+            %td.spacer
+            %td
+              %a{:href => 'http://rubyonrails.org/'}
+                %img{:style => "height: 40px", :src => '/images/rails.png' }
+            %td.spacer
+            %td
+              %a{:href => 'http://www.zotero.org/'}
+                %img{:style => "height: 20px", :src => '/images/zotero_logo_tiny.png'}
