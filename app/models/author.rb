@@ -18,7 +18,7 @@ class Author < ActiveRecord::Base
     references.each {|reference| reference.update_authors_string}
   end
 
-  def self.parse_authors_string string
+  def self.import_authors_string string
     import string.split(/; ?/)
   end
 

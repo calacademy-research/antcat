@@ -36,7 +36,7 @@ describe Author do
   describe "parse_authors_string" do
     it "should find or create authors with names in the string" do
       Author.create! :name => 'Bolton, B.'
-      authors = Author.parse_authors_string('Ward, P.S.; Bolton, B.')
+      authors = Author.import_authors_string('Ward, P.S.; Bolton, B.')
       authors.first.name.should == 'Ward, P.S.'
       authors.second.name.should == 'Bolton, B.'
       Author.count.should == 2

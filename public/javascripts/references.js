@@ -195,8 +195,8 @@ function submitReferenceForm() {
   $('input', $spinnerElement).attr('disabled', 'disabled');
   $('button', $spinnerElement).attr('disabled', 'disabled');
 
-  var selectedTab = $(this).closest('.reference .ui-tabs-selected a').text();
-  $.post(this.action, $(this).serialize(), updateReference, 'json');
+  var selectedTab = $.trim($('.ui-tabs-selected', $(this)).text());
+  $.post(this.action, $(this).serialize() + '&selected_tab=' + selectedTab, updateReference, 'json');
 
   showAddReferenceLink();
 
