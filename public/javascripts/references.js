@@ -30,27 +30,7 @@ function hideAddReferenceLink() {
 
 function setupDisplays() {
   $('.reference_display').live('click', editReference);
-
   $('.reference_display').addClass('editable');
-
-  $('.reference').live('mouseenter',
-    function() {
-      if (!isEditing())
-        $('.icon', $(this)).show();
-    }).live('mouseleave',
-    function() {
-      if (!isEditing())
-        $('.icon').hide();
-    });
-
-  $('.icon').live('mouseenter',
-    function() {
-      $(this).addClass('highlighted');
-    }).live('mouseleave',
-    function() {
-      $(this).removeClass('highlighted');
-    });
-
   setupIcons();
 }
 
@@ -59,6 +39,23 @@ function setupIcons() {
     $('.icon').hide();
   else
     $('.icon').show();
+
+  $('.reference').live('mouseenter',
+    function() {
+      if (!isEditing())
+        $('.icon', $(this)).show();
+    }).live('mouseleave',
+    function() {
+      $('.icon').hide();
+    });
+
+  $('.icon img').live('mouseenter',
+    function() {
+      this.src = this.src.replace('off', 'on');
+    }).live('mouseleave',
+    function() {
+      this.src = this.src.replace('on', 'off');
+    });
 
   $('.icon.edit').live('click', editReference);
   $('.icon.add').live('click', insertReference);
@@ -125,7 +122,7 @@ function addOrInsertReferenceForm($reference) {
 }
 
 function copyReference() {
-  $rowToCopyFrom = $(this).closest('tr');
+  $rowToCopyFrom = $(this).closest('tr.reference_row');
   $newRow = $rowToCopyFrom.clone(true);
   $rowToCopyFrom.after($newRow);
   $newReference = $('.reference', $newRow);
