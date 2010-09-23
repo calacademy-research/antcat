@@ -3,14 +3,14 @@
   %table
     %tr
       %td.icons
-        .icon.edit
-          %img{:title => 'edit', :src => '/images/edit.png'}
-        .icon.add
-          %img{:title => 'add', :src => '/images/add.png'}
-        .icon.copy
-          %img{:title => 'copy', :src => '/images/copy.png'}
-        .icon.delete
-          %img{:title => 'delete', :src => '/images/delete.png'}
+        %a.icon.edit{:title => 'edit', :href => '#'}
+          = image_tag 'edit.png'
+        %a.icon.add{:title => 'add', :href => '#'}
+          = image_tag 'add.png'
+        %a.icon.copy{:title => 'copy', :href => '#'}
+          = image_tag 'copy.png'
+        %a.icon.delete{:title => 'delete', :href => '#'}
+          = image_tag 'delete.png'
       %td{:style => 'vertical-align: top'}
         = render :partial => 'display', :locals => {:reference => reference}
         - if user_signed_in?

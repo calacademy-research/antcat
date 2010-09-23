@@ -68,7 +68,6 @@ Feature: Add reference
   Scenario: Adding a book
     Given I am logged in
     When I go to the main page
-    And show me the page
       And I follow "Add reference"
       Then I should see a new edit form
     When I fill in "reference_authors_string" with "Ward, B.L.;Bolton, B."
