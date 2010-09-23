@@ -4,6 +4,9 @@
     %title ANTBIB
     %meta{'http-equiv' => "content-type", :content => "text/html;charset=UTF-8"}/
 
+    %style{:type => 'text/css'}
+      = ".js #flash {display:none;}"
+
     = javascript_include_tag |
                              'ext/jquery-1.4.2.min',                    |
                              'ext/jquery-ui-1.8.5.custom.min',          |
@@ -21,10 +24,11 @@
     :javascript
       var usingCucumber = #{Rails.env == 'cucumber'};
       var loggedIn = #{user_signed_in?};
+      document.documentElement.className = 'js';
 
     = yield :head
 
-  %body
+  %body{:class => @controller.class, :id => 'flash'}
     #page
       #header
         %div{:style => 'float:left'}
@@ -66,3 +70,5 @@
             %td
               %a{:href => 'http://www.zotero.org/'}
                 %img{:style => "height: 20px", :src => '/images/zotero_logo_tiny.png'}
+      :javascript
+        $('#flash').show();
