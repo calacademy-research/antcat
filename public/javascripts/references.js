@@ -5,7 +5,7 @@ $(function() {
     setupForms();
   }
   //addReference();
-  //$('#reference_ .authors input').focus();
+  //$('#reference_ #reference_authors_string').focus();
 })
 
 /////////////////////////////////////////////////////////////////////////
@@ -31,6 +31,7 @@ function hideAddReferenceLink() {
 function setupDisplays() {
   $('.reference_display').live('click', editReference);
   $('.reference_display').addClass('editable');
+
   setupIcons();
 }
 
@@ -68,7 +69,6 @@ function setupForms() {
   $('.reference_form form').live('submit', submitReferenceForm);
   $('.reference_form .cancel').live('click', cancelReferenceForm);
   $('.reference_form .delete').live('click', deleteReference);
-  $('.tabs').tabs();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -160,6 +160,7 @@ function showReferenceForm($reference, options) {
 
   var $form = $('.reference_form', $reference);
   setWatermarks($form);
+  setTabs();
   $form.show();
 
   if (options.focusFirstField)
@@ -172,7 +173,8 @@ function showReferenceForm($reference, options) {
 }
 
 function setWatermarks($form) {
-  $('#reference_year', $form).watermark('Year');
+  $('#reference_authors_string', $form).watermark('Authors');
+  $('#reference_citation_year', $form).watermark('Year');
   $('#reference_title', $form).watermark('Title');
   $('#reference_public_notes', $form).watermark('Published notes');
   $('#reference_editor_notes', $form).watermark("Editor's notes");
@@ -180,6 +182,11 @@ function setWatermarks($form) {
   $('#reference_cite_code', $form).watermark('Cite code');
   $('#reference_possess', $form).watermark('Possess');
   $('#reference_date', $form).watermark('Date');
+  $('#reference_citation', $form).watermark('Citation');
+}
+
+function setTabs() {
+  $('.tabs').tabs();
 }
 
 function submitReferenceForm() {
@@ -219,6 +226,7 @@ function updateReference(data) {
 
   var $display = $('.reference_display', $reference);
   $display.show();
+  $display.addClass('editable');
   $display.effect("highlight", {}, 3000);
 }
 

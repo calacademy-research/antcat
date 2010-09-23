@@ -7,42 +7,48 @@
     %input{:type => 'hidden', :name => '_method', :value => method}
     = render :partial => 'shared/errors_for', :locals => { :resource => reference }
 
-    %div
-      = f.text_field :authors_string
-      = f.text_field :citation_year
-    %div
-      = f.text_field :title
-    %div.tabs
-      %ul
-        %li
-          %a{:href => "#tabs-1-#{reference.id}"}Article
-        %li
-          %a{:href => "#tabs-2-#{reference.id}"}Book
-        %li
-          %a{:href => "#tabs-3-#{reference.id}"}Other
-      %div{:id => "tabs-1-#{reference.id}"}
-        %p
-          = text_field_tag :journal_title
-      %div{:id => "tabs-2-#{reference.id}"}
-        %p
-          = text_field_tag :publisher_place
-          = text_field_tag :publisher_name, publisher_name
-      %div{:id => "tabs-3-#{reference.id}"}
-        %p
-          = text_field_tag :publisher_place
-          = text_field_tag :publisher_name
-          = text_field_tag :pagination
-    %div
-      = f.text_field :public_notes
-    %div
-      = f.text_field :editor_notes
-    %div
-      = f.text_field :taxonomic_notes
-    %div
-      = f.text_field :cite_code
-      = f.text_field :possess
-      = f.text_field :date
-    %div
-      = f.submit 'OK', :name => 'commit'
-      %button.cancel Cancel
-      %button.delete Delete
+    %table
+      %colgroup
+        %col{:width => '*'}
+        %col{:width => '100px'}
+      %tr
+        %td.authors= f.text_field :authors_string, :class => 'authors'
+        %td= f.text_field :citation_year
+      %tr
+        %td{:colspan => 2}
+          = f.text_area :title, :rows => 1
+      %tr
+        %td.tabs{:colspan => 2}
+          %ul
+            %li
+              %a{:href => "#tabs-article-#{reference.id}"}Article
+            %li
+              %a{:href => "#tabs-book-#{reference.id}"}Book
+          %table{:id => "tabs-article-#{reference.id}"}
+            %tr
+              %td= text_field_tag :journal_title, journal_title
+              %td= text_field_tag :pagination
+          %p{:id => "tabs-book-#{reference.id}"}
+            = text_field_tag :publisher_place
+            = text_field_tag :publisher_name, publisher_name
+      %tr
+        %td{:colspan => 2}
+          = f.text_area :public_notes, :rows => 1
+      %tr
+        %td{:colspan => 2}
+          = f.text_area :editor_notes, :rows => 1
+      %tr
+        %td{:colspan => 2}
+          = f.text_area :taxonomic_notes, :rows => 1
+      %tr
+        %td
+          %table.small_fields
+            %tr
+              %td.cite_code= f.text_field :cite_code
+              %td.possess= f.text_field :possess
+              %td.date= f.text_field :date
+      %tr
+        %td{:colspan => 2}
+          = f.submit 'OK', :name => 'commit'
+          %button.cancel Cancel
+          %button.delete Delete

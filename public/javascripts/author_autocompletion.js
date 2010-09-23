@@ -1,5 +1,5 @@
 function setupAuthorAutocomplete($reference) {
-  $('.reference_form .authors input', $reference).autocomplete({
+  $('.reference_form .authors', $reference).autocomplete({
     selectFirst: true,
     minLength: 3,
     source: function(request, response) {
