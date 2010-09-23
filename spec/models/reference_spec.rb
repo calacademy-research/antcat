@@ -256,4 +256,16 @@ describe Reference do
     end
   end
 
+  it "should not truncate long fields" do
+    #Reference.create!(:authors_string => 'a' * 3000, :citation => 'c' * 2000, :editor_notes => 'e' * 1000, :public_notes => 'n' * 1500, :taxonomic_notes => 't' * 1700, :title => 1900)
+    Reference.create!(:authors_string => 'a' * 3000, :editor_notes => 'e' * 1000, :public_notes => 'n' * 1500, :taxonomic_notes => 't' * 1700, :title => 't' * 1900)
+    reference = Reference.first
+    reference.authors_string.length.should == 3000
+    #reference.citation.length.should == 2000
+    reference.editor_notes.length.should == 1000
+    reference.public_notes.length.should == 1500
+    reference.taxonomic_notes.length.should == 1700
+    reference.title.length.should == 1900
+  end
+
 end

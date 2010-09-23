@@ -141,6 +141,116 @@ describe WardBibliography do
         @bibliography.import_html contents
       end
 
+      it "should remove period from 'de' at end of author entry" do
+        contents = "<html><body><table><tr></tr><tr><td></td><td>123</td>
+          <td>Zolessi, L. C. de; Abenante, Y. P. de.</td>
+          <td></td><td></td>
+          <td>Love &amp; Death</td>
+          <td></td><td></td><td></td></tr></table></body></html>"
+        WardReference.should_receive(:create!).with hash_including(:authors => 'Zolessi, L. C. de; Abenante, Y. P. de')
+        @bibliography.import_html contents
+      end
+
+      it "should not remove period from single letter at end of entry" do
+        contents = "<html><body><table><tr></tr><tr><td></td><td>123</td>
+          <td>Zolessi, L. C.</td>
+          <td></td><td></td>
+          <td>Love &amp; Death</td>
+          <td></td><td></td><td></td></tr></table></body></html>"
+        WardReference.should_receive(:create!).with hash_including(:authors => 'Zolessi, L. C.')
+        @bibliography.import_html contents
+      end
+
+      it "should not remove period from 'Jr.' at end of entry" do
+        contents = "<html><body><table><tr></tr><tr><td></td><td>123</td>
+          <td>Zolessi, L. C., Jr.</td>
+          <td></td><td></td>
+          <td>Love &amp; Death</td>
+          <td></td><td></td><td></td></tr></table></body></html>"
+        WardReference.should_receive(:create!).with hash_including(:authors => 'Zolessi, L. C., Jr.')
+        @bibliography.import_html contents
+      end
+
+      it "should not remove period from 'Sr.' at end of entry" do
+        contents = "<html><body><table><tr></tr><tr><td></td><td>123</td>
+          <td>Zolessi, L. C., Sr.</td>
+          <td></td><td></td>
+          <td>Love &amp; Death</td>
+          <td></td><td></td><td></td></tr></table></body></html>"
+        WardReference.should_receive(:create!).with hash_including(:authors => 'Zolessi, L. C., Sr.')
+        @bibliography.import_html contents
+      end
+
+      it "should not remove ) from '(ed.)' at end of entry" do
+        contents = "<html><body><table><tr></tr><tr><td></td><td>123</td>
+          <td>Zolessi, L. C. (ed.)</td>
+          <td></td><td></td>
+          <td>Love &amp; Death</td>
+          <td></td><td></td><td></td></tr></table></body></html>"
+        WardReference.should_receive(:create!).with hash_including(:authors => 'Zolessi, L. C. (ed.)')
+        @bibliography.import_html contents
+      end
+
+      it "should not remove ) from '(eds.)' at end of entry" do
+        contents = "<html><body><table><tr></tr><tr><td></td><td>123</td>
+          <td>Zolessi, L. C. (eds.)</td>
+          <td></td><td></td>
+          <td>Love &amp; Death</td>
+          <td></td><td></td><td></td></tr></table></body></html>"
+        WardReference.should_receive(:create!).with hash_including(:authors => 'Zolessi, L. C. (eds.)')
+        @bibliography.import_html contents
+      end
+
+      it "should remove 'and collaborators' from end of entry" do
+        contents = "<html><body><table><tr></tr><tr><td></td><td>123</td>
+          <td>Zolessi, L. C. and collaborators</td>
+          <td></td><td></td>
+          <td>Love &amp; Death</td>
+          <td></td><td></td><td></td></tr></table></body></html>"
+        WardReference.should_receive(:create!).with hash_including(:authors => 'Zolessi, L. C.')
+        @bibliography.import_html contents
+      end
+
+      it "should fix Medeiros's name" do
+        contents = "<html><body><table><tr></tr><tr><td></td><td>123</td>
+          <td>Medeiro, M. A. de</td>
+          <td></td><td></td>
+          <td>Love &amp; Death</td>
+          <td></td><td></td><td></td></tr></table></body></html>"
+        WardReference.should_receive(:create!).with hash_including(:authors => 'Medeiros, M. A. de')
+        @bibliography.import_html contents
+      end
+
+      it "should fix S.J. Gibron's name" do
+        contents = "<html><body><table><tr></tr><tr><td></td><td>123</td>
+          <td>Gibron, J.; Sr.</td>
+          <td></td><td></td>
+          <td>Love &amp; Death</td>
+          <td></td><td></td><td></td></tr></table></body></html>"
+        WardReference.should_receive(:create!).with hash_including(:authors => 'Gibron, S. J.')
+        @bibliography.import_html contents
+      end
+
+      it "should convert : to ;" do
+        contents = "<html><body><table><tr></tr><tr><td></td><td>123</td>
+          <td>Gibron, J.: Ward, P. S.</td>
+          <td></td><td></td>
+          <td>Love &amp; Death</td>
+          <td></td><td></td><td></td></tr></table></body></html>"
+        WardReference.should_receive(:create!).with hash_including(:authors => 'Gibron, J.; Ward, P. S.')
+        @bibliography.import_html contents
+      end
+
+      it "should remove links" do
+        contents = "<html><body><table><tr></tr><tr><td></td><td>123</td>
+          <td><a>Gibron, J.</a></td>
+          <td></td><td></td>
+          <td>Love &amp; Death</td>
+          <td></td><td></td><td></td></tr></table></body></html>"
+        WardReference.should_receive(:create!).with hash_including(:authors => 'Gibron, J.')
+        @bibliography.import_html contents
+      end
+
     end
   end
 

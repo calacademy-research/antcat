@@ -9,6 +9,16 @@ describe WardReference do
     ward_reference.reference.should == reference
   end
 
+  it "should not truncate long fields" do
+    WardReference.create!(:authors => 'a' * 1000, :citation => 'c' * 2000, :notes => 'n' * 1500, :taxonomic_notes => 't' * 1700, :title => 'i' * 1876)
+    reference = WardReference.first
+    reference.authors.length.should == 1000
+    reference.citation.length.should == 2000
+    reference.notes.length.should == 1500
+    reference.taxonomic_notes.length.should == 1700
+    reference.title.length.should == 1876
+  end
+
   describe "export" do
     describe "exporting all references" do
       it "should convert each to the right format, then send them to Reference" do

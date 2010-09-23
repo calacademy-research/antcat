@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100917200742) do
+ActiveRecord::Schema.define(:version => 20100923182024) do
 
   create_table "author_participations", :force => true do |t|
     t.integer  "author_id"
@@ -62,15 +62,11 @@ ActiveRecord::Schema.define(:version => 20100917200742) do
 
   create_table "references", :force => true do |t|
     t.integer  "year"
-    t.string   "title"
-    t.string   "public_notes"
     t.string   "possess"
     t.string   "date"
     t.datetime "created_at"
     t.string   "cite_code"
     t.datetime "updated_at"
-    t.string   "editor_notes"
-    t.string   "taxonomic_notes"
     t.string   "citation_year"
     t.string   "type"
     t.integer  "publisher_id"
@@ -79,7 +75,11 @@ ActiveRecord::Schema.define(:version => 20100917200742) do
     t.string   "pagination"
     t.integer  "source_reference_id"
     t.string   "source_reference_type"
-    t.string   "authors_string"
+    t.text     "authors_string"
+    t.text     "editor_notes"
+    t.text     "public_notes"
+    t.text     "taxonomic_notes"
+    t.text     "title"
   end
 
   create_table "users", :force => true do |t|
@@ -105,19 +105,19 @@ ActiveRecord::Schema.define(:version => 20100917200742) do
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
   create_table "ward_references", :force => true do |t|
-    t.string   "authors"
-    t.string   "citation"
     t.string   "cite_code"
     t.string   "date"
     t.string   "filename"
-    t.string   "notes"
     t.string   "possess"
-    t.string   "taxonomic_notes"
-    t.string   "title"
     t.string   "year"
     t.integer  "reference_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "authors"
+    t.text     "citation"
+    t.text     "notes"
+    t.text     "taxonomic_notes"
+    t.text     "title"
   end
 
 end
