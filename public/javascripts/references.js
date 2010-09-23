@@ -33,7 +33,6 @@ function setupDisplays() {
 
   $('.reference_display').addClass('editable');
 
-  $('.icon').hide();
   $('.reference').live('mouseenter',
     function() {
       if (!isEditing())
