@@ -80,7 +80,6 @@ function editReference() {
   $reference = $(this).closest('.reference');
   saveReference($reference);
   showReferenceForm($reference, {focusFirstField: true, showDeleteButton: true});
-
   return false;
 }
 
@@ -94,16 +93,29 @@ function deleteReference() {
     $reference.removeClass('about_to_be_deleted');
 
   showAddReferenceLink();
-
   return false;
 }
 
 function addReference() {
   addOrInsertReferenceForm(null);
+  return false;
 }
 
 function insertReference() {
   addOrInsertReferenceForm($(this).closest('.reference'));
+  return false
+}
+
+function copyReference() {
+  $rowToCopyFrom = $(this).closest('tr.reference_row');
+  $newRow = $rowToCopyFrom.clone(true);
+  $rowToCopyFrom.after($newRow);
+  $newReference = $('.reference', $newRow);
+  $newReference.attr("id", "reference_");
+  $('form', $newReference).attr("action", "/references");
+  $('[name=_method]', $newReference).attr("value", "post");
+  showReferenceForm($newReference, {focusFirstField: true});
+  return false;
 }
 
 function addOrInsertReferenceForm($reference) {
@@ -119,17 +131,6 @@ function addOrInsertReferenceForm($reference) {
 
   $newReference = $('.reference', $newReferenceRow);
   showReferenceForm($newReference);
-}
-
-function copyReference() {
-  $rowToCopyFrom = $(this).closest('tr.reference_row');
-  $newRow = $rowToCopyFrom.clone(true);
-  $rowToCopyFrom.after($newRow);
-  $newReference = $('.reference', $newRow);
-  $newReference.attr("id", "reference_");
-  $('form', $newReference).attr("action", "/references");
-  $('[name=_method]', $newReference).attr("value", "post");
-  showReferenceForm($newReference, {focusFirstField: true});
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
