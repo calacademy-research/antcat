@@ -39,7 +39,7 @@ class WardBibliography
     WardReference.create!(
       :filename        => @base_filename,
       :cite_code       => node_to_text(columns[col += 1]),
-      :authors         => node_to_text(columns[col += 1]),
+      :authors         => fix_authors(node_to_text(columns[col += 1])),
       :year            => node_to_text(columns[col += 1]),
       :date            => node_to_text(columns[col += 1]),
       :title           => node_to_text(columns[col += 1]),
@@ -62,6 +62,18 @@ class WardBibliography
     s = s.gsub(/\|/, '*')
     s = s.squish
     CGI.unescapeHTML(s)
+  end
+
+  def fix_authors name
+    # A reference by "Radchenko, A. G.; Elmes, G. W.; Alicata, A."
+    # has some weird bytes before Elmes's and Alicata's names
+    name.gsub! /\xC2\xA0/, ''
+
+    # Transposition mistakes
+    name.gsub! /MacKay, W\. P\.; Rebeles M\.; A\.; Arredondo B\.; H\. C\.; Rodríguez R\.; A\. D\.; González, D\. A\.; Vinson, S\. B\.\s*/,
+      "MacKay, W. P.; Rebeles, A.; Arredondo, H.; Rodriguez, A.; Gonzalez, D.; Vinson, S. B."
+
+    name
   end
 
 end

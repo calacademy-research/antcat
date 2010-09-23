@@ -20,4 +20,5 @@ class Author < ActiveRecord::Base
   def self.parse_authors_string string
     import string.split(/; ?/)
   end
+
 end
