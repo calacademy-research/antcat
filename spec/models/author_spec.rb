@@ -59,5 +59,19 @@ describe Author do
       results.count.should == 1
       results.first.should == 'Bolton'
     end
+
+    it "should return authors in order of most recently used" do
+      reference = Factory :reference
+      ['Never Used', 'Recent', 'Old', 'Most Recent'].each do |name|
+        Author.create! :name => name
+      end
+      AuthorParticipation.create! :created_at => Time.now, :author => Author.find_by_name('Most Recent'), :reference => reference
+      AuthorParticipation.create! :created_at => Time.now - 1, :author => Author.find_by_name('Recent'), :reference => reference
+      AuthorParticipation.create! :created_at => Time.now - 2, :author => Author.find_by_name('Old'), :reference => reference
+
+      results = Author.search
+
+      results.should == ['Most Recent', 'Recent', 'Old', 'Never Used']
+    end
   end
 end
