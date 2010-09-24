@@ -123,7 +123,7 @@ function copyReference() {
 function addOrInsertReferenceForm($reference) {
   $referenceTemplateRow = $('.reference_template_row');
   $newReferenceRow = $referenceTemplateRow.clone(true);
-  $newReferenceRow.removeClass('reference_template_row');
+  $newReferenceRow.removeClass('reference_template_row').addClass('reference_row');
   $('.reference_template', $newReferenceRow).removeClass('reference_template').addClass('reference');
 
   if ($reference == null)
