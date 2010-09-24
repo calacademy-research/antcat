@@ -40,12 +40,14 @@ class ArticleReference < Reference
 
   private
   def parse_pagination
+    return unless pagination
     parts = pagination.match(/(.+?)(?:-(.+?))?\.?$/) or return
     @start_page = parts[1]
     @end_page = parts[2] if parts.length == 3
   end
 
   def parse_series_volume_issue
+    return unless series_volume_issue
     parts = series_volume_issue.match(/(\(\w+\))?(\w+)(\(\w+\))?/) or return
     @series = parts[1].match(/\((\w+)\)/)[1] if parts[1].present?
     @volume = parts[2]

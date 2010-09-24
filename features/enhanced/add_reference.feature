@@ -75,10 +75,11 @@ Feature: Add reference
       And I fill in "reference_citation_year" with "1981"
       And I follow "Book"
       And I fill in "publisher_string" with "New York:Houghton Mifflin"
+      And I fill in "book_pagination" with "32 pp."
       And I press "OK"
     Then I should be on the main page
       And I should not see a new edit form
-      And I should see "Ward, B.L.; Bolton, B. 1981. A reference title. New York: Houghton Mifflin."
+      And I should see "Ward, B.L.; Bolton, B. 1981. A reference title. New York: Houghton Mifflin. 32 pp."
 
   Scenario: Adding an article
     Given I am logged in
@@ -90,7 +91,7 @@ Feature: Add reference
       And I fill in "reference_citation_year" with "1981"
       And I fill in "journal_title" with "Ant Journal"
       And I fill in "reference_series_volume_issue" with "1"
-      And I fill in "reference_pagination" with "2"
+      And I fill in "article_pagination" with "2"
       And I press "OK"
     Then I should be on the main page
       And I should not see a new edit form

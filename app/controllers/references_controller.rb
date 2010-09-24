@@ -11,6 +11,7 @@ class ReferencesController < ApplicationController
     @reference = Reference.find(params[:id])
     set_journal if @reference.respond_to? :journal
     set_publisher if @reference.respond_to? :publisher
+    set_pagination
     if set_authors
       @reference.update_attributes(params[:reference])
     end
@@ -25,6 +26,7 @@ class ReferencesController < ApplicationController
             end
     set_journal if @reference.respond_to? :journal
     set_publisher if @reference.respond_to? :publisher
+    set_pagination
     success = set_authors
     @reference.attributes = params[:reference]
     if success
@@ -40,6 +42,15 @@ class ReferencesController < ApplicationController
   end
 
   private
+  def set_pagination
+    params[:reference][:pagination] =
+      case @reference
+      when ArticleReference: params[:article_pagination]
+      when BookReference: params[:book_pagination]
+      else nil
+      end
+  end
+
   def set_authors
     if params[:reference][:authors].blank?
       @reference.errors.add :authors, "can't be blank"

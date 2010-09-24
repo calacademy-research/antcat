@@ -5,10 +5,10 @@ $(function() {
     setupDisplays();
     setupForms();
   }
-  if (!usingCucumber) {
-    addReference();
-    $('#reference_ #reference_authors_string').focus();
-  }
+  //if (!usingCucumber) {
+    //addReference();
+    //$('#reference_ #reference_authors_string').focus();
+  //}
 })
 
 function setupSearch() {
@@ -192,7 +192,8 @@ function setWatermarks($form) {
 
   $('#journal_title', $form).watermark('Journal');
   $('#reference_series_volume_issue', $form).watermark('Series, volume, issue');
-  $('#reference_pagination', $form).watermark('Pages');
+  $('#article_pagination', $form).watermark('Page');
+  $('#book_pagination', $form).watermark('Pages');
   $('#reference_citation', $form).watermark('Citation');
 
   $('#reference_public_notes', $form).watermark('Published notes');

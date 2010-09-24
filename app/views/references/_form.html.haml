@@ -31,10 +31,11 @@
             = text_field_tag :journal_title, journal_title, :class => 'journal'
             = f.text_field :series_volume_issue, :class => 'series_volume_issue'
             = ':'
-            = f.text_field :pagination, :class => 'pagination'
+            = text_field_tag :article_pagination, reference.pagination, :class => 'pages'
 
           %div{:id => "tabs-book-#{reference.id}"}
             = text_field_tag :publisher_string, publisher_string
+            = text_field_tag :book_pagination, reference.pagination, :class => 'pages'
 
       %tr
         %td{:colspan => 2}
