@@ -28,9 +28,10 @@
               %a{:href => "#tabs-book-#{reference.id}"}Book
           %table{:id => "tabs-article-#{reference.id}"}
             %tr
-              %td= text_field_tag :journal_title, journal_title
-              %td= f.text_field :series_volume_issue
-              %td= f.text_field :pagination
+              %td= text_field_tag :journal_title, journal_title, :style => 'width: 400px'
+              %td{:style => 'padding-left: 10px;'}= f.text_field :series_volume_issue, :style => 'width: 150px'
+              %td= ':'
+              %td= f.text_field :pagination, :style => 'width: 100px'
           %p{:id => "tabs-book-#{reference.id}"}
             = text_field_tag :publisher_place
             = text_field_tag :publisher_name, publisher_name
