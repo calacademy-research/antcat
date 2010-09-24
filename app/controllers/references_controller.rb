@@ -43,6 +43,7 @@ class ReferencesController < ApplicationController
   def set_authors
     if params[:reference][:authors].blank?
       @reference.errors.add :authors, "can't be blank"
+      @reference.authors_string = ''
       return false
     end
     @reference.author_participations.delete_all if @reference
@@ -64,7 +65,7 @@ class ReferencesController < ApplicationController
       :content => render_to_string(:partial => 'reference',
                                    :locals => {:reference => @reference, :css_class => 'reference'}),
       :id => @reference.id,
-      :success => @reference.valid?
+      :success => @reference.errors.empty?
     }
   end
 end
