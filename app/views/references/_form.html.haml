@@ -29,9 +29,9 @@
 
           %div{:id => "tabs-article-#{reference.id}"}
             = text_field_tag :journal_title, journal_title, :class => 'journal'
-            = f.text_field :series_volume_issue, :style => 'width: 150px'
+            = f.text_field :series_volume_issue, :class => 'series_volume_issue'
             = ':'
-            = f.text_field :pagination, :style => 'width: 80px'
+            = f.text_field :pagination, :class => 'pagination'
 
           %div{:id => "tabs-book-#{reference.id}"}
             = text_field_tag :publisher_string, publisher_string

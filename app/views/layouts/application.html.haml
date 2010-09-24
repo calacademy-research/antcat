@@ -32,19 +32,19 @@
     #page
       #header
         = render :partial => 'shared/login'
-        %div{:style => 'clear:both'}
+        .clear
 
         %hr
 
-        %div{:style => 'float:left'}
+        .left
           %a{:href => references_path}
             %h1 ANTBIB
-        %div{:style => 'float:left'}
+        .left
           %h2 A Bibliography of Ant Systematics
-        %div{:style => 'float:right'}
+        .right
           %h3 by Philip S. Ward, et al.
 
-        %div{:style => 'clear:both'}
+        .clear
 
         .notice
           =flash[:notice]

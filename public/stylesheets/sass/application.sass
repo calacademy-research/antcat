@@ -1,3 +1,15 @@
+div.clear
+  clear: both
+
+div.left
+  float: left
+
+div.right
+  float: right
+
+td.reference
+  vertical-align: top
+
 tr.full_width
   width: 100%
 
@@ -90,9 +102,13 @@ span.help
         background-color: lightyellow
       &.authors
         padding-right: 8px
-      &.year
-        input
-          width: 100%
+      & input.year
+        width: 100%
+      & input.pagination
+        width: 80px
+      & input.series_volume_issue
+        width: 150px
+
       table.small_fields
         width: auto
         td.cite_code
