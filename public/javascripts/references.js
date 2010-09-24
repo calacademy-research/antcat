@@ -4,8 +4,8 @@ $(function() {
     setupDisplays();
     setupForms();
   }
-  addReference();
-  $('#reference_ #reference_authors_string').focus();
+  //addReference();
+  //$('#reference_ #reference_authors_string').focus();
 })
 
 /////////////////////////////////////////////////////////////////////////
