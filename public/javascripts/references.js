@@ -1,4 +1,5 @@
 $(function() {
+  setupSearch();
   if (loggedIn) {
     setupAddReferenceLink();
     setupDisplays();
@@ -9,6 +10,15 @@ $(function() {
     $('#reference_ #reference_authors_string').focus();
   }
 })
+
+function setupSearch() {
+  $("#journal").autocomplete({source: "/journals", minLength: 3});
+  $("#author").autocomplete({source: "/authors", minLength: 3});
+  $("#start_year").keyup(function(event) {
+    if (event.which != 9)
+      $("#end_year").val($(this).val());
+  });
+}
 
 /////////////////////////////////////////////////////////////////////////
 
