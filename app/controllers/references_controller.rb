@@ -10,19 +10,21 @@ class ReferencesController < ApplicationController
   def update
     @reference = Reference.find(params[:id])
     set_authors
-    set_journal
+    set_journal if @reference.respond_to? :journal
+    set_publisher if @reference.respond_to? :publisher
     @reference.update_attributes(params[:reference])
     render_json
   end
   
   def create
-    set_authors
-    set_journal
     klass = case params[:selected_tab]
             when 'Article': ArticleReference
             when 'Book': BookReference
             else OtherReference
             end
+    set_authors
+    set_journal if klass == ArticleReference
+    set_publisher if klass == BookReference
     @reference = klass.create(params[:reference])
     render_json true
   end
@@ -42,7 +44,10 @@ class ReferencesController < ApplicationController
 
   def set_journal
     params[:reference][:journal] = Journal.import :title => params[:journal_title]
+  end
 
+  def set_publisher
+    params[:reference][:publisher] = Publisher.import_string params[:publisher_string]
   end
 
   def render_json new = false

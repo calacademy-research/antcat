@@ -5,4 +5,9 @@ class Publisher < ActiveRecord::Base
     find_or_create_by_name_and_place(data[:name], data[:place])
   end
 
+  def self.import_string string
+    match = string.match(/(.*?): ?(.*)/) or return
+    import :name => match[2], :place => match[1]
+  end
+
 end

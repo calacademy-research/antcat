@@ -16,10 +16,17 @@ describe Publisher do
   end
 
   describe "searching" do
-    it "should do fuzzy matching of journal names" do
-      Factory(:journal, :title => 'American Bibliographic Proceedings')
-      Factory(:journal, :title => 'Playboy')
-      Journal.search('ABP').should == ['American Bibliographic Proceedings']
+  end
+
+  describe "importing a string" do
+    it "should handle a blank string" do
+      Publisher.should_not_receive :import
+      Publisher.import_string ''
+    end
+    it "should parse it correctly" do
+      publisher = mock_model Publisher
+      Publisher.should_receive(:import).with(:name => 'Houghton Mifflin', :place => 'New York').and_return publisher
+      Publisher.import_string('New York: Houghton Mifflin').should == publisher
     end
   end
 

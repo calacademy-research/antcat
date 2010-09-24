@@ -9,7 +9,11 @@ class BookReference < Reference
   end
 
   def citation
-    add_period_if_necessary "#{publisher.place}: #{publisher.name}. #{pagination}"
+    add_period_if_necessary "#{publisher_string}. #{pagination}"
+  end
+
+  def publisher_string
+    "#{publisher.place}: #{publisher.name}"
   end
 
 end
