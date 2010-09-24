@@ -7,13 +7,13 @@
   %div{:style => 'clear:both'}
   %hr
 
-- unless @references.present?
-  No results found
+  - unless @references.present?
+    No results found
 
-- if user_signed_in?
-  %p
-    %a.add_reference_link{:href => '#'}
-      Add reference
+  - if user_signed_in?
+    %p
+      %a.add_reference_link{:href => '#'}
+        Add reference
 
 %table.references
   - for reference in @references
