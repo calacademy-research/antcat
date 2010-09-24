@@ -4,8 +4,10 @@ $(function() {
     setupDisplays();
     setupForms();
   }
-  //addReference();
-  //$('#reference_ #reference_authors_string').focus();
+  if (!usingCucumber) {
+    addReference();
+    $('#reference_ #reference_authors_string').focus();
+  }
 })
 
 /////////////////////////////////////////////////////////////////////////
