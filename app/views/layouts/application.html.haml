@@ -24,13 +24,16 @@
     :javascript
       var usingCucumber = #{Rails.env == 'cucumber'};
       var loggedIn = #{user_signed_in?};
-      document.documentElement.className = 'js';
+      document.documentElement.className = 'js'; // FOUC fix
 
     = yield :head
 
   %body{:class => @controller.class, :id => 'flash'}
     #page
       #header
+        = render :partial => 'shared/login'
+        %div{:style => 'clear:both'}
+
         %div{:style => 'float:left'}
           %a{:href => references_path}
             %h1 ANTBIB
@@ -71,4 +74,4 @@
               %a{:href => 'http://www.zotero.org/'}
                 %img{:style => "height: 20px", :src => '/images/zotero_logo_tiny.png'}
       :javascript
-        $('#flash').show();
+        $('#flash').show(); // FOUC fix
