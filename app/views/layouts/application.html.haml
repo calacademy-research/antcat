@@ -5,6 +5,7 @@
     %meta{'http-equiv' => "content-type", :content => "text/html;charset=UTF-8"}/
 
     %style{:type => 'text/css'}
+      / FOUC fix
       = ".js #flash {display:none;}"
 
     = javascript_include_tag |
@@ -35,7 +36,6 @@
         .clear
 
         %hr
-
         .left
           %a{:href => references_path}
             %h1 ANTBIB
@@ -43,14 +43,12 @@
           %h2 A Bibliography of Ant Systematics
         .right
           %h3 by Philip S. Ward, et al.
-
         .clear
 
         .notice
           =flash[:notice]
         .alert
           =flash[:alert]
-
         %hr
 
       #contents
