@@ -14,7 +14,7 @@
         %col{:width => '*'}
         %col{:width => '100px'}
       %tr
-        %td.authors= f.text_field :authors_string, :class => 'authors'
+        %td.authors= f.text_field :authors, :class => 'authors', :value => reference.authors_string
         %td= f.text_field :citation_year
       %tr
         %td{:colspan => 2}

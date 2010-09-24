@@ -9,23 +9,27 @@ class ReferencesController < ApplicationController
 
   def update
     @reference = Reference.find(params[:id])
-    set_authors
     set_journal if @reference.respond_to? :journal
     set_publisher if @reference.respond_to? :publisher
-    @reference.update_attributes(params[:reference])
+    if set_authors
+      @reference.update_attributes(params[:reference])
+    end
     render_json
   end
   
   def create
-    klass = case params[:selected_tab]
-            when 'Article': ArticleReference
-            when 'Book': BookReference
-            else OtherReference
+    @reference = case params[:selected_tab]
+            when 'Article': ArticleReference.new
+            when 'Book': BookReference.new
+            else OtherReference.new
             end
-    set_authors
-    set_journal if klass == ArticleReference
-    set_publisher if klass == BookReference
-    @reference = klass.create(params[:reference])
+    set_journal if @reference.respond_to? :journal
+    set_publisher if @reference.respond_to? :publisher
+    success = set_authors
+    @reference.attributes = params[:reference]
+    if success
+      @reference.save
+    end
     render_json true
   end
   
@@ -37,9 +41,13 @@ class ReferencesController < ApplicationController
 
   private
   def set_authors
+    if params[:reference][:authors].blank?
+      @reference.errors.add :authors, "can't be blank"
+      return false
+    end
     @reference.author_participations.delete_all if @reference
-    authors_string = params[:reference].delete :authors_string
-    params[:reference][:authors] = Author.import_authors_string authors_string
+    params[:reference][:authors] = Author.import_authors_string params[:reference][:authors]
+    true
   end
 
   def set_journal

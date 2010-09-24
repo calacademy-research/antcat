@@ -13,7 +13,7 @@ Feature: Add reference
     When I go to the main page
       And I follow "Add reference"
       Then I should see a new edit form
-    When I fill in "reference_authors_string" with "Ward, B.L.;Bolton, B."
+    When I fill in "reference_authors" with "Ward, B.L.;Bolton, B."
       And I fill in "reference_title" with "A reference title"
       And I fill in "reference_citation_year" with "1981"
       And I press "OK"
@@ -39,7 +39,7 @@ Feature: Add reference
       Then "Add reference" should not be visible
     When I follow "add"
       Then I should see a new edit form
-    When in the new edit form I fill in "reference_authors_string" with "Ward, B.L.;Bolton, B."
+    When in the new edit form I fill in "reference_authors" with "Ward, B.L.;Bolton, B."
       And in the new edit form I fill in "reference_title" with "Between Pacific Tides"
       And in the new edit form I fill in "reference_citation_year" with "1992"
       And in the new edit form I press "OK"
@@ -70,7 +70,7 @@ Feature: Add reference
     When I go to the main page
       And I follow "Add reference"
       Then I should see a new edit form
-    When I fill in "reference_authors_string" with "Ward, B.L.;Bolton, B."
+    When I fill in "reference_authors" with "Ward, B.L.;Bolton, B."
       And I fill in "reference_title" with "A reference title"
       And I fill in "reference_citation_year" with "1981"
       And I follow "Book"
@@ -85,7 +85,7 @@ Feature: Add reference
     When I go to the main page
       And I follow "Add reference"
       Then I should see a new edit form
-    When I fill in "reference_authors_string" with "Ward, B.L.;Bolton, B."
+    When I fill in "reference_authors" with "Ward, B.L.;Bolton, B."
       And I fill in "reference_title" with "A reference title"
       And I fill in "reference_citation_year" with "1981"
       And I fill in "journal_title" with "Ant Journal"
