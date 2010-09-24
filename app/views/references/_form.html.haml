@@ -2,7 +2,7 @@
 - publisher_string = reference.respond_to?(:publisher_string) ? reference.publisher_string : ''
 - journal_title = reference.respond_to?(:journal) ? (reference.journal && reference.journal.title) : ''
 
-.reference_form
+.reference_form.ui-corner-all.ui-widget-content.ui-widget
   - url = reference.new_record? ? references_path : reference_path(reference)
   - method = reference.new_record? ? 'post' : 'put'
   - form_for :reference, reference, :url => url do |f|
