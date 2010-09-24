@@ -4,8 +4,8 @@ $(function() {
     setupDisplays();
     setupForms();
   }
-  //addReference();
-  //$('#reference_ #reference_authors_string').focus();
+  addReference();
+  $('#reference_ #reference_authors_string').focus();
 })
 
 /////////////////////////////////////////////////////////////////////////
@@ -170,6 +170,7 @@ function showReferenceForm($reference, options) {
     $('.delete', $form).hide();
 
   setupAuthorAutocomplete($reference);
+  setupJournalAutocomplete($reference);
 }
 
 function setWatermarks($form) {

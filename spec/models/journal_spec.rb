@@ -19,6 +19,11 @@ describe Journal do
       Factory(:journal, :title => 'Playboy')
       Journal.search('ABP').should == ['American Bibliographic Proceedings']
     end
+
+    it "should require matching the first letter" do
+      Factory(:journal, :title => 'ABC')
+      Journal.search('BC').should == []
+    end
   end
 
 end

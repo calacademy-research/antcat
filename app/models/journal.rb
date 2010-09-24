@@ -4,7 +4,7 @@ class Journal < ActiveRecord::Base
   end
 
   def self.search term
-    search_expression = '%' + term.split('').join('%') + '%'
+    search_expression = term.split('').join('%') + '%'
     all(:select => 'title', :conditions => ["title LIKE ?", search_expression], :order => :title).map(&:title)
   end
 
