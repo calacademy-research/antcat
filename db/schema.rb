@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100923182024) do
+ActiveRecord::Schema.define(:version => 20100924003853) do
 
   create_table "author_participations", :force => true do |t|
     t.integer  "author_id"
@@ -81,6 +81,8 @@ ActiveRecord::Schema.define(:version => 20100923182024) do
     t.text     "taxonomic_notes"
     t.text     "title"
   end
+
+  add_index "references", ["journal_id"], :name => "references_journal_id_idx"
 
   create_table "users", :force => true do |t|
     t.string   "email",                              :default => "", :null => false

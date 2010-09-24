@@ -3,9 +3,14 @@ class Journal < ActiveRecord::Base
     find_or_create_by_title(title)
   end
 
-  def self.search term
+  def self.search term = ''
     search_expression = term.split('').join('%') + '%'
-    all(:select => 'title', :conditions => ["title LIKE ?", search_expression], :order => :title).map(&:title)
+
+    all(:select => 'journals.title, COUNT(*)',
+        :joins => 'LEFT OUTER JOIN `references` ON references.journal_id = journals.id',
+        :conditions => ['journals.title LIKE ?', search_expression],
+        :group => 'journals.id',
+        :order => 'COUNT(*) DESC').map(&:title)
   end
 
 end
