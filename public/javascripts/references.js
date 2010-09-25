@@ -193,7 +193,10 @@ function setWatermarks($form) {
   $('#journal_title', $form).watermark('Journal');
   $('#reference_series_volume_issue', $form).watermark('Series, volume, issue');
   $('#article_pagination', $form).watermark('Page');
+
+  $('#publisher_string', $form).watermark('Place: Publisher');
   $('#book_pagination', $form).watermark('Pages');
+
   $('#reference_citation', $form).watermark('Citation');
 
   $('#reference_public_notes', $form).watermark('Published notes');
