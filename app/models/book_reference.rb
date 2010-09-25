@@ -13,7 +13,8 @@ class BookReference < Reference
   end
 
   def publisher_string
-    "#{publisher.place}: #{publisher.name}"
+    string = publisher.place.present? ? "#{publisher.place}: " : ''
+    string << publisher.name
   end
 
 end
