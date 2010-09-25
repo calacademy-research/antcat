@@ -10,4 +10,8 @@ class Publisher < ActiveRecord::Base
     import :name => match[2], :place => match[1] unless match[2].blank?
   end
 
+  def to_s
+    string = place.present? ? "#{place}: " : ''
+    string << name
+  end
 end

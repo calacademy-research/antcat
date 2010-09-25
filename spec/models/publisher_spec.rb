@@ -36,4 +36,13 @@ describe Publisher do
     end
   end
 
+  describe "representing as a string" do
+    it "format name and place" do
+      Publisher.create!(:name => "Wiley", :place => 'New York').to_s.should == 'New York: Wiley'
+    end
+    it "should format correctly if there is no place" do
+      Publisher.create!(:name => "Wiley").to_s.should == 'Wiley'
+    end
+  end
+
 end
