@@ -183,6 +183,7 @@ function showReferenceForm($reference, options) {
 
   setupAuthorAutocomplete($reference);
   setupJournalAutocomplete($reference);
+  setupPublisherAutocomplete($reference);
 }
 
 function setWatermarks($form) {

@@ -14,4 +14,10 @@ class Publisher < ActiveRecord::Base
     string = place.present? ? "#{place}: " : ''
     string << name
   end
+
+  def self.search term
+    search_expression = '%' + term.split('').join('%') + '%'
+    all(:conditions => ["CONCAT(COALESCE(place, ''), ':', name) LIKE ?", search_expression]).map(&:to_s)
+  end
+
 end

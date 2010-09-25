@@ -16,6 +16,15 @@ describe Publisher do
   end
 
   describe "searching" do
+    it "should do fuzzy matching of name/place combinations" do
+      Publisher.create! :name => 'Wiley', :place => 'Chicago'
+      Publisher.create! :name => 'Wiley', :place => 'Toronto'
+      Publisher.search('chw').should == ['Chicago: Wiley']
+    end
+    it "should find a match even if there's no place" do
+      Publisher.create! :name => 'Wiley'
+      Publisher.search('w').should == ['Wiley']
+    end
   end
 
   describe "importing a string" do

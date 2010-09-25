@@ -49,3 +49,23 @@ function insertAuthor(string, position, author)
 
   return {string: string, position: position};
 }
+
+///////////////////////////////////////////////////////
+
+function setupJournalAutocomplete($reference) {
+  $('.reference_form .journal', $reference).autocomplete({
+    selectFirst: true,
+    source: "/journals",
+    minLength: 3
+  });
+}
+
+///////////////////////////////////////////////////////
+
+function setupPublisherAutocomplete($reference) {
+  $('.reference_form .publisher', $reference).autocomplete({
+    selectFirst: true,
+    source: "/publishers",
+    minLength: 3
+  });
+}
