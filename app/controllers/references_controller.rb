@@ -12,8 +12,10 @@ class ReferencesController < ApplicationController
     set_journal if @reference.respond_to? :journal
     set_publisher if @reference.respond_to? :publisher
     set_pagination
-    if set_authors
-      @reference.update_attributes(params[:reference])
+    success = set_authors
+    @reference.attributes = params[:reference]
+    if success
+      @reference.save
     end
     render_json
   end
@@ -53,11 +55,11 @@ class ReferencesController < ApplicationController
 
   def set_authors
     if params[:reference][:authors].blank?
+      params[:reference][:authors] = []
       @reference.errors.add :authors, "can't be blank"
       @reference.authors_string = ''
       return false
     end
-    @reference.author_participations.delete_all if @reference
     params[:reference][:authors] = Author.import_authors_string params[:reference][:authors]
     true
   end
