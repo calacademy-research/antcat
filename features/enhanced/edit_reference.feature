@@ -52,3 +52,14 @@ Feature: Edit reference
       And I fill in "publisher_string" with "New York: Wiley"
       And I press "OK"
     Then I should see "Fisher 2010. Ants. New York: Wiley."
+
+  Scenario: See the correct tab initially
+    Given I am logged in
+      And the following entries exist in the bibliography
+      |authors|title|citation               |year|
+      |Fisher |Ants |New York: Wiley, 22 pp.|2010|
+    When I go to the main page
+      And I click the reference
+      And I fill in "publisher_string" with "New York: Harcourt"
+      And I press "OK"
+    Then I should see "Fisher 2010. Ants. New York: Harcourt. 22 pp."

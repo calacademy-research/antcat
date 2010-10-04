@@ -172,7 +172,7 @@ function showReferenceForm($reference, options) {
 
   var $form = $('.reference_form', $reference);
   setWatermarks($form);
-  setTabs();
+  setTabs($reference);
   $form.show();
 
   if (options.focusFirstField)
@@ -208,8 +208,9 @@ function setWatermarks($form) {
   $('#reference_date', $form).watermark('Date');
 }
 
-function setTabs() {
-  $('.tabs').tabs();
+function setTabs($reference) {
+  var selected_tab = $('.selected_tab', $reference).val();
+  $('.tabs', $reference).tabs({selected: selected_tab});
 }
 
 function submitReferenceForm() {
