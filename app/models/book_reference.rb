@@ -1,8 +1,8 @@
 class BookReference < Reference
   belongs_to :publisher
 
-  def self.import create_data, data
-    BookReference.create! create_data.merge(
+  def self.import base_class_data, data
+    create! base_class_data.merge(
       :pagination => data[:pagination],
       :publisher => Publisher.import(data[:publisher])
     )

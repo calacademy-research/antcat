@@ -1,8 +1,8 @@
 class ArticleReference < Reference
   belongs_to :journal
 
-  def self.import create_data, data
-    ArticleReference.create! create_data.merge(
+  def self.import base_class_data, data
+    ArticleReference.create! base_class_data.merge(
       :series_volume_issue => data[:series_volume_issue],
       :pagination => data[:pagination],
       :journal => Journal.import(data[:journal])
