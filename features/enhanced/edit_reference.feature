@@ -40,3 +40,15 @@ Feature: Edit reference
       And I fill in "start_year" with "1910"
       And I press "Search"
     Then I should see "Fisher 1910a"
+
+  Scenario: Change a reference's type
+    Given I am logged in
+      And the following entries exist in the bibliography
+      |authors|title|citation  |year|
+      |Fisher |Ants |Psyche 6:4|2010|
+    When I go to the main page
+      And I click the reference
+      And I follow "Book"
+      And I fill in "publisher_string" with "New York: Wiley"
+      And I press "OK"
+    Then I should see "Fisher 2010. Ants. New York: Wiley."

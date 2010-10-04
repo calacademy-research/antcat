@@ -8,7 +8,7 @@ class ReferencesController < ApplicationController
   end
 
   def update
-    @reference = Reference.find(params[:id])
+    @reference = get_reference
     set_journal if @reference.respond_to? :journal
     set_publisher if @reference.respond_to? :publisher
     set_pagination
@@ -80,5 +80,12 @@ class ReferencesController < ApplicationController
       :id => @reference.id,
       :success => @reference.errors.empty?
     }
+  end
+
+  def get_reference
+    reference = Reference.find(params[:id])
+    return reference if reference.type == params[:selected_tab]
+    reference.update_attribute(:type, params[:selected_tab] + 'Reference')
+    Reference.find(params[:id])
   end
 end
