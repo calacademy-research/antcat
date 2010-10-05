@@ -5,7 +5,7 @@ class Reference < ActiveRecord::Base
   belongs_to :journal
   belongs_to :source_reference, :polymorphic => true
 
-  before_save :set_year
+  before_validation :set_year
 
   validates_presence_of :year, :title
 

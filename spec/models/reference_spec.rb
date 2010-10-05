@@ -164,7 +164,7 @@ describe Reference do
   end
 
   it "has many authors" do
-    reference = Reference.create! :title => 'asdf'
+    reference = Reference.create! :title => 'asdf', :citation_year => '2010d'
 
     author = Author.create! :name => 'Fisher, B.L.'
     reference.authors << author
@@ -251,13 +251,13 @@ describe Reference do
   describe "polymorphic association to source of reference" do
     it "should work" do
       ward_reference = Factory(:ward_reference)
-      reference = Reference.create! :source_reference => ward_reference, :title => 'asdf'
+      reference = Reference.create! :source_reference => ward_reference, :title => 'asdf', :citation_year => '2010'
       reference.reload.source_reference.should == ward_reference
     end
   end
 
   it "should not truncate long fields" do
-    Reference.create! :authors_string => 'a' * 3000, :editor_notes => 'e' * 1000, :public_notes => 'n' * 1500, :taxonomic_notes => 't' * 1700, :title => 't' * 1900
+    Reference.create! :authors_string => 'a' * 3000, :editor_notes => 'e' * 1000, :public_notes => 'n' * 1500, :taxonomic_notes => 't' * 1700, :title => 't' * 1900, :citation_year => '2010'
     reference = Reference.first
     reference.authors_string.length.should == 3000
     #reference.citation.length.should == 2000

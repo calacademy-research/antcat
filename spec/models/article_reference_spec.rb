@@ -7,7 +7,7 @@ describe ArticleReference do
     it "should create the reference and set its data" do
       ward_reference = Factory(:ward_reference)
       reference = ArticleReference.import(
-        {:title => 'awdf', :source_reference_id => ward_reference.id, :source_reference_type => 'WardReference'},
+        {:title => 'awdf', :source_reference_id => ward_reference.id, :source_reference_type => 'WardReference', :citation_year => '2010'},
         {:series_volume_issue => '12', :pagination => '32-33', :journal => 'Ecology Letters'})
       reference.series_volume_issue.should == '12'
       reference.pagination.should == '32-33'

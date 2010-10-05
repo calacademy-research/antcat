@@ -7,14 +7,13 @@ Factory.define :ward_reference do |ward_reference|
 end
 
 def ward_reference_factory attributes
-  attributes.reverse_merge!(:authors => 'Fisher', :title => 'Ants')
+  attributes.reverse_merge!(:authors => 'Fisher', :title => 'Ants', :year => '2010a')
   WardReference.new(attributes).export
 end
 
 Factory.define :reference do |reference|
-  reference.citation_year    "2010"
-  reference.title   "Ants are my life"
-  reference.year  2010
+  reference.citation_year   "2010"
+  reference.title           "Ants are my life"
 end
 
 def reference_factory attributes = {}
@@ -25,7 +24,10 @@ def reference_factory attributes = {}
 end
 
 Factory.define :article_reference do |reference|
-  reference.title   "Ants are my life"
+  reference.title               "Ants are my life"
+  reference.citation_year       '2010d'
+  reference.series_volume_issue '1'
+  reference.pagination          '22'
 end
 
 Factory.define :book_reference do |reference|
