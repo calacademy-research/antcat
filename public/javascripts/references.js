@@ -5,10 +5,10 @@ $(function() {
     setupDisplays();
     setupForms();
   }
-  if (!usingCucumber) {
-    addReference();
-    $('#reference_ #reference_authors_string').focus();
-  }
+  //if (!usingCucumber) {
+    //addReference();
+    //$('#reference_ #reference_authors_string').focus();
+  //}
 })
 
 function setupSearch() {
@@ -209,7 +209,15 @@ function setWatermarks($form) {
 }
 
 function setTabs($reference) {
+  var id = $reference.attr('id');
   var selected_tab = $('.selected_tab', $reference).val();
+
+  $('.tabs .article-tab', $reference).attr('href', '#reference_article' + id);
+  $('.tabs .article-tab-section', $reference).attr('id', 'reference_article' + id);
+
+  $('.tabs .book-tab', $reference).attr('href', '#reference_book' + id);
+  $('.tabs .book-tab-section', $reference).attr('id', 'reference_book' + id);
+
   $('.tabs', $reference).tabs({selected: selected_tab});
 }
 

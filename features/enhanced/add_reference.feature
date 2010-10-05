@@ -13,13 +13,16 @@ Feature: Add reference
     When I go to the main page
       And I follow "Add reference"
       Then I should see a new edit form
-    When I fill in "reference_authors" with "Ward, B.L.;Bolton, B."
+    When I fill in "reference_authors_string" with "Ward, B.L.;Bolton, B."
       And I fill in "reference_title" with "A reference title"
+      And I fill in "journal_title" with "Ants"
+      And I fill in "reference_series_volume_issue" with "2"
+      And I fill in "article_pagination" with "1"
       And I fill in "reference_citation_year" with "1981"
       And I press "OK"
     Then I should be on the main page
       And I should not see a new edit form
-      And I should see "Ward, B.L.; Bolton, B. 1981. A reference title"
+      And I should see "Ward, B.L.; Bolton, B. 1981. A reference title. Ants 2:1."
       And "Add reference" should not be visible
 
   Scenario: Add but cancel a reference when there are no others
@@ -39,13 +42,16 @@ Feature: Add reference
       Then "Add reference" should not be visible
     When I follow "add"
       Then I should see a new edit form
-    When in the new edit form I fill in "reference_authors" with "Ward, B.L.;Bolton, B."
+    When in the new edit form I fill in "reference_authors_string" with "Ward, B.L.;Bolton, B."
       And in the new edit form I fill in "reference_title" with "Between Pacific Tides"
+      And in the new edit form I fill in "journal_title" with "Ants"
+      And in the new edit form I fill in "reference_series_volume_issue" with "2"
+      And in the new edit form I fill in "article_pagination" with "1"
       And in the new edit form I fill in "reference_citation_year" with "1992"
       And in the new edit form I press "OK"
     Then I should be on the main page
       And I should not see a new edit form
-      And I should see "Ward, B.L.; Bolton, B. 1992. Between Pacific Tides."
+      And I should see "Ward, B.L.; Bolton, B. 1992. Between Pacific Tides. Ants 2:1."
 
   Scenario: Adding a reference but then cancelling
     Given I am logged in
@@ -70,7 +76,7 @@ Feature: Add reference
     When I go to the main page
       And I follow "Add reference"
       Then I should see a new edit form
-    When I fill in "reference_authors" with "Ward, B.L.;Bolton, B."
+    When I fill in "reference_authors_string" with "Ward, B.L.;Bolton, B."
       And I fill in "reference_title" with "A reference title"
       And I fill in "reference_citation_year" with "1981"
       And I follow "Book"
@@ -86,7 +92,7 @@ Feature: Add reference
     When I go to the main page
       And I follow "Add reference"
       Then I should see a new edit form
-    When I fill in "reference_authors" with "Ward, B.L.;Bolton, B."
+    When I fill in "reference_authors_string" with "Ward, B.L.;Bolton, B."
       And I fill in "reference_title" with "A reference title"
       And I fill in "reference_citation_year" with "1981"
       And I fill in "journal_title" with "Ant Journal"
@@ -110,7 +116,7 @@ Feature: Add reference
     Given I am logged in
     When I go to the main page
       And I follow "Add reference"
-      And I fill in "reference_authors" with "Fisher, B.L."
+      And I fill in "reference_authors_string" with "Fisher, B.L."
       And I press "OK"
     Then I should see the edit form
       And I should see "Year can't be blank"

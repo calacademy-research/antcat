@@ -7,48 +7,42 @@ class ReferencesController < ApplicationController
     @references = Reference.search(params).paginate(:page => params[:page])
   end
 
+  def create
+    @reference = new_reference
+    save true
+  end
+
   def update
     @reference = get_reference
-    set_journal if @reference.respond_to? :journal
-    set_publisher if @reference.respond_to? :publisher
-    set_pagination
-    success = set_authors
-    @reference.attributes = params[:reference]
-    if success
-      @reference.save
-    end
-    render_json
+    save false
   end
   
-  def create
+  def save new
     journal_valid = true
+    authors_valid = true
     begin
       Reference.transaction do
-        @reference = case params[:selected_tab]
-                when 'Article': ArticleReference.new
-                when 'Book': BookReference.new
-                else OtherReference.new
-                end
-        journal_valid = set_journal if @reference.respond_to? :journal
-        set_publisher if @reference.respond_to? :publisher
+        journal_valid = set_journal if @reference.kind_of? ArticleReference
+        set_publisher if @reference.kind_of? BookReference
         set_pagination
-        set_authors
+        authors_valid = set_authors
         @reference.attributes = params[:reference]
         @reference.save!
         unless @reference.errors.empty?
-          @reference.instance_variable_set( :@new_record ,true)
-          @reference[:id] = nil
+          @reference.instance_variable_set( :@new_record , new)
+          @reference[:id] = nil if new
           raise ActiveRecord::Rollback
         end
       end
     rescue ActiveRecord::RecordInvalid
-      @reference[:id] = nil
-      @reference.instance_variable_set( :@new_record ,true)
+      @reference[:id] = nil if new
+      @reference.instance_variable_set( :@new_record , new)
     end
     @reference.errors.add_to_base "Journal title can't be blank" unless journal_valid
-    render_json true
+    @reference.errors.add_to_base "Authors can't be blank" unless authors_valid
+    render_json new
   end
-  
+
   def destroy
     @reference = Reference.find(params[:id])
     @reference.destroy
@@ -66,12 +60,12 @@ class ReferencesController < ApplicationController
   end
 
   def set_authors
-    if params[:reference][:authors].blank?
-      params[:reference][:authors] = []
-      @reference.errors.add :authors, "can't be blank"
-      @reference.authors_string = ''
+    authors_string = params[:reference][:authors_string]
+    if authors_string.blank?
+      false
     else
-      params[:reference][:authors] = Author.import_authors_string params[:reference][:authors]
+      params[:reference][:authors] = Author.import_authors_string authors_string
+      true
     end
   end
 
@@ -93,9 +87,17 @@ class ReferencesController < ApplicationController
       :isNew => new,
       :content => render_to_string(:partial => 'reference',
                                    :locals => {:reference => @reference, :css_class => 'reference'}),
-      :id => @reference.id,
-      :success => @reference.errors.empty?
+                                   :id => @reference.id,
+                                   :success => @reference.errors.empty?
     }
+  end
+
+  def new_reference
+    case params[:selected_tab]
+    when 'Article': ArticleReference.new
+    when 'Book':    BookReference.new
+    else            OtherReference.new
+    end
   end
 
   def get_reference
