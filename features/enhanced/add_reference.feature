@@ -97,3 +97,25 @@ Feature: Add reference
       And I should not see a new edit form
       And I should see "Ward, B.L.; Bolton, B. 1981. A reference title. Ant Journal 1:2"
 
+  Scenario: Leaving authors blank when adding a reference
+    Given I am logged in
+    When I go to the main page
+      And I follow "Add reference"
+      And I fill in "reference_title" with "adsf"
+      And I press "OK"
+    Then I should see the edit form
+      And I should see "Authors can't be blank"
+
+  Scenario: Leaving other fields blank when adding an article reference
+    Given I am logged in
+    When I go to the main page
+      And I follow "Add reference"
+      And I fill in "reference_authors" with "Fisher, B.L."
+      And I press "OK"
+    Then I should see the edit form
+      And I should see "Year can't be blank"
+      And I should see "Title can't be blank"
+      And I should see "Journal title can't be blank"
+      And I should see "Series volume issue can't be blank"
+      And I should see "Pagination can't be blank"
+

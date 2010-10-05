@@ -7,7 +7,7 @@ class Reference < ActiveRecord::Base
 
   before_save :set_year
 
-  validates_presence_of :title
+  validates_presence_of :year, :title
 
   def self.import data
     create_data = {
@@ -75,7 +75,7 @@ class Reference < ActiveRecord::Base
   end
 
   def set_year
-    self.year = citation_year.to_i
+    self.year = citation_year.to_i unless citation_year.blank?
   end
 
 end

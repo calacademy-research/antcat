@@ -21,19 +21,31 @@ class ReferencesController < ApplicationController
   end
   
   def create
-    @reference = case params[:selected_tab]
-            when 'Article': ArticleReference.new
-            when 'Book': BookReference.new
-            else OtherReference.new
-            end
-    set_journal if @reference.respond_to? :journal
-    set_publisher if @reference.respond_to? :publisher
-    set_pagination
-    success = set_authors
-    @reference.attributes = params[:reference]
-    if success
-      @reference.save
+    journal_valid = true
+    begin
+      Reference.transaction do
+        @reference = case params[:selected_tab]
+                when 'Article': ArticleReference.new
+                when 'Book': BookReference.new
+                else OtherReference.new
+                end
+        journal_valid = set_journal if @reference.respond_to? :journal
+        set_publisher if @reference.respond_to? :publisher
+        set_pagination
+        set_authors
+        @reference.attributes = params[:reference]
+        @reference.save!
+        unless @reference.errors.empty?
+          @reference.instance_variable_set( :@new_record ,true)
+          @reference[:id] = nil
+          raise ActiveRecord::Rollback
+        end
+      end
+    rescue ActiveRecord::RecordInvalid
+      @reference[:id] = nil
+      @reference.instance_variable_set( :@new_record ,true)
     end
+    @reference.errors.add_to_base "Journal title can't be blank" unless journal_valid
     render_json true
   end
   
@@ -58,14 +70,18 @@ class ReferencesController < ApplicationController
       params[:reference][:authors] = []
       @reference.errors.add :authors, "can't be blank"
       @reference.authors_string = ''
-      return false
+    else
+      params[:reference][:authors] = Author.import_authors_string params[:reference][:authors]
     end
-    params[:reference][:authors] = Author.import_authors_string params[:reference][:authors]
-    true
   end
 
   def set_journal
-    params[:reference][:journal] = Journal.import :title => params[:journal_title]
+    if params[:journal_title].blank?
+      return false
+    else
+      params[:reference][:journal] = Journal.import :title => params[:journal_title]
+      return true
+    end
   end
 
   def set_publisher

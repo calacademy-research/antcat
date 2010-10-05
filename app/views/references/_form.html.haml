@@ -30,7 +30,7 @@
 
           %div{:id => "tabs-article-#{reference.id}"}
             = text_field_tag :journal_title, journal_title, :class => 'journal'
-            = f.text_field :series_volume_issue, :class => 'series_volume_issue'
+            = text_field_tag :series_volume_issue, reference.series_volume_issue, :class => 'series_volume_issue'
             = ':'
             = text_field_tag :article_pagination, reference.pagination, :class => 'pages'
 
