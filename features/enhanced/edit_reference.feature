@@ -50,8 +50,9 @@ Feature: Edit reference
       And I click the reference
       And I follow "Book"
       And I fill in "publisher_string" with "New York: Wiley"
+      And I fill in "book_pagination" with "22 pp."
       And I press "OK"
-    Then I should see "Fisher 2010. Ants. New York: Wiley."
+    Then I should see "Fisher 2010. Ants. New York: Wiley, 22 pp."
 
   Scenario: See the correct tab initially
     Given I am logged in
@@ -62,4 +63,4 @@ Feature: Edit reference
       And I click the reference
       And I fill in "publisher_string" with "New York: Harcourt"
       And I press "OK"
-    Then I should see "Fisher 2010. Ants. New York: Harcourt. 22 pp."
+    Then I should see "Fisher 2010. Ants. New York: Harcourt, 22 pp."

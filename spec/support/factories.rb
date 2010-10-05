@@ -28,6 +28,10 @@ Factory.define :article_reference do |reference|
   reference.title   "Ants are my life"
 end
 
+Factory.define :book_reference do |reference|
+  reference.title   "Ants are my life"
+end
+
 Factory.define :author do |author|
   author.sequence(:name) {|n| "Fisher#{n}, B.L."}
 end
@@ -39,4 +43,9 @@ end
 Factory.define :author_participation do |row|
   row.association :author
   row.association :reference
+end
+
+Factory.define :publisher do |row|
+  row.name  'Wiley'
+  row.place 'New York'
 end

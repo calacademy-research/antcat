@@ -79,7 +79,7 @@ Feature: Add reference
       And I press "OK"
     Then I should be on the main page
       And I should not see a new edit form
-      And I should see "Ward, B.L.; Bolton, B. 1981. A reference title. New York: Houghton Mifflin. 32 pp."
+      And I should see "Ward, B.L.; Bolton, B. 1981. A reference title. New York: Houghton Mifflin, 32 pp."
 
   Scenario: Adding an article
     Given I am logged in

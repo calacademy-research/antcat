@@ -2,8 +2,9 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe ReferenceHelper do
   before do
-    @journal = Factory(:journal, :title => "Neue Denkschriften")
-    @author = Factory(:author, :name => "Forel, A.")
+    @journal = Factory :journal, :title => "Neue Denkschriften"
+    @author = Factory :author, :name => "Forel, A."
+    @publisher = Factory :publisher
   end
 
   describe "formattng reference" do
@@ -35,6 +36,12 @@ describe ReferenceHelper do
       reference = Factory(:article_reference, :authors => [@author], :citation_year => "1874", :title => "Les fourmis de la Suisse.",
                           :journal => @journal, :series_volume_issue => "26", :pagination => "1-452.")
       helper.format_reference(reference).should == 'Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.'
+    end
+
+    it "should separate the publisher and the pagination with a comma" do
+      reference = Factory(:book_reference, :authors => [@author], :citation_year => "1874", :title => "Les fourmis de la Suisse.",
+                          :publisher => @publisher, :pagination => "22 pp.")
+      helper.format_reference(reference).should == 'Forel, A. 1874. Les fourmis de la Suisse. New York: Wiley, 22 pp.'
     end
   end
 
