@@ -1,7 +1,7 @@
 class ArticleReference < Reference
   belongs_to :journal
 
-  validates_presence_of :series_volume_issue, :pagination, :journal
+  validates_presence_of :journal, :series_volume_issue, :pagination
 
   def self.import base_class_data, data
     ArticleReference.create! base_class_data.merge(

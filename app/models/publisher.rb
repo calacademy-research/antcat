@@ -4,6 +4,7 @@ class Publisher < ActiveRecord::Base
   validates_presence_of :name
 
   def self.import data
+    return unless data[:name].present?
     find_or_create_by_name_and_place(data[:name], data[:place])
   end
 

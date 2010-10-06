@@ -125,3 +125,16 @@ Feature: Add reference
       And I should see "Series volume issue can't be blank"
       And I should see "Pagination can't be blank"
 
+  Scenario: Leaving other fields blank when adding a book reference
+    Given I am logged in
+    When I go to the main page
+      And I follow "Add reference"
+      And I follow "Book"
+      And I fill in "reference_authors_string" with "Fisher, B.L."
+      And I press "OK"
+    Then I should see the edit form
+      And I should see "Year can't be blank"
+      And I should see "Title can't be blank"
+      And I should see "Publisher can't be blank"
+      And I should see "Pagination can't be blank"
+
