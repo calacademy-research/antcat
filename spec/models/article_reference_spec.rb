@@ -60,4 +60,25 @@ describe ArticleReference do
     end
   end
 
+  describe "validation" do
+    before do
+      author = Factory :author
+      journal = Factory :journal
+      @reference = ArticleReference.new :authors => [author], :title => 'Title', :citation_year => '2010a',
+        :journal => journal, :series_volume_issue => '1', :pagination => '2'
+    end
+
+    it "should be valid the way I just set it up" do
+      @reference.should be_valid
+    end
+    it "should not be valid without a series/volume/issue" do
+      @reference.series_volume_issue = nil
+      @reference.should_not be_valid
+    end
+    it "should not be valid without a journal" do
+      @reference.journal = nil
+      @reference.should_not be_valid
+    end
+  end
+
 end

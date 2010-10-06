@@ -121,7 +121,7 @@ Feature: Add reference
     Then I should see the edit form
       And I should see "Year can't be blank"
       And I should see "Title can't be blank"
-      And I should see "Journal title can't be blank"
+      And I should see "Journal can't be blank"
       And I should see "Series volume issue can't be blank"
       And I should see "Pagination can't be blank"
 

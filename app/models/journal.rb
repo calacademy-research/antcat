@@ -1,6 +1,7 @@
 class Journal < ActiveRecord::Base
   def self.import title
-    find_or_create_by_title(title)
+    return unless title.present?
+    find_or_create_by_title title
   end
 
   def self.search term = ''

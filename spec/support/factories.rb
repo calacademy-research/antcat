@@ -25,6 +25,7 @@ end
 
 Factory.define :article_reference do |reference|
   reference.title               "Ants are my life"
+  reference.association         :journal
   reference.citation_year       '2010d'
   reference.series_volume_issue '1'
   reference.pagination          '22'

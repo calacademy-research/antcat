@@ -18,11 +18,10 @@ class ReferencesController < ApplicationController
   end
   
   def save new
-    journal_valid = true
     authors_valid = true
     begin
       Reference.transaction do
-        journal_valid = set_journal if @reference.kind_of? ArticleReference
+        set_journal if @reference.kind_of? ArticleReference
         set_publisher if @reference.kind_of? BookReference
         set_pagination
         authors_valid = set_authors
@@ -38,7 +37,6 @@ class ReferencesController < ApplicationController
       @reference[:id] = nil if new
       @reference.instance_variable_set( :@new_record , new)
     end
-    @reference.errors.add_to_base "Journal title can't be blank" unless journal_valid
     @reference.errors.add_to_base "Authors can't be blank" unless authors_valid
     render_json new
   end
@@ -70,12 +68,7 @@ class ReferencesController < ApplicationController
   end
 
   def set_journal
-    if params[:journal_title].blank?
-      return false
-    else
-      params[:reference][:journal] = Journal.import :title => params[:journal_title]
-      return true
-    end
+    params[:reference][:journal] = Journal.import params[:journal_title]
   end
 
   def set_publisher
