@@ -94,9 +94,6 @@ class ReferencesController < ApplicationController
   end
 
   def get_reference
-    reference = Reference.find(params[:id])
-    return reference if reference.type == params[:selected_tab]
-    reference.update_attribute(:type, params[:selected_tab] + 'Reference')
-    Reference.find(params[:id])
+    Reference.find(params[:id]).becomes((params[:selected_tab] + 'Reference').constantize)
   end
 end
