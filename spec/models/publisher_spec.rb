@@ -54,4 +54,12 @@ describe Publisher do
     end
   end
 
+  describe 'validation' do
+    it 'should require a name but not a place' do
+      Publisher.new.should_not be_valid
+      Publisher.new(:place => 'place').should_not be_valid
+      Publisher.new(:name => 'name').should be_valid
+    end
+  end
+
 end
