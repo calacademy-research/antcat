@@ -1,4 +1,7 @@
 class Journal < ActiveRecord::Base
+
+  validates_presence_of :title
+
   def self.import title
     return unless title.present?
     find_or_create_by_title title

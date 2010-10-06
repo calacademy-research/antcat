@@ -38,4 +38,11 @@ describe Journal do
     end
   end
 
+  describe 'validation' do
+    it 'should require a title' do
+      Journal.new.should_not be_valid
+      Journal.new(:title => 'title').should be_valid
+    end
+  end
+
 end
