@@ -17,9 +17,9 @@
         %col{:width => '100px'}
       %tr
         %td.authors= f.text_field :authors_string, :class => 'authors'
-        %td{:class => :padding_6}= f.text_field :citation_year
+        %td{:class => :right_side_field}= f.text_field :citation_year
       %tr
-        %td{:colspan => 2, :class => :padding_6}= f.text_area :title, :rows => 1
+        %td{:colspan => 2, :class => :right_side_field}= f.text_area :title, :rows => 1
       %tr
         %td.tabs{:colspan => 2}
           %ul
@@ -39,11 +39,11 @@
             = text_field_tag :book_pagination, reference.pagination, :class => 'pages'
 
       %tr
-        %td{:colspan => 2, :class => :padding_6}= f.text_area :public_notes, :rows => 1
+        %td{:colspan => 2, :class => :right_side_field}= f.text_area :public_notes, :rows => 1
       %tr
-        %td{:colspan => 2, :class => :padding_6}= f.text_area :editor_notes, :rows => 1
+        %td{:colspan => 2, :class => :right_side_field}= f.text_area :editor_notes, :rows => 1
       %tr
-        %td{:colspan => 2, :class => :padding_6}= f.text_area :taxonomic_notes, :rows => 1
+        %td{:colspan => 2, :class => :right_side_field}= f.text_area :taxonomic_notes, :rows => 1
       %tr
         %td
           %table.small_fields

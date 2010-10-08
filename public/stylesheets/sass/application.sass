@@ -1,5 +1,46 @@
-.padding_6
-  padding-right: 5px !important
+///////////////////////////////////////////////////
+// elements
+
+body
+  background-color: #71932d
+
+body, textarea, input
+  font-family: Verdana, Helvetica, Arial
+  font-size: 12px
+
+h1, h2, h3
+  font: Helvetica
+  font-weight: normal
+  margin: 0
+
+h1
+  font-size: 20px
+
+h2
+  font-size: 20px
+
+h3
+  font-size: 16px
+  margin-top: 4px
+
+img
+  border: none
+
+label
+  margin-right: 5px
+
+input[type=text], textarea
+  background-color: lightyellow
+
+a, a:active, a:hover, a:focus, a:visited
+  color: green
+  text-decoration: none
+  outline: none
+  &:hover
+    color: lightgreen
+
+///////////////////////////////////////////////////
+// classes
 
 div.clear
   clear: both
@@ -10,31 +51,39 @@ div.left
 div.right
   float: right
 
-td.reference_item
-  vertical-align: top
+.watermark
+  color: #999
 
-tr.full_width
-  width: 100%
+span.taxon
+  font-style: italic
 
-.reference_form
-  .ui-tabs .ui-tabs-nav li
-    font-weight: normal
-  .ui-tabs .ui-tabs-nav li a
-    padding: 1px 5px
-  .ui-widget-header
-    font-weight: normal
-    border: none
-  .ui-widget
-    font-size: 1em
+span.help
+  font-style: italic
 
-.reference_table
-  width: 100%
+.right_side_field
+  padding-right: 5px !important
 
-td.authors
-  padding-right: 5px
+.instructions
+  font-size: small
+  font-style: italic
 
-img
-  border: none
+ul.error_messages
+  margin: 15px 0 0 0
+  padding: 0
+  li
+    list-style-type: none
+    font-size: small
+    color: red
+    font-style: italic
+
+///////////////////////////////////////////////////
+// specific elements
+
+#header, #subheader, #contents, #footer, .pagination
+  padding: 20px 40px 0 55px
+
+#header h2
+  margin-left: 16px
 
 #page
   width: 95%
@@ -43,130 +92,16 @@ img
   border: solid 1px black
   margin-top: 20px
 
-#header, #subheader, #contents, #footer, .pagination
-  padding: 20px 40px 0 55px
-
 #subheader, #footer
   padding-top: 0
 
 .pagination
   padding-top: 5px
 
-.ReferencesController #contents
-  padding: 0
-
-table.references
-  width: 100%
-  padding-right: 30px
-
-.icons
-  width: 44px
-  padding-top: 2px
-  vertical-align: top
-
-.icon
-  display: none
-  float: left
-
-span.help
-  font-style: italic
-
 #images
   padding-top: 0
   padding-bottom: 5px
   width: 100%
-
-.reference_display.editable
-  cursor: pointer
-
-.reference.about_to_be_deleted
-  background-color: lightyellow
-
-.reference_template, .reference_template_row
-  display: none
-
-.watermark
-  color: #999
-
-input[type=text], textarea
-  background-color: lightyellow
-
-.reference_form
-  ul.error_messages
-    margin: 0 0 3px 5px
-  table
-    padding: 0
-    width: 100%
-    td
-      padding: 0 0 3px 0
-      input[type=text], textarea
-        width: 100%
-      &.authors
-        padding-right: 8px
-      & input.year
-        width: 100%
-      & input.pages
-        width: 80px
-      & input.series_volume_issue
-        width: 150px
-
-      table.small_fields
-        width: auto
-        td.cite_code
-          padding-right: 8px
-          input
-            width: 70px
-        td.possess
-          input
-            width: 100px
-        td.date
-          padding-left: 8px
-          input
-            width: 75px
-
-p.notes
-  margin: 0 20px
-
-span.taxon
-  font-style: italic
-
-.editor
-  font-style: italic
-  span.taxon 
-    font-style: normal
-
-h1, h2, h3
-  font: helvetica
-  font-weight: normal
-  margin: 0
-
-h1
-  font-size: 20px
-
-h2
-  font-size: 20px
-
-#header h2
-  margin-left: 16px
-
-h3
-  font-size: 16px
-  margin-top: 4px
-
-.footer-image
-  margin-left: auto
-  margin-right: auto
-
-.instructions
-  font-size: small
-  font-style: italic
-
-body, textarea, input
-  font-family: Verdana, Helvetica, Arial
-  font-size: 12px
-
-body
-  background-color: #71932d
 
 #search
   input[type=text]
@@ -184,44 +119,9 @@ body
   font-size: smaller
   text-align: right
 
-.notice
+#notice
   color: blue
 
-.alert
+#alert
   color: red
-
-table.reference-fields
-  width: 800px
-  .wide
-    width: 100%
-  .small
-    width: 100px
-
-label
-  margin-right: 5px
-
-a, a:active, a:hover, a:focus, a:visited
-  color: green
-  text-decoration: none
-  outline: none
-  &:hover
-    color: lightgreen
-
-.fieldWithErrors
-  input[type=text]
-    background: mistyrose
-
-ul.error_messages
-  margin: 15px 0 0 0
-  padding: 0
-  li
-    list-style-type: none
-    font-size: small
-    color: red
-    font-style: italic
-
-tr.reference_row
-  padding: 0
-  td
-    padding: 0
 
