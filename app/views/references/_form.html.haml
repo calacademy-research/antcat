@@ -1,5 +1,5 @@
 - reference ||= Reference.new
-- publisher_string = reference.respond_to?(:publisher_string) ? reference.publisher_string : ''
+- publisher_string = reference.respond_to?(:publisher) ? (reference.publisher && reference.publisher.to_s) : ''
 - journal_title = reference.respond_to?(:journal) ? (reference.journal && reference.journal.title) : ''
 - selected_tab = [ArticleReference, BookReference].index(reference.class) || 0
 

@@ -75,7 +75,7 @@ class Reference < ActiveRecord::Base
   end
 
   def set_year
-    self.year = citation_year.to_i unless citation_year.blank?
+    self.year = citation_year.blank? ? nil : citation_year.to_i 
   end
 
   def strip_newlines

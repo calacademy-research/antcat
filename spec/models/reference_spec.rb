@@ -241,6 +241,11 @@ describe Reference do
       @reference.should_not be_valid
     end
 
+    it "should not be OK when the citation year is blank" do
+      @reference.citation_year = ''
+      @reference.should_not be_valid
+    end
+
     it "should not be OK when there are no authors" do
       @reference.authors = []
       @reference.save

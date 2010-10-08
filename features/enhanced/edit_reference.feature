@@ -64,3 +64,24 @@ Feature: Edit reference
       And I fill in "publisher_string" with "New York: Harcourt"
       And I press "OK"
     Then I should see "Fisher 2010. Ants. New York: Harcourt, 22 pp."
+
+  Scenario: Clearing a book reference's fields
+    Given I am logged in
+      And the following entries exist in the bibliography
+      |authors    |citation               |year |title|
+      |Ward, P.S. |New York: Wiley, 36 pp.|2010a|Ants |
+    When I go to the main page
+    When I click the reference
+    When I fill in "reference_authors_string" with ""
+      And I fill in "reference_title" with ""
+      And I fill in "reference_citation_year" with ""
+      And I fill in "publisher_string" with ""
+      And I fill in "book_pagination" with ""
+      And I press "OK"
+    Then I should see the edit form
+      And I should see "Authors can't be blank"
+      And I should see "Year can't be blank"
+      And I should see "Title can't be blank"
+      And I should see "Publisher can't be blank"
+      And I should see "Pagination can't be blank"
+
