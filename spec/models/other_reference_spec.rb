@@ -35,4 +35,15 @@ describe OtherReference do
     end
   end
 
+  describe "entering a newline in the citation" do
+    it "should strip the newline" do
+      reference = Factory :other_reference
+      reference.title = "A\nB"
+      reference.citation = "A\nB"
+      reference.save!
+      reference.title.should == "A B"
+      reference.citation.should == "A B"
+    end
+  end
+
 end
