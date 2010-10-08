@@ -103,6 +103,21 @@ Feature: Add reference
       And I should not see a new edit form
       And I should see "Ward, B.L.; Bolton, B. 1981. A reference title. Ant Journal 1:2"
 
+  Scenario: Adding an other reference
+    Given I am logged in
+    When I go to the main page
+      And I follow "Add reference"
+      Then I should see a new edit form
+    When I fill in "reference_authors_string" with "Ward, B.L.;Bolton, B."
+      And I fill in "reference_title" with "A reference title"
+      And I fill in "reference_citation_year" with "1981"
+      And I follow "Other"
+      And I fill in "reference_citation_string" with "In Muller, Brown 1928. Ants. p. 23."
+      And I press "OK"
+    Then I should be on the main page
+      And I should not see a new edit form
+      And I should see "Ward, B.L.; Bolton, B. 1981. A reference title. In Muller, Brown 1928. Ants. p. 23."
+
   Scenario: Leaving authors blank when adding a reference
     Given I am logged in
     When I go to the main page
