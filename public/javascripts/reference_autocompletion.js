@@ -69,3 +69,19 @@ function setupPublisherAutocomplete($reference) {
     minLength: 3
   });
 }
+
+///////////////////////////////////////////////////////
+
+function setupSearchAutocomplete() {
+  $("#journal").autocomplete({
+    selectFirst: true,
+    source: "/journals",
+    minLength: 3
+  });
+  $("#author").autocomplete({
+    selectFirst: true,
+    source: "/authors",
+    minLength: 3
+  });
+}
+

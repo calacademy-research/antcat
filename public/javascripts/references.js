@@ -12,8 +12,7 @@ $(function() {
 })
 
 function setupSearch() {
-  $("#journal").autocomplete({source: "/journals", minLength: 3});
-  $("#author").autocomplete({source: "/authors", minLength: 3});
+  setupSearchAutocomplete();
   $("#start_year").keyup(function(event) {
     if (event.which != 9)
       $("#end_year").val($(this).val());
