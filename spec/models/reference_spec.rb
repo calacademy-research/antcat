@@ -259,6 +259,20 @@ describe Reference do
     end
   end
 
+  describe "entering a newline in the title, public_notes, editor_notes or taxonomic_notes" do
+    it "should strip the newline" do
+      reference = Factory :reference
+      reference.title = 'A\nB'
+      reference.public_notes = "A\nB"
+      reference.editor_notes = "A\nB"
+      reference.taxonomic_notes = "A\nB"
+      reference.save!
+      reference.public_notes.should == "A B"
+      reference.editor_notes.should == "A B"
+      reference.taxonomic_notes.should == "A B"
+    end
+  end
+
   describe "polymorphic association to source of reference" do
     it "should work" do
       ward_reference = Factory(:ward_reference)

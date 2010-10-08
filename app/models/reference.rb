@@ -5,7 +5,7 @@ class Reference < ActiveRecord::Base
   belongs_to :journal
   belongs_to :source_reference, :polymorphic => true
 
-  before_validation :set_year
+  before_validation :set_year, :strip_newlines
 
   validates_presence_of :authors, :year, :title
 
@@ -76,6 +76,12 @@ class Reference < ActiveRecord::Base
 
   def set_year
     self.year = citation_year.to_i unless citation_year.blank?
+  end
+
+  def strip_newlines
+    [:title, :public_notes, :editor_notes, :taxonomic_notes].each do |field|
+      self[field].gsub! /\n/, ' ' if self[field].present?
+    end
   end
 
 end
