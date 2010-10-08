@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101008185253) do
+ActiveRecord::Schema.define(:version => 20101008193904) do
 
   create_table "author_participations", :force => true do |t|
     t.integer  "author_id"
@@ -82,7 +82,7 @@ ActiveRecord::Schema.define(:version => 20101008185253) do
     t.text     "title"
     t.string   "pdf_link"
     t.boolean  "tried_to_get_pdf_link"
-    t.string   "citation_string"
+    t.string   "citation"
   end
 
   add_index "references", ["journal_id"], :name => "references_journal_id_idx"

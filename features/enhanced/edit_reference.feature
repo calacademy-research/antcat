@@ -65,6 +65,17 @@ Feature: Edit reference
       And I press "OK"
     Then I should see "Fisher 2010. Ants. New York: Harcourt, 22 pp."
 
+  Scenario: See the correct tab initially
+    Given I am logged in
+      And the following entries exist in the bibliography
+      |authors|title|citation|year|
+      |Fisher |Ants |New York|2010|
+    When I go to the main page
+      And I click the reference
+      And I fill in "reference_citation" with "New Jersey"
+      And I press "OK"
+    Then I should see "Fisher 2010. Ants. New Jersey."
+
   Scenario: Clearing a book reference's fields
     Given I am logged in
       And the following entries exist in the bibliography
@@ -106,4 +117,22 @@ Feature: Edit reference
       And I should see "Journal can't be blank"
       And I should see "Series volume issue can't be blank"
       And I should see "Pagination can't be blank"
+
+  Scenario: Clearing an other reference's fields
+    Given I am logged in
+      And the following entries exist in the bibliography
+      |authors    |citation  |year |title|
+      |Ward, P.S. |New York  |2010a|Ants |
+    When I go to the main page
+    When I click the reference
+    When I fill in "reference_authors_string" with ""
+      And I fill in "reference_title" with ""
+      And I fill in "reference_citation_year" with ""
+      And I fill in "reference_citation" with ""
+      And I press "OK"
+    Then I should see the edit form
+      And I should see "Authors can't be blank"
+      And I should see "Title can't be blank"
+      And I should see "Year can't be blank"
+      And I should see "Citation can't be blank"
 

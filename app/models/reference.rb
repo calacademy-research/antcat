@@ -28,6 +28,8 @@ class Reference < ActiveRecord::Base
       BookReference.import create_data, data[:book]
     when data[:article]
       ArticleReference.import create_data, data[:article]
+    when data[:other]
+      OtherReference.import create_data, data[:other]
     end
   end
 
@@ -62,7 +64,7 @@ class Reference < ActiveRecord::Base
         :order => 'authors_string, citation_year'
   end
 
-  def citation
+  def citation_string
   end
 
   def update_authors_string _ = nil

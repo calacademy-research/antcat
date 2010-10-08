@@ -135,7 +135,7 @@ describe WardReference do
         end
 
         describe "parsing an unknown format" do
-          it "should consider it an unknown format" do
+          it "should consider it an 'other' reference" do
             WardReference.new(:citation => 'asdf').to_import_format.should include(:other => 'asdf')
           end
         end

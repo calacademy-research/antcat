@@ -1,7 +1,7 @@
 - reference ||= Reference.new
 - publisher_string = reference.respond_to?(:publisher) ? (reference.publisher && reference.publisher.to_s) : ''
 - journal_title = reference.respond_to?(:journal) ? (reference.journal && reference.journal.title) : ''
-- selected_tab = [ArticleReference, BookReference].index(reference.class) || 0
+- selected_tab = [ArticleReference, BookReference, OtherReference].index(reference.class) || 0
 
 .reference_form.ui-corner-all.ui-widget-content.ui-widget
   - url = reference.new_record? ? references_path : reference_path(reference)
@@ -41,7 +41,7 @@
             = text_field_tag :book_pagination, reference.pagination, :class => 'pages'
 
           %div{:class => 'other-tab-section', :id => "tabs-other-#{reference.id}"}
-            = f.text_area :citation_string, :rows => 1
+            = f.text_area :citation, :rows => 1
 
       %tr
         %td{:colspan => 2, :class => :right_side_field}= f.text_area :public_notes, :rows => 1

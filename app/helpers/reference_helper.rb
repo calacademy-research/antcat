@@ -4,7 +4,7 @@ module ReferenceHelper
     s << "#{h reference.authors_string} "
     s << "#{h reference.citation_year}. "
     s << "#{italicize(add_period_if_necessary(h reference.title))} "
-    s << "#{italicize(add_period_if_necessary(h reference.citation))}"
+    s << "#{italicize(add_period_if_necessary(h reference.citation_string))}"
     s << " [#{format_date(reference.date)}]" if reference.date.present?
     s
   end

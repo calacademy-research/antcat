@@ -112,7 +112,7 @@ Feature: Add reference
       And I fill in "reference_title" with "A reference title"
       And I fill in "reference_citation_year" with "1981"
       And I follow "Other"
-      And I fill in "reference_citation_string" with "In Muller, Brown 1928. Ants. p. 23."
+      And I fill in "reference_citation" with "In Muller, Brown 1928. Ants. p. 23."
       And I press "OK"
     Then I should be on the main page
       And I should not see a new edit form

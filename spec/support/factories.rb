@@ -43,6 +43,13 @@ Factory.define :book_reference do |reference|
   reference.pagination          '22 pp.'
 end
 
+Factory.define :other_reference do |reference|
+  reference.authors             {[Factory(:author)]}
+  reference.title               "Ants are my life"
+  reference.citation_year       '2010d'
+  reference.citation            'New York'
+end
+
 def reference_factory attributes = {}
   author = Factory(:author, :name => attributes.delete(:author))
   reference = Factory(:reference, attributes.merge(:authors => [author]))
