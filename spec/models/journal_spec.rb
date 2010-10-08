@@ -30,8 +30,8 @@ describe Journal do
         Factory :journal, :title => title
       end
       2.times {Factory :article_reference, :journal => Journal.find_by_title('Rarely Used')}
-      30.times {Factory :article_reference, :journal => Journal.find_by_title('Occasionally Used')}
-      100.times {Factory :article_reference, :journal => Journal.find_by_title('Most Used')}
+      3.times {Factory :article_reference, :journal => Journal.find_by_title('Occasionally Used')}
+      4.times {Factory :article_reference, :journal => Journal.find_by_title('Most Used')}
       0.times {Factory :article_reference, :journal => Journal.find_by_title('Never Used')}
 
       Journal.search.should == ['Most Used', 'Occasionally Used', 'Rarely Used', 'Never Used']

@@ -7,7 +7,7 @@ class Reference < ActiveRecord::Base
 
   before_validation :set_year
 
-  validates_presence_of :year, :title
+  validates_presence_of :authors, :year, :title
 
   def self.import data
     create_data = {

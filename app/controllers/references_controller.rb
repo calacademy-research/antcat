@@ -1,5 +1,7 @@
 class ReferencesController < ApplicationController
+
   before_filter :authenticate_user!, :except => :index
+
   def index
     if params[:commit] == 'clear'
       params[:author] = params[:start_year] = params[:end_year] = params[:journal] = ''
@@ -18,13 +20,12 @@ class ReferencesController < ApplicationController
   end
   
   def save new
-    authors_valid = true
     begin
       Reference.transaction do
+        set_authors
         set_journal if @reference.kind_of? ArticleReference
         set_publisher if @reference.kind_of? BookReference
         set_pagination
-        authors_valid = set_authors
         @reference.attributes = params[:reference]
         @reference.save!
         unless @reference.errors.empty?
@@ -37,7 +38,6 @@ class ReferencesController < ApplicationController
       @reference[:id] = nil if new
       @reference.instance_variable_set( :@new_record , new)
     end
-    @reference.errors.add_to_base "Authors can't be blank" unless authors_valid
     render_json new
   end
 
@@ -58,13 +58,7 @@ class ReferencesController < ApplicationController
   end
 
   def set_authors
-    authors_string = params[:reference][:authors_string]
-    if authors_string.blank?
-      false
-    else
-      params[:reference][:authors] = Author.import_authors_string authors_string
-      true
-    end
+    params[:reference][:authors] = Author.import_authors_string params[:reference][:authors_string]
   end
 
   def set_journal

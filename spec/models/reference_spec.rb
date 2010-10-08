@@ -1,6 +1,9 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Reference do
+  before :each do
+    @authors = [Factory :author]
+  end
 
   describe "importing a new reference" do
     before do
@@ -58,7 +61,7 @@ describe Reference do
 
   describe "searching" do
     it "should return an empty array if nothing is found for author" do
-      reference_factory(:author => 'Bolton')
+      Factory :reference
       Reference.search(:author => 'foo').should be_empty
     end
 
@@ -164,51 +167,42 @@ describe Reference do
   end
 
   it "has many authors" do
-    reference = Reference.create! :title => 'asdf', :citation_year => '2010d'
-
-    author = Author.create! :name => 'Fisher, B.L.'
-    reference.authors << author
-
-    reference.authors.first.should == author
+    reference = Reference.create! :authors => @authors, :title => 'asdf', :citation_year => '2010d'
+    reference.authors.first.should == @authors.first
   end
 
   describe "authors_string" do
-    before do
-      @reference = Factory(:reference)
-    end
-
     describe "formatting" do
-      it "should be empty if there are no authors" do
-        @reference.authors_string.should be_blank
-      end
-
       it "should consist of one author if that's all there is" do
-        @reference.authors << Factory(:author, :name => 'Fisher, B.L.')
+        @reference = Factory(:reference, :authors => [Factory(:author, :name => 'Fisher, B.L.')])
         @reference.authors_string.should == 'Fisher, B.L.'
       end
 
       it "should separate multiple authors with semicolons" do
-        @reference.authors << Factory(:author, :name => 'Fisher, B.L.')
-        @reference.authors << Factory(:author, :name => 'Ward, P.S.')
+        authors = [Factory(:author, :name => 'Fisher, B.L.'), Factory(:author, :name => 'Ward, P.S.')]
+        @reference = Factory(:reference, :authors => authors)
         @reference.authors_string.should == 'Fisher, B.L.; Ward, P.S.'
       end
     end
 
     describe "updating, when things change" do
+      before do
+        @reference = Factory(:reference, :authors => [Factory(:author, :name => 'Fisher, B.L.')])
+      end
       it "should update its authors_string when an author is added" do
-        @reference.authors_string.should be_blank
         @reference.authors << Factory(:author, :name => 'Ward')
-        @reference.authors_string.should == 'Ward'
+        @reference.authors_string.should == 'Fisher, B.L.; Ward'
       end
       it "should update its authors_string when an author is removed" do
-        @reference.authors << Factory(:author, :name => 'Ward')
-        @reference.authors_string.should == 'Ward'
-        @reference.authors = []
-        @reference.authors_string.should be_blank
+        author = Factory(:author, :name => 'Ward')
+        @reference.authors << author
+        @reference.authors_string.should == 'Fisher, B.L.; Ward'
+        @reference.authors.delete author
+        @reference.authors_string.should == 'Fisher, B.L.'
       end
       it "should update its authors_string when an author's name is changed" do
         author = Factory(:author, :name => 'Ward')
-        @reference.authors << author
+        @reference.authors = [author]
         @reference.authors_string.should == 'Ward'
         author.update_attribute :name, 'Fisher'
         @reference.reload.authors_string.should == 'Fisher'
@@ -217,25 +211,42 @@ describe Reference do
 
     describe "maintaining its order" do
       it "should show the authors in the order in which they were added to the reference" do
-        ward = Author.create!(:name => 'Ward')
+        reference = Factory(:reference, :authors => [Author.create!(:name => 'Ward')])
         wilden = Author.create!(:name => 'Wilden')
         fisher = Author.create!(:name => 'Fisher')
-        reference = Factory(:reference)
         reference.authors << wilden
         reference.authors << fisher
-        reference.authors << ward
-        reference.authors_string.should == 'Wilden; Fisher; Ward'
+        reference.authors_string.should == 'Ward; Wilden; Fisher'
       end
     end
   end
 
   describe "validations" do
-    it "validates that the title is present" do
-      reference = Factory(:reference)
-      reference.should be_valid
-      reference.title = nil
-      reference.should_not be_valid
+    before do
+      author = Factory :author
+      @reference = Reference.new :authors => [author], :title => 'title', :citation_year => '1910'
     end
+
+    it "should be OK when all fields are present" do
+      @reference.should be_valid
+    end
+
+    it "should not be OK when the title is missing" do
+      @reference.title = nil
+      @reference.should_not be_valid
+    end
+
+    it "should not be OK when the citation year is missing" do
+      @reference.citation_year = nil
+      @reference.should_not be_valid
+    end
+
+    it "should not be OK when there are no authors" do
+      @reference.authors = []
+      @reference.save
+      @reference.should_not be_valid
+    end
+
   end
 
   describe "changing the citation year" do
@@ -251,15 +262,15 @@ describe Reference do
   describe "polymorphic association to source of reference" do
     it "should work" do
       ward_reference = Factory(:ward_reference)
-      reference = Reference.create! :source_reference => ward_reference, :title => 'asdf', :citation_year => '2010'
+      reference = Reference.create! :authors => @authors, :source_reference => ward_reference, :title => 'asdf', :citation_year => '2010'
       reference.reload.source_reference.should == ward_reference
     end
   end
 
   it "should not truncate long fields" do
-    Reference.create! :authors_string => 'a' * 3000, :editor_notes => 'e' * 1000, :public_notes => 'n' * 1500, :taxonomic_notes => 't' * 1700, :title => 't' * 1900, :citation_year => '2010'
+    Reference.create! :authors => @authors, :editor_notes => 'e' * 1000,
+      :public_notes => 'n' * 1500, :taxonomic_notes => 't' * 1700, :title => 't' * 1900, :citation_year => '2010'
     reference = Reference.first
-    reference.authors_string.length.should == 3000
     #reference.citation.length.should == 2000
     reference.editor_notes.length.should == 1000
     reference.public_notes.length.should == 1500

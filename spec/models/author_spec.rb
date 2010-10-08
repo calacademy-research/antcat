@@ -25,9 +25,8 @@ describe Author do
 
   describe "editing" do
     it "should update associated references when the name is changed" do
-      author = Factory(:author, :name => 'Ward')
-      reference = Factory(:reference)
-      reference.authors << author
+      author = Factory :author, :name => 'Ward'
+      reference = Factory :reference, :authors => [author]
       author.update_attribute :name, 'Fisher'
       reference.reload.authors_string.should == 'Fisher'
     end
@@ -61,11 +60,10 @@ describe Author do
     end
 
     it "should return authors in order of most recently used" do
-      reference = Factory :reference
       ['Never Used', 'Recent', 'Old', 'Most Recent'].each do |name|
         Author.create! :name => name
       end
-      AuthorParticipation.create! :created_at => Time.now, :author => Author.find_by_name('Most Recent'), :reference => reference
+      reference = Factory :reference, :authors => [Author.find_by_name('Most Recent')]
       AuthorParticipation.create! :created_at => Time.now - 1, :author => Author.find_by_name('Recent'), :reference => reference
       AuthorParticipation.create! :created_at => Time.now - 2, :author => Author.find_by_name('Old'), :reference => reference
 

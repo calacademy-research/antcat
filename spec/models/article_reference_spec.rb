@@ -1,20 +1,18 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe ArticleReference do
-
   describe "importing" do
-
     it "should create the reference and set its data" do
       ward_reference = Factory(:ward_reference)
       reference = ArticleReference.import(
-        {:title => 'awdf', :source_reference_id => ward_reference.id, :source_reference_type => 'WardReference', :citation_year => '2010'},
+        {:authors => [Factory(:author)], :title => 'awdf',
+          :source_reference_id => ward_reference.id, :source_reference_type => 'WardReference', :citation_year => '2010'},
         {:series_volume_issue => '12', :pagination => '32-33', :journal => 'Ecology Letters'})
       reference.series_volume_issue.should == '12'
       reference.pagination.should == '32-33'
       reference.journal.title.should == 'Ecology Letters'
       reference.source_reference.should == ward_reference
     end
-
   end
 
   describe "parsing fields from series_volume_issue" do
