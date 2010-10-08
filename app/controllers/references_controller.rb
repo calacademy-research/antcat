@@ -28,11 +28,7 @@ class ReferencesController < ApplicationController
         set_pagination
         @reference.attributes = params[:reference]
         @reference.save!
-        unless @reference.errors.empty?
-          @reference.instance_variable_set( :@new_record , new)
-          @reference[:id] = nil if new
-          raise ActiveRecord::Rollback
-        end
+        raise ActiveRecord::RecordInvalid unless @reference.errors.empty?
       end
     rescue ActiveRecord::RecordInvalid
       @reference[:id] = nil if new
