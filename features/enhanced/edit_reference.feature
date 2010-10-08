@@ -85,3 +85,25 @@ Feature: Edit reference
       And I should see "Publisher can't be blank"
       And I should see "Pagination can't be blank"
 
+  Scenario: Clearing an article reference's fields
+    Given I am logged in
+      And the following entries exist in the bibliography
+      |authors    |citation  |year |title|
+      |Ward, P.S. |Psyche 1:2|2010a|Ants |
+    When I go to the main page
+    When I click the reference
+    When I fill in "reference_authors_string" with ""
+      And I fill in "reference_title" with ""
+      And I fill in "reference_citation_year" with ""
+      And I fill in "journal_title" with ""
+      And I fill in "reference_series_volume_issue" with ""
+      And I fill in "article_pagination" with ""
+      And I press "OK"
+    Then I should see the edit form
+      And I should see "Authors can't be blank"
+      And I should see "Title can't be blank"
+      And I should see "Year can't be blank"
+      And I should see "Journal can't be blank"
+      And I should see "Series volume issue can't be blank"
+      And I should see "Pagination can't be blank"
+

@@ -3,44 +3,6 @@ Feature: Error handling
   I want to see what's wrong when there's an error
   So that I can fix mistakes
 
-  Scenario: Error when editing a reference
-    Given I am logged in
-      And the following entry exists in the bibliography
-      |authors       |year|title                     |citation                   |
-      |Forel, A.     |1874|Les fourmis de la Suisse  |Neue Denkschriften 26:1-452|
-    When I go to the main page
-      And I click the reference
-      And I fill in "reference_title" with ""
-      And I press "OK"
-    Then I should see the edit form
-      And I should see "Title can't be blank"
-    When I fill in "reference_title" with "Ants"
-      And I press "OK"
-    Then I should not see the edit form
-      And I should not see any error messages
-      And I should see "Forel, A. 1874. Ants. Neue Denkschriften 26:1-452."
-
-  Scenario: Clearing authors when editing a reference
-    Given I am logged in
-      And the following entry exists in the bibliography
-      |authors       |year|title                     |citation                   |
-      |Forel, A.     |1874|Les fourmis de la Suisse  |Neue Denkschriften 26:1-452|
-    When I go to the main page
-      And I click the reference
-      And I fill in "reference_authors_string" with ""
-      And I press "OK"
-    Then I should see the edit form
-      And I should see "Authors can't be blank"
-
-  Scenario: Leaving authors blank when adding a reference
-    Given I am logged in
-    When I go to the main page
-      And I follow "Add reference"
-      And I fill in "reference_title" with "adsf"
-      And I press "OK"
-    Then I should see the edit form
-      And I should see "Authors can't be blank"
-
   Scenario: Cancelling edit after an error
     Given I am logged in
       And the following entry exists in the bibliography
