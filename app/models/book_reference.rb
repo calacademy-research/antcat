@@ -11,7 +11,7 @@ class BookReference < Reference
   end
 
   def citation_string
-    add_period_if_necessary "#{publisher}, #{pagination}"
+    Reference.add_period_if_necessary "#{publisher}, #{pagination}"
   end
 
 end

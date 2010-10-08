@@ -71,8 +71,10 @@ class Reference < ActiveRecord::Base
     update_attribute :authors_string, authors.map(&:name).join('; ')
   end
 
-  def add_period_if_necessary string
-    string << '.' unless string[-1..-1] == '.'
+  def self.add_period_if_necessary string
+    return unless string
+    return string if string.empty?
+    return string + '.' unless string[-1..-1] == '.'
     string
   end
 

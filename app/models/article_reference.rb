@@ -12,7 +12,7 @@ class ArticleReference < Reference
   end
 
   def citation_string
-    add_period_if_necessary "#{journal.title} #{series_volume_issue}:#{pagination}"
+    Reference.add_period_if_necessary "#{journal.title} #{series_volume_issue}:#{pagination}"
   end
 
   def start_page

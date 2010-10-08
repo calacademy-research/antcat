@@ -8,7 +8,7 @@ class OtherReference < Reference
   end
 
   def citation_string
-    add_period_if_necessary citation
+    Reference.add_period_if_necessary citation
   end
 
   def strip_newlines
