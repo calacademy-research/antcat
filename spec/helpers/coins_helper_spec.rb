@@ -166,19 +166,24 @@ describe CoinsHelper do
     ]
   end
 
-=begin
   it "should format an unknown/nested reference correctly" do
     coins = helper.coins(ward_reference_factory(
+      :authors => 'MacKay, W.',
+      :year => '1933',
+      :title => 'Another title',
+      :citation => 'Dresden.'))
     check_parameters coins, [
       "ctx_ver=Z39.88-2004",
-      "rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Aunknown",
-      "rft.aulast=Fisher",
-      "rft.aufirst=B.L.",
+      "rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Adc",
+      "rft.aulast=MacKay",
+      "rft.aufirst=W.",
       "rfr_id=antcat.org",
       "rft.genre=",
+      "rft.title=Another+title",
+      "rft.source=Dresden",
+      "rft.date=1933",
     ]
   end
-=end
 
   def check_parameters coins, expected_parameters
     match = coins.match(/<span class="Z3988" title="(.*)"/)

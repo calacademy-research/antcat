@@ -43,6 +43,12 @@ describe ReferenceHelper do
                           :publisher => @publisher, :pagination => "22 pp.")
       helper.format_reference(reference).should == 'Forel, A. 1874. Les fourmis de la Suisse. New York: Wiley, 22 pp.'
     end
+
+    it "should format an 'other' reference" do
+      reference = Factory(:other_reference, :authors => [@author], :citation_year => "1874", :title => "Les fourmis de la Suisse.",
+                          :citation => 'New York')
+      helper.format_reference(reference).should == 'Forel, A. 1874. Les fourmis de la Suisse. New York.'
+    end
   end
 
   describe "formatting the date" do

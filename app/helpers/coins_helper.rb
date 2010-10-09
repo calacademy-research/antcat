@@ -3,7 +3,8 @@ module CoinsHelper
     title = case reference
     when ArticleReference then ArticleCoinsHelper
     when BookReference then BookCoinsHelper
-    else return '' #raise "Don't know what kind of reference this is: #{reference.reference.inspect}"
+    when OtherReference then OtherCoinsHelper
+    else raise "Don't know what kind of reference this is: #{reference.inspect}"
     end.new(reference).coins
 
     content_tag(:span, "", :class => "Z3988", :title => title.join("&amp;"))
@@ -77,5 +78,18 @@ class BookCoinsHelper < CoinsHelperBase
     add 'rft.pub', @reference.publisher.name
     add 'rft.place', @reference.publisher.place
     add 'rft.pages', @reference.pagination
+  end
+end
+
+class OtherCoinsHelper < CoinsHelperBase
+  def kind
+    'dc'
+  end
+  def genre
+    ''
+  end
+  def add_contents
+    add 'rft.title', @reference.title
+    add 'rft.source', @reference.citation
   end
 end

@@ -45,7 +45,7 @@ class WardReference < ActiveRecord::Base
 
   def parse_nested_citation data
     citation.match(/\bin: /i) or return
-    data[:other] = citation
+    data[:other] = remove_period_from citation
   end
 
   def parse_book_citation data
@@ -67,7 +67,7 @@ class WardReference < ActiveRecord::Base
   end
 
   def parse_unknown_citation data
-    data[:other] = citation
+    data[:other] = remove_period_from citation
   end
 
   def parse_notes data
