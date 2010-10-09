@@ -2,7 +2,7 @@ class BoltonReferenceMatcher
   SUFFICIENT_SIMILARITY = 0.75
 
   def initialize show_progress = false
-    $stderr = File.open('/dev/null', 'w') unless show_progress
+    Progress.init show_progress
     @all_count = BoltonReference.count
     @unmatched_count = @suspect_count = 0
     make_ward_index
@@ -100,7 +100,7 @@ class BoltonReferenceMatcher
   end
 
   def make_ward_index
-    $stderr.print "Setting up..."
+    Progress.print "Setting up..."
     @ward_index = Reference.all.inject({}) do |index, reference|
       s = remove_parenthesized_taxon_names(reference.title + reference.citation)
       s = normalize s
@@ -114,7 +114,7 @@ class BoltonReferenceMatcher
       index[key] << entry
       index
     end
-    $stderr.puts 'done'
+    Progress.puts 'done'
   end
 
   def remove_parenthesized_taxon_names s
@@ -172,27 +172,27 @@ class BoltonReferenceMatcher
     rate_s = sprintf("%.2f", rate) + "/sec"
     time_left = sprintf("%.0f", (@all_count - i + 1) / rate / 60) + " mins left"
 
-    $stderr.puts "******************** No match" unless @found_ward
-    $stderr.puts "???????????????????? Suspect" if @suspect
-    $stderr.puts @bolton
+    Progress.puts "******************** No match" unless @found_ward
+    Progress.puts "???????????????????? Suspect" if @suspect
+    Progress.puts @bolton
 
     if @found_ward
-      $stderr.puts "WARD: "
-      $stderr.puts @found_ward[:reference].to_s
+      Progress.puts "WARD: "
+      Progress.puts @found_ward[:reference].to_s
     else
-      $stderr.puts "Best was #{@max_similarity}:\n#{@best_match[:reference]}" if @best_match
+      Progress.puts "Best was #{@max_similarity}:\n#{@best_match[:reference]}" if @best_match
     end
-    $stderr.puts "#{i + 1}/#{@all_count} (#{@unmatched_count} unmatched, #{@suspect_count} suspect) #{rate_s} #{time_left}"
-    $stderr.puts
+    Progress.puts "#{i + 1}/#{@all_count} (#{@unmatched_count} unmatched, #{@suspect_count} suspect) #{rate_s} #{time_left}"
+    Progress.puts
   end
 
   def show_results
-    $stderr.puts
+    Progress.puts
     elapsed = Time.now - @start
     elapsed = sprintf("%.0f mins", elapsed / 60)
     unmatched_percent = sprintf("%.0f%%", @unmatched_count * 100.0 / @all_count)
     suspect_percent = sprintf("%.0f%%", @suspect_count * 100.0 / @all_count)
-    $stderr.puts "#{elapsed}. #{@all_count} processed, #{@unmatched_count} unmatched (#{unmatched_percent}), #{@suspect_count} suspect (#{suspect_percent})"
+    Progress.puts "#{elapsed}. #{@all_count} processed, #{@unmatched_count} unmatched (#{unmatched_percent}), #{@suspect_count} suspect (#{suspect_percent})"
   end
 
 end

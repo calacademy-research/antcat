@@ -10,4 +10,8 @@ class Progress
   def self.print string
     $stderr.print string
   end
+
+  def self.dot
+    print '.'
+  end
 end
