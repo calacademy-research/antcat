@@ -11,7 +11,6 @@ Rails::Initializer.run do |config|
   config.gem 'devise', :version => "1.0.8"
   config.gem 'devise_invitable', :version => '0.2.3'
   config.gem 'acts_as_list'
-  config.gem 'jasmine'
 end
 
 ActionMailer::Base.delivery_method = :sendmail

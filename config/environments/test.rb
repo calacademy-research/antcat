@@ -7,4 +7,5 @@ config.action_controller.allow_forgery_protection = false
 config.action_mailer.delivery_method = :test
 
 config.gem 'rspec-rails', :lib => false
+config.gem 'jasmine'
 config.gem 'lll'
