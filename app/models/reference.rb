@@ -88,4 +88,14 @@ class Reference < ActiveRecord::Base
     end
   end
 
+  def self.import_hol_source_urls show_progress = false
+    HolSourceUrlImporter.new(show_progress).import
+  end
+
+  def to_s
+    s = ''
+    s << "#{authors_string} "
+    s << "#{citation_year}."
+    s
+  end
 end

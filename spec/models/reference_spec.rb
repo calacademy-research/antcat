@@ -315,4 +315,13 @@ describe Reference do
     reference.title.length.should == 1900
   end
 
+  describe "importing PDF links" do
+    it "should delegate to the right object" do
+      mock = mock HolSourceUrlImporter
+      HolSourceUrlImporter.should_receive(:new).and_return mock
+      mock.should_receive(:import)
+      Reference.import_hol_source_urls
+    end
+  end
+
 end
