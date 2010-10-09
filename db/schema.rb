@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101008193904) do
+ActiveRecord::Schema.define(:version => 20101009223707) do
 
   create_table "author_participations", :force => true do |t|
     t.integer  "author_id"
@@ -80,8 +80,7 @@ ActiveRecord::Schema.define(:version => 20101008193904) do
     t.text     "public_notes"
     t.text     "taxonomic_notes"
     t.text     "title"
-    t.string   "pdf_link"
-    t.boolean  "tried_to_get_pdf_link"
+    t.string   "source_url"
     t.string   "citation"
   end
 
