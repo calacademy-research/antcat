@@ -72,4 +72,27 @@ describe Author do
       results.should == ['Most Recent', 'Recent', 'Old', 'Never Used']
     end
   end
+
+  describe "first and last name" do
+    it "should simply return the name if there's only one word" do
+      author = Author.new :name => 'Bolton'
+      author.last_name.should == 'Bolton'
+      author.first_name_and_initials.should be_nil
+    end
+    it "should separate the words if there are multiple" do
+      author = Author.new :name => 'Bolton, B.L.'
+      author.last_name.should == 'Bolton'
+      author.first_name_and_initials.should == 'B.L.'
+    end
+    it "should use all words if there is no comma" do
+      author = Author.new :name => 'Royal Academy'
+      author.last_name.should == 'Royal Academy'
+      author.first_name_and_initials.should be_nil
+    end
+    it "should use use all words before the comma if there are multiple" do
+      author = Author.new :name => 'Baroni Urbani, C.'
+      author.last_name.should == 'Baroni Urbani'
+      author.first_name_and_initials.should == 'C.'
+    end
+  end
 end

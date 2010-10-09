@@ -37,13 +37,13 @@ class CoinsHelperBase
 
   def authors
     @reference.authors.inject([]) do |authors, author|
-      name = author.name
-      parts = name.match(/(.*?), (.*)/)
-      unless parts
-        authors << "rft.au=#{treat(name)}"
+      first_name_and_initials = author.first_name_and_initials
+      last_name = author.last_name
+      if first_name_and_initials && last_name
+        authors << "rft.aulast=#{treat last_name}"
+        authors << "rft.aufirst=#{treat first_name_and_initials}"
       else
-        authors << "rft.aulast=#{treat(parts[1])}" if parts[1]
-        authors << "rft.aufirst=#{treat(parts[2])}" if parts[2]
+        authors << "rft.au=#{treat last_name}"
       end
     end
   end

@@ -3,6 +3,16 @@ class Author < ActiveRecord::Base
   has_many :references, :through => :author_participations
   after_update :update_references
 
+  def last_name
+    parse_name
+    @last_name
+  end
+
+  def first_name_and_initials
+    parse_name
+    @first_name_and_initials
+  end
+
   def self.import data
     data.inject([]) do |authors, author_name|
       authors << find_or_create_by_name(author_name)
@@ -22,4 +32,14 @@ class Author < ActiveRecord::Base
     import string.split(/; ?/)
   end
 
+  private
+  def parse_name
+    parts = name.match(/(.*?), (.*)/)
+    unless parts
+      @last_name = name
+    else
+      @last_name = parts[1]
+      @first_name_and_initials = parts[2]
+    end
+  end
 end
