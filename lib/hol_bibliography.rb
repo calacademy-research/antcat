@@ -31,10 +31,23 @@ class HolBibliography
   end
 
   def parse_reference li
-    second_strong = li.css('strong')[1]
-    series_volume_issue = second_strong.content
-    pagination = second_strong.next.content.match(/:\s*(.*)./)[1]
-    {:series_volume_issue => series_volume_issue, :pagination => pagination}
+    reference = {}
+    reference[:id] = li.at_css('strong').content.to_i
+    parse_article(li, reference) || parse_book(li, reference) || raise(li)
+  end
+
+  def parse_article li, reference
+    return unless second_strong = li.css('strong')[1]
+    reference[:year] = second_strong.previous.content.match(/\d+/m).to_s
+    reference[:series_volume_issue] = second_strong.content
+    reference[:pagination] = second_strong.next.content.match(/:\s*(.*)./)[1]
+    reference
+  end
+
+  def parse_book li, reference
+    reference[:year] = li.content.match(/^ (\d{4})\./m)[1]
+    reference[:pagination] = li.content.match(/\. (\d+ pp\.)/m)[1]
+    reference
   end
 
   def search_for_author author
