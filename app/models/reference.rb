@@ -79,7 +79,13 @@ class Reference < ActiveRecord::Base
   end
 
   def set_year
-    self.year = citation_year.blank? ? nil : citation_year.to_i 
+    self.year = if citation_year.blank?
+      nil
+    elsif match = citation_year.match(/\["(\d{4})"\]/)
+      match[1]
+    else
+      citation_year.to_i 
+    end
   end
 
   def strip_newlines

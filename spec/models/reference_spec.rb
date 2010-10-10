@@ -96,28 +96,28 @@ describe Reference do
     end
 
     it "should return an empty array if nothing is found for a given year and author" do
-      reference_factory(:author => 'Bolton', :citation_year => 2010)
-      reference_factory(:author => 'Bolton', :citation_year => 1995)
-      reference_factory(:author => 'Fisher', :citation_year => 2011)
-      reference_factory(:author => 'Fisher', :citation_year => 1996)
+      reference_factory(:author => 'Bolton', :citation_year => '2010')
+      reference_factory(:author => 'Bolton', :citation_year => '1995')
+      reference_factory(:author => 'Fisher', :citation_year => '2011')
+      reference_factory(:author => 'Fisher', :citation_year => '1996')
       Reference.search(:start_year => '2012', :end_year => '2013', :author => 'Fisher').should be_empty
     end
 
     it "should return the one reference for a given year and author" do
-      reference_factory(:author => 'Bolton', :citation_year => 2010)
-      reference_factory(:author => 'Bolton', :citation_year => 1995)
-      reference_factory(:author => 'Fisher', :citation_year => 2011)
-      reference = reference_factory(:author => 'Fisher', :citation_year => 1996)
+      reference_factory(:author => 'Bolton', :citation_year => '2010')
+      reference_factory(:author => 'Bolton', :citation_year => '1995')
+      reference_factory(:author => 'Fisher', :citation_year => '2011')
+      reference = reference_factory(:author => 'Fisher', :citation_year => '1996')
       Reference.search(:start_year => '1996', :end_year => '1996', :author => 'Fisher').should == [reference]
     end
 
     describe "searching by year" do
       before do
-        reference_factory(:author => 'Bolton', :citation_year => 1994)
-        reference_factory(:author => 'Bolton', :citation_year => 1995)
-        reference_factory(:author => 'Bolton', :citation_year => 1996)
-        reference_factory(:author => 'Bolton', :citation_year => 1997)
-        reference_factory(:author => 'Bolton', :citation_year => 1998)
+        reference_factory(:author => 'Bolton', :citation_year => '1994')
+        reference_factory(:author => 'Bolton', :citation_year => '1995')
+        reference_factory(:author => 'Bolton', :citation_year => '1996')
+        reference_factory(:author => 'Bolton', :citation_year => '1997')
+        reference_factory(:author => 'Bolton', :citation_year => '1998')
       end
 
       it "should return an empty array if nothing is found for year" do
@@ -276,6 +276,14 @@ describe Reference do
     it "should change the year" do
       reference = Factory(:reference, :citation_year => '1910a')
       reference.year.should == 1910
+      reference.citation_year = '2010b'
+      reference.save!
+      reference.year.should == 2010
+    end
+
+    it "should set the year to the stated year, if present" do
+      reference = Factory(:reference, :citation_year => '1910a ["1958"]')
+      reference.year.should == 1958
       reference.citation_year = '2010b'
       reference.save!
       reference.year.should == 2010
