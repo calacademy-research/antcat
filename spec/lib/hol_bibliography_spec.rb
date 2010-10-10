@@ -92,8 +92,7 @@ See Site Statistics</a><p>
     end
 
     it "should parse a reference" do
-      @scraper.stub!(:get).and_return Nokogiri::HTML <<-SEARCH_RESULTS
-<li>
+      result = @hol.parse_reference(Nokogiri::HTML <<-LI)
 <strong><a href="http://holBibliography.osu.edu/reference-full.html?id=22169" title="View extended reference information from Hymenoptera Online">22169</a></strong>
 <a href="http://holBibliography.osu.edu/agent-full.html?id=493">Bolton, B.</a> and <a href="http://holbibliography.osu.edu/agent-full.html?id=4746">B. L. Fisher</a>.
  2008. Afrotropical ants of the ponerine genera Centromyrmex Mayr, Promyopias Santschi gen. rev. and Feroponera gen. n., with a revised key to genera of African Ponerinae (Hymenoptera: Formicidae). Zootaxa <strong>1929</strong>: 1-37.
@@ -102,11 +101,10 @@ See Site Statistics</a><p>
 <A HREF="http://antbase.org/ants/publications/22169/22169.pdf" TARGET="_blank"> entire file (514K)</A>
 
 <IMG SRC="http://osuc.biosci.ohio-state.edu/images/pdf.gif">
-      SEARCH_RESULTS
+      LI
 
-      @hol.read_references('fisher').should == [
-        {:authors => ['Fisher, B.L.'], :title => 'title', :year => '2010'}
-      ]
+      result[:series_volume_issue].should == '1929'
+      result[:pagination].should == '1-37'
     end
   end
 

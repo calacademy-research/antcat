@@ -31,7 +31,10 @@ class HolBibliography
   end
 
   def parse_reference li
-    {:authors => ['Fisher, B.L.'], :title => 'title', :year => '2010'}
+    second_strong = li.css('strong')[1]
+    series_volume_issue = second_strong.content
+    pagination = second_strong.next.content.match(/:\s*(.*)./)[1]
+    {:series_volume_issue => series_volume_issue, :pagination => pagination}
   end
 
   def search_for_author author
