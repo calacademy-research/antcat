@@ -15,7 +15,6 @@ class HolBibliography
     best_match
   end
 
-  private
   def references_for author_name
     if author_name != @author_name
       @author_name = author_name
