@@ -13,7 +13,7 @@ class HolSourceUrlImporter
       import_source_url_for reference
       show_progress i
     end
-    Progress.puts
+    show_results
   end
 
   def import_source_url_for reference
@@ -30,4 +30,12 @@ class HolSourceUrlImporter
 
     Progress.puts " #{i + 1}/#{@all_count} #{rate_s} #{time_left}\n"
   end
+
+  def show_results
+    Progress.puts
+    elapsed = Time.now - @start
+    elapsed = sprintf("%.0f mins", elapsed / 60)
+    Progress.puts "#{elapsed}. #{@all_count} processed"
+  end
+
 end
