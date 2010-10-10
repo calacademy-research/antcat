@@ -14,8 +14,25 @@ describe HolSourceUrlImporter do
 
     it "should import each reference" do
       mocks = [mock_model(Reference), mock_model(Reference)]
-      Reference.stub!(:all).and_return mocks
+      Reference.stub!(:sorted_by_author).and_return mocks
       mocks.each {|mock| @importer.should_receive(:import_source_url_for).with(mock)}
+      @importer.import
+    end
+
+    it "should import references in order of their first author" do
+      bolton = Factory :author, :name => 'Bolton'
+      ward = Factory :author, :name => 'Ward'
+      fisher = Factory :author, :name => 'Fisher'
+      bolton_reference = Factory :reference, :authors => [bolton]
+      first_ward_reference = Factory :reference, :authors => [ward]
+      second_ward_reference = Factory :reference, :authors => [ward]
+      fisher_reference = Factory :reference, :authors => [fisher]
+
+      @importer.should_receive(:import_source_url_for).with(bolton_reference).ordered
+      @importer.should_receive(:import_source_url_for).with(fisher_reference).ordered
+      @importer.should_receive(:import_source_url_for).with(first_ward_reference).ordered
+      @importer.should_receive(:import_source_url_for).with(second_ward_reference).ordered
+
       @importer.import
     end
   end

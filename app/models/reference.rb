@@ -9,6 +9,8 @@ class Reference < ActiveRecord::Base
 
   validates_presence_of :authors, :year, :title
 
+  named_scope :sorted_by_author, :include => :authors, :order => 'authors.name ASC'
+
   def self.import data
     create_data = {
       :authors => Author.import(data[:authors]),

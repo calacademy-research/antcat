@@ -8,7 +8,7 @@ class HolSourceUrlImporter
 
   def import
     Progress.puts "Importing source URLs..."
-    Reference.all.each_with_index do |reference, i|
+    Reference.sorted_by_author.each_with_index do |reference, i|
       Progress.print "Importing source URL for #{reference}"
       import_source_url_for reference
       show_progress i
