@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101009223707) do
+ActiveRecord::Schema.define(:version => 20101010183355) do
 
   create_table "author_participations", :force => true do |t|
     t.integer  "author_id"
@@ -81,7 +81,7 @@ ActiveRecord::Schema.define(:version => 20101009223707) do
     t.text     "taxonomic_notes"
     t.text     "title"
     t.string   "source_url"
-    t.string   "citation"
+    t.text     "citation"
   end
 
   add_index "references", ["journal_id"], :name => "references_journal_id_idx"

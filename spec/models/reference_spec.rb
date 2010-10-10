@@ -313,10 +313,10 @@ describe Reference do
   end
 
   it "should not truncate long fields" do
-    Reference.create! :authors => @authors, :editor_notes => 'e' * 1000,
+    Reference.create! :authors => @authors, :editor_notes => 'e' * 1000, :citation => 'c' * 2000,
       :public_notes => 'n' * 1500, :taxonomic_notes => 't' * 1700, :title => 't' * 1900, :citation_year => '2010'
     reference = Reference.first
-    #reference.citation.length.should == 2000
+    reference.citation.length.should == 2000
     reference.editor_notes.length.should == 1000
     reference.public_notes.length.should == 1500
     reference.taxonomic_notes.length.should == 1700
