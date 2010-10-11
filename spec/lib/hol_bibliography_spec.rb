@@ -38,6 +38,11 @@ describe HolBibliography do
       @hol.read_references 'fisher'
     end
 
+    it "should URL-encode the name" do
+      @scraper.should_receive(:get).with("http://osuc.biosci.ohio-state.edu/hymenoptera/manage_lit.list_pubs?author=baroni+urbani").and_return(Nokogiri::HTML '')
+      @hol.read_references 'baroni urbani'
+    end
+
     it "should parse each reference" do
       @scraper.stub!(:get).and_return Nokogiri::HTML <<-SEARCH_RESULTS
 <HTML>

@@ -22,19 +22,7 @@ class HolBibliography
           result[:source_url] = reference[:source_url]
           break
         end
-        # if positive match, break
-        # if better match than any others so far, save it
       end
-      #unless best_match
-        #lll{'[target_reference.year, target_reference.series_volume_issue, target_reference.pagination]'}
-        #if references_for(author_name).empty?
-          #lll "No references for #{author_name}"
-        #elsif !year_match
-          #lll "No references match the year"
-        #else
-          #lll{'references_for(author_name)'}
-        #end
-      #end
     end
     result
   end

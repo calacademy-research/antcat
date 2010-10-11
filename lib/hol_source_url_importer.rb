@@ -48,25 +48,29 @@ class HolSourceUrlImporter
     @processed_count += 1
     if result[:source_url]
       @success_count += 1
-      return 'OK'
+      result = 'OK'
     else
       if result[:failure_reason] == HolBibliography::NO_ENTRIES_FOR_AUTHOR
         @missing_authors << reference.authors.first.name
-        return 'Author missing'
+        result = 'Author missing'
       elsif result[:failure_reason] == :pdf_not_found
         @pdf_not_found_failure_count += 1
-        return 'PDF not found'
+        result = 'PDF not found'
       elsif reference.kind_of? BookReference
         @book_failure_count += 1
-        return 'Book reference'
+        result = 'Book reference'
       elsif reference.kind_of? OtherReference
         @other_reference_failure_count += 1
-        return 'Other reference'
+        result = 'Other reference'
       else
         @unmatched_count += 1
-        return 'Unmatched'
+        result = 'Unmatched'
       end
     end
+
+    raise unless @success_count + @missing_authors.size + @pdf_not_found_failure_count + @book_failure_count + @other_reference_failure_count + @unmatched_count == @processed_count
+
+    result
   end
 
   def show_progress result
