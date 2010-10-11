@@ -1,18 +1,42 @@
 class HolBibliography
+
+  NO_ENTRIES_FOR_AUTHOR = 1
+
   def initialize
     @scraper = Scraper.new
   end
 
-  def match reference
-    author_name = reference.authors.first.last_name
-    best_match = nil
-    references_for(author_name).each do |hol_reference|
-      best_match = hol_reference
-      break
-      # if positive match, break
-      # if better match than any others so far, save it
+  def match target_reference
+    result = {}
+    author_name = target_reference.authors.first.last_name
+    year_match = false
+    references = references_for(author_name)
+    unless references.present?
+      result[:failure_reason] = NO_ENTRIES_FOR_AUTHOR
+    else
+      references.each do |reference|
+        year_match = year_match || target_reference.year == reference[:year]
+        if target_reference.year == reference[:year] &&
+          target_reference.series_volume_issue == reference[:series_volume_issue] &&
+          target_reference.pagination == reference[:pagination]
+          result[:source_url] = reference[:source_url]
+          break
+        end
+        # if positive match, break
+        # if better match than any others so far, save it
+      end
+      #unless best_match
+        #lll{'[target_reference.year, target_reference.series_volume_issue, target_reference.pagination]'}
+        #if references_for(author_name).empty?
+          #lll "No references for #{author_name}"
+        #elsif !year_match
+          #lll "No references match the year"
+        #else
+          #lll{'references_for(author_name)'}
+        #end
+      #end
     end
-    best_match
+    result
   end
 
   def references_for author_name
@@ -32,14 +56,15 @@ class HolBibliography
 
   def parse_reference li
     reference = {}
-    reference[:id] = li.at_css('strong').content.to_i
+    id = li.at_css('strong').content.to_i
+    reference[:source_url] = "http://antbase.org/ants/publications/#{id}/#{id}.pdf"
     parse_article(li, reference) || parse_book(li, reference) || lll{'li.content'}
   end
 
   def parse_article li, reference
     return unless second_strong = li.css('strong')[1]
-    reference[:year] = second_strong.previous.content.match(/\d+/m).to_s or return
-    reference[:series_volume_issue] = second_strong.content
+    reference[:year] = second_strong.previous.content.match(/\d+/m).to_s.to_i or return
+    reference[:series_volume_issue] = second_strong.content + second_strong.next.content.match(/(.*?):/)[1]
     reference[:pagination] = second_strong.next.content.match(/:\s*(.*)./)[1] or return
     reference
   rescue
@@ -47,7 +72,7 @@ class HolBibliography
   end
 
   def parse_book li, reference
-    reference[:year] = li.content.match(/^ (\d{4})\./m)[1] or return
+    reference[:year] = li.content.match(/^ (\d{4})\./m)[1].to_i or return
     reference[:pagination] = li.content.match(/\. (\d+ pp\.)/m)[1] or return
     reference
   rescue

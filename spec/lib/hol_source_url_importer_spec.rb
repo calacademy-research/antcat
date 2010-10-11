@@ -37,6 +37,22 @@ describe HolSourceUrlImporter do
     end
   end
 
+  describe "saving the authors it can't find" do
+    it "should save the authors it can't find" do
+      bolton = Factory :author, :name => 'bolton'
+      first_bolton = Factory :reference, :authors => [bolton]
+      second_bolton = Factory :reference, :authors => [bolton]
+      ward = Factory :reference, :authors => [Factory(:author, :name => 'ward')]
+      fisher = Factory :reference, :authors => [Factory(:author, :name => 'fisher')]
+      @bibliography.stub!(:match).with(first_bolton).and_return({})
+      @bibliography.stub!(:match).with(second_bolton).and_return({:source_url => 'source'})
+      @bibliography.stub!(:match).with(ward).and_return({:source_url => 'source'})
+      @bibliography.stub!(:match).with(fisher).and_return({:failure_reason => HolBibliography::NO_ENTRIES_FOR_AUTHOR})
+      @importer.import
+      @importer.missing_authors.should == ['fisher']
+    end
+  end
+
   describe "importing source URL for one reference" do
     it "ask the HOL bibliography for a match" do
       reference = Factory :reference 
