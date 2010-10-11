@@ -2,6 +2,7 @@ class AddPdfLink < ActiveRecord::Migration
   def self.up
     add_column :references, :pdf_link, :string
     add_column :references, :tried_to_get_pdf_link, :boolean
+  rescue
   end
 
   def self.down
