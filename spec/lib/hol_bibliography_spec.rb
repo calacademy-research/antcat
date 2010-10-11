@@ -144,7 +144,7 @@ See Site Statistics</a><p>
       @hol.stub!(:references_for).and_return []
       result = @hol.match reference
       result[:source_url].should be_nil
-      result[:failure_reason].should == HolBibliography::NO_ENTRIES_FOR_AUTHOR
+      result[:status].should == HolBibliography::NO_ENTRIES_FOR_AUTHOR
     end
 
   end

@@ -4,7 +4,7 @@ class HolSourceUrlImporter
 
   attr_reader :processed_count, :success_count,
               :book_failure_count, :other_reference_failure_count, :pdf_not_found_failure_count,
-              :missing_author_failure_count
+              :missing_author_failure_count, :already_imported_count
 
   def initialize show_progress = false
     Progress.init show_progress
@@ -12,7 +12,7 @@ class HolSourceUrlImporter
     @total_count = Reference.count
     @processed_count = @success_count = @unmatched_count =
       @book_failure_count = @other_reference_failure_count = @pdf_not_found_failure_count =
-      @missing_author_failure_count = 0
+      @missing_author_failure_count = @already_imported_count = 0
     @missing_authors = []
   end
 
@@ -26,9 +26,13 @@ class HolSourceUrlImporter
   end
 
   def import_source_url_for reference
-    result = @bibliography.match reference
-    see_if_pdf_exists result
-    reference.update_attribute(:source_url, result[:source_url])
+    if reference.source_url?
+      result = {:status => :already_imported}
+    else
+      result = @bibliography.match reference
+      see_if_pdf_exists result
+      reference.update_attribute(:source_url, result[:source_url])
+    end
     update_counts reference, result
   end
 
@@ -41,7 +45,7 @@ class HolSourceUrlImporter
     return unless result[:source_url]
     unless source_url_exists? result[:source_url]
       result[:source_url] = nil
-      result[:failure_reason] = :pdf_not_found
+      result[:status] = :pdf_not_found
     end
   end
 
@@ -50,12 +54,16 @@ class HolSourceUrlImporter
     if result[:source_url]
       @success_count += 1
       return 'OK'
+    elsif result[:status] == :already_imported
+      @already_imported_count += 1
+      @success_count += 1
+      return 'Already'
     else
-      if result[:failure_reason] == HolBibliography::NO_ENTRIES_FOR_AUTHOR
+      if result[:status] == HolBibliography::NO_ENTRIES_FOR_AUTHOR
         @missing_authors << reference.authors.first.name
         @missing_author_failure_count += 1
         return 'Author'
-      elsif result[:failure_reason] == :pdf_not_found
+      elsif result[:status] == :pdf_not_found
         @pdf_not_found_failure_count += 1
         return 'PDF'
       elsif reference.kind_of? BookReference
@@ -89,6 +97,7 @@ class HolSourceUrlImporter
     Progress.puts "#{@processed_count} processed in #{elapsed} (#{rate})"
 
     Progress.puts Progress.count(@success_count, @processed_count, 'successful')
+    Progress.puts Progress.count(@already_imported_count, @processed_count, 'already imported')
     Progress.puts Progress.count(@missing_author_failure_count, @processed_count, 'author not found')
     Progress.puts Progress.count(@unmatched_count, @processed_count, 'unmatched')
     Progress.puts Progress.count(@other_reference_failure_count, @processed_count, 'other references')

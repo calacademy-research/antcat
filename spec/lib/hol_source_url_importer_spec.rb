@@ -5,6 +5,7 @@ describe HolSourceUrlImporter do
     @bibliography = mock HolBibliography
     HolBibliography.stub!(:new).and_return @bibliography
     @importer = HolSourceUrlImporter.new
+    @importer.stub!(:source_url_exists?).and_return(true)
   end
 
   describe "importing source URL for all references" do
@@ -17,6 +18,17 @@ describe HolSourceUrlImporter do
       Reference.stub!(:sorted_by_author).and_return mocks
       mocks.each {|mock| @importer.should_receive(:import_source_url_for).with(mock).and_return 'asdf'}
       @importer.import
+    end
+
+    it "should not try to import if it already has a source URL" do
+      no_source_url = Factory :reference
+      with_source_url = Factory :reference, :source_url => 'source_url'
+      @bibliography.should_receive(:match).with(no_source_url).and_return({:source_url => 'source_url'})
+      @bibliography.should_not_receive(:match).with(with_source_url)
+      @importer.import
+      @importer.processed_count.should == 2
+      @importer.success_count.should == 2
+      @importer.already_imported_count.should == 1
     end
 
     it "should import references in order of their first author" do
@@ -48,9 +60,8 @@ describe HolSourceUrlImporter do
       @bibliography.stub!(:match).with(first_bolton).and_return({})
       @bibliography.stub!(:match).with(second_bolton).and_return({:source_url => 'source'})
       @bibliography.stub!(:match).with(ward).and_return({:source_url => 'source'})
-      @bibliography.stub!(:match).with(fisher).and_return({:failure_reason => HolBibliography::NO_ENTRIES_FOR_AUTHOR})
-      @bibliography.stub!(:match).with(another_fisher).and_return({:failure_reason => HolBibliography::NO_ENTRIES_FOR_AUTHOR})
-      @importer.stub!(:source_url_exists?).and_return(true)
+      @bibliography.stub!(:match).with(fisher).and_return({:status => HolBibliography::NO_ENTRIES_FOR_AUTHOR})
+      @bibliography.stub!(:match).with(another_fisher).and_return({:status => HolBibliography::NO_ENTRIES_FOR_AUTHOR})
       @importer.import
       @importer.missing_authors.should == ['fisher']
       @importer.missing_author_failure_count.should == 2
@@ -63,7 +74,6 @@ describe HolSourceUrlImporter do
       failure = Factory :reference
       @bibliography.stub!(:match).with(failure).and_return({})
       @bibliography.stub!(:match).with(success).and_return({:source_url => 'source'})
-      @importer.stub!(:source_url_exists?).and_return(true)
       @importer.import
       @importer.processed_count.should == 2
       @importer.success_count.should == 1
@@ -74,7 +84,6 @@ describe HolSourceUrlImporter do
       failure = Factory :book_reference
       @bibliography.stub!(:match).with(failure).and_return({})
       @bibliography.stub!(:match).with(success).and_return({:source_url => 'source'})
-      @importer.stub!(:source_url_exists?).and_return(true)
       @importer.import
       @importer.processed_count.should == 2
       @importer.book_failure_count.should == 1
@@ -85,7 +94,6 @@ describe HolSourceUrlImporter do
       failure = Factory :other_reference
       @bibliography.stub!(:match).with(failure).and_return({})
       @bibliography.stub!(:match).with(success).and_return({:source_url => 'source'})
-      @importer.stub!(:source_url_exists?).and_return(true)
       @importer.import
       @importer.processed_count.should == 2
       @importer.other_reference_failure_count.should == 1
@@ -108,7 +116,6 @@ describe HolSourceUrlImporter do
     it "ask the HOL bibliography for a match" do
       reference = Factory :reference 
       @bibliography.should_receive(:match).with(reference).and_return({:source_url => 'source_url'})
-      @importer.stub!(:source_url_exists?).and_return(true)
       @importer.import_source_url_for reference 
       reference.reload.source_url.should == 'source_url'
     end

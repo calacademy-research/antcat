@@ -12,7 +12,7 @@ class HolBibliography
     year_match = false
     references = references_for(author_name)
     unless references.present?
-      result[:failure_reason] = NO_ENTRIES_FOR_AUTHOR
+      result[:status] = NO_ENTRIES_FOR_AUTHOR
     else
       references.each do |reference|
         year_match = year_match || target_reference.year == reference[:year]
