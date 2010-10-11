@@ -48,8 +48,56 @@ describe HolSourceUrlImporter do
       @bibliography.stub!(:match).with(second_bolton).and_return({:source_url => 'source'})
       @bibliography.stub!(:match).with(ward).and_return({:source_url => 'source'})
       @bibliography.stub!(:match).with(fisher).and_return({:failure_reason => HolBibliography::NO_ENTRIES_FOR_AUTHOR})
+      @importer.stub!(:source_url_exists?).and_return(true)
       @importer.import
       @importer.missing_authors.should == ['fisher']
+    end
+  end
+
+  describe "recording counts of successful imports and each kind of failure" do
+    it "should record the number of successful and unsuccessful imports" do
+      success = Factory :reference
+      failure = Factory :reference
+      @bibliography.stub!(:match).with(failure).and_return({})
+      @bibliography.stub!(:match).with(success).and_return({:source_url => 'source'})
+      @importer.stub!(:source_url_exists?).and_return(true)
+      @importer.import
+      @importer.processed_count.should == 2
+      @importer.success_count.should == 1
+    end
+
+    it "should record the number of failures because reference was to a book" do
+      success = Factory :reference
+      failure = Factory :book_reference
+      @bibliography.stub!(:match).with(failure).and_return({})
+      @bibliography.stub!(:match).with(success).and_return({:source_url => 'source'})
+      @importer.stub!(:source_url_exists?).and_return(true)
+      @importer.import
+      @importer.processed_count.should == 2
+      @importer.book_failure_count.should == 1
+    end
+
+    it "should record the number of failures because reference was to another source" do
+      success = Factory :reference
+      failure = Factory :other_reference
+      @bibliography.stub!(:match).with(failure).and_return({})
+      @bibliography.stub!(:match).with(success).and_return({:source_url => 'source'})
+      @importer.stub!(:source_url_exists?).and_return(true)
+      @importer.import
+      @importer.processed_count.should == 2
+      @importer.other_reference_failure_count.should == 1
+    end
+
+    it "should record the number of failures because the PDF wasn't found" do
+      success = Factory :reference
+      failure = Factory :reference
+      @bibliography.stub!(:match).with(failure).and_return({:source_url => 'success'})
+      @bibliography.stub!(:match).with(success).and_return({:source_url => 'failure'})
+      @importer.should_receive(:source_url_exists?).with('success').and_return(true)
+      @importer.should_receive(:source_url_exists?).with('failure').and_return(false)
+      @importer.import
+      @importer.processed_count.should == 2
+      @importer.pdf_not_found_failure_count.should == 1
     end
   end
 
@@ -57,6 +105,7 @@ describe HolSourceUrlImporter do
     it "ask the HOL bibliography for a match" do
       reference = Factory :reference 
       @bibliography.should_receive(:match).with(reference).and_return({:source_url => 'source_url'})
+      @importer.stub!(:source_url_exists?).and_return(true)
       @importer.import_source_url_for reference 
       reference.reload.source_url.should == 'source_url'
     end
