@@ -41,3 +41,11 @@ Feature: View bibliography
       |Wheeler, W. M. 1910a. Small artificial ant-nests. Psyche 1:1.|
       |Wheeler, W. M. 1910b. Ants. Psyche 2:2|
 
+  Scenario: Viewing an entry with a source URL
+    Given the following entries exist in the bibliography
+      |authors   |year |title    |citation|cite_code|possess|date    |notes                       |
+      |Ward, P.S.|2010d|Ant Facts|Ants 1:1|232      |PSW    |20100712|{Public notes}Editor's notes|
+      And that the entry has a source URL
+    When I go to the main page
+    Then I should see a "SOURCE" link
+

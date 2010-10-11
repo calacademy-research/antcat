@@ -4,6 +4,10 @@ Given /the following entr(?:ies|y) exists? in the bibliography/ do |table|
   end
 end
 
+Given /that the entry has a source URL/ do
+  @reference.update_attribute :source_url, 'http://antbase.org/article.pdf'
+end
+
 Given /the following user exists/ do |table|
   table.hashes.each {|hash| User.create! hash}
 end
@@ -96,4 +100,8 @@ end
 
 Then 'I should not see the "Delete" button' do
   page.should_not have_css "button", :text => 'Delete'
+end
+
+Then 'I should see a "SOURCE" link' do
+  page.should have_css "a", :text => 'SOURCE'
 end

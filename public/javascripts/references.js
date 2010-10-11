@@ -40,6 +40,7 @@ function hideAddReferenceLink() {
 /////////////////////////////////////////////////////////////////////////
 
 function setupDisplays() {
+  $('.source_link').live('click', viewSource);
   $('.reference_display').live('click', editReference);
   $('.reference_display').addClass('editable');
 
@@ -83,6 +84,11 @@ function setupForms() {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
+
+function viewSource() {
+  window.location = this.href;
+  return false;
+}
 
 function editReference() {
   if (isEditing())

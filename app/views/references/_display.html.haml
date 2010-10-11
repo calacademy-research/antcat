@@ -1,5 +1,6 @@
 .reference_display
   = format_reference reference
+  = link_to 'SOURCE', reference.source_url, :class => :source_link if reference.source_url
 
   %p.notes= italicize h reference.public_notes
   %p.editor.notes= italicize h reference.editor_notes
