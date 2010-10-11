@@ -68,7 +68,7 @@ class HolBibliography
   end
 
   def search_for_author author
-    @scraper.get "http://osuc.biosci.ohio-state.edu/hymenoptera/manage_lit.list_pubs?author=#{author}"
+    @scraper.get "http://osuc.biosci.ohio-state.edu/hymenoptera/manage_lit.list_pubs?author=#{CGI.escape author}"
   end
 
 end

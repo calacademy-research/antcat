@@ -21,7 +21,9 @@ class Progress
   end
 
   def self.time_left processed_count, total_count
-    sprintf "%.0f mins left", (total_count - processed_count).to_f / rate_per_sec(processed_count) / 60
+    mins_left = (total_count - processed_count).to_f / rate_per_sec(processed_count) / 60
+    mins_left = [mins_left, 1.0].max unless processed_count == total_count
+    sprintf "%.0f mins left", mins_left
   end
 
   def self.percent numerator, denominator
@@ -29,7 +31,7 @@ class Progress
   end
 
   def self.elapsed
-    sprintf "%.0f mins", elapsed_secs.to_f / 60
+    sprintf "%.0f mins", [(elapsed_secs.to_f / 60), 1.0].max
   end
 
   def self.count count, total, label

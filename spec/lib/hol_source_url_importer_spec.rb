@@ -15,7 +15,7 @@ describe HolSourceUrlImporter do
     it "should import each reference" do
       mocks = [mock_model(Reference), mock_model(Reference)]
       Reference.stub!(:sorted_by_author).and_return mocks
-      mocks.each {|mock| @importer.should_receive(:import_source_url_for).with(mock)}
+      mocks.each {|mock| @importer.should_receive(:import_source_url_for).with(mock).and_return 'asdf'}
       @importer.import
     end
 
@@ -28,10 +28,10 @@ describe HolSourceUrlImporter do
       second_ward_reference = Factory :reference, :authors => [ward]
       fisher_reference = Factory :reference, :authors => [fisher]
 
-      @importer.should_receive(:import_source_url_for).with(bolton_reference).ordered
-      @importer.should_receive(:import_source_url_for).with(fisher_reference).ordered
-      @importer.should_receive(:import_source_url_for).with(first_ward_reference).ordered
-      @importer.should_receive(:import_source_url_for).with(second_ward_reference).ordered
+      @importer.should_receive(:import_source_url_for).with(bolton_reference).ordered.and_return 'asdf'
+      @importer.should_receive(:import_source_url_for).with(fisher_reference).ordered.and_return 'asdf'
+      @importer.should_receive(:import_source_url_for).with(first_ward_reference).ordered.and_return 'asdf'
+      @importer.should_receive(:import_source_url_for).with(second_ward_reference).ordered.and_return 'asdf'
 
       @importer.import
     end
@@ -44,13 +44,16 @@ describe HolSourceUrlImporter do
       second_bolton = Factory :reference, :authors => [bolton]
       ward = Factory :reference, :authors => [Factory(:author, :name => 'ward')]
       fisher = Factory :reference, :authors => [Factory(:author, :name => 'fisher')]
+      another_fisher = Factory :reference, :authors => [Factory(:author, :name => 'fisher')]
       @bibliography.stub!(:match).with(first_bolton).and_return({})
       @bibliography.stub!(:match).with(second_bolton).and_return({:source_url => 'source'})
       @bibliography.stub!(:match).with(ward).and_return({:source_url => 'source'})
       @bibliography.stub!(:match).with(fisher).and_return({:failure_reason => HolBibliography::NO_ENTRIES_FOR_AUTHOR})
+      @bibliography.stub!(:match).with(another_fisher).and_return({:failure_reason => HolBibliography::NO_ENTRIES_FOR_AUTHOR})
       @importer.stub!(:source_url_exists?).and_return(true)
       @importer.import
       @importer.missing_authors.should == ['fisher']
+      @importer.missing_author_failure_count.should == 2
     end
   end
 

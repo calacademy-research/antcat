@@ -3,23 +3,24 @@ require 'curl'
 class HolSourceUrlImporter
 
   attr_reader :processed_count, :success_count,
-              :book_failure_count, :other_reference_failure_count, :pdf_not_found_failure_count
+              :book_failure_count, :other_reference_failure_count, :pdf_not_found_failure_count,
+              :missing_author_failure_count
 
   def initialize show_progress = false
     Progress.init show_progress
     @bibliography = HolBibliography.new
     @total_count = Reference.count
     @processed_count = @success_count = @unmatched_count =
-      @book_failure_count = @other_reference_failure_count = @pdf_not_found_failure_count = 0
+      @book_failure_count = @other_reference_failure_count = @pdf_not_found_failure_count =
+      @missing_author_failure_count = 0
     @missing_authors = []
   end
 
   def import
     Progress.puts "Importing source URLs..."
     Reference.sorted_by_author.each do |reference|
-      Progress.print reference
       result = import_source_url_for reference
-      show_progress result
+      show_progress reference, result
     end
     show_results
   end
@@ -48,36 +49,37 @@ class HolSourceUrlImporter
     @processed_count += 1
     if result[:source_url]
       @success_count += 1
-      result = 'OK'
+      return 'OK'
     else
       if result[:failure_reason] == HolBibliography::NO_ENTRIES_FOR_AUTHOR
         @missing_authors << reference.authors.first.name
-        result = 'Author missing'
+        @missing_author_failure_count += 1
+        return 'Author'
       elsif result[:failure_reason] == :pdf_not_found
         @pdf_not_found_failure_count += 1
-        result = 'PDF not found'
+        return 'PDF'
       elsif reference.kind_of? BookReference
         @book_failure_count += 1
-        result = 'Book reference'
+        return 'Book'
       elsif reference.kind_of? OtherReference
         @other_reference_failure_count += 1
-        result = 'Other reference'
+        return 'Other'
       else
         @unmatched_count += 1
-        result = 'Unmatched'
+        return 'Unmatched'
       end
     end
-
-    raise unless @success_count + @missing_authors.size + @pdf_not_found_failure_count + @book_failure_count + @other_reference_failure_count + @unmatched_count == @processed_count
-
-    result
   end
 
-  def show_progress result
+  def show_progress reference, result
     rate = Progress.rate @processed_count
     time_left = Progress.time_left @processed_count, @total_count
     success_percent = Progress.percent @success_count, @processed_count
-    Progress.puts " #{result} (#{success_percent} success) #{rate} #{time_left}\n"
+    result = result.ljust(9)
+    success = (success_percent + ' success').rjust(12)
+    rate = rate.rjust(8)
+    time_left = time_left.rjust(13)
+    Progress.puts "#{result} #{success} #{rate} #{time_left} #{reference}"
   end
 
   def show_results
@@ -87,14 +89,14 @@ class HolSourceUrlImporter
     Progress.puts "#{@processed_count} processed in #{elapsed} (#{rate})"
 
     Progress.puts Progress.count(@success_count, @processed_count, 'successful')
-    Progress.puts Progress.count(missing_authors.size, @processed_count, 'author not found')
+    Progress.puts Progress.count(@missing_author_failure_count, @processed_count, 'author not found')
     Progress.puts Progress.count(@unmatched_count, @processed_count, 'unmatched')
     Progress.puts Progress.count(@other_reference_failure_count, @processed_count, 'other references')
     Progress.puts Progress.count(@book_failure_count, @processed_count, 'book references')
     Progress.puts Progress.count(@pdf_not_found_failure_count, @processed_count, 'PDF not found')
 
     Progress.puts
-    Progress.puts "Missing authors:\n#{missing_authors.join("\n")}"
+    Progress.puts "#{missing_authors.size} missing authors:\n#{missing_authors.join("\n")}"
   end
 
   def source_url_exists? source_url
