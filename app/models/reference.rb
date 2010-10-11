@@ -9,7 +9,11 @@ class Reference < ActiveRecord::Base
 
   validates_presence_of :authors, :year, :title
 
-  named_scope :sorted_by_author, :include => :authors, :order => 'authors.name ASC'
+  named_scope :sorted_by_author, 
+    :select => '`references`.*',
+    :joins => 'JOIN author_participations ON reference_id = `references`.id JOIN authors ON author_id = authors.id',
+    :conditions => 'author_participations.position = 1',
+    :order => 'name ASC'
 
   def self.import data
     create_data = {

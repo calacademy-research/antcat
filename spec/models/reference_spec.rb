@@ -337,10 +337,10 @@ describe Reference do
       bolton = Factory :author, :name => 'Bolton'
       ward = Factory :author, :name => 'Ward'
       fisher = Factory :author, :name => 'Fisher'
-      bolton_reference = Factory :reference, :authors => [bolton]
-      first_ward_reference = Factory :reference, :authors => [ward]
-      second_ward_reference = Factory :reference, :authors => [ward]
-      fisher_reference = Factory :reference, :authors => [fisher]
+      bolton_reference = Factory :reference, :authors => [bolton, ward]
+      first_ward_reference = Factory :reference, :authors => [ward, bolton]
+      second_ward_reference = Factory :reference, :authors => [ward, fisher]
+      fisher_reference = Factory :reference, :authors => [fisher, bolton]
 
       Reference.sorted_by_author.map(&:id).should == [bolton_reference.id, fisher_reference.id, first_ward_reference.id, second_ward_reference.id]
     end
