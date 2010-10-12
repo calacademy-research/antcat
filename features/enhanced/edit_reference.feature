@@ -28,17 +28,6 @@ Feature: Edit reference
     Then I should be on the main page
       And I should see "Ward, B.L.; Bolton, B. 2010. Ant Title"
 
-  Scenario: Inserting an author name into the middle of the list
-    Given I am logged in
-      And the following entries exist in the bibliography
-      |authors    |citation  |cite_code|created_at|date    |possess|title|updated_at|year|
-      |Ward;Bolton|Psyche 5:3|CiteCode |today     |20100712|Possess|title|today     |2010|
-    When I go to the main page
-      And I click the reference
-    When I fill in "reference_authors_string" with "Ward; Fisher; Bolton"
-      And I press "OK"
-    Then I should see "Ward; Fisher; Bolton"
-
   Scenario: Change a reference's year
     Given I am logged in
       And the following entries exist in the bibliography

@@ -54,7 +54,6 @@ class ReferencesController < ApplicationController
   end
 
   def set_authors
-    @reference.authors.clear
     params[:reference][:authors] = Author.import_authors_string params[:reference][:authors_string]
   end
 
