@@ -38,7 +38,18 @@ describe HolBibliography do
       @hol.read_references 'fisher'
     end
 
-    it "should URL-encode the name" do
+    it "should URL-encode a name with diacritic" do
+      @scraper.should_receive(:get).with("http://osuc.biosci.ohio-state.edu/hymenoptera/manage_lit.list_pubs?author=h%F6lldobler").and_return(Nokogiri::HTML '')
+      @hol.read_references 'hölldobler'
+    end
+
+    it "should not abort on this name" do
+      @scraper.should_receive(:get).and_return(Nokogiri::HTML '')
+      @hol.read_references "O’Donnell"
+      @hol.read_references "O\x2019Donnell"
+    end
+
+    it "should URL-encode a name with spaces" do
       @scraper.should_receive(:get).with("http://osuc.biosci.ohio-state.edu/hymenoptera/manage_lit.list_pubs?author=baroni+urbani").and_return(Nokogiri::HTML '')
       @hol.read_references 'baroni urbani'
     end

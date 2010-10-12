@@ -88,6 +88,12 @@ class WardBibliography
     names.gsub! /Gibron, J.; Sr./, 'Gibron, S. J.'
     names.gsub! /:/, ';'
 
+    # The ' is 0x2019
+    names.gsub! /O’Donnell/, "O'Donnell"
+
+    # The s is 0x0161
+    names.gsub! /Randuška/, "Randuska"
+
     names
   end
 
