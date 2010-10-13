@@ -15,6 +15,11 @@
       %colgroup
         %col{:width => '*'}
         %col{:width => '100px'}
+      %tr.msie_warning
+        %td{:colspan => 2}
+          Welcome, Internet Explorer users!
+          %p
+            We are experiencing difficulties with Internet Explorer, so saving changes is currently disabled with that browser. Feel free to try out the site with Firefox, Safari or Chrome. Otherwise, we expect to have this problem solved shortly, and will notify our users at that time.
       %tr
         %td.authors= f.text_field :authors_string, :class => 'authors'
         %td{:class => :right_side_field}= f.text_field :citation_year
@@ -58,6 +63,6 @@
               %td.date= f.text_field :date
       %tr
         %td{:colspan => 2}
-          = f.submit 'OK', :name => 'commit'
+          = f.submit 'OK', :class => 'submit' 
           %button.cancel Cancel
           %button.delete Delete
