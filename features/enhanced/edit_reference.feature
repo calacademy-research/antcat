@@ -24,7 +24,7 @@ Feature: Edit reference
       And I should not see the reference
     When I fill in "reference_authors_string" with "Ward, B.L.;Bolton, B."
     And I fill in "reference_title" with "Ant Title"
-      And I press "OK"
+      And I press "Save"
     Then I should be on the main page
       And I should see "Ward, B.L.; Bolton, B. 2010. Ant Title"
 
@@ -36,7 +36,7 @@ Feature: Edit reference
     When I go to the main page
       And I click the reference
     When I fill in "reference_authors_string" with "Ward; Fisher; Bolton"
-      And I press "OK"
+      And I press "Save"
     Then I should see "Ward; Fisher; Bolton"
 
   Scenario: Change a reference's year
@@ -47,7 +47,7 @@ Feature: Edit reference
     When I go to the main page
       And I click the reference
       And I fill in "reference_citation_year" with "1910a"
-      And I press "OK"
+      And I press "Save"
       And I fill in "start_year" with "1910"
       And I press "Search"
     Then I should see "Fisher 1910a"
@@ -62,7 +62,7 @@ Feature: Edit reference
       And I follow "Book"
       And I fill in "publisher_string" with "New York: Wiley"
       And I fill in "book_pagination" with "22 pp."
-      And I press "OK"
+      And I press "Save"
     Then I should see "Fisher 2010. Ants. New York: Wiley, 22 pp."
 
   Scenario: See the correct tab initially
@@ -73,7 +73,7 @@ Feature: Edit reference
     When I go to the main page
       And I click the reference
       And I fill in "publisher_string" with "New York: Harcourt"
-      And I press "OK"
+      And I press "Save"
     Then I should see "Fisher 2010. Ants. New York: Harcourt, 22 pp."
 
   Scenario: See the correct tab initially
@@ -84,7 +84,7 @@ Feature: Edit reference
     When I go to the main page
       And I click the reference
       And I fill in "reference_citation" with "New Jersey"
-      And I press "OK"
+      And I press "Save"
     Then I should see "Fisher 2010. Ants. New Jersey."
 
   Scenario: Clearing a book reference's fields
@@ -99,7 +99,7 @@ Feature: Edit reference
       And I fill in "reference_citation_year" with ""
       And I fill in "publisher_string" with ""
       And I fill in "book_pagination" with ""
-      And I press "OK"
+      And I press "Save"
     Then I should see the edit form
       And I should see "Authors can't be blank"
       And I should see "Year can't be blank"
@@ -120,7 +120,7 @@ Feature: Edit reference
       And I fill in "journal_title" with ""
       And I fill in "reference_series_volume_issue" with ""
       And I fill in "article_pagination" with ""
-      And I press "OK"
+      And I press "Save"
     Then I should see the edit form
       And I should see "Authors can't be blank"
       And I should see "Title can't be blank"
@@ -140,7 +140,7 @@ Feature: Edit reference
       And I fill in "reference_title" with ""
       And I fill in "reference_citation_year" with ""
       And I fill in "reference_citation" with ""
-      And I press "OK"
+      And I press "Save"
     Then I should see the edit form
       And I should see "Authors can't be blank"
       And I should see "Title can't be blank"

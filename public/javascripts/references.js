@@ -78,7 +78,7 @@ function setupIcons() {
 
 function setupForms() {
   $('.reference_form').hide();
-  $('.reference_form form').live('submit', submitReferenceForm);
+  $('.reference_form .submit').live('click', submitReferenceForm);
   $('.reference_form .cancel').live('click', cancelReferenceForm);
   $('.reference_form .delete').live('click', deleteReference);
 }
@@ -230,13 +230,14 @@ function setTabs($reference) {
 }
 
 function submitReferenceForm() {
-  var $spinnerElement = $('button', $(this)).parent();
+  var $thisForm = $(this).closest('form');
+  var $spinnerElement = $('button', $thisForm).parent();
   $spinnerElement.spinner({position: 'left', img: '/stylesheets/ext/jquery-ui/images/ui-anim_basic_16x16.gif'});
   $('input', $spinnerElement).attr('disabled', 'disabled');
   $('button', $spinnerElement).attr('disabled', 'disabled');
 
-  var selectedTab = $.trim($('.ui-tabs-selected', $(this)).text());
-  $.post(this.action, $(this).serialize() + '&selected_tab=' + selectedTab, updateReference, 'json');
+  var selectedTab = $.trim($('.ui-tabs-selected', $thisForm).text());
+  $.post($thisForm.attr('action'), $thisForm.serialize() + '&selected_tab=' + selectedTab, updateReference, 'json');
 
   showAddReferenceLink();
 

@@ -11,12 +11,12 @@ Feature: Error handling
     When I go to the main page
       And I click the reference
       And I fill in "reference_title" with ""
-      And I press "OK"
+      And I press "Save"
     Then I should see "Title can't be blank"
     When I press "Cancel"
     Then I should see "Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452."
     When I click the reference
     Then I should not see any error messages
-    When I press "OK"
+    When I press "Save"
     Then I should not see any error messages
       And I should see "Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452."

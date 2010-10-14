@@ -21,5 +21,5 @@ Feature: Copy reference
     When I follow "copy"
       Then I should see a new edit form
     When in the new edit form I fill in "reference_title" with "Tapinoma"
-      And in the new edit form I press "OK"
+      And in the new edit form I press "Save"
     Then I should see "1910. Tapinoma."
