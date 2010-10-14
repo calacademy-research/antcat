@@ -189,18 +189,6 @@ function showReferenceForm($reference, options) {
   setupAuthorAutocomplete($reference);
   setupJournalAutocomplete($reference);
   setupPublisherAutocomplete($reference);
-
-  handleIE($reference);
-}
-
-function handleIE($reference) {
-  if ($.browser.msie) {
-    $('.msie_warning', $reference).show();
-    $('.reference_form .submit', $reference).attr('disabled', true);
-    $('.reference_form .delete', $reference).attr('disabled', true);
-  } else {
-    $('.msie_warning').hide();
-  }
 }
 
 function setWatermarks($form) {
