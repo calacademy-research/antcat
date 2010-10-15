@@ -1,4 +1,5 @@
 function setupAuthorAutocomplete($reference) {
+  $.getScript('javascripts/ext/jquery.a-tools-1.5.2.js')
   $('.reference_form .authors', $reference).autocomplete({
     selectFirst: true,
     minLength: 3,
