@@ -3,7 +3,7 @@ function setupAuthorAutocomplete($reference) {
     selectFirst: true,
     minLength: 3,
     source: function(request, response) {
-      searchTerm = extractAuthorSearchTerm(this.element.val(), this.element.attr('selectionStart'));
+      searchTerm = extractAuthorSearchTerm(this.element.val(), $(this.element).getSelection().start);
       if (searchTerm.length >= 3)
         $.getJSON("authors", {term: searchTerm}, response);
       else
@@ -13,9 +13,10 @@ function setupAuthorAutocomplete($reference) {
       return false;
     },
     select: function(event, ui) {
-      value_and_position = insertAuthor(this.value, this.selectionStart, ui.item.value);
+      $this = $(this)
+      value_and_position = insertAuthor(this.value, $this.getSelection().start, ui.item.value);
       this.value = value_and_position.string;
-      this.selectionStart = this.selectionEnd = value_and_position.position;
+      $this.setCaretPos(value_and_position.position + 1)
       return false;
     }
   });
