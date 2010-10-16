@@ -165,12 +165,23 @@ See Site Statistics</a><p>
       @hol.match(reference)[:source_url].should == 'another source'
     end
 
-    it "should match an article reference based on year + title + page if series/volume/issue isn't found" do
+    it "should match an article reference based on year + title if series/volume/issue isn't found" do
       reference = Factory :article_reference, :year => 2010, :series_volume_issue => '44', :pagination => '325-335',
                           :title => 'Adelomyrmecini new tribe and Cryptomyrmex new genus of myrmicine ants'
       hol_references = [
         {:source_url => 'fernandez_source', :year => 2010, :series_volume_issue => '44(3)', :pagination => '325-335',
           :title => 'Adelomyrmecini new tribe and Cryptomyrmex new genus of myrmicine ants'},
+      ]
+      @hol.stub!(:references_for).and_return hol_references
+      @hol.match(reference)[:source_url].should == 'fernandez_source'
+    end
+
+    it "ignore punctuation when comparing titles" do
+      reference = Factory :article_reference, :year => 2010, :series_volume_issue => '44', :pagination => '325-335',
+                          :title => 'Adelomyrmecini new tribe and Cryptomyrmex new genus of myrmicine ants (Hymenoptera, Formicidae)'
+      hol_references = [
+        {:source_url => 'fernandez_source', :year => 2010, :series_volume_issue => '44(3)', :pagination => '325-335',
+          :title => 'Adelomyrmecini new tribe and Cryptomyrmex new genus of myrmicine ants (Hymenoptera: Formicidae)'},
       ]
       @hol.stub!(:references_for).and_return hol_references
       @hol.match(reference)[:source_url].should == 'fernandez_source'

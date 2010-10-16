@@ -107,7 +107,8 @@ class Reference < ActiveRecord::Base
   def to_s
     s = ''
     s << "#{authors_string} "
-    s << "#{citation_year}."
+    s << "#{citation_year}. "
+    s << "#{id}."
     s
   end
 end

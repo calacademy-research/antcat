@@ -53,7 +53,7 @@ class HolSourceUrlImporter
     @processed_count += 1
     if result[:source_url]
       @success_count += 1
-      return 'OK'
+      return '* OK *'
     elsif result[:status] == :already_imported
       @already_imported_count += 1
       @success_count += 1
@@ -92,6 +92,9 @@ class HolSourceUrlImporter
 
   def show_results
     Progress.puts
+    Progress.puts "#{missing_authors.size} missing authors:\n#{missing_authors.join("\n")}"
+
+    Progress.puts
     rate = Progress.rate @processed_count
     elapsed = Progress.elapsed
     Progress.puts "#{@processed_count} processed in #{elapsed} (#{rate})"
@@ -103,9 +106,6 @@ class HolSourceUrlImporter
     Progress.puts Progress.count(@other_reference_failure_count, @processed_count, 'other references')
     Progress.puts Progress.count(@book_failure_count, @processed_count, 'book references')
     Progress.puts Progress.count(@pdf_not_found_failure_count, @processed_count, 'PDF not found')
-
-    Progress.puts
-    Progress.puts "#{missing_authors.size} missing authors:\n#{missing_authors.join("\n")}"
   end
 
   def source_url_exists? source_url

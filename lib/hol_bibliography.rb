@@ -33,7 +33,8 @@ class HolBibliography
   end
 
   def match_title target_reference, reference, result
-    if target_reference.title == reference[:title]
+    if target_reference.title.present? && reference[:title].present? &&
+       target_reference.title.gsub(/\W/, '') == reference[:title].gsub(/\W/, '')
       result[:source_url] = reference[:source_url]
       return true
     end
