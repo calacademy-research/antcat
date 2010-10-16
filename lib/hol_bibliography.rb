@@ -9,22 +9,35 @@ class HolBibliography
   def match target_reference
     result = {}
     author_name = target_reference.authors.first.last_name
-    year_match = false
     references = references_for(author_name)
     unless references.present?
       result[:status] = NO_ENTRIES_FOR_AUTHOR
     else
       references.each do |reference|
-        year_match = year_match || target_reference.year == reference[:year]
-        if target_reference.year == reference[:year] &&
-          target_reference.series_volume_issue == reference[:series_volume_issue] &&
-          target_reference.pagination == reference[:pagination]
-          result[:source_url] = reference[:source_url]
-          break
+        if target_reference.year == reference[:year]
+          break if match_series_volume_issue_pagination target_reference, reference, result
+          break if match_title target_reference, reference, result
         end
       end
     end
     result
+  end
+
+  def match_series_volume_issue_pagination target_reference, reference, result
+    if target_reference.series_volume_issue == reference[:series_volume_issue] &&
+       target_reference.pagination == reference[:pagination]
+      result[:source_url] = reference[:source_url]
+      return true
+    end
+    false
+  end
+
+  def match_title target_reference, reference, result
+    if target_reference.title == reference[:title]
+      result[:source_url] = reference[:source_url]
+      return true
+    end
+    false
   end
 
   def references_for author_name
@@ -51,7 +64,11 @@ class HolBibliography
 
   def parse_article li, reference
     return unless second_strong = li.css('strong')[1]
-    reference[:year] = second_strong.previous.content.match(/\d+/m).to_s.to_i or return
+    year_title_journal = second_strong.previous.content
+    start_of_title = year_title_journal.match(/\.?.*?\.\s+/m).end(0)
+    last_period = year_title_journal.rindex '.'
+    reference[:title] = year_title_journal[start_of_title..last_period - 1]
+    reference[:year] = year_title_journal.match(/\d+/m).to_s.to_i or return
     reference[:series_volume_issue] = second_strong.content + second_strong.next.content.match(/(.*?):/)[1]
     reference[:pagination] = second_strong.next.content.match(/:\s*(.*)./)[1] or return
     reference

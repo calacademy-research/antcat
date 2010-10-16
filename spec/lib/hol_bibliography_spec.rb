@@ -122,7 +122,22 @@ See Site Statistics</a><p>
       result[:source_url].should == 'http://antbase.org/ants/publications/22169/22169.pdf'
       result[:year].should == 2008
       result[:series_volume_issue].should == '1929(1)'
+      result[:title].should == 'Afrotropical ants of the ponerine genera Centromyrmex Mayr, Promyopias Santschi gen. rev. and Feroponera gen. n., with a revised key to genera of African Ponerinae (Hymenoptera: Formicidae)'
       result[:pagination].should == '1-37'
+    end
+
+    it "should parse an article reference with a single author" do
+      result = @hol.parse_reference(Nokogiri::HTML(<<-LI).at_css('html body'))
+<strong><a href="http://hol.osu.edu/reference-full.html?id=22497" title="View extended reference information from Hymenoptera Online">22497</a></strong>
+<a href="http://hol.osu.edu/agent-full.html?id=2767">Adlerz, G.</a>
+ 1887. Myrmecologiska notiser. Entomologisk Tidskrift <strong>8</strong>: 41-50.
+<A HREF="http://osuc.biosci.ohio-state.edu/hymDB/nomenclator.hlviewer?id=22497" TARGET="_blank">Browse</A>
+ or download 
+<A HREF="http://128.146.250.117/pdfs/22497/22497.pdf" TARGET="_blank"> entire file (583k)</A>
+<IMG SRC="http://osuc.biosci.ohio-state.edu/images/pdf.gif">
+      LI
+
+      result[:title].should == 'Myrmecologiska notiser'
     end
 
     it "should parse a book reference" do
@@ -140,7 +155,7 @@ See Site Statistics</a><p>
       @hol = HolBibliography.new
     end
 
-    it "should match an article reference based on pagination" do
+    it "should match an article reference based on year + series/volume/issue + pagination" do
       reference = Factory :article_reference, :year => 2010, :series_volume_issue => '2', :pagination => '2-3'
       hol_references = [
         {:source_url => 'a source', :year => 2010, :series_volume_issue => '1', :pagination => '2-3'},
@@ -148,6 +163,17 @@ See Site Statistics</a><p>
       ]
       @hol.stub!(:references_for).and_return hol_references
       @hol.match(reference)[:source_url].should == 'another source'
+    end
+
+    it "should match an article reference based on year + title + page if series/volume/issue isn't found" do
+      reference = Factory :article_reference, :year => 2010, :series_volume_issue => '44', :pagination => '325-335',
+                          :title => 'Adelomyrmecini new tribe and Cryptomyrmex new genus of myrmicine ants'
+      hol_references = [
+        {:source_url => 'fernandez_source', :year => 2010, :series_volume_issue => '44(3)', :pagination => '325-335',
+          :title => 'Adelomyrmecini new tribe and Cryptomyrmex new genus of myrmicine ants'},
+      ]
+      @hol.stub!(:references_for).and_return hol_references
+      @hol.match(reference)[:source_url].should == 'fernandez_source'
     end
 
     it "should report as much when a failed match was because the author had no entries" do
