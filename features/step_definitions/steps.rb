@@ -102,6 +102,6 @@ Then 'I should not see the "Delete" button' do
   page.should_not have_css "button", :text => 'Delete'
 end
 
-Then 'I should see a "SOURCE" link' do
-  page.should have_css "a", :text => 'SOURCE'
+Then 'I should see a "PDF" link' do
+  page.should have_css "a", :text => 'PDF'
 end

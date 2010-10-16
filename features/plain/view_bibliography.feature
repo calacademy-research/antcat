@@ -47,5 +47,5 @@ Feature: View bibliography
       |Ward, P.S.|2010d|Ant Facts|Ants 1:1|232      |PSW    |20100712|{Public notes}Editor's notes|
       And that the entry has a source URL
     When I go to the main page
-    Then I should see a "SOURCE" link
+    Then I should see a "PDF" link
 
