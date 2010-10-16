@@ -1,6 +1,8 @@
-.reference_display
+- css_class = 'reference_display'
+- css_class << ' has_source' if reference.source_url?
+%div{:class => css_class}
   = format_reference reference
-  = link_to 'SOURCE', reference.source_url, :class => :source_link if reference.source_url
+  = link_to 'PDF', reference.source_url, :class => :source_link if reference.source_url?
 
   %p.notes= italicize h reference.public_notes
   %p.editor.notes= italicize h reference.editor_notes

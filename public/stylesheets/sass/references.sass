@@ -27,8 +27,11 @@ td.reference_item
 .ReferencesController #contents
   padding: 0
 
-.reference_display.editable
-  cursor: pointer
+.reference_display
+  &.has_source
+    font-weight: bold
+  .editable
+    cursor: pointer
 
 .reference.about_to_be_deleted
   background-color: lightyellow
