@@ -1,6 +1,6 @@
 $(function() {
   spaceOutImages();
-
+  $("input[type=text]:first").focus()
 })
 
 $(window).resize(function() {

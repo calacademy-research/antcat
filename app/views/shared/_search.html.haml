@@ -1,3 +1,8 @@
+:javascript
+  $(function() {
+    $("input[type=text]:first").blur()
+  })
+
 #search
   %form{:action => '/references', :method => :get}
     .left

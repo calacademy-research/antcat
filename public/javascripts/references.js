@@ -7,7 +7,6 @@ $(function() {
   }
   //if (!usingCucumber) {
     //addReference();
-    //$('#reference_ #reference_authors_string').focus();
   //}
 })
 
@@ -96,7 +95,7 @@ function editReference() {
 
   $reference = $(this).closest('.reference');
   saveReference($reference);
-  showReferenceForm($reference, {focusFirstField: true, showDeleteButton: true});
+  showReferenceForm($reference, {showDeleteButton: true});
   return false;
 }
 
@@ -131,7 +130,7 @@ function copyReference() {
   $newReference.attr("id", "reference_");
   $('form', $newReference).attr("action", "/references");
   $('[name=_method]', $newReference).attr("value", "post");
-  showReferenceForm($newReference, {focusFirstField: true});
+  showReferenceForm($newReference);
   return false;
 }
 
@@ -179,8 +178,7 @@ function showReferenceForm($reference, options) {
   setTabs($reference);
   $form.show();
 
-  if (options.focusFirstField)
-    $('#reference_authors', $form).focus();
+  $('#reference_authors_string', $form).focus();
 
   if (!options.showDeleteButton)
     $('.delete', $form).hide();
