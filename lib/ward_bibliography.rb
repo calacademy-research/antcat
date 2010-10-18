@@ -94,6 +94,9 @@ class WardBibliography
     # The s is 0x0161
     names.gsub! /Randuška/, "Randuska"
 
+    # commas instead of semicolons
+    names.gsub! /Santos-Colares, M. C., Viégas, J., Martino Roth, M. G., Loeck, A. E./, "Santos-Colares, M. C.; Viégas, J.; Martino Roth, M. G.; Loeck, A. E."
+
     names
   end
 
