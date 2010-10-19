@@ -10,7 +10,7 @@ Feature: Edit reference
       |authors|Psyche 3:3|CiteCode |today     |20100712|Possess|title|today     |2010|
     When I go to the main page
       And I click the reference
-      Then there should not be an edit form
+    Then there should not be an edit form
 
   Scenario: Edit a reference
     Given I am logged in

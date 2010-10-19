@@ -27,8 +27,11 @@ Then /^there should be the HTML "(.*)"$/ do |html|
 end
 
 Then /I should (not )?see the edit form/ do |should_not|
+  sleep 0.5
   selector = should_not ? :should_not : :should
-  #find("#reference_#{@reference.id} .reference_form").send(selector, be_visible)
+  css_selector = "#reference_"
+  css_selector << @reference.id.to_s if @reference
+  find("#{css_selector} .reference_form").send(selector, be_visible)
 end
 
 Then /there should not be an edit form/ do
@@ -36,10 +39,9 @@ Then /there should not be an edit form/ do
 end
 
 Then /I should (not )?see a new edit form/ do |should_not|
-  # this is annoying - 'should_not' fails here but works fine
-  # otherwise
-  #selector = should_not ? :should_not : :should
-  #find("#reference_ .reference_form").send(selector, be_visible)
+  sleep 0.5
+  selector = should_not ? :should_not : :should
+  find("#reference_ .reference_form").send(selector, be_visible)
 end
 
 Then 'I should not see the reference' do
@@ -57,11 +59,11 @@ Then 'there should be just the existing reference' do
 end
 
 Then "I should not see any error messages" do
-  # this also sometimes fails with "Element is no longer attached to the DOM"
-  #find('.error_messages li').should be_nil
+  find('.error_messages li').should be_nil
 end
 
 When 'I click the reference' do
+  sleep 0.5
   find("#reference_#{@reference.id} .reference_display").click
 end
 
