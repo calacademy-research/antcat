@@ -152,18 +152,17 @@ function addOrInsertReferenceForm($reference) {
 ///////////////////////////////////////////////////////////////////////////////////
 
 function saveReference($reference) {
-  var $savedReference = $reference.clone(true);
-  $savedReference.attr('id', 'saved_reference');
-  $('.references').append($savedReference);
-  $savedReference.hide();
+  $('#saved_reference').remove()
+  $reference.clone(true)
+    .attr('id', 'saved_reference')
+    .appendTo('body')
+    .hide()
 }
 
 function restoreReference($reference) {
   var id = $reference.attr('id');
-  $savedReference = $('#saved_reference');
-  $reference.replaceWith($savedReference);
-  $savedReference.attr('id', id);
-  $savedReference.show();
+  $reference.replaceWith($('#saved_reference'))
+  $('#saved_reference').attr('id', id).show()
 }
 
 function showReferenceForm($reference, options) {
