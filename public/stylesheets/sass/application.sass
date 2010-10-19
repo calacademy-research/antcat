@@ -1,8 +1,29 @@
+// Meyer's reset CSS: http://meyerweb.com/eric/tools/css/reset/index.html
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td
+  margin: 0
+  padding: 0
+  border: 0
+  outline: 0
+  font-size: 100%
+  vertical-align: baseline
+  background: transparent
+
+body
+  line-height: 1
+
+ol, ul
+  list-style: none
+
+table
+  border-collapse: collapse
+  border-spacing: 0
+
 ///////////////////////////////////////////////////
 // elements
 
 body
   background-color: #71932d
+  line-height: 16px
 
 body, textarea, input
   font-family: Verdana, Helvetica, Arial
@@ -11,7 +32,7 @@ body, textarea, input
 h1, h2, h3
   font: Helvetica
   font-weight: normal
-  margin: 0
+  margin: 4px
 
 h1
   font-size: 20px
@@ -23,8 +44,9 @@ h3
   font-size: 16px
   margin-top: 4px
 
-img
-  border: none
+table
+  border-collapse: separate
+  border-spacing: 2px
 
 label
   margin-right: 5px
@@ -35,7 +57,6 @@ input[type=text], textarea
 a, a:active, a:hover, a:focus, a:visited
   color: green
   text-decoration: none
-  outline: none
   &:hover
     color: lightgreen
 
@@ -71,7 +92,6 @@ ul.error_messages
   margin: 15px 0 0 0
   padding: 0
   li
-    list-style-type: none
     font-size: small
     color: red
     font-style: italic
@@ -80,7 +100,7 @@ ul.error_messages
 // specific elements
 
 #header, #subheader, #contents, #footer, .pagination
-  padding: 20px 40px 0 55px
+  padding: 2px 40px 0 55px
 
 #header h2
   margin-left: 16px
@@ -92,16 +112,14 @@ ul.error_messages
   border: solid 1px black
   margin-top: 20px
 
-#subheader, #footer
-  padding-top: 0
-
 .pagination
   padding-top: 5px
 
 #images
-  padding-top: 0
   padding-bottom: 5px
   width: 100%
+  td
+    vertical-align: middle
 
 #search
   input[type=text]
