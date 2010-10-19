@@ -290,6 +290,16 @@ describe Reference do
     end
   end
 
+  describe "source_url" do
+    it "should make sure it has a protocol" do
+      reference = Factory :reference, :source_url => '1.pdf'
+      reference.save!
+      reference.source_url.should == 'http://1.pdf'
+      reference.save!
+      reference.source_url.should == 'http://1.pdf'
+    end
+  end
+
   describe "entering a newline in the title, public_notes, editor_notes or taxonomic_notes" do
     it "should strip the newline" do
       reference = Factory :reference

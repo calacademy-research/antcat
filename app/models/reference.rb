@@ -5,7 +5,7 @@ class Reference < ActiveRecord::Base
   belongs_to :journal
   belongs_to :source_reference, :polymorphic => true
 
-  before_validation :set_year, :strip_newlines
+  before_validation :set_year, :strip_newlines, :set_source_url
 
   validates_presence_of :authors, :year, :title
 
@@ -110,5 +110,9 @@ class Reference < ActiveRecord::Base
     s << "#{citation_year}. "
     s << "#{id}."
     s
+  end
+
+  def set_source_url
+    self.source_url = "http://" + source_url if source_url.present? && source_url !~ %r{^http://}
   end
 end

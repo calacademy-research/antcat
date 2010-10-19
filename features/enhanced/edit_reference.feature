@@ -147,3 +147,13 @@ Feature: Edit reference
       And I should see "Year can't be blank"
       And I should see "Citation can't be blank"
 
+  Scenario: Specifying the source URL
+    Given I am logged in
+      And the following entries exist in the bibliography
+      |authors    |citation  |year |title|
+      |Ward, P.S. |New York  |2010a|Ants |
+    When I go to the main page
+    When I click the reference
+    When I fill in "reference_source_url" with "sourcefile"
+      And I press "Save"
+    Then I should see a "PDF" link

@@ -53,6 +53,9 @@
             = f.text_area :citation, :rows => 2
 
       %tr
+        %td Source URL
+        %td{:colspan => 3, :class => :right_side_field}= f.text_field :source_url
+      %tr
         %td Public notes
         %td{:colspan => 3, :class => :right_side_field}= f.text_area :public_notes, :rows => 2
       %tr
