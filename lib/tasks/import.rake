@@ -1,3 +1,5 @@
+task :import_bibliography => [:import_ward, :import_hol_source_urls]
+
 desc "Import HTML files of references from Bolton"
 task :import_bolton => :environment do
   BoltonReference.delete_all
