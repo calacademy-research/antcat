@@ -31,17 +31,17 @@ Then /I should (not )?see the edit form/ do |should_not|
   selector = should_not ? :should_not : :should
   css_selector = "#reference_"
   css_selector << @reference.id.to_s if @reference
-  find("#{css_selector} .reference_form").send(selector, be_visible)
+  find("#{css_selector} .reference_edit").send(selector, be_visible)
 end
 
 Then /there should not be an edit form/ do
-  find("#reference_#{@reference.id} .reference_form").should be_nil
+  find("#reference_#{@reference.id} .reference_edit").should be_nil
 end
 
 Then /I should (not )?see a new edit form/ do |should_not|
   sleep 0.5
   selector = should_not ? :should_not : :should
-  find("#reference_ .reference_form").send(selector, be_visible)
+  find("#reference_ .reference_edit").send(selector, be_visible)
 end
 
 Then 'I should not see the reference' do

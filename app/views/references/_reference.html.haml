@@ -14,5 +14,5 @@
       %td.reference_item
         = render(:partial => 'display', :locals => {:reference => reference}) if !reference.new_record? && reference.errors.empty?
         - if user_signed_in?
-          = render :partial => 'form', :locals => {:reference => reference}
+          = render :partial => 'edit', :locals => {:reference => reference}
         = render :partial => 'shared/coins', :locals => {:reference => reference} if !reference.new_record? && reference.errors.empty?

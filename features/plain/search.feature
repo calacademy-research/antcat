@@ -42,19 +42,16 @@ Feature: Searching references
       And I fill in "author" with "zzzzzz"
       And I fill in "start_year" with "1972"
       And I fill in "end_year" with "1980"
-      And I fill in "journal" with "Playboy"
       And I press "Search"
     Then I should see "No results found"
       And the "author" field should contain "zzzzz"
       And the "start_year" field should contain "1972"
       And the "end_year" field should contain "1980"
-      And the "journal" field should contain "Playboy"
     When I press "Clear"
     Then I should not see "No results found"
       And the "author" field should contain ""
       And the "start_year" field should contain ""
       And the "end_year" field should contain ""
-      And the "journal" field should contain ""
       And I should see "Brian Fisher"
       And I should see "Barry Bolton"
 
@@ -119,15 +116,4 @@ Feature: Searching references
       And I should not see "Brian Fisher 1810"
       And I should not see "Barry Bolton 1810"
       And I should not see "Barry Bolton 1895"
-
-  Scenario: Searching by journal title
-    Given the following entries exist in the bibliography
-       |citation              |authors|title  |year|
-       |Acta Informatica 1:222|authors|title9 |year|
-       |Science (3)1:444      |authors|title10|year|
-    When I go to the main page
-      And I fill in "journal" with "Science"
-      And I press "Search"
-    Then I should see "Science"
-      And I should not see "Acta Informatica"
 

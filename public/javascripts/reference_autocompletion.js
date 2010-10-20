@@ -1,6 +1,6 @@
 function setupAuthorAutocomplete($reference) {
   $.getScript('javascripts/ext/jquery.a-tools-1.5.2.js')
-  $('.reference_form .authors', $reference).autocomplete({
+  $('.reference_edit .authors', $reference).autocomplete({
     selectFirst: true,
     minLength: 3,
     source: function(request, response) {
@@ -55,7 +55,7 @@ function insertAuthor(string, position, author)
 ///////////////////////////////////////////////////////
 
 function setupJournalAutocomplete($reference) {
-  $('.reference_form .journal', $reference).autocomplete({
+  $('.reference_edit .journal', $reference).autocomplete({
     selectFirst: true,
     source: "/journals",
     minLength: 3
@@ -65,7 +65,7 @@ function setupJournalAutocomplete($reference) {
 ///////////////////////////////////////////////////////
 
 function setupPublisherAutocomplete($reference) {
-  $('.reference_form .publisher', $reference).autocomplete({
+  $('.reference_edit .publisher', $reference).autocomplete({
     selectFirst: true,
     source: "/publishers",
     minLength: 3

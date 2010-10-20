@@ -3,7 +3,7 @@ $(function() {
   if (loggedIn) {
     setupAddReferenceLink();
     setupDisplays();
-    setupForms();
+    setupEdits();
   }
   //if (!usingCucumber) {
     //addReference();
@@ -75,10 +75,10 @@ function setupIcons() {
   $('.icon.delete').live('click', deleteReference);
 }
 
-function setupForms() {
-  $('.reference_form').hide();
-  $('.reference_form .cancel').live('click', cancelReferenceForm);
-  $('.reference_form .delete').live('click', deleteReference);
+function setupEdits() {
+  $('.reference_edit').hide();
+  $('.reference_edit .cancel').live('click', cancelReferenceEdit);
+  $('.reference_edit .delete').live('click', deleteReference);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -94,7 +94,7 @@ function editReference() {
 
   $reference = $(this).closest('.reference');
   saveReference($reference);
-  showReferenceForm($reference, {showDeleteButton: true});
+  showReferenceEdit($reference, {showDeleteButton: true});
   return false;
 }
 
@@ -112,12 +112,12 @@ function deleteReference() {
 }
 
 function addReference() {
-  addOrInsertReferenceForm(null);
+  addOrInsertReferenceEdit(null);
   return false;
 }
 
 function insertReference() {
-  addOrInsertReferenceForm($(this).closest('.reference'));
+  addOrInsertReferenceEdit($(this).closest('.reference'));
   return false
 }
 
@@ -129,11 +129,11 @@ function copyReference() {
   $newReference.attr("id", "reference_");
   $('form', $newReference).attr("action", "/references");
   $('[name=_method]', $newReference).attr("value", "post");
-  showReferenceForm($newReference);
+  showReferenceEdit($newReference);
   return false;
 }
 
-function addOrInsertReferenceForm($reference) {
+function addOrInsertReferenceEdit($reference) {
   $referenceTemplateRow = $('.reference_template_row');
   $newReferenceRow = $referenceTemplateRow.clone(true);
   $newReferenceRow.removeClass('reference_template_row').addClass('reference_row');
@@ -145,7 +145,7 @@ function addOrInsertReferenceForm($reference) {
     $reference.closest('tr').after($newReferenceRow);
 
   $newReference = $('.reference', $newReferenceRow);
-  showReferenceForm($newReference);
+  showReferenceEdit($newReference);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -164,7 +164,7 @@ function restoreReference($reference) {
   $('#saved_reference').attr('id', id).show()
 }
 
-function showReferenceForm($reference, options) {
+function showReferenceEdit($reference, options) {
   if (!options)
     options = {}
 
@@ -173,15 +173,15 @@ function showReferenceForm($reference, options) {
   $('.reference_display', $reference).hide();
   $('.icon').hide();
 
-  var $form = $('.reference_form', $reference);
-  $('form', $form).ajaxForm({beforeSubmit: setupSubmit, success: updateReference, dataType: 'json'});
+  var $edit = $('.reference_edit', $reference);
+  $('form', $edit).ajaxForm({beforeSubmit: setupSubmit, success: updateReference, dataType: 'json'});
   setTabs($reference);
-  $form.show();
+  $edit.show();
 
-  $('#reference_authors_string', $form).focus();
+  $('#reference_authors_string', $edit).focus();
 
   if (!options.showDeleteButton)
-    $('.delete', $form).hide();
+    $('.delete', $edit).hide();
 
   setupAuthorAutocomplete($reference);
   setupJournalAutocomplete($reference);
@@ -219,9 +219,9 @@ function setupSubmit(formData, $form, options) {
 function updateReference(data, statusText, xhr, $form) {
   var $reference = $('#reference_' + (data.isNew ? '' : data.id));
 
-  var $form = $('.reference_form', $reference);
+  var $edit = $('.reference_edit', $reference);
 
-  var $spinnerElement = $('button', $form).parent();
+  var $spinnerElement = $('button', $edit).parent();
   $('input', $spinnerElement).attr('disabled', '');
   $('button', $spinnerElement).attr('disabled', '');
   $spinnerElement.spinner('remove');
@@ -230,12 +230,12 @@ function updateReference(data, statusText, xhr, $form) {
 
   if (!data.success) {
     $reference = $('#reference_' + (data.isNew ? '' : data.id));
-    showReferenceForm($reference);
+    showReferenceEdit($reference);
     return;
   }
 
   $reference = $('#reference_' + data.id);
-  $('.reference_form', $reference).hide();
+  $('.reference_edit', $reference).hide();
 
   var $display = $('.reference_display', $reference);
   $display.show();
@@ -245,14 +245,14 @@ function updateReference(data, statusText, xhr, $form) {
   showAddReferenceLink();
 }
 
-function cancelReferenceForm() {
+function cancelReferenceEdit() {
   $reference = $(this).closest('.reference');
   if ($reference.attr('id') == 'reference_')
     $reference.closest('tr').remove();
   else {
     restoreReference($reference);
     $('.reference_display', $reference).show();
-    $('.reference_form', $reference).hide();
+    $('.reference_edit', $reference).hide();
   }
 
   showAddReferenceLink();
@@ -263,6 +263,6 @@ function cancelReferenceForm() {
 ////////////////////////////////////////////////////////////////////////////////
 
 function isEditing() {
-  return $('.reference_form').is(':visible');
+  return $('.reference_edit').is(':visible');
 }
 
