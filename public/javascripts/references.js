@@ -77,7 +77,6 @@ function setupIcons() {
 
 function setupForms() {
   $('.reference_form').hide();
-  $('.reference_form .submit').live('click', submitReferenceForm);
   $('.reference_form .cancel').live('click', cancelReferenceForm);
   $('.reference_form .delete').live('click', deleteReference);
 }
@@ -169,11 +168,13 @@ function showReferenceForm($reference, options) {
   if (!options)
     options = {}
 
+
   hideAddReferenceLink();
   $('.reference_display', $reference).hide();
   $('.icon').hide();
 
   var $form = $('.reference_form', $reference);
+  $('form', $form).ajaxForm({beforeSubmit: setupSubmit, success: updateReference, dataType: 'json'});
   setTabs($reference);
   $form.show();
 
@@ -203,22 +204,19 @@ function setTabs($reference) {
   $('.tabs', $reference).tabs({selected: selected_tab});
 }
 
-function submitReferenceForm() {
-  var $thisForm = $(this).closest('form');
-  var $spinnerElement = $('button', $thisForm).parent();
+function setupSubmit(formData, $form, options) {
+  var $spinnerElement = $('button', $form).parent();
   $spinnerElement.spinner({position: 'left', img: '/stylesheets/ext/jquery-ui/images/ui-anim_basic_16x16.gif'});
   $('input', $spinnerElement).attr('disabled', 'disabled');
   $('button', $spinnerElement).attr('disabled', 'disabled');
 
-  var selectedTab = $.trim($('.ui-tabs-selected', $thisForm).text());
-  $.post($thisForm.attr('action'), $thisForm.serialize() + '&selected_tab=' + selectedTab, updateReference, 'json');
+  var selectedTab = $.trim($('.ui-tabs-selected', $form).text());
+  formData.push({name: 'selected_tab', value: selectedTab})
 
-  showAddReferenceLink();
-
-  return false;
+  return true;
 }
 
-function updateReference(data) {
+function updateReference(data, statusText, xhr, $form) {
   var $reference = $('#reference_' + (data.isNew ? '' : data.id));
 
   var $form = $('.reference_form', $reference);
@@ -243,6 +241,8 @@ function updateReference(data) {
   $display.show();
   $display.addClass('editable');
   $display.effect("highlight", {}, 3000);
+
+  showAddReferenceLink();
 }
 
 function cancelReferenceForm() {
