@@ -112,23 +112,19 @@ describe WardReference do
             parser = mock
             ReferenceParser.stub!(:new).and_return parser
             citation = 'Melbourne: CSIRO Publications, vii + 70 pp.'
-            parser.should_receive(:parse_book_citation).with(citation).and_return(:foo)
+            parser.should_receive(:parse_nested_citation).with(citation).and_return nil
+            parser.should_receive(:parse_book_citation).with(citation).and_return :foo
             WardReference.new(:citation => citation).to_import_format.should include(:book => :foo)
           end
         end
 
         describe "parsing a nested citation" do
-          it "should handle parsing with no page numbers" do
-            WardReference.new(:citation =>
-              'In: Michaelsen, W., Hartmeyer, R. (eds.)  Die Fauna Sdwest-Australiens. Band I, Lieferung 7.  Jena: Gustav Fischer, pp. 263-310.').
-              to_import_format.should include(
-              :other => 'In: Michaelsen, W., Hartmeyer, R. (eds.)  Die Fauna Sdwest-Australiens. Band I, Lieferung 7.  Jena: Gustav Fischer, pp. 263-310')
-          end
-          it "should handle parsing with page numbers" do
-            WardReference.new(:citation =>
-              'Pp. 191-210 in: Presl, J. S., Presl, K. B.  Deliciae Pragenses, historiam naturalem spectantes. Tome 1.  Pragae: Calve, 244 pp.').
-              to_import_format.should include(
-              :other => 'Pp. 191-210 in: Presl, J. S., Presl, K. B.  Deliciae Pragenses, historiam naturalem spectantes. Tome 1.  Pragae: Calve, 244 pp')
+          it "should call the parser with the right arguments" do
+            parser = mock
+            ReferenceParser.stub!(:new).and_return parser
+            citation = 'Pp. 32-40 in Melbourne: CSIRO Publications, vii + 70 pp.'
+            parser.should_receive(:parse_nested_citation).with(citation).and_return(:foo)
+            WardReference.new(:citation => citation).to_import_format.should include(:other => :foo)
           end
         end
 

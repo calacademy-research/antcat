@@ -44,8 +44,8 @@ class WardReference < ActiveRecord::Base
   end
 
   def parse_nested_citation data
-    citation.match(/\bin: /i) or return
-    data[:other] = remove_period_from citation
+    return unless result = ReferenceParser.new.parse_nested_citation(citation)
+    data.merge! :other => result
   end
 
   def parse_book_citation data
