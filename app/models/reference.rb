@@ -37,6 +37,9 @@ class Reference < ActiveRecord::Base
     when data[:other]
       OtherReference.import create_data, data[:other]
     end
+  rescue
+    puts data
+    raise
   end
 
   def self.search terms = {}

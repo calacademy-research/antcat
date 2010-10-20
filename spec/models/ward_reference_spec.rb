@@ -112,6 +112,7 @@ describe WardReference do
             parser = mock
             ReferenceParser.stub!(:new).and_return parser
             citation = 'Melbourne: CSIRO Publications, vii + 70 pp.'
+            parser.should_receive(:parse_cd_rom_citation).with(citation).and_return nil
             parser.should_receive(:parse_nested_citation).with(citation).and_return nil
             parser.should_receive(:parse_book_citation).with(citation).and_return :foo
             WardReference.new(:citation => citation).to_import_format.should include(:book => :foo)
@@ -123,7 +124,18 @@ describe WardReference do
             parser = mock
             ReferenceParser.stub!(:new).and_return parser
             citation = 'Pp. 32-40 in Melbourne: CSIRO Publications, vii + 70 pp.'
+            parser.should_receive(:parse_cd_rom_citation).with(citation).and_return nil
             parser.should_receive(:parse_nested_citation).with(citation).and_return(:foo)
+            WardReference.new(:citation => citation).to_import_format.should include(:other => :foo)
+          end
+        end
+
+        describe "parsing a CD-ROM citation" do
+          it "should call the parser with the right arguments" do
+            parser = mock
+            ReferenceParser.stub!(:new).and_return parser
+            citation = 'citation'
+            parser.should_receive(:parse_cd_rom_citation).with(citation).and_return(:foo)
             WardReference.new(:citation => citation).to_import_format.should include(:other => :foo)
           end
         end
@@ -133,6 +145,7 @@ describe WardReference do
             WardReference.new(:citation => 'asdf').to_import_format.should include(:other => 'asdf')
           end
         end
+
       end
 
       it "should convert to import format" do

@@ -5,6 +5,17 @@ describe ReferenceParser do
     @parser = ReferenceParser.new
   end
 
+  describe "parsing a CD-ROM citation" do
+    it "should return nil if it doesn't seem to be a CD-ROM citation" do
+      @parser.parse_cd_rom_citation('Science 1:2').should be_nil
+    end
+
+    it "should handle a CD-ROM citation" do
+      @parser.parse_cd_rom_citation('Cambridge, Mass.: Harvard University Press, CD-ROM.').should ==
+                                    'Cambridge, Mass.: Harvard University Press, CD-ROM'
+    end
+  end
+
   describe "parsing a book citation" do
     it "should return nil if it doesn't seem to be a book citation" do
       @parser.parse_book_citation('Science 1:2').should be_nil
@@ -44,6 +55,15 @@ describe ReferenceParser do
       @parser.parse_book_citation('Warszawa: Panstwowe Wydawnictwo Rolnicze i Lesne, 55 pp.').should ==
         {:publisher => {:name => 'Panstwowe Wydawnictwo Rolnicze i Lesne', :place => 'Warszawa'}, :pagination => '55 pp.'}
     end
+    
+    it "should handle a publisher with a number in it" do
+      @parser.parse_book_citation(
+        'Perth, Australia: Curtin University School of Environmental Biology (Bulletin No. 18), xii + 75 pp.'
+      ).should ==
+        {:publisher => {:name => 'Curtin University School of Environmental Biology (Bulletin No. 18)', :place => 'Perth, Australia'},
+         :pagination => 'xii + 75 pp.'}
+    end
+    
   end
 
   describe "parsing a nested citation" do

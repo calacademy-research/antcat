@@ -1,5 +1,10 @@
 class ReferenceParser
 
+  def parse_cd_rom_citation citation
+    return unless citation =~ /CD-ROM/
+    remove_period_from citation
+  end
+
   def parse_nested_citation citation
     return unless citation =~ /\bin: /i || citation =~ /^Pp\. \d+-\d+ in\b/
     remove_period_from citation
@@ -30,10 +35,19 @@ class ReferenceParser
   end
 
   def pagination? string
-    return true if string =~ /\d/
+    return true if contains_a_number_without_many_letters? string
     return false if contains_polish_conjunction? string
     return true if string =~ /\b[ivxlc]{1,3}\b/
     false
+  end
+
+  def contains_a_number_without_many_letters? string
+    return false unless string =~ /\d/
+    number_count = string.gsub(/\D/, '').length
+    letter_count = string.gsub(/\W/, '').length
+    return true if number_count > 4
+    return false if letter_count - number_count > 12
+    true
   end
 
   def contains_polish_conjunction? string

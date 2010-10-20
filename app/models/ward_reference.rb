@@ -37,10 +37,16 @@ class WardReference < ActiveRecord::Base
 
   def parse_citation data
     return if citation.blank?
+    parse_cd_rom_citation(data) ||
     parse_nested_citation(data) ||
     parse_book_citation(data) ||
     parse_article_citation(data) ||
     parse_unknown_citation(data)
+  end
+
+  def parse_cd_rom_citation data
+    return unless result = ReferenceParser.new.parse_cd_rom_citation(citation)
+    data.merge! :other => result
   end
 
   def parse_nested_citation data
