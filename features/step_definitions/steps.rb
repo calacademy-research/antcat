@@ -105,5 +105,6 @@ Then 'I should not see the "Delete" button' do
 end
 
 Then 'I should see a "PDF" link' do
+  sleep 0.5
   page.should have_css "a", :text => 'PDF'
 end
