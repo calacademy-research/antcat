@@ -108,36 +108,12 @@ describe WardReference do
         end
 
         describe "parsing a book citation" do
-          it "should extract the place, pagination and publisher" do
-            WardReference.new(:citation => 'Melbourne: CSIRO Publications, vii + 70 pp.').to_import_format.should include(
-              :book => {:publisher => {:name => 'CSIRO Publications', :place => 'Melbourne'}, :pagination => 'vii + 70 pp.'})
-          end
-
-          it "should handle a publisher with a comma in its name" do
-            WardReference.new(:citation => 'New York: Little, Brown, vii + 70 pp.').to_import_format.should include(
-              :book => {:publisher => {:name => 'Little, Brown', :place => 'New York'}, :pagination => 'vii + 70 pp.'})
-          end
-
-          it "should handle other variations in pagination" do
-            ['1 p., 5 maps',
-             '12 + 532 pp.',
-             '24 pp. 24 pls.',
-             '247 pp. + 14 pl. + 4 pp. (index)',
-             '312 + (posthumous section) 95 pp.',
-             '5-187 + i-viii pp.',
-             '5 maps',
-             '8 pls., 84 pp.',
-             'i-ii, 279-655',
-             'xi',
-             '93-114, 121'].each do |pagination|
-              WardReference.new(:citation => "Tokyo: Keishu-sha, #{pagination}").to_import_format.should include(
-                :book => {:publisher => {:name =>  'Keishu-sha', :place => 'Tokyo'}, :pagination => pagination})
-             end
-          end
-
-          it "should parse a book citation with complicated pagination" do
-            WardReference.new(:citation => 'Tokyo: Keishu-sha, 247 pp. + 14 pl. + 4 pp. (index).').to_import_format.should include(
-              :book => {:publisher => {:name =>  'Keishu-sha', :place => 'Tokyo'}, :pagination => '247 pp. + 14 pl. + 4 pp. (index).'})
+          it "should call the parser with the right arguments" do
+            parser = mock
+            ReferenceParser.stub!(:new).and_return parser
+            citation = 'Melbourne: CSIRO Publications, vii + 70 pp.'
+            parser.should_receive(:parse_book_citation).with(citation).and_return(:foo)
+            WardReference.new(:citation => citation).to_import_format.should include(:book => :foo)
           end
         end
 
