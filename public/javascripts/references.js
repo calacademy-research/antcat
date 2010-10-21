@@ -174,7 +174,7 @@ function showReferenceEdit($reference, options) {
   $('.icon').hide();
 
   var $edit = $('.reference_edit', $reference);
-  $('form', $edit).ajaxForm({beforeSubmit: setupSubmit, success: updateReference, dataType: 'json'});
+  $('form', $edit).ajaxForm({beforeSerialize: beforeSerialize, beforeSubmit: setupSubmit, success: updateReference, dataType: 'json'});
   setTabs($reference);
   $edit.show();
 
@@ -204,15 +204,17 @@ function setTabs($reference) {
   $('.tabs', $reference).tabs({selected: selected_tab});
 }
 
+function beforeSerialize($form, options) {
+  var selectedTab = $.trim($('.ui-tabs-selected', $form).text())
+  $('#selected_tab', $form).val(selectedTab)
+  return true
+}
+
 function setupSubmit(formData, $form, options) {
   var $spinnerElement = $('button', $form).parent();
   $spinnerElement.spinner({position: 'left', img: '/stylesheets/ext/jquery-ui/images/ui-anim_basic_16x16.gif'});
   $('input', $spinnerElement).attr('disabled', 'disabled');
   $('button', $spinnerElement).attr('disabled', 'disabled');
-
-  var selectedTab = $.trim($('.ui-tabs-selected', $form).text());
-  formData.push({name: 'selected_tab', value: selectedTab})
-
   return true;
 }
 

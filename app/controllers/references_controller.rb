@@ -67,13 +67,17 @@ class ReferencesController < ApplicationController
   end
 
   def render_json new = false
-    render :json => {
+    ActiveSupport.escape_html_entities_in_json = true
+    json = {
       :isNew => new,
       :content => render_to_string(:partial => 'reference',
                                    :locals => {:reference => @reference, :css_class => 'reference'}),
                                    :id => @reference.id,
                                    :success => @reference.errors.empty?
-    }
+    }.to_json
+    
+    json = '<textarea>' + json + '</textarea>' unless Rails.env.cucumber? 
+    render :json => json, :content_type => 'text/html'
   end
 
   def new_reference

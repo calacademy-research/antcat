@@ -27,7 +27,6 @@ Then /^there should be the HTML "(.*)"$/ do |html|
 end
 
 Then /I should (not )?see the edit form/ do |should_not|
-  sleep 0.5
   selector = should_not ? :should_not : :should
   css_selector = "#reference_"
   css_selector << @reference.id.to_s if @reference
@@ -39,7 +38,6 @@ Then /there should not be an edit form/ do
 end
 
 Then /I should (not )?see a new edit form/ do |should_not|
-  sleep 0.5
   selector = should_not ? :should_not : :should
   find("#reference_ .reference_edit").send(selector, be_visible)
 end
@@ -63,7 +61,6 @@ Then "I should not see any error messages" do
 end
 
 When 'I click the reference' do
-  sleep 0.5
   find("#reference_#{@reference.id} .reference_display").click
 end
 
@@ -71,8 +68,9 @@ When /in the new edit form I fill in "(.*?)" with "(.*?)"/ do |field, value|
   When "I fill in \"#{field}\" with \"#{value}\" within \"#reference_\""
 end
 
-When /in the new edit form I press "(.*?)"/ do |button|
+When /in the new edit form I press the "(.*?)" button/ do |button|
   When "I press \"#{button}\" within \"#reference_\""
+  sleep 0.5
 end
 
 Given 'I will confirm on the next step' do
@@ -105,6 +103,10 @@ Then 'I should not see the "Delete" button' do
 end
 
 Then 'I should see a "PDF" link' do
-  sleep 0.5
   page.should have_css "a", :text => 'PDF'
+end
+
+And 'I press the "Save" button' do
+  click_button "Save"
+  sleep 0.5
 end

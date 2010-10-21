@@ -19,7 +19,7 @@ Feature: Add reference
       And I fill in "reference_series_volume_issue" with "2"
       And I fill in "article_pagination" with "1"
       And I fill in "reference_citation_year" with "1981"
-      And I press "Save"
+      And I press the "Save" button
     Then I should be on the main page
       And I should not see a new edit form
       And I should see "Ward, B.L.; Bolton, B. 1981. A reference title. Ants 2:1."
@@ -48,7 +48,7 @@ Feature: Add reference
       And in the new edit form I fill in "reference_series_volume_issue" with "2"
       And in the new edit form I fill in "article_pagination" with "1"
       And in the new edit form I fill in "reference_citation_year" with "1992"
-      And in the new edit form I press "Save"
+      And in the new edit form I press the "Save" button
     Then I should be on the main page
       And I should not see a new edit form
       And I should see "Ward, B.L.; Bolton, B. 1992. Between Pacific Tides. Ants 2:1."
@@ -82,7 +82,7 @@ Feature: Add reference
       And I follow "Book"
       And I fill in "publisher_string" with "New York:Houghton Mifflin"
       And I fill in "book_pagination" with "32 pp."
-      And I press "Save"
+      And I press the "Save" button
     Then I should be on the main page
       And I should not see a new edit form
       And I should see "Ward, B.L.; Bolton, B. 1981. A reference title. New York: Houghton Mifflin, 32 pp."
@@ -98,12 +98,12 @@ Feature: Add reference
       And I fill in "journal_title" with "Ant Journal"
       And I fill in "reference_series_volume_issue" with "1"
       And I fill in "article_pagination" with "2"
-      And I press "Save"
+      And I press the "Save" button
     Then I should be on the main page
       And I should not see a new edit form
       And I should see "Ward, B.L.; Bolton, B. 1981. A reference title. Ant Journal 1:2"
 
-  Scenario: Adding an other reference
+  Scenario: Adding another reference
     Given I am logged in
     When I go to the main page
       And I follow "Add reference"
@@ -113,7 +113,7 @@ Feature: Add reference
       And I fill in "reference_citation_year" with "1981"
       And I follow "Other"
       And I fill in "reference_citation" with "In Muller, Brown 1928. Ants. p. 23."
-      And I press "Save"
+      And I press the "Save" button
     Then I should be on the main page
       And I should not see a new edit form
       And I should see "Ward, B.L.; Bolton, B. 1981. A reference title. In Muller, Brown 1928. Ants. p. 23."
@@ -123,7 +123,7 @@ Feature: Add reference
     When I go to the main page
       And I follow "Add reference"
       And I fill in "reference_title" with "adsf"
-      And I press "Save"
+      And I press the "Save" button
     Then I should see the edit form
       And I should see "Authors can't be blank"
 
@@ -132,7 +132,7 @@ Feature: Add reference
     When I go to the main page
       And I follow "Add reference"
       And I fill in "reference_authors_string" with "Fisher, B.L."
-      And I press "Save"
+      And I press the "Save" button
     Then I should see the edit form
       And I should see "Year can't be blank"
       And I should see "Title can't be blank"
@@ -146,7 +146,7 @@ Feature: Add reference
       And I follow "Add reference"
       And I follow "Book"
       And I fill in "reference_authors_string" with "Fisher, B.L."
-      And I press "Save"
+      And I press the "Save" button
     Then I should see the edit form
       And I should see "Year can't be blank"
       And I should see "Title can't be blank"
