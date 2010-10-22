@@ -78,6 +78,7 @@ function setupIcons() {
 
 function setupEdits() {
   $('.reference_edit').hide();
+  $('.reference_edit .submit').live('click', submitReferenceEdit);
   $('.reference_edit .cancel').live('click', cancelReferenceEdit);
   $('.reference_edit .delete').live('click', deleteReference);
 }
@@ -175,18 +176,18 @@ function showReferenceEdit($reference, options) {
   $('.icon').hide();
 
   var $edit = $('.reference_edit', $reference);
-  $('form', $edit).ajaxForm({beforeSerialize: beforeSerialize, beforeSubmit: setupSubmit, success: updateReference, dataType: 'json'});
-  setTabs($reference);
-  $edit.show();
-
   $('#reference_authors_string', $edit).focus();
 
   if (!options.showDeleteButton)
     $('.delete', $edit).hide();
 
+  setupTabs($reference);
+
   setupAuthorAutocomplete($reference);
   setupJournalAutocomplete($reference);
   setupPublisherAutocomplete($reference);
+
+  $edit.show();
 }
 
 function setTabs($reference) {
@@ -203,6 +204,13 @@ function setTabs($reference) {
   $('.tabs .other-tab-section', $reference).attr('id', 'reference_other' + id);
 
   $('.tabs', $reference).tabs({selected: selected_tab});
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+function submitReferenceEdit() {
+  $(this).closest('form').ajaxSubmit({beforeSerialize: beforeSerialize, beforeSubmit: setupSubmit, success: updateReference, dataType: 'json'});
+  return false
 }
 
 function beforeSerialize($form, options) {
