@@ -58,7 +58,7 @@
         %td{:colspan => 3, :class => :right_side_field}= f.text_field :source_url
       - unless Rails.env.cucumber?
         %tr
-          %td Source file
+          %td Upload
           %td= file_field_tag :source_file
       %tr
         %td Public notes

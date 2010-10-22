@@ -26,6 +26,7 @@ class ReferencesController < ApplicationController
         set_journal if @reference.kind_of? ArticleReference
         set_publisher if @reference.kind_of? BookReference
         set_pagination
+        save_uploaded_file
         @reference.attributes = params[:reference]
         @reference.save!
         raise ActiveRecord::RecordInvalid unless @reference.errors.empty?
@@ -90,5 +91,16 @@ class ReferencesController < ApplicationController
 
   def get_reference
     Reference.find(params[:id]).becomes((params[:selected_tab] + 'Reference').constantize)
+  end
+
+  def save_uploaded_file
+    upload = params['source_file']
+    return unless upload
+
+    directory = Rails.root + "public/sources"
+    name =  UniqueFilename.get directory, upload.original_filename
+    path = File.join directory, name
+    File.open(path, "wb") { |f| f.write(upload.read) }
+    params[:reference][:source_url] = "#{request.host}/sources/#{name}"
   end
 end
