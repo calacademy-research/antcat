@@ -59,7 +59,7 @@
       - unless Rails.env.cucumber?
         %tr
           %td Source file
-          %td= f.file_field :source_url
+          %td= file_field_tag :source_file
       %tr
         %td Public notes
         %td{:colspan => 3, :class => :right_side_field}= f.text_area :public_notes, :rows => 2
