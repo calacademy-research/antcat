@@ -186,6 +186,8 @@ function showReferenceEdit($reference, options) {
   if (!options)
     options = {}
 
+  $('.reference_display').removeClass('editable');
+
   hideAddReferenceLink();
   $('.reference_display', $reference).hide();
   $('.icon').hide();
@@ -224,7 +226,12 @@ function setupTabs($reference) {
 ////////////////////////////////////////////////////////////////////////////////
 
 function submitReferenceEdit() {
-  $(this).closest('form').ajaxSubmit({beforeSerialize: beforeSerialize, beforeSubmit: setupSubmit, success: updateReference, dataType: 'json'});
+  $(this).closest('form').ajaxSubmit({
+    beforeSerialize: beforeSerialize,
+    beforeSubmit: setupSubmit,
+    success: updateReference,
+    dataType: 'json'
+  });
   return false
 }
 
@@ -263,12 +270,13 @@ function updateReference(data, statusText, xhr, $form) {
   $reference = $('#reference_' + data.id);
   $('.reference_edit', $reference).hide();
 
-  var $display = $('.reference_display', $reference);
-  $display.show();
-  $display.addClass('editable');
-  $display.effect("highlight", {}, 3000);
+  $('.reference_display', $reference)
+    .show()
+    .addClass('editable')
+    .effect("highlight", {}, 3000)
 
   showAddReferenceLink();
+  $('.reference_display').addClass('editable');
 }
 
 function cancelReferenceEdit() {
@@ -276,12 +284,16 @@ function cancelReferenceEdit() {
   if ($reference.attr('id') == 'reference_')
     $reference.closest('tr').remove();
   else {
+    id = $reference.attr('id')
     restoreReference($reference);
-    $('.reference_display', $reference).show();
-    $('.reference_edit', $reference).hide();
+    $reference = $('#' + id)
+    $('.reference_display', $reference)
+      .show()
+      .effect("highlight", {}, 3000)
   }
 
   showAddReferenceLink();
+  $('.reference_display').addClass('editable');
 
   return false;
 }
