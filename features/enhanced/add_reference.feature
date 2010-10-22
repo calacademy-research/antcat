@@ -61,7 +61,7 @@ Feature: Add reference
     When I go to the main page
     When I follow "add"
     When in the new edit form I fill in "reference_title" with "Mark Wilden"
-      And in the new edit form I press "Cancel"
+      And in the new edit form I press the "Cancel" button
     Then there should be just the existing reference
 
   Scenario: Hide Delete button while adding
