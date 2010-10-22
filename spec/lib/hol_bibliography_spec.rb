@@ -148,6 +148,20 @@ See Site Statistics</a><p>
       result[:year].should == 1771
       result[:pagination].should == '100 pp.'
     end
+
+    it "should parse the URL out of the document, if it exists" do
+      result = @hol.parse_reference(Nokogiri::HTML(<<-LI).at_css('html body'))
+                <strong><a href="http://hol.osu.edu/reference-full.html?id=22497" title="View extended reference information from Hymenoptera Online">22497</a></strong>
+                <a href="http://hol.osu.edu/agent-full.html?id=2767">Adlerz, G.</a>
+                 1887. Myrmecologiska notiser. Entomologisk Tidskrift <strong>8</strong>: 41-50.
+                 <A HREF="http://osuc.biosci.ohio-state.edu/hymDB/nomenclator.hlviewer?id=22497" TARGET="_blank">Browse</A>
+                  or download 
+                  <A HREF="http://128.146.250.117/pdfs/22497/22497.pdf" TARGET="_blank"> entire file (583k)</A>
+                  <IMG SRC="http://osuc.biosci.ohio-state.edu/images/pdf.gif">
+      LI
+
+      result[:source_url].should == "http://128.146.250.117/pdfs/22497/22497.pdf" 
+    end
   end
 
   describe "matching against Ward" do
@@ -167,7 +181,7 @@ See Site Statistics</a><p>
 
     it "should match an article reference based on year + title if series/volume/issue isn't found" do
       reference = Factory :article_reference, :year => 2010, :series_volume_issue => '44', :pagination => '325-335',
-                          :title => 'Adelomyrmecini new tribe and Cryptomyrmex new genus of myrmicine ants'
+        :title => 'Adelomyrmecini new tribe and Cryptomyrmex new genus of myrmicine ants'
       hol_references = [
         {:source_url => 'fernandez_source', :year => 2010, :series_volume_issue => '44(3)', :pagination => '325-335',
           :title => 'Adelomyrmecini new tribe and Cryptomyrmex new genus of myrmicine ants'},
@@ -178,7 +192,7 @@ See Site Statistics</a><p>
 
     it "ignore punctuation when comparing titles" do
       reference = Factory :article_reference, :year => 2010, :series_volume_issue => '44', :pagination => '325-335',
-                          :title => 'Adelomyrmecini new tribe and Cryptomyrmex new genus of myrmicine ants (Hymenoptera, Formicidae)'
+        :title => 'Adelomyrmecini new tribe and Cryptomyrmex new genus of myrmicine ants (Hymenoptera, Formicidae)'
       hol_references = [
         {:source_url => 'fernandez_source', :year => 2010, :series_volume_issue => '44(3)', :pagination => '325-335',
           :title => 'Adelomyrmecini new tribe and Cryptomyrmex new genus of myrmicine ants (Hymenoptera: Formicidae)'},

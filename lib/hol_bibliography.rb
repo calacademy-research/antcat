@@ -58,9 +58,16 @@ class HolBibliography
 
   def parse_reference li
     reference = {}
-    id = li.at_css('strong').content.to_i
-    reference[:source_url] = "http://antbase.org/ants/publications/#{id}/#{id}.pdf"
+    reference[:source_url] = parse_source_url li
     parse_article(li, reference) || parse_book(li, reference) || lll{'li.content'}
+  end
+
+  def parse_source_url li
+    text = li.inner_html
+    match = text.match /or download\s+<a href="(.*?)"/
+    return match[1] if match
+    id = li.at_css('strong').content.to_i
+    "http://antbase.org/ants/publications/#{id}/#{id}.pdf"
   end
 
   def parse_article li, reference
