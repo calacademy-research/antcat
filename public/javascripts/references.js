@@ -12,11 +12,15 @@ $(function() {
 })
 
 function setupSearch() {
-  setupSearchAutocomplete();
+  setupSearchAutocomplete()
+  setupSearchYearDuplicating()
+}
+
+function setupSearchYearDuplicating() {
   $("#start_year").keyup(function(event) {
     if (event.which != 9)
-      $("#end_year").val($(this).val());
-  });
+      $("#end_year").val($(this).val())
+  })
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -48,6 +52,12 @@ function setupDisplays() {
 }
 
 function setupIcons() {
+  setupIconVisibility()
+  setupIconHighlighting()
+  setupIconClickHandlers()
+}
+
+function setupIconVisibility() {
   if (!usingCucumber)
     $('.icon').hide();
   else
@@ -61,7 +71,9 @@ function setupIcons() {
     function() {
       $('.icon').hide();
     });
+}
 
+function setupIconHighlighting() {
   $('.icon img').live('mouseenter',
     function() {
       this.src = this.src.replace('off', 'on');
@@ -69,7 +81,9 @@ function setupIcons() {
     function() {
       this.src = this.src.replace('on', 'off');
     });
+}
 
+function setupIconClickHandlers() {
   $('.icon.edit').live('click', editReference);
   $('.icon.add').live('click', insertReference);
   $('.icon.copy').live('click', copyReference);
@@ -89,6 +103,8 @@ function viewSource() {
   window.location = this.href;
   return false;
 }
+
+///////////////////////////////////////////////////////////////////////////////////
 
 function editReference() {
   if (isEditing())
@@ -170,7 +186,6 @@ function showReferenceEdit($reference, options) {
   if (!options)
     options = {}
 
-
   hideAddReferenceLink();
   $('.reference_display', $reference).hide();
   $('.icon').hide();
@@ -190,7 +205,7 @@ function showReferenceEdit($reference, options) {
   $edit.show();
 }
 
-function setTabs($reference) {
+function setupTabs($reference) {
   var id = $reference.attr('id');
   var selected_tab = $('.selected_tab', $reference).val();
 
