@@ -4,13 +4,13 @@
     %tr
       %td.icons
         %a.icon.edit{:title => 'edit', :href => '#'}
-          = image_tag 'edit_off.png'
+          = image_tag 'edit_off.png', :alt => 'edit'
         %a.icon.add{:title => 'add', :href => '#'}
-          = image_tag 'add_off.png'
+          = image_tag 'add_off.png', :alt => 'add'
         %a.icon.copy{:title => 'copy', :href => '#'}
-          = image_tag 'copy_off.png'
+          = image_tag 'copy_off.png', :alt => 'copy'
         %a.icon.delete{:title => 'delete', :href => '#'}
-          = image_tag 'delete_off.png'
+          = image_tag 'delete_off.png', :alt => 'delete'
       %td.reference_item
         = render(:partial => 'display', :locals => {:reference => reference}) if !reference.new_record? && reference.errors.empty?
         - if user_signed_in?
