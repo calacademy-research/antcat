@@ -1,4 +1,5 @@
 $(function() {
+  //$.fn.ajaxSubmit.debug = true
   setupSearch();
   if (loggedIn) {
     setupAddReferenceLink();
