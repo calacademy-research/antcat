@@ -17,9 +17,10 @@ class WardReference < ActiveRecord::Base
   end
 
   def to_import_format
+    parser = ReferenceParser.new
     data = {:id => id, :class => self.class.to_s}
-    parse_authors data
-    parse_citation data
+    data[:authors] = parser.parse_authors authors
+    data.merge! parser.parse_citation(citation) || {}
     data[:citation_year] = remove_period_from year
     data[:cite_code] = cite_code
     data[:date] = date
@@ -28,50 +29,6 @@ class WardReference < ActiveRecord::Base
     data[:taxonomic_notes] = taxonomic_notes
     data[:title] = remove_period_from title
     data
-  end
-
-  def parse_authors data
-    return if authors.blank?
-    data[:authors] = authors.split(/; ?/)
-  end
-
-  def parse_citation data
-    return if citation.blank?
-    parse_cd_rom_citation(data) ||
-    parse_nested_citation(data) ||
-    parse_book_citation(data) ||
-    parse_article_citation(data) ||
-    parse_unknown_citation(data)
-  end
-
-  def parse_cd_rom_citation data
-    return unless result = ReferenceParser.new.parse_cd_rom_citation(citation)
-    data.merge! :other => result
-  end
-
-  def parse_nested_citation data
-    return unless result = ReferenceParser.new.parse_nested_citation(citation)
-    data.merge! :other => result
-  end
-
-  def parse_book_citation data
-    return unless result = ReferenceParser.new.parse_book_citation(citation)
-    data.merge! :book => result
-  end
-
-  def parse_article_citation data
-    parts = citation.match(/(.+?)(\S+)$/) or return
-    journal_title = parts[1].strip
-
-    parts = parts[2].match(/(.+?):(.+)$/) or return
-    series_volume_issue = parts[1]
-    pagination = remove_period_from parts[2]
-
-    data[:article] = {:journal => journal_title, :series_volume_issue => series_volume_issue, :pagination => pagination}
-  end
-
-  def parse_unknown_citation data
-    data[:other] = remove_period_from citation
   end
 
   def parse_notes data
