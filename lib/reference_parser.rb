@@ -1,10 +1,5 @@
 class ReferenceParser
 
-  def parse_authors string
-    return if string.blank?
-    string.split /; ?/
-  end
-
   def parse_citation citation
     return unless citation.present?
     parse_cd_rom_citation(citation) ||

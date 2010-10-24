@@ -32,7 +32,7 @@ describe Author do
     end
   end
 
-  describe "parse_authors_string" do
+  describe "import_authors_string" do
     it "should find or create authors with names in the string" do
       Author.create! :name => 'Bolton, B.'
       authors = Author.import_authors_string('Ward, P.S.; Bolton, B.')

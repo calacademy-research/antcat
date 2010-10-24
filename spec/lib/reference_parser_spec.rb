@@ -5,15 +5,6 @@ describe ReferenceParser do
     @parser = ReferenceParser.new
   end
 
-  describe "parsing authors" do
-    it "should parse a single author into a one-element array" do
-      @parser.parse_authors('Fisher, B.L.').should == ['Fisher, B.L.']
-    end
-    it "should parse multiple authors" do
-      @parser.parse_authors('Fisher, B.L.; Wheeler, W.M.').should == ['Fisher, B.L.', 'Wheeler, W.M.']
-    end
-  end
-
   describe "parsing a article citation" do
     it "should extract article, issue and journal information" do
       @parser.parse_article_citation('Behav. Ecol. Sociobiol. 4:163-181.').should ==

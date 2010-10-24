@@ -19,7 +19,7 @@ class WardReference < ActiveRecord::Base
   def to_import_format
     parser = ReferenceParser.new
     data = {:id => id, :class => self.class.to_s}
-    data[:authors] = parser.parse_authors authors
+    data[:authors] = AuthorParser.get_author_names authors
     data.merge! parser.parse_citation(citation) || {}
     data[:citation_year] = remove_period_from year
     data[:cite_code] = cite_code

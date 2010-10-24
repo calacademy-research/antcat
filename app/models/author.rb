@@ -4,13 +4,11 @@ class Author < ActiveRecord::Base
   after_update :update_references
 
   def last_name
-    parse_name
-    @last_name
+    name_parts[:last]
   end
 
   def first_name_and_initials
-    parse_name
-    @first_name_and_initials
+    name_parts[:first_and_initials]
   end
 
   def self.import data
@@ -29,17 +27,13 @@ class Author < ActiveRecord::Base
   end
 
   def self.import_authors_string string
-    import string.split(/; ?/)
+    import AuthorParser.get_author_names string
   end
 
   private
-  def parse_name
-    parts = name.match(/(.*?), (.*)/)
-    unless parts
-      @last_name = name
-    else
-      @last_name = parts[1]
-      @first_name_and_initials = parts[2]
-    end
+
+  def name_parts
+    @name_parts ||= AuthorParser.get_name_parts name
   end
+
 end
