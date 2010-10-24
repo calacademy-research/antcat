@@ -37,6 +37,7 @@ describe ArticleReference do
   end
 
   describe "parsing fields from pagination" do
+
     it "should parse beginning and ending page numbers" do
       reference = Factory(:article_reference, :pagination => '163-181')
       reference.start_page.should == '163'
@@ -48,14 +49,17 @@ describe ArticleReference do
       reference.start_page.should == '8'
       reference.end_page.should be_nil
     end
+
   end
 
   describe "citation_string" do
+
     it "should format a citation_string" do
       journal = Journal.create! :title => 'Ants'
       reference = ArticleReference.new :journal => journal, :series_volume_issue => '(2)1(2)', :pagination => '34-46'
       reference.citation_string.should == 'Ants (2)1(2):34-46.'
     end
+
   end
 
   describe "validation" do

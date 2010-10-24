@@ -16,44 +16,33 @@ class ArticleReference < Reference
   end
 
   def start_page
-    parse_pagination
-    @start_page
+    page_parts[:start]
   end
 
   def end_page
-    parse_pagination
-    @end_page
+    page_parts[:end]
   end
 
   def series
-    parse_series_volume_issue
-    @series
+    series_volume_issue_parts[:series]
   end
 
   def volume
-    parse_series_volume_issue
-    @volume
+    series_volume_issue_parts[:volume]
   end
 
   def issue
-    parse_series_volume_issue
-    @issue
+    series_volume_issue_parts[:issue]
   end
 
   private
-  def parse_pagination
-    return unless pagination
-    parts = pagination.match(/(.+?)(?:-(.+?))?\.?$/) or return
-    @start_page = parts[1]
-    @end_page = parts[2] if parts.length == 3
+
+  def series_volume_issue_parts
+    @series_volume_issue_parts ||= ArticleParser.get_series_volume_issue_parts series_volume_issue
   end
 
-  def parse_series_volume_issue
-    return unless series_volume_issue
-    parts = series_volume_issue.match(/(\(\w+\))?(\w+)(\(\w+\))?/) or return
-    @series = parts[1].match(/\((\w+)\)/)[1] if parts[1].present?
-    @volume = parts[2]
-    @issue = parts[3].match(/\((\w+)\)/)[1] if parts[3].present?
+  def page_parts
+    @page_parts ||= ArticleParser.get_page_parts pagination
   end
 
 end
