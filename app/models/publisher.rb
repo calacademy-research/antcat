@@ -9,8 +9,8 @@ class Publisher < ActiveRecord::Base
   end
 
   def self.import_string string
-    match = string.match(/(?:(.*?): ?)?(.*)/)
-    import :name => match[2], :place => match[1] unless match[2].blank?
+    parts = PublisherParser.get_parts string
+    import parts unless parts.empty?
   end
 
   def to_s
