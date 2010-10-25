@@ -21,9 +21,10 @@ describe HolSourceUrlImporter do
     end
 
     it "should not try to import if it already has a source URL" do
+      FakeWeb.register_uri(:any, "http://url.com", :body => "Hello World!")
       no_source_url = Factory :reference
-      with_source_url = Factory :reference, :source_url => 'source_url'
-      @bibliography.should_receive(:match).with(no_source_url).and_return({:source_url => 'source_url'})
+      with_source_url = Factory :reference, :source_url => 'url.com'
+      @bibliography.should_receive(:match).with(no_source_url).and_return({:source_url => 'url.com'})
       @bibliography.should_not_receive(:match).with(with_source_url)
       @importer.import
       @importer.processed_count.should == 2

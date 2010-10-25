@@ -8,6 +8,8 @@ class Reference < ActiveRecord::Base
   before_validation :set_year, :strip_newlines, :set_source_url
 
   validates_presence_of :authors, :year, :title
+  validates_http_url :source_url, :malformed_url => 'is not in a valid format', :message => 'was not found',
+                     :valid_responses => [Net::HTTPSuccess, Net::HTTPRedirection]
 
   named_scope :sorted_by_author, 
     :select => '`references`.*',

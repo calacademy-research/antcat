@@ -291,12 +291,31 @@ describe Reference do
   end
 
   describe "source_url" do
+    before do
+      @author = Factory :author
+    end
     it "should make sure it has a protocol" do
-      reference = Factory :reference, :source_url => '1.pdf'
+      FakeWeb.register_uri(:any, "http://1.pdf", :body => "Hello World!")
+      reference = Factory :reference
+      reference.source_url = '1.pdf'
       reference.save!
-      reference.source_url.should == 'http://1.pdf'
+      reference.reload.source_url.should == 'http://1.pdf'
       reference.save!
-      reference.source_url.should == 'http://1.pdf'
+      reference.reload.source_url.should == 'http://1.pdf'
+    end
+
+    it "should make sure it's a valid URL" do
+      reference = Reference.new :authors => [@author], :title => 'title', :citation_year => '1910', :source_url => '*'
+      reference.should_not be_valid
+      reference.errors.full_messages.should =~ ['Source url is not in a valid format']
+    end
+
+    it "should make sure it exists" do
+      FakeWeb.register_uri(:any, "http://1.pdf", :body => "Hello World!")
+      reference = Reference.new :authors => [@author], :title => 'title', :citation_year => '1910', :source_url => '1.pdf'
+      reference.should be_valid
+      FakeWeb.register_uri(:any, "http://1.pdf", :status => ["404", "Not Found"])
+      reference.should_not be_valid
     end
   end
 

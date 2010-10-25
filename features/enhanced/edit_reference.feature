@@ -154,6 +154,18 @@ Feature: Edit reference
       |Ward, P.S. |New York  |2010a|Ants |
     When I go to the main page
     When I click the reference
-    When I fill in "reference_source_url" with "sourcefile"
+    When I fill in "reference_source_url" with "google.com"
       And I press the "Save" button
     Then I should see a "PDF" link
+
+  Scenario: Specifying the source URL when it doesn't exist
+    Given I am logged in
+      And the following entries exist in the bibliography
+      |authors    |citation  |year |title|
+      |Ward, P.S. |New York  |2010a|Ants |
+    When I go to the main page
+    When I click the reference
+    When I fill in "reference_source_url" with "asdfsdfsdfsdfdsf.com"
+      And I press the "Save" button
+    Then I should see the edit form
+      And I should see "Source url was not found"

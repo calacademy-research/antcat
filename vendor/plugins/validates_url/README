@@ -1,0 +1,12 @@
+*Validates_URL*
+version 1.0 (Oct 19, 2007)
+
+Author::    Tim Morgan  (mailto:riscfuture@gmail.com)
+Copyright:: Copyright (c)2007 Tim Morgan
+License::   Distributed under the same terms as Ruby
+
+Allows models with HTTP URL fields to validate those URL fields by attempting to
+connect to the URL. Validation will fail unless a connection is successfully
+made and the URL is an HTTP URL.
+
+For more information, please see the validates_http_url method.
