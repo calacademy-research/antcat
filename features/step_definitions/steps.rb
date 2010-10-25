@@ -4,8 +4,9 @@ Given /the following entr(?:ies|y) exists? in the bibliography/ do |table|
   end
 end
 
-Given /that the entry has a source URL/ do
-  @reference.update_attribute :source_url, 'http://antbase.org/article.pdf'
+Given /that the entry has a source URL that's (not )?on our site/ do |is_not|
+  hostname = is_not ? 'antbase.org' : 'antcat.org'
+  @reference.update_attribute :source_url, "http://#{hostname}/article.pdf"
 end
 
 Given /the following user exists/ do |table|
@@ -102,11 +103,14 @@ Then 'I should not see the "Delete" button' do
   page.should_not have_css "button", :text => 'Delete'
 end
 
-Then 'I should see a "PDF" link' do
-  page.should have_css "a", :text => 'PDF'
+Then /I should (not )?see a "PDF" link/ do |does_not|
+  message = does_not ? :should_not : :should
+  page.send(message, have_css("a", :text => 'PDF'))
 end
 
 And 'I press the "Save" button' do
   click_button "Save"
   sleep 0.5
 end
+
+

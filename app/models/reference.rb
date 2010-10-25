@@ -120,4 +120,10 @@ class Reference < ActiveRecord::Base
   def set_source_url
     self.source_url = "http://" + source_url if source_url.present? && source_url !~ %r{^http://}
   end
+
+  def hosted_by_us? our_host_name
+    return unless source_url
+    # cannot figure out how to set the host with Cucumber + Capybara
+    source_url =~ Regexp.new(Rails.env.cucumber? ? 'antcat.org' : our_host_name)
+  end
 end

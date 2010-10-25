@@ -317,6 +317,24 @@ describe Reference do
       FakeWeb.register_uri(:any, "http://1.pdf", :status => ["404", "Not Found"])
       reference.should_not be_valid
     end
+
+    it "should say that it's not hosted by us when the source URL is blank" do
+      reference = Factory :reference
+      reference.should_not be_hosted_by_us 'antcat.local'
+    end
+
+    it "should know when it's not hosted by us" do
+      reference = Factory :reference
+      reference.update_attribute :source_url, 'http://antbase.org/pdfs/23/3242.pdf'
+      reference.should_not be_hosted_by_us 'antcat.local'
+    end
+
+    it "should know when it is hosted by us" do
+      reference = Factory :reference
+      reference.update_attribute :source_url, 'http://antcat.org/sources/1.pdf'
+      reference.should be_hosted_by_us 'antcat.org'
+    end
+
   end
 
   describe "entering a newline in the title, public_notes, editor_notes or taxonomic_notes" do
