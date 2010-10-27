@@ -40,7 +40,7 @@ class Reference < ActiveRecord::Base
       OtherReference.import create_data, data[:other]
     end
   rescue
-    puts data
+    puts data.inspect
     raise
   end
 
