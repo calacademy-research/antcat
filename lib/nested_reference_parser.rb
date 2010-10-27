@@ -2,7 +2,6 @@ module NestedReferenceParser
 
   def self.parse string
     return unless string.present?
-    string = string.dup
 
     matches = string.match /^Pp\. (\d+-\d+) in/
     return unless matches.present?
