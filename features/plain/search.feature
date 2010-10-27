@@ -6,9 +6,9 @@ Feature: Searching references
 
   Background:
     Given the following entries exist in the bibliography
-       |authors     |year         |title                |citation  |
-       |Brian Fisher|1995b        |Anthill              |Ants 1:1-2|
-       |Barry Bolton|2010 ("2011")|Ants of North America|Ants 2:1-2|
+      |authors     |year         |title                |citation  |
+      |Brian Fisher|1995b        |Anthill              |Ants 1:1-2|
+      |Barry Bolton|2010 ("2011")|Ants of North America|Ants 2:1-2|
 
   Scenario: Not searching yet
     When I go to the main page

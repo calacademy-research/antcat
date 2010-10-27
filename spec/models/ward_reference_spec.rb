@@ -70,6 +70,13 @@ describe WardReference do
         ward_reference.to_import_format.should include(:id => ward_reference.id, :class => 'WardReference')
       end
 
+      it "not modify WardReference fields" do
+        ward_reference = WardReference.create!(:authors => 'Bolton, B.')
+        ward_reference.authors.should == 'Bolton, B.'
+        ward_reference.to_import_format
+        ward_reference.authors.should == 'Bolton, B.'
+      end
+
       it "should convert to import format" do
         ward_reference = WardReference.create!({
           :authors => "Abdul-Rassoul, M. S.; Dawah, H. A.; Othman, N. Y.",

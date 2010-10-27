@@ -97,6 +97,9 @@ class WardBibliography
     # commas instead of semicolons
     names.gsub! /Santos-Colares, M. C., Viégas, J., Martino Roth, M. G., Loeck, A. E./, "Santos-Colares, M. C.; Viégas, J.; Martino Roth, M. G.; Loeck, A. E."
 
+    # name without comma
+    names.gsub! /Swainson W/, 'Swainson, W'
+
     names
   end
 
