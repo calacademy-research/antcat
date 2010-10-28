@@ -11,12 +11,12 @@ class NameTokenizer < Tokenizer
     abbreviations = ['St.'].map {|abbreviation| Regexp.escape abbreviation}
     word_chars = %q{[\w\-']}
     word_expression = '(' + abbreviations.join('|') + '|' + word_chars + ')'
-    @scanner.scan /#{word_expression}+(\s+#{word_expression}+)*\s*/
+    @scanner.scan /#{word_expression}+(\s+#{word_expression}+)*\s*/u
   end
 
   def scan_initial
     # (eds.)
-    return true if @scanner.scan(/\(.*?\)/)
+    return true if @scanner.scan(/\(.*?\)/u)
     
     # S. de
     return true if ['da', 'de', 'di', 'del', 'do'].any? do |preposition|
