@@ -58,6 +58,9 @@ describe AuthorParser do
     it "should handle 'da' at the end of a name" do
       AuthorParser.get_author_names("Silva, R. R. da; Lopes, B. C.").should == ['Silva, R. R. da', 'Lopes, B. C.']
     end
+    it "should handle 'da' at the beginning of a name" do
+      AuthorParser.get_author_names("da Silva, R. R.").should == ['da Silva, R. R.']
+    end
 
     it "should handle roles" do
       AuthorParser.get_author_names("Breed, M. D.; Page, R. E. (eds.)").should == ['Breed, M. D.', 'Page, R. E. (eds.)']
