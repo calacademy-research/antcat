@@ -1,0 +1,35 @@
+grammar AuthorsGrammar
+  rule authors
+    (author (';' space author)* '.'? space) {
+      find 'author'
+    }
+  end
+
+  rule author
+    phrase (',' initial+)?
+  end
+
+  rule initial
+    space '(' [^)]+ ')' |
+    space ('da' | 'de' | 'di' | 'del' | 'do') |
+    space word_char '.'? '-' word_char '.' |
+    space word_char '.'
+  end
+
+  rule phrase
+    word (space word)*
+  end
+
+  rule word
+    word_char+
+  end
+
+  rule word_char
+    /[\-\'\w]/u
+  end
+
+  rule space
+    ' '*
+  end
+
+end

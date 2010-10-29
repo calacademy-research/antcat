@@ -12,8 +12,7 @@ Rails::Initializer.run do |config|
   config.gem 'devise_invitable', :version => '0.2.3'
   config.gem 'acts_as_list'
   config.gem 'lll'
-  config.gem 'treetop'
-  config.gem 'polyglot'
+  config.gem 'citrus'
 
   config.gem 'fakeweb' if RAILS_ENV == 'test'
 end

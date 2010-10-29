@@ -1,13 +1,12 @@
-require 'strscan'
-require 'authors'
-
 module AuthorParser
 
   def self.get_author_names string
     return [] unless string.present?
-    parse = AuthorsParser.new.parse(string)
-    authors = parse.authors.map {|e| e.dup}
-    string[parse.interval] = ''
+    Citrus.load 'lib/authors.citrus' unless defined? AuthorsGrammar
+    match = AuthorsGrammar.parse(string)
+
+    authors = match.value
+    string.gsub! /#{match}/, ''
     authors
   end
 
