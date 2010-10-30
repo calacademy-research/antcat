@@ -1,16 +1,16 @@
 grammar PaginationGrammar
 
   rule pagination
-    pagination_clause (space (('+'|',') space)? pagination_clause)*
+    pagination_clause ((space ('+' | ','))? space pagination_clause)*
   end
 
   rule pagination_clause
-    section_type_clause |
-    (note space section_type_clause) |
+    section_clause |
+    (note space section_clause) |
     (section_type space section_size '.')
   end
 
-  rule section_type_clause
+  rule section_clause
     section_size (space section_type)? (space note '.'?)?
   end
 
