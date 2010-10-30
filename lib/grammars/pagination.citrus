@@ -1,0 +1,51 @@
+grammar PaginationGrammar
+
+  rule pagination
+    pagination_clause (space (('+'|',') space)? pagination_clause)*
+  end
+
+  rule pagination_clause
+    section_type_clause |
+    (note space section_type_clause) |
+    (section_type space section_size '.')
+  end
+
+  rule section_type_clause
+    section_size (space section_type)? (space note '.'?)?
+  end
+
+  rule section_type
+    ('pp' | 'pl' | 'p' | 'map') 's'?  '.'? 
+  end
+
+  rule section_size
+    '[' (roman_section_size | arabic_section_size) ']' |
+    (roman_section_size | arabic_section_size)
+  end
+
+  rule arabic_section_size
+    arabic_number ('-' arabic_number)?
+  end
+
+  rule roman_section_size
+    roman_number ('-' roman_number)?
+  end
+
+  rule arabic_number
+    [\d]+
+  end
+
+  rule roman_number
+    [ivxlc]+
+  end
+
+  rule note
+    '(' [^)]+ ')' |
+    '[' [^\]]+ ']'
+  end
+
+  rule space
+    ' '*
+  end
+
+end
