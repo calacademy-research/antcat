@@ -1,0 +1,23 @@
+grammar CitationGrammar
+  rule citation
+    book_citation
+  end
+
+  rule book_citation
+    publisher
+  end
+
+  rule publisher
+    (place ': ' name_s) {
+      {:publisher => {:name => name_s, :place => place}}
+    }
+  end
+
+  rule place
+    [^:]+
+  end
+
+  rule name_s
+    .+
+  end
+end

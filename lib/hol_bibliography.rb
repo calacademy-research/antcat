@@ -95,8 +95,8 @@ class HolBibliography
   def search_for_author author
     author_string = Iconv.conv 'ISO-8859-1', 'UTF-8', author 
     @scraper.get "http://osuc.biosci.ohio-state.edu/hymenoptera/manage_lit.list_pubs?author=#{CGI.escape author_string}"
-  rescue Iconv::IllegalSequence => e
-    lll "Got an Iconv::IllegalSequence exception on [#{author}]"
+  rescue Iconv::IllegalSequence
+    Rails.logger.info "Got an Iconv::IllegalSequence exception on [#{author}]"
     Nokogiri::HTML ''
   end
 

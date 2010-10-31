@@ -1,5 +1,4 @@
 grammar PaginationGrammar
-
   rule pagination
     pagination_clause ((space ('+' | ','))? space pagination_clause)*
   end

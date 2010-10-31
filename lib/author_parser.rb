@@ -1,8 +1,8 @@
 module AuthorParser
+  Citrus.load 'lib/grammars/authors' unless defined? AuthorsGrammar
 
   def self.get_author_names string
     return [] unless string.present?
-    Citrus.load 'lib/grammars/authors' unless defined? AuthorsGrammar
     match = AuthorsGrammar.parse(string)
 
     authors = match.value

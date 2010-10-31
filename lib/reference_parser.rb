@@ -35,9 +35,12 @@ class ReferenceParser
   def self.parse_citation string
     parse_cd_rom_citation(string) ||
     parse_nested_citation(string) ||
-    parse_book_citation(string) ||
+    CitationParser.parse(string) ||
     parse_article_citation(string) ||
     parse_unknown_citation(string)
+  rescue
+    puts string
+    raise
   end
 
   def self.parse_article_citation string
@@ -61,30 +64,6 @@ class ReferenceParser
   def self.parse_nested_citation citation
     return unless citation =~ /\bin: /i || citation =~ /^Pp\. \d+-\d+ in\b/
     {:other => remove_period_from(citation)}
-  end
-
-  def self.parse_book_citation citation
-    return unless citation =~ /.+: .+, .+$/
-    comma_sections = citation.split ','
-    pagination_sections = []
-    last_pagination_section = 0
-    comma_sections.reverse.each_with_index do |comma_section, i|
-      if pagination? comma_section
-        pagination_sections.insert 0, comma_section
-        last_pagination_section = i
-      else
-        break
-      end
-    end
-    pagination = pagination_sections.join(',').strip
-
-    place_and_publisher = comma_sections[0..(-last_pagination_section - 2)].join(',').strip
-    match = place_and_publisher.match /(.*?): (.*)/
-
-    {:book => {:publisher => {:name => match[2], :place => match[1]}, :pagination => pagination}}
-  rescue => e
-    puts citation
-    raise
   end
 
   def self.parse_unknown_citation citation
