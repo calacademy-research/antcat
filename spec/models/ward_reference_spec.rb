@@ -118,22 +118,57 @@ describe WardReference do
             :year => "1990.",
           })
           ward_reference.to_import_format.should == {
-            :book => {:publisher => {:name => 'Harvard University Press', :place => 'Cambridge, Mass.'}, :pagination => 'xii + 732 pp.'},
             :authors => ["Hölldobler, B.", "Wilson, E. O."],
-            :citation_year => "1990",
-            :cite_code => '2841',
-            :class => ward_reference.class.to_s,
-            :date => '19900328',
-            :editor_notes => 'Michael Fisher (Harvard Univ. Press), pers. comm., 2.x.1995',
-            :id => ward_reference.id,
-            :possess => 'PSW',
-            :public_notes => 'Date from publisher.',
-            :taxonomic_notes => nil,
             :title => 'The ants',
+            :citation_year => "1990",
+            :book => {:publisher => {:name => 'Harvard University Press', :place => 'Cambridge, Mass.'}, :pagination => 'xii + 732 pp.'},
+            :public_notes => 'Date from publisher.',
+            :editor_notes => 'Michael Fisher (Harvard Univ. Press), pers. comm., 2.x.1995',
+            :taxonomic_notes => nil,
+            :cite_code => '2841',
+            :possess => 'PSW',
+            :date => '19900328',
+            :class => ward_reference.class.to_s,
+            :id => ward_reference.id,
           }
+        end
+
+        it "should convert a nested reference" do
+          ward_reference = WardReference.create!({
+            :authors => "MacKay, W. P.",
+            :citation => "Pp. 96-98 in: MacKay, W., Lowrie, D., Fisher, A., MacKay, E., Barnes, F., Lowrie, D.  The ants of Los Alamos County, New Mexico (Hymenoptera: Formicidae).  Pp. 79-131 in: Trager, J. C. (ed.)  Advances in myrmecology. Leiden: E. J. Brill, xxvii + 551 pp.",
+            :cite_code => '5652',
+            :date => '1988',
+            :possess => 'PSW',
+            :title => 'The ants of Los Alamos County, New Mexico (Hymenoptera: Formicidae).',
+            :year => "1988.",
+          })
+          expected = {
+            :authors => ["MacKay, W. P."],
+            :title => 'The ants of Los Alamos County, New Mexico (Hymenoptera: Formicidae)',
+            :citation_year => '1988',
+            :nested => {
+              :authors => ['MacKay, W.', 'Lowrie, D.', 'Fisher, A.', 'MacKay, E.', 'Barnes, F.', 'Lowrie, D.'],
+              :title => 'The ants of Los Alamos County, New Mexico (Hymenoptera: Formicidae)',
+              :pages_in => 'Pp. 96-98 in:',
+              :nested => {
+                :authors => ['Trager, J. C. (ed.)'],
+                :title => 'Advances in myrmecology',
+                :pages_in => 'Pp. 79-131 in:',
+                :book => {:publisher => {:name => 'E. J. Brill', :place => 'Leiden'}, :pagination => 'xxvii + 551 pp.'},
+              }
+            },
+            :taxonomic_notes => nil,
+            :cite_code => '5652',
+            :date => '1988',
+            :possess => 'PSW',
+            :class => ward_reference.class.to_s,
+            :id => ward_reference.id,
+          }
+          actual = ward_reference.to_import_format
+          actual.should == expected
         end
       end
     end
   end
-
 end

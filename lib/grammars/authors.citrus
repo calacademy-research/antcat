@@ -1,12 +1,16 @@
 grammar AuthorsGrammar
   rule authors
-    (author (';' space author)* '.'? space) {
+    (author (author_separator space author)* '.'? space) {
       find 'author'
     }
   end
 
   rule author
     phrase (',' initial+)?
+  end
+
+  rule author_separator
+    ';' | ','
   end
 
   rule initial

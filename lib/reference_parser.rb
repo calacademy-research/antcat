@@ -26,15 +26,15 @@ class ReferenceParser
   end
 
   def self.parse_title string
-    match = string.match /(.+?)\./
+    match = string.match /(.+?)\.\s*/
     title = match[1].strip
-    string[0..(match.end(0) - 1)] = ''
+    string.gsub! /#{Regexp.escape match.to_s}/, ''
     {:title => title}
   end
 
   def self.parse_citation string
     parse_cd_rom_citation(string) ||
-    parse_nested_citation(string) ||
+    NestedParser.parse(string) ||
     BookParser.parse(string) ||
     parse_article_citation(string) ||
     parse_unknown_citation(string)
@@ -58,11 +58,6 @@ class ReferenceParser
 
   def self.parse_cd_rom_citation citation
     return unless citation =~ /CD-ROM/
-    {:other => remove_period_from(citation)}
-  end
-
-  def self.parse_nested_citation citation
-    return unless citation =~ /\bin: /i || citation =~ /^Pp\. \d+-\d+ in\b/
     {:other => remove_period_from(citation)}
   end
 

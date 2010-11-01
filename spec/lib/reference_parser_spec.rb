@@ -89,32 +89,11 @@ describe ReferenceParser do
   end
 
   describe "parsing a nested citation" do
-    it "should return nil if it doesn't seem to be a nested citation" do
-      ReferenceParser.parse_nested_citation('Science 1:2').should be_nil
-    end
-
-    describe "parsing a nested citation" do
-      it "should handle parsing with no page numbers" do
-        #ReferenceParser.parse_nested_citation(
-          #'In: Michaelsen, W., Hartmeyer, R. (eds.)  Die Fauna Sdwest-Australiens. Band I, Lieferung 7.  Jena: Gustav Fischer, pp. 263-310.').
-          #should ==
-          #{:reference => {:authors => 'Michaelsen, W., Hartmeyer, R. (eds.)', :title => 'Die Fauna Sdwest-Australiens. Band I, Lieferung 7.',
-           #:publisher => {:name => 'Gustav Fischer', :place => 'Jena'}, :pagination => 'pp. 263-310'}}
-      end
-
-      it "should handle parsing with page numbers" do
-        ReferenceParser.parse_nested_citation(
-          'Pp. 191-210 in: Presl, J. S., Presl, K. B.  Deliciae Pragenses, historiam naturalem spectantes. Tome 1.  Pragae: Calve, 244 pp.').
-          should ==
-          {:other => 'Pp. 191-210 in: Presl, J. S., Presl, K. B.  Deliciae Pragenses, historiam naturalem spectantes. Tome 1.  Pragae: Calve, 244 pp'}
-      end
-
-      it "should handle parsing with page numbers when 'in' isn't followed by a colon" do
-        ReferenceParser.parse_nested_citation(
-          'Pp. 161-164 in Ganzhorn, J. U., Sorg, J.-P. (eds.) Ecology and economy of a tropical dry forest in Madagascar. Primate Report 46-1. Gttingen: German Primate Center (DPZ), 382 pp.').should ==
-          {:other => 'Pp. 161-164 in Ganzhorn, J. U., Sorg, J.-P. (eds.) Ecology and economy of a tropical dry forest in Madagascar. Primate Report 46-1. Gttingen: German Primate Center (DPZ), 382 pp'}
-      end
-
+    it "should delegate to the NestedParser" do
+      NestedParser.should_receive(:parse).with(
+        'Pp. 191-210 in: Presl, J. S., Presl, K. B.  Deliciae Pragenses, historiam naturalem spectantes. Tome 1.  Pragae: Calve, 244 pp.')
+      ReferenceParser.parse_citation(
+        'Pp. 191-210 in: Presl, J. S., Presl, K. B.  Deliciae Pragenses, historiam naturalem spectantes. Tome 1.  Pragae: Calve, 244 pp.')
     end
   end
 end

@@ -65,6 +65,10 @@ describe AuthorParser do
     it "should handle roles" do
       AuthorParser.get_author_names("Breed, M. D.; Page, R. E. (eds.)").should == ['Breed, M. D.', 'Page, R. E. (eds.)']
     end
+
+    it "should handle authors separated by commas" do
+      AuthorParser.get_author_names("Breed, M. D., Page, R. E., Ward, P.S.").should == ['Breed, M. D.', 'Page, R. E.', 'Ward, P.S.']
+    end
     
   end
 
