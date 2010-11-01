@@ -77,32 +77,61 @@ describe WardReference do
         ward_reference.authors.should == 'Bolton, B.'
       end
 
-      it "should convert to import format" do
-        ward_reference = WardReference.create!({
-          :authors => "Abdul-Rassoul, M. S.; Dawah, H. A.; Othman, N. Y.",
-          :citation => "Bull. Nat. Hist. Res. Cent. Univ. Baghdad 7(2):1-6",
-          :cite_code => '5523',
-          :date => '197804',
-          :notes => '{Formicidae pp. 4-6.}At least, I think so',
-          :possess => 'PSW',
-          :taxonomic_notes => 'Tapinoma',
-          :title => 'Records of insect collection',
-          :year => "1978d",
-        })
-        ward_reference.to_import_format.should == {
-          :article => {:journal => "Bull. Nat. Hist. Res. Cent. Univ. Baghdad", :series_volume_issue => "7(2)", :pagination => "1-6"},
-          :authors => ["Abdul-Rassoul, M. S.", "Dawah, H. A.", "Othman, N. Y."],
-          :citation_year => "1978d",
-          :cite_code => '5523',
-          :class => ward_reference.class.to_s,
-          :date => '197804',
-          :editor_notes => 'At least, I think so',
-          :id => ward_reference.id,
-          :possess => 'PSW',
-          :public_notes => 'Formicidae pp. 4-6.',
-          :taxonomic_notes => 'Tapinoma',
-          :title => 'Records of insect collection',
-        }
+      describe "converting to import format" do
+        it "should convert an article reference" do
+          ward_reference = WardReference.create!({
+            :authors => "Abdul-Rassoul, M. S.; Dawah, H. A.; Othman, N. Y.",
+            :citation => "Bull. Nat. Hist. Res. Cent. Univ. Baghdad 7(2):1-6",
+            :cite_code => '5523',
+            :date => '197804',
+            :notes => '{Formicidae pp. 4-6.}At least, I think so',
+            :possess => 'PSW',
+            :taxonomic_notes => 'Tapinoma',
+            :title => 'Records of insect collection',
+            :year => "1978d",
+          })
+          ward_reference.to_import_format.should == {
+            :article => {:journal => "Bull. Nat. Hist. Res. Cent. Univ. Baghdad", :series_volume_issue => "7(2)", :pagination => "1-6"},
+            :authors => ["Abdul-Rassoul, M. S.", "Dawah, H. A.", "Othman, N. Y."],
+            :citation_year => "1978d",
+            :cite_code => '5523',
+            :class => ward_reference.class.to_s,
+            :date => '197804',
+            :editor_notes => 'At least, I think so',
+            :id => ward_reference.id,
+            :possess => 'PSW',
+            :public_notes => 'Formicidae pp. 4-6.',
+            :taxonomic_notes => 'Tapinoma',
+            :title => 'Records of insect collection',
+          }
+        end
+
+        it "should convert a book reference" do
+          ward_reference = WardReference.create!({
+            :authors => "Hölldobler, B.; Wilson, E. O.",
+            :citation => "Cambridge, Mass.: Harvard University Press, xii + 732 pp.",
+            :cite_code => '2841',
+            :date => '19900328',
+            :notes => '{Date from publisher.} Michael Fisher (Harvard Univ. Press), pers. comm., 2.x.1995',
+            :possess => 'PSW',
+            :title => 'The ants.',
+            :year => "1990.",
+          })
+          ward_reference.to_import_format.should == {
+            :book => {:publisher => {:name => 'Harvard University Press', :place => 'Cambridge, Mass.'}, :pagination => 'xii + 732 pp.'},
+            :authors => ["Hölldobler, B.", "Wilson, E. O."],
+            :citation_year => "1990",
+            :cite_code => '2841',
+            :class => ward_reference.class.to_s,
+            :date => '19900328',
+            :editor_notes => 'Michael Fisher (Harvard Univ. Press), pers. comm., 2.x.1995',
+            :id => ward_reference.id,
+            :possess => 'PSW',
+            :public_notes => 'Date from publisher.',
+            :taxonomic_notes => nil,
+            :title => 'The ants',
+          }
+        end
       end
     end
   end

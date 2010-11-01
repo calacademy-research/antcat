@@ -35,7 +35,7 @@ class ReferenceParser
   def self.parse_citation string
     parse_cd_rom_citation(string) ||
     parse_nested_citation(string) ||
-    BookCitationParser.parse(string) ||
+    BookParser.parse(string) ||
     parse_article_citation(string) ||
     parse_unknown_citation(string)
   rescue
@@ -69,26 +69,6 @@ class ReferenceParser
   def self.parse_unknown_citation citation
     return unless citation.present?
     {:other => remove_period_from(citation)}
-  end
-
-  def self.pagination? string
-    return true if contains_a_number_without_many_letters? string
-    return false if contains_polish_conjunction? string
-    return true if string =~ /\b[ivxlc]{1,3}\b/
-    false
-  end
-
-  def self.contains_a_number_without_many_letters? string
-    return false unless string =~ /\d/
-    number_count = string.gsub(/\D/, '').length
-    letter_count = string.gsub(/\W/, '').length
-    return true if number_count > 4
-    return false if letter_count - number_count > 12
-    true
-  end
-
-  def self.contains_polish_conjunction? string
-    string =~ /\w+ i \w+/ 
   end
 
   def self.remove_period_from text

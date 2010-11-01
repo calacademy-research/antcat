@@ -1,4 +1,4 @@
-module BookCitationParser
+module BookParser
   Citrus.load 'lib/grammars/publisher' unless defined? PublisherGrammar
   Citrus.load 'lib/grammars/pagination' unless defined? PaginationGrammar
 
