@@ -8,16 +8,16 @@ grammar CitationGrammar
   end
 
   rule publisher
-    (place ': ' name_s) {
-      {:publisher => {:name => name_s, :place => place}}
+    (publisher_place ': ' publisher_name) {
+      {:publisher => {:name => publisher_name, :place => publisher_place}}
     }
   end
 
-  rule place
+  rule publisher_place
     [^:]+
   end
 
-  rule name_s
+  rule publisher_name
     .+
   end
 end
