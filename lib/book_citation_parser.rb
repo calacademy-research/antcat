@@ -1,13 +1,13 @@
-module CitationParser
+module BookCitationParser
+  Citrus.load 'lib/grammars/publisher' unless defined? PublisherGrammar
   Citrus.load 'lib/grammars/pagination' unless defined? PaginationGrammar
-  Citrus.load 'lib/grammars/citation' unless defined? CitationGrammar
 
   def self.parse string
     return unless string.present? && string =~ /.+: .+, .+$/
 
     string = string.dup
     pagination = parse_pagination string
-    match = CitationGrammar.parse string
+    match = PublisherGrammar.parse string
     string.gsub! /#{Regexp.escape match}/, ''
     book = match.value
     book[:pagination] = pagination

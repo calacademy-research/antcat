@@ -35,7 +35,7 @@ class ReferenceParser
   def self.parse_citation string
     parse_cd_rom_citation(string) ||
     parse_nested_citation(string) ||
-    CitationParser.parse(string) ||
+    BookCitationParser.parse(string) ||
     parse_article_citation(string) ||
     parse_unknown_citation(string)
   rescue

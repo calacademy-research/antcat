@@ -1,12 +1,4 @@
-grammar CitationGrammar
-  rule citation
-    book_citation
-  end
-
-  rule book_citation
-    publisher
-  end
-
+grammar PublisherGrammar
   rule publisher
     (publisher_place ': ' publisher_name) {
       {:publisher => {:name => publisher_name, :place => publisher_place}}
