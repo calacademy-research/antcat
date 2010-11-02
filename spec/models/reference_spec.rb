@@ -57,6 +57,24 @@ describe Reference do
         :source_reference_type => 'WardReference'}, 1)
         Reference.import @reference_data
     end
+    it "should import a nested reference" do
+      author = mock_model Author
+      Author.should_receive(:import).with(['Author']).and_return [author]
+      @reference_data[:nested] = 'nested'
+      NestedReference.should_receive(:import).with({
+        :authors => [author],
+        :citation_year => '2010d',
+        :title => 'Ants',
+        :cite_code => '345',
+        :possess => 'PSW',
+        :date => '120134',
+        :public_notes => 'Notes',
+        :editor_notes => 'Editor notes',
+        :taxonomic_notes => 'Tax. notes',
+        :source_reference_id => 1,
+        :source_reference_type => 'WardReference'}, 'nested')
+        Reference.import @reference_data
+    end
     it "should import an other reference" do
       author = mock_model Author
       Author.should_receive(:import).with(['Author']).and_return [author]

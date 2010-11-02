@@ -36,6 +36,8 @@ class Reference < ActiveRecord::Base
       BookReference.import create_data, data[:book]
     when data[:article]
       ArticleReference.import create_data, data[:article]
+    when data[:nested]
+      NestedReference.import create_data, data[:nested]
     when data[:other]
       OtherReference.import create_data, data[:other]
     end
