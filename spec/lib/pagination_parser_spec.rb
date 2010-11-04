@@ -21,5 +21,4 @@ describe PaginationParser do
       string.should be_empty
     end
   end
-
 end

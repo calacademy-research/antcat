@@ -6,8 +6,6 @@ module TitleParser
     title = find_title_before_citation(string)
     return title if title
 
-    colon_index = string.index ':'
-
     match = string.match /(^.*?)\.\s*/
     string[0, match[0].length] = ''
     match[1]
@@ -15,20 +13,37 @@ module TitleParser
 
   private
   def self.find_title_before_citation string
+    end_of_title = nil
+    start_of_citation = nil
     scanner = StringScanner.new string
+
     while scanner.scan_until /\./
       period_pos = scanner.pos
       scanner.scan /\s*/
-      if beginning_of_citation? scanner.rest
-        title = string[0, period_pos - 1]
-        string.replace scanner.rest
-        return title
+      next unless can_be_start_of_citation? scanner.rest
+
+      end_of_title ||= (period_pos - 1)
+      start_of_citation ||= scanner.pos
+
+      if start_of_citation? scanner.rest
+        end_of_title = period_pos - 1
+        start_of_citation = scanner.pos
+        break
       end
+    end
+    if end_of_title
+      title = string[0, end_of_title]
+      string[0, start_of_citation] = ''
+      return title
     end
     nil
   end
 
-  def self.beginning_of_citation? string
+  def self.can_be_start_of_citation? string
+    rc = string !~ /^\,/
+  end
+
+  def self.start_of_citation? string
     pages_in?(string) || journal_title?(string) || known_place_name?(string)
   end
 

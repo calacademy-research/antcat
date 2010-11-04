@@ -76,6 +76,11 @@ describe ReferenceParser do
         {:authors => ['Bolton, B.'], :year => '2006', :title => 'Ants', :other => 'A book'}
     end
 
+    it "can't be expected to handle this mess, but shouldn't go into infinite loop, either" do
+      ReferenceParser.parse('Bolton, B. 2006. Taxonomy, phylogeny: Philip Jr., 1904-1983. Series Entomologica (Dordrecht) 33:1-514.').should ==
+        {:authors => ['Bolton, B.'], :year => '2006', :title => 'Taxonomy, phylogeny: Philip Jr', :other => ', 1904-1983. Series Entomologica (Dordrecht) 33:1-514'}
+    end
+
   end
 
   describe "parsing a citation" do
@@ -124,12 +129,6 @@ describe ReferenceParser do
       ReferenceParser.parse_title(string).should ==
         {:title => 'Ameisen aus Sao Paulo (Brasilien), Paraguay etc. gesammelt von Prof. Herm. v. Ihering, Dr. Lutz, Dr. Fiebrig, etc'}
       string.should == "Verhandlungen der Kaiserlich-Königlichen Zoologisch-Botanischen Gesellschaft in Wien 58:340-418"
-    end
-
-    it "should handle a title with more than one period in it" do
-      string = "Taxonomy, phylogeny: Philip Jr., 1904-1983. Series Entomologica (Dordrecht) 33:1-514."
-      ReferenceParser.parse_title(string).should == {:title => 'Taxonomy, phylogeny: Philip Jr., 1904-1983'}
-      string.should == "Series Entomologica (Dordrecht) 33:1-514."
     end
 
   end

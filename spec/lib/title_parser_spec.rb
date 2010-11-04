@@ -74,6 +74,11 @@ describe TitleParser do
       TitleParser.parse(string).should == 'Dodech'
     end
 
+    it "should realize that a title can't end with a comma" do
+      string = "Taxonomy, phylogeny: Philip Jr., 1904-1983. Series Entomologica (Dordrecht) 33:1-514."
+      TitleParser.parse(string).should == 'Taxonomy, phylogeny: Philip Jr., 1904-1983'
+    end
+
   end
 
 end
