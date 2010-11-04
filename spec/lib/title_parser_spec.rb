@@ -66,6 +66,7 @@ describe TitleParser do
       string = "Dodech. Science in the home. Nature 32:3"
       TitleParser.parse(string).should == 'Dodech'
     end
+
   end
 
 end

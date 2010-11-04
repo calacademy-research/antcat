@@ -3,6 +3,16 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe ReferenceParser do
 
   describe 'parsing' do
+
+    it "should give up if it can't properly parse the title" do
+      ReferenceParser.parse("Ward, P. 2001. Title with. periods. Baltimore:Wiley 32 pp.").should == {
+        :authors => ['Ward, P.'],
+        :year => '2001',
+        :title => 'Title with',
+        :other => 'periods. Baltimore:Wiley 32 pp'
+      }
+    end
+
     it 'should parse an article reference' do
       ReferenceParser.parse('Mayer, D.M. 1970. Ants. Psyche 1:2').should == {
         :authors => ['Mayer, D.M.'],
@@ -63,7 +73,7 @@ describe ReferenceParser do
 
     it 'should parse a completely unknown reference' do
       ReferenceParser.parse('Bolton, B. 2006. Ants. A book.').should ==
-        {:authors => ['Bolton, B.'], :year => '2006', :other => 'Ants. A book.'}
+        {:authors => ['Bolton, B.'], :year => '2006', :title => 'Ants', :other => 'A book'}
     end
 
   end
@@ -121,5 +131,6 @@ describe ReferenceParser do
       ReferenceParser.parse_title(string).should == {:title => 'Taxonomy, phylogeny: Philip Jr., 1904-1983'}
       string.should == "Series Entomologica (Dordrecht) 33:1-514."
     end
+
   end
 end

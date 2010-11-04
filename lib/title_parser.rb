@@ -7,7 +7,6 @@ module TitleParser
     return title if title
 
     colon_index = string.index ':'
-    string_before_colon = string[0, colon_index - 1]
 
     match = string.match /(^.*?)\.\s*/
     string[0, match[0].length] = ''
