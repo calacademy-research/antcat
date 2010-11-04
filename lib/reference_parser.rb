@@ -26,12 +26,7 @@ class ReferenceParser
   end
 
   def self.parse_title string
-    # if the string contains the special journal name, the title is  everything up to it
-    match = string.match(/(.*)(\.\s*)Verhandlungen der Kaiserlich-Königlichen Zoologisch-Botanischen Gesellschaft in Wien/) ||
-            string.match(/(.+?)(\.\s*)/)
-    title = match[1]
-    string.gsub! /#{Regexp.escape(match[1] + match[2])}/, ''
-    {:title => title.strip}
+    {:title => TitleParser.parse(string)}
   end
 
   def self.parse_citation string
