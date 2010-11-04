@@ -38,10 +38,16 @@ describe TitleParser do
   end
 
   describe "titles with periods in them" do
-    it "work when the following citation is nested" do
+    it "should work when the following citation is nested" do
       string = "Ants of St. Croix. In: Ward, P.S. Ants. New York:Wiley 32 pp."
       TitleParser.parse(string).should == 'Ants of St. Croix'
       string.should == "In: Ward, P.S. Ants. New York:Wiley 32 pp."
+    end
+
+    it "should work when the journal name starts with 'Journal'" do
+      string = "Dodech. Ants. Journal of Entomology 32:3"
+      TitleParser.parse(string).should == 'Dodech. Ants'
+      string.should == "Journal of Entomology 32:3"
     end
   end
 
