@@ -77,7 +77,7 @@ describe CoinsHelper do
 
   it "should handle authors without commas" do
     coins = helper.coins(ward_reference_factory(
-      :authors => 'author',
+      :authors => 'Anonymous',
       :year => '1941',
       :title => 'A title',
       :citation => 'Journal Title 1(2):3-4'
@@ -94,13 +94,13 @@ describe CoinsHelper do
       "rft.spage=3",
       "rft.epage=4",
       "rft.date=1941",
-      "rft.au=author",
+      "rft.au=Anonymous",
     ]
   end
 
   it "should strip out italics formatting" do
     coins = helper.coins(ward_reference_factory(
-      :authors => 'author',
+      :authors => 'Ward, P.S.',
       :year => '1941',
       :title => 'A *title*',
       :citation => 'Journal Title 1(2):3-4'
@@ -117,13 +117,14 @@ describe CoinsHelper do
       "rft.spage=3",
       "rft.epage=4",
       "rft.date=1941",
-      "rft.au=author",
+      "rft.aufirst=P.S.",
+      "rft.aulast=Ward",
     ]
   end
 
   it "should escape HTML" do
     coins = helper.coins(ward_reference_factory(
-      :authors => 'author',
+      :authors => 'Ward, P.S.',
       :year => '1941',
       :title => '<script>',
       :citation => 'Journal Title 1(2):3-4'
@@ -140,7 +141,8 @@ describe CoinsHelper do
       "rft.spage=3",
       "rft.epage=4",
       "rft.date=1941",
-      "rft.au=author",
+      "rft.aufirst=P.S.",
+      "rft.aulast=Ward",
     ]
   end
 

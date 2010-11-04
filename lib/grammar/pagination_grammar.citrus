@@ -1,4 +1,5 @@
 grammar PaginationGrammar
+  include CommonGrammar
 
   rule pagination
     pagination_clause ((space ('+' | ','))? space pagination_clause)*
@@ -7,7 +8,7 @@ grammar PaginationGrammar
   rule pagination_clause
     section_clause |
     (note space section_clause) |
-    (section_type space section_size '.')
+    (section_type space section_size '.'?)
   end
 
   rule section_clause
@@ -15,7 +16,7 @@ grammar PaginationGrammar
   end
 
   rule section_type
-    ('pp' | 'pl' | 'p' | 'map') 's'?  '.'? 
+    ('pp' | 'Pp' | 'pl' | 'Pl' | 'p' | 'P' | 'map' | 'Map') 's'?  '.'? 
   end
 
   rule section_size
@@ -32,20 +33,16 @@ grammar PaginationGrammar
   end
 
   rule arabic_number
-    [\d]+
+    /\b[\d]+\b/
   end
 
   rule roman_number
-    [ivxlc]+
+    /\b[ivxlc]+\b/
   end
 
   rule note
     '(' [^)]+ ')' |
     '[' [^\]]+ ']'
-  end
-
-  rule space
-    ' '*
   end
 
 end

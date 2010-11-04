@@ -1,8 +1,9 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe ReferenceParser do
+
   describe 'parsing' do
-    it 'should work' do
+    it 'should parse an article reference' do
       ReferenceParser.parse('Mayer, D.M. 1970. Ants. Psyche 1:2').should == {
         :authors => ['Mayer, D.M.'],
         :year => '1970',
@@ -14,86 +15,111 @@ describe ReferenceParser do
         }
       }
     end
-  end
-
-  describe "parsing authors" do
-    it "should distinguish between an author name and a title" do
-      string = 'Ward, P.S. Ants.'
-      parts = ReferenceParser.parse_authors string
-      parts.should == {:authors => ['Ward, P.S.']}
-      string.should == 'Ants.'
-    end
-  end
-
-  describe "parsing a article citation" do
-    it "should handle a missing citation" do
-      ['', nil].each do |citation|
-        ReferenceParser.parse_article_citation(citation).should be_nil
-      end
+    
+    it 'should parse a book reference' do
+      ReferenceParser.parse('Ward, P.S., Fisher, B.L. 1981. Ants are my life. Melbourne: CSIRO Publications, vii + 70 pp.').should == {
+        :authors => ['Ward, P.S.', 'Fisher, B.L.'],
+        :year => '1981',
+        :title => 'Ants are my life',
+        :book => {
+          :publisher => {:name => 'CSIRO Publications', :place => 'Melbourne'},
+          :pagination => 'vii + 70 pp.',
+        }
+      }
     end
 
-    it "should quietly return if the citation isn't for an article" do
-      ReferenceParser.parse_article_citation('Dresden.').should be_nil
+    it 'should parse a nested reference' do
+      ReferenceParser.parse("MacKay, W. P. 1988. [Untitled. Pheidole wheelerorum W. MacKay new species.]. Pp. 96-98 in: MacKay, W., Lowrie, D., Fisher, A., MacKay, E., Barnes, F., Lowrie, D. The ants of Los Alamos County, New Mexico (Hymenoptera: Formicidae). Pp. 79-131 in: Trager, J. C. (ed.) Advances in myrmecology. Leiden: E. J. Brill, xxvii + 551 pp. [1988]").should == {
+        :authors => ['MacKay, W. P.'],
+        :year => '1988',
+        :title => '[Untitled. Pheidole wheelerorum W. MacKay new species.]',
+        :nested => {
+          :pages_in => 'Pp. 96-98 in:',
+          :nested => {
+            :authors => ['MacKay, W.', 'Lowrie, D.', 'Fisher, A.', 'MacKay, E.', 'Barnes, F.', 'Lowrie, D.'],
+            :title => 'The ants of Los Alamos County, New Mexico (Hymenoptera: Formicidae).',
+            :nested => {
+              :pages_in => 'Pp. 79-131 in:',
+              :authors => ['Trager, J. C. (ed.)'],
+              :title => 'Advances in myrmecology',
+              :book => {
+                :publisher => {:name => 'E. J. Brill', :place => 'Leiden'},
+                :pagination => 'xxvii + 551 pp.'
+              }
+            }
+          }
+        }
+      }
     end
 
-    it "should extract article, issue and journal information" do
-      ReferenceParser.parse_article_citation('Behav. Ecol. Sociobiol. 4:163-181.').should ==
-        {:article => {:journal => 'Behav. Ecol. Sociobiol.', :series_volume_issue => '4', :pagination => '163-181'}}
+    it 'should parse a CD-ROM reference' do
+      ReferenceParser.parse('Bolton, B.; Alpert, G.; Ward, P. S.; Nasrecki, P. 2006. Bolton’s Catalogue of ants of the world. Cambridge, Mass.: Harvard University Press, CD-ROM.').should == {
+        :authors => ['Bolton, B.', 'Alpert, G.', 'Ward, P. S.', 'Nasrecki, P.'],
+        :year => '2006',
+        :title => 'Bolton’s Catalogue of ants of the world',
+        :other => 'Cambridge, Mass.: Harvard University Press, CD-ROM'
+      }
     end
 
-    it "should parse a citation with just a single page issue" do
-      ReferenceParser.parse_article_citation("Entomol. Mon. Mag. 92:8.").should ==
-        {:article => {:journal => 'Entomol. Mon. Mag.', :series_volume_issue => '92', :pagination => '8'}}
+    it 'should parse a completely unknown reference' do
+      ReferenceParser.parse('Bolton, B. 2006. Ants. A book.').should ==
+        {:authors => ['Bolton, B.'], :year => '2006', :title => 'Ants', :other => 'A book'}
     end
 
-    it "should parse a citation with an issue issue" do
-      ReferenceParser.parse_article_citation("Entomol. Mon. Mag. 92(32):8.").should ==
-        {:article => {:journal => 'Entomol. Mon. Mag.', :series_volume_issue => '92(32)', :pagination => '8'}}
-    end
-
-    it "should parse a citation with a series issue" do
-      ReferenceParser.parse_article_citation('Ann. Mag. Nat. Hist. (10)8:129-131.').should ==
-        {:article => {:journal => 'Ann. Mag. Nat. Hist.', :series_volume_issue => '(10)8', :pagination => '129-131'}}
-    end
-
-    it "should parse a citation with series, volume and issue" do
-      ReferenceParser.parse_article_citation('Ann. Mag. Nat. Hist. (I)C(xix):129-131.').should ==
-        {:article => {:journal => 'Ann. Mag. Nat. Hist.', :series_volume_issue => '(I)C(xix)', :pagination => '129-131'}}
-    end
-  end
-
-  describe "parsing a CD-ROM citation" do
-    it "should return nil if it doesn't seem to be a CD-ROM citation" do
-      ReferenceParser.parse_cd_rom_citation('Science 1:2').should be_nil
-    end
-
-    it "should handle a CD-ROM citation" do
-      ReferenceParser.parse_cd_rom_citation('Cambridge, Mass.: Harvard University Press, CD-ROM.').should ==
-        {:other => 'Cambridge, Mass.: Harvard University Press, CD-ROM'}
-    end
   end
 
   describe "parsing a citation" do
-    it "should simply return an empty hash if there's no citation" do
-      ['', nil].each {|citation| ReferenceParser.parse_citation(citation).should be_nil}
+    it 'should parse an article citation' do
+      ReferenceParser.parse_citation('Psyche 1:2').should ==
+        {:article => {:journal => 'Psyche', :series_volume_issue => '1', :pagination => '2'}}
     end
+
+    it 'should parse a book citation' do
+      ReferenceParser.parse_citation('Melbourne: CSIRO Publications, vii + 70 pp.').should ==
+        {:book => {:publisher => {:name => 'CSIRO Publications', :place => 'Melbourne'}, :pagination => 'vii + 70 pp.'}}
+    end
+
+    it 'should parse a nested citation' do
+      ReferenceParser.parse_citation("Pp. 96-98 in: MacKay, W., Lowrie, D., Fisher, A., MacKay, E., Barnes, F., Lowrie, D. The ants of Los Alamos County, New Mexico (Hymenoptera: Formicidae). Pp. 79-131 in: Trager, J. C. (ed.) Advances in myrmecology. Leiden: E. J. Brill, xxvii + 551 pp. [1988]").should == {
+        :nested => {
+          :pages_in => 'Pp. 96-98 in:',
+          :nested => {
+            :authors => ['MacKay, W.', 'Lowrie, D.', 'Fisher, A.', 'MacKay, E.', 'Barnes, F.', 'Lowrie, D.'],
+            :title => 'The ants of Los Alamos County, New Mexico (Hymenoptera: Formicidae).',
+            :nested => {
+              :pages_in => 'Pp. 79-131 in:',
+              :authors => ['Trager, J. C. (ed.)'],
+              :title => 'Advances in myrmecology',
+              :book => {:publisher => {:name => 'E. J. Brill', :place => 'Leiden'}, :pagination => 'xxvii + 551 pp.'}
+            }
+          }
+        }
+      }
+    end
+
+    it 'should parse a CD-ROM citation' do
+      ReferenceParser.parse_citation('Cambridge, Mass.: Harvard University Press, CD-ROM.').should ==
+        {:other => 'Cambridge, Mass.: Harvard University Press, CD-ROM'}
+    end
+
+    it 'should parse a completely unknown citation' do
+      ReferenceParser.parse_citation('A book.').should == {:other => 'A book'}
+    end
+
   end
 
-  describe "parsing an unknown format" do
-    it "should consider it an 'other' reference" do
-      ReferenceParser.parse_unknown_citation('asdf').should == {:other => 'asdf'}
+  describe "parsing a title" do
+    it "should take a special journal name into account" do
+      string = "Ameisen aus Sao Paulo (Brasilien), Paraguay etc. gesammelt von Prof. Herm. v. Ihering, Dr. Lutz, Dr. Fiebrig, etc. Verhandlungen der Kaiserlich-Königlichen Zoologisch-Botanischen Gesellschaft in Wien 58:340-418"
+      ReferenceParser.parse_title(string).should ==
+        {:title => 'Ameisen aus Sao Paulo (Brasilien), Paraguay etc. gesammelt von Prof. Herm. v. Ihering, Dr. Lutz, Dr. Fiebrig, etc'}
+      string.should == "Verhandlungen der Kaiserlich-Königlichen Zoologisch-Botanischen Gesellschaft in Wien 58:340-418"
     end
-    it "should remove the period from the end" do
-      ReferenceParser.parse_unknown_citation('asdf.').should == {:other => 'asdf'}
-    end
-  end
 
-  describe "parsing a nested citation" do
-    it "should delegate to the NestedParser" do
-      NestedParser.should_receive(:parse).with(
-        'Pp. 191-210 in: Presl, J. S., Presl, K. B.  Deliciae Pragenses, historiam naturalem spectantes. Tome 1.  Pragae: Calve, 244 pp.')
-      ReferenceParser.parse_citation(
-        'Pp. 191-210 in: Presl, J. S., Presl, K. B.  Deliciae Pragenses, historiam naturalem spectantes. Tome 1.  Pragae: Calve, 244 pp.')
+    it "should handle a title with more than one period in it" do
+      string = "Taxonomy, phylogeny: Philip Jr., 1904-1983. Series Entomologica (Dordrecht) 33:1-514."
+      ReferenceParser.parse_title(string).should == {:title => 'Taxonomy, phylogeny: Philip Jr., 1904-1983'}
+      string.should == "Series Entomologica (Dordrecht) 33:1-514."
     end
   end
 end

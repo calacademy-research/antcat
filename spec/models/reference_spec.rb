@@ -282,12 +282,6 @@ describe Reference do
       @reference.should_not be_valid
     end
 
-    it "should not be OK when there are no authors" do
-      @reference.authors = []
-      @reference.save
-      @reference.should_not be_valid
-    end
-
   end
 
   describe "changing the citation year" do

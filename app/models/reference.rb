@@ -7,7 +7,7 @@ class Reference < ActiveRecord::Base
 
   before_validation :set_year, :strip_newlines, :set_source_url
 
-  validates_presence_of :authors, :year, :title
+  validates_presence_of :year, :title
   validates_http_url :source_url, :malformed_url => 'is not in a valid format', :message => 'was not found',
                      :valid_responses => [Net::HTTPSuccess, Net::HTTPRedirection]
 
@@ -41,7 +41,8 @@ class Reference < ActiveRecord::Base
     when data[:other]
       OtherReference.import create_data, data[:other]
     end
-  rescue
+  rescue StandardError => e
+    puts e
     puts data.inspect
     raise
   end

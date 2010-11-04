@@ -1,4 +1,6 @@
-grammar AuthorsGrammar
+grammar AuthorGrammar
+  include CommonGrammar
+
   rule authors
     (author (author_separator space author)* '.'? space) {
       find 'author'
@@ -30,10 +32,6 @@ grammar AuthorsGrammar
 
   rule word_char
     /[\-\'\w]/u
-  end
-
-  rule space
-    ' '*
   end
 
 end

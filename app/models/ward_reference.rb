@@ -3,8 +3,15 @@ class WardReference < ActiveRecord::Base
 
   def self.export show_progress = false
     Progress.init show_progress
+    #all(:conditions => 'reference_id is null').each do |ward_reference|
     all.each do |ward_reference|
-      ward_reference.export
+      p ward_reference
+      begin
+        ward_reference.export
+      rescue StandardError => e
+        puts e
+        puts e.backtrace
+      end
       Progress.print '.'
     end
     Progress.puts

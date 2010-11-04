@@ -1,0 +1,5 @@
+grammar CommonGrammar
+  rule space
+    ' '*
+  end
+end

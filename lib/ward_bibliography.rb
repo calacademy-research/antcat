@@ -14,7 +14,7 @@ class WardBibliography
     Progress.init show_progress
     @filename = filename.to_s
     @base_filename = File.basename(@filename, File.extname(@filename))
-    @new_format = @base_filename.match(/96/).present?
+    @new_format = @base_filename =~ /96/
   end
 
   def import_file

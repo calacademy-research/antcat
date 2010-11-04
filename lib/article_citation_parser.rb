@@ -1,4 +1,17 @@
-module ArticleParser
+module ArticleCitationParser
+
+  def self.parse string
+    return unless string.present?
+    matches = string.match(/(.+?)(\S+)$/) or return
+    journal_title = matches[1].strip
+
+    matches = matches[2].match /(.+?):(.+)$/
+    return unless matches
+    series_volume_issue = matches[1]
+    pages = ReferenceParser.remove_period_from matches[2]
+
+    {:article => {:journal => journal_title, :series_volume_issue => series_volume_issue, :pagination => pages}}
+  end
 
   def self.get_series_volume_issue_parts string
     parts = {}

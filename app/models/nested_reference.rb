@@ -9,6 +9,9 @@ class NestedReference < Reference
       :pages_in => data[:pages_in],
       :nested_reference => nested_reference
     )
+  rescue StandardError => e
+    puts e
+    raise
   end
 
   #def citation_string

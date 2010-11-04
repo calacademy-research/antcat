@@ -15,6 +15,8 @@ Rails::Initializer.run do |config|
   config.gem 'citrus'
 
   config.gem 'fakeweb' if RAILS_ENV == 'test'
+
+  config.load_paths << "#{RAILS_ROOT}/lib/grammar"
 end
 
 ActionMailer::Base.delivery_method = :sendmail

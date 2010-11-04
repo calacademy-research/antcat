@@ -36,6 +36,15 @@ describe NestedReference do
 
       reference.nested_reference.citation_year.should == '2010'
     end
+
+    it "should handle having no authors in the inner reference" do
+      lambda {NestedReference.import(
+        { :authors => [Factory :author], :citation_year => '2010a', :title => 'awdf',
+          :source_reference_id => Factory(:ward_reference), :source_reference_type => 'WardReference',
+        }, {:authors => [], :title => 'Nested title', :pages_in => 'In pp. 32-33:',
+          :book => { :publisher => {:name => 'Wiley', :place => 'New York'}, :pagination => '32 pp.', } })}.
+          should_not raise_error
+    end
   end
 
   describe "validation" do

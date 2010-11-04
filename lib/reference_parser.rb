@@ -17,7 +17,7 @@ class ReferenceParser
   end
 
   def self.parse_year string
-    match = string.strip.match /(\d+)\s*\.\s*/
+    match = string.strip.match /^(\d+)\s*\.\s*/
     return unless match.present?
 
     year = match[1]
@@ -26,34 +26,20 @@ class ReferenceParser
   end
 
   def self.parse_title string
-    match = string.match /(.+?)\.\s*/
-    title = match[1].strip
-    string.gsub! /#{Regexp.escape match.to_s}/, ''
-    {:title => title}
+    # if the string contains the special journal name, the title is  everything up to it
+    match = string.match(/(.*)(\.\s*)Verhandlungen der Kaiserlich-Königlichen Zoologisch-Botanischen Gesellschaft in Wien/) ||
+            string.match(/(.+?)(\.\s*)/)
+    title = match[1]
+    string.gsub! /#{Regexp.escape(match[1] + match[2])}/, ''
+    {:title => title.strip}
   end
 
   def self.parse_citation string
     parse_cd_rom_citation(string) ||
-    NestedParser.parse(string) ||
-    BookParser.parse(string) ||
-    parse_article_citation(string) ||
+    NestedCitationParser.parse(string) ||
+    BookCitationParser.parse(string) ||
+    ArticleCitationParser.parse(string) ||
     parse_unknown_citation(string)
-  rescue
-    puts string
-    raise
-  end
-
-  def self.parse_article_citation string
-    return unless string.present?
-    parts = string.match(/(.+?)(\S+)$/) or return
-    journal_title = parts[1].strip
-
-    parts = parts[2].match /(.+?):(.+)$/
-    return unless parts
-    series_volume_issue = parts[1]
-    pages = remove_period_from parts[2]
-
-    {:article => {:journal => journal_title, :series_volume_issue => series_volume_issue, :pagination => pages}}
   end
 
   def self.parse_cd_rom_citation citation
@@ -62,7 +48,6 @@ class ReferenceParser
   end
 
   def self.parse_unknown_citation citation
-    return unless citation.present?
     {:other => remove_period_from(citation)}
   end
 

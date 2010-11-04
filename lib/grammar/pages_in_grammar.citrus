@@ -1,0 +1,8 @@
+grammar PagesInGrammar
+  include PaginationGrammar
+
+  rule pages_in
+    (pagination space)? ('In'|'in') ':'? space 
+  end
+
+end

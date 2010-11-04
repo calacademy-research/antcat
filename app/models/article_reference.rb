@@ -38,11 +38,11 @@ class ArticleReference < Reference
   private
 
   def series_volume_issue_parts
-    @series_volume_issue_parts ||= ArticleParser.get_series_volume_issue_parts series_volume_issue
+    @series_volume_issue_parts ||= ArticleCitationParser.get_series_volume_issue_parts series_volume_issue
   end
 
   def page_parts
-    @page_parts ||= ArticleParser.get_page_parts pagination
+    @page_parts ||= ArticleCitationParser.get_page_parts pagination
   end
 
 end

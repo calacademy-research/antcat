@@ -1,19 +1,19 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe BookParser do
+describe BookCitationParser do
   describe "parsing a book citation" do
     it "should return nil if it doesn't seem to be a book citation" do
-      BookParser.parse('Science 1:2').should be_nil
+      BookCitationParser.parse('Science 1:2').should be_nil
     end
 
     it "should extract the place, pagination and publisher" do
-      BookParser.parse('Melbourne: CSIRO Publications, vii + 70 pp.').should == (
+      BookCitationParser.parse('Melbourne: CSIRO Publications, vii + 70 pp.').should == (
         {:book => {:publisher => {:name => 'CSIRO Publications', :place => 'Melbourne'}, :pagination => 'vii + 70 pp.'}}
       )
     end
 
     it "should extract the place, pagination and publisher when there are multiple pagination sections" do
-      BookParser.parse('Melbourne: CSIRO Publications, vii, 70 pp.').should == (
+      BookCitationParser.parse('Melbourne: CSIRO Publications, vii, 70 pp.').should == (
         {:book => {:publisher => {:name => 'CSIRO Publications', :place => 'Melbourne'}, :pagination => 'vii, 70 pp.'}}
       )
     end
@@ -29,30 +29,38 @@ describe BookParser do
         '8 pls., 84 pp.',
         'i-ii, 279-655',
         'xi',
-        '93-114, 121'
+        '93-114, 121',
+        'P. 1'
       ].each do |pagination|
-        BookParser.parse("Tokyo: Keishu-sha, #{pagination}").should ==(
+        BookCitationParser.parse("Tokyo: Keishu-sha, #{pagination}").should ==(
           {:book => {:publisher => {:name =>  'Keishu-sha', :place => 'Tokyo'}, :pagination => pagination}}
         )
       end
     end
 
     it "should handle a publisher with a comma in its name" do
-      BookParser.parse('New York: Little, Brown, vii + 70 pp.').should == 
+      BookCitationParser.parse('New York: Little, Brown, vii + 70 pp.').should == 
         {:book => {:publisher => {:name => 'Little, Brown', :place => 'New York'}, :pagination => 'vii + 70 pp.'}}
     end
 
     it "should handle a publisher with 'i' as a word in its name" do
-      BookParser.parse('Warszawa: Panstwowe Wydawnictwo Rolnicze i Lesne, 55 pp.').should ==
+      BookCitationParser.parse('Warszawa: Panstwowe Wydawnictwo Rolnicze i Lesne, 55 pp.').should ==
         {:book => {:publisher => {:name => 'Panstwowe Wydawnictwo Rolnicze i Lesne', :place => 'Warszawa'}, :pagination => '55 pp.'}}
     end
     
     it "should handle a publisher with a number in it" do
-      BookParser.parse(
+      BookCitationParser.parse(
         'Perth, Australia: Curtin University School of Environmental Biology (Bulletin No. 18), xii + 75 pp.'
       ).should ==
         {:book => {:publisher => {:name => 'Curtin University School of Environmental Biology (Bulletin No. 18)', :place => 'Perth, Australia'},
          :pagination => 'xii + 75 pp.'}}
     end
+
+    it "should handle a title with a colon in it (i.e., shouldn't think it's a book just because of that)" do
+      BookCitationParser.parse(
+"Six new weaver ant species from Malaysia: *Camponotus *(*Karavaievia*) *striatipes*, *C.* (*K.*) *melanus*, *C.* (*K.*) *nigripes*, *C.* (*K.*) *belumensis*, *C.* (*K.*) *gentingensis*, and *C.* (*K.*) *micragyne*. Malaysian Journal of Science. Series A. Life Sciences 16:87-105."
+      ).should be_nil
+    end
+
   end
 end
