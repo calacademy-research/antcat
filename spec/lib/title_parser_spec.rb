@@ -44,10 +44,27 @@ describe TitleParser do
       string.should == "In: Ward, P.S. Ants. New York:Wiley 32 pp."
     end
 
-    it "should work when the journal name starts with 'Journal'" do
-      string = "Dodech. Ants. Journal of Entomology 32:3"
+    ['Abhandlungen', 'Acta', 'Actes', 'Anales', 'Annalen', 'Annales', 'Annali', 'Annals', 'Archives', 'Archivos', 'Arquivos',
+     'Boletim', 'Boletin', 'Bollettino', 'Bulletin', 'Izvestiya', 'Journal', 'Memoires', 'Memoirs', 'Memorias', 'Memorie',
+     'Mitteilungen', 'Occasional Papers'].each do |word|
+      it "should find the title when the journal name starts with '#{word}'" do
+        string = "Dodech. Ants. #{word} 32:3"
+        TitleParser.parse(string).should == 'Dodech. Ants'
+        string.should == "#{word} 32:3"
+      end
+     end
+
+    it "should find the title when the journal name is already known" do
+      Journal.create! :title => 'Science'
+      string = "Dodech. Ants. Science 32:3"
       TitleParser.parse(string).should == 'Dodech. Ants'
-      string.should == "Journal of Entomology 32:3"
+      string.should == "Science 32:3"
+    end
+
+    it "should not be fooled by a string that merely starts with the name of a journal" do
+      Journal.create! :title => 'Science'
+      string = "Dodech. Science in the home. Nature 32:3"
+      TitleParser.parse(string).should == 'Dodech'
     end
   end
 

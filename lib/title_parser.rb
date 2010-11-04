@@ -38,6 +38,17 @@ module TitleParser
   end
 
   def self.journal_title? string
-    string =~ /^Journal/
+    starts_with_common_first_word_of_journal_name?(string) ||
+    known_journal_name?(string)
   end
+
+  def self.starts_with_common_first_word_of_journal_name? string
+    string =~ /^(Abhandlungen|Acta|Actes|Anales|Annalen|Annales|Annali|Annals|Archives|Archivos|Arquivos|Boletim|Boletin|Bollettino|Bulletin|Izvestiya|Journal|Memoires|Memoirs|Memorias|Memorie|Mitteilungen|Occasional Papers)/
+  end
+
+  def self.known_journal_name? string
+    return unless journal_title = JournalParser.parse(string.dup)
+    Journal.find_by_title journal_title
+  end
+
 end
