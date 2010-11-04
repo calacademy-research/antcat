@@ -37,12 +37,6 @@ describe Publisher do
       Publisher.should_receive(:import).with(:name => 'Houghton Mifflin', :place => 'New York').and_return publisher
       Publisher.import_string('New York: Houghton Mifflin').should == publisher
     end
-
-    it "should handle not having a place" do
-      publisher = mock_model Publisher
-      Publisher.should_receive(:import).with(:name => 'Houghton Mifflin', :place => nil).and_return publisher
-      Publisher.import_string('Houghton Mifflin')
-    end
   end
 
   describe "representing as a string" do

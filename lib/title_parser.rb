@@ -29,7 +29,7 @@ module TitleParser
   end
 
   def self.beginning_of_citation? string
-    pages_in?(string) || journal_title?(string)
+    pages_in?(string) || journal_title?(string) || known_place_name?(string)
   end
 
   def self.pages_in? string
@@ -48,6 +48,11 @@ module TitleParser
   def self.known_journal_name? string
     return unless journal_title = JournalParser.parse(string.dup)
     Journal.find_by_title journal_title
+  end
+
+  def self.known_place_name? string
+    return unless publisher = PublisherParser.parse(string.dup)
+    Publisher.find_by_place publisher[:place]
   end
 
 end

@@ -61,6 +61,13 @@ describe TitleParser do
       string.should == "Science 32:3"
     end
 
+    it "should find the title when the place name is already known" do
+      Publisher.create! :name => 'Wiley', :place => 'Las Vegas'
+      string = "Dodech. Ants. Las Vegas:Barnes 32 pp."
+      TitleParser.parse(string).should == 'Dodech. Ants'
+      string.should == "Las Vegas:Barnes 32 pp."
+    end
+
     it "should not be fooled by a string that merely starts with the name of a journal" do
       Journal.create! :title => 'Science'
       string = "Dodech. Science in the home. Nature 32:3"

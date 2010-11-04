@@ -9,8 +9,8 @@ class Publisher < ActiveRecord::Base
   end
 
   def self.import_string string
-    parts = PublisherParser.get_parts string
-    import parts unless parts.empty?
+    parts = PublisherParser.parse string
+    import parts if parts
   end
 
   def to_s
