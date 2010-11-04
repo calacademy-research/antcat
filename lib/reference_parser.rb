@@ -4,10 +4,14 @@ class ReferenceParser
     string = string.dup
     parts = {}
 
-    parts.merge_unless_nil! parse_authors string
-    parts.merge_unless_nil! parse_year string
-    parts.merge_unless_nil! parse_title string
-    parts.merge_unless_nil! parse_citation string
+    begin
+      parts.merge_unless_nil! parse_authors string
+      parts.merge_unless_nil! parse_year string
+      parts.merge_unless_nil! parse_title string
+      parts.merge_unless_nil! parse_citation string
+    rescue
+      parts[:other] = string
+    end
 
     parts
   end

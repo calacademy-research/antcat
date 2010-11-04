@@ -63,7 +63,7 @@ describe ReferenceParser do
 
     it 'should parse a completely unknown reference' do
       ReferenceParser.parse('Bolton, B. 2006. Ants. A book.').should ==
-        {:authors => ['Bolton, B.'], :year => '2006', :title => 'Ants', :other => 'A book'}
+        {:authors => ['Bolton, B.'], :year => '2006', :other => 'Ants. A book.'}
     end
 
   end
