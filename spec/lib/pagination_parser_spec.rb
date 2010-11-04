@@ -12,18 +12,14 @@ describe PaginationParser do
     'i-ii, 279-655',
     'xi',
     '93-114, 121',
-    'P. 1'
+    'P. 1',
+    '33pp.'
   ].each do |pagination|
     it "should handle '#{pagination}'" do
       string = pagination.dup
       PaginationParser.parse(string).should == pagination
       string.should be_empty
     end
-  end
-
-  it "should handle no space between count and type" do
-    string = "33pp."
-    PaginationParser.parse(string).should == '33pp.'
   end
 
 end

@@ -2,7 +2,10 @@ grammar PagesInGrammar
   include PaginationGrammar
 
   rule pages_in
-    (pagination space)? ('In'|'in') ':'? space 
+    intro ':'? space 
   end
 
+  rule intro
+    (pagination space /\bin\b/) | /\bIn\b/
+  end
 end

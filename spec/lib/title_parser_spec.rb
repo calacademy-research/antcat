@@ -29,6 +29,12 @@ describe TitleParser do
       TitleParser.parse(string).should == 'Ants'
       string.should == "Pp. 32, 4, 5 in Ward, P.S. Ants. In: Bolton, B. More ants. New York:Wiley 32 pp."
     end
+
+    it "should not find 'in' in the middle of a title" do
+      string = "Ants in Madagascar. New York:Wiley 32 pp."
+      TitleParser.parse(string).should == 'Ants in Madagascar'
+      string.should == "New York:Wiley 32 pp."
+    end
   end
 
   describe "titles with periods in them" do
