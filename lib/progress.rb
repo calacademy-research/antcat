@@ -1,7 +1,13 @@
 class Progress
-  def self.init on
+  def self.init on, total_count
     $stderr = File.open('/dev/null', 'w') unless on
     @start = Time.now
+    @processed_count = 0
+    @total_count = total_count
+  end
+
+  def self.tally
+    @processed_count += 1
   end
 
   def self.puts string = ''
@@ -16,13 +22,13 @@ class Progress
     print '.'
   end
 
-  def self.rate count
-    sprintf "%.2f/sec", rate_per_sec(count)
+  def self.rate
+    sprintf "%.2f/sec", rate_per_sec(@processed_count)
   end
 
-  def self.time_left processed_count, total_count
-    mins_left = (total_count - processed_count).to_f / rate_per_sec(processed_count) / 60
-    mins_left = [mins_left, 1.0].max unless processed_count == total_count
+  def self.time_left
+    mins_left = (@total_count - @processed_count).to_f / rate_per_sec(@processed_count) / 60
+    mins_left = [mins_left, 1.0].max unless @processed_count == total_count
     sprintf "%.0f mins left", mins_left
   end
 
@@ -36,6 +42,14 @@ class Progress
 
   def self.count count, total, label
     "#{count} (#{percent(count, total)}) #{label}"
+  end
+
+  def self.processed_count
+    @processed_count
+  end
+
+  def self.total_count
+    @total_count
   end
 
   private

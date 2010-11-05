@@ -80,7 +80,7 @@ class HolSourceUrlImporter
   end
 
   def show_progress reference, result
-    rate = Progress.rate @processed_count
+    rate = Progress.rate
     time_left = Progress.time_left @processed_count, @total_count
     success_percent = Progress.percent @success_count, @processed_count
     result = result.ljust(9)

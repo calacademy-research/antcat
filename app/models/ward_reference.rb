@@ -2,18 +2,35 @@ class WardReference < ActiveRecord::Base
   belongs_to :reference
 
   def self.export show_progress = false
-    Progress.init show_progress
-    #all(:conditions => 'reference_id is null').each do |ward_reference|
+    Progress.init show_progress, count
+    Progress.puts "Exporting WardReferences to References..."
     all.each do |ward_reference|
       begin
         ward_reference.export
+        self.show_progress
       rescue StandardError => e
+        puts
+        p ward_reference
+        p ward_reference.citation
         puts e
         puts e.backtrace
       end
-      Progress.print '.'
     end
-    Progress.puts
+    self.show_results
+  end
+
+  def self.show_progress
+    Progress.tally
+    return unless Progress.processed_count % 10 == 0
+
+    count = "#{Progress.processed_count}/#{Progress.total_count}".rjust(12)
+    rate = Progress.rate.rjust(9)
+    time_left = Progress.time_left.rjust(11)
+    Progress.puts "#{count} #{rate} #{time_left}"
+  end
+
+  def self.show_results
+    Progress.puts "#{Progress.processed_count} references in #{Progress.elapsed} #{Progress.rate}"
   end
 
   def export
