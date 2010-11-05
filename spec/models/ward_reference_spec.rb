@@ -47,31 +47,36 @@ describe WardReference do
     describe "creating import format" do
       describe "notes" do
         it 'should parse out public notes' do
-          WardReference.new(:notes => "{Notes}").to_import_format.should include(:public_notes => 'Notes', :editor_notes => '')
+          WardReference.new(:notes => "{Notes}", :citation => 'none').
+            to_import_format.should include(:public_notes => 'Notes', :editor_notes => '')
         end
         it "should parse out editor notes" do
-          WardReference.new(:notes => 'Notes').to_import_format.should include(:public_notes => '', :editor_notes => 'Notes')
+          WardReference.new(:notes => 'Notes', :citation => 'none').
+            to_import_format.should include(:public_notes => '', :editor_notes => 'Notes')
         end
         it "should parse out public and editor's notes" do
-          WardReference.new(:notes => '{Public} Editor').to_import_format.should include(:public_notes => 'Public', :editor_notes => 'Editor')
+          WardReference.new(:notes => '{Public} Editor', :citation => 'none').
+            to_import_format.should include(:public_notes => 'Public', :editor_notes => 'Editor')
         end
       end
 
       it "should remove period from end of year" do
-        WardReference.new(:year => '1978d.').to_import_format.should include(:citation_year => '1978d')
+        WardReference.new(:year => '1978d.', :citation => 'none').
+          to_import_format.should include(:citation_year => '1978d')
       end
 
       it "should remove period from end of title" do
-        WardReference.new(:title => 'Title with period.').to_import_format.should include(:title => 'Title with period')
+        WardReference.new(:title => 'Title with period.', :citation => 'none').
+          to_import_format.should include(:title => 'Title with period')
       end
 
       it "send itself along" do
-        ward_reference = WardReference.create!(:title => 'Title with period.')
+        ward_reference = WardReference.create!(:title => 'Title with period.', :citation => 'none')
         ward_reference.to_import_format.should include(:id => ward_reference.id, :class => 'WardReference')
       end
 
       it "not modify WardReference fields" do
-        ward_reference = WardReference.create!(:authors => 'Bolton, B.')
+        ward_reference = WardReference.create!(:authors => 'Bolton, B.', :citation => 'none')
         ward_reference.authors.should == 'Bolton, B.'
         ward_reference.to_import_format
         ward_reference.authors.should == 'Bolton, B.'

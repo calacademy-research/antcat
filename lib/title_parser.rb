@@ -67,7 +67,7 @@ module TitleParser
 
   def self.known_place_name? string
     return unless publisher = PublisherParser.parse(string.dup)
-    Publisher.find_by_place publisher[:place]
+    Place.find_by_name publisher[:place]
   end
 
 end

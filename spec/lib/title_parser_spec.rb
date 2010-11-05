@@ -62,7 +62,7 @@ describe TitleParser do
     end
 
     it "should find the title when the place name is already known" do
-      Publisher.create! :name => 'Wiley', :place => 'Las Vegas'
+      Place.create! :name => 'Las Vegas'
       string = "Dodech. Ants. Las Vegas:Barnes 32 pp."
       TitleParser.parse(string).should == 'Dodech. Ants'
       string.should == "Las Vegas:Barnes 32 pp."

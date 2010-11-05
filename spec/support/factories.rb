@@ -17,7 +17,11 @@ end
 
 Factory.define :publisher do |row|
   row.name  'Wiley'
-  row.place 'New York'
+  row.association :place
+end
+
+Factory.define :place do |row|
+  row.name  'New York'
 end
 
 Factory.define :reference do |reference|

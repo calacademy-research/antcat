@@ -6,7 +6,7 @@ describe Publisher do
     it "should create and return the publisher" do
       publisher = Publisher.import(:name => 'Wiley', :place => 'Chicago')
       publisher.name.should == 'Wiley'
-      publisher.place.should == 'Chicago'
+      publisher.place.name.should == 'Chicago'
     end
 
     it "should reuse an existing publisher" do
@@ -17,8 +17,8 @@ describe Publisher do
 
   describe "searching" do
     it "should do fuzzy matching of name/place combinations" do
-      Publisher.create! :name => 'Wiley', :place => 'Chicago'
-      Publisher.create! :name => 'Wiley', :place => 'Toronto'
+      Publisher.create! :name => 'Wiley', :place => Place.create!(:name => 'Chicago')
+      Publisher.create! :name => 'Wiley', :place => Place.create!(:name => 'Toronto')
       Publisher.search('chw').should == ['Chicago: Wiley']
     end
     it "should find a match even if there's no place" do
@@ -41,7 +41,7 @@ describe Publisher do
 
   describe "representing as a string" do
     it "format name and place" do
-      Publisher.create!(:name => "Wiley", :place => 'New York').to_s.should == 'New York: Wiley'
+      Publisher.create!(:name => "Wiley", :place => Place.create!(:name => 'New York')).to_s.should == 'New York: Wiley'
     end
     it "should format correctly if there is no place" do
       Publisher.create!(:name => "Wiley").to_s.should == 'Wiley'
@@ -51,9 +51,13 @@ describe Publisher do
   describe 'validation' do
     it 'should require a name but not a place' do
       Publisher.new.should_not be_valid
-      Publisher.new(:place => 'place').should_not be_valid
       Publisher.new(:name => 'name').should be_valid
     end
+  end
+
+  it 'belongs to a Place' do
+    place = Place.create! :name => 'Bogota'
+    publisher = Publisher.new :name => 'Wiley', :place => place
   end
 
 end

@@ -111,7 +111,7 @@ describe NestedCitationParser do
   end
 
   it "should handle this quite complicated citation, as long as the publisher place is known" do
-    Publisher.create(:name => "doesn't matter", :place => 'Kota Kinabalu')
+    Place.create(:name => 'Kota Kinabalu')
     NestedCitationParser.parse("Pp. 89-162 in : Hashimoto, Y.; Rahman, H. (eds.) Inventory and collection. Total protocol for understanding of biodiversity. Kota Kinabalu: Research and Education Component, BBEC Programme (Universiti Malaysia Sabah), 310 pp.").should == {
     :nested => {
       :pages_in => 'Pp. 89-162 in :',

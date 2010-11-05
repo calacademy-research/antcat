@@ -76,7 +76,7 @@ class BookCoinsHelper < CoinsHelperBase
   def add_contents
     add 'rft.btitle', @reference.title
     add 'rft.pub', @reference.publisher.name
-    add 'rft.place', @reference.publisher.place
+    add 'rft.place', @reference.publisher.place.name
     add 'rft.pages', @reference.pagination
   end
 end

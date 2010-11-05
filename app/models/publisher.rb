@@ -1,11 +1,13 @@
 class Publisher < ActiveRecord::Base
+  belongs_to :place
   has_many :books
 
   validates_presence_of :name
 
   def self.import data
     return unless data[:name].present?
-    find_or_create_by_name_and_place(data[:name], data[:place])
+    place = Place.import data[:place]
+    find_or_create_by_name_and_place_id(data[:name], place.id)
   end
 
   def self.import_string string
@@ -14,13 +16,14 @@ class Publisher < ActiveRecord::Base
   end
 
   def to_s
-    string = place.present? ? "#{place}: " : ''
+    string = place.present? ? "#{place.name}: " : ''
     string << name
   end
 
   def self.search term
     search_expression = '%' + term.split('').join('%') + '%'
-    all(:conditions => ["CONCAT(COALESCE(place, ''), ':', name) LIKE ?", search_expression]).map(&:to_s)
+    all(:joins => 'LEFT OUTER JOIN places ON place_id = places.id',
+        :conditions => ["CONCAT(COALESCE(places.name, ''), ':', publishers.name) LIKE ?", search_expression]).map(&:to_s)
   end
 
 end

@@ -10,14 +10,14 @@ describe BookReference do
         {:pagination => '32 pp.', :publisher => {:name => 'Wiley', :place => 'Chicago'}})
       reference.pagination.should == '32 pp.'
       reference.publisher.name.should == 'Wiley'
-      reference.publisher.place.should == 'Chicago'
+      reference.publisher.place.name.should == 'Chicago'
       reference.source_reference.should == ward_reference
     end
   end
 
   describe "citation_string" do
     it "should format a citation_string" do
-      publisher = Publisher.create! :name => "Wiley", :place => 'New York'
+      publisher = Publisher.create! :name => "Wiley", :place => Place.create!(:name => 'New York')
       reference = BookReference.new :title => 'asdf', :publisher => publisher, :pagination => '32 pp.'
       reference.citation_string.should == 'New York: Wiley, 32 pp.'
     end
