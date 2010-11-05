@@ -1,5 +1,5 @@
 class Progress
-  def self.init on, total_count
+  def self.init on, total_count = nil
     $stderr = File.open('/dev/null', 'w') unless on
     @start = Time.now
     @processed_count = 0
@@ -22,13 +22,16 @@ class Progress
     print '.'
   end
 
-  def self.rate
-    sprintf "%.2f/sec", rate_per_sec(@processed_count)
+  def self.rate processed_count = nil
+    processed_count ||= @processed_count
+    sprintf "%.2f/sec", rate_per_sec(processed_count)
   end
 
-  def self.time_left
-    mins_left = (@total_count - @processed_count).to_f / rate_per_sec(@processed_count) / 60
-    mins_left = [mins_left, 1.0].max unless @processed_count == total_count
+  def self.time_left total_count = nil, processed_count = nil
+    total_count ||= @total_count
+    processed_count ||= @processed_count
+    mins_left = (total_count - processed_count).to_f / rate_per_sec(processed_count) / 60
+    mins_left = [mins_left, 1.0].max unless processed_count == total_count
     sprintf "%.0f mins left", mins_left
   end
 
