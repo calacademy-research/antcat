@@ -48,17 +48,15 @@ describe ReferenceParser do
         :title => '[Untitled. Pheidole wheelerorum W. MacKay new species.]',
         :nested => {
           :pages_in => 'Pp. 96-98 in:',
+          :authors => ['MacKay, W.', 'Lowrie, D.', 'Fisher, A.', 'MacKay, E.', 'Barnes, F.', 'Lowrie, D.'],
+          :title => 'The ants of Los Alamos County, New Mexico (Hymenoptera: Formicidae).',
           :nested => {
-            :authors => ['MacKay, W.', 'Lowrie, D.', 'Fisher, A.', 'MacKay, E.', 'Barnes, F.', 'Lowrie, D.'],
-            :title => 'The ants of Los Alamos County, New Mexico (Hymenoptera: Formicidae).',
-            :nested => {
-              :pages_in => 'Pp. 79-131 in:',
-              :authors => ['Trager, J. C. (ed.)'],
-              :title => 'Advances in myrmecology',
-              :book => {
-                :publisher => {:name => 'E. J. Brill', :place => 'Leiden'},
-                :pagination => 'xxvii + 551 pp.'
-              }
+            :pages_in => 'Pp. 79-131 in:',
+            :authors => ['Trager, J. C. (ed.)'],
+            :title => 'Advances in myrmecology',
+            :book => {
+              :publisher => {:name => 'E. J. Brill', :place => 'Leiden'},
+              :pagination => 'xxvii + 551 pp.'
             }
           }
         }
@@ -114,15 +112,13 @@ describe ReferenceParser do
       ReferenceParser.parse_citation("Pp. 96-98 in: MacKay, W., Lowrie, D., Fisher, A., MacKay, E., Barnes, F., Lowrie, D. The ants of Los Alamos County, New Mexico (Hymenoptera: Formicidae). Pp. 79-131 in: Trager, J. C. (ed.) Advances in myrmecology. Leiden: E. J. Brill, xxvii + 551 pp. [1988]").should == {
         :nested => {
           :pages_in => 'Pp. 96-98 in:',
+          :authors => ['MacKay, W.', 'Lowrie, D.', 'Fisher, A.', 'MacKay, E.', 'Barnes, F.', 'Lowrie, D.'],
+          :title => 'The ants of Los Alamos County, New Mexico (Hymenoptera: Formicidae).',
           :nested => {
-            :authors => ['MacKay, W.', 'Lowrie, D.', 'Fisher, A.', 'MacKay, E.', 'Barnes, F.', 'Lowrie, D.'],
-            :title => 'The ants of Los Alamos County, New Mexico (Hymenoptera: Formicidae).',
-            :nested => {
-              :pages_in => 'Pp. 79-131 in:',
-              :authors => ['Trager, J. C. (ed.)'],
-              :title => 'Advances in myrmecology',
-              :book => {:publisher => {:name => 'E. J. Brill', :place => 'Leiden'}, :pagination => 'xxvii + 551 pp.'}
-            }
+            :pages_in => 'Pp. 79-131 in:',
+            :authors => ['Trager, J. C. (ed.)'],
+            :title => 'Advances in myrmecology',
+            :book => {:publisher => {:name => 'E. J. Brill', :place => 'Leiden'}, :pagination => 'xxvii + 551 pp.'}
           }
         }
       }
