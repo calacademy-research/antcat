@@ -133,6 +133,11 @@ describe ReferenceParser do
       ReferenceParser.parse_citation('A book.').should == {:other => 'A book'}
     end
 
+    it "should probably just call this one unknown" do
+      ReferenceParser.parse_citation("Journal of Insect Science 7(42), 14 pp. (available online: insectscience.org/7.42).").should ==
+        {:other => "Journal of Insect Science 7(42), 14 pp. (available online: insectscience.org/7.42)"}
+    end
+
   end
 
 end

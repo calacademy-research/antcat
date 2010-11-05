@@ -11,6 +11,8 @@ module BookCitationParser
     book = match.value
     book[:pagination] = pagination
     {:book => book}
+  rescue Citrus::ParseError
+    nil
   end
 
   def self.parse_pagination string
