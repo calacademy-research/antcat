@@ -40,7 +40,7 @@ module TitleParser
   end
 
   def self.can_be_start_of_citation? string
-    rc = string !~ /^\,/
+    string !~ /^[a-z\,]/
   end
 
   def self.start_of_citation? string

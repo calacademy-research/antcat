@@ -76,9 +76,22 @@ describe ReferenceParser do
         {:authors => ['Bolton, B.'], :year => '2006', :title => 'Ants', :other => 'A book'}
     end
 
-    it "can't be expected to handle this mess, but shouldn't go into infinite loop, either" do
+    it "actually can handle this mess!" do
       ReferenceParser.parse('Bolton, B. 2006. Taxonomy, phylogeny: Philip Jr., 1904-1983. Series Entomologica (Dordrecht) 33:1-514.').should ==
-        {:authors => ['Bolton, B.'], :year => '2006', :title => 'Taxonomy, phylogeny: Philip Jr', :other => ', 1904-1983. Series Entomologica (Dordrecht) 33:1-514'}
+        {:authors => ['Bolton, B.'], :year => '2006', :title => 'Taxonomy, phylogeny: Philip Jr., 1904-1983',
+         :article => {:journal => "Series Entomologica (Dordrecht)", :series_volume_issue => "33", :pagination => '1-514'}}
+    end
+
+    it "can't really help parsing this as an article reference" do
+      ReferenceParser.parse("Ward, P. 1980. Ameisen aus Sao Paulo (Brasilien), Paraguay etc. gesammelt von Prof. Herm. v. Ihering, Dr. Lutz, Dr. Fiebrig, etc. Verhandlungen der Kaiserlich-Königlichen Zoologisch-Botanischen Gesellschaft in Wien 58:340-418").should == {
+        :authors => ['Ward, P.'],
+        :year => '1980',
+        :title => 'Ameisen aus Sao Paulo (Brasilien), Paraguay etc. gesammelt von Prof',
+        :article => {
+          :journal => 'Herm. v. Ihering, Dr. Lutz, Dr. Fiebrig, etc. Verhandlungen der Kaiserlich-Königlichen Zoologisch-Botanischen Gesellschaft in Wien',
+          :series_volume_issue => '58',
+          :pagination => '340-418'}
+      }
     end
 
   end
@@ -123,13 +136,4 @@ describe ReferenceParser do
 
   end
 
-  describe "parsing a title" do
-    it "should take a special journal name into account" do
-      string = "Ameisen aus Sao Paulo (Brasilien), Paraguay etc. gesammelt von Prof. Herm. v. Ihering, Dr. Lutz, Dr. Fiebrig, etc. Verhandlungen der Kaiserlich-Königlichen Zoologisch-Botanischen Gesellschaft in Wien 58:340-418"
-      ReferenceParser.parse_title(string).should ==
-        {:title => 'Ameisen aus Sao Paulo (Brasilien), Paraguay etc. gesammelt von Prof. Herm. v. Ihering, Dr. Lutz, Dr. Fiebrig, etc'}
-      string.should == "Verhandlungen der Kaiserlich-Königlichen Zoologisch-Botanischen Gesellschaft in Wien 58:340-418"
-    end
-
-  end
 end

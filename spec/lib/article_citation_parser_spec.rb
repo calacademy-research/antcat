@@ -36,6 +36,10 @@ describe ArticleCitationParser do
       {:article => {:journal => 'Ann. Mag. Nat. Hist.', :series_volume_issue => '(I)C(xix)', :pagination => '129-131'}}
   end
 
+  it "should recognize that if the first letter of the citation is a lowercase letter, then something's wrong" do
+    ArticleCitationParser.parse('gesammelt von Prof. Herm. v. Ihering, Dr. Lutz, Dr. Fiebrig, etc. Verhandlungen der Kaiserlich-Königlichen Zoologisch-Botanischen Gesellschaft in Wien 58:340-41').should be_nil
+  end
+
   describe "parsing fields from series_volume_issue" do
     it "can parse out volume and issue" do
       ArticleCitationParser.get_series_volume_issue_parts("92(32)").should == {:volume => '92', :issue => '32'}

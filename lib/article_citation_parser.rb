@@ -5,6 +5,8 @@ module ArticleCitationParser
     matches = string.match(/(.+?)(\S+)$/) or return
     journal_title = matches[1].strip
 
+    return if string =~ /^[a-z]/
+
     matches = matches[2].match /(.+?):(.+)$/
     return unless matches
     series_volume_issue = matches[1]

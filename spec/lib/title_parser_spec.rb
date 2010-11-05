@@ -79,6 +79,19 @@ describe TitleParser do
       TitleParser.parse(string).should == 'Taxonomy, phylogeny: Philip Jr., 1904-1983'
     end
 
+    it "should be able to handle this weird journal name, as long as it exists" do
+      Journal.create! :title => 'Verhandlungen der Kaiserlich-Königlichen Zoologisch-Botanischen Gesellschaft in Wien'
+      string = "Ameisen aus Sao Paulo (Brasilien), Paraguay etc. gesammelt von Prof. Herm. v. Ihering, Dr. Lutz, Dr. Fiebrig, etc. Verhandlungen der Kaiserlich-Königlichen Zoologisch-Botanischen Gesellschaft in Wien 58:340-418"
+      TitleParser.parse(string).should == 'Ameisen aus Sao Paulo (Brasilien), Paraguay etc. gesammelt von Prof. Herm. v. Ihering, Dr. Lutz, Dr. Fiebrig, etc'
+      string.should == "Verhandlungen der Kaiserlich-Königlichen Zoologisch-Botanischen Gesellschaft in Wien 58:340-418"
+    end
+
+    it "should be able to handle this weird one a little better, because it should ignore the period before 'gesammelt' as that word is in lowercase" do
+      string = "Ameisen aus Sao Paulo (Brasilien), Paraguay etc. gesammelt von Prof. Herm. v. Ihering, Dr. Lutz, Dr. Fiebrig, etc. Verhandlungen der Kaiserlich-Königlichen Zoologisch-Botanischen Gesellschaft in Wien 58:340-418"
+      TitleParser.parse(string).should == 'Ameisen aus Sao Paulo (Brasilien), Paraguay etc. gesammelt von Prof'
+      string.should == "Herm. v. Ihering, Dr. Lutz, Dr. Fiebrig, etc. Verhandlungen der Kaiserlich-Königlichen Zoologisch-Botanischen Gesellschaft in Wien 58:340-418"
+    end
+
   end
 
 end
