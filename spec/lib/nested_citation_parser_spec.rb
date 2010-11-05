@@ -3,13 +3,6 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe NestedCitationParser do
 
   describe "if it's not a nested reference" do
-    describe "if it's empty" do
-      it "should return nil" do
-        [nil, ''].each do |citation|
-          NestedCitationParser.parse(citation).should == nil
-        end
-      end
-    end
 
     describe "if it's a book citation" do
       it "should return nil" do

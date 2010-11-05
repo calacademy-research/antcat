@@ -9,8 +9,6 @@ class ReferenceParser
       parts.merge_unless_nil! parse_year string
       parts.merge_unless_nil! parse_title string
       parts.merge_unless_nil! parse_citation string
-    rescue
-      parts[:other] = string
     end
 
     parts

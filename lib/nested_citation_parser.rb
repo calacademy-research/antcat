@@ -1,7 +1,11 @@
 module NestedCitationParser
 
   def self.parse string
-    pages_in = PagesInGrammar.parse string rescue nil
+    begin
+      pages_in = PagesInGrammar.parse string
+    rescue Citrus::ParseError
+      pages_in = nil
+    end
     return unless pages_in
 
     rest = string[pages_in.length..-1]
