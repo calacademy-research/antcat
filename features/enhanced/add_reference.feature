@@ -118,15 +118,6 @@ Feature: Add reference
       And I should not see a new edit form
       And I should see "Ward, B.L.; Bolton, B. 1981. A reference title. In Muller, Brown 1928. Ants. p. 23."
 
-  Scenario: Leaving authors blank when adding a reference
-    Given I am logged in
-    When I go to the main page
-      And I follow "Add reference"
-      And I fill in "reference_title" with "adsf"
-      And I press the "Save" button
-    Then I should see the edit form
-      And I should see "Authors can't be blank"
-
   Scenario: Leaving other fields blank when adding an article reference
     Given I am logged in
     When I go to the main page

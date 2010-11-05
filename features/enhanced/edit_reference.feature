@@ -43,49 +43,49 @@ Feature: Edit reference
     Given I am logged in
       And the following entries exist in the bibliography
       |authors|title|citation  |year|
-      |Fisher |Ants |Psyche 6:4|2010|
+      |Fisher, B.L. |Ants |Psyche 6:4|2010|
     When I go to the main page
       And I click the reference
       And I fill in "reference_citation_year" with "1910a"
       And I press the "Save" button
       And I fill in "start_year" with "1910"
       And I press "Search"
-    Then I should see "Fisher 1910a"
+    Then I should see "Fisher, B.L. 1910a"
 
   Scenario: Change a reference's type
     Given I am logged in
       And the following entries exist in the bibliography
       |authors|title|citation  |year|
-      |Fisher |Ants |Psyche 6:4|2010|
+      |Fisher, B. |Ants |Psyche 6:4|2010|
     When I go to the main page
       And I click the reference
       And I follow "Book"
       And I fill in "publisher_string" with "New York: Wiley"
       And I fill in "book_pagination" with "22 pp."
       And I press the "Save" button
-    Then I should see "Fisher 2010. Ants. New York: Wiley, 22 pp."
+    Then I should see "Fisher, B. 2010. Ants. New York: Wiley, 22 pp."
 
   Scenario: See the correct tab initially
     Given I am logged in
       And the following entries exist in the bibliography
       |authors|title|citation               |year|
-      |Fisher |Ants |New York: Wiley, 22 pp.|2010|
+      |Fisher, B. |Ants |New York: Wiley, 22 pp.|2010|
     When I go to the main page
       And I click the reference
       And I fill in "publisher_string" with "New York: Harcourt"
       And I press the "Save" button
-    Then I should see "Fisher 2010. Ants. New York: Harcourt, 22 pp."
+    Then I should see "Fisher, B. 2010. Ants. New York: Harcourt, 22 pp."
 
   Scenario: See the correct tab initially
     Given I am logged in
       And the following entries exist in the bibliography
       |authors|title|citation|year|
-      |Fisher |Ants |New York|2010|
+      |Fisher, B. |Ants |New York|2010|
     When I go to the main page
       And I click the reference
       And I fill in "reference_citation" with "New Jersey"
       And I press the "Save" button
-    Then I should see "Fisher 2010. Ants. New Jersey."
+    Then I should see "Fisher, B. 2010. Ants. New Jersey."
 
   Scenario: Clearing a book reference's fields
     Given I am logged in
@@ -101,7 +101,6 @@ Feature: Edit reference
       And I fill in "book_pagination" with ""
       And I press the "Save" button
     Then I should see the edit form
-      And I should see "Authors can't be blank"
       And I should see "Year can't be blank"
       And I should see "Title can't be blank"
       And I should see "Publisher can't be blank"
@@ -122,7 +121,6 @@ Feature: Edit reference
       And I fill in "article_pagination" with ""
       And I press the "Save" button
     Then I should see the edit form
-      And I should see "Authors can't be blank"
       And I should see "Title can't be blank"
       And I should see "Year can't be blank"
       And I should see "Journal can't be blank"
@@ -142,7 +140,6 @@ Feature: Edit reference
       And I fill in "reference_citation" with ""
       And I press the "Save" button
     Then I should see the edit form
-      And I should see "Authors can't be blank"
       And I should see "Title can't be blank"
       And I should see "Year can't be blank"
       And I should see "Citation can't be blank"
