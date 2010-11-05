@@ -2,7 +2,7 @@ grammar PagesInGrammar
   include PaginationGrammar
 
   rule pages_in
-    intro ':'? space 
+    intro space ':'? space 
   end
 
   rule intro

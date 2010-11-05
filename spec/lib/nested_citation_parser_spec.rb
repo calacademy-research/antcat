@@ -76,14 +76,14 @@ describe NestedCitationParser do
     )
     parts.should == {
       :nested => {
-      :authors => [],
-      :title => 'Atti della Terza Riunione degli Scienziati Italiani tenuta in Firenze nel settembre del 1841',
-      :book => {
-      :publisher => {:name => 'Galileiana', :place => 'Firenze'},
-      :pagination => '791 pp.',
-    },
-    :pages_in => 'Pp. 398-400 in:',
-    }
+        :authors => [],
+        :title => 'Atti della Terza Riunione degli Scienziati Italiani tenuta in Firenze nel settembre del 1841',
+        :book => {
+          :publisher => {:name => 'Galileiana', :place => 'Firenze'},
+          :pagination => '791 pp.',
+        },
+      :pages_in => 'Pp. 398-400 in:',
+      }
     }
   end
 
@@ -108,6 +108,21 @@ describe NestedCitationParser do
   it "should handle different paginations" do
     NestedCitationParser.parse(
       "Pp. 63-396 (part) in: Baroni Urbani, C.; de Andrade, M. L. The ant genus Proceratium in the extant and fossil record (Hymenoptera: Formicidae). Museo Regionale di Scienze Naturali Monografie (Turin) 36:1-492.")[:nested][:pages_in].should == 'Pp. 63-396 (part) in:'
+  end
+
+  it "should handle this quite complicated citation, as long as the publisher place is known" do
+    Publisher.create(:name => "doesn't matter", :place => 'Kota Kinabalu')
+    NestedCitationParser.parse("Pp. 89-162 in : Hashimoto, Y.; Rahman, H. (eds.) Inventory and collection. Total protocol for understanding of biodiversity. Kota Kinabalu: Research and Education Component, BBEC Programme (Universiti Malaysia Sabah), 310 pp.").should == {
+    :nested => {
+      :pages_in => 'Pp. 89-162 in :',
+      :authors => ['Hashimoto, Y.', 'Rahman, H. (eds.)'],
+      :title => 'Inventory and collection. Total protocol for understanding of biodiversity',
+      :book => {
+        :publisher => {:name => 'Research and Education Component, BBEC Programme (Universiti Malaysia Sabah)', :place => 'Kota Kinabalu'},
+        :pagination => '310 pp.',
+      }
+    }
+  }
   end
 
 end
