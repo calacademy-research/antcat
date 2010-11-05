@@ -41,10 +41,6 @@ class Reference < ActiveRecord::Base
     when data[:other]
       OtherReference.import create_data, data[:other]
     end
-  rescue StandardError => e
-    puts e
-    puts data.inspect
-    raise
   end
 
   def self.search terms = {}
