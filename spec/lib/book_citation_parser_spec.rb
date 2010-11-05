@@ -30,7 +30,9 @@ describe BookCitationParser do
         'i-ii, 279-655',
         'xi',
         '93-114, 121',
-        'P. 1'
+        'P. 1',
+        '32pp.',
+        '32 pp.',
       ].each do |pagination|
         BookCitationParser.parse("Tokyo: Keishu-sha, #{pagination}").should ==(
           {:book => {:publisher => {:name =>  'Keishu-sha', :place => 'Tokyo'}, :pagination => pagination}}
@@ -40,6 +42,11 @@ describe BookCitationParser do
 
     it "should handle a publisher with a comma in its name" do
       BookCitationParser.parse('New York: Little, Brown, vii + 70 pp.').should == 
+        {:book => {:publisher => {:name => 'Little, Brown', :place => 'New York'}, :pagination => 'vii + 70 pp.'}}
+    end
+
+    it "should handle a citation with no space after the colon" do
+      BookCitationParser.parse('New York:Little, Brown, vii + 70 pp.').should == 
         {:book => {:publisher => {:name => 'Little, Brown', :place => 'New York'}, :pagination => 'vii + 70 pp.'}}
     end
 

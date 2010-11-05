@@ -110,20 +110,4 @@ describe NestedCitationParser do
       "Pp. 63-396 (part) in: Baroni Urbani, C.; de Andrade, M. L. The ant genus Proceratium in the extant and fossil record (Hymenoptera: Formicidae). Museo Regionale di Scienze Naturali Monografie (Turin) 36:1-492.")[:nested][:pages_in].should == 'Pp. 63-396 (part) in:'
   end
 
-  it "should handle a funky title containing periods in a certain journal" do
-    NestedCitationParser.parse(
-      "P. 391 in: Forel, A. Ameisen aus Sao Paulo (Brasilien), Paraguay etc. gesammelt von Prof. Herm. v. Ihering, Dr. Lutz, Dr. Fiebrig, etc. Verhandlungen der Kaiserlich-Königlichen Zoologisch-Botanischen Gesellschaft in Wien 58:340-418").should == {
-      :nested => {
-        :pages_in => 'P. 391 in:',
-        :authors => ['Forel, A.'],
-        :title => 'Ameisen aus Sao Paulo (Brasilien), Paraguay etc. gesammelt von Prof. Herm. v. Ihering, Dr. Lutz, Dr. Fiebrig, etc',
-        :article => {
-          :journal => 'Verhandlungen der Kaiserlich-Königlichen Zoologisch-Botanischen Gesellschaft in Wien',
-          :series_volume_issue => '58',
-          :pagination => '340-418',
-        },
-      }
-    }
-  end
-
 end

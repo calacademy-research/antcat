@@ -1,6 +1,8 @@
 grammar PublisherGrammar
+  include CommonGrammar
+
   rule publisher
-    (publisher_place ': ' publisher_name) {
+    (publisher_place ':' space publisher_name) {
       {:publisher => {:name => publisher_name, :place => publisher_place}}
     }
   end

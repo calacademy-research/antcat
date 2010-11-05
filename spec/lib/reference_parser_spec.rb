@@ -4,12 +4,15 @@ describe ReferenceParser do
 
   describe 'parsing' do
 
-    it "should give up if it can't properly parse the title" do
-      ReferenceParser.parse("Ward, P. 2001. Title with. periods. Baltimore:Wiley 32 pp.").should == {
+    it "should not start a citation on a lowercase letter" do
+      ReferenceParser.parse("Ward, P. 2001. Title with. periods. Baltimore:Wiley, 32 pp.").should == {
         :authors => ['Ward, P.'],
         :year => '2001',
-        :title => 'Title with',
-        :other => 'periods. Baltimore:Wiley 32 pp'
+        :title => 'Title with. periods',
+        :book => {
+          :publisher => {:name => 'Wiley', :place => 'Baltimore'},
+          :pagination => '32 pp.'
+        }
       }
     end
 

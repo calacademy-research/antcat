@@ -5,7 +5,6 @@ class WardReference < ActiveRecord::Base
     Progress.init show_progress
     #all(:conditions => 'reference_id is null').each do |ward_reference|
     all.each do |ward_reference|
-      p ward_reference
       begin
         ward_reference.export
       rescue StandardError => e
