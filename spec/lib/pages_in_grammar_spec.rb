@@ -10,4 +10,7 @@ describe PagesInGrammar do
   it "should handle 'Pp. 34-5, 1 in:'" do
     PagesInGrammar.parse('Pp. 34-5, 1 in:').should == 'Pp. 34-5, 1 in:'
   end
+  it "should handle 'Pp. 63-396 (part) in:'" do
+    PagesInGrammar.parse('Pp. 63-396 (part) in:').should == 'Pp. 63-396 (part) in:'
+  end
 end

@@ -8,7 +8,7 @@ grammar PaginationGrammar
   rule pagination_clause
     section_clause |
     (note space section_clause) |
-    (section_type space section_size '.'?)
+    (section_type space section_size (space note)? '.'?)
   end
 
   rule section_clause

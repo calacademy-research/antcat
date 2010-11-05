@@ -14,7 +14,8 @@ describe PaginationParser do
     '93-114, 121',
     'P. 1',
     '33pp.',
-    '33 pp.'
+    '33 pp.',
+    'Pp. 63-396 (part)',
   ].each do |pagination|
     it "should handle '#{pagination}'" do
       string = pagination.dup
