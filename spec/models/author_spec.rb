@@ -64,8 +64,8 @@ describe Author do
         Author.create! :name => name
       end
       reference = Factory :reference, :authors => [Author.find_by_name('Most Recent')]
-      AuthorParticipation.create! :created_at => Time.now - 1, :author => Author.find_by_name('Recent'), :reference => reference
-      AuthorParticipation.create! :created_at => Time.now - 2, :author => Author.find_by_name('Old'), :reference => reference
+      AuthorParticipation.create! :created_at => Time.now - 5, :author => Author.find_by_name('Recent'), :reference => reference
+      AuthorParticipation.create! :created_at => Time.now - 10, :author => Author.find_by_name('Old'), :reference => reference
 
       results = Author.search
 

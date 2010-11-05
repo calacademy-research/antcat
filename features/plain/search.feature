@@ -6,35 +6,40 @@ Feature: Searching references
 
   Background:
     Given the following entries exist in the bibliography
-      |authors     |year         |title                |citation  |
-      |Brian Fisher|1995b        |Anthill              |Ants 1:1-2|
-      |Barry Bolton|2010 ("2011")|Ants of North America|Ants 2:1-2|
+      |authors    |year         |title                |citation  |
+      |Fisher, B. |1995b        |Anthill              |Ants 1:1-2|
+      |Forel, M.  |1995b        |Formis               |Ants 1:1-2|
+      |Bolton, B. |2010 ("2011")|Ants of North America|Ants 2:1-2|
 
   Scenario: Not searching yet
     When I go to the main page
-    Then I should see "Brian Fisher"
-      And I should see "Barry Bolton"
+    Then I should see "Fisher, B."
+      And I should see "Forel, M."
+      And I should see "Bolton, B."
 
   Scenario: Finding one reference for an author
     When I go to the main page
-      And I fill in "author" with "Brian"
+      And I fill in "author" with "Fisher"
       And I press "Search"
-    Then I should see "Brian Fisher"
-      And I should not see "Barry Bolton"
+    Then I should see "Fisher, B."
+      And I should not see "Bolton, B."
+      And I should not see "Forel, M."
 
   Scenario: Finding two references for a string
     When I go to the main page
-      And I fill in "author" with "b"
+      And I fill in "author" with "f"
       And I press "Search"
-    Then I should see "Brian Fisher"
-      And I should see "Barry Bolton"
+    Then I should see "Fisher, B."
+      And I should see "Forel, M."
+      And I should not see "Bolton, B."
 
   Scenario: Finding nothing
     When I go to the main page
       And I fill in "author" with "zzzzzz"
       And I press "Search"
-    Then I should not see "Brian Fisher"
-      And I should not see "Barry Bolton"
+    Then I should not see "Fisher, B."
+      And I should not see "Bolton, B."
+      And I should not see "Forel, M."
       And I should see "No results found"
 
   Scenario: Clearing the search
@@ -52,23 +57,26 @@ Feature: Searching references
       And the "author" field should contain ""
       And the "start_year" field should contain ""
       And the "end_year" field should contain ""
-      And I should see "Brian Fisher"
-      And I should see "Barry Bolton"
+      And I should see "Fisher, B."
+      And I should see "Bolton, B."
+      And I should see "Forel, M."
 
   Scenario: Searching by year
     When I go to the main page
       And I fill in "start_year" with "1995"
       And I fill in "end_year" with "1995"
       And I press "Search"
-    Then I should see "Brian Fisher 1995"
-      And I should not see "Barry Bolton 2010"
+    Then I should see "Fisher, B. 1995"
+      And I should see "Forel, M. 1995"
+      And I should not see "Bolton, B. 2010"
 
   Scenario: Searching by one year
     When I go to the main page
       And I fill in "start_year" with "1995"
       And I press "Search"
-    Then I should see "Brian Fisher 1995"
-      And I should see "Barry Bolton 2010"
+    Then I should see "Fisher, B. 1995"
+      And I should see "Forel, M. 1995"
+      And I should see "Bolton, B. 2010"
 
   Scenario: Searching by a year range
     Given the following entries exist in the bibliography
@@ -90,30 +98,30 @@ Feature: Searching references
     When I go to the main page
       And I fill in "end_year" with "1995"
       And I press "Search"
-    Then I should see "Brian Fisher 1995"
-      And I should not see "Barry Bolton 2010"
+    Then I should see "Fisher, B. 1995"
+      And I should not see "Bolton, B. 2010"
 
   Scenario: Searching by start year
     When I go to the main page
       And I fill in "start_year" with "2010"
       And I press "Search"
-    Then I should not see "Brian Fisher 1995"
-      And I should see "Barry Bolton 2010"
+    Then I should not see "Fisher, B. 1995"
+      And I should see "Bolton, B. 2010"
     
   Scenario: Searching by author and year
     Given the following entries exist in the bibliography
        |authors     |year |title|citation    |
-       |Brian Fisher|1895a|title5|Ants 11:1-2|
-       |Brian Fisher|1810b|title6|Ants 12:1-2|
-       |Barry Bolton|1810e|title7|Ants 13:1-2|
-       |Barry Bolton|1895d|title8|Ants 14:1-2|
+       |Fisher, B.|1895a|title5|Ants 11:1-2|
+       |Fisher, B.|1810b|title6|Ants 12:1-2|
+       |Bolton, B.|1810e|title7|Ants 13:1-2|
+       |Bolton, B.|1895d|title8|Ants 14:1-2|
     When I go to the main page
-      And I fill in "author" with "brian"
+      And I fill in "author" with "fisher"
       And I fill in "start_year" with "1895"
       And I fill in "end_year" with "1895"
       And I press "Search"
-    Then I should see "Brian Fisher 1895"
-      And I should not see "Brian Fisher 1810"
-      And I should not see "Barry Bolton 1810"
-      And I should not see "Barry Bolton 1895"
+    Then I should see "Fisher, B. 1895"
+      And I should not see "Fisher, B. 1810"
+      And I should not see "Bolton, B. 1810"
+      And I should not see "Bolton, B. 1895"
 
