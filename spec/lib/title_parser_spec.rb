@@ -94,4 +94,17 @@ describe TitleParser do
 
   end
 
+  describe "titles that include bracketed expressions" do
+    it "should include bracketed expressions in the title when the period is inside the brackets" do
+      string = "[In Russian.] Tartu"
+      TitleParser.parse(string).should == '[In Russian.]'
+      string.should == "Tartu"
+    end
+    it "should include bracketed expressions in the title when the period is outside the brackets" do
+      string = "[In Russian]. Tartu"
+      TitleParser.parse(string).should == '[In Russian]'
+      string.should == "Tartu"
+    end
+  end
+
 end

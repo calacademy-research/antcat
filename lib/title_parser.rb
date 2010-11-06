@@ -15,19 +15,19 @@ module TitleParser
   def self.find_title_before_citation string
     end_of_title = nil
     start_of_citation = nil
-    scanner = StringScanner.new string
+    @scanner = StringScanner.new string
 
-    while scanner.scan_until /\./
-      period_pos = scanner.pos
-      scanner.scan /\s*/
-      next unless can_be_start_of_citation? scanner.rest
+    while scan_until_possible_end_of_title
+      period_pos = @scanner.pos
+      @scanner.scan /\s*/
+      next unless can_be_start_of_citation? @scanner.rest
 
       end_of_title ||= (period_pos - 1)
-      start_of_citation ||= scanner.pos
+      start_of_citation ||= @scanner.pos
 
-      if start_of_citation? scanner.rest
+      if start_of_citation? @scanner.rest
         end_of_title = period_pos - 1
-        start_of_citation = scanner.pos
+        start_of_citation = @scanner.pos
         break
       end
     end
@@ -37,6 +37,10 @@ module TitleParser
       return title
     end
     nil
+  end
+
+  def self.scan_until_possible_end_of_title
+    @scanner.scan_until /(\.\] )|(\]\.)|(\.)/
   end
 
   def self.can_be_start_of_citation? string
