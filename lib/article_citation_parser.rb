@@ -2,6 +2,13 @@ module ArticleCitationParser
 
   def self.parse string
     return unless string.present?
+
+    begin
+      parse = ArticleCitationGrammar.parse string
+    rescue Citrus::ParseError
+      return
+    end
+
     matches = string.match(/(.+?)(\S+)$/) or return
     journal_title = matches[1].strip
 

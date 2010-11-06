@@ -1,0 +1,14 @@
+grammar ArticleCitationGrammar
+  include PaginationGrammar
+
+  rule article_citation
+    (journal_title_series_volume_issue ':' pagination) {
+      {:journal_title_series_volume_issue => journal_title_series_volume_issue,
+       :pagination => pagination}
+    }
+  end
+
+  rule journal_title_series_volume_issue
+    [^:]+
+  end
+end
