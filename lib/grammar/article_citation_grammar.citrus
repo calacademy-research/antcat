@@ -9,6 +9,6 @@ grammar ArticleCitationGrammar
   end
 
   rule journal_title_series_volume_issue
-    [^:]+
+    [A-Z] [^:]+
   end
 end

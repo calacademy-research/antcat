@@ -4,22 +4,37 @@ module ArticleCitationParser
     return unless string.present?
 
     begin
-      parse = ArticleCitationGrammar.parse string
+      parse = ArticleCitationGrammar.parse(string).value
     rescue Citrus::ParseError
       return
     end
 
-    matches = string.match(/(.+?)(\S+)$/) or return
-    journal_title = matches[1].strip
+    pagination = parse[:pagination]
+    rest = parse[:journal_title_series_volume_issue]
+    series_volume_issue = parse_series_volume_issue rest
+    journal_title = rest.strip
 
-    return if string =~ /^[a-z]/
+    {:article => {:journal => journal_title, :series_volume_issue => series_volume_issue, :pagination => pagination}}
+  end
 
-    matches = matches[2].match /(.+?):(.+)$/
-    return unless matches
-    series_volume_issue = matches[1]
-    pages = ReferenceParser.remove_period_from matches[2]
+  def self.parse_series_volume_issue string
+    series_volume_issue_start = nil
+    pos = series_volume_issue_end = string.length - 1
+    loop do
+      candidate = string[pos..series_volume_issue_end]
+      begin
+        result = SeriesVolumeIssueGrammar.parse string[pos..series_volume_issue_end]
+        series_volume_issue_start = pos if result == candidate
+      rescue
+      end
+      pos -= 1
+      break if pos <  0
+    end
 
-    {:article => {:journal => journal_title, :series_volume_issue => series_volume_issue, :pagination => pages}}
+    range = series_volume_issue_start..series_volume_issue_end
+    series_volume_issue = string[range]
+    string[range] = ''
+    series_volume_issue
   end
 
   def self.get_series_volume_issue_parts string
