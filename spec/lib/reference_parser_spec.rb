@@ -138,6 +138,11 @@ describe ReferenceParser do
         {:other => "Journal of Insect Science 7(42), 14 pp. (available online: insectscience.org/7.42)"}
     end
 
+    it "should work" do
+      ReferenceParser.parse_citation("Transactions of the Society for British Entomology 16:93-114,121").should ==
+        {:article => {:journal => 'Transactions of the Society for British Entomology'}, :series_volume_issue => '16',
+          :pagination => '93-114,121'}
+    end
   end
 
 end
