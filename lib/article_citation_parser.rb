@@ -27,7 +27,12 @@ module ArticleCitationParser
         series_volume_issue_start = pos if result == candidate
       rescue
       end
-      pos -= 1
+
+      loop do
+        pos -= 1
+        break unless string[pos..pos] == ' ' && pos > 0
+      end
+
       break if pos <  0
     end
 

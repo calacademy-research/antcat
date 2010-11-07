@@ -25,7 +25,17 @@ describe SeriesVolumeIssueGrammar do
       {:series => '', :volume => 'Secunda Era 2', :issue => '', :note => ''}
   end
 
-  ['14', '43(3)', '16/17', '(n.s.)56', '(2)1[=(3)9]', '113(suppl. 1)'].each do |series_volume_issue|
+  it "should handle '18(suppl.)'" do
+    SeriesVolumeIssueGrammar.parse('18(suppl.)').value.should ==  {:series => '', :volume => '18', :issue => '(suppl.)', :note => ''}
+  end
+
+  it "should handle '18(suppl.1)'" do
+    SeriesVolumeIssueGrammar.parse('18(suppl.1)').value.should ==  {:series => '', :volume => '18', :issue => '(suppl.1)', :note => ''}
+  end
+
+
+  ['14', '43(3)', '16/17', '(n.s.)56', '(2)1[=(3)9]', '113(suppl. 1)', '9(Tropische Binnengewässer 2)',
+  ].each do |series_volume_issue|
     it "should recognize '#{series_volume_issue}' as a series_volume_issue" do
       SeriesVolumeIssueGrammar.parse(series_volume_issue).should == series_volume_issue
     end

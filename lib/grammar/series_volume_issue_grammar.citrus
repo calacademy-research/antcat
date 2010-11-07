@@ -1,4 +1,5 @@
 grammar SeriesVolumeIssueGrammar
+  include CommonGrammar
 
   rule series_volume_issue
     (a_series:series? volume a_issue:issue? a_note:note?) {
@@ -7,43 +8,23 @@ grammar SeriesVolumeIssueGrammar
   end
 
   rule series
-    '(' series_number ')'
-  end
-
-  rule series_number
-    number | 'n.s.'
+    parenthesized_term
   end
 
   rule volume
-    number_term |
-    ('Secunda Era ' number)
+    ('Secunda Era ' [\d]+) | [^\s\(\[]+
   end
 
   rule issue
-    '(' number_term ')'
+    parenthesized_term
+  end
+
+  rule parenthesized_term
+    '(' [^\)]+ ')'
   end
 
   rule note
     '[' [^\]]+ ']'
   end
 
-  rule number_term
-    number ('/' number)?
-  end
-
-  rule number
-    numeral+ | ('suppl. ' number)
-  end
-
-  rule numeral
-    arabic_numeral | roman_numeral
-  end
-
-  rule arabic_numeral
-    [\d]
-  end
-
-  rule roman_numeral
-    [iIvVxXlLcCmM]
-  end
 end
