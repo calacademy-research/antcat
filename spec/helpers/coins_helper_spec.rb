@@ -147,6 +147,7 @@ describe CoinsHelper do
   end
 
   it "should format a book reference correctly" do
+    Factory :place, :name => 'Dresden'
     coins = helper.coins(ward_reference_factory(
       :authors => 'MacKay, W.',
       :year => '1933',

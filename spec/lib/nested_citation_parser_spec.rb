@@ -28,6 +28,7 @@ describe NestedCitationParser do
   end
 
   it "should work on a slightly harder nesting" do
+    Factory :place, :name => 'New York'
     parts = NestedCitationParser.parse 'Pp. 96-98 in: MacKay, W., Lowrie, D., Fisher, A., MacKay, E., Barnes, F., Lowrie, D.  The ants of Los Alamos County, New Mexico (Hymenoptera: Formicidae). New York: Harpers, 36 pp.'
     parts.should == {
       :nested => {
@@ -64,6 +65,7 @@ describe NestedCitationParser do
   end
 
   it "should work when there are no authors" do
+    Factory :place, :name => 'Firenze'
     parts = NestedCitationParser.parse(
       "Pp. 398-400 in: Atti della Terza Riunione degli Scienziati Italiani tenuta in Firenze nel settembre del 1841. Firenze: Galileiana, 791 pp."
     )

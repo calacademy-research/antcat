@@ -1,4 +1,5 @@
 Given /the following entr(?:ies|y) exists? in the bibliography/ do |table|
+  Place.create! :name => 'New York'
   table.hashes.each do |hash|
     @reference = WardReference.new(hash).export
   end

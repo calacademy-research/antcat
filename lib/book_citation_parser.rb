@@ -9,6 +9,7 @@ module BookCitationParser
     match = PublisherGrammar.parse string
     string.gsub! /#{Regexp.escape match}/, ''
     book = match.value
+    return nil unless Place.find_by_name book[:publisher][:place]
     book[:pagination] = pagination
     {:book => book}
   rescue Citrus::ParseError

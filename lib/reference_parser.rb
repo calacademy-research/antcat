@@ -4,14 +4,10 @@ class ReferenceParser
     string = string.dup
     parts = {}
 
-    begin
-      parts.merge_unless_nil! parse_authors string
-      parts.merge_unless_nil! parse_year string
-      parts.merge_unless_nil! parse_title string
-      parts.merge_unless_nil! parse_citation string
-    end
+    parts.merge_unless_nil! parse_authors string
+    parts.merge_unless_nil! parse_year string
+    parts.merge_unless_nil! parse_title_and_citation string
 
-    parts
   end
 
   def self.parse_authors string
@@ -27,30 +23,9 @@ class ReferenceParser
     {:year => year}
   end
 
-  def self.parse_title string
-    {:title => TitleParser.parse(string)}
-  end
-
-  def self.parse_citation string
-    parse_cd_rom_citation(string) ||
-    NestedCitationParser.parse(string) ||
-    ArticleCitationParser.parse(string) ||
-    BookCitationParser.parse(string) ||
-    parse_unknown_citation(string)
-  end
-
-  def self.parse_cd_rom_citation citation
-    return unless citation =~ /CD-ROM/
-    {:other => remove_period_from(citation)}
-  end
-
-  def self.parse_unknown_citation citation
-    {:other => remove_period_from(citation)}
-  end
-
-  def self.remove_period_from text
-    return if text.blank?
-    text[-1..-1] == '.' ? text[0..-2] : text 
+  def self.parse_title_and_citation string
+    result = TitleAndCitationParser.parse string
+    {:title => result[:title]}.merge result[:citation]
   end
 
 end

@@ -112,6 +112,7 @@ describe WardReference do
         end
 
         it "should convert a book reference" do
+          Factory :place, :name => 'Cambridge, Mass.'
           ward_reference = WardReference.create!({
             :authors => "Hölldobler, B.; Wilson, E. O.",
             :citation => "Cambridge, Mass.: Harvard University Press, xii + 732 pp.",
@@ -139,6 +140,7 @@ describe WardReference do
         end
 
         it "should convert a nested reference" do
+          Factory :place, :name => 'Leiden'
           ward_reference = WardReference.create!({
             :authors => "MacKay, W. P.",
             :citation => "Pp. 96-98 in: MacKay, W., Lowrie, D., Fisher, A., MacKay, E., Barnes, F., Lowrie, D.  The ants of Los Alamos County, New Mexico (Hymenoptera: Formicidae).  Pp. 79-131 in: Trager, J. C. (ed.)  Advances in myrmecology. Leiden: E. J. Brill, xxvii + 551 pp.",

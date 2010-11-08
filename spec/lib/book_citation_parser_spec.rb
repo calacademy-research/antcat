@@ -1,19 +1,27 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe BookCitationParser do
+  before :all do
+    Factory :place, :name => 'New York'
+  end
+
   it "should return nil if it doesn't seem to be a book citation" do
     BookCitationParser.parse('Science 1:2').should be_nil
   end
 
+  it "should return nil if the place is unknown" do
+    BookCitationParser.parse('Canberra: Wiley, 32 pp.').should be_nil
+  end
+
   it "should extract the place, pagination and publisher" do
-    BookCitationParser.parse('Melbourne: CSIRO Publications, vii + 70 pp.').should == (
-      {:book => {:publisher => {:name => 'CSIRO Publications', :place => 'Melbourne'}, :pagination => 'vii + 70 pp.'}}
+    BookCitationParser.parse('New York: CSIRO Publications, vii + 70 pp.').should == (
+      {:book => {:publisher => {:name => 'CSIRO Publications', :place => 'New York'}, :pagination => 'vii + 70 pp.'}}
     )
   end
 
   it "should extract the place, pagination and publisher when there are multiple pagination sections" do
-    BookCitationParser.parse('Melbourne: CSIRO Publications, vii, 70 pp.').should == (
-      {:book => {:publisher => {:name => 'CSIRO Publications', :place => 'Melbourne'}, :pagination => 'vii, 70 pp.'}}
+    BookCitationParser.parse('New York: CSIRO Publications, vii, 70 pp.').should == (
+      {:book => {:publisher => {:name => 'CSIRO Publications', :place => 'New York'}, :pagination => 'vii, 70 pp.'}}
     )
   end
 
@@ -33,8 +41,8 @@ describe BookCitationParser do
       '32pp.',
       '32 pp.',
     ].each do |pagination|
-      BookCitationParser.parse("Tokyo: Keishu-sha, #{pagination}").should ==(
-        {:book => {:publisher => {:name =>  'Keishu-sha', :place => 'Tokyo'}, :pagination => pagination}}
+      BookCitationParser.parse("New York: Keishu-sha, #{pagination}").should ==(
+        {:book => {:publisher => {:name =>  'Keishu-sha', :place => 'New York'}, :pagination => pagination}}
       )
     end
   end
@@ -50,11 +58,12 @@ describe BookCitationParser do
   end
 
   it "should handle a publisher with 'i' as a word in its name" do
-    BookCitationParser.parse('Warszawa: Panstwowe Wydawnictwo Rolnicze i Lesne, 55 pp.').should ==
-      {:book => {:publisher => {:name => 'Panstwowe Wydawnictwo Rolnicze i Lesne', :place => 'Warszawa'}, :pagination => '55 pp.'}}
+    BookCitationParser.parse('New York: Panstwowe Wydawnictwo Rolnicze i Lesne, 55 pp.').should ==
+      {:book => {:publisher => {:name => 'Panstwowe Wydawnictwo Rolnicze i Lesne', :place => 'New York'}, :pagination => '55 pp.'}}
   end
   
-  it "should handle a publisher with a number in it" do
+  it "should handle a place with a number in it" do
+    Place.create! :name => 'Perth, Australia'
     BookCitationParser.parse(
       'Perth, Australia: Curtin University School of Environmental Biology (Bulletin No. 18), xii + 75 pp.'
     ).should ==
@@ -71,12 +80,5 @@ describe BookCitationParser do
   it "should not be fooled by a colon that is part of a pagination note" do
     BookCitationParser.parse("Journal of Insect Science 7(42), 14 pp. (available online: insectscience.org/7.42).").should be_nil
   end
-
-  #it "should work" do
-    #BookCitationParser.parse(
-      #"Achtes Programm des Gymnasiums in Bozen. Bozen: Ebersche Buchdruckerei, 34 pp."
-    #).should == {:book => {:publisher => {:name => 'Achtes Programm des Gymnasiums in Bozen. Ebersche Buchdruckerei', :place => 'Bozen'}, :pagination => '34 pp.'}}
-  #end
-
 
 end

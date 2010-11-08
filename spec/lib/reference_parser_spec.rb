@@ -5,6 +5,7 @@ describe ReferenceParser do
   describe 'parsing' do
 
     it "should not start a citation on a lowercase letter" do
+      Factory :place, :name => 'Baltimore'
       ReferenceParser.parse("Ward, P. 2001. Title with. periods. Baltimore:Wiley, 32 pp.").should == {
         :authors => ['Ward, P.'],
         :year => '2001',
@@ -97,55 +98,5 @@ describe ReferenceParser do
 
   end
 
-  describe "parsing a citation" do
-    it 'should parse an article citation' do
-      ReferenceParser.parse_citation('Psyche 1:2').should ==
-        {:article => {:journal => 'Psyche', :series_volume_issue => '1', :pagination => '2'}}
-    end
-
-    it 'should parse a book citation' do
-      ReferenceParser.parse_citation('Melbourne: CSIRO Publications, vii + 70 pp.').should ==
-        {:book => {:publisher => {:name => 'CSIRO Publications', :place => 'Melbourne'}, :pagination => 'vii + 70 pp.'}}
-    end
-
-    it 'should parse a nested citation' do
-      ReferenceParser.parse_citation("Pp. 96-98 in: MacKay, W., Lowrie, D., Fisher, A., MacKay, E., Barnes, F., Lowrie, D. The ants of Los Alamos County, New Mexico (Hymenoptera: Formicidae). Pp. 79-131 in: Trager, J. C. (ed.) Advances in myrmecology. Leiden: E. J. Brill, xxvii + 551 pp.").should == {
-        :nested => {
-          :pages_in => 'Pp. 96-98 in:',
-          :authors => ['MacKay, W.', 'Lowrie, D.', 'Fisher, A.', 'MacKay, E.', 'Barnes, F.', 'Lowrie, D.'],
-          :title => 'The ants of Los Alamos County, New Mexico (Hymenoptera: Formicidae)',
-          :nested => {
-            :pages_in => 'Pp. 79-131 in:',
-            :authors => ['Trager, J. C. (ed.)'],
-            :title => 'Advances in myrmecology',
-            :book => {:publisher => {:name => 'E. J. Brill', :place => 'Leiden'}, :pagination => 'xxvii + 551 pp.'}
-          }
-        }
-      }
-    end
-
-    it 'should parse a CD-ROM citation' do
-      ReferenceParser.parse_citation('Cambridge, Mass.: Harvard University Press, CD-ROM.').should ==
-        {:other => 'Cambridge, Mass.: Harvard University Press, CD-ROM'}
-    end
-
-    it 'should parse a completely unknown citation' do
-      ReferenceParser.parse_citation('A book.').should == {:other => 'A book'}
-    end
-
-    it "should probably just call this one unknown" do
-      ReferenceParser.parse_citation("Journal of Insect Science 7(42), 14 pp. (available online: insectscience.org/7.42).").should ==
-        {:other => "Journal of Insect Science 7(42), 14 pp. (available online: insectscience.org/7.42)"}
-    end
-
-    it "should work" do
-      ReferenceParser.parse_citation("Transactions of the Society for British Entomology 16:93-114,121").should ==
-        {:article => {
-          :journal => 'Transactions of the Society for British Entomology',
-          :series_volume_issue => '16',
-          :pagination => '93-114,121'}
-        }
-    end
-  end
 
 end
