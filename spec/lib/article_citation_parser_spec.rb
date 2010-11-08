@@ -11,6 +11,10 @@ describe ArticleCitationParser do
     ArticleCitationParser.parse('Dresden.').should be_nil
   end
 
+  it "should recognize an existing journal" do
+    ArticleCitationParser.parse('Dresden.').should be_nil
+  end
+
   it "should extract article, issue and journal information" do
     ArticleCitationParser.parse('Behav. Ecol. Sociobiol. 4:163-181.').should ==
       {:article => {:journal => 'Behav. Ecol. Sociobiol.', :series_volume_issue => '4', :pagination => '163-181'}}

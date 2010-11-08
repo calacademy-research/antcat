@@ -61,7 +61,7 @@ def reference_factory attributes = {}
 end
 
 Factory.define :journal do |journal|
-  journal.sequence(:title) {|n| "Ants#{n}"}
+  journal.sequence(:name) {|n| "Ants#{n}"}
 end
 
 Factory.define :author_participation do |row|

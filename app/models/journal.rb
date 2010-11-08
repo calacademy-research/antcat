@@ -1,20 +1,20 @@
 class Journal < ActiveRecord::Base
 
-  validates_presence_of :title
+  validates_presence_of :name
 
-  def self.import title
-    return unless title.present?
-    find_or_create_by_title title
+  def self.import name
+    return unless name.present?
+    find_or_create_by_name name
   end
 
   def self.search term = ''
     search_expression = term.split('').join('%') + '%'
 
-    all(:select => 'journals.title, COUNT(*)',
+    all(:select => 'journals.name, COUNT(*)',
         :joins => 'LEFT OUTER JOIN `references` ON references.journal_id = journals.id',
-        :conditions => ['journals.title LIKE ?', search_expression],
+        :conditions => ['journals.name LIKE ?', search_expression],
         :group => 'journals.id',
-        :order => 'COUNT(*) DESC').map(&:title)
+        :order => 'COUNT(*) DESC').map(&:name)
   end
 
 end

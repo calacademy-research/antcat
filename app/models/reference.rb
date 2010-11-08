@@ -55,7 +55,7 @@ class Reference < ActiveRecord::Base
     end
 
     if terms[:journal].present?
-      conditions << 'journals.title LIKE :journal'
+      conditions << 'journals.name LIKE :journal'
       conditions_arguments[:journal] = terms[:journal]
       joins << :journal
     end

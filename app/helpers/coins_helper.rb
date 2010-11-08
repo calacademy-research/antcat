@@ -58,7 +58,7 @@ class ArticleCoinsHelper < CoinsHelperBase
   end
   def add_contents
     add 'rft.atitle', @reference.title
-    add 'rft.jtitle', @reference.journal.title
+    add 'rft.jtitle', @reference.journal.name
     add 'rft.volume', @reference.volume
     add 'rft.issue', @reference.issue
     add 'rft.spage', @reference.start_page

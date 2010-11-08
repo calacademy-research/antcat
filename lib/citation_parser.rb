@@ -21,7 +21,7 @@ class CitationParser
     text[-1..-1] == '.' ? text[0..-2] : text 
   end
 
-  #def self.journal_title? string
+  #def self.journal_name? string
     #starts_with_common_first_word_of_journal_name?(string) ||
     #known_journal_name?(string)
   #end
@@ -31,8 +31,8 @@ class CitationParser
   #end
 
   #def self.known_journal_name? string
-    #return unless journal_title = JournalParser.parse(string.dup)
-    #Journal.find_by_title journal_title
+    #return unless journal_name = JournalParser.parse(string.dup)
+    #Journal.find_by_name journal_name
   #end
 
 end

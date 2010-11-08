@@ -116,7 +116,7 @@ Feature: Edit reference
     When I fill in "reference_authors_string" with ""
       And I fill in "reference_title" with ""
       And I fill in "reference_citation_year" with ""
-      And I fill in "journal_title" with ""
+      And I fill in "journal_name" with ""
       And I fill in "reference_series_volume_issue" with ""
       And I fill in "article_pagination" with ""
       And I press the "Save" button

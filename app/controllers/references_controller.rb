@@ -60,7 +60,7 @@ class ReferencesController < ApplicationController
   end
 
   def set_journal
-    params[:reference][:journal] = Journal.import params[:journal_title]
+    params[:reference][:journal] = Journal.import params[:journal_name]
   end
 
   def set_publisher

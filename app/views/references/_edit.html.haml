@@ -1,6 +1,6 @@
 - reference ||= Reference.new
 - publisher_string = reference.respond_to?(:publisher) ? (reference.publisher && reference.publisher.to_s) : ''
-- journal_title = reference.respond_to?(:journal) ? (reference.journal && reference.journal.title) : ''
+- journal_name = reference.respond_to?(:journal) ? (reference.journal && reference.journal.name) : ''
 - selected_tab = [ArticleReference, BookReference, OtherReference].index(reference.class) || 0
 
 .reference_edit.ui-corner-all.ui-widget-content.ui-widget
@@ -37,7 +37,7 @@
 
           %div{:class => 'article-tab-section', :id => "tabs-article-#{reference.id}"}
             Journal
-            = text_field_tag :journal_title, journal_title, :class => 'journal'
+            = text_field_tag :journal_name, journal_name, :class => 'journal'
             Series volume issue
             = f.text_field :series_volume_issue, :class => 'series_volume_issue'
             Pages

@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe ReferenceHelper do
   before do
-    @journal = Factory :journal, :title => "Neue Denkschriften"
+    @journal = Factory :journal, :name => "Neue Denkschriften"
     @author = Factory :author, :name => "Forel, A."
     @publisher = Factory :publisher
   end

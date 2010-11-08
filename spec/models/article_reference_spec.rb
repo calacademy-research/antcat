@@ -10,7 +10,7 @@ describe ArticleReference do
         {:series_volume_issue => '12', :pagination => '32-33', :journal => 'Ecology Letters'})
       reference.series_volume_issue.should == '12'
       reference.pagination.should == '32-33'
-      reference.journal.title.should == 'Ecology Letters'
+      reference.journal.name.should == 'Ecology Letters'
       reference.source_reference.should == ward_reference
     end
   end
@@ -55,7 +55,7 @@ describe ArticleReference do
   describe "citation_string" do
 
     it "should format a citation_string" do
-      journal = Journal.create! :title => 'Ants'
+      journal = Journal.create! :name => 'Ants'
       reference = ArticleReference.new :journal => journal, :series_volume_issue => '(2)1(2)', :pagination => '34-46'
       reference.citation_string.should == 'Ants (2)1(2):34-46.'
     end

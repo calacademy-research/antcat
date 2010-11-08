@@ -106,9 +106,15 @@ describe TitleAndCitationParser do
      #end
 
     #it "should find the title when the journal name is already known" do
-      #Journal.create! :title => 'Science'
+      #Journal.create! :name => 'Science'
       #string = "Dodech. Ants. Science 32:3"
-      #TitleAndCitationParser.parse(string).should == {:title => 'Dodech. Ants', :citation => nil}
+      #TitleAndCitationParser.parse(string).should == {
+        #:title => 'Dodech. Ants',
+        #:citation => {
+          #:article => {
+            #:journal => 'Science',
+            #:series_volume_issue => '32',
+            #:pagination => '3'}}}
     #end
 
     it "should find the title when the place name is already known" do
@@ -123,7 +129,7 @@ describe TitleAndCitationParser do
     end
 
     #it "should not be fooled by a string that merely starts with the name of a journal" do
-      #Journal.create! :title => 'Science'
+      #Journal.create! :name => 'Science'
       #string = "Dodech. Science in the home. Nature 32:3"
       #TitleAndCitationParser.parse(string).should == {:title => 'Dodech. Science in the home', :citation => nil}
     #end
@@ -140,12 +146,12 @@ describe TitleAndCitationParser do
     end
 
     #it "should be able to handle this weird journal name, as long as it exists" do
-      #Journal.create! :title => 'Verhandlungen der Kaiserlich-Königlichen Zoologisch-Botanischen Gesellschaft in Wien'
+      #Journal.create! :name => 'Verhandlungen der Kaiserlich-Königlichen Zoologisch-Botanischen Gesellschaft in Wien'
       #string = "Ameisen aus Sao Paulo (Brasilien), Paraguay etc. gesammelt von Prof. Herm. v. Ihering, Dr. Lutz, Dr. Fiebrig, etc. Verhandlungen der Kaiserlich-Königlichen Zoologisch-Botanischen Gesellschaft in Wien 58:340-418"
       #TitleAndCitationParser.parse(string).should == {:title => 'Ameisen aus Sao Paulo (Brasilien), Paraguay etc. gesammelt von Prof. Herm. v. Ihering, Dr. Lutz, Dr. Fiebrig, etc', :citation => nil}
     #end
 
-    #it "should find the journal title in this one anyway, as it contains no periods" do
+    #it "should find the journal name in this one anyway, as it contains no periods" do
       #string = "Ameisen aus Sao Paulo (Brasilien), Paraguay etc. gesammelt von Prof. Herm. v. Ihering, Dr. Lutz, Dr. Fiebrig, etc. Verhandlungen der Kaiserlich-Königlichen Zoologisch-Botanischen Gesellschaft in Wien 58:340-418"
       #TitleAndCitationParser.parse(string).should == {:title => 'Ameisen aus Sao Paulo (Brasilien), Paraguay etc. gesammelt von Prof. Herm. v. Ihering, Dr. Lutz, Dr. Fiebrig, etc', :citation => nil}
     #end

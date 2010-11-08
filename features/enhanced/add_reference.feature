@@ -15,7 +15,7 @@ Feature: Add reference
       Then I should see a new edit form
     When I fill in "reference_authors_string" with "Ward, B.L.;Bolton, B."
       And I fill in "reference_title" with "A reference title"
-      And I fill in "journal_title" with "Ants"
+      And I fill in "journal_name" with "Ants"
       And I fill in "reference_series_volume_issue" with "2"
       And I fill in "article_pagination" with "1"
       And I fill in "reference_citation_year" with "1981"
@@ -44,7 +44,7 @@ Feature: Add reference
       Then I should see a new edit form
     When in the new edit form I fill in "reference_authors_string" with "Ward, B.L.;Bolton, B."
       And in the new edit form I fill in "reference_title" with "Between Pacific Tides"
-      And in the new edit form I fill in "journal_title" with "Ants"
+      And in the new edit form I fill in "journal_name" with "Ants"
       And in the new edit form I fill in "reference_series_volume_issue" with "2"
       And in the new edit form I fill in "article_pagination" with "1"
       And in the new edit form I fill in "reference_citation_year" with "1992"
@@ -95,7 +95,7 @@ Feature: Add reference
     When I fill in "reference_authors_string" with "Ward, B.L.;Bolton, B."
       And I fill in "reference_title" with "A reference title"
       And I fill in "reference_citation_year" with "1981"
-      And I fill in "journal_title" with "Ant Journal"
+      And I fill in "journal_name" with "Ant Journal"
       And I fill in "reference_series_volume_issue" with "1"
       And I fill in "article_pagination" with "2"
       And I press the "Save" button

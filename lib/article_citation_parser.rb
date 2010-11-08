@@ -10,11 +10,11 @@ module ArticleCitationParser
     end
 
     pagination = parse[:pagination]
-    rest = parse[:journal_title_series_volume_issue]
+    rest = parse[:journal_name_series_volume_issue]
     series_volume_issue = parse_series_volume_issue rest
-    journal_title = rest.strip
+    journal_name = rest.strip
 
-    {:article => {:journal => journal_title, :series_volume_issue => series_volume_issue, :pagination => pagination}}
+    {:article => {:journal => journal_name, :series_volume_issue => series_volume_issue, :pagination => pagination}}
   end
 
   def self.parse_series_volume_issue string
