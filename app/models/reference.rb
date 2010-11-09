@@ -6,6 +6,7 @@ class Reference < ActiveRecord::Base
   belongs_to :source_reference, :polymorphic => true
 
   before_validation :set_year, :strip_newlines, :set_source_url
+  before_save :set_authors_string
 
   validates_presence_of :year, :title
   validates_http_url :source_url, :malformed_url => 'is not in a valid format', :message => 'was not found',
@@ -20,6 +21,7 @@ class Reference < ActiveRecord::Base
   def self.import data
     create_data = {
       :authors => Author.import(data[:authors]),
+      :authors_role => data[:authors_role],
       :citation_year => data[:citation_year],
       :title => data[:title],
       :cite_code => data[:cite_code],
@@ -77,8 +79,18 @@ class Reference < ActiveRecord::Base
   def citation_string
   end
 
+  def make_authors_string
+    string = authors.map(&:name).join('; ')
+    string << ' ' << authors_role if authors_role.present?
+    string
+  end
+
+  def set_authors_string _ = nil
+    self.authors_string = make_authors_string
+  end
+
   def update_authors_string _ = nil
-    update_attribute :authors_string, authors.map(&:name).join('; ')
+    update_attribute :authors_string, make_authors_string
   end
 
   def self.add_period_if_necessary string

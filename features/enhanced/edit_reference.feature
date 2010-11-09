@@ -32,12 +32,12 @@ Feature: Edit reference
     Given I am logged in
       And the following entries exist in the bibliography
       |authors    |citation  |cite_code|created_at|date    |possess|title|updated_at|year|
-      |Ward;Bolton|Psyche 5:3|CiteCode |today     |20100712|Possess|title|today     |2010|
+      |Ward, P.;Bolton, B.|Psyche 5:3|CiteCode |today     |20100712|Possess|title|today     |2010|
     When I go to the main page
       And I click the reference
-    When I fill in "reference_authors_string" with "Ward; Fisher; Bolton"
+    When I fill in "reference_authors_string" with "Ward, P.; Fisher, B.; Bolton, B."
       And I press the "Save" button
-    Then I should see "Ward; Fisher; Bolton"
+    Then I should see "Ward, P.; Fisher, B.; Bolton, B."
 
   Scenario: Change a reference's year
     Given I am logged in
@@ -154,6 +154,29 @@ Feature: Edit reference
     When I fill in "reference_source_url" with "google.com"
       And I press the "Save" button
     Then I should see a "PDF" link
+
+  Scenario: Adding the authors' role
+    Given I am logged in
+      And the following entries exist in the bibliography
+      |authors    |citation  |year |title|
+      |Ward, P.S. |New York  |2010a|Ants |
+    When I go to the main page
+    When I click the reference
+    When I fill in "reference_authors_string" with "Ward, P.S. (ed.)"
+      And I press the "Save" button
+    Then I should see "Ward, P.S. (ed.)"
+
+  Scenario: Removing the authors' role
+    Given I am logged in
+      And the following entries exist in the bibliography
+      |authors         |citation  |year |title|
+      |Ward, P.S. (ed.)|New York  |2010a|Ants |
+    When I go to the main page
+    Then I should see "Ward, P.S. (ed.)"
+    When I click the reference
+    When I fill in "reference_authors_string" with "Ward, P.S."
+      And I press the "Save" button
+    Then I should see "Ward, P.S."
 
   Scenario: Specifying the source URL when it doesn't exist
     Given I am logged in

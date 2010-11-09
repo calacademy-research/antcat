@@ -35,10 +35,18 @@ describe Author do
   describe "import_authors_string" do
     it "should find or create authors with names in the string" do
       Author.create! :name => 'Bolton, B.'
-      authors = Author.import_authors_string('Ward, P.S.; Bolton, B.')
-      authors.first.name.should == 'Ward, P.S.'
-      authors.second.name.should == 'Bolton, B.'
+      author_data = Author.import_authors_string('Ward, P.S.; Bolton, B.')
+      author_data[:authors].first.name.should == 'Ward, P.S.'
+      author_data[:authors].second.name.should == 'Bolton, B.'
+      author_data[:authors_role].should == ''
       Author.count.should == 2
+    end
+
+    it "should return the authors role" do
+      author_data = Author.import_authors_string('Ward, P.S.; Bolton, B. (eds.)')
+      author_data[:authors].first.name.should == 'Ward, P.S.'
+      author_data[:authors].second.name.should == 'Bolton, B.'
+      author_data[:authors_role].should == '(eds.)'
     end
   end
 

@@ -83,6 +83,34 @@ describe WardReference do
       end
 
       describe "converting to import format" do
+        it "should parse out authors role" do
+          ward_reference = WardReference.create!({
+            :authors => "Abdul-Rassoul, M. S.; Dawah, H. A.; Othman, N. Y. (eds.)",
+            :citation => "Bull. Nat. Hist. Res. Cent. Univ. Baghdad 7(2):1-6",
+            :cite_code => '5523',
+            :date => '197804',
+            :notes => '{Formicidae pp. 4-6.}At least, I think so',
+            :possess => 'PSW',
+            :taxonomic_notes => 'Tapinoma',
+            :title => 'Records of insect collection',
+            :year => "1978d",
+          })
+          ward_reference.to_import_format.should == {
+            :article => {:journal => "Bull. Nat. Hist. Res. Cent. Univ. Baghdad", :series_volume_issue => "7(2)", :pagination => "1-6"},
+            :authors => ["Abdul-Rassoul, M. S.", "Dawah, H. A.", "Othman, N. Y."],
+            :authors_role => '(eds.)',
+            :citation_year => "1978d",
+            :cite_code => '5523',
+            :class => ward_reference.class.to_s,
+            :date => '197804',
+            :editor_notes => 'At least, I think so',
+            :id => ward_reference.id,
+            :possess => 'PSW',
+            :public_notes => 'Formicidae pp. 4-6.',
+            :taxonomic_notes => 'Tapinoma',
+            :title => 'Records of insect collection',
+          }
+        end
         it "should convert an article reference" do
           ward_reference = WardReference.create!({
             :authors => "Abdul-Rassoul, M. S.; Dawah, H. A.; Othman, N. Y.",
@@ -98,6 +126,7 @@ describe WardReference do
           ward_reference.to_import_format.should == {
             :article => {:journal => "Bull. Nat. Hist. Res. Cent. Univ. Baghdad", :series_volume_issue => "7(2)", :pagination => "1-6"},
             :authors => ["Abdul-Rassoul, M. S.", "Dawah, H. A.", "Othman, N. Y."],
+            :authors_role => '',
             :citation_year => "1978d",
             :cite_code => '5523',
             :class => ward_reference.class.to_s,
@@ -125,6 +154,7 @@ describe WardReference do
           })
           ward_reference.to_import_format.should == {
             :authors => ["Hölldobler, B.", "Wilson, E. O."],
+            :authors_role => '',
             :title => 'The ants',
             :citation_year => "1990",
             :book => {:publisher => {:name => 'Harvard University Press', :place => 'Cambridge, Mass.'}, :pagination => 'xii + 732 pp.'},
@@ -152,14 +182,17 @@ describe WardReference do
           })
           expected = {
             :authors => ["MacKay, W. P."],
+            :authors_role => '',
             :title => 'The ants of Los Alamos County, New Mexico (Hymenoptera: Formicidae)',
             :citation_year => '1988',
             :nested => {
               :authors => ['MacKay, W.', 'Lowrie, D.', 'Fisher, A.', 'MacKay, E.', 'Barnes, F.', 'Lowrie, D.'],
+              :authors_role => '',
               :title => 'The ants of Los Alamos County, New Mexico (Hymenoptera: Formicidae)',
               :pages_in => 'Pp. 96-98 in:',
               :nested => {
-                :authors => ['Trager, J. C. (ed.)'],
+                :authors => ['Trager, J. C.'],
+                :authors_role => '(ed.)',
                 :title => 'Advances in myrmecology',
                 :pages_in => 'Pp. 79-131 in:',
                 :book => {:publisher => {:name => 'E. J. Brill', :place => 'Leiden'}, :pagination => 'xxvii + 551 pp.'},

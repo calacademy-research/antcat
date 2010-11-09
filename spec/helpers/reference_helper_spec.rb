@@ -20,6 +20,13 @@ describe ReferenceHelper do
       helper.format_reference(reference).should == 'Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.'
     end
 
+    it "should not add a period after the authors' role" do
+      reference = Factory(:article_reference, :authors => [@author], :citation_year => "1874", :title => "Les fourmis de la Suisse",
+                          :journal => @journal, :series_volume_issue => "26", :pagination => "1-452")
+      reference.update_attribute :authors_role, '(ed.)'
+      helper.format_reference(reference).should == 'Forel, A. (ed.) 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.'
+    end
+
     it "should not add a period after the title if there's already one" do
       reference = Factory(:article_reference, :authors => [@author], :citation_year => "1874", :title => "Les fourmis de la Suisse.",
                           :journal => @journal, :series_volume_issue => "26", :pagination => "1-452")
@@ -68,7 +75,6 @@ describe ReferenceHelper do
     it "should handle dates with other symbols/characters" do
       make '201012>'; check ' [2010-12>]'
     end
-
 
     def make date
       @reference = Factory(:article_reference, :authors => [@author], :citation_year => "1874", :title => "Les fourmis de la Suisse.",

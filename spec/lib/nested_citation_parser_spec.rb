@@ -17,6 +17,7 @@ describe NestedCitationParser do
       :nested => {
         :pages_in => 'Pp. 32-45 in',
         :authors => ['Mayer, D.M.'],
+        :authors_role => '',
         :title => 'Ants',
         :article => {
           :journal => 'Psyche',
@@ -33,6 +34,7 @@ describe NestedCitationParser do
     parts.should == {
       :nested => {
       :authors => ['MacKay, W.', 'Lowrie, D.', 'Fisher, A.', 'MacKay, E.', 'Barnes, F.', 'Lowrie, D.'],
+      :authors_role => '',
       :title => 'The ants of Los Alamos County, New Mexico (Hymenoptera: Formicidae)',
       :book => {
       :publisher => {:name => 'Harpers', :place => 'New York'},
@@ -72,6 +74,7 @@ describe NestedCitationParser do
     parts.should == {
       :nested => {
         :authors => [],
+        :authors_role => '',
         :title => 'Atti della Terza Riunione degli Scienziati Italiani tenuta in Firenze nel settembre del 1841',
         :book => {
           :publisher => {:name => 'Galileiana', :place => 'Firenze'},
@@ -88,6 +91,7 @@ describe NestedCitationParser do
     ).should == {
       :nested => {
         :authors => ['Collingwood, C. A.', 'Pohl, H.', 'Guesten, R.', 'Wranik, W.', 'van Harten, A.'],
+        :authors_role => '',
         :year => '2004',
         :title => 'The ants (Insecta: Hymenoptera: Formicidae) of the Socotra Archipelago',
         :article => {
@@ -110,7 +114,8 @@ describe NestedCitationParser do
     NestedCitationParser.parse("Pp. 89-162 in : Hashimoto, Y.; Rahman, H. (eds.) Inventory and collection. Total protocol for understanding of biodiversity. Kota Kinabalu: Research and Education Component, BBEC Programme (Universiti Malaysia Sabah), 310 pp.").should == {
     :nested => {
       :pages_in => 'Pp. 89-162 in :',
-      :authors => ['Hashimoto, Y.', 'Rahman, H. (eds.)'],
+      :authors => ['Hashimoto, Y.', 'Rahman, H.'],
+      :authors_role => '(eds.)',
       :title => 'Inventory and collection. Total protocol for understanding of biodiversity',
       :book => {
         :publisher => {:name => 'Research and Education Component, BBEC Programme (Universiti Malaysia Sabah)', :place => 'Kota Kinabalu'},

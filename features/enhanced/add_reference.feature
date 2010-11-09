@@ -144,3 +144,19 @@ Feature: Add reference
       And I should see "Publisher can't be blank"
       And I should see "Pagination can't be blank"
 
+  Scenario: Adding a reference with authors' role
+    Given I am logged in
+    When I go to the main page
+      And I follow "Add reference"
+      Then I should see a new edit form
+    When I fill in "reference_authors_string" with "Ward, B.L.;Bolton, B. (eds.)"
+      And I fill in "reference_title" with "A reference title"
+      And I fill in "reference_citation_year" with "1981"
+      And I fill in "journal_name" with "Ant Journal"
+      And I fill in "reference_series_volume_issue" with "1"
+      And I fill in "article_pagination" with "2"
+      And I press the "Save" button
+    Then I should be on the main page
+      And I should not see a new edit form
+      And I should see "Ward, B.L.; Bolton, B. (eds.) 1981. A reference title. Ant Journal 1:2"
+

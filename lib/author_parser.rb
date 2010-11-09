@@ -1,5 +1,5 @@
 module AuthorParser
-  def self.get_author_names string
+  def self.parse string
     return {:names => []} unless string.present?
     match = AuthorGrammar.parse(string)
     result = match.value
