@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101108190743) do
+ActiveRecord::Schema.define(:version => 20101109175243) do
 
   create_table "author_participations", :force => true do |t|
     t.integer  "author_id"
@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(:version => 20101108190743) do
   end
 
   add_index "author_participations", ["author_id"], :name => "author_participations_author_id_idx"
-  add_index "author_participations", ["reference_id"], :name => "foo"
+  add_index "author_participations", ["reference_id"], :name => "author_participations_reference_id_idx"
 
   create_table "authors", :force => true do |t|
     t.string   "name"
@@ -53,6 +53,8 @@ ActiveRecord::Schema.define(:version => 20101108190743) do
     t.datetime "updated_at"
   end
 
+  add_index "journals", ["name"], :name => "journals_name_idx"
+
   create_table "places", :force => true do |t|
     t.string   "name"
     t.boolean  "verified"
@@ -60,12 +62,16 @@ ActiveRecord::Schema.define(:version => 20101108190743) do
     t.datetime "updated_at"
   end
 
+  add_index "places", ["name"], :name => "places_name_idx"
+
   create_table "publishers", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "place_id"
   end
+
+  add_index "publishers", ["name"], :name => "publishers_name_idx"
 
   create_table "references", :force => true do |t|
     t.integer  "year"
@@ -93,6 +99,7 @@ ActiveRecord::Schema.define(:version => 20101108190743) do
     t.string   "pages_in"
   end
 
+  add_index "references", ["authors_string", "citation_year"], :name => "references_authors_string_citation_year_idx", :length => {"citation_year"=>nil, "authors_string"=>"100"}
   add_index "references", ["journal_id"], :name => "references_journal_id_idx"
 
   create_table "users", :force => true do |t|
