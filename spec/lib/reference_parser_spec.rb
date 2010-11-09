@@ -84,13 +84,13 @@ describe ReferenceParser do
          :article => {:journal => "Series Entomologica (Dordrecht)", :series_volume_issue => "33", :pagination => '1-514'}}
     end
 
-    it "can't really help parsing this as an article reference" do
+    it "grabs the first sentence without a period as the journal name" do
       ReferenceParser.parse("Ward, P. 1980. Ameisen aus Sao Paulo (Brasilien), Paraguay etc. gesammelt von Prof. Herm. v. Ihering, Dr. Lutz, Dr. Fiebrig, etc. Verhandlungen der Kaiserlich-Königlichen Zoologisch-Botanischen Gesellschaft in Wien 58:340-418").should == {
         :authors => ['Ward, P.'],
         :year => '1980',
-        :title => 'Ameisen aus Sao Paulo (Brasilien), Paraguay etc. gesammelt von Prof',
+        :title => 'Ameisen aus Sao Paulo (Brasilien), Paraguay etc. gesammelt von Prof. Herm. v. Ihering, Dr. Lutz, Dr. Fiebrig, etc',
         :article => {
-          :journal => 'Herm. v. Ihering, Dr. Lutz, Dr. Fiebrig, etc. Verhandlungen der Kaiserlich-Königlichen Zoologisch-Botanischen Gesellschaft in Wien',
+          :journal => 'Verhandlungen der Kaiserlich-Königlichen Zoologisch-Botanischen Gesellschaft in Wien',
           :series_volume_issue => '58',
           :pagination => '340-418'}
       }

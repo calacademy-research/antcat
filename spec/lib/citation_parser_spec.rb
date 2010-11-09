@@ -1,13 +1,13 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe CitationParser do
-  before :all do
-    Factory :place, :name => 'Melbourne'
-    Factory :place, :name => 'Leiden'
-    Factory :place, :name => 'Cambridge, Mass.'
-  end
+  describe "actual parsed data results" do
+    before :all do
+      Factory :place, :name => 'Melbourne'
+      Factory :place, :name => 'Leiden'
+      Factory :place, :name => 'Cambridge, Mass.'
+    end
 
-  describe "parsing a citation" do
     it 'should parse an article citation' do
       CitationParser.parse('Psyche 1:2').should ==
         {:article => {:journal => 'Psyche', :series_volume_issue => '1', :pagination => '2'}}
@@ -34,17 +34,12 @@ describe CitationParser do
       }
     end
 
-    it 'should parse a CD-ROM citation' do
-      CitationParser.parse('Cambridge, Mass.: Harvard University Press, CD-ROM.').should ==
-        {:other => 'Cambridge, Mass.: Harvard University Press, CD-ROM'}
-    end
-
     it 'should parse a completely unknown citation' do
       CitationParser.parse('A book.').should == {:other => 'A book'}
     end
 
-    it 'should not parse a completely unknown citation if "allow_other" is false' do
-      CitationParser.parse('A book.', false).should_not be_true
+    it "should not parse a completely unknown citation if it's possibly embedded" do
+      CitationParser.parse('A book.', true).should_not be_true
     end
 
     it "should probably just call this one unknown" do

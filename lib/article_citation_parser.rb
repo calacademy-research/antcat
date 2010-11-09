@@ -1,6 +1,6 @@
 module ArticleCitationParser
 
-  def self.parse string
+  def self.parse string, possibly_embedded
     return unless string.present?
 
     begin
@@ -13,6 +13,8 @@ module ArticleCitationParser
     rest = parse[:journal_name_series_volume_issue]
     series_volume_issue = parse_series_volume_issue rest
     journal_name = rest.strip
+
+    return unless journal_name?(journal_name, possibly_embedded)
 
     {:article => {:journal => journal_name, :series_volume_issue => series_volume_issue, :pagination => pagination}}
   end
@@ -59,6 +61,16 @@ module ArticleCitationParser
     parts[:start] = matches[1]
     parts[:end] = matches[2] if matches[2].present?
     parts
+  end
+
+  private
+  def self.journal_name? string, possibly_embedded
+    return true unless possibly_embedded
+    string.index('.').nil? || starts_with_common_first_word_of_journal_name?(string) || Journal.find_by_name(string)
+  end
+
+  def self.starts_with_common_first_word_of_journal_name? string
+    string =~ /^(Abhandlungen|Acta|Actes|Anales|Annalen|Annales|Annali|Annals|Archives|Archivos|Arquivos|Boletim|Boletin|Bollettino|Bulletin|Izvestiya|Journal|Memoires|Memoirs|Memorias|Memorie|Mitteilungen|Occasional Papers)/
   end
 
 end

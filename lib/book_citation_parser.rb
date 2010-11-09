@@ -1,5 +1,6 @@
 module BookCitationParser
-  def self.parse string
+
+  def self.parse string, possibly_embedded
     return unless string.present?
     string = string.dup
 
@@ -9,7 +10,7 @@ module BookCitationParser
     match = PublisherGrammar.parse string
     string.gsub! /#{Regexp.escape match}/, ''
     book = match.value
-    return nil unless Place.find_by_name book[:publisher][:place]
+    return unless place?(book[:publisher][:place], possibly_embedded)
 
     book[:pagination] = pagination
     {:book => book}
@@ -32,5 +33,10 @@ module BookCitationParser
     end
     string.gsub!(/,\s*#{Regexp.escape pagination}/, '') if pagination
     pagination
+  end
+
+  private
+  def self.place? place, possibly_embedded
+    !possibly_embedded || place.index('.') == nil || Place.find_by_name(place)
   end
 end

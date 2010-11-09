@@ -25,12 +25,12 @@ module TitleAndCitationParser
       @scanner.scan /\s*/
       next unless sentence_start? @scanner.rest
       first_possible_citation_start ||= @scanner.pos
-      break if citation = CitationParser.parse(@scanner.rest, false)
+      break if citation = CitationParser.parse(@scanner.rest, true)
     end
 
     unless citation
       title_end = first_possible_title_end
-      citation = CitationParser.parse string[first_possible_citation_start..-1]
+      citation = CitationParser.parse(string[first_possible_citation_start..-1], false)
     end
     {:title => string[0, title_end - 2], :citation => citation}
   end
@@ -48,11 +48,3 @@ module TitleAndCitationParser
   end
 
 end
-
-    #title_and_citation = find_title_and_citation(string)
-    #return title_and_citation if title_and_citation
-
-    #match = string.match /(^.*?)\.\s*/
-    #string[0, match[0].length] = ''
-    #{:title => match[1], :citation => nil}
-

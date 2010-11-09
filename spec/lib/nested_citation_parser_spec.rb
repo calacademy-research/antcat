@@ -15,15 +15,15 @@ describe NestedCitationParser do
     parts = NestedCitationParser.parse('Pp. 32-45 in Mayer, D.M. Ants. Psyche 1:2')
     parts.should == {
       :nested => {
-      :authors => ['Mayer, D.M.'],
-      :title => 'Ants',
-      :article => {
-      :journal => 'Psyche',
-      :series_volume_issue => '1',
-      :pagination => '2',
-    },
-    :pages_in => 'Pp. 32-45 in',
-    }
+        :pages_in => 'Pp. 32-45 in',
+        :authors => ['Mayer, D.M.'],
+        :title => 'Ants',
+        :article => {
+          :journal => 'Psyche',
+          :series_volume_issue => '1',
+          :pagination => '2',
+        },
+      }
     }
   end
 
