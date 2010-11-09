@@ -8,7 +8,7 @@ grammar AuthorGrammar
   end
 
   rule author
-    phrase (',' initial+)?
+    phrase (',' initial+)? ', Jr.'?
   end
 
   rule author_separator

@@ -67,6 +67,12 @@ describe AuthorParser do
       AuthorParser.get_author_names("This is actually the title.").should == []
     end
     
+    it "should handle 'Jr.'" do
+      string = 'Brown, W. L., Jr.; Kempf, W. W.'
+      AuthorParser.get_author_names(string).should == ['Brown, W. L., Jr.', 'Kempf, W. W.']
+      string.should == ''
+    end
+
   end
 
   describe "parsing first name and initials and last name" do
