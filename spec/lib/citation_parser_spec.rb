@@ -35,7 +35,7 @@ describe CitationParser do
     end
 
     it 'should parse a completely unknown citation' do
-      CitationParser.parse('A book.').should == {:other => 'A book'}
+      CitationParser.parse('A book.').should == {:unknown => 'A book'}
     end
 
     it "should not parse a completely unknown citation if it's possibly embedded" do
@@ -44,7 +44,7 @@ describe CitationParser do
 
     it "should probably just call this one unknown" do
       CitationParser.parse("Journal of Insect Science 7(42), 14 pp. (available online: insectscience.org/7.42).").should ==
-        {:other => "Journal of Insect Science 7(42), 14 pp. (available online: insectscience.org/7.42)"}
+        {:unknown => "Journal of Insect Science 7(42), 14 pp. (available online: insectscience.org/7.42)"}
     end
 
     it "should work" do

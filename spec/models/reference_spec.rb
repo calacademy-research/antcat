@@ -75,11 +75,11 @@ describe Reference do
         :source_reference_type => 'WardReference'}, 'nested')
         Reference.import @reference_data
     end
-    it "should import an other reference" do
+    it "should import an unknown reference" do
       author = mock_model Author
       Author.should_receive(:import).with(['Author']).and_return [author]
-      @reference_data[:other] = 'other'
-      OtherReference.should_receive(:import).with({
+      @reference_data[:unknown] = 'other'
+      UnknownReference.should_receive(:import).with({
         :authors => [author],
         :citation_year => '2010d',
         :title => 'Ants',

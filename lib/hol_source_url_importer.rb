@@ -3,7 +3,7 @@ require 'curl'
 class HolSourceUrlImporter
 
   attr_reader :processed_count, :success_count,
-              :book_failure_count, :other_reference_failure_count, :pdf_not_found_failure_count,
+              :book_failure_count, :unknown_reference_failure_count, :pdf_not_found_failure_count,
               :missing_author_failure_count, :already_imported_count
 
   def initialize show_progress = false
@@ -11,7 +11,7 @@ class HolSourceUrlImporter
     @bibliography = HolBibliography.new
     @total_count = Reference.count
     @processed_count = @success_count = @unmatched_count =
-      @book_failure_count = @other_reference_failure_count = @pdf_not_found_failure_count =
+      @book_failure_count = @unknown_reference_failure_count = @pdf_not_found_failure_count =
       @missing_author_failure_count = @already_imported_count = 0
     @missing_authors = []
   end
@@ -69,9 +69,9 @@ class HolSourceUrlImporter
       elsif reference.kind_of? BookReference
         @book_failure_count += 1
         return 'Book'
-      elsif reference.kind_of? OtherReference
-        @other_reference_failure_count += 1
-        return 'Other'
+      elsif reference.kind_of? UnknownReference
+        @unknown_reference_failure_count += 1
+        return 'Unknown'
       else
         @unmatched_count += 1
         return 'Unmatched'
@@ -103,7 +103,7 @@ class HolSourceUrlImporter
     Progress.puts Progress.count(@already_imported_count, @processed_count, 'already imported')
     Progress.puts Progress.count(@missing_author_failure_count, @processed_count, 'author not found')
     Progress.puts Progress.count(@unmatched_count, @processed_count, 'unmatched')
-    Progress.puts Progress.count(@other_reference_failure_count, @processed_count, 'other references')
+    Progress.puts Progress.count(@unknown_reference_failure_count, @processed_count, 'unknown references')
     Progress.puts Progress.count(@book_failure_count, @processed_count, 'book references')
     Progress.puts Progress.count(@pdf_not_found_failure_count, @processed_count, 'PDF not found')
   end

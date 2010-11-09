@@ -207,7 +207,7 @@ describe TitleAndCitationParser do
 
   describe "unparseable strings" do
     it "should take the first sentence as the title and the rest as the citation" do
-      TitleAndCitationParser.parse('Ants. A book').should == {:title => 'Ants', :citation => {:other => 'A book'}}
+      TitleAndCitationParser.parse('Ants. A book').should == {:title => 'Ants', :citation => {:unknown => 'A book'}}
     end
   end
 

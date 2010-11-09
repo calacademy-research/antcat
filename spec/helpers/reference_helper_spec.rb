@@ -44,8 +44,8 @@ describe ReferenceHelper do
       helper.format_reference(reference).should == 'Forel, A. 1874. Les fourmis de la Suisse. New York: Wiley, 22 pp.'
     end
 
-    it "should format an 'other' reference" do
-      reference = Factory(:other_reference, :authors => [@author], :citation_year => "1874", :title => "Les fourmis de la Suisse.",
+    it "should format an unknown reference" do
+      reference = Factory(:unknown_reference, :authors => [@author], :citation_year => "1874", :title => "Les fourmis de la Suisse.",
                           :citation => 'New York')
       helper.format_reference(reference).should == 'Forel, A. 1874. Les fourmis de la Suisse. New York.'
     end

@@ -92,12 +92,12 @@ describe HolSourceUrlImporter do
 
     it "should record the number of failures because reference was to another source" do
       success = Factory :reference
-      failure = Factory :other_reference
+      failure = Factory :unknown_reference
       @bibliography.stub!(:match).with(failure).and_return({})
       @bibliography.stub!(:match).with(success).and_return({:source_url => 'source'})
       @importer.import
       @importer.processed_count.should == 2
-      @importer.other_reference_failure_count.should == 1
+      @importer.unknown_reference_failure_count.should == 1
     end
 
     it "should record the number of failures because the PDF wasn't found" do

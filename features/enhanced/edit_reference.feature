@@ -127,7 +127,7 @@ Feature: Edit reference
       And I should see "Series volume issue can't be blank"
       And I should see "Pagination can't be blank"
 
-  Scenario: Clearing an other reference's fields
+  Scenario: Clearing an unknown reference's fields
     Given I am logged in
       And the following entries exist in the bibliography
       |authors    |citation  |year |title|

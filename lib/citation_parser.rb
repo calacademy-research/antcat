@@ -7,7 +7,7 @@ class CitationParser
   end
 
   def self.parse_unknown_citation citation
-    {:other => remove_period_from(citation)}
+    {:unknown => remove_period_from(citation)}
   end
 
   def self.remove_period_from text

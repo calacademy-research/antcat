@@ -69,13 +69,13 @@ describe ReferenceParser do
         :authors => ['Bolton, B.', 'Alpert, G.', 'Ward, P. S.', 'Nasrecki, P.'],
         :year => '2006',
         :title => 'Bolton’s Catalogue of ants of the world',
-        :other => 'Cambridge, Mass.: Harvard University Press, CD-ROM'
+        :unknown => 'Cambridge, Mass.: Harvard University Press, CD-ROM'
       }
     end
 
     it 'should parse a completely unknown reference' do
       ReferenceParser.parse('Bolton, B. 2006. Ants. A book.').should ==
-        {:authors => ['Bolton, B.'], :year => '2006', :title => 'Ants', :other => 'A book'}
+        {:authors => ['Bolton, B.'], :year => '2006', :title => 'Ants', :unknown => 'A book'}
     end
 
     it "actually can handle this mess!" do

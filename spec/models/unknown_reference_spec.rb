@@ -1,10 +1,10 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe OtherReference do
+describe UnknownReference do
   describe "importing" do
     it "should create the reference and set its data" do
       ward_reference = Factory(:ward_reference)
-      reference = OtherReference.import(
+      reference = UnknownReference.import(
         {:authors => [Factory(:author)], :title => 'awdf',
           :source_reference_id => ward_reference.id, :source_reference_type => 'WardReference', :citation_year => '2010'},
         'Citation')
@@ -15,7 +15,7 @@ describe OtherReference do
 
   describe "citation_string" do
     it "should format a citation_string" do
-      reference = OtherReference.new :citation => 'Citation'
+      reference = UnknownReference.new :citation => 'Citation'
       reference.citation_string.should == 'Citation.'
     end
   end
@@ -23,7 +23,7 @@ describe OtherReference do
   describe "validation" do
     before do
       author = Factory :author
-      @reference = OtherReference.new :authors => [author], :title => 'Title', :citation_year => '2010a',
+      @reference = UnknownReference.new :authors => [author], :title => 'Title', :citation_year => '2010a',
         :citation => 'Citation'
     end
     it "should be be valid the way I set it up" do
@@ -37,7 +37,7 @@ describe OtherReference do
 
   describe "entering a newline in the citation" do
     it "should strip the newline" do
-      reference = Factory :other_reference
+      reference = Factory :unknown_reference
       reference.title = "A\nB"
       reference.citation = "A\nB"
       reference.save!

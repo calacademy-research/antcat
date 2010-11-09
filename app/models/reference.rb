@@ -38,8 +38,8 @@ class Reference < ActiveRecord::Base
       ArticleReference.import create_data, data[:article]
     when data[:nested]
       NestedReference.import create_data, data[:nested]
-    when data[:other]
-      OtherReference.import create_data, data[:other]
+    when data[:unknown]
+      UnknownReference.import create_data, data[:unknown]
     end
   end
 

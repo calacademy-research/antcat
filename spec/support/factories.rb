@@ -47,7 +47,7 @@ Factory.define :book_reference do |reference|
   reference.pagination          '22 pp.'
 end
 
-Factory.define :other_reference do |reference|
+Factory.define :unknown_reference do |reference|
   reference.authors             {[Factory(:author)]}
   reference.title               "Ants are my life"
   reference.citation_year       '2010d'

@@ -3,7 +3,7 @@ module CoinsHelper
     title = case reference
     when ArticleReference then ArticleCoinsHelper
     when BookReference then BookCoinsHelper
-    when OtherReference then OtherCoinsHelper
+    when UnknownReference then UnknownCoinsHelper
     else raise "Don't know what kind of reference this is: #{reference.inspect}"
     end.new(reference).coins
 
@@ -81,7 +81,7 @@ class BookCoinsHelper < CoinsHelperBase
   end
 end
 
-class OtherCoinsHelper < CoinsHelperBase
+class UnknownCoinsHelper < CoinsHelperBase
   def kind
     'dc'
   end

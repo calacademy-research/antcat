@@ -23,7 +23,7 @@ module TitleAndCitationParser
 
   def self.scan_to_sentence_end
     if @scanner.peek(1) == '['
-      @scanner.scan_until /]\.? /
+      @scanner.scan_until /\]\.? /
     else
       @scanner.scan_until /\. /
     end
