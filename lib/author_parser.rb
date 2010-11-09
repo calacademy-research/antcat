@@ -1,6 +1,6 @@
 module AuthorParser
   def self.get_author_names string
-    return [] unless string.present?
+    return {:names => []} unless string.present?
     match = AuthorGrammar.parse(string)
 
     authors = match.value
@@ -10,7 +10,7 @@ module AuthorParser
     else
       string.gsub! /#{Regexp.escape match}/, ''
     end
-    authors
+    {:names => authors}
   end
 
   def self.is_actually_the_title? name

@@ -27,7 +27,7 @@ class Author < ActiveRecord::Base
   end
 
   def self.import_authors_string string
-    import AuthorParser.get_author_names string
+    import AuthorParser.get_author_names(string)[:names]
   end
 
   private

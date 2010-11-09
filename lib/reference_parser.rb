@@ -11,7 +11,7 @@ class ReferenceParser
   end
 
   def self.parse_authors string
-    {:authors => AuthorParser.get_author_names(string)}
+    {:authors => AuthorParser.get_author_names(string)[:names]}
   end
 
   def self.parse_year string
