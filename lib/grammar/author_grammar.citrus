@@ -2,8 +2,8 @@ grammar AuthorGrammar
   include CommonGrammar
 
   rule authors
-    (author (author_separator space author)* '.'? space) {
-      find 'author'
+    (author (author_separator space author)* space a_role:role? '.'? space) {
+      {:names => find('author'), :role => a_role}
     }
   end
 
@@ -16,10 +16,13 @@ grammar AuthorGrammar
   end
 
   rule initial
-    space '(' [^)]+ ')' |
     space ('da' | 'de' | 'di' | 'del' | 'do') |
     space word_char '.'? '-' word_char '.' |
     space word_char '.'
+  end
+
+  rule role
+    '(' [^)]+ ')'
   end
 
   rule phrase

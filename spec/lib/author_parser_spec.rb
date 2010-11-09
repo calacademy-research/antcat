@@ -15,10 +15,21 @@ describe AuthorParser do
       string.should == ''
     end
 
+    it "should parse a single author + author roles into a hash" do
+      string = 'Fisher, B.L. (ed.)'
+      AuthorParser.get_author_names(string).should == {:names => ['Fisher, B.L.'], :role => '(ed.)'}
+      string.should == ''
+    end
+
     it "should parse multiple authors" do
       string = 'Fisher, B.L.; Wheeler, W.M.'
       AuthorParser.get_author_names(string)[:names].should == ['Fisher, B.L.', 'Wheeler, W.M.']
       string.should == ''
+    end
+
+    it "should multiple authors with a role" do
+      AuthorParser.get_author_names("Breed, M. D.; Page, R. E. (eds.)").should ==
+        {:names => ['Breed, M. D.', 'Page, R. E.'], :role => '(eds.)'}
     end
 
     it "should stop when it runs out of names" do
@@ -53,10 +64,6 @@ describe AuthorParser do
 
     it "should handle 'da' at the beginning of a name" do
       AuthorParser.get_author_names("da Silva, R. R.")[:names].should == ['da Silva, R. R.']
-    end
-
-    it "should handle roles" do
-      AuthorParser.get_author_names("Breed, M. D.; Page, R. E. (eds.)")[:names].should == ['Breed, M. D.', 'Page, R. E. (eds.)']
     end
 
     it "should handle authors separated by commas" do
