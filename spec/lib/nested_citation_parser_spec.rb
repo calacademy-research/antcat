@@ -120,4 +120,9 @@ describe NestedCitationParser do
   }
   end
 
+  it "should handle bracketed sentences" do
+    string = "Pp. 467-506 in: Alfred, J. R. B. (ed.) Fauna of Sikkim (part 4). [State Fauna Series 9.] Kolkata: Zoological Survey of India, iii + 512 pp."
+    rc = NestedCitationParser.parse(string)[:nested][:title].should == 'Fauna of Sikkim (part 4). [State Fauna Series 9.]'
+  end
+    
 end
