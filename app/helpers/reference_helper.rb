@@ -1,12 +1,6 @@
 module ReferenceHelper
   def format_reference reference
-    case reference
-    when ArticleReference then ArticleHelper
-    when BookReference then BookHelper
-    when NestedReference then NestedHelper
-    when UnknownReference then UnknownHelper
-    else raise "Don't know what kind of reference this is: #{reference.inspect}"
-    end.new(self, reference).format
+    ReferenceHelperBase.format self, reference
   end
 
   def italicize s
@@ -18,6 +12,17 @@ end
 
 class ReferenceHelperBase
   include ERB::Util
+
+  def self.format helper, reference
+    case reference
+    when ArticleReference then ArticleHelper
+    when BookReference then BookHelper
+    when NestedReference then NestedHelper
+    when UnknownReference then UnknownHelper
+    else raise "Don't know what kind of reference this is: #{reference.inspect}"
+    end.new(helper, reference).format
+  end
+
   def initialize helper, reference
     @helper = helper
     @reference = reference
@@ -31,10 +36,6 @@ class ReferenceHelperBase
     s << format_citation
     s << " [#{format_date(@reference.date)}]" if @reference.date.present?
     s
-  end
-
-  def format_citation
-    "#{@helper.italicize(Reference.add_period_if_necessary(h @reference.citation_string))}"
   end
 
   private
@@ -76,6 +77,6 @@ end
 
 class NestedHelper < ReferenceHelperBase
   def format_citation
-    "#{@helper.italicize(Reference.add_period_if_necessary(h @reference.citation_string))}"
+    "#{@reference.pages_in}#{ReferenceHelperBase.format(@helper, @reference.nested_reference)}"
   end
 end

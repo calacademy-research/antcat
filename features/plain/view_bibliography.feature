@@ -93,3 +93,12 @@ Feature: View bibliography
     When I go to the main page
     Then I should see a "PDF" link
 
+  Scenario: Viewing a nested reference
+    Given the following entries exists in the bibliography
+      |authors    |year|title |citation               |
+      |Bolton, B. |2010|Ants  |New York: Wiley, 23 pp.|
+    And the following entry nests it
+      |authors    |title          |year|pages_in|
+      |Ward, P.S. |Dolichoderinae |2010|In:   |
+    When I go to the main page
+    Then I should see "Ward, P.S. 2010. Dolichoderinae. In: Bolton, B. 2010. Ants. New York: Wiley, 23 pp."

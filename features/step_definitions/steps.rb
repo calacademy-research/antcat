@@ -7,6 +7,12 @@ Given /the following entr(?:ies|y) exists? in the bibliography/ do |table|
   end
 end
 
+Given /the following entry nests it/ do |table|
+  data = table.hashes.first
+  NestedReference.create! :authors => [Factory(:author, :name => data[:authors])], :citation_year => data[:year],
+                          :title => data[:title], :pages_in => data[:pages_in] + ' ', :nested_reference => @reference
+end
+
 Given /that the entry has a source URL that's (not )?on our site/ do |is_not|
   hostname = is_not ? 'antbase.org' : 'antcat.org'
   @reference.update_attribute :source_url, "http://#{hostname}/article.pdf"
