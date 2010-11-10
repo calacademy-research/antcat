@@ -169,7 +169,7 @@ describe CoinsHelper do
     ]
   end
 
-  it "should format an unknown/nested reference correctly" do
+  it "should format an unknown reference correctly" do
     coins = helper.coins(ward_reference_factory(
       :authors => 'MacKay, W.',
       :year => '1933',
@@ -185,6 +185,23 @@ describe CoinsHelper do
       "rft.title=Another+title",
       "rft.source=Dresden",
       "rft.date=1933",
+    ]
+  end
+
+  it "should just provide very basic stuff for nested references for now" do
+    reference = Factory :reference
+    nested_reference = Factory :nested_reference, :pages_in => 'In:', :nested_reference => reference,
+      :authors => [Factory :author, :name => 'Bolton, B.'], :title => 'Title', :citation_year => '2010'
+    coins = helper.coins nested_reference
+    check_parameters coins, [
+      "ctx_ver=Z39.88-2004",
+      "rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Adc",
+      "rft.aulast=Bolton",
+      "rft.aufirst=B.",
+      "rfr_id=antcat.org",
+      "rft.genre=",
+      "rft.title=Title",
+      "rft.date=2010",
     ]
   end
 

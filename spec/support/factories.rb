@@ -54,6 +54,9 @@ Factory.define :unknown_reference do |reference|
   reference.citation            'New York'
 end
 
+Factory.define :nested_reference do |reference|
+end
+
 def reference_factory attributes = {}
   author = Factory(:author, :name => attributes.delete(:author))
   reference = Factory(:reference, attributes.merge(:authors => [author]))

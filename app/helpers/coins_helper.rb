@@ -3,6 +3,7 @@ module CoinsHelper
     title = case reference
     when ArticleReference then ArticleCoinsHelper
     when BookReference then BookCoinsHelper
+    when NestedReference then NestedCoinsHelper
     when UnknownReference then UnknownCoinsHelper
     else raise "Don't know what kind of reference this is: #{reference.inspect}"
     end.new(reference).coins
@@ -91,5 +92,17 @@ class UnknownCoinsHelper < CoinsHelperBase
   def add_contents
     add 'rft.title', @reference.title
     add 'rft.source', @reference.citation
+  end
+end
+
+class NestedCoinsHelper < CoinsHelperBase
+  def kind
+    'dc'
+  end
+  def genre
+    ''
+  end
+  def add_contents
+    add 'rft.title', @reference.title
   end
 end
