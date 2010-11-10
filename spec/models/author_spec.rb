@@ -38,15 +38,15 @@ describe Author do
       author_data = Author.import_authors_string('Ward, P.S.; Bolton, B.')
       author_data[:authors].first.name.should == 'Ward, P.S.'
       author_data[:authors].second.name.should == 'Bolton, B.'
-      author_data[:authors_role].should == ''
+      author_data[:authors_suffix].should be_nil
       Author.count.should == 2
     end
 
-    it "should return the authors role" do
+    it "should return the authors suffix" do
       author_data = Author.import_authors_string('Ward, P.S.; Bolton, B. (eds.)')
       author_data[:authors].first.name.should == 'Ward, P.S.'
       author_data[:authors].second.name.should == 'Bolton, B.'
-      author_data[:authors_role].should == '(eds.)'
+      author_data[:authors_suffix].should == ' (eds.)'
     end
   end
 

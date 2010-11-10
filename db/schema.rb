@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101109190712) do
+ActiveRecord::Schema.define(:version => 20101110020959) do
 
   create_table "author_participations", :force => true do |t|
     t.integer  "author_id"
@@ -97,7 +97,7 @@ ActiveRecord::Schema.define(:version => 20101109190712) do
     t.text     "citation"
     t.integer  "nested_reference_id"
     t.string   "pages_in"
-    t.string   "authors_role"
+    t.string   "authors_suffix"
   end
 
   add_index "references", ["authors_string", "citation_year"], :name => "references_authors_string_citation_year_idx", :length => {"citation_year"=>nil, "authors_string"=>"100"}

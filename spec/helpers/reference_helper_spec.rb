@@ -20,10 +20,10 @@ describe ReferenceHelper do
       helper.format_reference(reference).should == 'Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.'
     end
 
-    it "should not add a period after the authors' role" do
+    it "should not add a period after the authors' suffix" do
       reference = Factory(:article_reference, :authors => [@author], :citation_year => "1874", :title => "Les fourmis de la Suisse",
                           :journal => @journal, :series_volume_issue => "26", :pagination => "1-452")
-      reference.update_attribute :authors_role, '(ed.)'
+      reference.update_attribute :authors_suffix, ' (ed.)'
       helper.format_reference(reference).should == 'Forel, A. (ed.) 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.'
     end
 

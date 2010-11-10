@@ -36,7 +36,7 @@ describe TitleAndCitationParser do
           :nested => {
             :pages_in => 'In:',
             :authors => ['Ward, P.S.'],
-            :authors_role => '',
+            :authors_suffix => nil,
             :title => 'Ants',
             :book => {
               :publisher => {:name => 'Wiley', :place => 'New York'},
@@ -51,7 +51,7 @@ describe TitleAndCitationParser do
           :nested => {
             :pages_in => 'Pp. 32, 4, 5 in',
             :authors => ['Ward, P.S.'],
-            :authors_role => '',
+            :authors_suffix => nil,
             :title => 'Ants',
             :book => {
               :publisher => {:name => 'Wiley', :place => 'New York'},
@@ -66,12 +66,12 @@ describe TitleAndCitationParser do
           :nested => {
             :pages_in => 'Pp. 32, 4, 5 in',
             :authors => ['Ward, P.S.'],
-            :authors_role => '',
+            :authors_suffix => nil,
             :title => 'Ants',
             :nested => {
               :pages_in => 'In:',
               :authors => ['Bolton, B.'],
-              :authors_role => '',
+              :authors_suffix => nil,
               :title => 'More ants',
               :book => {
                 :publisher => {:name => 'Wiley', :place => 'New York'},
@@ -94,7 +94,7 @@ describe TitleAndCitationParser do
           :nested => {
             :pages_in => 'In:',
             :authors => ['Ward, P.S.'],
-            :authors_role => '',
+            :authors_suffix => nil,
             :title => 'Ants',
             :book => {
               :publisher => {:name => 'Wiley', :place => 'New York'},

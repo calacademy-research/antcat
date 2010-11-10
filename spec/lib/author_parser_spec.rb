@@ -62,7 +62,15 @@ describe AuthorParser do
       AuthorParser.parse("Sanetra, M; Ward, P., et al.").should == {:names => ['Sanetra, M', 'Ward, P.'], :suffix => ', et al.'}
     end
 
-    it "should handle 'et al. (eds.)'"
+    it "should handle 'et al. (eds.)'" do
+      AuthorParser.parse("Sanetra, M; Ward, P., et al. (eds.)").should == {:names => ['Sanetra, M', 'Ward, P.'], :suffix => ', et al. (eds.)'}
+    end
+
+    it "should strip the space after the suffix" do
+      string = "Sanetra, M; Ward, P., et al. (eds.) Ants"
+      AuthorParser.parse(string)
+      string.should == 'Ants'
+    end
 
     it "should handle a name with one letter in part of it (not an abbreviation)" do
       AuthorParser.parse("Suñer i Escriche, D.")[:names].should == ["Suñer i Escriche, D."]

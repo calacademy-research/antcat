@@ -23,12 +23,12 @@ describe CitationParser do
         :nested => {
           :pages_in => 'Pp. 96-98 in:',
           :authors => ['MacKay, W.', 'Lowrie, D.', 'Fisher, A.', 'MacKay, E.', 'Barnes, F.', 'Lowrie, D.'],
-          :authors_role => '',
+          :authors_suffix => nil,
           :title => 'The ants of Los Alamos County, New Mexico (Hymenoptera: Formicidae)',
           :nested => {
             :pages_in => 'Pp. 79-131 in:',
             :authors => ['Trager, J. C.'],
-            :authors_role => '(ed.)',
+            :authors_suffix => ' (ed.)',
             :title => 'Advances in myrmecology',
             :book => {:publisher => {:name => 'E. J. Brill', :place => 'Leiden'}, :pagination => 'xxvii + 551 pp.'}
           }

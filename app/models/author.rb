@@ -28,7 +28,7 @@ class Author < ActiveRecord::Base
 
   def self.import_authors_string string
     author_data = AuthorParser.parse(string)
-    {:authors => import(author_data[:names]), :authors_role => author_data[:role]}
+    {:authors => import(author_data[:names]), :authors_suffix => author_data[:suffix]}
   end
 
   private

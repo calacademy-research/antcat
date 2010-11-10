@@ -9,7 +9,7 @@ describe Reference do
     before do
       @reference_data = {
         :authors => ['Author'],
-        :authors_role => '(eds.)',
+        :authors_suffix => ' (eds.)',
         :citation_year => '2010d',
         :title => 'Ants',
         :cite_code => '345',
@@ -28,7 +28,7 @@ describe Reference do
       @reference_data[:book] = 1
       BookReference.should_receive(:import).with({
         :authors => [author],
-        :authors_role => '(eds.)',
+        :authors_suffix => ' (eds.)',
         :citation_year => '2010d',
         :title => 'Ants',
         :cite_code => '345',
@@ -47,7 +47,7 @@ describe Reference do
       @reference_data[:article] = 1
       ArticleReference.should_receive(:import).with({
         :authors => [author],
-        :authors_role => '(eds.)',
+        :authors_suffix => ' (eds.)',
         :citation_year => '2010d',
         :title => 'Ants',
         :cite_code => '345',
@@ -66,7 +66,7 @@ describe Reference do
       @reference_data[:nested] = 'nested'
       NestedReference.should_receive(:import).with({
         :authors => [author],
-        :authors_role => '(eds.)',
+        :authors_suffix => ' (eds.)',
         :citation_year => '2010d',
         :title => 'Ants',
         :cite_code => '345',
@@ -85,7 +85,7 @@ describe Reference do
       @reference_data[:unknown] = 'other'
       UnknownReference.should_receive(:import).with({
         :authors => [author],
-        :authors_role => '(eds.)',
+        :authors_suffix => ' (eds.)',
         :citation_year => '2010d',
         :title => 'Ants',
         :cite_code => '345',
@@ -225,9 +225,9 @@ describe Reference do
         @reference.authors_string.should == 'Fisher, B.L.; Ward, P.S.'
       end
 
-      it "should include the authors' role" do
+      it "should include the authors' suffix" do
         authors = [Factory(:author, :name => 'Fisher, B.L.'), Factory(:author, :name => 'Ward, P.S.')]
-        @reference = Reference.create! :title => 'Ants', :citation_year => '2010', :authors => authors, :authors_role => '(eds.)'
+        @reference = Reference.create! :title => 'Ants', :citation_year => '2010', :authors => authors, :authors_suffix => ' (eds.)'
         @reference.authors_string.should == 'Fisher, B.L.; Ward, P.S. (eds.)'
       end
     end
@@ -254,8 +254,8 @@ describe Reference do
         author.update_attribute :name, 'Fisher'
         @reference.reload.authors_string.should == 'Fisher'
       end
-      it "should update its authors_string when the authors_role changes" do
-        @reference.authors_role = '(eds.)'
+      it "should update its authors_string when the authors_suffix changes" do
+        @reference.authors_suffix = ' (eds.)'
         @reference.save
         @reference.reload.authors_string.should == 'Fisher, B.L. (eds.)'
       end

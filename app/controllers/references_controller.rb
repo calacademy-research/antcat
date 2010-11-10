@@ -58,7 +58,7 @@ class ReferencesController < ApplicationController
     @reference.authors.clear
     authors_data = Author.import_authors_string params[:reference][:authors_string]
     params[:reference][:authors] = authors_data[:authors]
-    params[:reference][:authors_role] = authors_data[:authors_role]
+    params[:reference][:authors_suffix] = authors_data[:authors_suffix]
   end
 
   def set_journal

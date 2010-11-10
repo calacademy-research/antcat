@@ -21,7 +21,7 @@ class Reference < ActiveRecord::Base
   def self.import data
     create_data = {
       :authors => Author.import(data[:authors]),
-      :authors_role => data[:authors_role],
+      :authors_suffix => data[:authors_suffix],
       :citation_year => data[:citation_year],
       :title => data[:title],
       :cite_code => data[:cite_code],
@@ -81,7 +81,7 @@ class Reference < ActiveRecord::Base
 
   def make_authors_string
     string = authors.map(&:name).join('; ')
-    string << ' ' << authors_role if authors_role.present?
+    string << authors_suffix if authors_suffix.present?
     string
   end
 
