@@ -72,6 +72,14 @@ describe AuthorParser do
       string.should == 'Ants'
     end
 
+    it "should handle generation numbers" do
+      AuthorParser.parse("Coody, C. J.; Watkins, J. F., II")[:names].should == ["Coody, C. J.", "Watkins, J. F., II"]
+    end
+
+    it "should handle St." do
+      AuthorParser.parse("St. Romain, M. K.")[:names].should == ["St. Romain, M. K."]
+    end
+
     it "should handle a name with one letter in part of it (not an abbreviation)" do
       AuthorParser.parse("Suñer i Escriche, D.")[:names].should == ["Suñer i Escriche, D."]
     end

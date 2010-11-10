@@ -12,7 +12,11 @@ grammar AuthorGrammar
   end
 
   rule author
-    phrase (',' initial+)? ', Jr.'?
+    phrase (',' initial+)? author_suffix?
+  end
+
+  rule author_suffix
+    ', Jr.' | ', II'
   end
 
   rule author_separator
@@ -43,7 +47,7 @@ grammar AuthorGrammar
   end
 
   rule word
-    word_char+
+    'St.' | word_char+
   end
 
   rule word_char

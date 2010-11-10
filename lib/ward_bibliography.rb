@@ -102,6 +102,9 @@ class WardBibliography
     # name without comma
     names.gsub! /Swainson W/, 'Swainson, W'
 
+    # semicolon before generation number
+    names.gsub! /Coody, C. J.; Watkins, J. F.; II/, "Coody, C. J.; Watkins, J. F., II"
+
     names
   end
 
