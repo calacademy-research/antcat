@@ -25,6 +25,8 @@ describe NestedReference do
       reference.nested_reference.title.should  == 'Nested title'
       reference.nested_reference.publisher.name  == 'Wiley'
       reference.nested_reference.pagination.should == '32 pp.'
+      reference.nested_reference.source_reference_id.should == ward_reference.id
+      reference.nested_reference.source_reference_type.should == 'WardReference'
     end
 
     it "should set the nested citation year to the outer citation year (minus the letter)" do
