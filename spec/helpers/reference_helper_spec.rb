@@ -61,9 +61,9 @@ describe ReferenceHelper do
       reference = Factory :book_reference, :authors => [Factory :author, :name => 'Mayr, E.'], :citation_year => '2010',
         :title => 'Ants I have known', :publisher => Factory(:publisher, :name => 'Wiley', :place => Factory(:place, :name => 'New York')),
         :pagination => '32 pp.'
-      nested_reference = Factory :nested_reference, :pages_in => 'In:', :nested_reference => reference,
+      nested_reference = Factory :nested_reference, :nested_reference => reference,
         :authors => [Factory :author, :name => 'Forel, A.'], :title => 'Les fourmis de la Suisse',
-        :citation_year => '1874', :pages_in => 'Pp. 32-45 in '
+        :citation_year => '1874', :pages_in => 'Pp. 32-45 in'
       helper.format_reference(nested_reference).should ==
         'Forel, A. 1874. Les fourmis de la Suisse. Pp. 32-45 in Mayr, E. 2010. Ants I have known. New York: Wiley, 32 pp.'
     end

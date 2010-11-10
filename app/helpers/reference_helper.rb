@@ -77,6 +77,6 @@ end
 
 class NestedHelper < ReferenceHelperBase
   def format_citation
-    "#{@reference.pages_in}#{ReferenceHelperBase.format(@helper, @reference.nested_reference)}"
+    "#{@reference.pages_in} #{ReferenceHelperBase.format(@helper, @reference.nested_reference)}"
   end
 end
