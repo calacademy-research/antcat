@@ -3,16 +3,12 @@ grammar AuthorGrammar
 
   rule authors
     (author rest_of_authors) {
-      {:names => find('author'), :suffix => rest_of_authors.suffix}
+      {:names => find('author'), :suffix => find('suffix').first}
     }
   end
 
   rule rest_of_authors
-    (suffix | (author_separator space author rest_of_authors) | ('.'? space)) {
-      def suffix
-        find('suffix').first
-      end
-    }
+    suffix | (author_separator space author rest_of_authors) | ('.'? space)
   end
 
   rule author
@@ -31,9 +27,7 @@ grammar AuthorGrammar
   end
 
   rule suffix
-    et_al role |
-    et_al |
-    role
+    et_al role | et_al | role
   end
 
   rule role

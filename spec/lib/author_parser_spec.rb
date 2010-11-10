@@ -16,7 +16,7 @@ describe AuthorParser do
     end
 
     it "should parse a single author + author roles into a hash" do
-      string = 'Fisher, B.L.Z'
+      string = 'Fisher, B.L. (ed.)'
       AuthorParser.parse(string).should == {:names => ['Fisher, B.L.'], :suffix => ' (ed.)'}
       string.should == ''
     end
