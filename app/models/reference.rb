@@ -76,9 +76,6 @@ class Reference < ActiveRecord::Base
         :order => 'authors_string, citation_year'
   end
 
-  def citation_string
-  end
-
   def make_authors_string
     string = authors.map(&:name).join('; ')
     string << authors_suffix if authors_suffix.present?

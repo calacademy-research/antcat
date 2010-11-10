@@ -11,8 +11,4 @@ class NestedReference < Reference
     )
   end
 
-  #def citation_string
-    #Reference.add_period_if_necessary "#{publisher}, #{pagination}"
-  #end
-
 end

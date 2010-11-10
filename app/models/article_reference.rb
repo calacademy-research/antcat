@@ -11,10 +11,6 @@ class ArticleReference < Reference
     )
   end
 
-  def citation_string
-    Reference.add_period_if_necessary "#{journal.name} #{series_volume_issue}:#{pagination}"
-  end
-
   def start_page
     page_parts[:start]
   end

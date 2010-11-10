@@ -15,17 +15,4 @@ describe BookReference do
     end
   end
 
-  describe "citation_string" do
-    it "should format a citation_string" do
-      publisher = Publisher.create! :name => "Wiley", :place => Place.create!(:name => 'New York')
-      reference = BookReference.new :title => 'asdf', :publisher => publisher, :pagination => '32 pp.'
-      reference.citation_string.should == 'New York: Wiley, 32 pp.'
-    end
-    it "should format a citation_string correctly if the publisher doesn't have a place" do
-      publisher = Publisher.create! :name => "Wiley"
-      reference = BookReference.new :title => 'asdf', :publisher => publisher, :pagination => '32 pp.'
-      reference.citation_string.should == 'Wiley, 32 pp.'
-    end
-  end
-
 end

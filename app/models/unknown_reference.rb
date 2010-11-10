@@ -7,10 +7,6 @@ class UnknownReference < Reference
     UnknownReference.create! base_class_data.merge(:citation => citation)
   end
 
-  def citation_string
-    Reference.add_period_if_necessary citation
-  end
-
   def strip_newlines
     citation.gsub! /\n/, ' ' if citation.present?
     super

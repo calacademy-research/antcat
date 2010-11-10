@@ -13,13 +13,6 @@ describe UnknownReference do
     end
   end
 
-  describe "citation_string" do
-    it "should format a citation_string" do
-      reference = UnknownReference.new :citation => 'Citation'
-      reference.citation_string.should == 'Citation.'
-    end
-  end
-
   describe "validation" do
     before do
       author = Factory :author
