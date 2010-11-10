@@ -60,7 +60,7 @@ class WardBibliography
     # remove links
     s = s.gsub(/<a.*?>(.*?)<\/a>/, '\1')
     # replace mso-spacerun with space
-    s = s.gsub %r{<span style="mso-spacerun: yes">&nbsp; </span>}, ' '
+    s = s.gsub %r{<span style="mso-spacerun: yes">&nbsp;\s*</span>}, ' '
     # translate | to *
     s = s.gsub(/\|/, '*')
     s = s.squish

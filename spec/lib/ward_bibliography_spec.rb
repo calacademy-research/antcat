@@ -256,7 +256,7 @@ describe WardBibliography do
           <td><a>Gibron, J.</a></td>
           <td></td><td></td>
           <td>Love &amp; Death</td>
-          <td class=xl65>Pp. 534-540 in: Hooker, J. D., Gunther, A. (eds.)<span style=\"mso-spacerun: yes\">  </span>An account of the petrological, botanical, and zoological collections made in Kerguelen's land and Rodriguez during the Transit of Venus expeditions, carried out by order of Her Majesty's Government in the years 1874-75.<span style=\"mso-spacerun: yes\">  </span>Philosophical Transactions of the Royal Society of London 168(extra volume):i-ix,1-579.</td>
+          <td class=xl65>Pp. 534-540 in: Hooker, J. D., Gunther, A. (eds.)<span style=\"mso-spacerun: yes\">  </span>An account of the petrological, botanical, and zoological collections made in Kerguelen's land and Rodriguez during the Transit of Venus expeditions, carried out by order of Her Majesty's Government in the years 1874-75.<span style=\"mso-spacerun: yes\">&nbsp;  </span>Philosophical Transactions of the Royal Society of London 168(extra volume):i-ix,1-579.</td>
           <td></td><td></td></tr></table></body></html>"
         WardReference.should_receive(:create!).with hash_including(:citation =>
           "Pp. 534-540 in: Hooker, J. D., Gunther, A. (eds.) An account of the petrological, botanical, and zoological collections made in Kerguelen's land and Rodriguez during the Transit of Venus expeditions, carried out by order of Her Majesty's Government in the years 1874-75. Philosophical Transactions of the Royal Society of London 168(extra volume):i-ix,1-579.")
