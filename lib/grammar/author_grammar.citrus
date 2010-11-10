@@ -2,8 +2,16 @@ grammar AuthorGrammar
   include CommonGrammar
 
   rule authors
-    (author (author_separator space author)* space a_role:role? '.'? space) {
-      {:names => find('author'), :role => a_role}
+    (author rest_of_authors) {
+      {:names => find('author'), :suffix => rest_of_authors.suffix}
+    }
+  end
+
+  rule rest_of_authors
+    (suffix | (author_separator space author rest_of_authors) | ('.'? space)) {
+      def suffix
+        find('suffix').first
+      end
     }
   end
 
@@ -18,11 +26,22 @@ grammar AuthorGrammar
   rule initial
     space ('da' | 'de' | 'di' | 'del' | 'do') |
     space word_char '.'? '-' word_char '.' |
-    space word_char '.'
+    space word_char '.' |
+    space word_char_without_period_but_before_semicolon
+  end
+
+  rule suffix
+    et_al role |
+    et_al |
+    role
   end
 
   rule role
-    '(' [^)]+ ')'
+    space '(' [^)]+ ')'
+  end
+
+  rule et_al
+    ', '? space 'et al.'
   end
 
   rule phrase
@@ -37,4 +56,7 @@ grammar AuthorGrammar
     /[\-\'\w]/u
   end
 
+  rule word_char_without_period_but_before_semicolon
+    /[\-\'\w](?=;)/u
+  end
 end

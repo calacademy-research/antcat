@@ -1,3 +1,4 @@
+#require 'citrus/debug'
 module AuthorParser
   def self.parse string
     return {:names => []} unless string.present?
@@ -9,7 +10,7 @@ module AuthorParser
     else
       string.gsub! /#{Regexp.escape match}/, ''
     end
-    {:names => result[:names], :role => result[:role]}
+    {:names => result[:names], :suffix => result[:suffix]}
   end
 
   def self.is_actually_the_title? name

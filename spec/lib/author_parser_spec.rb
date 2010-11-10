@@ -16,8 +16,8 @@ describe AuthorParser do
     end
 
     it "should parse a single author + author roles into a hash" do
-      string = 'Fisher, B.L. (ed.)'
-      AuthorParser.parse(string).should == {:names => ['Fisher, B.L.'], :role => '(ed.)'}
+      string = 'Fisher, B.L.Z'
+      AuthorParser.parse(string).should == {:names => ['Fisher, B.L.'], :suffix => ' (ed.)'}
       string.should == ''
     end
 
@@ -29,7 +29,7 @@ describe AuthorParser do
 
     it "should multiple authors with a role" do
       AuthorParser.parse("Breed, M. D.; Page, R. E. (eds.)").should ==
-        {:names => ['Breed, M. D.', 'Page, R. E.'], :role => '(eds.)'}
+        {:names => ['Breed, M. D.', 'Page, R. E.'], :suffix => ' (eds.)'}
     end
 
     it "should stop when it runs out of names" do
@@ -49,6 +49,20 @@ describe AuthorParser do
     it "should handle a name with an apostrophe" do
       AuthorParser.parse("Passerin d'Entrèves, P.")[:names].should == ["Passerin d'Entrèves, P."]
     end
+
+    it "should handle a name with an initial without a period, as long as it's before a semicolon" do
+      AuthorParser.parse("Sanetra, M; Ward, P.")[:names].should == ['Sanetra, M', 'Ward, P.']
+    end
+
+    it "should handle 'et al.' without a comma before it" do
+      AuthorParser.parse("Sanetra, M; Ward, P. et al.").should == {:names => ['Sanetra, M', 'Ward, P.'], :suffix => ' et al.'}
+    end
+
+    it "should handle 'et al.' with a comma before it" do
+      AuthorParser.parse("Sanetra, M; Ward, P., et al.").should == {:names => ['Sanetra, M', 'Ward, P.'], :suffix => ', et al.'}
+    end
+
+    it "should handle 'et al. (eds.)'"
 
     it "should handle a name with one letter in part of it (not an abbreviation)" do
       AuthorParser.parse("Suñer i Escriche, D.")[:names].should == ["Suñer i Escriche, D."]
