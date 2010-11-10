@@ -52,6 +52,7 @@ class WardBibliography
   private
   def node_to_text node
     s = node.inner_html
+
     s = s.gsub(/\n/, '')
     # replace italics font styling with *'s
     s = s.gsub(/<font class="font7">(.*?)<\/font>/, '*\1*')
@@ -59,8 +60,8 @@ class WardBibliography
     s = s.gsub(/<font.*?>(.*?)<\/font>/, '\1')
     # remove links
     s = s.gsub(/<a.*?>(.*?)<\/a>/, '\1')
-    # replace mso-spacerun with space
-    s = s.gsub %r{<span style="mso-spacerun: yes">&nbsp;\s*</span>}, ' '
+    # get rid of remaining <span>s
+    s = s.gsub %r{<span.*?/span>}, ' '
     # translate | to *
     s = s.gsub(/\|/, '*')
     s = s.squish
