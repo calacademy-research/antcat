@@ -107,6 +107,20 @@ See Site Statistics</a><p>
       @hol.read_references('fisher').should have(3).items
     end
 
+    it "should parse this reference" do
+      result = @hol.parse_reference(Nokogiri::HTML(<<-LI).at_css('html body'))
+<strong><a href="http://hol.osu.edu/reference-full.html?id=22662" title="View extended reference information from Hymenoptera Online">22662</a></strong>
+<a href="http://hol.osu.edu/agent-full.html?id=2767">Adlerz, G.</a>
+ 1896. Stridulationsorgan och ljudf"ornimmelser hos myror. Öfversigt af Kongliga Ventenskaps-Akadamiens Förhandlingar <strong>52</strong>: 769-782.
+<A HREF="http://osuc.biosci.ohio-state.edu/hymDB/nomenclator.hlviewer?id=22662" TARGET="_blank">Browse</A>
+ or download 
+<A HREF="http://128.146.250.117/pdfs/22662/22662.pdf" TARGET="_blank"> entire file (557k)</A>
+<IMG SRC="http://osuc.biosci.ohio-state.edu/images/pdf.gif">
+      LI
+
+      result[:title].should == 'Stridulationsorgan och ljudf"ornimmelser hos myror'
+    end
+
     it "should parse an article reference" do
       result = @hol.parse_reference(Nokogiri::HTML(<<-LI).at_css('html body'))
 <strong><a href="http://holBibliography.osu.edu/reference-full.html?id=22169" title="View extended reference information from Hymenoptera Online">22169</a></strong>

@@ -9,6 +9,8 @@ grammar ArticleCitationGrammar
   end
 
   rule journal_name_series_volume_issue
-    [A-Z] [^:]+
+    # trying to simply choose uppercase letters in any language, but
+    # [[:upper:]] doesn't work with "\326", e.g.
+    [^a-z] [^:]+
   end
 end

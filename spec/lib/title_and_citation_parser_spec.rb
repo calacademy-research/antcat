@@ -27,6 +27,12 @@ describe TitleAndCitationParser do
           :pagination => '1'}}}
   end
 
+  it "should handle journal titles that begin with uppercase UTF-8 characters" do
+    TitleAndCitationParser.parse(
+      'Stridulationsorgan och ljudf"ornimmelser hos myror. Öfversigt af Kongliga Ventenskaps-Akadamiens Förhandlingar 52: 769-782.'
+    )[:citation][:article][:journal].should == 'Öfversigt af Kongliga Ventenskaps-Akadamiens Förhandlingar'
+  end
+
   describe "nested references" do
     it "should extract a simple title followed by 'In:'" do
       string = "Ants. In: Ward, P.S. Ants. New York:Wiley, 32 pp."

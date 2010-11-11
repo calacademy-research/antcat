@@ -20,4 +20,9 @@ describe ArticleCitationGrammar do
     lambda {ArticleCitationGrammar.parse('name 1:1')}.should raise_error Citrus::ParseError
   end
 
+  it "should not fail when it starts with a UTF-8 capital letter" do
+    ArticleCitationGrammar.parse('Öfversigt 1:1').value.should ==
+      {:journal_name_series_volume_issue => 'Öfversigt 1', :pagination => '1'}
+  end
+
 end
