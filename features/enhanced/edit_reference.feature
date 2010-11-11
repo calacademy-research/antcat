@@ -189,3 +189,13 @@ Feature: Edit reference
       And I press the "Save" button
     Then I should see the edit form
       And I should see "Source url was not found"
+
+  Scenario: View a reference's id
+    Given I am logged in
+      And the following entries exist in the bibliography
+      |authors|citation  |cite_code|created_at|date    |possess|title|updated_at|year|
+      |authors|Psyche 5:3|CiteCode |today     |20100712|Possess|title|today     |2010|
+    When I go to the main page
+      And I click the reference
+    Then I should see the edit form
+      And I should see the reference's ID in a text field
