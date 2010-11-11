@@ -59,7 +59,7 @@ class HolBibliography
   def parse_reference li
     reference = {}
     reference[:source_url] = parse_source_url li
-    parse_article(li, reference) || parse_book(li, reference) || puts("\n\n#{li.content}\n\n")
+    parse_article(li, reference) || parse_book(li, reference) || parse_other(li, reference)
   end
 
   def parse_source_url li
@@ -91,6 +91,11 @@ class HolBibliography
     reference
   rescue
     nil
+  end
+
+  def parse_other li, reference
+    puts("\n\n#{li.content}\n\n")
+    reference
   end
 
   def search_for_author author
