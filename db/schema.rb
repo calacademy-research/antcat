@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101110020959) do
+ActiveRecord::Schema.define(:version => 20101111023007) do
 
   create_table "author_participations", :force => true do |t|
     t.integer  "author_id"
@@ -20,6 +20,8 @@ ActiveRecord::Schema.define(:version => 20101110020959) do
   end
 
   add_index "author_participations", ["author_id"], :name => "author_participations_author_id_idx"
+  add_index "author_participations", ["reference_id", "position"], :name => "author_participations_reference_id_position_idx"
+  add_index "author_participations", ["reference_id", "position"], :name => "foo"
   add_index "author_participations", ["reference_id"], :name => "author_participations_reference_id_idx"
 
   create_table "authors", :force => true do |t|
