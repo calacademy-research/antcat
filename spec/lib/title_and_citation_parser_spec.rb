@@ -218,6 +218,7 @@ describe TitleAndCitationParser do
       TitleAndCitationParser.parse(string)[:title].should == 'Atas do simpósio sôbre a biota amazônica. Vol. 5: Zoologia'
     end
 
+
   end
 
   describe "unparseable strings" do

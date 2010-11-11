@@ -35,7 +35,7 @@ class WardBibliography
   def save_reference columns
     return unless columns && columns[1] && !columns[1].inner_html.empty?
     col = 0;
-    WardReference.create!(
+    data = {
       :filename        => @base_filename,
       :cite_code       => node_to_text(columns[col += 1]),
       :authors         => fix_authors(node_to_text(columns[col += 1])),
@@ -46,7 +46,11 @@ class WardBibliography
       :taxonomic_notes => (@new_format ? node_to_text(columns[col += 1]) : nil),
       :notes           => node_to_text(columns[col += 1]),
       :possess         => node_to_text(columns[col += 1])
-    )
+    }
+
+    fix_data data
+
+    WardReference.create! data
   end
 
   private
@@ -107,6 +111,13 @@ class WardBibliography
     names.gsub! /Coody, C. J.; Watkins, J. F.; II/, "Coody, C. J.; Watkins, J. F., II"
 
     names
+  end
+
+  def fix_data data
+    # a very special case indeed
+    return unless data[:citation] =~ /Extrait des .+ Lisbonne: Imprimerie de la Librairie/
+    data[:title] << '. Extrait des Mémoires publiés par la Société Portugaise des Sciences Naturelles'
+    data[:citation] = 'Lisbonne: Imprimerie de la Librairie Ferin, 4 pp.'
   end
 
 end

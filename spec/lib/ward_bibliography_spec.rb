@@ -263,6 +263,19 @@ describe WardBibliography do
         @bibliography.import_html contents
       end
 
+      it "should handle a certain special case with part of the title in the citation" do
+        contents = "<html><body><table><tr></tr><tr><td></td><td>123</td>
+          <td><a>Gibron, J.</a></td>
+          <td></td><td></td>
+          <td>Ants</td>
+          <td class=xl65>Extrait des Mémoires publiés par la Société Portugaise des Sciences Naturelles. Lisbonne: Imprimerie de la Librairie Ferin, 4 pp.</td>
+          <td></td><td></td></tr></table></body></html>"
+        WardReference.should_receive(:create!).with hash_including(
+          :title => "Ants. Extrait des Mémoires publiés par la Société Portugaise des Sciences Naturelles",
+          :citation => "Lisbonne: Imprimerie de la Librairie Ferin, 4 pp.")
+        @bibliography.import_html contents
+      end
+
     end
   end
 

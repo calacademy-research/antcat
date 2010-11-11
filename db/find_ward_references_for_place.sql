@@ -3,4 +3,4 @@ select *
   join `references` r  on r.source_reference_id = wr.id
   join publishers on r.publisher_id = publishers.id
   join places on places.id = publishers.place_id
-  where places.name = '5'\G
+  where places.name = 'Extrai%'\G
