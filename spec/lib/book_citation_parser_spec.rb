@@ -96,4 +96,8 @@ describe BookCitationParser do
     BookCitationParser.parse("Journal of Insect Science 7(42), 14 pp. (available online: insectscience.org/7.42).", false).should be_nil
   end
 
+  it "should not be fooled by a volume number" do
+    BookCitationParser.parse("5: Zoologia. Rio de Janeiro: Conselho Nacional de Pesquisas, 603 pp.", true).should be_nil
+  end
+
 end

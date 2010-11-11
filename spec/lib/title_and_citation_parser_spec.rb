@@ -207,7 +207,17 @@ describe TitleAndCitationParser do
             :publisher => {:name => 'Wiley', :place => 'New York'},
             :pagination => '23 pp.'}}}
     end
-    
+
+    it "should handle parenthesized sentences" do
+      string = "From individual to collective behavior in social insects. (Experientia: Supplementum, Volume 54). Basel: Birkhäuser Verlag, 433 pp."
+      TitleAndCitationParser.parse(string)[:title].should == 'From individual to collective behavior in social insects. (Experientia: Supplementum, Volume 54)'
+    end
+
+    it "should handle a number followed by a colon" do
+      string = "Atas do simpósio sôbre a biota amazônica. Vol. 5: Zoologia. Rio de Janeiro: Conselho Nacional de Pesquisas, 603 pp."
+      TitleAndCitationParser.parse(string)[:title].should == 'Atas do simpósio sôbre a biota amazônica. Vol. 5: Zoologia'
+    end
+
   end
 
   describe "unparseable strings" do

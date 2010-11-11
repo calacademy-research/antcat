@@ -8,7 +8,7 @@ module TitleAndCitationParser
     while scan_to_sentence_end
       title_end = @scanner.pos
       first_possible_title_end ||= title_end
-      @scanner.scan /\s*/
+      @scanner.scan /\s*/u
       next unless sentence_start? @scanner.rest
       first_possible_citation_start ||= @scanner.pos
       break if citation = CitationParser.parse(@scanner.rest, true)
@@ -23,18 +23,20 @@ module TitleAndCitationParser
 
   def self.scan_to_sentence_end
     if @scanner.peek(1) == '['
-      @scanner.scan_until /\]\.? /
+      @scanner.scan_until /\]\.? /u
+    elsif @scanner.peek(1) == '('
+      @scanner.scan_until /\)\.? /u
     else
-      @scanner.scan_until /\. /
+      @scanner.scan_until /\. /u
     end
   end
 
   def self.sentence_start? string
-    string !~ /^[a-z]/
+    string !~ /^[a-z(]/u
   end
 
   def self.remove_extra_characters_from_end_of text
-    text.gsub /\.? ?$/ , ''
+    text.gsub /\.? ?$/u , ''
   end
 
 end

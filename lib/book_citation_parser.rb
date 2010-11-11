@@ -8,6 +8,7 @@ module BookCitationParser
     return unless pagination
 
     match = PublisherGrammar.parse string
+    return unless match.value[:publisher][:place].length > 3
     string.gsub! /#{Regexp.escape match}/, ''
     book = match.value
     return unless place?(book[:publisher][:place], possibly_embedded)
