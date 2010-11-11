@@ -64,7 +64,7 @@ class HolBibliography
 
   def parse_source_url li
     text = li.inner_html
-    match = text.match /or download \n\s+<a href="(.*?)"/m
+    match = text.match /or download\s+<a href="(.*?)"/
     return match[1] if match
     id = li.at_css('strong').content.to_i
     "http://antbase.org/ants/publications/#{id}/#{id}.pdf"
@@ -72,14 +72,13 @@ class HolBibliography
 
   def parse_article li, reference
     return unless second_strong = li.css('strong')[1]
-    year_title_citation = (second_strong.previous.content + second_strong.content + second_strong.next.content).dup
-    matches = year_title_citation.match /(\d+)\.\s*(.*)\n/m 
-    return unless matches && matches.size == 3
-    parse = TitleAndCitationParser.parse(matches[2])
-    reference[:title] = parse[:title]
-    reference[:year] = matches[1].to_i
-    reference[:series_volume_issue] = parse[:citation][:article][:series_volume_issue]
-    reference[:pagination] = parse[:citation][:article][:pagination]
+    year_title_journal = second_strong.previous.content
+    start_of_title = year_title_journal.match(/\.?.*?\.\s+/m).end(0)
+    last_period = year_title_journal.rindex '.'
+    reference[:title] = year_title_journal[start_of_title..last_period - 1]
+    reference[:year] = year_title_journal.match(/\d+/m).to_s.to_i or return
+    reference[:series_volume_issue] = second_strong.content + second_strong.next.content.match(/(.*?):/)[1]
+    reference[:pagination] = second_strong.next.content.match(/:\s*(.*)./)[1] or return
     reference
   rescue
     nil
