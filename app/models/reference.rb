@@ -19,6 +19,9 @@ class Reference < ActiveRecord::Base
     :order => 'name ASC'
 
   def self.import data
+    reference = nil
+    return reference if reference = find_duplicate(data)
+
     create_data = {
       :authors => Author.import(data[:authors]),
       :authors_suffix => data[:authors_suffix],
@@ -43,6 +46,13 @@ class Reference < ActiveRecord::Base
     when data[:unknown]
       UnknownReference.import create_data, data[:unknown]
     end
+  end
+
+  def self.find_duplicate data
+    possible_duplicates = Reference.all(:conditions => ['title = ? and citation_year = ?', data[:title], data[:citation_year]])
+    possible_duplicates.find do |possible_duplicate|
+      data[:authors] == possible_duplicate.authors.map(&:name)
+    end 
   end
 
   def self.search terms = {}

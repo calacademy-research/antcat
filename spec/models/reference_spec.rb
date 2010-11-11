@@ -98,6 +98,27 @@ describe Reference do
         :source_reference_type => 'WardReference'}, 'other')
         Reference.import @reference_data
     end
+
+    it "should not import the same reference twice" do
+      author = Factory :author
+      reference = Reference.create! :title => 'Ants', :authors => [author], :citation_year => '2010d', :pagination => '2 pp.'
+      Reference.import(
+        :authors => [author.name],
+        :authors_suffix => ' (eds.)',
+        :citation_year => '2010d',
+        :title => 'Ants',
+        :unknown => 'Other citation',
+        :cite_code => '345',
+        :possess => 'PSW',
+        :date => '120134',
+        :public_notes => 'Notes',
+        :editor_notes => 'Editor notes',
+        :taxonomic_notes => 'Taxonomic notes',
+        :taxonomic_notes => 'Tax. notes',
+        :source_reference_id => 1,
+        :source_reference_type => 'WardReference')
+      Reference.count.should == 1
+    end
   end
 
   describe "searching" do
