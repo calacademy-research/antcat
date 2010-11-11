@@ -13,6 +13,11 @@ describe CitationParser do
         {:article => {:journal => 'Psyche', :series_volume_issue => '1', :pagination => '2'}}
     end
 
+    it "should parse an article citation even if there's a space after the colon" do
+      CitationParser.parse('Zootaxa 1929(1): 1-37').should ==
+        {:article => {:journal => 'Zootaxa', :series_volume_issue => '1929(1)', :pagination => '1-37'}}
+    end
+
     it 'should parse a book citation' do
       CitationParser.parse('Melbourne: CSIRO Publications, vii + 70 pp.').should ==
         {:book => {:publisher => {:name => 'CSIRO Publications', :place => 'Melbourne'}, :pagination => 'vii + 70 pp.'}}

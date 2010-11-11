@@ -2,7 +2,7 @@ grammar ArticleCitationGrammar
   include PaginationGrammar
 
   rule article_citation
-    (journal_name_series_volume_issue ':' pagination) {
+    (journal_name_series_volume_issue ':' space pagination) {
       {:journal_name_series_volume_issue => journal_name_series_volume_issue,
        :pagination => pagination}
     }

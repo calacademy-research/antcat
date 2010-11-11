@@ -213,12 +213,16 @@ describe TitleAndCitationParser do
       TitleAndCitationParser.parse(string)[:title].should == 'From individual to collective behavior in social insects. (Experientia: Supplementum, Volume 54)'
     end
 
-    it "should handle a number followed by a colon" do
-      string = "Atas do simpósio sôbre a biota amazônica. Vol. 5: Zoologia. Rio de Janeiro: Conselho Nacional de Pesquisas, 603 pp."
-      TitleAndCitationParser.parse(string)[:title].should == 'Atas do simpósio sôbre a biota amazônica. Vol. 5: Zoologia'
-    end
+  end
 
+  it "should handle a number followed by a colon" do
+    string = "Atas do simpósio sôbre a biota amazônica. Vol. 5: Zoologia. Rio de Janeiro: Conselho Nacional de Pesquisas, 603 pp."
+    TitleAndCitationParser.parse(string)[:title].should == 'Atas do simpósio sôbre a biota amazônica. Vol. 5: Zoologia'
+  end
 
+  it "should work" do
+    string = "Afrotropical ants of the ponerine genera Centromyrmex Mayr, Promyopias Santschi gen. rev. and Feroponera gen. n., with a revised key to genera of African Ponerinae (Hymenoptera: Formicidae). Zootaxa 1929(1): 1-37."
+    TitleAndCitationParser.parse(string)[:title].should == 'Afrotropical ants of the ponerine genera Centromyrmex Mayr, Promyopias Santschi gen. rev. and Feroponera gen. n., with a revised key to genera of African Ponerinae (Hymenoptera: Formicidae)'
   end
 
   describe "unparseable strings" do

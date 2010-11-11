@@ -63,6 +63,13 @@ describe ArticleCitationParser do
     ArticleCitationParser.parse('gesammelt von Prof. Herm. v. Ihering, Dr. Lutz, Dr. Fiebrig, etc. Verhandlungen der Kaiserlich-Königlichen Zoologisch-Botanischen Gesellschaft in Wien 58:340-41', false).should be_nil
   end
 
+  describe "when there's a space after the colon" do
+    it "should be able to parse it" do
+      ArticleCitationParser.parse('Zootaxa 1929(1): 1-37', false).should ==
+        {:article => {:journal => 'Zootaxa', :series_volume_issue => '1929(1)', :pagination => '1-37'}}
+    end
+  end
+
   describe "parsing fields from series_volume_issue" do
     it "can parse out volume and issue" do
       ArticleCitationParser.get_series_volume_issue_parts("92(32)").should == {:volume => '92', :issue => '32'}
