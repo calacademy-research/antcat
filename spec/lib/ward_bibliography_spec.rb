@@ -276,6 +276,19 @@ describe WardBibliography do
         @bibliography.import_html contents
       end
 
+      it "should handle another certain special case with part of the title in the citation" do
+        contents = "<html><body><table><tr></tr><tr><td></td><td>123</td>
+          <td><a>Gibron, J.</a></td>
+          <td></td><td></td>
+          <td>Ants</td>
+          <td class=xl65>Achtes Programm des Gymnasiums in Bozen. Bozen: Ebersche Buchdruckerei, 34 pp.</td>
+          <td></td><td></td></tr></table></body></html>"
+        WardReference.should_receive(:create!).with hash_including(
+          :title => "Ants. Achtes Programm des Gymnasiums in Bozen",
+          :citation => "Bozen: Ebersche Buchdruckerei, 34 pp.")
+        @bibliography.import_html contents
+      end
+
     end
   end
 

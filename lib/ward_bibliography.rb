@@ -115,9 +115,13 @@ class WardBibliography
 
   def fix_data data
     # a very special case indeed
-    return unless data[:citation] =~ /Extrait des .+ Lisbonne: Imprimerie de la Librairie/
-    data[:title] << '. Extrait des Mémoires publiés par la Société Portugaise des Sciences Naturelles'
-    data[:citation] = 'Lisbonne: Imprimerie de la Librairie Ferin, 4 pp.'
+    if data[:citation] =~ /Extrait des .+ Lisbonne: Imprimerie de la Librairie/
+      data[:title] << '. Extrait des Mémoires publiés par la Société Portugaise des Sciences Naturelles'
+      data[:citation] = 'Lisbonne: Imprimerie de la Librairie Ferin, 4 pp.'
+    elsif data[:citation] =~ /Achtes Programm des Gymnasiums in Bozen. Bozen: Ebersche Buchdruckerei, 34 pp./
+      data[:title] << '. Achtes Programm des Gymnasiums in Bozen'
+      data[:citation] = 'Bozen: Ebersche Buchdruckerei, 34 pp.'
+    end
   end
 
 end
