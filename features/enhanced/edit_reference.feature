@@ -190,7 +190,7 @@ Feature: Edit reference
     Then I should see the edit form
       And I should see "Source url was not found"
 
-  Scenario: View a reference's id
+  Scenario: Viewing a reference's id
     Given I am logged in
       And the following entries exist in the bibliography
       |authors|citation  |cite_code|created_at|date    |possess|title|updated_at|year|
@@ -199,3 +199,34 @@ Feature: Edit reference
       And I click the reference
     Then I should see the edit form
       And I should see the reference's ID in a text field
+
+  Scenario: Edit a nested reference
+    Given I am logged in
+      And the following entries exist in the bibliography
+      |authors   |citation  |year|title|
+      |Ward, P.S.|Psyche 5:3|2001|Ants|
+      And the following entry nests it
+      |authors   |title           |year|pages_in|
+      |Bolton, B.|Ants are my life|2001|In:|
+    When I go to the main page
+      Then I should see "Bolton, B. 2001. Ants are my life. In: Ward, P.S. 2001. Ants. Psyche 5:3" 
+    When I click the reference
+      And I fill in "reference_pages_in" with "Pp. 32 in:"
+      And I press the "Save" button
+    Then I should see "Bolton, B. 2001. Ants are my life. Pp. 32 in: Ward, P.S. 2001. Ants. Psyche 5:3" 
+
+  Scenario: Edit a nested reference and changing its nestee to itself
+    Given I am logged in
+      And the following entries exist in the bibliography
+      |authors   |citation  |year|title|
+      |Ward, P.S.|Psyche 5:3|2001|Ants|
+      And the following entry nests it
+      |authors   |title           |year|pages_in|
+      |Bolton, B.|Ants are my life|2001|In:|
+    When I go to the main page
+      Then I should see "Bolton, B. 2001. Ants are my life. In: Ward, P.S. 2001. Ants. Psyche 5:3" 
+    When I click the reference
+      And I fill in "reference_nested_reference_id" with its own ID
+      And I press the "Save" button
+    Then I should see "Nested reference can't point to itself"
+

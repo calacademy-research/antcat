@@ -87,6 +87,7 @@ class ReferencesController < ApplicationController
     case params[:selected_tab]
     when 'Article': ArticleReference.new
     when 'Book':    BookReference.new
+    when 'Nested':  NestedReference.new
     else            UnknownReference.new
     end
   end

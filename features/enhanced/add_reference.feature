@@ -113,10 +113,10 @@ Feature: Add reference
     When in the new edit form I fill in "reference_authors_string" with "Ward, B.L.;Bolton, B."
       And in the new edit form I fill in "reference_title" with "A reference title"
       And in the new edit form I fill in "reference_citation_year" with "1981"
-      And I follow "Nested"
-      And in the new edit form I fill in "reference_pages_in" with "Pp. 32-33"
+      And in the new edit form I follow "Nested"
+      And in the new edit form I fill in "reference_pages_in" with "Pp. 32-33 in:"
       And in the new edit form I fill in "reference_nested_reference_id" with the existing reference's ID
-      And I press the "Save" button
+      And in the new edit form I press the "Save" button
       Then I should see "Ward, B.L.; Bolton, B. 1981. A reference title. Pp. 32-33 in: Ward, P.S. 2010. Annals of Ants. Psyche 1:1."
 
   Scenario: Adding another reference
@@ -160,6 +160,19 @@ Feature: Add reference
       And I should see "Publisher can't be blank"
       And I should see "Pagination can't be blank"
 
+  Scenario: Leaving other fields blank when adding a nested reference
+    Given I am logged in
+    When I go to the main page
+      And I follow "Add reference"
+      And I follow "Nested"
+      And I fill in "reference_authors_string" with "Fisher, B.L."
+      And I press the "Save" button
+    Then I should see the edit form
+      And I should see "Year can't be blank"
+      And I should see "Title can't be blank"
+      And I should see "Pages in can't be blank"
+      And I should see "Nested reference can't be blank"
+
   Scenario: Adding a reference with authors' role
     Given I am logged in
     When I go to the main page
@@ -175,3 +188,17 @@ Feature: Add reference
     Then I should be on the main page
       And I should not see a new edit form
       And I should see "Ward, B.L.; Bolton, B. (eds.) 1981. A reference title. Ant Journal 1:2"
+
+  Scenario: Adding a nested reference with a nonexistent nestee
+    Given I am logged in
+    When I go to the main page
+      And I follow "Add reference"
+    When in the new edit form I fill in "reference_authors_string" with "Ward, B.L.;Bolton, B."
+      And in the new edit form I fill in "reference_title" with "A reference title"
+      And in the new edit form I fill in "reference_citation_year" with "1981"
+      And in the new edit form I follow "Nested"
+      And in the new edit form I fill in "reference_pages_in" with "Pp. 32-33 in:"
+      And in the new edit form I fill in "reference_nested_reference_id" with "123123"
+      And in the new edit form I press the "Save" button
+      Then I should see "Nested reference does not exist"
+

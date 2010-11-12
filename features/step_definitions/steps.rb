@@ -9,8 +9,10 @@ end
 
 Given /the following entry nests it/ do |table|
   data = table.hashes.first
-  NestedReference.create! :authors => [Factory(:author, :name => data[:authors])], :citation_year => data[:year],
-                          :title => data[:title], :pages_in => data[:pages_in], :nested_reference => @reference
+  @nestee_reference = @reference
+  @reference = NestedReference.create! :authors => [Factory(:author, :name => data[:authors])], :citation_year => data[:year],
+                          :title => data[:title], :pages_in => data[:pages_in], :nested_reference => @nestee_reference
+
 end
 
 Given /that the entry has a source URL that's (not )?on our site/ do |is_not|
@@ -78,6 +80,10 @@ When /in the new edit form I fill in "(.*?)" with "(.*?)"/ do |field, value|
   When "I fill in \"#{field}\" with \"#{value}\" within \"#reference_\""
 end
 
+When /in the new edit form I follow "(.*?)"/ do |value|
+  When "I follow \"#{value}\" within \"#reference_\""
+end
+
 When /in the new edit form I press the "(.*?)" button/ do |button|
   When "I press \"#{button}\" within \"#reference_\""
   sleep 0.5
@@ -121,11 +127,15 @@ Then /I should (not )?see a "PDF" link/ do |does_not|
   page.send(message, have_css("a", :text => 'PDF'))
 end
 
-And 'I press the "Save" button' do
+When 'I press the "Save" button' do
   click_button "Save"
   sleep 0.5
 end
 
 Then "I should see the reference's ID in a text field" do
   Then "the \"reference_id\" field should contain \"#{@reference.id}\""
+end
+
+When /I fill in "reference_nested_reference_id" with its own ID/ do
+  When "I fill in \"reference_nested_reference_id\" with \"#{@reference.id}\""
 end

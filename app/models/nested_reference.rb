@@ -2,6 +2,8 @@ class NestedReference < Reference
   belongs_to :nested_reference, :class_name => 'Reference'
 
   validates_presence_of :nested_reference, :pages_in
+  validate :validate_nested_reference_exists
+  validate :validate_nested_reference_doesnt_point_to_itself
 
   def self.import base_class_data, data
     nested_reference = Reference.import data.merge(
@@ -13,6 +15,14 @@ class NestedReference < Reference
       :pages_in => data[:pages_in],
       :nested_reference => nested_reference
     )
+  end
+
+  def validate_nested_reference_exists
+    errors.add(:nested_reference_id, 'does not exist') if nested_reference_id && !Reference.find_by_id(nested_reference_id)
+  end
+
+  def validate_nested_reference_doesnt_point_to_itself
+    errors.add(:nested_reference_id, "can't point to itself") if nested_reference_id && nested_reference_id == id
   end
 
 end

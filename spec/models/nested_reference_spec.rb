@@ -65,6 +65,20 @@ describe NestedReference do
       @reference.pages_in = nil
       @reference.should_not be_valid
     end
+    it "should refer to an existing reference" do
+      @reference.nested_reference_id = 232434
+      @reference.should_not be_valid
+    end
+    it "should not point to itself" do
+      @reference.nested_reference_id = @reference.id
+      @reference.should_not be_valid
+    end
+  end
+
+  describe "deletion" do
+      @reference = NestedReference.new :title => 'asdf', :authors => [Factory(:author)], :citation_year => '2010',
+        :nested_reference => Factory(:reference), :pages_in => 'Pp 2 in:'
+
   end
 
 end

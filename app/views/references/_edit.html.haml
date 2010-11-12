@@ -1,7 +1,7 @@
 - reference ||= Reference.new
 - publisher_string = reference.respond_to?(:publisher) ? (reference.publisher && reference.publisher.to_s) : ''
 - journal_name = reference.respond_to?(:journal) ? (reference.journal && reference.journal.name) : ''
-- selected_tab = [ArticleReference, BookReference, UnknownReference].index(reference.class) || 0
+- selected_tab = [ArticleReference, BookReference, NestedReference, UnknownReference].index(reference.class) || 0
 
 .reference_edit.ui-corner-all.ui-widget-content.ui-widget
   - url = reference.new_record? ? references_path : reference_path(reference)
@@ -52,10 +52,10 @@
             = text_field_tag :book_pagination, reference.pagination, :class => 'pages'
 
           %div{:class => 'nested-tab-section', :id => "tabs-nested-#{reference.id}"}
-            Publisher
-            = text_field_tag :publisher_string, publisher_string, :class => 'publisher'
-            Pages
-            = text_field_tag :book_pagination, reference.pagination, :class => 'pages'
+            Pages in
+            = f.text_field :pages_in, :class => 'pages'
+            Nested reference ID
+            = f.text_field :nested_reference_id, :class => 'pages'
 
           %div{:class => 'unknown-tab-section', :id => "tabs-unknown-#{reference.id}"}
             Citation
