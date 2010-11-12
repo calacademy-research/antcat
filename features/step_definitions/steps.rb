@@ -83,6 +83,10 @@ When /in the new edit form I press the "(.*?)" button/ do |button|
   sleep 0.5
 end
 
+When /in the new edit form I fill in "(.*?)" with the existing reference's ID/ do |field|
+  When "in the new edit form I fill in \"#{field}\" with \"#{@reference.id}\""
+end
+
 Given 'I will confirm on the next step' do
   begin
     evaluate_script("window.alert = function(msg) { return true; }")

@@ -217,6 +217,9 @@ function setupTabs($reference) {
   $('.tabs .book-tab', $reference).attr('href', '#reference_book' + id);
   $('.tabs .book-tab-section', $reference).attr('id', 'reference_book' + id);
 
+  $('.tabs .nested-tab', $reference).attr('href', '#reference_nested' + id);
+  $('.tabs .nested-tab-section', $reference).attr('id', 'reference_nested' + id);
+
   $('.tabs .unknown-tab', $reference).attr('href', '#reference_unknown' + id);
   $('.tabs .unknown-tab-section', $reference).attr('id', 'reference_unknown' + id);
 

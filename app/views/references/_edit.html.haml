@@ -33,6 +33,8 @@
             %li
               %a{:class => 'book-tab', :href => "#tabs-book-#{reference.id}"}Book
             %li
+              %a{:class => 'nested-tab', :href => "#tabs-nested-#{reference.id}"}Nested
+            %li
               %a{:class => 'unknown-tab', :href => "#tabs-unknown-#{reference.id}"}Other
 
           %div{:class => 'article-tab-section', :id => "tabs-article-#{reference.id}"}
@@ -44,6 +46,12 @@
             = text_field_tag :article_pagination, reference.pagination, :class => 'pages'
 
           %div{:class => 'book-tab-section', :id => "tabs-book-#{reference.id}"}
+            Publisher
+            = text_field_tag :publisher_string, publisher_string, :class => 'publisher'
+            Pages
+            = text_field_tag :book_pagination, reference.pagination, :class => 'pages'
+
+          %div{:class => 'nested-tab-section', :id => "tabs-nested-#{reference.id}"}
             Publisher
             = text_field_tag :publisher_string, publisher_string, :class => 'publisher'
             Pages

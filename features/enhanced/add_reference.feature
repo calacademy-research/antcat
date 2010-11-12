@@ -103,6 +103,22 @@ Feature: Add reference
       And I should not see a new edit form
       And I should see "Ward, B.L.; Bolton, B. 1981. A reference title. Ant Journal 1:2"
 
+  Scenario: Adding a nested reference
+    Given I am logged in
+      And the following entries exist in the bibliography
+      |authors   |title         |year|citation|
+      |Ward, P.S.|Annals of Ants|2010|Psyche 1:1|
+    When I go to the main page
+      And I follow "add"
+    When in the new edit form I fill in "reference_authors_string" with "Ward, B.L.;Bolton, B."
+      And in the new edit form I fill in "reference_title" with "A reference title"
+      And in the new edit form I fill in "reference_citation_year" with "1981"
+      And I follow "Nested"
+      And in the new edit form I fill in "reference_pages_in" with "Pp. 32-33"
+      And in the new edit form I fill in "reference_nested_reference_id" with the existing reference's ID
+      And I press the "Save" button
+      Then I should see "Ward, B.L.; Bolton, B. 1981. A reference title. Pp. 32-33 in: Ward, P.S. 2010. Annals of Ants. Psyche 1:1."
+
   Scenario: Adding another reference
     Given I am logged in
     When I go to the main page
@@ -159,4 +175,3 @@ Feature: Add reference
     Then I should be on the main page
       And I should not see a new edit form
       And I should see "Ward, B.L.; Bolton, B. (eds.) 1981. A reference title. Ant Journal 1:2"
-
