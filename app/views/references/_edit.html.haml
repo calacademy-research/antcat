@@ -56,6 +56,8 @@
             = f.text_field :pages_in, :class => 'pages'
             Nested reference ID
             = f.text_field :nested_reference_id, :class => 'pages'
+            %p.help
+              %span.help= "To find, edit or add the nested reference, you can open #{link_to 'a new browser window', references_path, :target => '_blank'}"
 
           %div{:class => 'unknown-tab-section', :id => "tabs-unknown-#{reference.id}"}
             Citation
