@@ -86,6 +86,12 @@ class Reference < ActiveRecord::Base
         :order => 'authors_string, citation_year'
   end
 
+  def before_destroy
+    nester = NestedReference.find_by_nested_reference_id id
+    errors.add_to_base "This reference can't be deleted because it's nested in #{nester}" if nester
+    nester.nil?
+  end
+
   def make_authors_string
     string = authors.map(&:name).join('; ')
     string << authors_suffix if authors_suffix.present?

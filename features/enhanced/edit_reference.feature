@@ -198,7 +198,7 @@ Feature: Edit reference
     When I go to the main page
       And I click the reference
     Then I should see the edit form
-      And I should see the reference's ID in a text field
+      And I should see the reference's ID beside its label
 
   Scenario: Edit a nested reference
     Given I am logged in

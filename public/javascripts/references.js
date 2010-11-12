@@ -120,8 +120,13 @@ function deleteReference() {
   $reference = $(this).closest('.reference');
   $reference.addClass('about_to_be_deleted');
   if (confirm('Do you want to delete this reference?')) {
-    $.post($reference.find('form').attr('action'), {'_method': 'delete'})
-    $reference.closest('tr').remove();
+    $.post($reference.find('form').attr('action'), {'_method': 'delete'},
+      function(data){
+        if (data.success)
+          $reference.closest('tr').remove();
+        else
+          alert(data.message);
+      });
   } else
     $reference.removeClass('about_to_be_deleted');
 

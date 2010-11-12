@@ -76,8 +76,11 @@ describe NestedReference do
   end
 
   describe "deletion" do
-      @reference = NestedReference.new :title => 'asdf', :authors => [Factory(:author)], :citation_year => '2010',
+    it "should not be possible to delete a nestee" do
+      reference = NestedReference.new :title => 'asdf', :authors => [Factory(:author)], :citation_year => '2010',
         :nested_reference => Factory(:reference), :pages_in => 'Pp 2 in:'
+      reference.nested_reference.destroy.should be_false
+    end
 
   end
 

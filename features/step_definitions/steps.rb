@@ -132,8 +132,8 @@ When 'I press the "Save" button' do
   sleep 0.5
 end
 
-Then "I should see the reference's ID in a text field" do
-  Then "the \"reference_id\" field should contain \"#{@reference.id}\""
+Then "I should see the reference's ID beside its label" do
+  Then "I should see \"ID #{@reference.id}\""
 end
 
 When /I fill in "reference_nested_reference_id" with its own ID/ do

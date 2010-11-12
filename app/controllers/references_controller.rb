@@ -40,8 +40,12 @@ class ReferencesController < ApplicationController
 
   def destroy
     @reference = Reference.find(params[:id])
-    @reference.destroy
-    head :ok
+    if @reference.destroy
+      json = {:success => true}
+    else
+      json = {:success => false, :message => @reference.errors[:base]}.to_json
+    end 
+    render :json => json
   end
 
   private
