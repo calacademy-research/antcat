@@ -1,8 +1,7 @@
 module PublisherParser
 
   def self.parse string
-    return unless matches = string.match(/(?:(.*?): ?)(.*)/)
-    {:name => matches[2], :place => matches[1]}
+    PublisherGrammar.parse(string.strip).value rescue nil
   end
 
 end

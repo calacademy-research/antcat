@@ -12,7 +12,7 @@ class Publisher < ActiveRecord::Base
 
   def self.import_string string
     parts = PublisherParser.parse string
-    import parts if parts
+    import parts[:publisher] if parts
   end
 
   def to_s

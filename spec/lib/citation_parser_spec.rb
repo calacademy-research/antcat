@@ -63,4 +63,5 @@ describe CitationParser do
         }
     end
   end
+
 end

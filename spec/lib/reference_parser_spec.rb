@@ -106,5 +106,4 @@ describe ReferenceParser do
 
   end
 
-
 end

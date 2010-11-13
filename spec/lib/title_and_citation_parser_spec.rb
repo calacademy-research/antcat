@@ -237,4 +237,9 @@ describe TitleAndCitationParser do
     end
   end
 
+  it "should work" do
+    TitleAndCitationParser.parse(
+"Proceedings of the Second All-Union Conference on the problems of kadastre of animal world. Part 4. [In Russian.] Ufa: Bashkirskoe Knizhnoe Izdatelstvo, 351 pp."
+    )[:citation][:book][:publisher][:place].should == 'Ufa'
+  end
 end

@@ -1,7 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-#require 'citrus/debug'
-
 describe SeriesVolumeIssueGrammar do
 
   it "should recognize and parse a simple volume number" do

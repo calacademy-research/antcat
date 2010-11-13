@@ -1,4 +1,3 @@
-#require 'citrus/debug'
 module AuthorParser
   def self.parse string
     return {:names => []} unless string.present?

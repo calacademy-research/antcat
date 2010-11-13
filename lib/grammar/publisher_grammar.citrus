@@ -8,7 +8,7 @@ grammar PublisherGrammar
   end
 
   rule publisher_place
-    /[^:]{4,}/u
+    /[^a-z:\d][^:\d]{2,}/u
   end
 
   rule publisher_name
