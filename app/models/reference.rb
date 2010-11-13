@@ -49,7 +49,7 @@ class Reference < ActiveRecord::Base
   end
 
   def self.find_duplicate data
-    possible_duplicates = Reference.all(:conditions => ['title = ? and citation_year = ?', data[:title], data[:citation_year]])
+    possible_duplicates = Reference.all(:conditions => ['title = ? and year = ?', data[:title], get_year(data[:citation_year])])
     possible_duplicates.find do |possible_duplicate|
       data[:authors] == possible_duplicate.authors.map(&:name)
     end 
@@ -114,7 +114,11 @@ class Reference < ActiveRecord::Base
   end
 
   def set_year
-    self.year = if citation_year.blank?
+    self.year = self.class.get_year citation_year
+  end 
+      
+  def self.get_year citation_year
+    if citation_year.blank?
       nil
     elsif match = citation_year.match(/\["(\d{4})"\]/)
       match[1]

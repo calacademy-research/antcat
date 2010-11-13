@@ -105,7 +105,7 @@ describe Reference do
       Reference.import(
         :authors => [author.name],
         :authors_suffix => ' (eds.)',
-        :citation_year => '2010d',
+        :citation_year => '2010',
         :title => 'Ants',
         :unknown => 'Other citation',
         :cite_code => '345',
