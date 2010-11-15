@@ -159,31 +159,6 @@ describe Reference do
       }.results.should == [reference]
     end
 
-    describe "searching by year" do
-      before do
-        reference_factory(:author => 'Bolton', :citation_year => '1994').index
-        reference_factory(:author => 'Bolton', :citation_year => '1995').index
-        reference_factory(:author => 'Bolton', :citation_year => '1996').index
-        reference_factory(:author => 'Bolton', :citation_year => '1997').index
-        reference_factory(:author => 'Bolton', :citation_year => '1998').index
-        Sunspot.commit
-      end
-
-      it "should return an empty array if nothing is found for year" do
-        Reference.search {with(:year).between(1992..1993) }.results.should be_empty
-      end
-
-      it "should find entries less than or equal to the end year" do
-        Reference.search {with(:year).less_than(1995)}.results.map(&:year).should =~ [1994, 1995]
-      end
-
-      it "should find entries equal to or greater than the start year" do
-        Reference.search {with(:year).greater_than(1995)}.results.map(&:year).should =~
-          [1995, 1996, 1997, 1998]
-      end
-
-    end
-
     describe "search" do
       it "should not strip the year from the string" do
         string = '1990'
@@ -207,6 +182,10 @@ describe Reference do
           reference_factory(:author => 'Bolton', :citation_year => '1997')
           reference_factory(:author => 'Bolton', :citation_year => '1998')
           Reference.reindex
+        end
+
+        it "should return an empty array if nothing is found for year" do
+          Reference.do_search('1992-1993').should be_empty
         end
 
         it "should find entries in between the start year and the end year (inclusive)" do
