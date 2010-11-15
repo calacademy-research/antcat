@@ -123,107 +123,105 @@ describe Reference do
 
   describe "searching" do
     it "should return an empty array if nothing is found for author" do
-      Factory :reference
-      Reference.search(:author => 'foo').should be_empty
+      Factory(:reference).index!
+      Reference.search {keywords 'foo'}.results.should be_empty
     end
 
     it "should find the reference for a given author if it exists" do
       reference = reference_factory(:author => 'Bolton')
       reference_factory(:author => 'Fisher')
-      Reference.search(:author => 'Bolton').should == [reference]
-    end
-
-    it "should find the reference for a given author prefix if it exists" do
-      reference = reference_factory(:author => 'Bolton')
-      reference_factory(:author => 'Fisher')
-      Reference.search(:author => 'Bolt').should == [reference]
+      Reference.reindex
+      Reference.search {keywords 'Bolton'}.results.should == [reference]
     end
 
     it "should return an empty array if nothing is found for a given year and author" do
-      reference_factory(:author => 'Bolton', :citation_year => '2010')
-      reference_factory(:author => 'Bolton', :citation_year => '1995')
-      reference_factory(:author => 'Fisher', :citation_year => '2011')
-      reference_factory(:author => 'Fisher', :citation_year => '1996')
-      Reference.search(:start_year => '2012', :end_year => '2013', :author => 'Fisher').should be_empty
+      reference_factory(:author => 'Bolton', :citation_year => '2010').index
+      reference_factory(:author => 'Bolton', :citation_year => '1995').index
+      reference_factory(:author => 'Fisher', :citation_year => '2011').index
+      reference_factory(:author => 'Fisher', :citation_year => '1996').index
+      Sunspot.commit
+      Reference.search {
+        with(:year).between(2012..2013)
+        keywords 'Fisher'
+      }.results.should be_empty
     end
 
     it "should return the one reference for a given year and author" do
-      reference_factory(:author => 'Bolton', :citation_year => '2010')
-      reference_factory(:author => 'Bolton', :citation_year => '1995')
-      reference_factory(:author => 'Fisher', :citation_year => '2011')
+      reference_factory(:author => 'Bolton', :citation_year => '2010').index
+      reference_factory(:author => 'Bolton', :citation_year => '1995').index
+      reference_factory(:author => 'Fisher', :citation_year => '2011').index
       reference = reference_factory(:author => 'Fisher', :citation_year => '1996')
-      Reference.search(:start_year => '1996', :end_year => '1996', :author => 'Fisher').should == [reference]
+      reference.index
+      Sunspot.commit
+      Reference.search {
+        with(:year).between(1996..1996)
+        keywords 'Fisher'
+      }.results.should == [reference]
     end
 
     describe "searching by year" do
       before do
-        reference_factory(:author => 'Bolton', :citation_year => '1994')
-        reference_factory(:author => 'Bolton', :citation_year => '1995')
-        reference_factory(:author => 'Bolton', :citation_year => '1996')
-        reference_factory(:author => 'Bolton', :citation_year => '1997')
-        reference_factory(:author => 'Bolton', :citation_year => '1998')
+        reference_factory(:author => 'Bolton', :citation_year => '1994').index
+        reference_factory(:author => 'Bolton', :citation_year => '1995').index
+        reference_factory(:author => 'Bolton', :citation_year => '1996').index
+        reference_factory(:author => 'Bolton', :citation_year => '1997').index
+        reference_factory(:author => 'Bolton', :citation_year => '1998').index
+        Sunspot.commit
       end
 
       it "should return an empty array if nothing is found for year" do
-        Reference.search(:start_year => '1992', :end_year => '1993').should be_empty
+        Reference.search {with(:year).between(1992..1993) }.results.should be_empty
       end
 
       it "should find entries less than or equal to the end year" do
-        Reference.search(:end_year => '1995').map(&:year).should =~ [1994, 1995]
+        Reference.search {with(:year).less_than(1995)}.results.map(&:year).should =~ [1994, 1995]
       end
 
       it "should find entries equal to or greater than the start year" do
-        Reference.search(:start_year => '1995').map(&:year).should =~ [1995, 1996, 1997, 1998]
-      end
-
-      it "should find entries in between the start year and the end year (inclusive)" do
-        Reference.search(:start_year => '1995', :end_year => '1996').map(&:year).should =~ [1995, 1996]
-      end
-
-      it "should find references in the year of the end range, even if they have extra characters" do
-        reference_factory(:author => 'Bolton', :citation_year => '2004.')
-        Reference.search(:start_year => '2004', :end_year => '2004').map(&:year).should =~ [2004]
-      end
-
-      it "should find references in the year of the start year, even if they have extra characters" do
-        reference_factory(:author => 'Bolton', :citation_year => '2004.')
-        Reference.search(:start_year => '2004', :end_year => '2004').map(&:year).should =~ [2004]
+        Reference.search {with(:year).greater_than(1995)}.results.map(&:year).should =~
+          [1995, 1996, 1997, 1998]
       end
 
     end
 
-    describe "sorting search results" do
-      it "should sort by author plus year plus letter" do
-        fisher1910b = reference_factory(:author => 'Fisher', :citation_year => '1910b')
-        wheeler1874 = reference_factory(:author => 'Wheeler', :citation_year => '1874')
-        fisher1910a = reference_factory(:author => 'Fisher', :citation_year => '1910a')
+    describe "search" do
+      describe 'searching by year' do
+        before do
+          reference_factory(:author => 'Bolton', :citation_year => '1994')
+          reference_factory(:author => 'Bolton', :citation_year => '1995')
+          reference_factory(:author => 'Bolton', :citation_year => '1996')
+          reference_factory(:author => 'Bolton', :citation_year => '1997')
+          reference_factory(:author => 'Bolton', :citation_year => '1998')
+          Reference.reindex
+        end
 
-        results = Reference.search
+        it "should find entries in between the start year and the end year (inclusive)" do
+          Reference.do_search('1995-1996').map(&:year).should =~ [1995, 1996]
+        end
 
-        results.should == [fisher1910a, fisher1910b, wheeler1874]
+        it "should find references in the year of the end range, even if they have extra characters" do
+          reference_factory(:author => 'Bolton', :citation_year => '2004.').index!
+          Reference.do_search('2004').map(&:year).should =~ [2004]
+        end
       end
 
-      it "should sort by multiple authors using their order in each reference" do
-        v = ward_reference_factory(:authors => "Vinson, S. B.; MacKay, W. P.; Rebeles M.; A.; Arredondo B.; H. C.; Rodríguez R.; A. D.; González, D. A.",
-                                   :citation => 'Ants 1:1')
-        a = ward_reference_factory(:authors => 'Abdalla, F. C.; Cruz-Landim, C. da.', :citation => 'Ants 2:2')
-        m = ward_reference_factory(:authors => 'Mueller, U. G.; Mikheyev, A. S.; Abbot, P.', :citation => 'Ants 3:3')
+      describe "sorting search results" do
+        it "should sort by author plus year plus letter" do
+          fisher1910b = reference_factory(:author => 'Fisher', :citation_year => '1910b')
+          wheeler1874 = reference_factory(:author => 'Wheeler', :citation_year => '1874')
+          fisher1910a = reference_factory(:author => 'Fisher', :citation_year => '1910a')
+          Reference.reindex
+          Reference.do_search.should == [fisher1910a, fisher1910b, wheeler1874]
+        end
 
-        results = Reference.search
-
-        results.should == [a, m, v]
-      end
-    end
-
-    describe "searching by journal" do
-      it "should find by journal" do
-        reference = ward_reference_factory(:citation => "Mathematica 1:2")
-        ward_reference_factory(:citation => "Ants Monthly 1:3")
-        Reference.search(:journal => 'Mathematica').should == [reference]
-      end
-      it "should only do an exact match" do
-        ward_reference_factory(:citation => "Mathematica 1:2")
-        Reference.search(:journal => 'Math').should be_empty
+        it "should sort by multiple authors using their order in each reference" do
+          a = ward_reference_factory(:authors => 'Abdalla, F. C.; Cruz-Landim, C. da.', :citation => 'Ants 2:2')
+          m = ward_reference_factory(:authors => 'Mueller, U. G.; Mikheyev, A. S.; Abbot, P.', :citation => 'Ants 3:3')
+          v = ward_reference_factory(:authors => "Vinson, S. B.; MacKay, W. P.; Rebeles M.; A.; Arredondo B.; H. C.; Rodríguez R.; A. D.; González, D. A.",
+                                    :citation => 'Ants 1:1')
+          Reference.reindex
+          Reference.do_search.should == [a, m, v]
+        end
       end
     end
   end

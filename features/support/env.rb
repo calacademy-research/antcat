@@ -57,3 +57,4 @@ require 'factory_girl'
 require 'factory_girl/step_definitions'
 
 Capybara.save_and_open_page_path = '/tmp'
+

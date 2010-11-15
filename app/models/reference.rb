@@ -5,6 +5,14 @@ class Reference < ActiveRecord::Base
   belongs_to :journal
   belongs_to :source_reference, :polymorphic => true
 
+  searchable do
+    text :title
+    text :authors_string
+    string :authors_string
+    string :citation_year
+    integer :year
+  end
+
   before_validation :set_year, :strip_newlines, :set_source_url
   before_save :set_authors_string
 
@@ -17,6 +25,24 @@ class Reference < ActiveRecord::Base
     :joins => 'JOIN author_participations ON reference_id = `references`.id JOIN authors ON author_id = authors.id',
     :conditions => 'author_participations.position = 1',
     :order => 'name ASC'
+
+  def self.do_search string = nil, page = nil
+    search {
+      if string.present?
+        if match = string.match(/(\d{4})-(\d{4})/)
+          with(:year).between((match[1].to_i)..(match[2].to_i))
+        elsif match = string.match(/\d{4}/)
+          with(:year).equal_to match[0].to_i
+        end
+        string.gsub! /#{match[0]}/, '' if match
+        keywords string
+      end
+
+      order_by :authors_string
+      order_by :citation_year
+      paginate :page => page
+    }.results
+  end
 
   def self.import data
     reference = nil
@@ -53,37 +79,6 @@ class Reference < ActiveRecord::Base
     possible_duplicates.find do |possible_duplicate|
       data[:authors] == possible_duplicate.authors.map(&:name)
     end 
-  end
-
-  def self.search terms = {}
-    conditions = []
-    conditions_arguments = {}
-    joins = []
-
-    if terms[:author].present?
-      conditions << 'authors.name LIKE :author'
-      conditions_arguments[:author] = "#{terms[:author]}%"
-      joins << :authors
-    end
-
-    if terms[:journal].present?
-      conditions << 'journals.name LIKE :journal'
-      conditions_arguments[:journal] = terms[:journal]
-      joins << :journal
-    end
-
-    if terms[:start_year].present?
-      conditions << 'year >= :start_year'
-      conditions_arguments[:start_year] = terms[:start_year]
-    end
-
-    if terms[:end_year].present?
-      conditions << 'year <= :end_year'
-      conditions_arguments[:end_year] = terms[:end_year]
-    end
-
-    all :joins => joins, :conditions => [conditions.join(' AND '), conditions_arguments],
-        :order => 'authors_string, citation_year'
   end
 
   def before_destroy

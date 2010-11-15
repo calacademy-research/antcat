@@ -6,6 +6,8 @@ require 'rake/rdoctask'
 
 require 'tasks/rails'
 
+require 'sunspot/rails/tasks'
+
 # We want to be able to run 'rake' and have the Cucumber tests run.
 # We want to do this in development mode, even though the tests
 # themselves will run in test or cucumber mode. So just swallow it up if

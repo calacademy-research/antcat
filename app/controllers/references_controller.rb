@@ -3,10 +3,8 @@ class ReferencesController < ApplicationController
   before_filter :authenticate_user!, :except => :index
 
   def index
-    if params[:commit] == 'clear'
-      params[:author] = params[:start_year] = params[:end_year] = params[:journal] = ''
-    end
-    @references = Reference.search(params).paginate(:page => params[:page])
+    params[:q] = '' if params[:commit] == 'clear'
+    @references = Reference.do_search(params[:q], params[:page])
   end
 
   def create

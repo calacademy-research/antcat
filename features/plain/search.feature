@@ -19,7 +19,7 @@ Feature: Searching references
 
   Scenario: Finding one reference for an author
     When I go to the main page
-      And I fill in "author" with "Fisher"
+      And I fill in "search" with "Fisher"
       And I press "Search"
     Then I should see "Fisher, B."
       And I should not see "Bolton, B."
