@@ -93,7 +93,6 @@ class HolBibliography
   end
 
   def parse_other li, reference
-    puts("\n\n#{li.content}\n\n")
     reference
   end
 
