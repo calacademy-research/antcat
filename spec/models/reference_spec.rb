@@ -185,6 +185,20 @@ describe Reference do
     end
 
     describe "search" do
+      it "should not strip the year from the string" do
+        string = '1990'
+        Reference.do_search string
+        string.should == '1990'
+      end
+
+      describe 'searching by author' do
+        it 'should at least find Bert!' do
+          reference = reference_factory(:author => 'Hölldobler')
+          Reference.reindex
+          Reference.do_search('holldobler').should == [reference]
+        end
+      end
+
       describe 'searching by year' do
         before do
           reference_factory(:author => 'Bolton', :citation_year => '1994')

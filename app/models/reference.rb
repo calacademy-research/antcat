@@ -28,6 +28,7 @@ class Reference < ActiveRecord::Base
 
   def self.do_search string = nil, page = nil
     return all(:order => 'authors_string, citation_year').paginate unless string.present?
+    string = string.dup
     search {
       if string.present?
         if match = string.match(/(\d{4})-(\d{4})/)

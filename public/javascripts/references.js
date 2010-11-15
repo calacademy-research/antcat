@@ -12,15 +12,14 @@ $(function() {
 })
 
 function setupSearch() {
-  setupSearchAutocomplete()
-  setupSearchYearDuplicating()
-}
-
-function setupSearchYearDuplicating() {
-  $("#start_year").keyup(function(event) {
-    if (event.which != 9)
-      $("#end_year").val($(this).val())
-  })
+  $('#search form').submit(function(){
+    var inp = $('#q', $(this))
+    var string = inp.attr('value')
+    if (!string.match(/ $/))
+      string += ' '
+    string.replace(/'/, '"')
+    inp.attr('value', string)
+  });
 }
 
 /////////////////////////////////////////////////////////////////////////
