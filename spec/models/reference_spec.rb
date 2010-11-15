@@ -220,6 +220,25 @@ describe Reference do
         end
       end
 
+      describe 'searching publisher name' do
+        it 'should find something in publisher name' do
+          publisher = Factory :publisher, :name => 'Publisher'
+          matching_reference = reference_factory(:author => 'Hölldobler', :publisher => publisher)
+          unmatching_reference = reference_factory(:author => 'Hölldobler')
+          Reference.reindex
+          Reference.do_search('Publisher').should == [matching_reference]
+        end
+      end
+
+      describe 'searching citation (for Unknown references)' do
+        it 'should find something in citation' do
+          matching_reference = reference_factory(:author => 'Hölldobler', :citation => 'Citation')
+          unmatching_reference = reference_factory(:author => 'Hölldobler')
+          Reference.reindex
+          Reference.do_search('Citation').should == [matching_reference]
+        end
+      end
+
       describe 'searching by year' do
         before do
           reference_factory(:author => 'Bolton', :citation_year => '1994')

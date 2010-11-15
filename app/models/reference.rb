@@ -3,6 +3,7 @@ class Reference < ActiveRecord::Base
   has_many :authors, :through => :author_participations, :order => :position,
            :after_add => :update_authors_string, :after_remove => :update_authors_string
   belongs_to :journal
+  belongs_to :publisher
   belongs_to :source_reference, :polymorphic => true
 
   searchable do
@@ -11,6 +12,10 @@ class Reference < ActiveRecord::Base
     text :journal_name do
       journal.name if journal
     end
+    text :publisher_name do
+      publisher.name if publisher
+    end
+    text :citation
     text :cite_code
     text :public_notes
     text :editor_notes
