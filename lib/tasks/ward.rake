@@ -17,4 +17,5 @@ task :export_ward => :environment do
   Publisher.delete_all
   Journal.delete_all
   WardReference.export true
+  Rake::Task["sunspot:solr:reindex"].invoke
 end
