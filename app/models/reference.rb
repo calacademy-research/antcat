@@ -8,6 +8,7 @@ class Reference < ActiveRecord::Base
   searchable do
     text :title
     text :authors_string
+    text :cite_code
     string :authors_string
     string :citation_year
     integer :year
@@ -29,21 +30,36 @@ class Reference < ActiveRecord::Base
   def self.do_search string = nil, page = nil
     return all(:order => 'authors_string, citation_year').paginate unless string.present?
     string = string.dup
-    search {
-      if string.present?
-        if match = string.match(/(\d{4})-(\d{4})/)
-          with(:year).between((match[1].to_i)..(match[2].to_i))
-        elsif match = string.match(/\d{4}/)
-          with(:year).equal_to match[0].to_i
-        end
-        string.gsub! /#{match[0]}/, '' if match
-        keywords string
-      end
 
+    search {
+      start_year, end_year = extract_years string
+      if start_year
+        if end_year
+          with(:year).between(start_year..end_year)
+        else
+          with(:year).equal_to start_year
+        end
+      end
+      keywords string
       order_by :authors_string
       order_by :citation_year
       paginate :page => page
     }.results
+  end
+
+  def self.extract_years string
+    start_year = end_year = nil
+    if match = string.match(/(\b\d{4})-(\d{4}\b)/)
+      start_year = match[1].to_i
+      end_year = match[2].to_i
+    elsif match = string.match(/\b\d{4}\b/)
+      start_year = match[0].to_i
+    end
+
+    return nil, nil unless (1758..2010).include? start_year
+
+    string.gsub! /#{match[0]}/, '' if match
+    return start_year, end_year
   end
 
   def self.import data

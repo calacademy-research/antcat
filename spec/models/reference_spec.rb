@@ -174,6 +174,21 @@ describe Reference do
         end
       end
 
+      describe 'searching by cite code' do
+        it "should find a cite code that's doesn't look like a current year" do
+          matching_reference = reference_factory(:author => 'Hölldobler', :cite_code => 'abcdef')
+          unmatching_reference = reference_factory(:author => 'Hölldobler', :cite_code => 'fedcba')
+          Reference.reindex
+          Reference.do_search('abcdef').should == [matching_reference]
+        end
+
+        it "should find a cite code that looks like a year, but not a current year" do
+          matching_reference = reference_factory(:author => 'Hölldobler', :cite_code => '1600')
+          Reference.reindex
+          Reference.do_search('1600').should == [matching_reference]
+        end
+      end
+
       describe 'searching by year' do
         before do
           reference_factory(:author => 'Bolton', :citation_year => '1994')
