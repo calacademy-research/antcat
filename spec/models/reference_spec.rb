@@ -189,6 +189,37 @@ describe Reference do
         end
       end
 
+      describe 'searching notes' do
+        it 'should find something in public notes' do
+          matching_reference = reference_factory(:author => 'Hölldobler', :public_notes => 'abcdef')
+          unmatching_reference = reference_factory(:author => 'Hölldobler', :public_notes => 'fedcba')
+          Reference.reindex
+          Reference.do_search('abcdef').should == [matching_reference]
+        end
+        it 'should find something in editor notes' do
+          matching_reference = reference_factory(:author => 'Hölldobler', :editor_notes => 'abcdef')
+          unmatching_reference = reference_factory(:author => 'Hölldobler', :editor_notes => 'fedcba')
+          Reference.reindex
+          Reference.do_search('abcdef').should == [matching_reference]
+        end
+        it 'should find something in taxonomic notes' do
+          matching_reference = reference_factory(:author => 'Hölldobler', :taxonomic_notes => 'abcdef')
+          unmatching_reference = reference_factory(:author => 'Hölldobler', :taxonomic_notes => 'fedcba')
+          Reference.reindex
+          Reference.do_search('abcdef').should == [matching_reference]
+        end
+      end
+
+      describe 'searching journal name' do
+        it 'should find something in journal name' do
+          journal = Factory :journal, :name => 'Journal'
+          matching_reference = reference_factory(:author => 'Hölldobler', :journal => journal)
+          unmatching_reference = reference_factory(:author => 'Hölldobler')
+          Reference.reindex
+          Reference.do_search('journal').should == [matching_reference]
+        end
+      end
+
       describe 'searching by year' do
         before do
           reference_factory(:author => 'Bolton', :citation_year => '1994')

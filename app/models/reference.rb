@@ -8,7 +8,13 @@ class Reference < ActiveRecord::Base
   searchable do
     text :title
     text :authors_string
+    text :journal_name do
+      journal.name if journal
+    end
     text :cite_code
+    text :public_notes
+    text :editor_notes
+    text :taxonomic_notes
     string :authors_string
     string :citation_year
     integer :year
