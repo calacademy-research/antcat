@@ -1,4 +1,6 @@
 class Reference < ActiveRecord::Base
+  versioned
+
   has_many :author_participations, :order => :position
   has_many :authors, :through => :author_participations, :order => :position,
            :after_add => :update_authors_string, :after_remove => :update_authors_string

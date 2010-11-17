@@ -15,6 +15,7 @@ Rails::Initializer.run do |config|
   config.gem 'citrus'
   config.gem 'sunspot', :lib => 'sunspot'
   config.gem 'sunspot_rails', :lib => 'sunspot/rails'
+  config.gem 'vestal_versions'
 
   config.gem 'fakeweb' if RAILS_ENV == 'test'
 

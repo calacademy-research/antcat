@@ -109,9 +109,7 @@ Given 'I am not logged in' do
 end
 
 Given 'I am logged in' do
-  email = 'mark@example.com'
-  password = 'secret'
-  User.create! :email => email, :password => password, :password_confirmation => password
+  @user = Factory :user
   visit('/users/sign_in')
   And %{I fill in "user_email" with "#{email}"}
   And %{I fill in "user_password" with "#{password}"}

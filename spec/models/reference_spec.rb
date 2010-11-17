@@ -498,4 +498,29 @@ describe Reference do
     end
   end
 
+  describe "versioning" do
+    it "should work" do
+      reference = Factory :reference, :title => 'Title'
+      user = Factory :user
+      reference.version.should == 2
+      reference.versions.last.user.should be_nil
+
+      reference.updated_by = user
+      reference.update_attributes(:title => "A new title")
+      reference.version.should == 3
+      reference.title.should == "A new title"
+      reference.versions.last.user.should == user
+
+      reference.revert_to 2
+      reference.updated_by = nil
+      reference.save!
+      reference.version.should == 4
+      reference.title.should == "Title"
+
+      reference.updated_by = nil
+      reference.update_attributes(:title => "An even newer title")
+      reference.versions.last.user.should be_nil
+    end
+  end
+
 end

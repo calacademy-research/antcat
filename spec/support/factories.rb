@@ -71,3 +71,8 @@ Factory.define :author_participation do |row|
   row.association :author
   row.association :reference
 end
+
+Factory.define :user do |user|
+  user.email     'mark@example.com'
+  user.password  'secret'
+end
