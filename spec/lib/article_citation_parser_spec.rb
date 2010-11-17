@@ -70,6 +70,24 @@ describe ArticleCitationParser do
     end
   end
 
+  describe "when there's a nested parenthetical expression" do
+    it "should just grab it all up to the colon" do
+      ArticleCitationParser.parse("Handbooks for the Identification of British Insects 6(3(c)):1-34", false).should ==
+        {:article => {:journal => 'Handbooks for the Identification of British Insects',
+                     :series_volume_issue => '6(3(c))', :pagination => '1-34'}}
+    end
+  end
+
+  describe "when there's a mess of stuff before the colon" do
+    it "should just grab it all up to the colon" do
+      ArticleCitationParser.parse(
+        'Journal and Proceedings of the Linnean Society of London. Zoology 5(17b)(suppl. to vol. 4):93-143.', false
+      ).should ==
+        {:article => {:journal => 'Journal and Proceedings of the Linnean Society of London. Zoology',
+                     :series_volume_issue => '5(17b)(suppl. to vol. 4)', :pagination => '93-143'}}
+    end
+  end
+
   describe "parsing fields from series_volume_issue" do
     it "can parse out volume and issue" do
       ArticleCitationParser.get_series_volume_issue_parts("92(32)").should == {:volume => '92', :issue => '32'}

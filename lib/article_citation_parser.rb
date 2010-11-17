@@ -20,28 +20,17 @@ module ArticleCitationParser
   end
 
   def self.parse_series_volume_issue string
-    series_volume_issue_start = nil
     pos = series_volume_issue_end = string.length - 1
-    loop do
+
+    begin
       candidate = string[pos..series_volume_issue_end]
       begin
-        result = SeriesVolumeIssueGrammar.parse string[pos..series_volume_issue_end]
-        series_volume_issue_start = pos if result == candidate
+        result = SeriesVolumeIssueStringGrammar.parse(string[pos..series_volume_issue_end] + ':')
+        string.gsub! /#{Regexp.escape result[0..-2]}/, ''
+        return result.value
       rescue
       end
-
-      loop do
-        pos -= 1
-        break unless string[pos..pos] == ' ' && pos > 0
-      end
-
-      break if pos <  0
-    end
-
-    range = series_volume_issue_start..series_volume_issue_end
-    series_volume_issue = string[range]
-    string[range] = ''
-    series_volume_issue
+    end until (pos -= 1) <  0
   end
 
   def self.get_series_volume_issue_parts string

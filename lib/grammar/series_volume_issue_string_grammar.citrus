@@ -1,0 +1,28 @@
+grammar SeriesVolumeIssueStringGrammar
+  rule series_volume_issue
+    (' ' contents  ':') {
+      contents
+    }
+  end
+
+  rule contents
+    (special_case | parenthesized_phrase | spaceless_phrase)+
+  end
+
+  rule parenthesized_phrase
+    '(' phrase+ ')'
+  end
+
+  rule spaceless_phrase
+    [^() :]+
+  end
+
+  rule phrase
+    parenthesized_phrase | [^:()]+
+  end
+
+  rule special_case
+    'Secunda Era '
+  end
+
+end
