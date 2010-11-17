@@ -116,6 +116,11 @@ describe AuthorParser do
       AuthorParser.parse(string)[:names].should == ['Anonymous']
       string.should be_empty
     end
+
+    it "should keep the 'author suffix' part of the title when there is no author" do
+      string = 'Report on the recorded animal life of Moscow province (No. 4). [In Russian.]'
+      AuthorParser.parse(string).should == {:names => [], :suffix => nil}
+    end
   end
 
   describe "parsing first name and initials and last name" do

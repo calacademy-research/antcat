@@ -6,6 +6,7 @@ module AuthorParser
 
     if is_actually_the_title? result[:names].first
       result[:names] = []
+      result[:suffix] = nil
     else
       string.gsub! /#{Regexp.escape match}/, ''
     end
