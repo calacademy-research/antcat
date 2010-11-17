@@ -39,7 +39,7 @@ class Reference < ActiveRecord::Base
     :order => 'name ASC'
 
   def self.do_search string = nil, page = nil
-    return all(:order => 'authors_string, citation_year').paginate unless string.present?
+    return all(:order => 'authors_string, citation_year').paginate(:page => page) unless string.present?
     string = string.dup
 
     search {
