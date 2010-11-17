@@ -77,6 +77,13 @@ describe ArticleCitationParser do
                      :series_volume_issue => '6(3(c))', :pagination => '1-34'}}
     end
   end
+  describe "when there are two parenthetical expressions" do
+    it "should just grab it all up to the colon" do
+      ArticleCitationParser.parse("Handbooks for the Identification of British Insects 6(1)(2nd edn.):1-34", false).should ==
+        {:article => {:journal => 'Handbooks for the Identification of British Insects',
+                     :series_volume_issue => '6(1)(2nd edn.)', :pagination => '1-34'}}
+    end
+  end
 
   describe "when there's a mess of stuff before the colon" do
     it "should just grab it all up to the colon" do
