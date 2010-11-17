@@ -110,6 +110,12 @@ describe AuthorParser do
       string.should == ''
     end
 
+    it "should handle a phrase that's known to be an author" do
+      Author.create! :name => 'Anonymous', :verified => true
+      string = 'Anonymous'
+      AuthorParser.parse(string)[:names].should == ['Anonymous']
+      string.should be_empty
+    end
   end
 
   describe "parsing first name and initials and last name" do
