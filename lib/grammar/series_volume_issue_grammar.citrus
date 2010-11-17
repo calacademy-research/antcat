@@ -12,7 +12,7 @@ grammar SeriesVolumeIssueGrammar
   end
 
   rule volume
-    ('Secunda Era ' [\d]+) | [^\s\(\[]+
+    [^\s\(\[]+
   end
 
   rule issue

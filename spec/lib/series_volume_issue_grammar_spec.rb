@@ -18,11 +18,6 @@ describe SeriesVolumeIssueGrammar do
     SeriesVolumeIssueGrammar.parse('1(2)').value.should == {:series => '', :volume => '1', :issue => '(2)', :note => ''}
   end
 
-  it "should recognize and parse a special case" do
-    SeriesVolumeIssueGrammar.parse('Secunda Era 2').value.should ==
-      {:series => '', :volume => 'Secunda Era 2', :issue => '', :note => ''}
-  end
-
   it "should handle '18(suppl.)'" do
     SeriesVolumeIssueGrammar.parse('18(suppl.)').value.should ==  {:series => '', :volume => '18', :issue => '(suppl.)', :note => ''}
   end

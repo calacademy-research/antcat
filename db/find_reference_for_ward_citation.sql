@@ -3,4 +3,4 @@ select wr.authors, wr.year, wr.title, wr.citation, r.authors_string, j.name, r.s
   join `references` r
   on wr.reference_id = r.id
   left join journals j on j.id = r.journal_id
-  where wr.title like '%report on the recorded animal life of moscow province%'\G
+  where j.name like '%in Innsbr%'\G
