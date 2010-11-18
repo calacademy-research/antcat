@@ -75,29 +75,6 @@ describe CoinsHelper do
     ]
   end
 
-  it "should handle authors without commas" do
-    coins = helper.coins(ward_reference_factory(
-      :authors => 'Anonymous',
-      :year => '1941',
-      :title => 'A title',
-      :citation => 'Journal Title 1(2):3-4'
-    ))
-    check_parameters coins, [
-      "ctx_ver=Z39.88-2004",
-      "rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal",
-      "rfr_id=antcat.org",
-      "rft.genre=article",
-      "rft.atitle=A+title",
-      "rft.jtitle=Journal+Title",
-      "rft.volume=1",
-      "rft.issue=2",
-      "rft.spage=3",
-      "rft.epage=4",
-      "rft.date=1941",
-      "rft.au=Anonymous",
-    ]
-  end
-
   it "should strip out italics formatting" do
     coins = helper.coins(ward_reference_factory(
       :authors => 'Ward, P.S.',
