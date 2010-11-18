@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101117232340) do
+ActiveRecord::Schema.define(:version => 20101118174317) do
 
   create_table "author_participations", :force => true do |t|
     t.integer  "author_id"
@@ -161,6 +161,7 @@ ActiveRecord::Schema.define(:version => 20101117232340) do
     t.text     "notes"
     t.text     "taxonomic_notes"
     t.text     "title"
+    t.text     "editor_notes"
   end
 
 end

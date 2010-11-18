@@ -3,9 +3,9 @@
 #  2) Select the entire contents and Format Cells to
 #     turn wrapping on.
 #  3) Do File | Save as Web Page..., selecting the Sheet radio button
-#  4) Choose a file name with the same base as the spreadsheet, e.g.
-#     ANTBIB_v1V.htm. If the file has '96' in its name, the import will
-#     handle one extra column - taxonomic_notes
+#  4) Save the file as ANTBIB.htm or ANTBIB96.htm. If the file has
+#     '96' in its name, the import will handle one extra column -
+#     taxonomic_notes.
 #  4) Run 'rake import_ward'.
 #     This will delete all data and import it from the web page output.
 
@@ -45,6 +45,8 @@ class WardBibliography
       :citation        => node_to_text(columns[col += 1]),
       :taxonomic_notes => (@new_format ? node_to_text(columns[col += 1]) : nil),
       :notes           => node_to_text(columns[col += 1]),
+      :editor_notes    => (@new_format ? node_to_text(columns[col += 1]) : nil),
+      :taxonomic_notes => (@new_format ? node_to_text(columns[col += 1]) : nil),
       :possess         => node_to_text(columns[col += 1])
     }
 

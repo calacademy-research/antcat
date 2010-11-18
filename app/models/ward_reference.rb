@@ -61,7 +61,10 @@ class WardReference < ActiveRecord::Base
   def parse_notes data
     return if notes.blank?
     data[:public_notes] = data[:editor_notes] = ''
-    if match = notes.match(/(?:\{(.+?)\})?(?:\s*(.*))?/)
+    if editor_notes.present?
+      data[:public_notes] = notes
+      data[:editor_notes] = editor_notes
+    elsif match = notes.match(/(?:\{(.+?)\})?(?:\s*(.*))?/)
       data[:public_notes] = match[1] || ''
       data[:editor_notes] = match[2] || ''
     end

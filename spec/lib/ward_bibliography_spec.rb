@@ -56,6 +56,7 @@ describe WardBibliography do
         :notes => '{Formicidae pp. 4-6.}At least, I think so',
         :possess => 'PSW',
         :taxonomic_notes => nil,
+        :editor_notes => nil,
         :title => 'Records of insect collection.',
         :year => '1978d.').and_return true
       WardReference.should_receive(:create!).with(
@@ -66,6 +67,7 @@ describe WardBibliography do
         :filename => 'ANTBIB_v1V',
         :notes => 'Notes',
         :possess => 'MW',
+        :editor_notes => nil,
         :taxonomic_notes => nil,
         :title => 'Ants.',
         :year => '1975d.').and_return true
@@ -308,8 +310,9 @@ describe WardBibliography do
               <td class=xl65>197804</td>
               <td class=xl65>Records of insect collection.</td>
               <td class=xl65>Bull. Nat. Hist. Res. Cent. Univ. Baghdad 7(2):1-6.</td>
-              <td>Austromorium</td>
               <td class=xl65>Published online: 2005102</td>
+              <td class=xl65>Editor note</td>
+              <td>Austromorium</td>
               <td class=xl65>PSW</td>
             </tr>
           </table>
@@ -323,6 +326,7 @@ describe WardBibliography do
         :date => '197804',
         :filename => 'ANTBIB96_v1V',
         :notes => 'Published online: 2005102',
+        :editor_notes => 'Editor note',
         :possess => 'PSW',
         :taxonomic_notes => 'Austromorium',
         :title => 'Records of insect collection.',

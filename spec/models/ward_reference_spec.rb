@@ -59,6 +59,10 @@ describe WardReference do
           WardReference.new(:notes => '{Public} Editor', :citation => 'none').
             to_import_format.should include(:public_notes => 'Public', :editor_notes => 'Editor')
         end
+        it "should handle explicit public and editor's notes" do
+          WardReference.new(:notes => 'Public', :editor_notes => 'Editor', :citation => 'none').
+            to_import_format.should include(:public_notes => 'Public', :editor_notes => 'Editor')
+        end
       end
 
       it "should remove period from end of year" do
