@@ -55,6 +55,11 @@ Factory.define :unknown_reference do |reference|
 end
 
 Factory.define :nested_reference do |reference|
+  reference.authors             {[Factory(:author)]}
+  reference.title               "Ants are my life"
+  reference.citation_year       '2010d'
+  reference.pages_in            'In: '
+  reference.nested_reference    {Factory :book_reference}
 end
 
 def reference_factory attributes = {}

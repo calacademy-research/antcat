@@ -54,7 +54,7 @@ describe ReferenceFormatter do
     it "should format an unknown reference" do
       reference = Factory(:unknown_reference, :authors => [@author], :citation_year => "1874", :title => "Les fourmis de la Suisse.",
                           :citation => 'New York')
-      ReferenceFormatter.format(reference).should == 'FForel, A. 1874. Les fourmis de la Suisse. New York.'
+      ReferenceFormatter.format(reference).should == 'Forel, A. 1874. Les fourmis de la Suisse. New York.'
     end
 
     it "should format a nested reference" do
@@ -76,10 +76,55 @@ describe ReferenceFormatter do
       ReferenceFormatter.format(reference).should == 'Forel, A. 1874. Les fourmis de la Suisse. Wiley, 22 pp.'
     end
 
-    it "should handle potentially unsafe characters" do
-      reference = Factory(:unknown_reference, :citation_year => "1874", :title => "Les fourmis de la Suisse.",
-                          :citation => '<script></script>')
-      ReferenceFormatter.format(reference).should == 'Fisher1, B.L. 1874. Les fourmis de la Suisse. &lt;script&gt&lt;/script&gt.'
+    describe "unsafe characters" do
+      before do
+        @authors = [Factory :author, :name => 'Ward, P. S.']
+        @reference = Factory :unknown_reference, :authors => @authors,
+          :citation_year => "1874", :title => "Les fourmis de la Suisse.", :citation => '32 pp.'
+      end
+      it "should escape the authors" do
+        @reference.authors = [Factory(:author, :name => '<script>')]
+        ReferenceFormatter.format(@reference).should == '&lt;script&gt; 1874. Les fourmis de la Suisse. 32 pp.'
+      end
+      it "should escape the citation year" do
+        @reference.update_attribute :citation_year, '<script>'
+        ReferenceFormatter.format(@reference).should == 'Ward, P. S. &lt;script&gt;. Les fourmis de la Suisse. 32 pp.'
+      end
+      it "should escape the title" do
+        @reference.update_attribute :title, '<script>'
+        ReferenceFormatter.format(@reference).should == 'Ward, P. S. 1874. &lt;script&gt;. 32 pp.'
+      end
+      it "should escape the title but leave the italics alone" do
+        @reference.update_attribute :title, '*foo*<script>'
+        ReferenceFormatter.format(@reference).should == 'Ward, P. S. 1874. <span class=taxon>foo</span>&lt;script&gt;. 32 pp.'
+      end
+      it "should escape the date" do
+        @reference.update_attribute :date, '1933>'
+        ReferenceFormatter.format(@reference).should == 'Ward, P. S. 1874. Les fourmis de la Suisse. 32 pp. [1933&gt;]'
+      end
+
+      it "should escape the citation in an article reference" do
+        reference = Factory :article_reference, :authors => @authors, :journal => Factory(:journal, :name => '<script>'), :series_volume_issue => '<', :pagination => '>'
+        ReferenceFormatter.format(reference).should == 'Ward, P. S. 2010d. Ants are my life. &lt;script&gt; &lt;:&gt;.'
+      end
+
+      it "should escape the citation in a book reference" do
+        reference = Factory :book_reference, :authors => @authors, :publisher => Factory(:publisher, :name => '<', :place => Factory(:place, :name => '>')),
+          :pagination => '>'
+        ReferenceFormatter.format(reference).should == 'Ward, P. S. 2010d. Ants are my life. &gt;: &lt;, &gt;.'
+      end
+
+      it "should escape the citation in an unknown reference" do
+        reference = Factory :unknown_reference, :authors => @authors, :citation => '>'
+        ReferenceFormatter.format(reference).should == 'Ward, P. S. 2010d. Ants are my life. &gt;.'
+      end
+
+      it "should escape the citation in a nested reference" do
+        nested_reference = Factory :unknown_reference, :authors => @authors
+        reference = Factory :nested_reference, :authors => @authors, :pages_in => '>', :nested_reference => nested_reference
+        ReferenceFormatter.format(reference).should == 'Ward, P. S. 2010d. Ants are my life. &gt; Ward, P. S. 2010d. Ants are my life. New York.'
+      end
+
     end
   end
 
@@ -98,7 +143,7 @@ describe ReferenceFormatter do
       make ''; check ''
     end 
     it "should handle dates with other symbols/characters" do
-      make '201012>'; check ' [2010-12>]'
+      make '201012>'; check ' [2010-12&gt;]'
     end
 
     def make date

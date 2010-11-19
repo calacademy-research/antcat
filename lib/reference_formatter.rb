@@ -1,4 +1,6 @@
 class ReferenceFormatter
+  include ERB::Util
+
   def self.format reference, format = :html
     case reference
     when ArticleReference then ArticleReferenceFormatter
@@ -16,11 +18,11 @@ class ReferenceFormatter
 
   def format
     s = ''
-    s << "#{@reference.authors_string} "
-    s << "#{@reference.citation_year}. "
-    s << "#{self.class.italicize(self.class.add_period_if_necessary(@reference.title))} "
+    s << "#{h @reference.authors_string} "
+    s << "#{h @reference.citation_year}. "
+    s << "#{self.class.italicize(self.class.add_period_if_necessary(h @reference.title))} "
     s << format_citation
-    s << " [#{format_date(@reference.date)}]" if @reference.date.present?
+    s << " [#{h format_date(@reference.date)}]" if @reference.date.present?
     s
   end
 
@@ -58,24 +60,24 @@ end
 
 class ArticleReferenceFormatter < ReferenceFormatter
   def format_citation
-    self.class.add_period_if_necessary "#{@reference.journal.name} #{@reference.series_volume_issue}:#{@reference.pagination}"
+    self.class.add_period_if_necessary "#{h @reference.journal.name} #{h @reference.series_volume_issue}:#{h @reference.pagination}"
   end
 end
 
 class BookReferenceFormatter < ReferenceFormatter
   def format_citation
-    self.class.add_period_if_necessary "#{@reference.publisher}, #{@reference.pagination}"
+    self.class.add_period_if_necessary "#{h @reference.publisher}, #{h @reference.pagination}"
   end
 end
 
 class UnknownReferenceFormatter < ReferenceFormatter
   def format_citation
-    self.class.add_period_if_necessary @reference.citation
+    self.class.add_period_if_necessary h @reference.citation
   end
 end
 
 class NestedReferenceFormatter < ReferenceFormatter
   def format_citation
-    "#{@reference.pages_in} #{ReferenceFormatter.format(@reference.nested_reference)}"
+    "#{h @reference.pages_in} #{ReferenceFormatter.format(@reference.nested_reference)}"
   end
 end
