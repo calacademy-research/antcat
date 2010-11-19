@@ -61,8 +61,11 @@ class WardBibliography
     s.gsub! /\n/, ''
     s.gsub! /&nbsp;/, ' '
 
+    # replace default font style with *'s when the next font tag is for font0
+    s.gsub! /^([^<]+)(?=<font class="font0">)/, '*\1*'
+    
     # replace italics font styling with *'s
-    s.gsub! /<font class="font7">(.*?)<\/font>/, '*\1*'
+    s.gsub! /<font class="font[^0]+">(.*?)<\/font>/, '*\1*'
     # remove font reset
     s.gsub! /<font.*?>(.*?)<\/font>/, '\1'
     # remove links

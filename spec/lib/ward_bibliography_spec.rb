@@ -125,14 +125,27 @@ describe WardBibliography do
         @bibliography.import_html contents
       end
 
-      it "should convert Microsoft's indication of italics to asterisks" do
-        contents = "<html><body><table><tr></tr><tr><td></td><td>123</td><td></td><td></td><td></td>
-          <td>Interaction between the ants <font class=font7>Zacryptocerus
-          maculatus</font><font class=font0> and </font><font class=font7>Azteca
-          trigona</font><font class=font0>.</font></td>
-              <td></td><td></td><td></td></tr></table></body></html>"
-        WardReference.should_receive(:create!).with hash_including(:title => 'Interaction between the ants *Zacryptocerus maculatus* and *Azteca trigona*.')
-        @bibliography.import_html contents
+      describe "converting font tags designating italics to asterisks" do
+        ['7', '8'].each do |font_number|
+          it "should convert Microsoft's indication of italics (<font#{font_number}>) to asterisks" do
+            contents = "<html><body><table><tr></tr><tr><td></td><td>123</td><td></td><td></td><td></td>
+              <td>Interaction between the ants <font class=font#{font_number}>Zacryptocerus
+              maculatus</font><font class=font0> and </font><font class=font7>Azteca
+              trigona</font><font class=font0>.</font></td>
+                  <td></td><td></td><td></td></tr></table></body></html>"
+            WardReference.should_receive(:create!).with hash_including(:title => 'Interaction between the ants *Zacryptocerus maculatus* and *Azteca trigona*.')
+            @bibliography.import_html contents
+          end
+        end
+
+        it "should handle it when the td is italicized, and the font changes to normal" do
+          contents = "<html><body><table><tr></tr><tr><td></td><td>123</td><td></td><td></td><td></td>
+            <td class=xl68>Formicoxenus<font class=font0> ants</td>
+                <td></td><td></td><td></td></tr></table></body></html>"
+          WardReference.should_receive(:create!).with hash_including(:title => '*Formicoxenus* ants')
+          @bibliography.import_html contents
+        end
+
       end
 
       it "should convert entities to characters" do
