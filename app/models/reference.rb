@@ -132,13 +132,6 @@ class Reference < ActiveRecord::Base
     update_attribute :authors_string, make_authors_string
   end
 
-  def self.add_period_if_necessary string
-    return unless string
-    return string if string.empty?
-    return string + '.' unless string[-1..-1] == '.'
-    string
-  end
-
   def set_year
     self.year = self.class.get_year citation_year
   end 
