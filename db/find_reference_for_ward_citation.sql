@@ -1,4 +1,8 @@
-select wr.id, wr.authors, wr.year, wr.title, wr.citation, r.authors_string, r.title, r.series_volume_issue, r.pagination, r.citation
+select
+  wr.id, wr.authors, wr.year, wr.title, wr.citation,
+  r.type, r.authors_string, r.title, r.series_volume_issue, r.pagination, r.citation,
+  j.name
   from `references` r
+  left join journals j on j.id = r.journal_id
   left join ward_references wr on r.source_reference_id = wr.id
-  where series_volume_issue like '%Schwanfeld%'\G
+  where wr.citation like '%Andre, Edm%'\G
