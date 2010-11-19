@@ -5,6 +5,7 @@ Given /the following entr(?:ies|y) exists? in the bibliography/ do |table|
   table.hashes.each do |hash|
     @reference = WardReference.new(hash).export
   end
+  Reference.reindex
 end
 
 Given /the following entry nests it/ do |table|
@@ -12,7 +13,7 @@ Given /the following entry nests it/ do |table|
   @nestee_reference = @reference
   @reference = NestedReference.create! :authors => [Factory(:author, :name => data[:authors])], :citation_year => data[:year],
                           :title => data[:title], :pages_in => data[:pages_in], :nested_reference => @nestee_reference
-
+  Reference.reindex
 end
 
 Given /that the entry has a source URL that's (not )?on our site/ do |is_not|
@@ -111,8 +112,8 @@ end
 Given 'I am logged in' do
   @user = Factory :user
   visit('/users/sign_in')
-  And %{I fill in "user_email" with "#{email}"}
-  And %{I fill in "user_password" with "#{password}"}
+  And %{I fill in "user_email" with "#{@user.email}"}
+  And %{I fill in "user_password" with "#{@user.password}"}
   And %{I press "Sign in"}
 end
 
