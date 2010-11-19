@@ -291,6 +291,26 @@ describe WardBibliography do
         @bibliography.import_html contents
       end
 
+      it "should fix weird space characters" do
+        contents = "<html><body><table><tr></tr><tr><td></td><td>123</td>
+          <td> Cheng, C. H.; Fisher, B. L.</td>
+          <td></td><td></td>
+          <td>Love &amp; Death</td>
+          <td></td><td></td><td></td></tr></table></body></html>"
+        WardReference.should_receive(:create!).with hash_including(:authors => 'Cheng, C. H.; Fisher, B. L.')
+        @bibliography.import_html contents
+      end
+
+      it "should fix this dude without a period" do
+        contents = "<html><body><table><tr></tr><tr><td></td><td>123</td>
+          <td>Collingwood, C. A.; van Harten, A</td>
+          <td></td><td></td>
+          <td>Love &amp; Death</td>
+          <td></td><td></td><td></td></tr></table></body></html>"
+        WardReference.should_receive(:create!).with hash_including(:authors => 'Collingwood, C. A.; van Harten, A.')
+        @bibliography.import_html contents
+      end
+
     end
   end
 

@@ -24,4 +24,8 @@ describe PaginationParser do
     end
   end
 
+  it "shouldn't consider '4th' a pagination" do 
+    PaginationParser.parse('4th').should be_nil
+  end
+
 end

@@ -62,6 +62,7 @@ describe CitationParser do
           :pagination => '93-114,121'}
         }
     end
+
   end
 
 end

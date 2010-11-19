@@ -36,7 +36,20 @@ class WardReference < ActiveRecord::Base
   def export
     reference = Reference.import to_import_format
     update_attribute(:reference, reference)
+
+    fix reference
+
     reference
+  end
+
+  def fix reference
+    if citation == 'Memorias de la Real Sociedad Española de Historia Natural, Tomo del Cincuentenario:424-436.'
+      reference.journal = Journal.import('Memorias de la Real Sociedad Española de Historia Natural')
+      reference.series_volume_issue = 'Tomo del Cincuentenario'
+      reference.pagination = '424-436'
+      reference.save!
+      Journal.find_by_name('Memorias de la Real Sociedad Española de Historia Natural, Tomo del').destroy
+    end
   end
 
   def to_import_format

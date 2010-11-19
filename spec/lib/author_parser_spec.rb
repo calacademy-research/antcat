@@ -110,6 +110,12 @@ describe AuthorParser do
       string.should == ''
     end
 
+    it "should handle 'Jr'" do
+      string = 'Brown, W. L., Jr; Kempf, W. W.'
+      AuthorParser.parse(string)[:names].should == ['Brown, W. L., Jr', 'Kempf, W. W.']
+      string.should == ''
+    end
+
     it "should handle a phrase that's known to be an author" do
       Author.create! :name => 'Anonymous', :verified => true
       string = 'Anonymous'

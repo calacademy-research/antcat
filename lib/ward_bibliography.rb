@@ -42,8 +42,7 @@ class WardBibliography
       :year            => node_to_text(columns[col += 1]),
       :date            => node_to_text(columns[col += 1]),
       :title           => node_to_text(columns[col += 1]),
-      :citation        => node_to_text(columns[col += 1]),
-      :taxonomic_notes => (@new_format ? node_to_text(columns[col += 1]) : nil),
+      :citation        => fix(node_to_text(columns[col += 1])),
       :notes           => node_to_text(columns[col += 1]),
       :editor_notes    => (@new_format ? node_to_text(columns[col += 1]) : nil),
       :taxonomic_notes => (@new_format ? node_to_text(columns[col += 1]) : nil),
@@ -52,67 +51,91 @@ class WardBibliography
 
     fix_data data
 
-    WardReference.create! data
+    WardReference.create!(data) unless data[:cite_code] == '8357'
   end
 
   private
   def node_to_text node
     s = node.inner_html
 
-    s = s.gsub(/\n/, '')
+    s.gsub! /\n/, ''
+    s.gsub! /&nbsp;/, ' '
+
     # replace italics font styling with *'s
-    s = s.gsub(/<font class="font7">(.*?)<\/font>/, '*\1*')
+    s.gsub! /<font class="font7">(.*?)<\/font>/, '*\1*'
     # remove font reset
-    s = s.gsub(/<font.*?>(.*?)<\/font>/, '\1')
+    s.gsub! /<font.*?>(.*?)<\/font>/, '\1'
     # remove links
-    s = s.gsub(/<a.*?>(.*?)<\/a>/, '\1')
+    s.gsub! /<a.*?>(.*?)<\/a>/, '\1'
     # get rid of remaining <span>s
-    s = s.gsub %r{<span.*?/span>}, ' '
+    s.gsub! %r{<span.*?/span>}, ' '
     # translate | to *
-    s = s.gsub(/\|/, '*')
-    s = s.squish
-    CGI.unescapeHTML(s)
+    s.gsub! /\|/, '*'
+
+    s.squish!
+    CGI.unescapeHTML s
   end
 
-  def fix_authors names
-    # A reference by "Radchenko, A. G.; Elmes, G. W.; Alicata, A."
-    # has some weird bytes before Elmes's and Alicata's namess
-    names.gsub! /\xC2\xA0/, ''
-
+  def fix_authors string
+    string = fix string
+    
     # Transposition mistakes
-    names.gsub! /MacKay, W\. P\.; Rebeles M\.; A\.; Arredondo B\.; H\. C\.; Rodríguez R\.; A\. D\.; González, D\. A\.; Vinson, S\. B\.\s*/,
+    string.gsub! /MacKay, W\. P\.; Rebeles M\.; A\.; Arredondo B\.; H\. C\.; Rodríguez R\.; A\. D\.; González, D\. A\.; Vinson, S\. B\.\s*/,
       "MacKay, W. P.; Rebeles, A.; Arredondo, H.; Rodriguez, A.; Gonzalez, D.; Vinson, S. B."
 
     # Remove trailing periods that aren't initials or abbreviations
-    unless names =~ /\(eds?\.\)/ 
-      match = names.match /(\w{2,})\./
-      names = names[0..-2] unless !match || ['Jr', 'Sr'].include?(match[1])
+    unless string =~ /\(eds?\.\)/ 
+      match = string.match /(\w{2,})\./
+      string = string[0..-2] unless !match || ['Jr', 'Sr'].include?(match[1])
     end
 
+    string.gsub! /:/, ';'
+
+    string
+  end
+
+  def fix string
+    string.gsub! /\(_\.\)/, 'Unknown'
+
+    # A reference by "Radchenko, A. G.; Elmes, G. W.; Alicata, A."
+    # has some weird bytes before Elmes's and Alicata's namess
+    string.gsub! /\xC2\xA0/, ''
+
+    # weird space characters
+    string.gsub! /\x00\xA0/, ' '
+
     # Remove 'and collaborators'
-    names.gsub!(/ and collaborators$/, '')
+    string.gsub!(/ and collaborators$/, '')
 
     # Fix typos
-    names.gsub! /Medeiro, M. A. de/, 'Medeiros, M. A. de'
-    names.gsub! /Gibron, J.; Sr./, 'Gibron, S. J.'
-    names.gsub! /:/, ';'
+    string.gsub! /Medeiro, M. A. de/, 'Medeiros, M. A. de'
+    string.gsub! /Gibron, J.; Sr./, 'Gibron, S. J.'
 
     # The ' is 0x2019
-    names.gsub! /O’Donnell/, "O'Donnell"
+    string.gsub! /O’Donnell/, "O'Donnell"
 
     # The s is 0x0161
-    names.gsub! /Randuška/, "Randuska"
+    string.gsub! /Randuška/, "Randuska"
 
     # commas instead of semicolons
-    names.gsub! /Santos-Colares, M. C., Viégas, J., Martino Roth, M. G., Loeck, A. E./, "Santos-Colares, M. C.; Viégas, J.; Martino Roth, M. G.; Loeck, A. E."
+    string.gsub! /Santos-Colares, M. C., Viégas, J., Martino Roth, M. G., Loeck, A. E./, "Santos-Colares, M. C.; Viégas, J.; Martino Roth, M. G.; Loeck, A. E."
 
     # name without comma
-    names.gsub! /Swainson W/, 'Swainson, W'
+    string.gsub! /Swainson W/, 'Swainson, W'
 
     # semicolon before generation number
-    names.gsub! /Coody, C. J.; Watkins, J. F.; II/, "Coody, C. J.; Watkins, J. F., II"
+    string.gsub! /Coody, C. J.; Watkins, J. F.; II/, "Coody, C. J.; Watkins, J. F., II"
 
-    names
+    # semicolon instead of comma
+    string.gsub! /van Harten; A/, 'van Harten, A.'
+
+    # missing period
+    string.gsub! /van Harten, A$/, 'van Harten, A.'
+
+    # missing comma
+    string.gsub! /Cerdá X./, 'Cerdá, X.'
+
+    string
   end
 
   def fix_data data
@@ -123,6 +146,8 @@ class WardBibliography
     elsif data[:citation] =~ /Achtes Programm des Gymnasiums in Bozen. Bozen: Ebersche Buchdruckerei, 34 pp./
       data[:title] << '. Achtes Programm des Gymnasiums in Bozen'
       data[:citation] = 'Bozen: Ebersche Buchdruckerei, 34 pp.'
+    elsif data[:citation] =~ /103 :20-29/
+      data[:citation].gsub! /103 :20-29/, '103:20-29'
     end
   end
 

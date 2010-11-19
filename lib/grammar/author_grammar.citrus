@@ -16,7 +16,7 @@ grammar AuthorGrammar
   end
 
   rule author_suffix
-    ', Jr.' | ', II'
+    (', Jr' '.'?) | ', II'
   end
 
   rule author_separator
