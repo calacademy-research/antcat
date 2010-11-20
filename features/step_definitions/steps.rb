@@ -128,7 +128,7 @@ end
 
 When 'I press the "Save" button' do
   click_button "Save"
-  sleep 0.5
+  sleep 0.75
 end
 
 Then "I should see the reference's ID beside its label" do

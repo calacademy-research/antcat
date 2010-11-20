@@ -48,7 +48,7 @@ Feature: Edit reference
       And I click the reference
       And I fill in "reference_citation_year" with "1910a"
       And I press the "Save" button
-      And I fill in "start_year" with "1910"
+      And I fill in "q" with "1910"
       And I press "Search"
     Then I should see "Fisher, B.L. 1910a"
 
