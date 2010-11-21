@@ -15,7 +15,7 @@ describe HolSourceUrlImporter do
 
     it "should import each reference" do
       mocks = [mock_model(Reference), mock_model(Reference)]
-      Reference.stub!(:sorted_by_author).and_return mocks
+      Reference.stub!(:sorted_by_author_name).and_return mocks
       mocks.each {|mock| @importer.should_receive(:import_source_url_for).with(mock).and_return 'asdf'}
       @importer.import
     end
@@ -33,13 +33,13 @@ describe HolSourceUrlImporter do
     end
 
     it "should import references in order of their first author" do
-      bolton = Factory :author, :name => 'Bolton'
-      ward = Factory :author, :name => 'Ward'
-      fisher = Factory :author, :name => 'Fisher'
-      bolton_reference = Factory :reference, :authors => [bolton]
-      first_ward_reference = Factory :reference, :authors => [ward]
-      second_ward_reference = Factory :reference, :authors => [ward]
-      fisher_reference = Factory :reference, :authors => [fisher]
+      bolton = Factory :author_name, :name => 'Bolton'
+      ward = Factory :author_name, :name => 'Ward'
+      fisher = Factory :author_name, :name => 'Fisher'
+      bolton_reference = Factory :reference, :author_names => [bolton]
+      first_ward_reference = Factory :reference, :author_names => [ward]
+      second_ward_reference = Factory :reference, :author_names => [ward]
+      fisher_reference = Factory :reference, :author_names => [fisher]
 
       @importer.should_receive(:import_source_url_for).with(bolton_reference).ordered.and_return 'asdf'
       @importer.should_receive(:import_source_url_for).with(fisher_reference).ordered.and_return 'asdf'
@@ -52,12 +52,12 @@ describe HolSourceUrlImporter do
 
   describe "saving the authors it can't find" do
     it "should save the authors it can't find" do
-      bolton = Factory :author, :name => 'bolton'
-      first_bolton = Factory :reference, :authors => [bolton]
-      second_bolton = Factory :reference, :authors => [bolton]
-      ward = Factory :reference, :authors => [Factory(:author, :name => 'ward')]
-      fisher = Factory :reference, :authors => [Factory(:author, :name => 'fisher')]
-      another_fisher = Factory :reference, :authors => [Factory(:author, :name => 'fisher')]
+      bolton = Factory :author_name, :name => 'bolton'
+      first_bolton = Factory :reference, :author_names => [bolton]
+      second_bolton = Factory :reference, :author_names => [bolton]
+      ward = Factory :reference, :author_names => [Factory(:author_name, :name => 'ward')]
+      fisher = Factory :reference, :author_names => [Factory(:author_name, :name => 'fisher')]
+      another_fisher = Factory :reference, :author_names => [Factory(:author_name, :name => 'fisher')]
       @bibliography.stub!(:match).with(first_bolton).and_return({})
       @bibliography.stub!(:match).with(second_bolton).and_return({:source_url => 'source'})
       @bibliography.stub!(:match).with(ward).and_return({:source_url => 'source'})

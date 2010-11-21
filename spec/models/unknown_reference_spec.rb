@@ -5,7 +5,7 @@ describe UnknownReference do
     it "should create the reference and set its data" do
       ward_reference = Factory(:ward_reference)
       reference = UnknownReference.import(
-        {:authors => [Factory(:author)], :title => 'awdf',
+        {:author_names => [Factory(:author_name)], :title => 'awdf',
           :source_reference_id => ward_reference.id, :source_reference_type => 'WardReference', :citation_year => '2010'},
         'Citation')
       reference.citation.should == 'Citation'
@@ -15,8 +15,8 @@ describe UnknownReference do
 
   describe "validation" do
     before do
-      author = Factory :author
-      @reference = UnknownReference.new :authors => [author], :title => 'Title', :citation_year => '2010a',
+      author_name = Factory :author_name
+      @reference = UnknownReference.new :author_names => [author_name], :title => 'Title', :citation_year => '2010a',
         :citation => 'Citation'
     end
     it "should be be valid the way I set it up" do

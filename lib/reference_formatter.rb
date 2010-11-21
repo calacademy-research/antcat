@@ -18,7 +18,7 @@ class ReferenceFormatter
 
   def format
     s = ''
-    s << "#{h @reference.authors_string} "
+    s << "#{h @reference.author_names_string} "
     s << "#{h @reference.citation_year}. "
     s << "#{self.class.italicize(self.class.add_period_if_necessary(h @reference.title))} "
     s << format_citation

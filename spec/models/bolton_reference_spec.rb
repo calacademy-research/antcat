@@ -48,7 +48,7 @@ normal'>31</b>: 1-115. [31.vii.1991.]"
       reference.date.should be_nil
     end
     
-    it "should handle missing space after year" do
+    it "should handle missing space after date" do
       file_contents = make_contents "Arnold, G. 1960a.Aculeate Hymenoptera from the Drakensberg Mountains, Natal. Annals of the Natal Museum 15: 79-87."
       File.should_receive(:read).with(@filename).and_return(file_contents)
       BoltonReference.import(@filename)

@@ -117,7 +117,7 @@ describe AuthorParser do
     end
 
     it "should handle a phrase that's known to be an author" do
-      Author.create! :name => 'Anonymous', :verified => true
+      AuthorName.create! :name => 'Anonymous', :verified => true
       string = 'Anonymous'
       AuthorParser.parse(string)[:names].should == ['Anonymous']
       string.should be_empty

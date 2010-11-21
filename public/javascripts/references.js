@@ -197,7 +197,7 @@ function showReferenceEdit($reference, options) {
   $('.icon').hide();
 
   var $edit = $('.reference_edit', $reference);
-  $('#reference_authors_string', $edit)[0].focus();
+  $('#reference_author_names_string', $edit)[0].focus();
 
   if (!options.showDeleteButton)
     $('.delete', $edit).hide();

@@ -1,6 +1,6 @@
 select name, count(*)
-  from authors 
-  join author_participations on authors.id = author_participations.author_id and position = 1
+  from author_names 
+  join author_participations on author_names.id = author_participations.author_name_id and position = 1
   join `references` on `references`.id = author_participations.reference_id
   where name in (
 'Abdalla, F. C.',

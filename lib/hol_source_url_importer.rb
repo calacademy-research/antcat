@@ -18,7 +18,7 @@ class HolSourceUrlImporter
 
   def import
     Progress.puts "Importing source URLs..."
-    Reference.sorted_by_author.each do |reference|
+    Reference.sorted_by_author_name.each do |reference|
       result = import_source_url_for reference
       show_progress reference, result
     end
@@ -60,7 +60,7 @@ class HolSourceUrlImporter
       return 'Already'
     else
       if result[:status] == HolBibliography::NO_ENTRIES_FOR_AUTHOR
-        @missing_authors << reference.authors.first.name
+        @missing_authors << reference.author_names.first.name
         @missing_author_failure_count += 1
         return 'Author'
       elsif result[:status] == :pdf_not_found

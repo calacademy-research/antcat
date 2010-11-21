@@ -102,8 +102,8 @@ describe WardReference do
           })
           ward_reference.to_import_format.should == {
             :article => {:journal => "Bull. Nat. Hist. Res. Cent. Univ. Baghdad", :series_volume_issue => "7(2)", :pagination => "1-6"},
-            :authors => ["Abdul-Rassoul, M. S.", "Dawah, H. A.", "Othman, N. Y."],
-            :authors_suffix => ' (eds.)',
+            :author_names => ["Abdul-Rassoul, M. S.", "Dawah, H. A.", "Othman, N. Y."],
+            :author_names_suffix => ' (eds.)',
             :citation_year => "1978d",
             :cite_code => '5523',
             :class => ward_reference.class.to_s,
@@ -130,8 +130,8 @@ describe WardReference do
           })
           ward_reference.to_import_format.should == {
             :article => {:journal => "Bull. Nat. Hist. Res. Cent. Univ. Baghdad", :series_volume_issue => "7(2)", :pagination => "1-6"},
-            :authors => ["Abdul-Rassoul, M. S.", "Dawah, H. A.", "Othman, N. Y."],
-            :authors_suffix => nil,
+            :author_names => ["Abdul-Rassoul, M. S.", "Dawah, H. A.", "Othman, N. Y."],
+            :author_names_suffix => nil,
             :citation_year => "1978d",
             :cite_code => '5523',
             :class => ward_reference.class.to_s,
@@ -158,8 +158,8 @@ describe WardReference do
             :year => "1990.",
           })
           ward_reference.to_import_format.should == {
-            :authors => ["Hölldobler, B.", "Wilson, E. O."],
-            :authors_suffix => nil,
+            :author_names => ["Hölldobler, B.", "Wilson, E. O."],
+            :author_names_suffix => nil,
             :title => 'The ants',
             :citation_year => "1990",
             :book => {:publisher => {:name => 'Harvard University Press', :place => 'Cambridge, Mass.'}, :pagination => 'xii + 732 pp.'},
@@ -187,18 +187,18 @@ describe WardReference do
           })
 
           expected = {
-            :authors => ["MacKay, W. P."],
-            :authors_suffix => nil,
+            :author_names => ["MacKay, W. P."],
+            :author_names_suffix => nil,
             :title => 'The ants of Los Alamos County, New Mexico (Hymenoptera: Formicidae)',
             :citation_year => '1988',
             :nested => {
-              :authors => ['MacKay, W.', 'Lowrie, D.', 'Fisher, A.', 'MacKay, E.', 'Barnes, F.', 'Lowrie, D.'],
-              :authors_suffix => nil,
+              :author_names => ['MacKay, W.', 'Lowrie, D.', 'Fisher, A.', 'MacKay, E.', 'Barnes, F.', 'Lowrie, D.'],
+              :author_names_suffix => nil,
               :title => 'The ants of Los Alamos County, New Mexico (Hymenoptera: Formicidae)',
               :pages_in => 'Pp. 96-98 in:',
               :nested => {
-                :authors => ['Trager, J. C.'],
-                :authors_suffix => ' (ed.)',
+                :author_names => ['Trager, J. C.'],
+                :author_names_suffix => ' (ed.)',
                 :title => 'Advances in myrmecology',
                 :pages_in => 'Pp. 79-131 in:',
                 :book => {:publisher => {:name => 'E. J. Brill', :place => 'Leiden'}, :pagination => 'xxvii + 551 pp.'},

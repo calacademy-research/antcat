@@ -22,7 +22,7 @@ Feature: Edit reference
     When I click the reference
       Then I should see the edit form
       And I should not see the reference
-    When I fill in "reference_authors_string" with "Ward, B.L.;Bolton, B."
+    When I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
     And I fill in "reference_title" with "Ant Title"
       And I press the "Save" button
     Then I should be on the main page
@@ -35,7 +35,7 @@ Feature: Edit reference
       |Ward, P.;Bolton, B.|Psyche 5:3|CiteCode |today     |20100712|Possess|title|today     |2010|
     When I go to the main page
       And I click the reference
-    When I fill in "reference_authors_string" with "Ward, P.; Fisher, B.; Bolton, B."
+    When I fill in "reference_author_names_string" with "Ward, P.; Fisher, B.; Bolton, B."
       And I press the "Save" button
     Then I should see "Ward, P.; Fisher, B.; Bolton, B."
 
@@ -94,7 +94,7 @@ Feature: Edit reference
       |Ward, P.S. |New York: Wiley, 36 pp.|2010a|Ants |
     When I go to the main page
     When I click the reference
-    When I fill in "reference_authors_string" with ""
+    When I fill in "reference_author_names_string" with ""
       And I fill in "reference_title" with ""
       And I fill in "reference_citation_year" with ""
       And I fill in "publisher_string" with ""
@@ -113,7 +113,7 @@ Feature: Edit reference
       |Ward, P.S. |Psyche 1:2|2010a|Ants |
     When I go to the main page
     When I click the reference
-    When I fill in "reference_authors_string" with ""
+    When I fill in "reference_author_names_string" with ""
       And I fill in "reference_title" with ""
       And I fill in "reference_citation_year" with ""
       And I fill in "journal_name" with ""
@@ -134,7 +134,7 @@ Feature: Edit reference
       |Ward, P.S. |New York  |2010a|Ants |
     When I go to the main page
     When I click the reference
-    When I fill in "reference_authors_string" with ""
+    When I fill in "reference_author_names_string" with ""
       And I fill in "reference_title" with ""
       And I fill in "reference_citation_year" with ""
       And I fill in "reference_citation" with ""
@@ -162,7 +162,7 @@ Feature: Edit reference
       |Ward, P.S. |New York  |2010a|Ants |
     When I go to the main page
     When I click the reference
-    When I fill in "reference_authors_string" with "Ward, P.S. (ed.)"
+    When I fill in "reference_author_names_string" with "Ward, P.S. (ed.)"
       And I press the "Save" button
     Then I should see "Ward, P.S. (ed.)"
 
@@ -174,7 +174,7 @@ Feature: Edit reference
     When I go to the main page
     Then I should see "Ward, P.S. (ed.)"
     When I click the reference
-    When I fill in "reference_authors_string" with "Ward, P.S."
+    When I fill in "reference_author_names_string" with "Ward, P.S."
       And I press the "Save" button
     Then I should see "Ward, P.S."
 

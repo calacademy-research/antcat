@@ -11,8 +11,8 @@ def ward_reference_factory attributes
   WardReference.new(attributes).export
 end
 
-Factory.define :author do |author|
-  author.sequence(:name) {|n| "Fisher#{n}, B.L."}
+Factory.define :author_name do |author_name|
+  author_name.sequence(:name) {|n| "Fisher#{n}, B.L."}
 end
 
 Factory.define :publisher do |row|
@@ -25,13 +25,13 @@ Factory.define :place do |row|
 end
 
 Factory.define :reference do |reference|
-  reference.authors         {[Factory(:author)]}
+  reference.author_names     {[Factory(:author_name)]}
   reference.title           "Ants are my life"
   reference.citation_year   "2010"
 end
 
 Factory.define :article_reference do |reference|
-  reference.authors             {[Factory(:author)]}
+  reference.author_names        {[Factory(:author_name)]}
   reference.title               "Ants are my life"
   reference.citation_year       '2010d'
   reference.association         :journal
@@ -40,7 +40,7 @@ Factory.define :article_reference do |reference|
 end
 
 Factory.define :book_reference do |reference|
-  reference.authors             {[Factory(:author)]}
+  reference.author_names        {[Factory(:author_name)]}
   reference.title               "Ants are my life"
   reference.citation_year       '2010d'
   reference.association         :publisher
@@ -48,14 +48,14 @@ Factory.define :book_reference do |reference|
 end
 
 Factory.define :unknown_reference do |reference|
-  reference.authors             {[Factory(:author)]}
+  reference.author_names        {[Factory(:author_name)]}
   reference.title               "Ants are my life"
   reference.citation_year       '2010d'
   reference.citation            'New York'
 end
 
 Factory.define :nested_reference do |reference|
-  reference.authors             {[Factory(:author)]}
+  reference.author_names        {[Factory(:author_name)]}
   reference.title               "Ants are my life"
   reference.citation_year       '2010d'
   reference.pages_in            'In: '
@@ -63,8 +63,8 @@ Factory.define :nested_reference do |reference|
 end
 
 def reference_factory attributes = {}
-  author = Factory(:author, :name => attributes.delete(:author))
-  reference = Factory(:reference, attributes.merge(:authors => [author]))
+  author_name = Factory(:author_name, :name => attributes.delete(:author_name))
+  reference = Factory(:reference, attributes.merge(:author_names => [author_name]))
   reference
 end
 
@@ -73,7 +73,7 @@ Factory.define :journal do |journal|
 end
 
 Factory.define :author_participation do |row|
-  row.association :author
+  row.association :author_name
   row.association :reference
 end
 

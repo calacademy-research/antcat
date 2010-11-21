@@ -2,14 +2,14 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Reference do
   before :each do
-    @authors = [Factory :author]
+    @author_names = [Factory :author_name]
   end
 
   describe "importing a new reference" do
     before do
       @reference_data = {
-        :authors => ['Author'],
-        :authors_suffix => ' (eds.)',
+        :author_names => ['Author'],
+        :author_names_suffix => ' (eds.)',
         :citation_year => '2010d',
         :title => 'Ants',
         :cite_code => '345',
@@ -23,12 +23,12 @@ describe Reference do
       }
     end
     it "should import a book reference" do
-      author = mock_model Author
-      Author.should_receive(:import).with(['Author']).and_return [author]
+      author_name = mock_model AuthorName
+      AuthorName.should_receive(:import).with(['Author']).and_return [author_name]
       @reference_data[:book] = 1
       BookReference.should_receive(:import).with({
-        :authors => [author],
-        :authors_suffix => ' (eds.)',
+        :author_names => [author_name],
+        :author_names_suffix => ' (eds.)',
         :citation_year => '2010d',
         :title => 'Ants',
         :cite_code => '345',
@@ -42,12 +42,12 @@ describe Reference do
         Reference.import @reference_data
     end
     it "should import an article reference" do
-      author = mock_model Author
-      Author.should_receive(:import).with(['Author']).and_return [author]
+      author_name = mock_model AuthorName
+      AuthorName.should_receive(:import).with(['Author']).and_return [author_name]
       @reference_data[:article] = 1
       ArticleReference.should_receive(:import).with({
-        :authors => [author],
-        :authors_suffix => ' (eds.)',
+        :author_names => [author_name],
+        :author_names_suffix => ' (eds.)',
         :citation_year => '2010d',
         :title => 'Ants',
         :cite_code => '345',
@@ -61,12 +61,12 @@ describe Reference do
         Reference.import @reference_data
     end
     it "should import a nested reference" do
-      author = mock_model Author
-      Author.should_receive(:import).with(['Author']).and_return [author]
+      author_name = mock_model AuthorName
+      AuthorName.should_receive(:import).with(['Author']).and_return [author_name]
       @reference_data[:nested] = 'nested'
       NestedReference.should_receive(:import).with({
-        :authors => [author],
-        :authors_suffix => ' (eds.)',
+        :author_names => [author_name],
+        :author_names_suffix => ' (eds.)',
         :citation_year => '2010d',
         :title => 'Ants',
         :cite_code => '345',
@@ -80,12 +80,12 @@ describe Reference do
         Reference.import @reference_data
     end
     it "should import an unknown reference" do
-      author = mock_model Author
-      Author.should_receive(:import).with(['Author']).and_return [author]
+      author_name = mock_model AuthorName
+      AuthorName.should_receive(:import).with(['Author']).and_return [author_name]
       @reference_data[:unknown] = 'other'
       UnknownReference.should_receive(:import).with({
-        :authors => [author],
-        :authors_suffix => ' (eds.)',
+        :author_names => [author_name],
+        :author_names_suffix => ' (eds.)',
         :citation_year => '2010d',
         :title => 'Ants',
         :cite_code => '345',
@@ -100,11 +100,11 @@ describe Reference do
     end
 
     it "should not import the same reference twice" do
-      author = Factory :author
-      reference = Reference.create! :title => 'Ants', :authors => [author], :citation_year => '2010d', :pagination => '2 pp.'
+      author_name = Factory :author_name
+      reference = Reference.create! :title => 'Ants', :author_names => [author_name], :citation_year => '2010d', :pagination => '2 pp.'
       Reference.import(
-        :authors => [author.name],
-        :authors_suffix => ' (eds.)',
+        :author_names => [author_name.name],
+        :author_names_suffix => ' (eds.)',
         :citation_year => '2010',
         :title => 'Ants',
         :unknown => 'Other citation',
@@ -122,23 +122,23 @@ describe Reference do
   end
 
   describe "searching" do
-    it "should return an empty array if nothing is found for author" do
+    it "should return an empty array if nothing is found for author_name" do
       Factory(:reference).index!
       Reference.search {keywords 'foo'}.results.should be_empty
     end
 
-    it "should find the reference for a given author if it exists" do
-      reference = reference_factory(:author => 'Bolton')
-      reference_factory(:author => 'Fisher')
+    it "should find the reference for a given author_name if it exists" do
+      reference = reference_factory(:author_name => 'Bolton')
+      reference_factory(:author_name => 'Fisher')
       Reference.reindex
       Reference.search {keywords 'Bolton'}.results.should == [reference]
     end
 
-    it "should return an empty array if nothing is found for a given year and author" do
-      reference_factory(:author => 'Bolton', :citation_year => '2010').index
-      reference_factory(:author => 'Bolton', :citation_year => '1995').index
-      reference_factory(:author => 'Fisher', :citation_year => '2011').index
-      reference_factory(:author => 'Fisher', :citation_year => '1996').index
+    it "should return an empty array if nothing is found for a given year and author_name" do
+      reference_factory(:author_name => 'Bolton', :citation_year => '2010').index
+      reference_factory(:author_name => 'Bolton', :citation_year => '1995').index
+      reference_factory(:author_name => 'Fisher', :citation_year => '2011').index
+      reference_factory(:author_name => 'Fisher', :citation_year => '1996').index
       Sunspot.commit
       Reference.search {
         with(:year).between(2012..2013)
@@ -146,11 +146,11 @@ describe Reference do
       }.results.should be_empty
     end
 
-    it "should return the one reference for a given year and author" do
-      reference_factory(:author => 'Bolton', :citation_year => '2010').index
-      reference_factory(:author => 'Bolton', :citation_year => '1995').index
-      reference_factory(:author => 'Fisher', :citation_year => '2011').index
-      reference = reference_factory(:author => 'Fisher', :citation_year => '1996')
+    it "should return the one reference for a given year and author_name" do
+      reference_factory(:author_name => 'Bolton', :citation_year => '2010').index
+      reference_factory(:author_name => 'Bolton', :citation_year => '1995').index
+      reference_factory(:author_name => 'Fisher', :citation_year => '2011').index
+      reference = reference_factory(:author_name => 'Fisher', :citation_year => '1996')
       reference.index
       Sunspot.commit
       Reference.search {
@@ -166,9 +166,9 @@ describe Reference do
         string.should == '1990'
       end
 
-      describe 'searching by author' do
+      describe 'searching by author_name' do
         it 'should at least find Bert!' do
-          reference = reference_factory(:author => 'Hölldobler')
+          reference = reference_factory(:author_name => 'Hölldobler')
           Reference.reindex
           Reference.do_search('holldobler').should == [reference]
         end
@@ -176,14 +176,14 @@ describe Reference do
 
       describe 'searching by cite code' do
         it "should find a cite code that's doesn't look like a current year" do
-          matching_reference = reference_factory(:author => 'Hölldobler', :cite_code => 'abcdef')
-          unmatching_reference = reference_factory(:author => 'Hölldobler', :cite_code => 'fedcba')
+          matching_reference = reference_factory(:author_name => 'Hölldobler', :cite_code => 'abcdef')
+          unmatching_reference = reference_factory(:author_name => 'Hölldobler', :cite_code => 'fedcba')
           Reference.reindex
           Reference.do_search('abcdef').should == [matching_reference]
         end
 
         it "should find a cite code that looks like a year, but not a current year" do
-          matching_reference = reference_factory(:author => 'Hölldobler', :cite_code => '1600')
+          matching_reference = reference_factory(:author_name => 'Hölldobler', :cite_code => '1600')
           Reference.reindex
           Reference.do_search('1600').should == [matching_reference]
         end
@@ -191,20 +191,20 @@ describe Reference do
 
       describe 'searching notes' do
         it 'should find something in public notes' do
-          matching_reference = reference_factory(:author => 'Hölldobler', :public_notes => 'abcdef')
-          unmatching_reference = reference_factory(:author => 'Hölldobler', :public_notes => 'fedcba')
+          matching_reference = reference_factory(:author_name => 'Hölldobler', :public_notes => 'abcdef')
+          unmatching_reference = reference_factory(:author_name => 'Hölldobler', :public_notes => 'fedcba')
           Reference.reindex
           Reference.do_search('abcdef').should == [matching_reference]
         end
         it 'should find something in editor notes' do
-          matching_reference = reference_factory(:author => 'Hölldobler', :editor_notes => 'abcdef')
-          unmatching_reference = reference_factory(:author => 'Hölldobler', :editor_notes => 'fedcba')
+          matching_reference = reference_factory(:author_name => 'Hölldobler', :editor_notes => 'abcdef')
+          unmatching_reference = reference_factory(:author_name => 'Hölldobler', :editor_notes => 'fedcba')
           Reference.reindex
           Reference.do_search('abcdef').should == [matching_reference]
         end
         it 'should find something in taxonomic notes' do
-          matching_reference = reference_factory(:author => 'Hölldobler', :taxonomic_notes => 'abcdef')
-          unmatching_reference = reference_factory(:author => 'Hölldobler', :taxonomic_notes => 'fedcba')
+          matching_reference = reference_factory(:author_name => 'Hölldobler', :taxonomic_notes => 'abcdef')
+          unmatching_reference = reference_factory(:author_name => 'Hölldobler', :taxonomic_notes => 'fedcba')
           Reference.reindex
           Reference.do_search('abcdef').should == [matching_reference]
         end
@@ -213,8 +213,8 @@ describe Reference do
       describe 'searching journal name' do
         it 'should find something in journal name' do
           journal = Factory :journal, :name => 'Journal'
-          matching_reference = reference_factory(:author => 'Hölldobler', :journal => journal)
-          unmatching_reference = reference_factory(:author => 'Hölldobler')
+          matching_reference = reference_factory(:author_name => 'Hölldobler', :journal => journal)
+          unmatching_reference = reference_factory(:author_name => 'Hölldobler')
           Reference.reindex
           Reference.do_search('journal').should == [matching_reference]
         end
@@ -223,8 +223,8 @@ describe Reference do
       describe 'searching publisher name' do
         it 'should find something in publisher name' do
           publisher = Factory :publisher, :name => 'Publisher'
-          matching_reference = reference_factory(:author => 'Hölldobler', :publisher => publisher)
-          unmatching_reference = reference_factory(:author => 'Hölldobler')
+          matching_reference = reference_factory(:author_name => 'Hölldobler', :publisher => publisher)
+          unmatching_reference = reference_factory(:author_name => 'Hölldobler')
           Reference.reindex
           Reference.do_search('Publisher').should == [matching_reference]
         end
@@ -232,8 +232,8 @@ describe Reference do
 
       describe 'searching citation (for Unknown references)' do
         it 'should find something in citation' do
-          matching_reference = reference_factory(:author => 'Hölldobler', :citation => 'Citation')
-          unmatching_reference = reference_factory(:author => 'Hölldobler')
+          matching_reference = reference_factory(:author_name => 'Hölldobler', :citation => 'Citation')
+          unmatching_reference = reference_factory(:author_name => 'Hölldobler')
           Reference.reindex
           Reference.do_search('Citation').should == [matching_reference]
         end
@@ -241,11 +241,11 @@ describe Reference do
 
       describe 'searching by year' do
         before do
-          reference_factory(:author => 'Bolton', :citation_year => '1994')
-          reference_factory(:author => 'Bolton', :citation_year => '1995')
-          reference_factory(:author => 'Bolton', :citation_year => '1996')
-          reference_factory(:author => 'Bolton', :citation_year => '1997')
-          reference_factory(:author => 'Bolton', :citation_year => '1998')
+          reference_factory(:author_name => 'Bolton', :citation_year => '1994')
+          reference_factory(:author_name => 'Bolton', :citation_year => '1995')
+          reference_factory(:author_name => 'Bolton', :citation_year => '1996')
+          reference_factory(:author_name => 'Bolton', :citation_year => '1997')
+          reference_factory(:author_name => 'Bolton', :citation_year => '1998')
           Reference.reindex
         end
 
@@ -258,25 +258,26 @@ describe Reference do
         end
 
         it "should find references in the year of the end range, even if they have extra characters" do
-          reference_factory(:author => 'Bolton', :citation_year => '2004.').index!
+          reference_factory(:author_name => 'Bolton', :citation_year => '2004.').index!
           Reference.do_search('2004').map(&:year).should =~ [2004]
         end
       end
 
       describe "sorting search results" do
-        it "should sort by author plus year plus letter" do
-          fisher1910b = reference_factory(:author => 'Fisher', :citation_year => '1910b')
-          wheeler1874 = reference_factory(:author => 'Wheeler', :citation_year => '1874')
-          fisher1910a = reference_factory(:author => 'Fisher', :citation_year => '1910a')
+        it "should sort by author_name plus year plus letter" do
+          fisher1910b = reference_factory(:author_name => 'Fisher', :citation_year => '1910b')
+          wheeler1874 = reference_factory(:author_name => 'Wheeler', :citation_year => '1874')
+          fisher1910a = reference_factory(:author_name => 'Fisher', :citation_year => '1910a')
           Reference.reindex
           Reference.do_search.should == [fisher1910a, fisher1910b, wheeler1874]
         end
 
-        it "should sort by multiple authors using their order in each reference" do
-          a = ward_reference_factory(:authors => 'Abdalla, F. C.; Cruz-Landim, C. da.', :citation => 'Ants 2:2')
-          m = ward_reference_factory(:authors => 'Mueller, U. G.; Mikheyev, A. S.; Abbot, P.', :citation => 'Ants 3:3')
-          v = ward_reference_factory(:authors => "Vinson, S. B.; MacKay, W. P.; Rebeles M.; A.; Arredondo B.; H. C.; Rodríguez R.; A. D.; González, D. A.",
-                                    :citation => 'Ants 1:1')
+        it "should sort by multiple author_names using their order in each reference" do
+          a = ward_reference_factory(:authors => 'Abdalla, F. C.; Cruz-Landim, C. da.', 
+                                     :citation => 'Ants 2:2')
+          m = ward_reference_factory(:authors => 'Mueller, U. G.; Mikheyev, A. S.; Abbot, P.',
+                                     :citation => 'Ants 3:3')
+          v = ward_reference_factory( :authors => "Vinson, S. B.; MacKay, W. P.; Rebeles M.; A.; Arredondo B.; H. C.; Rodríguez R.; A. D.; González, D. A.", :citation => 'Ants 1:1')
           Reference.reindex
           Reference.do_search.should == [a, m, v]
         end
@@ -284,76 +285,76 @@ describe Reference do
     end
   end
 
-  it "has many authors" do
-    reference = Reference.create! :authors => @authors, :title => 'asdf', :citation_year => '2010d'
-    reference.authors.first.should == @authors.first
+  it "has many author_names" do
+    reference = Reference.create! :author_names => @author_names, :title => 'asdf', :citation_year => '2010d'
+    reference.author_names.first.should == @author_names.first
   end
 
-  describe "authors_string" do
+  describe "author_names_string" do
     describe "formatting" do
-      it "should consist of one author if that's all there is" do
-        @reference = Factory(:reference, :authors => [Factory(:author, :name => 'Fisher, B.L.')])
-        @reference.authors_string.should == 'Fisher, B.L.'
+      it "should consist of one author_name if that's all there is" do
+        @reference = Factory(:reference, :author_names => [Factory(:author_name, :name => 'Fisher, B.L.')])
+        @reference.author_names_string.should == 'Fisher, B.L.'
       end
 
-      it "should separate multiple authors with semicolons" do
-        authors = [Factory(:author, :name => 'Fisher, B.L.'), Factory(:author, :name => 'Ward, P.S.')]
-        @reference = Factory(:reference, :authors => authors)
-        @reference.authors_string.should == 'Fisher, B.L.; Ward, P.S.'
+      it "should separate multiple author_names with semicolons" do
+        author_names = [Factory(:author_name, :name => 'Fisher, B.L.'), Factory(:author_name, :name => 'Ward, P.S.')]
+        @reference = Factory(:reference, :author_names => author_names)
+        @reference.author_names_string.should == 'Fisher, B.L.; Ward, P.S.'
       end
 
-      it "should include the authors' suffix" do
-        authors = [Factory(:author, :name => 'Fisher, B.L.'), Factory(:author, :name => 'Ward, P.S.')]
-        @reference = Reference.create! :title => 'Ants', :citation_year => '2010', :authors => authors, :authors_suffix => ' (eds.)'
-        @reference.authors_string.should == 'Fisher, B.L.; Ward, P.S. (eds.)'
+      it "should include the author_names' suffix" do
+        author_names = [Factory(:author_name, :name => 'Fisher, B.L.'), Factory(:author_name, :name => 'Ward, P.S.')]
+        @reference = Reference.create! :title => 'Ants', :citation_year => '2010', :author_names => author_names, :author_names_suffix => ' (eds.)'
+        @reference.author_names_string.should == 'Fisher, B.L.; Ward, P.S. (eds.)'
       end
     end
 
     describe "updating, when things change" do
       before do
-        @reference = Factory(:reference, :authors => [Factory(:author, :name => 'Fisher, B.L.')])
+        @reference = Factory(:reference, :author_names => [Factory(:author_name, :name => 'Fisher, B.L.')])
       end
-      it "should update its authors_string when an author is added" do
-        @reference.authors << Factory(:author, :name => 'Ward')
-        @reference.authors_string.should == 'Fisher, B.L.; Ward'
+      it "should update its author_names_string when an author_name is added" do
+        @reference.author_names << Factory(:author_name, :name => 'Ward')
+        @reference.author_names_string.should == 'Fisher, B.L.; Ward'
       end
-      it "should update its authors_string when an author is removed" do
-        author = Factory(:author, :name => 'Ward')
-        @reference.authors << author
-        @reference.authors_string.should == 'Fisher, B.L.; Ward'
-        @reference.authors.delete author
-        @reference.authors_string.should == 'Fisher, B.L.'
+      it "should update its author_names_string when an author_name is removed" do
+        author_name = Factory(:author_name, :name => 'Ward')
+        @reference.author_names << author_name
+        @reference.author_names_string.should == 'Fisher, B.L.; Ward'
+        @reference.author_names.delete author_name
+        @reference.author_names_string.should == 'Fisher, B.L.'
       end
-      it "should update its authors_string when an author's name is changed" do
-        author = Factory(:author, :name => 'Ward')
-        @reference.authors = [author]
-        @reference.authors_string.should == 'Ward'
-        author.update_attribute :name, 'Fisher'
-        @reference.reload.authors_string.should == 'Fisher'
+      it "should update its author_names_string when an author_name's name is changed" do
+        author_name = Factory(:author_name, :name => 'Ward')
+        @reference.author_names = [author_name]
+        @reference.author_names_string.should == 'Ward'
+        author_name.update_attribute :name, 'Fisher'
+        @reference.reload.author_names_string.should == 'Fisher'
       end
-      it "should update its authors_string when the authors_suffix changes" do
-        @reference.authors_suffix = ' (eds.)'
+      it "should update its author_names_string when the author_names_suffix changes" do
+        @reference.author_names_suffix = ' (eds.)'
         @reference.save
-        @reference.reload.authors_string.should == 'Fisher, B.L. (eds.)'
+        @reference.reload.author_names_string.should == 'Fisher, B.L. (eds.)'
       end
     end
 
     describe "maintaining its order" do
-      it "should show the authors in the order in which they were added to the reference" do
-        reference = Factory(:reference, :authors => [Author.create!(:name => 'Ward')])
-        wilden = Author.create!(:name => 'Wilden')
-        fisher = Author.create!(:name => 'Fisher')
-        reference.authors << wilden
-        reference.authors << fisher
-        reference.authors_string.should == 'Ward; Wilden; Fisher'
+      it "should show the author_names in the order in which they were added to the reference" do
+        reference = Factory(:reference, :author_names => [AuthorName.create!(:name => 'Ward')])
+        wilden = AuthorName.create!(:name => 'Wilden')
+        fisher = AuthorName.create!(:name => 'Fisher')
+        reference.author_names << wilden
+        reference.author_names << fisher
+        reference.author_names_string.should == 'Ward; Wilden; Fisher'
       end
     end
   end
 
   describe "validations" do
     before do
-      author = Factory :author
-      @reference = Reference.new :authors => [author], :title => 'title', :citation_year => '1910'
+      author_name = Factory :author_name
+      @reference = Reference.new :author_names => [author_name], :title => 'title', :citation_year => '1910'
     end
 
     it "should be OK when all fields are present" do
@@ -397,7 +398,7 @@ describe Reference do
 
   describe "source_url" do
     before do
-      @author = Factory :author
+      @author_name = Factory :author_name
     end
     it "should make sure it has a protocol" do
       FakeWeb.register_uri(:any, "http://1.pdf", :body => "Hello World!")
@@ -410,14 +411,14 @@ describe Reference do
     end
 
     it "should make sure it's a valid URL" do
-      reference = Reference.new :authors => [@author], :title => 'title', :citation_year => '1910', :source_url => '*'
+      reference = Reference.new :author_names => [@author_name], :title => 'title', :citation_year => '1910', :source_url => '*'
       reference.should_not be_valid
       reference.errors.full_messages.should =~ ['Source url is not in a valid format']
     end
 
     it "should make sure it exists" do
       FakeWeb.register_uri(:any, "http://1.pdf", :body => "Hello World!")
-      reference = Reference.new :authors => [@author], :title => 'title', :citation_year => '1910', :source_url => '1.pdf'
+      reference = Reference.new :author_names => [@author_name], :title => 'title', :citation_year => '1910', :source_url => '1.pdf'
       reference.should be_valid
       FakeWeb.register_uri(:any, "http://1.pdf", :status => ["404", "Not Found"])
       reference.should_not be_valid
@@ -459,13 +460,13 @@ describe Reference do
   describe "polymorphic association to source of reference" do
     it "should work" do
       ward_reference = Factory(:ward_reference)
-      reference = Reference.create! :authors => @authors, :source_reference => ward_reference, :title => 'asdf', :citation_year => '2010'
+      reference = Reference.create! :author_names => @author_names, :source_reference => ward_reference, :title => 'asdf', :citation_year => '2010'
       reference.reload.source_reference.should == ward_reference
     end
   end
 
   it "should not truncate long fields" do
-    Reference.create! :authors => @authors, :editor_notes => 'e' * 1000, :citation => 'c' * 2000,
+    Reference.create! :author_names => @author_names, :editor_notes => 'e' * 1000, :citation => 'c' * 2000,
       :public_notes => 'n' * 1500, :taxonomic_notes => 't' * 1700, :title => 't' * 1900, :citation_year => '2010'
     reference = Reference.first
     reference.citation.length.should == 2000
@@ -484,17 +485,17 @@ describe Reference do
     end
   end
 
-  describe "ordering by author" do
-    it "should order by author" do
-      bolton = Factory :author, :name => 'Bolton'
-      ward = Factory :author, :name => 'Ward'
-      fisher = Factory :author, :name => 'Fisher'
-      bolton_reference = Factory :reference, :authors => [bolton, ward]
-      first_ward_reference = Factory :reference, :authors => [ward, bolton]
-      second_ward_reference = Factory :reference, :authors => [ward, fisher]
-      fisher_reference = Factory :reference, :authors => [fisher, bolton]
+  describe "ordering by author_name" do
+    it "should order by author_name" do
+      bolton = Factory :author_name, :name => 'Bolton'
+      ward = Factory :author_name, :name => 'Ward'
+      fisher = Factory :author_name, :name => 'Fisher'
+      bolton_reference = Factory :reference, :author_names => [bolton, ward]
+      first_ward_reference = Factory :reference, :author_names => [ward, bolton]
+      second_ward_reference = Factory :reference, :author_names => [ward, fisher]
+      fisher_reference = Factory :reference, :author_names => [fisher, bolton]
 
-      Reference.sorted_by_author.map(&:id).should == [bolton_reference.id, fisher_reference.id, first_ward_reference.id, second_ward_reference.id]
+      Reference.sorted_by_author_name.map(&:id).should == [bolton_reference.id, fisher_reference.id, first_ward_reference.id, second_ward_reference.id]
     end
   end
 

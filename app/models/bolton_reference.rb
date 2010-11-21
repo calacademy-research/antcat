@@ -27,11 +27,12 @@ class BoltonReference < ActiveRecord::Base
 
     match = s.match /(\D+) ?(\d\w+)\.? ?(.+)[,.]/
 
-    authors = match[1].strip
+    author_names = match[1].strip
     year = match[2].strip
     title_and_citation = match[3].strip
 
-    reference = BoltonReference.create! :authors => authors, :year => year, :title_and_citation => title_and_citation, :date => date
+    reference = BoltonReference.create! :authors => author_names, :year => year,
+      :title_and_citation => title_and_citation, :date => date
   end
 
   def self.extract_date s

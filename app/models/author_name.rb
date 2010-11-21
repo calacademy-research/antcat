@@ -1,4 +1,4 @@
-class Author < ActiveRecord::Base
+class AuthorName < ActiveRecord::Base
   has_many :author_participations
   has_many :references, :through => :author_participations
   after_update :update_references
@@ -12,8 +12,8 @@ class Author < ActiveRecord::Base
   end
 
   def self.import data
-    data.inject([]) do |authors, author_name|
-      authors << find_or_create_by_name(author_name)
+    data.inject([]) do |author_names, author_name|
+      author_names << find_or_create_by_name(author_name)
     end
   end
 
@@ -23,12 +23,12 @@ class Author < ActiveRecord::Base
   end
 
   def update_references
-    references.each {|reference| reference.update_authors_string}
+    references.each {|reference| reference.update_author_names_string}
   end
 
-  def self.import_authors_string string
+  def self.import_author_names_string string
     author_data = AuthorParser.parse(string)
-    {:authors => import(author_data[:names]), :authors_suffix => author_data[:suffix]}
+    {:author_names => import(author_data[:names]), :author_names_suffix => author_data[:suffix]}
   end
 
   private

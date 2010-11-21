@@ -9,30 +9,30 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101118174317) do
+ActiveRecord::Schema.define(:version => 20101120220622) do
 
-  create_table "author_participations", :force => true do |t|
-    t.integer  "author_id"
-    t.integer  "reference_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "position"
-  end
-
-  add_index "author_participations", ["author_id"], :name => "author_participations_author_id_idx"
-  add_index "author_participations", ["reference_id", "position"], :name => "author_participations_reference_id_position_idx"
-  add_index "author_participations", ["reference_id", "position"], :name => "foo"
-  add_index "author_participations", ["reference_id"], :name => "author_participations_reference_id_idx"
-
-  create_table "authors", :force => true do |t|
+  create_table "author_names", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "verified"
   end
 
-  add_index "authors", ["created_at", "name"], :name => "author_created_at_name"
-  add_index "authors", ["name"], :name => "author_name_idx"
+  add_index "author_names", ["created_at", "name"], :name => "author_created_at_name"
+  add_index "author_names", ["name"], :name => "author_name_idx"
+
+  create_table "author_participations", :force => true do |t|
+    t.integer  "author_name_id"
+    t.integer  "reference_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "position"
+  end
+
+  add_index "author_participations", ["author_name_id"], :name => "author_participations_author_id_idx"
+  add_index "author_participations", ["reference_id", "position"], :name => "author_participations_reference_id_position_idx"
+  add_index "author_participations", ["reference_id", "position"], :name => "foo"
+  add_index "author_participations", ["reference_id"], :name => "author_participations_reference_id_idx"
 
   create_table "bolton_references", :force => true do |t|
     t.string   "authors"
@@ -91,7 +91,7 @@ ActiveRecord::Schema.define(:version => 20101118174317) do
     t.string   "pagination"
     t.integer  "source_reference_id"
     t.string   "source_reference_type"
-    t.text     "authors_string"
+    t.text     "author_names_string"
     t.text     "editor_notes"
     t.text     "public_notes"
     t.text     "taxonomic_notes"
@@ -100,10 +100,11 @@ ActiveRecord::Schema.define(:version => 20101118174317) do
     t.text     "citation"
     t.integer  "nested_reference_id"
     t.string   "pages_in"
-    t.string   "authors_suffix"
+    t.string   "author_names_suffix"
+    t.string   "hol_source_url_import_status"
   end
 
-  add_index "references", ["authors_string", "citation_year"], :name => "references_authors_string_citation_year_idx", :length => {"citation_year"=>nil, "authors_string"=>"100"}
+  add_index "references", ["author_names_string", "citation_year"], :name => "references_authors_string_citation_year_idx", :length => {"citation_year"=>nil, "author_names_string"=>"100"}
 
   create_table "users", :force => true do |t|
     t.string   "email",                              :default => "", :null => false

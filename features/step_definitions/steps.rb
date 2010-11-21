@@ -11,8 +11,9 @@ end
 Given /the following entry nests it/ do |table|
   data = table.hashes.first
   @nestee_reference = @reference
-  @reference = NestedReference.create! :authors => [Factory(:author, :name => data[:authors])], :citation_year => data[:year],
-                          :title => data[:title], :pages_in => data[:pages_in], :nested_reference => @nestee_reference
+  @reference = NestedReference.create! :author_names => [Factory(:author_name, :name => data[:authors])],
+    :citation_year => data[:year], :title => data[:title], :pages_in => data[:pages_in],
+    :nested_reference => @nestee_reference
   Reference.reindex
 end
 
@@ -126,8 +127,8 @@ Then /I should (not )?see a "PDF" link/ do |does_not|
   page.send(message, have_css("a", :text => 'PDF'))
 end
 
-When 'I press the "Save" button' do
-  click_button "Save"
+When /^I press the "([^"]+)" button/ do |button|
+  click_button button
   sleep 0.75
 end
 

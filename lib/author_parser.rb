@@ -14,7 +14,7 @@ module AuthorParser
   end
 
   def self.is_actually_the_title? name
-    name !~ /,/ && !Author.first(:conditions => ['name = ? AND verified = 1', name])
+    name !~ /,/ && !AuthorName.first(:conditions => ['name = ? AND verified = 1', name])
   end
 
   def self.get_name_parts string

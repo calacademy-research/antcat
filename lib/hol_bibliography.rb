@@ -8,7 +8,7 @@ class HolBibliography
 
   def match target_reference
     result = {}
-    author_name = target_reference.authors.first.last_name
+    author_name = target_reference.author_names.first.last_name
     references = references_for(author_name)
     unless references.present?
       result[:status] = NO_ENTRIES_FOR_AUTHOR

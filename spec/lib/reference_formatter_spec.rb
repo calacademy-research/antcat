@@ -3,66 +3,84 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe ReferenceFormatter do
   before do
     @journal = Factory :journal, :name => "Neue Denkschriften"
-    @author = Factory :author, :name => "Forel, A."
+    @author_name = Factory :author_name, :name => "Forel, A."
     @publisher = Factory :publisher
   end
 
   describe "formatting reference" do
     it "should format the reference" do
-      reference = Factory(:article_reference, :authors => [@author], :citation_year => "1874", :title => "Les fourmis de la Suisse",
+      reference = Factory(:article_reference, :author_names => [@author_name],
+                          :citation_year => "1874",
+                          :title => "Les fourmis de la Suisse",
                           :journal => @journal, :series_volume_issue => "26", :pagination => "1-452")
       ReferenceFormatter.format(reference).should == 'Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.'
     end
 
     it "should add a period after the title if none exists" do
-      reference = Factory(:article_reference, :authors => [@author], :citation_year => "1874", :title => "Les fourmis de la Suisse",
+      reference = Factory(:article_reference, :author_names => [@author_name],
+                          :citation_year => "1874",
+                          :title => "Les fourmis de la Suisse",
                           :journal => @journal, :series_volume_issue => "26", :pagination => "1-452")
       ReferenceFormatter.format(reference).should == 'Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.'
     end
 
-    it "should not add a period after the authors' suffix" do
-      reference = Factory(:article_reference, :authors => [@author], :citation_year => "1874", :title => "Les fourmis de la Suisse",
+    it "should not add a period after the author_names' suffix" do
+      reference = Factory(:article_reference, :author_names => [@author_name],
+                          :citation_year => "1874",
+                          :title => "Les fourmis de la Suisse",
                           :journal => @journal, :series_volume_issue => "26", :pagination => "1-452")
-      reference.update_attribute :authors_suffix, ' (ed.)'
+      reference.update_attribute :author_names_suffix, ' (ed.)'
       ReferenceFormatter.format(reference).should == 'Forel, A. (ed.) 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.'
     end
 
     it "should not add a period after the title if there's already one" do
-      reference = Factory(:article_reference, :authors => [@author], :citation_year => "1874", :title => "Les fourmis de la Suisse.",
+      reference = Factory(:article_reference, :author_names => [@author_name],
+                          :citation_year => "1874",
+                          :title => "Les fourmis de la Suisse.",
                           :journal => @journal, :series_volume_issue => "26", :pagination => "1-452")
       ReferenceFormatter.format(reference).should == 'Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.'
     end
 
     it "should add a period after the citation if none exists" do
-      reference = Factory(:article_reference, :authors => [@author], :citation_year => "1874", :title => "Les fourmis de la Suisse.",
+      reference = Factory(:article_reference, :author_names => [@author_name],
+                          :citation_year => "1874",
+                          :title => "Les fourmis de la Suisse.",
                           :journal => @journal, :series_volume_issue => "26", :pagination => "1-452")
       ReferenceFormatter.format(reference).should == 'Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.'
     end
 
     it "should not add a period after the citation if there's already one" do
-      reference = Factory(:article_reference, :authors => [@author], :citation_year => "1874", :title => "Les fourmis de la Suisse.",
+      reference = Factory(:article_reference, :author_names => [@author_name],
+                          :citation_year => "1874",
+                          :title => "Les fourmis de la Suisse.",
                           :journal => @journal, :series_volume_issue => "26", :pagination => "1-452.")
       ReferenceFormatter.format(reference).should == 'Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.'
     end
 
     it "should separate the publisher and the pagination with a comma" do
-      reference = Factory(:book_reference, :authors => [@author], :citation_year => "1874", :title => "Les fourmis de la Suisse.",
+      reference = Factory(:book_reference, :author_names => [@author_name],
+                          :citation_year => "1874",
+                          :title => "Les fourmis de la Suisse.",
                           :publisher => @publisher, :pagination => "22 pp.")
       ReferenceFormatter.format(reference).should == 'Forel, A. 1874. Les fourmis de la Suisse. New York: Wiley, 22 pp.'
     end
 
     it "should format an unknown reference" do
-      reference = Factory(:unknown_reference, :authors => [@author], :citation_year => "1874", :title => "Les fourmis de la Suisse.",
-                          :citation => 'New York')
+      reference = Factory(:unknown_reference, :author_names => [@author_name],
+                          :citation_year => "1874",
+                          :title => "Les fourmis de la Suisse.", :citation => 'New York')
       ReferenceFormatter.format(reference).should == 'Forel, A. 1874. Les fourmis de la Suisse. New York.'
     end
 
     it "should format a nested reference" do
-      reference = Factory :book_reference, :authors => [Factory :author, :name => 'Mayr, E.'], :citation_year => '2010',
-        :title => 'Ants I have known', :publisher => Factory(:publisher, :name => 'Wiley', :place => Factory(:place, :name => 'New York')),
+      reference = Factory :book_reference,
+        :author_names => [Factory :author_name, :name => 'Mayr, E.'],
+        :citation_year => '2010',
+        :title => 'Ants I have known',
+        :publisher => Factory(:publisher, :name => 'Wiley', :place => Factory(:place, :name => 'New York')),
         :pagination => '32 pp.'
       nested_reference = Factory :nested_reference, :nested_reference => reference,
-        :authors => [Factory :author, :name => 'Forel, A.'], :title => 'Les fourmis de la Suisse',
+        :author_names => [Factory :author_name, :name => 'Forel, A.'], :title => 'Les fourmis de la Suisse',
         :citation_year => '1874', :pages_in => 'Pp. 32-45 in'
       ReferenceFormatter.format(nested_reference).should ==
         'Forel, A. 1874. Les fourmis de la Suisse. Pp. 32-45 in Mayr, E. 2010. Ants I have known. New York: Wiley, 32 pp.'
@@ -70,7 +88,9 @@ describe ReferenceFormatter do
 
     it "should format a citation_string correctly if the publisher doesn't have a place" do
       publisher = Publisher.create! :name => "Wiley"
-      reference = Factory(:book_reference, :authors => [Factory :author, :name => 'Forel, A.'], :citation_year => "1874",
+      reference = Factory(:book_reference,
+                          :author_names => [Factory :author_name, :name => 'Forel, A.'],
+                          :citation_year => "1874",
                           :title => "Les fourmis de la Suisse.",
                           :publisher => publisher, :pagination => "22 pp.")
       ReferenceFormatter.format(reference).should == 'Forel, A. 1874. Les fourmis de la Suisse. Wiley, 22 pp.'
@@ -78,12 +98,12 @@ describe ReferenceFormatter do
 
     describe "unsafe characters" do
       before do
-        @authors = [Factory :author, :name => 'Ward, P. S.']
-        @reference = Factory :unknown_reference, :authors => @authors,
+        @author_names = [Factory :author_name, :name => 'Ward, P. S.']
+        @reference = Factory :unknown_reference, :author_names => @author_names,
           :citation_year => "1874", :title => "Les fourmis de la Suisse.", :citation => '32 pp.'
       end
-      it "should escape the authors" do
-        @reference.authors = [Factory(:author, :name => '<script>')]
+      it "should escape the author_names" do
+        @reference.author_names = [Factory(:author_name, :name => '<script>')]
         ReferenceFormatter.format(@reference).should == '&lt;script&gt; 1874. Les fourmis de la Suisse. 32 pp.'
       end
       it "should escape the citation year" do
@@ -104,24 +124,25 @@ describe ReferenceFormatter do
       end
 
       it "should escape the citation in an article reference" do
-        reference = Factory :article_reference, :authors => @authors, :journal => Factory(:journal, :name => '<script>'), :series_volume_issue => '<', :pagination => '>'
+        reference = Factory :article_reference, :author_names => @author_names,
+          :journal => Factory(:journal, :name => '<script>'), :series_volume_issue => '<', :pagination => '>'
         ReferenceFormatter.format(reference).should == 'Ward, P. S. 2010d. Ants are my life. &lt;script&gt; &lt;:&gt;.'
       end
 
       it "should escape the citation in a book reference" do
-        reference = Factory :book_reference, :authors => @authors, :publisher => Factory(:publisher, :name => '<', :place => Factory(:place, :name => '>')),
-          :pagination => '>'
+        reference = Factory :book_reference, :author_names => @author_names,
+          :publisher => Factory(:publisher, :name => '<', :place => Factory(:place, :name => '>')), :pagination => '>'
         ReferenceFormatter.format(reference).should == 'Ward, P. S. 2010d. Ants are my life. &gt;: &lt;, &gt;.'
       end
 
       it "should escape the citation in an unknown reference" do
-        reference = Factory :unknown_reference, :authors => @authors, :citation => '>'
+        reference = Factory :unknown_reference, :author_names => @author_names, :citation => '>'
         ReferenceFormatter.format(reference).should == 'Ward, P. S. 2010d. Ants are my life. &gt;.'
       end
 
       it "should escape the citation in a nested reference" do
-        nested_reference = Factory :unknown_reference, :authors => @authors
-        reference = Factory :nested_reference, :authors => @authors, :pages_in => '>', :nested_reference => nested_reference
+        nested_reference = Factory :unknown_reference, :author_names => @author_names
+        reference = Factory :nested_reference, :author_names => @author_names, :pages_in => '>', :nested_reference => nested_reference
         ReferenceFormatter.format(reference).should == 'Ward, P. S. 2010d. Ants are my life. &gt; Ward, P. S. 2010d. Ants are my life. New York.'
       end
 
@@ -147,7 +168,9 @@ describe ReferenceFormatter do
     end
 
     def make date
-      @reference = Factory(:article_reference, :authors => [@author], :citation_year => "1874", :title => "Les fourmis de la Suisse.",
+      @reference = Factory(:article_reference, :author_names => [@author_name],
+                           :citation_year => "1874",
+                           :title => "Les fourmis de la Suisse.",
                            :journal => @journal, :series_volume_issue => "26", :pagination => "1-452.", :date => date)
     end
 

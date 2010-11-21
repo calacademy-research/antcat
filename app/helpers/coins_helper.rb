@@ -24,7 +24,7 @@ class CoinsHelperBase
     @title << "rft.genre=#{genre}"
     add_contents
     @title << "rft.date=#{@reference.year}"
-    @title.concat authors
+    @title.concat author_names
   end
 
   private
@@ -36,15 +36,15 @@ class CoinsHelperBase
     CGI::escape(string.gsub(/[|*]/, ''))
   end
 
-  def authors
-    @reference.authors.inject([]) do |authors, author|
+  def author_names
+    @reference.author_names.inject([]) do |author_names, author|
       first_name_and_initials = author.first_name_and_initials
       last_name = author.last_name
       if first_name_and_initials && last_name
-        authors << "rft.aulast=#{treat last_name}"
-        authors << "rft.aufirst=#{treat first_name_and_initials}"
+        author_names << "rft.aulast=#{treat last_name}"
+        author_names << "rft.aufirst=#{treat first_name_and_initials}"
       else
-        authors << "rft.au=#{treat last_name}"
+        author_names << "rft.au=#{treat last_name}"
       end
     end
   end

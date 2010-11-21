@@ -5,7 +5,7 @@ describe ArticleReference do
     it "should create the reference and set its data" do
       ward_reference = Factory(:ward_reference)
       reference = ArticleReference.import(
-        {:authors => [Factory(:author)], :title => 'awdf',
+        {:author_names => [Factory(:author_name)], :title => 'awdf',
           :source_reference_id => ward_reference.id, :source_reference_type => 'WardReference', :citation_year => '2010'},
         {:series_volume_issue => '12', :pagination => '32-33', :journal => 'Ecology Letters'})
       reference.series_volume_issue.should == '12'
@@ -54,9 +54,9 @@ describe ArticleReference do
 
   describe "validation" do
     before do
-      author = Factory :author
+      author_name = Factory :author_name
       journal = Factory :journal
-      @reference = ArticleReference.new :authors => [author], :title => 'Title', :citation_year => '2010a',
+      @reference = ArticleReference.new :author_names => [author_name], :title => 'Title', :citation_year => '2010a',
         :journal => journal, :series_volume_issue => '1', :pagination => '2'
     end
 

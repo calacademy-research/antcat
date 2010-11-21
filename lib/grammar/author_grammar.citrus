@@ -1,7 +1,7 @@
 grammar AuthorGrammar
   include CommonGrammar
 
-  rule authors
+  rule author_names
     (author rest_of_authors space) {
       {:names => find('author'), :suffix => find('suffix').first}
     }

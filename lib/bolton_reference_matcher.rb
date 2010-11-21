@@ -36,7 +36,7 @@ class BoltonReferenceMatcher
     if @found_ward
       ward = @found_ward[:reference]
       @suspect ||= ward.numeric_year != @bolton.year.to_i
-      @suspect ||= normalize(ward.authors) != normalize(@bolton.authors)
+      @suspect ||= normalize(ward.author_names) != normalize(@bolton.authors)
     else
       @unmatched_count += 1
     end
@@ -88,7 +88,7 @@ class BoltonReferenceMatcher
 
   def match_author_year_and_digits
     @wards.find do |ward|
-      next unless ward[:reference].authors == @bolton.authors
+      next unless ward[:reference].author_names == @bolton.authors
       next unless ward[:reference].numeric_year == @bolton.year.to_i
       bolton_digits = @title_and_citation.gsub(/\D/, '')
       ward_digits = ward[:title_and_citation].gsub(/\D/, '')
@@ -109,7 +109,7 @@ class BoltonReferenceMatcher
         :title_and_citation => s,
         :pairs => make_pairs(s)
       }
-      key = reference.authors.downcase[0, 2]
+      key = reference.author_names.downcase[0, 2]
       index[key] ||= []
       index[key] << entry
       index

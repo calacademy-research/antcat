@@ -17,8 +17,8 @@ describe HolBibliography do
       @hol.match @reference
     end
     it "should get a different author's contents" do
-      bolton_reference = Factory :reference, :authors => [Factory(:author, :name => 'Bolton')]
-      fisher_reference = Factory :reference, :authors => [Factory(:author, :name => 'Fisher')]
+      bolton_reference = Factory :reference, :author_names => [Factory(:author_name, :name => 'Bolton')]
+      fisher_reference = Factory :reference, :author_names => [Factory(:author_name, :name => 'Fisher')]
       @hol.should_receive(:read_references).with('Bolton').once().and_return []
       @hol.should_receive(:read_references).with('Fisher').once().and_return []
       @hol.match bolton_reference

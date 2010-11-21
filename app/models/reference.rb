@@ -2,15 +2,15 @@ class Reference < ActiveRecord::Base
   versioned
 
   has_many :author_participations, :order => :position
-  has_many :authors, :through => :author_participations, :order => :position,
-           :after_add => :update_authors_string, :after_remove => :update_authors_string
+  has_many :author_names, :through => :author_participations, :order => :position,
+           :after_add => :update_author_names_string, :after_remove => :update_author_names_string
   belongs_to :journal
   belongs_to :publisher
   belongs_to :source_reference, :polymorphic => true
 
   searchable do
     text :title
-    text :authors_string
+    text :author_names_string
     text :journal_name do
       journal.name if journal
     end
@@ -22,26 +22,26 @@ class Reference < ActiveRecord::Base
     text :public_notes
     text :editor_notes
     text :taxonomic_notes
-    string :authors_string
+    string :author_names_string
     string :citation_year
     integer :year
   end
 
   before_validation :set_year, :strip_newlines, :set_source_url
-  before_save :set_authors_string
+  before_save :set_author_names_string
 
   validates_presence_of :year, :title
   validates_http_url :source_url, :malformed_url => 'is not in a valid format', :message => 'was not found',
                      :valid_responses => [Net::HTTPSuccess, Net::HTTPRedirection]
 
-  named_scope :sorted_by_author, 
+  named_scope :sorted_by_author_name, 
     :select => '`references`.*',
-    :joins => 'JOIN author_participations ON reference_id = `references`.id JOIN authors ON author_id = authors.id',
+    :joins => 'JOIN author_participations ON reference_id = `references`.id JOIN author_names ON author_name_id = author_names.id',
     :conditions => 'author_participations.position = 1',
     :order => 'name ASC'
 
   def self.do_search string = nil, page = nil
-    return all(:order => 'authors_string, citation_year').paginate(:page => page) unless string.present?
+    return all(:order => 'author_names_string, citation_year').paginate(:page => page) unless string.present?
     string = string.dup
 
     search {
@@ -54,7 +54,7 @@ class Reference < ActiveRecord::Base
         end
       end
       keywords string
-      order_by :authors_string
+      order_by :author_names_string
       order_by :citation_year
       paginate :page => page
     }.results
@@ -80,8 +80,8 @@ class Reference < ActiveRecord::Base
     return reference if reference = find_duplicate(data)
 
     create_data = {
-      :authors => Author.import(data[:authors]),
-      :authors_suffix => data[:authors_suffix],
+      :author_names => AuthorName.import(data[:author_names]),
+      :author_names_suffix => data[:author_names_suffix],
       :citation_year => data[:citation_year],
       :title => data[:title],
       :cite_code => data[:cite_code],
@@ -108,7 +108,7 @@ class Reference < ActiveRecord::Base
   def self.find_duplicate data
     possible_duplicates = Reference.all(:conditions => ['title = ? and year = ?', data[:title], get_year(data[:citation_year])])
     possible_duplicates.find do |possible_duplicate|
-      data[:authors] == possible_duplicate.authors.map(&:name)
+      data[:author_names] == possible_duplicate.author_names.map(&:name)
     end 
   end
 
@@ -118,18 +118,18 @@ class Reference < ActiveRecord::Base
     nester.nil?
   end
 
-  def make_authors_string
-    string = authors.map(&:name).join('; ')
-    string << authors_suffix if authors_suffix.present?
+  def make_author_names_string
+    string = author_names.map(&:name).join('; ')
+    string << author_names_suffix if author_names_suffix.present?
     string
   end
 
-  def set_authors_string _ = nil
-    self.authors_string = make_authors_string
+  def set_author_names_string _ = nil
+    self.author_names_string = make_author_names_string
   end
 
-  def update_authors_string _ = nil
-    update_attribute :authors_string, make_authors_string
+  def update_author_names_string _ = nil
+    update_attribute :author_names_string, make_author_names_string
   end
 
   def set_year
@@ -158,7 +158,7 @@ class Reference < ActiveRecord::Base
 
   def to_s
     s = ''
-    s << "#{authors_string} "
+    s << "#{author_names_string} "
     s << "#{citation_year}. "
     s << "#{id}."
     s

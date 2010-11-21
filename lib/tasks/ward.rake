@@ -12,7 +12,7 @@ desc "Export Ward's references into References"
 task :export_ward => :environment do
   Place.delete_all :verified => nil
   Reference.delete_all
-  Author.delete_all :verified => nil
+  AuthorName.delete_all :verified => nil
   AuthorParticipation.delete_all
   Publisher.delete_all
   Journal.delete_all

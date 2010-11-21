@@ -13,7 +13,7 @@ Feature: Add reference
     When I go to the main page
       And I follow "Add reference"
       Then I should see a new edit form
-    When I fill in "reference_authors_string" with "Ward, B.L.;Bolton, B."
+    When I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
       And I fill in "reference_title" with "A reference title"
       And I fill in "journal_name" with "Ants"
       And I fill in "reference_series_volume_issue" with "2"
@@ -42,7 +42,7 @@ Feature: Add reference
       Then "Add reference" should not be visible
     When I follow "add"
       Then I should see a new edit form
-    When in the new edit form I fill in "reference_authors_string" with "Ward, B.L.;Bolton, B."
+    When in the new edit form I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
       And in the new edit form I fill in "reference_title" with "Between Pacific Tides"
       And in the new edit form I fill in "journal_name" with "Ants"
       And in the new edit form I fill in "reference_series_volume_issue" with "2"
@@ -76,7 +76,7 @@ Feature: Add reference
     When I go to the main page
       And I follow "Add reference"
       Then I should see a new edit form
-    When I fill in "reference_authors_string" with "Ward, B.L.;Bolton, B."
+    When I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
       And I fill in "reference_title" with "A reference title"
       And I fill in "reference_citation_year" with "1981"
       And I follow "Book"
@@ -92,7 +92,7 @@ Feature: Add reference
     When I go to the main page
       And I follow "Add reference"
       Then I should see a new edit form
-    When I fill in "reference_authors_string" with "Ward, B.L.;Bolton, B."
+    When I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
       And I fill in "reference_title" with "A reference title"
       And I fill in "reference_citation_year" with "1981"
       And I fill in "journal_name" with "Ant Journal"
@@ -110,7 +110,7 @@ Feature: Add reference
       |Ward, P.S.|Annals of Ants|2010|Psyche 1:1|
     When I go to the main page
       And I follow "add"
-    When in the new edit form I fill in "reference_authors_string" with "Ward, B.L.;Bolton, B."
+    When in the new edit form I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
       And in the new edit form I fill in "reference_title" with "A reference title"
       And in the new edit form I fill in "reference_citation_year" with "1981"
       And in the new edit form I follow "Nested"
@@ -124,7 +124,7 @@ Feature: Add reference
     When I go to the main page
       And I follow "Add reference"
       Then I should see a new edit form
-    When I fill in "reference_authors_string" with "Ward, B.L.;Bolton, B."
+    When I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
       And I fill in "reference_title" with "A reference title"
       And I fill in "reference_citation_year" with "1981"
       And I follow "Other"
@@ -138,7 +138,7 @@ Feature: Add reference
     Given I am logged in
     When I go to the main page
       And I follow "Add reference"
-      And I fill in "reference_authors_string" with "Fisher, B.L."
+      And I fill in "reference_author_names_string" with "Fisher, B.L."
       And I press the "Save" button
     Then I should see the edit form
       And I should see "Year can't be blank"
@@ -152,7 +152,7 @@ Feature: Add reference
     When I go to the main page
       And I follow "Add reference"
       And I follow "Book"
-      And I fill in "reference_authors_string" with "Fisher, B.L."
+      And I fill in "reference_author_names_string" with "Fisher, B.L."
       And I press the "Save" button
     Then I should see the edit form
       And I should see "Year can't be blank"
@@ -165,7 +165,7 @@ Feature: Add reference
     When I go to the main page
       And I follow "Add reference"
       And I follow "Nested"
-      And I fill in "reference_authors_string" with "Fisher, B.L."
+      And I fill in "reference_author_names_string" with "Fisher, B.L."
       And I press the "Save" button
     Then I should see the edit form
       And I should see "Year can't be blank"
@@ -178,7 +178,7 @@ Feature: Add reference
     When I go to the main page
       And I follow "Add reference"
       Then I should see a new edit form
-    When I fill in "reference_authors_string" with "Ward, B.L.;Bolton, B. (eds.)"
+    When I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B. (eds.)"
       And I fill in "reference_title" with "A reference title"
       And I fill in "reference_citation_year" with "1981"
       And I fill in "journal_name" with "Ant Journal"
@@ -193,7 +193,7 @@ Feature: Add reference
     Given I am logged in
     When I go to the main page
       And I follow "Add reference"
-    When in the new edit form I fill in "reference_authors_string" with "Ward, B.L.;Bolton, B."
+    When in the new edit form I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
       And in the new edit form I fill in "reference_title" with "A reference title"
       And in the new edit form I fill in "reference_citation_year" with "1981"
       And in the new edit form I follow "Nested"

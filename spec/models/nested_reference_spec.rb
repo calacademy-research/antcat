@@ -5,13 +5,13 @@ describe NestedReference do
     it "should create the reference and set its data" do
       ward_reference = Factory :ward_reference
       reference = NestedReference.import(
-        { :authors => [Factory :author],
+        { :author_names => [Factory :author_name],
           :citation_year => '2010a',
           :title => 'awdf',
           :source_reference_id => ward_reference.id,
           :source_reference_type => 'WardReference',
         },
-        { :authors => ['Nested author'],
+        { :author_names => ['Nested author'],
           :title => 'Nested title',
           :pages_in => 'In pp. 32-33:',
           :book => {
@@ -21,7 +21,7 @@ describe NestedReference do
         }
       )
       reference.pages_in.should == 'In pp. 32-33:'
-      reference.nested_reference.authors.first.name.should == 'Nested author'
+      reference.nested_reference.author_names.first.name.should == 'Nested author'
       reference.nested_reference.title.should  == 'Nested title'
       reference.nested_reference.publisher.name  == 'Wiley'
       reference.nested_reference.pagination.should == '32 pp.'
@@ -31,9 +31,9 @@ describe NestedReference do
 
     it "should set the nested citation year to the outer citation year (minus the letter)" do
       reference = NestedReference.import(
-        { :authors => [Factory :author], :citation_year => '2010a', :title => 'awdf',
+        { :author_names => [Factory :author_name], :citation_year => '2010a', :title => 'awdf',
           :source_reference_id => Factory(:ward_reference), :source_reference_type => 'WardReference',
-        }, {:authors => ['Nested author'], :title => 'Nested title', :pages_in => 'In pp. 32-33:',
+        }, {:author_names => ['Nested author'], :title => 'Nested title', :pages_in => 'In pp. 32-33:',
           :book => { :publisher => {:name => 'Wiley', :place => 'New York'}, :pagination => '32 pp.', } })
 
       reference.nested_reference.citation_year.should == '2010'
@@ -41,9 +41,9 @@ describe NestedReference do
 
     it "should handle having no authors in the inner reference" do
       lambda {NestedReference.import(
-        { :authors => [Factory :author], :citation_year => '2010a', :title => 'awdf',
+        { :author_names => [Factory :author_name], :citation_year => '2010a', :title => 'awdf',
           :source_reference_id => Factory(:ward_reference), :source_reference_type => 'WardReference',
-        }, {:authors => [], :title => 'Nested title', :pages_in => 'In pp. 32-33:',
+        }, {:author_names => [], :title => 'Nested title', :pages_in => 'In pp. 32-33:',
           :book => { :publisher => {:name => 'Wiley', :place => 'New York'}, :pagination => '32 pp.', } })}.
           should_not raise_error
     end
@@ -51,7 +51,7 @@ describe NestedReference do
 
   describe "validation" do
     before do
-      @reference = NestedReference.new :title => 'asdf', :authors => [Factory(:author)], :citation_year => '2010',
+      @reference = NestedReference.new :title => 'asdf', :author_names => [Factory(:author_name)], :citation_year => '2010',
         :nested_reference => Factory(:reference), :pages_in => 'Pp 2 in:'
     end
     it "should be valid with the attributes given above" do
@@ -77,7 +77,7 @@ describe NestedReference do
 
   describe "deletion" do
     it "should not be possible to delete a nestee" do
-      reference = NestedReference.new :title => 'asdf', :authors => [Factory(:author)], :citation_year => '2010',
+      reference = NestedReference.create! :title => 'asdf', :author_names => [Factory(:author_name)], :citation_year => '2010',
         :nested_reference => Factory(:reference), :pages_in => 'Pp 2 in:'
       reference.nested_reference.destroy.should be_false
     end

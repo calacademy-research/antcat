@@ -12,7 +12,7 @@ class ReferenceParser
 
   def self.parse_authors string
     authors_data = AuthorParser.parse(string)
-    {:authors => authors_data[:names], :authors_suffix => authors_data[:suffix]}
+    {:author_names => authors_data[:names], :author_names_suffix => authors_data[:suffix]}
   end
 
   def self.parse_year string

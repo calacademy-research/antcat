@@ -167,8 +167,10 @@ describe CoinsHelper do
 
   it "should just provide very basic stuff for nested references for now" do
     reference = Factory :reference
-    nested_reference = Factory :nested_reference, :pages_in => 'In:', :nested_reference => reference,
-      :authors => [Factory :author, :name => 'Bolton, B.'], :title => 'Title', :citation_year => '2010'
+    nested_reference = Factory :nested_reference, :pages_in => 'In:',
+      :nested_reference => reference,
+      :author_names => [Factory :author_name, :name => 'Bolton, B.'],
+      :title => 'Title', :citation_year => '2010'
     coins = helper.coins nested_reference
     check_parameters coins, [
       "ctx_ver=Z39.88-2004",
