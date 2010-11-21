@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101120220622) do
+ActiveRecord::Schema.define(:version => 20101121010631) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -20,19 +20,6 @@ ActiveRecord::Schema.define(:version => 20101120220622) do
 
   add_index "author_names", ["created_at", "name"], :name => "author_created_at_name"
   add_index "author_names", ["name"], :name => "author_name_idx"
-
-  create_table "author_participations", :force => true do |t|
-    t.integer  "author_name_id"
-    t.integer  "reference_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "position"
-  end
-
-  add_index "author_participations", ["author_name_id"], :name => "author_participations_author_id_idx"
-  add_index "author_participations", ["reference_id", "position"], :name => "author_participations_reference_id_position_idx"
-  add_index "author_participations", ["reference_id", "position"], :name => "foo"
-  add_index "author_participations", ["reference_id"], :name => "author_participations_reference_id_idx"
 
   create_table "bolton_references", :force => true do |t|
     t.string   "authors"
@@ -75,6 +62,19 @@ ActiveRecord::Schema.define(:version => 20101120220622) do
   end
 
   add_index "publishers", ["name"], :name => "publishers_name_idx"
+
+  create_table "reference_author_names", :force => true do |t|
+    t.integer  "author_name_id"
+    t.integer  "reference_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "position"
+  end
+
+  add_index "reference_author_names", ["author_name_id"], :name => "author_participations_author_id_idx"
+  add_index "reference_author_names", ["reference_id", "position"], :name => "author_participations_reference_id_position_idx"
+  add_index "reference_author_names", ["reference_id", "position"], :name => "foo"
+  add_index "reference_author_names", ["reference_id"], :name => "author_participations_reference_id_idx"
 
   create_table "references", :force => true do |t|
     t.integer  "year"

@@ -24,6 +24,6 @@ Feature: Delete reference
       Then I should see "Fisher, B."
     Given I will confirm on the next step
     When I click the reference
-      And I press "Delete"
+      And I press the "Delete" button
     Then "Fisher, B." should not be visible
 

@@ -72,9 +72,9 @@ describe AuthorName do
         AuthorName.create! :name => name
       end
       reference = Factory :reference, :author_names => [AuthorName.find_by_name('Most Recent')]
-      AuthorParticipation.create! :created_at => Time.now - 5, :author_name => AuthorName.find_by_name('Recent'),
+      ReferenceAuthorName.create! :created_at => Time.now - 5, :author_name => AuthorName.find_by_name('Recent'),
                                   :reference => reference
-      AuthorParticipation.create! :created_at => Time.now - 10, :author_name => AuthorName.find_by_name('Old'),
+      ReferenceAuthorName.create! :created_at => Time.now - 10, :author_name => AuthorName.find_by_name('Old'),
                                   :reference => reference
       AuthorName.search.should == ['Most Recent', 'Recent', 'Old', 'Never Used']
     end

@@ -72,7 +72,7 @@ Factory.define :journal do |journal|
   journal.sequence(:name) {|n| "Ants#{n}"}
 end
 
-Factory.define :author_participation do |row|
+Factory.define :reference_author_names do |row|
   row.association :author_name
   row.association :reference
 end

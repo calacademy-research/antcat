@@ -1,6 +1,6 @@
 class AuthorName < ActiveRecord::Base
-  has_many :author_participations
-  has_many :references, :through => :author_participations
+  has_many :reference_author_names
+  has_many :references, :through => :reference_author_names
   after_update :update_references
 
   def last_name
@@ -18,8 +18,8 @@ class AuthorName < ActiveRecord::Base
   end
 
   def self.search term = ''
-    all(:conditions => ["name LIKE ?", "%#{term}%"], :include => :author_participations,
-        :order => 'author_participations.created_at DESC, name').map(&:name)
+    all(:conditions => ["name LIKE ?", "%#{term}%"], :include => :reference_author_names,
+        :order => 'reference_author_names.created_at DESC, name').map(&:name)
   end
 
   def update_references

@@ -1,8 +1,8 @@
 class Reference < ActiveRecord::Base
   versioned
 
-  has_many :author_participations, :order => :position
-  has_many :author_names, :through => :author_participations, :order => :position,
+  has_many :reference_author_names, :order => :position
+  has_many :author_names, :through => :reference_author_names, :order => :position,
            :after_add => :update_author_names_string, :after_remove => :update_author_names_string
   belongs_to :journal
   belongs_to :publisher
@@ -36,8 +36,8 @@ class Reference < ActiveRecord::Base
 
   named_scope :sorted_by_author_name, 
     :select => '`references`.*',
-    :joins => 'JOIN author_participations ON reference_id = `references`.id JOIN author_names ON author_name_id = author_names.id',
-    :conditions => 'author_participations.position = 1',
+    :joins => 'JOIN reference_author_names ON reference_id = `references`.id JOIN author_names ON author_name_id = author_names.id',
+    :conditions => 'reference_author_names.position = 1',
     :order => 'name ASC'
 
   def self.do_search string = nil, page = nil

@@ -13,7 +13,7 @@ task :export_ward => :environment do
   Place.delete_all :verified => nil
   Reference.delete_all
   AuthorName.delete_all :verified => nil
-  AuthorParticipation.delete_all
+  ReferenceAuthorName.delete_all
   Publisher.delete_all
   Journal.delete_all
   WardReference.export true
