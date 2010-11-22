@@ -40,6 +40,10 @@ class Reference < ActiveRecord::Base
     :conditions => 'reference_author_names.position = 1',
     :order => 'name ASC'
 
+  def authors reload = false
+    author_names(reload).map(&:author)
+  end
+
   def self.do_search string = nil, page = nil
     return all(:order => 'author_names_string, citation_year').paginate(:page => page) unless string.present?
     string = string.dup

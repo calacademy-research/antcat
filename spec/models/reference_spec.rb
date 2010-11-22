@@ -302,6 +302,11 @@ describe Reference do
     reference.author_names.first.should == @author_names.first
   end
 
+  it "has many authors" do
+    reference = Reference.create! :author_names => @author_names, :title => 'asdf', :citation_year => '2010d'
+    reference.authors.first.should == @author_names.first.author
+  end
+
   describe "author_names_string" do
     describe "formatting" do
       it "should consist of one author_name if that's all there is" do
