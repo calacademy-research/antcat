@@ -44,6 +44,10 @@ class Reference < ActiveRecord::Base
     return all(:order => 'author_names_string, citation_year').paginate(:page => page) unless string.present?
     string = string.dup
 
+    if match = string.match(/\d{5,}/)
+      return all(:conditions => ['id = ?', match[0]]).paginate
+    end
+
     search {
       start_year, end_year = extract_years string
       if start_year

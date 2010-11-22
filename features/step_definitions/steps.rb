@@ -139,3 +139,8 @@ end
 When /I fill in "reference_nested_reference_id" with its own ID/ do
   When "I fill in \"reference_nested_reference_id\" with \"#{@reference.id}\""
 end
+
+Given "there is a reference with ID 50000 for Dolerichoderinae" do
+  Factory :unknown_reference, :id => 50000, :title => 'Dolerichoderinae'
+end
+

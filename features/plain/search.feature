@@ -85,3 +85,12 @@ Feature: Searching references
       And I should not see "Bolton, B. 1810"
       And I should not see "Bolton, B. 1895"
 
+  Scenario: Searching by ID
+    Given there is a reference with ID 50000 for Dolerichoderinae
+    When I go to the main page
+      And I fill in "q" with "50000"
+      And I press "Search"
+    Then I should see "Dolerichoderinae"
+    When I fill in "q" with "10000"
+      And I press "Search"
+    Then I should not see "Dolerichoderinae"

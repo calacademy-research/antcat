@@ -159,130 +159,142 @@ describe Reference do
       }.results.should == [reference]
     end
 
-    describe "search" do
-      it "should not strip the year from the string" do
-        string = '1990'
-        Reference.do_search string
-        string.should == '1990'
-      end
+    it "should not strip the year from the string" do
+      string = '1990'
+      Reference.do_search string
+      string.should == '1990'
+    end
 
-      describe 'searching by author_name' do
-        it 'should at least find Bert!' do
-          reference = reference_factory(:author_name => 'Hölldobler')
-          Reference.reindex
-          Reference.do_search('holldobler').should == [reference]
-        end
-      end
-
-      describe 'searching by cite code' do
-        it "should find a cite code that's doesn't look like a current year" do
-          matching_reference = reference_factory(:author_name => 'Hölldobler', :cite_code => 'abcdef')
-          unmatching_reference = reference_factory(:author_name => 'Hölldobler', :cite_code => 'fedcba')
-          Reference.reindex
-          Reference.do_search('abcdef').should == [matching_reference]
-        end
-
-        it "should find a cite code that looks like a year, but not a current year" do
-          matching_reference = reference_factory(:author_name => 'Hölldobler', :cite_code => '1600')
-          Reference.reindex
-          Reference.do_search('1600').should == [matching_reference]
-        end
-      end
-
-      describe 'searching notes' do
-        it 'should find something in public notes' do
-          matching_reference = reference_factory(:author_name => 'Hölldobler', :public_notes => 'abcdef')
-          unmatching_reference = reference_factory(:author_name => 'Hölldobler', :public_notes => 'fedcba')
-          Reference.reindex
-          Reference.do_search('abcdef').should == [matching_reference]
-        end
-        it 'should find something in editor notes' do
-          matching_reference = reference_factory(:author_name => 'Hölldobler', :editor_notes => 'abcdef')
-          unmatching_reference = reference_factory(:author_name => 'Hölldobler', :editor_notes => 'fedcba')
-          Reference.reindex
-          Reference.do_search('abcdef').should == [matching_reference]
-        end
-        it 'should find something in taxonomic notes' do
-          matching_reference = reference_factory(:author_name => 'Hölldobler', :taxonomic_notes => 'abcdef')
-          unmatching_reference = reference_factory(:author_name => 'Hölldobler', :taxonomic_notes => 'fedcba')
-          Reference.reindex
-          Reference.do_search('abcdef').should == [matching_reference]
-        end
-      end
-
-      describe 'searching journal name' do
-        it 'should find something in journal name' do
-          journal = Factory :journal, :name => 'Journal'
-          matching_reference = reference_factory(:author_name => 'Hölldobler', :journal => journal)
-          unmatching_reference = reference_factory(:author_name => 'Hölldobler')
-          Reference.reindex
-          Reference.do_search('journal').should == [matching_reference]
-        end
-      end
-
-      describe 'searching publisher name' do
-        it 'should find something in publisher name' do
-          publisher = Factory :publisher, :name => 'Publisher'
-          matching_reference = reference_factory(:author_name => 'Hölldobler', :publisher => publisher)
-          unmatching_reference = reference_factory(:author_name => 'Hölldobler')
-          Reference.reindex
-          Reference.do_search('Publisher').should == [matching_reference]
-        end
-      end
-
-      describe 'searching citation (for Unknown references)' do
-        it 'should find something in citation' do
-          matching_reference = reference_factory(:author_name => 'Hölldobler', :citation => 'Citation')
-          unmatching_reference = reference_factory(:author_name => 'Hölldobler')
-          Reference.reindex
-          Reference.do_search('Citation').should == [matching_reference]
-        end
-      end
-
-      describe 'searching by year' do
-        before do
-          reference_factory(:author_name => 'Bolton', :citation_year => '1994')
-          reference_factory(:author_name => 'Bolton', :citation_year => '1995')
-          reference_factory(:author_name => 'Bolton', :citation_year => '1996')
-          reference_factory(:author_name => 'Bolton', :citation_year => '1997')
-          reference_factory(:author_name => 'Bolton', :citation_year => '1998')
-          Reference.reindex
-        end
-
-        it "should return an empty array if nothing is found for year" do
-          Reference.do_search('1992-1993').should be_empty
-        end
-
-        it "should find entries in between the start year and the end year (inclusive)" do
-          Reference.do_search('1995-1996').map(&:year).should =~ [1995, 1996]
-        end
-
-        it "should find references in the year of the end range, even if they have extra characters" do
-          reference_factory(:author_name => 'Bolton', :citation_year => '2004.').index!
-          Reference.do_search('2004').map(&:year).should =~ [2004]
-        end
-      end
-
-      describe "sorting search results" do
-        it "should sort by author_name plus year plus letter" do
-          fisher1910b = reference_factory(:author_name => 'Fisher', :citation_year => '1910b')
-          wheeler1874 = reference_factory(:author_name => 'Wheeler', :citation_year => '1874')
-          fisher1910a = reference_factory(:author_name => 'Fisher', :citation_year => '1910a')
-          Reference.reindex
-          Reference.do_search.should == [fisher1910a, fisher1910b, wheeler1874]
-        end
-
-        it "should sort by multiple author_names using their order in each reference" do
-          a = ward_reference_factory(:authors => 'Abdalla, F. C.; Cruz-Landim, C. da.', 
-                                     :citation => 'Ants 2:2')
-          m = ward_reference_factory(:authors => 'Mueller, U. G.; Mikheyev, A. S.; Abbot, P.',
-                                     :citation => 'Ants 3:3')
-          v = ward_reference_factory( :authors => "Vinson, S. B.; MacKay, W. P.; Rebeles M.; A.; Arredondo B.; H. C.; Rodríguez R.; A. D.; González, D. A.", :citation => 'Ants 1:1')
-          Reference.reindex
-          Reference.do_search.should == [a, m, v]
-        end
+    describe 'searching by author_name' do
+      it 'should at least find Bert!' do
+        reference = reference_factory(:author_name => 'Hölldobler')
+        Reference.reindex
+        Reference.do_search('holldobler').should == [reference]
       end
     end
+
+    describe 'searching by cite code' do
+      it "should find a cite code that's doesn't look like a current year" do
+        matching_reference = reference_factory(:author_name => 'Hölldobler', :cite_code => 'abcdef')
+        unmatching_reference = reference_factory(:author_name => 'Hölldobler', :cite_code => 'fedcba')
+        Reference.reindex
+        Reference.do_search('abcdef').should == [matching_reference]
+      end
+
+      it "should find a cite code that looks like a year, but not a current year" do
+        matching_reference = reference_factory(:author_name => 'Hölldobler', :cite_code => '1600')
+        Reference.reindex
+        Reference.do_search('1600').should == [matching_reference]
+      end
+    end
+
+    describe 'searching notes' do
+      it 'should find something in public notes' do
+        matching_reference = reference_factory(:author_name => 'Hölldobler', :public_notes => 'abcdef')
+        unmatching_reference = reference_factory(:author_name => 'Hölldobler', :public_notes => 'fedcba')
+        Reference.reindex
+        Reference.do_search('abcdef').should == [matching_reference]
+      end
+      it 'should find something in editor notes' do
+        matching_reference = reference_factory(:author_name => 'Hölldobler', :editor_notes => 'abcdef')
+        unmatching_reference = reference_factory(:author_name => 'Hölldobler', :editor_notes => 'fedcba')
+        Reference.reindex
+        Reference.do_search('abcdef').should == [matching_reference]
+      end
+      it 'should find something in taxonomic notes' do
+        matching_reference = reference_factory(:author_name => 'Hölldobler', :taxonomic_notes => 'abcdef')
+        unmatching_reference = reference_factory(:author_name => 'Hölldobler', :taxonomic_notes => 'fedcba')
+        Reference.reindex
+        Reference.do_search('abcdef').should == [matching_reference]
+      end
+    end
+
+    describe 'searching journal name' do
+      it 'should find something in journal name' do
+        journal = Factory :journal, :name => 'Journal'
+        matching_reference = reference_factory(:author_name => 'Hölldobler', :journal => journal)
+        unmatching_reference = reference_factory(:author_name => 'Hölldobler')
+        Reference.reindex
+        Reference.do_search('journal').should == [matching_reference]
+      end
+    end
+
+    describe 'searching publisher name' do
+      it 'should find something in publisher name' do
+        publisher = Factory :publisher, :name => 'Publisher'
+        matching_reference = reference_factory(:author_name => 'Hölldobler', :publisher => publisher)
+        unmatching_reference = reference_factory(:author_name => 'Hölldobler')
+        Reference.reindex
+        Reference.do_search('Publisher').should == [matching_reference]
+      end
+    end
+
+    describe 'searching citation (for Unknown references)' do
+      it 'should find something in citation' do
+        matching_reference = reference_factory(:author_name => 'Hölldobler', :citation => 'Citation')
+        unmatching_reference = reference_factory(:author_name => 'Hölldobler')
+        Reference.reindex
+        Reference.do_search('Citation').should == [matching_reference]
+      end
+    end
+
+    describe 'searching by year' do
+      before do
+        reference_factory(:author_name => 'Bolton', :citation_year => '1994')
+        reference_factory(:author_name => 'Bolton', :citation_year => '1995')
+        reference_factory(:author_name => 'Bolton', :citation_year => '1996')
+        reference_factory(:author_name => 'Bolton', :citation_year => '1997')
+        reference_factory(:author_name => 'Bolton', :citation_year => '1998')
+        Reference.reindex
+      end
+
+      it "should return an empty array if nothing is found for year" do
+        Reference.do_search('1992-1993').should be_empty
+      end
+
+      it "should find entries in between the start year and the end year (inclusive)" do
+        Reference.do_search('1995-1996').map(&:year).should =~ [1995, 1996]
+      end
+
+      it "should find references in the year of the end range, even if they have extra characters" do
+        reference_factory(:author_name => 'Bolton', :citation_year => '2004.').index!
+        Reference.do_search('2004').map(&:year).should =~ [2004]
+      end
+    end
+
+    describe "sorting search results" do
+      it "should sort by author_name plus year plus letter" do
+        fisher1910b = reference_factory(:author_name => 'Fisher', :citation_year => '1910b')
+        wheeler1874 = reference_factory(:author_name => 'Wheeler', :citation_year => '1874')
+        fisher1910a = reference_factory(:author_name => 'Fisher', :citation_year => '1910a')
+        Reference.reindex
+        Reference.do_search.should == [fisher1910a, fisher1910b, wheeler1874]
+      end
+
+      it "should sort by multiple author_names using their order in each reference" do
+        a = ward_reference_factory(:authors => 'Abdalla, F. C.; Cruz-Landim, C. da.', 
+                                    :citation => 'Ants 2:2')
+        m = ward_reference_factory(:authors => 'Mueller, U. G.; Mikheyev, A. S.; Abbot, P.',
+                                    :citation => 'Ants 3:3')
+        v = ward_reference_factory( :authors => "Vinson, S. B.; MacKay, W. P.; Rebeles M.; A.; Arredondo B.; H. C.; Rodríguez R.; A. D.; González, D. A.", :citation => 'Ants 1:1')
+        Reference.reindex
+        Reference.do_search.should == [a, m, v]
+      end
+    end
+
+    describe "searching by ID" do
+      it "should ignore everything else if an ID of sufficient length is provided" do
+        reference = Factory :reference, :id => 12345
+        Factory :reference
+        Reference.do_search(reference.id.to_s + ' 1972 Bolton').should == [reference]
+      end
+      it "should not freak out if it can't find the ID" do
+        reference = Factory :reference
+        Factory :reference
+        Reference.do_search('12345').should == []
+      end
+    end
+
   end
 
   it "has many author_names" do
