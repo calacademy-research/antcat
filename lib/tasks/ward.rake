@@ -24,3 +24,8 @@ desc "Fix author names with missing space after period"
 task :fix_author_names => :environment do
   AuthorName.fix_missing_spaces true
 end
+
+desc "Alias names differing only by hyphen"
+task :alias_hyphenated_names => :environment do
+  AuthorName.create_hyphenation_aliases true
+end

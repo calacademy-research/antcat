@@ -11,8 +11,12 @@ def ward_reference_factory attributes
   WardReference.new(attributes).export
 end
 
+Factory.define :author do |author|
+end
+
 Factory.define :author_name do |author_name|
   author_name.sequence(:name) {|n| "Fisher#{n}, B.L."}
+  author_name.association :author
 end
 
 Factory.define :publisher do |row|

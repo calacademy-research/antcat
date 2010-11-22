@@ -128,9 +128,30 @@ describe AuthorName do
       ward_with_spaces = AuthorName.create! :name => 'Ward, P. S.'
       ward_without_spaces = AuthorName.create! :name => 'Ward, P.S.'
       reference = Factory :reference, :author_names => [ward_without_spaces]
-      AuthorName.fix_missing_spaces true
+      AuthorName.fix_missing_spaces
       reference.author_names(true).should == [ward_with_spaces]
       AuthorName.count.should == 1
     end
   end
+
+  describe "create aliases for names differing only in hyphenation" do
+    it "should change author to nonhyphenated one's author" do
+      with_hyphen = Factory :author_name, :name => 'Ward, P.-S.'
+      without_hyphen = Factory :author_name, :name => 'Ward, P. S.'
+      reference = Factory :reference, :author_names => [without_hyphen]
+      AuthorName.create_hyphenation_aliases
+      author = reference.authors(true).first
+      author.names.should =~ [with_hyphen, without_hyphen]
+    end
+    it "should do nothing if the author is already the same as the nonhyphenated one's author" do
+      author = Factory :author
+      with_hyphen = Factory :author_name, :name => 'Ward, P.-S.', :author => author
+      without_hyphen = Factory :author_name, :name => 'Ward, P. S.', :author => author
+      reference = Factory :reference, :author_names => [without_hyphen]
+      AuthorName.create_hyphenation_aliases
+      with_hyphen.reload.author.reload.should == author
+      without_hyphen.reload.author.reload.should == author
+    end
+  end
+
 end

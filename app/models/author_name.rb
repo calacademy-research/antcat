@@ -57,6 +57,21 @@ class AuthorName < ActiveRecord::Base
     end
   end
 
+  def self.create_hyphenation_aliases show_progress = false
+    Progress.init show_progress
+    all(:order => 'name').each do |author_name|
+      next unless author_name.name =~ /-/
+      Progress.puts
+      Progress.print "Found name with hyphen(s): '#{author_name.name}'"
+      next unless without_hyphens = find_by_name(author_name.name.gsub /-/, ' ')
+      next if author_name.author == without_hyphens.author
+      Progress.print "...aliasing to '#{without_hyphens.name}'"
+      author_name.author.destroy
+      author_name.author = without_hyphens.author
+      author_name.save!
+    end
+  end
+
   private
   def name_parts
     @name_parts ||= AuthorParser.get_name_parts name
