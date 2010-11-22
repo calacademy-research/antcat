@@ -147,6 +147,17 @@ describe ReferenceFormatter do
       end
 
     end
+
+    it "should italicize the title and citation" do
+      reference = Factory :unknown_reference, :author_names => [], :citation => '*Ants*', :title => '*Tapinoma*'
+      ReferenceFormatter.format(reference).should == "2010d. <span class=taxon>Tapinoma</span>. <span class=taxon>Ants</span>."
+    end
+
+    it "should not have a space at the beginning when there are no authors" do
+      reference = Factory :unknown_reference, :author_names => [], :citation => 'Ants', :title => 'Tapinoma'
+      ReferenceFormatter.format(reference).should == "2010d. Tapinoma. Ants."
+    end
+
   end
 
   describe "formatting the date" do
@@ -184,4 +195,5 @@ describe ReferenceFormatter do
       ReferenceFormatter.italicize("|Hymenoptera| *Formicidae*").should == "<span class=taxon>Hymenoptera</span> <span class=taxon>Formicidae</span>"
     end
   end
+
 end
