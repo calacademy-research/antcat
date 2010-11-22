@@ -14,6 +14,7 @@ $(function() {
 function setupSearch() {
   $('#search form').submit(function(){
     var inp = $('#q', $(this))
+    inp.blur()
     var string = inp.attr('value')
     if (!string.match(/ $/))
       string += ' '
