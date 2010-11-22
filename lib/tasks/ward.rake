@@ -19,3 +19,8 @@ task :export_ward => :environment do
   WardReference.export true
   Rake::Task["sunspot:solr:reindex"].invoke
 end
+
+desc "Fix author names with missing space after period"
+task :fix_author_names => :environment do
+  AuthorName.fix_missing_spaces true
+end

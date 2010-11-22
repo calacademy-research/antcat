@@ -10,6 +10,11 @@ describe AuthorName do
     author_name.references.first.should == reference
   end
 
+  it "has an author" do
+    author = Author.create!
+    AuthorName.create! :author => author, :name => 'Fisher, B.L.'
+  end
+
   describe "importing" do
     it "should create and return the authors" do
       AuthorName.import(['Fisher, B.L.', 'Wheeler, W.M.']).map(&:name).should =~
@@ -100,6 +105,32 @@ describe AuthorName do
       author_name = AuthorName.new :name => 'Baroni Urbani, C.'
       author_name.last_name.should == 'Baroni Urbani'
       author_name.first_name_and_initials.should == 'C.'
+    end
+  end
+
+  describe "fixing missing space after periods" do
+    it "should not mess with missing space before comma" do
+      author = AuthorName.create! :name => 'Ward, P. S., Jr.'
+      AuthorName.fix_missing_spaces
+      author.reload.name.should == 'Ward, P. S., Jr.'
+    end
+    it "should not mess with missing space before hyphen" do
+      author = AuthorName.create! :name => 'Ward, P.-S.'
+      AuthorName.fix_missing_spaces
+      author.reload.name.should == 'Ward, P.-S.'
+    end
+    it "should find and fix the author names with missing spaces and fix them" do
+      author = AuthorName.create! :name => 'Ward, P.S.'
+      AuthorName.fix_missing_spaces
+      author.reload.name.should == 'Ward, P. S.'
+    end
+    it "should find an existing author that has the space and transfer references to it" do
+      ward_with_spaces = AuthorName.create! :name => 'Ward, P. S.'
+      ward_without_spaces = AuthorName.create! :name => 'Ward, P.S.'
+      reference = Factory :reference, :author_names => [ward_without_spaces]
+      AuthorName.fix_missing_spaces true
+      reference.author_names(true).should == [ward_with_spaces]
+      AuthorName.count.should == 1
     end
   end
 end

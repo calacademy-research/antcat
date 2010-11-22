@@ -9,17 +9,23 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101121010631) do
+ActiveRecord::Schema.define(:version => 20101121012421) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "verified"
+    t.integer  "author_id"
   end
 
   add_index "author_names", ["created_at", "name"], :name => "author_created_at_name"
   add_index "author_names", ["name"], :name => "author_name_idx"
+
+  create_table "authors", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "bolton_references", :force => true do |t|
     t.string   "authors"
