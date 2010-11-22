@@ -129,7 +129,7 @@ end
 
 When /^I press the "([^"]+)" button/ do |button|
   click_button button
-  sleep 0.75
+  sleep 1
 end
 
 Then "I should see the reference's ID beside its label" do
