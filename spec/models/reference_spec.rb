@@ -358,9 +358,9 @@ describe Reference do
 
     describe "maintaining its order" do
       it "should show the author_names in the order in which they were added to the reference" do
-        reference = Factory(:reference, :author_names => [AuthorName.create!(:name => 'Ward')])
-        wilden = AuthorName.create!(:name => 'Wilden')
-        fisher = AuthorName.create!(:name => 'Fisher')
+        reference = Factory(:reference, :author_names => [Factory :author_name, :name => 'Ward'])
+        wilden = Factory :author_name, :name => 'Wilden'
+        fisher = Factory :author_name, :name => 'Fisher'
         reference.author_names << wilden
         reference.author_names << fisher
         reference.author_names_string.should == 'Ward; Wilden; Fisher'

@@ -73,6 +73,13 @@ describe NestedReference do
       @reference.nested_reference_id = @reference.id
       @reference.should_not be_valid
     end
+    it "should not point to something that points to itself" do
+      inner_most = Factory :book_reference
+      middle = Factory :nested_reference, :nested_reference => inner_most
+      top = Factory :nested_reference, :nested_reference => middle 
+      middle.nested_reference = top
+      middle.should_not be_valid
+    end
   end
 
   describe "deletion" do

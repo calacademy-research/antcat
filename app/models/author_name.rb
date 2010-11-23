@@ -2,7 +2,9 @@ class AuthorName < ActiveRecord::Base
   has_many :reference_author_names
   has_many :references, :through => :reference_author_names
   after_update :update_references
+
   belongs_to :author
+  validates_presence_of :author
 
   def last_name
     name_parts[:last]
@@ -13,8 +15,9 @@ class AuthorName < ActiveRecord::Base
   end
 
   def self.import data
-    data.inject([]) do |author_names, author_name|
-      author_names << find_or_create_by_name(author_name)
+    data.inject([]) do |author_names, name|
+      author_name = find_by_name(name) || AuthorName.create!(:name => name, :author => Author.create!)
+      author_names << author_name
     end
   end
 

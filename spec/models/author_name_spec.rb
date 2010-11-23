@@ -1,8 +1,12 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe AuthorName do
+  before do
+    @author = Author.create!
+  end
+
   it "has many references" do
-    author_name = AuthorName.create! :name => 'Fisher, B.L.'
+    author_name = AuthorName.create! :name => 'Fisher, B.L.', :author => @author
 
     reference = Factory(:reference)
     author_name.references << reference
@@ -12,7 +16,14 @@ describe AuthorName do
 
   it "has an author" do
     author = Author.create!
-    AuthorName.create! :author => author, :name => 'Fisher, B.L.'
+    AuthorName.create! :author => author, :name => 'Fisher, B.L.', :author => @author
+  end
+
+  it "must have an author" do
+    author_name = AuthorName.new :name => 'Ward, P. S.'
+    author_name.should_not be_valid
+    author_name.author = Factory :author
+    author_name.should be_valid
   end
 
   describe "importing" do
@@ -39,7 +50,7 @@ describe AuthorName do
 
   describe "import_author_names_string" do
     it "should find or create authors with names in the string" do
-      AuthorName.create! :name => 'Bolton, B.'
+      AuthorName.create! :name => 'Bolton, B.', :author => @author
       author_data = AuthorName.import_author_names_string('Ward, P.S.; Bolton, B.')
       author_data[:author_names].first.name.should == 'Ward, P.S.'
       author_data[:author_names].second.name.should == 'Bolton, B.'
@@ -57,16 +68,16 @@ describe AuthorName do
 
   describe "searching" do
     it "should find a prefix" do
-      AuthorName.create! :name => 'Bolton'
-      AuthorName.create! :name => 'Fisher'
+      AuthorName.create! :name => 'Bolton', :author => @author
+      AuthorName.create! :name => 'Fisher', :author => @author
       results = AuthorName.search('Bol')
       results.count.should == 1
       results.first.should == 'Bolton'
     end
 
     it "should find an internal string" do
-      AuthorName.create! :name => 'Bolton'
-      AuthorName.create! :name => 'Fisher'
+      AuthorName.create! :name => 'Bolton', :author => @author
+      AuthorName.create! :name => 'Fisher', :author => @author
       results = AuthorName.search('ol')
       results.count.should == 1
       results.first.should == 'Bolton'
@@ -74,7 +85,7 @@ describe AuthorName do
 
     it "should return authors in order of most recently used" do
       ['Never Used', 'Recent', 'Old', 'Most Recent'].each do |name|
-        AuthorName.create! :name => name
+        AuthorName.create! :name => name, :author => @author
       end
       reference = Factory :reference, :author_names => [AuthorName.find_by_name('Most Recent')]
       ReferenceAuthorName.create! :created_at => Time.now - 5, :author_name => AuthorName.find_by_name('Recent'),
@@ -110,23 +121,23 @@ describe AuthorName do
 
   describe "fixing missing space after periods" do
     it "should not mess with missing space before comma" do
-      author = AuthorName.create! :name => 'Ward, P. S., Jr.'
+      author = AuthorName.create! :name => 'Ward, P. S., Jr.', :author => @author
       AuthorName.fix_missing_spaces
       author.reload.name.should == 'Ward, P. S., Jr.'
     end
     it "should not mess with missing space before hyphen" do
-      author = AuthorName.create! :name => 'Ward, P.-S.'
+      author = AuthorName.create! :name => 'Ward, P.-S.', :author => @author
       AuthorName.fix_missing_spaces
       author.reload.name.should == 'Ward, P.-S.'
     end
     it "should find and fix the author names with missing spaces and fix them" do
-      author = AuthorName.create! :name => 'Ward, P.S.'
+      author = AuthorName.create! :name => 'Ward, P.S.', :author => @author
       AuthorName.fix_missing_spaces
       author.reload.name.should == 'Ward, P. S.'
     end
     it "should find an existing author that has the space and transfer references to it" do
-      ward_with_spaces = AuthorName.create! :name => 'Ward, P. S.'
-      ward_without_spaces = AuthorName.create! :name => 'Ward, P.S.'
+      ward_with_spaces = AuthorName.create! :name => 'Ward, P. S.', :author => @author
+      ward_without_spaces = AuthorName.create! :name => 'Ward, P.S.', :author => @author
       reference = Factory :reference, :author_names => [ward_without_spaces]
       AuthorName.fix_missing_spaces
       reference.author_names(true).should == [ward_with_spaces]

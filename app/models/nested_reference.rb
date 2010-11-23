@@ -22,7 +22,14 @@ class NestedReference < Reference
   end
 
   def validate_nested_reference_doesnt_point_to_itself
-    errors.add(:nested_reference_id, "can't point to itself") if nested_reference_id && nested_reference_id == id
+    comparison = self
+    while comparison && comparison.nested_reference_id
+      if comparison.nested_reference_id == id
+        errors.add(:nested_reference_id, "can't point to itself")
+        break
+      end
+      comparison = Reference.find_by_id comparison.nested_reference_id
+    end
   end
 
 end
