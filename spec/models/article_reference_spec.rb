@@ -6,7 +6,7 @@ describe ArticleReference do
       ward_reference = Factory(:ward_reference)
       reference = ArticleReference.import(
         {:author_names => [Factory(:author_name)], :title => 'awdf',
-          :source_reference_id => ward_reference.id, :source_reference_type => 'WardReference', :citation_year => '2010'},
+          :source_reference_id => ward_reference.id, :source_reference_type => 'Ward::Reference', :citation_year => '2010'},
         {:series_volume_issue => '12', :pagination => '32-33', :journal => 'Ecology Letters'})
       reference.series_volume_issue.should == '12'
       reference.pagination.should == '32-33'

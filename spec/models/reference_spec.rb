@@ -19,7 +19,7 @@ describe Reference do
         :editor_notes => 'Editor notes',
         :taxonomic_notes => 'Tax. notes',
         :id => 1,
-        :class => 'WardReference', 
+        :class => 'Ward::Reference', 
       }
     end
     it "should import a book reference" do
@@ -38,7 +38,7 @@ describe Reference do
         :editor_notes => 'Editor notes',
         :taxonomic_notes => 'Tax. notes',
         :source_reference_id => 1,
-        :source_reference_type => 'WardReference'}, 1)
+        :source_reference_type => 'Ward::Reference'}, 1)
         Reference.import @reference_data
     end
     it "should import an article reference" do
@@ -57,7 +57,7 @@ describe Reference do
         :editor_notes => 'Editor notes',
         :taxonomic_notes => 'Tax. notes',
         :source_reference_id => 1,
-        :source_reference_type => 'WardReference'}, 1)
+        :source_reference_type => 'Ward::Reference'}, 1)
         Reference.import @reference_data
     end
     it "should import a nested reference" do
@@ -76,7 +76,7 @@ describe Reference do
         :editor_notes => 'Editor notes',
         :taxonomic_notes => 'Tax. notes',
         :source_reference_id => 1,
-        :source_reference_type => 'WardReference'}, 'nested')
+        :source_reference_type => 'Ward::Reference'}, 'nested')
         Reference.import @reference_data
     end
     it "should import an unknown reference" do
@@ -95,7 +95,7 @@ describe Reference do
         :editor_notes => 'Editor notes',
         :taxonomic_notes => 'Tax. notes',
         :source_reference_id => 1,
-        :source_reference_type => 'WardReference'}, 'other')
+        :source_reference_type => 'Ward::Reference'}, 'other')
         Reference.import @reference_data
     end
 
@@ -116,7 +116,7 @@ describe Reference do
         :taxonomic_notes => 'Taxonomic notes',
         :taxonomic_notes => 'Tax. notes',
         :source_reference_id => 1,
-        :source_reference_type => 'WardReference')
+        :source_reference_type => 'Ward::Reference')
       Reference.count.should == 1
     end
   end

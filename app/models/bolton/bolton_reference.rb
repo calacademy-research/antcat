@@ -1,5 +1,6 @@
-class BoltonReference < ActiveRecord::Base
+class Bolton::Reference < ActiveRecord::Base
   belongs_to :reference
+  set_table_name :bolton_references
 
   def self.match_against_ward show_progress = false
     Bolton::ReferenceMatcher.new(show_progress).match_all

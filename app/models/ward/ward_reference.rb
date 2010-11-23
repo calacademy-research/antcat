@@ -1,9 +1,10 @@
-class WardReference < ActiveRecord::Base
+class Ward::Reference < ActiveRecord::Base
   belongs_to :reference
+  set_table_name :ward_references
 
   def self.export show_progress = false
     Progress.init show_progress, count
-    Progress.puts "Exporting WardReferences to References..."
+    Progress.puts "Exporting Ward::References to References..."
     all.each do |ward_reference|
       begin
         ward_reference.export

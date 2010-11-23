@@ -3,14 +3,14 @@ class Bolton::ReferenceMatcher
 
   def initialize show_progress = false
     Progress.init show_progress
-    @all_count = BoltonReference.count
+    @all_count = Bolton::Reference.count
     @unmatched_count = @suspect_count = 0
     make_ward_index
     @start = Time.now
   end
 
   def match_all
-    BoltonReference.all.each_with_index do |bolton, i|
+    Bolton::Reference.all.each_with_index do |bolton, i|
       bolton.update_attributes :ward_reference => match(bolton, i), :suspect => suspect?
     end
     show_results

@@ -9,7 +9,6 @@ describe Place do
     end
 
     it "should reuse an existing place" do
-      lll{'Place.all'}
       Place.count.should == 0
       2.times {Place.import('Chicago')}
       Place.count.should == 1

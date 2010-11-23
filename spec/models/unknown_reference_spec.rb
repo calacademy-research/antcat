@@ -6,7 +6,7 @@ describe UnknownReference do
       ward_reference = Factory(:ward_reference)
       reference = UnknownReference.import(
         {:author_names => [Factory(:author_name)], :title => 'awdf',
-          :source_reference_id => ward_reference.id, :source_reference_type => 'WardReference', :citation_year => '2010'},
+          :source_reference_id => ward_reference.id, :source_reference_type => 'Ward::Reference', :citation_year => '2010'},
         'Citation')
       reference.citation.should == 'Citation'
       reference.source_reference.should == ward_reference

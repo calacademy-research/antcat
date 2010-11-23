@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe WardReference do
+describe Ward::Reference do
   it "belongs to a reference" do
-    ward_reference = WardReference.create!
+    ward_reference = Ward::Reference.create!
     ward_reference.reference.should be_nil
     reference = Factory :reference
     ward_reference.update_attribute :reference, reference
@@ -10,8 +10,8 @@ describe WardReference do
   end
 
   it "should not truncate long fields" do
-    WardReference.create!(:authors => 'a' * 1000, :citation => 'c' * 2000, :notes => 'n' * 1500, :taxonomic_notes => 't' * 1700, :title => 'i' * 1876)
-    reference = WardReference.first
+    Ward::Reference.create!(:authors => 'a' * 1000, :citation => 'c' * 2000, :notes => 'n' * 1500, :taxonomic_notes => 't' * 1700, :title => 'i' * 1876)
+    reference = Ward::Reference.first
     reference.authors.length.should == 1000
     reference.citation.length.should == 2000
     reference.notes.length.should == 1500
@@ -23,21 +23,21 @@ describe WardReference do
     describe "exporting all references" do
       it "should convert each to the right format, then send them to Reference" do
         ward_references = ['1', '2'].inject([]) do |ward_references, value|
-          ward_reference = mock_model WardReference
+          ward_reference = mock_model Ward::Reference
           ward_reference.should_receive(:export)
           ward_references << ward_reference
         end
-        WardReference.should_receive(:all).and_return ward_references
+        Ward::Reference.should_receive(:all).and_return ward_references
 
-        WardReference.export
+        Ward::Reference.export
       end
     end
 
     describe "exporting a reference" do
       it "should convert each to the right format, then send them to Reference" do
         reference = Factory(:reference)
-        ward_reference = WardReference.new :authors => 'Fisher', :citation => 'Ants 1:1'
-        Reference.should_receive(:import).with(hash_including(:id => ward_reference.id, :class => 'WardReference',
+        ward_reference = Ward::Reference.new :authors => 'Fisher', :citation => 'Ants 1:1'
+        Reference.should_receive(:import).with(hash_including(:id => ward_reference.id, :class => 'Ward::Reference',
                                                               :article => {:journal => 'Ants', :pagination => '1',
                                                               :series_volume_issue => '1'})).and_return reference
         ward_reference.export.should == reference
@@ -48,40 +48,40 @@ describe WardReference do
     describe "creating import format" do
       describe "notes" do
         it 'should parse out public notes' do
-          WardReference.new(:notes => "{Notes}", :citation => 'none').
+          Ward::Reference.new(:notes => "{Notes}", :citation => 'none').
             to_import_format.should include(:public_notes => 'Notes', :editor_notes => '')
         end
         it "should parse out editor notes" do
-          WardReference.new(:notes => 'Notes', :citation => 'none').
+          Ward::Reference.new(:notes => 'Notes', :citation => 'none').
             to_import_format.should include(:public_notes => '', :editor_notes => 'Notes')
         end
         it "should parse out public and editor's notes" do
-          WardReference.new(:notes => '{Public} Editor', :citation => 'none').
+          Ward::Reference.new(:notes => '{Public} Editor', :citation => 'none').
             to_import_format.should include(:public_notes => 'Public', :editor_notes => 'Editor')
         end
         it "should handle explicit public and editor's notes" do
-          WardReference.new(:notes => 'Public', :editor_notes => 'Editor', :citation => 'none').
+          Ward::Reference.new(:notes => 'Public', :editor_notes => 'Editor', :citation => 'none').
             to_import_format.should include(:public_notes => 'Public', :editor_notes => 'Editor')
         end
       end
 
       it "should remove period from end of year" do
-        WardReference.new(:year => '1978d.', :citation => 'none').
+        Ward::Reference.new(:year => '1978d.', :citation => 'none').
           to_import_format.should include(:citation_year => '1978d')
       end
 
       it "should remove period from end of title" do
-        WardReference.new(:title => 'Title with period.', :citation => 'none').
+        Ward::Reference.new(:title => 'Title with period.', :citation => 'none').
           to_import_format.should include(:title => 'Title with period')
       end
 
       it "send itself along" do
-        ward_reference = WardReference.create!(:title => 'Title with period.', :citation => 'none')
-        ward_reference.to_import_format.should include(:id => ward_reference.id, :class => 'WardReference')
+        ward_reference = Ward::Reference.create!(:title => 'Title with period.', :citation => 'none')
+        ward_reference.to_import_format.should include(:id => ward_reference.id, :class => 'Ward::Reference')
       end
 
-      it "not modify WardReference fields" do
-        ward_reference = WardReference.create!(:authors => 'Bolton, B.', :citation => 'none')
+      it "not modify Ward::Reference fields" do
+        ward_reference = Ward::Reference.create!(:authors => 'Bolton, B.', :citation => 'none')
         ward_reference.authors.should == 'Bolton, B.'
         ward_reference.to_import_format
         ward_reference.authors.should == 'Bolton, B.'
@@ -89,7 +89,7 @@ describe WardReference do
 
       describe "converting to import format" do
         it "should parse out authors suffix" do
-          ward_reference = WardReference.create!({
+          ward_reference = Ward::Reference.create!({
             :authors => "Abdul-Rassoul, M. S.; Dawah, H. A.; Othman, N. Y. (eds.)",
             :citation => "Bull. Nat. Hist. Res. Cent. Univ. Baghdad 7(2):1-6",
             :cite_code => '5523',
@@ -117,7 +117,7 @@ describe WardReference do
           }
         end
         it "should convert an article reference" do
-          ward_reference = WardReference.create!({
+          ward_reference = Ward::Reference.create!({
             :authors => "Abdul-Rassoul, M. S.; Dawah, H. A.; Othman, N. Y.",
             :citation => "Bull. Nat. Hist. Res. Cent. Univ. Baghdad 7(2):1-6",
             :cite_code => '5523',
@@ -147,7 +147,7 @@ describe WardReference do
 
         it "should convert a book reference" do
           Factory :place, :name => 'Cambridge, Mass.'
-          ward_reference = WardReference.create!({
+          ward_reference = Ward::Reference.create!({
             :authors => "Hölldobler, B.; Wilson, E. O.",
             :citation => "Cambridge, Mass.: Harvard University Press, xii + 732 pp.",
             :cite_code => '2841',
@@ -176,7 +176,7 @@ describe WardReference do
 
         it "should convert a nested reference" do
           Factory :place, :name => 'Leiden'
-          ward_reference = WardReference.create!({
+          ward_reference = Ward::Reference.create!({
             :authors => "MacKay, W. P.",
             :citation => "Pp. 96-98 in: MacKay, W., Lowrie, D., Fisher, A., MacKay, E., Barnes, F., Lowrie, D.  The ants of Los Alamos County, New Mexico (Hymenoptera: Formicidae).  Pp. 79-131 in: Trager, J. C. (ed.)  Advances in myrmecology. Leiden: E. J. Brill, xxvii + 551 pp.",
             :cite_code => '5652',

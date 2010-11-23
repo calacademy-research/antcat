@@ -35,7 +35,7 @@ class Bolton::Bibliography
     year = match[2].strip
     title_and_citation = match[3].strip
 
-    reference = BoltonReference.create! :authors => author_names, :year => year,
+    reference = Bolton::Reference.create! :authors => author_names, :year => year,
       :title_and_citation => title_and_citation, :date => date
     Progress.dot
   end

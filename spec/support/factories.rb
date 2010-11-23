@@ -1,6 +1,6 @@
 require 'factory_girl'
 
-Factory.define :ward_reference do |ward_reference|
+Factory.define :ward_reference, :class => Ward::Reference do |ward_reference|
   ward_reference.authors  'Fisher, B.L.'
   ward_reference.title  'Ants'
   ward_reference.citation  'New York: Wiley. 23pp.'
@@ -8,7 +8,7 @@ end
 
 def ward_reference_factory attributes
   attributes.reverse_merge!(:authors => 'Fisher, B.L.', :title => 'Ants', :year => '2010a')
-  WardReference.new(attributes).export
+  Ward::Reference.new(attributes).export
 end
 
 Factory.define :author do |author|

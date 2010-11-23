@@ -51,7 +51,7 @@ class Ward::Bibliography
 
     fix_data data
 
-    WardReference.create!(data) unless data[:cite_code] == '8357'
+    Ward::Reference.create!(data) unless data[:cite_code] == '8357'
   end
 
   private

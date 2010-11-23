@@ -14,7 +14,7 @@ describe Ward::Bibliography do
   end
 
   describe "importing HTML" do
-    it "should import contents of HTML into WardReferences" do
+    it "should import contents of HTML into Ward::References" do
       contents = <<-CONTENTS
         <html>
           <body>
@@ -47,7 +47,7 @@ describe Ward::Bibliography do
           </body>
         </html>
       CONTENTS
-      WardReference.should_receive(:create!).with(
+      Ward::Reference.should_receive(:create!).with(
         :authors => 'Abdul-Rassoul, M. S.; Dawah, H. A.; Othman, N. Y.',
         :citation => 'Bull. Nat. Hist. Res. Cent. Univ. Baghdad 7(2):1-6.',
         :cite_code => '5523',
@@ -59,7 +59,7 @@ describe Ward::Bibliography do
         :editor_notes => nil,
         :title => 'Records of insect collection.',
         :year => '1978d.').and_return true
-      WardReference.should_receive(:create!).with(
+      Ward::Reference.should_receive(:create!).with(
         :authors => 'Dawah, H. A.;Ward, P.S.',
         :citation => 'New York: Wiley, 322 pp.',
         :cite_code => '4523',
@@ -103,8 +103,8 @@ describe Ward::Bibliography do
             <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
           </tr>
         </table></body></html>"
-        WardReference.should_receive(:create!).with(hash_including(:cite_code => '1')).and_return true
-        WardReference.should_receive(:create!).with(hash_including(:cite_code => '2')).and_return true
+        Ward::Reference.should_receive(:create!).with(hash_including(:cite_code => '1')).and_return true
+        Ward::Reference.should_receive(:create!).with(hash_including(:cite_code => '2')).and_return true
       @bibliography.import_html contents
       end
 
@@ -113,7 +113,7 @@ describe Ward::Bibliography do
           <td>Records of insect collection (Part I) in the Natural History
           Research Centre, Baghdad.</td>
           <td></td><td></td><td></td></tr></table></body></html>"
-        WardReference.should_receive(:create!).with hash_including(:title => 'Records of insect collection (Part I) in the Natural History Research Centre, Baghdad.')
+        Ward::Reference.should_receive(:create!).with hash_including(:title => 'Records of insect collection (Part I) in the Natural History Research Centre, Baghdad.')
         @bibliography.import_html contents
       end
 
@@ -121,7 +121,7 @@ describe Ward::Bibliography do
         contents = "<html><body><table><tr></tr><tr><td></td><td>123</td><td></td><td></td><td></td>
             <td>Records of |Formicidae|.</td>
           <td></td><td></td><td></td></tr></table></body></html>"
-        WardReference.should_receive(:create!).with hash_including(:title => 'Records of *Formicidae*.')
+        Ward::Reference.should_receive(:create!).with hash_including(:title => 'Records of *Formicidae*.')
         @bibliography.import_html contents
       end
 
@@ -133,7 +133,7 @@ describe Ward::Bibliography do
               maculatus</font><font class=font0> and </font><font class=font7>Azteca
               trigona</font><font class=font0>.</font></td>
                   <td></td><td></td><td></td></tr></table></body></html>"
-            WardReference.should_receive(:create!).with hash_including(:title => 'Interaction between the ants *Zacryptocerus maculatus* and *Azteca trigona*.')
+            Ward::Reference.should_receive(:create!).with hash_including(:title => 'Interaction between the ants *Zacryptocerus maculatus* and *Azteca trigona*.')
             @bibliography.import_html contents
           end
         end
@@ -142,7 +142,7 @@ describe Ward::Bibliography do
           contents = "<html><body><table><tr></tr><tr><td></td><td>123</td><td></td><td></td><td></td>
             <td class=xl68>Formicoxenus<font class=font0> ants</td>
                 <td></td><td></td><td></td></tr></table></body></html>"
-          WardReference.should_receive(:create!).with hash_including(:title => '*Formicoxenus* ants')
+          Ward::Reference.should_receive(:create!).with hash_including(:title => '*Formicoxenus* ants')
           @bibliography.import_html contents
         end
 
@@ -152,7 +152,7 @@ describe Ward::Bibliography do
         contents = "<html><body><table><tr></tr><tr><td></td><td>123</td><td></td><td></td><td></td>
           <td>Love &amp; Death</td>
           <td></td><td></td><td></td></tr></table></body></html>"
-        WardReference.should_receive(:create!).with hash_including(:title => 'Love & Death')
+        Ward::Reference.should_receive(:create!).with hash_including(:title => 'Love & Death')
         @bibliography.import_html contents
       end
 
@@ -162,7 +162,7 @@ describe Ward::Bibliography do
           <td></td><td></td>
           <td>Love &amp; Death</td>
           <td></td><td></td><td></td></tr></table></body></html>"
-        WardReference.should_receive(:create!).with hash_including(:authors => 'Zolessi, L. C. de; Abenante, Y. P. de')
+        Ward::Reference.should_receive(:create!).with hash_including(:authors => 'Zolessi, L. C. de; Abenante, Y. P. de')
         @bibliography.import_html contents
       end
 
@@ -172,7 +172,7 @@ describe Ward::Bibliography do
           <td></td><td></td>
           <td>Love &amp; Death</td>
           <td></td><td></td><td></td></tr></table></body></html>"
-        WardReference.should_receive(:create!).with hash_including(:authors => 'Zolessi, L. C.')
+        Ward::Reference.should_receive(:create!).with hash_including(:authors => 'Zolessi, L. C.')
         @bibliography.import_html contents
       end
 
@@ -182,7 +182,7 @@ describe Ward::Bibliography do
           <td></td><td></td>
           <td>Love &amp; Death</td>
           <td></td><td></td><td></td></tr></table></body></html>"
-        WardReference.should_receive(:create!).with hash_including(:authors => 'Zolessi, L. C., Jr.')
+        Ward::Reference.should_receive(:create!).with hash_including(:authors => 'Zolessi, L. C., Jr.')
         @bibliography.import_html contents
       end
 
@@ -192,7 +192,7 @@ describe Ward::Bibliography do
           <td></td><td></td>
           <td>Love &amp; Death</td>
           <td></td><td></td><td></td></tr></table></body></html>"
-        WardReference.should_receive(:create!).with hash_including(:authors => 'Zolessi, L. C., Sr.')
+        Ward::Reference.should_receive(:create!).with hash_including(:authors => 'Zolessi, L. C., Sr.')
         @bibliography.import_html contents
       end
 
@@ -202,7 +202,7 @@ describe Ward::Bibliography do
           <td></td><td></td>
           <td>Love &amp; Death</td>
           <td></td><td></td><td></td></tr></table></body></html>"
-        WardReference.should_receive(:create!).with hash_including(:authors => 'Zolessi, L. C. (ed.)')
+        Ward::Reference.should_receive(:create!).with hash_including(:authors => 'Zolessi, L. C. (ed.)')
         @bibliography.import_html contents
       end
 
@@ -212,7 +212,7 @@ describe Ward::Bibliography do
           <td></td><td></td>
           <td>Love &amp; Death</td>
           <td></td><td></td><td></td></tr></table></body></html>"
-        WardReference.should_receive(:create!).with hash_including(:authors => 'Zolessi, L. C. (eds.)')
+        Ward::Reference.should_receive(:create!).with hash_including(:authors => 'Zolessi, L. C. (eds.)')
         @bibliography.import_html contents
       end
 
@@ -222,7 +222,7 @@ describe Ward::Bibliography do
           <td></td><td></td>
           <td>Love &amp; Death</td>
           <td></td><td></td><td></td></tr></table></body></html>"
-        WardReference.should_receive(:create!).with hash_including(:authors => 'Zolessi, L. C.')
+        Ward::Reference.should_receive(:create!).with hash_including(:authors => 'Zolessi, L. C.')
         @bibliography.import_html contents
       end
 
@@ -232,7 +232,7 @@ describe Ward::Bibliography do
           <td></td><td></td>
           <td>Love &amp; Death</td>
           <td></td><td></td><td></td></tr></table></body></html>"
-        WardReference.should_receive(:create!).with hash_including(:authors => 'Medeiros, M. A. de')
+        Ward::Reference.should_receive(:create!).with hash_including(:authors => 'Medeiros, M. A. de')
         @bibliography.import_html contents
       end
 
@@ -242,7 +242,7 @@ describe Ward::Bibliography do
           <td></td><td></td>
           <td>Love &amp; Death</td>
           <td></td><td></td><td></td></tr></table></body></html>"
-        WardReference.should_receive(:create!).with hash_including(:authors => 'Gibron, S. J.')
+        Ward::Reference.should_receive(:create!).with hash_including(:authors => 'Gibron, S. J.')
         @bibliography.import_html contents
       end
 
@@ -252,7 +252,7 @@ describe Ward::Bibliography do
           <td></td><td></td>
           <td>Love &amp; Death</td>
           <td></td><td></td><td></td></tr></table></body></html>"
-        WardReference.should_receive(:create!).with hash_including(:authors => 'Gibron, J.; Ward, P. S.')
+        Ward::Reference.should_receive(:create!).with hash_including(:authors => 'Gibron, J.; Ward, P. S.')
         @bibliography.import_html contents
       end
 
@@ -262,7 +262,7 @@ describe Ward::Bibliography do
           <td></td><td></td>
           <td>Love &amp; Death</td>
           <td></td><td></td><td></td></tr></table></body></html>"
-        WardReference.should_receive(:create!).with hash_including(:authors => 'Gibron, J.')
+        Ward::Reference.should_receive(:create!).with hash_including(:authors => 'Gibron, J.')
         @bibliography.import_html contents
       end
 
@@ -273,7 +273,7 @@ describe Ward::Bibliography do
           <td>Love &amp; Death</td>
           <td class=xl65>Pp. 534-540 in: Hooker, J. D., Gunther, A. (eds.)<span style=\"mso-spacerun: yes\">  </span>An account of the petrological, botanical, and zoological collections made in Kerguelen's land and Rodriguez during the Transit of Venus expeditions, carried out by order of Her Majesty's Government in the years 1874-75.<span style=\"mso-spacerun: yes\">  </span>Philosophical Transactions of the Royal Society of London 168(extra volume):i-ix,1-579.</td>
           <td></td><td></td></tr></table></body></html>"
-        WardReference.should_receive(:create!).with hash_including(:citation =>
+        Ward::Reference.should_receive(:create!).with hash_including(:citation =>
           "Pp. 534-540 in: Hooker, J. D., Gunther, A. (eds.) An account of the petrological, botanical, and zoological collections made in Kerguelen's land and Rodriguez during the Transit of Venus expeditions, carried out by order of Her Majesty's Government in the years 1874-75. Philosophical Transactions of the Royal Society of London 168(extra volume):i-ix,1-579.")
         @bibliography.import_html contents
       end
@@ -285,7 +285,7 @@ describe Ward::Bibliography do
           <td>Ants</td>
           <td class=xl65>Extrait des Mémoires publiés par la Société Portugaise des Sciences Naturelles. Lisbonne: Imprimerie de la Librairie Ferin, 4 pp.</td>
           <td></td><td></td></tr></table></body></html>"
-        WardReference.should_receive(:create!).with hash_including(
+        Ward::Reference.should_receive(:create!).with hash_including(
           :title => "Ants. Extrait des Mémoires publiés par la Société Portugaise des Sciences Naturelles",
           :citation => "Lisbonne: Imprimerie de la Librairie Ferin, 4 pp.")
         @bibliography.import_html contents
@@ -298,7 +298,7 @@ describe Ward::Bibliography do
           <td>Ants</td>
           <td class=xl65>Achtes Programm des Gymnasiums in Bozen. Bozen: Ebersche Buchdruckerei, 34 pp.</td>
           <td></td><td></td></tr></table></body></html>"
-        WardReference.should_receive(:create!).with hash_including(
+        Ward::Reference.should_receive(:create!).with hash_including(
           :title => "Ants. Achtes Programm des Gymnasiums in Bozen",
           :citation => "Bozen: Ebersche Buchdruckerei, 34 pp.")
         @bibliography.import_html contents
@@ -310,7 +310,7 @@ describe Ward::Bibliography do
           <td></td><td></td>
           <td>Love &amp; Death</td>
           <td></td><td></td><td></td></tr></table></body></html>"
-        WardReference.should_receive(:create!).with hash_including(:authors => 'Cheng, C. H.; Fisher, B. L.')
+        Ward::Reference.should_receive(:create!).with hash_including(:authors => 'Cheng, C. H.; Fisher, B. L.')
         @bibliography.import_html contents
       end
 
@@ -320,7 +320,7 @@ describe Ward::Bibliography do
           <td></td><td></td>
           <td>Love &amp; Death</td>
           <td></td><td></td><td></td></tr></table></body></html>"
-        WardReference.should_receive(:create!).with hash_including(:authors => 'Collingwood, C. A.; van Harten, A.')
+        Ward::Reference.should_receive(:create!).with hash_including(:authors => 'Collingwood, C. A.; van Harten, A.')
         @bibliography.import_html contents
       end
 
@@ -352,7 +352,7 @@ describe Ward::Bibliography do
         </body>
       </html>
       CONTENTS
-      WardReference.should_receive(:create!).with(
+      Ward::Reference.should_receive(:create!).with(
         :authors => "Schlick-Steiner, B. C.; Steiner, F. M.; Seifert, B.; Stauffer, C.; Christian, E.; Crozier, R. H.",
         :citation => 'Bull. Nat. Hist. Res. Cent. Univ. Baghdad 7(2):1-6.',
         :cite_code => '96-1828',
