@@ -3,7 +3,7 @@ task :import_bibliography => [:import_ward, :import_hol_source_urls]
 desc "Import HTML files of references from Bolton"
 task :import_bolton => :environment do
   BoltonReference.delete_all
-  BoltonReference.import 'data/NGC-REFS_a-d.htm', true
+  BoltonReference.import 'data/bolton/NGC-REFS_a-d.htm', true
 end
 
 desc 'Match Bolton against Ward'

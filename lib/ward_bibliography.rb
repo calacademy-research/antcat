@@ -26,13 +26,13 @@ class WardBibliography
     doc = Nokogiri::HTML(html)
     rows = doc.css('tr')
     (1..(rows.length - 1)).each do |i|
-      break unless save_reference rows[i].css('td')
-      Progress.print '.'
+      break unless import_reference rows[i].css('td')
+      Progress.dot
     end
     Progress.puts
   end
 
-  def save_reference columns
+  def import_reference columns
     return unless columns && columns[1] && !columns[1].inner_html.empty?
     col = 0;
     data = {
