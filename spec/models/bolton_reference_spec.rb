@@ -13,7 +13,7 @@ describe BoltonReference do
   describe "matching against ward" do
     it "should create and call a matcher" do
       matcher = mock
-      BoltonReferenceMatcher.should_receive(:new).and_return(matcher)
+      Bolton::ReferenceMatcher.should_receive(:new).and_return(matcher)
       matcher.should_receive(:match_all)
       BoltonReference.match_against_ward
     end

@@ -1,9 +1,9 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe HolBibliography do
+describe Hol::Bibliography do
   describe "getting the contents for an author" do
     before do
-      @hol = HolBibliography.new
+      @hol = Hol::Bibliography.new
       @reference = Factory :reference
     end
 
@@ -30,7 +30,7 @@ describe HolBibliography do
     before do
       @scraper = mock Scraper
       Scraper.stub!(:new).and_return @scraper
-      @hol = HolBibliography.new
+      @hol = Hol::Bibliography.new
     end
 
     it "should go to the right URL" do
@@ -192,7 +192,7 @@ See Site Statistics</a><p>
 
   describe "matching against Ward" do
     before do
-      @hol = HolBibliography.new
+      @hol = Hol::Bibliography.new
     end
 
     it "should match an article reference based on year + series/volume/issue + pagination" do
@@ -232,7 +232,6 @@ See Site Statistics</a><p>
       @hol.stub!(:references_for).and_return []
       result = @hol.match reference
       result[:source_url].should be_nil
-      result[:status].should == HolBibliography::NO_ENTRIES_FOR_AUTHOR
     end
 
   end

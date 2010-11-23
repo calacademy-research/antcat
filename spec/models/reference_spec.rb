@@ -495,8 +495,8 @@ describe Reference do
 
   describe "importing PDF links" do
     it "should delegate to the right object" do
-      mock = mock HolSourceUrlImporter
-      HolSourceUrlImporter.should_receive(:new).and_return mock
+      mock = mock Hol::SourceUrlImporter
+      Hol::SourceUrlImporter.should_receive(:new).and_return mock
       mock.should_receive(:import)
       Reference.import_hol_source_urls
     end

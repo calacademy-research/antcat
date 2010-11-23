@@ -1,4 +1,4 @@
-class BoltonReferenceMatcher
+class Bolton::ReferenceMatcher
   SUFFICIENT_SIMILARITY = 0.75
 
   def initialize show_progress = false

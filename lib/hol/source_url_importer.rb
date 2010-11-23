@@ -1,6 +1,6 @@
 require 'curl'
 
-class HolSourceUrlImporter
+class Hol::SourceUrlImporter
 
   attr_reader :processed_count, :success_count,
               :book_failure_count, :unknown_reference_failure_count, :pdf_not_found_failure_count,
@@ -8,7 +8,7 @@ class HolSourceUrlImporter
 
   def initialize show_progress = false
     Progress.init show_progress
-    @bibliography = HolBibliography.new
+    @bibliography = Hol::Bibliography.new
     @total_count = Reference.count
     @processed_count = @success_count = @unmatched_count =
       @book_failure_count = @unknown_reference_failure_count = @pdf_not_found_failure_count =
@@ -59,7 +59,7 @@ class HolSourceUrlImporter
       @success_count += 1
       return 'Already'
     else
-      if result[:status] == HolBibliography::NO_ENTRIES_FOR_AUTHOR
+      if result[:status] == Hol::Bibliography::NO_ENTRIES_FOR_AUTHOR
         @missing_authors << reference.author_names.first.name
         @missing_author_failure_count += 1
         return 'Author'

@@ -1,4 +1,4 @@
-class HolBibliography
+class Hol::Bibliography
 
   NO_ENTRIES_FOR_AUTHOR = 1
 

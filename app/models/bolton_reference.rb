@@ -2,7 +2,7 @@ class BoltonReference < ActiveRecord::Base
   belongs_to :reference
 
   def self.match_against_ward show_progress = false
-    BoltonReferenceMatcher.new(show_progress).match_all
+    Bolton::ReferenceMatcher.new(show_progress).match_all
   end
 
   def to_s

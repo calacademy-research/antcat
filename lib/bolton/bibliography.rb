@@ -2,7 +2,7 @@
 #  1) Open the file in Word
 #  2) Save it as web page
 
-class BoltonBibliography
+class Bolton::Bibliography
   def initialize filename, show_progress = false
     Progress.init show_progress
     @filename = filename.to_s

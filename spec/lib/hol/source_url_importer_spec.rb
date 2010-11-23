@@ -1,10 +1,10 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe HolSourceUrlImporter do
+describe Hol::SourceUrlImporter do
   before do
-    @bibliography = mock HolBibliography
-    HolBibliography.stub!(:new).and_return @bibliography
-    @importer = HolSourceUrlImporter.new
+    @bibliography = mock Hol::Bibliography
+    Hol::Bibliography.stub!(:new).and_return @bibliography
+    @importer = Hol::SourceUrlImporter.new
     @importer.stub!(:source_url_exists?).and_return(true)
   end
 
@@ -61,8 +61,8 @@ describe HolSourceUrlImporter do
       @bibliography.stub!(:match).with(first_bolton).and_return({})
       @bibliography.stub!(:match).with(second_bolton).and_return({:source_url => 'source'})
       @bibliography.stub!(:match).with(ward).and_return({:source_url => 'source'})
-      @bibliography.stub!(:match).with(fisher).and_return({:status => HolBibliography::NO_ENTRIES_FOR_AUTHOR})
-      @bibliography.stub!(:match).with(another_fisher).and_return({:status => HolBibliography::NO_ENTRIES_FOR_AUTHOR})
+      @bibliography.stub!(:match).with(fisher).and_return({:status => Hol::Bibliography::NO_ENTRIES_FOR_AUTHOR})
+      @bibliography.stub!(:match).with(another_fisher).and_return({:status => Hol::Bibliography::NO_ENTRIES_FOR_AUTHOR})
       @importer.import
       @importer.missing_authors.should == ['fisher']
       @importer.missing_author_failure_count.should == 2

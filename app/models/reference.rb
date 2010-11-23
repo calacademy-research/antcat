@@ -161,7 +161,7 @@ class Reference < ActiveRecord::Base
   end
 
   def self.import_hol_source_urls show_progress = false
-    HolSourceUrlImporter.new(show_progress).import
+    Hol::SourceUrlImporter.new(show_progress).import
   end
 
   def to_s

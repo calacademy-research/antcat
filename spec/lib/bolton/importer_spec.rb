@@ -1,10 +1,10 @@
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require 'spec_helper'
 
-describe BoltonImporter do
+describe Bolton::Importer do
   describe "importing genera" do
     it "should do nothing if the file is empty" do
       File.should_receive(:read).with('subfamily_genus.html').and_return('')
-      BoltonImporter.new.get_subfamilies('subfamily_genus.html')
+      Bolton::Importer.new.get_subfamilies('subfamily_genus.html')
       Genus.all.should be_empty 
     end
 
@@ -42,7 +42,7 @@ describe BoltonImporter do
       CONTENTS
 
       File.should_receive(:read).with('subfamily_genus.html').and_return(contents)
-      BoltonImporter.new.get_subfamilies('subfamily_genus.html').should == [{:genus => 'Amblyopone'}]
+      Bolton::Importer.new.get_subfamilies('subfamily_genus.html').should == [{:genus => 'Amblyopone'}]
     end
   end
 

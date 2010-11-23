@@ -1,9 +1,9 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe BoltonBibliography do
+describe Bolton::Bibliography do
   describe "importing from a file" do
     before do
-      @bibliography = BoltonBibliography.new 'filename'
+      @bibliography = Bolton::Bibliography.new 'filename'
     end
 
     it "importing a file should call #import_html" do
