@@ -518,26 +518,22 @@ describe Reference do
 
   describe "versioning" do
     it "should work" do
-      reference = Factory :reference, :title => 'Title'
-      user = Factory :user
-      reference.version.should == 2
-      reference.versions.last.user.should be_nil
+      reference = UnknownReference.create! :title => 'title', :citation_year => '2010', :citation => 'citation'
+      reference.versions.last.event.should == 'create'
 
-      reference.updated_by = user
-      reference.update_attributes(:title => "A new title")
-      reference.version.should == 3
-      reference.title.should == "A new title"
-      reference.versions.last.user.should == user
+      reference.update_attribute :title, 'new title'
+      reference.versions.last.event.should == 'update'
 
-      reference.revert_to 2
-      reference.updated_by = nil
-      reference.save!
-      reference.version.should == 4
-      reference.title.should == "Title"
+      #reference.update_attributes(:title => "A new title")
+      #reference.version.should == 3
+      #reference.title.should == "A new title"
 
-      reference.updated_by = nil
-      reference.update_attributes(:title => "An even newer title")
-      reference.versions.last.user.should be_nil
+      #reference.revert_to 2
+      #reference.save!
+      #reference.version.should == 4
+      #reference.title.should == "Title"
+
+      #reference.update_attributes(:title => "An even newer title")
     end
   end
 

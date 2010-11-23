@@ -1,5 +1,5 @@
 class Reference < ActiveRecord::Base
-  versioned
+  has_paper_trail
 
   has_many :reference_author_names, :order => :position
   has_many :author_names, :through => :reference_author_names, :order => :position,
