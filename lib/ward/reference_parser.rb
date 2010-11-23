@@ -1,4 +1,4 @@
-class ReferenceParser
+class Ward::ReferenceParser
 
   def self.parse string
     string = string.dup
@@ -11,7 +11,7 @@ class ReferenceParser
   end
 
   def self.parse_authors string
-    authors_data = AuthorParser.parse(string)
+    authors_data = Ward::AuthorParser.parse(string)
     {:author_names => authors_data[:names], :author_names_suffix => authors_data[:suffix]}
   end
 
@@ -25,7 +25,7 @@ class ReferenceParser
   end
 
   def self.parse_title_and_citation string
-    result = TitleAndCitationParser.parse string
+    result = Ward::TitleAndCitationParser.parse string
     {:title => result[:title]}.merge result[:citation]
   end
 

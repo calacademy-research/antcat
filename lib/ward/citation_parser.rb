@@ -1,8 +1,8 @@
-class CitationParser
+class Ward::CitationParser
   def self.parse string, possibly_embedded = false
-    NestedCitationParser.parse(string) ||
-    ArticleCitationParser.parse(string, possibly_embedded) ||
-    BookCitationParser.parse(string, possibly_embedded) ||
+    Ward::NestedCitationParser.parse(string) ||
+    Ward::ArticleCitationParser.parse(string, possibly_embedded) ||
+    Ward::BookCitationParser.parse(string, possibly_embedded) ||
     !possibly_embedded && parse_unknown_citation(string)
   end
 

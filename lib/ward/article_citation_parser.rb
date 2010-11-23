@@ -1,4 +1,4 @@
-module ArticleCitationParser
+module Ward::ArticleCitationParser
 
   def self.parse string, possibly_embedded
     return unless string.present?

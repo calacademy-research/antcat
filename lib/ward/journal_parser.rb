@@ -1,4 +1,4 @@
-module JournalParser
+module Ward::JournalParser
 
   def self.parse string
     matches = string.match(/(.+?)(\S+)$/) or return

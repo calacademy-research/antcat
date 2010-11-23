@@ -1,6 +1,6 @@
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require 'spec_helper'
 
-describe PaginationParser do
+describe Ward::PaginationParser do
   ['1 p., 5 maps',
     '12 + 532 pp.',
     '24 pp. 24 pls.',
@@ -19,13 +19,13 @@ describe PaginationParser do
   ].each do |pagination|
     it "should handle '#{pagination}'" do
       string = pagination.dup
-      PaginationParser.parse(string).should == pagination
+      Ward::PaginationParser.parse(string).should == pagination
       string.should be_empty
     end
   end
 
   it "shouldn't consider '4th' a pagination" do 
-    PaginationParser.parse('4th').should be_nil
+    Ward::PaginationParser.parse('4th').should be_nil
   end
 
 end

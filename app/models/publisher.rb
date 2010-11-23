@@ -11,7 +11,7 @@ class Publisher < ActiveRecord::Base
   end
 
   def self.import_string string
-    parts = PublisherParser.parse string
+    parts = Ward::PublisherParser.parse string
     import parts[:publisher] if parts
   end
 

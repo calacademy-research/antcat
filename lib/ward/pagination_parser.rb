@@ -1,4 +1,4 @@
-module PaginationParser
+module Ward::PaginationParser
   def self.parse string
     return unless string.present?
     pagination = PaginationGrammar.parse string.strip

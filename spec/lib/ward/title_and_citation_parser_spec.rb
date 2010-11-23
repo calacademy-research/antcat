@@ -1,6 +1,6 @@
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require 'spec_helper'
 
-describe TitleAndCitationParser do
+describe Ward::TitleAndCitationParser do
   before :all do
     Factory :place, :name => 'New York'
     Factory :place, :name => 'Cambridge'
@@ -8,7 +8,7 @@ describe TitleAndCitationParser do
 
   it "should extract a simple title and reference from book reference" do
     string = "Ants. Cambridge:Harvard, 320 pp."
-    TitleAndCitationParser.parse(string).should == {
+    Ward::TitleAndCitationParser.parse(string).should == {
       :title => 'Ants',
       :citation => {
         :book => {
@@ -18,7 +18,7 @@ describe TitleAndCitationParser do
 
   it "should extract a simple title from an article reference" do
     string = "Ants. Psyche 30:1"
-    TitleAndCitationParser.parse(string).should == {
+    Ward::TitleAndCitationParser.parse(string).should == {
       :title => 'Ants',
       :citation => {
         :article => {
@@ -28,7 +28,7 @@ describe TitleAndCitationParser do
   end
 
   it "should handle journal titles that begin with uppercase UTF-8 characters" do
-    TitleAndCitationParser.parse(
+    Ward::TitleAndCitationParser.parse(
       'Stridulationsorgan och ljudf"ornimmelser hos myror. Öfversigt af Kongliga Ventenskaps-Akadamiens Förhandlingar 52: 769-782.'
     )[:citation][:article][:journal].should == 'Öfversigt af Kongliga Ventenskaps-Akadamiens Förhandlingar'
   end
@@ -36,7 +36,7 @@ describe TitleAndCitationParser do
   describe "nested references" do
     it "should extract a simple title followed by 'In:'" do
       string = "Ants. In: Ward, P.S. Ants. New York:Wiley, 32 pp."
-      TitleAndCitationParser.parse(string).should == {
+      Ward::TitleAndCitationParser.parse(string).should == {
         :title => 'Ants',
         :citation => {
           :nested => {
@@ -51,7 +51,7 @@ describe TitleAndCitationParser do
 
     it "should extract a simple title followed by a more complicated pages_in" do
       string = "Ants. Pp. 32, 4, 5 in Ward, P.S. Ants. New York:Wiley, 32 pp."
-      TitleAndCitationParser.parse(string).should == {
+      Ward::TitleAndCitationParser.parse(string).should == {
         :title => 'Ants',
         :citation => {
           :nested => {
@@ -66,7 +66,7 @@ describe TitleAndCitationParser do
 
     it "should extract a simple title followed by a double nested citation" do
       string = "Ants. Pp. 32, 4, 5 in Ward, P.S. Ants. In: Bolton, B. More ants. New York:Wiley, 32 pp."
-      TitleAndCitationParser.parse(string).should == {
+      Ward::TitleAndCitationParser.parse(string).should == {
         :title => 'Ants',
         :citation => {
           :nested => {
@@ -86,7 +86,7 @@ describe TitleAndCitationParser do
 
     it "should not find 'in' in the middle of a title" do
       string = "Ants in Madagascar. New York:Wiley, 32 pp."
-      TitleAndCitationParser.parse(string)[:title].should == 'Ants in Madagascar'
+      Ward::TitleAndCitationParser.parse(string)[:title].should == 'Ants in Madagascar'
     end
   end
 
@@ -94,7 +94,7 @@ describe TitleAndCitationParser do
 
     it "should work when the following citation is nested" do
       string = "Ants of St. Croix. In: Ward, P.S. Ants. New York:Wiley, 32 pp."
-      TitleAndCitationParser.parse(string).should == {
+      Ward::TitleAndCitationParser.parse(string).should == {
         :title => 'Ants of St. Croix',
         :citation => {
           :nested => {
@@ -112,7 +112,7 @@ describe TitleAndCitationParser do
      'Mitteilungen', 'Occasional Papers'].each do |word|
       it "should find the title when the journal name starts with '#{word}'" do
         string = "Dodech. Ants. #{word} 32:3"
-        TitleAndCitationParser.parse(string).should == {
+        Ward::TitleAndCitationParser.parse(string).should == {
           :title => 'Dodech. Ants',
           :citation => {
             :article => {
@@ -125,7 +125,7 @@ describe TitleAndCitationParser do
     it "should find the title when the journal name is already known" do
       Journal.create! :name => 'Science'
       string = "Dodech. Ants. Science 32:3"
-      TitleAndCitationParser.parse(string).should == {
+      Ward::TitleAndCitationParser.parse(string).should == {
         :title => 'Dodech. Ants',
         :citation => {
           :article => {
@@ -137,7 +137,7 @@ describe TitleAndCitationParser do
     it "should find the title when the place name is already known" do
       Place.create! :name => 'Las Vegas'
       string = "Dodech. Ants. Las Vegas:Barnes, 32 pp."
-      TitleAndCitationParser.parse(string).should == {
+      Ward::TitleAndCitationParser.parse(string).should == {
         :title => 'Dodech. Ants',
         :citation => {
           :book => {
@@ -148,7 +148,7 @@ describe TitleAndCitationParser do
     it "should not be fooled by a string that merely starts with the name of a journal" do
       Journal.create! :name => 'Science'
       string = "Dodech. Science in the home. Nature 32:3"
-      TitleAndCitationParser.parse(string).should == {
+      Ward::TitleAndCitationParser.parse(string).should == {
         :title => 'Dodech. Science in the home', 
         :citation => {
           :article => {
@@ -159,7 +159,7 @@ describe TitleAndCitationParser do
 
     it "should realize that a title can't end with a comma" do
       string = "Taxonomy, phylogeny: Philip Jr., 1904-1983. Series Entomologica (Dordrecht) 33:1-514."
-      TitleAndCitationParser.parse(string).should == {
+      Ward::TitleAndCitationParser.parse(string).should == {
         :title => 'Taxonomy, phylogeny: Philip Jr., 1904-1983',
         :citation => {
           :article => {
@@ -171,7 +171,7 @@ describe TitleAndCitationParser do
     it "should be able to handle this weird journal name, as long as it exists" do
       Journal.create! :name => 'Verhandlungen der Kaiserlich-Königlichen Zoologisch-Botanischen Gesellschaft in Wien'
       string = "Ameisen aus Sao Paulo (Brasilien), Paraguay etc. gesammelt von Prof. Herm. v. Ihering, Dr. Lutz, Dr. Fiebrig, etc. Verhandlungen der Kaiserlich-Königlichen Zoologisch-Botanischen Gesellschaft in Wien 58:340-418"
-      TitleAndCitationParser.parse(string).should == {
+      Ward::TitleAndCitationParser.parse(string).should == {
         :title => 'Ameisen aus Sao Paulo (Brasilien), Paraguay etc. gesammelt von Prof. Herm. v. Ihering, Dr. Lutz, Dr. Fiebrig, etc',
         :citation => {
           :article => {
@@ -182,7 +182,7 @@ describe TitleAndCitationParser do
 
     it "should find the journal name in this one anyway, as it contains no periods" do
       string = "Ameisen aus Sao Paulo (Brasilien), Paraguay etc. gesammelt von Prof. Herm. v. Ihering, Dr. Lutz, Dr. Fiebrig, etc. Verhandlungen der Kaiserlich-Königlichen Zoologisch-Botanischen Gesellschaft in Wien 58:340-418"
-      TitleAndCitationParser.parse(string).should == {
+      Ward::TitleAndCitationParser.parse(string).should == {
         :title => 'Ameisen aus Sao Paulo (Brasilien), Paraguay etc. gesammelt von Prof. Herm. v. Ihering, Dr. Lutz, Dr. Fiebrig, etc',
         :citation => {
           :article => {
@@ -196,7 +196,7 @@ describe TitleAndCitationParser do
   describe "titles that include bracketed expressions" do
     it "should include bracketed expressions in the title when the period is inside the brackets" do
       string = "[Untitled.] New York:Wiley, 23 pp."
-      TitleAndCitationParser.parse(string).should == {
+      Ward::TitleAndCitationParser.parse(string).should == {
         :title => '[Untitled.]',
         :citation => {
           :book => {
@@ -206,7 +206,7 @@ describe TitleAndCitationParser do
 
     it "should include bracketed expressions in the title when the period is outside the brackets" do
       string = "[Untitled]. New York:Wiley, 23 pp."
-      TitleAndCitationParser.parse(string).should == {
+      Ward::TitleAndCitationParser.parse(string).should == {
         :title => '[Untitled]',
         :citation => {
           :book => {
@@ -216,29 +216,29 @@ describe TitleAndCitationParser do
 
     it "should handle parenthesized sentences" do
       string = "From individual to collective behavior in social insects. (Experientia: Supplementum, Volume 54). Basel: Birkhäuser Verlag, 433 pp."
-      TitleAndCitationParser.parse(string)[:title].should == 'From individual to collective behavior in social insects. (Experientia: Supplementum, Volume 54)'
+      Ward::TitleAndCitationParser.parse(string)[:title].should == 'From individual to collective behavior in social insects. (Experientia: Supplementum, Volume 54)'
     end
 
   end
 
   it "should handle a number followed by a colon" do
     string = "Atas do simpósio sôbre a biota amazônica. Vol. 5: Zoologia. Rio de Janeiro: Conselho Nacional de Pesquisas, 603 pp."
-    TitleAndCitationParser.parse(string)[:title].should == 'Atas do simpósio sôbre a biota amazônica. Vol. 5: Zoologia'
+    Ward::TitleAndCitationParser.parse(string)[:title].should == 'Atas do simpósio sôbre a biota amazônica. Vol. 5: Zoologia'
   end
 
   it "should work" do
     string = "Afrotropical ants of the ponerine genera Centromyrmex Mayr, Promyopias Santschi gen. rev. and Feroponera gen. n., with a revised key to genera of African Ponerinae (Hymenoptera: Formicidae). Zootaxa 1929(1): 1-37."
-    TitleAndCitationParser.parse(string)[:title].should == 'Afrotropical ants of the ponerine genera Centromyrmex Mayr, Promyopias Santschi gen. rev. and Feroponera gen. n., with a revised key to genera of African Ponerinae (Hymenoptera: Formicidae)'
+    Ward::TitleAndCitationParser.parse(string)[:title].should == 'Afrotropical ants of the ponerine genera Centromyrmex Mayr, Promyopias Santschi gen. rev. and Feroponera gen. n., with a revised key to genera of African Ponerinae (Hymenoptera: Formicidae)'
   end
 
   describe "unparseable strings" do
     it "should take the first sentence as the title and the rest as the citation" do
-      TitleAndCitationParser.parse('Ants. A book').should == {:title => 'Ants', :citation => {:unknown => 'A book'}}
+      Ward::TitleAndCitationParser.parse('Ants. A book').should == {:title => 'Ants', :citation => {:unknown => 'A book'}}
     end
   end
 
   it "should work" do
-    TitleAndCitationParser.parse(
+    Ward::TitleAndCitationParser.parse(
 "Proceedings of the Second All-Union Conference on the problems of kadastre of animal world. Part 4. [In Russian.] Ufa: Bashkirskoe Knizhnoe Izdatelstvo, 351 pp."
     )[:citation][:book][:publisher][:place].should == 'Ufa'
   end

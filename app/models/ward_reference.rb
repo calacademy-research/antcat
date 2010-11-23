@@ -56,11 +56,11 @@ class WardReference < ActiveRecord::Base
     data = {:id => id, :class => self.class.to_s}
 
     if authors
-      author_data = AuthorParser.parse(authors.dup)
+      author_data = Ward::AuthorParser.parse(authors.dup)
       data[:author_names] = author_data[:names]
       data[:author_names_suffix] = author_data[:suffix]
     end
-    data.merge!(CitationParser.parse(citation) || {})
+    data.merge!(Ward::CitationParser.parse(citation) || {})
     data[:citation_year] = remove_period_from year
     data[:cite_code] = cite_code
     data[:date] = date

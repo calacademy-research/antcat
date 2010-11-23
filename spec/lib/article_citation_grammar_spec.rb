@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require 'spec_helper'
 
 describe ArticleCitationGrammar do
 
@@ -27,9 +27,7 @@ describe ArticleCitationGrammar do
 
   it "should not consider this an article" do
     string = "Glen Osmond, South Australia:4th International Hymenopterists Conference, 96 pp."
-    lambda {
-      lll{'ArticleCitationGrammar.parse(string)'}
-    }.should raise_error
+    lambda {ArticleCitationGrammar.parse(string)}.should raise_error
   end
 
 end

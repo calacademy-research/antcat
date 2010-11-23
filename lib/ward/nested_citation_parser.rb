@@ -1,4 +1,4 @@
-module NestedCitationParser
+module Ward::NestedCitationParser
 
   def self.parse string
     begin
@@ -9,7 +9,7 @@ module NestedCitationParser
     return unless pages_in
 
     rest = string[pages_in.length..-1]
-    inner = ReferenceParser.parse rest
+    inner = Ward::ReferenceParser.parse rest
 
     {:nested => inner.merge(:pages_in => pages_in.strip)}
   end

@@ -9,7 +9,7 @@
 #  4) Run 'rake import_ward'.
 #     This will delete all data and import it from the web page output.
 
-class WardBibliography
+class Ward::Bibliography
   def initialize filename, show_progress = false
     Progress.init show_progress
     @filename = filename.to_s

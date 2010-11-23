@@ -1,4 +1,4 @@
-module AuthorParser
+module Ward::AuthorParser
   def self.parse string
     return {:names => []} unless string.present?
     match = AuthorGrammar.parse(string)

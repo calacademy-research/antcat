@@ -1,4 +1,4 @@
-module BookCitationParser
+module Ward::BookCitationParser
 
   def self.parse string, possibly_embedded
     return unless string.present?
@@ -27,7 +27,7 @@ module BookCitationParser
       break unless start_of_comma_section = string.rindex(',', start_of_comma_section - 1)
       begin
         input = string.dup
-        pagination = PaginationParser.parse input[(start_of_comma_section + 1)..-1].strip
+        pagination = Ward::PaginationParser.parse input[(start_of_comma_section + 1)..-1].strip
       rescue Citrus::ParseError
         break
       end

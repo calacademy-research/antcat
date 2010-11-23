@@ -1,6 +1,6 @@
 require 'strscan'
 
-module TitleAndCitationParser
+module Ward::TitleAndCitationParser
 
   def self.parse string
     citation = first_possible_citation_start = first_possible_title_end = nil
@@ -11,12 +11,12 @@ module TitleAndCitationParser
       @scanner.scan /\s*/u
       next unless sentence_start? @scanner.rest
       first_possible_citation_start ||= @scanner.pos
-      break if citation = CitationParser.parse(@scanner.rest, true)
+      break if citation = Ward::CitationParser.parse(@scanner.rest, true)
     end
 
     unless citation
       title_end = first_possible_title_end
-      citation = CitationParser.parse(string[first_possible_citation_start..-1], false)
+      citation = Ward::CitationParser.parse(string[first_possible_citation_start..-1], false)
     end
     {:title => remove_extra_characters_from_end_of(string[0, title_end]), :citation => citation}
   end

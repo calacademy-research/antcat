@@ -11,6 +11,7 @@ class BoltonBibliography
   def import_file
     Progress.print "Importing #{@filename}"
     import_html File.read(@filename)
+    Progress.puts
   end
 
   def import_html html
@@ -19,18 +20,16 @@ class BoltonBibliography
     ps.each do |p|
       import_reference p.inner_html
     end
-    $stderr.puts if @show_progress
   end
 
   def import_reference string
-    Progress.dot
-
     string = normalize string
     return unless string.length > 20
 
     string, date = extract_date string
 
     match = string.match /(\D+) ?(\d\w+)\.? ?(.+)[,.]/
+    return unless match
 
     author_names = match[1].strip
     year = match[2].strip
@@ -38,6 +37,7 @@ class BoltonBibliography
 
     reference = BoltonReference.create! :authors => author_names, :year => year,
       :title_and_citation => title_and_citation, :date => date
+    Progress.dot
   end
 
   def extract_date string
