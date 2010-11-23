@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Ward::CitationParser do
   describe "actual parsed data results" do
-    before :all do
+    before :each do
       Factory :place, :name => 'Melbourne'
       Factory :place, :name => 'Leiden'
       Factory :place, :name => 'Cambridge, Mass.'

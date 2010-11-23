@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require 'spec_helper'
 
 describe UniqueFilename do
   it "should simply return the filename if it doesn't already exist" do

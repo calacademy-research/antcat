@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Ward::TitleAndCitationParser do
-  before :all do
+  before :each do
     Factory :place, :name => 'New York'
     Factory :place, :name => 'Cambridge'
   end
