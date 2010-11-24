@@ -75,6 +75,51 @@ class AuthorName < ActiveRecord::Base
     end
   end
 
+  def self.alias show_progress, *names
+    Progress.init show_progress
+    names = names.map do |name|
+      author_name = nil
+      unless author_name = find_by_name(name)
+        author_name = Factory :author_name, :name => name
+      end
+      author_name
+    end
+    author = names.first.author
+    names[1..-1].each do |name|
+      Progress.puts "Aliasing '#{name.name}' to '#{names.first.name}'"
+      name.author.destroy
+      name.update_attribute :author, author
+    end
+  end
+
+  def self.correct bad, good, show_progress = true
+    Progress.init show_progress
+    Progress.print "Correcting '#{bad}' to '#{good}'..."
+    bad_name = find_by_name bad
+    raise unless bad_name
+    existing_name = find_by_name good
+    if existing_name
+      Progress.puts 'which already exists'
+      references = bad_name.references.dup
+      ReferenceAuthorName.all(:conditions => ['author_name_id = ?', bad_name.id]).each do |e|
+        e.author_name_id = existing_name.id
+        e.save!
+      end
+      author = bad_name.author
+      bad_name.destroy
+      author.destroy unless author.names.present?
+      references.each do |reference|
+        Progress.puts "Changed #{reference}"
+        reference.update_author_names_string
+        Progress.puts "     to #{reference}"
+      end
+    else
+      Progress.puts "which doesn't exist"
+      bad_name.name = good
+      bad_name.save!
+    end
+  end
+
   private
   def name_parts
     @name_parts ||= Ward::AuthorParser.get_name_parts name

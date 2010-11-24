@@ -165,4 +165,63 @@ describe AuthorName do
     end
   end
 
+  describe "aliasing" do
+    it "should create aliases between all the provided names and delete the extra authors" do
+      Author.delete_all
+      Factory :author_name, :name => 'Ward, P. S.'
+      Factory :author_name, :name => 'Ward, Phil'
+      AuthorName.alias true, 'Ward, P. S.', 'Ward, Phil'
+      AuthorName.find_by_name('Ward, P. S.').author.should == AuthorName.find_by_name('Ward, Phil').author
+      Author.count.should == 1
+    end
+    it "should handle the situation where none of the authors exist yet" do
+      Author.delete_all
+      AuthorName.alias true, 'Ward, P. S.', 'Ward, Phil'
+      AuthorName.find_by_name('Ward, P. S.').author.should == AuthorName.find_by_name('Ward, Phil').author
+      Author.count.should == 1
+    end
+  end
+
+  describe "correcting" do
+    describe "when the correct name doesn't exist" do
+      it "should add the correct name, delete the old name, and update its reference's" do
+        Author.delete_all
+        reference = Factory :reference, :author_names => [Factory :author_name, :name => 'Ward, Phil']
+        AuthorName.correct 'Ward, Phil', 'Ward, P. S.', false
+        AuthorName.find_by_name('Ward, Phil').should be_nil
+        reference.reload
+        reference.author_names.map(&:name).should == ['Ward, P. S.']
+        reference.author_names_string.should == 'Ward, P. S.'
+      end
+    end
+    describe "when the correct name does exist" do
+      it "should add the correct name, delete the old name, and update its references" do
+        Author.delete_all
+        Factory :author_name, :name => 'Ward, P. S.'
+        reference = Factory :reference, :author_names => [Factory :author_name, :name => 'Ward, Phil']
+        AuthorName.correct 'Ward, Phil', 'Ward, P. S.', false
+        AuthorName.find_by_name('Ward, Phil').should be_nil
+        reference.reload
+        reference.author_names.map(&:name).should == ['Ward, P. S.']
+        reference.author_names_string.should == 'Ward, P. S.'
+        AuthorName.count.should == 1
+        Author.count.should == 1
+      end
+      describe "when the correct name does exist and it has other names" do
+        it "shouldn't delete the author" do
+          Author.delete_all
+          author = Factory :author
+          good = Factory :author_name, :name => 'Ward, P. S.', :author => author
+          bad = Factory :author_name, :name => 'Ward, Phil', :author => author
+          reference = Factory :reference, :author_names => [bad]
+          AuthorName.correct 'Ward, Phil', 'Ward, P. S.', false
+          AuthorName.find_by_name('Ward, Phil').should be_nil
+          AuthorName.find_by_name('Ward, P. S.').author.should == author
+          AuthorName.count.should == 1
+          Author.count.should == 1
+        end
+      end
+    end
+  end
+
 end
