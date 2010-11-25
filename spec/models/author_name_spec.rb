@@ -170,15 +170,27 @@ describe AuthorName do
       Author.delete_all
       Factory :author_name, :name => 'Ward, P. S.'
       Factory :author_name, :name => 'Ward, Phil'
-      AuthorName.alias true, 'Ward, P. S.', 'Ward, Phil'
+      AuthorName.alias false, 'Ward, P. S.', 'Ward, Phil'
       AuthorName.find_by_name('Ward, P. S.').author.should == AuthorName.find_by_name('Ward, Phil').author
       Author.count.should == 1
     end
     it "should handle the situation where none of the authors exist yet" do
       Author.delete_all
-      AuthorName.alias true, 'Ward, P. S.', 'Ward, Phil'
+      AuthorName.alias false, 'Ward, P. S.', 'Ward, Phil'
       AuthorName.find_by_name('Ward, P. S.').author.should == AuthorName.find_by_name('Ward, Phil').author
       Author.count.should == 1
+    end
+    it "should not mess about aliases that are already there" do
+      Author.delete_all
+      martinez_ibanez = Author.create!
+      AuthorName.create! :name => 'Martínez Ibáñez, M. D.', :author => martinez_ibanez
+      AuthorName.create! :name => 'Martínez-Ibáñez, M. D.', :author => martinez_ibanez
+      Factory :author_name, :name => 'Martínez-Ibañez, D.'
+      AuthorName.alias false, "Martínez Ibáñez, M. D.", "Martínez-Ibañez, D.", "Martínez-Ibáñez, M. D."
+      Author.count.should == 1
+      author = AuthorName.find_by_name("Martínez Ibáñez, M. D.").author 
+      author.should == AuthorName.find_by_name("Martínez-Ibañez, D.").author 
+      author.should == AuthorName.find_by_name("Martínez-Ibáñez, M. D.").author 
     end
   end
 

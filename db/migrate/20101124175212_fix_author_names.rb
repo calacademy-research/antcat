@@ -8,6 +8,7 @@ class FixAuthorNames < ActiveRecord::Migration
       AuthorName.alias true, "Diehl, E.", "Diehl-Fleig, E."
 
       son = Factory :author_name, :name => 'Diehl-Fleig, Ed.'
+      AuthorName.alias true, "Diehl-Fleig, E. D.", "Diehl-Fleig, Ed."
       ['96-1373', '96-0213'].each do |cite_code|
         reference = Reference.find_by_cite_code  cite_code
         reference_author_name_for_son = ReferenceAuthorName.first(
@@ -23,7 +24,7 @@ class FixAuthorNames < ActiveRecord::Migration
       AuthorName.alias true, "Don, A. W.", "Don, W."
       AuthorName.alias true, "Dubovikoff, D. A.", "Dubovikov, D. A."
       AuthorName.alias true, "Franch Batlle, J.", "Franch, J."
-      AuthorName.alias true, "Martínez Ibáñez, M. D.", "Martínez-Ibañez, D.", "Martínez-Ibáñez, M. D."
+      AuthorName.alias true, "Martínez Ibáñez, M. D.", "Martínez-Ibañez, D.", "Martínez-Ibáñez, M. D.", "Martínez, M. D."
       AuthorName.alias true, 'Mustak Ali, T. M.', 'Musthak Ali, T. M.'
       AuthorName.alias true, 'Reyes López, J.', 'Reyes López, J. L.', 'Reyes, J.', 'Reyes, J. L.'
       AuthorName.alias true, "Zhigul'skaya, Z. A.", 'Zhigulskaya, Z. A.'
@@ -83,6 +84,7 @@ class FixAuthorNames < ActiveRecord::Migration
       AuthorName.alias true, "Dlussky, G.", "Dlussky, G. M."
       AuthorName.alias true, "Fadl, H.", "Fadl, H. H."
       AuthorName.alias true, "Fernandez Escudero, I.", "Fernandez-Escudero"
+      AuthorName.alias true, "Garcia Perez, J.", "García-Pérez, J. A."
       AuthorName.alias true, "Gauld, I.", "Gauld, I. D."
       AuthorName.alias true, "Gertsch, P.", "Gertsch, P. J."
       AuthorName.alias true, "Greenslade, P.", "Greenslade, P. J. M."
@@ -100,6 +102,7 @@ class FixAuthorNames < ActiveRecord::Migration
       AuthorName.alias true, "Klotz, J.", "Klotz, J. H."
       AuthorName.alias true, "Kohout, R.", "Kohout, R. J."
       AuthorName.alias true, "Lattke, J.", "Lattke, J. E."
+      AuthorName.alias true, "LePrince, D.", "LePrince, D. J."
       AuthorName.alias true, "Liu, M.", "Liu, M.-T."
       AuthorName.alias true, "Lubin, Y.", "Lubin, Y. D."
       AuthorName.alias true, "Lyu, D.", "Lyu, D.-P."
@@ -159,8 +162,12 @@ class FixAuthorNames < ActiveRecord::Migration
       AuthorName.correct 'Colllingwood, C. A.', 'Collingwood, C. A.'
       AuthorName.correct 'Johnsos, R. A.', 'Johnson, R. A.'
       AuthorName.correct "Zimmermannn, F. K.", "Zimmermann, F. K."
-      AuthorName.correct "Azarae, I.", "Azarae, Hj."
-      AuthorName.alias true, "Azarae, I.", "Azarae, Hj."
+
+      AuthorName.correct "Azarae, I.", "Azarae, I. Hj."
+      AuthorName.alias true, "Azarae, H. I.", "Azarae, I. Hj."
+      reference = Reference.find_by_title "Hj. Six new weaver ant species from Malaysia: *. Malaysian Journal of Science. Series A"
+      reference.update_attribute :title, "Six new weaver ant species from Malaysia: *. Malaysian Journal of Science. Series A"
+
       AuthorName.correct "Bestelmayer, B. T.", "Bestelmeyer, B. T."
       AuthorName.correct "Boosmsma, J. J.", "Boomsma, J. J."
       AuthorName.correct "Carrilloa, J. A.", "Carrillo, J. A."
@@ -187,6 +194,78 @@ class FixAuthorNames < ActiveRecord::Migration
       AuthorName.correct "Sanetra, M", "Sanetra, M."
       AuthorName.correct "Solis, D. R", "Solis, D. R."
       AuthorName.alias true, "Taylor, R.", "Taylor, R. W."
+
+      # from the book
+      AuthorName.alias true, "Acosta Salmerón, F. J.", "Acosta, F. J."
+      AuthorName.alias true, "Arakelian, G. R.", "Arakelyan, G. R."
+      AuthorName.alias true, "Arnol'di, K. V.", "Arnoldi, K. V."
+      AuthorName.alias true, "Atanassov, N.", "Atanasov, N.", "Atanassow, N."
+      AuthorName.alias true, "Billen, J. P. J.", "Billen, J."
+      AuthorName.alias true, "Boven, J. K. A. van", "Boven, J. van"
+      AuthorName.alias true, "Brandão, C. R. F.", "Ferreira Brandão, C. R."
+      AuthorName.alias true, "Collingwood, C. A.", "Collingwood, C."
+      AuthorName.alias true, "Comín, P.", "Comín del Río, P."
+      AuthorName.alias true, "Dalla Torre, K. W. von", "Dalla Torre, C. G. de"
+      AuthorName.alias true, "De Haro, A.", "De Haro Vera, A."
+      AuthorName.alias true, "Deyrup, M.", "Deyrup, M. A."
+      AuthorName.alias true, "Dlussky, G. M.", "Dlusskiy, G. M."
+      AuthorName.alias true, "Donisthrope, H.", "Donisthorpe, H. S. J. K."
+      AuthorName.alias true, "Escalante Gutiérrez, J. A.", "Escalante G., J. A."
+      AuthorName.alias true, "Espadaler, X.", "Espadaler Gelabert, X."
+      AuthorName.alias true, "Ezhikov, T.", "Ezikov, J."
+      AuthorName.alias true, "Fontenla Rizo, J. L.", "Fontenla, J. L."
+      AuthorName.alias true, "Frauenfeld, G. R. von", "Frauenfeld, G."
+      AuthorName.alias true, "Gerstäcker, A.", "Gerstaecker, A."
+      AuthorName.alias true, "Hermann, H. R.", "Hermann, H. R. Jr."
+      AuthorName.alias true, "Ipinza-Regla, J. H.", "Ipinza, J.", "Ipinza-Regla, J."
+      AuthorName.alias true, "Karavaiev, V.", "Karavajev, V.", "Karawaiew, W.", "Karawajew, W."
+      AuthorName.alias true, "Krausse, A. H.", "Krausse, A."
+      AuthorName.alias true, "Kusnezov, N.", "Kusnezow, N.", "Kuznetsov-Ugamsky, N. N.", "Kusnezov, N. N.",
+                             "Kusnezov-Ugamsky, N.", "Kusnezow, N. N.", "Kusnezow-Ugamsky, N.",
+                             "Kuznecov-Ugamskij, N. N.", "Kuznetzov-Ugamskij, N. N."
+      AuthorName.alias true, "Lattke, J. E.", "Lattke, J."
+      AuthorName.alias true, "Mackay, W. P.", "MacKay, W."
+      AuthorName.alias true, "Mayr, G.", "Mayr, G. L."
+      AuthorName.alias true, "Menozzi, C.", "Minozzi, C."
+      AuthorName.alias true, "Motschoulsky, V. de", "Motschulsky, V. de"
+      AuthorName.alias true, "Mukerjee, D.", "Mukerji, D.", "Mukherji, D."
+      AuthorName.alias true, "Ortiz, F. J.", "Ortiz y Sánchez, F. J."
+      AuthorName.alias true, "Quiran, E. M.", "Quiran, E."
+      AuthorName.alias true, "Radchenko, A. G.", "Radtchenko, A. G.", "Radtschenko, A. G."
+      AuthorName.alias true, "Ramos-Elorduy de Conconi, J.", "Conconi, J. R. E. de"
+      AuthorName.alias true, "Reyes, J. L.", "Reyes Lopez, J. L."
+      AuthorName.alias true, "Rodríguez, A.", "Rodríguez González, A."
+      AuthorName.alias true, "Ruzsky, M.", "Ruzsky, M. D."
+      AuthorName.alias true, "Schembri, S. P.", "Schembri, S."
+      AuthorName.alias true, "Schkaff, B.", "Škaff, B."
+      AuthorName.alias true, "Schmidt, G. H.", "Schmidt, G."
+      AuthorName.alias true, "Tinaut, A.", "Tinaut, J. A.", "Tinaut Ranera, J. A."
+      AuthorName.alias true, "Tiwari, R. N.", "Tewary, R. N."
+      AuthorName.alias true, "Tohmé, G.", "Tohme, G."
+      AuthorName.alias true, "Tohmé, H.", "Tohme, H."
+      AuthorName.alias true, "Wesselinoff, G. D.", "Vesselinov, G."
+      AuthorName.alias true, "Weyrauch, W.", "Weyrauch, W. K."
+      AuthorName.alias true, "Guillou, E. J. F. le", "Le Guillou, E. J. F."
+
+      # back out edits by Marek
+      
+      AuthorName.alias true, "Morley, B. D. W.", "Morley, D. B. W.", "Mosley, B. D. W."
+      wragge = AuthorName.find_by_name "Morley, D. B. W."
+      reference = Reference.find_by_cite_code '3219'
+      ReferenceAuthorName.update_all({:author_name_id => wragge.id}, {:reference_id => reference.id, :position => 2})
+      reference.update_author_names_string
+
+      AuthorName.alias true, "Morley, B. D. W.", "Morley, D. W."
+      wragge = AuthorName.find_by_name "Morley, D. W."
+      reference = Reference.find_by_cite_code '1019'
+      ReferenceAuthorName.update_all({:author_name_id => wragge.id}, {:reference_id => reference.id})
+      reference.update_author_names_string
+
+      AuthorName.alias true, "Ritter, H.", "Rittler, H."
+      rittler = AuthorName.find_by_name "Rittler, H."
+      reference = Reference.find_by_cite_code '8323'
+      ReferenceAuthorName.update_all({:author_name_id => rittler.id}, {:reference_id => reference.id})
+      reference.update_author_names_string
 
     end
   end

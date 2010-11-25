@@ -30,16 +30,12 @@ ActiveRecord::Schema.define(:version => 20101124175212) do
   create_table "bolton_references", :force => true do |t|
     t.string   "authors"
     t.string   "year"
+    t.string   "title_and_citation"
     t.string   "date"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "ward_reference_id"
     t.boolean  "suspect"
-    t.string   "title"
-    t.string   "journal"
-    t.string   "series_volume_issue"
-    t.string   "pagination"
-    t.string   "place"
   end
 
   create_table "genera", :force => true do |t|
