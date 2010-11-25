@@ -1,5 +1,8 @@
 class AuthorsController < ApplicationController
   def index
-    render :json => AuthorName.search(params[:term]).to_json
+    respond_to do |format|
+      format.json {render :json => AuthorName.search(params[:term]).to_json}
+      format.html
+    end
   end
 end
