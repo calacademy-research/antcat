@@ -267,6 +267,12 @@ class FixAuthorNames < ActiveRecord::Migration
       ReferenceAuthorName.update_all({:author_name_id => rittler.id}, {:reference_id => reference.id})
       reference.update_author_names_string
 
+      # author name fixes resulted in finding a duplicate reference
+      duplicate = Reference.find_by_year_and_pagination_and_cite_code 1995, '87-105', nil 
+      original = Reference.find_by_year_and_pagination_and_cite_code 1995, '87-105', '8321' 
+      nester = Reference.find_by_nested_reference_id duplicate.id
+      nester.update_attribute :nested_reference_id, original.id
+      duplicate.destroy
     end
   end
 
