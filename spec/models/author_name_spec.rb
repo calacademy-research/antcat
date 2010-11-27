@@ -224,4 +224,21 @@ describe AuthorName do
     end
   end
 
+  describe "finding preposition synonyms" do
+    ['Le', 'La', 'De'].each do |preposition|
+      it "should find names that differ only in having a space after the initial #{preposition}" do
+        no_space = Factory :author_name, :name => "#{preposition}farge, M."
+        with_space = Factory :author_name, :name => "#{preposition} Farge, M."
+        Factory :author_name, :name => "#{preposition}me, M."
+        AuthorName.find_preposition_synonyms.should == [[with_space, no_space]]
+      end
+    end
+    it "should find names that differ only in having a preposition in the back instead of the front" do
+      in_front = Factory :author_name, :name => "La Farge, M."
+      in_back = Factory :author_name, :name => "Farge, M., La"
+      Factory :author_name, :name => "me, M., La"
+      AuthorName.find_preposition_synonyms.should == [[in_front, in_back]]
+    end
+  end
+
 end

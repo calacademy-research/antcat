@@ -120,6 +120,31 @@ class AuthorName < ActiveRecord::Base
     end
   end
 
+  def self.find_preposition_synonyms show_progress = false
+    synonyms = []
+    all.each do |author_name|
+      name = author_name.name.dup
+      match = name.match /^((?:La|Le|De) )(.*)/i
+      next unless match
+
+      name_without_space = name.gsub! /^#{match[1]}/, match[1][0..-2]
+      if (author_name_without_space = find_by_name(name_without_space)) &&
+         author_name_without_space.author != author_name.author
+        synonyms << [author_name, author_name_without_space]
+      end
+
+      name = author_name.name.dup
+      name[0, match[1].length] = ''
+      name << ', ' + match[1]
+      name_with_preposition_at_end = name
+      if (author_name_with_preposition_at_end = find_by_name(name_with_preposition_at_end)) &&
+         author_name_with_preposition_at_end.author != author_name.author
+        synonyms << [author_name, author_name_with_preposition_at_end]
+      end
+    end
+    synonyms
+  end
+
   private
   def name_parts
     @name_parts ||= Ward::AuthorParser.get_name_parts name
