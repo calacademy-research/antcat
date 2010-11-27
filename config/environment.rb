@@ -16,6 +16,7 @@ Rails::Initializer.run do |config|
   config.gem 'sunspot', :lib => 'sunspot'
   config.gem 'sunspot_rails', :lib => 'sunspot/rails'
   config.gem 'paper_trail'
+  config.gem 'factory_girl', :lib => false
 
   config.gem 'fakeweb' if RAILS_ENV == 'test'
 
