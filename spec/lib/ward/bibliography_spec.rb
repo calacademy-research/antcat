@@ -138,6 +138,52 @@ describe Ward::Bibliography do
           end
         end
 
+        it "should handle this particularly complicated example" do
+            contents = "<html><body><table><tr></tr><tr><td></td><td>123</td><td></td><td></td><td></td>
+  <td class=xl85 width=181>Six new weaver ant species from Malaysia: 
+<font class=font7>Camponotus </font>
+<font class=font8>( </font>
+<font class=font7>Karavaievia</font>
+<font class=font8>) </font>
+<font class=font7>striatipes</font>
+<font class=font8>, </font>
+<font class=font7>C.</font>
+<font class=font8> (</font>
+<font class=font7>K.</font>
+<font class=font8>) </font>
+<font class=font7>melanus</font>
+<font class=font8>, </font>
+<font class=font7>C.</font>
+<font class=font8> (</font>
+<font class=font7>K.</font>
+<font class=font8>) </font>
+<font class=font7>nigripes</font>
+<font class=font8>, </font>
+<font class=font7>C.</font>
+<font class=font8> (</font>
+<font class=font7>K.</font>
+<font class=font8>) </font>
+<font class=font7>belumensis</font>
+<font class=font8>, </font>
+<font class=font7>C.</font>
+<font class=font8> (</font>
+<font class=font7>K.</font>
+<font class=font8>) </font>
+<font class=font7>gentingensis</font>
+<font class=font8>, and </font>
+<font class=font7>C.</font>
+<font class=font8> (</font>
+<font class=font7>K.</font>
+<font class=font8>) </font>
+<font class=font7>micragyne</font>
+<font class=font8>.</font>
+</td>
+                  <td></td><td></td><td></td></tr></table></body></html>"
+            Ward::Reference.should_receive(:create!).with hash_including(:title =>
+"Six new weaver ant species from Malaysia: *Camponotus **( **Karavaievia**) **striatipes**, **C.** (**K.**) **melanus**, **C.** (**K.**) **nigripes**, **C.** (**K.**) **belumensis**, **C.** (**K.**) **gentingensis**, and **C.** (**K.**) **micragyne**.*")
+            @bibliography.import_html contents
+        end
+
         it "should handle it when the td is italicized, and the font changes to normal" do
           contents = "<html><body><table><tr></tr><tr><td></td><td>123</td><td></td><td></td><td></td>
             <td class=xl68>Formicoxenus<font class=font0> ants</td>
