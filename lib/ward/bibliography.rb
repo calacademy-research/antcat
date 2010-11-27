@@ -38,7 +38,7 @@ class Ward::Bibliography
     data = {
       :filename        => @base_filename,
       :cite_code       => node_to_text(columns[col += 1]),
-      :authors         => fix_authors(node_to_text(columns[col += 1])),
+      :authors         => fix_authors(node_to_text(columns[col += 1], false)),
       :year            => node_to_text(columns[col += 1]),
       :date            => node_to_text(columns[col += 1]),
       :title           => node_to_text(columns[col += 1]),
@@ -55,18 +55,19 @@ class Ward::Bibliography
   end
 
   private
-  def node_to_text node
+  def node_to_text node, translate_italic_font_to_asterisks = true
     s = node.inner_html
 
     s.gsub! /\n/, ''
     s.gsub! /&nbsp;/, ' '
 
     # replace default font style with *'s when the next font tag is for font0
-    s.gsub! /^([^<]+)(?=<font class="font0">)/, '*\1*'
+    if translate_italic_font_to_asterisks
+      # replace default font style with *'s when the next font tag is for font0
+      s.gsub! /^([^<]+)(?=<font class="font0">)/, '*\1*'
+      s.gsub! /<font class="font[^0]">([^>]+)<\/font>/, '*\1*'
+    end
     
-    # replace italics font styling with *'s
-    s.gsub! /<font class="font[^0]">([^>]+)<\/font>/, '*\1*'
-
     # remove font reset
     s.gsub! /<font.*?>(.*?)<\/font>/, '\1'
     # remove links

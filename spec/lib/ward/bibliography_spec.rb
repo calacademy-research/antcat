@@ -184,6 +184,18 @@ describe Ward::Bibliography do
             @bibliography.import_html contents
         end
 
+        it "shouldn't mess with font tags in the authors list, but just strip them" do
+          contents = "<html><body><table><tr></tr><tr><td></td><td>123</td>
+    <td class=xl93 width=255>Soares, N. C.; Almeida, L. de O.; Gon<font
+    class=font0>ç</font><font class=font0>alves, C. A.; Marcolino, M. T.;
+    Bonetti, A. M.</font></td>
+            <td></td><td></td>
+            <td>Love &amp; Death</td>
+            <td></td><td></td><td></td></tr></table></body></html>"
+          Ward::Reference.should_receive(:create!).with hash_including(:authors => 'Soares, N. C.; Almeida, L. de O.; Gon&ccedil;alves, C. A.; Marcolino, M. T.; Bonetti, A. M.')
+          @bibliography.import_html contents
+        end
+
         it "should handle it when the td is italicized, and the font changes to normal" do
           contents = "<html><body><table><tr></tr><tr><td></td><td>123</td><td></td><td></td><td></td>
             <td class=xl68>Formicoxenus<font class=font0> ants</td>
