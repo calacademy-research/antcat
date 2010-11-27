@@ -10,7 +10,7 @@ class FixAuthorNames < ActiveRecord::Migration
       son = Factory :author_name, :name => 'Diehl-Fleig, Ed.'
       AuthorName.alias true, "Diehl-Fleig, E. D.", "Diehl-Fleig, Ed."
       ['96-1373', '96-0213'].each do |cite_code|
-        reference = Reference.find_by_cite_code  cite_code
+        reference = Reference.find_by_cite_code cite_code
         reference_author_name_for_son = ReferenceAuthorName.first(
           :conditions => ['reference_id = ? AND position = ?', reference.id, 2])
         reference_author_name_for_son.update_attribute :author_name, son
@@ -165,8 +165,6 @@ class FixAuthorNames < ActiveRecord::Migration
 
       AuthorName.correct "Azarae, I.", "Azarae, I. Hj."
       AuthorName.alias true, "Azarae, H. I.", "Azarae, I. Hj."
-      reference = Reference.find_by_title "Hj. Six new weaver ant species from Malaysia: *. Malaysian Journal of Science. Series A"
-      reference.update_attribute :title, "Six new weaver ant species from Malaysia: *. Malaysian Journal of Science. Series A"
 
       AuthorName.correct "Bestelmayer, B. T.", "Bestelmeyer, B. T."
       AuthorName.correct "Boosmsma, J. J.", "Boomsma, J. J."
@@ -266,13 +264,6 @@ class FixAuthorNames < ActiveRecord::Migration
       reference = Reference.find_by_cite_code '8323'
       ReferenceAuthorName.update_all({:author_name_id => rittler.id}, {:reference_id => reference.id})
       reference.update_author_names_string
-
-      # author name fixes resulted in finding a duplicate reference
-      duplicate = Reference.find_by_year_and_pagination_and_cite_code 1995, '87-105', nil 
-      original = Reference.find_by_year_and_pagination_and_cite_code 1995, '87-105', '8321' 
-      nester = Reference.find_by_nested_reference_id duplicate.id
-      nester.update_attribute :nested_reference_id, original.id
-      duplicate.destroy
     end
   end
 
