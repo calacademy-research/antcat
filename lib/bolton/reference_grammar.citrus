@@ -1,21 +1,32 @@
 grammar Bolton::ReferenceGrammar
   include PaginationGrammar
 
+  rule reference
+    (article_reference /.*/) {
+      article_reference.value
+    }
+  end
+
   rule article_reference
-    (authors year '. ' article_title journal ' ' volume ': ' pagination '. ' date) {
+    (authors citation_year '. ' article_title journal ' ' volume ': ' pagination '. ' date) {
       { :authors => authors.strip,
-        :year => year,
+        :citation_year => citation_year,
         :title => article_title.value.strip,
         :journal => journal.value,
         :series_volume_issue => volume.value,
         :pagination => pagination,
-        :date => date.value
+        :date => date.value,
+        :type => 'Article'
       }
     }
   end
 
   rule authors
     /\D+/
+  end
+
+  rule citation_year
+    /\d{4}\w?/
   end
 
   rule article_title
@@ -36,38 +47,6 @@ grammar Bolton::ReferenceGrammar
       volume_contents
     }
   end 
-
-  rule reference
-    (authors ' ' year '. ' title ': ' pagination ' ' place '. ' date) {
-      { :authors => authors.value,
-        :year => year,
-        :title => title.value,
-        :journal => 'Esakia',
-        :series_volume_issue => '31',
-        :pagination => pagination,
-        :place => place,
-        :date => date.value
-      }
-    }
-  end
-
-  rule year
-    /\d{4}\w?/
-  end
-
-  rule title
-    (/<i.+?>/ title_contents:(/[^<]*/) /<\/i>/) {
-      title_contents
-    }
-  end
-
-  rule place
-    /\w+/
-  end
-
-  rule otherstuff
-    /.*/
-  end
 
   rule date
     (/\[/ date_contents:/[^\]]+/ /]/) {

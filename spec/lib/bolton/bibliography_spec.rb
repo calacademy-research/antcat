@@ -20,7 +20,8 @@ normal'>31</b>: 1-115. [31.vii.1991.]"
       @bibliography.import_html contents
       reference = Bolton::Reference.first
       reference.authors.should == 'Abe, M. & Smith, D.R.'
-      reference.year.should == '1991d'
+      reference.citation_year.should == '1991d'
+      reference.year.should == 1991
       reference.title.should == 'The genus-group names of Symphyta and their type species'
       reference.journal.should == 'Esakia'
       reference.series_volume_issue.should == '31'
