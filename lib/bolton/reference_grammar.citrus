@@ -1,0 +1,78 @@
+grammar Bolton::ReferenceGrammar
+  include PaginationGrammar
+
+  rule article_reference
+    (authors year '. ' article_title journal ' ' volume ': ' pagination '. ' date) {
+      { :authors => authors.strip,
+        :year => year,
+        :title => article_title.value.strip,
+        :journal => journal.value,
+        :series_volume_issue => volume.value,
+        :pagination => pagination,
+        :date => date.value
+      }
+    }
+  end
+
+  rule authors
+    /\D+/
+  end
+
+  rule article_title
+    /[^<]+/ {
+      s = strip
+      s = s[-1..-1] == '.' ? s[0..-2] : s
+    }
+  end
+
+  rule journal
+    (/<i.+?>/ journal_contents:(/[^<]*/) /<\/i>/) {
+      journal_contents
+    }
+  end
+
+  rule volume
+    (/<b.+?>/ volume_contents:(/[^<]*/) /<\/b>/) {
+      volume_contents
+    }
+  end 
+
+  rule reference
+    (authors ' ' year '. ' title ': ' pagination ' ' place '. ' date) {
+      { :authors => authors.value,
+        :year => year,
+        :title => title.value,
+        :journal => 'Esakia',
+        :series_volume_issue => '31',
+        :pagination => pagination,
+        :place => place,
+        :date => date.value
+      }
+    }
+  end
+
+  rule year
+    /\d{4}\w?/
+  end
+
+  rule title
+    (/<i.+?>/ title_contents:(/[^<]*/) /<\/i>/) {
+      title_contents
+    }
+  end
+
+  rule place
+    /\w+/
+  end
+
+  rule otherstuff
+    /.*/
+  end
+
+  rule date
+    (/\[/ date_contents:/[^\]]+/ /]/) {
+      s = date_contents.strip
+      s = s[-1..-1] == '.' ? s[0..-2] : s
+    }
+  end
+end

@@ -13,17 +13,33 @@ describe Bolton::Bibliography do
       Bolton::Reference.all.should be_empty
     end
 
-    it "should import a record from the first reference it finds" do
-      contents = make_contents "Abe,
-M. &amp; Smith, D.R. 1991d. The genus-group names of Symphyta and their type
+    it "should import an article reference" do
+      contents = make_contents "Abe, M. &amp; Smith, D.R. 1991d. The genus-group names of Symphyta and their type
 species. <i style='mso-bidi-font-style:normal'>Esakia</i> <b style='mso-bidi-font-weight:
 normal'>31</b>: 1-115. [31.vii.1991.]"
       @bibliography.import_html contents
       reference = Bolton::Reference.first
       reference.authors.should == 'Abe, M. & Smith, D.R.'
       reference.year.should == '1991d'
-      reference.title_and_citation.should == 'The genus-group names of Symphyta and their type species. Esakia 31: 1-115'
-      reference.date.should == '31.vii.1991.'
+      reference.title.should == 'The genus-group names of Symphyta and their type species'
+      reference.journal.should == 'Esakia'
+      reference.series_volume_issue.should == '31'
+      reference.pagination.should == '1-115'
+      reference.date.should == '31.vii.1991'
+    end
+
+    it "should import a book reference" do
+      contents = make_contents "Dixon, F. 1940. <i style='mso-bidi-font-style:normal'>The geology
+and fossils of the Tertiary and Cretaceous formation of Sussex</i>: 422 pp.
+London. [(31).xii.1850.]"
+      @bibliography.import_html contents
+      reference = Bolton::Reference.first
+      reference.authors.should == 'Dixon, F.'
+      reference.year.should == '1940'
+      reference.title.should == "The geology and fossils of the Tertiary and Cretaceous formation of Sussex"
+      reference.pagination.should == '422 pp.'
+      reference.place.should == 'London'
+      reference.date.should == '(31).xii.1850.'
     end
 
     it "should handle comma instead of period before date" do

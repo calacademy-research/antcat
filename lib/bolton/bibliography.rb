@@ -18,38 +18,30 @@ class Bolton::Bibliography
     doc = Nokogiri::HTML html
     ps = doc.css('p')
     ps.each do |p|
-      import_reference p.inner_html
+      line = p.inner_html
+      next if header? line
+      next if blank? line
+      import_reference line
     end
   end
 
+  def header? line
+    line =~ /CATALOGUE REFERENCES/
+  end
+
+  def blank? line
+    line.length < 20
+  end
+
   def import_reference string
-    string = normalize string
-    return unless string.length > 20
-
-    string, date = extract_date string
-
-    match = string.match /(\D+) ?(\d\w+)\.? ?(.+)[,.]/
-    return unless match
-
-    author_names = match[1].strip
-    year = match[2].strip
-    title_and_citation = match[3].strip
-
-    reference = Bolton::Reference.create! :authors => author_names, :year => year,
-      :title_and_citation => title_and_citation, :date => date
-    Progress.dot
-  end
-
-  def extract_date string
-    parts = string.split(/ ?\[([^\]]+)\]$/)
-    return string, nil unless parts.length == 2
-    return parts
-  end
-
-  def normalize string
-    string = string.gsub(/\n/, ' ').strip
-    string = string.gsub(/<.+?>/, '')
     string = CGI.unescapeHTML(string)
+    string.gsub! /&nbsp;/, ' '
+    string.gsub! /\n/, ' '
+    result = Bolton::ReferenceGrammar.parse(string)
+
+    attributes = Bolton::ReferenceGrammar.parse(string).value
+    Bolton::Reference.create! attributes
+    Progress.dot
   end
 
 end
