@@ -2,15 +2,14 @@ require 'curl'
 
 class Hol::SourceUrlImporter
 
-  attr_reader :processed_count, :success_count,
+  attr_reader :success_count,
               :book_failure_count, :unknown_reference_failure_count, :pdf_not_found_failure_count,
               :missing_author_failure_count, :already_imported_count
 
   def initialize show_progress = false
-    Progress.init show_progress
+    Progress.init show_progress, Reference.count
     @bibliography = Hol::Bibliography.new
-    @total_count = Reference.count
-    @processed_count = @success_count = @unmatched_count =
+    @success_count = @unmatched_count =
       @book_failure_count = @unknown_reference_failure_count = @pdf_not_found_failure_count =
       @missing_author_failure_count = @already_imported_count = 0
     @missing_authors = []
@@ -40,6 +39,10 @@ class Hol::SourceUrlImporter
     @missing_authors.uniq.sort
   end
 
+  def processed_count
+    Progress.processed_count
+  end
+
   private
   def see_if_pdf_exists result
     return unless result[:source_url]
@@ -50,7 +53,6 @@ class Hol::SourceUrlImporter
   end
 
   def update_counts reference, result
-    @processed_count += 1
     if result[:source_url]
       @success_count += 1
       return '* OK *'
@@ -80,9 +82,10 @@ class Hol::SourceUrlImporter
   end
 
   def show_progress reference, result
+    Progress.tally
     rate = Progress.rate
-    time_left = Progress.time_left @processed_count, @total_count
-    success_percent = Progress.percent @success_count, @processed_count
+    time_left = Progress.time_left
+    success_percent = Progress.percent @success_count, Progress.processed_count
     result = result.ljust(9)
     success = (success_percent + ' success').rjust(12)
     rate = rate.rjust(8)
@@ -95,17 +98,17 @@ class Hol::SourceUrlImporter
     Progress.puts "#{missing_authors.size} missing authors:\n#{missing_authors.join("\n")}"
 
     Progress.puts
-    rate = Progress.rate @processed_count
+    rate = Progress.rate
     elapsed = Progress.elapsed
-    Progress.puts "#{@processed_count} processed in #{elapsed} (#{rate})"
+    Progress.puts "#{Progress.processed_count} processed in #{elapsed} (#{rate})"
 
-    Progress.puts Progress.count(@success_count, @processed_count, 'successful')
-    Progress.puts Progress.count(@already_imported_count, @processed_count, 'already imported')
-    Progress.puts Progress.count(@missing_author_failure_count, @processed_count, 'author not found')
-    Progress.puts Progress.count(@unmatched_count, @processed_count, 'unmatched')
-    Progress.puts Progress.count(@unknown_reference_failure_count, @processed_count, 'unknown references')
-    Progress.puts Progress.count(@book_failure_count, @processed_count, 'book references')
-    Progress.puts Progress.count(@pdf_not_found_failure_count, @processed_count, 'PDF not found')
+    Progress.puts Progress.count(@success_count, Progress.processed_count, 'successful')
+    Progress.puts Progress.count(@already_imported_count, Progress.processed_count, 'already imported')
+    Progress.puts Progress.count(@missing_author_failure_count, Progress.processed_count, 'author not found')
+    Progress.puts Progress.count(@unmatched_count, Progress.processed_count, 'unmatched')
+    Progress.puts Progress.count(@unknown_reference_failure_count, Progress.processed_count, 'unknown references')
+    Progress.puts Progress.count(@book_failure_count, Progress.processed_count, 'book references')
+    Progress.puts Progress.count(@pdf_not_found_failure_count, Progress.processed_count, 'PDF not found')
   end
 
   def source_url_exists? source_url
