@@ -8,7 +8,7 @@ class Bolton::Reference < ActiveRecord::Base
   end
 
   def to_s
-    "#{authors} #{year}. #{title_and_citation}."
+    "#{authors} #{year}. #{title}."
   end
 
   def set_year

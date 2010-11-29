@@ -85,3 +85,6 @@ Factory.define :user do |user|
   user.email     'mark@example.com'
   user.password  'secret'
 end
+
+Factory.define :bolton_reference, :class => Bolton::Reference do |reference|
+end
