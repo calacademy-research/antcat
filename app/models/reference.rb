@@ -181,4 +181,13 @@ class Reference < ActiveRecord::Base
     # cannot figure out how to set the host with Cucumber + Capybara
     source_url =~ Regexp.new(Rails.env.cucumber? ? 'antcat.org' : our_host_name)
   end
+
+  def replace_author_name old_name, new_author_name
+    old_author_name = AuthorName.find_by_name old_name
+    reference_author_name = reference_author_names.find(:first, :conditions => ['author_name_id = ?', old_author_name])
+    reference_author_name.author_name = new_author_name
+    reference_author_name.save!
+    author_names(true)
+    update_author_names_string
+  end
 end
