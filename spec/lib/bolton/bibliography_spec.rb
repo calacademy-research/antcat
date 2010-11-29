@@ -27,6 +27,7 @@ normal'>31</b>: 1-115. [31.vii.1991.]"
       reference.series_volume_issue.should == '31'
       reference.pagination.should == '1-115'
       reference.date.should == '31.vii.1991'
+      reference.type.should == 'ArticleReference'
     end
 
     it "should import a book reference" do
@@ -41,6 +42,7 @@ London. [(31).xii.1850.]"
       reference.pagination.should == '422 pp.'
       reference.place.should == 'London'
       reference.date.should == '(31).xii.1850.'
+      reference.type.should == 'BookReference'
     end
 
     it "should handle comma instead of period before date" do
