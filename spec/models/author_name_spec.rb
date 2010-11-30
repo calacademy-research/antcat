@@ -64,6 +64,12 @@ describe AuthorName do
       author_data[:author_names].second.name.should == 'Bolton, B.'
       author_data[:author_names_suffix].should == ' (eds.)'
     end
+
+    it "should not just crap out when the input is invalid" do
+      author_data = AuthorName.import_author_names_string(' ; ')
+      author_data[:author_names].should == []
+      author_data[:author_names_suffix].should be_nil
+    end
   end
 
   describe "searching" do
