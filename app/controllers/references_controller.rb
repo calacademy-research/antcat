@@ -106,7 +106,7 @@ class ReferencesController < ApplicationController
     return unless upload
 
     directory = Rails.root + "public/sources"
-    name =  UniqueFilename.get directory, upload.original_filename
+    name =  UniqueFilename.get directory, CGI.escape(upload.original_filename)
     path = File.join directory, name
     File.open(path, "wb") { |f| f.write(upload.read) }
     params[:reference][:source_url] = "#{request.host}/sources/#{name}"
