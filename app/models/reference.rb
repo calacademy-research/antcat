@@ -73,8 +73,8 @@ class Reference < ActiveRecord::Base
     if match = string.match(/(\b\d{4})-(\d{4}\b)/)
       start_year = match[1].to_i
       end_year = match[2].to_i
-    elsif match = string.match(/\b\d{4}\b/)
-      start_year = match[0].to_i
+    elsif match = string.match(/(?:^|\s)(\d{4})\b/)
+      start_year = match[1].to_i
     end
 
     return nil, nil unless (1758..2010).include? start_year

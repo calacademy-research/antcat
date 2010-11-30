@@ -94,3 +94,16 @@ Feature: Searching references
     When I fill in "q" with "10000"
       And I press "Search"
     Then I should not see "Dolerichoderinae"
+
+  Scenario: Searching by cite code that looks like a year
+    Given the following entries exist in the bibliography
+       |authors   |year |title |citation   |cite_code|
+       |Fisher, B.|1895a|title5|Ants 11:1-2|96-1984  |
+       |Fisher, B.|1895a|title6|Ants 11:2-3|97-9321  |
+    When I go to the main page
+      Then I should see "Ants 11:1-2"
+        And I should see "Ants 11:2-3"
+      And I fill in "q" with "96-1984"
+      And I press "Search"
+      Then I should see "Ants 11:1-2"
+        And I should not see "Ants 11:2-3"
