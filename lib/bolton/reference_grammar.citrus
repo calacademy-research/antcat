@@ -6,10 +6,10 @@ grammar Bolton::ReferenceGrammar
   end
 
   rule article_reference
-    (authors citation_year '. ' article_title journal ' ' volume ': ' pagination '. ' date) {
+    (authors citation_year '. ' article_title journal ' ' volume ': ' pagination ('.' | ',') ' ' date) {
       { :authors => authors.strip,
         :citation_year => citation_year,
-        :title => article_title.value.strip,
+        :title => article_title.value,
         :journal => journal.value,
         :series_volume_issue => volume.value,
         :pagination => pagination,
@@ -23,7 +23,7 @@ grammar Bolton::ReferenceGrammar
     (authors citation_year '. ' book_title ': ' pagination ' ' place '. ' date) {
       { :authors => authors.strip,
         :citation_year => citation_year,
-        :title => book_title.value.strip,
+        :title => book_title.value,
         :place => place.strip,
         :pagination => pagination,
         :date => date.value,

@@ -47,13 +47,20 @@ London. [(31).xii.1850.]"
     end
 
     it "should handle comma instead of period before date" do
-      contents = make_contents "Clark, J. 1934b. New Australian ants. Memoirs of the National Museum, Victoria 8: 21-47, [(30).ix.1934.]"
+      contents = make_contents "Clark,
+J. 1934b. New Australian ants. <i style='mso-bidi-font-style:normal'>Memoirs of
+the National Museum, Victoria</i> <b style='mso-bidi-font-weight:normal'>8</b>:
+21-47, [(30).ix.1934.]"
       @bibliography.import_html contents
       reference = Bolton::Reference.first
       reference.authors.should == 'Clark, J.'
-      reference.year.should == '1934b'
-      reference.title_and_citation.should == 'New Australian ants. Memoirs of the National Museum, Victoria 8: 21-47'
-      reference.date.should == '(30).ix.1934.'
+      reference.citation_year.should == '1934b'
+      reference.year.should == 1934
+      reference.title.should == 'New Australian ants'
+      reference.journal.should == "Memoirs of the National Museum, Victoria"
+      reference.series_volume_issue.should == "8"
+      reference.pagination.should == '21-47'
+      reference.date.should == '(30).ix.1934'
     end
 
     it "should handle missing date" do
