@@ -35,7 +35,7 @@ class Progress
     sprintf "%.0f mins left", mins_left
   end
 
-  def self.percent numerator, denominator
+  def self.percent numerator, denominator = @processed_count
     sprintf "%.0f%%", numerator * 100.0 / denominator
   end
 
