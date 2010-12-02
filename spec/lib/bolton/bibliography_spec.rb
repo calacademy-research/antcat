@@ -27,7 +27,7 @@ normal'>31</b>: 1-115. [31.vii.1991.]"
       reference.series_volume_issue.should == '31'
       reference.pagination.should == '1-115'
       reference.date.should == '31.vii.1991'
-      reference.type.should == 'ArticleReference'
+      reference.reference_type.should == 'ArticleReference'
     end
 
     it "should import a book reference" do
@@ -37,12 +37,13 @@ London. [(31).xii.1850.]"
       @bibliography.import_html contents
       reference = Bolton::Reference.first
       reference.authors.should == 'Dixon, F.'
-      reference.year.should == '1940'
+      reference.citation_year.should == '1940'
+      reference.year.should == 1940
       reference.title.should == "The geology and fossils of the Tertiary and Cretaceous formation of Sussex"
       reference.pagination.should == '422 pp.'
       reference.place.should == 'London'
-      reference.date.should == '(31).xii.1850.'
-      reference.type.should == 'BookReference'
+      reference.date.should == '(31).xii.1850'
+      reference.reference_type.should == 'BookReference'
     end
 
     it "should handle comma instead of period before date" do

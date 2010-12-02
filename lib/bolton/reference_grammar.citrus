@@ -2,11 +2,7 @@ grammar Bolton::ReferenceGrammar
   include PaginationGrammar
 
   rule reference
-    #((article_reference | book_reference) /.*/) {
-    (book_reference /.*/) {
-      return article_reference.value if has_name? :article_reference
-      return book_reference.value if has_name? :book_reference
-    }
+    article_reference | book_reference
   end
 
   rule article_reference
@@ -18,22 +14,20 @@ grammar Bolton::ReferenceGrammar
         :series_volume_issue => volume.value,
         :pagination => pagination,
         :date => date.value,
-        :type => 'ArticleReference'
+        :reference_type => 'ArticleReference'
       }
     }
   end
 
   rule book_reference
-    #(authors citation_year '. ' book_title ': ' pagination '. ' publisher '. ' date) {
-    (authors citation_year '. ' book_title ': ' ) {
+    (authors citation_year '. ' book_title ': ' pagination ' ' place '. ' date) {
       { :authors => authors.strip,
         :citation_year => citation_year,
         :title => book_title.value.strip,
-        :journal => journal.value,
-        :series_volume_issue => volume.value,
+        :place => place.strip,
         :pagination => pagination,
         :date => date.value,
-        :type => 'BookReference'
+        :reference_type => 'BookReference'
       }
     }
   end
@@ -79,7 +73,7 @@ grammar Bolton::ReferenceGrammar
     }
   end
 
-  rule publisher
+  rule place
     /[^\.]+/
   end
 end

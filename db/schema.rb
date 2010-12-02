@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101130234103) do
+ActiveRecord::Schema.define(:version => 20101202043220) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -38,9 +38,11 @@ ActiveRecord::Schema.define(:version => 20101130234103) do
     t.string   "journal"
     t.string   "series_volume_issue"
     t.string   "pagination"
-    t.string   "type"
+    t.string   "reference_type"
     t.integer  "year"
     t.string   "citation_year"
+    t.string   "publisher"
+    t.string   "place"
   end
 
   create_table "genera", :force => true do |t|
