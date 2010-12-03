@@ -2,34 +2,57 @@ grammar Bolton::ReferenceGrammar
   include PaginationGrammar
 
   rule reference
-    article_reference | book_reference
+    book_reference | article_reference
   end
 
   rule article_reference
-    (authors citation_year '. ' article_title journal ' ' volume ': ' pagination ('.' | ',') ' ' date) {
-      { :authors => authors.strip,
-        :citation_year => citation_year,
-        :title => article_title.value,
-        :journal => journal.value,
-        :series_volume_issue => volume.value,
-        :pagination => pagination,
-        :date => date.value,
-        :reference_type => 'ArticleReference'
-      }
+    (authors citation_year '.'? ' '? article_title journal ' ' series_volume_issue ': ' pagination ('.' | ',') (' ' date)?) {
+      value = 
+        { :authors => authors.strip,
+          :citation_year => citation_year,
+          :title => article_title,
+          :journal => journal,
+          :series_volume_issue => series_volume_issue,
+          :pagination => pagination,
+          :reference_type => 'ArticleReference'
+        }
+      date = find('date')[0]
+      value[:date] = date.value if date
+      value
     }
   end
 
+  rule article_title
+    ((unformatted_phrase | italicized_phrase) !(' ' bold_phrase))+
+  end
+
+  rule journal
+    italicized_phrase
+  end
+
   rule book_reference
-    (authors citation_year '. ' book_title ': ' pagination ' ' place '. ' date) {
+    (authors citation_year '. ' book_title ': ' pagination place '. ' date) {
       { :authors => authors.strip,
         :citation_year => citation_year,
-        :title => book_title.value,
-        :place => place.strip,
+        :title => book_title,
+        :place => place,
         :pagination => pagination,
         :date => date.value,
         :reference_type => 'BookReference'
       }
     }
+  end
+
+  rule book_title
+    italicized_phrase ('. ' subtitle? edition?)?
+  end
+
+  rule subtitle
+    /[^.]+/ '. ' 
+  end
+
+  rule edition
+    bold_phrase phrase_without_colon?
   end
 
   rule authors
@@ -40,31 +63,9 @@ grammar Bolton::ReferenceGrammar
     /\d{4}\w?/
   end
 
-  rule article_title
-    /[^<]+/ {
-      s = strip
-      s = s[-1..-1] == '.' ? s[0..-2] : s
-    }
+  rule series_volume_issue
+    bold_phrase /[^:]*/
   end
-
-  rule book_title
-    (/<i.+?>/ title:(/[^<]*/) /<\/i>/) {
-      s = title.strip
-      s = s[-1..-1] == '.' ? s[0..-2] : s
-    }
-  end
-
-  rule journal
-    (/<i.+?>/ journal_contents:(/[^<]*/) /<\/i>/) {
-      journal_contents
-    }
-  end
-
-  rule volume
-    (/<b.+?>/ volume_contents:(/[^<]*/) /<\/b>/) {
-      volume_contents
-    }
-  end 
 
   rule date
     (/\[/ date_contents:/[^\]]+/ /]/) {
@@ -76,4 +77,30 @@ grammar Bolton::ReferenceGrammar
   rule place
     /[^\.]+/
   end
+
+  #-------------------------------------------
+  rule phrase
+    /[^<]+/
+  end
+
+  rule phrase_without_colon
+    /[^:]+/
+  end
+
+  rule unformatted_phrase
+    span | phrase
+  end
+
+  rule bold_phrase
+    /<b.+?>.+?<\/b>/
+  end 
+
+  rule italicized_phrase
+    /<i.+?>/ phrase /<\/i>/
+  end
+
+  rule span
+    /<span.+?>/ phrase /<\/span>/
+  end
+
 end

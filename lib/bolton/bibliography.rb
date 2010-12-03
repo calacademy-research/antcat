@@ -37,12 +37,48 @@ class Bolton::Bibliography
   end
 
   def import_reference string
-    string = CGI.unescapeHTML(string)
-    string.gsub! /&nbsp;/, ' '
-    string.gsub! /\n/, ' '
-    Bolton::Reference.create! Bolton::ReferenceGrammar.parse(string).value
+    pre_parse string
+    attributes = Bolton::ReferenceGrammar.parse(string).value
+    post_parse attributes
+    Bolton::Reference.create! attributes
   rescue Citrus::ParseError => e
     puts e
+  end
+
+  def pre_parse string
+    string.replace CGI.unescapeHTML(string)
+    string.gsub! /&nbsp;/, ' '
+    string.gsub! /\n/, ' '
+  end
+
+  def post_parse attributes
+    attributes[:title] = remove_period remove_italics attributes[:title]
+    attributes[:journal] = remove_italics(attributes[:journal]) if attributes[:journal]
+    attributes[:series_volume_issue] = remove_bold attributes[:series_volume_issue] if attributes[:series_volume_issue]
+    attributes[:place].strip! if attributes[:place]
+    attributes[:title] = remove_italics remove_span remove_bold attributes[:title]
+  end
+
+  def remove_span string
+    remove_tag 'span', string
+  end
+
+  def remove_italics string
+    remove_tag 'i', string
+  end
+
+  def remove_bold string
+    remove_tag 'b', string
+  end
+
+  def remove_tag tag, string
+    string.gsub /<#{tag}.*?>(.*?)<\/#{tag}>/, '\1'
+  end
+
+  def remove_period string
+    string = string.strip
+    string = string[0..-2] if string[-1..-1] == '.'
+    string
   end
 
   def record_and_show_progress reference
