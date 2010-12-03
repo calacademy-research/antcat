@@ -10,7 +10,7 @@ Feature: View bibliography
     When I go to the main page
     Then I should see "Ward, P.S. 2010d. Ant Facts. Ants 1:1. [2010-07-12]"
       And I should see "Public notes"
-      And I should see "Editor's notes"
+      And I should not see "Editor's notes"
 
   Scenario: View one entry with italics
     Given the following entries exist in the bibliography
@@ -22,8 +22,8 @@ Feature: View bibliography
 
   Scenario: Dangerous text
     Given the following entries exist in the bibliography
-      |title   |authors|citation|year|notes |
-      |<script>|authors|Ants 3:3|year|<html>|
+      |title   |authors|citation|year|notes   |
+      |<script>|authors|Ants 3:3|year|{<html>}|
     When I go to the main page
     Then I should see "<script>"
       And I should see "<html>"
