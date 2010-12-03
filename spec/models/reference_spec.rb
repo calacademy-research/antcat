@@ -282,6 +282,32 @@ describe Reference do
       end
     end
 
+    describe "review" do
+      it "should sort by updated_at" do
+
+        Reference.record_timestamps = false
+        updated_yesterday = reference_factory(:author_name => 'Fisher', :citation_year => '1910b')
+        updated_yesterday.update_attribute(:updated_at,  Time.now.yesterday)
+        updated_last_week = reference_factory(:author_name => 'Wheeler', :citation_year => '1874')
+        updated_last_week.update_attribute(:updated_at,  1.week.ago)
+        updated_today = reference_factory(:author_name => 'Fisher', :citation_year => '1910a')
+        updated_today.update_attribute(:updated_at,  Time.now)
+        Reference.record_timestamps = true
+
+        Reference.do_search(nil, nil, true).should == [updated_today, updated_yesterday, updated_last_week]
+      end
+
+      it "should sort by multiple author_names using their order in each reference" do
+        a = ward_reference_factory(:authors => 'Abdalla, F. C.; Cruz-Landim, C. da.', 
+                                    :citation => 'Ants 2:2')
+        m = ward_reference_factory(:authors => 'Mueller, U. G.; Mikheyev, A. S.; Abbot, P.',
+                                    :citation => 'Ants 3:3')
+        v = ward_reference_factory( :authors => "Vinson, S. B.; MacKay, W. P.; Rebeles M.; A.; Arredondo B.; H. C.; Rodríguez R.; A. D.; González, D. A.", :citation => 'Ants 1:1')
+        Reference.reindex
+        Reference.do_search.should == [a, m, v]
+      end
+    end
+
     describe "searching by ID" do
       it "should ignore everything else if an ID of sufficient length is provided" do
         reference = Factory :reference, :id => 12345

@@ -44,7 +44,8 @@ class Reference < ActiveRecord::Base
     author_names(reload).map(&:author)
   end
 
-  def self.do_search string = nil, page = nil
+  def self.do_search string = nil, page = nil, sort_by_reverse_updated_at = false
+    return all(:order => 'updated_at DESC').paginate(:page => page) if sort_by_reverse_updated_at
     return all(:order => 'author_names_string, citation_year').paginate(:page => page) unless string.present?
     string = string.dup
 

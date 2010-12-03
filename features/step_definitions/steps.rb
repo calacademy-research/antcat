@@ -4,6 +4,7 @@ Given /the following entr(?:ies|y) exists? in the bibliography/ do |table|
   Place.create! :name => 'New York'
   table.hashes.each do |hash|
     @reference = Ward::Reference.new(hash).export
+    Reference.connection.execute("UPDATE `references` SET updated_at = '#{hash[:updated_at]}' WHERE id = #{@reference.id}") if hash[:updated_at]
   end
   Reference.reindex
 end

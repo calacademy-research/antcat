@@ -5,7 +5,7 @@ class ReferencesController < ApplicationController
   def index
     params[:q] = '' if params[:commit] == 'clear'
     params[:q].strip! if params[:q]
-    @references = Reference.do_search(params[:q], params[:page])
+    @references = Reference.do_search(params[:q], params[:page], params[:commit] == 'review')
   end
 
   def create

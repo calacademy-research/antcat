@@ -4,6 +4,10 @@
       %tr
         %td
           %input#q{:name => 'q', :type => 'text', :value => params[:q]}
-        %td.buttons
+        %td{:style => 'width: 55px'}
           %button{:value => 'search', :name => 'commit', :type => 'submit'} Search
+        %td{:style => 'width: 55px'}
           %button{:value => 'clear', :name => 'commit', :type => 'submit'} Clear
+          - if user_signed_in?
+            %td{:style => 'width: 55px'}
+              %button{:value => 'review', :name => 'commit', :type => 'submit'} Review
