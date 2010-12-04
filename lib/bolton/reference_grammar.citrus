@@ -23,7 +23,7 @@ grammar Bolton::ReferenceGrammar
   end
 
   rule article_title
-    ((unformatted_phrase | italicized_phrase) !(' ' bold_phrase))+
+    ((unformatted_phrase | italicized_phrase) !(' ' series_volume_issue))+
   end
 
   rule journal
@@ -64,7 +64,7 @@ grammar Bolton::ReferenceGrammar
   end
 
   rule series_volume_issue
-    bold_phrase /[^:]*/
+    phrase? bold_phrase /[^:]*/
   end
 
   rule date

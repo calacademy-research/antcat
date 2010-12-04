@@ -89,7 +89,6 @@ style='mso-bidi-font-weight:normal'>9</b>: 89.
       reference.date.should be_nil
     end
     
-    
     it "should handle missing space after date" do
       contents = make_contents %s{
 Arnold, G. 1960a.Aculeate Hymenoptera from the Drakensberg Mountains, Natal. <i
@@ -181,6 +180,16 @@ Douwes, P., Jessen, K. & Buschinger, A. 1988. <i style="mso-bidi-font-style:norm
       reference = Bolton::Reference.first
       reference.title.should == 'Epimyrma adlerzi sp. n. from Greece: morphology and life history' 
     end
+
+    it "should handle a series indicator" do
+      contents = make_contents %s{
+Dupuis, C. 1986. Dates de publication de l'Histoire Naturelle Générale et Particulière des Crustacés et des Insectes (1802-1805) par Latreille dans le "Buffon de Sonnini." <i style="mso-bidi-font-style:normal">Annales de la Société Entomologique de France</i> (N.S.) <b style="mso-bidi-font-weight:normal">22</b>: 205-210. [30.vi.1986.]
+      }
+      @bibliography.import_html contents
+      reference = Bolton::Reference.first
+      reference.series_volume_issue.should == '(N.S.) 22' 
+    end
+
   end
 
   describe 'importing book references' do
