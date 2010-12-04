@@ -44,15 +44,11 @@ grammar Bolton::ReferenceGrammar
   end
 
   rule book_title
-    italicized_phrase ('. ' subtitle? edition?)?
+    italicized_phrase post_book_title?
   end
 
-  rule subtitle
-    /[^.]+/ '. ' 
-  end
-
-  rule edition
-    bold_phrase phrase_without_colon?
+  rule post_book_title
+    (bold_phrase | /[^<:]/+)+
   end
 
   rule authors

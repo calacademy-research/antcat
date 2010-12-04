@@ -236,6 +236,15 @@ Drury, D. 1773. <i style="mso-bidi-font-style:normal">Illustrations of Natural H
       reference.title.should == 'Illustrations of Natural History. Wherein are exhibited upwards of two hundred and twenty figures of exotic insects. 2' 
     end
 
+    it "should handle an edition" do
+      contents = make_contents %s{
+Donisthorpe, H. 1927b. <i style="mso-bidi-font-style:normal">British Ants, their life-history and classification</i> (2nd. edition): 436 pp. London. [(31.xii).1927.]
+      }
+      @bibliography.import_html contents
+      reference = Bolton::Reference.first
+      reference.title.should == 'British Ants, their life-history and classification (2nd. edition)' 
+    end
+
   end
 
   def make_contents content
