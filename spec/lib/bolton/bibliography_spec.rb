@@ -190,6 +190,14 @@ Dupuis, C. 1986. Dates de publication de l'Histoire Naturelle Générale et Part
       reference.series_volume_issue.should == '(N.S.) 22' 
     end
 
+    it "should handle when the bold volume immediately follows the italic title" do
+      contents = make_contents %s{
+DuBois, M.B. 1998a. The first fossil Dorylinae, with notes on fossil Ecitoninae. <i style="mso-bidi-font-style:normal">Entomological News </i><b style="mso-bidi-font-weight: normal">109</b>: 136-142. [1998.]
+      }
+      @bibliography.import_html contents
+      reference = Bolton::Reference.first
+      reference.title.should == 'The first fossil Dorylinae, with notes on fossil Ecitoninae'
+    end
 
     it "should handle a space after the hyphen in the pagination" do
       contents = make_contents %s{

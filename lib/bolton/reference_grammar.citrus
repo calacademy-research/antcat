@@ -6,7 +6,7 @@ grammar Bolton::ReferenceGrammar
   end
 
   rule article_reference
-    (authors citation_year '.'? ' '? article_title journal ' ' series_volume_issue ': ' pagination ('.' | ',') (' ' date)?) {
+    (authors citation_year '.'? ' '? article_title journal ' '? series_volume_issue ': ' pagination ('.' | ',') (' ' date)?) {
       value = 
         { :authors => authors.strip,
           :citation_year => citation_year,
@@ -23,7 +23,7 @@ grammar Bolton::ReferenceGrammar
   end
 
   rule article_title
-    ((unformatted_phrase | italicized_phrase) !(' ' series_volume_issue))+
+    ((unformatted_phrase | italicized_phrase) !(' '? series_volume_issue))+
   end
 
   rule journal
