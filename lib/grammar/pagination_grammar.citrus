@@ -25,7 +25,7 @@ grammar PaginationGrammar
   end
 
   rule arabic_section_size
-    arabic_number ('-' ' '? arabic_number)?
+    arabic_number (' '? '-' ' '? arabic_number)?
   end
 
   rule roman_section_size

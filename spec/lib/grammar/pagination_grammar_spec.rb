@@ -30,4 +30,8 @@ describe PaginationGrammar do
     PaginationGrammar.parse('123- 4').should == '123- 4'
   end
 
+  it 'should handle spaces around the hyphen' do
+    PaginationGrammar.parse('123 - 4').should == '123 - 4'
+  end
+
 end

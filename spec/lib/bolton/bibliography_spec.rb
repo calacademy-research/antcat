@@ -208,6 +208,16 @@ DuBois, M.B. 1993. What's in a name? A clarification of <i style="mso-bidi-font-
       reference.pagination.should == '299- 334'
     end
 
+    it "should handle spaces around the hyphen in the pagination" do
+      contents = make_contents %s{
+Dorow, W.H.O. & Kohout, R.J. 1995. A review of the subgenus <i style="mso-bidi-font-style: normal">Hemioptica</i> Roger of the genus <i style="mso-bidi-font-style:normal">Polyrhachis</i> Fr. Smith with description of a new species. <i style="mso-bidi-font-style: normal">Zoologische Mededelingen</i> <b style="mso-bidi-font-weight:normal">69</b>: 93 - 104. [(31.xii).1995.]
+      }
+      @bibliography.import_html contents
+      reference = Bolton::Reference.first
+      reference.pagination.should == '93 - 104'
+    end
+
+
   end
 
   it 'should skip over a note' do
