@@ -3,8 +3,8 @@
 #  2) Save it as web page
 
 class Bolton::Bibliography
-  def initialize filename, record_and_show_progress = false
-    Progress.init record_and_show_progress
+  def initialize filename, show_progress = false
+    Progress.init show_progress
     @filename = filename.to_s
     @success_count = 0
   end
@@ -23,7 +23,6 @@ class Bolton::Bibliography
       next if header? line
       next if blank? line
       reference = import_reference line
-      record_and_show_progress reference
     end
     show_results
   end
@@ -37,12 +36,21 @@ class Bolton::Bibliography
   end
 
   def import_reference string
-    pre_parse string
-    attributes = Bolton::ReferenceGrammar.parse(string).value
-    post_parse attributes
-    Bolton::Reference.create! attributes
-  rescue Citrus::ParseError => e
-    puts e
+    reference = nil
+    begin
+      pre_parse string
+      return unless reference? string
+      attributes = Bolton::ReferenceGrammar.parse(string).value
+      post_parse attributes
+      reference = Bolton::Reference.create! attributes
+    rescue Citrus::ParseError => e
+      puts e
+    end
+    record_and_show_progress reference
+  end
+
+  def reference? string
+    string.match(/^Note: /).blank?
   end
 
   def pre_parse string

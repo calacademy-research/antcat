@@ -202,6 +202,12 @@ DuBois, M.B. 1993. What's in a name? A clarification of <i style="mso-bidi-font-
 
   end
 
+  it 'should skip over a note' do
+    contents = make_contents %s{Note: in publications the following name appears as either Dubovikoff or Dubovikov; the latter is used here throughout.  }
+    Bolton::ReferenceGrammar.should_not_receive(:parse)
+    @bibliography.import_html contents
+  end
+
   describe 'importing book references' do
     it "should import a book reference" do
       contents = make_contents "Dixon, F. 1940. <i style='mso-bidi-font-style:normal'>The geology
