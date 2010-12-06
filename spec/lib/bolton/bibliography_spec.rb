@@ -190,6 +190,16 @@ Dupuis, C. 1986. Dates de publication de l'Histoire Naturelle Générale et Part
       reference.series_volume_issue.should == '(N.S.) 22' 
     end
 
+
+    it "should handle a space after the hyphen in the pagination" do
+      contents = make_contents %s{
+DuBois, M.B. 1993. What's in a name? A clarification of <i style="mso-bidi-font-style: normal">Stenamma westwoodi, S. debile</i>, and <i style="mso-bidi-font-style: normal">S. lippulum. Sociobiology</i> <b style="mso-bidi-font-weight:normal">21</b>: 299- 334. [(31.xii).1993.]
+      }
+      @bibliography.import_html contents
+      reference = Bolton::Reference.first
+      reference.pagination.should == '299- 334'
+    end
+
   end
 
   describe 'importing book references' do
