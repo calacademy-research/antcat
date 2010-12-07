@@ -34,4 +34,8 @@ describe PaginationGrammar do
     PaginationGrammar.parse('123 - 4').should == '123 - 4'
   end
 
+  it 'should handle and ampersand between clauses' do
+    PaginationGrammar.parse('131-132 & 143-145').should == '131-132 & 143-145'
+  end
+
 end

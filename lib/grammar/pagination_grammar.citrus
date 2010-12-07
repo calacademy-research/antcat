@@ -2,7 +2,7 @@ grammar PaginationGrammar
   include CommonGrammar
 
   rule pagination
-    pagination_clause ((space ('+' | ','))? space pagination_clause)*
+    pagination_clause ((space ('+' | ',' | '&'))? space pagination_clause)*
   end
 
   rule pagination_clause

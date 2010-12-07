@@ -29,7 +29,7 @@ ActiveRecord::Schema.define(:version => 20101214010247) do
 
   create_table "bolton_references", :force => true do |t|
     t.string   "authors"
-    t.string   "date"
+    t.string   "note"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "ward_reference_id"

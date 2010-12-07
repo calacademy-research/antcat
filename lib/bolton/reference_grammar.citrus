@@ -1,12 +1,48 @@
 grammar Bolton::ReferenceGrammar
+  include CommonGrammar
   include PaginationGrammar
 
   rule reference
-    book_reference | article_reference
+    nested_reference | book_reference | article_reference | unknown_reference
+  end
+
+  rule unknown_reference
+    (authors citation_year '.'? ' '? title_and_citation:(.*)) {
+      {
+        :title => title_and_citation,
+        :citation_year => citation_year,
+        :authors => authors.strip,
+        :reference_type => 'UnknownReference'
+      }
+    }
+  end
+
+  rule nested_reference
+    (authors citation_year '.'? ' '? nested_title nested_pagination '. ' 'In ' nested_citation) {
+      {
+        :title => nested_title.strip,
+        :citation_year => citation_year,
+        :pagination => nested_pagination.strip,
+        :authors => authors.strip,
+        :reference_type => 'NestedReference'
+      }
+    }
+  end
+
+  rule nested_pagination
+    '(' pagination ')'
+  end
+
+  rule nested_title
+    /.*(?=\(p)/
+  end
+
+  rule nested_citation
+    .*
   end
 
   rule article_reference
-    (authors citation_year '.'? ' '? article_title journal ' '? series_volume_issue ': ' pagination ('.' | ',') (' ' date)?) {
+    (authors citation_year '.'? ' '? article_title journal ' '? series_volume_issue ': ' pagination ('.' | ',') (' ' note)?) {
       value = 
         { :authors => authors.strip,
           :citation_year => citation_year,
@@ -16,8 +52,8 @@ grammar Bolton::ReferenceGrammar
           :pagination => pagination,
           :reference_type => 'ArticleReference'
         }
-      date = find('date')[0]
-      value[:date] = date.value if date
+      note = find('note')[0]
+      value[:note] = note.value if note
       value
     }
   end
@@ -31,15 +67,18 @@ grammar Bolton::ReferenceGrammar
   end
 
   rule book_reference
-    (authors citation_year '. ' book_title ': ' pagination place '. ' date) {
-      { :authors => authors.strip,
-        :citation_year => citation_year,
-        :title => book_title,
-        :place => place,
-        :pagination => pagination,
-        :date => date.value,
-        :reference_type => 'BookReference'
-      }
+    (authors citation_year '. ' book_title ': ' pagination place '.' (space note)?) {
+      value =
+        { :authors => authors.strip,
+          :citation_year => citation_year,
+          :title => book_title,
+          :place => place,
+          :pagination => pagination,
+          :reference_type => 'BookReference'
+        }
+      note = find('note')[0]
+      value[:note] = note.value if note
+      value
     }
   end
 
@@ -63,9 +102,9 @@ grammar Bolton::ReferenceGrammar
     phrase? bold_phrase /[^:]*/
   end
 
-  rule date
-    (/\[/ date_contents:/[^\]]+/ /]/) {
-      s = date_contents.strip
+  rule note
+    (/\[/ note_contents:/[^\]]+/ /]/) {
+      s = note_contents.strip
       s = s[-1..-1] == '.' ? s[0..-2] : s
     }
   end

@@ -26,11 +26,11 @@ normal'>31</b>: 1-115. [31.vii.1991.]"
       reference.journal.should == 'Esakia'
       reference.series_volume_issue.should == '31'
       reference.pagination.should == '1-115'
-      reference.date.should == '31.vii.1991'
+      reference.note.should == '31.vii.1991'
       reference.reference_type.should == 'ArticleReference'
     end
 
-    it "should handle comma instead of period before date" do
+    it "should handle comma instead of period before note" do
       contents = make_contents "Clark,
 J. 1934b. New Australian ants. <i style='mso-bidi-font-style:normal'>Memoirs of
 the National Museum, Victoria</i> <b style='mso-bidi-font-weight:normal'>8</b>:
@@ -44,7 +44,7 @@ the National Museum, Victoria</i> <b style='mso-bidi-font-weight:normal'>8</b>:
       reference.journal.should == "Memoirs of the National Museum, Victoria"
       reference.series_volume_issue.should == "8"
       reference.pagination.should == '21-47'
-      reference.date.should == '(30).ix.1934'
+      reference.note.should == '(30).ix.1934'
     end
 
     it "should handle italics in an article title" do
@@ -65,10 +65,10 @@ style='mso-bidi-font-weight:normal'>9</b>: 89. [1.2.1934.]
       reference.journal.should == "Myrmecologische Nachrichten"
       reference.series_volume_issue.should == '9'
       reference.pagination.should == "89"
-      reference.date.should == '1.2.1934'
+      reference.note.should == '1.2.1934'
     end
 
-    it "should handle a missing date" do
+    it "should handle a missing note" do
       contents = make_contents %s{
 Dumpert,
 K. 2006. <i style='mso-bidi-font-style:normal'>Camponotus (Karavaievia)
@@ -86,10 +86,10 @@ style='mso-bidi-font-weight:normal'>9</b>: 89.
       reference.journal.should == "Myrmecologische Nachrichten"
       reference.series_volume_issue.should == '9'
       reference.pagination.should == "89"
-      reference.date.should be_nil
+      reference.note.should be_nil
     end
     
-    it "should handle missing space after date" do
+    it "should handle missing space after note" do
       contents = make_contents %s{
 Arnold, G. 1960a.Aculeate Hymenoptera from the Drakensberg Mountains, Natal. <i
 style='mso-bidi-font-style:normal'>Annals of the Natal Museum</i> <b
@@ -105,7 +105,7 @@ style='mso-bidi-font-weight:normal'>15</b>: 79-87. [8.xii.1960.]
       reference.journal.should == "Annals of the Natal Museum"
       reference.series_volume_issue.should == '15'
       reference.pagination.should == '79-87'
-      reference.date.should == '8.xii.1960'
+      reference.note.should == '8.xii.1960'
     end
 
     it "should handle missing space after author" do
@@ -123,7 +123,7 @@ style='mso-bidi-font-weight:normal'>54</b>: 263-264. [17.ii.1948.]
       reference.journal.should == 'Psyche'
       reference.series_volume_issue.should == '54'
       reference.pagination.should == '263-264'
-      reference.date.should == '17.ii.1948'
+      reference.note.should == '17.ii.1948'
     end
 
     it "should handle text after volume" do
@@ -141,7 +141,7 @@ style='mso-bidi-font-weight:normal'>54</b> (1947): 263-264. [17.ii.1948.]
       reference.journal.should == 'Psyche'
       reference.series_volume_issue.should == '54 (1947)'
       reference.pagination.should == '263-264'
-      reference.date.should == '17.ii.1948'
+      reference.note.should == '17.ii.1948'
     end
 
     it "should handle missing period after year" do
@@ -160,7 +160,7 @@ the Tennessee Academy of Science</i> <b style='mso-bidi-font-weight:normal'>27</
       reference.journal.should == 'Journal of the Tennessee Academy of Science'
       reference.series_volume_issue.should == '27'
       reference.pagination.should == '159-162'
-      reference.date.should == '(30).iv.1952'
+      reference.note.should == '(30).iv.1952'
     end
 
     it "should handle a <span> in the title" do
@@ -217,6 +217,17 @@ Dorow, W.H.O. & Kohout, R.J. 1995. A review of the subgenus <i style="mso-bidi-f
       reference.pagination.should == '93 - 104'
     end
 
+    it "should handle big ol' note at the end" do
+      contents = make_contents %s{
+Dorow, W.H.O. & Kohout, R.J. 1995. Paleogene ants of the genus <i style="mso-bidi-font-style:normal">Archimyrmex</i> Cockerell, 1923. <i style="mso-bidi-font-style:normal">Paleontological Journal</i> <b>37</b>: 39-47. [English translation of <i style="mso-bidi-font-style:normal">Paleontologicheskii Zhurnal</i> 2003 (No. 1): 40-49.] 
+      }
+      @bibliography.import_html contents
+      reference = Bolton::Reference.first
+      reference.authors.should == "Dorow, W.H.O. & Kohout, R.J."
+      reference.title.should == 'Paleogene ants of the genus Archimyrmex Cockerell, 1923'
+      reference.pagination.should == '39-47'
+      reference.note.should == 'English translation of <i style="mso-bidi-font-style:normal">Paleontologicheskii Zhurnal</i> 2003 (No. 1): 40-49.'
+    end
 
   end
 
@@ -239,7 +250,7 @@ London. [(31).xii.1850.]"
       reference.title.should == "The geology and fossils of the Tertiary and Cretaceous formation of Sussex"
       reference.pagination.should == '422 pp.'
       reference.place.should == 'London'
-      reference.date.should == '(31).xii.1850'
+      reference.note.should == '(31).xii.1850'
       reference.reference_type.should == 'BookReference'
     end
 
@@ -258,7 +269,7 @@ Berlin &amp; Hamburg. [(31.xii).1994.]
       reference.title.should == 'Das Sozialleben der Ameisen. 2., neubearbeitete Auflage'
       reference.place.should == 'Berlin & Hamburg'
       reference.pagination.should == '257 pp.'
-      reference.date.should == '(31.xii).1994'
+      reference.note.should == '(31.xii).1994'
     end
 
     it "should handle a subtitle (without italics)" do
@@ -279,6 +290,42 @@ Donisthorpe, H. 1927b. <i style="mso-bidi-font-style:normal">British Ants, their
       reference.title.should == 'British Ants, their life-history and classification (2nd. edition)' 
     end
 
+    it "should handle a missing note" do
+      contents = make_contents %s{
+Don, W. 2007. <i style="mso-bidi-font-style:normal">Ants of New Zealand</i>: 239 pp. Otago University Press. 
+      }
+      @bibliography.import_html contents
+      reference = Bolton::Reference.first
+      reference.note.should be_nil
+    end
+
+  end
+
+  describe 'importing nested references' do
+    it "should work" do
+      contents = make_contents %s{
+Dlussky, G.M. & Zabelin, S.I. 1985. Fauna murav'ev Basseina R. Sumbar (Yugo-zapadnyi Kopetdag) (pp. 208-246). In Nechaevaya, N.T. <i style="mso-bidi-font-style: normal">Rastitel'nost i Zhivotnyi Mir Zaladnogo Kopetdaga</i>: 277 pp. Ashkhabad, Ylym. [22.x.1985.]
+      }
+      @bibliography.import_html contents
+      reference = Bolton::Reference.first
+      reference.title.should == "Fauna murav'ev Basseina R. Sumbar (Yugo-zapadnyi Kopetdag)"
+      reference.citation_year.should == "1985"
+      reference.pagination.should == "(pp. 208-246)"
+      reference.reference_type.should == 'NestedReference'
+    end
+  end
+
+  describe "importing references where we can't tell what it is" do
+    it "should work" do
+      contents = make_contents %s{
+Dlussky, G.M. & Perfilieva, K.S. 2003. Paleogene ants of the genus <i style="mso-bidi-font-style:normal">Archimyrmex</i> Cockerell, 1923. <i style="mso-bidi-font-style:normal">Paleontological Journal</i> 37: 39-47. [English translation of <i style="mso-bidi-font-style:normal">Paleontologicheskii Zhurnal</i> 2003 (No. 1): 40-49.] 
+      }
+      @bibliography.import_html contents
+      reference = Bolton::Reference.first
+      reference.reference_type.should == 'UnknownReference'
+      reference.citation_year.should == '2003'
+      reference.title.should == 'Paleogene ants of the genus Archimyrmex Cockerell, 1923. Paleontological Journal 37: 39-47. [English translation of Paleontologicheskii Zhurnal 2003 (No. 1): 40-49.]'
+    end
   end
 
   def make_contents content
