@@ -16,7 +16,7 @@ Feature: Delete reference
     Then I should not see a "Delete" button
 
   Scenario: Delete a reference
-    Given I am logged in
+    Given I log in
       And the following entries exist in the bibliography
       |authors   |citation|year|title|
       |Fisher, B.|Psyche 2:1|year|title|

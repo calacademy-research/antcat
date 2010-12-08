@@ -61,10 +61,10 @@ Then 'I should not see the reference' do
   find("#reference_#{@reference.id} .reference_display").should_not be_visible
 end
 
-Then /"(.+)" should not be visible/ do |text|
+Then /"(.+)" should (not )?be visible/ do |text, should_not|
   text = find("*", :text => text)
   missing_or_invisible = text.nil? || !text.visible?
-  missing_or_invisible.should be_true
+  missing_or_invisible.should (should_not ? be_true : be_false)
 end
 
 Then 'there should be just the existing reference' do
@@ -111,12 +111,17 @@ end
 Given 'I am not logged in' do
 end
 
-Given 'I am logged in' do
+Given 'I log in' do
   @user = Factory :user
-  visit('/users/sign_in')
+  visit '/users/sign_in'
   And %{I fill in "user_email" with "#{@user.email}"}
   And %{I fill in "user_password" with "#{@user.password}"}
   And %{I press "Sign in"}
+end
+
+Given 'I am logged in' do
+  @user = Factory :user
+  visit '/stub_log_in'
 end
 
 Then 'I should not see the "Delete" button' do

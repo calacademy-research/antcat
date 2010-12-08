@@ -13,7 +13,7 @@ Feature: Copy reference
     Then "copy" should not be visible
 
   Scenario: Copy a reference
-    Given I am logged in
+    Given I log in
       And the following entries exist in the bibliography
       |authors   |title         |citation|year|
       |Ward, P.S.|Annals of Ants|Ants 1:2|1910|

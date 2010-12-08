@@ -58,3 +58,13 @@ require 'factory_girl/step_definitions'
 
 Capybara.save_and_open_page_path = '/tmp'
 
+class StubUserSessionsController < ApplicationController
+  def new
+    session['warden.user.user.key'] = [User, User.first.id]
+    redirect_to root_url
+  end
+end
+
+ActionController::Routing::Routes.draw do |map|
+  map.stub_log_in '/stub_log_in', :controller => 'stub_user_sessions', :action => 'new'
+end 

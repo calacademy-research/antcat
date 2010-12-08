@@ -62,7 +62,7 @@ Feature: View bibliography
       |authors   |year |title    |citation|cite_code|possess|date    |notes                       |
       |Ward, P.S.|2010d|Ant Facts|Ants 1:1|232      |PSW    |20100712|{Public notes}Editor's notes|
       And that the entry has a source URL that's on our site
-      And I am logged in
+      And I log in
     When I go to the main page
     Then I should see a "PDF" link
 
@@ -71,25 +71,7 @@ Feature: View bibliography
       |authors   |year |title    |citation|cite_code|possess|date    |notes                       |
       |Ward, P.S.|2010d|Ant Facts|Ants 1:1|232      |PSW    |20100712|{Public notes}Editor's notes|
       And that the entry has a source URL that's not on our site
-      And I am logged in
-    When I go to the main page
-    Then I should see a "PDF" link
-
-  Scenario: Viewing an entry with a source URL to a document on our site, but the user is logged in
-    Given the following entries exist in the bibliography
-      |authors   |year |title    |citation|cite_code|possess|date    |notes                       |
-      |Ward, P.S.|2010d|Ant Facts|Ants 1:1|232      |PSW    |20100712|{Public notes}Editor's notes|
-      And that the entry has a source URL that's on our site
-      And I am logged in
-    When I go to the main page
-    Then I should see a "PDF" link
-
-  Scenario: Viewing an entry with a source URL to a document that's not on our site, and the user is logged in
-    Given the following entries exist in the bibliography
-      |authors   |year |title    |citation|cite_code|possess|date    |notes                       |
-      |Ward, P.S.|2010d|Ant Facts|Ants 1:1|232      |PSW    |20100712|{Public notes}Editor's notes|
-      And that the entry has a source URL that's not on our site
-      And I am logged in
+      And I log in
     When I go to the main page
     Then I should see a "PDF" link
 

@@ -13,7 +13,7 @@ Feature: Edit reference
     Then there should not be an edit form
 
   Scenario: Edit a reference
-    Given I am logged in
+    Given I log in
       And the following entries exist in the bibliography
       |authors|citation  |cite_code|created_at|date    |possess|title|updated_at|year|
       |authors|Psyche 5:3|CiteCode |today     |20100712|Possess|title|today     |2010|

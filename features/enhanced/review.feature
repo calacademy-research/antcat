@@ -8,7 +8,7 @@ Feature: Reviewing features
     Then I should not see "Review"
 
   Scenario: Logged in
-    Given I am logged in
+    Given I log in
     And the following entries exist in the bibliography
       |authors   |citation  |created_at|title            |updated_at|year|
       |Ward, P.  |Psyche 5:3|today     |Ward's World     |2010-2-2  |2010|
