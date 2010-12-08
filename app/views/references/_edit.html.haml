@@ -18,12 +18,12 @@
       %col{:align => 'right', :width => '34px'}
       %col{:width => '100px'}
       %tr
-        %td Authors
+        %td= label_tag :reference_author_names_string, 'Authors'
         %td.authors= f.text_field :author_names_string, :class => 'authors'
-        %td{:style => 'padding-right: 5px'} Year
+        %td{:style => 'padding-right: 5px'}= label_tag :reference_citation_year, 'Year'
         %td{:class => :right_side_field}= f.text_field :citation_year
       %tr
-        %td Title
+        %td= label_tag :reference_title, 'Title'
         %td{:colspan => 3, :class => :right_side_field}= f.text_area :title, :rows => 2
       %tr
         %td.tabs{:colspan => 4}
@@ -38,58 +38,58 @@
               %a{:class => 'unknown-tab', :href => "#tabs-unknown-#{reference.id}"}Other
 
           %div{:class => 'article-tab-section', :id => "tabs-article-#{reference.id}"}
-            Journal
+            = label_tag :journal_name, 'Journal'
             = text_field_tag :journal_name, journal_name, :class => 'journal'
-            Series volume issue
+            = label_tag :reference_series_volume_issue, 'Series volume issue'
             = f.text_field :series_volume_issue, :class => 'series_volume_issue'
-            Pages
+            = label_tag :article_pagination, 'Pages'
             = text_field_tag :article_pagination, reference.pagination, :class => 'pages'
 
           %div{:class => 'book-tab-section', :id => "tabs-book-#{reference.id}"}
-            Publisher
+            = label_tag :publisher_string, 'Publisher'
             = text_field_tag :publisher_string, publisher_string, :class => 'publisher'
-            Pages
+            = label_tag :book_pagination, 'Pages'
             = text_field_tag :book_pagination, reference.pagination, :class => 'pages'
 
           %div{:class => 'nested-tab-section', :id => "tabs-nested-#{reference.id}"}
-            Pages in
+            = label_tag :reference_pages_in, 'Pages in'
             = f.text_field :pages_in, :class => 'pages'
-            Nested reference ID
+            = label_tag :reference_nested_reference_id, 'Nested reference ID'
             = f.text_field :nested_reference_id, :class => 'pages'
             %p.help
               %span.help= "To find, edit or add the nested reference in a new browser window, click #{link_to 'here', references_path(:q => reference.nested_reference_id), :target => '_blank'}"
 
           %div{:class => 'unknown-tab-section', :id => "tabs-unknown-#{reference.id}"}
-            Citation
+            = label_tag :reference_citation, 'Citation'
             = f.text_area :citation, :rows => 2
 
       %tr
-        %td Source URL
+        %td= label_tag :reference_source_url, 'Source URL'
         %td{:colspan => 3, :class => :right_side_field}= f.text_field :source_url
       - unless Rails.env.cucumber?
         %tr
-          %td Upload
+          %td= label_tag :source_file, 'Upload'
           %td= file_field_tag :source_file
       %tr
-        %td Public notes
+        %td= label_tag :reference_public_notes, 'Public notes'
         %td{:colspan => 3, :class => :right_side_field}= f.text_area :public_notes, :rows => 2
       %tr
-        %td Editor notes
+        %td= label_tag :reference_editor_notes, 'Editor notes'
         %td{:colspan => 3, :class => :right_side_field}= f.text_area :editor_notes, :rows => 2
       %tr
-        %td Taxonomic notes
+        %td= label_tag :reference_taxonomic_notes, 'Taxonomic notes'
         %td{:colspan => 3, :class => :right_side_field}= f.text_area :taxonomic_notes, :rows => 2
       %tr
         %td{:colspan => 4}
           %table.small_fields
             %tr
-              %td{:style => 'padding-right: 5px'} Cite code
+              %td{:style => 'padding-right: 5px'}= label_tag :reference_cite_code, 'Cite code'
               %td.cite_code= f.text_field :cite_code
-              %td Possess
+              %td= label_tag :reference_possess, 'Possess'
               %td.possess= f.text_field :possess
-              %td Date
+              %td= label_tag :reference_date, 'Date'
               %td.date= f.text_field :date
-              %td ID
+              %td= label_tag :reference_id, 'ID'
               %td= reference.id
       %tr
         %td{:colspan => 4}
