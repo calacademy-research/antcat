@@ -64,6 +64,7 @@ class Bolton::Bibliography
     attributes[:series_volume_issue] = remove_bold attributes[:series_volume_issue] if attributes[:series_volume_issue]
     attributes[:place].strip! if attributes[:place]
     attributes[:title] = remove_period remove_italics remove_span remove_bold attributes[:title]
+    attributes[:note] = remove_italics attributes[:note] if attributes[:note]
   end
 
   def remove_span string

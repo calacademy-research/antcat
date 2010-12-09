@@ -315,6 +315,20 @@ Dlussky, G.M. & Zabelin, S.I. 1985. Fauna murav'ev Basseina R. Sumbar (Yugo-zapa
     end
   end
 
+  describe "removing italics from a note" do
+    it "should work" do
+      contents = make_contents %s{
+Abe, M. &amp; Smith, D.R. 1991d. The genus-group names of Symphyta and their type
+species. <i style='mso-bidi-font-style:normal'>Esakia</i> <b style='mso-bidi-font-weight:
+normal'>31</b>: 1-115. [English translation of <i style="mso-bidi-font-style:normal">Paleontologicheskii Zhurnal</i> 2003 (No. 1): 40-49.]"
+      }
+      @bibliography.import_html contents
+      reference = Bolton::Reference.first
+      reference.reference_type.should == 'ArticleReference'
+      reference.note.should == 'English translation of Paleontologicheskii Zhurnal 2003 (No. 1): 40-49'
+    end
+  end
+
   describe "importing references where we can't tell what it is" do
     it "should work" do
       contents = make_contents %s{
