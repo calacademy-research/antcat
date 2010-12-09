@@ -17,8 +17,10 @@ Rails::Initializer.run do |config|
   config.gem 'sunspot_rails', :lib => 'sunspot/rails'
   config.gem 'paper_trail'
   config.gem 'factory_girl', :lib => false
+  config.gem 'paperclip'
+  config.gem 'aws-s3', :lib => 'aws/s3'
 
-  config.gem 'fakeweb' if RAILS_ENV == 'test'
+  config.gem 'fakeweb' if ['test', 'cucumber'].include? RAILS_ENV
 
   config.load_paths << "#{RAILS_ROOT}/lib/grammar"
 end

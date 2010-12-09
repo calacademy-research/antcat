@@ -66,10 +66,9 @@
       %tr
         %td= label_tag :reference_source_url, 'Source URL'
         %td{:colspan => 3, :class => :right_side_field}= f.text_field :source_url
-      - unless Rails.env.cucumber?
-        %tr
-          %td= label_tag :source_file, 'Upload'
-          %td= file_field_tag :source_file
+      %tr
+        %td= label_tag :reference_source, 'Upload'
+        %td= f.file_field :source
       %tr
         %td= label_tag :reference_public_notes, 'Public notes'
         %td{:colspan => 3, :class => :right_side_field}= f.text_area :public_notes, :rows => 2

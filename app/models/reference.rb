@@ -1,5 +1,15 @@
+require 'curl'
+
 class Reference < ActiveRecord::Base
   has_paper_trail
+  has_attached_file :source,
+                    :url => ':s3_domain_url',
+                    :path => ':attachment/:id',
+                    :bucket => 'antcat',
+                    :storage => :s3,
+                    :s3_credentials => Rails.root + 'config' + 's3.yml',
+                    :s3_permissions => 'authenticated-read',
+                    :s3_protocol => 'http'
 
   has_many :reference_author_names, :order => :position
   has_many :author_names, :through => :reference_author_names, :order => :position,
@@ -173,14 +183,16 @@ class Reference < ActiveRecord::Base
     s
   end
 
+  def set_uploaded_source_url host
+    update_attribute :source_url, "http://#{host}/sources/#{id}/#{source_file_name}"
+  end
+
   def set_source_url
     self.source_url = "http://" + source_url if source_url.present? && source_url !~ %r{^http://}
   end
 
-  def hosted_by_us? our_host_name
-    return unless source_url
-    # cannot figure out how to set the host with Cucumber + Capybara
-    source_url =~ Regexp.new(Rails.env.cucumber? ? 'antcat.org' : our_host_name)
+  def hosted_by_us?
+    source_file_name.present?
   end
 
   def replace_author_name old_name, new_author_name

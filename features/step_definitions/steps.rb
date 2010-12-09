@@ -64,7 +64,7 @@ end
 Then /"(.+)" should (not )?be visible/ do |text, should_not|
   text = find("*", :text => text)
   missing_or_invisible = text.nil? || !text.visible?
-  missing_or_invisible.should (should_not ? be_true : be_false)
+  missing_or_invisible.should(should_not ? be_true : be_false)
 end
 
 Then 'there should be just the existing reference' do

@@ -444,13 +444,13 @@ describe Reference do
       @author_name = Factory :author_name
     end
     it "should make sure it has a protocol" do
-      FakeWeb.register_uri(:any, "http://1.pdf", :body => "Hello World!")
+      FakeWeb.register_uri(:any, "http://antcat.org/1.pdf", :body => "Hello World!")
       reference = Factory :reference
-      reference.source_url = '1.pdf'
+      reference.source_url = 'antcat.org/1.pdf'
       reference.save!
-      reference.reload.source_url.should == 'http://1.pdf'
+      reference.reload.source_url.should == 'http://antcat.org/1.pdf'
       reference.save!
-      reference.reload.source_url.should == 'http://1.pdf'
+      reference.reload.source_url.should == 'http://antcat.org/1.pdf'
     end
 
     it "should make sure it's a valid URL" do
@@ -460,28 +460,36 @@ describe Reference do
     end
 
     it "should make sure it exists" do
-      FakeWeb.register_uri(:any, "http://1.pdf", :body => "Hello World!")
-      reference = Reference.new :author_names => [@author_name], :title => 'title', :citation_year => '1910', :source_url => '1.pdf'
+      FakeWeb.register_uri(:any, "http://antbase.org/1.pdf", :body => "Hello World!")
+      reference = Reference.create :author_names => [@author_name], :title => 'title', :citation_year => '1910', :source_url => 'http://antbase.org/1.pdf'
       reference.should be_valid
-      FakeWeb.register_uri(:any, "http://1.pdf", :status => ["404", "Not Found"])
+      FakeWeb.register_uri(:any, "http://antbase.org/1.pdf", :status => ["404", "Not Found"])
       reference.should_not be_valid
+      reference.errors.full_messages.should =~ ['Source url was not found']
     end
 
     it "should say that it's not hosted by us when the source URL is blank" do
       reference = Factory :reference
-      reference.should_not be_hosted_by_us 'antcat.local'
+      reference.should_not be_hosted_by_us
     end
 
     it "should know when it's not hosted by us" do
       reference = Factory :reference
-      reference.update_attribute :source_url, 'http://antbase.org/pdfs/23/3242.pdf'
-      reference.should_not be_hosted_by_us 'antcat.local'
+      reference.source_url = 'http://antbase.org/pdfs/23/3242.pdf'
+      reference.should_not be_hosted_by_us
     end
 
-    it "should know when it is hosted by us" do
+    it "should know when it is hosted by S3" do
       reference = Factory :reference
-      reference.update_attribute :source_url, 'http://antcat.org/sources/1.pdf'
-      reference.should be_hosted_by_us 'antcat.org'
+      reference.update_attribute :source_file_name, '1.pdf'
+      reference.should be_hosted_by_us
+    end
+
+    it "should create the URL for an uploaded file so that it goes to our controller" do
+      reference = Factory :reference
+      reference.source_file_name = '1.pdf'
+      reference.set_uploaded_source_url 'antcat.org'
+      reference.reload.source_url.should == "http://antcat.org/sources/#{reference.id}/1.pdf"
     end
 
   end
