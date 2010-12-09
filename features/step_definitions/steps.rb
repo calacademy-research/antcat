@@ -18,9 +18,12 @@ Given /the following entry nests it/ do |table|
   Reference.reindex
 end
 
-Given /that the entry has a source URL that's (not )?on our site/ do |is_not|
-  hostname = is_not ? 'antbase.org' : 'antcat.org'
-  @reference.update_attribute :source_url, "http://#{hostname}/article.pdf"
+Given /that the entry has a source URL that's on our site/ do
+  @reference.update_attribute :source_file_name, "article.pdf"
+end
+
+Given /that the entry has a source URL that's not on our site/ do
+  @reference.update_attribute :source_url, "http://antbase.org/article.pdf"
 end
 
 Given /the following user exists/ do |table|
