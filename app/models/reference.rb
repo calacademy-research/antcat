@@ -41,8 +41,6 @@ class Reference < ActiveRecord::Base
   before_save :set_author_names_string
 
   validates_presence_of :year, :title
-  validates_http_url :source_url, :malformed_url => 'is not in a valid format', :message => 'was not found',
-                     :valid_responses => [Net::HTTPSuccess, Net::HTTPRedirection]
 
   named_scope :sorted_by_author_name, 
     :select => '`references`.*',
@@ -203,4 +201,14 @@ class Reference < ActiveRecord::Base
     author_names(true)
     update_author_names_string
   end
+
+  def validate
+    return if source_file_name.present? or source_url.blank?
+    uri = URI.parse source_url
+    response_code = Net::HTTP.new(uri.host, 80).request_head(uri.path).code.to_i
+    errors.add :source_url, 'was not found' unless (200..399).include? response_code
+  rescue
+    errors.add :source_url, 'is not in a valid format'
+  end
+
 end
