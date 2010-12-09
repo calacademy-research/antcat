@@ -58,6 +58,8 @@ require 'factory_girl/step_definitions'
 
 Capybara.save_and_open_page_path = '/tmp'
 
+FakeWeb.allow_net_connect = /localhost|127/
+
 class StubUserSessionsController < ApplicationController
   def new
     session['warden.user.user.key'] = [User, User.first.id]

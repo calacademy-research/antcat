@@ -113,6 +113,7 @@ ActiveRecord::Schema.define(:version => 20101202043220) do
     t.integer  "nested_reference_id"
     t.string   "pages_in"
     t.string   "author_names_suffix"
+    t.string   "source_file_name"
   end
 
   add_index "references", ["author_names_string", "citation_year"], :name => "references_authors_string_citation_year_idx", :length => {"citation_year"=>nil, "author_names_string"=>"100"}

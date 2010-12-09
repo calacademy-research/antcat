@@ -150,3 +150,11 @@ Given "there is a reference with ID 50000 for Dolerichoderinae" do
   Factory :unknown_reference, :id => 50000, :title => 'Dolerichoderinae'
 end
 
+When 'I choose a file to upload' do
+  FakeWeb.register_uri(:put, "http://s3.amazonaws.com/antcat/sources/#{@reference.id}", :body => "OK")
+  attach_file 'reference_source', Rails.root + 'features/21105.pdf'
+end
+
+Then 'I should see a link to that file' do
+  find("a[href='http://localhost/sources/#{@reference.id}/21105.pdf']", :text => 'PDF').should_not be_nil
+end
