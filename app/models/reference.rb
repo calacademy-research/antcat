@@ -207,7 +207,7 @@ class Reference < ActiveRecord::Base
     uri = URI.parse source_url
     response_code = Net::HTTP.new(uri.host, 80).request_head(uri.path).code.to_i
     errors.add :source_url, 'was not found' unless (200..399).include? response_code
-  rescue
+  rescue URI::InvalidURIError, ArgumentError
     errors.add :source_url, 'is not in a valid format'
   end
 
