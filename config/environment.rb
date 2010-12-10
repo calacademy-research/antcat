@@ -20,7 +20,7 @@ Rails::Initializer.run do |config|
   config.gem 'paperclip'
   config.gem 'aws-s3', :lib => 'aws/s3'
 
-  config.gem 'fakeweb' if ['test', 'cucumber'].include? RAILS_ENV
+  config.gem 'webmock' if ['test', 'cucumber'].include? RAILS_ENV
 
   config.load_paths << "#{RAILS_ROOT}/lib/grammar"
 end

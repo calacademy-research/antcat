@@ -149,12 +149,22 @@ When /I fill in "reference_nested_reference_id" with its own ID/ do
   When "I fill in \"reference_nested_reference_id\" with \"#{@reference.id}\""
 end
 
+When /I fill in "reference_source_url" with a URL to a source that exists/ do
+  stub_request :any, "google.com/foo"
+  When "I fill in \"reference_source_url\" with \"google\.com/foo\""
+end
+
+When /I fill in "reference_source_url" with a URL to a source that doesn't exist/ do
+  stub_request(:any, "google.com/foo").to_return :status => 404
+  When "I fill in \"reference_source_url\" with \"google\.com/foo\""
+end
+
 Given "there is a reference with ID 50000 for Dolerichoderinae" do
   Factory :unknown_reference, :id => 50000, :title => 'Dolerichoderinae'
 end
 
 When 'I choose a file to upload' do
-  FakeWeb.register_uri(:put, "http://s3.amazonaws.com/antcat/sources/#{@reference.id}", :body => "OK")
+  stub_request(:put, "http://s3.amazonaws.com/antcat/sources/#{@reference.id}").to_return :body => "OK"
   attach_file 'reference_source', Rails.root + 'features/21105.pdf'
 end
 

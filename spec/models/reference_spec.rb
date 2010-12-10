@@ -444,7 +444,7 @@ describe Reference do
       @author_name = Factory :author_name
     end
     it "should make sure it has a protocol" do
-      FakeWeb.register_uri(:any, "http://antcat.org/1.pdf", :body => "Hello World!")
+      stub_request(:any, "http://antcat.org/1.pdf").to_return :body => "Hello World!"
       reference = Factory :reference
       reference.source_url = 'antcat.org/1.pdf'
       reference.save!
@@ -459,11 +459,17 @@ describe Reference do
       reference.errors.full_messages.should =~ ['Source url is not in a valid format']
     end
 
+    it "should make sure it's a valid URL with a path" do
+      reference = Reference.new :author_names => [@author_name], :title => 'title', :citation_year => '1910', :source_url => 'google.com'
+      reference.should_not be_valid
+      reference.errors.full_messages.should =~ ['Source url is not in a valid format']
+    end
+
     it "should make sure it exists" do
-      FakeWeb.register_uri(:any, "http://antbase.org/1.pdf", :body => "Hello World!")
+      stub_request(:any, "http://antbase.org/1.pdf").to_return :body => "Hello World!"
       reference = Reference.create :author_names => [@author_name], :title => 'title', :citation_year => '1910', :source_url => 'http://antbase.org/1.pdf'
       reference.should be_valid
-      FakeWeb.register_uri(:any, "http://antbase.org/1.pdf", :status => ["404", "Not Found"])
+      stub_request(:any, "http://antbase.org/1.pdf").to_return :body => "Not Found", :status => 404
       reference.should_not be_valid
       reference.errors.full_messages.should =~ ['Source url was not found']
     end
