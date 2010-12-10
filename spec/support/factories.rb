@@ -88,3 +88,6 @@ end
 
 Factory.define :bolton_reference, :class => Bolton::Reference do |reference|
 end
+
+Factory.define :document do |document|
+end
