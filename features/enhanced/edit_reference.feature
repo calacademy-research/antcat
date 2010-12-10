@@ -13,14 +13,14 @@ Feature: Edit reference
     Then there should not be an edit form
 
   Scenario: Edit a reference
-    Given I log in
-      And the following entries exist in the bibliography
+    Given the following entries exist in the bibliography
       |authors|citation  |cite_code|created_at|date    |possess|title|updated_at|year|
       |authors|Psyche 5:3|CiteCode |today     |20100712|Possess|title|today     |2010|
-    When I go to the main page
-      Then I should not see the edit form
+    When I log in
+      And I go to the main page
+    Then I should not see the edit form
     When I click the reference
-      Then I should see the edit form
+    Then I should see the edit form
       And I should not see the reference
     When I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
     And I fill in "reference_title" with "Ant Title"

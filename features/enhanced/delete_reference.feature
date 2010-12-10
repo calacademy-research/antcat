@@ -16,12 +16,12 @@ Feature: Delete reference
     Then I should not see a "Delete" button
 
   Scenario: Delete a reference
-    Given I log in
-      And the following entries exist in the bibliography
+    Given the following entries exist in the bibliography
       |authors   |citation|year|title|
       |Fisher, B.|Psyche 2:1|year|title|
-    When I go to the main page
-      Then I should see "Fisher, B."
+    When I log in
+      And I go to the main page
+    Then I should see "Fisher, B."
     Given I will confirm on the next step
     When I click the reference
       And I press the "Delete" button

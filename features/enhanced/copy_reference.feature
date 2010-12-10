@@ -13,13 +13,13 @@ Feature: Copy reference
     Then "copy" should not be visible
 
   Scenario: Copy a reference
-    Given I log in
+    When I log in
       And the following entries exist in the bibliography
       |authors   |title         |citation|year|
       |Ward, P.S.|Annals of Ants|Ants 1:2|1910|
     When I go to the main page
-    When I follow "copy"
-      Then I should see a new edit form
+      And I follow "copy"
+    Then I should see a new edit form
     When in the new edit form I fill in "reference_title" with "Tapinoma"
       And in the new edit form I press the "Save" button
     Then I should see "1910. Tapinoma."

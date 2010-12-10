@@ -9,8 +9,8 @@ Feature: Add reference
       Then I should not see "Add reference"
 
   Scenario: Logged in
-    Given I log in
-    When I go to the main page
+    When I log in
+      And I go to the main page
       Then I should see "Add reference"
 
   Scenario: Add a reference when there are no others
