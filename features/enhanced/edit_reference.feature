@@ -150,8 +150,8 @@ Feature: Edit reference
       |authors    |citation  |year |title|
       |Ward, P.S. |New York  |2010a|Ants |
     When I go to the main page
-    When I click the reference
-    When I fill in "reference_source_url" with "google.com"
+      And I click the reference
+      And I fill in "reference_source_url" with a URL to a source that exists
       And I press the "Save" button
     Then I should see a "PDF" link
 
@@ -185,7 +185,7 @@ Feature: Edit reference
       |Ward, P.S. |New York  |2010a|Ants |
     When I go to the main page
     When I click the reference
-    When I fill in "reference_source_url" with "asdfsdfsdfsdfdsf.com"
+    When I fill in "reference_source_url" with a URL to a source that doesn't exist
       And I press the "Save" button
     Then I should see the edit form
       And I should see "Source url was not found"

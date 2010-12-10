@@ -20,6 +20,7 @@ end
 
 Given /that the entry has a source URL that's on our site/ do
   @reference.update_attribute :source_file_name, "article.pdf"
+  @reference.set_uploaded_source_url 'localhost'
 end
 
 Given /that the entry has a source URL that's not on our site/ do
