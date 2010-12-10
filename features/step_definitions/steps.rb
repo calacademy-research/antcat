@@ -165,10 +165,14 @@ Given "there is a reference with ID 50000 for Dolerichoderinae" do
 end
 
 When 'I choose a file to upload' do
-  stub_request(:put, "http://s3.amazonaws.com/antcat/sources/#{@reference.id}").to_return :body => "OK"
+  stub_request(:put, "http://s3.amazonaws.com/antcat/sources/#{@reference.id}/21105.pdf").to_return :body => "OK"
+  stub_request(:get, "http://s3.amazonaws.com/antcat/sources/#{@reference.id}/21105.pdf").to_return :body => "OK"
   attach_file 'reference_source', Rails.root + 'features/21105.pdf'
 end
 
 Then 'I should see a link to that file' do
   find("a[href='http://localhost/sources/#{@reference.id}/21105.pdf']", :text => 'PDF').should_not be_nil
+end
+
+Then 'I should be redirected to Amazon' do
 end

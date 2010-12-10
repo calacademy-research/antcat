@@ -500,6 +500,15 @@ describe Reference do
 
   end
 
+  describe "authenticated_url" do
+    it "should go to Amazon" do
+      reference = Factory :reference
+      reference.source_file_name = '1.pdf'
+      reference.set_uploaded_source_url 'antcat.org'
+      reference.reload.authenticated_url.should match /http:\/\/s3\.amazonaws\.com\/antcat\/sources\/#{reference.id}\/1\.pdf\?AWSAccessKeyId=/
+    end
+  end
+
   describe "entering a newline in the title, public_notes, editor_notes or taxonomic_notes" do
     it "should strip the newline" do
       reference = Factory :reference

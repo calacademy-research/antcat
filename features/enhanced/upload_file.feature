@@ -13,3 +13,5 @@ Feature: Upload a file
       And I choose a file to upload
       And I press the "Save" button
     Then I should see a link to that file
+    When I follow "PDF"
+    Then I should be redirected to Amazon

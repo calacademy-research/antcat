@@ -4,7 +4,7 @@ class Reference < ActiveRecord::Base
   has_paper_trail
   has_attached_file :source,
                     :url => ':s3_domain_url',
-                    :path => ':attachment/:id',
+                    :path => ':attachment/:id/:filename',
                     :bucket => 'antcat',
                     :storage => :s3,
                     :s3_credentials => Rails.root + 'config' + 's3.yml',
@@ -191,6 +191,10 @@ class Reference < ActiveRecord::Base
 
   def hosted_by_us?
     source_file_name.present?
+  end
+
+  def authenticated_url
+    AWS::S3::S3Object.url_for(source.path, source.bucket_name, :expires_in => 1)
   end
 
   def replace_author_name old_name, new_author_name

@@ -8,6 +8,11 @@ class ReferencesController < ApplicationController
     @references = Reference.do_search(params[:q], params[:page], params[:commit] == 'review')
   end
 
+  def download
+    reference = Reference.find params[:id]
+    redirect_to reference.authenticated_url
+  end
+
   def create
     @reference = new_reference
     save true
