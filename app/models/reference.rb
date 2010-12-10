@@ -17,6 +17,7 @@ class Reference < ActiveRecord::Base
   belongs_to :journal
   belongs_to :publisher
   belongs_to :source_reference, :polymorphic => true
+  belongs_to :document
 
   searchable do
     text :title

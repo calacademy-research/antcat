@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101210203732) do
+ActiveRecord::Schema.define(:version => 20101210204716) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -121,6 +121,7 @@ ActiveRecord::Schema.define(:version => 20101210203732) do
     t.string   "pages_in"
     t.string   "author_names_suffix"
     t.string   "source_file_name"
+    t.integer  "document_id"
   end
 
   add_index "references", ["author_names_string", "citation_year"], :name => "references_authors_string_citation_year_idx", :length => {"citation_year"=>nil, "author_names_string"=>"100"}

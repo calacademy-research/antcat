@@ -603,4 +603,13 @@ describe Reference do
     end
   end
 
+  describe "document" do
+    it "has a document" do
+      reference = Factory :reference
+      reference.document.should be_nil
+      reference.create_document
+      reference.document.should_not be_nil
+    end
+  end
+
 end
