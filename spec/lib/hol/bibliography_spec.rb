@@ -145,7 +145,7 @@ See Site Statistics</a><p>
 <IMG SRC="http://osuc.biosci.ohio-state.edu/images/pdf.gif">
       LI
 
-      result[:source_url].should == 'http://antbase.org/ants/publications/22169/22169.pdf'
+      result[:document_url].should == 'http://antbase.org/ants/publications/22169/22169.pdf'
       result[:year].should == 2008
       result[:series_volume_issue].should == '1929(1)'
       result[:title].should == 'Afrotropical ants of the ponerine genera Centromyrmex Mayr, Promyopias Santschi gen. rev. and Feroponera gen. n., with a revised key to genera of African Ponerinae (Hymenoptera: Formicidae)'
@@ -170,7 +170,7 @@ See Site Statistics</a><p>
       result = @hol.parse_reference(Nokogiri::HTML(<<-LI).at_css('html body'))
 <strong><a href=\"http://hol.osu.edu/reference-full.html?id=6373\" title=\"View extended reference information from Hymenoptera Online\">6373</a></strong>\n<a href=\"http://hol.osu.edu/agent-full.html?id=2711\">Foerster, J. R.</a>\n 1771. Novae species insectorum. Centuria I. T. Davies, London. 100 pp.\n<p>\n</p>\n<center>\n<a href=\"http://osuc.biosci.ohio-state.edu/hymDB/hym_utilities.site_stats\">\nSee Site Statistics</a><p>\n<img src=\"http://iris.biosci.ohio-state.edu/gifs/bl_bds.gif\"></p>\n<p>\n<a href=\"http://iris.biosci.ohio-state.edu/hymenoptera/hym_db_form.html\">Return to Hymenoptera On-Line Opening Page</a>\n<br><a href=\"http://iris.biosci.ohio-state.edu/index.html\">Return to OSU Insect Collection Home Page</a>\n<br>\n10 October  , 2010\n</p>\n</center>\n\n\n\n\n<title>Hymenoptera On-Line Database</title>\n<script language=\"JAVASCRIPT\">\n<!-- Hide script from old browsers\nfunction popup(url, x, y) {\n  newWindow = window.open(url, \"coverwin\",\n    \"toolbar=yes,directories=yes,menubar=yes,status=yes,width=800,height=600,resizable=yes,scrollbars=yes\")\n  newWindow.focus()\n}\n// end hiding script from old browsers -->\n</script><title>Hymenoptera On-Line Database</title>\n<script language=\"JAVASCRIPT\">\n<!-- Hide script from old browsers\nfunction popup(url, x, y) {\n  newWindow = window.open(url, \"coverwin\",\n    \"toolbar=yes,directories=yes,menubar=yes,status=yes,width=800,height=600,resizable=yes,scrollbars=yes\")\n  newWindow.focus()\n}\n// end hiding script from old browsers -->\n</script><h3>Publications of Luis A. Foerster:</h3>\n<p>\n</p>
       LI
-      result[:source_url].should == 'http://antbase.org/ants/publications/6373/6373.pdf'
+      result[:document_url].should == 'http://antbase.org/ants/publications/6373/6373.pdf'
       result[:year].should == 1771
       result[:pagination].should == '100 pp.'
     end
@@ -186,7 +186,7 @@ See Site Statistics</a><p>
                   <IMG SRC="http://osuc.biosci.ohio-state.edu/images/pdf.gif">
       LI
 
-      result[:source_url].should == "http://128.146.250.117/pdfs/22497/22497.pdf" 
+      result[:document_url].should == "http://128.146.250.117/pdfs/22497/22497.pdf" 
     end
   end
 
@@ -198,40 +198,40 @@ See Site Statistics</a><p>
     it "should match an article reference based on year + series/volume/issue + pagination" do
       reference = Factory :article_reference, :year => 2010, :series_volume_issue => '2', :pagination => '2-3'
       hol_references = [
-        {:source_url => 'a source', :year => 2010, :series_volume_issue => '1', :pagination => '2-3'},
-        {:source_url => 'another source', :year => 2010, :series_volume_issue => '2', :pagination => '2-3'},
+        {:document_url => 'a source', :year => 2010, :series_volume_issue => '1', :pagination => '2-3'},
+        {:document_url => 'another source', :year => 2010, :series_volume_issue => '2', :pagination => '2-3'},
       ]
       @hol.stub!(:references_for).and_return hol_references
-      @hol.match(reference)[:source_url].should == 'another source'
+      @hol.match(reference)[:document_url].should == 'another source'
     end
 
     it "should match an article reference based on year + title if series/volume/issue isn't found" do
       reference = Factory :article_reference, :year => 2010, :series_volume_issue => '44', :pagination => '325-335',
         :title => 'Adelomyrmecini new tribe and Cryptomyrmex new genus of myrmicine ants'
       hol_references = [
-        {:source_url => 'fernandez_source', :year => 2010, :series_volume_issue => '44(3)', :pagination => '325-335',
+        {:document_url => 'fernandez_source', :year => 2010, :series_volume_issue => '44(3)', :pagination => '325-335',
           :title => 'Adelomyrmecini new tribe and Cryptomyrmex new genus of myrmicine ants'},
       ]
       @hol.stub!(:references_for).and_return hol_references
-      @hol.match(reference)[:source_url].should == 'fernandez_source'
+      @hol.match(reference)[:document_url].should == 'fernandez_source'
     end
 
     it "ignore punctuation when comparing titles" do
       reference = Factory :article_reference, :year => 2010, :series_volume_issue => '44', :pagination => '325-335',
         :title => 'Adelomyrmecini new tribe and Cryptomyrmex new genus of myrmicine ants (Hymenoptera, Formicidae)'
       hol_references = [
-        {:source_url => 'fernandez_source', :year => 2010, :series_volume_issue => '44(3)', :pagination => '325-335',
+        {:document_url => 'fernandez_source', :year => 2010, :series_volume_issue => '44(3)', :pagination => '325-335',
           :title => 'Adelomyrmecini new tribe and Cryptomyrmex new genus of myrmicine ants (Hymenoptera: Formicidae)'},
       ]
       @hol.stub!(:references_for).and_return hol_references
-      @hol.match(reference)[:source_url].should == 'fernandez_source'
+      @hol.match(reference)[:document_url].should == 'fernandez_source'
     end
 
     it "should report as much when a failed match was because the author had no entries" do
       reference = Factory :reference
       @hol.stub!(:references_for).and_return []
       result = @hol.match reference
-      result[:source_url].should be_nil
+      result[:document_url].should be_nil
     end
 
   end

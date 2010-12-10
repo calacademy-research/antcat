@@ -170,8 +170,8 @@ class Reference < ActiveRecord::Base
     end
   end
 
-  def self.import_hol_source_urls show_progress = false
-    Hol::SourceUrlImporter.new(show_progress).import
+  def self.import_hol_document_urls show_progress = false
+    Hol::DocumentUrlImporter.new(show_progress).import
   end
 
   def to_s

@@ -26,7 +26,7 @@ class Hol::Bibliography
   def match_series_volume_issue_pagination target_reference, reference, result
     if target_reference.series_volume_issue == reference[:series_volume_issue] &&
        target_reference.pagination == reference[:pagination]
-      result[:source_url] = reference[:source_url]
+      result[:document_url] = reference[:document_url]
       return true
     end
     false
@@ -35,7 +35,7 @@ class Hol::Bibliography
   def match_title target_reference, reference, result
     if target_reference.title.present? && reference[:title].present? &&
        target_reference.title.gsub(/\W/, '') == reference[:title].gsub(/\W/, '')
-      result[:source_url] = reference[:source_url]
+      result[:document_url] = reference[:document_url]
       return true
     end
     false
@@ -58,7 +58,7 @@ class Hol::Bibliography
 
   def parse_reference li
     reference = {}
-    reference[:source_url] = parse_source_url li
+    reference[:document_url] = parse_source_url li
     parse_article(li, reference) || parse_book(li, reference) || parse_other(li, reference)
   end
 

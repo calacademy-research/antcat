@@ -20,7 +20,7 @@ task :import_genera => :environment do
   Bolton::Importer.new.get_subfamilies('data/bolton/subfamily_genus.html')
 end
 
-desc "Import HOL source URLs"
-task :import_hol_source_urls => :environment do
-  Reference.import_hol_source_urls true
+desc "Import HOL document URLs"
+task :import_hol_document_urls => :environment do
+  Reference.import_hol_document_urls true
 end

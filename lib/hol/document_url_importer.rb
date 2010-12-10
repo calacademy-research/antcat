@@ -1,6 +1,6 @@
 require 'curl'
 
-class Hol::SourceUrlImporter
+class Hol::DocumentUrlImporter
 
   attr_reader :success_count,
               :book_failure_count, :unknown_reference_failure_count, :pdf_not_found_failure_count,
@@ -16,21 +16,30 @@ class Hol::SourceUrlImporter
   end
 
   def import
-    Progress.puts "Importing source URLs..."
+    Progress.puts "Importing document URLs..."
     Reference.sorted_by_author_name.each do |reference|
-      result = import_source_url_for reference
+      result = import_document_url_for reference
       show_progress reference, result
     end
     show_results
   end
 
-  def import_source_url_for reference
-    if reference.source_url?
+  def import_document_url_for reference
+    if reference.document
       result = {:status => :already_imported}
     else
       result = @bibliography.match reference
-      see_if_pdf_exists result
-      reference.update_attribute(:source_url, result[:source_url])
+      unless result[:document_url]
+        reference.document = nil
+      else
+        begin
+          reference.document = Document.create! :url => result[:document_url]
+        rescue ActiveRecord::RecordInvalid
+          result[:document_url] = nil
+          result[:status] = :pdf_not_found
+        end
+      end
+      reference.save!
     end
     update_counts reference, result
   end
@@ -44,16 +53,8 @@ class Hol::SourceUrlImporter
   end
 
   private
-  def see_if_pdf_exists result
-    return unless result[:source_url]
-    unless source_url_exists? result[:source_url]
-      result[:source_url] = nil
-      result[:status] = :pdf_not_found
-    end
-  end
-
   def update_counts reference, result
-    if result[:source_url]
+    if result[:document_url]
       @success_count += 1
       return '* OK *'
     elsif result[:status] == :already_imported
@@ -111,7 +112,7 @@ class Hol::SourceUrlImporter
     Progress.puts Progress.count(@pdf_not_found_failure_count, Progress.processed_count, 'PDF not found')
   end
 
-  def source_url_exists? source_url
-    (200..399).include? Curl::Easy.http_head(source_url).response_code
+  def document_url_exists? document_url
+    (200..399).include? Curl::Easy.http_head(document_url).response_code
   end
 end
