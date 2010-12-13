@@ -1,3 +1,8 @@
+# Progress.init total_items, show_progress
+# Progress.puts 'Importing...'
+# ...
+# Progress.tally_and_show_progress increment
+
 class Progress
   def self.init on, total_count = nil
     $stderr = File.open('/dev/null', 'w') unless on
@@ -53,6 +58,23 @@ class Progress
 
   def self.total_count
     @total_count
+  end
+
+  def self.show_progress increment = nil
+    return unless increment.nil? or processed_count % increment == 0
+    count = "#{processed_count}/#{total_count}".rjust(12)
+    rate = self.rate.rjust(9)
+    time_left = self.time_left.rjust(11)
+    puts "#{count} #{rate} #{time_left}"
+  end
+
+  def self.tally_and_show_progress increment = nil
+    tally
+    show_progress increment
+  end
+
+  def self.show_results
+    puts "#{processed_count} processed in #{elapsed} #{rate}"
   end
 
   private

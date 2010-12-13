@@ -8,7 +8,7 @@ class Ward::Reference < ActiveRecord::Base
     all.each do |ward_reference|
       begin
         ward_reference.export
-        self.show_progress
+        Progress.tally_and_show_progress 10
       rescue StandardError => e
         puts
         p ward_reference
@@ -17,21 +17,7 @@ class Ward::Reference < ActiveRecord::Base
         puts e.backtrace
       end
     end
-    self.show_results
-  end
-
-  def self.show_progress
-    Progress.tally
-    return unless Progress.processed_count % 10 == 0
-
-    count = "#{Progress.processed_count}/#{Progress.total_count}".rjust(12)
-    rate = Progress.rate.rjust(9)
-    time_left = Progress.time_left.rjust(11)
-    Progress.puts "#{count} #{rate} #{time_left}"
-  end
-
-  def self.show_results
-    Progress.puts "#{Progress.processed_count} references in #{Progress.elapsed} #{Progress.rate}"
+    Progress.show_results
   end
 
   def export
