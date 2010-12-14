@@ -439,76 +439,6 @@ describe Reference do
     end
   end
 
-  describe "source_url" do
-    before do
-      @author_name = Factory :author_name
-    end
-    it "should make sure it has a protocol" do
-      stub_request(:any, "http://antcat.org/1.pdf").to_return :body => "Hello World!"
-      reference = Factory :reference
-      reference.source_url = 'antcat.org/1.pdf'
-      reference.save!
-      reference.reload.source_url.should == 'http://antcat.org/1.pdf'
-      reference.save!
-      reference.reload.source_url.should == 'http://antcat.org/1.pdf'
-    end
-
-    it "should make sure it's a valid URL" do
-      reference = Reference.new :author_names => [@author_name], :title => 'title', :citation_year => '1910', :source_url => '*'
-      reference.should_not be_valid
-      reference.errors.full_messages.should =~ ['Source url is not in a valid format']
-    end
-
-    it "should make sure it's a valid URL with a path" do
-      reference = Reference.new :author_names => [@author_name], :title => 'title', :citation_year => '1910', :source_url => 'google.com'
-      reference.should_not be_valid
-      reference.errors.full_messages.should =~ ['Source url is not in a valid format']
-    end
-
-    it "should make sure it exists" do
-      stub_request(:any, "http://antbase.org/1.pdf").to_return :body => "Hello World!"
-      reference = Reference.create :author_names => [@author_name], :title => 'title', :citation_year => '1910', :source_url => 'http://antbase.org/1.pdf'
-      reference.should be_valid
-      stub_request(:any, "http://antbase.org/1.pdf").to_return :body => "Not Found", :status => 404
-      reference.should_not be_valid
-      reference.errors.full_messages.should =~ ['Source url was not found']
-    end
-
-    it "should say that it's not hosted by us when the source URL is blank" do
-      reference = Factory :reference
-      reference.should_not be_hosted_by_us
-    end
-
-    it "should know when it's not hosted by us" do
-      reference = Factory :reference
-      reference.source_url = 'http://antbase.org/pdfs/23/3242.pdf'
-      reference.should_not be_hosted_by_us
-    end
-
-    it "should know when it is hosted by S3" do
-      reference = Factory :reference
-      reference.update_attribute :source_file_name, '1.pdf'
-      reference.should be_hosted_by_us
-    end
-
-    it "should create the URL for an uploaded file so that it goes to our controller" do
-      reference = Factory :reference
-      reference.source_file_name = '1.pdf'
-      reference.set_uploaded_source_url 'antcat.org'
-      reference.reload.source_url.should == "http://antcat.org/sources/#{reference.id}/1.pdf"
-    end
-
-  end
-
-  describe "authenticated_url" do
-    it "should go to Amazon" do
-      reference = Factory :reference
-      reference.source_file_name = '1.pdf'
-      reference.set_uploaded_source_url 'antcat.org'
-      reference.reload.authenticated_url.should match /http:\/\/s3\.amazonaws\.com\/antcat\/sources\/#{reference.id}\/1\.pdf\?AWSAccessKeyId=/
-    end
-  end
-
   describe "entering a newline in the title, public_notes, editor_notes or taxonomic_notes" do
     it "should strip the newline" do
       reference = Factory :reference
@@ -609,6 +539,52 @@ describe Reference do
       reference.document.should be_nil
       reference.create_document
       reference.document.should_not be_nil
+    end
+  end
+
+  describe "downloadable_by?" do
+    it "should be false if there is no document" do
+      Factory(:reference).should_not be_downloadable_by Factory :user
+    end
+
+    it "should delegate to its document" do
+      reference = Factory :reference, :document => Factory(:document)
+      user = Factory :user
+      reference.document.should_receive(:downloadable_by?).with(user)
+      reference.downloadable_by? user
+    end
+  end
+
+  describe "url" do
+    it "should be nil if there is no document" do
+      Factory(:reference).url.should be_nil
+    end
+    it "should delegate to its document" do
+      reference = Factory :reference, :document => Factory(:document)
+      reference.document.should_receive(:url)
+      reference.url
+    end
+  end
+
+  describe "actual url" do
+    it "should be nil if there is no document" do
+      Factory(:reference).actual_url.should be_nil
+    end
+    it "should delegate to its document" do
+      reference = Factory :reference, :document => Factory(:document)
+      reference.document.should_receive(:actual_url)
+      reference.actual_url
+    end
+  end
+
+  describe "setting the document host" do
+    it "should not crash if there is no document" do
+      Factory(:reference).document_host = 'localhost'
+    end
+    it "should delegate to its document" do
+      reference = Factory :reference, :document => Factory(:document)
+      reference.document.should_receive(:host=)
+      reference.document_host = 'localhost'
     end
   end
 

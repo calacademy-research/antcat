@@ -1,8 +1,9 @@
 - css_class = 'reference_display'
-- css_class << ' has_source' if reference.source_url?
+- downloadable = reference.downloadable_by? current_user
+- css_class << ' has_source' if downloadable
 %div{:class => css_class}
   = format_reference reference
-  = link_to 'PDF', reference.source_url, :class => :source_link, :target => '_blank' if reference.source_url? && (!reference.hosted_by_us? || user_signed_in?)
+  = link_to 'PDF', reference.url, :class => :source_link, :target => '_blank' if downloadable
 
   %p.notes= italicize h reference.public_notes
   - if user_signed_in?

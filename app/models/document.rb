@@ -8,31 +8,41 @@ class Document < ActiveRecord::Base
                     :s3_permissions => 'authenticated-read',
                     :s3_protocol => 'http'
 
-  before_validation :set_url
+  before_validation :add_protocol_to_url
 
-  def set_uploaded_url host
+  def host= host
+    return unless hosted_by_us?
     update_attribute :url, "http://#{host}/files/#{id}/#{file_file_name}"
   end
 
-  def set_url
-    self.url = "http://" + url if url.present? && url !~ %r{^http://}
+  def downloadable_by? user
+    url.present? && (!hosted_by_us? || user.present?)
+  end
+
+  def actual_url
+    hosted_by_us? ? s3_url : url
+  end
+
+  private
+  def validate
+    return if file_file_name.present? or url.blank?
+    uri = URI.parse url
+    response_code = Net::HTTP.new(uri.host, 80).request_head(uri.path).code.to_i
+    errors.add :url, 'was not found' unless (200..399).include? response_code
+  rescue SocketError, URI::InvalidURIError, ArgumentError
+    errors.add :url, 'is not in a valid format'
   end
 
   def hosted_by_us?
     file_file_name.present?
   end
 
-  def authenticated_url
-    AWS::S3::S3Object.url_for(file.path, file.bucket_name, :expires_in => 1)
+  def add_protocol_to_url
+    self.url = "http://" + url if url.present? && url !~ %r{^http://}
   end
 
-  def validate
-    return if file_file_name.present? or url.blank?
-    uri = URI.parse url
-    response_code = Net::HTTP.new(uri.host, 80).request_head(uri.path).code.to_i
-    errors.add :url, 'was not found' unless (200..399).include? response_code
-  rescue URI::InvalidURIError, ArgumentError
-    errors.add :url, 'is not in a valid format'
+  def s3_url
+    AWS::S3::S3Object.url_for file.path, file.bucket_name, :expires_in => 1
   end
 
 end

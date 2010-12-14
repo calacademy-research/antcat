@@ -82,7 +82,7 @@ Factory.define :reference_author_names do |row|
 end
 
 Factory.define :user do |user|
-  user.email     'mark@example.com'
+  user.sequence(:email) {|n| "mark#{n}@example.com"}
   user.password  'secret'
 end
 

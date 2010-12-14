@@ -2,14 +2,6 @@ require 'curl'
 
 class Reference < ActiveRecord::Base
   has_paper_trail
-  has_attached_file :source,
-                    :url => ':s3_domain_url',
-                    :path => ':attachment/:id/:filename',
-                    :bucket => 'antcat',
-                    :storage => :s3,
-                    :s3_credentials => Rails.root + 'config' + 's3.yml',
-                    :s3_permissions => 'authenticated-read',
-                    :s3_protocol => 'http'
 
   has_many :reference_author_names, :order => :position
   has_many :author_names, :through => :reference_author_names, :order => :position,
@@ -17,7 +9,8 @@ class Reference < ActiveRecord::Base
   belongs_to :journal
   belongs_to :publisher
   belongs_to :source_reference, :polymorphic => true
-  belongs_to :document
+  has_one :document
+  accepts_nested_attributes_for :document
 
   searchable do
     text :title
@@ -38,7 +31,7 @@ class Reference < ActiveRecord::Base
     integer :year
   end
 
-  before_validation :set_year, :strip_newlines, :set_source_url
+  before_validation :set_year, :strip_newlines
   before_save :set_author_names_string
 
   validates_presence_of :year, :title
@@ -182,22 +175,6 @@ class Reference < ActiveRecord::Base
     s
   end
 
-  def set_uploaded_source_url host
-    update_attribute :source_url, "http://#{host}/sources/#{id}/#{source_file_name}"
-  end
-
-  def set_source_url
-    self.source_url = "http://" + source_url if source_url.present? && source_url !~ %r{^http://}
-  end
-
-  def hosted_by_us?
-    source_file_name.present?
-  end
-
-  def authenticated_url
-    AWS::S3::S3Object.url_for(source.path, source.bucket_name, :expires_in => 1)
-  end
-
   def replace_author_name old_name, new_author_name
     old_author_name = AuthorName.find_by_name old_name
     reference_author_name = reference_author_names.find(:first, :conditions => ['author_name_id = ?', old_author_name])
@@ -207,13 +184,20 @@ class Reference < ActiveRecord::Base
     update_author_names_string
   end
 
-  def validate
-    return if source_file_name.present? or source_url.blank?
-    uri = URI.parse source_url
-    response_code = Net::HTTP.new(uri.host, 80).request_head(uri.path).code.to_i
-    errors.add :source_url, 'was not found' unless (200..399).include? response_code
-  rescue URI::InvalidURIError, ArgumentError
-    errors.add :source_url, 'is not in a valid format'
+  def url
+    document && document.url
+  end
+
+  def downloadable_by? user
+    document && document.downloadable_by?(user)
+  end
+
+  def actual_url
+    document && document.actual_url
+  end
+
+  def document_host= host
+    document && document.host = host
   end
 
 end

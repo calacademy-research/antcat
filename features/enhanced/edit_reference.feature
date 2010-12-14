@@ -144,14 +144,14 @@ Feature: Edit reference
       And I should see "Year can't be blank"
       And I should see "Citation can't be blank"
 
-  Scenario: Specifying the source URL
+  Scenario: Specifying the document URL
     Given I am logged in
       And the following entries exist in the bibliography
       |authors    |citation  |year |title|
       |Ward, P.S. |New York  |2010a|Ants |
     When I go to the main page
       And I click the reference
-      And I fill in "reference_source_url" with a URL to a source that exists
+      And I fill in "reference_document_attributes_url" with a URL to a document that exists
       And I press the "Save" button
     Then I should see a "PDF" link
 
@@ -178,17 +178,17 @@ Feature: Edit reference
       And I press the "Save" button
     Then I should see "Ward, P.S."
 
-  Scenario: Specifying the source URL when it doesn't exist
+  Scenario: Specifying the document URL when it doesn't exist
     Given I am logged in
       And the following entries exist in the bibliography
       |authors    |citation  |year |title|
       |Ward, P.S. |New York  |2010a|Ants |
     When I go to the main page
     When I click the reference
-    When I fill in "reference_source_url" with a URL to a source that doesn't exist
+    When I fill in "reference_document_attributes_url" with a URL to a document that doesn't exist
       And I press the "Save" button
     Then I should see the edit form
-      And I should see "Source url was not found"
+      And I should see "Url was not found"
 
   Scenario: Viewing a reference's id
     Given I am logged in

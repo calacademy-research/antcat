@@ -18,13 +18,15 @@ Given /the following entry nests it/ do |table|
   Reference.reindex
 end
 
-Given /that the entry has a source URL that's on our site/ do
-  @reference.update_attribute :source_file_name, "article.pdf"
-  @reference.set_uploaded_source_url 'localhost'
+Given /that the entry has a URL that's on our site/ do
+  @reference.update_attribute :document, Document.create!
+  @reference.document.update_attribute :url, 'localhost/files/123.pdf'
+  @reference.document.update_attribute :file_file_name, '123.pdf'
 end
 
-Given /that the entry has a source URL that's not on our site/ do
-  @reference.update_attribute :source_url, "http://antbase.org/article.pdf"
+Given /that the entry has a URL that's not on our site/ do
+  @reference.update_attribute :document, Document.create!
+  @reference.document.update_attribute :url,  'google.com/foo'
 end
 
 Given /the following user exists/ do |table|
@@ -150,14 +152,14 @@ When /I fill in "reference_nested_reference_id" with its own ID/ do
   When "I fill in \"reference_nested_reference_id\" with \"#{@reference.id}\""
 end
 
-When /I fill in "reference_source_url" with a URL to a source that exists/ do
+When /I fill in "([^"]*)" with a URL to a document that exists/ do |field|
   stub_request :any, "google.com/foo"
-  When "I fill in \"reference_source_url\" with \"google\.com/foo\""
+  When "I fill in \"#{field}\" with \"google\.com/foo\""
 end
 
-When /I fill in "reference_source_url" with a URL to a source that doesn't exist/ do
+When /I fill in "([^"]*)" with a URL to a document that doesn't exist/ do |field|
   stub_request(:any, "google.com/foo").to_return :status => 404
-  When "I fill in \"reference_source_url\" with \"google\.com/foo\""
+  When "I fill in \"#{field}\" with \"google\.com/foo\""
 end
 
 Given "there is a reference with ID 50000 for Dolerichoderinae" do
@@ -165,13 +167,13 @@ Given "there is a reference with ID 50000 for Dolerichoderinae" do
 end
 
 When 'I choose a file to upload' do
-  stub_request(:put, "http://s3.amazonaws.com/antcat/sources/#{@reference.id}/21105.pdf").to_return :body => "OK"
-  stub_request(:get, "http://s3.amazonaws.com/antcat/sources/#{@reference.id}/21105.pdf").to_return :body => "OK"
-  attach_file 'reference_source', Rails.root + 'features/21105.pdf'
+  stub_request(:put, "http://s3.amazonaws.com/antcat/files/#{@reference.id}/21105.pdf").to_return :body => "OK"
+  stub_request(:get, "http://s3.amazonaws.com/antcat/files/#{@reference.id}/21105.pdf").to_return :body => "OK"
+  attach_file 'reference_document_attributes_file', Rails.root + 'features/21105.pdf'
 end
 
 Then 'I should see a link to that file' do
-  find("a[href='http://localhost/sources/#{@reference.id}/21105.pdf']", :text => 'PDF').should_not be_nil
+  find("a[href='http://localhost/files/#{@reference.id}/21105.pdf']", :text => 'PDF').should_not be_nil
 end
 
 Then 'I should be redirected to Amazon' do

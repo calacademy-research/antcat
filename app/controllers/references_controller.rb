@@ -10,7 +10,7 @@ class ReferencesController < ApplicationController
 
   def download
     reference = Reference.find params[:id]
-    redirect_to reference.authenticated_url
+    redirect_to reference.actual_url
   end
 
   def create
@@ -30,14 +30,14 @@ class ReferencesController < ApplicationController
         set_journal if @reference.kind_of? ArticleReference
         set_publisher if @reference.kind_of? BookReference
         set_pagination
-        @reference.attributes = params[:reference]
+        @reference.update_attributes params[:reference]
         @reference.save!
-        set_source_url
+        set_document_host
         raise ActiveRecord::RecordInvalid unless @reference.errors.empty?
       end
     rescue ActiveRecord::RecordInvalid
       @reference[:id] = nil if new
-      @reference.instance_variable_set( :@new_record , new)
+      @reference.instance_variable_set :@new_record, new
     end
     render_json new
   end
@@ -62,8 +62,8 @@ class ReferencesController < ApplicationController
       end
   end
 
-  def set_source_url
-    @reference.set_uploaded_source_url(request.host) if @reference.source_file_name
+  def set_document_host
+    @reference.document_host = request.host
   end
 
   def set_authors
