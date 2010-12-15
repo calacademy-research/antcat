@@ -4,7 +4,7 @@ class Document < ActiveRecord::Base
                     :path => ':attachment/:id/:filename',
                     :bucket => 'antcat',
                     :storage => :s3,
-                    :s3_credentials => (Rails.env.production? ? '/data/antcat/shared/' : Rails.root + 'config/') + 's3.yml',
+                    :s3_credentials => (Rails.env.production? ? '/data/antcat/shared/config/' : Rails.root + 'config/') + 's3.yml',
                     :s3_permissions => 'authenticated-read',
                     :s3_protocol => 'http'
 
