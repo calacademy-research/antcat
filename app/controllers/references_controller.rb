@@ -9,8 +9,7 @@ class ReferencesController < ApplicationController
   end
 
   def download
-    reference = Document.find params[:id]
-    redirect_to document.actual_url
+    redirect_to Document.find(params[:id]).actual_url
   end
 
   def create
