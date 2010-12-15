@@ -501,18 +501,12 @@ describe Reference do
       reference.versions.last.event.should == 'create'
 
       reference.update_attribute :title, 'new title'
-      reference.versions.last.event.should == 'update'
+      version = reference.versions.last
+      version.event.should == 'update'
 
-      #reference.update_attributes(:title => "A new title")
-      #reference.version.should == 3
-      #reference.title.should == "A new title"
-
-      #reference.revert_to 2
-      #reference.save!
-      #reference.version.should == 4
-      #reference.title.should == "Title"
-
-      #reference.update_attributes(:title => "An even newer title")
+      reference = version.reify
+      reference.save!
+      reference.reload.title.should == 'title' 
     end
   end
 
