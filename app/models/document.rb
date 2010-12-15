@@ -43,7 +43,7 @@ class Document < ActiveRecord::Base
   end
 
   def s3_url
-    AWS::S3::S3Object.url_for file.path, file.bucket_name, :expires_in => 1
+    AWS::S3::S3Object.url_for file.path, file.bucket_name, :expires_in => 10
   end
 
 end
