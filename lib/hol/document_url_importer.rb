@@ -104,6 +104,7 @@ class Hol::DocumentUrlImporter
     Progress.puts "#{Progress.processed_count} processed in #{elapsed} (#{rate})"
 
     Progress.puts Progress.count(@success_count, Progress.processed_count, 'successful')
+    Progress.puts Progress.count(@success_count - @already_imported_count, Progress.processed_count, 'new documents')
     Progress.puts Progress.count(@already_imported_count, Progress.processed_count, 'already imported')
     Progress.puts Progress.count(@missing_author_failure_count, Progress.processed_count, 'author not found')
     Progress.puts Progress.count(@unmatched_count, Progress.processed_count, 'unmatched')
