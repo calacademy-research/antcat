@@ -44,10 +44,6 @@ function hideAddReferenceLink() {
 /////////////////////////////////////////////////////////////////////////
 
 function setupDisplays() {
-  $('.document_link').live('click', viewSource);
-  $('.reference_display').live('click', editReference);
-  $('.reference_display').addClass('editable');
-
   setupIcons();
 }
 
@@ -95,13 +91,6 @@ function setupEdits() {
   $('.reference_edit .submit').live('click', submitReferenceEdit);
   $('.reference_edit .cancel').live('click', cancelReferenceEdit);
   $('.reference_edit .delete').live('click', deleteReference);
-}
-
-///////////////////////////////////////////////////////////////////////////////////
-
-function viewSource() {
-  window.location = this.href;
-  return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -191,8 +180,6 @@ function showReferenceEdit($reference, options) {
   if (!options)
     options = {}
 
-  $('.reference_display').removeClass('editable');
-
   hideAddReferenceLink();
   $('.reference_display', $reference).hide();
   $('.icon').hide();
@@ -280,11 +267,9 @@ function updateReference(data, statusText, xhr, $form) {
 
   $('.reference_display', $reference)
     .show()
-    .addClass('editable')
     .effect("highlight", {}, 3000)
 
   showAddReferenceLink();
-  $('.reference_display').addClass('editable');
 }
 
 function cancelReferenceEdit() {
@@ -301,7 +286,6 @@ function cancelReferenceEdit() {
   }
 
   showAddReferenceLink();
-  $('.reference_display').addClass('editable');
 
   return false;
 }
