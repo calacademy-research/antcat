@@ -44,7 +44,7 @@ function hideAddReferenceLink() {
 /////////////////////////////////////////////////////////////////////////
 
 function setupDisplays() {
-  $('.source_link').live('click', viewSource);
+  $('.document_link').live('click', viewSource);
   $('.reference_display').live('click', editReference);
   $('.reference_display').addClass('editable');
 

@@ -1,7 +1,7 @@
 class Document < ActiveRecord::Base
   has_attached_file :file,
                     :url => ':s3_domain_url',
-                    :path => ':attachment/:id/:filename',
+                    :path => ':id/:filename',
                     :bucket => 'antcat',
                     :storage => :s3,
                     :s3_credentials => (Rails.env.production? ? '/data/antcat/shared/config/' : Rails.root + 'config/') + 's3.yml',
@@ -9,10 +9,11 @@ class Document < ActiveRecord::Base
                     :s3_protocol => 'http'
 
   before_validation :add_protocol_to_url
+  belongs_to :reference
 
   def host= host
     return unless hosted_by_us?
-    update_attribute :url, "http://#{host}/files/#{id}/#{file_file_name}"
+    update_attribute :url, "http://#{host}/documents/#{id}/#{file_file_name}"
   end
 
   def downloadable_by? user

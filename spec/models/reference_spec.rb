@@ -560,17 +560,6 @@ describe Reference do
     end
   end
 
-  describe "actual url" do
-    it "should be nil if there is no document" do
-      Factory(:reference).actual_url.should be_nil
-    end
-    it "should delegate to its document" do
-      reference = Factory :reference, :document => Factory(:document)
-      reference.document.should_receive(:actual_url)
-      reference.actual_url
-    end
-  end
-
   describe "setting the document host" do
     it "should not crash if there is no document" do
       Factory(:reference).document_host = 'localhost'

@@ -36,7 +36,7 @@ describe Document do
     document = Factory :document
     document.file_file_name = '1.pdf'
     document.host = 'antcat.org'
-    document.reload.url.should == "http://antcat.org/files/#{document.id}/1.pdf"
+    document.reload.url.should == "http://antcat.org/documents/#{document.id}/1.pdf"
   end
 
   describe "actual url" do
@@ -49,7 +49,7 @@ describe Document do
       document = Factory :document
       document.file_file_name = '1.pdf'
       document.host = 'antcat.org'
-      document.reload.actual_url.should match /http:\/\/s3\.amazonaws\.com\/antcat\/files\/#{document.id}\/1\.pdf\?AWSAccessKeyId=/
+      document.reload.actual_url.should match /http:\/\/s3\.amazonaws\.com\/antcat\/#{document.id}\/1\.pdf\?AWSAccessKeyId=/
     end
   end
 
@@ -87,7 +87,7 @@ describe Document do
     it "should insert the host in the url if the file is hosted by us" do
       document = Document.create! :file_file_name => 'foo'
       document.host = 'localhost'
-      document.url.should == "http://localhost/files/#{document.id}/foo"
+      document.url.should == "http://localhost/documents/#{document.id}/foo"
     end
 
   end

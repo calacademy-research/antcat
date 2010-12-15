@@ -95,7 +95,7 @@ end
 
 When /in the new edit form I press the "(.*?)" button/ do |button|
   When "I press \"#{button}\" within \"#reference_\""
-  sleep 0.5
+  sleep 1
 end
 
 When /in the new edit form I fill in "(.*?)" with the existing reference's ID/ do |field|
@@ -167,13 +167,12 @@ Given "there is a reference with ID 50000 for Dolerichoderinae" do
 end
 
 When 'I choose a file to upload' do
-  stub_request(:put, "http://s3.amazonaws.com/antcat/files/#{@reference.id}/21105.pdf").to_return :body => "OK"
-  stub_request(:get, "http://s3.amazonaws.com/antcat/files/#{@reference.id}/21105.pdf").to_return :body => "OK"
+  stub_request(:put, "http://s3.amazonaws.com/antcat/1/21105.pdf")
   attach_file 'reference_document_attributes_file', Rails.root + 'features/21105.pdf'
 end
 
 Then 'I should see a link to that file' do
-  find("a[href='http://localhost/files/#{@reference.id}/21105.pdf']", :text => 'PDF').should_not be_nil
+  find("a[href='http://localhost/documents/#{@reference.document.id}/21105.pdf']", :text => 'PDF').should_not be_nil
 end
 
 Then 'I should be redirected to Amazon' do

@@ -192,10 +192,6 @@ class Reference < ActiveRecord::Base
     document && document.downloadable_by?(user)
   end
 
-  def actual_url
-    document && document.actual_url
-  end
-
   def document_host= host
     document && document.host = host
   end
