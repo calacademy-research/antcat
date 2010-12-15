@@ -68,7 +68,7 @@ class Hol::DocumentUrlImporter
         return 'Author'
       elsif result[:status] == :pdf_not_found
         @pdf_not_found_failure_count += 1
-        return 'PDF'
+        return 'No PDF'
       elsif reference.kind_of? BookReference
         @book_failure_count += 1
         return 'Book'

@@ -58,11 +58,11 @@ class Hol::Bibliography
 
   def parse_reference li
     reference = {}
-    reference[:document_url] = parse_source_url li
+    reference[:document_url] = parse_document_url li
     parse_article(li, reference) || parse_book(li, reference) || parse_other(li, reference)
   end
 
-  def parse_source_url li
+  def parse_document_url li
     text = li.inner_html
     match = text.match /or download\s+<a href="(.*?)"/
     return match[1] if match

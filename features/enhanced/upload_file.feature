@@ -1,6 +1,6 @@
 Feature: Upload a file
   As an editor
-  I want to upload the source for a reference
+  I want to upload the document for a reference
   So that people can easily read it
 
   Scenario: Upload file
