@@ -219,14 +219,15 @@ Dorow, W.H.O. & Kohout, R.J. 1995. A review of the subgenus <i style="mso-bidi-f
 
     it "should handle big ol' note at the end" do
       contents = make_contents %s{
-Dorow, W.H.O. & Kohout, R.J. 1995. Paleogene ants of the genus <i style="mso-bidi-font-style:normal">Archimyrmex</i> Cockerell, 1923. <i style="mso-bidi-font-style:normal">Paleontological Journal</i> <b>37</b>: 39-47. [English translation of <i style="mso-bidi-font-style:normal">Paleontologicheskii Zhurnal</i> 2003 (No. 1): 40-49.] 
+Dorow, W.H.O. & Kohout, R.J. 1995. Paleogene ants of the genus <i style="mso-bidi-font-style:normal">Archimyrmex</i> Cockerell, 1923. <i style="mso-bidi-font-style:normal">Paleontological Journal</i> <b style=''>37</b>: 39-47. [English translation of <i style="mso-bidi-font-style:normal">Paleontologicheskii Zhurnal</i> 2003 (No. 1): 40-49.] 
       }
       @bibliography.import_html contents
       reference = Bolton::Reference.first
       reference.authors.should == "Dorow, W.H.O. & Kohout, R.J."
+      reference.reference_type.should == 'ArticleReference'
       reference.title.should == 'Paleogene ants of the genus Archimyrmex Cockerell, 1923'
       reference.pagination.should == '39-47'
-      reference.note.should == 'English translation of <i style="mso-bidi-font-style:normal">Paleontologicheskii Zhurnal</i> 2003 (No. 1): 40-49.'
+      reference.note.should == 'English translation of Paleontologicheskii Zhurnal 2003 (No. 1): 40-49'
     end
 
   end
