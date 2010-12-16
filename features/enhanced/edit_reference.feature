@@ -9,8 +9,7 @@ Feature: Edit reference
       |authors|citation  |cite_code|created_at|date    |possess|title|updated_at|year|
       |authors|Psyche 3:3|CiteCode |today     |20100712|Possess|title|today     |2010|
     When I go to the main page
-      And I click the reference
-    Then there should not be an edit form
+      Then there should not be an edit form
 
   Scenario: Edit a reference
     Given the following entries exist in the bibliography
@@ -19,7 +18,7 @@ Feature: Edit reference
     When I log in
       And I go to the main page
     Then I should not see the edit form
-    When I click the reference
+      When I follow "edit"
     Then I should see the edit form
       And I should not see the reference
     When I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
@@ -34,7 +33,7 @@ Feature: Edit reference
       |authors    |citation  |cite_code|created_at|date    |possess|title|updated_at|year|
       |Ward, P.;Bolton, B.|Psyche 5:3|CiteCode |today     |20100712|Possess|title|today     |2010|
     When I go to the main page
-      And I click the reference
+      When I follow "edit"
     When I fill in "reference_author_names_string" with "Ward, P.; Fisher, B.; Bolton, B."
       And I press the "Save" button
     Then I should see "Ward, P.; Fisher, B.; Bolton, B."
@@ -45,7 +44,7 @@ Feature: Edit reference
       |authors|title|citation  |year|
       |Fisher, B.L. |Ants |Psyche 6:4|2010|
     When I go to the main page
-      And I click the reference
+      When I follow "edit"
       And I fill in "reference_citation_year" with "1910a"
       And I press the "Save" button
       And I fill in "q" with "1910"
@@ -58,7 +57,7 @@ Feature: Edit reference
       |authors|title|citation  |year|
       |Fisher, B. |Ants |Psyche 6:4|2010|
     When I go to the main page
-      And I click the reference
+      When I follow "edit"
       And I follow "Book"
       And I fill in "publisher_string" with "New York: Wiley"
       And I fill in "book_pagination" with "22 pp."
@@ -71,7 +70,7 @@ Feature: Edit reference
       |authors|title|citation               |year|
       |Fisher, B. |Ants |New York: Wiley, 22 pp.|2010|
     When I go to the main page
-      And I click the reference
+      When I follow "edit"
       And I fill in "publisher_string" with "New York: Harcourt"
       And I press the "Save" button
     Then I should see "Fisher, B. 2010. Ants. New York: Harcourt, 22 pp."
@@ -82,7 +81,7 @@ Feature: Edit reference
       |authors|title|citation|year|
       |Fisher, B. |Ants |New York|2010|
     When I go to the main page
-      And I click the reference
+      When I follow "edit"
       And I fill in "reference_citation" with "New Jersey"
       And I press the "Save" button
     Then I should see "Fisher, B. 2010. Ants. New Jersey."
@@ -93,7 +92,7 @@ Feature: Edit reference
       |authors    |citation               |year |title|
       |Ward, P.S. |New York: Wiley, 36 pp.|2010a|Ants |
     When I go to the main page
-    When I click the reference
+      When I follow "edit"
     When I fill in "reference_author_names_string" with ""
       And I fill in "reference_title" with ""
       And I fill in "reference_citation_year" with ""
@@ -112,7 +111,7 @@ Feature: Edit reference
       |authors    |citation  |year |title|
       |Ward, P.S. |Psyche 1:2|2010a|Ants |
     When I go to the main page
-    When I click the reference
+      When I follow "edit"
     When I fill in "reference_author_names_string" with ""
       And I fill in "reference_title" with ""
       And I fill in "reference_citation_year" with ""
@@ -133,7 +132,7 @@ Feature: Edit reference
       |authors    |citation  |year |title|
       |Ward, P.S. |New York  |2010a|Ants |
     When I go to the main page
-    When I click the reference
+      When I follow "edit"
     When I fill in "reference_author_names_string" with ""
       And I fill in "reference_title" with ""
       And I fill in "reference_citation_year" with ""
@@ -150,7 +149,7 @@ Feature: Edit reference
       |authors    |citation  |year |title|
       |Ward, P.S. |New York  |2010a|Ants |
     When I go to the main page
-      And I click the reference
+      When I follow "edit"
       And I fill in "reference_document_attributes_url" with a URL to a document that exists
       And I press the "Save" button
     Then I should see a "PDF" link
@@ -161,7 +160,7 @@ Feature: Edit reference
       |authors    |citation  |year |title|
       |Ward, P.S. |New York  |2010a|Ants |
     When I go to the main page
-    When I click the reference
+      When I follow "edit"
     When I fill in "reference_author_names_string" with "Ward, P.S. (ed.)"
       And I press the "Save" button
     Then I should see "Ward, P.S. (ed.)"
@@ -173,7 +172,7 @@ Feature: Edit reference
       |Ward, P.S. (ed.)|New York  |2010a|Ants |
     When I go to the main page
     Then I should see "Ward, P.S. (ed.)"
-    When I click the reference
+      When I follow "edit"
     When I fill in "reference_author_names_string" with "Ward, P.S."
       And I press the "Save" button
     Then I should see "Ward, P.S."
@@ -184,7 +183,7 @@ Feature: Edit reference
       |authors    |citation  |year |title|
       |Ward, P.S. |New York  |2010a|Ants |
     When I go to the main page
-    When I click the reference
+      When I follow "edit"
     When I fill in "reference_document_attributes_url" with a URL to a document that doesn't exist
       And I press the "Save" button
     Then I should see the edit form
@@ -196,7 +195,7 @@ Feature: Edit reference
       |authors|citation  |cite_code|created_at|date    |possess|title|updated_at|year|
       |authors|Psyche 5:3|CiteCode |today     |20100712|Possess|title|today     |2010|
     When I go to the main page
-      And I click the reference
+      When I follow "edit"
     Then I should see the edit form
       And I should see the reference's ID beside its label
 
@@ -210,7 +209,7 @@ Feature: Edit reference
       |Bolton, B.|Ants are my life|2001|In:|
     When I go to the main page
       Then I should see "Bolton, B. 2001. Ants are my life. In: Ward, P.S. 2001. Ants. Psyche 5:3" 
-    When I click the reference
+        When I follow "edit"
       And I fill in "reference_pages_in" with "Pp. 32 in:"
       And I press the "Save" button
     Then I should see "Bolton, B. 2001. Ants are my life. Pp. 32 in: Ward, P.S. 2001. Ants. Psyche 5:3" 
@@ -225,7 +224,7 @@ Feature: Edit reference
       |Bolton, B.|Ants are my life|2001|In:|
     When I go to the main page
       Then I should see "Bolton, B. 2001. Ants are my life. In: Ward, P.S. 2001. Ants. Psyche 5:3" 
-    When I click the reference
+        When I follow "edit"
       And I fill in "reference_nested_reference_id" with its own ID
       And I press the "Save" button
     Then I should see "Nested reference can't point to itself"
