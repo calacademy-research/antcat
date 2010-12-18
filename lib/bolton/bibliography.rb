@@ -46,7 +46,7 @@ class Bolton::Bibliography
     rescue Citrus::ParseError => e
       puts e
     end
-    record_and_show_progress reference
+    tally_and_show_progress reference
   end
 
   def reference? string
@@ -89,20 +89,15 @@ class Bolton::Bibliography
     string
   end
 
-  def record_and_show_progress reference
-    Progress.tally
+  def tally_and_show_progress reference
     @success_count += 1 if reference
-    return unless Progress.processed_count % 100 == 0
-    show_progress
-  end
-
-  def show_progress
-    Progress.puts "#{@success_count}/#{Progress.processed_count} parsed (#{Progress.percent @success_count}) in #{Progress.elapsed} (#{Progress.rate})"
+    Progress.tally_and_show_progress 100
   end
 
   def show_results
-    Progress.puts
-    show_progress
+    Progress.show_count(@success_count, Progress.processed_count, 'successful')
+    Progress.show_count(Bolton::Reference.all(:conditions => 'reference_type != "UnknownReference"').count, Progress.processed_count, 'not unknown')
+    Progress.show_results
   end
 
 end

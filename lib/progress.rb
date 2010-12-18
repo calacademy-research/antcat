@@ -52,6 +52,10 @@ class Progress
     "#{count} (#{percent(count, total)}) #{label}"
   end
 
+  def self.show_count count, total, label
+    puts count count, total, label
+  end
+
   def self.processed_count
     @processed_count
   end
@@ -62,10 +66,16 @@ class Progress
 
   def self.show_progress increment = nil
     return unless increment.nil? or processed_count % increment == 0
-    count = "#{processed_count}/#{total_count}".rjust(12)
-    rate = self.rate.rjust(9)
-    time_left = self.time_left.rjust(11)
-    puts "#{count} #{rate} #{time_left}"
+    if total_count
+      count = "#{processed_count}/#{total_count}".rjust(12)
+      rate = self.rate.rjust(9)
+      time_left = self.time_left.rjust(11)
+      puts "#{count} #{rate} #{time_left}"
+    else
+      count = "#{processed_count}".rjust(8)
+      rate = self.rate.rjust(9)
+      puts "#{count} #{rate}"
+    end
   end
 
   def self.tally_and_show_progress increment = nil
