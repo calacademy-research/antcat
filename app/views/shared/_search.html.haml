@@ -2,6 +2,8 @@
   %form{:action => '/references', :method => :get}
     %table
       %tr
+        %td{:style => 'width: 64px'}
+          %button{:style => 'margin-left: 0', :value => 'new', :name => 'commit', :type => 'submit'} New
         - if user_signed_in?
           %td{:style => 'width: 64px'}
             %button{:style => 'margin-left: 0', :value => 'review', :name => 'commit', :type => 'submit'} Review

@@ -5,6 +5,7 @@ Given /the following entr(?:ies|y) exists? in the bibliography/ do |table|
   table.hashes.each do |hash|
     @reference = Ward::Reference.new(hash).export
     Reference.connection.execute("UPDATE `references` SET updated_at = '#{hash[:updated_at]}' WHERE id = #{@reference.id}") if hash[:updated_at]
+    Reference.connection.execute("UPDATE `references` SET created_at = '#{hash[:created_at]}' WHERE id = #{@reference.id}") if hash[:created_at]
   end
   Reference.reindex
 end
@@ -36,7 +37,7 @@ end
 Then 'I should see these entries in this order:' do |entries|
   entries.hashes.each_with_index do |e, i|
     page.should have_css "table.references tr:nth-of-type(#{i + 2}) td", :text => e['entry']
-    page.should have_css "table.references tr:nth-of-type(#{i + 2}) td", :text => e['updated_at']
+    page.should have_css "table.references tr:nth-of-type(#{i + 2}) td", :text => e['date']
   end
 end
 

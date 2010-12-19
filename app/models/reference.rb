@@ -50,8 +50,9 @@ class Reference < ActiveRecord::Base
     all :conditions => ["author_names_string LIKE ? AND type = ?", last_name + '%', type]
   end
 
-  def self.do_search string = nil, page = nil, sort_by_reverse_updated_at = false
+  def self.do_search string = nil, page = nil, sort_by_reverse_updated_at = false, sort_by_reverse_created_at = false
     return all(:order => 'updated_at DESC').paginate(:page => page) if sort_by_reverse_updated_at
+    return all(:order => 'created_at DESC').paginate(:page => page) if sort_by_reverse_created_at
     return all(:order => 'author_names_string, citation_year').paginate(:page => page) unless string.present?
     string = string.dup
 

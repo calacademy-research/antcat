@@ -23,6 +23,12 @@
       %td{:style => 'font-weight: bold'}
         Updated
 
+  - if @seeing_whats_new
+    %tr
+      %td
+      %td{:style => 'font-weight: bold'}
+        Created
+
   - for reference in @references
     %tr.reference_row
       %td
@@ -30,6 +36,9 @@
       - if @reviewing
         %td{:style => 'vertical-align: top'}
           = reference.updated_at.strftime("%Y-%m-%d")
+      - if @seeing_whats_new
+        %td{:style => 'vertical-align: top'}
+          = reference.created_at.strftime("%Y-%m-%d")
 
   - if user_signed_in?
     %tr.reference_template_row
