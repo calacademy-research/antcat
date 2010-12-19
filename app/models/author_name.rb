@@ -149,7 +149,7 @@ class AuthorName < ActiveRecord::Base
 
   private
   def name_parts
-    @name_parts ||= Ward::AuthorParser.get_name_parts name
+    @name_parts ||= AuthorParser.get_name_parts name
   end
 
 end
