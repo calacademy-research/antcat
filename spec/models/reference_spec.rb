@@ -583,4 +583,13 @@ describe Reference do
     end
   end
 
+  describe 'possible matches' do
+    it 'should return references with a matching principal author last name and reference type' do
+      Factory :book_reference, :author_names => [Factory(:author_name, :name => 'Bolton, B.')]
+      possible_reference = Factory :article_reference, :author_names => [Factory(:author_name, :name => 'Ward, P. S.'), Factory(:author_name, :name => 'Fisher, B. L.')]
+      Factory :article_reference, :author_names => [Factory(:author_name, :name => 'Bolton, B.')]
+      Reference.possible_matches('Ward', 'ArticleReference').should == [possible_reference]
+    end
+  end
+
 end

@@ -17,7 +17,7 @@ class Bolton::ReferenceMatcher
 
   def find_match bolton
     bolton_last_name = last_name(bolton.authors)
-    ::Reference.all(:conditions => ["author_names_string like ?", bolton_last_name + '%']).find do |reference|
+    ::Reference.possible_matches(bolton_last_name, bolton.reference_type).find do |reference|
       next unless reference.author_names.first.last_name == bolton_last_name
       next unless reference.type == bolton.reference_type
       next unless reference.matches? bolton
