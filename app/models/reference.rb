@@ -196,4 +196,8 @@ class Reference < ActiveRecord::Base
     document && document.host = host
   end
 
+  def matches? reference
+    title == reference[:title]
+  end
+
 end

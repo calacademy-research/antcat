@@ -73,4 +73,7 @@ describe ArticleReference do
     end
   end
 
+  describe "matching" do
+  end
+
 end
