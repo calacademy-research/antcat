@@ -17,10 +17,19 @@
 
 %table.references
 
+  - if @reviewing
+    %tr
+      %td
+      %td{:style => 'font-weight: bold'}
+        Updated
+
   - for reference in @references
     %tr.reference_row
       %td
         = render :partial => 'reference', :locals => {:reference => reference, :css_class => 'reference'}
+      - if @reviewing
+        %td{:style => 'vertical-align: top'}
+          = reference.updated_at.strftime("%Y-%m-%d")
 
   - if user_signed_in?
     %tr.reference_template_row

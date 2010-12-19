@@ -21,6 +21,6 @@ Feature: Reviewing features
     When I go to the main page
       And I press the "Review" button
     Then I should see these entries in this order:
-      |entry|
-      |Ward, P. 2010. Ward's World. Psyche 5:3.|
-      |Bolton, B. 2010. Bolton's Bulletin. Psyche 4:2.|
+      |updated_at|entry|
+      |2010-02-02|Ward, P. 2010. Ward's World. Psyche 5:3.|
+      |2010-01-01|Bolton, B. 2010. Bolton's Bulletin. Psyche 4:2.|

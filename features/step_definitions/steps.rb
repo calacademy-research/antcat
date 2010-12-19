@@ -35,7 +35,8 @@ end
 
 Then 'I should see these entries in this order:' do |entries|
   entries.hashes.each_with_index do |e, i|
-    page.should have_css "table.references tr:nth-of-type(#{i + 1}) td", :text => e['entry']
+    page.should have_css "table.references tr:nth-of-type(#{i + 2}) td", :text => e['entry']
+    page.should have_css "table.references tr:nth-of-type(#{i + 2}) td", :text => e['updated_at']
   end
 end
 
