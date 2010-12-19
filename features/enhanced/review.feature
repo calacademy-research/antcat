@@ -8,12 +8,17 @@ Feature: Reviewing features
     Then I should not see "Review"
 
   Scenario: Logged in
+    When I log in
+      And I go to the main page
+    Then I should see "Review"
+
+  Scenario: See features in reverse chronological order
     Given the following entries exist in the bibliography
       |authors   |citation  |created_at|title            |updated_at|year|
       |Ward, P.  |Psyche 5:3|today     |Ward's World     |2010-2-2  |2010|
       |Bolton, B.|Psyche 4:2|yesterday |Bolton's Bulletin|2010-1-1  |2010|
-    When I log in
-      And I go to the main page
+    Given I am logged in
+    When I go to the main page
       And I press the "Review" button
     Then I should see these entries in this order:
       |entry|
