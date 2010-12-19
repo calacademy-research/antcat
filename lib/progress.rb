@@ -66,15 +66,19 @@ class Progress
 
   def self.show_progress increment = nil
     return unless increment.nil? or processed_count % increment == 0
+    puts progress_message
+  end
+
+  def self.progress_message
     if total_count
       count = "#{processed_count}/#{total_count}".rjust(12)
-      rate = self.rate.rjust(9)
+      rate = self.rate.rjust(10)
       time_left = self.time_left.rjust(11)
-      puts "#{count} #{rate} #{time_left}"
+      "#{count} #{rate} #{time_left}"
     else
       count = "#{processed_count}".rjust(8)
       rate = self.rate.rjust(9)
-      puts "#{count} #{rate}"
+      "#{count} #{rate}"
     end
   end
 
@@ -84,7 +88,11 @@ class Progress
   end
 
   def self.show_results
-    puts "#{processed_count} processed in #{elapsed} #{rate}"
+    puts results_message
+  end
+
+  def self.results_message
+    "#{processed_count} processed in #{elapsed} #{rate}"
   end
 
   private
