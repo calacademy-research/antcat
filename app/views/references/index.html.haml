@@ -34,10 +34,10 @@
       %td
         = render :partial => 'reference', :locals => {:reference => reference, :css_class => 'reference'}
       - if @reviewing
-        %td{:style => 'vertical-align: top'}
+        %td{:style => 'width: 90px; vertical-align: top'}
           = reference.updated_at.strftime("%Y-%m-%d")
       - if @seeing_whats_new
-        %td{:style => 'vertical-align: top'}
+        %td{:style => 'width: 90px; vertical-align: top'}
           = reference.created_at.strftime("%Y-%m-%d")
 
   - if user_signed_in?
