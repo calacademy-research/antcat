@@ -191,7 +191,8 @@ function showReferenceEdit($reference, options) {
 
   hideAddReferenceLink();
   $('.reference_display', $reference).hide();
-  $('.icon').hide();
+  if (!usingCucumber)
+    $('.icon').hide()
 
   var $edit = $('.reference_edit', $reference);
   $('#reference_author_names_string', $edit)[0].focus();

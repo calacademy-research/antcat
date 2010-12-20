@@ -9,7 +9,7 @@ Feature: Upload a file
       |authors   |title|citation  |year|
       |Ward, P.S.|Ants |Psyche 5:3|2010|
     When I go to the main page
-      And I click the reference
+      And I follow "edit"
       And I choose a file to upload
       And I press the "Save" button
     Then I should see a link to that file

@@ -34,10 +34,11 @@ Given /the following user exists/ do |table|
   table.hashes.each {|hash| User.create! hash}
 end
 
-Then 'I should see these entries in this order:' do |entries|
+Then /I should see these entries (with a header )?in this order:/ do |with_header, entries|
+  offset = with_header ? 2 : 1
   entries.hashes.each_with_index do |e, i|
-    page.should have_css "table.references tr:nth-of-type(#{i + 2}) td", :text => e['entry']
-    page.should have_css "table.references tr:nth-of-type(#{i + 2}) td", :text => e['date']
+    page.should have_css "table.references tr:nth-of-type(#{i + offset}) td", :text => e['entry']
+    page.should have_css "table.references tr:nth-of-type(#{i + offset}) td", :text => e['date']
   end
 end
 
@@ -81,10 +82,6 @@ end
 
 Then "I should not see any error messages" do
   find('.error_messages li').should be_nil
-end
-
-When 'I click the reference' do
-  find("#reference_#{@reference.id} .reference_display").click
 end
 
 When /in the new edit form I fill in "(.*?)" with "(.*?)"/ do |field, value|

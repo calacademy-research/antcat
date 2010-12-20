@@ -9,13 +9,13 @@ Feature: Error handling
       |authors       |year|title                     |citation                   |
       |Forel, A.     |1874|Les fourmis de la Suisse  |Neue Denkschriften 26:1-452|
     When I go to the main page
-      And I click the reference
+      And I follow "edit"
       And I fill in "reference_title" with ""
       And I press the "Save" button
     Then I should see "Title can't be blank"
-    When I press "Cancel"
+    When I press the "Cancel" button
     Then I should see "Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452."
-    When I click the reference
+    When I follow "edit"
     Then I should not see any error messages
     When I press the "Save" button
     Then I should not see any error messages
