@@ -1,41 +1,55 @@
 require 'spec_helper'
 
 describe Bolton::ReferenceMatcher do
-  describe "matching all references" do
-    it "should set the appropriate Ward reference for each" do
-      # exact match
-      exact_ward = Reference.create! :authors => 'Dlussky, G.M.',
-                        :title => "Ants of the genus Formica L. of Mongolia and northeast Tibet",
-                        :citation => "Annales Zoologici 23: 15-43", :year => '1965a'
-      exact_bolton = Bolton::Reference.create! :authors => 'Dlussky, G.M.', :title_and_citation =>
-                     "Ants of the genus Formica L. of Mongolia and northeast Tibet. Annales Zoologici 23: 15-43", :year => '1965a'
-      # non-match
-      Reference.create! :authors => 'Fisher, B.L.', :title => "My life among the ants", :citation => "Playboy", :year => '2009'
-      unmatched_bolton = Bolton::Reference.create! :authors => 'Wheeler, W.M.', :title_and_citation => "Ants, ants, ants!", :year => '1965a'
+  #describe "matching all references" do
+    #it "should set the appropriate Ward reference for each" do
+      ## exact match
+      #exact_ward = Reference.create! :author_names => [Factory :author_name, :name => 'Dlussky, G.M.'],
+                        #:title => "Ants of the genus Formica L. of Mongolia and northeast Tibet",
+                        #:citation => "Annales Zoologici 23: 15-43", :year => '1965a'
+      #exact_bolton = Bolton::Reference.create! :authors => 'Dlussky, G.M.'], :title_and_citation =>
+                     #"Ants of the genus Formica L. of Mongolia and northeast Tibet. Annales Zoologici 23: 15-43", :year => '1965a'
+      ## non-match
+      #Reference.create! [Factory :author_name, :name => 'Fisher, B.L.'], :title => "My life among the ants", :citation => "Playboy", :year => '2009'
+      #unmatched_bolton = Bolton::Reference.create! :authors => 'Wheeler, W.M.', :title_and_citation => "Ants, ants, ants!", :year => '1965a'
 
-      # suspect match
-      suspect_ward = Reference.create! :authors => 'De Geer, C.', :year => '1777', :title => "Ants",
-        :citation => "Stockholm: Pierre Hesselberg, 950 pp"
-      suspect_bolton = Bolton::Reference.create! :authors => 'De Geer, C.', :year => '1778',
-        :title_and_citation => "Ants. Stockholm: Pierre Hesselberg, 950 pp"
+      ## suspect match
+      #suspect_ward = Reference.create! [Factory :author_name, :name => 'De Geer, C.'], :year => '1777', :title => "Ants",
+        #:citation => "Stockholm: Pierre Hesselberg, 950 pp"
+      #suspect_bolton = Bolton::Reference.create! :authors => 'De Geer, C.', :year => '1778',
+        #:title_and_citation => "Ants. Stockholm: Pierre Hesselberg, 950 pp"
 
-      Bolton::ReferenceMatcher.new.match_all
+      #Bolton::ReferenceMatcher.new.match_all
 
-      exact_bolton.reload
-      exact_bolton.reference.should == exact_ward
-      exact_bolton.should_not be_suspect
+      #exact_bolton.reload
+      #exact_bolton.matches.should == [exact_ward]
 
-      unmatched_bolton.reload
-      unmatched_bolton.reference.should be_nil
-      exact_bolton.should_not be_suspect
+      #unmatched_bolton.reload
+      #unmatched_bolton.matches.count.should be_zero
 
-      suspect_bolton.reload
-      suspect_bolton.reference.should == suspect_ward
-      suspect_bolton.should be_suspect
-    end
-  end
+      #suspect_bolton.reload
+      #suspect_bolton.matches.should == [suspect_ward]
+    #end
+  #end
 
   describe "matching Bolton's references against Ward's" do
+    before do
+      @matcher = Bolton::ReferenceMatcher.new
+      @ward = ArticleReference.create! :author_names => [Factory :author_name, :name => "Arnol'di, G."],
+                                       :title => "My life among the ants",
+                                       :journal => Factory(:journal, :name => "Psyche"),
+                                       :series_volume_issue => '1',
+                                       :pagination => '15-43',
+                                       :citation_year => '1965'
+      @bolton = Bolton::Reference.create! :authors => "Arnol'di, G.",
+                                          :title => "My life among the ants",
+                                          :reference_type => 'ArticleReference',
+                                          :series_volume_issue => '1',
+                                          :pagination => '15-43',
+                                          :journal => 'Psyche',
+                                          :year => '1965a'
+    end
+
     it "should not match an obvious mismatch" do
       ArticleReference.create! :author_names => [Factory :author_name, :name => 'Fisher, B.L.'],
                                :title => "My life among the ants",
@@ -43,40 +57,50 @@ describe Bolton::ReferenceMatcher do
                                :series_volume_issue => '1',
                                :pagination => '3 pp.',
                                :citation_year => '2009'
-      bolton = Bolton::Reference.new(:authors => 'Dlussky, G.M.',
-                                     :title => "Ants of the genus Formica L. of Mongolia and northeast Tibet",
-                                     :reference_type => 'ArticleReference',
-                                     :journal => 'Annales Zoologici',
-                                     :series_volume_issue => "23",
-                                     :pagination => "15-43",
-                                     :year => '1965a')
-      Bolton::ReferenceMatcher.new.find_match(bolton).should be_nil
+      bolton = Bolton::Reference.create! :authors => 'Dlussky, G.M.',
+                                         :title => "Ants of the genus Formica L. of Mongolia and northeast Tibet",
+                                         :reference_type => 'ArticleReference',
+                                         :journal => 'Annales Zoologici',
+                                         :series_volume_issue => "23",
+                                         :pagination => "15-43",
+                                         :year => '1965a'
+      @matcher.find_matches_for bolton
+      bolton.matches.should be_empty
+      Bolton::Match.count.should be_zero
     end
 
+    it "should match an obvious match" do
+      @matcher.find_matches_for @bolton
+      Bolton::Match.count.should == 1
+      match = @bolton.matches.first
+      match.reference.should == @ward
+      match.confidence.should == 1
+    end
+      
     it "should handle an author last name with an apostrophe in it" do
-      ward, bolton = create_ward_and_bolton
-      ward.update_attribute :author_names, [Factory(:author_name, :name => "Arnol'di, G.")]
-      bolton.update_attribute :authors, "Arnol'di, G."
-      Bolton::ReferenceMatcher.new.find_match(bolton).should == ward
+      @ward.update_attributes :author_names => [Factory(:author_name, :name => "Arnol'di, G.")]
+      @bolton.update_attributes :authors => "Arnol'di, G."
+      @matcher.find_matches_for @bolton
+      Bolton::Match.count.should == 1
+      @bolton.references.should == [@ward]
+    end
+
+    it "should never match unknown references" do
+      ward = Factory :unknown_reference
+      bolton = Bolton::Reference.create! :authors => ward.author_names_string, :title => ward.title, :year => ward.year,
+                                     :reference_type => 'UnknownReference'
+      @matcher.find_matches_for bolton
+      bolton.matches.should be_empty
+    end
+
+    it "should not match author prefix" do
+      @ward.update_attributes :author_names => [Factory :author_name, :name => 'Abensperg-Traun, M.']
+      @bolton.update_attributes :authors  => 'Abe, M.'
+      @matcher.find_matches_for @bolton
+      @bolton.matches.should be_empty
     end
       
     private
-    def create_ward_and_bolton
-      ward = ArticleReference.create! :author_names => [Factory :author_name, :name => "Arnol'di, G."],
-                                      :title => "My life among the ants",
-                                      :journal => Factory(:journal, :name => "Psyche"),
-                                      :series_volume_issue => '1',
-                                      :pagination => '15-43',
-                                      :citation_year => '1965'
-      bolton = Bolton::Reference.new :authors => "Arnol'di, G.",
-                                     :title => "My life among the ants",
-                                     :reference_type => 'ArticleReference',
-                                     :series_volume_issue => '1',
-                                     :pagination => '15-43',
-                                     :journal => 'Psyche',
-                                     :year => '1965a'
-      return ward, bolton
-    end
 
     it "should find an exact match" do
       ward = ArticleReference.create! :author_names => [Factory :author_name, :name => 'Fisher, B.L.'],

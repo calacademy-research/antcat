@@ -5,23 +5,24 @@ class Bolton::ReferenceMatcher
     @unmatched_count = 0
   end
 
-  def match_all
-    Bolton::Reference.all.each_with_index do |bolton, i|
-      match = find_match bolton
-      bolton.update_attribute :ward_reference_id, match && match.id
-      @unmatched_count += 1 unless match
+  def find_matches_for_all
+    Bolton::Match.delete_all
+    Bolton::Reference.all[0..100].each_with_index do |bolton, i|
+      find_matches_for bolton
       show_progress
     end
     show_results
   end
 
-  def find_match bolton
+  def find_matches_for bolton
     bolton_last_name = last_name(bolton.authors)
-    ::Reference.possible_matches(bolton_last_name, bolton.reference_type).find do |reference|
-      next unless reference.author_names.first.last_name == bolton_last_name
-      next unless reference.type == bolton.reference_type
-      next unless reference.matches? bolton
-      true
+    return if bolton.reference_type == 'UnknownReference'
+    ::Reference.possible_matches(bolton_last_name, bolton.reference_type).each do |reference|
+      next unless bolton_last_name == reference.author_names.first.last_name
+      Bolton::Match.create! :bolton_reference_id => bolton.id, :reference_id => reference.id, :confidence => 1
+      #next unless reference.author_names.first.last_name == bolton_last_name
+      #next unless reference.type == bolton.reference_type
+      #next unless reference.matches? bolton
     end
   end
 
