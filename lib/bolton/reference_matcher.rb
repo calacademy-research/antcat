@@ -15,11 +15,12 @@ class Bolton::ReferenceMatcher
   end
 
   def find_matches_for bolton
-    bolton_last_name = last_name(bolton.authors)
     return if bolton.reference_type == 'UnknownReference'
-    ::Reference.possible_matches(bolton_last_name, bolton.reference_type).each do |reference|
-      next unless bolton_last_name == reference.author_names.first.last_name
-      Bolton::Match.create! :bolton_reference_id => bolton.id, :reference_id => reference.id, :confidence => 1
+    wards = ward_references_for bolton
+    bolton_last_name = bolton.principal_author_last_name
+    wards.each do |ward|
+      next unless bolton_last_name == ward.author_names.first.last_name
+      Bolton::Match.create! :bolton_reference_id => bolton.id, :reference_id => ward.id, :confidence => 1
       #next unless reference.author_names.first.last_name == bolton_last_name
       #next unless reference.type == bolton.reference_type
       #next unless reference.matches? bolton
@@ -35,10 +36,6 @@ class Bolton::ReferenceMatcher
 
   def show_results
     Progress.puts "#{Progress.results_message} #{Progress.count @unmatched_count, Progress.processed_count, 'unmatched'}"
-  end
-
-  def last_name string
-    string.split(',').first
   end
 
 end

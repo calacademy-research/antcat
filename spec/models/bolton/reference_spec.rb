@@ -27,4 +27,10 @@ describe Bolton::Reference do
     end
   end
 
+  describe 'last name of principal author' do
+    it 'should work' do
+      Bolton::Reference.new(:authors => 'Bolton, B.').principal_author_last_name.should == 'Bolton'
+    end
+  end
+
 end

@@ -12,4 +12,8 @@ class Bolton::Reference < ActiveRecord::Base
   def set_year
     self.year = ::Reference.get_year citation_year
   end 
+
+  def principal_author_last_name
+    authors.split(',').first
+  end
 end
