@@ -21,6 +21,15 @@ function setupSearch() {
     string.replace(/'/, '"')
     inp.attr('value', string)
   });
+  $("#search form").keypress(function (e) {
+    if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
+    console.log('keypress');
+        $('button[type=submit].default').click();
+        return false;
+    } else {
+        return true;
+    }
+  });
 }
 
 /////////////////////////////////////////////////////////////////////////
