@@ -9,15 +9,6 @@ describe Bolton::Reference do
     end
   end
 
-  describe "matching against Ward" do
-    it "should create and call a matcher" do
-      matcher = mock
-      Bolton::ReferenceMatcher.should_receive(:new).and_return(matcher)
-      matcher.should_receive(:match_all)
-      Bolton::Reference.match_against_ward
-    end
-  end
-
   describe "changing the citation year" do
     it "should change the year" do
       reference = Factory(:bolton_reference, :citation_year => '1910a')
