@@ -1,11 +1,9 @@
 class Bolton::Reference < ActiveRecord::Base
   belongs_to :reference
+  has_many :matches, :class_name => 'Bolton::Match', :foreign_key => :bolton_reference_id
+  has_many :references, :through => :matches
   set_table_name :bolton_references
   before_validation :set_year
-
-  def self.match_against_ward show_progress = false
-    Bolton::ReferenceMatcher.new(show_progress).match_all
-  end
 
   def to_s
     "#{authors} #{year}. #{title}."

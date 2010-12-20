@@ -1,0 +1,9 @@
+- for bolton_reference in Bolton::Reference.all
+  %table{:style => 'margin-top: 10px; border:thin black solid'}
+    %tr{:style => 'border: thin black solid'}
+      %td{:style => 'width: 30px'}
+      %td= Bolton::ReferenceFormatter.format bolton_reference
+      - for match in bolton_reference.matches
+        %tr
+          %td{:style => 'padding-right: 4px'}= match.confidence
+          %td= ReferenceFormatter.format match.reference

@@ -1,0 +1,2 @@
+class BoltonMatchesController < ApplicationController
+end
