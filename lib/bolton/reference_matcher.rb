@@ -28,6 +28,10 @@ class Bolton::ReferenceMatcher
   end
 
   private
+  def ward_references_for bolton
+    ::Reference.with_principal_author_last_name_like bolton.principal_author_last_name
+  end
+
   def show_progress
     Progress.tally
     return unless Progress.processed_count % 100 == 0

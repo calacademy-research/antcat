@@ -42,12 +42,10 @@ class Reference < ActiveRecord::Base
     :conditions => 'reference_author_names.position = 1',
     :order => 'name ASC'
 
+  named_scope :with_principal_author_last_name_like, lambda {|last_name| {:conditions => ['author_names_string LIKE ?', last_name + '%']}}
+
   def authors reload = false
     author_names(reload).map(&:author)
-  end
-
-  def self.possible_matches last_name, type
-    all :conditions => ["author_names_string LIKE ? AND type = ?", last_name + '%', type]
   end
 
   def self.do_search string = nil, page = nil, sort_by_reverse_updated_at = false, sort_by_reverse_created_at = false
