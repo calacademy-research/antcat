@@ -2,7 +2,7 @@ class Bolton::ReferenceMatcher
 
   def initialize show_progress = false
     Progress.init show_progress, Bolton::Reference.count
-    @unmatched_count = 0
+    @unmatched_count = @matched_count = @possible_count = 0
   end
 
   def find_matches_for_all
@@ -32,12 +32,19 @@ class Bolton::ReferenceMatcher
 
   def show_progress
     Progress.tally
-    return unless Progress.processed_count % 100 == 0
-    Progress.puts "#{Progress.progress_message} #{Progress.count @unmatched_count, Progress.processed_count, 'unmatched'}"
+    return unless Progress.processed_count % 10 == 0
+    Progress.puts Progress.progress_message + progress_stats
+  end
+
+  def progress_stats
+    message = ''
+    message << ' ' << Progress.count(@matched_count, Progress.processed_count, 'matched').rjust(20)
+    message << ' ' << Progress.count(@possible_count, Progress.processed_count, 'possible').rjust(20)
+    message << ' ' << Progress.count(@unmatched_count, Progress.processed_count, 'unmatched').rjust(20)
   end
 
   def show_results
-    Progress.puts "#{Progress.results_message} #{Progress.count @unmatched_count, Progress.processed_count, 'unmatched'}"
+    Progress.puts Progress.results_message + progress_stats
   end
 
 end
