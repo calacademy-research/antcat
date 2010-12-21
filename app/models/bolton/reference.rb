@@ -15,7 +15,7 @@ class Bolton::Reference < ActiveRecord::Base
 
   def match ward_reference
     return 0 unless ward_reference.principal_author_last_name == principal_author_last_name
-    return 0 if reference_type == 'UnknownReference' || ward_reference.type == 'UnknownReference'
+    return 1 if reference_type == 'UnknownReference' || ward_reference.type == 'UnknownReference'
     return 100 if title == ward_reference.title
     1
   end
