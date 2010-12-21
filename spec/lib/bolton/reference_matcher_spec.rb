@@ -129,24 +129,6 @@ describe Bolton::ReferenceMatcher do
       #Bolton::ReferenceMatcher.new.find_match(bolton).should == ward
     #end
 
-    #it "should find a match when Ward includes taxon names" do
-      #ward = Reference.create! :authors => "Dlussky, G. M.; Soyunov, O. S.", :year => "1988",
-        #:title => "Ants of the genus *Temnothorax* Mayr (Hymenoptera: Formicidae) of the USSR. [In Russian.]",
-        #:citation => "Izvestiya Akademii Nauk Turkmenskoi SSR. Seriya Biologicheskikh Nauk 1988(4):29-37"
-      #bolton = Bolton::Reference.new :authors => "Dlussky, G.M. & Soyunov, O.S.", :year => "1988",
-        #:title_and_citation => "Murav'i roda Temnothorax Mayr SSSR. Izvestiya Akademii Nauk Turkmenskoi SSR. Seriya Biologicheskikh Nauk 1988 (No. 4): 29-37."
-      #Bolton::ReferenceMatcher.new.find_match(bolton).should == ward
-    #end
-
-    #it "should find a match when Ward includes taxon names, as long as one of them is one we know about" do
-      #ward = Reference.create! :authors => "Dlusski, G. M.; Soyunov, O. S.", :year => "1987",
-        #:title => "Ants of the genus *Temnothorax* Mayr (Hymenoptera, Chrysidoidea, Vespoidea and Apoidea) of the USSR. [In Russian.]",
-        #:citation => "Izvestiya Akademii Nauk Turkmenskoi SSR. Seriya Biologicheskikh N."
-      #bolton = Bolton::Reference.new :authors => "Dlussky, G.M. & Soyunov, O.S.", :year => "1988",
-        #:title_and_citation => "Murav'i roda Temnothorax Mayr SSSR. Izvestiya Akademii Nauk Turkmenskoi SSR. Seriya Biologicheskikh Nauk"
-      #Bolton::ReferenceMatcher.new.find_match(bolton).should == ward
-    #end
-
     #it "should find a match when the author and year are the same, and a sufficient number of digits in the title + citation are the same" do
       #ward = Reference.create! :authors => 'De Geer, C.', :year => '1778', :title => "Mémoires pour servir à l'histoire des insectes. Tome septième (7)",
         #:citation => "Stockholm: Pierre Hesselberg, 950 pp"

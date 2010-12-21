@@ -17,6 +17,7 @@ class Bolton::Reference < ActiveRecord::Base
     return 0 unless ward_reference.principal_author_last_name == principal_author_last_name
     return 1 if reference_type == 'UnknownReference' || ward_reference.type == 'UnknownReference'
     return 100 if title == ward_reference.title
+    return 99 if remove_parenthesized_taxon_names(title) == remove_parenthesized_taxon_names(ward_reference.title)
     1
   end
 
@@ -24,4 +25,16 @@ class Bolton::Reference < ActiveRecord::Base
   def set_year
     self.year = ::Reference.get_year citation_year
   end 
+
+  def remove_parenthesized_taxon_names string
+    match = string.match(/ \(.+?\)/)
+    return string unless match
+    possible_taxon_names = match.to_s.strip.gsub(/[(),:]/, '').split(/[ ]/)
+    any_taxon_names = possible_taxon_names.any? do |word|
+      ['Formicidae', 'Hymenoptera'].include? word
+    end
+    string[match.begin(0)..(match.end(0) - 1)] = '' if any_taxon_names
+    string
+  end
+
 end
