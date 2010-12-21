@@ -411,6 +411,26 @@ describe Reference do
     end
   end
 
+  describe "principal author last name" do
+    before do
+      @ward = Factory :author_name, :name => 'Ward, P.'
+      @fisher = Factory:author_name, :name => 'Fisher, B.'
+    end
+    it "should not freak out if there are no authors" do
+      reference = Reference.create! :title => 'title', :citation_year => '1993'
+      reference.principal_author_last_name.should be_nil
+    end
+    it "should cache the last name of the principal author" do
+      reference = Factory :reference, :author_names => [@ward, @fisher]
+      reference.principal_author_last_name.should == 'Ward'
+    end
+    it "should update its author_names_string when an author_name's name is changed" do
+      reference = Factory :reference, :author_names => [@ward]
+      @ward.update_attributes :name => 'Bolton, B.'
+      reference.reload.principal_author_last_name.should == 'Bolton'
+    end
+  end
+
   describe "validations" do
     before do
       author_name = Factory :author_name

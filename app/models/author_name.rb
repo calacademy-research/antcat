@@ -27,7 +27,7 @@ class AuthorName < ActiveRecord::Base
   end
 
   def update_references
-    references.each {|reference| reference.update_author_names_string}
+    references.each {|reference| reference.update_author_names_caches}
   end
 
   def self.import_author_names_string string
@@ -112,7 +112,7 @@ class AuthorName < ActiveRecord::Base
       author.destroy unless author.names.present?
       references.each do |reference|
         Progress.puts "Changed #{reference}"
-        reference.update_author_names_string
+        reference.update_author_names_caches
         Progress.puts "     to #{reference}"
       end
     else

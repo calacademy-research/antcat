@@ -5,7 +5,7 @@ class Reference < ActiveRecord::Base
 
   has_many :reference_author_names, :order => :position
   has_many :author_names, :through => :reference_author_names, :order => :position,
-           :after_add => :update_author_names_string, :after_remove => :update_author_names_string
+           :after_add => :update_author_names_caches, :after_remove => :update_author_names_caches
   belongs_to :journal
   belongs_to :publisher
   belongs_to :source_reference, :polymorphic => true
@@ -32,7 +32,7 @@ class Reference < ActiveRecord::Base
   end
 
   before_validation :set_year, :strip_newlines
-  before_save :set_author_names_string
+  before_save :set_author_names_caches
 
   validates_presence_of :year, :title
 
@@ -132,18 +132,22 @@ class Reference < ActiveRecord::Base
     nester.nil?
   end
 
-  def make_author_names_string
+  def make_author_names_caches
     string = author_names.map(&:name).join('; ')
     string << author_names_suffix if author_names_suffix.present?
-    string
+    first_author_name = author_names.first
+    last_name = first_author_name && first_author_name.last_name
+    return string, last_name
   end
 
-  def set_author_names_string _ = nil
-    self.author_names_string = make_author_names_string
+  def set_author_names_caches _ = nil
+    self.author_names_string, self.principal_author_last_name = make_author_names_caches
   end
 
-  def update_author_names_string _ = nil
-    update_attribute :author_names_string, make_author_names_string
+  def update_author_names_caches _ = nil
+    string, principal_author_last_name = make_author_names_caches
+    update_attribute :author_names_string, string
+    update_attribute :principal_author_last_name, principal_author_last_name
   end
 
   def set_year
@@ -184,7 +188,7 @@ class Reference < ActiveRecord::Base
     reference_author_name.author_name = new_author_name
     reference_author_name.save!
     author_names(true)
-    update_author_names_string
+    update_author_names_caches
   end
 
   def url
