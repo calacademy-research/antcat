@@ -9,10 +9,6 @@ class Bolton::Reference < ActiveRecord::Base
     "#{authors} #{year}. #{title}."
   end
 
-  def set_year
-    self.year = ::Reference.get_year citation_year
-  end 
-
   def principal_author_last_name
     authors.split(',').first
   end
@@ -23,4 +19,9 @@ class Bolton::Reference < ActiveRecord::Base
     return 100 if title == ward_reference.title
     1
   end
+
+  private
+  def set_year
+    self.year = ::Reference.get_year citation_year
+  end 
 end
