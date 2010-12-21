@@ -6,4 +6,8 @@ module ReferenceHelper
   def italicize string
     ReferenceFormatter.italicize string
   end
+
+  def format_timestamp timestamp
+    ReferenceFormatter.format_timestamp timestamp
+  end
 end

@@ -40,6 +40,10 @@ class ReferenceFormatter
     string
   end
 
+  def self.format_timestamp timestamp
+    timestamp.strftime '%Y-%m-%d'
+  end
+
   private
   def format_date input
     date = input

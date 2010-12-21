@@ -2,16 +2,15 @@
   %form{:action => '/references', :method => :get}
     %table
       %tr
-        %td{:style => 'width: 64px'}
-          %button{:style => 'margin-left: 0', :value => 'new', :name => 'commit', :type => 'submit'} New
+        %td.left_button
+          %button{:value => 'new', :name => 'commit', :type => 'submit'} New
         - if user_signed_in?
-          %td{:style => 'width: 64px'}
-            %button{:style => 'margin-left: 0', :value => 'review', :name => 'commit', :type => 'submit'} Review
-        %td{:style => 'width: 64px; padding-right: 3px'}
+          %td.left_button
+            %button{:value => 'review', :name => 'commit', :type => 'submit'} Review
+        %td.label
           Search for
         %td
           %input#q{:name => 'q', :type => 'text', :value => params[:q]}
-        %td{:style => 'width: 55px; padding-left: 14px'}
+        %td.right_button
           %button{:value => 'search', :name => 'commit', :type => 'submit', :class => 'default'} Go
-        %td{:style => 'width: 55px'}
           %button{:value => 'clear', :name => 'commit', :type => 'submit'} Clear

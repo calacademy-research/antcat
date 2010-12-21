@@ -196,4 +196,10 @@ describe ReferenceFormatter do
     end
   end
 
+  describe "formatting a timestamp" do
+    it "should use a short format" do
+      ReferenceFormatter.format_timestamp(Time.parse('2001-1-2')).should == '2001-01-02'
+    end
+  end
+
 end

@@ -20,13 +20,13 @@
   - if @reviewing
     %tr
       %td
-      %td{:style => 'font-weight: bold'}
+      %td.date_header
         Updated
 
   - if @seeing_whats_new
     %tr
       %td
-      %td{:style => 'font-weight: bold'}
+      %td.date_header
         Created
 
   - for reference in @references
@@ -34,11 +34,11 @@
       %td
         = render :partial => 'reference', :locals => {:reference => reference, :css_class => 'reference'}
       - if @reviewing
-        %td{:style => 'width: 90px; vertical-align: top'}
-          = reference.updated_at.strftime("%Y-%m-%d")
+        %td.date
+          = format_timestamp reference.updated_at
       - if @seeing_whats_new
-        %td{:style => 'width: 90px; vertical-align: top'}
-          = reference.created_at.strftime("%Y-%m-%d")
+        %td.date
+          = format_timestamp reference.created_at
 
   - if user_signed_in?
     %tr.reference_template_row
