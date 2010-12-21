@@ -42,7 +42,7 @@ class Reference < ActiveRecord::Base
     :conditions => 'reference_author_names.position = 1',
     :order => 'name ASC'
 
-  named_scope :with_principal_author_last_name_like, lambda {|last_name| {:conditions => ['author_names_string LIKE ?', last_name + '%']}}
+  named_scope :with_principal_author_last_name, lambda {|last_name| {:conditions => ['principal_author_last_name = ?', last_name]}}
 
   def authors reload = false
     author_names(reload).map(&:author)

@@ -620,12 +620,12 @@ describe Reference do
     end
   end
 
-  describe 'with principal author last name like' do
+  describe 'with principal author last name' do
     it 'should return references with a matching principal author last name' do
       not_possible_reference = Factory :book_reference, :author_names => [Factory(:author_name, :name => 'Bolton, B.')]
       possible_reference = Factory :article_reference, :author_names => [Factory(:author_name, :name => 'Ward, P. S.'), Factory(:author_name, :name => 'Fisher, B. L.')]
       another_possible_reference = Factory :article_reference, :author_names => [Factory(:author_name, :name => 'Warden, J.')]
-      Reference.with_principal_author_last_name_like('Ward').should =~ [possible_reference, another_possible_reference]
+      Reference.with_principal_author_last_name('Ward').should =~ [possible_reference]
     end
   end
 
