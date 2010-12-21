@@ -56,5 +56,22 @@ describe Bolton::Reference do
       @bolton.match(@ward).should == 0
     end
 
+    it "should never match unknown references" do
+      ward = Factory :unknown_reference
+      bolton = Bolton::Reference.create! :authors => ward.author_names_string, :title => ward.title, :year => ward.year,
+                                     :reference_type => 'UnknownReference'
+      bolton.match(@ward).should == 0
+    end
+
+    it "should match with complete confidence if the author and title are the same" do
+      @bolton.update_attributes :title => @ward.title
+      @bolton.match(@ward).should == 100
+    end
+
+    it "should match with very low confidence the author is the same but the title is different" do
+      @bolton.update_attributes :title => 'Spiders'
+      @bolton.match(@ward).should be == 1
+    end
+
   end
 end
