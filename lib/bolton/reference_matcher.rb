@@ -15,12 +15,10 @@ class Bolton::ReferenceMatcher
   end
 
   def find_matches_for bolton
-    return if bolton.reference_type == 'UnknownReference'
-    wards = ward_references_for bolton
-    bolton_last_name = bolton.principal_author_last_name
-    wards.each do |ward|
-      next unless bolton_last_name == ward.author_names.first.last_name
-      Bolton::Match.create! :bolton_reference_id => bolton.id, :reference_id => ward.id, :confidence => 1
+    ward_references_for(bolton).each do |ward|
+      confidence = bolton.match ward
+      next unless confidence > 0
+      Bolton::Match.create! :bolton_reference_id => bolton.id, :reference_id => ward.id, :confidence => confidence
       #next unless reference.author_names.first.last_name == bolton_last_name
       #next unless reference.type == bolton.reference_type
       #next unless reference.matches? bolton

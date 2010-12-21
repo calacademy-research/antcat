@@ -33,4 +33,28 @@ describe Bolton::Reference do
     end
   end
 
+  describe 'matching against Ward' do
+    before do
+      @ward = ArticleReference.create! :author_names => [Factory :author_name, :name => "Arnol'di, G."],
+                                       :title => "My life among the ants",
+                                       :journal => Factory(:journal, :name => "Psyche"),
+                                       :series_volume_issue => '1',
+                                       :pagination => '15-43',
+                                       :citation_year => '1965'
+      @bolton = Bolton::Reference.create! :authors => "Arnol'di, G.",
+                                          :title => "My life among the ants",
+                                          :reference_type => 'ArticleReference',
+                                          :series_volume_issue => '1',
+                                          :pagination => '15-43',
+                                          :journal => 'Psyche',
+                                          :year => '1965a'
+    end
+
+    it "should not match if the author name is a prefix" do
+      @ward.update_attributes :author_names => [Factory :author_name, :name => 'Abensperg-Traun, M.']
+      @bolton.update_attributes :authors  => 'Abe, M.'
+      @bolton.match(@ward).should == 0
+    end
+
+  end
 end

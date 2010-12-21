@@ -16,4 +16,8 @@ class Bolton::Reference < ActiveRecord::Base
   def principal_author_last_name
     authors.split(',').first
   end
+
+  def match ward_reference
+    0
+  end
 end
