@@ -23,7 +23,6 @@ function setupSearch() {
   });
   $("#search form").keypress(function (e) {
     if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
-    console.log('keypress');
         $('button[type=submit].default').click();
         return false;
     } else {
