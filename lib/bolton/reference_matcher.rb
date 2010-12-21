@@ -6,28 +6,51 @@ class Bolton::ReferenceMatcher
   end
 
   def find_matches_for_all
-    Bolton::Match.delete_all
-    Bolton::Reference.all[0..100].each_with_index do |bolton, i|
-      find_matches_for bolton
-      show_progress
+    Bolton::Match.transaction do 
+      Bolton::Match.delete_all
+      Bolton::Reference.all[0,100].each_with_index do |bolton, i|
+        find_matches_for bolton
+        show_progress
+      end
     end
     show_results
   end
 
   def find_matches_for bolton
+    max_confidence = 0
+    matches = []
     ward_references_for(bolton).each do |ward|
       confidence = bolton.match ward
+      max_confidence = [confidence, max_confidence].max
       next unless confidence > 0
-      Bolton::Match.create! :bolton_reference_id => bolton.id, :reference_id => ward.id, :confidence => confidence
+      matches << {:bolton_reference_id => bolton.id, :reference_id => ward.id, :confidence => confidence}
       #next unless reference.author_names.first.last_name == bolton_last_name
       #next unless reference.type == bolton.reference_type
       #next unless reference.matches? bolton
     end
+
+    matches.select do |match|
+      match[:confidence] == max_confidence
+    end.each do |match|
+      Bolton::Match.create! match
+    end
+
+    case max_confidence
+    when 0 then @unmatched_count += 1
+    when 100 then @matched_count += 1
+    else @possible_count += 1
+    end
+
   end
 
   private
   def ward_references_for bolton
-    ::Reference.with_principal_author_last_name_like bolton.principal_author_last_name
+    bolton_name = bolton.principal_author_last_name
+    if bolton_name != @bolton_name
+      @bolton_name = bolton_name
+      @references = ::Reference.with_principal_author_last_name bolton_name
+    end
+    @references
   end
 
   def show_progress

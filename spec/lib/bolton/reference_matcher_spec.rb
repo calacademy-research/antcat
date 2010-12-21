@@ -63,6 +63,16 @@ describe Bolton::ReferenceMatcher do
       @bolton.references.should == [@ward]
     end
 
+    it "should only save the highest confidence results as matches" do
+      author_names = [Factory :author_name, :name => 'Ward, P. S.']
+      Reference.delete_all
+      @bolton.should_receive(:match).with(Factory :reference, :author_names => author_names).and_return 50
+      @bolton.should_receive(:match).with(Factory :reference, :author_names => author_names).and_return 50
+      @bolton.should_receive(:match).with(Factory :reference, :author_names => author_names).and_return 1
+      @matcher.find_matches_for @bolton
+      Bolton::Match.all.map(&:confidence).should == [50, 50]
+    end
+
     private
 
     #it "should find an exact match" do
