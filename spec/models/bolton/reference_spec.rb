@@ -76,13 +76,19 @@ describe Bolton::Reference do
     it "should find a match when Ward includes taxon names, as long as one of them is one we know about" do
       @bolton.update_attributes :title => 'The genus-group names of Symphyta and their type species'
       @ward.update_attributes :title => 'The genus-group names of Symphyta (Hymenoptera: Formicidae) and their type species'
-      @bolton.match(@ward).should be == 99
+      @bolton.match(@ward).should be == 90
     end
 
-    it "should find not find a match when the only difference is parenthetical, but is not a toxon name" do
+    it "should not find a match when the only difference is parenthetical, but is not a toxon name" do
       @bolton.update_attributes :title => 'The genus-group names of Symphyta and their type species'
       @ward.update_attributes :title => 'The genus-group names of Symphyta (unknown) and their type species'
       @bolton.match(@ward).should be == 1
+    end
+
+    it "should find a match when the only difference is in square brackets" do
+      @bolton.update_attributes :title => 'Ants [sic] and pants'
+      @ward.update_attributes :title => 'Ants and pants [sic]'
+      @bolton.match(@ward).should be == 90
     end
 
   end
