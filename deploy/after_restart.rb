@@ -1,1 +1,1 @@
-run "rake sunspot:solr:start"
+run "cd #{release_path};rake sunspot:solr:start"
