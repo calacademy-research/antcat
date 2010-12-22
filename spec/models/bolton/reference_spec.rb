@@ -56,13 +56,24 @@ describe Bolton::Reference do
         @bolton.update_attributes :authors  => 'Abe, M.'
         @bolton.match(@ward).should == 0
       end
+    end
 
-      it "should just match the author for unknown references" do
+    describe "matching unknown types of reference" do
+
+      it "should match the author for unknown references" do
         ward = Factory :unknown_reference
-        bolton = Bolton::Reference.create! :authors => ward.author_names_string, :title => ward.title, :year => ward.year,
-                                      :reference_type => 'UnknownReference'
+        bolton = Bolton::Reference.create! :authors => ward.author_names_string, :title => 'Ants', :year => ward.year,
+                                           :reference_type => 'UnknownReference'
         bolton.match(ward).should == 1
       end
+
+      it "should match the title for unknown references" do
+        ward = Factory :unknown_reference
+        bolton = Bolton::Reference.create! :authors => ward.author_names_string, :title => ward.title, :year => ward.year,
+                                           :reference_type => 'UnknownReference'
+        bolton.match(ward).should == 100
+      end
+
     end
 
     describe "title matching" do
