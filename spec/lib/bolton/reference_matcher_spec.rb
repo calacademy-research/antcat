@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Bolton::ReferenceMatcher do
   describe "matching all references" do
-    it "should set the appropriate Ward reference for each" do
+    it "should find the appropriate Ward reference(s) for each" do
       # exact match
       exact_ward = Factory :reference, :author_names => [Factory :author_name, :name => 'Dlussky, G.M.']
       exact_bolton = Factory :bolton_reference, :authors => 'Dlussky, G.M.'
@@ -72,57 +72,6 @@ describe Bolton::ReferenceMatcher do
       @matcher.find_matches_for @bolton
       Bolton::Match.all.map(&:confidence).should == [50, 50]
     end
-
-    private
-
-    #it "should find a match when Ward has extra text" do
-      #reference = Reference.create!(:authors => 'Dlussky, G.M.',
-                                    #:title => "Ants of the genus *Formica* L. of Mongolia and northeast Tibet (Hymenoptera, Formicidae)",
-                                    #:citation => "Annales Zoologici 23: 15-43", :year => '1965a')
-      #bolton = Bolton::Reference.new(:authors => 'Dlussky, G.M.', :title_and_citation =>
-                                   #"Ants of the genus Formica L. of Mongolia and northeast Tibet. Annales Zoologici 23: 15-43", :year => '1965a')
-
-      #Bolton::ReferenceMatcher.new.find_match(bolton).should == reference
-    #end
-
-    #it "should find a match when two entries have similar authors" do
-      #Reference.create!(:authors => 'abc', :title => "title", :citation => "citation", :year => 'year')
-      #reference = Reference.create!(:authors => 'abd', :title => "another title", :citation => "another citation", :year => 'year')
-      #bolton = Bolton::Reference.new(:authors => 'abd', :title_and_citation => "another title another citation", :year => 'year')
-
-      #Bolton::ReferenceMatcher.new.find_match(bolton).should == reference
-    #end
-
-    #it "should find a match when there is a long enough common suffix (e.g., from journal title, volume and page)" do
-      #ward = Reference.create! :authors => "Arakelian, G. R.; Dlussky, G. M.", :year => '1991',
-                               #:title => "Dacetine ants (Hymenoptera: Formicidae) of the USSR. [In Russian.].",
-                               #:citation => "Zoologicheskii Zhurnal 70(2):149-152."
-      #bolton = Bolton::Reference.new :authors => 'Arakelian, G.R. & Dlussky, G.M.', :year => '1991',
-                                   #:title_and_citation => "Murav'i triby Dacetini SSSR. Zoologicheskii Zhurnal 70 (2): 149-152."
-      #Bolton::ReferenceMatcher.new.find_match(bolton).should == ward
-    #end
-
-    #it "should find a match when the author and year are the same, and a sufficient number of digits in the title + citation are the same" do
-      #ward = Reference.create! :authors => 'De Geer, C.', :year => '1778', :title => "Mémoires pour servir à l'histoire des insectes. Tome septième (7)",
-        #:citation => "Stockholm: Pierre Hesselberg, 950 pp"
-      #bolton = Bolton::Reference.new :authors => 'De Geer, C.', :year => '1778', :title_and_citation => "Memoirs pour Servir à l'Histoire des Insectes 7: 950 pp. Stockholm."
-      #Bolton::ReferenceMatcher.new.find_match(bolton).should == ward
-    #end
-
-    #it "should mark matches as 'suspect' if the authors and year don't match exactly" do
-      #ward = Reference.create! :authors => 'De Geer, C.', :year => '1777', :title => "Ants", :citation => "Stockholm: Pierre Hesselberg, 950 pp"
-      #bolton = Bolton::Reference.new :authors => 'De Geer, C.', :year => '1778', :title_and_citation => "Ants. Stockholm: Pierre Hesselberg, 950 pp"
-      #matcher = Bolton::ReferenceMatcher.new
-      #matcher.find_match(bolton).should == ward
-      #matcher.should be_suspect
-    #end
-
-    #it "should find the best match, not just the first match above the threshold" do
-      #Reference.create! :authors => 'De Geer, C.', :year => '1777', :title => "Ants 2", :citation => "Stockholm: Pierre Hesselberg, 950 pp"
-      #ward = Reference.create! :authors => 'De Geer, C.', :year => '1777', :title => "Ants 1", :citation => "Stockholm: Pierre Hesselberg, 950 pp"
-      #bolton = Bolton::Reference.new :authors => 'De Geer, C.', :year => '1777', :title_and_citation => "Ants 1. Stockholm: Pierre Hesselberg, 950 pp"
-      #Bolton::ReferenceMatcher.new.find_match(bolton).should == ward
-    #end
 
   end
 end
