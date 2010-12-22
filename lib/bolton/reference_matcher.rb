@@ -8,7 +8,8 @@ class Bolton::ReferenceMatcher
   def find_matches_for_all
     Bolton::Match.transaction do 
       Bolton::Match.delete_all
-      Bolton::Reference.all[0,100].each_with_index do |bolton, i|
+      #Bolton::Reference.all[0,100].each_with_index do |bolton, i|
+      Bolton::Reference.all.each_with_index do |bolton, i|
         find_matches_for bolton
         show_progress
       end
@@ -24,9 +25,6 @@ class Bolton::ReferenceMatcher
       max_confidence = [confidence, max_confidence].max
       next unless confidence > 0
       matches << {:bolton_reference_id => bolton.id, :reference_id => ward.id, :confidence => confidence}
-      #next unless reference.author_names.first.last_name == bolton_last_name
-      #next unless reference.type == bolton.reference_type
-      #next unless reference.matches? bolton
     end
 
     matches.select do |match|

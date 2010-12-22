@@ -50,46 +50,68 @@ describe Bolton::Reference do
                                           :year => '1965a'
     end
 
-    it "should not match if the author name is a prefix" do
-      @ward.update_attributes :author_names => [Factory :author_name, :name => 'Abensperg-Traun, M.']
-      @bolton.update_attributes :authors  => 'Abe, M.'
-      @bolton.match(@ward).should == 0
+    describe "author matching" do
+      it "should not match if the author name is a prefix" do
+        @ward.update_attributes :author_names => [Factory :author_name, :name => 'Abensperg-Traun, M.']
+        @bolton.update_attributes :authors  => 'Abe, M.'
+        @bolton.match(@ward).should == 0
+      end
+
+      it "should just match the author for unknown references" do
+        ward = Factory :unknown_reference
+        bolton = Bolton::Reference.create! :authors => ward.author_names_string, :title => ward.title, :year => ward.year,
+                                      :reference_type => 'UnknownReference'
+        bolton.match(ward).should == 1
+      end
     end
 
-    it "should just match the author for unknown references" do
-      ward = Factory :unknown_reference
-      bolton = Bolton::Reference.create! :authors => ward.author_names_string, :title => ward.title, :year => ward.year,
-                                     :reference_type => 'UnknownReference'
-      bolton.match(ward).should == 1
-    end
+    describe "title matching" do
+      it "should match with complete confidence if the author and title are the same" do
+        @bolton.update_attributes :title => @ward.title
+        @bolton.match(@ward).should == 100
+      end
 
-    it "should match with complete confidence if the author and title are the same" do
-      @bolton.update_attributes :title => @ward.title
-      @bolton.match(@ward).should == 100
-    end
+      it "should match with very low confidence the author is the same but the title is different" do
+        @bolton.update_attributes :title => 'Spiders'
+        @bolton.match(@ward).should be == 1
+      end
 
-    it "should match with very low confidence the author is the same but the title is different" do
-      @bolton.update_attributes :title => 'Spiders'
-      @bolton.match(@ward).should be == 1
-    end
+      it "should match when Ward includes taxon names, as long as one of them is one we know about" do
+        @bolton.update_attributes :title => 'The genus-group names of Symphyta and their type species'
+        @ward.update_attributes :title => 'The genus-group names of Symphyta (Hymenoptera: Formicidae) and their type species'
+        @bolton.match(@ward).should be == 90
+      end
 
-    it "should find a match when Ward includes taxon names, as long as one of them is one we know about" do
-      @bolton.update_attributes :title => 'The genus-group names of Symphyta and their type species'
-      @ward.update_attributes :title => 'The genus-group names of Symphyta (Hymenoptera: Formicidae) and their type species'
-      @bolton.match(@ward).should be == 90
-    end
+      it "should not match when the only difference is parenthetical, but is not a toxon name" do
+        @bolton.update_attributes :title => 'The genus-group names of Symphyta and their type species'
+        @ward.update_attributes :title => 'The genus-group names of Symphyta (unknown) and their type species'
+        @bolton.match(@ward).should be == 1
+      end
 
-    it "should not find a match when the only difference is parenthetical, but is not a toxon name" do
-      @bolton.update_attributes :title => 'The genus-group names of Symphyta and their type species'
-      @ward.update_attributes :title => 'The genus-group names of Symphyta (unknown) and their type species'
-      @bolton.match(@ward).should be == 1
-    end
+      it "should match when the only difference is in square brackets" do
+        @bolton.update_attributes :title => 'Ants [sic] and pants'
+        @ward.update_attributes :title => 'Ants and pants [sic]'
+        @bolton.match(@ward).should be == 90
+      end
 
-    it "should find a match when the only difference is in square brackets" do
-      @bolton.update_attributes :title => 'Ants [sic] and pants'
-      @ward.update_attributes :title => 'Ants and pants [sic]'
-      @bolton.match(@ward).should be == 90
-    end
+      it "should match when the only difference is accents" do
+        @bolton.update_attributes :title => 'Sobre los caracteres morfólogicos de Goniomma, con algunas sugerencias sobre su taxonomia'
+        @ward.update_attributes :title =>   'Sobre los caracteres morfólogicos de Goniomma, con algunas sugerencias sobre su taxonomía'
+        @bolton.match(@ward).should be == 90
+      end
 
+      it "should match when the only difference is case" do
+        @bolton.update_attributes :title => 'Ants'
+        @ward.update_attributes :title =>   'ANTS'
+        @bolton.match(@ward).should be == 90
+      end
+
+      it "should match when the only difference is punctuation" do
+        @bolton.update_attributes :title => 'Sobre los caracteres morfólogicos de Goniomma, con algunas sugerencias sobre su taxonomia'
+        @ward.update_attributes :title =>   'Sobre los caracteres morfólogicos de *Goniomma*, con algunas sugerencias sobre su taxonomía'
+        @bolton.match(@ward).should be == 90
+      end
+
+    end
   end
 end

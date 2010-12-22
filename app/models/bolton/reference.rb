@@ -16,16 +16,37 @@ class Bolton::Reference < ActiveRecord::Base
   def match ward_reference
     return 0 unless ward_reference.principal_author_last_name == principal_author_last_name
     return 1 if reference_type == 'UnknownReference' || ward_reference.type == 'UnknownReference'
-    return 100 if title == ward_reference.title
-    return 90 if remove_parenthesized_taxon_names(title) == remove_parenthesized_taxon_names(ward_reference.title)
-    return 90 if remove_bracketed_phrases(title) == remove_bracketed_phrases(ward_reference.title)
+
+    result = match_title ward_reference.title
+    return result if result
+
     1
   end
 
   private
+  def match_title ward_title
+    bolton_title = title.dup
+    ward_title = ward_title.dup
+    return 100 if bolton_title == ward_title
+    return 90 if normalize(bolton_title) == normalize(ward_title)
+  end
+
   def set_year
     self.year = ::Reference.get_year citation_year
   end 
+
+  def normalize string
+    remove_parenthesized_taxon_names string
+    string.downcase!
+    remove_bracketed_phrases string
+    convert_accents_to_ascii string
+    string.gsub! /[^\w\s]/, ''
+    string
+  end
+
+  def convert_accents_to_ascii string
+    string.replace string.mb_chars.normalize(:kd).gsub(/[^\x00-\x7F]/n,"")
+  end
 
   def remove_parenthesized_taxon_names string
     match = string.match(/ \(.+?\)/)
@@ -39,7 +60,9 @@ class Bolton::Reference < ActiveRecord::Base
   end
 
   def remove_bracketed_phrases string
-    string.gsub(/\s?\[.*?\]\s?/, ' ').strip
+    string.gsub!(/\s?\[.*?\]\s?/, ' ')
+    string.strip!
+    string
   end
 
 end
