@@ -194,7 +194,6 @@ function showReferenceEdit($reference, options) {
     $('.icon').hide()
 
   var $edit = $('.reference_edit', $reference);
-  $('#reference_author_names_string', $edit)[0].focus();
 
   if (!options.showDeleteButton)
     $('.delete', $edit).hide();
@@ -206,6 +205,7 @@ function showReferenceEdit($reference, options) {
   setupPublisherAutocomplete($reference);
 
   $edit.show();
+  $('#reference_author_names_string', $edit)[0].focus();
 }
 
 function setupTabs($reference) {
