@@ -75,33 +75,6 @@ describe Bolton::ReferenceMatcher do
 
     private
 
-    #it "should find an exact match" do
-      #ward = ArticleReference.create! :author_names => [Factory :author_name, :name => 'Fisher, B.L.'],
-                                      #:title => "My life among the ants",
-                                      #:journal => Factory(:journal, :name => "Psyche"),
-                                      #:series_volume_issue => '1',
-                                      #:pagination => '15-43',
-                                      #:citation_year => '1965'
-      #bolton = Bolton::Reference.new :authors => 'Fisher, B.L.',
-                                     #:title => "My life among the ants",
-                                     #:reference_type => 'ArticleReference',
-                                     #:series_volume_issue => '1',
-                                     #:pagination => '15-43',
-                                     #:journal => 'Psyche',
-                                     #:year => '1965a'
-      #Bolton::ReferenceMatcher.new.find_match(bolton).should == ward
-    #end
-
-    #it "should find a match when Ward has markup" do
-      #reference = Reference.create!(:authors => 'Dlussky, G.M.',
-                                    #:title => "Ants of the genus *Formica* L. of Mongolia and northeast Tibet",
-                                    #:citation => "Annales Zoologici 23: 15-43", :year => '1965a')
-      #bolton = Bolton::Reference.new(:authors => 'Dlussky, G.M.', :title_and_citation =>
-                                   #"Ants of the genus Formica L. of Mongolia and northeast Tibet. Annales Zoologici 23: 15-43", :year => '1965a')
-
-      #Bolton::ReferenceMatcher.new.find_match(bolton).should == reference
-    #end
-
     #it "should find a match when Ward has extra text" do
       #reference = Reference.create!(:authors => 'Dlussky, G.M.',
                                     #:title => "Ants of the genus *Formica* L. of Mongolia and northeast Tibet (Hymenoptera, Formicidae)",

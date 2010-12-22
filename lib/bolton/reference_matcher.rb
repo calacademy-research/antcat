@@ -8,8 +8,8 @@ class Bolton::ReferenceMatcher
   def find_matches_for_all
     Bolton::Match.transaction do 
       Bolton::Match.delete_all
-      #Bolton::Reference.all[0,100].each_with_index do |bolton, i|
-      Bolton::Reference.all.each_with_index do |bolton, i|
+      Bolton::Reference.all[0,100].each_with_index do |bolton, i|
+      #Bolton::Reference.all.each_with_index do |bolton, i|
         find_matches_for bolton
         show_progress
       end
@@ -33,10 +33,10 @@ class Bolton::ReferenceMatcher
       Bolton::Match.create! match
     end
 
-    case max_confidence
-    when 0 then @unmatched_count += 1
-    when 100 then @matched_count += 1
-    else @possible_count += 1
+    case 
+    when max_confidence == 0 then @unmatched_count += 1
+    when max_confidence < 85 then @possible_count += 1
+    else @matched_count += 1
     end
 
   end

@@ -16,8 +16,9 @@ class Bolton::Reference < ActiveRecord::Base
   def match ward_reference
     return 0 unless ward_reference.principal_author_last_name == principal_author_last_name
 
-    result = match_title ward_reference.title
-    return result if result
+    result = nil
+    return result if result = match_title(ward_reference.title)
+    return result if result = match_article(ward_reference)
 
     return 1 if reference_type == 'UnknownReference' || ward_reference.type == 'UnknownReference'
 
@@ -25,6 +26,13 @@ class Bolton::Reference < ActiveRecord::Base
   end
 
   private
+  def match_article ward_reference
+    return unless ward_reference.type == 'ArticleReference' && reference_type == 'ArticleReference' &&
+                  ward_reference.series_volume_issue.present? && series_volume_issue.present? &&
+                  ward_reference.pagination.present? && pagination.present?
+    return 85 if ward_reference.series_volume_issue == series_volume_issue && ward_reference.pagination == pagination
+  end
+
   def match_title ward_title
     bolton_title = title.dup
     ward_title = ward_title.dup

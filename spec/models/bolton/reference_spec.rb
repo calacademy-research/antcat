@@ -83,7 +83,7 @@ describe Bolton::Reference do
       end
 
       it "should match with very low confidence the author is the same but the title is different" do
-        @bolton.update_attributes :title => 'Spiders'
+        @bolton.update_attributes :title => 'Spiders', :pagination => nil
         @bolton.match(@ward).should be == 1
       end
 
@@ -94,7 +94,7 @@ describe Bolton::Reference do
       end
 
       it "should not match when the only difference is parenthetical, but is not a toxon name" do
-        @bolton.update_attributes :title => 'The genus-group names of Symphyta and their type species'
+        @bolton.update_attributes :title => 'The genus-group names of Symphyta and their type species', :series_volume_issue => nil
         @ward.update_attributes :title => 'The genus-group names of Symphyta (unknown) and their type species'
         @bolton.match(@ward).should be == 1
       end
@@ -124,5 +124,16 @@ describe Bolton::Reference do
       end
 
     end
+
+    describe 'matching series/volume/issue + pagination with different titles' do
+      it "should match a perfect match" do
+        ward = Factory :article_reference, :title => 'Studier',
+                       :series_volume_issue => '(21) 4', :pagination => '1-76'
+        bolton = Factory :bolton_reference, :title => 'Study', :authors => ward.principal_author_last_name, :reference_type => 'ArticleReference',
+                       :series_volume_issue => '(21) 4', :pagination => '1-76'
+        bolton.match(ward).should be == 85
+      end
+    end
+
   end
 end
