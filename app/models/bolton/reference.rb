@@ -30,9 +30,9 @@ class Bolton::Reference < ActiveRecord::Base
     return unless ward_reference.type == 'ArticleReference' && reference_type == 'ArticleReference' &&
                   ward_reference.series_volume_issue.present? && series_volume_issue.present? &&
                   ward_reference.pagination.present? && pagination.present?
-    return 85 if normalize_series_volume_issue(ward_reference.series_volume_issue) ==
-                  normalize_series_volume_issue(series_volume_issue) &&
-                 ward_reference.pagination == pagination
+    return unless ward_reference.pagination == pagination
+    return 85 if normalize_series_volume_issue(ward_reference.series_volume_issue) == normalize_series_volume_issue(series_volume_issue)
+    80
   end
 
   def match_title ward_title
