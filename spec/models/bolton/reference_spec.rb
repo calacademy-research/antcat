@@ -133,6 +133,20 @@ describe Bolton::Reference do
                        :series_volume_issue => '(21) 4', :pagination => '1-76'
         bolton.match(ward).should be == 85
       end
+      it "should match when the series/volume/issue has a space after the series" do
+        ward = Factory :article_reference, :title => 'Studier',
+                       :series_volume_issue => '21 (4)', :pagination => '1-76'
+        bolton = Factory :bolton_reference, :title => 'Study', :authors => ward.principal_author_last_name, :reference_type => 'ArticleReference',
+                       :series_volume_issue => '21(4)', :pagination => '1-76'
+        bolton.match(ward).should be == 85
+      end
+      it "should not match when the series/volume/issue has a space after the series, but the space separates words" do
+        ward = Factory :article_reference, :title => 'Studier',
+                       :series_volume_issue => '21 4', :pagination => '1-76'
+        bolton = Factory :bolton_reference, :title => 'Study', :authors => ward.principal_author_last_name, :reference_type => 'ArticleReference',
+                       :series_volume_issue => '214', :pagination => '1-76'
+        bolton.match(ward).should be == 1
+      end
     end
 
   end

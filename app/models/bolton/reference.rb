@@ -30,7 +30,9 @@ class Bolton::Reference < ActiveRecord::Base
     return unless ward_reference.type == 'ArticleReference' && reference_type == 'ArticleReference' &&
                   ward_reference.series_volume_issue.present? && series_volume_issue.present? &&
                   ward_reference.pagination.present? && pagination.present?
-    return 85 if ward_reference.series_volume_issue == series_volume_issue && ward_reference.pagination == pagination
+    return 85 if normalize_series_volume_issue(ward_reference.series_volume_issue) ==
+                  normalize_series_volume_issue(series_volume_issue) &&
+                 ward_reference.pagination == pagination
   end
 
   def match_title ward_title
@@ -38,6 +40,10 @@ class Bolton::Reference < ActiveRecord::Base
     ward_title = ward_title.dup
     return 100 if bolton_title == ward_title
     return 90 if normalize(bolton_title) == normalize(ward_title)
+  end
+
+  def normalize_series_volume_issue string
+    string.gsub /\s\(/, '('
   end
 
   def set_year
