@@ -3,7 +3,7 @@ class ReferencesController < ApplicationController
   before_filter :authenticate_user!, :except => :index
 
   def index
-    params[:q] = '' if params[:commit] == 'clear'
+    params[:q] = '' if ['review', 'new', 'clear'].include? params[:commit]
     params[:q].strip! if params[:q]
     @reviewing = params[:commit] == 'review'
     @seeing_whats_new = params[:commit] == 'new'
