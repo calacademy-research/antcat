@@ -35,127 +35,152 @@ describe Bolton::Reference do
 
   describe 'matching against Ward' do
     before do
-      @ward = ArticleReference.create! :author_names => [Factory :author_name, :name => "Ward, P. S."],
-                                       :title => "My life among the ants",
-                                       :journal => Factory(:journal, :name => "Psyche"),
-                                       :series_volume_issue => '1',
-                                       :pagination => '15-43',
-                                       :citation_year => '1965'
-      @bolton = Bolton::Reference.create! :authors => "Ward, P. S.",
-                                          :title => "My life among the ants",
-                                          :reference_type => 'ArticleReference',
-                                          :series_volume_issue => '1',
-                                          :pagination => '15-43',
-                                          :journal => 'Psyche',
-                                          :year => '1965a'
+      @fisher = Factory :author_name, :name => 'Fisher, B. L.'
     end
 
-    describe "author matching" do
-      it "should not match if the author name is different" do
-        @ward.update_attributes :author_names => [Factory :author_name, :name => 'Fisher, B. L.']
-        @bolton.update_attributes :authors  => 'Abe, M.'
-        @bolton.match(@ward).should == 0
+    describe "author + year matching" do
+      before do
+        @ward = Factory :reference, :title => 'Myrmicinae'
+        @bolton = Factory :bolton_reference, :title => 'Dolichoderinae'
       end
-      it "should not match if the author name is a prefix" do
-        @ward.update_attributes :author_names => [Factory :author_name, :name => 'Abensperg-Traun, M.']
-        @bolton.update_attributes :authors  => 'Abe, M.'
-        @bolton.match(@ward).should == 0
+      describe "when the author names don't match" do
+        it "should not match if the author name is different" do
+          @ward.update_attributes :author_names => [@fisher]
+          @bolton.update_attributes :authors => 'Ward, P. S.'
+          @bolton.match(@ward).should == 0
+        end
+        it "should not match if the author name is a prefix" do
+          @ward.update_attributes :author_names => [Factory :author_name, :name => 'Fish, B. L.']
+          @bolton.update_attributes :authors => 'Fisher, B. L.'
+          @bolton.match(@ward).should == 0
+        end
       end
-    end
-
-    describe "matching unknown types of reference" do
-      it "should match the author for unknown references" do
-        ward = Factory :unknown_reference
-        bolton = Bolton::Reference.create! :authors => ward.author_names_string, :title => 'Ants', :year => ward.year,
-                                           :reference_type => 'UnknownReference'
-        bolton.match(ward).should == 1
-      end
-      it "should match the title for unknown references" do
-        ward = Factory :unknown_reference
-        bolton = Bolton::Reference.create! :authors => ward.author_names_string, :title => ward.title, :year => ward.year,
-                                           :reference_type => 'UnknownReference'
-        bolton.match(ward).should == 100
+      describe 'when the author names match' do
+        before do
+          @ward.update_attributes :author_names => [@fisher]
+          @bolton.update_attributes :authors => @fisher.name
+        end
+        it "should not match if the author name is the same but the year is different" do
+          @ward.update_attributes :citation_year => '1970'
+          @bolton.update_attributes :citation_year => '1980'
+          @bolton.match(@ward).should == 0
+        end
+        it "should match better if the author name matches and the year is within 1" do
+          @ward.update_attributes :citation_year => '1979'
+          @bolton.update_attributes :citation_year => '1980'
+          @bolton.match(@ward).should == 10
+        end
       end
     end
 
-    describe "title matching" do
-      it "should match with complete confidence if the author and title are the same" do
-        @bolton.update_attributes :title => @ward.title
-        @bolton.match(@ward).should == 100
+    describe "title + year matching" do
+      before do
+        @ward = Factory :reference, :author_names => [@fisher]
+        @bolton = Factory :bolton_reference, :authors => @fisher.name
       end
 
-      it "should match with very low confidence the author is the same but the title is different" do
-        @bolton.update_attributes :title => 'Spiders', :pagination => nil
-        @bolton.match(@ward).should be == 1
+      it "should match with much less confidence if the author and title are the same but the year is not within 1" do
+        @ward.update_attributes :title => 'Ants', :citation_year => '1975'
+        @bolton.update_attributes :title => 'Ants', :citation_year => '1971'
+        @bolton.match(@ward).should == 50
       end
 
-      it "should match when Ward includes taxon names, as long as one of them is one we know about" do
-        @bolton.update_attributes :title => 'The genus-group names of Symphyta and their type species'
-        @ward.update_attributes :title => 'The genus-group names of Symphyta (Hymenoptera: Formicidae) and their type species'
-        @bolton.match(@ward).should be == 90
-      end
-
-      it "should not match when the only difference is parenthetical, but is not a toxon name" do
-        @bolton.update_attributes :title => 'The genus-group names of Symphyta and their type species', :series_volume_issue => nil
-        @ward.update_attributes :title => 'The genus-group names of Symphyta (unknown) and their type species'
-        @bolton.match(@ward).should be == 1
-      end
-
-      it "should match when the only difference is in square brackets" do
-        @bolton.update_attributes :title => 'Ants [sic] and pants'
-        @ward.update_attributes :title => 'Ants and pants [sic]'
-        @bolton.match(@ward).should be == 90
-      end
-
-      it "should match when the only difference is accents" do
-        @bolton.update_attributes :title => 'Sobre los caracteres morfólogicos de Goniomma, con algunas sugerencias sobre su taxonomia'
-        @ward.update_attributes :title =>   'Sobre los caracteres morfólogicos de Goniomma, con algunas sugerencias sobre su taxonomía'
-        @bolton.match(@ward).should be == 90
-      end
-
-      it "should match when the only difference is case" do
-        @bolton.update_attributes :title => 'Ants'
-        @ward.update_attributes :title =>   'ANTS'
-        @bolton.match(@ward).should be == 90
-      end
-
-      it "should match when the only difference is punctuation" do
-        @bolton.update_attributes :title => 'Sobre los caracteres morfólogicos de Goniomma, con algunas sugerencias sobre su taxonomia'
-        @ward.update_attributes :title =>   'Sobre los caracteres morfólogicos de *Goniomma*, con algunas sugerencias sobre su taxonomía'
-        @bolton.match(@ward).should be == 90
+      describe "year is within 1" do
+        before do
+          @ward.update_attributes :citation_year => '1979'
+          @bolton.update_attributes :citation_year => '1980'
+        end
+        it "should match with complete confidence if the author and title are the same" do
+          @ward.update_attributes :title => 'Ants'
+          @bolton.update_attributes :title => 'Ants'
+          @bolton.match(@ward).should == 100
+        end
+          it "should match when Ward includes taxon names, as long as one of them is one we know about" do
+          @bolton.update_attributes :title => 'The genus-group names of Symphyta and their type species'
+          @ward.update_attributes :title => 'The genus-group names of Symphyta (Hymenoptera: Formicidae) and their type species'
+          @bolton.match(@ward).should be == 100
+        end
+        it "should not match when the only difference is parenthetical, but is not a toxon name" do
+          @bolton.update_attributes :title => 'The genus-group names of Symphyta and their type species'
+          @ward.update_attributes :title => 'The genus-group names of Symphyta (unknown) and their type species'
+          @bolton.match(@ward).should be == 10
+        end
+        it "should match when the only difference is accents" do
+          @bolton.update_attributes :title => 'Sobre los caracteres morfólogicos de Goniomma, con algunas sugerencias sobre su taxonomia'
+          @ward.update_attributes :title =>   'Sobre los caracteres morfólogicos de Goniomma, con algunas sugerencias sobre su taxonomía'
+          @bolton.match(@ward).should be == 100
+        end
+        it "should match when the only difference is case" do
+          @bolton.update_attributes :title => 'Ants'
+          @ward.update_attributes :title =>   'ANTS'
+          @bolton.match(@ward).should be == 100
+        end
+        it "should match when the only difference is punctuation" do
+          @bolton.update_attributes :title => 'Sobre los caracteres morfólogicos de Goniomma, con algunas sugerencias sobre su taxonomia'
+          @ward.update_attributes :title =>   'Sobre los caracteres morfólogicos de *Goniomma*, con algunas sugerencias sobre su taxonomía'
+          @bolton.match(@ward).should be == 100
+        end
+        it "should match when the only difference is in square brackets" do
+          @bolton.update_attributes :title => 'Ants [sic] and pants'
+          @ward.update_attributes :title => 'Ants and pants [sic]'
+          @bolton.match(@ward).should be == 95
+        end
       end
     end
 
     describe 'matching series/volume/issue + pagination with different titles' do
-      it "should match a perfect match" do
-        ward = Factory :article_reference, :title => 'Studier',
-                       :series_volume_issue => '(21) 4', :pagination => '1-76'
-        bolton = Factory :bolton_reference, :title => 'Study', :authors => ward.principal_author_last_name, :reference_type => 'ArticleReference',
-                       :series_volume_issue => '(21) 4', :pagination => '1-76'
-        bolton.match(ward).should be == 85
+      before do
+        @ward = Factory :article_reference, :author_names => [@fisher], :title => 'Myrmicinae'
+        @bolton = Factory :bolton_reference, :authors => @fisher.name, :title => 'Formica', :reference_type => 'ArticleReference'
       end
-      it "should match when the series/volume/issue has a space after the series" do
-        ward = Factory :article_reference, :title => 'Studier',
-                       :series_volume_issue => '21 (4)', :pagination => '1-76'
-        bolton = Factory :bolton_reference, :title => 'Study', :authors => ward.principal_author_last_name, :reference_type => 'ArticleReference',
-                       :series_volume_issue => '21(4)', :pagination => '1-76'
-        bolton.match(ward).should be == 85
-      end
-      it "should not match the series_volume_issue when the series/volume/issue has a space after the series, but the space separates words" do
-        ward = Factory :article_reference, :title => 'Studier',
-                       :series_volume_issue => '21 4', :pagination => '1-76'
-        bolton = Factory :bolton_reference, :title => 'Study', :authors => ward.principal_author_last_name, :reference_type => 'ArticleReference',
-                       :series_volume_issue => '214', :pagination => '1-76'
-        bolton.match(ward).should be == 80
-      end
-
-      it "should match pagination, but with less confidence" do
-        ward = Factory :article_reference, :title => 'Studier',
-                       :series_volume_issue => '21 (1976)', :pagination => '1-76'
-        bolton = Factory :bolton_reference, :title => 'Study', :authors => ward.principal_author_last_name, :reference_type => 'ArticleReference',
-                       :series_volume_issue => '21', :pagination => '1-76'
-        bolton.match(ward).should be == 80
-
+      describe 'when the pagination matches' do
+        before do
+          @ward.update_attributes :pagination => '1-76'
+          @bolton.update_attributes :pagination => '1-76'
+        end
+        describe 'when the year does not match' do
+          it 'should match with much less confidence' do
+            @ward.update_attributes :citation_year => '1980', :series_volume_issue => '(21) 4'
+            @bolton.update_attributes :citation_year => '1990', :series_volume_issue => '(21) 4'
+            @bolton.match(@ward).should be == 40
+          end
+        end
+        describe 'when the year matches' do
+          before do
+            @ward.update_attributes :citation_year => '1979'
+            @bolton.update_attributes :citation_year => '1980'
+          end
+          it "should match a perfect match" do
+            @ward.update_attributes :series_volume_issue => '(21) 4'
+            @bolton.update_attributes :series_volume_issue => '(21) 4'
+            @bolton.match(@ward).should be == 90
+          end
+          it "should match when the series/volume/issue has spaces after the volume" do
+            @ward.update_attributes :series_volume_issue => '(21)4'
+            @bolton.update_attributes :series_volume_issue => '(21) 4'
+            @bolton.match(@ward).should be == 90
+          end
+          it "should match when the series/volume/issue has spaces after the volume" do
+            @ward.update_attributes :series_volume_issue => '4(21)'
+            @bolton.update_attributes :series_volume_issue => '4 (21)'
+            @bolton.match(@ward).should be == 90
+          end
+          it "should not match the series_volume_issue when the series/volume/issue has a space after the series, but the space separates words" do
+            @ward.update_attributes :series_volume_issue => '21 4'
+            @bolton.update_attributes :series_volume_issue => '214'
+            @bolton.match(@ward).should be == 10
+          end
+          it "should match if the only difference is that Bolton includes the year" do
+            @ward.update_attributes :series_volume_issue => '44'
+            @bolton.update_attributes :series_volume_issue => '44 (1976)'
+            @bolton.match(@ward).should be == 90
+          end
+          it "should match if the only difference is that Bolton uses 'No.'" do
+            @ward.update_attributes :series_volume_issue => '1976(1)'
+            @bolton.update_attributes :series_volume_issue => '1976 (No. 1)'
+            @bolton.match(@ward).should be == 90
+          end
+        end
       end
     end
 

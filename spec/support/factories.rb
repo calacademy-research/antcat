@@ -87,6 +87,7 @@ Factory.define :user do |user|
 end
 
 Factory.define :bolton_reference, :class => Bolton::Reference do |reference|
+  reference.title 'New General Catalog'
 end
 
 Factory.define :document do |document|
