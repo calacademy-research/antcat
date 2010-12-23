@@ -38,11 +38,11 @@ class Bolton::Bibliography
   def import_reference string
     reference = nil
     begin
-      pre_parse string
+      original = pre_parse!(string).dup
       return unless reference? string
       attributes = Bolton::ReferenceGrammar.parse(string).value
       post_parse attributes
-      reference = Bolton::Reference.create! attributes
+      reference = Bolton::Reference.create! attributes.merge :original => original
     rescue Citrus::ParseError => e
       puts e
     end
@@ -53,10 +53,13 @@ class Bolton::Bibliography
     string.match(/^Note: /).blank?
   end
 
-  def pre_parse string
+  def pre_parse! string
     string.replace CGI.unescapeHTML(string)
     string.gsub! /&nbsp;/, ' '
     string.gsub! /\n/, ' '
+    remove_attributes! string
+    string.strip!
+    string
   end
 
   def post_parse attributes
@@ -65,6 +68,10 @@ class Bolton::Bibliography
     attributes[:place].strip! if attributes[:place]
     attributes[:title] = remove_period remove_italics remove_span remove_bold attributes[:title]
     attributes[:note] = remove_italics attributes[:note] if attributes[:note]
+  end
+
+  def remove_attributes! string
+    string.gsub! /<(\w+).*?>/, '<\1>'
   end
 
   def remove_span string

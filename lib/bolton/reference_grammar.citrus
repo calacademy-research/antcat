@@ -127,15 +127,15 @@ grammar Bolton::ReferenceGrammar
   end
 
   rule bold_phrase
-    /<b.+?>.+?<\/b>/
+    /<b>/ phrase /<\/b>/
   end 
 
   rule italicized_phrase
-    /<i.+?>/ phrase /<\/i>/
+    /<i>/ phrase /<\/i>/
   end
 
   rule span
-    /<span.+?>/ phrase /<\/span>/
+    /<span>/ phrase /<\/span>/
   end
 
 end

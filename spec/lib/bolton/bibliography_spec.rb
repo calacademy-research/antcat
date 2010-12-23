@@ -343,6 +343,17 @@ Dlussky, G.M. & Perfilieva, K.S. 2003. Paleogene ants of the genus <i style="mso
     end
   end
 
+  describe 'saving the original' do
+    it "should simplify the HTML markup" do
+      contents = make_contents "Abe, M. &amp; Smith, D.R. 1991d. The genus-group names of Symphyta and their type
+species. <i style='mso-bidi-font-style:normal'>Esakia</i> <b style='mso-bidi-font-weight:
+normal'>31</b>: 1-115. [31.vii.1991.]"
+      @bibliography.import_html contents
+      Bolton::Reference.first.original.should == "Abe, M. & Smith, D.R. 1991d. The genus-group names of Symphyta and their type species. <i>Esakia</i> <b>31</b>: 1-115. [31.vii.1991.]"
+    end
+
+  end
+
   def make_contents content
     "<html>
         <body>
