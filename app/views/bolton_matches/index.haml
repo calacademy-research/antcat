@@ -1,11 +1,11 @@
 %div= will_paginate @references
 - for bolton_reference in @references
-  %table{:style => 'margin-top: 10px; border:thin black solid'}
+  %table{:style => 'width: 100%;margin-top: 10px; border:thin black solid'}
     %tr{:style => 'border: thin black solid'}
       %td{:style => 'width: 30px'}
       %td= Bolton::ReferenceFormatter.format bolton_reference
       - for match in bolton_reference.matches
         %tr
           %td{:style => 'padding-right: 4px; text-align: right'}= match.confidence
-          %td= ReferenceFormatter.format match.reference
+          %td= ReferenceFormatter.format(match.reference) + ' ' + match.reference.id.to_s
 %div= will_paginate @references

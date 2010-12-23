@@ -7,6 +7,11 @@ class Bolton::Reference < ActiveRecord::Base
 
   before_validation :set_year
 
+  named_scope :with_confidence, lambda {|confidence| {
+    :joins => :matches,
+    :conditions => ['confidence = ?', confidence]
+  }}
+
   def match ward_reference
     return 0 unless ward_reference.principal_author_last_name == principal_author_last_name
 
