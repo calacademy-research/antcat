@@ -128,6 +128,35 @@ describe Bolton::Reference do
       end
     end
 
+    describe 'matching book pagination with different titles' do
+      before do
+        @ward = Factory :book_reference, :author_names => [@fisher], :title => 'Myrmicinae'
+        @bolton = Factory :bolton_reference, :authors => @fisher.name, :title => 'Formica', :reference_type => 'BookReference'
+      end
+      describe 'when the pagination matches' do
+        before do
+          @ward.update_attributes :pagination => '1-76'
+          @bolton.update_attributes :pagination => '1-76'
+        end
+        describe 'when the year does not match' do
+          it 'should match with much less confidence' do
+            @ward.update_attributes :citation_year => '1980'
+            @bolton.update_attributes :citation_year => '1990'
+            @bolton.match(@ward).should be == 30
+          end
+        end
+        describe 'when the year matches' do
+          before do
+            @ward.update_attributes :citation_year => '1979'
+            @bolton.update_attributes :citation_year => '1980'
+          end
+          it "should match a perfect match" do
+            @bolton.match(@ward).should be == 80
+          end
+        end
+      end
+    end
+
     describe 'matching series/volume/issue + pagination with different titles' do
       before do
         @ward = Factory :article_reference, :author_names => [@fisher], :title => 'Myrmicinae'
