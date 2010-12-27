@@ -94,7 +94,7 @@ end
 
 When /in the new edit form I press the "(.*?)" button/ do |button|
   When "I press \"#{button}\" within \"#reference_\""
-  sleep 1
+  sleep 2
 end
 
 When /in the new edit form I fill in "(.*?)" with the existing reference's ID/ do |field|
@@ -140,7 +140,7 @@ end
 
 When /^I press the "([^"]+)" button/ do |button|
   click_button button
-  sleep 1
+  sleep 2
 end
 
 Then "I should see the reference's ID beside its label" do
