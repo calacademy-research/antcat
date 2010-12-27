@@ -1,0 +1,108 @@
+module ReferenceComparable
+  attr_reader :author, :year, :title, :type, :series_volume_issue, :pagination
+
+  def <=> rhs
+    return 0 unless convert_accents_to_ascii(author) == convert_accents_to_ascii(rhs.author)
+
+    result = match_title(rhs) || match_article(rhs) || match_book(rhs)
+    year_matches = year_matches? rhs
+
+    case
+    when !result && !year_matches then 0
+    when !result && year_matches then 10
+    when result && !year_matches then result - 50
+    else result
+    end
+  end
+
+  private
+  def year_matches? rhs
+    return unless rhs.year && year
+    (rhs.year.to_i - year.to_i).abs <= 1
+  end
+
+  def match_title rhs
+    other_title = rhs.title.dup
+    title = self.title.dup
+    return 100 if normalize_title!(other_title) == normalize_title!(title)
+    return 95 if remove_bracketed_phrases!(other_title) == remove_bracketed_phrases!(title)
+    return 100 if remove_punctuation!(other_title) == remove_punctuation!(title)
+  end
+
+  def match_article rhs
+    return unless rhs.type == 'ArticleReference' && type == 'ArticleReference' &&
+      rhs.series_volume_issue.present? && series_volume_issue.present? &&
+      rhs.pagination.present? && pagination.present? &&
+      rhs.pagination == pagination
+
+    return 90 if normalize_series_volume_issue(rhs.series_volume_issue) ==
+                 normalize_series_volume_issue(series_volume_issue)
+  end
+
+  def match_book rhs
+    return unless rhs.type == 'BookReference' && type == 'BookReference' &&
+      rhs.pagination.present? && pagination.present?
+    return 80 if rhs.pagination == pagination
+  end
+
+  def normalize_series_volume_issue string
+    string = string.dup
+    remove_space_before_or_after_parenthesis! string
+    remove_year_in_parentheses! string
+    remove_No! string
+    string
+  end
+
+  def remove_space_before_or_after_parenthesis! string
+    string.gsub! /\s?([\(\)])\s?/, '\1'
+    string
+  end
+
+  def remove_year_in_parentheses! string
+    string.gsub! /\(\d{4}\)$/, ''
+    string
+  end
+
+  def remove_No! string
+    string.gsub! /\(No. (\d+)\)$/, '(\1)'
+    string
+  end
+
+  def normalize_title! string
+    remove_parenthesized_taxon_names! string
+    string.downcase!
+    convert_accents_to_ascii! string
+    string
+  end
+
+  def remove_punctuation! string
+    string.gsub! /[^\w\s]/, ''
+    string
+  end
+
+  def convert_accents_to_ascii! string
+    string.replace convert_accents_to_ascii string
+  end
+
+  def convert_accents_to_ascii string
+    string.mb_chars.normalize(:kd).gsub(/[^\x00-\x7F]/n,"")
+  end
+
+  def remove_parenthesized_taxon_names! string
+    match = string.match(/ \(.+?\)/)
+    return string unless match
+    possible_taxon_names = match.to_s.strip.gsub(/[(),:]/, '').split(/[ ]/)
+    any_taxon_names = possible_taxon_names.any? do |word|
+      ['Formicidae', 'Hymenoptera'].include? word
+    end
+    string[match.begin(0)..(match.end(0) - 1)] = '' if any_taxon_names
+    string
+  end
+
+  def remove_bracketed_phrases! string
+    string.gsub!(/\s?\[.*?\]\s?/, ' ')
+    string.strip!
+    string
+  end
+
+end
