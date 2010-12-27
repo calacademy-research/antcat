@@ -35,7 +35,7 @@ class Bolton::ReferenceMatcher
 
     case 
     when max_confidence == 0 then @unmatched_count += 1
-    when max_confidence < 85 then @possible_count += 1
+    when max_confidence < 80 then @possible_count += 1
     else @matched_count += 1
     end
 
