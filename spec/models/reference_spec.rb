@@ -608,18 +608,6 @@ describe Reference do
     end
   end
 
-  describe "matching" do
-    it "should match if the title is the same" do
-      reference = Factory :reference
-      reference.matches?(:title => reference.title).should be_true
-    end
-    it "should not match if the title is not the same" do
-      reference = Factory :reference
-      another_reference = Factory :reference, :title => 'Another title'
-      reference.matches?(another_reference).should be_false
-    end
-  end
-
   describe 'with principal author last name' do
     it 'should return references with a matching principal author last name' do
       not_possible_reference = Factory :book_reference, :author_names => [Factory(:author_name, :name => 'Bolton, B.')]
