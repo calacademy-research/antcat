@@ -1,6 +1,4 @@
 module ReferenceComparable
-  attr_reader :author, :year, :title, :type, :series_volume_issue, :pagination
-
   def <=> rhs
     return 0 unless convert_accents_to_ascii(author) == convert_accents_to_ascii(rhs.author)
 

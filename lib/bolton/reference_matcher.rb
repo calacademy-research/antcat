@@ -21,7 +21,7 @@ class Bolton::ReferenceMatcher
     max_confidence = 0
     matches = []
     ward_references_for(bolton).each do |ward|
-      confidence = bolton.match ward
+      confidence = bolton <=> ward
       max_confidence = [confidence, max_confidence].max
       next unless confidence > 0
       matches << {:bolton_reference_id => bolton.id, :reference_id => ward.id, :confidence => confidence}
@@ -43,7 +43,7 @@ class Bolton::ReferenceMatcher
 
   private
   def ward_references_for bolton
-    bolton_name = bolton.principal_author_last_name
+    bolton_name = bolton.author
     if bolton_name != @bolton_name
       @bolton_name = bolton_name
       @references = ::Reference.with_principal_author_last_name bolton_name
