@@ -70,6 +70,11 @@ describe Bolton::Reference do
           @bolton.update_attributes :citation_year => '1980'
           @bolton.match(@ward).should == 10
         end
+        it "should match if the author names differ by accentation" do
+          @ward.update_attributes :author_names => [Factory :author_name, :name => 'Csösz'], :citation_year => '1979'
+          @bolton.update_attributes :authors => 'Csősz', :citation_year => '1980'
+          @bolton.match(@ward).should == 10
+        end
       end
     end
 

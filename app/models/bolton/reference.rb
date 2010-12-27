@@ -13,7 +13,8 @@ class Bolton::Reference < ActiveRecord::Base
   }}
 
   def match ward_reference
-    return 0 unless ward_reference.principal_author_last_name == principal_author_last_name
+    return 0 unless convert_accents_to_ascii(ward_reference.principal_author_last_name) ==
+                    convert_accents_to_ascii(principal_author_last_name)
 
     result = match_title(ward_reference) || match_article(ward_reference) || match_book(ward_reference)
     year_matches = year_matches? ward_reference
@@ -108,7 +109,11 @@ class Bolton::Reference < ActiveRecord::Base
   end
 
   def convert_accents_to_ascii! string
-    string.replace string.mb_chars.normalize(:kd).gsub(/[^\x00-\x7F]/n,"")
+    string.replace convert_accents_to_ascii string
+  end
+
+  def convert_accents_to_ascii string
+    string.mb_chars.normalize(:kd).gsub(/[^\x00-\x7F]/n,"")
   end
 
   def remove_parenthesized_taxon_names! string
