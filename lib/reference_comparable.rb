@@ -45,9 +45,15 @@ module ReferenceComparable
 
   def normalize_series_volume_issue string
     string = string.dup
-    remove_space_before_or_after_parenthesis! string
     remove_year_in_parentheses! string
     remove_No! string
+    replace_punctuation_with_space! string
+    string
+  end
+
+  def replace_punctuation_with_space! string
+    string.gsub! /[[:punct:]]/, ' '
+    string.squish!
     string
   end
 
