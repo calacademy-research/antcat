@@ -8,10 +8,11 @@ class Bolton::Reference < ActiveRecord::Base
 
   before_validation :set_year
 
-  named_scope :with_confidence, lambda {|confidence| {
-    :joins => :matches,
-    :conditions => ['confidence = ?', confidence]
-  }}
+  named_scope :with_possible_matches, {
+    :select => 'DISTINCT bolton_references.*',
+    :joins => 'LEFT OUTER JOIN bolton_matches ON bolton_matches.bolton_reference_id = bolton_references.id',
+    :conditions => ['confidence != 100']
+  }
 
   def to_s
     "#{authors} #{year}. #{title}."
