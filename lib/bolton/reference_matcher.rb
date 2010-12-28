@@ -18,6 +18,7 @@ class Bolton::ReferenceMatcher
     show_results
   end
 
+  private
   def find_matches_for bolton
     results = @matcher.match bolton
     results[:matches].each do |result|
@@ -32,7 +33,6 @@ class Bolton::ReferenceMatcher
 
   end
 
-  private
   def show_progress
     Progress.tally
     return unless Progress.processed_count % 10 == 0
