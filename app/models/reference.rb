@@ -1,6 +1,5 @@
-require 'curl'
-
 class Reference < ActiveRecord::Base
+  include ReferenceComparable
   has_paper_trail
 
   has_many :reference_author_names, :order => :position
@@ -203,4 +202,6 @@ class Reference < ActiveRecord::Base
     document && document.host = host
   end
 
+  # ReferenceComparable
+  def author; principal_author_last_name; end
 end

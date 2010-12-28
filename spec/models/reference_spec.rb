@@ -617,4 +617,17 @@ describe Reference do
     end
   end
 
+  describe 'implementing ReferenceComparable' do
+    it 'should map all fields correctly' do
+      @reference = ArticleReference.create! :author_names => [Factory :author_name, :name => 'Fisher, B. L.'], :citation_year => '1981',
+        :title => 'Dolichoderinae', :journal => Factory(:journal), :series_volume_issue => '1(2)', :pagination => '22-54'
+      @reference.author.should == 'Fisher'
+      @reference.year.should == 1981
+      @reference.title.should == 'Dolichoderinae'
+      @reference.type.should == 'ArticleReference'
+      @reference.series_volume_issue.should == '1(2)'
+      @reference.pagination.should == '22-54'
+    end
+  end
+
 end
