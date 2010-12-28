@@ -1,11 +1,61 @@
-%div= will_paginate @references
+%style
+  :sass
+    table, tr, td, tbody
+      margin-top: -1px
+      margin-bottom: -1px
+      padding: 0px
+      border: 0
+      line-height: 1em
+
+%div{:style => 'margin-bottom: 6px'}= will_paginate @references
 - for bolton_reference in @references
-  %table{:style => 'width: 100%;margin-top: 10px; border:thin black solid'}
-    %tr{:style => 'border: thin black solid'}
-      %td{:style => 'width: 30px'}
-      %td= Bolton::ReferenceFormatter.format bolton_reference
-      - for match in bolton_reference.matches
-        %tr
-          %td{:style => 'padding-right: 4px; text-align: right'}= match.confidence
-          %td= ReferenceFormatter.format(match.reference) + ' ' + match.reference.id.to_s
+  %div{:style => 'border: thin black solid; margin-top: 0px;margin-bottom: 16px'}
+    %table{:style => 'width: 100%; background: lightgrey; border-top: thin black solid; border-bottom: thin black solid'}
+      %tr
+        %td{:style => 'width: 21px; padding-right: 4px; text-align:right'}= bolton_reference.matches.first && bolton_reference.matches.first.confidence
+        %td
+          %table
+            %tr
+              %td
+                %table
+                  %tr
+                    %td{:style => 'width: 55px'}= bolton_reference.id
+                    %td{:style => 'width:200px'}= bolton_reference.authors
+                    %td{:style => 'width: 108px'}= bolton_reference.citation_year
+                    %td{:style => 'width: 168px'}= bolton_reference.series_volume_issue
+                    %td{:style => 'width: 100px'}= bolton_reference.pagination
+                    %td{:style => 'width: 100px; text-align:right'}= bolton_reference.reference_type
+            %tr
+              %td
+                %table
+                  %tr
+                    %td= bolton_reference.title
+            %tr
+              %td
+                %table
+                  %tr
+                    %td= bolton_reference.original
+
+        - for match in bolton_reference.matches
+          %table{:style => 'border-bottom: thin black solid;width: 100%'}
+            %tr
+              %td{:style => 'width: 21px; padding-right: 4px'}
+              %td
+                %table
+                  %tr
+                    %td
+                      %table
+                        %tr
+                          %td{:style => 'width:55px'}= match.reference.id
+                          %td{:style => 'width:200px'}= match.reference.author_names_string
+                          %td{:style => 'width: 108px'}= match.reference.citation_year
+                          %td{:style => 'width: 168px'}= match.reference.series_volume_issue
+                          %td{:style => 'width: 100px'}= match.reference.pagination
+                          %td{:style => 'width: 100px; text-align:right'}= match.reference.type
+                  %tr
+                    %td
+                      %table
+                        %tr
+                          %td= match.reference.title
+
 %div= will_paginate @references
