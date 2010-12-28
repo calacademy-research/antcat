@@ -3,13 +3,14 @@ class Bolton::ReferenceMatcher
   def initialize show_progress = false
     Progress.init show_progress, Bolton::Reference.count
     @unmatched_count = @matched_count = @possible_count = 0
+    @matcher = ::ReferenceMatcher.new
   end
 
   def find_matches_for_all
     Bolton::Match.transaction do 
       Bolton::Match.delete_all
       #Bolton::Reference.all[0,100].each_with_index do |bolton, i|
-      Bolton::Reference.all.each_with_index do |bolton, i|
+      Bolton::Reference.all.each do |bolton|
         find_matches_for bolton
         show_progress
       end
@@ -18,39 +19,20 @@ class Bolton::ReferenceMatcher
   end
 
   def find_matches_for bolton
-    max_confidence = 0
-    matches = []
-    ward_references_for(bolton).each do |ward|
-      confidence = bolton <=> ward
-      max_confidence = [confidence, max_confidence].max
-      next unless confidence > 0
-      matches << {:bolton_reference_id => bolton.id, :reference_id => ward.id, :confidence => confidence}
-    end
-
-    matches.select do |match|
-      match[:confidence] == max_confidence
-    end.each do |match|
-      Bolton::Match.create! match
+    results = @matcher.match bolton
+    results[:matches].each do |result|
+      Bolton::Match.create! :bolton_reference_id => result[:target], :reference_id => result[:match], :confidence => results[:confidence]
     end
 
     case 
-    when max_confidence == 0 then @unmatched_count += 1
-    when max_confidence < 80 then @possible_count += 1
+    when results[:confidence] == 0 then @unmatched_count += 1
+    when results[:confidence] < 80 then @possible_count += 1
     else @matched_count += 1
     end
 
   end
 
   private
-  def ward_references_for bolton
-    bolton_name = bolton.author
-    if bolton_name != @bolton_name
-      @bolton_name = bolton_name
-      @references = ::Reference.with_principal_author_last_name bolton_name
-    end
-    @references
-  end
-
   def show_progress
     Progress.tally
     return unless Progress.processed_count % 10 == 0
