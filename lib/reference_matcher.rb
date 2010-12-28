@@ -2,8 +2,8 @@ class ReferenceMatcher
   def match target
     matches = candidates_for(target).inject([]) do |matches, candidate|
       confidence = target <=> candidate
-      next unless confidence > 0
-      matches << {:target => target.id, :match => candidate.id, :confidence => confidence}
+      matches << {:target => target.id, :match => candidate.id, :confidence => confidence} if confidence > 0
+      matches
     end || []
     max_confidence = matches.map {|e| e[:confidence]}.max || 0
     matches = matches.select {|match| match[:confidence] == max_confidence}

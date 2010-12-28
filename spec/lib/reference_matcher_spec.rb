@@ -36,6 +36,7 @@ describe ReferenceMatcher do
       author_names = [Factory :author_name, :name => 'Ward, P. S.']
       Reference.delete_all
       @bolton.should_receive(:<=>).with(Factory :reference, :author_names => author_names).and_return 50
+      @bolton.should_receive(:<=>).with(Factory :reference, :author_names => author_names).and_return 0
       @bolton.should_receive(:<=>).with(Factory :reference, :author_names => author_names).and_return 50
       @bolton.should_receive(:<=>).with(Factory :reference, :author_names => author_names).and_return 1
       results = @matcher.match @bolton
