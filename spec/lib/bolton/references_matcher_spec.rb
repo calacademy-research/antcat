@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Bolton::ReferenceMatcher do
+describe Bolton::ReferencesMatcher do
   it "should find the appropriate Ward reference(s) for each" do
     # exact match
     exact_ward = Factory :reference, :author_names => [Factory :author_name, :name => 'Dlussky, G.M.']
@@ -12,7 +12,7 @@ describe Bolton::ReferenceMatcher do
     exact_bolton.should_receive(:<=>).and_return 1
     unmatched_bolton.should_not_receive(:<=>)
 
-    Bolton::ReferenceMatcher.new.find_matches_for_all
+    Bolton::ReferencesMatcher.new.find_matches_for_all
 
     Bolton::Match.count.should == 1
     exact_bolton.references.should == [exact_ward]

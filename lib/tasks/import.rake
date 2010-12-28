@@ -8,7 +8,7 @@ end
 
 desc 'Match Bolton'
 task :match_bolton => :environment do
-  Bolton::ReferenceMatcher.new(true).find_matches_for_all
+  Bolton::ReferencesMatcher.new(true).find_matches_for_all
 end
 
 desc 'Import and match Bolton'

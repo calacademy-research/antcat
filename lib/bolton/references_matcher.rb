@@ -1,4 +1,4 @@
-class Bolton::ReferenceMatcher
+class Bolton::ReferencesMatcher
 
   def initialize show_progress = false
     Progress.init show_progress, Bolton::Reference.count
