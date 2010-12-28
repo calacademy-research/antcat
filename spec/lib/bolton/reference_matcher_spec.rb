@@ -23,19 +23,8 @@ describe Bolton::ReferenceMatcher do
   describe "matching Bolton's references against Ward's" do
     before do
       @matcher = Bolton::ReferenceMatcher.new
-      @ward = ArticleReference.create! :author_names => [Factory :author_name, :name => "Ward, P. S."],
-                                       :title => "My life among the ants",
-                                       :journal => Factory(:journal, :name => "Psyche"),
-                                       :series_volume_issue => '1',
-                                       :pagination => '15-43',
-                                       :citation_year => '1965'
-      @bolton = Bolton::Reference.create! :authors => "Ward, P. S.",
-                                          :title => "My life among the ants",
-                                          :reference_type => 'ArticleReference',
-                                          :series_volume_issue => '1',
-                                          :pagination => '15-43',
-                                          :journal => 'Psyche',
-                                          :year => '1965a'
+      @ward = Factory :reference, :author_names => [Factory :author_name, :name => 'Ward']
+      @bolton = Factory :bolton_reference, :authors => 'Ward'
     end
 
     it "should not match an obvious mismatch" do
