@@ -24,6 +24,7 @@ module ReferenceComparable
     title = self.title.dup
     return 100 if normalize_title!(other_title) == normalize_title!(title)
     return 95 if remove_bracketed_phrases!(other_title) == remove_bracketed_phrases!(title)
+    return 94 if replace_roman_numerals!(other_title) == replace_roman_numerals!(title)
     return 100 if remove_punctuation!(other_title) == remove_punctuation!(title)
   end
 
@@ -106,6 +107,14 @@ module ReferenceComparable
   def remove_bracketed_phrases! string
     string.gsub!(/\s?\[.*?\]\s?/, ' ')
     string.strip!
+    string
+  end
+
+  def replace_roman_numerals! string
+    [['i', 1], ['ii', 2], ['iii', 3], ['iv', 4], ['v', 5], ['vi', 6], ['vii', 7], ['viii', 8], ['ix', 9], ['x', 10]
+    ].each do |roman, arabic|
+      string.gsub! /\b#{roman}\b/, arabic.to_s
+    end
     string
   end
 
