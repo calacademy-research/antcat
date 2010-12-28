@@ -73,21 +73,6 @@ class Reference < ActiveRecord::Base
     }.results
   end
 
-  def self.extract_years string
-    start_year = end_year = nil
-    if match = string.match(/(\b\d{4})-(\d{4}\b)/)
-      start_year = match[1].to_i
-      end_year = match[2].to_i
-    elsif match = string.match(/(?:^|\s)(\d{4})\b/)
-      start_year = match[1].to_i
-    end
-
-    return nil, nil unless (1758..2010).include? start_year
-
-    string.gsub! /#{match[0]}/, '' if match
-    return start_year, end_year
-  end
-
   def self.import data
     reference = nil
     return reference if reference = find_duplicate(data)
@@ -125,34 +110,6 @@ class Reference < ActiveRecord::Base
     end 
   end
 
-  def before_destroy
-    nester = NestedReference.find_by_nested_reference_id id
-    errors.add_to_base "This reference can't be deleted because it's nested in #{nester}" if nester
-    nester.nil?
-  end
-
-  def make_author_names_caches
-    string = author_names.map(&:name).join('; ')
-    string << author_names_suffix if author_names_suffix.present?
-    first_author_name = author_names.first
-    last_name = first_author_name && first_author_name.last_name
-    return string, last_name
-  end
-
-  def set_author_names_caches _ = nil
-    self.author_names_string, self.principal_author_last_name = make_author_names_caches
-  end
-
-  def update_author_names_caches _ = nil
-    string, principal_author_last_name = make_author_names_caches
-    update_attribute :author_names_string, string
-    update_attribute :principal_author_last_name, principal_author_last_name
-  end
-
-  def set_year
-    self.year = self.class.get_year citation_year
-  end 
-      
   def self.get_year citation_year
     if citation_year.blank?
       nil
@@ -163,23 +120,16 @@ class Reference < ActiveRecord::Base
     end
   end
 
-  def strip_newlines
-    [:title, :public_notes, :editor_notes, :taxonomic_notes].each do |field|
-      self[field].gsub! /\n/, ' ' if self[field].present?
-    end
-  end
-
   def self.import_hol_document_urls show_progress = false
     Hol::DocumentUrlImporter.new(show_progress).import
   end
 
-  def to_s
-    s = ''
-    s << "#{author_names_string} "
-    s << "#{citation_year}. "
-    s << "#{id}."
-    s
+  def update_author_names_caches _ = nil
+    string, principal_author_last_name = make_author_names_caches
+    update_attribute :author_names_string, string
+    update_attribute :principal_author_last_name, principal_author_last_name
   end
+
 
   def replace_author_name old_name, new_author_name
     old_author_name = AuthorName.find_by_name old_name
@@ -204,4 +154,57 @@ class Reference < ActiveRecord::Base
 
   # ReferenceComparable
   def author; principal_author_last_name; end
+
+  def to_s
+    s = ''
+    s << "#{author_names_string} "
+    s << "#{citation_year}. "
+    s << "#{id}."
+    s
+  end
+
+  def before_destroy
+    nester = NestedReference.find_by_nested_reference_id id
+    errors.add_to_base "This reference can't be deleted because it's nested in #{nester}" if nester
+    nester.nil?
+  end
+
+  private
+  def self.extract_years string
+    start_year = end_year = nil
+    if match = string.match(/(\b\d{4})-(\d{4}\b)/)
+      start_year = match[1].to_i
+      end_year = match[2].to_i
+    elsif match = string.match(/(?:^|\s)(\d{4})\b/)
+      start_year = match[1].to_i
+    end
+
+    return nil, nil unless (1758..2010).include? start_year
+
+    string.gsub! /#{match[0]}/, '' if match
+    return start_year, end_year
+  end
+
+  def make_author_names_caches
+    string = author_names.map(&:name).join('; ')
+    string << author_names_suffix if author_names_suffix.present?
+    first_author_name = author_names.first
+    last_name = first_author_name && first_author_name.last_name
+    return string, last_name
+  end
+
+  def set_author_names_caches _ = nil
+    self.author_names_string, self.principal_author_last_name = make_author_names_caches
+  end
+
+  def set_year
+    self.year = self.class.get_year citation_year
+  end 
+
+  def strip_newlines
+    [:title, :public_notes, :editor_notes, :taxonomic_notes].each do |field|
+      self[field].gsub! /\n/, ' ' if self[field].present?
+    end
+  end
+
 end
