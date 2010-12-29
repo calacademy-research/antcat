@@ -2,13 +2,13 @@ require 'spec_helper'
 
 describe Bolton::Bibliography do
   before do
-    @bibliography = Bolton::Bibliography.new 'filename'
+    @bibliography = Bolton::Bibliography.new
   end
 
   it "importing a file should call #import_html" do
     File.should_receive(:read).with('filename').and_return('contents')
     @bibliography.should_receive(:import_html).with('contents')
-    @bibliography.import_file
+    @bibliography.import_files ['filename']
     Bolton::Reference.all.should be_empty
   end
 
