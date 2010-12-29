@@ -3,7 +3,8 @@ task :import_bibliography => [:import_ward, :import_hol_document_urls]
 desc "Import HTML files of references from Bolton"
 task :import_bolton => :environment do
   Bolton::Reference.delete_all
-  Bolton::Bibliography.new('data/bolton/NGC-REFS_a-d.htm', true).import_file
+  #Bolton::Bibliography.new(Dir.glob('data/bolton/NGC-REFS*.htm'), true).import_files
+  Bolton::Bibliography.new.import_files(Dir.glob('data/bolton/NGC-REFS(*.htm'), true)
 end
 
 desc 'Match Bolton'

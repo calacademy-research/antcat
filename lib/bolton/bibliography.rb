@@ -3,16 +3,17 @@
 #  2) Save it as web page
 
 class Bolton::Bibliography
-  def initialize filename, show_progress = false
+  def import_files filenames, show_progress = false
     Progress.init show_progress
-    @filename = filename.to_s
     @success_count = 0
-  end
-
-  def import_file
-    Progress.puts "Importing #{@filename}..."
-    import_html File.read(@filename)
-    Progress.puts
+    filenames.each do |filename|
+      @filename = filename
+      Progress.puts "Importing #{@filename}..."
+      import_html File.read @filename
+      show_results
+      Progress.puts
+    end
+    show_results
   end
 
   def import_html html
@@ -24,7 +25,6 @@ class Bolton::Bibliography
       next if blank? line
       reference = import_reference line
     end
-    show_results
   end
 
   def header? line
