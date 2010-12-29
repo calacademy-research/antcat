@@ -9,7 +9,7 @@ class Reference < ActiveRecord::Base
   belongs_to :publisher
   belongs_to :source_reference, :polymorphic => true
   has_one :document
-  accepts_nested_attributes_for :document
+  accepts_nested_attributes_for :document, :reject_if => :all_blank
 
   searchable do
     text :title
