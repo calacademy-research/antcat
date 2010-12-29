@@ -305,7 +305,7 @@ describe Reference do
         updated_today.update_attribute(:updated_at,  Time.now)
         Reference.record_timestamps = true
 
-        Reference.do_search(nil, nil, true).should == [updated_today, updated_yesterday, updated_last_week]
+        Reference.do_search(nil, nil, nil, true).should == [updated_today, updated_yesterday, updated_last_week]
       end
     end
 
@@ -321,7 +321,7 @@ describe Reference do
         created_today.update_attribute(:created_at,  Time.now)
         Reference.record_timestamps = true
 
-        Reference.do_search(nil, nil, false, true).should == [created_today, created_yesterday, created_last_week]
+        Reference.do_search(nil, nil, nil, false, true).should == [created_today, created_yesterday, created_last_week]
       end
     end
 

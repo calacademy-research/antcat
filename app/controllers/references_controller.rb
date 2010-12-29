@@ -7,7 +7,7 @@ class ReferencesController < ApplicationController
     params[:q].strip! if params[:q]
     @reviewing = params[:commit] == 'review'
     @seeing_whats_new = params[:commit] == 'new'
-    @references = Reference.do_search params[:q], params[:page], @reviewing, @seeing_whats_new
+    @references = Reference.do_search params[:q], params[:page], params[:per_page], @reviewing, @seeing_whats_new
   end
 
   def download

@@ -47,10 +47,12 @@ class Reference < ActiveRecord::Base
     author_names(reload).map(&:author)
   end
 
-  def self.do_search string = nil, page = nil, sort_by_reverse_updated_at = false, sort_by_reverse_created_at = false
-    return all(:order => 'updated_at DESC').paginate(:page => page) if sort_by_reverse_updated_at
-    return all(:order => 'created_at DESC').paginate(:page => page) if sort_by_reverse_created_at
-    return all(:order => 'author_names_string, citation_year').paginate(:page => page) unless string.present?
+  def self.do_search string = nil, page = nil, per_page = nil, sort_by_reverse_updated_at = false, sort_by_reverse_created_at = false
+    per_page ||= 100
+    page_options = {:page => page, :per_page => per_page}
+    return all(:order => 'updated_at DESC').paginate(page_options) if sort_by_reverse_updated_at
+    return all(:order => 'created_at DESC').paginate(page_options) if sort_by_reverse_created_at
+    return all(:order => 'author_names_string, citation_year').paginate(page_options) unless string.present?
     string = string.dup
 
     if match = string.match(/\d{5,}/)
@@ -69,7 +71,7 @@ class Reference < ActiveRecord::Base
       keywords string
       order_by :author_names_string
       order_by :citation_year
-      paginate :page => page
+      paginate :page => page, :per_page => 500
     }.results
   end
 
