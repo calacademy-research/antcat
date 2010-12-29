@@ -5,10 +5,10 @@
 class Bolton::Bibliography
   def initialize show_progress = false
     Progress.init show_progress
+    @success_count = 0
   end
 
   def import_files filenames
-    @success_count = 0
     filenames.each do |filename|
       @filename = filename
       Progress.puts "Importing #{@filename}..."
