@@ -41,7 +41,7 @@ class Bolton::SpeciesCatalog
   end
 
   def header? line
-    line =~ /CATALOGUE REFERENCES/
+    line =~ /CATALOGUE OF/
   end
 
   def blank? line
@@ -72,7 +72,7 @@ class Bolton::SpeciesCatalog
     #string.gsub! /\n/, ' '
     #remove_attributes! string
     #string.strip!
-    #string
+    string
   end
 
   def post_parse attributes
