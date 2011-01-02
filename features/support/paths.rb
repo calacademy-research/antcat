@@ -7,6 +7,8 @@ module NavigationHelpers
       reference_path(@reference || Reference.first)    
     when /the edit user page/
       '/users/edit'
+    when /the species list/
+      '/species'
     end
   end
 end

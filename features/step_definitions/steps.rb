@@ -10,6 +10,12 @@ Given /the following entr(?:ies|y) exists? in the bibliography/ do |table|
   Reference.reindex
 end
 
+Given 'the following species exist' do |table|
+  table.hashes.each do |hash|
+    Species.create hash
+  end
+end
+
 Given /the following entry nests it/ do |table|
   data = table.hashes.first
   @nestee_reference = @reference

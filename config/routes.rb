@@ -9,6 +9,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :bolton_matches, :only => [:index]
   map.resources :duplicate_references, :only => [:index]
   map.resources :publishers, :only => [:index]
+  map.resources :species, :only => [:index]
 
   map.connect '/documents/:id/:file_name.:ext', :controller => :references, :action => :download,
     :conditions => {:method => :get}
