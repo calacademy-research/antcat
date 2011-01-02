@@ -28,6 +28,5 @@ desc "Import Bolton species catalog documents"
 task :import_species => :environment do
   catalog = Bolton::SpeciesCatalog.new(true)
   catalog.clear
-  #catalog.import_files Dir.glob 'data/bolton/NGC-Sp*.htm'
-  catalog.import_files Dir.glob 'data/bolton/NGC-Spa-an.htm'
+  catalog.import_files Dir.glob 'data/bolton/NGC-Sp*.htm'
 end
