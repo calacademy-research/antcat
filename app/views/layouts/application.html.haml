@@ -1,32 +1,27 @@
 !!! Strict
 %html{:xmlns => 'http://www.w3.org/1999/xhtml', 'xml:lang' => 'en', :lang => 'en'}
   %head
-    %title= @title || 'ANTBIB'
+    %title= @title || 'AntCat'
     %meta{'http-equiv' => "content-type", :content => "text/html;charset=UTF-8"}/
 
     %style{:type => 'text/css'}
       = ".js #flash {display:none;}"
 
-    = javascript_include_tag |
-                             'ext/jquery-1.4.2.min',                    |
-                             'ext/jquery-ui-1.8.5.custom.min',          |
-                             'ext/jquery.watermark.min',                |
-                             'ext/jquery.spinner',                      |
-                             'ext/jquery.ui.autocomplete.selectFirst',  |
-                             :cache => true                             |
+    = javascript_include_tag 'ext/jquery-1.4.2.min', |
+                            'ext/jquery-ui-1.8.5.custom.min', |
+                            :cache => true |
     = javascript_include_tag 'application'
 
-    = stylesheet_link_tag |
-                            'ext/jquery-ui/jquery-ui-1.8.5.custom', |
-                            'application',                          |
-                            :cache => true                          |
+    = stylesheet_link_tag 'ext/jquery-ui/jquery-ui-1.8.5.custom', |
+                          :cache => true |
+    = stylesheet_link_tag 'application'
+
+    = yield :head
 
     :javascript
       var usingCucumber = #{Rails.env == 'cucumber'};
       var loggedIn = #{user_signed_in?};
       document.documentElement.className = 'js'; // FOUC fix
-
-    = yield :head
 
   %body{:class => @controller.class, :id => 'flash'}
     #page
@@ -35,13 +30,11 @@
         .clear
 
         %hr
-        .left
-          %a{:href => references_path}
-            %h1 ANTBIB
-        .left
-          %h2 A Bibliography of Ant Systematics
-        .right
-          %h3 by Philip S. Ward, et al.
+        - if @content_for_header
+          = yield :header
+        - else
+          .left
+            %h1 AntCat
         .clear
 
         #notice

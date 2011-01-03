@@ -1,3 +1,4 @@
+- @title = 'AntCat - Duplicate References'
 - def possible_matches reference
   - return [] unless reference.author_names.first
   - Reference.all :conditions => ['author_names_string = ? AND id != ? AND (title = ? OR pagination = ? AND series_volume_issue = ?)', reference.author_names_string, reference.id, reference.title, reference.pagination, reference.series_volume_issue]
