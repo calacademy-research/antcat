@@ -1,4 +1,8 @@
 - @title = 'The Ant List'
 
-- for species in Species.all
+%div= will_paginate @species
+
+- for species in @species
   %p= species.name
+
+%div= will_paginate @species
