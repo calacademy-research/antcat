@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110102013129) do
+ActiveRecord::Schema.define(:version => 20110104202910) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -60,6 +60,14 @@ ActiveRecord::Schema.define(:version => 20110102013129) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "reference_id"
+  end
+
+  create_table "duplicate_references", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "reference_id"
+    t.integer  "duplicate_id"
+    t.float    "similarity"
   end
 
   create_table "genera", :force => true do |t|
