@@ -7,13 +7,10 @@
     %style{:type => 'text/css'}
       = ".js #flash {display:none;}"
 
-    = javascript_include_tag 'ext/jquery-1.4.2.min', |
-                            'ext/jquery-ui-1.8.5.custom.min', |
-                            :cache => true |
+    = javascript_include_tag 'ext/jquery-1.4.2.min', 'ext/jquery-ui-1.8.5.custom.min'
     = javascript_include_tag 'application'
 
-    = stylesheet_link_tag 'ext/jquery-ui/jquery-ui-1.8.5.custom', |
-                          :cache => true |
+    = stylesheet_link_tag 'ext/jquery-ui/jquery-ui-1.8.5.custom'
     = stylesheet_link_tag 'application'
 
     = yield :head
