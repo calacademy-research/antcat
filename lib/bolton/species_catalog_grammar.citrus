@@ -1,7 +1,7 @@
 grammar Bolton::SpeciesCatalogGrammar
 
   rule record
-    header | blank | genus | species
+    header | blank | genus | species | not_understood
   end
 
   rule header
@@ -33,6 +33,12 @@ grammar Bolton::SpeciesCatalogGrammar
       tag_end tag_end tag_end /.*/
     ) {
       {:type => :species, :species => lowercase_word}
+    }
+  end
+
+  rule not_understood
+    /.*/ {
+      {:type => :not_understood}
     }
   end
 
