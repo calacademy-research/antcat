@@ -12,17 +12,47 @@ describe Bolton::SpeciesCatalog do
     Species.all.should be_empty
   end
 
-  describe "importing a species record" do
-    it "should import a species record" do
-      contents = make_contents %q{
+  describe 'parsing the genus header' do
+    before do
+      @species_contents = %q{
 <p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
 style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
 style='color:red'>brevicornis</span></i></b><i style='mso-bidi-font-style:normal'>.
 Acanthognathus brevicornis</i> Smith, M.R. 1944c: 151 (w.q.) PANAMA. See also:
 Brown &amp; Kempf, 1969: 94; Bolton, 2000: 16.</p>
       }
-      @species_catalog.import_html contents
-      species = Species.first
+    end
+    it "should recognize a valid, extant genus heading" do
+      @species_catalog.import_html make_contents %Q{
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
+style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
+style='color:red'>ACANTHOGNATHUS</span></i></b> (Neotropical)</p>
+      #{@species_contents}
+      }
+      Species.count.should == 1
+      Species.first.name.should == 'Acanthognathus brevicornis'
+    end
+  end
+
+  describe 'parsing a species line' do
+    before do
+      @genus_contents = %q{
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
+style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
+style='color:red'>ACANTHOGNATHUS</span></i></b> (Neotropical)</p>
+      }
+    end
+    it "should recognize a valid, extant species line" do
+      @species_catalog.import_html make_contents %Q{
+      #{@genus_contents}
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
+style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
+style='color:red'>brevicornis</span></i></b><i style='mso-bidi-font-style:normal'>.
+Acanthognathus brevicornis</i> Smith, M.R. 1944c: 151 (w.q.) PANAMA. See also:
+Brown &amp; Kempf, 1969: 94; Bolton, 2000: 16.</p>
+      }
+      Species.count.should == 1
+      Species.first.name.should == 'Acanthognathus brevicornis'
     end
   end
 

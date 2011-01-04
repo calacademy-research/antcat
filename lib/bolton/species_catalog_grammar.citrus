@@ -1,0 +1,63 @@
+grammar Bolton::SpeciesCatalogGrammar
+
+  rule record
+    header | blank | genus | species
+  end
+
+  rule header
+    /.*?CATALOGUE OF.*/ {
+      {:type => :header}
+    }
+  end
+
+  rule blank
+    /^.{0,20}$/ {
+      {:type => :blank}
+    }
+  end
+
+  rule genus
+    (
+      bold italics red
+        uppercase_word
+      tag_end tag_end tag_end /.*/
+    ) {
+      {:type => :genus, :genus => uppercase_word.downcase.capitalize}
+    }
+  end
+
+  rule species
+    (
+      bold italics red
+        lowercase_word
+      tag_end tag_end tag_end /.*/
+    ) {
+      {:type => :species, :species => lowercase_word}
+    }
+  end
+
+  rule bold
+    '<b style="mso-bidi-font-weight:normal">'
+  end
+
+  rule italics
+    '<i style="mso-bidi-font-style:normal">'
+  end
+
+  rule red
+    '<span style="color:red">'
+  end
+
+  rule tag_end
+    /<\/\w+>/
+  end
+
+  rule lowercase_word
+    /[a-z]+/
+  end
+
+  rule uppercase_word
+    /[A-Z]+/
+  end
+
+end

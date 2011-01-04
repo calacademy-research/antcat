@@ -23,100 +23,36 @@ class Bolton::SpeciesCatalog
       @filename = filename
       Progress.puts "Importing #{@filename}..."
       import_html File.read @filename
-      show_results
+      Progress.show_results
       Progress.puts
     end
-    show_results
+    Progress.show_results
   end
 
   def import_html html
     doc = Nokogiri::HTML html
+    @genus = nil
     ps = doc.css('p')
     ps.each do |p|
-      line = p.inner_html
-      next if header? line
-      next if blank? line
-      species = import_species line
+      record = parse p.inner_html
+      case record[:type]
+      when :genus then @genus = record[:genus]
+      when :species then import_species record
+      end
     end
   end
 
-  def header? line
-    line =~ /CATALOGUE OF/
+  def parse string
+    string = string.gsub /\n/, ' '
+    Bolton::SpeciesCatalogGrammar.parse(string).value
+  rescue Citrus::ParseError => e
+    p e
+    nil
   end
 
-  def blank? line
-    line.length < 20
-  end
-
-  def import_species string
-    species = nil
-    begin
-      original = pre_parse!(string).dup
-      return unless species? string
-      attributes = Bolton::SpeciesGrammar.parse(string).value
-      post_parse attributes
-      species = Species.create! attributes.merge :original => original
-    rescue Citrus::ParseError => e
-      puts e
-    end
-    tally_and_show_progress species
-  end
-
-  def species? string
-    #string.match(/^Note: /).blank?
-  end
-
-  def pre_parse! string
-    #string.replace CGI.unescapeHTML(string)
-    #string.gsub! /&nbsp;/, ' '
-    #string.gsub! /\n/, ' '
-    #remove_attributes! string
-    #string.strip!
-    string
-  end
-
-  def post_parse attributes
-    #attributes[:journal] = remove_italics(attributes[:journal]) if attributes[:journal]
-    #attributes[:series_volume_issue] = remove_bold attributes[:series_volume_issue] if attributes[:series_volume_issue]
-    #attributes[:place].strip! if attributes[:place]
-    #attributes[:title] = remove_period remove_italics remove_span remove_bold attributes[:title]
-    #attributes[:note] = remove_italics attributes[:note] if attributes[:note]
-  end
-
-  def remove_attributes! string
-    string.gsub! /<(\w+).*?>/, '<\1>'
-  end
-
-  def remove_span string
-    remove_tag 'span', string
-  end
-
-  def remove_italics string
-    remove_tag 'i', string
-  end
-
-  def remove_bold string
-    remove_tag 'b', string
-  end
-
-  def remove_tag tag, string
-    string.gsub /<#{tag}.*?>(.*?)<\/#{tag}>/, '\1'
-  end
-
-  def remove_period string
-    string = string.strip
-    string = string[0..-2] if string[-1..-1] == '.'
-    string
-  end
-
-  def tally_and_show_progress species
-    @success_count += 1 if species
+  def import_species record
+    Species.create! :name => "#{@genus} #{record[:species]}"
     Progress.tally_and_show_progress 100
-  end
-
-  def show_results
-    Progress.show_count(@success_count, Progress.processed_count, 'successful')
-    Progress.show_results
   end
 
 end
