@@ -12,7 +12,7 @@ end
 
 Given 'the following species exist' do |table|
   table.hashes.each do |hash|
-    Species.create hash
+    Species.create! hash
   end
 end
 
