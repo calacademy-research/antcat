@@ -3,7 +3,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.devise_for :users
 
-  map.resources :references, :only => [:index, :update, :create, :destroy]
+  map.resources :references, :only => [:index, :update, :create, :destroy],
+                :has_many => :duplicate_references
   map.resources :journals, :only => [:index]
   map.resources :authors, :only => [:index]
   map.resources :bolton_matches, :only => [:index]

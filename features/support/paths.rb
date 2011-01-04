@@ -9,6 +9,8 @@ module NavigationHelpers
       '/users/edit'
     when /the species list/
       '/species'
+    when /the duplicate reference list/
+      '/duplicate_references'
     end
   end
 end
