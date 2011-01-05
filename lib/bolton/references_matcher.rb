@@ -3,7 +3,7 @@ class Bolton::ReferencesMatcher
   def initialize show_progress = false
     Progress.init show_progress, Bolton::Reference.count
     @unmatched_count = @matched_count = @possible_count = 0
-    @matcher = ::ReferenceMatcher.new
+    @matcher = Bolton::ReferenceMatcher.new
   end
 
   def find_matches_for_all

@@ -1,16 +1,19 @@
 class ReferenceMatcher
   def match target
-    matches = candidates_for(target).inject([]) do |matches, candidate|
-      similarity = target <=> candidate
-      matches << {:target => target.id, :match => candidate.id, :similarity => similarity} if similarity > 0
+    candidates_for(target).inject([]) do |matches, candidate|
+      if possible_match? target, candidate
+        similarity = target <=> candidate
+        matches << {:target => target.id, :match => candidate.id, :similarity => similarity} if similarity > 0
+      end
       matches
     end || []
-    max_similarity = matches.map {|e| e[:similarity]}.max || 0
-    matches = matches.select {|match| match[:similarity] == max_similarity}
-    {:similarity => max_similarity, :matches => matches}
   end
 
   private
+  def possible_match? target, candidate
+    true
+  end
+
   def candidates_for target
     if target.author != @target_author
       @target_author = target.author

@@ -19,7 +19,7 @@ class DuplicateReferencesFinder
   def find_duplicates_for target
     results = @matcher.match target
     results.each do |result|
-      DuplicateReference.create! :reference => target, :duplicate => result[:match], :similarity => result[:similarity]
+      DuplicateReference.create! :reference_id => target.id, :duplicate_id => result[:match], :similarity => result[:similarity]
     end
 
     @duplicate_count += 1 if results.present?
@@ -42,25 +42,9 @@ class DuplicateReferencesFinder
 
 end
 
-class DuplicateReferenceMatcher
-  def match target
-    matches = candidates_for(target).inject([]) do |matches, candidate|
-      if candidate != target && !candidate.duplicates(true).include?(target)
-        similarity = target <=> candidate
-        matches << {:target => target, :match => candidate, :similarity => similarity} if similarity > 10
-      end
-      matches
-    end || []
-    matches
-  end
-
-  private
-  def candidates_for target
-    if target.author != @target_author
-      @target_author = target.author
-      @candidates = Reference.with_principal_author_last_name @target_author
-    end
-    @candidates
+class DuplicateReferenceMatcher < ReferenceMatcher
+  def possible_match? target, candidate
+    candidate != target && !candidate.duplicates(true).include?(target)
   end
 end
 
