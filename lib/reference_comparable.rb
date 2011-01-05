@@ -23,7 +23,12 @@ module ReferenceComparable
     other_title = rhs.title.dup
     title = self.title.dup
     return 100 if normalize_title!(other_title) == normalize_title!(title)
-    return 95 if remove_bracketed_phrases!(other_title) == remove_bracketed_phrases!(title)
+
+    remove_bracketed_phrases!(other_title)
+    remove_bracketed_phrases!(title)
+    return unless other_title.present? and title.present?
+    return 95 if other_title == title
+
     return 94 if replace_roman_numerals!(other_title) == replace_roman_numerals!(title)
     return 100 if remove_punctuation!(other_title) == remove_punctuation!(title)
   end

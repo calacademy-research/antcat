@@ -95,6 +95,11 @@ describe ComparableReference do
         @lhs.title = 'Ants and pants [sic]'
         (@lhs <=> @rhs).should == 95
       end
+      it "should not match when the whole title is square brackets" do
+        @rhs.title = '[Ants and pants]'
+        @lhs.title = '[Pants and ants]'
+        (@lhs <=> @rhs).should == 10
+      end
 
       describe 'replacing roman numerals with arabic' do
         it "should not replace roman numerals embedded in words" do
