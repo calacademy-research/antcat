@@ -22,12 +22,12 @@ class Bolton::ReferencesMatcher
   def find_matches_for bolton
     results = @matcher.match bolton
     results[:matches].each do |result|
-      Bolton::Match.create! :bolton_reference_id => result[:target], :reference_id => result[:match], :confidence => results[:confidence]
+      Bolton::Match.create! :bolton_reference_id => result[:target], :reference_id => result[:match], :similarity => results[:similarity]
     end
 
     case 
-    when results[:confidence] == 0 then @unmatched_count += 1
-    when results[:confidence] < 80 then @possible_count += 1
+    when results[:similarity] == 0.00 then @unmatched_count += 1
+    when results[:similarity] < 0.80 then @possible_count += 1
     else @matched_count += 1
     end
 

@@ -11,4 +11,8 @@ class ComparableReference
       send "#{key}=", value
     end
   end
+
+  def id
+    object_id
+  end
 end

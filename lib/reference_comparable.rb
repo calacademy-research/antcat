@@ -1,14 +1,14 @@
 module ReferenceComparable
   def <=> rhs
-    return 0 unless convert_accents_to_ascii(author) == convert_accents_to_ascii(rhs.author)
+    return 0.00 unless convert_accents_to_ascii(author) == convert_accents_to_ascii(rhs.author)
 
     result = match_title(rhs) || match_article(rhs) || match_book(rhs)
     year_matches = year_matches? rhs
 
     case
-    when !result && !year_matches then 0
-    when !result && year_matches then 10
-    when result && !year_matches then result - 50
+    when !result && !year_matches then 0.00
+    when !result && year_matches then 0.10
+    when result && !year_matches then result - 0.50
     else result
     end
   end
@@ -22,15 +22,15 @@ module ReferenceComparable
   def match_title rhs
     other_title = rhs.title.dup
     title = self.title.dup
-    return 100 if normalize_title!(other_title) == normalize_title!(title)
+    return 1.00 if normalize_title!(other_title) == normalize_title!(title)
 
     remove_bracketed_phrases!(other_title)
     remove_bracketed_phrases!(title)
     return unless other_title.present? and title.present?
-    return 95 if other_title == title
+    return 0.95 if other_title == title
 
-    return 94 if replace_roman_numerals!(other_title) == replace_roman_numerals!(title)
-    return 100 if remove_punctuation!(other_title) == remove_punctuation!(title)
+    return 0.94 if replace_roman_numerals!(other_title) == replace_roman_numerals!(title)
+    return 1.00 if remove_punctuation!(other_title) == remove_punctuation!(title)
   end
 
   def match_article rhs
@@ -39,14 +39,14 @@ module ReferenceComparable
       rhs.pagination.present? && pagination.present? &&
       rhs.pagination == pagination
 
-    return 90 if normalize_series_volume_issue(rhs.series_volume_issue) ==
+    return 0.90 if normalize_series_volume_issue(rhs.series_volume_issue) ==
                  normalize_series_volume_issue(series_volume_issue)
   end
 
   def match_book rhs
     return unless rhs.type == 'BookReference' && type == 'BookReference' &&
       rhs.pagination.present? && pagination.present?
-    return 80 if rhs.pagination == pagination
+    return 0.80 if rhs.pagination == pagination
   end
 
   def normalize_series_volume_issue string

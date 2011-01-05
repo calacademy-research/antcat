@@ -1,13 +1,13 @@
 class ReferenceMatcher
   def match target
     matches = candidates_for(target).inject([]) do |matches, candidate|
-      confidence = target <=> candidate
-      matches << {:target => target.id, :match => candidate.id, :confidence => confidence} if confidence > 0
+      similarity = target <=> candidate
+      matches << {:target => target.id, :match => candidate.id, :similarity => similarity} if similarity > 0
       matches
     end || []
-    max_confidence = matches.map {|e| e[:confidence]}.max || 0
-    matches = matches.select {|match| match[:confidence] == max_confidence}
-    {:confidence => max_confidence, :matches => matches}
+    max_similarity = matches.map {|e| e[:similarity]}.max || 0
+    matches = matches.select {|match| match[:similarity] == max_similarity}
+    {:similarity => max_similarity, :matches => matches}
   end
 
   private
