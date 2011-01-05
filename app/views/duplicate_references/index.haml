@@ -15,12 +15,12 @@
   %div{:style => 'border: thin black solid; margin-top: 0px;margin-bottom: 16px'}
     %table{:style => 'width: 100%; background: lightgrey; border-top: thin black solid; border-bottom: thin black solid'}
       %tr
-        %td{:style => 'width: 30px; padding-right: 4px; text-align:right'}
+        %td{:style => 'width: 35px; padding-right: 4px; text-align:right'}
           %td{:class => :target}= ReferenceFormatter.format(reference) + ' ' + reference.id.to_s + (is_nestee?(reference) ? ' [nestee]' : '')
 
         - for duplicate in reference.duplicate_references
           %table{:style => 'border-bottom: thin black solid;width: 100%'}
             %tr
-              %td{:class => :similarity, :style => 'width: 30px; padding-right: 4px'}= duplicate.similarity
+              %td{:class => :similarity, :style => 'width: 35px; padding-right: 4px'}= duplicate.similarity
               %td{:class => :duplicate}= ReferenceFormatter.format(duplicate.duplicate) + ' ' + duplicate.duplicate.id.to_s + ' (' + duplicate.id.to_s + ')' + (is_nestee?(duplicate.duplicate) ? ' [nestee]' : '')
 
