@@ -630,4 +630,13 @@ describe Reference do
     end
   end
 
+  describe 'having many duplicates' do
+    it 'should have many duplicates' do
+      reference = Factory :reference
+      reference.should have(0).duplicates
+      reference.duplicates << Factory(:reference)
+      reference.should have(1).duplicate
+    end
+  end
+
 end
