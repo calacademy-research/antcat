@@ -1,12 +1,12 @@
 - @title = 'AntCat - Duplicate References'
-- def possible_matches reference
-  - return [] unless reference.author_names.first
-  - Reference.all :conditions => ['author_names_string = ? AND id != ? AND (title = ? OR pagination = ? AND series_volume_issue = ?)', reference.author_names_string, reference.id, reference.title, reference.pagination, reference.series_volume_issue]
 
-- for reference in @references
-  %table{:style => 'width: 100%;margin-top: 10px; border:thin black solid'}
-    %tr{:style => 'border: thin black solid'}
-      %td{:style => 'font-weight: bold'}= ReferenceFormatter.format(reference) + ' ' + reference.id.to_s
-      - for match in possible_matches reference
-        %tr
-          %td= ReferenceFormatter.format(match) + ' ' + match.id.to_s
+- for reference in @references_with_duplicates
+  %table
+    %tr
+      %td{:class => :target}
+        = ReferenceFormatter.format(reference) + ' ' + reference.id.to_s
+        %table
+          - for duplicate in reference.duplicate_references
+            %tr
+              %td{:class => :similarity}= duplicate.similarity
+              %td{:class => :duplicate}= ReferenceFormatter.format(duplicate.duplicate) + ' ' + duplicate.duplicate.id.to_s

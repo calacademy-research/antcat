@@ -4,10 +4,32 @@ Given /the following entr(?:ies|y) exists? in the bibliography/ do |table|
   Place.create! :name => 'New York'
   table.hashes.each do |hash|
     @reference = Ward::Reference.new(hash).export
-    Reference.connection.execute("UPDATE `references` SET updated_at = '#{hash[:updated_at]}' WHERE id = #{@reference.id}") if hash[:updated_at]
-    Reference.connection.execute("UPDATE `references` SET created_at = '#{hash[:created_at]}' WHERE id = #{@reference.id}") if hash[:created_at]
+    set_timestamps @reference, hash
   end
   Reference.reindex
+end
+
+Given /the following article references exist/ do |table|
+  table.hashes.each do |hash|
+    author = hash.delete 'author'
+    journal = hash.delete 'journal'
+    hash[:citation_year] = hash.delete 'year'
+    @reference = Factory :article_reference, hash.merge(:author_names => [Factory :author_name, :name => author],
+                         :journal => Factory(:journal, :name => journal))
+    set_timestamps @reference, hash
+  end
+  Reference.reindex
+end
+
+def set_timestamps reference, hash
+  Reference.connection.execute("UPDATE `references` SET updated_at = '#{hash[:updated_at]}' WHERE id = #{reference.id}") if hash[:updated_at]
+  Reference.connection.execute("UPDATE `references` SET created_at = '#{hash[:created_at]}' WHERE id = #{reference.id}") if hash[:created_at]
+end
+
+Given /the following are duplicates/ do |table|
+  target = Reference.find_by_year table.hashes.first[:year]
+  duplicate = Reference.find_by_year table.hashes.second[:year]
+  DuplicateReference.create! :reference => target, :duplicate => duplicate, :similarity => table.hashes.second[:similarity]
 end
 
 Given 'the following species exist' do |table|
@@ -182,3 +204,21 @@ end
 
 Then 'I should be redirected to Amazon' do
 end
+
+Then 'I should see one duplicate reference' do
+  all('.duplicate').size.should == 1
+end
+
+Then 'I should see one target reference' do
+  all('.target').size.should == 1
+end
+
+Then /I should see the target reference "([^"]*)"/ do |target_reference|
+  page.should have_css ".target", :text => target_reference
+end
+
+Then /^I should see the possible duplicate for it "([^"]*)" with similarity "([^"]*)"$/ do |duplicate, similarity|
+  page.should have_css ".duplicate", :text => duplicate
+  page.should have_css ".similarity", :text => similarity
+end
+
