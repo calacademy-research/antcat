@@ -7,20 +7,19 @@
       padding: 0px
       border: 0
 
-- def is_nestee? reference
-  - NestedReference.find_by_nested_reference_id reference.id
-
 %div{:style => 'margin-bottom: 6px'}
 - for reference in @references_with_duplicates
   %div{:style => 'border: thin black solid; margin-top: 0px;margin-bottom: 16px'}
     %table{:style => 'width: 100%; background: lightgrey; border-top: thin black solid; border-bottom: thin black solid'}
       %tr
         %td{:style => 'width: 35px; padding-right: 4px; text-align:right'}
-          %td{:class => :target}= ReferenceFormatter.format(reference) + ' ' + reference.id.to_s + (is_nestee?(reference) ? ' [nestee]' : '')
+          - is_nestee = NestedReference.find_by_nested_reference_id reference.id
+          %td{:class => :target}= ReferenceFormatter.format(reference) + ' ' + reference.id.to_s + (is_nestee ? ' [nestee]' : '')
 
         - for duplicate in reference.duplicate_references
           %table{:style => 'border-bottom: thin black solid;width: 100%'}
             %tr
+              - is_nestee = NestedReference.find_by_nested_reference_id duplicate.duplicate.id
               %td{:class => :similarity, :style => 'width: 35px; padding-right: 4px'}= duplicate.similarity
-              %td{:class => :duplicate}= ReferenceFormatter.format(duplicate.duplicate) + ' ' + duplicate.duplicate.id.to_s + ' (' + duplicate.id.to_s + ')' + (is_nestee?(duplicate.duplicate) ? ' [nestee]' : '')
+              %td{:class => :duplicate}= ReferenceFormatter.format(duplicate.duplicate) + ' ' + duplicate.duplicate.id.to_s + ' (' + duplicate.id.to_s + ')' + (is_nestee ? ' [nestee]' : '')
 
