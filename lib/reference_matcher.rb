@@ -3,7 +3,7 @@ class ReferenceMatcher
     candidates_for(target).inject([]) do |matches, candidate|
       if possible_match? target, candidate
         similarity = target <=> candidate
-        matches << {:target => target.id, :match => candidate.id, :similarity => similarity} if similarity > 0
+        matches << {:target => target.id, :match => candidate.id, :similarity => similarity} if similarity >= min_similarity
       end
       matches
     end || []
@@ -12,6 +12,10 @@ class ReferenceMatcher
   private
   def possible_match? target, candidate
     true
+  end
+
+  def min_similarity
+    0.01
   end
 
   def candidates_for target

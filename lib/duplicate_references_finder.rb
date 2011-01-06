@@ -46,5 +46,8 @@ class DuplicateReferenceMatcher < ReferenceMatcher
   def possible_match? target, candidate
     candidate != target && !candidate.duplicates(true).include?(target)
   end
+  def min_similarity
+    0.20
+  end
 end
 
