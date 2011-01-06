@@ -1,6 +1,6 @@
 module ReferenceComparable
   def <=> rhs
-    return 0.00 unless convert_accents_to_ascii(author) == convert_accents_to_ascii(rhs.author)
+    return 0.00 unless normalize_author(author) == normalize_author(rhs.author)
 
     result = match_title(rhs) || match_article(rhs) || match_book(rhs)
     year_matches = year_matches? rhs
@@ -96,6 +96,10 @@ module ReferenceComparable
 
   def convert_accents_to_ascii string
     string.mb_chars.normalize(:kd).gsub(/[^\x00-\x7F]/n,"")
+  end
+
+  def normalize_author string
+    convert_accents_to_ascii(string).downcase
   end
 
   def remove_parenthesized_taxon_names! string

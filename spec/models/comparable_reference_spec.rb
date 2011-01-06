@@ -39,6 +39,11 @@ describe ComparableReference do
         @rhs.update :author => 'Csősz', :year => '1980'
         (@lhs <=> @rhs).should == 0.10
       end
+      it "should match if the author names differ by case" do
+        @lhs.update :author => 'MacKay', :year => '1979'
+        @rhs.update :author => 'Mackay', :year => '1980'
+        (@lhs <=> @rhs).should == 0.10
+      end
     end
   end
 
