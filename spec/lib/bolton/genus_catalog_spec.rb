@@ -12,6 +12,11 @@ describe Bolton::GenusCatalog do
     Genus.all.should be_empty
   end
 
+  it "should call the parser" do
+    Bolton::GenusCatalogParser.should_receive(:parse).with 'foo'
+    @genus_catalog.import_html '<html><p>foo</p></html>'
+  end
+
 #  describe 'parsing the genus header' do
 #    before do
 #      @genus_contents = %q{

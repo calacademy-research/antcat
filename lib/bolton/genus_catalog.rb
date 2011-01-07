@@ -4,11 +4,8 @@ class Bolton::GenusCatalog
     @success_count = 0
   end
 
-  def clear
-    Genus.delete_all
-  end
-
   def import_files filenames
+    Genus.delete_all
     filenames.each do |filename|
       @filename = filename
       Progress.puts "Importing #{@filename}..."
@@ -20,21 +17,9 @@ class Bolton::GenusCatalog
   end
 
   def import_html html
-    doc = Nokogiri::HTML html
-    @genus = nil
-    ps = doc.css('p')
-    ps.each do |p|
-      parse p.inner_html
+    Nokogiri::HTML(html).css('p').each do |p|
+      Bolton::GenusCatalogParser.parse p.inner_html
     end
-  end
-
-  def parse string
-    return nil
-    string = string.gsub /\n/, ' '
-    Bolton::GenusCatalogGrammar.parse(string).value
-  rescue Citrus::ParseError => e
-    p e
-    nil
   end
 
   def import_genus record
