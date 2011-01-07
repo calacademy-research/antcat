@@ -1,6 +1,7 @@
 class Bolton::GenusCatalog
   def initialize show_progress = false
     Progress.init show_progress
+    @fossil_count = 0
   end
 
   def import_files filenames
@@ -12,13 +13,17 @@ class Bolton::GenusCatalog
       Progress.puts
     end
     Progress.show_results
+    summary = ''
+    summary << ' ' << Progress.count(@fossil_count, Progress.processed_count, 'fossils').rjust(16)
+    Progress.puts Progress.results_message + summary
   end
 
   def import_html html
     Nokogiri::HTML(html).css('p').each do |p|
       next unless record = Bolton::GenusCatalogParser.parse(p.inner_html)
-      Genus.create! record[:genus]
-      Progress.tally_and_show_progress
+      genus = Genus.create! record[:genus]
+      @fossil_count += 1 if genus.fossil?
+      Progress.tally_and_show_progress 25
     end
   end
 

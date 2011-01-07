@@ -1,2 +1,40 @@
 grammar Bolton::GenusCatalogGrammar
+  rule record
+    genus
+  end
+
+  rule genus
+    (
+      fossil? bold italics red
+        uppercase_word
+      tag_end tag_end tag_end /.*/
+    ) {
+      {:genus => {:name => uppercase_word.downcase.capitalize, :fossil => find('fossil')[0].present?}}
+    }
+  end
+
+  rule fossil
+    '*'
+  end
+
+  rule bold
+    /<b [^>]*>/
+  end
+
+  rule italics
+    /<i [^>]*>/
+  end
+
+  rule red
+    /<span [^>]*color:red[^>]*>/
+  end
+
+  rule tag_end
+    /<\/\w+>/
+  end
+
+  rule uppercase_word
+    /[A-Z]+/
+  end
+
 end

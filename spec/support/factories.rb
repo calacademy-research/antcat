@@ -92,3 +92,7 @@ end
 
 Factory.define :document do |document|
 end
+
+Factory.define :genus do |genus|
+
+end
