@@ -1,15 +1,13 @@
 class Bolton::GenusCatalog
   def initialize show_progress = false
     Progress.init show_progress
-    @success_count = 0
   end
 
   def import_files filenames
     Genus.delete_all
     filenames.each do |filename|
-      @filename = filename
-      Progress.puts "Importing #{@filename}..."
-      import_html File.read @filename
+      Progress.puts "Importing #{filename}..."
+      import_html File.read filename
       Progress.show_results
       Progress.puts
     end
@@ -18,13 +16,10 @@ class Bolton::GenusCatalog
 
   def import_html html
     Nokogiri::HTML(html).css('p').each do |p|
-      Bolton::GenusCatalogParser.parse p.inner_html
+      next unless record = Bolton::GenusCatalogParser.parse(p.inner_html)
+      Genus.create! record[:genus]
+      Progress.tally_and_show_progress
     end
-  end
-
-  def import_genus record
-    Genus.create! :name => record[:genus]
-    Progress.tally_and_show_progress 100
   end
 
 end

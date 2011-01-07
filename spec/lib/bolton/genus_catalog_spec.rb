@@ -5,16 +5,27 @@ describe Bolton::GenusCatalog do
     @genus_catalog = Bolton::GenusCatalog.new
   end
 
-  it "importing a file should call #import_html" do
-    File.should_receive(:read).with('filename').and_return('contents')
-    @genus_catalog.should_receive(:import_html).with('contents')
-    @genus_catalog.import_files ['filename']
-    Genus.all.should be_empty
+  describe 'importing files' do
+    it "should call #import_html with the contents of each one" do
+      File.should_receive(:read).with('first_filename').and_return('first contents')
+      File.should_receive(:read).with('second_filename').and_return('second contents')
+      @genus_catalog.should_receive(:import_html).with('first contents')
+      @genus_catalog.should_receive(:import_html).with('second contents')
+      @genus_catalog.import_files ['first_filename', 'second_filename']
+    end
   end
 
-  it "should call the parser" do
-    Bolton::GenusCatalogParser.should_receive(:parse).with 'foo'
-    @genus_catalog.import_html '<html><p>foo</p></html>'
+  describe 'importing html' do
+    it "should call the parser and save the result" do
+      Bolton::GenusCatalogParser.should_receive(:parse).with('foo').and_return :genus => {:name => 'bar'}
+      Genus.should_receive(:create!).with :name => 'bar'
+      @genus_catalog.import_html '<html><p>foo</p></html>'
+    end
+    it "should call the parser and not save the result if it wasn't a genus" do
+      Bolton::GenusCatalogParser.should_receive(:parse).with('foo').and_return nil
+      Genus.should_not_receive :create!
+      @genus_catalog.import_html '<html><p>foo</p></html>'
+    end
   end
 
 #  describe 'parsing the genus header' do
