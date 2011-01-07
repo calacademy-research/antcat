@@ -6,7 +6,7 @@
 #  2) Save it as web page
 
 #  To import these files, run
-#    rake import_species
+#    rake bolton:import:species
 
 class Bolton::SpeciesCatalog
   def initialize show_progress = false
