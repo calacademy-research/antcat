@@ -17,4 +17,12 @@ style='color:red'>ACANTHOGNATHUS</span></i></b> [Myrmicinae: Dacetini]
     }
     Bolton::GenusCatalogParser.parse(line).should == {:genus => {:name => 'Acanthognathus', :fossil => true}}
   end
+  it 'should parse an unidentifiable genus name' do
+    line = %q{
+*<b
+style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
+style='color:green'>ATTAICHNUS</span></i></b> [Myrmicinae: Attini]</p>
+    }
+    Bolton::GenusCatalogParser.parse(line).should == {:unidentifiable => {}}
+  end
 end

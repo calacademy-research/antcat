@@ -1,6 +1,6 @@
 grammar Bolton::GenusCatalogGrammar
   rule record
-    genus
+    genus | unidentifiable
   end
 
   rule genus
@@ -10,6 +10,16 @@ grammar Bolton::GenusCatalogGrammar
       tag_end tag_end tag_end /.*/
     ) {
       {:genus => {:name => uppercase_word.downcase.capitalize, :fossil => find('fossil')[0].present?}}
+    }
+  end
+
+  rule unidentifiable
+    (
+      fossil? bold italics green
+        uppercase_word
+      tag_end tag_end tag_end /.*/
+    ) {
+      {:unidentifiable => {}}
     }
   end
 
@@ -27,6 +37,10 @@ grammar Bolton::GenusCatalogGrammar
 
   rule red
     /<span [^>]*color:red[^>]*>/
+  end
+
+  rule green
+    /<span [^>]*color:green[^>]*>/
   end
 
   rule tag_end

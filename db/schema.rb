@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110107230014) do
+ActiveRecord::Schema.define(:version => 20110107232928) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -75,6 +75,12 @@ ActiveRecord::Schema.define(:version => 20110107230014) do
     t.datetime "updated_at"
     t.string   "name"
     t.boolean  "fossil"
+    t.string   "subfamily"
+    t.string   "tribe"
+    t.text     "taxonomic_history"
+    t.string   "current_valid_name"
+    t.boolean  "available"
+    t.boolean  "is_valid"
   end
 
   create_table "journals", :force => true do |t|

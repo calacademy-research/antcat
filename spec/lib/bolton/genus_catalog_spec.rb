@@ -37,6 +37,9 @@ describe Bolton::GenusCatalog do
 style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
 style='color:red'>ALLOIOMMA</span></i></b> [<i style='mso-bidi-font-style:normal'>incertae
 sedis</i> in Dolichoderinae]</p>
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'>*<b
+style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
+style='color:green'>ATTAICHNUS</span></i></b> [Myrmicinae: Attini]</p>
         }
         Genus.count.should == 1
         Genus.first.should be_fossil
