@@ -5,7 +5,7 @@ Feature: Upload a file
 
   Scenario: Upload file
     Given I am logged in
-      And the following entries exist in the bibliography
+      And the following references exist
       |authors   |title|citation  |year|
       |Ward, P.S.|Ants |Psyche 5:3|2010|
     When I go to the main page

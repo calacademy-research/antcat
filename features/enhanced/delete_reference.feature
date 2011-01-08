@@ -5,7 +5,7 @@ Feature: Delete reference
   Or so I can delete one that turns out to have been a duplicate
 
   Scenario: Delete a reference
-    Given the following entries exist in the bibliography
+      And the following references exist
       |authors   |citation|year|title|
       |Fisher, B.|Psyche 2:1|year|title|
       And I am logged in

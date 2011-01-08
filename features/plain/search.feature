@@ -5,7 +5,7 @@ Feature: Searching references
     Or see if I have already added it
 
   Background:
-    Given the following entries exist in the bibliography
+      Given the following references exist
       |authors    |year         |title                |citation  |
       |Fisher, B. |1995b        |Anthill              |Ants 1:1-2|
       |Forel, M.  |1995b        |Formis               |Ants 1:1-2|
@@ -56,7 +56,7 @@ Feature: Searching references
       And I should not see "Bolton, B. 2010"
 
   Scenario: Searching by a year range
-    Given the following entries exist in the bibliography
+    Given the following references exist
      |year  |authors|title |citation   |
      |2009a.|authors|title1|Ants 31:1-2|
      |2010c.|authors|title2|Ants 32:1-2|
@@ -71,7 +71,7 @@ Feature: Searching references
       And I should not see "2012e."
 
   Scenario: Searching by author and year
-    Given the following entries exist in the bibliography
+    Given the following references exist
        |authors     |year |title|citation    |
        |Fisher, B.|1895a|title5|Ants 11:1-2|
        |Fisher, B.|1810b|title6|Ants 12:1-2|
@@ -96,7 +96,7 @@ Feature: Searching references
     Then I should not see "Dolerichoderinae"
 
   Scenario: Searching by cite code that looks like a year
-    Given the following entries exist in the bibliography
+    Given the following references exist
        |authors   |year |title |citation   |cite_code|
        |Fisher, B.|1895a|title5|Ants 11:1-2|96-1984  |
        |Fisher, B.|1895a|title6|Ants 11:2-3|97-9321  |

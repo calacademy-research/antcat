@@ -4,11 +4,11 @@ Feature: View duplicate references
   So that I can prune them
 
   Scenario: View duplicate references
-    Given the following article references exist in the bibliography
-      |author     |title|year|journal|series_volume_issue|pagination|
-      |Ward, P. S.|Ants |1960|Psyche |1                  |2         |
-      |Bolton, B. |Bees |1958|Psyche |2                  |3         |
-      |Ward, P. S.|Ants |1961|Psyche |4                  |5         |
+    Given the following references exist in the bibliography
+      |author     |title|year|citation  |
+      |Ward, P. S.|Ants |1960|Psyche 1:2|
+      |Bolton, B. |Bees |1958|Psyche 2:3|
+      |Ward, P. S.|Ants |1961|Psyche 4:5|
       And the following are duplicates
         |authors    |year|similarity|
         |Ward, P. S.|1960|          |

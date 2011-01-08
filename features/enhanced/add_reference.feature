@@ -40,9 +40,9 @@ Feature: Add reference
 
   Scenario: Add a reference when there are others
     Given I am logged in
-      And the following entries exist in the bibliography
-      |authors   |title         |year|citation|
-      |Ward, P.S.|Annals of Ants|year|Psyche 1:1|
+      And the following references exist
+      |author    |title         |year|citation  |
+      |Ward, P.S.|Annals of Ants|2010|Psyche 1:1|
     When I go to the main page
       Then "Add reference" should not be visible
     When I follow "add"
@@ -60,7 +60,7 @@ Feature: Add reference
 
   Scenario: Adding a reference but then cancelling
     Given I am logged in
-      And the following entries exist in the bibliography
+      And the following references exist
       |authors   |title         |citation|year|
       |Ward, P.S.|Annals of Ants|Psyche 2:2|year|
     When I go to the main page
@@ -110,7 +110,7 @@ Feature: Add reference
 
   Scenario: Adding a nested reference
     Given I am logged in
-      And the following entries exist in the bibliography
+      And the following references exist
       |authors   |title         |year|citation|
       |Ward, P.S.|Annals of Ants|2010|Psyche 1:1|
     When I go to the main page

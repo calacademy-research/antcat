@@ -6,7 +6,7 @@ Feature: Copy reference
 
   Scenario: Not logged in
     Given I am not logged in
-      And the following entries exist in the bibliography
+      And the following references exist
       |authors   |title         |citation|year|
       |Ward, P.S.|Annals of Ants|Ants 1:2|1910|
     When I go to the main page
@@ -14,7 +14,7 @@ Feature: Copy reference
 
   Scenario: Copy a reference
     When I log in
-      And the following entries exist in the bibliography
+      And the following references exist
       |authors   |title         |citation|year|
       |Ward, P.S.|Annals of Ants|Ants 1:2|1910|
     When I go to the main page

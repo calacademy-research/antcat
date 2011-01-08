@@ -1,23 +1,37 @@
 require Rails.root + 'spec/support/factories'
 
-Given /the following entr(?:ies|y) exists? in the bibliography/ do |table|
-  Place.create! :name => 'New York'
+Given /the following references? exists?/ do |table|
   table.hashes.each do |hash|
-    @reference = Ward::Reference.new(hash).export
-    set_timestamps @reference, hash
+    citation = hash.delete 'citation'
+    matches = citation.match /(\w+) (\d+):([\d\-]+)/
+    hash.merge! :journal => Factory(:journal, :name => matches[1]), :series_volume_issue => matches[2],
+      :pagination => matches[3]
+    create_reference :article_reference, hash
   end
-  Reference.reindex
 end
 
-Given /the following article references exist/ do |table|
+Given /the following book references? exists?/ do |table|
   table.hashes.each do |hash|
-    author = hash.delete 'author'
-    journal = hash.delete 'journal'
-    hash[:citation_year] = hash.delete 'year'
-    @reference = Factory :article_reference, hash.merge(:author_names => [Factory :author_name, :name => author],
-                         :journal => Factory(:journal, :name => journal))
-    set_timestamps @reference, hash
+    citation = hash.delete 'citation'
+    matches = citation.match /([^:]+): (\w+), (.*)/
+    hash.merge! :publisher => Factory(:publisher, :name => matches[2],
+                                      :place => Factory(:place, :name => matches[1])),
+                :pagination => matches[3]
+    create_reference :book_reference, hash
   end
+end
+
+Given /the following unknown references? exists?/ do |table|
+  table.hashes.each do |hash|
+    create_reference :unknown_reference, hash
+  end
+end
+
+def create_reference type, hash
+  author = hash.delete('author') || hash.delete('authors')
+  hash[:citation_year] = hash.delete 'year'
+  @reference = Factory type, hash.merge(:author_names => [Factory :author_name, :name => author])
+  set_timestamps @reference, hash
   Reference.reindex
 end
 

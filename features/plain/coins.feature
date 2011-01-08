@@ -5,9 +5,9 @@ Feature: COinS formatting
   And so I can use the citations in my own documents
 
   Scenario: Including COinS on index page
-    Given the following entries exist in the bibliography
-      |authors|title|year|citation                   |
-      |AUTHORS|TITLE|1999|Ecology Letters 12:324-333.|
+      And the following references exist
+      |authors|title|year|citation      |
+      |AUTHORS|TITLE|1999|Ecology 12:333|
     When I go to the main page
     Then there should be the HTML "<span class="Z3988" title="ctx_ver=Z39.88-2004"
       And there should be the HTML "rft.atitle=TITLE"

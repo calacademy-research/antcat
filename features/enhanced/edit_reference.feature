@@ -5,14 +5,14 @@ Feature: Edit reference
 
   Scenario: Not logged in
     Given I am not logged in
-      And the following entries exist in the bibliography
+      And the following references exist
       |authors|citation  |cite_code|created_at|date    |possess|title|updated_at|year|
       |authors|Psyche 3:3|CiteCode |today     |20100712|Possess|title|today     |2010|
     When I go to the main page
       Then there should not be an edit form
 
   Scenario: Edit a reference
-    Given the following entries exist in the bibliography
+    Given the following references exist
       |authors|citation  |cite_code|created_at|date    |possess|title|updated_at|year|
       |authors|Psyche 5:3|CiteCode |today     |20100712|Possess|title|today     |2010|
     When I log in
@@ -29,7 +29,7 @@ Feature: Edit reference
 
   Scenario: Inserting an author name into the middle of the list
     Given I am logged in
-      And the following entries exist in the bibliography
+      And the following references exist
       |authors    |citation  |cite_code|created_at|date    |possess|title|updated_at|year|
       |Ward, P.;Bolton, B.|Psyche 5:3|CiteCode |today     |20100712|Possess|title|today     |2010|
     When I go to the main page
@@ -40,7 +40,7 @@ Feature: Edit reference
 
   Scenario: Change a reference's year
     Given I am logged in
-      And the following entries exist in the bibliography
+      And the following references exist
       |authors|title|citation  |year|
       |Fisher, B.L. |Ants |Psyche 6:4|2010|
     When I go to the main page
@@ -53,7 +53,7 @@ Feature: Edit reference
 
   Scenario: Change a reference's type
     Given I am logged in
-      And the following entries exist in the bibliography
+      And the following references exist
       |authors|title|citation  |year|
       |Fisher, B. |Ants |Psyche 6:4|2010|
     When I go to the main page
@@ -66,7 +66,7 @@ Feature: Edit reference
 
   Scenario: See the correct tab initially
     Given I am logged in
-      And the following entries exist in the bibliography
+      And the following book references exist
       |authors|title|citation               |year|
       |Fisher, B. |Ants |New York: Wiley, 22 pp.|2010|
     When I go to the main page
@@ -77,7 +77,7 @@ Feature: Edit reference
 
   Scenario: See the correct tab initially
     Given I am logged in
-      And the following entries exist in the bibliography
+      And the following unknown reference exists
       |authors|title|citation|year|
       |Fisher, B. |Ants |New York|2010|
     When I go to the main page
@@ -88,7 +88,7 @@ Feature: Edit reference
 
   Scenario: Clearing a book reference's fields
     Given I am logged in
-      And the following entries exist in the bibliography
+      And the following book references exist
       |authors    |citation               |year |title|
       |Ward, P.S. |New York: Wiley, 36 pp.|2010a|Ants |
     When I go to the main page
@@ -107,7 +107,7 @@ Feature: Edit reference
 
   Scenario: Clearing an article reference's fields
     Given I am logged in
-      And the following entries exist in the bibliography
+      And the following references exist
       |authors    |citation  |year |title|
       |Ward, P.S. |Psyche 1:2|2010a|Ants |
     When I go to the main page
@@ -128,7 +128,7 @@ Feature: Edit reference
 
   Scenario: Clearing an unknown reference's fields
     Given I am logged in
-      And the following entries exist in the bibliography
+      And the following unknown references exist
       |authors    |citation  |year |title|
       |Ward, P.S. |New York  |2010a|Ants |
     When I go to the main page
@@ -145,9 +145,9 @@ Feature: Edit reference
 
   Scenario: Specifying the document URL
     Given I am logged in
-      And the following entries exist in the bibliography
+      And the following references exist
       |authors    |citation  |year |title|
-      |Ward, P.S. |New York  |2010a|Ants |
+      |Ward, P.S. |Psyche 1:1|2010a|Ants |
     When I go to the main page
       When I follow "edit"
       And I fill in "reference_document_attributes_url" with a URL to a document that exists
@@ -156,9 +156,9 @@ Feature: Edit reference
 
   Scenario: Adding the authors' role
     Given I am logged in
-      And the following entries exist in the bibliography
+      And the following references exist
       |authors    |citation  |year |title|
-      |Ward, P.S. |New York  |2010a|Ants |
+      |Ward, P.S. |Psyche 1:1|2010a|Ants |
     When I go to the main page
       When I follow "edit"
     When I fill in "reference_author_names_string" with "Ward, P.S. (ed.)"
@@ -167,9 +167,9 @@ Feature: Edit reference
 
   Scenario: Removing the authors' role
     Given I am logged in
-      And the following entries exist in the bibliography
+      And the following references exist
       |authors         |citation  |year |title|
-      |Ward, P.S. (ed.)|New York  |2010a|Ants |
+      |Ward, P.S. (ed.)|Psyche 1:1|2010a|Ants |
     When I go to the main page
     Then I should see "Ward, P.S. (ed.)"
       When I follow "edit"
@@ -179,9 +179,9 @@ Feature: Edit reference
 
   Scenario: Specifying the document URL when it doesn't exist
     Given I am logged in
-      And the following entries exist in the bibliography
+      And the following references exist
       |authors    |citation  |year |title|
-      |Ward, P.S. |New York  |2010a|Ants |
+      |Ward, P.S. |Psyche 1:1|2010a|Ants |
     When I go to the main page
       When I follow "edit"
     When I fill in "reference_document_attributes_url" with a URL to a document that doesn't exist
@@ -191,7 +191,7 @@ Feature: Edit reference
 
   Scenario: Viewing a reference's id
     Given I am logged in
-      And the following entries exist in the bibliography
+      And the following references exist
       |authors|citation  |cite_code|created_at|date    |possess|title|updated_at|year|
       |authors|Psyche 5:3|CiteCode |today     |20100712|Possess|title|today     |2010|
     When I go to the main page
@@ -201,7 +201,7 @@ Feature: Edit reference
 
   Scenario: Edit a nested reference
     Given I am logged in
-      And the following entries exist in the bibliography
+      And the following references exist
       |authors   |citation  |year|title|
       |Ward, P.S.|Psyche 5:3|2001|Ants|
       And the following entry nests it
@@ -216,7 +216,7 @@ Feature: Edit reference
 
   Scenario: Edit a nested reference and changing its nestee to itself
     Given I am logged in
-      And the following entries exist in the bibliography
+      And the following references exist
       |authors   |citation  |year|title|
       |Ward, P.S.|Psyche 5:3|2001|Ants|
       And the following entry nests it
