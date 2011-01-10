@@ -57,8 +57,12 @@ style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
 style='color:blue'>ACANTHOMYOPS</span></i></b> [subgenus of <i
 style='mso-bidi-font-style:normal'>Lasius</i>]</p>
 
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><i
+style='mso-bidi-font-style:normal'><span style='color:purple'>ANCYLOGNATHUS</span></i>
+[<i style='mso-bidi-font-style:normal'>Nomen nudum</i>]</p>
+
         }
-        Genus.count.should == 2
+        Genus.count.should == 3
 
         acromyrmex = Genus.find_by_name 'Acromyrmex'
         acromyrmex.should_not be_fossil
@@ -69,6 +73,11 @@ style='mso-bidi-font-style:normal'>Lasius</i>]</p>
         acalama = Genus.find_by_name 'Acalama'
         acalama.should_not be_fossil
         acalama.is_valid.should_not be_true
+
+        ancylognathus = Genus.find_by_name 'Ancylognathus'
+        ancylognathus.should_not be_available
+        ancylognathus.is_valid.should_not be_true
+        
       end
     end
 

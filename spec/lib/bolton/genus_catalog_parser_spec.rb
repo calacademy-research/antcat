@@ -11,19 +11,19 @@ describe Bolton::GenusCatalogParser do
 style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
 style='color:red'>ACANTHOGNATHUS</span></i></b> [Myrmicinae: Dacetini]}
     Bolton::GenusCatalogParser.parse(line).should == {:genus =>
-      {:name => 'Acanthognathus', :subfamily => 'Myrmicinae', :tribe => 'Dacetini', :valid => true, :fossil => false}}
+      {:name => 'Acanthognathus', :subfamily => 'Myrmicinae', :tribe => 'Dacetini', :available => true, :valid => true, :fossil => false}}
   end
 
   it 'should parse a normal genus name' do
     line = %{<b><i><span style='color:red'>ACANTHOGNATHUS</span></i></b> [Myrmicinae: Dacetini]}
     Bolton::GenusCatalogParser.parse(line).should == {:genus =>   
-      {:name => 'Acanthognathus', :subfamily => 'Myrmicinae', :tribe => 'Dacetini', :valid => true, :fossil => false}}
+      {:name => 'Acanthognathus', :subfamily => 'Myrmicinae', :tribe => 'Dacetini', :available => true, :valid => true, :fossil => false}}
   end
 
   it 'should parse a fossil genus name' do
     line = %{*<b><i><span style='color:red'>ACANTHOGNATHUS</span></i></b> [Myrmicinae: Dacetini]}
     Bolton::GenusCatalogParser.parse(line).should == {:genus =>
-      {:name => 'Acanthognathus', :subfamily => 'Myrmicinae', :tribe => 'Dacetini', :valid => true, :fossil => true}}
+      {:name => 'Acanthognathus', :subfamily => 'Myrmicinae', :tribe => 'Dacetini', :available => true, :valid => true, :fossil => true}}
   end
 
   it 'should parse an unidentifiable genus name' do
@@ -34,7 +34,7 @@ style='color:red'>ACANTHOGNATHUS</span></i></b> [Myrmicinae: Dacetini]}
   it 'should parse the subfamily and tribe' do
     line = %{<b><i><span style='color:red'>ACROMYRMEX</span></i></b> [Myrmicinae: Attini]}
     Bolton::GenusCatalogParser.parse(line).should == {:genus =>
-      {:name => 'Acromyrmex', :subfamily => 'Myrmicinae', :tribe => 'Attini', :valid => true, :fossil => false}}
+      {:name => 'Acromyrmex', :subfamily => 'Myrmicinae', :tribe => 'Attini', :available => true, :valid => true, :fossil => false}}
   end
 
   it "should recognize an entry that's not a genus" do
@@ -45,13 +45,19 @@ style='color:red'>ACANTHOGNATHUS</span></i></b> [Myrmicinae: Dacetini]}
   it "should recognize an invalid name" do
     line = %{<i><span style='color:black'>ACALAMA</span></i> [junior synonym of <i>Gauromyrmex</i>]}
     Bolton::GenusCatalogParser.parse(line).should == {:genus =>
-      {:name => 'Acalama', :valid => false, :fossil => false}}
+      {:name => 'Acalama', :available => true, :valid => false, :fossil => false}}
   end
 
   it "should recognize an invalid name that has no color (like Claude)" do
     line = %{<i>ACIDOMYRMEX</i> [junior synonym of <i>Rhoptromyrmex</i>]}
     Bolton::GenusCatalogParser.parse(line).should == {:genus =>
-      {:name => 'Acidomyrmex', :valid => false, :fossil => false}}
+      {:name => 'Acidomyrmex', :available => true, :valid => false, :fossil => false}}
+  end
+
+  it "should recognize an unavailable name" do
+    line = %{<i><span style='color:purple'>ANCYLOGNATHUS</span></i> [<i>Nomen nudum</i>]}
+    Bolton::GenusCatalogParser.parse(line).should == {:genus =>
+      {:name => 'Ancylognathus', :available => false, :valid => false, :fossil => false}}
   end
 
 end
