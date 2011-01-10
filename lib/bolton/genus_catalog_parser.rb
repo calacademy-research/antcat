@@ -4,7 +4,7 @@ module Bolton::GenusCatalogParser
     string = string.gsub(/\n/, ' ').strip
     Bolton::GenusCatalogGrammar.parse(string).value
   rescue Citrus::ParseError
-    nil
+    :unparseable
   end
 
 end

@@ -1,46 +1,64 @@
 grammar Bolton::GenusCatalogGrammar
   rule record
-    genus | unidentifiable
+    header
   end
 
-  rule genus
-    (
-      fossil? bold italics red
-        uppercase_word
-      tag_end tag_end tag_end /.*/
-    ) {
-      {:genus => {:name => uppercase_word.downcase.capitalize, :fossil => find('fossil')[0].present?}}
+  rule header
+    (fossil? bold italics color uppercase_word tag_end tag_end tag_end subfamily_and_tribe) {
+      return :unidentifiable if find('green')[0].present?
+      genus = {:name => uppercase_word.downcase.capitalize, :fossil => find('fossil')[0].present?}
+      genus.merge! subfamily_and_tribe.value
+      {:genus => genus}
     }
   end
 
-  rule unidentifiable
-    (
-      fossil? bold italics green
-        uppercase_word
-      tag_end tag_end tag_end /.*/
-    ) {
-      {:unidentifiable => {}}
+  rule subfamily_and_tribe
+    (' [' subfamily (': ' tribe)? ']') {
+      information = {}
+      if find('subfamily')[0].present?
+        information[:subfamily] = subfamily
+        if find('tribe')[0].present?
+          information[:tribe] = find('tribe')[0]
+        end
+      end
+      information
     }
+  end
+
+  rule subfamily
+    capitalized_word
+  end
+
+  rule tribe
+    capitalized_word
   end
 
   rule fossil
     '*'
   end
 
+  rule capitalized_word
+    /[[:upper:]][[:alpha:]]+/
+  end
+
+  rule color
+    red | green
+  end
+
   rule bold
-    /<b [^>]*>/
+    /<b[^>]*>/
   end
 
   rule italics
-    /<i [^>]*>/
+    /<i[^>]*>/
   end
 
   rule red
-    /<span [^>]*color:red[^>]*>/
+    /<span[^>]*color:red[^>]*>/
   end
 
   rule green
-    /<span [^>]*color:green[^>]*>/
+    /<span.*?color:green[^>]*>/
   end
 
   rule tag_end
@@ -48,7 +66,7 @@ grammar Bolton::GenusCatalogGrammar
   end
 
   rule uppercase_word
-    /[A-Z]+/
+    /[[:upper:]]+/
   end
 
 end

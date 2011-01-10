@@ -32,22 +32,28 @@ describe Bolton::GenusCatalog do
 
     describe "processing a representative sample and making sure they're saved correctly" do
       it 'should import a fossil genus' do
-        @genus_catalog.import_html make_content %Q{
-<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'>*<b
+        @genus_catalog.import_html make_content %{
+<p>asdfdsfsdf</p>
+
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
 style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
-style='color:red'>ALLOIOMMA</span></i></b> [<i style='mso-bidi-font-style:normal'>incertae
-sedis</i> in Dolichoderinae]</p>
+style='color:red'>ACROMYRMEX</span></i></b> [Myrmicinae: Attini]</p>
+
 <p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'>*<b
 style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
 style='color:green'>ATTAICHNUS</span></i></b> [Myrmicinae: Attini]</p>
         }
         Genus.count.should == 1
-        Genus.first.should be_fossil
+
+        acromyrmex = Genus.find_by_name 'Acromyrmex'
+        acromyrmex.should_not be_fossil
+        acromyrmex.subfamily.should == 'Myrmicinae'
+        acromyrmex.tribe.should == 'Attini'
       end
     end
 
     def make_content content
-      %Q{<html> <head> <title>CATALOGUE OF GENUS-GROUP TAXA</title> </head>
+      %{<html> <head> <title>CATALOGUE OF GENUS-GROUP TAXA</title> </head>
 <body>
 <div class=Section1>
 <p class=MsoNormal align=center style='margin-left:.5in;text-align:center;
