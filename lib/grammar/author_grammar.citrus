@@ -47,7 +47,7 @@ grammar AuthorGrammar
   end
 
   rule word
-    'St.' | word_char+
+    word_char+ '.'?
   end
 
   rule word_char
