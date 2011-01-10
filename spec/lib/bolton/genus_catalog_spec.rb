@@ -25,7 +25,7 @@ describe Bolton::GenusCatalog do
     end
 
     it "should not save the result if it wasn't a genus" do
-      Bolton::GenusCatalogParser.should_receive(:parse).with('foo').and_return nil
+      Bolton::GenusCatalogParser.should_receive(:parse).with('foo').and_return :unidentifiable
       Genus.should_not_receive :create!
       @genus_catalog.import_html '<html><p>foo</p></html>'
     end

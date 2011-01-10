@@ -4,24 +4,42 @@ grammar Bolton::GenusCatalogGrammar
   end
 
   rule header
-    (fossil? bold italics color uppercase_word tag_end tag_end tag_end subfamily_and_tribe) {
-      return :unidentifiable if find('green')[0].present?
-      genus = {:name => uppercase_word.downcase.capitalize, :fossil => find('fossil')[0].present?}
-      genus.merge! subfamily_and_tribe.value
-      {:genus => genus}
+    (fossil? genus subfamily_and_tribe) {
+      genus_name = genus.value
+      return :unidentifiable if genus_name == :unidentifiable
+
+      value = {:name => genus_name, :fossil => find('fossil')[0].present?}
+      value.merge! subfamily_and_tribe.value
+      {:genus => value}
+    }
+  end
+
+  rule genus
+    identifiable_genus | unidentifiable_genus
+  end
+
+  rule identifiable_genus
+    (bold italics red uppercase_word tag_end tag_end tag_end) {
+      uppercase_word.downcase.capitalize
+    }
+  end
+
+  rule unidentifiable_genus
+    (bold italics green uppercase_word tag_end tag_end tag_end) {
+      :unidentifiable
     }
   end
 
   rule subfamily_and_tribe
     (' [' subfamily (': ' tribe)? ']') {
-      information = {}
+      value = {}
       if find('subfamily')[0].present?
-        information[:subfamily] = subfamily
+        value[:subfamily] = subfamily
         if find('tribe')[0].present?
-          information[:tribe] = find('tribe')[0]
+          value[:tribe] = find('tribe')[0]
         end
       end
-      information
+      value
     }
   end
 
