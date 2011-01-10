@@ -35,4 +35,9 @@ style='color:red'>ACANTHOGNATHUS</span></i></b> [Myrmicinae: Dacetini]}
     }
   end
 
+  it "should recognize an entry that's not a genus" do
+    line = %{<b><i><span style='color:blue'>ACROMYRMEX</span></i></b> [subgenus of <i>Dorylus</i>]}
+    Bolton::GenusCatalogParser.parse(line).should == :not_genus
+  end
+
 end

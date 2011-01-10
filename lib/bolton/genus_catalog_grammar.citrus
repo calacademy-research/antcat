@@ -4,18 +4,19 @@ grammar Bolton::GenusCatalogGrammar
   end
 
   rule header
-    (fossil? genus subfamily_and_tribe) {
+    (fossil? genus bracketed_information) {
       genus_name = genus.value
       return :unidentifiable if genus_name == :unidentifiable
+      return :not_genus if genus_name == :not_genus
 
       value = {:name => genus_name, :fossil => find('fossil')[0].present?}
-      value.merge! subfamily_and_tribe.value
+      value.merge! bracketed_information.value
       {:genus => value}
     }
   end
 
   rule genus
-    identifiable_genus | unidentifiable_genus
+    identifiable_genus | not_genus | unidentifiable_genus
   end
 
   rule identifiable_genus
@@ -30,14 +31,23 @@ grammar Bolton::GenusCatalogGrammar
     }
   end
 
+  rule not_genus
+    (bold italics blue uppercase_word tag_end tag_end tag_end) {
+      :not_genus
+    }
+  end
+
+  rule bracketed_information
+    (' [' (subfamily_and_tribe | /[^\]]*/) ']') {
+      subfamily_and_tribe.value if find('subfamily_and_tribe')[0].present?
+    }
+  end
+
   rule subfamily_and_tribe
-    (' [' subfamily (': ' tribe)? ']') {
-      value = {}
-      if find('subfamily')[0].present?
-        value[:subfamily] = subfamily
-        if find('tribe')[0].present?
-          value[:tribe] = find('tribe')[0]
-        end
+    (subfamily (': ' tribe)?) {
+      value = {:subfamily => subfamily}
+      if find('tribe')[0].present?
+        value[:tribe] = find('tribe')[0]
       end
       value
     }
@@ -77,6 +87,10 @@ grammar Bolton::GenusCatalogGrammar
 
   rule green
     /<span.*?color:green[^>]*>/
+  end
+
+  rule blue
+    /<span.*?color:blue[^>]*>/
   end
 
   rule tag_end
