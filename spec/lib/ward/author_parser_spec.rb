@@ -123,6 +123,10 @@ describe Ward::AuthorParser do
       string.should be_empty
     end
 
+    it "should be able to parse this weird one" do
+      Ward::AuthorParser.parse('Arias P., T. M.')[:names].should == ['Arias P., T. M.']
+    end
+
     it "should keep the 'author suffix' part of the title when there is no author" do
       string = 'Report on the recorded animal life of Moscow province (No. 4). [In Russian.]'
       Ward::AuthorParser.parse(string).should == {:names => [], :suffix => nil}

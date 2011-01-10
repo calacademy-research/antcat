@@ -1,7 +1,7 @@
 class Bolton::GenusCatalog
   def initialize show_progress = false
     Progress.init show_progress
-    @fossil_count = @unidentifiable_count = @not_genus_count = @unparseable_count = 
+    @fossil_count = @unidentifiable_count = @subgenus_count = @unparseable_count = 
       @valid_count = @unavailable_count = 0
   end
 
@@ -27,8 +27,8 @@ class Bolton::GenusCatalog
         @unidentifiable_count += 1
         next
       end
-      if record == :not_genus
-        @not_genus_count += 1
+      if record == :subgenus
+        @subgenus_count += 1
         next
       end
       record[:genus][:is_valid] = record[:genus].delete(:valid)
@@ -44,7 +44,7 @@ class Bolton::GenusCatalog
     Progress.show_results
     Progress.puts Progress.count(@valid_count, Progress.processed_count, 'valid')
     Progress.puts Progress.count(@unavailable_count, Progress.processed_count, 'unavailable')
-    Progress.puts Progress.count(@not_genus_count, Progress.processed_count, 'not genus')
+    Progress.puts Progress.count(@subgenus_count, Progress.processed_count, 'subgenera')
     Progress.puts Progress.count(@fossil_count, Progress.processed_count, 'fossils')
     Progress.puts Progress.count(@unidentifiable_count, Progress.processed_count, 'unidentifiable')
     Progress.puts "(#{@unparseable_count} sections unparseable)"

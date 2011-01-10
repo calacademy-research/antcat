@@ -37,9 +37,9 @@ style='color:red'>ACANTHOGNATHUS</span></i></b> [Myrmicinae: Dacetini]}
       {:name => 'Acromyrmex', :subfamily => 'Myrmicinae', :tribe => 'Attini', :available => true, :valid => true, :fossil => false}}
   end
 
-  it "should recognize an entry that's not a genus" do
+  it "should recognize a subgenus" do
     line = %{#<b><i><span style='color:blue'>ACANTHOMYOPS</span></i></b> [subgenus of <i>Lasius</i>]}
-    Bolton::GenusCatalogParser.parse(line).should == :not_genus
+    Bolton::GenusCatalogParser.parse(line).should == :subgenus
   end
 
   it "should recognize an invalid name" do

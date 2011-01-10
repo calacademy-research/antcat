@@ -4,9 +4,9 @@ grammar Bolton::GenusCatalogGrammar
   end
 
   rule header
-    (not_genus_flag? fossil_flag? genus bracketed_information) {
+    (subgenus_flag? fossil_flag? genus bracketed_information) {
       return :unidentifiable if genus.value == :unidentifiable
-      return :not_genus if genus.value == :not_genus
+      return :subgenus if genus.value == :subgenus
 
       value = {:available => true, :fossil => find('fossil_flag')[0].present?}
       value.merge! genus.value
@@ -16,7 +16,7 @@ grammar Bolton::GenusCatalogGrammar
   end
 
   rule genus
-    invalid_genus | unavailable_genus | valid_genus | not_genus | unidentifiable_genus
+    invalid_genus | unavailable_genus | valid_genus | subgenus | unidentifiable_genus
   end
 
   rule valid_genus
@@ -44,9 +44,9 @@ grammar Bolton::GenusCatalogGrammar
     }
   end
 
-  rule not_genus
+  rule subgenus
     (bold italics blue genus_name tag_end tag_end tag_end) {
-      :not_genus
+      :subgenus
     }
   end
 
@@ -85,7 +85,7 @@ grammar Bolton::GenusCatalogGrammar
     '*'
   end
 
-  rule not_genus_flag
+  rule subgenus_flag
     '#'
   end
 
