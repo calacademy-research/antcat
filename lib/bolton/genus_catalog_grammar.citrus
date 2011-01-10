@@ -4,42 +4,57 @@ grammar Bolton::GenusCatalogGrammar
   end
 
   rule header
-    (fossil? genus bracketed_information) {
+    (not_genus_flag? fossil_flag? genus bracketed_information) {
       genus_name = genus.value
       return :unidentifiable if genus_name == :unidentifiable
       return :not_genus if genus_name == :not_genus
 
-      value = {:name => genus_name, :fossil => find('fossil')[0].present?}
+      value = {:fossil => find('fossil_flag')[0].present?}
+      value.merge! genus_name
       value.merge! bracketed_information.value
       {:genus => value}
     }
   end
 
   rule genus
-    identifiable_genus | not_genus | unidentifiable_genus
+    invalid_genus | valid_genus | not_genus | unidentifiable_genus
   end
 
-  rule identifiable_genus
-    (bold italics red uppercase_word tag_end tag_end tag_end) {
-      uppercase_word.downcase.capitalize
+  rule valid_genus
+    (bold italics red genus_name tag_end tag_end tag_end) {
+      {:name => genus_name.value, :valid => true}
+    }
+  end
+
+  rule invalid_genus
+    ((italics black genus_name tag_end tag_end) |
+     (italics genus_name tag_end)) {
+      {:name => genus_name.value, :valid => false}
     }
   end
 
   rule unidentifiable_genus
-    (bold italics green uppercase_word tag_end tag_end tag_end) {
+    (bold italics green genus_name tag_end tag_end tag_end) {
       :unidentifiable
     }
   end
 
   rule not_genus
-    (bold italics blue uppercase_word tag_end tag_end tag_end) {
+    (bold italics blue genus_name tag_end tag_end tag_end) {
       :not_genus
+    }
+  end
+
+  rule genus_name
+    uppercase_word {
+      downcase.capitalize
     }
   end
 
   rule bracketed_information
     (' [' (subfamily_and_tribe | /[^\]]*/) ']') {
-      subfamily_and_tribe.value if find('subfamily_and_tribe')[0].present?
+      return subfamily_and_tribe.value if find('subfamily_and_tribe')[0].present?
+      {}
     }
   end
 
@@ -61,16 +76,16 @@ grammar Bolton::GenusCatalogGrammar
     capitalized_word
   end
 
-  rule fossil
+  rule fossil_flag
     '*'
+  end
+
+  rule not_genus_flag
+    '#'
   end
 
   rule capitalized_word
     /[[:upper:]][[:alpha:]]+/
-  end
-
-  rule color
-    red | green
   end
 
   rule bold
@@ -91,6 +106,10 @@ grammar Bolton::GenusCatalogGrammar
 
   rule blue
     /<span.*?color:blue[^>]*>/
+  end
+
+  rule black
+    /<span.*?color:black[^>]*>/
   end
 
   rule tag_end

@@ -19,8 +19,8 @@ describe Bolton::GenusCatalog do
     it "should call the parser for each <p> and save the result" do
       Bolton::GenusCatalogParser.should_receive(:parse).with('foo').and_return :genus => {:name => 'bar'}
       Bolton::GenusCatalogParser.should_receive(:parse).with('bar').and_return :genus => {:name => 'foo'}
-      Genus.should_receive(:create!).with(:name => 'bar').and_return Factory :genus
-      Genus.should_receive(:create!).with(:name => 'foo').and_return Factory :genus
+      Genus.should_receive(:create!).with(:name => 'bar', :is_valid => nil).and_return Factory :genus
+      Genus.should_receive(:create!).with(:name => 'foo', :is_valid => nil).and_return Factory :genus
       @genus_catalog.import_html '<html><p>foo</p><p>bar</p></html>'
     end
 
@@ -31,7 +31,7 @@ describe Bolton::GenusCatalog do
     end
 
     describe "processing a representative sample and making sure they're saved correctly" do
-      it 'should import a fossil genus' do
+      it 'should work' do
         @genus_catalog.import_html make_content %{
 <p>asdfdsfsdf</p>
 
@@ -47,13 +47,28 @@ normal'>Dorylus</i>]</p>
 <p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'>*<b
 style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
 style='color:green'>ATTAICHNUS</span></i></b> [Myrmicinae: Attini]</p>
+
+<p class=MsoNormal><i style='mso-bidi-font-style:normal'><span
+style='color:black'>ACALAMA</span></i> [junior synonym of <i style='mso-bidi-font-style:
+normal'>Gauromyrmex</i>]</p>
+
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'>#<b
+style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
+style='color:blue'>ACANTHOMYOPS</span></i></b> [subgenus of <i
+style='mso-bidi-font-style:normal'>Lasius</i>]</p>
+
         }
-        Genus.count.should == 1
+        Genus.count.should == 2
 
         acromyrmex = Genus.find_by_name 'Acromyrmex'
         acromyrmex.should_not be_fossil
         acromyrmex.subfamily.should == 'Myrmicinae'
         acromyrmex.tribe.should == 'Attini'
+        acromyrmex.is_valid.should be_true
+
+        acalama = Genus.find_by_name 'Acalama'
+        acalama.should_not be_fossil
+        acalama.is_valid.should_not be_true
       end
     end
 
