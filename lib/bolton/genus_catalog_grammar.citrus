@@ -63,30 +63,28 @@ grammar Bolton::GenusCatalogGrammar
   end
 
   rule bracketed_contents
-    subfamily_and_tribe | incertae_sedis_in | any_bracketed_contents
-  end
-
-  rule any_bracketed_contents
-    /[^\]]*/ {
-      {}
-    }
+    subfamily_and_tribe | any_bracketed_contents
   end
 
   rule subfamily_and_tribe
-    (subfamily (': ' tribe)?) {
+    (uncertain_in_family:incertae_sedis_in? subfamily (': ' incertae_sedis_in? tribe)?) {
       value = {:subfamily => subfamily.value}
       if find('tribe')[0].present?
         value[:tribe] = find('tribe')[0].value
+      elsif find('uncertain_in_family')[0].present?
+        value[:tribe] = 'incertae sedis'
       end
       value
     }
   end
 
   rule incertae_sedis_in
-    (italics 'incertae sedis' tag_end ' in ' subfamily_and_tribe) {
-      value = subfamily_and_tribe.value
-      value[:tribe] ||= 'incertae sedis'
-      value
+    italics 'incertae sedis' tag_end ' in '
+  end
+
+  rule any_bracketed_contents
+    /[^\]]*/ {
+      {}
     }
   end
 
