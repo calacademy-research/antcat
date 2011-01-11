@@ -76,7 +76,7 @@ grammar Bolton::GenusCatalogGrammar
     (subfamily (': ' tribe)?) {
       value = {:subfamily => subfamily.value}
       if find('tribe')[0].present?
-        value[:tribe] = find('tribe')[0]
+        value[:tribe] = find('tribe')[0].value
       end
       value
     }
@@ -88,18 +88,22 @@ grammar Bolton::GenusCatalogGrammar
     }
   end
 
-  rule subfamily
-    (fossil_flag? capitalized_word) {
-      capitalized_word
-     }
+  rule tribe
+    subfamily_or_tribe
   end
 
-  rule tribe
-    capitalized_word
+  rule subfamily
+    subfamily_or_tribe
   end
 
   rule fossil_flag
     '*'
+  end
+
+  rule subfamily_or_tribe
+    (fossil_flag? capitalized_word) {
+      capitalized_word
+     }
   end
 
   rule subgenus_flag
