@@ -66,4 +66,9 @@ style='color:red'>ACANTHOGNATHUS</span></i></b> [Myrmicinae: Dacetini]}
       {:name => 'Protazteca', :subfamily => 'Dolichoderinae', :tribe => 'incertae sedis', :available => true, :valid => true, :fossil => false}}
   end
 
+  it "should handle an extinct subfamily" do
+    line = %{<b><i><span style='color:red'>PROTAZTECA</span></i></b> [*Myrmicinae]}
+    Bolton::GenusCatalogParser.parse(line).should == {:genus =>
+      {:name => 'Protazteca', :subfamily => 'Myrmicinae', :available => true, :valid => true, :fossil => false}}
+    end
 end

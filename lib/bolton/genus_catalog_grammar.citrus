@@ -4,11 +4,11 @@ grammar Bolton::GenusCatalogGrammar
   end
 
   rule header
-    (subgenus_flag? fossil_flag? genus bracketed_information) {
+    (subgenus_flag? f:fossil_flag? genus bracketed_information) {
       return :unidentifiable if genus.value == :unidentifiable
       return :subgenus if genus.value == :subgenus
 
-      value = {:available => true, :fossil => find('fossil_flag')[0].present?}
+      value = {:available => true, :fossil => find('f')[0].present?}
       value.merge! genus.value
       value.merge! bracketed_information.value
       {:genus => value}
@@ -74,7 +74,7 @@ grammar Bolton::GenusCatalogGrammar
 
   rule subfamily_and_tribe
     (subfamily (': ' tribe)?) {
-      value = {:subfamily => subfamily}
+      value = {:subfamily => subfamily.value}
       if find('tribe')[0].present?
         value[:tribe] = find('tribe')[0]
       end
@@ -84,12 +84,14 @@ grammar Bolton::GenusCatalogGrammar
 
   rule incertae_sedis_in
     (italics 'incertae sedis' tag_end ' in ' subfamily) {
-      {:subfamily => subfamily, :tribe => 'incertae sedis'}
+      {:subfamily => subfamily.value, :tribe => 'incertae sedis'}
     }
   end
 
   rule subfamily
-    capitalized_word
+    (fossil_flag? capitalized_word) {
+      capitalized_word
+     }
   end
 
   rule tribe
