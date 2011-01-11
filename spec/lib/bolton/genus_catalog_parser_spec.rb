@@ -60,4 +60,10 @@ style='color:red'>ACANTHOGNATHUS</span></i></b> [Myrmicinae: Dacetini]}
       {:name => 'Ancylognathus', :available => false, :valid => false, :fossil => false}}
   end
 
+  it "should handle an uncertain tribe" do
+    line = %{<b><i><span style='color:red'>PROTAZTECA</span></i></b> [<i>incertae sedis</i> in Dolichoderinae]}
+    Bolton::GenusCatalogParser.parse(line).should == {:genus =>
+      {:name => 'Protazteca', :subfamily => 'Dolichoderinae', :tribe => 'incertae sedis', :available => true, :valid => true, :fossil => false}}
+  end
+
 end

@@ -57,8 +57,17 @@ grammar Bolton::GenusCatalogGrammar
   end
 
   rule bracketed_information
-    (' [' (subfamily_and_tribe | /[^\]]*/) ']') {
-      return subfamily_and_tribe.value if find('subfamily_and_tribe')[0].present?
+    (' [' bracketed_contents ']') {
+      bracketed_contents.value
+    }
+  end
+
+  rule bracketed_contents
+    subfamily_and_tribe | incertae_sedis_in | any_bracketed_contents
+  end
+
+  rule any_bracketed_contents
+    /[^\]]*/ {
       {}
     }
   end
@@ -70,6 +79,12 @@ grammar Bolton::GenusCatalogGrammar
         value[:tribe] = find('tribe')[0]
       end
       value
+    }
+  end
+
+  rule incertae_sedis_in
+    (italics 'incertae sedis' tag_end ' in ' subfamily) {
+      {:subfamily => subfamily, :tribe => 'incertae sedis'}
     }
   end
 

@@ -61,8 +61,13 @@ style='mso-bidi-font-style:normal'>Lasius</i>]</p>
 style='mso-bidi-font-style:normal'><span style='color:purple'>ANCYLOGNATHUS</span></i>
 [<i style='mso-bidi-font-style:normal'>Nomen nudum</i>]</p>
 
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'>*<b
+style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
+style='color:red'>PROTAZTECA</span></i></b> [<i style='mso-bidi-font-style:
+normal'>incertae sedis</i> in Dolichoderinae]</p>
+
         }
-        Genus.count.should == 3
+        Genus.count.should == 4
 
         acromyrmex = Genus.find_by_name 'Acromyrmex'
         acromyrmex.should_not be_fossil
@@ -77,6 +82,10 @@ style='mso-bidi-font-style:normal'><span style='color:purple'>ANCYLOGNATHUS</spa
         ancylognathus = Genus.find_by_name 'Ancylognathus'
         ancylognathus.should_not be_available
         ancylognathus.is_valid.should_not be_true
+        
+        protazteca = Genus.find_by_name 'Protazteca'
+        protazteca.tribe.should == 'incertae sedis'
+        protazteca.subfamily.should == 'Dolichoderinae'
         
       end
     end
