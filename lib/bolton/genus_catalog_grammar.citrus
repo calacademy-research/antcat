@@ -63,7 +63,13 @@ grammar Bolton::GenusCatalogGrammar
   end
 
   rule bracketed_contents
-    subfamily_and_tribe | any_bracketed_contents
+    uncertain_subfamily | subfamily_and_tribe | any_bracketed_contents
+  end
+
+  rule uncertain_subfamily
+    (incertae_sedis_in 'Formicidae') {
+      {:subfamily => 'incertae_sedis'}
+    }
   end
 
   rule subfamily_and_tribe
@@ -72,7 +78,7 @@ grammar Bolton::GenusCatalogGrammar
       if find('tribe')[0].present?
         value[:tribe] = find('tribe')[0].value
       elsif find('uncertain_in_family')[0].present?
-        value[:tribe] = 'incertae sedis'
+        value[:tribe] = 'incertae_sedis'
       end
       value
     }

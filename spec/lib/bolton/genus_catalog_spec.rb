@@ -84,7 +84,7 @@ normal'>incertae sedis</i> in Dolichoderinae]</p>
         ancylognathus.is_valid.should_not be_true
         
         protazteca = Genus.find_by_name 'Protazteca'
-        protazteca.tribe.should == 'incertae sedis'
+        protazteca.tribe.should == 'incertae_sedis'
         protazteca.subfamily.should == 'Dolichoderinae'
         
       end
