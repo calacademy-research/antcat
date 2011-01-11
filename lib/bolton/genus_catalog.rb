@@ -36,7 +36,7 @@ class Bolton::GenusCatalog
       @fossil_count += 1 if genus.fossil?
       @valid_count += 1 if genus.is_valid?
       @unavailable_count += 1 unless genus.available?
-      Progress.tally_and_show_progress 25
+      Progress.tally
     end
   end
 
