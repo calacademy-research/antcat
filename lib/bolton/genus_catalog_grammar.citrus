@@ -83,8 +83,10 @@ grammar Bolton::GenusCatalogGrammar
   end
 
   rule incertae_sedis_in
-    (italics 'incertae sedis' tag_end ' in ' subfamily) {
-      {:subfamily => subfamily.value, :tribe => 'incertae sedis'}
+    (italics 'incertae sedis' tag_end ' in ' subfamily_and_tribe) {
+      value = subfamily_and_tribe.value
+      value[:tribe] ||= 'incertae sedis'
+      value
     }
   end
 
