@@ -78,4 +78,10 @@ style='color:red'>ACANTHOGNATHUS</span></i></b> [Myrmicinae: Dacetini]}
       {:name => 'Protazteca', :subfamily => 'Specomyrminae', :tribe => 'Sphecomyrmini', :available => true, :valid => true, :fossil => false}}
   end
 
+  it "should handle a parenthtical note" do
+    line = %{<b><i><span style='color:red'>PROTAZTECA</span></i></b> [<i>incertae sedis</i> in Dolichoderinae (or so they say)]}
+    Bolton::GenusCatalogParser.parse(line).should == {:genus =>
+      {:name => 'Protazteca', :subfamily => 'Dolichoderinae', :tribe => 'incertae sedis', :available => true, :valid => true, :fossil => false}}
+  end
+
 end

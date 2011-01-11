@@ -57,7 +57,7 @@ grammar Bolton::GenusCatalogGrammar
   end
 
   rule bracketed_information
-    (' [' bracketed_contents ']') {
+    (' [' bracketed_contents parenthetical_note? ']') {
       bracketed_contents.value
     }
   end
@@ -86,6 +86,10 @@ grammar Bolton::GenusCatalogGrammar
     (italics 'incertae sedis' tag_end ' in ' subfamily) {
       {:subfamily => subfamily.value, :tribe => 'incertae sedis'}
     }
+  end
+
+  rule parenthetical_note
+    / \(.+?\)/
   end
 
   rule tribe
