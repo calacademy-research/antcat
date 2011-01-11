@@ -21,7 +21,7 @@ grammar Bolton::GenusCatalogGrammar
 
   rule valid_genus
     (bold italics red genus_name tag_end tag_end tag_end) {
-      {:name => genus_name.value, :valid => true}
+      {:name => genus_name.value, :valid => true, :current_valid_name => genus_name.value}
     }
   end
 
@@ -63,7 +63,7 @@ grammar Bolton::GenusCatalogGrammar
   end
 
   rule bracketed_contents
-    uncertain_subfamily | subfamily_and_tribe | any_bracketed_contents
+    uncertain_subfamily | subfamily_and_tribe | junior_synonym_of | any_bracketed_contents
   end
 
   rule uncertain_subfamily
@@ -81,6 +81,12 @@ grammar Bolton::GenusCatalogGrammar
         value[:tribe] = 'incertae_sedis'
       end
       value
+    }
+  end
+
+  rule junior_synonym_of
+  ('junior synonym of ' italics capitalized_word tag_end) {
+      {:current_valid_name => capitalized_word}
     }
   end
 
@@ -111,7 +117,7 @@ grammar Bolton::GenusCatalogGrammar
   end
 
   rule subfamily_or_tribe
-    (fossil_flag? capitalized_word) {
+    (fossil_flag? capitalized_word question_mark?) {
       capitalized_word
      }
   end
@@ -122,6 +128,10 @@ grammar Bolton::GenusCatalogGrammar
 
   rule capitalized_word
     /[[:upper:]][[:alpha:]]+/
+  end
+
+  rule question_mark
+    '?'
   end
 
   rule bold

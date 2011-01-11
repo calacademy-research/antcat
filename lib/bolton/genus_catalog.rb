@@ -32,6 +32,7 @@ class Bolton::GenusCatalog
         next
       end
       record[:genus][:is_valid] = record[:genus].delete(:valid)
+      record[:genus][:taxonomic_history] = p.to_html.strip
       genus = Genus.create! record[:genus]
       @fossil_count += 1 if genus.fossil?
       @valid_count += 1 if genus.is_valid?

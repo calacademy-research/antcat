@@ -17,10 +17,10 @@ describe Bolton::GenusCatalog do
 
   describe 'importing html' do
     it "should call the parser for each <p> and save the result" do
-      Bolton::GenusCatalogParser.should_receive(:parse).with('foo').and_return :genus => {:name => 'bar'}
-      Bolton::GenusCatalogParser.should_receive(:parse).with('bar').and_return :genus => {:name => 'foo'}
-      Genus.should_receive(:create!).with(:name => 'bar', :is_valid => nil).and_return Factory :genus
-      Genus.should_receive(:create!).with(:name => 'foo', :is_valid => nil).and_return Factory :genus
+      Bolton::GenusCatalogParser.should_receive(:parse).with('foo').and_return :genus => {:name => 'foo'}
+      Bolton::GenusCatalogParser.should_receive(:parse).with('bar').and_return :genus => {:name => 'bar'}
+      Genus.should_receive(:create!).with(:name => 'bar', :is_valid => nil, :taxonomic_history=>"<p>bar</p>").and_return Factory :genus
+      Genus.should_receive(:create!).with(:name => 'foo', :is_valid => nil, :taxonomic_history=>"<p>foo</p>").and_return Factory :genus
       @genus_catalog.import_html '<html><p>foo</p><p>bar</p></html>'
     end
 
@@ -74,10 +74,13 @@ normal'>incertae sedis</i> in Dolichoderinae]</p>
         acromyrmex.subfamily.should == 'Myrmicinae'
         acromyrmex.tribe.should == 'Attini'
         acromyrmex.is_valid.should be_true
+        acromyrmex.current_valid_name.should == 'Acromyrmex'
+        acromyrmex.taxonomic_history.should == %{<p class="MsoNormal" style="margin-left:.5in;text-align:justify;text-indent:-.5in"><b style="mso-bidi-font-weight:normal"><i style="mso-bidi-font-style:normal"><span style="color:red">ACROMYRMEX</span></i></b> [Myrmicinae: Attini]</p>}
 
         acalama = Genus.find_by_name 'Acalama'
         acalama.should_not be_fossil
         acalama.is_valid.should_not be_true
+        acalama.current_valid_name.should == 'Gauromyrmex'
 
         ancylognathus = Genus.find_by_name 'Ancylognathus'
         ancylognathus.should_not be_available
