@@ -136,5 +136,20 @@ style='color:red'>ACANTHOGNATHUS</span></i></b> [Myrmicinae: Dacetini]}
 
     end
 
+    it 'should handle parens instead of brackets' do
+      line = %{<b><i><span style='color:red'>ACROMYRMEX</span></i></b> (Myrmicinae: Attini)}
+      Bolton::GenusCatalogParser.parse(line).should == {:genus =>
+        {:name => 'Acromyrmex', :subfamily => 'Myrmicinae', :tribe => 'Attini', :available => true, :valid => true, :fossil => false,
+          :current_valid_name => 'Acromyrmex'}}
+    end
+
+    it 'should handle paren at one end and bracket at the other' do
+      line = %{<b><i><span style='color:red'>ACROMYRMEX</span></i></b> (Myrmicinae: Attini]}
+      Bolton::GenusCatalogParser.parse(line).should == {:genus =>
+        {:name => 'Acromyrmex', :subfamily => 'Myrmicinae', :tribe => 'Attini', :available => true, :valid => true, :fossil => false,
+          :current_valid_name => 'Acromyrmex'}}
+    end
+
+
   end
 end

@@ -57,9 +57,17 @@ grammar Bolton::GenusCatalogGrammar
   end
 
   rule bracketed_information
-    (' [' bracketed_contents parenthetical_note? ']') {
+    (' ' open_bracket bracketed_contents parenthetical_note? close_bracket) {
       bracketed_contents.value
     }
+  end
+
+  rule open_bracket
+    '(' | '['
+  end
+
+  rule close_bracket
+    ')' | ']'
   end
 
   rule bracketed_contents
