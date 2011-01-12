@@ -24,7 +24,7 @@ grammar AuthorGrammar
   end
 
   rule initial
-    space ('da' | 'de' | 'di' | 'del' | 'do') |
+    space ('dos' | 'da' | 'de' | 'di' | 'del' | 'do') |
     space word_char '.'? '-' word_char '.' |
     space word_char '.' |
     space word_char_without_period_but_before_semicolon

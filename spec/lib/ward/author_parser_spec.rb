@@ -92,6 +92,10 @@ describe Ward::AuthorParser do
       Ward::AuthorParser.parse("Silva, R. R. da; Lopes, B. C.")[:names].should == ['Silva, R. R. da', 'Lopes, B. C.']
     end
 
+    it "should handle 'dos' in the middle of a name" do
+      Ward::AuthorParser.parse("Feitosa, R. dos S. M.")[:names].should == ['Feitosa, R. dos S. M.']
+    end
+
     it "should handle 'da' at the beginning of a name" do
       Ward::AuthorParser.parse("da Silva, R. R.")[:names].should == ['da Silva, R. R.']
     end
