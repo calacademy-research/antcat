@@ -207,7 +207,7 @@ Feature: Add reference
       And in the new edit form I press the "Save" button
       Then I should see "Nested reference does not exist"
 
-  Scenario: Unparseable author string
+  Scenario: Empty author string (with separator)
     Given I am logged in
     When I go to the main page
       And I follow "Add reference"
@@ -218,5 +218,19 @@ Feature: Add reference
       And I fill in "article_pagination" with "1"
       And I fill in "reference_citation_year" with "1981"
       And I press the "Save" button
-    Then I should see "1981. A reference title. Ants 2:1."
+    Then I should see "Author names string couldn't be parsed. Please post a message on http://groups.google.com/group/antcat/, and we'll fix it!"
+
+
+  Scenario: Unparseable author string
+    Given I am logged in
+    When I go to the main page
+      And I follow "Add reference"
+    When I fill in "reference_author_names_string" with "Feitosa, R dos S. M."
+      And I fill in "reference_title" with "A reference title"
+      And I fill in "journal_name" with "Ants"
+      And I fill in "reference_series_volume_issue" with "2"
+      And I fill in "article_pagination" with "1"
+      And I fill in "reference_citation_year" with "1981"
+      And I press the "Save" button
+    Then I should see "Author names string couldn't be parsed. Please post a message on http://groups.google.com/group/antcat/, and we'll fix it!"
 
