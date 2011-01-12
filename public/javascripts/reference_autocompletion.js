@@ -2,7 +2,6 @@ function setupAuthorAutocomplete($reference) {
   if (usingCucumber)
     return
 
-  $.getScript('javascripts/ext/jquery.a-tools-1.5.2.js')
   $('.reference_edit .authors', $reference).autocomplete({
     selectFirst: true,
     minLength: 3,
