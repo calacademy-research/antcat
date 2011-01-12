@@ -12,7 +12,7 @@ Rails::Initializer.run do |config|
   config.gem 'devise_invitable', :version => '0.2.3'
   config.gem 'acts_as_list'
   config.gem 'lll'
-  config.gem 'citrus'
+  config.gem 'citrus', :version => '2.2.2'
   config.gem 'sunspot', :lib => 'sunspot'
   config.gem 'sunspot_rails', :lib => 'sunspot/rails'
   config.gem 'paper_trail'
