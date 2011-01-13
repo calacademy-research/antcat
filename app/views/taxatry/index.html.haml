@@ -1,0 +1,42 @@
+- @title = 'Taxatry'
+
+- content_for :header do
+  .left
+    %h1 Taxatry
+
+%style
+  :sass
+    table
+      border-collapse: collapse
+    tr.cell td
+      padding: 2px
+      padding-right: 6px
+    .selected
+      background: yellow !important
+
+%table
+  %tr
+    %td
+      %table
+        - ['dorylomorphs', 'ectaheteromorphs'].each do |supersubfamily|
+          %tr{:class => :cell}
+            - the_class = @selected_supersubfamily == supersubfamily ? :selected : nil
+            %td{:class => the_class}= link_to supersubfamily.capitalize, taxatry_path(:supersubfamily => supersubfamily)
+    %td
+      %table
+        - if @selected_supersubfamily.present?
+          - {'dorylomorphs' => ['cerapachyinae', 'ecitoninae'], 'ectaheteromorphs' => ['ectatomminae', 'heteroponerinae']}[@selected_supersubfamily].each do |subfamily|
+            %tr{:class => :cell}
+              - the_class = @selected_subfamily == subfamily || @selected_subfamily.nil? ? :selected : nil
+              %td{:class => the_class}= link_to subfamily.capitalize, taxatry_path(:supersubfamily => @selected_supersubfamily, :subfamily => subfamily)
+    %td
+      %table
+        - if @selected_subfamily.present?
+          - {'cerapachyinae' => ['acanthostichini'], |
+             'ecitoninae' => ['cheliomyrmecini', 'ecitonini', ], |
+             'ectatomminae' => ['ectatommini', 'typhlomyrmecini'], |
+             'heteroponerinae' => ['heteroponerini'] |
+            }[@selected_subfamily].each do |tribe| |
+            %tr{:class => :cell}
+              - the_class = @selected_tribe == tribe || @selected_tribe.nil? ? :selected : nil
+              %td{:class => the_class}= link_to tribe.capitalize, taxatry_path(:supersubfamily => @selected_supersubfamily, :subfamily => @selected_subfamily, :tribe => tribe)
