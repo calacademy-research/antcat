@@ -93,6 +93,5 @@ end
 Factory.define :document do |document|
 end
 
-Factory.define :genus do |genus|
-
+Factory.define :antweb_taxonomy, :class => 'Antweb::Taxonomy' do |antweb_taxonomy|
 end

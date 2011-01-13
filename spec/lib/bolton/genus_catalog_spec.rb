@@ -19,14 +19,14 @@ describe Bolton::GenusCatalog do
     it "should call the parser for each <p> and save the result" do
       Bolton::GenusCatalogParser.should_receive(:parse).with('foo').and_return :genus => {:name => 'foo'}
       Bolton::GenusCatalogParser.should_receive(:parse).with('bar').and_return :genus => {:name => 'bar'}
-      Genus.should_receive(:create!).with(:name => 'bar', :is_valid => nil, :taxonomic_history=>"<p>bar</p>").and_return Factory :genus
-      Genus.should_receive(:create!).with(:name => 'foo', :is_valid => nil, :taxonomic_history=>"<p>foo</p>").and_return Factory :genus
+      Antweb::Taxonomy.should_receive(:create!).with(:name => 'bar', :is_valid => nil, :taxonomic_history=>"<p>bar</p>").and_return Factory :antweb_taxonomy
+      Antweb::Taxonomy.should_receive(:create!).with(:name => 'foo', :is_valid => nil, :taxonomic_history=>"<p>foo</p>").and_return Factory :antweb_taxonomy
       @genus_catalog.import_html '<html><p>foo</p><p>bar</p></html>'
     end
 
     it "should not save the result if it wasn't a genus" do
       Bolton::GenusCatalogParser.should_receive(:parse).with('foo').and_return :unidentifiable
-      Genus.should_not_receive :create!
+      Antweb::Taxonomy.should_not_receive :create!
       @genus_catalog.import_html '<html><p>foo</p></html>'
     end
 
@@ -67,9 +67,9 @@ style='color:red'>PROTAZTECA</span></i></b> [<i style='mso-bidi-font-style:
 normal'>incertae sedis</i> in Dolichoderinae]</p>
 
         }
-        Genus.count.should == 4
+        Antweb::Taxonomy.count.should == 4
 
-        acromyrmex = Genus.find_by_name 'Acromyrmex'
+        acromyrmex = Antweb::Taxonomy.find_by_name 'Acromyrmex'
         acromyrmex.should_not be_fossil
         acromyrmex.subfamily.should == 'Myrmicinae'
         acromyrmex.tribe.should == 'Attini'
@@ -77,16 +77,16 @@ normal'>incertae sedis</i> in Dolichoderinae]</p>
         acromyrmex.current_valid_name.should == 'Acromyrmex'
         acromyrmex.taxonomic_history.should == %{<p class="MsoNormal" style="margin-left:.5in;text-align:justify;text-indent:-.5in"><b style="mso-bidi-font-weight:normal"><i style="mso-bidi-font-style:normal"><span style="color:red">ACROMYRMEX</span></i></b> [Myrmicinae: Attini]</p>}
 
-        acalama = Genus.find_by_name 'Acalama'
+        acalama = Antweb::Taxonomy.find_by_name 'Acalama'
         acalama.should_not be_fossil
         acalama.is_valid.should_not be_true
         acalama.current_valid_name.should == 'Gauromyrmex'
 
-        ancylognathus = Genus.find_by_name 'Ancylognathus'
+        ancylognathus = Antweb::Taxonomy.find_by_name 'Ancylognathus'
         ancylognathus.should_not be_available
         ancylognathus.is_valid.should_not be_true
         
-        protazteca = Genus.find_by_name 'Protazteca'
+        protazteca = Antweb::Taxonomy.find_by_name 'Protazteca'
         protazteca.tribe.should == 'incertae_sedis'
         protazteca.subfamily.should == 'Dolichoderinae'
         

@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Genus do
+describe Antweb::Taxonomy do
   it "should be able to get fossil?" do
-    genus = Genus.create!
+    genus = Antweb::Taxonomy.create!
     genus.update_attributes :fossil => true
     genus.fossil?.should be_true
   end
