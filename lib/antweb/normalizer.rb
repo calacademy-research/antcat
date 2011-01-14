@@ -1,0 +1,2 @@
+class Antweb::Normalizer
+end
