@@ -8,7 +8,7 @@ class Taxon < ActiveRecord::Base
     transaction do
       destroy_all
       yield lambda {|hash|
-        subfamily = find_or_create_by_name :name => hash[:subfamily], :rank => 'subfamily'
+        subfamily = hash[:subfamily].present? ? find_or_create_by_name(:name => hash[:subfamily], :rank => 'subfamily') : nil
         genus = create! :name => hash[:genus], :rank => 'genus', :available => hash[:available], :is_valid => hash[:is_valid]
         if hash[:tribe].present?
           genus.update_attributes :parent => find_or_create_by_name(:name => hash[:tribe], :rank => 'tribe', :parent => subfamily)

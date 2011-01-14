@@ -18,25 +18,21 @@
   %tr
     %td
       %table
-        - ['dorylomorphs', 'ectaheteromorphs'].each do |supersubfamily|
+        - @subfamilies.each do |subfamily|
           %tr{:class => :cell}
-            - the_class = @selected_supersubfamily == supersubfamily ? :selected : nil
-            %td{:class => the_class}= link_to supersubfamily.capitalize, taxatry_path(:supersubfamily => supersubfamily)
+            - the_class = @subfamily == subfamily ? :selected : nil
+            %td{:class => the_class}= link_to subfamily.name.capitalize, taxatry_path(:subfamily => subfamily)
     %td
       %table
-        - if @selected_supersubfamily.present?
-          - {'dorylomorphs' => ['cerapachyinae', 'ecitoninae'], 'ectaheteromorphs' => ['ectatomminae', 'heteroponerinae']}[@selected_supersubfamily].each do |subfamily|
+        - if @tribes
+          - @tribes.each do |tribe|
             %tr{:class => :cell}
-              - the_class = @selected_subfamily == subfamily || @selected_subfamily.nil? ? :selected : nil
-              %td{:class => the_class}= link_to subfamily.capitalize, taxatry_path(:supersubfamily => @selected_supersubfamily, :subfamily => subfamily)
+              - the_class = @tribe == tribe || @tribe.nil? ? :selected : nil
+              %td{:class => the_class}= link_to tribe.name.capitalize, taxatry_path(:subfamily => @subfamily, :tribe => tribe)
     %td
       %table
-        - if @selected_subfamily.present?
-          - {'cerapachyinae' => ['acanthostichini'], |
-             'ecitoninae' => ['cheliomyrmecini', 'ecitonini', ], |
-             'ectatomminae' => ['ectatommini', 'typhlomyrmecini'], |
-             'heteroponerinae' => ['heteroponerini'] |
-            }[@selected_subfamily].each do |tribe| |
+        - if @genera
+          - @genera.each do |genus|
             %tr{:class => :cell}
-              - the_class = @selected_tribe == tribe || @selected_tribe.nil? ? :selected : nil
-              %td{:class => the_class}= link_to tribe.capitalize, taxatry_path(:supersubfamily => @selected_supersubfamily, :subfamily => @selected_subfamily, :tribe => tribe)
+              - the_class = @genus == genus || @genus.nil? ? :selected : nil
+              %td{:class => the_class}= link_to genus.name.capitalize, taxatry_path(:subfamily => @subfamily, :tribe => @tribe, :genus => genus)
