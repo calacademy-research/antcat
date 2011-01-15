@@ -2,7 +2,7 @@ class Taxon < ActiveRecord::Base
   set_table_name :taxa
 
   belongs_to :parent, :class_name => 'Taxon'
-  has_many :children, :class_name => 'Taxon', :foreign_key => :parent_id
+  has_many :children, :class_name => 'Taxon', :foreign_key => :parent_id, :order => :name
 
   def self.import
     transaction do
