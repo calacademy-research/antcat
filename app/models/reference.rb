@@ -50,13 +50,13 @@ class Reference < ActiveRecord::Base
   end
 
   def self.do_search string = nil, page = nil, sort_by_reverse_updated_at = false, sort_by_reverse_created_at = false
-    return all(:order => 'updated_at DESC').paginate(:page => page) if sort_by_reverse_updated_at
-    return all(:order => 'created_at DESC').paginate(:page => page) if sort_by_reverse_created_at
-    return all(:order => 'author_names_string, citation_year').paginate(:page => page) unless string.present?
+    return paginate(:order => 'updated_at DESC', :page => page) if sort_by_reverse_updated_at
+    return paginate(:order => 'created_at DESC', :page => page) if sort_by_reverse_created_at
+    return paginate(:order => 'author_names_string, citation_year', :page => page) unless string.present?
     string = string.dup
 
     if match = string.match(/\d{5,}/)
-      return all(:conditions => ['id = ?', match[0]]).paginate
+      return paginate(:conditions => ['id = ?', match[0]], :page => 1)
     end
 
     search {

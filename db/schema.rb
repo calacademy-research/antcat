@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110113232514) do
+ActiveRecord::Schema.define(:version => 20110116180037) do
 
   create_table "antweb_taxonomy", :force => true do |t|
     t.datetime "created_at"
@@ -75,6 +75,8 @@ ActiveRecord::Schema.define(:version => 20110113232514) do
     t.integer  "reference_id"
   end
 
+  add_index "documents", ["reference_id"], :name => "documents_reference_id_idx"
+
   create_table "duplicate_references", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -136,7 +138,7 @@ ActiveRecord::Schema.define(:version => 20110113232514) do
     t.string   "pagination"
     t.integer  "source_reference_id"
     t.string   "source_reference_type"
-    t.text     "author_names_string"
+    t.string   "author_names_string"
     t.text     "editor_notes"
     t.text     "public_notes"
     t.text     "taxonomic_notes"
@@ -150,7 +152,9 @@ ActiveRecord::Schema.define(:version => 20110113232514) do
     t.string   "principal_author_last_name"
   end
 
-  add_index "references", ["author_names_string", "citation_year"], :name => "references_authors_string_citation_year_idx", :length => {"citation_year"=>nil, "author_names_string"=>"100"}
+  add_index "references", ["author_names_string", "citation_year"], :name => "references_author_names_string_citation_year_idx"
+  add_index "references", ["created_at"], :name => "references_created_at_idx"
+  add_index "references", ["updated_at"], :name => "references_updated_at_idx"
 
   create_table "species", :force => true do |t|
     t.string   "name"
