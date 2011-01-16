@@ -85,7 +85,7 @@ Then /I should see these entries (with a header )?in this order:/ do |with_heade
 end
 
 Then /I should see "([^"]*)" in italics/ do |italicized_text|
-  page.should have_css('span.taxon', :text => italicized_text)  
+  page.should have_css('span.genus_or_species', :text => italicized_text)  
 end
 
 Then /^there should be the HTML "(.*)"$/ do |html|

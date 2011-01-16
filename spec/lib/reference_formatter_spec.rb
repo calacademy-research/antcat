@@ -116,7 +116,7 @@ describe ReferenceFormatter do
       end
       it "should escape the title but leave the italics alone" do
         @reference.update_attribute :title, '*foo*<script>'
-        ReferenceFormatter.format(@reference).should == 'Ward, P. S. 1874. <span class=taxon>foo</span>&lt;script&gt;. 32 pp.'
+        ReferenceFormatter.format(@reference).should == 'Ward, P. S. 1874. <span class=genus_or_species>foo</span>&lt;script&gt;. 32 pp.'
       end
       it "should escape the date" do
         @reference.update_attribute :date, '1933>'
@@ -150,7 +150,7 @@ describe ReferenceFormatter do
 
     it "should italicize the title and citation" do
       reference = Factory :unknown_reference, :author_names => [], :citation => '*Ants*', :title => '*Tapinoma*'
-      ReferenceFormatter.format(reference).should == "2010d. <span class=taxon>Tapinoma</span>. <span class=taxon>Ants</span>."
+      ReferenceFormatter.format(reference).should == "2010d. <span class=genus_or_species>Tapinoma</span>. <span class=genus_or_species>Ants</span>."
     end
 
     it "should not have a space at the beginning when there are no authors" do
@@ -192,7 +192,7 @@ describe ReferenceFormatter do
 
   describe "italicizing" do
     it "should replace asterisks and bars with spans of a certain class" do
-      ReferenceFormatter.italicize("|Hymenoptera| *Formicidae*").should == "<span class=taxon>Hymenoptera</span> <span class=taxon>Formicidae</span>"
+      ReferenceFormatter.italicize("|Hymenoptera| *Formicidae*").should == "<span class=genus_or_species>Hymenoptera</span> <span class=genus_or_species>Formicidae</span>"
     end
   end
 

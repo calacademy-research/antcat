@@ -26,12 +26,16 @@
 
     %td{:class => :column}
       %table
+        %tr
+          - css_class = @selected_subfamily == :all ? :selected : nil
+          %td{:class => css_class}= link_to 'All', taxatry_path(:subfamily => :all)
+        - selected_subfamily_row = 0
         - @subfamilies.each_with_index do |subfamily, i|
           %tr
             - parent_row = nil
             - if subfamily == @selected_subfamily
               - css_class = :selected
-              - selected_subfamily_row = i
+              - selected_subfamily_row = i + 1
             - else
               - css_class = nil
             %td{:class => css_class}= link_to subfamily.name.capitalize, taxatry_path(:subfamily => subfamily)
@@ -60,4 +64,4 @@
           - @genera.each do |genus|
             %tr
               - css_class = @genus == genus || @genus.nil? ? :selected : nil
-              %td{:class => css_class}= link_to genus.name.capitalize, taxatry_path(:subfamily => @selected_subfamily, :tribe => @selected_tribe, :genus => genus)
+              %td{:class => css_class}= link_to genus.name.capitalize, taxatry_path(:subfamily => @selected_subfamily, :tribe => @selected_tribe, :genus => genus), :class => :genus_or_species

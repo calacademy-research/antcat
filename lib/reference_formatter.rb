@@ -29,8 +29,8 @@ class ReferenceFormatter
 
   def self.italicize s
     return unless s
-    s = s.gsub /\*(.*?)\*/, '<span class=taxon>\1</span>'
-    s = s.gsub /\|(.*?)\|/, '<span class=taxon>\1</span>'
+    s = s.gsub /\*(.*?)\*/, '<span class=genus_or_species>\1</span>'
+    s = s.gsub /\|(.*?)\|/, '<span class=genus_or_species>\1</span>'
   end
 
   def self.add_period_if_necessary string
