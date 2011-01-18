@@ -11,6 +11,8 @@ module NavigationHelpers
       '/species'
     when /the duplicate reference list/
       '/duplicate_references'
+    when /the Taxatry/
+      '/taxatry'
     end
   end
 end

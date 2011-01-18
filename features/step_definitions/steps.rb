@@ -235,3 +235,7 @@ Then /^I should see the possible duplicate for it "([^"]*)" with similarity "([^
   page.should have_css ".similarity", :text => similarity
 end
 
+Given /a (\w+) exists with a name of "([^"]+)" and a parent of "([^"]+)"/ do |rank, name, parent_name|
+  Given %{a #{rank} exists with a name of "#{name}"}
+  Taxon.find_by_name(name).update_attribute :parent, Taxon.find_by_name(parent_name)
+end
