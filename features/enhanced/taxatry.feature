@@ -19,7 +19,23 @@ Feature: Using the Taxatry
       And "Dolichoderinae" should be selected
       And "Attini" should be selected
 
+  Scenario: Viewing the tribes for a subfamily
+    When I follow "Dolichoderinae"
+    Then I should see "Attini"
+
+  Scenario: Not showing the tribes for a subfamily
+    When I uncheck "Show tribes?"
+    When I follow "Dolichoderinae"
+    Then I should not see "Attini"
+      And I should see "Tapinoma"
+
   Scenario: Viewing the tribes for all subfamilies
     When I follow "All" in the subfamilies list
     Then I should see "Attini"
       And I should see "Ecitonini"
+
+  Scenario: Viewing the genera for all subfamilies
+    When I uncheck "Show tribes?"
+      And I follow "All" in the subfamilies list
+    Then I should not see "Attini"
+      And I should see "Tapinoma"

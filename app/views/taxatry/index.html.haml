@@ -1,5 +1,8 @@
 - @title = 'Taxatry'
 
+- content_for :head do
+  = javascript_include_tag 'taxatry'
+
 - content_for :header do
   .left
     %h1 Taxatry
@@ -12,22 +15,27 @@
     .selected
       background: yellow !important
 
+%div
+  = label_tag :show_tribes, 'Show tribes?'
+  = check_box_tag :show_tribes, '1', @show_tribes
+  %hr
+
 %div.subfamilies
-  = all_of_a_taxon :subfamily, @selected_subfamily
+  = all_of_a_taxon_link :subfamily, @selected_subfamily
   - @subfamilies.each do |subfamily|
-    = a_taxon :subfamily, @selected_subfamily, subfamily
+    = taxon_link :subfamily, @selected_subfamily, subfamily
   %div.clear
 
 - if @tribes
   %div.tribes
     %hr
       - @tribes.each do |tribe|
-        = a_taxon :tribe, @selected_tribe, tribe, :subfamily => @selected_subfamily
+        = taxon_link :tribe, @selected_tribe, tribe, :subfamily => @selected_subfamily
     %div.clear
 
 - if @genera
   %div.genera
     %hr
       - @genera.each do |genus|
-        = a_taxon :genus, @selected_genus, genus, :subfamily => @selected_subfamily, :tribe => @selected_tribe
+        = genus_or_species_link :genus, @selected_genus, genus, :subfamily => @selected_subfamily, :tribe => @selected_tribe
   %div.clear
