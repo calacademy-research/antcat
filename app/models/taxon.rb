@@ -4,6 +4,17 @@ class Taxon < ActiveRecord::Base
   belongs_to :parent, :class_name => 'Taxon'
   has_many :children, :class_name => 'Taxon', :foreign_key => :parent_id, :order => :name
 
+  def genera
+    children.inject([]) do |genera, child|
+      if child.rank == 'genus'
+        genera << child
+      else
+        genera.concat child.genera
+      end
+      genera
+    end.sort_by(&:name)
+  end
+
   def self.import
     transaction do
       destroy_all
@@ -26,4 +37,5 @@ class Taxon < ActiveRecord::Base
   def is_valid?
     is_valid
   end
+
 end

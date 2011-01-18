@@ -16,6 +16,23 @@ describe Taxon do
     taxon.should be_available
   end
 
+  describe "getting the genera for a subfamily" do
+    it "should get a genus that's attached directly to the subfamily" do
+      subfamily = Taxon.create! :rank => 'subfamily'
+      genus = Taxon.create! :rank => 'genus', :parent => subfamily
+      subfamily.genera.should == [genus]
+    end
+    it "should get a genus that's attached under a tribe" do
+      subfamily = Taxon.create! :rank => 'subfamily'
+      tribe = Taxon.create! :rank => 'tribe', :parent => subfamily
+      genus = Taxon.create! :rank => 'genus', :parent => tribe
+      subfamily.genera.should == [genus]
+    end
+    it "should return an empty array if it has no children" do
+      Taxon.create!(:rank => 'subfamily').genera.should be_empty
+    end
+  end
+
   describe "import" do
     it "should delete existing taxa" do
       Taxon.create! :name => 'Cerapachynae', :rank => 'subfamily'
