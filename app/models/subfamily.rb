@@ -1,0 +1,2 @@
+class Subfamily < Taxon
+end

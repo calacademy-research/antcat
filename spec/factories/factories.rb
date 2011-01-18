@@ -91,18 +91,14 @@ end
 Factory.define :antweb_taxonomy, :class => 'Antweb::Taxonomy' do |antweb_taxonomy|
 end
 
-Factory.define :subfamily, :class => 'Taxon' do |taxon|
-  taxon.rank  'subfamily'
+Factory.define :subfamily do |subfamily|
 end
 
-Factory.define :tribe, :class => 'Taxon' do |taxon|
-  taxon.rank  'tribe'
+Factory.define :tribe do |taxon|
 end
 
-Factory.define :genus, :class => 'Taxon' do |taxon|
-  taxon.rank  'genus'
+Factory.define :genus do |taxon|
 end
 
-Factory.define :species, :class => 'Taxon' do |taxon|
-  taxon.rank  'species'
+Factory.define :species do |taxon|
 end

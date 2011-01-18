@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110116180037) do
+ActiveRecord::Schema.define(:version => 20110118005711) do
 
   create_table "antweb_taxonomy", :force => true do |t|
     t.datetime "created_at"
@@ -164,7 +164,7 @@ ActiveRecord::Schema.define(:version => 20110116180037) do
 
   create_table "taxa", :force => true do |t|
     t.string   "name"
-    t.string   "rank"
+    t.string   "type"
     t.integer  "parent_id"
     t.boolean  "available"
     t.boolean  "is_valid"

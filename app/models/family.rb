@@ -1,0 +1,2 @@
+class Family < Taxon
+end

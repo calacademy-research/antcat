@@ -6,7 +6,7 @@ class Taxon < ActiveRecord::Base
 
   def genera
     children.inject([]) do |genera, child|
-      if child.rank == 'genus'
+      if child.kind_of? Genus
         genera << child
       else
         genera.concat child.genera
@@ -17,12 +17,12 @@ class Taxon < ActiveRecord::Base
 
   def self.import
     transaction do
-      destroy_all
+      delete_all
       yield lambda {|hash|
-        subfamily = hash[:subfamily].present? ? find_or_create_by_name(:name => hash[:subfamily], :rank => 'subfamily') : nil
-        genus = create! :name => hash[:genus], :rank => 'genus', :available => hash[:available], :is_valid => hash[:is_valid]
+        subfamily = hash[:subfamily].present? ? Subfamily.find_or_create_by_name(:name => hash[:subfamily]) : nil
+        genus = Genus.create! :name => hash[:genus], :available => hash[:available], :is_valid => hash[:is_valid]
         if hash[:tribe].present?
-          genus.update_attributes :parent => find_or_create_by_name(:name => hash[:tribe], :rank => 'tribe', :parent => subfamily)
+          genus.update_attributes :parent => Tribe.find_or_create_by_name(:name => hash[:tribe], :parent => subfamily)
         else
           genus.update_attributes :parent => subfamily
         end

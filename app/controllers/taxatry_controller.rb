@@ -1,10 +1,10 @@
 class TaxatryController < ApplicationController
   def index
-    @subfamilies = Taxon.all(:conditions => "rank = 'subfamily'", :order => :name)
+    @subfamilies = Subfamily.all :order => :name
     set_selected_taxon 'subfamily'
 
     if @selected_subfamily
-      @tribes = @selected_subfamily == 'all' ? Taxon.all(:conditions => "rank = 'tribe'", :order => :name) : @selected_subfamily.children
+      @tribes = @selected_subfamily == 'all' ? Tribe.all(:order => :name) : @selected_subfamily.children
       set_selected_taxon 'tribe'
     end
 

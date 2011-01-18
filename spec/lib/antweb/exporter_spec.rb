@@ -6,15 +6,15 @@ describe Antweb::Exporter do
 
     Antweb::Exporter.export
 
-    subfamily = Taxon.find_by_name('subfamily')
-    subfamily.rank.should == 'subfamily'
+    subfamily = Subfamily.find_by_name('subfamily')
+    subfamily.should_not be_nil
 
     tribe = Taxon.find_by_name('tribe')
-    tribe.rank.should == 'tribe'
+    tribe.should_not be_nil
     tribe.parent.should == subfamily
 
     genus = Taxon.find_by_name('genus')
-    genus.rank.should == 'genus'
+    genus.should_not be_nil
     genus.parent.should == tribe
     genus.should be_available
     genus.should_not be_is_valid
