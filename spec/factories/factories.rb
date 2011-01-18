@@ -76,11 +76,6 @@ Factory.define :journal do |journal|
   journal.sequence(:name) {|n| "Ants#{n}"}
 end
 
-Factory.define :reference_author_names do |row|
-  row.association :author_name
-  row.association :reference
-end
-
 Factory.define :user do |user|
   user.sequence(:email) {|n| "mark#{n}@example.com"}
   user.password  'secret'
@@ -94,4 +89,20 @@ Factory.define :document do |document|
 end
 
 Factory.define :antweb_taxonomy, :class => 'Antweb::Taxonomy' do |antweb_taxonomy|
+end
+
+Factory.define :subfamily, :class => 'Taxon' do |taxon|
+  taxon.rank  'subfamily'
+end
+
+Factory.define :tribe, :class => 'Taxon' do |taxon|
+  taxon.rank  'tribe'
+end
+
+Factory.define :genus, :class => 'Taxon' do |taxon|
+  taxon.rank  'genus'
+end
+
+Factory.define :species, :class => 'Taxon' do |taxon|
+  taxon.rank  'species'
 end

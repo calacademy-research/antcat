@@ -9,3 +9,4 @@ config.action_mailer.delivery_method = :test
 config.gem 'rspec-rails', :lib => false
 config.gem 'jasmine'
 config.gem 'lll'
+config.gem 'factory_girl'

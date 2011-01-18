@@ -53,7 +53,6 @@ Cucumber::Rails::World.use_transactional_fixtures = true
 require 'database_cleaner'
 DatabaseCleaner.strategy = :truncation
 
-require 'factory_girl'
 require 'factory_girl/step_definitions'
 
 Capybara.save_and_open_page_path = '/tmp'

@@ -1,4 +1,3 @@
-require Rails.root + 'spec/support/factories'
 
 Given /the following references? exists?/ do |table|
   table.hashes.each do |hash|
