@@ -8,6 +8,7 @@ Feature: Using the Taxatry
     Given a subfamily exists with a name of "Dolichoderinae"
       And a tribe exists with a name of "Attini" and a parent of "Dolichoderinae"
       And a genus exists with a name of "Tapinoma" and a parent of "Attini"
+      And a species exists with a name of "sessile" and a parent of "Tapinoma"
       And a tribe exists with a name of "Ecitonini" and a parent of "Aenictogitoninae"
     When I go to the Taxatry
 
@@ -18,6 +19,9 @@ Feature: Using the Taxatry
     Then I should see "Tapinoma"
       And "Dolichoderinae" should be selected
       And "Attini" should be selected
+    When I follow "Tapinoma"
+    Then "Tapinoma" should be selected
+      And I should see "sessile"
 
   Scenario: Viewing the tribes for a subfamily
     When I follow "Dolichoderinae"

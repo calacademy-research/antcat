@@ -16,6 +16,11 @@ class TaxatryController < ApplicationController
       @genera = @selected_subfamily == 'all' ? Genus.all(:order => :name) : @selected_subfamily.genera
 
     end
+    set_selected_taxon 'genus'
+
+    if @selected_genus
+      @species = @selected_genus.children
+    end
   end
 
   def set_selected_taxon rank
