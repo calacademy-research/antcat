@@ -239,3 +239,11 @@ Given /a (\w+) exists with a name of "([^"]+)" and a parent of "([^"]+)"/ do |ra
   Given %{a #{rank} exists with a name of "#{name}"}
   Taxon.find_by_name(name).update_attribute :parent, Taxon.find_by_name(parent_name)
 end
+
+When /I follow "All" in the subfamilies list/ do
+  When %{I follow "All" within ".subfamilies"}
+end
+
+Then /"([^"]+)" should be selected/ do |word|
+  page.should have_css ".selected", :text => word
+end

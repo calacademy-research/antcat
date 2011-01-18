@@ -6,62 +6,28 @@
 
 %style
   :sass
-    table
-      border-collapse: collapse
-    td.column td
-      padding: 2px
-      padding-right: 6px
-      height: 21px
+    div.taxon
+      float: left
+      width: 130px
     .selected
       background: yellow !important
 
-- def blank_rows(parent_row, selected_record, records)
-  - return (parent_row - (records.count - 1)/ 2.0).ceil unless selected_record
-  - selected_index = records.index(selected_record)
-  - parent_row - selected_index
+%div.subfamilies
+  = all_of_a_taxon :subfamily, @selected_subfamily
+  - @subfamilies.each do |subfamily|
+    = a_taxon :subfamily, @selected_subfamily, subfamily
+  %div.clear
 
-%table
-  - selected_subfamily_row = selected_tribe_row = 0
-  %tr
+- if @tribes
+  %div.tribes
+    %hr
+      - @tribes.each do |tribe|
+        = a_taxon :tribe, @selected_tribe, tribe, :subfamily => @selected_subfamily
+    %div.clear
 
-    %td{:class => :column}
-      %table
-        %tr
-          - css_class = @selected_subfamily == :all ? :selected : nil
-          %td{:class => css_class}= link_to 'All', taxatry_path(:subfamily => :all)
-        - selected_subfamily_row = 0
-        - @subfamilies.each_with_index do |subfamily, i|
-          %tr
-            - parent_row = nil
-            - if subfamily == @selected_subfamily
-              - css_class = :selected
-              - selected_subfamily_row = i + 1
-            - else
-              - css_class = nil
-            %td{:class => css_class}= link_to subfamily.name.capitalize, taxatry_path(:subfamily => subfamily)
-
-    %td{:class => :column}
-      %table
-        - if @tribes
-          - blanks = blank_rows selected_subfamily_row, @selected_tribe, @tribes
-          - blanks.times do
-            %tr
-              %td &nbsp;
-          - @tribes.each_with_index do |tribe, i|
-            %tr
-              - css_class = :selected if tribe == @selected_tribe || !@selected_tribe
-              - selected_tribe_row = i + blanks if tribe == @selected_tribe
-              %td{:class => css_class}= link_to tribe.name.capitalize, taxatry_path(:subfamily => @selected_subfamily, :tribe => tribe)
-
-    %td{:class => :column}
-      %table
-        - if @genera
-          - if selected_tribe_row
-            - blanks = blank_rows selected_tribe_row, nil, @genera
-            - blanks.times do
-              %tr
-                %td &nbsp;
-          - @genera.each do |genus|
-            %tr
-              - css_class = @genus == genus || @genus.nil? ? :selected : nil
-              %td{:class => css_class}= link_to genus.name.capitalize, taxatry_path(:subfamily => @selected_subfamily, :tribe => @selected_tribe, :genus => genus), :class => :genus_or_species
+- if @genera
+  %div.genera
+    %hr
+      - @genera.each do |genus|
+        = a_taxon :genus, @selected_genus, genus, :subfamily => @selected_subfamily, :tribe => @selected_tribe
+  %div.clear
