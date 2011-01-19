@@ -43,11 +43,11 @@ grammar Bolton::SpeciesCatalogGrammar
   end
 
   rule bold
-    '<b style="mso-bidi-font-weight:normal">'
+    /<b.*?>/
   end
 
   rule italics
-    '<i style="mso-bidi-font-style:normal">'
+    /<i.*?>/
   end
 
   rule red
