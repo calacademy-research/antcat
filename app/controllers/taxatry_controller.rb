@@ -1,3 +1,5 @@
+require 'snake'
+
 class TaxatryController < ApplicationController
   def index
     @show_tribes = params[:show_tribes] != 'false'

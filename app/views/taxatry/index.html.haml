@@ -20,25 +20,44 @@
   = check_box_tag :show_tribes, '1', @show_tribes
   %hr
 
-%div.subfamilies
-  = all_of_a_taxon_link :subfamily, @selected_subfamily
-  - @subfamilies.each do |subfamily|
-    = taxon_link :subfamily, @selected_subfamily, subfamily
-  %div.clear
+%table.subfamilies
+  - @subfamilies.unshift 'all'
+  - rows = @subfamilies.snake 6
+  - rows.each do |row|
+    %tr
+      - row.each do |subfamily|
+        %td
+          - if subfamily == 'all'
+            = all_of_a_taxon_link :subfamily, @selected_subfamily
+          - elsif subfamily
+            = taxon_link :subfamily, @selected_subfamily, subfamily
+
 
 - if @tribes
-  %div.tribes
-    %hr
-      - @tribes.each do |tribe|
-        = taxon_link :tribe, @selected_tribe, tribe, :subfamily => @selected_subfamily
-    %div.clear
+  %hr
+    %table.tribes
+      - rows = @tribes.snake 6
+      - rows.each do |row|
+        %tr
+          - row.each do |tribe|
+            %td
+              - if tribe == 'all'
+                = all_of_a_taxon_link :tribe, @selected_tribe
+              - elsif tribe
+                = taxon_link :tribe, @selected_tribe, tribe, :subfamily => @selected_subfamily
 
 - if @genera
-  %div.genera
-    %hr
-      - @genera.each do |genus|
-        = genus_or_species_link :genus, @selected_genus, genus, :subfamily => @selected_subfamily, :tribe => @selected_tribe
-  %div.clear
+  %hr
+    %table.genera
+      - rows = @genera.snake 6
+      - rows.each do |row|
+        %tr
+          - row.each do |genus|
+            %td
+              - if genus == 'all'
+                = all_of_a_taxon_link :genus, @selected_genus
+              - elsif genus
+                = genus_or_species_link :genus, @selected_genus, genus, :subfamily => @selected_subfamily, :tribe => @selected_tribe
 
 - if @species
   %div.species
