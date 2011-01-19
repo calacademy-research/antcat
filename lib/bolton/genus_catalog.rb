@@ -6,7 +6,7 @@ class Bolton::GenusCatalog
   end
 
   def import_files filenames
-    Antweb::Taxonomy.delete_all
+    Taxon.delete_all
     filenames.each {|filename| import_file filename }
     show_results
   end
@@ -33,7 +33,15 @@ class Bolton::GenusCatalog
       end
       record[:genus][:is_valid] = record[:genus].delete(:valid)
       record[:genus][:taxonomic_history] = p.to_html.strip
-      genus = Antweb::Taxonomy.create! record[:genus]
+
+      subfamily_name = record[:genus].delete(:subfamily)
+      tribe_name = record[:genus].delete(:tribe)
+
+      subfamily = subfamily_name && Subfamily.find_or_create_by_name(subfamily_name)
+      tribe = tribe_name && Tribe.find_or_create_by_name(tribe_name, :parent => subfamily)
+
+      genus = Genus.find_or_create_by_name record[:genus].merge :parent => tribe || subfamily
+
       @fossil_count += 1 if genus.fossil?
       @valid_count += 1 if genus.is_valid?
       @unavailable_count += 1 unless genus.available?

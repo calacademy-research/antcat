@@ -21,7 +21,7 @@ grammar Bolton::GenusCatalogGrammar
 
   rule valid_genus
     (bold italics red genus_name tag_end tag_end tag_end) {
-      {:name => genus_name.value, :valid => true, :current_valid_name => genus_name.value}
+      {:name => genus_name.value, :valid => true}
     }
   end
 
@@ -94,7 +94,7 @@ grammar Bolton::GenusCatalogGrammar
 
   rule junior_synonym_of
   ('junior synonym of ' italics capitalized_word tag_end) {
-      {:current_valid_name => capitalized_word}
+      {}
     }
   end
 

@@ -19,6 +19,7 @@ class Bolton::SpeciesCatalog
   end
 
   def import_files filenames
+    @genus = nil
     filenames.each do |filename|
       @filename = filename
       Progress.puts "Importing #{@filename}..."
@@ -31,7 +32,6 @@ class Bolton::SpeciesCatalog
 
   def import_html html
     doc = Nokogiri::HTML html
-    @genus = nil
     ps = doc.css('p')
     ps.each do |p|
       record = parse p.inner_html
@@ -51,7 +51,13 @@ class Bolton::SpeciesCatalog
   end
 
   def import_species record
-    Species.create! :name => "#{@genus} #{record[:species]}"
+    unless @genus
+      p @filename
+      p record
+      return
+    end
+    genus = Genus.find_or_create_by_name @genus
+    Species.create! :name => record[:species], :parent => genus
     Progress.tally_and_show_progress 100
   end
 
