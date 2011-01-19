@@ -225,7 +225,7 @@ Feature: Add reference
     Given I am logged in
     When I go to the main page
       And I follow "Add reference"
-    When I fill in "reference_author_names_string" with "Feitosa, R dos S. M."
+    When I fill in "reference_author_names_string" with "...asdf sdf dsfdsf"
       And I fill in "reference_title" with "A reference title"
       And I fill in "journal_name" with "Ants"
       And I fill in "reference_series_volume_issue" with "2"

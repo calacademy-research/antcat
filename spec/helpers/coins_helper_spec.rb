@@ -2,11 +2,13 @@ require 'spec_helper'
 
 describe CoinsHelper do
   it "should format a journal reference correctly" do
-    coins = helper.coins(ward_reference_factory(
-      :authors => 'MacKay, W.',
+    coins = helper.coins(ArticleReference.new(
+      :author_names => [Factory :author_name, :name => 'MacKay, W.'],
       :year => '1941',
       :title => 'A title',
-      :citation => 'Journal Title 1(2):3-4'
+      :journal => Factory(:journal, :name => 'Journal Title'),
+      :series_volume_issue => '1(2)',
+      :pagination => '3-4'
     ))
     check_parameters coins, [
       "ctx_ver=Z39.88-2004",
@@ -26,11 +28,13 @@ describe CoinsHelper do
   end
 
   it "should use the numeric year" do
-    coins = helper.coins(ward_reference_factory(
-      :authors => 'MacKay, W.',
+    coins = helper.coins(ArticleReference.new(
+      :author_names => [Factory :author_name, :name => 'MacKay, W.'],
       :year => '1941a ("1942")',
       :title => 'A title',
-      :citation => 'Journal Title 1(2):3-4'
+      :journal => Factory(:journal, :name => 'Journal Title'),
+      :series_volume_issue => '1(2)',
+      :pagination => '3-4'
     ))
     check_parameters coins, [
       "ctx_ver=Z39.88-2004",
@@ -50,11 +54,14 @@ describe CoinsHelper do
   end
 
   it "should add multiple authors" do
-    coins = helper.coins(ward_reference_factory(
-      :authors => 'MacKay, W. P.; Lowrie, D.',
+    coins = helper.coins(ArticleReference.new(
+      :author_names => [Factory(:author_name, :name => 'MacKay, W. P.'),
+                        Factory(:author_name, :name => 'Lowrie, D.')],
       :year => '1941',
       :title => 'A title',
-      :citation => 'Journal Title 1(2):3-4'
+      :journal => Factory(:journal, :name => 'Journal Title'),
+      :series_volume_issue => '1(2)',
+      :pagination => '3-4'
     ))
     check_parameters coins, [
       "ctx_ver=Z39.88-2004",
@@ -76,11 +83,13 @@ describe CoinsHelper do
   end
 
   it "should strip out italics formatting" do
-    coins = helper.coins(ward_reference_factory(
-      :authors => 'Ward, P.S.',
+    coins = helper.coins(ArticleReference.new(
+      :author_names => [Factory :author_name, :name => 'Ward, P.S.'],
       :year => '1941',
       :title => 'A *title*',
-      :citation => 'Journal Title 1(2):3-4'
+      :journal => Factory(:journal, :name => 'Journal Title'),
+      :series_volume_issue => '1(2)',
+      :pagination => '3-4'
     ))
     check_parameters coins, [
       "ctx_ver=Z39.88-2004",
@@ -100,11 +109,13 @@ describe CoinsHelper do
   end
 
   it "should escape HTML" do
-    coins = helper.coins(ward_reference_factory(
-      :authors => 'Ward, P.S.',
+    coins = helper.coins(ArticleReference.new(
+      :author_names => [Factory :author_name, :name => 'Ward, P.S.'],
       :year => '1941',
       :title => '<script>',
-      :citation => 'Journal Title 1(2):3-4'
+      :journal => Factory(:journal, :name => 'Journal Title'),
+      :series_volume_issue => '1(2)',
+      :pagination => '3-4'
     ))
     check_parameters coins, [
       "ctx_ver=Z39.88-2004",
@@ -125,11 +136,12 @@ describe CoinsHelper do
 
   it "should format a book reference correctly" do
     Factory :place, :name => 'Dresden'
-    coins = helper.coins(ward_reference_factory(
-      :authors => 'MacKay, W.',
+    coins = helper.coins(BookReference.new(
+      :author_names => [Factory :author_name, :name => 'MacKay, W.'],
       :year => '1933',
       :title => 'Another title',
-      :citation => 'Dresden: Springer Verlag, ix + 33pp.'
+      :publisher => Factory(:publisher, :name => 'Springer Verlag', :place => Factory(:place, :name => 'Dresden')),
+      :pagination => 'ix + 33pp.'
     ))
     check_parameters coins, [
       "ctx_ver=Z39.88-2004",
@@ -147,11 +159,11 @@ describe CoinsHelper do
   end
 
   it "should format an unknown reference correctly" do
-    coins = helper.coins(ward_reference_factory(
-      :authors => 'MacKay, W.',
+    coins = helper.coins(UnknownReference.new(
+      :author_names => [Factory :author_name, :name => 'MacKay, W.'],
       :year => '1933',
       :title => 'Another title',
-      :citation => 'Dresden.'))
+      :citation => 'Dresden'))
     check_parameters coins, [
       "ctx_ver=Z39.88-2004",
       "rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Adc",

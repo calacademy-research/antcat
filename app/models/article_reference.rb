@@ -3,14 +3,6 @@ class ArticleReference < Reference
 
   validates_presence_of :journal, :series_volume_issue, :pagination
 
-  def self.import base_class_data, data
-    ArticleReference.create! base_class_data.merge(
-      :series_volume_issue => data[:series_volume_issue],
-      :pagination => data[:pagination],
-      :journal => Journal.import(data[:journal])
-    )
-  end
-
   def start_page
     page_parts[:start]
   end
@@ -34,11 +26,11 @@ class ArticleReference < Reference
   private
 
   def series_volume_issue_parts
-    @series_volume_issue_parts ||= Ward::ArticleCitationParser.get_series_volume_issue_parts series_volume_issue
+    @series_volume_issue_parts ||= ArticleCitationParser.get_series_volume_issue_parts series_volume_issue
   end
 
   def page_parts
-    @page_parts ||= Ward::ArticleCitationParser.get_page_parts pagination
+    @page_parts ||= ArticleCitationParser.get_page_parts pagination
   end
 
 end

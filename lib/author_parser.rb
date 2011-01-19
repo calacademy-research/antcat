@@ -1,5 +1,15 @@
 module AuthorParser
 
+  def self.parse string
+    return {:names => []} unless string.present?
+    match = AuthorGrammar.parse(string)
+    result = match.value
+
+    string.gsub! /#{Regexp.escape match}/, ''
+
+    {:names => result[:names], :suffix => result[:suffix]}
+  end
+
   def self.get_name_parts string
     parts = {}
     return parts unless string.present?

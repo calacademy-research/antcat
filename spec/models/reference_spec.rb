@@ -272,21 +272,17 @@ describe Reference do
       end
 
       it "should sort by multiple author_names using their order in each reference" do
-        a = ward_reference_factory(:authors => 'Abdalla, F. C.; Cruz-Landim, C. da.', 
-                                    :citation => 'Ants 2:2')
-        m = ward_reference_factory(:authors => 'Mueller, U. G.; Mikheyev, A. S.; Abbot, P.',
-                                    :citation => 'Ants 3:3')
-        v = ward_reference_factory( :authors => "Vinson, S. B.; MacKay, W. P.; Rebeles M.; A.; Arredondo B.; H. C.; Rodríguez R.; A. D.; González, D. A.", :citation => 'Ants 1:1')
+        a = Factory(:article_reference, :author_names => AuthorName.import_author_names_string('Abdalla, F. C.; Cruz-Landim, C. da.')[:author_names])
+        m = Factory(:article_reference, :author_names => AuthorName.import_author_names_string('Mueller, U. G.; Mikheyev, A. S.; Abbot, P.')[:author_names])
+        v = Factory(:article_reference, :author_names => AuthorName.import_author_names_string("Vinson, S. B.; MacKay, W. P.; Rebeles M.; A.; Arredondo B.; H. C.; Rodríguez R.; A. D.; González, D. A.")[:author_names])
         Reference.reindex
         Reference.do_search.should == [a, m, v]
       end
 
       it "should sort by multiple author_names using their order in each reference" do
-        a = ward_reference_factory(:authors => 'Abdalla, F. C.; Cruz-Landim, C. da.', 
-                                    :citation => 'Ants 2:2')
-        m = ward_reference_factory(:authors => 'Mueller, U. G.; Mikheyev, A. S.; Abbot, P.',
-                                    :citation => 'Ants 3:3')
-        v = ward_reference_factory( :authors => "Vinson, S. B.; MacKay, W. P.; Rebeles M.; A.; Arredondo B.; H. C.; Rodríguez R.; A. D.; González, D. A.", :citation => 'Ants 1:1')
+        a = Factory(:article_reference, :author_names => AuthorName.import_author_names_string('Abdalla, F. C.; Cruz-Landim, C. da.')[:author_names]) 
+        m = Factory(:article_reference, :author_names => AuthorName.import_author_names_string('Mueller, U. G.; Mikheyev, A. S.; Abbot, P.')[:author_names])
+        v = Factory(:article_reference, :author_names => AuthorName.import_author_names_string("Vinson, S. B.; MacKay, W. P.; Rebeles M.; A.; Arredondo B.; H. C.; Rodríguez R.; A. D.; González, D. A.")[:author_names])
         Reference.reindex
         Reference.do_search.should == [a, m, v]
       end

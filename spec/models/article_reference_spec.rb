@@ -1,19 +1,6 @@
 require 'spec_helper'
 
 describe ArticleReference do
-  describe "importing" do
-    it "should create the reference and set its data" do
-      ward_reference = Factory(:ward_reference)
-      reference = ArticleReference.import(
-        {:author_names => [Factory(:author_name)], :title => 'awdf',
-          :source_reference_id => ward_reference.id, :source_reference_type => 'Ward::Reference', :citation_year => '2010'},
-        {:series_volume_issue => '12', :pagination => '32-33', :journal => 'Ecology Letters'})
-      reference.series_volume_issue.should == '12'
-      reference.pagination.should == '32-33'
-      reference.journal.name.should == 'Ecology Letters'
-      reference.source_reference.should == ward_reference
-    end
-  end
 
   describe "parsing fields from series_volume_issue" do
     it "can parse out volume and issue" do
@@ -71,9 +58,6 @@ describe ArticleReference do
       @reference.journal = nil
       @reference.should_not be_valid
     end
-  end
-
-  describe "matching" do
   end
 
 end

@@ -1,17 +1,6 @@
 require 'spec_helper'
 
 describe UnknownReference do
-  describe "importing" do
-    it "should create the reference and set its data" do
-      ward_reference = Factory(:ward_reference)
-      reference = UnknownReference.import(
-        {:author_names => [Factory(:author_name)], :title => 'awdf',
-          :source_reference_id => ward_reference.id, :source_reference_type => 'Ward::Reference', :citation_year => '2010'},
-        'Citation')
-      reference.citation.should == 'Citation'
-      reference.source_reference.should == ward_reference
-    end
-  end
 
   describe "validation" do
     before do

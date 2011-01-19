@@ -31,7 +31,7 @@ class AuthorName < ActiveRecord::Base
   end
 
   def self.import_author_names_string string
-    author_data = Ward::AuthorParser.parse(string)
+    author_data = AuthorParser.parse(string)
     {:author_names => import(author_data[:names]), :author_names_suffix => author_data[:suffix]}
   rescue Citrus::ParseError
     {:author_names => [], :author_names_suffix => nil}
