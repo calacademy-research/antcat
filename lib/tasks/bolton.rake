@@ -18,6 +18,8 @@ namespace :bolton do
       catalog.clear
       catalog.import_files Dir.glob 'data/bolton/NGC-Sp*.htm'
     end
+    desc "Import genera and species"
+    task :taxa => ['bolton:import:genera', 'bolton:import:species']
   end
 
   namespace :match do
@@ -29,7 +31,7 @@ namespace :bolton do
 
   namespace :import_and_match do
     desc 'Import and match Bolton references'
-    task :references => [':bolton:import:references', ':bolton:match:references']
+    task :references => ['bolton:import:references', 'bolton:match:references']
   end
 
 end
