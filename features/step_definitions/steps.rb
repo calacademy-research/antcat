@@ -60,10 +60,11 @@ Given /the following entry nests it/ do |table|
   Reference.reindex
 end
 
-Given /that the entry has a URL that's on our site/ do
+Given /that the entry has a URL that's on our site( that is public)?/ do |is_public|
   @reference.update_attribute :document, Document.create!
-  @reference.document.update_attribute :url, 'localhost/files/123.pdf'
-  @reference.document.update_attribute :file_file_name, '123.pdf'
+  @reference.document.update_attributes :url => 'localhost/files/123.pdf',
+                                        :file_file_name => '123.pdf',
+                                        :public => is_public ? true : nil
 end
 
 Given /that the entry has a URL that's not on our site/ do
@@ -163,6 +164,10 @@ Given 'I log in' do
   And %{I fill in "user_email" with "#{@user.email}"}
   And %{I fill in "user_password" with "#{@user.password}"}
   And %{I press "Sign in"}
+end
+
+Given 'I log out' do
+  Given %{I follow "sign out"}
 end
 
 Given 'I am logged in' do

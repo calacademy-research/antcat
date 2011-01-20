@@ -17,7 +17,7 @@ class Document < ActiveRecord::Base
   end
 
   def downloadable_by? user
-    url.present? && (!hosted_by_us? || user.present?)
+    url.present? && (attributes["public"] || !hosted_by_us? || user.present?)
   end
 
   def actual_url

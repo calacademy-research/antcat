@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110119040138) do
+ActiveRecord::Schema.define(:version => 20110120202235) do
 
   create_table "antweb_taxonomy", :force => true do |t|
     t.datetime "created_at"
@@ -73,6 +73,7 @@ ActiveRecord::Schema.define(:version => 20110119040138) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "reference_id"
+    t.boolean  "public"
   end
 
   add_index "documents", ["reference_id"], :name => "documents_reference_id_idx"

@@ -49,6 +49,14 @@ Feature: View bibliography
     When I go to the main page
     Then I should not see a "PDF" link
 
+  Scenario: Viewing an entry with a URL to a document on our site, the user isn't logged in, but it's public
+    Given the following references exist
+      |authors   |year |title    |citation|date    |
+      |Ward, P.S.|2010d|Ant Facts|Ants 1:1|20100712|
+      And that the entry has a URL that's on our site that is public
+    When I go to the main page
+    Then I should see a "PDF" link
+
   Scenario: Viewing an entry with a URL to a document that's not on our site, and the user isn't logged in
     Given the following references exist
       |authors   |year |title    |citation|cite_code|possess|

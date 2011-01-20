@@ -154,6 +154,20 @@ Feature: Edit reference
       And I press the "Save" button
     Then I should see a "PDF" link
 
+  Scenario: Setting a document's publicness
+    Given the following references exist
+      |authors   |year |title    |citation|
+      |Ward, P.S.|2010d|Ant Facts|Ants 1:1|
+      And that the entry has a URL that's on our site
+    When I go to the main page
+    Then I should not see a "PDF" link
+    When I log in
+      And I follow "edit"
+      And I check "reference_document_attributes_public"
+      And I press the "Save" button
+      And I log out
+    Then I should see a "PDF" link
+
   Scenario: Adding the authors' role
     Given I am logged in
       And the following references exist

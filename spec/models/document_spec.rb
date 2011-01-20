@@ -69,6 +69,11 @@ describe Document do
     it "should be downloadable by a registered user if we are hosting on S3" do
       Document.new(:url => 'foo', :file_file_name => 'bar').should be_downloadable_by Factory :user
     end
+    it "should be downloadable by anyone if it's public" do
+      document = Document.new(:url => 'foo', :file_file_name => 'bar', :public => true)
+      document.should be_downloadable_by Factory :user
+      document.should be_downloadable_by nil
+    end
   end
 
   describe "setting the host" do
