@@ -9,8 +9,13 @@
 #    rake bolton:import:species
 
 class Bolton::SpeciesCatalog
+  attr_reader :logger
+
   def initialize show_progress = false
     Progress.init show_progress
+    file = File.open 'log/bolton_species_import.log', 'w'
+    file.sync = true
+    @logger = Logger.new file
     @success_count = 0
   end
 
@@ -28,6 +33,7 @@ class Bolton::SpeciesCatalog
       Progress.puts
     end
     Progress.show_results
+    @logger.info Progress.results_string
   end
 
   def import_html html
@@ -46,14 +52,16 @@ class Bolton::SpeciesCatalog
     string = string.gsub /\n/, ' '
     Bolton::SpeciesCatalogGrammar.parse(string).value
   rescue Citrus::ParseError => e
-    p e
+    @logger.info 'Parse error'
+    @logger.info e
     nil
   end
 
   def import_species record
     unless @genus
-      p @filename
-      p record
+      @logger.info 'No genus'
+      @logger.info @filename
+      @logger.info record
       return
     end
     genus = Genus.find_or_create_by_name @genus
