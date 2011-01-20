@@ -94,10 +94,10 @@ class Progress
   end
 
   def self.show_results
-    puts results_message
+    puts results_string
   end
 
-  def self.results_message
+  def self.results_string
     "#{processed_count} processed in #{elapsed} #{rate}"
   end
 

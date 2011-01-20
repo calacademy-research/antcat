@@ -37,7 +37,7 @@ class DuplicateReferencesFinder
   end
 
   def show_results
-    Progress.puts Progress.results_message + progress_stats
+    Progress.puts Progress.results_string + progress_stats
   end
 
 end
