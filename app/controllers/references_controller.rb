@@ -1,6 +1,6 @@
 class ReferencesController < ApplicationController
 
-  before_filter :authenticate_user!, :except => :index
+  before_filter :authenticate_user!, :except => [:index, :download]
 
   def index
     params[:q] = '' if ['review', 'new', 'clear'].include? params[:commit]
@@ -11,7 +11,12 @@ class ReferencesController < ApplicationController
   end
 
   def download
-    redirect_to Document.find(params[:id]).actual_url
+    document = Document.find params[:id]
+    if document.downloadable_by? current_user
+      redirect_to Document.find(params[:id]).actual_url
+    else
+      head 401
+    end
   end
 
   def create
