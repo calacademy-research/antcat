@@ -1,6 +1,6 @@
 module TaxatryHelper
   def all_of_a_taxon_link rank, selected, super_path = {}
-    content_tag :div, :class => make_css_class(selected == 'all') do
+    content_tag :div, :class => make_css_class('all', selected) do
       link_to 'All', taxatry_path({rank => 'all'}.merge super_path)
     end
   end
@@ -15,15 +15,22 @@ module TaxatryHelper
 
   private
   def link rank, selected, current, super_path, additional_class = ''
-    content_tag :div, :class => make_css_class(current == selected, additional_class) do
-      link_to current.name, taxatry_path({rank => current}.merge super_path)
+    content_tag :div, :class => make_css_class(current, selected, additional_class) do
+      fossil_symbol = current.fossil? ? "&dagger;" : ''
+      suffix = current.kind_of?(Species) ? '' : "(#{current.children.count})" 
+      link_to "#{fossil_symbol}#{current.name}#{suffix}", taxatry_path({rank => current}.merge super_path)
     end
   end
 
-  def make_css_class selected = false, additional_class = ''
-    css_class = "taxon #{additional_class}"
-    css_class << ' ' << 'selected' if selected
-    css_class
+  def make_css_class current, selected, additional_class = ''
+    css_classes = ['taxon']
+    css_classes << additional_class if additional_class.present?
+    css_classes << 'selected' if current == selected
+    if current.kind_of? Taxon
+      css_classes << 'taxon_not_available' if !current.available?
+      css_classes << 'taxon_not_valid' if !current.is_valid?
+    end
+    css_classes.join ' '
   end
 
 end
