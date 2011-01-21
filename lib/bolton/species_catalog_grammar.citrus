@@ -8,7 +8,7 @@ grammar Bolton::SpeciesCatalogGrammar
   end
 
   rule genus_header
-    see_under | fossil_genus | genus
+    see_under | fossil_genus | genus | unidentifiable_genus | transferred_genus
   end
 
   rule see_under
@@ -39,6 +39,22 @@ grammar Bolton::SpeciesCatalogGrammar
     italic subgenus_flag blue uppercase_word space tag_end tag_end
   end
 
+  rule unidentifiable_genus
+    (f:fossil_flag? italic green uppercase_word tag_end tag_end space parenthesized_phrase) {
+      value = {:type => :genus, :name => uppercase_word.downcase.capitalize, :unidentifiable => true}
+      value.merge! :fossil => true if find('f')[0].present?
+      value
+    }
+  end
+
+  rule transferred_genus
+    (f:fossil_flag? italic green uppercase_word /.*?transferred to.*/) {
+      value = {:type => :genus, :name => uppercase_word.downcase.capitalize, :unidentifiable => true}
+      value.merge! :fossil => true if find('f')[0].present?
+      value
+    }
+  end
+
   rule header
     /.*?CATALOGUE OF.*/ {
       {:type => :header}
@@ -67,22 +83,32 @@ grammar Bolton::SpeciesCatalogGrammar
 
   rule genus
     (
-      bold italic red
-        uppercase_word
-      tag_end tag_end tag_end region
+      bold italic (red|green)
+        uppercase_word space errant_paragraph?
+      tag_end space tag_end space tag_end '.'?
+      region?
     ) {
       {:type => :genus, :name => uppercase_word.downcase.capitalize}
     }
   end
 
   rule region
-    space parenthesized_phrase
+    (space errant_red_space? /\(.+?\)?$/) |
+    (span space parenthesized_phrase errant_paragraph tag_end)
+  end
+
+  rule errant_paragraph
+    '<p></p>'
+  end
+
+  rule errant_red_space
+    red space tag_end
   end
 
   rule species
     (
       bold italic red
-        lowercase_word
+        lowercase_word 
       tag_end tag_end tag_end /.*/
     ) {
       {:type => :species, :species => lowercase_word}

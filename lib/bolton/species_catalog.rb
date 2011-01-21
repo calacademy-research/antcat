@@ -57,10 +57,12 @@ class Bolton::SpeciesCatalog
   end
 
   def parse_genus_section
+    return unless @p && parse(@p)[:type] == :genus
+    eat_blanks
+    true
   end
 
   def parse string
-    string = string.gsub /\n/, ' '
     Bolton::SpeciesCatalogGrammar.parse(string).value
   rescue Citrus::ParseError => e
     @logger.info 'Parse error'
@@ -106,7 +108,7 @@ class Bolton::SpeciesCatalog
       @p = nil
       return
     end
-    @p = @ps[@index].inner_html
+    @p = @ps[@index].inner_html.gsub /\n/, ' '
     @index += 1
     @p
   end
