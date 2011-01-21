@@ -66,11 +66,11 @@ class Bolton::Bibliography
   end
 
   def post_parse attributes
-    attributes[:journal] = remove_italics(attributes[:journal]) if attributes[:journal]
+    attributes[:journal] = remove_italic(attributes[:journal]) if attributes[:journal]
     attributes[:series_volume_issue] = remove_bold attributes[:series_volume_issue] if attributes[:series_volume_issue]
     attributes[:place].strip! if attributes[:place]
-    attributes[:title] = remove_period remove_italics remove_span remove_bold attributes[:title]
-    attributes[:note] = remove_italics attributes[:note] if attributes[:note]
+    attributes[:title] = remove_period remove_italic remove_span remove_bold attributes[:title]
+    attributes[:note] = remove_italic attributes[:note] if attributes[:note]
   end
 
   def remove_attributes! string
@@ -81,7 +81,7 @@ class Bolton::Bibliography
     remove_tag 'span', string
   end
 
-  def remove_italics string
+  def remove_italic string
     remove_tag 'i', string
   end
 

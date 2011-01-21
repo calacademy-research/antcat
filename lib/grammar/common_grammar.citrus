@@ -2,4 +2,73 @@ grammar CommonGrammar
   rule space
     ' '*
   end
+
+  rule question_mark
+    '?'
+  end
+
+  rule red
+    start_color_span_start 'red' start_color_span_end
+  end
+
+  rule green
+    start_color_span_start 'green' start_color_span_end
+  end
+
+  rule black
+    start_color_span_start 'black' start_color_span_end
+  end
+
+  rule purple
+    start_color_span_start 'purple' start_color_span_end
+  end
+
+  rule blue
+    start_color_span_start 'blue' start_color_span_end
+  end
+
+  rule start_color_span_start
+    /<span.*?color:/
+  end
+
+  rule start_color_span_end
+    /.*?>/
+  end
+
+  rule bold
+    /<b.*?>/
+  end
+
+  rule italic
+    /<i.*?>/
+  end
+
+  rule span
+    /<span.*?>/
+  end
+
+  rule tag_end
+    /<\/\w+>/
+  end
+
+  rule lowercase_word
+    /[[:lower:]]+/
+  end
+
+  rule uppercase_word
+    /[[:upper:]]+/
+  end
+
+  rule capitalized_word
+    /[[:upper:]][[:alpha:]]+/
+  end
+
+  rule parenthetical_note
+    / \(.+?\)/
+  end
+
+  rule year
+    /\d{4}/
+  end
+
 end

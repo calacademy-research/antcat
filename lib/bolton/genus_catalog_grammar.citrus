@@ -1,4 +1,7 @@
 grammar Bolton::GenusCatalogGrammar
+  include CommonGrammar
+  include Bolton::CatalogGrammar
+
   rule record
     header
   end
@@ -20,32 +23,32 @@ grammar Bolton::GenusCatalogGrammar
   end
 
   rule valid_genus
-    (bold italics red genus_name tag_end tag_end tag_end) {
+    (bold italic red genus_name tag_end tag_end tag_end) {
       {:name => genus_name.value, :valid => true}
     }
   end
 
   rule unavailable_genus
-    (italics purple genus_name tag_end tag_end) {
+    (italic purple genus_name tag_end tag_end) {
       {:name => genus_name.value, :valid => false, :available => false}
     }
   end
 
   rule invalid_genus
-    ((italics black genus_name tag_end tag_end) |
-     (italics genus_name tag_end)) {
+    ((italic black genus_name tag_end tag_end) |
+     (italic genus_name tag_end)) {
       {:name => genus_name.value, :valid => false}
     }
   end
 
   rule unidentifiable_genus
-    (bold italics green genus_name tag_end tag_end tag_end) {
+    (bold italic green genus_name tag_end tag_end tag_end) {
       :unidentifiable
     }
   end
 
   rule subgenus
-    (bold italics blue genus_name tag_end tag_end tag_end) {
+    (bold italic blue genus_name tag_end tag_end tag_end) {
       :subgenus
     }
   end
@@ -93,23 +96,19 @@ grammar Bolton::GenusCatalogGrammar
   end
 
   rule junior_synonym_of
-  ('junior synonym of ' italics capitalized_word tag_end) {
+  ('junior synonym of ' italic capitalized_word tag_end) {
       {}
     }
   end
 
   rule incertae_sedis_in
-    italics 'incertae sedis' tag_end ' in '
+    italic 'incertae sedis' tag_end ' in '
   end
 
   rule any_bracketed_contents
     /[^\]]*/ {
       {}
     }
-  end
-
-  rule parenthetical_note
-    / \(.+?\)/
   end
 
   rule tribe
@@ -120,62 +119,10 @@ grammar Bolton::GenusCatalogGrammar
     subfamily_or_tribe
   end
 
-  rule fossil_flag
-    '*'
-  end
-
   rule subfamily_or_tribe
     (fossil_flag? capitalized_word question_mark?) {
       capitalized_word
      }
-  end
-
-  rule subgenus_flag
-    '#'
-  end
-
-  rule capitalized_word
-    /[[:upper:]][[:alpha:]]+/
-  end
-
-  rule question_mark
-    '?'
-  end
-
-  rule bold
-    /<b[^>]*>/
-  end
-
-  rule italics
-    /<i[^>]*>/
-  end
-
-  rule red
-    /<span[^>]*color:red[^>]*>/
-  end
-
-  rule green
-    /<span.*?color:green[^>]*>/
-  end
-
-  rule blue
-    /<span.*?color:blue[^>]*>/
-  end
-
-  rule black
-    /<span.*?color:black[^>]*>/
-  end
-
-  rule purple
-    /<span.*?color:purple[^>]*>/
-  end
-
-  rule tag_end
-    /<\/\w+>/
-  end
-
-  rule uppercase_word
-    /[[:upper:]]+/
   end
 
 end

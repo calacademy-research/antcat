@@ -1,5 +1,7 @@
 grammar Bolton::SpeciesCatalogGrammar
+  include CommonGrammar
   include AuthorGrammar
+  include Bolton::CatalogGrammar
 
   rule record
     header | blank | see_under | genus | species | not_understood
@@ -17,24 +19,20 @@ grammar Bolton::SpeciesCatalogGrammar
     author (', ' year)?
   end
 
-  rule year
-    /\d{4}/
-  end
-
   rule genus_group_name
-    '*'? (genus_name|subgenus_name)
+    fossil_flag? (genus_name|subgenus_name)
   end
 
   rule see_under_referent
-    ':'? ' see under ' '*'? bold genus_name tag_end '.'?
+    ':'? ' see under ' fossil_flag? bold genus_name tag_end '.'?
   end
 
   rule genus_name
-    italics uppercase_word space tag_end
+    italic uppercase_word space tag_end
   end
 
   rule subgenus_name
-    italics '#' blue uppercase_word space tag_end tag_end
+    italic subgenus_flag blue uppercase_word space tag_end tag_end
   end
 
   rule header
@@ -59,7 +57,7 @@ grammar Bolton::SpeciesCatalogGrammar
 
   rule genus
     (
-      bold italics red
+      bold italic red
         uppercase_word
       tag_end tag_end tag_end /.*/
     ) {
@@ -69,7 +67,7 @@ grammar Bolton::SpeciesCatalogGrammar
 
   rule species
     (
-      bold italics red
+      bold italic red
         lowercase_word
       tag_end tag_end tag_end /.*/
     ) {
@@ -81,42 +79,6 @@ grammar Bolton::SpeciesCatalogGrammar
     /.*/ {
       {:type => :not_understood}
     }
-  end
-
-  rule bold
-    /<b.*?>/
-  end
-
-  rule italics
-    /<i.*?>/
-  end
-
-  rule red
-    '<span style="color:red">'
-  end
-
-  rule blue
-    /<span .*?blue.*?>/
-  end
-
-  rule tag_end
-    /<\/\w+>/
-  end
-
-  rule lowercase_word
-    /[a-z]+/
-  end
-
-  rule uppercase_word
-    /[A-Z]+/
-  end
-
-  rule capitalized_word
-    /[[:upper:]]\w*/
-  end
-
-  rule space
-    /\s*/
   end
 
 end

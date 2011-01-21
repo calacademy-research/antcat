@@ -123,19 +123,19 @@ grammar Bolton::ReferenceGrammar
   end
 
   rule unformatted_phrase
-    span | phrase
+    span_phrase | phrase
   end
 
   rule bold_phrase
-    /<b>/ phrase /<\/b>/
+    bold phrase tag_end
   end 
 
   rule italicized_phrase
-    /<i>/ phrase /<\/i>/
+    italic phrase tag_end
   end
 
-  rule span
-    /<span>/ phrase /<\/span>/
+  rule span_phrase
+    span phrase tag_end
   end
 
 end
