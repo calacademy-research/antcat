@@ -1,3 +1,5 @@
+@import 'colors'
+
 // Meyer's reset CSS: http://meyerweb.com/eric/tools/css/reset/index.html
 html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td
   margin: 0
@@ -22,7 +24,7 @@ table
 // elements
 
 body
-  background-color: #71932d
+  background-color: $color_frame
   line-height: 16px
 
 body, textarea, input
@@ -52,18 +54,18 @@ label
   margin-right: 5px
 
 input[type=text], input[type=file], textarea
-  background-color: lightyellow
+  background-color: $color_input_background
 
 a, a:active, a:hover, a:focus, a:visited
-  color: green
+  color: $color_link
   text-decoration: none
   &:hover
-    color: lightgreen
+    color: $color_link_highlight
 
 p.help span.help a
-  color: green
+  color: $color_link
   &:hover
-    color: lightgreen
+    color: $color_link_highlight
 
 ///////////////////////////////////////////////////
 // classes
@@ -95,7 +97,7 @@ ul.error_messages
   padding: 0
   li
     font-size: small
-    color: red
+    color: $color_error
     font-style: italic
 
 ///////////////////////////////////////////////////
@@ -113,8 +115,8 @@ ul.error_messages
 #page
   width: 95%
   margin: 0 auto
-  background-color: #FFF
-  border: solid 1px black
+  background-color: $color_contents_background
+  border: solid 1px $color_border
   margin-top: 20px
 
 .pagination
@@ -148,10 +150,10 @@ ul.error_messages
   text-align: right
 
 #notice
-  color: blue
+  color: $color_notice
 
 #alert
-  color: red
+  color: $color_error
 
 
 #q

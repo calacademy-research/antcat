@@ -1,3 +1,5 @@
+@import 'colors'
+
 .pagination
   padding: 2px 40px 0 55px
 
@@ -28,12 +30,12 @@ td.reference_item
   padding: 0
 
 .reference_display
-  color: #4F4F4F
+  color: $color_reference_without_document
   &.downloadable
-    color: black
+    color: $color_reference_with_document
 
 .reference.about_to_be_deleted
-  background-color: lightyellow
+  background-color: $color_reference_highlight
 
 .reference_template, .reference_template_row
   display: none
