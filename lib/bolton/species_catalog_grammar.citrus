@@ -4,7 +4,11 @@ grammar Bolton::SpeciesCatalogGrammar
   include Bolton::CatalogGrammar
 
   rule record
-    header | blank | see_under | genus | species | not_understood
+    header | blank | genus_header | species | not_understood
+  end
+
+  rule genus_header
+    see_under | fossil_genus | genus
   end
 
   rule see_under
@@ -55,14 +59,24 @@ grammar Bolton::SpeciesCatalogGrammar
     /^<p>(&nbsp;|\s)*<\/p>$/
   end
 
+  rule fossil_genus
+    (fossil_flag genus) {
+      genus.value.merge :fossil => true
+    }
+  end
+
   rule genus
     (
       bold italic red
         uppercase_word
-      tag_end tag_end tag_end /.*/
+      tag_end tag_end tag_end region
     ) {
-      {:type => :genus, :genus => uppercase_word.downcase.capitalize}
+      {:type => :genus, :name => uppercase_word.downcase.capitalize}
     }
+  end
+
+  rule region
+    space parenthesized_phrase
   end
 
   rule species

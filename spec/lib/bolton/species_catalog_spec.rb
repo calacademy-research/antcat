@@ -19,8 +19,8 @@ describe Bolton::SpeciesCatalog do
       @species_catalog.import_html contents
     end
 
-#    it "should parse a header + see-under + genus-section without complaint" do
-#      contents = make_contents %{
+#   it "should parse a header + see-under + genus-section without complaint" do
+#     contents = make_contents %{
 #<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><i
 #style='mso-bidi-font-style:normal'>ACANTHOLEPIS</i>: see under <b
 #style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'>LEPISIOTA</i></b>.</p>
@@ -38,11 +38,11 @@ describe Bolton::SpeciesCatalog do
 #(s.w.) INDONESIA (Sulawesi).</p>
 
 #<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><o:p>&nbsp;</o:p></p>
-#      }
+#     }
 
-#      @species_catalog.logger.should_not_receive(:info)
-#      @species_catalog.import_html contents
-#    end
+   #  @species_catalog.logger.should_not_receive(:info)
+   #  @species_catalog.import_html contents
+   #end
 
   end
 
@@ -91,28 +91,17 @@ describe Bolton::SpeciesCatalog do
     end
   end
 
-  #describe 'parsing the genus header' do
-    #before do
-      #@species_contents = %q{
-#<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
-#style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
-#style='color:red'>brevicornis</span></i></b><i style='mso-bidi-font-style:normal'>.
-#Acanthognathus brevicornis</i> Smith, M.R. 1944c: 151 (w.q.) PANAMA. See also:
-#Brown &amp; Kempf, 1969: 94; Bolton, 2000: 16.</p>
-      #}
-    #end
-    #it "should recognize a valid, extant genus heading" do
-      #@species_catalog.import_html make_contents %{
-#<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
-#style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
-#style='color:red'>ACANTHOGNATHUS</span></i></b> (Neotropical)</p>
-      ##{@species_contents}
-      #}
-      #Species.count.should == 1
-      #Species.first.parent.name.should == 'Acanthognathus'
-      #Species.first.name.should == 'brevicornis'
-    #end
-  #end
+  describe 'parsing the genus header' do
+    it "should recognize a valid, extant genus heading" do
+      @species_catalog.parse("<b><i><span style='color:red'>ACANTHOGNATHUS</span></i></b> (Neotropical)").should == {:type => :genus, :name => 'Acanthognathus'}
+    end
+    it "should recognize multiple regions" do
+      @species_catalog.parse("<b><i><span style=\"color:red\">ACANTHOMYRMEX</span></i></b> (Oriental, Indo-Australian)").should == {:type => :genus, :name => 'Acanthomyrmex'}
+    end
+    it "should recognize a valid, fossil genus heading" do
+      @species_catalog.parse("*<b><i><span style='color:red'>AFROMYRMA</span></i></b> (Botswana)").should == {:type => :genus, :name => 'Afromyrma', :fossil => true}
+    end
+  end
 
   #describe 'parsing a species line' do
     #before do

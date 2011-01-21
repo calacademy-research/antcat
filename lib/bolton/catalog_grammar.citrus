@@ -1,0 +1,9 @@
+grammar Bolton::CatalogGrammar
+  rule fossil_flag
+    '*'
+  end
+
+  rule subgenus_flag
+    '#'
+  end
+end

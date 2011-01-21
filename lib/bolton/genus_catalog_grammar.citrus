@@ -65,6 +65,10 @@ grammar Bolton::GenusCatalogGrammar
     }
   end
 
+  rule parenthetical_note
+    ' ' parenthesized_phrase
+  end
+
   rule open_bracket
     '(' | '['
   end

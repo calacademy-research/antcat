@@ -63,8 +63,8 @@ grammar CommonGrammar
     /[[:upper:]][[:alpha:]]+/
   end
 
-  rule parenthetical_note
-    / \(.+?\)/
+  rule parenthesized_phrase
+    /\(.+?\)/
   end
 
   rule year
