@@ -10,7 +10,7 @@ class Reference < ActiveRecord::Base
   belongs_to :journal
   belongs_to :publisher
   belongs_to :source_reference, :polymorphic => true
-  has_one :document
+  has_one :document, :class_name => 'ReferenceDocument'
   accepts_nested_attributes_for :document, :reject_if => :all_blank
 
   searchable do

@@ -575,7 +575,7 @@ describe Reference do
     end
 
     it "should delegate to its document" do
-      reference = Factory :reference, :document => Factory(:document)
+      reference = Factory :reference, :document => Factory(:reference_document)
       user = Factory :user
       reference.document.should_receive(:downloadable_by?).with(user)
       reference.downloadable_by? user
@@ -587,7 +587,7 @@ describe Reference do
       Factory(:reference).url.should be_nil
     end
     it "should delegate to its document" do
-      reference = Factory :reference, :document => Factory(:document)
+      reference = Factory :reference, :document => Factory(:reference_document)
       reference.document.should_receive(:url)
       reference.url
     end
@@ -598,7 +598,7 @@ describe Reference do
       Factory(:reference).document_host = 'localhost'
     end
     it "should delegate to its document" do
-      reference = Factory :reference, :document => Factory(:document)
+      reference = Factory :reference, :document => Factory(:reference_document)
       reference.document.should_receive(:host=)
       reference.document_host = 'localhost'
     end

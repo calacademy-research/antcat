@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110120202235) do
+ActiveRecord::Schema.define(:version => 20110121225916) do
 
   create_table "antweb_taxonomy", :force => true do |t|
     t.datetime "created_at"
@@ -67,17 +67,6 @@ ActiveRecord::Schema.define(:version => 20110120202235) do
     t.text     "original"
   end
 
-  create_table "documents", :force => true do |t|
-    t.string   "url"
-    t.string   "file_file_name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "reference_id"
-    t.boolean  "public"
-  end
-
-  add_index "documents", ["reference_id"], :name => "documents_reference_id_idx"
-
   create_table "duplicate_references", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -123,6 +112,17 @@ ActiveRecord::Schema.define(:version => 20110120202235) do
   add_index "reference_author_names", ["author_name_id"], :name => "author_participations_author_id_idx"
   add_index "reference_author_names", ["reference_id", "position"], :name => "author_participations_reference_id_position_idx"
   add_index "reference_author_names", ["reference_id"], :name => "author_participations_reference_id_idx"
+
+  create_table "reference_documents", :force => true do |t|
+    t.string   "url"
+    t.string   "file_file_name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "reference_id"
+    t.boolean  "public"
+  end
+
+  add_index "reference_documents", ["reference_id"], :name => "documents_reference_id_idx"
 
   create_table "references", :force => true do |t|
     t.integer  "year"

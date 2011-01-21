@@ -11,9 +11,9 @@ class ReferencesController < ApplicationController
   end
 
   def download
-    document = Document.find params[:id]
+    document = ReferenceDocument.find params[:id]
     if document.downloadable_by? current_user
-      redirect_to Document.find(params[:id]).actual_url
+      redirect_to ReferenceDocument.find(params[:id]).actual_url
     else
       head 401
     end

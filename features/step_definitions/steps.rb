@@ -61,14 +61,14 @@ Given /the following entry nests it/ do |table|
 end
 
 Given /that the entry has a URL that's on our site( that is public)?/ do |is_public|
-  @reference.update_attribute :document, Document.create!
+  @reference.update_attribute :document, ReferenceDocument.create!
   @reference.document.update_attributes :url => "localhost/documents/#{@reference.document.id}/123.pdf",
                                         :file_file_name => '123.pdf',
                                         :public => is_public ? true : nil
 end
 
 Given /that the entry has a URL that's not on our site/ do
-  @reference.update_attribute :document, Document.create!
+  @reference.update_attribute :document, ReferenceDocument.create!
   @reference.document.update_attribute :url,  'google.com/foo'
 end
 

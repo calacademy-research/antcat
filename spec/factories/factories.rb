@@ -80,7 +80,7 @@ Factory.define :bolton_reference, :class => Bolton::Reference do |reference|
   reference.title 'New General Catalog'
 end
 
-Factory.define :document do |document|
+Factory.define :reference_document do |document|
 end
 
 Factory.define :antweb_taxonomy, :class => 'Antweb::Taxonomy' do |antweb_taxonomy|

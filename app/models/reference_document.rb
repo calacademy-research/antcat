@@ -1,4 +1,4 @@
-class Document < ActiveRecord::Base
+class ReferenceDocument < ActiveRecord::Base
   has_attached_file :file,
                     :url => ':s3_domain_url',
                     :path => ':id/:filename',

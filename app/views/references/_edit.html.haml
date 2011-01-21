@@ -63,7 +63,7 @@
             = label_tag :reference_citation, 'Citation'
             = f.text_area :citation, :rows => 2
 
-      - f.fields_for :document, reference.document || Document.new do |document_form|
+      - f.fields_for :document, reference.document || ReferenceDocument.new do |document_form|
         %tr
           %td= label_tag :document_url, 'Source URL'
           %td{:colspan => 3, :class => :right_side_field}

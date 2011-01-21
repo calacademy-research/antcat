@@ -22,7 +22,7 @@ describe Hol::DocumentUrlImporter do
 
     it "should not try to import if it already has a document" do
       no_document_url = Factory :reference
-      with_document_url = Factory :reference, :document => Factory(:document, :url => 'url.com/foo')
+      with_document_url = Factory :reference, :document => Factory(:reference_document, :url => 'url.com/foo')
       @bibliography.should_receive(:match).with(no_document_url).and_return({:document_url => 'url.com/foo'})
       @bibliography.should_not_receive(:match).with(with_document_url)
       @importer.import
