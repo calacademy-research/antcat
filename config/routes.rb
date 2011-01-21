@@ -11,6 +11,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :duplicate_references, :only => [:index]
   map.resources :publishers, :only => [:index]
   map.resources :species, :only => [:index]
+  map.resources :styles, :only => [:index]
 
   map.resources :taxatry, :singular => 't'
 

@@ -1,0 +1,10 @@
+- @title = 'AntCat Styles'
+
+- content_for :header do
+  %h1 AntCat Styles
+
+%table
+  - @sass_vars.each do |var|
+    %tr
+      %td= "#{var[0]}: #{var[1]}"
+      %td{:style => "background-color:#{var[1]};width:80%;height:32px;"} &nbsp;
