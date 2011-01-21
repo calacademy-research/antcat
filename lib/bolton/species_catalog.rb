@@ -37,15 +37,26 @@ class Bolton::SpeciesCatalog
   end
 
   def import_html html
-    doc = Nokogiri::HTML html
-    ps = doc.css('p')
-    ps.each do |p|
-      record = parse p.inner_html
-      case record[:type]
-      when :genus then @genus = record[:genus]
-      when :species then import_species record
-      end
+    initialize_scan html
+    parse_header
+    while @p
+      parse_see_under || parse_genus_section || parse_failed
     end
+  end
+
+  def parse_header
+    return unless @p && parse(@p)[:type] == :header
+    eat_blanks
+    true
+  end
+
+  def parse_see_under
+    return unless @p && parse(@p)[:type] == :see_under
+    eat_blanks
+    true
+  end
+
+  def parse_genus_section
   end
 
   def parse string
@@ -69,4 +80,34 @@ class Bolton::SpeciesCatalog
     Progress.tally_and_show_progress 100
   end
 
+  private
+  def initialize_scan html
+    doc = Nokogiri::HTML html
+    @ps = doc.css('p')
+    @index = 0
+    get_p
+  end
+
+  def parse_failed
+    complain "Couldn't parse: #{@p}"
+    get_p
+  end
+
+  def complain msg
+    @logger.info msg
+  end
+
+  def eat_blanks
+    while get_p && parse(@p)[:type] == :blank; end
+  end
+
+  def get_p
+    if @index >= @ps.size
+      @p = nil
+      return
+    end
+    @p = @ps[@index].inner_html
+    @index += 1
+    @p
+  end
 end
