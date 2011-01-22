@@ -47,7 +47,8 @@ class Bolton::SpeciesCatalog
 
   def import_files filenames
     @genus = nil
-    filenames.each do |filename|
+    #filenames.each do |filename|
+    [filenames.first].each do |filename|
       @filename = filename
       Progress.puts "Importing #{@filename}..."
       import_html File.read @filename

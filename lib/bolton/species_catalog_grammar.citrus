@@ -106,8 +106,14 @@ grammar Bolton::SpeciesCatalogGrammar
   end
 
   rule species
-    /.*?<i/ {
-      {:type => :species, :species => 'foo'}
+    available_valid_species
+  end
+
+  rule available_valid_species
+    (f:fossil_flag? bold italic red lowercase_word) {
+      value = {:type => :species, :name => lowercase_word}
+      value.merge! :fossil => true if find('f')[0].present?
+      value
     }
   end
 

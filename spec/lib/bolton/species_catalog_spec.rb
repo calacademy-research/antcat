@@ -169,7 +169,19 @@ Shattuck, 1992a: 13.</p>
     it "should handle a single nonbreaking space" do
       @species_catalog.parse(%{ }).should == {:type => :blank}
     end
+  end
 
+  describe "parsing species" do
+    it "should handle a normal species" do
+      @species_catalog.parse(%{
+<b><i><span style='color:red'>brevicornis</span></i></b><i>. Acanthognathus brevicornis</i> Smith, M.R. 1944c: 151 (w.q.) PANAMA. See also: Brown &amp; Kempf, 1969: 94; Bolton, 2000: 16.
+      }).should == {:type => :species, :name => 'brevicornis'}
+    end
+    it "should handle a fossil species" do
+      @species_catalog.parse(%{
+*<b><i><span style='color:red'>poinari</span></i></b><i>. *Acanthognathus poinari</i> Baroni Urbani, in Baroni Urbani &amp; De Andrade, 1994: 41, figs. 20, 21, 26, 27 (q.) DOMINICAN AMBER (Miocene). See also: Bolton, 2000: 17.
+      }).should == {:type => :species, :name => 'poinari', :fossil => true}
+    end
   end
 
   #describe 'parsing a species line' do
