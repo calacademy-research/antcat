@@ -38,7 +38,7 @@ class Bolton::SpeciesCatalog
   def initialize show_progress = false
     Progress.init show_progress
     Progress.open_log 'log/bolton_species_import.log'
-    @success_count = 0
+    @success_count = @error_count = 0
   end
 
   def clear
@@ -55,6 +55,7 @@ class Bolton::SpeciesCatalog
       Progress.puts
     end
     Progress.show_and_log_results
+    Progress.show_count @error_count, Progress.processed_count, 'parse failures'
   end
 
   def import_html html
@@ -95,6 +96,7 @@ class Bolton::SpeciesCatalog
   end
 
   def parse string
+    string.strip!
     v = Bolton::SpeciesCatalogGrammar.parse(string).value
     Progress.info v
     v
@@ -125,6 +127,7 @@ class Bolton::SpeciesCatalog
   end
 
   def parse_failed
+    @error_count += 1
     Progress.error "Couldn't parse: [#{@line}]"
     get_next_line
   end
