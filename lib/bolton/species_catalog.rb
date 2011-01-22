@@ -68,14 +68,14 @@ class Bolton::SpeciesCatalog
   def parse_header
     return unless @line && parse(@line)[:type] == :header
     Progress.info ">>>> HEADER"
-    eat_blanks
+    get_next_line
     true
   end
 
   def parse_see_under
     return unless @line && parse(@line)[:type] == :see_under
     Progress.info ">>>> SEE UNDER"
-    eat_blanks
+    get_next_line
     true
   end
 
@@ -84,14 +84,13 @@ class Bolton::SpeciesCatalog
     Progress.info ">>>> GENUS SECTION"
     get_next_line
     while parse_species; end
-    eat_blanks
     true
   end
 
   def parse_species
     return unless @line && parse(@line)[:type] == :species
     Progress.info ">>>> SPECIES"
-    eat_blanks
+    get_next_line
     true
   end
 
@@ -130,13 +129,13 @@ class Bolton::SpeciesCatalog
     get_next_line
   end
 
-  def eat_blanks
-    while get_next_line && parse(@line)[:type] == :blank
+  def get_next_line
+    while get_next_line_including_blanks && parse(@line)[:type] == :blank
       Progress.info '>>> BLANK'
     end
   end
 
-  def get_next_line
+  def get_next_line_including_blanks
     if @index >= @lines.size
       @line = nil
       return
