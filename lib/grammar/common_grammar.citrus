@@ -1,6 +1,6 @@
 grammar CommonGrammar
   rule space
-    ' '*
+    /(\s|\xC2\xA0|&nbsp;)*/
   end
 
   rule question_mark

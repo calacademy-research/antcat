@@ -68,11 +68,11 @@ grammar Bolton::SpeciesCatalogGrammar
   end
 
   rule blank_line
-    /^(&nbsp;|\s)*$/
+    /^/ space /$/
   end
 
   rule blank_string_in_paragraph
-    /^<p>(&nbsp;|\s)*<\/p>$/
+    /^/ '<p>' space '</p>' /$/
   end
 
   rule fossil_genus
