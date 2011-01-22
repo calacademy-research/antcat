@@ -39,26 +39,34 @@ class Bolton::SpeciesCatalog
   def import_html html
     initialize_scan html
     parse_header
-    while @p
+    while @line
       parse_see_under || parse_genus_section || parse_failed
     end
   end
 
   def parse_header
-    return unless @p && parse(@p)[:type] == :header
+    return unless @line && parse(@line)[:type] == :header
     eat_blanks
     true
   end
 
   def parse_see_under
-    return unless @p && parse(@p)[:type] == :see_under
+    return unless @line && parse(@line)[:type] == :see_under
     eat_blanks
     true
   end
 
   def parse_genus_section
-    return unless @p && parse(@p)[:type] == :genus
+    return unless @line && parse(@line)[:type] == :genus
+    get_next_line
+    while parse_species; end
     eat_blanks
+    true
+  end
+
+  def parse_species
+    return unless @line && parse(@line)[:type] == :species
+    get_next_line
     true
   end
 
@@ -85,14 +93,14 @@ class Bolton::SpeciesCatalog
   private
   def initialize_scan html
     doc = Nokogiri::HTML html
-    @ps = doc.css('p')
+    @lines = doc.css('p')
     @index = 0
-    get_p
+    get_next_line
   end
 
   def parse_failed
-    complain "Couldn't parse: #{@p}"
-    get_p
+    complain "Couldn't parse: #{@line}"
+    get_next_line
   end
 
   def complain msg
@@ -100,16 +108,16 @@ class Bolton::SpeciesCatalog
   end
 
   def eat_blanks
-    while get_p && parse(@p)[:type] == :blank; end
+    while get_next_line && parse(@line)[:type] == :blank; end
   end
 
-  def get_p
-    if @index >= @ps.size
-      @p = nil
+  def get_next_line
+    if @index >= @lines.size
+      @line = nil
       return
     end
-    @p = @ps[@index].inner_html.gsub /\n/, ' '
+    @line = @lines[@index].inner_html.gsub /\n/, ' '
     @index += 1
-    @p
+    @line
   end
 end

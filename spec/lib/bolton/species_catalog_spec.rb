@@ -19,30 +19,48 @@ describe Bolton::SpeciesCatalog do
       @species_catalog.import_html contents
     end
 
-#   it "should parse a header + see-under + genus-section without complaint" do
-#     contents = make_contents %{
-#<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><i
-#style='mso-bidi-font-style:normal'>ACANTHOLEPIS</i>: see under <b
-#style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'>LEPISIOTA</i></b>.</p>
+    it "should parse a header + see-under + genus-section without complaint" do
+      contents = make_contents %{
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><i
+style='mso-bidi-font-style:normal'>ACANTHOLEPIS</i>: see under <b
+style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'>LEPISIOTA</i></b>.</p>
 
-#<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><o:p>&nbsp;</o:p></p>
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><o:p>&nbsp;</o:p></p>
 
-#<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
-#style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
-#style='color:red'>ACANTHOMYRMEX</span></i></b> (Oriental, Indo-Australian)</p>
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
+style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
+style='color:red'>ACANTHOMYRMEX</span></i></b> (Oriental, Indo-Australian)</p>
 
-#<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
-#style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
-#style='color:red'>basispinosus</span></i></b><i style='mso-bidi-font-style:
-#normal'>. Acanthomyrmex basispinosus</i> Moffett, 1986c: 67, figs. 8A, 9-14
-#(s.w.) INDONESIA (Sulawesi).</p>
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
+style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
+style='color:red'>basispinosus</span></i></b><i style='mso-bidi-font-style:
+normal'>. Acanthomyrmex basispinosus</i> Moffett, 1986c: 67, figs. 8A, 9-14
+(s.w.) INDONESIA (Sulawesi).</p>
 
-#<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><o:p>&nbsp;</o:p></p>
-#     }
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><o:p>&nbsp;</o:p></p>
 
-   #  @species_catalog.logger.should_not_receive(:info)
-   #  @species_catalog.import_html contents
-   #end
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
+style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
+style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
+
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
+style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
+style='color:red'>anguliceps</span></i></b><i style='mso-bidi-font-style:normal'>.
+Iridomyrmex anguliceps</i> Forel, 1901b: 18 (q.m.) NEW GUINEA (Bismarck
+Archipelago). Combination in <i style='mso-bidi-font-style:normal'>Anonychomyrma</i>:
+Shattuck, 1992a: 13.</p>
+
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
+style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
+style='color:red'>angusta</span></i></b><i style='mso-bidi-font-style:normal'>.
+Iridomyrmex angustus</i> Stitz, 1911a: 369, fig. 15 (w.) NEW GUINEA.
+Combination in <i style='mso-bidi-font-style:normal'>Anonychomyrma</i>:
+Shattuck, 1992a: 13.</p>
+      }
+
+      @species_catalog.logger.should_not_receive(:info)
+      @species_catalog.import_html contents
+    end
 
   end
 
@@ -127,7 +145,7 @@ describe Bolton::SpeciesCatalog do
     end
     it "should handle an unidentifiable though valid genus" do
       @species_catalog.parse(%{<b><i><span style='color:green'>CONDYLODON</span></i></b> (Brazil)}).should == {:type => :genus, :name => 'Condylodon'}
-   end
+    end
 
   end
 
@@ -143,47 +161,47 @@ describe Bolton::SpeciesCatalog do
 
 
   #describe 'parsing a species line' do
-    #before do
-      #@genus_contents = %q{
-#<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
-#style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
-#style='color:red'>ACANTHOGNATHUS</span></i></b> (Neotropical)</p>
-      #}
-    #end
-    #it "should recognize a valid, extant species line" do
-      #@species_catalog.import_html make_contents %{
-      ##{@genus_contents}
-#<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
-#style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
-#style='color:red'>brevicornis</span></i></b><i style='mso-bidi-font-style:normal'>.
-#Acanthognathus brevicornis</i> Smith, M.R. 1944c: 151 (w.q.) PANAMA. See also:
-#Brown &amp; Kempf, 1969: 94; Bolton, 2000: 16.</p>
-      #}
-      #Species.count.should == 1
-      #Species.first.parent.name.should == 'Acanthognathus'
-      #Species.first.name.should == 'brevicornis'
-    #end
+  #before do
+  #@genus_contents = %q{
+  #<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
+  #style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
+  #style='color:red'>ACANTHOGNATHUS</span></i></b> (Neotropical)</p>
+  #}
+  #end
+  #it "should recognize a valid, extant species line" do
+  #@species_catalog.import_html make_contents %{
+  ##{@genus_contents}
+  #<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
+  #style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
+  #style='color:red'>brevicornis</span></i></b><i style='mso-bidi-font-style:normal'>.
+  #Acanthognathus brevicornis</i> Smith, M.R. 1944c: 151 (w.q.) PANAMA. See also:
+  #Brown &amp; Kempf, 1969: 94; Bolton, 2000: 16.</p>
+  #}
+  #Species.count.should == 1
+  #Species.first.parent.name.should == 'Acanthognathus'
+  #Species.first.name.should == 'brevicornis'
+  #end
   #end
 
-#  describe 'a genus with a little tiny space in it' do
-#    it "should still work" do
-#      @species_catalog.import_html make_contents %{
-#<p class=MsoNormal style='text-align:justify'><b style='mso-bidi-font-weight:
-#normal'><i style='mso-bidi-font-style:normal'><span style='color:red'>APHAENOGASTER</span></i></b>
-#(Worldwide except Afrotropical)</p>
+  #  describe 'a genus with a little tiny space in it' do
+  #    it "should still work" do
+  #      @species_catalog.import_html make_contents %{
+  #<p class=MsoNormal style='text-align:justify'><b style='mso-bidi-font-weight:
+  #normal'><i style='mso-bidi-font-style:normal'><span style='color:red'>APHAENOGASTER</span></i></b>
+  #(Worldwide except Afrotropical)</p>
 
-#<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
-#style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
-#style='color:red'>aktaci</span></i></b><i style='mso-bidi-font-style:normal'>.
-#Aphaenogaster (Attomyrma) aktaci</i> Kiran &amp; Tezcan, in Kiran, <i
-#style='mso-bidi-font-style:normal'>et al</i>. 2008: 690, fig. 1 (w.) TURKEY.</p>
+  #<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
+  #style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
+  #style='color:red'>aktaci</span></i></b><i style='mso-bidi-font-style:normal'>.
+  #Aphaenogaster (Attomyrma) aktaci</i> Kiran &amp; Tezcan, in Kiran, <i
+  #style='mso-bidi-font-style:normal'>et al</i>. 2008: 690, fig. 1 (w.) TURKEY.</p>
 
-#      }
-#      Species.count.should == 1
-#      Species.first.parent.name.should == 'Aphaenogaster'
-#      Species.first.name.should == 'aktaci'
-#    end
-#  end
+  #      }
+  #      Species.count.should == 1
+  #      Species.first.parent.name.should == 'Aphaenogaster'
+  #      Species.first.name.should == 'aktaci'
+  #    end
+  #  end
 
   def make_contents content
     %{
@@ -196,7 +214,7 @@ SPECIES-GROUP TAXA<o:p></o:p></b></p>
 <p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><o:p>&nbsp;</o:p></p>
 <p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><o:p>&nbsp;</o:p></p>
 <p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'>
-#{content}
+      #{content}
 <p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><o:p>&nbsp;</o:p></p>
 </div> </body> </html>
     }

@@ -106,12 +106,8 @@ grammar Bolton::SpeciesCatalogGrammar
   end
 
   rule species
-    (
-      bold italic red
-        lowercase_word 
-      tag_end tag_end tag_end /.*/
-    ) {
-      {:type => :species, :species => lowercase_word}
+    /.*/ {
+      {:type => :species, :species => 'foo'}
     }
   end
 
