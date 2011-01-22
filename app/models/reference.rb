@@ -43,16 +43,28 @@ class Reference < ActiveRecord::Base
     :conditions => 'reference_author_names.position = 1',
     :order => 'name ASC'
 
-  named_scope :with_principal_author_last_name, lambda {|last_name| {:conditions => ['principal_author_last_name = ?', last_name]}}
+  named_scope :with_principal_author_last_name, lambda {|last_name| {:conditions => ['principal_author_last_name_cache = ?', last_name]}}
 
   def authors reload = false
     author_names(reload).map(&:author)
   end
 
+  def author_names_string
+    author_names_string_cache
+  end
+
+  def author_names_string= string
+    self.author_names_string_cache = string
+  end
+
+  def principal_author_last_name
+    principal_author_last_name_cache
+  end
+
   def self.do_search string = nil, page = nil, sort_by_reverse_updated_at = false, sort_by_reverse_created_at = false
     return paginate(:order => 'updated_at DESC', :page => page) if sort_by_reverse_updated_at
     return paginate(:order => 'created_at DESC', :page => page) if sort_by_reverse_created_at
-    return paginate(:order => 'author_names_string, citation_year', :page => page) unless string.present?
+    return paginate(:order => 'author_names_string_cache, citation_year', :page => page) unless string.present?
     string = string.dup
 
     if match = string.match(/\d{5,}/)
@@ -128,8 +140,8 @@ class Reference < ActiveRecord::Base
 
   def update_author_names_caches _ = nil
     string, principal_author_last_name = make_author_names_caches
-    update_attribute :author_names_string, string
-    update_attribute :principal_author_last_name, principal_author_last_name
+    update_attribute :author_names_string_cache, string
+    update_attribute :principal_author_last_name_cache, principal_author_last_name
   end
 
 
@@ -195,8 +207,8 @@ class Reference < ActiveRecord::Base
     return string, last_name
   end
 
-  def set_author_names_caches _ = nil
-    self.author_names_string, self.principal_author_last_name = make_author_names_caches
+  def set_author_names_caches(*)
+    self.author_names_string_cache, self.principal_author_last_name_cache = make_author_names_caches
   end
 
   def set_year

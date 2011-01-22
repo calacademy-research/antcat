@@ -349,20 +349,26 @@ describe Reference do
   describe "author_names_string" do
     describe "formatting" do
       it "should consist of one author_name if that's all there is" do
-        @reference = Factory(:reference, :author_names => [Factory(:author_name, :name => 'Fisher, B.L.')])
-        @reference.author_names_string.should == 'Fisher, B.L.'
+        reference = Factory(:reference, :author_names => [Factory(:author_name, :name => 'Fisher, B.L.')])
+        reference.author_names_string.should == 'Fisher, B.L.'
       end
 
       it "should separate multiple author_names with semicolons" do
         author_names = [Factory(:author_name, :name => 'Fisher, B.L.'), Factory(:author_name, :name => 'Ward, P.S.')]
-        @reference = Factory(:reference, :author_names => author_names)
-        @reference.author_names_string.should == 'Fisher, B.L.; Ward, P.S.'
+        reference = Factory(:reference, :author_names => author_names)
+        reference.author_names_string.should == 'Fisher, B.L.; Ward, P.S.'
       end
 
       it "should include the author_names' suffix" do
         author_names = [Factory(:author_name, :name => 'Fisher, B.L.'), Factory(:author_name, :name => 'Ward, P.S.')]
-        @reference = Reference.create! :title => 'Ants', :citation_year => '2010', :author_names => author_names, :author_names_suffix => ' (eds.)'
-        @reference.author_names_string.should == 'Fisher, B.L.; Ward, P.S. (eds.)'
+        reference = Reference.create! :title => 'Ants', :citation_year => '2010', :author_names => author_names, :author_names_suffix => ' (eds.)'
+        reference.reload.author_names_string.should == 'Fisher, B.L.; Ward, P.S. (eds.)'
+      end
+
+      it "should be possible to read from and assign to, aliased to author_names_string_cached" do
+        reference = Factory :reference
+        reference.author_names_string = 'foo'
+        reference.author_names_string.should == 'foo'
       end
     end
 
@@ -424,6 +430,11 @@ describe Reference do
       reference = Factory :reference, :author_names => [@ward]
       @ward.update_attributes :name => 'Bolton, B.'
       reference.reload.principal_author_last_name.should == 'Bolton'
+    end
+    it "should be possible to read from, aliased to principal_author_last_name_cached" do
+      reference = Factory :reference
+      reference.principal_author_last_name_cache = 'foo'
+      reference.principal_author_last_name.should == 'foo'
     end
   end
 
@@ -609,20 +620,20 @@ describe Reference do
       not_possible_reference = Factory :book_reference, :author_names => [Factory(:author_name, :name => 'Bolton, B.')]
       possible_reference = Factory :article_reference, :author_names => [Factory(:author_name, :name => 'Ward, P. S.'), Factory(:author_name, :name => 'Fisher, B. L.')]
       another_possible_reference = Factory :article_reference, :author_names => [Factory(:author_name, :name => 'Warden, J.')]
-      Reference.with_principal_author_last_name('Ward').should =~ [possible_reference]
+      Reference.with_principal_author_last_name('Ward').should == [possible_reference]
     end
   end
 
   describe 'implementing ReferenceComparable' do
     it 'should map all fields correctly' do
-      @reference = ArticleReference.create! :author_names => [Factory :author_name, :name => 'Fisher, B. L.'], :citation_year => '1981',
+      reference = ArticleReference.create! :author_names => [Factory :author_name, :name => 'Fisher, B. L.'], :citation_year => '1981',
         :title => 'Dolichoderinae', :journal => Factory(:journal), :series_volume_issue => '1(2)', :pagination => '22-54'
-      @reference.author.should == 'Fisher'
-      @reference.year.should == 1981
-      @reference.title.should == 'Dolichoderinae'
-      @reference.type.should == 'ArticleReference'
-      @reference.series_volume_issue.should == '1(2)'
-      @reference.pagination.should == '22-54'
+      reference.author.should == 'Fisher'
+      reference.year.should == 1981
+      reference.title.should == 'Dolichoderinae'
+      reference.type.should == 'ArticleReference'
+      reference.series_volume_issue.should == '1(2)'
+      reference.pagination.should == '22-54'
     end
   end
 

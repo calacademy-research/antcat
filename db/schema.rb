@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110121225916) do
+ActiveRecord::Schema.define(:version => 20110122231930) do
 
   create_table "antweb_taxonomy", :force => true do |t|
     t.datetime "created_at"
@@ -139,7 +139,7 @@ ActiveRecord::Schema.define(:version => 20110121225916) do
     t.string   "pagination"
     t.integer  "source_reference_id"
     t.string   "source_reference_type"
-    t.string   "author_names_string"
+    t.string   "author_names_string_cache"
     t.text     "editor_notes"
     t.text     "public_notes"
     t.text     "taxonomic_notes"
@@ -150,10 +150,10 @@ ActiveRecord::Schema.define(:version => 20110121225916) do
     t.string   "pages_in"
     t.string   "author_names_suffix"
     t.string   "source_file_name"
-    t.string   "principal_author_last_name"
+    t.string   "principal_author_last_name_cache"
   end
 
-  add_index "references", ["author_names_string", "citation_year"], :name => "references_author_names_string_citation_year_idx"
+  add_index "references", ["author_names_string_cache", "citation_year"], :name => "references_author_names_string_citation_year_idx"
   add_index "references", ["created_at"], :name => "references_created_at_idx"
   add_index "references", ["updated_at"], :name => "references_updated_at_idx"
 

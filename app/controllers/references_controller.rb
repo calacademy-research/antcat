@@ -73,7 +73,7 @@ class ReferencesController < ApplicationController
   end
 
   def set_authors
-    author_names_string = params[:reference][:author_names_string]
+    author_names_string = params[:reference].delete(:author_names_string)
     authors_data = AuthorName.import_author_names_string(author_names_string.dup)
     if authors_data[:author_names].empty? && author_names_string.present?
       @reference.errors.add :author_names_string, "couldn't be parsed. Please post a message on http://groups.google.com/group/antcat/, and we'll fix it!"
