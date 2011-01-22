@@ -8,15 +8,42 @@
 #  To import these files, run
 #    rake bolton:import:species
 
-class Bolton::SpeciesCatalog
+require 'progress'
+
+class Progress
   attr_reader :logger
 
-  def initialize show_progress = false
-    Progress.init show_progress
-    file = File.open 'log/bolton_species_import.log', 'w'
+  def self.open_log name
+    file = File.open name, 'w'
     file.sync = true
     @logger = Logger.new file
+  end
+
+  def self.info string
+    @logger.info string
+    puts string
+  end
+
+  def self.error string
+    @logger.error string
+    puts "ERROR: " + string
+  end
+
+  def self.show_and_log_results
+    @logger.info Progress.results_string
+    show_results
+  end
+end
+
+class Bolton::SpeciesCatalog
+  def initialize show_progress = false
+    Progress.init show_progress
+    Progress.open_log 'log/bolton_species_import.log'
     @success_count = 0
+  end
+
+  def logger
+    Progress.logger
   end
 
   def clear
@@ -32,8 +59,7 @@ class Bolton::SpeciesCatalog
       Progress.show_results
       Progress.puts
     end
-    Progress.show_results
-    @logger.info Progress.results_string
+    Progress.show_and_log_results
   end
 
   def import_html html
@@ -46,18 +72,21 @@ class Bolton::SpeciesCatalog
 
   def parse_header
     return unless @line && parse(@line)[:type] == :header
+    Progress.info ">>>> HEADER"
     eat_blanks
     true
   end
 
   def parse_see_under
     return unless @line && parse(@line)[:type] == :see_under
+    Progress.info ">>>> SEE UNDER"
     eat_blanks
     true
   end
 
   def parse_genus_section
     return unless @line && parse(@line)[:type] == :genus
+    Progress.info ">>>> GENUS SECTION"
     get_next_line
     while parse_species; end
     eat_blanks
@@ -66,23 +95,26 @@ class Bolton::SpeciesCatalog
 
   def parse_species
     return unless @line && parse(@line)[:type] == :species
-    get_next_line
+    Progress.info ">>>> SPECIES"
+    eat_blanks
     true
   end
 
   def parse string
-    Bolton::SpeciesCatalogGrammar.parse(string).value
+    v = Bolton::SpeciesCatalogGrammar.parse(string).value
+    Progress.info v
+    v
   rescue Citrus::ParseError => e
-    @logger.info 'Parse error'
-    @logger.info e
+    Progress.error 'Parse error'
+    Progress.error e
     nil
   end
 
   def import_species record
     unless @genus
-      @logger.info 'No genus'
-      @logger.info @filename
-      @logger.info record
+      Progress.error 'No genus'
+      Progress.error @filename
+      Progress.error record
       return
     end
     genus = Genus.find_or_create_by_name @genus
@@ -99,16 +131,14 @@ class Bolton::SpeciesCatalog
   end
 
   def parse_failed
-    complain "Couldn't parse: #{@line}"
+    Progress.error "Couldn't parse: [#{@line}]"
     get_next_line
   end
 
-  def complain msg
-    @logger.info msg
-  end
-
   def eat_blanks
-    while get_next_line && parse(@line)[:type] == :blank; end
+    while get_next_line && parse(@line)[:type] == :blank
+      Progress.info '>>> BLANK'
+    end
   end
 
   def get_next_line
@@ -118,6 +148,7 @@ class Bolton::SpeciesCatalog
     end
     @line = @lines[@index].inner_html.gsub /\n/, ' '
     @index += 1
+    Progress.info "\n[" + @line + "]"
     @line
   end
 end

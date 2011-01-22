@@ -15,7 +15,7 @@ describe Bolton::SpeciesCatalog do
   describe 'parsing the file as a whole' do
     it 'should complain bitterly if file is obviously not a species catalog' do
       contents = %{<html><body> <p>Foo</p> </body></html>}
-      @species_catalog.logger.should_receive(:info).with("Couldn't parse: Foo")
+      @species_catalog.logger.should_receive(:error).with("Couldn't parse: [Foo]")
       @species_catalog.import_html contents
     end
 
@@ -58,7 +58,7 @@ Combination in <i style='mso-bidi-font-style:normal'>Anonychomyrma</i>:
 Shattuck, 1992a: 13.</p>
       }
 
-      @species_catalog.logger.should_not_receive(:info)
+      @species_catalog.logger.should_not_receive(:error)
       @species_catalog.import_html contents
     end
 
