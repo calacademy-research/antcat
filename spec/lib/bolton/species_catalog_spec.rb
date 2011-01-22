@@ -105,7 +105,7 @@ Shattuck, 1992a: 13.</p>
       @species_catalog.parse("*<i>PALAEOMYRMEX</i> Dlussky, 1975: see under *<b><i>DLUSSKYIDRIS</i></b>").should == {:type => :see_under}
     end
     it "should not simply consider everything with 'see under' in it as a see-under" do
-      @species_catalog.parse("*<i>PALAEOMYRMEX</i> Dlussky, 1975: see under").should == {:type => :not_understood}
+      @species_catalog.parse("*<b>PALAEOMYRMEX</b> Dlussky, 1975: see under").should == {:type => :not_understood}
     end
   end
 

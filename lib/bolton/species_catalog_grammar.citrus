@@ -106,7 +106,7 @@ grammar Bolton::SpeciesCatalogGrammar
   end
 
   rule species
-    /.*/ {
+    /.*?<i/ {
       {:type => :species, :species => 'foo'}
     }
   end
