@@ -11,8 +11,6 @@
 require 'progress'
 
 class Progress
-  attr_reader :logger
-
   def self.open_log name
     file = File.open name, 'w'
     file.sync = true
@@ -25,8 +23,9 @@ class Progress
   end
 
   def self.error string
+    string = '*** ERROR: ' + string
     @logger.error string
-    puts "ERROR: " + string
+    puts string
   end
 
   def self.show_and_log_results
@@ -40,10 +39,6 @@ class Bolton::SpeciesCatalog
     Progress.init show_progress
     Progress.open_log 'log/bolton_species_import.log'
     @success_count = 0
-  end
-
-  def logger
-    Progress.logger
   end
 
   def clear
