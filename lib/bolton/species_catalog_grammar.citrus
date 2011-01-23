@@ -106,7 +106,7 @@ grammar Bolton::SpeciesCatalogGrammar
   end
 
   rule species
-    available_valid_species
+    available_valid_species | not_valid_species
   end
 
   rule available_valid_species
@@ -114,6 +114,12 @@ grammar Bolton::SpeciesCatalogGrammar
       value = {:type => :species, :name => lowercase_word}
       value.merge! :fossil => true if find('f')[0].present?
       value
+    }
+  end
+
+  rule not_valid_species
+    (italic black lowercase_word) {
+      {:type => :species, :name => lowercase_word, :not_valid => true}
     }
   end
 
