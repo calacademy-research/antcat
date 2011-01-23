@@ -118,7 +118,7 @@ grammar Bolton::SpeciesCatalogGrammar
   end
 
   rule not_valid_species
-    (italic black lowercase_word) {
+    ((italic black lowercase_word) | (italic lowercase_word space tag_end author ', ' year)) {
       {:type => :species, :name => lowercase_word, :not_valid => true}
     }
   end

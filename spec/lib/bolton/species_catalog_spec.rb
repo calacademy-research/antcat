@@ -187,6 +187,12 @@ Shattuck, 1992a: 13.</p>
 <i><span style='color:black'>dyak.</span> Acanthomyrmex dyak</i> Wheeler, W.M. 1919e: 86 (s.w.) BORNEO. Junior synonym of <i>ferox</i>: Moffett, 1986c: 70.
       }).should == {:type => :species, :name => 'dyak', :not_valid => true}
     end
+    it "should handle a non-valid species with an author" do
+      @species_catalog.parse(%{
+<i>aurea </i>Forel, 1913; see under <b><i>HETEROPONERA</i></b>.
+      }).should == {:type => :species, :name => 'aurea', :not_valid => true}
+    end
+
   end
 
   #describe 'parsing a species line' do
