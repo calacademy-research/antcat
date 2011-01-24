@@ -27,6 +27,28 @@ class Progress
     print '.'
   end
 
+  def self.open_log name
+    file = File.open name, 'w'
+    file.sync = true
+    @logger = Logger.new file
+  end
+
+  def self.info string
+    @logger.info string
+    puts string
+  end
+
+  def self.error string
+    string = '*** ERROR: ' + string
+    @logger.error string
+    puts string
+  end
+
+  def self.show_and_log_results
+    @logger.info Progress.results_string
+    show_results
+  end
+
   def self.rate processed_count = nil
     processed_count ||= @processed_count
     sprintf "%.2f/sec", rate_per_sec(processed_count)

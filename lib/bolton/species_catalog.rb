@@ -8,32 +8,6 @@
 #  To import these files, run
 #    rake bolton:import:species
 
-require 'progress'
-
-class Progress
-  def self.open_log name
-    file = File.open name, 'w'
-    file.sync = true
-    @logger = Logger.new file
-  end
-
-  def self.info string
-    @logger.info string
-    puts string
-  end
-
-  def self.error string
-    string = '*** ERROR: ' + string
-    @logger.error string
-    puts string
-  end
-
-  def self.show_and_log_results
-    @logger.info Progress.results_string
-    show_results
-  end
-end
-
 class Bolton::SpeciesCatalog
   def initialize show_progress = false
     Progress.init show_progress
