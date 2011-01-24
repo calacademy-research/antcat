@@ -14,9 +14,7 @@ namespace :bolton do
     end
     desc "Import Bolton species catalog documents"
     task :species => :environment do
-      catalog = Bolton::SpeciesCatalog.new(true)
-      catalog.clear
-      catalog.import_files Dir.glob 'data/bolton/NGC-Sp*.htm'
+      Bolton::SpeciesCatalog.new(true).import_files Dir.glob 'data/bolton/NGC-Sp*.htm'
     end
     desc "Import genera and species"
     task :taxa => ['bolton:import:genera', 'bolton:import:species']

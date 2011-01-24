@@ -15,14 +15,10 @@ class Bolton::SpeciesCatalog
     @success_count = @error_count = 0
   end
 
-  def clear
-    Species.delete_all
-  end
-
   def import_files filenames
+    Species.delete_all
     @genus = nil
-    #filenames.each do |filename|
-    [filenames.first].each do |filename|
+    filenames.each do |filename|
       @filename = filename
       Progress.puts "Importing #{@filename}..."
       import_html File.read @filename
