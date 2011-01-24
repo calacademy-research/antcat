@@ -2,7 +2,7 @@ module AuthorParser
 
   def self.parse string
     return {:names => []} unless string.present?
-    match = AuthorGrammar.parse(string)
+    match = AuthorGrammar.parse(string, :consume => false)
     result = match.value
 
     string.gsub! /#{Regexp.escape match}/, ''

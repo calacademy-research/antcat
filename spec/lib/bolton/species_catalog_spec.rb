@@ -90,7 +90,7 @@ Shattuck, 1992a: 13.</p>
       @species_catalog.parse("<i>AROTROPUS</i>: see under <b><i>AMBLYOPONE</i></b>").should == {:type => :see_under}
     end
     it "should not freak if there's no colon after the referer" do
-      @species_catalog.parse("<i>ASKETOGENYS</i> see under <b><i>PYRAMICA</i></b><i>AROTROPUS</i>").should == {:type => :see_under}
+      @species_catalog.parse("<i>ASKETOGENYS</i> see under <b><i>PYRAMICA</i></b>").should == {:type => :see_under}
     end
     it "should handle space between the referer and the colon" do
       @species_catalog.parse("<i>MACROMISCHOIDES</i> : see under <b><i>TETRAMORIUM</i></b>").should == {:type => :see_under}
@@ -151,7 +151,7 @@ Shattuck, 1992a: 13.</p>
 
   describe "parsing an unidentifiable genus header" do
     it "should handle an ichnotaxon" do
-      @species_catalog.parse(%{*<i><span style='color:green'>ATTAICHNUS</span></i> (ichnotaxon)</p>}).should == {:type => :genus, :name => 'Attaichnus', :unidentifiable => true, :fossil => true}
+      @species_catalog.parse(%{*<i><span style='color:green'>ATTAICHNUS</span></i> (ichnotaxon)}).should == {:type => :genus, :name => 'Attaichnus', :unidentifiable => true, :fossil => true}
     end
     it "should handle transferred genus" do
       @species_catalog.parse(%{*<i><span style="color:green">PALAEOMYRMEX</span></i> Heer, 1865: transferred to <b><i>HOMOPTERA</i></b>.}).should == {:type => :genus, :name => 'Palaeomyrmex', :unidentifiable => true, :fossil => true}

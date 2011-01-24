@@ -28,7 +28,7 @@ style='color:red'>ACANTHOGNATHUS</span></i></b> [Myrmicinae: Dacetini]}
     end
 
     it 'should parse an unidentifiable genus name' do
-      line = %{*<b><i><span style='color:green'>ATTAICHNUS</span></i></b> [Myrmicinae: Attini]</p>}
+      line = %{*<b><i><span style='color:green'>ATTAICHNUS</span></i></b> [Myrmicinae: Attini]}
       Bolton::GenusCatalogParser.parse(line).should == :unidentifiable
     end
 

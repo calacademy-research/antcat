@@ -9,8 +9,8 @@ grammar Bolton::ReferenceGrammar
   rule unknown_reference
     (authors citation_year '.'? ' '? title_and_citation:(.*)) {
       {
-        :title => title_and_citation,
-        :citation_year => citation_year,
+        :title => title_and_citation.to_s,
+        :citation_year => citation_year.to_s,
         :authors => authors.strip,
         :reference_type => 'UnknownReference'
       }
@@ -21,7 +21,7 @@ grammar Bolton::ReferenceGrammar
     (authors citation_year '.'? ' '? nested_title nested_pagination '. ' 'In ' nested_citation) {
       {
         :title => nested_title.strip,
-        :citation_year => citation_year,
+        :citation_year => citation_year.to_s,
         :pagination => nested_pagination.strip,
         :authors => authors.strip,
         :reference_type => 'NestedReference'
@@ -45,14 +45,13 @@ grammar Bolton::ReferenceGrammar
     (authors citation_year '.'? ' '? article_title journal ' '? series_volume_issue ': ' pagination ('.' | ',') (' ' note)?) {
       value = 
         { :authors => authors.strip,
-          :citation_year => citation_year,
-          :title => article_title,
-          :journal => journal,
-          :series_volume_issue => series_volume_issue,
-          :pagination => pagination,
+          :citation_year => citation_year.to_s,
+          :title => article_title.to_s,
+          :journal => journal.to_s,
+          :series_volume_issue => series_volume_issue.to_s,
+          :pagination => pagination.to_s,
           :reference_type => 'ArticleReference'
         }
-      note = find('note')[0]
       value[:note] = note.value if note
       value
     }
@@ -70,13 +69,12 @@ grammar Bolton::ReferenceGrammar
     (authors citation_year '. ' book_title ': ' pagination place '.' (space note)?) {
       value =
         { :authors => authors.strip,
-          :citation_year => citation_year,
-          :title => book_title,
-          :place => place,
-          :pagination => pagination,
+          :citation_year => citation_year.to_s,
+          :title => book_title.to_s,
+          :place => place.to_s,
+          :pagination => pagination.to_s,
           :reference_type => 'BookReference'
         }
-      note = find('note')[0]
       value[:note] = note.value if note
       value
     }

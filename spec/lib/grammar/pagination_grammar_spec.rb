@@ -23,7 +23,7 @@ describe PaginationGrammar do
   end
 
   it "shouldn't consider '4th' a pagination" do 
-    PaginationGrammar.parse('4th').should == '4'
+    PaginationGrammar.parse('4th', :consume => false).should == '4'
   end
 
   it 'should handle a space after a hyphen' do

@@ -40,17 +40,17 @@ grammar Bolton::SpeciesCatalogGrammar
   end
 
   rule unidentifiable_genus
-    (f:fossil_flag? italic green uppercase_word tag_end tag_end space parenthesized_phrase) {
+    (fossil_flag? italic green uppercase_word tag_end tag_end space parenthesized_phrase) {
       value = {:type => :genus, :name => uppercase_word.downcase.capitalize, :unidentifiable => true}
-      value.merge! :fossil => true if find('f')[0].present?
+      value.merge! :fossil => true unless fossil_flag.blank?
       value
     }
   end
 
   rule transferred_genus
-    (f:fossil_flag? italic green uppercase_word /.*?transferred to.*/) {
+    (fossil_flag? italic green uppercase_word /.*?transferred to.*/) {
       value = {:type => :genus, :name => uppercase_word.downcase.capitalize, :unidentifiable => true}
-      value.merge! :fossil => true if find('f')[0].present?
+      value.merge! :fossil => true unless fossil_flag.blank?
       value
     }
   end
@@ -110,15 +110,15 @@ grammar Bolton::SpeciesCatalogGrammar
   end
 
   rule available_valid_species
-    (f:fossil_flag? bold italic red lowercase_word) {
+    ((fossil_flag? bold italic red lowercase_word) /.*/) {
       value = {:type => :species, :name => lowercase_word}
-      value.merge! :fossil => true if find('f')[0].present?
+      value.merge! :fossil => true unless fossil_flag.blank?
       value
     }
   end
 
   rule not_valid_species
-    ((italic black lowercase_word) | (italic lowercase_word space tag_end author ', ' year)) {
+    (((italic black lowercase_word) | (italic lowercase_word space tag_end author ', ' year)) /.*/) {
       {:type => :species, :name => lowercase_word, :not_valid => true}
     }
   end

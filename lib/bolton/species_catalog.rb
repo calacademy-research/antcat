@@ -104,6 +104,7 @@ class Bolton::SpeciesCatalog
   rescue Citrus::ParseError => e
     Progress.error 'Parse error'
     Progress.error e
+    p e
     nil
   end
 

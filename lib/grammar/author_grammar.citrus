@@ -2,17 +2,13 @@ grammar AuthorGrammar
   include CommonGrammar
 
   rule author_names
-    (author rest_of_authors space) {
-      {:names => find('author'), :suffix => find('suffix').first}
+    (author (author_separator space author)* suffix? space) {
+      {:names => captures[:author].map(&:to_s), :suffix => suffix}
     }
   end
 
-  rule rest_of_authors
-    suffix | (author_separator space author rest_of_authors) | ('.'? space)
-  end
-
   rule author
-    phrase (',' initial+)? author_suffix?
+    !suffix phrase (',' initial+)? author_suffix?
   end
 
   rule author_suffix

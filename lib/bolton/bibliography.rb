@@ -43,9 +43,10 @@ class Bolton::Bibliography
     begin
       original = pre_parse!(string).dup
       return unless reference? string
-      attributes = Bolton::ReferenceGrammar.parse(string).value
+      attributes = Bolton::ReferenceGrammar.parse(string, :consume => false).value
       post_parse attributes
-      reference = Bolton::Reference.create! attributes.merge :original => original
+      attributes.merge! :original => original
+      reference = Bolton::Reference.create! attributes
     rescue Citrus::ParseError => e
       puts e
     end
