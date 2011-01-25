@@ -238,6 +238,11 @@ Shattuck, 1992a: 13.</p>
 *<b><i><span style='color:red'>poinari</span></i></b><i>. *Acanthognathus poinari</i> Baroni Urbani, in Baroni Urbani &amp; De Andrade, 1994: 41, figs. 20, 21, 26, 27 (q.) DOMINICAN AMBER (Miocene). See also: Bolton, 2000: 17.
       }).should == {:type => :species, :name => 'poinari', :fossil => true}
     end
+    it "should handle a fossil species with the prefix in another order" do
+      @species_catalog.parse(%{
+<i>*<b><span style="color:red">groehni</span></b>. *Amblyopone groehni</i> Dlussky, 2009: 1046, figs. 2a,b (w.) BALTIC AMBER (Eocene).
+      }).should == {:type => :species, :name => 'groehni', :fossil => true}
+    end
     it "should handle a non-valid species" do
       @species_catalog.parse(%{
 <i><span style='color:black'>dyak.</span> Acanthomyrmex dyak</i> Wheeler, W.M. 1919e: 86 (s.w.) BORNEO. Junior synonym of <i>ferox</i>: Moffett, 1986c: 70.
