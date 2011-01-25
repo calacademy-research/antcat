@@ -1,4 +1,5 @@
 grammar Bolton::CatalogGrammar
+
   rule fossil_flag
     '*'
   end
@@ -6,4 +7,9 @@ grammar Bolton::CatalogGrammar
   rule subgenus_flag
     '#'
   end
+
+  rule subspecies_flag
+    '#'
+  end
+
 end

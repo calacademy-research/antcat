@@ -62,6 +62,59 @@ Shattuck, 1992a: 13.</p>
       @species_catalog.import_html contents
     end
 
+    it "should recover from one species it can't parse and continue with the rest" do
+      contents = make_contents %{
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
+style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
+style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
+
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
+style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
+style='color:red'>anguliceps</span></i></b><i style='mso-bidi-font-style:normal'>.
+Iridomyrmex anguliceps</i> Forel, 1901b: 18 (q.m.) NEW GUINEA (Bismarck
+Archipelago). Combination in <i style='mso-bidi-font-style:normal'>Anonychomyrma</i>:
+Shattuck, 1992a: 13.</p>
+
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><span>foo</span></p>
+
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
+style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
+style='color:red'>angusta</span></i></b><i style='mso-bidi-font-style:normal'>.
+Iridomyrmex angustus</i> Stitz, 1911a: 369, fig. 15 (w.) NEW GUINEA.
+Combination in <i style='mso-bidi-font-style:normal'>Anonychomyrma</i>:
+Shattuck, 1992a: 13.</p>
+      }
+
+      Progress.should_receive(:error).once
+      @species_catalog.import_html contents
+    end
+
+    it "should skip by subspecies" do
+      contents = make_contents %{
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
+style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
+style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
+
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
+style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
+style='color:red'>anguliceps</span></i></b><i style='mso-bidi-font-style:normal'>.
+Iridomyrmex anguliceps</i> Forel, 1901b: 18 (q.m.) NEW GUINEA (Bismarck
+Archipelago). Combination in <i style='mso-bidi-font-style:normal'>Anonychomyrma</i>:
+Shattuck, 1992a: 13.</p>
+
+<p>#<b><i><span style="color:blue">ajax</span></i></b><i>. Atta (Acromyrmex) emilii</i> var. <i>ajax</i> Forel, 1909b: 58 (w.) "GUINEA" (in error; in text Forel states "probablement du Brésil"). Currently subspecies of <i>hystrix</i>: Santschi, 1925a: 358.</p>
+
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
+style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
+style='color:red'>angusta</span></i></b><i style='mso-bidi-font-style:normal'>.
+Iridomyrmex angustus</i> Stitz, 1911a: 369, fig. 15 (w.) NEW GUINEA.
+Combination in <i style='mso-bidi-font-style:normal'>Anonychomyrma</i>:
+Shattuck, 1992a: 13.</p>
+      }
+
+      Progress.should_not_receive :error
+      @species_catalog.import_html contents
+    end
   end
 
   describe "parsing genus see-under heading" do

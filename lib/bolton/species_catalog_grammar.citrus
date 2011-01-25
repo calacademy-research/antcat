@@ -4,7 +4,7 @@ grammar Bolton::SpeciesCatalogGrammar
   include Bolton::CatalogGrammar
 
   rule record
-    header | blank | genus_header | species | not_understood
+    header | blank | genus_header | species | subspecies | not_understood
   end
 
   rule genus_header
@@ -118,9 +118,15 @@ grammar Bolton::SpeciesCatalogGrammar
   end
 
   rule not_valid_species
-    (((italic black lowercase_word) | (italic lowercase_word space tag_end author ', ' year)) /.*/) {
+    (italic black? lowercase_word /.*/) {
       {:type => :species, :name => lowercase_word, :not_valid => true}
     }
+  end
+
+  rule subspecies
+  (subspecies_flag bold italic blue lowercase_word tag_end tag_end tag_end /.*/) {
+    {:type => :subspecies, :name => lowercase_word}
+  }
   end
 
   rule not_understood
