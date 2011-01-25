@@ -23,7 +23,8 @@ class Bolton::SpeciesCatalog
   def import_files filenames
     Species.delete_all
     @genus = nil
-    filenames.each do |filename|
+    #filenames.each do |filename|
+    ['data/bolton/NGC-Spap-ca.htm'].each do |filename|
       @filename = filename
       Progress.puts "Importing #{@filename}..."
       @inserting_camponotus_genus_header = filename =~ /NGC-Spcam2/
