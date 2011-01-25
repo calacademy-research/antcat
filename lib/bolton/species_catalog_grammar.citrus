@@ -4,7 +4,7 @@ grammar Bolton::SpeciesCatalogGrammar
   include Bolton::CatalogGrammar
 
   rule record
-    header | blank | genus_header | species | subspecies | not_understood
+    header | blank | genus_header | species | subspecies | unresolved_junior_homonym_subspecies | not_understood
   end
 
   rule genus_header
@@ -110,12 +110,20 @@ grammar Bolton::SpeciesCatalogGrammar
   end
 
   rule species
-    available_valid_species | not_available_species | not_valid_species | not_identifiable_species | synonym
+    available_valid_species | not_available_species | not_valid_species | not_identifiable_species | synonym | long_synonym | unresolved_junior_homonym_species
   end
 
   rule synonym
     (fossil_flag? italic? lowercase_word tag_end? space author ', ' year (';'|':') ' see under ' bold italic uppercase_word tag_end tag_end '.') {
       {:type => :species, :synonym => true}
+    }
+  end
+
+  rule long_synonym
+    (fossil_flag? italic lowercase_word '.' space fossil_flag?  binomial tag_end space author ', ' citation_year ':' /.*/) {
+      value = {:type => :species, :name => lowercase_word, :synonym => true}
+      value.merge! :fossil => true unless fossil_flag.blank?
+      value
     }
   end
 
@@ -148,10 +156,16 @@ grammar Bolton::SpeciesCatalogGrammar
 
   rule not_identifiable_species
     (
-      (italic green lowercase_word tag_end '.' /.*/) |
+      (italic green lowercase_word tag_end tag_end? '.' /.*/) |
       (fossil_flag? italic green lowercase_word tag_end '.' space fossil_flag? binomial tag_end /.*/)
     ){
       {:type => :species, :name => lowercase_word, :not_identifiable => true}
+    }
+  end
+
+  rule unresolved_junior_homonym_species
+    (bold italic maroon lowercase_word tag_end tag_end tag_end /.*/) {
+      {:type => :species, :name => lowercase_word, :unresolved_junior_homonym => true}
     }
   end
 
@@ -160,8 +174,14 @@ grammar Bolton::SpeciesCatalogGrammar
   end
 
   rule subspecies
-  (subspecies_flag bold italic (blue|maroon) lowercase_word tag_end tag_end tag_end /.*/) {
+  (subspecies_flag bold italic blue lowercase_word tag_end tag_end tag_end /.*/) {
     {:type => :subspecies, :name => lowercase_word}
+  }
+  end
+
+  rule unresolved_junior_homonym_subspecies
+  (subspecies_flag bold italic maroon lowercase_word tag_end tag_end tag_end /.*/) {
+    {:type => :subspecies, :name => lowercase_word, :unresolved_junior_homonym => true}
   }
   end
 

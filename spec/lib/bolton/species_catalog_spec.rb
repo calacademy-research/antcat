@@ -254,11 +254,19 @@ Shattuck, 1992a: 13.</p>
 <i><span style='color:black'>dyak.</span> Acanthomyrmex dyak</i> Wheeler, W.M. 1919e: 86 (s.w.) BORNEO. Junior synonym of <i>ferox</i>: Moffett, 1986c: 70.
       }).should == {:type => :species, :name => 'dyak', :not_valid => true}
     end
+
     it "should handle a non-valid species with an author" do
       @species_catalog.parse(%{
 <i>aurea </i>Forel, 1913; see under <b><i>HETEROPONERA</i></b>.
       }).should == {:type => :species, :name => 'aurea', :not_valid => true}
     end
+
+    it "should handle an unresolved junior homonym species" do
+      @species_catalog.parse(%{
+<b><i><span style="color:maroon">bidentatum</span></i></b><i>. Monomorium bidentatum</i> Mayr, 1887: 616 (w.q.) CHILE. Snelling, 1975: 5 (m.); Wheeler, G.C. &amp; Wheeler, J. 1980: 533 (l.). Combination in <i>Monomorium (Notomyrmex</i>): Emery, 1922e: 169; in <i>Notomyrmex</i>: Kusnezov, 1960b: 345; in <i>Nothidris</i>: Ettershank, 1966: 107; in <i>Antichthonidris</i>: Snelling, 1975: 6; in <i>Monomorium</i>: Fernández, 2007b: 132. Senior synonym of <i>piceonigrum</i>: Kusnezov, 1960b: 345. See also: Kusnezov, 1949a: 431. [Note. If the dubious combination of <i>bidentata</i> Smith, F. in <i>Monomorium</i> (above) is correct then <i>bidentatum</i> Mayr, 1887 becomes an <b>unresolved junior secondary homonym</b> of <i>bidentata</i> Smith, F. 1858.]
+      }).should == {:type => :species, :name => 'bidentatum', :unresolved_junior_homonym => true}
+    end
+
     it "should handle when the species name and the binomial are both within the same <i> tag" do
       @species_catalog.parse(%{
 <i>crassa. Acanthoponera crassa</i> Brown, 1958g: 255, fig. 10 (w.) ECUADOR. Junior synonym of <i>minor</i>: Kempf &amp; Brown, 1968: 90.
@@ -271,6 +279,12 @@ Shattuck, 1992a: 13.</p>
       }).should == {:type => :species, :name => 'kuenzelii', :not_identifiable => true}
     end
 
+    it "should handle an unidentifiable species" do
+      @species_catalog.parse(%{
+<i><span style="color:green">bidentata</span></i>. <i>Myrmica bidentata</i> Smith, F. 1858b: 124 (w.) INDIA. [Bingham, 1903: 212 suggests that this may belong in <i>Solenopsis</i>.] <b>Unidentifiable to genus</b>; <i>incertae sedis</i> in <i>Myrmica</i>: Bolton, 1995b: 277. Combination in <i>Monomorium</i>: Radchenko &amp; Elmes, 2001: 238. [Note. Combination in <i>Monomorium</i> is unconvincing; see note under <i>bidentatum</i> Mayr, below.]
+      }).should == {:type => :species, :name => 'bidentata', :not_identifiable => true}
+    end
+
     it "should handle a subspecies" do
       @species_catalog.parse(%{
 #<b><i><span style="color:blue">ajax</span></i></b><i>. Atta (Acromyrmex) emilii</i> var. <i>ajax</i> Forel, 1909b: 58 (w.) "GUINEA" (in error; in text Forel states "probablement du Brésil"). Currently subspecies of <i>hystrix</i>: Santschi, 1925a: 358.
@@ -281,10 +295,10 @@ Shattuck, 1992a: 13.</p>
 <i><span style="color:purple">angustata</span>. Atta (Acromyrmex) moelleri</i> subsp. <i>panamensis</i> var. <i>angustata </i>Forel, 1908b: 41 (w.q.) COSTA RICA. <b>Unavailable name</b> (Bolton, 1995b: 54).
       }).should == {:type => :species, :name => 'angustata', :not_available => true}
     end
-    it "should handle a maroon subspecies" do
+    it "should handle an unresolved junior homonym of species rank" do
       @species_catalog.parse(%{
 #<b><i><span style="color:maroon">brunneus</span></i></b><i>. Atta (Acromyrmex) subterranea</i> var. <i>brunnea</i> Forel, 1912e: 181 (w.q.m.) BRAZIL. [First available use of <i>Atta (Acromyrmex) coronata</i> subsp. <i>subterranea</i> var. <i>brunnea</i> Forel, 1911c: 291; unavailable name.] [<b>Unresolved junior primary homonym</b> of <i>Atta brunnea</i> Patton, 1894: 618 (now in <i>Odontomachus</i>).] Combination in <i>Acromyrmex</i>: Luederwaldt, 1918: 39. Currently subspecies of <i>subterraneus</i>: Gonçalves, 1961: 167; Kempf, 1972a: 15.
-      }).should == {:type => :subspecies, :name => 'brunneus'}
+      }).should == {:type => :subspecies, :name => 'brunneus', :unresolved_junior_homonym => true}
     end
 
     describe "synonyms" do
@@ -298,8 +312,14 @@ Shattuck, 1992a: 13.</p>
 dimidiata Forel, 1911: see under <b><i>ACROMYRMEX</i></b>.
         }).should == {:type => :species, :synonym => true}
       end
+      it "should handle a synonym where the binomial is inside the italics" do
+        @species_catalog.parse(%{
+*<i>gracillimus. *Lampromyrmex gracillimus</i> Mayr, 1868c: 95, pl. 5, figs. 97, 98 (w.) BALTIC AMBER (Eocene). [Junior secondary homonym of <i>gracillima</i> Smith, above.] Replacement name: *<i>mayrianum</i> Wheeler, W.M. 1915h: 45. [Combination in error, with <i>Lophomyrmex gracillimus</i> for *<i>Lampromyrmex gracillimus</i>: Dlussky, 1997: 57.]
+        }).should == {:type => :species, :name => 'gracillimus', :synonym => true, :fossil => true}
+      end
     end
   end
+
 
   def make_contents content
     %{
