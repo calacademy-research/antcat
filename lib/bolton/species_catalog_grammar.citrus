@@ -62,17 +62,17 @@ grammar Bolton::SpeciesCatalogGrammar
   end
 
   rule blank
-    (blank_line | blank_string_in_paragraph | spacerun) {
+    (/^/ (blank_paragraph | blank_paragraph_with_font | spacerun | space) /$/) {
       {:type => :blank}
     }
   end
 
-  rule blank_line
-    /^/ space /$/
+  rule blank_paragraph_with_font
+    /<span style='font-family:".*?"'>/ blank_paragraph '</span>' 
   end
 
-  rule blank_string_in_paragraph
-    /^/ '<p>' space '</p>' /$/
+  rule blank_paragraph
+    '<p>' space '</p>'
   end
 
   rule spacerun

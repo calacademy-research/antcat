@@ -219,16 +219,18 @@ Shattuck, 1992a: 13.</p>
     it "should handle '<p> </p>' (nested empty paragraph)" do
       @species_catalog.parse(%{<p> </p>}).should == {:type => :blank}
     end
-    it "should handle a nonbreaking space" do
+    it "should handle a nonbreaking space inside a subparagraph" do
       @species_catalog.parse(%{<p> </p>}).should == {:type => :blank}
     end
-    it "should handle a single nonbreaking space" do
+    it "should handle a nonbreaking space" do
       @species_catalog.parse(%{ }).should == {:type => :blank}
     end
     it "should handle a spacerun" do
       @species_catalog.parse(%{<span style="mso-spacerun: yes"> </span>}).should == {:type => :blank}
     end
-
+    it "should handle an empty paragraph with a font" do
+      @species_catalog.parse(%{<span style='font-family:"Times New Roman"'><p> </p></span>}).should == {:type => :blank}
+    end
   end
 
   describe "parsing species" do
