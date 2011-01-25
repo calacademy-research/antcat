@@ -225,6 +225,10 @@ Shattuck, 1992a: 13.</p>
     it "should handle a single nonbreaking space" do
       @species_catalog.parse(%{ }).should == {:type => :blank}
     end
+    it "should handle a spacerun" do
+      @species_catalog.parse(%{<span style="mso-spacerun: yes"> </span>}).should == {:type => :blank}
+    end
+
   end
 
   describe "parsing species" do

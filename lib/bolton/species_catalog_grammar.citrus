@@ -62,7 +62,7 @@ grammar Bolton::SpeciesCatalogGrammar
   end
 
   rule blank
-    (blank_line | blank_string_in_paragraph) {
+    (blank_line | blank_string_in_paragraph | spacerun) {
       {:type => :blank}
     }
   end
@@ -73,6 +73,10 @@ grammar Bolton::SpeciesCatalogGrammar
 
   rule blank_string_in_paragraph
     /^/ '<p>' space '</p>' /$/
+  end
+
+  rule spacerun
+    '<span style="mso-spacerun: yes"> </span>'
   end
 
   rule fossil_genus
