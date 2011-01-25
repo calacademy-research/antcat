@@ -1,7 +1,6 @@
 class AuthorName < ActiveRecord::Base
   has_many :reference_author_names
   has_many :references, :through => :reference_author_names
-  after_update :update_references
 
   belongs_to :author
   validates_presence_of :author
@@ -24,10 +23,6 @@ class AuthorName < ActiveRecord::Base
   def self.search term = ''
     all(:conditions => ["name LIKE ?", "%#{term}%"], :include => :reference_author_names,
         :order => 'reference_author_names.created_at DESC, name').map(&:name)
-  end
-
-  def update_references
-    references.each {|reference| reference.update_author_names_caches}
   end
 
   def self.import_author_names_string string

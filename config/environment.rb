@@ -23,6 +23,8 @@ Rails::Initializer.run do |config|
   config.gem 'webmock' if ['test', 'cucumber'].include? RAILS_ENV
 
   config.load_paths << "#{RAILS_ROOT}/lib/grammar"
+
+  config.active_record.observers = :author_name_observer
 end
 
 ActionMailer::Base.delivery_method = :sendmail
