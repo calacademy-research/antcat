@@ -7,6 +7,11 @@
 
 #  To import these files, run
 #    rake bolton:import:species
+#
+#  Note: NGC-Spcam2.docx is actually the continuation of NGC-Spcam1.docx
+#  and doesn't have the Camponotus genus header. The code makes a special
+#  case for this file, so make sure its name when importing is
+#  NGC-Spcam2.htm.
 
 class Bolton::SpeciesCatalog
   def initialize show_progress = false
@@ -21,6 +26,7 @@ class Bolton::SpeciesCatalog
     filenames.each do |filename|
       @filename = filename
       Progress.puts "Importing #{@filename}..."
+      @inserting_camponotus_genus_header = filename =~ /NGC-Spcam2/
       import_html File.read @filename
       Progress.show_results
       Progress.puts
@@ -96,9 +102,6 @@ class Bolton::SpeciesCatalog
       if @type == :not_understood
         parse_failed
       elsif @type != :blank
-        if @type == :subspecies
-        end
-        
         return @type
       end
     end
@@ -109,8 +112,13 @@ class Bolton::SpeciesCatalog
       @line = @type = @parse_result = nil
       return
     end
-    @line = @lines[@index].inner_html.gsub /\n/, ' '
-    @index += 1
+    if @inserting_camponotus_genus_header
+      @line = '<b><i><span color:red>CAMPONOTUS</span></i></b>'
+      @inserting_camponotus_genus_header = false
+    else
+      @line = @lines[@index].inner_html.gsub /\n/, ' '
+      @index += 1
+    end
     Progress.info "\n[" + @line + "]"
     Progress.tally
     @line
