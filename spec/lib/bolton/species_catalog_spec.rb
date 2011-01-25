@@ -255,6 +255,11 @@ Shattuck, 1992a: 13.</p>
 #<b><i><span style="color:blue">ajax</span></i></b><i>. Atta (Acromyrmex) emilii</i> var. <i>ajax</i> Forel, 1909b: 58 (w.) "GUINEA" (in error; in text Forel states "probablement du Brésil"). Currently subspecies of <i>hystrix</i>: Santschi, 1925a: 358.
       }).should == {:type => :subspecies, :name => 'ajax'}
     end
+    it "should handle an unavailable subspecies" do
+      @species_catalog.parse(%{
+<i><span style="color:purple">angustata</span>. Atta (Acromyrmex) moelleri</i> subsp. <i>panamensis</i> var. <i>angustata </i>Forel, 1908b: 41 (w.q.) COSTA RICA. <b>Unavailable name</b> (Bolton, 1995b: 54).
+      }).should == {:type => :species, :name => 'angustata', :not_available => true}
+    end
   end
 
   def make_contents content

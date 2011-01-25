@@ -106,7 +106,7 @@ grammar Bolton::SpeciesCatalogGrammar
   end
 
   rule species
-    available_valid_species | not_valid_species
+    available_valid_species | not_available_species | not_valid_species
   end
 
   rule available_valid_species
@@ -120,6 +120,12 @@ grammar Bolton::SpeciesCatalogGrammar
   rule not_valid_species
     (italic black? lowercase_word /.*/) {
       {:type => :species, :name => lowercase_word, :not_valid => true}
+    }
+  end
+
+  rule not_available_species
+    (italic purple lowercase_word tag_end '.' /.*/) {
+      {:type => :species, :name => lowercase_word, :not_available => true}
     }
   end
 
