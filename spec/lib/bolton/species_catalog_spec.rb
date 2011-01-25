@@ -15,7 +15,7 @@ describe Bolton::SpeciesCatalog do
   describe 'parsing the file as a whole' do
     it 'should complain bitterly if file is obviously not a species catalog' do
      contents = %{<html><body> <p>Foo</p> </body></html>}
-     Progress.should_receive(:error).with("Couldn't parse: [Foo]")
+     Progress.should_receive(:error).with("Parse failed: [Foo]")
      @species_catalog.import_html contents
     end
 
@@ -245,7 +245,16 @@ Shattuck, 1992a: 13.</p>
 <i>aurea </i>Forel, 1913; see under <b><i>HETEROPONERA</i></b>.
       }).should == {:type => :species, :name => 'aurea', :not_valid => true}
     end
-
+    it "should handle when the species name and the binomial are both within the same <i> tag" do
+      @species_catalog.parse(%{
+<i>crassa. Acanthoponera crassa</i> Brown, 1958g: 255, fig. 10 (w.) ECUADOR. Junior synonym of <i>minor</i>: Kempf &amp; Brown, 1968: 90.
+      }).should == {:type => :species, :name => 'crassa', :not_valid => true}
+    end
+    it "should handle a subspecies" do
+      @species_catalog.parse(%{
+#<b><i><span style="color:blue">ajax</span></i></b><i>. Atta (Acromyrmex) emilii</i> var. <i>ajax</i> Forel, 1909b: 58 (w.) "GUINEA" (in error; in text Forel states "probablement du Brésil"). Currently subspecies of <i>hystrix</i>: Santschi, 1925a: 358.
+      }).should == {:type => :subspecies, :name => 'ajax'}
+    end
   end
 
   def make_contents content

@@ -11,42 +11,36 @@ class Progress
     @total_count = total_count
   end
 
-  def self.tally
-    @processed_count += 1
-  end
-
-  def self.puts string = ''
-    $stderr.puts string
-  end
-
-  def self.print string
-    $stderr.print string
-  end
-
-  def self.dot
-    print '.'
-  end
-
   def self.open_log name
     file = File.open name, 'w'
     file.sync = true
     @logger = Logger.new file
   end
 
+  def self.tally
+    @processed_count += 1
+  end
+
+  def self.puts string = ''
+    print string + "\n"
+  end
+
+  def self.print string
+    $stderr.print string
+    info string
+  end
+
+  def self.dot
+    print '.'
+  end
+
   def self.info string
-    @logger.info string
-    puts string
+    @logger.info string if @logger
+    Rails.logger.info string
   end
 
   def self.error string
-    string = '*** ERROR: ' + string
-    @logger.error string
-    puts string
-  end
-
-  def self.show_and_log_results
-    @logger.info Progress.results_string
-    show_results
+    puts '*** ERROR: ' + string
   end
 
   def self.rate processed_count = nil

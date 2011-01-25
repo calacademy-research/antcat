@@ -25,7 +25,7 @@ class Bolton::SpeciesCatalog
       Progress.show_results
       Progress.puts
     end
-    Progress.show_and_log_results
+    Progress.show_results
     Progress.show_count @error_count, Progress.processed_count, 'parse failures'
   end
 
@@ -37,57 +37,15 @@ class Bolton::SpeciesCatalog
     end
   end
 
-  def parse_header
-    return unless @line && parse(@line)[:type] == :header
-    Progress.info ">>>> HEADER"
-    get_next_line
-    true
-  end
-
-  def parse_see_under
-    return unless @line && parse(@line)[:type] == :see_under
-    Progress.info ">>>> SEE UNDER"
-    get_next_line
-    true
-  end
-
-  def parse_genus_section
-    return unless @line && parse(@line)[:type] == :genus
-    Progress.info ">>>> GENUS SECTION"
-    get_next_line
-    while parse_species; end
-    true
-  end
-
-  def parse_species
-    return unless @line && parse(@line)[:type] == :species
-    Progress.info ">>>> SPECIES"
-    get_next_line
-    true
-  end
-
   def parse string
     string.strip!
-    v = Bolton::SpeciesCatalogGrammar.parse(string).value
-    Progress.info v
-    v
+    parse_result = Bolton::SpeciesCatalogGrammar.parse(string).value
+    Progress.info parse_result
+    parse_result
   rescue Citrus::ParseError => e
     Progress.error 'Parse error'
     Progress.error e
-    p e
     nil
-  end
-
-  def import_species record
-    unless @genus
-      Progress.error 'No genus'
-      Progress.error @filename
-      Progress.error record
-      return
-    end
-    genus = Genus.find_or_create_by_name @genus
-    Species.create! :name => record[:species], :parent => genus
-    Progress.tally_and_show_progress 100
   end
 
   private
@@ -95,18 +53,54 @@ class Bolton::SpeciesCatalog
     doc = Nokogiri::HTML html
     @lines = doc.css('p')
     @index = 0
-    get_next_line
+    @parse_result = {:type => :eof}
+    parse_next_line
+  end
+
+  def parse_header
+    return unless @type == :header
+    parse_next_line
+    true
+  end
+
+  def parse_see_under
+    return unless @type == :see_under
+    parse_next_line
+    true
+  end
+
+  def parse_genus_section
+    return unless @type == :genus
+    parse_next_line
+    while parse_species; end
+    true
+  end
+
+  def parse_species
+    return unless @type == :species || @type == :subspecies
+    parse_next_line
+    true
   end
 
   def parse_failed
+    Progress.error "Parse failed: [#{@line}]"
     @error_count += 1
-    Progress.error "Couldn't parse: [#{@line}]"
-    get_next_line
+    parse_next_line
   end
 
-  def get_next_line
-    while get_next_line_including_blanks && parse(@line)[:type] == :blank
-      Progress.info '>>> BLANK'
+  def parse_next_line
+    while get_next_line_including_blanks
+      @parse_result = parse @line
+      next unless @parse_result
+      @type = @parse_result[:type]
+      if @type == :not_understood
+        parse_failed
+      elsif @type != :blank
+        if @type == :subspecies
+        end
+        
+        return @type
+      end
     end
   end
 
@@ -118,6 +112,7 @@ class Bolton::SpeciesCatalog
     @line = @lines[@index].inner_html.gsub /\n/, ' '
     @index += 1
     Progress.info "\n[" + @line + "]"
+    Progress.tally
     @line
   end
 end
