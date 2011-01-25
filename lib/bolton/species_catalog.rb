@@ -106,7 +106,7 @@ class Bolton::SpeciesCatalog
 
   def get_next_line_including_blanks
     if @index >= @lines.size
-      @line = nil
+      @line = @type = @parse_result = nil
       return
     end
     @line = @lines[@index].inner_html.gsub /\n/, ' '
