@@ -13,7 +13,7 @@ grammar Bolton::SpeciesCatalogGrammar
 
   rule see_under
     ((genus_group_name see_under_referent) |
-     (genus_group_name space genus_author? see_under_referent)
+     (genus_group_name s genus_author? see_under_referent)
     ) {
       {:type => :see_under}
     }
@@ -32,15 +32,15 @@ grammar Bolton::SpeciesCatalogGrammar
   end
 
   rule genus_name
-    italic uppercase_word space tag_end
+    italic uppercase_word s tag_end
   end
 
   rule subgenus_name
-    ((italic subgenus_flag) | (subgenus_flag italic)) blue uppercase_word space tag_end tag_end
+    ((italic subgenus_flag) | (subgenus_flag italic)) blue uppercase_word s tag_end tag_end
   end
 
   rule unidentifiable_genus
-    (fossil_flag? italic green uppercase_word tag_end tag_end space parenthesized_phrase) {
+    (fossil_flag? italic green uppercase_word tag_end tag_end s parenthesized_phrase) {
       value = {:type => :genus, :name => uppercase_word.downcase.capitalize, :unidentifiable => true}
       value.merge! :fossil => true unless fossil_flag.blank?
       value
@@ -62,7 +62,7 @@ grammar Bolton::SpeciesCatalogGrammar
   end
 
   rule blank
-    (/^/ (blank_paragraph | blank_paragraph_with_font | spacerun | space) /$/) {
+    (/^/ (blank_paragraph | blank_paragraph_with_font | spacerun | s) /$/) {
       {:type => :blank}
     }
   end
@@ -72,7 +72,7 @@ grammar Bolton::SpeciesCatalogGrammar
   end
 
   rule blank_paragraph
-    '<p>' space '</p>'
+    '<p>' s '</p>'
   end
 
   rule spacerun
@@ -88,8 +88,8 @@ grammar Bolton::SpeciesCatalogGrammar
   rule genus
     (
       bold italic (red|green)
-        uppercase_word space errant_paragraph?
-      tag_end space tag_end space tag_end '.'?
+        uppercase_word s errant_paragraph?
+      tag_end s tag_end s tag_end '.'?
       region?
     ) {
       {:type => :genus, :name => uppercase_word.downcase.capitalize}
@@ -97,8 +97,8 @@ grammar Bolton::SpeciesCatalogGrammar
   end
 
   rule region
-    (space errant_red_space? /\(.+?\)?$/) |
-    (span space parenthesized_phrase errant_paragraph tag_end)
+    (s errant_red_space? /\(.+?\)?$/) |
+    (span s parenthesized_phrase errant_paragraph tag_end)
   end
 
   rule errant_paragraph
@@ -106,7 +106,7 @@ grammar Bolton::SpeciesCatalogGrammar
   end
 
   rule errant_red_space
-    red space tag_end
+    red s tag_end
   end
 
   rule species
@@ -114,13 +114,13 @@ grammar Bolton::SpeciesCatalogGrammar
   end
 
   rule synonym
-    (fossil_flag? italic? lowercase_word tag_end? space author ', ' year (';'|':') ' see under ' bold italic uppercase_word tag_end tag_end '.') {
+    (fossil_flag? italic? lowercase_word tag_end? s author ', ' year (';'|':') ' see under ' bold italic uppercase_word tag_end tag_end '.') {
       {:type => :species, :synonym => true}
     }
   end
 
   rule long_synonym
-    (fossil_flag? italic lowercase_word '.' space fossil_flag?  binomial tag_end space author ', ' citation_year ':' /.*/) {
+    (fossil_flag? italic lowercase_word '.' s fossil_flag?  binomial tag_end s author ', ' citation_year ':' /.*/) {
       value = {:type => :species, :name => lowercase_word, :synonym => true}
       value.merge! :fossil => true unless fossil_flag.blank?
       value
@@ -157,7 +157,7 @@ grammar Bolton::SpeciesCatalogGrammar
   rule not_identifiable_species
     (
       (italic green lowercase_word tag_end tag_end? '.' /.*/) |
-      (fossil_flag? italic green lowercase_word tag_end '.' space fossil_flag? binomial tag_end /.*/)
+      (fossil_flag? italic green lowercase_word tag_end '.' s fossil_flag? binomial tag_end /.*/)
     ){
       {:type => :species, :name => lowercase_word, :not_identifiable => true}
     }
@@ -170,7 +170,7 @@ grammar Bolton::SpeciesCatalogGrammar
   end
 
   rule binomial
-    capitalized_word space lowercase_word
+    capitalized_word s lowercase_word
   end
 
   rule subspecies

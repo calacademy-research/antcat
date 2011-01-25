@@ -66,7 +66,7 @@ grammar Bolton::ReferenceGrammar
   end
 
   rule book_reference
-    (authors citation_year '. ' book_title ': ' pagination place '.' (space note)?) {
+    (authors citation_year '. ' book_title ': ' pagination place '.' (s note)?) {
       value =
         { :authors => authors.strip,
           :citation_year => citation_year.to_s,

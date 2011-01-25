@@ -2,17 +2,17 @@ grammar PaginationGrammar
   include CommonGrammar
 
   rule pagination
-    pagination_clause ((space ('+' | ',' | '&'))? space pagination_clause)*
+    pagination_clause ((s ('+' | ',' | '&'))? s pagination_clause)*
   end
 
   rule pagination_clause
     section_clause |
-    (note space section_clause) |
-    (section_type space section_size (space note)? '.'?)
+    (note s section_clause) |
+    (section_type s section_size (s note)? '.'?)
   end
 
   rule section_clause
-    section_size (space section_type)? (space note '.'?)?
+    section_size (s section_type)? (s note '.'?)?
   end
 
   rule section_type

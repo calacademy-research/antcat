@@ -2,7 +2,7 @@ grammar AuthorGrammar
   include CommonGrammar
 
   rule author_names
-    (author (author_separator space author)* suffix? space) {
+    (author (author_separator s author)* suffix? s) {
       {:names => captures[:author].map(&:to_s), :suffix => suffix}
     }
   end
@@ -20,10 +20,10 @@ grammar AuthorGrammar
   end
 
   rule initial
-    space ('dos' | 'da' | 'de' | 'di' | 'del' | 'do') |
-    space word_char '.'? '-' word_char '.' |
-    space word_char '.' |
-    space word_char_without_period_but_before_semicolon
+    s ('dos' | 'da' | 'de' | 'di' | 'del' | 'do') |
+    s word_char '.'? '-' word_char '.' |
+    s word_char '.' |
+    s word_char_without_period_but_before_semicolon
   end
 
   rule suffix
@@ -31,15 +31,15 @@ grammar AuthorGrammar
   end
 
   rule role
-    space '(' [^)]+ ')'
+    s '(' [^)]+ ')'
   end
 
   rule et_al
-    ', '? space 'et al.'
+    ', '? s 'et al.'
   end
 
   rule phrase
-    word (space word)*
+    word (s word)*
   end
 
   rule word

@@ -2,7 +2,7 @@ grammar PublisherGrammar
   include CommonGrammar
 
   rule publisher
-    (publisher_place ':' space publisher_name) {
+    (publisher_place ':' s publisher_name) {
       {:publisher => {:name => publisher_name.to_s, :place => publisher_place.to_s}}
     }
   end
