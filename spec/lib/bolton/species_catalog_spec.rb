@@ -285,41 +285,58 @@ Shattuck, 1992a: 13.</p>
       }).should == {:type => :species, :name => 'bidentata', :not_identifiable => true}
     end
 
-    it "should handle a subspecies" do
-      @species_catalog.parse(%{
-#<b><i><span style="color:blue">ajax</span></i></b><i>. Atta (Acromyrmex) emilii</i> var. <i>ajax</i> Forel, 1909b: 58 (w.) "GUINEA" (in error; in text Forel states "probablement du Brésil"). Currently subspecies of <i>hystrix</i>: Santschi, 1925a: 358.
-      }).should == {:type => :subspecies, :name => 'ajax'}
-    end
-    it "should handle an unavailable subspecies" do
-      @species_catalog.parse(%{
-<i><span style="color:purple">angustata</span>. Atta (Acromyrmex) moelleri</i> subsp. <i>panamensis</i> var. <i>angustata </i>Forel, 1908b: 41 (w.q.) COSTA RICA. <b>Unavailable name</b> (Bolton, 1995b: 54).
-      }).should == {:type => :species, :name => 'angustata', :not_available => true}
-    end
     it "should handle an unresolved junior homonym of species rank" do
       @species_catalog.parse(%{
 #<b><i><span style="color:maroon">brunneus</span></i></b><i>. Atta (Acromyrmex) subterranea</i> var. <i>brunnea</i> Forel, 1912e: 181 (w.q.m.) BRAZIL. [First available use of <i>Atta (Acromyrmex) coronata</i> subsp. <i>subterranea</i> var. <i>brunnea</i> Forel, 1911c: 291; unavailable name.] [<b>Unresolved junior primary homonym</b> of <i>Atta brunnea</i> Patton, 1894: 618 (now in <i>Odontomachus</i>).] Combination in <i>Acromyrmex</i>: Luederwaldt, 1918: 39. Currently subspecies of <i>subterraneus</i>: Gonçalves, 1961: 167; Kempf, 1972a: 15.
       }).should == {:type => :subspecies, :name => 'brunneus', :unresolved_junior_homonym => true}
     end
 
+    describe "subspecies" do
+      it "should handle a subspecies" do
+        @species_catalog.parse(%{
+  #<b><i><span style="color:blue">ajax</span></i></b><i>. Atta (Acromyrmex) emilii</i> var. <i>ajax</i> Forel, 1909b: 58 (w.) "GUINEA" (in error; in text Forel states "probablement du Brésil"). Currently subspecies of <i>hystrix</i>: Santschi, 1925a: 358.
+        }).should == {:type => :subspecies, :name => 'ajax'}
+      end
+      it "should handle an unavailable subspecies" do
+        @species_catalog.parse(%{
+  <i><span style="color:purple">angustata</span>. Atta (Acromyrmex) moelleri</i> subsp. <i>panamensis</i> var. <i>angustata </i>Forel, 1908b: 41 (w.q.) COSTA RICA. <b>Unavailable name</b> (Bolton, 1995b: 54).
+        }).should == {:type => :species, :name => 'angustata', :not_available => true}
+      end
+      it "should handle a fossil subspecies" do
+        @species_catalog.parse(%{
+*#<b><i><span style="color:blue">minor</span></i></b><i>. *Poneropsis lugubris</i> var. <i>minor</i> Heer, 1867: 21 (m.) CROATIA (Miocene).
+        }).should == {:type => :subspecies, :name => 'minor', :fossil => true}
+      end
+    end
+
     describe "synonyms" do
       it "should handle an italicized fossil synonym" do
         @species_catalog.parse(%{
   *<i>berendti</i> Mayr, 1868; see under <b><i>STENAMMA</i></b>.
-        }).should == {:type => :species, :synonym => true}
+        }).should == {:type => :species, :name => 'berendti', :fossil => true, :synonym => true}
       end
       it "should handle a synonym where the italics were left off" do
         @species_catalog.parse(%{
 dimidiata Forel, 1911: see under <b><i>ACROMYRMEX</i></b>.
-        }).should == {:type => :species, :synonym => true}
+        }).should == {:type => :species, :name => 'dimidiata', :synonym => true}
       end
       it "should handle a synonym where the binomial is inside the italics" do
         @species_catalog.parse(%{
 *<i>gracillimus. *Lampromyrmex gracillimus</i> Mayr, 1868c: 95, pl. 5, figs. 97, 98 (w.) BALTIC AMBER (Eocene). [Junior secondary homonym of <i>gracillima</i> Smith, above.] Replacement name: *<i>mayrianum</i> Wheeler, W.M. 1915h: 45. [Combination in error, with <i>Lophomyrmex gracillimus</i> for *<i>Lampromyrmex gracillimus</i>: Dlussky, 1997: 57.]
         }).should == {:type => :species, :name => 'gracillimus', :synonym => true, :fossil => true}
       end
+      it "should handle fossil synonym in a fossil genus" do
+        @species_catalog.parse(%{
+*<i>affinis</i> Heer, 1849; see under *<b><i>PONEROPSIS</i></b>.
+        }).should == {:type => :species, :name => 'affinis', :synonym => true, :fossil => true}
+      end
+      it "should handle italicized asterisk" do
+        @species_catalog.parse(%{
+<i>*pygmaea</i> Mayr, 1868; see under <b><i>NYLANDERIA</i></b>.
+        }).should == {:type => :species, :name => 'pygmaea', :synonym => true, :fossil => true}
+      end
     end
   end
-
 
   def make_contents content
     %{
