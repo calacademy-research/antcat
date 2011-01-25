@@ -27,6 +27,10 @@ grammar CommonGrammar
     start_color_span_start 'blue' start_color_span_end
   end
 
+  rule maroon
+    start_color_span_start 'maroon' start_color_span_end
+  end
+
   rule start_color_span_start
     /<span.*?color:/
   end
