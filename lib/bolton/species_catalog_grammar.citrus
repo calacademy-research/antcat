@@ -106,7 +106,13 @@ grammar Bolton::SpeciesCatalogGrammar
   end
 
   rule species
-    available_valid_species | not_available_species | not_valid_species | not_identifiable_species
+    available_valid_species | not_available_species | not_valid_species | not_identifiable_species | synonym
+  end
+
+  rule synonym
+    (fossil_flag? italic? lowercase_word tag_end? space author ', ' year (';'|':') ' see under ' bold italic uppercase_word tag_end tag_end '.') {
+      {:type => :species, :synonym => true}
+    }
   end
 
   rule available_valid_species
