@@ -157,6 +157,10 @@ Shattuck, 1992a: 13.</p>
     it "should handle a year after the author" do
       @species_catalog.parse("*<i>PALAEOMYRMEX</i> Dlussky, 1975: see under *<b><i>DLUSSKYIDRIS</i></b>").should == {:type => :see_under}
     end
+    it "should handle a subgenus where the # is outside the italics" do
+      @species_catalog.parse(%{#<i><span style="color:blue">ALAOPONE</span></i>: see under <b><i>DORYLUS</i></b>.}).should == 
+        {:type => :see_under}
+    end
     it "should not simply consider everything with 'see under' in it as a see-under" do
       @species_catalog.parse("*<b>PALAEOMYRMEX</b> Dlussky, 1975: see under").should == {:type => :not_understood}
     end
@@ -199,7 +203,6 @@ Shattuck, 1992a: 13.</p>
     it "should handle an unidentifiable though valid genus" do
       @species_catalog.parse(%{<b><i><span style='color:green'>CONDYLODON</span></i></b> (Brazil)}).should == {:type => :genus, :name => 'Condylodon'}
     end
-
   end
 
   describe "parsing an unidentifiable genus header" do

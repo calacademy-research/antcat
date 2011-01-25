@@ -36,7 +36,7 @@ grammar Bolton::SpeciesCatalogGrammar
   end
 
   rule subgenus_name
-    italic subgenus_flag blue uppercase_word space tag_end tag_end
+    ((italic subgenus_flag) | (subgenus_flag italic)) blue uppercase_word space tag_end tag_end
   end
 
   rule unidentifiable_genus
