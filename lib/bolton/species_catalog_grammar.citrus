@@ -147,9 +147,16 @@ grammar Bolton::SpeciesCatalogGrammar
   end
 
   rule not_identifiable_species
-    (italic green lowercase_word tag_end '.' /.*/) {
+    (
+      (italic green lowercase_word tag_end '.' /.*/) |
+      (fossil_flag? italic green lowercase_word tag_end '.' space fossil_flag? binomial tag_end /.*/)
+    ){
       {:type => :species, :name => lowercase_word, :not_identifiable => true}
     }
+  end
+
+  rule binomial
+    capitalized_word space lowercase_word
   end
 
   rule subspecies

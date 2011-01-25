@@ -262,6 +262,13 @@ Shattuck, 1992a: 13.</p>
 <i>crassa. Acanthoponera crassa</i> Brown, 1958g: 255, fig. 10 (w.) ECUADOR. Junior synonym of <i>minor</i>: Kempf &amp; Brown, 1968: 90.
       }).should == {:type => :species, :name => 'crassa', :not_valid => true}
     end
+
+    it "should handle an ichnospecies where the italics include the binomial" do
+      @species_catalog.parse(%{
+*<i><span style="color:green">kuenzelii</span>. *Attaichnus kuenzelii</i> Laza, 1982: 112, figs. ARGENTINA (ichnospecies).
+      }).should == {:type => :species, :name => 'kuenzelii', :not_identifiable => true}
+    end
+
     it "should handle a subspecies" do
       @species_catalog.parse(%{
 #<b><i><span style="color:blue">ajax</span></i></b><i>. Atta (Acromyrmex) emilii</i> var. <i>ajax</i> Forel, 1909b: 58 (w.) "GUINEA" (in error; in text Forel states "probablement du Brésil"). Currently subspecies of <i>hystrix</i>: Santschi, 1925a: 358.
