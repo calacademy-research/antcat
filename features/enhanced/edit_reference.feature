@@ -243,3 +243,24 @@ Feature: Edit reference
       And I press the "Save" button
     Then I should see "Nested reference can't point to itself"
 
+  Scenario: Edit a nested reference to remove its nestedness, delete the nestee, go back to the first one and set it as nested
+    Given I am logged in
+      And the following references exist
+      |authors   |citation  |year|title|
+      |Ward, P.S.|Psyche 5:3|2001|Ants|
+      And the following entry nests it
+      |authors   |title           |year|pages_in|
+      |Bolton, B.|Ants are my life|2001|In:|
+    When I go to the main page
+      And I edit "Bolton"
+      And I follow "Article"
+      And I fill in "journal_name" with "Ant Journal"
+      And I fill in "reference_series_volume_issue" with "1"
+      And I fill in "article_pagination" with "2"
+      And I press the "Save" button
+      And I will confirm on the next step
+      And I delete "Ward"
+      And I edit "Bolton"
+      And I follow "Nested"
+      And I press the "Save" button
+    Then I should see "Nested reference can't be blank"

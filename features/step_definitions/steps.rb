@@ -252,3 +252,8 @@ end
 Then /"([^"]+)" should be selected/ do |word|
   page.should have_css ".selected", :text => word
 end
+
+And /I (edit|delete) "(.*?)"/ do |verb, author|
+  reference = Reference.first :conditions => ['author_names_string_cache like ?', "%#{author}%"]
+  And %{I follow "#{verb}" within "#reference_#{reference.id}"}
+end

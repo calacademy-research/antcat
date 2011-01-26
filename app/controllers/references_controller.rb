@@ -119,7 +119,10 @@ class ReferencesController < ApplicationController
   def get_reference
     selected_tab = params[:selected_tab]
     selected_tab = 'Unknown' if selected_tab == 'Other'
-    Reference.find(params[:id]).becomes((selected_tab + 'Reference').constantize)
+    type = selected_tab + 'Reference'
+    reference = Reference.find(params[:id]).becomes((type).constantize)
+    reference.type = type
+    reference
   end
 
 end
