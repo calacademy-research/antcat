@@ -171,7 +171,7 @@ grammar Bolton::SpeciesCatalogGrammar
 
   rule not_available_species
     (
-      (italic purple lowercase_word tag_end s tag_end s author ', ' citation_year ':'? /.*/) |
+      (italic purple lowercase_word tag_end s tag_end s author ','? space citation_year ':'? /.*/) |
       (italic purple lowercase_word tag_end '.' /.*/)
     ){
       {:type => :species, :name => lowercase_word, :not_available => true}
