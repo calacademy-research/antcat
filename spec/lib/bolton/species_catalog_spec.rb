@@ -301,6 +301,11 @@ Shattuck, 1992a: 13.</p>
   <i><span style="color:purple">angustata</span>. Atta (Acromyrmex) moelleri</i> subsp. <i>panamensis</i> var. <i>angustata </i>Forel, 1908b: 41 (w.q.) COSTA RICA. <b>Unavailable name</b> (Bolton, 1995b: 54).
         }).should == {:type => :species, :name => 'angustata', :not_available => true}
       end
+      it "should handle an unavailable subspecies without a binomial" do
+        @species_catalog.parse(%{
+<i><span style="color:purple">suturalis</span> </i>Santschi, 1921b: 426 (<b>unavailable name</b>); see under <b><i>LEPTOTHORAX</i></b>.
+        }).should == {:type => :species, :name => 'suturalis', :not_available => true}
+      end
       it "should handle a fossil subspecies" do
         @species_catalog.parse(%{
 *#<b><i><span style="color:blue">minor</span></i></b><i>. *Poneropsis lugubris</i> var. <i>minor</i> Heer, 1867: 21 (m.) CROATIA (Miocene).
@@ -347,7 +352,6 @@ dimidiata Forel, 1911: see under <b><i>ACROMYRMEX</i></b>.
 
     end
   end
-
 
   def make_contents content
     %{
