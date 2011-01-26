@@ -349,9 +349,14 @@ dimidiata Forel, 1911: see under <b><i>ACROMYRMEX</i></b>.
   <i>crassa. Acanthoponera crassa</i> Brown, 1958g: 255, fig. 10 (w.) ECUADOR. Junior synonym of <i>minor</i>: Kempf &amp; Brown, 1968: 90.
         }).should == {:type => :species, :name => 'crassa', :synonym => true}
       end
-
+      it "should handle a see-under species with genus in brackets" do
+        @species_catalog.parse(%{
+*<i>rugosostriata</i> Mayr, 1868 [<i>Macromischa</i>]; see under *<b><i>EOCENOMYRMA</i></b>.
+        }).should == {:type => :species, :name => 'rugosostriata', :synonym => true, :fossil => true}
+      end
     end
   end
+
 
   def make_contents content
     %{

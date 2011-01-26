@@ -121,11 +121,15 @@ grammar Bolton::SpeciesCatalogGrammar
   end
 
   rule synonym
-    (fossil_flag? italic? lowercase_word tag_end? s author ', ' citation_year (';'|':') ' see under ' fossil_flag? bold italic uppercase_word tag_end tag_end '.') {
+    (fossil_flag? italic? lowercase_word tag_end? s author ', ' citation_year s bracketed_genus? (';'|':') ' see under ' fossil_flag? bold italic uppercase_word tag_end tag_end '.') {
       value = {:type => :species, :name => lowercase_word, :synonym => true}
       value.merge! :fossil => true unless fossil_flag.blank?
       value
     }
+  end
+
+  rule bracketed_genus
+    '[' italic capitalized_word tag_end ']'
   end
 
   rule long_synonym
