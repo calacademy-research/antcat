@@ -64,8 +64,6 @@ function setupIcons() {
 function setupIconVisibility() {
   if (!usingCucumber)
     $('.icon').hide();
-  else
-    $('.icon').show();
 
   $('.reference').live('mouseenter',
     function() {
