@@ -311,6 +311,11 @@ Shattuck, 1992a: 13.</p>
 <i><span style="color:purple">pseudoxanthus</span> </i> Plateaux, 1981: 64 (<b>unavailable name</b>); see under <b><i>LEPTOTHORAX</i></b>.
         }).should == {:type => :species, :name => 'pseudoxanthus', :not_available => true}
       end
+      it "should handle an unavailable subspecies without a binomial with the parentheses before the semicolon" do
+        @species_catalog.parse(%{
+<i><span style="color:purple">esmirensis</span></i> Santschi, 1936 (<b>unavailable name</b>); see under <b><i>LEPTOTHORAX</i></b>.
+        }).should == {:type => :species, :name => 'esmirensis', :not_available => true}
+      end
       it "should handle a fossil subspecies" do
         @species_catalog.parse(%{
 *#<b><i><span style="color:blue">minor</span></i></b><i>. *Poneropsis lugubris</i> var. <i>minor</i> Heer, 1867: 21 (m.) CROATIA (Miocene).
