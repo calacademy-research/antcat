@@ -203,6 +203,11 @@ Shattuck, 1992a: 13.</p>
     it "should handle an unidentifiable though valid genus" do
       @species_catalog.parse(%{<b><i><span style='color:green'>CONDYLODON</span></i></b> (Brazil)}).should == {:type => :genus, :name => 'Condylodon'}
     end
+
+    it "should handle a load of other crap" do
+      @species_catalog.parse(%{<b><i><span style="color:red">PROMYOPIAS</span></i></b><span style="color:red"> </span><span style="color:black">(Afrotropical)<p></p></span>}).should == {:type => :genus, :name => 'Promyopias'}
+    end
+      
   end
 
   describe "parsing an unidentifiable genus header" do
@@ -267,12 +272,6 @@ Shattuck, 1992a: 13.</p>
       }).should == {:type => :species, :name => 'bidentatum', :unresolved_junior_homonym => true}
     end
 
-    it "should handle when the species name and the binomial are both within the same <i> tag" do
-      @species_catalog.parse(%{
-<i>crassa. Acanthoponera crassa</i> Brown, 1958g: 255, fig. 10 (w.) ECUADOR. Junior synonym of <i>minor</i>: Kempf &amp; Brown, 1968: 90.
-      }).should == {:type => :species, :name => 'crassa', :not_valid => true}
-    end
-
     it "should handle an ichnospecies where the italics include the binomial" do
       @species_catalog.parse(%{
 *<i><span style="color:green">kuenzelii</span>. *Attaichnus kuenzelii</i> Laza, 1982: 112, figs. ARGENTINA (ichnospecies).
@@ -335,8 +334,20 @@ dimidiata Forel, 1911: see under <b><i>ACROMYRMEX</i></b>.
 <i>*pygmaea</i> Mayr, 1868; see under <b><i>NYLANDERIA</i></b>.
         }).should == {:type => :species, :name => 'pygmaea', :synonym => true, :fossil => true}
       end
+      it "should handle nonfossil with binomial inside italics" do
+        @species_catalog.parse(%{
+<i>asili. Promyopias asili</i> Crawley, 1916a: 30, fig. (q.) MALAWI. Combination in <i>Pseudoponera</i> (<i>Promyopias</i>): Wheeler, W.M. 1922a: 779. Junior synonym of <i>silvestrii</i>: Brown, 1963: 10.
+        }).should == {:type => :species, :name => 'asili', :synonym => true}
+      end
+      it "should handle when the species name and the binomial are both within the same <i> tag" do
+        @species_catalog.parse(%{
+  <i>crassa. Acanthoponera crassa</i> Brown, 1958g: 255, fig. 10 (w.) ECUADOR. Junior synonym of <i>minor</i>: Kempf &amp; Brown, 1968: 90.
+        }).should == {:type => :species, :name => 'crassa', :synonym => true}
+      end
+
     end
   end
+
 
   def make_contents content
     %{

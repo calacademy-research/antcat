@@ -8,7 +8,7 @@ grammar Bolton::SpeciesCatalogGrammar
   end
 
   rule genus_header
-    see_under | fossil_genus | genus | unidentifiable_genus | transferred_genus
+    see_under | fossil_genus | genus_with_crap | genus | unidentifiable_genus | transferred_genus
   end
 
   rule see_under
@@ -89,11 +89,18 @@ grammar Bolton::SpeciesCatalogGrammar
     (
       bold italic (red|green)
         uppercase_word s errant_paragraph?
-      tag_end s tag_end s tag_end '.'?
+      tag_end s tag_end s tag_end region? '.'?
       region?
     ) {
       {:type => :genus, :name => uppercase_word.downcase.capitalize}
     }
+  end
+
+  rule genus_with_crap
+    (bold italic red uppercase_word tag_end tag_end tag_end red space tag_end black parenthesized_phrase '<p></p>' tag_end) {
+      {:type => :genus, :name => uppercase_word.downcase.capitalize}
+    }
+
   end
 
   rule region
@@ -110,7 +117,7 @@ grammar Bolton::SpeciesCatalogGrammar
   end
 
   rule species
-    available_valid_species | not_available_species | not_valid_species | not_identifiable_species | synonym | long_synonym | unresolved_junior_homonym_species | another_synonym
+    available_valid_species | not_available_species | long_synonym | unresolved_junior_homonym_species | another_synonym | synonym | not_valid_species | not_identifiable_species
   end
 
   rule synonym
