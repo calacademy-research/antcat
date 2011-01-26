@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110122231930) do
+ActiveRecord::Schema.define(:version => 20110126014429) do
 
   create_table "antweb_taxonomy", :force => true do |t|
     t.datetime "created_at"
@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(:version => 20110122231930) do
     t.integer  "author_id"
   end
 
+  add_index "author_names", ["author_id"], :name => "author_names_author_id_idx"
   add_index "author_names", ["created_at", "name"], :name => "author_created_at_name"
   add_index "author_names", ["name"], :name => "author_name_idx"
 
@@ -47,6 +48,9 @@ ActiveRecord::Schema.define(:version => 20110122231930) do
     t.datetime "updated_at"
     t.float    "similarity"
   end
+
+  add_index "bolton_matches", ["bolton_reference_id"], :name => "bolton_matches_bolton_reference_id_idx"
+  add_index "bolton_matches", ["reference_id"], :name => "bolton_matches_reference_id_idx"
 
   create_table "bolton_references", :force => true do |t|
     t.string   "authors"
@@ -67,6 +71,8 @@ ActiveRecord::Schema.define(:version => 20110122231930) do
     t.text     "original"
   end
 
+  add_index "bolton_references", ["ward_reference_id"], :name => "bolton_references_ward_reference_id_idx"
+
   create_table "duplicate_references", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -74,6 +80,9 @@ ActiveRecord::Schema.define(:version => 20110122231930) do
     t.integer  "duplicate_id"
     t.float    "similarity"
   end
+
+  add_index "duplicate_references", ["duplicate_id"], :name => "duplicate_references_duplicate_id_idx"
+  add_index "duplicate_references", ["reference_id"], :name => "duplicate_references_reference_id_idx"
 
   create_table "journals", :force => true do |t|
     t.string   "name"
@@ -100,6 +109,7 @@ ActiveRecord::Schema.define(:version => 20110122231930) do
   end
 
   add_index "publishers", ["name"], :name => "publishers_name_idx"
+  add_index "publishers", ["place_id"], :name => "publishers_place_id_idx"
 
   create_table "reference_author_names", :force => true do |t|
     t.integer  "author_name_id"
@@ -155,6 +165,10 @@ ActiveRecord::Schema.define(:version => 20110122231930) do
 
   add_index "references", ["author_names_string_cache", "citation_year"], :name => "references_author_names_string_citation_year_idx"
   add_index "references", ["created_at"], :name => "references_created_at_idx"
+  add_index "references", ["journal_id"], :name => "references_journal_id_idx"
+  add_index "references", ["nested_reference_id"], :name => "references_nested_reference_id_idx"
+  add_index "references", ["publisher_id"], :name => "references_publisher_id_idx"
+  add_index "references", ["source_reference_id"], :name => "references_source_reference_id_idx"
   add_index "references", ["updated_at"], :name => "references_updated_at_idx"
 
   create_table "taxa", :force => true do |t|
@@ -168,6 +182,8 @@ ActiveRecord::Schema.define(:version => 20110122231930) do
     t.boolean  "fossil"
     t.text     "taxonomic_history"
   end
+
+  add_index "taxa", ["parent_id"], :name => "taxa_parent_id_idx"
 
   create_table "users", :force => true do |t|
     t.string   "email",                              :default => "", :null => false
@@ -218,5 +234,7 @@ ActiveRecord::Schema.define(:version => 20110122231930) do
     t.text     "title"
     t.text     "editor_notes"
   end
+
+  add_index "ward_references", ["reference_id"], :name => "ward_references_reference_id_idx"
 
 end
