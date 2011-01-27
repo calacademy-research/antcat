@@ -147,8 +147,17 @@ function copyReference() {
   $newReference.attr("id", "reference_");
   $('form', $newReference).attr("action", "/references");
   $('[name=_method]', $newReference).attr("value", "post");
+  clearFieldsThatShouldntBeCopied($newReference)
   showReferenceEdit($newReference);
   return false;
+}
+
+function clearFieldsThatShouldntBeCopied($reference) {
+  $('#reference_document_attributes_id', $reference).remove()
+  $('#reference_document_attributes_url', $reference).attr("value", "")
+  $('#reference_document_attributes_public', $reference).attr("checked", "")
+  $('#reference_date', $reference).attr("value", "")
+  $('#reference_cite_code', $reference).attr("value", "")
 }
 
 function addOrInsertReferenceEdit($reference) {

@@ -130,6 +130,10 @@ When /in the new edit form I fill in "(.*?)" with "(.*?)"/ do |field, value|
   When "I fill in \"#{field}\" with \"#{value}\" within \"#reference_\""
 end
 
+Then /in the new edit form the "(.*?)" field should (not )?contain "(.*?)"/ do |field, should_not, value|
+  Then %{the "#{field}" field within "#reference_" should #{should_not ? 'not ' : ''}contain "#{value}"}
+end
+
 When /in the new edit form I follow "(.*?)"/ do |value|
   When "I follow \"#{value}\" within \"#reference_\""
 end
@@ -253,7 +257,7 @@ Then /"([^"]+)" should be selected/ do |word|
   page.should have_css ".selected", :text => word
 end
 
-And /I (edit|delete) "(.*?)"/ do |verb, author|
+And /I (edit|delete|copy) "(.*?)"/ do |verb, author|
   reference = Reference.first :conditions => ['author_names_string_cache like ?', "%#{author}%"]
   And %{I follow "#{verb}" within "#reference_#{reference.id}"}
 end
