@@ -134,7 +134,7 @@ grammar Bolton::SpeciesCatalogGrammar
   end
 
   rule long_synonym
-    (fossil_flag? italic lowercase_word '.' s fossil_flag? binomial tag_end s author ', ' citation_year ':' /.*/) {
+    (fossil_flag? italic lowercase_word '.' s fossil_flag? binomial tag_end s citation ':' /.*/) {
       value = {:type => :species, :name => lowercase_word, :synonym => true}
       value.merge! :fossil => true unless fossil_flag.blank?
       value

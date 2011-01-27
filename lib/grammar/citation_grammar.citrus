@@ -3,7 +3,7 @@ grammar CitationGrammar
   include AuthorGrammar
 
   rule citation
-    author_names ','? s year s
+    author_names ','? s citation_year s
   end
 
 end

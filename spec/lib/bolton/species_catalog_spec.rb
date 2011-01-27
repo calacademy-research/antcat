@@ -1,4 +1,5 @@
 require 'spec_helper'
+
 describe Bolton::SpeciesCatalog do
   before do
     @species_catalog = Bolton::SpeciesCatalog.new
@@ -383,6 +384,11 @@ dimidiata Forel, 1911: see under <b><i>ACROMYRMEX</i></b>.
         @species_catalog.parse(%{
 *<i>rugosostriata</i> Mayr, 1868 [<i>Macromischa</i>]; see under *<b><i>EOCENOMYRMA</i></b>.
         }).should == {:type => :species, :name => 'rugosostriata', :synonym => true, :fossil => true}
+      end
+      it "should handle a multi-author citation" do
+        @species_catalog.parse(%{
+*<i>elevatus. *Exocryptocerus elevatus</i> Vierbergen & Scheven, 1995: 160, fig. 2 (w.) DOMINICAN AMBER (Miocene). Junior synonym of *<i>serratus</i>: De Andrade &amp; Baroni Urbani, 1999: 522.
+        }).should == {:type => :species, :name => 'elevatus', :synonym => true, :fossil => true}
       end
     end
   end

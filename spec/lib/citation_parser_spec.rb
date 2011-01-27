@@ -29,4 +29,10 @@ describe CitationGrammar do
     string.should == ': 121'
   end
 
+  it "should handle a letter at the end of the year" do
+    string = 'Espadaler 1989b: 121'
+    CitationParser.parse(string).should be_true
+    string.should == ': 121'
+  end
+
 end
