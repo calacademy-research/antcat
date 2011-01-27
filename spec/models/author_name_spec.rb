@@ -37,6 +37,11 @@ describe AuthorName do
       AuthorName.import(['Fisher, B.L.', 'Wheeler, W.M.'])
       AuthorName.count.should == 2
     end
+
+    it "should respect case" do
+      AuthorName.import(['Mackay, W. M.', 'MacKay, W. M.'])
+      AuthorName.count.should == 2
+    end
   end
 
   describe "editing" do
