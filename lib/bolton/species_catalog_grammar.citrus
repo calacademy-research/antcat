@@ -199,7 +199,10 @@ grammar Bolton::SpeciesCatalogGrammar
   end
 
   rule subspecies
-  (fossil_flag? subspecies_flag bold italic blue lowercase_word tag_end tag_end tag_end /.*/) {
+  (
+    (fossil_flag? subspecies_flag bold italic blue lowercase_word tag_end tag_end tag_end /.*/) |
+    (fossil_flag? bold italic subspecies_flag blue lowercase_word tag_end tag_end tag_end /.*/)
+  ) {
     value = {:type => :subspecies, :name => lowercase_word}
     value.merge! :fossil => true unless fossil_flag.blank?
     value

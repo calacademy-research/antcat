@@ -331,6 +331,11 @@ Shattuck, 1992a: 13.</p>
 *#<b><i><span style="color:blue">minor</span></i></b><i>. *Poneropsis lugubris</i> var. <i>minor</i> Heer, 1867: 21 (m.) CROATIA (Miocene).
         }).should == {:type => :subspecies, :name => 'minor', :fossil => true}
       end
+      it "should handle a bold italic sub-class indicator" do
+        @species_catalog.parse(%{
+<b><i>#<span style="color:blue">aeolia</span></i></b><i>. Oligomyrmex oertzeni</i> var. <i>aeolia</i> Forel, 1911d: 338 (q.m.) TURKEY. Combination in <i>Carebara</i>: <b>new combination (unpublished).</b>
+        }).should == {:type => :subspecies, :name => 'aeolia'}
+      end
     end
 
     describe "synonyms" do
