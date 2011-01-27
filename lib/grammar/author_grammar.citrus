@@ -2,13 +2,13 @@ grammar AuthorGrammar
   include CommonGrammar
 
   rule author_names
-    (author (author_separator s author)* suffix? s) {
+    (author (s author_separator s author)* suffix? s) {
       {:names => captures[:author].map(&:to_s), :suffix => suffix}
     }
   end
 
   rule author
-    !suffix phrase (',' initial+)? author_suffix?
+    !suffix name_phrase (',' initial+)? author_suffix?
   end
 
   rule author_suffix
@@ -16,14 +16,14 @@ grammar AuthorGrammar
   end
 
   rule author_separator
-    ';' | ','
+    ';' | ',' | '&'
   end
 
   rule initial
     s ('dos' | 'da' | 'de' | 'di' | 'del' | 'do') |
-    s word_char '.'? '-' word_char '.' |
-    s word_char '.' |
-    s word_char_without_period_but_before_semicolon
+    s name_char '.'? '-' name_char '.' |
+    s name_char '.' |
+    s name_char_without_period_but_before_semicolon
   end
 
   rule suffix
@@ -38,19 +38,19 @@ grammar AuthorGrammar
     ', '? s 'et al.'
   end
 
-  rule phrase
-    word (s word)*
+  rule name_phrase
+    name_word (s name_word)*
   end
 
-  rule word
-    word_char+ '.'?
+  rule name_word
+    name_char+ '.'?
   end
 
-  rule word_char
-    /[\-\'\w]/u
+  rule name_char
+    /[^[:punct:][:digit:]\s]/ | /[\-\']/
   end
 
-  rule word_char_without_period_but_before_semicolon
+  rule name_char_without_period_but_before_semicolon
     /[\-\'\w](?=;)/u
   end
 end

@@ -124,6 +124,10 @@ describe AuthorParser do
      AuthorParser.parse('Ward, P. S.; ').should == {:names => ['Ward, P. S.'], :suffix => nil}
    end
 
+   it "should handle an authors list separated by ampersand" do
+     AuthorParser.parse('Espadaler & DuMerle').should == {:names => ['Espadaler', 'DuMerle'], :suffix => nil}
+   end
+
   end
 
   describe "parsing first name and initials and last name" do

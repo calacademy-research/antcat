@@ -1,0 +1,9 @@
+grammar CitationGrammar
+  include CommonGrammar
+  include AuthorGrammar
+
+  rule citation
+    author_names ','? s year s
+  end
+
+end

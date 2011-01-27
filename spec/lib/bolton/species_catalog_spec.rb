@@ -321,7 +321,7 @@ Shattuck, 1992a: 13.</p>
 <i><span style="color:purple">spinosus</span> </i>Smith, M.R. 1929: 551 (<b>unavailable name</b>); see under <b><i>LEPTOTHORAX</i></b>.
         }).should == {:type => :species, :name => 'spinosus', :not_available => true}
       end
-      it "should handle an unavailable subspecies without a comma before the year" do
+      it "should handle an authors list separated by &'s" do
         @species_catalog.parse(%{
 <i><span style="color:purple">parkeri</span> </i> Espadaler &amp; DuMerle, 1989: 121 (<b>unavailable name</b>); see under <b><i>LEPTOTHORAX</i></b>.
         }).should == {:type => :species, :name => 'parkeri', :not_available => true}

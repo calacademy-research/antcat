@@ -23,8 +23,8 @@ class Bolton::SpeciesCatalog
   def import_files filenames
     Species.delete_all
     @genus = nil
-    #filenames.each do |filename|
-    ['data/bolton/NGC-Spst-tet.htm'].each do |filename|
+    filenames.each do |filename|
+    #['data/bolton/NGC-Spst-tet.htm'].each do |filename|
       @filename = filename
       Progress.puts "Importing #{@filename}..."
       @inserting_camponotus_genus_header = filename =~ /NGC-Spcam2/
@@ -118,11 +118,15 @@ class Bolton::SpeciesCatalog
       @line = '<b><i><span color:red>CAMPONOTUS</span></i></b>'
       @inserting_camponotus_genus_header = false
     else
-      @line = @lines[@index].inner_html.gsub /\n/, ' '
+      @line = massage @lines[@index].inner_html
       @index += 1
     end
     Progress.info "\n[" + @line + "]"
     Progress.tally
     @line
+  end
+
+  def massage line
+    CGI.unescape line.gsub /\n/, ' '
   end
 end
