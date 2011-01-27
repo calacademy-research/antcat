@@ -14,5 +14,5 @@ Feature: Delete reference
     Given I will confirm on the next step
     When I follow "edit"
       And I press the "Delete" button
-    Then "Fisher, B." should not be visible
+    Then I should not see "Fisher, B."
 

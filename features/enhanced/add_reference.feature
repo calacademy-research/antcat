@@ -28,7 +28,7 @@ Feature: Add reference
     Then I should be on the main page
       And I should not see a new edit form
       And I should see "Ward, B.L.; Bolton, B. 1981. A reference title. Ants 2:1."
-      And "Add reference" should not be visible
+      And the "Add reference" link should not be visible
 
   Scenario: Add but cancel a reference when there are no others
     Given I am logged in
@@ -44,7 +44,7 @@ Feature: Add reference
       |author    |title         |year|citation  |
       |Ward, P.S.|Annals of Ants|2010|Psyche 1:1|
     When I go to the main page
-      Then "Add reference" should not be visible
+      Then the "Add reference" link should not be visible
     When I follow "add"
       Then I should see a new edit form
     When in the new edit form I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."

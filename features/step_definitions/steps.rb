@@ -100,7 +100,7 @@ Then /I should (not )?see the edit form/ do |should_not|
 end
 
 Then /there should not be an edit form/ do
-  find("#reference_#{@reference.id} .reference_edit").should be_nil
+  page.should have_no_css "#reference_#{@reference.id} .reference_edit"
 end
 
 Then /I should (not )?see a new edit form/ do |should_not|
@@ -112,10 +112,8 @@ Then 'I should not see the reference' do
   find("#reference_#{@reference.id} .reference_display").should_not be_visible
 end
 
-Then /"(.+)" should (not )?be visible/ do |text, should_not|
-  text = find("*", :text => text)
-  missing_or_invisible = text.nil? || !text.visible?
-  missing_or_invisible.should(should_not ? be_true : be_false)
+Then /the "(.+)" link should (not )?be visible/ do |text, should_not|
+  find_link(text).visible?.should == !should_not
 end
 
 Then 'there should be just the existing reference' do
@@ -123,7 +121,7 @@ Then 'there should be just the existing reference' do
 end
 
 Then "I should not see any error messages" do
-  find('.error_messages li').should be_nil
+  page.should_not have_css '.error_messages li'
 end
 
 When /in the new edit form I fill in "(.*?)" with "(.*?)"/ do |field, value|
@@ -156,7 +154,7 @@ Given 'I will confirm on the next step' do
 end
 
 Then 'I should not see a "Delete" button' do
-  find('button', :text => 'Delete').should be_nil
+  find_button('Delete').should_not be_visible
 end
 
 Given 'I am not logged in' do
@@ -183,9 +181,10 @@ Then 'I should not see the "Delete" button' do
   page.should_not have_css "button", :text => 'Delete'
 end
 
-Then /I should (not )?see a "PDF" link/ do |does_not|
-  message = does_not ? :should_not : :should
-  page.send(message, have_css("a", :text => 'PDF'))
+Then /I should (not )?see a "PDF" link/ do |should_not|
+  unless page.has_no_selector?('a', :text => 'PDF') and should_not
+    find_link("PDF").send(should_not ? :should_not : :should, be_visible)
+  end
 end
 
 When /^I press the "([^"]+)" button/ do |button|
@@ -221,7 +220,7 @@ When 'I choose a file to upload' do
 end
 
 Then 'I should see a link to that file' do
-  find("a[href='http://localhost/documents/#{@reference.document.id}/21105.pdf']", :text => 'PDF').should_not be_nil
+  page.should have_css("a[href='http://127.0.0.1/documents/#{@reference.document.id}/21105.pdf']", :text => 'PDF')
 end
 
 Then 'I should be redirected to Amazon' do
