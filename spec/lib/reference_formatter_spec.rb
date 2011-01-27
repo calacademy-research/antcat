@@ -33,6 +33,22 @@ describe ReferenceFormatter do
       ReferenceFormatter.format(reference).should == 'Forel, A. (ed.) 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.'
     end
 
+    it "should not add a period after the title if it ends with a question mark" do
+      reference = Factory(:article_reference, :author_names => [@author_name],
+                          :citation_year => "1874",
+                          :title => "Les fourmis de la Suisse?",
+                          :journal => @journal, :series_volume_issue => "26", :pagination => "1-452")
+      ReferenceFormatter.format(reference).should == 'Forel, A. 1874. Les fourmis de la Suisse? Neue Denkschriften 26:1-452.'
+    end
+
+    it "should not add a period after the title if it ends with an exclamation mark" do
+      reference = Factory(:article_reference, :author_names => [@author_name],
+                          :citation_year => "1874",
+                          :title => "Les fourmis de la Suisse!",
+                          :journal => @journal, :series_volume_issue => "26", :pagination => "1-452")
+      ReferenceFormatter.format(reference).should == 'Forel, A. 1874. Les fourmis de la Suisse! Neue Denkschriften 26:1-452.'
+    end
+
     it "should not add a period after the title if there's already one" do
       reference = Factory(:article_reference, :author_names => [@author_name],
                           :citation_year => "1874",
