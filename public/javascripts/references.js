@@ -117,9 +117,10 @@ function deleteReference() {
   if (confirm('Do you want to delete this reference?')) {
     $.post($reference.find('form').attr('action'), {'_method': 'delete'},
       function(data){
-        if (data.success)
+        if (data.success) {
           $reference.closest('tr').remove();
-        else
+          removeSavedReference()
+        } else
           alert(data.message);
       });
   } else
@@ -189,6 +190,10 @@ function restoreReference($reference) {
   var id = $reference.attr('id');
   $reference.replaceWith($('#saved_reference'))
   $('#saved_reference').attr('id', id).show()
+}
+
+function removeSavedReference() {
+  $('#saved_reference').remove()
 }
 
 function showReferenceEdit($reference, options) {
