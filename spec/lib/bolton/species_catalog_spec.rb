@@ -1,5 +1,4 @@
 require 'spec_helper'
-
 describe Bolton::SpeciesCatalog do
   before do
     @species_catalog = Bolton::SpeciesCatalog.new
@@ -249,6 +248,12 @@ Shattuck, 1992a: 13.</p>
 *<b><i><span style='color:red'>poinari</span></i></b><i>. *Acanthognathus poinari</i> Baroni Urbani, in Baroni Urbani &amp; De Andrade, 1994: 41, figs. 20, 21, 26, 27 (q.) DOMINICAN AMBER (Miocene). See also: Bolton, 2000: 17.
       }).should == {:type => :species, :name => 'poinari', :fossil => true}
     end
+    it "should handle a fossil species where the asterisk is explicitly black" do
+      @species_catalog.parse(%{
+<span style="color:black">*</span><b><i><span style="color:red">ucrainica</span></i></b><i><span style="color:black">. *Oligomyrmex ucrainicus</span></i><span> Dlussky, in Dlussky &amp; Perkovsky, 2002: 15, fig. 5 (q.) UKRAINE (Rovno Amber). </span>Combination in <i>Carebara</i>: <b>new combination (unpublished).</b><span style="color:black"><p></p></span>
+      }).should == {:type => :species, :name => 'ucrainica', :fossil => true}
+    end
+
     it "should handle a fossil species with the prefix in another order" do
       @species_catalog.parse(%{
 <i>*<b><span style="color:red">groehni</span></b>. *Amblyopone groehni</i> Dlussky, 2009: 1046, figs. 2a,b (w.) BALTIC AMBER (Eocene).

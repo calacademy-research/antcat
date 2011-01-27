@@ -1,7 +1,8 @@
 grammar Bolton::CatalogGrammar
+  include CommonGrammar
 
   rule fossil_flag
-    '*'
+    '*' | black '*' tag_end
   end
 
   rule subgenus_flag
