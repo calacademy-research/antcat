@@ -16,7 +16,7 @@ grammar CommonGrammar
   end
 
   rule green
-    start_color_span_start 'green' start_color_span_end
+    start_color_span_start ('green'|'#009644') start_color_span_end
   end
 
   rule black

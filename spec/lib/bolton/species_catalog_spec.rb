@@ -304,6 +304,12 @@ Shattuck, 1992a: 13.</p>
       }).should == {:type => :species, :name => 'audouini', :not_identifiable => true}
     end
 
+    it "should handle an unidentifiable species that's not 'green'" do
+      @species_catalog.parse(%{
+<i><span style="color:#009644">montaniformis</span>. Formica rufibarbis</i> var. <i>montaniformis</i> Kuznetsov-Ugamsky, 1929b: 39 (w.) DAGHESTAN. Junior synonym of <i style="mso-bidi-font-style:normal">glauca</i>: Dlussky, 1967a: 74 (misspelled as <i>montanoides</i>). <b>Unidentifiable taxon</b>: Seifert &amp; Schultz, 2009: 272.
+      }).should == {:type => :species, :name => 'montaniformis', :not_identifiable => true}
+    end
+
     it "should handle an unresolved junior homonym of species rank" do
       @species_catalog.parse(%{
 #<b><i><span style="color:maroon">brunneus</span></i></b><i>. Atta (Acromyrmex) subterranea</i> var. <i>brunnea</i> Forel, 1912e: 181 (w.q.m.) BRAZIL. [First available use of <i>Atta (Acromyrmex) coronata</i> subsp. <i>subterranea</i> var. <i>brunnea</i> Forel, 1911c: 291; unavailable name.] [<b>Unresolved junior primary homonym</b> of <i>Atta brunnea</i> Patton, 1894: 618 (now in <i>Odontomachus</i>).] Combination in <i>Acromyrmex</i>: Luederwaldt, 1918: 39. Currently subspecies of <i>subterraneus</i>: Gonçalves, 1961: 167; Kempf, 1972a: 15.
