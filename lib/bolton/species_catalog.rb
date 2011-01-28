@@ -12,6 +12,9 @@
 #  and doesn't have the Camponotus genus header. The code makes a special
 #  case for this file, so make sure its name when importing is
 #  NGC-Spcam2.htm.
+# 
+#  Manual edits:
+#   In NGC-Spcan-cr.htm, removed extra paragraph in Cephalotes texanus
 
 class Bolton::SpeciesCatalog
   def initialize show_progress = false
@@ -103,7 +106,7 @@ class Bolton::SpeciesCatalog
       @type = @parse_result[:type]
       if @type == :not_understood
         parse_failed
-      elsif @type != :blank
+      elsif not [:blank, :note].include? @type
         return @type
       end
     end

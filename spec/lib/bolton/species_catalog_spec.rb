@@ -89,7 +89,7 @@ Shattuck, 1992a: 13.</p>
       @species_catalog.import_html contents
     end
 
-    it "should skip by subspecies" do
+    it "should skip by subspecies and notes" do
       contents = make_contents %{
 <p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
 style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
@@ -104,6 +104,8 @@ Shattuck, 1992a: 13.</p>
 
 <p>#<b><i><span style="color:blue">ajax</span></i></b><i>. Atta (Acromyrmex) emilii</i> var. <i>ajax</i> Forel, 1909b: 58 (w.) "GUINEA" (in error; in text Forel states "probablement du Brésil"). Currently subspecies of <i>hystrix</i>: Santschi, 1925a: 358.</p>
 
+<p><span style="color:black">[Note. All <i>Colobostruma</i> taxa with combination in <i>Epopostruma</i>, <i>sensu</i> Baroni Urbani &amp; De Andrade, 2007: 97-98.]</span></p>
+
 <p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
 style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
 style='color:red'>angusta</span></i></b><i style='mso-bidi-font-style:normal'>.
@@ -114,6 +116,12 @@ Shattuck, 1992a: 13.</p>
 
       Progress.should_not_receive :error
       @species_catalog.import_html contents
+    end
+  end
+
+  describe "parsing a note" do
+    it "should work" do
+      @species_catalog.parse(%{<span style="color:black">[Note. All <i>Colobostruma</i> taxa with combination in <i>Epopostruma</i>, <i>sensu</i> Baroni Urbani &amp; De Andrade, 2007: 97-98.]</span>}).should == {:type => :note}
     end
   end
 
@@ -288,6 +296,12 @@ Shattuck, 1992a: 13.</p>
       @species_catalog.parse(%{
 <i><span style="color:green">bidentata</span></i>. <i>Myrmica bidentata</i> Smith, F. 1858b: 124 (w.) INDIA. [Bingham, 1903: 212 suggests that this may belong in <i>Solenopsis</i>.] <b>Unidentifiable to genus</b>; <i>incertae sedis</i> in <i>Myrmica</i>: Bolton, 1995b: 277. Combination in <i>Monomorium</i>: Radchenko &amp; Elmes, 2001: 238. [Note. Combination in <i>Monomorium</i> is unconvincing; see note under <i>bidentatum</i> Mayr, below.]
       }).should == {:type => :species, :name => 'bidentata', :not_identifiable => true}
+    end
+
+    it "should handle an unidentifiable species that's actually valid" do
+      @species_catalog.parse(%{
+<b><i><span style="color:green">audouini</span></i></b><i>. Condylodon audouini</i> Lund, 1831a: 132 (w.) BRAZIL. Member of family Mutillidae?: Swainson &amp; Shuckard, 1840: 173; combination in <i>Pseudomyrma</i>: Dalla Torre, 1893: 56; member of subfamily Ponerinae?: Emery, 1921f: 28 (footnote); <i>incertae sedis</i> in Ponerinae: Ward, 1990: 471. <b>Unidentifiable taxon</b>.
+      }).should == {:type => :species, :name => 'audouini', :not_identifiable => true}
     end
 
     it "should handle an unresolved junior homonym of species rank" do
