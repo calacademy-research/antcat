@@ -27,6 +27,10 @@ describe CoinsHelper do
     ]
   end
 
+  it "should bail on a class it doesn't know about " do
+    lambda {helper.coins(String.new)}.should raise_error
+  end
+
   it "should use the numeric year" do
     coins = helper.coins(ArticleReference.new(
       :author_names => [Factory :author_name, :name => 'MacKay, W.'],

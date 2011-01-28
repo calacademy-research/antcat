@@ -95,4 +95,22 @@ describe DuplicateReference do
       end
     end
   end
+
+  it "should format the references nicely" do
+    ward = Factory :reference, :citation_year => '2001b'
+    copy = Factory :reference, :citation_year => '2001'
+    dupe = DuplicateReference.new :reference => ward, :duplicate => copy
+
+    ReferenceFormatter.should_receive(:format).with(copy).and_return 'copy'
+    ReferenceFormatter.should_receive(:format).with(ward).and_return 'ward'
+    dupe.to_s.should == "ward\ncopy"
+  end
+
+  it "should not crash when show_resolution is called" do
+    ward = Factory :article_reference
+    copy = Factory :article_reference
+    dupe = DuplicateReference.new :reference => ward, :duplicate => copy
+    $stdout.should_receive(:write).at_least(2).times
+    dupe.show_resolution
+  end
 end

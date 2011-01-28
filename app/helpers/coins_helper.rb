@@ -1,12 +1,14 @@
 module CoinsHelper
   def coins reference
-    title = case reference
+    klass = case reference
     when ArticleReference then ArticleCoinsHelper
     when BookReference then BookCoinsHelper
     when NestedReference then NestedCoinsHelper
     when UnknownReference then UnknownCoinsHelper
     else raise "Don't know what kind of reference this is: #{reference.inspect}"
-    end.new(reference).coins
+    end
+    
+    title = klass.new(reference).coins
 
     content_tag(:span, "", :class => "Z3988", :title => title.join("&amp;"))
   end
