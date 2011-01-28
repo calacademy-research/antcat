@@ -26,8 +26,8 @@ class Bolton::SpeciesCatalog
   def import_files filenames
     Species.delete_all
     @genus = nil
-    #filenames.each do |filename|
-    ['data/bolton/NGC-Spf.htm'].each do |filename|
+    filenames.each do |filename|
+    #['data/bolton/NGC-Spf.htm'].each do |filename|
       @filename = filename
       Progress.puts "Importing #{@filename}..."
       @inserting_camponotus_genus_header = filename =~ /NGC-Spcam2/
@@ -94,7 +94,7 @@ class Bolton::SpeciesCatalog
   end
 
   def parse_failed
-    Progress.error "Parse failed: [#{@line}]"
+    Progress.error "#{@line}\n"
     @error_count += 1
     parse_next_line
   end

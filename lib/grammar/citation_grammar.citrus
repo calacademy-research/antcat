@@ -3,7 +3,11 @@ grammar CitationGrammar
   include AuthorGrammar
 
   rule citation
-    author_names ','? s citation_year s
+    author_names ','? s citation_year page_number? s
+  end
+
+  rule page_number
+    ': ' /\d+/
   end
 
 end

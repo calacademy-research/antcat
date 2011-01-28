@@ -15,7 +15,7 @@ describe Bolton::SpeciesCatalog do
   describe 'parsing the file as a whole' do
     it 'should complain bitterly if file is obviously not a species catalog' do
      contents = %{<html><body> <p>Foo</p> </body></html>}
-     Progress.should_receive(:error).with("Parse failed: [Foo]")
+     Progress.should_receive(:error).with("Foo\n")
      @species_catalog.import_html contents
     end
 
@@ -172,6 +172,9 @@ Shattuck, 1992a: 13.</p>
     it "should not simply consider everything with 'see under' in it as a see-under" do
       @species_catalog.parse("*<b>PALAEOMYRMEX</b> Dlussky, 1975: see under").should == {:type => :not_understood}
     end
+    it "should handle a trailing comma" do
+      @species_catalog.parse("*<i>RHOPALOMYRMEX</i>: see under <b><i>PLAGIOLEPIS</i></b>,").should == {:type => :see_under}
+    end
   end
 
   describe 'parsing a valid genus header' do
@@ -244,6 +247,10 @@ Shattuck, 1992a: 13.</p>
     it "should handle an empty paragraph with a font" do
       @species_catalog.parse(%{<span style='font-family:"Times New Roman"'><p> </p></span>}).should == {:type => :blank}
     end
+    it "should handle an empty paragraph with italics" do
+      @species_catalog.parse(%{<i><p> </p></i>}).should == {:type => :blank}
+    end
+
   end
 
   describe "parsing species" do
@@ -268,18 +275,6 @@ Shattuck, 1992a: 13.</p>
 <i>*<b><span style="color:red">groehni</span></b>. *Amblyopone groehni</i> Dlussky, 2009: 1046, figs. 2a,b (w.) BALTIC AMBER (Eocene).
       }).should == {:type => :species, :name => 'groehni', :fossil => true}
     end
-    it "should handle a non-valid species" do
-      @species_catalog.parse(%{
-<i><span style='color:black'>dyak.</span> Acanthomyrmex dyak</i> Wheeler, W.M. 1919e: 86 (s.w.) BORNEO. Junior synonym of <i>ferox</i>: Moffett, 1986c: 70.
-      }).should == {:type => :species, :name => 'dyak', :not_valid => true}
-    end
-
-    it "should handle a non-valid species with an author" do
-      @species_catalog.parse(%{
-<i>aurea </i>Forel, 1913; see under <b><i>HETEROPONERA</i></b>.
-      }).should == {:type => :species, :name => 'aurea', :not_valid => true}
-    end
-
     it "should handle an unresolved junior homonym species" do
       @species_catalog.parse(%{
 <b><i><span style="color:maroon">bidentatum</span></i></b><i>. Monomorium bidentatum</i> Mayr, 1887: 616 (w.q.) CHILE. Snelling, 1975: 5 (m.); Wheeler, G.C. &amp; Wheeler, J. 1980: 533 (l.). Combination in <i>Monomorium (Notomyrmex</i>): Emery, 1922e: 169; in <i>Notomyrmex</i>: Kusnezov, 1960b: 345; in <i>Nothidris</i>: Ettershank, 1966: 107; in <i>Antichthonidris</i>: Snelling, 1975: 6; in <i>Monomorium</i>: Fernández, 2007b: 132. Senior synonym of <i>piceonigrum</i>: Kusnezov, 1960b: 345. See also: Kusnezov, 1949a: 431. [Note. If the dubious combination of <i>bidentata</i> Smith, F. in <i>Monomorium</i> (above) is correct then <i>bidentatum</i> Mayr, 1887 becomes an <b>unresolved junior secondary homonym</b> of <i>bidentata</i> Smith, F. 1858.]
@@ -390,26 +385,60 @@ dimidiata Forel, 1911: see under <b><i>ACROMYRMEX</i></b>.
 <i>*pygmaea</i> Mayr, 1868; see under <b><i>NYLANDERIA</i></b>.
         }).should == {:type => :species, :name => 'pygmaea', :synonym => true, :fossil => true}
       end
-      it "should handle nonfossil with binomial inside italics" do
-        @species_catalog.parse(%{
-<i>asili. Promyopias asili</i> Crawley, 1916a: 30, fig. (q.) MALAWI. Combination in <i>Pseudoponera</i> (<i>Promyopias</i>): Wheeler, W.M. 1922a: 779. Junior synonym of <i>silvestrii</i>: Brown, 1963: 10.
-        }).should == {:type => :species, :name => 'asili', :synonym => true}
-      end
-      it "should handle when the species name and the binomial are both within the same <i> tag" do
-        @species_catalog.parse(%{
-  <i>crassa. Acanthoponera crassa</i> Brown, 1958g: 255, fig. 10 (w.) ECUADOR. Junior synonym of <i>minor</i>: Kempf &amp; Brown, 1968: 90.
-        }).should == {:type => :species, :name => 'crassa', :synonym => true}
-      end
+      #it "should handle nonfossil with binomial inside italics" do
+        #@species_catalog.parse(%{
+#<i>asili. Promyopias asili</i> Crawley, 1916a: 30, fig. (q.) MALAWI. Combination in <i>Pseudoponera</i> (<i>Promyopias</i>): Wheeler, W.M. 1922a: 779. Junior synonym of <i>silvestrii</i>: Brown, 1963: 10.
+        #}).should == {:type => :species, :name => 'asili', :synonym => true}
+      #end
+      #it "should handle when the species name and the binomial are both within the same <i> tag" do
+        #@species_catalog.parse(%{
+  #<i>crassa. Acanthoponera crassa</i> Brown, 1958g: 255, fig. 10 (w.) ECUADOR. Junior synonym of <i>minor</i>: Kempf &amp; Brown, 1968: 90.
+        #}).should == {:type => :species, :name => 'crassa', :synonym => true}
+      #end
       it "should handle a see-under species with genus in brackets" do
         @species_catalog.parse(%{
 *<i>rugosostriata</i> Mayr, 1868 [<i>Macromischa</i>]; see under *<b><i>EOCENOMYRMA</i></b>.
         }).should == {:type => :species, :name => 'rugosostriata', :synonym => true, :fossil => true}
       end
+      it "should handle a see-under species with stuff after the referent" do
+        @species_catalog.parse(%{
+*<i>pusillus</i> Wheeler, W.M. 1915h: 142; see under *<i>pumilus</i>, above.
+        }).should == {:type => :species, :name => 'pusillus', :synonym => true, :fossil => true}
+      end
+      it "should handle it when the whole thing is enclosed in black" do
+        @species_catalog.parse(%{
+<span style="color:black">*<i>pilosula</i> De Andrade, in Baroni Urbani & De Andrade, 2007; see under <b><i>PYRAMICA</i></b>.</span>
+        }).should == {:type => :species, :name => 'pilosula', :synonym => true, :fossil => true}
+      end
+
       it "should handle a multi-author citation" do
         @species_catalog.parse(%{
 *<i>elevatus. *Exocryptocerus elevatus</i> Vierbergen & Scheven, 1995: 160, fig. 2 (w.) DOMINICAN AMBER (Miocene). Junior synonym of *<i>serratus</i>: De Andrade &amp; Baroni Urbani, 1999: 522.
         }).should == {:type => :species, :name => 'elevatus', :synonym => true, :fossil => true}
       end
+      it "should handle a subgenus in the binomial" do
+        @species_catalog.parse(%{
+*<i>antiqua. *Formica (Serviformica) antiqua</i> Dlussky, 1967b: 82, fig. 1 (w.) BALTIC AMBER (Eocene). Junior synonym of *<i>flori</i>: Dlussky, 2002a: 292.
+        }).should == {:type => :species, :name => 'antiqua', :synonym => true, :fossil => true}
+      end
+
+      #it "should handle a species synonym" do
+        #@species_catalog.parse(%{
+  #<i><span style='color:black'>dyak.</span> Acanthomyrmex dyak</i> Wheeler, W.M. 1919e: 86 (s.w.) BORNEO. Junior synonym of <i>ferox</i>: Moffett, 1986c: 70.
+        #}).should == {:type => :species, :name => 'dyak', :synonym => true}
+      #end
+
+      #it "should handle a species synonym with an author" do
+        #@species_catalog.parse(%{
+  #<i>aurea </i>Forel, 1913; see under <b><i>HETEROPONERA</i></b>.
+        #}).should == {:type => :species, :name => 'aurea', :synonym => true}
+      #end
+      it "should handle a species synonym with an author without comma before year" do
+        @species_catalog.parse(%{
+  *<i>glaesarius</i> Wheeler, W.M. 1915; see under <b><i>TEMNOTHORAX</i></b>.
+        }).should == {:type => :species, :name => 'glaesarius', :synonym => true, :fossil => true}
+      end
+
     end
   end
 

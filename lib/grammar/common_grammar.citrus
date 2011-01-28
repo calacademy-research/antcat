@@ -59,6 +59,10 @@ grammar CommonGrammar
     /<\/\w+>/
   end
 
+  rule word
+    /[[:alpha:]]+/
+  end
+
   rule lowercase_word
     /[[:lower:]]+/
   end

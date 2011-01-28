@@ -40,7 +40,7 @@ class Progress
   end
 
   def self.error string
-    puts '*** ERROR: ' + string
+    puts string.to_s
   end
 
   def self.rate processed_count = nil
