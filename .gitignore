@@ -5,3 +5,4 @@ public/sources
 solr/data
 log
 s3.yml
+coverage
