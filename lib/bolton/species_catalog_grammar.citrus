@@ -126,14 +126,12 @@ grammar Bolton::SpeciesCatalogGrammar
   end
 
   rule species
-    available_valid_species | not_available_species | long_synonym | unresolved_junior_homonym_species | another_synonym | synonym | not_valid_species | not_identifiable_species | yet_another_synonym | synonym_3
+    available_valid_species | unavailable_species | long_synonym | unresolved_junior_homonym_species | another_synonym | synonym | not_valid_species | unidentifiable_species | yet_another_synonym | synonym_3
   end
 
   rule synonym
     (black? fossil_flag? italic? lowercase_word tag_end? s citation s bracketed_genus? (';'|':') ' see under ' fossil_flag? bold italic word tag_end tag_end  '.' tag_end?) {
-      value = {:type => :species, :name => lowercase_word, :synonym => true}
-      value.merge! :fossil => true unless fossil_flag.blank?
-      value
+      {:type => :species, :name => lowercase_word, :synonym => true}
     }
   end
 
@@ -143,33 +141,25 @@ grammar Bolton::SpeciesCatalogGrammar
 
   rule long_synonym
     (fossil_flag? italic lowercase_word '.' s fossil_flag? binomial tag_end s citation ':' /.*/) {
-      value = {:type => :species, :name => lowercase_word, :synonym => true}
-      value.merge! :fossil => true unless fossil_flag.blank?
-      value
+      {:type => :species, :name => lowercase_word, :synonym => true}
     }
   end
 
   rule another_synonym
     (italic fossil_flag? lowercase_word tag_end s author ', ' citation_year '; see under ' bold italic uppercase_word tag_end tag_end '.') {
-      value = {:type => :species, :name => lowercase_word, :synonym => true}
-      value.merge! :fossil => true unless fossil_flag.blank?
-      value
+      {:type => :species, :name => lowercase_word, :synonym => true}
     }
   end
 
   rule yet_another_synonym
     (fossil_flag italic lowercase_word tag_end s citation ';' ' see under ' fossil_flag italic lowercase_word tag_end ', above' '.') {
-      value = {:type => :species, :name => lowercase_word, :synonym => true}
-      value.merge! :fossil => true unless fossil_flag.blank?
-      value
+      {:type => :species, :name => lowercase_word, :synonym => true}
     }
   end
 
   rule synonym_3
     (fossil_flag italic lowercase_word '.' s binomial tag_end s citation /.*/) {
-      value = {:type => :species, :name => lowercase_word, :synonym => true}
-      value.merge! :fossil => true unless fossil_flag.blank?
-      value
+      {:type => :species, :name => lowercase_word, :synonym => true}
     }
   end
 
@@ -194,22 +184,22 @@ grammar Bolton::SpeciesCatalogGrammar
     }
   end
 
-  rule not_available_species
+  rule unavailable_species
     (
       (italic purple lowercase_word tag_end s tag_end s citation /.*/)|
       (italic purple lowercase_word tag_end '.' /.*/)
     ){
-      {:type => :species, :name => lowercase_word, :not_available => true}
+      {:type => :species, :name => lowercase_word, :unavailable => true}
     }
   end
 
-  rule not_identifiable_species
+  rule unidentifiable_species
     (
       (bold italic green lowercase_word tag_end tag_end tag_end italic '.' /.*/) |
       (italic green lowercase_word tag_end tag_end? '.' /.*/) |
       (fossil_flag? italic green lowercase_word tag_end '.' s fossil_flag? binomial tag_end /.*/)
     ){
-      {:type => :species, :name => lowercase_word, :not_identifiable => true}
+      {:type => :species, :name => lowercase_word, :unidentifiable => true}
     }
   end
 
