@@ -1,9 +1,9 @@
 $(function() {
   //$.fn.ajaxSubmit.debug = true
   setupSearch();
+  setupDisplays();
   if (loggedIn) {
     setupAddReferenceLink();
-    setupDisplays();
     setupEdits();
   }
   //if (!usingCucumber) {
@@ -57,13 +57,18 @@ function setupDisplays() {
 
 function setupIcons() {
   setupIconVisibility()
-  setupIconHighlighting()
-  setupIconClickHandlers()
+  if (loggedIn) {
+    setupIconHighlighting()
+    setupIconClickHandlers()
+  }
 }
 
 function setupIconVisibility() {
   if (!usingCucumber)
     $('.icon').hide();
+
+  if (!loggedIn)
+    return
 
   $('.reference').live('mouseenter',
     function() {
