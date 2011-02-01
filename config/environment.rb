@@ -1,4 +1,4 @@
-RAILS_GEM_VERSION = '2.3.8' unless defined? RAILS_GEM_VERSION
+RAILS_GEM_VERSION = '2.3.10' unless defined? RAILS_GEM_VERSION
 
 require File.join(File.dirname(__FILE__), 'boot')
 
@@ -12,7 +12,7 @@ Rails::Initializer.run do |config|
   config.gem 'devise_invitable', :version => '0.2.3'
   config.gem 'acts_as_list'
   config.gem 'lll'
-  config.gem 'citrus', :version => "2.3.2"
+  config.gem 'citrus'
   config.gem 'sunspot', :lib => 'sunspot'
   config.gem 'sunspot_rails', :lib => 'sunspot/rails'
   config.gem 'paper_trail'
