@@ -220,7 +220,6 @@ Feature: Add reference
       And I press the "Save" button
     Then I should see "Author names string couldn't be parsed. Please post a message on http://groups.google.com/group/antcat/, and we'll fix it!"
 
-
   Scenario: Unparseable author string
     Given I am logged in
     When I go to the main page
@@ -233,4 +232,19 @@ Feature: Add reference
       And I fill in "reference_citation_year" with "1981"
       And I press the "Save" button
     Then I should see "Author names string couldn't be parsed. Please post a message on http://groups.google.com/group/antcat/, and we'll fix it!"
+      And in the new edit form the "reference_author_names_string" field should contain "...asdf sdf dsfdsf"
+
+  Scenario: Unparseable publisher string
+    Given I am logged in
+    When I go to the main page
+      And I follow "Add reference"
+    When I fill in "reference_author_names_string" with "Ward, B.L"
+      And I fill in "reference_title" with "A reference title"
+      And I follow "Book"
+      And I fill in "publisher_string" with "Pensoft, Sophia"
+      And I fill in "book_pagination" with "1"
+      And I fill in "reference_citation_year" with "1981"
+      And I press the "Save" button
+    Then I should see "Publisher string couldn't be parsed. In general, use the format 'Place: Publisher'. Otherwise, please post a message on http://groups.google.com/group/antcat/, and we'll see what we can do!"
+      And in the new edit form the "publisher_string" field should contain "Pensoft, Sophia"
 
