@@ -42,13 +42,13 @@
             = text_field_tag :journal_name, journal_name, :class => 'journal'
             = label_tag :reference_series_volume_issue, 'Series volume issue'
             = f.text_field :series_volume_issue, :class => 'series_volume_issue'
-            = label_tag :article_pagination, 'Pages'
+            = label_tag :article_pagination, 'Pagination'
             = text_field_tag :article_pagination, reference.pagination, :class => 'pages'
 
           %div{:class => 'book-tab-section', :id => "tabs-book-#{reference.id}"}
             = label_tag :publisher_string, 'Publisher'
             = text_field_tag :publisher_string, publisher_string, :class => 'publisher'
-            = label_tag :book_pagination, 'Pages'
+            = label_tag :book_pagination, 'Pagination'
             = text_field_tag :book_pagination, reference.pagination, :class => 'pages'
 
           %div{:class => 'nested-tab-section', :id => "tabs-nested-#{reference.id}"}
