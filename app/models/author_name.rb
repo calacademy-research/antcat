@@ -79,7 +79,7 @@ class AuthorName < ActiveRecord::Base
     names = names.map do |name|
       author_name = nil
       unless author_name = find_by_name(name)
-        author_name = Factory :author_name, :name => name
+        author_name = create! :author => Author.create!, :name => name
       end
       author_name
     end

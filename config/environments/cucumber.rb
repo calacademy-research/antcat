@@ -21,9 +21,8 @@ config.action_controller.allow_forgery_protection    = false
 # ActionMailer::Base.deliveries array.
 config.action_mailer.delivery_method = :test
 
+config.gem 'capybara',          :version => '0.4.1.1', :lib => false
 config.gem 'cucumber-rails',    :version => '0.3.2', :lib => false
 config.gem 'database_cleaner',  :version => '0.5.2', :lib => false
-config.gem 'capybara',          :version => '0.4.1.1', :lib => false
-config.gem 'rspec',             :version => '1.3.0', :lib => false
-config.gem 'rspec-rails',       :version => '1.3.2', :lib => false
 config.gem 'jasmine',           :version => '1.0.1.1'
+config.gem 'rspec-rails',       :version => '1.3.2', :lib => false
