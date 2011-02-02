@@ -1,6 +1,6 @@
 Feature: COinS formatting
   As a researcher
-  I want to use Zotero to extract citations from ANTBIB
+  I want to use Zotero to extract citations from AntCat
   So that I don't have to hand-copy them myself
   And so I can use the citations in my own documents
 

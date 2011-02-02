@@ -1,5 +1,5 @@
 Feature: Editing a user
-  As a user of ANTBIB
+  As a user of AntCat
   I want to edit my password and email
   So that I can use a password that makes sense
     And so I can use a different email than what I was signed up with
