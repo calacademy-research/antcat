@@ -24,7 +24,7 @@ Rails::Initializer.run do |config|
     config.gem 'webmock',       :version => '1.6.1'
   end
 
-  config.load_paths << "#{RAILS_ROOT}/lib/grammar"
+  config.autoload_paths << "#{RAILS_ROOT}/lib/grammar"
 
   config.active_record.observers = :author_name_observer
 end
