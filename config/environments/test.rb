@@ -6,7 +6,5 @@ config.action_view.cache_template_loading = true
 config.action_controller.allow_forgery_protection = false
 config.action_mailer.delivery_method = :test
 
-config.gem 'rspec-rails', :lib => false
-config.gem 'jasmine'
-config.gem 'lll'
-config.gem 'factory_girl'
+config.gem 'rspec-rails', :version => '1.3.2', :lib => false
+config.gem 'jasmine',     :version => '1.0.1.1'
