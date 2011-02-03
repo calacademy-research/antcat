@@ -119,9 +119,38 @@ Shattuck, 1992a: 13.</p>
     end
   end
 
+  describe "parsing a blank line" do
+    it "should handle '<p> </p>' (nested empty paragraph)" do
+      @species_catalog.parse(%{<p> </p>}).should == {:type => :blank}
+    end
+    it "should handle a nonbreaking space inside a subparagraph" do
+      @species_catalog.parse(%{<p> </p>}).should == {:type => :blank}
+    end
+    it "should handle a nonbreaking space" do
+      @species_catalog.parse(%{ }).should == {:type => :blank}
+    end
+    it "should handle a spacerun" do
+      @species_catalog.parse(%{<span style="mso-spacerun: yes"> </span>}).should == {:type => :blank}
+    end
+    it "should handle an empty paragraph with a font" do
+      @species_catalog.parse(%{<span style='font-family:"Times New Roman"'><p> </p></span>}).should == {:type => :blank}
+    end
+    it "should handle an empty paragraph with italics" do
+      @species_catalog.parse(%{<i><p> </p></i>}).should == {:type => :blank}
+    end
+    it "should handle a blank bold red paragraph" do
+      @species_catalog.parse(%{<b><span style="color:red"><p> </p></span></b>}).should == {:type => :blank}
+    end
+  end
+
   describe "parsing a note" do
     it "should work" do
       @species_catalog.parse(%{<span style="color:black">[Note. All <i>Colobostruma</i> taxa with combination in <i>Epopostruma</i>, <i>sensu</i> Baroni Urbani &amp; De Andrade, 2007: 97-98.]</span>}).should == {:type => :note}
+    end
+    it "should parse 'Notes' as a note" do
+      @species_catalog.parse(%{
+[Notes. (i) The original spelling <i>Crematogaster</i> is used throughout, the incorrect subsequent spelling <i><span style="color:purple">Cremastogaster</span></i> is ignored; see catalogue of genus-group names. (ii) The spurious paper by Soulié &amp; Dicko, 1965: 85, is ignored. This publication merely repeats, inaccurately, the Wheeler, W.M. 1922a: 828 catalogue of Afrotopical <i>Crematogaster</i>, but treats the subgenera as genera; see catalogue of genus-group names.]
+      }).should == {:type => :note}
     end
   end
 

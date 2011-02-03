@@ -1,0 +1,117 @@
+grammar Bolton::SpeciesCatalogSpeciesGrammar
+  include Bolton::CatalogGrammar
+
+  rule species
+    uncertain_status_species | available_valid_species | species_synonym | unavailable_species | homonym_species  | unidentifiable_species
+  end
+
+  rule species_synonym
+    (species_synonym_prefix? lowercase_word /.*/) {
+      value = {:type => :species, :name => lowercase_word, :status => :synonym}
+      value.merge! species_synonym_prefix.value if species_synonym_prefix.present?
+      value
+    }
+  end
+
+  rule species_synonym_prefix
+    (
+      (black fossil_flag italic) |
+      (italic black) |
+      (italic fossil_flag) |
+      (fossil_flag italic black) |
+      (fossil_flag italic) |
+      (italic spacerun) |
+      italic
+    ) {
+      fossil_flag.blank? ? {} : {:fossil => true}
+    }
+  end
+
+  rule available_valid_species
+    (
+      (
+        (fossil_flag? bold italic red) |
+        (italic fossil_flag? bold red) |
+        (bold italic fossil_flag? red)
+      )
+      lowercase_word
+      /.*/
+    ) {
+      value = {:type => :species, :name => lowercase_word}
+      value.merge! :fossil => true unless fossil_flag.blank?
+      value
+    }
+  end
+
+  rule unavailable_species
+    (fossil_flag? italic purple lowercase_word /.*/) {
+      value = {:type => :species, :name => lowercase_word, :status => :unavailable}
+      value.merge! :fossil => true unless fossil_flag.blank?
+      value
+    }
+  end
+
+  rule unidentifiable_species
+    (
+      (bold italic green lowercase_word tag_end tag_end tag_end italic '.' /.*/) |
+      (italic green lowercase_word /.*/) |
+      (fossil_flag? bold  italic green lowercase_word tag_end tag_end tag_end /.*/) |
+      (fossil_flag? italic green lowercase_word tag_end '.' s fossil_flag? binomial tag_end /.*/)
+    ){
+      value = {:type => :species, :name => lowercase_word, :status => :unidentifiable}
+      value.merge! :fossil => true unless fossil_flag.blank?
+      value
+    }
+  end
+
+  rule uncertain_status_species
+    (fossil_flag? italic lowercase_word '.' /.*?Junior secondary homonym.*?Replacement name:.*/) {
+      value = {:type => :species, :name => lowercase_word, :status => :uncertain}
+      value.merge! :fossil => true unless fossil_flag.blank?
+      value
+    }
+  end
+
+  rule homonym_species
+    (fossil_flag? bold italic maroon lowercase_word tag_end tag_end tag_end /.*/) {
+      value = {:type => :species, :name => lowercase_word, :status => :homonym}
+      value.merge! :fossil => true unless fossil_flag.blank?
+      value
+    }
+  end
+
+  rule binomial
+    fossil_flag? capitalized_word s subgenus? s lowercase_word
+  end
+
+  rule subgenus
+    '(' capitalized_word ')'
+  end
+
+  rule subspecies
+    available_subspecies | homonym_subspecies
+  end
+
+  rule available_subspecies
+  (
+    (fossil_flag? subspecies_flag bold italic blue lowercase_word tag_end tag_end '.'? tag_end? /.*/) |
+    (bold italic black subspecies_flag tag_end blue lowercase_word tag_end tag_end tag_end /.*/) |
+    (fossil_flag? bold italic subspecies_flag blue lowercase_word tag_end tag_end tag_end /.*/) |
+    (subspecies_flag fossil_flag bold italic blue lowercase_word tag_end tag_end tag_end /.*/) |
+    (subspecies_flag italic lowercase_word /.*/)
+  ) {
+    value = {:type => :subspecies, :name => lowercase_word}
+    value.merge! :fossil => true unless fossil_flag.blank?
+    value
+  }
+  end
+
+  rule homonym_subspecies
+    (fossil_flag? subspecies_flag bold italic maroon lowercase_word tag_end tag_end tag_end /.*/) {
+      value = {:type => :subspecies, :name => lowercase_word, :status => :homonym}
+      value.merge! :fossil => true unless fossil_flag.blank?
+      value
+    }
+  end
+
+end

@@ -14,6 +14,7 @@
 #  NGC-Spcam2.htm.
 # 
 #  Manual edits:
+#   In NGC-Spg-las.htm, removed extra paragraph in Lasius murphyi
 #   In NGC-Spcan-cr.htm, removed extra paragraph in Cephalotes texanus
 
 class Bolton::SpeciesCatalog

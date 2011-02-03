@@ -1,5 +1,7 @@
 grammar Bolton::CatalogGrammar
   include CommonGrammar
+  include AuthorGrammar
+  include CitationGrammar
 
   rule fossil_flag
     '*' | black '*' tag_end
@@ -11,6 +13,23 @@ grammar Bolton::CatalogGrammar
 
   rule subspecies_flag
     '#'
+  end
+
+  rule region
+    (s errant_red_space? /\(.+?\)?$/) |
+    (span s parenthesized_phrase errant_paragraph tag_end)
+  end
+
+  rule errant_paragraph
+    '<p></p>'
+  end
+
+  rule errant_red_space
+    red s tag_end
+  end
+
+  rule spacerun
+    '<span style="mso-spacerun: yes"> </span>'
   end
 
 end

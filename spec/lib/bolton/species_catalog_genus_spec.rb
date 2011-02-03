@@ -55,6 +55,15 @@ describe Bolton::SpeciesCatalog do
     it "should handle a trailing comma" do
       @species_catalog.parse("*<i>RHOPALOMYRMEX</i>: see under <b><i>PLAGIOLEPIS</i></b>,").should == {:type => :see_under}
     end
+    it "should handle an empty paragraph" do
+      @species_catalog.parse("<i>DORISIDRIS</i>: see under <b><i>PYRAMICA</i></b><i><p></p></i>").should == {:type => :see_under}
+    end
+    it "should handle black" do
+      @species_catalog.parse(%{<i><span style="color:black">PHACOTA</span></i> : see under <b><i>MONOMORIUM</i></b>.}).should == {:type => :see_under}
+    end
+    it "should handle an empty italicized paragraph" do
+      @species_catalog.parse(%{<i>DORISIDRIS</i>: see under <b><i>PYRAMICA</i></b><i><p></p></i>}).should == {:type => :see_under}
+    end
   end
 
   describe 'parsing a valid genus header' do

@@ -4,7 +4,7 @@ grammar CommonGrammar
   end
 
   rule space
-    /(\s|\xC2\xA0|&nbsp;)/
+    /(\s|\xC2\xA0|&nbsp;)/ | (italic '<p></p>' tag_end)
   end
 
   rule question_mark
@@ -16,7 +16,7 @@ grammar CommonGrammar
   end
 
   rule green
-    start_color_span_start ('green'|'#009644') start_color_span_end
+    start_color_span_start ('green'|'#009644'|'#009900') start_color_span_end
   end
 
   rule black
@@ -24,7 +24,7 @@ grammar CommonGrammar
   end
 
   rule purple
-    start_color_span_start 'purple' start_color_span_end
+    start_color_span_start ('purple'|'#7030A0') start_color_span_end
   end
 
   rule blue
@@ -32,7 +32,7 @@ grammar CommonGrammar
   end
 
   rule maroon
-    start_color_span_start 'maroon' start_color_span_end
+    start_color_span_start ('maroon'|'#984806') start_color_span_end
   end
 
   rule start_color_span_start
@@ -64,7 +64,7 @@ grammar CommonGrammar
   end
 
   rule lowercase_word
-    /[[:lower:]]+/
+    /[[:lower:]\-]+/
   end
 
   rule uppercase_word

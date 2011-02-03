@@ -1,63 +1,10 @@
 grammar Bolton::SpeciesCatalogGrammar
-  include CommonGrammar
-  include AuthorGrammar
-  include CitationGrammar
   include Bolton::CatalogGrammar
+  include Bolton::SpeciesCatalogGenusGrammar
+  include Bolton::SpeciesCatalogSpeciesGrammar
 
   rule record
-    header | blank | genus_header | species | subspecies | unresolved_junior_homonym_subspecies | note | not_understood
-  end
-
-  rule note
-    (black '[Note.' /.*/) {
-      {:type => :note}
-    }
-  end
-
-  rule genus_header
-    see_under | fossil_genus | genus_with_crap | genus | unidentifiable_genus | transferred_genus
-  end
-
-  rule see_under
-    (((genus_group_name see_under_referent) | (genus_group_name s genus_author? see_under_referent)) /[.,]?/) {
-      {:type => :see_under}
-    }
-  end
-
-  rule genus_author
-    author (', ' year)?
-  end
-
-  rule genus_group_name
-    fossil_flag? (genus_name|subgenus_name)
-  end
-
-  rule see_under_referent
-    ':'? ' see under ' fossil_flag? bold genus_name tag_end
-  end
-
-  rule genus_name
-    italic uppercase_word s tag_end
-  end
-
-  rule subgenus_name
-    ((italic subgenus_flag) | (subgenus_flag italic)) blue uppercase_word s tag_end tag_end
-  end
-
-  rule unidentifiable_genus
-    (fossil_flag? italic green uppercase_word tag_end tag_end s parenthesized_phrase) {
-      value = {:type => :genus, :name => uppercase_word.downcase.capitalize, :unidentifiable => true}
-      value.merge! :fossil => true unless fossil_flag.blank?
-      value
-    }
-  end
-
-  rule transferred_genus
-    (fossil_flag? italic green uppercase_word /.*?transferred to.*/) {
-      value = {:type => :genus, :name => uppercase_word.downcase.capitalize, :unidentifiable => true}
-      value.merge! :fossil => true unless fossil_flag.blank?
-      value
-    }
+    header | blank | genus_header | species | subspecies | note | not_understood
   end
 
   rule header
@@ -67,13 +14,17 @@ grammar Bolton::SpeciesCatalogGrammar
   end
 
   rule blank
-    (/^/ (blank_paragraph | blank_paragraph_with_font | blank_paragraph_italic | spacerun | s) /$/) {
+    (/^/ (blank_paragraph | blank_paragraph_with_font | blank_bold_red_paragraph | blank_paragraph_italic | spacerun | s) /$/) {
       {:type => :blank}
     }
   end
 
   rule blank_paragraph_with_font
     /<span style='font-family:".*?"'>/ blank_paragraph '</span>' 
+  end
+
+  rule blank_bold_red_paragraph
+    bold red blank_paragraph tag_end tag_end
   end
 
   rule blank_paragraph_italic
@@ -84,160 +35,10 @@ grammar Bolton::SpeciesCatalogGrammar
     '<p>' s '</p>'
   end
 
-  rule spacerun
-    '<span style="mso-spacerun: yes"> </span>'
-  end
-
-  rule fossil_genus
-    (fossil_flag genus) {
-      genus.value.merge :fossil => true
+  rule note
+    (black? '[Note' /.*/) {
+      {:type => :note}
     }
-  end
-
-  rule genus
-    (
-      bold italic (red|green)
-        uppercase_word s errant_paragraph?
-      tag_end s tag_end s tag_end region? '.'?
-      region?
-    ) {
-      {:type => :genus, :name => uppercase_word.downcase.capitalize}
-    }
-  end
-
-  rule genus_with_crap
-    (bold italic red uppercase_word tag_end tag_end tag_end red space tag_end black parenthesized_phrase '<p></p>' tag_end) {
-      {:type => :genus, :name => uppercase_word.downcase.capitalize}
-    }
-
-  end
-
-  rule region
-    (s errant_red_space? /\(.+?\)?$/) |
-    (span s parenthesized_phrase errant_paragraph tag_end)
-  end
-
-  rule errant_paragraph
-    '<p></p>'
-  end
-
-  rule errant_red_space
-    red s tag_end
-  end
-
-  rule species
-    available_valid_species | species_synonym | unavailable_species | unresolved_junior_homonym_species  | not_valid_species | unidentifiable_species
-  end
-
-  rule species_synonym
-    (black?
-      species_synonym_name citation
-      (species_synonym_under_genus | species_synonym_under_species | species_synonym_other | (bracketed_genus? synonym_see_under))
-     tag_end?) {
-      {:type => :species, :synonym => true, :name => species_synonym_name.value}
-    }
-  end
-
-  rule species_synonym_name
-    (
-      ((italic fossil_flag) | (fossil_flag italic) | fossil_flag | italic)?
-      (
-        (lowercase_word '.'? s fossil_flag? binomial tag_end s) |
-        (lowercase_word tag_end? '.'? s)
-      )) {
-      lowercase_word
-    }
-  end
-
-  rule species_synonym_under_genus
-    ('; see under ' bold italic uppercase_word tag_end tag_end '.')
-  end
-
-  rule species_synonym_under_species
-    ('; see under ' fossil_flag italic lowercase_word tag_end ', above' '.')
-  end
-
-  rule species_synonym_other
-    (/.*/)
-  end
-
-  rule bracketed_genus
-    '[' italic capitalized_word tag_end ']'
-  end
-
-  rule synonym_see_under
-    (';'|':') ' see under ' fossil_flag? bold italic word tag_end tag_end  '.'
-  end
-
-  rule available_valid_species
-    (
-      (
-        (fossil_flag? bold italic red) |
-        (italic fossil_flag? bold red)
-      )
-      lowercase_word
-      /.*/
-    ) {
-      value = {:type => :species, :name => lowercase_word}
-      value.merge! :fossil => true unless fossil_flag.blank?
-      value
-    }
-  end
-
-  rule not_valid_species
-    (italic black? lowercase_word /.*/) {
-      {:type => :species, :name => lowercase_word, :not_valid => true}
-    }
-  end
-
-  rule unavailable_species
-    (
-      (italic purple lowercase_word tag_end s tag_end s citation /.*/)|
-      (italic purple lowercase_word tag_end '.' /.*/)
-    ){
-      {:type => :species, :name => lowercase_word, :unavailable => true}
-    }
-  end
-
-  rule unidentifiable_species
-    (
-      (bold italic green lowercase_word tag_end tag_end tag_end italic '.' /.*/) |
-      (italic green lowercase_word tag_end tag_end? '.' /.*/) |
-      (fossil_flag? italic green lowercase_word tag_end '.' s fossil_flag? binomial tag_end /.*/)
-    ){
-      {:type => :species, :name => lowercase_word, :unidentifiable => true}
-    }
-  end
-
-  rule unresolved_junior_homonym_species
-    (bold italic maroon lowercase_word tag_end tag_end tag_end /.*/) {
-      {:type => :species, :name => lowercase_word, :unresolved_junior_homonym => true}
-    }
-  end
-
-  rule binomial
-    fossil_flag? capitalized_word s subgenus? s lowercase_word
-  end
-
-  rule subgenus
-    '(' capitalized_word ')'
-  end
-
-  rule subspecies
-  (
-    (fossil_flag? subspecies_flag bold italic blue lowercase_word tag_end tag_end tag_end /.*/) |
-    (fossil_flag? bold italic subspecies_flag blue lowercase_word tag_end tag_end tag_end /.*/)
-  ) {
-    value = {:type => :subspecies, :name => lowercase_word}
-    value.merge! :fossil => true unless fossil_flag.blank?
-    value
-  }
-  end
-
-  rule unresolved_junior_homonym_subspecies
-  (subspecies_flag bold italic maroon lowercase_word tag_end tag_end tag_end /.*/) {
-    {:type => :subspecies, :name => lowercase_word, :unresolved_junior_homonym => true}
-  }
   end
 
   rule not_understood
