@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110204180016) do
+ActiveRecord::Schema.define(:version => 20110204190807) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -162,12 +162,11 @@ ActiveRecord::Schema.define(:version => 20110204180016) do
     t.string   "name"
     t.string   "type"
     t.integer  "parent_id"
-    t.boolean  "available"
-    t.boolean  "is_valid"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "fossil"
     t.text     "taxonomic_history"
+    t.string   "status"
   end
 
   add_index "taxa", ["parent_id"], :name => "taxa_parent_id_idx"

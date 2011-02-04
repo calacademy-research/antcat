@@ -3,6 +3,13 @@ class Taxon < ActiveRecord::Base
 
   belongs_to :parent, :class_name => 'Taxon'
   has_many :children, :class_name => 'Taxon', :foreign_key => :parent_id, :order => :name
+  def unavailable?
+    status == 'unavailable'
+  end
+
+  def invalid?
+    status != 'valid'
+  end
 
   def genera
     children.inject([]) do |genera, child|
@@ -28,14 +35,6 @@ class Taxon < ActiveRecord::Base
         end
       }
     end
-  end
-
-  def available?
-    available
-  end
-
-  def is_valid?
-    is_valid
   end
 
 end

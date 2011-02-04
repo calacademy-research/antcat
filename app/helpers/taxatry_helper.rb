@@ -27,8 +27,8 @@ module TaxatryHelper
     css_classes << additional_class if additional_class.present?
     css_classes << 'selected' if current == selected
     if current.kind_of? Taxon
-      css_classes << 'taxon_not_available' if !current.available?
-      css_classes << 'taxon_not_valid' if !current.is_valid?
+      css_classes << 'taxon_unavailable' if current.unavailable?
+      css_classes << 'taxon_invalid' if current.invalid?
     end
     css_classes.join ' '
   end
