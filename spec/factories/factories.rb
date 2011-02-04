@@ -83,9 +83,6 @@ end
 Factory.define :reference_document do |document|
 end
 
-Factory.define :antweb_taxonomy, :class => 'Antweb::Taxonomy' do |antweb_taxonomy|
-end
-
 Factory.define :subfamily do |subfamily|
 end
 
