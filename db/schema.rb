@@ -9,20 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110126014429) do
-
-  create_table "antweb_taxonomy", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "name"
-    t.boolean  "fossil"
-    t.string   "subfamily"
-    t.string   "tribe"
-    t.text     "taxonomic_history"
-    t.string   "current_valid_name"
-    t.boolean  "available"
-    t.boolean  "is_valid"
-  end
+ActiveRecord::Schema.define(:version => 20110204180016) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
