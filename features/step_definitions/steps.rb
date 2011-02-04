@@ -260,3 +260,18 @@ And /I (edit|delete|copy) "(.*?)"/ do |verb, author|
   reference = Reference.first :conditions => ['author_names_string_cache like ?', "%#{author}%"]
   And %{I follow "#{verb}" within "#reference_#{reference.id}"}
 end
+
+Given /a tribe exists with a name of "(.*?)" and a subfamily of "(.*?)"/ do |taxon_name, parent_name|
+  Tribe.create! :name => taxon_name, :subfamily => Subfamily.find_or_create_by_name(parent_name)
+end
+
+Given /a genus exists with a name of "(.*?)" and a tribe of "(.*?)"/ do |taxon_name, parent_name|
+  tribe = Tribe.find_or_create_by_name(parent_name)
+  Genus.create! :name => taxon_name, :tribe => tribe, :subfamily => tribe.subfamily
+end
+
+Given /a species exists with a name of "(.*?)" and a genus of "(.*?)"/ do |taxon_name, parent_name|
+  genus = Genus.find_or_create_by_name(parent_name)
+  Species.create! :name => taxon_name, :genus => genus
+end
+

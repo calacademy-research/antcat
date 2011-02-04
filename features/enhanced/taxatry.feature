@@ -6,11 +6,24 @@ Feature: Using the Taxatry
 
   Background:
     Given a subfamily exists with a name of "Dolichoderinae"
-      And a tribe exists with a name of "Attini" and a parent of "Dolichoderinae"
-      And a genus exists with a name of "Tapinoma" and a parent of "Attini"
-      And a species exists with a name of "sessile" and a parent of "Tapinoma"
-      And a tribe exists with a name of "Ecitonini" and a parent of "Aenictogitoninae"
+      And a tribe exists with a name of "Attini" and a subfamily of "Dolichoderinae"
+      And a genus exists with a name of "Tapinoma" and a tribe of "Attini"
+      And a species exists with a name of "sessile" and a genus of "Tapinoma"
+      And a tribe exists with a name of "Ecitonini" and a subfamily of "Aenictogitoninae"
     When I go to the Taxatry
+
+  Scenario: Seeing the initial subfamilies
+    Then I should see "Dolichoderinae"
+
+  Scenario: Viewing the tribes for a subfamily
+    When I follow "Dolichoderinae"
+    Then I should see "Attini"
+
+  Scenario: Not showing the tribes for a subfamily
+    When I uncheck "Show tribes?"
+    When I follow "Dolichoderinae"
+    Then I should not see "Attini"
+      And I should see "Tapinoma"
 
   Scenario: Drilling down into the taxonomy
     When I follow "Dolichoderinae"
@@ -22,16 +35,6 @@ Feature: Using the Taxatry
     When I follow "Tapinoma"
     Then "Tapinoma" should be selected
       And I should see "sessile"
-
-  Scenario: Viewing the tribes for a subfamily
-    When I follow "Dolichoderinae"
-    Then I should see "Attini"
-
-  Scenario: Not showing the tribes for a subfamily
-    When I uncheck "Show tribes?"
-    When I follow "Dolichoderinae"
-    Then I should not see "Attini"
-      And I should see "Tapinoma"
 
   Scenario: Viewing the tribes for all subfamilies
     When I follow "All" in the subfamilies list
