@@ -1,21 +1,16 @@
 require 'spec_helper'
 
 describe Taxon do
-  describe "getting the genera for a subfamily" do
-    it "should get a genus that's attached directly to the subfamily" do
-      subfamily = Subfamily.create!
-      genus = Genus.create! :parent => subfamily
-      subfamily.genera.should == [genus]
-    end
-    it "should get a genus that's attached under a tribe" do
-      subfamily = Subfamily.create!
-      tribe = Tribe.create! :parent => subfamily
-      genus = Genus.create! :parent => tribe
-      subfamily.genera.should == [genus]
-    end
-    it "should return an empty array if it has no children" do
-      Subfamily.create!.genera.should be_empty
-    end
+
+  it "should have a name" do
+    taxon = Taxon.create! :name => 'Cerapachynae', :status => 'valid'
+    taxon.name.should == 'Cerapachynae'
+  end
+
+  it "should not be invalid or unavailable" do
+    taxon = Taxon.create! :name => 'Cerapachynae', :status => 'valid'
+    taxon.should_not be_invalid
+    taxon.should_not be_unavailable
   end
 
   describe "import" do
