@@ -1,8 +1,6 @@
 class Taxon < ActiveRecord::Base
   set_table_name :taxa
 
-  belongs_to :parent, :class_name => 'Taxon'
-  has_many :children, :class_name => 'Taxon', :foreign_key => :parent_id, :order => :name
   def unavailable?
     status == 'unavailable'
   end
@@ -11,15 +9,8 @@ class Taxon < ActiveRecord::Base
     status != 'valid'
   end
 
-  def genera
-    children.inject([]) do |genera, child|
-      if child.kind_of? Genus
-        genera << child
-      else
-        genera.concat child.genera
-      end
-      genera
-    end.sort_by(&:name)
+  def children
+    raise NotImplementedError
   end
 
   def self.import

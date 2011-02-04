@@ -9,7 +9,7 @@ class TaxatryController < ApplicationController
 
     if @show_tribes
       if @selected_subfamily
-        @tribes = @selected_subfamily == 'all' ? Tribe.all(:order => :name) : @selected_subfamily.children
+        @tribes = @selected_subfamily == 'all' ? Tribe.all(:order => :name) : @selected_subfamily.tribes
         set_selected_taxon 'tribe'
       end
       @genera = @selected_tribe.genera if @selected_tribe
@@ -21,7 +21,7 @@ class TaxatryController < ApplicationController
     set_selected_taxon 'genus'
 
     if @selected_genus
-      @species = @selected_genus.children
+      @species = @selected_genus.species
     end
   end
 

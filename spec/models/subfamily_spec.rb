@@ -1,19 +1,21 @@
 require 'spec_helper'
 
 describe Subfamily do
-  it "should have these fields" do
-    subfamily = Subfamily.create! :name => 'Cerapachynae', :is_valid => true, :available => true
-    subfamily.parent = Family.create! :name => 'Formicidae'
-    subfamily.save!
-    subfamily.children << Tribe.create!(:name => 'Attini')
-    subfamily.children << Genus.create!(:name => 'Formica')
 
-    subfamily.parent.should have(1).children
-    subfamily.parent.should be_kind_of Family
-    subfamily.should have(2).children
-    subfamily.name.should == 'Cerapachynae'
-    subfamily.should be_kind_of Subfamily
-    subfamily.should be_is_valid
-    subfamily.should be_available
+  it "should have tribes, which are its children" do
+    subfamily = Subfamily.create! :name => 'Myrmicinae'
+    Tribe.create! :name => 'Attini', :subfamily => subfamily
+    Tribe.create! :name => 'Dacetini', :subfamily => subfamily
+    subfamily.tribes.map(&:name).should =~ ['Attini', 'Dacetini']
+    subfamily.tribes.should == subfamily.children
   end
+
+  it "should have genera" do
+    myrmicinae = Subfamily.create! :name => 'Myrmicinae'
+    dacetini = Tribe.create! :name => 'Dacetini', :subfamily => myrmicinae
+    Genus.create! :name => 'Atta', :subfamily => myrmicinae, :tribe => Tribe.create!(:name => 'Attini', :subfamily => myrmicinae)
+    Genus.create! :name => 'Acanthognathus', :subfamily => myrmicinae, :tribe => Tribe.create!(:name => 'Dacetini', :subfamily => myrmicinae)
+    myrmicinae.genera.map(&:name).should =~ ['Atta', 'Acanthognathus']
+  end
+
 end

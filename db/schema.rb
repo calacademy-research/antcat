@@ -161,15 +161,19 @@ ActiveRecord::Schema.define(:version => 20110204190807) do
   create_table "taxa", :force => true do |t|
     t.string   "name"
     t.string   "type"
-    t.integer  "parent_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "fossil"
     t.text     "taxonomic_history"
     t.string   "status"
+    t.integer  "subfamily_id"
+    t.integer  "tribe_id"
+    t.integer  "genus_id"
   end
 
-  add_index "taxa", ["parent_id"], :name => "taxa_parent_id_idx"
+  add_index "taxa", ["genus_id"], :name => "taxa_genus_id_idx"
+  add_index "taxa", ["subfamily_id"], :name => "taxa_subfamily_id_idx"
+  add_index "taxa", ["tribe_id"], :name => "taxa_tribe_id_idx"
 
   create_table "users", :force => true do |t|
     t.string   "email",                              :default => "", :null => false
