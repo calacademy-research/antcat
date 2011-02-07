@@ -30,15 +30,17 @@ class Bolton::GenusCatalog
         @not_understood_count += 1
         next
       end
-      record[:genus][:taxonomic_history] = p.to_html.strip
+      next if record[:type] == :subgenus
 
-      subfamily_name = record[:genus].delete(:subfamily)
-      tribe_name = record[:genus].delete(:tribe)
+
+      subfamily_name = record[:subfamily]
+      tribe_name = record[:tribe]
 
       subfamily = subfamily_name && Subfamily.find_or_create_by_name(subfamily_name)
-      tribe = tribe_name && Tribe.find_or_create_by_name(tribe_name, :parent => subfamily)
+      tribe = tribe_name && Tribe.find_or_create_by_name(tribe_name, :subfamily => subfamily)
 
-      genus = Genus.find_or_create_by_name record[:genus].merge :parent => tribe || subfamily
+      Genus.find_or_create_by_name record[:name], :fossil => record[:fossil], :status => record[:status].to_s, :tribe => tribe, :subfamily => subfamily,
+        :taxonomic_history => p.to_html.strip
 
       Progress.tally
     end

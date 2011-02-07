@@ -16,20 +16,6 @@ describe Bolton::GenusCatalog do
   end
 
   describe 'importing html' do
-    it "should call the parser for each <p> and save the result" do
-      Bolton::GenusCatalogParser.should_receive(:parse).with('foo').and_return :type => :genus, :name => 'foo'
-      Bolton::GenusCatalogParser.should_receive(:parse).with('bar').and_return :type => :genus, :name => 'bar'
-      Genus.should_receive(:find_or_create_by_name).with(:name => 'bar', :taxonomic_history=>"<p>bar</p>").and_return Factory :genus
-      Genus.should_receive(:find_or_create_by_name).with(:name => 'foo', :is_valid => nil, :taxonomic_history=>"<p>foo</p>").and_return Factory :genus
-      @genus_catalog.import_html '<html><p>foo</p><p>bar</p></html>'
-    end
-
-    it "should not save the result if it wasn't a genus" do
-      Bolton::GenusCatalogParser.should_receive(:parse).with('foo').and_return :unidentifiable
-      Taxon.should_not_receive :create!
-      @genus_catalog.import_html '<html><p>foo</p></html>'
-    end
-
     describe "processing a representative sample and making sure they're saved correctly" do
       it 'should work' do
         @genus_catalog.import_html make_content %{
@@ -67,26 +53,29 @@ style='color:red'>PROTAZTECA</span></i></b> [<i style='mso-bidi-font-style:
 normal'>incertae sedis</i> in Dolichoderinae]</p>
 
         }
-        Genus.count.should == 4
+        Genus.count.should == 5
 
         acromyrmex = Genus.find_by_name 'Acromyrmex'
         acromyrmex.should_not be_fossil
-        acromyrmex.parent.parent.name.should == 'Myrmicinae'
-        acromyrmex.parent.name.should == 'Attini'
-        acromyrmex.is_valid.should be_true
+        acromyrmex.subfamily.name.should == 'Myrmicinae'
+        acromyrmex.tribe.name.should == 'Attini'
+        acromyrmex.should_not be_invalid
         acromyrmex.taxonomic_history.should == %{<p class="MsoNormal" style="margin-left:.5in;text-align:justify;text-indent:-.5in"><b style="mso-bidi-font-weight:normal"><i style="mso-bidi-font-style:normal"><span style="color:red">ACROMYRMEX</span></i></b> [Myrmicinae: Attini]</p>}
+
+        attaichnus = Genus.find_by_name 'Attaichnus'
+        attaichnus.should be_fossil
+        attaichnus.should be_unidentifiable
 
         acalama = Genus.find_by_name 'Acalama'
         acalama.should_not be_fossil
-        acalama.is_valid.should_not be_true
+        acalama.should be_invalid
 
         ancylognathus = Genus.find_by_name 'Ancylognathus'
         ancylognathus.should_not be_available
-        ancylognathus.is_valid.should_not be_true
         
         protazteca = Genus.find_by_name 'Protazteca'
-        protazteca.parent.name.should == 'incertae_sedis'
-        protazteca.parent.parent.name.should == 'Dolichoderinae'
+        protazteca.tribe.name.should == 'incertae_sedis'
+        protazteca.subfamily.name.should == 'Dolichoderinae'
         
       end
     end
