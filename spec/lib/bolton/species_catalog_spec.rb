@@ -66,18 +66,18 @@ Shattuck, 1992a: 13.</p>
 
       @species_catalog.import_html contents
 
-      Taxon.count.should == 5
+      Taxon.count.should == 7
 
       acanthomyrmex = Genus.find_by_name('Acanthomyrmex')
       acanthomyrmex.should_not be_nil
-      acanthomyrmex.fossil.should be_true
+      acanthomyrmex.fossil.should_not be_true
 
       basispinosus = acanthomyrmex.species.find_by_name('basispinosus')
-      basispinosus.fossil.should be_true
+      basispinosus.fossil.should_not be_true
 
       tetramorium = Genus.find_by_name('Tetramorium')
       poinari = tetramorium.species.find_by_name('poinari')
-      poinari.status.fossil.should be_true
+      poinari.fossil.should be_true
     end
 
     it "should recover from one species it can't parse and continue with the rest" do
