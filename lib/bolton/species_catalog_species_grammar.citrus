@@ -7,7 +7,7 @@ grammar Bolton::SpeciesCatalogSpeciesGrammar
 
   rule species_synonym
     (species_synonym_prefix? species_name /.*/) {
-      value = {:type => :species, :name => species_name, :status => :synonym}
+      value = {:type => :species, :name => species_name.value, :status => :synonym}
       value.merge! species_synonym_prefix.value if species_synonym_prefix.present?
       value
     }
@@ -37,7 +37,7 @@ grammar Bolton::SpeciesCatalogSpeciesGrammar
       species_name
       /.*/
     ) {
-      value = {:type => :species, :name => species_name}
+      value = {:type => :species, :name => species_name.value}
       value.merge! :fossil => true unless fossil_flag.blank?
       value
     }
@@ -45,7 +45,7 @@ grammar Bolton::SpeciesCatalogSpeciesGrammar
 
   rule unavailable_species
     (fossil_flag? italic purple species_name /.*/) {
-      value = {:type => :species, :name => species_name, :status => :unavailable}
+      value = {:type => :species, :name => species_name.value, :status => :unavailable}
       value.merge! :fossil => true unless fossil_flag.blank?
       value
     }
@@ -58,7 +58,7 @@ grammar Bolton::SpeciesCatalogSpeciesGrammar
       (fossil_flag? bold  italic green species_name tag_end tag_end tag_end /.*/) |
       (fossil_flag? italic green species_name tag_end '.' s fossil_flag? binomial tag_end /.*/)
     ){
-      value = {:type => :species, :name => species_name, :status => :unidentifiable}
+      value = {:type => :species, :name => species_name.value, :status => :unidentifiable}
       value.merge! :fossil => true unless fossil_flag.blank?
       value
     }
@@ -66,7 +66,7 @@ grammar Bolton::SpeciesCatalogSpeciesGrammar
 
   rule uncertain_status_species
     (fossil_flag? italic species_name '.' /.*?Junior secondary homonym.*?Replacement name:.*/) {
-      value = {:type => :species, :name => species_name, :status => :uncertain}
+      value = {:type => :species, :name => species_name.value, :status => :uncertain}
       value.merge! :fossil => true unless fossil_flag.blank?
       value
     }
@@ -74,7 +74,7 @@ grammar Bolton::SpeciesCatalogSpeciesGrammar
 
   rule homonym_species
     (fossil_flag? bold italic maroon species_name tag_end tag_end tag_end /.*/) {
-      value = {:type => :species, :name => species_name, :status => :homonym}
+      value = {:type => :species, :name => species_name.value, :status => :homonym}
       value.merge! :fossil => true unless fossil_flag.blank?
       value
     }
@@ -100,7 +100,7 @@ grammar Bolton::SpeciesCatalogSpeciesGrammar
     (subspecies_flag fossil_flag bold italic blue species_name tag_end tag_end tag_end /.*/) |
     (subspecies_flag italic species_name /.*/)
   ) {
-    value = {:type => :subspecies, :name => species_name}
+    value = {:type => :subspecies, :name => species_name.value}
     value.merge! :fossil => true unless fossil_flag.blank?
     value
   }
@@ -108,7 +108,7 @@ grammar Bolton::SpeciesCatalogSpeciesGrammar
 
   rule homonym_subspecies
     (fossil_flag? subspecies_flag bold italic maroon species_name tag_end tag_end tag_end /.*/) {
-      value = {:type => :subspecies, :name => species_name, :status => :homonym}
+      value = {:type => :subspecies, :name => species_name.value, :status => :homonym}
       value.merge! :fossil => true unless fossil_flag.blank?
       value
     }
