@@ -3,66 +3,55 @@ require 'spec_helper'
 describe Taxon do
 
   it "should have a name" do
-    taxon = Taxon.create! :name => 'Cerapachynae', :status => 'valid'
+    taxon = Taxon.create! :name => 'Cerapachynae'
     taxon.name.should == 'Cerapachynae'
   end
 
-  it "should not be invalid or unavailable" do
-    taxon = Taxon.create! :name => 'Cerapachynae', :status => 'valid'
+  it "when without status, should not be invalid" do
+    taxon = Taxon.create! :name => 'Cerapachynae'
     taxon.should_not be_invalid
+  end
+
+  it "when with blank status, should not be invalid" do
+    taxon = Taxon.create! :name => 'Cerapachynae', :status => ''
+    taxon.should_not be_invalid
+  end
+
+  it "should be able to be unidentifiable" do
+    taxon = Taxon.create! :name => 'Cerapachynae'
+    taxon.should_not be_unidentifiable
+    taxon.update_attribute :status, 'unidentifiable'
+    taxon.should be_unidentifiable
+    taxon.should be_invalid
+  end
+
+  it "should be able to be unavailable" do
+    taxon = Taxon.create! :name => 'Cerapachynae'
     taxon.should_not be_unavailable
+    taxon.should be_available
+    taxon.update_attribute :status, 'unavailable'
+    taxon.should be_unavailable
+    taxon.should_not be_available
+    taxon.should be_invalid
   end
 
-  describe "import" do
-    it "should delete existing taxa" do
-      Subfamily.create! :name => 'Cerapachynae'
-      Taxon.import {|proc|}
-      Taxon.count.should be_zero
-    end
-
-    it "should create each part of the hierarchy" do
-      Taxon.import do |proc|
-        proc.call :genus => 'genus', :subfamily => 'subfamily', :tribe => 'tribe'
-      end
-
-      subfamily = Subfamily.find_by_name('subfamily')
-      subfamily.should_not be_nil
-
-      tribe = Tribe.find_by_name('tribe')
-      tribe.should_not be_nil
-      tribe.parent.should == subfamily
-
-      genus = Genus.find_by_name('genus')
-      genus.should_not be_nil
-      genus.parent.should == tribe
-    end
-    
-    it "should be able to skip tribe" do
-      Taxon.import do |proc|
-        proc.call :genus => 'genus', :subfamily => 'subfamily', :tribe => ''
-      end
-
-      subfamily = Subfamily.find_by_name('subfamily')
-      genus = Genus.find_by_name('genus')
-      genus.parent.should == subfamily
-    end
-
-    it "should save the validity and availability of the genus" do
-      Taxon.import do |proc|
-        proc.call :genus => 'genus', :subfamily => 'subfamily', :tribe => '', :available => true, :is_valid => false
-      end
-      genus = Genus.find_by_name 'genus'
-      genus.should be_available
-      genus.should_not be_is_valid
-    end
-
-    it "should only create each taxon once" do
-      Taxon.import do |proc|
-        proc.call :genus => 'genus', :subfamily => 'subfamily', :tribe => 'tribe'
-        proc.call :genus => 'another_genus', :subfamily => 'subfamily', :tribe => 'tribe'
-      end
-      Taxon.count.should == 4
-    end
-    
+  it "should be able to be a synonym" do
+    taxon = Taxon.create! :name => 'Cerapachynae'
+    taxon.should_not be_synonym
+    taxon.update_attribute :status, 'synonym'
+    taxon.should be_synonym
+    taxon.should be_invalid
   end
+
+  it "should be able to be a fossil" do
+    taxon = Taxon.create! :name => 'Cerapachynae'
+    taxon.should_not be_fossil
+    taxon.update_attribute :fossil, true
+    taxon.should be_fossil
+  end
+
+  it "should raise if anyone calls #children directly" do
+    lambda {Taxon.new.children}.should raise_error NotImplementedError
+  end
+
 end
