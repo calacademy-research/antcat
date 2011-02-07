@@ -8,12 +8,12 @@ grammar Bolton::GenusCatalogGrammar
 
   rule header
     (subgenus_flag? fossil_flag? genus bracketed_information) {
-      return :unidentifiable if genus.value == :unidentifiable
-      return :subgenus if genus.value == :subgenus
-      value = {:available => true, :fossil => !fossil_flag.blank?}
-      value.merge! genus.value
+      value = genus.value
+      value.merge! :fossil => true if fossil_flag.present?
       value.merge! bracketed_information.value
-      {:genus => value}
+      value
+    }
+  end
 
   rule not_understood
     /.*/ {
@@ -27,32 +27,32 @@ grammar Bolton::GenusCatalogGrammar
 
   rule valid_genus
     (bold italic red genus_name tag_end tag_end tag_end) {
-      {:name => genus_name.value, :valid => true}
+      {:type => :genus, :name => genus_name.value}
     }
   end
 
   rule unavailable_genus
     (italic purple genus_name tag_end tag_end) {
-      {:name => genus_name.value, :valid => false, :available => false}
+      {:type => :genus, :name => genus_name.value, :status => :unavailable}
     }
   end
 
   rule invalid_genus
     ((italic black genus_name tag_end tag_end) |
      (italic genus_name tag_end)) {
-      {:name => genus_name.value, :valid => false}
+      {:type => :genus, :name => genus_name.value, :status => :invalid}
     }
   end
 
   rule unidentifiable_genus
     (bold italic green genus_name tag_end tag_end tag_end) {
-      :unidentifiable
+      {:type => :genus, :name => genus_name.value, :status => :unidentifiable}
     }
   end
 
   rule subgenus
     (bold italic blue genus_name tag_end tag_end tag_end) {
-      :subgenus
+      {:type => :subgenus, :name => genus_name.value}
     }
   end
 
@@ -81,7 +81,13 @@ grammar Bolton::GenusCatalogGrammar
   end
 
   rule bracketed_contents
-    uncertain_subfamily | subfamily_and_tribe | junior_synonym_of | any_bracketed_contents
+    subgenus_of | uncertain_subfamily | subfamily_and_tribe | junior_synonym_of | any_bracketed_contents
+  end
+
+  rule subgenus_of
+    ('subgenus of ' italic capitalized_word tag_end) {
+      {:genus => capitalized_word.value}
+    }
   end
 
   rule uncertain_subfamily

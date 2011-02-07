@@ -56,10 +56,28 @@ style='color:red'>angusta</span></i></b><i style='mso-bidi-font-style:normal'>.
 Iridomyrmex angustus</i> Stitz, 1911a: 369, fig. 15 (w.) NEW GUINEA.
 Combination in <i style='mso-bidi-font-style:normal'>Anonychomyrma</i>:
 Shattuck, 1992a: 13.</p>
+
+<p><b><i><span style="color:red">TETRAMORIUM</span></i></b></p>
+
+<p>*<b><i><span style='color:red'>poinari</span></i></b><i>. *Acanthognathus poinari</i> Baroni Urbani, in Baroni Urbani &amp; De Andrade, 1994: 41, figs. 20, 21, 26, 27 (q.) DOMINICAN AMBER (Miocene). See also: Bolton, 2000: 17.</p>
       }
 
       Progress.should_not_receive(:error)
+
       @species_catalog.import_html contents
+
+      Taxon.count.should == 5
+
+      acanthomyrmex = Genus.find_by_name('Acanthomyrmex')
+      acanthomyrmex.should_not be_nil
+      acanthomyrmex.fossil.should be_true
+
+      basispinosus = acanthomyrmex.species.find_by_name('basispinosus')
+      basispinosus.fossil.should be_true
+
+      tetramorium = Genus.find_by_name('Tetramorium')
+      poinari = tetramorium.species.find_by_name('poinari')
+      poinari.status.fossil.should be_true
     end
 
     it "should recover from one species it can't parse and continue with the rest" do

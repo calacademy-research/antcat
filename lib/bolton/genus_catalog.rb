@@ -1,26 +1,34 @@
+#  The Bolton genus catalog files are NGC-GEN.A-L.docx and NGC-GEN.M-Z.docx.
+
+#  To convert a genus catalog file from Bolton to a format we can use
+#  1) Open the file in Word
+#  2) Save it as web page in data/bolton
+
+#  To import these files, run
+#    rake bolton:import:genera
+
 class Bolton::GenusCatalog
   def initialize show_progress = false
     Progress.init show_progress
-    @fossil_count = @unidentifiable_count = @subgenus_count = @unparseable_count = 
+    Progress.open_log 'log/bolton_genus_import.log'
+    @fossil_count = @unidentifiable_count = @subgenus_count = @not_understood_count = 
       @valid_count = @unavailable_count = 0
   end
 
   def import_files filenames
     Taxon.delete_all
-    filenames.each {|filename| import_file filename }
+    filenames.each do |filename|
+      Progress.puts "Importing #{@filename}..."
+      import_html File.read filename
+    end
     show_results
-  end
-
-  def import_file filename
-    Progress.puts "Importing #{filename}..."
-    import_html File.read filename
   end
 
   def import_html html
     Nokogiri::HTML(html).css('p').each do |p|
       record = Bolton::GenusCatalogParser.parse p.inner_html
-      if record == :unparseable
-        @unparseable_count += 1
+      if record[:type] == :not_understood
+        @not_understood_count += 1
         next
       end
       if record == :unidentifiable
@@ -56,7 +64,7 @@ class Bolton::GenusCatalog
     Progress.puts Progress.count(@subgenus_count, Progress.processed_count, 'subgenera')
     Progress.puts Progress.count(@fossil_count, Progress.processed_count, 'fossils')
     Progress.puts Progress.count(@unidentifiable_count, Progress.processed_count, 'unidentifiable')
-    Progress.puts "(#{@unparseable_count} sections unparseable)"
+    Progress.puts "(#{@not_understood_count} sections not understood)"
   end
 
 end

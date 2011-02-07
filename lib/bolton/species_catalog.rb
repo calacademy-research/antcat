@@ -3,10 +3,11 @@
 
 #  To convert a species catalog file from Bolton to a format we can use
 #  1) Open the file in Word
-#  2) Save it as web page
+#  2) Save it as web page in data/bolton
 
 #  To import these files, run
 #    rake bolton:import:species
+#  This generates log/bolton_species_import.log
 #
 #  Note: NGC-Spcam2.docx is actually the continuation of NGC-Spcam1.docx
 #  and doesn't have the Camponotus genus header. The code makes a special
@@ -25,7 +26,7 @@ class Bolton::SpeciesCatalog
   end
 
   def import_files filenames
-    Species.delete_all
+    Taxon.delete_all
     @genus = nil
     filenames.each do |filename|
       @filename = filename
@@ -82,6 +83,9 @@ class Bolton::SpeciesCatalog
 
   def parse_genus_section
     return unless @type == :genus
+
+    @genus = Genus.create! :name => @parse_result[:name], :fossil => @parse_result[:fossil], :status => @parse_result[:status]
+
     parse_next_line
     while parse_species; end
     true
@@ -89,6 +93,9 @@ class Bolton::SpeciesCatalog
 
   def parse_species
     return unless @type == :species || @type == :subspecies
+
+    Species.create! :name => @parse_result[:name], :fossil => @parse_result[:fossil], :status => @parse_result[:status], :parent => @genus
+
     parse_next_line
     true
   end
