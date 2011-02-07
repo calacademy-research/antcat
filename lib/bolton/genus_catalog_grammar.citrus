@@ -22,7 +22,7 @@ grammar Bolton::GenusCatalogGrammar
   end
 
   rule genus
-    invalid_genus | unavailable_genus | valid_genus | subgenus | unidentifiable_genus
+    unavailable_genus | genus_synonym | valid_genus | subgenus | unidentifiable_genus
   end
 
   rule valid_genus
@@ -37,7 +37,7 @@ grammar Bolton::GenusCatalogGrammar
     }
   end
 
-  rule invalid_genus
+  rule genus_synonym
     ((italic black genus_name tag_end tag_end) |
      (italic genus_name tag_end)) {
       {:type => :genus, :name => genus_name.value, :status => :invalid}
@@ -63,7 +63,7 @@ grammar Bolton::GenusCatalogGrammar
   end
 
   rule bracketed_information
-    (' ' open_bracket bracketed_contents parenthetical_note? close_bracket) {
+    (' ' open_bracket bracketed_contents parenthetical_note? close_bracket tag_end?) {
       bracketed_contents.value
     }
   end
@@ -81,7 +81,7 @@ grammar Bolton::GenusCatalogGrammar
   end
 
   rule bracketed_contents
-    subgenus_of | uncertain_subfamily | subfamily_and_tribe | junior_synonym_of | any_bracketed_contents
+    subgenus_of | uncertain_subfamily | subfamily_and_tribe | junior_synonym_of | unavailable_name | any_bracketed_contents
   end
 
   rule subgenus_of
@@ -116,6 +116,12 @@ grammar Bolton::GenusCatalogGrammar
 
   rule incertae_sedis_in
     italic 'incertae sedis' tag_end ' in '
+  end
+
+  rule unavailable_name
+    (bold 'unavailable name' tag_end?) {
+      {}
+    }
   end
 
   rule any_bracketed_contents

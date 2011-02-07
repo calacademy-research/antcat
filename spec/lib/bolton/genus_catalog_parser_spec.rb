@@ -42,6 +42,11 @@ describe Bolton::GenusCatalogParser do
       line = %{<i><span style='color:purple'>ANCYLOGNATHUS</span></i> [<i>Nomen nudum</i>]}
       Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Ancylognathus', :status => :unavailable}
     end
+
+    it "should handle when the bracketed remark at end has a trailing bracket in bold" do
+      line = %{<i><span style="color:purple">MYRMECIUM</span></i> [<b>unavailable name]</b>}
+      Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Myrmecium', :status => :unavailable}
+    end
   end
 
   describe "subgenus" do
