@@ -17,10 +17,10 @@ describe Bolton::GenusCatalog do
 
   describe 'importing html' do
     it "should call the parser for each <p> and save the result" do
-      Bolton::GenusCatalogParser.should_receive(:parse).with('foo').and_return :genus => {:name => 'foo'}
-      Bolton::GenusCatalogParser.should_receive(:parse).with('bar').and_return :genus => {:name => 'bar'}
-      Genus.should_receive(:find_or_create_by_name).with(:name => 'bar', :is_valid => nil, :taxonomic_history=>"<p>bar</p>", :parent => nil).and_return Factory :genus
-      Genus.should_receive(:find_or_create_by_name).with(:name => 'foo', :is_valid => nil, :taxonomic_history=>"<p>foo</p>", :parent => nil).and_return Factory :genus
+      Bolton::GenusCatalogParser.should_receive(:parse).with('foo').and_return :type => :genus, :name => 'foo'
+      Bolton::GenusCatalogParser.should_receive(:parse).with('bar').and_return :type => :genus, :name => 'bar'
+      Genus.should_receive(:find_or_create_by_name).with(:name => 'bar', :taxonomic_history=>"<p>bar</p>").and_return Factory :genus
+      Genus.should_receive(:find_or_create_by_name).with(:name => 'foo', :is_valid => nil, :taxonomic_history=>"<p>foo</p>").and_return Factory :genus
       @genus_catalog.import_html '<html><p>foo</p><p>bar</p></html>'
     end
 
