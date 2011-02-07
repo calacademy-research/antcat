@@ -3,7 +3,7 @@ grammar Bolton::GenusCatalogGrammar
   include Bolton::CatalogGrammar
 
   rule record
-    header
+    header | not_understood
   end
 
   rule header
@@ -14,6 +14,10 @@ grammar Bolton::GenusCatalogGrammar
       value.merge! genus.value
       value.merge! bracketed_information.value
       {:genus => value}
+
+  rule not_understood
+    /.*/ {
+      {:type => :not_understood}
     }
   end
 
