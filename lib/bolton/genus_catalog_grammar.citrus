@@ -3,7 +3,20 @@ grammar Bolton::GenusCatalogGrammar
   include Bolton::CatalogGrammar
 
   rule record
-    header | not_understood
+    blank | header | not_understood
+  end
+
+  rule header
+    /.*?CATALOGUE OF.*/ {
+      {:type => :header}
+    }
+  end
+
+
+  rule blank
+    /^\s*$/ {
+      {:type => :blank}
+    }
   end
 
   rule header

@@ -12,16 +12,16 @@ describe Bolton::SpeciesCatalog do
     it "should recognize a genus with an author" do
       @species_catalog.parse("<i>ACROSTIGMA</i> Emery: see under <b><i>LEPISIOTA</i></b>.").should == {:type => :see_under}
     end
-    it "should recognize a sub-genus" do
+    it "should recognize a subgenus" do
       @species_catalog.parse("<i>#<span style='color:blue'>ACANTHOMYOPS</span></i>: see under <b><i>LASIUS</i></b>.").should == {:type => :see_under}
     end
     it "should recognize an extinct genus" do
       @species_catalog.parse("*<i>ACROSIYGMA</i>: see under <b><i>LASIUS</i></b>.").should == {:type => :see_under}
     end
-    it "should recognize a sub-genus" do
+    it "should recognize a subgenus" do
       @species_catalog.parse("<i>#<span style='color:blue'>ACANTHOMYOPS</span></i>: see under <b><i>LASIUS</i></b>.").should == {:type => :see_under}
     end
-    it "should recognize an extinct sub-genus" do
+    it "should recognize an extinct subgenus" do
       @species_catalog.parse("*<i>#<span style='color:blue'>ACANTHOMYOPS</span></i>: see under <b><i>LASIUS</i></b>.").should == {:type => :see_under}
     end
     it "should recognize an extinct referent" do
@@ -112,10 +112,10 @@ describe Bolton::SpeciesCatalog do
 
   describe "parsing an unidentifiable genus header" do
     it "should handle an ichnotaxon" do
-      @species_catalog.parse(%{*<i><span style='color:green'>ATTAICHNUS</span></i> (ichnotaxon)}).should == {:type => :genus, :name => 'Attaichnus', :unidentifiable => true, :fossil => true}
+      @species_catalog.parse(%{*<i><span style='color:green'>ATTAICHNUS</span></i> (ichnotaxon)}).should == {:type => :genus, :name => 'Attaichnus', :status => :unidentifiable, :fossil => true}
     end
     it "should handle transferred genus" do
-      @species_catalog.parse(%{*<i><span style="color:green">PALAEOMYRMEX</span></i> Heer, 1865: transferred to <b><i>HOMOPTERA</i></b>.}).should == {:type => :genus, :name => 'Palaeomyrmex', :unidentifiable => true, :fossil => true}
+      @species_catalog.parse(%{*<i><span style="color:green">PALAEOMYRMEX</span></i> Heer, 1865: transferred to <b><i>HOMOPTERA</i></b>.}).should == {:type => :genus, :name => 'Palaeomyrmex', :status => :unidentifiable, :fossil => true}
     end
 
   end

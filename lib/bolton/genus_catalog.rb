@@ -25,8 +25,12 @@ class Bolton::GenusCatalog
   def import_html html
     Nokogiri::HTML(html).css('p').each do |p|
       record = Bolton::GenusCatalogParser.parse p.inner_html
-      next if record[:type] == :subgenus
 
+      case record[:type]
+      when :blank then next
+      when :subgenus then next
+      when :not_understood then next
+      end
 
       subfamily_name = record[:subfamily]
       tribe_name = record[:tribe]
