@@ -84,7 +84,7 @@ class Bolton::SpeciesCatalog
   def parse_genus_section
     return unless @type == :genus
 
-    @genus = Genus.create! :name => @parse_result[:name], :fossil => @parse_result[:fossil], :status => @parse_result[:status]
+    @genus = Genus.find_or_create_by_name :name => @parse_result[:name], :fossil => @parse_result[:fossil], :status => @parse_result[:status]
 
     parse_next_line
     while parse_species; end

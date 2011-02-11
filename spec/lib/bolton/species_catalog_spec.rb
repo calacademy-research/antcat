@@ -80,6 +80,32 @@ Shattuck, 1992a: 13.</p>
       poinari.fossil.should be_true
     end
 
+    it "should link species to existing genera" do
+      contents = make_contents %{
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
+style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
+style='color:red'>ACANTHOMYRMEX</span></i></b> (Oriental, Indo-Australian)</p>
+
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
+style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
+style='color:red'>basispinosus</span></i></b><i style='mso-bidi-font-style:
+normal'>. Acanthomyrmex basispinosus</i> Moffett, 1986c: 67, figs. 8A, 9-14
+(s.w.) INDONESIA (Sulawesi).</p>
+      }
+
+      Progress.should_not_receive(:error)
+
+      Genus.create! :name => 'Acanthomyrmex'
+      @species_catalog.import_html contents
+
+      Taxon.count.should == 2
+
+      acanthomyrmex = Genus.find_by_name('Acanthomyrmex')
+      acanthomyrmex.should_not be_nil
+      basispinosus = acanthomyrmex.species.find_by_name('basispinosus')
+      basispinosus.genus.should == acanthomyrmex
+    end
+
     it "should recover from one species it can't parse and continue with the rest" do
       contents = make_contents %{
 <p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
