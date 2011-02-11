@@ -65,6 +65,10 @@
 - if @species
   %div.species
     %hr
-      - @species.each do |species|
-        = genus_or_species_link :species, @selected_species, species, :subfamily => @selected_subfamily, :tribe => @selected_tribe, :genus => @selected_genus
+      - rows = @species.snake 6
+      - rows.each do |row|
+        %tr
+          - row.each do |species|
+            - if species
+              = genus_or_species_link :species, @selected_species, species, :subfamily => @selected_subfamily, :tribe => @selected_tribe, :genus => @selected_genus
   %div.clear
