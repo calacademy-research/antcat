@@ -26,7 +26,7 @@ class Bolton::SpeciesCatalog
   end
 
   def import_files filenames
-    Taxon.delete_all
+    Species.delete_all
     @genus = nil
     filenames.each do |filename|
       @filename = filename
