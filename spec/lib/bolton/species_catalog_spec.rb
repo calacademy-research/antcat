@@ -133,6 +133,23 @@ Shattuck, 1992a: 13.</p>
       @species_catalog.import_html contents
     end
 
+    it "should save statuses correctly" do
+      contents = make_contents %{
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
+style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
+style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
+
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'>
+<i style='mso-bidi-font-style:normal'><span
+style='color:purple'>basispinosus</span></i><i style='mso-bidi-font-style:
+normal'>. Acanthomyrmex basispinosus</i> Moffett, 1986c: 67, figs. 8A, 9-14
+(s.w.) INDONESIA (Sulawesi).</p>
+      }
+
+      @species_catalog.import_html contents
+      Species.find_by_name('basispinosus').should be_unavailable
+    end
+
     it "should skip by subspecies and notes" do
       contents = make_contents %{
 <p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
