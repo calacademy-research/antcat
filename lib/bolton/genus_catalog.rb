@@ -11,13 +11,12 @@ class Bolton::GenusCatalog
   def initialize show_progress = false
     Progress.init show_progress
     Progress.open_log 'log/bolton_genus_import.log'
-    @not_understood_count = 0
   end
 
   def import_files filenames
     Taxon.delete_all
     filenames.each do |filename|
-      Progress.puts "Importing #{@filename}..."
+      Progress.puts "Importing #{filename}..."
       import_html File.read filename
     end
     show_results
@@ -26,10 +25,6 @@ class Bolton::GenusCatalog
   def import_html html
     Nokogiri::HTML(html).css('p').each do |p|
       record = Bolton::GenusCatalogParser.parse p.inner_html
-      if record[:type] == :not_understood
-        @not_understood_count += 1
-        next
-      end
       next if record[:type] == :subgenus
 
 
@@ -48,7 +43,6 @@ class Bolton::GenusCatalog
 
   def show_results
     Progress.show_results
-    Progress.puts "(#{@not_understood_count} sections not understood)"
   end
 
 end
