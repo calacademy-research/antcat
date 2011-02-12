@@ -243,6 +243,7 @@ describe Bolton::SpeciesCatalog do
         }).should == {:type => :subspecies, :name => 'major', :status => :homonym, :fossil => true}
       end
     end
+
   end
 
   describe "synonyms" do
