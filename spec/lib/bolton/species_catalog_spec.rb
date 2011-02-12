@@ -150,6 +150,24 @@ normal'>. Acanthomyrmex basispinosus</i> Moffett, 1986c: 67, figs. 8A, 9-14
       Species.find_by_name('basispinosus').should be_unavailable
     end
 
+    it "should save subspecies correctly" do
+      contents = make_contents %{
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
+style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
+style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
+
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'>#<b
+style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
+style='color:blue'>v-nigra</span></i></b><i style='mso-bidi-font-style:normal'>.
+Crematogaster chiarinii</i> var. <i style='mso-bidi-font-style:normal'>v-nigrum</i>
+Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i
+style='mso-bidi-font-style:normal'>C. (Acrocoelia</i>): Emery, 1922e: 146.</p>
+      }
+
+      @species_catalog.import_html contents
+      Species.find_by_name('v-nigra').should be_nil
+    end
+
     it "should skip by subspecies and notes" do
       contents = make_contents %{
 <p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b

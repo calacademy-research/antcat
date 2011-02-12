@@ -94,7 +94,9 @@ class Bolton::SpeciesCatalog
   def parse_species
     return unless @type == :species || @type == :subspecies
 
-    Species.create! :name => @parse_result[:name], :fossil => @parse_result[:fossil], :status => @parse_result[:status].to_s, :genus => @genus
+    if @type == :species
+      Species.create! :name => @parse_result[:name], :fossil => @parse_result[:fossil], :status => @parse_result[:status].to_s, :genus => @genus
+    end
 
     parse_next_line
     true
