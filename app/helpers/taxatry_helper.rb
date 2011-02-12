@@ -17,8 +17,7 @@ module TaxatryHelper
   def link rank, selected, current, super_path, additional_class = ''
     content_tag :div, :class => make_css_class(rank, current, selected, additional_class) do
       fossil_symbol = current.fossil? ? "&dagger;" : ''
-      suffix = [Species, Subfamily].any? {|klass| current.kind_of?(klass)} ? '' : "(#{current.children.count})" 
-      link_to "#{fossil_symbol}#{current.name}#{suffix}", taxatry_path({rank => current}.merge super_path)
+      link_to "#{fossil_symbol}#{current.name}", taxatry_path({rank => current}.merge super_path)
     end
   end
 
