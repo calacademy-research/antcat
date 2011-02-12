@@ -14,18 +14,24 @@
       width: 150px
       a
         color: red
-    div.unavailable
+    div.synonym
+      a
+        color: black
+    div.unidentifiable
       a
         color: green
-    div.subfamily
+    div.unavailable
+      a
+        color: purple
+    div.homonym
+      a
+        color: brown
+
+    div.subfamily, div.genus
       width: 150px
     .selected
       background: yellow !important
-    .taxon_not_available
-      text-decoration: strikethrough
-    .taxon_not_valid
-      color: blue
-
+      
 %div
   = label_tag :show_tribes, 'Show tribes?'
   = check_box_tag :show_tribes, '1', @show_tribes
