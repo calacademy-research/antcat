@@ -105,7 +105,7 @@ class ReferencesController < ApplicationController
     json = {
       :isNew => new,
       :content => render_to_string(:partial => 'reference',
-                                   :locals => {:reference => @reference, :css_class => 'reference'}),
+                                   :locals => {:reference => @reference, :publisher_string => @publisher_string, :css_class => 'reference'}),
                                    :id => @reference.id,
                                    :success => @reference.errors.empty?
     }.to_json
