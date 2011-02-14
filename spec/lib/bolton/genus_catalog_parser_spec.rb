@@ -37,11 +37,6 @@ describe Bolton::GenusCatalogParser do
                                                         :subfamily => 'Myrmicinae', :tribe => 'Attini', :fossil => true}
     end
 
-    it "should recognize an invalid name" do
-      line = %{<i><span style='color:black'>ACALAMA</span></i> [junior homonym, see <i>Gauromyrmex</i>]}
-      Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Acalama', :status => :invalid}
-    end
-
     it "should recognize an unavailable name" do
       line = %{<i><span style='color:purple'>ANCYLOGNATHUS</span></i> [<i>Nomen nudum</i>]}
       Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Ancylognathus', :status => :unavailable}
@@ -120,14 +115,27 @@ describe Bolton::GenusCatalogParser do
 
     end
 
-    #describe 'synonymy' do
-      #it "should recognize an invalid name that has no color (like Claude)" do
-        #line = %{<i>ACIDOMYRMEX</i> [junior synonym of <i>Rhoptromyrmex</i>]}
-        #Bolton::GenusCatalogParser.parse(line).should ==
-           #{:type => :genus, {:name => 'Acidomyrmex', :available => true, :valid => false, :fossil => false}
-      #end
+    describe 'synonymy' do
 
-    #end
+      it "should recognize a synonym and point to its senior" do
+        line = %{<span style='color:black'><i>ACALAMA</i></span> [junior synonym of <i>Gauromyrmex</i>]}
+        Bolton::GenusCatalogParser.parse(line).should ==
+           {:type => :genus, :name => 'Acalama', :status => :synonym, :synonym_of => 'Gauromyrmex'}
+      end
+
+      it "should handle the closing bracket being in a useless span" do
+        line = %{<span style='color:black'><i>ACALAMA</i></span> [junior synonym of <i>Gauromyrmex</i><span style='font-style:normal'>]</span>}
+        Bolton::GenusCatalogParser.parse(line).should ==
+           {:type => :genus, :name => 'Acalama', :status => :synonym, :synonym_of => 'Gauromyrmex'}
+      end
+
+      it "should recognize an invalid name that has no color (like Claude)" do
+        line = %{<i>ACIDOMYRMEX</i> [junior synonym of <i>Rhoptromyrmex</i>]}
+        Bolton::GenusCatalogParser.parse(line).should ==
+           {:type => :genus, :name => 'Acidomyrmex', :status => :synonym, :synonym_of => 'Rhoptromyrmex'}
+      end
+
+    end
 
     #it 'should handle parens instead of brackets' do
       #line = %{<b><i><span style='color:red'>ACROMYRMEX</span></i></b> (Myrmicinae: Attini)}

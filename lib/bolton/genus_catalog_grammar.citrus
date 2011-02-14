@@ -12,7 +12,6 @@ grammar Bolton::GenusCatalogGrammar
     }
   end
 
-
   rule blank
     /^\s*$/ {
       {:type => :blank}
@@ -20,6 +19,10 @@ grammar Bolton::GenusCatalogGrammar
   end
 
   rule header
+    genus_synonym | non_genus_synonym
+  end
+
+  rule non_genus_synonym
     (subgenus_flag? fossil_flag? genus bracketed_information) {
       value = genus.value
       value.merge! :fossil => true if fossil_flag.present?
@@ -28,6 +31,16 @@ grammar Bolton::GenusCatalogGrammar
     }
   end
 
+  rule genus_synonym
+    (
+      ((black italic genus_name tag_end tag_end) | (italic black genus_name tag_end tag_end) | (italic genus_name tag_end))
+      ' [junior synonym of ' italic capitalized_word tag_end span? ']' tag_end?
+    ) {
+      {:type => :genus, :name => genus_name.value, :status => :synonym, :synonym_of => capitalized_word.value}
+    }
+  end
+
+
   rule not_understood
     /.*/ {
       {:type => :not_understood}
@@ -35,7 +48,7 @@ grammar Bolton::GenusCatalogGrammar
   end
 
   rule genus
-    unavailable_genus | genus_synonym | valid_genus | subgenus | unidentifiable_genus
+    unavailable_genus | valid_genus | subgenus | unidentifiable_genus
   end
 
   rule valid_genus
@@ -47,13 +60,6 @@ grammar Bolton::GenusCatalogGrammar
   rule unavailable_genus
     (italic purple genus_name tag_end tag_end) {
       {:type => :genus, :name => genus_name.value, :status => :unavailable}
-    }
-  end
-
-  rule genus_synonym
-    ((italic black genus_name tag_end tag_end) |
-     (italic genus_name tag_end)) {
-      {:type => :genus, :name => genus_name.value, :status => :invalid}
     }
   end
 
@@ -94,7 +100,7 @@ grammar Bolton::GenusCatalogGrammar
   end
 
   rule bracketed_contents
-    subgenus_of | uncertain_subfamily | subfamily_and_tribe | junior_synonym_of | unavailable_name | any_bracketed_contents
+    subgenus_of | uncertain_subfamily | subfamily_and_tribe | unavailable_name | any_bracketed_contents
   end
 
   rule subgenus_of
@@ -118,12 +124,6 @@ grammar Bolton::GenusCatalogGrammar
         value[:tribe] = 'incertae_sedis'
       end
       value
-    }
-  end
-
-  rule junior_synonym_of
-  ('junior synonym of ' italic capitalized_word tag_end) {
-      {}
     }
   end
 
