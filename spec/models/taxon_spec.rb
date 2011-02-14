@@ -54,4 +54,10 @@ describe Taxon do
     lambda {Taxon.new.children}.should raise_error NotImplementedError
   end
 
+  it "should be able to be a synonym of something else" do
+    gauromyrmex = Taxon.create! :name => 'Gauromyrmex'
+    acalama = Taxon.create! :name => 'Acalama', :status => :synonym, :synonym_of => gauromyrmex
+    acalama.reload.synonym_of.should == gauromyrmex
+  end
+
 end

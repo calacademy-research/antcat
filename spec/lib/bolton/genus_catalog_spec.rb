@@ -56,7 +56,7 @@ style='color:red'>PROTAZTECA</span></i></b> [<i style='mso-bidi-font-style:
 normal'>incertae sedis</i> in Dolichoderinae]</p>
         }
 
-        Genus.count.should == 5
+        Genus.count.should == 6
 
         acromyrmex = Genus.find_by_name 'Acromyrmex'
         acromyrmex.should_not be_fossil
@@ -71,7 +71,9 @@ normal'>incertae sedis</i> in Dolichoderinae]</p>
 
         acalama = Genus.find_by_name 'Acalama'
         acalama.should_not be_fossil
+        acalama.should be_synonym
         acalama.should be_invalid
+        acalama.synonym_of.name.should == 'Gauromyrmex'
 
         ancylognathus = Genus.find_by_name 'Ancylognathus'
         ancylognathus.should_not be_available
@@ -79,7 +81,7 @@ normal'>incertae sedis</i> in Dolichoderinae]</p>
         protazteca = Genus.find_by_name 'Protazteca'
         protazteca.tribe.name.should == 'incertae_sedis'
         protazteca.subfamily.name.should == 'Dolichoderinae'
-        
+
       end
     end
 

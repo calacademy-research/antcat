@@ -1,5 +1,6 @@
 class Taxon < ActiveRecord::Base
   set_table_name :taxa
+  has_one :synonym_of, :class_name => 'Taxon', :foreign_key => :synonym_of_id
 
   def unavailable?;     status == 'unavailable' end
   def available?;       !unavailable? end

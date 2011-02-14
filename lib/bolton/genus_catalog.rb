@@ -39,7 +39,8 @@ class Bolton::GenusCatalog
       tribe = tribe_name && Tribe.find_or_create_by_name(tribe_name, :subfamily => subfamily)
 
       Genus.find_or_create_by_name record[:name], :fossil => record[:fossil], :status => record[:status].to_s, :tribe => tribe, :subfamily => subfamily,
-        :taxonomic_history => p.to_html.strip
+        :taxonomic_history => p.to_html.strip,
+        :synonym_of => record[:synonym_of] ? Genus.find_or_create_by_name(record[:synonym_of]) : nil
 
       Progress.tally
     end
