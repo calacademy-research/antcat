@@ -32,18 +32,23 @@ class Bolton::GenusCatalog
       when :not_understood then next
       end
 
-      subfamily_name = record[:subfamily]
-      tribe_name = record[:tribe]
-
-      subfamily = subfamily_name && Subfamily.find_or_create_by_name(subfamily_name)
-      tribe = tribe_name && Tribe.find_or_create_by_name(tribe_name, :subfamily => subfamily)
-
-      Genus.find_or_create_by_name record[:name], :fossil => record[:fossil], :status => record[:status].to_s, :tribe => tribe, :subfamily => subfamily,
-        :taxonomic_history => p.to_html.strip,
-        :synonym_of => record[:synonym_of] ? Genus.find_or_create_by_name(record[:synonym_of]) : nil
+      save_genus record.merge :taxonomic_history => p.to_html.strip
 
       Progress.tally
     end
+  end
+
+  def save_genus record
+    subfamily_name = record[:subfamily]
+    tribe_name = record[:tribe]
+    synonym_of_name = record[:synonym_of]
+
+    subfamily = subfamily_name && Subfamily.find_or_create_by_name(subfamily_name)
+    tribe = tribe_name && Tribe.find_or_create_by_name(tribe_name, :subfamily => subfamily)
+    synonym_of = synonym_of_name && Genus.find_or_create_by_name(synonym_of_name)
+
+    Genus.find_or_create_by_name record[:name], :fossil => record[:fossil], :status => record[:status].to_s, :tribe => tribe, :subfamily => subfamily,
+      :taxonomic_history => record[:taxonomic_history], :synonym_of => synonym_of
   end
 
   def show_results

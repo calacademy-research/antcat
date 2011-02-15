@@ -102,4 +102,15 @@ SPECIES-GROUP TAXA<o:p></o:p></b></p>
       end
   end
 
+  describe "saving the result of the parse" do
+    it "should set the synonym_of correctly" do
+      @genus_catalog.save_genus :type => :genus, :name => 'Acalama', :status => :synonym, :synonym_of => 'Gauromyrmex'
+      Taxon.count.should == 2
+      acalama = Genus.find_by_name 'Acalama'
+      gauromyrmex = Genus.find_by_name 'Gauromyrmex'
+      acalama.synonym_of.should == gauromyrmex
+      gauromyrmex.synonym_of.should be_nil
+    end
+  end
+
 end
