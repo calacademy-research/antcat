@@ -47,6 +47,10 @@ style='color:blue'>ACANTHOMYOPS</span></i></b> [subgenus of <i
 style='mso-bidi-font-style:normal'>Lasius</i>]</p>
 
 <p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><i
+style='mso-bidi-font-style:normal'>ACAMATUS</i> [junior homonym, see <i
+style='mso-bidi-font-style:normal'>Neivamyrmex</i>]</p>
+
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><i
 style='mso-bidi-font-style:normal'><span style='color:purple'>ANCYLOGNATHUS</span></i>
 [<i style='mso-bidi-font-style:normal'>Nomen nudum</i>]</p>
 
@@ -56,7 +60,7 @@ style='color:red'>PROTAZTECA</span></i></b> [<i style='mso-bidi-font-style:
 normal'>incertae sedis</i> in Dolichoderinae]</p>
         }
 
-        Genus.count.should == 6
+        Genus.count.should == 8
 
         acromyrmex = Genus.find_by_name 'Acromyrmex'
         acromyrmex.should_not be_fossil
@@ -81,6 +85,11 @@ normal'>incertae sedis</i> in Dolichoderinae]</p>
         protazteca = Genus.find_by_name 'Protazteca'
         protazteca.tribe.name.should == 'incertae_sedis'
         protazteca.subfamily.name.should == 'Dolichoderinae'
+
+        acamatus = Genus.find_by_name 'Acamatus'
+        acamatus.should be_homonym
+        acamatus.should be_invalid
+        acamatus.homonym_of.name.should == 'Neivamyrmex'
 
       end
     end
@@ -110,6 +119,15 @@ SPECIES-GROUP TAXA<o:p></o:p></b></p>
       gauromyrmex = Genus.find_by_name 'Gauromyrmex'
       acalama.synonym_of.should == gauromyrmex
       gauromyrmex.synonym_of.should be_nil
+    end
+
+    it "should set the homonym_of correctly" do
+      @genus_catalog.save_genus :type => :genus, :name => 'Acamatus', :status => :homonym, :homonym_of => 'Neivamyrmex'
+      Taxon.count.should == 2
+      acamatus = Genus.find_by_name 'Acamatus'
+      neivamyrmex = Genus.find_by_name 'Neivamyrmex'
+      acamatus.homonym_of.should == neivamyrmex
+      neivamyrmex.homonym_of.should be_nil
     end
   end
 

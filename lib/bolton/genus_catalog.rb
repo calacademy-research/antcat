@@ -39,16 +39,19 @@ class Bolton::GenusCatalog
   end
 
   def save_genus record
+
     subfamily_name = record[:subfamily]
     tribe_name = record[:tribe]
     synonym_of_name = record[:synonym_of]
+    homonym_of_name = record[:homonym_of]
 
     subfamily = subfamily_name && Subfamily.find_or_create_by_name(subfamily_name)
     tribe = tribe_name && Tribe.find_or_create_by_name(tribe_name, :subfamily => subfamily)
     synonym_of = synonym_of_name && Genus.find_or_create_by_name(synonym_of_name)
+    homonym_of = homonym_of_name && Genus.find_or_create_by_name(homonym_of_name)
 
     Genus.find_or_create_by_name record[:name], :fossil => record[:fossil], :status => record[:status].to_s, :tribe => tribe, :subfamily => subfamily,
-      :taxonomic_history => record[:taxonomic_history], :synonym_of => synonym_of
+      :taxonomic_history => record[:taxonomic_history], :synonym_of => synonym_of, :homonym_of => homonym_of
   end
 
   def show_results

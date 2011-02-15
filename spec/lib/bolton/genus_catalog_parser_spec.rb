@@ -137,6 +137,22 @@ describe Bolton::GenusCatalogParser do
 
     end
 
+    describe 'homonymy' do
+
+      it "should recognize a homonym and point to its senior" do
+        line = %{<i>ACAMATUS</i><span style='font-style:normal'> [junior homonym, see </span><i>Neivamyrmex</i><span style='font-style:normal'>]</span>}
+        Bolton::GenusCatalogParser.parse(line).should ==
+           {:type => :genus, :name => 'Acamatus', :status => :homonym, :homonym_of => 'Neivamyrmex'}
+      end
+
+      it "should handle it without spans" do
+        line = %{<i>ACAMATUS</i> [junior homonym, see <i>Neivamyrmex</i>]}
+        Bolton::GenusCatalogParser.parse(line).should ==
+           {:type => :genus, :name => 'Acamatus', :status => :homonym, :homonym_of => 'Neivamyrmex'}
+      end
+
+    end
+
     #it 'should handle parens instead of brackets' do
       #line = %{<b><i><span style='color:red'>ACROMYRMEX</span></i></b> (Myrmicinae: Attini)}
       #Bolton::GenusCatalogParser.parse(line).should ==

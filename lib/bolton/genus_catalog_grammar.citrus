@@ -19,10 +19,10 @@ grammar Bolton::GenusCatalogGrammar
   end
 
   rule header
-    genus_synonym | non_genus_synonym
+    genus_synonym | genus_homonym | genus_other
   end
 
-  rule non_genus_synonym
+  rule genus_other
     (subgenus_flag? fossil_flag? genus bracketed_information) {
       value = genus.value
       value.merge! :fossil => true if fossil_flag.present?
@@ -40,6 +40,11 @@ grammar Bolton::GenusCatalogGrammar
     }
   end
 
+  rule genus_homonym
+    (italic genus_name tag_end span? ' [junior homonym, see ' tag_end? italic capitalized_word tag_end span? ']' tag_end?) {
+      {:type => :genus, :name => genus_name.value, :status => :homonym, :homonym_of => capitalized_word.value}
+    }
+  end
 
   rule not_understood
     /.*/ {

@@ -56,8 +56,18 @@ describe Taxon do
 
   it "should be able to be a synonym of something else" do
     gauromyrmex = Taxon.create! :name => 'Gauromyrmex'
-    acalama = Taxon.create! :name => 'Acalama', :status => :synonym, :synonym_of => gauromyrmex
+    acalama = Taxon.create! :name => 'Acalama', :status => 'synonym', :synonym_of => gauromyrmex
+    acalama.reload
+    acalama.should be_synonym
     acalama.reload.synonym_of.should == gauromyrmex
+  end
+
+  it "should be able to be a homonym of something else" do
+    neivamyrmex = Taxon.create! :name => 'Neivamyrmex'
+    acamatus = Taxon.create! :name => 'Acamatus', :status => 'homonym', :homonym_of => neivamyrmex
+    acamatus.reload
+    acamatus.should be_homonym
+    acamatus.homonym_of.should == neivamyrmex
   end
 
 end

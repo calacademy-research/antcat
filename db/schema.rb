@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110214224352) do
+ActiveRecord::Schema.define(:version => 20110215002942) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -170,6 +170,7 @@ ActiveRecord::Schema.define(:version => 20110214224352) do
     t.integer  "tribe_id"
     t.integer  "genus_id"
     t.integer  "synonym_of_id"
+    t.integer  "homonym_of_id"
   end
 
   add_index "taxa", ["genus_id"], :name => "taxa_genus_id_idx"
