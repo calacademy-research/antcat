@@ -27,20 +27,30 @@ class Progress
 
   def self.print string
     $stderr.print string
-    info string
   end
 
   def self.dot
     print '.'
   end
 
-  def self.info string
+  def self.info object
+    string = "INFO: #{format_object(object)}"
+    log string
+  end
+
+  def self.error object
+    string = "ERROR: #{format_object(object)}"
+    puts string
+    log string
+  end
+
+  def self.log string
     @logger.info string if @logger
     Rails.logger.info string
   end
 
-  def self.error string
-    puts string.to_s
+  def self.format_object object
+    object.kind_of?(String) ? object : object.inspect
   end
 
   def self.rate processed_count = nil
