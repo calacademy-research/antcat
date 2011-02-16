@@ -4,7 +4,9 @@ class Journal < ActiveRecord::Base
 
   def self.import name
     return unless name.present?
-    find_or_create_by_name name
+    journal = find_or_create_by_name name
+    raise unless journal.valid?
+    journal
   end
 
   def self.search term = ''

@@ -67,6 +67,7 @@ class Bolton::SpeciesCatalog
     return unless @type == :genus
 
     @genus = Genus.find_or_create_by_name :name => @parse_result[:name], :fossil => @parse_result[:fossil], :status => @parse_result[:status]
+    raise unless @genus.valid?
 
     parse_next_line
     parse_species_lines

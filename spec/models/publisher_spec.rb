@@ -13,6 +13,11 @@ describe Publisher do
       2.times {Publisher.import(:name => 'Wiley', :place => 'Chicago')}
       Publisher.count.should == 1
     end
+    
+    it "should raise an error if name is supplied but no place" do
+      lambda {Publisher.import(:name => 'Wiley')}.should raise_error
+    end
+
   end
 
   describe "searching" do

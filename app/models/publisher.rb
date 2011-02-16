@@ -7,7 +7,9 @@ class Publisher < ActiveRecord::Base
   def self.import data
     return unless data[:name].present?
     place = Place.import data[:place]
-    find_or_create_by_name_and_place_id(data[:name], place.id)
+    publisher = find_or_create_by_name_and_place_id(data[:name], place.id)
+    raise unless publisher.valid?
+    publisher
   end
 
   def self.import_string string

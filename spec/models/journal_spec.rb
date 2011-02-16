@@ -6,6 +6,10 @@ describe Journal do
       Journal.import(:name => 'Antucopia').name.should == 'Antucopia'
     end
 
+    it "should raise on invalid input" do
+      lambda {Journal.import(:name => '')}.should raise_error
+    end
+
     it "should reuse an existing journal" do
       Journal.import(:name => 'Antucopia')
       Journal.import(:name => 'Antucopia')

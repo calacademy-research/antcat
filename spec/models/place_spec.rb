@@ -8,6 +8,10 @@ describe Place do
       place.name.should == 'Chicago'
     end
 
+    it "should raise on invalid input" do
+      lambda {Place.import(:name => '')}.should raise_error
+    end
+
     it "should reuse an existing place" do
       Place.count.should == 0
       2.times {Place.import('Chicago')}
