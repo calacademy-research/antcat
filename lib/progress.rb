@@ -17,6 +17,10 @@ class Progress
     @logger = Logger.new file
   end
 
+  def self.log_level= level
+    @log_level = level
+  end
+
   def self.tally
     @processed_count += 1
   end
@@ -37,7 +41,7 @@ class Progress
 
   def self.info object
     string = "INFO: #{format_object(object)}"
-    log string
+    log string unless @log_level == :error
   end
 
   def self.error object

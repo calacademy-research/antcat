@@ -65,6 +65,10 @@ Shattuck, 1992a: 13.</p>
 <p>*<b><i><span style='color:red'>poinari</span></i></b><i>. *Acanthognathus poinari</i> Baroni Urbani, in Baroni Urbani &amp; De Andrade, 1994: 41, figs. 20, 21, 26, 27 (q.) DOMINICAN AMBER (Miocene). See also: Bolton, 2000: 17.</p>
       }
 
+      Genus.create! :name => 'Acanthomyrmex', :status => 'valid'
+      Genus.create! :name => 'Anonychomyrma', :status => 'valid'
+      Genus.create! :name => 'Tetramorium', :status => 'valid'
+
       Progress.should_not_receive(:error)
 
       @species_catalog.import_html contents
@@ -108,6 +112,23 @@ normal'>. Acanthomyrmex basispinosus</i> Moffett, 1986c: 67, figs. 8A, 9-14
       acanthomyrmex.should_not be_nil
       basispinosus = acanthomyrmex.species.find_by_name('basispinosus')
       basispinosus.genus.should == acanthomyrmex
+    end
+
+    it "should complain if a genus doesn't already exist" do
+      contents = make_contents %{
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
+style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
+style='color:red'>ACANTHOMYRMEX</span></i></b> (Oriental, Indo-Australian)</p>
+
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
+style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
+style='color:red'>basispinosus</span></i></b><i style='mso-bidi-font-style:
+normal'>. Acanthomyrmex basispinosus</i> Moffett, 1986c: 67, figs. 8A, 9-14
+(s.w.) INDONESIA (Sulawesi).</p>
+      }
+
+      Progress.should_receive(:error).with("Genus 'Acanthomyrmex' did not exist")
+      @species_catalog.import_html contents
     end
 
     it "should save statuses correctly" do
@@ -169,6 +190,7 @@ Iridomyrmex angustus</i> Stitz, 1911a: 369, fig. 15 (w.) NEW GUINEA.
 Combination in <i style='mso-bidi-font-style:normal'>Anonychomyrma</i>:
 Shattuck, 1992a: 13.</p>
       }
+      Genus.create! :name => 'Anonychomyrma', :status => 'valid'
 
       Progress.should_not_receive :error
       @species_catalog.import_html contents
