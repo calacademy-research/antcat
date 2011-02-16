@@ -9,11 +9,6 @@
 #    rake bolton:import:species
 #  This generates log/bolton_species_import.log
 #
-#  Note: NGC-Spcam2.docx is actually the continuation of NGC-Spcam1.docx
-#  and doesn't have the Camponotus genus header. The code makes a special
-#  case for this file, so make sure its name when importing is
-#  NGC-Spcam2.htm.
-# 
 #  Manual edits:
 #   In NGC-Spg-las.htm, removed extra paragraph in Lasius murphyi
 #   In NGC-Spcan-cr.htm, removed extra paragraph in Cephalotes texanus
@@ -26,7 +21,7 @@ class Bolton::SpeciesCatalog
   end
 
   def import_files filenames
-    initialize_parse filenames
+    initialize_parse filenames.sort
     import
   end
 
@@ -121,7 +116,7 @@ class Bolton::SpeciesCatalog
   end
 
   def read_file
-    return unless @filename_index < @filenames.size - 1
+    return unless @filename_index < @filenames.size
     html = File.read @filenames[@filename_index]
     Progress.show_progress if @filename_index > 0
     Progress.puts "Parsing #{@filenames[@filename_index]}..."

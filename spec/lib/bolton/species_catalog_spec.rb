@@ -5,6 +5,15 @@ describe Bolton::SpeciesCatalog do
     @species_catalog = Bolton::SpeciesCatalog.new
   end
 
+  describe "sorting files to process" do
+    it "should process them in alphabetical order, so the two Camponotus files get processed in the right order" do
+      File.should_receive(:read).with('a').ordered.and_return ''
+      File.should_receive(:read).with('b').ordered.and_return ''
+      File.should_receive(:read).with('c').ordered.and_return ''
+      @species_catalog.import_files ['b', 'a', 'c']
+    end
+  end
+
   describe 'parsing the file as a whole' do
     it 'should complain bitterly if file is obviously not a species catalog' do
      contents = %{<html><body> <p>Foo</p> </body></html>}
