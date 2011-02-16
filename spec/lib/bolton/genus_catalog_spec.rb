@@ -33,6 +33,15 @@ normal'>Dorylus</i>]</p>
 style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
 style='color:green'>ATTAICHNUS</span></i></b> [Myrmicinae: Attini]</p>
 
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><i
+style='mso-bidi-font-style:normal'>Acamatus</i> Emery, 1894c: 181 [as subgenus
+of <i style='mso-bidi-font-style:normal'>Eciton</i>]. Type-species: <i
+style='mso-bidi-font-style:normal'>Eciton (Acamatus) schmitti</i> (junior
+synonym of <i style='mso-bidi-font-style:normal'>Labidus nigrescens</i>), by
+subsequent designation of Ashmead, 1906: 24; Wheeler, W.M. 1911f: 157. [Junior
+homonym of <i style='mso-bidi-font-style:normal'>Acamatus </i>Schoenherr, 1833:
+20 (Coleoptera).] </p>
+
 <p class=MsoNormal><i style='mso-bidi-font-style:normal'><span
 style='color:black'>ACALAMA</span></i> [junior synonym of <i style='mso-bidi-font-style:
 normal'>Gauromyrmex</i>]</p>

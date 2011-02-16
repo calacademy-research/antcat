@@ -7,21 +7,9 @@ grammar Bolton::SpeciesCatalogGrammar
     header | blank_line | genus_header | species | subspecies | note | not_understood
   end
 
-  rule header
-    /.*?CATALOGUE OF.*/ {
-      {:type => :header}
-    }
-  end
-
   rule note
     (black? '[Note' /.*/) {
       {:type => :note}
-    }
-  end
-
-  rule not_understood
-    /.*/ {
-      {:type => :not_understood}
     }
   end
 

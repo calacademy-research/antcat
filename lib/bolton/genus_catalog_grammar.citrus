@@ -6,12 +6,6 @@ grammar Bolton::GenusCatalogGrammar
     header | genus_section_header | blank_line | nonblank_line
   end
 
-  rule header
-    /.*?CATALOGUE OF.*/ {
-      {:type => :header}
-    }
-  end
-
   rule genus_section_header
     genus_synonym | genus_homonym | genus_other
   end

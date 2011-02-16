@@ -3,6 +3,12 @@ grammar Bolton::CatalogGrammar
   include AuthorGrammar
   include CitationGrammar
 
+  rule header
+    /.*?CATALOGUE OF.*/ {
+      {:type => :header}
+    }
+  end
+
   rule fossil_flag
     '*' | black '*' tag_end
   end
@@ -26,6 +32,12 @@ grammar Bolton::CatalogGrammar
 
   rule errant_red_space
     red s tag_end
+  end
+
+  rule not_understood
+    /.*/ {
+      {:type => :not_understood}
+    }
   end
 
 end
