@@ -202,6 +202,11 @@ Shattuck, 1992a: 13.</p>
     it "should handle '<p> </p>' (nested empty paragraph)" do
       @species_catalog.parse(%{<p> </p>}).should == {:type => :blank}
     end
+
+    it "should handle a nonbreaking space inside a subparagraph" do
+      @species_catalog.parse(%{<span style="mso-spacerun: yes">&nbsp;</span>}).should == {:type => :blank}
+    end
+
     it "should handle a nonbreaking space inside a subparagraph" do
       @species_catalog.parse(%{<p> </p>}).should == {:type => :blank}
     end
@@ -220,6 +225,13 @@ Shattuck, 1992a: 13.</p>
     it "should handle a blank bold red paragraph" do
       @species_catalog.parse(%{<b><span style="color:red"><p> </p></span></b>}).should == {:type => :blank}
     end
+    it "should handle a namespaced paragraph with a blank" do
+      @species_catalog.parse(%{<o:p>&nbsp;</o:p>}).should == {:type => :blank}
+    end
+    it "should handle a nonbreaking space inside paragraph" do
+      @species_catalog.parse(%{<p>&nbsp;</p>}).should == {:type => :blank}
+    end
+
   end
 
   describe "parsing a note" do
@@ -243,7 +255,6 @@ text-indent:-.5in'><b style='mso-bidi-font-weight:normal'>CATALOGUE OF
 SPECIES-GROUP TAXA<o:p></o:p></b></p>
 <p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><o:p>&nbsp;</o:p></p>
 <p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><o:p>&nbsp;</o:p></p>
-<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'>
       #{content}
 <p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><o:p>&nbsp;</o:p></p>
 </div> </body> </html>

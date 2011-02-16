@@ -91,4 +91,40 @@ grammar CommonGrammar
     year /[[:alpha:]]/?
   end
 
+  rule blank_line
+    (/^/ (blank_paragraph | blank_namespaced_paragraph | blank_paragraph_with_font | blank_bold_red_paragraph | blank_paragraph_italic | spacerun | s) /$/) {
+      {:type => :blank}
+    }
+  end
+
+  rule spacerun
+    '<span style="mso-spacerun: yes">' s '</span>'
+  end
+
+  rule blank_paragraph_with_font
+    /<span style='font-family:".*?"'>/ blank_paragraph '</span>' 
+  end
+
+  rule blank_bold_red_paragraph
+    bold red blank_paragraph tag_end tag_end
+  end
+
+  rule blank_paragraph_italic
+    italic blank_paragraph tag_end
+  end
+
+  rule blank_paragraph
+    '<p>' s '</p>'
+  end
+
+  rule blank_namespaced_paragraph
+    '<o:p>' s '</o:p>'
+  end
+
+  rule nonblank_line
+    /^[\S].*$/ {
+      {:type => :nonblank_line}
+    }
+  end
+
 end

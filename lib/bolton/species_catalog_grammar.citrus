@@ -4,35 +4,13 @@ grammar Bolton::SpeciesCatalogGrammar
   include Bolton::SpeciesCatalogSpeciesGrammar
 
   rule record
-    header | blank | genus_header | species | subspecies | note | not_understood
+    header | blank_line | genus_header | species | subspecies | note | not_understood
   end
 
   rule header
     /.*?CATALOGUE OF.*/ {
       {:type => :header}
     }
-  end
-
-  rule blank
-    (/^/ (blank_paragraph | blank_paragraph_with_font | blank_bold_red_paragraph | blank_paragraph_italic | spacerun | s) /$/) {
-      {:type => :blank}
-    }
-  end
-
-  rule blank_paragraph_with_font
-    /<span style='font-family:".*?"'>/ blank_paragraph '</span>' 
-  end
-
-  rule blank_bold_red_paragraph
-    bold red blank_paragraph tag_end tag_end
-  end
-
-  rule blank_paragraph_italic
-    italic blank_paragraph tag_end
-  end
-
-  rule blank_paragraph
-    '<p>' s '</p>'
   end
 
   rule note

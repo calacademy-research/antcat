@@ -28,8 +28,4 @@ grammar Bolton::CatalogGrammar
     red s tag_end
   end
 
-  rule spacerun
-    '<span style="mso-spacerun: yes"> </span>'
-  end
-
 end
