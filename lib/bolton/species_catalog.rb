@@ -118,7 +118,7 @@ class Bolton::SpeciesCatalog
     return unless @filename_index < @filenames.size
     html = File.read @filenames[@filename_index]
     Progress.show_progress if @filename_index > 0
-    Progress.puts "Parsing #{@filenames[@filename_index]}..."
+    Progress.puts "Parsing #{@filenames[@filename_index]}...", true
     @filename_index += 1
     read_string html
   end

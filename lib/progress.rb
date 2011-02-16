@@ -21,12 +21,14 @@ class Progress
     @processed_count += 1
   end
 
-  def self.puts string = ''
+  def self.puts string = '', log = false
     print string + "\n"
+    info string if log
   end
 
-  def self.print string
+  def self.print string, log = false
     $stderr.print string
+    info string if log
   end
 
   def self.dot
