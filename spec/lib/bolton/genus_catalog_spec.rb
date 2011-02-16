@@ -20,8 +20,6 @@ describe Bolton::GenusCatalog do
     describe "processing a representative sample and making sure they're saved correctly" do
       it 'should work' do
         @genus_catalog.import_html make_content %{
-<p>asdfdsfsdf</p>
-
 <p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
 style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
 style='color:red'>ACROMYRMEX</span></i></b> [Myrmicinae: Attini]</p>

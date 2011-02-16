@@ -7,7 +7,7 @@ describe Bolton::GenusCatalogParser do
 
   it 'should handle complete garbage' do
     line = %{asdfj;jsdf}
-    Bolton::GenusCatalogParser.parse(line).should == {:type => :not_understood}
+    Bolton::GenusCatalogParser.parse(line).should == {:type => :nonblank_line}
   end
 
   it 'should handle all sorts of guff within the tags' do

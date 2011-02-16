@@ -3,7 +3,7 @@ grammar Bolton::GenusCatalogGrammar
   include Bolton::CatalogGrammar
 
   rule record
-    blank | header | not_understood
+    header | genus_section_header | blank_line | nonblank_line
   end
 
   rule header
@@ -12,13 +12,7 @@ grammar Bolton::GenusCatalogGrammar
     }
   end
 
-  rule blank
-    /^\s*$/ {
-      {:type => :blank}
-    }
-  end
-
-  rule header
+  rule genus_section_header
     genus_synonym | genus_homonym | genus_other
   end
 
@@ -43,12 +37,6 @@ grammar Bolton::GenusCatalogGrammar
   rule genus_homonym
     (italic genus_name tag_end span? ' [junior homonym, see ' tag_end? italic capitalized_word tag_end span? ']' tag_end?) {
       {:type => :genus, :name => genus_name.value, :status => :homonym, :homonym_of => capitalized_word.value}
-    }
-  end
-
-  rule not_understood
-    /.*/ {
-      {:type => :not_understood}
     }
   end
 
