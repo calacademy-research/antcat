@@ -165,41 +165,6 @@ Shattuck, 1992a: 13.</p>
     end
   end
 
-  describe "parsing a blank line" do
-    it "should handle '<p> </p>' (nested empty paragraph)" do
-      @species_catalog.parse(%{<p> </p>}).should == {:type => :blank}
-    end
-
-    it "should handle a nonbreaking space inside a subparagraph" do
-      @species_catalog.parse(%{<span style="mso-spacerun: yes">&nbsp;</span>}).should == {:type => :blank}
-    end
-
-    it "should handle a nonbreaking space inside a subparagraph" do
-      @species_catalog.parse(%{<p> </p>}).should == {:type => :blank}
-    end
-    it "should handle a nonbreaking space" do
-      @species_catalog.parse(%{ }).should == {:type => :blank}
-    end
-    it "should handle a spacerun" do
-      @species_catalog.parse(%{<span style="mso-spacerun: yes"> </span>}).should == {:type => :blank}
-    end
-    it "should handle an empty paragraph with a font" do
-      @species_catalog.parse(%{<span style='font-family:"Times New Roman"'><p> </p></span>}).should == {:type => :blank}
-    end
-    it "should handle an empty paragraph with italics" do
-      @species_catalog.parse(%{<i><p> </p></i>}).should == {:type => :blank}
-    end
-    it "should handle a blank bold red paragraph" do
-      @species_catalog.parse(%{<b><span style="color:red"><p> </p></span></b>}).should == {:type => :blank}
-    end
-    it "should handle a namespaced paragraph with a blank" do
-      @species_catalog.parse(%{<o:p>&nbsp;</o:p>}).should == {:type => :blank}
-    end
-    it "should handle a nonbreaking space inside paragraph" do
-      @species_catalog.parse(%{<p>&nbsp;</p>}).should == {:type => :blank}
-    end
-
-  end
 
   describe "parsing a note" do
     it "should work" do
