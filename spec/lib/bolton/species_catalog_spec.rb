@@ -15,7 +15,7 @@ describe Bolton::SpeciesCatalog do
   describe 'parsing the file as a whole' do
     it 'should complain bitterly if file is obviously not a species catalog' do
      contents = %{<html><body> <p>Foo</p> </body></html>}
-     Progress.should_receive(:error).with("Foo\n")
+     Progress.should_receive(:error).with("parse failed on: 'Foo'")
      @species_catalog.import_html contents
     end
 
@@ -57,6 +57,7 @@ Iridomyrmex angustus</i> Stitz, 1911a: 369, fig. 15 (w.) NEW GUINEA.
 Combination in <i style='mso-bidi-font-style:normal'>Anonychomyrma</i>:
 Shattuck, 1992a: 13.</p>
 
+<p>&nbsp;</p>
 <p><b><i><span style="color:red">TETRAMORIUM</span></i></b></p>
 
 <p>*<b><i><span style='color:red'>poinari</span></i></b><i>. *Acanthognathus poinari</i> Baroni Urbani, in Baroni Urbani &amp; De Andrade, 1994: 41, figs. 20, 21, 26, 27 (q.) DOMINICAN AMBER (Miocene). See also: Bolton, 2000: 17.</p>
