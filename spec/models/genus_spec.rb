@@ -19,6 +19,24 @@ describe Genus do
 
   describe "import" do
 
+    it "should import all the fields correctly" do
+      genus = Genus.import :name => 'Atta',
+        :fossil => true, :status => :valid,
+        :taxonomic_history => '<p>history</p>',
+        :incertae_sedis_in => :family
+      genus.reload
+      genus.name.should == 'Atta'
+      genus.fossil?.should be_true
+      genus.status.should == 'valid'
+      genus.taxonomic_history.should == '<p>history</p>'
+      genus.incertae_sedis_in.should == 'family'
+    end
+
+    it "should leave incertae_sedis_in nil" do
+      genus = Genus.import :name => 'Atta', :status => :valid
+      genus.incertae_sedis_in.should be_nil
+    end
+
     it "should not create the genus if the passed-in subfamily isn't valid" do
       lambda {Genus.import :name => 'Acalama', :status => :valid, :subfamily => ''}.should raise_error
     end

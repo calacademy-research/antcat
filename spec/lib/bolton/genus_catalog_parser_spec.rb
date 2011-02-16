@@ -82,12 +82,11 @@ describe Bolton::GenusCatalogParser do
      #{:type => :genus, {:name => 'Protazteca', :subfamily => 'Dolichoderinae', :tribe => 'incertae_sedis', :available => true, :valid => true, :fossil => false}
     #end
 
-    #describe 'incertae sedis' do
-      #it "should handle an uncertain family" do
-        #line = %{<b><i><span style='color:red'>MYANMYRMA</span></i></b> [<i>incertae sedis</i> in Formicidae]}
-        #Bolton::GenusCatalogParser.parse(line).should ==
-      #{:type => :genus, {:name => 'Myanmyrma', :subfamily => 'incertae_sedis', :available => true, :valid => true, :fossil => false}
-      #end
+    describe 'incertae sedis' do
+      it "should handle an uncertain family" do
+        line = %{<b><i><span style='color:red'>MYANMYRMA</span></i></b> [<i>incertae sedis</i> in Formicidae]}
+        Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Myanmyrma', :incertae_sedis_in => :family, :status => :valid}
+      end
 
       #it "should handle uncertainty in a family" do
         #line = %{<b><i><span style='color:red'>PROTAZTECA</span></i></b> [<i>incertae sedis</i> in Dolichoderinae]}
@@ -167,4 +166,5 @@ describe Bolton::GenusCatalogParser do
 
 
   #end
+  end
 end

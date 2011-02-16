@@ -87,7 +87,7 @@ grammar Bolton::GenusCatalogGrammar
   end
 
   rule bracketed_contents
-    subgenus_of | uncertain_subfamily | subfamily_and_tribe | unavailable_name | any_bracketed_contents
+    subgenus_of | uncertain_in_family | subfamily_and_tribe | unavailable_name | any_bracketed_contents
   end
 
   rule subgenus_of
@@ -96,18 +96,18 @@ grammar Bolton::GenusCatalogGrammar
     }
   end
 
-  rule uncertain_subfamily
+  rule uncertain_in_family
     (incertae_sedis_in 'Formicidae') {
-      {:subfamily => 'incertae_sedis'}
+      {:incertae_sedis_in => :family}
     }
   end
 
   rule subfamily_and_tribe
-    (uncertain_subfamily:incertae_sedis_in? subfamily (': ' incertae_sedis_in? tribe)?) {
+    (uncertain_in_family:incertae_sedis_in? subfamily (': ' incertae_sedis_in? tribe)?) {
       value = {:subfamily => subfamily.value}
       if !tribe.blank?
         value[:tribe] = tribe.value
-      elsif uncertain_subfamily && uncertain_subfamily != ''
+      elsif uncertain_in_family && uncertain_in_family != ''
         value[:tribe] = 'incertae_sedis'
       end
       value

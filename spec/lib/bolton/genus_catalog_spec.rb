@@ -63,9 +63,14 @@ style='mso-bidi-font-style:normal'><span style='color:purple'>ANCYLOGNATHUS</spa
 style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
 style='color:red'>PROTAZTECA</span></i></b> [<i style='mso-bidi-font-style:
 normal'>incertae sedis</i> in Dolichoderinae]</p>
+
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'>*<b
+style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
+style='color:red'>MYANMYRMA</span></i></b> [<i style='mso-bidi-font-style:normal'>incertae
+sedis</i> in Formicidae]</p>
         }
 
-        Genus.count.should == 8
+        Genus.count.should == 9
 
         acromyrmex = Genus.find_by_name 'Acromyrmex'
         acromyrmex.should_not be_fossil
@@ -73,6 +78,7 @@ normal'>incertae sedis</i> in Dolichoderinae]</p>
         acromyrmex.tribe.name.should == 'Attini'
         acromyrmex.should_not be_invalid
         acromyrmex.taxonomic_history.should == %{<p class="MsoNormal" style="margin-left:.5in;text-align:justify;text-indent:-.5in"><b style="mso-bidi-font-weight:normal"><i style="mso-bidi-font-style:normal"><span style="color:red">ACROMYRMEX</span></i></b> [Myrmicinae: Attini]</p>}
+        acromyrmex.incertae_sedis_in.should be_nil
 
         attaichnus = Genus.find_by_name 'Attaichnus'
         attaichnus.should be_fossil
@@ -96,6 +102,9 @@ normal'>incertae sedis</i> in Dolichoderinae]</p>
         acamatus.should be_invalid
         acamatus.homonym_of.name.should == 'Neivamyrmex'
 
+        myanmyrma = Genus.find_by_name 'Myanmyrma'
+        myanmyrma.should be_valid
+        myanmyrma.incertae_sedis_in.should == 'family'
       end
     end
 

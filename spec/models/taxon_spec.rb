@@ -73,4 +73,11 @@ describe Taxon do
     acamatus.homonym_of.should == neivamyrmex
   end
 
+  it "should be able to have an incertae_sedis_in" do
+    myanmyrma = Taxon.create! :name => 'Myanmyrma', :status => 'valid', :incertae_sedis_in => 'family'
+    myanmyrma.reload
+    myanmyrma.incertae_sedis_in.should == 'family'
+    myanmyrma.should_not be_invalid
+  end
+
 end
