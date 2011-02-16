@@ -5,13 +5,6 @@ describe Bolton::SpeciesCatalog do
     @species_catalog = Bolton::SpeciesCatalog.new
   end
 
-  it "importing a file should call #import_html" do
-    File.should_receive(:read).with('filename').and_return('contents')
-    @species_catalog.should_receive(:import_html).with('contents')
-    @species_catalog.import_files ['filename']
-    Species.all.should be_empty
-  end
-
   describe 'parsing the file as a whole' do
     it 'should complain bitterly if file is obviously not a species catalog' do
      contents = %{<html><body> <p>Foo</p> </body></html>}
@@ -105,33 +98,6 @@ normal'>. Acanthomyrmex basispinosus</i> Moffett, 1986c: 67, figs. 8A, 9-14
       acanthomyrmex.should_not be_nil
       basispinosus = acanthomyrmex.species.find_by_name('basispinosus')
       basispinosus.genus.should == acanthomyrmex
-    end
-
-    it "should recover from one species it can't parse and continue with the rest" do
-      contents = make_contents %{
-<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
-style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
-style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
-
-<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
-style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
-style='color:red'>anguliceps</span></i></b><i style='mso-bidi-font-style:normal'>.
-Iridomyrmex anguliceps</i> Forel, 1901b: 18 (q.m.) NEW GUINEA (Bismarck
-Archipelago). Combination in <i style='mso-bidi-font-style:normal'>Anonychomyrma</i>:
-Shattuck, 1992a: 13.</p>
-
-<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><span>foo</span></p>
-
-<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
-style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
-style='color:red'>angusta</span></i></b><i style='mso-bidi-font-style:normal'>.
-Iridomyrmex angustus</i> Stitz, 1911a: 369, fig. 15 (w.) NEW GUINEA.
-Combination in <i style='mso-bidi-font-style:normal'>Anonychomyrma</i>:
-Shattuck, 1992a: 13.</p>
-      }
-
-      Progress.should_receive(:error).once
-      @species_catalog.import_html contents
     end
 
     it "should save statuses correctly" do
