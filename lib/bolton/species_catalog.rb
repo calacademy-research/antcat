@@ -74,8 +74,7 @@ class Bolton::SpeciesCatalog
   end
 
   def parse_species_lines
-    while @line && (parse_note || parse_species)
-    end
+    while @line && (parse_note || parse_species); end
     true
   end
 
@@ -135,8 +134,12 @@ class Bolton::SpeciesCatalog
       get_next_line
       return unless @line
       @parse_result = parse @line
-      @type = @parse_result[:type]
-    end while @type == :blank
+      @type = 
+      case @parse_result
+      when Symbol then @parse_result
+      else @parse_result[:type]
+      end
+    end while @type == :blank_line
     @type
   end
 

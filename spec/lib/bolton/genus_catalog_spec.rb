@@ -5,13 +5,11 @@ describe Bolton::GenusCatalog do
     @genus_catalog = Bolton::GenusCatalog.new
   end
 
-  describe 'importing files' do
-    it "should call #import_html with the contents of each one" do
-      File.should_receive(:read).with('first_filename').and_return('first contents')
-      File.should_receive(:read).with('second_filename').and_return('second contents')
-      @genus_catalog.should_receive(:import_html).with('first contents')
-      @genus_catalog.should_receive(:import_html).with('second contents')
-      @genus_catalog.import_files ['first_filename', 'second_filename']
+  describe "importing files" do
+    it "should process them in alphabetical order (not counting extension), so the three Camponotus files get processed in the right order" do
+      File.should_receive(:read).with('NGC-GEN.A-L.htm').ordered.and_return ''
+      File.should_receive(:read).with('NGC-GEN.M-Z.htm').ordered.and_return ''
+      @genus_catalog.import_files ['NGC-GEN.A-L.htm', 'NGC-GEN.M-Z.htm']
     end
   end
 

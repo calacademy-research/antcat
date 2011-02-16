@@ -92,7 +92,9 @@ grammar CommonGrammar
   end
 
   rule blank_line
-    (/^/ (blank_paragraph | blank_namespaced_paragraph | blank_paragraph_with_font | blank_bold_red_paragraph | blank_paragraph_italic | spacerun | s) /$/)
+    (/^/ (blank_paragraph | blank_namespaced_paragraph | blank_paragraph_with_font | blank_bold_red_paragraph | blank_paragraph_italic | spacerun | s) /$/) {
+      :blank_line
+    }
   end
 
   rule spacerun
@@ -120,7 +122,9 @@ grammar CommonGrammar
   end
 
   rule nonblank_line
-    /.*[\S].*/
+    /.*[\S].*/ {
+      :nonblank_line
+    }
   end
 
 end

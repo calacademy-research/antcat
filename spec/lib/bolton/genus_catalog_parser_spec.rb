@@ -2,12 +2,12 @@ require 'spec_helper'
 
 describe Bolton::GenusCatalogParser do
   it 'should handle a blank line' do
-    Bolton::GenusCatalogParser.parse("\n").should == {:type => :blank}
+    Bolton::GenusCatalogParser.parse("\n").should == :blank_line
   end
 
   it 'should handle complete garbage' do
     line = %{asdfj;jsdf}
-    Bolton::GenusCatalogParser.parse(line).should == {:type => :nonblank_line}
+    Bolton::GenusCatalogParser.parse(line).should == :nonblank_line
   end
 
   it 'should handle all sorts of guff within the tags' do

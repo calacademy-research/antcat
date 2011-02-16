@@ -5,7 +5,7 @@ describe Bolton::SpeciesCatalog do
     @species_catalog = Bolton::SpeciesCatalog.new
   end
 
-  describe "sorting files to process" do
+  describe "importing files" do
     it "should process them in alphabetical order (not counting extension), so the three Camponotus files get processed in the right order" do
       File.should_receive(:read).with('NGC-Spst-tet.htm').ordered.and_return ''
       File.should_receive(:read).with('NGC-Sptet.htm').ordered.and_return ''

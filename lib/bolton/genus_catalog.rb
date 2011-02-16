@@ -12,118 +12,134 @@ class Bolton::GenusCatalog
   def initialize show_progress = false
     Progress.init show_progress
     Progress.open_log 'log/bolton_genus_import.log'
-    @success_count = @error_count = 0
+    @error_count = 0
   end
 
   def import_files filenames
-    Taxon.delete_all
-    filenames.each do |filename|
-      Progress.puts "Importing #{filename}..."
-      import_html File.read filename
-    end
-    show_results
+      initialize_parse filenames.sort_by {|filename| File.basename(filename, File.extname(filename))}
+      import
   end
 
   def import_html html
-    initialize_scan html
-    parse_header || parse_failed
-    while @line
-      parse_genus_section || parse_failed
-    end
+    initialize_parse_html html
+    import
   end
 
   def parse string
-    string.strip!
-    parse_result = Bolton::GenusCatalogGrammar.parse(string).value
-    Progress.info parse_result
-    parse_result
-  rescue Citrus::ParseError => e
-    Progress.error 'Parse error'
-    Progress.error e
-    p e
-    nil
-  end
-
-  def parse_genus_section
-    return unless [:subgenus, :genus].include? @type
-
-    if @type == :genus
-      Genus.import @parse_result.merge :taxonomic_history => @line
+    begin
+      string.strip!
+      parse_result = Bolton::GenusCatalogGrammar.parse(string).value
+      Progress.info "parsed as: #{parse_result.inspect}"
+    rescue Citrus::ParseError => e
+      parse_result = {:type => :not_understood}
+      Progress.error 'citrus parse error:'
+      Progress.error e
     end
-
-    parse_next_line
-    while parse_genus_section_line; end
-    while parse_blank_line; end
-    true
-  end
-
-  def parse_genus_section_line
-    return unless @type == :non_blank_line
-    parse_next_line true
-    true
-  end
-
-  def parse_blank_line
-    return unless @type == :blank_line
-    parse_next_line true
-    true
-  end
-
-  def show_results
-    Progress.show_results
+    parse_result
   end
 
   private
-  def initialize_scan html
-    doc = Nokogiri::HTML html
-    @lines = doc.css('p')
-    @index = 0
-    @parse_result = {:type => :eof}
-    parse_next_line
+  def import
+    Taxon.delete_all
+    parse_header || parse_failed if @line
+    parse_genus_section || parse_failed while @line
+    Progress.show_results
+    Progress.show_count @error_count, Progress.processed_count, 'parse failures'
   end
 
   def parse_header
     return unless @type == :header
     parse_next_line
+  end
+
+
+  def parse_genus_section
+    return unless [:subgenus, :genus].include? @type
+
+    if @type == :genus
+      Genus.import @parse_result.merge :taxonomic_history => @paragraph
+    end
+
+    parse_next_line
+    parse_genus_detail
+  end
+
+  def parse_genus_detail
+    while @line && (parse_genus_detail_line); end
+    true
+  end
+
+  def parse_genus_detail_line
+    return unless @type == :nonblank_line
+    parse_next_line true
     true
   end
 
   def parse_failed
-    Progress.error "#{@line}\n"
+    Progress.error "parse failed on: '#{@line}'"
     @error_count += 1
     parse_next_line
   end
 
-  def parse_next_line return_blank_lines = false
-    while get_next_line_including_blanks
-      lll{'@line'}
-      @parse_result = parse @line
-      lll{'@parse_result'}
-      next unless @parse_result
-      @type = @parse_result[:type]
-      if @type == :not_understood
-        parse_failed
-      elsif @type == :blank
-        return @type if return_blank_lines
-      elsif not @type != :note
-        return @type
-      end
-    end
+  def initialize_parse filenames
+    @filenames = filenames
+    @filename_index = 0
+    read_file
+    parse_next_line
   end
 
-  def get_next_line_including_blanks
-    if @index >= @lines.size
-      @line = @type = @parse_result = nil
-      return
+  def initialize_parse_html html
+    @filenames = []
+    @filename_index = 0
+    read_string html
+    parse_next_line
+  end
+
+  def read_file
+    return unless @filename_index < @filenames.size
+    html = File.read @filenames[@filename_index]
+    Progress.show_progress if @filename_index > 0
+    Progress.puts "Parsing #{@filenames[@filename_index]}...", true
+    @filename_index += 1
+    read_string html
+  end
+
+  def read_string html
+    doc = Nokogiri::HTML html
+    @paragraphs = doc.css('p')
+    @paragraph_index = 0
+  end
+
+  def parse_next_line
+    begin
+      get_next_line
+      return unless @line
+      @parse_result = parse @line
+      @type = 
+      case @parse_result
+      when Symbol then @parse_result
+      else @parse_result[:type]
+      end
+    end while @type == :blank_line
+    @type
+  end
+
+  def get_next_line
+    while @paragraph_index >= @paragraphs.size
+      unless read_file
+        @line = @type = @parse_result = nil
+        return
+      end
     end
-    @line = massage @lines[@index].inner_html
-    @index += 1
-    Progress.info "\n[" + @line + "]"
+    @line = massage @paragraphs[@paragraph_index].inner_html
+    @paragraph = massage @paragraphs[@paragraph_index].to_html
+    @paragraph_index += 1
+    Progress.info "input line: '#{@line}'"
     Progress.tally
     @line
   end
 
   def massage line
-    CGI.unescape line.gsub /\n/, ' '
+    CGI.unescape(line.gsub /\n/, ' ').strip
   end
 end

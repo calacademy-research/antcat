@@ -4,7 +4,7 @@ grammar Bolton::SpeciesCatalogGrammar
   include Bolton::SpeciesCatalogSpeciesGrammar
 
   rule record
-    header | blank | genus_header | species | subspecies | note | not_understood
+    header | blank_line | genus_header | species | subspecies | note | not_understood
   end
 
   rule header
@@ -16,12 +16,6 @@ grammar Bolton::SpeciesCatalogGrammar
   rule note
     (black? '[Note' /.*/) {
       {:type => :note}
-    }
-  end
-
-  rule blank
-    blank_line {
-      {:type => :blank}
     }
   end
 
