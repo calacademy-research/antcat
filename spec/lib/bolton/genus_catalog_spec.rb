@@ -112,6 +112,18 @@ SPECIES-GROUP TAXA<o:p></o:p></b></p>
   end
 
   describe "saving the result of the parse" do
+    it "should not create the genus if the passed-in subfamily isn't valid" do
+      lambda {@genus_catalog.save_genus :type => :genus, :name => 'Acalama', :status => :valid, :subfamily => ''}.should raise_error
+    end
+    it "should not create the genus if the passed-in tribe isn't valid" do
+      lambda {@genus_catalog.save_genus :type => :genus, :name => 'Acalama', :status => :valid, :tribe => ''}.should raise_error
+    end
+    it "should not create the genus if the passed-in synonym_of isn't valid" do
+      lambda {@genus_catalog.save_genus :type => :genus, :name => 'Acalama', :status => :synonym, :synonym_of => ''}.should raise_error
+    end
+    it "should not create the genus if the passed-in homonym_of isn't valid" do
+      lambda {@genus_catalog.save_genus :type => :genus, :name => 'Acalama', :status => :homonym, :homonym_of => ''}.should raise_error
+    end
     it "should set the synonym_of correctly" do
       @genus_catalog.save_genus :type => :genus, :name => 'Acalama', :status => :synonym, :synonym_of => 'Gauromyrmex'
       Taxon.count.should == 2

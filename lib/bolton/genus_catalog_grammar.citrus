@@ -58,7 +58,7 @@ grammar Bolton::GenusCatalogGrammar
 
   rule valid_genus
     (bold italic red genus_name tag_end tag_end tag_end) {
-      {:type => :genus, :name => genus_name.value}
+      {:type => :genus, :name => genus_name.value, :status => :valid}
     }
   end
 
@@ -76,7 +76,7 @@ grammar Bolton::GenusCatalogGrammar
 
   rule subgenus
     (bold italic blue genus_name tag_end tag_end tag_end) {
-      {:type => :subgenus, :name => genus_name.value}
+      {:type => :subgenus, :name => genus_name.value, :status => :valid}
     }
   end
 

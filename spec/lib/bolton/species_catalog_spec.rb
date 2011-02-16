@@ -98,7 +98,7 @@ normal'>. Acanthomyrmex basispinosus</i> Moffett, 1986c: 67, figs. 8A, 9-14
 
       Progress.should_not_receive(:error)
 
-      Genus.create! :name => 'Acanthomyrmex'
+      Genus.create! :name => 'Acanthomyrmex', :status => 'valid'
       @species_catalog.import_html contents
 
       Taxon.count.should == 2

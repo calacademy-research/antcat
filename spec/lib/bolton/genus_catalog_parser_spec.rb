@@ -15,20 +15,20 @@ describe Bolton::GenusCatalogParser do
       style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
       style='color:red'>ACANTHOGNATHUS</span></i></b> [Myrmicinae: Dacetini]}
     Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Acanthognathus',
-                                                      :subfamily => 'Myrmicinae', :tribe => 'Dacetini'}
+                                                      :subfamily => 'Myrmicinae', :tribe => 'Dacetini', :status => :valid}
   end
 
   describe 'parsing the genus name' do
     it 'should parse a normal genus name' do
       line = %{<b><i><span style='color:red'>ACANTHOGNATHUS</span></i></b> [Myrmicinae: Dacetini]}
       Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Acanthognathus',
-                                                        :subfamily => 'Myrmicinae', :tribe => 'Dacetini'}
+                                                        :subfamily => 'Myrmicinae', :tribe => 'Dacetini', :status => :valid}
     end
 
     it 'should parse a fossil genus name' do
       line = %{*<b><i><span style='color:red'>ACANTHOGNATHUS</span></i></b> [Myrmicinae: Dacetini]}
       Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Acanthognathus',
-                                                        :subfamily => 'Myrmicinae', :tribe => 'Dacetini', :fossil => true}
+                                                        :subfamily => 'Myrmicinae', :tribe => 'Dacetini', :fossil => true, :status => :valid}
     end
 
     it 'should parse an unidentifiable genus name' do
@@ -52,7 +52,7 @@ describe Bolton::GenusCatalogParser do
 
     it "should recognize a subgenus" do
       line = %{#<b><i><span style='color:blue'>ACANTHOMYOPS</span></i></b> [subgenus of <i>Lasius</i>]}
-      Bolton::GenusCatalogParser.parse(line).should == {:type => :subgenus, :name => 'Acanthomyops', :genus => 'Lasius'}
+      Bolton::GenusCatalogParser.parse(line).should == {:type => :subgenus, :name => 'Acanthomyops', :genus => 'Lasius', :status => :valid}
     end
 
   end
@@ -62,18 +62,18 @@ describe Bolton::GenusCatalogParser do
     it 'should parse the subfamily and tribe' do
       line = %{<b><i><span style='color:red'>ACROMYRMEX</span></i></b> [Myrmicinae: Attini]}
       Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Acromyrmex',
-                                                        :subfamily => 'Myrmicinae', :tribe => 'Attini'}
+                                                        :subfamily => 'Myrmicinae', :tribe => 'Attini', :status => :valid}
     end
 
     it "should handle an extinct subfamily" do
       line = %{*<b><i><span style='color:red'>PROTAZTECA</span></i></b> [*Myrmicinae]}
-      Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Protazteca', :subfamily => 'Myrmicinae', :fossil => true}
+      Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Protazteca', :subfamily => 'Myrmicinae', :fossil => true, :status => :valid}
     end
 
     it "should handle an extinct subfamily and extinct tribe" do
       line = %{*<b><i><span style='color:red'>PROTAZTECA</span></i></b> [*Specomyrminae: *Sphecomyrmini]}
       Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Protazteca',
-                                                        :subfamily => 'Specomyrminae', :tribe => 'Sphecomyrmini', :fossil => true}
+                                                        :subfamily => 'Specomyrminae', :tribe => 'Sphecomyrmini', :fossil => true, :status => :valid}
     end
 
     #it "should handle a parenthetical note" do

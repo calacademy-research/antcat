@@ -60,13 +60,13 @@ grammar Bolton::SpeciesCatalogGenusGrammar
       tag_end s tag_end s tag_end region? '.'?
       region?
     ) {
-      {:type => :genus, :name => uppercase_word.downcase.capitalize}
+      {:type => :genus, :name => uppercase_word.downcase.capitalize, :status => :valid}
     }
   end
 
   rule genus_with_crap
     (bold italic red uppercase_word tag_end tag_end tag_end red space tag_end black parenthesized_phrase '<p></p>' tag_end) {
-      {:type => :genus, :name => uppercase_word.downcase.capitalize}
+      {:type => :genus, :name => uppercase_word.downcase.capitalize, :status => :valid}
     }
 
   end

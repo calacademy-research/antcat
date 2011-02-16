@@ -11,7 +11,7 @@ describe Bolton::SpeciesCatalog do
     it "should handle a normal species" do
       @species_catalog.parse(%{
 <b><i><span style='color:red'>brevicornis</span></i></b><i>. Acanthognathus brevicornis</i> Smith, M.R. 1944c: 151 (w.q.) PANAMA. See also: Brown &amp; Kempf, 1969: 94; Bolton, 2000: 16.
-      }).should == {:type => :species, :name => 'brevicornis'}
+      }).should == {:type => :species, :name => 'brevicornis', :status => :valid}
     end
 
     describe "fossil" do
@@ -19,25 +19,25 @@ describe Bolton::SpeciesCatalog do
       it "should handle a normal fossil species" do
         @species_catalog.parse(%{
 *<b><i><span style='color:red'>poinari</span></i></b><i>. *Acanthognathus poinari</i> Baroni Urbani, in Baroni Urbani &amp; De Andrade, 1994: 41, figs. 20, 21, 26, 27 (q.) DOMINICAN AMBER (Miocene). See also: Bolton, 2000: 17.
-        }).should == {:type => :species, :name => 'poinari', :fossil => true}
+        }).should == {:type => :species, :name => 'poinari', :fossil => true, :status => :valid}
       end
 
       it "should handle a fossil species where the asterisk is explicitly black" do
         @species_catalog.parse(%{
 <span style="color:black">*</span><b><i><span style="color:red">ucrainica</span></i></b><i><span style="color:black">. *Oligomyrmex ucrainicus</span></i><span> Dlussky, in Dlussky &amp; Perkovsky, 2002: 15, fig. 5 (q.) UKRAINE (Rovno Amber). </span>Combination in <i>Carebara</i>: <b>new combination (unpublished).</b><span style="color:black"><p></p></span>
-        }).should == {:type => :species, :name => 'ucrainica', :fossil => true}
+        }).should == {:type => :species, :name => 'ucrainica', :fossil => true, :status => :valid}
       end
 
       it "should handle a fossil species with the formatting tags in another order" do
         @species_catalog.parse(%{
   <i>*<b><span style="color:red">groehni</span></b>. *Amblyopone groehni</i> Dlussky, 2009: 1046, figs. 2a,b (w.) BALTIC AMBER (Eocene).
-        }).should == {:type => :species, :name => 'groehni', :fossil => true}
+        }).should == {:type => :species, :name => 'groehni', :fossil => true, :status => :valid}
       end
 
       it "should handle a fossil species with the formatting tags in yet another order" do
         @species_catalog.parse(%{
 <b><i>*<span style="color:red">cantalica</span>. </i></b><i>*Formica cantalica</i> Piton, in Piton &amp; Théobald, 1935: 68, pl. 1, fig. 10 (m.?) FRANCE (Mio-Pliocene).
-        }).should == {:type => :species, :name => 'cantalica', :fossil => true}
+        }).should == {:type => :species, :name => 'cantalica', :fossil => true, :status => :valid}
       end
 
     end
@@ -135,31 +135,31 @@ describe Bolton::SpeciesCatalog do
     it "should handle a subspecies" do
       @species_catalog.parse(%{
 #<b><i><span style="color:blue">ajax</span></i></b><i>. Atta (Acromyrmex) emilii</i> var. <i>ajax</i> Forel, 1909b: 58 (w.) "GUINEA" (in error; in text Forel states "probablement du Brésil"). Currently subspecies of <i>hystrix</i>: Santschi, 1925a: 358.
-      }).should == {:type => :subspecies, :name => 'ajax'}
+      }).should == {:type => :subspecies, :name => 'ajax', :status => :valid}
     end
 
     it "should handle black and blue" do
       @species_catalog.parse(%{
 <b><i><span style="color:black">#</span><span style="color:blue">dagmarae</span></i></b><i><span style="color:blue">. </span><span style="color:black">Myrmica moravica</span></i><span style="color:black"> var. <i>dagmarae</i> Sadil, 1939b: 108 (w.q.m.) CZECHIA.<b><i> </i></b>Currently subspecies of <i>lacustris</i> (because <i>moravica</i> and its senior synonym <i>deplanata</i> are both junior synonyms of <i>lacustris</i>).<p></p></span>
-      }).should == {:type => :subspecies, :name => 'dagmarae'}
+      }).should == {:type => :subspecies, :name => 'dagmarae', :status => :valid}
     end
 
     it "should handle including the period after the name in the italicization of the binomial" do
       @species_catalog.parse(%{
 #<b><i><span style="color:blue">v-nigra</span></i></b><i>. Crematogaster chiarinii</i> var. <i>v-nigrum</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146.
-      }).should == {:type => :subspecies, :name => 'v-nigra'}
+      }).should == {:type => :subspecies, :name => 'v-nigra', :status => :valid}
     end
 
     it "should handle a colorless subspecies" do
       @species_catalog.parse(%{
 #<i>emarginatobrunneus. Lasius brunneus</i> var. <i>emarginatobrunneus</i> Ruzsky, 1902d: 17 (w.) RUSSIA (attributed to Forel).
-      }).should == {:type => :subspecies, :name => 'emarginatobrunneus'}
+      }).should == {:type => :subspecies, :name => 'emarginatobrunneus', :status => :valid}
     end
 
     it "should handle a period in amongst the end tags" do
       @species_catalog.parse(%{
 #<b><i><span style="color:blue">torrei</span></i>.</b><i> Crematogaster sanguinea</i> var. <i>torrei</i> Wheeler, W.M. 1913b: 490 (w.q.) CUBA. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 141.
-      }).should == {:type => :subspecies, :name => 'torrei'}
+      }).should == {:type => :subspecies, :name => 'torrei', :status => :valid}
     end
 
     describe "unavailable subspecies" do
@@ -213,13 +213,13 @@ describe Bolton::SpeciesCatalog do
       it "should handle a fossil subspecies" do
         @species_catalog.parse(%{
   *#<b><i><span style="color:blue">minor</span></i></b><i>. *Poneropsis lugubris</i> var. <i>minor</i> Heer, 1867: 21 (m.) CROATIA (Miocene).
-        }).should == {:type => :subspecies, :name => 'minor', :fossil => true}
+        }).should == {:type => :subspecies, :name => 'minor', :fossil => true, :status => :valid}
       end
 
       it "should the subspecies mark before th fossil mark" do
         @species_catalog.parse(%{
 #*<b><i><span style="color:blue">neuter</span></i></b><i>. *Formica redtenbacheri</i> subsp. <i>neutra</i> Heer, 1849: 130 (q.?). [Also described as new by Heer, 1850: 130.] Combination in <i>Lasius</i>: Bolton, 1995b: 224 [as <i>redtenbacheri</i> referred to <i>Lasius</i> by Mayr, 1867b: 54].
-        }).should == {:type => :subspecies, :name => 'neuter', :fossil => true}
+        }).should == {:type => :subspecies, :name => 'neuter', :fossil => true, :status => :valid}
       end
 
     end
@@ -227,7 +227,7 @@ describe Bolton::SpeciesCatalog do
     it "should handle a bold italic subspecies indicator" do
       @species_catalog.parse(%{
 <b><i>#<span style="color:blue">aeolia</span></i></b><i>. Oligomyrmex oertzeni</i> var. <i>aeolia</i> Forel, 1911d: 338 (q.m.) TURKEY. Combination in <i>Carebara</i>: <b>new combination (unpublished).</b>
-      }).should == {:type => :subspecies, :name => 'aeolia'}
+      }).should == {:type => :subspecies, :name => 'aeolia', :status => :valid}
     end
 
     describe "subspecies homonyms" do

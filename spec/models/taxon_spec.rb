@@ -2,23 +2,26 @@ require 'spec_helper'
 
 describe Taxon do
 
-  it "should have a name" do
-    taxon = Taxon.create! :name => 'Cerapachynae'
+  it "should require a name" do
+    taxon = Taxon.create! :name => 'Cerapachynae', :status => 'valid'
     taxon.name.should == 'Cerapachynae'
   end
 
-  it "when without status, should not be invalid" do
-    taxon = Taxon.create! :name => 'Cerapachynae'
-    taxon.should_not be_invalid
+  it "should not be (Rails) valid with a blank status" do
+    Taxon.new(:name => 'Cerapachynae').should_not be_valid
+    Taxon.new(:status => 'valid').should_not be_valid
+    Taxon.new(:name => 'Cerapachynae', :status => '').should_not be_valid
+    Taxon.new(:name => '', :status => 'valid').should_not be_valid
+    Taxon.new(:name => 'Cerapachynae', :status => 'valid').should be_valid
   end
 
-  it "when with blank status, should not be invalid" do
-    taxon = Taxon.create! :name => 'Cerapachynae', :status => ''
+  it "when status 'valid', should not be invalid" do
+    taxon = Taxon.create! :name => 'Cerapachynae', :status => 'valid'
     taxon.should_not be_invalid
   end
 
   it "should be able to be unidentifiable" do
-    taxon = Taxon.create! :name => 'Cerapachynae'
+    taxon = Taxon.create! :name => 'Cerapachynae', :status => 'valid'
     taxon.should_not be_unidentifiable
     taxon.update_attribute :status, 'unidentifiable'
     taxon.should be_unidentifiable
@@ -26,7 +29,7 @@ describe Taxon do
   end
 
   it "should be able to be unavailable" do
-    taxon = Taxon.create! :name => 'Cerapachynae'
+    taxon = Taxon.create! :name => 'Cerapachynae', :status => 'valid'
     taxon.should_not be_unavailable
     taxon.should be_available
     taxon.update_attribute :status, 'unavailable'
@@ -36,7 +39,7 @@ describe Taxon do
   end
 
   it "should be able to be a synonym" do
-    taxon = Taxon.create! :name => 'Cerapachynae'
+    taxon = Taxon.create! :name => 'Cerapachynae', :status => 'valid'
     taxon.should_not be_synonym
     taxon.update_attribute :status, 'synonym'
     taxon.should be_synonym
@@ -44,7 +47,7 @@ describe Taxon do
   end
 
   it "should be able to be a fossil" do
-    taxon = Taxon.create! :name => 'Cerapachynae'
+    taxon = Taxon.create! :name => 'Cerapachynae', :status => 'valid'
     taxon.should_not be_fossil
     taxon.update_attribute :fossil, true
     taxon.should be_fossil
@@ -55,7 +58,7 @@ describe Taxon do
   end
 
   it "should be able to be a synonym of something else" do
-    gauromyrmex = Taxon.create! :name => 'Gauromyrmex'
+    gauromyrmex = Taxon.create! :name => 'Gauromyrmex', :status => 'valid'
     acalama = Taxon.create! :name => 'Acalama', :status => 'synonym', :synonym_of => gauromyrmex
     acalama.reload
     acalama.should be_synonym
@@ -63,7 +66,7 @@ describe Taxon do
   end
 
   it "should be able to be a homonym of something else" do
-    neivamyrmex = Taxon.create! :name => 'Neivamyrmex'
+    neivamyrmex = Taxon.create! :name => 'Neivamyrmex', :status => 'valid'
     acamatus = Taxon.create! :name => 'Acamatus', :status => 'homonym', :homonym_of => neivamyrmex
     acamatus.reload
     acamatus.should be_homonym
