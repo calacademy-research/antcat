@@ -6,11 +6,11 @@ describe Bolton::SpeciesCatalog do
   end
 
   describe "sorting files to process" do
-    it "should process them in alphabetical order, so the two Camponotus files get processed in the right order" do
-      File.should_receive(:read).with('a').ordered.and_return ''
-      File.should_receive(:read).with('b').ordered.and_return ''
-      File.should_receive(:read).with('c').ordered.and_return ''
-      @species_catalog.import_files ['b', 'a', 'c']
+    it "should process them in alphabetical order (not counting extension), so the three Camponotus files get processed in the right order" do
+      File.should_receive(:read).with('NGC-Spst-tet.htm').ordered.and_return ''
+      File.should_receive(:read).with('NGC-Sptet.htm').ordered.and_return ''
+      File.should_receive(:read).with('NGC-Sptet-z.htm').ordered.and_return ''
+      @species_catalog.import_files ['NGC-Spst-tet.htm', 'NGC-Sptet-z.htm', 'NGC-Sptet.htm']
     end
   end
 

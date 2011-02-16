@@ -21,8 +21,8 @@ class Bolton::SpeciesCatalog
   end
 
   def import_files filenames
-    initialize_parse filenames.sort
-    import
+      initialize_parse filenames.sort_by {|filename| File.basename(filename, File.extname(filename))}
+      import
   end
 
   def import_html html
@@ -47,11 +47,8 @@ class Bolton::SpeciesCatalog
   def import
     Species.delete_all
     @genus = nil
-    parse_header || parse_failed
-    loop do
-      break unless @line
-      parse_see_under || parse_genus_section || parse_failed
-    end
+    parse_header || parse_failed if @line
+    parse_see_under || parse_genus_section || parse_failed while @line
     Progress.show_results
     Progress.show_count @error_count, Progress.processed_count, 'parse failures'
   end
@@ -107,12 +104,14 @@ class Bolton::SpeciesCatalog
     @filenames = filenames
     @filename_index = 0
     read_file
+    parse_next_line
   end
 
   def initialize_parse_html html
     @filenames = []
     @filename_index = 0
     read_string html
+    parse_next_line
   end
 
   def read_file
@@ -126,31 +125,29 @@ class Bolton::SpeciesCatalog
 
   def read_string html
     doc = Nokogiri::HTML html
-    @lines = doc.css('p')
-    @line_index = 0
-    parse_next_line
+    @paragraphs = doc.css('p')
+    @paragraph_index = 0
   end
 
   def parse_next_line
-    loop do
+    begin
       get_next_line
       return unless @line
       @parse_result = parse @line
       @type = @parse_result[:type]
-      break unless @type == :blank
-    end
+    end while @type == :blank
     @type
   end
 
   def get_next_line
-    if @line_index >= @lines.size
+    while @paragraph_index >= @paragraphs.size
       unless read_file
         @line = @type = @parse_result = nil
         return
       end
     end
-    @line = massage @lines[@line_index].inner_html
-    @line_index += 1
+    @line = massage @paragraphs[@paragraph_index].inner_html
+    @paragraph_index += 1
     Progress.info "input line: '#{@line}'"
     Progress.tally
     @line
