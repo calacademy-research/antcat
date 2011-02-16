@@ -109,36 +109,4 @@ SPECIES-GROUP TAXA<o:p></o:p></b></p>
       end
   end
 
-  describe "saving the result of the parse" do
-    it "should not create the genus if the passed-in subfamily isn't valid" do
-      lambda {@genus_catalog.save_genus :type => :genus, :name => 'Acalama', :status => :valid, :subfamily => ''}.should raise_error
-    end
-    it "should not create the genus if the passed-in tribe isn't valid" do
-      lambda {@genus_catalog.save_genus :type => :genus, :name => 'Acalama', :status => :valid, :tribe => ''}.should raise_error
-    end
-    it "should not create the genus if the passed-in synonym_of isn't valid" do
-      lambda {@genus_catalog.save_genus :type => :genus, :name => 'Acalama', :status => :synonym, :synonym_of => ''}.should raise_error
-    end
-    it "should not create the genus if the passed-in homonym_of isn't valid" do
-      lambda {@genus_catalog.save_genus :type => :genus, :name => 'Acalama', :status => :homonym, :homonym_of => ''}.should raise_error
-    end
-    it "should set the synonym_of correctly" do
-      @genus_catalog.save_genus :type => :genus, :name => 'Acalama', :status => :synonym, :synonym_of => 'Gauromyrmex'
-      Taxon.count.should == 2
-      acalama = Genus.find_by_name 'Acalama'
-      gauromyrmex = Genus.find_by_name 'Gauromyrmex'
-      acalama.synonym_of.should == gauromyrmex
-      gauromyrmex.synonym_of.should be_nil
-    end
-
-    it "should set the homonym_of correctly" do
-      @genus_catalog.save_genus :type => :genus, :name => 'Acamatus', :status => :homonym, :homonym_of => 'Neivamyrmex'
-      Taxon.count.should == 2
-      acamatus = Genus.find_by_name 'Acamatus'
-      neivamyrmex = Genus.find_by_name 'Neivamyrmex'
-      acamatus.homonym_of.should == neivamyrmex
-      neivamyrmex.homonym_of.should be_nil
-    end
-  end
-
 end
