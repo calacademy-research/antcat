@@ -79,6 +79,7 @@ Shattuck, 1992a: 13.</p>
       basispinosus.fossil.should_not be_true
 
       tetramorium = Genus.find_by_name('Tetramorium')
+      tetramorium.should_not be_invalid
       poinari = tetramorium.species.find_by_name('poinari')
       poinari.fossil.should be_true
     end
