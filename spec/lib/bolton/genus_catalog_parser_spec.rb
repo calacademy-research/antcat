@@ -37,6 +37,18 @@ describe Bolton::GenusCatalogParser do
                                                         :subfamily => 'Myrmicinae', :tribe => 'Attini', :fossil => true}
     end
 
+    it 'should handle parens instead of brackets' do
+      line = %{<b><i><span style='color:red'>ACROMYRMEX</span></i></b> (Myrmicinae: Attini)}
+      Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Acromyrmex', :status => :valid,
+                                                        :subfamily => 'Myrmicinae', :tribe => 'Attini'}
+    end
+
+    it 'should handle paren at one end and bracket at the other' do
+      line = %{<b><i><span style='color:red'>ACROMYRMEX</span></i></b> (Myrmicinae: Attini]}
+      Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Acromyrmex', :status => :valid,
+                                                        :subfamily => 'Myrmicinae', :tribe => 'Attini'}
+    end
+
     describe "unavailable names" do
       it "should recognize a nomen nudum" do
         line = %{<i><span style='color:purple'>ANCYLOGNATHUS</span></i> [<i>Nomen nudum</i>]}
@@ -203,20 +215,13 @@ describe Bolton::GenusCatalogParser do
            {:type => :genus, :name => 'Acamatus', :status => :homonym, :homonym_of => 'Neivamyrmex'}
       end
 
+      it "should handle fossil homonyms" do
+        line = %{*<i>HETEROMYRMEX</i> [junior homonym, see *<i>Zhangidris</i>]}
+        Bolton::GenusCatalogParser.parse(line).should ==
+           {:type => :genus, :name => 'Heteromyrmex', :status => :homonym, :homonym_of => 'Zhangidris', :fossil => true}
+      end
+
     end
-
-    #it 'should handle parens instead of brackets' do
-      #line = %{<b><i><span style='color:red'>ACROMYRMEX</span></i></b> (Myrmicinae: Attini)}
-      #Bolton::GenusCatalogParser.parse(line).should ==
-            #{:type => :genus, {:name => 'Acromyrmex', :subfamily => 'Myrmicinae', :tribe => 'Attini', :available => true, :valid => true, :fossil => false}
-    #end
-
-    #it 'should handle paren at one end and bracket at the other' do
-      #line = %{<b><i><span style='color:red'>ACROMYRMEX</span></i></b> (Myrmicinae: Attini]}
-      #Bolton::GenusCatalogParser.parse(line).should ==
-             #{:type => :genus, {:name => 'Acromyrmex', :subfamily => 'Myrmicinae', :tribe => 'Attini', :available => true, :valid => true, :fossil => false}
-    #end
-
 
   #end
   end

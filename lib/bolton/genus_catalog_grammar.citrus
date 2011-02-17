@@ -44,8 +44,10 @@ grammar Bolton::GenusCatalogGrammar
   end
 
   rule genus_homonym
-    (italic genus_name tag_end span? ' [junior homonym, see ' tag_end? italic capitalized_word tag_end span? ']' tag_end?) {
-      {:type => :genus, :name => genus_name.value, :status => :homonym, :homonym_of => capitalized_word.value}
+    (main_fossil_flag:fossil_flag? italic genus_name tag_end span? ' [junior homonym, see ' tag_end? fossil_flag? italic capitalized_word tag_end span? ']' tag_end?) {
+      value = {:type => :genus, :name => genus_name.value, :status => :homonym, :homonym_of => capitalized_word.value}
+      value.merge! :fossil => true if main_fossil_flag && main_fossil_flag != ''
+      value
     }
   end
 
