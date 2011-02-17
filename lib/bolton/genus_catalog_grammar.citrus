@@ -69,7 +69,7 @@ grammar Bolton::GenusCatalogGrammar
   end
 
   rule bracketed_information
-    (' ' open_bracket bracketed_contents parenthetical_note? close_bracket tag_end?) {
+    (s open_bracket bracketed_contents parenthetical_note? close_bracket tag_end?) {
       bracketed_contents.value
     }
   end

@@ -4,7 +4,7 @@ grammar CommonGrammar
   end
 
   rule space
-    /(\s|\xC2\xA0|&nbsp;)/ | (italic '<p></p>' tag_end)
+    /(\s|\xC2\xA0|&nbsp;)/ | (italic '<p></p>' tag_end) | errant_red_space
   end
 
   rule question_mark
@@ -125,6 +125,10 @@ grammar CommonGrammar
     /.*[\S].*/ {
       :nonblank_line
     }
+  end
+
+  rule errant_red_space
+    red s tag_end
   end
 
 end

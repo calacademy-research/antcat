@@ -30,10 +30,6 @@ grammar Bolton::CatalogGrammar
     '<p></p>'
   end
 
-  rule errant_red_space
-    red s tag_end
-  end
-
   rule not_understood
     /.*/ {
       {:type => :not_understood}
