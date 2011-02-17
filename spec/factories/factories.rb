@@ -83,14 +83,22 @@ end
 Factory.define :reference_document do |document|
 end
 
+Factory.define :taxon do |taxon|
+  taxon.status  'valid'
+end
+
 Factory.define :subfamily do |subfamily|
+  subfamily.status  'valid'
 end
 
-Factory.define :tribe do |taxon|
+Factory.define :tribe do |tribe|
+  tribe.status  'valid'
 end
 
-Factory.define :genus do |taxon|
+Factory.define :genus do |genus|
+  genus.status  'valid'
 end
 
-Factory.define :species do |taxon|
+Factory.define :species do |species|
+  species.status  'valid'
 end

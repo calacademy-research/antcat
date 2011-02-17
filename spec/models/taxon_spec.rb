@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Taxon do
 
   it "should require a name" do
-    taxon = Taxon.create! :name => 'Cerapachynae', :status => 'valid'
+    taxon = Factory :taxon, :name => 'Cerapachynae'
     taxon.name.should == 'Cerapachynae'
   end
 
@@ -16,12 +16,12 @@ describe Taxon do
   end
 
   it "when status 'valid', should not be invalid" do
-    taxon = Taxon.create! :name => 'Cerapachynae', :status => 'valid'
+    taxon = Factory :taxon, :name => 'Cerapachynae'
     taxon.should_not be_invalid
   end
 
   it "should be able to be unidentifiable" do
-    taxon = Taxon.create! :name => 'Cerapachynae', :status => 'valid'
+    taxon = Factory :taxon, :name => 'Cerapachynae'
     taxon.should_not be_unidentifiable
     taxon.update_attribute :status, 'unidentifiable'
     taxon.should be_unidentifiable
@@ -29,7 +29,7 @@ describe Taxon do
   end
 
   it "should be able to be unavailable" do
-    taxon = Taxon.create! :name => 'Cerapachynae', :status => 'valid'
+    taxon = Factory :taxon, :name => 'Cerapachynae'
     taxon.should_not be_unavailable
     taxon.should be_available
     taxon.update_attribute :status, 'unavailable'
@@ -39,7 +39,7 @@ describe Taxon do
   end
 
   it "should be able to be a synonym" do
-    taxon = Taxon.create! :name => 'Cerapachynae', :status => 'valid'
+    taxon = Factory :taxon, :name => 'Cerapachynae'
     taxon.should_not be_synonym
     taxon.update_attribute :status, 'synonym'
     taxon.should be_synonym
@@ -47,7 +47,7 @@ describe Taxon do
   end
 
   it "should be able to be a fossil" do
-    taxon = Taxon.create! :name => 'Cerapachynae', :status => 'valid'
+    taxon = Factory :taxon, :name => 'Cerapachynae'
     taxon.should_not be_fossil
     taxon.update_attribute :fossil, true
     taxon.should be_fossil
@@ -58,23 +58,23 @@ describe Taxon do
   end
 
   it "should be able to be a synonym of something else" do
-    gauromyrmex = Taxon.create! :name => 'Gauromyrmex', :status => 'valid'
-    acalama = Taxon.create! :name => 'Acalama', :status => 'synonym', :synonym_of => gauromyrmex
+    gauromyrmex = Factory :taxon, :name => 'Gauromyrmex'
+    acalama = Factory :taxon, :name => 'Acalama', :status => 'synonym', :synonym_of => gauromyrmex
     acalama.reload
     acalama.should be_synonym
     acalama.reload.synonym_of.should == gauromyrmex
   end
 
   it "should be able to be a homonym of something else" do
-    neivamyrmex = Taxon.create! :name => 'Neivamyrmex', :status => 'valid'
-    acamatus = Taxon.create! :name => 'Acamatus', :status => 'homonym', :homonym_of => neivamyrmex
+    neivamyrmex = Factory :taxon, :name => 'Neivamyrmex'
+    acamatus = Factory :taxon, :name => 'Acamatus', :status => 'homonym', :homonym_of => neivamyrmex
     acamatus.reload
     acamatus.should be_homonym
     acamatus.homonym_of.should == neivamyrmex
   end
 
   it "should be able to have an incertae_sedis_in" do
-    myanmyrma = Taxon.create! :name => 'Myanmyrma', :status => 'valid', :incertae_sedis_in => 'family'
+    myanmyrma = Factory :taxon, :name => 'Myanmyrma', :incertae_sedis_in => 'family'
     myanmyrma.reload
     myanmyrma.incertae_sedis_in.should == 'family'
     myanmyrma.should_not be_invalid

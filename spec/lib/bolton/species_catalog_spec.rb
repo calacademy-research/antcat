@@ -65,9 +65,9 @@ Shattuck, 1992a: 13.</p>
 <p>*<b><i><span style='color:red'>poinari</span></i></b><i>. *Acanthognathus poinari</i> Baroni Urbani, in Baroni Urbani &amp; De Andrade, 1994: 41, figs. 20, 21, 26, 27 (q.) DOMINICAN AMBER (Miocene). See also: Bolton, 2000: 17.</p>
       }
 
-      Genus.create! :name => 'Acanthomyrmex', :status => 'valid'
-      Genus.create! :name => 'Anonychomyrma', :status => 'valid'
-      Genus.create! :name => 'Tetramorium', :status => 'valid'
+      Factory :genus, :name => 'Acanthomyrmex'
+      Factory :genus, :name => 'Anonychomyrma'
+      Factory :genus, :name => 'Tetramorium'
 
       Progress.should_not_receive(:error)
 
@@ -103,7 +103,7 @@ normal'>. Acanthomyrmex basispinosus</i> Moffett, 1986c: 67, figs. 8A, 9-14
 
       Progress.should_not_receive(:error)
 
-      Genus.create! :name => 'Acanthomyrmex', :status => 'valid'
+      Factory :genus, :name => 'Acanthomyrmex'
       @species_catalog.import_html contents
 
       Taxon.count.should == 2
@@ -190,7 +190,7 @@ Iridomyrmex angustus</i> Stitz, 1911a: 369, fig. 15 (w.) NEW GUINEA.
 Combination in <i style='mso-bidi-font-style:normal'>Anonychomyrma</i>:
 Shattuck, 1992a: 13.</p>
       }
-      Genus.create! :name => 'Anonychomyrma', :status => 'valid'
+      Factory :genus, :name => 'Anonychomyrma'
 
       Progress.should_not_receive :error
       @species_catalog.import_html contents

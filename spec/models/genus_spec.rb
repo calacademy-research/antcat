@@ -3,15 +3,15 @@ require 'spec_helper'
 describe Genus do
 
   it "should have a tribe" do
-    attini = Tribe.create! :name => 'Attini', :subfamily => Subfamily.create!(:name => 'Myrmicinae', :status => 'valid'), :status => 'valid'
-    Genus.create! :name => 'Atta', :tribe => attini, :status => 'valid'
+    attini = Factory :tribe, :name => 'Attini', :subfamily => Factory(:subfamily, :name => 'Myrmicinae')
+    Factory :genus, :name => 'Atta', :tribe => attini
     Genus.find_by_name('Atta').tribe.should == attini
   end
 
   it "should have species, which are its children" do
-    atta = Genus.create! :name => 'Atta', :status => 'valid'
-    Species.create! :name => 'robusta', :genus => atta, :status => 'valid'
-    Species.create! :name => 'saltensis', :genus => atta, :status => 'valid'
+    atta = Factory :genus, :name => 'Atta'
+    Factory :species, :name => 'robusta', :genus => atta
+    Factory :species, :name => 'saltensis', :genus => atta
     atta = Genus.find_by_name('Atta')
     atta.species.map(&:name).should =~ ['robusta', 'saltensis']
     atta.children.should == atta.species
@@ -56,8 +56,8 @@ describe Genus do
     end
 
     it "should not recreate each element in chain, if not necessary" do
-      Subfamily.create! :name => 'Forminidaie', :status => 'valid'
-      Tribe.create! :name => 'Attini', :status => 'valid'
+      Factory :subfamily, :name => 'Forminidaie'
+      Factory :tribe, :name => 'Attini'
       Genus.import :name => 'Acalama', :status => :valid, :tribe => 'Attini', :subfamily => 'Forminidaie'
       Taxon.count.should == 3
     end

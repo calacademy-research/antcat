@@ -47,7 +47,7 @@ end
 
 Given 'the following species exist' do |table|
   table.hashes.each do |hash|
-    Species.create! hash
+    Factory :species, hash
   end
 end
 
@@ -262,16 +262,17 @@ And /I (edit|delete|copy) "(.*?)"/ do |verb, author|
 end
 
 Given /a tribe exists with a name of "(.*?)" and a subfamily of "(.*?)"/ do |taxon_name, parent_name|
-  Tribe.create! :name => taxon_name, :subfamily => Subfamily.find_or_create_by_name(parent_name)
+  subfamily = Subfamily.find_by_name(parent_name) || Factory(:subfamily, :name => parent_name)
+  Factory :tribe, :name => taxon_name, :subfamily => subfamily
 end
 
 Given /a genus exists with a name of "(.*?)" and a tribe of "(.*?)"/ do |taxon_name, parent_name|
-  tribe = Tribe.find_or_create_by_name(parent_name)
-  Genus.create! :name => taxon_name, :tribe => tribe, :subfamily => tribe.subfamily
+  tribe = Tribe.find_by_name(parent_name) || Factory(:tribe, :name => parent_name)
+  Factory :genus, :name => taxon_name, :tribe => tribe, :subfamily => tribe.subfamily
 end
 
 Given /a species exists with a name of "(.*?)" and a genus of "(.*?)"/ do |taxon_name, parent_name|
-  genus = Genus.find_or_create_by_name(parent_name)
-  Species.create! :name => taxon_name, :genus => genus
+  genus = Genus.find_by_name(parent_name) || Factory(:genus, :name => parent_name)
+  Factory :species, :name => taxon_name, :genus => genus
 end
 
