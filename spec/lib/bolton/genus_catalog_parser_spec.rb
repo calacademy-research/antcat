@@ -37,14 +37,27 @@ describe Bolton::GenusCatalogParser do
                                                         :subfamily => 'Myrmicinae', :tribe => 'Attini', :fossil => true}
     end
 
-    it "should recognize an unavailable name" do
-      line = %{<i><span style='color:purple'>ANCYLOGNATHUS</span></i> [<i>Nomen nudum</i>]}
-      Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Ancylognathus', :status => :unavailable}
-    end
+    describe "unavailable names" do
+      it "should recognize a nomen nudum" do
+        line = %{<i><span style='color:purple'>ANCYLOGNATHUS</span></i> [<i>Nomen nudum</i>]}
+        Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Ancylognathus', :status => :unavailable}
+      end
 
-    it "should handle when the bracketed remark at end has a trailing bracket in bold" do
-      line = %{<i><span style="color:purple">MYRMECIUM</span></i> [<b>unavailable name]</b>}
-      Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Myrmecium', :status => :unavailable}
+      it "should recognize an unavailable name" do
+        line = %{<i><span style="color:purple">ACHANTILEPIS</span></i> [<b>unavailable name</b>]}
+        Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Achantilepis', :status => :unavailable}
+      end
+
+      it "should recognize an unavailable name with an italicized space" do
+        line = %{<i><span style="color:purple">ACHANTILEPIS</span> </i>[<b>unavailable name</b>]}
+        Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Achantilepis', :status => :unavailable}
+      end
+
+      it "should handle when the bracketed remark at end has a trailing bracket in bold" do
+        line = %{<i><span style="color:purple">MYRMECIUM</span></i> [<b>unavailable name]</b>}
+        Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Myrmecium', :status => :unavailable}
+      end
+
     end
   end
 
@@ -137,6 +150,21 @@ describe Bolton::GenusCatalogParser do
         Bolton::GenusCatalogParser.parse(line).should ==
            {:type => :genus, :name => 'Acidomyrmex', :status => :synonym, :synonym_of => 'Rhoptromyrmex'}
       end
+
+      it "should recognize a fossil synonym with an italicized space" do
+        line = %{*<i>ACROSTIGMA </i>[junior synonym of <i>Podomyrma</i>]}
+        Bolton::GenusCatalogParser.parse(line).should ==
+           {:type => :genus, :name => 'Acrostigma', :status => :synonym, :synonym_of => 'Podomyrma', 
+            :fossil => true}
+      end
+
+      it "should recognize a fossil synonym of a fossil" do
+        line = %{*<i>AMEGHINOIA </i>[junior synonym of *<i>Archimyrmex</i>]}
+        Bolton::GenusCatalogParser.parse(line).should ==
+           {:type => :genus, :name => 'Ameghinoia', :status => :synonym, :synonym_of => 'Archimyrmex', 
+            :fossil => true}
+      end
+
 
     end
 

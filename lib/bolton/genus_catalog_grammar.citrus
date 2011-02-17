@@ -21,10 +21,17 @@ grammar Bolton::GenusCatalogGrammar
 
   rule genus_synonym
     (
-      ((black italic genus_name tag_end tag_end) | (italic black genus_name tag_end tag_end) | (italic genus_name tag_end))
-      ' [junior synonym of ' italic capitalized_word tag_end span? ']' tag_end?
+      main_fossil_flag:fossil_flag?
+      (
+        (black italic genus_name tag_end tag_end) |
+        (italic black genus_name tag_end tag_end) |
+        (italic genus_name tag_end)
+      )
+      s '[junior synonym of ' fossil_flag? italic capitalized_word tag_end span? ']' tag_end?
     ) {
-      {:type => :genus, :name => genus_name.value, :status => :synonym, :synonym_of => capitalized_word.value}
+      value = {:type => :genus, :name => genus_name.value, :status => :synonym, :synonym_of => capitalized_word.value}
+      value.merge! :fossil => true if main_fossil_flag && main_fossil_flag != ''
+      value
     }
   end
 
@@ -45,7 +52,7 @@ grammar Bolton::GenusCatalogGrammar
   end
 
   rule unavailable_genus
-    (italic purple genus_name tag_end tag_end) {
+    (italic purple genus_name tag_end s tag_end) {
       {:type => :genus, :name => genus_name.value, :status => :unavailable}
     }
   end
@@ -63,8 +70,8 @@ grammar Bolton::GenusCatalogGrammar
   end
 
   rule genus_name
-    uppercase_word {
-      downcase.capitalize
+    (uppercase_word s) {
+      downcase.capitalize.strip
     }
   end
 
