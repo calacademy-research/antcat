@@ -7,6 +7,9 @@
 #  To import these files, run
 #    rake bolton:import:genera
 #  This generates log/bolton_genus_import.log
+#
+#  Manual edits:
+#   In NGC-GEN.A-L.htm, surrounded ASPHINCTANILLOIDES in bold red
 
 class Bolton::GenusCatalog < Bolton::Catalog
   def import
