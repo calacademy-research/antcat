@@ -135,4 +135,8 @@ grammar CommonGrammar
     red s tag_end
   end
 
+  rule errant_blue_space
+    blue s tag_end
+  end
+
 end

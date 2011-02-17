@@ -68,6 +68,11 @@ describe Bolton::GenusCatalogParser do
       Bolton::GenusCatalogParser.parse(line).should == {:type => :subgenus, :name => 'Acanthomyops', :genus => 'Lasius', :status => :valid}
     end
 
+    it "should ignore an errant blue space" do
+      line = %{#<b><i><span style="color:blue">ANOMMA</span></i></b><span style="color:blue"> </span>[subgenus of <i>Dorylus</i>]}
+      Bolton::GenusCatalogParser.parse(line).should == {:type => :subgenus, :name => 'Anomma', :genus => 'Dorylus', :status => :valid}
+    end
+
   end
 
   describe 'material inside brackets' do
