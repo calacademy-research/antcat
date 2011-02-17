@@ -88,23 +88,27 @@ describe Bolton::GenusCatalogParser do
         Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Myanmyrma', :incertae_sedis_in => :family, :status => :valid}
       end
 
-      #it "should handle uncertainty in a family" do
-        #line = %{<b><i><span style='color:red'>PROTAZTECA</span></i></b> [<i>incertae sedis</i> in Dolichoderinae]}
-        #Bolton::GenusCatalogParser.parse(line).should ==
-       #{:type => :genus, {:name => 'Protazteca', :subfamily => 'Dolichoderinae', :tribe => 'incertae_sedis', :available => true, :valid => true, :fossil => false}
-      #end
+      it "should handle uncertainty in a family" do
+        line = %{<b><i><span style='color:red'>PROTAZTECA</span></i></b> [<i>incertae sedis</i> in Dolichoderinae]}
+        Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Protazteca', :subfamily => 'Dolichoderinae', :incertae_sedis_in => :subfamily, :status => :valid}
+      end
 
-      #it "should handle an uncertain subfamily + tribe" do
-        #line = %{<b><i><span style='color:red'>ELECTROPONERA</span></i></b> [<i>incertae sedis</i> in Ectatomminae: Ectatommini]}
-        #Bolton::GenusCatalogParser.parse(line).should ==
-        #{:type => :genus, {:name => 'Electroponera', :subfamily => 'Ectatomminae', :tribe => 'Ectatommini', :available => true, :valid => true, :fossil => false}
-      #end
+      it "should handle an uncertain subfamily + tribe" do
+        line = %{<b><i><span style='color:red'>ELECTROPONERA</span></i></b> [<i>incertae sedis</i> in Ectatomminae: Ectatommini]}
+        Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Electroponera', :subfamily => 'Ectatomminae', :tribe => 'Ectatommini', 
+                                                          :incertae_sedis_in => :tribe, :status => :valid}
+      end
 
-      #it "should handle an uncertain tribe" do
-        #line = %{<b><i><span style='color:red'>PROPODILOBUS</span></i></b> [Myrmicinae: <i>incertae sedis</i> in Stenammini]}
-        #Bolton::GenusCatalogParser.parse(line).should ==
-         #{:type => :genus, {:name => 'Propodilobus', :subfamily => 'Myrmicinae', :tribe => 'Stenammini', :available => true, :valid => true, :fossil => false}
-      #end
+      it "should handle an uncertain tribe" do
+        line = %{<b><i><span style='color:red'>PROPODILOBUS</span></i></b> [Myrmicinae: <i>incertae sedis</i> in Stenammini]}
+        Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Propodilobus', :subfamily => 'Myrmicinae', :tribe => 'Stenammini',
+                                                          :incertae_sedis_in => :tribe, :status => :valid}
+      end
+
+      it "should handle this" do
+        line = %{*<b><i><span style='color:red'>AFROMYRMA</span></i></b><span style='color:red'> </span>[<i>incertae sedis</i> in Myrmicinae]}
+        Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Afromyrma', :subfamily => 'Myrmicinae', :incertae_sedis_in => :subfamily, :fossil => true, :status => :valid}
+      end
 
       #it "should ignore a question mark" do
         #line = %{<b><i><span style='color:red'>CANANEURETUS</span></i></b> [Aneuretinae?]}

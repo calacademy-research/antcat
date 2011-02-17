@@ -103,12 +103,13 @@ grammar Bolton::GenusCatalogGrammar
   end
 
   rule subfamily_and_tribe
-    (uncertain_in_family:incertae_sedis_in? subfamily (': ' incertae_sedis_in? tribe)?) {
+    (uncertain:incertae_sedis_in? subfamily (': ' incertae_sedis_in? tribe)?) {
       value = {:subfamily => subfamily.value}
       if !tribe.blank?
         value[:tribe] = tribe.value
-      elsif uncertain_in_family && uncertain_in_family != ''
-        value[:tribe] = 'incertae_sedis'
+        value[:incertae_sedis_in] = :tribe if uncertain && uncertain != '' || incertae_sedis_in.present?
+      elsif uncertain && uncertain != ''
+        value[:incertae_sedis_in] = :subfamily
       end
       value
     }

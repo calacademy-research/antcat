@@ -94,7 +94,7 @@ sedis</i> in Formicidae]</p>
         ancylognathus.should_not be_available
         
         protazteca = Genus.find_by_name 'Protazteca'
-        protazteca.tribe.name.should == 'incertae_sedis'
+        protazteca.incertae_sedis_in.should == 'subfamily'
         protazteca.subfamily.name.should == 'Dolichoderinae'
 
         acamatus = Genus.find_by_name 'Acamatus'
