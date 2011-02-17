@@ -7,7 +7,7 @@ describe Bolton::GenusCatalogParser do
 
   it 'should handle complete garbage' do
     line = %{asdfj;jsdf}
-    Bolton::GenusCatalogParser.parse(line).should == :nonblank_line
+    Bolton::GenusCatalogParser.parse(line).should == {:type => :not_understood}
   end
 
   it 'should handle all sorts of guff within the tags' do
@@ -171,4 +171,21 @@ describe Bolton::GenusCatalogParser do
 
   #end
   end
+
+  describe "genus detail line" do
+    it "should recognize anything beginning with tags and non-word characters, followed by a capitalized word" do
+        line = %{<i style='mso-bidi-font-style:normal'>Acamatus</i> Emery, 1894c: 181 [as subgenus
+of <i style='mso-bidi-font-style:normal'>Eciton</i>]. Type-species: <i
+style='mso-bidi-font-style:normal'>Eciton (Acamatus) schmitti</i> (junior
+synonym of <i style='mso-bidi-font-style:normal'>Labidus nigrescens</i>), by
+subsequent designation of Ashmead, 1906: 24; Wheeler, W.M. 1911f: 157. [Junior
+homonym of <i style='mso-bidi-font-style:normal'>Acamatus </i>Schoenherr, 1833:
+20 (Coleoptera).]
+        }
+        Bolton::GenusCatalogParser.parse(line).should ==
+           {:type => :genus_detail_line}
+
+    end
+  end
+
 end

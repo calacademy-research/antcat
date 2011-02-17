@@ -55,6 +55,10 @@ grammar CommonGrammar
     /<span.*?>/
   end
 
+  rule tag_start
+    /<.*?>/
+  end
+
   rule tag_end
     /<\/\w+>/
   end

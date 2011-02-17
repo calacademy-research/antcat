@@ -37,7 +37,7 @@ class Bolton::GenusCatalog < Bolton::Catalog
   end
 
   def parse_genus_detail_line
-    return unless @type == :nonblank_line
+    return unless @type == :genus_detail_line
     parse_next_line
     true
   end

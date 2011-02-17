@@ -3,7 +3,7 @@ grammar Bolton::GenusCatalogGrammar
   include Bolton::CatalogGrammar
 
   rule record
-    header | genus_section_header | blank_line | nonblank_line
+    header | blank_line | genus_section_header | genus_detail_line | not_understood
   end
 
   rule genus_section_header
@@ -143,6 +143,12 @@ grammar Bolton::GenusCatalogGrammar
     (fossil_flag? capitalized_word question_mark?) {
       capitalized_word.to_s
      }
+  end
+
+  rule genus_detail_line
+    ((tag_start | /\W/)* /[[:upper:]][[:lower:]].*/) {
+      {:type => :genus_detail_line}
+    }
   end
 
 end

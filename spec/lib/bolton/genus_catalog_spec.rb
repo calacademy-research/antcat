@@ -17,6 +17,7 @@ describe Bolton::GenusCatalog do
     
     describe "processing a representative sample and making sure they're saved correctly" do
       it 'should work' do
+        Progress.should_not_receive :error
         @genus_catalog.import_html make_content %{
 <p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
 style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
@@ -105,6 +106,20 @@ sedis</i> in Formicidae]</p>
         myanmyrma = Genus.find_by_name 'Myanmyrma'
         myanmyrma.should be_valid
         myanmyrma.incertae_sedis_in.should == 'family'
+      end
+    end
+    
+    describe "error handling" do
+      it "should squawk when a genus header can't be parsed" do
+        Progress.should_receive(:error).with("parse failed on: 'FOO'")
+        @genus_catalog.import_html make_content %{
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'>*<b
+style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
+style='color:red'>PROTAZTECA</span></i></b> [<i style='mso-bidi-font-style:
+normal'>incertae sedis</i> in Dolichoderinae]</p>
+
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'>FOO</p>
+        }
       end
     end
 
