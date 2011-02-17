@@ -11,12 +11,16 @@ grammar Bolton::GenusCatalogGrammar
   end
 
   rule genus_other
-    (subgenus_flag? fossil_flag? genus bracketed_information) {
+    (subgenus_prefix? fossil_flag? genus bracketed_information) {
       value = genus.value
       value.merge! :fossil => true if fossil_flag.present?
       value.merge! bracketed_information.value
       value
     }
+  end
+
+  rule subgenus_prefix
+    black? subgenus_flag tag_end?
   end
 
   rule genus_synonym
@@ -27,12 +31,16 @@ grammar Bolton::GenusCatalogGrammar
         (italic black genus_name tag_end tag_end) |
         (italic genus_name tag_end)
       )
-      s '[junior synonym of ' fossil_flag? italic capitalized_word tag_end span? ']' tag_end?
+      s '[' junior_synonym_of fossil_flag? italic capitalized_word tag_end span? ']' tag_end?
     ) {
       value = {:type => :genus, :name => genus_name.value, :status => :synonym, :synonym_of => capitalized_word.value}
       value.merge! :fossil => true if main_fossil_flag && main_fossil_flag != ''
       value
     }
+  end
+
+  rule junior_synonym_of
+    /[Jj]unior (synonym|syonym) of /
   end
 
   rule genus_homonym
@@ -153,7 +161,10 @@ grammar Bolton::GenusCatalogGrammar
   end
 
   rule genus_detail_line
-    ((tag_start | /\W/)* /[[:upper:]][[:lower:]].*/) {
+    (
+      (s (tag_start | /\W/)* /[[:upper:]][[:lower:]].*/) |
+      (s /\[.*?\]/)
+    ) {
       {:type => :genus_detail_line}
     }
   end

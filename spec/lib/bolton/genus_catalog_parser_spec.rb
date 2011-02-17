@@ -73,6 +73,11 @@ describe Bolton::GenusCatalogParser do
       Bolton::GenusCatalogParser.parse(line).should == {:type => :subgenus, :name => 'Anomma', :genus => 'Dorylus', :status => :valid}
     end
 
+    it "should handle it when the # is in black" do
+      line = %{<span style="color:black">#</span><b><i><span style="color:blue">BARONIURBANIA</span></i></b> [subgenus of <i>Lepisiota</i>]}
+      Bolton::GenusCatalogParser.parse(line).should == {:type => :subgenus, :name => 'Baroniurbania', :genus => 'Lepisiota', :status => :valid}
+    end
+
   end
 
   describe 'material inside brackets' do
@@ -156,6 +161,12 @@ describe Bolton::GenusCatalogParser do
            {:type => :genus, :name => 'Acidomyrmex', :status => :synonym, :synonym_of => 'Rhoptromyrmex'}
       end
 
+      it "should handle 'Junior'" do
+        line = %{<i>CRYPTOPONE</i> [Junior synonym of <i>Pachycondyla</i>]}
+        Bolton::GenusCatalogParser.parse(line).should ==
+           {:type => :genus, :name => 'Cryptopone', :status => :synonym, :synonym_of => 'Pachycondyla'}
+      end
+
       it "should recognize a fossil synonym with an italicized space" do
         line = %{*<i>ACROSTIGMA </i>[junior synonym of <i>Podomyrma</i>]}
         Bolton::GenusCatalogParser.parse(line).should ==
@@ -170,6 +181,11 @@ describe Bolton::GenusCatalogParser do
             :fossil => true}
       end
 
+      it "should handle a misspelling of 'synonym'" do
+        line = %{<i>CREIGHTONIDRIS</i> [junior syonym of <i>Basiceros</i>]}
+        Bolton::GenusCatalogParser.parse(line).should ==
+           {:type => :genus, :name => 'Creightonidris', :status => :synonym, :synonym_of => 'Basiceros'}
+      end
 
     end
 
@@ -206,8 +222,9 @@ describe Bolton::GenusCatalogParser do
   end
 
   describe "genus detail line" do
+
     it "should recognize anything beginning with tags and non-word characters, followed by a capitalized word" do
-        line = %{<i style='mso-bidi-font-style:normal'>Acamatus</i> Emery, 1894c: 181 [as subgenus
+      line = %{<i style='mso-bidi-font-style:normal'>Acamatus</i> Emery, 1894c: 181 [as subgenus
 of <i style='mso-bidi-font-style:normal'>Eciton</i>]. Type-species: <i
 style='mso-bidi-font-style:normal'>Eciton (Acamatus) schmitti</i> (junior
 synonym of <i style='mso-bidi-font-style:normal'>Labidus nigrescens</i>), by
@@ -215,10 +232,19 @@ subsequent designation of Ashmead, 1906: 24; Wheeler, W.M. 1911f: 157. [Junior
 homonym of <i style='mso-bidi-font-style:normal'>Acamatus </i>Schoenherr, 1833:
 20 (Coleoptera).]
         }
-        Bolton::GenusCatalogParser.parse(line).should ==
-           {:type => :genus_detail_line}
-
+      Bolton::GenusCatalogParser.parse(line).should == {:type => :genus_detail_line}
     end
+    
+    it "should recognize anything totally inside brackets" do
+      line = %{<span style="mso-spacerun: yes">  </span>[All subgenera were given as provisional junior synonyms of <i style="mso-bidi-font-style:normal">Camponotus</i> by Brown, 1973b: 179-185. The list was repeated in Hölldobler & Wilson, 1990: 18 with all subgenera listed as junior synonyms. They reverted to subgeneric status in Bolton, 1994: 50; see under individual entries. The entry of <i style="mso-bidi-font-style:normal">Myrmophyma</i> and <i style="mso-bidi-font-style:normal">Thlipsepinotus</i> under the synonymy of <i style="mso-bidi-font-style:normal">Camponotus</i> by Taylor & Brown, D.R. 1985: 109, is not accepted as confirmation as not all taxa were included.]}
+      Bolton::GenusCatalogParser.parse(line).should == {:type => :genus_detail_line}
+    end
+
+    it "handle this" do
+      line = %{<span style="mso-spacerun: yes"> </span><i>Cryptopone</i> junior synonym of <i>Pachycondyla</i>: Mackay & Mackay, 2010: 3.}
+      Bolton::GenusCatalogParser.parse(line).should == {:type => :genus_detail_line}
+    end
+
   end
 
 end

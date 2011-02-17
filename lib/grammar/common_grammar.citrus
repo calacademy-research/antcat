@@ -4,7 +4,10 @@ grammar CommonGrammar
   end
 
   rule space
-    /(\s|\xC2\xA0|&nbsp;)/ | (italic '<p></p>' tag_end) | errant_red_space
+    /(\s|\xC2\xA0|&nbsp;)/ |
+    (italic '<p></p>' tag_end) |
+    errant_red_space |
+    spacerun
   end
 
   rule question_mark
@@ -96,7 +99,7 @@ grammar CommonGrammar
   end
 
   rule blank_line
-    (/^/ (blank_paragraph | blank_namespaced_paragraph | blank_paragraph_with_font | blank_bold_red_paragraph | blank_paragraph_italic | spacerun | s) /$/) {
+    (/^/ (blank_paragraph | blank_namespaced_paragraph | blank_paragraph_with_font | blank_bold_red_paragraph | blank_paragraph_italic | s) /$/) {
       :blank_line
     }
   end
