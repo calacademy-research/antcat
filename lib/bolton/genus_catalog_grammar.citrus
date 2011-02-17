@@ -7,7 +7,7 @@ grammar Bolton::GenusCatalogGrammar
   end
 
   rule genus_section_header
-    genus_synonym | genus_homonym | genus_other
+    genus_synonym | genus_homonym | collective_group_name | genus_other
   end
 
   rule genus_other
@@ -169,4 +169,9 @@ grammar Bolton::GenusCatalogGrammar
     }
   end
 
+  rule collective_group_name
+    /.*?\[collective group name\]/ {
+      {:type => :collective_group_name}
+    }
+  end
 end

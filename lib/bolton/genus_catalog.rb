@@ -19,12 +19,16 @@ class Bolton::GenusCatalog < Bolton::Catalog
     super
   end
 
+  def parse_failed
+    super
+  end
+
   def grammar
     Bolton::GenusCatalogGrammar
   end
 
   def parse_genus_section
-    return unless [:subgenus, :genus].include? @type
+    return unless [:genus, :subgenus, :collective_group_name].include? @type
 
     if @type == :genus
       Genus.import @parse_result.merge :taxonomic_history => @paragraph

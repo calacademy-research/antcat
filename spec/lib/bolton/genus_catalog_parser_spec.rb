@@ -240,11 +240,15 @@ homonym of <i style='mso-bidi-font-style:normal'>Acamatus </i>Schoenherr, 1833:
       Bolton::GenusCatalogParser.parse(line).should == {:type => :genus_detail_line}
     end
 
-    it "handle this" do
+    it "should handle space at the beginning" do
       line = %{<span style="mso-spacerun: yes"> </span><i>Cryptopone</i> junior synonym of <i>Pachycondyla</i>: Mackay & Mackay, 2010: 3.}
       Bolton::GenusCatalogParser.parse(line).should == {:type => :genus_detail_line}
     end
 
   end
 
+  it "should handle collective group names" do
+    line = %{*<i><span style="color:green">FORMICITES</span></i> [collective group name]}
+    Bolton::GenusCatalogParser.parse(line).should == {:type => :collective_group_name}
+  end
 end

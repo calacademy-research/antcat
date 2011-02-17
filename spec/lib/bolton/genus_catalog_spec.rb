@@ -109,6 +109,11 @@ sedis</i> in Formicidae]</p>
       end
     end
     
+    it "should silently swallow a collective group name" do
+      Progress.should_not_receive :error
+      @genus_catalog.import_html make_content %{*<i><span style="color:green">FORMICITES</span></i> [collective group name]}
+    end
+
     describe "error handling" do
       it "should squawk when a genus header can't be parsed" do
         Progress.should_receive(:error).with("parse failed on: 'FOO'")
