@@ -15,6 +15,22 @@ describe CommonGrammar do
       CommonGrammar.parse(%{<span style="mso-spacerun: yes">&nbsp;</span>}, :root => :blank_line).value.should == :blank_line
     end
 
+    it "should handle a red paragraph w/nonbreaking space" do
+      CommonGrammar.parse(%{<span style="color:red"><p> </p></span>}, :root => :blank_line).value.should == :blank_line
+    end
+
+    it "should handle a single period" do
+      CommonGrammar.parse(%{.}, :root => :blank_line).value.should == :blank_line
+    end
+
+    it "should handle a bold empty paragraph" do
+      CommonGrammar.parse(%{<b><p> </p></b>}, :root => :blank_line).value.should == :blank_line
+    end
+
+    it "should handle an italic space" do
+      CommonGrammar.parse(%{<i> </i>}, :root => :blank_line).value.should == :blank_line
+    end
+
     it "should handle a nonbreaking space inside a subparagraph" do
       CommonGrammar.parse(%{<p> </p>}, :root => :blank_line).value.should == :blank_line
     end

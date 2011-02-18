@@ -161,6 +161,48 @@ normal'>incertae sedis</i> in Dolichoderinae]</p>
       end
     end
 
+    it "should handle this especially weird case where one name is a homonym and two synonyms" do
+      @genus_catalog.import_html make_content %{
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><i
+style='mso-bidi-font-style:normal'>HOLCOPONERA</i> [junior synonym of <i
+style='mso-bidi-font-style:normal'>Gnamptogenys</i>]</p>
+
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><i
+style='mso-bidi-font-style:normal'>Holcoponera </i>Mayr, 1887: 540 [as subgenus
+of <i style='mso-bidi-font-style:normal'>Ectatomma</i>]. Type-species: <i
+style='mso-bidi-font-style:normal'>Gnamptogenys striatula</i>, by subsequent
+designation of Emery, 1911d: 40. </p>
+
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><i
+style='mso-bidi-font-style:normal'>Holcoponera</i> raised to genus: Emery,
+1902b: 181. </p>
+
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><i
+style='mso-bidi-font-style:normal'>Holcoponera</i> junior synonym of <i
+style='mso-bidi-font-style:normal'>Gnamptogenys</i>: Brown, 1958g: 211.</p>
+
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><i
+style='mso-bidi-font-style:normal'>HOLCOPONERA </i>[junior homonym, junior
+synonym of <i style='mso-bidi-font-style:normal'>Cylindromyrmex</i>]</p>
+
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><i
+style='mso-bidi-font-style:normal'>Holcoponera</i> Cameron, 1891: 92.
+Type-species: <i style='mso-bidi-font-style:normal'>Holcoponera whymperi</i>,
+by monotypy. [Unresolved junior homonym of <i style='mso-bidi-font-style:normal'>Holcoponera</i>
+Mayr, 1887, above.] </p>
+
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><i
+style='mso-bidi-font-style:normal'>Holcoponera</i> Cameron junior synonym of <i
+style='mso-bidi-font-style:normal'>Cylindromyrmex</i>: Forel, 1892f: 256.</p>
+
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><o:p>&nbsp;</o:p></p>
+      }
+
+      Genus.count.should == 4
+    end
+
     def make_content content
       %{<html> <head> <title>CATALOGUE OF GENUS-GROUP TAXA</title> </head>
 <body>

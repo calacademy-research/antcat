@@ -25,6 +25,12 @@ describe Bolton::GenusCatalogParser do
                                                         :subfamily => 'Myrmicinae', :tribe => 'Dacetini', :status => :valid}
     end
 
+    it 'should handle an italic space' do
+      line = %{<b><i><span style="color:red">PROTOMOGNATHUS</span></i></b><i> </i>[Myrmicinae: Formicoxenini]}
+      Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Protomognathus',
+                                                        :subfamily => 'Myrmicinae', :tribe => 'Formicoxenini', :status => :valid}
+    end
+
     it 'should parse a fossil genus name' do
       line = %{*<b><i><span style='color:red'>ACANTHOGNATHUS</span></i></b> [Myrmicinae: Dacetini]}
       Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Acanthognathus',
@@ -49,7 +55,15 @@ describe Bolton::GenusCatalogParser do
                                                         :subfamily => 'Myrmicinae', :tribe => 'Attini'}
     end
 
+    it "should handle this spacing" do
+      line = %{<b><i><span style="color:red">LEPISIOTA</span></i></b><span style="color: red"> </span>[Formicinae: Plagiolepidini]}
+      Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Lepisiota', :status => :valid,
+                                                        :subfamily => 'Formicinae', :tribe => 'Plagiolepidini'}
+    end
+
+
     describe "unavailable names" do
+
       it "should recognize a nomen nudum" do
         line = %{<i><span style='color:purple'>ANCYLOGNATHUS</span></i> [<i>Nomen nudum</i>]}
         Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Ancylognathus', :status => :unavailable}
@@ -140,7 +154,7 @@ describe Bolton::GenusCatalogParser do
                                                           :incertae_sedis_in => :tribe, :status => :valid}
       end
 
-      it "should handle this" do
+      it "should handle fossil" do
         line = %{*<b><i><span style='color:red'>AFROMYRMA</span></i></b><span style='color:red'> </span>[<i>incertae sedis</i> in Myrmicinae]}
         Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Afromyrma', :subfamily => 'Myrmicinae', :incertae_sedis_in => :subfamily, :fossil => true, :status => :valid}
       end
@@ -199,6 +213,11 @@ describe Bolton::GenusCatalogParser do
            {:type => :genus, :name => 'Creightonidris', :status => :synonym, :synonym_of => 'Basiceros'}
       end
 
+      it "should handle an italicized closing bracket" do
+        line = %{<i>PALAEATTA</i> [junior synonym of <i>Atta]</i>}
+        Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Palaeatta', :status => :synonym, :synonym_of => 'Atta'}
+      end
+
     end
 
     describe 'homonymy' do
@@ -226,10 +245,16 @@ describe Bolton::GenusCatalogParser do
     describe "unresolved junior homonym and junior synonym"
       it "should be its own thing" do
         line = %{<i>HOLCOPONERA </i>[junior homonym, junior synonym of <i>Cylindromyrmex</i>]}
-        Bolton::GenusCatalogParser.parse(line).should ==
-          {:type => :genus, :name => 'Holcoponera', :status => :unresolved_homonym_and_synonym, :synonym_of => 'Cylindromyrmex'}
+        Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Holcoponera',
+                                                          :status => :unresolved_homonym_and_synonym,
+                                                          :synonym_of => 'Cylindromyrmex'}
       end
-
+      it "should handle unitalicized space" do
+        line = %{<i>MYRMEX</i> [junior homonym, junior synonym of <i>Pseudomyrma</i>]}
+        Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Myrmex',
+                                                          :status => :unresolved_homonym_and_synonym,
+                                                          :synonym_of => 'Pseudomyrma'}
+      end
   end
 
   describe "genus detail line" do
@@ -260,6 +285,11 @@ homonym of <i style='mso-bidi-font-style:normal'>Acamatus </i>Schoenherr, 1833:
 
   it "should handle collective group names" do
     line = %{*<i><span style="color:green">FORMICITES</span></i> [collective group name]}
+    Bolton::GenusCatalogParser.parse(line).should == {:type => :collective_group_name}
+  end
+
+  it "should handle collective group name with subfamily" do
+    line = %{*<b><i><span style="color:green">MYRMECIITES</span></i></b> [Myrmeciinae: collective group name]}
     Bolton::GenusCatalogParser.parse(line).should == {:type => :collective_group_name}
   end
 end

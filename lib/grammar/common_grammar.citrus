@@ -6,6 +6,7 @@ grammar CommonGrammar
   rule space
     /(\s|\xC2\xA0|&nbsp;)/ |
     (italic '<p></p>' tag_end) |
+    (italic s tag_end) |
     errant_red_space |
     spacerun
   end
@@ -39,7 +40,7 @@ grammar CommonGrammar
   end
 
   rule start_color_span_start
-    /<span.*?color:/
+    /<span.*?color:/ s
   end
 
   rule start_color_span_end
@@ -99,7 +100,7 @@ grammar CommonGrammar
   end
 
   rule blank_line
-    (/^/ (blank_paragraph | blank_namespaced_paragraph | blank_paragraph_with_font | blank_bold_red_paragraph | blank_paragraph_italic | s) /$/) {
+    (/^/ (blank_paragraph | blank_namespaced_paragraph | blank_paragraph_with_font | blank_paragraph_with_formatting | blank_paragraph_italic | '.' | s) /$/) {
       :blank_line
     }
   end
@@ -112,8 +113,8 @@ grammar CommonGrammar
     /<span style='font-family:".*?"'>/ blank_paragraph '</span>' 
   end
 
-  rule blank_bold_red_paragraph
-    bold red blank_paragraph tag_end tag_end
+  rule blank_paragraph_with_formatting
+    bold? red? blank_paragraph tag_end? tag_end?
   end
 
   rule blank_paragraph_italic

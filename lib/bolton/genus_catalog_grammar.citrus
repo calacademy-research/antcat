@@ -31,7 +31,7 @@ grammar Bolton::GenusCatalogGrammar
         (italic black name tag_end tag_end) |
         (italic name tag_end)
       )
-      s '[' junior_synonym_of fossil_flag? italic capitalized_word tag_end span? ']' tag_end?
+      s '[' junior_synonym_of fossil_flag? italic capitalized_word tag_end? span? ']' tag_end?
     ) {
       value = {:type => :genus, :name => name.value, :status => :synonym, :synonym_of => capitalized_word.value}
       value.merge! :fossil => true if main_fossil_flag && main_fossil_flag != ''
@@ -52,7 +52,7 @@ grammar Bolton::GenusCatalogGrammar
   end
 
   rule unresolved_homonym_and_synonym
-    (italic name s tag_end '[junior homonym, junior synonym of ' italic capitalized_word tag_end ']') {
+    (italic name s tag_end s '[junior homonym, junior synonym of ' italic capitalized_word tag_end ']') {
       {:type => :genus, :name => name.value, :status => :unresolved_homonym_and_synonym, :synonym_of => capitalized_word.value}
     }
   end
@@ -178,7 +178,7 @@ grammar Bolton::GenusCatalogGrammar
   end
 
   rule collective_group_name
-    /.*?\[collective group name\]/ {
+    /.*?\[.*collective group name\]/ {
       {:type => :collective_group_name}
     }
   end
