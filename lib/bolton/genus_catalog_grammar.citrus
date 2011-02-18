@@ -7,7 +7,7 @@ grammar Bolton::GenusCatalogGrammar
   end
 
   rule section_header
-    synonym | homonym | unresolved_homonym_and_synonym | collective_group_name | other
+    synonym | homonym | unresolved_homonym_and_synonym | collective_group_name | other | wilsonia
   end
 
   rule other
@@ -25,12 +25,16 @@ grammar Bolton::GenusCatalogGrammar
 
   rule synonym
     (
+      italic?
       main_fossil_flag:fossil_flag?
       (
         (black italic name tag_end tag_end) |
         (italic black name tag_end tag_end) |
-        (italic name tag_end)
+        (italic name tag_end) |
+        (name tag_end) |
+        (black name tag_end)
       )
+      tag_end?
       s '[' junior_synonym_of fossil_flag? italic capitalized_word tag_end? span? ']' tag_end?
     ) {
       value = {:type => :genus, :name => name.value, :status => :synonym, :synonym_of => capitalized_word.value}
@@ -54,6 +58,14 @@ grammar Bolton::GenusCatalogGrammar
   rule unresolved_homonym_and_synonym
     (italic name s tag_end s '[junior homonym, junior synonym of ' italic capitalized_word tag_end ']') {
       {:type => :genus, :name => name.value, :status => :unresolved_homonym_and_synonym, :synonym_of => capitalized_word.value}
+    }
+  end
+
+  rule wilsonia
+    (fossil_flag? bold italic brown 'WILSONIA' tag_end tag_end tag_end s '[' incertae_sedis_in 'Formicinae' ']') {
+      value = {:type => :genus, :name => 'Wilsonia', :status => :unresolved_homonym, :incertae_sedis_in => :subfamily, :subfamily => 'Formicinae'}
+      value.merge! :fossil => true if fossil_flag.present?
+      value
     }
   end
 
@@ -182,4 +194,5 @@ grammar Bolton::GenusCatalogGrammar
       {:type => :collective_group_name}
     }
   end
+
 end

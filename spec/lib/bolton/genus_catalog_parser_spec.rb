@@ -180,6 +180,11 @@ describe Bolton::GenusCatalogParser do
            {:type => :genus, :name => 'Acalama', :status => :synonym, :synonym_of => 'Gauromyrmex'}
       end
 
+      it "should handle italic black as well as black italic" do
+        line = %{<i><span style="color:black">ACALAMA</span></i> [junior synonym of <i>Gauromyrmex</i>]}
+        Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Acalama', :status => :synonym, :synonym_of => 'Gauromyrmex'}
+      end
+
       it "should handle the closing bracket being in a useless span" do
         line = %{<span style='color:black'><i>ACALAMA</i></span> [junior synonym of <i>Gauromyrmex</i><span style='font-style:normal'>]</span>}
         Bolton::GenusCatalogParser.parse(line).should ==
@@ -260,6 +265,15 @@ describe Bolton::GenusCatalogParser do
                                                           :status => :unresolved_homonym_and_synonym,
                                                           :synonym_of => 'Pseudomyrma'}
       end
+    end
+
+    it "should handle an unresolved junior homonym in brown" do
+      line = %{*<b><i><span style="color:#663300">WILSONIA</span></i></b><span style="color:red"> </span>[<i>incertae sedis</i> in Formicinae]}
+      Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Wilsonia', :subfamily => 'Formicinae',
+                                                        :incertae_sedis_in => :subfamily, :status => :unresolved_homonym,
+                                                        :fossil => true}
+    end
+    
   end
 
   describe "genus detail line" do

@@ -39,6 +39,10 @@ grammar CommonGrammar
     start_color_span_start ('maroon'|'#984806') start_color_span_end
   end
 
+  rule brown
+    start_color_span_start '#663300' start_color_span_end
+  end
+
   rule start_color_span_start
     /<span.*?color:/ s
   end
