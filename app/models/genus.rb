@@ -12,6 +12,8 @@ class Genus < Taxon
     tribe_name = record[:tribe]
     synonym_of_name = record[:synonym_of]
     homonym_resolved_to_name = record[:homonym_resolved_to]
+    status = record[:status].to_s
+    incertae_sedis_in = record[:incertae_sedis_in] && record[:incertae_sedis_in].to_s
 
     subfamily = subfamily_name && Subfamily.find_or_create_by_name(subfamily_name, :status => 'valid')
     raise if subfamily && !subfamily.valid?
@@ -19,21 +21,27 @@ class Genus < Taxon
     tribe = tribe_name && Tribe.find_or_create_by_name(tribe_name, :subfamily => subfamily, :status => 'valid')
     raise if tribe && !tribe.valid?
 
-    synonym_of = synonym_of_name && Genus.find_or_create_by_name(synonym_of_name, :status => 'valid')
+    synonym_of = synonym_of_name && find_or_create_by_name(synonym_of_name)
     raise if synonym_of && !synonym_of.valid?
 
-    homonym_resolved_to = homonym_resolved_to_name && Genus.find_or_create_by_name(homonym_resolved_to_name, :status => 'valid')
+    homonym_resolved_to = homonym_resolved_to_name && find_or_create_by_name(homonym_resolved_to_name)
     raise if homonym_resolved_to && !homonym_resolved_to.valid?
 
-    incertae_sedis_in = record[:incertae_sedis_in] && record[:incertae_sedis_in].to_s
+    attributes = {:name => record[:name], :fossil => record[:fossil], :status => status,
+                  :subfamily => subfamily, :tribe => tribe, 
+                  :synonym_of => synonym_of, :homonym_resolved_to => homonym_resolved_to,
+                  :taxonomic_history => record[:taxonomic_history],
+                  :incertae_sedis_in => incertae_sedis_in}
 
-    genus = Genus.find_or_create_by_name_and_status record[:name],
-      :fossil => record[:fossil], :status => record[:status].to_s,
-      :subfamily => subfamily, :tribe => tribe, 
-      :synonym_of => synonym_of, :homonym_resolved_to => homonym_resolved_to,
-      :taxonomic_history => record[:taxonomic_history],
-      :incertae_sedis_in => incertae_sedis_in
-    raise unless genus.valid?
+    possible_matches = Genus.all :conditions => ['name = ?', record[:name]]
+    if genus = possible_matches.find {|possible_match| possible_match.status.nil?}
+      genus.update_attributes! attributes
+    elsif possible_matches.none? {|possible_match| possible_match.status == status}
+      genus = create! attributes
+    else
+      
+      raise "Trying to add the genus #{record[:name]} twice with the same status"
+    end
     genus
   end
 

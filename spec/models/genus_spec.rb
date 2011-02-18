@@ -85,6 +85,25 @@ describe Genus do
       Genus.import :name => 'Acrostigma', :status => :synonym, :synonym_of => 'Podomyrma'
       Genus.count.should == 4
     end
+
+    it "should leave the status nil when the target of homonym/synonym, then set it properly after being imported directly" do
+      Genus.import :name => 'Acrostigma', :status => :synonym, :synonym_of => 'Podomyrma'
+      Genus.import :name => 'Acalama', :status => :homonym, :homonym_resolved_to => 'Stigmacros'
+      Genus.import :name => 'Atta', :status => :valid, :tribe => 'Attini', :subfamily => 'Myrmicinae'
+      Taxon.count.should == 7
+      Genus.find_by_name('Podomyrma').status.should be_nil
+      Genus.find_by_name('Stigmacros').status.should be_nil
+      Subfamily.find_by_name('Myrmicinae').status.should == 'valid'
+      Tribe.find_by_name('Attini').status.should == 'valid'
+
+      Genus.import :name => 'Stigmacros', :status => :valid, :homonym_resolved_to => 'Stigmacros'
+      Genus.find_by_name('Stigmacros').status.should == 'valid'
+    end
+
+    it "scream and holler if the same genus with the same status is imported twice" do
+      Genus.import :name => 'Acrostigma', :status => :valid
+      lambda {Genus.import :name => 'Acrostigma', :status => :valid}.should raise_error
+    end
   end
 
 end
