@@ -31,6 +31,8 @@ class Bolton::GenusCatalog < Bolton::Catalog
 
     if @type == :genus
       Genus.import @parse_result.merge :taxonomic_history => @paragraph
+    elsif @type == :subgenus
+      Subgenus.import @parse_result.merge :taxonomic_history => @paragraph
     end
 
     parse_next_line

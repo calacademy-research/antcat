@@ -7,7 +7,7 @@ grammar Bolton::GenusCatalogGrammar
   end
 
   rule section_header
-    synonym | homonym | unresolved_homonym_and_synonym | collective_group_name | other | unresolved_homonym
+    synonym | homonym | subgenus_header | unresolved_homonym_and_synonym | collective_group_name | other | unresolved_homonym
   end
 
   rule other
@@ -21,6 +21,12 @@ grammar Bolton::GenusCatalogGrammar
 
   rule subgenus_prefix
     black? subgenus_flag tag_end?
+  end
+
+  rule subgenus_header
+    (subgenus_prefix italic name tag_end bracketed_information) {
+      value = {:type => :subgenus, :name => name.value, :status => :valid}.merge bracketed_information.value
+    }
   end
 
   rule synonym
@@ -93,7 +99,7 @@ grammar Bolton::GenusCatalogGrammar
   end
 
   rule subgenus
-    (bold? italic blue? name tag_end tag_end? tag_end? errant_blue_space?) {
+    (bold? italic blue name tag_end tag_end? tag_end? errant_blue_space?) {
       {:type => :subgenus, :name => name.value, :status => :valid}
     }
   end

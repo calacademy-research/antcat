@@ -99,6 +99,10 @@ Factory.define :genus do |genus|
   genus.status  'valid'
 end
 
+Factory.define :subgenus do |subgenus|
+  subgenus.status  'valid'
+end
+
 Factory.define :species do |species|
   species.status  'valid'
 end

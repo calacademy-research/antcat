@@ -28,7 +28,7 @@ style='color:red'>ACROMYRMEX</span></i></b> [Myrmicinae: Attini]</p>
 <p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'>#<b
 style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
 style='color:blue'>ALAOPONE</span></i></b> [subgenus of <i style='mso-bidi-font-style:
-normal'>Dorylus</i>]</p>
+normal'>Acromyrmex</i>]</p>
 
 <p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'>*<b
 style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
@@ -45,16 +45,16 @@ homonym of <i style='mso-bidi-font-style:normal'>Acamatus </i>Schoenherr, 1833:
 
 <p class=MsoNormal><i style='mso-bidi-font-style:normal'><span
 style='color:black'>ACALAMA</span></i> [junior synonym of <i style='mso-bidi-font-style:
-normal'>Gauromyrmex</i>]</p>
+normal'>Acromyrmex</i>]</p>
 
 <p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'>#<b
 style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
 style='color:blue'>ACANTHOMYOPS</span></i></b> [subgenus of <i
-style='mso-bidi-font-style:normal'>Lasius</i>]</p>
+style='mso-bidi-font-style:normal'>Acromyrmex</i>]</p>
 
 <p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><i
 style='mso-bidi-font-style:normal'>ACAMATUS</i> [junior homonym, see <i
-style='mso-bidi-font-style:normal'>Neivamyrmex</i>]</p>
+style='mso-bidi-font-style:normal'>Acromyrmex</i>]</p>
 
 <p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><i
 style='mso-bidi-font-style:normal'><span style='color:purple'>ANCYLOGNATHUS</span></i>
@@ -71,7 +71,8 @@ style='color:red'>MYANMYRMA</span></i></b> [<i style='mso-bidi-font-style:normal
 sedis</i> in Formicidae]</p>
         }
 
-        Genus.count.should == 9
+        Genus.count.should == 7
+        Subgenus.count.should == 2
 
         acromyrmex = Genus.find_by_name 'Acromyrmex'
         acromyrmex.should_not be_fossil
@@ -81,6 +82,14 @@ sedis</i> in Formicidae]</p>
         acromyrmex.taxonomic_history.should == %{<p class="MsoNormal" style="margin-left:.5in;text-align:justify;text-indent:-.5in"><b style="mso-bidi-font-weight:normal"><i style="mso-bidi-font-style:normal"><span style="color:red">ACROMYRMEX</span></i></b> [Myrmicinae: Attini]</p>}
         acromyrmex.incertae_sedis_in.should be_nil
 
+        alaopone = Subgenus.find_by_name 'Alaopone'
+        alaopone.genus.name.should == 'Acromyrmex'
+        alaopone.should_not be_fossil
+        alaopone.should_not be_invalid
+
+        acanothomyops = Subgenus.find_by_name 'Acanthomyops'
+        acanothomyops.genus.name.should == 'Acromyrmex'
+
         attaichnus = Genus.find_by_name 'Attaichnus'
         attaichnus.should be_fossil
         attaichnus.should be_unidentifiable
@@ -89,7 +98,7 @@ sedis</i> in Formicidae]</p>
         acalama.should_not be_fossil
         acalama.should be_synonym
         acalama.should be_invalid
-        acalama.synonym_of.name.should == 'Gauromyrmex'
+        acalama.synonym_of.name.should == 'Acromyrmex'
 
         ancylognathus = Genus.find_by_name 'Ancylognathus'
         ancylognathus.should_not be_available
@@ -101,7 +110,7 @@ sedis</i> in Formicidae]</p>
         acamatus = Genus.find_by_name 'Acamatus'
         acamatus.should be_homonym
         acamatus.should be_invalid
-        acamatus.homonym_resolved_to.name.should == 'Neivamyrmex'
+        acamatus.homonym_resolved_to.name.should == 'Acromyrmex'
 
         myanmyrma = Genus.find_by_name 'Myanmyrma'
         myanmyrma.should be_valid
