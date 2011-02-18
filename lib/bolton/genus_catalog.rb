@@ -15,7 +15,7 @@ class Bolton::GenusCatalog < Bolton::Catalog
   def import
     Taxon.delete_all
     parse_header || parse_failed if @line
-    parse_genus_section || parse_failed while @line
+    parse_section || parse_failed while @line
     super
   end
 
@@ -28,7 +28,7 @@ class Bolton::GenusCatalog < Bolton::Catalog
     Bolton::GenusCatalogGrammar
   end
 
-  def parse_genus_section
+  def parse_section
     return unless [:genus, :subgenus, :collective_group_name].include? @type
 
     if @type == :genus
@@ -36,16 +36,16 @@ class Bolton::GenusCatalog < Bolton::Catalog
     end
 
     parse_next_line
-    parse_genus_detail
+    parse_section_details
   end
 
-  def parse_genus_detail
-    while @line && (parse_genus_detail_line); end
+  def parse_section_details
+    while @line && parse_section_detail; end
     true
   end
 
-  def parse_genus_detail_line
-    return unless @type == :genus_detail_line
+  def parse_section_detail
+    return unless @type == :section_detail
     parse_next_line
     true
   end

@@ -3,14 +3,14 @@ grammar Bolton::GenusCatalogGrammar
   include Bolton::CatalogGrammar
 
   rule record
-    header | blank_line | genus_section_header | genus_detail_line | not_understood
+    header | blank_line | section_header | section_detail | not_understood
   end
 
-  rule genus_section_header
-    genus_synonym | genus_homonym | collective_group_name | genus_other
+  rule section_header
+    synonym | homonym | unresolved_homonym_and_synonym | collective_group_name | other
   end
 
-  rule genus_other
+  rule other
     (subgenus_prefix? fossil_flag? genus bracketed_information) {
       value = genus.value
       value.merge! :fossil => true if fossil_flag.present?
@@ -23,17 +23,17 @@ grammar Bolton::GenusCatalogGrammar
     black? subgenus_flag tag_end?
   end
 
-  rule genus_synonym
+  rule synonym
     (
       main_fossil_flag:fossil_flag?
       (
-        (black italic genus_name tag_end tag_end) |
-        (italic black genus_name tag_end tag_end) |
-        (italic genus_name tag_end)
+        (black italic name tag_end tag_end) |
+        (italic black name tag_end tag_end) |
+        (italic name tag_end)
       )
       s '[' junior_synonym_of fossil_flag? italic capitalized_word tag_end span? ']' tag_end?
     ) {
-      value = {:type => :genus, :name => genus_name.value, :status => :synonym, :synonym_of => capitalized_word.value}
+      value = {:type => :genus, :name => name.value, :status => :synonym, :synonym_of => capitalized_word.value}
       value.merge! :fossil => true if main_fossil_flag && main_fossil_flag != ''
       value
     }
@@ -43,43 +43,49 @@ grammar Bolton::GenusCatalogGrammar
     /[Jj]unior (synonym|syonym) of /
   end
 
-  rule genus_homonym
-    (main_fossil_flag:fossil_flag? italic genus_name tag_end span? ' [junior homonym, see ' tag_end? fossil_flag? italic capitalized_word tag_end span? ']' tag_end?) {
-      value = {:type => :genus, :name => genus_name.value, :status => :homonym, :homonym_resolved_to => capitalized_word.value}
+  rule homonym
+    (main_fossil_flag:fossil_flag? italic name tag_end span? ' [junior homonym, see ' tag_end? fossil_flag? italic capitalized_word tag_end span? ']' tag_end?) {
+      value = {:type => :genus, :name => name.value, :status => :homonym, :homonym_resolved_to => capitalized_word.value}
       value.merge! :fossil => true if main_fossil_flag && main_fossil_flag != ''
       value
     }
   end
 
+  rule unresolved_homonym_and_synonym
+    (italic name s tag_end '[junior homonym, junior synonym of ' italic capitalized_word tag_end ']') {
+      {:type => :genus, :name => name.value, :status => :unresolved_homonym_and_synonym, :synonym_of => capitalized_word.value}
+    }
+  end
+
   rule genus
-    unavailable_genus | valid_genus | subgenus | unidentifiable_genus
+    unavailable | valid | subgenus | unidentifiable
   end
 
-  rule valid_genus
-    (bold italic red genus_name tag_end tag_end tag_end) {
-      {:type => :genus, :name => genus_name.value, :status => :valid}
+  rule valid
+    (bold italic red name tag_end tag_end tag_end) {
+      {:type => :genus, :name => name.value, :status => :valid}
     }
   end
 
-  rule unavailable_genus
-    (italic purple genus_name tag_end s tag_end) {
-      {:type => :genus, :name => genus_name.value, :status => :unavailable}
+  rule unavailable
+    (italic purple name tag_end s tag_end) {
+      {:type => :genus, :name => name.value, :status => :unavailable}
     }
   end
 
-  rule unidentifiable_genus
-    (bold italic green genus_name tag_end tag_end tag_end) {
-      {:type => :genus, :name => genus_name.value, :status => :unidentifiable}
+  rule unidentifiable
+    (bold italic green name tag_end tag_end tag_end) {
+      {:type => :genus, :name => name.value, :status => :unidentifiable}
     }
   end
 
   rule subgenus
-    (bold italic blue genus_name tag_end tag_end tag_end errant_blue_space?) {
-      {:type => :subgenus, :name => genus_name.value, :status => :valid}
+    (bold italic blue name tag_end tag_end tag_end errant_blue_space?) {
+      {:type => :subgenus, :name => name.value, :status => :valid}
     }
   end
 
-  rule genus_name
+  rule name
     (uppercase_word s) {
       downcase.capitalize.strip
     }
@@ -162,12 +168,12 @@ grammar Bolton::GenusCatalogGrammar
      }
   end
 
-  rule genus_detail_line
+  rule section_detail
     (
       (s (tag_start | /\W/)* /[[:upper:]][[:lower:]].*/) |
       (s /\[.*?\]/)
     ) {
-      {:type => :genus_detail_line}
+      {:type => :section_detail}
     }
   end
 

@@ -206,24 +206,30 @@ describe Bolton::GenusCatalogParser do
       it "should recognize a homonym and point to its senior" do
         line = %{<i>ACAMATUS</i><span style='font-style:normal'> [junior homonym, see </span><i>Neivamyrmex</i><span style='font-style:normal'>]</span>}
         Bolton::GenusCatalogParser.parse(line).should ==
-           {:type => :genus, :name => 'Acamatus', :status => :homonym, :homonym_of => 'Neivamyrmex'}
+           {:type => :genus, :name => 'Acamatus', :status => :homonym, :homonym_resolved_to => 'Neivamyrmex'}
       end
 
       it "should handle it without spans" do
         line = %{<i>ACAMATUS</i> [junior homonym, see <i>Neivamyrmex</i>]}
         Bolton::GenusCatalogParser.parse(line).should ==
-           {:type => :genus, :name => 'Acamatus', :status => :homonym, :homonym_of => 'Neivamyrmex'}
+           {:type => :genus, :name => 'Acamatus', :status => :homonym, :homonym_resolved_to => 'Neivamyrmex'}
       end
 
       it "should handle fossil homonyms" do
         line = %{*<i>HETEROMYRMEX</i> [junior homonym, see *<i>Zhangidris</i>]}
         Bolton::GenusCatalogParser.parse(line).should ==
-           {:type => :genus, :name => 'Heteromyrmex', :status => :homonym, :homonym_of => 'Zhangidris', :fossil => true}
+           {:type => :genus, :name => 'Heteromyrmex', :status => :homonym, :homonym_resolved_to => 'Zhangidris', :fossil => true}
       end
 
     end
 
-  #end
+    describe "unresolved junior homonym and junior synonym"
+      it "should be its own thing" do
+        line = %{<i>HOLCOPONERA </i>[junior homonym, junior synonym of <i>Cylindromyrmex</i>]}
+        Bolton::GenusCatalogParser.parse(line).should ==
+          {:type => :genus, :name => 'Holcoponera', :status => :unresolved_homonym_and_synonym, :synonym_of => 'Cylindromyrmex'}
+      end
+
   end
 
   describe "genus detail line" do
@@ -237,17 +243,17 @@ subsequent designation of Ashmead, 1906: 24; Wheeler, W.M. 1911f: 157. [Junior
 homonym of <i style='mso-bidi-font-style:normal'>Acamatus </i>Schoenherr, 1833:
 20 (Coleoptera).]
         }
-      Bolton::GenusCatalogParser.parse(line).should == {:type => :genus_detail_line}
+      Bolton::GenusCatalogParser.parse(line).should == {:type => :section_detail}
     end
     
     it "should recognize anything totally inside brackets" do
       line = %{<span style="mso-spacerun: yes">  </span>[All subgenera were given as provisional junior synonyms of <i style="mso-bidi-font-style:normal">Camponotus</i> by Brown, 1973b: 179-185. The list was repeated in Hölldobler & Wilson, 1990: 18 with all subgenera listed as junior synonyms. They reverted to subgeneric status in Bolton, 1994: 50; see under individual entries. The entry of <i style="mso-bidi-font-style:normal">Myrmophyma</i> and <i style="mso-bidi-font-style:normal">Thlipsepinotus</i> under the synonymy of <i style="mso-bidi-font-style:normal">Camponotus</i> by Taylor & Brown, D.R. 1985: 109, is not accepted as confirmation as not all taxa were included.]}
-      Bolton::GenusCatalogParser.parse(line).should == {:type => :genus_detail_line}
+      Bolton::GenusCatalogParser.parse(line).should == {:type => :section_detail}
     end
 
     it "should handle space at the beginning" do
       line = %{<span style="mso-spacerun: yes"> </span><i>Cryptopone</i> junior synonym of <i>Pachycondyla</i>: Mackay & Mackay, 2010: 3.}
-      Bolton::GenusCatalogParser.parse(line).should == {:type => :genus_detail_line}
+      Bolton::GenusCatalogParser.parse(line).should == {:type => :section_detail}
     end
 
   end
