@@ -18,6 +18,7 @@ class Bolton::GenusCatalog < Bolton::Catalog
     Taxon.delete_all
     parse_header || parse_failed if @line
     parse_section || parse_failed while @line
+    show_genuses_referred_to_but_without_their_own_section
     super
   end
 
@@ -45,6 +46,18 @@ class Bolton::GenusCatalog < Bolton::Catalog
     return unless @type == :section_detail
     parse_next_line
     true
+  end
+
+  def show_genuses_referred_to_but_without_their_own_section
+    Genus.all(:conditions => 'status IS NULL', :order => :name).each do |genus|
+      synonyms_pointing_to = Genus.all(:conditions => ['synonym_of_id = ?', genus.id]).map{|e| %{#{e.name}}}.join(', ')
+      homonyms_pointing_to = Genus.all(:conditions => ['homonym_resolved_to_id = ?', genus.id]).map{|e| %{#{e.name}}}.join(', ')
+      Progress.error <<-END
+No section for #{genus.name}
+Synonyms pointing to it: #{synonyms_pointing_to}
+Homonyms pointing to it: #{homonyms_pointing_to}
+      END
+    end
   end
 
 end
