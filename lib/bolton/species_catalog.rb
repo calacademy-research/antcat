@@ -34,11 +34,8 @@ class Bolton::SpeciesCatalog < Bolton::Catalog
   def parse_genus_section
     return unless @type == :genus
 
-    unless Genus.find_by_name @parse_result[:name]
-      Progress.error "Genus '#{@parse_result[:name]}' did not exist"
-    end
-
-    @genus = Genus.import :name => @parse_result[:name], :fossil => @parse_result[:fossil], :status => @parse_result[:status].to_s
+    @genus = Genus.find_by_name @parse_result[:name]
+    Progress.error "Genus '#{@parse_result[:name]}' did not exist" unless @genus
 
     parse_next_line
     parse_species_lines
