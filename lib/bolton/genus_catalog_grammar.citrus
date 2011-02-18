@@ -7,7 +7,7 @@ grammar Bolton::GenusCatalogGrammar
   end
 
   rule section_header
-    synonym | homonym | unresolved_homonym_and_synonym | collective_group_name | other | wilsonia
+    synonym | homonym | unresolved_homonym_and_synonym | collective_group_name | other | unresolved_homonym
   end
 
   rule other
@@ -61,9 +61,10 @@ grammar Bolton::GenusCatalogGrammar
     }
   end
 
-  rule wilsonia
-    (fossil_flag? bold italic brown 'WILSONIA' tag_end tag_end tag_end s '[' incertae_sedis_in 'Formicinae' ']') {
-      value = {:type => :genus, :name => 'Wilsonia', :status => :unresolved_homonym, :incertae_sedis_in => :subfamily, :subfamily => 'Formicinae'}
+  rule unresolved_homonym
+    (fossil_flag? bold italic brown name tag_end tag_end tag_end bracketed_information) {
+      value = {:type => :genus, :name => name.value, :status => :unresolved_homonym}
+      value.merge! bracketed_information.value
       value.merge! :fossil => true if fossil_flag.present?
       value
     }
