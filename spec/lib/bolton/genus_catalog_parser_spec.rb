@@ -18,7 +18,7 @@ describe Bolton::GenusCatalogParser do
                                                       :subfamily => 'Myrmicinae', :tribe => 'Dacetini', :status => :valid}
   end
 
-  describe 'parsing the genus name' do
+  describe 'Parsing the genus name' do
     it 'should parse a normal genus name' do
       line = %{<b><i><span style='color:red'>ACANTHOGNATHUS</span></i></b> [Myrmicinae: Dacetini]}
       Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Acanthognathus',
@@ -62,7 +62,7 @@ describe Bolton::GenusCatalogParser do
     end
 
 
-    describe "unavailable names" do
+    describe "Unavailable names" do
 
       it "should recognize a nomen nudum" do
         line = %{<i><span style='color:purple'>ANCYLOGNATHUS</span></i> [<i>Nomen nudum</i>]}
@@ -87,7 +87,7 @@ describe Bolton::GenusCatalogParser do
     end
   end
 
-  describe "subgenus" do
+  describe "Subgenus" do
 
     it "should recognize a subgenus" do
       line = %{#<b><i><span style='color:blue'>ACANTHOMYOPS</span></i></b> [subgenus of <i>Lasius</i>]}
@@ -111,7 +111,7 @@ describe Bolton::GenusCatalogParser do
 
   end
 
-  describe 'material inside brackets' do
+  describe 'Material inside brackets' do
 
     it 'should parse the subfamily and tribe' do
       line = %{<b><i><span style='color:red'>ACROMYRMEX</span></i></b> [Myrmicinae: Attini]}
@@ -136,7 +136,7 @@ describe Bolton::GenusCatalogParser do
      #{:type => :genus, {:name => 'Protazteca', :subfamily => 'Dolichoderinae', :tribe => 'incertae_sedis', :available => true, :valid => true, :fossil => false}
     #end
 
-    describe 'incertae sedis' do
+    describe 'Incertae sedis' do
       it "should handle an uncertain family" do
         line = %{<b><i><span style='color:red'>MYANMYRMA</span></i></b> [<i>incertae sedis</i> in Formicidae]}
         Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Myanmyrma', :incertae_sedis_in => :family, :status => :valid}
@@ -172,7 +172,7 @@ describe Bolton::GenusCatalogParser do
 
     end
 
-    describe 'synonymy' do
+    describe 'Synonymy' do
 
       it "should recognize a synonym and point to its senior" do
         line = %{<span style='color:black'><i>ACALAMA</i></span> [junior synonym of <i>Gauromyrmex</i>]}
@@ -228,9 +228,15 @@ describe Bolton::GenusCatalogParser do
         Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Palaeatta', :status => :synonym, :synonym_of => 'Atta'}
       end
 
+      it "should handle an italicized fossil flag" do
+        line = %{<i>*SINAPHAENOGASTER</i> [junior synonym of <i>Aphaenogaster</i>]}
+        Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Sinaphaenogaster', :status => :synonym, :synonym_of => 'Aphaenogaster',
+                                                          :fossil => true}
+      end
+
     end
 
-    describe 'homonymy' do
+    describe 'Homonymy' do
 
       it "should recognize a homonym and point to its senior" do
         line = %{<i>ACAMATUS</i><span style='font-style:normal'> [junior homonym, see </span><i>Neivamyrmex</i><span style='font-style:normal'>]</span>}
@@ -252,7 +258,7 @@ describe Bolton::GenusCatalogParser do
 
     end
 
-    describe "unresolved junior homonym and junior synonym"
+    describe "Unresolved junior homonym and junior synonym" do
       it "should be its own thing" do
         line = %{<i>HOLCOPONERA </i>[junior homonym, junior synonym of <i>Cylindromyrmex</i>]}
         Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Holcoponera',
@@ -276,7 +282,7 @@ describe Bolton::GenusCatalogParser do
     
   end
 
-  describe "genus detail line" do
+  describe "Genus detail line" do
 
     it "should recognize anything beginning with tags and non-word characters, followed by a capitalized word" do
       line = %{<i style='mso-bidi-font-style:normal'>Acamatus</i> Emery, 1894c: 181 [as subgenus
