@@ -101,7 +101,7 @@ sedis</i> in Formicidae]</p>
         acamatus = Genus.find_by_name 'Acamatus'
         acamatus.should be_homonym
         acamatus.should be_invalid
-        acamatus.homonym_of.name.should == 'Neivamyrmex'
+        acamatus.homonym_resolved_to.name.should == 'Neivamyrmex'
 
         myanmyrma = Genus.find_by_name 'Myanmyrma'
         myanmyrma.should be_valid

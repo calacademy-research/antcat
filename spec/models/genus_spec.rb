@@ -47,7 +47,7 @@ describe Genus do
       lambda {Genus.import :name => 'Acalama', :status => :synonym, :synonym_of => ''}.should raise_error
     end
     it "should not create the genus if the passed-in homonym_of isn't valid" do
-      lambda {Genus.import :name => 'Acalama', :status => :homonym, :homonym_of => ''}.should raise_error
+      lambda {Genus.import :name => 'Acalama', :status => :homonym, :homonym_resolved_to => ''}.should raise_error
     end
 
     it "should create each element in chain, if necessary" do
@@ -71,13 +71,14 @@ describe Genus do
       gauromyrmex.synonym_of.should be_nil
     end
 
-    it "should set the homonym_of correctly" do
-      Genus.import :name => 'Acamatus', :status => :homonym, :homonym_of => 'Neivamyrmex'
+    it "should set the homonym_resolved_to correctly" do
+      Genus.import :name => 'Acamatus', :status => :homonym, :homonym_resolved_to => 'Neivamyrmex'
       Taxon.count.should == 2
       acamatus = Genus.find_by_name 'Acamatus'
       neivamyrmex = Genus.find_by_name 'Neivamyrmex'
-      acamatus.homonym_of.should == neivamyrmex
-      neivamyrmex.homonym_of.should be_nil
+      acamatus.homonym_resolved_to.should == neivamyrmex
+      neivamyrmex.homonym_resolved_to.should be_nil
+    end
     end
   end
 

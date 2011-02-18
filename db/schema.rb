@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110216225227) do
+ActiveRecord::Schema.define(:version => 20110217235241) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -170,7 +170,7 @@ ActiveRecord::Schema.define(:version => 20110216225227) do
     t.integer  "tribe_id"
     t.integer  "genus_id"
     t.integer  "synonym_of_id"
-    t.integer  "homonym_of_id"
+    t.integer  "homonym_resolved_to_id"
     t.string   "incertae_sedis_in"
   end
 
