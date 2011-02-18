@@ -109,6 +109,39 @@ sedis</i> in Formicidae]</p>
       end
     end
     
+    it "should add both homonyms" do
+        @genus_catalog.import_html make_content %{
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'>*<i
+style='mso-bidi-font-style:normal'>ACROSTIGMA </i>[junior synonym of <i
+style='mso-bidi-font-style:normal'>Podomyrma</i>]</p>
+
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'>*<i
+style='mso-bidi-font-style:normal'>Acrostigma</i> Emery, 1891a: 149 [as
+subgenus of <i style='mso-bidi-font-style:normal'>Podomyrma</i>]. Type-species:
+*<i style='mso-bidi-font-style:normal'>Podomyrma (Acrostigma) mayri</i>, by
+monotypy. </p>
+
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'>*<i
+style='mso-bidi-font-style:normal'>Acrostigma </i>junior synonym of <i
+style='mso-bidi-font-style:normal'>Podomyrma</i>: Dalla Torre, 1893: 159.</p>
+
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><i
+style='mso-bidi-font-style:normal'>ACROSTIGMA</i> [junior homonym, see <i
+style='mso-bidi-font-style:normal'>Stigmacros</i>]</p>
+        }
+        Genus.count.should == 4
+
+        acrostigma_synonym = Genus.find_by_name_and_status('Acrostigma', 'synonym')
+        acrostigma_synonym.should_not be_nil
+        acrostigma_synonym.synonym_of.name.should == 'Podomyrma'
+
+        acrostigma_homonym = Genus.find_by_name_and_status('Acrostigma', 'homonym')
+        acrostigma_homonym.should_not be_nil
+        acrostigma_homonym.homonym_resolved_to.name.should == 'Stigmacros'
+    end
+
     it "should silently swallow a collective group name" do
       Progress.should_not_receive :error
       @genus_catalog.import_html make_content %{*<i><span style="color:green">FORMICITES</span></i> [collective group name]}

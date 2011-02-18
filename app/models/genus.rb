@@ -27,7 +27,7 @@ class Genus < Taxon
 
     incertae_sedis_in = record[:incertae_sedis_in] && record[:incertae_sedis_in].to_s
 
-    genus = Genus.find_or_create_by_name record[:name],
+    genus = Genus.find_or_create_by_name_and_status record[:name],
       :fossil => record[:fossil], :status => record[:status].to_s,
       :subfamily => subfamily, :tribe => tribe, 
       :synonym_of => synonym_of, :homonym_resolved_to => homonym_resolved_to,

@@ -79,6 +79,11 @@ describe Genus do
       acamatus.homonym_resolved_to.should == neivamyrmex
       neivamyrmex.homonym_resolved_to.should be_nil
     end
+
+    it "should respect homonyms" do
+      Genus.import :name => 'Acrostigma', :status => :homonym, :homonym_resolved_to => 'Stigmacros'
+      Genus.import :name => 'Acrostigma', :status => :synonym, :synonym_of => 'Podomyrma'
+      Genus.count.should == 4
     end
   end
 
