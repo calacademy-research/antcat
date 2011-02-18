@@ -10,6 +10,8 @@
 #
 #  Manual edits:
 #   In NGC-GEN.A-L.htm, surrounded ASPHINCTANILLOIDES in bold red
+#   In NGC-GEN.M-Z.htm, surrounded PARAPRIONOPELTA in bold red
+#   In NGC-GEN.M-Z.htm, surrounded PSEUDOATTA in bold red
 
 class Bolton::GenusCatalog < Bolton::Catalog
   def import
