@@ -3,15 +3,14 @@ require 'spec_helper'
 describe Taxon do
 
   it "should require a name" do
+    Factory.build(:taxon).should_not be_valid
     taxon = Factory :taxon, :name => 'Cerapachynae'
     taxon.name.should == 'Cerapachynae'
+    taxon.should be_valid
   end
 
-  it "should not be (Rails) valid with a blank status" do
-    Taxon.new(:name => 'Cerapachynae').should_not be_valid
-    Taxon.new(:status => 'valid').should_not be_valid
-    Taxon.new(:name => 'Cerapachynae', :status => '').should_not be_valid
-    Taxon.new(:name => '', :status => 'valid').should_not be_valid
+  it "should be (Rails) valid with a nil status" do
+    Taxon.new(:name => 'Cerapachynae').should be_valid
     Taxon.new(:name => 'Cerapachynae', :status => 'valid').should be_valid
   end
 
