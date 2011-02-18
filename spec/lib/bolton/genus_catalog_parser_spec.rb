@@ -130,11 +130,10 @@ describe Bolton::GenusCatalogParser do
                                                         :subfamily => 'Specomyrminae', :tribe => 'Sphecomyrmini', :fossil => true, :status => :valid}
     end
 
-    #it "should handle a parenthetical note" do
-      #line = %{<b><i><span style='color:red'>PROTAZTECA</span></i></b> [<i>incertae sedis</i> in Dolichoderinae (or so they say)]}
-      #Bolton::GenusCatalogParser.parse(line).should ==
-     #{:type => :genus, {:name => 'Protazteca', :subfamily => 'Dolichoderinae', :tribe => 'incertae_sedis', :available => true, :valid => true, :fossil => false}
-    #end
+    it "should handle a parenthetical note" do
+      line = %{<b><i><span style='color:red'>PROTAZTECA</span></i></b> [<i>incertae sedis</i> in Dolichoderinae (or so they say)]}
+      Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Protazteca', :subfamily => 'Dolichoderinae', :incertae_sedis_in => :subfamily, :status => :valid}
+    end
 
     describe 'Incertae sedis' do
       it "should handle an uncertain family" do
@@ -164,11 +163,10 @@ describe Bolton::GenusCatalogParser do
         Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Afromyrma', :subfamily => 'Myrmicinae', :incertae_sedis_in => :subfamily, :fossil => true, :status => :valid}
       end
 
-      #it "should ignore a question mark" do
-        #line = %{<b><i><span style='color:red'>CANANEURETUS</span></i></b> [Aneuretinae?]}
-        #Bolton::GenusCatalogParser.parse(line).should ==
-          #{:type => :genus, {:name => 'Cananeuretus', :subfamily => 'Aneuretinae', :available => true, :valid => true, :fossil => false}
-      #end
+      it "should ignore a question mark" do
+        line = %{<b><i><span style='color:red'>CANANEURETUS</span></i></b> [Aneuretinae?]}
+        Bolton::GenusCatalogParser.parse(line).should == {:type => :genus, :name => 'Cananeuretus', :subfamily => 'Aneuretinae', :status => :valid}
+      end
 
     end
 
