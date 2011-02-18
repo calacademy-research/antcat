@@ -80,7 +80,7 @@ grammar Bolton::GenusCatalogGrammar
   end
 
   rule subgenus
-    (bold italic blue name tag_end tag_end tag_end errant_blue_space?) {
+    (bold? italic blue? name tag_end tag_end? tag_end? errant_blue_space?) {
       {:type => :subgenus, :name => name.value, :status => :valid}
     }
   end

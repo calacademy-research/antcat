@@ -104,6 +104,11 @@ describe Bolton::GenusCatalogParser do
       Bolton::GenusCatalogParser.parse(line).should == {:type => :subgenus, :name => 'Baroniurbania', :genus => 'Lepisiota', :status => :valid}
     end
 
+    it "should handle it when it's not blue or bold" do
+      line = %{#<i>RHINOMYRMEX</i> [subgenus of <i>Camponotus</i>]}
+      Bolton::GenusCatalogParser.parse(line).should == {:type => :subgenus, :name => 'Rhinomyrmex', :genus => 'Camponotus', :status => :valid}
+    end
+
   end
 
   describe 'material inside brackets' do

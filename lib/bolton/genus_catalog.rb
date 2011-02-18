@@ -21,11 +21,6 @@ class Bolton::GenusCatalog < Bolton::Catalog
     super
   end
 
-  def parse_failed
-    super
-    exit
-  end
-
   def grammar
     Bolton::GenusCatalogGrammar
   end
