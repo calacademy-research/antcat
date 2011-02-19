@@ -21,11 +21,8 @@ class Genus < Taxon
     tribe = tribe_name && Tribe.find_or_create_by_name(tribe_name, :subfamily => subfamily, :status => 'valid')
     raise if tribe && !tribe.valid?
 
-    synonym_of = synonym_of_name && find_or_create_by_name(synonym_of_name)
-    raise if synonym_of && !synonym_of.valid?
-
-    homonym_resolved_to = homonym_resolved_to_name && find_or_create_by_name(homonym_resolved_to_name)
-    raise if homonym_resolved_to && !homonym_resolved_to.valid?
+    synonym_of = find_referent synonym_of_name
+    homonym_resolved_to = find_referent homonym_resolved_to_name
 
     attributes = {:name => record[:name], :fossil => record[:fossil], :status => status,
                   :subfamily => subfamily, :tribe => tribe, 
@@ -45,4 +42,8 @@ class Genus < Taxon
     genus
   end
 
+  def self.find_referent name
+    return unless name
+    find_by_name(name) || Subgenus.find_by_name(name) || create!(:name => name)
+  end
 end

@@ -106,4 +106,39 @@ describe Genus do
     end
   end
 
+  describe "A genus synonymized to a subgenus" do
+
+    it "should look for both genera and subgenera when looking for its synonym" do
+      Genus.import :name => 'Shuckardia', :status => :synonym, :synonym_of => 'Alaopone'
+      Subgenus.import :name => 'Alaopone', :status => :valid, :genus => 'Dorylus'
+      Taxon.count.should == 3
+    end
+
+    it "should look for both genera and subgenera when looking for its synonym" do
+      Subgenus.import :name => 'Alaopone', :status => :valid, :genus => 'Dorylus'
+      Genus.import :name => 'Shuckardia', :status => :synonym, :synonym_of => 'Alaopone'
+      Taxon.count.should == 3
+    end
+
+  end
+
+  describe "A genus homonymized to a subgenus" do
+
+    it "should look for both genera and subgenera when looking for its homonym" do
+      orthonotus = Genus.import :name => 'Orthonotus', :status => :homonym, :homonym_resolved_to => 'Orthonotomyrmex'
+      orthonotomyrmex = Subgenus.import :name => 'Orthonotomyrmex', :status => :valid, :genus => 'Dorylus'
+      Taxon.count.should == 3
+      orthonotus.reload.homonym_resolved_to.should == orthonotomyrmex
+    end
+
+    it "should look for both genera and subgenera when looking for its homonym" do
+      orthonotomyrmex = Subgenus.import :name => 'Orthonotomyrmex', :status => :valid, :genus => 'Dorylus'
+      orthonotus = Genus.import :name => 'Orthonotus', :status => :homonym, :homonym_resolved_to => 'Orthonotomyrmex'
+      Taxon.count.should == 3
+      orthonotus.reload.homonym_resolved_to.should == orthonotomyrmex
+    end
+
+  end
+
+
 end

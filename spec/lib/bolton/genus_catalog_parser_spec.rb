@@ -254,6 +254,12 @@ describe Bolton::GenusCatalogParser do
            {:type => :genus, :name => 'Heteromyrmex', :status => :homonym, :homonym_resolved_to => 'Zhangidris', :fossil => true}
       end
 
+      it "should handle a semicolon" do
+        line = %{<i>TRIGONOGASTER</i> [junior homonym; see <i>Recurvidris</i>]}
+        Bolton::GenusCatalogParser.parse(line).should ==
+           {:type => :genus, :name => 'Trigonogaster', :status => :homonym, :homonym_resolved_to => 'Recurvidris'}
+      end
+
     end
 
     describe "Unresolved junior homonym and junior synonym" do
