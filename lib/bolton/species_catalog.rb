@@ -7,7 +7,7 @@
 
 #  To import these files, run
 #    rake bolton:import:species
-#  This generates log/bolton_species_import.log
+#  This generates log/bolton_species_catalog.log
 #
 #  Manual edits:
 #   In NGC-Spg-las.htm, removed extra paragraph in Lasius murphyi
