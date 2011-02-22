@@ -1,0 +1,20 @@
+grammar Bolton::SubfamilyCatalogGrammar
+  include Bolton::CatalogGrammar
+
+  rule record
+    subfamily | other
+  end
+
+  rule subfamily
+    (bold span 'Subfamily ' red uppercase_word close_tags) {
+      {:type => :subfamily, :name => uppercase_word.downcase.capitalize.strip}
+    }
+  end
+
+  rule other
+    /.*/ {
+      {:type => :other}
+    }
+  end
+
+end

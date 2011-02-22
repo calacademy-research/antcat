@@ -13,7 +13,26 @@
 
 class Bolton::SubfamilyCatalog < Bolton::Catalog
   private
-  def get_filenames filenames
-    super filenames.select {|filename| filename =~ /^\d\d\. /}
+
+  def import
+    while @line
+      parse_subfamily || parse_next_line
+    end
+    super
   end
+
+  def parse_subfamily
+    return unless @type == :subfamily
+    Subfamily.create! :name => @parse_result[:name], :status => 'valid'
+    parse_next_line
+  end
+
+  def get_filenames filenames
+    super filenames.select {|filename| File.basename(filename) =~ /^\d\d\. /}
+  end
+
+  def grammar
+    Bolton::SubfamilyCatalogGrammar
+  end
+
 end
