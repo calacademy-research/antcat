@@ -2,7 +2,7 @@ grammar Bolton::SpeciesCatalogSpeciesGrammar
   include Bolton::CatalogGrammar
 
   rule species
-    uncertain_status_species | available_valid_species | species_synonym | unavailable_species | homonym_species  | unidentifiable_species
+    homonym | available_valid_species | species_synonym | unavailable_species | unresolved_homonym  | unidentifiable_species
   end
 
   rule species_synonym
@@ -64,17 +64,21 @@ grammar Bolton::SpeciesCatalogSpeciesGrammar
     }
   end
 
-  rule uncertain_status_species
-    (fossil_flag? italic species_name '.' /.*?Junior secondary homonym.*?Replacement name:.*/) {
-      value = {:type => :species, :name => species_name.value, :status => :uncertain}
+  rule homonym
+    (fossil_flag? italic species_name '.' /.*?Junior secondary homonym.*?Replacement name: / '*'? italic replacement_name tag_end /.*/) {
+      value = {:type => :species, :name => species_name.value, :status => :homonym, :homonym_resolved_to => replacement_name.value}
       value.merge! :fossil => true unless fossil_flag.blank?
       value
     }
   end
 
-  rule homonym_species
+  rule replacement_name
+    species_name
+  end
+
+  rule unresolved_homonym
     (fossil_flag? bold italic maroon species_name tag_end tag_end tag_end /.*/) {
-      value = {:type => :species, :name => species_name.value, :status => :homonym}
+      value = {:type => :species, :name => species_name.value, :status => :unresolved_homonym}
       value.merge! :fossil => true unless fossil_flag.blank?
       value
     }
