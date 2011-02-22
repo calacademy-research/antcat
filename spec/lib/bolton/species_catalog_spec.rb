@@ -166,6 +166,16 @@ style='mso-bidi-font-style:normal'>C. (Acrocoelia</i>): Emery, 1922e: 146.</p>
       Species.find_by_name('v-nigra').should be_nil
     end
 
+    it "should point a resolved homonym back to its resolution" do
+      contents = make_contents %{
+<p>*<i>gracillimus. *Lampromyrmex gracillimus</i> Mayr, 1868c: 95, pl. 5, figs. 97, 98 (w.) BALTIC AMBER (Eocene). [Junior secondary homonym of <i>gracillima</i> Smith, above.] Replacement name: *<i>mayrianum</i> Wheeler, W.M. 1915h: 45. [Combination in error, with <i>Lophomyrmex gracillimus</i> for *<i>Lampromyrmex gracillimus</i>: Dlussky, 1997: 57.]</p>
+      }
+
+      @species_catalog.import_html contents
+      species = Species.find_by_name('gracillimus')
+      species.homonym_resolved_to.name.should == 'mayrianum'
+    end
+
     it "should skip by subspecies and notes" do
       contents = make_contents %{
 <p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b

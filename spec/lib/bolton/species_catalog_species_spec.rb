@@ -55,11 +55,11 @@ describe Bolton::SpeciesCatalog do
         }).should == {:type => :species, :name => 'flavum', :status => :unresolved_homonym}
       end
 
-      it "should handle a resolved junior secondary homonym where the binomial is inside the italics" do
-        @species_catalog.parse(%{
-  *<i>gracillimus. *Lampromyrmex gracillimus</i> Mayr, 1868c: 95, pl. 5, figs. 97, 98 (w.) BALTIC AMBER (Eocene). [Junior secondary homonym of <i>gracillima</i> Smith, above.] Replacement name: *<i>mayrianum</i> Wheeler, W.M. 1915h: 45. [Combination in error, with <i>Lophomyrmex gracillimus</i> for *<i>Lampromyrmex gracillimus</i>: Dlussky, 1997: 57.]
-        }).should == {:type => :species, :name => 'gracillimus', :status => :homonym, :homonym_resolved_to => 'mayrianum', :fossil => true}
-      end
+      #it "should handle a resolved junior secondary homonym where the binomial is inside the italics" do
+        #@species_catalog.parse(%{
+  #*<i>gracillimus. *Lampromyrmex gracillimus</i> Mayr, 1868c: 95, pl. 5, figs. 97, 98 (w.) BALTIC AMBER (Eocene). [Junior secondary homonym of <i>gracillima</i> Smith, above.] Replacement name: *<i>mayrianum</i> Wheeler, W.M. 1915h: 45. [Combination in error, with <i>Lophomyrmex gracillimus</i> for *<i>Lampromyrmex gracillimus</i>: Dlussky, 1997: 57.]
+        #}).should == {:type => :species, :name => 'gracillimus', :status => :homonym, :homonym_resolved_to => 'mayrianum', :fossil => true}
+      #end
 
       it "should recognize a unresolved junior primary homonym" do
         @species_catalog.parse(%{
