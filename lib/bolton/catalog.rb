@@ -7,8 +7,8 @@ class Bolton::Catalog
   end
 
   def import_files filenames
-      initialize_parse filenames.sort_by {|filename| File.basename(filename, File.extname(filename))}
-      import
+    initialize_parse get_filenames filenames
+    import
   end
 
   def import_html html
@@ -30,6 +30,10 @@ class Bolton::Catalog
   end
 
   private
+  def get_filenames filenames
+    filenames.sort_by {|filename| File.basename(filename, File.extname(filename))}
+  end
+
   def import
     Progress.show_results
     Progress.show_count @error_count, Progress.processed_count, 'parse failures'
