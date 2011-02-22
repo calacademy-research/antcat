@@ -7,6 +7,8 @@ grammar CommonGrammar
     /(\s|\xC2\xA0|&nbsp;)/ |
     (italic '<p></p>' tag_end) |
     (italic s tag_end) |
+    blank_namespaced_paragraph |
+    blank_paragraph |
     errant_red_space |
     spacerun
   end
@@ -71,6 +73,10 @@ grammar CommonGrammar
     /<\/\w+>/
   end
 
+  rule close_tags
+    (tag_end | space)+
+  end
+
   rule word
     /[[:alpha:]]+/
   end
@@ -104,7 +110,7 @@ grammar CommonGrammar
   end
 
   rule blank_line
-    (/^/ (blank_paragraph | blank_namespaced_paragraph | blank_paragraph_with_font | blank_paragraph_with_formatting | blank_paragraph_italic | '.' | s) /$/) {
+    (/^/ (blank_paragraph_with_font | blank_paragraph_with_formatting | blank_paragraph_italic | '.' | s) /$/) {
       :blank_line
     }
   end

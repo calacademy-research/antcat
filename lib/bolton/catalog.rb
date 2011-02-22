@@ -18,7 +18,7 @@ class Bolton::Catalog
 
   def parse string
     begin
-      string.strip!
+      string = string.gsub(/\n/, ' ').strip
       parse_result = grammar.parse(string).value
       Progress.info "parsed as: #{parse_result.inspect}"
     rescue Citrus::ParseError => e
