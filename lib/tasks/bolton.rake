@@ -8,6 +8,10 @@ namespace :bolton do
       Bolton::Reference.delete_all
       Bolton::Bibliography.new(true).import_files Dir.glob 'data/bolton/NGC-REFS(*.htm'
     end
+    desc "Import Bolton subfamily catalog"
+    task :subfamilies => :environment do
+      Bolton::SubfamilyCatalog.new(true).import_files Dir.glob 'data/bolton/*.htm'
+    end
     desc "Import Bolton genus catalog documents"
     task :genera => :environment do
       Bolton::GenusCatalog.new(true).import_files Dir.glob 'data/bolton/NGC-GEN*.htm'
