@@ -24,8 +24,17 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
 
   def parse_subfamily
     return unless @type == :subfamily
-    Subfamily.create! :name => @parse_result[:name], :status => 'valid'
-    parse_next_line
+
+    name = @parse_result[:name]
+    fossil = @parse_result[:fossil]
+    taxonomic_history = ''
+
+    loop do
+      parse_next_line
+      break if !@line || @type != :other
+      taxonomic_history << @paragraph
+    end
+    Subfamily.create! :name => name, :status => 'valid', :fossil => fossil, :taxonomic_history => taxonomic_history
   end
 
   def get_filenames filenames
