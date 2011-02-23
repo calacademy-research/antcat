@@ -55,6 +55,9 @@ describe CommonGrammar do
     it "should handle a nonbreaking space inside paragraph" do
       CommonGrammar.parse(%{<p>&nbsp;</p>}, :root => :blank_line).value.should == :blank_line
     end
+    it "should handle an empty span" do
+      CommonGrammar.parse(%{<span lang="EN-GB"> </span>}, :root => :space).should_not be_nil
+    end
 
   end
 end

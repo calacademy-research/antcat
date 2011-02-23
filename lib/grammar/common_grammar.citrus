@@ -9,6 +9,7 @@ grammar CommonGrammar
     (italic s tag_end) |
     blank_namespaced_paragraph |
     blank_paragraph |
+    empty_span |
     errant_red_space |
     spacerun
   end
@@ -151,6 +152,10 @@ grammar CommonGrammar
 
   rule errant_blue_space
     blue s tag_end
+  end
+
+  rule empty_span
+    span s tag_end
   end
 
 end

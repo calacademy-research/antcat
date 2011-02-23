@@ -140,6 +140,12 @@ style='mso-bidi-font-style:normal'><span style='color:red'>ANEURETELLUS</span></
       }).should == {:type => :genus, :name => 'Aneuretellus', :fossil => true}
     end
 
+    it "should handle an empty span in there" do
+      @subfamily_catalog.parse(%{
+<b><span lang="EN-GB">Genus *<i><span style="color:red">EOAENICTITES</span></i></span></b><span lang="EN-GB"> </span>
+      }).should == {:type => :genus, :name => 'Eoaenictites', :fossil => true}
+    end
+
   end
 
 end
