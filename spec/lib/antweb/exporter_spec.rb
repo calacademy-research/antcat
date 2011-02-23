@@ -17,6 +17,11 @@ describe Antweb::Exporter do
 
   describe "exporting one taxon" do
 
+    it "should export a subfamily" do
+      ponerinae = Subfamily.create! :name => 'Ponerinae', :status => 'valid', :taxonomic_history => '<p>Ponerinae</p>'
+      @exporter.export_taxon(ponerinae).should == ['Ponerinae', nil, nil, nil, nil, nil, nil, 'TRUE', nil, nil, nil, '<p>Ponerinae</p>']
+    end
+
     it "should export a genus that's a junior synonym" do
       gauromyrmex = Genus.create! :name => 'Gauromyrmex', :status => 'valid'
       acalama = Genus.create! :name => 'Acalama', :status => 'synonym', :synonym_of => gauromyrmex, :taxonomic_history => '<i>ACALAMA</i>', :status => 'valid'
