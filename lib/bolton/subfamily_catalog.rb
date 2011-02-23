@@ -15,6 +15,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
   private
 
   def import
+    Taxon.delete_all
     while @line
       parse_subfamily || parse_next_line
     end
