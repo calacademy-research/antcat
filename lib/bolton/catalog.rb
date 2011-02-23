@@ -79,7 +79,7 @@ class Bolton::Catalog
 
   def read_string html
     doc = Nokogiri::HTML html
-    @paragraphs = doc.css('p')
+    @paragraphs = doc.css('div/p')
     @paragraph_index = 0
   end
 

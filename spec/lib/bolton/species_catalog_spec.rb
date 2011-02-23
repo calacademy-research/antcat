@@ -16,7 +16,7 @@ describe Bolton::SpeciesCatalog do
 
   describe 'parsing the file as a whole' do
     it 'should complain bitterly if file is obviously not a species catalog' do
-     contents = %{<html><body> <p>Foo</p> </body></html>}
+     contents = %{<html><body> <div><p>Foo</p></div> </body></html>}
      Progress.should_receive(:error).with("parse failed on: 'Foo'")
      @species_catalog.import_html contents
     end
