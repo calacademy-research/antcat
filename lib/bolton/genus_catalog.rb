@@ -15,7 +15,6 @@
 
 class Bolton::GenusCatalog < Bolton::Catalog
   def import
-    Genus.delete_all
     parse_header || parse_failed if @line
     parse_section || parse_failed while @line
     show_genuses_referred_to_but_without_their_own_section

@@ -2,12 +2,20 @@ grammar Bolton::SubfamilyCatalogGrammar
   include Bolton::CatalogGrammar
 
   rule record
-    subfamily | tribe | other
+    subfamily | tribe | genus | other
   end
 
   rule subfamily
     (bold span 'Subfamily ' fossil_flag? red uppercase_word close_tags) {
       value = {:type => :subfamily, :name => uppercase_word.downcase.capitalize.strip}
+      value.merge! :fossil => true if fossil_flag.present?
+      value
+    }
+  end
+
+  rule genus
+    (bold span 'Genus ' fossil_flag? italic red uppercase_word close_tags) {
+      value = {:type => :genus, :name => uppercase_word.downcase.capitalize.strip}
       value.merge! :fossil => true if fossil_flag.present?
       value
     }
