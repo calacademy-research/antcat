@@ -6,19 +6,19 @@ namespace :bolton do
     desc "Import HTML files of references from Bolton"
     task :references => :environment do
       Bolton::Reference.delete_all
-      Bolton::Bibliography.new(true).import_files Dir.glob 'data/bolton/NGC-REFS(*.htm'
+      Bolton::Bibliography.new(true).import_files Dir.glob 'data/bolton/2010-06/NGC-REFS(*.htm'
     end
     desc "Import Bolton subfamily catalog"
     task :subfamilies => :environment do
-      Bolton::SubfamilyCatalog.new(true).import_files Dir.glob 'data/bolton/*.htm'
+      Bolton::SubfamilyCatalog.new(true).import_files Dir.glob 'data/2010-06/bolton/*.htm'
     end
     desc "Import Bolton genus catalog documents"
     task :genera => :environment do
-      Bolton::GenusCatalog.new(true).import_files Dir.glob 'data/bolton/NGC-GEN*.htm'
+      Bolton::GenusCatalog.new(true).import_files Dir.glob 'data/bolton/2010-06/NGC-GEN*.htm'
     end
     desc "Import Bolton species catalog documents"
     task :species => :environment do
-      Bolton::SpeciesCatalog.new(true).import_files Dir.glob 'data/bolton/NGC-Sp*.htm'
+      Bolton::SpeciesCatalog.new(true).import_files Dir.glob 'data/bolton/2010-06/NGC-Sp*.htm'
     end
     desc "Import genera and species"
     task :taxa => ['bolton:import:genera', 'bolton:import:species']
