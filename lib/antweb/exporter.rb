@@ -1,17 +1,21 @@
 class Antweb::Exporter
+  def initialize show_progress = false
+
+  end
 
   def export
+    extant_file = File.open('data/extant_new.xls', 'w')
     Taxon.all.each do |taxon|
-      export_taxon taxon
+      row = export_taxon taxon
+      extant_file.puts row.join("\t") if row
     end
   end
 
   def export_taxon taxon
-    if taxon.kind_of? Subfamily
-      convert_to_antweb_array :subfamily => taxon.name, :valid? => !taxon.invalid?, :taxonomic_history => taxon.taxonomic_history
-    else
-      convert_to_antweb_array :subfamily => 'Myrmicinae', :genus => 'Acalama', :valid? => false, :available? => false,
-                              :current_valid_name => 'Gauromyrmex',  :taxonomic_history => taxon.taxonomic_history
+    case taxon
+    when Subfamily: convert_to_antweb_array :subfamily => taxon.name, :valid? => !taxon.invalid?, :taxonomic_history => taxon.taxonomic_history
+    #when Genus: convert_to_antweb_array :genus => taxon.name, :valid? => !taxon.invalid?, :taxonomic_history => taxon.taxonomic_history
+    else nil
     end
   end
 
