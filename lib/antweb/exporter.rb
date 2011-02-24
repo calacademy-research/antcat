@@ -4,7 +4,7 @@ class Antweb::Exporter
   end
 
   def export
-    extant_file = File.open('data/extant_new.xls', 'w')
+    extant_file = File.open('data/output/extant.xls', 'w')
     Taxon.all.each do |taxon|
       row = export_taxon taxon
       extant_file.puts row.join("\t") if row
