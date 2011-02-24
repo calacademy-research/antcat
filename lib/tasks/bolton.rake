@@ -10,7 +10,7 @@ namespace :bolton do
     end
     desc "Import Bolton subfamily catalog"
     task :subfamilies => :environment do
-      Bolton::SubfamilyCatalog.new(true).import_files Dir.glob 'data/2010-06/bolton/*.htm'
+      Bolton::SubfamilyCatalog.new(true).import_files Dir.glob 'data/bolton/2010-06/*.htm'
     end
     desc "Import Bolton genus catalog documents"
     task :genera => :environment do

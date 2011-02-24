@@ -5,8 +5,8 @@ class Antweb::Diff
     @match_count = @left_count = @right_count = @difference_count = 0
   end
 
-  def diff_files left, right
-    diff File.open(left, 'r').readlines, File.open(right, 'r').readlines
+  def diff_files left_directory, right_directory
+    diff File.open("#{left_directory}/extant.xls", 'r').readlines, File.open("#{right_directory}/extant.xls", 'r').readlines
   end
 
   def diff left, right

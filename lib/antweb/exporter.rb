@@ -1,10 +1,9 @@
 class Antweb::Exporter
   def initialize show_progress = false
-
   end
 
-  def export
-    extant_file = File.open('data/output/extant.xls', 'w')
+  def export directory
+    extant_file = File.open("#{directory}/extant.xls", 'w')
     Taxon.all.each do |taxon|
       row = export_taxon taxon
       extant_file.puts row.join("\t") if row
