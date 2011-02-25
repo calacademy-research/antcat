@@ -78,7 +78,7 @@ class Bolton::Catalog
   end
 
   def read_string html
-    doc = Nokogiri::HTML html
+    doc = Nokogiri::HTML html, nil, 'UTF-8'
     @paragraphs = doc.css('div/p')
     @paragraph_index = 0
   end
@@ -104,8 +104,8 @@ class Bolton::Catalog
         return
       end
     end
-    @line = massage @paragraphs[@paragraph_index].inner_html
-    @paragraph = massage @paragraphs[@paragraph_index].to_html
+    @line = massage @paragraphs[@paragraph_index].inner_html(:encoding => 'UTF-8')
+    @paragraph = massage @paragraphs[@paragraph_index].to_html(:encoding => 'UTF-8')
     @paragraph_index += 1
     Progress.info "input line: '#{@line}'"
     Progress.tally

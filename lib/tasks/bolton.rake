@@ -38,7 +38,7 @@ namespace :bolton do
     task :references => ['bolton:import:references', 'bolton:match:references']
   end
 
-  desc "Import HTML files of references from Bolton"
+  desc "Convert some Bolton input that was saved in Macintosh format to UTF-8"
   task :convert_from_macintosh_to_utf_8 do
     Dir.glob('data/bolton/2010-07/*.html').each do |filename|
       new_name = filename.gsub /#{File.extname(filename)}$/, '.htm'

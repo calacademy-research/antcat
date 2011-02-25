@@ -39,4 +39,28 @@ describe Antweb::Diff do
     @diff.right_unmatched_count.should == 2
   end
 
+  describe "showing where two strings differ" do
+
+    it "should return nil if they're equal" do
+      Antweb::Diff.match_fails_at('abc', 'abc').should == nil
+    end
+
+    it "should return 0 if they differ at the first character" do
+      Antweb::Diff.match_fails_at('a', 'b').should == 0
+    end
+
+    it "should return the size of the shorter string if it's a substring of the other" do
+      Antweb::Diff.match_fails_at('ab', 'a').should == 1
+    end
+  
+    it "should insert a pointer to the failure" do
+      Antweb::Diff.format_failed_match('abc', 0).should == 'a<<<bc'
+    end
+
+    it "should insert a pointer to the failure when it's at the end of one of the strings" do
+      Antweb::Diff.format_failed_match('abc', 3).should == 'abc[substring]'
+    end
+
+  end
+
 end
