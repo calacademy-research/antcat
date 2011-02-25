@@ -7,15 +7,7 @@ describe Antweb::Diff do
 
   it "should consider two equal arrays as equal" do
     @diff.diff(['1','2','3'], ['1','2','3'])
-    @diff.left_count.should == 3
-    @diff.right_count.should == 3
     @diff.match_count.should == 3
-  end
-
-  it "should count the elements in each array" do
-    @diff.diff(['1','2','3'], ['1','2'])
-    @diff.left_count.should == 3
-    @diff.right_count.should == 2
   end
 
   it "should count completely different arrays as different" do
@@ -34,9 +26,9 @@ describe Antweb::Diff do
   end
 
   it "should report the number of lines on each side that weren't matched" do
-    @diff.diff ["a\tb", "b\tc", "left"], ["a\tc", "b\tc", "right-1", "right-2"]
-    @diff.left_unmatched_count.should == 1
-    @diff.right_unmatched_count.should == 2
+    @diff.diff ["a\tb", "b\tc", "antcat"], ["a\tc", "b\tc", "antweb-1", "antweb-2"]
+    @diff.antcat_unmatched_count.should == 1
+    @diff.antweb_unmatched_count.should == 2
   end
 
   describe "showing where two strings differ" do
@@ -53,14 +45,6 @@ describe Antweb::Diff do
       Antweb::Diff.match_fails_at('ab', 'a').should == 1
     end
   
-    it "should insert a pointer to the failure" do
-      Antweb::Diff.format_failed_match('abc', 0).should == 'a<<<bc'
-    end
-
-    it "should insert a pointer to the failure when it's at the end of one of the strings" do
-      Antweb::Diff.format_failed_match('abc', 3).should == 'abc[substring]'
-    end
-
   end
 
 end
