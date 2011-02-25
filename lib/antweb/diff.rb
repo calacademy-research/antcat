@@ -8,10 +8,17 @@ class Antweb::Diff
   end
 
   def diff_files antcat_directory, antweb_directory
-    antcat_filename = "#{antcat_directory}/extant.xls"
-    antweb_filename = "#{antweb_directory}/extant.xls.utf8"
-    Progress.puts "Diffing #{antcat_filename} against #{antweb_filename}"
-    diff File.open(antcat_filename, 'r').readlines, File.open(antweb_filename, 'r').readlines
+    ['extant', 'extinct'].each do |filename|
+      antcat_filename = "#{antcat_directory}/#{filename}.xls"
+      antweb_filename = "#{antweb_directory}/#{filename}.xls.utf8"
+      Progress.puts "Diffing #{antcat_filename} against #{antweb_filename}"
+      diff File.open(antcat_filename, 'r').readlines, File.open(antweb_filename, 'r').readlines
+    end
+    show_differences
+    Progress.puts "#{@match_count} matches"
+    Progress.puts "#{@difference_count} matches with differences"
+    Progress.puts "#{@antcat_unmatched_count} antcat lines unmatched"
+    Progress.puts "#{@antweb_unmatched_count} antweb lines unmatched"
   end
 
   def diff antcat, antweb
@@ -36,12 +43,6 @@ class Antweb::Diff
 
     @antcat_unmatched_count += antcat.size - antcat_index
     @antweb_unmatched_count += antweb.size - antweb_index
-
-    show_differences
-    Progress.puts "#{@match_count} matches"
-    Progress.puts "#{@difference_count} matches with differences"
-    Progress.puts "#{@antcat_unmatched_count} antcat lines unmatched"
-    Progress.puts "#{@antweb_unmatched_count} antweb lines unmatched"
   end
 
   def self.match_fails_at antcat, antweb

@@ -3,20 +3,21 @@ class Antweb::Exporter
   end
 
   def export directory
-    File.open("#{directory}/extant.xls", 'w') do |extant_file|
-      File.open("#{directory}/extinct.xls", 'w') do |extinct_file|
-        Taxon.all.each do |taxon|
-          row = export_taxon taxon
-          file = taxon.fossil? ? extinct_file : extant_file
-          file.puts row.join("\t") if row
-        end
-      end
+    extant_file = File.open("#{directory}/extant.xls", 'w')
+    extinct_file = File.open("#{directory}/extinct.xls", 'w')
+    Taxon.all.each do |taxon|
+      row = export_taxon taxon
+      file = taxon.fossil? ? extinct_file : extant_file
+      file.puts row.join("\t") if row
     end
+    extinct_file.close
+    extant_file.close
   end
 
   def export_taxon taxon
     case taxon
-    when Subfamily: convert_to_antweb_array :subfamily => taxon.name, :valid? => !taxon.invalid?, :taxonomic_history => taxon.taxonomic_history
+    when Subfamily
+      taxon.fossil? ? nil : convert_to_antweb_array(:subfamily => taxon.name, :valid? => !taxon.invalid?, :taxonomic_history => taxon.taxonomic_history)
     #when Genus: convert_to_antweb_array :genus => taxon.name, :valid? => !taxon.invalid?, :taxonomic_history => taxon.taxonomic_history
     else nil
     end
