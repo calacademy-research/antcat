@@ -17,7 +17,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
   def import
     Taxon.delete_all
     while @line
-      parse_subfamily || parse_genus || parse_next_line
+      parse_subfamily || parse_genus || parse_tribe || parse_next_line
     end
     super
   end
@@ -28,7 +28,16 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     name = @parse_result[:name]
     fossil = @parse_result[:fossil]
     taxonomic_history = parse_taxonomic_history
-    Subfamily.create! :name => name, :status => 'valid', :fossil => fossil, :taxonomic_history => taxonomic_history
+    @current_subfamily = Subfamily.create! :name => name, :status => 'valid', :fossil => fossil, :taxonomic_history => taxonomic_history
+  end
+
+  def parse_tribe
+    return unless @type == :tribe
+
+    name = @parse_result[:name]
+    fossil = @parse_result[:fossil]
+    taxonomic_history = parse_taxonomic_history
+    @current_tribe = Tribe.create! :name => name, :subfamily => @current_subfamily, :status => 'valid', :fossil => fossil, :taxonomic_history => taxonomic_history
   end
 
   def parse_genus
@@ -37,7 +46,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     name = @parse_result[:name]
     fossil = @parse_result[:fossil]
     taxonomic_history = parse_taxonomic_history
-    Genus.create! :name => name, :status => 'valid', :fossil => fossil, :taxonomic_history => taxonomic_history
+    Genus.create! :name => name, :subfamily => @current_subfamily, :tribe => @current_tribe, :status => 'valid', :fossil => fossil, :taxonomic_history => taxonomic_history
   end
 
   def parse_taxonomic_history

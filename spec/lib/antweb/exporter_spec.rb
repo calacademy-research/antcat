@@ -34,6 +34,13 @@ describe Antweb::Exporter do
       @exporter.export_taxon(ponerinae).should be_nil
     end
 
+    it "should export a genus" do
+      myrmicinae = Subfamily.create! :name => 'Myrmicinae', :status => 'valid'
+      dacetini = Tribe.create! :name => 'Dacetini', :subfamily => myrmicinae, :status => 'valid'
+      acanthognathus = Genus.create! :name => 'Acanothognathus', :subfamily => myrmicinae, :tribe => dacetini, :status => 'valid', :taxonomic_history => '<i>Acanthognathous</i>'
+      @exporter.export_taxon(acanthognathus).should == ['Myrmicinae', 'Dacetini', 'Acanothognathus', nil, nil, nil, 'TRUE', 'TRUE', 'Acanothognathus', nil, '<i>Acanthognathous</i>']
+    end
+
     #it "should export a genus that's a junior synonym" do
       #gauromyrmex = Genus.create! :name => 'Gauromyrmex', :status => 'valid'
       #acalama = Genus.create! :name => 'Acalama', :status => 'synonym', :synonym_of => gauromyrmex, :taxonomic_history => '<i>ACALAMA</i>', :status => 'valid'

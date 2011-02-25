@@ -18,7 +18,14 @@ class Antweb::Exporter
     case taxon
     when Subfamily
       taxon.fossil? ? nil : convert_to_antweb_array(:subfamily => taxon.name, :valid? => !taxon.invalid?, :taxonomic_history => taxon.taxonomic_history)
-    #when Genus: convert_to_antweb_array :genus => taxon.name, :valid? => !taxon.invalid?, :taxonomic_history => taxon.taxonomic_history
+    when Genus
+      return nil unless taxon.subfamily && taxon.tribe
+      convert_to_antweb_array :subfamily => taxon.subfamily.name,
+                              :tribe => taxon.tribe.name,
+                              :genus => taxon.name,
+                              :valid? => !taxon.invalid?, :available? => true,
+                              :current_valid_name => taxon.name,
+                              :taxonomic_history => taxon.taxonomic_history
     else nil
     end
   end
@@ -34,7 +41,7 @@ class Antweb::Exporter
   end
 
   def convert_to_antweb_array values
-    [values[:subfamily], nil, values[:genus], nil, nil, nil, boolean_to_antweb(values[:valid?]), boolean_to_antweb(values[:available?]), values[:current_valid_name], nil, values[:taxonomic_history]]
+    [values[:subfamily], values[:tribe], values[:genus], nil, nil, nil, boolean_to_antweb(values[:valid?]), boolean_to_antweb(values[:available?]), values[:current_valid_name], nil, values[:taxonomic_history]]
   end
 
 end

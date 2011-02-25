@@ -69,6 +69,7 @@ style='mso-bidi-font-style:normal'><span style='color:red'>ANEURETELLUS</span></
       aneuretellus = Genus.find_by_name('Aneuretellus')
       aneuretellus.should_not be_nil
       aneuretellus.should be_fossil
+      aneuretellus.subfamily.name.should == 'Armaniinae'
 
       armaniinae = Subfamily.find_by_name('Armaniinae')
       armaniinae.should_not be_nil
@@ -81,6 +82,7 @@ style='mso-bidi-font-style:normal'><span style='color:red'>ANEURETELLUS</span></
 
       atta = Genus.find_by_name 'Atta'
       atta.should_not be_nil
+      atta.tribe.name.should == 'Myrmeciini'
       atta.taxonomic_history.should == 
 %{<p class="MsoNormal" style="margin-left:.5in;text-align:justify;text-indent:-.5in"><b style="mso-bidi-font-weight:normal"><i style="mso-bidi-font-style:normal"><span lang="EN-GB">Atta</span></i></b><span lang="EN-GB"> Fabricius, 1804: 421. Type-species: <i style="mso-bidi-font-style:normal">Formica cephalotes</i>, by subsequent designation of Wheeler, W.M. 1911f: 159. </span></p>}
     end
@@ -176,7 +178,7 @@ genera key).</span></p>
     it "should recognize the beginning of a tribe" do
       @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Tribe <span style='color:red'>MYRMECIINI</span><o:p></o:p></span></b></p>
-      }).should == {:type => :tribe}
+      }).should == {:type => :tribe, :name => 'Myrmeciini'}
     end
 
     it "should recognize the beginning of a genus" do

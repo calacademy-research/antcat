@@ -89,10 +89,17 @@ class Antweb::Diff
   def compare_prefixes antcat, antweb
     antcat = antcat.split "\t"
     antweb = antweb.split "\t"
-    antcat[0] <=> antweb[0]
+    antcat[0, 4] <=> antweb[0, 4]
   end
 
   def preprocess line
-    line.chomp.gsub(/<.*?>/, ' ').gsub(/&nbsp;/, '').gsub(/\xC2\xA0/, '').squeeze(' ').rstrip
+    line = line.chomp
+    line = line.gsub(/<.*?>/, ' ')
+    line = line.gsub(/&nbsp;/, '')
+    line = line.gsub(/\xC2\xA0/, '')
+    line = line.gsub(/true/, 'TRUE')
+    line = line.gsub(/false/, 'FALSE')
+    line = line.squeeze(' ')
+    line = line.rstrip
   end
 end

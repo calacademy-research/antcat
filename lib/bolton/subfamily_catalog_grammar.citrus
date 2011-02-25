@@ -23,7 +23,9 @@ grammar Bolton::SubfamilyCatalogGrammar
 
   rule tribe
     (bold span 'Tribe ' red uppercase_word close_tags) {
-      {:type => :tribe}
+      value = {:type => :tribe, :name => uppercase_word.downcase.capitalize.strip}
+      value.merge! :fossil => true if fossil_flag.present?
+      value
     }
   end
 
