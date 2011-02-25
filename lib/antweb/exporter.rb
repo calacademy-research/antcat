@@ -4,9 +4,11 @@ class Antweb::Exporter
 
   def export directory
     extant_file = File.open("#{directory}/extant.xls", 'w')
+    extinct_file = File.open("#{directory}/extinct.xls", 'w')
     Taxon.all.each do |taxon|
       row = export_taxon taxon
-      extant_file.puts row.join("\t") if row
+      file = taxon.fossil? ? extinct_file : extant_file
+      file.puts row.join("\t") if row
     end
   end
 
