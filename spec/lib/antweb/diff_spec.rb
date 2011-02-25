@@ -28,8 +28,15 @@ describe Antweb::Diff do
     @diff.match_count.should == 1
   end
 
-  it "should report the number of lines on each side that weren't matched" do
+  it "should report the number of lines on each side that were different" do
     @diff.diff ["a\tb", "b\tc"], ["a\tc", "b\tc"]
     @diff.difference_count.should == 1
   end
+
+  it "should report the number of lines on each side that weren't matched" do
+    @diff.diff ["a\tb", "b\tc", "left"], ["a\tc", "b\tc", "right-1", "right-2"]
+    @diff.left_unmatched_count.should == 1
+    @diff.right_unmatched_count.should == 2
+  end
+
 end

@@ -85,6 +85,58 @@ style='mso-bidi-font-style:normal'><span style='color:red'>ANEURETELLUS</span></
 %{<p class="MsoNormal" style="margin-left:.5in;text-align:justify;text-indent:-.5in"><b style="mso-bidi-font-weight:normal"><i style="mso-bidi-font-style:normal"><span lang="EN-GB">Atta</span></i></b><span lang="EN-GB"> Fabricius, 1804: 421. Type-species: <i style="mso-bidi-font-style:normal">Formica cephalotes</i>, by subsequent designation of Wheeler, W.M. 1911f: 159. </span></p>}
     end
 
+    it "should grab the full taxonomic history" do
+      @subfamily_catalog.import_html make_contents %{
+<p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
+-36.0pt'><b style='mso-bidi-font-weight:normal'><span lang=EN-GB>Subfamily <span
+style='color:red'>PROCERATIINAE</span><o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
+-36.0pt'><b style='mso-bidi-font-weight:normal'><span lang=EN-GB>Proceratii</span></b><span
+lang=EN-GB> Emery, 1895j: 765. Type-genus: <i style='mso-bidi-font-style:normal'>Proceratium</i>.
+</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
+-36.0pt'><b style='mso-bidi-font-weight:normal'><span lang=EN-GB>Taxonomic
+history<o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
+-36.0pt'><span lang=EN-GB>Proceratiinae as poneromorph subfamily of Formicidae:
+Bolton, 2003: 48, 178.</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
+-36.0pt'><span lang=EN-GB>Proceratiinae as poneroid subfamily of Formicidae:
+Ouellette, Fisher, <i style='mso-bidi-font-style:normal'>et al</i>. 2006: 365;
+Brady, Schultz, <i style='mso-bidi-font-style:normal'>et al</i>. 2006: 18173;
+Moreau, Bell <i style='mso-bidi-font-style:normal'>et al</i>. 2006: 102; Ward,
+2007a: 555.</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
+-36.0pt'><span lang=EN-GB>Tribes of Proceratiinae: Probolomyrmecini,
+Proceratiini.</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
+-36.0pt'><span lang=EN-GB><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
+-36.0pt'><b style='mso-bidi-font-weight:normal'><span lang=EN-GB>Subfamily
+references<o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='text-align:justify'><span lang=EN-GB>Bolton, 2003:
+48, 178 (diagnosis, synopsis); Ouellette, Fisher <i style='mso-bidi-font-style:
+normal'>et al</i>. 2006: 359 (phylogeny); Brady, Schultz, <i style='mso-bidi-font-style:
+normal'>et al</i>. 2006: 18173 (phylogeny); Moreau, Bell <i style='mso-bidi-font-style:
+normal'>et al</i>. 2006: 102 (phylogeny); Ward, 2007a: 555 (classification);
+Fernández &amp; Arias-Penna, 2008: 31 (Neotropical genera key); Yoshimura &amp;
+Fisher, 2009: 8 (Malagasy males diagnosis, key); Terayama, 2009: 96 (Taiwan
+genera key).</span></p>
+      }
+
+      Subfamily.find_by_name('Proceratiinae').taxonomic_history.should ==
+        %{
+      }
+    end
+      
     def make_contents content
       %{
   <html> <body lang=EN-US style='tab-interval:.5in'> <div class=Section1>

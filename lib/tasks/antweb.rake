@@ -10,8 +10,11 @@ namespace :antweb do
 
     desc "Compare AntCat's output against AntWeb's"
     task :diff => :environment do
-      Antweb::Diff.new(true).diff_files 'data/output', 'data/antweb/2010-06'
+      Antweb::Diff.new(true).diff_files 'data/output', 'data/antweb/2010-07'
     end
+
+    desc "Export and diff AntWeb output"
+    task :export_and_diff => [:taxa, :diff]
 
   end
 

@@ -29,7 +29,7 @@ class Antweb::Exporter
   end
 
   def convert_to_antweb_array values
-    [values[:subfamily], nil, values[:genus], nil, nil, nil, nil, boolean_to_antweb(values[:valid?]), boolean_to_antweb(values[:available?]), values[:current_valid_name], nil, values[:taxonomic_history]]
+    [values[:subfamily], nil, values[:genus], nil, nil, nil, boolean_to_antweb(values[:valid?]), boolean_to_antweb(values[:available?]), values[:current_valid_name], nil, values[:taxonomic_history]]
   end
 
 end
