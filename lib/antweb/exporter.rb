@@ -3,12 +3,14 @@ class Antweb::Exporter
   end
 
   def export directory
-    extant_file = File.open("#{directory}/extant.xls", 'w')
-    extinct_file = File.open("#{directory}/extinct.xls", 'w')
-    Taxon.all.each do |taxon|
-      row = export_taxon taxon
-      file = taxon.fossil? ? extinct_file : extant_file
-      file.puts row.join("\t") if row
+    File.open("#{directory}/extant.xls", 'w') do |extant_file|
+      File.open("#{directory}/extinct.xls", 'w') do |extinct_file|
+        Taxon.all.each do |taxon|
+          row = export_taxon taxon
+          file = taxon.fossil? ? extinct_file : extant_file
+          file.puts row.join("\t") if row
+        end
+      end
     end
   end
 
