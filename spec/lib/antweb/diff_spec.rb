@@ -5,51 +5,48 @@ describe Antweb::Diff do
     @diff = Antweb::Diff.new
   end
 
-  it "should consider two equal arrays as equal" do
-    @diff.diff(['1','2','3'], ['1','2','3'])
-    @diff.match_count.should == 3
-  end
-
-  it "should count completely different arrays as different" do
-    @diff.diff(['1','2','3'], ['4','5','6'])
+  it "should report no matches when there are none" do
+    antcat = ["A\t\t\t\t1"]
+    antweb = ["B\t\t\t\t1"]
+    @diff.diff antcat, antweb
     @diff.match_count.should == 0
-  end
-
-  it "should detect one match" do
-    @diff.diff(['1','2','3'], ['4','1','6'])
-    @diff.match_count.should == 1
-  end
-
-  it "should report the number of lines on each side that were different" do
-    @diff.diff ["a\tb\tc\td\te"], ["a\tb\tc\td\tf"]
-    @diff.difference_count.should == 1
-  end
-
-  it "should report the number of lines on each side that weren't matched" do
-    @diff.diff ["a\t1\t2\t3\tb", "b\tc", "antcat"], ["a\t1\t2\t3\tc", "b\tc", "antweb-1", "antweb-2"]
+    @diff.difference_count.should == 0
     @diff.antcat_unmatched_count.should == 1
-    @diff.antweb_unmatched_count.should == 2
+    @diff.antweb_unmatched_count.should == 1
+    @diff.differences.should == []
   end
 
-  it "should not care about the case of TRUE and FALSE" do
-    @diff.diff ["a\t1\t2\t3\tTRUE\tFALSE"], ["a\t1\t2\t3\ttrue\tfalse"] 
+  it "should report one match when there is one match" do
+    antcat = ["A\t\t\t\t1"]
+    antweb = ["A\t\t\t\t1"]
+    @diff.diff antcat, antweb
     @diff.match_count.should == 1
-  end
-
-  it "should consider it a 'match with a difference' if the first four columns match, but the rest doesn't" do
-    @diff.diff ["1\t2\t3\t4\ta"], ["1\t2\t3\t4\tb"]
+    @diff.difference_count.should == 0
     @diff.antcat_unmatched_count.should == 0
     @diff.antweb_unmatched_count.should == 0
-    @diff.difference_count.should == 1
+    @diff.differences.should == []
   end
 
-  it "should find the best match out of the lines with the same prefix" do
-    antcat = ["1\t2\t3\t4D"]
-    antweb = ["1\t2\t3\t4A", "1\t2\t3\t4D"]
-    @diff.diff antweb, antcat
-    @diff.match_count.should == 1
+  it "should report one difference when there is one difference" do
+    antcat = ["A\t\t\t\t1"]
+    antweb = ["A\t\t\t\t2"]
+    @diff.diff antcat, antweb
+    @diff.match_count.should == 0
+    @diff.difference_count.should == 1
     @diff.antcat_unmatched_count.should == 0
+    @diff.antweb_unmatched_count.should == 0
+    @diff.differences.should == [["A\t\t\t\t1", "A\t\t\t\t2"]]
+  end
+
+  it "should handle a mix" do
+    antcat = ["A\t\t\t\t1", "A\t\t\t\t2","C\t\t\t\t1"]
+    antweb = ["A\t\t\t\t2", "C\t\t\t\t3","D\t\t\t\t1"]
+    @diff.diff antcat, antweb
+    @diff.match_count.should == 1
+    @diff.difference_count.should == 1
+    @diff.antcat_unmatched_count.should == 1
     @diff.antweb_unmatched_count.should == 1
+    @diff.differences.should == [["C\t\t\t\t1", "C\t\t\t\t3"]]
   end
 
   describe "showing where two strings differ" do

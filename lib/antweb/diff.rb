@@ -1,5 +1,7 @@
+require 'levenshtein'
+
 class Antweb::Diff
-  attr_reader :match_count, :difference_count, :antcat_unmatched_count, :antweb_unmatched_count
+  attr_reader :match_count, :difference_count, :differences, :antcat_unmatched_count, :antweb_unmatched_count
 
   def initialize show_progress = false
     Progress.init show_progress
@@ -26,23 +28,51 @@ class Antweb::Diff
     antweb.sort!
     Progress.puts "#{antcat.size} antcat lines, #{antweb.size} antweb lines"
 
-    antcat_index = antweb_index = 0
-    while antcat_index < antcat.size && antweb_index < antweb.size
-      result = compare antcat[antcat_index], antweb[antweb_index]
-      if result == 0
-        antcat_index += 1
-        antweb_index += 1
-      elsif result == 1
-        @antweb_unmatched_count += 1
-        antweb_index += 1
-      else
-        @antcat_unmatched_count += 1
-        antcat_index += 1
+    antcat_taxa = make_taxa_groups antcat
+    antweb_taxa = make_taxa_groups antweb
+
+    antcat_taxa.each_key do |antcat_taxon|
+      antcat_records = antcat_taxa[antcat_taxon]
+      antweb_records = antweb_taxa[antcat_taxon]
+
+      combinations = []
+      for antcat_record in antcat_records
+        unless antweb_records
+          @antcat_unmatched_count += 1
+        else
+          for antweb_record in antweb_records
+            combinations << [antcat_record, antweb_record, Levenshtein.distance(antcat_record, antweb_record)]
+          end
+        end
+      end
+      combinations = combinations.sort_by {|a| a[2]}
+      for combination_index in 0...(combinations.size - 1)
+        combination = combinations[combination_index]
+        for other_combination_index in (combination_index + 1)...combinations.size
+          other_combination = combinations[other_combination_index]
+          if other_combination[0] == combination[0]
+            other_combination[0] = nil
+          end
+          if other_combination[1] == combination[1]
+            other_combination[1] = nil
+          end
+        end
+      end
+      combinations.each do |combination|
+        if combination[0] != nil && combination[1] == nil
+          @antcat_unmatched_count += 1
+        elsif combination[0] == nil && combination[1] != nil
+          @antweb_unmatched_count += 1
+        elsif combination[0] == combination[1]
+          @match_count += 1
+        else
+          @differences << [combination[0], combination[1]]
+          @difference_count += 1
+        end
       end
     end
 
-    @antcat_unmatched_count += antcat.size - antcat_index
-    @antweb_unmatched_count += antweb.size - antweb_index
+    @antweb_unmatched_count = antweb.size - @match_count - @difference_count
   end
 
   def self.match_fails_at antcat, antweb
@@ -55,6 +85,21 @@ class Antweb::Diff
   end
 
   private
+  def make_taxa_groups records
+    groups = {}
+    records.each do |record|
+      record = preprocess record
+      key = get_key record
+      groups[key] ||= []
+      groups[key] << record
+    end
+    groups
+  end
+
+  def get_key record
+    record.split("\t")[0, 4]
+  end
+
   def show_differences
     return unless @differences.present?
     Progress.puts "Differences:"
@@ -68,28 +113,6 @@ class Antweb::Diff
       Progress.puts antweb[match_fails_at..-1] || ''
       Progress.puts ">>> #{antweb[match_fails_at]} len: #{antweb.length}"
     end
-  end
-
-  def compare antcat, antweb
-    antcat = preprocess antcat
-    antweb = preprocess antweb
-    result = antcat <=> antweb
-    if compare_prefixes(antcat, antweb) == 0
-      if result == 0
-        @match_count += 1
-      else
-        @difference_count += 1
-        @differences << [antcat, antweb]
-      end
-      return 0
-    end
-    result
-  end
-
-  def compare_prefixes antcat, antweb
-    antcat = antcat.split "\t"
-    antweb = antweb.split "\t"
-    antcat[0, 4] <=> antweb[0, 4]
   end
 
   def preprocess line
