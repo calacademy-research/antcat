@@ -237,6 +237,12 @@ style='color:red'>PROCERATIINAE</span><o:p></o:p></span></b></p>
       }).should == {:type => :genus, :name => 'Atta'}
     end
 
+    it "should recognize a fossil genus with an extra language span" do
+      @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>Genus</span></b><span lang=EN-GB> *<b><i><span style='color:red'>CTENOBETHYLUS</span></i></b> </span>
+      }).should == {:type => :genus, :name => 'Ctenobethylus', :fossil => true}
+    end
+
     it "should recognize the beginning of a fossil genus" do
       @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Genus *<i><span style='color:red'>ANEURETELLUS</span></i> <o:p></o:p></span></b></p>
@@ -262,6 +268,5 @@ style='color:red'>PROCERATIINAE</span><o:p></o:p></span></b></p>
     end
 
   end
-
 end
 
