@@ -79,4 +79,9 @@ describe Taxon do
     myanmyrma.should_not be_invalid
   end
 
+  it "should be able to store tons of text in taxonomic history" do
+    camponotus = Factory :taxon, :name => 'Camponotus', :taxonomic_history => '1234' * 100_000
+    camponotus.reload.taxonomic_history.size.should == 4 * 100_000
+  end
+
 end

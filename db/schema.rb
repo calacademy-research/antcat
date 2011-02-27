@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110217235241) do
+ActiveRecord::Schema.define(:version => 20110227023528) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -164,7 +164,7 @@ ActiveRecord::Schema.define(:version => 20110217235241) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "fossil"
-    t.text     "taxonomic_history"
+    t.text     "taxonomic_history",      :limit => 2147483647
     t.string   "status"
     t.integer  "subfamily_id"
     t.integer  "tribe_id"
