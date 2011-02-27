@@ -36,7 +36,7 @@ grammar Bolton::SubfamilyCatalogGrammar
   end
 
   rule subfamily_header
-    (bold span 'SUBFAMILY ' red uppercase_word close_tags) {
+    (bold span 'SUBFAMILY' close_tags red uppercase_word close_tags) {
       {:type => :subfamily_header}
     }
   end

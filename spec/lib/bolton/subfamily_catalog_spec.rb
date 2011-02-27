@@ -284,6 +284,11 @@ style='color:red'>PROCERATIINAE</span><o:p></o:p></span></b></p>
       }).should == {:type => :subfamily_header}
     end
 
+    it "should recognize another form of subfamily header" do
+      @subfamily_catalog.parse(%{
+<b><span lang="EN-GB" style="color:black">SUBFAMILY</span><span lang="EN-GB"> <span style="color:red">MARTIALINAE</span><p></p></span></b>
+      }).should == {:type => :subfamily_header}
+    end
   end
 end
 
