@@ -49,6 +49,13 @@ describe Antweb::Diff do
     @diff.differences.should == [["C\t\t\t\t1", "C\t\t\t\t3"]]
   end
 
+  it "should ignore the validity and availability of Pseudoatta, since Bolton had a typo which I corrected" do
+    antcat = ["Myrmicinae\tAttini\tPseudoatta\t\t\t\tTRUE\tTRUE\tPseudoatta\t"]
+    antweb = ["Myrmicinae\tAttini\tPseudoatta\t\t\t\tfalse\tfalse\t\t"]
+    @diff.diff antcat, antweb
+    @diff.match_count.should == 1
+  end
+
   describe "showing where two strings differ" do
 
     it "should return nil if they're equal" do

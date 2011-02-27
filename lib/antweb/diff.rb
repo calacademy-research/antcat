@@ -22,6 +22,7 @@ class Antweb::Diff
   end
 
   def diff antcat, antweb
+    self.class.preprocess_antweb antweb
     antcat.sort!
     antweb.sort!
     Progress.puts "#{antcat.size} antcat lines, #{antweb.size} antweb lines"
@@ -39,7 +40,7 @@ class Antweb::Diff
           @antcat_unmatched_count += 1
         else
           for antweb_record in antweb_records
-            combinations << [antcat_record, antweb_record, Levenshtein.distance(antcat_record, antweb_record)]
+            combinations << [antcat_record, antweb_record, self.class.closeness(antcat_record, antweb_record)]
           end
         end
       end
@@ -61,7 +62,7 @@ class Antweb::Diff
           @antcat_unmatched_count += 1
         elsif combination[0] == nil && combination[1] != nil
           @antweb_unmatched_count += 1
-        elsif combination[0] == combination[1]
+        elsif combination[2] == 0
           @match_count += 1
         else
           @differences << [combination[0], combination[1]]
@@ -71,6 +72,18 @@ class Antweb::Diff
     end
 
     @antweb_unmatched_count = antweb.size - @match_count - @difference_count
+  end
+
+  def self.closeness antcat, antweb
+    Levenshtein.distance(antcat, antweb)
+  end
+
+  def self.preprocess_antweb antweb
+    # AntWeb parsed this correctly, but it was a typo in Bolton which in AntCat
+    # was corrected manually
+    for line in antweb
+      line.gsub! /(Myrmicinae\tAttini\tPseudoatta\t\t\t\t)FALSE\tFALSE\t\t/i, "\\1TRUE\tTRUE\tPseudoatta\t"
+    end
   end
 
   def self.match_fails_at antcat, antweb
@@ -86,6 +99,7 @@ class Antweb::Diff
   def make_taxa_groups records
     groups = {}
     records.each do |record|
+
       record = preprocess record
       key = get_key record
       groups[key] ||= []
