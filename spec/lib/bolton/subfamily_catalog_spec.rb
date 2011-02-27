@@ -155,6 +155,22 @@ style='color:red'>Stenammini</span><o:p></o:p></span></b></p>
       ancyridris.taxonomic_history.should == ''
     end
 
+    it "should not include the subfamily header in the tazonomic history" do
+      @subfamily_catalog.import_html make_contents %{
+<p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
+-36.0pt'><b style='mso-bidi-font-weight:normal'><span lang=EN-GB>Genus <i
+style='mso-bidi-font-style:normal'><span style='color:red'>ANCYRIDRIS</span></i>
+<o:p></o:p></span></b></p>
+
+<p class=MsoNormal align=center style='margin-top:0in;margin-right:-1.25pt;
+margin-bottom:0in;margin-left:.5in;margin-bottom:.0001pt;text-align:center;
+text-indent:-.5in;tab-stops:6.25in'><b style='mso-bidi-font-weight:normal'><span
+lang=EN-GB>SUBFAMILY <span style='color:red'>ECITONINAE</span><o:p></o:p></span></b></p>
+      }
+      ancyridris = Genus.find_by_name 'Ancyridris'
+      ancyridris.taxonomic_history.should == ''
+    end
+
     it "should handle a plus sign in the taxonomic history" do
       @subfamily_catalog.import_html make_contents %{
 <p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
@@ -237,6 +253,12 @@ style='color:red'>PROCERATIINAE</span><o:p></o:p></span></b></p>
       @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Genus <i>incertae sedis</i> in <span style='color:red'>Stenammini</i>
       }).should == {:type => :genus_incertae_sedis_in}
+    end
+
+    it "should recognize a subfamily header" do
+      @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>SUBFAMILY <span style='color:red'>ECITONINAE</span><o:p></o:p></span></b></p>
+      }).should == {:type => :subfamily_header}
     end
 
   end

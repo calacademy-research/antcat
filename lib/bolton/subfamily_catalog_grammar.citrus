@@ -2,7 +2,7 @@ grammar Bolton::SubfamilyCatalogGrammar
   include Bolton::CatalogGrammar
 
   rule record
-    subfamily | tribe | genus | genus_incertae_sedis_in | other
+    subfamily | tribe | genus | subfamily_header | genus_incertae_sedis_in | other
   end
 
   rule subfamily
@@ -30,8 +30,14 @@ grammar Bolton::SubfamilyCatalogGrammar
   end
 
   rule genus_incertae_sedis_in
-    (bold span 'Genus ' italic 'incertae sedis' tag_end ' in ' red capitalized_word tag_end) {
+    (bold span 'Genus ' italic 'incertae sedis' tag_end ' in ' red capitalized_word close_tags) {
       {:type => :genus_incertae_sedis_in}
+    }
+  end
+
+  rule subfamily_header
+    (bold span 'SUBFAMILY ' red uppercase_word close_tags) {
+      {:type => :subfamily_header}
     }
   end
 
