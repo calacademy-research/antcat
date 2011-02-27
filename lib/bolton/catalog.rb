@@ -103,15 +103,15 @@ class Bolton::Catalog
         return
       end
     end
-    @line = massage @paragraphs[@paragraph_index].inner_html(:encoding => 'UTF-8')
-    @paragraph = massage @paragraphs[@paragraph_index].to_html(:encoding => 'UTF-8')
+    @line = preprocess @paragraphs[@paragraph_index].inner_html(:encoding => 'UTF-8')
+    @paragraph = preprocess @paragraphs[@paragraph_index].to_html(:encoding => 'UTF-8')
     @paragraph_index += 1
     Progress.info "input line: '#{@line}'"
     Progress.tally
     @line
   end
 
-  def massage line
-    CGI.unescape(line.gsub /\n/, ' ').strip
+  def preprocess line
+    line.gsub(/\n/, ' ').strip
   end
 end
