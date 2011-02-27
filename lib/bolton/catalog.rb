@@ -77,9 +77,18 @@ class Bolton::Catalog
   end
 
   def read_string html
+    html = save_quot_character_entity html
     doc = Nokogiri::HTML html, nil, 'UTF-8'
     @paragraphs = doc.css('div/p')
     @paragraph_index = 0
+  end
+
+  def save_quot_character_entity html
+    html.gsub /&quot;/, 'SAVED_QUOT_CHARACTER_ENTITY'
+  end
+
+  def restore_quot_character_entity html
+    html.gsub /SAVED_QUOT_CHARACTER_ENTITY/, '&quot;'
   end
 
   def parse_next_line
@@ -112,6 +121,6 @@ class Bolton::Catalog
   end
 
   def preprocess line
-    line.gsub(/\n/, ' ').strip
+    rc = restore_quot_character_entity line.gsub(/\n/, ' ').strip
   end
 end
