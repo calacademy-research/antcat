@@ -2,7 +2,7 @@ grammar Bolton::SubfamilyCatalogGrammar
   include Bolton::CatalogGrammar
 
   rule record
-    subfamily | tribe | genus | other
+    subfamily | tribe | genus | genus_incertae_sedis_in | other
   end
 
   rule subfamily
@@ -26,6 +26,12 @@ grammar Bolton::SubfamilyCatalogGrammar
       value = {:type => :tribe, :name => uppercase_word.downcase.capitalize.strip}
       value.merge! :fossil => true if fossil_flag.present?
       value
+    }
+  end
+
+  rule genus_incertae_sedis_in
+    (bold span 'Genus ' italic 'incertae sedis' tag_end ' in ' red capitalized_word tag_end) {
+      {:type => :genus_incertae_sedis_in}
     }
   end
 

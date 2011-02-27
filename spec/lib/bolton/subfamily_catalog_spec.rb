@@ -138,6 +138,23 @@ genera key).</span></p>
 "<p class=\"MsoNormal\" style=\"margin-left:36.0pt;text-align:justify;text-indent: -36.0pt\"><b style=\"mso-bidi-font-weight:normal\"><span lang=\"EN-GB\">Proceratii</span></b><span lang=\"EN-GB\"> Emery, 1895j: 765. Type-genus: <i style=\"mso-bidi-font-style:normal\">Proceratium</i>. </span></p><p class=\"MsoNormal\" style=\"margin-left:36.0pt;text-align:justify;text-indent: -36.0pt\"><b style=\"mso-bidi-font-weight:normal\"><span lang=\"EN-GB\">Taxonomic history<p></p></span></b></p><p class=\"MsoNormal\" style=\"margin-left:36.0pt;text-align:justify;text-indent: -36.0pt\"><span lang=\"EN-GB\">Proceratiinae as poneromorph subfamily of Formicidae: Bolton, 2003: 48, 178.</span></p><p class=\"MsoNormal\" style=\"margin-left:36.0pt;text-align:justify;text-indent: -36.0pt\"><span lang=\"EN-GB\">Proceratiinae as poneroid subfamily of Formicidae: Ouellette, Fisher, <i style=\"mso-bidi-font-style:normal\">et al</i>. 2006: 365; Brady, Schultz, <i style=\"mso-bidi-font-style:normal\">et al</i>. 2006: 18173; Moreau, Bell <i style=\"mso-bidi-font-style:normal\">et al</i>. 2006: 102; Ward, 2007a: 555.</span></p><p class=\"MsoNormal\" style=\"margin-left:36.0pt;text-align:justify;text-indent: -36.0pt\"><span lang=\"EN-GB\">Tribes of Proceratiinae: Probolomyrmecini, Proceratiini.</span></p><p class=\"MsoNormal\" style=\"margin-left:36.0pt;text-align:justify;text-indent: -36.0pt\"><span lang=\"EN-GB\"><p> </p></span></p><p class=\"MsoNormal\" style=\"margin-left:36.0pt;text-align:justify;text-indent: -36.0pt\"><b style=\"mso-bidi-font-weight:normal\"><span lang=\"EN-GB\">Subfamily references<p></p></span></b></p><p class=\"MsoNormal\" style=\"text-align:justify\"><span lang=\"EN-GB\">Bolton, 2003: 48, 178 (diagnosis, synopsis); Ouellette, Fisher <i style=\"mso-bidi-font-style: normal\">et al</i>. 2006: 359 (phylogeny); Brady, Schultz, <i style=\"mso-bidi-font-style: normal\">et al</i>. 2006: 18173 (phylogeny); Moreau, Bell <i style=\"mso-bidi-font-style: normal\">et al</i>. 2006: 102 (phylogeny); Ward, 2007a: 555 (classification); Fernández &amp; Arias-Penna, 2008: 31 (Neotropical genera key); Yoshimura &amp; Fisher, 2009: 8 (Malagasy males diagnosis, key); Terayama, 2009: 96 (Taiwan genera key).</span></p><p class=\"MsoNormal\" style=\"margin-left:.5in;text-align:justify;text-indent:-.5in\"><p> </p></p>"
     end
       
+
+    it "should not include 'Genus incertae sedis in [...]' in the taxonomic history" do
+      @subfamily_catalog.import_html make_contents %{
+<p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
+-36.0pt'><b style='mso-bidi-font-weight:normal'><span lang=EN-GB>Genus <i
+style='mso-bidi-font-style:normal'><span style='color:red'>ANCYRIDRIS</span></i>
+<o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
+-36.0pt'><b style='mso-bidi-font-weight:normal'><span lang=EN-GB>Genus <i
+style='mso-bidi-font-style:normal'>incertae sedis</i> in <span
+style='color:red'>Stenammini</span><o:p></o:p></span></b></p>
+      }
+      ancyridris = Genus.find_by_name 'Ancyridris'
+      ancyridris.taxonomic_history.should == ''
+    end
+
     def make_contents content
       %{
   <html> <body lang=EN-US style='tab-interval:.5in'> <div class=Section1>
@@ -197,6 +214,12 @@ genera key).</span></p>
       @subfamily_catalog.parse(%{
 <b><span lang="EN-GB">Genus *<i><span style="color:red">EOAENICTITES</span></i></span></b><span lang="EN-GB"> </span>
       }).should == {:type => :genus, :name => 'Eoaenictites', :fossil => true}
+    end
+
+    it "should recognize an incertae sedis header" do
+      @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>Genus <i>incertae sedis</i> in <span style='color:red'>Stenammini</i>
+      }).should == {:type => :genus_incertae_sedis_in}
     end
 
   end
