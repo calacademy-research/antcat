@@ -10,6 +10,7 @@ grammar CommonGrammar
     blank_namespaced_paragraph |
     blank_paragraph |
     empty_span |
+    en_gb_span |
     errant_red_space |
     spacerun
   end
@@ -156,6 +157,10 @@ grammar CommonGrammar
 
   rule empty_span
     span s tag_end
+  end
+
+  rule en_gb_span
+    '<span lang=' '"'? 'EN-GB' '"'? '>'
   end
 
 end

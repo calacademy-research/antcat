@@ -58,6 +58,12 @@ describe CommonGrammar do
     it "should handle an empty span" do
       CommonGrammar.parse(%{<span lang="EN-GB"> </span>}, :root => :space).should_not be_nil
     end
+    it "should just ignore this span as space" do
+      CommonGrammar.parse(%{<span lang="EN-GB">}, :root => :space).should_not be_nil
+    end
+    it "should just ignore this span as space" do
+      CommonGrammar.parse(%{<span lang=EN-GB>}, :root => :space).should_not be_nil
+    end
 
   end
 end
