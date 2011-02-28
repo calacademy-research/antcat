@@ -84,9 +84,12 @@ class Antweb::Diff
 
   def self.preprocess_antweb antweb
     for line in antweb
-      # AntWeb parsed this correctly, but it was a typo in Bolton which in AntCat
+
+      # AntWeb parsed these correctly, but it was a typo in Bolton which in AntCat
       # was corrected manually
       line.gsub! /(Myrmicinae\tAttini\tPseudoatta\t\t\t\t)FALSE\tFALSE\t\t/i, "\\1TRUE\tTRUE\tPseudoatta\t"
+      line.gsub! /(Amblyoponinae\t\tParaprionopelta\t\t\t\t)FALSE\tFALSE\t\t/i, "\\1TRUE\tTRUE\tParaprionopelta\t"
+      line.gsub! /(Leptanilloidinae\t\tAsphinctanilloides\t\t\t\t)FALSE\tFALSE\t\t/i, "\\1TRUE\tTRUE\tAsphinctanilloides\t"
 
       # AntWeb doesn't store the tribes of all genera
       antweb_fields = line.split "\t"

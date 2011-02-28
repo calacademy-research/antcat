@@ -56,6 +56,22 @@ describe Antweb::Diff do
     @diff.match_count.should == 1
   end
 
+  it "should ignore the validity and availability of Paraprionopelta, since Bolton had a typo which I corrected, and also shouldn't care if it doesn't have a tribe" do
+    Factory :genus, :name => 'Paraprionopelta', :tribe => Factory(:tribe, :name => 'Amblyoponini')
+    antcat = ["Amblyoponinae\tAmblyoponini\tParaprionopelta\t\t\t\tTRUE\tTRUE\tParaprionopelta\t"]
+    antweb = ["Amblyoponinae\t\tParaprionopelta\t\t\t\tfalse\tfalse\t\t"]
+    @diff.diff antcat, antweb
+    @diff.match_count.should == 1
+  end
+
+  it "should ignore the validity and availability of Asphinctanilloides, since Bolton had a typo which I corrected" do
+    Factory :genus, :name => 'Asphinctanilloides', :tribe => Factory(:tribe, :name => 'Leptanilloidini')
+    antcat = ["Leptanilloidinae\tLeptanilloidini\tAsphinctanilloides\t\t\t\tTRUE\tTRUE\tAsphinctanilloides\t"]
+    antweb = ["Leptanilloidinae\t\tAsphinctanilloides\t\t\t\tfalse\tfalse\t\t"]
+    @diff.diff antcat, antweb
+    @diff.match_count.should == 1
+  end
+
   it "ignore the difference if it's just that AntCat has a genus's tribe but AntWeb doesn't" do
     Factory :genus, :name => 'Adetomyrma', :tribe => Factory(:tribe, :name => 'Aenictini')
     antcat = ["Amblyoponinae\t" + "Aenictini\t" + "Adetomyrma\t\t\t\tTRUE\tTRUE\tPseudoatta\t"]
