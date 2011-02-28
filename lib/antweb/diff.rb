@@ -79,6 +79,8 @@ class Antweb::Diff
   end
 
   def self.closeness antcat, antweb
+    # AntWeb just got this one's taxonomic history wrong
+    return 0 if antweb =~ /Martialinae\tLeptanillini\tMartialis\t\t\t\tTRUE\tTRUE\tMartialis\t/
     Levenshtein.distance(antcat, antweb)
   end
 
@@ -91,14 +93,16 @@ class Antweb::Diff
       line.gsub! /(Amblyoponinae\t\tParaprionopelta\t\t\t\t)FALSE\tFALSE\t\t/i, "\\1TRUE\tTRUE\tParaprionopelta\t"
       line.gsub! /(Leptanilloidinae\t\tAsphinctanilloides\t\t\t\t)FALSE\tFALSE\t\t/i, "\\1TRUE\tTRUE\tAsphinctanilloides\t"
 
-      # AntWeb doesn't store the tribes of all genera
       antweb_fields = line.split "\t"
+
+      # AntWeb doesn't store the tribes of all genera
       if antweb_fields[1].blank? && antweb_fields[3].blank? && antweb_fields[2].present?
         genus = Genus.find_by_name antweb_fields[2]
         tribe = genus && genus.tribe && genus.tribe.name
         antweb_fields[1] = tribe
         line.replace antweb_fields.join("\t")
       end
+
     end
   end
 

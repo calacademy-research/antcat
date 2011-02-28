@@ -72,10 +72,18 @@ describe Antweb::Diff do
     @diff.match_count.should == 1
   end
 
-  it "ignore the difference if it's just that AntCat has a genus's tribe but AntWeb doesn't" do
+  it "should ignore the difference if it's just that AntCat has a genus's tribe but AntWeb doesn't" do
     Factory :genus, :name => 'Adetomyrma', :tribe => Factory(:tribe, :name => 'Aenictini')
     antcat = ["Amblyoponinae\t" + "Aenictini\t" + "Adetomyrma\t\t\t\tTRUE\tTRUE\tPseudoatta\t"]
     antweb = ["Amblyoponinae\t" + "\t"          + "Adetomyrma\t\t\t\tTRUE\tTRUE\tPseudoatta\t"]
+    @diff.diff antcat, antweb
+    @diff.match_count.should == 1
+  end
+
+  it "should ignore the difference if it's just that AntWeb didn't pick up the taxonomic history properly" do
+    Factory :genus, :name => 'Martialis', :tribe => Factory(:tribe, :name => 'Leptanillini')
+    antcat = ["Martialinae\tLeptanillini\tMartialis\t\t\t\tTRUE\tTRUE\tMartialis\tA good taxonomic history"]
+    antweb = ["Martialinae\t\tMartialis\t\t\t\tTRUE\tTRUE\tMartialis\tA bad taxonomic history"]
     @diff.diff antcat, antweb
     @diff.match_count.should == 1
   end
