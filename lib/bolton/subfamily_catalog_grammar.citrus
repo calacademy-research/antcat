@@ -2,7 +2,7 @@ grammar Bolton::SubfamilyCatalogGrammar
   include Bolton::CatalogGrammar
 
   rule record
-    subfamily | tribe | genus | subfamily_header | genus_incertae_sedis_in | other
+    a_supersubfamily_header | subfamily_header | subfamily | tribe | genus | genus_incertae_sedis_in | other
   end
 
   rule subfamily
@@ -38,6 +38,12 @@ grammar Bolton::SubfamilyCatalogGrammar
   rule subfamily_header
     (bold span 'SUBFAMILY' close_tags red uppercase_word close_tags) {
       {:type => :subfamily_header}
+    }
+  end
+
+  rule a_supersubfamily_header
+    (bold span ('THE '|'EXTINCT') /.*?(SUBFAMILIES|SUBFAMILY).*/) {
+      {:type => :supersubfamily_header}
     }
   end
 

@@ -301,6 +301,20 @@ style='color:red'>PROCERATIINAE</span><o:p></o:p></span></b></p>
 <b><span lang="EN-GB" style="color:black">SUBFAMILY</span><span lang="EN-GB"> <span style="color:red">MARTIALINAE</span><p></p></span></b>
       }).should == {:type => :subfamily_header}
     end
+
+    it "should recognize the supersubfamily header" do
+      @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>THE PONEROIDS: SUBFAMILIES AGROECOMYRMECINAE, AMBLYOPONINAE, PARAPONERINAE, PONERINAE AND PROCERATIINAE<o:p></o:p></span></b>
+      }).should == {:type => :supersubfamily_header}
+    end
+
+    it "should recognize the supersubfamily header when there's only one subfamily" do
+      @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>THE MYRMICOMORPHS: SUBFAMILY MYRMICINAE<o:p></o:p></span></b></p>
+      }).should == {:type => :supersubfamily_header}
+    end
+
+
   end
 end
 
