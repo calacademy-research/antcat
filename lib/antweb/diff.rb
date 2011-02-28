@@ -1,12 +1,14 @@
 require 'levenshtein'
 
 class Antweb::Diff
-  attr_reader :match_count, :difference_count, :differences, :antcat_unmatched_count, :antweb_unmatched_count
+  attr_reader :match_count, :difference_count, :differences, :antcat_unmatched_count, :antweb_unmatched_count,
+              :antcat_unmatched
 
   def initialize show_progress = false
     Progress.init show_progress
     @match_count = @difference_count = @antcat_unmatched_count = @antweb_unmatched_count = 0
     @differences = []
+    @antcat_unmatched = []
   end
 
   def diff_files antcat_directory, antweb_directory
@@ -15,6 +17,7 @@ class Antweb::Diff
     Progress.puts "Diffing #{antcat_filename} against #{antweb_filename}"
     diff File.open(antcat_filename, 'r').readlines, File.open(antweb_filename, 'r').readlines
     show_differences
+    show_antcat_unmatched
     Progress.puts "#{@match_count} matches"
     Progress.puts "#{@difference_count} matches with differences"
     Progress.puts "#{@antcat_unmatched_count} antcat lines unmatched"
@@ -38,6 +41,7 @@ class Antweb::Diff
       for antcat_record in antcat_records
         unless antweb_records
           @antcat_unmatched_count += 1
+          @antcat_unmatched << antcat_record
         else
           for antweb_record in antweb_records
             combinations << [antcat_record, antweb_record, self.class.closeness(antcat_record, antweb_record)]
@@ -124,6 +128,14 @@ class Antweb::Diff
       Progress.puts '==='
       Progress.puts antweb[match_fails_at..-1] || ''
       Progress.puts ">>> #{antweb[match_fails_at]} len: #{antweb.length}"
+    end
+  end
+
+  def show_antcat_unmatched
+    return unless @antcat_unmatched.present?
+    Progress.puts "antcat unmatched:"
+    @antcat_unmatched.sort.each do |antcat|
+      Progress.puts antcat.split("\t")[0,4].join("\t")
     end
   end
 
