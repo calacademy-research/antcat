@@ -88,6 +88,13 @@ describe Antweb::Diff do
     @diff.match_count.should == 1
   end
 
+  it "should ignore the difference if it's just that AntWeb didn't pick up the tribe properly" do
+    antcat = ["Myrmicinae\tStenammini\tPropodilobus\t\t\t\tTRUE\tTRUE\tPropodilobus\t"]
+    antweb = ["Myrmicinae\tincertae sedis in Stenammini\tPropodilobus\t\t\t\tTRUE\tTRUE\tPropodilobus\t"]
+    @diff.diff antcat, antweb
+    @diff.match_count.should == 1
+  end
+
   describe "showing where two strings differ" do
 
     it "should return nil if they're equal" do
