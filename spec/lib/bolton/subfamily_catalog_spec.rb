@@ -248,10 +248,22 @@ style='color:red'>PROCERATIINAE</span><o:p></o:p></span></b></p>
       }).should == {:type => :tribe, :name => 'Myrmeciini'}
     end
 
+    it "should recognize the beginning of a fossil tribe" do
+      @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>Tribe *<span style='color:red'>MIOMYRMECINI</span><o:p></o:p></span></b>
+      }).should == {:type => :tribe, :name => 'Miomyrmecini', :fossil => true}
+    end
+
     it "should recognize the beginning of a genus" do
       @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Genus <i><span style='color:red'>ATTA</span></i> <o:p></o:p></span></b></p>
       }).should == {:type => :genus, :name => 'Atta'}
+    end
+
+    it "should recognize the beginning of a genus when the word 'Genus' is in italics, too" do
+      @subfamily_catalog.parse(%{
+<b><i><span lang=EN-GB style='color:black'>Genus</span><span lang=EN-GB style='color:red'> PARVIMYRMA</span></i></b>
+      }).should == {:type => :genus, :name => 'Parvimyrma'}
     end
 
     it "should recognize a fossil genus with an extra language span" do

@@ -14,7 +14,7 @@ grammar Bolton::SubfamilyCatalogGrammar
   end
 
   rule genus
-    (bold span 'Genus' close_tags fossil_flag? bold? italic red uppercase_word close_tags) {
+    (bold italic? span 'Genus' close_tags fossil_flag? bold? italic? red s uppercase_word close_tags) {
       value = {:type => :genus, :name => uppercase_word.downcase.capitalize.strip}
       value.merge! :fossil => true if fossil_flag.present?
       value
@@ -22,7 +22,7 @@ grammar Bolton::SubfamilyCatalogGrammar
   end
 
   rule tribe
-    (bold span 'Tribe ' red uppercase_word close_tags) {
+    (bold span 'Tribe ' fossil_flag? red uppercase_word close_tags) {
       value = {:type => :tribe, :name => uppercase_word.downcase.capitalize.strip}
       value.merge! :fossil => true if fossil_flag.present?
       value
