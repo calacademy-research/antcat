@@ -56,6 +56,14 @@ describe Antweb::Diff do
     @diff.match_count.should == 1
   end
 
+  it "ignore the difference if it's just that AntCat has a genus's tribe but AntWeb doesn't" do
+    Factory :genus, :name => 'Adetomyrma', :tribe => Factory(:tribe, :name => 'Aenictini')
+    antcat = ["Amblyoponinae\t" + "Aenictini\t" + "Adetomyrma\t\t\t\tTRUE\tTRUE\tPseudoatta\t"]
+    antweb = ["Amblyoponinae\t" + "\t"          + "Adetomyrma\t\t\t\tTRUE\tTRUE\tPseudoatta\t"]
+    @diff.diff antcat, antweb
+    @diff.match_count.should == 1
+  end
+
   describe "showing where two strings differ" do
 
     it "should return nil if they're equal" do

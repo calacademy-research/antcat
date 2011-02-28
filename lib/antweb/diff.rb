@@ -83,10 +83,19 @@ class Antweb::Diff
   end
 
   def self.preprocess_antweb antweb
-    # AntWeb parsed this correctly, but it was a typo in Bolton which in AntCat
-    # was corrected manually
     for line in antweb
+      # AntWeb parsed this correctly, but it was a typo in Bolton which in AntCat
+      # was corrected manually
       line.gsub! /(Myrmicinae\tAttini\tPseudoatta\t\t\t\t)FALSE\tFALSE\t\t/i, "\\1TRUE\tTRUE\tPseudoatta\t"
+
+      # AntWeb doesn't store the tribes of all genera
+      antweb_fields = line.split "\t"
+      if antweb_fields[1].blank? && antweb_fields[3].blank? && antweb_fields[2].present?
+        genus = Genus.find_by_name antweb_fields[2]
+        tribe = genus && genus.tribe && genus.tribe.name
+        antweb_fields[1] = tribe
+        line.replace antweb_fields.join("\t")
+      end
     end
   end
 
