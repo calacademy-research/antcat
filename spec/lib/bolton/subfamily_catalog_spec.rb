@@ -290,6 +290,12 @@ style='color:red'>PROCERATIINAE</span><o:p></o:p></span></b></p>
       }).should == {:type => :genus_incertae_sedis_in}
     end
 
+    it "should recognize Hong's incertae sedises" do
+      @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>Genera of Hong (2002), <i>incertae sedis</i> in <span style='color:red'>MYRMICINAE</span><o:p></o:p></span></b>
+      }).should == {:type => :genus_incertae_sedis_in}
+    end
+
     it "should recognize a subfamily header" do
       @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>SUBFAMILY <span style='color:red'>ECITONINAE</span><o:p></o:p></span></b></p>
@@ -313,7 +319,6 @@ style='color:red'>PROCERATIINAE</span><o:p></o:p></span></b></p>
 <b><span lang=EN-GB>THE MYRMICOMORPHS: SUBFAMILY MYRMICINAE<o:p></o:p></span></b></p>
       }).should == {:type => :supersubfamily_header}
     end
-
 
   end
 end
