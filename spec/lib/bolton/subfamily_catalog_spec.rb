@@ -382,6 +382,14 @@ normal'><span style='color:red'>ATTA</span></i> <o:p></o:p></span></b></p>
       }}.should raise_error "Genus Atta has no subfamily"
     end
 
+    it 'should complain if adding a tribe without a subfamily' do
+      lambda {@subfamily_catalog.import_html make_contents %{
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
+style='mso-bidi-font-weight:normal'><span lang=EN-GB>Tribe <span
+style='color:red'>MYRMECIINI</span><o:p></o:p></span></b></p>
+      }}.should raise_error "Tribe Myrmeciini has no subfamily"
+    end
+
     def make_contents content
       %{
   <html> <body lang=EN-US style='tab-interval:.5in'> <div class=Section1>

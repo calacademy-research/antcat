@@ -57,6 +57,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     taxonomic_history = parse_taxonomic_history
 
     raise "Tribe #{name} already exists" if Tribe.find_by_name name
+    raise "Tribe #{name} has no subfamily" unless @current_subfamily
 
     @current_tribe = Tribe.create! :name => name, :subfamily => @current_subfamily, :fossil => fossil, :taxonomic_history => taxonomic_history
   end
@@ -75,7 +76,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     if @incertae_sedis_in_family
       attributes[:incertae_sedis_in] = 'family'
     elsif @incertae_sedis_in_subfamily
-      raise "Genus #{name} is incertae sedis in subfamily with no subfamily" if !@current_subfamily
+      raise "Genus #{name} is incertae sedis in subfamily with no subfamily" unless @current_subfamily
       attributes[:incertae_sedis_in] = 'subfamily'
     elsif !@current_subfamily
       raise "Genus #{name} has no subfamily"

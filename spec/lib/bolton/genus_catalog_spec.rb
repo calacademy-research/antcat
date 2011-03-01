@@ -237,6 +237,34 @@ style='mso-bidi-font-style:normal'>Cylindromyrmex</i>: Forel, 1892f: 256.</p>
       Genus.count.should == 4
     end
 
+    it "should complain if the genus is brand new" do
+      lambda {@genus_catalog.import_html make_content %{
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
+style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
+style='color:red'>ACROMYRMEX</span></i></b> [Myrmicinae: Attini]</p>
+      }}.should raise_error "Genus Acromyrmex not found"
+    end
+
+    it "should not complain if the genus is brand new but is a synonym" do
+      lambda {@genus_catalog.import_html make_content %{
+<p class=MsoNormal><i style='mso-bidi-font-style:normal'><span
+style='color:black'>ACALAMA</span></i> [junior synonym of <i style='mso-bidi-font-style:
+normal'>Gauromyrmex</i>]</p>
+      }}.should_not raise_error
+      acalama = Genus.find_by_name 'Acalama'
+      acalama.status.should == 'synonym'
+    end
+
+    it "should not complain if the genus is brand new but is a homonym" do
+      lambda {@genus_catalog.import_html make_content %{
+<p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
+-36.0pt'><i style='mso-bidi-font-style:normal'>ACAMATUS</i> [junior homonym,
+see <i style='mso-bidi-font-style:normal'>Neivamyrmex</i>]</p>
+      }}.should_not raise_error
+      acamatus = Genus.find_by_name 'Acamatus'
+      acamatus.status.should == 'homonym'
+    end
+
     def make_content content
       %{<html> <head> <title>CATALOGUE OF GENUS-GROUP TAXA</title> </head>
 <body>
