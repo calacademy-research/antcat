@@ -12,7 +12,7 @@ class Genus < Taxon
     tribe_name = record[:tribe]
     synonym_of_name = record[:synonym_of]
     homonym_resolved_to_name = record[:homonym_resolved_to]
-    status = record[:status].to_s
+    status = record[:status].present? ? record[:status].to_s : nil
     incertae_sedis_in = record[:incertae_sedis_in] && record[:incertae_sedis_in].to_s
     fossil = record[:fossil]
 
@@ -48,15 +48,8 @@ class Genus < Taxon
       if tribe && existing_genus.tribe && existing_genus.tribe != tribe
         raise "#{existing_genus.name}: trying to replace tribe '#{existing_genus.tribe && existing_genus.tribe.name}' with '#{tribe_name}'"
       end
-      if existing_genus.status != status
-        puts "#{existing_genus.name}" unless already_printed_genus_name
-        already_printed_genus_name = true
-        puts "Trying to replace status '#{existing_genus.status}' with '#{status}'"
-      end
       if !!existing_genus.fossil? != !!fossil
-        puts "#{existing_genus.name}" unless already_printed_genus_name
-        already_printed_genus_name = true
-        puts "Trying to replace fossil '#{existing_genus.fossil?}' with '#{fossil}'"
+        raise "#{existing_genus.name}: trying to replace fossil flag '#{existing_genus.fossil?}' with '#{fossil}'"
       end
     end
     genus

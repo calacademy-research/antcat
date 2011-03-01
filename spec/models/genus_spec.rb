@@ -142,38 +142,56 @@ describe Genus do
   end
 
   describe "Reimporting, when information changes" do
+    describe "Setting the subfamily" do
 
-    it "should allow setting a subfamily if none existed before" do
-      Factory :genus, :name => 'Camponotites'
-      lambda {Genus.import :name => 'Camponotites', :subfamily => 'Formicinae', :status => :valid}.should_not raise_error
+      it "should allow setting a subfamily if none existed before" do
+        Factory :genus, :name => 'Camponotites'
+        lambda {Genus.import :name => 'Camponotites', :subfamily => 'Formicinae', :status => :valid}.should_not raise_error
+      end
+
+      it "should not allow setting a subfamily if one did exist before and they're not the same" do
+        Factory :genus, :name => 'Camponotites', :subfamily => Factory(:subfamily, :name => 'Formicinae')
+        lambda {Genus.import :name => 'Camponotites', :subfamily => 'Dolichoderinae', :status => :valid}.should raise_error
+      end
+
+      it "should allow setting a subfamily if one did exist before and they are the same" do
+        Factory :genus, :name => 'Camponotites', :subfamily => Factory(:subfamily, :name => 'Formicinae')
+        lambda {Genus.import :name => 'Camponotites', :subfamily => 'Formicinae', :status => :valid}.should_not raise_error
+      end
+
     end
 
-    it "should not allow setting a subfamily if one did exist before and they're not the same" do
-      Factory :genus, :name => 'Camponotites', :subfamily => Factory(:subfamily, :name => 'Formicinae')
-      lambda {Genus.import :name => 'Camponotites', :subfamily => 'Dolichoderinae', :status => :valid}.should raise_error
+    describe "Setting the tribe" do
+
+      it "should allow setting a tribe if none existed before" do
+        Factory :genus, :name => 'Camponotites'
+        lambda {Genus.import :name => 'Camponotites', :tribe => 'Camponotini', :status => :valid}.should_not raise_error
+      end
+
+      it "should not allow setting a tribe if one did exist before and they're not the same" do
+        Factory :genus, :name => 'Camponotites', :tribe => Factory(:tribe, :name => 'Camponotini')
+        lambda {Genus.import :name => 'Camponotites', :tribe => 'Aneuretini', :status => :valid}.should raise_error
+      end
+
+      it "should allow setting a tribe if one did exist before and they are the same" do
+        Factory :genus, :name => 'Camponotites', :tribe => Factory(:tribe, :name => 'Camponotini')
+        lambda {Genus.import :name => 'Camponotites', :tribe => 'Camponotini', :status => :valid}.should_not raise_error
+      end
+
     end
 
-    it "should allow setting a subfamily if one did exist before and they are the same" do
-      Factory :genus, :name => 'Camponotites', :subfamily => Factory(:subfamily, :name => 'Formicinae')
-      lambda {Genus.import :name => 'Camponotites', :subfamily => 'Formicinae', :status => :valid}.should_not raise_error
-    end
+    describe "Setting the fossil flag" do
 
-    it "should allow setting a tribe if none existed before" do
-      Factory :genus, :name => 'Camponotites'
-      lambda {Genus.import :name => 'Camponotites', :tribe => 'Camponotini', :status => :valid}.should_not raise_error
-    end
+      it "should not allow changing the fossil flag" do
+        Factory :genus, :name => 'Camponotites'
+        lambda {Genus.import :name => 'Camponotites', :status => :valid, :fossil => true}.should raise_error
+      end
 
-    it "should not allow setting a tribe if one did exist before and they're not the same" do
-      Factory :genus, :name => 'Camponotites', :tribe => Factory(:tribe, :name => 'Camponotini')
-      lambda {Genus.import :name => 'Camponotites', :tribe => 'Aneuretini', :status => :valid}.should raise_error
-    end
+      it "should allow setting the fossil flag to the same thing" do
+        Factory :genus, :name => 'Camponotites', :fossil => true
+        lambda {Genus.import :name => 'Camponotites', :status => :valid, :fossil => true}.should_not raise_error
+      end
 
-    it "should allow setting a tribe if one did exist before and they are the same" do
-      Factory :genus, :name => 'Camponotites', :tribe => Factory(:tribe, :name => 'Camponotini')
-      lambda {Genus.import :name => 'Camponotites', :tribe => 'Camponotini', :status => :valid}.should_not raise_error
     end
-
   end
-
-
 end
