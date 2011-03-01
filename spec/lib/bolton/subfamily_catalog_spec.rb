@@ -303,6 +303,12 @@ style='color:red'>PROCERATIINAE</span><o:p></o:p></span></b></p>
       }).should == {:type => :genus, :name => 'Eoaenictites', :fossil => true}
     end
 
+    it "should recognize this tribe" do
+      @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>Tribe</span></b><span lang=EN-GB> *<b style='mso-bidi-font-weight:normal'><span style='color:red'>PITYOMYRMECINI</span></b></span>
+      }).should == {:type => :tribe, :name => 'Pityomyrmecini', :fossil => true}
+    end
+
     it "should recognize an incertae sedis header in tribe" do
       @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Genus <i>incertae sedis</i> in <span style='color:red'>Stenammini</i>
