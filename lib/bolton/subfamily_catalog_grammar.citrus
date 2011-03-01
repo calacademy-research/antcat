@@ -2,7 +2,7 @@ grammar Bolton::SubfamilyCatalogGrammar
   include Bolton::CatalogGrammar
 
   rule record
-    a_supersubfamily_header | subfamily_header | subfamily | tribe | genus | incertae_sedis | other
+    a_supersubfamily_header | subfamily_header | subfamily | tribe | genus | incertae_sedis_header | other
   end
 
   rule subfamily
@@ -29,19 +29,19 @@ grammar Bolton::SubfamilyCatalogGrammar
     }
   end
 
-  rule incertae_sedis
-    incertae_sedis_in_tribe | incertae_sedis_in_subfamily
+  rule incertae_sedis_header
+    incertae_sedis_in_tribe_header | incertae_sedis_in_subfamily_header
   end
 
-  rule incertae_sedis_in_tribe
+  rule incertae_sedis_in_tribe_header
     (bold span ('Genus '|'Genera ') italic 'incertae sedis' tag_end ' in ' red capitalized_word close_tags) {
-      {:type => :genus_incertae_sedis_in_tribe}
+      {:type => :incertae_sedis_in_tribe_header}
     }
   end
 
-  rule incertae_sedis_in_subfamily
+  rule incertae_sedis_in_subfamily_header
     (bold span ('Genus ' | 'Genera of Hong (2002), ' | 'Genera ') '(extinct) '? italic 'incertae sedis' tag_end ' in ' red uppercase_word close_tags) {
-      {:type => :genus_incertae_sedis_in_subfamily}
+      {:type => :incertae_sedis_in_subfamily_header}
     }
   end
 

@@ -69,7 +69,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
   end
 
   def parse_other
-    return unless @type == :genus_incertae_sedis_in_subfamily
+    return unless @type == :incertae_sedis_in_subfamily_header
     @current_tribe = nil
     parse_next_line
   end

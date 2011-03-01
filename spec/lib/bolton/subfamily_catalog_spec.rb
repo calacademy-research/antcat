@@ -350,25 +350,25 @@ style='mso-bidi-font-style:normal'><span style='color:red'>ANCYRIDRIS</span></i>
     it "should recognize an incertae sedis header in tribe" do
       @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Genus <i>incertae sedis</i> in <span style='color:red'>Stenammini</i>
-      }).should == {:type => :genus_incertae_sedis_in_tribe}
+      }).should == {:type => :incertae_sedis_in_tribe_header}
     end
 
     it "should recognize Hong's incertae sedises" do
       @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Genera of Hong (2002), <i>incertae sedis</i> in <span style='color:red'>MYRMICINAE</span><o:p></o:p></span></b>
-      }).should == {:type => :genus_incertae_sedis_in_subfamily}
+      }).should == {:type => :incertae_sedis_in_subfamily_header}
     end
 
     it "should recognize incertae sedis in subfamily" do
       @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Genera <i>incertae sedis</i> in <span style='color:red'>MYRMICINAE</span><o:p></o:p></span></b>
-      }).should == {:type => :genus_incertae_sedis_in_subfamily}
+      }).should == {:type => :incertae_sedis_in_subfamily_header}
     end
 
     it "should recognize extinct incertae sedis in subfamily" do
       @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in <span style='color:red'>DOLICHODERINAE<o:p></o:p></span></span></b>
-      }).should == {:type => :genus_incertae_sedis_in_subfamily}
+      }).should == {:type => :incertae_sedis_in_subfamily_header}
     end
 
     it "should recognize a subfamily header" do
