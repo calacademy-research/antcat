@@ -17,13 +17,27 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
   def import
     Taxon.delete_all
     while @line
-      parse_subfamily || parse_genus || parse_tribe || parse_other || parse_next_line
+      parse_incertae_sedis_in_family || parse_incertae_sedis_in_subfamily || parse_subfamily || parse_genus || parse_tribe || parse_other || parse_next_line
     end
     super
   end
 
+  def parse_incertae_sedis_in_family
+    return unless @type == :incertae_sedis_in_family_header
+    @incertae_sedis_in_family = true
+    parse_next_line
+  end
+
+  def parse_incertae_sedis_in_subfamily
+    return unless @type == :incertae_sedis_in_subfamily_header
+    @incertae_sedis_in_subfamily = true
+    parse_next_line
+  end
+
   def parse_subfamily
     return unless @type == :subfamily
+    @incertae_sedis_in_family = false
+    @incertae_sedis_in_subfamily = false
 
     name = @parse_result[:name]
     fossil = @parse_result[:fossil]
@@ -31,11 +45,12 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
 
     raise "Subfamily #{name} already exists" if Subfamily.find_by_name name
 
-    @current_subfamily = Subfamily.create! :name => name, :status => 'valid', :fossil => fossil, :taxonomic_history => taxonomic_history
+    @current_subfamily = Subfamily.create! :name => name, :fossil => fossil, :taxonomic_history => taxonomic_history
   end
 
   def parse_tribe
     return unless @type == :tribe
+    @incertae_sedis_in_subfamily = false
 
     name = @parse_result[:name]
     fossil = @parse_result[:fossil]
@@ -43,7 +58,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
 
     raise "Tribe #{name} already exists" if Tribe.find_by_name name
 
-    @current_tribe = Tribe.create! :name => name, :subfamily => @current_subfamily, :status => 'valid', :fossil => fossil, :taxonomic_history => taxonomic_history
+    @current_tribe = Tribe.create! :name => name, :subfamily => @current_subfamily, :fossil => fossil, :taxonomic_history => taxonomic_history
   end
 
   def parse_genus
@@ -55,7 +70,20 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
 
     raise "Genus #{name} already exists" if Genus.find_by_name name
 
-    Genus.create! :name => name, :subfamily => @current_subfamily, :tribe => @current_tribe, :status => 'valid', :fossil => fossil, :taxonomic_history => taxonomic_history
+    attributes = {:name => name, :subfamily => @current_subfamily, :tribe => @current_tribe, :fossil => fossil, :taxonomic_history => taxonomic_history}
+
+    if @incertae_sedis_in_family
+      attributes[:incertae_sedis_in] = 'family'
+    elsif @incertae_sedis_in_subfamily
+      raise "Genus #{name} is incertae sedis in subfamily with no subfamily" if !@current_subfamily
+      attributes[:incertae_sedis_in] = 'subfamily'
+    elsif !@current_subfamily
+      raise "Genus #{name} has no subfamily"
+    elsif !@current_tribe
+      raise "Genus #{name} has no tribe"
+    end
+
+    Genus.create! attributes
   end
 
   def parse_taxonomic_history

@@ -30,12 +30,18 @@ grammar Bolton::SubfamilyCatalogGrammar
   end
 
   rule incertae_sedis_header
-    incertae_sedis_in_tribe_header | incertae_sedis_in_subfamily_header
+    incertae_sedis_in_family_header | incertae_sedis_in_tribe_header | incertae_sedis_in_subfamily_header
+  end
+
+  rule incertae_sedis_in_family_header
+    (bold span ('Genus '|'Genera ') italic 'incertae sedis' tag_end ' in ' red capitalized_word close_tags) {
+      {:type => :incertae_sedis_in_tribe_header}
+    }
   end
 
   rule incertae_sedis_in_tribe_header
-    (bold span ('Genus '|'Genera ') italic 'incertae sedis' tag_end ' in ' red capitalized_word close_tags) {
-      {:type => :incertae_sedis_in_tribe_header}
+    (bold span 'Genera ' italic 'incertae sedis' tag_end ' in ' red 'FORMICIDAE' close_tags) {
+      {:type => :incertae_sedis_in_family_header}
     }
   end
 
