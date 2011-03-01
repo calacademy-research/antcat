@@ -275,6 +275,16 @@ see <i style='mso-bidi-font-style:normal'>Neivamyrmex</i>]</p>
       achantilepis.status.should == 'unavailable'
     end
 
+    it "should not complain if the genus is brand new but is unidentifiable" do
+      lambda {@genus_catalog.import_html make_content %{
+<p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
+-36.0pt'>*<b style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:
+normal'><span style='color:green'>ATTAICHNUS</span></i></b> [Myrmicinae:
+Attini]</p>
+      }}.should_not raise_error
+      attaichnus = Genus.find_by_name 'Attaichnus'
+      attaichnus.status.should == 'unidentifiable'
+    end
 
     def make_content content
       %{<html> <head> <title>CATALOGUE OF GENUS-GROUP TAXA</title> </head>
