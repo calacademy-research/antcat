@@ -60,7 +60,7 @@ class Bolton::GenusCatalog < Bolton::Catalog
     if genera.size > 1
       Progress.puts "More than one genus for #{@parse_result[:name]}"
     elsif genera.empty?
-      raise "Genus #{@parse_result[:name]} not found" unless ['synonym', 'homonym'].include? status
+      raise "Genus #{@parse_result[:name]} not found" unless ['synonym', 'homonym', 'unavailable'].include? status
       Genus.create! :name => @parse_result[:name], :status => status
     else
       genus = genera.first
