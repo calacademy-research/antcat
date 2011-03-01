@@ -42,6 +42,13 @@ describe Genus do
       genus.reload.should_not be_fossil
     end
 
+    it "should not consider these as subfamilies" do
+      ['Aculeata', 'Symphyta', 'Apocrita', 'Homoptera', 'Ichneumonidae', 'Embolemidae'].each do |name|
+        genus = Genus.import :name => 'Cariridris', :subfamily => name
+        genus.reload.subfamily.should be_nil
+      end
+    end
+
     it "should not create the genus if the passed-in subfamily isn't valid" do
       lambda {Genus.import :name => 'Acalama', :status => :valid, :subfamily => ''}.should raise_error
     end

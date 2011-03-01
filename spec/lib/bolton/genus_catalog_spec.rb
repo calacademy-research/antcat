@@ -118,6 +118,31 @@ sedis</i> in Formicidae]</p>
       end
     end
     
+    describe "Genera outside Formicidae" do
+      it "should not set the subfamily of a genus to one that's not even in Formicidae" do
+        @genus_catalog.import_html make_content %{
+  <p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
+  -36.0pt'>*<b style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:
+  normal'><span style='color:green'>CARIRIDRIS</span></i></b> [<i
+  style='mso-bidi-font-style:normal'>incertae sedis</i> in Aculeata]</p>
+
+  <p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
+  -36.0pt'>*<i style='mso-bidi-font-style:normal'>Cariridris</i> Brandão &amp;
+  Martins-Neto, 1990: 201. Type-species: *<i style='mso-bidi-font-style:normal'>Cariridris
+  bipetiolata</i>, by original designation. </p>
+
+  <p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
+  -36.0pt'>*<i style='mso-bidi-font-style:normal'>Cariridris</i> in Sphecidae:
+  Verhaagh, 1996: 11; Dlussky &amp; Rasnitsyn, 2002: 418; <i style='mso-bidi-font-style:
+  normal'>incertae sedis</i> in Aculeata: Grimaldi, Agosti &amp; Carpenter, 1997:
+  7; Ward &amp; Brady, 2003: 362. <b style='mso-bidi-font-weight:normal'>Excluded
+  from Formicidae</b>.</p>
+        }
+        cariridris = Genus.find_by_name 'Cariridris'
+        cariridris.subfamily.should be_nil
+      end
+    end
+
     it "should add both homonyms" do
         @genus_catalog.import_html make_content %{
 <p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'>*<i
@@ -553,5 +578,4 @@ SPECIES-GROUP TAXA<o:p></o:p></b></p>
     end
 
   end
-
 end

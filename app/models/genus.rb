@@ -16,6 +16,9 @@ class Genus < Taxon
     incertae_sedis_in = record[:incertae_sedis_in] && record[:incertae_sedis_in].to_s
     fossil = record[:fossil]
 
+    # the parse returns subfamilies that are outside the family - exclude them
+    subfamily_name = nil if ['Aculeata', 'Symphyta', 'Apocrita', 'Homoptera', 'Ichneumonidae', 'Embolemidae'].include? subfamily_name
+
     subfamily = subfamily_name && Subfamily.find_or_create_by_name(subfamily_name, :status => 'valid')
     raise if subfamily && !subfamily.valid?
 
