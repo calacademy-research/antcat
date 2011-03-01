@@ -523,6 +523,13 @@ style='color:red'>MYRMECIINI</span><o:p></o:p></span></b></p>
       }).should == {:type => :supersubfamily_header}
     end
 
+    it 'should handle italics in weird place' do
+      @subfamily_catalog.parse(%{
+<b><span lang=EN-GB style='color:black'>Genus *</span><i><span lang=EN-GB style='color:red'>HAIDOMYRMODES</span></i><span lang=EN-GB><o:p></o:p></span></b>
+      }).should == {:type => :genus, :name => 'Haidomyrmodes', :fossil => true}
+    end
+
+
   end
 end
 
