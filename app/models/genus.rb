@@ -14,6 +14,7 @@ class Genus < Taxon
     homonym_resolved_to_name = record[:homonym_resolved_to]
     status = record[:status].to_s
     incertae_sedis_in = record[:incertae_sedis_in] && record[:incertae_sedis_in].to_s
+    fossil = record[:fossil]
 
     subfamily = subfamily_name && Subfamily.find_or_create_by_name(subfamily_name, :status => 'valid')
     raise if subfamily && !subfamily.valid?
@@ -24,7 +25,10 @@ class Genus < Taxon
     synonym_of = find_referent synonym_of_name
     homonym_resolved_to = find_referent homonym_resolved_to_name
 
-    attributes = {:name => record[:name], :fossil => record[:fossil], :status => status,
+    # sorry, Barry, but it's just not
+    fossil = nil if record[:name] == 'Pseudoatta'
+
+    attributes = {:name => record[:name], :fossil => fossil, :status => status,
                   :subfamily => subfamily, :tribe => tribe, 
                   :synonym_of => synonym_of, :homonym_resolved_to => homonym_resolved_to,
                   :taxonomic_history => record[:taxonomic_history],
@@ -36,8 +40,28 @@ class Genus < Taxon
     elsif possible_matches.none? {|possible_match| possible_match.status == status}
       genus = create! attributes
     else
-      
-      raise "Trying to add the genus #{record[:name]} twice with the same status"
+      already_printed_genus_name = false
+      existing_genus = possible_matches.find {|possible_match| possible_match.status == status}
+      if subfamily && existing_genus.subfamily != subfamily
+        puts "#{existing_genus.name}" unless already_printed_genus_name
+        already_printed_genus_name = true
+        puts "Trying to replace subfamily '#{existing_genus.subfamily && existing_genus.subfamily.name}' with '#{subfamily_name}'"
+      end
+      if tribe && existing_genus.tribe != tribe
+        puts "#{existing_genus.name}" unless already_printed_genus_name
+        already_printed_genus_name = true
+        puts "Trying to replace tribe '#{existing_genus.tribe && existing_genus.tribe.name}' with '#{tribe_name}'"
+      end
+      if existing_genus.status != status
+        puts "#{existing_genus.name}" unless already_printed_genus_name
+        already_printed_genus_name = true
+        puts "Trying to replace status '#{existing_genus.status}' with '#{status}'"
+      end
+      if !!existing_genus.fossil? != !!fossil
+        puts "#{existing_genus.name}" unless already_printed_genus_name
+        already_printed_genus_name = true
+        puts "Trying to replace fossil '#{existing_genus.fossil?}' with '#{fossil}'"
+      end
     end
     genus
   end

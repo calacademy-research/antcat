@@ -16,6 +16,7 @@ class Antweb::Diff
     antweb_filename = "#{antweb_directory}/extant.xls.utf8"
     Progress.puts "Diffing #{antcat_filename} against #{antweb_filename}"
     diff File.open(antcat_filename, 'r').readlines, File.open(antweb_filename, 'r').readlines
+
     show_differences
     show_antcat_unmatched
     Progress.puts "#{@match_count} matches"
@@ -134,6 +135,7 @@ class Antweb::Diff
   end
 
   def show_differences
+    return
     return unless @differences.present?
     Progress.puts "Differences:"
     @differences.each do |antcat, antweb|
@@ -149,6 +151,7 @@ class Antweb::Diff
   end
 
   def show_antcat_unmatched
+    return
     return unless @antcat_unmatched.present?
     Progress.puts "antcat unmatched:"
     @antcat_unmatched.sort.each do |antcat|

@@ -96,7 +96,7 @@ grammar CommonGrammar
   end
 
   rule capitalized_word
-    /[[:upper:]][[:alpha:]]+/
+    /[[:upper:]][[:lower:]]+/
   end
 
   rule parenthesized_phrase

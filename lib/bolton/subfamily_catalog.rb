@@ -17,7 +17,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
   def import
     Taxon.delete_all
     while @line
-      parse_subfamily || parse_genus || parse_tribe || parse_next_line
+      parse_subfamily || parse_genus || parse_tribe || parse_other || parse_next_line
     end
     super
   end
@@ -57,6 +57,12 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
       taxonomic_history << @paragraph
     end
     taxonomic_history
+  end
+
+  def parse_other
+    return unless @type == :genus_incertae_sedis_in_subfamily
+    @current_tribe = nil
+    parse_next_line
   end
 
   def get_filenames filenames

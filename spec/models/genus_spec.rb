@@ -37,6 +37,11 @@ describe Genus do
       genus.incertae_sedis_in.should be_nil
     end
 
+    it "should not consider Pseudoatta extinct, no matter what Bolton said in one document at one time" do
+      genus = Genus.import :name => 'Pseudoatta', :status => :valid, :fossil => true
+      genus.reload.should_not be_fossil
+    end
+
     it "should not create the genus if the passed-in subfamily isn't valid" do
       lambda {Genus.import :name => 'Acalama', :status => :valid, :subfamily => ''}.should raise_error
     end
@@ -100,10 +105,6 @@ describe Genus do
       Genus.find_by_name('Stigmacros').status.should == 'valid'
     end
 
-    it "scream and holler if the same genus with the same status is imported twice" do
-      Genus.import :name => 'Acrostigma', :status => :valid
-      lambda {Genus.import :name => 'Acrostigma', :status => :valid}.should raise_error
-    end
   end
 
   describe "A genus synonymized to a subgenus" do

@@ -155,6 +155,25 @@ style='color:red'>Stenammini</span><o:p></o:p></span></b></p>
       ancyridris.taxonomic_history.should == ''
     end
 
+    it "should not carry over the current tribe after seeing 'Genus incertae sedis in...'" do
+      @subfamily_catalog.import_html make_contents %{
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
+style='mso-bidi-font-weight:normal'><span lang=EN-GB>Tribe <span
+style='color:red'>MYRMECIINI</span><o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='text-align:justify'><b style='mso-bidi-font-weight:
+normal'><span lang=EN-GB>Genera <i style='mso-bidi-font-style:normal'>incertae
+sedis</i> in <span style='color:red'>FORMICINAE</span><o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
+-36.0pt'><b style='mso-bidi-font-weight:normal'><span lang=EN-GB>Genus *<i
+style='mso-bidi-font-style:normal'><span style='color:red'>CAMPONOTITES</span></i>
+<o:p></o:p></span></b></p>
+      }
+      camponotites = Genus.find_by_name 'Camponotites'
+      camponotites.tribe.should be_nil
+    end
+
     it "should not include the subfamily header in the tazonomic history" do
       @subfamily_catalog.import_html make_contents %{
 <p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
@@ -284,16 +303,22 @@ style='color:red'>PROCERATIINAE</span><o:p></o:p></span></b></p>
       }).should == {:type => :genus, :name => 'Eoaenictites', :fossil => true}
     end
 
-    it "should recognize an incertae sedis header" do
+    it "should recognize an incertae sedis header in tribe" do
       @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Genus <i>incertae sedis</i> in <span style='color:red'>Stenammini</i>
-      }).should == {:type => :genus_incertae_sedis_in}
+      }).should == {:type => :genus_incertae_sedis_in_tribe}
     end
 
     it "should recognize Hong's incertae sedises" do
       @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Genera of Hong (2002), <i>incertae sedis</i> in <span style='color:red'>MYRMICINAE</span><o:p></o:p></span></b>
-      }).should == {:type => :genus_incertae_sedis_in}
+      }).should == {:type => :genus_incertae_sedis_in_subfamily}
+    end
+
+    it "should recognize incertae sedis in subfamily" do
+      @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>Genera <i>incertae sedis</i> in <span style='color:red'>MYRMICINAE</span><o:p></o:p></span></b>
+      }).should == {:type => :genus_incertae_sedis_in_subfamily}
     end
 
     it "should recognize a subfamily header" do
