@@ -224,6 +224,44 @@ style='color:red'>PROCERATIINAE</span><o:p></o:p></span></b></p>
       ancyridris.taxonomic_history.should == '<p>&quot;XXX</p>'
     end
 
+    it "should complain if it sees the same subfamily twice" do
+      lambda {@subfamily_catalog.import_html make_contents %{
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'>
+<b><span lang=EN-GB>Subfamily <span style='color:red'>MYRMICINAE</span> <o:p></o:p></span></b>
+</p>
+<p>&quot;XXX</p>
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'>
+<b><span lang=EN-GB>Subfamily <span style='color:red'>MYRMICINAE</span> <o:p></o:p></span></b>
+</p>
+      }}.should raise_error
+    end
+
+    it "should complain if it sees the same tribe twice" do
+      lambda {@subfamily_catalog.import_html make_contents %{
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
+style='mso-bidi-font-weight:normal'><span lang=EN-GB>Tribe <span
+style='color:red'>MYRMECIINI</span><o:p></o:p></span></b></p>
+<p>&quot;XXX</p>
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
+style='mso-bidi-font-weight:normal'><span lang=EN-GB>Tribe <span
+style='color:red'>MYRMECIINI</span><o:p></o:p></span></b></p>
+      }}.should raise_error
+    end
+
+    it "should complain if it sees the same genus twice" do
+      lambda {@subfamily_catalog.import_html make_contents %{
+<p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
+-36.0pt'><b style='mso-bidi-font-weight:normal'><span lang=EN-GB>Genus <i
+style='mso-bidi-font-style:normal'><span style='color:red'>ANCYRIDRIS</span></i>
+<o:p></o:p></span></b></p>
+<p>&quot;XXX</p>
+<p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
+-36.0pt'><b style='mso-bidi-font-weight:normal'><span lang=EN-GB>Genus <i
+style='mso-bidi-font-style:normal'><span style='color:red'>ANCYRIDRIS</span></i>
+<o:p></o:p></span></b></p>
+      }}.should raise_error
+    end
+
     def make_contents content
       %{
   <html> <body lang=EN-US style='tab-interval:.5in'> <div class=Section1>

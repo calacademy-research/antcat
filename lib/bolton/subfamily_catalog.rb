@@ -28,6 +28,9 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     name = @parse_result[:name]
     fossil = @parse_result[:fossil]
     taxonomic_history = parse_taxonomic_history
+
+    raise "Subfamily #{name} already exists" if Subfamily.find_by_name name
+
     @current_subfamily = Subfamily.create! :name => name, :status => 'valid', :fossil => fossil, :taxonomic_history => taxonomic_history
   end
 
@@ -37,6 +40,9 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     name = @parse_result[:name]
     fossil = @parse_result[:fossil]
     taxonomic_history = parse_taxonomic_history
+
+    raise "Tribe #{name} already exists" if Tribe.find_by_name name
+
     @current_tribe = Tribe.create! :name => name, :subfamily => @current_subfamily, :status => 'valid', :fossil => fossil, :taxonomic_history => taxonomic_history
   end
 
@@ -46,6 +52,9 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     name = @parse_result[:name]
     fossil = @parse_result[:fossil]
     taxonomic_history = parse_taxonomic_history
+
+    raise "Genus #{name} already exists" if Genus.find_by_name name
+
     Genus.create! :name => name, :subfamily => @current_subfamily, :tribe => @current_tribe, :status => 'valid', :fossil => fossil, :taxonomic_history => taxonomic_history
   end
 
