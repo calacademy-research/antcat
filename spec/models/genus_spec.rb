@@ -141,5 +141,39 @@ describe Genus do
 
   end
 
+  describe "Reimporting, when information changes" do
+
+    it "should allow setting a subfamily if none existed before" do
+      Factory :genus, :name => 'Camponotites'
+      lambda {Genus.import :name => 'Camponotites', :subfamily => 'Formicinae', :status => :valid}.should_not raise_error
+    end
+
+    it "should not allow setting a subfamily if one did exist before and they're not the same" do
+      Factory :genus, :name => 'Camponotites', :subfamily => Factory(:subfamily, :name => 'Formicinae')
+      lambda {Genus.import :name => 'Camponotites', :subfamily => 'Dolichoderinae', :status => :valid}.should raise_error
+    end
+
+    it "should allow setting a subfamily if one did exist before and they are the same" do
+      Factory :genus, :name => 'Camponotites', :subfamily => Factory(:subfamily, :name => 'Formicinae')
+      lambda {Genus.import :name => 'Camponotites', :subfamily => 'Formicinae', :status => :valid}.should_not raise_error
+    end
+
+    it "should allow setting a tribe if none existed before" do
+      Factory :genus, :name => 'Camponotites'
+      lambda {Genus.import :name => 'Camponotites', :tribe => 'Camponotini', :status => :valid}.should_not raise_error
+    end
+
+    it "should not allow setting a tribe if one did exist before and they're not the same" do
+      Factory :genus, :name => 'Camponotites', :tribe => Factory(:tribe, :name => 'Camponotini')
+      lambda {Genus.import :name => 'Camponotites', :tribe => 'Aneuretini', :status => :valid}.should raise_error
+    end
+
+    it "should allow setting a tribe if one did exist before and they are the same" do
+      Factory :genus, :name => 'Camponotites', :tribe => Factory(:tribe, :name => 'Camponotini')
+      lambda {Genus.import :name => 'Camponotites', :tribe => 'Camponotini', :status => :valid}.should_not raise_error
+    end
+
+  end
+
 
 end

@@ -42,15 +42,11 @@ class Genus < Taxon
     else
       already_printed_genus_name = false
       existing_genus = possible_matches.find {|possible_match| possible_match.status == status}
-      if subfamily && existing_genus.subfamily != subfamily
-        puts "#{existing_genus.name}" unless already_printed_genus_name
-        already_printed_genus_name = true
-        puts "Trying to replace subfamily '#{existing_genus.subfamily && existing_genus.subfamily.name}' with '#{subfamily_name}'"
+      if subfamily && existing_genus.subfamily && existing_genus.subfamily != subfamily
+        raise "#{existing_genus.name}: trying to replace subfamily '#{existing_genus.subfamily && existing_genus.subfamily.name}' with '#{subfamily_name}'"
       end
-      if tribe && existing_genus.tribe != tribe
-        puts "#{existing_genus.name}" unless already_printed_genus_name
-        already_printed_genus_name = true
-        puts "Trying to replace tribe '#{existing_genus.tribe && existing_genus.tribe.name}' with '#{tribe_name}'"
+      if tribe && existing_genus.tribe && existing_genus.tribe != tribe
+        raise "#{existing_genus.name}: trying to replace tribe '#{existing_genus.tribe && existing_genus.tribe.name}' with '#{tribe_name}'"
       end
       if existing_genus.status != status
         puts "#{existing_genus.name}" unless already_printed_genus_name
