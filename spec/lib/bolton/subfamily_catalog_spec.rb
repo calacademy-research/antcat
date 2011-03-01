@@ -327,6 +327,12 @@ style='color:red'>PROCERATIINAE</span><o:p></o:p></span></b></p>
       }).should == {:type => :genus_incertae_sedis_in_subfamily}
     end
 
+    it "should recognize extinct incertae sedis in subfamily" do
+      @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in <span style='color:red'>DOLICHODERINAE<o:p></o:p></span></span></b>
+      }).should == {:type => :genus_incertae_sedis_in_subfamily}
+    end
+
     it "should recognize a subfamily header" do
       @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>SUBFAMILY <span style='color:red'>ECITONINAE</span><o:p></o:p></span></b></p>
