@@ -286,6 +286,16 @@ Attini]</p>
       attaichnus.status.should == 'unidentifiable'
     end
 
+    it "should not complain if the genus is brand new but is an unresolved homonym and synonym" do
+      lambda {@genus_catalog.import_html make_content %{
+<p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
+-36.0pt'><i style='mso-bidi-font-style:normal'>MYRMEX</i> [junior homonym,
+junior synonym of <i style='mso-bidi-font-style:normal'>Pseudomyrma</i>]</p>
+      }}.should_not raise_error
+      myrmex = Genus.find_by_name 'Myrmex'
+      myrmex.status.should == 'unresolved_homonym_and_synonym'
+    end
+
     def make_content content
       %{<html> <head> <title>CATALOGUE OF GENUS-GROUP TAXA</title> </head>
 <body>
