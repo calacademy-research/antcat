@@ -701,5 +701,14 @@ SPECIES-GROUP TAXA<o:p></o:p></b></p>
       }.should raise_error 'Updating genus Atta with different attributes'
     end
 
+    it "should not consider these as subfamilies" do
+      Factory :genus, :name => 'Cariridris'
+      ['Aculeata', 'Symphyta', 'Apocrita', 'Homoptera', 'Ichneumonidae', 'Embolemidae'].each do |name|
+        @genus_catalog.import_genus :name => 'Cariridris', :subfamily => name, :status => 'valid'
+        Genus.find_by_name('Cariridris').subfamily.should be_nil
+      end
+    end
+
+
   end
 end

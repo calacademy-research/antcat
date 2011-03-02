@@ -51,8 +51,12 @@ class Bolton::GenusCatalog < Bolton::Catalog
     record[:incertae_sedis_in] = record[:incertae_sedis_in].present? ? record[:incertae_sedis_in].to_s : nil
 
     if record[:subfamily]
-      subfamily = Subfamily.find_by_name(record[:subfamily])
-      raise "Genus #{record[:name]} has unknown subfamily #{record[:subfamily]}" unless subfamily
+      if ['Aculeata', 'Symphyta', 'Apocrita', 'Homoptera', 'Ichneumonidae', 'Embolemidae'].include? record[:subfamily]
+        subfamily = nil
+      else
+        subfamily = Subfamily.find_by_name(record[:subfamily])
+        raise "Genus #{record[:name]} has unknown subfamily #{record[:subfamily]}" unless subfamily
+      end
       record[:subfamily] = subfamily
     end
 
