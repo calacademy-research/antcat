@@ -1,0 +1,10 @@
+- form_for @journal do |f|
+  = f.error_messages
+  %p
+    = f.label :name, 'Journal name'
+    %br
+    = f.text_field :name
+    = f.submit "Save"
+  %p
+  %p
+    %br

@@ -1,0 +1,5 @@
+= render :partial => 'form'
+
+%h4 References using this journal
+- Reference.sorted_by_author_name.all(:conditions => ['journal_id = ?', @journal.id]).each do |reference|
+  %p.reference_list= "#{format_reference(reference)} #{reference.id}"
