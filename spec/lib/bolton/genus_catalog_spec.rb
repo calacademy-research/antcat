@@ -18,12 +18,12 @@ describe Bolton::GenusCatalog do
     describe "processing a representative sample and making sure they're saved correctly" do
       it 'should work' do
         Progress.should_not_receive :error
-        Factory :genus, :name => 'Acromyrmex'
-        Factory :genus, :name => 'Protazteca'
-        Factory :genus, :name => 'Myanmyrma'
-        Factory :subfamily, :name => 'Myrmicinae'
-        Factory :subfamily, :name => 'Dolichoderinae'
-        Factory :tribe, :name => 'Attini'
+        Factory :genus, :name => 'Acromyrmex', :status => nil, :taxonomic_history => 'History'
+        Factory :genus, :name => 'Protazteca', :status => nil
+        Factory :genus, :name => 'Myanmyrma', :status => nil
+        Factory :subfamily, :name => 'Myrmicinae', :status => nil
+        Factory :subfamily, :name => 'Dolichoderinae', :status => nil
+        Factory :tribe, :name => 'Attini', :status => nil
         @genus_catalog.import_html make_content %{
 <p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
 style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
@@ -76,26 +76,15 @@ style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
 style='color:red'>MYANMYRMA</span></i></b> [<i style='mso-bidi-font-style:normal'>incertae
 sedis</i> in Formicidae]</p>
         }
-        lll{'Genus.all.map(&:name)'}
-
         Genus.count.should == 7
-        Subgenus.count.should == 2
 
         acromyrmex = Genus.find_by_name 'Acromyrmex'
         acromyrmex.should_not be_fossil
         acromyrmex.subfamily.name.should == 'Myrmicinae'
         acromyrmex.tribe.name.should == 'Attini'
         acromyrmex.should_not be_invalid
-        acromyrmex.taxonomic_history.should == %{<p class="MsoNormal" style="margin-left:.5in;text-align:justify;text-indent:-.5in"><b style="mso-bidi-font-weight:normal"><i style="mso-bidi-font-style:normal"><span style="color:red">ACROMYRMEX</span></i></b> [Myrmicinae: Attini]</p>}
+        acromyrmex.taxonomic_history.should == %{History}
         acromyrmex.incertae_sedis_in.should be_nil
-
-        alaopone = Subgenus.find_by_name 'Alaopone'
-        alaopone.genus.name.should == 'Acromyrmex'
-        alaopone.should_not be_fossil
-        alaopone.should_not be_invalid
-
-        acanothomyops = Subgenus.find_by_name 'Acanthomyops'
-        acanothomyops.genus.name.should == 'Acromyrmex'
 
         attaichnus = Genus.find_by_name 'Attaichnus'
         attaichnus.should be_fossil
@@ -152,7 +141,9 @@ sedis</i> in Formicidae]</p>
     end
 
     it "should add both homonyms" do
-        @genus_catalog.import_html make_content %{
+      Factory :genus, :name => 'Podomyrma'
+      Factory :genus, :name => 'Stigmacros'
+      @genus_catalog.import_html make_content %{
 <p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'>*<i
 style='mso-bidi-font-style:normal'>ACROSTIGMA </i>[junior synonym of <i
 style='mso-bidi-font-style:normal'>Podomyrma</i>]</p>
@@ -172,16 +163,16 @@ style='mso-bidi-font-style:normal'>Podomyrma</i>: Dalla Torre, 1893: 159.</p>
 <p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><i
 style='mso-bidi-font-style:normal'>ACROSTIGMA</i> [junior homonym, see <i
 style='mso-bidi-font-style:normal'>Stigmacros</i>]</p>
-        }
-        Genus.count.should == 4
+      }
+      Genus.count.should == 4
 
-        acrostigma_synonym = Genus.find_by_name_and_status('Acrostigma', 'synonym')
-        acrostigma_synonym.should_not be_nil
-        acrostigma_synonym.synonym_of.name.should == 'Podomyrma'
+      acrostigma_synonym = Genus.find_by_name_and_status('Acrostigma', 'synonym')
+      acrostigma_synonym.should_not be_nil
+      acrostigma_synonym.synonym_of.name.should == 'Podomyrma'
 
-        acrostigma_homonym = Genus.find_by_name_and_status('Acrostigma', 'homonym')
-        acrostigma_homonym.should_not be_nil
-        acrostigma_homonym.homonym_resolved_to.name.should == 'Stigmacros'
+      acrostigma_homonym = Genus.find_by_name_and_status('Acrostigma', 'homonym')
+      acrostigma_homonym.should_not be_nil
+      acrostigma_homonym.homonym_resolved_to.name.should == 'Stigmacros'
     end
 
     it "should silently swallow a collective group name" do
@@ -192,7 +183,7 @@ style='mso-bidi-font-style:normal'>Stigmacros</i>]</p>
     describe "error handling" do
       it "should squawk when a genus header can't be parsed" do
         Factory :subfamily, :name => 'Dolichoderinae'
-        Factory :genus, :name => 'Protazteca'
+        Factory :genus, :name => 'Protazteca', :status => nil
         Progress.should_receive(:error).with("parse failed on: 'FOO'")
         @genus_catalog.import_html make_content %{
 <p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'>*<b
@@ -206,6 +197,8 @@ normal'>incertae sedis</i> in Dolichoderinae]</p>
     end
 
     it "should handle this especially weird case where one name is a homonym and two synonyms" do
+      Factory :genus, :name => 'Gnamptogenys'
+      Factory :genus, :name => 'Cylindromyrmex'
       @genus_catalog.import_html make_content %{
 <p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><i
 style='mso-bidi-font-style:normal'>HOLCOPONERA</i> [junior synonym of <i
@@ -258,6 +251,7 @@ style='color:red'>ACROMYRMEX</span></i></b> [Myrmicinae: Attini]</p>
     end
 
     it "should not complain if the genus is brand new but is a synonym" do
+      Factory :genus, :name => 'Gauromyrmex'
       lambda {@genus_catalog.import_html make_content %{
 <p class=MsoNormal><i style='mso-bidi-font-style:normal'><span
 style='color:black'>ACALAMA</span></i> [junior synonym of <i style='mso-bidi-font-style:
@@ -268,6 +262,7 @@ normal'>Gauromyrmex</i>]</p>
     end
 
     it "should not complain if the genus is brand new but is a homonym" do
+      Factory :genus, :name => 'Neivamyrmex'
       lambda {@genus_catalog.import_html make_content %{
 <p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
 -36.0pt'><i style='mso-bidi-font-style:normal'>ACAMATUS</i> [junior homonym,
@@ -301,6 +296,7 @@ Attini]</p>
     end
 
     it "should not complain if the genus is brand new but is an unresolved homonym and synonym" do
+      Factory :genus, :name => 'Pseudomyrma'
       lambda {@genus_catalog.import_html make_content %{
 <p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
 -36.0pt'><i style='mso-bidi-font-style:normal'>MYRMEX</i> [junior homonym,
@@ -685,6 +681,14 @@ SPECIES-GROUP TAXA<o:p></o:p></b></p>
       Factory :genus, :name => 'Atta', :status => nil
       @genus_catalog.import_genus :name => 'Atta', :status => 'homonym'
       Genus.find_by_name_and_status('Atta', 'homonym').should_not be_nil
+    end
+
+    it "should complain if updating a record with the same status, but different attributes" do
+      Factory :genus, :name => 'Atta', :status => 'valid'
+      Genus.should_not_receive(:update_attributes)
+      lambda {
+        @genus_catalog.import_genus :name => 'Atta', :status => 'valid', :incertae_sedis_in => 'family'
+      }.should raise_error 'Updating genus Atta with different attributes'
     end
 
   end

@@ -29,8 +29,6 @@ class Bolton::GenusCatalog < Bolton::Catalog
 
     if @type == :genus
       import_genus @parse_result
-    elsif @type == :subgenus
-      Subgenus.import @parse_result.merge :taxonomic_history => @paragraph
     end
 
     parse_next_line
@@ -50,6 +48,7 @@ class Bolton::GenusCatalog < Bolton::Catalog
 
   def import_genus record
     record[:status] = status = record[:status].present? ? record[:status].to_s : nil
+    record[:incertae_sedis_in] = record[:incertae_sedis_in].present? ? record[:incertae_sedis_in].to_s : nil
 
     if record[:subfamily]
       subfamily = Subfamily.find_by_name(record[:subfamily])
@@ -63,38 +62,28 @@ class Bolton::GenusCatalog < Bolton::Catalog
       record[:tribe] = tribe
     end
 
-    record[:tribe] = record[:tribe].present? ? Tribe.find_by_name(record[:tribe]) : nil
-    record[:synonym_of] = record[:synonym_of].present? ? Taxon.find_by_name(record[:synonym_of]) : nil
-    record[:homonym_resolved_to] = record[:homonym_resolved_to].present? ? Taxon.find_by_name(record[:homonym_resolved_to]) : nil
+    if record[:synonym_of]
+      synonym_of = Taxon.find_by_name(record[:synonym_of])
+      raise "Genus #{record[:name]} has unknown synonym_of #{record[:synonym_of]}" unless synonym_of
+      record[:synonym_of] = synonym_of
+    end
+
+    if record[:homonym_resolved_to]
+      homonym_resolved_to = Taxon.find_by_name(record[:homonym_resolved_to])
+      raise "Genus #{record[:name]} has unknown homonym_resolved_to #{record[:homonym_resolved_to]}" unless homonym_resolved_to
+      record[:homonym_resolved_to] = homonym_resolved_to
+    end
 
     genera = Genus.find :all, :conditions => ['name = ?', record[:name]]
     if genera.size > 1
       Progress.puts "More than one genus for #{record[:name]}"
     elsif genera.empty?
       raise "Genus #{record[:name]} not found" unless ['synonym', 'homonym', 'unavailable', 'unidentifiable', 'unresolved_homonym_and_synonym'].include? status
-      Genus.create! :name => record[:name], :status => status
+      Genus.create! :name => record[:name], :status => status, :synonym_of => synonym_of, :homonym_resolved_to => homonym_resolved_to, :fossil => record[:fossil]
     else
-      return if add_genus_with_different_status record
-      return if update_genus_with_nil_status record
-      #genus = genera.first
-      #if genus.status != status
-        #Progress.puts "Genus #{genus.name} status changing from #{genus.status} to #{status}"
-      #end
-      #if subfamily && genus.subfamily != subfamily
-        #Progress.puts "Genus #{genus.name} subfamily changing from #{genus.subfamily} to #{subfamily}"
-      #end
-      #if tribe && genus.tribe != tribe
-        #Progress.puts "Genus #{genus.name} tribe changing from #{genus.tribe} to #{tribe}"
-      #end
-      #if genus.incertae_sedis_in != record[:incertae_sedis_in]
-        #Progress.puts "Genus #{genus.name} incertae_sedis_in changing from #{genus.incertae_sedis_in} to #{record[:incertae_sedis_in]}"
-      #end
-      #if genus.synonym_of != synonym_of
-        #Progress.puts "Genus #{genus.name} synonym_of changing from #{genus.synonym_of} to #{record[:synonym_of]}"
-      #end
-      #if genus.homonym_resolved_to != homonym_resolved_to
-        #Progress.puts "Genus #{genus.name} homonym_resolved_to changing from #{genus.homonym_resolved_to} to #{@parse_result[:homonym_resolved_to]}"
-      #end
+      add_genus_with_different_status(record) ||
+      update_genus_with_nil_status(record) ||
+      update_genus_with_nonnil_status(record)
     end
   end
 
@@ -103,14 +92,28 @@ class Bolton::GenusCatalog < Bolton::Catalog
     return unless record[:status]
     return unless genus = Genus.find_by_name(record[:name])
     return unless genus.status
+    return unless genus.status != record[:status]
     Progress.warning "Adding #{record[:status]} genus #{record[:name]} which already existed with #{genus.status} status"
-    Genus.create! :name => record[:name], :status => record[:status], :subfamily => record[:subfamily], :tribe => record[:tribe]
+    Genus.create! :name => record[:name], :status => record[:status], :subfamily => record[:subfamily], :tribe => record[:tribe], :synonym_of => record[:synonym_of], :homonym_resolved_to => record[:homonym_resolved_to]
   end
 
   def update_genus_with_nil_status record
     return unless record[:status]
     return unless genus = Genus.find_by_name(record[:name])
     return if genus.status
-    genus.update_attributes :status => record[:status]
+    genus.update_attributes :status => record[:status], :subfamily => record[:subfamily], :tribe => record[:tribe], :fossil => record[:fossil], :incertae_sedis_in => record[:incertae_sedis_in]
+  end
+
+  def update_genus_with_nonnil_status record
+    return unless record[:status]
+    return unless genus = Genus.find_by_name(record[:name])
+    return if genus.status != record[:status]
+    raise "Updating genus #{genus.name} with different attributes" unless
+      record[:subfamily] == genus.subfamily &&
+      record[:tribe] == genus.tribe &&
+      record[:synonym_of] == genus.synonym_of &&
+      record[:homonym_resolved_to] == genus.homonym_resolved_to &&
+      record[:incertae_sedis_in] == genus.incertae_sedis_in &&
+      !!record[:fossil] == !!genus.fossil?
   end
 end
