@@ -56,6 +56,26 @@ Formicidae (extant)</span></b><span lang=EN-GB>: Aenictinae, Myrmicinae<b style=
 <p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
 -36.0pt'><b style='mso-bidi-font-weight:normal'><span lang=EN-GB>Subfamilies of
 Formicidae (extinct)</span></b><span lang=EN-GB>: *Armaniinae, *Brownimeciinae.</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
+-36.0pt'><b style='mso-bidi-font-weight:normal'><span lang=EN-GB>Genera
+(extant) <i style='mso-bidi-font-style:normal'>incertae sedis</i> in Formicidae</span></b><span
+lang=EN-GB>: <i style='mso-bidi-font-style:normal'>Condylodon</i>.</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
+-36.0pt'><b style='mso-bidi-font-weight:normal'><span lang=EN-GB>Genera
+(extinct) <i style='mso-bidi-font-style:normal'>incertae sedis</i> in
+Formicidae</span></b><span lang=EN-GB>: <i style='mso-bidi-font-style:normal'>*Calyptites</i>.</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
+-36.0pt'><b style='mso-bidi-font-weight:normal'><span lang=EN-GB>Genera
+(extant) excluded from Formicidae</span></b><span lang=EN-GB>: <i
+style='mso-bidi-font-style:normal'><span style='color:green'>Formila</span></i>.</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
+-36.0pt'><b style='mso-bidi-font-weight:normal'><span lang=EN-GB>Genera
+(extinct) excluded from Formicidae</span></b><span lang=EN-GB>: *<i
+style='mso-bidi-font-style:normal'><span style='color:green'>Cariridris</span></i>.</span></p>
         }
         taxon = Subfamily.find_by_name 'Aenictinae'
         taxon.should_not be_invalid
@@ -70,13 +90,26 @@ Formicidae (extinct)</span></b><span lang=EN-GB>: *Armaniinae, *Brownimeciinae.<
         taxon = Subfamily.find_by_name 'Brownimeciinae'
         taxon.should_not be_invalid
         taxon.should be_fossil
-      end
 
-      it "should parse the genera_incertae_sedis_in_family section" do
-        @subfamily_catalog.import_html make_contents %{
-    <p class=MsoNormal align=center style='text-align:center'><b style='mso-bidi-font-weight:
-    normal'><span lang=EN-GB>FAMILY FORMICIDAE<o:p></o:p></span></b></p>
-        }
+        taxon = Genus.find_by_name 'Condylodon'
+        taxon.should_not be_invalid
+        taxon.should_not be_fossil
+        taxon.incertae_sedis_in.should == 'family'
+
+        taxon = Genus.find_by_name 'Calyptites'
+        taxon.should_not be_invalid
+        taxon.should be_fossil
+        taxon.incertae_sedis_in.should == 'family'
+
+        taxon = Genus.find_by_name 'Formila'
+        taxon.should be_invalid
+        taxon.should_not be_fossil
+        taxon.status.should == 'excluded'
+
+        taxon = Genus.find_by_name 'Cariridris'
+        taxon.should be_invalid
+        taxon.should be_fossil
+        taxon.status.should == 'excluded'
 
       end
 
@@ -472,6 +505,37 @@ Formicidae (extinct)</span></b><span lang=EN-GB>: *Armaniinae, *Brownimeciinae.<
       @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Subfamilies of Formicidae (extant)</span></b><span lang=EN-GB>: Aenictinae, Myrmicinae<b>.</b></span></p> }).should == {:type => :extant_subfamilies, :subfamilies => ['Aenictinae', 'Myrmicinae']}
     end
+
+    it "should recognize the extinct subfamilies section" do
+      @subfamily_catalog.parse(%{
+<b style='mso-bidi-font-weight:normal'><span lang=EN-GB>Subfamilies of Formicidae (extinct)</span></b><span lang=EN-GB>: *Armaniinae, *Brownimeciinae.</span>
+}).should == {:type => :extinct_subfamilies, :subfamilies => ['Armaniinae', 'Brownimeciinae']}
+    end
+
+    it "should recognize the extant genera incertae sedis section" do
+      @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>Genera (extant) <i>incertae sedis</i> in Formicidae</span></b><span lang=EN-GB>: <i>Condylodon</i>.</span></p>
+}).should == {:type => :extant_genera_incertae_sedis_in_family, :genera => ['Condylodon']}
+    end
+
+    it "should recognize the extinct genera incertae sedis section" do
+      @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in Formicidae</span></b><span lang=EN-GB>: <i>*Condylodon</i>.</span></p>
+}).should == {:type => :extinct_genera_incertae_sedis_in_family, :genera => ['Condylodon']}
+    end
+
+    it "should recognize the extant genera excluded from family" do
+      @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>Genera (extant) excluded from Formicidae</span></b><span lang=EN-GB>: <i><span style='color:green'>Formila</span></i>.</span></p>
+}).should == {:type => :extant_genera_excluded_from_family, :genera => ['Formila']}
+    end
+
+    it "should recognize the extinct genera excluded from family" do
+      @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>Genera (extinct) excluded from Formicidae</span></b><span lang=EN-GB>: *<i><span style='color:green'>Cariridris, *Cretacoformica</span></i>.</span>
+}).should == {:type => :extinct_genera_excluded_from_family, :genera => ['Cariridris', 'Cretacoformica']}
+    end
+
 
       #@subfamily_catalog.parse(%{
 #<b><span lang=EN-GB>Subfamily <span style='color:red'>MYRMICINAE</span> <o:p></o:p></span></b>

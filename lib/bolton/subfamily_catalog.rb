@@ -65,15 +65,35 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
   end
 
   def parse_extant_genera_incertae_sedis_in_family
+    parse_failed and return unless @type == :extant_genera_incertae_sedis_in_family
+    @parse_result[:genera].each do |genus|
+      Genus.create! :name => genus, :status => 'valid', :incertae_sedis_in => 'family'
+    end
+    parse_next_line
   end
 
   def parse_extinct_genera_incertae_sedis_in_family
+    parse_failed and return unless @type == :extinct_genera_incertae_sedis_in_family
+    @parse_result[:genera].each do |genus|
+      Genus.create! :name => genus, :status => 'valid', :incertae_sedis_in => 'family', :fossil => true
+    end
+    parse_next_line
   end
 
   def parse_extant_genera_excluded_from_family
+    parse_failed and return unless @type == :extant_genera_excluded_from_family
+    @parse_result[:genera].each do |genus|
+      Genus.create! :name => genus, :status => 'excluded'
+    end
+    parse_next_line
   end
 
   def parse_extinct_genera_excluded_from_family
+    parse_failed and return unless @type == :extinct_genera_excluded_from_family
+    @parse_result[:genera].each do |genus|
+      Genus.create! :name => genus, :status => 'excluded', :fossil => true
+    end
+    parse_next_line
   end
 
   def parse_genus_group_nomina_nuda
