@@ -15,6 +15,10 @@ grammar CommonGrammar
     spacerun
   end
 
+  rule text
+    /[^<>.]+/
+  end
+
   rule question_mark
     '?'
   end

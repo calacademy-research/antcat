@@ -1,7 +1,18 @@
 require 'spec_helper'
 
 describe CommonGrammar do
+  describe "parsing text" do
+
+    it "should recognize text" do
+      CommonGrammar.parse(%{  a  }, :root => :text).value.should_not be_nil
+      lambda {CommonGrammar.parse(%{  <a>  }, :root => :text)}.should raise_error Citrus::ParseError
+      lambda {CommonGrammar.parse(%{  .  }, :root => :text)}.should raise_error Citrus::ParseError
+    end
+
+  end
+
   describe "parsing a blank line" do
+
     it "should not consider a nonblank line blank" do
       lambda {CommonGrammar.parse(%{  a  }, :root => :blank_line)}.should raise_error Citrus::ParseError
       CommonGrammar.parse(%{  a  }, :root => :nonblank_line).value.should == :nonblank_line
