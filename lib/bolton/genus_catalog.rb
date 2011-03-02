@@ -68,7 +68,8 @@ class Bolton::GenusCatalog < Bolton::Catalog
 
     if record[:synonym_of]
       synonym_of = Taxon.find_by_name(record[:synonym_of])
-      raise "Genus #{record[:name]} has unknown synonym_of #{record[:synonym_of]}" unless synonym_of || record[:synonym_of] == 'Myrma'
+      raise "Genus #{record[:name]} has unknown synonym_of #{record[:synonym_of]}" unless
+        synonym_of || ['Myrma', 'Myrmhopla'].include?(record[:synonym_of])
       record[:synonym_of] = synonym_of
     end
 
