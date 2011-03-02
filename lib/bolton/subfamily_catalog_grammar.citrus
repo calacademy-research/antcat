@@ -1,8 +1,30 @@
 grammar Bolton::SubfamilyCatalogGrammar
   include Bolton::CatalogGrammar
 
-  rule record
-    a_supersubfamily_header | subfamily_header | subfamily | tribe | genus | incertae_sedis_header | other
+  rule subfamily_catalog
+    family | a_supersubfamily_header | subfamily_header | subfamily | tribe | genus | incertae_sedis_header | other
+  end
+
+  rule family
+    family_header | extant_subfamilies | extinct_subfamilies
+  end
+
+  rule family_header
+    (bold span 'FAMILY FORMICIDAE' close_tags) {
+      {:type => :family_header}
+    }
+  end
+
+  rule extant_subfamilies
+    (bold span 'Subfamilies of Formicidae (extant)' close_tags ': ' text /.*/) {
+      {:type => :extant_subfamilies, :subfamilies => text.split(', ')}
+    } 
+  end
+
+  rule extinct_subfamilies
+    (bold span 'Subfamilies of Formicidae (extinct)' close_tags ': ' text /.*/) {
+      {:type => :extinct_subfamilies, :subfamilies => text.split(', ').map {|e| e.gsub(/\*/, '')}}
+    } 
   end
 
   rule subfamily
