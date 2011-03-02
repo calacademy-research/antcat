@@ -44,6 +44,12 @@ class Progress
     log string unless @log_level == :error
   end
 
+  def self.warning object
+    string = "WARNING: #{format_object(object)}"
+    puts string
+    log string
+  end
+
   def self.error object
     string = "ERROR: #{format_object(object)}"
     puts string

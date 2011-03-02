@@ -18,6 +18,12 @@ describe Bolton::GenusCatalog do
     describe "processing a representative sample and making sure they're saved correctly" do
       it 'should work' do
         Progress.should_not_receive :error
+        Factory :genus, :name => 'Acromyrmex'
+        Factory :genus, :name => 'Protazteca'
+        Factory :genus, :name => 'Myanmyrma'
+        Factory :subfamily, :name => 'Myrmicinae'
+        Factory :subfamily, :name => 'Dolichoderinae'
+        Factory :tribe, :name => 'Attini'
         @genus_catalog.import_html make_content %{
 <p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
 style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
@@ -70,6 +76,7 @@ style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
 style='color:red'>MYANMYRMA</span></i></b> [<i style='mso-bidi-font-style:normal'>incertae
 sedis</i> in Formicidae]</p>
         }
+        lll{'Genus.all.map(&:name)'}
 
         Genus.count.should == 7
         Subgenus.count.should == 2
@@ -120,6 +127,7 @@ sedis</i> in Formicidae]</p>
     
     describe "Genera outside Formicidae" do
       it "should not set the subfamily of a genus to one that's not even in Formicidae" do
+        Factory :subfamily, :name => 'Aculeata'
         @genus_catalog.import_html make_content %{
   <p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
   -36.0pt'>*<b style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:
@@ -183,6 +191,8 @@ style='mso-bidi-font-style:normal'>Stigmacros</i>]</p>
 
     describe "error handling" do
       it "should squawk when a genus header can't be parsed" do
+        Factory :subfamily, :name => 'Dolichoderinae'
+        Factory :genus, :name => 'Protazteca'
         Progress.should_receive(:error).with("parse failed on: 'FOO'")
         @genus_catalog.import_html make_content %{
 <p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'>*<b
@@ -238,6 +248,8 @@ style='mso-bidi-font-style:normal'>Cylindromyrmex</i>: Forel, 1892f: 256.</p>
     end
 
     it "should complain if the genus is brand new" do
+      Factory :subfamily, :name => 'Myrmicinae'
+      Factory :tribe, :name => 'Attini'
       lambda {@genus_catalog.import_html make_content %{
 <p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
 style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
@@ -276,6 +288,8 @@ see <i style='mso-bidi-font-style:normal'>Neivamyrmex</i>]</p>
     end
 
     it "should not complain if the genus is brand new but is unidentifiable" do
+      Factory :subfamily, :name => 'Myrmicinae'
+      Factory :tribe, :name => 'Attini'
       lambda {@genus_catalog.import_html make_content %{
 <p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
 -36.0pt'>*<b style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:
@@ -634,6 +648,43 @@ SPECIES-GROUP TAXA<o:p></o:p></b></p>
     it "should handle collective group name with subfamily" do
       line = %{*<b><i><span style="color:green">MYRMECIITES</span></i></b> [Myrmeciinae: collective group name]}
       @genus_catalog.parse(line).should == {:type => :collective_group_name}
+    end
+
+  end
+
+  describe "Importing a genus" do
+
+    it "should make sure the subfamily exists" do
+      Factory :genus, :name => 'Atta'
+      lambda {
+        @genus_catalog.import_genus :name => 'Atta', :status => 'homonym', :subfamily => 'Dolichoderinae'
+      }.should raise_error "Genus Atta has unknown subfamily Dolichoderinae"
+    end
+
+    it "should make sure the tribe exists" do
+      Factory :genus, :name => 'Atta'
+      lambda {
+        @genus_catalog.import_genus :name => 'Atta', :status => 'homonym', :tribe => 'Attini'
+      }.should raise_error "Genus Atta has unknown tribe Attini"
+    end
+
+    describe "Adding a genus (because of status)" do
+
+      it "should log it but add it if an existing genus is imported with a different nonnull status" do
+        Progress.should_receive(:warning).with 'Adding homonym genus Atta which already existed with synonym status'
+        Factory :genus, :name => 'Atta', :status => 'synonym'
+        @genus_catalog.import_genus :name => 'Atta', :status => 'homonym'
+        Genus.find_by_name_and_status('Atta', 'synonym').should_not be_nil
+        Genus.find_by_name_and_status('Atta', 'homonym').should_not be_nil
+      end
+
+    end
+
+    it "should not care if updating a nil status" do
+      Progress.should_not_receive(:warning)
+      Factory :genus, :name => 'Atta', :status => nil
+      @genus_catalog.import_genus :name => 'Atta', :status => 'homonym'
+      Genus.find_by_name_and_status('Atta', 'homonym').should_not be_nil
     end
 
   end
