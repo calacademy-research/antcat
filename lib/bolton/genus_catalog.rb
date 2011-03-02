@@ -64,7 +64,7 @@ class Bolton::GenusCatalog < Bolton::Catalog
 
     if record[:synonym_of]
       synonym_of = Taxon.find_by_name(record[:synonym_of])
-      raise "Genus #{record[:name]} has unknown synonym_of #{record[:synonym_of]}" unless synonym_of
+      raise "Genus #{record[:name]} has unknown synonym_of #{record[:synonym_of]}" unless synonym_of || record[:synonym_of] == 'Myrma'
       record[:synonym_of] = synonym_of
     end
 
@@ -78,8 +78,7 @@ class Bolton::GenusCatalog < Bolton::Catalog
     if genera.size > 1
       Progress.puts "More than one genus for #{record[:name]}"
     elsif genera.empty?
-      raise "Genus #{record[:name]} not found" unless ['synonym', 'homonym', 'unavailable', 'unidentifiable', 'unresolved_homonym_and_synonym'].include? status
-      Genus.create! :name => record[:name], :status => status, :synonym_of => synonym_of, :homonym_resolved_to => homonym_resolved_to, :fossil => record[:fossil]
+      add_genus record
     else
       add_genus_with_different_status(record) ||
       update_genus_with_nil_status(record) ||
@@ -88,6 +87,12 @@ class Bolton::GenusCatalog < Bolton::Catalog
   end
 
   private
+  def add_genus record
+    raise "Genus #{record[:name]} not found" unless ['synonym', 'homonym', 'unavailable', 'unidentifiable', 'unresolved_homonym_and_synonym'].include? record[:status]
+    Genus.create! :name => record[:name], :status => record[:status], :synonym_of => record[:synonym_of],
+                  :homonym_resolved_to => record[:homonym_resolved_to], :fossil => record[:fossil]
+  end
+
   def add_genus_with_different_status record
     return unless record[:status]
     return unless genus = Genus.find_by_name(record[:name])

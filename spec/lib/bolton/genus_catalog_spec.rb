@@ -306,6 +306,16 @@ junior synonym of <i style='mso-bidi-font-style:normal'>Pseudomyrma</i>]</p>
       myrmex.status.should == 'unresolved_homonym_and_synonym'
     end
 
+    it "should not complain if the genus is a synonym of Myrma, which is actually a subgenus" do
+      lambda {@genus_catalog.import_html make_content %{
+<p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
+-36.0pt'><i style='mso-bidi-font-style:normal'>ANOPLOMYRMA</i> [junior synonym
+of <i style='mso-bidi-font-style:normal'>Myrma</i>]</p>
+      }}.should_not raise_error
+      anoploymyrma = Genus.find_by_name 'Anoplomyrma'
+      anoploymyrma.status.should == 'synonym'
+    end
+
     def make_content content
       %{<html> <head> <title>CATALOGUE OF GENUS-GROUP TAXA</title> </head>
 <body>
