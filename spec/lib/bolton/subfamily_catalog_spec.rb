@@ -529,6 +529,11 @@ style='color:red'>MYRMECIINI</span><o:p></o:p></span></b></p>
       }).should == {:type => :genus, :name => 'Haidomyrmodes', :fossil => true}
     end
 
+    it "should handle it when the span is before the bold and there's a subfamily at the end" do
+      @subfamily_catalog.parse(%{
+<span lang=EN-GB>Genus *<b style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span style='color:red'>YPRESIOMYRMA</span></i></b> [Myrmeciinae]</span>
+      }).should == {:type => :genus, :name => 'Ypresiomyrma', :fossil => true}
+    end
 
   end
 end
