@@ -135,7 +135,6 @@ class Antweb::Diff
   end
 
   def show_differences
-    return
     return unless @differences.present?
     Progress.puts "Differences:"
     @differences.each do |antcat, antweb|
