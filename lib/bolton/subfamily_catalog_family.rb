@@ -79,6 +79,9 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
 
   def parse_genus_group_nomina_nuda_in_family_list
     expect :genus_group_nomina_nuda_in_family_list
+    @parse_result[:genera].each do |genus|
+      Genus.create! :name => genus, :status => 'nomen nuda'
+    end
     parse_next_line
   end
 

@@ -13,49 +13,23 @@ describe Bolton::SubfamilyCatalog do
     @subfamily_catalog.stub! :parse_family_detail
     @subfamily_catalog.import_html make_contents %{
 <p><b style="mso-bidi-font-weight:normal"><span lang="EN-GB"><p> </p></span></b></p>
+<p><b><span lang=EN-GB>FAMILY FORMICIDAE<o:p></o:p></span></b></p>
+<p><span lang=EN-GB><o:p>&nbsp;</o:p></span></p>
 
-<p class=MsoNormal align=center style='text-align:center'><b style='mso-bidi-font-weight:
-normal'><span lang=EN-GB>FAMILY FORMICIDAE<o:p></o:p></span></b></p>
+<p><b><span lang=EN-GB>Subfamilies of Formicidae (extant)</span></b><span lang=EN-GB>: Aenictinae, Myrmicinae<b style='mso-bidi-font-weight: normal'>.</b></span></p>
+<p><b><span lang=EN-GB>Subfamilies of Formicidae (extinct)</span></b><span lang=EN-GB>: *Armaniinae, *Brownimeciinae.</span></p>
 
-<p class=MsoNormal style='text-align:justify'><span lang=EN-GB><o:p>&nbsp;</o:p></span></p>
+<p><b><span lang=EN-GB>Genera (extant) <i>incertae sedis</i> in Formicidae</span></b><span lang=EN-GB>: <i>Condylodon</i>.</span></p>
+<p><b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in Formicidae</span></b><span lang=EN-GB>: <i>*Calyptites</i>.</span></p>
 
-<p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
--36.0pt'><b style='mso-bidi-font-weight:normal'><span lang=EN-GB>Subfamilies of
-Formicidae (extant)</span></b><span lang=EN-GB>: Aenictinae, Myrmicinae<b style='mso-bidi-font-weight: normal'>.</b></span></p>
+<p><b><span lang=EN-GB>Genera (extant) excluded from Formicidae</span></b><span lang=EN-GB>: <i><span style='color:green'>Formila</span></i>.</span></p>
+<p><b><span lang=EN-GB>Genera (extinct) excluded from Formicidae</span></b><span lang=EN-GB>: *<i><span style='color:green'>Cariridris</span></i>.</span></p>
 
-<p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
--36.0pt'><b style='mso-bidi-font-weight:normal'><span lang=EN-GB>Subfamilies of
-Formicidae (extinct)</span></b><span lang=EN-GB>: *Armaniinae, *Brownimeciinae.</span></p>
+<p><span lang=EN-GB><o:p>&nbsp;</o:p></span></p>
 
-<p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
--36.0pt'><b style='mso-bidi-font-weight:normal'><span lang=EN-GB>Genera
-(extant) <i style='mso-bidi-font-style:normal'>incertae sedis</i> in Formicidae</span></b><span
-lang=EN-GB>: <i style='mso-bidi-font-style:normal'>Condylodon</i>.</span></p>
-
-<p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
--36.0pt'><b style='mso-bidi-font-weight:normal'><span lang=EN-GB>Genera
-(extinct) <i style='mso-bidi-font-style:normal'>incertae sedis</i> in
-Formicidae</span></b><span lang=EN-GB>: <i style='mso-bidi-font-style:normal'>*Calyptites</i>.</span></p>
-
-<p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
--36.0pt'><b style='mso-bidi-font-weight:normal'><span lang=EN-GB>Genera
-(extant) excluded from Formicidae</span></b><span lang=EN-GB>: <i
-style='mso-bidi-font-style:normal'><span style='color:green'>Formila</span></i>.</span></p>
-
-<p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
--36.0pt'><b style='mso-bidi-font-weight:normal'><span lang=EN-GB>Genera
-(extinct) excluded from Formicidae</span></b><span lang=EN-GB>: *<i
-style='mso-bidi-font-style:normal'><span style='color:green'>Cariridris</span></i>.</span></p>
-
-<p class=MsoNormal style='text-align:justify'><span lang=EN-GB><o:p>&nbsp;</o:p></span></p>
-
-<p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
--36.0pt'><b style='mso-bidi-font-weight:normal'><span lang=EN-GB>Genus-group <i
-style='mso-bidi-font-style:normal'>nomina nuda</i> in Formicidae</span></b><span
-lang=EN-GB>: <i style='mso-bidi-font-style:normal'><span style='color:purple'>Ancylognathus,
-Hypopheidole, Leptoxenus, Myrmegis, Pergandea, Salticomorpha, Titusia</span></i>.</span></p>
-
+<p><b><span lang=EN-GB>Genus-group <i>nomina nuda</i> in Formicidae</span></b><span lang=EN-GB>: <i><span style='color:purple'>Hypopheidole</span></i>.</span></p>
     }
+
     taxon = Subfamily.find_by_name 'Aenictinae'
     taxon.should_not be_invalid
     taxon.should_not be_fossil
@@ -91,7 +65,8 @@ Hypopheidole, Leptoxenus, Myrmegis, Pergandea, Salticomorpha, Titusia</span></i>
     taxon.status.should == 'excluded'
 
     taxon = Genus.find_by_name 'Hypopheidole'
-    taxon.should be_nil
+    taxon.should be_invalid
+    taxon.status.should == 'nomen nuda'
 
   end
 

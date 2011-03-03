@@ -56,7 +56,9 @@ grammar Bolton::SubfamilyCatalogFamilyGrammar
   end
 
   rule genus_group_nomina_nuda_in_family_list
-    (bold span 'Genus-group ' italic 'nomina nuda' tag_end ' in Formicidae' /.*/) {{:type => :genus_group_nomina_nuda_in_family_list}} 
+    (bold span 'Genus-group ' italic 'nomina nuda' tag_end ' in Formicidae' close_tags ': ' italic purple text /.*/) {
+      {:type => :genus_group_nomina_nuda_in_family_list, :genera => text.split(', ')}
+    } 
   end
 
   rule genera_incertae_sedis_in_family_header

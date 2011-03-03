@@ -50,7 +50,7 @@ describe Bolton::SubfamilyCatalog do
   it "should recognize the genus group nomina nuda in family list" do
     @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Genus-group <i>nomina nuda</i> in Formicidae</span></b><span lang=EN-GB>: <i><span style='color:purple'>Ancylognathus, Hypopheidole</span></i>.</span>
-    }).should == {:type => :genus_group_nomina_nuda_in_family_list}
+    }).should == {:type => :genus_group_nomina_nuda_in_family_list, :genera => ['Ancylognathus', 'Hypopheidole']}
   end
 
   it "should recognize the genera incertae sedis in family header" do
