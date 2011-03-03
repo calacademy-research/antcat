@@ -37,6 +37,9 @@ describe CommonGrammar do
     it "should handle a bold empty paragraph" do
       CommonGrammar.parse(%{<b><p> </p></b>}, :root => :blank_line).value.should == :blank_line
     end
+    it "should handle another bold empty paragraph" do
+      CommonGrammar.parse(%{<b style="mso-bidi-font-weight:normal"><span lang="EN-GB"><p> </p></span></b>}, :root => :blank_line).value.should == :blank_line
+    end
 
     it "should handle an italic space" do
       CommonGrammar.parse(%{<i> </i>}, :root => :blank_line).value.should == :blank_line

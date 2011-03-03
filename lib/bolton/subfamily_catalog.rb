@@ -190,7 +190,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     taxonomic_history = ''
     loop do
       parse_next_line
-      break if !@line || @type != :other
+      break if @type != :other
       taxonomic_history << @paragraph
     end
     taxonomic_history

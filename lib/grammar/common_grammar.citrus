@@ -116,7 +116,7 @@ grammar CommonGrammar
   end
 
   rule blank_line
-    (/^/ (blank_paragraph_with_font | blank_paragraph_with_formatting | blank_paragraph_italic | '.' | s) /$/) {
+    (/^/ (blank_paragraph_with_font | blank_paragraph_with_formatting | bold_empty_paragraph | blank_paragraph_italic | '.' | s) /$/) {
       :blank_line
     }
   end
@@ -130,7 +130,11 @@ grammar CommonGrammar
   end
 
   rule blank_paragraph_with_formatting
-    bold? red? blank_paragraph tag_end? tag_end?
+    bold? red? blank_paragraph close_tags
+  end
+
+  rule bold_empty_paragraph
+    bold span '<p>' s '</p>' close_tags
   end
 
   rule blank_paragraph_italic
