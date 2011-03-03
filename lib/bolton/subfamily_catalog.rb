@@ -133,9 +133,9 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
   end
 
   def parse_subfamily
-    raise unless @type == :subfamily_header
+    expect :subfamily_centered_header
     parse_next_line
-    raise unless @type == :subfamily
+    expect :subfamily_header
 
     name = @parse_result[:name]
     fossil = @parse_result[:fossil]
@@ -145,6 +145,16 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     raise "Subfamily doesn't exist" unless subfamily
 
     subfamily.update_attributes :taxonomic_history => taxonomic_history
+
+    parse_tribes_list subfamily
+  end
+
+  def parse_tribes_list subfamily
+    expect :tribes_list
+    @parse_result[:tribes].each do |tribe, fossil|
+      Tribe.create! :name => tribe, :subfamily => subfamily, :fossil => fossil, :status => 'valid'
+    end
+    parse_next_line
   end
 
   def parse_tribe

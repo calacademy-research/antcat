@@ -2,10 +2,10 @@ grammar Bolton::SubfamilyCatalogGrammar
   include Bolton::CatalogGrammar
 
   rule subfamily_catalog
-    family | a_supersubfamily_header | subfamily_header | subfamily | tribe | genus | incertae_sedis_header | blank_line | other
+    family_section | subfamily_section | a_supersubfamily_header | tribe | genus | incertae_sedis_header | blank_line | other
   end
 
-  rule family
+  rule family_section
     family_header |
     extant_subfamilies | extinct_subfamilies |
     extant_genera_sedis_in_family | extinct_genera_sedis_in_family |
@@ -61,12 +61,33 @@ grammar Bolton::SubfamilyCatalogGrammar
     } 
   end
 
-  rule subfamily
+  rule subfamily_section
+    subfamily_centered_header | subfamily_header | tribes_list
+  end
+
+  rule subfamily_centered_header
+    (bold span 'SUBFAMILY ' red uppercase_word close_tags) {
+      {:type => :subfamily_centered_header}
+    }
+  end
+
+  rule subfamily_header
     (bold span 'Subfamily ' fossil_flag? red uppercase_word close_tags) {
-      value = {:type => :subfamily, :name => uppercase_word.downcase.capitalize.strip}
+      value = {:type => :subfamily_header, :name => uppercase_word.downcase.capitalize.strip}
       value.merge! :fossil => true if fossil_flag.present?
       value
     }
+  end
+
+  rule tribes_list
+    (bold span 'Tribes of ' capitalized_word close_tags ': ' text /.*/) {
+      value = {:type => :tribes_list}
+      value[:tribes] = text.split(', ').map do |tribe|
+        fossil = tribe.gsub!(/\*/, '') && true
+        [tribe, fossil]
+      end
+      value
+    } 
   end
 
   rule genus
@@ -107,12 +128,6 @@ grammar Bolton::SubfamilyCatalogGrammar
   rule incertae_sedis_in_subfamily_header
     (bold span ('Genus ' | 'Genera of Hong (2002), ' | 'Genera ') '(extinct) '? italic 'incertae sedis' tag_end ' in ' red uppercase_word close_tags) {
       {:type => :incertae_sedis_in_subfamily_header}
-    }
-  end
-
-  rule subfamily_header
-    (bold span 'SUBFAMILY' close_tags red uppercase_word close_tags) {
-      {:type => :subfamily_header}
     }
   end
 

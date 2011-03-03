@@ -160,10 +160,23 @@ lang=EN-GB><o:p>&nbsp;</o:p></span></p>
 style='color:red'>ANEURETINAE</span> <o:p></o:p></span></b></p>
 
 <p>Aneuritinae history</p>
+
+<p class=MsoNormal style='text-align:justify'><b style='mso-bidi-font-weight:
+normal'><span lang=EN-GB>Tribes of Aneuretinae</span></b><span lang=EN-GB>:
+Aneuretini, *Pityomyrmecini.</span></p>
       }
 
-      taxon = Subfamily.find_by_name('Aneuretinae')
-      taxon.taxonomic_history.should == '<p>Aneuritinae history</p>'
+      aneuretinae = Subfamily.find_by_name 'Aneuretinae'
+      aneuretinae.taxonomic_history.should == '<p>Aneuritinae history</p>'
+
+      aneuretini = Tribe.find_by_name 'Aneuretini'
+      aneuretini.subfamily.should == aneuretinae
+      aneuretinae.should_not be_fossil
+      pityomyrmecini = Tribe.find_by_name 'Pityomyrmecini'
+      pityomyrmecini.subfamily.should == aneuretinae
+      pityomyrmecini.should be_fossil
+
+
     end
   end
 
@@ -593,10 +606,23 @@ style='color:red'>ANEURETINAE</span> <o:p></o:p></span></b></p>
       }).should == {:type => :genus_group_nomina_nuda_in_family}
     end
 
-      #@subfamily_catalog.parse(%{
-#<b><span lang=EN-GB>Subfamily <span style='color:red'>MYRMICINAE</span> <o:p></o:p></span></b>
-      #}).should == {:type => :subfamily, :name => 'Myrmicinae'}
-    #end
+    it "should recognize a centered subfamily header" do
+      @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>SUBFAMILY <span style='color:red'>ANEURETINAE</span><o:p></o:p></span></b>
+      }).should == {:type => :subfamily_centered_header}
+    end
+
+    it "should recognize a subfamily header" do
+      @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>Subfamily <span style='color:red'>MYRMICINAE</span> <o:p></o:p></span></b>
+      }).should == {:type => :subfamily_header, :name => 'Myrmicinae'}
+    end
+
+    it "should recognize a tribes list" do
+      @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>Tribes of Aneuretinae</span></b><span lang=EN-GB>: Aneuretini, *Pityomyrmecini.</span>
+      }).should == {:type => :tribes_list, :tribes => [['Aneuretini', nil], ['Pityomyrmecini', true]]}
+    end
 
     #it "should recognize an extinct subfamily line" do
       #@subfamily_catalog.parse(%{
