@@ -157,10 +157,6 @@ grammar Bolton::GenusCatalogGrammar
     }
   end
 
-  rule incertae_sedis_in
-    italic 'incertae sedis' tag_end ' in '
-  end
-
   rule unavailable_name
     (bold 'unavailable name' tag_end?) {
       {}

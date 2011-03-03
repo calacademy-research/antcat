@@ -36,4 +36,8 @@ grammar Bolton::CatalogGrammar
     }
   end
 
+  rule incertae_sedis_in
+    italic 'incertae sedis' tag_end ' in '
+  end
+
 end

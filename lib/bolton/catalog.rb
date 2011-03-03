@@ -128,4 +128,7 @@ class Bolton::Catalog
     raise "Expecting #{type}" unless @type == type
   end
 
+  def skip type
+    parse_next_line while @type == type
+  end
 end

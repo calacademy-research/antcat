@@ -15,102 +15,13 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
   private
 
   def import
+    Progress.info "==============================="
     Taxon.delete_all
 
     parse_family
     parse_supersubfamilies 
-    #while @line
-      #parse_incertae_sedis_in_family || parse_incertae_sedis_in_subfamily || parse_subfamily || parse_genus || parse_tribe || parse_other || parse_next_line
-    #end
+
     super
-  end
-
-  def parse_family
-    return unless @type == :family_header
-
-    parse_next_line 
-    parse_next_line while @type == :other
-
-    parse_family_summary &&
-    parse_genera_incertae_sedis_in_family &&
-    parse_genera_excluded_from_family &&
-    parse_unavailable_group_names &&
-    parse_genus_group_nomina_nuda
-  end
-
-  def parse_family_summary
-    parse_extant_subfamilies &&
-    parse_extinct_subfamilies &&
-    parse_extant_genera_incertae_sedis_in_family &&
-    parse_extinct_genera_incertae_sedis_in_family &&
-    parse_extant_genera_excluded_from_family &&
-    parse_extinct_genera_excluded_from_family &&
-    parse_genus_group_nomina_nuda
-  end
-
-  def parse_extant_subfamilies
-    parse_failed and return unless @type == :extant_subfamilies
-    @parse_result[:subfamilies].each do |subfamily|
-      Subfamily.create! :name => subfamily, :status => 'valid'
-    end
-    parse_next_line
-  end
-
-  def parse_extinct_subfamilies
-    parse_failed and return unless @type == :extinct_subfamilies
-    @parse_result[:subfamilies].each do |subfamily|
-      Subfamily.create! :name => subfamily, :status => 'valid', :fossil => true
-    end
-    parse_next_line
-  end
-
-  def parse_extant_genera_incertae_sedis_in_family
-    parse_failed and return unless @type == :extant_genera_incertae_sedis_in_family
-    @parse_result[:genera].each do |genus|
-      Genus.create! :name => genus, :status => 'valid', :incertae_sedis_in => 'family'
-    end
-    parse_next_line
-  end
-
-  def parse_extinct_genera_incertae_sedis_in_family
-    parse_failed and return unless @type == :extinct_genera_incertae_sedis_in_family
-    @parse_result[:genera].each do |genus|
-      Genus.create! :name => genus, :status => 'valid', :incertae_sedis_in => 'family', :fossil => true
-    end
-    parse_next_line
-  end
-
-  def parse_extant_genera_excluded_from_family
-    parse_failed and return unless @type == :extant_genera_excluded_from_family
-    @parse_result[:genera].each do |genus|
-      Genus.create! :name => genus, :status => 'excluded'
-    end
-    parse_next_line
-  end
-
-  def parse_extinct_genera_excluded_from_family
-    parse_failed and return unless @type == :extinct_genera_excluded_from_family
-    @parse_result[:genera].each do |genus|
-      Genus.create! :name => genus, :status => 'excluded', :fossil => true
-    end
-    parse_next_line
-  end
-
-  def parse_genus_group_nomina_nuda
-    parse_failed and return unless @type == :genus_group_nomina_nuda_in_family
-    parse_next_line
-  end
-
-  def parse_genera_incertae_sedis_in_family
-  end
-
-  def parse_genera_excluded_from_family
-  end
-
-  def parse_unavailable_group_names
-  end
-
-  def parse_genus_group_nomina_nuda
   end
 
   def parse_supersubfamilies
@@ -118,12 +29,6 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
       parse_next_line
       parse_subfamily
     end
-  end
-
-  def parse_incertae_sedis_in_family
-    return unless @type == :incertae_sedis_in_family_header
-    @incertae_sedis_in_family = true
-    parse_next_line
   end
 
   def parse_incertae_sedis_in_subfamily

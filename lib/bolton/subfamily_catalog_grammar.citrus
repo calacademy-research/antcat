@@ -1,64 +1,9 @@
 grammar Bolton::SubfamilyCatalogGrammar
   include Bolton::CatalogGrammar
+  include Bolton::SubfamilyCatalogFamilyGrammar
 
   rule subfamily_catalog
     family_section | subfamily_section | a_supersubfamily_header | tribe | genus | incertae_sedis_header | blank_line | other
-  end
-
-  rule family_section
-    family_header |
-    extant_subfamilies | extinct_subfamilies |
-    extant_genera_sedis_in_family | extinct_genera_sedis_in_family |
-    extant_genera_excluded_from_family | extinct_genera_excluded_from_family |
-    genus_group_nomina_nuda_in_family
-  end
-
-  rule family_header
-    (bold span 'FAMILY FORMICIDAE' close_tags) {
-      {:type => :family_header}
-    }
-  end
-
-  rule extant_subfamilies
-    (bold span 'Subfamilies of Formicidae (extant)' close_tags ': ' text /.*/) {
-      {:type => :extant_subfamilies, :subfamilies => text.split(', ')}
-    } 
-  end
-
-  rule extinct_subfamilies
-    (bold span 'Subfamilies of Formicidae (extinct)' close_tags ': ' text /.*/) {
-      {:type => :extinct_subfamilies, :subfamilies => text.split(', ').map {|e| e.gsub(/\*/, '')}}
-    } 
-  end
-
-  rule extant_genera_sedis_in_family
-    (bold span 'Genera (extant) ' italic 'incertae sedis' tag_end ' in Formicidae' close_tags ': ' italic text /.*/) {
-      {:type => :extant_genera_incertae_sedis_in_family, :genera => text.split(', ')}
-    } 
-  end
-
-  rule extinct_genera_sedis_in_family
-    (bold span 'Genera (extinct) ' italic 'incertae sedis' tag_end ' in Formicidae' close_tags ': ' italic text /.*/) {
-      {:type => :extinct_genera_incertae_sedis_in_family, :genera => text.split(', ').map {|e| e.gsub(/\*/, '')}}
-    } 
-  end
-
-  rule extant_genera_excluded_from_family
-    (bold span 'Genera (extant) excluded from Formicidae' close_tags ': ' italic green text /.*/) {
-      {:type => :extant_genera_excluded_from_family, :genera => text.split(', ')}
-    } 
-  end
-
-  rule extinct_genera_excluded_from_family
-    (bold span 'Genera (extinct) excluded from Formicidae' close_tags ': *' italic green text /.*/) {
-      {:type => :extinct_genera_excluded_from_family, :genera => text.split(', ').map {|e| e.gsub(/\*/, '')}}
-    } 
-  end
-
-  rule genus_group_nomina_nuda_in_family
-    (bold span 'Genus-group ' italic 'nomina nuda' tag_end ' in Formicidae' /.*/) {
-      {:type => :genus_group_nomina_nuda_in_family}
-    } 
   end
 
   rule subfamily_section
@@ -113,14 +58,8 @@ grammar Bolton::SubfamilyCatalogGrammar
     incertae_sedis_in_family_header | incertae_sedis_in_tribe_header | incertae_sedis_in_subfamily_header
   end
 
-  rule incertae_sedis_in_family_header
-    (bold span ('Genus '|'Genera ') italic 'incertae sedis' tag_end ' in ' red capitalized_word close_tags) {
-      {:type => :incertae_sedis_in_tribe_header}
-    }
-  end
-
   rule incertae_sedis_in_tribe_header
-    (bold span 'Genera ' italic 'incertae sedis' tag_end ' in ' red 'FORMICIDAE' close_tags) {
+    (bold span 'Genera ' incertae_sedis_in red 'FORMICIDAE' close_tags) {
       {:type => :incertae_sedis_in_family_header}
     }
   end
