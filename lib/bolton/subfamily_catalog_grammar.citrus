@@ -2,11 +2,15 @@ grammar Bolton::SubfamilyCatalogGrammar
   include Bolton::CatalogGrammar
 
   rule subfamily_catalog
-    family | a_supersubfamily_header | subfamily_header | subfamily | tribe | genus | incertae_sedis_header | other
+    family | a_supersubfamily_header | subfamily_header | subfamily | tribe | genus | incertae_sedis_header | blank_line | other
   end
 
   rule family
-    family_header | extant_subfamilies | extinct_subfamilies | extant_genera_sedis_in_family | extinct_genera_sedis_in_family | extant_genera_excluded_from_family | extinct_genera_excluded_from_family
+    family_header |
+    extant_subfamilies | extinct_subfamilies |
+    extant_genera_sedis_in_family | extinct_genera_sedis_in_family |
+    extant_genera_excluded_from_family | extinct_genera_excluded_from_family |
+    genus_group_nomina_nuda_in_family
   end
 
   rule family_header
@@ -48,6 +52,12 @@ grammar Bolton::SubfamilyCatalogGrammar
   rule extinct_genera_excluded_from_family
     (bold span 'Genera (extinct) excluded from Formicidae' close_tags ': *' italic green text /.*/) {
       {:type => :extinct_genera_excluded_from_family, :genera => text.split(', ').map {|e| e.gsub(/\*/, '')}}
+    } 
+  end
+
+  rule genus_group_nomina_nuda_in_family
+    (bold span 'Genus-group ' italic 'nomina nuda' tag_end ' in Formicidae' /.*/) {
+      {:type => :genus_group_nomina_nuda_in_family}
     } 
   end
 

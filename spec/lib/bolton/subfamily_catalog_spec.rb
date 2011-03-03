@@ -46,8 +46,12 @@ describe Bolton::SubfamilyCatalog do
 
       it "should parse the family summary section" do
         @subfamily_catalog.import_html make_contents %{
+<p><b style="mso-bidi-font-weight:normal"><span lang="EN-GB"><p> </p></span></b></p>
+
 <p class=MsoNormal align=center style='text-align:center'><b style='mso-bidi-font-weight:
 normal'><span lang=EN-GB>FAMILY FORMICIDAE<o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='text-align:justify'><span lang=EN-GB><o:p>&nbsp;</o:p></span></p>
 
 <p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
 -36.0pt'><b style='mso-bidi-font-weight:normal'><span lang=EN-GB>Subfamilies of
@@ -76,6 +80,15 @@ style='mso-bidi-font-style:normal'><span style='color:green'>Formila</span></i>.
 -36.0pt'><b style='mso-bidi-font-weight:normal'><span lang=EN-GB>Genera
 (extinct) excluded from Formicidae</span></b><span lang=EN-GB>: *<i
 style='mso-bidi-font-style:normal'><span style='color:green'>Cariridris</span></i>.</span></p>
+
+<p class=MsoNormal style='text-align:justify'><span lang=EN-GB><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
+-36.0pt'><b style='mso-bidi-font-weight:normal'><span lang=EN-GB>Genus-group <i
+style='mso-bidi-font-style:normal'>nomina nuda</i> in Formicidae</span></b><span
+lang=EN-GB>: <i style='mso-bidi-font-style:normal'><span style='color:purple'>Ancylognathus,
+Hypopheidole, Leptoxenus, Myrmegis, Pergandea, Salticomorpha, Titusia</span></i>.</span></p>
+
         }
         taxon = Subfamily.find_by_name 'Aenictinae'
         taxon.should_not be_invalid
@@ -110,6 +123,9 @@ style='mso-bidi-font-style:normal'><span style='color:green'>Cariridris</span></
         taxon.should be_invalid
         taxon.should be_fossil
         taxon.status.should == 'excluded'
+
+        taxon = Genus.find_by_name 'Hypopheidole'
+        taxon.should be_nil
 
       end
 
@@ -509,33 +525,38 @@ style='mso-bidi-font-style:normal'><span style='color:green'>Cariridris</span></
     it "should recognize the extinct subfamilies section" do
       @subfamily_catalog.parse(%{
 <b style='mso-bidi-font-weight:normal'><span lang=EN-GB>Subfamilies of Formicidae (extinct)</span></b><span lang=EN-GB>: *Armaniinae, *Brownimeciinae.</span>
-}).should == {:type => :extinct_subfamilies, :subfamilies => ['Armaniinae', 'Brownimeciinae']}
+      }).should == {:type => :extinct_subfamilies, :subfamilies => ['Armaniinae', 'Brownimeciinae']}
     end
 
     it "should recognize the extant genera incertae sedis section" do
       @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Genera (extant) <i>incertae sedis</i> in Formicidae</span></b><span lang=EN-GB>: <i>Condylodon</i>.</span></p>
-}).should == {:type => :extant_genera_incertae_sedis_in_family, :genera => ['Condylodon']}
+      }).should == {:type => :extant_genera_incertae_sedis_in_family, :genera => ['Condylodon']}
     end
 
     it "should recognize the extinct genera incertae sedis section" do
       @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in Formicidae</span></b><span lang=EN-GB>: <i>*Condylodon</i>.</span></p>
-}).should == {:type => :extinct_genera_incertae_sedis_in_family, :genera => ['Condylodon']}
+      }).should == {:type => :extinct_genera_incertae_sedis_in_family, :genera => ['Condylodon']}
     end
 
     it "should recognize the extant genera excluded from family" do
       @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Genera (extant) excluded from Formicidae</span></b><span lang=EN-GB>: <i><span style='color:green'>Formila</span></i>.</span></p>
-}).should == {:type => :extant_genera_excluded_from_family, :genera => ['Formila']}
+      }).should == {:type => :extant_genera_excluded_from_family, :genera => ['Formila']}
     end
 
     it "should recognize the extinct genera excluded from family" do
       @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Genera (extinct) excluded from Formicidae</span></b><span lang=EN-GB>: *<i><span style='color:green'>Cariridris, *Cretacoformica</span></i>.</span>
-}).should == {:type => :extinct_genera_excluded_from_family, :genera => ['Cariridris', 'Cretacoformica']}
+      }).should == {:type => :extinct_genera_excluded_from_family, :genera => ['Cariridris', 'Cretacoformica']}
     end
 
+    it "should recognize the genus group nomina nuda in family" do
+      @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>Genus-group <i>nomina nuda</i> in Formicidae</span></b><span lang=EN-GB>: <i><span style='color:purple'>Ancylognathus, Hypopheidole</span></i>.</span>
+      }).should == {:type => :genus_group_nomina_nuda_in_family}
+    end
 
       #@subfamily_catalog.parse(%{
 #<b><span lang=EN-GB>Subfamily <span style='color:red'>MYRMICINAE</span> <o:p></o:p></span></b>

@@ -97,6 +97,8 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
   end
 
   def parse_genus_group_nomina_nuda
+    parse_failed and return unless @type == :genus_group_nomina_nuda_in_family
+    parse_next_line
   end
 
   def parse_genera_incertae_sedis_in_family
