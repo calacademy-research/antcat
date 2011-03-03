@@ -100,8 +100,24 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
   end
 
   def parse_genera_excluded_from_family
-    #expect :genera_excluded_from_family_header
-    #parse_next_line
+    expect :genera_excluded_from_family_header
+    parse_next_line
+
+    skip :other
+    expect :genus
+    while @type == :genus
+      genus = Genus.find_by_name @parse_result[:name]
+      name = @parse_result[:name]
+      status = @parse_result[:status]
+      fossil = @parse_result[:fossil]
+      taxonomic_history = parse_taxonomic_history
+      if genus
+        genus.update_attributes :taxonomic_history => taxonomic_history
+      else
+        Progress.warning "Genus #{name} not found"
+        Genus.create! :name => name, :fossil => fossil, :status => 'excluded', :taxonomic_history => taxonomic_history
+      end
+    end
   end
 
   def parse_unavailable_family_group_names_in_family

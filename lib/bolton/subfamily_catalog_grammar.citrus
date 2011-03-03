@@ -51,8 +51,10 @@ grammar Bolton::SubfamilyCatalogGrammar
   end
 
   rule unidentifiable_genus
-    (bold span 'Genus ' italic green uppercase_word close_tags) {
-      {:type => :genus, :name => uppercase_word.downcase.capitalize.strip, :status => :unidentifiable}
+    (bold span 'Genus ' fossil_flag? italic green uppercase_word close_tags) {
+      value = {:type => :genus, :name => uppercase_word.downcase.capitalize.strip, :status => :unidentifiable}
+      value.merge! :fossil => true if fossil_flag.present?
+      value
     }
   end
 

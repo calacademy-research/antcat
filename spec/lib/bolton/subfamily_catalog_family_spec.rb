@@ -35,6 +35,10 @@ describe Bolton::SubfamilyCatalog do
 <p class=MsoNormal style='text-align:justify'><span lang=EN-GB><o:p>&nbsp;</o:p></span></p>
 
 <p><b><span lang=EN-GB>Genera excluded from <span style='color:red'>FORMICIDAE</span><o:p></o:p></span></b></p>
+<p><span lang=EN-GB>The following were all originally described as members of Formicidae but are now excluded.</span></p>
+<p><b><span lang=EN-GB>Genus *<i><span style='color:green'>CARIRIDRIS</span></i> <o:p></o:p></span></b></p>
+<p>Cariridris taxonomic history</p>
+<p><b><span lang=EN-GB>Genus *<i><span style='color:red'>SYNTAPHUS</span></i> <o:p></o:p></span></b></p>
 
 <p><b><span lang=EN-GB>Unavailable family-group names in <span style='color:red'>FORMICIDAE</span><o:p></o:p></span></b></p>
 
@@ -82,10 +86,17 @@ describe Bolton::SubfamilyCatalog do
     taxon.should be_invalid
     taxon.should be_fossil
     taxon.status.should == 'excluded'
+    taxon.taxonomic_history.should == '<p>Cariridris taxonomic history</p>'
 
     taxon = Genus.find_by_name 'Hypopheidole'
     taxon.should be_invalid
     taxon.status.should == 'nomen nuda'
+
+    taxon = Genus.find_by_name 'Syntaphus'
+    taxon.should be_invalid
+    taxon.should be_fossil
+    taxon.status.should == 'excluded'
+    taxon.taxonomic_history.should == ''
 
   end
 

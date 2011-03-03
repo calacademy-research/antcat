@@ -41,6 +41,12 @@ describe Bolton::SubfamilyCatalog do
     }).should == {:type => :genus, :name => 'Hypochira', :status => :unidentifiable}
   end
 
+  it "should handle an unidentifiable fossil genus" do
+    @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>Genus *<i><span style='color:green'>CARIRIDRIS</span></i> <o:p></o:p></span></b>
+    }).should == {:type => :genus, :name => 'Cariridris', :status => :unidentifiable, :fossil => true}
+  end
+
   #it "should recognize this tribe" do
     #@subfamily_catalog.parse(%{
 #<b><span lang=EN-GB>Tribe</span></b><span lang=EN-GB> *<b style='mso-bidi-font-weight:normal'><span style='color:red'>PITYOMYRMECINI</span></b></span>
