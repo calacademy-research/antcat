@@ -5,83 +5,72 @@ describe Bolton::SubfamilyCatalog do
     @subfamily_catalog = Bolton::SubfamilyCatalog.new
   end
 
-  describe "Importing a list of files" do
+  #describe "Importing HTML" do
+    #def make_contents content
+      #%{<html><body><div class=Section1>#{content}</div></body></html>}
+    #end
 
-    it "should process only files beginning with numbers, and them in numerical order" do
-      File.should_receive(:read).with('data/bolton/01. FORMICIDAE.htm').ordered.and_return ''
-      File.should_receive(:read).with('data/bolton/02. DOLICHODEROMORPHS.htm').ordered.and_return ''
-      File.should_not_receive(:read).with('data/bolton/NGC-GEN.A-L.htm')
-      @subfamily_catalog.import_files ['data/bolton/NGC-GEN.A-L.htm', 'data/bolton/02. DOLICHODEROMORPHS.htm', 'data/bolton/01. FORMICIDAE.htm']
-    end
+    #describe "Importing the catalog" do
 
-  end
+      #it "should parse the family, then the subfamilies" do
+        #@subfamily_catalog.should_receive(:parse_family).ordered
+        #@subfamily_catalog.should_receive(:parse_supersubfamilies).ordered
+        #@subfamily_catalog.import_html make_contents %{
+    #<p class=MsoNormal align=center style='text-align:center'><b style='mso-bidi-font-weight:
+    #normal'><span lang=EN-GB>FAMILY FORMICIDAE<o:p></o:p></span></b></p>
+        #}
+      #end
 
-  describe "Importing HTML" do
-    def make_contents content
-      %{<html><body><div class=Section1>#{content}</div></body></html>}
-    end
+    #end
 
-    describe "Importing the catalog" do
+    #it "should parse each supersubfamily" do
+      #@subfamily_catalog.should_receive(:parse_family).and_return {
+        #Factory :subfamily, :name => 'Aneuretinae'
+      #}
 
-      it "should parse the family, then the subfamilies" do
-        @subfamily_catalog.should_receive(:parse_family).ordered
-        @subfamily_catalog.should_receive(:parse_supersubfamilies).ordered
-        @subfamily_catalog.import_html make_contents %{
-    <p class=MsoNormal align=center style='text-align:center'><b style='mso-bidi-font-weight:
-    normal'><span lang=EN-GB>FAMILY FORMICIDAE<o:p></o:p></span></b></p>
-        }
-      end
+      #@subfamily_catalog.import_html make_contents %{
+#<p class=MsoNormal align=center style='text-align:center'><b style='mso-bidi-font-weight:
+#normal'><span lang=EN-GB>THE DOLICHODEROMORPHS: SUBFAMILIES ANEURETINAE AND
+#DOLICHODERINAE<o:p></o:p></span></b></p>
 
-    end
+#<p class=MsoNormal style='margin-right:-1.25pt;text-align:justify'><span
+#lang=EN-GB><o:p>&nbsp;</o:p></span></p>
 
-    it "should parse each supersubfamily" do
-      @subfamily_catalog.should_receive(:parse_family).and_return {
-        Factory :subfamily, :name => 'Aneuretinae'
-      }
+#<p class=MsoNormal align=center style='margin-right:-1.25pt;text-align:center'><b
+#style='mso-bidi-font-weight:normal'><span lang=EN-GB>SUBFAMILY <span
+#style='color:red'>ANEURETINAE</span><o:p></o:p></span></b></p>
 
-      @subfamily_catalog.import_html make_contents %{
-<p class=MsoNormal align=center style='text-align:center'><b style='mso-bidi-font-weight:
-normal'><span lang=EN-GB>THE DOLICHODEROMORPHS: SUBFAMILIES ANEURETINAE AND
-DOLICHODERINAE<o:p></o:p></span></b></p>
+#<p class=MsoNormal style='margin-right:-1.25pt;text-align:justify'><span
+#lang=EN-GB><o:p>&nbsp;</o:p></span></p>
 
-<p class=MsoNormal style='margin-right:-1.25pt;text-align:justify'><span
-lang=EN-GB><o:p>&nbsp;</o:p></span></p>
+#<p class=MsoNormal style='margin-right:-1.25pt;text-align:justify'><span
+#lang=EN-GB><o:p>&nbsp;</o:p></span></p>
 
-<p class=MsoNormal align=center style='margin-right:-1.25pt;text-align:center'><b
-style='mso-bidi-font-weight:normal'><span lang=EN-GB>SUBFAMILY <span
-style='color:red'>ANEURETINAE</span><o:p></o:p></span></b></p>
+#<p class=MsoNormal style='margin-top:0cm;margin-right:-1.25pt;margin-bottom:
+#0cm;margin-left:36.0pt;margin-bottom:.0001pt;text-align:justify;text-indent:
+#-36.0pt'><b style='mso-bidi-font-weight:normal'><span lang=EN-GB>Subfamily <span
+#style='color:red'>ANEURETINAE</span> <o:p></o:p></span></b></p>
 
-<p class=MsoNormal style='margin-right:-1.25pt;text-align:justify'><span
-lang=EN-GB><o:p>&nbsp;</o:p></span></p>
+#<p>Aneuritinae history</p>
 
-<p class=MsoNormal style='margin-right:-1.25pt;text-align:justify'><span
-lang=EN-GB><o:p>&nbsp;</o:p></span></p>
+#<p class=MsoNormal style='text-align:justify'><b style='mso-bidi-font-weight:
+#normal'><span lang=EN-GB>Tribes of Aneuretinae</span></b><span lang=EN-GB>:
+#Aneuretini, *Pityomyrmecini.</span></p>
+      #}
 
-<p class=MsoNormal style='margin-top:0cm;margin-right:-1.25pt;margin-bottom:
-0cm;margin-left:36.0pt;margin-bottom:.0001pt;text-align:justify;text-indent:
--36.0pt'><b style='mso-bidi-font-weight:normal'><span lang=EN-GB>Subfamily <span
-style='color:red'>ANEURETINAE</span> <o:p></o:p></span></b></p>
+      #aneuretinae = Subfamily.find_by_name 'Aneuretinae'
+      #aneuretinae.taxonomic_history.should == '<p>Aneuritinae history</p>'
 
-<p>Aneuritinae history</p>
-
-<p class=MsoNormal style='text-align:justify'><b style='mso-bidi-font-weight:
-normal'><span lang=EN-GB>Tribes of Aneuretinae</span></b><span lang=EN-GB>:
-Aneuretini, *Pityomyrmecini.</span></p>
-      }
-
-      aneuretinae = Subfamily.find_by_name 'Aneuretinae'
-      aneuretinae.taxonomic_history.should == '<p>Aneuritinae history</p>'
-
-      aneuretini = Tribe.find_by_name 'Aneuretini'
-      aneuretini.subfamily.should == aneuretinae
-      aneuretinae.should_not be_fossil
-      pityomyrmecini = Tribe.find_by_name 'Pityomyrmecini'
-      pityomyrmecini.subfamily.should == aneuretinae
-      pityomyrmecini.should be_fossil
+      #aneuretini = Tribe.find_by_name 'Aneuretini'
+      #aneuretini.subfamily.should == aneuretinae
+      #aneuretinae.should_not be_fossil
+      #pityomyrmecini = Tribe.find_by_name 'Pityomyrmecini'
+      #pityomyrmecini.subfamily.should == aneuretinae
+      #pityomyrmecini.should be_fossil
 
 
-    end
-  end
+    #end
+  #end
 
 
   #describe "Importing a file" do
@@ -460,187 +449,4 @@ Aneuretini, *Pityomyrmecini.</span></p>
 
   #end
 
-  describe "Parsing a line" do
-
-    it "should recognize the family header" do
-      @subfamily_catalog.parse(%{
-<b><span lang=EN-GB>FAMILY FORMICIDAE<o:p></o:p></span></b>
-      }).should == {:type => :family_header}
-    end
-
-    it "should recognize the extant subfamilies section" do
-      @subfamily_catalog.parse(%{
-<b><span lang=EN-GB>Subfamilies of Formicidae (extant)</span></b><span lang=EN-GB>: Aenictinae, Myrmicinae<b>.</b></span></p> }).should == {:type => :extant_subfamilies, :subfamilies => ['Aenictinae', 'Myrmicinae']}
-    end
-
-    it "should recognize the extinct subfamilies section" do
-      @subfamily_catalog.parse(%{
-<b style='mso-bidi-font-weight:normal'><span lang=EN-GB>Subfamilies of Formicidae (extinct)</span></b><span lang=EN-GB>: *Armaniinae, *Brownimeciinae.</span>
-      }).should == {:type => :extinct_subfamilies, :subfamilies => ['Armaniinae', 'Brownimeciinae']}
-    end
-
-    it "should recognize the extant genera incertae sedis section" do
-      @subfamily_catalog.parse(%{
-<b><span lang=EN-GB>Genera (extant) <i>incertae sedis</i> in Formicidae</span></b><span lang=EN-GB>: <i>Condylodon</i>.</span></p>
-      }).should == {:type => :extant_genera_incertae_sedis_in_family, :genera => ['Condylodon']}
-    end
-
-    it "should recognize the extinct genera incertae sedis section" do
-      @subfamily_catalog.parse(%{
-<b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in Formicidae</span></b><span lang=EN-GB>: <i>*Condylodon</i>.</span></p>
-      }).should == {:type => :extinct_genera_incertae_sedis_in_family, :genera => ['Condylodon']}
-    end
-
-    it "should recognize the extant genera excluded from family" do
-      @subfamily_catalog.parse(%{
-<b><span lang=EN-GB>Genera (extant) excluded from Formicidae</span></b><span lang=EN-GB>: <i><span style='color:green'>Formila</span></i>.</span></p>
-      }).should == {:type => :extant_genera_excluded_from_family, :genera => ['Formila']}
-    end
-
-    it "should recognize the extinct genera excluded from family" do
-      @subfamily_catalog.parse(%{
-<b><span lang=EN-GB>Genera (extinct) excluded from Formicidae</span></b><span lang=EN-GB>: *<i><span style='color:green'>Cariridris, *Cretacoformica</span></i>.</span>
-      }).should == {:type => :extinct_genera_excluded_from_family, :genera => ['Cariridris', 'Cretacoformica']}
-    end
-
-    it "should recognize the genus group nomina nuda in family" do
-      @subfamily_catalog.parse(%{
-<b><span lang=EN-GB>Genus-group <i>nomina nuda</i> in Formicidae</span></b><span lang=EN-GB>: <i><span style='color:purple'>Ancylognathus, Hypopheidole</span></i>.</span>
-      }).should == {:type => :genus_group_nomina_nuda_in_family}
-    end
-
-    it "should recognize a centered subfamily header" do
-      @subfamily_catalog.parse(%{
-<b><span lang=EN-GB>SUBFAMILY <span style='color:red'>ANEURETINAE</span><o:p></o:p></span></b>
-      }).should == {:type => :subfamily_centered_header}
-    end
-
-    it "should recognize a subfamily header" do
-      @subfamily_catalog.parse(%{
-<b><span lang=EN-GB>Subfamily <span style='color:red'>MYRMICINAE</span> <o:p></o:p></span></b>
-      }).should == {:type => :subfamily_header, :name => 'Myrmicinae'}
-    end
-
-    it "should recognize a tribes list" do
-      @subfamily_catalog.parse(%{
-<b><span lang=EN-GB>Tribes of Aneuretinae</span></b><span lang=EN-GB>: Aneuretini, *Pityomyrmecini.</span>
-      }).should == {:type => :tribes_list, :tribes => [['Aneuretini', nil], ['Pityomyrmecini', true]]}
-    end
-
-    #it "should recognize an extinct subfamily line" do
-      #@subfamily_catalog.parse(%{
-#<b><span lang=EN-GB>Subfamily *<span style='color:red'>ARMANIINAE</span> <o:p></o:p></span></b></p>
-      #}).should == {:type => :subfamily, :name => 'Armaniinae', :fossil => true}
-    #end
-
-    #it "should recognize the beginning of a tribe" do
-      #@subfamily_catalog.parse(%{
-#<b><span lang=EN-GB>Tribe <span style='color:red'>MYRMECIINI</span><o:p></o:p></span></b></p>
-      #}).should == {:type => :tribe, :name => 'Myrmeciini'}
-    #end
-
-    #it "should recognize the beginning of a fossil tribe" do
-      #@subfamily_catalog.parse(%{
-#<b><span lang=EN-GB>Tribe *<span style='color:red'>MIOMYRMECINI</span><o:p></o:p></span></b>
-      #}).should == {:type => :tribe, :name => 'Miomyrmecini', :fossil => true}
-    #end
-
-    #it "should recognize the beginning of a genus" do
-      #@subfamily_catalog.parse(%{
-#<b><span lang=EN-GB>Genus <i><span style='color:red'>ATTA</span></i> <o:p></o:p></span></b></p>
-      #}).should == {:type => :genus, :name => 'Atta'}
-    #end
-
-    #it "should recognize the beginning of a genus when the word 'Genus' is in italics, too" do
-      #@subfamily_catalog.parse(%{
-#<b><i><span lang=EN-GB style='color:black'>Genus</span><span lang=EN-GB style='color:red'> PARVIMYRMA</span></i></b>
-      #}).should == {:type => :genus, :name => 'Parvimyrma'}
-    #end
-
-    #it "should recognize a fossil genus with an extra language span" do
-      #@subfamily_catalog.parse(%{
-#<b><span lang=EN-GB>Genus</span></b><span lang=EN-GB> *<b><i><span style='color:red'>CTENOBETHYLUS</span></i></b> </span>
-      #}).should == {:type => :genus, :name => 'Ctenobethylus', :fossil => true}
-    #end
-
-    #it "should recognize the beginning of a fossil genus" do
-      #@subfamily_catalog.parse(%{
-#<b><span lang=EN-GB>Genus *<i><span style='color:red'>ANEURETELLUS</span></i> <o:p></o:p></span></b></p>
-      #}).should == {:type => :genus, :name => 'Aneuretellus', :fossil => true}
-    #end
-
-    #it "should handle an empty span in there" do
-      #@subfamily_catalog.parse(%{
-#<b><span lang="EN-GB">Genus *<i><span style="color:red">EOAENICTITES</span></i></span></b><span lang="EN-GB"> </span>
-      #}).should == {:type => :genus, :name => 'Eoaenictites', :fossil => true}
-    #end
-
-    #it "should recognize this tribe" do
-      #@subfamily_catalog.parse(%{
-#<b><span lang=EN-GB>Tribe</span></b><span lang=EN-GB> *<b style='mso-bidi-font-weight:normal'><span style='color:red'>PITYOMYRMECINI</span></b></span>
-      #}).should == {:type => :tribe, :name => 'Pityomyrmecini', :fossil => true}
-    #end
-
-    #it "should recognize an incertae sedis header in tribe" do
-      #@subfamily_catalog.parse(%{
-#<b><span lang=EN-GB>Genus <i>incertae sedis</i> in <span style='color:red'>Stenammini</i>
-      #}).should == {:type => :incertae_sedis_in_tribe_header}
-    #end
-
-    #it "should recognize Hong's incertae sedises" do
-      #@subfamily_catalog.parse(%{
-#<b><span lang=EN-GB>Genera of Hong (2002), <i>incertae sedis</i> in <span style='color:red'>MYRMICINAE</span><o:p></o:p></span></b>
-      #}).should == {:type => :incertae_sedis_in_subfamily_header}
-    #end
-
-    #it "should recognize incertae sedis in subfamily" do
-      #@subfamily_catalog.parse(%{
-#<b><span lang=EN-GB>Genera <i>incertae sedis</i> in <span style='color:red'>MYRMICINAE</span><o:p></o:p></span></b>
-      #}).should == {:type => :incertae_sedis_in_subfamily_header}
-    #end
-
-    #it "should recognize extinct incertae sedis in subfamily" do
-      #@subfamily_catalog.parse(%{
-#<b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in <span style='color:red'>DOLICHODERINAE<o:p></o:p></span></span></b>
-      #}).should == {:type => :incertae_sedis_in_subfamily_header}
-    #end
-
-    #it "should recognize a subfamily header" do
-      #@subfamily_catalog.parse(%{
-#<b><span lang=EN-GB>SUBFAMILY <span style='color:red'>ECITONINAE</span><o:p></o:p></span></b></p>
-      #}).should == {:type => :subfamily_header}
-    #end
-
-    #it "should recognize another form of subfamily header" do
-      #@subfamily_catalog.parse(%{
-#<b><span lang="EN-GB" style="color:black">SUBFAMILY</span><span lang="EN-GB"> <span style="color:red">MARTIALINAE</span><p></p></span></b>
-      #}).should == {:type => :subfamily_header}
-    #end
-
-    #it "should recognize the supersubfamily header" do
-      #@subfamily_catalog.parse(%{
-#<b><span lang=EN-GB>THE PONEROIDS: SUBFAMILIES AGROECOMYRMECINAE, AMBLYOPONINAE, PARAPONERINAE, PONERINAE AND PROCERATIINAE<o:p></o:p></span></b>
-      #}).should == {:type => :supersubfamily_header}
-    #end
-
-    #it "should recognize the supersubfamily header when there's only one subfamily" do
-      #@subfamily_catalog.parse(%{
-#<b><span lang=EN-GB>THE MYRMICOMORPHS: SUBFAMILY MYRMICINAE<o:p></o:p></span></b></p>
-      #}).should == {:type => :supersubfamily_header}
-    #end
-
-    #it 'should handle italics in weird place' do
-      #@subfamily_catalog.parse(%{
-#<b><span lang=EN-GB style='color:black'>Genus *</span><i><span lang=EN-GB style='color:red'>HAIDOMYRMODES</span></i><span lang=EN-GB><o:p></o:p></span></b>
-      #}).should == {:type => :genus, :name => 'Haidomyrmodes', :fossil => true}
-    #end
-
-    #it "should handle it when the span is before the bold and there's a subfamily at the end" do
-      #@subfamily_catalog.parse(%{
-#<span lang=EN-GB>Genus *<b style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span style='color:red'>YPRESIOMYRMA</span></i></b> [Myrmeciinae]</span>
-      #}).should == {:type => :genus, :name => 'Ypresiomyrma', :fossil => true}
-    #end
-
-  end
 end
-
