@@ -88,21 +88,30 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
   def parse_genera_incertae_sedis_in_family
     expect :genera_incertae_sedis_in_family_header
     parse_next_line
+
+    expect :genus
+    while @type == :genus
+      genus = Genus.find_by_name @parse_result[:name]
+      status = @parse_result[:status]
+      attributes = {:taxonomic_history => parse_taxonomic_history}
+      attributes.merge!(:status => status) if status
+      genus.update_attributes attributes
+    end
   end
 
   def parse_genera_excluded_from_family
-    expect :genera_exluded_from_family_header
-    parse_next_line
+    #expect :genera_excluded_from_family_header
+    #parse_next_line
   end
 
   def parse_unavailable_family_group_names_in_family
-    expect :unavailable_family_group_names_in_family_header
-    parse_next_line
+    #expect :unavailable_family_group_names_in_family_header
+    #parse_next_line
   end
 
   def parse_genus_group_nomina_nuda_in_family
-    expect :genus_group_nomina_nuda_in_family_header
-    parse_next_line
+    #expect :genus_group_nomina_nuda_in_family_header
+    #parse_next_line
   end
 
 end
