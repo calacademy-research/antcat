@@ -130,6 +130,41 @@ Hypopheidole, Leptoxenus, Myrmegis, Pergandea, Salticomorpha, Titusia</span></i>
       end
 
     end
+
+    it "should parse each supersubfamily" do
+      @subfamily_catalog.should_receive(:parse_family).and_return {
+        Factory :subfamily, :name => 'Aneuretinae'
+      }
+
+      @subfamily_catalog.import_html make_contents %{
+<p class=MsoNormal align=center style='text-align:center'><b style='mso-bidi-font-weight:
+normal'><span lang=EN-GB>THE DOLICHODEROMORPHS: SUBFAMILIES ANEURETINAE AND
+DOLICHODERINAE<o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='margin-right:-1.25pt;text-align:justify'><span
+lang=EN-GB><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoNormal align=center style='margin-right:-1.25pt;text-align:center'><b
+style='mso-bidi-font-weight:normal'><span lang=EN-GB>SUBFAMILY <span
+style='color:red'>ANEURETINAE</span><o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='margin-right:-1.25pt;text-align:justify'><span
+lang=EN-GB><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoNormal style='margin-right:-1.25pt;text-align:justify'><span
+lang=EN-GB><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:-1.25pt;margin-bottom:
+0cm;margin-left:36.0pt;margin-bottom:.0001pt;text-align:justify;text-indent:
+-36.0pt'><b style='mso-bidi-font-weight:normal'><span lang=EN-GB>Subfamily <span
+style='color:red'>ANEURETINAE</span> <o:p></o:p></span></b></p>
+
+<p>Aneuritinae history</p>
+      }
+
+      taxon = Subfamily.find_by_name('Aneuretinae')
+      taxon.taxonomic_history.should == '<p>Aneuritinae history</p>'
+    end
   end
 
 

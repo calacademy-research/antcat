@@ -114,6 +114,10 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
   end
 
   def parse_supersubfamilies
+    while @type == :supersubfamily_header
+      parse_next_line
+      parse_subfamily
+    end
   end
 
   def parse_incertae_sedis_in_family
@@ -129,17 +133,18 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
   end
 
   def parse_subfamily
-    return unless @type == :subfamily
-    @incertae_sedis_in_family = false
-    @incertae_sedis_in_subfamily = false
+    raise unless @type == :subfamily_header
+    parse_next_line
+    raise unless @type == :subfamily
 
     name = @parse_result[:name]
     fossil = @parse_result[:fossil]
     taxonomic_history = parse_taxonomic_history
 
-    raise "Subfamily #{name} already exists" if Subfamily.find_by_name name
+    subfamily = Subfamily.find_by_name name
+    raise "Subfamily doesn't exist" unless subfamily
 
-    @current_subfamily = Subfamily.create! :name => name, :fossil => fossil, :taxonomic_history => taxonomic_history
+    subfamily.update_attributes :taxonomic_history => taxonomic_history
   end
 
   def parse_tribe
