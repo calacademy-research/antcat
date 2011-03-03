@@ -9,15 +9,12 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     parse_family_summary
     skip :other
 
-    parse_genera_incertae_sedis_in_family
-    parse_genera_excluded_from_family
-    parse_unavailable_family_group_names_in_family
-    parse_genus_group_nomina_nuda_in_family
+    parse_family_detail
   end
 
   def parse_family_summary
-    parse_extant_subfamily_list
-    parse_extinct_subfamily_list
+    parse_extant_subfamilies_list
+    parse_extinct_subfamilies_list
     parse_extant_genera_incertae_sedis_in_family_list
     parse_extinct_genera_incertae_sedis_in_family_list
     parse_extant_genera_excluded_from_family_list
@@ -25,16 +22,23 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     parse_genus_group_nomina_nuda_in_family_list
   end
 
-  def parse_extant_subfamily_list
-    expect :extant_subfamily_list
+  def parse_family_detail
+    parse_genera_incertae_sedis_in_family
+    parse_genera_excluded_from_family
+    parse_unavailable_family_group_names_in_family
+    parse_genus_group_nomina_nuda_in_family
+  end
+
+  def parse_extant_subfamilies_list
+    expect :extant_subfamilies_list
     @parse_result[:subfamilies].each do |subfamily|
       Subfamily.create! :name => subfamily, :status => 'valid'
     end
     parse_next_line
   end
 
-  def parse_extinct_subfamily_list
-    expect :extinct_subfamily_list
+  def parse_extinct_subfamilies_list
+    expect :extinct_subfamilies_list
     @parse_result[:subfamilies].each do |subfamily|
       Subfamily.create! :name => subfamily, :status => 'valid', :fossil => true
     end
@@ -73,7 +77,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     parse_next_line
   end
 
-  def parse_genus_group_nomina_nuda_list
+  def parse_genus_group_nomina_nuda_in_family_list
     expect :genus_group_nomina_nuda_in_family_list
     parse_next_line
   end

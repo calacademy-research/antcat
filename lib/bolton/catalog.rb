@@ -1,7 +1,9 @@
 class Bolton::Catalog
+
   def initialize show_progress = false
     Progress.init show_progress
     Progress.open_log 'log/' + self.class.name.underscore.gsub(/\//, '_') + '.log'
+    Progress.info "==============================="
     @error_count = 0
   end
 

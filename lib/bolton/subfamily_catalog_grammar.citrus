@@ -55,7 +55,7 @@ grammar Bolton::SubfamilyCatalogGrammar
   end
 
   rule incertae_sedis_header
-    incertae_sedis_in_family_header | incertae_sedis_in_tribe_header | incertae_sedis_in_subfamily_header
+    incertae_sedis_in_tribe_header | incertae_sedis_in_subfamily_header
   end
 
   rule incertae_sedis_in_tribe_header

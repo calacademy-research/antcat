@@ -11,11 +11,12 @@
 #    rake bolton:import:subfamilies
 #  This generates log/bolton_subfamily_catalog.log
 
+require 'bolton/subfamily_catalog_family'
+
 class Bolton::SubfamilyCatalog < Bolton::Catalog
   private
 
   def import
-    Progress.info "==============================="
     Taxon.delete_all
 
     parse_family
