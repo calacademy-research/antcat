@@ -123,4 +123,9 @@ class Bolton::Catalog
   def preprocess line
     rc = restore_quot_character_entity line.gsub(/\n/, ' ').strip
   end
+
+  def expect type
+    raise "Expecting #{type}" unless @type == type
+  end
+
 end
