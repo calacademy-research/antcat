@@ -1,0 +1,39 @@
+grammar Bolton::SubfamilyCatalogSubfamilyGrammar
+  include Bolton::CatalogGrammar
+
+  rule subfamily_section
+    subfamily_centered_header | subfamily_header | tribes_list | extinct_genera_incertae_sedis_in_subfamily_list
+  end
+
+  rule subfamily_centered_header
+    (bold span 'SUBFAMILY ' red uppercase_word close_tags) {
+      {:type => :subfamily_centered_header}
+    }
+  end
+
+  rule subfamily_header
+    (bold span 'Subfamily ' fossil_flag? red uppercase_word close_tags) {
+      value = {:type => :subfamily_header, :name => uppercase_word.downcase.capitalize.strip}
+      value.merge! :fossil => true if fossil_flag.present?
+      value
+    }
+  end
+
+  rule tribes_list
+    (bold span 'Tribes of ' capitalized_word close_tags ': ' text /.*/) {
+      value = {:type => :tribes_list}
+      value[:tribes] = text.split(', ').map do |tribe|
+        fossil = tribe.gsub!(/\*/, '') && true
+        [tribe, fossil]
+      end
+      value
+    } 
+  end
+
+  rule extinct_genera_incertae_sedis_in_subfamily_list
+    (bold span 'Genera (extinct) ' incertae_sedis_in capitalized_word close_tags ': *' italic text /.*/) {
+      {:type => :extinct_genera_incertae_sedis_in_subfamily_list, :genera => text.split(', ').map {|e| e.gsub(/\*/, '')}}
+    } 
+  end
+
+end

@@ -1,38 +1,10 @@
 grammar Bolton::SubfamilyCatalogGrammar
   include Bolton::CatalogGrammar
   include Bolton::SubfamilyCatalogFamilyGrammar
+  include Bolton::SubfamilyCatalogSubfamilyGrammar
 
   rule subfamily_catalog
     family_section | subfamily_section | a_supersubfamily_header | tribe | genus | incertae_sedis_header | blank_line | other
-  end
-
-  rule subfamily_section
-    subfamily_centered_header | subfamily_header | tribes_list
-  end
-
-  rule subfamily_centered_header
-    (bold span 'SUBFAMILY ' red uppercase_word close_tags) {
-      {:type => :subfamily_centered_header}
-    }
-  end
-
-  rule subfamily_header
-    (bold span 'Subfamily ' fossil_flag? red uppercase_word close_tags) {
-      value = {:type => :subfamily_header, :name => uppercase_word.downcase.capitalize.strip}
-      value.merge! :fossil => true if fossil_flag.present?
-      value
-    }
-  end
-
-  rule tribes_list
-    (bold span 'Tribes of ' capitalized_word close_tags ': ' text /.*/) {
-      value = {:type => :tribes_list}
-      value[:tribes] = text.split(', ').map do |tribe|
-        fossil = tribe.gsub!(/\*/, '') && true
-        [tribe, fossil]
-      end
-      value
-    } 
   end
 
   rule genus

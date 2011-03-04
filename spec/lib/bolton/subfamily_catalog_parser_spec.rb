@@ -53,54 +53,6 @@ describe Bolton::SubfamilyCatalog do
     }).should == {:type => :genus, :name => 'Ancylognathus', :status => 'unavailable'}
   end
 
-  #it "should recognize this tribe" do
-    #@subfamily_catalog.parse(%{
-#<b><span lang=EN-GB>Tribe</span></b><span lang=EN-GB> *<b style='mso-bidi-font-weight:normal'><span style='color:red'>PITYOMYRMECINI</span></b></span>
-    #}).should == {:type => :tribe, :name => 'Pityomyrmecini', :fossil => true}
-  #end
-
-  #it "should recognize an incertae sedis header in tribe" do
-    #@subfamily_catalog.parse(%{
-#<b><span lang=EN-GB>Genus <i>incertae sedis</i> in <span style='color:red'>Stenammini</i>
-    #}).should == {:type => :incertae_sedis_in_tribe_header}
-  #end
-
-  #it "should recognize Hong's incertae sedises" do
-    #@subfamily_catalog.parse(%{
-#<b><span lang=EN-GB>Genera of Hong (2002), <i>incertae sedis</i> in <span style='color:red'>MYRMICINAE</span><o:p></o:p></span></b>
-    #}).should == {:type => :incertae_sedis_in_subfamily_header}
-  #end
-
-  #it "should recognize incertae sedis in subfamily" do
-    #@subfamily_catalog.parse(%{
-#<b><span lang=EN-GB>Genera <i>incertae sedis</i> in <span style='color:red'>MYRMICINAE</span><o:p></o:p></span></b>
-    #}).should == {:type => :incertae_sedis_in_subfamily_header}
-  #end
-
-  #it "should recognize extinct incertae sedis in subfamily" do
-    #@subfamily_catalog.parse(%{
-#<b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in <span style='color:red'>DOLICHODERINAE<o:p></o:p></span></span></b>
-    #}).should == {:type => :incertae_sedis_in_subfamily_header}
-  #end
-
-  #it "should recognize a subfamily header" do
-    #@subfamily_catalog.parse(%{
-#<b><span lang=EN-GB>SUBFAMILY <span style='color:red'>ECITONINAE</span><o:p></o:p></span></b></p>
-    #}).should == {:type => :subfamily_header}
-  #end
-
-  #it "should recognize another form of subfamily header" do
-    #@subfamily_catalog.parse(%{
-#<b><span lang="EN-GB" style="color:black">SUBFAMILY</span><span lang="EN-GB"> <span style="color:red">MARTIALINAE</span><p></p></span></b>
-    #}).should == {:type => :subfamily_header}
-  #end
-
-  #it "should recognize the supersubfamily header" do
-    #@subfamily_catalog.parse(%{
-#<b><span lang=EN-GB>THE PONEROIDS: SUBFAMILIES AGROECOMYRMECINAE, AMBLYOPONINAE, PARAPONERINAE, PONERINAE AND PROCERATIINAE<o:p></o:p></span></b>
-    #}).should == {:type => :supersubfamily_header}
-  #end
-
   #it "should recognize the supersubfamily header when there's only one subfamily" do
     #@subfamily_catalog.parse(%{
 #<b><span lang=EN-GB>THE MYRMICOMORPHS: SUBFAMILY MYRMICINAE<o:p></o:p></span></b></p>

@@ -5,6 +5,12 @@ describe Bolton::SubfamilyCatalog do
     @subfamily_catalog = Bolton::SubfamilyCatalog.new
   end
 
+  it "should recognize a subfamily centered header" do
+    @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>SUBFAMILY <span style='color:red'>ANEURETINAE</span><o:p></o:p></span></b>
+    }).should == {:type => :subfamily_centered_header}
+  end
+
   it "should recognize a subfamily header" do
     @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Subfamily <span style='color:red'>MYRMICINAE</span> <o:p></o:p></span></b>
@@ -15,6 +21,12 @@ describe Bolton::SubfamilyCatalog do
     @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Tribes of Aneuretinae</span></b><span lang=EN-GB>: Aneuretini, *Pityomyrmecini.</span>
     }).should == {:type => :tribes_list, :tribes => [['Aneuretini', nil], ['Pityomyrmecini', true]]}
+  end
+
+  it "should recognize the extinct genera incertae sedis in subfamily list" do
+    @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in Aneuretinae</span></b><span lang=EN-GB>: *<i>Burmomyrma, *Cananeuretus</i>. </span>
+    }).should == {:type => :extinct_genera_incertae_sedis_in_subfamily_list, :genera => ['Burmomyrma', 'Cananeuretus']}
   end
 
   #it "should recognize an extinct subfamily line" do
@@ -33,36 +45,6 @@ describe Bolton::SubfamilyCatalog do
     #@subfamily_catalog.parse(%{
 #<b><span lang=EN-GB>Tribe *<span style='color:red'>MIOMYRMECINI</span><o:p></o:p></span></b>
     #}).should == {:type => :tribe, :name => 'Miomyrmecini', :fossil => true}
-  #end
-
-  #it "should recognize the beginning of a genus" do
-    #@subfamily_catalog.parse(%{
-#<b><span lang=EN-GB>Genus <i><span style='color:red'>ATTA</span></i> <o:p></o:p></span></b></p>
-    #}).should == {:type => :genus, :name => 'Atta'}
-  #end
-
-  #it "should recognize the beginning of a genus when the word 'Genus' is in italics, too" do
-    #@subfamily_catalog.parse(%{
-#<b><i><span lang=EN-GB style='color:black'>Genus</span><span lang=EN-GB style='color:red'> PARVIMYRMA</span></i></b>
-    #}).should == {:type => :genus, :name => 'Parvimyrma'}
-  #end
-
-  #it "should recognize a fossil genus with an extra language span" do
-    #@subfamily_catalog.parse(%{
-#<b><span lang=EN-GB>Genus</span></b><span lang=EN-GB> *<b><i><span style='color:red'>CTENOBETHYLUS</span></i></b> </span>
-    #}).should == {:type => :genus, :name => 'Ctenobethylus', :fossil => true}
-  #end
-
-  #it "should recognize the beginning of a fossil genus" do
-    #@subfamily_catalog.parse(%{
-#<b><span lang=EN-GB>Genus *<i><span style='color:red'>ANEURETELLUS</span></i> <o:p></o:p></span></b></p>
-    #}).should == {:type => :genus, :name => 'Aneuretellus', :fossil => true}
-  #end
-
-  #it "should handle an empty span in there" do
-    #@subfamily_catalog.parse(%{
-#<b><span lang="EN-GB">Genus *<i><span style="color:red">EOAENICTITES</span></i></span></b><span lang="EN-GB"> </span>
-    #}).should == {:type => :genus, :name => 'Eoaenictites', :fossil => true}
   #end
 
   #it "should recognize this tribe" do
@@ -95,34 +77,10 @@ describe Bolton::SubfamilyCatalog do
     #}).should == {:type => :incertae_sedis_in_subfamily_header}
   #end
 
-  #it "should recognize a subfamily header" do
-    #@subfamily_catalog.parse(%{
-#<b><span lang=EN-GB>SUBFAMILY <span style='color:red'>ECITONINAE</span><o:p></o:p></span></b></p>
-    #}).should == {:type => :subfamily_header}
-  #end
-
   #it "should recognize another form of subfamily header" do
     #@subfamily_catalog.parse(%{
 #<b><span lang="EN-GB" style="color:black">SUBFAMILY</span><span lang="EN-GB"> <span style="color:red">MARTIALINAE</span><p></p></span></b>
     #}).should == {:type => :subfamily_header}
-  #end
-
-  #it "should recognize the supersubfamily header" do
-    #@subfamily_catalog.parse(%{
-#<b><span lang=EN-GB>THE PONEROIDS: SUBFAMILIES AGROECOMYRMECINAE, AMBLYOPONINAE, PARAPONERINAE, PONERINAE AND PROCERATIINAE<o:p></o:p></span></b>
-    #}).should == {:type => :supersubfamily_header}
-  #end
-
-  #it "should recognize the supersubfamily header when there's only one subfamily" do
-    #@subfamily_catalog.parse(%{
-#<b><span lang=EN-GB>THE MYRMICOMORPHS: SUBFAMILY MYRMICINAE<o:p></o:p></span></b></p>
-    #}).should == {:type => :supersubfamily_header}
-  #end
-
-  #it 'should handle italics in weird place' do
-    #@subfamily_catalog.parse(%{
-#<b><span lang=EN-GB style='color:black'>Genus *</span><i><span lang=EN-GB style='color:red'>HAIDOMYRMODES</span></i><span lang=EN-GB><o:p></o:p></span></b>
-    #}).should == {:type => :genus, :name => 'Haidomyrmodes', :fossil => true}
   #end
 
   #it "should handle it when the span is before the bold and there's a subfamily at the end" do

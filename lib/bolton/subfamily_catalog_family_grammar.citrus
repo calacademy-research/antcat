@@ -4,7 +4,7 @@ grammar Bolton::SubfamilyCatalogFamilyGrammar
   rule family_section
     family_header |
     extant_subfamilies_list | extinct_subfamilies_list |
-    extant_genera_sedis_in_family_list | extinct_genera_sedis_in_family_list |
+    extant_genera_incertae_sedis_in_family_list | extinct_genera_incertae_sedis_in_family_list |
     extant_genera_excluded_from_family_list | extinct_genera_excluded_from_family_list |
     genus_group_nomina_nuda_in_family_list |
     genera_incertae_sedis_in_family_header |
@@ -31,13 +31,13 @@ grammar Bolton::SubfamilyCatalogFamilyGrammar
     } 
   end
 
-  rule extant_genera_sedis_in_family_list
+  rule extant_genera_incertae_sedis_in_family_list
     (bold span 'Genera (extant) ' italic 'incertae sedis' tag_end ' in Formicidae' close_tags ': ' italic text /.*/) {
       {:type => :extant_genera_incertae_sedis_in_family_list, :genera => text.split(', ')}
     } 
   end
 
-  rule extinct_genera_sedis_in_family_list
+  rule extinct_genera_incertae_sedis_in_family_list
     (bold span 'Genera (extinct) ' italic 'incertae sedis' tag_end ' in Formicidae' close_tags ': ' italic text /.*/) {
       {:type => :extinct_genera_incertae_sedis_in_family_list, :genera => text.split(', ').map {|e| e.gsub(/\*/, '')}}
     } 

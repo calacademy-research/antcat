@@ -27,7 +27,8 @@ describe Bolton::SubfamilyCatalog do
       @subfamily_catalog.should_receive(:parse_family).and_return {
         Factory :subfamily, :name => 'Aneuretinae'
       }
-      @subfamily_catalog.should_receive(:parse_supersubfamily).exactly(2).times
+      @subfamily_catalog.should_receive(:parse_supersubfamily).ordered.and_return true
+      @subfamily_catalog.should_receive(:parse_supersubfamily).ordered.and_return false
 
       @subfamily_catalog.import_html make_contents %{
 <p class=MsoNormal align=center style='text-align:center'><b style='mso-bidi-font-weight:

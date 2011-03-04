@@ -7,57 +7,50 @@ describe Bolton::SubfamilyCatalog do
 
   describe "Importing HTML" do
     def make_contents content
-      %{<html><body><div class=Section1>#{content}</div></body></html>}
+%{<html><body><div class=Section1>
+<p class=MsoNormal align=center style='text-align:center'><b style='mso-bidi-font-weight:
+normal'><span lang=EN-GB>THE DOLICHODEROMORPHS: SUBFAMILIES ANEURETINAE AND
+DOLICHODERINAE<o:p></o:p></span></b></p>
+#{content}
+</div></body></html>}
     end
 
-    #it "should parse each supersubfamily" do
-      #@subfamily_catalog.should_receive(:parse_family).and_return {
-        #Factory :subfamily, :name => 'Aneuretinae'
-      #}
+    it "should parse a subfamily" do
+      @subfamily_catalog.should_receive(:parse_family).and_return {
+        Factory :subfamily, :name => 'Aneuretinae'
+      }
 
-      #@subfamily_catalog.import_html make_contents %{
-#<p class=MsoNormal align=center style='text-align:center'><b style='mso-bidi-font-weight:
-#normal'><span lang=EN-GB>THE DOLICHODEROMORPHS: SUBFAMILIES ANEURETINAE AND
-#DOLICHODERINAE<o:p></o:p></span></b></p>
+      @subfamily_catalog.import_html make_contents %{
+<p><b><span lang=EN-GB>SUBFAMILY <span style='color:red'>ANEURETINAE</span><o:p></o:p></span></b></p>
 
-#<p class=MsoNormal style='margin-right:-1.25pt;text-align:justify'><span
-#lang=EN-GB><o:p>&nbsp;</o:p></span></p>
+<p><span lang=EN-GB><o:p>&nbsp;</o:p></span></p>
+<p><span lang=EN-GB><o:p>&nbsp;</o:p></span></p>
 
-#<p class=MsoNormal align=center style='margin-right:-1.25pt;text-align:center'><b
-#style='mso-bidi-font-weight:normal'><span lang=EN-GB>SUBFAMILY <span
-#style='color:red'>ANEURETINAE</span><o:p></o:p></span></b></p>
+<p><b><span lang=EN-GB>Subfamily <span style='color:red'>ANEURETINAE</span> <o:p></o:p></span></b></p>
+<p>Aneuritinae history</p>
 
-#<p class=MsoNormal style='margin-right:-1.25pt;text-align:justify'><span
-#lang=EN-GB><o:p>&nbsp;</o:p></span></p>
+<p><b><span lang=EN-GB>Tribes of Aneuretinae</span></b><span lang=EN-GB>: Aneuretini, *Pityomyrmecini.</span></p>
 
-#<p class=MsoNormal style='margin-right:-1.25pt;text-align:justify'><span
-#lang=EN-GB><o:p>&nbsp;</o:p></span></p>
+<p><b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in Aneuretinae</span></b><span lang=EN-GB>: *<i>Burmomyrma, *Cananeuretus</i>. </span></p>
+      }
 
-#<p class=MsoNormal style='margin-top:0cm;margin-right:-1.25pt;margin-bottom:
-#0cm;margin-left:36.0pt;margin-bottom:.0001pt;text-align:justify;text-indent:
-#-36.0pt'><b style='mso-bidi-font-weight:normal'><span lang=EN-GB>Subfamily <span
-#style='color:red'>ANEURETINAE</span> <o:p></o:p></span></b></p>
+      aneuretinae = Subfamily.find_by_name 'Aneuretinae'
+      aneuretinae.taxonomic_history.should == '<p>Aneuritinae history</p>'
 
-#<p>Aneuritinae history</p>
+      aneuretini = Tribe.find_by_name 'Aneuretini'
+      aneuretini.subfamily.should == aneuretinae
+      aneuretinae.should_not be_fossil
+      pityomyrmecini = Tribe.find_by_name 'Pityomyrmecini'
+      pityomyrmecini.subfamily.should == aneuretinae
+      pityomyrmecini.should be_fossil
 
-#<p class=MsoNormal style='text-align:justify'><b style='mso-bidi-font-weight:
-#normal'><span lang=EN-GB>Tribes of Aneuretinae</span></b><span lang=EN-GB>:
-#Aneuretini, *Pityomyrmecini.</span></p>
-      #}
+      taxon = Genus.find_by_name 'Burmomyrma'
+      taxon.subfamily.should == aneuretinae
+      taxon.should be_fossil
+      taxon.should_not be_invalid
 
-      #aneuretinae = Subfamily.find_by_name 'Aneuretinae'
-      #aneuretinae.taxonomic_history.should == '<p>Aneuritinae history</p>'
-
-      #aneuretini = Tribe.find_by_name 'Aneuretini'
-      #aneuretini.subfamily.should == aneuretinae
-      #aneuretinae.should_not be_fossil
-      #pityomyrmecini = Tribe.find_by_name 'Pityomyrmecini'
-      #pityomyrmecini.subfamily.should == aneuretinae
-      #pityomyrmecini.should be_fossil
-
-
-    #end
-  ##end
+    end
+  #end
 
 
   #describe "Importing a file" do
