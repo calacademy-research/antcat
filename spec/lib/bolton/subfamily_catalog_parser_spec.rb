@@ -5,6 +5,12 @@ describe Bolton::SubfamilyCatalog do
     @subfamily_catalog = Bolton::SubfamilyCatalog.new
   end
 
+  it "should recognize the supersubfamily header when there's only one subfamily" do
+    @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>THE MYRMICOMORPHS: SUBFAMILY MYRMICINAE<o:p></o:p></span></b></p>
+    }).should == {:type => :supersubfamily_header}
+  end
+
   it "should recognize the beginning of a genus" do
     @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Genus <i><span style='color:red'>ATTA</span></i> <o:p></o:p></span></b></p>
@@ -52,12 +58,6 @@ describe Bolton::SubfamilyCatalog do
 <i><span lang=EN-GB style='color:purple'>ANCYLOGNATHUS</span></i><span lang=EN-GB> [<i>nomen nudum</i>]</span>
     }).should == {:type => :genus, :name => 'Ancylognathus', :status => 'unavailable'}
   end
-
-  #it "should recognize the supersubfamily header when there's only one subfamily" do
-    #@subfamily_catalog.parse(%{
-#<b><span lang=EN-GB>THE MYRMICOMORPHS: SUBFAMILY MYRMICINAE<o:p></o:p></span></b></p>
-    #}).should == {:type => :supersubfamily_header}
-  #end
 
   #it 'should handle italics in weird place' do
     #@subfamily_catalog.parse(%{
