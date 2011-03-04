@@ -2,7 +2,10 @@ grammar Bolton::SubfamilyCatalogSubfamilyGrammar
   include Bolton::CatalogGrammar
 
   rule subfamily_section
-    subfamily_centered_header | subfamily_header | tribes_list | extinct_genera_incertae_sedis_in_subfamily_list
+    subfamily_centered_header | subfamily_header | 
+    tribes_list | tribes_incertae_sedis_list |
+    genera_incertae_sedis_list |
+    genera_incertae_sedis_header
   end
 
   rule subfamily_centered_header
