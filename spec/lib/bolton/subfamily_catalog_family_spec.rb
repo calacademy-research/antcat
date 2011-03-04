@@ -20,7 +20,7 @@ describe Bolton::SubfamilyCatalog do
 <p><b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in Formicidae</span></b><span lang=EN-GB>: <i>*Calyptites</i>.</span></p>
 
 <p><b><span lang=EN-GB>Genera (extant) excluded from Formicidae</span></b><span lang=EN-GB>: <i><span style='color:green'>Formila</span></i>.</span></p>
-<p><b><span lang=EN-GB>Genera (extinct) excluded from Formicidae</span></b><span lang=EN-GB>: *<i><span style='color:green'>Cariridris</span></i>.</span></p>
+<p><b><span lang=EN-GB>Genera (extinct) excluded from Formicidae</span></b><span lang=EN-GB>: *<i><span style='color:green'>Cariridris, Cretacoformica</span></i>.</span></p>
 
 <p><b><span lang=EN-GB>Genus-group <i>nomina nuda</i> in Formicidae</span></b><span lang=EN-GB>: <i><span style='color:purple'>Hypopheidole</span></i>.</span></p>
 
@@ -91,7 +91,7 @@ describe Bolton::SubfamilyCatalog do
 
     taxon = Genus.find_by_name 'Hypopheidole'
     taxon.should be_invalid
-    taxon.status.should == 'nomen nuda'
+    taxon.status.should == 'nomen nudus'
 
     taxon = Genus.find_by_name 'Syntaphus'
     taxon.should_not be_invalid
