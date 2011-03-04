@@ -5,16 +5,38 @@ describe Bolton::SubfamilyCatalog do
     @subfamily_catalog = Bolton::SubfamilyCatalog.new
   end
 
-  it "should recognize a subfamily centered header" do
-    @subfamily_catalog.parse(%{
-<b><span lang=EN-GB>SUBFAMILY <span style='color:red'>ANEURETINAE</span><o:p></o:p></span></b>
-    }).should == {:type => :subfamily_centered_header}
-  end
+  describe "Headers" do
 
-  it "should recognize a subfamily header" do
-    @subfamily_catalog.parse(%{
-<b><span lang=EN-GB>Subfamily <span style='color:red'>MYRMICINAE</span> <o:p></o:p></span></b>
-    }).should == {:type => :subfamily_header, :name => 'Myrmicinae'}
+    it "should recognize a subfamily centered header" do
+      @subfamily_catalog.parse(%{
+  <b><span lang=EN-GB>SUBFAMILY <span style='color:red'>ANEURETINAE</span><o:p></o:p></span></b>
+      }).should == {:type => :subfamily_centered_header}
+    end
+
+    it "should recognize a subfamily header" do
+      @subfamily_catalog.parse(%{
+  <b><span lang=EN-GB>Subfamily <span style='color:red'>MYRMICINAE</span> <o:p></o:p></span></b>
+      }).should == {:type => :subfamily_header, :name => 'Myrmicinae'}
+    end
+
+    it "should recognize an extinct genera incertae sedis header" do
+      @subfamily_catalog.parse(%{
+  <b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in Aneuretinae</span></b><span lang=EN-GB>: *<i>Burmomyrma, *Cananeuretus</i>. </span>
+      }).should == {:type => :extinct_genera_incertae_sedis_in_subfamily_list, :genera => ['Burmomyrma', 'Cananeuretus']}
+    end
+
+    it "should recognize a genera incertae sedis header" do
+      @subfamily_catalog.parse(%{
+  <b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in Aneuretinae</span></b><span lang=EN-GB>: *<i>Burmomyrma, *Cananeuretus</i>. </span>
+      }).should == {:type => :extinct_genera_incertae_sedis_in_subfamily_list, :genera => ['Burmomyrma', 'Cananeuretus']}
+    end
+
+    it "should recognize a Hong 2002 genera incertae sedis header" do
+      @subfamily_catalog.parse(%{
+  <b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in Aneuretinae</span></b><span lang=EN-GB>: *<i>Burmomyrma, *Cananeuretus</i>. </span>
+      }).should == {:type => :extinct_genera_incertae_sedis_in_subfamily_list, :genera => ['Burmomyrma', 'Cananeuretus']}
+    end
+
   end
 
   describe "Lists" do
@@ -52,9 +74,42 @@ describe Bolton::SubfamilyCatalog do
 
     end
 
+    describe "Genus incertae sedis lists" do
+
+      it "should recognize a genera incertae sedis list" do
+        @subfamily_catalog.parse(%{
+    <b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in Aneuretinae</span></b><span lang=EN-GB>: *<i>Burmomyrma, *Cananeuretus</i>. </span>
+        }).should == {:type => :genera_incertae_sedis_list, :genera => [['Burmomyrma', true], ['Cananeuretus', true]]}
+      end
+
+      it "should recognize an extinct genera incertae sedis list" do
+        @subfamily_catalog.parse(%{
+    <b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in Aneuretinae</span></b><span lang=EN-GB>: *<i>Burmomyrma, *Cananeuretus</i>. </span>
+        }).should == {:type => :extinct_genera_incertae_sedis_in_subfamily_list, :genera => ['Burmomyrma', 'Cananeuretus']}
+      end
+
+      it "should recognize an extant genera incertae sedis list" do
+        @subfamily_catalog.parse(%{
+    <b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in Aneuretinae</span></b><span lang=EN-GB>: *<i>Burmomyrma, *Cananeuretus</i>. </span>
+        }).should == {:type => :extinct_genera_incertae_sedis_in_subfamily_list, :genera => ['Burmomyrma', 'Cananeuretus']}
+      end
+
+    end
+    it "should recognize a Hong 2002 genera incertae sedis list" do
+      @subfamily_catalog.parse(%{
+  <b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in Aneuretinae</span></b><span lang=EN-GB>: *<i>Burmomyrma, *Cananeuretus</i>. </span>
+      }).should == {:type => :extinct_genera_incertae_sedis_in_subfamily_list, :genera => ['Burmomyrma', 'Cananeuretus']}
+    end
+
+    it "should recognize a collective group name list" do
+      @subfamily_catalog.parse(%{
+  <b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in Aneuretinae</span></b><span lang=EN-GB>: *<i>Burmomyrma, *Cananeuretus</i>. </span>
+      }).should == {:type => :extinct_genera_incertae_sedis_in_subfamily_list, :genera => ['Burmomyrma', 'Cananeuretus']}
+    end
+
   end
 
-  it "should recognize the extinct genera incertae sedis in subfamily list" do
+  it "should recognize a collective group name" do
     @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in Aneuretinae</span></b><span lang=EN-GB>: *<i>Burmomyrma, *Cananeuretus</i>. </span>
     }).should == {:type => :extinct_genera_incertae_sedis_in_subfamily_list, :genera => ['Burmomyrma', 'Cananeuretus']}
