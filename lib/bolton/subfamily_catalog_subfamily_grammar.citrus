@@ -23,8 +23,20 @@ grammar Bolton::SubfamilyCatalogSubfamilyGrammar
   end
 
   rule tribes_list
-    (bold span 'Tribes of ' capitalized_word close_tags ': ' text /.*/) {
+    (bold span 'Tribe' 's'? ' ' ('(extinct) '|'(extant) ')?  (incertae_sedis_in | 'of ') capitalized_word close_tags ': ' text /.*/) {
       value = {:type => :tribes_list}
+      value[:tribes] = text.split(', ').map do |tribe|
+        fossil = tribe.gsub!(/\*/, '') && true
+        [tribe, fossil]
+      end
+      value.merge! :incertae_sedis => true if incertae_sedis_in.present?
+      value
+    } 
+  end
+
+  rule tribes_incertae_sedis_list
+    (bold span 'Tribes (extinct) ' incertae_sedis_in capitalized_word close_tags ': ' text /.*/) {
+      value = {:type => :tribes_incertae_sedis_list}
       value[:tribes] = text.split(', ').map do |tribe|
         fossil = tribe.gsub!(/\*/, '') && true
         [tribe, fossil]
@@ -33,7 +45,7 @@ grammar Bolton::SubfamilyCatalogSubfamilyGrammar
     } 
   end
 
-  rule extinct_genera_incertae_sedis_in_subfamily_list
+  rule genera_incertae_sedis_list
     (bold span 'Genera (extinct) ' incertae_sedis_in capitalized_word close_tags ': *' italic text /.*/) {
       {:type => :extinct_genera_incertae_sedis_in_subfamily_list, :genera => text.split(', ').map {|e| e.gsub(/\*/, '')}}
     } 

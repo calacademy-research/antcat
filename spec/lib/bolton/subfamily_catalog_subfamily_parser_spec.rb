@@ -17,10 +17,41 @@ describe Bolton::SubfamilyCatalog do
     }).should == {:type => :subfamily_header, :name => 'Myrmicinae'}
   end
 
-  it "should recognize a tribes list" do
-    @subfamily_catalog.parse(%{
-<b><span lang=EN-GB>Tribes of Aneuretinae</span></b><span lang=EN-GB>: Aneuretini, *Pityomyrmecini.</span>
-    }).should == {:type => :tribes_list, :tribes => [['Aneuretini', nil], ['Pityomyrmecini', true]]}
+  describe "Lists" do
+    describe "Tribes list" do
+
+      it "should recognize a tribes list" do
+        @subfamily_catalog.parse(%{
+    <b><span lang=EN-GB>Tribes of Aneuretinae</span></b><span lang=EN-GB>: Aneuretini, *Pityomyrmecini.</span>
+        }).should == {:type => :tribes_list, :tribes => [['Aneuretini', nil], ['Pityomyrmecini', true]]}
+      end
+
+      it "should recognize an extinct tribes list" do
+        @subfamily_catalog.parse(%{
+    <b><span lang=EN-GB>Tribes (extinct) of Aneuretinae</span></b><span lang=EN-GB>: Aneuretini, *Pityomyrmecini.</span>
+        }).should == {:type => :tribes_list, :tribes => [['Aneuretini', nil], ['Pityomyrmecini', true]]}
+      end
+
+      it "should recognize an extant tribes list" do
+        @subfamily_catalog.parse(%{
+    <b><span lang=EN-GB>Tribes (extant) of Aneuretinae</span></b><span lang=EN-GB>: Aneuretini, *Pityomyrmecini.</span>
+        }).should == {:type => :tribes_list, :tribes => [['Aneuretini', nil], ['Pityomyrmecini', true]]}
+      end
+
+      it "should recognize an tribes list with one tribe" do
+        @subfamily_catalog.parse(%{
+    <b><span lang=EN-GB>Tribe of Aneuretinae</span></b><span lang=EN-GB>: Aneuretini.</span>
+        }).should == {:type => :tribes_list, :tribes => [['Aneuretini', nil]]}
+      end
+      
+      it "should recognize an extinct tribes incertae sedis list" do
+        @subfamily_catalog.parse(%{
+  <b><span lang=EN-GB>Tribes (extinct) <i>incertae sedis</i> in Dolichoderinae</span></b><span lang=EN-GB>: *Miomyrmecini, *Zherichiniini.</span>
+        }).should == {:type => :tribes_list, :tribes => [['Miomyrmecini', true], ['Zherichiniini', true]], :incertae_sedis => true}
+      end
+
+    end
+
   end
 
   it "should recognize the extinct genera incertae sedis in subfamily list" do

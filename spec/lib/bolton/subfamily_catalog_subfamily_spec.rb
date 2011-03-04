@@ -30,6 +30,7 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 <p>Aneuritinae history</p>
 
 <p><b><span lang=EN-GB>Tribes of Aneuretinae</span></b><span lang=EN-GB>: Aneuretini, *Pityomyrmecini.</span></p>
+<p><b><span lang=EN-GB>Tribes <i>incertae sedis</i> in Aneuretinae</span></b><span lang=EN-GB>: *Miomyrmecini.</span></p>
 
 <p><b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in Aneuretinae</span></b><span lang=EN-GB>: *<i>Burmomyrma, *Cananeuretus</i>. </span></p>
       }
@@ -49,6 +50,9 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
       taxon.should be_fossil
       taxon.should_not be_invalid
 
+      taxon = Tribe.find_by_name 'Miomyrmecini'
+      taxon.subfamily.should == aneuretinae
+      taxon.incertae_sedis_in.should == 'subfamily'
     end
   #end
 

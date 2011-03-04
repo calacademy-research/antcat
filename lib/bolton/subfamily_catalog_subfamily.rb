@@ -15,16 +15,19 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
 
     subfamily.update_attributes :taxonomic_history => taxonomic_history
 
-    parse_tribes_list subfamily
-    parse_extinct_genera_incertae_sedis_in_subfamily_list subfamily
+    parse_tribes_lists subfamily
+    parse_genera_incertae_sedis_lists subfamily
   end
 
-  def parse_tribes_list subfamily
-    return unless @type == :tribes_list
-    @parse_result[:tribes].each do |tribe, fossil|
-      Tribe.create! :name => tribe, :subfamily => subfamily, :fossil => fossil, :status => 'valid'
+  def parse_tribes_lists subfamily
+    while @type == :tribes_list
+      @parse_result[:tribes].each do |tribe, fossil|
+        attributes = {:name => tribe, :subfamily => subfamily, :fossil => fossil, :status => 'valid'}
+        attributes.merge! :incertae_certis_in, 'subfamily' if @parse_results[:incertae_sedis]
+        Tribe.create! attributes
+      end
+      parse_next_line
     end
-    parse_next_line
   end
 
   def parse_extinct_genera_incertae_sedis_in_subfamily_list subfamily
