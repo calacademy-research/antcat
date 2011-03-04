@@ -7,7 +7,7 @@ Rails::Initializer.run do |config|
 
   config.gem 'acts_as_list',    :version => '0.1.2'
   config.gem 'aws-s3',          :version => '0.6.2', :lib => 'aws/s3'
-  config.gem 'citrus',          :version => '2.3.7'
+  config.gem 'citrus',          :version => '2.3.4'
   config.gem 'devise',          :version => "1.0.8"
   config.gem 'devise_invitable',:version => '0.2.3'
   config.gem 'haml',            :version => '3.0.25'
