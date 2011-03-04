@@ -8,43 +8,43 @@ describe Bolton::SubfamilyCatalog do
   it "should recognize the beginning of a genus" do
     @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Genus <i><span style='color:red'>ATTA</span></i> <o:p></o:p></span></b></p>
-    }).should == {:type => :genus, :name => 'Atta'}
+    }).should == {:type => :genus, :name => 'Atta', :status => 'valid'}
   end
 
   it "should recognize the beginning of a genus when the word 'Genus' is in italics, too" do
     @subfamily_catalog.parse(%{
 <b><i><span lang=EN-GB style='color:black'>Genus</span><span lang=EN-GB style='color:red'> PARVIMYRMA</span></i></b>
-    }).should == {:type => :genus, :name => 'Parvimyrma'}
+    }).should == {:type => :genus, :name => 'Parvimyrma', :status => 'valid'}
   end
 
   it "should recognize a fossil genus with an extra language span" do
     @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Genus</span></b><span lang=EN-GB> *<b><i><span style='color:red'>CTENOBETHYLUS</span></i></b> </span>
-    }).should == {:type => :genus, :name => 'Ctenobethylus', :fossil => true}
+    }).should == {:type => :genus, :name => 'Ctenobethylus', :fossil => true, :status => 'valid'}
   end
 
   it "should recognize the beginning of a fossil genus" do
     @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Genus *<i><span style='color:red'>ANEURETELLUS</span></i> <o:p></o:p></span></b></p>
-    }).should == {:type => :genus, :name => 'Aneuretellus', :fossil => true}
+    }).should == {:type => :genus, :name => 'Aneuretellus', :fossil => true, :status => 'valid'}
   end
 
   it "should handle an empty span in there" do
     @subfamily_catalog.parse(%{
 <b><span lang="EN-GB">Genus *<i><span style="color:red">EOAENICTITES</span></i></span></b><span lang="EN-GB"> </span>
-    }).should == {:type => :genus, :name => 'Eoaenictites', :fossil => true}
+    }).should == {:type => :genus, :name => 'Eoaenictites', :fossil => true, :status => 'valid'}
   end
 
   it "should handle an unidentifiable genus" do
     @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Genus <i><span style='color:green'>HYPOCHIRA</span></i> <o:p></o:p></span></b>
-    }).should == {:type => :genus, :name => 'Hypochira', :status => :unidentifiable}
+    }).should == {:type => :genus, :name => 'Hypochira', :status => 'unidentifiable'}
   end
 
   it "should handle an unidentifiable fossil genus" do
     @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Genus *<i><span style='color:green'>CARIRIDRIS</span></i> <o:p></o:p></span></b>
-    }).should == {:type => :genus, :name => 'Cariridris', :status => :unidentifiable, :fossil => true}
+    }).should == {:type => :genus, :name => 'Cariridris', :status => 'unidentifiable', :fossil => true}
   end
 
   #it "should recognize this tribe" do

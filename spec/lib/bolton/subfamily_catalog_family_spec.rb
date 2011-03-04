@@ -5,7 +5,7 @@ describe Bolton::SubfamilyCatalog do
     @subfamily_catalog = Bolton::SubfamilyCatalog.new
   end
 
-  it "should parse the family summary section" do
+  it "should parse the family" do
     @subfamily_catalog.import_html %{
 <html><body><div class=Section1>
 
@@ -31,6 +31,7 @@ describe Bolton::SubfamilyCatalog do
 <p><b><span lang=EN-GB>Genus</span></b><span lang=EN-GB> <b><i><span style='color:red'>CONDYLODON</span></i></b> </span></p>
 <p>Condylodon taxonomic history</p>
 <p><b><span lang=EN-GB>Genus <i><span style='color:green'>HYPOCHIRA</span></i> <o:p></o:p></span></b></p>
+<p><b><span lang=EN-GB>Genus *<i><span style='color:red'>SYNTAPHUS</span></i> <o:p></o:p></span></b></p>
 
 <p class=MsoNormal style='text-align:justify'><span lang=EN-GB><o:p>&nbsp;</o:p></span></p>
 
@@ -38,7 +39,7 @@ describe Bolton::SubfamilyCatalog do
 <p><span lang=EN-GB>The following were all originally described as members of Formicidae but are now excluded.</span></p>
 <p><b><span lang=EN-GB>Genus *<i><span style='color:green'>CARIRIDRIS</span></i> <o:p></o:p></span></b></p>
 <p>Cariridris taxonomic history</p>
-<p><b><span lang=EN-GB>Genus *<i><span style='color:red'>SYNTAPHUS</span></i> <o:p></o:p></span></b></p>
+<p><b><span lang=EN-GB>Genus *<i><span style='color:red'>WILDENSIS</span></i> <o:p></o:p></span></b></p>
 
 <p><b><span lang=EN-GB>Unavailable family-group names in <span style='color:red'>FORMICIDAE</span><o:p></o:p></span></b></p>
 
@@ -74,7 +75,7 @@ describe Bolton::SubfamilyCatalog do
     taxon.taxonomic_history.should == '<p>Calyptites taxonomic history</p>'
 
     taxon = Genus.find_by_name 'Hypochira'
-    taxon.should be_invalid
+    taxon.should_not be_invalid
     taxon.incertae_sedis_in.should == 'family'
 
     taxon = Genus.find_by_name 'Formila'
@@ -93,6 +94,12 @@ describe Bolton::SubfamilyCatalog do
     taxon.status.should == 'nomen nuda'
 
     taxon = Genus.find_by_name 'Syntaphus'
+    taxon.should_not be_invalid
+    taxon.should be_fossil
+    taxon.incertae_sedis_in.should == 'family'
+    taxon.taxonomic_history.should == ''
+
+    taxon = Genus.find_by_name 'Wildensis'
     taxon.should be_invalid
     taxon.should be_fossil
     taxon.status.should == 'excluded'

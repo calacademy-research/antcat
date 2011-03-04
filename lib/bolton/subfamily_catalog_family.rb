@@ -91,11 +91,20 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
 
     expect :genus
     while @type == :genus
-      genus = Genus.find_by_name @parse_result[:name]
-      status = @parse_result[:status]
-      attributes = {:taxonomic_history => parse_taxonomic_history}
-      attributes.merge!(:status => status) if status
-      genus.update_attributes attributes
+      name = @parse_result[:name]
+      status = @parse_result[:status] ? @parse_result[:status].to_s : nil
+      fossil = @parse_result[:fossil]
+      taxonomic_history = parse_taxonomic_history
+
+      genus = Genus.find_by_name name
+      if genus
+        check_status_change genus, status
+        raise "Genus #{name} fossil change from #{genus.fossil?} to #{fossil}" if fossil != genus.fossil
+        genus.update_attributes :taxonomic_history => taxonomic_history
+      else
+        Progress.warning "Genus #{name} not found"
+        Genus.create! :name => name, :incertae_sedis_in => 'family', :fossil => fossil, :status => status, :taxonomic_history => taxonomic_history
+      end
     end
   end
 
@@ -128,6 +137,11 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
   def parse_genus_group_nomina_nuda_in_family
     #expect :genus_group_nomina_nuda_in_family_header
     #parse_next_line
+  end
+
+  private
+  def check_status_change genus, status
+    raise "Genus #{genus.name} status change from #{genus.status} to #{status}" if status != genus.status unless genus.name == 'Hypochira'
   end
 
 end

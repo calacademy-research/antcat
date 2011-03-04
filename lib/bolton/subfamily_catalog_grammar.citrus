@@ -44,7 +44,7 @@ grammar Bolton::SubfamilyCatalogGrammar
       (span 'Genus' s fossil_flag? bold italic red uppercase_word close_tags '[Myrmeciinae]' close_tags) |
       (bold italic? span 'Genus' close_tags fossil_flag? close_tags? bold? italic? red s uppercase_word close_tags)
     ) {
-      value = {:type => :genus, :name => uppercase_word.downcase.capitalize.strip}
+      value = {:type => :genus, :name => uppercase_word.downcase.capitalize.strip, :status => 'valid'}
       value.merge! :fossil => true if fossil_flag.present?
       value
     }
@@ -52,7 +52,7 @@ grammar Bolton::SubfamilyCatalogGrammar
 
   rule unidentifiable_genus
     (bold span 'Genus ' fossil_flag? italic green uppercase_word close_tags) {
-      value = {:type => :genus, :name => uppercase_word.downcase.capitalize.strip, :status => :unidentifiable}
+      value = {:type => :genus, :name => uppercase_word.downcase.capitalize.strip, :status => 'unidentifiable'}
       value.merge! :fossil => true if fossil_flag.present?
       value
     }
