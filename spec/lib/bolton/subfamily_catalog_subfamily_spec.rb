@@ -44,15 +44,15 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
       pityomyrmecini = Tribe.find_by_name 'Pityomyrmecini'
       pityomyrmecini.subfamily.should == aneuretinae
       pityomyrmecini.should be_fossil
-
-      taxon = Genus.find_by_name 'Burmomyrma'
-      taxon.subfamily.should == aneuretinae
-      taxon.should be_fossil
-      taxon.should_not be_invalid
-
       taxon = Tribe.find_by_name 'Miomyrmecini'
       taxon.subfamily.should == aneuretinae
       taxon.incertae_sedis_in.should == 'subfamily'
+
+      #taxon = Genus.find_by_name 'Burmomyrma'
+      #taxon.subfamily.should == aneuretinae
+      #taxon.should be_fossil
+      #taxon.should_not be_invalid
+
     end
   #end
 
