@@ -39,7 +39,7 @@ describe Bolton::SubfamilyCatalog do
 <p><span lang=EN-GB>The following were all originally described as members of Formicidae but are now excluded.</span></p>
 <p><b><span lang=EN-GB>Genus *<i><span style='color:green'>CARIRIDRIS</span></i> <o:p></o:p></span></b></p>
 <p>Cariridris taxonomic history</p>
-<p><b><span lang=EN-GB>Genus *<i><span style='color:red'>WILDENSIS</span></i> <o:p></o:p></span></b></p>
+<p><b><span lang=EN-GB>Genus *<i><span style='color:red'>CRETACOFORMICA</span></i> <o:p></o:p></span></b></p>
 
 <p><b><span lang=EN-GB>Unavailable family-group names in <span style='color:red'>FORMICIDAE</span><o:p></o:p></span></b></p>
 
@@ -75,7 +75,7 @@ describe Bolton::SubfamilyCatalog do
     taxon.taxonomic_history.should == '<p>Calyptites taxonomic history</p>'
 
     taxon = Genus.find_by_name 'Hypochira'
-    taxon.should_not be_invalid
+    taxon.status.should == 'unidentifiable'
     taxon.incertae_sedis_in.should == 'family'
 
     taxon = Genus.find_by_name 'Formila'
@@ -99,7 +99,7 @@ describe Bolton::SubfamilyCatalog do
     taxon.incertae_sedis_in.should == 'family'
     taxon.taxonomic_history.should == ''
 
-    taxon = Genus.find_by_name 'Wildensis'
+    taxon = Genus.find_by_name 'Cretacoformica'
     taxon.should be_invalid
     taxon.should be_fossil
     taxon.status.should == 'excluded'

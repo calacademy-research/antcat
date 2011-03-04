@@ -100,9 +100,9 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
       if genus
         check_status_change genus, status
         raise "Genus #{name} fossil change from #{genus.fossil?} to #{fossil}" if fossil != genus.fossil
-        genus.update_attributes :taxonomic_history => taxonomic_history
+        genus.update_attributes :status => status, :taxonomic_history => taxonomic_history
       else
-        Progress.warning "Genus #{name} not found"
+        check_existence name, genus
         Genus.create! :name => name, :incertae_sedis_in => 'family', :fossil => fossil, :status => status, :taxonomic_history => taxonomic_history
       end
     end
@@ -144,4 +144,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     raise "Genus #{genus.name} status change from #{genus.status} to #{status}" if status != genus.status unless genus.name == 'Hypochira'
   end
 
+  def check_existence name, genus
+    raise "Genus #{name} not found" unless genus || name == 'Syntaphus'
+  end
 end
