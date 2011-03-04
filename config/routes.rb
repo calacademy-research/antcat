@@ -15,6 +15,6 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :taxatry, :singular => 't'
 
-  map.connect '/documents/:id/:file_name.:ext', :controller => :references, :action => :download,
+  map.connect '/documents/:id/:file_name', :controller => :references, :action => :download, :file_name => /.+/,
     :conditions => {:method => :get}
 end
