@@ -28,8 +28,12 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
   def parse_supersubfamilies
     while @type == :supersubfamily_header
       parse_next_line
-      parse_subfamily
+      parse_supersubfamily
     end
+  end
+
+  def parse_supersubfamily
+    parse_subfamily while @type == :subfamily_centered_header
   end
 
   def parse_incertae_sedis_in_subfamily
