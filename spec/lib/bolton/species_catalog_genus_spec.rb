@@ -68,54 +68,54 @@ describe Bolton::SpeciesCatalog do
 
   describe 'parsing a valid genus header' do
     it "should recognize a valid, extant genus heading" do
-      @species_catalog.parse("<b><i><span style='color:red'>ACANTHOGNATHUS</span></i></b> (Neotropical)").should == {:type => :genus, :name => 'Acanthognathus', :status => :valid}
+      @species_catalog.parse("<b><i><span style='color:red'>ACANTHOGNATHUS</span></i></b> (Neotropical)").should == {:type => :genus, :name => 'Acanthognathus', :status => 'valid'}
     end
     it "should recognize multiple regions" do
-      @species_catalog.parse("<b><i><span style=\"color:red\">ACANTHOMYRMEX</span></i></b> (Oriental, Indo-Australian)").should == {:type => :genus, :name => 'Acanthomyrmex', :status => :valid}
+      @species_catalog.parse("<b><i><span style=\"color:red\">ACANTHOMYRMEX</span></i></b> (Oriental, Indo-Australian)").should == {:type => :genus, :name => 'Acanthomyrmex', :status => 'valid'}
     end
     it "should recognize a valid, fossil genus heading" do
-      @species_catalog.parse("*<b><i><span style='color:red'>AFROMYRMA</span></i></b> (Botswana)").should == {:type => :genus, :name => 'Afromyrma', :fossil => true, :status => :valid}
+      @species_catalog.parse("*<b><i><span style='color:red'>AFROMYRMA</span></i></b> (Botswana)").should == {:type => :genus, :name => 'Afromyrma', :fossil => true, :status => 'valid'}
     end
     it "should handle when Barry includes a little blank red space" do
-      @species_catalog.parse("<b><i><span style='color:red'>ACANTHOPONERA</span></i></b><span style='color:red'> </span>(Neotropical)").should == {:type => :genus, :name => 'Acanthoponera', :status => :valid}
+      @species_catalog.parse("<b><i><span style='color:red'>ACANTHOPONERA</span></i></b><span style='color:red'> </span>(Neotropical)").should == {:type => :genus, :name => 'Acanthoponera', :status => 'valid'}
     end
     it "should handle a period after the genus name" do
-      @species_catalog.parse(%{*<b style="mso-bidi-font-weight:normal"><i style="mso-bidi-font-style:normal"><span style="color:red">ARCHIPONERA</span></i></b>. (U.S.A.)}).should == {:type => :genus, :name => 'Archiponera', :fossil => true, :status => :valid}
+      @species_catalog.parse(%{*<b style="mso-bidi-font-weight:normal"><i style="mso-bidi-font-style:normal"><span style="color:red">ARCHIPONERA</span></i></b>. (U.S.A.)}).should == {:type => :genus, :name => 'Archiponera', :fossil => true, :status => 'valid'}
     end
     it "should handle a space after the genus name" do
-      @species_catalog.parse(%{<b><i><span style="color:red">AUSTROMORIUM </span></i></b>(Australia)}).should == {:type => :genus, :name => 'Austromorium', :status => :valid}
+      @species_catalog.parse(%{<b><i><span style="color:red">AUSTROMORIUM </span></i></b>(Australia)}).should == {:type => :genus, :name => 'Austromorium', :status => 'valid'}
     end
     it "should handle a space after the color" do
-      @species_catalog.parse(%{<b><i><span style="color:red">DRYMOMYRMEX</span> </i></b>(Baltic Amber)}).should == {:type => :genus, :name => 'Drymomyrmex', :status => :valid}
+      @species_catalog.parse(%{<b><i><span style="color:red">DRYMOMYRMEX</span> </i></b>(Baltic Amber)}).should == {:type => :genus, :name => 'Drymomyrmex', :status => 'valid'}
     end
     it "should handle a missing paren at the end" do
-      @species_catalog.parse(%{<b><i><span style="color:red">LEPTOMYRMEX</span></i></b> (Sulawesi, New Guinea, Australia, New Caledonia}).should == {:type => :genus, :name => 'Leptomyrmex', :status => :valid}
+      @species_catalog.parse(%{<b><i><span style="color:red">LEPTOMYRMEX</span></i></b> (Sulawesi, New Guinea, Australia, New Caledonia}).should == {:type => :genus, :name => 'Leptomyrmex', :status => 'valid'}
     end
     it "should handle a genus without a region" do
-      @species_catalog.parse(%{<b><i><span style="color:red">NYLANDERIA</span></i></b>}).should == {:type => :genus, :name => 'Nylanderia', :status => :valid}
+      @species_catalog.parse(%{<b><i><span style="color:red">NYLANDERIA</span></i></b>}).should == {:type => :genus, :name => 'Nylanderia', :status => 'valid'}
     end
     it "should handle superflous paragraph in its midst" do
-      @species_catalog.parse(%{<b><i><span style="color:red">NYLANDERIA<p></p></span></i></b>}).should == {:type => :genus, :name => 'Nylanderia', :status => :valid}
+      @species_catalog.parse(%{<b><i><span style="color:red">NYLANDERIA<p></p></span></i></b>}).should == {:type => :genus, :name => 'Nylanderia', :status => 'valid'}
     end
     it "should handle unnecessary blackness and parenthesis" do
-      @species_catalog.parse(%{<b><i><span style="color:red">OPAMYRMA</span></i></b><span style="color:black"> (Vietnam)<p></p></span>}).should == {:type => :genus, :name => 'Opamyrma', :status => :valid}
+      @species_catalog.parse(%{<b><i><span style="color:red">OPAMYRMA</span></i></b><span style="color:black"> (Vietnam)<p></p></span>}).should == {:type => :genus, :name => 'Opamyrma', :status => 'valid'}
     end
     it "should handle an unidentifiable though valid genus" do
-      @species_catalog.parse(%{<b><i><span style='color:green'>CONDYLODON</span></i></b> (Brazil)}).should == {:type => :genus, :name => 'Condylodon', :status => :valid}
+      @species_catalog.parse(%{<b><i><span style='color:green'>CONDYLODON</span></i></b> (Brazil)}).should == {:type => :genus, :name => 'Condylodon', :status => 'valid'}
     end
 
     it "should handle a load of other crap" do
-      @species_catalog.parse(%{<b><i><span style="color:red">PROMYOPIAS</span></i></b><span style="color:red"> </span><span style="color:black">(Afrotropical)<p></p></span>}).should == {:type => :genus, :name => 'Promyopias', :status => :valid}
+      @species_catalog.parse(%{<b><i><span style="color:red">PROMYOPIAS</span></i></b><span style="color:red"> </span><span style="color:black">(Afrotropical)<p></p></span>}).should == {:type => :genus, :name => 'Promyopias', :status => 'valid'}
     end
       
   end
 
   describe "parsing an unidentifiable genus header" do
     it "should handle an ichnotaxon" do
-      @species_catalog.parse(%{*<i><span style='color:green'>ATTAICHNUS</span></i> (ichnotaxon)}).should == {:type => :genus, :name => 'Attaichnus', :status => :unidentifiable, :fossil => true}
+      @species_catalog.parse(%{*<i><span style='color:green'>ATTAICHNUS</span></i> (ichnotaxon)}).should == {:type => :genus, :name => 'Attaichnus', :status => 'unidentifiable', :fossil => true}
     end
     it "should handle transferred genus" do
-      @species_catalog.parse(%{*<i><span style="color:green">PALAEOMYRMEX</span></i> Heer, 1865: transferred to <b><i>HOMOPTERA</i></b>.}).should == {:type => :genus, :name => 'Palaeomyrmex', :status => :unidentifiable, :fossil => true}
+      @species_catalog.parse(%{*<i><span style="color:green">PALAEOMYRMEX</span></i> Heer, 1865: transferred to <b><i>HOMOPTERA</i></b>.}).should == {:type => :genus, :name => 'Palaeomyrmex', :status => 'unidentifiable', :fossil => true}
     end
 
   end

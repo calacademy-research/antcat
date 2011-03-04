@@ -12,8 +12,8 @@ class Genus < Taxon
     tribe_name = record[:tribe]
     synonym_of_name = record[:synonym_of]
     homonym_resolved_to_name = record[:homonym_resolved_to]
-    status = record[:status].present? ? record[:status].to_s : nil
-    incertae_sedis_in = record[:incertae_sedis_in] && record[:incertae_sedis_in].to_s
+    status = record[:status].present? ? record[:status] : nil
+    incertae_sedis_in = record[:incertae_sedis_in] && record[:incertae_sedis_in]
     fossil = record[:fossil]
 
     # the parse returns subfamilies that are outside the family - exclude them

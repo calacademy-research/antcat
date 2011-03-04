@@ -339,49 +339,49 @@ SPECIES-GROUP TAXA<o:p></o:p></b></p>
         style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
         style='color:red'>ACANTHOGNATHUS</span></i></b> [Myrmicinae: Dacetini]}
       @genus_catalog.parse(line).should == {:type => :genus, :name => 'Acanthognathus',
-                                                        :subfamily => 'Myrmicinae', :tribe => 'Dacetini', :status => :valid}
+                                                        :subfamily => 'Myrmicinae', :tribe => 'Dacetini', :status => 'valid'}
     end
 
     describe 'Parsing the genus name' do
       it 'should parse a normal genus name' do
         line = %{<b><i><span style='color:red'>ACANTHOGNATHUS</span></i></b> [Myrmicinae: Dacetini]}
         @genus_catalog.parse(line).should == {:type => :genus, :name => 'Acanthognathus',
-                                                          :subfamily => 'Myrmicinae', :tribe => 'Dacetini', :status => :valid}
+                                                          :subfamily => 'Myrmicinae', :tribe => 'Dacetini', :status => 'valid'}
       end
 
       it 'should handle an italic space' do
         line = %{<b><i><span style="color:red">PROTOMOGNATHUS</span></i></b><i> </i>[Myrmicinae: Formicoxenini]}
         @genus_catalog.parse(line).should == {:type => :genus, :name => 'Protomognathus',
-                                                          :subfamily => 'Myrmicinae', :tribe => 'Formicoxenini', :status => :valid}
+                                                          :subfamily => 'Myrmicinae', :tribe => 'Formicoxenini', :status => 'valid'}
       end
 
       it 'should parse a fossil genus name' do
         line = %{*<b><i><span style='color:red'>ACANTHOGNATHUS</span></i></b> [Myrmicinae: Dacetini]}
         @genus_catalog.parse(line).should == {:type => :genus, :name => 'Acanthognathus',
-                                                          :subfamily => 'Myrmicinae', :tribe => 'Dacetini', :fossil => true, :status => :valid}
+                                                          :subfamily => 'Myrmicinae', :tribe => 'Dacetini', :fossil => true, :status => 'valid'}
       end
 
       it 'should parse an unidentifiable genus name' do
         line = %{*<b><i><span style='color:green'>ATTAICHNUS</span></i></b> [Myrmicinae: Attini]}
-        @genus_catalog.parse(line).should == {:type => :genus, :name => 'Attaichnus', :status => :unidentifiable,
+        @genus_catalog.parse(line).should == {:type => :genus, :name => 'Attaichnus', :status => 'unidentifiable',
                                                           :subfamily => 'Myrmicinae', :tribe => 'Attini', :fossil => true}
       end
 
       it 'should handle parens instead of brackets' do
         line = %{<b><i><span style='color:red'>ACROMYRMEX</span></i></b> (Myrmicinae: Attini)}
-        @genus_catalog.parse(line).should == {:type => :genus, :name => 'Acromyrmex', :status => :valid,
+        @genus_catalog.parse(line).should == {:type => :genus, :name => 'Acromyrmex', :status => 'valid',
                                                           :subfamily => 'Myrmicinae', :tribe => 'Attini'}
       end
 
       it 'should handle paren at one end and bracket at the other' do
         line = %{<b><i><span style='color:red'>ACROMYRMEX</span></i></b> (Myrmicinae: Attini]}
-        @genus_catalog.parse(line).should == {:type => :genus, :name => 'Acromyrmex', :status => :valid,
+        @genus_catalog.parse(line).should == {:type => :genus, :name => 'Acromyrmex', :status => 'valid',
                                                           :subfamily => 'Myrmicinae', :tribe => 'Attini'}
       end
 
       it "should handle this spacing" do
         line = %{<b><i><span style="color:red">LEPISIOTA</span></i></b><span style="color: red"> </span>[Formicinae: Plagiolepidini]}
-        @genus_catalog.parse(line).should == {:type => :genus, :name => 'Lepisiota', :status => :valid,
+        @genus_catalog.parse(line).should == {:type => :genus, :name => 'Lepisiota', :status => 'valid',
                                                           :subfamily => 'Formicinae', :tribe => 'Plagiolepidini'}
       end
 
@@ -390,22 +390,22 @@ SPECIES-GROUP TAXA<o:p></o:p></b></p>
 
         it "should recognize a nomen nudum" do
           line = %{<i><span style='color:purple'>ANCYLOGNATHUS</span></i> [<i>Nomen nudum</i>]}
-          @genus_catalog.parse(line).should == {:type => :genus, :name => 'Ancylognathus', :status => :unavailable}
+          @genus_catalog.parse(line).should == {:type => :genus, :name => 'Ancylognathus', :status => 'unavailable'}
         end
 
         it "should recognize an unavailable name" do
           line = %{<i><span style="color:purple">ACHANTILEPIS</span></i> [<b>unavailable name</b>]}
-          @genus_catalog.parse(line).should == {:type => :genus, :name => 'Achantilepis', :status => :unavailable}
+          @genus_catalog.parse(line).should == {:type => :genus, :name => 'Achantilepis', :status => 'unavailable'}
         end
 
         it "should recognize an unavailable name with an italicized space" do
           line = %{<i><span style="color:purple">ACHANTILEPIS</span> </i>[<b>unavailable name</b>]}
-          @genus_catalog.parse(line).should == {:type => :genus, :name => 'Achantilepis', :status => :unavailable}
+          @genus_catalog.parse(line).should == {:type => :genus, :name => 'Achantilepis', :status => 'unavailable'}
         end
 
         it "should handle when the bracketed remark at end has a trailing bracket in bold" do
           line = %{<i><span style="color:purple">MYRMECIUM</span></i> [<b>unavailable name]</b>}
-          @genus_catalog.parse(line).should == {:type => :genus, :name => 'Myrmecium', :status => :unavailable}
+          @genus_catalog.parse(line).should == {:type => :genus, :name => 'Myrmecium', :status => 'unavailable'}
         end
 
       end
@@ -415,22 +415,22 @@ SPECIES-GROUP TAXA<o:p></o:p></b></p>
 
       it "should recognize a subgenus" do
         line = %{#<b><i><span style='color:blue'>ACANTHOMYOPS</span></i></b> [subgenus of <i>Lasius</i>]}
-        @genus_catalog.parse(line).should == {:type => :subgenus, :name => 'Acanthomyops', :genus => 'Lasius', :status => :valid}
+        @genus_catalog.parse(line).should == {:type => :subgenus, :name => 'Acanthomyops', :genus => 'Lasius', :status => 'valid'}
       end
 
       it "should ignore an errant blue space" do
         line = %{#<b><i><span style="color:blue">ANOMMA</span></i></b><span style="color:blue"> </span>[subgenus of <i>Dorylus</i>]}
-        @genus_catalog.parse(line).should == {:type => :subgenus, :name => 'Anomma', :genus => 'Dorylus', :status => :valid}
+        @genus_catalog.parse(line).should == {:type => :subgenus, :name => 'Anomma', :genus => 'Dorylus', :status => 'valid'}
       end
 
       it "should handle it when the # is in black" do
         line = %{<span style="color:black">#</span><b><i><span style="color:blue">BARONIURBANIA</span></i></b> [subgenus of <i>Lepisiota</i>]}
-        @genus_catalog.parse(line).should == {:type => :subgenus, :name => 'Baroniurbania', :genus => 'Lepisiota', :status => :valid}
+        @genus_catalog.parse(line).should == {:type => :subgenus, :name => 'Baroniurbania', :genus => 'Lepisiota', :status => 'valid'}
       end
 
       it "should handle it when it's not blue or bold" do
         line = %{#<i>RHINOMYRMEX</i> [subgenus of <i>Camponotus</i>]}
-        @genus_catalog.parse(line).should == {:type => :subgenus, :name => 'Rhinomyrmex', :genus => 'Camponotus', :status => :valid}
+        @genus_catalog.parse(line).should == {:type => :subgenus, :name => 'Rhinomyrmex', :genus => 'Camponotus', :status => 'valid'}
       end
 
     end
@@ -440,56 +440,56 @@ SPECIES-GROUP TAXA<o:p></o:p></b></p>
       it 'should parse the subfamily and tribe' do
         line = %{<b><i><span style='color:red'>ACROMYRMEX</span></i></b> [Myrmicinae: Attini]}
         @genus_catalog.parse(line).should == {:type => :genus, :name => 'Acromyrmex',
-                                                          :subfamily => 'Myrmicinae', :tribe => 'Attini', :status => :valid}
+                                                          :subfamily => 'Myrmicinae', :tribe => 'Attini', :status => 'valid'}
       end
 
       it "should handle an extinct subfamily" do
         line = %{*<b><i><span style='color:red'>PROTAZTECA</span></i></b> [*Myrmicinae]}
-        @genus_catalog.parse(line).should == {:type => :genus, :name => 'Protazteca', :subfamily => 'Myrmicinae', :fossil => true, :status => :valid}
+        @genus_catalog.parse(line).should == {:type => :genus, :name => 'Protazteca', :subfamily => 'Myrmicinae', :fossil => true, :status => 'valid'}
       end
 
       it "should handle an extinct subfamily and extinct tribe" do
         line = %{*<b><i><span style='color:red'>PROTAZTECA</span></i></b> [*Specomyrminae: *Sphecomyrmini]}
         @genus_catalog.parse(line).should == {:type => :genus, :name => 'Protazteca',
-                                                          :subfamily => 'Specomyrminae', :tribe => 'Sphecomyrmini', :fossil => true, :status => :valid}
+                                                          :subfamily => 'Specomyrminae', :tribe => 'Sphecomyrmini', :fossil => true, :status => 'valid'}
       end
 
       it "should handle a parenthetical note" do
         line = %{<b><i><span style='color:red'>PROTAZTECA</span></i></b> [<i>incertae sedis</i> in Dolichoderinae (or so they say)]}
-        @genus_catalog.parse(line).should == {:type => :genus, :name => 'Protazteca', :subfamily => 'Dolichoderinae', :incertae_sedis_in => :subfamily, :status => :valid}
+        @genus_catalog.parse(line).should == {:type => :genus, :name => 'Protazteca', :subfamily => 'Dolichoderinae', :incertae_sedis_in => 'subfamily', :status => 'valid'}
       end
 
       describe 'Incertae sedis' do
         it "should handle an uncertain family" do
           line = %{<b><i><span style='color:red'>MYANMYRMA</span></i></b> [<i>incertae sedis</i> in Formicidae]}
-          @genus_catalog.parse(line).should == {:type => :genus, :name => 'Myanmyrma', :incertae_sedis_in => :family, :status => :valid}
+          @genus_catalog.parse(line).should == {:type => :genus, :name => 'Myanmyrma', :incertae_sedis_in => 'family', :status => 'valid'}
         end
 
         it "should handle uncertainty in a family" do
           line = %{<b><i><span style='color:red'>PROTAZTECA</span></i></b> [<i>incertae sedis</i> in Dolichoderinae]}
-          @genus_catalog.parse(line).should == {:type => :genus, :name => 'Protazteca', :subfamily => 'Dolichoderinae', :incertae_sedis_in => :subfamily, :status => :valid}
+          @genus_catalog.parse(line).should == {:type => :genus, :name => 'Protazteca', :subfamily => 'Dolichoderinae', :incertae_sedis_in => 'subfamily', :status => 'valid'}
         end
 
         it "should handle an uncertain subfamily + tribe" do
           line = %{<b><i><span style='color:red'>ELECTROPONERA</span></i></b> [<i>incertae sedis</i> in Ectatomminae: Ectatommini]}
           @genus_catalog.parse(line).should == {:type => :genus, :name => 'Electroponera', :subfamily => 'Ectatomminae', :tribe => 'Ectatommini', 
-                                                            :incertae_sedis_in => :tribe, :status => :valid}
+                                                            :incertae_sedis_in => 'tribe', :status => 'valid'}
         end
 
         it "should handle an uncertain tribe" do
           line = %{<b><i><span style='color:red'>PROPODILOBUS</span></i></b> [Myrmicinae: <i>incertae sedis</i> in Stenammini]}
           @genus_catalog.parse(line).should == {:type => :genus, :name => 'Propodilobus', :subfamily => 'Myrmicinae', :tribe => 'Stenammini',
-                                                            :incertae_sedis_in => :tribe, :status => :valid}
+                                                            :incertae_sedis_in => 'tribe', :status => 'valid'}
         end
 
         it "should handle fossil" do
           line = %{*<b><i><span style='color:red'>AFROMYRMA</span></i></b><span style='color:red'> </span>[<i>incertae sedis</i> in Myrmicinae]}
-          @genus_catalog.parse(line).should == {:type => :genus, :name => 'Afromyrma', :subfamily => 'Myrmicinae', :incertae_sedis_in => :subfamily, :fossil => true, :status => :valid}
+          @genus_catalog.parse(line).should == {:type => :genus, :name => 'Afromyrma', :subfamily => 'Myrmicinae', :incertae_sedis_in => 'subfamily', :fossil => true, :status => 'valid'}
         end
 
         it "should ignore a question mark" do
           line = %{<b><i><span style='color:red'>CANANEURETUS</span></i></b> [Aneuretinae?]}
-          @genus_catalog.parse(line).should == {:type => :genus, :name => 'Cananeuretus', :subfamily => 'Aneuretinae', :status => :valid}
+          @genus_catalog.parse(line).should == {:type => :genus, :name => 'Cananeuretus', :subfamily => 'Aneuretinae', :status => 'valid'}
         end
 
       end
@@ -499,60 +499,60 @@ SPECIES-GROUP TAXA<o:p></o:p></b></p>
         it "should recognize a synonym and point to its senior" do
           line = %{<span style='color:black'><i>ACALAMA</i></span> [junior synonym of <i>Gauromyrmex</i>]}
           @genus_catalog.parse(line).should ==
-            {:type => :genus, :name => 'Acalama', :status => :synonym, :synonym_of => 'Gauromyrmex'}
+            {:type => :genus, :name => 'Acalama', :status => 'synonym', :synonym_of => 'Gauromyrmex'}
         end
 
         it "should handle italic black as well as black italic" do
           line = %{<i><span style="color:black">ACALAMA</span></i> [junior synonym of <i>Gauromyrmex</i>]}
-          @genus_catalog.parse(line).should == {:type => :genus, :name => 'Acalama', :status => :synonym, :synonym_of => 'Gauromyrmex'}
+          @genus_catalog.parse(line).should == {:type => :genus, :name => 'Acalama', :status => 'synonym', :synonym_of => 'Gauromyrmex'}
         end
 
         it "should handle the closing bracket being in a useless span" do
           line = %{<span style='color:black'><i>ACALAMA</i></span> [junior synonym of <i>Gauromyrmex</i><span style='font-style:normal'>]</span>}
           @genus_catalog.parse(line).should ==
-            {:type => :genus, :name => 'Acalama', :status => :synonym, :synonym_of => 'Gauromyrmex'}
+            {:type => :genus, :name => 'Acalama', :status => 'synonym', :synonym_of => 'Gauromyrmex'}
         end
 
         it "should recognize an invalid name that has no color (like Claude)" do
           line = %{<i>ACIDOMYRMEX</i> [junior synonym of <i>Rhoptromyrmex</i>]}
           @genus_catalog.parse(line).should ==
-            {:type => :genus, :name => 'Acidomyrmex', :status => :synonym, :synonym_of => 'Rhoptromyrmex'}
+            {:type => :genus, :name => 'Acidomyrmex', :status => 'synonym', :synonym_of => 'Rhoptromyrmex'}
         end
 
         it "should handle 'Junior'" do
           line = %{<i>CRYPTOPONE</i> [Junior synonym of <i>Pachycondyla</i>]}
           @genus_catalog.parse(line).should ==
-            {:type => :genus, :name => 'Cryptopone', :status => :synonym, :synonym_of => 'Pachycondyla'}
+            {:type => :genus, :name => 'Cryptopone', :status => 'synonym', :synonym_of => 'Pachycondyla'}
         end
 
         it "should recognize a fossil synonym with an italicized space" do
           line = %{*<i>ACROSTIGMA </i>[junior synonym of <i>Podomyrma</i>]}
           @genus_catalog.parse(line).should ==
-            {:type => :genus, :name => 'Acrostigma', :status => :synonym, :synonym_of => 'Podomyrma', 
+            {:type => :genus, :name => 'Acrostigma', :status => 'synonym', :synonym_of => 'Podomyrma', 
               :fossil => true}
         end
 
         it "should recognize a fossil synonym of a fossil" do
           line = %{*<i>AMEGHINOIA </i>[junior synonym of *<i>Archimyrmex</i>]}
           @genus_catalog.parse(line).should ==
-            {:type => :genus, :name => 'Ameghinoia', :status => :synonym, :synonym_of => 'Archimyrmex', 
+            {:type => :genus, :name => 'Ameghinoia', :status => 'synonym', :synonym_of => 'Archimyrmex', 
               :fossil => true}
         end
 
         it "should handle a misspelling of 'synonym'" do
           line = %{<i>CREIGHTONIDRIS</i> [junior syonym of <i>Basiceros</i>]}
           @genus_catalog.parse(line).should ==
-            {:type => :genus, :name => 'Creightonidris', :status => :synonym, :synonym_of => 'Basiceros'}
+            {:type => :genus, :name => 'Creightonidris', :status => 'synonym', :synonym_of => 'Basiceros'}
         end
 
         it "should handle an italicized closing bracket" do
           line = %{<i>PALAEATTA</i> [junior synonym of <i>Atta]</i>}
-          @genus_catalog.parse(line).should == {:type => :genus, :name => 'Palaeatta', :status => :synonym, :synonym_of => 'Atta'}
+          @genus_catalog.parse(line).should == {:type => :genus, :name => 'Palaeatta', :status => 'synonym', :synonym_of => 'Atta'}
         end
 
         it "should handle an italicized fossil flag" do
           line = %{<i>*SINAPHAENOGASTER</i> [junior synonym of <i>Aphaenogaster</i>]}
-          @genus_catalog.parse(line).should == {:type => :genus, :name => 'Sinaphaenogaster', :status => :synonym, :synonym_of => 'Aphaenogaster',
+          @genus_catalog.parse(line).should == {:type => :genus, :name => 'Sinaphaenogaster', :status => 'synonym', :synonym_of => 'Aphaenogaster',
                                                             :fossil => true}
         end
 
@@ -563,25 +563,25 @@ SPECIES-GROUP TAXA<o:p></o:p></b></p>
         it "should recognize a homonym and point to its senior" do
           line = %{<i>ACAMATUS</i><span style='font-style:normal'> [junior homonym, see </span><i>Neivamyrmex</i><span style='font-style:normal'>]</span>}
           @genus_catalog.parse(line).should ==
-            {:type => :genus, :name => 'Acamatus', :status => :homonym, :homonym_resolved_to => 'Neivamyrmex'}
+            {:type => :genus, :name => 'Acamatus', :status => 'homonym', :homonym_resolved_to => 'Neivamyrmex'}
         end
 
         it "should handle it without spans" do
           line = %{<i>ACAMATUS</i> [junior homonym, see <i>Neivamyrmex</i>]}
           @genus_catalog.parse(line).should ==
-            {:type => :genus, :name => 'Acamatus', :status => :homonym, :homonym_resolved_to => 'Neivamyrmex'}
+            {:type => :genus, :name => 'Acamatus', :status => 'homonym', :homonym_resolved_to => 'Neivamyrmex'}
         end
 
         it "should handle fossil homonyms" do
           line = %{*<i>HETEROMYRMEX</i> [junior homonym, see *<i>Zhangidris</i>]}
           @genus_catalog.parse(line).should ==
-            {:type => :genus, :name => 'Heteromyrmex', :status => :homonym, :homonym_resolved_to => 'Zhangidris', :fossil => true}
+            {:type => :genus, :name => 'Heteromyrmex', :status => 'homonym', :homonym_resolved_to => 'Zhangidris', :fossil => true}
         end
 
         it "should handle a semicolon" do
           line = %{<i>TRIGONOGASTER</i> [junior homonym; see <i>Recurvidris</i>]}
           @genus_catalog.parse(line).should ==
-            {:type => :genus, :name => 'Trigonogaster', :status => :homonym, :homonym_resolved_to => 'Recurvidris'}
+            {:type => :genus, :name => 'Trigonogaster', :status => 'homonym', :homonym_resolved_to => 'Recurvidris'}
         end
 
       end
@@ -590,13 +590,13 @@ SPECIES-GROUP TAXA<o:p></o:p></b></p>
         it "should be its own thing" do
           line = %{<i>HOLCOPONERA </i>[junior homonym, junior synonym of <i>Cylindromyrmex</i>]}
           @genus_catalog.parse(line).should == {:type => :genus, :name => 'Holcoponera',
-                                                            :status => :unresolved_homonym_and_synonym,
+                                                            :status => 'unresolved_homonym_and_synonym',
                                                             :synonym_of => 'Cylindromyrmex'}
         end
         it "should handle unitalicized space" do
           line = %{<i>MYRMEX</i> [junior homonym, junior synonym of <i>Pseudomyrma</i>]}
           @genus_catalog.parse(line).should == {:type => :genus, :name => 'Myrmex',
-                                                            :status => :unresolved_homonym_and_synonym,
+                                                            :status => 'unresolved_homonym_and_synonym',
                                                             :synonym_of => 'Pseudomyrma'}
         end
       end
@@ -604,7 +604,7 @@ SPECIES-GROUP TAXA<o:p></o:p></b></p>
       it "should handle an unresolved junior homonym in brown" do
         line = %{*<b><i><span style="color:#663300">WILSONIA</span></i></b><span style="color:red"> </span>[<i>incertae sedis</i> in Formicinae]}
         @genus_catalog.parse(line).should == {:type => :genus, :name => 'Wilsonia', :subfamily => 'Formicinae',
-                                                          :incertae_sedis_in => :subfamily, :status => :unresolved_homonym,
+                                                          :incertae_sedis_in => 'subfamily', :status => 'unresolved_homonym',
                                                           :fossil => true}
       end
       
@@ -702,7 +702,7 @@ SPECIES-GROUP TAXA<o:p></o:p></b></p>
     it "should not complain if the genus is a synonym of these subgenera, which are not currently being imported" do
       ['Myrma', 'Myrmhopla'].each do |subgenus|
         lambda {
-          @genus_catalog.import_genus :name => 'Anoplomyrma', :status => :synonym, :synonym_of => subgenus
+          @genus_catalog.import_genus :name => 'Anoplomyrma', :status => 'synonym', :synonym_of => subgenus
         }.should_not raise_error
         anoploymyrma = Genus.find_by_name 'Anoplomyrma'
         anoploymyrma.status.should == 'synonym'

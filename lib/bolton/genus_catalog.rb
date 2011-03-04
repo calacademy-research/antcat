@@ -47,8 +47,8 @@ class Bolton::GenusCatalog < Bolton::Catalog
   end
 
   def import_genus record
-    record[:status] = status = record[:status].present? ? record[:status].to_s : nil
-    record[:incertae_sedis_in] = record[:incertae_sedis_in].present? ? record[:incertae_sedis_in].to_s : nil
+    record[:status] = status = record[:status].present? ? record[:status] : nil
+    record[:incertae_sedis_in] = record[:incertae_sedis_in].present? ? record[:incertae_sedis_in] : nil
 
     if record[:subfamily]
       if ['Aculeata', 'Symphyta', 'Apocrita', 'Homoptera', 'Ichneumonidae', 'Embolemidae'].include? record[:subfamily]

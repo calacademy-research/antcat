@@ -25,7 +25,7 @@ grammar Bolton::GenusCatalogGrammar
 
   rule subgenus_header
     (subgenus_prefix italic name tag_end bracketed_information) {
-      value = {:type => :subgenus, :name => name.value, :status => :valid}.merge bracketed_information.value
+      value = {:type => :subgenus, :name => name.value, :status => 'valid'}.merge bracketed_information.value
     }
   end
 
@@ -43,7 +43,7 @@ grammar Bolton::GenusCatalogGrammar
       tag_end?
       s '[' junior_synonym_of fossil_flag? italic capitalized_word tag_end? span? ']' tag_end?
     ) {
-      value = {:type => :genus, :name => name.value, :status => :synonym, :synonym_of => capitalized_word.value}
+      value = {:type => :genus, :name => name.value, :status => 'synonym', :synonym_of => capitalized_word.value}
       value.merge! :fossil => true if main_fossil_flag && main_fossil_flag != ''
       value
     }
@@ -55,7 +55,7 @@ grammar Bolton::GenusCatalogGrammar
 
   rule homonym
     (main_fossil_flag:fossil_flag? italic name tag_end span? ' [junior homonym' /[,;]/ ' see ' tag_end? fossil_flag? italic capitalized_word tag_end span? ']' tag_end?) {
-      value = {:type => :genus, :name => name.value, :status => :homonym, :homonym_resolved_to => capitalized_word.value}
+      value = {:type => :genus, :name => name.value, :status => 'homonym', :homonym_resolved_to => capitalized_word.value}
       value.merge! :fossil => true if main_fossil_flag && main_fossil_flag != ''
       value
     }
@@ -63,13 +63,13 @@ grammar Bolton::GenusCatalogGrammar
 
   rule unresolved_homonym_and_synonym
     (italic name s tag_end s '[junior homonym, junior synonym of ' italic capitalized_word tag_end ']') {
-      {:type => :genus, :name => name.value, :status => :unresolved_homonym_and_synonym, :synonym_of => capitalized_word.value}
+      {:type => :genus, :name => name.value, :status => 'unresolved_homonym_and_synonym', :synonym_of => capitalized_word.value}
     }
   end
 
   rule unresolved_homonym
     (fossil_flag? bold italic brown name tag_end tag_end tag_end bracketed_information) {
-      value = {:type => :genus, :name => name.value, :status => :unresolved_homonym}
+      value = {:type => :genus, :name => name.value, :status => 'unresolved_homonym'}
       value.merge! bracketed_information.value
       value.merge! :fossil => true if fossil_flag.present?
       value
@@ -82,25 +82,25 @@ grammar Bolton::GenusCatalogGrammar
 
   rule valid
     (bold italic red name tag_end tag_end tag_end) {
-      {:type => :genus, :name => name.value, :status => :valid}
+      {:type => :genus, :name => name.value, :status => 'valid'}
     }
   end
 
   rule unavailable
     (italic purple name tag_end s tag_end) {
-      {:type => :genus, :name => name.value, :status => :unavailable}
+      {:type => :genus, :name => name.value, :status => 'unavailable'}
     }
   end
 
   rule unidentifiable
     (bold italic green name tag_end tag_end tag_end) {
-      {:type => :genus, :name => name.value, :status => :unidentifiable}
+      {:type => :genus, :name => name.value, :status => 'unidentifiable'}
     }
   end
 
   rule subgenus
     (bold? italic blue name tag_end tag_end? tag_end? errant_blue_space?) {
-      {:type => :subgenus, :name => name.value, :status => :valid}
+      {:type => :subgenus, :name => name.value, :status => 'valid'}
     }
   end
 
@@ -140,7 +140,7 @@ grammar Bolton::GenusCatalogGrammar
 
   rule uncertain_in_family
     (incertae_sedis_in 'Formicidae') {
-      {:incertae_sedis_in => :family}
+      {:incertae_sedis_in => 'family'}
     }
   end
 
@@ -149,9 +149,9 @@ grammar Bolton::GenusCatalogGrammar
       value = {:subfamily => subfamily.value}
       if !tribe.blank?
         value[:tribe] = tribe.value
-        value[:incertae_sedis_in] = :tribe if uncertain && uncertain != '' || incertae_sedis_in.present?
+        value[:incertae_sedis_in] = 'tribe' if uncertain && uncertain != '' || incertae_sedis_in.present?
       elsif uncertain && uncertain != ''
-        value[:incertae_sedis_in] = :subfamily
+        value[:incertae_sedis_in] = 'subfamily'
       end
       value
     }

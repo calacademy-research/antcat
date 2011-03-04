@@ -15,7 +15,7 @@ describe Subgenus do
     it "should import all the fields correctly" do
       subgenus = Subgenus.import :name => 'Colobopsis',
         :genus => 'Camponotus',
-        :fossil => true, :status => :valid,
+        :fossil => true, :status => 'valid',
         :taxonomic_history => '<p>history</p>'
       subgenus.reload
       subgenus.name.should == 'Colobopsis'
@@ -27,7 +27,7 @@ describe Subgenus do
     end
 
     it "should not create the genus if the passed-in information isn't valid" do
-      lambda {Subgenus.import :name => 'Acalama', :status => :valid, :genus => ''}.should raise_error
+      lambda {Subgenus.import :name => 'Acalama', :status => 'valid', :genus => ''}.should raise_error
     end
 
   end

@@ -33,7 +33,7 @@ grammar Bolton::SpeciesCatalogGenusGrammar
 
   rule unidentifiable_genus
     (fossil_flag? italic green uppercase_word tag_end tag_end s parenthesized_phrase) {
-      value = {:type => :genus, :name => uppercase_word.downcase.capitalize, :status => :unidentifiable}
+      value = {:type => :genus, :name => uppercase_word.downcase.capitalize, :status => 'unidentifiable'}
       value.merge! :fossil => true unless fossil_flag.blank?
       value
     }
@@ -41,7 +41,7 @@ grammar Bolton::SpeciesCatalogGenusGrammar
 
   rule transferred_genus
     (fossil_flag? italic green uppercase_word /.*?transferred to.*/) {
-      value = {:type => :genus, :name => uppercase_word.downcase.capitalize, :status => :unidentifiable}
+      value = {:type => :genus, :name => uppercase_word.downcase.capitalize, :status => 'unidentifiable'}
       value.merge! :fossil => true unless fossil_flag.blank?
       value
     }
@@ -60,13 +60,13 @@ grammar Bolton::SpeciesCatalogGenusGrammar
       tag_end s tag_end s tag_end region? '.'?
       region?
     ) {
-      {:type => :genus, :name => uppercase_word.downcase.capitalize, :status => :valid}
+      {:type => :genus, :name => uppercase_word.downcase.capitalize, :status => 'valid'}
     }
   end
 
   rule genus_with_crap
     (bold italic red uppercase_word tag_end tag_end tag_end red space tag_end black parenthesized_phrase '<p></p>' tag_end) {
-      {:type => :genus, :name => uppercase_word.downcase.capitalize, :status => :valid}
+      {:type => :genus, :name => uppercase_word.downcase.capitalize, :status => 'valid'}
     }
 
   end
