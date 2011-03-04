@@ -42,8 +42,11 @@ describe Bolton::SubfamilyCatalog do
 <p><b><span lang=EN-GB>Genus *<i><span style='color:red'>CRETACOFORMICA</span></i> <o:p></o:p></span></b></p>
 
 <p><b><span lang=EN-GB>Unavailable family-group names in <span style='color:red'>FORMICIDAE</span><o:p></o:p></span></b></p>
+<p><span lang=EN-GB style='color:purple'>ALLOFORMICINAE</span><span lang=EN-GB> [unavailable name]</span></p>
 
 <p><b><span lang=EN-GB>Genus-group <i>nomina nuda</i> in <span style='color:red'>FORMICIDAE<o:p></o:p></span></span></b></p>
+<p><i style='mso-bidi-font-style:normal'><span lang=EN-GB style='color:purple'>HYPOPHEIDOLE</span></i><span lang=EN-GB> [<i>nomen nudum</i>]</span></p>
+<p>Hypopheidole history</p>
 
 </div></body></html>
     }
@@ -91,7 +94,8 @@ describe Bolton::SubfamilyCatalog do
 
     taxon = Genus.find_by_name 'Hypopheidole'
     taxon.should be_invalid
-    taxon.status.should == 'nomen nudus'
+    taxon.status.should == 'nomen nudum'
+    taxon.taxonomic_history.should == '<p>Hypopheidole history</p>'
 
     taxon = Genus.find_by_name 'Syntaphus'
     taxon.should_not be_invalid

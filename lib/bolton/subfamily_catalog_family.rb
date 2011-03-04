@@ -80,7 +80,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
   def parse_genus_group_nomina_nuda_in_family_list
     expect :genus_group_nomina_nuda_in_family_list
     @parse_result[:genera].each do |genus|
-      Genus.create! :name => genus, :status => 'nomen nudus'
+      Genus.create! :name => genus, :status => 'nomen nudum'
     end
     parse_next_line
   end
@@ -101,13 +101,16 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
   end
 
   def parse_unavailable_family_group_names_in_family
-    #expect :unavailable_family_group_names_in_family_header
-    #parse_next_line
+    expect :unavailable_family_group_names_in_family_header
+    parse_next_line
+    skip :other
   end
 
   def parse_genus_group_nomina_nuda_in_family
-    #expect :genus_group_nomina_nuda_in_family_header
-    #parse_next_line
+    expect :genus_group_nomina_nuda_in_family_header
+    parse_next_line
+    expect :genus
+    update_genus(:status => 'nomen nudum') while @type == :genus
   end
 
   private

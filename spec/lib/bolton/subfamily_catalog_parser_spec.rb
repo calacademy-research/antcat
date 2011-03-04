@@ -47,6 +47,12 @@ describe Bolton::SubfamilyCatalog do
     }).should == {:type => :genus, :name => 'Cariridris', :status => 'unidentifiable', :fossil => true}
   end
 
+  it "should handle an unavailable genus" do
+    @subfamily_catalog.parse(%{
+<i><span lang=EN-GB style='color:purple'>ANCYLOGNATHUS</span></i><span lang=EN-GB> [<i>nomen nudum</i>]</span>
+    }).should == {:type => :genus, :name => 'Ancylognathus', :status => 'unavailable'}
+  end
+
   #it "should recognize this tribe" do
     #@subfamily_catalog.parse(%{
 #<b><span lang=EN-GB>Tribe</span></b><span lang=EN-GB> *<b style='mso-bidi-font-weight:normal'><span style='color:red'>PITYOMYRMECINI</span></b></span>

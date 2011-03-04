@@ -36,7 +36,7 @@ grammar Bolton::SubfamilyCatalogGrammar
   end
 
   rule genus
-    valid_genus | unidentifiable_genus
+    valid_genus | unidentifiable_genus | unavailable_genus
   end
 
   rule valid_genus
@@ -55,6 +55,12 @@ grammar Bolton::SubfamilyCatalogGrammar
       value = {:type => :genus, :name => uppercase_word.downcase.capitalize.strip, :status => 'unidentifiable'}
       value.merge! :fossil => true if fossil_flag.present?
       value
+    }
+  end
+
+  rule unavailable_genus
+    (italic purple uppercase_word /.*/) {
+      {:type => :genus, :name => uppercase_word.downcase.capitalize.strip, :status => 'unavailable'}
     }
   end
 
