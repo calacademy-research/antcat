@@ -31,8 +31,8 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
   end
 
   def parse_genera_incertae_sedis_lists subfamily
-    while @type == :tribes_list
-      @parse_result[:tribes].each do |tribe, fossil|
+    while @type == :genera_incertae_sedis_list
+      @parse_result[:genera].each do |genus, fossil|
         Genus.create! :name => genus, :subfamily => subfamily, :fossil => fossil, :incertae_sedis_in => 'subfamily', :status => 'valid'
       end
       parse_next_line

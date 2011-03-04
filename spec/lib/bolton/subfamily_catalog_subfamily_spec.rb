@@ -33,6 +33,7 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 <p><b><span lang=EN-GB>Tribes <i>incertae sedis</i> in Aneuretinae</span></b><span lang=EN-GB>: *Miomyrmecini.</span></p>
 
 <p><b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in Aneuretinae</span></b><span lang=EN-GB>: *<i>Burmomyrma, *Cananeuretus</i>. </span></p>
+<p><b><span lang=EN-GB>Genus <i>incertae sedis</i> in Aneuretinae</span></b><span lang=EN-GB>: <i>Wildensis. </span></p>
       }
 
       aneuretinae = Subfamily.find_by_name 'Aneuretinae'
@@ -48,10 +49,23 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
       taxon.subfamily.should == aneuretinae
       taxon.incertae_sedis_in.should == 'subfamily'
 
-      #taxon = Genus.find_by_name 'Burmomyrma'
-      #taxon.subfamily.should == aneuretinae
-      #taxon.should be_fossil
-      #taxon.should_not be_invalid
+      taxon = Genus.find_by_name 'Burmomyrma'
+      taxon.subfamily.should == aneuretinae
+      taxon.should be_fossil
+      taxon.incertae_sedis_in.should == 'subfamily'
+      taxon.should_not be_invalid
+
+      taxon = Genus.find_by_name 'Cananeuretus'
+      taxon.subfamily.should == aneuretinae
+      taxon.should be_fossil
+      taxon.incertae_sedis_in.should == 'subfamily'
+      taxon.should_not be_invalid
+
+      taxon = Genus.find_by_name 'Wildensis'
+      taxon.subfamily.should == aneuretinae
+      taxon.should_not be_fossil
+      taxon.incertae_sedis_in.should == 'subfamily'
+      taxon.should_not be_invalid
 
     end
   #end

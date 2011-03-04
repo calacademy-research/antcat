@@ -78,23 +78,24 @@ describe Bolton::SubfamilyCatalog do
 
       it "should recognize a genera incertae sedis list" do
         @subfamily_catalog.parse(%{
-    <b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in Aneuretinae</span></b><span lang=EN-GB>: *<i>Burmomyrma, *Cananeuretus</i>. </span>
-        }).should == {:type => :genera_incertae_sedis_list, :genera => [['Burmomyrma', true], ['Cananeuretus', true]]}
+    <b><span lang=EN-GB>Genera <i>incertae sedis</i> in Aneuretinae</span></b><span lang=EN-GB>: <i>Burmomyrma, *Cananeuretus</i>. </span>
+        }).should == {:type => :genera_incertae_sedis_list, :genera => [['Burmomyrma', nil], ['Cananeuretus', true]]}
       end
 
       it "should recognize an extinct genera incertae sedis list" do
         @subfamily_catalog.parse(%{
     <b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in Aneuretinae</span></b><span lang=EN-GB>: *<i>Burmomyrma, *Cananeuretus</i>. </span>
-        }).should == {:type => :extinct_genera_incertae_sedis_in_subfamily_list, :genera => ['Burmomyrma', 'Cananeuretus']}
+        }).should == {:type => :genera_incertae_sedis_list, :genera => [['Burmomyrma', true], ['Cananeuretus', true]]}
       end
 
       it "should recognize an extant genera incertae sedis list" do
         @subfamily_catalog.parse(%{
-    <b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in Aneuretinae</span></b><span lang=EN-GB>: *<i>Burmomyrma, *Cananeuretus</i>. </span>
-        }).should == {:type => :extinct_genera_incertae_sedis_in_subfamily_list, :genera => ['Burmomyrma', 'Cananeuretus']}
+    <b><span lang=EN-GB>Genera (extant) <i>incertae sedis</i> in Aneuretinae</span></b><span lang=EN-GB>: <i>Burmomyrma, Cananeuretus</i>. </span>
+        }).should == {:type => :genera_incertae_sedis_list, :genera => [['Burmomyrma', nil], ['Cananeuretus', nil]]}
       end
 
     end
+
     it "should recognize a Hong 2002 genera incertae sedis list" do
       @subfamily_catalog.parse(%{
   <b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in Aneuretinae</span></b><span lang=EN-GB>: *<i>Burmomyrma, *Cananeuretus</i>. </span>

@@ -3,7 +3,7 @@ grammar Bolton::SubfamilyCatalogSubfamilyGrammar
 
   rule subfamily_section
     subfamily_centered_header | subfamily_header | 
-    tribes_list | tribes_incertae_sedis_list |
+    tribes_list |
     genera_incertae_sedis_list |
     genera_incertae_sedis_header
   end
@@ -34,20 +34,14 @@ grammar Bolton::SubfamilyCatalogSubfamilyGrammar
     } 
   end
 
-  rule tribes_incertae_sedis_list
-    (bold span 'Tribes (extinct) ' incertae_sedis_in capitalized_word close_tags ': ' text /.*/) {
-      value = {:type => :tribes_incertae_sedis_list}
-      value[:tribes] = text.split(', ').map do |tribe|
-        fossil = tribe.gsub!(/\*/, '') && true
-        [tribe, fossil]
+  rule genera_incertae_sedis_list
+    (bold span ('Genera '|'Genus ') extinct_or_extant:('(extinct) '|'(extant) ')? incertae_sedis_in capitalized_word close_tags ': ' '*'? italic text /.*/) {
+      value = {:type => :genera_incertae_sedis_list}
+      value[:genera] = text.split(', ').map do |genus|
+        fossil = (genus.gsub!(/\*/, '') || extinct_or_extant.to_s =~ /extinct/) ? true : nil
+        [genus, fossil]
       end
       value
-    } 
-  end
-
-  rule genera_incertae_sedis_list
-    (bold span 'Genera (extinct) ' incertae_sedis_in capitalized_word close_tags ': *' italic text /.*/) {
-      {:type => :extinct_genera_incertae_sedis_in_subfamily_list, :genera => text.split(', ').map {|e| e.gsub(/\*/, '')}}
     } 
   end
 
