@@ -17,6 +17,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
 
     parse_tribes_lists subfamily
     parse_genera_incertae_sedis_lists subfamily
+    parse_collective_group_names_list subfamily
   end
 
   def parse_tribes_lists subfamily
@@ -36,6 +37,13 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
         Genus.create! :name => genus, :subfamily => subfamily, :fossil => fossil, :incertae_sedis_in => 'subfamily', :status => 'valid'
       end
       parse_next_line
+    end
+  end
+
+  def parse_collective_group_names_list subfamily
+    return unless @type = :collective_group_name_list
+    @parse_result[:names].each do |name, fossil|
+      Genus.create! :name => name, :subfamily => subfamily, :fossil => fossil, :status => 'valid'
     end
   end
 

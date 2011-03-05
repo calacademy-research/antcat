@@ -3,8 +3,7 @@ grammar Bolton::SubfamilyCatalogSubfamilyGrammar
 
   rule subfamily_section
     subfamily_centered_header | subfamily_header | 
-    tribes_list |
-    genera_incertae_sedis_list |
+    tribes_list | genera_incertae_sedis_list | collective_group_name_list |
     genera_incertae_sedis_header
   end
 
@@ -40,6 +39,17 @@ grammar Bolton::SubfamilyCatalogSubfamilyGrammar
       value[:genera] = text.split(', ').map do |genus|
         fossil = (genus.gsub!(/\*/, '') || extinct_or_extant.to_s =~ /extinct/) ? true : nil
         [genus, fossil]
+      end
+      value
+    } 
+  end
+
+  rule collective_group_name_list
+    (bold span 'Collective group name in ' capitalized_word close_tags ': ' fossil_tag:'*'? italic text /.*/) {
+      value = {:type => :collective_group_name_list}
+      value[:names] = text.split(', ').map do |name|
+        fossil = (name.gsub!(/\*/, '') || fossil_tag.present?) ? true : nil
+        [name, fossil]
       end
       value
     } 

@@ -108,11 +108,11 @@ describe Bolton::SubfamilyCatalog do
 
     end
 
-    #it "should recognize a collective group name list" do
-      #@subfamily_catalog.parse(%{
-  #<b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in Aneuretinae</span></b><span lang=EN-GB>: *<i>Burmomyrma, *Cananeuretus</i>. </span>
-      #}).should == {:type => :extinct_genera_incertae_sedis_in_subfamily_list, :genera => ['Burmomyrma', 'Cananeuretus']}
-    #end
+    it "should recognize a collective group name list" do
+      @subfamily_catalog.parse(%{
+  <b><span lang=EN-GB>Collective group name in Myrmeciinae</span></b><span lang=EN-GB>: *<i>Myrmeciites</i>.</span></p>
+      }).should == {:type => :collective_group_name_list, :names => [['Myrmeciites', true]]}
+    end
 
   end
 
