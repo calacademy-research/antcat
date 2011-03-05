@@ -35,7 +35,7 @@ grammar Bolton::SubfamilyCatalogSubfamilyGrammar
   end
 
   rule genera_incertae_sedis_list
-    (bold span ('Genera '|'Genus ') extinct_or_extant:('(extinct) '|'(extant) ')? incertae_sedis_in capitalized_word close_tags ': ' '*'? italic text /.*/) {
+    (bold span ('Hong (2002) genera '|'Genera '|'Genus ') extinct_or_extant:('(extinct) '|'(extant) ')? incertae_sedis_in capitalized_word close_tags ': ' '*'? italic text /.*/) {
       value = {:type => :genera_incertae_sedis_list}
       value[:genera] = text.split(', ').map do |genus|
         fossil = (genus.gsub!(/\*/, '') || extinct_or_extant.to_s =~ /extinct/) ? true : nil
