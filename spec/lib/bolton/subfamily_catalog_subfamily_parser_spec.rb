@@ -13,6 +13,12 @@ describe Bolton::SubfamilyCatalog do
       }).should == {:type => :subfamily_centered_header}
     end
 
+    it "should recognize another form of subfamily centered header" do
+      @subfamily_catalog.parse(%{
+  <b><span lang="EN-GB" style="color:black">SUBFAMILY</span><span lang="EN-GB"> <span style="color:red">MARTIALINAE</span><p></p></span></b>
+      }).should == {:type => :subfamily_centered_header}
+    end
+
     it "should recognize a subfamily header" do
       @subfamily_catalog.parse(%{
   <b><span lang=EN-GB>Subfamily <span style='color:red'>MYRMICINAE</span> <o:p></o:p></span></b>

@@ -9,7 +9,7 @@ grammar Bolton::SubfamilyCatalogSubfamilyGrammar
   end
 
   rule subfamily_centered_header
-    (bold span 'SUBFAMILY ' red uppercase_word close_tags) {
+    (bold span 'SUBFAMILY' close_tags red uppercase_word close_tags) {
       {:type => :subfamily_centered_header}
     }
   end
