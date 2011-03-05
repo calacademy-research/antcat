@@ -38,6 +38,13 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 
 <p><b><span lang=EN-GB>Collective group name in Myrmeciinae</span></b><span lang=EN-GB>: *<i>Myrmeciites</i>.</span></p>
 
+<p><b><span lang=EN-GB>Tribe <span style='color:red'>ANEURETINI</span><o:p></o:p></span></b></p>
+<p>Aneuretini history</p>
+
+<p><b><span lang=EN-GB>Genus (extant) of Aneuretini</span></b><span lang=EN-GB>: <i>Aneuretus</i>.</span></p>
+
+<p><b><span lang=EN-GB>Tribe <span style='color:red'>PITYOMYRMECINI</span><o:p></o:p></span></b></p>
+<p>Pityomyrmecini history</p>
       }
 
       aneuretinae = Subfamily.find_by_name 'Aneuretinae'
@@ -45,10 +52,14 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 
       aneuretini = Tribe.find_by_name 'Aneuretini'
       aneuretini.subfamily.should == aneuretinae
-      aneuretinae.should_not be_fossil
-      pityomyrmecini = Tribe.find_by_name 'Pityomyrmecini'
-      pityomyrmecini.subfamily.should == aneuretinae
-      pityomyrmecini.should be_fossil
+      aneuretini.should_not be_fossil
+      aneuretini.taxonomic_history.should == '<p>Aneuretini history</p>'
+
+      taxon = Tribe.find_by_name 'Pityomyrmecini'
+      taxon.subfamily.should == aneuretinae
+      taxon.should be_fossil
+      taxon.taxonomic_history.should == '<p>Pityomyrmecini history</p>'
+
       taxon = Tribe.find_by_name 'Miomyrmecini'
       taxon.subfamily.should == aneuretinae
       taxon.incertae_sedis_in.should == 'subfamily'
@@ -86,6 +97,12 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
       taxon = Genus.find_by_name 'Myrmeciites'
       taxon.subfamily.should == aneuretinae
       taxon.should be_fossil
+      taxon.should_not be_invalid
+
+      taxon = Genus.find_by_name 'Aneuretus'
+      taxon.subfamily.should == aneuretinae
+      taxon.tribe.should == aneuretini
+      taxon.should_not be_fossil
       taxon.should_not be_invalid
 
     end
@@ -137,14 +154,6 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 
 #<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><span
 #lang=EN-GB><o:p>&nbsp;</o:p></span></p>
-
-#<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
-#style='mso-bidi-font-weight:normal'><span lang=EN-GB>Tribe <span
-#style='color:red'>MYRMECIINI</span><o:p></o:p></span></b></p>
-
-#<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
-#style='mso-bidi-font-weight:normal'><span lang=EN-GB>Myrmeciidae</span></b><span
-#lang=EN-GB> Emery, 1877a: 71. Type-genus: <i style='mso-bidi-font-style:normal'>Myrmecia</i>.</span></p>
 
 #<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
 #style='mso-bidi-font-weight:normal'><span lang=EN-GB>Genus <i style='mso-bidi-font-style:

@@ -4,13 +4,7 @@ grammar Bolton::SubfamilyCatalogGrammar
   include Bolton::SubfamilyCatalogSubfamilyGrammar
 
   rule subfamily_catalog
-    family_section | subfamily_section | a_supersubfamily_header | tribe | genus | incertae_sedis_header | blank_line | other
-  end
-
-  rule a_supersubfamily_header
-    (bold span ('THE '|'EXTINCT') /.*/){#/.*?(SUBFAMILIES|SUBFAMILY).*/) {
-      {:type => :supersubfamily_header}
-    }
+    family_section | subfamily_section | genus | incertae_sedis_header | blank_line | other
   end
 
   rule genus
@@ -39,14 +33,6 @@ grammar Bolton::SubfamilyCatalogGrammar
   rule unavailable_genus
     (italic purple uppercase_word /.*/) {
       {:type => :genus, :name => uppercase_word.downcase.capitalize.strip, :status => 'unavailable'}
-    }
-  end
-
-  rule tribe
-    (bold span 'Tribe' close_tags fossil_flag? bold? red uppercase_word close_tags) {
-      value = {:type => :tribe, :name => uppercase_word.downcase.capitalize.strip}
-      value.merge! :fossil => true if fossil_flag.present?
-      value
     }
   end
 

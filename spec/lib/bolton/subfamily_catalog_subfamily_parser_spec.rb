@@ -25,6 +25,12 @@ describe Bolton::SubfamilyCatalog do
       }).should == {:type => :subfamily_header, :name => 'Myrmicinae'}
     end
 
+  it "should recognize a tribe header" do
+    @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>Tribe <span style='color:red'>MYRMECIINI</span><o:p></o:p></span></b></p>
+    }).should == {:type => :tribe_header, :name => 'Myrmeciini'}
+  end
+
     #it "should recognize an extinct genera incertae sedis header" do
       #@subfamily_catalog.parse(%{
   #<b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in Aneuretinae</span></b><span lang=EN-GB>: *<i>Burmomyrma, *Cananeuretus</i>. </span>
@@ -85,25 +91,25 @@ describe Bolton::SubfamilyCatalog do
       it "should recognize a genera incertae sedis list" do
         @subfamily_catalog.parse(%{
     <b><span lang=EN-GB>Genera <i>incertae sedis</i> in Aneuretinae</span></b><span lang=EN-GB>: <i>Burmomyrma, *Cananeuretus</i>. </span>
-        }).should == {:type => :genera_incertae_sedis_list, :genera => [['Burmomyrma', nil], ['Cananeuretus', true]]}
+        }).should == {:type => :genera_list, :incertae_sedis => true, :genera => [['Burmomyrma', nil], ['Cananeuretus', true]]}
       end
 
       it "should recognize an extinct genera incertae sedis list" do
         @subfamily_catalog.parse(%{
     <b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in Aneuretinae</span></b><span lang=EN-GB>: *<i>Burmomyrma, *Cananeuretus</i>. </span>
-        }).should == {:type => :genera_incertae_sedis_list, :genera => [['Burmomyrma', true], ['Cananeuretus', true]]}
+        }).should == {:type => :genera_list, :incertae_sedis => true, :genera => [['Burmomyrma', true], ['Cananeuretus', true]]}
       end
 
       it "should recognize an extant genera incertae sedis list" do
         @subfamily_catalog.parse(%{
     <b><span lang=EN-GB>Genera (extant) <i>incertae sedis</i> in Aneuretinae</span></b><span lang=EN-GB>: <i>Burmomyrma, Cananeuretus</i>. </span>
-        }).should == {:type => :genera_incertae_sedis_list, :genera => [['Burmomyrma', nil], ['Cananeuretus', nil]]}
+        }).should == {:type => :genera_list, :incertae_sedis => true, :genera => [['Burmomyrma', nil], ['Cananeuretus', nil]]}
       end
 
       it "should recognize a Hong 2002 genera incertae sedis list" do
         @subfamily_catalog.parse(%{
   <b><span lang=EN-GB>Hong (2002) genera (extinct) <i>incertae sedis</i> in Formicinae</span></b><span lang=EN-GB>: *<i>Curtipalpulus.</i> (unresolved junior homonym).</span></p>
-        }).should == {:type => :genera_incertae_sedis_list, :genera => [['Curtipalpulus', true]]}
+        }).should == {:type => :genera_list, :incertae_sedis => true, :genera => [['Curtipalpulus', true]]}
       end
 
     end
@@ -126,12 +132,6 @@ describe Bolton::SubfamilyCatalog do
     #@subfamily_catalog.parse(%{
 #<b><span lang=EN-GB>Subfamily *<span style='color:red'>ARMANIINAE</span> <o:p></o:p></span></b></p>
     #}).should == {:type => :subfamily, :name => 'Armaniinae', :fossil => true}
-  #end
-
-  #it "should recognize the beginning of a tribe" do
-    #@subfamily_catalog.parse(%{
-#<b><span lang=EN-GB>Tribe <span style='color:red'>MYRMECIINI</span><o:p></o:p></span></b></p>
-    #}).should == {:type => :tribe, :name => 'Myrmeciini'}
   #end
 
   #it "should recognize the beginning of a fossil tribe" do

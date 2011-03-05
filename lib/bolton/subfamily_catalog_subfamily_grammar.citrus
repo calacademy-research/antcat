@@ -3,8 +3,8 @@ grammar Bolton::SubfamilyCatalogSubfamilyGrammar
 
   rule subfamily_section
     subfamily_centered_header | subfamily_header | 
-    tribes_list | genera_incertae_sedis_list | collective_group_name_list |
-    genera_incertae_sedis_header
+    tribes_list | genera_list | collective_group_name_list |
+    tribe_header | genera_incertae_sedis_header
   end
 
   rule subfamily_centered_header
@@ -33,13 +33,14 @@ grammar Bolton::SubfamilyCatalogSubfamilyGrammar
     } 
   end
 
-  rule genera_incertae_sedis_list
-    (bold span ('Hong (2002) genera '|'Genera '|'Genus ') extinct_or_extant:('(extinct) '|'(extant) ')? incertae_sedis_in capitalized_word close_tags ': ' '*'? italic text /.*/) {
-      value = {:type => :genera_incertae_sedis_list}
+  rule genera_list
+    (bold span ('Hong (2002) genera '|'Genera '|'Genus ') extinct_or_extant:('(extinct) '|'(extant) ')? (incertae_sedis_in | 'of ') capitalized_word close_tags ': ' '*'? italic text /.*/) {
+      value = {:type => :genera_list}
       value[:genera] = text.split(', ').map do |genus|
         fossil = (genus.gsub!(/\*/, '') || extinct_or_extant.to_s =~ /extinct/) ? true : nil
         [genus, fossil]
       end
+      value.merge! :incertae_sedis => true if incertae_sedis_in.present?
       value
     } 
   end
@@ -55,6 +56,13 @@ grammar Bolton::SubfamilyCatalogSubfamilyGrammar
     } 
   end
 
+  rule tribe_header
+    (bold span 'Tribe' close_tags fossil_flag? bold? red uppercase_word close_tags) {
+      value = {:type => :tribe_header, :name => uppercase_word.downcase.capitalize.strip}
+      value.merge! :fossil => true if fossil_flag.present?
+      value
+    }
+  end
 
   rule genera_incertae_sedis_header
     'asdf'
