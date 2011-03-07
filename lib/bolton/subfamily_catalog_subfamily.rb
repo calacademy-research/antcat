@@ -20,6 +20,8 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     parse_collective_group_names_list subfamily
 
     parse_tribes subfamily
+
+    parse_genera_incertae_sedis
   end
 
   def parse_tribes_lists subfamily
@@ -78,7 +80,10 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     parse_genus while @type == :genus
   end
 
-    #Genus.create! attributes
-  #end
+  def parse_genera_incertae_sedis
+    return unless @type == :genera_incertae_sedis_header
+    parse_next_line
+    parse_genus while @type == :genus
+  end
 
 end

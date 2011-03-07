@@ -69,6 +69,22 @@ describe Bolton::SubfamilyCatalog do
 
     end
 
+    describe "Genera incertae sedis header" do
+
+      it "should be recognized" do
+        @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>Genera <i>incertae sedis</i> in <span style='color:red'>ANEURETINAE</span><o:p></o:p></span></b>
+        }).should == {:type => :genera_incertae_sedis_header}
+      end
+
+      it "should be recognized when there's only one genus" do
+        @subfamily_catalog.parse(%{
+    <b><span lang=EN-GB>Genus <i>incertae sedis</i> in <span style='color:red'>ANEURETINAE</span><o:p></o:p></span></b>
+        }).should == {:type => :genera_incertae_sedis_header}
+      end
+
+    end
+
   end
 
   describe "Lists" do

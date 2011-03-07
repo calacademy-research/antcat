@@ -4,7 +4,7 @@ grammar Bolton::SubfamilyCatalogGrammar
   include Bolton::SubfamilyCatalogSubfamilyGrammar
 
   rule subfamily_catalog
-    a_supersubfamily_section | family_section | subfamily_section | genus | incertae_sedis_header | blank_line | other
+    a_supersubfamily_section | family_section | subfamily_section | genus | blank_line | other
   end
 
   # Citrus 2.3.7 doesn't like rules beginning with 'super'
@@ -49,22 +49,6 @@ grammar Bolton::SubfamilyCatalogGrammar
   rule unavailable_genus
     (italic purple uppercase_word /.*/) {
       {:type => :genus, :name => uppercase_word.downcase.capitalize.strip, :status => 'unavailable'}
-    }
-  end
-
-  rule incertae_sedis_header
-    incertae_sedis_in_tribe_header | incertae_sedis_in_subfamily_header
-  end
-
-  rule incertae_sedis_in_tribe_header
-    (bold span 'Genera ' incertae_sedis_in red 'FORMICIDAE' close_tags) {
-      {:type => :incertae_sedis_in_family_header}
-    }
-  end
-
-  rule incertae_sedis_in_subfamily_header
-    (bold span ('Genus ' | 'Genera of Hong (2002), ' | 'Genera ') '(extinct) '? italic 'incertae sedis' tag_end ' in ' red uppercase_word close_tags) {
-      {:type => :incertae_sedis_in_subfamily_header}
     }
   end
 

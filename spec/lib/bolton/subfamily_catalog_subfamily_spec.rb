@@ -51,6 +51,12 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 
 <p><b><span lang=EN-GB>Tribe <span style='color:red'>PITYOMYRMECINI</span><o:p></o:p></span></b></p>
 <p>Pityomyrmecini history</p>
+
+<p><b><span lang=EN-GB>Genera <i>incertae sedis</i> in <span style='color:red'>ANEURETINAE</span><o:p></o:p></span></b></p>
+<p><span lang=EN-GB><o:p>&nbsp;</o:p></span></p>
+
+<p><b><span lang=EN-GB>Genus *<i><span style='color:red'>BURMOMYRMA</span></i> <o:p></o:p></span></b></p>
+<p>Burmomyrma history</p>
       }
 
       aneuretinae = Subfamily.find_by_name 'Aneuretinae'
@@ -75,6 +81,7 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
       taxon.should be_fossil
       taxon.incertae_sedis_in.should == 'subfamily'
       taxon.should_not be_invalid
+      taxon.taxonomic_history.should == '<p>Burmomyrma history</p>'
 
       taxon = Genus.find_by_name 'Cananeuretus'
       taxon.subfamily.should == aneuretinae
