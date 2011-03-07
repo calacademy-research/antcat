@@ -4,7 +4,23 @@ grammar Bolton::SubfamilyCatalogGrammar
   include Bolton::SubfamilyCatalogSubfamilyGrammar
 
   rule subfamily_catalog
-    family_section | subfamily_section | genus | incertae_sedis_header | blank_line | other
+    a_supersubfamily_section | family_section | subfamily_section | genus | incertae_sedis_header | blank_line | other
+  end
+
+  # Citrus 2.3.7 doesn't like rules beginning with 'super'
+  rule a_supersubfamily_section
+    a_supersubfamily_header
+  end
+
+  rule a_supersubfamily_header
+    (bold span
+      (
+        ('THE ' uppercase_word ': ' ('SUBFAMILIES'|'SUBFAMILY') /.*/) |
+        ('EXTINCT SUBFAMILIES' /.*/)
+      )
+    ) {
+      {:type => :supersubfamily_header}
+    }
   end
 
   rule genus
