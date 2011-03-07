@@ -37,6 +37,32 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     while parse_subfamily; end
   end
 
+  private
+  def parse_genus attributes = {}
+    name = @parse_result[:name]
+    status = @parse_result[:status]
+    fossil = @parse_result[:fossil]
+    taxonomic_history = parse_taxonomic_history
+    genus = Genus.find_by_name name
+    if genus
+      attributes = {:status => status, :taxonomic_history => taxonomic_history}.merge(attributes)
+      check_status_change genus, attributes[:status]
+      raise "Genus #{name} fossil change from #{genus.fossil?} to #{fossil}" if fossil != genus.fossil
+      genus.update_attributes attributes
+    else
+      check_existence name, genus
+      Genus.create!({:name => name, :fossil => fossil, :status => status, :taxonomic_history => taxonomic_history}.merge(attributes))
+    end
+  end
+
+  def check_status_change genus, status
+    raise "Genus #{genus.name} status change from #{genus.status} to #{status}" if status != genus.status unless genus.name == 'Hypochira'
+  end
+
+  def check_existence name, genus
+    raise "Genus #{name} not found" unless genus || name == 'Syntaphus'
+  end
+
   def parse_taxonomic_history
     taxonomic_history = ''
     loop do

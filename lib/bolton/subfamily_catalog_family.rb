@@ -89,7 +89,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     expect :genera_incertae_sedis_in_family_header
     parse_next_line
     expect :genus
-    update_genus(:incertae_sedis_in => 'family')  while @type == :genus
+    parse_genus(:incertae_sedis_in => 'family')  while @type == :genus
   end
 
   def parse_genera_excluded_from_family
@@ -97,7 +97,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     parse_next_line
     skip :other
     expect :genus
-    update_genus(:status => 'excluded') while @type == :genus
+    parse_genus(:status => 'excluded') while @type == :genus
   end
 
   def parse_unavailable_family_group_names_in_family
@@ -110,32 +110,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     expect :genus_group_nomina_nuda_in_family_header
     parse_next_line
     expect :genus
-    update_genus(:status => 'nomen nudum') while @type == :genus
+    parse_genus(:status => 'nomen nudum') while @type == :genus
   end
 
-  private
-  def update_genus attributes
-    name = @parse_result[:name]
-    status = @parse_result[:status]
-    fossil = @parse_result[:fossil]
-    taxonomic_history = parse_taxonomic_history
-    genus = Genus.find_by_name name
-    if genus
-      attributes = {:status => status, :taxonomic_history => taxonomic_history}.merge(attributes)
-      check_status_change genus, attributes[:status]
-      raise "Genus #{name} fossil change from #{genus.fossil?} to #{fossil}" if fossil != genus.fossil
-      genus.update_attributes attributes
-    else
-      check_existence name, genus
-      Genus.create!({:name => name, :fossil => fossil, :status => status, :taxonomic_history => taxonomic_history}.merge(attributes))
-    end
-  end
-
-  def check_status_change genus, status
-    raise "Genus #{genus.name} status change from #{genus.status} to #{status}" if status != genus.status unless genus.name == 'Hypochira'
-  end
-
-  def check_existence name, genus
-    raise "Genus #{name} not found" unless genus || name == 'Syntaphus'
-  end
 end
