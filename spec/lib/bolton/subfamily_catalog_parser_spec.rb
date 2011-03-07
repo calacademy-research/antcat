@@ -71,16 +71,16 @@ describe Bolton::SubfamilyCatalog do
     }).should == {:type => :genus, :name => 'Ancylognathus', :status => 'unavailable'}
   end
 
-  #it 'should handle italics in weird place' do
-    #@subfamily_catalog.parse(%{
-#<b><span lang=EN-GB style='color:black'>Genus *</span><i><span lang=EN-GB style='color:red'>HAIDOMYRMODES</span></i><span lang=EN-GB><o:p></o:p></span></b>
-    #}).should == {:type => :genus, :name => 'Haidomyrmodes', :fossil => true}
-  #end
+  it "should handle it when the span is before the bold and there's a subfamily at the end" do
+    @subfamily_catalog.parse(%{
+<span lang=EN-GB>Genus *<b style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span style='color:red'>YPRESIOMYRMA</span></i></b> [Myrmeciinae]</span>
+    }).should == {:type => :genus, :name => 'Ypresiomyrma', :fossil => true, :status => 'valid'}
+  end
 
-  #it "should handle it when the span is before the bold and there's a subfamily at the end" do
-    #@subfamily_catalog.parse(%{
-#<span lang=EN-GB>Genus *<b style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span style='color:red'>YPRESIOMYRMA</span></i></b> [Myrmeciinae]</span>
-    #}).should == {:type => :genus, :name => 'Ypresiomyrma', :fossil => true}
-  #end
+  it 'should handle italics in weird place' do
+    @subfamily_catalog.parse(%{
+<b><span lang=EN-GB style='color:black'>Genus *</span><i><span lang=EN-GB style='color:red'>HAIDOMYRMODES</span></i><span lang=EN-GB><o:p></o:p></span></b>
+    }).should == {:type => :genus, :name => 'Haidomyrmodes', :fossil => true, :status => 'valid'}
+  end
 
 end

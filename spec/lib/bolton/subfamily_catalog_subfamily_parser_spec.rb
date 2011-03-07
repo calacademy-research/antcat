@@ -25,17 +25,33 @@ describe Bolton::SubfamilyCatalog do
       }).should == {:type => :subfamily_header, :name => 'Myrmicinae'}
     end
 
-  it "should recognize a tribe header" do
-    @subfamily_catalog.parse(%{
-<b><span lang=EN-GB>Tribe <span style='color:red'>MYRMECIINI</span><o:p></o:p></span></b></p>
-    }).should == {:type => :tribe_header, :name => 'Myrmeciini'}
-  end
+    it "should recognize an extinct subfamily header" do
+      @subfamily_catalog.parse(%{
+  <b><span lang=EN-GB>Subfamily *<span style='color:red'>ARMANIINAE</span> <o:p></o:p></span></b></p>
+      }).should == {:type => :subfamily_header, :name => 'Armaniinae', :fossil => true}
+    end
 
-    #it "should recognize an extinct genera incertae sedis header" do
-      #@subfamily_catalog.parse(%{
-  #<b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in Aneuretinae</span></b><span lang=EN-GB>: *<i>Burmomyrma, *Cananeuretus</i>. </span>
-      #}).should == {:type => :extinct_genera_incertae_sedis_in_subfamily_list, :genera => ['Burmomyrma', 'Cananeuretus']}
-    #end
+    describe "Tribe header" do
+
+      it "should be recognized" do
+        @subfamily_catalog.parse(%{
+    <b><span lang=EN-GB>Tribe <span style='color:red'>MYRMECIINI</span><o:p></o:p></span></b></p>
+        }).should == {:type => :tribe_header, :name => 'Myrmeciini'}
+      end
+
+      it "should be recognized when it's extinct" do
+        @subfamily_catalog.parse(%{
+    <b><span lang=EN-GB>Tribe *<span style='color:red'>MIOMYRMECINI</span><o:p></o:p></span></b>
+        }).should == {:type => :tribe_header, :name => 'Miomyrmecini', :fossil => true}
+      end
+
+      it "should be recognized when the asterisk is in a different place" do
+        @subfamily_catalog.parse(%{
+    <b><span lang=EN-GB>Tribe</span></b><span lang=EN-GB> *<b style='mso-bidi-font-weight:normal'><span style='color:red'>PITYOMYRMECINI</span></b></span>
+        }).should == {:type => :tribe_header, :name => 'Pityomyrmecini', :fossil => true}
+      end
+
+    end
 
     describe "Genera header" do
 
@@ -125,59 +141,5 @@ describe Bolton::SubfamilyCatalog do
     end
 
   end
-
-  #it "should recognize a collective group name" do
-    #@subfamily_catalog.parse(%{
-#<b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in Aneuretinae</span></b><span lang=EN-GB>: *<i>Burmomyrma, *Cananeuretus</i>. </span>
-    #}).should == {:type => :extinct_genera_incertae_sedis_in_subfamily_list, :genera => ['Burmomyrma', 'Cananeuretus']}
-  #end
-
-  #it "should recognize an extinct subfamily line" do
-    #@subfamily_catalog.parse(%{
-#<b><span lang=EN-GB>Subfamily *<span style='color:red'>ARMANIINAE</span> <o:p></o:p></span></b></p>
-    #}).should == {:type => :subfamily, :name => 'Armaniinae', :fossil => true}
-  #end
-
-  #it "should recognize the beginning of a fossil tribe" do
-    #@subfamily_catalog.parse(%{
-#<b><span lang=EN-GB>Tribe *<span style='color:red'>MIOMYRMECINI</span><o:p></o:p></span></b>
-    #}).should == {:type => :tribe, :name => 'Miomyrmecini', :fossil => true}
-  #end
-
-  #it "should recognize this tribe" do
-    #@subfamily_catalog.parse(%{
-#<b><span lang=EN-GB>Tribe</span></b><span lang=EN-GB> *<b style='mso-bidi-font-weight:normal'><span style='color:red'>PITYOMYRMECINI</span></b></span>
-    #}).should == {:type => :tribe, :name => 'Pityomyrmecini', :fossil => true}
-  #end
-
-  #it "should recognize an incertae sedis header in tribe" do
-    #@subfamily_catalog.parse(%{
-#<b><span lang=EN-GB>Genus <i>incertae sedis</i> in <span style='color:red'>Stenammini</i>
-    #}).should == {:type => :incertae_sedis_in_tribe_header}
-  #end
-
-  #it "should recognize Hong's incertae sedises" do
-    #@subfamily_catalog.parse(%{
-#<b><span lang=EN-GB>Genera of Hong (2002), <i>incertae sedis</i> in <span style='color:red'>MYRMICINAE</span><o:p></o:p></span></b>
-    #}).should == {:type => :incertae_sedis_in_subfamily_header}
-  #end
-
-  #it "should recognize incertae sedis in subfamily" do
-    #@subfamily_catalog.parse(%{
-#<b><span lang=EN-GB>Genera <i>incertae sedis</i> in <span style='color:red'>MYRMICINAE</span><o:p></o:p></span></b>
-    #}).should == {:type => :incertae_sedis_in_subfamily_header}
-  #end
-
-  #it "should recognize extinct incertae sedis in subfamily" do
-    #@subfamily_catalog.parse(%{
-#<b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in <span style='color:red'>DOLICHODERINAE<o:p></o:p></span></span></b>
-    #}).should == {:type => :incertae_sedis_in_subfamily_header}
-  #end
-
-  #it "should handle it when the span is before the bold and there's a subfamily at the end" do
-    #@subfamily_catalog.parse(%{
-#<span lang=EN-GB>Genus *<b style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span style='color:red'>YPRESIOMYRMA</span></i></b> [Myrmeciinae]</span>
-    #}).should == {:type => :genus, :name => 'Ypresiomyrma', :fossil => true}
-  #end
 
 end

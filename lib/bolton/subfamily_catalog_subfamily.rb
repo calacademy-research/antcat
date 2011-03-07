@@ -67,22 +67,6 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     tribe.update_attributes :taxonomic_history => taxonomic_history
 
     parse_genera_lists :tribe, :subfamily => subfamily, :tribe => tribe
-  end
-
-  #def parse_incertae_sedis_in_subfamily
-    #return unless @type == :incertae_sedis_in_subfamily_header
-    #@incertae_sedis_in_subfamily = true
-    #parse_next_line
-  #end
-
-  #def parse_genus
-    #return unless @type == :genus
-
-    #name = @parse_result[:name]
-    #fossil = @parse_result[:fossil]
-    #taxonomic_history = parse_taxonomic_history
-
-    #raise "Genus #{name} already exists" if Genus.find_by_name name
 
     skip :other
     parse_genera
