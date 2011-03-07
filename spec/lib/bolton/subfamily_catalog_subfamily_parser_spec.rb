@@ -122,7 +122,23 @@ describe Bolton::SubfamilyCatalog do
 
     end
 
-    describe "Genus incertae sedis lists" do
+    describe "Genera lists" do
+
+      it "should recognize a genera list" do
+        @subfamily_catalog.parse(%{
+    <b><span lang=EN-GB>Genera of Aneuretinae</span></b><span lang=EN-GB>: <i>Burmomyrma, *Cananeuretus</i>. </span>
+        }).should == {:type => :genera_list, :genera => [['Burmomyrma', nil], ['Cananeuretus', true]]}
+      end
+
+      it "should recognize a genera list with just one extinct genus" do
+        @subfamily_catalog.parse(%{
+    <b><span lang=EN-GB>Genus</span></b><span lang=EN-GB>: *<i>Pityomyrmex</i>.</span>
+        }).should == {:type => :genera_list, :genera => [['Pityomyrmex', true]]}
+      end
+
+    end
+
+    describe "Genera incertae sedis lists" do
 
       it "should recognize a genera incertae sedis list" do
         @subfamily_catalog.parse(%{

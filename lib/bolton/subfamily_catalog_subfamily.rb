@@ -19,9 +19,12 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     parse_genera_lists :subfamily, :subfamily => subfamily
     parse_collective_group_names_list subfamily
 
+    skip :other
+
     parse_tribes subfamily
 
     parse_genera_incertae_sedis
+    true
   end
 
   def parse_tribes_lists subfamily
@@ -75,8 +78,8 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
   end
 
   def parse_genera
-    return unless @type == :genera_header
-    parse_next_line
+    return unless @type == :genera_header || @type == :genus
+    parse_next_line if @type == :genera_header
     parse_genus while @type == :genus
   end
 

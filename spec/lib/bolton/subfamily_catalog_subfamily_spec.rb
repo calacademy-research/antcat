@@ -18,6 +18,7 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
     it "should parse a subfamily" do
       @subfamily_catalog.should_receive(:parse_family).and_return {
         Factory :subfamily, :name => 'Aneuretinae'
+        Factory :subfamily, :name => 'Dolichoderinae'
       }
 
       @subfamily_catalog.import_html make_contents %{
@@ -38,6 +39,9 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 
 <p><b><span lang=EN-GB>Collective group name in Myrmeciinae</span></b><span lang=EN-GB>: *<i>Myrmeciites</i>.</span></p>
 
+<p>References</p>
+<p>a references</p>
+
 <p><b><span lang=EN-GB>Tribe <span style='color:red'>ANEURETINI</span><o:p></o:p></span></b></p>
 <p>Aneuretini history</p>
 
@@ -57,6 +61,12 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 
 <p><b><span lang=EN-GB>Genus *<i><span style='color:red'>BURMOMYRMA</span></i> <o:p></o:p></span></b></p>
 <p>Burmomyrma history</p>
+
+<p><b><span lang=EN-GB>SUBFAMILY <span style='color:red'>DOLICHODERINAE</span><o:p></o:p></span></b></p>
+<p><b><span lang=EN-GB><o:p>&nbsp;</o:p></span></b></p>
+<p><b><span lang=EN-GB><o:p>&nbsp;</o:p></span></b></p>
+
+<p><b><span lang=EN-GB>Subfamily <span style='color:red'>DOLICHODERINAE</span> <o:p></o:p></span></b></p>
       }
 
       aneuretinae = Subfamily.find_by_name 'Aneuretinae'
@@ -119,6 +129,28 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
       taxon.should_not be_invalid
       taxon.taxonomic_history.should == '<p>Aneuretus history</p>'
 
+      dolichoderinae = Subfamily.find_by_name 'Dolichoderinae'
+      dolichoderinae.should_not be_invalid
+
+    end
+
+    it "should allow the genera header to be optional" do
+      @subfamily_catalog.should_receive(:parse_family).and_return {
+        Factory :subfamily, :name => 'Aneuretinae'
+        Factory :subfamily, :name => 'Dolichoderinae'
+      }
+
+      @subfamily_catalog.import_html make_contents %{
+<p><b><span lang=EN-GB>SUBFAMILY <span style='color:red'>ANEURETINAE</span><o:p></o:p></span></b></p>
+<p><b><span lang=EN-GB>Subfamily <span style='color:red'>ANEURETINAE</span> <o:p></o:p></span></b></p>
+<p><b><span lang=EN-GB>Tribes of Aneuretinae</span></b><span lang=EN-GB>: Aneuretini, *Pityomyrmecini.</span></p>
+<p><b><span lang=EN-GB>Tribe <span style='color:red'>ANEURETINI</span><o:p></o:p></span></b></p>
+<p><b><span lang=EN-GB>Genus of Aneuretini</span></b><span lang=EN-GB>: <i>Aneuretus</i>.</span></p>
+<p><b><span lang=EN-GB>Genus <i><span style='color:red'>ANEURETUS</span></i> <o:p></o:p></span></b></p>
+      }
+
+      aneuretus = Genus.find_by_name "Aneuretus"
+      aneuretus.tribe.name.should == 'Aneuretini'
     end
   #end
 

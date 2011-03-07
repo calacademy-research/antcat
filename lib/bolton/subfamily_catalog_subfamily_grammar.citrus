@@ -35,6 +35,10 @@ grammar Bolton::SubfamilyCatalogSubfamilyGrammar
   end
 
   rule genera_list
+    genera_list_with_multiple_genera | genera_list_with_single_genera
+  end
+
+  rule genera_list_with_multiple_genera
     (bold span ('Hong (2002) genera '|'Genera '|'Genus ') extinct_or_extant:('(extinct) '|'(extant) ')? (incertae_sedis_in | 'of ') capitalized_word close_tags ': ' '*'? italic text /.*/) {
       value = {:type => :genera_list}
       value[:genera] = text.split(', ').map do |genus|
@@ -43,6 +47,12 @@ grammar Bolton::SubfamilyCatalogSubfamilyGrammar
       end
       value.merge! :incertae_sedis => true if incertae_sedis_in.present?
       value
+    } 
+  end
+
+  rule genera_list_with_single_genera
+    (bold span 'Genus' close_tags ': *' italic  capitalized_word close_tags '.' close_tags) {
+      {:type => :genera_list, :genera => [[capitalized_word.value, true]]}
     } 
   end
 
