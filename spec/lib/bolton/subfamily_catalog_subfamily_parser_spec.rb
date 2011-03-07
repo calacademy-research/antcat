@@ -37,17 +37,21 @@ describe Bolton::SubfamilyCatalog do
       #}).should == {:type => :extinct_genera_incertae_sedis_in_subfamily_list, :genera => ['Burmomyrma', 'Cananeuretus']}
     #end
 
-    #it "should recognize a genera incertae sedis header" do
-      #@subfamily_catalog.parse(%{
-  #<b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in Aneuretinae</span></b><span lang=EN-GB>: *<i>Burmomyrma, *Cananeuretus</i>. </span>
-      #}).should == {:type => :extinct_genera_incertae_sedis_in_subfamily_list, :genera => ['Burmomyrma', 'Cananeuretus']}
-    #end
+    describe "Genera header" do
 
-    #it "should recognize a Hong 2002 genera incertae sedis header" do
-      #@subfamily_catalog.parse(%{
-  #<b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in Aneuretinae</span></b><span lang=EN-GB>: *<i>Burmomyrma, *Cananeuretus</i>. </span>
-      #}).should == {:type => :extinct_genera_incertae_sedis_in_subfamily_list, :genera => ['Burmomyrma', 'Cananeuretus']}
-    #end
+      it "should be recognized" do
+        @subfamily_catalog.parse(%{
+    <b><span lang=EN-GB>Genera of <span style='color:red'>Aneuretini</span><o:p></o:p></span></b>
+        }).should == {:type => :genera_header}
+      end
+
+      it "should be recognized when there's only one genus" do
+        @subfamily_catalog.parse(%{
+    <b><span lang=EN-GB>Genus of <span style='color:red'>Dolichoderini</span><o:p></o:p></span></b>
+        }).should == {:type => :genera_header}
+      end
+
+    end
 
   end
 

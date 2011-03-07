@@ -43,6 +43,12 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 
 <p><b><span lang=EN-GB>Genus (extant) of Aneuretini</span></b><span lang=EN-GB>: <i>Aneuretus</i>.</span></p>
 
+<p><b><span lang=EN-GB>Genera of <span style='color:red'>Aneuretini</span><o:p></o:p></span></b></p>
+<p><span lang=EN-GB><o:p>&nbsp;</o:p></span></p>
+
+<p><b><span lang=EN-GB>Genus <i><span style='color:red'>ANEURETUS</span></i> <o:p></o:p></span></b></p>
+<p>Aneuretus history</p>
+
 <p><b><span lang=EN-GB>Tribe <span style='color:red'>PITYOMYRMECINI</span><o:p></o:p></span></b></p>
 <p>Pityomyrmecini history</p>
       }
@@ -104,6 +110,7 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
       taxon.tribe.should == aneuretini
       taxon.should_not be_fossil
       taxon.should_not be_invalid
+      taxon.taxonomic_history.should == '<p>Aneuretus history</p>'
 
     end
   #end

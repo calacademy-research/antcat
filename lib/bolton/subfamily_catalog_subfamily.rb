@@ -84,18 +84,15 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
 
     #raise "Genus #{name} already exists" if Genus.find_by_name name
 
-    #attributes = {:name => name, :subfamily => @current_subfamily, :tribe => @current_tribe, :fossil => fossil, :taxonomic_history => taxonomic_history}
+    skip :other
+    parse_genera
+  end
 
-    #if @incertae_sedis_in_family
-      #attributes[:incertae_sedis_in] = 'family'
-    #elsif @incertae_sedis_in_subfamily
-      #raise "Genus #{name} is incertae sedis in subfamily with no subfamily" unless @current_subfamily
-      #attributes[:incertae_sedis_in] = 'subfamily'
-    #elsif !@current_subfamily
-      #raise "Genus #{name} has no subfamily"
-    #elsif !@current_tribe
-      #raise "Genus #{name} has no tribe"
-    #end
+  def parse_genera
+    return unless @type == :genera_header
+    parse_next_line
+    parse_genus while @type == :genus
+  end
 
     #Genus.create! attributes
   #end
