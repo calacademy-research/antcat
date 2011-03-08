@@ -39,7 +39,11 @@ grammar Bolton::SubfamilyCatalogSubfamilyGrammar
   end
 
   rule genera_list_with_multiple_genera
-    (bold span ('Hong (2002) genera '|'Genera '|'Genus ') extinct_or_extant:('(extinct) '|'(extant) ')? (incertae_sedis_in | 'of ') capitalized_word close_tags ': ' '*'? italic text /.*/) {
+    (
+      (bold span ('Hong (2002) genera '|'Genera '|'Genus ') extinct_or_extant:('(extinct) '|'(extant) ')? (incertae_sedis_in | 'of ') capitalized_word close_tags ': ' '*'? italic text /.*/) |
+      (bold span 'Genera of ' capitalized_word ':' close_tags italic span? text /.*/) |
+      (bold span 'Genera of ' black capitalized_word close_tags ':' close_tags italic text /.*/) 
+    ) {
       value = {:type => :genera_list}
       value[:genera] = text.split(', ').map do |genus|
         fossil = (genus.gsub!(/\*/, '') || extinct_or_extant.to_s =~ /extinct/) ? true : nil

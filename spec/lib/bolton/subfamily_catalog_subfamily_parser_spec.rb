@@ -126,14 +126,26 @@ describe Bolton::SubfamilyCatalog do
 
       it "should recognize a genera list" do
         @subfamily_catalog.parse(%{
-    <b><span lang=EN-GB>Genera of Aneuretinae</span></b><span lang=EN-GB>: <i>Burmomyrma, *Cananeuretus</i>. </span>
+<b><span lang=EN-GB>Genera of Aneuretinae</span></b><span lang=EN-GB>: <i>Burmomyrma, *Cananeuretus</i>. </span>
         }).should == {:type => :genera_list, :genera => [['Burmomyrma', nil], ['Cananeuretus', true]]}
+      end
+
+      it "should be recognized with colon inside the first span" do
+        @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>Genera of Leptomyrmecini: </span></b><i><span lang=EN-GB>Anillidris</i>.
+        }).should == {:type => :genera_list, :genera => [['Anillidris', nil]]}
       end
 
       it "should recognize a genera list with just one extinct genus" do
         @subfamily_catalog.parse(%{
     <b><span lang=EN-GB>Genus</span></b><span lang=EN-GB>: *<i>Pityomyrmex</i>.</span>
         }).should == {:type => :genera_list, :genera => [['Pityomyrmex', true]]}
+      end
+
+      it "should be recognized with a black parent taxon" do
+        @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>Genera of <span style='color:black'>Bothriomyrmecini</span></span></b><span lang=EN-GB>: <i>Arnoldius</i>.</span>
+        }).should == {:type => :genera_list, :genera => [['Arnoldius', nil]]}
       end
 
     end
