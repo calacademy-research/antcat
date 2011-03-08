@@ -200,6 +200,12 @@ describe Bolton::SubfamilyCatalog do
         }).should == {:type => :genera_list, :incertae_sedis => true, :genera => [['Curtipalpulus', true]]}
       end
 
+      it "should recognize a Hong 2002 genera incertae sedis list" do
+        @subfamily_catalog.parse(%{
+<b><span lang="EN-GB">Genera (extinct<i>) incertae sedis</i> in Myrmeciinae</span></b><span lang="EN-GB">: *<i>Archimyrmex</i>.</span>
+        }).should == {:type => :genera_list, :incertae_sedis => true, :genera => [['Archimyrmex', true]]}
+      end
+
 
     end
 
