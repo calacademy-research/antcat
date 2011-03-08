@@ -80,7 +80,7 @@ grammar CommonGrammar
   end
 
   rule close_tags
-    (tag_end | space)+
+    (tag_end | space)*
   end
 
   rule word

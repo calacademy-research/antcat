@@ -136,6 +136,12 @@ describe Bolton::SubfamilyCatalog do
         }).should == {:type => :genera_list, :genera => [['Anillidris', nil]]}
       end
 
+      it "should recognize a genera list without a period" do
+        @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>Genus</span></b><span lang=EN-GB>: <i>Notostigma</i></span>
+        }).should == {:type => :genera_list, :genera => [['Notostigma', nil]]}
+      end
+
       it "should recognize a genera list with just one extinct genus" do
         @subfamily_catalog.parse(%{
     <b><span lang=EN-GB>Genus</span></b><span lang=EN-GB>: *<i>Pityomyrmex</i>.</span>
@@ -147,6 +153,7 @@ describe Bolton::SubfamilyCatalog do
 <b><span lang=EN-GB>Genera of <span style='color:black'>Bothriomyrmecini</span></span></b><span lang=EN-GB>: <i>Arnoldius</i>.</span>
         }).should == {:type => :genera_list, :genera => [['Arnoldius', nil]]}
       end
+
 
     end
 
@@ -164,6 +171,12 @@ describe Bolton::SubfamilyCatalog do
         }).should == {:type => :genera_list, :incertae_sedis => true, :genera => [['Burmomyrma', true], ['Cananeuretus', true]]}
       end
 
+      it "should recognize an extinct genera incertae sedis list" do
+        @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>Genus <i>incertae sedis</i> in Gesomyrmecini</span></b><span lang=EN-GB>: *<i>Prodimorphomyrmex</i>.</span></p>
+        }).should == {:type => :genera_list, :incertae_sedis => true, :genera => [['Prodimorphomyrmex', true]]}
+      end
+
       it "should recognize an extant genera incertae sedis list" do
         @subfamily_catalog.parse(%{
     <b><span lang=EN-GB>Genera (extant) <i>incertae sedis</i> in Aneuretinae</span></b><span lang=EN-GB>: <i>Burmomyrma, Cananeuretus</i>. </span>
@@ -175,6 +188,7 @@ describe Bolton::SubfamilyCatalog do
   <b><span lang=EN-GB>Hong (2002) genera (extinct) <i>incertae sedis</i> in Formicinae</span></b><span lang=EN-GB>: *<i>Curtipalpulus.</i> (unresolved junior homonym).</span></p>
         }).should == {:type => :genera_list, :incertae_sedis => true, :genera => [['Curtipalpulus', true]]}
       end
+
 
     end
 
