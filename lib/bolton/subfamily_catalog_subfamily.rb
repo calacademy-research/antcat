@@ -56,7 +56,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     Progress.log 'parse_collective_group_names'
     return unless @type == :collective_group_name_list
     @parse_result[:names].each do |name, fossil|
-      Genus.create! :name => name, :subfamily => subfamily, :fossil => fossil, :status => 'valid'
+      Genus.create! :name => name, :subfamily => subfamily, :fossil => fossil, :status => 'unidentifiable'
     end
     parse_next_line
   end
