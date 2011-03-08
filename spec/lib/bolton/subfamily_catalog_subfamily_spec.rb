@@ -166,6 +166,31 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
       aneuretus = Genus.find_by_name "Aneuretus"
       aneuretus.tribe.name.should == 'Aneuretini'
     end
+
+    it "should handle when a genus incertae sedis in subfamily also belongs to a tribe incertae sedis in subfamily (we're going to ignore the tribe" do
+      @subfamily_catalog.should_receive(:parse_family).and_return { Factory :subfamily, :name => 'Dolichoderinae' }
+      @subfamily_catalog.import_html make_contents %{
+<p><b><span lang=EN-GB>SUBFAMILY <span style='color:red'>DOLICHODERINAE</span><o:p></o:p></span></b></p>
+<p><b><span lang=EN-GB>Subfamily <span style='color:red'>DOLICHODERINAE</span> <o:p></o:p></span></b></p>
+<p><b><span lang=EN-GB>Tribes (extinct) <i>incertae sedis</i> in Dolichoderinae</span></b><span lang=EN-GB>: *Miomyrmecini, *Zherichiniini.</span></p>
+<p><b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in Dolichoderinae</span></b><span lang=EN-GB>: *<i>Miomyrmex</i>.</span></p>
+<p><b><span lang=EN-GB>Tribe *<span style='color:red'>MIOMYRMECINI</span><o:p></o:p></span></b></p>
+<p><b><span lang=EN-GB>Genus</span></b><span lang=EN-GB>: *<i>Miomyrmex</i> (see under: Genera <i>incertae sedis</i> in Dolichoderinae, below).</span></p>
+
+<p><b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in <span style='color:red'>DOLICHODERINAE<o:p></o:p></span></span></b></p>
+<p><b><span lang=EN-GB>Genus *<i><span style='color:red'>MIOMYRMEX</span></i> <o:p></o:p></span></b></p>
+<p>Miomyrmex history</p>
+      }
+      miomyrmecini = Tribe.find_by_name 'Miomyrmecini'
+      miomyrmecini.should_not be_nil
+      miomyrmecini.incertae_sedis_in.should == 'subfamily'
+
+      miomyrmex = Genus.find_by_name 'Miomyrmex'
+      miomyrmex.should_not be_nil
+      miomyrmex.incertae_sedis_in.should == 'subfamily'
+      miomyrmex.tribe.should be_nil
+
+    end
   #end
 
 
