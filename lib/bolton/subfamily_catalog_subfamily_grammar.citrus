@@ -23,7 +23,10 @@ grammar Bolton::SubfamilyCatalogSubfamilyGrammar
   end
 
   rule tribes_list
-    (bold span 'Tribe' 's'? ' ' ('(extinct) '|'(extant) ')?  (incertae_sedis_in | 'of ') capitalized_word close_tags ': ' text /.*/) {
+    (
+      (span 'Tribes of ' capitalized_word ': ' text /.*/) |
+      (bold span 'Tribe' 's'? ' ' ('(extinct) '|'(extant) ')?  (incertae_sedis_in | 'of ') capitalized_word close_tags ': ' text /.*/)
+    ) {
       value = {:type => :tribes_list}
       value[:tribes] = text.split(', ').map do |tribe|
         fossil = tribe.gsub!(/\*/, '') && true

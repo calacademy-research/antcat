@@ -120,6 +120,12 @@ describe Bolton::SubfamilyCatalog do
         }).should == {:type => :tribes_list, :tribes => [['Miomyrmecini', true], ['Zherichiniini', true]], :incertae_sedis => true}
       end
 
+      it "should recognize a tribes list that doesn't start out bold" do
+        @subfamily_catalog.parse(%{
+<span lang=EN-GB>Tribes of Myrmeciinae: Myrmeciini, Prionomyrmecini.</span>
+        }).should == {:type => :tribes_list, :tribes => [['Myrmeciini', nil], ['Prionomyrmecini', nil]]}
+      end
+
     end
 
     describe "Genera lists" do

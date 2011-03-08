@@ -20,9 +20,12 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
   def import
     Taxon.delete_all
 
-    parse_family
-    parse_supersubfamilies 
-
+    begin
+      parse_family
+      parse_supersubfamilies 
+    rescue Exception => e
+      Progress.error e.message
+    end
     super
     Progress.puts "#{Subfamily.count} subfamilies, #{Tribe.count} tribes, #{Genus.count} genera, #{Subgenus.count} subgenera, #{Species.count} species"
   end
