@@ -2,6 +2,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
   private
 
   def parse_subfamily
+    Progress.log 'parse_subfamily'
     return unless @type == :subfamily_centered_header
     parse_next_line
     expect :subfamily_header
@@ -28,6 +29,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
   end
 
   def parse_tribes_lists subfamily
+    Progress.log 'parse_tribes_lists'
     while @type == :tribes_list
       @parse_result[:tribes].each do |tribe, fossil|
         attributes = {:name => tribe, :subfamily => subfamily, :fossil => fossil, :status => 'valid'}
@@ -39,6 +41,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
   end
 
   def parse_genera_lists parent_rank, parent_attributes
+    Progress.log 'parse_genera_lists'
     while @type == :genera_list
       @parse_result[:genera].each do |genus, fossil|
         attributes = {:name => genus, :fossil => fossil, :status => 'valid'}.merge parent_attributes
@@ -50,6 +53,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
   end
 
   def parse_collective_group_names_list subfamily
+    Progress.log 'parse_collective_group_names'
     return unless @type == :collective_group_name_list
     @parse_result[:names].each do |name, fossil|
       Genus.create! :name => name, :subfamily => subfamily, :fossil => fossil, :status => 'valid'
@@ -58,10 +62,12 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
   end
 
   def parse_tribes subfamily
+    Progress.log 'parse_tribes'
     parse_tribe(subfamily) while @type == :tribe_header
   end
 
   def parse_tribe subfamily
+    Progress.log 'parse_tribe'
     name = @parse_result[:name]
     fossil = @parse_result[:fossil]
     taxonomic_history = parse_taxonomic_history
@@ -78,12 +84,14 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
   end
 
   def parse_genera
+    Progress.log 'parse_genera'
     return unless @type == :genera_header || @type == :genus
     parse_next_line if @type == :genera_header
     parse_genus while @type == :genus
   end
 
   def parse_genera_incertae_sedis
+    Progress.log 'parse_genera_incertae_sedis'
     return unless @type == :genera_incertae_sedis_header
     parse_next_line
     parse_genus while @type == :genus
