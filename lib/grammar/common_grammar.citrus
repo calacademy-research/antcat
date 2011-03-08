@@ -96,11 +96,11 @@ grammar CommonGrammar
   end
 
   rule uppercase_word
-    /[[:upper:]]+/
+    /[[:upper:]]+\b/
   end
 
   rule capitalized_word
-    /[[:upper:]][[:lower:]]+/
+    /[[:upper:]][[:lower:]]+\b/
   end
 
   rule parenthesized_phrase

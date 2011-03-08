@@ -78,11 +78,21 @@ describe CommonGrammar do
     it "should just ignore this span as space" do
       CommonGrammar.parse(%{<span lang=EN-GB>}, :root => :space).should_not be_nil
     end
+  end
+
+  describe "Uppercase and capitalized words" do
+
     it "should differentiate between a capitalized word and an uppercase word" do
       lambda {CommonGrammar.parse(%{Abc}, :root => :uppercase_word)}.should raise_error
       CommonGrammar.parse(%{Abc}, :root => :capitalized_word).should_not be_nil
       CommonGrammar.parse(%{ABC}, :root => :uppercase_word).should_not be_nil
       lambda {CommonGrammar.parse(%{ABC}, :root => :capitalized_word)}.should raise_error
     end
+
+    it "should only consider them words if they are followed by word break" do
+      CommonGrammar.parse(%{ABC}, :root => :uppercase_word).should_not be_nil
+      lambda {CommonGrammar.parse(%{Abc}, :root => :uppercase_word)}.should raise_error
+    end
+
   end
 end

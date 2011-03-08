@@ -47,6 +47,12 @@ describe Bolton::SubfamilyCatalog do
     }).should == {:type => :genus, :name => 'Aneuretellus', :fossil => true, :status => 'valid'}
   end
 
+  it "shouldn't make a big deal out of a purple word in the taxonomic history" do
+    @subfamily_catalog.parse(%{
+<i><span lang="EN-GB" style="color:purple">Bregmatomyrmex</span></i><span lang="EN-GB"> [incorrect subsequent spelling] <i>incertae sedis</i> in Formicidae: Wheeler, G.C. &amp; Wheeler, J. 1985: 259.</span>
+    }).should == {:type => :other}
+  end
+
   it "should handle an empty span in there" do
     @subfamily_catalog.parse(%{
 <b><span lang="EN-GB">Genus *<i><span style="color:red">EOAENICTITES</span></i></span></b><span lang="EN-GB"> </span>
