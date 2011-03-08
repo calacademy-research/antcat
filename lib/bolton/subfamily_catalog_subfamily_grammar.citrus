@@ -56,7 +56,7 @@ grammar Bolton::SubfamilyCatalogSubfamilyGrammar
 
   rule genera_list_with_single_genus
     (
-      (bold span 'Genus' close_tags ': ' fossil_flag? italic genus:capitalized_word close_tags '.'? close_tags) |
+      (bold span 'Genus' close_tags ': ' fossil_flag? italic genus:capitalized_word close_tags /.*/) |
       (bold span 'Genus ' incertae_sedis_in capitalized_word close_tags ': ' fossil_flag? italic  genus:capitalized_word close_tags '.' close_tags)
     ) {
       value = {:type => :genera_list, :genera => [[genus.value, fossil_flag.present? ? true : nil]]}

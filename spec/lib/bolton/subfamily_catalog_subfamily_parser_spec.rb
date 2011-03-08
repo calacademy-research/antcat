@@ -154,6 +154,11 @@ describe Bolton::SubfamilyCatalog do
         }).should == {:type => :genera_list, :genera => [['Arnoldius', nil]]}
       end
 
+      it "should be recognized with the period well after the end of the list" do
+        @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>Genus</span></b><span lang=EN-GB>: *<i>Miomyrmex</i> (see under: Genera <i>incertae sedis</i> in Dolichoderinae, below).</span>
+        }).should == {:type => :genera_list, :genera => [['Miomyrmex', true]]}
+      end
 
     end
 
