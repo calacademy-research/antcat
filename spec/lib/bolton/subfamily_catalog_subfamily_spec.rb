@@ -19,6 +19,7 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
       @subfamily_catalog.should_receive(:parse_family).and_return {
         Factory :subfamily, :name => 'Aneuretinae'
         Factory :subfamily, :name => 'Dolichoderinae'
+        Factory :subfamily, :name => 'Formicinae'
       }
 
       @subfamily_catalog.import_html make_contents %{
@@ -67,6 +68,14 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 <p><b><span lang=EN-GB><o:p>&nbsp;</o:p></span></b></p>
 
 <p><b><span lang=EN-GB>Subfamily <span style='color:red'>DOLICHODERINAE</span> <o:p></o:p></span></b></p>
+<p>Dolichoderinae history</p>
+
+<p><b><span lang=EN-GB>THE FORMICOMORPHS: SUBFAMILY FORMICINAE<o:p></o:p></span></b></p>
+
+<p><b><span lang=EN-GB>SUBFAMILY <span style='color:red'>FORMICINAE</span><o:p></o:p></span></b></p>
+<p><b><span lang=EN-GB>Subfamily <span style='color:red'>FORMICINAE</span> <o:p></o:p></span></b></p>
+<p>Formicinae history</p>
+
       }
 
       aneuretinae = Subfamily.find_by_name 'Aneuretinae'
@@ -131,6 +140,11 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 
       dolichoderinae = Subfamily.find_by_name 'Dolichoderinae'
       dolichoderinae.should_not be_invalid
+      dolichoderinae.taxonomic_history.should == '<p>Dolichoderinae history</p>'
+
+      taxon = Subfamily.find_by_name 'Formicinae'
+      taxon.should_not be_invalid
+      taxon.taxonomic_history.should == '<p>Formicinae history</p>'
 
     end
 

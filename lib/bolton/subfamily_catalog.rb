@@ -35,6 +35,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     return unless @type == :supersubfamily_header
     parse_next_line
     while parse_subfamily; end
+    true
   end
 
   private
