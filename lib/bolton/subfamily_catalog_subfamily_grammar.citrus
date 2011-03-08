@@ -35,7 +35,7 @@ grammar Bolton::SubfamilyCatalogSubfamilyGrammar
   end
 
   rule genera_list
-    genera_list_with_multiple_genera | genera_list_with_single_genera
+    genera_list_with_single_genus | genera_list_with_multiple_genera
   end
 
   rule genera_list_with_multiple_genera
@@ -54,9 +54,7 @@ grammar Bolton::SubfamilyCatalogSubfamilyGrammar
     } 
   end
 
-  rule genera_list_with_single_genera
-    (bold span 'Genus' close_tags ': *' italic  capitalized_word close_tags '.' close_tags) {
-      {:type => :genera_list, :genera => [[capitalized_word.value, true]]}
+  rule genera_list_with_single_genus
     } 
   end
 
