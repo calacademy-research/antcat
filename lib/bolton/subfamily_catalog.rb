@@ -13,6 +13,7 @@
 #
 # Manual edits:
 #   07. MYRMICOMORPHS 1.htm Corrected 'Adelomymex' to 'Adelomyrmex'
+#   07. MYRMICOMORPHS 1.htm Added Formosimyrma to Solenopsidini genera list
 
 require 'bolton/subfamily_catalog_family'
 require 'bolton/subfamily_catalog_subfamily'
