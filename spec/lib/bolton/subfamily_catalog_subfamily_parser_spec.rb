@@ -126,6 +126,12 @@ describe Bolton::SubfamilyCatalog do
         }).should == {:type => :tribes_list, :tribes => [['Myrmeciini', nil], ['Prionomyrmecini', nil]]}
       end
 
+      it "should be recognized when the list doesn't include the subfamily name" do
+        @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>Tribe</span></b><span lang=EN-GB>: Pseudomyrmecini.</span>
+        }).should == {:type => :tribes_list, :tribes => [['Pseudomyrmecini', nil]]}
+      end
+
     end
 
     describe "Genera lists" do
@@ -164,6 +170,12 @@ describe Bolton::SubfamilyCatalog do
         @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Genus</span></b><span lang=EN-GB>: *<i>Miomyrmex</i> (see under: Genera <i>incertae sedis</i> in Dolichoderinae, below).</span>
         }).should == {:type => :genera_list, :genera => [['Miomyrmex', true]]}
+      end
+
+      it "should be recognized with the period well after the end of the list" do
+        @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>Genus</span></b><span lang=EN-GB> of Aenictogitonini: <i>Aenictogiton</i>.</span></p>
+        }).should == {:type => :genera_list, :genera => [['Aenictogiton', nil]]}
       end
 
     end

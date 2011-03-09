@@ -24,6 +24,8 @@ grammar Bolton::SubfamilyCatalogSubfamilyGrammar
 
   rule tribes_list
     (
+      (bold span 'Tribe' close_tags ': ' text /.*/) |
+      (span 'Tribes of ' capitalized_word ': ' text /.*/) |
       (span 'Tribes of ' capitalized_word ': ' text /.*/) |
       (bold span 'Tribe' 's'? ' ' ('(extinct) '|'(extant) ')?  (incertae_sedis_in | 'of ') capitalized_word close_tags ': ' text /.*/)
     ) {
@@ -60,6 +62,7 @@ grammar Bolton::SubfamilyCatalogSubfamilyGrammar
 
   rule genera_list_with_single_genus
     (
+      (bold span 'Genus' close_tags 'of ' capitalized_word ': ' italic genus:capitalized_word close_tags /.*/) |
       (bold span 'Genus' close_tags ': ' fossil_flag? italic genus:capitalized_word close_tags /.*/) |
       (bold span 'Genus ' incertae_sedis_in capitalized_word close_tags ': ' fossil_flag? italic  genus:capitalized_word close_tags '.' close_tags)
     ) {
