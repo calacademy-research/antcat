@@ -212,7 +212,7 @@ describe Bolton::SubfamilyCatalog do
         }).should == {:type => :genera_list, :incertae_sedis => true, :genera => [['Curtipalpulus', true]]}
       end
 
-      it "should recognize a Hong 2002 genera incertae sedis list" do
+      it "should recognize a list with misplaced italic tag" do
         @subfamily_catalog.parse(%{
 <b><span lang="EN-GB">Genera (extinct<i>) incertae sedis</i> in Myrmeciinae</span></b><span lang="EN-GB">: *<i>Archimyrmex</i>.</span>
         }).should == {:type => :genera_list, :incertae_sedis => true, :genera => [['Archimyrmex', true]]}
@@ -236,10 +236,16 @@ describe Bolton::SubfamilyCatalog do
         }).should == {:type => :genera_list, :genera => [['Aulacopone', nil]], :incertae_sedis => true}
       end
 
-      it "should be recognized when the astierisk is italicized" do
+      it "should be recognized when the asterisk is italicized" do
         @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Genus <i>incertae sedis</i></span></b><span lang=EN-GB> in Stenammini: <i>*Ilemomyrmex</i>.</span>
         }).should == {:type => :genera_list, :genera => [['Ilemomyrmex', true]], :incertae_sedis => true}
+      end
+
+      it "for a supersubfamily should be recognized" do
+        @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in poneroid subfamilies</span></b><span lang=EN-GB>: *<i>Cretopone</i>, *<i>Petropone</i>.</span></p>
+        }).should == {:type => :genera_list, :genera => [['Cretopone', true], ['Petropone', true]], :incertae_sedis => true}
       end
 
     end
@@ -250,6 +256,17 @@ describe Bolton::SubfamilyCatalog do
       }).should == {:type => :collective_group_name_list, :names => [['Myrmeciites', true]]}
     end
 
-  end
+    describe "Parsing a group of list names" do
 
+      it "should recognize one name" do
+        Bolton::SubfamilyCatalogGrammar.parse("*<i>Myrmeciites</i>.</span></p>", :root => :list_names).value.should == [['Myrmeciites', true]]
+      end
+
+      it "should recognize more than one name" do
+        Bolton::SubfamilyCatalogGrammar.parse(%{*<i>Myrmeciites</i>, <i>Petropone</i>.</span></p>}, :root => :list_names).value.should ==
+          [['Myrmeciites', true], ['Petropone', nil]]
+      end
+
+    end
+  end
 end

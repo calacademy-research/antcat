@@ -37,7 +37,7 @@ grammar Bolton::CatalogGrammar
   end
 
   rule incertae_sedis_in
-    italic s 'incertae sedis' close_tags 'in '
+    s italic? s 'incertae sedis' close_tags 'in' s
   end
 
 end
