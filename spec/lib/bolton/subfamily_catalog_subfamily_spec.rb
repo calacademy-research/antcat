@@ -191,6 +191,20 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
       miomyrmex.tribe.should be_nil
     end
 
+    it "should allow a taxon which has been added from a list (all of them, hopefully) to be subsequently changed to unidentifiable" do
+      @subfamily_catalog.should_receive(:parse_family).and_return { Factory :subfamily, :name => 'Aneuretinae' }
+      @subfamily_catalog.import_html make_contents %{
+<p><b><span lang=EN-GB>SUBFAMILY <span style='color:red'>ANEURETINAE</span><o:p></o:p></span></b></p>
+<p><b><span lang=EN-GB>Subfamily <span style='color:red'>ANEURETINAE</span> <o:p></o:p></span></b></p>
+<p><b><span lang=EN-GB>Tribes of Aneuretinae</span></b><span lang=EN-GB>: Aneuretini, *Pityomyrmecini.</span></p>
+<p><b><span lang=EN-GB>Tribe <span style='color:red'>ANEURETINI</span><o:p></o:p></span></b></p>
+<p><b><span lang=EN-GB>Genus of Aneuretini</span></b><span lang=EN-GB>: <i>Tricytarus</i>.</span></p>
+<p><b><span lang=EN-GB>Genus <i><span style='color:green'>TRICYTARUS</span></i> <o:p></o:p></span></b></p>
+      }
+      taxon = Genus.find_by_name 'Tricytarus'
+      taxon.status.should == 'unidentifiable'
+    end
+
     describe "situations where line needs to be preprocessed, not just parsed" do
       it "should handle a spacerun in the middle" do
         @subfamily_catalog.should_receive(:parse_family).and_return {

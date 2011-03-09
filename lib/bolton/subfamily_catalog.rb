@@ -64,7 +64,9 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
   end
 
   def check_status_change genus, status
-    raise "Genus #{genus.name} status change from #{genus.status} to #{status}" if status != genus.status unless genus.name == 'Hypochira'
+    return if status == genus.status
+    return if genus.status == 'valid' && status == 'unidentifiable'
+    raise "Genus #{genus.name} status change from #{genus.status} to #{status}"
   end
 
   def check_existence name, genus
