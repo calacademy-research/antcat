@@ -14,7 +14,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     subfamily = Subfamily.find_by_name(name)
     raise "Subfamily #{name} doesn't exist" unless subfamily
 
-    subfamily.update_attributes :taxonomic_history => taxonomic_history
+    subfamily.update_attributes :taxonomic_history => taxonomic_history, :fossil => fossil
 
     parse_tribes_lists subfamily
     parse_genera_lists :subfamily, :subfamily => subfamily

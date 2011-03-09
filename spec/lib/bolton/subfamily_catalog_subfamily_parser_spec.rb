@@ -144,6 +144,12 @@ describe Bolton::SubfamilyCatalog do
         }).should == {:type => :tribes_list, :tribes => [['Pseudomyrmecini', nil]]}
       end
 
+      it "should be recognized with an extinct subfamily" do
+        @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>Tribes of *Sphecomyrminae</span></b><span lang=EN-GB>: *Haidomyrmecini.</span>
+        }).should == {:type => :tribes_list, :tribes => [['Haidomyrmecini', true]]}
+      end
+
     end
 
     describe "Genera lists" do

@@ -29,6 +29,9 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
     end
 
     it "should parse an extinct subfamily" do
+      @subfamily_catalog.should_receive(:parse_family).and_return {
+        Factory :subfamily, :name => 'Armaniinae'
+      }
       @subfamily_catalog.import_html make_contents %{
 <p><b><span lang=EN-GB>SUBFAMILY *<span style='color:red'>ARMANIINAE</span><o:p></o:p></span></b></p>
 <p><b><span lang=EN-GB>Subfamily *<span style='color:red'>ARMANIINAE</span> <o:p></o:p></span></b></p>

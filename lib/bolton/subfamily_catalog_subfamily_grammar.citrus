@@ -24,16 +24,11 @@ grammar Bolton::SubfamilyCatalogSubfamilyGrammar
 
   rule tribes_list
     (
-      (bold span 'Tribe' close_tags ': ' text /.*/) |
-      (span 'Tribes of ' capitalized_word ': ' text /.*/) |
-      (span 'Tribes of ' capitalized_word ': ' text /.*/) |
-      (bold span 'Tribe' 's'? ' ' ('(extinct) '|'(extant) ')?  (incertae_sedis_in | 'of ') capitalized_word close_tags ': ' text /.*/)
+      (bold span 'Tribe' close_tags ': ' list_names) |
+      (bold? span 'Tribes of ' fossil_flag? capitalized_word close_tags? ': ' list_names) |
+      (bold span 'Tribe' 's'? ' ' ('(extinct) '|'(extant) ')?  (incertae_sedis_in | 'of ') capitalized_word close_tags? ':' list_names)
     ) {
-      value = {:type => :tribes_list}
-      value[:tribes] = text.split(', ').map do |tribe|
-        fossil = tribe.gsub!(/\*/, '') && true
-        [tribe, fossil]
-      end
+      value = {:type => :tribes_list, :tribes => list_names.value}
       value.merge! :incertae_sedis => true if incertae_sedis_in.present?
       value
     } 
@@ -57,13 +52,8 @@ grammar Bolton::SubfamilyCatalogSubfamilyGrammar
   end
 
   rule collective_group_name_list
-    (bold span 'Collective group name in ' capitalized_word close_tags ': ' fossil_tag:'*'? italic text /.*/) {
-      value = {:type => :collective_group_name_list}
-      value[:names] = text.split(', ').map do |name|
-        fossil = (name.gsub!(/\*/, '') || fossil_tag.present?) ? true : nil
-        [name, fossil]
-      end
-      value
+    (bold span 'Collective group name in ' capitalized_word close_tags ':' list_names) {
+      {:type => :collective_group_name_list, :names => list_names.value}
     } 
   end
 
