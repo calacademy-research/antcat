@@ -191,6 +191,28 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
       miomyrmex.tribe.should be_nil
     end
 
+    describe "situations where line needs to be preprocessed, not just parsed" do
+      it "should handle a spacerun in the middle" do
+        @subfamily_catalog.should_receive(:parse_family).and_return {
+          Factory :subfamily, :name => 'Aneuretinae'
+          Factory :tribe, :name => 'Miomyrmecini'
+        }
+        @subfamily_catalog.import_html make_contents %{
+<p><b><span lang=EN-GB>SUBFAMILY <span style='color:red'>ANEURETINAE</span><o:p></o:p></span></b></p>
+<p><b><span lang=EN-GB>Subfamily <span style='color:red'>ANEURETINAE</span> <o:p></o:p></span></b></p>
+<b><span lang=EN-GB>Tribes of Aneuretinae</span></b><span lang=EN-GB>: Miomyrmecini</span></p>
+<p><b><span lang=EN-GB>Tribe *<span style='color:red'>MIOMYRMECINI</span><o:p></o:p></span></b></p>
+<p><b><span lang=EN-GB>Genera of Miomyrmecini</span></b><span lang=EN-GB>: <i>Eutetramorium, *Protomyrmica, <span style="mso-spacerun: yes">&nbsp;</span>Secostruma</i>.</span></p>
+        }
+        taxon = Genus.find_by_name 'Eutetramorium'
+        taxon.should_not be_fossil
+        taxon = Genus.find_by_name 'Protomyrmica'
+        taxon.should be_fossil
+        taxon = Genus.find_by_name 'Secostruma'
+        taxon.should_not be_fossil
+      end
+    end
+
     describe "taxonomic history" do
       before do
         @subfamily_catalog.should_receive(:parse_family).and_return {Factory :subfamily, :name => 'Aneuretinae'}

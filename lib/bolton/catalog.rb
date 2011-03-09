@@ -123,7 +123,8 @@ class Bolton::Catalog
   end
 
   def preprocess line
-    rc = restore_quot_character_entity line.gsub(/\n/, ' ').strip
+    line.gsub! %r{<span style="mso-spacerun: yes">.*?</span>}, ''
+    restore_quot_character_entity line.gsub(/\n/, ' ').strip
   end
 
   def expect type
