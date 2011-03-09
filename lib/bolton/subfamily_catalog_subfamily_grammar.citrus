@@ -65,6 +65,7 @@ grammar Bolton::SubfamilyCatalogSubfamilyGrammar
       (bold span 'Genus' close_tags 'of ' capitalized_word ': ' italic genus:capitalized_word close_tags /.*/) |
       (bold span 'Genus' close_tags ': ' fossil_flag? italic genus:capitalized_word close_tags /.*/) |
       (bold span 'Genus' s incertae_sedis_in s capitalized_word close_tags ':' s fossil_flag? italic s genus:capitalized_word close_tags '.' close_tags) |
+      (bold span 'Genus' s incertae_sedis_in s capitalized_word close_tags? ':' s italic fossil_flag genus:capitalized_word close_tags '.' close_tags) |
       (bold span 'Genus (extinct) ' incertae_sedis_in capitalized_word close_tags ': ' fossil_flag? italic genus:capitalized_word close_tags '.' close_tags)
     ) {
       value = {:type => :genera_list, :genera => [[genus.value, fossil_flag.present? ? true : nil]]}

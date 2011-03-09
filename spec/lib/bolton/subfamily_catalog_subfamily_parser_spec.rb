@@ -236,6 +236,11 @@ describe Bolton::SubfamilyCatalog do
         }).should == {:type => :genera_list, :genera => [['Aulacopone', nil]], :incertae_sedis => true}
       end
 
+      it "should be recognized when the astierisk is italicized" do
+        @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>Genus <i>incertae sedis</i></span></b><span lang=EN-GB> in Stenammini: <i>*Ilemomyrmex</i>.</span>
+        }).should == {:type => :genera_list, :genera => [['Ilemomyrmex', true]], :incertae_sedis => true}
+      end
 
     end
 
