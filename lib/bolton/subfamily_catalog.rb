@@ -15,6 +15,7 @@
 #   07. MYRMICOMORPHS 1.htm Corrected 'Adelomymex' to 'Adelomyrmex'
 #   07. MYRMICOMORPHS 1.htm Added Formosimyrma to Solenopsidini genera list
 #   08. MYRMICOMORPHS 2.htm Corrected 'Quinqueangulicapito' to 'Quineangulicapito'
+#   09. PONEROMORPHS.htm Added Probolomyrmex to Probolomyrmecini genus list
 
 require 'bolton/subfamily_catalog_family'
 require 'bolton/subfamily_catalog_subfamily'
