@@ -24,6 +24,8 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
 
     parse_tribes subfamily
 
+    parse_genera
+
     parse_genera_incertae_sedis
     true
   end

@@ -28,6 +28,14 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
       taxon.incertae_sedis_in.should == "supersubfamily"
     end
 
+    it "should parse an extinct subfamily" do
+      @subfamily_catalog.import_html make_contents %{
+<p><b><span lang=EN-GB>SUBFAMILY *<span style='color:red'>ARMANIINAE</span><o:p></o:p></span></b></p>
+<p><b><span lang=EN-GB>Subfamily *<span style='color:red'>ARMANIINAE</span> <o:p></o:p></span></b></p>
+      }
+      Subfamily.find_by_name('Armaniinae').should be_fossil
+    end
+
     it "should parse a subfamily" do
       @subfamily_catalog.should_receive(:parse_family).and_return {
         Factory :subfamily, :name => 'Aneuretinae'
@@ -178,6 +186,19 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 
       aneuretus = Genus.find_by_name "Aneuretus"
       aneuretus.tribe.name.should == 'Aneuretini'
+    end
+
+    it "should parse a genus when there are no tribes" do
+      @subfamily_catalog.should_receive(:parse_family).and_return { Factory :subfamily, :name => 'Martialinae' }
+      @subfamily_catalog.import_html make_contents %{
+<p><b><span lang=EN-GB style='color:black'>SUBFAMILY</span><span lang=EN-GB> <span style='color:red'>MARTIALINAE</span><o:p></o:p></span></b></p>
+<p><b><span lang=EN-GB>Subfamily <span style='color:red'>MARTIALINAE<o:p></o:p></span></span></b></p>
+<p><b><span lang=EN-GB>Genus of Martialinae</span></b><span lang=EN-GB>: <i>Martialis</i>.</span></p>
+<p><b><span lang=EN-GB>Genus of <span style='color:red'>Martialinae</span><o:p></o:p></span></b></p>
+<p><b><span lang=EN-GB>Genus <i><span style='color:red'>MARTIALIS</span></i><o:p></o:p></span></b></p>
+<p>Martialis history</p>
+      }
+      Genus.find_by_name('Martialis').taxonomic_history.should == '<p>Martialis history</p>'
     end
 
     it "should handle when a genus incertae sedis in subfamily also belongs to a tribe incertae sedis in subfamily (we're going to ignore the tribe" do
