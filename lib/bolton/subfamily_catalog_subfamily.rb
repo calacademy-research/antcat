@@ -40,18 +40,6 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     end
   end
 
-  def parse_genera_lists parent_rank, parent_attributes
-    Progress.log 'parse_genera_lists'
-    while @type == :genera_list
-      @parse_result[:genera].each do |genus, fossil|
-        attributes = {:name => genus, :fossil => fossil, :status => 'valid'}.merge parent_attributes
-        attributes.merge!(:incertae_sedis_in => parent_rank.to_s) if @parse_result[:incertae_sedis]
-        Genus.create! attributes
-      end
-      parse_next_line
-    end
-  end
-
   def parse_collective_group_names_list subfamily
     Progress.log 'parse_collective_group_names'
     return unless @type == :collective_group_name_list

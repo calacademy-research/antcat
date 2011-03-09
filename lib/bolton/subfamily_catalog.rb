@@ -42,6 +42,9 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
   def parse_supersubfamily
     return unless @type == :supersubfamily_header
     parse_next_line
+
+    parse_genera_lists :supersubfamily
+
     while parse_subfamily; end
     true
   end
@@ -61,6 +64,18 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     else
       check_existence name, genus
       Genus.create!({:name => name, :fossil => fossil, :status => status, :taxonomic_history => taxonomic_history}.merge(attributes))
+    end
+  end
+
+  def parse_genera_lists parent_rank, parent_attributes = {}
+    Progress.log 'parse_genera_lists'
+    while @type == :genera_list
+      @parse_result[:genera].each do |genus, fossil|
+        attributes = {:name => genus, :fossil => fossil, :status => 'valid'}.merge parent_attributes
+        attributes.merge!(:incertae_sedis_in => parent_rank.to_s) if @parse_result[:incertae_sedis]
+        Genus.create! attributes
+      end
+      parse_next_line
     end
   end
 

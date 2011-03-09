@@ -15,6 +15,19 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 </div></body></html>}
     end
 
+    it "should parse an incertae sedis list of the supersubfamily" do
+      @subfamily_catalog.should_receive(:parse_family)
+      @subfamily_catalog.import_html make_contents %{
+<p><b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in poneroid subfamilies</span></b><span lang=EN-GB>: *<i>Cretopone</i>, *<i>Petropone</i>.</span></p>
+      }
+      taxon = Genus.find_by_name 'Cretopone'
+      taxon.should be_fossil
+      taxon.incertae_sedis_in.should == "supersubfamily"
+      taxon = Genus.find_by_name 'Petropone'
+      taxon.should be_fossil
+      taxon.incertae_sedis_in.should == "supersubfamily"
+    end
+
     it "should parse a subfamily" do
       @subfamily_catalog.should_receive(:parse_family).and_return {
         Factory :subfamily, :name => 'Aneuretinae'
