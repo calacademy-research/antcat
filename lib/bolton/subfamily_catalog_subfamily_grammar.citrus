@@ -43,7 +43,7 @@ grammar Bolton::SubfamilyCatalogSubfamilyGrammar
       (bold span 'Genera (extinct' italic ')' incertae_sedis_in capitalized_word close_tags ':' list_names) |
       (bold span ('Hong (2002) genera '|'Genera '|'Genus ') ('(extinct) '|'(extant) ')? (incertae_sedis_in | 'of ') capitalized_word close_tags ':' list_names) |
       (bold span 'Genera of ' black capitalized_word close_tags ':' close_tags list_names) |
-      (bold span 'Genera (extinct) of ' fossil_flag* capitalized_word close_tags ':' list_names)
+      (bold span ('Genera'|'Genus') ' (extinct) of ' fossil_flag* capitalized_word close_tags ':' list_names)
     ) {
       value = {:type => :genera_list, :genera => list_names.value}
       value[:incertae_sedis] = true if incertae_sedis_in.present?

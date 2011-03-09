@@ -202,6 +202,12 @@ describe Bolton::SubfamilyCatalog do
         }).should == {:type => :genera_list, :genera => [['Archaeopone', true]]}
       end
 
+      it "should be recognized for an extinct subfamily" do
+        @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>Genus (extinct) of *Brownimeciini</span></b><span lang=EN-GB>: *<i>Brownimecia</i></span>
+        }).should == {:type => :genera_list, :genera => [['Brownimecia', true]]}
+      end
+
     end
 
     describe "Genera incertae sedis lists" do
