@@ -10,6 +10,9 @@
 #  To import these files, run
 #    rake bolton:import:subfamilies
 #  This generates log/bolton_subfamily_catalog.log
+#
+# Manual edits:
+#   07. MYRMICOMORPHS 1.htm Corrected 'Adelomymex' to 'Adelomyrmex'
 
 require 'bolton/subfamily_catalog_family'
 require 'bolton/subfamily_catalog_subfamily'
