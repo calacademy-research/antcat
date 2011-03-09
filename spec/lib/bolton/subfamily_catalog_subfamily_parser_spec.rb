@@ -218,6 +218,11 @@ describe Bolton::SubfamilyCatalog do
         }).should == {:type => :genera_list, :incertae_sedis => true, :genera => [['Archimyrmex', true]]}
       end
 
+      it "should be recognized when the incertae sedis part is a bit different" do
+        @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>Genus (extinct) <i>incertae sedis </i>in Ectatommini</span></b><span lang=EN-GB>: *<i>Electroponera</i>.</span>
+        }).should == {:type => :genera_list, :genera => [['Electroponera', true]], :incertae_sedis => true}
+      end
 
     end
 
