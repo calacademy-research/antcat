@@ -17,10 +17,9 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     taxonomic_history << parse_tribes_lists(subfamily)
     taxonomic_history << parse_genera_lists(:subfamily, :subfamily => subfamily)
     taxonomic_history << parse_collective_group_names_list(subfamily)
+    taxonomic_history << skip(:other)
 
     subfamily.update_attributes :taxonomic_history => taxonomic_history, :fossil => fossil
-
-    skip :other
 
     parse_tribes subfamily
 

@@ -139,7 +139,7 @@ class Antweb::Diff
     Progress.puts "Differences:"
     @differences.each do |antcat, antweb|
       match_fails_at = self.class.match_fails_at antcat, antweb
-      Progress.puts "\nDiffer at #{match_fails_at}"
+      Progress.puts "\n" + '=' * 80
       Progress.puts antcat[0..match_fails_at - 1]
       Progress.puts "<<< #{antcat[match_fails_at]} len: #{antcat.length}"
       Progress.puts antcat[match_fails_at..-1] || ''

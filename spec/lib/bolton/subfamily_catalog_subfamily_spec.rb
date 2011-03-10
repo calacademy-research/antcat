@@ -110,7 +110,9 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 '<p><b><span lang="EN-GB">Genera (extinct) <i>incertae sedis</i> in Aneuretinae</span></b><span lang="EN-GB">: *<i>Burmomyrma, *Cananeuretus</i>. </span></p>' +
 '<p><b><span lang="EN-GB">Genus <i>incertae sedis</i> in Aneuretinae</span></b><span lang="EN-GB">: <i>Wildensis</i>. </span></p>' +
 '<p><b><span lang="EN-GB">Hong (2002) genera (extinct) <i>incertae sedis</i> in Aneuretinae</span></b><span lang="EN-GB">: *<i>Curtipalpulus, *Eoleptocerites</i>.</span></p>' +
-'<p><b><span lang="EN-GB">Collective group name in Myrmeciinae</span></b><span lang="EN-GB">: *<i>Myrmeciites</i>.</span></p>'
+'<p><b><span lang="EN-GB">Collective group name in Myrmeciinae</span></b><span lang="EN-GB">: *<i>Myrmeciites</i>.</span></p>' +
+'<p>References</p>' +
+'<p>a references</p>'
 
       aneuretini = Tribe.find_by_name 'Aneuretini'
       aneuretini.subfamily.should == aneuretinae

@@ -132,6 +132,11 @@ class Bolton::Catalog
   end
 
   def skip type
-    parse_next_line while @type == type
+    parsed_text = ''
+    while @type == type
+      parsed_text << @paragraph
+      parse_next_line
+    end
+    parsed_text
   end
 end
