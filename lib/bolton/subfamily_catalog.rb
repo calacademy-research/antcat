@@ -69,8 +69,10 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
   end
 
   def parse_genera_lists parent_rank, parent_attributes = {}
+    parsed_text = ''
     Progress.log 'parse_genera_lists'
     while @type == :genera_list
+      parsed_text << @paragraph
       @parse_result[:genera].each do |genus, fossil|
         attributes = {:name => genus, :fossil => fossil, :status => 'valid'}.merge parent_attributes
         attributes.merge!(:incertae_sedis_in => parent_rank.to_s) if @parse_result[:incertae_sedis]
@@ -78,6 +80,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
       end
       parse_next_line
     end
+    parsed_text
   end
 
   def check_status_change genus, status
