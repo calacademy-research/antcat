@@ -94,6 +94,7 @@ class Antweb::Diff
       line.gsub! /(Amblyoponinae\t\tParaprionopelta\t\t\t\t)FALSE\tFALSE\t\t/i, "\\1TRUE\tTRUE\tParaprionopelta\t"
       line.gsub! /(Leptanilloidinae\t\tAsphinctanilloides\t\t\t\t)FALSE\tFALSE\t\t/i, "\\1TRUE\tTRUE\tAsphinctanilloides\t"
       line.gsub! /Myrmicinae\tincertae sedis in Stenammini\tPropodilobus/, "Myrmicinae\tStenammini\tPropodilobus"
+      line.gsub! /Quinqueangulicapito/, 'Quineangulicapito'
 
       antweb_fields = line.split "\t"
 
