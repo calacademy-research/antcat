@@ -91,7 +91,7 @@ grammar Bolton::SubfamilyCatalogSubfamilyGrammar
   end
 
   rule synonyms_header
-    (bold span 'Junior synonym' 's'? ' of ' italic red uppercase_word close_tags) {
+    (bold span 'Junior synonym' 's'? ' of ' italic red uppercase_word close_tags /.*/) {
       {:type => :synonyms_header}
     }
   end

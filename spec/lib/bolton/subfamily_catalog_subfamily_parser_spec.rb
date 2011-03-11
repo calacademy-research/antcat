@@ -111,6 +111,12 @@ describe Bolton::SubfamilyCatalog do
         }).should == {:type => :synonyms_header}
       end
 
+      it "should recognize a header for the group of synonyms when there's a period after the closing tags" do
+        @subfamily_catalog.parse(%{
+<b><span lang="EN-GB">Junior synonyms of <i><span style="color:red">ACROPYGA</span></i>.<p></p></span></b>
+        }).should == {:type => :synonyms_header}
+      end
+
     end
   end
 
