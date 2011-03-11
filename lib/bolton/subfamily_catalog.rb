@@ -52,10 +52,14 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
 
   private
   def parse_genus attributes = {}
+    return unless @type == :genus_header
     name = @parse_result[:name]
     status = @parse_result[:status]
     fossil = @parse_result[:fossil]
-    taxonomic_history = parse_taxonomic_history
+    parse_next_line
+    expect :genus_line
+    taxonomic_history = @paragraph
+    taxonomic_history << parse_taxonomic_history
     genus = Genus.find_by_name name
     if genus
       attributes = {:status => status, :taxonomic_history => taxonomic_history}.merge(attributes)
@@ -64,8 +68,27 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
       genus.update_attributes attributes
     else
       check_existence name, genus
-      Genus.create!({:name => name, :fossil => fossil, :status => status, :taxonomic_history => taxonomic_history}.merge(attributes))
+      genus = Genus.create!({:name => name, :fossil => fossil, :status => status, :taxonomic_history => taxonomic_history}.merge(attributes))
     end
+
+    taxonomic_history << parse_genus_synonyms(genus)
+    genus.reload.update_attributes :taxonomic_history => taxonomic_history
+  end
+
+  def parse_genus_synonyms genus
+    return '' unless @type == :synonyms_header
+    parse_results = @paragraph
+    parse_next_line
+
+    while @type == :genus_line
+      name = @parse_result[:name]
+      taxonomic_history = @paragraph
+      taxonomic_history << parse_taxonomic_history
+      genus = Genus.create! :name => name, :status => 'synonym', :synonym_of => genus, :subfamily => genus.subfamily, :tribe => genus.tribe, :taxonomic_history => taxonomic_history
+      parse_results << taxonomic_history
+    end
+
+    parse_results
   end
 
   def parse_genera_lists parent_rank, parent_attributes = {}

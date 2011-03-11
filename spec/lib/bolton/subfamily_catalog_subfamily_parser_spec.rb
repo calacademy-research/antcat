@@ -97,6 +97,21 @@ describe Bolton::SubfamilyCatalog do
 
     end
 
+    describe "Synonym headers" do
+
+      it "should recognize a header for the group of synonyms" do
+        @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>Junior synonyms of <i><span style='color:red'>ANEURETUS<o:p></o:p></span></i></span></b>
+        }).should == {:type => :synonyms_header}
+      end
+
+      it "should recognize a header for the group of synonyms when there's only one" do
+        @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>Junior synonym of <i><span style='color:red'>ANEURETUS<o:p></o:p></span></i></span></b>
+        }).should == {:type => :synonyms_header}
+      end
+
+    end
   end
 
   describe "Lists" do

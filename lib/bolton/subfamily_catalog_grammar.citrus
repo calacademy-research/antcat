@@ -4,7 +4,7 @@ grammar Bolton::SubfamilyCatalogGrammar
   include Bolton::SubfamilyCatalogSubfamilyGrammar
 
   rule subfamily_catalog
-    a_supersubfamily_section | family_section | subfamily_section | genus | blank_line | other
+    a_supersubfamily_section | family_section | subfamily_section | genus_header | genus_line | blank_line | other
   end
 
   # Citrus 2.3.7 doesn't like rules beginning with 'super'
@@ -23,32 +23,38 @@ grammar Bolton::SubfamilyCatalogGrammar
     }
   end
 
-  rule genus
-    valid_genus | unidentifiable_genus | unavailable_genus
+  rule genus_header
+    valid_genus_header | unidentifiable_genus_header | unavailable_genus_header
   end
 
-  rule valid_genus
+  rule valid_genus_header
     (
       (span 'Genus' s fossil_flag? bold italic red uppercase_word close_tags '[Myrmeciinae]' close_tags) |
       (bold italic? span 'Genus' close_tags fossil_flag? close_tags? bold? italic? red s uppercase_word close_tags)
     ) {
-      value = {:type => :genus, :name => uppercase_word.downcase.capitalize.strip, :status => 'valid'}
+      value = {:type => :genus_header, :name => uppercase_word.downcase.capitalize.strip, :status => 'valid'}
       value.merge! :fossil => true if fossil_flag.present?
       value
     }
   end
 
-  rule unidentifiable_genus
+  rule unidentifiable_genus_header
     (bold span 'Genus ' fossil_flag? italic green uppercase_word close_tags) {
-      value = {:type => :genus, :name => uppercase_word.downcase.capitalize.strip, :status => 'unidentifiable'}
+      value = {:type => :genus_header, :name => uppercase_word.downcase.capitalize.strip, :status => 'unidentifiable'}
       value.merge! :fossil => true if fossil_flag.present?
       value
     }
   end
 
-  rule unavailable_genus
+  rule unavailable_genus_header
     (italic purple uppercase_word /.*/) {
-      {:type => :genus, :name => uppercase_word.downcase.capitalize.strip, :status => 'unavailable'}
+      {:type => :genus_header, :name => uppercase_word.downcase.capitalize.strip, :status => 'unavailable'}
+    }
+  end
+
+  rule genus_line
+    (bold italic span capitalized_word close_tags /.*/) {
+      {:type => :genus_line, :name => capitalized_word.to_s}
     }
   end
 

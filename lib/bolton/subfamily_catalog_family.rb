@@ -88,16 +88,16 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
   def parse_genera_incertae_sedis_in_family
     expect :genera_incertae_sedis_in_family_header
     parse_next_line
-    expect :genus
-    parse_genus(:incertae_sedis_in => 'family')  while @type == :genus
+    expect :genus_header
+    parse_genus(:incertae_sedis_in => 'family')  while @type == :genus_header
   end
 
   def parse_genera_excluded_from_family
     expect :genera_excluded_from_family_header
     parse_next_line
     skip :other
-    expect :genus
-    parse_genus(:status => 'excluded') while @type == :genus
+    expect :genus_header
+    parse_genus(:status => 'excluded') while @type == :genus_header
   end
 
   def parse_unavailable_family_group_names_in_family
@@ -109,8 +109,8 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
   def parse_genus_group_nomina_nuda_in_family
     expect :genus_group_nomina_nuda_in_family_header
     parse_next_line
-    expect :genus
-    parse_genus(:status => 'nomen nudum') while @type == :genus
+    expect :genus_header
+    parse_genus(:status => 'nomen nudum') while @type == :genus_header
   end
 
 end

@@ -76,7 +76,12 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 <p><span lang=EN-GB><o:p>&nbsp;</o:p></span></p>
 
 <p><b><span lang=EN-GB>Genus <i><span style='color:red'>ANEURETUS</span></i> <o:p></o:p></span></b></p>
+<p><b><i><span lang=EN-GB>Aneuretus</span></i></b></p>
 <p>Aneuretus history</p>
+
+<p><b><span lang=EN-GB>Junior synonyms of <i><span style='color:red'>ANEURETUS<o:p></o:p></span></i></span></b></p>
+<p><b><i><span lang=EN-GB>Odontomyrmex</span></i></b><span lang=EN-GB> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </span></p>
+<p>Odontomyrmex history</p>
 
 <p><b><span lang=EN-GB>Tribe <span style='color:red'>PITYOMYRMECINI</span><o:p></o:p></span></b></p>
 <p>Pityomyrmecini history</p>
@@ -85,6 +90,7 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 <p><span lang=EN-GB><o:p>&nbsp;</o:p></span></p>
 
 <p><b><span lang=EN-GB>Genus *<i><span style='color:red'>BURMOMYRMA</span></i> <o:p></o:p></span></b></p>
+<p><b><i><span lang=EN-GB>Burmomyrma</span></i></b></p>
 <p>Burmomyrma history</p>
 
 <p><b><span lang=EN-GB>SUBFAMILY <span style='color:red'>DOLICHODERINAE</span><o:p></o:p></span></b></p>
@@ -133,7 +139,7 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
       taxon.should be_fossil
       taxon.incertae_sedis_in.should == 'subfamily'
       taxon.should_not be_invalid
-      taxon.taxonomic_history.should == '<p>Burmomyrma history</p>'
+      taxon.taxonomic_history.should == '<p><b><i><span lang="EN-GB">Burmomyrma</span></i></b></p><p>Burmomyrma history</p>'
 
       taxon = Genus.find_by_name 'Cananeuretus'
       taxon.subfamily.should == aneuretinae
@@ -164,12 +170,27 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
       taxon.should be_fossil
       taxon.should be_invalid
 
-      taxon = Genus.find_by_name 'Aneuretus'
-      taxon.subfamily.should == aneuretinae
-      taxon.tribe.should == aneuretini
-      taxon.should_not be_fossil
-      taxon.should_not be_invalid
-      taxon.taxonomic_history.should == '<p>Aneuretus history</p>'
+      aneuretus = Genus.find_by_name 'Aneuretus'
+      aneuretus.subfamily.should == aneuretinae
+      aneuretus.tribe.should == aneuretini
+      aneuretus.should_not be_fossil
+      aneuretus.should_not be_invalid
+      aneuretus.taxonomic_history.should ==
+%{<p><b><i><span lang="EN-GB">Aneuretus</span></i></b></p>} +
+%{<p>Aneuretus history</p>} +
+%{<p><b><span lang="EN-GB">Junior synonyms of <i><span style="color:red">ANEURETUS<p></p></span></i></span></b></p>} +
+%{<p><b><i><span lang="EN-GB">Odontomyrmex</span></i></b><span lang="EN-GB"> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </span></p>} +
+%{<p>Odontomyrmex history</p>}
+
+      odontomyrmex = Genus.find_by_name 'Odontomyrmex'
+      odontomyrmex.subfamily.should == aneuretinae
+      odontomyrmex.tribe.should == aneuretini
+      odontomyrmex.should be_invalid
+      odontomyrmex.taxonomic_history.should == 
+%{<p><b><i><span lang="EN-GB">Odontomyrmex</span></i></b><span lang="EN-GB"> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </span></p>} +
+%{<p>Odontomyrmex history</p>}
+      odontomyrmex.status.should == 'synonym'
+      odontomyrmex.synonym_of.should == aneuretus
 
       dolichoderinae = Subfamily.find_by_name 'Dolichoderinae'
       dolichoderinae.should_not be_invalid
@@ -208,9 +229,12 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 <p><b><span lang=EN-GB>Genus of Martialinae</span></b><span lang=EN-GB>: <i>Martialis</i>.</span></p>
 <p><b><span lang=EN-GB>Genus of <span style='color:red'>Martialinae</span><o:p></o:p></span></b></p>
 <p><b><span lang=EN-GB>Genus <i><span style='color:red'>MARTIALIS</span></i><o:p></o:p></span></b></p>
+<p><b><i><span lang=EN-GB>Martialis</span></i></b><span lang=EN-GB> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </span></p>
 <p>Martialis history</p>
       }
-      Genus.find_by_name('Martialis').taxonomic_history.should == '<p>Martialis history</p>'
+      Genus.find_by_name('Martialis').taxonomic_history.should ==
+%{<p><b><i><span lang="EN-GB">Martialis</span></i></b><span lang="EN-GB"> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </span></p>} +
+%{<p>Martialis history</p>}
     end
 
     it "should handle when a genus incertae sedis in subfamily also belongs to a tribe incertae sedis in subfamily (we're going to ignore the tribe" do
@@ -246,6 +270,7 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 <p><b><span lang=EN-GB>Tribe <span style='color:red'>ANEURETINI</span><o:p></o:p></span></b></p>
 <p><b><span lang=EN-GB>Genus of Aneuretini</span></b><span lang=EN-GB>: <i>Tricytarus</i>.</span></p>
 <p><b><span lang=EN-GB>Genus <i><span style='color:green'>TRICYTARUS</span></i> <o:p></o:p></span></b></p>
+<p><b><i><span lang=EN-GB>Tricytarus</span></i></b><span lang=EN-GB> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </span></p>
       }
       taxon = Genus.find_by_name 'Tricytarus'
       taxon.status.should == 'unidentifiable'

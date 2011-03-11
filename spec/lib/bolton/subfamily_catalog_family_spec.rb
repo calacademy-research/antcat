@@ -26,26 +26,33 @@ describe Bolton::SubfamilyCatalog do
 
 <p><b><span lang=EN-GB>Genera <i>incertae sedis</i> in <span style='color:red'>FORMICIDAE</span><o:p></o:p></span></b></p>
 <p><b><span lang=EN-GB>Genus</span></b><span lang=EN-GB> *<b><i><span style='color:red'>CALYPTITES</span></i></b> </span></p>
+<p><b><i><span lang="EN-GB">Calypitites</span></i></b><span lang="EN-GB"> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </span></p>
 <p>Calyptites taxonomic history</p>
 <p class=MsoNormal style='text-align:justify'><span lang=EN-GB><o:p>&nbsp;</o:p></span></p>
 <p><b><span lang=EN-GB>Genus</span></b><span lang=EN-GB> <b><i><span style='color:red'>CONDYLODON</span></i></b> </span></p>
+<p><b><i><span lang="EN-GB">Condylodon</span></i></b><span lang="EN-GB"> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </span></p>
 <p>Condylodon taxonomic history</p>
 <p><b><span lang=EN-GB>Genus <i><span style='color:green'>HYPOCHIRA</span></i> <o:p></o:p></span></b></p>
+<p><b><i><span lang="EN-GB">Hypochira</span></i></b><span lang="EN-GB"> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </span></p>
 <p><b><span lang=EN-GB>Genus *<i><span style='color:red'>SYNTAPHUS</span></i> <o:p></o:p></span></b></p>
+<p><b><i><span lang="EN-GB">Syntaphus</span></i></b><span lang="EN-GB"> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </span></p>
 
 <p class=MsoNormal style='text-align:justify'><span lang=EN-GB><o:p>&nbsp;</o:p></span></p>
 
 <p><b><span lang=EN-GB>Genera excluded from <span style='color:red'>FORMICIDAE</span><o:p></o:p></span></b></p>
 <p><span lang=EN-GB>The following were all originally described as members of Formicidae but are now excluded.</span></p>
 <p><b><span lang=EN-GB>Genus *<i><span style='color:green'>CARIRIDRIS</span></i> <o:p></o:p></span></b></p>
+<p><b><i><span lang="EN-GB">Cariridris</span></i></b><span lang="EN-GB"> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </span></p>
 <p>Cariridris taxonomic history</p>
 <p><b><span lang=EN-GB>Genus *<i><span style='color:red'>CRETACOFORMICA</span></i> <o:p></o:p></span></b></p>
+<p><b><i><span lang="EN-GB">Cretacoformica</span></i></b><span lang="EN-GB"> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </span></p>
 
 <p><b><span lang=EN-GB>Unavailable family-group names in <span style='color:red'>FORMICIDAE</span><o:p></o:p></span></b></p>
 <p><span lang=EN-GB style='color:purple'>ALLOFORMICINAE</span><span lang=EN-GB> [unavailable name]</span></p>
 
 <p><b><span lang=EN-GB>Genus-group <i>nomina nuda</i> in <span style='color:red'>FORMICIDAE<o:p></o:p></span></span></b></p>
 <p><i style='mso-bidi-font-style:normal'><span lang=EN-GB style='color:purple'>HYPOPHEIDOLE</span></i><span lang=EN-GB> [<i>nomen nudum</i>]</span></p>
+<p><b><i><span lang="EN-GB">Hypopheidole</span></i></b><span lang="EN-GB"> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </span></p>
 <p>Hypopheidole history</p>
 
 </div></body></html>
@@ -69,13 +76,17 @@ describe Bolton::SubfamilyCatalog do
     taxon.should_not be_invalid
     taxon.should_not be_fossil
     taxon.incertae_sedis_in.should == 'family'
-    taxon.taxonomic_history.should == '<p>Condylodon taxonomic history</p>'
+    taxon.taxonomic_history.should ==
+%{<p><b><i><span lang="EN-GB">Condylodon</span></i></b><span lang="EN-GB"> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </span></p>} +
+%{<p>Condylodon taxonomic history</p>}
 
     taxon = Genus.find_by_name 'Calyptites'
     taxon.should_not be_invalid
     taxon.should be_fossil
     taxon.incertae_sedis_in.should == 'family'
-    taxon.taxonomic_history.should == '<p>Calyptites taxonomic history</p>'
+    taxon.taxonomic_history.should ==
+%{<p><b><i><span lang="EN-GB">Calypitites</span></i></b><span lang="EN-GB"> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </span></p>} +
+%{<p>Calyptites taxonomic history</p>}
 
     taxon = Genus.find_by_name 'Hypochira'
     taxon.status.should == 'unidentifiable'
@@ -90,24 +101,30 @@ describe Bolton::SubfamilyCatalog do
     taxon.should be_invalid
     taxon.should be_fossil
     taxon.status.should == 'excluded'
-    taxon.taxonomic_history.should == '<p>Cariridris taxonomic history</p>'
+    taxon.taxonomic_history.should ==
+%{<p><b><i><span lang="EN-GB">Cariridris</span></i></b><span lang="EN-GB"> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </span></p>} +
+%{<p>Cariridris taxonomic history</p>}
 
     taxon = Genus.find_by_name 'Hypopheidole'
     taxon.should be_invalid
     taxon.status.should == 'nomen nudum'
-    taxon.taxonomic_history.should == '<p>Hypopheidole history</p>'
+    taxon.taxonomic_history.should ==
+%{<p><b><i><span lang="EN-GB">Hypopheidole</span></i></b><span lang="EN-GB"> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </span></p>} +
+%{<p>Hypopheidole history</p>}
 
     taxon = Genus.find_by_name 'Syntaphus'
     taxon.should_not be_invalid
     taxon.should be_fossil
     taxon.incertae_sedis_in.should == 'family'
-    taxon.taxonomic_history.should == ''
+    taxon.taxonomic_history.should ==
+%{<p><b><i><span lang="EN-GB">Syntaphus</span></i></b><span lang="EN-GB"> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </span></p>}
 
     taxon = Genus.find_by_name 'Cretacoformica'
     taxon.should be_invalid
     taxon.should be_fossil
     taxon.status.should == 'excluded'
-    taxon.taxonomic_history.should == ''
+    taxon.taxonomic_history.should == 
+%{<p><b><i><span lang="EN-GB">Cretacoformica</span></i></b><span lang="EN-GB"> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </span></p>}
 
   end
 
