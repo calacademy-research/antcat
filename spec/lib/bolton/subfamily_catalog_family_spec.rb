@@ -49,6 +49,12 @@ describe Bolton::SubfamilyCatalog do
 <p><b><span lang=EN-GB>Genus *<i><span style='color:red'>CRETACOFORMICA</span></i> <o:p></o:p></span></b></p>
 <p><b><i><span lang="EN-GB">Cretacoformica</span></i></b><span lang="EN-GB"> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </span></p>
 
+<p><b><span lang=EN-GB>Homonym replaced by *<i><span style='color:green'>PROMYRMICIUM</span></i><o:p></o:p></span></b></p>
+<p><span lang=EN-GB>*<b><i>Myrmicium</i></b> Heer, 1870: 78.  Type-species: *<i>Myrmicium boreale</i>, by
+monotypy. </span></p>
+<p><b><span lang=EN-GB>Taxonomic history<o:p></o:p></span></b></p>
+<p><span lang=EN-GB>[Junior homonym of *<i style='mso-bidi-font-style: normal'>Myrmicium</i> Westwood, 1854: 396 (*Pseudosiricidae).] </span></p>
+
 <p><b><span lang=EN-GB>Unavailable family-group names in <span style='color:red'>FORMICIDAE</span><o:p></o:p></span></b></p>
 <p><span lang=EN-GB style='color:purple'>ALLOFORMICINAE</span><span lang=EN-GB> [unavailable name]</span></p>
 

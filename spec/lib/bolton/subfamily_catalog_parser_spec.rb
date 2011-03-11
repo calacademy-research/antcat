@@ -51,6 +51,12 @@ describe Bolton::SubfamilyCatalog do
 
   end
 
+  it "should recognize a homonym replaced by line" do
+    @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>Homonym replaced by *<i><span style='color:green'>PROMYRMICIUM</span></i><o:p></o:p></span></b>
+    }).should == {:type => :homonym_replaced_by}
+  end
+
   it "should recognize a fossil genus with an extra language span" do
     @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Genus</span></b><span lang=EN-GB> *<b><i><span style='color:red'>CTENOBETHYLUS</span></i></b> </span>

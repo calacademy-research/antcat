@@ -97,7 +97,13 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     parse_next_line
     skip :other
     expect :genus_header
-    parse_genus(:status => 'excluded') while @type == :genus_header
+    while @type == :genus_header || @type == :homonym_replaced_by
+      if @type == :genus_header
+        parse_genus :status => 'excluded'
+      else
+        parse_homonym_replaced_by
+      end
+    end
   end
 
   def parse_unavailable_family_group_names_in_family

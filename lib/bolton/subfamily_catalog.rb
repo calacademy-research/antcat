@@ -75,6 +75,12 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     genus.reload.update_attributes :taxonomic_history => taxonomic_history
   end
 
+  def parse_homonym_replaced_by
+    parse_next_line
+    expect :genus_line
+    parse_taxonomic_history
+  end
+
   def parse_genus_synonyms genus
     return '' unless @type == :synonyms_header
     parse_results = @paragraph

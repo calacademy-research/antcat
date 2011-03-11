@@ -81,7 +81,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
 
   def parse_genera
     Progress.log 'parse_genera'
-    return unless @type == :genera_header || @type == :genus_header
+    return unless @type == :genera_header || @type == :genus_header || @type == :homonym_replaced_by
     parse_next_line if @type == :genera_header
     while parse_genus; end
   end
