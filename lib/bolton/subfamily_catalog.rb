@@ -82,9 +82,11 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
 
     while @type == :genus_line
       name = @parse_result[:name]
+      fossil = @parse_result[:fossil]
       taxonomic_history = @paragraph
       taxonomic_history << parse_taxonomic_history
-      genus = Genus.create! :name => name, :status => 'synonym', :synonym_of => genus, :subfamily => genus.subfamily, :tribe => genus.tribe, :taxonomic_history => taxonomic_history
+      genus = Genus.create! :name => name, :fossil => fossil, :status => 'synonym', :synonym_of => genus,
+                            :subfamily => genus.subfamily, :tribe => genus.tribe, :taxonomic_history => taxonomic_history
       parse_results << taxonomic_history
     end
 

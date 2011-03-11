@@ -28,7 +28,9 @@ describe Bolton::SubfamilyCatalog do
 <p><b><span lang=EN-GB>Genus</span></b><span lang=EN-GB> *<b><i><span style='color:red'>CALYPTITES</span></i></b> </span></p>
 <p><b><i><span lang="EN-GB">Calypitites</span></i></b><span lang="EN-GB"> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </span></p>
 <p>Calyptites taxonomic history</p>
+
 <p class=MsoNormal style='text-align:justify'><span lang=EN-GB><o:p>&nbsp;</o:p></span></p>
+
 <p><b><span lang=EN-GB>Genus</span></b><span lang=EN-GB> <b><i><span style='color:red'>CONDYLODON</span></i></b> </span></p>
 <p><b><i><span lang="EN-GB">Condylodon</span></i></b><span lang="EN-GB"> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </span></p>
 <p>Condylodon taxonomic history</p>

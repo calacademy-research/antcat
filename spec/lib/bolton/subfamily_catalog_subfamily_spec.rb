@@ -93,6 +93,9 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 <p><b><i><span lang=EN-GB>Burmomyrma</span></i></b></p>
 <p>Burmomyrma history</p>
 
+<p><b><span lang=EN-GB>Junior synonyms of <i><span style='color:red'>BURMOMYRMA<o:p></o:p></span></i></span></b></p>
+<p><span lang=EN-GB>*<b><i>Burmomoma</i></b> Scudder, 1877b: 270 [as member of family Braconidae]. Type-species: *<i>Calyptites antediluvianum</i>, by monotypy. </span></p>
+
 <p><b><span lang=EN-GB>SUBFAMILY <span style='color:red'>DOLICHODERINAE</span><o:p></o:p></span></b></p>
 <p><b><span lang=EN-GB><o:p>&nbsp;</o:p></span></b></p>
 <p><b><span lang=EN-GB><o:p>&nbsp;</o:p></span></b></p>
@@ -134,12 +137,20 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
       taxon.subfamily.should == aneuretinae
       taxon.incertae_sedis_in.should == 'subfamily'
 
-      taxon = Genus.find_by_name 'Burmomyrma'
-      taxon.subfamily.should == aneuretinae
-      taxon.should be_fossil
-      taxon.incertae_sedis_in.should == 'subfamily'
-      taxon.should_not be_invalid
-      taxon.taxonomic_history.should == '<p><b><i><span lang="EN-GB">Burmomyrma</span></i></b></p><p>Burmomyrma history</p>'
+      burmomyrma = Genus.find_by_name 'Burmomyrma'
+      burmomyrma.subfamily.should == aneuretinae
+      burmomyrma.should be_fossil
+      burmomyrma.incertae_sedis_in.should == 'subfamily'
+      burmomyrma.should_not be_invalid
+      burmomyrma.taxonomic_history.should == 
+%{<p><b><i><span lang="EN-GB">Burmomyrma</span></i></b></p><p>Burmomyrma history</p>} +
+%{<p><b><span lang="EN-GB">Junior synonyms of <i><span style="color:red">BURMOMYRMA<p></p></span></i></span></b></p>} +
+%{<p><span lang="EN-GB">*<b><i>Burmomoma</i></b> Scudder, 1877b: 270 [as member of family Braconidae]. Type-species: *<i>Calyptites antediluvianum</i>, by monotypy. </span></p>}
+      burmomoma = Genus.find_by_name 'Burmomoma'
+      burmomoma.should be_fossil
+      burmomoma.should be_invalid
+      burmomoma.status.should == 'synonym'
+      burmomoma.synonym_of.should == burmomyrma
 
       taxon = Genus.find_by_name 'Cananeuretus'
       taxon.subfamily.should == aneuretinae

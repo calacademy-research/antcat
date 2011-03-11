@@ -53,8 +53,13 @@ grammar Bolton::SubfamilyCatalogGrammar
   end
 
   rule genus_line
-    (bold italic span capitalized_word close_tags /.*/) {
-      {:type => :genus_line, :name => capitalized_word.to_s}
+    (
+      (bold italic span capitalized_word close_tags /.*/) |
+      (span fossil_flag bold italic capitalized_word close_tags /.*/)
+    ) {
+      value = {:type => :genus_line, :name => capitalized_word.to_s}
+      value.merge! :fossil => true if fossil_flag.present?
+      value
     }
   end
 

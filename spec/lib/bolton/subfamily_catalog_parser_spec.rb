@@ -43,6 +43,12 @@ describe Bolton::SubfamilyCatalog do
       }).should == {:type => :genus_line, :name => 'Odontomyrmex'}
     end
 
+    it "should recognize a fossil genus line" do
+      @subfamily_catalog.parse(%{
+<span lang=EN-GB>*<b><i>Calyptites</i></b> Scudder, 1877b: 270 [as member of family Braconidae]. Type-species: *<i>Calyptites antediluvianum</i>, by monotypy. </span>
+      }).should == {:type => :genus_line, :name => 'Calyptites', :fossil => true}
+    end
+
   end
 
   it "should recognize a fossil genus with an extra language span" do
