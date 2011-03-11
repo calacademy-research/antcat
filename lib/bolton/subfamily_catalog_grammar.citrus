@@ -64,7 +64,7 @@ grammar Bolton::SubfamilyCatalogGrammar
   end
 
   rule homonym_replaced_by
-    (bold span 'Homonym replaced by *' /.*/) {
+    (bold span 'Homonym replaced by ' fossil_flag? italic (green|red) /.*/) {
       {:type => :homonym_replaced_by}
     }
   end
