@@ -51,13 +51,13 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
   end
 
   private
-  def parse_genus attributes = {}
+  def parse_genus attributes = {}, expect_genus_line = true
     return unless @type == :genus_header
     name = @parse_result[:name]
     status = @parse_result[:status]
     fossil = @parse_result[:fossil]
     parse_next_line
-    expect :genus_line
+    expect :genus_line if expect_genus_line
     taxonomic_history = @paragraph
     taxonomic_history << parse_taxonomic_history
     genus = Genus.find_by_name name

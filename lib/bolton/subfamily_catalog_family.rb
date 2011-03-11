@@ -116,7 +116,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     expect :genus_group_nomina_nuda_in_family_header
     parse_next_line
     expect :genus_header
-    parse_genus(:status => 'nomen nudum') while @type == :genus_header
+    parse_genus({:status => 'nomen nudum'}, false) while @type == :genus_header
   end
 
 end
