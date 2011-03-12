@@ -102,6 +102,16 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 
 <p><b><span lang=EN-GB>Subfamily <span style='color:red'>DOLICHODERINAE</span> <o:p></o:p></span></b></p>
 <p>Dolichoderinae history</p>
+<p><b><span lang=EN-GB>Genera (extant) of Dolichoderinae</span></b><span lang=EN-GB>: <i>Stigmacros</i>.</span></p>
+
+<p><b><span lang=EN-GB>Genera of <span style='color:red'>Dolichoderinae</span><o:p></o:p></span></b></p>
+
+<p><b><span lang=EN-GB>Genus <i><span style='color:red'>STIGMACROS</span></i> <o:p></o:p></span></b></p>
+<p><b><i><span lang=EN-GB>Stigmacros</span></i></b><span lang=EN-GB> Forel, 1905b: 179 [as subgenus of <i>Acantholepis</i>].  </span></p>
+
+<p><b><span lang=EN-GB>Homonym replaced by <i><span style='color:red'>STIGMACROS</span></i></span></b><span lang=EN-GB style='color:red'><o:p></o:p></span></p>
+<p><span lang=EN-GB><o:p>&nbsp;</o:p></span></p>
+<p><b><i><span lang=EN-GB>Acrostigma</span></i></b><span lang=EN-GB> Forel, 1902h: 477 [as subgenus of <i>Acantholepis</i>].  Type-species: <i>Acantholepis (Acrostigma) froggatti</i>, by subsequent designation of Wheeler, W.M. 1911f: 158. </span></p>
 
 <p><b><span lang=EN-GB>THE FORMICOMORPHS: SUBFAMILY FORMICINAE<o:p></o:p></span></b></p>
 
@@ -205,8 +215,9 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 
       dolichoderinae = Subfamily.find_by_name 'Dolichoderinae'
       dolichoderinae.should_not be_invalid
-      dolichoderinae.taxonomic_history.should == '<p>Dolichoderinae history</p>'
-
+      dolichoderinae.taxonomic_history.should == 
+%{<p>Dolichoderinae history</p>} +
+%{<p><b><span lang="EN-GB">Genera (extant) of Dolichoderinae</span></b><span lang="EN-GB">: <i>Stigmacros</i>.</span></p>}
       taxon = Subfamily.find_by_name 'Formicinae'
       taxon.should_not be_invalid
       taxon.taxonomic_history.should == '<p>Formicinae history</p>'

@@ -79,18 +79,4 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     parse_genera
   end
 
-  def parse_genera
-    Progress.log 'parse_genera'
-    return unless @type == :genera_header || @type == :genus_header || @type == :homonym_replaced_by
-    parse_next_line if @type == :genera_header
-    while parse_genus; end
-  end
-
-  def parse_genera_incertae_sedis
-    Progress.log 'parse_genera_incertae_sedis'
-    return unless @type == :genera_incertae_sedis_header
-    parse_next_line
-    parse_genus while @type == :genus_header
-  end
-
 end
