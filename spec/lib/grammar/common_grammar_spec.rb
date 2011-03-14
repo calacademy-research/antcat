@@ -102,13 +102,19 @@ describe CommonGrammar do
 
   describe "Closing tags" do
 
-    it "should require at least one closing tag" do
-      lambda {CommonGrammar.parse(%{ }, :root => :close_tags)}.should raise_error
+    it "should be strict, if the close_tags_required rule is used" do
+      lambda {CommonGrammar.parse(%{ }, :root => :close_tags_required)}.should raise_error
+      CommonGrammar.parse(%{</p>}, :root => :close_tags_required).should_not be_nil 
+      CommonGrammar.parse(%{ </p> }, :root => :close_tags_required).should_not be_nil 
+      CommonGrammar.parse(%{ </p> </i> }, :root => :close_tags_required).should_not be_nil 
+    end
+
+    it "should be loose" do
+      lambda {CommonGrammar.parse(%{ }, :root => :close_tags)}.should_not raise_error
       CommonGrammar.parse(%{</p>}, :root => :close_tags).should_not be_nil 
       CommonGrammar.parse(%{ </p> }, :root => :close_tags).should_not be_nil 
       CommonGrammar.parse(%{ </p> </i> }, :root => :close_tags).should_not be_nil 
     end
-
 
   end
 end

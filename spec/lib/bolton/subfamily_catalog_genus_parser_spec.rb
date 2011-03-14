@@ -117,6 +117,28 @@ describe Bolton::SubfamilyCatalog do
 
   end
 
+  describe "Junior synonym headers" do
+
+    it "should recognize a header for the group of synonyms" do
+      @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>Junior synonyms of <i><span style='color:red'>ANEURETUS<o:p></o:p></span></i></span></b>
+      }).should == {:type => :junior_synonyms_of_genus_header}
+    end
+
+    it "should recognize a header for the group of synonyms when there's only one" do
+      @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>Junior synonym of <i><span style='color:red'>ANEURETUS<o:p></o:p></span></i></span></b>
+      }).should == {:type => :junior_synonyms_of_genus_header}
+    end
+
+    it "should recognize a header for the group of synonyms when there's a period after the closing tags" do
+      @subfamily_catalog.parse(%{
+<b><span lang="EN-GB">Junior synonyms of <i><span style="color:red">ACROPYGA</span></i>.<p></p></span></b>
+      }).should == {:type => :junior_synonyms_of_genus_header}
+    end
+
+  end
+
   describe "Taxonomic history" do
 
     it "shouldn't make a big deal out of a purple word in the taxonomic history" do
