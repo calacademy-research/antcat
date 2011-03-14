@@ -21,9 +21,11 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
       check_status_change genus, attributes[:status]
       raise "Genus #{name} fossil change from #{genus.fossil?} to #{fossil}" if fossil != genus.fossil
       genus.update_attributes attributes
+      Progress.info "Updated #{genus.name}"
     else
       check_existence name, genus
       genus = Genus.create!({:name => name, :fossil => fossil, :status => status, :taxonomic_history => taxonomic_history}.merge(attributes))
+      Progress.info "Created #{genus.name}"
     end
 
     taxonomic_history << parse_homonym_replaced_by_genus
