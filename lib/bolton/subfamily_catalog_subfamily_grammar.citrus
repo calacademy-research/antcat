@@ -4,9 +4,7 @@ grammar Bolton::SubfamilyCatalogSubfamilyGrammar
   rule subfamily_section
     subfamily_centered_header | subfamily_header | 
     tribes_list | genera_list | collective_group_name_list |
-    tribe_header | genera_incertae_sedis_header |
-    genera_header |
-    junior_synonyms_of_genus_header
+    tribe_header | genera_incertae_sedis_header
   end
 
   rule subfamily_centered_header
@@ -81,18 +79,6 @@ grammar Bolton::SubfamilyCatalogSubfamilyGrammar
   rule genera_incertae_sedis_header
     (bold span ('Genera '|'Genus ') incertae_sedis_in red uppercase_word close_tags) {
       {:type => :genera_incertae_sedis_header}
-    }
-  end
-
-  rule genera_header
-    (bold span ('Genera '|'Genus ') 'of ' red capitalized_word close_tags) {
-      {:type => :genera_header}
-    }
-  end
-
-  rule junior_synonyms_of_genus_header
-    (bold span 'Junior synonym' 's'? ' of ' italic red uppercase_word close_tags /.*/) {
-      {:type => :junior_synonyms_of_genus_header}
     }
   end
 

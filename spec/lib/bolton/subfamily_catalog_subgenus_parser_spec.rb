@@ -25,4 +25,14 @@ describe Bolton::SubfamilyCatalog do
 
   end
 
+  describe "Junior synonyms of subgenus header" do
+
+    it "should be recognized" do
+      @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>Junior synonyms of <i><span style='color:red'>STIGMACROS (MYAGROTERAS)</span></i></span></b><span lang=EN-GB style='color:red'><o:p></o:p></span>
+      }).should == {:type => :junior_synonyms_of_subgenus_header}
+    end
+
+  end
+
 end

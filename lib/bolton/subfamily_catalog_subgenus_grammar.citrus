@@ -2,7 +2,7 @@ grammar Bolton::SubfamilyCatalogSubgenusGrammar
   include Bolton::CatalogGrammar
 
   rule subgenus_section
-    subgenera_header | subgenus_header
+    subgenera_header | subgenus_header #| junior_synonyms_of_subgenus_header
   end
 
   rule subgenera_header
@@ -17,5 +17,7 @@ grammar Bolton::SubfamilyCatalogSubgenusGrammar
     }
   end
 
+  #rule junior_synonyms_of_subgenus_header
+  #end
 
 end

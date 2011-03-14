@@ -2,7 +2,8 @@ grammar Bolton::SubfamilyCatalogGenusGrammar
   include Bolton::CatalogGrammar
 
   rule genus_section
-    genus_header | genus_line | homonym_replaced_by_genus_header | homonym_replaced_by_genus_synonym_header
+    genus_header | genus_line | homonym_replaced_by_genus_header | homonym_replaced_by_genus_synonym_header |
+    genera_header | junior_synonyms_of_genus_header
   end
 
   rule genus_header
@@ -45,6 +46,17 @@ grammar Bolton::SubfamilyCatalogGenusGrammar
     }
   end
 
+  rule genera_header
+    (bold span ('Genera '|'Genus ') 'of ' red capitalized_word close_tags) {
+      {:type => :genera_header}
+    }
+  end
+
+  rule junior_synonyms_of_genus_header
+    (bold span 'Junior synonym' 's'? ' of ' italic red uppercase_word close_tags /.*/) {
+      {:type => :junior_synonyms_of_genus_header}
+    }
+  end
   rule homonym_replaced_by_genus_header
     (bold span 'Homonym replaced by ' fossil_flag? italic (green|red) uppercase_word /.*/) {
       {:type => :homonym_replaced_by_genus_header}

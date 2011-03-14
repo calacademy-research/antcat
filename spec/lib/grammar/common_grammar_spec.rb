@@ -78,6 +78,10 @@ describe CommonGrammar do
     it "should just ignore this span as space" do
       CommonGrammar.parse(%{<span lang=EN-GB>}, :root => :space).should_not be_nil
     end
+    it "should just ignore this span around an empty paragraph as a blank line" do
+      CommonGrammar.parse(%{<span lang="EN-GB"><p> </p></span>}, :root => :blank_line).should_not be_nil
+    end
+
   end
 
   describe "Uppercase and capitalized words" do
@@ -93,6 +97,18 @@ describe CommonGrammar do
       CommonGrammar.parse(%{ABC}, :root => :uppercase_word).should_not be_nil
       lambda {CommonGrammar.parse(%{Abc}, :root => :uppercase_word)}.should raise_error
     end
+
+  end
+
+  describe "Closing tags" do
+
+    it "should require at least one closing tag" do
+      lambda {CommonGrammar.parse(%{ }, :root => :close_tags)}.should raise_error
+      CommonGrammar.parse(%{</p>}, :root => :close_tags).should_not be_nil 
+      CommonGrammar.parse(%{ </p> }, :root => :close_tags).should_not be_nil 
+      CommonGrammar.parse(%{ </p> </i> }, :root => :close_tags).should_not be_nil 
+    end
+
 
   end
 end

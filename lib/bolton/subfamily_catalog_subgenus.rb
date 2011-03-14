@@ -33,6 +33,33 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     subgenus = Subgenus.create! :name => name, :status => 'valid', :genus => genus, :taxonomic_history => taxonomic_history
     Progress.info "Created #{subgenus.name}"
 
+    taxonomic_history << parse_homonym_replaced_by_subgenus
+    taxonomic_history << parse_junior_synonyms_of_subgenus(subgenus)
+
+    subgenus.reload.update_attributes :taxonomic_history => taxonomic_history
+
+    parsed_text
+  end
+
+  def parse_homonym_replaced_by_subgenus
+    return '' unless @type == :homonym_replaced_by_subgenus_header
+    Progress.log 'parse_homonym_replaced_by_subgenus'
+
+    parsed_text = @paragraph
+    parse_next_line
+
+    parsed_text << @paragraph << parse_taxonomic_history
+
+    parsed_text
+  end
+
+  def parse_junior_synonyms_of_subgenus subgenus
+    return '' unless @type == :junior_synonyms_of_subgenus_header
+    Progress.log 'parse_junior_synonyms_of_subgenus'
+
+    parsed_text = @paragraph
+    parse_next_line
+
     parsed_text
   end
 
