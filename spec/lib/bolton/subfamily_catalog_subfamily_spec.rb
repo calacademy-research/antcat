@@ -224,25 +224,6 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 
     end
 
-    it "should allow the genera header to be optional" do
-      @subfamily_catalog.should_receive(:parse_family).and_return {
-        Factory :subfamily, :name => 'Aneuretinae'
-        Factory :subfamily, :name => 'Dolichoderinae'
-      }
-
-      @subfamily_catalog.import_html make_contents %{
-<p><b><span lang=EN-GB>SUBFAMILY <span style='color:red'>ANEURETINAE</span><o:p></o:p></span></b></p>
-<p><b><span lang=EN-GB>Subfamily <span style='color:red'>ANEURETINAE</span> <o:p></o:p></span></b></p>
-<p><b><span lang=EN-GB>Tribes of Aneuretinae</span></b><span lang=EN-GB>: Aneuretini, *Pityomyrmecini.</span></p>
-<p><b><span lang=EN-GB>Tribe <span style='color:red'>ANEURETINI</span><o:p></o:p></span></b></p>
-<p><b><span lang=EN-GB>Genus of Aneuretini</span></b><span lang=EN-GB>: <i>Aneuretus</i>.</span></p>
-<p><b><span lang=EN-GB>Genus <i><span style='color:red'>ANEURETUS</span></i> <o:p></o:p></span></b></p>
-      }
-
-      aneuretus = Genus.find_by_name "Aneuretus"
-      aneuretus.tribe.name.should == 'Aneuretini'
-    end
-
     it "should parse a genus when there are no tribes" do
       @subfamily_catalog.should_receive(:parse_family).and_return { Factory :subfamily, :name => 'Martialinae' }
       @subfamily_catalog.import_html make_contents %{
@@ -271,6 +252,7 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 
 <p><b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in <span style='color:red'>DOLICHODERINAE<o:p></o:p></span></span></b></p>
 <p><b><span lang=EN-GB>Genus *<i><span style='color:red'>MIOMYRMEX</span></i> <o:p></o:p></span></b></p>
+<p><b><i><span lang=EN-GB>Miomyrmex</span></i></b><span lang=EN-GB> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </span></p>
 <p>Miomyrmex history</p>
       }
       miomyrmecini = Tribe.find_by_name 'Miomyrmecini'
