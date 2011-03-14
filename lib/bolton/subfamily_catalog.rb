@@ -41,7 +41,8 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
   end
 
   def parse_supersubfamily
-    return unless @type == :supersubfamily_header
+    return unless @type
+    expect :supersubfamily_header
     parse_next_line
 
     parse_genera_lists :supersubfamily
