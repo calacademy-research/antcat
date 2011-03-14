@@ -94,7 +94,12 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 <p>Burmomyrma history</p>
 
 <p><b><span lang=EN-GB>Junior synonyms of <i><span style='color:red'>BURMOMYRMA<o:p></o:p></span></i></span></b></p>
+
 <p><span lang=EN-GB>*<b><i>Burmomoma</i></b> Scudder, 1877b: 270 [as member of family Braconidae]. Type-species: *<i>Calyptites antediluvianum</i>, by monotypy. </span></p>
+
+<p><b><span lang=EN-GB>Homonym replaced by <i><span style='color:red'>Burmomoma</span></i></span></b><span lang=EN-GB style='color:red'><o:p></o:p></span></p>
+<p><b><i><span lang=EN-GB>Decamera</span></i></b><span lang=EN-GB> Roger, 1863a: 166. Type-species: <i>Decamera nigella</i>, by monotypy. </span></p>
+<p><b style='mso-bidi-font-weight: normal'><span lang=EN-GB>Decamera history<o:p></o:p></span></b></p>
 
 <p><b><span lang=EN-GB>SUBFAMILY <span style='color:red'>DOLICHODERINAE</span><o:p></o:p></span></b></p>
 <p><b><span lang=EN-GB><o:p>&nbsp;</o:p></span></b></p>
@@ -155,7 +160,11 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
       burmomyrma.taxonomic_history.should == 
 %{<p><b><i><span lang="EN-GB">Burmomyrma</span></i></b></p><p>Burmomyrma history</p>} +
 %{<p><b><span lang="EN-GB">Junior synonyms of <i><span style="color:red">BURMOMYRMA<p></p></span></i></span></b></p>} +
-%{<p><span lang="EN-GB">*<b><i>Burmomoma</i></b> Scudder, 1877b: 270 [as member of family Braconidae]. Type-species: *<i>Calyptites antediluvianum</i>, by monotypy. </span></p>}
+%{<p><span lang="EN-GB">*<b><i>Burmomoma</i></b> Scudder, 1877b: 270 [as member of family Braconidae]. Type-species: *<i>Calyptites antediluvianum</i>, by monotypy. </span></p>} +
+%{<p><b><span lang="EN-GB">Homonym replaced by <i><span style="color:red">Burmomoma</span></i></span></b><span lang="EN-GB" style="color:red"><p></p></span></p>} +
+%{<p><b><i><span lang="EN-GB">Decamera</span></i></b><span lang="EN-GB"> Roger, 1863a: 166. Type-species: <i>Decamera nigella</i>, by monotypy. </span></p>} +
+%{<p><b style="mso-bidi-font-weight: normal"><span lang="EN-GB">Decamera history<p></p></span></b></p>}
+
       burmomoma = Genus.find_by_name 'Burmomoma'
       burmomoma.should be_fossil
       burmomoma.should be_invalid
