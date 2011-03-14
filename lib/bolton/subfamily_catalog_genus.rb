@@ -34,42 +34,43 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     genus.reload.update_attributes :taxonomic_history => taxonomic_history
   end
 
-  def parse_references
-    ''
-  end
-
   def parse_homonym_replaced_by_genus
     return '' unless @type == :homonym_replaced_by_genus_header
     Progress.log 'parse_homonym_replaced_by_genus'
 
-    parse_results = @paragraph
+    parsed_text = @paragraph
     parse_next_line
 
-    while @type == :genus_line
-      parse_results << @paragraph << parse_taxonomic_history
-    end
+    parsed_text << @paragraph << parse_taxonomic_history
 
-    parse_results
+    parsed_text
   end
 
   def parse_junior_synonyms_of_genus genus
     return '' unless @type == :junior_synonyms_of_genus_header
     Progress.log 'parse_junior_synonyms_of_genus'
 
-    parse_results = @paragraph
+    parsed_text = @paragraph
     parse_next_line
 
-    while @type == :genus_line
-      name = @parse_result[:name]
-      fossil = @parse_result[:fossil]
-      taxonomic_history = @paragraph
-      taxonomic_history << parse_taxonomic_history
-      genus = Genus.create! :name => name, :fossil => fossil, :status => 'synonym', :synonym_of => genus,
-                            :subfamily => genus.subfamily, :tribe => genus.tribe, :taxonomic_history => taxonomic_history
-      parse_results << taxonomic_history
-    end
+    parsed_text << parse_junior_synonym_of_genus(genus) while @type == :genus_line
 
-    parse_results
+    parsed_text
+  end
+
+  def parse_junior_synonym_of_genus genus
+    parsed_text = ''
+    name = @parse_result[:name]
+    fossil = @parse_result[:fossil]
+    taxonomic_history = @paragraph
+    taxonomic_history << parse_taxonomic_history
+    genus = Genus.create! :name => name, :fossil => fossil, :status => 'synonym', :synonym_of => genus,
+                          :subfamily => genus.subfamily, :tribe => genus.tribe, :taxonomic_history => taxonomic_history
+    parsed_text << taxonomic_history
+  end
+
+  def parse_references
+    ''
   end
 
   def parse_genera_lists parent_rank, parent_attributes = {}
