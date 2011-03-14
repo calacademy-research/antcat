@@ -56,6 +56,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     parse_next_line
 
     parsed_text << parse_junior_synonym_of_genus(genus) while @type == :genus_line
+    parsed_text << parse_homonym_replaced_by_genus_synonym
 
     parsed_text
   end
@@ -69,6 +70,18 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     genus = Genus.create! :name => name, :fossil => fossil, :status => 'synonym', :synonym_of => genus,
                           :subfamily => genus.subfamily, :tribe => genus.tribe, :taxonomic_history => taxonomic_history
     parsed_text << taxonomic_history
+  end
+
+  def parse_homonym_replaced_by_genus_synonym
+    return '' unless @type == :homonym_replaced_by_genus_synonym_header
+    Progress.log 'parse_homonym_replaced_by_genus_synonym'
+
+    parsed_text = @paragraph
+    parse_next_line
+
+    parsed_text << @paragraph << parse_taxonomic_history
+
+    parsed_text
   end
 
   def parse_references
