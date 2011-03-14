@@ -4,7 +4,7 @@ grammar Bolton::SubfamilyCatalogGrammar
   include Bolton::SubfamilyCatalogSubfamilyGrammar
 
   rule subfamily_catalog
-    a_supersubfamily_section | family_section | subfamily_section | genus_header | homonym_replaced_by | genus_line | blank_line | other
+    a_supersubfamily_section | family_section | subfamily_section | genus_header | homonym_replaced_by_genus_header | genus_line | blank_line | other
   end
 
   # Citrus 2.3.7 doesn't like rules beginning with 'super'
@@ -63,9 +63,9 @@ grammar Bolton::SubfamilyCatalogGrammar
     }
   end
 
-  rule homonym_replaced_by
+  rule homonym_replaced_by_genus_header
     (bold span 'Homonym replaced by ' fossil_flag? italic (green|red) /.*/) {
-      {:type => :homonym_replaced_by}
+      {:type => :homonym_replaced_by_genus_header}
     }
   end
 

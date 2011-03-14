@@ -6,7 +6,7 @@ grammar Bolton::SubfamilyCatalogSubfamilyGrammar
     tribes_list | genera_list | collective_group_name_list |
     tribe_header | genera_incertae_sedis_header |
     genera_header |
-    synonyms_header
+    junior_synonyms_of_genus_header
   end
 
   rule subfamily_centered_header
@@ -90,9 +90,9 @@ grammar Bolton::SubfamilyCatalogSubfamilyGrammar
     }
   end
 
-  rule synonyms_header
+  rule junior_synonyms_of_genus_header
     (bold span 'Junior synonym' 's'? ' of ' italic red uppercase_word close_tags /.*/) {
-      {:type => :synonyms_header}
+      {:type => :junior_synonyms_of_genus_header}
     }
   end
 

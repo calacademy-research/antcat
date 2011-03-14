@@ -26,15 +26,21 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
       genus = Genus.create!({:name => name, :fossil => fossil, :status => status, :taxonomic_history => taxonomic_history}.merge(attributes))
     end
 
-    taxonomic_history << parse_homonym_replaced_bys
-    taxonomic_history << parse_genus_synonyms(genus)
+    taxonomic_history << parse_homonym_replaced_by_genus
+    taxonomic_history << parse_junior_synonyms_of_genus(genus)
+    taxonomic_history << parse_subgenera(genus)
+    taxonomic_history << parse_references
 
     genus.reload.update_attributes :taxonomic_history => taxonomic_history
   end
 
-  def parse_homonym_replaced_bys
-    return '' unless @type == :homonym_replaced_by
-    Progress.log 'parse_homonym_replaced_bys'
+  def parse_references
+    ''
+  end
+
+  def parse_homonym_replaced_by_genus
+    return '' unless @type == :homonym_replaced_by_genus_header
+    Progress.log 'parse_homonym_replaced_by_genus'
 
     parse_results = @paragraph
     parse_next_line
@@ -46,9 +52,9 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     parse_results
   end
 
-  def parse_genus_synonyms genus
-    return '' unless @type == :synonyms_header
-    Progress.log 'parse_genus_synonyms'
+  def parse_junior_synonyms_of_genus genus
+    return '' unless @type == :junior_synonyms_of_genus_header
+    Progress.log 'parse_junior_synonyms_of_genus'
 
     parse_results = @paragraph
     parse_next_line

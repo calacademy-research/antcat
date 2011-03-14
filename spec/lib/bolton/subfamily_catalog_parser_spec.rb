@@ -56,13 +56,13 @@ describe Bolton::SubfamilyCatalog do
     it "should recognize a homonym replaced by line" do
       @subfamily_catalog.parse(%{
   <b><span lang=EN-GB>Homonym replaced by *<i><span style='color:green'>PROMYRMICIUM</span></i><o:p></o:p></span></b>
-      }).should == {:type => :homonym_replaced_by}
+      }).should == {:type => :homonym_replaced_by_genus_header}
     end
 
     it "should recognize a homonym replaced by line" do
       @subfamily_catalog.parse(%{
 <b><span lang="EN-GB">Homonym replaced by <i><span style="color:red">STIGMACROS</span></i></span></b><span lang="EN-GB" style="color:red"><p></p></span>
-      }).should == {:type => :homonym_replaced_by}
+      }).should == {:type => :homonym_replaced_by_genus_header}
     end
 
     it "should just include a homonym-replaced-by in a synonym as :other" do
