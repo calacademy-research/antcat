@@ -3,9 +3,10 @@ grammar Bolton::SubfamilyCatalogGrammar
   include Bolton::SubfamilyCatalogFamilyGrammar
   include Bolton::SubfamilyCatalogSubfamilyGrammar
   include Bolton::SubfamilyCatalogGenusGrammar
+  include Bolton::SubfamilyCatalogSubgenusGrammar
 
   rule subfamily_catalog
-    a_supersubfamily_section | family_section | subfamily_section | genus_section | blank_line | other
+    a_supersubfamily_section | family_section | subfamily_section | genus_section | subgenus_section | blank_line | other
   end
 
   # Citrus 2.3.7 doesn't like rules beginning with 'super'

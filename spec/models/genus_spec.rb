@@ -17,6 +17,14 @@ describe Genus do
     atta.children.should == atta.species
   end
 
+  it "should have subgenera" do
+    atta = Factory :genus, :name => 'Atta'
+    Factory :subgenus, :name => 'robusta', :genus => atta
+    Factory :subgenus, :name => 'saltensis', :genus => atta
+    atta = Genus.find_by_name('Atta')
+    atta.subgenera.map(&:name).should =~ ['robusta', 'saltensis']
+  end
+
   describe "import" do
 
     it "should import all the fields correctly" do

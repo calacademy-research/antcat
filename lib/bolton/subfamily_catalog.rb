@@ -42,6 +42,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
 
   def parse_supersubfamily
     return unless @type
+    Progress.log 'parse_supersubfamily'
     expect :supersubfamily_header
     parse_next_line
 
@@ -53,6 +54,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
 
   private
   def parse_taxonomic_history
+    Progress.log 'parse_taxonomic_history'
     taxonomic_history = ''
     loop do
       parse_next_line

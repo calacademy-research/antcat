@@ -2,6 +2,7 @@ class Genus < Taxon
   belongs_to :tribe
   belongs_to :subfamily
   has_many :species, :class_name => 'Species', :order => :name
+  has_many :subgenera, :class_name => 'Subgenus', :order => :name
 
   def children
     species

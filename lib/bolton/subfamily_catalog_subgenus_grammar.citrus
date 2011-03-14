@@ -1,0 +1,21 @@
+grammar Bolton::SubfamilyCatalogSubgenusGrammar
+  include Bolton::CatalogGrammar
+
+  rule subgenus_section
+    subgenera_header | subgenus_header
+  end
+
+  rule subgenera_header
+    (bold span 'Subgenera of ' /.*/) {
+      {:type => :subgenera_header}
+    }
+  end
+
+  rule subgenus_header
+    (bold span 'Subgenus ' italic red uppercase_word ' (' subgenus_name:uppercase_word ')' close_tags) {
+      {:type => :subgenus_header, :name => subgenus_name.downcase.capitalize.strip}
+    }
+  end
+
+
+end

@@ -2,8 +2,9 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
   private
 
   def parse_subfamily
-    Progress.log 'parse_subfamily'
     return unless @type == :subfamily_centered_header
+    Progress.log 'parse_subfamily'
+
     parse_next_line
     expect :subfamily_header
 
@@ -31,7 +32,9 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
   end
 
   def parse_tribes_lists subfamily
+    return '' unless @type == :tribes_list
     Progress.log 'parse_tribes_lists'
+
     parsed_text = ''
     while @type == :tribes_list
       parsed_text << @paragraph
@@ -46,10 +49,10 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
   end
 
   def parse_collective_group_names_list subfamily
-    Progress.log 'parse_collective_group_names'
-    parsed_text = ''
     return '' unless @type == :collective_group_name_list
-    parsed_text << @paragraph
+    Progress.log 'parse_collective_group_names'
+
+    parsed_text = @paragraph
     @parse_result[:names].each do |name, fossil|
       Genus.create! :name => name, :subfamily => subfamily, :fossil => fossil, :status => 'unidentifiable'
     end
@@ -64,6 +67,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
 
   def parse_tribe subfamily
     Progress.log 'parse_tribe'
+
     name = @parse_result[:name]
     fossil = @parse_result[:fossil]
     taxonomic_history = parse_taxonomic_history

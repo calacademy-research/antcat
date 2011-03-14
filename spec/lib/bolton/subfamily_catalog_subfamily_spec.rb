@@ -118,6 +118,11 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 <p><span lang=EN-GB><o:p>&nbsp;</o:p></span></p>
 <p><b><i><span lang=EN-GB>Acrostigma</span></i></b><span lang=EN-GB> Forel, 1902h: 477 [as subgenus of <i>Acantholepis</i>].  Type-species: <i>Acantholepis (Acrostigma) froggatti</i>, by subsequent designation of Wheeler, W.M. 1911f: 158. </span></p>
 
+<p><b><span lang=EN-GB>Subgenera of <i><span style='color:red'>STIGMACROS</span></i> include the nominal plus the following.<o:p></o:p></span></b></p>
+<p>Subgenera note</p>
+<p><b><span lang=EN-GB>Subgenus <i><span style='color:red'>STIGMACROS (MYAGROTERAS)</span></i> <o:p></o:p></span></b></p>
+<p><b><i><span lang=EN-GB>Myagroteras</span></i></b><span lang=EN-GB> Moffett, 1985bb: 31 [as subgenus of <i>Myrmoteras</i>].  Type-species: <i>Myrmoteras donisthorpei</i>, by original designation.</span></p>
+
 <p><b><span lang=EN-GB>THE FORMICOMORPHS: SUBFAMILY FORMICINAE<o:p></o:p></span></b></p>
 
 <p><b><span lang=EN-GB>SUBFAMILY <span style='color:red'>FORMICINAE</span><o:p></o:p></span></b></p>
@@ -230,6 +235,24 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
       taxon = Subfamily.find_by_name 'Formicinae'
       taxon.should_not be_invalid
       taxon.taxonomic_history.should == '<p>Formicinae history</p>'
+
+      stigmacros = Genus.find_by_name 'Stigmacros'
+      stigmacros.should_not be_nil
+      stigmacros.subgenera.count.should == 1
+      stigmacros.subgenera.first.name.should == 'Myagroteras'
+      stigmacros.taxonomic_history.should ==
+%{<p><b><i><span lang="EN-GB">Stigmacros</span></i></b><span lang="EN-GB"> Forel, 1905b: 179 [as subgenus of <i>Acantholepis</i>].  </span></p>} +
+%{<p><b><span lang="EN-GB">Homonym replaced by <i><span style="color:red">STIGMACROS</span></i></span></b><span lang="EN-GB" style="color:red"><p></p></span></p>} +
+%{<p><b><i><span lang="EN-GB">Acrostigma</span></i></b><span lang="EN-GB"> Forel, 1902h: 477 [as subgenus of <i>Acantholepis</i>].  Type-species: <i>Acantholepis (Acrostigma) froggatti</i>, by subsequent designation of Wheeler, W.M. 1911f: 158. </span></p>} +
+%{<p><b><span lang="EN-GB">Subgenera of <i><span style="color:red">STIGMACROS</span></i> include the nominal plus the following.<p></p></span></b></p>} +
+%{<p>Subgenera note</p>} +
+%{<p><b><span lang="EN-GB">Subgenus <i><span style="color:red">STIGMACROS (MYAGROTERAS)</span></i> <p></p></span></b></p>} +
+%{<p><b><i><span lang="EN-GB">Myagroteras</span></i></b><span lang="EN-GB"> Moffett, 1985bb: 31 [as subgenus of <i>Myrmoteras</i>].  Type-species: <i>Myrmoteras donisthorpei</i>, by original designation.</span></p>}
+
+      myagroteras = Subgenus.find_by_name 'Myagroteras'
+      myagroteras.genus.should == stigmacros
+      myagroteras.taxonomic_history.should ==
+%{<p><b><i><span lang="EN-GB">Myagroteras</span></i></b><span lang="EN-GB"> Moffett, 1985bb: 31 [as subgenus of <i>Myrmoteras</i>].  Type-species: <i>Myrmoteras donisthorpei</i>, by original designation.</span></p>}
 
     end
 
