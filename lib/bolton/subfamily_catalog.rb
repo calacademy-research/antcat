@@ -31,6 +31,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     parse_family
     parse_supersubfamilies 
 
+  ensure
     super
     Progress.puts "#{Subfamily.count} subfamilies, #{Tribe.count} tribes, #{Genus.count} genera, #{Subgenus.count} subgenera, #{Species.count} species"
   end
