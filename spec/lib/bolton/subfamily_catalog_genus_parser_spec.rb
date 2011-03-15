@@ -95,6 +95,12 @@ describe Bolton::SubfamilyCatalog do
       }).should == {:type => :other}
     end
 
+    it "is a line with a non-bold first word (the taxon) if it has 'Type-species' somewhere" do
+      @subfamily_catalog.parse(%{
+<span lang=EN-GB>*<i>Eoaenictites</i> Hong, 2002: 541. Type-species: *<i>Eoaenictites castanifurvus</i>, by original designation.</span>
+      }).should == {:type => :genus_line, :name => 'Eoaenictites', :fossil => true}
+    end
+
   end
 
   describe "Homonym replaced by genus header" do

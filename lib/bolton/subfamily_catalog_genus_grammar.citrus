@@ -39,6 +39,7 @@ grammar Bolton::SubfamilyCatalogGenusGrammar
     (
       (bold italic span capitalized_word close_tags /.*/) |
       (span fossil_flag bold italic capitalized_word close_tags /.*/) |
+      (span fossil_flag italic capitalized_word /.*Type-species.*/) |
       (span fossil_flag italic capitalized_word close_tags /.*\[Collective group name\.\].*/)
     ) {
       value = {:type => :genus_line, :name => capitalized_word.to_s}
@@ -58,6 +59,7 @@ grammar Bolton::SubfamilyCatalogGenusGrammar
       {:type => :junior_synonyms_of_genus_header}
     }
   end
+
   rule homonym_replaced_by_genus_header
     (bold span 'Homonym replaced by ' fossil_flag? italic (green|red) uppercase_word /.*/) {
       {:type => :homonym_replaced_by_genus_header}
