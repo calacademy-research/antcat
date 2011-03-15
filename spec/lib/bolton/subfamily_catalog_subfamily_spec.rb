@@ -121,17 +121,19 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 <p><b><span lang=EN-GB>Subgenera of <i><span style='color:red'>STIGMACROS</span></i> include the nominal plus the following.<o:p></o:p></span></b></p>
 <p>Subgenera note</p>
 <p><b><span lang=EN-GB>Subgenus <i><span style='color:red'>STIGMACROS (MYAGROTERAS)</span></i> <o:p></o:p></span></b></p>
-<p><b><i><span lang=EN-GB>Myagroteras</span></i></b><span lang=EN-GB> Moffett, 1985bb: 31 [as subgenus of <i>Myrmoteras</i>].  Type-species: <i>Myrmoteras donisthorpei</i>, by original designation.</span></p>
+<p><b><i><span lang=EN-GB>Myagroteras</span></i></b><span lang=EN-GB> Moffett, 1985b: 31 [as subgenus of <i>Myrmoteras</i>].  Type-species: <i>Myrmoteras donisthorpei</i>, by original designation.</span></p>
+
+<p><b><span lang=EN-GB>Junior synonyms of <i><span style='color:red'>STIGMACROS (MYAGROTERAS)</span></i></span></b><span lang=EN-GB style='color:red'><o:p></o:p></span></p>
+<p><b><i><span lang=EN-GB>Condylomyrma</span></i></b><span lang=EN-GB> Santschi, 1928c: 72 [as subgenus of <i>Camponotus</i>].  Type-species: <i>Camponotus (Condylomyrma) bryani</i>, by monotypy. </span></p>
+<p><b><span lang=EN-GB>Condylomyrma history<o:p></o:p></span></b></p>
+
+<p><b><span lang=EN-GB>THE FORMICOMORPHS: SUBFAMILY FORMICINAE<o:p></o:p></span></b></p>
 
 <p><b><span lang=EN-GB>SUBFAMILY <span style='color:red'>FORMICINAE</span><o:p></o:p></span></b></p>
 <p><b><span lang=EN-GB>Subfamily <span style='color:red'>FORMICINAE</span> <o:p></o:p></span></b></p>
 <p>Formicinae history</p>
 
       }
-
-#<p><b><span lang=EN-GB>Junior synonyms of <i><span style='color:red'>STIGMACROS (MYAGROTERAS)</span></i></span></b><span lang=EN-GB style='color:red'><o:p></o:p></span></p>
-#<p><b><i><span lang=EN-GB>Condylomyrma</span></i></b><span lang=EN-GB> Santschi, 1928c: 72 [as subgenus of <i>Camponotus</i>].  Type-species: <i>Camponotus (Condylomyrma) bryani</i>, by monotypy. </span></p>
-#<p><b><span lang=EN-GB>Condylomyrma history<o:p></o:p></span></b></p> <p><b><span lang=EN-GB>THE FORMICOMORPHS: SUBFAMILY FORMICINAE<o:p></o:p></span></b></p>
 
       aneuretinae = Subfamily.find_by_name 'Aneuretinae'
       aneuretinae.taxonomic_history.should ==
@@ -240,27 +242,26 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 
       stigmacros = Genus.find_by_name 'Stigmacros'
       stigmacros.should_not be_nil
-      stigmacros.subgenera.count.should == 1
-      stigmacros.subgenera.first.name.should == 'Myagroteras'
-      #stigmacros.taxonomic_history.should ==
-#%{<p><b><i><span lang="EN-GB">Stigmacros</span></i></b><span lang="EN-GB"> Forel, 1905b: 179 [as subgenus of <i>Acantholepis</i>].  </span></p>} +
-#%{<p><b><span lang="EN-GB">Homonym replaced by <i><span style="color:red">STIGMACROS</span></i></span></b><span lang="EN-GB" style="color:red"><p></p></span></p>} +
-#%{<p><b><i><span lang="EN-GB">Acrostigma</span></i></b><span lang="EN-GB"> Forel, 1902h: 477 [as subgenus of <i>Acantholepis</i>].  Type-species: <i>Acantholepis (Acrostigma) froggatti</i>, by subsequent designation of Wheeler, W.M. 1911f: 158. </span></p>} +
-#%{<p><b><span lang="EN-GB">Subgenera of <i><span style="color:red">STIGMACROS</span></i> include the nominal plus the following.<p></p></span></b></p>} +
-#%{<p>Subgenera note</p>} +
-#%{<p><b><span lang="EN-GB">Subgenus <i><span style="color:red">STIGMACROS (MYAGROTERAS)</span></i> <p></p></span></b></p>} +
-#%{<p><b><i><span lang="EN-GB">Myagroteras</span></i></b><span lang="EN-GB"> Moffett, 1985bb: 31 [as subgenus of <i>Myrmoteras</i>].  Type-species: <i>Myrmoteras donisthorpei</i>, by original designation.</span></p>} +
-#%{<p><b><span lang="EN-GB">Junior synonyms of <i><span style='color:red'>STIGMACROS (MYAGROTERAS)</span></i></span></b><span lang="EN-GB" style='color:red'><o:p></o:p></span></p>} +
-#%{<p><b><i><span lang="EN-GB">Condylomyrma</span></i></b><span lang="EN-GB"> Santschi, 1928c: 72 [as subgenus of <i>Camponotus</i>].  Type-species: <i>Camponotus (Condylomyrma) bryani</i>, by monotypy. </span></p>} +
-#%{<p><b><span lang="EN-GB">Condylomyrma history<o:p></o:p></span></b></p>}
+      stigmacros.subgenera.map(&:name).should =~ ['Myagroteras', 'Condylomyrma']
+      stigmacros.taxonomic_history.should ==
+%{<p><b><i><span lang="EN-GB">Stigmacros</span></i></b><span lang="EN-GB"> Forel, 1905b: 179 [as subgenus of <i>Acantholepis</i>].  </span></p>} +
+%{<p><b><span lang="EN-GB">Homonym replaced by <i><span style="color:red">STIGMACROS</span></i></span></b><span lang="EN-GB" style="color:red"><p></p></span></p>} +
+%{<p><b><i><span lang="EN-GB">Acrostigma</span></i></b><span lang="EN-GB"> Forel, 1902h: 477 [as subgenus of <i>Acantholepis</i>].  Type-species: <i>Acantholepis (Acrostigma) froggatti</i>, by subsequent designation of Wheeler, W.M. 1911f: 158. </span></p>} +
+%{<p><b><span lang="EN-GB">Subgenera of <i><span style="color:red">STIGMACROS</span></i> include the nominal plus the following.<p></p></span></b></p>} +
+%{<p>Subgenera note</p>} +
+%{<p><b><span lang="EN-GB">Subgenus <i><span style="color:red">STIGMACROS (MYAGROTERAS)</span></i> <p></p></span></b></p>} +
+%{<p><b><i><span lang="EN-GB">Myagroteras</span></i></b><span lang="EN-GB"> Moffett, 1985b: 31 [as subgenus of <i>Myrmoteras</i>].  Type-species: <i>Myrmoteras donisthorpei</i>, by original designation.</span></p>} +
+%{<p><b><span lang="EN-GB">Junior synonyms of <i><span style="color:red">STIGMACROS (MYAGROTERAS)</span></i></span></b><span lang="EN-GB" style="color:red"><p></p></span></p>} +
+%{<p><b><i><span lang="EN-GB">Condylomyrma</span></i></b><span lang="EN-GB"> Santschi, 1928c: 72 [as subgenus of <i>Camponotus</i>].  Type-species: <i>Camponotus (Condylomyrma) bryani</i>, by monotypy. </span></p>} +
+%{<p><b><span lang="EN-GB">Condylomyrma history<p></p></span></b></p>}
 
       myagroteras = Subgenus.find_by_name 'Myagroteras'
       myagroteras.genus.should == stigmacros
       #myagroteras.taxonomic_history.should ==
 #%{<p><b><i><span lang="EN-GB">Myagroteras</span></i></b><span lang="EN-GB"> Moffett, 1985bb: 31 [as subgenus of <i>Myrmoteras</i>].  Type-species: <i>Myrmoteras donisthorpei</i>, by original designation.</span></p>} +
-#%{<p><b><span lang="EN-GB">Junior synonyms of <i><span style='color:red'>STIGMACROS (MYAGROTERAS)</span></i></span></b><span lang="EN-GB" style='color:red'><o:p></o:p></span></p>} +
+#%{<p><b><span lang="EN-GB">Junior synonyms of <i><span style='color:red'>STIGMACROS (MYAGROTERAS)</span></i></span></b><span lang="EN-GB" style='color:red'><p></p></span></p>} +
 #%{<p><b><i><span lang="EN-GB">Condylomyrma</span></i></b><span lang="EN-GB"> Santschi, 1928c: 72 [as subgenus of <i>Camponotus</i>].  Type-species: <i>Camponotus (Condylomyrma) bryani</i>, by monotypy. </span></p>} +
-#%{<p><b><span lang="EN-GB">Condylomyrma history<o:p></o:p></span></b></p>}
+#%{<p><b><span lang="EN-GB">Condylomyrma history<p></p></span></b></p>}
 
       #condylomyrma = Subgenus.find_by_name 'Condylomyrma'
       #condylomyrma.genus.should == stigmacros
@@ -268,7 +269,7 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
       #condylomyrma.synonym_of.should == myagroteras
       #condylomyrma.taxonomic_history.should == 
 #%{<p><b><i><span lang="EN-GB">Condylomyrma</span></i></b><span lang="EN-GB"> Santschi, 1928c: 72 [as subgenus of <i>Camponotus</i>].  Type-species: <i>Camponotus (Condylomyrma) bryani</i>, by monotypy. </span></p>} +
-#%{<p><b><span lang="EN-GB">Condylomyrma history<o:p></o:p></span></b></p>}
+#%{<p><b><span lang="EN-GB">Condylomyrma history<p></p></span></b></p>}
     end
 
     it "should parse a genus when there are no tribes" do
