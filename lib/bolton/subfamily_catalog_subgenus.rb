@@ -42,7 +42,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
   end
 
   def parse_homonym_replaced_by_subgenus
-    return '' unless @type == :homonym_replaced_by_subgenus_header
+    return '' unless @type == :homonym_replaced_by_genus_header
     Progress.log 'parse_homonym_replaced_by_subgenus'
 
     parsed_text = @paragraph
