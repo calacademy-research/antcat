@@ -83,6 +83,18 @@ describe Bolton::SubfamilyCatalog do
       }).should == {:type => :genus_line, :name => 'Calyptites', :fossil => true}
     end
 
+    it "should recognize the 'genus line' that actually describes a collective group name" do
+      @subfamily_catalog.parse(%{
+<span lang="EN-GB">*<i style="mso-bidi-font-style:normal">Myrmeciites </i>Archibald, Cover &amp; Moreau, 2006: 500. [Collective group name.]</span>
+      }).should == {:type => :genus_line, :name => 'Myrmeciites', :fossil => true}
+    end
+
+    it "should not consider normal non-boldface genus description as a genus line" do
+      @subfamily_catalog.parse(%{
+<span lang="EN-GB">*<i style="mso-bidi-font-style:normal">Calyptites</i> in Braconidae: Scudder, 1891: 629; Donisthorpe, 1943f: 629.</span>
+      }).should == {:type => :other}
+    end
+
   end
 
   describe "Homonym replaced by genus header" do
