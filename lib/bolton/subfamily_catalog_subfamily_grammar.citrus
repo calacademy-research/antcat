@@ -84,7 +84,7 @@ grammar Bolton::SubfamilyCatalogSubfamilyGrammar
   end
 
   rule genera_incertae_sedis_header
-    (bold span ('Genera '|'Genus ') incertae_sedis_in red uppercase_word close_tags) {
+    (bold span ('Genera '|'Genus ') '(extinct) '? incertae_sedis_in red uppercase_word close_tags) {
       {:type => :genera_incertae_sedis_header}
     }
   end

@@ -104,6 +104,12 @@ describe Bolton::SubfamilyCatalog do
         }).should == {:type => :genera_incertae_sedis_header}
       end
 
+      it "should be recognized when extinct" do
+        @subfamily_catalog.parse(%{
+<b><span lang="EN-GB">Genera (extinct) <i>incertae sedis</i> in <span style="color:red">DOLICHODERINAE<p></p></span></span></b>
+        }).should == {:type => :genera_incertae_sedis_header}
+      end
+
     end
 
   end
