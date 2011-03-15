@@ -71,7 +71,7 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 <p>Aneuretini history</p>
 
 <p><b><span lang=EN-GB>Junior synonym of <span style='color:red'>ANEURETINI<o:p></o:p></span></span></b></p>
-<p><b><i><span lang=EN-GB>Stictoponerini</span></i></b><span lang=EN-GB> Arnol'di, 1930d: 161. Type-genus: <i>Stictoponera</i> (junior synonym of <i>Gnamptogenys</i>).</span></p>
+<p><b><span lang=EN-GB>Stictoponerini</span></b><span lang=EN-GB> Arnol'di, 1930d: 161. Type-genus: <i>Stictoponera</i> (junior synonym of <i>Gnamptogenys</i>).</span></p>
 <p><b><span lang=EN-GB>Taxonomic history<o:p></o:p></span></b></p>
 <p><span lang=EN-GB>Stictoponerini as subtribe of Aneuretini: Arnol'di, 1930d: 161.</span></p>
 
@@ -165,7 +165,7 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
       aneuretini.taxonomic_history.should ==
 %{<p>Aneuretini history</p>} +
 %{<p><b><span lang="EN-GB">Junior synonym of <span style="color:red">ANEURETINI<p></p></span></span></b></p>} +
-%{<p><b><i><span lang="EN-GB">Stictoponerini</span></i></b><span lang="EN-GB"> Arnol'di, 1930d: 161. Type-genus: <i>Stictoponera</i> (junior synonym of <i>Gnamptogenys</i>).</span></p>} +
+%{<p><b><span lang="EN-GB">Stictoponerini</span></b><span lang="EN-GB"> Arnol'di, 1930d: 161. Type-genus: <i>Stictoponera</i> (junior synonym of <i>Gnamptogenys</i>).</span></p>} +
 %{<p><b><span lang="EN-GB">Taxonomic history<p></p></span></b></p>} +
 %{<p><span lang="EN-GB">Stictoponerini as subtribe of Aneuretini: Arnol'di, 1930d: 161.</span></p>}
 

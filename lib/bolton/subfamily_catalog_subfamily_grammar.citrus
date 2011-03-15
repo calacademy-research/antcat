@@ -4,8 +4,7 @@ grammar Bolton::SubfamilyCatalogSubfamilyGrammar
   rule subfamily_section
     subfamily_centered_header | subfamily_header | 
     tribes_list | genera_list | collective_group_name_list |
-    tribe_header | genera_incertae_sedis_header |
-    junior_synonyms_of_tribe_header
+    genera_incertae_sedis_header
   end
 
   rule subfamily_centered_header
@@ -32,12 +31,6 @@ grammar Bolton::SubfamilyCatalogSubfamilyGrammar
       value.merge! :incertae_sedis => true if incertae_sedis_in.present?
       value
     } 
-  end
-
-  rule junior_synonyms_of_tribe_header
-    (bold span 'Junior synonym of ' red uppercase_word close_tags_required) {
-      {:type => :junior_synonyms_of_tribe_header}
-    }
   end
 
   rule genera_list
@@ -72,14 +65,6 @@ grammar Bolton::SubfamilyCatalogSubfamilyGrammar
   rule list_name
     (italic? fossil_flag? italic? s capitalized_word tag_end?) {
       [capitalized_word.to_s, fossil_flag.present? ? true : nil]
-    }
-  end
-
-  rule tribe_header
-    (bold span 'Tribe' close_tags fossil_flag? bold? red uppercase_word close_tags) {
-      value = {:type => :tribe_header, :name => uppercase_word.downcase.capitalize.strip}
-      value.merge! :fossil => true if fossil_flag.present?
-      value
     }
   end
 

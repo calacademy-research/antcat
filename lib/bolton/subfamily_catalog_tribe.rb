@@ -52,12 +52,13 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     parsed_text = @paragraph
     parse_next_line
 
-    parsed_text << parse_junior_synonym_of_tribe(tribe) while @type == :genus_line
+    parsed_text << parse_junior_synonym_of_tribe(tribe) while @type == :tribe_line
 
     parsed_text
   end
 
   def parse_junior_synonym_of_tribe tribe
+    Progress.log 'parse_junior_synonym_of_tribe'
     parsed_text = ''
     name = @parse_result[:name]
     fossil = @parse_result[:fossil]

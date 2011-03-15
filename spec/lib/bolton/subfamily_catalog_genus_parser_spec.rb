@@ -100,7 +100,7 @@ describe Bolton::SubfamilyCatalog do
 <span lang=EN-GB>*<i>Eoaenictites</i> Hong, 2002: 541. Type-species: *<i>Eoaenictites castanifurvus</i>, by original designation.</span>
       }).should == {:type => :genus_line, :name => 'Eoaenictites', :fossil => true}
     end
-
+    
   end
 
   describe "Homonym replaced by genus header" do
