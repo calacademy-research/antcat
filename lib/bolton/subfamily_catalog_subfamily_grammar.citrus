@@ -4,7 +4,8 @@ grammar Bolton::SubfamilyCatalogSubfamilyGrammar
   rule subfamily_section
     subfamily_centered_header | subfamily_header | 
     tribes_list | genera_list | collective_group_name_list |
-    tribe_header | genera_incertae_sedis_header
+    tribe_header | genera_incertae_sedis_header |
+    junior_synonyms_of_tribe_header
   end
 
   rule subfamily_centered_header
@@ -31,6 +32,12 @@ grammar Bolton::SubfamilyCatalogSubfamilyGrammar
       value.merge! :incertae_sedis => true if incertae_sedis_in.present?
       value
     } 
+  end
+
+  rule junior_synonyms_of_tribe_header
+    (bold span 'Junior synonym of ' red uppercase_word close_tags_required) {
+      {:type => :junior_synonyms_of_tribe_header}
+    }
   end
 
   rule genera_list

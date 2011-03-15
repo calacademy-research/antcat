@@ -63,6 +63,15 @@ describe Bolton::SubfamilyCatalog do
         }).should == {:type => :tribe_header, :name => 'Pityomyrmecini', :fossil => true}
       end
 
+      describe "Junior synonyms of tribe header" do
+
+        it "should be recognized" do
+          @subfamily_catalog.parse(%{
+  <b><span lang=EN-GB>Junior synonym of <span style='color:red'>ECTATOMMINI<o:p></o:p></span></span></b>
+          }).should == {:type => :junior_synonyms_of_tribe_header}
+        end
+
+      end
     end
 
     describe "Genera header" do

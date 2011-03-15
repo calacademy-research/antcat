@@ -70,6 +70,11 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 <p><b><span lang=EN-GB>Tribe <span style='color:red'>ANEURETINI</span><o:p></o:p></span></b></p>
 <p>Aneuretini history</p>
 
+<p><b><span lang=EN-GB>Junior synonym of <span style='color:red'>ANEURETINI<o:p></o:p></span></span></b></p>
+<p><b><i><span lang=EN-GB>Stictoponerini</span></i></b><span lang=EN-GB> Arnol'di, 1930d: 161. Type-genus: <i>Stictoponera</i> (junior synonym of <i>Gnamptogenys</i>).</span></p>
+<p><b><span lang=EN-GB>Taxonomic history<o:p></o:p></span></b></p>
+<p><span lang=EN-GB>Stictoponerini as subtribe of Aneuretini: Arnol'di, 1930d: 161.</span></p>
+
 <p><b><span lang=EN-GB>Genus (extant) of Aneuretini</span></b><span lang=EN-GB>: <i>Aneuretus</i>.</span></p>
 
 <p><b><span lang=EN-GB>Genera of <span style='color:red'>Aneuretini</span><o:p></o:p></span></b></p>
@@ -157,7 +162,18 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
       aneuretini = Tribe.find_by_name 'Aneuretini'
       aneuretini.subfamily.should == aneuretinae
       aneuretini.should_not be_fossil
-      aneuretini.taxonomic_history.should == '<p>Aneuretini history</p>'
+      aneuretini.taxonomic_history.should ==
+%{<p>Aneuretini history</p>} +
+%{<p><b><span lang="EN-GB">Junior synonym of <span style="color:red">ANEURETINI<p></p></span></span></b></p>} +
+%{<p><b><i><span lang="EN-GB">Stictoponerini</span></i></b><span lang="EN-GB"> Arnol'di, 1930d: 161. Type-genus: <i>Stictoponera</i> (junior synonym of <i>Gnamptogenys</i>).</span></p>} +
+%{<p><b><span lang="EN-GB">Taxonomic history<p></p></span></b></p>} +
+%{<p><span lang="EN-GB">Stictoponerini as subtribe of Aneuretini: Arnol'di, 1930d: 161.</span></p>}
+
+      stictoponerini = Tribe.find_by_name 'Stictoponerini'
+      stictoponerini.should_not be_fossil
+      stictoponerini.should be_invalid
+      stictoponerini.status.should == 'synonym'
+      stictoponerini.synonym_of.should == aneuretini
 
       taxon = Tribe.find_by_name 'Pityomyrmecini'
       taxon.subfamily.should == aneuretinae
