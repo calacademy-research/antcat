@@ -9,7 +9,7 @@
 
 #  To import these files, run
 #    rake bolton:import:subfamilies
-#  This generates log/bolton_subfamily_catalog.log
+#  This generates info/bolton_subfamily_catalog.info
 #
 # Manual edits:
 #   03. FORMICOMORPHS Made Johnia bold
@@ -46,7 +46,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
 
   def parse_supersubfamily
     return unless @type
-    Progress.log 'parse_supersubfamily'
+    Progress.info 'parse_supersubfamily'
     expect :supersubfamily_header
     parse_next_line
 
@@ -58,7 +58,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
 
   private
   def parse_taxonomic_history
-    Progress.log 'parse_taxonomic_history'
+    Progress.info 'parse_taxonomic_history'
     taxonomic_history = ''
     loop do
       parse_next_line
@@ -69,7 +69,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
   end
 
   def parse_references
-    Progress.log 'parse_references'
+    Progress.info 'parse_references'
     parsed_text = ''
     parsed_text << parse_taxonomic_history if @type == :other
     parsed_text

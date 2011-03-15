@@ -3,7 +3,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
 
   def parse_subgenera genus
     return '' unless @type == :subgenera_header
-    Progress.log 'parse_subgenera'
+    Progress.info 'parse_subgenera'
 
     parsed_text = @paragraph
     parse_next_line
@@ -43,7 +43,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
 
   def parse_homonym_replaced_by_subgenus
     return '' unless @type == :homonym_replaced_by_genus_header
-    Progress.log 'parse_homonym_replaced_by_subgenus'
+    Progress.info 'parse_homonym_replaced_by_subgenus'
 
     parsed_text = @paragraph
     parse_next_line
@@ -55,7 +55,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
 
   def parse_junior_synonyms_of_subgenus subgenus
     return '' unless @type == :junior_synonyms_of_subgenus_header
-    Progress.log 'parse_junior_synonyms_of_subgenus'
+    Progress.info 'parse_junior_synonyms_of_subgenus'
 
     parsed_text = @paragraph
     parse_next_line

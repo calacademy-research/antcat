@@ -3,7 +3,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
 
   def parse_subfamily
     return unless @type == :subfamily_centered_header
-    Progress.log 'parse_subfamily'
+    Progress.info 'parse_subfamily'
 
     parse_next_line
     expect :subfamily_header
@@ -38,7 +38,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
 
   def parse_collective_group_names_list subfamily
     return '' unless @type == :collective_group_name_list
-    Progress.log 'parse_collective_group_names'
+    Progress.info 'parse_collective_group_names'
 
     parsed_text = @paragraph
     @parse_result[:names].each do |name, fossil|

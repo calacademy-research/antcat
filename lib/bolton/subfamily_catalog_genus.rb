@@ -3,7 +3,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
 
   def parse_genus attributes = {}, expect_genus_line = true
     return unless @type == :genus_header
-    Progress.log 'parse_genus'
+    Progress.info 'parse_genus'
 
     name = @parse_result[:name]
     status = @parse_result[:status]
@@ -38,7 +38,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
 
   def parse_homonym_replaced_by_genus
     return '' unless @type == :homonym_replaced_by_genus_header
-    Progress.log 'parse_homonym_replaced_by_genus'
+    Progress.info 'parse_homonym_replaced_by_genus'
 
     parsed_text = @paragraph
     parse_next_line
@@ -50,7 +50,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
 
   def parse_junior_synonyms_of_genus genus
     return '' unless @type == :junior_synonyms_of_genus_header
-    Progress.log 'parse_junior_synonyms_of_genus'
+    Progress.info 'parse_junior_synonyms_of_genus'
 
     parsed_text = @paragraph
     parse_next_line
@@ -74,7 +74,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
 
   def parse_homonym_replaced_by_genus_synonym
     return '' unless @type == :homonym_replaced_by_genus_synonym_header
-    Progress.log 'parse_homonym_replaced_by_genus_synonym'
+    Progress.info 'parse_homonym_replaced_by_genus_synonym'
 
     parsed_text = @paragraph
     parse_next_line
@@ -85,7 +85,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
   end
 
   def parse_genera_lists parent_rank, parent_attributes = {}
-    Progress.log 'parse_genera_lists'
+    Progress.info 'parse_genera_lists'
 
     parsed_text = ''
 
@@ -105,7 +105,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
 
   def parse_genera
     return unless @type == :genera_header || @type == :genus_header
-    Progress.log 'parse_genera'
+    Progress.info 'parse_genera'
 
     parse_next_line if @type == :genera_header
 
@@ -114,7 +114,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
 
   def parse_genera_incertae_sedis
     return unless @type == :genera_incertae_sedis_header
-    Progress.log 'parse_genera_incertae_sedis'
+    Progress.info 'parse_genera_incertae_sedis'
 
     parse_next_line
 
