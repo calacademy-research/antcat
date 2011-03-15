@@ -18,7 +18,7 @@ grammar Bolton::SubfamilyCatalogSubgenusGrammar
   end
 
   rule junior_synonyms_of_subgenus_header
-    (bold span 'Junior synonyms of ' italic red uppercase_word ' (' uppercase_word ')' close_tags) {
+    (bold span 'Junior synonym' 's'? ' of ' italic red uppercase_word ' (' uppercase_word ')' close_tags) {
       {:type => :junior_synonyms_of_subgenus_header}
     }
   end

@@ -34,6 +34,12 @@ describe Bolton::SubfamilyCatalog do
         }).should == {:type => :junior_synonyms_of_subgenus_header}
       end
 
+      it "should be recognized when there's only one" do
+        @subfamily_catalog.parse(%{
+<b><span lang="EN-GB">Junior synonym of <i><span style="color:red">CAMPONOTUS (MAYRIA)<p></p></span></i></span></b>
+        }).should == {:type => :junior_synonyms_of_subgenus_header}
+      end
+
     end
   end
 end
