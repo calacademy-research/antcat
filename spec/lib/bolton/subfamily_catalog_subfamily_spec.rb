@@ -324,6 +324,30 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
       orthonotus.should be_nil
     end
 
+    it "should handle a tribe with its genera lists after its synonyms instead of before" do
+      @subfamily_catalog.should_receive(:parse_family).and_return {
+        Factory :subfamily, :name => 'Martialinae'
+        Factory :tribe, :name => 'Lasiini'
+      }
+      @subfamily_catalog.import_html make_contents %{
+<p><b><span lang=EN-GB style='color:black'>SUBFAMILY</span><span lang=EN-GB> <span style='color:red'>MARTIALINAE</span><o:p></o:p></span></b></p>
+<p><b><span lang=EN-GB>Subfamily <span style='color:red'>MARTIALINAE<o:p></o:p></span></span></b></p>
+<p><b><span lang=EN-GB>Martialinae</span></b><span lang=EN-GB> Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.  </span></p>
+
+<p><b><span lang=EN-GB>Tribe <span style='color:red'>LASIINI</span> <o:p></o:p></span></b></p>
+<p><b style='mso-bidi-font-weight:normal'><span lang=EN-GB>Lasiini</span></b><span lang=EN-GB> Ashmead, 1905b: 384. Type-genus: <i style='mso-bidi-font-style: normal'>Lasius</i>.</span></p>
+
+<p><b><span lang=EN-GB>Junior synonym of <span style='color:red'>LASIINI<o:p></o:p></span></span></b></p>
+<p><b><span lang=EN-GB>Acanthomyopsini</span></b><span lang=EN-GB> Donisthorpe, 1943f: 618. Type-genus: <i style='mso-bidi-font-style: normal'>Acanthomyops</i>.</span></p>
+
+<p><b><span lang=EN-GB>Genera (extant) of Lasiini</span></b><span lang=EN-GB>: <i>Acropyga.</span></p>
+      }
+
+      Tribe.find_by_name('Lasiini').should_not be_nil
+      Genus.find_by_name('Acropyga').should_not be_nil
+      Tribe.find_by_name('Acanthomyopsini').should_not be_nil
+    end
+
     it "should parse a genus when there are no tribes" do
       @subfamily_catalog.should_receive(:parse_family).and_return { Factory :subfamily, :name => 'Martialinae' }
       @subfamily_catalog.import_html make_contents %{
