@@ -10,7 +10,12 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
 
     name = @parse_result[:name]
     fossil = @parse_result[:fossil]
-    taxonomic_history = parse_taxonomic_history
+
+    parse_next_line
+    expect :family_group_line
+    taxonomic_history = @paragraph
+
+    taxonomic_history << parse_taxonomic_history
 
     subfamily = Subfamily.find_by_name(name)
     raise "Subfamily #{name} doesn't exist" unless subfamily

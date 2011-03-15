@@ -35,6 +35,7 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
       @subfamily_catalog.import_html make_contents %{
 <p><b><span lang=EN-GB>SUBFAMILY *<span style='color:red'>ARMANIINAE</span><o:p></o:p></span></b></p>
 <p><b><span lang=EN-GB>Subfamily *<span style='color:red'>ARMANIINAE</span> <o:p></o:p></span></b></p>
+<p><b><span lang=EN-GB>Armaniinae</span></b><span lang=EN-GB> Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.  </span></p>
       }
       Subfamily.find_by_name('Armaniinae').should be_fossil
     end
@@ -53,6 +54,7 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 <p><span lang=EN-GB><o:p>&nbsp;</o:p></span></p>
 
 <p><b><span lang=EN-GB>Subfamily <span style='color:red'>ANEURETINAE</span> <o:p></o:p></span></b></p>
+<p><b><span lang=EN-GB>Aneuretini</span></b><span lang=EN-GB> Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.  </span></p>
 <p>Aneuritinae history</p>
 
 <p><b><span lang=EN-GB>Tribes of Aneuretinae</span></b><span lang=EN-GB>: Aneuretini, *Pityomyrmecini.</span></p>
@@ -108,9 +110,9 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 
 <p><b><span lang=EN-GB>SUBFAMILY <span style='color:red'>DOLICHODERINAE</span><o:p></o:p></span></b></p>
 <p><b><span lang=EN-GB><o:p>&nbsp;</o:p></span></b></p>
-<p><b><span lang=EN-GB><o:p>&nbsp;</o:p></span></b></p>
 
 <p><b><span lang=EN-GB>Subfamily <span style='color:red'>DOLICHODERINAE</span> <o:p></o:p></span></b></p>
+<p><b><span lang=EN-GB>Dolichoderinae</span></b><span lang=EN-GB> Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.  </span></p>
 <p>Dolichoderinae history</p>
 <p><b><span lang=EN-GB>Genera (extant) of Dolichoderinae</span></b><span lang=EN-GB>: <i>Stigmacros</i>.</span></p>
 
@@ -143,12 +145,14 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 
 <p><b><span lang=EN-GB>SUBFAMILY <span style='color:red'>FORMICINAE</span><o:p></o:p></span></b></p>
 <p><b><span lang=EN-GB>Subfamily <span style='color:red'>FORMICINAE</span> <o:p></o:p></span></b></p>
+<p><b><span lang=EN-GB>Formicinae</span></b><span lang=EN-GB> Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.  </span></p>
 <p>Formicinae history</p>
 
       }
 
       aneuretinae = Subfamily.find_by_name 'Aneuretinae'
       aneuretinae.taxonomic_history.should ==
+'<p><b><span lang="EN-GB">Aneuretini</span></b><span lang="EN-GB"> Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.  </span></p>' +
 '<p>Aneuritinae history</p>' +
 '<p><b><span lang="EN-GB">Tribes of Aneuretinae</span></b><span lang="EN-GB">: Aneuretini, *Pityomyrmecini.</span></p>' +
 '<p><b><span lang="EN-GB">Tribes <i>incertae sedis</i> in Aneuretinae</span></b><span lang="EN-GB">: *Miomyrmecini.</span></p>' +
@@ -257,11 +261,14 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
       dolichoderinae = Subfamily.find_by_name 'Dolichoderinae'
       dolichoderinae.should_not be_invalid
       dolichoderinae.taxonomic_history.should == 
+'<p><b><span lang="EN-GB">Dolichoderinae</span></b><span lang="EN-GB"> Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.  </span></p>' +
 %{<p>Dolichoderinae history</p>} +
 %{<p><b><span lang="EN-GB">Genera (extant) of Dolichoderinae</span></b><span lang="EN-GB">: <i>Stigmacros</i>.</span></p>}
       taxon = Subfamily.find_by_name 'Formicinae'
       taxon.should_not be_invalid
-      taxon.taxonomic_history.should == '<p>Formicinae history</p>'
+      taxon.taxonomic_history.should ==
+%{<p><b><span lang="EN-GB">Formicinae</span></b><span lang="EN-GB"> Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.  </span></p>} +
+%{<p>Formicinae history</p>}
 
       stigmacros = Genus.find_by_name 'Stigmacros'
       stigmacros.should_not be_nil
@@ -318,6 +325,7 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
       @subfamily_catalog.import_html make_contents %{
 <p><b><span lang=EN-GB style='color:black'>SUBFAMILY</span><span lang=EN-GB> <span style='color:red'>MARTIALINAE</span><o:p></o:p></span></b></p>
 <p><b><span lang=EN-GB>Subfamily <span style='color:red'>MARTIALINAE<o:p></o:p></span></span></b></p>
+<p><b><span lang=EN-GB>Martialinae</span></b><span lang=EN-GB> Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.  </span></p>
 <p><b><span lang=EN-GB>Genus of Martialinae</span></b><span lang=EN-GB>: <i>Martialis</i>.</span></p>
 <p><b><span lang=EN-GB>Genus of <span style='color:red'>Martialinae</span><o:p></o:p></span></b></p>
 <p><b><span lang=EN-GB>Genus <i><span style='color:red'>MARTIALIS</span></i><o:p></o:p></span></b></p>
@@ -334,6 +342,7 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
       @subfamily_catalog.import_html make_contents %{
 <p><b><span lang=EN-GB>SUBFAMILY <span style='color:red'>DOLICHODERINAE</span><o:p></o:p></span></b></p>
 <p><b><span lang=EN-GB>Subfamily <span style='color:red'>DOLICHODERINAE</span> <o:p></o:p></span></b></p>
+<p><b><span lang=EN-GB>Dolichoderinae</span></b><span lang=EN-GB> Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.  </span></p>
 <p><b><span lang=EN-GB>Tribes (extinct) <i>incertae sedis</i> in Dolichoderinae</span></b><span lang=EN-GB>: *Miomyrmecini, *Zherichiniini.</span></p>
 <p><b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in Dolichoderinae</span></b><span lang=EN-GB>: *<i>Miomyrmex</i>.</span></p>
 <p><b><span lang=EN-GB>Tribe *<span style='color:red'>MIOMYRMECINI</span><o:p></o:p></span></b></p>
@@ -359,6 +368,7 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
       @subfamily_catalog.import_html make_contents %{
 <p><b><span lang=EN-GB>SUBFAMILY <span style='color:red'>ANEURETINAE</span><o:p></o:p></span></b></p>
 <p><b><span lang=EN-GB>Subfamily <span style='color:red'>ANEURETINAE</span> <o:p></o:p></span></b></p>
+<p><b><span lang="EN-GB">Aneuretinae</span></b><span lang="EN-GB"> Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.  </span></p>
 <p><b><span lang=EN-GB>Tribes of Aneuretinae</span></b><span lang=EN-GB>: Aneuretini, *Pityomyrmecini.</span></p>
 <p><b><span lang=EN-GB>Tribe <span style='color:red'>ANEURETINI</span><o:p></o:p></span></b></p>
 <p><b><span lang=EN-GB>Genus of Aneuretini</span></b><span lang=EN-GB>: <i>Tricytarus</i>.</span></p>
@@ -378,6 +388,7 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
         @subfamily_catalog.import_html make_contents %{
 <p><b><span lang=EN-GB>SUBFAMILY <span style='color:red'>ANEURETINAE</span><o:p></o:p></span></b></p>
 <p><b><span lang=EN-GB>Subfamily <span style='color:red'>ANEURETINAE</span> <o:p></o:p></span></b></p>
+<p><b><span lang="EN-GB">Aneuretinae</span></b><span lang="EN-GB"> Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.  </span></p>
 <b><span lang=EN-GB>Tribes of Aneuretinae</span></b><span lang=EN-GB>: Miomyrmecini</span></p>
 <p><b><span lang=EN-GB>Tribe *<span style='color:red'>MIOMYRMECINI</span><o:p></o:p></span></b></p>
 <p><b><span lang=EN-GB>Genera of Miomyrmecini</span></b><span lang=EN-GB>: <i>Eutetramorium, *Protomyrmica, <span style="mso-spacerun: yes">&nbsp;</span>Secostruma</i>.</span></p>
@@ -397,17 +408,22 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
         @contents = %{
   <p><b><span lang=EN-GB>SUBFAMILY <span style='color:red'>ANEURETINAE</span><o:p></o:p></span></b></p>
   <p><b><span lang=EN-GB>Subfamily <span style='color:red'>ANEURETINAE</span> <o:p></o:p></span></b></p>
+  <p><b><span lang="EN-GB">Aneuretinae</span></b><span lang="EN-GB"> Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.  </span></p>
         }
       end
 
       it "should handle a plus sign in the taxonomic history" do
         @subfamily_catalog.import_html make_contents @contents + '<p>Panama + Columbia</p>'
-        Taxon.find_by_name('Aneuretinae').taxonomic_history.should == '<p>Panama + Columbia</p>'
+        Taxon.find_by_name('Aneuretinae').taxonomic_history.should == 
+%{<p><b><span lang="EN-GB">Aneuretinae</span></b><span lang="EN-GB"> Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.  </span></p>} +
+%{<p>Panama + Columbia</p>}
       end
 
       it "should not translate &quot; character entity" do
         @subfamily_catalog.import_html make_contents @contents + '<p>&quot;XXX</p>'
-        Taxon.find_by_name('Aneuretinae').taxonomic_history.should == '<p>&quot;XXX</p>'
+        Taxon.find_by_name('Aneuretinae').taxonomic_history.should ==
+%{<p><b><span lang="EN-GB">Aneuretinae</span></b><span lang="EN-GB"> Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.  </span></p>} +
+%{<p>&quot;XXX</p>}
       end
 
     end
