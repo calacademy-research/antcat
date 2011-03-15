@@ -21,6 +21,7 @@
 
 require 'bolton/subfamily_catalog_family'
 require 'bolton/subfamily_catalog_subfamily'
+require 'bolton/subfamily_catalog_tribe'
 require 'bolton/subfamily_catalog_genus'
 require 'bolton/subfamily_catalog_subgenus'
 

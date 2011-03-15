@@ -31,23 +31,6 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     true
   end
 
-  def parse_tribes_lists subfamily
-    return '' unless @type == :tribes_list
-    Progress.log 'parse_tribes_lists'
-
-    parsed_text = ''
-    while @type == :tribes_list
-      parsed_text << @paragraph
-      @parse_result[:tribes].each do |tribe, fossil|
-        attributes = {:name => tribe, :subfamily => subfamily, :fossil => fossil, :status => 'valid'}
-        attributes.merge!(:incertae_sedis_in => 'subfamily') if @parse_result[:incertae_sedis]
-        Tribe.create! attributes
-      end
-      parse_next_line
-    end
-    parsed_text
-  end
-
   def parse_collective_group_names_list subfamily
     return '' unless @type == :collective_group_name_list
     Progress.log 'parse_collective_group_names'
@@ -58,29 +41,6 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     end
     parse_next_line
     parsed_text
-  end
-
-  def parse_tribes subfamily
-    Progress.log 'parse_tribes'
-    parse_tribe(subfamily) while @type == :tribe_header
-  end
-
-  def parse_tribe subfamily
-    Progress.log 'parse_tribe'
-
-    name = @parse_result[:name]
-    fossil = @parse_result[:fossil]
-    taxonomic_history = parse_taxonomic_history
-
-    tribe = Tribe.find_by_name(name)
-    raise "Tribe #{name} doesn't exist" unless tribe
-
-    tribe.update_attributes :taxonomic_history => taxonomic_history
-
-    parse_genera_lists :tribe, :subfamily => subfamily, :tribe => tribe
-
-    skip :other
-    parse_genera
   end
 
 end
