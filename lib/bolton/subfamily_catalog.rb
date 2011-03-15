@@ -12,15 +12,16 @@
 #  This generates info/bolton_subfamily_catalog.info
 #
 # Manual edits:
-#   03. FORMICOMORPHS Made Johnia bold
-#   03. FORMICOMORPHS Made Pseudocamponotus bold and removed bold in taxonomic history
-#   04. Remove 'Genus' from 'Genus MYRMECIITES'
-#   07. MYRMICOMORPHS 1.htm Corrected 'Adelomymex' to 'Adelomyrmex'
-#   07. MYRMICOMORPHS 1.htm Added Formosimyrma to Solenopsidini genera list
-#   07. ECTAHETEROMORPHS.htm Removed italics from Stictoponerini
-#   08. MYRMICOMORPHS 2.htm Removed italics from 'PHEIDOLINI' in junior synonyms header
-#   08. MYRMICOMORPHS 2.htm Corrected 'Quinqueangulicapito' to 'Quineangulicapito'
-#   09. PONEROMORPHS.htm Added Probolomyrmex to Probolomyrmecini genus list
+#   03. FORMICOMORPHS     Made Johnia bold
+#   03. FORMICOMORPHS     Made Pseudocamponotus bold and removed bold in taxonomic history
+#   04. MYRMECIOMORPHS    Remove 'Genus' from 'Genus MYRMECIITES'
+#   06. ECTAHETEROMORPHS  Removed italics from Stictoponerini
+#   07. MYRMICOMORPHS 1   Corrected 'Adelomymex' to 'Adelomyrmex'
+#   07. MYRMICOMORPHS 1   Added Formosimyrma to Solenopsidini genera list
+#   08. MYRMICOMORPHS 2   Removed italics from 'PHEIDOLINI' in junior synonyms header
+#   08. MYRMICOMORPHS 2   Corrected 'Quinqueangulicapito' to 'Quineangulicapito'
+#   09. PONEROMORPHS      Added Probolomyrmex to Probolomyrmecini genus list
+#   10. EXTINCT SUBFAMS   Removed italics from Specomyrminae family_group_line
 
 require 'bolton/subfamily_catalog_family'
 require 'bolton/subfamily_catalog_subfamily'
