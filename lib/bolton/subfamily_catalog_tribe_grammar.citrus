@@ -14,7 +14,7 @@ grammar Bolton::SubfamilyCatalogTribeGrammar
   end
 
   rule junior_synonyms_of_tribe_header
-    (bold span 'Junior synonym of ' red uppercase_word close_tags_required) {
+    (bold span 'Junior synonym' 's'? ' of ' red uppercase_word close_tags_required) {
       {:type => :junior_synonyms_of_tribe_header}
     }
   end

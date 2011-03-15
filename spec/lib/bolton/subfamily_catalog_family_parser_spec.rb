@@ -91,6 +91,18 @@ describe Bolton::SubfamilyCatalog do
       }).should == {:type => :family_group_line, :name => 'Formicariae'}
     end
 
+    it "should recognize an extinct tribe line" do
+      @subfamily_catalog.parse(%{
+<span lang="EN-GB">*<b style="mso-bidi-font-weight:normal">Pityomyrmecini</b> Wheeler, W.M. 1915h: 98. Type-genus: *<i style="mso-bidi-font-style:normal">Pityomyrmex</i>.</span>
+      }).should == {:type => :family_group_line, :name => 'Pityomyrmecini'}
+    end
+
+    it "should recognize this" do
+      @subfamily_catalog.parse(%{
+<b><span lang="EN-GB">Anonychomyrmini</span></b><span lang="EN-GB"> Donisthorpe, 1947c: 588. Type-genus: <i style="mso-bidi-font-style: normal">Anonychomyrma</i>.</span>
+      }).should == {:type => :family_group_line, :name => 'Anonychomyrmini'}
+    end
+
   end
     
 end

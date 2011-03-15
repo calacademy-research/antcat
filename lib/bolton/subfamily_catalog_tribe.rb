@@ -29,7 +29,11 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     name = @parse_result[:name]
     fossil = @parse_result[:fossil]
 
-    taxonomic_history = parse_taxonomic_history
+    parse_next_line
+    expect :family_group_line
+    taxonomic_history = @paragraph
+
+    taxonomic_history << parse_taxonomic_history
 
     tribe = Tribe.find_by_name(name)
     raise "Tribe #{name} doesn't exist" unless tribe

@@ -20,7 +20,10 @@ grammar Bolton::SubfamilyCatalogFamilyGrammar
   end
 
   rule family_group_line
-    (bold span capitalized_word close_tags_required /.*Type-genus.*/) {
+    (
+      (span fossil_flag bold capitalized_word close_tags_required /.*Type-genus.*/) |
+      (bold span capitalized_word close_tags_required /.*Type-genus.*/)
+    ) {
       {:type => :family_group_line, :name => capitalized_word.to_s}
     }
   end

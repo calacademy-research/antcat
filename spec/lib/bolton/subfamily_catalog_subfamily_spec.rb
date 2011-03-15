@@ -70,6 +70,7 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 <p>a references</p>
 
 <p><b><span lang=EN-GB>Tribe <span style='color:red'>ANEURETINI</span><o:p></o:p></span></b></p>
+<p><b><span lang="EN-GB">Aneuretini</span></b><span lang="EN-GB"> Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.  </span></p>
 <p>Aneuretini history</p>
 
 <p><b><span lang=EN-GB>Junior synonym of <span style='color:red'>ANEURETINI<o:p></o:p></span></span></b></p>
@@ -91,6 +92,7 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 <p>Odontomyrmex history</p>
 
 <p><b><span lang=EN-GB>Tribe <span style='color:red'>PITYOMYRMECINI</span><o:p></o:p></span></b></p>
+<p><b><span lang=EN-GB>Pityomyrmecini</span></b><span lang=EN-GB> Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.  </span></p>
 <p>Pityomyrmecini history</p>
 
 <p><b><span lang=EN-GB>Genera <i>incertae sedis</i> in <span style='color:red'>ANEURETINAE</span><o:p></o:p></span></b></p>
@@ -167,6 +169,7 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
       aneuretini.subfamily.should == aneuretinae
       aneuretini.should_not be_fossil
       aneuretini.taxonomic_history.should ==
+%{<p><b><span lang="EN-GB">Aneuretini</span></b><span lang="EN-GB"> Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.  </span></p>} +
 %{<p>Aneuretini history</p>} +
 %{<p><b><span lang="EN-GB">Junior synonym of <span style="color:red">ANEURETINI<p></p></span></span></b></p>} +
 %{<p><b><span lang="EN-GB">Stictoponerini</span></b><span lang="EN-GB"> Arnol'di, 1930d: 161. Type-genus: <i>Stictoponera</i> (junior synonym of <i>Gnamptogenys</i>).</span></p>} +
@@ -182,8 +185,9 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
       taxon = Tribe.find_by_name 'Pityomyrmecini'
       taxon.subfamily.should == aneuretinae
       taxon.should be_fossil
-      taxon.taxonomic_history.should == '<p>Pityomyrmecini history</p>'
-
+      taxon.taxonomic_history.should ==
+%{<p><b><span lang="EN-GB">Pityomyrmecini</span></b><span lang="EN-GB"> Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.  </span></p>} +
+%{<p>Pityomyrmecini history</p>}
       taxon = Tribe.find_by_name 'Miomyrmecini'
       taxon.subfamily.should == aneuretinae
       taxon.incertae_sedis_in.should == 'subfamily'
@@ -346,6 +350,7 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 <p><b><span lang=EN-GB>Tribes (extinct) <i>incertae sedis</i> in Dolichoderinae</span></b><span lang=EN-GB>: *Miomyrmecini, *Zherichiniini.</span></p>
 <p><b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in Dolichoderinae</span></b><span lang=EN-GB>: *<i>Miomyrmex</i>.</span></p>
 <p><b><span lang=EN-GB>Tribe *<span style='color:red'>MIOMYRMECINI</span><o:p></o:p></span></b></p>
+<p><b><span lang="EN-GB">Miomyrmecini</span></b><span lang="EN-GB"> Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.  </span></p>
 <p><b><span lang=EN-GB>Genus</span></b><span lang=EN-GB>: *<i>Miomyrmex</i> (see under: Genera <i>incertae sedis</i> in Dolichoderinae, below).</span></p>
 
 <p><b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in <span style='color:red'>DOLICHODERINAE<o:p></o:p></span></span></b></p>
@@ -371,6 +376,7 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 <p><b><span lang="EN-GB">Aneuretinae</span></b><span lang="EN-GB"> Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.  </span></p>
 <p><b><span lang=EN-GB>Tribes of Aneuretinae</span></b><span lang=EN-GB>: Aneuretini, *Pityomyrmecini.</span></p>
 <p><b><span lang=EN-GB>Tribe <span style='color:red'>ANEURETINI</span><o:p></o:p></span></b></p>
+<p><b><span lang="EN-GB">Aneuretini</span></b><span lang="EN-GB"> Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.  </span></p>
 <p><b><span lang=EN-GB>Genus of Aneuretini</span></b><span lang=EN-GB>: <i>Tricytarus</i>.</span></p>
 <p><b><span lang=EN-GB>Genus <i><span style='color:green'>TRICYTARUS</span></i> <o:p></o:p></span></b></p>
 <p><b><i><span lang=EN-GB>Tricytarus</span></i></b><span lang=EN-GB> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </span></p>
@@ -391,6 +397,7 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 <p><b><span lang="EN-GB">Aneuretinae</span></b><span lang="EN-GB"> Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.  </span></p>
 <b><span lang=EN-GB>Tribes of Aneuretinae</span></b><span lang=EN-GB>: Miomyrmecini</span></p>
 <p><b><span lang=EN-GB>Tribe *<span style='color:red'>MIOMYRMECINI</span><o:p></o:p></span></b></p>
+<p><b><span lang="EN-GB">Miomyrmecini</span></b><span lang="EN-GB"> Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.  </span></p>
 <p><b><span lang=EN-GB>Genera of Miomyrmecini</span></b><span lang=EN-GB>: <i>Eutetramorium, *Protomyrmica, <span style="mso-spacerun: yes">&nbsp;</span>Secostruma</i>.</span></p>
         }
         taxon = Genus.find_by_name 'Eutetramorium'
