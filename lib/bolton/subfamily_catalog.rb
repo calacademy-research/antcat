@@ -16,6 +16,7 @@
 #   03. FORMICOMORPHS Made Pseudocamponotus bold and removed bold in taxonomic history
 #   07. MYRMICOMORPHS 1.htm Corrected 'Adelomymex' to 'Adelomyrmex'
 #   07. MYRMICOMORPHS 1.htm Added Formosimyrma to Solenopsidini genera list
+#   07. ECTAHETEROMORPHS.htm Removed italics from Stictoponerini
 #   08. MYRMICOMORPHS 2.htm Corrected 'Quinqueangulicapito' to 'Quineangulicapito'
 #   09. PONEROMORPHS.htm Added Probolomyrmex to Probolomyrmecini genus list
 
