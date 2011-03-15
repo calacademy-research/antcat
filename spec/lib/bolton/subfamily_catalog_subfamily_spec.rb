@@ -127,6 +127,13 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 <p><b><i><span lang=EN-GB>Condylomyrma</span></i></b><span lang=EN-GB> Santschi, 1928c: 72 [as subgenus of <i>Camponotus</i>].  Type-species: <i>Camponotus (Condylomyrma) bryani</i>, by monotypy. </span></p>
 <p><b><span lang=EN-GB>Condylomyrma history<o:p></o:p></span></b></p>
 
+
+
+<p><b><span lang=EN-GB>Subgenus <i><span style='color:red'>CAMPONOTUS (ORTHONOTOMYRMEX)</span></i> <o:p></o:p></span></b></p>
+<p><b><i><span lang=EN-GB>Orthonotomyrmex</span></i></b><span lang=EN-GB> Ashmead, 1906: 31.<span style="mso-spacerun: yes">&nbsp; </span></span></p>
+<p><b><span lang=EN-GB>Orthonotomyrmex history<o:p></o:p></span></b></p>
+
+
 <p><b><span lang=EN-GB>THE FORMICOMORPHS: SUBFAMILY FORMICINAE<o:p></o:p></span></b></p>
 
 <p><b><span lang=EN-GB>SUBFAMILY <span style='color:red'>FORMICINAE</span><o:p></o:p></span></b></p>
@@ -242,7 +249,7 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 
       stigmacros = Genus.find_by_name 'Stigmacros'
       stigmacros.should_not be_nil
-      stigmacros.subgenera.map(&:name).should =~ ['Myagroteras', 'Condylomyrma']
+      stigmacros.subgenera.map(&:name).should =~ ['Myagroteras', 'Condylomyrma', 'Orthonotomyrmex']
       stigmacros.taxonomic_history.should ==
 %{<p><b><i><span lang="EN-GB">Stigmacros</span></i></b><span lang="EN-GB"> Forel, 1905b: 179 [as subgenus of <i>Acantholepis</i>].  </span></p>} +
 %{<p><b><span lang="EN-GB">Homonym replaced by <i><span style="color:red">STIGMACROS</span></i></span></b><span lang="EN-GB" style="color:red"><p></p></span></p>} +
@@ -253,7 +260,10 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 %{<p><b><i><span lang="EN-GB">Myagroteras</span></i></b><span lang="EN-GB"> Moffett, 1985b: 31 [as subgenus of <i>Myrmoteras</i>].  Type-species: <i>Myrmoteras donisthorpei</i>, by original designation.</span></p>} +
 %{<p><b><span lang="EN-GB">Junior synonyms of <i><span style="color:red">STIGMACROS (MYAGROTERAS)</span></i></span></b><span lang="EN-GB" style="color:red"><p></p></span></p>} +
 %{<p><b><i><span lang="EN-GB">Condylomyrma</span></i></b><span lang="EN-GB"> Santschi, 1928c: 72 [as subgenus of <i>Camponotus</i>].  Type-species: <i>Camponotus (Condylomyrma) bryani</i>, by monotypy. </span></p>} +
-%{<p><b><span lang="EN-GB">Condylomyrma history<p></p></span></b></p>}
+%{<p><b><span lang="EN-GB">Condylomyrma history<p></p></span></b></p>} +
+%{<p><b><span lang="EN-GB">Subgenus <i><span style="color:red">CAMPONOTUS (ORTHONOTOMYRMEX)</span></i> <p></p></span></b></p>} +
+%{<p><b><i><span lang="EN-GB">Orthonotomyrmex</span></i></b><span lang="EN-GB"> Ashmead, 1906: 31.</span></p>} +
+%{<p><b><span lang="EN-GB">Orthonotomyrmex history<p></p></span></b></p>}
 
       myagroteras = Subgenus.find_by_name 'Myagroteras'
       myagroteras.genus.should == stigmacros
@@ -270,6 +280,28 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
       condylomyrma.taxonomic_history.should == 
 %{<p><b><i><span lang="EN-GB">Condylomyrma</span></i></b><span lang="EN-GB"> Santschi, 1928c: 72 [as subgenus of <i>Camponotus</i>].  Type-species: <i>Camponotus (Condylomyrma) bryani</i>, by monotypy. </span></p>} +
 %{<p><b><span lang="EN-GB">Condylomyrma history<p></p></span></b></p>}
+
+      orthonotomyrmex = Subgenus.find_by_name 'Orthonotomyrmex'
+      orthonotomyrmex.genus.should == stigmacros
+      orthonotomyrmex.taxonomic_history.should == 
+%{<p><b><i><span lang="EN-GB">Orthonotomyrmex</span></i></b><span lang="EN-GB"> Ashmead, 1906: 31.</span></p>} +
+%{<p><b><span lang="EN-GB">Orthonotomyrmex history<p></p></span></b></p>}
+
+#<p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
+#-36.0pt'><b style='mso-bidi-font-weight:normal'><span lang=EN-GB>Homonym
+#replaced by <i style='mso-bidi-font-style:normal'><span style='color:red'>ORTHONOTOMYRMEX</span></i>
+#<o:p></o:p></span></b></p>
+
+#<p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
+#-36.0pt'><b style='mso-bidi-font-weight:normal'><span lang=EN-GB><o:p>&nbsp;</o:p></span></b></p>
+
+#<p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:
+#-36.0pt'><b style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:
+#normal'><span lang=EN-GB>Orthonotus</span></i></b><span lang=EN-GB> Ashmead,
+#1905b: 384. Type-species: <i style='mso-bidi-font-style:normal'>Formica sericea</i>,
+#by original designation. </span></p>
+
+
     end
 
     it "should parse a genus when there are no tribes" do
