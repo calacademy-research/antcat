@@ -12,6 +12,8 @@
 #  This generates log/bolton_subfamily_catalog.log
 #
 # Manual edits:
+#   03. FORMICOMORPHS Made Johnia bold
+#   03. FORMICOMORPHS Made Pseudocamponotus bold and removed bold in taxonomic history
 #   07. MYRMICOMORPHS 1.htm Corrected 'Adelomymex' to 'Adelomyrmex'
 #   07. MYRMICOMORPHS 1.htm Added Formosimyrma to Solenopsidini genera list
 #   08. MYRMICOMORPHS 2.htm Corrected 'Quinqueangulicapito' to 'Quineangulicapito'
