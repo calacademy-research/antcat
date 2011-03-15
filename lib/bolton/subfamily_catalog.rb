@@ -67,6 +67,13 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     taxonomic_history
   end
 
+  def parse_references
+    Progress.log 'parse_references'
+    parsed_text = ''
+    parsed_text << parse_taxonomic_history if @type == :other
+    parsed_text
+  end
+
   def get_filenames filenames
     super filenames.select {|filename| File.basename(filename) =~ /^\d\d\. /}
   end

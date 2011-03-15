@@ -84,10 +84,6 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     parsed_text
   end
 
-  def parse_references
-    ''
-  end
-
   def parse_genera_lists parent_rank, parent_attributes = {}
     Progress.log 'parse_genera_lists'
 
