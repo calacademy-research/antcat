@@ -98,6 +98,11 @@ describe CommonGrammar do
       lambda {CommonGrammar.parse(%{Abc}, :root => :uppercase_word)}.should raise_error
     end
 
+    it "should not consider a single letter an uppercase or capitalized word" do
+      lambda {CommonGrammar.parse(%{A}, :root => :uppercase_word)}.should raise_error
+      lambda {CommonGrammar.parse(%{A}, :root => :capitalized_word)}.should raise_error
+    end
+
   end
 
   describe "Closing tags" do

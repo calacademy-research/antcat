@@ -100,7 +100,7 @@ grammar CommonGrammar
   end
 
   rule uppercase_word
-    /[[:upper:]]+\b/
+    /[[:upper:]]{2,}\b/
   end
 
   rule capitalized_word

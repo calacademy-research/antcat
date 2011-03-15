@@ -147,5 +147,11 @@ describe Bolton::SubfamilyCatalog do
       }).should == {:type => :other}
     end
 
+    it "should handle a single unitalicized letter" do
+      @subfamily_catalog.parse(%{
+<b style="mso-bidi-font-weight: normal"><span lang="EN-GB">Genus <span style="color:red">N<i style="mso-bidi-font-style: normal">Nylanderia</i></span> references</span></b>
+      }).should == {:type => :other}
+    end
+
   end
 end
