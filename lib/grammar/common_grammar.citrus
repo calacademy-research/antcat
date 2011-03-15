@@ -52,7 +52,7 @@ grammar CommonGrammar
   end
 
   rule start_color_span_start
-    /<span.*?color:/ s
+    /<span[^>]*?color:/ s
   end
 
   rule start_color_span_end

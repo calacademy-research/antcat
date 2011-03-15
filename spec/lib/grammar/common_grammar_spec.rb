@@ -122,4 +122,11 @@ describe CommonGrammar do
     end
 
   end
+
+  describe "Color" do
+    it "shouldn't slop over" do
+      CommonGrammar.parse(%{<span style="color:}, :root => :start_color_span_start).should_not be_nil
+      lambda {CommonGrammar.parse(%{<span> <span style="color:}, :root => :start_color_span_start)}.should raise_error
+    end
+  end
 end

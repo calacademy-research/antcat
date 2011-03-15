@@ -113,6 +113,11 @@ describe Bolton::SubfamilyCatalog do
       }).should == {:type => :genus_line, :name => 'Phidologeton'}
     end
 
+    it "shouldn't be purple like this" do
+      @subfamily_catalog.parse(%{
+<i><span lang="EN-GB">Apomyrma</span></i><span lang="EN-GB"> in Ponerinae, Apomyrmini: Dlussky &amp; Fedoseeva, 1988: 78 (misspelled as <span style="color:purple">Aromyrmini</span>).</span>
+      }).should == {:type => :other}
+    end
   end
 
   describe "Homonym replaced by genus header" do
