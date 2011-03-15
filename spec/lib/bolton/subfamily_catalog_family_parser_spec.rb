@@ -103,10 +103,16 @@ describe Bolton::SubfamilyCatalog do
       }).should == {:type => :family_group_line, :name => 'Anonychomyrmini'}
     end
 
-    it "should recognize this" do
+    it "should handle an errant space" do
       @subfamily_catalog.parse(%{
 <b> <span lang="EN-GB">Stictoponerini</span></b><span lang="EN-GB"> Arnol'di, 1930d: 161. Type-genus: <i>Stictoponera</i> (junior synonym of <i>Gnamptogenys</i>).</span>
       }).should == {:type => :family_group_line, :name => 'Stictoponerini'}
+    end
+
+    it "should handle an errant space" do
+      @subfamily_catalog.parse(%{
+<b><span lang="EN-GB" style="color:black">Bothriomyrmecina</span></b><span lang="EN-GB" style="color:black"> </span><span lang="EN-GB">Dubovikov, 2005: 92. Type-genus: <i>Bothriomyrmex</i>.</span>
+      }).should == {:type => :family_group_line, :name => 'Bothriomyrmecina'}
     end
 
   end

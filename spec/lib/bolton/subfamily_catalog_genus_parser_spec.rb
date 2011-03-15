@@ -100,7 +100,19 @@ describe Bolton::SubfamilyCatalog do
 <span lang=EN-GB>*<i>Eoaenictites</i> Hong, 2002: 541. Type-species: *<i>Eoaenictites castanifurvus</i>, by original designation.</span>
       }).should == {:type => :genus_line, :name => 'Eoaenictites', :fossil => true}
     end
-    
+
+    it "is a line" do
+      @subfamily_catalog.parse(%{
+<i><span lang="EN-GB">Propodilobus</span></i><span lang="EN-GB"> Branstetter, 2009: 54. Type-species: <i>Stenamma orientale</i> (junior homonym, replaced by <i>Stenamma pingorum</i>), by original designation.</span>    
+      }).should == {:type => :genus_line, :name => 'Propodilobus'}
+    end
+
+    it "can be purple" do
+      @subfamily_catalog.parse(%{
+<i><span lang="EN-GB" style="color:purple">Phidologeton</span></i><span lang="EN-GB"> Bingham, 1903: 160, unjustified emendation of <i>Pheidologeton</i>. </span>
+      }).should == {:type => :genus_line, :name => 'Phidologeton'}
+    end
+
   end
 
   describe "Homonym replaced by genus header" do

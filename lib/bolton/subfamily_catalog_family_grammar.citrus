@@ -22,6 +22,7 @@ grammar Bolton::SubfamilyCatalogFamilyGrammar
   rule family_group_line
     (
       (span fossil_flag bold capitalized_word close_tags_required /.*Type-genus.*/) |
+      (bold black capitalized_word close_tags_required /.*Type-genus.*/) |
       (bold s capitalized_word close_tags_required /.*Type-genus.*/)
     ) {
       {:type => :family_group_line, :name => capitalized_word.to_s}
