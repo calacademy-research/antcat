@@ -28,10 +28,9 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     subfamily.update_attributes :taxonomic_history => taxonomic_history, :fossil => fossil
 
     parse_tribes subfamily
-
     parse_genera
-
     parse_genera_incertae_sedis
+    parse_collective_group_names
 
     true
   end
@@ -47,5 +46,17 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     parse_next_line
     parsed_text
   end
+
+  def parse_collective_group_names
+    return '' unless @type == :collective_group_name_header
+    Progress.info 'parse_collective_group_name_header'
+
+    parse_next_line
+    expect :other
+    parse_next_line
+    expect :genus_line
+    parse_next_line
+  end
+
 
 end

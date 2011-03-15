@@ -348,6 +348,21 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
       Tribe.find_by_name('Acanthomyopsini').should_not be_nil
     end
 
+    it "should handle a collective group name section" do
+      @subfamily_catalog.should_receive(:parse_family).and_return {
+        Factory :subfamily, :name => 'Myrmicinae'
+      }
+      @subfamily_catalog.import_html make_contents %{
+<p><b><span lang=EN-GB style='color:black'>SUBFAMILY</span><span lang=EN-GB> <span style='color:red'>MYRMICINAE</span><o:p></o:p></span></b></p>
+<p><b><span lang=EN-GB>Subfamily <span style='color:red'>MYRMICINAE<o:p></o:p></span></span></b></p>
+<p><b><span lang=EN-GB>Myrmicinae</span></b><span lang=EN-GB> Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.  </span></p>
+
+<p><b><span lang=EN-GB>Collective group name in <span style='color:red'>MYRMICINAE</span><o:p></o:p></span></b></p>
+<p><span lang=EN-GB>*<b><i><span style='color:green'>MYRMICITES</span></i></b></span></p>
+<p><span lang=EN-GB>*<b><i>Myrmicites</i></b> Förster, 1891: 448 [collective group name, without included named taxa. Note that this name is not equivalent to Myrmicites Lepeletier de Saint-Fargeau, 1835: 169.]</span></p>
+      }
+    end
+
     it "should parse a genus when there are no tribes" do
       @subfamily_catalog.should_receive(:parse_family).and_return { Factory :subfamily, :name => 'Martialinae' }
       @subfamily_catalog.import_html make_contents %{

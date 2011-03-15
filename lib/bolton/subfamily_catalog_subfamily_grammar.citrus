@@ -4,7 +4,8 @@ grammar Bolton::SubfamilyCatalogSubfamilyGrammar
   rule subfamily_section
     subfamily_centered_header | subfamily_header | 
     tribes_list | genera_list | collective_group_name_list |
-    genera_incertae_sedis_header
+    genera_incertae_sedis_header |
+    collective_group_name_header
   end
 
   rule subfamily_centered_header
@@ -53,6 +54,12 @@ grammar Bolton::SubfamilyCatalogSubfamilyGrammar
   rule collective_group_name_list
     (bold span 'Collective group name in ' capitalized_word close_tags ':' list_names) {
       {:type => :collective_group_name_list, :names => list_names.value}
+    } 
+  end
+
+  rule collective_group_name_header
+    (bold span 'Collective group name in ' red uppercase_word close_tags_required) {
+      {:type => :collective_group_name_header}
     } 
   end
 

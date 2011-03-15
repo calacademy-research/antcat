@@ -304,5 +304,15 @@ describe Bolton::SubfamilyCatalog do
       end
 
     end
+
+    describe "Collective group name header" do
+
+      it "should be recognized" do
+        @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>Collective group name in <span style='color:red'>MYRMICINAE</span><o:p></o:p></span></b>
+        }).should == {:type => :collective_group_name_header}
+      end
+
+    end
   end
 end
