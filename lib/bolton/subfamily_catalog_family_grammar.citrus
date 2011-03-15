@@ -2,7 +2,7 @@ grammar Bolton::SubfamilyCatalogFamilyGrammar
   include Bolton::CatalogGrammar
 
   rule family_section
-    family_header |
+    family_header | family_group_line |
     extant_subfamilies_list | extinct_subfamilies_list |
     extant_genera_incertae_sedis_in_family_list | extinct_genera_incertae_sedis_in_family_list |
     extant_genera_excluded_from_family_list | extinct_genera_excluded_from_family_list |
@@ -16,6 +16,12 @@ grammar Bolton::SubfamilyCatalogFamilyGrammar
   rule family_header
     (bold span 'FAMILY FORMICIDAE' close_tags) {
       {:type => :family_header}
+    }
+  end
+
+  rule family_group_line
+    (bold span capitalized_word close_tags_required /.*Type-genus.*/) {
+      {:type => :family_group_line, :name => capitalized_word.to_s}
     }
   end
 

@@ -11,6 +11,8 @@ describe Bolton::SubfamilyCatalog do
 
 <p><b style="mso-bidi-font-weight:normal"><span lang="EN-GB"><p> </p></span></b></p>
 <p><b><span lang=EN-GB>FAMILY FORMICIDAE<o:p></o:p></span></b></p>
+<p><b><span lang=EN-GB>Family <span style='color:red'>FORMICIDAE</span> <o:p></o:p></span></b></p>
+<p><b><span lang=EN-GB>Formicariae</span></b><span lang=EN-GB> Latreille, 1809: 124. Type-genus: <i>Formica</i>.</span></p>
 <p><span lang=EN-GB><o:p>&nbsp;</o:p></span></p>
 
 <p><b><span lang=EN-GB>Subfamilies of Formicidae (extant)</span></b><span lang=EN-GB>: Aenictinae, Myrmicinae<b style='mso-bidi-font-weight: normal'>.</b></span></p>

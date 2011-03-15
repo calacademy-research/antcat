@@ -52,7 +52,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     parsed_text = @paragraph
     parse_next_line
 
-    parsed_text << parse_junior_synonym_of_tribe(tribe) while @type == :tribe_line
+    parsed_text << parse_junior_synonym_of_tribe(tribe) while @type == :family_group_line
 
     parsed_text
   end

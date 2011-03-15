@@ -2,7 +2,7 @@ grammar Bolton::SubfamilyCatalogTribeGrammar
   include Bolton::CatalogGrammar
 
   rule tribe_section
-    tribe_header | tribe_line | junior_synonyms_of_tribe_header
+    tribe_header | junior_synonyms_of_tribe_header
   end
 
   rule tribe_header
@@ -10,12 +10,6 @@ grammar Bolton::SubfamilyCatalogTribeGrammar
       value = {:type => :tribe_header, :name => uppercase_word.downcase.capitalize.strip}
       value.merge! :fossil => true if fossil_flag.present?
       value
-    }
-  end
-
-  rule tribe_line
-    (bold span capitalized_word close_tags_required /.*Type-genus.*/) {
-      {:type => :tribe_line, :name => capitalized_word.to_s}
     }
   end
 

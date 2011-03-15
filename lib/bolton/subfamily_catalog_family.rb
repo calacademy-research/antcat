@@ -5,6 +5,9 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     expect :family_header
     parse_next_line
     skip :other
+    expect :family_group_line
+    parse_next_line
+    skip :other
 
     parse_family_summary
     skip :other

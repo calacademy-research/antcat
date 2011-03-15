@@ -77,4 +77,20 @@ describe Bolton::SubfamilyCatalog do
     }).should == {:type => :genus_group_nomina_nuda_in_family_header}
   end
 
+  describe "Family-group line" do
+
+    it "should recognize a tribe line" do
+      @subfamily_catalog.parse(%{
+  <b><span lang="EN-GB">Acanthomyopsini</span></b><span lang="EN-GB"> Donisthorpe, 1943f: 618. Type-genus: <i>Acanthomyops</i>.</span>
+      }).should == {:type => :family_group_line, :name => 'Acanthomyopsini'}
+    end
+
+    it "should recognize a family line" do
+      @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>Formicariae</span></b><span lang=EN-GB> Latreille, 1809: 124. Type-genus: <i>Formica</i>.</span>
+      }).should == {:type => :family_group_line, :name => 'Formicariae'}
+    end
+
+  end
+    
 end
