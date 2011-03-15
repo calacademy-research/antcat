@@ -14,6 +14,7 @@
 # Manual edits:
 #   03. FORMICOMORPHS Made Johnia bold
 #   03. FORMICOMORPHS Made Pseudocamponotus bold and removed bold in taxonomic history
+#   04. Remove 'Genus' from 'Genus MYRMECIITES'
 #   07. MYRMICOMORPHS 1.htm Corrected 'Adelomymex' to 'Adelomyrmex'
 #   07. MYRMICOMORPHS 1.htm Added Formosimyrma to Solenopsidini genera list
 #   07. ECTAHETEROMORPHS.htm Removed italics from Stictoponerini
