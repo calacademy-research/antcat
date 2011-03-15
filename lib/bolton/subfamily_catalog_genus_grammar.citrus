@@ -53,7 +53,7 @@ grammar Bolton::SubfamilyCatalogGenusGrammar
   end
 
   rule junior_synonyms_of_genus_header
-    (bold span 'Junior synonym' 's'? ' of ' italic red uppercase_word close_tags_required /.*/) {
+    (bold span 'Junior synonym' 's'? ' of ' fossil_flag? italic red uppercase_word close_tags_required /.*/) {
       {:type => :junior_synonyms_of_genus_header}
     }
   end

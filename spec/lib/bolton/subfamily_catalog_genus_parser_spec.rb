@@ -137,6 +137,12 @@ describe Bolton::SubfamilyCatalog do
       }).should == {:type => :junior_synonyms_of_genus_header}
     end
 
+    it "should be recognized when they are of a fossil" do
+      @subfamily_catalog.parse(%{
+<b style="mso-bidi-font-weight:normal"><span lang="EN-GB">Junior synonyms of *<i style="mso-bidi-font-style:normal"><span style="color:red">ARCHIMYRMEX<p></p></span></i></span></b>
+      }).should == {:type => :junior_synonyms_of_genus_header}
+    end
+
   end
 
   describe "Taxonomic history" do
