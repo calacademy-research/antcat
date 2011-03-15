@@ -257,19 +257,19 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 
       myagroteras = Subgenus.find_by_name 'Myagroteras'
       myagroteras.genus.should == stigmacros
-      #myagroteras.taxonomic_history.should ==
-#%{<p><b><i><span lang="EN-GB">Myagroteras</span></i></b><span lang="EN-GB"> Moffett, 1985bb: 31 [as subgenus of <i>Myrmoteras</i>].  Type-species: <i>Myrmoteras donisthorpei</i>, by original designation.</span></p>} +
-#%{<p><b><span lang="EN-GB">Junior synonyms of <i><span style='color:red'>STIGMACROS (MYAGROTERAS)</span></i></span></b><span lang="EN-GB" style='color:red'><p></p></span></p>} +
-#%{<p><b><i><span lang="EN-GB">Condylomyrma</span></i></b><span lang="EN-GB"> Santschi, 1928c: 72 [as subgenus of <i>Camponotus</i>].  Type-species: <i>Camponotus (Condylomyrma) bryani</i>, by monotypy. </span></p>} +
-#%{<p><b><span lang="EN-GB">Condylomyrma history<p></p></span></b></p>}
+      myagroteras.taxonomic_history.should ==
+%{<p><b><i><span lang="EN-GB">Myagroteras</span></i></b><span lang="EN-GB"> Moffett, 1985b: 31 [as subgenus of <i>Myrmoteras</i>].  Type-species: <i>Myrmoteras donisthorpei</i>, by original designation.</span></p>} +
+%{<p><b><span lang="EN-GB">Junior synonyms of <i><span style="color:red">STIGMACROS (MYAGROTERAS)</span></i></span></b><span lang="EN-GB" style="color:red"><p></p></span></p>} +
+%{<p><b><i><span lang="EN-GB">Condylomyrma</span></i></b><span lang="EN-GB"> Santschi, 1928c: 72 [as subgenus of <i>Camponotus</i>].  Type-species: <i>Camponotus (Condylomyrma) bryani</i>, by monotypy. </span></p>} +
+%{<p><b><span lang="EN-GB">Condylomyrma history<p></p></span></b></p>}
 
-      #condylomyrma = Subgenus.find_by_name 'Condylomyrma'
-      #condylomyrma.genus.should == stigmacros
-      #condylomyrma.status.should == 'synonym'
-      #condylomyrma.synonym_of.should == myagroteras
-      #condylomyrma.taxonomic_history.should == 
-#%{<p><b><i><span lang="EN-GB">Condylomyrma</span></i></b><span lang="EN-GB"> Santschi, 1928c: 72 [as subgenus of <i>Camponotus</i>].  Type-species: <i>Camponotus (Condylomyrma) bryani</i>, by monotypy. </span></p>} +
-#%{<p><b><span lang="EN-GB">Condylomyrma history<p></p></span></b></p>}
+      condylomyrma = Subgenus.find_by_name 'Condylomyrma'
+      condylomyrma.genus.should == stigmacros
+      condylomyrma.status.should == 'synonym'
+      condylomyrma.synonym_of.should == myagroteras
+      condylomyrma.taxonomic_history.should == 
+%{<p><b><i><span lang="EN-GB">Condylomyrma</span></i></b><span lang="EN-GB"> Santschi, 1928c: 72 [as subgenus of <i>Camponotus</i>].  Type-species: <i>Camponotus (Condylomyrma) bryani</i>, by monotypy. </span></p>} +
+%{<p><b><span lang="EN-GB">Condylomyrma history<p></p></span></b></p>}
     end
 
     it "should parse a genus when there are no tribes" do
