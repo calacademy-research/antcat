@@ -38,10 +38,8 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     tribe = Tribe.find_by_name(name)
     raise "Tribe #{name} doesn't exist" unless tribe
 
+    taxonomic_history << parse_genera_lists(:tribe, :subfamily => subfamily, :tribe => tribe)
     taxonomic_history << parse_junior_synonyms_of_tribe(tribe)
-
-    parse_genera_lists :tribe, :subfamily => subfamily, :tribe => tribe
-
     taxonomic_history << parse_references
 
     parse_genera
