@@ -88,21 +88,26 @@ Factory.define :taxon do |taxon|
 end
 
 Factory.define :subfamily do |subfamily|
+  subfamily.sequence(:name) {|n| "Subfamily#{n}"}
   subfamily.status  'valid'
 end
 
 Factory.define :tribe do |tribe|
+  tribe.sequence(:name) {|n| "Tribe#{n}"}
   tribe.status  'valid'
 end
 
 Factory.define :genus do |genus|
+  genus.sequence(:name) {|n| "Genus#{n}"}
   genus.status  'valid'
 end
 
 Factory.define :subgenus do |subgenus|
+  subgenus.sequence(:name) {|n| "Subgenus#{n}"}
   subgenus.status  'valid'
 end
 
 Factory.define :species do |species|
+  species.sequence(:name) {|n| "Species#{n}"}
   species.status  'valid'
 end
