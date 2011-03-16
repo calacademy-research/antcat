@@ -23,7 +23,7 @@ class Antweb::Exporter
       convert_to_antweb_array :subfamily => taxon.subfamily.name,
                               :tribe => taxon.tribe.name,
                               :genus => taxon.name,
-                              :valid? => !taxon.invalid?, :available? => true,
+                              :valid? => !taxon.invalid?, :available? => !taxon.invalid?,
                               :current_valid_name => taxon.name,
                               :taxonomic_history => taxon.taxonomic_history
     else nil
