@@ -236,9 +236,7 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
       taxon.should_not be_invalid
 
       taxon = Genus.find_by_name 'Myrmeciites'
-      taxon.subfamily.should == aneuretinae
-      taxon.should be_fossil
-      taxon.should be_invalid
+      taxon.should be_nil
 
       aneuretus = Genus.find_by_name 'Aneuretus'
       aneuretus.subfamily.should == aneuretinae

@@ -40,9 +40,6 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     Progress.info 'parse_collective_group_names'
 
     parsed_text = @paragraph
-    @parse_result[:names].each do |name, fossil|
-      Genus.create! :name => name, :subfamily => subfamily, :fossil => fossil, :status => 'unidentifiable'
-    end
     parse_next_line
     parsed_text
   end
