@@ -58,5 +58,4 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     parse_next_line
   end
 
-
 end

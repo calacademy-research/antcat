@@ -380,7 +380,7 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 %{<p>Martialis history</p>}
     end
 
-    it "should handle when a genus incertae sedis in subfamily also belongs to a tribe incertae sedis in subfamily (we're going to ignore the tribe" do
+    it "should handle when Miomyrmex incertae sedis in subfamily also belongs to a tribe incertae sedis in subfamily (it will be both)" do
       @subfamily_catalog.should_receive(:parse_family).and_return { Factory :subfamily, :name => 'Dolichoderinae' }
       @subfamily_catalog.import_html make_contents %{
 <p><b><span lang=EN-GB>SUBFAMILY <span style='color:red'>DOLICHODERINAE</span><o:p></o:p></span></b></p>
@@ -401,10 +401,11 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
       miomyrmecini.should_not be_nil
       miomyrmecini.incertae_sedis_in.should == 'subfamily'
 
-      miomyrmex = Genus.find_by_name 'Miomyrmex'
-      miomyrmex.should_not be_nil
+      miomyrmex = Genus.all :conditions => ['name = ?', 'Miomyrmex']
+      miomyrmex.count.should == 1
+      miomyrmex = miomyrmex.first
       miomyrmex.incertae_sedis_in.should == 'subfamily'
-      miomyrmex.tribe.should be_nil
+      miomyrmex.tribe.should == miomyrmecini
     end
 
     it "should allow a taxon which has been added from a list (all of them, hopefully) to be subsequently changed to unidentifiable" do

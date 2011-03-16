@@ -85,16 +85,28 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
   end
 
   def parse_genera_lists parent_rank, parent_attributes = {}
+    return '' unless @type == :genera_list
     Progress.info 'parse_genera_lists'
 
     parsed_text = ''
 
     while @type == :genera_list
       parsed_text << @paragraph
-      @parse_result[:genera].each do |genus, fossil|
-        attributes = {:name => genus, :fossil => fossil, :status => 'valid'}.merge parent_attributes
+      @parse_result[:genera].each do |name, fossil|
+        attributes = {:name => name, :fossil => fossil, :status => 'valid'}.merge parent_attributes
         attributes.merge!(:incertae_sedis_in => parent_rank.to_s) if @parse_result[:incertae_sedis]
-        Genus.create! attributes
+
+        genus = Genus.find_by_name name
+        if genus
+          # Several genera are listed both as incertae sedis in subfamily, and as a genus of an incertae sedis tribe
+          if ['Zherichinius', 'Miomyrmex'].include? name
+            genus.update_attributes attributes
+          else
+            raise "Genus #{name} found in more than one list"
+          end
+        else
+          Genus.create! attributes
+        end
       end
 
       parse_next_line
@@ -117,7 +129,6 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     Progress.info 'parse_genera_incertae_sedis'
 
     parse_next_line
-
     parse_genus while @type == :genus_header
   end
 
