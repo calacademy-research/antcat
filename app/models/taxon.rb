@@ -15,4 +15,10 @@ class Taxon < ActiveRecord::Base
     raise NotImplementedError
   end
 
+  def current_valid_name
+    target = self
+    target = target.synonym_of while target.synonym_of
+    target.name
+  end
+
 end

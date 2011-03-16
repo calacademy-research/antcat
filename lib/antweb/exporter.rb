@@ -24,7 +24,7 @@ class Antweb::Exporter
                               :tribe => taxon.tribe.name,
                               :genus => taxon.name,
                               :valid? => !taxon.invalid?, :available? => !taxon.invalid?,
-                              :current_valid_name => taxon.name,
+                              :current_valid_name => taxon.current_valid_name,
                               :taxonomic_history => taxon.taxonomic_history
     else nil
     end

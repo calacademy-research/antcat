@@ -84,4 +84,25 @@ describe Taxon do
     camponotus.reload.taxonomic_history.size.should == 4 * 100_000
   end
 
+  describe "Current valid name" do
+
+    it "if it's not a synonym: it's just the name" do
+      taxon = Taxon.create! :name => 'Name'
+      taxon.current_valid_name.should == 'Name'
+    end
+
+    it "if it is a synonym: the name of the target" do
+      target = Taxon.create! :name => 'Target'
+      taxon = Taxon.create! :name => 'Taxon', :status => 'synonym', :synonym_of => target
+      taxon.current_valid_name.should == 'Target'
+    end
+
+    it "if it is a synonym of a synonym: the name of the target's target" do
+      target_target = Taxon.create! :name => 'Target_Target'
+      target = Taxon.create! :name => 'Target', :status => 'synonym', :synonym_of => target_target
+      taxon = Taxon.create! :name => 'Taxon', :status => 'synonym', :synonym_of => target
+      taxon.current_valid_name.should == 'Target_Target'
+    end
+
+  end
 end

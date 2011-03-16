@@ -50,12 +50,11 @@ describe Antweb::Exporter do
       @exporter.export_taxon(invalid_genus).should == [subfamily.name, tribe.name, invalid_genus.name, nil, nil, nil, 'FALSE', 'FALSE', invalid_genus.name, nil, nil]
     end
 
-    #it "should export a genus that's a junior synonym" do
-      #gauromyrmex = Genus.create! :name => 'Gauromyrmex', :status => 'valid'
-      #acalama = Genus.create! :name => 'Acalama', :status => 'synonym', :synonym_of => gauromyrmex, :taxonomic_history => '<i>ACALAMA</i>', :status => 'valid'
-      #@exporter.export_taxon(acalama).should == ['Myrmicinae', nil, 'Acalama', nil, nil, nil, nil, 'FALSE', 'FALSE', 'Gauromyrmex', nil, '<i>ACALAMA</i>']
-    #end
+    it "should export a genus that's a junior synonym" do
+      gauromyrmex = Factory :genus
+      acalama = Factory :genus,  :status => 'synonym', :synonym_of => gauromyrmex
+      @exporter.export_taxon(acalama).should == [acalama.tribe.subfamily.name, acalama.tribe.name, acalama.name, nil, nil, nil, 'FALSE', 'FALSE', gauromyrmex.name, nil, nil]
+    end
 
   end
-
 end
