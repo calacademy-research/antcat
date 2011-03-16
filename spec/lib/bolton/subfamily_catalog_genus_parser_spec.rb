@@ -118,6 +118,13 @@ describe Bolton::SubfamilyCatalog do
 <i><span lang="EN-GB">Apomyrma</span></i><span lang="EN-GB"> in Ponerinae, Apomyrmini: Dlussky &amp; Fedoseeva, 1988: 78 (misspelled as <span style="color:purple">Aromyrmini</span>).</span>
       }).should == {:type => :other}
     end
+
+    it "isn't a genus line just because it has 'Type species' in it" do
+      @subfamily_catalog.parse(%{
+<i><span lang=EN-GB>Acrocoelia</span></i><span lang=EN-GB> as junior synonym of Crematogaster: Roger, 1863b: 36; Mayr, 1863: 404; Emery &amp; Forel, 1879a: 464; Dalla Torre, 1893: 79; Wheeler, W.M. 1911f: 158; Wheeler, W.M. 1922a: 828; Buren, 1959: 126; Kempf, 1972a: 81; Brown, 1973b: 178. [Type-species of <i>Acrocoelia</i> and <i>Crematogaster</i> are synonymous, generic synonymy is therefore absolute.]</span></p>
+      }).should == {:type => :other}
+    end
+
   end
 
   describe "Homonym replaced by genus header" do

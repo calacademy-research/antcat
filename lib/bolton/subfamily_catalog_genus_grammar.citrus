@@ -39,9 +39,9 @@ grammar Bolton::SubfamilyCatalogGenusGrammar
     (
       (bold italic span capitalized_word close_tags /.*/) |
       (span fossil_flag bold italic capitalized_word close_tags /.*/) |
-      (span fossil_flag italic capitalized_word /.*Type-species.*/) |
+      (span fossil_flag italic capitalized_word /.*Type-species:.*/) |
       (span fossil_flag italic capitalized_word close_tags /.*\[Collective group name\.\].*/) |
-      (italic span capitalized_word close_tags_required /.*Type-species.*/) |
+      (italic span capitalized_word close_tags_required /.*Type-species:.*/) |
       (italic purple capitalized_word close_tags_required s /[^\[]/ /.*/)
     ) {
       value = {:type => :genus_line, :name => capitalized_word.to_s}
