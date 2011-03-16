@@ -94,11 +94,14 @@ end
 
 Factory.define :tribe do |tribe|
   tribe.sequence(:name) {|n| "Tribe#{n}"}
+  tribe.association :subfamily
   tribe.status  'valid'
 end
 
 Factory.define :genus do |genus|
   genus.sequence(:name) {|n| "Genus#{n}"}
+  genus.association :tribe
+  genus.subfamily   {|a| a.tribe && a.tribe.subfamily}
   genus.status  'valid'
 end
 

@@ -77,7 +77,7 @@ describe Genus do
 
     it "should not recreate each element in chain, if not necessary" do
       Factory :subfamily, :name => 'Forminidaie'
-      Factory :tribe, :name => 'Attini'
+      Factory :tribe, :name => 'Attini', :subfamily => nil
       Genus.import :name => 'Acalama', :status => 'valid', :tribe => 'Attini', :subfamily => 'Forminidaie'
       Taxon.count.should == 3
     end
@@ -160,7 +160,7 @@ describe Genus do
     describe "Setting the subfamily" do
 
       it "should allow setting a subfamily if none existed before" do
-        Factory :genus, :name => 'Camponotites'
+        Factory :genus, :name => 'Camponotites', :tribe => nil
         lambda {Genus.import :name => 'Camponotites', :subfamily => 'Formicinae', :status => 'valid'}.should_not raise_error
       end
 
@@ -179,7 +179,7 @@ describe Genus do
     describe "Setting the tribe" do
 
       it "should allow setting a tribe if none existed before" do
-        Factory :genus, :name => 'Camponotites'
+        Factory :genus, :name => 'Camponotites', :tribe => nil
         lambda {Genus.import :name => 'Camponotites', :tribe => 'Camponotini', :status => 'valid'}.should_not raise_error
       end
 

@@ -692,7 +692,7 @@ SPECIES-GROUP TAXA<o:p></o:p></b></p>
     end
 
     it "should not consider these as subfamilies" do
-      Factory :genus, :name => 'Cariridris'
+      Factory :genus, :name => 'Cariridris', :subfamily => nil, :tribe => nil
       ['Aculeata', 'Symphyta', 'Apocrita', 'Homoptera', 'Ichneumonidae', 'Embolemidae'].each do |name|
         @genus_catalog.import_genus :name => 'Cariridris', :subfamily => name, :status => 'valid'
         Genus.find_by_name('Cariridris').subfamily.should be_nil
