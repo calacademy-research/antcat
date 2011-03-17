@@ -45,8 +45,17 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     taxonomic_history << parse_references
 
     parse_genera
+    parse_genera_incertae_sedis_in_tribe
 
     tribe.reload.update_attributes :taxonomic_history => taxonomic_history
+  end
+
+  def parse_genera_incertae_sedis_in_tribe
+    return unless @type == :genera_incertae_sedis_in_tribe_header
+    Progress.info 'parse_genera_incertae_sedis_in_tribe'
+
+    parse_next_line
+    parse_genus while @type == :genus_header
   end
 
   def parse_junior_synonyms_of_tribe tribe

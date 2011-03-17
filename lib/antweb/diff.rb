@@ -103,7 +103,7 @@ class Antweb::Diff
     antweb_taxonomic_history = antweb[10]
     return true if antcat_taxonomic_history.try(:downcase) == antweb_taxonomic_history.try(:downcase)
     return unless antcat_taxonomic_history.split(' ')[0].downcase == antweb_taxonomic_history.split(' ')[0].downcase
-    return unless antweb_taxonomic_history =~ /\w+ \[junior synonym of \w+ \]/
+    return unless antweb_taxonomic_history =~ /\w+ \[junior (synonym|homonym)/
     true
   end
 
@@ -117,6 +117,7 @@ class Antweb::Diff
       line.gsub! /(Leptanilloidinae\t\tAsphinctanilloides\t\t\t\t)FALSE\tFALSE\t\t/i, "\\1TRUE\tTRUE\tAsphinctanilloides\t"
       line.gsub! /Myrmicinae\tincertae sedis in Stenammini\tPropodilobus/, "Myrmicinae\tStenammini\tPropodilobus"
       line.gsub! /Quinqueangulicapito/, 'Quineangulicapito'
+      line.gsub! /syonym/, 'synonym'
 
       antweb_fields = line.split "\t"
 
@@ -125,8 +126,12 @@ class Antweb::Diff
         genus = Genus.find_by_name antweb_fields[2]
         tribe = genus && genus.tribe && genus.tribe.name
         antweb_fields[1] = tribe
-        line.replace antweb_fields.join("\t")
       end
+
+      # The species author date column appears bogus and unused
+      antweb_fields[4] = nil
+
+      line.replace antweb_fields.join("\t")
 
     end
   end
@@ -161,6 +166,7 @@ class Antweb::Diff
     return unless @differences.present?
     Progress.puts "Differences:"
     @differences.each do |antcat, antweb|
+      next unless antcat && antweb
       match_fails_at = match_fails_at antcat, antweb
       Progress.puts "\n" + '=' * 80
       Progress.puts antcat[0..match_fails_at - 1]

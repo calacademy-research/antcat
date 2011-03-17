@@ -17,8 +17,8 @@ describe Antweb::Diff do
   end
 
   it "should report one match when there is one match" do
-    antcat = ["A\t\t\t\t1"]
-    antweb = ["A\t\t\t\t1"]
+    antcat = ["A\t\t\t\t\t\t1"]
+    antweb = ["A\t\t\t\t\t\t1"]
     @diff.diff antcat, antweb
     @diff.match_count.should == 1
     @diff.difference_count.should == 0
@@ -28,25 +28,25 @@ describe Antweb::Diff do
   end
 
   it "should report one difference when there is one difference" do
-    antcat = ["A\t\t\t\t1"]
-    antweb = ["A\t\t\t\t2"]
+    antcat = ["A\t\t\t\t\t\t1"]
+    antweb = ["A\t\t\t\t\t\t2"]
     @diff.diff antcat, antweb
     @diff.match_count.should == 0
     @diff.difference_count.should == 1
     @diff.antcat_unmatched_count.should == 0
     @diff.antweb_unmatched_count.should == 0
-    @diff.differences.should == [["A\t\t\t\t1", "A\t\t\t\t2"]]
+    @diff.differences.should == [["A\t\t\t\t\t\t1", "A\t\t\t\t\t\t2"]]
   end
 
   it "should handle a mix" do
-    antcat = ["A\t\t\t\t1", "A\t\t\t\t2","C\t\t\t\t1"]
-    antweb = ["A\t\t\t\t2", "C\t\t\t\t3","D\t\t\t\t1"]
+    antcat = ["A\t\t\t\t\t\t1", "A\t\t\t\t\t\t2","C\t\t\t\t\t\t1"]
+    antweb = ["A\t\t\t\t\t\t2", "C\t\t\t\t\t\t3","D\t\t\t\t\t\t1"]
     @diff.diff antcat, antweb
     @diff.match_count.should == 1
     @diff.difference_count.should == 1
     @diff.antcat_unmatched_count.should == 1
     @diff.antweb_unmatched_count.should == 1
-    @diff.differences.should == [["C\t\t\t\t1", "C\t\t\t\t3"]]
+    @diff.differences.should == [["C\t\t\t\t\t\t1", "C\t\t\t\t\t\t3"]]
   end
 
   it "should ignore the validity and availability of Pseudoatta, since Bolton had a typo which I corrected" do
@@ -113,6 +113,27 @@ describe Antweb::Diff do
     it "should ignore the difference if AntCat is just the name + [junior synonym of]" do
       antcat = ["Myrmicinae\tStenammini\tPropodilobus\t\t\t\tTRUE\tTRUE\tPropodilobus\t\tPropodilobus Much longer taxonomic history"]
       antweb = ["Myrmicinae\tStenammini\tPropodilobus\t\t\t\tTRUE\tTRUE\tPropodilobus\t\tPROPODILOBUS [junior synonym of Athropus ]"]
+      @diff.diff antcat, antweb
+      @diff.match_count.should == 1
+    end
+
+    it "should ignore the difference if AntCat is just the name + [junior syonym of] (misspelling)" do
+      antcat = ["Myrmicinae\tStenammini\tPropodilobus\t\t\t\tTRUE\tTRUE\tPropodilobus\t\tPropodilobus Much longer taxonomic history"]
+      antweb = ["Myrmicinae\tStenammini\tPropodilobus\t\t\t\tTRUE\tTRUE\tPropodilobus\t\tPROPODILOBUS [junior syonym of Athropus ]"]
+      @diff.diff antcat, antweb
+      @diff.match_count.should == 1
+    end
+
+    it "should ignore the difference if AntCat is just the name + [junior homonym of]" do
+      antcat = ["Myrmicinae\tStenammini\tPropodilobus\t\t\t\tTRUE\tTRUE\tPropodilobus\t\tPropodilobus Much longer taxonomic history"]
+      antweb = ["Myrmicinae\tStenammini\tPropodilobus\t\t\t\tTRUE\tTRUE\tPropodilobus\t\tPROPODILOBUS [junior homonym of Athropus ]"]
+      @diff.diff antcat, antweb
+      @diff.match_count.should == 1
+    end
+
+    it "should ignore the difference if it's just in the species name author" do
+      antcat = ["Myrmicinae\tStenammini\tPropodilobus\tpingorum\t\t\tTRUE\tTRUE\tPropodilobus\t\tPropodilobus Much longer taxonomic history"]
+      antweb = ["Myrmicinae\tStenammini\tPropodilobus\tpingorum\tDuBois, 1998\t\tTRUE\tTRUE\tPropodilobus\t\tPROPODILOBUS [junior homonym of Athropus ]"]
       @diff.diff antcat, antweb
       @diff.match_count.should == 1
     end

@@ -26,6 +26,14 @@ class Antweb::Exporter
                               :valid? => !taxon.invalid?, :available? => !taxon.invalid?,
                               :current_valid_name => taxon.current_valid_name,
                               :taxonomic_history => taxon.taxonomic_history
+    when Species
+      return nil unless taxon.genus && taxon.genus.tribe && taxon.genus.tribe.subfamily
+      convert_to_antweb_array :subfamily => taxon.genus.subfamily.name,
+                              :tribe => taxon.genus.tribe.name,
+                              :genus => taxon.genus.name,
+                              :species => taxon.name,
+                              :valid? => !taxon.invalid?, :available? => !taxon.invalid?,
+                              :taxonomic_history => taxon.taxonomic_history
     else nil
     end
   end
@@ -41,7 +49,7 @@ class Antweb::Exporter
   end
 
   def convert_to_antweb_array values
-    [values[:subfamily], values[:tribe], values[:genus], nil, nil, nil, boolean_to_antweb(values[:valid?]), boolean_to_antweb(values[:available?]), values[:current_valid_name], nil, values[:taxonomic_history]]
+    [values[:subfamily], values[:tribe], values[:genus], values[:species], nil, nil, boolean_to_antweb(values[:valid?]), boolean_to_antweb(values[:available?]), values[:current_valid_name], nil, values[:taxonomic_history]]
   end
 
 end

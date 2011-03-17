@@ -406,6 +406,31 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
       miomyrmex.tribe.should == miomyrmecini
     end
 
+    it "should handle genera incertae sedis in tribe" do
+      @subfamily_catalog.should_receive(:parse_family).and_return { Factory :subfamily, :name => 'Aneuretinae' }
+      @subfamily_catalog.import_html make_contents %{
+<p><b><span lang=EN-GB>SUBFAMILY <span style='color:red'>ANEURETINAE</span><o:p></o:p></span></b></p>
+<p><b><span lang=EN-GB>Subfamily <span style='color:red'>ANEURETINAE</span> <o:p></o:p></span></b></p>
+<p><b><span lang="EN-GB">Aneuretinae</span></b><span lang="EN-GB"> Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.  </span></p>
+<p><b><span lang=EN-GB>Tribes of Aneuretinae</span></b><span lang=EN-GB>: Aneuretini, *Pityomyrmecini.</span></p>
+<p><b><span lang=EN-GB>Tribe <span style='color:red'>ANEURETINI</span><o:p></o:p></span></b></p>
+<p><b><span lang="EN-GB">Aneuretini</span></b><span lang="EN-GB"> Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.  </span></p>
+<p><b><span lang=EN-GB>Genus (extant) of Aneuretini</span></b><span lang=EN-GB>: *<i>Miomyrmex</i>.</span></p>
+<p><b><span lang=EN-GB>Genus<i> incertae sedis</i> in Aneuretini</span></b><span lang=EN-GB>:<i> Aulacopone</i>.</span></p>
+<p><b><span lang=EN-GB>Genus *<i><span style='color:red'>MIOMYRMEX</span></i> <o:p></o:p></span></b></p>
+<p><b><i><span lang=EN-GB>Miomyrmex</span></i></b><span lang=EN-GB> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </span></p>
+<p>Miomyrmex history</p>
+<p><b><span lang=EN-GB>Genus <i>incertae sedis</i> in <span style='color:red'>Heteroponerini</span><o:p></o:p></span></b></p>
+<p><b><span lang=EN-GB>Genus <i><span style='color:red'>AULACOPONE</span></i><o:p></o:p></span></b></p>
+<p><b><i><span lang=EN-GB>Aulacopone</span></i></b><span lang=EN-GB> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </span></p>
+<p>Aulacopone history</p>
+      }
+      taxon = Genus.find_by_name 'Miomyrmex'
+      taxon.taxonomic_history.should == 
+%{<p><b><i><span lang="EN-GB">Miomyrmex</span></i></b><span lang="EN-GB"> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </span></p>} +
+%{<p>Miomyrmex history</p>}
+    end
+
     it "should allow a taxon which has been added from a list (all of them, hopefully) to be subsequently changed to unidentifiable" do
       @subfamily_catalog.should_receive(:parse_family).and_return { Factory :subfamily, :name => 'Aneuretinae' }
       @subfamily_catalog.import_html make_contents %{

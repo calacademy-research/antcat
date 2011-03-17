@@ -56,5 +56,18 @@ describe Antweb::Exporter do
       @exporter.export_taxon(acalama).should == [acalama.tribe.subfamily.name, acalama.tribe.name, acalama.name, nil, nil, nil, 'FALSE', 'FALSE', gauromyrmex.name, nil, nil]
     end
 
+    describe "Exporting species" do
+
+      it "should export one correctly" do
+        myrmicinae = Factory :subfamily, :name => 'Myrmicinae'
+        attini = Factory :tribe, :name => 'Attini', :subfamily => myrmicinae
+        atta = Factory :genus, :name => 'Atta', :tribe => attini
+        species = Factory :species, :name => 'robustus', :genus => atta, :taxonomic_history => 'Taxonomic history'
+        @exporter.export_taxon(species).should == ['Myrmicinae', 'Attini', 'Atta', 'robustus', nil, nil, 'TRUE', 'TRUE', nil, nil, 'Taxonomic history']
+      end
+
+    end
+
   end
+
 end
