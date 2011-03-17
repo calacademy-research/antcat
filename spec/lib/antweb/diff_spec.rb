@@ -138,6 +138,13 @@ describe Antweb::Diff do
       @diff.match_count.should == 1
     end
 
+    it "should ignore the difference if it's just in the country" do
+      antcat = ["Myrmicinae\tStenammini\tPropodilobus\tpingorum\t\t\tTRUE\tTRUE\tPropodilobus\t\tPropodilobus Much longer taxonomic history"]
+      antweb = ["Myrmicinae\tStenammini\tPropodilobus\tpingorum\t\tBorneo\tTRUE\tTRUE\tPropodilobus\t\tPROPODILOBUS [junior homonym of Athropus ]"]
+      @diff.diff antcat, antweb
+      @diff.match_count.should == 1
+    end
+
   end
 
   describe "showing where two strings differ" do
