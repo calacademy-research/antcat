@@ -33,11 +33,7 @@ style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'>LEPISI
 style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
 style='color:red'>ACANTHOMYRMEX</span></i></b> (Oriental, Indo-Australian)</p>
 
-<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
-style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
-style='color:red'>basispinosus</span></i></b><i style='mso-bidi-font-style:
-normal'>. Acanthomyrmex basispinosus</i> Moffett, 1986c: 67, figs. 8A, 9-14
-(s.w.) INDONESIA (Sulawesi).</p>
+<p><b><i><span style='color:red'>basispinosus</span></i></b><i>. Acanthomyrmex basispinosus</i> Moffett, 1986c: 67, figs. 8A, 9-14 (s.w.) INDONESIA (Sulawesi).</p>
 
 <p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><o:p>&nbsp;</o:p></p>
 
@@ -81,6 +77,8 @@ Shattuck, 1992a: 13.</p>
 
       basispinosus = acanthomyrmex.species.find_by_name('basispinosus')
       basispinosus.fossil.should_not be_true
+      basispinosus.taxonomic_history.should == 
+%{<p><b><i><span style="color:red">basispinosus</span></i></b><i>. Acanthomyrmex basispinosus</i> Moffett, 1986c: 67, figs. 8A, 9-14 (s.w.) INDONESIA (Sulawesi).</p>}
 
       tetramorium = Genus.find_by_name('Tetramorium')
       tetramorium.should_not be_invalid
