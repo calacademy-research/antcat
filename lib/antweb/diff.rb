@@ -99,8 +99,8 @@ class Antweb::Diff
     antcat = antcat.split "\t"
     antweb = antweb.split "\t"
     return unless antcat[0,9] == antweb[0,9]
-    antcat_taxonomic_history = antcat[9]
-    antweb_taxonomic_history = antweb[9]
+    antcat_taxonomic_history = antcat[10]
+    antweb_taxonomic_history = antweb[10]
     return true if antcat_taxonomic_history.try(:downcase) == antweb_taxonomic_history.try(:downcase)
     return unless antcat_taxonomic_history.split(' ')[0].downcase == antweb_taxonomic_history.split(' ')[0].downcase
     return unless antweb_taxonomic_history =~ /\w+ \[junior synonym of \w+ \]/

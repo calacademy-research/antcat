@@ -90,29 +90,29 @@ describe Antweb::Diff do
   describe "judging the similarity of taxonomic histories" do
 
     it "should not ignore the difference if the first words aren't the same" do
-      antcat = ["Myrmicinae\tStenammini\tPropodilobus\t\t\t\tTRUE\tTRUE\tPropodilobus\tFoo"]
-      antweb = ["Myrmicinae\tStenammini\tPropodilobus\t\t\t\tTRUE\tTRUE\tPropodilobus\tBar"]
+      antcat = ["Myrmicinae\tStenammini\tPropodilobus\t\t\t\tTRUE\tTRUE\tPropodilobus\t\tFoo"]
+      antweb = ["Myrmicinae\tStenammini\tPropodilobus\t\t\t\tTRUE\tTRUE\tPropodilobus\t\tBar"]
       @diff.diff antcat, antweb
       @diff.match_count.should == 0
     end
 
     it "should ignore the difference if the first words are the same except for case" do
-      antcat = ["Myrmicinae\tStenammini\tPropodilobus\t\t\t\tTRUE\tTRUE\tPropodilobus\tPropodilobus"]
-      antweb = ["Myrmicinae\tStenammini\tPropodilobus\t\t\t\tTRUE\tTRUE\tPropodilobus\tPROPODILOBUS"]
+      antcat = ["Myrmicinae\tStenammini\tPropodilobus\t\t\t\tTRUE\tTRUE\tPropodilobus\t\tPropodilobus"]
+      antweb = ["Myrmicinae\tStenammini\tPropodilobus\t\t\t\tTRUE\tTRUE\tPropodilobus\t\tPROPODILOBUS"]
       @diff.diff antcat, antweb
       @diff.match_count.should == 1
     end
 
     it "should not ignore the difference if the first words are the same except for case but the rest isn't a match" do
-      antcat = ["Myrmicinae\tStenammini\tPropodilobus\t\t\t\tTRUE\tTRUE\tPropodilobus\tPropodilobus Much longer taxonomic history"]
-      antweb = ["Myrmicinae\tStenammini\tPropodilobus\t\t\t\tTRUE\tTRUE\tPropodilobus\tPROPODILOBUS Different taxonomic history"]
+      antcat = ["Myrmicinae\tStenammini\tPropodilobus\t\t\t\tTRUE\tTRUE\t\t\tPropodilobus Much longer taxonomic history"]
+      antweb = ["Myrmicinae\tStenammini\tPropodilobus\t\t\t\tTRUE\tTRUE\t\t\tPROPODILOBUS Different taxonomic history"]
       @diff.diff antcat, antweb
       @diff.match_count.should == 0
     end
 
     it "should ignore the difference if AntCat is just the name + [junior synonym of]" do
-      antcat = ["Myrmicinae\tStenammini\tPropodilobus\t\t\t\tTRUE\tTRUE\tPropodilobus\tPropodilobus Much longer taxonomic history"]
-      antweb = ["Myrmicinae\tStenammini\tPropodilobus\t\t\t\tTRUE\tTRUE\tPropodilobus\tPROPODILOBUS [junior synonym of Athropus ]"]
+      antcat = ["Myrmicinae\tStenammini\tPropodilobus\t\t\t\tTRUE\tTRUE\tPropodilobus\t\tPropodilobus Much longer taxonomic history"]
+      antweb = ["Myrmicinae\tStenammini\tPropodilobus\t\t\t\tTRUE\tTRUE\tPropodilobus\t\tPROPODILOBUS [junior synonym of Athropus ]"]
       @diff.diff antcat, antweb
       @diff.match_count.should == 1
     end
