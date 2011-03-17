@@ -91,11 +91,11 @@ class Antweb::Diff
   def closeness antcat, antweb
     # AntWeb just got this one's taxonomic history wrong
     return 0 if antweb =~ /Martialinae\tLeptanillini\tMartialis\t\t\t\tTRUE\tTRUE\tMartialis\t/
-    return 0 if match_with_acceptable_taxononmic_history_difference antcat, antweb
+    return 0 if match_with_acceptable_taxonomic_history_difference antcat, antweb
     Levenshtein.distance(antcat, antweb)
   end
 
-  def match_with_acceptable_taxononmic_history_difference antcat, antweb
+  def match_with_acceptable_taxonomic_history_difference antcat, antweb
     antcat = antcat.split "\t"
     antweb = antweb.split "\t"
     return unless antcat[0,9] == antweb[0,9]
