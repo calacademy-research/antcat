@@ -22,7 +22,7 @@ class Antweb::Exporter
     when Subfamily
       taxon.fossil? ? nil : convert_to_antweb_array(:subfamily => taxon.name, :valid? => !taxon.invalid?, :taxonomic_history => taxon.taxonomic_history)
     when Genus
-      return nil unless taxon.subfamily && taxon.tribe
+      return unless taxon.subfamily && taxon.tribe
       convert_to_antweb_array :subfamily => taxon.subfamily.name,
                               :tribe => taxon.tribe.name,
                               :genus => taxon.name,
@@ -30,7 +30,7 @@ class Antweb::Exporter
                               :current_valid_name => taxon.current_valid_name,
                               :taxonomic_history => taxon.taxonomic_history
     when Species
-      return nil unless taxon.genus && taxon.genus.tribe && taxon.genus.tribe.subfamily
+      return unless taxon.genus && taxon.genus.tribe && taxon.genus.tribe.subfamily
       convert_to_antweb_array :subfamily => taxon.genus.subfamily.name,
                               :tribe => taxon.genus.tribe.name,
                               :genus => taxon.genus.name,
