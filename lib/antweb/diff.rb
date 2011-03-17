@@ -66,12 +66,8 @@ class Antweb::Diff
   def set_duplicates_to_nil pairs
     pairs[0, pairs.size - 1].each_with_index do |pair, i|
       pairs[(i + 1)...pairs.size].each do |other_pair|
-        if other_pair[0] == pair[0]
-          other_pair[0] = nil
-        end
-        if other_pair[1] == pair[1]
-          other_pair[1] = nil
-        end
+        other_pair[0] = nil if other_pair[0] == pair[0]
+        other_pair[1] = nil if other_pair[1] == pair[1]
       end
     end
     pairs
@@ -105,8 +101,9 @@ class Antweb::Diff
     return unless antcat[0,9] == antweb[0,9]
     antcat_taxonomic_history = antcat[9]
     antweb_taxonomic_history = antweb[9]
-    return true if antcat_taxonomic_history == antweb_taxonomic_history
+    return true if antcat_taxonomic_history.try(:downcase) == antweb_taxonomic_history.try(:downcase)
     return unless antcat_taxonomic_history.split(' ')[0].downcase == antweb_taxonomic_history.split(' ')[0].downcase
+    return unless antweb_taxonomic_history =~ /\w+ \[junior synonym of \w+ \]/
     true
   end
 
