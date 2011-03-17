@@ -80,14 +80,6 @@ describe Antweb::Diff do
     @diff.match_count.should == 1
   end
 
-  it "should ignore the difference if it's just that AntWeb didn't pick up the taxonomic history properly" do
-    Factory :genus, :name => 'Martialis', :tribe => Factory(:tribe, :name => 'Leptanillini')
-    antcat = ["Martialinae\tLeptanillini\tMartialis\t\t\t\tTRUE\tTRUE\tMartialis\tA good taxonomic history"]
-    antweb = ["Martialinae\t\tMartialis\t\t\t\tTRUE\tTRUE\tMartialis\tA bad taxonomic history"]
-    @diff.diff antcat, antweb
-    @diff.match_count.should == 1
-  end
-
   it "should ignore the difference if it's just that AntWeb didn't pick up the tribe properly" do
     antcat = ["Myrmicinae\tStenammini\tPropodilobus\t\t\t\tTRUE\tTRUE\tPropodilobus\t"]
     antweb = ["Myrmicinae\tincertae sedis in Stenammini\tPropodilobus\t\t\t\tTRUE\tTRUE\tPropodilobus\t"]
@@ -95,18 +87,36 @@ describe Antweb::Diff do
     @diff.match_count.should == 1
   end
 
+  describe "judging the similarity of taxonomic histories" do
+
+    it "should not ignore the difference if the first words aren't the same" do
+      antcat = ["Myrmicinae\tStenammini\tPropodilobus\t\t\t\tTRUE\tTRUE\tPropodilobus\tFoo"]
+      antweb = ["Myrmicinae\tStenammini\tPropodilobus\t\t\t\tTRUE\tTRUE\tPropodilobus\tBar"]
+      @diff.diff antcat, antweb
+      @diff.match_count.should == 0
+    end
+
+    it "should ignore the difference if the first words are the same" do
+      antcat = ["Myrmicinae\tStenammini\tPropodilobus\t\t\t\tTRUE\tTRUE\tPropodilobus\tPropodilobus"]
+      antweb = ["Myrmicinae\tStenammini\tPropodilobus\t\t\t\tTRUE\tTRUE\tPropodilobus\tPROPODILOBUS"]
+      @diff.diff antcat, antweb
+      @diff.match_count.should == 1
+    end
+
+  end
+
   describe "showing where two strings differ" do
 
     it "should return nil if they're equal" do
-      Antweb::Diff.match_fails_at('abc', 'abc').should == nil
+      Antweb::Diff.new.match_fails_at('abc', 'abc').should == nil
     end
 
     it "should return 0 if they differ at the first character" do
-      Antweb::Diff.match_fails_at('a', 'b').should == 0
+      Antweb::Diff.new.match_fails_at('a', 'b').should == 0
     end
 
     it "should return the size of the shorter string if it's a substring of the other" do
-      Antweb::Diff.match_fails_at('ab', 'a').should == 1
+      Antweb::Diff.new.match_fails_at('ab', 'a').should == 1
     end
   
   end

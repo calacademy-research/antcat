@@ -26,66 +26,91 @@ class Antweb::Diff
   end
 
   def diff antcat, antweb
-    self.class.preprocess_antweb antweb
-    antcat.sort!
-    antweb.sort!
+    preprocess_antweb antweb
     Progress.puts "#{antcat.size} antcat lines, #{antweb.size} antweb lines"
 
-    antcat_taxa = make_taxa_groups antcat
-    antweb_taxa = make_taxa_groups antweb
+    antcat.sort!
+    antweb.sort!
 
-    antcat_taxa.each_key do |antcat_taxon|
-      antcat_records = antcat_taxa[antcat_taxon]
-      antweb_records = antweb_taxa[antcat_taxon]
+    antcat_taxon_groups = make_taxon_groups antcat
+    antweb_taxon_groups = make_taxon_groups antweb
 
-      combinations = []
-      for antcat_record in antcat_records
-        unless antweb_records
-          @antcat_unmatched_count += 1
-          @antcat_unmatched << antcat_record
-        else
-          for antweb_record in antweb_records
-            combinations << [antcat_record, antweb_record, self.class.closeness(antcat_record, antweb_record)]
-          end
-        end
-      end
-      combinations = combinations.sort_by {|a| a[2]}
-      for combination_index in 0...(combinations.size - 1)
-        combination = combinations[combination_index]
-        for other_combination_index in (combination_index + 1)...combinations.size
-          other_combination = combinations[other_combination_index]
-          if other_combination[0] == combination[0]
-            other_combination[0] = nil
-          end
-          if other_combination[1] == combination[1]
-            other_combination[1] = nil
-          end
-        end
-      end
-      combinations.each do |combination|
-        if combination[0] != nil && combination[1] == nil
-          @antcat_unmatched_count += 1
-        elsif combination[0] == nil && combination[1] != nil
-          @antweb_unmatched_count += 1
-        elsif combination[2] == 0
-          @match_count += 1
-        else
-          @differences << [combination[0], combination[1]]
-          @difference_count += 1
-        end
-      end
+    antcat_taxon_groups.each_key do |antcat_taxon|
+      compare_taxon_group antcat_taxon_groups[antcat_taxon], antweb_taxon_groups[antcat_taxon]
     end
 
     @antweb_unmatched_count = antweb.size - @match_count - @difference_count
   end
 
-  def self.closeness antcat, antweb
+  def compare_taxon_group antcat_taxon_group, antweb_taxon_group
+    pairs = compare_each_pair(antcat_taxon_group, antweb_taxon_group).sort_by {|a| a[2]}
+    set_duplicates_to_nil pairs if pairs.present?
+    tally_pairs pairs
+  end
+
+  def compare_each_pair antcat_taxon_group, antweb_taxon_group
+    pairs = []
+    for antcat_record in antcat_taxon_group
+      if antweb_taxon_group
+        for antweb_record in antweb_taxon_group
+          pairs << [antcat_record, antweb_record, closeness(antcat_record, antweb_record)]
+        end
+      else
+        @antcat_unmatched_count += 1
+        @antcat_unmatched << antcat_record
+      end
+    end
+    pairs
+  end
+
+  def set_duplicates_to_nil pairs
+    pairs[0, pairs.size - 1].each_with_index do |pair, i|
+      pairs[(i + 1)...pairs.size].each do |other_pair|
+        if other_pair[0] == pair[0]
+          other_pair[0] = nil
+        end
+        if other_pair[1] == pair[1]
+          other_pair[1] = nil
+        end
+      end
+    end
+    pairs
+  end
+
+  def tally_pairs pairs
+    pairs.each do |pair|
+      if pair[0] != nil && pair[1] == nil
+        @antcat_unmatched_count += 1
+      elsif pair[0] == nil && pair[1] != nil
+        @antweb_unmatched_count += 1
+      elsif pair[2] == 0
+        @match_count += 1
+      else
+        @differences << [pair[0], pair[1]]
+        @difference_count += 1
+      end
+    end
+  end
+
+  def closeness antcat, antweb
     # AntWeb just got this one's taxonomic history wrong
     return 0 if antweb =~ /Martialinae\tLeptanillini\tMartialis\t\t\t\tTRUE\tTRUE\tMartialis\t/
+    return 0 if match_with_acceptable_taxononmic_history_difference antcat, antweb
     Levenshtein.distance(antcat, antweb)
   end
 
-  def self.preprocess_antweb antweb
+  def match_with_acceptable_taxononmic_history_difference antcat, antweb
+    antcat = antcat.split "\t"
+    antweb = antweb.split "\t"
+    return unless antcat[0,9] == antweb[0,9]
+    antcat_taxonomic_history = antcat[9]
+    antweb_taxonomic_history = antweb[9]
+    return true if antcat_taxonomic_history == antweb_taxonomic_history
+    return unless antcat_taxonomic_history.split(' ')[0].downcase == antweb_taxonomic_history.split(' ')[0].downcase
+    true
+  end
+
+  def preprocess_antweb antweb
     for line in antweb
 
       # AntWeb parsed these correctly, but it was a typo in Bolton which in AntCat
@@ -109,7 +134,7 @@ class Antweb::Diff
     end
   end
 
-  def self.match_fails_at antcat, antweb
+  def match_fails_at antcat, antweb
     index = 0
     while index < antcat.size && index < antweb.size
       return index if antcat[index] != antweb[index]   
@@ -119,7 +144,7 @@ class Antweb::Diff
   end
 
   private
-  def make_taxa_groups records
+  def make_taxon_groups records
     groups = {}
     records.each do |record|
 
@@ -139,7 +164,7 @@ class Antweb::Diff
     return unless @differences.present?
     Progress.puts "Differences:"
     @differences.each do |antcat, antweb|
-      match_fails_at = self.class.match_fails_at antcat, antweb
+      match_fails_at = match_fails_at antcat, antweb
       Progress.puts "\n" + '=' * 80
       Progress.puts antcat[0..match_fails_at - 1]
       Progress.puts "<<< #{antcat[match_fails_at]} len: #{antcat.length}"
