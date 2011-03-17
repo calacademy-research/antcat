@@ -1,5 +1,6 @@
 class Antweb::Exporter
   def initialize show_progress = false
+    Progress.init show_progress
   end
 
   def export directory
@@ -12,9 +13,11 @@ class Antweb::Exporter
     end
     extinct_file.close
     extant_file.close
+    Progress.show_results
   end
 
   def export_taxon taxon
+    Progress.tally_and_show_progress 1000
     case taxon
     when Subfamily
       taxon.fossil? ? nil : convert_to_antweb_array(:subfamily => taxon.name, :valid? => !taxon.invalid?, :taxonomic_history => taxon.taxonomic_history)
