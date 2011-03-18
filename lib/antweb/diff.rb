@@ -128,8 +128,8 @@ class Antweb::Diff
         antweb_fields[1] = tribe
       end
 
-      # The species author date and country columns appear bogus and unused
-      antweb_fields[4] = antweb_fields[5] = nil
+      # clear fields that aren't used and are often bogus anyway
+      antweb_fields[4] = antweb_fields[5] = antweb_fields[9] = antweb_fields[8] = nil
 
       line.replace antweb_fields.join("\t")
 
