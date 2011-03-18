@@ -92,30 +92,5 @@ grammar Bolton::SpeciesCatalogSpeciesGrammar
     '(' capitalized_word ')'
   end
 
-  rule subspecies
-    available_subspecies | homonym_subspecies
-  end
-
-  rule available_subspecies
-  (
-    (fossil_flag? subspecies_flag bold italic blue species_name tag_end tag_end '.'? tag_end? /.*/) |
-    (bold italic black subspecies_flag tag_end blue species_name tag_end tag_end tag_end /.*/) |
-    (fossil_flag? bold italic subspecies_flag blue species_name tag_end tag_end tag_end /.*/) |
-    (subspecies_flag fossil_flag bold italic blue species_name tag_end tag_end tag_end /.*/) |
-    (subspecies_flag italic species_name /.*/)
-  ) {
-    value = {:type => :subspecies, :name => species_name.value, :status => 'valid'}
-    value.merge! :fossil => true unless fossil_flag.blank?
-    value
-  }
-  end
-
-  rule homonym_subspecies
-    (fossil_flag? subspecies_flag bold italic maroon species_name tag_end tag_end tag_end /.*/) {
-      value = {:type => :subspecies, :name => species_name.value, :status => 'homonym'}
-      value.merge! :fossil => true unless fossil_flag.blank?
-      value
-    }
-  end
 
 end

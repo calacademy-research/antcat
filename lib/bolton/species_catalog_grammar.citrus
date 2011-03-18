@@ -2,6 +2,7 @@ grammar Bolton::SpeciesCatalogGrammar
   include Bolton::CatalogGrammar
   include Bolton::SpeciesCatalogGenusGrammar
   include Bolton::SpeciesCatalogSpeciesGrammar
+  include Bolton::SpeciesCatalogSubspeciesGrammar
 
   rule record
     header | blank_line | genus_header | species | subspecies | note | not_understood

@@ -23,41 +23,16 @@ describe Bolton::SpeciesCatalog do
 
     it "should parse a header + see-under + genus-section without complaint" do
       contents = make_contents %{
-<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><i
-style='mso-bidi-font-style:normal'>ACANTHOLEPIS</i>: see under <b
-style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'>LEPISIOTA</i></b>.</p>
+<p><i>ACANTHOLEPIS</i>: see under <b><i>LEPISIOTA</i></b>.</p> <p><o:p>&nbsp;</o:p></p>
 
-<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><o:p>&nbsp;</o:p></p>
+<p><b><i><span style='color:red'>ACANTHOMYRMEX</span></i></b> (Oriental, Indo-Australian)</p>
+<p><b><i><span style='color:red'>basispinosus</span></i></b><i>. Acanthomyrmex basispinosus</i> Moffett, 1986c: 67, figs. 8A, 9-14 (s.w.) INDONESIA (Sulawesi).</p> <p><o:p>&nbsp;</o:p></p>
 
-<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
-style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
-style='color:red'>ACANTHOMYRMEX</span></i></b> (Oriental, Indo-Australian)</p>
+<p><b><i><span style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
+<p><b><i><span style='color:red'>anguliceps</span></i></b><i>.  Iridomyrmex anguliceps</i> Forel, 1901b: 18 (q.m.) NEW GUINEA (Bismarck Archipelago). Combination in <i>Anonychomyrma</i>: Shattuck, 1992a: 13.</p>
+<p><b><i><span style='color:red'>angusta</span></i></b><i>.  Iridomyrmex angustus</i> Stitz, 1911a: 369, fig. 15 (w.) NEW GUINEA.  Combination in <i>Anonychomyrma</i>: Shattuck, 1992a: 13.</p> <p>&nbsp;</p>
 
-<p><b><i><span style='color:red'>basispinosus</span></i></b><i>. Acanthomyrmex basispinosus</i> Moffett, 1986c: 67, figs. 8A, 9-14 (s.w.) INDONESIA (Sulawesi).</p>
-
-<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><o:p>&nbsp;</o:p></p>
-
-<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
-style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
-style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
-
-<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
-style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
-style='color:red'>anguliceps</span></i></b><i style='mso-bidi-font-style:normal'>.
-Iridomyrmex anguliceps</i> Forel, 1901b: 18 (q.m.) NEW GUINEA (Bismarck
-Archipelago). Combination in <i style='mso-bidi-font-style:normal'>Anonychomyrma</i>:
-Shattuck, 1992a: 13.</p>
-
-<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
-style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
-style='color:red'>angusta</span></i></b><i style='mso-bidi-font-style:normal'>.
-Iridomyrmex angustus</i> Stitz, 1911a: 369, fig. 15 (w.) NEW GUINEA.
-Combination in <i style='mso-bidi-font-style:normal'>Anonychomyrma</i>:
-Shattuck, 1992a: 13.</p>
-
-<p>&nbsp;</p>
 <p><b><i><span style="color:red">TETRAMORIUM</span></i></b></p>
-
 <p>*<b><i><span style='color:red'>poinari</span></i></b><i>. *Acanthognathus poinari</i> Baroni Urbani, in Baroni Urbani &amp; De Andrade, 1994: 41, figs. 20, 21, 26, 27 (q.) DOMINICAN AMBER (Miocene). See also: Bolton, 2000: 17.</p>
       }
 
@@ -88,15 +63,8 @@ Shattuck, 1992a: 13.</p>
 
     it "should link species to existing genera" do
       contents = make_contents %{
-<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
-style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
-style='color:red'>ACANTHOMYRMEX</span></i></b> (Oriental, Indo-Australian)</p>
-
-<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
-style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
-style='color:red'>basispinosus</span></i></b><i style='mso-bidi-font-style:
-normal'>. Acanthomyrmex basispinosus</i> Moffett, 1986c: 67, figs. 8A, 9-14
-(s.w.) INDONESIA (Sulawesi).</p>
+<p><b><i><span style='color:red'>ACANTHOMYRMEX</span></i></b> (Oriental, Indo-Australian)</p>
+<p><b><i><span style='color:red'>basispinosus</span></i></b><i>. Acanthomyrmex basispinosus</i> Moffett, 1986c: 67, figs. 8A, 9-14 (s.w.) INDONESIA (Sulawesi).</p>
       }
 
       Progress.should_not_receive(:error)
@@ -114,15 +82,8 @@ normal'>. Acanthomyrmex basispinosus</i> Moffett, 1986c: 67, figs. 8A, 9-14
 
     it "should complain if a genus doesn't already exist" do
       contents = make_contents %{
-<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
-style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
-style='color:red'>ACANTHOMYRMEX</span></i></b> (Oriental, Indo-Australian)</p>
-
-<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
-style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
-style='color:red'>basispinosus</span></i></b><i style='mso-bidi-font-style:
-normal'>. Acanthomyrmex basispinosus</i> Moffett, 1986c: 67, figs. 8A, 9-14
-(s.w.) INDONESIA (Sulawesi).</p>
+<p><b><i><span style='color:red'>ACANTHOMYRMEX</span></i></b> (Oriental, Indo-Australian)</p>
+<p><b><i><span style='color:red'>basispinosus</span></i></b><i>. Acanthomyrmex basispinosus</i> Moffett, 1986c: 67, figs. 8A, 9-14 (s.w.) INDONESIA (Sulawesi).</p>
       }
 
       Progress.should_receive(:error).with("Genus 'Acanthomyrmex' did not exist")
@@ -131,15 +92,8 @@ normal'>. Acanthomyrmex basispinosus</i> Moffett, 1986c: 67, figs. 8A, 9-14
 
     it "should save statuses correctly" do
       contents = make_contents %{
-<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
-style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
-style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
-
-<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'>
-<i style='mso-bidi-font-style:normal'><span
-style='color:purple'>basispinosus</span></i><i style='mso-bidi-font-style:
-normal'>. Acanthomyrmex basispinosus</i> Moffett, 1986c: 67, figs. 8A, 9-14
-(s.w.) INDONESIA (Sulawesi).</p>
+<p><b><i><span style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
+<p> <i><span style='color:purple'>basispinosus</span></i><i>. Acanthomyrmex basispinosus</i> Moffett, 1986c: 67, figs. 8A, 9-14 (s.w.) INDONESIA (Sulawesi).</p>
       }
 
       @species_catalog.import_html contents
@@ -148,55 +102,20 @@ normal'>. Acanthomyrmex basispinosus</i> Moffett, 1986c: 67, figs. 8A, 9-14
 
     it "should save subspecies correctly" do
       contents = make_contents %{
-<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
-style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
-style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
-
-<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'>#<b
-style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
-style='color:blue'>v-nigra</span></i></b><i style='mso-bidi-font-style:normal'>.
-Crematogaster chiarinii</i> var. <i style='mso-bidi-font-style:normal'>v-nigrum</i>
-Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i
-style='mso-bidi-font-style:normal'>C. (Acrocoelia</i>): Emery, 1922e: 146.</p>
+<p><b><i><span style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p> <p>#<b><i><span style='color:blue'>v-nigra</span></i></b><i>.  Crematogaster chiarinii</i> var. <i>v-nigrum</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146.</p>
       }
 
       @species_catalog.import_html contents
       Species.find_by_name('v-nigra').should be_nil
     end
 
-    #it "should point a resolved homonym back to its resolution" do
-      #contents = make_contents %{
-#<p>*<i>gracillimus. *Lampromyrmex gracillimus</i> Mayr, 1868c: 95, pl. 5, figs. 97, 98 (w.) BALTIC AMBER (Eocene). [Junior secondary homonym of <i>gracillima</i> Smith, above.] Replacement name: *<i>mayrianum</i> Wheeler, W.M. 1915h: 45. [Combination in error, with <i>Lophomyrmex gracillimus</i> for *<i>Lampromyrmex gracillimus</i>: Dlussky, 1997: 57.]</p>
-      #}
-
-      #@species_catalog.import_html contents
-      #species = Species.find_by_name('gracillimus')
-      #species.homonym_resolved_to.name.should == 'mayrianum'
-    #end
-
     it "should skip by subspecies and notes" do
       contents = make_contents %{
-<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
-style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
-style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
-
-<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
-style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
-style='color:red'>anguliceps</span></i></b><i style='mso-bidi-font-style:normal'>.
-Iridomyrmex anguliceps</i> Forel, 1901b: 18 (q.m.) NEW GUINEA (Bismarck
-Archipelago). Combination in <i style='mso-bidi-font-style:normal'>Anonychomyrma</i>:
-Shattuck, 1992a: 13.</p>
-
+<p><b><i><span style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
+<p><b><i><span style='color:red'>anguliceps</span></i></b><i>.  Iridomyrmex anguliceps</i> Forel, 1901b: 18 (q.m.) NEW GUINEA (Bismarck Archipelago). Combination in <i>Anonychomyrma</i>: Shattuck, 1992a: 13.</p>
 <p>#<b><i><span style="color:blue">ajax</span></i></b><i>. Atta (Acromyrmex) emilii</i> var. <i>ajax</i> Forel, 1909b: 58 (w.) "GUINEA" (in error; in text Forel states "probablement du Brésil"). Currently subspecies of <i>hystrix</i>: Santschi, 1925a: 358.</p>
-
 <p><span style="color:black">[Note. All <i>Colobostruma</i> taxa with combination in <i>Epopostruma</i>, <i>sensu</i> Baroni Urbani &amp; De Andrade, 2007: 97-98.]</span></p>
-
-<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><b
-style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
-style='color:red'>angusta</span></i></b><i style='mso-bidi-font-style:normal'>.
-Iridomyrmex angustus</i> Stitz, 1911a: 369, fig. 15 (w.) NEW GUINEA.
-Combination in <i style='mso-bidi-font-style:normal'>Anonychomyrma</i>:
-Shattuck, 1992a: 13.</p>
+<p><b><i><span style='color:red'>angusta</span></i></b><i>.  Iridomyrmex angustus</i> Stitz, 1911a: 369, fig. 15 (w.) NEW GUINEA.  Combination in <i>Anonychomyrma</i>: Shattuck, 1992a: 13.</p>
       }
       Factory :genus, :name => 'Anonychomyrma'
 
@@ -222,13 +141,11 @@ Shattuck, 1992a: 13.</p>
 <html> <head> <title>CATALOGUE OF SPECIES-GROUP TAXA</title> </head>
 <body>
 <div class=Section1>
-<p class=MsoNormal align=center style='margin-left:.5in;text-align:center;
-text-indent:-.5in'><b style='mso-bidi-font-weight:normal'>CATALOGUE OF
-SPECIES-GROUP TAXA<o:p></o:p></b></p>
-<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><o:p>&nbsp;</o:p></p>
-<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><o:p>&nbsp;</o:p></p>
+<p><b>CATALOGUE OF SPECIES-GROUP TAXA<o:p></o:p></b></p>
+<p><o:p>&nbsp;</o:p></p>
+<p><o:p>&nbsp;</o:p></p>
       #{content}
-<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'><o:p>&nbsp;</o:p></p>
+<p><o:p>&nbsp;</o:p></p>
 </div> </body> </html>
     }
   end
