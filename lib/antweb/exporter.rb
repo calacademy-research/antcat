@@ -18,6 +18,9 @@ class Antweb::Exporter
 
   def export_taxon taxon
     Progress.tally_and_show_progress 1000
+
+    return if taxon.invalid?
+
     case taxon
     when Subfamily
       taxon.fossil? ? nil : convert_to_antweb_array(:subfamily => taxon.name, :valid? => !taxon.invalid?, :taxonomic_history => taxon.taxonomic_history)

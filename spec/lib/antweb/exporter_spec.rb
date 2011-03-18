@@ -38,22 +38,21 @@ describe Antweb::Exporter do
       myrmicinae = Subfamily.create! :name => 'Myrmicinae', :status => 'valid'
       dacetini = Tribe.create! :name => 'Dacetini', :subfamily => myrmicinae, :status => 'valid'
       acanthognathus = Genus.create! :name => 'Acanothognathus', :subfamily => myrmicinae, :tribe => dacetini, :status => 'valid', :taxonomic_history => '<i>Acanthognathous</i>'
-      @exporter.export_taxon(acanthognathus).should == ['Myrmicinae', 'Dacetini', 'Acanothognathus', nil, nil, nil, 'TRUE', 'TRUE', 'Acanothognathus', nil, '<i>Acanthognathous</i>']
+      @exporter.export_taxon(acanthognathus).should == ['Myrmicinae', 'Dacetini', 'Acanothognathus', nil, nil, nil, 'TRUE', 'TRUE', nil, nil, '<i>Acanthognathous</i>']
     end
 
-    it "should simply set 'available' to equal 'valid'" do
+    it "should not export invalid taxa" do
       subfamily = Factory :subfamily
       tribe = Factory :tribe, :subfamily => subfamily
       valid_genus = Factory :genus, :subfamily => subfamily, :tribe => tribe, :status => 'valid'
       invalid_genus = Factory :genus, :subfamily => subfamily, :tribe => tribe, :status => 'syononym'
-      @exporter.export_taxon(valid_genus).should == [subfamily.name, tribe.name, valid_genus.name, nil, nil, nil, 'TRUE', 'TRUE', valid_genus.name, nil, nil]
-      @exporter.export_taxon(invalid_genus).should == [subfamily.name, tribe.name, invalid_genus.name, nil, nil, nil, 'FALSE', 'FALSE', invalid_genus.name, nil, nil]
+      @exporter.export_taxon(valid_genus).should == [subfamily.name, tribe.name, valid_genus.name, nil, nil, nil, 'TRUE', 'TRUE', nil, nil, nil]
+      @exporter.export_taxon(invalid_genus).should == nil
     end
 
-    it "should export a genus that's a junior synonym" do
-      gauromyrmex = Factory :genus
-      acalama = Factory :genus,  :status => 'synonym', :synonym_of => gauromyrmex
-      @exporter.export_taxon(acalama).should == [acalama.tribe.subfamily.name, acalama.tribe.name, acalama.name, nil, nil, nil, 'FALSE', 'FALSE', gauromyrmex.name, nil, nil]
+    it "should not export an invalid taxon" do
+      acalama = Factory :genus,  :status => 'synonym'
+      @exporter.export_taxon(acalama).should == nil
     end
 
     describe "Exporting species" do
