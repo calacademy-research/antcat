@@ -17,13 +17,13 @@ describe Bolton::SpeciesCatalog do
     it "should handle black and blue" do
       @species_catalog.parse(%{
 <b><i><span style="color:black">#</span><span style="color:blue">dagmarae</span></i></b><i><span style="color:blue">. </span><span style="color:black">Myrmica moravica</span></i><span style="color:black"> var. <i>dagmarae</i> Sadil, 1939b: 108 (w.q.m.) CZECHIA.<b><i> </i></b>Currently subspecies of <i>lacustris</i> (because <i>moravica</i> and its senior synonym <i>deplanata</i> are both junior synonyms of <i>lacustris</i>).<p></p></span>
-      }).should == {:type => :subspecies, :name => 'dagmarae', :status => 'valid'}
+      }).should == {:type => :subspecies, :name => 'dagmarae', :status => 'valid', :species => 'lacustris'}
     end
 
     it "should handle including the period after the name in the italicization of the binomial" do
       @species_catalog.parse(%{
-#<b><i><span style="color:blue">v-nigra</span></i></b><i>. Crematogaster chiarinii</i> var. <i>v-nigrum</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146.
-      }).should == {:type => :subspecies, :name => 'v-nigra', :status => 'valid'}
+#<b><i><span style="color:blue">nigra</span></i></b><i>. Crematogaster chiarinii</i> var. <i>nigrum</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146.
+      }).should == {:type => :subspecies, :name => 'nigra', :status => 'valid', :species => 'chiarinii'}
     end
 
     it "should handle a colorless subspecies" do
@@ -103,7 +103,7 @@ describe Bolton::SpeciesCatalog do
     it "should handle a bold italic subspecies indicator" do
       @species_catalog.parse(%{
 <b><i>#<span style="color:blue">aeolia</span></i></b><i>. Oligomyrmex oertzeni</i> var. <i>aeolia</i> Forel, 1911d: 338 (q.m.) TURKEY. Combination in <i>Carebara</i>: <b>new combination (unpublished).</b>
-      }).should == {:type => :subspecies, :name => 'aeolia', :status => 'valid'}
+      }).should == {:type => :subspecies, :name => 'aeolia', :status => 'valid', :species => 'oertzeni'}
     end
 
     describe "subspecies homonyms" do

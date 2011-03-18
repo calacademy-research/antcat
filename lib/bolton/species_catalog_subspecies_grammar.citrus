@@ -6,18 +6,41 @@ grammar Bolton::SpeciesCatalogSubspeciesGrammar
   end
 
   rule available_subspecies
-  (
-    (fossil_flag? subspecies_flag bold italic blue species_name tag_end tag_end '.'? tag_end? /.*/) |
-    (bold italic black subspecies_flag tag_end blue species_name tag_end tag_end tag_end /.*/) |
-    (fossil_flag? bold italic subspecies_flag blue species_name tag_end tag_end tag_end /.*/) |
-    (subspecies_flag fossil_flag bold italic blue species_name tag_end tag_end tag_end /.*/) |
-    (subspecies_flag italic species_name /.*/)
-  ) {
-    value = {:type => :subspecies, :name => species_name.value, :status => 'valid'}
-    value.merge! :fossil => true unless fossil_flag.blank?
-    value.merge! :species => 'hystrix'
-    value
-  }
+    (available_subspecies_prefix subspecies_name:species_name subspecies_species_name? /.*/) {
+      value = {:type => :subspecies, :name => subspecies_name.value, :status => 'valid'}
+      value.merge! available_subspecies_prefix.value
+      value.merge! subspecies_species_name.value if subspecies_species_name.present?
+      value
+    }
+  end
+
+  rule subspecies_species_name
+    species_from_full_name | currently_subspecies_of
+  end
+
+  rule currently_subspecies_of
+    (/.*Currently subspecies of / italic species_name) {
+      {:species => species_name.value}
+    } 
+  end
+
+  rule species_from_full_name
+    (close_tags italic '.' ' ' capitalized_word s species_name) {
+      {:species => species_name.value}
+    }
+  end
+
+  rule available_subspecies_prefix
+    (
+      fossil_flag?
+      (                         subspecies_flag bold italic blue             ) |
+      (bold italic black        subspecies_flag tag_end blue                 ) |
+      (bold italic              subspecies_flag blue                         ) |
+      (                         subspecies_flag fossil_flag bold italic blue ) |
+      (                         subspecies_flag italic                       ) 
+    ) {
+      fossil_flag.present? ? {:fossil => true} : {}
+    }
   end
 
   rule homonym_subspecies
