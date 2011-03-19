@@ -14,18 +14,6 @@ describe Bolton::SpeciesCatalog do
       }).should == {:type => :species, :name => 'brevicornis', :status => 'valid'}
     end
 
-    it "should handle a name with a hyphen after the first letter" do
-      @species_catalog.parse(%{
-<p>#<b><i><span style='color:blue'>v-nigra</span></i></b><i>.  Crematogaster chiarinii</i> var. <i>v-nigrum</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146.</p>
-      }).should == {:type => :species, :name => 'v-nigra', :status => 'valid'}
-    end
-
-    it "should not handle a name with a hyphen anywhere other than the first letter" do
-      @species_catalog.parse(%{
-<p>#<b><i><span style='color:blue'>vni-gra</span></i></b><i>.  Crematogaster chiarinii</i> var. <i>v-nigrum</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146.</p>
-      }).should == {:type => :not_understood}
-    end
-
     describe "Unavailable species" do
 
       it "should handle an unavailable subspecies" do

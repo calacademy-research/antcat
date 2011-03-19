@@ -14,6 +14,12 @@ describe Bolton::SpeciesCatalog do
       }).should == {:type => :subspecies, :name => 'ajax', :status => 'valid', :species => 'hystrix'}
     end
 
+    it "should handle a name with a hyphen after the first letter" do
+      @species_catalog.parse(%{
+#<b><i><span style='color:blue'>v-nigra</span></i></b><i>.  Crematogaster chiarinii</i> var. <i>v-nigrum</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146.
+      }).should == {:type => :subspecies, :name => 'v-nigra', :status => 'valid', :species => 'chiarinii'}
+    end
+
     it "should handle black and blue" do
       @species_catalog.parse(%{
 <b><i><span style="color:black">#</span><span style="color:blue">dagmarae</span></i></b><i><span style="color:blue">. </span><span style="color:black">Myrmica moravica</span></i><span style="color:black"> var. <i>dagmarae</i> Sadil, 1939b: 108 (w.q.m.) CZECHIA.<b><i> </i></b>Currently subspecies of <i>lacustris</i> (because <i>moravica</i> and its senior synonym <i>deplanata</i> are both junior synonyms of <i>lacustris</i>).<p></p></span>
