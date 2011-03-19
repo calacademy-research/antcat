@@ -6,7 +6,7 @@ describe Bolton::SpeciesCatalog do
     @species_catalog = Bolton::SpeciesCatalog.new
   end
 
-  describe "parsing species" do
+  describe "Parsing species" do
 
     it "should handle a normal species" do
       @species_catalog.parse(%{
@@ -24,6 +24,52 @@ describe Bolton::SpeciesCatalog do
       @species_catalog.parse(%{
 <p>#<b><i><span style='color:blue'>vni-gra</span></i></b><i>.  Crematogaster chiarinii</i> var. <i>v-nigrum</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146.</p>
       }).should == {:type => :not_understood}
+    end
+
+    describe "Unavailable species" do
+
+      it "should handle an unavailable subspecies" do
+        @species_catalog.parse(%{
+  <i><span style="color:purple">angustata</span>. Atta (Acromyrmex) moelleri</i> subsp. <i>panamensis</i> var. <i>angustata </i>Forel, 1908b: 41 (w.q.) COSTA RICA. <b>Unavailable name</b> (Bolton, 1995b: 54).
+        }).should == {:type => :species, :name => 'angustata', :status => 'unavailable'}
+      end
+
+      it "should handle an unavailable subspecies without a binomial" do
+        @species_catalog.parse(%{
+  <i><span style="color:purple">suturalis</span> </i>Santschi, 1921b: 426 (<b>unavailable name</b>); see under <b><i>LEPTOTHORAX</i></b>.
+        }).should == {:type => :species, :name => 'suturalis', :status => 'unavailable'}
+      end
+
+      it "should handle an unavailable subspecies without a binomial with some spaces" do
+        @species_catalog.parse(%{
+  <i><span style="color:purple">pseudoxanthus</span> </i> Plateaux, 1981: 64 (<b>unavailable name</b>); see under <b><i>LEPTOTHORAX</i></b>.
+        }).should == {:type => :species, :name => 'pseudoxanthus', :status => 'unavailable'}
+      end
+
+      it "should handle an unavailable subspecies without a binomial with the parentheses before the semicolon" do
+        @species_catalog.parse(%{
+  <i><span style="color:purple">esmirensis</span></i> Santschi, 1936 (<b>unavailable name</b>); see under <b><i>LEPTOTHORAX</i></b>.
+        }).should == {:type => :species, :name => 'esmirensis', :status => 'unavailable'}
+      end
+
+      it "should handle an unavailable subspecies without a comma before the year" do
+        @species_catalog.parse(%{
+  <i><span style="color:purple">spinosus</span> </i>Smith, M.R. 1929: 551 (<b>unavailable name</b>); see under <b><i>LEPTOTHORAX</i></b>.
+        }).should == {:type => :species, :name => 'spinosus', :status => 'unavailable'}
+      end
+
+      it "should handle an authors list separated by &'s" do
+        @species_catalog.parse(%{
+  <i><span style="color:purple">parkeri</span> </i> Espadaler &amp; DuMerle, 1989: 121 (<b>unavailable name</b>); see under <b><i>LEPTOTHORAX</i></b>.
+        }).should == {:type => :species, :name => 'parkeri', :status => 'unavailable'}
+      end
+
+      it "should handle a fossil unavailable species" do
+        @species_catalog.parse(%{
+*<i><span style="color:purple">cephalica</span>. *Formica cephalica</i> Scudder, 1891: 699, no caste mentioned, BALTIC AMBER. <i>Nomen nudum</i>, attributed to Burmeister. [Name may be based on a misinterpretation. Burmeister, 1831: 1100, does not name a species but mentions that he has a number of ants’ heads (<i>formicae cephalicae</i>) in amber.]
+        }).should == {:type => :species, :name => 'cephalica', :status => 'unavailable', :fossil => true}
+      end
+
     end
 
     describe "fossil" do

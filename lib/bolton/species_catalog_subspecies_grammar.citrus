@@ -15,7 +15,7 @@ grammar Bolton::SpeciesCatalogSubspeciesGrammar
   end
 
   rule subspecies_species_name
-    species_from_full_name | currently_subspecies_of
+    currently_subspecies_of | species_from_full_name
   end
 
   rule currently_subspecies_of
@@ -25,9 +25,13 @@ grammar Bolton::SpeciesCatalogSubspeciesGrammar
   end
 
   rule species_from_full_name
-    (close_tags italic '.' ' ' capitalized_word s species_name) {
+    (close_tags '.'? close_tags italic? '.'? s fossil_flag? capitalized_word s parenthesized_genus_name? species_name) {
       {:species => species_name.value}
     }
+  end
+
+  rule parenthesized_genus_name
+    s '(' capitalized_word ')' s
   end
 
   rule available_subspecies_prefix
@@ -44,9 +48,10 @@ grammar Bolton::SpeciesCatalogSubspeciesGrammar
   end
 
   rule homonym_subspecies
-    (fossil_flag? subspecies_flag bold italic maroon species_name tag_end tag_end tag_end /.*/) {
-      value = {:type => :subspecies, :name => species_name.value, :status => 'homonym'}
+    (fossil_flag? subspecies_flag bold italic maroon subspecies_name:species_name subspecies_species_name? /.*/) {
+      value = {:type => :subspecies, :name => subspecies_name.value, :status => 'homonym'}
       value.merge! :fossil => true unless fossil_flag.blank?
+      value.merge! subspecies_species_name.value if subspecies_species_name.present?
       value
     }
   end
