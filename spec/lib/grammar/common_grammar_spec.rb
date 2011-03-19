@@ -124,9 +124,30 @@ describe CommonGrammar do
   end
 
   describe "Color" do
+
     it "shouldn't slop over" do
       CommonGrammar.parse(%{<span style="color:}, :root => :start_color_span_start).should_not be_nil
       lambda {CommonGrammar.parse(%{<span> <span style="color:}, :root => :start_color_span_start)}.should raise_error
     end
+
   end
+
+  describe "Species name" do
+    it "should allow a lowercase word" do
+      CommonGrammar.parse('chilensis', :root => :species_name).should_not be_nil
+    end
+    it "should not allow a space" do
+      lambda {CommonGrammar.parse('chilensis negrescens', :root => :species_name)}.should raise_error
+    end
+    it "should allow a hyphen in the second position" do
+      CommonGrammar.parse('v-nigra', :root => :species_name).should_not be_nil
+    end
+    it "should not allow a hyphen in the first position" do
+      lambda {CommonGrammar.parse('-vnigra', :root => :species_name)}.should raise_error
+    end
+    it "should not allow a hyphen in the third position" do
+      lambda {CommonGrammar.parse('vn-igra', :root => :species_name)}.should raise_error
+    end
+  end
+
 end

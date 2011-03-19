@@ -91,12 +91,8 @@ grammar CommonGrammar
     /[[:alpha:]]+/
   end
 
-  rule species_name_letter
-    /[[:lower:]\-]/
-  end
-
   rule species_name
-    species_name_letter+
+    /[[:lower:]][[:lower:]\-][[:lower:]]+/
   end
 
   rule uppercase_word
