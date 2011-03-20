@@ -35,11 +35,25 @@ grammar Bolton::SpeciesCatalogSpeciesGrammar
         (bold italic fossil_flag? red)
       )
       species_name
+      subspecies_list?
       /.*/
     ) {
       value = {:type => :species, :name => species_name.value, :status => 'valid'}
       value.merge! :fossil => true unless fossil_flag.blank?
+      value.merge! :subspecies => subspecies_list.value unless subspecies_list.blank?
       value
+    }
+  end
+
+  rule subspecies_list
+    (/.*Current subspecies: nominal plus / subspecies_list_subspecies+) {
+      captures[:subspecies_list_subspecies].map(&:value)
+    }
+  end
+
+  rule subspecies_list_subspecies
+    (italic blue species_name /.*/) {
+      species_name.value
     }
   end
 
