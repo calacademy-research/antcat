@@ -14,6 +14,10 @@ describe Bolton::SpeciesCatalog do
       }).should == {:type => :species, :name => 'brevicornis', :status => 'valid'}
     end
 
+    describe "Subspecies lists" do
+      
+    end
+
     describe "Unavailable species" do
 
       it "should handle an unavailable subspecies" do

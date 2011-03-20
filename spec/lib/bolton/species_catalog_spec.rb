@@ -85,7 +85,6 @@ describe Bolton::SpeciesCatalog do
 <p><b><i><span style='color:red'>ACANTHOMYRMEX</span></i></b> (Oriental, Indo-Australian)</p>
 <p><b><i><span style='color:red'>basispinosus</span></i></b><i>. Acanthomyrmex basispinosus</i> Moffett, 1986c: 67, figs. 8A, 9-14 (s.w.) INDONESIA (Sulawesi).</p>
       }
-
       Progress.should_receive(:error).with("Genus 'Acanthomyrmex' did not exist")
       @species_catalog.import_html contents
     end
@@ -100,20 +99,10 @@ describe Bolton::SpeciesCatalog do
       Species.find_by_name('basispinosus').should be_unavailable
     end
 
-    it "should save subspecies correctly" do
-      contents = make_contents %{
-<p><b><i><span style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
-<p>#<b><i><span style='color:blue'>v-nigra</span></i></b><i>.  Crematogaster chiarinii</i> var. <i>v-nigrum</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146.</p>
-      }
-      @species_catalog.import_html contents
-      Species.find_by_name('v-nigra').should_not be_nil
-    end
-
-    it "should skip by subspecies and notes" do
+    it "should skip by notes" do
       contents = make_contents %{
 <p><b><i><span style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
 <p><b><i><span style='color:red'>anguliceps</span></i></b><i>.  Iridomyrmex anguliceps</i> Forel, 1901b: 18 (q.m.) NEW GUINEA (Bismarck Archipelago). Combination in <i>Anonychomyrma</i>: Shattuck, 1992a: 13.</p>
-<p>#<b><i><span style="color:blue">ajax</span></i></b><i>. Atta (Acromyrmex) emilii</i> var. <i>ajax</i> Forel, 1909b: 58 (w.) "GUINEA" (in error; in text Forel states "probablement du Brésil"). Currently subspecies of <i>hystrix</i>: Santschi, 1925a: 358.</p>
 <p><span style="color:black">[Note. All <i>Colobostruma</i> taxa with combination in <i>Epopostruma</i>, <i>sensu</i> Baroni Urbani &amp; De Andrade, 2007: 97-98.]</span></p>
 <p><b><i><span style='color:red'>angusta</span></i></b><i>.  Iridomyrmex angustus</i> Stitz, 1911a: 369, fig. 15 (w.) NEW GUINEA.  Combination in <i>Anonychomyrma</i>: Shattuck, 1992a: 13.</p>
       }
@@ -124,6 +113,54 @@ describe Bolton::SpeciesCatalog do
     end
   end
 
+  describe "Subspecies" do
+    it "should not be OK if a subspecies is seen but not its species" do
+      Factory :genus, :name => 'Anonychomyrma'
+      lambda {@species_catalog.import_html make_contents %{
+<p><b><i><span style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
+<p>#<b><i><span style='color:blue'>nigra</span></i></b><i>. Anonychomyrma chiarinii</i> var. <i>v-nigrum</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146.</p>
+      }}.should raise_error "Subspecies Anonychomyrma chiarinii nigra was seen but not its species"
+    end
+
+    it "should not be OK if a species is seen first, then a subspecies is seen, but the species has no subspecies list" do
+      Factory :genus, :name => 'Anonychomyrma'
+      lambda {@species_catalog.import_html make_contents %{
+<p><b><i><span style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
+<p><b><i><span style='color:red'>chiarinii</span></i></b><i>. Anyonychomyrma chiarinii</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146.</p>
+<p>#<b><i><span style='color:blue'>nigra</span></i></b><i>. Anyonychomyrma chiarinii</i> var. <i>v-nigrum</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146.</p>
+      }}.should raise_error "Subspecies Anonychomyrma chiarinii nigra was seen but it was not in its species's subspecies list"
+    end
+
+    it "should not be OK if a species is seen first, then a subspecies is seen, but the subspecies is not in the species's subspecies list" do
+      Factory :genus, :name => 'Anonychomyrma'
+      lambda {@species_catalog.import_html make_contents %{
+<p><b><i><span style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
+<p><b><i><span style='color:red'>chiarinii</span></i></b><i>. Anyonychomyrma chiarinii</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146. Current subspecies: nominal plus <i style='mso-bidi-font-style:normal'><span style='color:blue'>fuhrmanni</span></i>.</p>
+<p>#<b><i><span style='color:blue'>nigra</span></i></b><i>. Anyonychomyrma chiarinii</i> var. <i>v-nigrum</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146.</p>
+      }}.should raise_error "Subspecies Anonychomyrma chiarinii nigra was seen but it was not in its species's subspecies list"
+    end
+
+    it "should be OK if a species is seen first, then a subspecies is seen, which is in the species's list"
+    it "should be OK if the subspecies is seen first, then the species is seen, and the subspecies is in the species's subspecies list"
+    it "should not be OK if the subspecies is seen first, then the species is seen, but the subspecies is not in the species's subspecies list"
+
+
+    it "should not be OK if a species is seen but a subspecies in its list is not seen"
+  end
+
+    #it "should save subspecies correctly" do
+      #@species_catalog.import_html make_contents %{
+#<p><b><i><span style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
+#<p>#<b><i><span style='color:blue'>v-nigra</span></i></b><i>.  Crematogaster chiarinii</i> var. <i>v-nigrum</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146.</p>
+      #}
+      #v_nigra = Subspecies.find_by_name 'v-nigra'
+      #v_nigra.should_not be_nil
+      #v_nigra.should_not be_invalid
+      #v_nigra.species.name.should == 'Anonychomyrma'
+    #end
+
+    #it "should complain if a subspecies listed in a species line wasn't added"
+    #it "should complain if a subspecies line is seen that wasn't in a species line"
 
   describe "parsing a note" do
     it "should work" do
