@@ -114,3 +114,9 @@ Factory.define :species do |species|
   species.sequence(:name) {|n| "Species#{n}"}
   species.status  'valid'
 end
+
+Factory.define :subspecies do |subspecies|
+  subspecies.sequence(:name) {|n| "Subspecies#{n}"}
+  subspecies.status  'valid'
+  subspecies.association :species
+end
