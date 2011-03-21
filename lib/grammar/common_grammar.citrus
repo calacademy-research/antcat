@@ -92,7 +92,7 @@ grammar CommonGrammar
   end
 
   rule species_name
-    /[[:lower:]][[:lower:]\-][[:lower:]]+/
+    /[[:lower:]][[:lower:]\-][[:lower:]]*/
   end
 
   rule uppercase_word

@@ -133,6 +133,7 @@ describe CommonGrammar do
   end
 
   describe "Species name" do
+
     it "should allow a lowercase word" do
       CommonGrammar.parse('chilensis', :root => :species_name).should_not be_nil
     end
@@ -148,6 +149,10 @@ describe CommonGrammar do
     it "should not allow a hyphen in the third position" do
       lambda {CommonGrammar.parse('vn-igra', :root => :species_name)}.should raise_error
     end
+    it "can have only two letters" do
+      CommonGrammar.parse('io', :root => :species_name).should_not be_nil
+    end
+
   end
 
 end
