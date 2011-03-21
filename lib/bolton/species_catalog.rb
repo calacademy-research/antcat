@@ -10,6 +10,7 @@
 #  This generates log/bolton_species_catalog.log
 #
 #  Manual edits:
+#   In NGC-Spap-ca.htm, made Aphaenogaster simonelli red and bold
 #   In NGC-Spcan-cr.htm, removed extra paragraph in Cephalotes texanus
 #   In NGC-Spg-las.htm, removed extra paragraph in Lasius murphyi
 
