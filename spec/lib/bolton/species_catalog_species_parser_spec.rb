@@ -15,11 +15,19 @@ describe Bolton::SpeciesCatalog do
     end
 
     describe "Subspecies lists" do
+
       it "should handle a single subspecies" do
         @species_catalog.parse(%{
   <b><i><span style='color:red'>brevicornis</span></i></b><i>. Acanthognathus brevicornis</i> Smith, M.R. 1944c: 151 (w.q.) PANAMA. See also: Brown &amp; Kempf, 1969: 94; Bolton, 2000: 16. Current subspecies: nominal plus <i style='mso-bidi-font-style:normal'><span style='color:blue'>fuhrmanni</span></i>.</p>
         }).should == {:type => :species, :name => 'brevicornis', :status => 'valid', :subspecies => ['fuhrmanni']}
       end
+
+      it "should handle multiple" do
+        @species_catalog.parse(%{
+  <b><i><span style='color:red'>brevicornis</span></i></b><i>. Acanthognathus brevicornis</i> Smith, M.R. 1944c: 151 (w.q.) PANAMA. See also: Brown &amp; Kempf, 1969: 94; Bolton, 2000: 16. Current subspecies: nominal plus <i style='mso-bidi-font-style:normal'><span style='color:blue'>andicola, globoculis, importunus, panamensis, rectispinus</span></i>.
+        }).should == {:type => :species, :name => 'brevicornis', :status => 'valid', :subspecies => ['andicola', 'globoculis', 'importunus', 'panamensis', 'rectispinus']}
+      end
+
     end
 
     describe "Unavailable species" do
