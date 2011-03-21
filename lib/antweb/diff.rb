@@ -2,23 +2,26 @@ require 'levenshtein'
 
 class Antweb::Diff
   attr_reader :match_count, :difference_count, :differences, :antcat_unmatched_count, :antweb_unmatched_count,
-              :antcat_unmatched
+              :antcat_unmatched, :antweb_unmatched
 
   def initialize show_progress = false
     Progress.init show_progress
     @match_count = @difference_count = @antcat_unmatched_count = @antweb_unmatched_count = 0
     @differences = []
     @antcat_unmatched = []
+    @antweb_matched = []
+    @antweb_unmatched = []
   end
 
   def diff_files antcat_directory, antweb_directory
     antcat_filename = "#{antcat_directory}/extant.xls"
     antweb_filename = "#{antweb_directory}/extant.xls.utf8"
     Progress.puts "Diffing #{antcat_filename} against #{antweb_filename}"
+
     diff File.open(antcat_filename, 'r').readlines, File.open(antweb_filename, 'r').readlines
 
     show_differences
-    show_antcat_unmatched
+    show_unmatched 'antweb', @antweb_unmatched
     Progress.puts "#{@match_count} matches"
     Progress.puts "#{@difference_count} matches with differences"
     Progress.puts "#{@antcat_unmatched_count} antcat lines unmatched"
@@ -26,7 +29,7 @@ class Antweb::Diff
   end
 
   def diff antcat, antweb
-    preprocess_antweb antweb
+    antweb = preprocess_antweb antweb
     Progress.puts "#{antcat.size} antcat lines, #{antweb.size} antweb lines"
 
     antcat.sort!
@@ -40,6 +43,7 @@ class Antweb::Diff
     end
 
     @antweb_unmatched_count = antweb.size - @match_count - @difference_count
+    @antweb_unmatched = antweb - @antweb_matched
   end
 
   def compare_taxon_group antcat_taxon_group, antweb_taxon_group
@@ -54,6 +58,7 @@ class Antweb::Diff
       if antweb_taxon_group
         for antweb_record in antweb_taxon_group
           pairs << [antcat_record, antweb_record, closeness(antcat_record, antweb_record)]
+          @antweb_matched << antweb_record
         end
       else
         @antcat_unmatched_count += 1
@@ -108,8 +113,8 @@ class Antweb::Diff
   end
 
   def preprocess_antweb antweb
+    preprocessed_lines = []
     for line in antweb
-
       # AntWeb parsed these correctly, but it was a typo in Bolton which in AntCat
       # was corrected manually
       line.gsub! /(Myrmicinae\tAttini\tPseudoatta\t\t\t\t)FALSE\tFALSE\t\t/i, "\\1TRUE\tTRUE\tPseudoatta\t"
@@ -134,7 +139,9 @@ class Antweb::Diff
 
       line.replace antweb_fields.join("\t")
 
+      preprocessed_lines << line
     end
+    preprocessed_lines
   end
 
   def match_fails_at antcat, antweb
@@ -176,6 +183,14 @@ class Antweb::Diff
       Progress.puts '==='
       Progress.puts antweb[match_fails_at..-1] || ''
       Progress.puts ">>> #{antweb[match_fails_at]} len: #{antweb.length}"
+    end
+  end
+
+  def show_unmatched name, list
+    Progress.puts "#{name} unmatched:"
+    return unless list.present?
+    list.sort.each do |item|
+      Progress.puts item.split("\t")[0,4].join("\t")
     end
   end
 

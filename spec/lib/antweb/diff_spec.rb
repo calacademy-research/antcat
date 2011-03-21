@@ -167,6 +167,13 @@ describe Antweb::Diff do
       @diff.antcat_unmatched_count.should == 1
     end
 
+    it "should be able to show the unmatched antweb items" do
+      antcat = ["Myrmicinae\tStenammini\tPropodilobus\tpingorum\t\t\tTRUE\tTRUE\t\t\tPropodilobus Much longer taxonomic history"]
+      antweb = ["Dolichoderinae\tStenammini\tPropodilobus\tpingorum\t\t\tTRUE\tTRUE\t\t\tPROPODILOBUS [junior homonym of Athropus ]"]
+      @diff.diff antcat, antweb
+      @diff.antweb_unmatched.should == ["Dolichoderinae\tStenammini\tPropodilobus\tpingorum\t\t\tTRUE\tTRUE\t\t\tPROPODILOBUS [junior homonym of Athropus ]"]
+    end
+
   end
 
   describe "showing where two strings differ" do
