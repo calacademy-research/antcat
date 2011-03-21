@@ -10,8 +10,8 @@
 #  This generates log/bolton_species_catalog.log
 #
 #  Manual edits:
-#   In NGC-Spg-las.htm, removed extra paragraph in Lasius murphyi
 #   In NGC-Spcan-cr.htm, removed extra paragraph in Cephalotes texanus
+#   In NGC-Spg-las.htm, removed extra paragraph in Lasius murphyi
 
 class Bolton::SpeciesCatalog < Bolton::Catalog
   def import
