@@ -30,6 +30,7 @@ class Antweb::Diff
 
   def diff antcat, antweb
     antweb = preprocess_antweb antweb
+    antcat = preprocess_antcat antcat
     Progress.puts "#{antcat.size} antcat lines, #{antweb.size} antweb lines"
 
     antcat.sort!
@@ -139,7 +140,15 @@ class Antweb::Diff
 
       line.replace antweb_fields.join("\t")
 
-      preprocessed_lines << line
+      preprocessed_lines << preprocess(line)
+    end
+    preprocessed_lines
+  end
+
+  def preprocess_antcat antcat
+    preprocessed_lines = []
+    for line in antcat
+      preprocessed_lines << preprocess(line)
     end
     preprocessed_lines
   end
@@ -158,7 +167,6 @@ class Antweb::Diff
     groups = {}
     records.each do |record|
 
-      record = preprocess record
       key = get_key record
       groups[key] ||= []
       groups[key] << record
