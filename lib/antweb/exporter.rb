@@ -39,6 +39,14 @@ class Antweb::Exporter
                               :species => taxon.name,
                               :valid? => !taxon.invalid?, :available? => !taxon.invalid?,
                               :taxonomic_history => taxon.taxonomic_history
+    when Subspecies
+      return unless taxon.species && taxon.species.genus && taxon.species.genus.tribe && taxon.species.genus.tribe.subfamily
+      convert_to_antweb_array :subfamily => taxon.species.genus.subfamily.name,
+                              :tribe => taxon.species.genus.tribe.name,
+                              :genus => taxon.species.genus.name,
+                              :species => "#{taxon.species.name} #{taxon.name}",
+                              :valid? => !taxon.invalid?, :available? => !taxon.invalid?,
+                              :taxonomic_history => taxon.taxonomic_history
     else nil
     end
   end

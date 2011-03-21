@@ -67,6 +67,19 @@ describe Antweb::Exporter do
 
     end
 
+    describe "Exporting subspecies" do
+
+      it "should export one correctly" do
+        myrmicinae = Factory :subfamily, :name => 'Myrmicinae'
+        attini = Factory :tribe, :name => 'Attini', :subfamily => myrmicinae
+        atta = Factory :genus, :name => 'Atta', :tribe => attini
+        species = Factory :species, :name => 'robustus', :genus => atta
+        subspecies = Factory :subspecies, :name => 'emeryii', :species => species, :taxonomic_history => 'Taxonomic history'
+        @exporter.export_taxon(subspecies).should == ['Myrmicinae', 'Attini', 'Atta', 'robustus emeryii', nil, nil, 'TRUE', 'TRUE', nil, nil, 'Taxonomic history']
+      end
+
+    end
+
   end
 
 end

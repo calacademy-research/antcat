@@ -128,7 +128,7 @@ class Antweb::Diff
       next if antweb_fields[6].upcase == 'FALSE' || antweb_fields[7].upcase == 'FALSE'
 
       # AntWeb doesn't store the tribes of all genera
-      if antweb_fields[1].blank? && antweb_fields[3].blank? && antweb_fields[2].present?
+      if antweb_fields[1].blank? && antweb_fields[2].present?
         genus = Genus.find_by_name antweb_fields[2]
         tribe = genus && genus.tribe && genus.tribe.name
         antweb_fields[1] = tribe
