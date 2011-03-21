@@ -15,10 +15,21 @@ describe Bolton::SpeciesCatalog do
   end
 
   describe 'parsing the file as a whole' do
+
     it 'should complain bitterly if file is obviously not a species catalog' do
      contents = %{<html><body> <div><p>Foo</p></div> </body></html>}
      Progress.should_receive(:error).with("parse failed on: 'Foo'")
      @species_catalog.import_html contents
+    end
+
+    it 'should clear out species and subspecies' do
+      Factory :species
+      Factory :subspecies
+      @species_catalog.import_html make_contents %{
+<p><b><i><span style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
+      }
+      Species.count.should == 0
+      Subspecies.count.should == 0
     end
 
     it "should parse a header + see-under + genus-section without complaint" do

@@ -15,10 +15,15 @@
 
 class Bolton::SpeciesCatalog < Bolton::Catalog
   def import
+    @subspecies_errors = 0
     Species.delete_all
+    Subspecies.delete_all
+
     parse_header || parse_failed if @line
     parse_see_under || parse_genus_section || parse_failed while @line
+
     super
+    Progress.puts "#{@subspecies_errors} subspecies errors"
   end
 
   def grammar
@@ -81,10 +86,12 @@ class Bolton::SpeciesCatalog < Bolton::Catalog
       species = Species.find_by_genus_id_and_name genus.id, species_name
       unless species
         Progress.error "Subspecies #{genus.name} #{species_name} #{subspecies.name} was seen but not its species"
+        @subspecies_errors += 1
         next
       end
       unless @subspecies_for_species[species_name].include? subspecies.name
         Progress.error "Subspecies #{genus.name} #{species_name} #{subspecies.name} was seen but it was not in its species's subspecies list" 
+        @subspecies_errors += 1
         next
       end
       subspecies.species = species
@@ -95,6 +102,7 @@ class Bolton::SpeciesCatalog < Bolton::Catalog
       species = Species.find_by_genus_id_and_name genus.id, species_name
       subspecies_list.each do |subspecies_name|
         Progress.error "Subspecies #{genus.name} #{species.name} #{subspecies_name} was in its species's subspecies list but was not seen" unless species.subspecies.find_by_name subspecies_name
+        @subspecies_errors += 1
       end
     end
 
