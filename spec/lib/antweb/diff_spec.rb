@@ -159,6 +159,14 @@ describe Antweb::Diff do
       @diff.match_count.should == 1
     end
 
+    it "should ignore antweb entries that aren't valid" do
+      antcat = ["Myrmicinae\tStenammini\tPropodilobus\tpingorum\t\t\tTRUE\tTRUE\t\t\tPropodilobus Much longer taxonomic history"]
+      antweb = ["Myrmicinae\tStenammini\tPropodilobus\tpingorum\t\t\tFALSE\tTRUE\t\tCombination\tPROPODILOBUS [junior homonym of Athropus ]"]
+      @diff.diff antcat, antweb
+      @diff.match_count.should == 0
+      @diff.antcat_unmatched_count.should == 1
+    end
+
   end
 
   describe "showing where two strings differ" do
