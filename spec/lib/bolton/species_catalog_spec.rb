@@ -250,7 +250,6 @@ describe Bolton::SpeciesCatalog do
 <p><b><i><span style='color:red'>brevicornis</span></i></b><i>. Monomorium brevicorne</i> Emery, 1893e: 203 (w.) INDONESIA (Sumatra).  Combination in <i>Vollenhovia</i>: Emery, 1914f: 406 (footnote). Current subspecies: nominal plus <i style='mso-bidi-font-style: normal'><span style='color:blue'>minuta</span></i>.</p>
 <p><i>brevicornis. Vollenhovia brevicornis</i> Emery, 1897d: 560 (w.) NEW GUINEA. [Junior secondary homonym of <i>brevicorne</i> Emery, above.] Replacement name: <i>brachycera</i> Emery, 1914f: 407 (footnote).</p>
 <p>#<b><i><span style='color:blue'>minuta</span></i></b><i>. Vollenhovia brevicornis</i> var. <i>minuta</i> Viehmeyer, 1916a: 129 (w.) WEST MALAYSIA.</p>
-
       }
       brevicornises = Species.all :conditions => ['name = ?', 'brevicornis']
       brevicornises.count.should == 2

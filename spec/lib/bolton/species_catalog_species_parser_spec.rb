@@ -28,6 +28,40 @@ describe Bolton::SpeciesCatalog do
         }).should == {:type => :species, :name => 'brevicornis', :status => 'valid', :subspecies => ['andicola', 'globoculis', 'importunus', 'panamensis', 'rectispinus']}
       end
 
+      it "should handle multiple statuses of subspecies" do
+        @species_catalog.parse(%{
+<b><i><span style='color:red'>vitreus</span></i></b><i>. Formica vitrea</i> Smith, F. 1860b: 94 (w.) INDONESIA (Batjan I.).  Emery, 1899c: 7 (l.); Viehmeyer, 1916a: 160 (s.q.m.); Karavaiev, 1933a: 319 (m.). Combination in <i>Camponotus</i>: Dalla Torre, 1893: 257; in <i>C. (Colobopsis</i>): Emery, 1893e: 225. Senior synonym of <i>siggii</i>: Forel, 1895e: 455; of <i>adlerzii</i>: Forel, 1895e: 458; of <i>incursor</i>: Donisthorpe, 1932c: 459. Current subspecies: nominal plus <i><span style='color:blue'>angustulus, </span><span style='color:maroon'>carinatus</span></i> (unresolved junior homonym), <i><span style='color:maroon'>latinotus</span></i> (unresolved junior homonym), <i><span style='color:blue'>oebalis, praeluteus, praerufus, vittatulus</span></i>. See also: McArthur &amp; Shattuck, 2001: 41.
+        }).should == {:type => :species, :name => 'vitreus', :status => 'valid', :subspecies => ['angustulus', 'carinatus', 'latinotus', 'oebalis', 'praeluteus', 'praerufus', 'vittatulus']}
+      end
+
+      describe "Parsing individual subspecies items in list" do
+
+        it "should handle 'regular' italic blue" do
+          Bolton::SpeciesCatalogSpeciesGrammar.parse(%{<i><span style='color:blue'>angustulus, </span>}, :root => :subspecies_list_item).should_not be_nil
+        end
+
+        it "should handle just a name" do
+          Bolton::SpeciesCatalogSpeciesGrammar.parse(%{angustulus}, :root => :subspecies_list_item).should_not be_nil
+        end
+
+        it "should handle a name with a comma" do
+          Bolton::SpeciesCatalogSpeciesGrammar.parse(%{angustulus, }, :root => :subspecies_list_item).should_not be_nil
+        end
+
+        it "should handle italic blue without a close tag" do
+          Bolton::SpeciesCatalogSpeciesGrammar.parse(%{<i><span style='color:blue'>angustulus, }, :root => :subspecies_list_item).should_not be_nil
+        end
+
+        it "should handle unresolved junion homonym" do
+          Bolton::SpeciesCatalogSpeciesGrammar.parse(%{<span style='color:maroon'>carinatus</span></i> (unresolved junior homonym), }, :root => :subspecies_list_item).should_not be_nil
+        end
+
+        it "should handle italic unresolved junion homonym" do
+          Bolton::SpeciesCatalogSpeciesGrammar.parse(%{<i><span style='color:maroon'>latinotus</span></i> (unresolved junior homonym), }, :root => :subspecies_list_item).should_not be_nil
+        end
+
+      end
+
     end
 
     describe "Unavailable species" do
