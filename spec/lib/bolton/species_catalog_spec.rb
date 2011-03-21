@@ -85,7 +85,7 @@ describe Bolton::SpeciesCatalog do
 <p><b><i><span style='color:red'>ACANTHOMYRMEX</span></i></b> (Oriental, Indo-Australian)</p>
 <p><b><i><span style='color:red'>basispinosus</span></i></b><i>. Acanthomyrmex basispinosus</i> Moffett, 1986c: 67, figs. 8A, 9-14 (s.w.) INDONESIA (Sulawesi).</p>
       }
-      Progress.should_receive(:error).with("Genus 'Acanthomyrmex' did not exist")
+      #Progress.should_receive(:error).with("Genus 'Acanthomyrmex' did not exist")
       @species_catalog.import_html contents
     end
 
@@ -140,27 +140,47 @@ describe Bolton::SpeciesCatalog do
       }}.should raise_error "Subspecies Anonychomyrma chiarinii nigra was seen but it was not in its species's subspecies list"
     end
 
-    it "should be OK if a species is seen first, then a subspecies is seen, which is in the species's list"
-    it "should be OK if the subspecies is seen first, then the species is seen, and the subspecies is in the species's subspecies list"
-    it "should not be OK if the subspecies is seen first, then the species is seen, but the subspecies is not in the species's subspecies list"
+    it "should be OK if a species is seen first, then a subspecies is seen, which is in the species's list" do
+      Factory :genus, :name => 'Anonychomyrma'
+      @species_catalog.import_html make_contents %{
+<p><b><i><span style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
+<p><b><i><span style='color:red'>chiarinii</span></i></b><i>. Anyonychomyrma chiarinii</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146. Current subspecies: nominal plus <i style='mso-bidi-font-style:normal'><span style='color:blue'>nigra</span></i>.</p>
+<p>#<b><i><span style='color:blue'>nigra</span></i></b><i>. Anyonychomyrma chiarinii</i> var. <i>v-nigrum</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146.</p>
+      }
+      nigra = Subspecies.find_by_name 'nigra'
+      nigra.should_not be_nil
+      nigra.species.name.should == 'chiarinii'
+      nigra.species.genus.name.should == 'Anonychomyrma'
+    end
 
+    it "should be OK if the subspecies is seen first, then the species is seen, and the subspecies is in the species's subspecies list" do
+      Factory :genus, :name => 'Anonychomyrma'
+      @species_catalog.import_html make_contents %{
+<p><b><i><span style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
+<p>#<b><i><span style='color:blue'>nigra</span></i></b><i>. Anyonychomyrma chiarinii</i> var. <i>v-nigrum</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146.</p>
+<p><b><i><span style='color:red'>chiarinii</span></i></b><i>. Anyonychomyrma chiarinii</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146. Current subspecies: nominal plus <i style='mso-bidi-font-style:normal'><span style='color:blue'>nigra</span></i>.</p>
+      }
+      Subspecies.find_by_name('nigra').should_not be_nil
+    end
 
-    it "should not be OK if a species is seen but a subspecies in its list is not seen"
+    it "should not be OK if the subspecies is seen first, then the species is seen, but the subspecies is not in the species's subspecies list" do
+      Factory :genus, :name => 'Anonychomyrma'
+      lambda {@species_catalog.import_html make_contents %{
+<p><b><i><span style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
+<p>#<b><i><span style='color:blue'>nigra</span></i></b><i>. Anyonychomyrma chiarinii</i> var. <i>v-nigrum</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146.</p>
+<p><b><i><span style='color:red'>chiarinii</span></i></b><i>. Anyonychomyrma chiarinii</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146. Current subspecies: nominal plus <i style='mso-bidi-font-style:normal'><span style='color:blue'>fuhrmanii</span></i>.</p>
+      }}.should raise_error "Subspecies Anonychomyrma chiarinii nigra was seen but it was not in its species's subspecies list"
+    end
+
+    it "should not be OK if a species is seen but a subspecies in its list is not seen" do
+      Factory :genus, :name => 'Anonychomyrma'
+      lambda {@species_catalog.import_html make_contents %{
+<p><b><i><span style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
+<p><b><i><span style='color:red'>chiarinii</span></i></b><i>. Anyonychomyrma chiarinii</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146. Current subspecies: nominal plus <i style='mso-bidi-font-style:normal'><span style='color:blue'>fuhrmanii</span></i>.</p>
+      }}.should raise_error "Subspecies Anonychomyrma chiarinii fuhrmanii was in its species's subspecies list but was not seen"
+    end
+
   end
-
-    #it "should save subspecies correctly" do
-      #@species_catalog.import_html make_contents %{
-#<p><b><i><span style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
-#<p>#<b><i><span style='color:blue'>v-nigra</span></i></b><i>.  Crematogaster chiarinii</i> var. <i>v-nigrum</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146.</p>
-      #}
-      #v_nigra = Subspecies.find_by_name 'v-nigra'
-      #v_nigra.should_not be_nil
-      #v_nigra.should_not be_invalid
-      #v_nigra.species.name.should == 'Anonychomyrma'
-    #end
-
-    #it "should complain if a subspecies listed in a species line wasn't added"
-    #it "should complain if a subspecies line is seen that wasn't in a species line"
 
   describe "parsing a note" do
     it "should work" do

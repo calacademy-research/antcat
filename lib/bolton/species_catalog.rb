@@ -42,7 +42,8 @@ class Bolton::SpeciesCatalog < Bolton::Catalog
     parse_next_line
     parse_species_lines genus
 
-    save_subspecies genus
+    save_subspecies genus if genus
+    true
   end
 
   def parse_species_lines genus
@@ -54,7 +55,7 @@ class Bolton::SpeciesCatalog < Bolton::Catalog
     return unless @type == :species
 
     species = Species.create! :name => @parse_result[:name], :fossil => @parse_result[:fossil], :status => @parse_result[:status], :genus => genus, :taxonomic_history => @paragraph
-    @subspecies_for_species[species.name] = @parse_result[:subspecies]
+    @subspecies_for_species[species.name] = @parse_result[:subspecies] || []
 
     parse_next_line
     true
@@ -79,7 +80,16 @@ class Bolton::SpeciesCatalog < Bolton::Catalog
     @species_for_subspecies.each do |subspecies, species_name|
       species = Species.find_by_genus_id_and_name genus.id, species_name
       raise "Subspecies #{genus.name} #{species_name} #{subspecies.name} was seen but not its species" unless species
-      raise "Subspecies #{genus.name} #{species_name} #{subspecies.name} was seen but it was not in its species's subspecies list" unless @subspecies_for_species[species_name].try(:include?, subspecies.name)
+      raise "Subspecies #{genus.name} #{species_name} #{subspecies.name} was seen but it was not in its species's subspecies list" unless @subspecies_for_species[species_name].include? subspecies.name
+      subspecies.species = species
+      subspecies.save!
+    end
+
+    @subspecies_for_species.each do |species_name, subspecies_list|
+      species = Species.find_by_genus_id_and_name genus.id, species_name
+      subspecies_list.each do |subspecies_name|
+        raise "Subspecies #{genus.name} #{species.name} #{subspecies_name} was in its species's subspecies list but was not seen" unless species.subspecies.find_by_name subspecies_name
+      end
     end
   end
 end
