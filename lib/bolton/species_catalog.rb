@@ -81,11 +81,11 @@ class Bolton::SpeciesCatalog < Bolton::Catalog
       species = Species.find_by_genus_id_and_name genus.id, species_name
       unless species
         Progress.error "Subspecies #{genus.name} #{species_name} #{subspecies.name} was seen but not its species"
-        return
+        next
       end
       unless @subspecies_for_species[species_name].include? subspecies.name
         Progress.error "Subspecies #{genus.name} #{species_name} #{subspecies.name} was seen but it was not in its species's subspecies list" 
-        return
+        next
       end
       subspecies.species = species
       subspecies.save!
@@ -97,5 +97,6 @@ class Bolton::SpeciesCatalog < Bolton::Catalog
         Progress.error "Subspecies #{genus.name} #{species.name} #{subspecies_name} was in its species's subspecies list but was not seen" unless species.subspecies.find_by_name subspecies_name
       end
     end
+
   end
 end
