@@ -108,6 +108,12 @@ class Bolton::SpeciesCatalog < Bolton::Catalog
       @subspecies_errors += 1
       return
     end
+
+    unless @subspecies_for_species[species.name]
+      Progress.error "Subspecies #{genus.name} #{species_name} #{subspecies.name} was seen but its species (#{species.name}) subspecies list is nil" 
+      @subspecies_errors += 1
+      return
+    end
     unless @subspecies_for_species[species.name].include? subspecies.name
       Progress.error "Subspecies #{genus.name} #{species_name} #{subspecies.name} was seen but it was not in its species's subspecies list" 
       @subspecies_errors += 1
