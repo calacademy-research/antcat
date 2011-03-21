@@ -79,8 +79,14 @@ class Bolton::SpeciesCatalog < Bolton::Catalog
   def save_subspecies genus
     @species_for_subspecies.each do |subspecies, species_name|
       species = Species.find_by_genus_id_and_name genus.id, species_name
-      raise "Subspecies #{genus.name} #{species_name} #{subspecies.name} was seen but not its species" unless species
-      raise "Subspecies #{genus.name} #{species_name} #{subspecies.name} was seen but it was not in its species's subspecies list" unless @subspecies_for_species[species_name].include? subspecies.name
+      unless species
+        Progress.error "Subspecies #{genus.name} #{species_name} #{subspecies.name} was seen but not its species"
+        return
+      end
+      unless @subspecies_for_species[species_name].include? subspecies.name
+        Progress.error "Subspecies #{genus.name} #{species_name} #{subspecies.name} was seen but it was not in its species's subspecies list" 
+        return
+      end
       subspecies.species = species
       subspecies.save!
     end
@@ -88,7 +94,7 @@ class Bolton::SpeciesCatalog < Bolton::Catalog
     @subspecies_for_species.each do |species_name, subspecies_list|
       species = Species.find_by_genus_id_and_name genus.id, species_name
       subspecies_list.each do |subspecies_name|
-        raise "Subspecies #{genus.name} #{species.name} #{subspecies_name} was in its species's subspecies list but was not seen" unless species.subspecies.find_by_name subspecies_name
+        Progress.error "Subspecies #{genus.name} #{species.name} #{subspecies_name} was in its species's subspecies list but was not seen" unless species.subspecies.find_by_name subspecies_name
       end
     end
   end

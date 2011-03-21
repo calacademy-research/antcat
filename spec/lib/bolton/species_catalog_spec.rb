@@ -85,7 +85,7 @@ describe Bolton::SpeciesCatalog do
 <p><b><i><span style='color:red'>ACANTHOMYRMEX</span></i></b> (Oriental, Indo-Australian)</p>
 <p><b><i><span style='color:red'>basispinosus</span></i></b><i>. Acanthomyrmex basispinosus</i> Moffett, 1986c: 67, figs. 8A, 9-14 (s.w.) INDONESIA (Sulawesi).</p>
       }
-      #Progress.should_receive(:error).with("Genus 'Acanthomyrmex' did not exist")
+      Progress.should_receive(:error).with "Genus 'Acanthomyrmex' did not exist"
       @species_catalog.import_html contents
     end
 
@@ -116,28 +116,31 @@ describe Bolton::SpeciesCatalog do
   describe "Subspecies" do
     it "should not be OK if a subspecies is seen but not its species" do
       Factory :genus, :name => 'Anonychomyrma'
-      lambda {@species_catalog.import_html make_contents %{
+      Progress.should_receive(:error).with "Subspecies Anonychomyrma chiarinii nigra was seen but not its species"
+      @species_catalog.import_html make_contents %{
 <p><b><i><span style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
 <p>#<b><i><span style='color:blue'>nigra</span></i></b><i>. Anonychomyrma chiarinii</i> var. <i>v-nigrum</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146.</p>
-      }}.should raise_error "Subspecies Anonychomyrma chiarinii nigra was seen but not its species"
+      }
     end
 
     it "should not be OK if a species is seen first, then a subspecies is seen, but the species has no subspecies list" do
       Factory :genus, :name => 'Anonychomyrma'
-      lambda {@species_catalog.import_html make_contents %{
+      Progress.should_receive(:error).with "Subspecies Anonychomyrma chiarinii nigra was seen but it was not in its species's subspecies list"
+      @species_catalog.import_html make_contents %{
 <p><b><i><span style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
 <p><b><i><span style='color:red'>chiarinii</span></i></b><i>. Anyonychomyrma chiarinii</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146.</p>
 <p>#<b><i><span style='color:blue'>nigra</span></i></b><i>. Anyonychomyrma chiarinii</i> var. <i>v-nigrum</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146.</p>
-      }}.should raise_error "Subspecies Anonychomyrma chiarinii nigra was seen but it was not in its species's subspecies list"
+      }
     end
 
     it "should not be OK if a species is seen first, then a subspecies is seen, but the subspecies is not in the species's subspecies list" do
       Factory :genus, :name => 'Anonychomyrma'
-      lambda {@species_catalog.import_html make_contents %{
+      Progress.should_receive(:error).with "Subspecies Anonychomyrma chiarinii nigra was seen but it was not in its species's subspecies list"
+      @species_catalog.import_html make_contents %{
 <p><b><i><span style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
 <p><b><i><span style='color:red'>chiarinii</span></i></b><i>. Anyonychomyrma chiarinii</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146. Current subspecies: nominal plus <i style='mso-bidi-font-style:normal'><span style='color:blue'>fuhrmanni</span></i>.</p>
 <p>#<b><i><span style='color:blue'>nigra</span></i></b><i>. Anyonychomyrma chiarinii</i> var. <i>v-nigrum</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146.</p>
-      }}.should raise_error "Subspecies Anonychomyrma chiarinii nigra was seen but it was not in its species's subspecies list"
+      }
     end
 
     it "should be OK if a species is seen first, then a subspecies is seen, which is in the species's list" do
@@ -165,19 +168,21 @@ describe Bolton::SpeciesCatalog do
 
     it "should not be OK if the subspecies is seen first, then the species is seen, but the subspecies is not in the species's subspecies list" do
       Factory :genus, :name => 'Anonychomyrma'
-      lambda {@species_catalog.import_html make_contents %{
+      Progress.should_receive(:error).with "Subspecies Anonychomyrma chiarinii nigra was seen but it was not in its species's subspecies list"
+      @species_catalog.import_html make_contents %{
 <p><b><i><span style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
 <p>#<b><i><span style='color:blue'>nigra</span></i></b><i>. Anyonychomyrma chiarinii</i> var. <i>v-nigrum</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146.</p>
 <p><b><i><span style='color:red'>chiarinii</span></i></b><i>. Anyonychomyrma chiarinii</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146. Current subspecies: nominal plus <i style='mso-bidi-font-style:normal'><span style='color:blue'>fuhrmanii</span></i>.</p>
-      }}.should raise_error "Subspecies Anonychomyrma chiarinii nigra was seen but it was not in its species's subspecies list"
+      }
     end
 
     it "should not be OK if a species is seen but a subspecies in its list is not seen" do
       Factory :genus, :name => 'Anonychomyrma'
-      lambda {@species_catalog.import_html make_contents %{
+      Progress.should_receive(:error).with "Subspecies Anonychomyrma chiarinii fuhrmanii was in its species's subspecies list but was not seen"
+      @species_catalog.import_html make_contents %{
 <p><b><i><span style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
 <p><b><i><span style='color:red'>chiarinii</span></i></b><i>. Anyonychomyrma chiarinii</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146. Current subspecies: nominal plus <i style='mso-bidi-font-style:normal'><span style='color:blue'>fuhrmanii</span></i>.</p>
-      }}.should raise_error "Subspecies Anonychomyrma chiarinii fuhrmanii was in its species's subspecies list but was not seen"
+      }
     end
 
   end
