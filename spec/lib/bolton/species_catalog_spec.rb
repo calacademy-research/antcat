@@ -208,6 +208,56 @@ describe Bolton::SpeciesCatalog do
       }
     end
 
+    it "should create a synonym if it can't find its species, but it exists in another species's subspecies list" do
+      Factory :genus, :name => 'Acromyrmex'
+      @species_catalog.import_html make_contents %{
+<p><b><i><span style='color:red'>ACROMYRMEX</span></i></b><span style='color:red'> </span>(Neotropical, southern Nearctic)</p>
+<p>#<b><i><span style='color:blue'>carli</span></i></b><i>. Acromyrmex lundi</i> subsp. <i>carli</i> Gonçalves, 1961: 152 (w.) MEXICO. [First available use of <i>Acromyrmex lundi</i> st. <i>pubescens</i> var. <i>carli </i>Santschi, 1925a: 385; unavailable name.]</p>
+<p><b><i><span style='color:red'>lundii</span></i></b><i>. Myrmica lundii</i> Guérin-Méneville, 1838: 206 (q.m.) BRAZIL. Current subspecies: nominal plus <i><span style='color:blue'>carli</span></i>.</p>
+      }
+      carli = Subspecies.find_by_name 'carli'
+      lundi = Species.find_by_name 'lundi'
+      lundii = Species.find_by_name 'lundii'
+      carli.species.should == lundii
+      lundi.should be_synonym
+      lundi.synonym_of.should == lundii
+      lundi.genus.should == lundii.genus
+    end
+
+    it "should only create one synonym if two subspecies can't find their species, which are in another species's subspecies list" do
+      Factory :genus, :name => 'Acromyrmex'
+      @species_catalog.import_html make_contents %{
+<p><b><i><span style='color:red'>ACROMYRMEX</span></i></b><span style='color:red'> </span>(Neotropical, southern Nearctic)</p>
+<p>#<b><i><span style='color:blue'>carli</span></i></b><i>. Acromyrmex lundi</i> subsp. <i>carli</i> Gonçalves, 1961: 152 (w.) MEXICO. [First available use of <i>Acromyrmex lundi</i> st. <i>pubescens</i> var. <i>carli </i>Santschi, 1925a: 385; unavailable name.]</p>
+<p>#<b><i><span style='color:blue'>parallelus</span></i></b><i>. Acromyrmex lundi</i> subsp. <i>parallelus</i> Gonçalves, 1961: 152 (w.) MEXICO. [First available use of <i>Acromyrmex lundi</i> st. <i>pubescens</i> var. <i>carli </i>Santschi, 1925a: 385; unavailable name.]</p>
+<p><b><i><span style='color:red'>lundii</span></i></b><i>. Myrmica lundii</i> Guérin-Méneville, 1838: 206 (q.m.) BRAZIL. Current subspecies: nominal plus <i><span style='color:blue'>carli, parallelus</span></i>.</p>
+      }
+      Species.count.should == 2
+      carli = Subspecies.find_by_name 'carli'
+      parallelus = Subspecies.find_by_name 'parallelus'
+      lundi = Species.find_by_name 'lundi'
+      lundii = Species.find_by_name 'lundii'
+      carli.species.should == lundii
+      parallelus.species.should == lundii
+      lundi.should be_synonym
+      lundi.synonym_of.should == lundii
+    end
+
+    it "should ignore invalid species when searching for a subspecies list" do
+      Factory :genus, :name => 'Vollenhovia'
+      @species_catalog.import_html make_contents %{
+<p><b><i><span style='color:red'>VOLLENHOVIA</span></i></b> (Old World tropics and subtropics except Africa)</p>
+<p><b><i><span style='color:red'>brevicornis</span></i></b><i>. Monomorium brevicorne</i> Emery, 1893e: 203 (w.) INDONESIA (Sumatra).  Combination in <i>Vollenhovia</i>: Emery, 1914f: 406 (footnote). Current subspecies: nominal plus <i style='mso-bidi-font-style: normal'><span style='color:blue'>minuta</span></i>.</p>
+<p><i>brevicornis. Vollenhovia brevicornis</i> Emery, 1897d: 560 (w.) NEW GUINEA. [Junior secondary homonym of <i>brevicorne</i> Emery, above.] Replacement name: <i>brachycera</i> Emery, 1914f: 407 (footnote).</p>
+<p>#<b><i><span style='color:blue'>minuta</span></i></b><i>. Vollenhovia brevicornis</i> var. <i>minuta</i> Viehmeyer, 1916a: 129 (w.) WEST MALAYSIA.</p>
+
+      }
+      brevicornises = Species.all :conditions => ['name = ?', 'brevicornis']
+      brevicornises.count.should == 2
+      minuta = Subspecies.find_by_name 'minuta'
+      minuta.species.status.should == 'valid'
+    end
+
   end
 
   describe "parsing a note" do
