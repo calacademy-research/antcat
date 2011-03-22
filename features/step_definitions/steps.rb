@@ -261,9 +261,8 @@ And /I (edit|delete|copy) "(.*?)"/ do |verb, author|
   And %{I follow "#{verb}" within "#reference_#{reference.id}"}
 end
 
-Given /a tribe exists with a name of "(.*?)" and a subfamily of "(.*?)"/ do |taxon_name, parent_name|
-  subfamily = Subfamily.find_by_name(parent_name) || Factory(:subfamily, :name => parent_name)
-  Factory :tribe, :name => taxon_name, :subfamily => subfamily
+Given /a subfamily exists with a name of "(.*?)" and a taxonomic history of "(.*?)"/ do |taxon_name, taxonomic_history|
+  Factory :subfamily, :name => taxon_name, :taxonomic_history => taxonomic_history
 end
 
 Given /a genus exists with a name of "(.*?)" and a subfamily of "(.*?)"/ do |taxon_name, parent_name|

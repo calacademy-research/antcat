@@ -31,11 +31,18 @@
       width: 150px
     .selected
       background: yellow !important
+
+    .taxonomic_history
+      max-height: 200px
+      overflow: auto
+      position: relative
+      text-align: left
       
-%div
-  = label_tag :show_tribes, 'Show tribes?'
-  = check_box_tag :show_tribes, '1', @show_tribes
-  %hr
+%div{:style => 'width: 500px'}
+  .taxonomic_history{:style => 'width: 400px'}
+    = @taxonomic_history
+
+%hr
 
 %table.subfamilies
   - @subfamilies.unshift 'all'

@@ -14,6 +14,9 @@ Feature: Using the Taxatry
     When I follow "Dolichoderinae"
     Then I should see "Tapinoma"
       And "Dolichoderinae" should be selected
+      And I should see "A sweet little subfamily"
     When I follow "Tapinoma"
     Then "Tapinoma" should be selected
       And I should see "sessile"
+    When I follow "sessile"
+    Then "sessile" should be selected
