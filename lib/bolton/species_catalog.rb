@@ -16,7 +16,12 @@
 
 class Bolton::SpeciesCatalog < Bolton::Catalog
   def import
-    @subspecies_errors = 0
+    @species_not_seen_count = 0
+    @species_seen_but_list_is_nil_count = 0
+    @subspecies_not_in_list_count = 0
+    @species_synonynm_created_for_subspecies_count = 0
+    @subspecies_in_list_but_not_seen_count = 0
+    @genus_not_found_count = 0
     Species.delete_all
     Subspecies.delete_all
 
@@ -24,7 +29,13 @@ class Bolton::SpeciesCatalog < Bolton::Catalog
     parse_see_under || parse_genus_section || parse_failed while @line
 
     super
-    Progress.puts "#{@subspecies_errors} subspecies errors"
+    Progress.puts "#{@species_not_seen_count} species for subspecies not seen"
+    Progress.puts "#{@species_seen_but_list_is_nil_count} species seen but it had no list"
+    Progress.puts "#{@subspecies_not_in_list_count} subspecies not in its species list"
+    Progress.puts "#{@subspecies_in_list_but_not_seen_count} subspecies in a species list but not seen"
+    Progress.puts "#{@species_not_seen_count + @species_seen_but_list_is_nil_count + @subspecies_not_in_list_count + @subspecies_in_list_but_not_seen_count} total subspecies errors"
+    Progress.puts "#{@species_synonynm_created_for_subspecies_count} species synonyms created"
+    Progress.puts "#{@genus_not_found_count} genera not found"
   end
 
   def grammar
@@ -43,7 +54,10 @@ class Bolton::SpeciesCatalog < Bolton::Catalog
     @species_for_subspecies = {}
 
     genus = Genus.find_by_name @parse_result[:name]
-    Progress.error "Genus '#{@parse_result[:name]}' did not exist" unless genus
+    unless genus
+      Progress.error "Genus '#{@parse_result[:name]}' did not exist"
+      @genus_not_found_count += 1
+    end
 
     parse_next_line
     parse_species_lines genus
@@ -92,8 +106,10 @@ class Bolton::SpeciesCatalog < Bolton::Catalog
     @subspecies_for_species.each do |species_name, subspecies_list|
       species = Species.find_by_genus_id_and_name genus.id, species_name
       subspecies_list.each do |subspecies_name|
-        Progress.error "Subspecies #{genus.name} #{species.name} #{subspecies_name} was in its species's subspecies list but was not seen" unless species.subspecies.find_by_name subspecies_name
-        @subspecies_errors += 1
+        unless species.subspecies.find_by_name subspecies_name
+          Progress.error "Subspecies #{genus.name} #{species.name} #{subspecies_name} was in its species's subspecies list but was not seen"
+          @subspecies_in_list_but_not_seen_count += 1
+        end
       end
     end
 
@@ -105,18 +121,18 @@ class Bolton::SpeciesCatalog < Bolton::Catalog
       species = find_species_synonym genus, subspecies, species_name
       return species if species
       Progress.error "Subspecies #{genus.name} #{species_name} #{subspecies.name} was seen but not its species"
-      @subspecies_errors += 1
+      @species_not_seen_count += 1
       return
     end
 
     unless @subspecies_for_species[species.name]
       Progress.error "Subspecies #{genus.name} #{species_name} #{subspecies.name} was seen but its species (#{species.name}) subspecies list is nil" 
-      @subspecies_errors += 1
+      @species_seen_but_list_is_nil_count += 1
       return
     end
     unless @subspecies_for_species[species.name].include? subspecies.name
       Progress.error "Subspecies #{genus.name} #{species_name} #{subspecies.name} was seen but it was not in its species's subspecies list" 
-      @subspecies_errors += 1
+      @subspecies_not_in_list_count += 1
       return
     end
     species
@@ -130,6 +146,7 @@ class Bolton::SpeciesCatalog < Bolton::Catalog
         species = Species.find_by_genus_id_and_name genus.id, name
         synonym = Species.create! :name => species_name, :fossil => species.fossil, :status => 'synonym', :synonym_of => species, :genus => genus
         Progress.error "Subspecies #{genus.name} #{species_name} #{subspecies.name} was seen but not its species, but a species synonym was created (#{species.name})"
+        @species_synonynm_created_for_subspecies_count += 1
         return species
       end
     end
