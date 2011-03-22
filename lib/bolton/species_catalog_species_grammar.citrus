@@ -45,7 +45,7 @@ grammar Bolton::SpeciesCatalogSpeciesGrammar
     }
   end
   rule subspecies_list
-    (/.*Current subspecies: nominal plus / subspecies_list_item+) {
+    (/.*Current subspecies: nominal plus/ s subspecies_list_item+) {
       captures[:subspecies_list_item].map &:value
     }
   end
@@ -53,7 +53,7 @@ grammar Bolton::SpeciesCatalogSpeciesGrammar
   rule subspecies_list_item
     (
       (italic? maroon species_name close_tags '(unresolved junior homonym)' ', '? ) |
-      (italic blue species_name ', '? close_tags) |
+      (italic blue s species_name ', '? close_tags) |
       (species_name ', '?)
     ) {
       species_name.value

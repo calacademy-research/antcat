@@ -34,6 +34,12 @@ describe Bolton::SpeciesCatalog do
         }).should == {:type => :species, :name => 'vitreus', :status => 'valid', :subspecies => ['angustulus', 'carinatus', 'latinotus', 'oebalis', 'praeluteus', 'praerufus', 'vittatulus']}
       end
 
+      it "should handle spaces" do
+        @species_catalog.parse(%{
+<b><i><span style="color:red">heeri</span></i></b><i>. Brachymyrmex heeri</i> Forel, 1874: 91, figs. 16, 20 (w.) SWITZERLAND. Forel, 1876: 52 (q.m.). See also: Santschi, 1923b: 664. Current subspecies: nominal plus<i><span style="color:blue"> basalis, fallax</span></i>.
+        })[:subspecies].should =~ ['basalis', 'fallax']
+      end
+
       describe "Parsing individual subspecies items in list" do
 
         it "should handle 'regular' italic blue" do

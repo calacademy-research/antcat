@@ -22,6 +22,7 @@ class Antweb::Diff
 
     show_differences
     show_unmatched 'antweb', @antweb_unmatched
+
     Progress.puts "#{@match_count} matches"
     Progress.puts "#{@difference_count} matches with differences"
     Progress.puts "#{@antcat_unmatched_count} antcat lines unmatched"
@@ -44,6 +45,7 @@ class Antweb::Diff
     end
 
     @antweb_unmatched_count = antweb.size - @match_count - @difference_count
+
     @antweb_unmatched = antweb - @antweb_matched
   end
 
