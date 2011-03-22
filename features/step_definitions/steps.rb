@@ -266,9 +266,9 @@ Given /a tribe exists with a name of "(.*?)" and a subfamily of "(.*?)"/ do |tax
   Factory :tribe, :name => taxon_name, :subfamily => subfamily
 end
 
-Given /a genus exists with a name of "(.*?)" and a tribe of "(.*?)"/ do |taxon_name, parent_name|
-  tribe = Tribe.find_by_name(parent_name) || Factory(:tribe, :name => parent_name)
-  Factory :genus, :name => taxon_name, :tribe => tribe, :subfamily => tribe.subfamily
+Given /a genus exists with a name of "(.*?)" and a subfamily of "(.*?)"/ do |taxon_name, parent_name|
+  subfamily = Subfamily.find_by_name(parent_name) || Factory(:subfamily, :name => parent_name)
+  Factory :genus, :name => taxon_name, :subfamily => subfamily, :tribe => nil
 end
 
 Given /a species exists with a name of "(.*?)" and a genus of "(.*?)"/ do |taxon_name, parent_name|
