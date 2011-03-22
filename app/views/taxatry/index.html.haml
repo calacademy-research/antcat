@@ -33,49 +33,52 @@
       background: yellow !important
 
     .taxonomic_history
-      max-height: 200px
+      height: 100px
       overflow: auto
       position: relative
       text-align: left
+    
+    .rank_header
+      text-align: left
+      width: 33%
+      font-size: 1.5em
       
 .taxonomic_history
   = @taxonomic_history
 
 %hr
 
-%table.subfamilies
-  - @subfamilies.unshift 'all'
-  - rows = @subfamilies.snake 6
-  - rows.each do |row|
-    %tr
-      - row.each do |subfamily|
-        %td
-          - if subfamily == 'all'
-            = all_of_a_taxon_link :subfamily, @selected_subfamily
-          - elsif subfamily
-            = taxon_link :subfamily, @selected_subfamily, subfamily
-
-- if @genera
-  %hr
-    %table.genera
-      - rows = @genera.snake 6
-      - rows.each do |row|
-        %tr
-          - row.each do |genus|
+%table{:style => 'width: 100%'}
+  %tr
+    %td.rank_header Subfamily
+    %td.rank_header Genus
+    %td.rank_header Species
+  %tr
+    %td
+      %table
+        - @subfamilies.unshift 'all'
+        - @subfamilies.each do |subfamily|
+          %tr
             %td
-              - if genus == 'all'
-                = all_of_a_taxon_link :genus, @selected_genus
-              - elsif genus
-                = genus_or_species_link :genus, @selected_genus, genus, :subfamily => @selected_subfamily
+              - if subfamily == 'all'
+                = all_of_a_taxon_link :subfamily, @selected_subfamily
+              - elsif subfamily
+                = taxon_link :subfamily, @selected_subfamily, subfamily
+    %td
+      - if @genera
+        %table
+          - @genera.each do |genus|
+            %tr
+              %td
+                - if genus == 'all'
+                  = all_of_a_taxon_link :genus, @selected_genus
+                - elsif genus
+                  = genus_or_species_link :genus, @selected_genus, genus, :subfamily => @selected_subfamily
+    %td
+      - if @species
+        %table
+          - @species.each do |species|
+            %tr
+              %td= genus_or_species_link :species, @selected_species, species, :subfamily => @selected_subfamily, :genus => @selected_genus
 
-- if @species
-  %hr
-    %table.species
-      - rows = @species.snake 6
-      - rows.each do |row|
-        %tr
-          - row.each do |species|
-            %td 
-              - if species
-                = genus_or_species_link :species, @selected_species, species, :subfamily => @selected_subfamily, :genus => @selected_genus
-  %div.clear
+%div.clear
