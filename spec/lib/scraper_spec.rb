@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-require 'curl'
+require 'curb'
 
 describe Scraper do
   it "should call Curl appropriately" do
