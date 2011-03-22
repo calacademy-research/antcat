@@ -73,3 +73,5 @@ end
 ActionController::Routing::Routes.draw do |map|
   map.stub_log_in '/stub_log_in', :controller => 'stub_user_sessions', :action => 'new'
 end 
+
+require 'capybara/firebug'
