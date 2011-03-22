@@ -87,7 +87,7 @@ monotypy. </span></p>
     taxon.should_not be_fossil
     taxon.incertae_sedis_in.should == 'family'
     taxon.taxonomic_history.should ==
-%{<p><b><i><span lang="EN-GB">Condylodon</span></i></b><span lang="EN-GB"> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </span></p>} +
+%{<p><b><i>Condylodon</i></b> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </p>} +
 %{<p>Condylodon taxonomic history</p>}
 
     taxon = Genus.find_by_name 'Calyptites'
@@ -95,7 +95,7 @@ monotypy. </span></p>
     taxon.should be_fossil
     taxon.incertae_sedis_in.should == 'family'
     taxon.taxonomic_history.should ==
-%{<p><b><i><span lang="EN-GB">Calypitites</span></i></b><span lang="EN-GB"> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </span></p>} +
+%{<p><b><i>Calypitites</i></b> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </p>} +
 %{<p>Calyptites taxonomic history</p>}
 
     taxon = Genus.find_by_name 'Hypochira'
@@ -112,14 +112,14 @@ monotypy. </span></p>
     taxon.should be_fossil
     taxon.status.should == 'excluded'
     taxon.taxonomic_history.should ==
-%{<p><b><i><span lang="EN-GB">Cariridris</span></i></b><span lang="EN-GB"> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </span></p>} +
+%{<p><b><i>Cariridris</i></b> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </p>} +
 %{<p>Cariridris taxonomic history</p>}
 
     taxon = Genus.find_by_name 'Hypopheidole'
     taxon.should be_invalid
     taxon.status.should == 'nomen nudum'
     taxon.taxonomic_history.should ==
-%{<p><b><i><span lang="EN-GB">Hypopheidole</span></i></b><span lang="EN-GB"> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </span></p>} +
+%{<p><b><i>Hypopheidole</i></b> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </p>} +
 %{<p>Hypopheidole history</p>}
 
     taxon = Genus.find_by_name 'Syntaphus'
@@ -127,18 +127,18 @@ monotypy. </span></p>
     taxon.should be_fossil
     taxon.incertae_sedis_in.should == 'family'
     taxon.taxonomic_history.should ==
-%{<p><b><i><span lang="EN-GB">Syntaphus</span></i></b><span lang="EN-GB"> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </span></p>}
+%{<p><b><i>Syntaphus</i></b> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </p>}
 
     taxon = Genus.find_by_name 'Cretacoformica'
     taxon.should be_invalid
     taxon.should be_fossil
     taxon.status.should == 'excluded'
     taxon.taxonomic_history.should == 
-%{<p><b><i><span lang="EN-GB">Cretacoformica</span></i></b><span lang="EN-GB"> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </span></p>} +
-%{<p><b><span lang="EN-GB">Homonym replaced by *<i><span style="color:green">PROMYRMICIUM</span></i><p></p></span></b></p>} +
-%{<p><span lang="EN-GB">*<b><i>Myrmicium</i></b> Heer, 1870: 78.  Type-species: *<i>Myrmicium boreale</i>, by monotypy. </span></p>} +
-%{<p><b><span lang="EN-GB">Taxonomic history<p></p></span></b></p>} +
-%{<p><span lang="EN-GB">[Junior homonym of *<i style="mso-bidi-font-style: normal">Myrmicium</i> Westwood, 1854: 396 (*Pseudosiricidae).] </span></p>}
+%{<p><b><i>Cretacoformica</i></b> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </p>} +
+%{<p><b>Homonym replaced by *<i>PROMYRMICIUM</i><p></p></b></p>} +
+%{<p>*<b><i>Myrmicium</i></b> Heer, 1870: 78.  Type-species: *<i>Myrmicium boreale</i>, by monotypy. </p>} +
+%{<p><b>Taxonomic history<p></p></b></p>} +
+%{<p>[Junior homonym of *<i>Myrmicium</i> Westwood, 1854: 396 (*Pseudosiricidae).] </p>}
 
   end
 

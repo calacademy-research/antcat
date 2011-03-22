@@ -24,7 +24,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
       Progress.info "Updated #{genus.name}"
     else
       check_existence name, genus
-      genus = Genus.create!({:name => name, :fossil => fossil, :status => status, :taxonomic_history => taxonomic_history}.merge(attributes))
+      genus = Genus.create!({:name => name, :fossil => fossil, :status => status, :taxonomic_history => clean_taxonomic_history(taxonomic_history)}.merge(attributes))
       Progress.info "Created #{genus.name}"
     end
 
@@ -33,7 +33,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     taxonomic_history << parse_subgenera(genus)
     taxonomic_history << parse_references
 
-    genus.reload.update_attributes :taxonomic_history => taxonomic_history
+    genus.reload.update_attributes :taxonomic_history => clean_taxonomic_history(taxonomic_history)
   end
 
   def parse_homonym_replaced_by_genus
@@ -67,7 +67,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     taxonomic_history = @paragraph
     taxonomic_history << parse_taxonomic_history
     genus = Genus.create! :name => name, :fossil => fossil, :status => 'synonym', :synonym_of => genus,
-                          :subfamily => genus.subfamily, :tribe => genus.tribe, :taxonomic_history => taxonomic_history
+                          :subfamily => genus.subfamily, :tribe => genus.tribe, :taxonomic_history => clean_taxonomic_history(taxonomic_history)
     parsed_text << taxonomic_history
     parsed_text << parse_homonym_replaced_by_genus_synonym
   end

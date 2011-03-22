@@ -47,7 +47,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     parse_genera
     parse_genera_incertae_sedis_in_tribe
 
-    tribe.reload.update_attributes :taxonomic_history => taxonomic_history
+    tribe.reload.update_attributes :taxonomic_history => clean_taxonomic_history(taxonomic_history)
   end
 
   def parse_genera_incertae_sedis_in_tribe
@@ -78,7 +78,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     taxonomic_history = @paragraph
     taxonomic_history << parse_taxonomic_history
     tribe = Tribe.create! :name => name, :fossil => fossil, :status => 'synonym', :synonym_of => tribe,
-                          :subfamily => tribe.subfamily, :taxonomic_history => taxonomic_history
+                          :subfamily => tribe.subfamily, :taxonomic_history => clean_taxonomic_history(taxonomic_history)
     parsed_text << taxonomic_history
   end
 

@@ -74,7 +74,8 @@ class Bolton::SpeciesCatalog < Bolton::Catalog
   def parse_species genus
     return unless @type == :species
 
-    species = Species.create! :name => @parse_result[:name], :fossil => @parse_result[:fossil], :status => @parse_result[:status], :genus => genus, :taxonomic_history => @paragraph
+    species = Species.create! :name => @parse_result[:name], :fossil => @parse_result[:fossil], :status => @parse_result[:status], :genus => genus,
+      :taxonomic_history => clean_taxonomic_history(@paragraph)
     @subspecies_for_species[species.name] = @parse_result[:subspecies] || [] unless species.invalid?
 
     parse_next_line
@@ -84,7 +85,7 @@ class Bolton::SpeciesCatalog < Bolton::Catalog
   def parse_subspecies genus
     return unless @type == :subspecies
 
-    subspecies = Subspecies.new :name => @parse_result[:name], :fossil => @parse_result[:fossil], :status => @parse_result[:status], :taxonomic_history => @paragraph
+    subspecies = Subspecies.new :name => @parse_result[:name], :fossil => @parse_result[:fossil], :status => @parse_result[:status], :taxonomic_history => clean_taxonomic_history(@paragraph)
     @species_for_subspecies[subspecies] = @parse_result[:species] || []
 
     parse_next_line

@@ -29,14 +29,14 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     taxonomic_history << parse_taxonomic_history
 
     raise "Subgenus #{name} already exists" if Subgenus.find_by_name name
-    subgenus = Subgenus.create! :name => name, :status => 'valid', :genus => genus, :taxonomic_history => taxonomic_history
+    subgenus = Subgenus.create! :name => name, :status => 'valid', :genus => genus, :taxonomic_history => clean_taxonomic_history(taxonomic_history)
     Progress.info "Created #{subgenus.name}"
 
     taxonomic_history << parse_homonym_replaced_by_subgenus
     taxonomic_history << parse_junior_synonyms_of_subgenus(subgenus)
     parsed_text << taxonomic_history
 
-    subgenus.reload.update_attributes :taxonomic_history => taxonomic_history
+    subgenus.reload.update_attributes :taxonomic_history => clean_taxonomic_history(taxonomic_history)
 
     parsed_text
   end
@@ -72,7 +72,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     taxonomic_history = @paragraph
     taxonomic_history << parse_taxonomic_history
     genus = Subgenus.create! :name => name, :fossil => fossil, :status => 'synonym', :synonym_of => subgenus,
-                             :genus => subgenus.genus, :taxonomic_history => taxonomic_history
+                             :genus => subgenus.genus, :taxonomic_history => clean_taxonomic_history(taxonomic_history)
     parsed_text << taxonomic_history
   end
 

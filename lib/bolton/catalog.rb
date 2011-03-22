@@ -30,6 +30,16 @@ class Bolton::Catalog
     parse_result
   end
 
+  def clean_taxonomic_history taxonomic_history
+    taxonomic_history = taxonomic_history.dup
+    ['i', 'b', 'p'].each do |tag|
+      taxonomic_history.gsub! /<#{tag}.*?>/, "<#{tag}>"
+    end
+    taxonomic_history.gsub! /<span.*?>/, ''
+    taxonomic_history.gsub! /<\/span>/, ''
+    taxonomic_history
+  end
+
   private
   def get_filenames filenames
     filenames.sort_by {|filename| File.basename(filename, File.extname(filename))}

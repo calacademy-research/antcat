@@ -64,7 +64,7 @@ describe Bolton::SpeciesCatalog do
       basispinosus = acanthomyrmex.species.find_by_name('basispinosus')
       basispinosus.fossil.should_not be_true
       basispinosus.taxonomic_history.should == 
-%{<p><b><i><span style="color:red">basispinosus</span></i></b><i>. Acanthomyrmex basispinosus</i> Moffett, 1986c: 67, figs. 8A, 9-14 (s.w.) INDONESIA (Sulawesi).</p>}
+%{<p><b><i>basispinosus</i></b><i>. Acanthomyrmex basispinosus</i> Moffett, 1986c: 67, figs. 8A, 9-14 (s.w.) INDONESIA (Sulawesi).</p>}
 
       tetramorium = Genus.find_by_name('Tetramorium')
       tetramorium.should_not be_invalid
