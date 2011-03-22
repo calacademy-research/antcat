@@ -22,8 +22,8 @@ namespace :bolton do
     task :species => :environment do
       Bolton::SpeciesCatalog.new(true).import_files Dir.glob "#{$BOLTON_DATA_DIRECTORY}/NGC-Sp*.htm"
     end
-    desc "Import genera and species"
-    task :taxa => ['bolton:import:genera', 'bolton:import:species']
+    desc "Import all taxa"
+    task :taxa => ['bolton:import:subfamilies', 'bolton:import:species']
   end
 
   namespace :match do
