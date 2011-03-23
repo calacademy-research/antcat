@@ -11,7 +11,6 @@
   :sass
     div.taxon
       float: left
-      width: 150px
       a
         color: red
     div.synonym
@@ -27,8 +26,6 @@
       a
         color: brown
 
-    div.subfamily, div.genus
-      width: 150px
     .selected
       background: yellow !important
 
@@ -40,8 +37,16 @@
     
     .rank_header
       text-align: left
-      width: 33%
       font-size: 1.5em
+      padding-bottom: 5px
+
+    .teensy
+      font-size: .90em
+      width: 50px
+      line-height: .90em
+
+    body
+      width: 1240px
       
 .taxonomic_history
   = @taxonomic_history
@@ -50,35 +55,72 @@
 
 %table{:style => 'width: 100%'}
   %tr
-    %td.rank_header Subfamily
-    %td.rank_header Genus
-    %td.rank_header Species
-  %tr
     %td
       %table
-        - @subfamilies.unshift 'all'
-        - @subfamilies.each do |subfamily|
-          %tr
-            %td
-              - if subfamily == 'all'
-                = all_of_a_taxon_link :subfamily, @selected_subfamily
-              - elsif subfamily
-                = taxon_link :subfamily, @selected_subfamily, subfamily
-    %td
-      - if @genera
-        %table
-          - @genera.each do |genus|
-            %tr
-              %td
-                - if genus == 'all'
-                  = all_of_a_taxon_link :genus, @selected_genus
-                - elsif genus
-                  = genus_or_species_link :genus, @selected_genus, genus, :subfamily => @selected_subfamily
-    %td
-      - if @species
-        %table
-          - @species.each do |species|
-            %tr
-              %td= genus_or_species_link :species, @selected_species, species, :subfamily => @selected_subfamily, :genus => @selected_genus
+        %tr
+          %td.rank_header Subfamily
+        %tr
+          %td{:style => 'width: 100px'}
+            %table
+              - @subfamilies.unshift 'all'
+              - @subfamilies.each do |subfamily|
+                %tr
+                  %td
+                    - if subfamily == 'all'
+                      = all_of_a_taxon_link :subfamily, @selected_subfamily
+                    - elsif subfamily
+                      = taxon_link :subfamily, @selected_subfamily, subfamily
+
+    %td{:style => 'width: 577px; border-bottom: 1px solid black; padding-bottom: 5px'}
+      %table
+        %tr
+          %td.rank_header Genus
+        %tr{:style => 'width: 577px; border-bottom: 1px solid black; padding-bottom: 5px'}
+          %td
+            - if @genera
+              %table
+                - column_count = @genera.count / 30.0
+                - css_class = ''
+                - if column_count < 1
+                  - column_count = 1
+                - else
+                  - column_count = column_count.ceil
+                - if column_count > 5
+                  - column_count = 5
+                  - css_class = 'teensy'
+                - rows = @genera.snake column_count
+                - rows.each do |row|
+                  %tr
+                    - row.each do |genus|
+                      %td{:class => css_class}
+                        - if genus == 'all'
+                          = all_of_a_taxon_link :genus, @selected_genus
+                        - elsif genus
+                          = genus_or_species_link :genus, @selected_genus, genus, :subfamily => @selected_subfamily
+
+    %td{:style => 'width: 800px'}
+      %table
+        %tr
+          %td.rank_header Species
+        %tr
+          %td
+            - if @species
+              %table
+                - column_count = @species.count / 30.0
+                - css_class = ''
+                - if column_count < 1
+                  - column_count = 1
+                - else
+                  - column_count = column_count.ceil
+                - if column_count > 4
+                  - column_count = 4
+                  - css_class = 'teensy'
+                - rows = @species.snake column_count
+                - rows.each do |row|
+                  %tr
+                    - row.each do |species|
+                      %td{:class => css_class}
+                        - if species
+                          = genus_or_species_link :species, @selected_species, species, :subfamily => @selected_subfamily, :genus => @selected_genus
 
 %div.clear
