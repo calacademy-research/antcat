@@ -39,6 +39,7 @@ grammar Bolton::SubfamilyCatalogSubfamilyGrammar
       (bold span 'Genus' close_tags ('of ' capitalized_word)? ':' list_names) |
       (bold span 'Genus' s '(extinct)'? incertae_sedis_in capitalized_word close_tags? ':' list_names) |
       (bold span 'Genera (extinct)' incertae_sedis_in 'poneroid subfamilies' close_tags ':' list_names) |
+      (bold span 'Genera (extinct)' incertae_sedis_in 'poneromorph subfamilies' close_tags ':' list_names) |
       (bold span 'Genera of ' capitalized_word ':' close_tags list_names) |
       (bold span 'Genera (extinct' italic ')' incertae_sedis_in capitalized_word close_tags ':' list_names) |
       (bold span ('Hong (2002) genera '|'Genera '|'Genus ') ('(extinct) '|'(extant) ')? (incertae_sedis_in | 'of ') capitalized_word close_tags ':' list_names) |

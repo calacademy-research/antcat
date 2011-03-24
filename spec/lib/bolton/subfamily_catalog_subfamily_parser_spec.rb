@@ -284,6 +284,12 @@ describe Bolton::SubfamilyCatalog do
         }).should == {:type => :genera_list, :genera => [['Cretopone', true], ['Petropone', true]], :incertae_sedis => true}
       end
 
+      it "for a supersubfamily with a different name should be recognized" do
+        @subfamily_catalog.parse(%{
+<b><span lang="EN-GB">Genera (extinct) <i>incertae sedis</i> in poneromorph subfamilies</span></b><span lang="EN-GB">: *<i>Cretopone</i>, *<i>Petropone</i>.</span>
+        }).should == {:type => :genera_list, :genera => [['Cretopone', true], ['Petropone', true]], :incertae_sedis => true}
+      end
+
     end
 
     it "should recognize a collective group name list" do
