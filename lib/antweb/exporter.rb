@@ -4,15 +4,14 @@ class Antweb::Exporter
   end
 
   def export directory
-    extant_file = File.open("#{directory}/extant.xls", 'w')
-    extinct_file = File.open("#{directory}/extinct.xls", 'w')
-    Taxon.all.each do |taxon|
-      row = export_taxon taxon
-      file = taxon.fossil? ? extinct_file : extant_file
-      file.puts row.join("\t") if row
+    File.open("#{directory}/extant.xls", 'w') do |file|
+      file.puts "subfamily\ttribe\tgenus\tspecies\tspecies author date\tcountry\tvalid\tavailable\tcurrent valid name\toriginal combination\ttaxonomic history"
+      Taxon.all.each do |taxon|
+        next if taxon.fossil?
+        row = export_taxon taxon
+        file.puts row.join("\t") if row
+      end
     end
-    extinct_file.close
-    extant_file.close
     Progress.show_results
   end
 
@@ -23,7 +22,7 @@ class Antweb::Exporter
 
     case taxon
     when Subfamily
-      taxon.fossil? ? nil : convert_to_antweb_array(:subfamily => taxon.name, :valid? => !taxon.invalid?, :taxonomic_history => taxon.taxonomic_history)
+      convert_to_antweb_array(:subfamily => taxon.name, :valid? => !taxon.invalid?, :taxonomic_history => taxon.taxonomic_history)
     when Genus
       return unless taxon.subfamily && taxon.tribe
       convert_to_antweb_array :subfamily => taxon.subfamily.name,
