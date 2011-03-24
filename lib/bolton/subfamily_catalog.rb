@@ -13,7 +13,8 @@
 #
 # Manual edits:
 #   03. FORMICOMORPHS     Made Johnia bold
-#   (03. FORMICOMORPHS    Made Pseudocamponotus bold and removed bold in taxonomic history 2010-07 only)
+#   03. FORMICOMORPHS     Made Pseudocamponotus bold and removed bold in taxonomic history. Made 'Pseudocamponotus' in line in taxonomic
+#                         history nonbold
 #   04. MYRMECIOMORPHS    Remove 'Genus' from 'Genus MYRMECIITES'
 #   06. ECTAHETEROMORPHS  Removed italics from Stictoponerini
 #   07. MYRMICOMORPHS 1   Corrected 'Adelomymex' to 'Adelomyrmex'
