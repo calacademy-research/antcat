@@ -12,12 +12,20 @@ describe Antweb::Exporter do
       @exporter.export_taxon(ponerinae).should == ['Ponerinae', nil, nil, nil, nil, nil, 'TRUE', nil, nil, nil, '<p>Ponerinae</p>']
     end
 
-    it "should not export an extinct subfamily" do
-      ponerinae = Subfamily.create! :name => 'Ponerinae', :status => 'valid', :taxonomic_history => '<p>Ponerinae</p>', :fossil => true
-      @exporter.export_taxon(ponerinae).should be_nil
+    it "should export a genus" do
+      myrmicinae = Subfamily.create! :name => 'Myrmicinae', :status => 'valid'
+      dacetini = Tribe.create! :name => 'Dacetini', :subfamily => myrmicinae, :status => 'valid'
+      acanthognathus = Genus.create! :name => 'Acanothognathus', :subfamily => myrmicinae, :tribe => dacetini, :status => 'valid', :taxonomic_history => '<i>Acanthognathous</i>'
+      @exporter.export_taxon(acanthognathus).should == ['Myrmicinae', 'Dacetini', 'Acanothognathus', nil, nil, nil, 'TRUE', 'TRUE', nil, nil, '<i>Acanthognathous</i>']
     end
 
-    it "should export a genus" do
+    it "should export a genus without a tribe" do
+      myrmicinae = Subfamily.create! :name => 'Myrmicinae', :status => 'valid'
+      acanthognathus = Genus.create! :name => 'Acanothognathus', :subfamily => myrmicinae, :status => 'valid', :taxonomic_history => '<i>Acanthognathous</i>'
+      @exporter.export_taxon(acanthognathus).should == ['Myrmicinae', nil, 'Acanothognathus', nil, nil, nil, 'TRUE', 'TRUE', nil, nil, '<i>Acanthognathous</i>']
+    end
+
+    it "should export a genus without a subfamily as being in 'incertae_sedis'" do
       myrmicinae = Subfamily.create! :name => 'Myrmicinae', :status => 'valid'
       dacetini = Tribe.create! :name => 'Dacetini', :subfamily => myrmicinae, :status => 'valid'
       acanthognathus = Genus.create! :name => 'Acanothognathus', :subfamily => myrmicinae, :tribe => dacetini, :status => 'valid', :taxonomic_history => '<i>Acanthognathous</i>'

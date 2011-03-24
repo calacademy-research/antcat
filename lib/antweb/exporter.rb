@@ -24,9 +24,9 @@ class Antweb::Exporter
     when Subfamily
       convert_to_antweb_array(:subfamily => taxon.name, :valid? => !taxon.invalid?, :taxonomic_history => taxon.taxonomic_history)
     when Genus
-      return unless taxon.subfamily && taxon.tribe
+      return unless taxon.subfamily
       convert_to_antweb_array :subfamily => taxon.subfamily.name,
-                              :tribe => taxon.tribe.name,
+                              :tribe => taxon.tribe && taxon.tribe.name,
                               :genus => taxon.name,
                               :valid? => !taxon.invalid?, :available? => !taxon.invalid?,
                               :taxonomic_history => taxon.taxonomic_history
