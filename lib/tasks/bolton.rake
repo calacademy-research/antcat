@@ -1,6 +1,6 @@
 Rake.application.options.trace = true
 
-$BOLTON_DATA_DIRECTORY = 'data/bolton/2010-07'
+$BOLTON_DATA_DIRECTORY = 'data/bolton/2011-01'
 
 namespace :bolton do
 
@@ -36,14 +36,6 @@ namespace :bolton do
   namespace :import_and_match do
     desc 'Import and match Bolton references'
     task :references => ['bolton:import:references', 'bolton:match:references']
-  end
-
-  desc "Convert some Bolton input that was saved in Macintosh format to UTF-8"
-  task :convert_from_macintosh_to_utf_8 do
-    Dir.glob('data/bolton/2010-07/*.html').each do |filename|
-      new_name = filename.gsub /#{File.extname(filename)}$/, '.htm'
-      `iconv -f MACINTOSH -t utf-8 '#{filename}' > '#{new_name}'`
-    end
   end
 
 end
