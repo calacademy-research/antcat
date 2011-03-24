@@ -52,7 +52,7 @@ grammar Bolton::SpeciesCatalogSpeciesGrammar
 
   rule subspecies_list_item
     (
-      (italic? maroon species_name close_tags '(unresolved junior homonym)' ', '? ) |
+      (tag_end? s italic? maroon species_name close_tags '(unresolved junior homonym)' ', '? ) |
       (italic blue s species_name ', '? close_tags) |
       (species_name ', '?)
     ) {
@@ -94,9 +94,10 @@ grammar Bolton::SpeciesCatalogSpeciesGrammar
   end
 
   rule unresolved_homonym
-    (fossil_flag? bold italic maroon species_name tag_end tag_end tag_end /.*/) {
+    (fossil_flag? bold italic maroon species_name subspecies_list? /.*/) {
       value = {:type => :species, :name => species_name.value, :status => 'unresolved_homonym'}
       value.merge! :fossil => true unless fossil_flag.blank?
+      value.merge! :subspecies => subspecies_list.value unless subspecies_list.blank?
       value
     }
   end

@@ -34,11 +34,24 @@ describe Bolton::SpeciesCatalog do
         }).should == {:type => :species, :name => 'vitreus', :status => 'valid', :subspecies => ['angustulus', 'carinatus', 'latinotus', 'oebalis', 'praeluteus', 'praerufus', 'vittatulus']}
       end
 
+      it "should handle even more multiple statuses of subspecies" do
+        @species_catalog.parse(%{
+<b><i><span style='color:red'>tarsata</span></i></b><i>. Formica tarsata</i> Fabricius, 1798: 280 (w.) SENEGAL. Latreille, 1802c: 736 (q.); Mayr, 1866b: 893 (m.). Combination in <i>Paltothyreus</i>: Mayr, 1862: 736; in <i>Pachycondyla</i>: Brown, in Bolton, 1995b: 310. Senior synonym of <i>gagates, pestilentia, spiniventris</i>: Roger, 1860: 310; Roger, 1863b: 17; of <i>simillima</i>: Emery, 1892d: 557. Current subspecies: nominal plus <i><span style='color:blue'>delagoensis, mediana, robusta, </span><span style='color:maroon'>striata</span></i> (unresolved junior homonym), <i><span style='color:maroon'>striatidens</span></i> (unresolved junior homonym), <i><span style='color:blue'>subopaca</span></i>. See also: Forel, 1891b: 136; Arnold, 1915: 44; Wheeler, W.M. 1922a: 60; Hölldobler, 1980: 86.</p> 
+        }).should == {:type => :species, :name => 'tarsata', :status => 'valid', :subspecies => ['delagoensis', 'mediana', 'robusta', 'striata', 'striatidens', 'subopaca']}
+      end
+
       it "should handle spaces" do
         @species_catalog.parse(%{
 <b><i><span style="color:red">heeri</span></i></b><i>. Brachymyrmex heeri</i> Forel, 1874: 91, figs. 16, 20 (w.) SWITZERLAND. Forel, 1876: 52 (q.m.). See also: Santschi, 1923b: 664. Current subspecies: nominal plus<i><span style="color:blue"> basalis, fallax</span></i>.
         })[:subspecies].should =~ ['basalis', 'fallax']
       end
+
+      it "should handle subspecies list for unresolved homonym" do
+        @species_catalog.parse(%{
+<b><i><span style='color:maroon'>cordata</span></i></b><i>. Formica cordata</i> Smith, F. 1859a: 137 (w.) INDONESIA (Aru I.). [<b style='mso-bidi-font-weight:normal'>Unresolved junior primary homonym</b> of *<i>Formica cordata</i> Holl, 1829: 140.] Emery, 1887a: 250 (q.m.); Imai, Brown, <i>et al</i>.  1984: 68 (k.). Combination in <i>Hypoclinea</i>: Mayr, 1879: 659; in <i>Iridomyrmex</i>: Emery, 1887a: 249; in <i>Philidris</i>: Shattuck, 1992a: 18. Current subspecies: nominal plus <i><span style='color:blue'>fusca, protensa, stewartii</span></i>. See also: Karavaiev, 1926d: 435; Tjan, Imai, <i>et al</i>. 1986: 58; Shattuck, 1994: 136.</p> 
+        })[:subspecies].should =~ ['fusca', 'protensa', 'stewartii']
+      end
+
 
       describe "Parsing individual subspecies items in list" do
 
@@ -58,12 +71,16 @@ describe Bolton::SpeciesCatalog do
           Bolton::SpeciesCatalogSpeciesGrammar.parse(%{<i><span style='color:blue'>angustulus, }, :root => :subspecies_list_item).should_not be_nil
         end
 
-        it "should handle unresolved junion homonym" do
+        it "should handle unresolved junior homonym" do
           Bolton::SpeciesCatalogSpeciesGrammar.parse(%{<span style='color:maroon'>carinatus</span></i> (unresolved junior homonym), }, :root => :subspecies_list_item).should_not be_nil
         end
 
-        it "should handle italic unresolved junion homonym" do
+        it "should handle italic unresolved junior homonym" do
           Bolton::SpeciesCatalogSpeciesGrammar.parse(%{<i><span style='color:maroon'>latinotus</span></i> (unresolved junior homonym), }, :root => :subspecies_list_item).should_not be_nil
+        end
+
+        it "should handle italic unresolved junior homonym" do
+          Bolton::SpeciesCatalogSpeciesGrammar.parse(%{</span><span style='color:maroon'>striata</span></i> (unresolved junior homonym)}, :root => :subspecies_list_item).should_not be_nil
         end
 
       end
