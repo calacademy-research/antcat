@@ -26,10 +26,8 @@ describe Antweb::Exporter do
     end
 
     it "should export a genus without a subfamily as being in 'incertae_sedis'" do
-      myrmicinae = Subfamily.create! :name => 'Myrmicinae', :status => 'valid'
-      dacetini = Tribe.create! :name => 'Dacetini', :subfamily => myrmicinae, :status => 'valid'
-      acanthognathus = Genus.create! :name => 'Acanothognathus', :subfamily => myrmicinae, :tribe => dacetini, :status => 'valid', :taxonomic_history => '<i>Acanthognathous</i>'
-      @exporter.export_taxon(acanthognathus).should == ['Myrmicinae', 'Dacetini', 'Acanothognathus', nil, nil, nil, 'TRUE', 'TRUE', nil, nil, '<i>Acanthognathous</i>']
+      acanthognathus = Genus.create! :name => 'Acanothognathus', :status => 'valid', :taxonomic_history => '<i>Acanthognathous</i>'
+      @exporter.export_taxon(acanthognathus).should == ['incertae_sedis', nil, 'Acanothognathus', nil, nil, nil, 'TRUE', 'TRUE', nil, nil, '<i>Acanthognathous</i>']
     end
 
     it "should not export invalid taxa" do
