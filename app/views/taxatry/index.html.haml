@@ -77,14 +77,9 @@
           %td{:style => 'width: 100px'}
             #subfamilies
               %table
-                - @subfamilies.unshift 'all'
                 - @subfamilies.each do |subfamily|
                   %tr
-                    %td
-                      - if subfamily == 'all'
-                        = all_of_a_taxon_link :subfamily, @selected_subfamily
-                      - elsif subfamily
-                        = taxon_link :subfamily, @selected_subfamily, subfamily
+                    %td= taxon_link subfamily, @selected_subfamily
 
     %td{:style => 'width: 577px; padding-bottom: 5px'}
       %table{:style => 'border-right: 1px black solid'}
@@ -109,10 +104,8 @@
                     %tr
                       - row.each do |genus|
                         %td{:class => css_class}
-                          - if genus == 'all'
-                            = all_of_a_taxon_link :genus, @selected_genus
-                          - elsif genus
-                            = genus_or_species_link :genus, @selected_genus, genus, :subfamily => @selected_subfamily
+                          - if genus
+                            = taxon_link genus, @selected_genus
 
     %td
       %table
@@ -138,6 +131,6 @@
                       - row.each do |species|
                         %td{:class => css_class}
                           - if species
-                            = genus_or_species_link :species, @selected_species, species, :subfamily => @selected_subfamily, :genus => @selected_genus
+                            = taxon_link species, @selected_species
 
 %div.clear

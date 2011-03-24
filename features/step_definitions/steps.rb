@@ -265,13 +265,13 @@ Given /a subfamily exists with a name of "(.*?)" and a taxonomic history of "(.*
   Factory :subfamily, :name => taxon_name, :taxonomic_history => taxonomic_history
 end
 
-Given /a genus exists with a name of "(.*?)" and a subfamily of "(.*?)"/ do |taxon_name, parent_name|
+Given /a genus exists with a name of "(.*?)" and a subfamily of "(.*?)" and a taxonomic history of "(.*?)"/ do |taxon_name, parent_name, taxonomic_history|
   subfamily = Subfamily.find_by_name(parent_name) || Factory(:subfamily, :name => parent_name)
-  Factory :genus, :name => taxon_name, :subfamily => subfamily, :tribe => nil
+  Factory :genus, :name => taxon_name, :subfamily => subfamily, :tribe => nil, :taxonomic_history => taxonomic_history
 end
 
-Given /a species exists with a name of "(.*?)" and a genus of "(.*?)"/ do |taxon_name, parent_name|
+Given /a species exists with a name of "(.*?)" and a genus of "(.*?)" and a taxonomic history of "(.*?)"/ do |taxon_name, parent_name, taxonomic_history|
   genus = Genus.find_by_name(parent_name) || Factory(:genus, :name => parent_name)
-  Factory :species, :name => taxon_name, :genus => genus
+  Factory :species, :name => taxon_name, :genus => genus, :taxonomic_history => taxonomic_history
 end
 

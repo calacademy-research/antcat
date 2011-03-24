@@ -13,7 +13,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :species, :only => [:index]
   map.resources :styles, :only => [:index]
 
-  map.resources :taxatry, :singular => 't'
+  map.resources :taxatry, :singular => 'taxon', :only => [:index, :show]
 
   map.connect '/documents/:id/:file_name', :controller => :references, :action => :download, :file_name => /.+/,
     :conditions => {:method => :get}
