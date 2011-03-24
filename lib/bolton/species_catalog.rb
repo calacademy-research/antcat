@@ -11,6 +11,7 @@
 #
 #  Manual edits:
 #   In NGC-Spap-ca.htm, made Aphaenogaster simonelli red and bold
+#   In NGC-Spcam1.htm, change #afer to be subspecies of ligniperda
 #   In NGC-Spcan-cr.htm, removed extra paragraph in Cephalotes texanus
 #   In NGC-Spg-las.htm, removed extra paragraph in Lasius murphyi
 
