@@ -10,4 +10,19 @@ module TaxatryHelper
     end
   end
 
+  def make_columns items
+    column_count = items.count / 30.0
+    css_class = ''
+    if column_count < 1
+      column_count = 1
+    else
+      column_count = column_count.ceil
+    end
+    if column_count >= 4
+      column_count = 4
+      css_class = 'teensy'
+    end
+    return items.snake(column_count), css_class
+  end
+
 end
