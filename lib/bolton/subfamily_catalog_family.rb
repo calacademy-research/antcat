@@ -83,7 +83,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
   def parse_genus_group_nomina_nuda_in_family_list
     expect :genus_group_nomina_nuda_in_family_list
     @parse_result[:genera].each do |genus|
-      Genus.create! :name => genus, :status => 'nomen nudum'
+      Genus.create! :name => genus, :status => 'nomen_nudum'
     end
     parse_next_line
   end
@@ -113,7 +113,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     expect :genus_group_nomina_nuda_in_family_header
     parse_next_line
     expect :genus_header
-    parse_genus({:status => 'nomen nudum'}, false) while @type == :genus_header
+    parse_genus({:status => 'nomen_nudum'}, false) while @type == :genus_header
   end
 
 end

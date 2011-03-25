@@ -2,92 +2,37 @@
 
 - content_for :head do
   = javascript_include_tag 'taxatry'
+  = stylesheet_link_tag 'taxatry'
 
 - content_for :header do
   .left
     %h1 Taxatry
 
-%style
-  :sass
-    div.taxon
-      float: left
-      a
-        color: red
-    div.synonym
-      a
-        color: black
-    div.unidentifiable
-      a
-        color: green
-    div.unavailable
-      a
-        color: purple
-    div.homonym
-      a
-        color: brown
-
-    .selected
-      background: yellow !important
-
-    .taxonomic_history
-      height: 9.2em
-      overflow: auto
-      position: relative
-      text-align: left
-      padding: 5px
-      padding-top: 0
-
-    #subfamilies
-      height: 500px
-    
-    #genera
-      height: 542px
-      width: 560px
-      overflow: auto
-    
-    #species
-      height: 500px
-      width: 388px
-      overflow: auto
-    
-    .rank_header
-      text-align: left
-      font-size: 1.5em
-      padding-bottom: 5px
-      border-bottom: 1px black solid
-
-    .teensy
-      font-size: .90em
-      width: 50px
-      line-height: .90em
-
-    body
-      width: 1240px
       
 .taxonomic_history
   = @taxonomic_history
 
-%table{:style => 'border-top: 1px solid black; margin-top: 10px'}
+%table.browser
   %tr
     %td
-      %table{:style => 'border-right: 1px black solid'}
+      %table.subfamily
         %tr
           %td.rank_header Subfamilies
         %tr
-          %td{:style => 'width: 100px'}
-            #subfamilies
+          %td
+            .rank_column
               %table
                 - @subfamilies.each do |subfamily|
                   %tr
                     %td= taxon_link subfamily, @selected_subfamily
 
-    %td{:style => 'width: 577px; padding-bottom: 5px'}
-      %table{:style => 'border-right: 1px black solid'}
+    %td
+      %table.genera
         %tr
           %td.rank_header Genera
-        %tr{:style => 'border-top: 1px solid black; padding-bottom: 5px'}
+        %tr
           %td
-            #genera
+            .rank_column
               - if @genera
                 %table
                   - column_count = @genera.count / 30.0
@@ -108,12 +53,12 @@
                             = taxon_link genus, @selected_genus
 
     %td
-      %table
+      %table.species
         %tr
           %td.rank_header Species
         %tr
           %td
-            #species
+            .rank_column
               - if @species
                 %table
                   - column_count = @species.count / 30.0

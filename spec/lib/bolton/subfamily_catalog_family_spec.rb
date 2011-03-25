@@ -117,7 +117,7 @@ monotypy. </span></p>
 
     taxon = Genus.find_by_name 'Hypopheidole'
     taxon.should be_invalid
-    taxon.status.should == 'nomen nudum'
+    taxon.status.should == 'nomen_nudum'
     taxon.taxonomic_history.should ==
 %{<p><b><i>Hypopheidole</i></b> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </p>} +
 %{<p>Hypopheidole history</p>}
