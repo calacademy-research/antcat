@@ -41,8 +41,8 @@
                     - column_count = 1
                   - else
                     - column_count = column_count.ceil
-                  - if column_count > 5
-                    - column_count = 5
+                  - if column_count > 4
+                    - column_count = 4
                     - css_class = 'teensy'
                   - rows = @genera.snake column_count
                   - rows.each do |row|
