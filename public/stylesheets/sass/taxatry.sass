@@ -1,7 +1,7 @@
 @import 'colors'
 
 body
-  width: 1220px
+  width: 1371px
 
 .taxon_header
   padding: 5px
@@ -45,12 +45,23 @@ table.browser
   height: 452px
   overflow: auto
 
+.teensy
+  font-size: .90em
+  line-height: .99em
+
 table.subfamilies
   border-right: 1px black solid
   width: 140px
 
-table.genera, table.species
+table.genera
   width: 460px
+  .teensy
+    width: 100px
+
+table.species
+  width: 600px
+  .teensy
+    width: 150px
 
 table.genera
   border-right: 1px black solid
@@ -60,8 +71,3 @@ table.genera
   font-size: 1.5em
   padding-bottom: 5px
   border-bottom: 1px black solid
-
-.teensy
-  font-size: .90em
-  width: 100px
-  line-height: .90em
