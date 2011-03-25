@@ -29,19 +29,24 @@ class TaxatryController < ApplicationController
       @selected_genera = nil
       @species = nil
       @selected_species = nil
+      @taxon_header_name = @taxon.name
     when Genus
       @selected_subfamily = @taxon.subfamily
       @genera = @selected_subfamily.genera
       @selected_genus = @taxon
       @species = @taxon.species
       @selected_species = nil
+      @taxon_header_name = @taxon.subfamily.name + ' ' + '<i>' + @taxon.name + '</i>'
     when Species
       @selected_subfamily = @taxon.genus.subfamily
       @genera = @selected_subfamily.genera
       @selected_genus = @taxon.genus
       @species = @taxon.genus.species
       @selected_species = @taxon
+      @taxon_header_name = @taxon.genus.subfamily.name + ' ' + '<i>' + @taxon.genus.name + ' ' + @taxon.name + '</i>'
     end
+
+    @taxon_header_status = @taxon.status.gsub /_/, ' ' if @taxon.invalid?
 
     render :index
   end

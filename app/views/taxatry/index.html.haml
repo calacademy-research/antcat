@@ -8,7 +8,12 @@
   .left
     %h1 Taxatry
 
-      
+%span.taxon_header
+  = @taxon_header_name
+%span
+  = @taxon_header_status
+%hr
+
 .taxonomic_history
   = @taxonomic_history
 
