@@ -104,13 +104,24 @@ ul.error_messages
 // specific elements
 
 #header, #subheader, #contents, #footer
-  padding: 2px 40px 0 55px
+  padding-top: 2px
+  padding-bottom: 0
+
+#contents
+  padding-right: 40px
+  padding-left: 55px
 
 .pagination
   padding-bottom: 10px
 
 #header h2
   margin-left: 16px
+
+#header
+  border-left: 2px solid $color_header_border
+  border-right: 2px solid $color_header_border
+  background: url("../images/header_bg.png") repeat scroll 0 0
+  height: 95px
 
 #page
   width: 95%
@@ -155,6 +166,426 @@ ul.error_messages
 #alert
   color: $color_error
 
-
 #q
   width: 100%
+
+// Luke
+
+a
+  text-decoration: none
+  font-weight: bold
+  color: #f8941d
+
+a:link
+  text-decoration: none
+  font-weight: bold
+  color: #f8941d
+
+a:visited
+  text-decoration: none
+  font-weight: bold
+  color: #f8941d
+
+a:visited:hover
+  text-decoration: none
+  font-weight: bold
+  color: #f8941d
+
+a:hover
+  text-decoration: underline
+  font-weight: bold
+  color: #f8941d
+
+a:hoverhover
+  text-decoration: underline
+  font-weight: bold
+  color: #f8941d
+
+a:active
+  text-decoration: underline
+  font-weight: bold
+  color: #f8941d
+
+a:active:hover
+  text-decoration: underline
+  font-weight: bold
+  color: #f8941d
+
+a:focus
+  text-decoration: underline
+  font-weight: bold
+  color: #f8941d
+
+a:focus:hover
+  text-decoration: underline
+  font-weight: bold
+  color: #f8941d
+
+body
+  font-size: 13px
+  font-family: "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
+  font-weight: normal
+  color: #575e4d
+  background: #858585
+
+h1 
+  font: 36px "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
+  font-weight: bold
+  color: #527523
+  margin-top: 5px
+  margin-bottom: 5px
+
+h1 a
+  color: #527523
+  font-size: 36px
+  text-decoration: none
+  font-weight: bold
+  line-height: normal
+  margin-bottom: 5px
+  margin-top: 5px
+
+h1 a:link
+  color: #527523
+  font-size: 36px
+  text-decoration: none
+  font-weight: bold
+  line-height: normal
+  margin-bottom: 5px
+  margin-top: 5px
+
+h1 a:visited
+  color: #527523
+  font-size: 36px
+  text-decoration: none
+  font-weight: bold
+  line-height: normal
+  margin-bottom: 5px
+  margin-top: 5px
+
+h1 a:hover
+  color: #527523
+  font-size: 36px
+  text-decoration: underline
+  font-weight: bold
+  line-height: normal
+  margin-bottom: 5px
+  margin-top: 5px
+
+h2 
+  font: 24px "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
+  color: #527523 
+  font-weight: bold
+  margin-top: 5px
+  margin-bottom: 5px
+
+h3 
+  font: 18px "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
+  color: #527523 
+  font-weight: bold
+  margin-top: 0px
+  margin-bottom: 0px
+
+h4 
+  font: 13px "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
+  color: #527523 
+  font-weight: bold
+  margin-top: 0px
+  margin-bottom: 0px
+
+h5 
+  font: 13px "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
+  color: #527523 
+  font-weight: bold
+  margin-top: 0px
+  margin-bottom: 0px
+
+h6 
+  font: 13px "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
+  color: #527523 
+  font-weight: bold
+  margin-top: 0px
+  margin-bottom: 0px
+
+p
+  font-size: 13px
+
+hr
+  border: 0
+  border-top: 1px solid #575e4d
+  height: 0
+  background: #575e4d
+  margin-top: 0px
+  margin-bottom: 5px
+
+.header_logo
+  float: left
+
+.header_ant
+  float: left
+
+.header_navigation
+  text-align: right
+  margin-top: 19px
+  float: right
+  padding-right: 10px
+  color: #fff
+  font-weight: bold
+  font-size: 13px
+
+.header_navigation a, .header_navigation a:hover, .header_navigation a:visited, .header_navigation a:link
+  color: #fff
+  font-weight: bold
+  font-size: 13px
+
+.header_left, .header_left a, .header_left a:hover, .header_left a:visited, .header_left a:link
+  margin-left: 3px
+  margin-top: 3px
+  color: #fff
+  font-weight: bold
+  font-size: 13px
+  text-decoration: none
+  float: left
+
+#login_area
+  height: 40px
+  margin-bottom: 5px
+
+.login_input 
+  width: 100px
+  font: 13px "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
+  color: #888582
+  background: white
+  border: 1px solid #bbbbbb
+  height: 20px
+
+.login_submit
+  padding-bottom: 2px
+  background-color: #645405
+  color: #fff
+  border: 1px solid #b6b6b6
+  width: 37px
+  height: 20px
+  font-weight: bold
+  font: 13px "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
+
+.login_small, .login_small a, .login_small a:hover, .login_small a:visited, .login_small a:link
+  font-size: 10.5px
+  text-decoration: none
+  font-weight: normal
+  color: #fff
+
+.uppercase
+  text-transform: uppercase
+
+.align_right
+  text-align: right
+
+#footer
+  margin-top: 60px
+  margin-bottom: 27px
+  font-size: 11px
+
+.layout
+  width: 950px
+
+#nav
+  font-size: 13px
+  position: absolute
+  top: 97px
+
+.nav_bg
+  padding-right: 10px
+  vertical-align: middle
+  text-align: left
+  color: white
+  background: #f8941d
+  height: 30px
+  border-left: 2px solid #b5b5b5
+  border-right: 2px solid #b5b5b5
+  border-top: 2px solid #b5b5b5
+  border-bottom: 2px solid #b5b5b5
+
+html > body .nav_bg
+  padding-right: 10px
+  vertical-align: middle
+  text-align: left
+  color: white
+  background: #f8941d
+  height: 26px
+  border-left: 2px solid #b5b5b5
+  border-right: 2px solid #b5b5b5
+  border-top: 2px solid #b5b5b5
+  border-bottom: 2px solid #b5b5b5
+
+.page_bg
+  text-align: left
+  padding: 10px
+  color: #575e4d
+  background: white
+  border-left: 2px solid #b5b5b5
+  border-right: 2px solid #b5b5b5
+
+.left
+  text-align: left
+  width: 672px
+  font: 13px "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
+  font-weight: normal
+  color: #575e4d
+  float: left
+
+.right
+  text-align: left
+  width: 236px
+  margin-top: 5px
+  float: right
+
+.top_right
+  text-align: right
+  width: 236px
+  float: right
+
+.full
+  text-align: left
+  width: 913px
+  font: 13px "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
+  font-weight: normal
+  color: #575e4d
+
+.half_left
+  text-align: left
+  width: 444px
+  font: 13px "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
+  font-weight: normal
+  color: #575e4d
+  margin-right: 10px
+  float: left
+
+.half_right
+  text-align: left
+  width: 445px
+  font: 13px "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
+  font-weight: normal
+  color: #575e4d
+  margin-left: 10px
+  float: right
+
+.indent
+  padding-left: 15px
+
+.footer
+  width: 950px
+  height: 23px
+  background-image: url("../images/footer2.gif")
+
+.search_href a, .search_href, .search_href:link, .search_href:visited, .search_href:hover
+  font-size: 10.5px
+  text-decoration: underline
+  font-weight: normal
+  color: #fff
+
+.subnav_href, .subnav_href a
+  width: 145px
+  font: 10.5px "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
+  text-decoration: none
+  font-weight: bold
+  color: white
+
+.subnav_href a:hover
+  width: 145px
+  font: 10.5px "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
+  text-decoration: none
+  font-weight: bold
+  background: white
+  color: #707B7D
+
+.subnav_href:link
+  width: 145px
+  text-decoration: none
+  font-weight: bold
+  color: white
+
+.subnav_href:visited
+  width: 145px
+  text-decoration: none
+  font-weight: bold
+  color: white
+
+.subnav_href:hover
+  width: 145px
+  text-decoration: underline
+  font-weight: bold
+  color: white
+
+.footer_contents
+  text-align: left
+  width: 780px
+  font: 11px "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
+  color: white
+  position: relative
+  left: 10px
+
+.footer_href
+  font: 11px "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
+  text-decoration: none
+  font-weight: normal
+  color: #f8941d
+
+.footer_href:link
+  text-decoration: none
+  font-weight: normal
+  color: #f8941d
+
+.footer_href:visited
+  text-decoration: none
+  font-weight: normal
+  color: #f8941d
+
+.footer_href:hover
+  text-decoration: underline
+  font-weight: normal
+  color: #f8941d
+
+.border
+  background: white
+  border: 1px solid #888582
+
+form 
+  margin-top: 0px
+  margin-bottom: 0px
+
+.float_right
+  float: right
+
+.header_search
+  float: right
+  position: relative
+  top: 3px
+
+.header_search_input 
+  width: 175px
+  font: 13px "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
+  color: #888582
+  background: white
+  border: 1px solid #bbbbbb
+  height: 20px
+
+.header_search_submit
+  padding-bottom: 2px
+  background-color: #b26b16
+  color: #fff
+  border: 1px solid #90928e
+  width: 37px
+  height: 20px
+  font-weight: bold
+  font: 13px "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
+
+.clear
+  clear: all
+
+.submit 
+  font: 11px "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
+  font-weight: bold
+  color: white
+  background: #b26b16
+  border: 1px solid #90928e
+

@@ -30,10 +30,52 @@
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
 
+      function toggleDivs(show,hide) {
+          var toShow = document.getElementById(show);
+          var toHide = document.getElementById(hide);
+          if (toShow.style.display == "") {
+              toShow.style.display = "none";
+              toHide.style.display = "";
+          } else {
+              toShow.style.display = "";
+              toHide.style.display = "none";
+          }
+      }
+
   %body{:class => @controller.class, :id => 'flash'}
     #page
       #header
-        = render :partial => 'shared/login'
+        .header_logo
+          %a{:href => "http://www.antcat.org"}
+            %img{:border => "0", :src => "images/antcat_logo.png", :width => "179", :height => "94", :alt => "AntCat"}
+        .header_ant
+          %img{:name => "imgs", :border => '0', :src => "images/header_ant_5.png", :height => "94", :width => "223"}
+
+        .header_navigation
+          #login_area
+            #login_link
+              %a{:href => "#", :onclick => "toggleDivs('login_form', 'login_link'); return false;"}Login
+            #login_form{:style => "display:none;"}
+              %form{:name => "loginForm", :method => "post", :action => "/users/sign_in"}
+                %input{:type => "hidden", :name => "target", :value => ""}
+                Email:
+                %input{:type => "text", :class => "login_input", :name => "user[email]"}
+                Password:
+                %input{:type => "password", :class => "login_input", :name => "user[password]"}
+                %input{:type => "submit", :name => "commit", :class => "login_submit", :value => "Go &#187;"}
+                %br
+                %span{:class => "login_small"}
+                  %input{:name => "user[remember_me]", :type => "hidden", :value => "0"}
+                  %input{:checked => "checked", :id => "user_remember_me", :name => "user[remember_me]", :type => "checkbox", :value => "1"}
+                  Remember me
+                  |
+                  %a{:href => "/users/password/new"}
+                    Forgot Password?
+                  |
+                  %a{:href => "#", :onclick => "toggleDivs('login_link','login_form'); return false;"}
+                    Cancel
+          %a{:href => "http://www.antweb.org/"}AntWeb
+
         .clear
 
         %hr
