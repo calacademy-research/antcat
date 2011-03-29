@@ -9,17 +9,17 @@ Feature: Editing a user
     When I go to the main page
       And I follow "mark1@example.com"
     Then I should be on the edit user page
-    When I fill in "user_password" with "new password"
-      And I fill in "user_password_confirmation" with "new password"
-      And I fill in "user_current_password" with "secret"
+    When I fill in "user_password" with "new password" within "#contents"
+      And I fill in "user_password_confirmation" with "new password" within "#contents"
+      And I fill in "user_current_password" with "secret" within "#contents"
       And I press "Update"
     Then I should be on the main page
       And I should see "Your account has been updated"
     When I follow "sign out"
     Then I should not see "mark1@example.com"
-    When I follow "sign in"
+    When I follow "Login"
       And I fill in "user_email" with "mark1@example.com"
       And I fill in "user_password" with "new password"
-      And I press "Sign in"
+      And I press "Go"
     Then I should be on the main page
       And I should see "mark1@example.com"

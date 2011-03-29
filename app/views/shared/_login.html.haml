@@ -1,9 +1,38 @@
-#login
-  - if user_signed_in?
-    = link_to 'journals', journals_path
-    |
-    = link_to current_user.email, edit_user_registration_path
-    |
-    = link_to 'sign out', destroy_user_session_path
-  - else
-    = link_to 'sign in', new_user_session_path
+-##login
+  -#- if user_signed_in?
+    -#= link_to 'journals', journals_path
+    -#|
+    -#= link_to current_user.email, edit_user_registration_path
+    -#|
+    -#= link_to 'sign out', destroy_user_session_path
+  -#- else
+    -#= link_to 'sign in', new_user_session_path
+
+#login_area
+  #login_link
+    - if user_signed_in?
+      = link_to 'journals', journals_path
+      |
+      = link_to current_user.email, edit_user_registration_path
+      |
+      = link_to 'sign out', destroy_user_session_path
+    - else
+      %a{:href => "#", :onclick => "toggleDivs('login_form', 'login_link'); return false;"} Login
+  #login_form{:style => "display:none;"}
+    %form{:name => "loginForm", :method => "post", :action => "/users/sign_in"}
+      %input{:type => "hidden", :name => "target", :value => ""}
+      Email:
+      %input#user_email.login_input{:type => "text", :name => "user[email]"}
+      Password:
+      %input#user_password.login_input{:type => "password", :name => "user[password]"}
+      %input.login_submit{:type => "submit", :name => "commit", :value => "Go &#187;"}
+      %br
+      %span.login_small
+        %input{:name => "user[remember_me]", :type => "hidden", :value => "0"}
+        %input#user_remember_me{:checked => "checked", :name => "user[remember_me]", :type => "checkbox", :value => "1"}
+        Remember me
+        |
+        |
+        %a{:href => "#", :onclick => "toggleDivs('login_link','login_form'); return false;"}
+        |
+        Cancel
