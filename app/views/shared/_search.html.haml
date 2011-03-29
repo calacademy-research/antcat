@@ -1,16 +1,9 @@
-#search
-  %form{:action => '/references', :method => :get}
-    %table
-      %tr
-        %td.left_button
-          %button{:value => 'new', :name => 'commit', :type => 'submit'} New
-        - if user_signed_in?
-          %td.left_button
-            %button{:value => 'review', :name => 'commit', :type => 'submit'} Review
-        %td.label
-          Search for
-        %td
-          %input#q{:name => 'q', :type => 'text', :value => params[:q]}
-        %td.right_button
-          %button{:value => 'search', :name => 'commit', :type => 'submit', :class => 'default'} Go
-          %button{:value => 'clear', :name => 'commit', :type => 'submit'} Clear
+- content_for :nav do
+  .nav_bg{:style => "z-index:3000;"}
+    %form{:action => '/references', :method => 'get'}
+      .header_left#nav
+        %a{:href => "/references?commit=new&q="} Show Newest
+      .header_search
+        %b Search for
+        %input.header_search_input{:type => "text", :name => "q", :value => "", :style => "height:20px;"}
+        %input.header_search_submit{:type => "submit", :name => "commit", :value => "Go &#187;"}

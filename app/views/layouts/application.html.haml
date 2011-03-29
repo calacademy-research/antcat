@@ -42,14 +42,14 @@
           }
       }
 
-  %body{:class => @controller.class, :id => 'flash'}
+  %body#flash{:class => @controller.class}
     #page
       #header
         .header_logo
-          %a{:href => "http://www.antcat.org"}
-            %img{:border => "0", :src => "images/antcat_logo.png", :width => "179", :height => "94", :alt => "AntCat"}
+          - link_to root_path do
+            = image_tag 'antcat_logo.png', :border => "0", :width => "179", :height => "94", :alt => "AntCat"
         .header_ant
-          %img{:name => "imgs", :border => '0', :src => "images/header_ant_5.png", :height => "94", :width => "223"}
+          = image_tag 'header_ant_5.png', :name => "imgs", :border => '0', :height => "94", :width => "223"
 
         .header_navigation
           #login_area
@@ -59,38 +59,39 @@
               %form{:name => "loginForm", :method => "post", :action => "/users/sign_in"}
                 %input{:type => "hidden", :name => "target", :value => ""}
                 Email:
-                %input{:type => "text", :class => "login_input", :name => "user[email]"}
+                %input.login_input{:type => "text", :name => "user[email]"}
                 Password:
-                %input{:type => "password", :class => "login_input", :name => "user[password]"}
-                %input{:type => "submit", :name => "commit", :class => "login_submit", :value => "Go &#187;"}
+                %input.login_input{:type => "password", :name => "user[password]"}
+                %input.login_submit{:type => "submit", :name => "commit", :value => "Go &#187;"}
                 %br
-                %span{:class => "login_small"}
+                %span.login_small
                   %input{:name => "user[remember_me]", :type => "hidden", :value => "0"}
-                  %input{:checked => "checked", :id => "user_remember_me", :name => "user[remember_me]", :type => "checkbox", :value => "1"}
+                  %input#user_remember_me{:checked => "checked", :name => "user[remember_me]", :type => "checkbox", :value => "1"}
                   Remember me
                   |
-                  %a{:href => "/users/password/new"}
-                    Forgot Password?
                   |
                   %a{:href => "#", :onclick => "toggleDivs('login_link','login_form'); return false;"}
-                    Cancel
-          %a{:href => "http://www.antweb.org/"}AntWeb
+                  |
+                  Cancel
+          = link_to 'AntWeb', "http://www.antweb.org/"
 
         .clear
 
-        %hr
-        - if @content_for_header
-          = yield :header
-        - else
-          .left
-            %h1 AntCat
-        .clear
+      = yield :nav
 
-        #notice
-          =flash[:notice]
-        #alert
-          =flash[:alert]
-        %hr
+      %hr
+      - if @content_for_header
+        = yield :header
+      - else
+        .left
+          %h1 AntCat
+      .clear
+
+      #notice
+        =flash[:notice]
+      #alert
+        =flash[:alert]
+      %hr
 
       #contents
         = yield
