@@ -3,9 +3,13 @@
     %form#search_form{:action => '/references', :method => 'get'}
       .header_left#nav
         %a{:href => "/references?commit=new"} Show latest additions
-        %span
-          |
-        %a{:href => "/references?commit=review"} Show latest changes
+        - if user_signed_in?
+          %span
+            |
+          %a{:href => "/references?commit=review"} Show latest changes
+          %span
+            |
+          %a{:href => "/journals"} Edit journals
       .header_search
         %b Search for
         %input.header_search_input{:type => "text", :name => "q", :value => params[:q], :style => "height:20px;"}

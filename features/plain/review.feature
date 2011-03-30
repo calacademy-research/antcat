@@ -5,7 +5,7 @@ Feature: Reviewing features
 
   Scenario: Not logged in
     When I go to the main page
-    Then I should not see "Review"
+    Then I should not see "Show latest changes"
 
   Scenario: Logged in
     When I log in

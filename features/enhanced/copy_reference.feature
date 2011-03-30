@@ -5,7 +5,8 @@ Feature: Copy reference
   And so that the bibliography continues to be up-to-date
 
   Scenario: Copy a reference
-    When I log in
+    When I go to the main page
+      And I log in
       And the following references exist
       |authors   |title         |citation|year|
       |Ward, P.S.|Annals of Ants|Ants 1:2|1910|

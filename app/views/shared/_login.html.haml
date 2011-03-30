@@ -1,18 +1,6 @@
--##login
-  -#- if user_signed_in?
-    -#= link_to 'journals', journals_path
-    -#|
-    -#= link_to current_user.email, edit_user_registration_path
-    -#|
-    -#= link_to 'sign out', destroy_user_session_path
-  -#- else
-    -#= link_to 'sign in', new_user_session_path
-
 #login_area
   #login_link
     - if user_signed_in?
-      = link_to 'journals', journals_path
-      |
       = link_to current_user.email, edit_user_registration_path
       |
       = link_to 'sign out', destroy_user_session_path
