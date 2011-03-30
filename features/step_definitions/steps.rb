@@ -163,10 +163,10 @@ end
 
 Given 'I log in' do
   @user = Factory :user
-  visit '/users/sign_in'
+  click_link "Login"
   And %{I fill in "user_email" with "#{@user.email}"}
   And %{I fill in "user_password" with "#{@user.password}"}
-  And %{I press "Sign in"}
+  And %{I press "Go"}
 end
 
 Given 'I log out' do

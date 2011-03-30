@@ -16,8 +16,8 @@ Feature: View reference when logged in and logged out
       And I should not see "Taxonomy"
 
   Scenario: Logged in
-    When I log in
-      And I go to the main page
+    When I go to the main page
+      And I log in
     Then I should see "Public"
       And I should see "Editor"
       And I should see "Taxonomy"
