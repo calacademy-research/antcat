@@ -18,8 +18,9 @@
       = link_to 'sign out', destroy_user_session_path
     - else
       %a{:href => "#", :onclick => "toggleDivs('login_form', 'login_link'); return false;"} Login
+
   #login_form{:style => "display:none;"}
-    %form{:name => "loginForm", :method => "post", :action => "/users/sign_in"}
+    - form_tag "/users/sign_in" do
       %input{:type => "hidden", :name => "target", :value => ""}
       Email:
       %input#user_email.login_input{:type => "text", :name => "user[email]"}

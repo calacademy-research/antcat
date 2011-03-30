@@ -2,7 +2,10 @@
   .nav_bg{:style => "z-index:3000;"}
     %form#search_form{:action => '/references', :method => 'get'}
       .header_left#nav
-        %a{:href => "/references?commit=new&q="} Show latest additions
+        %a{:href => "/references?commit=new"} Show latest additions
+        %span
+          |
+        %a{:href => "/references?commit=review"} Show latest changes
       .header_search
         %b Search for
         %input.header_search_input{:type => "text", :name => "q", :value => params[:q], :style => "height:20px;"}

@@ -79,8 +79,8 @@ Feature: View bibliography
       |authors   |year |title    |citation|
       |Ward, P.S.|2010d|Ant Facts|Ants 1:1|
       And that the entry has a URL that's not on our site
+      And I go to the main page
       And I log in
-    When I go to the main page
     Then I should see a "PDF" link
 
   Scenario: Viewing a nested reference

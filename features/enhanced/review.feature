@@ -10,7 +10,7 @@ Feature: Reviewing features
   Scenario: Logged in
     When I log in
       And I go to the main page
-    Then I should see "Review"
+    Then I should see "Show latest changes"
 
   Scenario: See features in reverse chronological order
       And the following references exist
@@ -19,7 +19,7 @@ Feature: Reviewing features
       |Bolton, B.|Psyche 4:2|yesterday |Bolton's Bulletin|2010-1-1  |2010|
     Given I am logged in
     When I go to the main page
-      And I press the "Review" button
+      And I follow "Show latest changes"
     Then I should see these entries with a header in this order:
       |updated_at|entry|
       |2010-02-02|Ward, P. 2010. Ward's World. Psyche 5:3.|
