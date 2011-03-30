@@ -70,7 +70,7 @@ Feature: View bibliography
       |authors   |year |title    |citation|cite_code|
       |Ward, P.S.|2010d|Ant Facts|Ants 1:1|232      |
       And that the entry has a URL that's on our site
-      And I log in
+      And I am logged in
     When I go to the main page
     Then I should see a "PDF" link
 
