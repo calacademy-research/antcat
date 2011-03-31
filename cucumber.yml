@@ -1,2 +1,7 @@
-default: --format pretty -r features/support/env.rb -r features/support/plain.rb -r features/step_definitions features/plain
-selenium: --format pretty -r features/support/env.rb -r features/support/enhanced.rb -r features/step_definitions features/enhanced
+<%
+plain = '--format pretty -r features/support/env.rb -r features/support/plain.rb -r features/step_definitions features/plain'
+%>
+
+default: <%= plain %>
+plain: <%= plain %>
+enhanced: --format pretty -r features/support/env.rb -r features/support/enhanced.rb -r features/step_definitions features/enhanced
