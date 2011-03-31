@@ -11,4 +11,4 @@ Feature: Editing journals
     Given I am logged in
     When I go to the main page
     When I follow "Edit journals"
-    ehen I should be on the "Edit journals" page
+    Then I should be on the "Edit journals" page
