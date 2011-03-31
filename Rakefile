@@ -18,10 +18,10 @@ namespace :cucumber do
 end
 
 desc "Run both plain and enhanced Cucumber features"
-task :cucumber => ['cucumber:plain', 'cucumber:selenium']
+task 'cucumber:all_features' => ['cucumber:plain', 'cucumber:enhanced']
 
 # add to default tasks (not override)
-task :default => :cucumber
+task :default => 'cucumber:all_features'
 
 begin
   require 'metric_fu'
