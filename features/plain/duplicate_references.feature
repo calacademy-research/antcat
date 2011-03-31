@@ -8,7 +8,7 @@ Feature: View duplicate references
       |author     |title|year|citation  |
       |Ward, P. S.|Ants |1960|Psyche 1:2|
       |Bolton, B. |Bees |1958|Psyche 2:3|
-      |Ward, P. S.|Ants |1961|Psyche 4:5|
+      |Ward, P. S.|Cows |1961|Psyche 4:5|
       And the following are duplicates
         |authors    |year|similarity|
         |Ward, P. S.|1960|          |

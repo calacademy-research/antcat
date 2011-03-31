@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe DuplicateReferencesFinder do
+
   it "should populate duplicate_references" do
     author_name = Factory :author_name
     target = Factory :reference, :author_names => [author_name]
@@ -25,4 +26,5 @@ describe DuplicateReferencesFinder do
     duplicate_reference.duplicate.should == duplicate
     duplicate_reference.similarity.should == 0.20
   end
+
 end

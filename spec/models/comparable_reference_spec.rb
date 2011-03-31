@@ -2,6 +2,16 @@ require 'spec_helper'
 
 describe ComparableReference do
 
+  describe "type mismatch" do
+
+    it "should never consider references of different types similar in the least" do
+      lhs = ComparableReference.new :type => 'ArticleReference', :author => 'Fisher, B. L.', :title => 'Ants', :year => '1975'
+      rhs = ComparableReference.new :type => 'NestedReference', :author => 'Fisher, B. L.', :title => 'Ants', :year => '1975'
+      (lhs <=> rhs).should == 0.00
+    end
+
+  end
+
   describe "author + year matching" do
     describe "when the author names don't match but the years do" do
       before do

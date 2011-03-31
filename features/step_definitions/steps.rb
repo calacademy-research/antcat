@@ -29,8 +29,9 @@ end
 def create_reference type, hash
   author = hash.delete('author') || hash.delete('authors')
   hash[:citation_year] = hash.delete 'year'
-  @reference = Factory type, hash.merge(:author_names => [Factory :author_name, :name => author])
-  set_timestamps @reference, hash
+  reference = Factory type, hash.merge(:author_names => [Factory :author_name, :name => author])
+  @reference ||= reference
+  set_timestamps reference, hash
   Reference.reindex
 end
 
@@ -103,7 +104,7 @@ Then /there should not be an edit form/ do
   page.should have_no_css "#reference_#{@reference.id} .reference_edit"
 end
 
-Then /I should (not )?see a new edit form/ do |should_not|
+Then /I should (not )?see (?:a|the) new edit form/ do |should_not|
   selector = should_not ? :should_not : :should
   find("#reference_ .reference_edit").send(selector, be_visible)
 end

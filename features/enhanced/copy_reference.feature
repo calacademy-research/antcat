@@ -13,8 +13,9 @@ Feature: Copy reference
       And I follow "copy"
     Then I should see a new edit form
     When in the new edit form I fill in "reference_title" with "Tapinoma"
+      And in the new edit form I fill in "reference_citation_year" with "2010"
       And in the new edit form I press the "Save" button
-    Then I should see "1910. Tapinoma."
+    Then I should see "2010. Tapinoma."
 
   Scenario: Copy a reference with a document
     Given I am logged in
@@ -25,8 +26,9 @@ Feature: Copy reference
     When I go to the main page
       And I follow "copy"
       And in the new edit form I fill in "reference_title" with "Tapinoma"
+      And in the new edit form I fill in "reference_citation_year" with "2010"
       And in the new edit form I press the "Save" button
-    Then I should see "1910. Tapinoma."
+    Then I should see "2010. Tapinoma."
 
   Scenario: Copy a reference with a cite code and date
     Given I am logged in

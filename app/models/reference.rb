@@ -87,6 +87,13 @@ class Reference < ActiveRecord::Base
     }.results
   end
 
+  def validate
+    duplicates = DuplicateMatcher.new.match self
+    return unless duplicates.present?
+    duplicate = Reference.find duplicates.first[:match]
+    errors.add_to_base "This seems to be a duplicate of #{ReferenceFormatter.format duplicate} #{duplicate.id}"
+  end
+
   def self.import data
     reference = nil
     return reference if reference = find_duplicate(data)
@@ -218,6 +225,12 @@ class Reference < ActiveRecord::Base
   def strip_newlines
     [:title, :public_notes, :editor_notes, :taxonomic_notes].each do |field|
       self[field].gsub! /\n/, ' ' if self[field].present?
+    end
+  end
+
+  class DuplicateMatcher < ReferenceMatcher
+    def min_similarity
+      0.5
     end
   end
 

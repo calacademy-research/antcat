@@ -24,39 +24,39 @@ Factory.define :place do |row|
 end
 
 Factory.define :reference do |reference|
-  reference.author_names     {[Factory(:author_name)]}
-  reference.title           "Ants are my life"
-  reference.citation_year   "2010"
+  reference.author_names      {[Factory(:author_name)]}
+  reference.sequence(:title)  {|n| "Ants are my life#{n}"}
+  reference.sequence(:citation_year)       {|n| "201#{n}d"}
 end
 
 Factory.define :article_reference do |reference|
   reference.author_names        {[Factory(:author_name)]}
-  reference.title               "Ants are my life"
-  reference.citation_year       '2010d'
+  reference.sequence(:title)    {|n| "Ants are my life#{n}"}
+  reference.sequence(:citation_year)       {|n| "201#{n}d"}
   reference.association         :journal
-  reference.series_volume_issue '1'
-  reference.pagination          '22'
+  reference.sequence(:series_volume_issue) {|n| n}
+  reference.sequence(:pagination) {|n| n}
 end
 
 Factory.define :book_reference do |reference|
   reference.author_names        {[Factory(:author_name)]}
-  reference.title               "Ants are my life"
-  reference.citation_year       '2010d'
+  reference.sequence(:title)    {|n| "Ants are my life#{n}"}
+  reference.sequence(:citation_year)       {|n| "201#{n}d"}
   reference.association         :publisher
   reference.pagination          '22 pp.'
 end
 
 Factory.define :unknown_reference do |reference|
   reference.author_names        {[Factory(:author_name)]}
-  reference.title               "Ants are my life"
-  reference.citation_year       '2010d'
+  reference.sequence(:title)    {|n| "Ants are my life#{n}"}
+  reference.sequence(:citation_year)       {|n| "201#{n}d"}
   reference.citation            'New York'
 end
 
 Factory.define :nested_reference do |reference|
   reference.author_names        {[Factory(:author_name)]}
-  reference.title               "Ants are my life"
-  reference.citation_year       '2010d'
+  reference.sequence(:title)    {|n| "Ants are my life#{n}"}
+  reference.sequence(:citation_year)       {|n| "201#{n}d"}
   reference.pages_in            'In: '
   reference.nested_reference    {Factory :book_reference}
 end

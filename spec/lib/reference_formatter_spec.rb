@@ -140,37 +140,37 @@ describe ReferenceFormatter do
       end
 
       it "should escape the citation in an article reference" do
-        reference = Factory :article_reference, :author_names => @author_names,
-          :journal => Factory(:journal, :name => '<script>'), :series_volume_issue => '<', :pagination => '>'
+        reference = Factory :article_reference, :title => 'Ants are my life', :author_names => @author_names,
+          :journal => Factory(:journal, :name => '<script>'), :citation_year => '2010d', :series_volume_issue => '<', :pagination => '>'
         ReferenceFormatter.format(reference).should == 'Ward, P. S. 2010d. Ants are my life. &lt;script&gt; &lt;:&gt;.'
       end
 
       it "should escape the citation in a book reference" do
-        reference = Factory :book_reference, :author_names => @author_names,
+        reference = Factory :book_reference, :citation_year => '2010d', :title => 'Ants are my life', :author_names => @author_names,
           :publisher => Factory(:publisher, :name => '<', :place => Factory(:place, :name => '>')), :pagination => '>'
         ReferenceFormatter.format(reference).should == 'Ward, P. S. 2010d. Ants are my life. &gt;: &lt;, &gt;.'
       end
 
       it "should escape the citation in an unknown reference" do
-        reference = Factory :unknown_reference, :author_names => @author_names, :citation => '>'
+        reference = Factory :unknown_reference, :title => 'Ants are my life', :citation_year => '2010d', :author_names => @author_names, :citation => '>'
         ReferenceFormatter.format(reference).should == 'Ward, P. S. 2010d. Ants are my life. &gt;.'
       end
 
       it "should escape the citation in a nested reference" do
-        nested_reference = Factory :unknown_reference, :author_names => @author_names
-        reference = Factory :nested_reference, :author_names => @author_names, :pages_in => '>', :nested_reference => nested_reference
+        nested_reference = Factory :unknown_reference, :title => "Ants are my life", :citation_year => '2010d', :author_names => @author_names
+        reference = Factory :nested_reference, :title => "Ants are my life", :citation_year => '2010d', :author_names => @author_names, :pages_in => '>', :nested_reference => nested_reference
         ReferenceFormatter.format(reference).should == 'Ward, P. S. 2010d. Ants are my life. &gt; Ward, P. S. 2010d. Ants are my life. New York.'
       end
 
     end
 
     it "should italicize the title and citation" do
-      reference = Factory :unknown_reference, :author_names => [], :citation => '*Ants*', :title => '*Tapinoma*'
+      reference = Factory :unknown_reference, :citation_year => '2010d', :author_names => [], :citation => '*Ants*', :title => '*Tapinoma*'
       ReferenceFormatter.format(reference).should == "2010d. <span class=genus_or_species>Tapinoma</span>. <span class=genus_or_species>Ants</span>."
     end
 
     it "should not have a space at the beginning when there are no authors" do
-      reference = Factory :unknown_reference, :author_names => [], :citation => 'Ants', :title => 'Tapinoma'
+      reference = Factory :unknown_reference, :citation_year => '2010d', :author_names => [], :citation => 'Ants', :title => 'Tapinoma'
       ReferenceFormatter.format(reference).should == "2010d. Tapinoma. Ants."
     end
 
@@ -188,6 +188,8 @@ describe ReferenceFormatter do
     end
     it "should handle missing date" do
       make nil; check ''
+    end
+    it "should handle missing date" do
       make ''; check ''
     end 
     it "should handle dates with other symbols/characters" do

@@ -196,7 +196,7 @@ See Site Statistics</a><p>
     end
 
     it "should match an article reference based on year + series/volume/issue + pagination" do
-      reference = Factory :article_reference, :year => 2010, :series_volume_issue => '2', :pagination => '2-3'
+      reference = Factory :article_reference, :citation_year => '2010', :series_volume_issue => '2', :pagination => '2-3'
       hol_references = [
         {:document_url => 'a source', :year => 2010, :series_volume_issue => '1', :pagination => '2-3'},
         {:document_url => 'another source', :year => 2010, :series_volume_issue => '2', :pagination => '2-3'},
@@ -206,7 +206,7 @@ See Site Statistics</a><p>
     end
 
     it "should match an article reference based on year + title if series/volume/issue isn't found" do
-      reference = Factory :article_reference, :year => 2010, :series_volume_issue => '44', :pagination => '325-335',
+      reference = Factory :article_reference, :citation_year => '2010', :series_volume_issue => '44', :pagination => '325-335',
         :title => 'Adelomyrmecini new tribe and Cryptomyrmex new genus of myrmicine ants'
       hol_references = [
         {:document_url => 'fernandez_source', :year => 2010, :series_volume_issue => '44(3)', :pagination => '325-335',
@@ -217,7 +217,7 @@ See Site Statistics</a><p>
     end
 
     it "ignore punctuation when comparing titles" do
-      reference = Factory :article_reference, :year => 2010, :series_volume_issue => '44', :pagination => '325-335',
+      reference = Factory :article_reference, :citation_year => '2010', :series_volume_issue => '44', :pagination => '325-335',
         :title => 'Adelomyrmecini new tribe and Cryptomyrmex new genus of myrmicine ants (Hymenoptera, Formicidae)'
       hol_references = [
         {:document_url => 'fernandez_source', :year => 2010, :series_volume_issue => '44(3)', :pagination => '325-335',

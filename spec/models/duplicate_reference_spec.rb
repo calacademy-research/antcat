@@ -47,11 +47,13 @@ describe DuplicateReference do
     end
 
     describe 'choosing which one should be kept' do
+
       it "should bail out if it can't find the real one" do
-        ward = Factory :reference
-        copy = Factory :reference
+        ward = Factory :reference, :citation_year => '2010'
+        copy = Factory :reference, :citation_year => '2010'
         lambda {DuplicateReference.new(:reference => ward, :duplicate => copy).resolve}.should raise_error
       end
+
       describe 'choosing the one with a date' do
         it 'should pick the one with a date' do
           ward = Factory :reference, :date => '[1982.1.2]'

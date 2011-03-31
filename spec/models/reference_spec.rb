@@ -530,10 +530,10 @@ describe Reference do
       bolton = Factory :author_name, :name => 'Bolton'
       ward = Factory :author_name, :name => 'Ward'
       fisher = Factory :author_name, :name => 'Fisher'
-      bolton_reference = Factory :reference, :author_names => [bolton, ward]
-      first_ward_reference = Factory :reference, :author_names => [ward, bolton]
-      second_ward_reference = Factory :reference, :author_names => [ward, fisher]
-      fisher_reference = Factory :reference, :author_names => [fisher, bolton]
+      bolton_reference = Factory :article_reference, :author_names => [bolton, ward]
+      first_ward_reference = Factory :article_reference, :author_names => [ward, bolton]
+      second_ward_reference = Factory :article_reference, :author_names => [ward, fisher]
+      fisher_reference = Factory :article_reference, :author_names => [fisher, bolton]
 
       Reference.sorted_by_author_name.map(&:id).should == [bolton_reference.id, fisher_reference.id, first_ward_reference.id, second_ward_reference.id]
     end
@@ -644,6 +644,19 @@ describe Reference do
       reference.duplicates << Factory(:reference)
       reference.should have(1).duplicate
     end
+  end
+
+  describe "duplicated checking" do
+
+    it "should not allow a duplicate record to be saved" do
+      journal = Factory :journal
+      author = Factory :author_name
+      original = ArticleReference.create! :author_names => [author], :citation_year => '1981', :title => 'Dolichoderinae',
+                               :journal => journal, :series_volume_issue => '1(2)', :pagination => '22-54'
+      lambda {ArticleReference.create! :author_names => [author], :citation_year => '1981', :title => 'Dolichoderinae',
+                               :journal => journal, :series_volume_issue => '1(2)', :pagination => '22-54'}.should raise_error
+    end
+
   end
 
 end
