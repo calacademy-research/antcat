@@ -44,28 +44,21 @@
 
   %body#flash{:class => @controller.class}
     #page
-      #header
-        .header_logo
+
+      #site_header
+        #site_header_logo
           - link_to root_path do
             = image_tag 'antcat_logo.png', :border => "0", :width => "179", :height => "94", :alt => "AntCat"
-        .header_ant
-          = image_tag 'header_ant_5.png', :name => "imgs", :border => '0', :height => "94", :width => "223"
-
-        .header_navigation
+        #site_header_ant
+          = image_tag 'site_header_ant_5.png', :name => "imgs", :border => '0', :height => "94", :width => "223"
+        #site_header_navigation
           = render :partial => 'shared/login'
           = link_to 'AntWeb', "http://www.antweb.org/"
 
-        .clear
-
-      = yield :nav
-
-      %hr
-      - if @content_for_header
-        = yield :header
-      - else
-        .left
-          %h1 AntCat
       .clear
+
+      #page_header
+        = yield :page_header
 
       #notice
         =flash[:notice]

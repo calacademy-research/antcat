@@ -99,9 +99,67 @@ ul.error_messages
 ///////////////////////////////////////////////////
 // specific elements
 
-#header, #subheader, #contents, #footer
+#page
+  width: 95%
+  margin: 0 auto
+  background-color: $color_contents_background
+  border: solid 1px $color_border
+
+
+//////////////////////////////////////////////////
+// site header
+#site_header, #contents, #footer
   padding-top: 2px
   padding-bottom: 0
+
+#site_header_logo
+  float: left
+
+#site_header_ant
+  float: left
+
+#site_header_navigation
+  text-align: right
+  margin-top: 19px
+  float: right
+  padding-right: 10px
+  color: #fff
+  font-weight: bold
+  font-size: 13px
+  a, a:hover, a:visited, a:link
+    color: #fff
+    font-weight: bold
+    font-size: 13px
+
+//////////////////////////////////////////////////////////
+// login
+#login_area
+  height: 40px
+  margin-bottom: 5px
+
+.login_input 
+  width: 100px
+  font: 13px "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
+  color: #888582
+  background: white
+  border: 1px solid #bbbbbb
+  height: 20px
+
+.login_submit
+  padding-bottom: 2px
+  background-color: #645405
+  color: #fff
+  border: 1px solid #b6b6b6
+  width: 37px
+  height: 20px
+  font-weight: bold
+  font: 13px "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
+
+.login_small, .login_small a, .login_small a:hover, .login_small a:visited, .login_small a:link
+  font-size: 10.5px
+  text-decoration: none
+  font-weight: normal
+  color: #fff
 
 #contents
   padding-right: 40px
@@ -110,20 +168,13 @@ ul.error_messages
 .pagination
   padding-bottom: 10px
 
-#header h2
-  margin-left: 16px
-
-#header
+#site_header
   border-left: 2px solid $color_header_border
   border-right: 2px solid $color_header_border
   background: url("../images/header_bg.png") repeat scroll 0 0
   height: 95px
-
-#page
-  width: 95%
-  margin: 0 auto
-  background-color: $color_contents_background
-  border: solid 1px $color_border
+  h2
+    margin-left: 16px
 
 .pagination
   padding-top: 5px
@@ -191,7 +242,7 @@ a:hover
   font-weight: bold
   color: #f8941d
 
-a:hoverhover
+a:hover
   text-decoration: underline
   font-weight: bold
   color: #f8941d
@@ -223,115 +274,6 @@ body
   color: #575e4d
   background: #858585
 
-h1 
-  font: 36px "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
-  font-weight: bold
-  color: #527523
-  margin-top: 5px
-  margin-bottom: 5px
-
-h1 a
-  color: #527523
-  font-size: 36px
-  text-decoration: none
-  font-weight: bold
-  line-height: normal
-  margin-bottom: 5px
-  margin-top: 5px
-
-h1 a:link
-  color: #527523
-  font-size: 36px
-  text-decoration: none
-  font-weight: bold
-  line-height: normal
-  margin-bottom: 5px
-  margin-top: 5px
-
-h1 a:visited
-  color: #527523
-  font-size: 36px
-  text-decoration: none
-  font-weight: bold
-  line-height: normal
-  margin-bottom: 5px
-  margin-top: 5px
-
-h1 a:hover
-  color: #527523
-  font-size: 36px
-  text-decoration: underline
-  font-weight: bold
-  line-height: normal
-  margin-bottom: 5px
-  margin-top: 5px
-
-h2 
-  font: 24px "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
-  color: #527523 
-  font-weight: bold
-  margin-top: 5px
-  margin-bottom: 5px
-
-h3 
-  font: 18px "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
-  color: #527523 
-  font-weight: bold
-  margin-top: 0px
-  margin-bottom: 0px
-
-h4 
-  font: 13px "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
-  color: #527523 
-  font-weight: bold
-  margin-top: 0px
-  margin-bottom: 0px
-
-h5 
-  font: 13px "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
-  color: #527523 
-  font-weight: bold
-  margin-top: 0px
-  margin-bottom: 0px
-
-h6 
-  font: 13px "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
-  color: #527523 
-  font-weight: bold
-  margin-top: 0px
-  margin-bottom: 0px
-
-p
-  font-size: 13px
-
-hr
-  border: 0
-  border-top: 1px solid #575e4d
-  height: 0
-  background: #575e4d
-  margin-top: 0px
-  margin-bottom: 5px
-
-.header_logo
-  float: left
-
-.header_ant
-  float: left
-
-.header_navigation
-  text-align: right
-  margin-top: 19px
-  float: right
-  padding-right: 10px
-  color: #fff
-  font-weight: bold
-  font-size: 13px
-
-.header_navigation a, .header_navigation a:hover, .header_navigation a:visited, .header_navigation a:link
-  color: #fff
-  font-weight: bold
-  font-size: 13px
-
 .header_left, .header_left a, .header_left a:hover, .header_left a:visited, .header_left a:link, .header_left span
   margin-left: 3px
   margin-top: 3px
@@ -340,34 +282,6 @@ hr
   font-size: 13px
   text-decoration: none
   float: left
-
-#login_area
-  height: 40px
-  margin-bottom: 5px
-
-.login_input 
-  width: 100px
-  font: 13px "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
-  color: #888582
-  background: white
-  border: 1px solid #bbbbbb
-  height: 20px
-
-.login_submit
-  padding-bottom: 2px
-  background-color: #645405
-  color: #fff
-  border: 1px solid #b6b6b6
-  width: 37px
-  height: 20px
-  font-weight: bold
-  font: 13px "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
-
-.login_small, .login_small a, .login_small a:hover, .login_small a:visited, .login_small a:link
-  font-size: 10.5px
-  text-decoration: none
-  font-weight: normal
-  color: #fff
 
 .uppercase
   text-transform: uppercase
@@ -419,58 +333,6 @@ html > body .nav_bg
   background: white
   border-left: 2px solid #b5b5b5
   border-right: 2px solid #b5b5b5
-
-.left
-  text-align: left
-  width: 672px
-  font: 13px "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
-  font-weight: normal
-  color: #575e4d
-  float: left
-
-.right
-  text-align: left
-  width: 236px
-  margin-top: 5px
-  float: right
-
-.top_right
-  text-align: right
-  width: 236px
-  float: right
-
-.full
-  text-align: left
-  width: 913px
-  font: 13px "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
-  font-weight: normal
-  color: #575e4d
-
-.half_left
-  text-align: left
-  width: 444px
-  font: 13px "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
-  font-weight: normal
-  color: #575e4d
-  margin-right: 10px
-  float: left
-
-.half_right
-  text-align: left
-  width: 445px
-  font: 13px "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
-  font-weight: normal
-  color: #575e4d
-  margin-left: 10px
-  float: right
-
-.indent
-  padding-left: 15px
-
-.footer
-  width: 950px
-  height: 23px
-  background-image: url("../images/footer2.gif")
 
 .search_href a, .search_href, .search_href:link, .search_href:visited, .search_href:hover
   font-size: 10.5px
