@@ -1,15 +1,34 @@
-#subheader
+- @title = 'AntCat Bibliography'
+
+- content_for :head do
+  = javascript_include_tag 'ext/jquery.spinner', 'ext/jquery.ui.autocomplete.selectFirst', 'ext/jquery.form', 'ext/jquery.a-tools-1.5.2'
+  = javascript_include_tag 'references', 'reference_autocompletion'
+  = stylesheet_link_tag 'references'
+
+- content_for :page_header do
+
   = render :partial => 'navigation_bar'
+
+  .left
+    %a{:href => references_path}
+      %h1 ANTBIB
+  .left
+    %h2 A Bibliography of Ant Systematics
+  .right
+    %h3 by Philip S. Ward, et al.
+
   .clear
-  %hr
 
-  - unless @references.present?
-    No results found
+%hr
+.clear
 
-  - if user_signed_in?
-    %p
-      %a.add_reference_link{:href => '#'}
-        Add reference
+- unless @references.present?
+  No results found
+
+- if user_signed_in?
+  %p
+    %a.add_reference_link{:href => '#'}
+      Add reference
 
 %table.references
 
