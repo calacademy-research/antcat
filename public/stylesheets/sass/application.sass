@@ -26,9 +26,12 @@ table
 body
   background-color: $color_frame
   line-height: 16px
+  font-family: "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
+  font-size: 13px
+  font-weight: normal
+  background: $color_frame
 
 h1, h2, h3
-  font: Helvetica
   font-weight: normal
   margin: 4px
 
@@ -58,11 +61,6 @@ a, a:active, a:hover, a:focus, a:visited
   &:hover
     color: $color_link_highlight
 
-p.help span.help a
-  color: $color_link
-  &:hover
-    color: $color_link_highlight
-
 ///////////////////////////////////////////////////
 // classes
 
@@ -77,6 +75,11 @@ div.right
 
 .genus_or_species
   font-style: italic
+
+p.help span.help a
+  color: $color_link
+  &:hover
+    color: $color_link_highlight
 
 span.help
   font-style: italic
@@ -96,6 +99,13 @@ ul.error_messages
     color: $color_error
     font-style: italic
 
+.pagination
+  padding-bottom: 10px
+  padding-top: 5px
+
+.clear
+  clear: all
+
 ///////////////////////////////////////////////////
 // specific elements
 
@@ -105,12 +115,51 @@ ul.error_messages
   background-color: $color_contents_background
   border: solid 1px $color_border
 
+#contents
+  padding-right: 40px
+  padding-left: 55px
+
+#images
+  padding-bottom: 5px
+  width: 100%
+  td
+    vertical-align: middle
+
+#search
+  table
+    width: 100%
+  button
+    width: 55px
+  td.left_button
+    width: 64px
+  td.label
+    width: 64px
+    padding-right: 3px
+  input[type=text]
+    margin-right: 5px
+  td.right_button
+    width: 115px
+    padding-left: 14px
+
+#notice
+  color: $color_notice
+
+#alert
+  color: $color_error
 
 //////////////////////////////////////////////////
 // site header
 #site_header, #contents, #footer
   padding-top: 2px
   padding-bottom: 0
+
+#site_header
+  border-left: 2px solid $color_header_border
+  border-right: 2px solid $color_header_border
+  background: url("../images/header_bg.png") repeat scroll 0 0
+  height: 95px
+  h2
+    margin-left: 16px
 
 #site_header_logo
   float: left
@@ -139,7 +188,6 @@ ul.error_messages
 
 .login_input 
   width: 100px
-  font: 13px "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
   color: #888582
   background: white
   border: 1px solid #bbbbbb
@@ -153,7 +201,6 @@ ul.error_messages
   width: 37px
   height: 20px
   font-weight: bold
-  font: 13px "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
 
 .login_small, .login_small a, .login_small a:hover, .login_small a:visited, .login_small a:link
   font-size: 10.5px
@@ -161,133 +208,7 @@ ul.error_messages
   font-weight: normal
   color: #fff
 
-#contents
-  padding-right: 40px
-  padding-left: 55px
-
-.pagination
-  padding-bottom: 10px
-
-#site_header
-  border-left: 2px solid $color_header_border
-  border-right: 2px solid $color_header_border
-  background: url("../images/header_bg.png") repeat scroll 0 0
-  height: 95px
-  h2
-    margin-left: 16px
-
-.pagination
-  padding-top: 5px
-
-#images
-  padding-bottom: 5px
-  width: 100%
-  td
-    vertical-align: middle
-
-#search
-  table
-    width: 100%
-  button
-    width: 55px
-  td.left_button
-    width: 64px
-  td.label
-    width: 64px
-    padding-right: 3px
-  input[type=text]
-    margin-right: 5px
-  td.right_button
-    width: 115px
-    padding-left: 14px
-
-#login
-  float: right
-  font-size: smaller
-  text-align: right
-
-#notice
-  color: $color_notice
-
-#alert
-  color: $color_error
-
-#q
-  width: 100%
-
 // Luke
-
-a
-  text-decoration: none
-  font-weight: bold
-  color: #f8941d
-
-a:link
-  text-decoration: none
-  font-weight: bold
-  color: #f8941d
-
-a:visited
-  text-decoration: none
-  font-weight: bold
-  color: #f8941d
-
-a:visited:hover
-  text-decoration: none
-  font-weight: bold
-  color: #f8941d
-
-a:hover
-  text-decoration: underline
-  font-weight: bold
-  color: #f8941d
-
-a:hover
-  text-decoration: underline
-  font-weight: bold
-  color: #f8941d
-
-a:active
-  text-decoration: underline
-  font-weight: bold
-  color: #f8941d
-
-a:active:hover
-  text-decoration: underline
-  font-weight: bold
-  color: #f8941d
-
-a:focus
-  text-decoration: underline
-  font-weight: bold
-  color: #f8941d
-
-a:focus:hover
-  text-decoration: underline
-  font-weight: bold
-  color: #f8941d
-
-body
-  font-size: 13px
-  font-family: "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
-  font-weight: normal
-  color: #575e4d
-  background: #858585
-
-.header_left, .header_left a, .header_left a:hover, .header_left a:visited, .header_left a:link, .header_left span
-  margin-left: 3px
-  margin-top: 3px
-  color: #fff
-  font-weight: bold
-  font-size: 13px
-  text-decoration: none
-  float: left
-
-.uppercase
-  text-transform: uppercase
-
-.align_right
-  text-align: right
 
 #footer
   margin-top: 60px
@@ -340,68 +261,6 @@ html > body .nav_bg
   font-weight: normal
   color: #fff
 
-.subnav_href, .subnav_href a
-  width: 145px
-  font: 10.5px "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
-  text-decoration: none
-  font-weight: bold
-  color: white
-
-.subnav_href a:hover
-  width: 145px
-  font: 10.5px "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
-  text-decoration: none
-  font-weight: bold
-  background: white
-  color: #707B7D
-
-.subnav_href:link
-  width: 145px
-  text-decoration: none
-  font-weight: bold
-  color: white
-
-.subnav_href:visited
-  width: 145px
-  text-decoration: none
-  font-weight: bold
-  color: white
-
-.subnav_href:hover
-  width: 145px
-  text-decoration: underline
-  font-weight: bold
-  color: white
-
-.footer_contents
-  text-align: left
-  width: 780px
-  font: 11px "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
-  color: white
-  position: relative
-  left: 10px
-
-.footer_href
-  font: 11px "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
-  text-decoration: none
-  font-weight: normal
-  color: #f8941d
-
-.footer_href:link
-  text-decoration: none
-  font-weight: normal
-  color: #f8941d
-
-.footer_href:visited
-  text-decoration: none
-  font-weight: normal
-  color: #f8941d
-
-.footer_href:hover
-  text-decoration: underline
-  font-weight: normal
-  color: #f8941d
-
 .border
   background: white
   border: 1px solid #888582
@@ -435,9 +294,6 @@ form
   height: 20px
   font-weight: bold
   font: 13px "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
-
-.clear
-  clear: all
 
 .submit 
   font: 11px "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
