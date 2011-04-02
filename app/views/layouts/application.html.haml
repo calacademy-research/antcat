@@ -2,19 +2,19 @@
 %html{:xmlns => 'http://www.w3.org/1999/xhtml', 'xml:lang' => 'en', :lang => 'en'}
 
   %head
-    %title=(@title || 'AntCat') + (Rails.env.development? ? ' (local)' : '')
+    %title= (@title || 'AntCat') + (Rails.env.development? ? ' (local)' : '')
     %meta{'http-equiv' => "content-type", :content => "text/html;charset=UTF-8"}/
 
     %style{:type => 'text/css'}=".js #flash {display:none;}"
 
-    =javascript_include_tag 'ext/jquery-1.4.2.min', 'ext/jquery-ui-1.8.5.custom.min'
-    =javascript_include_tag 'google_analytics'
-    =javascript_include_tag 'application'
+    = javascript_include_tag 'ext/jquery-1.4.2.min', 'ext/jquery-ui-1.8.5.custom.min'
+    = javascript_include_tag 'google_analytics'
+    = javascript_include_tag 'application'
 
-    =stylesheet_link_tag 'ext/jquery-ui/jquery-ui-1.8.5.custom'
-    =stylesheet_link_tag 'application'
+    = stylesheet_link_tag 'ext/jquery-ui/jquery-ui-1.8.5.custom'
+    = stylesheet_link_tag 'application'
 
-    =yield :head
+    = yield :head
 
     :javascript
       var usingCucumber = #{Rails.env == 'cucumber'};
@@ -23,21 +23,23 @@
   %body#flash{:class => @controller.class}
     #page
       #site_header
-        =render :partial => 'shared/site_header'
+        = render :partial => 'shared/site_header'
 
       #page_header
-        =yield :page_header
+        = yield :page_header
 
       #page_notice
-        =flash[:notice]
+        = flash[:notice]
       #page_alert
-        =flash[:alert]
+        = flash[:alert]
 
+      %hr
       #page_contents
-        =yield
+        = yield
+      %hr
 
       #site_footer
-        =render :partial => 'shared/site_footer'
+        = render :partial => 'shared/site_footer'
 
       :javascript
         $('#flash').show(); // FOUC fix

@@ -6,9 +6,21 @@
   = stylesheet_link_tag 'references'
 
 - content_for :page_header do
-
-  = render :partial => 'navigation_bar'
-
+  #navigation_bar
+    %form#search_form{:action => '/references', :method => 'get'}
+      .actions
+        %a{:href => "/references?commit=new"} Show latest additions
+        - if user_signed_in?
+          %span
+            |
+          %a{:href => "/references?commit=review"} Show latest changes
+          %span
+            |
+          %a{:href => "/journals"} Edit journals
+      .header_search
+        %b Search for
+        %input.header_search_input{:type => "text", :name => "q", :value => params[:q], :style => "height:20px;"}
+        %input.header_search_submit{:type => "submit", :name => "commit", :value => "Go &#187;"}
   .left
     %a{:href => references_path}
       %h1 ANTBIB
@@ -16,11 +28,7 @@
     %h2 A Bibliography of Ant Systematics
   .right
     %h3 by Philip S. Ward, et al.
-
   .clear
-
-%hr
-.clear
 
 - unless @references.present?
   No results found
