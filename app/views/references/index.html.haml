@@ -6,6 +6,7 @@
   = stylesheet_link_tag 'references'
 
 - content_for :page_header do
+
   #navigation_bar
     %form#search_form{:action => '/references', :method => 'get'}
       .actions
@@ -17,18 +18,15 @@
           %span
             |
           %a{:href => "/journals"} Edit journals
-      .header_search
+      .search
         %b Search for
-        %input.header_search_input{:type => "text", :name => "q", :value => params[:q], :style => "height:20px;"}
-        %input.header_search_submit{:type => "submit", :name => "commit", :value => "Go &#187;"}
+        %input{:type => "text", :name => "q", :value => params[:q]}
+        %input{:type => "submit", :name => "commit", :value => "Go &#187;"}
+
   #page_title
-    .left
-      %a{:href => references_path}
-        %h1 ANTBIB
-    .left
-      %h2 A Bibliography of Ant Systematics
-    .right
-      %h3 by Philip S. Ward, et al.
+    .left= link_to 'ANTBIB', references_path
+    .left A Bibliography of Ant Systematics
+    .right by Philip S. Ward, et al.
     .clear
 
 - unless @references.present?
