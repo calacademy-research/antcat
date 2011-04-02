@@ -21,7 +21,7 @@ table
   border-spacing: 0
 
 ///////////////////////////////////////////////////
-// elements
+// tags
 
 body
   background-color: $color_frame
@@ -107,7 +107,7 @@ ul.error_messages
   clear: all
 
 ///////////////////////////////////////////////////
-// specific elements
+// elements
 
 #page
   width: 95%
@@ -115,15 +115,52 @@ ul.error_messages
   background-color: $color_contents_background
   border: solid 1px $color_border
 
-#contents
+#site_header
+  padding-top: 2px
+  padding-bottom: 0
+  border-left: 2px solid $color_header_border
+  border-right: 2px solid $color_header_border
+  background: url("../images/header_bg.png") repeat scroll 0 0
+  height: 95px
+  h2
+    margin-left: 16px
+  .logo, .image
+    float: left
+    float: left
+  .navigation
+    text-align: right
+    margin-top: 19px
+    float: right
+    padding-right: 10px
+    color: #fff
+    font-weight: bold
+    font-size: 13px
+    a, a:hover, a:visited, a:link
+      color: #fff
+      font-weight: bold
+      font-size: 13px
+
+#page_header
+  .title
+
+#page_notice
+  color: $color_notice
+
+#page_alert
+  color: $color_error
+
+#page_contents
   padding-right: 40px
   padding-left: 55px
+  padding-top: 2px
+  padding-bottom: 0
 
-#images
-  padding-bottom: 5px
-  width: 100%
-  td
-    vertical-align: middle
+#site_footer
+  .images
+    padding-bottom: 5px
+    width: 100%
+    td
+      vertical-align: middle
 
 #search
   table
@@ -140,45 +177,6 @@ ul.error_messages
   td.right_button
     width: 115px
     padding-left: 14px
-
-#notice
-  color: $color_notice
-
-#alert
-  color: $color_error
-
-//////////////////////////////////////////////////
-// site header
-#site_header, #contents, #footer
-  padding-top: 2px
-  padding-bottom: 0
-
-#site_header
-  border-left: 2px solid $color_header_border
-  border-right: 2px solid $color_header_border
-  background: url("../images/header_bg.png") repeat scroll 0 0
-  height: 95px
-  h2
-    margin-left: 16px
-
-#site_header_logo
-  float: left
-
-#site_header_ant
-  float: left
-
-#site_header_navigation
-  text-align: right
-  margin-top: 19px
-  float: right
-  padding-right: 10px
-  color: #fff
-  font-weight: bold
-  font-size: 13px
-  a, a:hover, a:visited, a:link
-    color: #fff
-    font-weight: bold
-    font-size: 13px
 
 //////////////////////////////////////////////////////////
 // login

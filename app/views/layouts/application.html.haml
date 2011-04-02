@@ -1,99 +1,43 @@
 !!! Strict
 %html{:xmlns => 'http://www.w3.org/1999/xhtml', 'xml:lang' => 'en', :lang => 'en'}
+
   %head
-    %title= (@title || 'AntCat') + (Rails.env.development? ? ' (local)' : '')
+    %title=(@title || 'AntCat') + (Rails.env.development? ? ' (local)' : '')
     %meta{'http-equiv' => "content-type", :content => "text/html;charset=UTF-8"}/
 
-    %style{:type => 'text/css'}
-      = ".js #flash {display:none;}"
+    %style{:type => 'text/css'}=".js #flash {display:none;}"
 
-    = javascript_include_tag 'ext/jquery-1.4.2.min', 'ext/jquery-ui-1.8.5.custom.min'
-    = javascript_include_tag 'application'
+    =javascript_include_tag 'ext/jquery-1.4.2.min', 'ext/jquery-ui-1.8.5.custom.min'
+    =javascript_include_tag 'google_analytics'
+    =javascript_include_tag 'application'
 
-    = stylesheet_link_tag 'ext/jquery-ui/jquery-ui-1.8.5.custom'
-    = stylesheet_link_tag 'application'
+    =stylesheet_link_tag 'ext/jquery-ui/jquery-ui-1.8.5.custom'
+    =stylesheet_link_tag 'application'
 
-    = yield :head
+    =yield :head
 
     :javascript
       var usingCucumber = #{Rails.env == 'cucumber'};
       var loggedIn = #{user_signed_in?};
-      document.documentElement.className = 'js'; // FOUC fix
-
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-5512531-2']);
-      _gaq.push(['_trackPageview']);
-
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-
-      function toggleDivs(show,hide) {
-          var toShow = document.getElementById(show);
-          var toHide = document.getElementById(hide);
-          if (toShow.style.display == "") {
-              toShow.style.display = "none";
-              toHide.style.display = "";
-          } else {
-              toShow.style.display = "";
-              toHide.style.display = "none";
-          }
-      }
 
   %body#flash{:class => @controller.class}
     #page
-
       #site_header
-        #site_header_logo
-          - link_to root_path do
-            = image_tag 'antcat_logo.png', :border => "0", :width => "179", :height => "94", :alt => "AntCat"
-        #site_header_ant
-          = image_tag 'site_header_ant_5.png', :name => "imgs", :border => '0', :height => "94", :width => "223"
-        #site_header_navigation
-          = render :partial => 'shared/login'
-          = link_to 'AntWeb', "http://www.antweb.org/"
-
-      .clear
+        =render :partial => 'shared/site_header'
 
       #page_header
-        = yield :page_header
+        =yield :page_header
 
-      #notice
+      #page_notice
         =flash[:notice]
-      #alert
+      #page_alert
         =flash[:alert]
 
-      #contents
-        = yield
+      #page_contents
+        =yield
 
-      #footer
-        %hr
-        %table#images
-          %tr
-            %td
-              %a{:href => 'http://www.nsf.gov/', :target => '_blank'}
-                %img{:style => "height: 50px", :src => '/images/nsf1.gif', :title => "Supported in part by NSF Award DBI-0642321"}
-            %td.spacer
-              %td
-                %a{:href => 'http://www.calacademy.org/', :target => '_blank'}
-                  %img{:style => "height: 40px", :src => '/images/calacademy.gif'}
-            %td.spacer
-            %td
-              %a{:href => 'http://rubyonrails.org/', :target => '_blank'}
-                %img{:style => "height: 40px", :src => '/images/rails.png' }
-            %td.spacer
-            %td
-              %a{:href => 'http://hol.osu.edu/', :target => '_blank'}
-                %img{:style => "height: 20px", :src => '/images/hol.png'}
-            %td.spacer
-            %td
-              %a{:href => 'http://antbase.org/', :target => '_blank'}
-                %img{:style => "height: 20px", :src => '/images/antbase.org.png'}
-            %td.spacer
-            %td
-              %a{:href => 'http://www.zotero.org/', :target => '_blank'}
-                %img{:style => "height: 20px", :src => '/images/zotero_logo_tiny.png'}
+      #site_footer
+        =render :partial => 'shared/site_footer'
+
       :javascript
         $('#flash').show(); // FOUC fix
