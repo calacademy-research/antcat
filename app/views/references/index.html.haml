@@ -21,14 +21,15 @@
         %b Search for
         %input.header_search_input{:type => "text", :name => "q", :value => params[:q], :style => "height:20px;"}
         %input.header_search_submit{:type => "submit", :name => "commit", :value => "Go &#187;"}
-  .left
-    %a{:href => references_path}
-      %h1 ANTBIB
-  .left
-    %h2 A Bibliography of Ant Systematics
-  .right
-    %h3 by Philip S. Ward, et al.
-  .clear
+  #page_title
+    .left
+      %a{:href => references_path}
+        %h1 ANTBIB
+    .left
+      %h2 A Bibliography of Ant Systematics
+    .right
+      %h3 by Philip S. Ward, et al.
+    .clear
 
 - unless @references.present?
   No results found
