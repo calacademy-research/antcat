@@ -5,6 +5,7 @@
     %title= @title + ' - AntCat' + (Rails.env.development? ? ' (local)' : '')
     %meta{'http-equiv' => "content-type", :content => "text/html;charset=UTF-8"}/
 
+    -# FOUC fix
     %style{:type => 'text/css'}=".js #flash {display:none;}"
 
     = javascript_include_tag 'ext/jquery-1.4.2.min', 'ext/jquery-ui-1.8.5.custom.min'
