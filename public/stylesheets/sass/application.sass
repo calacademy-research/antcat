@@ -26,7 +26,6 @@ body
   font-family: "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
   font-size: 13px
   font-weight: normal
-  background: $color_frame
 
 table
   border-collapse: separate
@@ -98,9 +97,9 @@ ul.error_messages
   background-color: $color_contents_background
 
 #site_header
+  @include margins
   padding-top: 2px
   padding-bottom: 0
-  @include margins
   background: url("../images/header_bg.png") repeat scroll 0 0
   height: 95px
   h2
@@ -117,9 +116,11 @@ ul.error_messages
     font-weight: bold
     font-size: 13px
     a, a:hover, a:visited, a:link
-      color: #fff
+      color: $color_header_link
       font-weight: bold
       font-size: 13px
+      &:hover
+        color: $color_header_link_highlight
 
 #page_header
   .title

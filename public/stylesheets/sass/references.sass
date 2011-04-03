@@ -9,8 +9,10 @@
   .actions
     margin-top: 6px
     position: absolute
-    a
-      color: white
+    a, a:active, a:focus, a:visited
+      color: $color_header_link
+      &:hover
+        color: $color_header_link_highlight
   .search
     float: right
     position: relative
