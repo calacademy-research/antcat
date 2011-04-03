@@ -1,8 +1,10 @@
 .logo
-  -link_to root_path do
-    =image_tag 'antcat_logo.png', :border => "0", :width => "179", :height => "94", :alt => "AntCat"
+  - link_to root_path do
+    = image_tag 'antcat_logo.png', :alt => "AntCat"
+
 .image
-  =image_tag 'site_header_ant_5.png', :name => "imgs", :border => '0', :height => "94", :width => "223"
+  = image_tag 'site_header_ant_5.png', :name => "imgs"
+
 .navigation
-  =render :partial => 'shared/login'
-  =link_to 'AntWeb', "http://www.antweb.org/"
+  = render :partial => 'shared/login'
+  = link_to 'AntWeb', "http://www.antweb.org/"

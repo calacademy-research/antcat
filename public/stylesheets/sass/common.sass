@@ -1,19 +1,16 @@
 @import 'colors'
 
-$left_margin  = 8px
-$right_margin  = $left_margin
-
 @mixin margins
-  padding-left: $left_margin
-  padding-right: $right_margin
+  padding-left: 8px
+  padding-right: 8px
 
 @mixin header_submit_button($background_color, $border_color)
   input[type=submit]
-    margin-left: 2px
-    padding-bottom: 2px
-    background-color: $background_color
     color: white
-    border: 1px solid $border_color
+    background-color: $background_color
+    font-weight: bold
     width: 37px
     height: 20px
-    font-weight: bold
+    margin-left: 2px
+    padding-bottom: 2px
+    border: 1px solid $border_color
