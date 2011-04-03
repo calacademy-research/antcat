@@ -19,4 +19,6 @@
         = check_box_tag "user[remember_me]", "1", true
         Remember me
         |
+        = link_to 'Forgot password?', new_user_password_path
+        |
         = link_to 'Cancel', '#', :class => :link
