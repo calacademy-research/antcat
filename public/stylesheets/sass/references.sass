@@ -1,33 +1,42 @@
 @import 'common'
 
-#page_contents
-  padding-left: 0
+$color_navigation_bar                 = white
+$color_navigation_bar_background      = green
+$color_navigation_bar_button          = green
+$color_navigation_bar_link            = white
+$color_navigation_bar_link_highlight  = lightgreen
+$color_navigation_bar_button          = darkgreen
+$color_navigation_bar_button_border   = #90928E
 
 #navigation_bar
   @include margins
   font-weight: bold
-  color: white
-  background: $color_contrast
+  color: $color_navigation_bar
+  background: $color_navigation_bar_background
   height: 30px
   .actions
     margin-top: 6px
     position: absolute
     a, a:active, a:focus, a:visited
-      color: $color_header_link
+      color: $color_navigation_bar_link
       &:hover
-        color: $color_header_link_highlight
+        color: $color_navigation_bar_link_highlight
   .search
     float: right
     position: relative
     top: 3px
     input[type=text]
+      padding-left: 4px
       width: 250px
-      border: 1px solid #bbbbbb
+      border: 1px solid $color_input_border
       height: 20px
-    @include header_submit_button(#b26b16, #90928e)
+    @include header_submit_button($color_navigation_bar_button, $color_navigation_bar_button_border)
 
-#page .title
+#page .title, #page_notice, #page_alert
   padding-left: 50px
+
+#page_contents
+  padding-left: 0
 
 .pagination
   padding: 2px 40px 0 55px
