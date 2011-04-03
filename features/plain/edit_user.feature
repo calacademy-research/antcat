@@ -9,9 +9,9 @@ Feature: Editing a user
     When I go to the main page
       And I follow "mark1@example.com"
     Then I should be on the edit user page
-    When I fill in "user_password" with "new password" within "#contents"
-      And I fill in "user_password_confirmation" with "new password" within "#contents"
-      And I fill in "user_current_password" with "secret" within "#contents"
+    When I fill in "user_password" with "new password" within "#page_contents"
+      And I fill in "user_password_confirmation" with "new password" within "#page_contents"
+      And I fill in "user_current_password" with "secret" within "#page_contents"
       And I press "Update"
     Then I should be on the main page
       And I should see "Your account has been updated"

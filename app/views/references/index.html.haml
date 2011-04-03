@@ -8,20 +8,18 @@
 - content_for :page_header do
 
   #navigation_bar
-    %form#search_form{:action => '/references', :method => 'get'}
+    - form_tag references_path, :method => 'get', :id => 'search_form' do
       .actions
-        %a{:href => "/references?commit=new"} Show latest additions
+        = link_to 'Show latest additions', references_path(:commit => 'new')
         - if user_signed_in?
-          %span
-            |
-          %a{:href => "/references?commit=review"} Show latest changes
-          %span
-            |
-          %a{:href => "/journals"} Edit journals
+          |
+          = link_to 'Show latest changes', references_path(:commit => 'review')
+          |
+          = link_to 'Edit journals', journals_path
       .search
-        %b Search for
-        %input{:type => "text", :name => "q", :value => params[:q]}
-        %input{:type => "submit", :name => "commit", :value => "Go &#187;"}
+        Search for
+        = text_field_tag "q", params[:q]
+        = submit_tag  "Go &#187;"
 
   #page_title
     .left= link_to 'ANTBIB', references_path

@@ -9,13 +9,10 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
   font-size: 100%
   vertical-align: baseline
   background: transparent
-
 body
   line-height: 1
-
 ol, ul
   list-style: none
-
 table
   border-collapse: collapse
   border-spacing: 0
@@ -103,8 +100,7 @@ ul.error_messages
 #site_header
   padding-top: 2px
   padding-bottom: 0
-  padding-left: $left_margin
-  padding-right: $right_margin
+  @include margins
   background: url("../images/header_bg.png") repeat scroll 0 0
   height: 95px
   h2
@@ -129,23 +125,19 @@ ul.error_messages
   .title
 
 #page_notice
-  padding-left: $left_margin
-  padding-right: $right_margin
+  @include margins
   color: $color_notice
 #page_alert
-  padding-left: $left_margin
-  padding-right: $right_margin
+  @include margins
   color: $color_error
 
 #page_contents
-  padding-left: $left_margin
-  padding-right: $right_margin
+  @include margins
   padding-top: 2px
   padding-bottom: 0
 
 #site_footer
-  padding-left: $left_margin
-  padding-right: $right_margin
+  @include margins
   .images
     padding-bottom: 5px
     width: 100%

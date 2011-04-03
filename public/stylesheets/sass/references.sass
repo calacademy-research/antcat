@@ -1,8 +1,8 @@
 @import 'common'
 
 #navigation_bar
-  padding-left: $left_margin
-  padding-right: $right_margin
+  @include margins
+  font-weight: bold
   color: white
   background: $color_contrast
   height: 30px
@@ -11,7 +11,6 @@
     position: absolute
     a
       color: white
-      font-weight: bold
   .search
     float: right
     position: relative
@@ -23,17 +22,16 @@
       border: 1px solid #bbbbbb
       height: 20px
     input[type=submit]
+      font-weight: bold
       padding-bottom: 2px
       background-color: #b26b16
       color: #fff
       border: 1px solid #90928e
       width: 37px
       height: 20px
-      font-weight: bold
 
 #page_title
-  padding-left: $left_margin
-  padding-right: $right_margin
+  @include margins
   padding-top: 8px
   font-size: 20px
   div
