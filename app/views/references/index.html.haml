@@ -1,4 +1,4 @@
-- @title = 'AntCat Bibliography'
+- @title = 'Bibliography'
 
 - content_for :head do
   = javascript_include_tag 'ext/jquery.spinner', 'ext/jquery.ui.autocomplete.selectFirst', 'ext/jquery.form', 'ext/jquery.a-tools-1.5.2'
@@ -21,10 +21,10 @@
         = text_field_tag "q", params[:q]
         = submit_tag  "Go &#187;"
 
-  #page_title
-    .left= link_to 'ANTBIB', references_path
-    .left A Bibliography of Ant Systematics
-    .right by Philip S. Ward, et al.
+  .title
+    %h2.left ANTBIB
+    %h2.left A Bibliography of Ant Systematics
+    %h3.right by Philip S. Ward, et al.
     .clear
 
 - unless @references.present?

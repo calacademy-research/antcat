@@ -2,7 +2,7 @@
 %html{:xmlns => 'http://www.w3.org/1999/xhtml', 'xml:lang' => 'en', :lang => 'en'}
 
   %head
-    %title= (@title || 'AntCat') + (Rails.env.development? ? ' (local)' : '')
+    %title= @title + ' - AntCat' + (Rails.env.development? ? ' (local)' : '')
     %meta{'http-equiv' => "content-type", :content => "text/html;charset=UTF-8"}/
 
     %style{:type => 'text/css'}=".js #flash {display:none;}"
@@ -26,7 +26,10 @@
         = render :partial => 'shared/site_header'
 
       #page_header
-        = yield :page_header
+        - if @content_for_page_header
+          = yield :page_header
+        - else
+          %h2.title= @title
 
       #page_notice
         = flash[:notice]
