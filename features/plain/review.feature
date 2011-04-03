@@ -9,7 +9,6 @@ Feature: Reviewing features
 
   Scenario: Logged in
     When I log in
-      And I go to the main page
     Then I should see "Show latest changes"
 
   Scenario: See features in reverse chronological order

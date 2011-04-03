@@ -16,7 +16,6 @@ Feature: Edit reference
       |authors|citation  |cite_code|created_at|date    |possess|title|updated_at|year|
       |authors|Psyche 5:3|CiteCode |today     |20100712|Possess|title|today     |2010|
     When I log in
-      And I go to the main page
     Then I should not see the edit form
       When I follow "edit"
     Then I should see the edit form

@@ -15,7 +15,7 @@ Feature: Editing a user
       And I press "Update"
     Then I should be on the main page
       And I should see "Your account has been updated"
-    When I follow "sign out"
+    When I follow "Logout"
     Then I should not see "mark1@example.com"
     When I follow "Login"
       And I fill in "user_email" with "mark1@example.com"

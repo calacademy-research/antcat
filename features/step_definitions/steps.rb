@@ -162,6 +162,7 @@ Given 'I am not logged in' do
 end
 
 Given 'I log in' do
+  When 'I go to the main page'
   @user = Factory :user
   click_link "Login"
   And %{I fill in "user_email" with "#{@user.email}"}
@@ -170,7 +171,7 @@ Given 'I log in' do
 end
 
 Given 'I log out' do
-  Given %{I follow "sign out"}
+  Given %{I follow "Logout"}
 end
 
 Given 'I am logged in' do
