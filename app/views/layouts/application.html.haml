@@ -32,12 +32,11 @@
         - else
           %h2.title= @title
 
+      %hr
       #page_notice
         = flash[:notice]
       #page_alert
         = flash[:alert]
-
-      %hr
       #page_contents
         = yield
       %hr
