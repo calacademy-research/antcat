@@ -1,21 +1,17 @@
 document.documentElement.className = 'js'; // FOUC fix
 
-function toggleDivs(show,hide) {
-    var toShow = document.getElementById(show);
-    var toHide = document.getElementById(hide);
-    if (toShow.style.display == "") {
-        toShow.style.display = "none";
-        toHide.style.display = "";
-    } else {
-        toShow.style.display = "";
-        toHide.style.display = "none";
-    }
-}
-
 $(function() {
+  setupLogin();
   spaceOutImages();
   $("input[type=text]:first").focus()
 })
+
+function setupLogin() {
+  $('#login .form').hide();
+  $('#login a.link').click(function() {
+    $('#login div').toggle();
+  });
+}
 
 $(window).resize(function() {
   spaceOutImages();

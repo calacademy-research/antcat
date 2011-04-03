@@ -34,7 +34,6 @@ table
 label
   margin-right: 5px
 
-input[type=text], input[type=file], textarea
 h2
   font-size: 20px
   font-weight: normal
@@ -43,6 +42,7 @@ h3
   font-size: 16px
   font-weight: normal
 
+input[type=text], input[type=file], input[type=password], textarea
   background-color: $color_input_background
 
 a, a:active, a:hover, a:focus, a:visited
@@ -54,13 +54,13 @@ a, a:active, a:hover, a:focus, a:visited
 ///////////////////////////////////////////////////
 // classes
 
-div.clear
+.clear
   clear: both
 
-div.left
+.left
   float: left
 
-div.right
+.right
   float: right
 
 .genus_or_species
@@ -93,9 +93,6 @@ ul.error_messages
   padding-bottom: 10px
   padding-top: 5px
 
-.clear
-  clear: all
-
 ///////////////////////////////////////////////////
 // elements
 
@@ -106,32 +103,39 @@ ul.error_messages
 
 #site_header
   @include margins
-  padding-top: 2px
-  padding-bottom: 0
+  color: $color_header
   background: url("../images/header_bg.png") repeat scroll 0 0
   height: 95px
-  h2
-    margin-left: 16px
+
   .logo, .image
     float: left
-    float: left
+
   .navigation
     text-align: right
-    margin-top: 19px
+    margin-top: 8px
     float: right
-    padding-right: 10px
-    color: #fff
-    font-weight: bold
-    font-size: 13px
     a, a:hover, a:visited, a:link
       color: $color_header_link
       font-weight: bold
-      font-size: 13px
       &:hover
         color: $color_header_link_highlight
 
+#login
+  height: 58px
+  input[type=text]
+    width: 140px
+  input[type=password]
+    width: 100px
+  @include header_submit_button(#645405, #b6b6b6)
+  .small
+    font-size: 10.5px
+
 #page_header
   .title
+    @include margins
+    padding-top: 8px
+    h2
+      margin-right: 12px
 
 #page_notice
   @include margins
@@ -152,31 +156,3 @@ ul.error_messages
     width: 100%
     td
       vertical-align: middle
-
-//////////////////////////////////////////////////////////
-// login
-#login_area
-  height: 40px
-  margin-bottom: 5px
-
-.login_input 
-  width: 100px
-  color: #888582
-  background: white
-  border: 1px solid #bbbbbb
-  height: 20px
-
-.login_submit
-  padding-bottom: 2px
-  background-color: #645405
-  color: #fff
-  border: 1px solid #b6b6b6
-  width: 37px
-  height: 20px
-  font-weight: bold
-
-.login_small, .login_small a, .login_small a:hover, .login_small a:visited, .login_small a:link
-  font-size: 10.5px
-  text-decoration: none
-  font-weight: normal
-  color: #fff

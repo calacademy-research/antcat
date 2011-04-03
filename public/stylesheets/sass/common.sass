@@ -6,3 +6,14 @@ $right_margin  = $left_margin
 @mixin margins
   padding-left: $left_margin
   padding-right: $right_margin
+
+@mixin header_submit_button($background_color, $border_color)
+  input[type=submit]
+    margin-left: 2px
+    padding-bottom: 2px
+    background-color: $background_color
+    color: white
+    border: 1px solid $border_color
+    width: 37px
+    height: 20px
+    font-weight: bold

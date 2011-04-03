@@ -1,25 +1,22 @@
-#login_area
-  #login_link
+#login
+  .link
     - if user_signed_in?
       = link_to current_user.email, edit_user_registration_path
       |
-      = link_to 'sign out', destroy_user_session_path
+      = link_to 'Logout', destroy_user_session_path
     - else
-      %a{:href => "#", :onclick => "toggleDivs('login_form', 'login_link'); return false;"} Login
+      = link_to 'Login', '#', :class => :link
 
-  #login_form{:style => "display:none;"}
-    - form_tag "/users/sign_in" do
-      %input{:type => "hidden", :name => "target", :value => ""}
-      Email:
-      %input#user_email.login_input{:type => "text", :name => "user[email]"}
-      Password:
-      %input#user_password.login_input{:type => "password", :name => "user[password]"}
-      %input.login_submit{:type => "submit", :name => "commit", :value => "Go &#187;"}
+  .form
+    - form_tag user_session_path do
+      Email
+      = text_field_tag "user[email]"
+      Password
+      = password_field_tag "user[password]"
+      = submit_tag "Go &#187;"
       %br
-      %span.login_small
-        %input{:name => "user[remember_me]", :type => "hidden", :value => "0"}
-        %input#user_remember_me{:checked => "checked", :name => "user[remember_me]", :type => "checkbox", :value => "1"}
+      %span.small
+        = check_box_tag "user[remember_me]", "1", true
         Remember me
         |
-        %a{:href => "#", :onclick => "toggleDivs('login_link','login_form'); return false;"}
-          Cancel
+        = link_to 'Cancel', '#', :class => :link
