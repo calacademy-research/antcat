@@ -6,7 +6,6 @@
   = stylesheet_link_tag 'references'
 
 - content_for :page_header do
-
   #navigation_bar
     - form_tag references_path, :method => 'get', :id => 'search_form' do
       .actions
@@ -20,7 +19,6 @@
         Search for
         = text_field_tag "q", params[:q]
         = submit_tag  "Go &#187;"
-
   .title
     %h2.left ANTBIB
     %h2.left A Bibliography of Ant Systematics
