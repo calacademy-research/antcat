@@ -25,11 +25,8 @@
     %h3.right by Philip S. Ward, et al.
     .clear
 
-- unless @references.present?
-  No results found
-
 - if user_signed_in?
-  %p
+  .add_reference_link
     %a.add_reference_link{:href => '#'}
       Add reference
 
