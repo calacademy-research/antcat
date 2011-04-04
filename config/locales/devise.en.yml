@@ -2,8 +2,8 @@ en:
   devise:
     sessions:
       link: 'Log in'
-      signed_in: 'Logged in'
-      signed_out: 'Logged out'
+      signed_in: 'You are logged in'
+      signed_out: 'You have been logged out'
       unauthenticated: 'You need to log in before continuing'
       unconfirmed: 'You need to confirm your account before continuing'
       locked: 'Your account is locked'
