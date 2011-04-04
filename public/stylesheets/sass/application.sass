@@ -21,11 +21,11 @@ table
 // tags
 
 body
-  background-color: $color_frame
   line-height: 16px
   font-family: "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
   font-size: 13px
   font-weight: normal
+  width: 100%
 
 table
   border-collapse: separate
@@ -51,17 +51,21 @@ a, a:active, a:hover, a:focus, a:visited
   &:hover
     color: $color_link_highlight
 
+hr
+  padding: 0
+  margin: 0
+
 ///////////////////////////////////////////////////
 // classes
-
-.clear
-  clear: both
 
 .left
   float: left
 
 .right
   float: right
+
+.clear
+  clear: both
 
 .genus_or_species
   font-style: italic
@@ -97,8 +101,7 @@ ul.error_messages
 // elements
 
 #page
-  width: 95%
-  margin: 0 auto
+  width: 100%
   background-color: $color_contents_background
 
 #site_header
@@ -142,6 +145,7 @@ ul.error_messages
   .title
     @include margins
     padding-top: 8px
+    padding-bottom: 8px
     h2
       margin-right: 12px
 
