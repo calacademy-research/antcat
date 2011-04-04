@@ -11,7 +11,7 @@ module TaxatryHelper
   end
 
   def make_columns items
-    column_count = items.count / 30.0
+    column_count = items.count / 25.0
     css_class = ''
     if column_count < 1
       column_count = 1

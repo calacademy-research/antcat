@@ -9,12 +9,14 @@
   #navigation_bar
     - form_tag references_path, :method => 'get', :id => 'search_form' do
       .actions
-        = link_to 'Show latest additions', references_path(:commit => 'new')
+        = link_to 'Taxatry', taxatry_path
+        |
+        = link_to 'Latest additions', references_path(:commit => 'new')
         - if user_signed_in?
           |
-          = link_to 'Show latest changes', references_path(:commit => 'review')
+          = link_to 'Latest changes', references_path(:commit => 'review')
           |
-          = link_to 'Edit journals', journals_path
+          = link_to 'Journals', journals_path
       .search
         Search for
         = text_field_tag "q", params[:q]
