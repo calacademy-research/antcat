@@ -37,3 +37,6 @@ Feature: Using the Taxatry
     When I follow "sessile"
     Then "sessile" should be selected
       Then I should see "sessile history"
+
+  Scenario: Searching taxatry
+    When I fill in the search box with "Fisher"

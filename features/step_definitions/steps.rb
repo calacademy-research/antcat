@@ -277,3 +277,6 @@ Given /a species exists with a name of "(.*?)" and a genus of "(.*?)" and a taxo
   Factory :species, :name => taxon_name, :genus => genus, :taxonomic_history => taxonomic_history
 end
 
+When /I fill in the search box with "(.*?)"/ do |search_term|
+  When %{I fill in "q" with "#{search_term}"}
+end

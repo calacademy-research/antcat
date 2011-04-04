@@ -26,7 +26,7 @@ Feature: Checking for duplicates during data entry
       |Ward, P.  |Psyche 6:1|Ants            |2010|2 |
       And I am logged in
     When I go to the main page
-      And I fill in "q" with "Bolton"
+      And I fill in the search box with "Bolton"
       And I press "Go" within "#search_form"
       And I follow "edit"
       And I fill in "reference_author_names_string" with "Ward, P."
