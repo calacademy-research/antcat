@@ -284,3 +284,8 @@ end
 When /I press "Go" by the search box/ do
   When 'I press "Go" within "#search_form"'
 end
+
+Then /I should (not )?see the "add" icon/ do |do_not|
+  selector = do_not ? :should_not : :should
+  find("img[alt=add]").send selector, be_visible
+end
