@@ -46,6 +46,7 @@ class TaxatryController < ApplicationController
       @taxon_header_name = @taxon.genus.subfamily.name + ' ' + '<i>' + @taxon.genus.name + ' ' + @taxon.name + '</i>'
     end
 
+    @taxon_header_name = @taxon.full_name
     @taxon_header_status = @taxon.status.gsub /_/, ' ' if @taxon.invalid?
 
     render :index

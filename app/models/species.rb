@@ -6,4 +6,8 @@ class Species < Taxon
     subspecies
   end
 
+  def full_name
+    "#{genus.subfamily.name} <i>#{genus.name} #{name}</i>"
+  end
+
 end

@@ -5,4 +5,9 @@ class Subfamily < Taxon
   def children
     tribes
   end
+
+  def full_name
+    name
+  end
+
 end

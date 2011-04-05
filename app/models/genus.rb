@@ -63,4 +63,9 @@ class Genus < Taxon
     return unless name
     find_by_name(name) || Subgenus.find_by_name(name) || create!(:name => name)
   end
+
+  def full_name
+    "#{subfamily.name} <i>#{name}</i>"
+  end
+
 end
