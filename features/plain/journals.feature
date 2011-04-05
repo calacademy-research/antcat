@@ -5,10 +5,10 @@ Feature: Editing journals
 
   Scenario: Not logged in
     When I go to the main page
-    Then I should not see "Edit journals"
+    Then I should not see "Journals"
 
   Scenario: Logged in
     Given I am logged in
     When I go to the main page
-    When I follow "Edit journals"
+    When I follow "Journals"
     Then I should be on the "Edit journals" page

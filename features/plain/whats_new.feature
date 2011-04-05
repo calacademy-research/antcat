@@ -9,7 +9,7 @@ Feature: Seeing what's new
       |Ward, P.  |Psyche 5:3|today     |Ward's World     |2010-2-2  |2010-1-1  |2010|
       |Bolton, B.|Psyche 4:2|yesterday |Bolton's Bulletin|2010-1-1  |2010-2-2  |2010|
     When I go to the main page
-      And I follow "Show latest additions"
+      And I follow "Latest additions"
     Then I should see these entries with a header in this order:
       |date      |entry|
       |2010-02-02|Ward, P. 2010. Ward's World. Psyche 5:3.|
