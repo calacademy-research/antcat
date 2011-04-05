@@ -3,7 +3,6 @@ $(function() {
   setupSearch();
   setupDisplays();
   if (loggedIn) {
-    setupAddReferenceLink();
     setupEdits();
   }
   //if (!usingCucumber) {
@@ -33,24 +32,6 @@ function setupSearch() {
 
 /////////////////////////////////////////////////////////////////////////
 
-function setupAddReferenceLink() {
-  showAddReferenceLink();
-  $('.add_reference_link').click(addReference);
-}
-
-function showAddReferenceLink() {
-  if ($('.reference').size() == 0)
-    $('.add_reference_link').show();
-  else
-    hideAddReferenceLink();
-}
-
-function hideAddReferenceLink() {
-  $('.add_reference_link').hide();
-}
-
-/////////////////////////////////////////////////////////////////////////
-
 function setupDisplays() {
   setupIcons();
 }
@@ -64,7 +45,7 @@ function setupIcons() {
 }
 
 function setupIconVisibility() {
-  if (!usingCucumber)
+  if (!usingCucumber || !loggedIn)
     $('.icon').hide();
 
   if (!loggedIn)
@@ -131,7 +112,6 @@ function deleteReference() {
   } else
     $reference.removeClass('about_to_be_deleted');
 
-  showAddReferenceLink();
   return false;
 }
 
@@ -205,7 +185,6 @@ function showReferenceEdit($reference, options) {
   if (!options)
     options = {}
 
-  hideAddReferenceLink();
   $('.reference_display', $reference).hide();
   if (!usingCucumber)
     $('.icon').hide()
@@ -294,8 +273,6 @@ function updateReference(data, statusText, xhr, $form) {
   $('.reference_display', $reference)
     .show()
     .effect("highlight", {}, 3000)
-
-  showAddReferenceLink();
 }
 
 function cancelReferenceEdit() {
@@ -310,8 +287,6 @@ function cancelReferenceEdit() {
       .show()
       .effect("highlight", {}, 3000)
   }
-
-  showAddReferenceLink();
 
   return false;
 }
