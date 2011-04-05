@@ -8,7 +8,6 @@ class ReferencesController < ApplicationController
     @reviewing = params[:commit] == 'review'
     @seeing_whats_new = params[:commit] == 'new'
     @references = Reference.do_search params[:q], params[:page], @reviewing, @seeing_whats_new
-    flash[:notice] = 'No results found' unless @references.present?
   end
 
   def download
