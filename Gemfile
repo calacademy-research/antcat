@@ -32,7 +32,8 @@ group :cucumber do
   gem 'capybara',         '0.4.1.2'
   gem 'capybara-firebug'
   gem 'cucumber-rails',   '0.3.2'
-  gem 'jasmine'
   gem 'database_cleaner', '0.5.2'
+  gem 'launchy'
+  gem 'jasmine'
 end
 
