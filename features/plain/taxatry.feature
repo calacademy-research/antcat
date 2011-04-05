@@ -7,7 +7,10 @@ Feature: Using the Taxatry
   Background:
     Given a subfamily exists with a name of "Dolichoderinae" and a taxonomic history of "<p><b>Dolichoderinae</b></p>A sweet little subfamily"
       And a genus exists with a name of "Tapinoma" and a subfamily of "Dolichoderinae" and a taxonomic history of "Tapinoma history"
+      And a genus exists with a name of "Atta" and a subfamily of "Dolichoderinae" and a taxonomic history of "Atta history"
       And a species exists with a name of "sessile" and a genus of "Tapinoma" and a taxonomic history of "sessile history"
+      And a species exists with a name of "emeryi" and a genus of "Tapinoma" and a taxonomic history of "emeryi history"
+      And a species exists with a name of "emeryi" and a genus of "Atta" and a taxonomic history of "atta emeryi history"
     When I go to the Taxatry
 
   Scenario: Viewing the index page
@@ -38,7 +41,24 @@ Feature: Using the Taxatry
     Then "sessile" should be selected
       Then I should see "sessile history"
 
-  Scenario: Searching taxatry
+  Scenario: Searching taxatry when no results
+
+  Scenario: Searching taxatry when only one result
     When I fill in the search box with "sessile"
       And I press "Go" by the search box
     Then I should see "sessile history"
+
+  Scenario: Searching taxatry when no results
+    When I fill in the search box with "asdfjl;jsdf"
+      And I press "Go" by the search box
+    Then I should see "No results found"
+
+  Scenario: Searching taxatry when more than one result
+    When I fill in the search box with "emeryi"
+      And I press "Go" by the search box
+    Then I should see "Dolichoderinae Tapinoma emeryi"
+      And I should see "Dolichoderinae Atta emeryi"
+      And I should see "emeryi history"
+    When I follow "Dolichoderinae Atta emeryi"
+    Then I should see "atta emeryi history"
+      And I should see "Dolichoderinae Tapinoma emeryi"

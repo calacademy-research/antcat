@@ -13,7 +13,15 @@
           Search for
           = text_field_tag "q", params[:q]
           = submit_tag  "Go &#187;"
+          = @search_results_message
     .clear
+
+- if @search_results && @search_results.size > 1
+  %ul
+    - @search_results.each do |search_result|
+      %li
+        = link_to search_result[:name], taxon_path(search_result[:id])
+  %hr
 
 %span.taxon_header
   = @taxon_header_name

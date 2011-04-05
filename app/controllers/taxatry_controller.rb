@@ -3,6 +3,19 @@ require 'snake'
 class TaxatryController < ApplicationController
 
   def index
+    if params['q'].present?
+      @search_results = Taxon.all(:conditions => ['name = ?', params['q']])
+      unless @search_results.present?
+        @search_results_message = "No results found"
+      else
+        @search_results = Taxon.all(:conditions => ['name = ?', params['q']]).map do |search_result|
+          {:name => search_result.full_name, :id => search_result.id}
+        end.sort_by {|element| element[:name]}
+        params[:id] = @search_results.first[:id]
+        show
+        return
+      end
+    end
     @taxon = nil
     @taxonomic_history = nil
 
@@ -29,7 +42,6 @@ class TaxatryController < ApplicationController
       @selected_genera = nil
       @species = nil
       @selected_species = nil
-      @taxon_header_name = @taxon.name
     when Genus
       @selected_subfamily = @taxon.subfamily
       @genera = @selected_subfamily.genera
