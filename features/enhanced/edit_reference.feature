@@ -47,7 +47,7 @@ Feature: Edit reference
       And I fill in "reference_citation_year" with "1910a"
       And I press the "Save" button
       And I fill in the search box with "1910"
-      And I press "Go" within "#search_form"
+      And I press "Go" by the search box
     Then I should see "Fisher, B.L. 1910a"
 
   Scenario: Change a reference's type

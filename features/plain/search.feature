@@ -20,7 +20,7 @@ Feature: Searching references
   Scenario: Finding one reference for an author
     When I go to the main page
       And I fill in the search box with "Fisher"
-      And I press "Go" within "#search_form"
+      And I press "Go" by the search box
     Then I should see "Fisher, B."
       And I should not see "Bolton, B."
       And I should not see "Forel, M."
@@ -28,7 +28,7 @@ Feature: Searching references
   Scenario: Finding nothing
     When I go to the main page
       And I fill in the search box with "zzzzzz"
-      And I press "Go" within "#search_form"
+      And I press "Go" by the search box
     Then I should not see "Fisher, B."
       And I should not see "Bolton, B."
       And I should not see "Forel, M."
@@ -37,14 +37,14 @@ Feature: Searching references
   Scenario: Maintaining search box contents
     When I go to the main page
       And I fill in the search box with "zzzzzz 1972-1980"
-      And I press "Go" within "#search_form"
+      And I press "Go" by the search box
     Then I should see "No results found"
       And the "q" field should contain "zzzzzz 1972-1980"
 
   Scenario: Searching by year
     When I go to the main page
       And I fill in the search box with "1995"
-      And I press "Go" within "#search_form"
+      And I press "Go" by the search box
     Then I should see "Fisher, B. 1995"
       And I should see "Forel, M. 1995"
       And I should not see "Bolton, B. 2010"
@@ -58,7 +58,7 @@ Feature: Searching references
      |2012e.|authors|title4|Ants 34:1-2|
     When I go to the main page
       And I fill in the search box with "2010-2011"
-      And I press "Go" within "#search_form"
+      And I press "Go" by the search box
     Then I should see "2010c."
       And I should see "2011d."
       And I should not see "2009a."
@@ -73,7 +73,7 @@ Feature: Searching references
        |Bolton, B.|1895d|title8|Ants 14:1-2|
     When I go to the main page
       And I fill in the search box with "fisher 1895-1895"
-      And I press "Go" within "#search_form"
+      And I press "Go" by the search box
     Then I should see "Fisher, B. 1895"
       And I should not see "Fisher, B. 1810"
       And I should not see "Bolton, B. 1810"
@@ -83,10 +83,10 @@ Feature: Searching references
     Given there is a reference with ID 50000 for Dolerichoderinae
     When I go to the main page
       And I fill in the search box with "50000"
-      And I press "Go" within "#search_form"
+      And I press "Go" by the search box
     Then I should see "Dolerichoderinae"
     When I fill in the search box with "10000"
-      And I press "Go" within "#search_form"
+      And I press "Go" by the search box
     Then I should not see "Dolerichoderinae"
 
   Scenario: Searching by cite code that looks like a year
@@ -98,6 +98,6 @@ Feature: Searching references
       Then I should see "Ants 11:1-2"
         And I should see "Ants 11:2-3"
       And I fill in the search box with "96-1984"
-      And I press "Go" within "#search_form"
+      And I press "Go" by the search box
       Then I should see "Ants 11:1-2"
         And I should not see "Ants 11:2-3"
