@@ -4,9 +4,16 @@
   = javascript_include_tag 'taxatry'
   = stylesheet_link_tag 'taxatry'
 
-- content_for :header do
-  .left
-    %h1 Taxatry
+- content_for :page_header do
+  .title
+    %h2.left Taxatry
+    .left
+      - form_tag taxatry_path, :method => 'get', :id => 'search_form' do
+        .search
+          Search for
+          = text_field_tag "q", params[:q]
+          = submit_tag  "Go &#187;"
+    .clear
 
 %span.taxon_header
   = @taxon_header_name

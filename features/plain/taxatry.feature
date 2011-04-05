@@ -39,4 +39,6 @@ Feature: Using the Taxatry
       Then I should see "sessile history"
 
   Scenario: Searching taxatry
-    When I fill in the search box with "Fisher"
+    When I fill in the search box with "sessile"
+      And I press "Go" by the search box
+    Then I should see "sessile history"
