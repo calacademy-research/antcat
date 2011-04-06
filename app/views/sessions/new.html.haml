@@ -1,0 +1,15 @@
+- @title = "Log in"
+%h2 Log in
+
+- form_for resource_name, resource, :url => session_path(resource_name) do |f|
+  %p= f.label :email
+  %p= f.text_field :email
+
+  %p= f.label :password
+  %p= f.password_field :password
+
+  %p
+    = f.check_box :remember_me, :checked => true
+    = f.label :remember_me
+
+  %p= f.submit "Log in"
