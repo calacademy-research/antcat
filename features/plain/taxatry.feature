@@ -79,7 +79,17 @@ Feature: Using the Taxatry
       And I press "Go" by the search box
     Then I should see "Dolichoderinae Tapinoma emeryi"
       And I should see "Dolichoderinae Atta emeryi"
-      And I should see "emeryi history"
+      And I should see "atta emeryi history"
     When I press "Clear"
     Then I should see "atta emeryi history"
       And I should not see "Dolichoderinae Tapinoma emeryi"
+
+  Scenario: Keeping search results open even after finding another taxon
+    When I fill in the search box with "emeryi"
+      And I press "Go" by the search box
+    Then I should see "Dolichoderinae Tapinoma emeryi"
+      And I should see "Dolichoderinae Atta emeryi"
+      And I should see "atta emeryi history"
+    When I follow "emeryi"
+    Then I should see "atta emeryi history"
+      And I should see "Dolichoderinae Tapinoma emeryi"

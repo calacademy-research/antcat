@@ -1,3 +1,4 @@
+- search_params = {:q => q, :search_type => search_type}
 %td
   %table{:class => table_class}
     %tr
@@ -13,4 +14,4 @@
                   - row.each do |item|
                     %td{:class => css_class}
                       - if item
-                        = taxon_link item, selected_item
+                        = taxon_link item, selected_item, search_params

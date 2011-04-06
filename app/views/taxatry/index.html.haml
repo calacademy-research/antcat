@@ -33,10 +33,10 @@
 %table.browser
   %tr
 
-    = render :partial => 'rank', :locals => {:items => @subfamilies, :selected_item => @selected_subfamily, :table_class => 'subfamilies'}
+    = render :partial => 'rank', :locals => {:items => @subfamilies, :selected_item => @selected_subfamily, :table_class => 'subfamilies', :q => params[:q], :search_type => params[:search_type]}
 
-    = render :partial => 'rank', :locals => {:items => @genera, :selected_item => @selected_genus, :table_class => 'genera'}
+    = render :partial => 'rank', :locals => {:items => @genera, :selected_item => @selected_genus, :table_class => 'genera', :q => params[:q], :search_type => params[:search_type]}
 
-    = render :partial => 'rank', :locals => {:items => @species, :selected_item => @selected_species, :table_class => 'species'}
+    = render :partial => 'rank', :locals => {:items => @species, :selected_item => @selected_species, :table_class => 'species', :q => params[:q], :search_type => params[:search_type]}
 
 %div.clear
