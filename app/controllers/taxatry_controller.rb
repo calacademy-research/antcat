@@ -6,6 +6,7 @@ class TaxatryController < ApplicationController
 
   def index
     show and return if @search_results.present?
+    show and return if params['id'].present?
 
     @taxon = nil
     @taxonomic_history = nil
@@ -62,7 +63,9 @@ class TaxatryController < ApplicationController
   end
 
   def search
+    return if params['commit'] == 'Clear'
     if params['q'].present?
+      params['id'] = nil if params['commit'] == 'Go'
       @search_results = Taxon.find_name params['q'], params['search_type']
       unless @search_results.present?
         @search_results_message = "No results found"
@@ -70,7 +73,7 @@ class TaxatryController < ApplicationController
         @search_results = @search_results.map do |search_result|
           {:name => search_result.full_name, :id => search_result.id}
         end.sort_by {|element| element[:name]}
-        params[:id] ||= @search_results.first[:id]
+        params['id'] = @search_results.first[:id] if params['id'].blank?
         show
         true
       end

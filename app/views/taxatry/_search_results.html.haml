@@ -1,8 +1,10 @@
 - if search_results && search_results.size > 1
+
   %ul
     - search_results.each do |search_result|
       %li
-        - css_class = params[:id] == search_result[:id].to_s ? 'selected' : nil
+        - css_class = params['id'].to_s == search_result[:id].to_s ? 'selected' : nil
         = link_to search_result[:name], taxon_path(search_result[:id], :q => params['q'], :search_type => params['search_type']), :class => css_class
+
   %hr
 

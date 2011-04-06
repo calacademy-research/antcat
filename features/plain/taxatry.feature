@@ -73,4 +73,13 @@ Feature: Using the Taxatry
     When I fill in the search box with "Monomorium"
       And I press "Go" by the search box
     Then I should see "Monomorium history"
-    
+
+  Scenario: Closing the search results
+    When I fill in the search box with "emeryi"
+      And I press "Go" by the search box
+    Then I should see "Dolichoderinae Tapinoma emeryi"
+      And I should see "Dolichoderinae Atta emeryi"
+      And I should see "emeryi history"
+    When I press "Clear"
+    Then I should see "atta emeryi history"
+      And I should not see "Dolichoderinae Tapinoma emeryi"
