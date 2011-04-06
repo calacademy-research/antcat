@@ -107,11 +107,13 @@ end
 
 Factory.define :subgenus do |subgenus|
   subgenus.sequence(:name) {|n| "Subgenus#{n}"}
+  subgenus.association :genus
   subgenus.status  'valid'
 end
 
 Factory.define :species do |species|
   species.sequence(:name) {|n| "Species#{n}"}
+  species.association :genus
   species.status  'valid'
 end
 

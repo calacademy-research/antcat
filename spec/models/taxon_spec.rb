@@ -157,5 +157,16 @@ describe Taxon do
       results.size.should == 2
     end
 
+    it "should not return anything but subfamilies, genera and tribes" do
+      Factory :subfamily, :name => 'Lepto'
+      Factory :tribe, :name => 'Lepto'
+      Factory :genus, :name => 'Lepto'
+      Factory :subgenus, :name => 'Lepto'
+      Factory :species, :name => 'Lepto'
+      Factory :subspecies, :name => 'Lepto'
+      results = Taxon.find_name 'Lepto'
+      results.size.should == 3
+    end
+
   end
 end

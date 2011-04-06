@@ -24,12 +24,13 @@ class Taxon < ActiveRecord::Base
   def self.find_name name, search_type = 'matching'
     case search_type
     when 'matching'
-      Taxon.all :conditions => ['name = ?', name]
+      conditions = ['name = ? AND type IN (?)', name, ['Subfamily', 'Genus', 'Species']]
     when 'beginning with'
-      Taxon.all :conditions => ['name LIKE ?', name + '%']
+      conditions = ['name LIKE ? AND type IN (?)', name + '%', ['Subfamily', 'Genus', 'Species']]
     when 'containing'
-      Taxon.all :conditions => ['name LIKE ?', '%' + name + '%']
+      conditions = ['name LIKE ? AND type IN (?)', '%' + name + '%', ['Subfamily', 'Genus', 'Species']]
     end
+    Taxon.all :conditions => conditions
   end
 
 end
