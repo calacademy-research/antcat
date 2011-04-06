@@ -41,8 +41,6 @@ Feature: Using the Taxatry
     Then "sessile" should be selected
       Then I should see "sessile history"
 
-  Scenario: Searching taxatry when no results
-
   Scenario: Searching taxatry when only one result
     When I fill in the search box with "sessile"
       And I press "Go" by the search box
@@ -61,6 +59,8 @@ Feature: Using the Taxatry
       And I should see "emeryi history"
     When I follow "Dolichoderinae Atta emeryi"
     Then I should see "atta emeryi history"
+      And I should see "Dolichoderinae Tapinoma emeryi"
+      And "Dolichoderinae Atta emeryi" should be selected
 
   Scenario: Searching taxatry for a 'beginning with' match
     When I fill in the search box with "ses"
@@ -68,3 +68,9 @@ Feature: Using the Taxatry
       And I press "Go" by the search box
     Then I should see "sessile history"
 
+  Scenario: Finding a genus without a subfamily
+    Given a genus exists with a name of "Monomorium" and a taxonomic history of "Monomorium history"
+    When I fill in the search box with "Monomorium"
+      And I press "Go" by the search box
+    Then I should see "Monomorium history"
+    

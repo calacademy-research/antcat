@@ -17,12 +17,7 @@
           = @search_results_message
     .clear
 
-- if @search_results && @search_results.size > 1
-  %ul
-    - @search_results.each do |search_result|
-      %li
-        = link_to search_result[:name], taxon_path(search_result[:id])
-  %hr
+= render :partial => 'search_results', :locals => {:search_results => @search_results, :taxon => @taxon}
 
 %span.taxon_header
   = @taxon_header_name
