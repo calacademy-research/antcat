@@ -15,6 +15,8 @@ module NavigationHelpers
       '/journals'
     when /the Taxatry/
       '/taxatry'
+    when /the forgot password page/
+      '/users/password/new'
     end
   end
 end
