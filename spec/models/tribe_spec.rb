@@ -16,4 +16,9 @@ describe Tribe do
     attini.children.should == attini.genera
   end
 
+  it "should have as its full name, the subfamily + its name" do
+    taxon = Factory :tribe, :name => 'Attini', :subfamily => Factory(:subfamily, :name => 'Myrmicinae')
+    taxon.full_name.should == 'Myrmicinae Attini'
+  end
+
 end

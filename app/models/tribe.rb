@@ -5,4 +5,9 @@ class Tribe < Taxon
   def children
     genera
   end
+
+  def full_name
+    "#{subfamily.name} #{name}"
+  end
+
 end
