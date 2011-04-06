@@ -61,4 +61,10 @@ Feature: Using the Taxatry
       And I should see "emeryi history"
     When I follow "Dolichoderinae Atta emeryi"
     Then I should see "atta emeryi history"
-      And I should see "Dolichoderinae Tapinoma emeryi"
+
+  Scenario: Searching taxatry for a 'beginning with' match
+    When I fill in the search box with "ses"
+      And I select "beginning with" from "search_type"
+      And I press "Go" by the search box
+    Then I should see "sessile history"
+

@@ -129,4 +129,33 @@ describe Taxon do
     end
 
   end
+
+  describe "Find name" do
+    before do
+      Factory :genus, :name => 'Monomorium'
+      Factory :genus, :name => 'Monoceros'
+    end
+
+    it "should return [] if nothing matches" do
+      Taxon.find_name('sdfsdf').should == []
+    end
+
+    it "should return an exact match" do
+      Taxon.find_name('Monomorium').first.name.should == 'Monomorium'
+    end
+
+    it "should return a prefix match" do
+      Taxon.find_name('Monomor', 'beginning with').first.name.should == 'Monomorium'
+    end
+
+    it "should return a substring match" do
+      Taxon.find_name('iu', 'containing').first.name.should == 'Monomorium'
+    end
+
+    it "should return multiple matches" do
+      results = Taxon.find_name('Mono', 'containing')
+      results.size.should == 2
+    end
+
+  end
 end

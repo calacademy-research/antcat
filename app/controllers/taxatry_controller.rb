@@ -4,11 +4,11 @@ class TaxatryController < ApplicationController
 
   def index
     if params['q'].present?
-      @search_results = Taxon.all(:conditions => ['name = ?', params['q']])
+      @search_results = Taxon.find_name params['q'], params['search_type']
       unless @search_results.present?
         @search_results_message = "No results found"
       else
-        @search_results = Taxon.all(:conditions => ['name = ?', params['q']]).map do |search_result|
+        @search_results = @search_results.map do |search_result|
           {:name => search_result.full_name, :id => search_result.id}
         end.sort_by {|element| element[:name]}
         params[:id] = @search_results.first[:id]

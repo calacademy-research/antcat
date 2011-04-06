@@ -21,4 +21,15 @@ class Taxon < ActiveRecord::Base
     target.name
   end
 
+  def self.find_name name, search_type = 'matching'
+    case search_type
+    when 'matching'
+      Taxon.all :conditions => ['name = ?', name]
+    when 'beginning with'
+      Taxon.all :conditions => ['name LIKE ?', name + '%']
+    when 'containing'
+      Taxon.all :conditions => ['name LIKE ?', '%' + name + '%']
+    end
+  end
+
 end
