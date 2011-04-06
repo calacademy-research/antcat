@@ -17,6 +17,8 @@ module NavigationHelpers
       '/taxatry'
     when /the forgot password page/
       '/users/password/new'
+    when /the sign in page/
+      '/users/sign_in'
     end
   end
 end
