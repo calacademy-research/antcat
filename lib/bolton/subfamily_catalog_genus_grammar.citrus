@@ -7,7 +7,7 @@ grammar Bolton::SubfamilyCatalogGenusGrammar
   end
 
   rule genus_header
-    valid_genus_header | unidentifiable_genus_header | unavailable_genus_header
+    valid_genus_header | unidentifiable_genus_header | unavailable_genus_header | unresolved_homonym_genus_header
   end
 
   rule valid_genus_header
@@ -24,6 +24,14 @@ grammar Bolton::SubfamilyCatalogGenusGrammar
   rule unidentifiable_genus_header
     (bold span 'Genus ' fossil_flag? italic green uppercase_word close_tags) {
       value = {:type => :genus_header, :name => uppercase_word.downcase.capitalize.strip, :status => 'unidentifiable'}
+      value.merge! :fossil => true if fossil_flag.present?
+      value
+    }
+  end
+
+  rule unresolved_homonym_genus_header
+    (bold span 'Genus ' fossil_flag? italic brown uppercase_word close_tags) {
+      value = {:type => :genus_header, :name => uppercase_word.downcase.capitalize.strip, :status => 'unresolved_homonym'}
       value.merge! :fossil => true if fossil_flag.present?
       value
     }

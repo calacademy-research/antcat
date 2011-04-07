@@ -15,6 +15,7 @@
 #   03. FORMICOMORPHS     Made Johnia bold
 #   03. FORMICOMORPHS     Made Pseudocamponotus bold and removed bold in taxonomic history. Made 'Pseudocamponotus' in line in taxonomic
 #                         history nonbold
+#   03. FORMICOMORPHS     Made WILSONIA brown at the end of the document, as it is indeed a homonym of a bird genus
 #   04. MYRMECIOMORPHS    Remove 'Genus' from 'Genus MYRMECIITES'
 #   06. ECTAHETEROMORPHS  Removed italics from Stictoponerini
 #   07. MYRMICOMORPHS 1   Corrected 'Adelomymex' to 'Adelomyrmex'

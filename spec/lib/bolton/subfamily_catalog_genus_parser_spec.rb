@@ -43,6 +43,12 @@ describe Bolton::SubfamilyCatalog do
       }).should == {:type => :genus_header, :name => 'Hypochira', :status => 'unidentifiable'}
     end
 
+    it "should handle an unresolved homonym genus" do
+      @subfamily_catalog.parse(%{
+<b><span lang=EN-GB>Genus *<i><span style='color:#663300'>WILSONIA</span></i><o:p></o:p></span></b>
+      }).should == {:type => :genus_header, :name => 'Wilsonia', :fossil => true, :status => 'unresolved_homonym'}
+    end
+
     it "should handle an unidentifiable fossil genus" do
       @subfamily_catalog.parse(%{
   <b><span lang=EN-GB>Genus *<i><span style='color:green'>CARIRIDRIS</span></i> <o:p></o:p></span></b>
