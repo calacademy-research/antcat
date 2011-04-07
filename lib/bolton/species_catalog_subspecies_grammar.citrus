@@ -25,7 +25,7 @@ grammar Bolton::SpeciesCatalogSubspeciesGrammar
   end
 
   rule species_from_full_name
-    (close_tags '.'? close_tags italic? '.'? s fossil_flag? capitalized_word s parenthesized_genus_name? species_name) {
+    (close_tags blue? '.'? close_tags italic? '.'? s fossil_flag? capitalized_word s parenthesized_genus_name? species_name) {
       {:species => species_name.value}
     }
   end
@@ -40,6 +40,7 @@ grammar Bolton::SpeciesCatalogSubspeciesGrammar
       (                         subspecies_flag bold italic blue             ) |
       (bold italic black        subspecies_flag tag_end blue                 ) |
       (bold italic              subspecies_flag blue                         ) |
+      (italic                   subspecies_flag bold blue                    ) |
       (                         subspecies_flag fossil_flag bold italic blue ) |
       (                         subspecies_flag italic                       ) 
     ) {

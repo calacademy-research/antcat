@@ -64,6 +64,7 @@ describe Bolton::SpeciesCatalog do
     it "should handle an empty italicized paragraph" do
       @species_catalog.parse(%{<i>DORISIDRIS</i>: see under <b><i>PYRAMICA</i></b><i><p></p></i>}).should == {:type => :see_under}
     end
+
   end
 
   describe 'parsing a valid genus header' do
@@ -107,7 +108,10 @@ describe Bolton::SpeciesCatalog do
     it "should handle a load of other crap" do
       @species_catalog.parse(%{<b><i><span style="color:red">PROMYOPIAS</span></i></b><span style="color:red"> </span><span style="color:black">(Afrotropical)<p></p></span>}).should == {:type => :genus, :name => 'Promyopias', :status => 'valid'}
     end
-      
+    it "should handle an empty red paragrah" do
+      @species_catalog.parse(%{<b><i><span style="color:red">ACANTHOPONERA</span></i></b><span style="color:red"> <p></p></span>
+      }).should == {:type => :genus, :name => 'Acanthoponera', :status => 'valid'}
+    end
   end
 
   describe "parsing an unidentifiable genus header" do
@@ -117,7 +121,6 @@ describe Bolton::SpeciesCatalog do
     it "should handle transferred genus" do
       @species_catalog.parse(%{*<i><span style="color:green">PALAEOMYRMEX</span></i> Heer, 1865: transferred to <b><i>HOMOPTERA</i></b>.}).should == {:type => :genus, :name => 'Palaeomyrmex', :status => 'unidentifiable', :fossil => true}
     end
-
   end
 
   describe "Parsing an unresolved junior homonym genus header" do

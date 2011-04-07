@@ -44,6 +44,12 @@ describe Bolton::SpeciesCatalog do
       }).should == {:type => :subspecies, :name => 'torrei', :status => 'valid', :species => 'sanguinea'}
     end
 
+    it "should handle a blue period, like Picasso" do
+      @species_catalog.parse(%{
+<i>#<b><span style="color:blue">dallatorrei</span></b><span style="color:blue">.</span> Camponotus alii dallatorrei</i> Özdikmen, 2010a: 520. Replacement name for <i>concolor</i> Dalla Torre, 1893: 221. [Junior primary homonym of <i>concolor</i> Forel, 1891b: 214.]
+      }).should == {:type => :subspecies, :name => 'dallatorrei', :status => 'valid', :species => 'alii'}
+    end
+
     describe "fossil subspecies" do
 
       it "should handle a fossil subspecies" do
