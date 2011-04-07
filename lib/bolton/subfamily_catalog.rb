@@ -22,7 +22,7 @@
 #   07. MYRMICOMORPHS 1   Corrected 'Quinqueangulicapito' to 'Quineangulicapito'
 #   08. MYRMICOMORPHS 2   Removed italics from 'PHEIDOLINI' in junior synonyms header
 #   09. PONEROMORPHS      Added Probolomyrmex to Probolomyrmecini genus list
-#   10. EXTINCT SUBFAMS   Removed italics from Sphecomyrminae family_group_line
+#   11. EXTINCT SUBFAMS   Removed italics from Sphecomyrminae family_group_line
 
 require 'bolton/subfamily_catalog_family'
 require 'bolton/subfamily_catalog_subfamily'
