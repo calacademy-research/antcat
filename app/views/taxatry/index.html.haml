@@ -6,7 +6,13 @@
 
 - content_for :page_header do
   .title
-    %h2.left Taxatry
+    %h2.taxatry.left Taxatry
+    %h2.left
+      %i An Online Catalog of the Ants of the World
+      by Barry Bolton
+    .clear
+  %hr
+  .search_bar
     .left
       - form_tag taxatry_path, :method => 'get', :id => 'search_form' do
         .search
