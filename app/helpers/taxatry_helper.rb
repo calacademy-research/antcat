@@ -26,13 +26,12 @@ module TaxatryHelper
   end
 
   def make_taxatry_search_results_columns items
-    column_count =
+    column_count = 
     case
       when items.count <= 10: 1
       when items.count <= 20: 2
       else 3
     end
-    lll{'column_count'}
     items.snake column_count
   end
 
