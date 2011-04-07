@@ -18,6 +18,7 @@
 #   04. MYRMECIOMORPHS    Remove 'Genus' from 'Genus MYRMECIITES'
 #   06. ECTAHETEROMORPHS  Removed italics from Stictoponerini
 #   07. MYRMICOMORPHS 1   Corrected 'Adelomymex' to 'Adelomyrmex'
+#   07. MYRMICOMORPHS 1   Corrected 'origional' to 'original' (new)
 #   07. MYRMICOMORPHS 1   Added Formosimyrma to Solenopsidini genera list
 #   07. MYRMICOMORPHS 1   Corrected 'Quinqueangulicapito' to 'Quineangulicapito'
 #   08. MYRMICOMORPHS 2   Removed italics from 'PHEIDOLINI' in junior synonyms header
