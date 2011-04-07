@@ -22,10 +22,12 @@ class Bolton::Catalog
       string = string.gsub(/\n/, ' ').strip
       parse_result = grammar.parse(string).value
       Progress.info "parsed as: #{parse_result.inspect}"
+      raise if parse_result.is_a?(Hash) && parse_result[:type] == :not_understood && !Rails.env.test?
     rescue Citrus::ParseError => e
       parse_result = {:type => :not_understood}
       Progress.error 'citrus parse error:'
       Progress.error e
+      raise e unless Rails.env.test?
     end
     parse_result
   end
@@ -61,6 +63,7 @@ class Bolton::Catalog
 
   def parse_failed
     Progress.error "parse failed on: '#{@line}'"
+    raise unless Rails.env.test?
     @error_count += 1
     parse_next_line
   end
