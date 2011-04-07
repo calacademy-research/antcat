@@ -62,7 +62,8 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 
 <p><b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in Aneuretinae</span></b><span lang=EN-GB>: *<i>Burmomyrma, *Cananeuretus</i>. </span></p>
 <p><b><span lang=EN-GB>Genus <i>incertae sedis</i> in Aneuretinae</span></b><span lang=EN-GB>: <i>Wildensis</i>. </span></p>
-<p><b><span lang=EN-GB>Hong (2002) genera (extinct) <i>incertae sedis</i> in Aneuretinae</span></b><span lang=EN-GB>: *<i>Curtipalpulus, *Eoleptocerites</i>.</span></p>
+<p><b><span lang=EN-GB>Hong (2002) genera (extinct) <i>incertae sedis</i> in Aneuretinae</span></b><span lang=EN-GB>: *<i>Curtipalpulus, *Eoleptocerites</i>
+(unresolved junior homonym).</span></p>
 
 <p><b><span lang=EN-GB>Collective group name in Myrmeciinae</span></b><span lang=EN-GB>: *<i>Myrmeciites</i>.</span></p>
 
@@ -159,7 +160,7 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 '<p><b>Tribes <i>incertae sedis</i> in Aneuretinae</b>: *Miomyrmecini.</p>' +
 '<p><b>Genera (extinct) <i>incertae sedis</i> in Aneuretinae</b>: *<i>Burmomyrma, *Cananeuretus</i>. </p>' +
 '<p><b>Genus <i>incertae sedis</i> in Aneuretinae</b>: <i>Wildensis</i>. </p>' +
-'<p><b>Hong (2002) genera (extinct) <i>incertae sedis</i> in Aneuretinae</b>: *<i>Curtipalpulus, *Eoleptocerites</i>.</p>' +
+'<p><b>Hong (2002) genera (extinct) <i>incertae sedis</i> in Aneuretinae</b>: *<i>Curtipalpulus, *Eoleptocerites</i> (unresolved junior homonym).</p>' +
 '<p><b>Collective group name in Myrmeciinae</b>: *<i>Myrmeciites</i>.</p>' +
 '<p>References</p>' +
 '<p>a references</p>'
@@ -233,7 +234,7 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
       taxon.subfamily.should == aneuretinae
       taxon.should be_fossil
       taxon.incertae_sedis_in.should == 'subfamily'
-      taxon.should_not be_invalid
+      taxon.status.should == 'unresolved_homonym'
 
       taxon = Genus.find_by_name 'Myrmeciites'
       taxon.should be_nil

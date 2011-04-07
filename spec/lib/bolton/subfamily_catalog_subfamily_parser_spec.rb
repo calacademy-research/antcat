@@ -111,49 +111,49 @@ describe Bolton::SubfamilyCatalog do
       it "should recognize a tribes list" do
         @subfamily_catalog.parse(%{
     <b><span lang=EN-GB>Tribes of Aneuretinae</span></b><span lang=EN-GB>: Aneuretini, *Pityomyrmecini.</span>
-        }).should == {:type => :tribes_list, :tribes => [['Aneuretini', nil], ['Pityomyrmecini', true]]}
+        }).should == {:type => :tribes_list, :tribes => [{:name => 'Aneuretini'}, {:name => 'Pityomyrmecini', :fossil => true}]}
       end
 
       it "should recognize an extinct tribes list" do
         @subfamily_catalog.parse(%{
     <b><span lang=EN-GB>Tribes (extinct) of Aneuretinae</span></b><span lang=EN-GB>: Aneuretini, *Pityomyrmecini.</span>
-        }).should == {:type => :tribes_list, :tribes => [['Aneuretini', nil], ['Pityomyrmecini', true]]}
+        }).should == {:type => :tribes_list, :tribes => [{:name => 'Aneuretini'}, {:name => 'Pityomyrmecini', :fossil => true}]}
       end
 
       it "should recognize an extant tribes list" do
         @subfamily_catalog.parse(%{
     <b><span lang=EN-GB>Tribes (extant) of Aneuretinae</span></b><span lang=EN-GB>: Aneuretini, *Pityomyrmecini.</span>
-        }).should == {:type => :tribes_list, :tribes => [['Aneuretini', nil], ['Pityomyrmecini', true]]}
+        }).should == {:type => :tribes_list, :tribes => [{:name => 'Aneuretini'}, {:name => 'Pityomyrmecini', :fossil => true}]}
       end
 
       it "should recognize an tribes list with one tribe" do
         @subfamily_catalog.parse(%{
     <b><span lang=EN-GB>Tribe of Aneuretinae</span></b><span lang=EN-GB>: Aneuretini.</span>
-        }).should == {:type => :tribes_list, :tribes => [['Aneuretini', nil]]}
+        }).should == {:type => :tribes_list, :tribes => [{:name => 'Aneuretini'}]}
       end
       
       it "should recognize an extinct tribes incertae sedis list" do
         @subfamily_catalog.parse(%{
   <b><span lang=EN-GB>Tribes (extinct) <i>incertae sedis</i> in Dolichoderinae</span></b><span lang=EN-GB>: *Miomyrmecini, *Zherichiniini.</span>
-        }).should == {:type => :tribes_list, :tribes => [['Miomyrmecini', true], ['Zherichiniini', true]], :incertae_sedis => true}
+        }).should == {:type => :tribes_list, :tribes => [{:name => 'Miomyrmecini', :fossil => true}, {:name => 'Zherichiniini', :fossil => true}], :incertae_sedis => true}
       end
 
       it "should recognize a tribes list that doesn't start out bold" do
         @subfamily_catalog.parse(%{
 <span lang=EN-GB>Tribes of Myrmeciinae: Myrmeciini, Prionomyrmecini.</span>
-        }).should == {:type => :tribes_list, :tribes => [['Myrmeciini', nil], ['Prionomyrmecini', nil]]}
+        }).should == {:type => :tribes_list, :tribes => [{:name => 'Myrmeciini'}, {:name => 'Prionomyrmecini'}]}
       end
 
       it "should be recognized when the list doesn't include the subfamily name" do
         @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Tribe</span></b><span lang=EN-GB>: Pseudomyrmecini.</span>
-        }).should == {:type => :tribes_list, :tribes => [['Pseudomyrmecini', nil]]}
+        }).should == {:type => :tribes_list, :tribes => [{:name => 'Pseudomyrmecini'}]}
       end
 
       it "should be recognized with an extinct subfamily" do
         @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Tribes of *Sphecomyrminae</span></b><span lang=EN-GB>: *Haidomyrmecini.</span>
-        }).should == {:type => :tribes_list, :tribes => [['Haidomyrmecini', true]]}
+        }).should == {:type => :tribes_list, :tribes => [{:name => 'Haidomyrmecini', :fossil => true}]}
       end
 
     end
@@ -163,55 +163,55 @@ describe Bolton::SubfamilyCatalog do
       it "should recognize a genera list" do
         @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Genera of Aneuretinae</span></b><span lang=EN-GB>: <i>Burmomyrma, *Cananeuretus</i>. </span>
-        }).should == {:type => :genera_list, :genera => [['Burmomyrma', nil], ['Cananeuretus', true]]}
+        }).should == {:type => :genera_list, :genera => [{:name => 'Burmomyrma'}, {:name => 'Cananeuretus', :fossil => true}]}
       end
 
       it "should be recognized with colon inside the first span" do
         @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Genera of Leptomyrmecini: </span></b><i><span lang=EN-GB>Anillidris</i>.
-        }).should == {:type => :genera_list, :genera => [['Anillidris', nil]]}
+        }).should == {:type => :genera_list, :genera => [{:name => 'Anillidris'}]}
       end
 
       it "should recognize a genera list without a period" do
         @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Genus</span></b><span lang=EN-GB>: <i>Notostigma</i></span>
-        }).should == {:type => :genera_list, :genera => [['Notostigma', nil]]}
+        }).should == {:type => :genera_list, :genera => [{:name => 'Notostigma'}]}
       end
 
       it "should recognize a genera list with just one extinct genus" do
         @subfamily_catalog.parse(%{
     <b><span lang=EN-GB>Genus</span></b><span lang=EN-GB>: *<i>Pityomyrmex</i>.</span>
-        }).should == {:type => :genera_list, :genera => [['Pityomyrmex', true]]}
+        }).should == {:type => :genera_list, :genera => [{:name => 'Pityomyrmex', :fossil => true}]}
       end
 
       it "should be recognized with a black parent taxon" do
         @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Genera of <span style='color:black'>Bothriomyrmecini</span></span></b><span lang=EN-GB>: <i>Arnoldius</i>.</span>
-        }).should == {:type => :genera_list, :genera => [['Arnoldius', nil]]}
+        }).should == {:type => :genera_list, :genera => [{:name => 'Arnoldius'}]}
       end
 
       it "should be recognized with the period well after the end of the list" do
         @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Genus</span></b><span lang=EN-GB>: *<i>Miomyrmex</i> (see under: Genera <i>incertae sedis</i> in Dolichoderinae, below).</span>
-        }).should == {:type => :genera_list, :genera => [['Miomyrmex', true]]}
+        }).should == {:type => :genera_list, :genera => [{:name => 'Miomyrmex', :fossil => true}]}
       end
 
       it "should be recognized with the period well after the end of the list" do
         @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Genus</span></b><span lang=EN-GB> of Aenictogitonini: <i>Aenictogiton</i>.</span>
-        }).should == {:type => :genera_list, :genera => [['Aenictogiton', nil]]}
+        }).should == {:type => :genera_list, :genera => [{:name => 'Aenictogiton'}]}
       end
 
       it "should be recognized for an extinct subfamily" do
         @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Genera (extinct) of *Armaniini</span></b><span lang=EN-GB>: *<i>Archaeopone</i>.</span>
-        }).should == {:type => :genera_list, :genera => [['Archaeopone', true]]}
+        }).should == {:type => :genera_list, :genera => [{:name => 'Archaeopone', :fossil => true}]}
       end
 
       it "should be recognized for an extinct subfamily" do
         @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Genus (extinct) of *Brownimeciini</span></b><span lang=EN-GB>: *<i>Brownimecia</i></span>
-        }).should == {:type => :genera_list, :genera => [['Brownimecia', true]]}
+        }).should == {:type => :genera_list, :genera => [{:name => 'Brownimecia', :fossil => true}]}
       end
 
     end
@@ -221,73 +221,73 @@ describe Bolton::SubfamilyCatalog do
       it "should recognize a genera incertae sedis list" do
         @subfamily_catalog.parse(%{
     <b><span lang=EN-GB>Genera <i>incertae sedis</i> in Aneuretinae</span></b><span lang=EN-GB>: <i>Burmomyrma, *Cananeuretus</i>. </span>
-        }).should == {:type => :genera_list, :incertae_sedis => true, :genera => [['Burmomyrma', nil], ['Cananeuretus', true]]}
+        }).should == {:type => :genera_list, :incertae_sedis => true, :genera => [{:name => 'Burmomyrma'}, {:name => 'Cananeuretus', :fossil => true}]}
       end
 
       it "should recognize an extinct genera incertae sedis list" do
         @subfamily_catalog.parse(%{
     <b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in Aneuretinae</span></b><span lang=EN-GB>: *<i>Burmomyrma, *Cananeuretus</i>. </span>
-        }).should == {:type => :genera_list, :incertae_sedis => true, :genera => [['Burmomyrma', true], ['Cananeuretus', true]]}
+        }).should == {:type => :genera_list, :incertae_sedis => true, :genera => [{:name => 'Burmomyrma', :fossil => true}, {:name => 'Cananeuretus', :fossil => true}]}
       end
 
       it "should recognize an extinct genera incertae sedis list" do
         @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Genus <i>incertae sedis</i> in Gesomyrmecini</span></b><span lang=EN-GB>: *<i>Prodimorphomyrmex</i>.</span>
-        }).should == {:type => :genera_list, :incertae_sedis => true, :genera => [['Prodimorphomyrmex', true]]}
+        }).should == {:type => :genera_list, :incertae_sedis => true, :genera => [{:name => 'Prodimorphomyrmex', :fossil => true}]}
       end
 
       it "should recognize an extant genera incertae sedis list" do
         @subfamily_catalog.parse(%{
     <b><span lang=EN-GB>Genera (extant) <i>incertae sedis</i> in Aneuretinae</span></b><span lang=EN-GB>: <i>Burmomyrma, Cananeuretus</i>. </span>
-        }).should == {:type => :genera_list, :incertae_sedis => true, :genera => [['Burmomyrma', nil], ['Cananeuretus', nil]]}
+        }).should == {:type => :genera_list, :incertae_sedis => true, :genera => [{:name => 'Burmomyrma'}, {:name => 'Cananeuretus'}]}
       end
 
-      it "should recognize a Hong 2002 genera incertae sedis list" do
+      it "should recognize a Hong 2002 genera incertae sedis list, and handle an unresolved junior homonym in it" do
         @subfamily_catalog.parse(%{
-  <b><span lang=EN-GB>Hong (2002) genera (extinct) <i>incertae sedis</i> in Formicinae</span></b><span lang=EN-GB>: *<i>Curtipalpulus.</i> (unresolved junior homonym).</span>
-        }).should == {:type => :genera_list, :incertae_sedis => true, :genera => [['Curtipalpulus', true]]}
+  <b><span lang=EN-GB>Hong (2002) genera (extinct) <i>incertae sedis</i> in Formicinae</span></b><span lang=EN-GB>: *<i>Curtipalpulus</i> (unresolved junior homonym).</span>
+        }).should == {:type => :genera_list, :incertae_sedis => true, :genera => [{:name => 'Curtipalpulus', :fossil => true, :status => 'unresolved_homonym'}]}
       end
 
       it "should recognize a list with misplaced italic tag" do
         @subfamily_catalog.parse(%{
 <b><span lang="EN-GB">Genera (extinct<i>) incertae sedis</i> in Myrmeciinae</span></b><span lang="EN-GB">: *<i>Archimyrmex</i>.</span>
-        }).should == {:type => :genera_list, :incertae_sedis => true, :genera => [['Archimyrmex', true]]}
+        }).should == {:type => :genera_list, :incertae_sedis => true, :genera => [{:name => 'Archimyrmex', :fossil => true}]}
       end
 
       it "should be recognized when the incertae sedis part is a bit different" do
         @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Genus (extinct) <i>incertae sedis </i>in Ectatommini</span></b><span lang=EN-GB>: *<i>Electroponera</i>.</span>
-        }).should == {:type => :genera_list, :genera => [['Electroponera', true]], :incertae_sedis => true}
+        }).should == {:type => :genera_list, :genera => [{:name => 'Electroponera', :fossil => true}], :incertae_sedis => true}
       end
 
       it "should be recognized when the incertae sedis part is a bit different" do
         @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Genus (extinct) <i>incertae sedis </i>in Ectatommini</span></b><span lang=EN-GB>: *<i>Electroponera</i>.</span>
-        }).should == {:type => :genera_list, :genera => [['Electroponera', true]], :incertae_sedis => true}
+        }).should == {:type => :genera_list, :genera => [{:name => 'Electroponera', :fossil => true}], :incertae_sedis => true}
       end
 
       it "should be recognized when the incertae sedis part is a bit different" do
         @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Genus<i style='mso-bidi-font-style:normal'> incertae sedis</i> in Heteroponerini</span></b><span lang=EN-GB>:<i> Aulacopone</i>.</span>
-        }).should == {:type => :genera_list, :genera => [['Aulacopone', nil]], :incertae_sedis => true}
+        }).should == {:type => :genera_list, :genera => [{:name => 'Aulacopone'}], :incertae_sedis => true}
       end
 
       it "should be recognized when the asterisk is italicized" do
         @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Genus <i>incertae sedis</i></span></b><span lang=EN-GB> in Stenammini: <i>*Ilemomyrmex</i>.</span>
-        }).should == {:type => :genera_list, :genera => [['Ilemomyrmex', true]], :incertae_sedis => true}
+        }).should == {:type => :genera_list, :genera => [{:name => 'Ilemomyrmex', :fossil => true}], :incertae_sedis => true}
       end
 
       it "for a supersubfamily should be recognized" do
         @subfamily_catalog.parse(%{
 <b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in poneroid subfamilies</span></b><span lang=EN-GB>: *<i>Cretopone</i>, *<i>Petropone</i>.</span>
-        }).should == {:type => :genera_list, :genera => [['Cretopone', true], ['Petropone', true]], :incertae_sedis => true}
+        }).should == {:type => :genera_list, :genera => [{:name => 'Cretopone', :fossil => true}, {:name => 'Petropone', :fossil => true}], :incertae_sedis => true}
       end
 
       it "for a supersubfamily with a different name should be recognized" do
         @subfamily_catalog.parse(%{
 <b><span lang="EN-GB">Genera (extinct) <i>incertae sedis</i> in poneromorph subfamilies</span></b><span lang="EN-GB">: *<i>Cretopone</i>, *<i>Petropone</i>.</span>
-        }).should == {:type => :genera_list, :genera => [['Cretopone', true], ['Petropone', true]], :incertae_sedis => true}
+        }).should == {:type => :genera_list, :genera => [{:name => 'Cretopone', :fossil => true}, {:name => 'Petropone', :fossil => true}], :incertae_sedis => true}
       end
 
     end
@@ -295,18 +295,18 @@ describe Bolton::SubfamilyCatalog do
     it "should recognize a collective group name list" do
       @subfamily_catalog.parse(%{
   <b><span lang=EN-GB>Collective group name in Myrmeciinae</span></b><span lang=EN-GB>: *<i>Myrmeciites</i>.</span>
-      }).should == {:type => :collective_group_name_list, :names => [['Myrmeciites', true]]}
+      }).should == {:type => :collective_group_name_list, :names => [{:name => 'Myrmeciites', :fossil => true}]}
     end
 
     describe "Parsing a group of list names" do
 
       it "should recognize one name" do
-        Bolton::SubfamilyCatalogGrammar.parse("*<i>Myrmeciites</i>.</span>", :root => :list_names).value.should == [['Myrmeciites', true]]
+        Bolton::SubfamilyCatalogGrammar.parse("*<i>Myrmeciites</i>.</span>", :root => :list_names).value.should == [{:name => 'Myrmeciites', :fossil => true}]
       end
 
       it "should recognize more than one name" do
         Bolton::SubfamilyCatalogGrammar.parse(%{*<i>Myrmeciites</i>, <i>Petropone</i>.</span>}, :root => :list_names).value.should ==
-          [['Myrmeciites', true], ['Petropone', nil]]
+          [{:name => 'Myrmeciites', :fossil => true}, {:name => 'Petropone'}]
       end
 
     end

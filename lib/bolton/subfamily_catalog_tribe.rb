@@ -8,8 +8,8 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     parsed_text = ''
     while @type == :tribes_list
       parsed_text << @paragraph
-      @parse_result[:tribes].each do |tribe, fossil|
-        attributes = {:name => tribe, :subfamily => subfamily, :fossil => fossil, :status => 'valid'}
+      @parse_result[:tribes].each do |tribe|
+        attributes = {:name => tribe[:name], :subfamily => subfamily, :fossil => tribe[:fossil], :status => 'valid'}
         attributes.merge!(:incertae_sedis_in => 'subfamily') if @parse_result[:incertae_sedis]
         Tribe.create! attributes
       end

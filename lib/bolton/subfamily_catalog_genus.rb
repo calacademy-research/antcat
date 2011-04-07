@@ -92,10 +92,11 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
 
     while @type == :genera_list
       parsed_text << @paragraph
-      @parse_result[:genera].each do |name, fossil|
-        attributes = {:name => name, :fossil => fossil, :status => 'valid'}.merge parent_attributes
+      @parse_result[:genera].each do |genus|
+        attributes = {:name => genus[:name], :fossil => genus[:fossil], :status => genus[:status] || 'valid'}.merge parent_attributes
         attributes.merge!(:incertae_sedis_in => parent_rank.to_s) if @parse_result[:incertae_sedis]
 
+        name = genus[:name]
         genus = Genus.find_by_name name
         if genus
           # Several genera are listed both as incertae sedis in subfamily, and as a genus of an incertae sedis tribe

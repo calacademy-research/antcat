@@ -120,4 +120,12 @@ describe Bolton::SpeciesCatalog do
 
   end
 
+  describe "Parsing an unresolved junior homonym genus header" do
+    it "should work" do
+      @species_catalog.parse(%{
+  *<b style="mso-bidi-font-weight:normal"><i style="mso-bidi-font-style:normal"><span style="color:#663300">WILSONIA</span></i></b>
+      }).should == {:type => :genus, :name => 'Wilsonia', :status => 'unresolved_homonym', :fossil => true}
+    end
+  end
+
 end
