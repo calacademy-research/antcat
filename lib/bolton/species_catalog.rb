@@ -10,13 +10,13 @@
 #  This generates log/bolton_species_catalog.log
 #
 #  Manual edits:
-#   In NGC-Spap-ca, made Aphaenogaster simonellii red and bold
-#   In NGC-Spcam1, change #afer to be subspecies of ligniperda
-#   In NGC-Spcam2, change convexinodus to convexinodis (new)
-#   In NGC-Spcam2, change bendingensis to bendigensis (new)
-#   In NGC-Spcan-cr, removed extra paragraph in Cephalotes texanus
-#   In NGC-Spg-las, removed extra paragraph in Lasius murphyi
-
+#   NGC-Spap-ca, made Aphaenogaster simonellii red and bold
+#   NGC-Spcam1, change #afer to be subspecies of ligniperda
+#   NGC-Spcam2, change convexinodus to convexinodis (new)
+#   NGC-Spcam2, change bendingensis to bendigensis (new)
+#   NGC-Spcan-cr, removed extra paragraph in Cephalotes texanus
+#   NGC-Spg-las, removed extra paragraph in Lasius murphyi
+#   NGC-Spon-spp, italicize 'n' in 'niger' (Pachycondyla)
 class Bolton::SpeciesCatalog < Bolton::Catalog
   def import
     @species_not_seen_count = 0
