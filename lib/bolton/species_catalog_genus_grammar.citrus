@@ -6,7 +6,7 @@ grammar Bolton::SpeciesCatalogGenusGrammar
   end
 
   rule see_under_genus
-    (((genus_group_name see_under_referent) | (genus_group_name s genus_author? see_under_referent)) s /[.,]?/) {
+    (((genus_group_name see_under_referent) | (genus_group_name s genus_author? see_under_referent)) s italic? /[.,]?/ close_tags) {
       {:type => :see_under}
     }
   end

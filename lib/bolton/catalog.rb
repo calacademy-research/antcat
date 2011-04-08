@@ -27,7 +27,7 @@ class Bolton::Catalog
       parse_result = {:type => :not_understood}
       Progress.error 'citrus parse error:'
       Progress.error e
-      raise e unless Rails.env.test?
+      raise unless Rails.env.test?
     end
     parse_result
   end

@@ -64,6 +64,9 @@ describe Bolton::SpeciesCatalog do
     it "should handle an empty italicized paragraph" do
       @species_catalog.parse(%{<i>DORISIDRIS</i>: see under <b><i>PYRAMICA</i></b><i><p></p></i>}).should == {:type => :see_under}
     end
+    it "should handle italicized period" do
+      @species_catalog.parse(%{<i>PARVIMYRMA</i>: see under <b><i>CAREBARA</i></b><i>.</i>}).should == {:type => :see_under}
+    end
 
   end
 
