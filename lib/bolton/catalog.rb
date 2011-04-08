@@ -84,10 +84,6 @@ class Bolton::Catalog
   end
 
   def read_file
-    if @filename_index == 1
-      @filename_index += 1 while @filenames[@filename_index] != "data/bolton/2011-01/NGC-Spon-spp.htm"
-    end
-
     return unless @filename_index < @filenames.size
     html = File.read @filenames[@filename_index]
     Progress.show_progress if @filename_index > 0
