@@ -35,15 +35,7 @@ grammar Bolton::SpeciesCatalogSubspeciesGrammar
   end
 
   rule available_subspecies_prefix
-    (
-      fossil_flag?
-      (                         subspecies_flag bold italic blue             ) |
-      (bold italic black        subspecies_flag tag_end blue                 ) |
-      (bold italic              subspecies_flag blue                         ) |
-      (italic                   subspecies_flag bold blue                    ) |
-      (                         subspecies_flag fossil_flag bold italic blue ) |
-      (                         subspecies_flag italic                       ) 
-    ) {
+    (fossil_flag? bold? italic? black? subspecies_flag fossil_flag? close_tags bold? italic? blue?) {
       fossil_flag.present? ? {:fossil => true} : {}
     }
   end
