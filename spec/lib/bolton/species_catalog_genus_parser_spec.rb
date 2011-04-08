@@ -124,6 +124,9 @@ describe Bolton::SpeciesCatalog do
     it "should handle transferred genus" do
       @species_catalog.parse(%{*<i><span style="color:green">PALAEOMYRMEX</span></i> Heer, 1865: transferred to <b><i>HOMOPTERA</i></b>.}).should == {:type => :genus, :name => 'Palaeomyrmex', :status => 'unidentifiable', :fossil => true}
     end
+    it "should handle a plain old unidentifiable genus header" do
+      @species_catalog.parse(%{<i><span style="color:green">SCYPHODON</span></i>}).should == {:type => :genus, :name => 'Scyphodon', :status => 'unidentifiable'}
+    end
   end
 
   describe "Parsing an unresolved junior homonym genus header" do

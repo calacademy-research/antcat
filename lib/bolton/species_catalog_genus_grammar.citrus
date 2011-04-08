@@ -32,7 +32,7 @@ grammar Bolton::SpeciesCatalogGenusGrammar
   end
 
   rule unidentifiable_genus
-    (fossil_flag? italic green uppercase_word tag_end tag_end s parenthesized_phrase) {
+    (fossil_flag? italic green uppercase_word /.*/) {
       value = {:type => :genus, :name => uppercase_word.downcase.capitalize, :status => 'unidentifiable'}
       value.merge! :fossil => true unless fossil_flag.blank?
       value
