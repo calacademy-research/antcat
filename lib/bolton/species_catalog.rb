@@ -34,7 +34,7 @@ class Bolton::SpeciesCatalog < Bolton::Catalog
     super
     Progress.puts "#{@species_not_seen_count} species for subspecies not seen"
     Progress.puts "#{@species_seen_but_list_is_nil_count} species seen but it had no list"
-    Progress.puts "#{@subspecies_not_in_list_count} subspecies not in its species list"
+    Progress.puts "#{@subspecies_not_in_list_count} subspecies created, even though not in their species list"
     Progress.puts "#{@subspecies_in_list_but_not_seen_count} subspecies in a species list but not seen"
     Progress.puts "#{@species_not_seen_count + @species_seen_but_list_is_nil_count + @subspecies_not_in_list_count + @subspecies_in_list_but_not_seen_count} total subspecies errors"
     Progress.puts "#{@species_synonynm_created_for_subspecies_count} species synonyms created"
@@ -135,9 +135,9 @@ class Bolton::SpeciesCatalog < Bolton::Catalog
       return
     end
     unless @subspecies_for_species[species.name].include? subspecies.name
-      Progress.error "Subspecies #{genus.name} #{species_name} #{subspecies.name} was seen but it was not in its species's subspecies list" 
+      Progress.error "Subspecies #{genus.name} #{species_name} #{subspecies.name} was seen and created even though it was not in its species's subspecies list" 
       @subspecies_not_in_list_count += 1
-      return
+      return species
     end
     species
   end

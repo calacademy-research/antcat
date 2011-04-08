@@ -136,7 +136,7 @@ describe Bolton::SpeciesCatalog do
 
     it "should not be OK if a species is seen first, then a subspecies is seen, but the species has no subspecies list" do
       Factory :genus, :name => 'Anonychomyrma'
-      Progress.should_receive(:error).with "Subspecies Anonychomyrma chiarinii nigra was seen but it was not in its species's subspecies list"
+      Progress.should_receive(:error).with "Subspecies Anonychomyrma chiarinii nigra was seen and created even though it was not in its species's subspecies list"
       @species_catalog.import_html make_contents %{
 <p><b><i><span style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
 <p><b><i><span style='color:red'>chiarinii</span></i></b><i>. Anyonychomyrma chiarinii</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146.</p>
@@ -144,14 +144,15 @@ describe Bolton::SpeciesCatalog do
       }
     end
 
-    it "should not be OK if a species is seen first, then a subspecies is seen, but the subspecies is not in the species's subspecies list" do
+    it "should not be OK if a species is seen first, then a subspecies is seen, but the subspecies is not in the species's subspecies list; however, the subspecies should still be created" do
       Factory :genus, :name => 'Anonychomyrma'
-      Progress.should_receive(:error).with "Subspecies Anonychomyrma chiarinii nigra was seen but it was not in its species's subspecies list"
+      Progress.should_receive(:error).with "Subspecies Anonychomyrma chiarinii nigra was seen and created even though but it was not in its species's subspecies list"
       @species_catalog.import_html make_contents %{
 <p><b><i><span style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
 <p><b><i><span style='color:red'>chiarinii</span></i></b><i>. Anyonychomyrma chiarinii</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146. Current subspecies: nominal plus <i style='mso-bidi-font-style:normal'><span style='color:blue'></span></i>.</p>
 <p>#<b><i><span style='color:blue'>nigra</span></i></b><i>. Anyonychomyrma chiarinii</i> var. <i>v-nigrum</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146.</p>
       }
+      Genus.find_by_name('Anonychomyrma').species.find_by_name('chiarinii').subspecies.find_by_name('nigra').should_not be_nil
     end
 
     it "should be OK if a species is seen first, then a subspecies is seen, which is in the species's list" do
@@ -179,7 +180,7 @@ describe Bolton::SpeciesCatalog do
 
     it "should not be OK if the subspecies is seen first, then the species is seen, but the subspecies is not in the species's subspecies list" do
       Factory :genus, :name => 'Anonychomyrma'
-      Progress.should_receive(:error).with "Subspecies Anonychomyrma chiarinii nigra was seen but it was not in its species's subspecies list"
+      Progress.should_receive(:error).with "Subspecies Anonychomyrma chiarinii nigra was seen and created even though it was not in its species's subspecies list"
       @species_catalog.import_html make_contents %{
 <p><b><i><span style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
 <p>#<b><i><span style='color:blue'>nigra</span></i></b><i>. Anyonychomyrma chiarinii</i> var. <i>v-nigrum</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146.</p>
@@ -198,7 +199,7 @@ describe Bolton::SpeciesCatalog do
 
     it "should report both errors if there are more than one" do
       Factory :genus, :name => 'Anonychomyrma'
-      Progress.should_receive(:error).with "Subspecies Anonychomyrma chiarinii nigra was seen but it was not in its species's subspecies list"
+      Progress.should_receive(:error).with "Subspecies Anonychomyrma chiarinii nigra was seen and created even though it was not in its species's subspecies list"
       Progress.should_receive(:error).with "Subspecies Anonychomyrma chiarinii boxi was in its species's subspecies list but was not seen"
       Progress.should_receive(:error).with "Subspecies Anonychomyrma chiarinii fuhrmanii was in its species's subspecies list but was not seen"
       @species_catalog.import_html make_contents %{
