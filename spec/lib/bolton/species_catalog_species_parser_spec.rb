@@ -52,6 +52,18 @@ describe Bolton::SpeciesCatalog do
         })[:subspecies].should =~ ['fusca', 'protensa', 'stewartii']
       end
 
+      it "should handle when the coloring starts over again" do
+        @species_catalog.parse(%{
+<b><i><span style="color:red">melanoticus</span></i></b><i>. Camponotus sexguttatus</i> var. <i>melanoticus</i> Emery, 1894c: 167 (w.) BOLIVIA. Forel, 1911c: 310 (m.). Combination in <i>C. (Myrmoturba</i>): Forel, 1914a: 267; in <i>C</i>. (<i>Tanaemyrmex</i>): Emery, 1925b: 81. Subspecies of <i>extensus</i>: Emery, 1894f: 3; Emery, 1896d: 371. Raised to species: Forel, 1899c: 136; Emery, 1920b: 255; Santschi, 1922c: 99. Current subspecies: nominal plus <i><span style="color:blue">catharinae, flavopubens, kempfi</span></i>, <i><span style="color:blue">paranaensis, publicola, valerius</span></i>.
+        })[:subspecies].should =~ ['catharinae', 'flavopubens', 'kempfi', 'paranaensis', 'publicola', 'valerius']
+      end
+
+      it "should handle when just part of the list is reitalicized" do
+        @species_catalog.parse(%{
+<b><i><span style="color:red">heeri</span></i></b><i>. Brachymyrmex heeri</i> Forel, 1874: 91, figs. 16, 20 (w.) SWITZERLAND. Forel, 1876: 52 (q.m.). See also: Santschi, 1923b: 664. Current subspecies: nominal plus<i><span style="color:blue">
+sumatranus</span></i><span style="color:blue">, <i>tinctus</i></span>.
+        })[:subspecies].should =~ ['sumatranus', 'tinctus']
+      end
 
       describe "Parsing individual subspecies items in list" do
 

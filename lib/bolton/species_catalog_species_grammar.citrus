@@ -51,13 +51,17 @@ grammar Bolton::SpeciesCatalogSpeciesGrammar
   end
 
   rule subspecies_list_item
-    (
-      (tag_end? s italic? maroon species_name close_tags '(unresolved junior homonym)' ', '? ) |
-      (italic blue s species_name ', '? close_tags) |
-      (species_name ', '?)
-    ) {
+    (subspecies_list_item_prefix species_name subspecies_list_item_suffix) {
       species_name.value
     }
+  end
+
+  rule subspecies_list_item_prefix
+    close_tags italic?  (maroon | blue)?  s
+  end
+
+  rule subspecies_list_item_suffix
+    close_tags '(unresolved junior homonym)'?  blue?  ', '?  close_tags
   end
 
   rule unavailable_species
