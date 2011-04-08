@@ -28,7 +28,7 @@ grammar CommonGrammar
   end
 
   rule green
-    start_color_span_start ('green'|'#009644'|'#009900') start_color_span_end
+    start_color_span_start ('green'|'#009644'|'#009900'|'#006600') start_color_span_end
   end
 
   rule black

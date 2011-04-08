@@ -237,6 +237,12 @@ sumatranus</span></i><span style="color:blue">, <i>tinctus</i></span>.
         }).should == {:type => :species, :name => 'chevrolatii', :status => 'unidentifiable'}
       end
 
+      it "should handle a different green" do
+        @species_catalog.parse(%{
+<b><i><span style="color:#006600">bituberculatus</span></i></b><i>. Formica bituberculata</i> Fabricius, 1798: 280 (w.) SURINAM. Combination in <i>Megalomyrmex</i>: Emery, 1890b: 47. <b>Unidentifiable taxon</b>: Brandão, 1990: 413 (<i>species inquirenda</i>).
+        }).should == {:type => :species, :name => 'bituberculatus', :status => 'unidentifiable'}
+      end
+
     end
 
     describe "unavailable species" do
