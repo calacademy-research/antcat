@@ -50,6 +50,12 @@ describe Bolton::SpeciesCatalog do
       }).should == {:type => :subspecies, :name => 'dallatorrei', :status => 'valid', :species => 'alii'}
     end
 
+    it "should handle " do
+      @species_catalog.parse(%{
+<b><i><span style="color:blue">#nigrosubnuda</span></i></b><i>. Crematogaster subnuda nigrosubnuda</i> Özdikmen, 2010c: 990. Replacement name for <i>formosae</i> Wheeler, W.M. 1909d: 336. [Junior primary homonym of <i>formosa</i> Mayr, 1870b: 994.]
+      }).should == {:type => :subspecies, :name => 'nigrosubnuda', :status => 'valid', :species => 'subnuda'}
+    end
+
     describe "fossil subspecies" do
 
       it "should handle a fossil subspecies" do
