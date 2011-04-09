@@ -1,8 +1,5 @@
 @import 'common'
 
-body
-  width: 1228px
-
 .taxon_header
   padding: 5px
   font-size: 1.3em
@@ -16,8 +13,26 @@ body
   padding: 5px
   padding-top: 0
 
-.taxon
+.browser
+  margin-top: 10px
+  min-width: 1200px
+
+.rank
+  overflow-y: auto
+  overflow-x: hidden
+  height: 600px
   float: left
+  .header
+    text-align: left
+    font-size: 1.5em
+    padding-bottom: 5px
+
+td.taxon_item
+  padding-right: 13px
+
+td.teensy
+  font-size: .90em
+  line-height: .99em
 
 .valid
   color: red !important
@@ -36,41 +51,6 @@ body
 
 .selected
   background: yellow !important
-
-table.browser
-  border-top: 1px solid black
-  margin-top: 10px
-
-.rank_column
-  height: 452px
-  overflow: auto
-
-.teensy
-  font-size: .90em
-  line-height: .99em
-
-table.subfamilies
-  border-right: 1px black solid
-  width: 140px
-
-table.genera
-  width: 460px
-  .teensy
-    width: 100px
-
-table.species
-  width: 600px
-  .teensy
-    width: 150px
-
-table.genera
-  border-right: 1px black solid
-
-.rank_header
-  text-align: left
-  font-size: 1.5em
-  padding-bottom: 5px
-  border-bottom: 1px black solid
 
 .search_bar
   @include margins

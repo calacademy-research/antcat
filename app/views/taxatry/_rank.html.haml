@@ -1,17 +1,15 @@
-- search_params = {:q => q, :search_type => search_type}
-%td
-  %table{:class => table_class}
+.rank
+  %table
     %tr
-      %td.rank_header= table_class.capitalize
+      %td.header= header
     %tr
       %td
-        .rank_column
-          - if items
-            %table
-              - rows, css_class = make_columns items
-              - rows.each do |row|
-                %tr
-                  - row.each do |item|
-                    %td{:class => css_class}
-                      - if item
-                        = taxon_link item, selected_item, search_params
+        - if items
+          %table
+            - rows, css_class = snake_taxon_columns items
+            - rows.each do |row|
+              %tr
+                - row.each do |item|
+                  %td{:class => css_class}
+                    - if item
+                      = taxon_link item, selected_item, :q => q, :search_type => search_type
