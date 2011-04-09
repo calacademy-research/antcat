@@ -1,7 +1,7 @@
 module TaxatryHelper
 
   def taxon_link taxon, selected, search_params
-    content_tag :div, :class => 'taxon' do
+    content_tag :div, :class => 'taxon_name' do
       fossil_symbol = taxon.fossil? ? "&dagger;" : ''
       css_classes = [taxon.type.class.to_s.downcase]
       css_classes << taxon.status
@@ -10,7 +10,7 @@ module TaxatryHelper
     end
   end
 
-  def make_columns items
+  def make_taxon_columns items
     column_count = items.count / 25.0
     css_class = ''
     if column_count < 1

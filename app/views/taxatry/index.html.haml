@@ -35,13 +35,11 @@
 .taxonomic_history
   = @taxonomic_history
 
-%table.browser
-  %tr
+%hr
 
-    = render :partial => 'rank', :locals => {:items => @subfamilies, :selected_item => @selected_subfamily, :table_class => 'subfamilies', :q => params[:q], :search_type => params[:search_type]}
+.browser
+  = render :partial => 'rank', :locals => {:items => @subfamilies, :selected_item => @selected_subfamily, :header => 'Subfamilies', :q => params[:q], :search_type => params[:search_type]}
+  = render :partial => 'rank', :locals => {:items => @genera, :selected_item => @selected_genus, :header => 'Genera', :q => params[:q], :search_type => params[:search_type]}
+  = render :partial => 'rank', :locals => {:items => @species, :selected_item => @selected_species, :header => 'Species', :q => params[:q], :search_type => params[:search_type]}
 
-    = render :partial => 'rank', :locals => {:items => @genera, :selected_item => @selected_genus, :table_class => 'genera', :q => params[:q], :search_type => params[:search_type]}
-
-    = render :partial => 'rank', :locals => {:items => @species, :selected_item => @selected_species, :table_class => 'species', :q => params[:q], :search_type => params[:search_type]}
-
-%div.clear
+.clear
