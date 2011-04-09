@@ -18,7 +18,7 @@ module TaxatryHelper
     end
     if column_count >= 4
       column_count = 4
-      css_class = 'teensy'
+      css_class << ' teensy'
     end
     return items.snake(column_count), css_class
   end
