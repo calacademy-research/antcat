@@ -10,14 +10,14 @@ Feature: View reference when logged in and logged out
 
   Scenario: Not logged in
     Given I am not logged in
-    When I go to the main page
+    When I go to the references page
     Then I should see "Public"
       And I should not see "Editor"
       And I should not see "Taxonomy"
 
   Scenario: Logged in
-    When I go to the main page
-      And I log in
+    When I log in
+      And I go to the references page
     Then I should see "Public"
       And I should see "Editor"
       And I should see "Taxonomy"

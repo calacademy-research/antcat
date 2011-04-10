@@ -9,7 +9,7 @@ Feature: Checking for duplicates during data entry
       |Bolton, B.|Psyche 5:3|Ants are my life|2010|1 |
       |Ward, P.  |Psyche 6:1|Ants            |2010|2 |
       And I am logged in
-    When I go to the main page
+    When I go to the references page
       And I follow "add"
       And in the new edit form I fill in "reference_author_names_string" with "Bolton, B."
       And in the new edit form I fill in "reference_title" with "Ants are my life"
@@ -25,7 +25,7 @@ Feature: Checking for duplicates during data entry
       |Bolton, B.|Psyche 5:3|Ants are my life|2010|1 |
       |Ward, P.  |Psyche 6:1|Ants            |2010|2 |
       And I am logged in
-    When I go to the main page
+    When I go to the references page
       And I fill in the search box with "Bolton"
       And I press "Go" by the search box
       And I follow "edit"

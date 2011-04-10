@@ -8,7 +8,7 @@ Feature: Edit reference
       And the following references exist
       |authors|citation  |cite_code|created_at|date    |possess|title|updated_at|year|
       |authors|Psyche 3:3|CiteCode |today     |20100712|Possess|title|today     |2010|
-    When I go to the main page
+    When I go to the references page
       Then there should not be an edit form
 
   Scenario: Edit a reference
@@ -16,6 +16,7 @@ Feature: Edit reference
       |authors|citation  |cite_code|created_at|date    |possess|title|updated_at|year|
       |authors|Psyche 5:3|CiteCode |today     |20100712|Possess|title|today     |2010|
     When I log in
+      And I go to the references page
     Then I should not see the edit form
       When I follow "edit"
     Then I should see the edit form
@@ -23,7 +24,7 @@ Feature: Edit reference
     When I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
     And I fill in "reference_title" with "Ant Title"
       And I press the "Save" button
-    Then I should be on the main page
+    Then I should be on the references page
       And I should see "Ward, B.L.; Bolton, B. 2010. Ant Title"
 
   Scenario: Inserting an author name into the middle of the list
@@ -31,7 +32,7 @@ Feature: Edit reference
       And the following references exist
       |authors    |citation  |cite_code|created_at|date    |possess|title|updated_at|year|
       |Ward, P.;Bolton, B.|Psyche 5:3|CiteCode |today     |20100712|Possess|title|today     |2010|
-    When I go to the main page
+    When I go to the references page
       When I follow "edit"
     When I fill in "reference_author_names_string" with "Ward, P.; Fisher, B.; Bolton, B."
       And I press the "Save" button
@@ -42,7 +43,7 @@ Feature: Edit reference
       And the following references exist
       |authors|title|citation  |year|
       |Fisher, B.L. |Ants |Psyche 6:4|2010|
-    When I go to the main page
+    When I go to the references page
       When I follow "edit"
       And I fill in "reference_citation_year" with "1910a"
       And I press the "Save" button
@@ -55,7 +56,7 @@ Feature: Edit reference
       And the following references exist
       |authors|title|citation  |year|
       |Fisher, B. |Ants |Psyche 6:4|2010|
-    When I go to the main page
+    When I go to the references page
       When I follow "edit"
       And I follow "Book"
       And I fill in "publisher_string" with "New York: Wiley"
@@ -68,7 +69,7 @@ Feature: Edit reference
       And the following book references exist
       |authors|title|citation               |year|
       |Fisher, B. |Ants |New York: Wiley, 22 pp.|2010|
-    When I go to the main page
+    When I go to the references page
       When I follow "edit"
       And I fill in "publisher_string" with "New York: Harcourt"
       And I press the "Save" button
@@ -79,7 +80,7 @@ Feature: Edit reference
       And the following unknown reference exists
       |authors|title|citation|year|
       |Fisher, B. |Ants |New York|2010|
-    When I go to the main page
+    When I go to the references page
       When I follow "edit"
       And I fill in "reference_citation" with "New Jersey"
       And I press the "Save" button
@@ -90,7 +91,7 @@ Feature: Edit reference
       And the following book references exist
       |authors    |citation               |year |title|
       |Ward, P.S. |New York: Wiley, 36 pp.|2010a|Ants |
-    When I go to the main page
+    When I go to the references page
       When I follow "edit"
     When I fill in "reference_author_names_string" with ""
       And I fill in "reference_title" with ""
@@ -109,7 +110,7 @@ Feature: Edit reference
       And the following references exist
       |authors    |citation  |year |title|
       |Ward, P.S. |Psyche 1:2|2010a|Ants |
-    When I go to the main page
+    When I go to the references page
       When I follow "edit"
     When I fill in "reference_author_names_string" with ""
       And I fill in "reference_title" with ""
@@ -130,7 +131,7 @@ Feature: Edit reference
       And the following unknown references exist
       |authors    |citation  |year |title|
       |Ward, P.S. |New York  |2010a|Ants |
-    When I go to the main page
+    When I go to the references page
       When I follow "edit"
     When I fill in "reference_author_names_string" with ""
       And I fill in "reference_title" with ""
@@ -147,7 +148,7 @@ Feature: Edit reference
       And the following references exist
       |authors    |citation  |year |title|
       |Ward, P.S. |Psyche 1:1|2010a|Ants |
-    When I go to the main page
+    When I go to the references page
       When I follow "edit"
       And I fill in "reference_document_attributes_url" with a URL to a document that exists
       And I press the "Save" button
@@ -158,13 +159,15 @@ Feature: Edit reference
       |authors   |year |title    |citation|
       |Ward, P.S.|2010d|Ant Facts|Ants 1:1|
       And that the entry has a URL that's on our site
-    When I go to the main page
+    When I go to the references page
     Then I should not see a "PDF" link
     When I log in
+      And I go to the references page
       And I follow "edit"
       And I check "reference_document_attributes_public"
       And I press the "Save" button
       And I log out
+      And I go to the references page
     Then I should see a "PDF" link
 
   Scenario: Adding the authors' role
@@ -172,7 +175,7 @@ Feature: Edit reference
       And the following references exist
       |authors    |citation  |year |title|
       |Ward, P.S. |Psyche 1:1|2010a|Ants |
-    When I go to the main page
+    When I go to the references page
       When I follow "edit"
     When I fill in "reference_author_names_string" with "Ward, P.S. (ed.)"
       And I press the "Save" button
@@ -183,7 +186,7 @@ Feature: Edit reference
       And the following references exist
       |authors         |citation  |year |title|
       |Ward, P.S. (ed.)|Psyche 1:1|2010a|Ants |
-    When I go to the main page
+    When I go to the references page
     Then I should see "Ward, P.S. (ed.)"
       When I follow "edit"
     When I fill in "reference_author_names_string" with "Ward, P.S."
@@ -195,7 +198,7 @@ Feature: Edit reference
       And the following references exist
       |authors    |citation  |year |title|
       |Ward, P.S. |Psyche 1:1|2010a|Ants |
-    When I go to the main page
+    When I go to the references page
       When I follow "edit"
     When I fill in "reference_document_attributes_url" with a URL to a document that doesn't exist
       And I press the "Save" button
@@ -207,7 +210,7 @@ Feature: Edit reference
       And the following references exist
       |authors|citation  |cite_code|created_at|date    |possess|title|updated_at|year|
       |authors|Psyche 5:3|CiteCode |today     |20100712|Possess|title|today     |2010|
-    When I go to the main page
+    When I go to the references page
       When I follow "edit"
     Then I should see the edit form
       And I should see the reference's ID beside its label
@@ -220,7 +223,7 @@ Feature: Edit reference
       And the following entry nests it
       |authors   |title           |year|pages_in|
       |Bolton, B.|Ants are my life|2001|In:|
-    When I go to the main page
+    When I go to the references page
       Then I should see "Bolton, B. 2001. Ants are my life. In: Ward, P.S. 2001. Ants. Psyche 5:3" 
         When I follow "edit"
       And I fill in "reference_pages_in" with "Pp. 32 in:"
@@ -235,7 +238,7 @@ Feature: Edit reference
       And the following entry nests it
       |authors   |title           |year|pages_in|
       |Bolton, B.|Ants are my life|2001|In:|
-    When I go to the main page
+    When I go to the references page
       Then I should see "Bolton, B. 2001. Ants are my life. In: Ward, P.S. 2001. Ants. Psyche 5:3" 
         When I follow "edit"
       And I fill in "reference_nested_reference_id" with its own ID
@@ -250,7 +253,7 @@ Feature: Edit reference
       And the following entry nests it
       |authors   |title           |year|pages_in|
       |Bolton, B.|Ants are my life|2001|In:|
-    When I go to the main page
+    When I go to the references page
       And I edit "Bolton"
       And I follow "Article"
       And I fill in "journal_name" with "Ant Journal"

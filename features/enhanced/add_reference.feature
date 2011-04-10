@@ -8,10 +8,11 @@ Feature: Add reference
       And the following references exist
       |author    |title         |year|citation  |
       |Ward, P.S.|Annals of Ants|2010|Psyche 1:1|
-      And I go to the main page
+      And I go to the references page
 
   Scenario: Not logged in
     When I log out
+    And I go to the references page
     Then I should not see the "add" icon
 
   Scenario: Logged in
@@ -26,7 +27,7 @@ Feature: Add reference
       And in the new edit form I fill in "article_pagination" with "1"
       And in the new edit form I fill in "reference_citation_year" with "1992"
       And in the new edit form I press the "Save" button
-    Then I should be on the main page
+    Then I should be on the references page
       And I should not see a new edit form
       And I should see "Ward, B.L.; Bolton, B. 1992. Between Pacific Tides. Ants 2:1."
 
@@ -50,7 +51,7 @@ Feature: Add reference
       And in the new edit form I fill in "publisher_string" with "New York:Houghton Mifflin"
       And in the new edit form I fill in "book_pagination" with "32 pp."
       And in the new edit form I press the "Save" button
-    Then I should be on the main page
+    Then I should be on the references page
       And I should not see a new edit form
       And I should see "Ward, B.L.; Bolton, B. 1981. A reference title. New York: Houghton Mifflin, 32 pp."
 
@@ -63,7 +64,7 @@ Feature: Add reference
       And in the new edit form I fill in "reference_series_volume_issue" with "1"
       And in the new edit form I fill in "article_pagination" with "2"
       And in the new edit form I press the "Save" button
-    Then I should be on the main page
+    Then I should be on the references page
       And I should not see a new edit form
       And I should see "Ward, B.L.; Bolton, B. 1981. A reference title. Ant Journal 1:2"
 
@@ -131,7 +132,7 @@ Feature: Add reference
       And in the new edit form I fill in "reference_series_volume_issue" with "1"
       And in the new edit form I fill in "article_pagination" with "2"
       And in the new edit form I press the "Save" button
-    Then I should be on the main page
+    Then I should be on the references page
       And I should not see a new edit form
       And I should see "Ward, B.L.; Bolton, B. (eds.) 1981. A reference title. Ant Journal 1:2"
 

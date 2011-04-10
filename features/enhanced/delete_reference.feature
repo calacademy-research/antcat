@@ -9,7 +9,7 @@ Feature: Delete reference
       |authors   |citation|year|title|
       |Fisher, B.|Psyche 2:1|year|title|
       And I am logged in
-      And I go to the main page
+      And I go to the references page
     Then I should see "Fisher, B."
     Given I will confirm on the next step
     When I follow "edit"

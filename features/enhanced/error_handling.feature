@@ -8,7 +8,7 @@ Feature: Error handling
       And the following reference exists
       |authors       |year|title                     |citation     |
       |Forel, A.     |1874|Les fourmis de la Suisse  |Neue 26:1-452|
-    When I go to the main page
+    When I go to the references page
       And I follow "edit"
       And I fill in "reference_title" with ""
       And I press the "Save" button

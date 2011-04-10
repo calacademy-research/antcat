@@ -167,7 +167,7 @@ Given 'I log in' do
   click_link "Login"
   And %{I fill in "user_email" with "#{@user.email}"}
   And %{I fill in "user_password" with "#{@user.password}"}
-  And %{I press "Go"}
+  And %{I press "Go" within "#login"}
 end
 
 Given 'I log out' do

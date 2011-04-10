@@ -8,7 +8,7 @@ Feature: Upload a file
       And the following references exist
       |authors   |title|citation  |year|
       |Ward, P.S.|Ants |Psyche 5:3|2010|
-    When I go to the main page
+    When I go to the references page
       And I follow "edit"
       And I choose a file to upload
       And I press the "Save" button

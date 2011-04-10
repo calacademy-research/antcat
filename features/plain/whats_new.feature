@@ -8,7 +8,7 @@ Feature: Seeing what's new
       |authors   |citation  |created_at|title            |created_at|updated_at|year|
       |Ward, P.  |Psyche 5:3|today     |Ward's World     |2010-2-2  |2010-1-1  |2010|
       |Bolton, B.|Psyche 4:2|yesterday |Bolton's Bulletin|2010-1-1  |2010-2-2  |2010|
-    When I go to the main page
+    When I go to the references page
       And I follow "Latest additions"
     Then I should see these entries with a header in this order:
       |date      |entry|

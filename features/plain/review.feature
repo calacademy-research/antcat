@@ -4,11 +4,12 @@ Feature: Reviewing features
   So that I can review, fix and monitor them
 
   Scenario: Not logged in
-    When I go to the main page
+    When I go to the references page
     Then I should not see "Latest changes"
 
   Scenario: Logged in
     When I log in
+      And I go to the references page
     Then I should see "Latest changes"
 
   Scenario: See features in reverse chronological order
@@ -17,7 +18,7 @@ Feature: Reviewing features
       |Ward, P.  |Psyche 5:3|today     |Ward's World     |2010-2-2  |2010|
       |Bolton, B.|Psyche 4:2|yesterday |Bolton's Bulletin|2010-1-1  |2010|
     Given I am logged in
-    When I go to the main page
+    When I go to the references page
       And I follow "Latest changes"
     Then I should see these entries with a header in this order:
       |updated_at|entry|

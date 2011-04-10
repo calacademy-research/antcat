@@ -1,5 +1,5 @@
 ActionController::Routing::Routes.draw do |map|
-  map.root :controller => "references"
+  map.root :controller => "taxatry"
 
   map.devise_for :users
 

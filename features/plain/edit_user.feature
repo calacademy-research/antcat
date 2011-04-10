@@ -20,6 +20,6 @@ Feature: Editing a user
     When I follow "Login"
       And I fill in "user_email" with "mark1@example.com"
       And I fill in "user_password" with "new password"
-      And I press "Go"
+      And I press "Go" within "#login"
     Then I should be on the main page
       And I should see "mark1@example.com"
