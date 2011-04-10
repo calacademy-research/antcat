@@ -1,10 +1,10 @@
-.rank
-  %table
-    %tr
-      %td.header= header
-    %tr
-      %td
-        - if items
+- if items
+  .rank
+    %table
+      %tr
+        %td.header= header
+      %tr
+        %td
           %table
             - rows, css_class = snake_taxon_columns items
             - rows.each do |row|

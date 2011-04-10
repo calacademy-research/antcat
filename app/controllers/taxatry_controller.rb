@@ -63,7 +63,11 @@ class TaxatryController < ApplicationController
   end
 
   def search
-    return if params['commit'] == 'Clear'
+    if params['commit'] == 'Clear'
+      params['q'] = params['search_type'] = nil
+      return
+    end
+
     if params['q'].present?
       params['id'] = nil if params['commit'] == 'Go'
       @search_results = Taxon.find_name params['q'], params['search_type']

@@ -27,6 +27,7 @@ body
   font-weight: normal
   width: 100%
   background-color: black
+  min-width: 630px
 
 table
   border-collapse: separate
@@ -150,6 +151,33 @@ ul.error_messages
     padding-top: 8px
     h2
       margin-right: 12px
+
+#navigation_bar
+  @include margins
+  color: $color_navigation_bar
+  background: $color_navigation_bar_background
+  height: 30px
+
+  .actions
+    margin-top: 6px
+    position: absolute
+    font-weight: bold
+    a, a:active, a:focus, a:visited
+      color: $color_navigation_bar_link
+      &:hover
+        color: $color_navigation_bar_link_highlight
+
+  .search
+    float: right
+    position: relative
+    top: 3px
+    vertical-align: center
+    input[type=text]
+      padding-left: 4px
+      width: 100px
+      border: 1px solid $color_input_border
+      height: 20px
+    @include header_submit_button($color_navigation_bar_button, $color_navigation_bar_button_border)
 
 #page_notice
   @include margins

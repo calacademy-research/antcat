@@ -146,7 +146,7 @@ describe Bolton::SpeciesCatalog do
 
     it "should not be OK if a species is seen first, then a subspecies is seen, but the subspecies is not in the species's subspecies list; however, the subspecies should still be created" do
       Factory :genus, :name => 'Anonychomyrma'
-      Progress.should_receive(:error).with "Subspecies Anonychomyrma chiarinii nigra was seen and created even though but it was not in its species's subspecies list"
+      Progress.should_receive(:error).with "Subspecies Anonychomyrma chiarinii nigra was seen and created even though it was not in its species's subspecies list"
       @species_catalog.import_html make_contents %{
 <p><b><i><span style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
 <p><b><i><span style='color:red'>chiarinii</span></i></b><i>. Anyonychomyrma chiarinii</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146. Current subspecies: nominal plus <i style='mso-bidi-font-style:normal'><span style='color:blue'></span></i>.</p>

@@ -1,12 +1,11 @@
 @import 'common'
 
 .taxon_header
-  padding: 5px
   font-size: 1.3em
   font-weight: bold
 
 .taxonomic_history
-  height: 9.2em
+  height: 11em
   overflow: auto
   position: relative
   text-align: left
@@ -26,6 +25,7 @@
     text-align: left
     font-size: 1.5em
     padding-bottom: 5px
+    border-bottom: solid black 1px
 
 td.taxon_item
   padding-right: 13px
@@ -52,19 +52,11 @@ td.teensy
 .selected
   background: yellow !important
 
-.search_bar
-  @include margins
-
-.title
-  padding-bottom: 5px 
-  color: $color_bar
-  background: $color_bar_background
-
-#taxatry
-  font-size: 1.4em
-  margin-right: 18px !important
-#online_catalog
-  font-size: 1.2em
+span.date
+  font-size: .8em
+  font-weight: normal
   font-style: italic
-#barry_bolton
-  margin-left: 10px
+  margin-left: 4px
+
+#search_results td
+  padding-right: 5px
