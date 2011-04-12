@@ -17,6 +17,7 @@
 #   NGC-Spcan-cr, removed extra paragraph in Cephalotes texanus
 #   NGC-Spg-las, removed extra paragraph in Lasius murphyi
 #   NGC-Spon-spp, italicize 'n' in 'niger' (Pachycondyla)
+
 class Bolton::SpeciesCatalog < Bolton::Catalog
   def import
     @species_not_seen_count = 0

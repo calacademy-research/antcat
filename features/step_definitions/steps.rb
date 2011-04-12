@@ -270,7 +270,7 @@ end
 Given /a genus exists with a name of "(.*?)"(?: and a subfamily of "(.*?)")?(?: and a taxonomic history of "(.*?)")?(?: and a status of "(.*?)")?/ do |taxon_name, parent_name, taxonomic_history, status|
   status ||= 'valid'
   subfamily = parent_name && (Subfamily.find_by_name(parent_name) || Factory(:subfamily, :name => parent_name))
-  Factory :genus, :name => taxon_name, :subfamily => subfamily, :tribe => nil, :taxonomic_history => taxonomic_history
+  Factory :genus, :name => taxon_name, :subfamily => subfamily, :tribe => nil, :taxonomic_history => taxonomic_history, :status => status
 end
 
 Given /a species exists with a name of "(.*?)" and a genus of "(.*?)" and a taxonomic history of "(.*?)"/ do |taxon_name, parent_name, taxonomic_history|

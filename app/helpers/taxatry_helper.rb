@@ -28,8 +28,59 @@ module TaxatryHelper
     items.snake column_count
   end
 
-  def format_taxon_statistics statistics
-    "2 valid genera (1 synonym)"
+  def taxon_statistics taxon
+    statistics = taxon.statistics
+    rank_strings = []
+    string = format_rank_statistics(statistics, :genera)
+    rank_strings << string if string
+    string = format_rank_statistics(statistics, :species)
+    rank_strings << string if string
+    rank_strings.join ', '
+  end
+
+  def format_rank_statistics statistics, rank
+    statistics = statistics[rank]
+    return unless statistics
+
+    string = format_rank_status_count rank, 'valid', statistics['valid']
+    statistics.delete 'valid' 
+
+    status_strings = statistics.keys.sort_by do |key|
+      ordered_statuses.index key
+    end.inject([]) do |status_strings, status|
+      status_strings << format_rank_status_count(:genera, status, statistics[status])
+    end
+    string << " (#{status_strings.join(', ')})" if status_strings.present?
+    string
+  end
+
+  def format_rank_status_count rank, status, count
+    count_and_status = pluralize count, status, status == 'valid' ? status : status_plural(status)
+    string = count_and_status
+    string << " #{rank.to_s}" if status == 'valid'
+    string
+  end
+
+  def status_plural status
+    statuses[status]
+  end
+
+  def statuses
+    @statuses || begin
+      @statuses = ActiveSupport::OrderedHash.new
+      @statuses['synonym'] = 'synonyms'
+      @statuses['homonym'] = 'homonyms'
+      @statuses['unavailable'] = 'unavailable'
+      @statuses['unidentifiable'] = 'unidentifiable'
+      @statuses['excluded'] = 'excluded'
+      @statuses['unresolved_homonym'] = 'unresolved homonyms'
+      @statuses['nomen_nudum'] = 'nomina nuda'
+      @statuses
+    end
+  end
+
+  def ordered_statuses
+    statuses.keys
   end
 
 end
