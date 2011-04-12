@@ -8,17 +8,7 @@ class TaxatryController < ApplicationController
     show and return if @search_results.present?
     show and return if params['id'].present?
 
-    @taxon = nil
-    @taxonomic_history = nil
-
     @subfamilies = Subfamily.all :order => :name
-    @selected_subfamily = nil
-
-    @genera = nil
-    @selected_genera = nil
-    
-    @species = nil
-    @selected_species = nil
   end
 
   def show
