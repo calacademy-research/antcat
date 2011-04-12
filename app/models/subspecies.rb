@@ -10,8 +10,8 @@ class Subspecies < Taxon
     self.genus = species.genus
   end
 
-  def statistics
-    {:genera => {'valid' => 2, 'synonym' => 1}}
+  def full_name
+    "#{species.genus.subfamily.name} <i>#{species.genus.name} #{species.name} #{name}</i>"
   end
 
 end

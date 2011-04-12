@@ -45,4 +45,32 @@ describe Genus do
 
   end
 
+  describe "Statistics" do
+
+    it "should handle 0 children" do
+      genus = Factory :genus
+      genus.statistics.should == {:species => {}, :subspecies => {}}
+    end
+
+    it "should handle 1 valid species" do
+      genus = Factory :genus
+      species = Factory :species, :genus => genus
+      genus.statistics.should == {:species => {'valid' => 1}, :subspecies => {}}
+    end
+
+    it "should handle 1 valid species and 2 synonyms" do
+      genus = Factory :genus
+      Factory :species, :genus => genus
+      2.times {Factory :species, :genus => genus, :status => 'synonym'}
+      genus.statistics.should == {:species => {'valid' => 1, 'synonym' => 2}, :subspecies => {}}
+    end
+
+    it "should handle 1 valid species with 2 valid subspecies" do
+      genus = Factory :genus
+      species = Factory :species, :genus => genus
+      2.times {Factory :subspecies, :species => species}
+      genus.statistics.should == {:species => {'valid' => 1}, :subspecies => {'valid' => 2}}
+    end
+
+  end
 end

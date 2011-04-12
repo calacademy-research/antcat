@@ -72,7 +72,9 @@ class Genus < Taxon
   end
 
   def statistics
-    {:genera => {'valid' => 2, 'synonym' => 1}}
+    {:species => species.count(:group => :status),
+     :subspecies => subspecies.count(:group => :status),
+    }
   end
 
 end

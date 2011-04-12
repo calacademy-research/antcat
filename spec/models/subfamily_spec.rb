@@ -41,4 +41,41 @@ describe Subfamily do
     end
 
   end
+
+  describe "Statistics" do
+
+    it "should handle 0 children" do
+      subfamily = Factory :subfamily
+      subfamily.statistics.should == {:genera => {}, :species => {}, :subspecies => {}}
+    end
+
+    it "should handle 1 valid genus" do
+      subfamily = Factory :subfamily
+      genus = Factory :genus, :subfamily => subfamily
+      subfamily.statistics.should == {:genera => {'valid' => 1}, :species => {}, :subspecies => {}}
+    end
+
+    it "should handle 1 valid genus and 2 synonyms" do
+      subfamily = Factory :subfamily
+      genus = Factory :genus, :subfamily => subfamily
+      2.times {Factory :genus, :subfamily => subfamily, :status => 'synonym'}
+      subfamily.statistics.should == {:genera => {'valid' => 1, 'synonym' => 2}, :species => {}, :subspecies => {}}
+    end
+
+    it "should handle 1 valid genus with 2 valid species" do
+      subfamily = Factory :subfamily
+      genus = Factory :genus, :subfamily => subfamily
+      2.times {Factory :species, :genus => genus, :subfamily => subfamily}
+      subfamily.statistics.should == {:genera => {'valid' => 1}, :species => {'valid' => 2}, :subspecies => {}}
+    end
+
+    it "should handle 1 valid genus with 2 valid species, one of which has a subspecies" do
+      subfamily = Factory :subfamily
+      genus = Factory :genus, :subfamily => subfamily
+      Factory :species, :genus => genus
+      Factory :subspecies, :species => Factory(:species, :genus => genus)
+      subfamily.statistics.should == {:genera => {'valid' => 1}, :species => {'valid' => 2}, :subspecies => {'valid' => 1}}
+    end
+
+  end
 end

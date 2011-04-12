@@ -13,7 +13,10 @@ class Subfamily < Taxon
   end
 
   def statistics
-    {:genera => {'valid' => 2, 'synonym' => 1}}
+    {:genera => genera.count(:group => :status),
+     :species => species.count(:group => :status),
+     :subspecies => subspecies.count(:group => :status),
+    }
   end
 
 end
