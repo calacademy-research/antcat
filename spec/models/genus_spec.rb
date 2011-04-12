@@ -17,6 +17,12 @@ describe Genus do
     atta.children.should == atta.species
   end
 
+  it "should have subspecies" do
+    genus = Factory :genus
+    Factory :subspecies, :species => Factory(:species, :genus => genus)
+    genus.should have(1).subspecies
+  end
+
   it "should have subgenera" do
     atta = Factory :genus, :name => 'Atta'
     Factory :subgenus, :name => 'robusta', :genus => atta

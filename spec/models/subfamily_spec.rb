@@ -18,6 +18,21 @@ describe Subfamily do
     myrmicinae.genera.map(&:name).should =~ ['Atta', 'Acanthognathus']
   end
 
+  it "should have species" do
+    subfamily = Factory :subfamily
+    genus = Factory :genus, :subfamily => subfamily
+    species = Factory :species, :genus => genus
+    subfamily.should have(1).species
+  end
+
+  it "should have subspecies" do
+    subfamily = Factory :subfamily
+    genus = Factory :genus, :subfamily => subfamily
+    species = Factory :species, :genus => genus
+    subspecies = Factory :subspecies, :species => species
+    subfamily.should have(1).subspecies
+  end
+
   describe "Full name" do
 
     it "is just the name" do

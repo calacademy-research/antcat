@@ -10,4 +10,16 @@ describe Subspecies do
     subspecies.reload.species.name.should == 'christi'
   end
 
+  it "should have a subfamily" do
+    species = Factory :species
+    subspecies = Factory :subspecies, :species => species
+    subspecies.subfamily.should == species.subfamily
+  end
+
+  it "should have a genus" do
+    species = Factory :species
+    subspecies = Factory :subspecies, :species => species
+    subspecies.genus.should == species.genus
+  end
+
 end
