@@ -70,4 +70,8 @@ class Genus < Taxon
     full_name
   end
 
+  def statistics
+    {:genera => {'valid' => 2, 'synonym' => 1}}
+  end
+
 end

@@ -33,6 +33,10 @@
 %span
   = @taxon_header_status
 
+- if @taxon
+  .statistics
+    = format_taxon_statistics @taxon.statistics
+
 - if @taxonomic_history
   .taxonomic_history
     = @taxonomic_history

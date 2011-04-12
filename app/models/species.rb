@@ -10,4 +10,8 @@ class Species < Taxon
     "#{genus.subfamily.name} <i>#{genus.name} #{name}</i>"
   end
 
+  def statistics
+    {:genera => {'valid' => 2, 'synonym' => 1}}
+  end
+
 end

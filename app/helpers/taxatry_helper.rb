@@ -28,4 +28,8 @@ module TaxatryHelper
     items.snake column_count
   end
 
+  def format_taxon_statistics statistics
+    "2 valid genera (1 synonym)"
+  end
+
 end

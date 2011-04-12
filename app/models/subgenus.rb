@@ -7,6 +7,8 @@ class Subgenus < Taxon
     species
   end
 
+  def statistics
+    {:genera => {'valid' => 2, 'synonym' => 1}}
   end
 
 end

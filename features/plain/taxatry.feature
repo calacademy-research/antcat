@@ -6,8 +6,9 @@ Feature: Using the Taxatry
 
   Background:
     Given a subfamily exists with a name of "Dolichoderinae" and a taxonomic history of "<p><b>Dolichoderinae</b></p>A sweet little subfamily"
-      And a genus exists with a name of "Tapinoma" and a subfamily of "Dolichoderinae" and a taxonomic history of "Tapinoma history"
+      And a genus exists with a name of "Tapinoma" and a subfamily of "Dolichoderinae" and a taxonomic history of "Tapinoma history" and a status of "synonym"
       And a genus exists with a name of "Atta" and a subfamily of "Dolichoderinae" and a taxonomic history of "Atta history"
+      And a genus exists with a name of "Tetramorium" and a subfamily of "Dolichoderinae"
       And a species exists with a name of "sessile" and a genus of "Tapinoma" and a taxonomic history of "sessile history"
       And a species exists with a name of "emeryi" and a genus of "Tapinoma" and a taxonomic history of "emeryi history"
       And a species exists with a name of "emeryi" and a genus of "Atta" and a taxonomic history of "atta emeryi history"
@@ -25,6 +26,7 @@ Feature: Using the Taxatry
     When I follow "Dolichoderinae"
     Then "Dolichoderinae" should be selected
       And I should see "A sweet little subfamily"
+      And I should see "2 valid genera (1 synonym)"
       And should see "Tapinoma"
       And I should not see "sessile"
 
