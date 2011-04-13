@@ -14,6 +14,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :styles, :only => [:index]
 
   map.resources :taxatry, :singular => 'taxon', :only => [:index, :show]
+  map.resources :forager, :only => [:index]
 
   map.connect '/documents/:id/:file_name', :controller => :references, :action => :download, :file_name => /.+/,
     :conditions => {:method => :get}

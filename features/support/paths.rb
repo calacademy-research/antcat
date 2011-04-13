@@ -17,10 +17,14 @@ module NavigationHelpers
       '/journals'
     when /the Taxatry/
       '/taxatry'
+    when /the Forager/
+      '/forager'
     when /the forgot password page/
       '/users/password/new'
     when /the sign in page/
       '/users/sign_in'
+    else
+      raise "#{page_name} not found"
     end
   end
 end
