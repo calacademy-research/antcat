@@ -28,4 +28,25 @@ describe Species do
     species.children.should == species.subspecies
   end
 
+  describe "Statistics" do
+
+    it "should handle 0 children" do
+      species = Factory :species
+      species.statistics.should == {:subspecies => {}}
+    end
+
+    it "should handle 1 valid subspecies" do
+      species = Factory :species
+      subspecies = Factory :subspecies, :species => species
+      species.statistics.should == {:subspecies => {'valid' => 1}}
+    end
+
+    it "should handle 1 valid subspecies and 2 synonyms" do
+      species = Factory :species
+      Factory :subspecies, :species => species
+      2.times {Factory :subspecies, :species => species, :status => 'synonym'}
+      species.statistics.should == {:subspecies => {'valid' => 1, 'synonym' => 2}}
+    end
+
+  end
 end

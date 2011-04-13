@@ -22,7 +22,7 @@ Feature: Using the Taxatry
     Then I should see "Dolichoderinae"
       And I should not see "Tapinoma"
 
-  Scenario: Selecting a subfamily
+  Scenario: Selecting a subfamily and seeing its statistics
     When I follow "Dolichoderinae"
     Then "Dolichoderinae" should be selected
       And I should see "A sweet little subfamily"

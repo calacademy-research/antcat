@@ -35,6 +35,8 @@ module TaxatryHelper
     rank_strings << string if string
     string = format_rank_statistics(statistics, :species)
     rank_strings << string if string
+    string = format_rank_statistics(statistics, :subspecies)
+    rank_strings << string if string
     rank_strings.join ', '
   end
 

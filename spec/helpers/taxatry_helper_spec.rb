@@ -20,6 +20,12 @@ describe TaxatryHelper do
         helper.taxon_statistics(genus).should == "1 valid species"
       end
 
+      it "should format a species's statistics correctly" do
+        species = Factory :species
+        Factory :subspecies, :species => species
+        helper.taxon_statistics(species).should == "1 valid subspecies"
+      end
+
       it "should not pluralize certain statuses" do
         genus = Factory :genus
         2.times {Factory :species, :genus => genus, :status => 'valid'}
