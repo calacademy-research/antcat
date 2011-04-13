@@ -58,7 +58,7 @@ grammar Bolton::SpeciesCatalogGenusGrammar
       bold italic (red|green|brown) uppercase_word /.*/
     ) {
       value = {:type => :genus, :name => uppercase_word.downcase.capitalize}
-      value[:status] = brown.present? ? 'unresolved_homonym' : 'valid'
+      value[:status] = brown.present? ? 'unresolved homonym' : 'valid'
       value
     }
   end

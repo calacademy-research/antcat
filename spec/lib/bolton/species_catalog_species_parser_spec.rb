@@ -173,30 +173,30 @@ sumatranus</span></i><span style="color:blue">, <i>tinctus</i></span>.
 
     end
 
-    describe "Jomonyms" do
+    describe "Homonyms" do
 
       it "should handle an unresolved junior homonym species" do
         @species_catalog.parse(%{
 <b><i><span style="color:maroon">bidentatum</span></i></b><i>. Monomorium bidentatum</i> Mayr, 1887: 616 (w.q.) CHILE. Snelling, 1975: 5 (m.); Wheeler, G.C. &amp; Wheeler, J. 1980: 533 (l.). Combination in <i>Monomorium (Notomyrmex</i>): Emery, 1922e: 169; in <i>Notomyrmex</i>: Kusnezov, 1960b: 345; in <i>Nothidris</i>: Ettershank, 1966: 107; in <i>Antichthonidris</i>: Snelling, 1975: 6; in <i>Monomorium</i>: Fernández, 2007b: 132. Senior synonym of <i>piceonigrum</i>: Kusnezov, 1960b: 345. See also: Kusnezov, 1949a: 431. [Note. If the dubious combination of <i>bidentata</i> Smith, F. in <i>Monomorium</i> (above) is correct then <i>bidentatum</i> Mayr, 1887 becomes an <b>unresolved junior secondary homonym</b> of <i>bidentata</i> Smith, F. 1858.]
-        }).should == {:type => :species, :name => 'bidentatum', :status => 'unresolved_homonym'}
+        }).should == {:type => :species, :name => 'bidentatum', :status => 'unresolved homonym'}
       end
 
       it "should handle an unresolved junior secondary homonym" do
         @species_catalog.parse(%{
 <b><i><span style="color:#984806">flavum</span></i></b>. <i>Tetramorium flavum</i> Chang &amp; He, 2001a: 2, figs. 1, 2, 16 (w.) CHINA. [<b>Unresolved junior secondary homonym</b> of <i>flavus</i> Donisthorpe, below.]
-        }).should == {:type => :species, :name => 'flavum', :status => 'unresolved_homonym'}
+        }).should == {:type => :species, :name => 'flavum', :status => 'unresolved homonym'}
       end
 
       it "should recognize a unresolved junior primary homonym" do
         @species_catalog.parse(%{
 *<b><i><span style="color:maroon">major</span></i></b><i>. *Solenopsis major</i> Théobald, 1937b: 201, pl. 4, fig. 16; pl. 14, fig. 4 (m.) FRANCE (Oligocene). [<b>Unresolved junior primary homonym</b> of <i>major</i> Forel, above.]
-        }).should == {:type => :species, :name => 'major', :status => 'unresolved_homonym', :fossil => true}
+        }).should == {:type => :species, :name => 'major', :status => 'unresolved homonym', :fossil => true}
       end
 
       it "should handle a different maroon" do
         @species_catalog.parse(%{
 <b><i><span style="color:#632423">butteli</span></i></b><i>. Cryptopone butteli</i> Forel, 1913k: 9, fig. C (w.) INDONESIA (Sumatra). Wheeler, W.M. 1933g: 10 (q.m.). Combination in <i>Pachycondyla</i>: Mackay &amp; Mackay, 2010: 3 (by implication as <i>Cryptopone</i> synonymised with <i>Pachycondyla</i>). See also: Wilson, 1958d: 358. [<b>Unresolved junior secondary homonym</b> of <i>butteli</i> Forel, 1913k: 8, above.]
-        }).should == {:type => :species, :name => 'butteli', :status => 'unresolved_homonym'}
+        }).should == {:type => :species, :name => 'butteli', :status => 'unresolved homonym'}
       end
 
     end

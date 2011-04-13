@@ -3,7 +3,7 @@ module TaxatryHelper
   def taxon_link taxon, selected, search_params
     fossil_symbol = taxon.fossil? ? "&dagger;" : ''
     css_classes = [taxon.type.class.to_s.downcase]
-    css_classes << taxon.status
+    css_classes << taxon.status.gsub(/ /, '_')
     css_classes << 'selected' if taxon == selected
     link_to "#{fossil_symbol}#{taxon.name}", taxon_path(taxon, search_params), :class => css_classes.join(' ')
   end
@@ -73,8 +73,8 @@ module TaxatryHelper
       @statuses['unavailable'] = 'unavailable'
       @statuses['unidentifiable'] = 'unidentifiable'
       @statuses['excluded'] = 'excluded'
-      @statuses['unresolved_homonym'] = 'unresolved homonyms'
-      @statuses['nomen_nudum'] = 'nomina nuda'
+      @statuses['unresolved homonym'] = 'unresolved homonyms'
+      @statuses['nomen nudum'] = 'nomina nuda'
       @statuses
     end
   end

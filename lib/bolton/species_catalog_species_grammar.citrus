@@ -99,7 +99,7 @@ grammar Bolton::SpeciesCatalogSpeciesGrammar
 
   rule unresolved_homonym
     (fossil_flag? bold italic maroon species_name subspecies_list? /.*/) {
-      value = {:type => :species, :name => species_name.value, :status => 'unresolved_homonym'}
+      value = {:type => :species, :name => species_name.value, :status => 'unresolved homonym'}
       value.merge! :fossil => true unless fossil_flag.blank?
       value.merge! :subspecies => subspecies_list.value unless subspecies_list.blank?
       value

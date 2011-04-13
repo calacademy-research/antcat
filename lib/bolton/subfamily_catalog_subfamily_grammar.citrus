@@ -74,7 +74,7 @@ grammar Bolton::SubfamilyCatalogSubfamilyGrammar
     (italic? fossil_flag? italic? s capitalized_word tag_end? unresolved_junior_homonym:" (unresolved junior homonym)."?) {
       value = {:name => capitalized_word.to_s}
       value[:fossil] = true if fossil_flag.present?
-      value[:status] = 'unresolved_homonym' if unresolved_junior_homonym && unresolved_junior_homonym != ''
+      value[:status] = 'unresolved homonym' if unresolved_junior_homonym && unresolved_junior_homonym != ''
       value
     }
   end

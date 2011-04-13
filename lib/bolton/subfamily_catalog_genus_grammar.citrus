@@ -31,7 +31,7 @@ grammar Bolton::SubfamilyCatalogGenusGrammar
 
   rule unresolved_homonym_genus_header
     (bold span 'Genus ' fossil_flag? italic brown uppercase_word close_tags) {
-      value = {:type => :genus_header, :name => uppercase_word.downcase.capitalize.strip, :status => 'unresolved_homonym'}
+      value = {:type => :genus_header, :name => uppercase_word.downcase.capitalize.strip, :status => 'unresolved homonym'}
       value.merge! :fossil => true if fossil_flag.present?
       value
     }

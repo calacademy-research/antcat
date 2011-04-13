@@ -133,7 +133,7 @@ describe Bolton::SpeciesCatalog do
     it "should work" do
       @species_catalog.parse(%{
   *<b style="mso-bidi-font-weight:normal"><i style="mso-bidi-font-style:normal"><span style="color:#663300">WILSONIA</span></i></b>
-      }).should == {:type => :genus, :name => 'Wilsonia', :status => 'unresolved_homonym', :fossil => true}
+      }).should == {:type => :genus, :name => 'Wilsonia', :status => 'unresolved homonym', :fossil => true}
     end
   end
 

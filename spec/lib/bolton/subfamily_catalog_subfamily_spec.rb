@@ -234,7 +234,7 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
       taxon.subfamily.should == aneuretinae
       taxon.should be_fossil
       taxon.incertae_sedis_in.should == 'subfamily'
-      taxon.status.should == 'unresolved_homonym'
+      taxon.status.should == 'unresolved homonym'
 
       taxon = Genus.find_by_name 'Myrmeciites'
       taxon.should be_nil

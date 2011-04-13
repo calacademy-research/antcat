@@ -245,7 +245,7 @@ describe Bolton::SubfamilyCatalog do
       it "should recognize a Hong 2002 genera incertae sedis list, and handle an unresolved junior homonym in it" do
         @subfamily_catalog.parse(%{
   <b><span lang=EN-GB>Hong (2002) genera (extinct) <i>incertae sedis</i> in Formicinae</span></b><span lang=EN-GB>: *<i>Curtipalpulus</i> (unresolved junior homonym).</span>
-        }).should == {:type => :genera_list, :incertae_sedis => true, :genera => [{:name => 'Curtipalpulus', :fossil => true, :status => 'unresolved_homonym'}]}
+        }).should == {:type => :genera_list, :incertae_sedis => true, :genera => [{:name => 'Curtipalpulus', :fossil => true, :status => 'unresolved homonym'}]}
       end
 
       it "should recognize a list with misplaced italic tag" do

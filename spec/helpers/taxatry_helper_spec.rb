@@ -28,8 +28,8 @@ describe TaxatryHelper do
         2.times {Factory :species, :genus => genus, :status => 'unavailable'}
         2.times {Factory :species, :genus => genus, :status => 'unidentifiable'}
         2.times {Factory :species, :genus => genus, :status => 'excluded'}
-        2.times {Factory :species, :genus => genus, :status => 'unresolved_homonym'}
-        2.times {Factory :species, :genus => genus, :status => 'nomen_nudum'}
+        2.times {Factory :species, :genus => genus, :status => 'unresolved homonym'}
+        2.times {Factory :species, :genus => genus, :status => 'nomen nudum'}
         helper.taxon_statistics(genus).should == "2 valid species (2 synonyms, 2 homonyms, 2 unavailable, 2 unidentifiable, 2 excluded, 2 unresolved homonyms, 2 nomina nuda)"
       end
 
