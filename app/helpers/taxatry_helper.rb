@@ -59,6 +59,7 @@ module TaxatryHelper
   end
 
   def format_rank_status_count rank, status, count
+    rank = :genus if rank == :genera and count == 1
     count_and_status = pluralize count, status, status == 'valid' ? status : status_plural(status)
     string = count_and_status
     string << " #{rank.to_s}" if status == 'valid'

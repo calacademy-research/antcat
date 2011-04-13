@@ -14,6 +14,12 @@ describe TaxatryHelper do
         helper.taxon_statistics(subfamily).should == "2 valid genera (1 synonym, 2 homonyms), 1 valid species"
       end
 
+      it "should use the singular for genus" do
+        subfamily = Factory :subfamily
+        Factory :genus, :subfamily => subfamily
+        helper.taxon_statistics(subfamily).should == "1 valid genus"
+      end
+
       it "should format a genus's statistics correctly" do
         genus = Factory :genus
         Factory :species, :genus => genus
