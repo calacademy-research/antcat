@@ -7,7 +7,7 @@ Feature: Using the Forager
       And a subfamily exists with a name of "Myrmicinae" and a taxonomic history of "<p><b>Myrmicinae</b></p>Myrmicinae history"
     When I go to the Forager
 
-  Scenario: Viewing the index page
+  Scenario: Viewing subfamilies
     Then I should see "Dolichoderinae" within "#index"
       And I should see "Myrmicinae" within "#index"
       And I should see "Dolichoderinae" within "#browser"

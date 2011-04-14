@@ -1,5 +1,6 @@
 $(function() {
   setupIndex();
+  setBrowserHeight();
 })
 
 function setupIndex() {
@@ -10,4 +11,13 @@ function gotoIndexedLocation() {
   id = this.href.match(/\d+/)[0];
   $('#browser').scrollTo($('#' + id));
   return false;
+}
+
+$(window).resize(function() {
+  setBrowserHeight();
+});
+
+function setBrowserHeight() {
+  var availableHeight = $('#page').height();
+  $("#browser").height(availableHeight - 213);
 }
