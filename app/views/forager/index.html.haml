@@ -1,7 +1,18 @@
 - @title = 'Forager'
 
-Dolichoderinae
-A sweet little subfamily
+- content_for :head do
+  = javascript_include_tag 'forager'
+  = javascript_include_tag 'ext/jquery.scrollTo-1.4.2-min'
+  = stylesheet_link_tag 'forager'
 
-Myrmicinae
-Myrmicinae history
+#index
+  - Subfamily.all.each do |subfamily|
+    .taxon_header
+      = link_to subfamily.name, subfamily.id.to_s
+
+#browser
+  - Subfamily.all.each do |subfamily|
+    .taxon_header{:id => subfamily.id}= subfamily.name
+    .taxonomic_history= subfamily.taxonomic_history
+
+.clear
