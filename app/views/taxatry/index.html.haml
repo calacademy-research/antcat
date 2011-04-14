@@ -48,3 +48,14 @@
   = render :partial => 'rank', :locals => {:items => @species, :selected_item => @selected_species, :header => 'Species', :q => params[:q], :search_type => params[:search_type]}
 
 .clear
+
+#key
+  %hr
+  %span &dagger;fossil
+  %span.valid valid
+  %span.synonym synonym
+  %span.unidentifiable unidentifiable/excluded
+  %span.unavailable unavailable/nomen nudum
+  %span.homonym homonym
+  = link_to "View full key", "/NGC colour-code protocol.pdf", :target => '_blank'
+
