@@ -1,6 +1,6 @@
 Rake.application.options.trace = true
 
-$BOLTON_DATA_DIRECTORY = 'data/bolton/2011-01'
+$BOLTON_DATA_DIRECTORY = 'data/bolton'
 
 namespace :bolton do
 
