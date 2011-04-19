@@ -6,7 +6,7 @@
 
 - content_for :page_header do
   #navigation_bar
-    - form_tag taxatry_path, :method => 'get', :id => 'search_form' do
+    = form_tag taxatry_path, :method => 'get', :id => 'search_form' do
       .actions
         = link_to 'References', references_path
       .search

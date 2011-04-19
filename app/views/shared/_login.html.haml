@@ -8,7 +8,7 @@
       = link_to 'Login', '#', :class => :link
 
   .form
-    - form_tag user_session_path do
+    = form_tag user_session_path do
       Email
       = text_field_tag "user[email]"
       Password
