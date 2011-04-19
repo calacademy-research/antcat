@@ -20,7 +20,7 @@
     = yield :head
 
     :javascript
-      var usingCucumber = #{Rails.env == 'cucumber'};
+      var testing = #{Rails.env == 'test'};
       var loggedIn = #{user_signed_in?};
 
   %body#flash{:class => @controller.class}

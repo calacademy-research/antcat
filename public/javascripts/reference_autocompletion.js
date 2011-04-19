@@ -1,5 +1,5 @@
 function setupAuthorAutocomplete($reference) {
-  if (usingCucumber)
+  if (testing)
     return
 
   $('.reference_edit .authors', $reference).autocomplete({

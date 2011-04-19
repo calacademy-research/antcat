@@ -1,13 +1,9 @@
 $(function() {
-  //$.fn.ajaxSubmit.debug = true
   setupSearch();
   setupDisplays();
   if (loggedIn) {
     setupEdits();
   }
-  //if (!usingCucumber) {
-    //addReference();
-  //}
 })
 
 function setupSearch() {
@@ -45,7 +41,7 @@ function setupIcons() {
 }
 
 function setupIconVisibility() {
-  if (!usingCucumber || !loggedIn)
+  if (!testing || !loggedIn)
     $('.icon').hide();
 
   if (!loggedIn)
@@ -186,7 +182,7 @@ function showReferenceEdit($reference, options) {
     options = {}
 
   $('.reference_display', $reference).hide();
-  if (!usingCucumber)
+  if (!testing)
     $('.icon').hide()
 
   var $edit = $('.reference_edit', $reference);

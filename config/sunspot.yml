@@ -15,10 +15,3 @@ test:
     hostname: localhost
     port: 8981
     log_level: WARNING
-
-cucumber:
-  solr:
-    hostname: localhost
-    port: 8981
-    log_level: WARNING
-    

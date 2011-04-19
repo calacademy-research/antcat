@@ -117,7 +117,7 @@ class ReferencesController < ApplicationController
                                    :success => @reference.errors.empty?
     }.to_json
     
-    json = '<textarea>' + json + '</textarea>' unless Rails.env.cucumber? 
+    json = '<textarea>' + json + '</textarea>' unless Rails.env.test? 
     render :json => json, :content_type => 'text/html'
   end
 
