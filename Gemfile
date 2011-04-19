@@ -1,38 +1,41 @@
 source :rubygems
 
-gem 'acts_as_list',    '0.1.2'
-gem 'aws-s3',          '0.6.2', :require => 'aws/s3'
-gem 'citrus',          '2.3.4'
-gem 'curb',                     :require => 'curl'
-gem 'devise',          "1.0.8"
-gem 'devise_invitable','0.2.3'
-gem 'haml',            '3.0.25'
+gem 'acts_as_list'
+gem 'aws-s3',           :require => 'aws/s3'
+gem 'citrus'
+gem 'curb',             :require => 'curl'
+gem 'devise'
+gem 'devise_invitable'
+gem 'haml'
+gem 'jquery-rails',     '>= 0.2.6'
 gem 'levenshtein'
-gem 'lll',             '1.3.0'
-gem 'mysql'
-gem 'nokogiri',        '1.4.4'
-gem 'rails',           '2.3.10'
-gem 'sunspot',         '1.1.0', :require => 'sunspot'
-gem 'sunspot_rails',   '1.1.0', :require => 'sunspot/rails'
-gem 'paperclip',       '2.3.6'
-gem 'paper_trail',     '1.6.4'
-gem 'will_paginate',   '2.3.15'
+gem 'lll'
+gem 'mysql2'
+gem 'nokogiri'
+gem 'rails', "3.0.6"
+gem 'sunspot',          :require => 'sunspot'
+gem 'sunspot_rails',    '~> 1.2.1'
+gem 'paperclip'
+gem 'paper_trail'
+gem 'will_paginate',    '~> 3.0.pre2'
 
-gem 'ruby-debug',               :group => [:development, :test, :cucumber]
-
-gem 'factory_girl',   '1.3.2', :group => [:test, :cucumber]
-gem 'webmock',        '1.6.1', :group => [:test, :cucumber]
-
-group :test do
-  gem 'rspec',          '1.3.0'
-  gem 'rspec-rails',    '1.3.2'
+group :development, :test do
+  gem 'ruby-debug'
+  gem 'rspec' 
+  gem 'rspec-rails' 
 end
 
+group :test do
+  gem 'factory_girl'
+  gem 'webmock'
+end
+
+gem 'capybara'
 group :cucumber do
-  gem 'capybara',         '0.4.1.2'
   gem 'capybara-firebug'
-  gem 'cucumber-rails',   '0.3.2'
-  gem 'database_cleaner', '0.5.2'
+  gem 'cucumber'
+  gem 'cucumber-rails'
+  gem 'database_cleaner'
   gem 'launchy'
   gem 'jasmine'
 end
