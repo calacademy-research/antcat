@@ -32,10 +32,13 @@ class ReferencesController < ApplicationController
   def save new
     begin
       Reference.transaction do
+        clear_nested_reference_id unless @reference.kind_of? NestedReference
         set_authors
         set_journal if @reference.kind_of? ArticleReference
         set_publisher if @reference.kind_of? BookReference
         set_pagination
+        # kludge around Rails 3 behavior that uses the type to look up a record - so you can't update the type!
+        Reference.connection.execute "UPDATE `references` SET type = '#{@reference.type}' WHERE id = '#{@reference.id}'" unless new
         @reference.update_attributes params[:reference]
         @reference.save!
         set_document_host
@@ -98,6 +101,10 @@ class ReferencesController < ApplicationController
       raise ActiveRecord::RecordInvalid.new @reference
     end
     params[:reference][:publisher] = publisher
+  end
+
+  def clear_nested_reference_id
+    params[:reference][:nested_reference_id] = nil
   end
 
   def render_json new = false
