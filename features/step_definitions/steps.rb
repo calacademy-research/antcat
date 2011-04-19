@@ -126,11 +126,15 @@ Then "I should not see any error messages" do
 end
 
 When /in the new edit form I fill in "(.*?)" with "(.*?)"/ do |field, value|
-  When "I fill in \"#{field}\" with \"#{value}\" within \"#reference_\""
+  within "#reference_" do
+    When "I fill in \"#{field}\" with \"#{value}\""
+  end
 end
 
 Then /in the new edit form the "(.*?)" field should (not )?contain "(.*?)"/ do |field, should_not, value|
-  Then %{the "#{field}" field within "#reference_" should #{should_not ? 'not ' : ''}contain "#{value}"}
+  within "#reference_" do
+    Then %{the "#{field}" field should #{should_not ? 'not ' : ''}contain "#{value}"}
+  end
 end
 
 When /in the new edit form I follow "(.*?)"/ do |value|
