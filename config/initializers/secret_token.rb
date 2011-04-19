@@ -2,6 +2,6 @@
 
 # Your secret key for verifying the integrity of signed cookies.
 # If you change this key, all old signed cookies will become invalid!
-# Make sure the secret is at least 30 characters and all random, 
+# Make sure the secret is at least 30 characters and all random,
 # no regular words or you'll be exposed to dictionary attacks.
-ActionController::Base.cookie_verifier_secret = '778fb33e1c8d0c06923376e06583679d133f90a71f568830b8fed1f9b0f67d7b5b9e9ca50aee2477aaaf825afabe88855ad5a45aa1f84a4468c26eaaeca9212f';
+Antcat::Application.config.secret_token = 'f2edb172a5ed66b8d22115511111111c04c4127924d96b813f1a0e1ee60bc9ae87e0c95afb41b6d801a9d65e3010408c8d57a18a69f0e0b12f942c9db30dacb0'
