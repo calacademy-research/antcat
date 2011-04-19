@@ -1,5 +1,9 @@
 require 'factory_girl'
 
+Factory.define :journal do |journal|
+  journal.sequence(:name) {|n| "Ants#{n}"}
+end
+
 Factory.define :ward_reference, :class => Ward::Reference do |ward_reference|
   ward_reference.authors  'Fisher, B.L.'
   ward_reference.title  'Ants'
@@ -65,10 +69,6 @@ def reference_factory attributes = {}
   author_name = Factory(:author_name, :name => attributes.delete(:author_name))
   reference = Factory(:reference, attributes.merge(:author_names => [author_name]))
   reference
-end
-
-Factory.define :journal do |journal|
-  journal.sequence(:name) {|n| "Ants#{n}"}
 end
 
 Factory.define :user do |user|
