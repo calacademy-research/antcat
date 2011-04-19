@@ -1,5 +1,24 @@
+# Additional translations at http://github.com/plataformatec/devise/wiki/I18n
+
 en:
+  errors:
+    messages:
+      not_found: "not found"
+      already_confirmed: "was already confirmed, please try signing in"
+      not_locked: "was not locked"
+      not_saved:
+        one: "1 error prohibited this %{resource} from being saved:"
+        other: "%{count} errors prohibited this %{resource} from being saved:"
+
   devise:
+    failure:
+      unauthenticated: 'You need to sign in or sign up before continuing.'
+      unconfirmed: 'You have to confirm your account before continuing.'
+      locked: 'Your account is locked.'
+      invalid: 'Invalid email or password.'
+      invalid_token: 'Invalid authentication token.'
+      timeout: 'Your session expired, please sign in again to continue.'
+      inactive: 'Your account was not activated yet.'
     sessions:
       link: 'Log in'
       signed_in: 'You are logged in'
@@ -9,8 +28,8 @@ en:
       locked: 'Your account is locked'
       invalid: 'Invalid email or password'
       invalid_token: 'Invalid authentication token'
-      timeout: 'Your session expired. Please log in again to continue.'
-      inactive: 'Your account has not been activated yet'
+      signed_in: 'Signed in successfully.'
+      signed_out: 'Signed out successfully.'
     passwords:
       link: 'Forgot password?'
       send_instructions: 'You will receive an email with instructions about how to reset your password in a few minutes'
