@@ -148,7 +148,7 @@ end
 
 When /in the new edit form I press the "(.*?)" button/ do |button|
   When "I press \"#{button}\" within \"#reference_\""
-  sleep 2
+  sleep 3
 end
 
 When /in the new edit form I fill in "(.*?)" with the existing reference's ID/ do |field|

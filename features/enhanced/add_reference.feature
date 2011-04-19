@@ -133,7 +133,6 @@ Feature: Add reference
       And in the new edit form I fill in "article_pagination" with "2"
       And in the new edit form I press the "Save" button
     Then I should be on the references page
-      And I should not see a new edit form
       And I should see "Ward, B.L.; Bolton, B. (eds.) 1981. A reference title. Ant Journal 1:2"
 
   Scenario: Adding a nested reference with a nonexistent nestee
