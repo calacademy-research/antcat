@@ -29,7 +29,7 @@
 = render :partial => 'search_results', :locals => {:search_results => @search_results, :taxon => @taxon}
 
 %span.taxon_header
-  = @taxon_header_name
+  = raw @taxon_header_name
 %span
   = @taxon_header_status
 
@@ -39,7 +39,7 @@
 
 - if @taxonomic_history
   .taxonomic_history
-    = @taxonomic_history
+    = raw @taxonomic_history
   %hr
 
 .browser

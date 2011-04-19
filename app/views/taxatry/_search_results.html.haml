@@ -7,7 +7,7 @@
           - if item
             %td
               - css_class = params[:id].to_s == item[:id].to_s ? 'selected' : nil
-              = link_to item[:name], taxon_path(item[:id], :q => params['q'], :search_type => params[:search_type]), :class => css_class
+              = link_to raw(item[:name]), taxon_path(item[:id], :q => params['q'], :search_type => params[:search_type]), :class => css_class
 
   %hr
 

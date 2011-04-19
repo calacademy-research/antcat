@@ -5,7 +5,8 @@ module TaxatryHelper
     css_classes = [taxon.type.class.to_s.downcase]
     css_classes << taxon.status.gsub(/ /, '_')
     css_classes << 'selected' if taxon == selected
-    link_to "#{fossil_symbol}#{taxon.name}", taxon_path(taxon, search_params), :class => css_classes.join(' ')
+    label = fossil_symbol + taxon.name
+    link_to label.html_safe, taxon_path(taxon, search_params), :class => css_classes.join(' ')
   end
 
   def snake_taxon_columns items

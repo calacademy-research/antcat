@@ -4,6 +4,6 @@
   %tr
   - for journal in @journals
     %tr
-      %td= link_to h(journal.name), edit_journal_path(journal)
+      %td= link_to journal.name, edit_journal_path(journal)
 
 %p= button_to "New Journal", new_journal_path, :method => :get
