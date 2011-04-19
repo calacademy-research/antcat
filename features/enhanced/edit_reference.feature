@@ -203,7 +203,7 @@ Feature: Edit reference
     When I fill in "reference_document_attributes_url" with a URL to a document that doesn't exist
       And I press the "Save" button
     Then I should see the edit form
-      And I should see "Url was not found"
+      And I should see "Document url was not found"
 
   Scenario: Viewing a reference's id
     Given I am logged in
