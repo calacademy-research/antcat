@@ -91,36 +91,6 @@ class Reference < ActiveRecord::Base
     errors.add :base, "This seems to be a duplicate of #{ReferenceFormatter.format duplicate} #{duplicate.id}"
   end
 
-  def self.import data
-    reference = nil
-    return reference if reference = find_duplicate(data)
-
-    create_data = {
-      :author_names => AuthorName.import(data[:author_names]),
-      :author_names_suffix => data[:author_names_suffix],
-      :citation_year => data[:citation_year],
-      :title => data[:title],
-      :cite_code => data[:cite_code],
-      :possess => data[:possess],
-      :date => data[:date],
-      :public_notes => data[:public_notes],
-      :taxonomic_notes => data[:taxonomic_notes],
-      :editor_notes => data[:editor_notes],
-      :source_reference_id => data[:id],
-      :source_reference_type => data[:class], 
-    }
-    case
-    when data[:book]
-      BookReference.import create_data, data[:book]
-    when data[:article]
-      ArticleReference.import create_data, data[:article]
-    when data[:nested]
-      NestedReference.import create_data, data[:nested]
-    when data[:unknown]
-      UnknownReference.import create_data, data[:unknown]
-    end
-  end
-
   def self.find_duplicate data
     possible_duplicates = Reference.where :title => data[:title], :year => get_year(data[:citation_year])
     possible_duplicates.find do |possible_duplicate|
