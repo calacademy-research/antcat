@@ -28,4 +28,4 @@ begin
 rescue MissingSourceFile
 end
 
-Antcat::Application.load_tasks
+AntCat::Application.load_tasks

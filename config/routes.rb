@@ -1,4 +1,4 @@
-Antcat::Application.routes.draw do
+AntCat::Application.routes.draw do
 
   root :to => "taxatry#index"
 
