@@ -1,7 +1,12 @@
 common: &common
-  adapter: mysql
+  adapter: mysql2
   encoding: utf8
-  user: localhost
+  reconnect: false
+  database: antcat_development
+  pool: 5
+  username: root
+  password:
+  socket: /tmp/mysql.sock
 
 development:
   <<: *common
