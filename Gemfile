@@ -12,7 +12,7 @@ gem 'levenshtein'
 gem 'lll'
 gem 'mysql2'
 gem 'nokogiri'
-gem 'rails',            "3.0.6"
+gem 'rails'
 gem 'sunspot',          :require => 'sunspot'
 gem 'sunspot_rails',    '~> 1.2.1'
 gem 'paperclip'

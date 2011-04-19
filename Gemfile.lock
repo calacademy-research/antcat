@@ -205,7 +205,7 @@ DEPENDENCIES
   nokogiri
   paper_trail
   paperclip
-  rails (= 3.0.6)
+  rails
   rspec
   rspec-rails
   ruby-debug
