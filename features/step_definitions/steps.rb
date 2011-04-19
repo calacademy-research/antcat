@@ -179,8 +179,7 @@ Given 'I log out' do
 end
 
 Given 'I am logged in' do
-  @user = Factory :user
-  visit '/stub_log_in'
+  Given 'I log in'
 end
 
 Then 'I should not see the "Delete" button' do
