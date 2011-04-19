@@ -12,7 +12,7 @@ gem 'levenshtein'
 gem 'lll'
 gem 'mysql2'
 gem 'nokogiri'
-gem 'rails', "3.0.6"
+gem 'rails',            "3.0.6"
 gem 'sunspot',          :require => 'sunspot'
 gem 'sunspot_rails',    '~> 1.2.1'
 gem 'paperclip'
@@ -21,22 +21,18 @@ gem 'will_paginate',    '~> 3.0.pre2'
 
 group :development, :test do
   gem 'ruby-debug'
-  gem 'rspec' 
-  gem 'rspec-rails' 
 end
 
 group :test do
-  gem 'factory_girl'
-  gem 'webmock'
-end
-
-gem 'capybara'
-group :cucumber do
+  gem 'capybara'
   gem 'capybara-firebug'
   gem 'cucumber'
   gem 'cucumber-rails'
   gem 'database_cleaner'
+  gem 'factory_girl'
   gem 'launchy'
-  gem 'jasmine'
+  gem 'rspec' 
+  gem 'rspec-rails' 
+  gem 'webmock'
 end
 
