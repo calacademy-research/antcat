@@ -39,13 +39,8 @@ class Reference < ActiveRecord::Base
   validate :check_for_duplicate
   validates_presence_of :year, :title
 
-  scope :sorted_by_author_name, 
-    :select => '`references`.*',
-    :joins => 'JOIN reference_author_names ON reference_id = `references`.id JOIN author_names ON author_name_id = author_names.id',
-    :conditions => 'reference_author_names.position = 1',
-    :order => 'name ASC'
-
-  scope :with_principal_author_last_name, lambda {|last_name| {:conditions => ['principal_author_last_name_cache = ?', last_name]}}
+  scope :sorted_by_author_name, select('`references`.*').joins(:author_names).where('position = 1').order(:name)
+  scope :with_principal_author_last_name, lambda {|last_name| where :principal_author_last_name_cache => last_name}
 
   def authors reload = false
     author_names(reload).map(&:author)
@@ -64,13 +59,13 @@ class Reference < ActiveRecord::Base
   end
 
   def self.do_search string = nil, page = 1, sort_by_reverse_updated_at = false, sort_by_reverse_created_at = false
-    return paginate :order => 'updated_at DESC', :page => page if sort_by_reverse_updated_at
-    return paginate :order => 'created_at DESC', :page => page if sort_by_reverse_created_at
-    return paginate(:order => 'author_names_string_cache, citation_year', :page => page) unless string.present?
+    return order('updated_at DESC').paginate :page => page if sort_by_reverse_updated_at
+    return order('created_at DESC').paginate :page => page if sort_by_reverse_created_at
+    return order(:author_names_string_cache, :citation_year).paginate :page => page unless string.present?
     string = string.dup
 
     if match = string.match(/\d{5,}/)
-      return paginate :conditions => ['id = ?', match[0]], :page => 1 
+      return where(:id => match[0]).paginate :page => 1 
     end
 
     search {
@@ -127,7 +122,7 @@ class Reference < ActiveRecord::Base
   end
 
   def self.find_duplicate data
-    possible_duplicates = Reference.all(:conditions => ['title = ? and year = ?', data[:title], get_year(data[:citation_year])])
+    possible_duplicates = Reference.where :title => data[:title], :year => get_year(data[:citation_year])
     possible_duplicates.find do |possible_duplicate|
       data[:author_names] == possible_duplicate.author_names.map(&:name)
     end 
@@ -156,7 +151,7 @@ class Reference < ActiveRecord::Base
 
   def replace_author_name old_name, new_author_name
     old_author_name = AuthorName.find_by_name old_name
-    reference_author_name = reference_author_names.find(:first, :conditions => ['author_name_id = ?', old_author_name])
+    reference_author_name = reference_author_names.where(:author_name_id => old_author_name).first
     reference_author_name.author_name = new_author_name
     reference_author_name.save!
     author_names(true)

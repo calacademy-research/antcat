@@ -8,11 +8,10 @@ class Bolton::Reference < ActiveRecord::Base
 
   before_validation :set_year
 
-  scope :with_possible_matches, {
-    :select => 'DISTINCT bolton_references.*',
-    :joins => 'LEFT OUTER JOIN bolton_matches ON bolton_matches.bolton_reference_id = bolton_references.id',
-    :conditions => ['similarity < 0.80']
-  }
+  scope :with_possible_matches,
+    select('DISTINCT bolton_references.*').
+      joins('LEFT OUTER JOIN bolton_matches ON bolton_matches.bolton_reference_id = bolton_references.id').
+      where('similarity < 0.80')
 
   def to_s
     "#{authors} #{year}. #{title}."
