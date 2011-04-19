@@ -1,21 +1,22 @@
-ActionController::Routing::Routes.draw do |map|
-  map.root :controller => "taxatry"
+Antcat::Application.routes.draw do
 
-  map.devise_for :users
+  root :to => "taxatry#index"
 
-  map.resources :references, :only => [:index, :update, :create, :destroy],
-                :has_many => :duplicate_references
-  map.resources :journals
-  map.resources :authors, :only => [:index]
-  map.resources :bolton_matches, :only => [:index]
-  map.resources :duplicate_references, :only => [:index]
-  map.resources :publishers, :only => [:index]
-  map.resources :species, :only => [:index]
-  map.resources :styles, :only => [:index]
+  resources :authors, :only => [:index]
+  resources :bolton_matches, :only => [:index]
+  match     '/documents/:id/:file_name', :to => 'references#download', :file_name => /.+/, :via => :get
+  resources :duplicate_references, :only => [:index]
+  resources :forager, :only => [:index]
+  resources :journals
+  resources :publishers, :only => [:index]
+  resources :references, :only => [:index, :update, :create, :destroy] do
+    resources :duplicate_references
+  end
+  resources :species, :only => [:index]
+  resources :styles, :only => [:index]
+  match     'taxatry', :to => 'taxatry#index', :as => 'taxatry'
+  match     'taxon/:id', :to => 'taxatry#show', :as => 'taxon'
 
-  map.resources :taxatry, :singular => 'taxon', :only => [:index, :show]
-  map.resources :forager, :only => [:index]
+  devise_for :users
 
-  map.connect '/documents/:id/:file_name', :controller => :references, :action => :download, :file_name => /.+/,
-    :conditions => {:method => :get}
 end
