@@ -1,5 +1,6 @@
 
 Given /the following references? exists?/ do |table|
+  Reference.delete_all
   table.hashes.each do |hash|
     citation = hash.delete 'citation'
     matches = citation.match /(\w+) (\d+):([\d\-]+)/
@@ -24,6 +25,10 @@ Given /the following unknown references? exists?/ do |table|
   table.hashes.each do |hash|
     create_reference :unknown_reference, hash
   end
+end
+
+Given /an author name exists with a name of "(.*?)"/ do |name|
+  Factory :author_name, :name => name
 end
 
 def create_reference type, hash
@@ -167,6 +172,7 @@ end
 
 Given 'I log in' do
   When 'I go to the main page'
+  User.delete_all
   @user = Factory :user
   click_link "Login"
   And %{I fill in "user_email" with "#{@user.email}"}

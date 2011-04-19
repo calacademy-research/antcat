@@ -3,22 +3,21 @@ Feature: Logging in
   I want to be able to log in
   So I can edit references
 
-  Scenario: Logging in succesfully
+  Scenario: Logging in successfully
     Given the following user exists
-      |email            |password|
-      |email@example.com|secret  |
+      |email            |password|password_confirmation|
+      |email@example.com|secret  |secret               |
     Given I am not logged in
-    When I go to the main page
-      And I follow "Login"
-      And I fill in "user_email" with "email@example.com"
-      And I fill in "user_password" with "secret"
-      And I press "Go" within "#login"
+    When I go to the sign in page
+      And I fill in "user_email" with "email@example.com" within "#page_contents"
+      And I fill in "user_password" with "secret" within "#page_contents"
+      And I press "Sign in"
     Then I should be on the main page
 
   Scenario: Logging in unsuccesfully
     Given the following user exists
-      |email            |password|
-      |email@example.com|secret  |
+      |email            |password|password_confirmation|
+      |email@example.com|secret  |secret               |
     Given I am not logged in
     When I go to the main page
       And I follow "Login"
