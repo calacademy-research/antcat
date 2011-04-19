@@ -26,13 +26,13 @@
       var testing = #{Rails.env == 'test'};
       var loggedIn = #{user_signed_in?};
 
-  %body#flash{:class => @controller.class}
+  %body#flash{:class => controller.class}
     #page
       #site_header
         = render :partial => 'shared/site_header'
 
       #page_header
-        - if @content_for_page_header
+        - if content_for? :page_header
           = yield :page_header
         - else
           %h2.title= @title
