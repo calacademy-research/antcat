@@ -168,7 +168,7 @@ Feature: Add reference
       And in the new edit form I fill in "reference_citation_year" with "1981"
       And in the new edit form I press the "Save" button
     Then I should see "Author names string couldn't be parsed. Please post a message on http://groups.google.com/group/antcat/, and we'll fix it!"
-      And in the new edit form the "reference_author_names_string" field should contain "...asdf sdf dsfdsf"
+      And in the new edit form the "reference_author_names_string" field should contain "asdf"
 
   Scenario: Unparseable publisher string
     When I follow "add"
