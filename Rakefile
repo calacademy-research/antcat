@@ -6,11 +6,10 @@ require 'rake'
 require 'rake/testtask'
 require 'rake/rdoctask'
 
-require 'tasks/rails'
-
 require 'sunspot/rails/tasks'
 
 namespace :cucumber do
+  require 'cucumber/rake/task'
   Cucumber::Rake::Task.new(:plain, "Run features that don't use Selenium") do |t|
     t.profile = 'plain'
   end
@@ -22,8 +21,7 @@ end
 desc "Run both plain and enhanced Cucumber features"
 task 'cucumber:all_features' => ['cucumber:plain', 'cucumber:enhanced']
 
-# add to default tasks (not override)
-task :default => 'cucumber:all_features'
+task :default => [:spec, 'cucumber:all_features']
 
 begin
   require 'metric_fu'
