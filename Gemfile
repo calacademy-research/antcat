@@ -21,18 +21,18 @@ gem 'will_paginate',    '~> 3.0.pre2'
 
 group :development, :test do
   gem 'ruby-debug'
+  gem 'rspec' 
+  gem 'rspec-rails' 
+  gem 'cucumber'
+  gem 'cucumber-rails'
 end
 
 group :test do
   gem 'capybara'
   gem 'capybara-firebug'
-  gem 'cucumber'
-  gem 'cucumber-rails'
   gem 'database_cleaner'
   gem 'factory_girl'
   gem 'launchy'
-  gem 'rspec' 
-  gem 'rspec-rails' 
   gem 'webmock'
 end
 
