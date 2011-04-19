@@ -602,6 +602,15 @@ describe Reference do
       reference.document.should_receive(:url)
       reference.url
     end
+
+    it "should make sure it exists" do
+      reference = Factory :reference
+      stub_request(:any, "http://antbase.org/1.pdf").to_return :body => "Not Found", :status => 404
+      reference.document = ReferenceDocument.create :url => 'http://antbase.org/1.pdf'
+      reference.should_not be_valid
+      reference.errors.full_messages.should =~ ['Document url was not found']
+    end
+
   end
 
   describe "setting the document host" do
