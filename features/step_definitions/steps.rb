@@ -259,7 +259,7 @@ Then /"([^"]+)" should be selected/ do |word|
 end
 
 And /I (edit|delete|copy) "(.*?)"/ do |verb, author|
-  reference = Reference.first :conditions => ['author_names_string_cache like ?', "%#{author}%"]
+  reference = Reference.where('author_names_string_cache like ?', "%#{author}%").first
   And %{I follow "#{verb}" within "#reference_#{reference.id}"}
 end
 

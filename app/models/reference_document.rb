@@ -10,6 +10,7 @@ class ReferenceDocument < ActiveRecord::Base
 
   before_validation :add_protocol_to_url
   belongs_to :reference
+  validate :check_url
 
   def host= host
     return unless hosted_by_us?
@@ -25,7 +26,7 @@ class ReferenceDocument < ActiveRecord::Base
   end
 
   private
-  def validate
+  def check_url
     return if file_file_name.present? or url.blank?
     uri = URI.parse url
     response_code = Net::HTTP.new(uri.host, 80).request_head(uri.path).code.to_i

@@ -34,16 +34,18 @@ class Reference < ActiveRecord::Base
 
   before_validation :set_year, :strip_newlines
   before_save :set_author_names_caches
+  before_destroy :check_that_is_not_nested
 
+  validate :check_for_duplicate
   validates_presence_of :year, :title
 
-  named_scope :sorted_by_author_name, 
+  scope :sorted_by_author_name, 
     :select => '`references`.*',
     :joins => 'JOIN reference_author_names ON reference_id = `references`.id JOIN author_names ON author_name_id = author_names.id',
     :conditions => 'reference_author_names.position = 1',
     :order => 'name ASC'
 
-  named_scope :with_principal_author_last_name, lambda {|last_name| {:conditions => ['principal_author_last_name_cache = ?', last_name]}}
+  scope :with_principal_author_last_name, lambda {|last_name| {:conditions => ['principal_author_last_name_cache = ?', last_name]}}
 
   def authors reload = false
     author_names(reload).map(&:author)
@@ -61,14 +63,14 @@ class Reference < ActiveRecord::Base
     principal_author_last_name_cache
   end
 
-  def self.do_search string = nil, page = nil, sort_by_reverse_updated_at = false, sort_by_reverse_created_at = false
-    return paginate(:order => 'updated_at DESC', :page => page) if sort_by_reverse_updated_at
-    return paginate(:order => 'created_at DESC', :page => page) if sort_by_reverse_created_at
+  def self.do_search string = nil, page = 1, sort_by_reverse_updated_at = false, sort_by_reverse_created_at = false
+    return paginate :order => 'updated_at DESC', :page => page if sort_by_reverse_updated_at
+    return paginate :order => 'created_at DESC', :page => page if sort_by_reverse_created_at
     return paginate(:order => 'author_names_string_cache, citation_year', :page => page) unless string.present?
     string = string.dup
 
     if match = string.match(/\d{5,}/)
-      return paginate(:conditions => ['id = ?', match[0]], :page => 1)
+      return paginate :conditions => ['id = ?', match[0]], :page => 1 
     end
 
     search {
@@ -87,11 +89,11 @@ class Reference < ActiveRecord::Base
     }.results
   end
 
-  def validate
+  def check_for_duplicate
     duplicates = DuplicateMatcher.new.match self
     return unless duplicates.present?
     duplicate = Reference.find duplicates.first[:match]
-    errors.add_to_base "This seems to be a duplicate of #{ReferenceFormatter.format duplicate} #{duplicate.id}"
+    errors.add :base, "This seems to be a duplicate of #{ReferenceFormatter.format duplicate} #{duplicate.id}"
   end
 
   def self.import data
@@ -184,9 +186,9 @@ class Reference < ActiveRecord::Base
     s
   end
 
-  def before_destroy
+  def check_that_is_not_nested
     nester = NestedReference.find_by_nested_reference_id id
-    errors.add_to_base "This reference can't be deleted because it's nested in #{nester}" if nester
+    errors.add :base, "This reference can't be deleted because it's nested in #{nester}" if nester
     nester.nil?
   end
 
