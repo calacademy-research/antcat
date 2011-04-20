@@ -1,6 +1,8 @@
 $(function() {
   setupIndex();
+  setupBrowser();
   setBrowserHeight();
+  setBrowserWidth();
 })
 
 function setupIndex() {
@@ -13,11 +15,20 @@ function gotoIndexedLocation() {
   return false;
 }
 
-$(window).resize(function() {
+function setupBrowser() {
   setBrowserHeight();
-});
+  setBrowserWidth();
+  $(window).resize(function() {
+    setBrowserHeight();
+    setBrowserWidth();
+  });
+}
 
 function setBrowserHeight() {
   var availableHeight = $('#page').height();
   $("#browser").height(availableHeight - 213);
+}
+
+function setBrowserWidth() {
+  $("#browser").width($('#page').width() - $('#index').width() - 25);
 }
