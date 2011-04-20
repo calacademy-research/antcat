@@ -6,7 +6,7 @@ AntCat::Application.routes.draw do
   resources :bolton_matches, :only => [:index]
   match     '/documents/:id/:file_name', :to => 'references#download', :file_name => /.+/, :via => :get
   resources :duplicate_references, :only => [:index]
-  resources :forager, :only => [:index]
+  match     'forager', :to => 'forager#index', :as => 'forager'
   resources :journals
   resources :publishers, :only => [:index]
   resources :references, :only => [:index, :update, :create, :destroy] do

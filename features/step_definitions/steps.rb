@@ -299,3 +299,15 @@ Then /I should (not )?see the "add" icon/ do |do_not|
   selector = do_not ? :should_not : :should
   find("img[alt=add]").send selector, be_visible
 end
+
+Then /I should see "(.*?)" within (.*)$/ do |contents, location|
+  with_scope location do
+    When %{I should see "#{contents}"}
+  end
+end
+
+Then /I follow "(.*?)" within (.*)$/ do |link, location|
+  with_scope location do
+    When %{I follow "#{link}"}
+  end
+end

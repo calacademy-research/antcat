@@ -10,6 +10,8 @@ function setupIndex() {
 }
 
 function gotoIndexedLocation() {
+  $('#index a').removeClass('selected');
+  $(this).addClass('selected');
   id = this.href.match(/\d+/)[0];
   $('#browser').scrollTo($('#' + id));
   return false;

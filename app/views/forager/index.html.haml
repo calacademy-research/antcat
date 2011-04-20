@@ -6,13 +6,22 @@
   = stylesheet_link_tag 'forager'
 
 #index
-  - Subfamily.all.each do |subfamily|
+  - @index_header_taxa.each do |index_header_taxon|
     .taxon_header
-      = link_to subfamily.name, subfamily.id.to_s
+      = link_to index_header_taxon[:taxon].name, index_header_taxon[:path]
+    %hr
+
+  - @index_taxa.each do |taxon|
+    .taxon_header
+      = link_to taxon.name, taxon.id.to_s
 
 #browser
-  - Subfamily.all.each do |subfamily|
-    .taxon_header{:id => subfamily.id}= subfamily.name
-    .taxonomic_history= raw subfamily.taxonomic_history
+  - @browser_taxa.each do |taxon|
+    .taxon_header{:id => taxon.id}
+      = link_to taxon.name, forager_path(:rank => @child_rank, :id => taxon)
+    .taxonomic_history= raw taxon.taxonomic_history
+  -#- 100.times do
+    -#.taxon_header
+      -#&nbsp;
 
 .clear
