@@ -21,7 +21,7 @@ module NavigationHelpers
       '/forager'
     when /the forgot password page/
       '/users/password/new'
-    when /the sign in page/
+    when /the login page/
       '/users/sign_in'
     else
       raise "#{page_name} not found"

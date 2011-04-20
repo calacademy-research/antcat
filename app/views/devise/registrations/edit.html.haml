@@ -1,6 +1,6 @@
 - @title = 'Edit User'
 
-- form_for resource_name, resource, :url => registration_path(resource_name), :html => { :method => :put } do |f|
+- form_for resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put } do |f|
   = render :partial => 'shared/errors_for', :locals => { :resource => resource }
 
   %p= f.label :email

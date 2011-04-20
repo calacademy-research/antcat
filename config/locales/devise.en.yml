@@ -4,7 +4,6 @@ en:
   errors:
     messages:
       not_found: "not found"
-      already_confirmed: "was already confirmed, please try signing in"
       not_locked: "was not locked"
       not_saved:
         one: "1 error prohibited this %{resource} from being saved:"
@@ -12,12 +11,12 @@ en:
 
   devise:
     failure:
-      unauthenticated: 'You need to sign in or sign up before continuing.'
+      unauthenticated: 'You need to log in before continuing.'
       unconfirmed: 'You have to confirm your account before continuing.'
       locked: 'Your account is locked.'
       invalid: 'Invalid email or password.'
       invalid_token: 'Invalid authentication token.'
-      timeout: 'Your session expired, please sign in again to continue.'
+      timeout: 'Your session expired. Please log in again to continue.'
       inactive: 'Your account was not activated yet.'
     sessions:
       link: 'Log in'
@@ -28,8 +27,6 @@ en:
       locked: 'Your account is locked'
       invalid: 'Invalid email or password'
       invalid_token: 'Invalid authentication token'
-      signed_in: 'Signed in successfully.'
-      signed_out: 'Signed out successfully.'
     passwords:
       link: 'Forgot password?'
       send_instructions: 'You will receive an email with instructions about how to reset your password in a few minutes'
@@ -39,10 +36,7 @@ en:
       send_instructions: 'You will receive an email with instructions about how to confirm your account in a few minutes'
       confirmed: 'Your account has been confirmed. You are now logged in.'
     registrations:
-      link: 'Sign up'
-      signed_up: 'You are now registered'
       updated: 'Your account has been updated'
-      destroyed: 'Your account has been cancelled'
     unlocks:
       link: "Didn't receive unlock instructions?"
       send_instructions: 'You will receive an email with instructions about how to unlock your account in a few minutes'
