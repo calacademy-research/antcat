@@ -11,6 +11,7 @@ module AntCat
     config.autoload_paths += Dir["#{config.root}/lib/**/"]
     config.encoding = "utf-8"
     config.time_zone = 'UTC'
+    config.action_mailer.delivery_method = :sendmail
 
   end
 end
