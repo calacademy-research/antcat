@@ -13,6 +13,6 @@
 #browser
   - Subfamily.all.each do |subfamily|
     .taxon_header{:id => subfamily.id}= subfamily.name
-    .taxonomic_history= subfamily.taxonomic_history
+    .taxonomic_history= raw subfamily.taxonomic_history
 
 .clear
