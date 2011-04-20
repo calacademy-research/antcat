@@ -306,8 +306,20 @@ Then /I should see "(.*?)" within (.*)$/ do |contents, location|
   end
 end
 
-Then /I follow "(.*?)" within (.*)$/ do |link, location|
+And /I follow "(.*?)" within (.*)$/ do |link, location|
   with_scope location do
     When %{I follow "#{link}"}
+  end
+end
+
+And /I press "(.*?)" within (.*)$/ do |button, location|
+  with_scope location do
+    When %{I press "#{button}"}
+  end
+end
+
+And /I fill in "(.*?)" with "(.*?)" within (.*)$/ do |field, contents, location|
+  with_scope location do
+    When %{I fill in "#{field}" with "#{contents}"}
   end
 end
