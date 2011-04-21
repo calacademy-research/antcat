@@ -35,10 +35,13 @@
   - @taxa.each do |taxon|
     .taxon_header{:id => taxon.id}
       - unless @rank == 'genus'
-        = link_to taxon.name, forager_path(:rank => @child_rank, :id => taxon), :class => @child_rank
+        - label_and_classes = taxon_label_and_css_classes taxon
+        = link_to label_and_classes[:label], forager_path(:rank => @child_rank, :id => taxon), :class => label_and_classes[:css_classes]
     .taxonomic_history= raw taxon.taxonomic_history
   - 100.times do
     .taxon_header
       &nbsp;
 
 .clear
+
+= render 'shared/taxon_key'

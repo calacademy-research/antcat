@@ -51,13 +51,4 @@
 
 .clear
 
-#key
-  %hr
-  %span &dagger;fossil
-  %span.valid valid
-  %span.synonym synonym
-  %span.unidentifiable unidentifiable/excluded
-  %span.unavailable unavailable/nomen nudum
-  %span.homonym homonym
-  = link_to "View full key", "/NGC colour-code protocol.pdf", :target => '_blank'
-
+= render :partial => 'shared/taxon_key'
