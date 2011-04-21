@@ -22,13 +22,14 @@
 #index
   - @index_header_taxa.each do |index_header_taxon|
     .index_header_taxon
-      = link_to index_header_taxon[:taxon].name, index_header_taxon[:path], :class => index_header_taxon[:rank]
+      - label_and_classes = taxon_label_and_css_classes index_header_taxon[:taxon]
+      = link_to label_and_classes[:label], index_header_taxon[:path], :class => label_and_classes[:css_classes]
     %hr
 
   - index_items = make_index_groups @taxa, 50, 10
-  - index_items.each do |name, id|
+  - index_items.each do |item|
     .index_taxon
-      = link_to name, id.to_s, :class => @child_rank
+      = link_to item[:label], item[:id].to_s, :class => item[:css_classes]
 
 #browser
   - @taxa.each do |taxon|

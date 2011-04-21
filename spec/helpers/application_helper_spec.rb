@@ -8,7 +8,7 @@ describe ApplicationHelper do
         taxon = Factory :genus, :name => 'Atta'
         taxon_label_and_css_classes = helper.taxon_label_and_css_classes(taxon)
         taxon_label_and_css_classes[:label].should == 'Atta'
-        taxon_label_and_css_classes[:css_classes].should =~ ['valid', 'genus']
+        taxon_label_and_css_classes[:css_classes].should == 'genus taxon valid'
       end
 
       it "should prepend a fossil symbol" do
@@ -18,7 +18,7 @@ describe ApplicationHelper do
 
       it "should handle being selected" do
         taxon = Factory :genus, :name => 'Atta'
-        helper.taxon_label_and_css_classes(taxon, true)[:css_classes] =~ ['valid', 'genus', 'selected']
+        helper.taxon_label_and_css_classes(taxon, true)[:css_classes].should == 'genus selected taxon valid'
       end
 
       it "should return an HTML safe label" do
@@ -26,5 +26,12 @@ describe ApplicationHelper do
         helper.taxon_label_and_css_classes(taxon)[:label].should be_html_safe
       end
 
+  end
+
+  describe 'taxon rank css classes' do
+    it 'should return the right ones' do
+      taxon = Factory :genus, :name => 'Atta'
+      taxon_rank_css_classes(taxon).should == ['genus', 'taxon']
+    end
   end
 end

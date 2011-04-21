@@ -1,8 +1,8 @@
 module TaxatryHelper
 
   def taxon_link taxon, selected, search_params
-    label_and_classes = taxon_label_and_css_classes taxon, selected
-    link_to label_and_classes[:label], taxon_path(taxon, search_params), :class => label_and_classes[:css_classes].join(' ')
+    label_and_classes = taxon_label_and_css_classes taxon, taxon == selected
+    link_to label_and_classes[:label], taxon_path(taxon, search_params), :class => label_and_classes[:css_classes]
   end
 
   def snake_taxon_columns items
