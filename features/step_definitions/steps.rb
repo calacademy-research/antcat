@@ -300,25 +300,25 @@ Then /I should (not )?see the "add" icon/ do |do_not|
   find("img[alt=add]").send selector, be_visible
 end
 
-Then /I should see "(.*?)" within (.*)$/ do |contents, location|
+Then /I should (not )?see "(.*?)" (?:with)?in (.*)$/ do |do_not, contents, location|
   with_scope location do
-    When %{I should see "#{contents}"}
+    When %{I should #{do_not}see "#{contents}"}
   end
 end
 
-And /I follow "(.*?)" within (.*)$/ do |link, location|
+And /I follow "(.*?)" (?:with)?in (.*)$/ do |link, location|
   with_scope location do
     When %{I follow "#{link}"}
   end
 end
 
-And /I press "(.*?)" within (.*)$/ do |button, location|
+And /I press "(.*?)" (?:with)?in (.*)$/ do |button, location|
   with_scope location do
     When %{I press "#{button}"}
   end
 end
 
-And /I fill in "(.*?)" with "(.*?)" within (.*)$/ do |field, contents, location|
+And /I fill in "(.*?)" with "(.*?)" (?:with)?in (.*)$/ do |field, contents, location|
   with_scope location do
     When %{I fill in "#{field}" with "#{contents}"}
   end

@@ -16,6 +16,13 @@ class ForagerController < ApplicationController
       @index_header_taxa = [:taxon => @taxon, :path => forager_path]
       @index_taxa = @taxon.genera
       @browser_taxa = @taxon.genera
+    elsif @rank == 'genus'
+      @index_header_taxa = [
+        {:taxon => @taxon.subfamily, :path => forager_path},
+        {:taxon => @taxon, :path => forager_path(:rank => :subfamily, :id => @taxon.subfamily.id)},
+      ]
+      @index_taxa = @taxon.species
+      @browser_taxa = @taxon.species
     end
   end
 

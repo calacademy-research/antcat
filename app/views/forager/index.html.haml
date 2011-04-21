@@ -20,8 +20,8 @@
     .taxon_header{:id => taxon.id}
       = link_to taxon.name, forager_path(:rank => @child_rank, :id => taxon)
     .taxonomic_history= raw taxon.taxonomic_history
-  -#- 100.times do
-    -#.taxon_header
-      -#&nbsp;
+  - 100.times do
+    .taxon_header
+      &nbsp;
 
 .clear
