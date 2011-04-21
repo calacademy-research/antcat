@@ -12,7 +12,7 @@ function setupPage() {
 }
 
 function setPageHeight() {
-  height = $('#page').height() - 213
+  height = $('#page').height() - 240
   $("#browser").height(height);
   $("#index").height(height);
 }
