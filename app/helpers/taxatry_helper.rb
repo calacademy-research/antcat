@@ -1,12 +1,8 @@
 module TaxatryHelper
 
   def taxon_link taxon, selected, search_params
-    fossil_symbol = taxon.fossil? ? "&dagger;" : ''
-    css_classes = [taxon.type.class.to_s.downcase]
-    css_classes << taxon.status.gsub(/ /, '_')
-    css_classes << 'selected' if taxon == selected
-    label = fossil_symbol + taxon.name
-    link_to label.html_safe, taxon_path(taxon, search_params), :class => css_classes.join(' ')
+    label_and_classes = taxon_label_and_css_classes taxon, selected
+    link_to label_and_classes[:label], taxon_path(taxon, search_params), :class => label_and_classes[:css_classes].join(' ')
   end
 
   def snake_taxon_columns items
