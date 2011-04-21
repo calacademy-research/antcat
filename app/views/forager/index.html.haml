@@ -25,9 +25,10 @@
       = link_to index_header_taxon[:taxon].name, index_header_taxon[:path], :class => index_header_taxon[:rank]
     %hr
 
-  - @taxa.each do |taxon|
+  - index_items = make_index_groups @taxa, 50, 10
+  - index_items.each do |name, id|
     .index_taxon
-      = link_to taxon.name, taxon.id.to_s, :class => @child_rank
+      = link_to name, id.to_s, :class => @child_rank
 
 #browser
   - @taxa.each do |taxon|
