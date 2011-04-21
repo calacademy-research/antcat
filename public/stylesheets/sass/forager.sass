@@ -18,8 +18,16 @@ body
 
 #browser
   float: left
-  width: 700px
-  overflow-y: auto
+  .header
+    max-height: 12.2em
+    overflow: auto
+    .taxon
+      font-size: 1.3em
+  .contents
+    overflow: auto
+  hr
+    margin-top: 14px
+    margin-bottom: 10px
 
 .taxon_header
   font-weight: bold
@@ -30,7 +38,8 @@ body
 .index_taxon
   padding-bottom: 2px
 
-.index_header_taxon
-  font-size: 1.3em
-  padding-top: 4px
-  padding-bottom: 8px
+.index_header_taxon, .subfamily
+  font-size: 1.2em
+  line-height: 1.2em
+  margin-top: 4px
+  margin-bottom: 8px

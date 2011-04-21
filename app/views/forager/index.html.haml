@@ -32,15 +32,23 @@
       = link_to item[:label], item[:id].to_s, :class => item[:css_classes]
 
 #browser
-  - @taxa.each do |taxon|
-    .taxon_header{:id => taxon.id}
-      - unless @rank == 'genus'
-        - label_and_classes = taxon_label_and_css_classes taxon
-        = link_to label_and_classes[:label], forager_path(:rank => @child_rank, :id => taxon), :class => label_and_classes[:css_classes]
-    .taxonomic_history= raw taxon.taxonomic_history
-  - 100.times do
-    .taxon_header
-      &nbsp;
+  - if @taxon
+    .header
+      - label_and_classes = taxon_label_and_css_classes @taxon
+      %span{:class => label_and_classes[:css_classes]}= label_and_classes[:label]
+      .taxonomic_history= raw @taxon.taxonomic_history
+  %hr
+
+  .contents
+    - @taxa.each do |taxon|
+      .taxon_header{:id => taxon.id}
+        - unless @rank == 'genus'
+          - label_and_classes = taxon_label_and_css_classes taxon
+          = link_to label_and_classes[:label], forager_path(:rank => @child_rank, :id => taxon), :class => label_and_classes[:css_classes]
+      .taxonomic_history= raw taxon.taxonomic_history
+    - 100.times do
+      .taxon_header
+        &nbsp;
 
 .clear
 

@@ -29,6 +29,8 @@ Feature: Using the Forager
   Scenario: Clicking a subfamily heading in the browser
     When I follow "Myrmicinae" in the browser
     Then I should see "Atta" in the index
+      And I should see "Myrmicinae" in the browser
+      And I should see "Myrmicinae history" in the browser
       And I should see "Atta history" in the browser
 
   Scenario: Clicking a subfamily heading in the index which is showing genera
