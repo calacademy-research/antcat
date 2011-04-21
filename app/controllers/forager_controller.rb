@@ -6,23 +6,24 @@ class ForagerController < ApplicationController
     @index_header_taxa = []
     @child_rank = case @rank
                   when 'subfamily': 'genus'
+                  when 'genus': 'species'
                   else 'subfamily'
                   end
 
     if @taxon.nil?
-      @index_taxa = Subfamily.all
-      @browser_taxa = Subfamily.all
+      @rank = 'family'
+      @taxa = Subfamily.all
+
     elsif @rank == 'subfamily'
-      @index_header_taxa = [:taxon => @taxon, :path => forager_path]
-      @index_taxa = @taxon.genera
-      @browser_taxa = @taxon.genera
+      @index_header_taxa = [:taxon => @taxon, :path => forager_path, :rank => 'subfamily']
+      @taxa = @taxon.genera
+
     elsif @rank == 'genus'
       @index_header_taxa = [
-        {:taxon => @taxon.subfamily, :path => forager_path},
-        {:taxon => @taxon, :path => forager_path(:rank => :subfamily, :id => @taxon.subfamily.id)},
+        {:taxon => @taxon.subfamily, :path => forager_path, :rank => 'subfamily'},
+        {:taxon => @taxon, :path => forager_path(:rank => :subfamily, :id => @taxon.subfamily.id), :rank => 'genus'},
       ]
-      @index_taxa = @taxon.species
-      @browser_taxa = @taxon.species
+      @taxa = @taxon.species
     end
   end
 

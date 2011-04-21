@@ -5,20 +5,35 @@
   = javascript_include_tag 'ext/jquery.scrollTo-1.4.2-min'
   = stylesheet_link_tag 'forager'
 
+- content_for :page_header do
+  #navigation_bar
+    .actions
+      = link_to 'References', references_path
+      |
+      = link_to 'Taxatry', taxatry_path
+  .title
+    %h2.left An Online Catalog of the Ants of the World
+    .right
+      %h3
+        by Barry Bolton
+        %span.date 3 Jan 2011
+    .clear
+
 #index
   - @index_header_taxa.each do |index_header_taxon|
-    .taxon_header
-      = link_to index_header_taxon[:taxon].name, index_header_taxon[:path]
+    .index_header_taxon
+      = link_to index_header_taxon[:taxon].name, index_header_taxon[:path], :class => index_header_taxon[:rank]
     %hr
 
-  - @index_taxa.each do |taxon|
-    .taxon_header
-      = link_to taxon.name, taxon.id.to_s
+  - @taxa.each do |taxon|
+    .index_taxon
+      = link_to taxon.name, taxon.id.to_s, :class => @child_rank
 
 #browser
-  - @browser_taxa.each do |taxon|
+  - @taxa.each do |taxon|
     .taxon_header{:id => taxon.id}
-      = link_to taxon.name, forager_path(:rank => @child_rank, :id => taxon)
+      - unless @rank == 'genus'
+        = link_to taxon.name, forager_path(:rank => @child_rank, :id => taxon), :class => @child_rank
     .taxonomic_history= raw taxon.taxonomic_history
   - 100.times do
     .taxon_header

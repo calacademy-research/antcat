@@ -9,6 +9,8 @@
     = form_tag taxatry_path, :method => 'get', :id => 'search_form' do
       .actions
         = link_to 'References', references_path
+        |
+        = link_to 'Forager', forager_path
       .search
         Search for name
         = select_tag :search_type, options_for_select(['matching', 'beginning with', 'containing'], params[:search_type] || 'beginning with')

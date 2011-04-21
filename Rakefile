@@ -13,7 +13,7 @@ unless Rails.env.production?
   end
 
   desc "Run both plain and enhanced Cucumber features"
-  task 'cucumber:all_features' => ['cucumber:plain', 'cucumber:enhanced']
+  task 'cucumber:all_features' => ['cucumber:enhanced', 'cucumber:plain']
 
   task :default => [:spec, 'cucumber:all_features']
 

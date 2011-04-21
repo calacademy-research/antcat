@@ -17,8 +17,8 @@ Feature: View bibliography
       |title                                            |authors|citation|year|
       |Territory \|defense\| by the ant *Azteca trigona*|authors|Ants 2:2|year|
     When I go to the references page
-    Then I should see "Azteca trigona" in italics
-      And I should see "defense" in italics
+    Then I should see "Azteca trigona" italicized
+      And I should see "defense" italicized
 
   Scenario: Dangerous text
     Given the following references exist

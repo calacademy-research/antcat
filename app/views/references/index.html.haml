@@ -11,6 +11,8 @@
       .actions
         = link_to 'Taxatry', taxatry_path
         |
+        = link_to 'Forager', forager_path
+        |
         = link_to 'Latest additions', references_path(:commit => 'new')
         - if user_signed_in?
           |

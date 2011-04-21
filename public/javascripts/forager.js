@@ -1,36 +1,39 @@
 $(function() {
+  setupPage();
   setupIndex();
   setupBrowser();
-  setBrowserHeight();
-  setBrowserWidth();
 })
 
-function setupIndex() {
-  $('#index a').live('click', gotoIndexedLocation);
+function setupPage() {
+  setPageHeight();
+  $(window).resize(function() {
+    setPageHeight();
+  });
 }
 
-function gotoIndexedLocation() {
-  $('#index a').removeClass('selected');
-  $(this).addClass('selected');
-  id = this.href.match(/\d+/)[0];
-  $('#browser').scrollTo($('#' + id));
-  return false;
+function setPageHeight() {
+  height = $('#page').height() - 213
+  $("#browser").height(height);
+  $("#index").height(height);
+}
+
+function setupIndex() {
+  $('#index a').live('click', function() {
+    $('#index a').removeClass('selected');
+    $(this).addClass('selected');
+    id = this.href.match(/\d+/)[0];
+    $('#browser').scrollTo($('#' + id));
+    return false;
+  });
 }
 
 function setupBrowser() {
-  setBrowserHeight();
   setBrowserWidth();
   $(window).resize(function() {
-    setBrowserHeight();
     setBrowserWidth();
   });
 }
 
-function setBrowserHeight() {
-  var availableHeight = $('#page').height();
-  $("#browser").height(availableHeight - 213);
-}
-
 function setBrowserWidth() {
-  $("#browser").width($('#page').width() - $('#index').width() - 25);
+  $("#browser").width($('#page_contents').width() - $('#index').width() - 30);
 }
