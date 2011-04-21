@@ -8,7 +8,7 @@ module ForagerHelper
       else
         label = group.first.name
       end
-      groups << {label => group.first.id}
+      groups << [label, group.first.id]
     end
   end
 
