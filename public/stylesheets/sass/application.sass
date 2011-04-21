@@ -55,10 +55,7 @@ a, a:active, a:hover, a:focus, a:visited
   text-decoration: none
   &:hover
     color: $color_link_highlight
-
-#navigation_bar a:hover
-  color: lightgreen !important
-  background: green !important
+    background: $color_link_highlight_background
 
 hr
   padding: 0
@@ -130,7 +127,7 @@ span.date
 
 #site_header
   @include margins
-  color: $color_header
+  color: $color_site_header
   background: url("../images/header_bg.png") repeat scroll 0 0
   height: 95px
 
@@ -148,11 +145,12 @@ span.date
     text-align: right
     margin-top: 8px
     float: right
-    a, a:visited, a:link
-      color: $color_header_link
-      font-weight: bold
-      &:hover
-        color: gray
+  a, a:active, a:visited, a:link
+    color: $color_site_header_link
+    font-weight: bold
+    &:hover
+      color: $color_site_header_link_highlight !important
+      background: none
 
 #login
   height: 58px
@@ -184,7 +182,8 @@ span.date
     a, a:active, a:focus, a:visited
       color: $color_navigation_bar_link
       &:hover
-        color: $color_navigation_bar_link_highlight
+        color: $color_navigation_bar_link_highlight !important
+        background: none
 
   .search
     float: right
