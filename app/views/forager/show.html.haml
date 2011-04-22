@@ -17,6 +17,7 @@
 #index
   - if @taxon
     .index_header_taxon
+      = link_to 'All subfamilies', forager_path, :class => 'subfamily taxon valid'
       %hr
     - @index_header_taxa.each do |index_header_taxon|
       .index_header_taxon

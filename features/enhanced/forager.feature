@@ -61,3 +61,10 @@ Feature: Using the Forager
     When I follow "Myrmicinae" in the index
     Then I should see "Dolichoderinae" in the index
 
+  Scenario: Going back to viewing all subfamilies
+    When I follow "Myrmicinae" in the browser
+    Then I should not see "Dolichoderinae" in the index
+    When I follow "All subfamilies"
+    Then I should see "Dolichoderinae" in the index
+      And I should see "Myrmicinae" in the index
+
