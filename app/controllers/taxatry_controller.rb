@@ -4,18 +4,13 @@ class TaxatryController < ApplicationController
 
   before_filter :search
 
-  def index
-    show and return if @search_results.present?
-    show and return if params['id'].present?
-
-    @subfamilies = Subfamily.all :order => :name
-  end
-
   def show
+    @subfamilies = Subfamily.all :order => :name
+
+    return if @search_results.blank? && params[:id].blank?
+
     @taxon = Taxon.find params[:id]
     @taxonomic_history = @taxon.taxonomic_history
-
-    @subfamilies = Subfamily.all :order => :name
 
     case @taxon
     when Subfamily
@@ -48,8 +43,6 @@ class TaxatryController < ApplicationController
 
     @taxon_header_name = @taxon.full_name
     @taxon_header_status = @taxon.status.gsub /_/, ' ' if @taxon.invalid?
-
-    render :index
   end
 
   def search

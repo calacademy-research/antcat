@@ -8,7 +8,7 @@
 - content_for :page_header do
   #navigation_bar
     .actions
-      = link_to 'References', references_path
+      = link_to 'Taxatry', taxatry_path(@taxon)
       |
       = link_to 'Taxatry', taxatry_path
   .title
@@ -29,7 +29,7 @@
   - index_items = make_index_groups @taxa, 50, 10
   - index_items.each do |item|
     .index_taxon
-      = link_to item[:label], item[:id].to_s, :class => item[:css_classes]
+      = link_to item[:label], forager_path(item[:id]), :class => item[:css_classes]
 
 #browser
   - if @taxon
@@ -44,8 +44,8 @@
       .taxon_header{:id => taxon.id}
         - unless @rank == 'genus'
           - label_and_classes = taxon_label_and_css_classes taxon
-          = link_to label_and_classes[:label], forager_path(:rank => @child_rank, :id => taxon), :class => label_and_classes[:css_classes]
       %div{:class => "taxonomic_history #{@child_rank}"}
+          = link_to label_and_classes[:label], forager_path(taxon), :class => label_and_classes[:css_classes]
         = raw taxon.taxonomic_history
     - 100.times do
       .taxon_header

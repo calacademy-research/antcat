@@ -1,27 +1,22 @@
 class ForagerController < ApplicationController
 
-  def index
-    @rank = params[:rank]
-    @taxon = params[:id] && Taxon.find(params[:id])
-    @index_header_taxa = []
-    @child_rank = case @rank
-                  when 'subfamily': 'genus'
-                  when 'genus': 'species'
-                  else 'subfamily'
-                  end
-
-    if @taxon.nil?
-      @rank = 'family'
+  def show
+    unless params[:id]
       @taxa = Subfamily.all
+      return
+    end
 
-    elsif @rank == 'subfamily'
+    @taxon = params[:id] && Taxon.find(params[:id])
+    rank = @taxon && @taxon.rank
+
+    if rank == 'subfamily'
       @index_header_taxa = [:taxon => @taxon, :path => forager_path, :rank => 'subfamily']
       @taxa = @taxon.genera
 
-    elsif @rank == 'genus'
+    elsif rank == 'genus'
       @index_header_taxa = [
-        {:taxon => @taxon.subfamily, :path => forager_path, :rank => 'subfamily'},
-        {:taxon => @taxon, :path => forager_path(:rank => :subfamily, :id => @taxon.subfamily.id), :rank => 'genus'},
+        {:taxon => @taxon.subfamily, :path => forager_path},
+        {:taxon => @taxon, :path => forager_path(@taxon.subfamily.id)},
       ]
       @taxa = @taxon.species
     end
