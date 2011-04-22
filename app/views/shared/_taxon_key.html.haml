@@ -1,9 +1,23 @@
-#taxon_key
-  %hr
-  %span &dagger;fossil
-  %span.valid valid
-  %span.synonym synonym
-  %span.unidentifiable unidentifiable/excluded
-  %span.unavailable unavailable/nomen nudum
-  %span.homonym homonym
-  = link_to "View full key", "/NGC colour-code protocol.pdf", :target => '_blank'
+%hr
+  %table#taxon_key
+    %tr
+      %td
+        %span.taxon_key_item &dagger;fossil
+      %td.spacer
+      %td
+        %span.taxon_key_item.valid valid
+      %td.spacer
+      %td
+        %span.taxon_key_item.synonym synonym
+      %td.spacer
+      %td
+        %span.taxon_key_item.unidentifiable unidentifiable/excluded
+      %td.spacer
+      %td
+        %span.taxon_key_item.unavailable unavailable/nomen nudum
+      %td.spacer
+      %td
+        %span.taxon_key_item.homonym homonym
+      %td.spacer
+      %td
+        %span.taxon_key_item= link_to "View full key", "/NGC colour-code protocol.pdf", :target => '_blank'

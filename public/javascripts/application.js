@@ -32,5 +32,5 @@ function spaceOutImages() {
   var imageCount = 6;
   var availableWidth = $('#site_footer .images').width();
   var marginInBetween = (availableWidth - totalImageWidth) / (imageCount - 1);
-  $(".spacer").width(marginInBetween);
+  $("#site_footer .spacer").width(marginInBetween);
 }
