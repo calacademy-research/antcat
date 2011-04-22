@@ -20,13 +20,7 @@
         - if @search_results.present? && @search_results.size > 1
           = submit_tag "Clear"
         = @search_results_message
-  .title
-    %h2.left An Online Catalog of the Ants of the World
-    .right
-      %h3
-        by Barry Bolton
-        %span.date 3 Jan 2011
-    .clear
+  = render 'shared/catalog_title'
 
 = render 'search_results', :search_results => @search_results, :taxon => @taxon
 

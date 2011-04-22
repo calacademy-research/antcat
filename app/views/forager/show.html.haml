@@ -10,14 +10,9 @@
     .actions
       = link_to 'Taxatry', taxatry_path(@taxon)
       |
-      = link_to 'Taxatry', taxatry_path
-  .title
-    %h2.left An Online Catalog of the Ants of the World
-    .right
-      %h3
-        by Barry Bolton
-        %span.date 3 Jan 2011
-    .clear
+      = link_to 'References', references_path
+
+  = render 'shared/catalog_title'
 
 #index
   - @index_header_taxa.each do |index_header_taxon|
