@@ -5,7 +5,7 @@ preloadImages();
 $(function() {
   setupLogin();
   spaceOutImages();
-  $("input[type=text]:first").focus()
+  $("input[type=text]:visible:first").focus();
 })
 
 function preloadImages() {
