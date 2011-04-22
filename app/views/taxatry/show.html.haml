@@ -28,7 +28,7 @@
         %span.date 3 Jan 2011
     .clear
 
-= render :partial => 'search_results', :locals => {:search_results => @search_results, :taxon => @taxon}
+= render 'search_results', :search_results => @search_results, :taxon => @taxon
 
 %span.taxon_header
   = raw @taxon_header_name
@@ -45,10 +45,10 @@
   %hr
 
 .browser
-  = render :partial => 'rank', :locals => {:items => @subfamilies, :selected_item => @selected_subfamily, :header => 'Subfamilies', :q => params[:q], :search_type => params[:search_type]}
-  = render :partial => 'rank', :locals => {:items => @genera, :selected_item => @selected_genus, :header => 'Genera', :q => params[:q], :search_type => params[:search_type]}
-  = render :partial => 'rank', :locals => {:items => @species, :selected_item => @selected_species, :header => 'Species', :q => params[:q], :search_type => params[:search_type]}
+  = render 'rank', :items => @subfamilies, :selected_item => @selected_subfamily, :header => 'Subfamilies', :q => params[:q], :search_type => params[:search_type]
+  = render 'rank', :items => @genera, :selected_item => @selected_genus, :header => 'Genera', :q => params[:q], :search_type => params[:search_type]
+  = render 'rank', :items => @species, :selected_item => @selected_species, :header => 'Species', :q => params[:q], :search_type => params[:search_type]
 
 .clear
 
-= render :partial => 'shared/taxon_key'
+= render 'shared/taxon_key'

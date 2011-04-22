@@ -29,7 +29,7 @@
   %body#flash{:class => controller.class}
     #page
       #site_header
-        = render :partial => 'shared/site_header'
+        = render 'shared/site_header'
 
       #page_header
         - if content_for? :page_header
@@ -47,7 +47,7 @@
       %hr
 
       #site_footer
-        = render :partial => 'shared/site_footer'
+        = render 'shared/site_footer'
 
       :javascript
         $('#flash').show(); // FOUC fix

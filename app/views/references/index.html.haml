@@ -50,7 +50,7 @@
   - for reference in @references
     %tr.reference_row
       %td
-        = render :partial => 'reference', :locals => {:reference => reference, :publisher_string => @publisher_string, :css_class => 'reference'}
+        = render 'reference', :reference => reference, :publisher_string => @publisher_string, :css_class => 'reference'
       - if @reviewing
         %td.date
           = format_timestamp reference.updated_at
@@ -61,6 +61,6 @@
   - if user_signed_in?
     %tr.reference_template_row
       %td
-        = render :partial => 'reference', :locals => {:reference => nil, :publisher_string => @publisher_string, :css_class => 'reference_template'}
+        = render 'reference', :reference => nil, :publisher_string => @publisher_string, :css_class => 'reference_template'
 
 %div= will_paginate @references

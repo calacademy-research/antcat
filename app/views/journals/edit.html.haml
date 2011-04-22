@@ -1,6 +1,6 @@
 - @title = 'Edit Journal'
 
-= render :partial => 'form'
+= render 'form'
 
 %h4 References using this journal
 - Reference.sorted_by_author_name.all(:conditions => ['journal_id = ?', @journal.id]).each do |reference|

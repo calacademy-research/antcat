@@ -1,7 +1,7 @@
 - @title = 'Forgot Password'
 
 = form_for resource, :as => resource_name, :url => password_path(resource_name) do |f|
-  = render :partial => 'shared/errors_for', :locals => { :resource => resource }
+  = render 'shared/errors_for', :resource => resource
 
   %p= f.label :email
   %p= f.text_field :email

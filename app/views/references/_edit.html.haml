@@ -10,7 +10,7 @@
   = form_for reference, :as => :reference, :url => url, :html => html_options do |f|
     %input{:type => 'hidden', :name => '_method', :value => method}
     %input{:type => 'hidden', :name => 'selected_tab', :id => 'selected_tab', :class => 'selected_tab', :value => selected_tab}
-    = render :partial => 'shared/errors_for', :locals => { :resource => reference }
+    = render 'shared/errors_for', :resource => reference
 
     %table
       %col{:width => '50px'}
