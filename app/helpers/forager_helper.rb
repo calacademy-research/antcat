@@ -2,6 +2,7 @@ module ForagerHelper
 
   def make_index_groups taxa, max_row_count, abbreviated_length
     items_per_row = (taxa.count.to_f / max_row_count).ceil
+    return [] if items_per_row.zero?
     taxa.sort_by(&:name).in_groups_of(items_per_row, false).inject([]) do |groups, group|
       result = {:id => group.first.id}
       if group.size > 1

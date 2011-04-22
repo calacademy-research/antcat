@@ -43,5 +43,9 @@ describe ForagerHelper do
         helper.make_index_groups([a], 2, 4).should == [{:label => '&dagger;Acanthomyrmex', :id => a.id, :css_classes => 'species taxon valid'}]
       end
 
+      it "should not have a cow if there are no items" do
+        helper.make_index_groups([], 2, 4).should == []
+      end
+
   end
 end
