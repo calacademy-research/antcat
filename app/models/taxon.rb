@@ -11,6 +11,10 @@ class Taxon < ActiveRecord::Base
   def synonym?;         status == 'synonym' end
   def homonym?;         status == 'homonym' end
 
+  def rank
+    self.class.to_s.downcase
+  end
+
   def children
     raise NotImplementedError
   end

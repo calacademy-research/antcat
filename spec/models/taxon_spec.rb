@@ -169,4 +169,12 @@ describe Taxon do
     end
 
   end
+
+  describe ".rank" do
+
+    it "should return a lowercase version" do
+      Factory(:subfamily).rank.should == 'subfamily'
+    end
+
+  end
 end
