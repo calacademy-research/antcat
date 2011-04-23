@@ -9,6 +9,20 @@ Feature: Editing journals
 
   Scenario: Logged in
     Given I am logged in
+      And a journal exists with a name of "Psyche"
     When I go to the references page
-    When I follow "Journals"
+      And I follow "Journals"
     Then I should be on the "Edit journals" page
+
+  Scenario: Edit a journal name
+    Given I am logged in
+      And a journal exists with a name of "Psyche"
+    When I go to the references page
+      And I follow "Journals"
+      And I follow "Psyche"
+      And I fill in "journal_name" with "Science"
+      And I press "Save"
+    Then I should see "Successfully updated journal"
+    When I go to the references page
+      And I follow "Journals"
+    Then I should see "Science"
