@@ -43,7 +43,7 @@ module TaxatryHelper
 
     if statistics['valid']
       string = format_rank_status_count rank, 'valid', statistics['valid']
-      statistics.delete 'valid' 
+      statistics.delete 'valid'
     end
 
     status_strings = statistics.keys.sort_by do |key|

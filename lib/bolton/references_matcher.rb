@@ -7,7 +7,7 @@ class Bolton::ReferencesMatcher
   end
 
   def find_matches_for_all
-    Bolton::Match.transaction do 
+    Bolton::Match.transaction do
       Bolton::Match.delete_all
       #Bolton::Reference.all[0,100].each_with_index do |bolton, i|
       Bolton::Reference.all.each do |bolton|
@@ -25,7 +25,7 @@ class Bolton::ReferencesMatcher
       Bolton::Match.create! :bolton_reference_id => result[:target], :reference_id => result[:match], :similarity => results[:similarity]
     end
 
-    case 
+    case
     when results[:similarity] == 0.00 then @unmatched_count += 1
     when results[:similarity] < 0.80 then @possible_count += 1
     else @matched_count += 1

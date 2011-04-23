@@ -15,7 +15,7 @@ class CreateReferences < ActiveRecord::Migration
       t.timestamps
     end
   end
-  
+
   def self.down
     drop_table :refs
   end

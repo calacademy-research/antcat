@@ -34,7 +34,7 @@ class Genus < Taxon
     fossil = nil if record[:name] == 'Pseudoatta'
 
     attributes = {:name => record[:name], :fossil => fossil, :status => status,
-                  :subfamily => subfamily, :tribe => tribe, 
+                  :subfamily => subfamily, :tribe => tribe,
                   :synonym_of => synonym_of, :homonym_resolved_to => homonym_resolved_to,
                   :taxonomic_history => record[:taxonomic_history],
                   :incertae_sedis_in => incertae_sedis_in}

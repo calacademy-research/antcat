@@ -24,6 +24,6 @@ class Bolton::Reference < ActiveRecord::Base
   private
   def set_year
     self.year = ::Reference.get_year citation_year
-  end 
+  end
 
 end

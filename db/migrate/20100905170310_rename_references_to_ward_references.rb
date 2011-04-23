@@ -6,8 +6,8 @@ class RenameReferencesToWardReferences < ActiveRecord::Migration
   end
 
   def self.down
-    rename_table :bolton_references, :bolton_refs 
-    rename_table :ward_references, :refs 
+    rename_table :bolton_references, :bolton_refs
+    rename_table :ward_references, :refs
     rename_column :bolton_refs, :ward_reference_id, :ward_id
   end
 end

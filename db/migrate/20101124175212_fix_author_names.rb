@@ -246,7 +246,7 @@ class FixAuthorNames < ActiveRecord::Migration
       AuthorName.alias true, "Guillou, E. J. F. le", "Le Guillou, E. J. F."
 
       # back out edits by Marek
-      
+
       AuthorName.alias true, "Morley, B. D. W.", "Morley, D. B. W.", "Mosley, B. D. W."
       wragge = AuthorName.find_by_name "Morley, D. B. W."
       reference = Reference.find_by_cite_code '3219'

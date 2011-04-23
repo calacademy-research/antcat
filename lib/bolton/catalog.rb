@@ -112,7 +112,7 @@ class Bolton::Catalog
       get_next_line
       return unless @line
       @parse_result = parse @line
-      @type = 
+      @type =
       case @parse_result
       when Symbol then @parse_result
       else @parse_result[:type]

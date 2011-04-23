@@ -39,7 +39,7 @@ class Bolton::SubfamilyCatalog < Bolton::Catalog
     Taxon.delete_all
 
     parse_family
-    parse_supersubfamilies 
+    parse_supersubfamilies
 
   ensure
     super

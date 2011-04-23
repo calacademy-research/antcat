@@ -65,7 +65,7 @@ class Reference < ActiveRecord::Base
     string = string.dup
 
     if match = string.match(/\d{5,}/)
-      return where(:id => match[0]).paginate :page => 1 
+      return where(:id => match[0]).paginate :page => 1
     end
 
     search {
@@ -95,7 +95,7 @@ class Reference < ActiveRecord::Base
     possible_duplicates = Reference.where :title => data[:title], :year => get_year(data[:citation_year])
     possible_duplicates.find do |possible_duplicate|
       data[:author_names] == possible_duplicate.author_names.map(&:name)
-    end 
+    end
   end
 
   def self.get_year citation_year
@@ -104,7 +104,7 @@ class Reference < ActiveRecord::Base
     elsif match = citation_year.match(/\["(\d{4})"\]/)
       match[1]
     else
-      citation_year.to_i 
+      citation_year.to_i
     end
   end
 
@@ -187,7 +187,7 @@ class Reference < ActiveRecord::Base
 
   def set_year
     self.year = self.class.get_year citation_year
-  end 
+  end
 
   def strip_newlines
     [:title, :public_notes, :editor_notes, :taxonomic_notes].each do |field|

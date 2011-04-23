@@ -28,7 +28,7 @@ class ReferencesController < ApplicationController
     @reference = get_reference
     save false
   end
-  
+
   def save new
     begin
       Reference.transaction do
@@ -57,7 +57,7 @@ class ReferencesController < ApplicationController
       json = {:success => true}
     else
       json = {:success => false, :message => @reference.errors[:base]}.to_json
-    end 
+    end
     render :json => json
   end
 
@@ -116,8 +116,8 @@ class ReferencesController < ApplicationController
                                    :id => @reference.id,
                                    :success => @reference.errors.empty?
     }.to_json
-    
-    json = '<textarea>' + json + '</textarea>' unless Rails.env.test? 
+
+    json = '<textarea>' + json + '</textarea>' unless Rails.env.test?
     render :json => json, :content_type => 'text/html'
   end
 

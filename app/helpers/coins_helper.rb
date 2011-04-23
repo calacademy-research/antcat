@@ -7,7 +7,7 @@ module CoinsHelper
     when UnknownReference then UnknownCoinsHelper
     else raise "Don't know what kind of reference this is: #{reference.inspect}"
     end
-    
+
     title = klass.new(reference).coins
 
     content_tag(:span, "", :class => "Z3988", :title => raw(title.join("&amp;")))

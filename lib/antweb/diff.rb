@@ -158,7 +158,7 @@ class Antweb::Diff
   def match_fails_at antcat, antweb
     index = 0
     while index < antcat.size && index < antweb.size
-      return index if antcat[index] != antweb[index]   
+      return index if antcat[index] != antweb[index]
       index += 1
     end
     antcat[index] == antweb[index] ? nil : index
