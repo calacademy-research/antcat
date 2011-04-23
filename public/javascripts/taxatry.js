@@ -1,8 +1,17 @@
 $(function() {
-  send_options_when_taxon_clicked()
+  setupPage();
 })
 
-function send_options_when_taxon_clicked() {
-  $('.taxon a').click(function(){
-  })
+function setupPage() {
+  setPageHeight();
+  $(window).resize(function() {
+    setPageHeight();
+  });
 }
+
+function setPageHeight() {
+  height = $('#page').height() - 240
+  $("#page_contents").height(height);
+  $(".browser").height(height - 48 - $("#taxon_header").height());
+}
+

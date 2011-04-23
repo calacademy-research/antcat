@@ -24,19 +24,18 @@
 
 = render 'search_results', :search_results => @search_results, :taxon => @taxon
 
-%span.taxon_header
-  = raw @taxon_header_name
-%span
-  = @taxon_header_status
-
 - if @taxon
-  .statistics
-    = taxon_statistics @taxon
-
-- if @taxonomic_history
-  .taxonomic_history
-    = raw @taxonomic_history
-  %hr
+  #taxon_header
+    %span.taxon_header
+      = raw @taxon_header_name
+    %span
+      = @taxon_header_status
+    .statistics
+      = taxon_statistics @taxon
+    - if @taxonomic_history
+      .taxonomic_history
+        = raw @taxonomic_history
+      %hr
 
 .browser
   = render 'rank', :items => @subfamilies, :selected_item => @selected_subfamily, :header => 'Subfamilies', :q => params[:q], :search_type => params[:search_type]
