@@ -36,8 +36,6 @@ rescue NameError
 end
 
 # ADDED TO DEFAULT
-require 'factory_girl/step_definitions'
-
 Capybara.save_and_open_page_path = '/tmp'
 
 require 'webmock/cucumber'
@@ -45,3 +43,4 @@ WebMock.disable_net_connect! :allow_localhost => true
 
 require 'capybara/firebug'
 require Rails.root + 'spec/factories/factories'
+require 'factory_girl/step_definitions'
