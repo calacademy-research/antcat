@@ -27,10 +27,6 @@ Given /the following unknown references? exists?/ do |table|
   end
 end
 
-Given /an author name exists with a name of "(.*?)"/ do |name|
-  Factory :author_name, :name => name
-end
-
 def create_reference type, hash
   author = hash.delete('author') || hash.delete('authors')
   hash[:citation_year] = hash.delete 'year'
