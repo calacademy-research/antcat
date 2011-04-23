@@ -1,5 +1,5 @@
-- form_for journal do |f|
-  = f.error_messages
+= form_for journal do |f|
+  = render 'shared/errors_for', :resource => journal
   %p
     = f.label :name, 'Journal name'
     %br
