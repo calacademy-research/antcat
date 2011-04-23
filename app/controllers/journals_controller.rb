@@ -8,31 +8,31 @@ class JournalsController < ApplicationController
       format.json {render :json => Journal.search(params[:term]).to_json}
     end
   end
-  
+
   def new
     @journal = Journal.new
   end
-  
+
   def create
     @journal = Journal.new(params[:journal])
     if @journal.save
       flash[:notice] = "Successfully created journal."
-      render :action => 'edit'
+      render :edit
     else
-      render :action => 'new'
+      render :new
     end
   end
-  
+
   def edit
     @journal = Journal.find(params[:id])
   end
-  
+
   def update
     @journal = Journal.find(params[:id])
     if @journal.update_attributes(params[:journal])
       flash[:notice] = "Successfully updated journal."
     end
-    render :action => 'edit'
+    render :edit, :journal => journal
   end
 
 end
