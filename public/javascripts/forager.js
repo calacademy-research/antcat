@@ -21,8 +21,7 @@ function setPageHeight() {
 function setupIndex() {
   $('#index a').live('click', function() {
     id = this.href.match(/\d+/)[0];
-    $('#browser .contents').scrollTo($('#' + id));
-    $('#' + id).effect("highlight", {}, 3000)
+    selectBrowserItem(id);
     return false;
   });
 }
@@ -32,6 +31,13 @@ function setupBrowser() {
   $(window).resize(function() {
     setBrowserWidth();
   });
+  selectBrowserItem(selectedBrowserTaxonID);
+}
+
+function selectBrowserItem(id) {
+  if (!id) return;
+  $('#browser .contents').scrollTo($('#' + id));
+  $('#' + id).effect("highlight", {}, 3000)
 }
 
 function setBrowserWidth() {
