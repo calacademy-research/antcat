@@ -20,10 +20,9 @@ function setPageHeight() {
 
 function setupIndex() {
   $('#index a').live('click', function() {
-    $('#index a').removeClass('selected');
-    $(this).addClass('selected');
     id = this.href.match(/\d+/)[0];
     $('#browser .contents').scrollTo($('#' + id));
+    $('#' + id).effect("highlight", {}, 3000)
     return false;
   });
 }

@@ -16,14 +16,10 @@
 
 #index
   - if @taxon
-    .index_header_taxon
-      = link_to 'All subfamilies', forager_path, :class => 'subfamily taxon valid'
-      %hr
     - @index_header_taxa.each do |index_header_taxon|
       .index_header_taxon
-        - label_and_classes = taxon_label_and_css_classes index_header_taxon[:taxon]
+        - label_and_classes = taxon_label_and_css_classes index_header_taxon[:taxon], true
         = link_to label_and_classes[:label], index_header_taxon[:path], :class => label_and_classes[:css_classes]
-      %hr
 
   - index_items = make_index_groups @taxa, 50, 10
   - index_items.each do |item|
@@ -33,8 +29,6 @@
 #browser
   - if @taxon
     .header
-      - label_and_classes = taxon_label_and_css_classes @taxon
-      %span{:class => label_and_classes[:css_classes]}= label_and_classes[:label]
       .taxonomic_history= raw @taxon.taxonomic_history
     %hr
 
