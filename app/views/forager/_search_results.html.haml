@@ -1,0 +1,14 @@
+- if search_results && search_results.size > 1
+  %table#search_results
+    - rows = make_taxatry_search_results_columns search_results
+    - rows.each do |row|
+      %tr
+        - row.each do |item|
+          - if item
+            %td
+              - css_class = params[:id].to_s == item[:id].to_s ? 'selected' : nil
+              = link_to raw(item[:name]), forager_path(item[:id], :q => params['q'], :search_type => params[:search_type]), :class => css_class
+
+  %hr
+
+

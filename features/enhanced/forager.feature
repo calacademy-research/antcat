@@ -68,3 +68,20 @@ Feature: Using the Forager
     Then I should see "Dolichoderinae" in the index
       And I should see "Myrmicinae" in the index
 
+  Scenario: Searching when no results
+    When I fill in the search box with "asdfjl;jsdf"
+      And I press "Go" by the search box
+    Then I should see "No results found"
+
+  Scenario: Searching when only one genus result
+    Given I should not see "Atta history"
+    When I fill in the search box with "atta"
+      And I press "Go" by the search box
+    Then I should see "Atta history"
+
+  Scenario: Searching when only one species result
+    Given I should not see "nigra history"
+    When I fill in the search box with "nigra"
+      And I press "Go" by the search box
+    Then I should see "nigra history"
+
