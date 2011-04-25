@@ -10,6 +10,7 @@ class ForagerController < ApplicationController
 
     @taxon = params[:id] && Taxon.find(params[:id])
     rank = @taxon && @taxon.rank
+    @header_taxon = @taxon
 
     if rank == 'subfamily'
       @index_header_taxa = [:taxon => @taxon, :path => forager_path, :rank => 'subfamily']
@@ -18,13 +19,13 @@ class ForagerController < ApplicationController
     elsif rank == 'genus' || rank == 'species'
       if rank == 'species'
         @selected_browser_taxon = @taxon
-        @taxon = @taxon.genus
+        @header_taxon = @taxon.genus
       end
       @index_header_taxa = [
-        {:taxon => @taxon.subfamily, :path => forager_path},
-        {:taxon => @taxon, :path => forager_path(@taxon.subfamily.id)},
+        {:taxon => @header_taxon.subfamily, :path => forager_path},
+        {:taxon => @header_taxon, :path => forager_path(@header_taxon.subfamily.id)},
       ]
-      @taxa = @taxon.species
+      @taxa = @header_taxon.species
     end
   end
 

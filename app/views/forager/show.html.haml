@@ -41,15 +41,15 @@
       = link_to item[:label], forager_path(item[:id]), :class => item[:css_classes]
 
 #browser
-  - if @taxon
+  - if @header_taxon
     .header
-      .taxonomic_history= raw @taxon.taxonomic_history
+      .taxonomic_history= raw @header_taxon.taxonomic_history
     %hr
 
   .contents
     - @taxa.each do |taxon|
       .taxon_header{:id => taxon.id}
-        - unless @taxon && @taxon.rank == 'genus'
+        - unless @header_taxon && @header_taxon.rank == 'genus'
           - label_and_classes = taxon_label_and_css_classes taxon
           = link_to label_and_classes[:label], forager_path(taxon), :class => label_and_classes[:css_classes]
       %div{:class => "taxonomic_history #{taxon.rank}"}
