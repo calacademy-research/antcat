@@ -26,6 +26,8 @@
         = @search_results_message
   = render 'shared/catalog_title'
 
+= render 'search_results', :search_results => @search_results, :taxon => @taxon
+
 #index
   - if @taxon
     - @index_header_taxa.each do |index_header_taxon|
