@@ -7,7 +7,8 @@ Feature: Using the Forager
       And a subfamily exists with a name of "Myrmicinae" and a taxonomic history of "<p><b>Myrmicinae</b></p>Myrmicinae history"
       And a genus exists with a name of "Atta" and a subfamily of "Myrmicinae" and a taxonomic history of "Atta history"
       And a genus exists with a name of "Tetramorium" and a subfamily of "Myrmicinae" and a taxonomic history of "Tetramorium history"
-      And a species exists with a name of "nigra" and a genus of "Atta" and a taxonomic history of "nigra history"
+      And a species exists with a name of "nigra" and a genus of "Atta" and a taxonomic history of "Atta nigra history"
+      And a species exists with a name of "nigra" and a genus of "Tetramorium" and a taxonomic history of "Tetramorium nigra history"
     When I go to the Forager
 
   Scenario: Viewing subfamilies
@@ -84,4 +85,11 @@ Feature: Using the Forager
     When I fill in the search box with "nigra"
       And I press "Go" by the search box
     Then I should see "nigra history"
+    Then I should see "Atta nigra history"
 
+  Scenario: Searching when more than one result
+    When I fill in the search box with "nigr"
+      And I press "Go" by the search box
+    Then I should see "Atta nigra" in the search results
+      And I should see "Tetramorium nigra" in the search results
+      And I should see "Atta history"
