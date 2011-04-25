@@ -1,0 +1,23 @@
+- content_for :page_header do
+  #navigation_bar
+    = form_tag @current_path, :method => 'get', :id => 'search_form' do
+      .actions
+        = link_to 'Taxatry', @other_path
+        |
+        = link_to 'References', references_path
+      .search
+        Search for name
+        = select_tag :search_type, options_for_select(['matching', 'beginning with', 'containing'], params[:search_type] || 'beginning with')
+        = hidden_field_tag "id", params[:id]
+        = text_field_tag "q", params[:q]
+        = submit_tag  "Go"
+        - if @search_results.present? && @search_results.size > 1
+          = submit_tag "Clear"
+        = @search_results_message
+  = render 'shared/catalog_title'
+
+= render 'taxatry/search_results', :search_results => @search_results, :taxon => @taxon, :path => :browser_taxatry_path
+
+= yield :taxatry_contents
+
+= render :file => 'layouts/application'

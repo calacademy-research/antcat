@@ -1,13 +1,14 @@
-class Taxatry::IndexController < ApplicationController
-
-  before_filter :search
+class Taxatry::IndexController < TaxatryController
 
   def show
+    @current_path = index_taxatry_path
+    @other_path = browser_taxatry_path
     @subfamilies = Subfamily.all :order => :name
 
     return if @search_results.blank? && params[:id].blank?
 
     @taxon = Taxon.find params[:id]
+    @other_path = browser_taxatry_path(@taxon)
     @taxonomic_history = @taxon.taxonomic_history
 
     case @taxon
@@ -41,28 +42,6 @@ class Taxatry::IndexController < ApplicationController
 
     @taxon_header_name = @taxon.full_name
     @taxon_header_status = @taxon.status.gsub /_/, ' ' if @taxon.invalid?
-  end
-
-  def search
-    if params['commit'] == 'Clear'
-      params['q'] = params['search_type'] = nil
-      return
-    end
-
-    if params['q'].present?
-      params['id'] = nil if params['commit'] == 'Go'
-      @search_results = Taxon.find_name params['q'], params['search_type']
-      unless @search_results.present?
-        @search_results_message = "No results found"
-      else
-        @search_results = @search_results.map do |search_result|
-          {:name => search_result.full_name, :id => search_result.id}
-        end.sort_by {|element| element[:name]}
-        params['id'] = @search_results.first[:id] if params['id'].blank?
-        show
-        true
-      end
-    end
   end
 
 end

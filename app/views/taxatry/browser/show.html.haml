@@ -1,32 +1,13 @@
 - @title = 'Taxatry Index'
 
 - content_for :head do
-  = javascript_include_tag 'taxatry/browser', 'taxon_key'
+  = javascript_include_tag 'taxatry/browser', 'taxatry/taxon_key'
   = javascript_include_tag 'ext/jquery.scrollTo-1.4.2-min'
   = stylesheet_link_tag 'taxatry/browser'
 
   :javascript
     var selectedBrowserTaxonID = #{@selected_browser_taxon.try(:id) || 0};
 
-- content_for :page_header do
-  #navigation_bar
-    = form_tag browser_taxatry_path, :method => 'get', :id => 'search_form' do
-      .actions
-        = link_to 'Taxatry', index_taxatry_path(@taxon)
-        |
-        = link_to 'References', references_path
-      .search
-        Search for name
-        = select_tag :search_type, options_for_select(['matching', 'beginning with', 'containing'], params[:search_type] || 'beginning with')
-        = hidden_field_tag "id", params[:id]
-        = text_field_tag "q", params[:q]
-        = submit_tag  "Go"
-        - if @search_results.present? && @search_results.size > 1
-          = submit_tag "Clear"
-        = @search_results_message
-  = render 'shared/catalog_title'
-
-= render 'taxatry/search_results', :search_results => @search_results, :taxon => @taxon, :path => :browser_taxatry_path
 
 #index
   - if @taxon
