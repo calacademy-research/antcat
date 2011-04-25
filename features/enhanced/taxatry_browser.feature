@@ -93,9 +93,9 @@ Feature: Using the Taxatry browser
       And I should see "Tetramorium nigra" in the search results
       And I should see "Atta history"
 
-  Scenario: Going to Taxatry after finding a species
+  Scenario: Going to the index after finding a species
     When I fill in the search box with "nigr"
       And I press "Go" by the search box
       And I follow "Atta nigra" in the search results
-      And I follow "Taxatry"
+      And I choose "Index"
     Then I should see "Atta nigra"

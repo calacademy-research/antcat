@@ -1,19 +1,15 @@
 - content_for :head do
-  = javascript_include_tag 'taxatry/taxon_key'
+  = stylesheet_link_tag 'taxatry/taxatry'
+  = javascript_include_tag 'taxatry/taxatry', 'taxatry/taxon_key'
 
 - content_for :page_header do
   #navigation_bar
     = form_tag @current_path, :method => 'get', :id => 'search_form' do
       .actions.taxatry_view_selector
-        - if controller.class.name =~ /Browser/
-          = link_to 'Index view', index_taxatry_path(@taxon)
-        - else
-          %span Index view
-
-        - if controller.class.name =~ /Index/
-          = link_to 'Browser view', browser_taxatry_path(@taxon)
-        - else
-          %span Browser view
+        = label_tag 'index_view', 'Index'
+        = radio_button_tag 'view_selector', 'Index', controller.class.name =~ /Index/, :id => 'index_view', :path => index_taxatry_url(@taxon)
+        = label_tag 'browser_view', 'Browser'
+        = radio_button_tag 'view_selector', 'Browser', controller.class.name =~ /Browser/, :id => 'browser_view', :path => browser_taxatry_url(@taxon)
 
       .search
         Search for name

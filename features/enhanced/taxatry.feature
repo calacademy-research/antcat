@@ -5,18 +5,15 @@ Feature: Using the Taxatry
 
   Scenario: Going to landing page
     When I go to the main page
-    Then "Browser view" should be available
-      And "Index view" should not be available
+    Then the "Index" tab should be selected
 
   Scenario: Going from the index to the browser
     When I go to the main page
-    And I follow "Browser view"
-    Then "Index view" should be available
-      And "Browser view" should not be available
+    And I choose "Browser"
+    Then the "Browser" tab should be selected
 
   Scenario: Going from the index to the browser
     When I go to the main page
-      And I follow "Browser view"
-      And I follow "Index view"
-    Then "Browser view" should be available
-      And "Index view" should not be available
+      And I choose "Browser"
+      And I choose "Index"
+    Then the "Index" tab should be selected
