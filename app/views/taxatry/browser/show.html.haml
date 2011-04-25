@@ -31,7 +31,7 @@
       .taxon_header{:id => taxon.id}
         - unless @header_taxon && @header_taxon.rank == 'genus'
           - label_and_classes = taxon_label_and_css_classes taxon
-          = link_to label_and_classes[:label], browser_taxatry_path(taxon), :class => label_and_classes[:css_classes]
+          = link_to label_and_classes[:label], browser_taxatry_path(taxon, @search_params), :class => label_and_classes[:css_classes]
       %div{:class => "taxonomic_history #{taxon.rank}"}
         = raw taxon.taxonomic_history
     - 100.times do

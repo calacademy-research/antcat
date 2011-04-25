@@ -11,7 +11,7 @@ class Taxatry::BrowserController < TaxatryController
     @header_taxon = @taxon
 
     if rank == 'subfamily'
-      @index_header_taxa = [:taxon => @taxon, :path => browser_taxatry_path, :rank => 'subfamily']
+      @index_header_taxa = [:taxon => @taxon, :path => browser_taxatry_path(nil, @search_params)]
       @taxa = @taxon.genera
 
     elsif rank == 'genus' || rank == 'species'
@@ -20,8 +20,8 @@ class Taxatry::BrowserController < TaxatryController
         @header_taxon = @taxon.genus
       end
       @index_header_taxa = [
-        {:taxon => @header_taxon.subfamily, :path => browser_taxatry_path},
-        {:taxon => @header_taxon, :path => browser_taxatry_path(@header_taxon.subfamily.id)},
+        {:taxon => @header_taxon.subfamily, :path => browser_taxatry_path(nil, @search_params)},
+        {:taxon => @header_taxon, :path => browser_taxatry_path(@header_taxon.subfamily.id, @search_params)},
       ]
       @taxa = @header_taxon.species
     end

@@ -4,13 +4,16 @@ class TaxatryController < ApplicationController
 
   def search
     if params['commit'] == 'Clear'
+      @search_params = {}
       params['q'] = params['search_type'] = nil
       return
     end
 
-    if params['q'].present?
+    @search_params = {'search_type' => params['search_type'], 'q' => params['q']}
+
+    if @search_params['q'].present?
       params['id'] = nil if params['commit'] == 'Go'
-      @search_results = Taxon.find_name params['q'], params['search_type']
+      @search_results = Taxon.find_name @search_params['q'], @search_params['search_type']
       unless @search_results.present?
         @search_results_message = "No results found"
       else

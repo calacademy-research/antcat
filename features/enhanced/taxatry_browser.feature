@@ -8,6 +8,7 @@ Feature: Using the Taxatry browser
       And a genus exists with a name of "Atta" and a subfamily of "Myrmicinae" and a taxonomic history of "Atta history"
       And a genus exists with a name of "Tetramorium" and a subfamily of "Myrmicinae" and a taxonomic history of "Tetramorium history"
       And a species exists with a name of "nigra" and a genus of "Atta" and a taxonomic history of "Atta nigra history"
+      And a species exists with a name of "attaxus" and a genus of "Atta" and a taxonomic history of "Atta attaxus history"
       And a species exists with a name of "nigra" and a genus of "Tetramorium" and a taxonomic history of "Tetramorium nigra history"
     When I go to the Taxatry browser
 
@@ -99,3 +100,32 @@ Feature: Using the Taxatry browser
       And I follow "Atta nigra" in the search results
       And I choose "Index"
     Then I should see "Atta nigra"
+
+  Scenario: Keeping search results after selecting from the browser index
+    When I fill in the search box with "nigr"
+      And I press "Go" by the search box
+    Then I should see "Atta nigra" in the search results
+      And I should see "Tetramorium nigra" in the search results
+    When I follow "Myrmicinae" in the index
+    Then I should see "Atta nigra" in the search results
+      And I should see "Tetramorium nigra" in the search results
+
+  Scenario: Keeping search results after selecting from the browser contents
+    When I fill in the search box with "Atta"
+      And I press "Go" by the search box
+    Then I should see "Myrmicinae Atta" in the search results
+      And I should see "Atta attaxus" in the search results
+      And show me the page
+    When I follow "Atta" in the browser
+    Then I should see "Myrmicinae Atta" in the search results
+      And I should see "Atta attaxus" in the search results
+
+  Scenario: Keeping search results after going to the index
+    When I fill in the search box with "nigr"
+      And I press "Go" by the search box
+    Then I should see "Atta nigra" in the search results
+      And I should see "Tetramorium nigra" in the search results
+    When I choose "Index"
+    Then I should see "Atta nigra" in the search results
+      And I should see "Tetramorium nigra" in the search results
+
