@@ -4,10 +4,17 @@
 - content_for :page_header do
   #navigation_bar
     = form_tag @current_path, :method => 'get', :id => 'search_form' do
-      .actions
-        = link_to 'Taxatry', @other_path
-        |
-        = link_to 'References', references_path
+      .actions.taxatry_view_selector
+        - if controller.class.name =~ /Browser/
+          = link_to 'Index view', index_taxatry_path(@taxon)
+        - else
+          %span Index view
+
+        - if controller.class.name =~ /Index/
+          = link_to 'Browser view', browser_taxatry_path(@taxon)
+        - else
+          %span Browser view
+
       .search
         Search for name
         = select_tag :search_type, options_for_select(['matching', 'beginning with', 'containing'], params[:search_type] || 'beginning with')
