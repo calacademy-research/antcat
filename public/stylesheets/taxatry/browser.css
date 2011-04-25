@@ -1,0 +1,49 @@
+html, body, #page, .rank, .browser {
+  height: 100%; }
+
+#index {
+  float: left;
+  width: 160px;
+  margin-right: 10px;
+  font-weight: normal;
+  border-right: solid black 1px; }
+
+#browser {
+  float: left; }
+  #browser .header {
+    max-height: 12.2em;
+    overflow: auto; }
+    #browser .header .taxon {
+      font-size: 1.3em; }
+  #browser .contents {
+    overflow: auto; }
+  #browser hr {
+    margin-top: 14px;
+    margin-bottom: 10px; }
+
+#page_contents {
+  padding: 0px 0 0 0; }
+
+.taxon_header {
+  font-weight: bold; }
+
+.taxonomic_history {
+  padding-bottom: 10px; }
+
+.index_header_taxon, .index_taxon {
+  padding-left: 12px; }
+
+.index_header_taxon {
+  font-size: 16px;
+  line-height: 20px;
+  border-bottom: 1px black solid; }
+
+.taxonomic_history.species {
+  padding-bottom: 1px; }
+  .taxonomic_history.species p {
+    text-indent: -3em;
+    margin-left: 3em; }
+
+hr {
+  margin-left: -12px;
+  margin-right: -12px; }

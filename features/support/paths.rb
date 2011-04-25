@@ -13,10 +13,10 @@ module NavigationHelpers
       duplicate_references_path
     when /the "Edit journals" page/
       journals_path
-    when /the Taxatry/
-      taxatry_path
-    when /the Forager/
-      forager_path
+    when /the Taxatry index/
+      index_taxatry_path
+    when /the Taxatry browser/
+      browser_taxatry_path
     when /the forgot password page/
       '/users/password/new'
     when /the login page/

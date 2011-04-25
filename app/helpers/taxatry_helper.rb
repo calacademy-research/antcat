@@ -1,8 +1,10 @@
+require 'snake'
+
 module TaxatryHelper
 
   def taxon_link taxon, selected, search_params
     label_and_classes = taxon_label_and_css_classes taxon, taxon == selected
-    link_to label_and_classes[:label], taxatry_path(taxon, search_params), :class => label_and_classes[:css_classes]
+    link_to label_and_classes[:label], index_taxatry_path(taxon, search_params), :class => label_and_classes[:css_classes]
   end
 
   def snake_taxon_columns items
@@ -83,6 +85,21 @@ module TaxatryHelper
 
   def ordered_statuses
     statuses.keys
+  end
+
+  def make_index_groups taxa, max_row_count, abbreviated_length
+    items_per_row = (taxa.count.to_f / max_row_count).ceil
+    return [] if items_per_row.zero?
+    taxa.sort_by(&:name).in_groups_of(items_per_row, false).inject([]) do |groups, group|
+      result = {:id => group.first.id}
+      if group.size > 1
+        result[:css_classes] = taxon_rank_css_classes(group.first).join ' '
+        result[:label] = "#{group.first.name[0, abbreviated_length]}-#{group.last.name[0, abbreviated_length]}"
+      else
+        result.merge! taxon_label_and_css_classes group.first
+      end
+      groups << result
+    end
   end
 
 end

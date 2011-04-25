@@ -12,7 +12,7 @@ Feature: Using the Taxatry
       And a species exists with a name of "sessile" and a genus of "Tapinoma" and a taxonomic history of "sessile history"
       And a species exists with a name of "emeryi" and a genus of "Tapinoma" and a taxonomic history of "emeryi history"
       And a species exists with a name of "emeryi" and a genus of "Atta" and a taxonomic history of "atta emeryi history"
-    When I go to the Taxatry
+    When I go to the Taxatry index
 
   Scenario: Taxatry is the landing page
     When I go to the main page

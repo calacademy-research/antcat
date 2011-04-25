@@ -1,4 +1,4 @@
-class ForagerController < ApplicationController
+class Taxatry::BrowserController < ApplicationController
 
   before_filter :search
 
@@ -13,7 +13,7 @@ class ForagerController < ApplicationController
     @header_taxon = @taxon
 
     if rank == 'subfamily'
-      @index_header_taxa = [:taxon => @taxon, :path => forager_path, :rank => 'subfamily']
+      @index_header_taxa = [:taxon => @taxon, :path => browser_taxatry_path, :rank => 'subfamily']
       @taxa = @taxon.genera
 
     elsif rank == 'genus' || rank == 'species'
@@ -22,8 +22,8 @@ class ForagerController < ApplicationController
         @header_taxon = @taxon.genus
       end
       @index_header_taxa = [
-        {:taxon => @header_taxon.subfamily, :path => forager_path},
-        {:taxon => @header_taxon, :path => forager_path(@header_taxon.subfamily.id)},
+        {:taxon => @header_taxon.subfamily, :path => browser_taxatry_path},
+        {:taxon => @header_taxon, :path => browser_taxatry_path(@header_taxon.subfamily.id)},
       ]
       @taxa = @header_taxon.species
     end
