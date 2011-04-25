@@ -319,3 +319,8 @@ And /I fill in "(.*?)" with "(.*?)" (?:with)?in (.*)$/ do |field, contents, loca
     When %{I fill in "#{field}" with "#{contents}"}
   end
 end
+
+Then /"(.*?)" should (not )?be available/ do |button, not_available|
+  tag = not_available ? 'span' : 'a'
+  page.should have_css ".taxatry_view_selector #{tag}", :text => button
+end

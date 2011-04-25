@@ -1,4 +1,4 @@
-Feature: Using the Taxatry
+Feature: Using the Taxatry index
   As a user of AntCat
   I want to view the taxonomy of ants hierarchically
   So that I can choose a taxon easily
