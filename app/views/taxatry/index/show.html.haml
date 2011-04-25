@@ -17,7 +17,7 @@
         = raw @taxonomic_history
       %hr
 
-.browser
+#browser
   = render 'rank', :items => @subfamilies, :selected_item => @selected_subfamily, :header => 'Subfamilies', :q => params[:q], :search_type => params[:search_type]
   = render 'rank', :items => @genera, :selected_item => @selected_genus, :header => 'Genera', :q => params[:q], :search_type => params[:search_type]
   = render 'rank', :items => @species, :selected_item => @selected_species, :header => 'Species', :q => params[:q], :search_type => params[:search_type]

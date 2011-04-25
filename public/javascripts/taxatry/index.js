@@ -12,6 +12,6 @@ function setupPage() {
 function setPageHeight() {
   height = $('#page').height() - 240
   $("#page_contents").height(height);
-  $(".browser").height(height - 48 - $("#taxon_header").height());
+  $("#browser").height(height - 48 - $("#taxon_header").height());
 }
 
