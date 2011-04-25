@@ -320,7 +320,6 @@ And /I fill in "(.*?)" with "(.*?)" (?:with)?in (.*)$/ do |field, contents, loca
   end
 end
 
-Then /"(.*?)" should (not )?be available/ do |button, not_available|
-  tag = not_available ? 'span' : 'a'
-  page.should have_css ".taxatry_view_selector #{tag}", :text => button
+Then /"(.*?)" tab should be selected/ do |tab|
+  page.should have_css ".taxatry_view_selector input[checked=checked][value=#{tab}]"
 end
