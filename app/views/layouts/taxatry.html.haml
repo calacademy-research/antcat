@@ -1,3 +1,6 @@
+- content_for :head do
+  = javascript_include_tag 'taxatry/taxon_key'
+
 - content_for :page_header do
   #navigation_bar
     = form_tag @current_path, :method => 'get', :id => 'search_form' do
@@ -16,8 +19,9 @@
         = @search_results_message
   = render 'shared/catalog_title'
 
-= render 'taxatry/search_results', :search_results => @search_results, :taxon => @taxon, :path => :browser_taxatry_path
-
-= yield :taxatry_contents
+- content_for :page_contents do
+  = render 'taxatry/search_results', :search_results => @search_results, :taxon => @taxon, :path => :browser_taxatry_path
+  = yield
+  = render 'taxatry/taxon_key'
 
 = render :file => 'layouts/application'

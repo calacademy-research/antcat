@@ -1,28 +1,8 @@
-- @title = 'Taxatry'
+- @title = 'Taxatry Browser'
 
 - content_for :head do
-  = javascript_include_tag 'taxatry/index', 'taxatry/taxon_key'
+  = javascript_include_tag 'taxatry/index'
   = stylesheet_link_tag 'taxatry/index'
-
-- content_for :page_header do
-  #navigation_bar
-    = form_tag index_taxatry_path, :method => 'get', :id => 'search_form' do
-      .actions
-        = link_to 'Forager', browser_taxatry_path(@taxon)
-        |
-        = link_to 'References', references_path
-      .search
-        Search for name
-        = select_tag :search_type, options_for_select(['matching', 'beginning with', 'containing'], params[:search_type] || 'beginning with')
-        = hidden_field_tag "id", params[:id]
-        = text_field_tag "q", params[:q]
-        = submit_tag  "Go"
-        - if @search_results.present? && @search_results.size > 1
-          = submit_tag "Clear"
-        = @search_results_message
-  = render 'shared/catalog_title'
-
-= render 'taxatry/search_results', :search_results => @search_results, :taxon => @taxon, :path => :index_taxatry_path
 
 - if @taxon
   #taxon_header
@@ -41,7 +21,3 @@
   = render 'rank', :items => @subfamilies, :selected_item => @selected_subfamily, :header => 'Subfamilies', :q => params[:q], :search_type => params[:search_type]
   = render 'rank', :items => @genera, :selected_item => @selected_genus, :header => 'Genera', :q => params[:q], :search_type => params[:search_type]
   = render 'rank', :items => @species, :selected_item => @selected_species, :header => 'Species', :q => params[:q], :search_type => params[:search_type]
-
-.clear
-
-= render 'taxatry/taxon_key'
