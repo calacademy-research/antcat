@@ -43,7 +43,7 @@
       #page_alert
         = flash[:alert]
       #page_contents
-        = yield
+        = content_for?(:page_contents) ? yield(:page_contents) : yield
       %hr
 
       #site_footer

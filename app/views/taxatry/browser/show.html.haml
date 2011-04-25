@@ -1,13 +1,12 @@
 - @title = 'Taxatry Index'
 
 - content_for :head do
-  = javascript_include_tag 'taxatry/browser', 'taxatry/taxon_key'
+  = javascript_include_tag 'taxatry/browser'
   = javascript_include_tag 'ext/jquery.scrollTo-1.4.2-min'
   = stylesheet_link_tag 'taxatry/browser'
 
   :javascript
     var selectedBrowserTaxonID = #{@selected_browser_taxon.try(:id) || 0};
-
 
 #index
   - if @taxon
@@ -38,7 +37,3 @@
     - 100.times do
       .taxon_header
         &nbsp;
-
-.clear
-
-= render 'taxatry/taxon_key'
