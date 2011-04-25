@@ -1,4 +1,4 @@
-html, body, #page, .rank, .browser {
+html, body, #page, .rank, #browser {
   height: 100%; }
 
 #index {
@@ -18,20 +18,16 @@ html, body, #page, .rank, .browser {
   #browser .contents {
     overflow: auto; }
   #browser hr {
-    margin-top: 14px;
-    margin-bottom: 10px; }
+    margin-top: 6px; }
 
 #page_contents {
   padding: 0px 0 0 0; }
 
+#browser a {
+  margin-left: -6px; }
+
 .taxon_header {
   font-weight: bold; }
-
-.taxonomic_history {
-  padding-bottom: 10px; }
-
-.index_header_taxon, .index_taxon {
-  padding-left: 12px; }
 
 .index_header_taxon {
   font-size: 16px;
