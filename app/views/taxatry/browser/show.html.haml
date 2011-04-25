@@ -1,18 +1,18 @@
-- @title = 'Forager'
+- @title = 'Taxatry Index'
 
 - content_for :head do
-  = javascript_include_tag 'forager', 'taxon_key'
+  = javascript_include_tag 'taxatry/browser', 'taxon_key'
   = javascript_include_tag 'ext/jquery.scrollTo-1.4.2-min'
-  = stylesheet_link_tag 'forager'
+  = stylesheet_link_tag 'taxatry/browser'
 
   :javascript
     var selectedBrowserTaxonID = #{@selected_browser_taxon.try(:id) || 0};
 
 - content_for :page_header do
   #navigation_bar
-    = form_tag forager_path, :method => 'get', :id => 'search_form' do
+    = form_tag browser_taxatry_path, :method => 'get', :id => 'search_form' do
       .actions
-        = link_to 'Taxatry', taxatry_path(@taxon)
+        = link_to 'Taxatry', index_taxatry_path(@taxon)
         |
         = link_to 'References', references_path
       .search
@@ -26,7 +26,7 @@
         = @search_results_message
   = render 'shared/catalog_title'
 
-= render 'search_results', :search_results => @search_results, :taxon => @taxon
+= render 'taxatry/search_results', :search_results => @search_results, :taxon => @taxon, :path => :browser_taxatry_path
 
 #index
   - if @taxon
@@ -38,7 +38,7 @@
   - index_items = make_index_groups @taxa, 50, 10
   - index_items.each do |item|
     .index_taxon
-      = link_to item[:label], forager_path(item[:id]), :class => item[:css_classes]
+      = link_to item[:label], browser_taxatry_path(item[:id]), :class => item[:css_classes]
 
 #browser
   - if @header_taxon
@@ -51,7 +51,7 @@
       .taxon_header{:id => taxon.id}
         - unless @header_taxon && @header_taxon.rank == 'genus'
           - label_and_classes = taxon_label_and_css_classes taxon
-          = link_to label_and_classes[:label], forager_path(taxon), :class => label_and_classes[:css_classes]
+          = link_to label_and_classes[:label], browser_taxatry_path(taxon), :class => label_and_classes[:css_classes]
       %div{:class => "taxonomic_history #{taxon.rank}"}
         = raw taxon.taxonomic_history
     - 100.times do
@@ -60,4 +60,4 @@
 
 .clear
 
-= render 'shared/taxon_key'
+= render 'taxatry/taxon_key'

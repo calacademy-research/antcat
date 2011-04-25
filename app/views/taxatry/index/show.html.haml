@@ -6,9 +6,9 @@
 
 - content_for :page_header do
   #navigation_bar
-    = form_tag taxatry_path, :method => 'get', :id => 'search_form' do
+    = form_tag index_taxatry_path, :method => 'get', :id => 'search_form' do
       .actions
-        = link_to 'Forager', forager_path(@taxon)
+        = link_to 'Forager', browser_taxatry_path(@taxon)
         |
         = link_to 'References', references_path
       .search
@@ -22,7 +22,7 @@
         = @search_results_message
   = render 'shared/catalog_title'
 
-= render 'search_results', :search_results => @search_results, :taxon => @taxon
+= render 'taxatry/search_results', :search_results => @search_results, :taxon => @taxon, :path => :index_taxatry_path
 
 - if @taxon
   #taxon_header
@@ -44,4 +44,4 @@
 
 .clear
 
-= render 'shared/taxon_key'
+= render 'taxatry/taxon_key'

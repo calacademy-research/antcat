@@ -1,4 +1,4 @@
-Feature: Using the Forager
+Feature: Using the Taxatry browser
   As a user of AntCat
   I want to browse the ant catalog
 
@@ -9,7 +9,7 @@ Feature: Using the Forager
       And a genus exists with a name of "Tetramorium" and a subfamily of "Myrmicinae" and a taxonomic history of "Tetramorium history"
       And a species exists with a name of "nigra" and a genus of "Atta" and a taxonomic history of "Atta nigra history"
       And a species exists with a name of "nigra" and a genus of "Tetramorium" and a taxonomic history of "Tetramorium nigra history"
-    When I go to the Forager
+    When I go to the Taxatry browser
 
   Scenario: Viewing subfamilies
     Then I should see "Dolichoderinae" in the browser

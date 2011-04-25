@@ -1,12 +1,11 @@
 AntCat::Application.routes.draw do
 
-  root :to => "taxatry#show"
+  root :to => "taxatry/index#show"
 
   resources :authors, :only => [:index]
   resources :bolton_matches, :only => [:index]
   match     '/documents/:id/:file_name', :to => 'references#download', :file_name => /.+/, :via => :get
   resources :duplicate_references, :only => [:index]
-  match     'forager/(:id)', :to => 'forager#show', :as => 'forager'
   resources :journals
   resources :publishers, :only => [:index]
   resources :references, :only => [:index, :update, :create, :destroy] do
@@ -14,8 +13,10 @@ AntCat::Application.routes.draw do
   end
   resources :species, :only => [:index]
   resources :styles, :only => [:index]
-  match     'taxatry/(:id)', :to => 'taxatry#show', :as => 'taxatry'
-
+  resource  :taxatry, :only => [] do
+    match     'index/(:id)', :to => 'taxatry/index#show', :as => 'index'
+    match     'browser/(:id)', :to => 'taxatry/browser#show', :as => 'browser'
+  end
   devise_for :users
 
 end

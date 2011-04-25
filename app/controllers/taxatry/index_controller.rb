@@ -1,6 +1,4 @@
-require 'snake'
-
-class TaxatryController < ApplicationController
+class Taxatry::IndexController < ApplicationController
 
   before_filter :search
 
