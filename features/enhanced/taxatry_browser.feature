@@ -110,16 +110,6 @@ Feature: Using the Taxatry browser
     Then I should see "Atta nigra" in the search results
       And I should see "Tetramorium nigra" in the search results
 
-  Scenario: Keeping search results after selecting from the browser contents
-    When I fill in the search box with "Atta"
-      And I press "Go" by the search box
-    Then I should see "Myrmicinae Atta" in the search results
-      And I should see "Atta attaxus" in the search results
-      And show me the page
-    When I follow "Atta" in the browser
-    Then I should see "Myrmicinae Atta" in the search results
-      And I should see "Atta attaxus" in the search results
-
   Scenario: Keeping search results after going to the index
     When I fill in the search box with "nigr"
       And I press "Go" by the search box
