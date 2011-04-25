@@ -84,7 +84,6 @@ Feature: Using the Forager
     Given I should not see "nigra history"
     When I fill in the search box with "nigra"
       And I press "Go" by the search box
-    Then I should see "nigra history"
     Then I should see "Atta nigra history"
 
   Scenario: Searching when more than one result
@@ -93,3 +92,10 @@ Feature: Using the Forager
     Then I should see "Atta nigra" in the search results
       And I should see "Tetramorium nigra" in the search results
       And I should see "Atta history"
+
+  Scenario: Going to Taxatry after finding a species
+    When I fill in the search box with "nigr"
+      And I press "Go" by the search box
+      And I follow "Atta nigra" in the search results
+      And I follow "Taxatry"
+    Then I should see "Atta nigra"
