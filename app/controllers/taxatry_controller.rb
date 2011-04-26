@@ -1,6 +1,10 @@
 class TaxatryController < ApplicationController
 
-  before_filter :search
+  caches_action :show
+
+  def show
+    search
+  end
 
   def search
     if params['commit'] == 'Clear'
