@@ -9,10 +9,6 @@
   #navigation_bar
     = form_tag references_path, :method => 'get', :id => 'search_form' do
       .actions
-        = link_to 'Taxatry', index_taxatry_path
-        |
-        = link_to 'Forager', browser_taxatry_path
-        |
         = link_to 'Latest additions', references_path(:commit => 'new')
         - if user_signed_in?
           |
