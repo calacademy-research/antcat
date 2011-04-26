@@ -2,7 +2,7 @@ class Taxatry::BrowserController < TaxatryController
 
   def show
     unless params[:id]
-      @taxa = Subfamily.all
+      @taxa = Subfamily.order(:name).all
       return
     end
 
