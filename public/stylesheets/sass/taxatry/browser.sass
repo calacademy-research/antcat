@@ -3,22 +3,31 @@
 html, body, #page, .rank, #browser
   height: 100%
 
+body
+  overflow-y: hidden
+  
+#page_contents, body
+  overflow-x: hidden
+
 #index
   float: left
-  width: 160px
+  width: 168px
   margin-right: 10px
   font-weight: normal
   border-right: solid black 1px
+  overflow-y: auto
 
 #browser
+  overflow-y: auto
+  overflow-x: hidden
   float: left
   .header
     max-height: 12.2em
-    overflow: auto
+    overflow-y: auto
     .taxon
       font-size: 1.3em
   .contents
-    overflow: auto
+    overflow-y: auto
   hr
     margin-top: 6px
 
