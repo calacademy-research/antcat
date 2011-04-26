@@ -104,6 +104,5 @@ Feature: Using the Taxatry index
     When I fill in the search box with "emeryi"
       And I press "Go" by the search box
       And I choose "Browser"
-      And show me the page
     Then I should see "Dolichoderinae Tapinoma emeryi" within the search results
       And I should see "Dolichoderinae Atta emeryi" within the search results
