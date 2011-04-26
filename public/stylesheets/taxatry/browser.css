@@ -20,12 +20,6 @@ html, body, #page, .rank, #browser {
   #browser hr {
     margin-top: 6px; }
 
-#page_contents {
-  padding: 0px 0 0 0; }
-
-#browser a {
-  margin-left: -6px; }
-
 .taxon_header {
   font-weight: bold; }
 
@@ -33,6 +27,14 @@ html, body, #page, .rank, #browser {
   font-size: 16px;
   line-height: 20px;
   border-bottom: 1px black solid; }
+
+#index a {
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+  line-height: 1em;
+  margin-left: 8px; }
 
 .taxonomic_history.species {
   padding-bottom: 1px; }
@@ -43,3 +45,11 @@ html, body, #page, .rank, #browser {
 hr {
   margin-left: -12px;
   margin-right: -12px; }
+
+#browser hr {
+  margin-left: -12px;
+  margin-right: -12px;
+  margin-bottom: 4px; }
+
+.contents .taxonomic_history {
+  margin-bottom: 6px; }

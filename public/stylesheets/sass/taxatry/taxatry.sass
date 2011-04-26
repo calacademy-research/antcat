@@ -9,21 +9,42 @@
     label
       height: 28px
 
-#page_contents a
-  padding-left: 6px
-  padding-right: 6px
-  padding-top: 2px
-  padding-bottom: 2px
-  margin-top: 2px
-  margin-bottom: 2px
-  line-height: 1.5em
+//#page_contents a
+  //padding-left: 6px
+  //padding-right: 6px
+  //padding-top: 2px
+  //padding-bottom: 2px
+  //margin-top: 2px
+  //margin-bottom: 2px
+  //line-height: 1.5em
 
-#search_results a
-  margin-bottom: 0
-  margin-top: 0
-  line-height: 1em
-  padding-top: 0
-  padding-bottom: 0
+#search_results
+  @include margins
+  margin-bottom: 3px
+  a
+    padding-top: 0
+    padding-bottom: 0
+    padding-left: $link_padding
+    padding-right: $link_padding
+    margin-right: 6px
+    line-height: 1em
 
 #page_contents
   padding: 0
+
+#taxon_key
+  width: 100%
+  td
+    white-space: nowrap
+  span
+    font-style: italic
+    margin-right: 8px
+    &.title
+      font-weight: bold
+      font-style: normal
+      margin-right: 4px
+  a
+    cursor: pointer
+    font-weight: bold
+    font-style: normal
+    margin-left: 10px
