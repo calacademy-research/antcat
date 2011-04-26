@@ -7,6 +7,7 @@ Feature: Using the Taxatry browser
       And a subfamily exists with a name of "Myrmicinae" and a taxonomic history of "<p><b>Myrmicinae</b></p>Myrmicinae history"
       And a genus exists with a name of "Atta" and a subfamily of "Myrmicinae" and a taxonomic history of "Atta history"
       And a genus exists with a name of "Tetramorium" and a subfamily of "Myrmicinae" and a taxonomic history of "Tetramorium history"
+      And a genus exists with a name of "Myrmicinae" and a taxonomic history of "Myrmicinae history"
       And a species exists with a name of "nigra" and a genus of "Atta" and a taxonomic history of "Atta nigra history"
       And a species exists with a name of "attaxus" and a genus of "Tetramorium" and a taxonomic history of "Tetramorium attaxus history"
       And a species exists with a name of "nigra" and a genus of "Tetramorium" and a taxonomic history of "Tetramorium nigra history"
@@ -128,4 +129,9 @@ Feature: Using the Taxatry browser
     When I choose "Index"
     Then I should see "Atta nigra" in the search results
       And I should see "Tetramorium nigra" in the search results
+
+  Scenario: Finding a genus without a subfamily
+    When I fill in the search box with "myrmi"
+      And I press "Go" by the search box
+    Then I should see "Myrmicinae history"
 

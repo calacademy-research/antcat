@@ -19,10 +19,13 @@ class Taxatry::BrowserController < TaxatryController
         @selected_browser_taxon = @taxon
         @header_taxon = @taxon.genus
       end
-      @index_header_taxa = [
-        {:taxon => @header_taxon.subfamily, :path => browser_taxatry_path(nil, @search_params)},
-        {:taxon => @header_taxon, :path => browser_taxatry_path(@header_taxon.subfamily.id, @search_params)},
-      ]
+      @index_header_taxa = []
+      if @header_taxon.subfamily
+        @index_header_taxa = [
+          {:taxon => @header_taxon.subfamily, :path => browser_taxatry_path(nil, @search_params)},
+          {:taxon => @header_taxon, :path => browser_taxatry_path(@header_taxon.subfamily, @search_params)},
+        ]
+      end
       @taxa = @header_taxon.species
     end
   end

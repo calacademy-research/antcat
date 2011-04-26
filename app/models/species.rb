@@ -13,7 +13,9 @@ class Species < Taxon
   end
 
   def full_name
-    "#{subfamily.name} <i>#{genus.name} #{name}</i>"
+    full_name = ''
+    full_name << "#{subfamily.name} " if subfamily
+    full_name << "<i>#{genus.name} #{name}</i>"
   end
 
   def statistics

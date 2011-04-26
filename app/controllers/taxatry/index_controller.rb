@@ -33,11 +33,13 @@ class Taxatry::IndexController < TaxatryController
       @taxon_header_name = subfamily_name + '<i>' + @taxon.name + '</i>'
     when Species
       @selected_subfamily = @taxon.genus.subfamily
-      @genera = @selected_subfamily.genera
+      @genera = @selected_subfamily.genera if @selected_subfamily
       @selected_genus = @taxon.genus
       @species = @taxon.genus.species
       @selected_species = @taxon
-      @taxon_header_name = @taxon.genus.subfamily.name + ' ' + '<i>' + @taxon.genus.name + ' ' + @taxon.name + '</i>'
+      @taxon_header_name = ''
+      @taxon_header_name << @taxon.genus.subfamily.name + ' ' if @taxon.genus.subfamily
+      @taxon_header_name << '<i>' + @taxon.genus.name + ' ' + @taxon.name + '</i>'
     end
 
     @taxon_header_name = @taxon.full_name

@@ -12,9 +12,13 @@ function setupPage() {
 }
 
 function setPageHeight() {
-  height = $('#page').height() - 240
+  height = $('#page').height() - $('#site_header').height() - $('#page_header').height() - $('#page_notice').height() - $('#page_alert').height() - $('#search_results').height() - $('#taxon_key').height() - $('#site_footer').height() - 4;
   $("#browser").height(height);
-  $("#browser .contents").height(height - $("#browser .header").height() - 38);
+  headerHeight = $("#browser .header").height();
+  // no idea why this is necessary
+  if (headerHeight > 0)
+    headerHeight += 16;
+  $("#browser .contents").height(height - headerHeight);
   $("#index").height(height);
 }
 
