@@ -1,6 +1,8 @@
 class Taxatry::BrowserController < TaxatryController
 
   def show
+    super
+
     unless params[:id]
       @taxa = Subfamily.order(:name).all
       return

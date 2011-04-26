@@ -1,6 +1,8 @@
 class Taxatry::IndexController < TaxatryController
 
   def show
+    super
+
     @current_path = index_taxatry_path
     @other_path = browser_taxatry_path
     @subfamilies = Subfamily.all :order => :name
