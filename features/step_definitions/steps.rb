@@ -323,3 +323,8 @@ end
 Then /"(.*?)" tab should be selected/ do |tab|
   page.should have_css ".taxatry_view_selector input[checked=checked][value=#{tab}]"
 end
+
+Then /I should be in "(.*?)" mode/ do |mode|
+  Then %{the "#{mode}" tab should be selected}
+end
+
