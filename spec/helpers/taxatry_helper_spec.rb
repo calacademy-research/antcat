@@ -32,6 +32,12 @@ describe TaxatryHelper do
       helper.taxon_statistics(species).should == "1 valid subspecies"
     end
 
+    it "should handle when there are no valid rank members" do
+      species = Factory :species
+      Factory :subspecies, :species => species, :status => 'synonym'
+      helper.taxon_statistics(species).should == "(1 synonym)"
+    end
+
     it "should not pluralize certain statuses" do
       genus = Factory :genus
       2.times {Factory :species, :genus => genus, :status => 'valid'}

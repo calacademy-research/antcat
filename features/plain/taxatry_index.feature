@@ -9,6 +9,8 @@ Feature: Using the Taxatry index
       And a genus exists with a name of "Tapinoma" and a subfamily of "Dolichoderinae" and a taxonomic history of "Tapinoma history" and a status of "synonym"
       And a genus exists with a name of "Atta" and a subfamily of "Dolichoderinae" and a taxonomic history of "Atta history"
       And a genus exists with a name of "Tetramorium" and a subfamily of "Dolichoderinae"
+      And a genus exists with a name of "Myrmicium" and a taxonomic history of "Myrmicium history"
+      And a species exists with a name of "shattucki" and a genus of "Myrmicium" and a taxonomic history of "Myrmicium shattucki history"
       And a species exists with a name of "attaxus" and a genus of "Tetramorium" and a taxonomic history of "Tetramorium attaxus history"
       And a species exists with a name of "sessile" and a genus of "Tapinoma" and a taxonomic history of "sessile history"
       And a species exists with a name of "emeryi" and a genus of "Tapinoma" and a taxonomic history of "emeryi history"
@@ -118,3 +120,13 @@ Feature: Using the Taxatry index
       Then I should see "Tetramorium attaxus history"
       And I should be in "Index" mode
 
+  Scenario: Finding a genus without a subfamily
+    When I fill in the search box with "myrmi"
+      And I press "Go" by the search box
+    Then I should see "Myrmicium history"
+
+  Scenario: Selecting a species from a genus without a subfamily
+    When I fill in the search box with "myrmi"
+      And I press "Go" by the search box
+      And I follow "shattucki"
+    Then I should see "Myrmicium shattucki history"

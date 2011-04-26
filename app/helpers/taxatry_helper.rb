@@ -43,8 +43,10 @@ module TaxatryHelper
     statistics = statistics[rank]
     return unless statistics
 
+    string = ''
+
     if statistics['valid']
-      string = format_rank_status_count rank, 'valid', statistics['valid']
+      string << format_rank_status_count(rank, 'valid', statistics['valid'])
       statistics.delete 'valid'
     end
 
@@ -53,8 +55,13 @@ module TaxatryHelper
     end.inject([]) do |status_strings, status|
       status_strings << format_rank_status_count(:genera, status, statistics[status])
     end
-    string << " (#{status_strings.join(', ')})" if status_strings.present?
-    string
+
+    if status_strings.present?
+      string << ' ' if string.present?
+      string << "(#{status_strings.join(', ')})"
+    end
+
+    string.present? && string
   end
 
   def format_rank_status_count rank, status, count
