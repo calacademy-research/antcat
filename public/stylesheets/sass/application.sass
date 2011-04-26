@@ -50,6 +50,13 @@ h3
 input[type=text], input[type=file], input[type=password], textarea
   background-color: $color_input_background
 
+a
+  padding-top: 0
+  padding-bottom: 0
+  padding-left: $link_padding
+  padding-right: $link_padding
+  margin-left: -$link_padding
+
 a, a:active, a:hover, a:focus, a:visited
   color: $color_link
   text-decoration: none
@@ -236,20 +243,3 @@ a:hover.taxon
     width: 100%
     td
       vertical-align: middle
-
-#taxon_key
-  width: 100%
-  td
-    white-space: nowrap
-  span
-    font-style: italic
-    margin-right: 8px
-    &.title
-      font-weight: bold
-      font-style: normal
-      margin-right: 4px
-  a
-    cursor: pointer
-    font-weight: bold
-    font-style: normal
-    margin-left: 10px
