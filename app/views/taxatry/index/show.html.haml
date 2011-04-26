@@ -15,7 +15,7 @@
     - if @taxonomic_history
       .taxonomic_history
         = raw @taxonomic_history
-      %hr
+  %hr
 
 #browser
   = render 'rank', :items => @subfamilies, :selected_item => @selected_subfamily, :header => 'Subfamilies', :q => params[:q], :search_type => params[:search_type]

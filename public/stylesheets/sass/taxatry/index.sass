@@ -6,20 +6,24 @@ html, body, #page, .rank
 #page_contents
   padding-bottom: 3px
 
-.taxon_header
-  font-size: 1.3em
-  font-weight: bold
-
-.taxonomic_history
+#taxon_header
   height: 11em
   overflow: auto
+  margin-bottom: 6px
+  span
+    @include margins
+    font-size: 1.3em
+    font-weight: bold
+
+.taxonomic_history
   position: relative
   text-align: left
   padding: 5px
   padding-top: 0
+  @include margins
 
 #browser
-  margin-top: 10px
+  margin-top: 2px
   min-width: 1200px
 
 .rank
@@ -42,6 +46,6 @@ td.teensy
   line-height: .99em
 
 .statistics
-  padding-left: 5px
+  @include margins
   font-size: .85em
   font-style: italic
