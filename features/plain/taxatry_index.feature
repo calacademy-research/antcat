@@ -9,6 +9,7 @@ Feature: Using the Taxatry index
       And a genus exists with a name of "Tapinoma" and a subfamily of "Dolichoderinae" and a taxonomic history of "Tapinoma history" and a status of "synonym"
       And a genus exists with a name of "Atta" and a subfamily of "Dolichoderinae" and a taxonomic history of "Atta history"
       And a genus exists with a name of "Tetramorium" and a subfamily of "Dolichoderinae"
+      And a species exists with a name of "attaxus" and a genus of "Tetramorium" and a taxonomic history of "Tetramorium attaxus history"
       And a species exists with a name of "sessile" and a genus of "Tapinoma" and a taxonomic history of "sessile history"
       And a species exists with a name of "emeryi" and a genus of "Tapinoma" and a taxonomic history of "emeryi history"
       And a species exists with a name of "emeryi" and a genus of "Atta" and a taxonomic history of "atta emeryi history"
@@ -106,3 +107,14 @@ Feature: Using the Taxatry index
       And I choose "Browser"
     Then I should see "Dolichoderinae Tapinoma emeryi" within the search results
       And I should see "Dolichoderinae Atta emeryi" within the search results
+
+  Scenario: Following a search result
+    When I fill in the search box with "Att"
+      And I press "Go" by the search box
+    Then I should see "Atta" in the search results
+      And I should see "Tetramorium attaxus" in the search results
+      And I should not see "Tetramorium attaxus history"
+    When I follow "Tetramorium attaxus"
+      Then I should see "Tetramorium attaxus history"
+      And I should be in "Index" mode
+

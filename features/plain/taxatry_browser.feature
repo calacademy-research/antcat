@@ -8,7 +8,7 @@ Feature: Using the Taxatry browser
       And a genus exists with a name of "Atta" and a subfamily of "Myrmicinae" and a taxonomic history of "Atta history"
       And a genus exists with a name of "Tetramorium" and a subfamily of "Myrmicinae" and a taxonomic history of "Tetramorium history"
       And a species exists with a name of "nigra" and a genus of "Atta" and a taxonomic history of "Atta nigra history"
-      And a species exists with a name of "attaxus" and a genus of "Atta" and a taxonomic history of "Atta attaxus history"
+      And a species exists with a name of "attaxus" and a genus of "Tetramorium" and a taxonomic history of "Tetramorium attaxus history"
       And a species exists with a name of "nigra" and a genus of "Tetramorium" and a taxonomic history of "Tetramorium nigra history"
     When I go to the Taxatry browser
 
@@ -93,6 +93,16 @@ Feature: Using the Taxatry browser
     Then I should see "Atta nigra" in the search results
       And I should see "Tetramorium nigra" in the search results
       And I should see "Atta history"
+
+  Scenario: Following a search result
+    When I fill in the search box with "Att"
+      And I press "Go" by the search box
+    Then I should see "Atta" in the search results
+      And I should see "Tetramorium attaxus" in the search results
+      And I should not see "Tetramorium attaxus history" in the browser
+    When I follow "Tetramorium attaxus"
+      Then I should see "Tetramorium attaxus history" in the browser
+      And I should be in "Browser" mode
 
   Scenario: Going to the index after finding a species
     When I fill in the search box with "nigr"

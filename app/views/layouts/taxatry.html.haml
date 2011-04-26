@@ -23,7 +23,8 @@
   = render 'shared/catalog_title'
 
 - content_for :page_contents do
-  = render 'taxatry/search_results', :search_results => @search_results, :taxon => @taxon, :path => :browser_taxatry_path
+  = render 'taxatry/search_results', :search_results => @search_results, :taxon => @taxon,
+    :path => controller.class.name =~ /Index/ ? :index_taxatry_path : :browser_taxatry_path
   = yield
   .clear
   = render 'taxatry/taxon_key'
