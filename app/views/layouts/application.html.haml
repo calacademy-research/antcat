@@ -36,12 +36,13 @@
           = yield :page_header
         - else
           %h2.title= @title
-
       %hr
-      #page_notice
-        = flash[:notice]
-      #page_alert
-        = flash[:alert]
+
+      - if flash[:notice].present?
+        #page_notice= flash[:notice]
+      - if flash[:alert].present?
+        #page_alert= flash[:alert]
+
       #page_contents
         = content_for?(:page_contents) ? yield(:page_contents) : yield
       %hr
