@@ -4,20 +4,22 @@
   = javascript_include_tag 'taxatry/index'
   = stylesheet_link_tag 'taxatry/index'
 
-- if @taxon
-  #taxon_header
-    %span.taxon_header
-      = raw @taxon_header_name
-    %span
-      = @taxon_header_status
-    .statistics
-      = taxon_statistics @taxon
-    - if @taxonomic_history
-      .taxonomic_history
-        = raw @taxonomic_history
-  %hr
-
 #browser
-  = render 'rank', :items => @subfamilies, :selected_item => @selected_subfamily, :header => 'Subfamilies', :q => params[:q], :search_type => params[:search_type]
-  = render 'rank', :items => @genera, :selected_item => @selected_genus, :header => 'Genera', :q => params[:q], :search_type => params[:search_type]
-  = render 'rank', :items => @species, :selected_item => @selected_species, :header => 'Species', :q => params[:q], :search_type => params[:search_type]
+  .header
+    - if @taxon
+      #taxon_header
+        %span.taxon_header
+          = raw @taxon_header_name
+        %span
+          = @taxon_header_status
+        .statistics
+          = taxon_statistics @taxon
+        - if @taxonomic_history
+          .taxonomic_history
+            = raw @taxonomic_history
+      %hr
+
+  .contents
+    = render 'rank', :items => @subfamilies, :selected_item => @selected_subfamily, :header => 'Subfamilies', :q => params[:q], :search_type => params[:search_type]
+    = render 'rank', :items => @genera, :selected_item => @selected_genus, :header => 'Genera', :q => params[:q], :search_type => params[:search_type]
+    = render 'rank', :items => @species, :selected_item => @selected_species, :header => 'Species', :q => params[:q], :search_type => params[:search_type]
