@@ -4,13 +4,11 @@ class Taxatry::IndexController < TaxatryController
     super
 
     @current_path = index_taxatry_path
-    @other_path = browser_taxatry_path
     @subfamilies = Subfamily.all :order => :name
 
     return if @search_results.blank? && params[:id].blank?
 
     @taxon = Taxon.find params[:id]
-    @other_path = browser_taxatry_path(@taxon)
     @taxonomic_history = @taxon.taxonomic_history
 
     case @taxon
