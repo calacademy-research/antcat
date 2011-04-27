@@ -23,7 +23,7 @@ class ReferenceFormatter
     s << "#{h @reference.citation_year}. "
     s << "#{self.class.italicize(self.class.add_period_if_necessary(h @reference.title))} "
     s << self.class.italicize(format_citation)
-    s << " [#{h format_date(@reference.date)}]" if @reference.date.present?
+    s << " [#{h format_date(@reference.date)}]" if @reference.date?
     s
   end
 
