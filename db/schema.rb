@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110425024104) do
+ActiveRecord::Schema.define(:version => 20110427163752) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -156,6 +156,7 @@ ActiveRecord::Schema.define(:version => 20110425024104) do
   add_index "references", ["journal_id"], :name => "references_journal_id_idx"
   add_index "references", ["nested_reference_id"], :name => "references_nested_reference_id_idx"
   add_index "references", ["publisher_id"], :name => "references_publisher_id_idx"
+  add_index "references", ["source_reference_id", "source_reference_type"], :name => "references_source_reference_id_source_reference_type_index"
   add_index "references", ["source_reference_id"], :name => "references_source_reference_id_idx"
   add_index "references", ["updated_at"], :name => "references_updated_at_idx"
 
@@ -177,9 +178,12 @@ ActiveRecord::Schema.define(:version => 20110425024104) do
   end
 
   add_index "taxa", ["genus_id"], :name => "taxa_genus_id_idx"
+  add_index "taxa", ["homonym_resolved_to_id"], :name => "taxa_homonym_resolved_to_id_index"
   add_index "taxa", ["id", "type"], :name => "taxa_id_and_type_idx"
   add_index "taxa", ["name"], :name => "taxa_name_idx"
+  add_index "taxa", ["species_id"], :name => "taxa_species_id_index"
   add_index "taxa", ["subfamily_id"], :name => "taxa_subfamily_id_idx"
+  add_index "taxa", ["synonym_of_id"], :name => "taxa_synonym_of_id_index"
   add_index "taxa", ["tribe_id"], :name => "taxa_tribe_id_idx"
   add_index "taxa", ["type"], :name => "taxa_type_idx"
 
