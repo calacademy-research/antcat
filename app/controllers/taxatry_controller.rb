@@ -1,7 +1,5 @@
 class TaxatryController < ApplicationController
 
-  caches_action :show, :layout => false
-
   def show
     search
   end
