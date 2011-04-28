@@ -1,4 +1,4 @@
-grammar Bolton::ReferenceGrammar
+grammar Bolton::Bibliography::ReferenceGrammar
   include CommonGrammar
   include PaginationGrammar
 

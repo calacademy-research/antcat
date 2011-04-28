@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Bolton::Bibliography do
+describe Bolton::Bibliography::Bibliography do
   before do
-    @bibliography = Bolton::Bibliography.new
+    @bibliography = Bolton::Bibliography::Bibliography.new
   end
 
   it "importing a file should call #import_html" do
@@ -234,7 +234,7 @@ Dorow, W.H.O. & Kohout, R.J. 1995. Paleogene ants of the genus <i style="mso-bid
 
  it 'should skip over a note' do
    contents = make_contents %s{Note: in publications the following name appears as either Dubovikoff or Dubovikov; the latter is used here throughout.  }
-   Bolton::ReferenceGrammar.should_not_receive(:parse)
+   Bolton::Bibliography::ReferenceGrammar.should_not_receive(:parse)
    @bibliography.import_html contents
  end
 
