@@ -8,7 +8,7 @@ namespace :bolton do
     desc "Import HTML files of references from Bolton"
     task :references => :environment do
       Bolton::Reference.delete_all
-      Bolton::Bibliography.new(true).import_files Dir.glob "#{$BOLTON_DATA_DIRECTORY}/NGC-REFS(*.htm"
+      Bolton::Bibliography::Bibliography.new(true).import_files Dir.glob "#{$BOLTON_DATA_DIRECTORY}/NGC-REFS(*.htm"
     end
     desc "Import Bolton subfamily catalog"
     task :subfamilies => :environment do
@@ -29,7 +29,7 @@ namespace :bolton do
   namespace :match do
     desc 'Match Bolton references to ours'
     task :references => :environment do
-      Bolton::ReferencesMatcher.new(true).find_matches_for_all
+      Bolton::Bibliography::ReferencesMatcher.new(true).find_matches_for_all
     end
   end
 

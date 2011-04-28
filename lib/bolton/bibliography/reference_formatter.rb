@@ -1,4 +1,4 @@
-class Bolton::ReferenceFormatter
+class Bolton::Bibliography::ReferenceFormatter
   include ERB::Util
 
   def self.format reference, format = :html

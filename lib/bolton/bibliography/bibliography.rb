@@ -2,7 +2,9 @@
 #  1) Open the file in Word
 #  2) Save it as web page
 
-class Bolton::Bibliography
+Citrus.load File.dirname(__FILE__) + '/reference_grammar'
+
+class Bolton::Bibliography::Bibliography
   def initialize show_progress = false
     Progress.init show_progress
     @success_count = 0
@@ -43,7 +45,7 @@ class Bolton::Bibliography
     begin
       original = pre_parse!(string).dup
       return unless reference? string
-      attributes = Bolton::ReferenceGrammar.parse(string, :consume => false).value
+      attributes = Bolton::Bibliography::ReferenceGrammar.parse(string, :consume => false).value
       post_parse attributes
       attributes.merge! :original => original
       reference = Bolton::Reference.create! attributes
