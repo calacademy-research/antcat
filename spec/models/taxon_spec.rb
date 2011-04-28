@@ -177,4 +177,20 @@ describe Taxon do
     end
 
   end
+
+  describe "being a synonym of" do
+
+    it "should not think it's a synonym of something when it's not" do
+      genus = Factory :genus
+      another_genus = Factory :genus
+      genus.should_not be_synonym_of another_genus
+    end
+
+    it "should not think it's a synonym of something when it's not" do
+      senior_synonym = Factory :genus
+      junior_synonym = Factory :genus, :synonym_of => senior_synonym, :status => 'synonym'
+      junior_synonym.should be_synonym_of senior_synonym
+    end
+
+  end
 end
