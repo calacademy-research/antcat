@@ -1,2 +1,2 @@
-Citrus.load 'lib/grammar/common_grammar'
+Citrus.load __FILE__.gsub /\..*$/, ''
 

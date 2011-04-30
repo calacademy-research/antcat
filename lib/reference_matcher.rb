@@ -1,4 +1,5 @@
 class ReferenceMatcher
+
   def match target
     candidates_for(target).inject([]) do |matches, candidate|
       if possible_match? target, candidate
@@ -25,5 +26,6 @@ class ReferenceMatcher
     end
     @candidates || []
   end
+
 end
 
