@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110427163752) do
+ActiveRecord::Schema.define(:version => 20110430023813) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -137,7 +137,7 @@ ActiveRecord::Schema.define(:version => 20110427163752) do
     t.string   "pagination"
     t.integer  "source_reference_id"
     t.string   "source_reference_type"
-    t.string   "author_names_string_cache"
+    t.text     "author_names_string_cache"
     t.text     "editor_notes"
     t.text     "public_notes"
     t.text     "taxonomic_notes"
@@ -151,7 +151,7 @@ ActiveRecord::Schema.define(:version => 20110427163752) do
     t.string   "principal_author_last_name_cache"
   end
 
-  add_index "references", ["author_names_string_cache", "citation_year"], :name => "references_author_names_string_citation_year_idx"
+  add_index "references", ["author_names_string_cache", "citation_year"], :name => "references_author_names_string_citation_year_idx", :length => {"citation_year"=>nil, "author_names_string_cache"=>255}
   add_index "references", ["created_at"], :name => "references_created_at_idx"
   add_index "references", ["journal_id"], :name => "references_journal_id_idx"
   add_index "references", ["nested_reference_id"], :name => "references_nested_reference_id_idx"
