@@ -1,0 +1,93 @@
+grammar Bolton::Catalog::Subfamily::GenusGrammar
+  include Bolton::Catalog::Grammar
+
+  rule genus_section
+    genus_header | genus_line | homonym_replaced_by_genus_header | homonym_replaced_by_genus_synonym_header |
+    genera_header | junior_synonyms_of_genus_header | genus_references_header
+  end
+
+  rule genus_header
+    valid_genus_header | unidentifiable_genus_header | unavailable_genus_header | unresolved_homonym_genus_header
+  end
+
+  rule valid_genus_header
+    (
+      (span 'Genus' s fossil_flag? bold italic red uppercase_word close_tags '[Myrmeciinae]' close_tags) |
+      (bold italic? span 'Genus' close_tags fossil_flag? close_tags? bold? italic? red s uppercase_word close_tags)
+    ) {
+      value = {:type => :genus_header, :name => uppercase_word.downcase.capitalize.strip, :status => 'valid'}
+      value.merge! :fossil => true if fossil_flag.present?
+      value
+    }
+  end
+
+  rule unidentifiable_genus_header
+    (bold span 'Genus ' fossil_flag? italic green uppercase_word close_tags) {
+      value = {:type => :genus_header, :name => uppercase_word.downcase.capitalize.strip, :status => 'unidentifiable'}
+      value.merge! :fossil => true if fossil_flag.present?
+      value
+    }
+  end
+
+  rule unresolved_homonym_genus_header
+    (bold span 'Genus ' fossil_flag? italic brown uppercase_word close_tags) {
+      value = {:type => :genus_header, :name => uppercase_word.downcase.capitalize.strip, :status => 'unresolved homonym'}
+      value.merge! :fossil => true if fossil_flag.present?
+      value
+    }
+  end
+
+  rule unavailable_genus_header
+    (italic purple uppercase_word /.*/) {
+      {:type => :genus_header, :name => uppercase_word.downcase.capitalize.strip, :status => 'unavailable'}
+    }
+  end
+
+  rule genus_line
+    (
+      (bold italic span capitalized_word close_tags /.*/) |
+      (span fossil_flag bold italic capitalized_word close_tags /.*/) |
+      (span fossil_flag italic capitalized_word /.*Type-species:.*/) |
+      (span fossil_flag italic capitalized_word close_tags /.*\[Collective group name\.\].*/) |
+      (italic span capitalized_word close_tags_required /.*Type-species:.*/) |
+      (italic purple capitalized_word close_tags_required s /[^\[]/ /.*/)
+    ) {
+      value = {:type => :genus_line, :name => capitalized_word.to_s}
+      value.merge! :fossil => true if fossil_flag.present?
+      value
+    }
+  end
+
+#<p><i><span lang=EN-GB style='color:purple'>Bregmatomyrmex</span></i><span lang=EN-GB> [incorrect subsequent spelling] <i>incertae sedis</i> in Formicidae: Wheeler, G.C. &amp; Wheeler, J. 1985: 259.</span></p>
+
+  rule genera_header
+    (bold span ('Genera '|'Genus ') 'of ' red capitalized_word close_tags) {
+      {:type => :genera_header}
+    }
+  end
+
+  rule junior_synonyms_of_genus_header
+    (bold span 'Junior synonym' 's'? ' of ' fossil_flag? italic red uppercase_word close_tags_required /.*/) {
+      {:type => :junior_synonyms_of_genus_header}
+    }
+  end
+
+  rule homonym_replaced_by_genus_header
+    (bold span 'Homonym replaced by ' fossil_flag? italic (green|red) uppercase_word /.*/) {
+      {:type => :homonym_replaced_by_genus_header}
+    }
+  end
+
+  rule homonym_replaced_by_genus_synonym_header
+    (bold span 'Homonym replaced by ' fossil_flag? italic (green|red) capitalized_word /.*/) {
+      {:type => :homonym_replaced_by_genus_synonym_header}
+    }
+  end
+
+  rule genus_references_header
+    (bold span "Genus " italic red capitalized_word close_tags "references" close_tags) {
+      {:type => :genus_references_header}
+    }
+  end
+
+end

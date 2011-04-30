@@ -1,0 +1,90 @@
+grammar Bolton::Catalog::Subfamily::FamilyGrammar
+  include Bolton::Catalog::Grammar
+
+  rule family_section
+    family_header | family_group_line |
+    extant_subfamilies_list | extinct_subfamilies_list |
+    extant_genera_incertae_sedis_in_family_list | extinct_genera_incertae_sedis_in_family_list |
+    extant_genera_excluded_from_family_list | extinct_genera_excluded_from_family_list |
+    genus_group_nomina_nuda_in_family_list |
+    genera_incertae_sedis_in_family_header |
+    genera_excluded_from_family_header |
+    unavailable_family_group_names_in_family_header |
+    genus_group_nomina_nuda_in_family_header
+  end
+
+  rule family_header
+    (bold span 'FAMILY FORMICIDAE' close_tags) {
+      {:type => :family_header}
+    }
+  end
+
+  rule family_group_line
+    (
+      (span fossil_flag bold capitalized_word close_tags_required /.*Type-genus.*/) |
+      (bold black capitalized_word close_tags_required /.*Type-genus.*/) |
+      (bold s capitalized_word close_tags_required /.*Type-genus.*/)
+    ) {
+      {:type => :family_group_line, :name => capitalized_word.to_s}
+    }
+  end
+
+  rule extant_subfamilies_list
+    (bold span 'Subfamilies of Formicidae (extant)' close_tags ': ' text /.*/) {
+      {:type => :extant_subfamilies_list, :subfamilies => text.split(', ')}
+    } 
+  end
+
+  rule extinct_subfamilies_list
+    (bold span 'Subfamilies of Formicidae (extinct)' close_tags ': ' text /.*/) {
+      {:type => :extinct_subfamilies_list, :subfamilies => text.split(', ').map {|e| e.gsub(/\*/, '')}}
+    } 
+  end
+
+  rule extant_genera_incertae_sedis_in_family_list
+    (bold span 'Genera (extant) ' italic 'incertae sedis' tag_end ' in Formicidae' close_tags ': ' italic text /.*/) {
+      {:type => :extant_genera_incertae_sedis_in_family_list, :genera => text.split(', ')}
+    } 
+  end
+
+  rule extinct_genera_incertae_sedis_in_family_list
+    (bold span 'Genera (extinct) ' italic 'incertae sedis' tag_end ' in Formicidae' close_tags ': ' italic text /.*/) {
+      {:type => :extinct_genera_incertae_sedis_in_family_list, :genera => text.split(', ').map {|e| e.gsub(/\*/, '')}}
+    } 
+  end
+
+  rule extant_genera_excluded_from_family_list
+    (bold span 'Genera (extant) excluded from Formicidae' close_tags ': ' italic green text /.*/) {
+      {:type => :extant_genera_excluded_from_family_list, :genera => text.split(', ')}
+    } 
+  end
+
+  rule extinct_genera_excluded_from_family_list
+    (bold span 'Genera (extinct) excluded from Formicidae' close_tags ': *' italic green text /.*/) {
+      {:type => :extinct_genera_excluded_from_family_list, :genera => text.split(', ').map {|e| e.gsub(/\*/, '')}}
+    } 
+  end
+
+  rule genus_group_nomina_nuda_in_family_list
+    (bold span 'Genus-group ' italic 'nomina nuda' tag_end ' in Formicidae' close_tags ': ' italic purple text /.*/) {
+      {:type => :genus_group_nomina_nuda_in_family_list, :genera => text.split(', ')}
+    } 
+  end
+
+  rule genera_incertae_sedis_in_family_header
+    (bold span 'Genera ' incertae_sedis_in red 'FORMICIDAE' close_tags) {{:type => :genera_incertae_sedis_in_family_header}}
+  end
+
+  rule genera_excluded_from_family_header
+    (bold span 'Genera excluded from ' red 'FORMICIDAE' close_tags) {{:type => :genera_excluded_from_family_header}}
+  end
+
+  rule unavailable_family_group_names_in_family_header
+    (bold span 'Unavailable family-group names in ' red 'FORMICIDAE' close_tags) {{:type => :unavailable_family_group_names_in_family_header}}
+  end
+
+  rule genus_group_nomina_nuda_in_family_header
+    (bold span 'Genus-group ' italic 'nomina nuda' tag_end ' in ' red 'FORMICIDAE' close_tags) {{:type => :genus_group_nomina_nuda_in_family_header}}
+  end
+
+end

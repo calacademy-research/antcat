@@ -1,0 +1,118 @@
+grammar Bolton::Catalog::Species::SpeciesGrammar
+  include Bolton::Catalog::Grammar
+
+  rule species
+    homonym | available_valid_species | species_synonym | unavailable_species | unresolved_homonym  | unidentifiable_species
+  end
+
+  rule species_synonym
+    (species_synonym_prefix? species_name /.*/) {
+      value = {:type => :species, :name => species_name.value, :status => 'synonym'}
+      value.merge! species_synonym_prefix.value if species_synonym_prefix.present?
+      value
+    }
+  end
+
+  rule species_synonym_prefix
+    (
+      (black fossil_flag italic) |
+      (italic black) |
+      (italic fossil_flag) |
+      (fossil_flag italic black) |
+      (fossil_flag italic) |
+      (italic spacerun) |
+      italic
+    ) {
+      fossil_flag.blank? ? {} : {:fossil => true}
+    }
+  end
+
+  rule available_valid_species
+    (
+      (
+        (fossil_flag? bold italic red) |
+        (italic fossil_flag? bold red) |
+        (bold italic fossil_flag? red)
+      )
+      species_name
+      subspecies_list?
+      /.*/
+    ) {
+      value = {:type => :species, :name => species_name.value, :status => 'valid'}
+      value.merge! :fossil => true unless fossil_flag.blank?
+      value.merge! :subspecies => subspecies_list.value unless subspecies_list.blank?
+      value
+    }
+  end
+  rule subspecies_list
+    (/.*Current subspecies: nominal plus/ s subspecies_list_item+) {
+      captures[:subspecies_list_item].map &:value
+    }
+  end
+
+  rule subspecies_list_item
+    (subspecies_list_item_prefix species_name subspecies_list_item_suffix) {
+      species_name.value
+    }
+  end
+
+  rule subspecies_list_item_prefix
+    close_tags italic?  (maroon | blue)?  s
+  end
+
+  rule subspecies_list_item_suffix
+    close_tags '(unresolved junior homonym)'?  blue?  ', '?  close_tags
+  end
+
+  rule unavailable_species
+    (fossil_flag? italic purple species_name /.*/) {
+      value = {:type => :species, :name => species_name.value, :status => 'unavailable'}
+      value.merge! :fossil => true unless fossil_flag.blank?
+      value
+    }
+  end
+
+  rule unidentifiable_species
+    (
+      (bold italic green species_name tag_end tag_end tag_end italic '.' /.*/) |
+      (italic green species_name /.*/) |
+      (fossil_flag? bold  italic green species_name tag_end tag_end tag_end /.*/) |
+      (fossil_flag? italic green species_name tag_end '.' s fossil_flag? binomial tag_end /.*/)
+    ){
+      value = {:type => :species, :name => species_name.value, :status => 'unidentifiable'}
+      value.merge! :fossil => true unless fossil_flag.blank?
+      value
+    }
+  end
+
+  rule homonym
+    (fossil_flag? italic species_name '.' /.*?Junior secondary homonym.*?Replacement name: / '*'? italic replacement_name tag_end /.*/) {
+      value = {:type => :species, :name => species_name.value, :status => 'homonym', :homonym_resolved_to => replacement_name.value}
+      value.merge! :fossil => true unless fossil_flag.blank?
+      value
+    }
+  end
+
+  rule replacement_name
+    species_name
+  end
+
+  rule unresolved_homonym
+    (fossil_flag? bold italic maroon species_name subspecies_list? /.*/) {
+      value = {:type => :species, :name => species_name.value, :status => 'unresolved homonym'}
+      value.merge! :fossil => true unless fossil_flag.blank?
+      value.merge! :subspecies => subspecies_list.value unless subspecies_list.blank?
+      value
+    }
+  end
+
+  rule binomial
+    fossil_flag? capitalized_word s subgenus? s species_name
+  end
+
+  rule subgenus
+    '(' capitalized_word ')'
+  end
+
+
+end

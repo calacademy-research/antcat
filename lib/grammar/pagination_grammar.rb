@@ -1,2 +1,2 @@
-Citrus.load 'lib/grammar/pagination_grammar'
+Citrus.load __FILE__.gsub /\..*$/, ''
 
