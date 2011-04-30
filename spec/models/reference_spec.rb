@@ -220,17 +220,20 @@ describe Reference do
 
   end
 
-  it "has many author_names" do
-    reference = Reference.create! :author_names => @author_names, :title => 'asdf', :citation_year => '2010d'
-    reference.author_names.first.should == @author_names.first
-  end
+  describe "relationships" do
+    it "has many author_names" do
+      reference = Reference.create! :author_names => @author_names, :title => 'asdf', :citation_year => '2010d'
+      reference.author_names.first.should == @author_names.first
+    end
 
-  it "has many authors" do
-    reference = Reference.create! :author_names => @author_names, :title => 'asdf', :citation_year => '2010d'
-    reference.authors.first.should == @author_names.first.author
+    it "has many authors" do
+      reference = Reference.create! :author_names => @author_names, :title => 'asdf', :citation_year => '2010d'
+      reference.authors.first.should == @author_names.first.author
+    end
   end
 
   describe "author_names_string" do
+
     describe "formatting" do
       it "should consist of one author_name if that's all there is" do
         reference = Factory(:reference, :author_names => [Factory(:author_name, :name => 'Fisher, B.L.')])
@@ -295,6 +298,7 @@ describe Reference do
         reference.author_names_string.should == 'Ward; Wilden; Fisher'
       end
     end
+
   end
 
   describe "principal author last name" do
@@ -389,15 +393,17 @@ describe Reference do
     end
   end
 
-  it "should not truncate long fields" do
-    Reference.create! :author_names => @author_names, :editor_notes => 'e' * 1000, :citation => 'c' * 2000,
-      :public_notes => 'n' * 1500, :taxonomic_notes => 't' * 1700, :title => 't' * 1900, :citation_year => '2010'
-    reference = Reference.first
-    reference.citation.length.should == 2000
-    reference.editor_notes.length.should == 1000
-    reference.public_notes.length.should == 1500
-    reference.taxonomic_notes.length.should == 1700
-    reference.title.length.should == 1900
+  describe "long fields" do
+    it "should not truncate long fields" do
+      Reference.create! :author_names => @author_names, :editor_notes => 'e' * 1000, :citation => 'c' * 2000,
+        :public_notes => 'n' * 1500, :taxonomic_notes => 't' * 1700, :title => 't' * 1900, :citation_year => '2010'
+      reference = Reference.first
+      reference.citation.length.should == 2000
+      reference.editor_notes.length.should == 1000
+      reference.public_notes.length.should == 1500
+      reference.taxonomic_notes.length.should == 1700
+      reference.title.length.should == 1900
+    end
   end
 
   describe "importing PDF links" do

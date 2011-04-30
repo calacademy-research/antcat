@@ -140,7 +140,7 @@ end
 
 When /in the new edit form I press the "(.*?)" button/ do |button|
   When "I press \"#{button}\" within \"#reference_\""
-  sleep 3
+  sleep 5
 end
 
 When /in the new edit form I fill in "(.*?)" with the existing reference's ID/ do |field|
@@ -326,5 +326,17 @@ end
 
 Then /I should be in "(.*?)" mode/ do |mode|
   Then %{the "#{mode}" tab should be selected}
+end
+
+very_long_author_names_string = (0...26).inject([]) {|a, n| a << "AuthorWithVeryVeryVeryLongName#{('A'[0] + n).chr}, A."}.join('; ')
+
+When /in the new edit form I fill in "reference_author_names_string" with a very long author names string/ do
+  within "#reference_" do
+    When %{I fill in "reference_author_names_string" with "#{very_long_author_names_string}"}
+  end
+end
+
+Then /I should see a very long author names string/ do
+  Then %{I should see "#{very_long_author_names_string}"}
 end
 
