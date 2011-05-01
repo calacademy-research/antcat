@@ -33,7 +33,7 @@ class ReferencesController < ApplicationController
     begin
       Reference.transaction do
         clear_nested_reference_id unless @reference.kind_of? NestedReference
-        set_authors
+        parse_author_names_string
         set_journal if @reference.kind_of? ArticleReference
         set_publisher if @reference.kind_of? BookReference
         set_pagination
@@ -75,17 +75,11 @@ class ReferencesController < ApplicationController
     @reference.document_host = request.host
   end
 
-  def set_authors
-    author_names_string = params[:reference].delete(:author_names_string)
-    authors_data = AuthorName.import_author_names_string(author_names_string.dup)
-    if authors_data[:author_names].empty? && author_names_string.present?
-      @reference.errors.add :author_names_string, "couldn't be parsed. Please post a message on http://groups.google.com/group/antcat/, and we'll fix it!"
-      @reference.author_names_string = author_names_string
-      raise ActiveRecord::RecordInvalid.new @reference
-    end
+  def parse_author_names_string
+    author_names_and_suffix = @reference.parse_author_names_and_suffix params[:reference].delete(:author_names_string)
     @reference.author_names.clear
-    params[:reference][:author_names] = authors_data[:author_names]
-    params[:reference][:author_names_suffix] = authors_data[:author_names_suffix]
+    params[:reference][:author_names] = author_names_and_suffix[:author_names]
+    params[:reference][:author_names_suffix] = author_names_and_suffix[:author_names_suffix]
   end
 
   def set_journal

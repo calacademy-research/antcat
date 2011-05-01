@@ -157,6 +157,16 @@ class Reference < ActiveRecord::Base
     nester.nil?
   end
 
+  def parse_author_names_and_suffix author_names_string
+    author_names_and_suffix = AuthorName.import_author_names_string author_names_string.dup
+    if author_names_and_suffix[:author_names].empty? && author_names_string.present?
+      errors.add :author_names_string, "couldn't be parsed. Please post a message on http://groups.google.com/group/antcat/, and we'll fix it!"
+      self.author_names_string = author_names_string
+      raise ActiveRecord::RecordInvalid.new self
+    end
+    author_names_and_suffix
+  end
+
   private
   def self.extract_years string
     start_year = end_year = nil
