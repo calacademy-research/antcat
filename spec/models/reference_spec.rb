@@ -234,6 +234,27 @@ describe Reference do
 
   describe "author_names_string" do
 
+    describe "parsing" do
+      before do
+        @reference = Factory :reference
+      end
+
+      it "should return nothing if empty" do
+        @reference.parse_author_names_and_suffix('') .should == {:author_names => [], :author_names_suffix => nil}
+      end
+
+      it "should add an error and raise and exception if invalid" do
+        lambda {@reference.parse_author_names_and_suffix('...asdf sdf dsfdsf')}.should raise_error ActiveRecord::RecordInvalid
+        @reference.errors.should == {:author_names_string => ["couldn't be parsed. Please post a message on http://groups.google.com/group/antcat/, and we'll fix it!"]}
+        @reference.author_names_string.should == '...asdf sdf dsfdsf'
+      end
+
+      it "should return the author names and the suffix" do
+        @reference.parse_author_names_and_suffix('Fisher, B.; Bolton, B. (eds.)').should == {:author_names => [AuthorName.find_by_name('Fisher, B.'), AuthorName.find_by_name('Bolton, B.')], :author_names_suffix => ' (eds.)'}
+      end
+
+    end
+
     describe "formatting" do
       it "should consist of one author_name if that's all there is" do
         reference = Factory(:reference, :author_names => [Factory(:author_name, :name => 'Fisher, B.L.')])
