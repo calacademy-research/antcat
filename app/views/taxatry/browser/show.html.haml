@@ -9,10 +9,12 @@
     var selectedBrowserTaxonID = #{@selected_browser_taxon.try(:id) || 0};
 
 #index
+  .index_header_taxon
+    = link_to 'Formicidae', browser_taxatry_path, :class => 'family'
   - if @taxon
     - @index_header_taxa.each do |index_header_taxon|
       .index_header_taxon
-        - label_and_classes = taxon_label_and_css_classes index_header_taxon[:taxon], true
+        - label_and_classes = taxon_label_and_css_classes index_header_taxon[:taxon]
         = link_to label_and_classes[:label], index_header_taxon[:path], :class => label_and_classes[:css_classes]
 
   - index_items = make_index_groups @taxa, 50, 8
