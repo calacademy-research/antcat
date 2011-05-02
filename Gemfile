@@ -1,7 +1,7 @@
 source :rubygems
 
 gem 'acts_as_list'
-gem 'aws-s3',           :require => 'aws/s3'
+gem 'aws-s3',           :require => 'aws/s3', :git => 'git://github.com/emk/aws-s3.git'
 gem 'citrus'
 gem 'curb',             :require => 'curl'
 gem 'devise'
@@ -19,6 +19,7 @@ gem 'sunspot_rails',    '~> 1.2.1'
 gem 'paperclip'
 gem 'paper_trail'
 gem 'will_paginate',    '~> 3.0.pre2'
+gem 'xml-simple'
 
 group :development, :test do
   gem 'ruby-debug'
