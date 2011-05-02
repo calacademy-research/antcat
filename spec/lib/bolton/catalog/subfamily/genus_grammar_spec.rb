@@ -217,11 +217,11 @@ describe Bolton::Catalog::Subfamily::Importer do
       }).should == {:type => :genus_references_header}
     end
 
-    #it "should handle a 'see above' header" do
-      #@importer.parse(%{
-#<b><span lang="EN-GB">Genus <i><span style="color:red">Myrmoteras</span></i> references</span></b><span lang="EN-GB">: see above.</span>
-      #}).should == {:type => :genus_references_header}
-    #end
+    it "should handle a 'see above' header" do
+      @importer.parse(%{
+<b><span lang="EN-GB">Genus <i><span style="color:red">Myrmoteras</span></i> references</span></b><span lang="EN-GB">: see above.</span>
+      }).should == {:type => :genus_references_header}
+    end
 
   end
 
