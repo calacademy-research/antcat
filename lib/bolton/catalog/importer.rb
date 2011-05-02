@@ -28,6 +28,7 @@ class Bolton::Catalog::Importer
       Progress.error 'citrus parse error:'
       Progress.error e
       raise unless Rails.env.test?
+      $stderr.puts e
     end
     parse_result
   end

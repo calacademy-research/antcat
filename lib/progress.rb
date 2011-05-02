@@ -5,7 +5,7 @@
 
 class Progress
   def self.init on, total_count = nil
-    $stderr = File.open('/dev/null', 'w') unless on
+    @on = on
     @start = Time.now
     @processed_count = 0
     @total_count = total_count
@@ -31,7 +31,7 @@ class Progress
   end
 
   def self.print string, log = false
-    $stderr.print string
+    $stderr.print string if @on
     info string if log
   end
 
