@@ -17,7 +17,7 @@ Feature: Edit reference
       |authors|Psyche 5:3|CiteCode |today     |20100712|Possess|title|today     |2010|
     When I log in
       And I go to the references page
-    Then I should not see the edit form
+      And I should not be editing
       When I follow "edit"
     Then I should see the edit form
       And I should not see the reference
@@ -152,6 +152,7 @@ Feature: Edit reference
       When I follow "edit"
       And I fill in "reference_document_attributes_url" with a URL to a document that exists
       And I press the "Save" button
+      And I wait for a bit
     Then I should see a "PDF" link
 
   Scenario: Setting a document's publicness
@@ -260,6 +261,8 @@ Feature: Edit reference
       And I fill in "reference_series_volume_issue" with "1"
       And I fill in "article_pagination" with "2"
       And I press the "Save" button
+      And I wait for a bit
+      And I wait for a bit more
       And I will confirm on the next step
       And I delete "Ward"
       And I edit "Bolton"

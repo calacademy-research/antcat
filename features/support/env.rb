@@ -37,6 +37,7 @@ end
 
 # ADDED TO DEFAULT
 Capybara.save_and_open_page_path = '/tmp'
+Capybara.default_wait_time = 10
 
 require 'webmock/cucumber'
 WebMock.disable_net_connect! :allow_localhost => true

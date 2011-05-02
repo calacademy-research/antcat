@@ -16,7 +16,7 @@ Feature: Checking for duplicates during data entry
       And in the new edit form I fill in "journal_name" with "Psyche"
       And in the new edit form I fill in "reference_citation_year" with "2010"
       And in the new edit form I press the "Save" button
-    Then I should see the new edit form
+    Then I should see a new edit form
     And I should see "This seems to be a duplicate of Bolton, B. 2010. Ants are my life. Psyche 5:3. 1"
 
   Scenario: Editing a reference that makes it a duplicate
