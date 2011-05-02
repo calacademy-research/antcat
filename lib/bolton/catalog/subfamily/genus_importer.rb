@@ -19,7 +19,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     if genus
       attributes = {:status => status, :taxonomic_history => taxonomic_history}.merge(attributes)
       check_status_change genus, attributes[:status]
-      raise "Genus #{name} fossil change from #{genus.fossil?} to #{fossil}" if fossil != genus.fossil
+      check_fossil_change genus, attributes[:fossil]
       genus.update_attributes attributes
       Progress.info "Updated #{genus.name}"
     else
@@ -145,6 +145,10 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     return if status == genus.status
     return if genus.status == 'valid' && status == 'unidentifiable'
     raise "Genus #{genus.name} status change from #{genus.status} to #{status}"
+  end
+
+  def check_fossil_change genus, fossil
+    raise "Genus #{genus.name} fossil change from #{genus.fossil?} to #{fossil}" if fossil != genus.fossil
   end
 
   def check_existence name, genus
