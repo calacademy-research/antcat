@@ -28,7 +28,7 @@ Feature: Add reference
       And in the new edit form I fill in "reference_citation_year" with "1992"
       And in the new edit form I press the "Save" button
     Then I should be on the references page
-      And I should not see a new edit form
+      And I should not be editing
       And I should see "Ward, B.L.; Bolton, B. 1992. Between Pacific Tides. Ants 2:1."
 
   Scenario: Adding a reference but then cancelling
@@ -52,7 +52,7 @@ Feature: Add reference
       And in the new edit form I fill in "book_pagination" with "32 pp."
       And in the new edit form I press the "Save" button
     Then I should be on the references page
-      And I should not see a new edit form
+      And I should not be editing
       And I should see "Ward, B.L.; Bolton, B. 1981. A reference title. New York: Houghton Mifflin, 32 pp."
 
   Scenario: Adding an article
@@ -65,7 +65,7 @@ Feature: Add reference
       And in the new edit form I fill in "article_pagination" with "2"
       And in the new edit form I press the "Save" button
     Then I should be on the references page
-      And I should not see a new edit form
+      And I should not be editing
       And I should see "Ward, B.L.; Bolton, B. 1981. A reference title. Ant Journal 1:2"
 
   Scenario: Adding a nested reference
@@ -93,7 +93,7 @@ Feature: Add reference
     When I follow "add"
       And in the new edit form I fill in "reference_author_names_string" with "Fisher, B.L."
       And in the new edit form I press the "Save" button
-    Then I should see the new edit form
+    Then I should see a new edit form
       And I should see "Year can't be blank"
       And I should see "Title can't be blank"
       And I should see "Journal can't be blank"
@@ -105,7 +105,7 @@ Feature: Add reference
       And in the new edit form I follow "Book"
       And in the new edit form I fill in "reference_author_names_string" with "Fisher, B.L."
       And in the new edit form I press the "Save" button
-    Then I should see the new edit form
+    Then I should see a new edit form
       And I should see "Year can't be blank"
       And I should see "Title can't be blank"
       And I should see "Publisher can't be blank"
@@ -116,7 +116,7 @@ Feature: Add reference
       And in the new edit form I follow "Nested"
       And in the new edit form I fill in "reference_author_names_string" with "Fisher, B.L."
       And in the new edit form I press the "Save" button
-    Then I should see the new edit form
+    Then I should see a new edit form
       And I should see "Year can't be blank"
       And I should see "Title can't be blank"
       And I should see "Pages in can't be blank"

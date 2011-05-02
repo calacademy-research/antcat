@@ -97,13 +97,12 @@ Then /I should (not )?see the edit form/ do |should_not|
   find("#{css_selector} .reference_edit").send(selector, be_visible)
 end
 
-Then /there should not be an edit form/ do
-  page.should have_no_css "#reference_#{@reference.id} .reference_edit"
+Then /I should not be editing/ do
+  Then %{I should see "edit"}
 end
 
-Then /I should (not )?see (?:a|the) new edit form/ do |should_not|
-  selector = should_not ? :should_not : :should
-  find("#reference_ .reference_edit").send(selector, be_visible)
+Then /I should see a new edit form/ do
+  find("#reference_ .reference_edit").should be_visible
 end
 
 Then 'I should not see the reference' do
@@ -140,7 +139,10 @@ end
 
 When /in the new edit form I press the "(.*?)" button/ do |button|
   When "I press \"#{button}\" within \"#reference_\""
-  sleep 5
+end
+
+Then /there should not be an edit form/ do
+  page.should have_no_css "#reference_#{@reference.id} .reference_edit"
 end
 
 When /in the new edit form I fill in "(.*?)" with the existing reference's ID/ do |field|
@@ -192,7 +194,6 @@ end
 
 When /^I press the "([^"]+)" button/ do |button|
   click_button button
-  sleep 2
 end
 
 Then "I should see the reference's ID beside its label" do
@@ -223,7 +224,13 @@ When 'I choose a file to upload' do
 end
 
 Then 'I should see a link to that file' do
+  @reference.should_not be_nil
+  @reference.reload.document.should_not be_nil
   page.should have_css("a[href='http://127.0.0.1/documents/#{@reference.document.id}/21105.pdf']", :text => 'PDF')
+end
+
+When /I wait for a bit(?: more)?/ do
+  sleep 3
 end
 
 Then 'I should be redirected to Amazon' do
