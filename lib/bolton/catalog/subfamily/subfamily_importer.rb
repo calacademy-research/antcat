@@ -17,7 +17,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
 
     taxonomic_history << parse_taxonomic_history
 
-    subfamily = Subfamily.find_by_name(name)
+    subfamily = ::Subfamily.find_by_name(name)
     raise "Subfamily #{name} doesn't exist" unless subfamily
 
     taxonomic_history << parse_tribes_lists(subfamily)
