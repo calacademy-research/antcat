@@ -35,7 +35,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
   def parse_extant_subfamilies_list
     expect :extant_subfamilies_list
     @parse_result[:subfamilies].each do |subfamily|
-      Subfamily.create! :name => subfamily, :status => 'valid'
+      ::Subfamily.create! :name => subfamily, :status => 'valid'
     end
     parse_next_line
   end
@@ -43,7 +43,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
   def parse_extinct_subfamilies_list
     expect :extinct_subfamilies_list
     @parse_result[:subfamilies].each do |subfamily|
-      Subfamily.create! :name => subfamily, :status => 'valid', :fossil => true
+      ::Subfamily.create! :name => subfamily, :status => 'valid', :fossil => true
     end
     parse_next_line
   end

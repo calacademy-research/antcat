@@ -15,7 +15,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     taxonomic_history = @paragraph
     taxonomic_history << parse_taxonomic_history
 
-    genus = Genus.find_by_name name
+    genus = ::Genus.find_by_name name
     if genus
       attributes = {:status => status, :taxonomic_history => taxonomic_history}.merge(attributes)
       check_status_change genus, attributes[:status]
@@ -24,7 +24,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
       Progress.info "Updated #{genus.name}"
     else
       check_existence name, genus
-      genus = Genus.create!({:name => name, :fossil => fossil, :status => status, :taxonomic_history => clean_taxonomic_history(taxonomic_history)}.merge(attributes))
+      genus = ::Genus.create!({:name => name, :fossil => fossil, :status => status, :taxonomic_history => clean_taxonomic_history(taxonomic_history)}.merge(attributes))
       Progress.info "Created #{genus.name}"
     end
 
@@ -74,7 +74,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     fossil = @parse_result[:fossil]
     taxonomic_history = @paragraph
     taxonomic_history << parse_taxonomic_history
-    genus = Genus.create! :name => name, :fossil => fossil, :status => 'synonym', :synonym_of => genus,
+    genus = ::Genus.create! :name => name, :fossil => fossil, :status => 'synonym', :synonym_of => genus,
                           :subfamily => genus.subfamily, :tribe => genus.tribe, :taxonomic_history => clean_taxonomic_history(taxonomic_history)
     parsed_text << taxonomic_history
     parsed_text << parse_homonym_replaced_by_genus_synonym
@@ -105,7 +105,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
         attributes.merge!(:incertae_sedis_in => parent_rank.to_s) if @parse_result[:incertae_sedis]
 
         name = genus[:name]
-        genus = Genus.find_by_name name
+        genus = ::Genus.find_by_name name
         if genus
           # Several genera are listed both as incertae sedis in subfamily, and as a genus of an incertae sedis tribe
           if ['Zherichinius', 'Miomyrmex'].include? name
@@ -114,7 +114,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
             raise "Genus #{name} found in more than one list"
           end
         else
-          Genus.create! attributes
+          ::Genus.create! attributes
         end
       end
 

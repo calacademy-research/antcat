@@ -26,8 +26,8 @@ class Bolton::Catalog::Species::Importer < Bolton::Catalog::Importer
     @species_synonynm_created_for_subspecies_count = 0
     @subspecies_in_list_but_not_seen_count = 0
     @genus_not_found_count = 0
-    Species.delete_all
-    Subspecies.delete_all
+    ::Species.delete_all
+    ::Subspecies.delete_all
 
     parse_header || parse_failed if @line
     parse_see_under || parse_genus_section || parse_failed while @line
@@ -78,7 +78,7 @@ class Bolton::Catalog::Species::Importer < Bolton::Catalog::Importer
   def parse_species genus
     return unless @type == :species
 
-    species = Species.create! :name => @parse_result[:name], :fossil => @parse_result[:fossil], :status => @parse_result[:status], :genus => genus,
+    species = ::Species.create! :name => @parse_result[:name], :fossil => @parse_result[:fossil], :status => @parse_result[:status], :genus => genus,
       :taxonomic_history => clean_taxonomic_history(@paragraph)
     @subspecies_for_species[species.name] = @parse_result[:subspecies] || [] unless species.invalid?
 
@@ -109,7 +109,7 @@ class Bolton::Catalog::Species::Importer < Bolton::Catalog::Importer
     end
 
     @subspecies_for_species.each do |species_name, subspecies_list|
-      species = Species.find_by_genus_id_and_name genus.id, species_name
+      species = ::Species.find_by_genus_id_and_name genus.id, species_name
       subspecies_list.each do |subspecies_name|
         unless species.subspecies.find_by_name subspecies_name
           Progress.error "Subspecies #{genus.name} #{species.name} #{subspecies_name} was in its species's subspecies list but was not seen"
@@ -148,8 +148,8 @@ class Bolton::Catalog::Species::Importer < Bolton::Catalog::Importer
     @subspecies_for_species.each do |name, list|
       # if so, we assume we have a species synonym
       if list && list.include?(subspecies.name)
-        species = Species.find_by_genus_id_and_name genus.id, name
-        synonym = Species.create! :name => species_name, :fossil => species.fossil, :status => 'synonym', :synonym_of => species, :genus => genus
+        species = ::Species.find_by_genus_id_and_name genus.id, name
+        synonym = ::Species.create! :name => species_name, :fossil => species.fossil, :status => 'synonym', :synonym_of => species, :genus => genus
         Progress.error "Subspecies #{genus.name} #{species_name} #{subspecies.name} was seen but not its species, but a species synonym was created (#{species.name})"
         @species_synonynm_created_for_subspecies_count += 1
         return species
@@ -159,7 +159,7 @@ class Bolton::Catalog::Species::Importer < Bolton::Catalog::Importer
   end
 
   def find_senior_synonym_of genus, species_name
-    species = Species.find_by_genus_id_and_name genus.id, species_name
+    species = ::Species.find_by_genus_id_and_name genus.id, species_name
     return unless species
     species = species.synonym_of while species.synonym? && species.synonym_of
     species
