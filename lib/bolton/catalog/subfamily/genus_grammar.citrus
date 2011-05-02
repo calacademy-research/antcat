@@ -85,7 +85,7 @@ grammar Bolton::Catalog::Subfamily::GenusGrammar
   end
 
   rule genus_references_header
-    (bold span "Genus " italic red capitalized_word close_tags "references" close_tags) {
+    (bold span "Genus " italic red capitalized_word close_tags "references" close_tags (': see above.' close_tags)?) {
       {:type => :genus_references_header}
     }
   end
