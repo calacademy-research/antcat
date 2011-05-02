@@ -12,15 +12,11 @@ namespace :bolton do
     end
     desc "Import Bolton subfamily catalog"
     task :subfamilies => :environment do
-      Bolton::SubfamilyCatalog.new(true).import_files Dir.glob "#{$BOLTON_DATA_DIRECTORY}/*.htm"
-    end
-    desc "Import Bolton genus catalog documents"
-    task :genera => :environment do
-      Bolton::GenusCatalog.new(true).import_files Dir.glob "#{$BOLTON_DATA_DIRECTORY}/NGC-GEN*.htm"
+      Bolton::Catalog::Subfamily::Importer.new(true).import_files Dir.glob "#{$BOLTON_DATA_DIRECTORY}/*.htm"
     end
     desc "Import Bolton species catalog documents"
     task :species => :environment do
-      Bolton::SpeciesCatalog.new(true).import_files Dir.glob "#{$BOLTON_DATA_DIRECTORY}/NGC-Sp*.htm"
+      Bolton::Catalog::Species::Importer.new(true).import_files Dir.glob "#{$BOLTON_DATA_DIRECTORY}/NGC-Sp*.htm"
     end
     desc "Import all taxa"
     task :taxa => ['bolton:import:subfamilies', 'bolton:import:species']
@@ -29,7 +25,7 @@ namespace :bolton do
   namespace :match do
     desc 'Match Bolton references to ours'
     task :references => :environment do
-      Bolton::Bibliography::ReferencesMatcher.new(true).find_matches_for_all
+      Bolton::ReferencesMatcher.new(true).find_matches_for_all
     end
   end
 
