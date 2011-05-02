@@ -1,3 +1,9 @@
+GIT
+  remote: git://github.com/emk/aws-s3.git
+  revision: 2d68ba80679c070a1c04733f62ce0577735e3b55
+  specs:
+    aws-s3 (0.6.4)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -31,10 +37,6 @@ GEM
     acts_as_list (0.1.2)
     addressable (2.2.5)
     arel (2.0.9)
-    aws-s3 (0.6.2)
-      builder
-      mime-types
-      xml-simple
     bcrypt-ruby (2.1.4)
     builder (2.1.2)
     capybara (0.4.1.2)
@@ -185,7 +187,7 @@ PLATFORMS
 
 DEPENDENCIES
   acts_as_list
-  aws-s3
+  aws-s3!
   capybara
   capybara-firebug
   citrus
@@ -214,3 +216,4 @@ DEPENDENCIES
   sunspot_rails (~> 1.2.1)
   webmock
   will_paginate (~> 3.0.pre2)
+  xml-simple
