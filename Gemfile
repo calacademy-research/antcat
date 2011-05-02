@@ -21,12 +21,16 @@ gem 'paper_trail'
 gem 'will_paginate',    '~> 3.0.pre2'
 gem 'xml-simple'
 
+group :developement do
+  gem 'wirble'
+end
+
 group :development, :test do
+  gem 'cucumber'
+  gem 'cucumber-rails'
   gem 'ruby-debug'
   gem 'rspec' 
   gem 'rspec-rails' 
-  gem 'cucumber'
-  gem 'cucumber-rails'
 end
 
 group :test do
