@@ -24,6 +24,7 @@ Feature: Edit reference
     When I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
     And I fill in "reference_title" with "Ant Title"
       And I press the "Save" button
+      And I wait for a bit
     Then I should be on the references page
       And I should see "Ward, B.L.; Bolton, B. 2010. Ant Title"
 
@@ -119,6 +120,7 @@ Feature: Edit reference
       And I fill in "reference_series_volume_issue" with ""
       And I fill in "article_pagination" with ""
       And I press the "Save" button
+      And I wait for a bit
     Then I should see the edit form
       And I should see "Title can't be blank"
       And I should see "Year can't be blank"
