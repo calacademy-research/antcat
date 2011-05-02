@@ -144,7 +144,7 @@ describe ComparableReference do
     it 'should match with much less confidence when the year does not match' do
       @lhs.year = '1980'
       @rhs.year = '1990'
-      (@lhs <=> @rhs).should be_close(0.30, 0.001)
+      (@lhs <=> @rhs).should be_within(0.001).of(0.30)
     end
     it "should match perfectly when the year does match" do
       @lhs.year = '1979'
