@@ -93,6 +93,7 @@ Feature: Add reference
     When I follow "add"
       And in the new edit form I fill in "reference_author_names_string" with "Fisher, B.L."
       And in the new edit form I press the "Save" button
+      And I wait for a bit
     Then I should see a new edit form
       And I should see "Year can't be blank"
       And I should see "Title can't be blank"
