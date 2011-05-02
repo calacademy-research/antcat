@@ -14,6 +14,9 @@ Feature: Using the Taxatry browser
     When I go to the Taxatry browser
 
   Scenario: Viewing subfamilies
+    Then I should see "Formicidae" in the index
+      And I should see "Dolichoderinae" in the index
+      And I should see "Myrmicinae" in the index
     Then I should see "Dolichoderinae" in the browser
       And I should see "Myrmicinae" in the browser
       And I should see "Dolichoderinae" in the browser
@@ -36,11 +39,22 @@ Feature: Using the Taxatry browser
       And I should see "Myrmicinae history" in the browser
       And I should see "Atta history" in the browser
 
+  Scenario: Clicking a subfamily heading in the browser after a search
+    When I fill in the search box with "atta"
+      And I press "Go" by the search box
+    Then I should see "Atta history"
+    When I follow "Myrmicinae" in the index
+    Then I should see "Atta" in the index
+      And I should see "Myrmicinae" in the index
+      And I should see "Atta history" in the browser
+
   Scenario: Clicking a subfamily heading in the index which is showing genera
     When I follow "Myrmicinae" in the browser
     Then I should not see "Dolichoderinae" in the index
+      And I should see "Atta" in the index
     When I follow "Myrmicinae" in the index
-    Then I should see "Dolichoderinae" in the index
+    Then I should not see "Dolichoderinae" in the index
+      And I should see "Atta" in the index
 
   Scenario: Clicking a genus heading in the browser
     When I follow "Myrmicinae" in the browser
@@ -52,24 +66,35 @@ Feature: Using the Taxatry browser
     When I follow "Myrmicinae" in the browser
     Then I should see "Tetramorium" in the index
     When I follow "Atta" in the browser
-      Then I should not see "Tetramorium" in the index
+      Then I should see "nigra" in the browser
     When I follow "Atta" in the index
-    Then I should see "Tetramorium" in the index
+      Then I should see "nigra" in the browser
+
+  Scenario: Clicking the family heading in the index which is showing species
+    When I follow "Myrmicinae" in the browser
+      Then I should see "Myrmicinae history" in the browser
+    When I follow "Atta" in the browser
+      Then I should see "nigra" in the browser
+    When I follow "Myrmicinae" in the index
+    Then I should see "Myrmicinae history" in the browser
+    When I follow "Formicidae" in the index
+    Then I should see "Dolichoderinae" in the index
 
   Scenario: Clicking a subfamily heading in the index which is showing species
     When I follow "Myrmicinae" in the browser
-    Then I should see "Tetramorium" in the index
+      Then I should see "Myrmicinae history" in the browser
     When I follow "Atta" in the browser
-      Then I should not see "Tetramorium" in the index
+      Then I should see "nigra" in the browser
     When I follow "Myrmicinae" in the index
-    Then I should see "Dolichoderinae" in the index
+    Then I should see "Myrmicinae history" in the browser
 
-  Scenario: Going back to viewing all subfamilies
+  Scenario: Clicking a subfamily heading in the index which is showing the subfamily
     When I follow "Myrmicinae" in the browser
     Then I should not see "Dolichoderinae" in the index
+      And I should see "Myrmicinae history" in the browser
     When I follow "Myrmicinae" in the index
-    Then I should see "Dolichoderinae" in the index
-      And I should see "Myrmicinae" in the index
+    Then I should not see "Dolichoderinae" in the index
+      And I should see "Myrmicinae history" in the browser
 
   Scenario: Searching when no results
     When I fill in the search box with "asdfjl;jsdf"
