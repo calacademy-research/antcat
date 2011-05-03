@@ -2,7 +2,7 @@ class Bolton::Catalog::Importer
 
   def initialize show_progress = false
     Progress.init show_progress
-    Progress.open_log Rails.root.join 'log/' + self.class.name.underscore.gsub(/\//, '_') + '.log'
+    Progress.open_log Rails.root.join 'log/' + self.class.name.underscore.gsub(/\//, '_') + "-#{Rails.env}.log"
     Progress.info "==============================="
     @error_count = 0
   end
