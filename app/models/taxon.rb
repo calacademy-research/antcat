@@ -1,7 +1,7 @@
 class Taxon < ActiveRecord::Base
   set_table_name :taxa
   belongs_to :synonym_of, :class_name => 'Taxon', :foreign_key => :synonym_of_id
-  belongs_to :homonym_resolved_to, :class_name => 'Taxon', :foreign_key => :homonym_resolved_to_id
+  belongs_to :homonym_replaced_by, :class_name => 'Taxon', :foreign_key => :homonym_replaced_by_id
   validates_presence_of :name
 
   def unavailable?;     status == 'unavailable' end

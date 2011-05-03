@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110430023813) do
+ActiveRecord::Schema.define(:version => 20110503014112) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -172,13 +172,13 @@ ActiveRecord::Schema.define(:version => 20110430023813) do
     t.integer  "tribe_id"
     t.integer  "genus_id"
     t.integer  "synonym_of_id"
-    t.integer  "homonym_resolved_to_id"
+    t.integer  "homonym_replaced_by_id"
     t.string   "incertae_sedis_in"
     t.integer  "species_id"
   end
 
   add_index "taxa", ["genus_id"], :name => "taxa_genus_id_idx"
-  add_index "taxa", ["homonym_resolved_to_id"], :name => "taxa_homonym_resolved_to_id_index"
+  add_index "taxa", ["homonym_replaced_by_id"], :name => "taxa_homonym_resolved_to_id_index"
   add_index "taxa", ["id", "type"], :name => "taxa_id_and_type_idx"
   add_index "taxa", ["name"], :name => "taxa_name_idx"
   add_index "taxa", ["species_id"], :name => "taxa_species_id_index"

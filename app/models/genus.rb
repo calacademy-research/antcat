@@ -13,7 +13,7 @@ class Genus < Taxon
     subfamily_name = record[:subfamily]
     tribe_name = record[:tribe]
     synonym_of_name = record[:synonym_of]
-    homonym_resolved_to_name = record[:homonym_resolved_to]
+    homonym_replaced_by_name = record[:homonym_replaced_by]
     status = record[:status].present? ? record[:status] : nil
     incertae_sedis_in = record[:incertae_sedis_in] && record[:incertae_sedis_in]
     fossil = record[:fossil]
@@ -28,14 +28,14 @@ class Genus < Taxon
     raise if tribe && !tribe.valid?
 
     synonym_of = find_referent synonym_of_name
-    homonym_resolved_to = find_referent homonym_resolved_to_name
+    homonym_replaced_by = find_referent homonym_replaced_by_name
 
     # sorry, Barry, but it's just not
     fossil = nil if record[:name] == 'Pseudoatta'
 
     attributes = {:name => record[:name], :fossil => fossil, :status => status,
                   :subfamily => subfamily, :tribe => tribe,
-                  :synonym_of => synonym_of, :homonym_resolved_to => homonym_resolved_to,
+                  :synonym_of => synonym_of, :homonym_replaced_by => homonym_replaced_by,
                   :taxonomic_history => record[:taxonomic_history],
                   :incertae_sedis_in => incertae_sedis_in}
 
