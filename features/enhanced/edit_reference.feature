@@ -100,6 +100,7 @@ Feature: Edit reference
       And I fill in "publisher_string" with ""
       And I fill in "book_pagination" with ""
       And I press the "Save" button
+      And I wait for a bit
     Then I should see the edit form
       And I should see "Year can't be blank"
       And I should see "Title can't be blank"
@@ -264,9 +265,9 @@ Feature: Edit reference
       And I fill in "article_pagination" with "2"
       And I press the "Save" button
       And I wait for a bit
-      And I wait for a bit more
       And I will confirm on the next step
       And I delete "Ward"
+      And I wait for a bit
       And I edit "Bolton"
       And I follow "Nested"
       And I press the "Save" button
