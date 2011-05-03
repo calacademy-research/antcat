@@ -177,7 +177,7 @@ class Reference < ActiveRecord::Base
       start_year = match[1].to_i
     end
 
-    return nil, nil unless (1758..2010).include? start_year
+    return nil, nil unless (1758..(Time.now.year + 1)).include? start_year
 
     string.gsub! /#{match[0]}/, '' if match
     return start_year, end_year
