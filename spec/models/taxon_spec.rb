@@ -186,10 +186,26 @@ describe Taxon do
       genus.should_not be_synonym_of another_genus
     end
 
-    it "should not think it's a synonym of something when it's not" do
+    it "should think it's a synonym of something when it is" do
       senior_synonym = Factory :genus
       junior_synonym = Factory :genus, :synonym_of => senior_synonym, :status => 'synonym'
       junior_synonym.should be_synonym_of senior_synonym
+    end
+
+  end
+
+  describe "being a homonym replaced by something" do
+
+    it "should not think it's a homonym replaced by something when it's not" do
+      genus = Factory :genus
+      another_genus = Factory :genus
+      genus.should_not be_homonym_replaced_by another_genus
+    end
+
+    it "should think it's a homonym replaced by something when it is" do
+      replacement = Factory :genus
+      homonym = Factory :genus, :homonym_replaced_by => replacement, :status => 'homonym'
+      homonym.should be_homonym_replaced_by replacement
     end
 
   end
