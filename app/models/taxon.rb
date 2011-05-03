@@ -23,6 +23,10 @@ class Taxon < ActiveRecord::Base
     synonym_of == taxon
   end
 
+  def homonym_replaced_by? taxon
+    homonym_replaced_by == taxon
+  end
+
   def current_valid_name
     target = self
     target = target.synonym_of while target.synonym_of
