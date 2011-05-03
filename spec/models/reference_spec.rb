@@ -43,6 +43,16 @@ describe Reference do
       }.results.should == [reference]
     end
 
+    it "should handle the current year + the next year" do
+      bolton = reference_factory(:author_name => 'Bolton', :citation_year => Time.now.year.to_s)
+      bolton.index
+      fisher = reference_factory(:author_name => 'Fisher', :citation_year => (Time.now.year + 1).to_s)
+      fisher.index
+      Sunspot.commit
+      Reference.do_search("Bolton #{Time.now.year}").should == [bolton]
+      Reference.do_search("Fisher #{Time.now.year + 1}").should == [fisher]
+    end
+
     it "should not strip the year from the string" do
       string = '1990'
       Reference.do_search string
