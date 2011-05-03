@@ -77,6 +77,7 @@ Feature: Add reference
       And in the new edit form I fill in "reference_pages_in" with "Pp. 32-33 in:"
       And in the new edit form I fill in "reference_nested_reference_id" with the existing reference's ID
       And in the new edit form I press the "Save" button
+      And I wait for a bit
     Then I should see "Ward, B.L.; Bolton, B. 1981. A reference title. Pp. 32-33 in: Ward, P.S. 2010. Annals of Ants. Psyche 1:1."
 
   Scenario: Adding an 'Other' reference
