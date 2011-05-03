@@ -66,10 +66,10 @@ describe Taxon do
 
   it "should be able to be a homonym of something else" do
     neivamyrmex = Factory :taxon, :name => 'Neivamyrmex'
-    acamatus = Factory :taxon, :name => 'Acamatus', :status => 'homonym', :homonym_resolved_to => neivamyrmex
+    acamatus = Factory :taxon, :name => 'Acamatus', :status => 'homonym', :homonym_replaced_by => neivamyrmex
     acamatus.reload
     acamatus.should be_homonym
-    acamatus.homonym_resolved_to.should == neivamyrmex
+    acamatus.homonym_replaced_by.should == neivamyrmex
   end
 
   it "should be able to have an incertae_sedis_in" do
