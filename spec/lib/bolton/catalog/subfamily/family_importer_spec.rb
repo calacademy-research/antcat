@@ -51,7 +51,7 @@ describe Bolton::Catalog::Subfamily::Importer do
 <p><b><span lang=EN-GB>Genus *<i><span style='color:red'>CRETACOFORMICA</span></i> <o:p></o:p></span></b></p>
 <p><b><i><span lang="EN-GB">Cretacoformica</span></i></b><span lang="EN-GB"> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </span></p>
 
-<p><b><span lang=EN-GB>Homonym replaced by *<i><span style='color:green'>PROMYRMICIUM</span></i><o:p></o:p></span></b></p>
+<p><b><span lang=EN-GB>Homonym replaced by *<i><span style='color:green'>CRETACOFORMICA</span></i><o:p></o:p></span></b></p>
 <p><span lang=EN-GB>*<b><i>Myrmicium</i></b> Heer, 1870: 78.  Type-species: *<i>Myrmicium boreale</i>, by
 monotypy. </span></p>
 <p><b><span lang=EN-GB>Taxonomic history<o:p></o:p></span></b></p>
@@ -129,16 +129,15 @@ monotypy. </span></p>
     taxon.taxonomic_history.should ==
 %{<p><b><i>Syntaphus</i></b> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </p>}
 
-    taxon = Genus.find_by_name 'Cretacoformica'
-    taxon.should be_invalid
-    taxon.should be_fossil
-    taxon.status.should == 'excluded'
-    taxon.taxonomic_history.should == 
-%{<p><b><i>Cretacoformica</i></b> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </p>} +
-%{<p><b>Homonym replaced by *<i>PROMYRMICIUM</i><p></p></b></p>} +
-%{<p>*<b><i>Myrmicium</i></b> Heer, 1870: 78.  Type-species: *<i>Myrmicium boreale</i>, by monotypy. </p>} +
-%{<p><b>Taxonomic history<p></p></b></p>} +
-%{<p>[Junior homonym of *<i>Myrmicium</i> Westwood, 1854: 396 (*Pseudosiricidae).] </p>}
+    cretacoformica = Genus.find_by_name 'Cretacoformica'
+    cretacoformica.should be_invalid
+    cretacoformica.should be_fossil
+    cretacoformica.status.should == 'excluded'
+    cretacoformica.taxonomic_history.should == 
+%{<p><b><i>Cretacoformica</i></b> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </p>}
+
+    taxon = Genus.find_by_name 'Myrmicium'
+    taxon.should be_homonym_replaced_by cretacoformica
 
   end
 

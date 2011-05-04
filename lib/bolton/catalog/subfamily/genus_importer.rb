@@ -28,7 +28,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
       Progress.info "Created #{genus.name}"
     end
 
-    taxonomic_history << parse_homonym_replaced_by_genus
+    parse_homonym_replaced_by_genus(genus)
     taxonomic_history << parse_junior_synonyms_of_genus(genus)
     taxonomic_history << parse_subgenera(genus)
     taxonomic_history << parse_genus_references
@@ -44,16 +44,19 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     parsed_text
   end
 
-  def parse_homonym_replaced_by_genus
-    return '' unless @type == :homonym_replaced_by_genus_header
+  def parse_homonym_replaced_by_genus genus
+    return unless @type == :homonym_replaced_by_genus_header
     Progress.info 'parse_homonym_replaced_by_genus'
 
-    parsed_text = @paragraph
     parse_next_line
+    expect :genus_line
 
-    parsed_text << @paragraph << parse_taxonomic_history
-
-    parsed_text
+    name = @parse_result[:name]
+    fossil = @parse_result[:fossil]
+    taxonomic_history = @paragraph
+    taxonomic_history << parse_taxonomic_history
+    genus = ::Genus.create! :name => name, :fossil => fossil, :status => 'homonym', :homonym_replaced_by => genus,
+                          :subfamily => genus.subfamily, :tribe => genus.tribe, :taxonomic_history => clean_taxonomic_history(taxonomic_history)
   end
 
   def parse_junior_synonyms_of_genus genus

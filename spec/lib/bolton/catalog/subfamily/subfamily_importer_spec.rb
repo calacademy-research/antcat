@@ -278,8 +278,7 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
       stigmacros.subgenera.map(&:name).should =~ ['Myagroteras', 'Condylomyrma', 'Orthonotomyrmex']
       stigmacros.taxonomic_history.should ==
 %{<p><b><i>Stigmacros</i></b> Forel, 1905b: 179 [as subgenus of <i>Acantholepis</i>].  </p>} +
-%{<p><b>Homonym replaced by <i>STIGMACROS</i></b><p></p></p>} +
-%{<p><b><i>Acrostigma</i></b> Forel, 1902h: 477 [as subgenus of <i>Acantholepis</i>].  Type-species: <i>Acantholepis (Acrostigma) froggatti</i>, by subsequent designation of Wheeler, W.M. 1911f: 158. </p>} +
+
 %{<p><b>Subgenera of <i>STIGMACROS</i> include the nominal plus the following.<p></p></b></p>} +
 %{<p>Subgenera note</p>} +
 %{<p><b>Subgenus <i>STIGMACROS (MYAGROTERAS)</i> <p></p></b></p>} +
@@ -293,6 +292,9 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 %{<p><b>Homonym replaced by <i>ORTHONOTOMYRMEX</i> <p></p></b></p>} +
 %{<p><b><i>Orthonotus</i></b> Ashmead, 1905b: 384. Type-species: <i>Formica sericea</i>, by original designation. </p>} +
 %{<p>Orthonotus history</p>}
+
+      acrostigma = Genus.find_by_name 'Acrostigma'
+      acrostigma.should be_homonym_replaced_by stigmacros
 
       myagroteras = Subgenus.find_by_name 'Myagroteras'
       myagroteras.genus.should == stigmacros
