@@ -200,12 +200,25 @@ describe Taxon do
       genus = Factory :genus
       another_genus = Factory :genus
       genus.should_not be_homonym_replaced_by another_genus
+      genus.homonym_replaced.should be_nil
     end
 
     it "should think it's a homonym replaced by something when it is" do
       replacement = Factory :genus
       homonym = Factory :genus, :homonym_replaced_by => replacement, :status => 'homonym'
       homonym.should be_homonym_replaced_by replacement
+      replacement.homonym_replaced.should == homonym
+    end
+
+  end
+
+  describe "the 'not homonyms' scope" do
+
+    it "should include everything except homonyms" do
+      subfamily = Factory :subfamily
+      replacement = Factory :genus, :subfamily => subfamily
+      homonym = Factory :genus, :homonym_replaced_by => replacement, :status => 'homonym', :subfamily => subfamily
+      subfamily.genera.not_homonyms.should == [replacement]
     end
 
   end
