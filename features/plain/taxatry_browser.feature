@@ -161,3 +161,22 @@ Feature: Using the Taxatry browser
       And I press "Go" by the search box
     Then I should see "Myrmicinae history"
 
+  Scenario: A genus that replaced another genus
+    Given a genus exists with a name of "Dlusskyidris" and a subfamily of "Dolichoderinae" and a taxonomic history of "Dlusskyidris history"
+      And a genus that was replaced by "Dlusskyidris" exists with a name of "Palaeomyrmex" with a taxonomic history of "Palaeomyrmex history"
+    When I follow "Dolichoderinae" in the browser
+    And show me the page
+      Then I should see "Homonym replaced by DLUSSKYIDRIS" in the browser
+      Then I should see "Palaeomyrmex" in the browser
+      And I should see "Palaeomyrmex" in the index
+      And I should not see "Palaeomyrmex" by itself in the browser
+    When I follow "Dlusskyidris" in the browser
+    Then I should see "Homonym replaced by DLUSSKYIDRIS" in the browser header
+      And I should see "Palaeomyrmex" in the browser header
+    When I follow "Dolichoderinae" in the index
+      And I follow "Palaeomyrmex" in the browser
+    Then I should see "Palaeomyrmex" in the browser header
+      And I should not see "Homonym replaced by DLUSSKYIDRIS" in the browser header
+
+
+

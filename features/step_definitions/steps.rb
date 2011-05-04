@@ -281,6 +281,11 @@ Given /a genus exists with a name of "(.*?)"(?: and a subfamily of "(.*?)")?(?: 
   Factory :genus, :name => taxon_name, :subfamily => subfamily, :tribe => nil, :taxonomic_history => taxonomic_history, :status => status
 end
 
+Given /a genus that was replaced by "(.*?)" exists with a name of "(.*?)" with a taxonomic history of "(.*?)"/ do |replacement, name, taxonomic_history|
+  replacement = Genus.find_by_name(replacement) || Factory(:genus, :name => replacement)
+  Factory :genus, :name => name, :taxonomic_history => taxonomic_history, :status => 'homonym', :subfamily => replacement.subfamily, :homonym_replaced_by => replacement
+end
+
 Given /a species exists with a name of "(.*?)" and a genus of "(.*?)" and a taxonomic history of "(.*?)"/ do |taxon_name, parent_name, taxonomic_history|
   genus = Genus.find_by_name(parent_name) || Factory(:genus, :name => parent_name)
   Factory :species, :name => taxon_name, :genus => genus, :taxonomic_history => taxonomic_history

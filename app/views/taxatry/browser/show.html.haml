@@ -27,6 +27,7 @@
     .header
       .taxon_header
         = taxon_header @header_taxon
+      .taxonomic_history= raw taxonomic_history(@header_taxon)
     %hr
 
   .contents
@@ -35,7 +36,7 @@
         - unless @header_taxon && @header_taxon.rank == 'genus'
           = taxon_header taxon
       %div{:class => "taxonomic_history #{taxon.rank}"}
-        = raw taxon.taxonomic_history
+        = raw taxonomic_history(taxon)
     - 100.times do
       .taxon_header
         &nbsp;
