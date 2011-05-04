@@ -18,8 +18,6 @@ Feature: Using the Taxatry browser
       And I should see "Dolichoderinae" in the index
       And I should see "Myrmicinae" in the index
     Then I should see "Dolichoderinae" in the browser
-      And I should see "Myrmicinae" in the browser
-      And I should see "Dolichoderinae" in the browser
       And I should see "Dolichoderinae history" in the browser
       And I should see "Myrmicinae" in the browser
       And I should see "Myrmicinae history" in the browser
@@ -33,10 +31,13 @@ Feature: Using the Taxatry browser
   #    And "Myrmicinae" should be selected in the index
 
   Scenario: Clicking a subfamily heading in the browser
-    When I follow "Myrmicinae" in the browser
-    Then I should see "Atta" in the index
+    When I follow "MYRMICINAE" in the browser
+    Then the browser header should be "Subfamily MYRMICINAE"
+      And I should see "Myrmicinae" in the browser header
+      And I should see "Atta" in the index
       And I should see "Myrmicinae" in the browser
       And I should see "Myrmicinae history" in the browser
+      And I should see "Genus ATTA" in the browser
       And I should see "Atta history" in the browser
 
   Scenario: Clicking a subfamily heading in the browser after a search

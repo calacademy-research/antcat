@@ -15,6 +15,8 @@ module HtmlSelectorsHelpers
       "#index"
     when /the browser/
       "#browser"
+    when /the browser header/
+      "#browser .header"
     when /the search results/
       "#search_results"
 

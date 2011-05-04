@@ -305,6 +305,16 @@ Then /I should (not )?see "(.*?)" (?:with)?in (.*)$/ do |do_not, contents, locat
   end
 end
 
+Then /the browser header should be "(.*?)"/ do |contents|
+  words = contents.split ' '
+  page.should have_css '#browser .header .taxon_header', :text => words.first
+  page.should have_css '#browser .header .taxon_header a', :text => words.second
+end
+
+Then /I should not see "(.*?)" by itself in the browser/ do |contents|
+  page.should_not have_css('.taxon_header a', :text => contents)
+end
+
 Then /I should see "([^"]*)" italicized/ do |italicized_text|
   page.should have_css('span.genus_or_species', :text => italicized_text)  
 end

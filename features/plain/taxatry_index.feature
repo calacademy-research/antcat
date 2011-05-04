@@ -130,3 +130,4 @@ Feature: Using the Taxatry index
       And I press "Go" by the search box
       And I follow "shattucki"
     Then I should see "Myrmicium shattucki history"
+
