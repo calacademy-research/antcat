@@ -187,8 +187,20 @@ Then 'I should not see the "Delete" button' do
 end
 
 Then /I should (not )?see a "PDF" link/ do |should_not|
-  unless page.has_no_selector?('a', :text => 'PDF') and should_not
-    find_link("PDF").send(should_not ? :should_not : :should, be_visible)
+  begin
+    trace = ['Inside the I should(not) see a PDF step']
+    page_has_no_selector = page.has_no_selector?('a', :text => 'PDF')
+    trace << 'after page.has_no_selector'
+    unless page_has_no_selector and should_not
+      trace << 'inside unless'
+      find_link("PDF").send(should_not ? :should_not : :should, be_visible)
+      trace << 'after find_link'
+    end
+    trace << 'end'
+
+  rescue Exception
+    lll{'trace'}
+    raise
   end
 end
 
