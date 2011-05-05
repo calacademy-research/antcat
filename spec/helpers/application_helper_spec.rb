@@ -14,7 +14,16 @@ describe ApplicationHelper do
 
   end
 
-  describe 'taxon label' do
+  describe 'taxon class' do
+
+    it "should return the correct classes" do
+      taxon = Factory :genus, :name => 'Atta'
+      helper.css_classes_for_taxon(taxon).should == "genus taxon valid"
+    end
+
+  end
+
+  describe 'taxon label and css classes' do
 
     it "should return the CSS class based on the type of the taxon and its status" do
       taxon = Factory :genus, :name => 'Atta'
@@ -30,7 +39,12 @@ describe ApplicationHelper do
 
     it "should handle being selected" do
       taxon = Factory :genus, :name => 'Atta'
-      helper.taxon_label_and_css_classes(taxon, true)[:css_classes].should == 'genus selected taxon valid'
+      helper.taxon_label_and_css_classes(taxon, :selected => true)[:css_classes].should == 'genus selected taxon valid'
+    end
+
+    it "should handle upper case" do
+      taxon = Factory :genus, :name => 'Atta'
+      helper.taxon_label_and_css_classes(taxon, :uppercase => true)[:label].should == 'ATTA'
     end
 
     it "should return an HTML safe label" do
@@ -41,9 +55,11 @@ describe ApplicationHelper do
   end
 
   describe 'taxon rank css classes' do
+
     it 'should return the right ones' do
       taxon = Factory :genus, :name => 'Atta'
-      taxon_rank_css_classes(taxon).should == ['genus', 'taxon']
+      css_classes_for_rank(taxon).should == ['genus', 'taxon']
     end
+
   end
 end

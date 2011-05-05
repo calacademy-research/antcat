@@ -3,7 +3,7 @@ require 'snake'
 module TaxatryHelper
 
   def taxon_link taxon, selected, search_params
-    label_and_classes = taxon_label_and_css_classes taxon, taxon == selected
+    label_and_classes = taxon_label_and_css_classes taxon, :selected => taxon == selected
     link_to label_and_classes[:label], index_taxatry_path(taxon, search_params), :class => label_and_classes[:css_classes]
   end
 
@@ -100,7 +100,7 @@ module TaxatryHelper
     taxa.sort_by(&:name).in_groups_of(items_per_row, false).inject([]) do |groups, group|
       result = {:id => group.first.id}
       if group.size > 1
-        result[:css_classes] = taxon_rank_css_classes(group.first).join ' '
+        result[:css_classes] = css_classes_for_rank(group.first).join ' '
         result[:label] = "#{group.first.name[0, abbreviated_length]}-#{group.last.name[0, abbreviated_length]}"
       else
         result.merge! taxon_label_and_css_classes group.first
