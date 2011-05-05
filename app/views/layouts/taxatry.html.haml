@@ -14,7 +14,7 @@
 
       .search
         Search for name
-        = select_tag :search_type, options_for_select(['matching', 'beginning with', 'containing'], params[:search_type] || 'beginning with')
+        = search_selector params[:search_type]
         = hidden_field_tag "id", params[:id]
         = text_field_tag "q", params[:q]
         = submit_tag  "Go"

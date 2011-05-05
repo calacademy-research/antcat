@@ -149,4 +149,9 @@ module TaxatryHelper
     css_classes = css_classes.sort.join ' '
   end
 
+  def search_selector current_search_type
+    select_tag :search_type,
+      options_for_select(['matching', 'beginning with', 'containing'], current_search_type || 'beginning with')
+  end
+
 end
