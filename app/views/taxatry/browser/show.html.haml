@@ -14,7 +14,7 @@
   - if @taxon
     - @index_header_taxa.each do |index_header_taxon|
       .index_header_taxon
-        - label_and_classes = taxon_label_and_css_classes index_header_taxon[:taxon]
+        - label_and_classes = TaxatryFormatter.taxon_label_and_css_classes index_header_taxon[:taxon]
         = link_to label_and_classes[:label], index_header_taxon[:path], :class => label_and_classes[:css_classes]
 
   - index_items = make_index_groups @index_taxa, 50, 8
