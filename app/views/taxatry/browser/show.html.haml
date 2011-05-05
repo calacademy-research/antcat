@@ -35,7 +35,7 @@
       .taxon_header{:id => taxon.id}
         - unless @header_taxon && @header_taxon.rank == 'genus'
           = taxon_header taxon, :link => true
-      %div.taxonomic_history
+      %div{:class => "taxonomic_history #{taxon.rank}"}
         = raw taxonomic_history(taxon)
     - 100.times do
       .taxon_header
