@@ -19,7 +19,7 @@ describe TaxonomicHistoryHelper do
       helper.taxonomic_history(replacement).should == 
 %{<p>Dlusskyidris history</p>} + 
 %{<p class="taxon_subsection_header">Homonym replaced by <span class="genus taxon valid">&dagger;DLUSSKYIDRIS</span></p>} +
-%{<p>Palaeomyrmex history</p>}
+%{<div id="#{junior_homonym.id}"><p>Palaeomyrmex history</p></div>}
     end
 
   end
