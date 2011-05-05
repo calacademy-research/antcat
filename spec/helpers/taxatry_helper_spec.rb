@@ -77,7 +77,7 @@ describe TaxatryHelper do
       c = Factory :species, :name => 'c'
       helper.make_index_groups([a,b,c], 2, 4).should == [
         {:label => 'a-b', :id => a.id, :css_classes => 'species taxon'},
-        {:label => 'c', :id => c.id, :css_classes => 'species taxon valid'}]
+        {:label => 'c', :id => c.id, :css_classes => 'species taxon'}]
     end
 
     it "should abbreviate items" do
@@ -86,7 +86,7 @@ describe TaxatryHelper do
       c = Factory :species, :name => 'Tetramorium'
       helper.make_index_groups([a,b,c], 2, 4).should == [
         {:label => 'Acan-Atta', :id => a.id, :css_classes => 'species taxon'},
-        {:label => 'Tetramorium', :id => c.id, :css_classes => 'species taxon valid'}]
+        {:label => 'Tetramorium', :id => c.id, :css_classes => 'species taxon'}]
     end
 
     it "should prepend daggers on single items" do

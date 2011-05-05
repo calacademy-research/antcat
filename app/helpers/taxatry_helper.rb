@@ -97,15 +97,24 @@ module TaxatryHelper
   def make_index_groups taxa, max_row_count, abbreviated_length
     items_per_row = (taxa.count.to_f / max_row_count).ceil
     return [] if items_per_row.zero?
-    taxa.sort_by(&:name).in_groups_of(items_per_row, false).inject([]) do |groups, group|
+    groups = taxa.sort_by(&:name).in_groups_of(items_per_row, false)
+    any_groups_with_more_than_one_member = false
+    groups.inject([]) do |label_groups, group|
       result = {:id => group.first.id}
-      if group.size > 1
-        result[:css_classes] = css_classes_for_rank(group.first).join ' '
-        result[:label] = "#{group.first.name[0, abbreviated_length]}-#{group.last.name[0, abbreviated_length]}"
+      label_and_classes = taxon_label_and_css_classes group.first
+      any_groups_with_more_than_one_member ||= group.size > 1
+      if any_groups_with_more_than_one_member
+        if group.size > 1
+          result[:label] = "#{group.first.name[0, abbreviated_length]}-#{group.last.name[0, abbreviated_length]}"
+          result[:css_classes] = css_classes_for_rank(group.first).join ' '
+        else
+          result.merge! label_and_classes
+          result[:css_classes] = css_classes_for_rank(group.first).join ' '
+        end
       else
-        result.merge! taxon_label_and_css_classes group.first
+        result.merge! label_and_classes
       end
-      groups << result
+      label_groups << result
     end
   end
 
