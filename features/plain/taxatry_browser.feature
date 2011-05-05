@@ -50,7 +50,7 @@ Feature: Using the Taxatry browser
       And I should see "Atta history" in the browser
 
   Scenario: Clicking a subfamily heading in the index which is showing genera
-    When I follow "Myrmicinae" in the browser
+    When I follow "MYRMICINAE" in the browser
     Then I should not see "Dolichoderinae" in the index
       And I should see "Atta" in the index
     When I follow "Myrmicinae" in the index
@@ -58,23 +58,23 @@ Feature: Using the Taxatry browser
       And I should see "Atta" in the index
 
   Scenario: Clicking a genus heading in the browser
-    When I follow "Myrmicinae" in the browser
-      And I follow "Atta" in the browser
+    When I follow "MYRMICINAE" in the browser
+      And I follow "ATTA" in the browser
     Then I should see "nigra" in the index
       And I should see "nigra history" in the browser
 
   Scenario: Clicking a genus heading in the index which is showing species
-    When I follow "Myrmicinae" in the browser
+    When I follow "MYRMICINAE" in the browser
     Then I should see "Tetramorium" in the index
-    When I follow "Atta" in the browser
+    When I follow "ATTA" in the browser
       Then I should see "nigra" in the browser
     When I follow "Atta" in the index
       Then I should see "nigra" in the browser
 
   Scenario: Clicking the family heading in the index which is showing species
-    When I follow "Myrmicinae" in the browser
+    When I follow "MYRMICINAE" in the browser
       Then I should see "Myrmicinae history" in the browser
-    When I follow "Atta" in the browser
+    When I follow "ATTA" in the browser
       Then I should see "nigra" in the browser
     When I follow "Myrmicinae" in the index
     Then I should see "Myrmicinae history" in the browser
@@ -82,15 +82,15 @@ Feature: Using the Taxatry browser
     Then I should see "Dolichoderinae" in the index
 
   Scenario: Clicking a subfamily heading in the index which is showing species
-    When I follow "Myrmicinae" in the browser
+    When I follow "MYRMICINAE" in the browser
       Then I should see "Myrmicinae history" in the browser
-    When I follow "Atta" in the browser
+    When I follow "ATTA" in the browser
       Then I should see "nigra" in the browser
     When I follow "Myrmicinae" in the index
     Then I should see "Myrmicinae history" in the browser
 
   Scenario: Clicking a subfamily heading in the index which is showing the subfamily
-    When I follow "Myrmicinae" in the browser
+    When I follow "MYRMICINAE" in the browser
     Then I should not see "Dolichoderinae" in the index
       And I should see "Myrmicinae history" in the browser
     When I follow "Myrmicinae" in the index
