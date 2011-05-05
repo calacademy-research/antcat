@@ -3,7 +3,7 @@ require 'snake'
 module TaxatryHelper
 
   def taxon_link taxon, selected, search_params
-    label_and_classes = taxon_label_and_css_classes taxon, :selected => taxon == selected
+    label_and_classes = TaxatryFormatter.taxon_label_and_css_classes taxon, :selected => taxon == selected
     link_to label_and_classes[:label], index_taxatry_path(taxon, search_params), :class => label_and_classes[:css_classes]
   end
 
@@ -101,15 +101,15 @@ module TaxatryHelper
     any_groups_with_more_than_one_member = false
     groups.inject([]) do |label_groups, group|
       result = {:id => group.first.id}
-      label_and_classes = taxon_label_and_css_classes group.first
+      label_and_classes = TaxatryFormatter.taxon_label_and_css_classes group.first
       any_groups_with_more_than_one_member ||= group.size > 1
       if any_groups_with_more_than_one_member
         if group.size > 1
           result[:label] = "#{group.first.name[0, abbreviated_length]}-#{group.last.name[0, abbreviated_length]}"
-          result[:css_classes] = css_classes_for_rank(group.first).join ' '
+          result[:css_classes] = TaxatryFormatter.css_classes_for_rank(group.first).join ' '
         else
           result.merge! label_and_classes
-          result[:css_classes] = css_classes_for_rank(group.first).join ' '
+          result[:css_classes] = TaxatryFormatter.css_classes_for_rank(group.first).join ' '
         end
       else
         result.merge! label_and_classes
@@ -118,35 +118,13 @@ module TaxatryHelper
     end
   end
 
-  def taxon_label_and_css_classes taxon, options = {}
-    fossil_symbol = taxon.fossil? ? "&dagger;" : ''
-    css_classes = css_classes_for_rank taxon
-    css_classes << taxon.status.gsub(/ /, '_')
-    css_classes << 'selected' if options[:selected]
-    name = taxon.name.dup
-    name.upcase! if options[:uppercase]
-    label = fossil_symbol + h(name)
-    {:label => label.html_safe, :css_classes => css_classes_for_taxon(taxon, options[:selected])}
-  end
-
-  def css_classes_for_rank taxon
-    [taxon.type.downcase, 'taxon']
-  end
-
   def taxon_header taxon, options = {}
-    label_and_css_classes = taxon_label_and_css_classes taxon, :uppercase => true
+    label_and_css_classes = TaxatryFormatter.taxon_label_and_css_classes taxon, :uppercase => true
     if options[:link]
       (taxon.rank.capitalize + ' ' + link_to(label_and_css_classes[:label], browser_taxatry_path(taxon, options[:search_params]), :class => label_and_css_classes[:css_classes])).html_safe
     else
       (taxon.rank.capitalize + ' ' + content_tag('span', label_and_css_classes[:label], :class => label_and_css_classes[:css_classes])).html_safe
     end
-  end
-
-  def css_classes_for_taxon taxon, selected = false
-    css_classes = css_classes_for_rank taxon
-    css_classes << taxon.status.gsub(/ /, '_')
-    css_classes << 'selected' if selected
-    css_classes = css_classes.sort.join ' '
   end
 
   def search_selector current_search_type

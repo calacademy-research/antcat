@@ -22,14 +22,16 @@ class Antweb::Exporter
 
     case taxon
     when Subfamily
-      convert_to_antweb_array(:subfamily => taxon.name, :valid? => !taxon.invalid?, :taxonomic_history => taxon.taxonomic_history)
+      convert_to_antweb_array :subfamily => taxon.name,
+                              :valid? => !taxon.invalid?,
+                              :taxonomic_history => TaxatryFormatter.format_taxonomic_history(taxon)
     when Genus
       subfamily_name = taxon.subfamily.try(:name) || 'incertae_sedis'
       convert_to_antweb_array :subfamily => subfamily_name,
                               :tribe => taxon.tribe && taxon.tribe.name,
                               :genus => taxon.name,
                               :valid? => !taxon.invalid?, :available? => !taxon.invalid?,
-                              :taxonomic_history => taxon.taxonomic_history
+                              :taxonomic_history => TaxatryFormatter.format_taxonomic_history(taxon)
     when Species
       return unless taxon.genus && taxon.genus.tribe && taxon.genus.tribe.subfamily
       convert_to_antweb_array :subfamily => taxon.genus.subfamily.name,
@@ -37,7 +39,7 @@ class Antweb::Exporter
                               :genus => taxon.genus.name,
                               :species => taxon.name,
                               :valid? => !taxon.invalid?, :available? => !taxon.invalid?,
-                              :taxonomic_history => taxon.taxonomic_history
+                              :taxonomic_history => TaxatryFormatter.format_taxonomic_history(taxon)
     when Subspecies
       return unless taxon.species && taxon.species.genus && taxon.species.genus.tribe && taxon.species.genus.tribe.subfamily
       convert_to_antweb_array :subfamily => taxon.species.genus.subfamily.name,
@@ -45,7 +47,7 @@ class Antweb::Exporter
                               :genus => taxon.species.genus.name,
                               :species => "#{taxon.species.name} #{taxon.name}",
                               :valid? => !taxon.invalid?, :available? => !taxon.invalid?,
-                              :taxonomic_history => taxon.taxonomic_history
+                              :taxonomic_history => TaxatryFormatter.format_taxonomic_history(taxon)
     else nil
     end
   end
