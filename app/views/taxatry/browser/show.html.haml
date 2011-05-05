@@ -17,7 +17,7 @@
         - label_and_classes = TaxatryFormatter.taxon_label_and_css_classes index_header_taxon[:taxon]
         = link_to label_and_classes[:label], index_header_taxon[:path], :class => label_and_classes[:css_classes]
 
-  - index_items = make_index_groups @index_taxa, 50, 8
+  - index_items = make_index_groups @taxa, 50, 8
   - index_items.each do |item|
     .index_taxon
       = link_to item[:label], browser_taxatry_path(item[:id]), :class => item[:css_classes]
@@ -31,7 +31,7 @@
     %hr
 
   .contents
-    - @contents_taxa.each do |taxon|
+    - @taxa.each do |taxon|
       .taxon_header{:id => taxon.id}
         - unless @header_taxon && @header_taxon.rank == 'genus'
           = taxon_header taxon, :link => true, :search_params => @search_params

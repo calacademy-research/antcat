@@ -4,7 +4,7 @@ class Taxatry::BrowserController < TaxatryController
     super
 
     unless params[:id]
-      @index_taxa = @contents_taxa = Subfamily.order(:name).all
+      @taxa = Subfamily.order(:name).all
       return
     end
 
@@ -17,8 +17,7 @@ class Taxatry::BrowserController < TaxatryController
 
     elsif rank == 'subfamily'
       @index_header_taxa = [:taxon => @taxon, :path => browser_taxatry_path(@taxon, @search_params)]
-      @index_taxa = @taxon.genera
-      @contents_taxa = @taxon.genera.not_homonyms
+      @taxa = @taxon.genera.not_homonyms
 
     elsif rank == 'genus' || rank == 'species'
       if rank == 'species'
@@ -32,7 +31,7 @@ class Taxatry::BrowserController < TaxatryController
           {:taxon => @header_taxon, :path => browser_taxatry_path(@header_taxon, @search_params)},
         ]
       end
-      @index_taxa = @contents_taxa = @header_taxon.species
+      @taxa = @header_taxon.species
     end
   end
 
