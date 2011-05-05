@@ -14,12 +14,11 @@ describe TaxonomicHistoryHelper do
   describe 'With homonyms' do
 
     it "should return the field + the list of homonyms" do
-      replacement = Factory :genus, :name => 'Dlusskyidris', :taxonomic_history => '<p>Dlusskyidris history</p>'
+      replacement = Factory :genus, :name => 'Dlusskyidris', :taxonomic_history => '<p>Dlusskyidris history</p>', :fossil => true
       junior_homonym = Factory :genus, :name => 'Palaeomyrmex', :taxonomic_history => '<p>Palaeomyrmex history</p>', :status => 'homonym', :homonym_replaced_by => replacement
       helper.taxonomic_history(replacement).should == 
 %{<p>Dlusskyidris history</p>} + 
-%{<p>Homonym replaced by <i>DLUSSKYIDRIS</i></p>} +
-%{<p><a href="#{browser_taxatry_path junior_homonym}">Palaeomyrmex</a></p>} + 
+%{<p class="taxon_subsection_header">Homonym replaced by <span class="genus taxon valid">&dagger;DLUSSKYIDRIS</span></p>} +
 %{<p>Palaeomyrmex history</p>}
     end
 
