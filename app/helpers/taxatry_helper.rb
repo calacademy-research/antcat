@@ -136,7 +136,7 @@ module TaxatryHelper
   def taxon_header taxon, options = {}
     label_and_css_classes = taxon_label_and_css_classes taxon, :uppercase => true
     if options[:link]
-      (taxon.rank.capitalize + ' ' + link_to(label_and_css_classes[:label], browser_taxatry_path(taxon), :class => label_and_css_classes[:css_classes])).html_safe
+      (taxon.rank.capitalize + ' ' + link_to(label_and_css_classes[:label], browser_taxatry_path(taxon, options[:search_params]), :class => label_and_css_classes[:css_classes])).html_safe
     else
       (taxon.rank.capitalize + ' ' + content_tag('span', label_and_css_classes[:label], :class => label_and_css_classes[:css_classes])).html_safe
     end
