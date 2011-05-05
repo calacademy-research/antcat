@@ -5,7 +5,7 @@ class Taxon < ActiveRecord::Base
   belongs_to :homonym_replaced_by, :class_name => 'Taxon', :foreign_key => :homonym_replaced_by_id
   validates_presence_of :name
 
-  scope :not_homonyms, where("status != ?", 'homonym')
+  scope :valid, where("status = ?", 'valid')
 
   def unavailable?;     status == 'unavailable' end
   def available?;       !unavailable? end
