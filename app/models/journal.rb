@@ -1,6 +1,7 @@
 class Journal < ActiveRecord::Base
 
   validates_presence_of :name
+  scope :list, order(:name)
 
   def self.import name
     return unless name.present?

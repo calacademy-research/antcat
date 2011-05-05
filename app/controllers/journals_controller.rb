@@ -5,7 +5,7 @@ class JournalsController < ApplicationController
 
   def index
     respond_to do |format|
-      format.html {@journals = Journal.all(:order => :name)}
+      format.html {@journals = Journal.list}
       format.json {render :json => Journal.search(params[:term]).to_json}
     end
   end
