@@ -1,6 +1,6 @@
 AntCat::Application.routes.draw do
 
-  root :to => "taxatry/index#show"
+  root :to => "taxatry/browser#show"
 
   resources :authors, :only => [:index]
   resources :bolton_matches, :only => [:index]
