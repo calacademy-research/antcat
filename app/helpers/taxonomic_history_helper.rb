@@ -7,7 +7,7 @@ module TaxonomicHistoryHelper
       label_and_classes = taxon_label_and_css_classes taxon, :uppercase => true
       span = content_tag('span', label_and_classes[:label], :class => label_and_classes[:css_classes])
       string << %{<p class="taxon_subsection_header">Homonym replaced by #{span}</p>}
-      string << homonym_replaced.taxonomic_history
+      string << %{<div id="#{homonym_replaced.id}">#{homonym_replaced.taxonomic_history}</div>}
     end
     string
   end
