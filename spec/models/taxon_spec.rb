@@ -212,13 +212,14 @@ describe Taxon do
 
   end
 
-  describe "the 'not homonyms' scope" do
+  describe "the 'valid' scope" do
 
-    it "should include everything except homonyms" do
+    it "should only include valid taxa" do
       subfamily = Factory :subfamily
       replacement = Factory :genus, :subfamily => subfamily
       homonym = Factory :genus, :homonym_replaced_by => replacement, :status => 'homonym', :subfamily => subfamily
-      subfamily.genera.not_homonyms.should == [replacement]
+      synonym = Factory :genus, :synonym_of => replacement, :status => 'synonym', :subfamily => subfamily
+      subfamily.genera.valid.should == [replacement]
     end
 
   end

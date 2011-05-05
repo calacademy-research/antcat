@@ -173,5 +173,12 @@ Feature: Using the Taxatry browser
     Then I should see "Homonym replaced by DLUSSKYIDRIS" in the browser header
       And I should see "Palaeomyrmex" in the browser header
 
+  Scenario: A junior synonym
+    Given a genus exists with a name of "Dlusskyidris" and a subfamily of "Dolichoderinae" and a taxonomic history of "Dlusskyidris history"
+      And a genus that was synonymized to "Dlusskyidris" exists with a name of "Palaeomyrmex" with a taxonomic history of "Palaeomyrmex history"
+    When I follow "DOLICHODERINAE" in the browser
+      And I should not see "Palaeomyrmex" in the index
+      And I should not see "Palaeomyrmex" by itself in the browser
+
 
 

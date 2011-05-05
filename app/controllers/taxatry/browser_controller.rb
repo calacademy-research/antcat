@@ -17,7 +17,7 @@ class Taxatry::BrowserController < TaxatryController
 
     elsif rank == 'subfamily'
       @index_header_taxa = [:taxon => @taxon, :path => browser_taxatry_path(@taxon, @search_params)]
-      @taxa = @taxon.genera.not_homonyms
+      @taxa = @taxon.genera.valid
 
     elsif rank == 'genus' || rank == 'species'
       if rank == 'species'
