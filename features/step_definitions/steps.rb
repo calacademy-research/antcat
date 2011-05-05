@@ -325,7 +325,7 @@ end
 Then /the browser header should be "(.*?)"/ do |contents|
   words = contents.split ' '
   page.should have_css '#browser .header .taxon_header', :text => words.first
-  page.should have_css '#browser .header .taxon_header a', :text => words.second
+  page.should have_css '#browser .header .taxon_header span', :text => words.second
 end
 
 Then /I should not see "(.*?)" by itself in the browser/ do |contents|

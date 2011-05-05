@@ -34,7 +34,7 @@
     - @contents_taxa.each do |taxon|
       .taxon_header{:id => taxon.id}
         - unless @header_taxon && @header_taxon.rank == 'genus'
-          = taxon_header taxon
+          = taxon_header taxon, :link => true
       %div.taxonomic_history
         = raw taxonomic_history(taxon)
     - 100.times do
