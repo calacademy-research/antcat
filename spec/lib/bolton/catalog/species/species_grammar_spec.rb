@@ -269,48 +269,72 @@ sumatranus</span></i><span style="color:blue">, <i>tinctus</i></span>.
     end
   end
 
-  describe "synonyms" do
+  describe "recombined species" do
 
-    it "should handle a species synonym" do
-      @importer.parse(%{
-<i><span style='color:black'>dyak.</span> Acanthomyrmex dyak</i> Wheeler, W.M. 1919e: 86 (s.w.) BORNEO. Junior synonym of <i>ferox</i>: Moffett, 1986c: 70.
-      }).should == {:type => :species, :name => 'dyak', :status => 'synonym'}
-    end
-
-    it "should handle a species synonym with an author" do
+    it "should handle a recombined species with an author" do
       @importer.parse(%{
 <i>aurea </i>Forel, 1913; see under <b><i>HETEROPONERA</i></b>.
-      }).should == {:type => :species, :name => 'aurea', :status => 'synonym'}
+      }).should == {:type => :species, :name => 'aurea', :status => 'recombined'}
     end
 
-    it "should handle a species synonym with an author without comma before year" do
+    it "should handle a recombined species with an author without comma before year" do
       @importer.parse(%{
 *<i>glaesarius</i> Wheeler, W.M. 1915; see under <b><i>TEMNOTHORAX</i></b>.
-      }).should == {:type => :species, :name => 'glaesarius', :status => 'synonym', :fossil => true}
+      }).should == {:type => :species, :name => 'glaesarius', :status => 'recombined', :fossil => true}
     end
 
-    it "should handle an italicized fossil synonym" do
+    it "should handle an italicized fossil recombined species" do
       @importer.parse(%{
 *<i>berendti</i> Mayr, 1868; see under <b><i>STENAMMA</i></b>.
-      }).should == {:type => :species, :name => 'berendti', :status => 'synonym', :fossil => true}
+      }).should == {:type => :species, :name => 'berendti', :status => 'recombined', :fossil => true}
     end
 
-    it "should handle a synonym where the italics were left off" do
+    it "should handle a recombined species where the italics were left off and the semicolon is a colon" do
       @importer.parse(%{
 dimidiata Forel, 1911: see under <b><i>ACROMYRMEX</i></b>.
-      }).should == {:type => :species, :name => 'dimidiata', :status => 'synonym'}
+      }).should == {:type => :species, :name => 'dimidiata', :status => 'recombined'}
     end
 
-    it "should handle fossil synonym in a fossil genus" do
+    it "should handle fossil recombined species in a fossil genus" do
       @importer.parse(%{
 *<i>affinis</i> Heer, 1849; see under *<b><i>PONEROPSIS</i></b>.
-      }).should == {:type => :species, :name => 'affinis', :status => 'synonym', :fossil => true}
+      }).should == {:type => :species, :name => 'affinis', :status => 'recombined', :fossil => true}
     end
 
     it "should handle italicized asterisk" do
       @importer.parse(%{
 <i>*pygmaea</i> Mayr, 1868; see under <b><i>NYLANDERIA</i></b>.
-      }).should == {:type => :species, :name => 'pygmaea', :status => 'synonym', :fossil => true}
+      }).should == {:type => :species, :name => 'pygmaea', :status => 'recombined', :fossil => true}
+    end
+
+    it "should handle a recombined species with genus in brackets" do
+      @importer.parse(%{
+*<i>rugosostriata</i> Mayr, 1868 [<i>Macromischa</i>]; see under *<b><i>EOCENOMYRMA</i></b>.
+      }).should == {:type => :species, :name => 'rugosostriata', :status => 'recombined', :fossil => true}
+    end
+
+    it "should handle it when the whole thing is enclosed in black" do
+      @importer.parse(%{
+<span style="color:black">*<i>pilosula</i> De Andrade, in Baroni Urbani & De Andrade, 2007; see under <b><i>PYRAMICA</i></b>.</span>
+      }).should == {:type => :species, :name => 'pilosula', :status => 'recombined', :fossil => true}
+    end
+
+  end
+
+  describe 'misspellings' do
+    it "should handle a misspelling " do
+      #@importer.parse(%{
+#*<i>pusillus</i> Wheeler, W.M. 1915h: 142; see under *<i>pumilus</i>, above.
+      #}).should == {:type => :species, :name => 'pusillus', :status => 'recombined', :fossil => true}
+    end
+  end
+
+  describe "synonyms" do
+
+    it "should handle a recombined species" do
+      @importer.parse(%{
+<i><span style='color:black'>dyak.</span> Acanthomyrmex dyak</i> Wheeler, W.M. 1919e: 86 (s.w.) BORNEO. Junior synonym of <i>ferox</i>: Moffett, 1986c: 70.
+      }).should == {:type => :species, :name => 'dyak', :status => 'synonym'}
     end
 
     it "should handle nonfossil with binomial inside italics" do
@@ -323,24 +347,6 @@ dimidiata Forel, 1911: see under <b><i>ACROMYRMEX</i></b>.
       @importer.parse(%{
 <i>crassa. Acanthoponera crassa</i> Brown, 1958g: 255, fig. 10 (w.) ECUADOR. Junior synonym of <i>minor</i>: Kempf &amp; Brown, 1968: 90.
       }).should == {:type => :species, :name => 'crassa', :status => 'synonym'}
-    end
-
-    it "should handle a see-under species with genus in brackets" do
-      @importer.parse(%{
-*<i>rugosostriata</i> Mayr, 1868 [<i>Macromischa</i>]; see under *<b><i>EOCENOMYRMA</i></b>.
-      }).should == {:type => :species, :name => 'rugosostriata', :status => 'synonym', :fossil => true}
-    end
-
-    it "should handle a see-under species with stuff after the referent" do
-      @importer.parse(%{
-*<i>pusillus</i> Wheeler, W.M. 1915h: 142; see under *<i>pumilus</i>, above.
-      }).should == {:type => :species, :name => 'pusillus', :status => 'synonym', :fossil => true}
-    end
-
-    it "should handle it when the whole thing is enclosed in black" do
-      @importer.parse(%{
-<span style="color:black">*<i>pilosula</i> De Andrade, in Baroni Urbani & De Andrade, 2007; see under <b><i>PYRAMICA</i></b>.</span>
-      }).should == {:type => :species, :name => 'pilosula', :status => 'synonym', :fossil => true}
     end
 
     it "should handle a multi-author citation" do

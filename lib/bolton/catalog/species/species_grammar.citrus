@@ -2,7 +2,19 @@ grammar Bolton::Catalog::Species::SpeciesGrammar
   include Bolton::Catalog::Grammar
 
   rule species
-    homonym | available_valid_species | species_synonym | unavailable_species | unresolved_homonym  | unidentifiable_species
+    homonym | available_valid_species | species_see_under | species_synonym | unavailable_species | unresolved_homonym  | unidentifiable_species
+  end
+
+  rule species_see_under
+    (species_synonym_prefix? species_name /.* see under .*[A-Z]{2,}.*/) {
+      value = {:type => :species, :name => species_name.value, :status => 'recombined'}
+      value.merge! species_synonym_prefix.value if species_synonym_prefix.present?
+      value
+    }
+  end
+
+  rule bracketed_phrase
+    /\[.*?\]/
   end
 
   rule species_synonym
