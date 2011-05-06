@@ -198,6 +198,12 @@ sumatranus</span></i><span style="color:blue">, <i>tinctus</i></span>.
         }).should == {:type => :species, :name => 'butteli', :status => 'unresolved homonym'}
       end
 
+      it "should handle a resolved homonym" do
+        @importer.parse(%{
+<i>aspersa. Myrmica aspersa</i> Kupyanskaya, 1990: 105, figs. 16, 17, 18 (w.q.m.) RUSSIA. [Junior primary homonym of <i>Myrmica aspersa</i> Smith, F. 1865: 72, above.] Replacement name: <i>ademonia</i> Bolton, 1995b: 277.
+        }).should == {:type => :species, :name => 'aspersa', :status => 'homonym', :homonym_replaced_by => 'ademonia'}
+      end
+
     end
 
     describe "unidentifiable" do
