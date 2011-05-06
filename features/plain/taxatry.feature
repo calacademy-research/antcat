@@ -5,15 +5,8 @@ Feature: Using the Taxatry
 
   Scenario: Going to landing page
     When I go to the main page
-    Then the "Index" tab should be selected
-
-  Scenario: Going from the index to the browser
-    When I go to the main page
-    And I choose "Browser"
     Then the "Browser" tab should be selected
-
-  Scenario: Going from the index to the browser
-    When I go to the main page
-      And I choose "Browser"
-      And I choose "Index"
+    When I choose "Index"
     Then the "Index" tab should be selected
+    When I choose "Browser"
+    Then the "Browser" tab should be selected
