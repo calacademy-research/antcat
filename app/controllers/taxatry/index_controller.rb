@@ -4,7 +4,7 @@ class Taxatry::IndexController < TaxatryController
     super
 
     @current_path = index_taxatry_path
-    @subfamilies = Subfamily.all :order => :name
+    @subfamilies = Subfamily.ordered_by_name
 
     return if @search_results.blank? && params[:id].blank?
 

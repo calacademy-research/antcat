@@ -213,7 +213,6 @@ describe Taxon do
   end
 
   describe "the 'valid' scope" do
-
     it "should only include valid taxa" do
       subfamily = Factory :subfamily
       replacement = Factory :genus, :subfamily => subfamily
@@ -221,6 +220,14 @@ describe Taxon do
       synonym = Factory :genus, :synonym_of => replacement, :status => 'synonym', :subfamily => subfamily
       subfamily.genera.valid.should == [replacement]
     end
-
   end
+
+  describe "ordered by name" do
+    it "should order by name" do
+      zymacros = Factory :subfamily, :name => 'Zymacros'
+      atta = Factory :subfamily, :name => 'Atta'
+      Taxon.ordered_by_name.should == [atta, zymacros]
+    end
+  end
+
 end
