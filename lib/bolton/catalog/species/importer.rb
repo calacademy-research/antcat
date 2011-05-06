@@ -71,7 +71,7 @@ class Bolton::Catalog::Species::Importer < Bolton::Catalog::Importer
   end
 
   def parse_species_lines genus
-    while @line && (parse_note || parse_species(genus) || parse_subspecies(genus)); end
+    while @line && (parse_note || parse_species(genus) || parse_species_see_under(genus) || parse_subspecies(genus)); end
     true
   end
 
@@ -81,6 +81,16 @@ class Bolton::Catalog::Species::Importer < Bolton::Catalog::Importer
     species = ::Species.create! :name => @parse_result[:name], :fossil => @parse_result[:fossil], :status => @parse_result[:status], :genus => genus,
       :taxonomic_history => clean_taxonomic_history(@paragraph)
     @subspecies_for_species[species.name] = @parse_result[:subspecies] || [] unless species.invalid?
+
+    parse_next_line
+    true
+  end
+
+  def parse_species_see_under genus
+    return unless @type == :species_see_under
+
+    ::Species.create! :name => @parse_result[:name], :fossil => @parse_result[:fossil], :status => 'recombined',
+      :genus => genus, :taxonomic_history => clean_taxonomic_history(@paragraph)
 
     parse_next_line
     true

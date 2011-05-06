@@ -85,6 +85,7 @@ module TaxatryHelper
       @statuses['unidentifiable'] = 'unidentifiable'
       @statuses['excluded'] = 'excluded'
       @statuses['unresolved homonym'] = 'unresolved homonyms'
+      @statuses['recombined'] = 'recombined'
       @statuses['nomen nudum'] = 'nomina nuda'
       @statuses
     end

@@ -122,6 +122,18 @@ describe Bolton::Catalog::Species::Importer do
       Progress.should_not_receive :error
       @importer.import_html contents
     end
+
+    it "should add recombinations" do
+      genus = Factory :genus, :name => 'Turneria'
+      @importer.import_html make_contents %{
+<p><b><i><span style='color:red'>TURNERIA</span></i></b> </p> 
+<p><i>butteli</i> Forel, 1913; see under <b><i>IRIDOMYRMEX</i></b>.</p> 
+      }
+      species = Species.find_by_genus_id_and_name genus.id, 'butteli'
+      species.status.should == 'recombined'
+      species.taxonomic_history.should == %{<p><i>butteli</i> Forel, 1913; see under <b><i>IRIDOMYRMEX</i></b>.</p>}
+    end
+
   end
 
   describe "Subspecies" do
