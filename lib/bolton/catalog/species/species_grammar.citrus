@@ -98,7 +98,7 @@ grammar Bolton::Catalog::Species::SpeciesGrammar
   end
 
   rule homonym
-    (fossil_flag? italic species_name '.' /.*?Junior secondary homonym.*?Replacement name: / '*'? italic replacement_name tag_end /.*/) {
+    (fossil_flag? italic species_name '.' /.*?Junior (primary|secondary) homonym.*?Replacement name: / '*'? italic replacement_name tag_end /.*/) {
       value = {:type => :species, :name => species_name.value, :status => 'homonym', :homonym_replaced_by => replacement_name.value}
       value.merge! :fossil => true unless fossil_flag.blank?
       value
