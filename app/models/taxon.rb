@@ -6,6 +6,7 @@ class Taxon < ActiveRecord::Base
   validates_presence_of :name
 
   scope :valid, where("status = ?", 'valid')
+  scope :ordered_by_name, order(:name)
 
   def unavailable?;     status == 'unavailable' end
   def available?;       !unavailable? end
