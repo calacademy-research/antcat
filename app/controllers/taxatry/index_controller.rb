@@ -43,7 +43,6 @@ class Taxatry::IndexController < TaxatryController
     end
 
     @taxon_header_name = @taxon.full_name
-    @taxon_header_status = @taxon.status.gsub /_/, ' ' if @taxon.invalid?
   end
 
 end

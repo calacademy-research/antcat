@@ -11,7 +11,7 @@
         %span.taxon_header
           = raw @taxon_header_name
         %span.taxon_status
-          = @taxon_header_status
+          = status_labels[@taxon.status][:singular] if @taxon.invalid?
         .statistics
           = taxon_statistics @taxon
         - if @taxonomic_history

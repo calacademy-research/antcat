@@ -73,6 +73,13 @@ describe TaxatryHelper do
 
   end
 
+  describe "Status labels" do
+    it "should return the singular and the plural for a status" do
+      helper.status_labels['synonym'][:singular].should == 'synonym'
+      helper.status_labels['synonym'][:plural].should == 'synonyms'
+    end
+  end
+
   describe 'Grouping index items' do
 
     it "should just return the items if the number of rows isn't exceeded" do

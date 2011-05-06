@@ -73,26 +73,26 @@ module TaxatryHelper
   end
 
   def status_plural status
-    statuses[status]
+    status_labels[status][:plural]
   end
 
-  def statuses
-    @statuses || begin
-      @statuses = ActiveSupport::OrderedHash.new
-      @statuses['synonym'] = 'synonyms'
-      @statuses['homonym'] = 'homonyms'
-      @statuses['unavailable'] = 'unavailable'
-      @statuses['unidentifiable'] = 'unidentifiable'
-      @statuses['excluded'] = 'excluded'
-      @statuses['unresolved homonym'] = 'unresolved homonyms'
-      @statuses['recombined'] = 'transferred out of this genus'
-      @statuses['nomen nudum'] = 'nomina nuda'
-      @statuses
+  def status_labels
+    @status_labels || begin
+      @status_labels = ActiveSupport::OrderedHash.new
+      @status_labels['synonym']             = {:singular => 'synonym', :plural => 'synonyms'}
+      @status_labels['homonym']             = {:singular => 'homonym', :plural => 'homonyms'}
+      @status_labels['unavailable']         = {:singular => 'unavailable', :plural => 'unavailable'}
+      @status_labels['unidentifiable']      = {:singular => 'unidentifiable', :plural => 'unidentifiable'}
+      @status_labels['excluded']            = {:singular => 'excluded', :plural => 'excluded'}
+      @status_labels['unresolved homonym']  = {:singular => 'unresolved homonym', :plural => 'unresolved homonyms'}
+      @status_labels['recombined']          = {:singular => 'transferred out of this genus', :plural => 'transferred out of this genus'}
+      @status_labels['nomen nudum']         = {:singular => 'nomen nuda', :plural => 'nomina nuda'}
+      @status_labels
     end
   end
 
   def ordered_statuses
-    statuses.keys
+    status_labels.keys
   end
 
   def make_index_groups taxa, max_row_count, abbreviated_length
