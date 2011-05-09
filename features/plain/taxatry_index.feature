@@ -63,13 +63,13 @@ Feature: Using the Taxatry index
   Scenario: Searching taxatry when more than one result
     When I fill in the search box with "emeryi"
       And I press "Go" by the search box
-    Then I should see "Dolichoderinae Tapinoma emeryi"
-      And I should see "Dolichoderinae Atta emeryi"
+    Then I should see "Tapinoma emeryi"
+      And I should see "Atta emeryi"
       And I should see "emeryi history"
-    When I follow "Dolichoderinae Atta emeryi"
+    When I follow "Atta emeryi"
     Then I should see "atta emeryi history"
-      And I should see "Dolichoderinae Tapinoma emeryi"
-      And "Dolichoderinae Atta emeryi" should be selected
+      And I should see "Tapinoma emeryi"
+      And "Atta emeryi" should be selected
 
   Scenario: Searching taxatry for a 'beginning with' match
     When I fill in the search box with "ses"
@@ -86,29 +86,29 @@ Feature: Using the Taxatry index
   Scenario: Closing the search results
     When I fill in the search box with "emeryi"
       And I press "Go" by the search box
-    Then I should see "Dolichoderinae Tapinoma emeryi"
-      And I should see "Dolichoderinae Atta emeryi"
+    Then I should see "Tapinoma emeryi"
+      And I should see "Atta emeryi"
       And I should see "atta emeryi history"
     When I press "Clear"
     Then I should see "atta emeryi history"
-      And I should not see "Dolichoderinae Tapinoma emeryi"
+      And I should not see "Tapinoma emeryi"
 
   Scenario: Keeping search results open even after finding another taxon
     When I fill in the search box with "emeryi"
       And I press "Go" by the search box
-    Then I should see "Dolichoderinae Tapinoma emeryi"
-      And I should see "Dolichoderinae Atta emeryi"
+    Then I should see "Tapinoma emeryi"
+      And I should see "Atta emeryi"
       And I should see "atta emeryi history"
     When I follow "emeryi"
     Then I should see "atta emeryi history"
-      And I should see "Dolichoderinae Tapinoma emeryi"
+      And I should see "Tapinoma emeryi"
 
   Scenario: Keeping search results after going to the browser
     When I fill in the search box with "emeryi"
       And I press "Go" by the search box
       And I choose "Browser"
-    Then I should see "Dolichoderinae Tapinoma emeryi" within the search results
-      And I should see "Dolichoderinae Atta emeryi" within the search results
+    Then I should see "Tapinoma emeryi" within the search results
+      And I should see "Atta emeryi" within the search results
 
   Scenario: Following a search result
     When I fill in the search box with "Att"

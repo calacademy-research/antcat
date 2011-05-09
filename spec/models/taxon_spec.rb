@@ -106,30 +106,6 @@ describe Taxon do
 
   end
 
-  describe "Full name" do
-
-    it "is just the subfamily name if a subfamily" do
-      taxon = Factory :subfamily, :name => 'Dolichoderinae'
-      taxon.full_name.should == 'Dolichoderinae'
-    end
-
-    it "is the subfamily name and the genus if a genus" do
-      taxon = Factory :genus, :name => 'Atta', :subfamily => Factory(:subfamily, :name => 'Dolichoderinae')
-      taxon.full_name.should == 'Dolichoderinae <i>Atta</i>'
-    end
-
-    it "is the subfamily name, the genus, and the species if a species" do
-      taxon = Factory :species, :name => 'emeryi', :genus => Factory(:genus, :name => 'Atta', :subfamily => Factory(:subfamily, :name => 'Dolichoderinae'))
-      taxon.full_name.should == 'Dolichoderinae <i>Atta emeryi</i>'
-    end
-
-    it "is the subfamily name, the genus, the species, and the subspecies if a subspecies" do
-      taxon = Factory :subspecies, :name => 'biggus', :species => Factory(:species, :name => 'emeryi', :genus => Factory(:genus, :name => 'Atta', :subfamily => Factory(:subfamily, :name => 'Dolichoderinae')))
-      taxon.full_name.should == 'Dolichoderinae <i>Atta emeryi biggus</i>'
-    end
-
-  end
-
   describe "Find name" do
     before do
       Factory :genus, :name => 'Monomorium'

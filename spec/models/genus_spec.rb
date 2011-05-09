@@ -33,9 +33,9 @@ describe Genus do
 
   describe "Full name" do
 
-    it "is the subfamily name and the genus" do
+    it "is the genus name" do
       taxon = Factory :genus, :name => 'Atta', :subfamily => Factory(:subfamily, :name => 'Dolichoderinae')
-      taxon.full_name.should == 'Dolichoderinae <i>Atta</i>'
+      taxon.full_name.should == '<i>Atta</i>'
     end
 
     it "is just the genus name if there is no subfamily" do

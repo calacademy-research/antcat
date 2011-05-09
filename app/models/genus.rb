@@ -66,9 +66,7 @@ class Genus < Taxon
   end
 
   def full_name
-    full_name = "<i>#{name}</i>"
-    full_name = "#{subfamily.name} " + full_name if subfamily
-    full_name
+    "<i>#{name}</i>"
   end
 
   def statistics
