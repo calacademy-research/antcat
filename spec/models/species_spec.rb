@@ -34,7 +34,7 @@ describe Species do
       subfamily = Factory :subfamily, :name => 'Dolichoderinae'
       genus = Factory :genus, :subfamily => subfamily, :name => 'Myrmicium'
       species = Factory :species, :genus => genus, :name => 'shattucki'
-      species.full_name.should == 'Dolichoderinae <i>Myrmicium shattucki</i>'
+      species.full_name.should == '<i>Myrmicium shattucki</i>'
     end
 
     it "should handle it when it has no subfamily" do
