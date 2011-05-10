@@ -31,13 +31,13 @@
 
 %table.references
 
-  - if @reviewing
+  - if params[:review]
     %tr
       %td
       %td.date_header
         Updated
 
-  - if @seeing_whats_new
+  - if params[:whats_new]
     %tr
       %td
       %td.date_header
@@ -47,10 +47,10 @@
     %tr.reference_row
       %td
         = render 'reference', :reference => reference, :publisher_string => @publisher_string, :css_class => 'reference'
-      - if @reviewing
+      - if params[:review]
         %td.date
           = format_timestamp reference.updated_at
-      - if @seeing_whats_new
+      - if params[:whats_new]
         %td.date
           = format_timestamp reference.created_at
 

@@ -1,1 +1,1 @@
-Mime::Type.register "text/bibix", :bibix
+Mime::Type.register "text/endnote_import", :endnote_import

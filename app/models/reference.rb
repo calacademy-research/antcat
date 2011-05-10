@@ -58,11 +58,21 @@ class Reference < ActiveRecord::Base
     principal_author_last_name_cache
   end
 
-  def self.do_search string = nil, page = 1, sort_by_reverse_updated_at = false, sort_by_reverse_created_at = false
-    return order('updated_at DESC').paginate :page => page if sort_by_reverse_updated_at
-    return order('created_at DESC').paginate :page => page if sort_by_reverse_created_at
-    return order(:author_names_string_cache, :citation_year).paginate :page => page unless string.present?
-    string = string.dup
+  def self.do_search options = {}
+    paginate = options[:format] != :endnote_import
+
+    return order('updated_at DESC').paginate :page => options[:page] if options[:review]
+    return order('created_at DESC').paginate :page => options[:page] if options[:whats_new]
+
+    unless options[:q]
+      if paginate
+        return order(:author_names_string_cache, :citation_year).paginate :page => options[:page]
+      else
+        return order :author_names_string_cache, :citation_year
+      end
+    end
+
+    string = options[:q].dup
 
     if match = string.match(/\d{5,}/)
       return where(:id => match[0]).paginate :page => 1
@@ -80,7 +90,7 @@ class Reference < ActiveRecord::Base
       keywords string
       order_by :author_names_string
       order_by :citation_year
-      paginate :page => page
+      paginate(:page => options[:page]) if paginate
     }.results
   end
 
@@ -165,10 +175,6 @@ class Reference < ActiveRecord::Base
       raise ActiveRecord::RecordInvalid.new self
     end
     author_names_and_suffix
-  end
-
-  def to_bibix
-    ReferenceFormatter.to_bibix self
   end
 
   private
