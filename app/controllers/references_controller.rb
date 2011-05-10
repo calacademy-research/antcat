@@ -5,13 +5,17 @@ class ReferencesController < ApplicationController
   def index
     params[:q] = '' if ['review', 'new', 'clear'].include? params[:commit]
     params[:q].strip! if params[:q]
-    @reviewing = params[:commit] == 'review'
-    @seeing_whats_new = params[:commit] == 'new'
-    @references = Reference.do_search params[:q], params[:page], @reviewing, @seeing_whats_new
+    params[:review] = params[:commit] == 'review'
+    params[:whats_new] = params[:commit] == 'new'
 
     respond_to do |format|
-      format.html
-      format.bibix
+      format.html   {
+        @references = Reference.do_search params
+      }
+      format.endnote_import  {
+        references = Reference.do_search params.merge :format => :endnote_import
+        render :text => ReferenceFormatter::EndnoteImport.format(references)
+      }
     end
   end
 

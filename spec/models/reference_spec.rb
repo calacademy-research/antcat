@@ -5,7 +5,7 @@ describe Reference do
     @author_names = [Factory :author_name]
   end
 
-  describe "searching" do
+  describe "searching with Solr" do
     it "should return an empty array if nothing is found for author_name" do
       Factory(:reference).index!
       Reference.search {keywords 'foo'}.results.should be_empty
@@ -43,19 +43,23 @@ describe Reference do
       }.results.should == [reference]
     end
 
+  end
+
+  describe "Searching" do
+
     it "should handle the current year + the next year" do
       bolton = reference_factory(:author_name => 'Bolton', :citation_year => Time.now.year.to_s)
       bolton.index
       fisher = reference_factory(:author_name => 'Fisher', :citation_year => (Time.now.year + 1).to_s)
       fisher.index
       Sunspot.commit
-      Reference.do_search("Bolton #{Time.now.year}").should == [bolton]
-      Reference.do_search("Fisher #{Time.now.year + 1}").should == [fisher]
+      Reference.do_search(:q => "Bolton #{Time.now.year}").should == [bolton]
+      Reference.do_search(:q => "Fisher #{Time.now.year + 1}").should == [fisher]
     end
 
     it "should not strip the year from the string" do
       string = '1990'
-      Reference.do_search string
+      Reference.do_search :q => string
       string.should == '1990'
     end
 
@@ -63,7 +67,7 @@ describe Reference do
       it 'should at least find Bert!' do
         reference = reference_factory(:author_name => 'Hölldobler')
         Reference.reindex
-        Reference.do_search('holldobler').should == [reference]
+        Reference.do_search(:q => 'holldobler').should == [reference]
       end
     end
 
@@ -72,13 +76,13 @@ describe Reference do
         matching_reference = reference_factory(:author_name => 'Hölldobler', :cite_code => 'abcdef')
         unmatching_reference = reference_factory(:author_name => 'Hölldobler', :cite_code => 'fedcba')
         Reference.reindex
-        Reference.do_search('abcdef').should == [matching_reference]
+        Reference.do_search(:q => 'abcdef').should == [matching_reference]
       end
 
       it "should find a cite code that looks like a year, but not a current year" do
         matching_reference = reference_factory(:author_name => 'Hölldobler', :cite_code => '1600')
         Reference.reindex
-        Reference.do_search('1600').should == [matching_reference]
+        Reference.do_search(:q => '1600').should == [matching_reference]
       end
     end
 
@@ -87,19 +91,19 @@ describe Reference do
         matching_reference = reference_factory(:author_name => 'Hölldobler', :public_notes => 'abcdef')
         unmatching_reference = reference_factory(:author_name => 'Hölldobler', :public_notes => 'fedcba')
         Reference.reindex
-        Reference.do_search('abcdef').should == [matching_reference]
+        Reference.do_search(:q => 'abcdef').should == [matching_reference]
       end
       it 'should find something in editor notes' do
         matching_reference = reference_factory(:author_name => 'Hölldobler', :editor_notes => 'abcdef')
         unmatching_reference = reference_factory(:author_name => 'Hölldobler', :editor_notes => 'fedcba')
         Reference.reindex
-        Reference.do_search('abcdef').should == [matching_reference]
+        Reference.do_search(:q => 'abcdef').should == [matching_reference]
       end
       it 'should find something in taxonomic notes' do
         matching_reference = reference_factory(:author_name => 'Hölldobler', :taxonomic_notes => 'abcdef')
         unmatching_reference = reference_factory(:author_name => 'Hölldobler', :taxonomic_notes => 'fedcba')
         Reference.reindex
-        Reference.do_search('abcdef').should == [matching_reference]
+        Reference.do_search(:q => 'abcdef').should == [matching_reference]
       end
     end
 
@@ -109,7 +113,7 @@ describe Reference do
         matching_reference = reference_factory(:author_name => 'Hölldobler', :journal => journal)
         unmatching_reference = reference_factory(:author_name => 'Hölldobler')
         Reference.reindex
-        Reference.do_search('journal').should == [matching_reference]
+        Reference.do_search(:q => 'journal').should == [matching_reference]
       end
     end
 
@@ -119,7 +123,7 @@ describe Reference do
         matching_reference = reference_factory(:author_name => 'Hölldobler', :publisher => publisher)
         unmatching_reference = reference_factory(:author_name => 'Hölldobler')
         Reference.reindex
-        Reference.do_search('Publisher').should == [matching_reference]
+        Reference.do_search(:q => 'Publisher').should == [matching_reference]
       end
     end
 
@@ -128,7 +132,7 @@ describe Reference do
         matching_reference = reference_factory(:author_name => 'Hölldobler', :citation => 'Citation')
         unmatching_reference = reference_factory(:author_name => 'Hölldobler')
         Reference.reindex
-        Reference.do_search('Citation').should == [matching_reference]
+        Reference.do_search(:q => 'Citation').should == [matching_reference]
       end
     end
 
@@ -143,16 +147,16 @@ describe Reference do
       end
 
       it "should return an empty array if nothing is found for year" do
-        Reference.do_search('1992-1993').should be_empty
+        Reference.do_search(:q => '1992-1993').should be_empty
       end
 
       it "should find entries in between the start year and the end year (inclusive)" do
-        Reference.do_search('1995-1996').map(&:year).should =~ [1995, 1996]
+        Reference.do_search(:q => '1995-1996').map(&:year).should =~ [1995, 1996]
       end
 
       it "should find references in the year of the end range, even if they have extra characters" do
         reference_factory(:author_name => 'Bolton', :citation_year => '2004.').index!
-        Reference.do_search('2004').map(&:year).should =~ [2004]
+        Reference.do_search(:q => '2004').map(&:year).should =~ [2004]
       end
     end
 
@@ -195,7 +199,7 @@ describe Reference do
         updated_today.update_attribute(:updated_at,  Time.now)
         Reference.record_timestamps = true
 
-        Reference.do_search(nil, nil, true).should == [updated_today, updated_yesterday, updated_last_week]
+        Reference.do_search(:review => true).should == [updated_today, updated_yesterday, updated_last_week]
       end
     end
 
@@ -211,7 +215,7 @@ describe Reference do
         created_today.update_attribute(:created_at,  Time.now)
         Reference.record_timestamps = true
 
-        Reference.do_search(nil, nil, false, true).should == [created_today, created_yesterday, created_last_week]
+        Reference.do_search(:whats_new => true).should == [created_today, created_yesterday, created_last_week]
       end
     end
 
@@ -219,12 +223,12 @@ describe Reference do
       it "should ignore everything else if an ID of sufficient length is provided" do
         reference = Factory :reference, :id => 12345
         Factory :reference
-        Reference.do_search(reference.id.to_s + ' 1972 Bolton').should == [reference]
+        Reference.do_search(:q => reference.id.to_s + ' 1972 Bolton').should == [reference]
       end
       it "should not freak out if it can't find the ID" do
         reference = Factory :reference
         Factory :reference
-        Reference.do_search('12345').should == []
+        Reference.do_search(:q => '12345').should == []
       end
     end
 
@@ -586,14 +590,5 @@ describe Reference do
                                :journal => journal, :series_volume_issue => '1(2)', :pagination => '22-54'}.should raise_error
     end
   end
-
-  describe "to_bibex" do
-    it "should delegate to ReferenceFormatter" do
-      reference = Factory :reference
-      ReferenceFormatter.should_receive(:to_bibix).with reference
-      reference.to_bibix
-    end
-  end
-
 
 end
