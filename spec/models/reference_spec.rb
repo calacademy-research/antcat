@@ -577,7 +577,6 @@ describe Reference do
   end
 
   describe "duplicated checking" do
-
     it "should not allow a duplicate record to be saved" do
       journal = Factory :journal
       author = Factory :author_name
@@ -586,7 +585,15 @@ describe Reference do
       lambda {ArticleReference.create! :author_names => [author], :citation_year => '1981', :title => 'Dolichoderinae',
                                :journal => journal, :series_volume_issue => '1(2)', :pagination => '22-54'}.should raise_error
     end
-
   end
+
+  describe "to_bibex" do
+    it "should delegate to ReferenceFormatter" do
+      reference = Factory :reference
+      ReferenceFormatter.should_receive(:to_bibix).with reference
+      reference.to_bibix
+    end
+  end
+
 
 end

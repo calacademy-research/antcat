@@ -167,6 +167,10 @@ class Reference < ActiveRecord::Base
     author_names_and_suffix
   end
 
+  def to_bibix
+    ReferenceFormatter.to_bibix self
+  end
+
   private
   def self.extract_years string
     start_year = end_year = nil

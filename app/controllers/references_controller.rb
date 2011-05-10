@@ -8,6 +8,11 @@ class ReferencesController < ApplicationController
     @reviewing = params[:commit] == 'review'
     @seeing_whats_new = params[:commit] == 'new'
     @references = Reference.do_search params[:q], params[:page], @reviewing, @seeing_whats_new
+
+    respond_to do |format|
+      format.html
+      format.bibix
+    end
   end
 
   def download
