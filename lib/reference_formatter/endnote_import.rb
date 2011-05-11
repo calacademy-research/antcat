@@ -9,7 +9,7 @@ class ReferenceFormatter::EndnoteImport
       else raise "Don't know what kind of reference this is: #{reference.inspect}"
       end
       klass.new(reference).format
-    end.join("\n") + "\n"
+    end.select{|string| string.present?}.join("\n") + "\n"
   end
 end
 
@@ -20,14 +20,20 @@ class ReferenceFormatter::EndnoteImport::Base
   end
 
   def format
+    add '0', kind
     add_author_names
+    add 'D', @reference.year
+    add 'T', @reference.title
     add_contents
+    add 'Z', @reference.public_notes
+    add 'K', @reference.taxonomic_notes
+    add '~', 'AntCat'
     @string.join("\n") + "\n"
   end
 
   private
   def add tag, value
-    @string << "%#{tag} #{value}" if value
+    @string << "%#{tag} #{value.to_s.gsub(/[|*]/, '')}" if value.present?
   end
 
   def add_author_names
@@ -40,57 +46,38 @@ end
 
 class ReferenceFormatter::EndnoteImport::Article < ReferenceFormatter::EndnoteImport::Base
   def kind
-    'journal'
-  end
-  def genre
-    'article'
+    'Journal Article'
   end
   def add_contents
-    add 'T', @reference.title
-    #add 'rft.jtitle', @reference.journal.name
-    #add 'rft.volume', @reference.volume
-    #add 'rft.issue', @reference.issue
-    #add 'rft.spage', @reference.start_page
-    #add 'rft.epage', @reference.end_page
+    add 'J', @reference.journal.name
+    add 'N', @reference.series_volume_issue
+    add 'P', @reference.pagination
   end
 end
 
 class ReferenceFormatter::EndnoteImport::Book < ReferenceFormatter::EndnoteImport::Base
   def kind
-    'book'
-  end
-  def genre
-    'book'
+    'Book'
   end
   def add_contents
-    add 'T', @reference.title
-    #add 'rft.pub', @reference.publisher.name
-    #add 'rft.place', @reference.publisher.place.name
-    #add 'rft.pages', @reference.pagination
+    add 'C', @reference.publisher.place.name
+    add 'I', @reference.publisher.name
+    add 'P', @reference.pagination
   end
 end
 
 class ReferenceFormatter::EndnoteImport::Unknown < ReferenceFormatter::EndnoteImport::Base
   def kind
-    'dc'
-  end
-  def genre
-    ''
+    'Generic'
   end
   def add_contents
-    add 'T', @reference.title
-    #add 'rft.source', @reference.citation
+    add '1', @reference.citation
   end
 end
 
 class ReferenceFormatter::EndnoteImport::Nested < ReferenceFormatter::EndnoteImport::Base
-  def kind
-    'dc'
-  end
-  def genre
+  # don't know how to get EndNote to handle nested references
+  def format
     ''
-  end
-  def add_contents
-    add 'T', @reference.title
   end
 end
