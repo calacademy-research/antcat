@@ -73,4 +73,12 @@ describe Genus do
     end
 
   end
+
+  describe "Without subfamily" do
+    it "should just return the genera with no subfamily" do
+      cariridris = Factory :genus, :subfamily => nil
+      atta = Factory :genus
+      Genus.without_subfamily.all.should == [cariridris]
+    end
+  end
 end

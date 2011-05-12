@@ -131,3 +131,9 @@ Feature: Using the Taxatry index
       And I follow "shattucki"
     Then I should see "Myrmicium shattucki history"
 
+  Scenario: Showing genera without subfamilies
+    Given a genus exists with a name of "Cariridris" and a taxonomic history of "Cariridris history"
+    Then I should not see "Cariridris"
+    When I follow "(none)"
+    Then I should see "Cariridris"
+      And "(none)" should be selected
