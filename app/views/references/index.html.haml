@@ -15,7 +15,7 @@
           = link_to 'Latest changes', references_path(:commit => 'review')
           |
           = link_to 'Journals', journals_path
-        |Hash
+        |
         = link_to 'Export to EndNote', endnote_import_path(:q => params[:q]), :confirm => @endnote_export_confirmation_message
 
       .search
