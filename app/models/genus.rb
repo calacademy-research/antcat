@@ -21,4 +21,8 @@ class Genus < Taxon
     }
   end
 
+  def siblings
+    tribe && tribe.genera || Genus.without_subfamily.all
+  end
+
 end
