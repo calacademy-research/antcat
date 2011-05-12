@@ -3,12 +3,18 @@ require 'snake'
 module TaxatryHelper
 
   def taxon_link taxon, selected, search_params
-    label_and_classes = TaxatryFormatter.taxon_label_and_css_classes taxon, :selected => taxon == selected
-    link_to label_and_classes[:label], index_taxatry_path(taxon, search_params), :class => label_and_classes[:css_classes]
+    if taxon == 'no_subfamily'
+      classes = 'valid'
+      classes << ' selected' if taxon == selected
+      link_to '(none)', index_taxatry_path(taxon, search_params), :class => classes
+    else
+      label_and_classes = TaxatryFormatter.taxon_label_and_css_classes taxon, :selected => taxon == selected
+      link_to label_and_classes[:label], index_taxatry_path(taxon, search_params), :class => label_and_classes[:css_classes]
+    end
   end
 
   def snake_taxon_columns items
-    column_count = items.count / 25.0
+    column_count = items.count / 26.0
     css_class = 'taxon_item'
     if column_count < 1
       column_count = 1
@@ -86,7 +92,7 @@ module TaxatryHelper
       @status_labels['excluded']            = {:singular => 'excluded', :plural => 'excluded'}
       @status_labels['unresolved homonym']  = {:singular => 'unresolved homonym', :plural => 'unresolved homonyms'}
       @status_labels['recombined']          = {:singular => 'transferred out of this genus', :plural => 'transferred out of this genus'}
-      @status_labels['nomen nudum']         = {:singular => 'nomen nuda', :plural => 'nomina nuda'}
+      @status_labels['nomen nudum']         = {:singular => 'nomen nudum', :plural => 'nomina nuda'}
       @status_labels
     end
   end

@@ -6,6 +6,9 @@
       %tr
         %td
           %table
+            - if show_none
+              - items = items.to_a
+              - items.insert 0, 'no_subfamily'
             - rows, css_class = snake_taxon_columns items
             - rows.each do |row|
               %tr

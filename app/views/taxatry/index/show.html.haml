@@ -6,8 +6,8 @@
 
 #browser
   .header
-    - if @taxon
-      #taxon_header
+    #taxon_header
+      - if @taxon.kind_of? Taxon
         %span.taxon_header
           = raw @taxon_header_name
         %span.taxon_status
@@ -17,9 +17,9 @@
         - if @taxonomic_history
           .taxonomic_history
             = raw @taxonomic_history
-      %hr
+    %hr
 
   .contents
-    = render 'rank', :items => @subfamilies, :selected_item => @selected_subfamily, :header => 'Subfamilies', :q => params[:q], :search_type => params[:search_type]
-    = render 'rank', :items => @genera, :selected_item => @selected_genus, :header => 'Genera', :q => params[:q], :search_type => params[:search_type]
-    = render 'rank', :items => @species, :selected_item => @selected_species, :header => 'Species', :q => params[:q], :search_type => params[:search_type]
+    = render 'rank', :items => @subfamilies, :selected_item => @selected_subfamily, :header => 'Subfamilies', :q => params[:q], :search_type => params[:search_type], :show_none => true
+    = render 'rank', :items => @genera, :selected_item => @selected_genus, :header => 'Genera', :q => params[:q], :search_type => params[:search_type], :show_none => false
+    = render 'rank', :items => @species, :selected_item => @selected_species, :header => 'Species', :q => params[:q], :search_type => params[:search_type], :show_none => false
