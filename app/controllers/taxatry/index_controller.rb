@@ -18,26 +18,43 @@ class Taxatry::IndexController < TaxatryController
     case @taxon
     when 'no_subfamily', Subfamily
       @selected_subfamily = @taxon
-      @genera = @selected_subfamily == 'no_subfamily' ? Genus.without_subfamily : @selected_subfamily.genera
-      @selected_genera = nil
-      @species = nil
-      @selected_species = nil
+      if @selected_subfamily == 'no_subfamily'
+        @genera = Genus.without_subfamily
+      else
+        @tribes = @taxon.tribes
+      end
+
+    when Tribe
+      @selected_subfamily = @taxon.subfamily
+      @tribes = @taxon.siblings
+      @selected_tribe = @taxon
+      @genera = @taxon.genera
+
     when Genus
       @selected_subfamily = @taxon.subfamily || 'no_subfamily'
-      if @selected_subfamily.kind_of? Taxon
-        @genera = @selected_subfamily.genera
-      else
+      if @selected_subfamily == 'no_subfamily'
         @genera = Genus.without_subfamily
+      else
+        @tribes = @taxon.tribe.siblings
+        @selected_tribe = @taxon.tribe
+        @genera = @taxon.siblings
       end
       @selected_genus = @taxon
       @species = @taxon.species
-      @selected_species = nil
+
     when Species
-      @selected_subfamily = @taxon.genus.subfamily || 'no_subfamily'
-      @genera = @selected_subfamily == 'no_subfamily' ? Genus.without_subfamily : @selected_subfamily.genera
+      @selected_subfamily = @taxon.subfamily || 'no_subfamily'
+      if @selected_subfamily == 'no_subfamily'
+        @genera = Genus.without_subfamily
+      else
+        @tribes = @taxon.genus.tribe.siblings
+        @selected_tribe = @taxon.genus.tribe
+        @genera = @taxon.genus.siblings
+      end
       @selected_genus = @taxon.genus
-      @species = @taxon.genus.species
+      @species = @taxon.siblings
       @selected_species = @taxon
+
     end
 
     @taxon_header_name = @taxon.full_name if @taxon.kind_of? Taxon

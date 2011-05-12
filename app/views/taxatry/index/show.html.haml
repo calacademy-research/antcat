@@ -21,5 +21,7 @@
 
   .contents
     = render 'rank', :items => @subfamilies, :selected_item => @selected_subfamily, :header => 'Subfamilies', :q => params[:q], :search_type => params[:search_type], :show_none => true
+    - unless @taxon == 'no_subfamily'
+      = render 'rank', :items => @tribes, :selected_item => @selected_tribe, :header => 'Tribes', :q => params[:q], :search_type => params[:search_type], :show_none => false
     = render 'rank', :items => @genera, :selected_item => @selected_genus, :header => 'Genera', :q => params[:q], :search_type => params[:search_type], :show_none => false
     = render 'rank', :items => @species, :selected_item => @selected_species, :header => 'Species', :q => params[:q], :search_type => params[:search_type], :show_none => false

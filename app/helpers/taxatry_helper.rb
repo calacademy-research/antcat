@@ -6,7 +6,7 @@ module TaxatryHelper
     if taxon == 'no_subfamily'
       classes = 'valid'
       classes << ' selected' if taxon == selected
-      link_to '(none)', index_taxatry_path(taxon, search_params), :class => classes
+      link_to '(incertae sedis)', index_taxatry_path(taxon, search_params), :class => classes
     else
       label_and_classes = TaxatryFormatter.taxon_label_and_css_classes taxon, :selected => taxon == selected
       link_to label_and_classes[:label], index_taxatry_path(taxon, search_params), :class => label_and_classes[:css_classes]
