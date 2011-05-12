@@ -11,7 +11,7 @@ AntCat::Application.routes.draw do
   resources :references, :only => [:index, :update, :create, :destroy] do
     resources :duplicate_references
   end
-  match     '/antcat_references.utf8.endnote_import', :to => 'references#index', :format => :endnote_import
+  match     '/antcat_references.utf8.endnote_import', :to => 'references#index', :format => :endnote_import, :as => :endnote_import
   resources :species, :only => [:index]
   resources :styles, :only => [:index]
   resource  :taxatry, :only => [] do
