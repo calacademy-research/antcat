@@ -20,4 +20,8 @@ class Species < Taxon
     {:subspecies => subspecies.count(:group => :status) }
   end
 
+  def siblings
+    genus.species
+  end
+
 end

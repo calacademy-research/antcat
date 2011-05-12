@@ -14,4 +14,8 @@ class Tribe < Taxon
     {:genera => {'valid' => 2, 'synonym' => 1}}
   end
 
+  def siblings
+    subfamily.tribes
+  end
+
 end

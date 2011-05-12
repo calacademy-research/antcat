@@ -81,4 +81,30 @@ describe Genus do
       Genus.without_subfamily.all.should == [cariridris]
     end
   end
+
+  describe "Siblings" do
+
+    it "should return itself when there are no others" do
+      Factory :genus
+      tribe = Factory :tribe
+      genus = Factory :genus, :tribe => tribe, :subfamily => tribe.subfamily
+      genus.siblings.should == [genus]
+    end
+
+    it "should return itself and its tribe's other genera" do
+      Factory :genus
+      tribe = Factory :tribe
+      genus = Factory :genus, :tribe => tribe, :subfamily => tribe.subfamily
+      another_genus = Factory :genus, :tribe => tribe, :subfamily => tribe.subfamily
+      genus.siblings.should =~ [genus, another_genus]
+    end
+
+    it "when there's no subfamily, should return all the genera with no subfamilies" do
+      Factory :genus
+      genus = Factory :genus, :subfamily => nil, :tribe => nil
+      another_genus = Factory :genus, :subfamily => nil, :tribe => nil
+      genus.siblings.should =~ [genus, another_genus]
+    end
+
+  end
 end
