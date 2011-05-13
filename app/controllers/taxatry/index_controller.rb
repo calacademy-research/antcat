@@ -3,6 +3,8 @@ class Taxatry::IndexController < TaxatryController
   def show
     super
 
+    @url_parameters = {:q => params[:q], :search_type => params[:search_type], :hide_tribes => params[:hide_tribes]}
+
     @current_path = index_taxatry_path
     @subfamilies = Subfamily.ordered_by_name
 
@@ -20,6 +22,8 @@ class Taxatry::IndexController < TaxatryController
       @selected_subfamily = @taxon
       if @selected_subfamily == 'no_subfamily'
         @genera = Genus.without_subfamily
+      elsif params[:hide_tribes]
+        @genera = @selected_subfamily.genera
       else
         @tribes = @taxon.tribes
       end
