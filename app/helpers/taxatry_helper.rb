@@ -2,15 +2,26 @@ require 'snake'
 
 module TaxatryHelper
 
-  def taxon_link taxon, selected, search_params
+  def taxon_link taxon, selected, url_parameters
     if taxon == 'no_subfamily'
       classes = 'valid'
       classes << ' selected' if taxon == selected
-      link_to '(incertae sedis)', index_taxatry_path(taxon, search_params), :class => classes
+      link_to '(incertae sedis)', index_taxatry_path(taxon, url_parameters), :class => classes
     else
       label_and_classes = TaxatryFormatter.taxon_label_and_css_classes taxon, :selected => taxon == selected
-      link_to label_and_classes[:label], index_taxatry_path(taxon, search_params), :class => label_and_classes[:css_classes]
+      link_to label_and_classes[:label], index_taxatry_path(taxon, url_parameters), :class => label_and_classes[:css_classes]
     end
+  end
+
+  def hide_link name, selected, url_parameters
+    hide_param = "hide_#{name}".to_sym
+    link_to 'hide', index_taxatry_path(selected, url_parameters.merge(hide_param => true)), :class => :hide
+  end
+
+  def show_child_link params, name, selected, url_parameters
+    hide_child_param = "hide_#{name}".to_sym
+    return unless params[hide_child_param]
+    link_to "show #{name}", index_taxatry_path(selected, url_parameters.merge(hide_child_param => nil))
   end
 
   def snake_taxon_columns items

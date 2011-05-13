@@ -2,11 +2,16 @@
   .rank
     %table
       %tr
-        %td.header= header
+        %td.header
+          = header
+          - if options[:hideable_name]
+            = hide_link options[:hideable_name], options[:taxon], url_parameters
+          - if options[:hideable_child_name]
+            .show_child= show_child_link params, options[:hideable_child_name], options[:taxon], url_parameters
       %tr
         %td
           %table
-            - if show_none
+            - if options[:show_none]
               - items = items.to_a
               - items.insert 0, 'no_subfamily'
             - rows, css_class = snake_taxon_columns items
@@ -15,4 +20,4 @@
                 - row.each do |item|
                   %td{:class => css_class}
                     - if item
-                      = taxon_link item, selected_item, :q => q, :search_type => search_type
+                      = taxon_link item, selected_item, url_parameters
