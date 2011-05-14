@@ -17,10 +17,6 @@ Feature: Using the Taxatry index
       And a species exists with a name of "emeryi" and a genus of "Atta" and a taxonomic history of "atta emeryi history"
     When I go to the Taxatry index
 
-  Scenario: Taxatry is the landing page
-    When I go to the main page
-    Then I should see "Online Catalog"
-
   Scenario: Viewing the index page
     Then I should see "Dolichoderinae"
 
