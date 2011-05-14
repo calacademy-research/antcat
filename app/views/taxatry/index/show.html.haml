@@ -21,7 +21,7 @@
 
   .index
     = render 'rank', :items => @subfamilies, :selected_item => @selected_subfamily, :header => 'Subfamilies', :url_parameters => @url_parameters, :options => {:taxon => @taxon, :show_none => true, :hideable_child_name => 'tribes'}
-    - unless @taxon == 'no_subfamily' || params[:hide_tribes]
+    - unless @selected_subfamily == 'no_subfamily' || params[:hide_tribes]
       = render 'rank', :items => @tribes, :selected_item => @selected_tribe, :header => 'Tribes', :url_parameters => @url_parameters, :options => {:taxon => @taxon, :hideable_name => 'tribes'}
     = render 'rank', :items => @genera, :selected_item => @selected_genus, :header => 'Genera', :url_parameters => @url_parameters, :options => {}
     = render 'rank', :items => @species, :selected_item => @selected_species, :header => 'Species', :url_parameters => @url_parameters, :options => {}
