@@ -30,9 +30,15 @@ class Taxatry::IndexController < TaxatryController
 
     when Tribe
       @selected_tribe = @taxon
-      @tribes = @selected_tribe.siblings
-      @genera = @selected_tribe.genera
-      @selected_subfamily = @selected_tribe.subfamily
+      if params[:hide_tribes]
+        @taxon = @selected_tribe.subfamily
+        @selected_subfamily = @taxon
+        @genera = @selected_subfamily.genera
+      else
+        @tribes = @selected_tribe.siblings
+        @genera = @selected_tribe.genera
+        @selected_subfamily = @selected_tribe.subfamily
+      end
 
     when Genus
       @selected_genus = @taxon
@@ -43,7 +49,7 @@ class Taxatry::IndexController < TaxatryController
         @genera = @selected_genus.siblings
       end
       @species = @selected_genus.species
-      unless params[:hide_tribes]
+      unless params[:hide_tribes] || @selected_subfamily == 'no_subfamily'
         @selected_tribe = @selected_genus.tribe || 'no_tribe'
         @tribes = @selected_tribe.siblings unless @selected_tribe == 'no_tribe'
       end
@@ -58,7 +64,7 @@ class Taxatry::IndexController < TaxatryController
       else
         @genera = @selected_genus.siblings
       end
-      unless params[:hide_tribes]
+      unless params[:hide_tribes] || @selected_subfamily == 'no_subfamily'
         @selected_tribe = @selected_genus.tribe || 'no_tribe'
         @tribes = @selected_tribe.siblings unless @selected_tribe == 'no_tribe'
       end
