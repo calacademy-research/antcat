@@ -6,6 +6,7 @@ class Genus < Taxon
   has_many :subgenera, :class_name => 'Subgenus', :order => :name
 
   scope :without_subfamily, where(:subfamily_id => nil)
+  scope :without_tribe, where(:tribe_id => nil)
 
   def children
     species
@@ -22,7 +23,9 @@ class Genus < Taxon
   end
 
   def siblings
-    tribe && tribe.genera || Genus.without_subfamily.all
+    tribe && tribe.genera ||
+    subfamily && subfamily.genera.without_tribe.all ||
+    Genus.without_subfamily.all
   end
 
 end
