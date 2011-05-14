@@ -141,6 +141,7 @@ Feature: Edit reference
       And I fill in "reference_citation_year" with ""
       And I fill in "reference_citation" with ""
       And I press the "Save" button
+      And I wait for a bit
     Then I should see the edit form
       And I should see "Title can't be blank"
       And I should see "Year can't be blank"
