@@ -82,6 +82,15 @@ describe Genus do
     end
   end
 
+  describe "Without tribe" do
+    it "should just return the genera with no tribe" do
+      tribe = Factory :tribe
+      cariridris = Factory :genus, :tribe => tribe, :subfamily => tribe.subfamily
+      atta = Factory :genus, :subfamily => tribe.subfamily, :tribe => nil
+      Genus.without_tribe.all.should == [atta]
+    end
+  end
+
   describe "Siblings" do
 
     it "should return itself when there are no others" do
@@ -103,6 +112,15 @@ describe Genus do
       Factory :genus
       genus = Factory :genus, :subfamily => nil, :tribe => nil
       another_genus = Factory :genus, :subfamily => nil, :tribe => nil
+      genus.siblings.should =~ [genus, another_genus]
+    end
+
+    it "when there's no tribe, return the other genera in its subfamily without tribes" do
+      subfamily = Factory :subfamily
+      tribe = Factory :tribe, :subfamily => subfamily
+      Factory :genus, :tribe => tribe, :subfamily => subfamily
+      genus = Factory :genus, :subfamily => subfamily, :tribe => nil
+      another_genus = Factory :genus, :subfamily => subfamily, :tribe => nil
       genus.siblings.should =~ [genus, another_genus]
     end
 
