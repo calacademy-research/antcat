@@ -9,7 +9,7 @@ Feature: Using the Taxatry index
       And a genus exists with a name of "Tapinoma" and a subfamily of "Dolichoderinae" and a taxonomic history of "Tapinoma history" and a status of "synonym"
       And a genus exists with a name of "Atta" and a subfamily of "Dolichoderinae" and a taxonomic history of "Atta history"
       And a genus exists with a name of "Tetramorium" and a subfamily of "Dolichoderinae"
-      And a genus exists with a name of "Myrmicium" and a taxonomic history of "Myrmicium history"
+      And a genus exists with a name of "Myrmicium" and no subfamily and a taxonomic history of "Myrmicium history"
       And a species exists with a name of "shattucki" and a genus of "Myrmicium" and a taxonomic history of "Myrmicium shattucki history"
       And a species exists with a name of "attaxus" and a genus of "Tetramorium" and a taxonomic history of "Tetramorium attaxus history"
       And a species exists with a name of "sessile" and a genus of "Tapinoma" and a taxonomic history of "sessile history"
@@ -23,18 +23,22 @@ Feature: Using the Taxatry index
 
   Scenario: Viewing the index page
     Then I should see "Dolichoderinae"
-      And I should not see "Tapinoma"
 
   Scenario: Selecting a subfamily and seeing its statistics
     When I follow "Dolichoderinae"
-    Then "Dolichoderinae" should be selected
+      And I hide tribes
+    Then I should see "Tapinoma"
+      And I should see "Atta"
+      And I should see "Tetramorium"
+      And "Dolichoderinae" should be selected
       And I should see "A sweet little subfamily"
       And I should see "2 valid genera (1 synonym)"
       And should see "Tapinoma"
       And I should not see "sessile"
 
-  Scenario: Selecting a genus
+  Scenario: Selecting a genus without a tribe
     When I follow "Dolichoderinae"
+      And I hide tribes
     Then "Dolichoderinae" should be selected
     When I follow "Tapinoma"
     Then "Tapinoma" should be selected
@@ -43,6 +47,7 @@ Feature: Using the Taxatry index
 
   Scenario: Selecting a species
     When I follow "Dolichoderinae"
+      And I hide tribes
     Then "Dolichoderinae" should be selected
     When I follow "Tapinoma"
     Then "Tapinoma" should be selected
@@ -78,7 +83,7 @@ Feature: Using the Taxatry index
     Then I should see "sessile history"
 
   Scenario: Finding a genus without a subfamily
-    Given a genus exists with a name of "Monomorium" and a taxonomic history of "Monomorium history"
+    Given a genus exists with a name of "Monomorium" and no subfamily and a taxonomic history of "Monomorium history"
     When I fill in the search box with "Monomorium"
       And I press "Go" by the search box
     Then I should see "Monomorium history"
@@ -132,8 +137,8 @@ Feature: Using the Taxatry index
     Then I should see "Myrmicium shattucki history"
 
   Scenario: Showing genera without subfamilies
-    Given a genus exists with a name of "Cariridris" and a taxonomic history of "Cariridris history"
+    Given a genus exists with a name of "Cariridris" and no subfamily and a taxonomic history of "Cariridris history"
     Then I should not see "Cariridris"
-    When I follow "(none)"
+    When I follow "(incertae sedis)"
     Then I should see "Cariridris"
-      And "(none)" should be selected
+      And "(incertae sedis)" should be selected

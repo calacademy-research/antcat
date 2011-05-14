@@ -393,3 +393,6 @@ Then /I should see a very long author names string/ do
   Then %{I should see "#{very_long_author_names_string}"}
 end
 
+And /I hide tribes/ do
+  And %{I follow "hide"}
+end

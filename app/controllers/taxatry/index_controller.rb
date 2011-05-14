@@ -25,39 +25,43 @@ class Taxatry::IndexController < TaxatryController
       elsif params[:hide_tribes]
         @genera = @selected_subfamily.genera
       else
-        @tribes = @taxon.tribes
+        @tribes = @selected_subfamily.tribes
       end
 
     when Tribe
-      @selected_subfamily = @taxon.subfamily
-      @tribes = @taxon.siblings
       @selected_tribe = @taxon
-      @genera = @taxon.genera
+      @tribes = @selected_tribe.siblings
+      @genera = @selected_tribe.genera
+      @selected_subfamily = @selected_tribe.subfamily
 
     when Genus
-      @selected_subfamily = @taxon.subfamily || 'no_subfamily'
+      @selected_genus = @taxon
+      @selected_subfamily = @selected_genus.subfamily || 'no_subfamily'
       if @selected_subfamily == 'no_subfamily'
         @genera = Genus.without_subfamily
       else
-        @tribes = @taxon.tribe.siblings
-        @selected_tribe = @taxon.tribe
-        @genera = @taxon.siblings
+        @genera = @selected_genus.siblings
       end
-      @selected_genus = @taxon
-      @species = @taxon.species
+      @species = @selected_genus.species
+      unless params[:hide_tribes]
+        @selected_tribe = @selected_genus.tribe || 'no_tribe'
+        @tribes = @selected_tribe.siblings unless @selected_tribe == 'no_tribe'
+      end
 
     when Species
-      @selected_subfamily = @taxon.subfamily || 'no_subfamily'
+      @selected_species = @taxon
+      @species = @selected_species.siblings
+      @selected_subfamily = @selected_species.subfamily || 'no_subfamily'
+      @selected_genus = @selected_species.genus
       if @selected_subfamily == 'no_subfamily'
         @genera = Genus.without_subfamily
       else
-        @tribes = @taxon.genus.tribe.siblings
-        @selected_tribe = @taxon.genus.tribe
-        @genera = @taxon.genus.siblings
+        @genera = @selected_genus.siblings
       end
-      @selected_genus = @taxon.genus
-      @species = @taxon.siblings
-      @selected_species = @taxon
+      unless params[:hide_tribes]
+        @selected_tribe = @selected_genus.tribe || 'no_tribe'
+        @tribes = @selected_tribe.siblings unless @selected_tribe == 'no_tribe'
+      end
 
     end
 
