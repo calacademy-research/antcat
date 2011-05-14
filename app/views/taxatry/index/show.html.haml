@@ -4,8 +4,8 @@
   = javascript_include_tag 'taxatry/index'
   = stylesheet_link_tag 'taxatry/index'
 
-#browser
-  .header
+#catalog
+  .content
     #taxon_header
       - if @taxon.kind_of? Taxon
         %span.taxon_header
@@ -19,7 +19,7 @@
             = raw @taxonomic_history
     %hr
 
-  .contents
+  .index
     = render 'rank', :items => @subfamilies, :selected_item => @selected_subfamily, :header => 'Subfamilies', :url_parameters => @url_parameters, :options => {:taxon => @taxon, :show_none => true, :hideable_child_name => 'tribes'}
     - unless @taxon == 'no_subfamily' || params[:hide_tribes]
       = render 'rank', :items => @tribes, :selected_item => @selected_tribe, :header => 'Tribes', :url_parameters => @url_parameters, :options => {:taxon => @taxon, :hideable_name => 'tribes'}
