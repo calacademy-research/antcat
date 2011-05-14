@@ -19,11 +19,11 @@ function setPageHeight() {
   if (headerHeight > 0)
     headerHeight += 16;
   $("#browser .contents").height(height - headerHeight);
-  $("#index").height(height);
+  $("#catalog .index").height(height);
 }
 
 function setupIndex() {
-  $('#index a').live('click', function() {
+  $('#catalog .index a').live('click', function() {
     id = this.href.match(/\d+/)[0];
     selectBrowserItem(id);
     return false;
@@ -45,5 +45,5 @@ function selectBrowserItem(id) {
 }
 
 function setBrowserWidth() {
-  $("#browser").width($('#page_contents').width() - $('#index').width() - 30);
+  $("#browser").width($('#page_contents').width() - $('#catalog .index').width() - 30);
 }
