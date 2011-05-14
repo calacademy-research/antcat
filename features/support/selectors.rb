@@ -12,7 +12,11 @@ module HtmlSelectorsHelpers
       "html > body"
 
     when /the index/
-      "#index"
+      "#catalog .index"
+    when /the tribes index/
+      "#catalog .index .tribes"
+    when /the content/
+      "#catalog .content"
     when /the browser/
       "#browser"
     when /the browser header/
