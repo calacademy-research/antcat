@@ -275,7 +275,7 @@ When /I follow "All" in the subfamilies list/ do
 end
 
 Then /^"([^"]+)" should be selected(?: in (.*))?$/ do |word, location|
-  with_scope location || 'body' do
+  with_scope location || 'the page' do
     page.should have_css ".selected", :text => word
   end
 end
