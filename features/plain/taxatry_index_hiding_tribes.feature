@@ -30,17 +30,15 @@ Feature: Hiding and showing tribes in the index
     Then I should see "Dolichoderini" in the index
       And "Dolichoderini" should be selected
 
-  #Scenario: Showing tribes after selecting a genus without a tribe
-    #When I go to the Taxatry index
-      #And I follow "Dolichoderinae"
-      #And I follow "hide"
-      #And I follow "Atta"
-      #And I follow "show tribes"
-      #And show me the page
-    #Then I should see "Dolichoderini" in the index
-      #And "Dolichoderini" should not be selected
+  Scenario: Showing tribes after selecting a genus without a tribe
+    When I go to the Taxatry index
+      And I follow "Dolichoderinae"
+      And I follow "hide"
+      And I follow "Atta"
+      And I follow "show tribes"
+    Then I should see "Dolichoderini" in the index
       #And "(incertae sedis)" should be selected in the tribes index
-      #And I should not see "Atta" in the index
+      And I should not see "Atta" in the index
       
    Scenario: Hiding tribes after selecting a tribe
     When I go to the Taxatry index
