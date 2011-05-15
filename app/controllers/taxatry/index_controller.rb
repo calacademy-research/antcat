@@ -51,7 +51,7 @@ class Taxatry::IndexController < TaxatryController
       @species = @selected_genus.species
       unless params[:hide_tribes] || @selected_subfamily == 'no_subfamily'
         @selected_tribe = @selected_genus.tribe || 'no_tribe'
-        @tribes = @selected_tribe.siblings unless @selected_tribe == 'no_tribe'
+        @tribes = @selected_subfamily.tribes
       end
 
     when Species
@@ -66,7 +66,7 @@ class Taxatry::IndexController < TaxatryController
       end
       unless params[:hide_tribes] || @selected_subfamily == 'no_subfamily'
         @selected_tribe = @selected_genus.tribe || 'no_tribe'
-        @tribes = @selected_tribe.siblings unless @selected_tribe == 'no_tribe'
+        @tribes = @selected_subfamily.tribes
       end
 
     end

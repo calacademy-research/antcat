@@ -38,7 +38,7 @@ Feature: Hiding and showing tribes in the index
       And I follow "show tribes"
     Then I should see "Dolichoderini" in the index
       #And "(incertae sedis)" should be selected in the tribes index
-      And I should not see "Atta" in the index
+      And I should see "Atta" in the index
       
    Scenario: Hiding tribes after selecting a tribe
     When I go to the Taxatry index
