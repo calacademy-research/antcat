@@ -6,12 +6,12 @@ Feature: Hiding and showing tribes in the index
 
   Background:
     Given a subfamily exists with a name of "Dolichoderinae"
-      And a tribe exists with a name of "Dolichoderini" and a subfamily of "Dolichoderinae"
-      And a genus exists with a name of "Dolichoderus" and a tribe of "Dolichoderini"
-      And a genus exists with a name of "Atta" and a subfamily of "Dolichoderinae"
+    And a tribe exists with a name of "Dolichoderini" and a subfamily of "Dolichoderinae"
+    And a genus exists with a name of "Dolichoderus" and a tribe of "Dolichoderini"
+    And a genus exists with a name of "Atta" and a subfamily of "Dolichoderinae"
 
   Scenario: Hiding tribes
-    When I go to the Taxatry index
+    When I go to the catalog index
       And I follow "Dolichoderinae"
     Then I should see "Dolichoderini" in the index
       And I should not see "show tribes"
@@ -22,7 +22,7 @@ Feature: Hiding and showing tribes in the index
       And I should see "Atta" in the index
 
   Scenario: Showing tribes after selecting a genus with a tribe
-    When I go to the Taxatry index
+    When I go to the catalog index
       And I follow "Dolichoderinae"
       And I follow "hide"
       And I follow "Dolichoderus"
@@ -31,7 +31,7 @@ Feature: Hiding and showing tribes in the index
       And "Dolichoderini" should be selected
 
   Scenario: Showing tribes after selecting a genus without a tribe
-    When I go to the Taxatry index
+    When I go to the catalog index
       And I follow "Dolichoderinae"
       And I follow "hide"
       And I follow "Atta"
@@ -41,7 +41,7 @@ Feature: Hiding and showing tribes in the index
       And I should see "Atta" in the index
       
    Scenario: Hiding tribes after selecting a tribe
-    When I go to the Taxatry index
+    When I go to the catalog index
       And I follow "Dolichoderinae"
       And I follow "Dolichoderini"
       And I follow "hide" in the tribes index
@@ -49,7 +49,7 @@ Feature: Hiding and showing tribes in the index
       And "Dolichoderinae" should be selected
       
    Scenario: Hiding tribes after selecting a genus
-    When I go to the Taxatry index
+    When I go to the catalog index
       And I follow "Dolichoderinae"
       And I follow "Dolichoderini"
       And I follow "Dolichoderus"

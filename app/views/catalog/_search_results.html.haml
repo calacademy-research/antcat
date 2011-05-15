@@ -1,6 +1,6 @@
 - if search_results && search_results.size > 1
   %table#search_results
-    - rows = make_taxatry_search_results_columns search_results
+    - rows = make_catalog_search_results_columns search_results
     - rows.each do |row|
       %tr
         - row.each do |item|

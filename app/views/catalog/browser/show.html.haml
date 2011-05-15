@@ -1,9 +1,9 @@
-- @title = 'Taxatry Browser'
+- @title = 'Catalog Browser'
 
 - content_for :head do
-  = javascript_include_tag 'taxatry/browser'
+  = javascript_include_tag 'catalog/browser'
   = javascript_include_tag 'ext/jquery.scrollTo-1.4.2-min'
-  = stylesheet_link_tag 'taxatry/browser'
+  = stylesheet_link_tag 'catalog/browser'
 
   :javascript
     var selectedBrowserTaxonID = #{@selected_browser_taxon.try(:id) || 0};
@@ -11,17 +11,17 @@
 #catalog
   .index
     .index_header_taxon
-      = link_to 'Formicidae', browser_taxatry_path, :class => 'family'
+      = link_to 'Formicidae', browser_catalog_path, :class => 'family'
     - if @taxon
       - @index_header_taxa.each do |index_header_taxon|
         .index_header_taxon
-          - label_and_classes = TaxatryFormatter.taxon_label_and_css_classes index_header_taxon[:taxon]
+          - label_and_classes = CatalogFormatter.taxon_label_and_css_classes index_header_taxon[:taxon]
           = link_to label_and_classes[:label], index_header_taxon[:path], :class => label_and_classes[:css_classes]
 
     - index_items = make_index_groups @taxa, 50, 8
     - index_items.each do |item|
       .index_taxon
-        = link_to item[:label], browser_taxatry_path(item[:id]), :class => item[:css_classes]
+        = link_to item[:label], browser_catalog_path(item[:id]), :class => item[:css_classes]
 
   #browser
     - if @header_taxon

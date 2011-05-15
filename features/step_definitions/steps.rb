@@ -376,7 +376,7 @@ And /I fill in "(.*?)" with "(.*?)" (?:with)?in (.*)$/ do |field, contents, loca
 end
 
 Then /"(.*?)" tab should be selected/ do |tab|
-  page.should have_css ".taxatry_view_selector input[checked=checked][value=#{tab}]"
+  page.should have_css ".catalog_view_selector input[checked=checked][value=#{tab}]"
 end
 
 Then /I should be in "(.*?)" mode/ do |mode|

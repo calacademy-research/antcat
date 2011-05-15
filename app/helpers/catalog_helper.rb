@@ -1,27 +1,27 @@
 require 'snake'
 
-module TaxatryHelper
+module CatalogHelper
 
   def taxon_link taxon, selected, url_parameters
     if taxon == 'no_subfamily'
       classes = 'valid'
       classes << ' selected' if taxon == selected
-      link_to '(incertae sedis)', index_taxatry_path(taxon, url_parameters), :class => classes
+      link_to '(incertae sedis)', index_catalog_path(taxon, url_parameters), :class => classes
     else
-      label_and_classes = TaxatryFormatter.taxon_label_and_css_classes taxon, :selected => taxon == selected
-      link_to label_and_classes[:label], index_taxatry_path(taxon, url_parameters), :class => label_and_classes[:css_classes]
+      label_and_classes = CatalogFormatter.taxon_label_and_css_classes taxon, :selected => taxon == selected
+      link_to label_and_classes[:label], index_catalog_path(taxon, url_parameters), :class => label_and_classes[:css_classes]
     end
   end
 
   def hide_link name, selected, url_parameters
     hide_param = "hide_#{name}".to_sym
-    link_to 'hide', index_taxatry_path(selected, url_parameters.merge(hide_param => true)), :class => :hide
+    link_to 'hide', index_catalog_path(selected, url_parameters.merge(hide_param => true)), :class => :hide
   end
 
   def show_child_link params, name, selected, url_parameters
     hide_child_param = "hide_#{name}".to_sym
     return unless params[hide_child_param]
-    link_to "show #{name}", index_taxatry_path(selected, url_parameters.merge(hide_child_param => nil))
+    link_to "show #{name}", index_catalog_path(selected, url_parameters.merge(hide_child_param => nil))
   end
 
   def snake_taxon_columns items
@@ -39,7 +39,7 @@ module TaxatryHelper
     return items.snake(column_count), css_class
   end
 
-  def make_taxatry_search_results_columns items
+  def make_catalog_search_results_columns items
     column_count = 3
     items.snake column_count
   end
@@ -119,15 +119,15 @@ module TaxatryHelper
     any_groups_with_more_than_one_member = false
     groups.inject([]) do |label_groups, group|
       result = {:id => group.first.id}
-      label_and_classes = TaxatryFormatter.taxon_label_and_css_classes group.first
+      label_and_classes = CatalogFormatter.taxon_label_and_css_classes group.first
       any_groups_with_more_than_one_member ||= group.size > 1
       if any_groups_with_more_than_one_member
         if group.size > 1
           result[:label] = "#{group.first.name[0, abbreviated_length]}-#{group.last.name[0, abbreviated_length]}"
-          result[:css_classes] = TaxatryFormatter.css_classes_for_rank(group.first).join ' '
+          result[:css_classes] = CatalogFormatter.css_classes_for_rank(group.first).join ' '
         else
           result.merge! label_and_classes
-          result[:css_classes] = TaxatryFormatter.css_classes_for_rank(group.first).join ' '
+          result[:css_classes] = CatalogFormatter.css_classes_for_rank(group.first).join ' '
         end
       else
         result.merge! label_and_classes
@@ -137,9 +137,9 @@ module TaxatryHelper
   end
 
   def taxon_header taxon, options = {}
-    label_and_css_classes = TaxatryFormatter.taxon_label_and_css_classes taxon, :uppercase => true
+    label_and_css_classes = CatalogFormatter.taxon_label_and_css_classes taxon, :uppercase => true
     if options[:link]
-      (taxon.rank.capitalize + ' ' + link_to(label_and_css_classes[:label], browser_taxatry_path(taxon, options[:search_params]), :class => label_and_css_classes[:css_classes])).html_safe
+      (taxon.rank.capitalize + ' ' + link_to(label_and_css_classes[:label], browser_catalog_path(taxon, options[:search_params]), :class => label_and_css_classes[:css_classes])).html_safe
     else
       (taxon.rank.capitalize + ' ' + content_tag('span', label_and_css_classes[:label], :class => label_and_css_classes[:css_classes])).html_safe
     end

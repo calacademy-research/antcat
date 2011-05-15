@@ -1,10 +1,10 @@
-class Taxatry::BrowserController < TaxatryController
+class Catalog::BrowserController < CatalogController
 
   def show
     super
 
     unless params[:id]
-      @taxa = Subfamily.order(:name).all
+      @taxa = ::Subfamily.order(:name).all
       return
     end
 
@@ -13,10 +13,10 @@ class Taxatry::BrowserController < TaxatryController
     @header_taxon = @taxon
 
     if rank.nil?
-      @index_header_taxa = [:taxon => @taxon, :path => browser_taxatry_path(nil, @search_params)]
+      @index_header_taxa = [:taxon => @taxon, :path => browser_catalog_path(nil, @search_params)]
 
     elsif rank == 'subfamily'
-      @index_header_taxa = [:taxon => @taxon, :path => browser_taxatry_path(@taxon, @search_params)]
+      @index_header_taxa = [:taxon => @taxon, :path => browser_catalog_path(@taxon, @search_params)]
       @taxa = @taxon.genera.valid
 
     elsif rank == 'genus' || rank == 'species'
@@ -27,8 +27,8 @@ class Taxatry::BrowserController < TaxatryController
       @index_header_taxa = []
       if @header_taxon.subfamily
         @index_header_taxa = [
-          {:taxon => @header_taxon.subfamily, :path => browser_taxatry_path(@header_taxon.subfamily, @search_params)},
-          {:taxon => @header_taxon, :path => browser_taxatry_path(@header_taxon, @search_params)},
+          {:taxon => @header_taxon.subfamily, :path => browser_catalog_path(@header_taxon.subfamily, @search_params)},
+          {:taxon => @header_taxon, :path => browser_catalog_path(@header_taxon, @search_params)},
         ]
       end
       @taxa = @header_taxon.species

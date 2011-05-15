@@ -1,6 +1,6 @@
 AntCat::Application.routes.draw do
 
-  root :to => "taxatry/browser#show"
+  root :to => "catalog/browser#show"
 
   resources :authors, :only => [:index]
   resources :bolton_matches, :only => [:index]
@@ -14,9 +14,9 @@ AntCat::Application.routes.draw do
   match     '/antcat_references.utf8.endnote_import', :to => 'references#index', :format => :endnote_import, :as => :endnote_import
   resources :species, :only => [:index]
   resources :styles, :only => [:index]
-  resource  :taxatry, :only => [] do
-    match     'index/(:id)', :to => 'taxatry/index#show', :as => 'index'
-    match     'browser/(:id)', :to => 'taxatry/browser#show', :as => 'browser'
+  resource  :catalog, :only => [] do
+    match     'index/(:id)', :to => 'catalog/index#show', :as => 'index'
+    match     'browser/(:id)', :to => 'catalog/browser#show', :as => 'browser'
   end
 
   devise_for :users

@@ -1,0 +1,39 @@
+#navigation_bar .actions.catalog_view_selector {
+  left: -3px;
+  margin-top: 0;
+  position: absolute;
+  font-weight: bold; }
+  #navigation_bar .actions.catalog_view_selector label {
+    height: 28px; }
+
+#search_results {
+  padding-left: 12px;
+  padding-right: 12px;
+  margin-bottom: 3px; }
+  #search_results a {
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: 4px;
+    padding-right: 4px;
+    margin-right: 6px;
+    line-height: 1em; }
+
+#page_contents {
+  padding: 0; }
+
+#taxon_key {
+  width: 100%; }
+  #taxon_key td {
+    white-space: nowrap; }
+  #taxon_key span {
+    font-style: italic;
+    margin-right: 8px; }
+    #taxon_key span.title {
+      font-weight: bold;
+      font-style: normal;
+      margin-right: 4px; }
+  #taxon_key a {
+    cursor: pointer;
+    font-weight: bold;
+    font-style: normal;
+    margin-left: 10px; }
