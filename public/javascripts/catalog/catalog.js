@@ -3,8 +3,8 @@ $(function() {
 });
 
 function setupViewSelector() {
-  $(".taxatry_view_selector").buttonset();
-  $(".taxatry_view_selector input").click(function() {
+  $(".catalog_view_selector").buttonset();
+  $(".catalog_view_selector input").click(function() {
     document.location.href = $(this).attr('path');
   });
 }

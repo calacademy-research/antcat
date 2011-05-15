@@ -1,4 +1,4 @@
-Feature: Using the Taxatry index
+Feature: Using the catalog index
   As a user of AntCat
   I want to view the taxonomy of ants hierarchically
   So that I can choose a taxon easily
@@ -6,17 +6,17 @@ Feature: Using the Taxatry index
 
   Background:
     Given a subfamily exists with a name of "Dolichoderinae" and a taxonomic history of "Dolichoderinae history"
-      And a tribe exists with a name of "Dolichoderini" and a subfamily of "Dolichoderinae" and a taxonomic history of "Dolichoderini history"
-      And a genus exists with a name of "Dolichoderus" and a tribe of "Dolichoderini" and a taxonomic history of "Dolichoderus history"
-      And a species exists with a name of "abruptus" and a genus of "Dolichoderus" and a taxonomic history of "abruptus history"
+    And a tribe exists with a name of "Dolichoderini" and a subfamily of "Dolichoderinae" and a taxonomic history of "Dolichoderini history"
+    And a genus exists with a name of "Dolichoderus" and a tribe of "Dolichoderini" and a taxonomic history of "Dolichoderus history"
+    And a species exists with a name of "abruptus" and a genus of "Dolichoderus" and a taxonomic history of "abruptus history"
 
   Scenario: Before selecting anything
-    When I go to the Taxatry index
+    When I go to the catalog index
     Then I should see "Dolichoderinae" in the index
       And I should not see "Dolichoderinae history"
 
   Scenario: Selecting a subfamily
-    When I go to the Taxatry index
+    When I go to the catalog index
       And I follow "Dolichoderinae"
     Then "Dolichoderinae" should be selected
       And I should see "Dolichoderinae history"
@@ -24,7 +24,7 @@ Feature: Using the Taxatry index
       #And I should see "2 valid genera (1 synonym)"
 
   Scenario: Selecting a tribe
-    When I go to the Taxatry index
+    When I go to the catalog index
       And I follow "Dolichoderinae"
       And I follow "Dolichoderini"
     Then "Dolichoderinae" should be selected
@@ -34,7 +34,7 @@ Feature: Using the Taxatry index
       And I should see "Dolichoderus" in the index
 
   Scenario: Selecting a genus
-    When I go to the Taxatry index
+    When I go to the catalog index
       And I follow "Dolichoderinae"
       And I follow "Dolichoderini"
       And I follow "Dolichoderus"
@@ -46,7 +46,7 @@ Feature: Using the Taxatry index
       And I should see "abruptus" in the index
 
   Scenario: Selecting a species
-    When I go to the Taxatry index
+    When I go to the catalog index
       And I follow "Dolichoderinae"
       And I follow "Dolichoderini"
       And I follow "Dolichoderus"
@@ -59,7 +59,7 @@ Feature: Using the Taxatry index
 
   Scenario: Showing the "incertae sedis" subfamily
     Given a genus exists with a name of "Cariridris" and no subfamily
-    When I go to the Taxatry index
+    When I go to the catalog index
       And I follow "(incertae sedis)"
     Then I should see "Cariridris"
       And "(incertae sedis)" should be selected

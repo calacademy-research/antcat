@@ -1,12 +1,12 @@
-class Taxatry::IndexController < TaxatryController
+class Catalog::IndexController < CatalogController
 
   def show
     super
 
     @url_parameters = {:q => params[:q], :search_type => params[:search_type], :hide_tribes => params[:hide_tribes]}
 
-    @current_path = index_taxatry_path
-    @subfamilies = Subfamily.ordered_by_name
+    @current_path = index_catalog_path
+    @subfamilies = ::Subfamily.ordered_by_name
 
     return if @search_results.blank? && params[:id].blank?
 

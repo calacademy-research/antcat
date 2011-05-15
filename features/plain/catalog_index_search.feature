@@ -5,9 +5,9 @@ Feature: Searching the catalog index
 
   Background:
     Given a subfamily exists with a name of "Dolichoderinae" and a taxonomic history of "Dolichoderinae history"
-      And a tribe exists with a name of "Dolichoderini" and a subfamily of "Dolichoderinae" and a taxonomic history of "Dolichoderini history"
-      And a genus exists with a name of "Dolichoderus" and a tribe of "Dolichoderini" and a taxonomic history of "Dolichoderus history"
-      And a species exists with a name of "abruptus" and a genus of "Dolichoderus" and a taxonomic history of "abruptus history"
+    And a tribe exists with a name of "Dolichoderini" and a subfamily of "Dolichoderinae" and a taxonomic history of "Dolichoderini history"
+    And a genus exists with a name of "Dolichoderus" and a tribe of "Dolichoderini" and a taxonomic history of "Dolichoderus history"
+    And a species exists with a name of "abruptus" and a genus of "Dolichoderus" and a taxonomic history of "abruptus history"
 
   Scenario: Searching when no results
     When I go to the catalog index
@@ -32,7 +32,7 @@ Feature: Searching the catalog index
       And "Dolichoderinae" should be selected in the index
       And I should see "Dolichoderinae history"
 
-  Scenario: Searching taxatry for a 'containing' match
+  Scenario: Searching for a 'containing' match
     When I go to the catalog index
       And I fill in the search box with "rup"
       And I select "containing" from "search_type"

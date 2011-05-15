@@ -1,4 +1,4 @@
-class TaxatryController < ApplicationController
+class CatalogController < ApplicationController
 
   def show
     search

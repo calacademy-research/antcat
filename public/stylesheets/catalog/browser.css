@@ -1,0 +1,75 @@
+html, body, #page, .rank, #browser {
+  height: 100%; }
+
+body {
+  overflow-y: hidden; }
+
+#page_contents, body {
+  overflow-x: hidden; }
+
+#catalog .index {
+  float: left;
+  width: 168px;
+  margin-right: 10px;
+  font-weight: normal;
+  border-right: solid black 1px;
+  overflow-y: auto; }
+
+#catalog #browser {
+  overflow-y: auto;
+  overflow-x: hidden;
+  float: left; }
+  #catalog #browser .header {
+    max-height: 12.2em;
+    overflow-y: auto;
+    overflow-x: hidden; }
+  #catalog #browser .contents {
+    overflow-y: auto; }
+  #catalog #browser hr {
+    margin-top: 6px; }
+
+.taxon_header {
+  font-weight: bold; }
+
+.index_header_taxon {
+  font-size: 16px;
+  line-height: 20px;
+  border-bottom: 1px black solid; }
+
+#catalog .index a {
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+  line-height: 1em;
+  margin-left: 8px; }
+
+.taxonomic_history.species {
+  padding-bottom: 1px; }
+  .taxonomic_history.species p {
+    text-indent: -3em;
+    margin-left: 3em; }
+
+hr {
+  margin-left: -12px;
+  margin-right: -12px; }
+
+#catalog hr {
+  margin-left: -12px;
+  margin-right: -12px;
+  margin-bottom: 4px; }
+
+.contents .taxonomic_history {
+  margin-bottom: 6px; }
+
+.taxon_subsection_header {
+  margin-top: 6px;
+  margin-bottom: 6px;
+  font-weight: bold; }
+
+.taxonomic_history.genus {
+  font-style: normal; }
+
+.taxonomic_history.species {
+  margin-bottom: 0;
+  font-style: normal; }

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe TaxatryHelper do
+describe CatalogHelper do
 
   describe 'taxon header' do
 
@@ -8,7 +8,7 @@ describe TaxatryHelper do
       taxon = Factory :genus, :name => 'Atta', :fossil => true
       taxon_header = helper.taxon_header taxon, :link => true
       taxon_header.should ==
-        %{Genus <a href="#{browser_taxatry_path taxon}" class="genus taxon valid">&dagger;ATTA</a>}
+        %{Genus <a href="#{browser_catalog_path taxon}" class="genus taxon valid">&dagger;ATTA</a>}
       taxon_header.should be_html_safe
     end
 
@@ -144,14 +144,14 @@ describe TaxatryHelper do
   describe "Hide link" do
     it "should create a link with all the current parameters + hide_tribe => true" do
       taxon = Factory :genus
-      helper.hide_link('tribes', taxon, {}).should == %{<a href="/taxatry/index/#{taxon.id}?hide_tribes=true" class="hide">hide</a>}
+      helper.hide_link('tribes', taxon, {}).should == %{<a href="/catalog/index/#{taxon.id}?hide_tribes=true" class="hide">hide</a>}
     end
   end
 
   describe "Show child link" do
     it "if child is hidden, should create a link with all the current parameters and without hide_tribe" do
       taxon = Factory :genus
-      helper.show_child_link({:hide_tribes => true}, 'tribes', taxon, {}).should == %{<a href="/taxatry/index/#{taxon.id}">show tribes</a>}
+      helper.show_child_link({:hide_tribes => true}, 'tribes', taxon, {}).should == %{<a href="/catalog/index/#{taxon.id}">show tribes</a>}
     end
 
     it "if child is not hidden, return nil" do

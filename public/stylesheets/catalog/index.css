@@ -1,0 +1,57 @@
+html, body, #page, .rank {
+  height: 100%; }
+
+#page_contents {
+  padding-bottom: 3px; }
+
+#taxon_header {
+  height: 11em;
+  overflow: auto;
+  margin-bottom: 6px; }
+  #taxon_header span {
+    padding-left: 12px;
+    padding-right: 12px;
+    font-size: 1.3em;
+    font-weight: bold; }
+  #taxon_header .taxon_status {
+    font-weight: normal; }
+
+.taxonomic_history {
+  padding: 5px;
+  padding-top: 0;
+  padding-left: 12px;
+  padding-right: 12px; }
+
+#catalog {
+  margin-top: 2px;
+  min-width: 1500px; }
+
+.rank {
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-right: solid 1px black;
+  float: left; }
+  .rank .header {
+    height: 37px;
+    padding-left: 12px;
+    padding-top: 4px;
+    text-align: left;
+    font-size: 1.5em;
+    border-bottom: solid black 1px; }
+    .rank .header .hide_show {
+      font-size: 10px;
+      margin-left: 16px; }
+
+td.taxon_item {
+  padding-right: 13px;
+  padding-left: 12px; }
+
+td.teensy {
+  font-size: 0.9em;
+  line-height: 0.99em; }
+
+.statistics {
+  padding-left: 12px;
+  padding-right: 12px;
+  font-size: 0.85em;
+  font-style: italic; }
