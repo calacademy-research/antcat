@@ -15,6 +15,8 @@ module NavigationHelpers
       journals_path
     when /the Taxatry index/
       index_taxatry_path
+    when /the catalog index/
+      index_taxatry_path
     when /the Taxatry browser/
       browser_taxatry_path
     when /the forgot password page/
