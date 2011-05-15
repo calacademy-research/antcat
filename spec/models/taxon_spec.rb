@@ -133,7 +133,7 @@ describe Taxon do
       results.size.should == 2
     end
 
-    it "should not return anything but subfamilies, genera and tribes" do
+    it "should not return anything but subfamilies, tribes, genera and species" do
       Factory :subfamily, :name => 'Lepto'
       Factory :tribe, :name => 'Lepto'
       Factory :genus, :name => 'Lepto'
@@ -141,7 +141,15 @@ describe Taxon do
       Factory :species, :name => 'Lepto'
       Factory :subspecies, :name => 'Lepto'
       results = Taxon.find_name 'Lepto'
-      results.size.should == 3
+      results.size.should == 4
+    end
+
+    it "should sort results by name" do
+      Factory :subfamily, :name => 'Lepti'
+      Factory :subfamily, :name => 'Lepta'
+      Factory :subfamily, :name => 'Lepte'
+      results = Taxon.find_name 'Lept', 'beginning with'
+      results.map(&:name).should == ['Lepta', 'Lepte', 'Lepti']
     end
 
   end

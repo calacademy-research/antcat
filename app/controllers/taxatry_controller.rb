@@ -21,7 +21,7 @@ class TaxatryController < ApplicationController
       else
         @search_results = @search_results.map do |search_result|
           {:name => search_result.full_name, :id => search_result.id}
-        end.sort_by {|element| element[:name]}
+        end
         params['id'] = @search_results.first[:id] if params['id'].blank?
       end
     end
