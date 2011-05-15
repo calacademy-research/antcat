@@ -13,8 +13,8 @@ module HtmlSelectorsHelpers
 
     when /the index/
       "#catalog .index"
-    when /the tribes index/
-      "#catalog .index .tribes"
+    when /the (\w*) index/
+      "#catalog .index .#{$1}"
     when /the content/
       "#catalog .content"
     when /the browser/

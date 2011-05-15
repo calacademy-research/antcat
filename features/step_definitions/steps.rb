@@ -274,8 +274,10 @@ When /I follow "All" in the subfamilies list/ do
   When %{I follow "All" within ".subfamilies"}
 end
 
-Then /"([^"]+)" should be selected/ do |word|
-  page.should have_css ".selected", :text => word
+Then /^"([^"]+)" should be selected(?: in (.*))?$/ do |word, location|
+  with_scope location || 'body' do
+    page.should have_css ".selected", :text => word
+  end
 end
 
 And /I (edit|delete|copy) "(.*?)"/ do |verb, author|
@@ -395,4 +397,8 @@ end
 
 And /I hide tribes/ do
   And %{I follow "hide"}
+end
+
+Then "I should not see any search results" do
+  page.should_not have_css "#search_results"
 end
