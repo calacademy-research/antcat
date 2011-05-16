@@ -30,7 +30,11 @@ class Catalog::IndexController < CatalogController
 
     when 'no_tribe', Tribe
       @selected_tribe = @taxon
-      if params[:hide_tribes]
+      if params[:hide_tribes] && @selected_tribe == 'no_tribe'
+        @taxon = ::Subfamily.find params[:subfamily]
+        @selected_subfamily = @taxon
+        @genera = @selected_subfamily.genera
+      elsif params[:hide_tribes]
         @taxon = @selected_tribe.subfamily
         @selected_subfamily = @taxon
         @genera = @selected_subfamily.genera
