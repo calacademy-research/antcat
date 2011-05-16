@@ -13,7 +13,7 @@
           %table
             - if options[:show_none]
               - items = items.to_a
-              - items.insert 0, 'no_subfamily'
+              - items.insert 0, options[:show_none]
             - rows, css_class = snake_taxon_columns items
             - rows.each do |row|
               %tr
