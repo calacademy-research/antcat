@@ -9,6 +9,9 @@ class Catalog::BrowserController < CatalogController
     end
 
     @taxon = params[:id] && Taxon.find(params[:id])
+
+    @taxon = @taxon.subfamily if @taxon.kind_of?(Tribe)
+
     rank = @taxon && @taxon.rank
     @header_taxon = @taxon
 
