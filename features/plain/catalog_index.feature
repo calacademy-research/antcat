@@ -66,3 +66,14 @@ Feature: Using the catalog index
       And I should not see "Tribes"
       And I should not see "show tribes"
 
+  Scenario: Showing the "incertae sedis" tribe
+    Given a genus exists with a name of "Cariridris" and a subfamily of "Dolichoderinae"
+      And a genus exists with a name of "Atta" and a subfamily of "Attaninae"
+    When I go to the catalog index
+      And I follow "Dolichoderinae"
+      And I follow "(incertae sedis)" in the tribes index
+    Then I should see "Cariridris" in the genera index
+      And I should not see "Atta" in the genera index
+      And "(incertae sedis)" should be selected in the tribes index
+      And "Dolichoderinae" should be selected in the subfamilies index
+

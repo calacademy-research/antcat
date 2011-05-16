@@ -3,14 +3,14 @@ class Catalog::IndexController < CatalogController
   def show
     super
 
-    @url_parameters = {:q => params[:q], :search_type => params[:search_type], :hide_tribes => params[:hide_tribes]}
-
     @current_path = index_catalog_path
     @subfamilies = ::Subfamily.ordered_by_name
 
+    @url_parameters = {:q => params[:q], :search_type => params[:search_type], :hide_tribes => params[:hide_tribes]}
+
     return if @search_results.blank? && params[:id].blank?
 
-    if params[:id] == 'no_subfamily'
+    if params[:id] =~ /^no_/
       @taxon = params[:id]
     else
       @taxon = Taxon.find params[:id]
@@ -28,12 +28,16 @@ class Catalog::IndexController < CatalogController
         @tribes = @selected_subfamily.tribes
       end
 
-    when Tribe
+    when 'no_tribe', Tribe
       @selected_tribe = @taxon
       if params[:hide_tribes]
         @taxon = @selected_tribe.subfamily
         @selected_subfamily = @taxon
         @genera = @selected_subfamily.genera
+      elsif @selected_tribe == 'no_tribe'
+        @selected_subfamily = ::Subfamily.find params[:subfamily]
+        @tribes = @selected_subfamily.tribes
+        @genera = @selected_subfamily.genera.without_tribe
       else
         @tribes = @selected_tribe.siblings
         @genera = @selected_tribe.genera
@@ -70,6 +74,8 @@ class Catalog::IndexController < CatalogController
       end
 
     end
+
+    @url_parameters[:subfamily] = @selected_subfamily
 
     @taxon_header_name = @taxon.full_name if @taxon.kind_of? Taxon
   end

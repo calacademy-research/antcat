@@ -3,7 +3,7 @@ require 'snake'
 module CatalogHelper
 
   def taxon_link taxon, selected, url_parameters
-    if taxon == 'no_subfamily'
+    if taxon =~ /^no_/
       classes = 'valid'
       classes << ' selected' if taxon == selected
       link_to '(incertae sedis)', index_catalog_path(taxon, url_parameters), :class => classes
