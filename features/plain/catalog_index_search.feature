@@ -70,7 +70,7 @@ Feature: Searching the catalog index
       And I fill in the search box with "Monomorium"
       And I press "Go" by the search box
     Then I should see "Monomorium history"
-      And "(incertae sedis)" should be selected in the subfamilies index
+      And "(no subfamily)" should be selected in the subfamilies index
       And "Monomorium" should be selected in the genera index
 
   Scenario: Finding a genus without a tribe but with a subfamily
@@ -80,7 +80,7 @@ Feature: Searching the catalog index
       And I press "Go" by the search box
     Then I should see "Monomorium history"
       And "Dolichoderinae" should be selected in the subfamilies index
-      #And "(incertae sedis)" should be selected in the tribes index
+      And "(no tribe)" should be selected in the tribes index
       And "Monomorium" should be selected in the genera index
 
   Scenario: Finding a tribe when tribes are hidden
