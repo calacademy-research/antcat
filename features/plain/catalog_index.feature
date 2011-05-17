@@ -57,23 +57,23 @@ Feature: Using the catalog index
       And "abruptus" should be selected
       And I should see "abruptus history"
 
-  Scenario: Showing the "incertae sedis" subfamily
+  Scenario: Showing the "no subfamily" subfamily
     Given a genus exists with a name of "Cariridris" and no subfamily
     When I go to the catalog index
-      And I follow "(incertae sedis)"
+      And I follow "(no subfamily)"
     Then I should see "Cariridris"
-      And "(incertae sedis)" should be selected
+      And "(no subfamily)" should be selected
       And I should not see "Tribes"
       And I should not see "show tribes"
 
-  Scenario: Showing the "incertae sedis" tribe
+  Scenario: Showing the "no tribe" tribe
     Given a genus exists with a name of "Cariridris" and a subfamily of "Dolichoderinae"
       And a genus exists with a name of "Atta" and a subfamily of "Attaninae"
     When I go to the catalog index
       And I follow "Dolichoderinae"
-      And I follow "(incertae sedis)" in the tribes index
+      And I follow "(no tribe)" in the tribes index
     Then I should see "Cariridris" in the genera index
       And I should not see "Atta" in the genera index
-      And "(incertae sedis)" should be selected in the tribes index
+      And "(no tribe)" should be selected in the tribes index
       And "Dolichoderinae" should be selected in the subfamilies index
 

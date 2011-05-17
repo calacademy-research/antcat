@@ -6,7 +6,7 @@ module CatalogHelper
     if taxon =~ /^no_/
       classes = 'valid'
       classes << ' selected' if taxon == selected
-      link_to '(incertae sedis)', index_catalog_path(taxon, url_parameters), :class => classes
+      link_to "(#{taxon.gsub(/_/, ' ')})", index_catalog_path(taxon, url_parameters), :class => classes
     else
       label_and_classes = CatalogFormatter.taxon_label_and_css_classes taxon, :selected => taxon == selected
       link_to label_and_classes[:label], index_catalog_path(taxon, url_parameters), :class => label_and_classes[:css_classes]
