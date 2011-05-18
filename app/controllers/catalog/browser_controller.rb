@@ -12,18 +12,15 @@ class Catalog::BrowserController < CatalogController
 
     @taxon = @taxon.subfamily if @taxon.kind_of?(Tribe)
 
-    rank = @taxon && @taxon.rank
     @header_taxon = @taxon
 
-    if rank.nil?
-      @index_header_taxa = [:taxon => @taxon, :path => browser_catalog_path(nil, @search_params)]
-
-    elsif rank == 'subfamily'
+    case @taxon
+    when Subfamily
       @index_header_taxa = [:taxon => @taxon, :path => browser_catalog_path(@taxon, @search_params)]
       @taxa = @taxon.genera.valid
 
-    elsif rank == 'genus' || rank == 'species'
-      if rank == 'species'
+    when Genus, Species
+      if @taxon.kind_of? Species
         @selected_browser_taxon = @taxon
         @header_taxon = @taxon.genus
       end
