@@ -53,7 +53,7 @@ GEM
     celerity (0.8.9)
     childprocess (0.1.8)
       ffi (~> 1.0.6)
-    citrus (2.3.7)
+    citrus (2.4.0)
     columnize (0.3.2)
     configuration (1.2.0)
     crack (0.1.8)
