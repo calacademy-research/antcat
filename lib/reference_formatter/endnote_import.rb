@@ -27,6 +27,7 @@ class ReferenceFormatter::EndnoteImport::Base
     add_contents
     add 'Z', @reference.public_notes
     add 'K', @reference.taxonomic_notes
+    add 'U', @reference.url
     add '~', 'AntCat'
     @string.join("\n") + "\n"
   end

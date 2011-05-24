@@ -70,6 +70,7 @@ describe ReferenceFormatter::EndnoteImport do
       :journal => Factory(:journal, :name => 'Psyche'),
       :series_volume_issue => '1(2)',
       :pagination => '3-4'
+    reference.create_document :url => 'http://antcat.org/article.pdf'
     string = ReferenceFormatter::EndnoteImport.format([reference])
     string.should == 
 %{%0 Journal Article
@@ -79,6 +80,7 @@ describe ReferenceFormatter::EndnoteImport do
 %J Psyche
 %N 1(2)
 %P 3-4
+%U http://antcat.org/article.pdf
 %~ AntCat
 
 }
