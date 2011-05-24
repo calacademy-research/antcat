@@ -17,6 +17,12 @@ describe ReferenceDocument do
     document.errors.full_messages.should =~ ['Url is not in a valid format']
   end
 
+  it "should accept a URL with spaces" do
+    stub_request(:any, "http://antbase.org/a%20url").to_return :body => "Hello World!"
+    document = ReferenceDocument.new :url => 'http://antbase.org/a url'
+    document.should be_valid
+  end
+
   it "should make sure it's a valid URL with a path" do
     document = ReferenceDocument.new :url => 'google.com'
     document.should_not be_valid

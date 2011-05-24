@@ -28,7 +28,8 @@ class ReferenceDocument < ActiveRecord::Base
   private
   def check_url
     return if file_file_name.present? or url.blank?
-    uri = URI.parse url
+    # a URL with spaces is valid, but URI.parse rejects it
+    uri = URI.parse url.gsub(/ /, '%20')
     response_code = Net::HTTP.new(uri.host, 80).request_head(uri.path).code.to_i
     errors.add :url, 'was not found' unless (200..399).include? response_code
   rescue SocketError, URI::InvalidURIError, ArgumentError
