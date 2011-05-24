@@ -23,6 +23,11 @@ describe ReferenceDocument do
     document.should be_valid
   end
 
+  it "don't check existence of URL when it's ours" do
+    document = ReferenceDocument.new :url => 'http://antcat.org/a.pdf'
+    document.should be_valid
+  end
+
   it "should make sure it's a valid URL with a path" do
     document = ReferenceDocument.new :url => 'google.com'
     document.should_not be_valid
