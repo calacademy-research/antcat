@@ -48,6 +48,7 @@ EOS
   def save new
     begin
       Reference.transaction do
+        clear_document_params_if_necessary
         clear_nested_reference_id unless @reference.kind_of? NestedReference
         parse_author_names_string
         set_journal if @reference.kind_of? ArticleReference
@@ -115,6 +116,10 @@ EOS
 
   def clear_nested_reference_id
     params[:reference][:nested_reference_id] = nil
+  end
+
+  def clear_document_params_if_necessary
+    params[:reference][:document_attributes][:id] = nil unless params[:reference][:document_attributes][:url].present?
   end
 
   def render_json new = false
