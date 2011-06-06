@@ -14,4 +14,7 @@ class Subspecies < Taxon
     "<i>#{species.genus.name} #{species.name} #{name}</i>"
   end
 
+  def statistics
+  end
+
 end
