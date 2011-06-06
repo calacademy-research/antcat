@@ -7,6 +7,7 @@ class Taxon < ActiveRecord::Base
 
   scope :valid, where("status = ?", 'valid')
   scope :ordered_by_name, order(:name)
+  scope :extant, where('fossil IS NULL')
 
   def unavailable?;     status == 'unavailable' end
   def available?;       !unavailable? end

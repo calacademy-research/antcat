@@ -206,6 +206,15 @@ describe Taxon do
     end
   end
 
+  describe "the 'extant' scope" do
+    it "should only include extant taxa" do
+      subfamily = Factory :subfamily
+      extant_genus = Factory :genus, :subfamily => subfamily
+      Factory :genus, :subfamily => subfamily, :fossil => true
+      subfamily.genera.extant.should == [extant_genus]
+    end
+  end
+
   describe "ordered by name" do
     it "should order by name" do
       zymacros = Factory :subfamily, :name => 'Zymacros'
