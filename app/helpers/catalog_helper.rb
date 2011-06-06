@@ -24,6 +24,14 @@ module CatalogHelper
     link_to "show #{name}", index_catalog_path(selected, url_parameters.merge(hide_child_param => nil))
   end
 
+  def taxon_statistics taxon
+    CatalogFormatter.taxon_statistics taxon
+  end
+
+  def status_labels
+    CatalogFormatter.status_labels
+  end
+
   def snake_taxon_columns items
     column_count = items.count / 26.0
     css_class = 'taxon_item'
@@ -42,74 +50,6 @@ module CatalogHelper
   def make_catalog_search_results_columns items
     column_count = 3
     items.snake column_count
-  end
-
-  def taxon_statistics taxon
-    statistics = taxon.statistics
-    rank_strings = []
-    string = format_rank_statistics(statistics, :genera)
-    rank_strings << string if string
-    string = format_rank_statistics(statistics, :species)
-    rank_strings << string if string
-    string = format_rank_statistics(statistics, :subspecies)
-    rank_strings << string if string
-    rank_strings.join ', '
-  end
-
-  def format_rank_statistics statistics, rank
-    statistics = statistics[rank]
-    return unless statistics
-
-    string = ''
-
-    if statistics['valid']
-      string << format_rank_status_count(rank, 'valid', statistics['valid'])
-      statistics.delete 'valid'
-    end
-
-    status_strings = statistics.keys.sort_by do |key|
-      ordered_statuses.index key
-    end.inject([]) do |status_strings, status|
-      status_strings << format_rank_status_count(:genera, status, statistics[status])
-    end
-
-    if status_strings.present?
-      string << ' ' if string.present?
-      string << "(#{status_strings.join(', ')})"
-    end
-
-    string.present? && string
-  end
-
-  def format_rank_status_count rank, status, count
-    rank = :genus if rank == :genera and count == 1
-    count_and_status = pluralize count, status, status == 'valid' ? status : status_plural(status)
-    string = count_and_status
-    string << " #{rank.to_s}" if status == 'valid'
-    string
-  end
-
-  def status_plural status
-    status_labels[status][:plural]
-  end
-
-  def status_labels
-    @status_labels || begin
-      @status_labels = ActiveSupport::OrderedHash.new
-      @status_labels['synonym']             = {:singular => 'synonym', :plural => 'synonyms'}
-      @status_labels['homonym']             = {:singular => 'homonym', :plural => 'homonyms'}
-      @status_labels['unavailable']         = {:singular => 'unavailable', :plural => 'unavailable'}
-      @status_labels['unidentifiable']      = {:singular => 'unidentifiable', :plural => 'unidentifiable'}
-      @status_labels['excluded']            = {:singular => 'excluded', :plural => 'excluded'}
-      @status_labels['unresolved homonym']  = {:singular => 'unresolved homonym', :plural => 'unresolved homonyms'}
-      @status_labels['recombined']          = {:singular => 'transferred out of this genus', :plural => 'transferred out of this genus'}
-      @status_labels['nomen nudum']         = {:singular => 'nomen nudum', :plural => 'nomina nuda'}
-      @status_labels
-    end
-  end
-
-  def ordered_statuses
-    status_labels.keys
   end
 
   def make_index_groups taxa, max_row_count, abbreviated_length

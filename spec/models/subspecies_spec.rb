@@ -2,6 +2,10 @@ require 'spec_helper'
 
 describe Subspecies do
 
+  it "has no statistics" do
+    Subspecies.new.statistics.should be_nil
+  end
+
   it "must have a species" do
     subspecies = Subspecies.new :name => 'Colobopsis'
     subspecies.should_not be_valid
