@@ -4,6 +4,7 @@ describe Subspecies do
 
   it "has no statistics" do
     Subspecies.new.statistics.should be_nil
+    Subspecies.new.statistics(false).should be_nil
   end
 
   it "must have a species" do

@@ -58,6 +58,14 @@ describe Species do
       species.statistics.should == {:subspecies => {'valid' => 1}}
     end
 
+    it "should be able to exclude fossil subspecies" do
+      species = Factory :species
+      subspecies = Factory :subspecies, :species => species
+      Factory :subspecies, :species => species, :fossil => true
+      species.statistics.should == {:subspecies => {'valid' => 2}}
+      species.statistics(false).should == {:subspecies => {'valid' => 1}}
+    end
+
     it "should handle 1 valid subspecies and 2 synonyms" do
       species = Factory :species
       Factory :subspecies, :species => species

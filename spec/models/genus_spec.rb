@@ -72,6 +72,17 @@ describe Genus do
       genus.statistics.should == {:species => {'valid' => 1}, :subspecies => {'valid' => 2}}
     end
 
+    it "should be able to exclude extinct species and subspecies" do
+      genus = Factory :genus
+      species = Factory :species, :genus => genus
+      fossil_species = Factory :species, :genus => genus, :fossil => true
+      Factory :subspecies, :species => species, :fossil => true
+      Factory :subspecies, :species => species
+      Factory :subspecies, :species => fossil_species, :fossil => true
+      genus.statistics(false).should == {:species => {'valid' => 1}, :subspecies => {'valid' => 1}}
+      genus.statistics.should == {:species => {'valid' => 2}, :subspecies => {'valid' => 3}}
+    end
+
   end
 
   describe "Without subfamily" do
