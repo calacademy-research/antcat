@@ -51,33 +51,16 @@ class Catalog::IndexController < CatalogController
 
     when Genus
       @selected_genus = @taxon
-      @selected_subfamily = @selected_genus.subfamily || 'no_subfamily'
-      if @selected_subfamily == 'no_subfamily'
-        @genera = Genus.without_subfamily
-      else
-        @genera = @selected_genus.siblings
-      end
+      select_subfamily_and_tribes
+      select_genera
       @species = @selected_genus.species
-      unless params[:hide_tribes] || @selected_subfamily == 'no_subfamily'
-        @selected_tribe = @selected_genus.tribe || 'no_tribe'
-        @tribes = @selected_subfamily.tribes
-      end
 
     when Species
       @selected_species = @taxon
-      @species = @selected_species.siblings
-      @selected_subfamily = @selected_species.subfamily || 'no_subfamily'
       @selected_genus = @selected_species.genus
-      if @selected_subfamily == 'no_subfamily'
-        @genera = Genus.without_subfamily
-      else
-        @genera = @selected_genus.siblings
-      end
-      unless params[:hide_tribes] || @selected_subfamily == 'no_subfamily'
-        @selected_tribe = @selected_genus.tribe || 'no_tribe'
-        @tribes = @selected_subfamily.tribes
-      end
-
+      @species = @selected_species.siblings
+      select_subfamily_and_tribes
+      select_genera
     end
 
     @url_parameters[:subfamily] = @selected_subfamily
@@ -107,6 +90,24 @@ class Catalog::IndexController < CatalogController
   def setup_formicidae
     @taxon_header_name = 'Formicidae'
     @taxon_statistics = Taxon.statistics
+  end
+
+  def select_subfamily_and_tribes
+    @selected_subfamily = @selected_genus.subfamily || 'no_subfamily'
+    unless params[:hide_tribes] || @selected_subfamily == 'no_subfamily'
+      @selected_tribe = @selected_genus.tribe || 'no_tribe'
+      @tribes = @selected_subfamily.tribes
+    end
+  end
+
+  def select_genera
+    if @selected_subfamily == 'no_subfamily'
+      @genera = Genus.without_subfamily
+    elsif params[:hide_tribes]
+      @genera = @selected_subfamily.genera
+    else
+      @genera = @selected_genus.siblings
+    end
   end
 
 end
