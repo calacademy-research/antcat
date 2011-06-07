@@ -179,9 +179,3 @@ Feature: Using the catalog browser
     When I follow "DOLICHODERINAE" in the browser
       And I should not see "Palaeomyrmex" in the index
       And I should not see "Palaeomyrmex" by itself in the browser
-
-  #Scenario: Showing the "no subfamily" subfamily
-    #Given a genus exists with a name of "Cariridris" and no subfamily
-    #When I go to the catalog browser
-      #And I follow "(no subfamily)"
-    #Then I should see "Cariridris"

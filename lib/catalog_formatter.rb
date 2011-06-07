@@ -13,7 +13,7 @@ class CatalogFormatter
       string << %{<p class="taxon_subsection_header">Homonym replaced by #{span}</p>}
       string << %{<div id="#{homonym_replaced.id}">#{homonym_replaced.taxonomic_history}</div>}
     end
-    string.html_safe
+    string.html_safe if string
   end
 
   def self.format_taxonomic_history_with_statistics taxon, options = {}

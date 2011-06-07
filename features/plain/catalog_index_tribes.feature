@@ -7,8 +7,11 @@ Feature: Hiding and showing tribes in the index
   Background:
     Given a subfamily exists with a name of "Dolichoderinae"
     And a tribe exists with a name of "Dolichoderini" and a subfamily of "Dolichoderinae"
+    And a tribe exists with a name of "Tapinomini" and a subfamily of "Dolichoderinae"
     And a genus exists with a name of "Dolichoderus" and a tribe of "Dolichoderini"
     And a genus exists with a name of "Atta" and a subfamily of "Dolichoderinae"
+    And a genus exists with a name of "Tapinoma" and a tribe of "Tapinomini"
+    And a species exists with a name of "rufa" and a genus of "Atta"
 
   Scenario: Hiding tribes
     When I go to the catalog index
@@ -20,6 +23,25 @@ Feature: Hiding and showing tribes in the index
       And I should see "show tribes"
       And I should see "Dolichoderus" in the index
       And I should see "Atta" in the index
+
+  Scenario: Selecting a genus after hiding tribes
+    When I go to the catalog index
+      And I follow "Dolichoderinae"
+    When I follow "hide"
+      And I follow "Atta"
+    Then I should see "Dolichoderus" in the index
+      And I should see "Atta" in the index
+      And I should see "Tapinoma" in the index
+
+  Scenario: Selecting a species after hiding tribes
+    When I go to the catalog index
+      And I follow "Dolichoderinae"
+    When I follow "hide"
+      And I follow "Atta"
+      And I follow "rufa"
+    Then I should see "Dolichoderus" in the index
+      And I should see "Atta" in the index
+      And I should see "Tapinoma" in the index
 
   Scenario: Showing tribes after selecting a genus with a tribe
     When I go to the catalog index
