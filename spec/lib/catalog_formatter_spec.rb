@@ -5,6 +5,26 @@ describe CatalogFormatter do
     @formatter = CatalogFormatter
   end
 
+  describe 'Taxon statistics' do
+    it "should get the statistics, then format them" do
+      subfamily = mock
+      subfamily.should_receive(:statistics).and_return :foo
+      @formatter.should_receive(:format_statistics).with(:foo, true)
+      @formatter.taxon_statistics(subfamily)
+    end
+    it "should just return nil if there are no statistics" do
+      subfamily = mock
+      subfamily.should_receive(:statistics).and_return nil
+      @formatter.should_not_receive(:format_statistics)
+      @formatter.taxon_statistics(subfamily).should be_nil
+    end
+    it "should not leave a comma at the end if only showing valid taxa" do
+      genus = Factory :genus, :taxonomic_history => 'foo'
+      2.times {Factory :species, :genus => genus}
+      @formatter.taxon_statistics(genus, false, false).should == "2 species"
+    end
+  end
+
   describe 'Formatting statistics' do
 
     it "should format a subfamily's statistics correctly" do
@@ -64,6 +84,10 @@ describe CatalogFormatter do
       taxon = Factory :subfamily
       taxon.should_receive(:statistics).and_return(:genera => {'valid' => 1, 'homonym' => 2}, :species => {'valid' => 2}, :subspecies => {'valid' => 3})
       @formatter.taxon_statistics(taxon, false).should == "1 genus, 2 species, 3 subspecies"
+    end
+
+    it "should not leave a trailing comma" do
+      @formatter.format_statistics({:species => {'valid' => 2}}, false).should == "2 species"
     end
 
   end
