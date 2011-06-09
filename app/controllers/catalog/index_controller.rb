@@ -8,7 +8,7 @@ class Catalog::IndexController < CatalogController
 
     @url_parameters = {:q => params[:q], :search_type => params[:search_type], :hide_tribes => params[:hide_tribes]}
 
-    return if @search_results.blank? && params[:id].blank?
+    setup_formicidae and return if @search_results.blank? && params[:id].blank?
 
     if params[:id] =~ /^no_/
       @taxon = params[:id]
@@ -21,6 +21,7 @@ class Catalog::IndexController < CatalogController
     when 'no_subfamily', Subfamily
       @selected_subfamily = @taxon
       if @selected_subfamily == 'no_subfamily'
+        setup_formicidae
         @genera = Genus.without_subfamily
       elsif params[:hide_tribes]
         @genera = @selected_subfamily.genera
@@ -81,7 +82,31 @@ class Catalog::IndexController < CatalogController
 
     @url_parameters[:subfamily] = @selected_subfamily
 
-    @taxon_header_name = @taxon.full_name if @taxon.kind_of? Taxon
+    @taxon_header_name ||= @taxon.full_name if @taxon.kind_of? Taxon
+    @taxon_statistics ||= @taxon.statistics if @taxon.kind_of? Taxon
+  end
+
+  def select_subfamily_and_tribes
+    @selected_subfamily = @selected_genus.subfamily || 'no_subfamily'
+    unless params[:hide_tribes] || @selected_subfamily == 'no_subfamily'
+      @selected_tribe = @selected_genus.tribe || 'no_tribe'
+      @tribes = @selected_subfamily.tribes
+    end
+  end
+
+  def select_genera
+    if @selected_subfamily == 'no_subfamily'
+      @genera = Genus.without_subfamily
+    elsif params[:hide_tribes]
+      @genera = @selected_subfamily.genera
+    else
+      @genera = @selected_genus.siblings
+    end
+  end
+
+  def setup_formicidae
+    @taxon_header_name = 'Formicidae'
+    @taxon_statistics = Taxon.statistics
   end
 
 end

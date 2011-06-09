@@ -15,6 +15,8 @@ Feature: Using the catalog index
     When I go to the catalog index
     Then I should see "Dolichoderinae" in the index
       And I should not see "Dolichoderinae history"
+      And I should see "Formicidae"
+      And I should see "1 valid subfamily, 1 valid genus, 1 valid species"
 
   Scenario: Selecting a subfamily
     When I go to the catalog index
@@ -32,7 +34,6 @@ Feature: Using the catalog index
     Then "Dolichoderinae" should be selected
       And "Dolichoderini" should be selected
       And I should see "Dolichoderini history"
-      #And I should see "2 valid genera (1 synonym)"
       And I should see "Dolichoderus" in the index
 
   Scenario: Selecting a genus
@@ -44,7 +45,7 @@ Feature: Using the catalog index
       And "Dolichoderini" should be selected
       And "Dolichoderus" should be selected
       And I should see "Dolichoderus history"
-      #And I should see "2 valid genera (1 synonym)"
+      And I should see "1 valid species"
       And I should see "abruptus" in the index
 
   Scenario: Selecting a species

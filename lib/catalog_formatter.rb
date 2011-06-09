@@ -85,6 +85,7 @@ class CatalogFormatter
   end
 
   def self.format_rank_status_count rank, status, count, label_statuses = true
+    rank = :subfamily if rank == :subfamilies and count == 1
     rank = :genus if rank == :genera and count == 1
     if label_statuses
       count_and_status = pluralize_with_delimiters count, status, status == 'valid' ? status : status_plural(status)
