@@ -12,11 +12,8 @@ class Subfamily < Taxon
     name
   end
 
-  def statistics include_fossil = true
-    {:genera => include_fossil ? genera.count(:group => :status) : genera.extant.count(:group => :status),
-     :species => include_fossil ? species.count(:group => :status) : species.extant.count(:group => :status),
-     :subspecies => include_fossil ? subspecies.count(:group => :status) : subspecies.extant.count(:group => :status),
-    }
+  def statistics
+    get_statistics [:genera, :species, :subspecies]
   end
 
 end

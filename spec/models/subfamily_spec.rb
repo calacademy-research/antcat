@@ -46,27 +46,27 @@ describe Subfamily do
 
     it "should handle 0 children" do
       subfamily = Factory :subfamily
-      subfamily.statistics.should == {:genera => {}, :species => {}, :subspecies => {}}
+      subfamily.statistics.should == {}
     end
 
     it "should handle 1 valid genus" do
       subfamily = Factory :subfamily
       genus = Factory :genus, :subfamily => subfamily
-      subfamily.statistics.should == {:genera => {'valid' => 1}, :species => {}, :subspecies => {}}
+      subfamily.statistics.should == {:extant => {:genera => {'valid' => 1}}}
     end
 
     it "should handle 1 valid genus and 2 synonyms" do
       subfamily = Factory :subfamily
       genus = Factory :genus, :subfamily => subfamily
       2.times {Factory :genus, :subfamily => subfamily, :status => 'synonym'}
-      subfamily.statistics.should == {:genera => {'valid' => 1, 'synonym' => 2}, :species => {}, :subspecies => {}}
+      subfamily.statistics.should == {:extant => {:genera => {'valid' => 1, 'synonym' => 2}}} 
     end
 
     it "should handle 1 valid genus with 2 valid species" do
       subfamily = Factory :subfamily
       genus = Factory :genus, :subfamily => subfamily
       2.times {Factory :species, :genus => genus, :subfamily => subfamily}
-      subfamily.statistics.should == {:genera => {'valid' => 1}, :species => {'valid' => 2}, :subspecies => {}}
+      subfamily.statistics.should == {:extant => {:genera => {'valid' => 1}, :species => {'valid' => 2}}}
     end
 
     it "should handle 1 valid genus with 2 valid species, one of which has a subspecies" do
@@ -74,10 +74,10 @@ describe Subfamily do
       genus = Factory :genus, :subfamily => subfamily
       Factory :species, :genus => genus
       Factory :subspecies, :species => Factory(:species, :genus => genus)
-      subfamily.statistics.should == {:genera => {'valid' => 1}, :species => {'valid' => 2}, :subspecies => {'valid' => 1}}
+      subfamily.statistics.should == {:extant => {:genera => {'valid' => 1}, :species => {'valid' => 2}, :subspecies => {'valid' => 1}}}
     end
 
-    it "should be able to exclude extinct genera, species and subspecies" do
+    it "should differentiate between extinct genera, species and subspecies" do
       subfamily = Factory :subfamily
       genus = Factory :genus, :subfamily => subfamily
       Factory :genus, :subfamily => subfamily, :fossil => true
@@ -85,8 +85,10 @@ describe Subfamily do
       Factory :species, :genus => genus, :fossil => true
       Factory :subspecies, :species => Factory(:species, :genus => genus)
       Factory :subspecies, :species => Factory(:species, :genus => genus), :fossil => true
-      subfamily.statistics(false).should == {:genera => {'valid' => 1}, :species => {'valid' => 3}, :subspecies => {'valid' => 1}}
-      subfamily.statistics.should == {:genera => {'valid' => 2}, :species => {'valid' => 4}, :subspecies => {'valid' => 2}}
+      subfamily.statistics.should == {
+        :extant => {:genera => {'valid' => 1}, :species => {'valid' => 3}, :subspecies => {'valid' => 1}},
+        :fossil => {:genera => {'valid' => 1}, :species => {'valid' => 1}, :subspecies => {'valid' => 1}},
+      }
     end
 
   end
