@@ -1,6 +1,5 @@
 tmp
-public/stylesheets/*.css
-public/stylesheets/taxatry/*.css
+*.css
 database.yml
 public/sources
 solr/data
