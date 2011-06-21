@@ -2,6 +2,7 @@ class CatalogFormatter
   extend ERB::Util
   extend ActionView::Helpers::TagHelper
   extend ActionView::Helpers::TextHelper
+  extend ActionView::Helpers::NumberHelper
 
   def self.format_taxonomic_history taxon
     string = taxon.taxonomic_history
@@ -86,9 +87,9 @@ class CatalogFormatter
   def self.format_rank_status_count rank, status, count, label_statuses = true
     rank = :genus if rank == :genera and count == 1
     if label_statuses
-      count_and_status = pluralize count, status, status == 'valid' ? status : status_plural(status)
+      count_and_status = pluralize_with_delimiters count, status, status == 'valid' ? status : status_plural(status)
     else
-      count_and_status = count.to_s
+      count_and_status = number_with_delimiter count
     end
     string = count_and_status
     string << " #{rank.to_s}" if status == 'valid'
@@ -133,6 +134,12 @@ class CatalogFormatter
     status_labels.keys
   end
 
+  def self.pluralize_with_delimiters count, word, plural = nil
+    if count != 1
+      word = plural ? plural : word.pluralize
+    end
+    "#{number_with_delimiter(count)} #{word}"
+  end
 
   private
   def self.css_classes_for_taxon taxon, selected = false

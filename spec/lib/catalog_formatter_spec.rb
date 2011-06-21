@@ -30,7 +30,12 @@ describe CatalogFormatter do
       @formatter.format_statistics(nil).should == ''
       @formatter.format_statistics({}).should == ''
     end
-
+    it "should use commas in numbers" do
+      @formatter.format_statistics(:extant => {:genera => {'valid' => 2_000}}).should == '<p class="taxon_statistics">2,000 valid genera</p>'
+    end
+    it "should use commas in numbers when not showing invalid" do
+      @formatter.format_statistics({:extant => {:genera => {'valid' => 2_000}}}, :include_invalid => false).should == '<p class="taxon_statistics">2,000 genera</p>'
+    end
     it "should handle both extant and fossil statistics" do
       statistics = {
         :extant => {:subfamilies => {'valid' => 1}, :genera => {'valid' => 2, 'synonym' => 1, 'homonym' => 2}, :species => {'valid' => 1}},
@@ -199,6 +204,21 @@ describe CatalogFormatter do
     it "should return the singular and the plural for a status" do
       @formatter.status_labels['synonym'][:singular].should == 'synonym'
       @formatter.status_labels['synonym'][:plural].should == 'synonyms'
+    end
+  end
+
+  describe "Pluralizing with commas" do
+    it "should handle a single item" do
+      @formatter.pluralize_with_delimiters(1, 'bear').should == '1 bear'
+    end
+    it "should handle two items" do
+      @formatter.pluralize_with_delimiters(2, 'bear').should == '2 bears'
+    end
+    it "should use the provided plural" do
+      @formatter.pluralize_with_delimiters(2, 'genus', 'genera').should == '2 genera'
+    end
+    it "should use commas" do
+      @formatter.pluralize_with_delimiters(2000, 'bear').should == '2,000 bears'
     end
   end
 
