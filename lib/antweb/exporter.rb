@@ -5,9 +5,8 @@ class Antweb::Exporter
 
   def export directory
     File.open("#{directory}/extant.xls", 'w') do |file|
-      file.puts "subfamily\ttribe\tgenus\tspecies\tspecies author date\tcountry\tvalid\tavailable\tcurrent valid name\toriginal combination\ttaxonomic history"
+      file.puts "subfamily\ttribe\tgenus\tspecies\tspecies author date\tcountry\tvalid\tavailable\tcurrent valid name\toriginal combination\ttaxonomic history\tfossil"
       Taxon.all.each do |taxon|
-        next if taxon.fossil?
         row = export_taxon taxon
         file.puts row.join("\t") if row
       end
@@ -24,14 +23,16 @@ class Antweb::Exporter
     when Subfamily
       convert_to_antweb_array :subfamily => taxon.name,
                               :valid? => !taxon.invalid?,
-                              :taxonomic_history => CatalogFormatter.format_taxonomic_history_with_statistics(taxon, :include_invalid => false, :include_fossil => false)
+                              :taxonomic_history => CatalogFormatter.format_taxonomic_history_with_statistics(taxon, :include_invalid => false),
+                              :fossil? => taxon.fossil
     when Genus
       subfamily_name = taxon.subfamily.try(:name) || 'incertae_sedis'
       convert_to_antweb_array :subfamily => subfamily_name,
                               :tribe => taxon.tribe && taxon.tribe.name,
                               :genus => taxon.name,
                               :valid? => !taxon.invalid?, :available? => !taxon.invalid?,
-                              :taxonomic_history => CatalogFormatter.format_taxonomic_history_with_statistics(taxon, :include_invalid => false, :include_fossil => false)
+                              :taxonomic_history => CatalogFormatter.format_taxonomic_history_with_statistics(taxon, :include_invalid => false),
+                              :fossil? => taxon.fossil
     when Species
       return unless taxon.genus && taxon.genus.tribe && taxon.genus.tribe.subfamily
       convert_to_antweb_array :subfamily => taxon.genus.subfamily.name,
@@ -39,7 +40,8 @@ class Antweb::Exporter
                               :genus => taxon.genus.name,
                               :species => taxon.name,
                               :valid? => !taxon.invalid?, :available? => !taxon.invalid?,
-                              :taxonomic_history => CatalogFormatter.format_taxonomic_history_with_statistics(taxon, :include_invalid => false, :include_fossil => false)
+                              :taxonomic_history => CatalogFormatter.format_taxonomic_history_with_statistics(taxon, :include_invalid => false),
+                              :fossil? => taxon.fossil
     when Subspecies
       return unless taxon.species && taxon.species.genus && taxon.species.genus.tribe && taxon.species.genus.tribe.subfamily
       convert_to_antweb_array :subfamily => taxon.species.genus.subfamily.name,
@@ -47,7 +49,8 @@ class Antweb::Exporter
                               :genus => taxon.species.genus.name,
                               :species => "#{taxon.species.name} #{taxon.name}",
                               :valid? => !taxon.invalid?, :available? => !taxon.invalid?,
-                              :taxonomic_history => CatalogFormatter.format_taxonomic_history_with_statistics(taxon, :include_invalid => false, :include_fossil => false)
+                              :taxonomic_history => CatalogFormatter.format_taxonomic_history_with_statistics(taxon, :include_invalid => false),
+                              :fossil? => taxon.fossil
     else nil
     end
   end
@@ -63,7 +66,7 @@ class Antweb::Exporter
   end
 
   def convert_to_antweb_array values
-    [values[:subfamily], values[:tribe], values[:genus], values[:species], nil, nil, boolean_to_antweb(values[:valid?]), boolean_to_antweb(values[:available?]), values[:current_valid_name], nil, values[:taxonomic_history]]
+    [values[:subfamily], values[:tribe], values[:genus], values[:species], nil, nil, boolean_to_antweb(values[:valid?]), boolean_to_antweb(values[:available?]), values[:current_valid_name], nil, values[:taxonomic_history], boolean_to_antweb(values[:fossil?])]
   end
 
 end
