@@ -28,8 +28,8 @@ $(window).resize(function() {
 });
 
 function spaceOutImages() {
-  var totalImageWidth = 379 + 154;
-  var imageCount = 6;
+  var totalImageWidth = 379 + 154 + 124;
+  var imageCount = 7;
   var availableWidth = $('#site_footer .images').width();
   var marginInBetween = (availableWidth - totalImageWidth) / (imageCount - 1);
   $("#site_footer .spacer").width(marginInBetween);
