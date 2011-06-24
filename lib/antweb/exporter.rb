@@ -4,7 +4,7 @@ class Antweb::Exporter
   end
 
   def export directory
-    File.open("#{directory}/extant.xls", 'w') do |file|
+    File.open("#{directory}/bolton.xls", 'w') do |file|
       file.puts "subfamily\ttribe\tgenus\tspecies\tspecies author date\tcountry\tvalid\tavailable\tcurrent valid name\toriginal combination\ttaxonomic history\tfossil"
       Taxon.all.each do |taxon|
         row = export_taxon taxon
