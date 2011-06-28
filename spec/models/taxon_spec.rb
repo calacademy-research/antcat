@@ -109,7 +109,8 @@ describe Taxon do
   describe "Find name" do
     before do
       Factory :genus, :name => 'Monomorium'
-      Factory :genus, :name => 'Monoceros'
+      @monoceros = Factory :genus, :name => 'Monoceros'
+      @rufa = Factory :species, :name => 'rufa', :genus => @monoceros
     end
 
     it "should return [] if nothing matches" do
@@ -150,6 +151,18 @@ describe Taxon do
       Factory :subfamily, :name => 'Lepte'
       results = Taxon.find_name 'Lept', 'beginning with'
       results.map(&:name).should == ['Lepta', 'Lepte', 'Lepti']
+    end
+
+    describe "Finding full species name" do
+      it "should search for full species name" do
+        results = Taxon.find_name 'Monoceros rufa'
+        results.first.should == @rufa
+      end
+
+      it "should search for partial species name" do
+        results = Taxon.find_name 'Monoceros ruf', 'beginning with'
+        results.first.should == @rufa
+      end
     end
 
   end
