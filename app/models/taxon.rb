@@ -39,16 +39,23 @@ class Taxon < ActiveRecord::Base
   end
 
   def self.find_name name, search_type = 'matching'
+    query = ordered_by_name
+    names = name.split ' '
+    if names.size > 1
+      query = query.joins 'JOIN taxa genera ON genera.id = taxa.genus_id'
+      query = query.where ['genera.name = ?', names.first]
+      name = names.second
+    end
     types_sought = ['Subfamily', 'Tribe', 'Genus', 'Species']
     case search_type
     when 'matching'
-      conditions = ['name = ? AND type IN (?)', name, types_sought]
+      query = query.where ['taxa.name = ? AND taxa.type IN (?)', name, types_sought]
     when 'beginning with'
-      conditions = ['name LIKE ? AND type IN (?)', name + '%', types_sought]
+      query = query.where ['taxa.name LIKE ? AND taxa.type IN (?)', name + '%', types_sought]
     when 'containing'
-      conditions = ['name LIKE ? AND type IN (?)', '%' + name + '%', types_sought]
+      query = query.where ['taxa.name LIKE ? AND taxa.type IN (?)', '%' + name + '%', types_sought]
     end
-    Taxon.ordered_by_name.all :conditions => conditions
+    query.all
   end
 
   def self.statistics
