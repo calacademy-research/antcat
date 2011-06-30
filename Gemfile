@@ -12,7 +12,7 @@ gem 'levenshtein'
 gem 'lll'
 gem 'mysql2'
 gem 'nokogiri'
-gem 'rack',             '1.2.1'
+gem 'rack'
 gem 'rails'
 gem 'rake',             '~> 0.8.7'
 gem 'sass'
@@ -23,7 +23,7 @@ gem 'paper_trail'
 gem 'will_paginate',    '~> 3.0.pre2'
 gem 'xml-simple'
 
-group :developement do
+group :development do
   gem 'wirble'
 end
 
