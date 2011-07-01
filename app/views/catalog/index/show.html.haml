@@ -7,16 +7,14 @@
 #catalog
   .content
     #taxon_header
-      - if @taxon.kind_of? Taxon
-        %span.taxon_header
-          = raw @taxon_header_name
-        %span.taxon_status
-          = status_labels[@taxon.status][:singular] if @taxon.invalid?
-        .statistics
-          = taxon_statistics @taxon
-        - if @taxonomic_history
-          .taxonomic_history
-            = raw @taxonomic_history
+      %span.taxon_header
+        = raw @taxon_header_name
+      %span.taxon_status
+        = status_labels[@taxon.status][:singular] if @taxon.kind_of?(Taxon) && @taxon.invalid?
+      .statistics
+        = raw format_statistics @taxon_statistics
+      .taxonomic_history
+        = raw @taxonomic_history
     %hr
 
   .index
