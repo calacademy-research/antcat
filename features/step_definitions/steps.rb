@@ -304,9 +304,9 @@ Given /a genus exists with a name of "(.*?)" and no subfamily(?: and a taxonomic
   genus = Factory :genus, :name => taxon_name, :subfamily => nil, :tribe => nil, :taxonomic_history => taxonomic_history
 end
 
-Given /a genus exists with a name of "(.*?)" and a tribe of "(.*?)"(?: and a taxonomic history of "(.*?)")?/ do |taxon_name, parent_name, taxonomic_history|
+Given /a (fossil )?genus exists with a name of "(.*?)" and a tribe of "(.*?)"(?: and a taxonomic history of "(.*?)")?/ do |fossil, taxon_name, parent_name, taxonomic_history|
   tribe = Tribe.find_by_name(parent_name)
-  Factory :genus, :name => taxon_name, :subfamily => tribe.subfamily, :tribe => tribe, :taxonomic_history => taxonomic_history
+  Factory :genus, :name => taxon_name, :subfamily => tribe.subfamily, :tribe => tribe, :taxonomic_history => taxonomic_history, :fossil => fossil
 end
 
 Given /a genus that was replaced by "(.*?)" exists with a name of "(.*?)" with a taxonomic history of "(.*?)"/ do |replacement, name, taxonomic_history|

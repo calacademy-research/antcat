@@ -30,6 +30,23 @@ describe CatalogFormatter do
       @formatter.format_statistics(nil).should be_nil
     end
 
+    it "should handle both extant and fossil statistics" do
+      statistics = {
+        :extant => {:subfamilies => {'valid' => 1}, :genera => {'valid' => 2, 'synonym' => 1, 'homonym' => 2}, :species => {'valid' => 1}},
+        :fossil => {:subfamilies => {'valid' => 2}},
+      }
+      @formatter.format_statistics(statistics).should == [
+        "Extant: 1 valid subfamily, 2 valid genera (1 synonym, 2 homonyms), 1 valid species",
+        "Fossil: 2 valid subfamilies",
+      ]
+    end
+    it "should handle just fossil statistics" do
+      statistics = {
+        :fossil => {:subfamilies => {'valid' => 2}},
+      }
+      @formatter.format_statistics(statistics).should == "Fossil: 2 valid subfamilies"
+    end
+
     it "should format the family's statistics correctly" do
       statistics = {:extant => {:subfamilies => {'valid' => 1}, :genera => {'valid' => 2, 'synonym' => 1, 'homonym' => 2}, :species => {'valid' => 1}}}
       @formatter.format_statistics(statistics).should == "1 valid subfamily, 2 valid genera (1 synonym, 2 homonyms), 1 valid species"
