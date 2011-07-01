@@ -8,6 +8,7 @@ Feature: Using the catalog index
     Given a subfamily exists with a name of "Dolichoderinae" and a taxonomic history of "Dolichoderinae history"
     And a tribe exists with a name of "Dolichoderini" and a subfamily of "Dolichoderinae" and a taxonomic history of "Dolichoderini history"
     And a genus exists with a name of "Dolichoderus" and a tribe of "Dolichoderini" and a taxonomic history of "Dolichoderus history"
+    And a fossil genus exists with a name of "Brownerus" and a tribe of "Dolichoderini" and a taxonomic history of "Dolichoderus history"
     And a species exists with a name of "abruptus" and a genus of "Dolichoderus" and a taxonomic history of "abruptus history"
 
   Scenario: Before selecting anything
@@ -21,7 +22,8 @@ Feature: Using the catalog index
     Then "Dolichoderinae" should be selected
       And I should see "Dolichoderinae history"
       And I should see "Dolichoderini" in the index
-      #And I should see "2 valid genera (1 synonym)"
+      And I should see "Extant: 1 valid genus, 1 valid species"
+      And I should see "Fossil: 1 valid genus"
 
   Scenario: Selecting a tribe
     When I go to the catalog index

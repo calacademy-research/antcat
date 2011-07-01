@@ -223,4 +223,17 @@ describe Taxon do
     end
   end
 
+  describe "statistics (for the whole family)" do
+    it "should return the statistics for each status of each rank" do
+      subfamily = Factory :subfamily
+      genus = Factory :genus, :subfamily => subfamily, :tribe => nil
+      Factory :genus, :subfamily => subfamily, :status => 'homonym', :tribe => nil
+      2.times {Factory :subfamily, :fossil => true}
+      Taxon.statistics.should == {
+        :extant => {:subfamilies => {'valid' => 1}, :genera => {'valid' => 1, 'homonym' => 1}},
+        :fossil => {:subfamilies => {'valid' => 2}}
+      }
+    end
+
+  end
 end

@@ -49,38 +49,40 @@ describe Genus do
 
     it "should handle 0 children" do
       genus = Factory :genus
-      genus.statistics.should == {:species => {}, :subspecies => {}}
+      genus.statistics.should == {}
     end
 
     it "should handle 1 valid species" do
       genus = Factory :genus
       species = Factory :species, :genus => genus
-      genus.statistics.should == {:species => {'valid' => 1}, :subspecies => {}}
+      genus.statistics.should == {:extant => {:species => {'valid' => 1}}}
     end
 
     it "should handle 1 valid species and 2 synonyms" do
       genus = Factory :genus
       Factory :species, :genus => genus
       2.times {Factory :species, :genus => genus, :status => 'synonym'}
-      genus.statistics.should == {:species => {'valid' => 1, 'synonym' => 2}, :subspecies => {}}
+      genus.statistics.should == {:extant => {:species => {'valid' => 1, 'synonym' => 2}}}
     end
 
     it "should handle 1 valid species with 2 valid subspecies" do
       genus = Factory :genus
       species = Factory :species, :genus => genus
       2.times {Factory :subspecies, :species => species}
-      genus.statistics.should == {:species => {'valid' => 1}, :subspecies => {'valid' => 2}}
+      genus.statistics.should == {:extant => {:species => {'valid' => 1}, :subspecies => {'valid' => 2}}}
     end
 
-    it "should be able to exclude extinct species and subspecies" do
+    it "should be able to differentiate extinct species and subspecies" do
       genus = Factory :genus
       species = Factory :species, :genus => genus
       fossil_species = Factory :species, :genus => genus, :fossil => true
       Factory :subspecies, :species => species, :fossil => true
       Factory :subspecies, :species => species
       Factory :subspecies, :species => fossil_species, :fossil => true
-      genus.statistics(false).should == {:species => {'valid' => 1}, :subspecies => {'valid' => 1}}
-      genus.statistics.should == {:species => {'valid' => 2}, :subspecies => {'valid' => 3}}
+      genus.statistics.should == {
+        :extant => {:species => {'valid' => 1}, :subspecies => {'valid' => 1}},
+        :fossil => {:species => {'valid' => 1}, :subspecies => {'valid' => 2}},
+      }
     end
 
   end
