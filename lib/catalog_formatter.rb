@@ -46,7 +46,7 @@ class CatalogFormatter
   def self.format_statistics statistics, include_invalid_taxa = true
     return unless statistics
     [:subfamilies, :genera, :species, :subspecies].inject([]) do |rank_strings, rank|
-      string = format_rank_statistics(statistics, rank, include_invalid_taxa)
+      string = format_rank_statistics(statistics[:extant], rank, include_invalid_taxa)
       rank_strings << string if string.present?
       rank_strings
     end.join ', '
