@@ -8,8 +8,8 @@ describe CatalogFormatter do
   describe 'Taxon statistics' do
     it "should get the statistics, then format them" do
       subfamily = mock
-      subfamily.should_receive(:statistics).and_return :foo
-      @formatter.should_receive(:format_statistics).with(:foo, true)
+      subfamily.should_receive(:statistics).and_return :extant => :foo
+      @formatter.should_receive(:format_statistics).with({:extant => :foo}, true)
       @formatter.taxon_statistics(subfamily)
     end
     it "should just return nil if there are no statistics" do
@@ -20,74 +20,54 @@ describe CatalogFormatter do
     end
     it "should not leave a comma at the end if only showing valid taxa" do
       genus = Factory :genus, :taxonomic_history => 'foo'
-      2.times {Factory :species, :genus => genus}
+      genus.should_receive(:statistics).and_return :extant => {:species => {'valid' => 2}}
       @formatter.taxon_statistics(genus, false, false).should == "2 species"
     end
   end
 
   describe 'Formatting statistics' do
+    it "handle nil" do
+      @formatter.format_statistics(nil).should be_nil
+    end
+
+    it "should format the family's statistics correctly" do
+      statistics = {:extant => {:subfamilies => {'valid' => 1}, :genera => {'valid' => 2, 'synonym' => 1, 'homonym' => 2}, :species => {'valid' => 1}}}
+      @formatter.format_statistics(statistics).should == "1 valid subfamily, 2 valid genera (1 synonym, 2 homonyms), 1 valid species"
+    end
 
     it "should format a subfamily's statistics correctly" do
-      subfamily = Factory :subfamily
-      Factory :genus, :subfamily => subfamily
-      Factory :genus, :subfamily => subfamily
-      genus = Factory :genus, :subfamily => subfamily, :status => 'synonym'
-      2.times {Factory :genus, :subfamily => subfamily, :status => 'homonym'}
-      Factory :species, :genus => genus
-      @formatter.taxon_statistics(subfamily).should == "2 valid genera (1 synonym, 2 homonyms), 1 valid species"
+      statistics = {:extant => {:genera => {'valid' => 2, 'synonym' => 1, 'homonym' => 2}, :species => {'valid' => 1}}}
+      @formatter.format_statistics(statistics).should == "2 valid genera (1 synonym, 2 homonyms), 1 valid species"
     end
 
     it "should use the singular for genus" do
-      subfamily = Factory :subfamily
-      Factory :genus, :subfamily => subfamily
-      @formatter.taxon_statistics(subfamily).should == "1 valid genus"
+      @formatter.format_statistics(:extant => {:genera => {'valid' => 1}}).should == "1 valid genus"
     end
 
     it "should format a genus's statistics correctly" do
-      genus = Factory :genus
-      Factory :species, :genus => genus
-      @formatter.taxon_statistics(genus).should == "1 valid species"
+      @formatter.format_statistics(:extant => {:species => {'valid' => 1}}).should == "1 valid species"
     end
 
     it "should format a species's statistics correctly" do
-      species = Factory :species
-      Factory :subspecies, :species => species
-      @formatter.taxon_statistics(species).should == "1 valid subspecies"
-    end
-
-    it "should format a species's statistics correctly" do
-      subspecies = Factory :subspecies
-      Factory :subspecies
-      @formatter.taxon_statistics(subspecies).should be_nil
+      @formatter.format_statistics(:extant => {:subspecies => {'valid' => 1}}).should == "1 valid subspecies"
     end
 
     it "should handle when there are no valid rank members" do
       species = Factory :species
       Factory :subspecies, :species => species, :status => 'synonym'
-      @formatter.taxon_statistics(species).should == "(1 synonym)"
+      @formatter.format_statistics(:extant => {:subspecies => {'synonym' => 1}}).should == "(1 synonym)"
     end
 
     it "should not pluralize certain statuses" do
-      genus = Factory :genus
-      2.times {Factory :species, :genus => genus, :status => 'valid'}
-      2.times {Factory :species, :genus => genus, :status => 'synonym'}
-      2.times {Factory :species, :genus => genus, :status => 'homonym'}
-      2.times {Factory :species, :genus => genus, :status => 'unavailable'}
-      2.times {Factory :species, :genus => genus, :status => 'unidentifiable'}
-      2.times {Factory :species, :genus => genus, :status => 'excluded'}
-      2.times {Factory :species, :genus => genus, :status => 'unresolved homonym'}
-      2.times {Factory :species, :genus => genus, :status => 'nomen nudum'}
-      @formatter.taxon_statistics(genus).should == "2 valid species (2 synonyms, 2 homonyms, 2 unavailable, 2 unidentifiable, 2 excluded, 2 unresolved homonyms, 2 nomina nuda)"
+      @formatter.format_statistics(:extant => {:species => {'valid' => 2, 'synonym' => 2, 'homonym' => 2, 'unavailable' => 2, 'unidentifiable' => 2, 'excluded' => 2, 'unresolved homonym' => 2, 'nomen nudum' => 2}}).should == "2 valid species (2 synonyms, 2 homonyms, 2 unavailable, 2 unidentifiable, 2 excluded, 2 unresolved homonyms, 2 nomina nuda)"
     end
 
     it "should leave out invalid status if desired" do
-      taxon = Factory :subfamily
-      taxon.should_receive(:statistics).and_return(:genera => {'valid' => 1, 'homonym' => 2}, :species => {'valid' => 2}, :subspecies => {'valid' => 3})
-      @formatter.taxon_statistics(taxon, false).should == "1 genus, 2 species, 3 subspecies"
+      @formatter.format_statistics({:extant => {:genera => {'valid' => 1, 'homonym' => 2}, :species => {'valid' => 2}, :subspecies => {'valid' => 3}}}, false).should == "1 genus, 2 species, 3 subspecies"
     end
 
     it "should not leave a trailing comma" do
-      @formatter.format_statistics({:species => {'valid' => 2}}, false).should == "2 species"
+      @formatter.format_statistics({:extant => {:species => {'valid' => 2}}}, false).should == "2 species"
     end
 
   end
@@ -115,12 +95,12 @@ describe CatalogFormatter do
     describe "Formatting taxonomic history with statistics" do
       it "should handle a simple case" do
         taxon = Factory :subfamily, :taxonomic_history => '<p>Taxonomic history</p>'
-        taxon.should_receive(:statistics).and_return(:genera => {'valid' => 1, 'homonym' => 2}, :species => {'valid' => 2}, :subspecies => {'valid' => 3})
+        taxon.should_receive(:statistics).and_return(:extant => {:genera => {'valid' => 1, 'homonym' => 2}, :species => {'valid' => 2}, :subspecies => {'valid' => 3}})
         @formatter.format_taxonomic_history_with_statistics(taxon).should == '<p class="taxon_statistics">1 genus, 2 species, 3 subspecies</p><p>Taxonomic history</p>'
       end
       it "should handle an even simpler case" do
         taxon = Factory :subfamily, :taxonomic_history => '<p>Taxonomic history</p>'
-        taxon.should_receive(:statistics).and_return(:genera => {'valid' => 1}, :species => {'valid' => 0}, :subspecies => {'valid' => 3})
+        taxon.should_receive(:statistics).and_return(:extant => {:genera => {'valid' => 1}, :species => {'valid' => 0}, :subspecies => {'valid' => 3}})
         @formatter.format_taxonomic_history_with_statistics(taxon).should == '<p class="taxon_statistics">1 genus, 0 species, 3 subspecies</p><p>Taxonomic history</p>'
       end
       it "should just return the taxonomic history alone for a subspecies" do
