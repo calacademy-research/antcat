@@ -16,8 +16,8 @@ class Species < Taxon
     "<i>#{genus.name} #{name}</i>"
   end
 
-  def statistics include_fossil = true
-    {:subspecies => include_fossil ? subspecies.count(:group => :status) : subspecies.extant.count(:group => :status)}
+  def statistics
+    get_statistics [:subspecies]
   end
 
   def siblings

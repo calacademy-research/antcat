@@ -32,4 +32,11 @@ describe Tribe do
     end
 
   end
+
+  describe "Statistics" do
+    it "should have none" do
+      Factory(:tribe).statistics.should be_nil
+    end
+  end
+
 end

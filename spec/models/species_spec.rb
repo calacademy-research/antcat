@@ -48,29 +48,30 @@ describe Species do
   describe "Statistics" do
 
     it "should handle 0 children" do
-      species = Factory :species
-      species.statistics.should == {:subspecies => {}}
+      Factory(:species).statistics.should == {}
     end
 
     it "should handle 1 valid subspecies" do
       species = Factory :species
       subspecies = Factory :subspecies, :species => species
-      species.statistics.should == {:subspecies => {'valid' => 1}}
+      species.statistics.should == {:extant => {:subspecies => {'valid' => 1}}}
     end
 
-    it "should be able to exclude fossil subspecies" do
+    it "should differentiate between extant and fossil subspecies" do
       species = Factory :species
       subspecies = Factory :subspecies, :species => species
       Factory :subspecies, :species => species, :fossil => true
-      species.statistics.should == {:subspecies => {'valid' => 2}}
-      species.statistics(false).should == {:subspecies => {'valid' => 1}}
+      species.statistics.should == {
+        :extant => {:subspecies => {'valid' => 1}},
+        :fossil => {:subspecies => {'valid' => 1}},
+      }
     end
 
     it "should handle 1 valid subspecies and 2 synonyms" do
       species = Factory :species
       Factory :subspecies, :species => species
       2.times {Factory :subspecies, :species => species, :status => 'synonym'}
-      species.statistics.should == {:subspecies => {'valid' => 1, 'synonym' => 2}}
+      species.statistics.should == {:extant => {:subspecies => {'valid' => 1, 'synonym' => 2}}}
     end
 
   end

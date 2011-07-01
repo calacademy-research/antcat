@@ -105,6 +105,10 @@ describe CatalogHelper do
       CatalogFormatter.should_receive :status_labels
       helper.status_labels
     end
+    it "format statistics" do
+      CatalogFormatter.should_receive(:format_statistics).with(1, :include_invalid => true)
+      helper.format_statistics 1, true
+    end
   end
 
 end

@@ -306,7 +306,7 @@ end
 
 Given /a (fossil )?genus exists with a name of "(.*?)" and a tribe of "(.*?)"(?: and a taxonomic history of "(.*?)")?/ do |fossil, taxon_name, parent_name, taxonomic_history|
   tribe = Tribe.find_by_name(parent_name)
-  Factory :genus, :name => taxon_name, :subfamily => tribe.subfamily, :tribe => tribe, :taxonomic_history => taxonomic_history, :fossil => fossil
+  Factory :genus, :name => taxon_name, :subfamily => tribe.subfamily, :tribe => tribe, :taxonomic_history => taxonomic_history, :fossil => fossil.present?
 end
 
 Given /a genus that was replaced by "(.*?)" exists with a name of "(.*?)" with a taxonomic history of "(.*?)"/ do |replacement, name, taxonomic_history|

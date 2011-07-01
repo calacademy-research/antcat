@@ -10,4 +10,10 @@ describe Subgenus do
     colobopsis.reload.genus.name.should == 'Camponotus'
   end
 
+  describe "Statistics" do
+    it "should have none" do
+      Factory(:subgenus).statistics.should be_nil
+    end
+  end
+
 end

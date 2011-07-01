@@ -24,12 +24,12 @@ module CatalogHelper
     link_to "show #{name}", index_catalog_path(selected, url_parameters.merge(hide_child_param => nil))
   end
 
-  def taxon_statistics taxon
-    CatalogFormatter.taxon_statistics taxon
-  end
-
   def status_labels
     CatalogFormatter.status_labels
+  end
+
+  def format_statistics statistics, include_invalid = true
+    CatalogFormatter.format_statistics statistics, :include_invalid => include_invalid
   end
 
   def snake_taxon_columns items
