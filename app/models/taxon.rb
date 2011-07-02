@@ -90,12 +90,4 @@ class Taxon < ActiveRecord::Base
     end
   end
 
-  def self.statistics
-    {:subfamilies => Subfamily.count(:group => :status),
-     :genera => Genus.count(:group => :status),
-     :species => Species.count(:group => :status),
-     :subspecies => Subspecies.count(:group => :status),
-    }
-  end
-
 end
