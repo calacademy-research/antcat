@@ -9,22 +9,6 @@
 
 #  To import these files, run
 #    rake bolton:import:subfamilies
-#  This generates info/bolton_subfamily_catalog.info
-#
-# Manual edits:
-#   03. FORMICOMORPHS     Made Johnia bold
-#   03. FORMICOMORPHS     Made Pseudocamponotus bold and removed bold in taxonomic history. Made 'Pseudocamponotus' in line in taxonomic
-#                         history nonbold
-#   03. FORMICOMORPHS     Made WILSONIA brown at the end of the document, as it is indeed a homonym of a bird genus
-#   04. MYRMECIOMORPHS    Remove 'Genus' from 'Genus MYRMECIITES'
-#   06. ECTAHETEROMORPHS  Removed italics from Stictoponerini
-#   07. MYRMICOMORPHS 1   Corrected 'Adelomymex' to 'Adelomyrmex'
-#   07. MYRMICOMORPHS 1   Corrected 'origional' to 'original' (new)
-#   07. MYRMICOMORPHS 1   Added Formosimyrma to Solenopsidini genera list
-#   07. MYRMICOMORPHS 1   Corrected 'Quinqueangulicapito' to 'Quineangulicapito'
-#   08. MYRMICOMORPHS 2   Removed italics from 'PHEIDOLINI' in junior synonyms header
-#   09. PONEROMORPHS      Added Probolomyrmex to Probolomyrmecini genus list
-#   11. EXTINCT SUBFAMS   Removed italics from Sphecomyrminae family_group_line
 
 require 'bolton/catalog/subfamily/family_importer'
 require 'bolton/catalog/subfamily/genus_importer'
