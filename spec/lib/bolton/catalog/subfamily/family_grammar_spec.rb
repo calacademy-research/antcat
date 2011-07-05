@@ -47,10 +47,10 @@ describe Bolton::Catalog::Subfamily::Importer do
     }).should == {:type => :extinct_genera_excluded_from_family_list, :genera => ['Cariridris', 'Cretacoformica']}
   end
 
-  it "should recognize the genus group nomina nuda in family list" do
+  it "should recognize the genus group nomina nuda in family list, even if one of them is a fossil" do
     @importer.parse(%{
-<b><span lang=EN-GB>Genus-group <i>nomina nuda</i> in Formicidae</span></b><span lang=EN-GB>: <i><span style='color:purple'>Ancylognathus, Hypopheidole</span></i>.</span>
-    }).should == {:type => :genus_group_nomina_nuda_in_family_list, :genera => ['Ancylognathus', 'Hypopheidole']}
+<b><span lang=EN-GB>Genus-group <i>nomina nuda</i> in Formicidae</span></b><span lang=EN-GB>: <i><span style='color:purple'>Ancylognathus, *Hypopheidole</span></i>.</span>
+    }).should == {:type => :genus_group_nomina_nuda_in_family_list, :genera => [{:name => 'Ancylognathus'}, {:name => 'Hypopheidole', :fossil => true}]}
   end
 
   it "should recognize the genera incertae sedis in family header" do
