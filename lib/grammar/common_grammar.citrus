@@ -48,7 +48,7 @@ grammar CommonGrammar
   end
 
   rule brown
-    start_color_span_start '#663300' start_color_span_end
+    start_color_span_start ('#663300'|'#984806') start_color_span_end
   end
 
   rule start_color_span_start
