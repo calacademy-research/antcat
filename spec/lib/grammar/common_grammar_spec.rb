@@ -139,6 +139,14 @@ describe CommonGrammar do
       end
     end
 
+    describe "brown" do
+      it "should recognize brown" do
+        CommonGrammar.parse(%{<span style="color:#663300">}, :root => :brown).should_not be_nil
+      end
+      it "should recognize brown" do
+        CommonGrammar.parse(%{<span style="color:#984806">}, :root => :brown).should_not be_nil
+      end
+    end
   end
 
   describe "Species name" do
