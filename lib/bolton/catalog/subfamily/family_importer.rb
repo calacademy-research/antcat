@@ -110,6 +110,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
   end
 
   def parse_genus_group_nomina_nuda_in_family
+    Progress.info 'parse_genus_group_nomina_nuda_in_family'
     expect :genus_group_nomina_nuda_in_family_header
     parse_next_line
     expect :genus_header
