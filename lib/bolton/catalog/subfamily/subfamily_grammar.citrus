@@ -53,7 +53,7 @@ grammar Bolton::Catalog::Subfamily::SubfamilyGrammar
   end
 
   rule collective_group_name_list
-    (bold span 'Collective group name in ' capitalized_word close_tags ':' list_names) {
+    (bold span 'Collective group name in ' fossil_flag? capitalized_word close_tags ':' list_names) {
       {:type => :collective_group_name_list, :names => list_names.value}
     } 
   end

@@ -83,7 +83,9 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
   def parse_genus_group_nomina_nuda_in_family_list
     expect :genus_group_nomina_nuda_in_family_list
     @parse_result[:genera].each do |genus|
-      Genus.create! :name => genus, :status => 'nomen nudum'
+      attributes = {:name => genus[:name], :status => 'nomen nudum'}
+      attributes[:fossil] = true if genus[:fossil]
+      Genus.create! attributes
     end
     parse_next_line
   end

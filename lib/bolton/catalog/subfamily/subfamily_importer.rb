@@ -22,7 +22,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
 
     taxonomic_history << parse_tribes_lists(subfamily)
     taxonomic_history << parse_genera_lists(:subfamily, :subfamily => subfamily)
-    taxonomic_history << parse_collective_group_names_list(subfamily)
+    taxonomic_history << parse_collective_group_names_list
     taxonomic_history << skip(:other)
 
     subfamily.update_attributes :taxonomic_history => clean_taxonomic_history(taxonomic_history), :fossil => fossil
@@ -35,7 +35,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     true
   end
 
-  def parse_collective_group_names_list subfamily
+  def parse_collective_group_names_list
     return '' unless @type == :collective_group_name_list
     Progress.info 'parse_collective_group_names'
 

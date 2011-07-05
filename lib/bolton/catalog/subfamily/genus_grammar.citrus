@@ -50,7 +50,7 @@ grammar Bolton::Catalog::Subfamily::GenusGrammar
 
   rule genus_line
     (
-      (bold italic span capitalized_word close_tags /.*/) |
+      (bold italic span fossil_flag? capitalized_word close_tags /.*/) |
       (span fossil_flag bold italic capitalized_word close_tags /.*/) |
       (span fossil_flag italic capitalized_word /.*Type-species:.*/) |
       (span fossil_flag italic capitalized_word close_tags /.*\[Collective group name\.\].*/) |
@@ -62,8 +62,6 @@ grammar Bolton::Catalog::Subfamily::GenusGrammar
       value
     }
   end
-
-#<p><i><span lang=EN-GB style='color:purple'>Bregmatomyrmex</span></i><span lang=EN-GB> [incorrect subsequent spelling] <i>incertae sedis</i> in Formicidae: Wheeler, G.C. &amp; Wheeler, J. 1985: 259.</span></p>
 
   rule genera_header
     (bold span ('Genera '|'Genus ') 'of ' red capitalized_word close_tags) {

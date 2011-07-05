@@ -67,7 +67,12 @@ grammar Bolton::Catalog::Subfamily::FamilyGrammar
 
   rule genus_group_nomina_nuda_in_family_list
     (bold span 'Genus-group ' italic 'nomina nuda' tag_end ' in Formicidae' close_tags ': ' italic purple text /.*/) {
-      {:type => :genus_group_nomina_nuda_in_family_list, :genera => text.split(', ')}
+      {:type => :genus_group_nomina_nuda_in_family_list, :genera => text.split(', ').map do |e|
+        fossil = e.index '*'
+        value = {:name => e.gsub(/\*/, '')}
+        value[:fossil] = true if fossil
+        value
+      end}
     } 
   end
 
