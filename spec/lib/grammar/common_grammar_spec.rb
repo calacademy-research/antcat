@@ -130,6 +130,15 @@ describe CommonGrammar do
       lambda {CommonGrammar.parse(%{<span> <span style="color:}, :root => :start_color_span_start)}.should raise_error
     end
 
+    describe "purple" do
+      it "should recognize purple" do
+        CommonGrammar.parse(%{<span style="color:purple">}, :root => :purple).should_not be_nil
+      end
+      it "should recognize purple" do
+        CommonGrammar.parse(%{<span style="color:#6600CC">}, :root => :purple).should_not be_nil
+      end
+    end
+
   end
 
   describe "Species name" do

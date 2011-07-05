@@ -61,6 +61,12 @@ describe Bolton::Catalog::Subfamily::Importer do
       }).should == {:type => :genus_header, :name => 'Ancylognathus', :status => 'unavailable'}
     end
 
+    it "should handle this" do
+      @importer.parse(%{
+<span lang="EN-GB">*<i><span style="color:#6600CC">DOLICHOFORMICA</span></i> [<i>nomen nudum</i>]</span>
+      }).should == {:type => :genus_header, :name => 'Dolichoformica', :status => 'unavailable', :fossil => true}
+    end
+
     it "should handle it when the span is before the bold and there's a subfamily at the end" do
       @importer.parse(%{
   <span lang=EN-GB>Genus *<b style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span style='color:red'>YPRESIOMYRMA</span></i></b> [Myrmeciinae]</span>
