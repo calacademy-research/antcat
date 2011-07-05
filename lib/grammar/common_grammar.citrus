@@ -36,7 +36,7 @@ grammar CommonGrammar
   end
 
   rule purple
-    start_color_span_start ('purple'|'#7030A0') start_color_span_end
+    start_color_span_start ('purple'|'#7030A0'|'#6600CC') start_color_span_end
   end
 
   rule blue
