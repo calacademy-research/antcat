@@ -38,8 +38,13 @@ grammar Bolton::Catalog::Subfamily::GenusGrammar
   end
 
   rule unavailable_genus_header
-    (italic purple uppercase_word /.*/) {
-      {:type => :genus_header, :name => uppercase_word.downcase.capitalize.strip, :status => 'unavailable'}
+    (
+      (italic purple uppercase_word /.*/) |
+      (span fossil_flag italic purple uppercase_word /.*/)
+    ) {
+      value = {:type => :genus_header, :name => uppercase_word.downcase.capitalize.strip, :status => 'unavailable'}
+      value[:fossil] = true if fossil_flag
+      value
     }
   end
 
