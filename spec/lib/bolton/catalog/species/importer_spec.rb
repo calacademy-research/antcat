@@ -18,8 +18,7 @@ describe Bolton::Catalog::Species::Importer do
 
     it 'should complain bitterly if file is obviously not a species catalog' do
      contents = %{<html><body> <div><p>Foo</p></div> </body></html>}
-     Progress.should_receive(:error).with("parse failed on: 'Foo'")
-     @importer.import_html contents
+     lambda {@importer.import_html contents}.should raise_error Citrus::ParseError
     end
 
     it 'should clear out species and subspecies' do
