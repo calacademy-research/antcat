@@ -20,11 +20,11 @@ grammar Bolton::Catalog::Species::GenusGrammar
   end
 
   rule see_under_referent
-    ':'? ' see under ' fossil_flag? bold genus_name tag_end
+    ':'? close_tags?  'see under ' fossil_flag? bold genus_name tag_end
   end
 
   rule genus_name
-    (italic black uppercase_word tag_end tag_end) | (italic uppercase_word s tag_end)
+    (italic black uppercase_word tag_end tag_end?) | (italic uppercase_word s tag_end?)
   end
 
   rule subgenus_name
