@@ -7,7 +7,6 @@
 
 #  To import these files, run
 #    rake bolton:import:species
-#  This generates log/bolton_species_catalog.log
 #
 #  Manual edits:
 #   NGC-Spap-ca, made Aphaenogaster simonellii red and bold

@@ -20,6 +20,7 @@ class Bolton::Catalog::Importer
   def parse string
     begin
       string = string.gsub(/\n/, ' ').strip
+      Progress.info "input: #{string}"
       parse_result = grammar.parse(string).value
       Progress.info "parsed as: #{parse_result.inspect}"
       raise if parse_result.is_a?(Hash) && parse_result[:type] == :not_understood && !Rails.env.test?
