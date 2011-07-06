@@ -9,12 +9,6 @@
 #    rake bolton:import:species
 #
 #  Manual edits:
-#   NGC-Spap-ca, made Aphaenogaster simonellii red and bold
-#   NGC-Spcam1, change #afer to be subspecies of ligniperda
-#   NGC-Spcam2, change convexinodus to convexinodis (new)
-#   NGC-Spcam2, change bendingensis to bendigensis (new)
-#   NGC-Spcan-cr, removed extra paragraph in Cephalotes texanus
-#   NGC-Spg-las, removed extra paragraph in Lasius murphyi
 #   NGC-Spon-spp, italicize 'n' in 'niger' (Pachycondyla)
 
 class Bolton::Catalog::Species::Importer < Bolton::Catalog::Importer
