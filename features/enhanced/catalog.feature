@@ -18,7 +18,6 @@ Feature: Using the catalog
       And I follow "Dolichoderinae"
       And I follow "Dolichoderini"
       And I choose "Browser"
-      And show me the page
     Then the browser header should be "Subfamily DOLICHODERINAE"
 
   #Scenario: Keeping search results after going to the browser
