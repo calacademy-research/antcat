@@ -142,7 +142,7 @@ describe Bolton::Catalog::Species::Importer do
       Progress.should_receive(:error).with "Subspecies Anonychomyrma chiarinii nigra was seen but not its species"
       @importer.import_html make_contents %{
 <p><b><i><span style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
-<p>#<b><i><span style='color:blue'>nigra</span></i></b><i>. Anonychomyrma chiarinii</i> var. <i>v-nigrum</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146.</p>
+<p><b><i><span style='color:blue'>nigra</span></i></b><i>. Anonychomyrma chiarinii</i> var. <i>v-nigrum</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146.</p>
       }
     end
 
@@ -152,7 +152,7 @@ describe Bolton::Catalog::Species::Importer do
       @importer.import_html make_contents %{
 <p><b><i><span style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
 <p><b><i><span style='color:red'>chiarinii</span></i></b><i>. Anyonychomyrma chiarinii</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146.</p>
-<p>#<b><i><span style='color:blue'>nigra</span></i></b><i>. Anyonychomyrma chiarinii</i> var. <i>v-nigrum</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146.</p>
+<p><b><i><span style='color:blue'>nigra</span></i></b><i>. Anyonychomyrma chiarinii</i> var. <i>v-nigrum</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146.</p>
       }
     end
 
@@ -162,7 +162,7 @@ describe Bolton::Catalog::Species::Importer do
       @importer.import_html make_contents %{
 <p><b><i><span style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
 <p><b><i><span style='color:red'>chiarinii</span></i></b><i>. Anyonychomyrma chiarinii</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146. Current subspecies: nominal plus <i style='mso-bidi-font-style:normal'><span style='color:blue'></span></i>.</p>
-<p>#<b><i><span style='color:blue'>nigra</span></i></b><i>. Anyonychomyrma chiarinii</i> var. <i>v-nigrum</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146.</p>
+<p><b><i><span style='color:blue'>nigra</span></i></b><i>. Anyonychomyrma chiarinii</i> var. <i>v-nigrum</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146.</p>
       }
       Genus.find_by_name('Anonychomyrma').species.find_by_name('chiarinii').subspecies.find_by_name('nigra').should_not be_nil
     end
@@ -172,7 +172,7 @@ describe Bolton::Catalog::Species::Importer do
       @importer.import_html make_contents %{
 <p><b><i><span style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
 <p><b><i><span style='color:red'>chiarinii</span></i></b><i>. Anyonychomyrma chiarinii</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146. Current subspecies: nominal plus <i style='mso-bidi-font-style:normal'><span style='color:blue'>nigra</span></i>.</p>
-<p>#<b><i><span style='color:blue'>nigra</span></i></b><i>. Anyonychomyrma chiarinii</i> var. <i>v-nigrum</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146.</p>
+<p><b><i><span style='color:blue'>nigra</span></i></b><i>. Anyonychomyrma chiarinii</i> var. <i>v-nigrum</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146.</p>
       }
       nigra = Subspecies.find_by_name 'nigra'
       nigra.should_not be_nil
@@ -184,7 +184,7 @@ describe Bolton::Catalog::Species::Importer do
       Factory :genus, :name => 'Anonychomyrma'
       @importer.import_html make_contents %{
 <p><b><i><span style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
-<p>#<b><i><span style='color:blue'>nigra</span></i></b><i>. Anyonychomyrma chiarinii</i> var. <i>v-nigrum</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146.</p>
+<p><b><i><span style='color:blue'>nigra</span></i></b><i>. Anyonychomyrma chiarinii</i> var. <i>v-nigrum</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146.</p>
 <p><b><i><span style='color:red'>chiarinii</span></i></b><i>. Anyonychomyrma chiarinii</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146. Current subspecies: nominal plus <i style='mso-bidi-font-style:normal'><span style='color:blue'>nigra</span></i>.</p>
       }
       Subspecies.find_by_name('nigra').should_not be_nil
@@ -195,7 +195,7 @@ describe Bolton::Catalog::Species::Importer do
       Progress.should_receive(:error).with "Subspecies Anonychomyrma chiarinii nigra was seen and created even though it was not in its species's subspecies list"
       @importer.import_html make_contents %{
 <p><b><i><span style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
-<p>#<b><i><span style='color:blue'>nigra</span></i></b><i>. Anyonychomyrma chiarinii</i> var. <i>v-nigrum</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146.</p>
+<p><b><i><span style='color:blue'>nigra</span></i></b><i>. Anyonychomyrma chiarinii</i> var. <i>v-nigrum</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146.</p>
 <p><b><i><span style='color:red'>chiarinii</span></i></b><i>. Anyonychomyrma chiarinii</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146. Current subspecies: nominal plus <i style='mso-bidi-font-style:normal'><span style='color:blue'></span></i>.</p>
       }
     end
@@ -216,7 +216,7 @@ describe Bolton::Catalog::Species::Importer do
       Progress.should_receive(:error).with "Subspecies Anonychomyrma chiarinii fuhrmanii was in its species's subspecies list but was not seen"
       @importer.import_html make_contents %{
 <p><b><i><span style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
-<p>#<b><i><span style='color:blue'>nigra</span></i></b><i>. Anyonychomyrma chiarinii</i> var. <i>v-nigrum</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146.</p>
+<p><b><i><span style='color:blue'>nigra</span></i></b><i>. Anyonychomyrma chiarinii</i> var. <i>v-nigrum</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146.</p>
 <p><b><i><span style='color:red'>chiarinii</span></i></b><i>. Anyonychomyrma chiarinii</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146. Current subspecies: nominal plus <i style='mso-bidi-font-style:normal'><span style='color:blue'>fuhrmanii, boxi</span></i>.</p>
       }
     end
@@ -225,7 +225,7 @@ describe Bolton::Catalog::Species::Importer do
       Factory :genus, :name => 'Acromyrmex'
       @importer.import_html make_contents %{
 <p><b><i><span style='color:red'>ACROMYRMEX</span></i></b><span style='color:red'> </span>(Neotropical, southern Nearctic)</p>
-<p>#<b><i><span style='color:blue'>carli</span></i></b><i>. Acromyrmex lundi</i> subsp. <i>carli</i> Gonçalves, 1961: 152 (w.) MEXICO. [First available use of <i>Acromyrmex lundi</i> st. <i>pubescens</i> var. <i>carli </i>Santschi, 1925a: 385; unavailable name.]</p>
+<p><b><i><span style='color:blue'>carli</span></i></b><i>. Acromyrmex lundi</i> subsp. <i>carli</i> Gonçalves, 1961: 152 (w.) MEXICO. [First available use of <i>Acromyrmex lundi</i> st. <i>pubescens</i> var. <i>carli </i>Santschi, 1925a: 385; unavailable name.]</p>
 <p><b><i><span style='color:red'>lundii</span></i></b><i>. Myrmica lundii</i> Guérin-Méneville, 1838: 206 (q.m.) BRAZIL. Current subspecies: nominal plus <i><span style='color:blue'>carli</span></i>.</p>
       }
       carli = Subspecies.find_by_name 'carli'
@@ -241,8 +241,8 @@ describe Bolton::Catalog::Species::Importer do
       Factory :genus, :name => 'Acromyrmex'
       @importer.import_html make_contents %{
 <p><b><i><span style='color:red'>ACROMYRMEX</span></i></b><span style='color:red'> </span>(Neotropical, southern Nearctic)</p>
-<p>#<b><i><span style='color:blue'>carli</span></i></b><i>. Acromyrmex lundi</i> subsp. <i>carli</i> Gonçalves, 1961: 152 (w.) MEXICO. [First available use of <i>Acromyrmex lundi</i> st. <i>pubescens</i> var. <i>carli </i>Santschi, 1925a: 385; unavailable name.]</p>
-<p>#<b><i><span style='color:blue'>parallelus</span></i></b><i>. Acromyrmex lundi</i> subsp. <i>parallelus</i> Gonçalves, 1961: 152 (w.) MEXICO. [First available use of <i>Acromyrmex lundi</i> st. <i>pubescens</i> var. <i>carli </i>Santschi, 1925a: 385; unavailable name.]</p>
+<p><b><i><span style='color:blue'>carli</span></i></b><i>. Acromyrmex lundi</i> subsp. <i>carli</i> Gonçalves, 1961: 152 (w.) MEXICO. [First available use of <i>Acromyrmex lundi</i> st. <i>pubescens</i> var. <i>carli </i>Santschi, 1925a: 385; unavailable name.]</p>
+<p><b><i><span style='color:blue'>parallelus</span></i></b><i>. Acromyrmex lundi</i> subsp. <i>parallelus</i> Gonçalves, 1961: 152 (w.) MEXICO. [First available use of <i>Acromyrmex lundi</i> st. <i>pubescens</i> var. <i>carli </i>Santschi, 1925a: 385; unavailable name.]</p>
 <p><b><i><span style='color:red'>lundii</span></i></b><i>. Myrmica lundii</i> Guérin-Méneville, 1838: 206 (q.m.) BRAZIL. Current subspecies: nominal plus <i><span style='color:blue'>carli, parallelus</span></i>.</p>
       }
       Species.count.should == 2
@@ -262,7 +262,7 @@ describe Bolton::Catalog::Species::Importer do
 <p><b><i><span style='color:red'>VOLLENHOVIA</span></i></b> (Old World tropics and subtropics except Africa)</p>
 <p><b><i><span style='color:red'>brevicornis</span></i></b><i>. Monomorium brevicorne</i> Emery, 1893e: 203 (w.) INDONESIA (Sumatra).  Combination in <i>Vollenhovia</i>: Emery, 1914f: 406 (footnote). Current subspecies: nominal plus <i style='mso-bidi-font-style: normal'><span style='color:blue'>minuta</span></i>.</p>
 <p><i>brevicornis. Vollenhovia brevicornis</i> Emery, 1897d: 560 (w.) NEW GUINEA. [Junior secondary homonym of <i>brevicorne</i> Emery, above.] Replacement name: <i>brachycera</i> Emery, 1914f: 407 (footnote).</p>
-<p>#<b><i><span style='color:blue'>minuta</span></i></b><i>. Vollenhovia brevicornis</i> var. <i>minuta</i> Viehmeyer, 1916a: 129 (w.) WEST MALAYSIA.</p>
+<p><b><i><span style='color:blue'>minuta</span></i></b><i>. Vollenhovia brevicornis</i> var. <i>minuta</i> Viehmeyer, 1916a: 129 (w.) WEST MALAYSIA.</p>
       }
       brevicornises = Species.all :conditions => ['name = ?', 'brevicornis']
       brevicornises.count.should == 2
