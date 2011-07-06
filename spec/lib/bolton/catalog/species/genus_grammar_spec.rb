@@ -6,6 +6,9 @@ describe Bolton::Catalog::Species::Importer do
   end
 
   describe "parsing genus see-under heading" do
+    it "should handle when colon is italicized" do
+      @importer.parse("<i>ASKETOGENYS:</i> see under <b><i>PYRAMICA</i></b>.").should == {:type => :see_under}
+    end
     it "should recognize a simple see-under" do
       @importer.parse("<i>ACANTHOLEPIS</i>: see under <b><i>LEPISIOTA</i></b>.").should == {:type => :see_under}
     end
