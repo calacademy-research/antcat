@@ -13,14 +13,6 @@ grammar Bolton::Catalog::Grammar
     '*' | black '*' tag_end
   end
 
-  rule subgenus_flag
-    '#'
-  end
-
-  rule subspecies_flag
-    '#'
-  end
-
   rule region
     (s errant_red_space? /\(.+?\)?$/) |
     (span s parenthesized_phrase errant_paragraph tag_end)

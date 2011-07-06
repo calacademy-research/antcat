@@ -13,16 +13,16 @@ describe Bolton::Catalog::Species::Importer do
       @importer.parse("<i>ACROSTIGMA</i> Emery: see under <b><i>LEPISIOTA</i></b>.").should == {:type => :see_under}
     end
     it "should recognize a subgenus" do
-      @importer.parse("<i>#<span style='color:blue'>ACANTHOMYOPS</span></i>: see under <b><i>LASIUS</i></b>.").should == {:type => :see_under}
+      @importer.parse("<i><span style='color:blue'>ACANTHOMYOPS</span></i>: see under <b><i>LASIUS</i></b>.").should == {:type => :see_under}
     end
     it "should recognize an extinct genus" do
       @importer.parse("*<i>ACROSIYGMA</i>: see under <b><i>LASIUS</i></b>.").should == {:type => :see_under}
     end
     it "should recognize a subgenus" do
-      @importer.parse("<i>#<span style='color:blue'>ACANTHOMYOPS</span></i>: see under <b><i>LASIUS</i></b>.").should == {:type => :see_under}
+      @importer.parse("<i><span style='color:blue'>ACANTHOMYOPS</span></i>: see under <b><i>LASIUS</i></b>.").should == {:type => :see_under}
     end
     it "should recognize an extinct subgenus" do
-      @importer.parse("*<i>#<span style='color:blue'>ACANTHOMYOPS</span></i>: see under <b><i>LASIUS</i></b>.").should == {:type => :see_under}
+      @importer.parse("*<i><span style='color:blue'>ACANTHOMYOPS</span></i>: see under <b><i>LASIUS</i></b>.").should == {:type => :see_under}
     end
     it "should recognize an extinct referent" do
       @importer.parse("<i>ACANTHOMYOPS</i>: see under *<b><i>LASIUS</i></b>.").should == {:type => :see_under}
@@ -45,8 +45,8 @@ describe Bolton::Catalog::Species::Importer do
     it "should handle a year after the author" do
       @importer.parse("*<i>PALAEOMYRMEX</i> Dlussky, 1975: see under *<b><i>DLUSSKYIDRIS</i></b>").should == {:type => :see_under}
     end
-    it "should handle a subgenus where the # is outside the italics" do
-      @importer.parse(%{#<i><span style="color:blue">ALAOPONE</span></i>: see under <b><i>DORYLUS</i></b>.}).should == 
+    it "should handle a subgenus" do
+      @importer.parse(%{<i><span style="color:blue">ALAOPONE</span></i>: see under <b><i>DORYLUS</i></b>.}).should == 
         {:type => :see_under}
     end
     it "should not simply consider everything with 'see under' in it as a see-under" do
