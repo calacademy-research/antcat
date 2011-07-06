@@ -48,7 +48,6 @@ class Bolton::Catalog::Importer
 
   def import
     Progress.show_results
-    Progress.show_count @error_count, Progress.processed_count, 'parse failures'
   end
 
   def grammar
@@ -57,13 +56,6 @@ class Bolton::Catalog::Importer
 
   def parse_header
     return unless @type == :header
-    parse_next_line
-  end
-
-  def parse_failed
-    Progress.error "parse failed on: '#{@line}'"
-    raise unless Rails.env.test?
-    @error_count += 1
     parse_next_line
   end
 
