@@ -5,7 +5,7 @@ grammar Bolton::Catalog::Species::Grammar
   include Bolton::Catalog::Species::SubspeciesGrammar
 
   rule record
-    header | blank_line | genus_header | species | subspecies | note | not_understood
+    header | blank_line | genus_header | species | subspecies | note
   end
 
   rule note

@@ -50,7 +50,7 @@ describe Bolton::Catalog::Species::Importer do
         {:type => :see_under}
     end
     it "should not simply consider everything with 'see under' in it as a see-under" do
-      @importer.parse("*<b>PALAEOMYRMEX</b> Dlussky, 1975: see under").should == {:type => :not_understood}
+      lambda {@importer.parse("*<b>PALAEOMYRMEX</b> Dlussky, 1975: see under")}.should raise_error Citrus::ParseError
     end
     it "should handle a trailing comma" do
       @importer.parse("*<i>RHOPALOMYRMEX</i>: see under <b><i>PLAGIOLEPIS</i></b>,").should == {:type => :see_under}
