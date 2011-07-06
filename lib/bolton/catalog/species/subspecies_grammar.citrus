@@ -9,7 +9,7 @@ grammar Bolton::Catalog::Species::SubspeciesGrammar
     (available_subspecies_prefix subspecies_name:species_name subspecies_species_name? /.*/) {
       value = {:type => :subspecies, :name => subspecies_name.value, :status => 'valid'}
       value.merge! available_subspecies_prefix.value
-      value.merge! subspecies_species_name.value if subspecies_species_name.present?
+      value.merge! subspecies_species_name.value if subspecies_species_name && subspecies_species_name != ''
       value
     }
   end
@@ -25,7 +25,7 @@ grammar Bolton::Catalog::Species::SubspeciesGrammar
   end
 
   rule species_from_full_name
-    (close_tags blue? '.'? close_tags italic? '.'? s fossil_flag? capitalized_word s parenthesized_genus_name? species_name) {
+    (close_tags italic? blue? '.'? close_tags italic? '.'? s fossil_flag? capitalized_word s parenthesized_genus_name? species_name) {
       {:species => species_name.value}
     }
   end
@@ -36,7 +36,7 @@ grammar Bolton::Catalog::Species::SubspeciesGrammar
 
   rule available_subspecies_prefix
     (fossil_flag? bold? italic? blue? black? fossil_flag? close_tags bold? italic? blue?) {
-      fossil_flag.present? ? {:fossil => true} : {}
+      fossil_flag ? {:fossil => true} : {}
     }
   end
 
@@ -44,7 +44,7 @@ grammar Bolton::Catalog::Species::SubspeciesGrammar
     (fossil_flag? bold italic maroon subspecies_name:species_name subspecies_species_name? /.*/) {
       value = {:type => :subspecies, :name => subspecies_name.value, :status => 'homonym'}
       value.merge! :fossil => true unless fossil_flag.blank?
-      value.merge! subspecies_species_name.value if subspecies_species_name.present?
+      value.merge! subspecies_species_name.value if subspecies_species_name && subspecies_species_name != ''
       value
     }
   end
