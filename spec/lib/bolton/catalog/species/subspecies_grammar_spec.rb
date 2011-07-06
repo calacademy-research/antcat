@@ -57,12 +57,6 @@ describe Bolton::Catalog::Species::Importer do
         }).should == {:type => :subspecies, :name => 'minor', :fossil => true, :status => 'valid', :species => 'lugubris'}
       end
 
-      it "should handle the subspecies mark before the fossil mark" do
-        @importer.parse(%{
-*<b><i><span style="color:blue">neuter</span></i></b><i>. *Formica redtenbacheri</i> subsp. <i>neutra</i> Heer, 1849: 130 (q.?). [Also described as new by Heer, 1850: 130.] Combination in <i>Lasius</i>: Bolton, 1995b: 224 [as <i>redtenbacheri</i> referred to <i>Lasius</i> by Mayr, 1867b: 54].
-        }).should == {:type => :subspecies, :name => 'neuter', :fossil => true, :status => 'valid', :species => 'redtenbacheri'}
-      end
-
     end
 
     it "should handle a bold italic subspecies indicator" do
@@ -70,6 +64,13 @@ describe Bolton::Catalog::Species::Importer do
 <b><i><span style="color:blue">aeolia</span></i></b><i>. Oligomyrmex oertzeni</i> var. <i>aeolia</i> Forel, 1911d: 338 (q.m.) TURKEY. Combination in <i>Carebara</i>: <b>new combination (unpublished).</b>
       }).should == {:type => :subspecies, :name => 'aeolia', :status => 'valid', :species => 'oertzeni'}
     end
+
+    it "should handle a blue italicized period" do
+      @importer.parse(%{
+<b><i><span style="color:blue">dallatorrei</span></i></b><i><span style="color:blue">.</span> Camponotus alii dallatorrei</i> Özdikmen, 2010a: 520. Replacement name for <i>concolor</i> Dalla Torre, 1893: 221. [Junior primary homonym of <i>concolor</i> Forel, 1891b: 214.]
+      }).should == {:type => :subspecies, :name => 'dallatorrei', :status => 'valid', :species => 'alii'}
+    end
+
 
     #describe "subspecies homonyms" do
       #it "should handle an unresolved junior homonym subspecies" do
