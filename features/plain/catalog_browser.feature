@@ -179,3 +179,8 @@ Feature: Using the catalog browser
     When I follow "DOLICHODERINAE" in the browser
       And I should not see "Palaeomyrmex" in the index
       And I should not see "Palaeomyrmex" by itself in the browser
+
+  Scenario: Viewing the key
+    When I follow "View full key"
+    Then I should see "GREEN BOLD ITALIC"
+

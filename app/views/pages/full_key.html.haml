@@ -1,0 +1,76 @@
+- @title = 'Color-code Protocol for Initial Entries of Names'
+
+%style
+  :sass
+    .explanation
+      padding-bottom: 12px
+    .bold
+      font-weight: bold
+    .roman
+    .italic
+      font-style: italic
+    .color
+      padding-bottom: 12px
+
+%div.explanation Names of taxa of any rank and status that are preceded by the symbol &dagger; or * are fossil forms.
+
+%div.color
+  %span.valid.bold.roman RED BOLD ROMAN
+  (upper case): currently valid names in the family-group.
+  %br
+  %span.valid.bold.italic RED BOLD ITALIC
+  (upper case): currently valid names of genus rank.
+  %br
+  %span.valid.bold.italic Red bold italic
+  (lower case): currently valid names of species rank.
+
+%div.color
+  %span.subrank.bold.italic BLUE BOLD ITALIC
+  (upper case): currently valid names of subgenus rank.
+  %br
+  %span.subrank.bold.italic Blue bold italic
+  (lower case): currently valid names of subspecies rank.
+
+%div.color
+  %span.synonym.bold.roman BLACK ROMAN
+  (upper case): names in the family-group that are currently junior synonyms.
+  %br
+  %span.synonym.bold.italic BLACK ITALIC
+  (upper case): names in the genus-group that are currently junior synonyms.
+  %br
+  %span.synonym.bold.italic Black italic
+  (lower case): names in the species-group that are currently junior synonyms, and names in the species-group that have been transferred out of their original combinations.
+  %br
+
+%div.color
+  %span.unavailable.bold.roman PURPLE ROMAN
+  (upper case): unavailable names, 
+  %span.latin nomina nuda
+  and incorrect subsequent spellings in the family-group.
+  %br
+  %span.unavailable.bold.italic PURPLE ITALIC
+  (upper case): unavailable names,
+  %span.latin nomina nuda
+  and incorrect subsequent spellings in the genus-group.
+  %br
+  %span.unavailable.bold.italic Purple italic
+  (lower case): unavailable names,
+  %span.latin nomina nuda
+  and incorrect subsequent spellings in the species-group.
+  %br
+
+%div.color
+  %span.unidentifiable.bold.italic GREEN BOLD ITALIC
+  (upper case): available names in the genus-group of unidentifiable taxa, collective group names and names excluded from Formicidae.
+  %br
+  %span.unidentifiable.bold.italic Green bold italic
+  (lower case): available names in the species-group of unidentifiable taxa, members of collective groups and names excluded from Formicidae.
+  %br
+
+%div.color
+  %span.homonym.bold.italic BROWN BOLD ITALIC
+  (upper case): unresolved junior homonyms in the genus-group that are not currently in synonymy.
+  %br
+  %span.homonym.bold.italic Brown bold italic
+  (lower case): unresolved junior homonyms in the species-group that are not currently in synonymy.
+  %br
