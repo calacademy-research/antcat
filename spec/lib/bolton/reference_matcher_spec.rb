@@ -17,7 +17,7 @@ describe Bolton::ReferenceMatcher do
   it "should match an obvious match" do
     @target.should_receive(:<=>).and_return 0.10
     results = @matcher.match @target
-    results[:matches].should == [{:similarity => 0.10, :target => @target.id, :match => @match.id}]
+    results[:matches].should == [{:similarity => 0.10, :target => @target, :match => @match}]
     results[:similarity].should == 0.10
   end
     
@@ -27,7 +27,7 @@ describe Bolton::ReferenceMatcher do
     @target.should_receive(:<=>).and_return 0.10
 
     results = @matcher.match @target
-    results[:matches].should == [{:similarity => 0.10, :target => @target.id, :match => @match.id}]
+    results[:matches].should == [{:similarity => 0.10, :target => @target, :match => @match}]
     results[:similarity].should == 0.10
   end
 

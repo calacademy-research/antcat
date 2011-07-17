@@ -16,7 +16,7 @@ describe ReferenceMatcher do
   it "should match an obvious match" do
     @target.should_receive(:<=>).and_return 0.10
     results = @matcher.match @target
-    results.should == [{:similarity => 0.10, :target => @target.id, :match => @match.id}]
+    results.should == [{:similarity => 0.10, :target => @target, :match => @match}]
   end
     
   it "should handle an author last name with an apostrophe in it (regression)" do
@@ -25,7 +25,7 @@ describe ReferenceMatcher do
     @target.should_receive(:<=>).and_return 0.10
 
     results = @matcher.match @target
-    results.should == [{:similarity => 0.10, :target => @target.id, :match => @match.id}]
+    results.should == [{:similarity => 0.10, :target => @target, :match => @match}]
   end
 
 end
