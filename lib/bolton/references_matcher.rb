@@ -22,7 +22,7 @@ class Bolton::ReferencesMatcher
   def find_matches_for bolton
     results = @matcher.match bolton
     results[:matches].each do |result|
-      Bolton::Match.create! :bolton_reference_id => result[:target], :reference_id => result[:match], :similarity => results[:similarity]
+      Bolton::Match.create! :bolton_reference_id => result[:target].id, :reference_id => result[:match].id, :similarity => results[:similarity]
     end
 
     case

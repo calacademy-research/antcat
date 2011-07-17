@@ -19,7 +19,7 @@ class DuplicateReferencesFinder
   def find_duplicates_for target
     results = @matcher.match target
     results.each do |result|
-      DuplicateReference.create! :reference_id => target.id, :duplicate_id => result[:match], :similarity => result[:similarity]
+      DuplicateReference.create! :reference_id => target.id, :duplicate_id => result[:match].id, :similarity => result[:similarity]
     end
 
     @duplicate_count += 1 if results.present?
