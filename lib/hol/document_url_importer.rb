@@ -1,25 +1,23 @@
-require 'curl'
-
 class Hol::DocumentUrlImporter
 
   attr_reader :success_count,
-              :book_failure_count, :unknown_reference_failure_count, :pdf_not_found_failure_count,
-              :missing_author_failure_count, :already_imported_count
+              :book_failure_count, :unknown_count, :pdf_not_found_count,
+              :missing_author_count, :already_imported_count
 
   def initialize show_progress = false
     Progress.init show_progress, Reference.count
-    @bibliography = Hol::Bibliography.new
+    @matcher = Hol::ReferenceMatcher.new
     @success_count = @unmatched_count =
-      @book_failure_count = @unknown_reference_failure_count = @pdf_not_found_failure_count =
-      @missing_author_failure_count = @already_imported_count = 0
+      @book_failure_count = @unknown_count = @pdf_not_found_count =
+      @missing_author_count = @already_imported_count = 0
     @missing_authors = []
   end
 
   def import
     Progress.puts "Importing document URLs..."
     Reference.sorted_by_author_name.each do |reference|
-      result = import_document_url_for reference
-      show_progress reference, result
+      result_string = import_document_url_for reference
+      show_progress reference, result_string
     end
     show_results
   end
@@ -28,7 +26,7 @@ class Hol::DocumentUrlImporter
     if reference.document
       result = {:status => :already_imported}
     else
-      result = @bibliography.match reference
+      result = @matcher.match reference
       unless result[:document_url]
         reference.document = nil
       else
@@ -62,18 +60,18 @@ class Hol::DocumentUrlImporter
       @success_count += 1
       return 'Already'
     else
-      if result[:status] == Hol::Bibliography::NO_ENTRIES_FOR_AUTHOR
+      if result[:status] == :no_entries_for_author
         @missing_authors << reference.author_names.first.name
-        @missing_author_failure_count += 1
+        @missing_author_count += 1
         return 'Author'
       elsif result[:status] == :pdf_not_found
-        @pdf_not_found_failure_count += 1
+        @pdf_not_found_count += 1
         return 'No PDF'
       elsif reference.kind_of? BookReference
         @book_failure_count += 1
         return 'Book'
       elsif reference.kind_of? UnknownReference
-        @unknown_reference_failure_count += 1
+        @unknown_count += 1
         return 'Unknown'
       else
         @unmatched_count += 1
@@ -82,16 +80,16 @@ class Hol::DocumentUrlImporter
     end
   end
 
-  def show_progress reference, result
+  def show_progress reference, result_string
     Progress.tally
     rate = Progress.rate
     time_left = Progress.time_left
     success_percent = Progress.percent @success_count, Progress.processed_count
-    result = result.ljust(9)
+    result_string = result_string.ljust(9)
     success = (success_percent + ' success').rjust(12)
     rate = rate.rjust(8)
     time_left = time_left.rjust(13)
-    Progress.puts "#{result} #{success} #{rate} #{time_left} #{reference}"
+    Progress.puts "#{result_string} #{success} #{rate} #{time_left} #{reference}"
   end
 
   def show_results
@@ -106,11 +104,11 @@ class Hol::DocumentUrlImporter
     Progress.puts Progress.count(@success_count, Progress.processed_count, 'successful')
     Progress.puts Progress.count(@success_count - @already_imported_count, Progress.processed_count, 'new documents')
     Progress.puts Progress.count(@already_imported_count, Progress.processed_count, 'already imported')
-    Progress.puts Progress.count(@missing_author_failure_count, Progress.processed_count, 'author not found')
+    Progress.puts Progress.count(@missing_author_count, Progress.processed_count, 'author not found')
     Progress.puts Progress.count(@unmatched_count, Progress.processed_count, 'unmatched')
-    Progress.puts Progress.count(@unknown_reference_failure_count, Progress.processed_count, 'unknown references')
+    Progress.puts Progress.count(@unknown_count, Progress.processed_count, 'unknown references')
     Progress.puts Progress.count(@book_failure_count, Progress.processed_count, 'book references')
-    Progress.puts Progress.count(@pdf_not_found_failure_count, Progress.processed_count, 'PDF not found')
+    Progress.puts Progress.count(@pdf_not_found_count, Progress.processed_count, 'PDF not found')
   end
 
   def document_url_exists? document_url

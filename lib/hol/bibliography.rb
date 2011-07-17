@@ -1,26 +1,7 @@
 class Hol::Bibliography
 
-  NO_ENTRIES_FOR_AUTHOR = 1
-
   def initialize
     @scraper = Scraper.new
-  end
-
-  def match target_reference
-    result = {}
-    author_name = target_reference.author_names.first.last_name
-    references = references_for(author_name)
-    unless references.present?
-      result[:status] = NO_ENTRIES_FOR_AUTHOR
-    else
-      references.each do |reference|
-        if target_reference.year == reference[:year]
-          break if match_series_volume_issue_pagination target_reference, reference, result
-          break if match_title target_reference, reference, result
-        end
-      end
-    end
-    result
   end
 
   def match_series_volume_issue_pagination target_reference, reference, result
@@ -39,14 +20,6 @@ class Hol::Bibliography
       return true
     end
     false
-  end
-
-  def references_for author_name
-    if author_name != @author_name
-      @author_name = author_name
-      @references = read_references author_name
-    end
-    @references
   end
 
   def read_references author_name
