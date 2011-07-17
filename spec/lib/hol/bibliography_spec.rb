@@ -1,31 +1,6 @@
 require 'spec_helper'
 
 describe Hol::Bibliography do
-  describe "getting the contents for an author" do
-    before do
-      @hol = Hol::Bibliography.new
-      @reference = Factory :reference
-    end
-
-    it "should get the contents for an author initially" do
-      @hol.should_receive(:read_references).and_return []
-      @hol.match @reference
-    end
-    it "should cache an author's contents" do
-      @hol.should_receive(:read_references).once().and_return []
-      @hol.match @reference
-      @hol.match @reference
-    end
-    it "should get a different author's contents" do
-      bolton_reference = Factory :reference, :author_names => [Factory(:author_name, :name => 'Bolton')]
-      fisher_reference = Factory :reference, :author_names => [Factory(:author_name, :name => 'Fisher')]
-      @hol.should_receive(:read_references).with('Bolton').once().and_return []
-      @hol.should_receive(:read_references).with('Fisher').once().and_return []
-      @hol.match bolton_reference
-      @hol.match fisher_reference
-    end
-  end
-
   describe "getting an author's bibliography" do
     before do
       @scraper = mock Scraper
@@ -188,52 +163,6 @@ See Site Statistics</a><p>
 
       result[:document_url].should == "http://128.146.250.117/pdfs/22497/22497.pdf" 
     end
-  end
-
-  describe "matching against Ward" do
-    before do
-      @hol = Hol::Bibliography.new
-    end
-
-    it "should match an article reference based on year + series/volume/issue + pagination" do
-      reference = Factory :article_reference, :citation_year => '2010', :series_volume_issue => '2', :pagination => '2-3'
-      hol_references = [
-        {:document_url => 'a source', :year => 2010, :series_volume_issue => '1', :pagination => '2-3'},
-        {:document_url => 'another source', :year => 2010, :series_volume_issue => '2', :pagination => '2-3'},
-      ]
-      @hol.stub!(:references_for).and_return hol_references
-      @hol.match(reference)[:document_url].should == 'another source'
-    end
-
-    it "should match an article reference based on year + title if series/volume/issue isn't found" do
-      reference = Factory :article_reference, :citation_year => '2010', :series_volume_issue => '44', :pagination => '325-335',
-        :title => 'Adelomyrmecini new tribe and Cryptomyrmex new genus of myrmicine ants'
-      hol_references = [
-        {:document_url => 'fernandez_source', :year => 2010, :series_volume_issue => '44(3)', :pagination => '325-335',
-          :title => 'Adelomyrmecini new tribe and Cryptomyrmex new genus of myrmicine ants'},
-      ]
-      @hol.stub!(:references_for).and_return hol_references
-      @hol.match(reference)[:document_url].should == 'fernandez_source'
-    end
-
-    it "ignore punctuation when comparing titles" do
-      reference = Factory :article_reference, :citation_year => '2010', :series_volume_issue => '44', :pagination => '325-335',
-        :title => 'Adelomyrmecini new tribe and Cryptomyrmex new genus of myrmicine ants (Hymenoptera, Formicidae)'
-      hol_references = [
-        {:document_url => 'fernandez_source', :year => 2010, :series_volume_issue => '44(3)', :pagination => '325-335',
-          :title => 'Adelomyrmecini new tribe and Cryptomyrmex new genus of myrmicine ants (Hymenoptera: Formicidae)'},
-      ]
-      @hol.stub!(:references_for).and_return hol_references
-      @hol.match(reference)[:document_url].should == 'fernandez_source'
-    end
-
-    it "should report as much when a failed match was because the author had no entries" do
-      reference = Factory :reference
-      @hol.stub!(:references_for).and_return []
-      result = @hol.match reference
-      result[:document_url].should be_nil
-    end
-
   end
 
 end

@@ -22,9 +22,13 @@ class ReferenceMatcher
   def candidates_for target
     if target.author != @target_author
       @target_author = target.author
-      @candidates = ::Reference.with_principal_author_last_name @target_author
+      @candidates = read_references @target_author
     end
     @candidates || []
+  end
+
+  def read_references target
+    ::Reference.with_principal_author_last_name target
   end
 
 end
