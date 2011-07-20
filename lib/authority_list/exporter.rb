@@ -4,8 +4,8 @@ class AuthorityList::Exporter
   end
 
   def export directory
-    File.open("#{directory}/authority_list.txt", 'w') do |file|
-      #file.puts "subfamily\ttribe\tgenus\tspecies\tspecies author date\tcountry\tvalid\tavailable\tcurrent valid name\toriginal combination\ttaxonomic history\tfossil"
+    File.open("#{directory}/antcat_authority_list.txt", 'w') do |file|
+      write_header file
       #Taxon.all.each do |taxon|
         #row = export_taxon taxon
         #file.puts row.join("\t") if row
@@ -14,31 +14,25 @@ class AuthorityList::Exporter
     Progress.show_results
   end
 
-  #def export_taxon taxon
-    #Progress.tally_and_show_progress 1000
+  def write_header file
+    write file, format('subfamily', 'tribe', 'genus', 'species', 'subspecies', 'status', 'fossil')
+  end
 
-    #return if taxon.invalid?
+  def write file, line
+    file.puts line
+  end
 
-    #case taxon
-    #when Subfamily
-      #convert_to_antweb_array :subfamily => taxon.name,
-                              #:valid? => !taxon.invalid?,
-                              #:taxonomic_history => CatalogFormatter.format_taxonomic_history_with_statistics(taxon, :include_invalid => false),
-                              #:fossil? => taxon.fossil
-    #when Genus
-      #subfamily_name = taxon.subfamily.try(:name) || 'incertae_sedis'
-      #convert_to_antweb_array :subfamily => subfamily_name,
-                              #:tribe => taxon.tribe && taxon.tribe.name,
-                              #:genus => taxon.name,
-                              #:valid? => !taxon.invalid?, :available? => !taxon.invalid?,
-                              #:taxonomic_history => CatalogFormatter.format_taxonomic_history_with_statistics(taxon, :include_invalid => false),
-                              #:fossil? => taxon.fossil
-    #when Species
-      #return unless taxon.genus && taxon.genus.tribe && taxon.genus.tribe.subfamily
-      #convert_to_antweb_array :subfamily => taxon.genus.subfamily.name,
-                              #:tribe => taxon.genus.tribe.name,
-                              #:genus => taxon.genus.name,
-                              #:species => taxon.name,
+  def format *values
+    values.join "\t"
+  end
+
+  def export_taxon taxon
+    Progress.tally_and_show_progress 1000
+
+    case taxon
+    when Species
+      return unless taxon.genus && taxon.genus.tribe && taxon.genus.tribe.subfamily
+      format taxon.subfamily.name, taxon.genus.tribe.name, taxon.genus.name, taxon.name
                               #:valid? => !taxon.invalid?, :available? => !taxon.invalid?,
                               #:taxonomic_history => CatalogFormatter.format_taxonomic_history_with_statistics(taxon, :include_invalid => false),
                               #:fossil? => taxon.fossil
@@ -52,8 +46,8 @@ class AuthorityList::Exporter
                               #:taxonomic_history => CatalogFormatter.format_taxonomic_history_with_statistics(taxon, :include_invalid => false),
                               #:fossil? => taxon.fossil
     #else nil
-    #end
-  #end
+    end
+  end
 
   #private
   #def boolean_to_antweb boolean
