@@ -39,7 +39,21 @@ describe AuthorityList::Exporter do
       @exporter.export 'data/output'
     end
 
-    it "should export a subspecies correctly"
+    describe "Outputting subspecies" do
+      before do
+        @subspecies = Factory :subspecies, :name => 'rufa', :genus => @genus, :species => @species
+      end
+
+      it "should export a subspecies correctly" do
+        @exporter.format_taxon(@subspecies).should == "Myrmicinae\tAttini\tAtta\trobusta\trufa\tvalid\t"
+      end
+
+      it "should export subspecies as well as species" do
+        @exporter.should_receive(:write).exactly(3).times
+        @exporter.export 'data/output'
+      end
+    end
+
     it "should sort its output by names in ranks"
   end
 
