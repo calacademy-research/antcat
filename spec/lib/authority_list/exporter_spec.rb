@@ -5,11 +5,15 @@ describe AuthorityList::Exporter do
     @exporter = AuthorityList::Exporter.new
   end
 
+  it "should write its output to the right file" do
+    File.should_receive(:open).with 'data/output/authority_list.txt', 'w'
+    @exporter.export 'data/output'
+  end
+
   it "should export a species correctly"
   it "should export a subspecies correctly"
   it "should not export a genus"
   it "should sort its output by names in ranks"
-  it "should write its output to the right file"
   it "should include the correct header"
 
   #describe "exporting one taxon" do
