@@ -13,3 +13,5 @@ RSpec.configure do |config|
 end
 
 require Rails.root + 'spec/factories/factories'
+
+puts "in #{`pwd`}"
