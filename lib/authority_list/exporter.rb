@@ -3,16 +3,16 @@ class AuthorityList::Exporter
     Progress.init show_progress
   end
 
-  #def export directory
-    #File.open("#{directory}/bolton.xls", 'w') do |file|
+  def export directory
+    File.open("#{directory}/authority_list.txt", 'w') do |file|
       #file.puts "subfamily\ttribe\tgenus\tspecies\tspecies author date\tcountry\tvalid\tavailable\tcurrent valid name\toriginal combination\ttaxonomic history\tfossil"
       #Taxon.all.each do |taxon|
         #row = export_taxon taxon
         #file.puts row.join("\t") if row
       #end
-    #end
-    #Progress.show_results
-  #end
+    end
+    Progress.show_results
+  end
 
   #def export_taxon taxon
     #Progress.tally_and_show_progress 1000
