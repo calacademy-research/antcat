@@ -33,19 +33,12 @@ class AuthorityList::Exporter
     when Species
       return unless taxon.genus && taxon.genus.tribe && taxon.genus.tribe.subfamily
       format taxon.subfamily.name, taxon.genus.tribe.name, taxon.genus.name, taxon.name, taxon.status, taxon.fossil? ? 'true' : ''
-                              #:valid? => !taxon.invalid?, :available? => !taxon.invalid?,
-                              #:taxonomic_history => CatalogFormatter.format_taxonomic_history_with_statistics(taxon, :include_invalid => false),
-                              #:fossil? => taxon.fossil
-    #when Subspecies
-      #return unless taxon.species && taxon.species.genus && taxon.species.genus.tribe && taxon.species.genus.tribe.subfamily
-      #convert_to_antweb_array :subfamily => taxon.species.genus.subfamily.name,
-                              #:tribe => taxon.species.genus.tribe.name,
-                              #:genus => taxon.species.genus.name,
-                              #:species => "#{taxon.species.name} #{taxon.name}",
-                              #:valid? => !taxon.invalid?, :available? => !taxon.invalid?,
-                              #:taxonomic_history => CatalogFormatter.format_taxonomic_history_with_statistics(taxon, :include_invalid => false),
-                              #:fossil? => taxon.fossil
-    #else nil
+
+    when Subspecies
+      return unless taxon.species && taxon.species.genus && taxon.species.genus.tribe && taxon.species.genus.tribe.subfamily
+      format taxon.species.genus.subfamily.name, taxon.species.genus.tribe.name, taxon.species.genus.name,
+                  taxon.species.name, taxon.name, taxon.status, taxon.fossil? ? 'true' : ''
+    else nil
     end
   end
 
