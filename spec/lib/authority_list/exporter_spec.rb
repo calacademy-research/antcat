@@ -6,15 +6,28 @@ describe AuthorityList::Exporter do
   end
 
   it "should write its output to the right file" do
-    File.should_receive(:open).with 'data/output/authority_list.txt', 'w'
+    File.should_receive(:open).with 'data/output/antcat_authority_list.txt', 'w'
     @exporter.export 'data/output'
   end
 
-  it "should export a species correctly"
+  it "should include the correct header" do
+    file = stub
+    File.stub(:open).and_yield file
+    file.should_receive(:puts).with "subfamily\ttribe\tgenus\tspecies\tsubspecies\tstatus\tfossil"
+    @exporter.export 'data/output'
+  end
+
+  it "should export a species correctly" do
+    subfamily = Factory :subfamily, :name => 'Myrmicinae'
+    tribe = Factory :tribe, :name => 'Attini', :subfamily => subfamily
+    genus = Factory :genus, :name => 'Atta', :subfamily => subfamily, :tribe => tribe
+    species = Factory :species, :name => 'robusta', :subfamily => subfamily, :genus => genus
+    @exporter.export_taxon(species).should == "Myrmicinae\tAttini\tAtta\trobusta"
+  end
+
   it "should export a subspecies correctly"
   it "should not export a genus"
   it "should sort its output by names in ranks"
-  it "should include the correct header"
 
   #describe "exporting one taxon" do
     #it "should export a subfamily" do
