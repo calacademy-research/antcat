@@ -17,17 +17,31 @@ describe AuthorityList::Exporter do
     @exporter.export 'data/output'
   end
 
-  it "should export a species correctly" do
-    subfamily = Factory :subfamily, :name => 'Myrmicinae'
-    tribe = Factory :tribe, :name => 'Attini', :subfamily => subfamily
-    genus = Factory :genus, :name => 'Atta', :subfamily => subfamily, :tribe => tribe
-    species = Factory :species, :name => 'robusta', :subfamily => subfamily, :genus => genus
-    @exporter.export_taxon(species).should == "Myrmicinae\tAttini\tAtta\trobusta"
-  end
+  describe "Outputting taxa" do
+    before do
+      @subfamily = Factory :subfamily, :name => 'Myrmicinae'
+      @tribe = Factory :tribe, :name => 'Attini', :subfamily => @subfamily
+      @genus = Factory :genus, :name => 'Atta', :subfamily => @subfamily, :tribe => @tribe
+      @species = Factory :species, :name => 'robusta', :subfamily => @subfamily, :genus => @genus
+    end
 
-  it "should export a subspecies correctly"
-  it "should not export a genus"
-  it "should sort its output by names in ranks"
+    it "should export a species correctly" do
+      @exporter.format_taxon(@species).should == "Myrmicinae\tAttini\tAtta\trobusta\tvalid\t"
+    end
+
+    it "should export a fossil species correctly" do
+      @species.update_attribute :fossil, true
+      @exporter.format_taxon(@species).should == "Myrmicinae\tAttini\tAtta\trobusta\tvalid\ttrue"
+    end
+
+    it "should not export genera (or subfamilies or tribes)" do
+      @exporter.should_receive(:write).twice
+      @exporter.export 'data/output'
+    end
+
+    it "should export a subspecies correctly"
+    it "should sort its output by names in ranks"
+  end
 
   #describe "exporting one taxon" do
     #it "should export a subfamily" do

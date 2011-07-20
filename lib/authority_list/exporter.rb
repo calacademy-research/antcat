@@ -6,10 +6,10 @@ class AuthorityList::Exporter
   def export directory
     File.open("#{directory}/antcat_authority_list.txt", 'w') do |file|
       write_header file
-      #Taxon.all.each do |taxon|
-        #row = export_taxon taxon
-        #file.puts row.join("\t") if row
-      #end
+      for taxon in Taxon.all
+        row = format_taxon taxon
+        write file, row if row
+      end
     end
     Progress.show_results
   end
@@ -26,13 +26,13 @@ class AuthorityList::Exporter
     values.join "\t"
   end
 
-  def export_taxon taxon
+  def format_taxon taxon
     Progress.tally_and_show_progress 1000
 
     case taxon
     when Species
       return unless taxon.genus && taxon.genus.tribe && taxon.genus.tribe.subfamily
-      format taxon.subfamily.name, taxon.genus.tribe.name, taxon.genus.name, taxon.name
+      format taxon.subfamily.name, taxon.genus.tribe.name, taxon.genus.name, taxon.name, taxon.status, taxon.fossil? ? 'true' : ''
                               #:valid? => !taxon.invalid?, :available? => !taxon.invalid?,
                               #:taxonomic_history => CatalogFormatter.format_taxonomic_history_with_statistics(taxon, :include_invalid => false),
                               #:fossil? => taxon.fossil
