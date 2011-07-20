@@ -6,12 +6,23 @@ class AuthorityList::Exporter
   def export directory
     File.open("#{directory}/antcat_authority_list.txt", 'w') do |file|
       write_header file
-      for taxon in Taxon.all
-        row = format_taxon taxon
-        write file, row if row
-      end
+      write_rows file, sort_rows(get_rows)
     end
     Progress.show_results
+  end
+
+  def get_rows
+    Taxon.all.inject([]) do |rows, taxon|
+      data = get_data taxon
+      rows << data if data
+      rows
+    end
+  end
+
+  def write_rows file, rows
+    for row in rows
+      write file, format(row)
+    end
   end
 
   def write_header file
@@ -26,34 +37,25 @@ class AuthorityList::Exporter
     values.join "\t"
   end
 
-  def format_taxon taxon
+  def sort_rows rows
+    rows.sort
+  end
+
+  def get_data taxon
     Progress.tally_and_show_progress 1000
 
     case taxon
     when Species
       return unless taxon.genus && taxon.genus.tribe && taxon.genus.tribe.subfamily
-      format taxon.subfamily.name, taxon.genus.tribe.name, taxon.genus.name, taxon.name, taxon.status, taxon.fossil? ? 'true' : ''
+      [taxon.subfamily.name, taxon.genus.tribe.name, taxon.genus.name, taxon.name, '', taxon.status,
+        taxon.fossil? ? 'true' : '']
 
     when Subspecies
       return unless taxon.species && taxon.species.genus && taxon.species.genus.tribe && taxon.species.genus.tribe.subfamily
-      format taxon.species.genus.subfamily.name, taxon.species.genus.tribe.name, taxon.species.genus.name,
-                  taxon.species.name, taxon.name, taxon.status, taxon.fossil? ? 'true' : ''
+      [taxon.species.genus.subfamily.name, taxon.species.genus.tribe.name, taxon.species.genus.name,
+        taxon.species.name, taxon.name, taxon.status, taxon.fossil? ? 'true' : '']
     else nil
     end
   end
-
-  #private
-  #def boolean_to_antweb boolean
-    #case boolean
-    #when true: 'TRUE'
-    #when false: 'FALSE'
-    #when nil: nil
-    #else raise
-    #end
-  #end
-
-  #def convert_to_antweb_array values
-    #[values[:subfamily], values[:tribe], values[:genus], values[:species], nil, nil, boolean_to_antweb(values[:valid?]), boolean_to_antweb(values[:available?]), values[:current_valid_name], nil, values[:taxonomic_history], boolean_to_antweb(values[:fossil?])]
-  #end
 
 end
