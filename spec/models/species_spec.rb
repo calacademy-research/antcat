@@ -29,20 +29,31 @@ describe Species do
   end
 
   describe "Full name" do
-
     it "should handle it when it has a subfamily" do
       subfamily = Factory :subfamily, :name => 'Dolichoderinae'
       genus = Factory :genus, :subfamily => subfamily, :name => 'Myrmicium'
       species = Factory :species, :genus => genus, :name => 'shattucki'
-      species.full_name.should == '<i>Myrmicium shattucki</i>'
+      species.full_name.should == 'Myrmicium shattucki'
     end
-
     it "should handle it when it has no subfamily" do
       genus = Factory :genus, :subfamily => nil, :name => 'Myrmicium'
       species = Factory :species, :genus => genus, :name => 'shattucki'
-      species.full_name.should == '<i>Myrmicium shattucki</i>'
+      species.full_name.should == 'Myrmicium shattucki'
     end
+  end
 
+  describe "Full label" do
+    it "should handle it when it has a subfamily" do
+      subfamily = Factory :subfamily, :name => 'Dolichoderinae'
+      genus = Factory :genus, :subfamily => subfamily, :name => 'Myrmicium'
+      species = Factory :species, :genus => genus, :name => 'shattucki'
+      species.full_label.should == '<i>Myrmicium shattucki</i>'
+    end
+    it "should handle it when it has no subfamily" do
+      genus = Factory :genus, :subfamily => nil, :name => 'Myrmicium'
+      species = Factory :species, :genus => genus, :name => 'shattucki'
+      species.full_label.should == '<i>Myrmicium shattucki</i>'
+    end
   end
 
   describe "Statistics" do

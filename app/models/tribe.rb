@@ -10,6 +10,10 @@ class Tribe < Taxon
     "#{subfamily.name} #{name}"
   end
 
+  def full_label
+    full_name
+  end
+
   def statistics
   end
 

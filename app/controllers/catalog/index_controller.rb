@@ -65,7 +65,7 @@ class Catalog::IndexController < CatalogController
 
     @url_parameters[:subfamily] = @selected_subfamily
 
-    @taxon_header_name ||= @taxon.full_name if @taxon.kind_of? Taxon
+    @taxon_header_name ||= @taxon.full_label if @taxon.kind_of? Taxon
     @taxon_statistics ||= @taxon.statistics if @taxon.kind_of? Taxon
   end
 
