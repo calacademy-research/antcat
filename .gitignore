@@ -6,4 +6,3 @@ solr/data
 log
 s3.yml
 coverage
-data/output
