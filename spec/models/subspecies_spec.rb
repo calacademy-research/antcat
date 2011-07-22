@@ -27,12 +27,17 @@ describe Subspecies do
   end
 
   describe "Full name" do
-
     it "is the the genus, the species, and the subspecies name" do
       taxon = Factory :subspecies, :name => 'biggus', :species => Factory(:species, :name => 'emeryi', :genus => Factory(:genus, :name => 'Atta', :subfamily => Factory(:subfamily, :name => 'Dolichoderinae')))
-      taxon.full_name.should == '<i>Atta emeryi biggus</i>'
+      taxon.full_name.should == 'Atta emeryi biggus'
     end
+  end
 
+  describe "Full label" do
+    it "is the the genus, the species, and the subspecies name" do
+      taxon = Factory :subspecies, :name => 'biggus', :species => Factory(:species, :name => 'emeryi', :genus => Factory(:genus, :name => 'Atta', :subfamily => Factory(:subfamily, :name => 'Dolichoderinae')))
+      taxon.full_label.should == '<i>Atta emeryi biggus</i>'
+    end
   end
 
 end

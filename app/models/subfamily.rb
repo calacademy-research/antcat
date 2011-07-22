@@ -12,6 +12,10 @@ class Subfamily < Taxon
     name
   end
 
+  def full_label
+    full_name
+  end
+
   def statistics
     get_statistics [:genera, :species, :subspecies]
   end

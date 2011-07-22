@@ -20,7 +20,7 @@ class CatalogController < ApplicationController
         @search_results_message = "No results found"
       else
         @search_results = @search_results.map do |search_result|
-          {:name => search_result.full_name, :id => search_result.id}
+          {:name => search_result.full_label, :id => search_result.id}
         end
         params['id'] = @search_results.first[:id] if params['id'].blank?
       end

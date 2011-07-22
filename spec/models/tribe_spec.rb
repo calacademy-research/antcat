@@ -21,6 +21,11 @@ describe Tribe do
     taxon.full_name.should == 'Myrmicinae Attini'
   end
 
+  it "should have as its full label, the subfamily + its name" do
+    taxon = Factory :tribe, :name => 'Attini', :subfamily => Factory(:subfamily, :name => 'Myrmicinae')
+    taxon.full_label.should == 'Myrmicinae Attini'
+  end
+
   describe "Siblings" do
 
     it "should return itself and its subfamily's other tribes" do

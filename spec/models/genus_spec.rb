@@ -35,12 +35,26 @@ describe Genus do
 
     it "is the genus name" do
       taxon = Factory :genus, :name => 'Atta', :subfamily => Factory(:subfamily, :name => 'Dolichoderinae')
-      taxon.full_name.should == '<i>Atta</i>'
+      taxon.full_name.should == 'Atta'
     end
 
     it "is just the genus name if there is no subfamily" do
       taxon = Factory :genus, :name => 'Atta', :subfamily => nil
-      taxon.full_name.should == '<i>Atta</i>'
+      taxon.full_name.should == 'Atta'
+    end
+
+  end
+
+  describe "Full label" do
+
+    it "is the genus name" do
+      taxon = Factory :genus, :name => 'Atta', :subfamily => Factory(:subfamily, :name => 'Dolichoderinae')
+      taxon.full_label.should == '<i>Atta</i>'
+    end
+
+    it "is just the genus name if there is no subfamily" do
+      taxon = Factory :genus, :name => 'Atta', :subfamily => nil
+      taxon.full_label.should == '<i>Atta</i>'
     end
 
   end

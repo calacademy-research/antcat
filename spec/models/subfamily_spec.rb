@@ -34,12 +34,17 @@ describe Subfamily do
   end
 
   describe "Full name" do
-
     it "is just the name" do
       taxon = Factory :subfamily, :name => 'Dolichoderinae'
       taxon.full_name.should == 'Dolichoderinae'
     end
+  end
 
+  describe "Full label" do
+    it "is just the name" do
+      taxon = Factory :subfamily, :name => 'Dolichoderinae'
+      taxon.full_label.should == 'Dolichoderinae'
+    end
   end
 
   describe "Statistics" do

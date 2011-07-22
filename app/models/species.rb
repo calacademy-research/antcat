@@ -13,7 +13,11 @@ class Species < Taxon
   end
 
   def full_name
-    "<i>#{genus.name} #{name}</i>"
+    "#{genus.name} #{name}"
+  end
+
+  def full_label
+    "<i>#{full_name}</i>"
   end
 
   def statistics
