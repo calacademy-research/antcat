@@ -13,7 +13,7 @@ describe AuthorityList::Exporter do
   it "should include the correct header" do
     file = stub
     File.stub(:open).and_yield file
-    file.should_receive(:puts).with "subfamily\ttribe\tgenus\tspecies\tsubspecies\tstatus\tfossil"
+    file.should_receive(:puts).with "subfamily\ttribe\tgenus\tspecies\tsubspecies\tstatus\tsenior synonym\tfossil"
     @exporter.export 'data/output'
   end
 
@@ -26,12 +26,12 @@ describe AuthorityList::Exporter do
     end
 
     it "should export a species correctly" do
-      @exporter.get_data(@species).should == ['Myrmicinae', 'Attini', 'Atta', 'robusta', '', 'valid', '']
+      @exporter.get_data(@species).should == ['Myrmicinae', 'Attini', 'Atta', 'robusta', '', 'valid', '', '']
     end
 
     it "should export a fossil species correctly" do
       @species.update_attribute :fossil, true
-      @exporter.get_data(@species).should == ['Myrmicinae', 'Attini', 'Atta', 'robusta', '', 'valid', 'true']
+      @exporter.get_data(@species).should == ['Myrmicinae', 'Attini', 'Atta', 'robusta', '', 'valid', '', 'fossil']
     end
 
     it "should not export genera (or subfamilies or tribes)" do
@@ -45,7 +45,7 @@ describe AuthorityList::Exporter do
       end
 
       it "should export a subspecies correctly" do
-        @exporter.get_data(@subspecies).should == ['Myrmicinae', 'Attini', 'Atta', 'robusta', 'rufa', 'valid', '']
+        @exporter.get_data(@subspecies).should == ['Myrmicinae', 'Attini', 'Atta', 'robusta', 'rufa', 'valid', '', '']
       end
 
       it "should export subspecies as well as species" do
@@ -75,16 +75,34 @@ describe AuthorityList::Exporter do
       rufa = Factory :subspecies, :name => 'rufa', :species => adolphi
 
       @exporter.should_receive(:write).with(file,
-        "subfamily\ttribe\tgenus\tspecies\tsubspecies\tstatus\tfossil").ordered
+        "subfamily\ttribe\tgenus\tspecies\tsubspecies\tstatus\tsenior synonym\tfossil").ordered
       @exporter.should_receive(:write).with(file,
-        "Myrmicinae\t" + "Attini\t" +      "Atta\t" +       "robusta\t" + "\t" + "valid\t").ordered
+        "Myrmicinae\t" + "Attini\t" +      "Atta\t" +       "robusta\t" + "\t" + "valid\t\t").ordered
       @exporter.should_receive(:write).with(file,
-        "Myrmicinae\t" + "Cephalotini\t" + "Cephalotes\t" + "adolphi\t" + "\t" + "valid\t").ordered
+        "Myrmicinae\t" + "Cephalotini\t" + "Cephalotes\t" + "adolphi\t" + "\t" + "valid\t\t").ordered
       @exporter.should_receive(:write).with(file,
-        "Myrmicinae\t" + "Cephalotini\t" + "Cephalotes\t" + "adolphi\t" + "rufa\t" + "valid\t").ordered
+        "Myrmicinae\t" + "Cephalotini\t" + "Cephalotes\t" + "adolphi\t" + "rufa\t" + "valid\t\t").ordered
 
       @exporter.export 'data/output'
     end
+  end
+
+  describe "Outputting the senior synonym of a species" do
+    before do
+      @atta = Factory :genus, :name => 'Atta'
+      @senior_synonym = Factory :species, :name => 'formica', :genus => @atta
+      @junior_synonym = Factory :species, :name => 'robusta', :genus => @atta, :status => 'synonym', :synonym_of => @senior_synonym
+    end
+
+    it "should not crash if it's a junior synonym but we don't know the senior" do
+      @junior_synonym.update_attribute :synonym_of, nil
+      @exporter.get_data(@junior_synonym).should == [@atta.subfamily.name, @atta.tribe.name, @atta.name, @junior_synonym.name, '', 'synonym', '', '']
+    end
+
+    it "should output the genus + species of the synonym" do
+      @exporter.get_data(@junior_synonym).should == [@atta.subfamily.name, @atta.tribe.name, @atta.name, @junior_synonym.name, '', 'synonym', 'Atta formica', '']
+    end
+
   end
 
 end
