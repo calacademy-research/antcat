@@ -19,8 +19,8 @@ describe Hol::ReferenceMatcher do
     it "should get a different author's contents" do
       bolton_reference = Factory :reference, :author_names => [Factory(:author_name, :name => 'Bolton')]
       fisher_reference = Factory :reference, :author_names => [Factory(:author_name, :name => 'Fisher')]
-      @matcher.should_receive(:read_references).with(bolton_reference).once().and_return []
-      @matcher.should_receive(:read_references).with(fisher_reference).once().and_return []
+      @matcher.should_receive(:read_references).with('Bolton').once().and_return []
+      @matcher.should_receive(:read_references).with('Fisher').once().and_return []
       @matcher.candidates_for bolton_reference
       @matcher.candidates_for fisher_reference
     end
@@ -34,19 +34,18 @@ describe Hol::ReferenceMatcher do
     it "should match an article reference based on year + series/volume/issue + pagination" do
       reference = Factory :article_reference, :citation_year => '2010', :series_volume_issue => '2', :pagination => '2-3'
       hol_references = [
-        {:document_url => 'a source', :year => 2010, :series_volume_issue => '1', :pagination => '2-3'},
-        {:document_url => 'another source', :year => 2010, :series_volume_issue => '2', :pagination => '2-3'},
+        Hol::Reference.new(:type => 'ArticleReference', :document_url => 'a source', :year => 2010, :series_volume_issue => '1', :pagination => '2-3'),
+        Hol::Reference.new(:type => 'ArticleReference', :document_url => 'another source', :year => 2010, :series_volume_issue => '2', :pagination => '2-3'),
       ]
-      @matcher.stub!(:candidates_for).and_return hol_references
-      @matcher.match(reference)[:document_url].should == 'another source'
+      @matcher.stub!(:read_references).and_return hol_references
+      @matcher.match(reference)[:match].document_url.should == 'another source'
     end
 
     it "should match an article reference based on year + title if series/volume/issue isn't found" do
-      reference = Factory :article_reference, :citation_year => '2010', :series_volume_issue => '44', :pagination => '325-335',
-        :title => 'Adelomyrmecini new tribe and Cryptomyrmex new genus of myrmicine ants'
+      reference = Factory :article_reference, :citation_year => '2010', :series_volume_issue => '44', :pagination => '325-335', :title => 'Adelomyrmecini new tribe and Cryptomyrmex new genus of myrmicine ants'
       hol_references = [
-        {:document_url => 'fernandez_source', :year => 2010, :series_volume_issue => '44(3)', :pagination => '325-335',
-          :title => 'Adelomyrmecini new tribe and Cryptomyrmex new genus of myrmicine ants'},
+        Hol::Reference.new(:document_url => 'fernandez_source', :year => 2010, :series_volume_issue => '44(3)',
+          :pagination => '325-335', :title => 'Adelomyrmecini new tribe and Cryptomyrmex new genus of myrmicine ants'),
       ]
       @matcher.stub!(:candidates_for).and_return hol_references
       @matcher.match(reference)[:document_url].should == 'fernandez_source'
@@ -56,8 +55,8 @@ describe Hol::ReferenceMatcher do
       reference = Factory :article_reference, :citation_year => '2010', :series_volume_issue => '44', :pagination => '325-335',
         :title => 'Adelomyrmecini new tribe and Cryptomyrmex new genus of myrmicine ants (Hymenoptera, Formicidae)'
       hol_references = [
-        {:document_url => 'fernandez_source', :year => 2010, :series_volume_issue => '44(3)', :pagination => '325-335',
-          :title => 'Adelomyrmecini new tribe and Cryptomyrmex new genus of myrmicine ants (Hymenoptera: Formicidae)'},
+        Hol::Reference.new(:document_url => 'fernandez_source', :year => 2010, :series_volume_issue => '44(3)',
+        :pagination => '325-335', :title => 'Adelomyrmecini new tribe and Cryptomyrmex new genus of myrmicine ants (Hymenoptera: Formicidae)'),
       ]
       @matcher.stub!(:candidates_for).and_return hol_references
       @matcher.match(reference)[:document_url].should == 'fernandez_source'

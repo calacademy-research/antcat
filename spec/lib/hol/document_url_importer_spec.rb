@@ -6,6 +6,7 @@ describe Hol::DocumentUrlImporter do
     @matcher = mock Hol::ReferenceMatcher
     Hol::ReferenceMatcher.stub!(:new).and_return @matcher
     @importer = Hol::DocumentUrlImporter.new
+    @hol_reference = Hol::Reference.new :url => 'url.com/foo'
   end
 
   describe "importing document URL for all references" do
@@ -23,7 +24,7 @@ describe Hol::DocumentUrlImporter do
     it "should not try to import if it already has a document" do
       no_document_url = Factory :reference
       with_document_url = Factory :reference, :document => Factory(:reference_document, :url => 'url.com/foo')
-      @matcher.should_receive(:match).with(no_document_url).and_return({:document_url => 'url.com/foo'})
+      @matcher.should_receive(:match).with(no_document_url).and_return :match => @hol_reference
       @matcher.should_not_receive(:match).with(with_document_url)
       @importer.import
       @importer.processed_count.should == 2
@@ -52,16 +53,14 @@ describe Hol::DocumentUrlImporter do
   describe "saving the authors it can't find" do
     it "should save the authors it can't find" do
       bolton = Factory :author_name, :name => 'bolton'
-      first_bolton = Factory :reference, :author_names => [bolton]
       second_bolton = Factory :reference, :author_names => [bolton]
       ward = Factory :reference, :author_names => [Factory(:author_name, :name => 'ward')]
       fisher = Factory :reference, :author_names => [Factory(:author_name, :name => 'fisher')]
       another_fisher = Factory :reference, :author_names => [Factory(:author_name, :name => 'fisher')]
-      @matcher.stub!(:match).with(first_bolton).and_return({})
-      @matcher.stub!(:match).with(second_bolton).and_return({:document_url => 'url.com/foo'})
-      @matcher.stub!(:match).with(ward).and_return({:document_url => 'url.com/foo'})
-      @matcher.stub!(:match).with(fisher).and_return({:status => :no_entries_for_author})
-      @matcher.stub!(:match).with(another_fisher).and_return({:status => :no_entries_for_author})
+      @matcher.stub!(:match).with(second_bolton).and_return(:match => @hol_reference)
+      @matcher.stub!(:match).with(ward).and_return(:match => @hol_reference)
+      @matcher.stub!(:match).with(fisher).and_return(:no_candidates => true)
+      @matcher.stub!(:match).with(another_fisher).and_return(:no_candidates => true)
       @importer.import
       @importer.missing_authors.should == ['fisher']
       @importer.missing_author_count.should == 2
@@ -73,7 +72,7 @@ describe Hol::DocumentUrlImporter do
       success = Factory :reference
       failure = Factory :reference
       @matcher.stub!(:match).with(failure).and_return({})
-      @matcher.stub!(:match).with(success).and_return({:document_url => 'url.com/foo'})
+      @matcher.stub!(:match).with(success).and_return(:match => @hol_reference)
       @importer.import
       @importer.processed_count.should == 2
       @importer.success_count.should == 1
@@ -83,7 +82,7 @@ describe Hol::DocumentUrlImporter do
       success = Factory :reference
       failure = Factory :book_reference
       @matcher.stub!(:match).with(failure).and_return({})
-      @matcher.stub!(:match).with(success).and_return({:document_url => 'url.com/foo'})
+      @matcher.stub!(:match).with(success).and_return(:match => @hol_reference)
       @importer.import
       @importer.processed_count.should == 2
       @importer.book_failure_count.should == 1
@@ -93,7 +92,7 @@ describe Hol::DocumentUrlImporter do
       success = Factory :reference
       failure = Factory :unknown_reference
       @matcher.stub!(:match).with(failure).and_return({})
-      @matcher.stub!(:match).with(success).and_return({:document_url => 'url.com/foo'})
+      @matcher.stub!(:match).with(success).and_return(:match => @hol_reference)
       @importer.import
       @importer.processed_count.should == 2
       @importer.unknown_count.should == 1
@@ -102,9 +101,10 @@ describe Hol::DocumentUrlImporter do
     it "should record the number of failures because the PDF wasn't found" do
       success = Factory :reference
       failure = Factory :reference
-      @matcher.stub!(:match).with(failure).and_return({:document_url => 'url.com/bar'})
+      @matcher.stub!(:match).with(failure).and_return(:match => Hol::Reference.new(:document_url => 'url.com/bar'))
       stub_request(:any, "http://url.com/bar").to_return :status => 404
-      @matcher.stub!(:match).with(success).and_return({:document_url => 'url.com/foo'})
+      @matcher.stub!(:match).with(success).and_return(:match => Hol::Reference.new(:document_url => 'url.com/foo'))
+      stub_request(:any, "http://url.com/foo").to_return :status => 200
       @importer.import
       @importer.processed_count.should == 2
       @importer.pdf_not_found_count.should == 1
@@ -112,9 +112,9 @@ describe Hol::DocumentUrlImporter do
   end
 
   describe "importing document URL for one reference" do
-    it "ask the HOL matcher for a match" do
+    it "save the url" do
       reference = Factory :reference 
-      @matcher.should_receive(:match).with(reference).and_return({:document_url => 'url.com/foo'})
+      @matcher.stub!(:match).with(reference).and_return :match => Hol::Reference.new(:document_url => 'url.com/foo')
       @importer.import_document_url_for reference 
       reference.reload.document(true).url.should == 'http://url.com/foo'
     end
