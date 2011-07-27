@@ -5,18 +5,18 @@ class Hol::Bibliography
   end
 
   def match_series_volume_issue_pagination target_reference, reference, result
-    if target_reference.series_volume_issue == reference[:series_volume_issue] &&
-       target_reference.pagination == reference[:pagination]
-      result[:document_url] = reference[:document_url]
+    if target_reference.series_volume_issue == reference.series_volume_issue &&
+       target_reference.pagination == reference.pagination
+      result.document_url = reference.document_url
       return true
     end
     false
   end
 
   def match_title target_reference, reference, result
-    if target_reference.title.present? && reference[:title].present? &&
-       target_reference.title.gsub(/\W/, '') == reference[:title].gsub(/\W/, '')
-      result[:document_url] = reference[:document_url]
+    if target_reference.title.present? && reference.title.present? &&
+       target_reference.title.gsub(/\W/, '') == reference.title.gsub(/\W/, '')
+      result.document_url = reference.document_url
       return true
     end
     false
@@ -30,8 +30,8 @@ class Hol::Bibliography
   end
 
   def parse_reference li
-    reference = {}
-    reference[:document_url] = parse_document_url li
+    reference = Hol::Reference.new
+    reference.document_url = parse_document_url li
     parse_article(li, reference) || parse_book(li, reference) || parse_other(li, reference)
   end
 
@@ -48,24 +48,27 @@ class Hol::Bibliography
     year_title_journal = second_strong.previous.content
     start_of_title = year_title_journal.match(/\.?.*?\.\s+/m).end(0)
     last_period = year_title_journal.rindex '.'
-    reference[:title] = year_title_journal[start_of_title..last_period - 1]
-    reference[:year] = year_title_journal.match(/\d+/m).to_s.to_i or return
-    reference[:series_volume_issue] = second_strong.content + second_strong.next.content.match(/(.*?):/)[1]
-    reference[:pagination] = second_strong.next.content.match(/:\s*(.*)./)[1] or return
+    reference.type = 'ArticleReference'
+    reference.title = year_title_journal[start_of_title..last_period - 1]
+    reference.year = year_title_journal.match(/\d+/m).to_s.to_i or return
+    reference.series_volume_issue = second_strong.content + second_strong.next.content.match(/(.*?):/)[1]
+    reference.pagination = second_strong.next.content.match(/:\s*(.*)./)[1] or return
     reference
   rescue
     nil
   end
 
   def parse_book li, reference
-    reference[:year] = li.content.match(/^ (\d{4})\./m)[1].to_i or return
-    reference[:pagination] = li.content.match(/\. (\d+ pp\.)/m)[1] or return
+    reference.type = 'BookReference'
+    reference.year = li.content.match(/^ (\d{4})\./m)[1].to_i or return
+    reference.pagination = li.content.match(/\. (\d+ pp\.)/m)[1] or return
     reference
   rescue
     nil
   end
 
   def parse_other li, reference
+    reference.type = 'OtherReference'
     reference
   end
 
