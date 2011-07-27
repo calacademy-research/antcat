@@ -26,17 +26,21 @@ class Hol::DocumentUrlImporter
 
   def import_document_url_for reference
     if reference.document
-      result = {:status => :already_imported}
+      result = :already_imported
     else
-      result = @matcher.match reference
-      unless result[:document_url]
+      match_result = @matcher.match reference
+      if match_result[:no_candidates]
         reference.document = nil
+        result = :no_entries_for_author
+      elsif !match_result[:match]
+        reference.document = nil
+        result = :no_match
       else
         begin
-          reference.document = ReferenceDocument.create! :url => result[:document_url]
+          reference.document = ReferenceDocument.create! :url => match_result[:match].document_url
+          result = :success
         rescue ActiveRecord::RecordInvalid
-          result[:document_url] = nil
-          result[:status] = :pdf_not_found
+          result = :pdf_not_found
         end
       end
       reference.save!
@@ -54,19 +58,19 @@ class Hol::DocumentUrlImporter
 
   private
   def update_counts reference, result
-    if result[:document_url]
+    if result == :success
       @success_count += 1
       return '* OK *'
-    elsif result[:status] == :already_imported
+    elsif result== :already_imported
       @already_imported_count += 1
       @success_count += 1
       return 'Already'
     else
-      if result[:status] == :no_entries_for_author
+      if result == :no_entries_for_author
         @missing_authors << reference.author_names.first.name
         @missing_author_count += 1
         return 'Author'
-      elsif result[:status] == :pdf_not_found
+      elsif result == :pdf_not_found
         @pdf_not_found_count += 1
         return 'No PDF'
       elsif reference.kind_of? BookReference
