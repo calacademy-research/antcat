@@ -1,15 +1,17 @@
 class Hol::DocumentUrlImporter
 
   attr_reader :success_count,
-              :book_failure_count, :unknown_count, :pdf_not_found_count,
-              :missing_author_count, :already_imported_count
+              :book_failure_count,
+              :unknown_count,
+              :pdf_not_found_count,
+              :missing_author_count,
+              :already_imported_count
 
   def initialize show_progress = false
     Progress.init show_progress, Reference.count
     @matcher = Hol::ReferenceMatcher.new
-    @success_count = @unmatched_count =
-      @book_failure_count = @unknown_count = @pdf_not_found_count =
-      @missing_author_count = @already_imported_count = 0
+    @success_count = @unmatched_count = @book_failure_count = @unknown_count =
+      @pdf_not_found_count = @missing_author_count = @already_imported_count = 0
     @missing_authors = []
   end
 
