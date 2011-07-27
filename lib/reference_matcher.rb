@@ -10,7 +10,6 @@ class ReferenceMatcher
     end
   end
 
-  private
   def possible_match? target, candidate
     target.id != candidate.id
   end
