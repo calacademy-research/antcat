@@ -113,7 +113,4 @@ class Hol::DocumentUrlImporter
     Progress.puts Progress.count(@pdf_not_found_count, Progress.processed_count, 'PDF not found')
   end
 
-  def document_url_exists? document_url
-    (200..399).include? Curl::Easy.http_head(document_url).response_code
-  end
 end
