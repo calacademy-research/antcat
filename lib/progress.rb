@@ -11,7 +11,12 @@ class Progress
     @total_count = total_count
   end
 
-  def self.open_log name
+  def self.open_log name = nil
+    unless name
+      name = caller.first.match(/(.*?):/)[1]
+      name = File.basename name, File.extname(name)
+    end
+    name = Rails.root.join 'log/' + name + "-#{Rails.env}.log"
     file = File.open name, 'w'
     file.sync = true
     @logger = Logger.new file

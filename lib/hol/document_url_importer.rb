@@ -9,6 +9,7 @@ class Hol::DocumentUrlImporter
 
   def initialize show_progress = false
     Progress.init show_progress, Reference.count
+    Progress.open_log
     @matcher = Hol::ReferenceMatcher.new
     @success_count = @unmatched_count = @book_failure_count = @unknown_count =
       @pdf_not_found_count = @missing_author_count = @already_imported_count = 0
@@ -29,7 +30,7 @@ class Hol::DocumentUrlImporter
       result = :already_imported
     else
       match_result = @matcher.match reference
-      if match_result[:no_candidates]
+      if match_result = :no_entries_for_author
         reference.document = nil
         result = :no_entries_for_author
       elsif !match_result[:match]
