@@ -4,6 +4,12 @@ class Hol::ReferenceMatcher < ReferenceMatcher
     matches = super
     return :no_entries_for_author if @no_entries_for_author
     return unless matches.present?
+    best_match matches
+  end
+
+  def best_match matches
+    matches = matches.sort_by {|match| match[:similarity]}
+    raise if matches.first[:similarity] == matches.second[:similarity]
     matches
   end
 
