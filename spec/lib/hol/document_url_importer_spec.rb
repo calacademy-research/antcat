@@ -6,7 +6,7 @@ describe Hol::DocumentUrlImporter do
     @matcher = mock Hol::ReferenceMatcher
     Hol::ReferenceMatcher.stub!(:new).and_return @matcher
     @importer = Hol::DocumentUrlImporter.new
-    @hol_reference = Hol::Reference.new :url => 'url.com/foo'
+    @hol_reference = Hol::Reference.new :document_url => 'url.com/foo'
   end
 
   describe "importing document URL for all references" do
