@@ -2,6 +2,12 @@ require 'spec_helper'
 
 describe ComparableReference do
 
+  describe "initialization" do
+    it "should be initializable with nothing" do
+      ComparableReference.new
+    end
+  end
+
   describe "type mismatch" do
 
     it "should never consider references of different types similar in the least" do
