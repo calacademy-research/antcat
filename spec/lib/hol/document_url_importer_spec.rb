@@ -52,17 +52,17 @@ describe Hol::DocumentUrlImporter do
 
   describe "saving the authors it can't find" do
     it "should save the authors it can't find" do
-      bolton = Factory :author_name, :name => 'bolton'
-      second_bolton = Factory :reference, :author_names => [bolton]
-      ward = Factory :reference, :author_names => [Factory(:author_name, :name => 'ward')]
-      fisher = Factory :reference, :author_names => [Factory(:author_name, :name => 'fisher')]
-      another_fisher = Factory :reference, :author_names => [Factory(:author_name, :name => 'fisher')]
-      @matcher.stub!(:match).with(second_bolton).and_return(:match => @hol_reference)
-      @matcher.stub!(:match).with(ward).and_return(:match => @hol_reference)
-      @matcher.stub!(:match).with(fisher).and_return(:no_candidates => true)
-      @matcher.stub!(:match).with(another_fisher).and_return(:no_candidates => true)
+      bolton_reference = Factory :reference, :author_names => [Factory(:author_name, :name => 'Bolton')]
+      ward_reference = Factory :reference, :author_names => [Factory(:author_name, :name => 'Ward')]
+      fisher = Factory :author_name, :name => 'Fisher'
+      fisher_reference = Factory :reference, :author_names => [fisher]
+      another_fisher_reference = Factory :reference, :author_names => [fisher]
+      @matcher.stub!(:match).with(bolton_reference).and_return(:match => @hol_reference)
+      @matcher.stub!(:match).with(ward_reference).and_return(:match => @hol_reference)
+      @matcher.stub!(:match).with(fisher_reference).and_return(:no_entries_for_author)
+      @matcher.stub!(:match).with(another_fisher_reference).and_return(:no_entries_for_author)
       @importer.import
-      @importer.missing_authors.should == ['fisher']
+      @importer.missing_authors.should == ['Fisher']
       @importer.missing_author_count.should == 2
     end
   end
