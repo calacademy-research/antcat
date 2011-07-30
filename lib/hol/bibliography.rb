@@ -4,33 +4,15 @@ class Hol::Bibliography
     @scraper = Scraper.new
   end
 
-  def match_series_volume_issue_pagination target_reference, reference, result
-    if target_reference.series_volume_issue == reference.series_volume_issue &&
-       target_reference.pagination == reference.pagination
-      result.document_url = reference.document_url
-      return true
-    end
-    false
-  end
-
-  def match_title target_reference, reference, result
-    if target_reference.title.present? && reference.title.present? &&
-       target_reference.title.gsub(/\W/, '') == reference.title.gsub(/\W/, '')
-      result.document_url = reference.document_url
-      return true
-    end
-    false
-  end
-
   def read_references author_name
     doc = search_for_author author_name
     doc.css('li').inject([]) do |references, li|
-      references << parse_reference(li)
+      references << parse_reference(li, author_name)
     end
   end
 
-  def parse_reference li
-    reference = Hol::Reference.new
+  def parse_reference li, author_name
+    reference = Hol::Reference.new :author => author_name
     reference.document_url = parse_document_url li
     parse_article(li, reference) || parse_book(li, reference) || parse_other(li, reference)
   end
