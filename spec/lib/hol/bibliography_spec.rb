@@ -83,7 +83,7 @@ See Site Statistics</a><p>
     end
 
     it "should parse a reference where the journal name begins with a UTF-8 character" do
-      result = @hol.parse_reference(Nokogiri::HTML(<<-LI).at_css('html body'))
+      result = @hol.parse_reference(Nokogiri::HTML(<<-LI).at_css('html body'), 'Fisher')
 <strong><a href="http://hol.osu.edu/reference-full.html?id=22662" title="View extended reference information from Hymenoptera Online">22662</a></strong>
 <a href="http://hol.osu.edu/agent-full.html?id=2767">Adlerz, G.</a>
  1896. Stridulationsorgan och ljudf"ornimmelser hos myror. Öfversigt af Kongliga Ventenskaps-Akadamiens Förhandlingar <strong>52</strong>: 769-782.
@@ -96,7 +96,7 @@ See Site Statistics</a><p>
     end
 
     it "should at least not crash when information is absent" do
-      result = @hol.parse_reference(Nokogiri::HTML(<<-LI).at_css('html body'))
+      result = @hol.parse_reference(Nokogiri::HTML(<<-LI).at_css('html body'), 'Fisher')
 <strong><a href="http://hol.osu.edu/reference-full.html?id=22662" title="View extended reference information from Hymenoptera Online">22662</a></strong>
 <a href="http://hol.osu.edu/agent-full.html?id=2767">Adlerz, G.</a>
  1846. Nomenclatoris zoologici index universalis, continens nomina systematica classium, ordinum, familiarum, et generum animalium omnium.... Soloduri, .
@@ -109,7 +109,7 @@ See Site Statistics</a><p>
     end
 
     it "should parse an article reference" do
-      result = @hol.parse_reference(Nokogiri::HTML(<<-LI).at_css('html body'))
+      result = @hol.parse_reference(Nokogiri::HTML(<<-LI).at_css('html body'), 'Fisher')
 <strong><a href="http://holBibliography.osu.edu/reference-full.html?id=22169" title="View extended reference information from Hymenoptera Online">22169</a></strong>
 <a href="http://holBibliography.osu.edu/agent-full.html?id=493">Bolton, B.</a> and <a href="http://holbibliography.osu.edu/agent-full.html?id=4746">B. L. Fisher</a>.
  2008. Afrotropical ants of the ponerine genera Centromyrmex Mayr, Promyopias Santschi gen. rev. and Feroponera gen. n., with a revised key to genera of African Ponerinae (Hymenoptera: Formicidae). Zootaxa <strong>1929</strong>(1): 1-37.
@@ -128,7 +128,7 @@ See Site Statistics</a><p>
     end
 
     it "should parse an article reference with a single author" do
-      result = @hol.parse_reference(Nokogiri::HTML(<<-LI).at_css('html body'))
+      result = @hol.parse_reference(Nokogiri::HTML(<<-LI).at_css('html body'), 'Fisher')
 <strong><a href="http://hol.osu.edu/reference-full.html?id=22497" title="View extended reference information from Hymenoptera Online">22497</a></strong>
 <a href="http://hol.osu.edu/agent-full.html?id=2767">Adlerz, G.</a>
  1887. Myrmecologiska notiser. Entomologisk Tidskrift <strong>8</strong>: 41-50.
@@ -142,7 +142,7 @@ See Site Statistics</a><p>
     end
 
     it "should parse a book reference" do
-      result = @hol.parse_reference(Nokogiri::HTML(<<-LI).at_css('html body'))
+      result = @hol.parse_reference(Nokogiri::HTML(<<-LI).at_css('html body'), 'Fisher')
 <strong><a href=\"http://hol.osu.edu/reference-full.html?id=6373\" title=\"View extended reference information from Hymenoptera Online\">6373</a></strong>\n<a href=\"http://hol.osu.edu/agent-full.html?id=2711\">Foerster, J. R.</a>\n 1771. Novae species insectorum. Centuria I. T. Davies, London. 100 pp.\n<p>\n</p>\n<center>\n<a href=\"http://osuc.biosci.ohio-state.edu/hymDB/hym_utilities.site_stats\">\nSee Site Statistics</a><p>\n<img src=\"http://iris.biosci.ohio-state.edu/gifs/bl_bds.gif\"></p>\n<p>\n<a href=\"http://iris.biosci.ohio-state.edu/hymenoptera/hym_db_form.html\">Return to Hymenoptera On-Line Opening Page</a>\n<br><a href=\"http://iris.biosci.ohio-state.edu/index.html\">Return to OSU Insect Collection Home Page</a>\n<br>\n10 October  , 2010\n</p>\n</center>\n\n\n\n\n<title>Hymenoptera On-Line Database</title>\n<script language=\"JAVASCRIPT\">\n<!-- Hide script from old browsers\nfunction popup(url, x, y) {\n  newWindow = window.open(url, \"coverwin\",\n    \"toolbar=yes,directories=yes,menubar=yes,status=yes,width=800,height=600,resizable=yes,scrollbars=yes\")\n  newWindow.focus()\n}\n// end hiding script from old browsers -->\n</script><title>Hymenoptera On-Line Database</title>\n<script language=\"JAVASCRIPT\">\n<!-- Hide script from old browsers\nfunction popup(url, x, y) {\n  newWindow = window.open(url, \"coverwin\",\n    \"toolbar=yes,directories=yes,menubar=yes,status=yes,width=800,height=600,resizable=yes,scrollbars=yes\")\n  newWindow.focus()\n}\n// end hiding script from old browsers -->\n</script><h3>Publications of Luis A. Foerster:</h3>\n<p>\n</p>
       LI
       result.document_url.should == 'http://antbase.org/ants/publications/6373/6373.pdf'
@@ -151,7 +151,7 @@ See Site Statistics</a><p>
     end
 
     it "should parse the URL out of the document, if it exists" do
-      result = @hol.parse_reference(Nokogiri::HTML(<<-LI).at_css('html body'))
+      result = @hol.parse_reference(Nokogiri::HTML(<<-LI).at_css('html body'), 'Fisher')
                 <strong><a href="http://hol.osu.edu/reference-full.html?id=22497" title="View extended reference information from Hymenoptera Online">22497</a></strong>
                 <a href="http://hol.osu.edu/agent-full.html?id=2767">Adlerz, G.</a>
                  1887. Myrmecologiska notiser. Entomologisk Tidskrift <strong>8</strong>: 41-50.
@@ -162,6 +162,19 @@ See Site Statistics</a><p>
       LI
 
       result.document_url.should == "http://128.146.250.117/pdfs/22497/22497.pdf" 
+    end
+
+    it "should set the author" do
+      result = @hol.parse_reference(Nokogiri::HTML(<<-LI).at_css('html body'), 'Fisher')
+                  <strong><a href="http://hol.osu.edu/reference-full.html?id=22497" title="View extended reference information from Hymenoptera Online">22497</a></strong>
+                  <a href="http://hol.osu.edu/agent-full.html?id=2767">Adlerz, G.</a>
+                  1887. Myrmecologiska notiser. Entomologisk Tidskrift <strong>8</strong>: 41-50.
+                  <A HREF="http://osuc.biosci.ohio-state.edu/hymDB/nomenclator.hlviewer?id=22497" TARGET="_blank">Browse</A>
+                    or download 
+                    <A HREF="http://128.146.250.117/pdfs/22497/22497.pdf" TARGET="_blank"> entire file (583k)</A>
+                    <IMG SRC="http://osuc.biosci.ohio-state.edu/images/pdf.gif">
+        LI
+      result.author.should == 'Fisher'
     end
   end
 
