@@ -33,12 +33,12 @@ class Hol::DocumentUrlImporter
       if match_result == :no_entries_for_author
         reference.document = nil
         result = :no_entries_for_author
-      elsif !match_result[:match]
+      elsif !match_result
         reference.document = nil
         result = :no_match
       else
         begin
-          reference.document = ReferenceDocument.create! :url => match_result[:match].document_url
+          reference.document = ReferenceDocument.create! :url => match_result.document_url
           result = :success
         rescue ActiveRecord::RecordInvalid
           result = :pdf_not_found
