@@ -30,7 +30,7 @@ class Hol::DocumentUrlImporter
       result = :already_imported
     else
       match_result = @matcher.match reference
-      if match_result = :no_entries_for_author
+      if match_result == :no_entries_for_author
         reference.document = nil
         result = :no_entries_for_author
       elsif !match_result[:match]
@@ -62,7 +62,7 @@ class Hol::DocumentUrlImporter
     if result == :success
       @success_count += 1
       return '* OK *'
-    elsif result== :already_imported
+    elsif result == :already_imported
       @already_imported_count += 1
       @success_count += 1
       return 'Already'
