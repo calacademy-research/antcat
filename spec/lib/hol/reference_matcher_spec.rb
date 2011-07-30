@@ -32,9 +32,20 @@ describe Hol::ReferenceMatcher do
   describe "No match found, but matching author exists" do
     it "should return nil" do
       reference = Factory.build :article_reference
-      @matcher.stub!(:candidates_for).and_return [reference]
+      hol_reference = Hol::Reference.new
+      @matcher.stub!(:candidates_for).and_return [hol_reference]
       reference.stub(:<=>).and_return 0.0
       @matcher.match(reference).should be_nil
+    end
+  end
+
+  describe "One match found" do
+    it "should return that match" do
+      reference = Factory.build :article_reference
+      hol_reference = Hol::Reference.new
+      @matcher.stub!(:candidates_for).and_return [hol_reference]
+      reference.stub(:<=>).and_return 1.0
+      @matcher.match(reference).should == hol_reference
     end
   end
 
