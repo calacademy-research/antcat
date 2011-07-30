@@ -8,6 +8,7 @@ class Hol::ReferenceMatcher < ReferenceMatcher
   end
 
   def best_match matches
+    return matches.first[:match] if matches.size == 1
     matches = matches.sort_by {|match| match[:similarity]}.reverse
     raise if matches.first[:similarity] == matches.second[:similarity]
     matches.first[:match]
