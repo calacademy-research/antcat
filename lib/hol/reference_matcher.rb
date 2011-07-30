@@ -8,9 +8,9 @@ class Hol::ReferenceMatcher < ReferenceMatcher
   end
 
   def best_match matches
-    matches = matches.sort_by {|match| match[:similarity]}
+    matches = matches.sort_by {|match| match[:similarity]}.reverse
     raise if matches.first[:similarity] == matches.second[:similarity]
-    matches
+    matches.first[:match]
   end
 
   def read_references target
