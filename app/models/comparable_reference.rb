@@ -15,4 +15,9 @@ class ComparableReference
   def id
     object_id
   end
+
+  def to_s
+    "#{type}: #{author}, #{year}. #{title}. #{series_volume_issue}. #{pagination}"
+  end
+
 end
