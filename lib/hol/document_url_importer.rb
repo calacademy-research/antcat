@@ -32,10 +32,13 @@ class Hol::DocumentUrlImporter
       match_result = @matcher.match reference
       if match_result == :no_entries_for_author
         reference.document = nil
-        result = :no_entries_for_author
+        result = match_result
       elsif !match_result
         reference.document = nil
         result = :no_match
+      elsif match_result == :book_reference
+        reference.document = nil
+        result = match_result
       else
         begin
           reference.document = ReferenceDocument.create! :url => match_result.document_url
@@ -74,7 +77,7 @@ class Hol::DocumentUrlImporter
       elsif result == :pdf_not_found
         @pdf_not_found_count += 1
         return 'No PDF'
-      elsif reference.kind_of? BookReference
+      elsif result == :book_reference
         @book_failure_count += 1
         return 'Book'
       elsif reference.kind_of? UnknownReference
