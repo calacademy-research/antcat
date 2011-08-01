@@ -11,7 +11,12 @@ class Hol::ReferenceMatcher < ReferenceMatcher
   def best_match matches
     return matches.first[:match] if matches.size == 1
     matches = matches.sort_by {|match| match[:similarity]}.reverse
-    raise if matches.first[:similarity] == matches.second[:similarity]
+    if matches.first[:similarity] == matches.second[:similarity]
+      msg = "Best match found two with same similarity (#{matches.first[:similarity]}):\n"
+      msg << "#{matches.first[:match]} and\n"
+      msg << "#{matches.second[:match]}"
+      raise msg
+    end
     matches.first[:match]
   end
 
