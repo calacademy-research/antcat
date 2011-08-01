@@ -63,4 +63,11 @@ describe Hol::ReferenceMatcher do
     end
   end
 
+  describe "Matching a book" do
+    it "shouldn't" do
+      reference = Factory.build :book_reference
+      @matcher.match(reference).should == :book_reference
+    end
+  end
+
 end

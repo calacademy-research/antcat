@@ -1,6 +1,7 @@
 class Hol::ReferenceMatcher < ReferenceMatcher
 
   def match target_reference
+    return :book_reference if target_reference.kind_of? BookReference
     matches = super
     return :no_entries_for_author if @no_entries_for_author
     return unless matches.present?
