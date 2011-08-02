@@ -81,7 +81,7 @@ describe Hol::DocumentUrlImporter do
     it "should record the number of failures because reference was to a book" do
       success = Factory :reference
       failure = Factory :book_reference
-      @matcher.stub!(:match).with(failure).and_return nil
+      @matcher.stub!(:match).with(failure).and_return :book_reference
       @matcher.stub!(:match).with(success).and_return @hol_reference
       @importer.import
       @importer.processed_count.should == 2
