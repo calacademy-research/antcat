@@ -30,4 +30,9 @@ class Hol::ReferenceMatcher < ReferenceMatcher
   def possible_match? target, candidate
     true
   end
+
+  def min_similarity
+    0.4
+  end
+
 end
