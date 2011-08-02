@@ -3,34 +3,38 @@ require 'spec_helper'
 describe Hol::Bibliography do
   describe "getting an author's bibliography" do
     before do
-      @scraper = mock Scraper
-      Scraper.stub!(:new).and_return @scraper
-      @hol = Hol::Bibliography.new
+      @hol = Hol::Bibliography
+      @curl_result = mock
+      @curl_result.stub(:body_str).and_return ''
     end
 
     it "should go to the right URL" do
-      @scraper.should_receive(:get).with("http://osuc.biosci.ohio-state.edu/hymenoptera/manage_lit.list_pubs?author=fisher").and_return(Nokogiri::HTML '')
-      @hol.read_references 'fisher'
+      Curl::Easy.should_receive(:perform).with("http://osuc.biosci.ohio-state.edu/hymenoptera/manage_lit.list_pubs?author=fisher").and_return @curl_result
+      @hol.search_for_author 'fisher'
     end
 
     it "should URL-encode a name with diacritic" do
-      @scraper.should_receive(:get).with("http://osuc.biosci.ohio-state.edu/hymenoptera/manage_lit.list_pubs?author=h%F6lldobler").and_return(Nokogiri::HTML '')
-      @hol.read_references 'hölldobler'
-    end
-
-    it "should not abort on this name" do
-      @scraper.should_receive(:get).and_return(Nokogiri::HTML '')
-      @hol.read_references "O’Donnell"
-      @hol.read_references "O\x2019Donnell"
+      utf8 = 'hölldobler'
+      Curl::Easy.should_receive(:perform).with("http://osuc.biosci.ohio-state.edu/hymenoptera/manage_lit.list_pubs?author=h%F6lldobler").and_return @curl_result
+      @hol.search_for_author utf8
     end
 
     it "should URL-encode a name with spaces" do
-      @scraper.should_receive(:get).with("http://osuc.biosci.ohio-state.edu/hymenoptera/manage_lit.list_pubs?author=baroni+urbani").and_return(Nokogiri::HTML '')
-      @hol.read_references 'baroni urbani'
+      Curl::Easy.should_receive(:perform).with("http://osuc.biosci.ohio-state.edu/hymenoptera/manage_lit.list_pubs?author=baroni+urbani").and_return @curl_result
+      @hol.search_for_author 'baroni urbani'
+    end
+
+    it "should convert what it gets from HOL to UTF-8" do
+      Curl::Easy.should_receive(:perform).with("http://osuc.biosci.ohio-state.edu/hymenoptera/manage_lit.list_pubs?author=baroni+urbani").and_return @curl_result
+      iso_8859_string = 'A' + 246.chr + 'B' # o with diaresis
+      utf_8_string = 'A' + 'C3'.to_i(16).chr + 'B6'.to_i(16).chr + 'B'
+      @curl_result.should_receive(:body_str).and_return iso_8859_string
+      Nokogiri.should_receive(:HTML).with(utf_8_string, nil, 'UTF-8').and_return 'foobar'
+      @hol.search_for_author 'baroni urbani'
     end
 
     it "should parse each reference" do
-      @scraper.stub!(:get).and_return Nokogiri::HTML <<-SEARCH_RESULTS
+      Hol::Bibliography.stub(:search_for_author).and_return Nokogiri::HTML <<-SEARCH_RESULTS
 <HTML>
 <HEAD>
 <TITLE>Hymenoptera On-Line Database</TITLE>
