@@ -21,8 +21,7 @@ class Hol::ReferenceMatcher < ReferenceMatcher
   end
 
   def read_references target
-    @bibliography ||= Hol::Bibliography.new
-    result = @bibliography.read_references target
+    result = Hol::Bibliography.read_references target
     @no_entries_for_author = result.blank?
     result
   end
