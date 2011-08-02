@@ -47,7 +47,6 @@ class Hol::DocumentUrlImporter
           result = :pdf_not_found
         end
       end
-      reference.save!
     end
     update_counts reference, result
   end
