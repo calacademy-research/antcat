@@ -45,18 +45,6 @@ describe Hol::ReferenceMatcher do
     end
   end
 
-  describe "Two matches with equal similarity found" do
-    it "should raise exception" do
-      best_match = mock
-      good_match = mock
-      reference = Factory.build :article_reference
-      Hol::Bibliography.stub!(:read_references).and_return [good_match, best_match]
-      reference.should_receive(:<=>).with(best_match).and_return 0.9
-      reference.should_receive(:<=>).with(good_match).and_return 0.9
-      lambda {@matcher.match(reference)}.should raise_error
-    end
-  end
-
   describe "Matching a book" do
     it "shouldn't" do
       reference = Factory.build :book_reference
