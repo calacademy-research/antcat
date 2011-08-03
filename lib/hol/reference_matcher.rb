@@ -9,15 +9,19 @@ class Hol::ReferenceMatcher < ReferenceMatcher
   end
 
   def best_match matches
-    return matches.first[:match] if matches.size == 1
-    matches = matches.sort_by {|match| match[:similarity]}.reverse
-    if matches.first[:similarity] == matches.second[:similarity]
-      msg = "Best match found two with same similarity (#{matches.first[:similarity]}):\n"
-      msg << "#{matches.first[:match]} and\n"
-      msg << "#{matches.second[:match]}"
-      Progress.info msg
+    if matches.size == 1
+      match = matches.first if matches.size == 1
+    else
+      matches = matches.sort_by {|match| match[:similarity]}.reverse
+      if matches.first[:similarity] == matches.second[:similarity]
+        msg = "Best match found two with same similarity (#{matches.first[:similarity]}):\n"
+        msg << "#{matches.first[:match]} and\n"
+        msg << "#{matches.second[:match]}"
+        Progress.puts msg, true
+      end
+      match = matches.first
     end
-    matches.first[:match]
+    match[:match]
   end
 
   def read_references target
@@ -31,7 +35,7 @@ class Hol::ReferenceMatcher < ReferenceMatcher
   end
 
   def min_similarity
-    0.4
+    0.90
   end
 
 end
