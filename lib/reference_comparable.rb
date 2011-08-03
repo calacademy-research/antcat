@@ -5,11 +5,13 @@ module ReferenceComparable
 
     result = match_title(rhs) || match_article(rhs) || match_book(rhs)
     year_matches = year_matches? rhs
+    pagination_matches = pagination_matches? rhs
 
     case
     when !result && !year_matches then 0.00
     when !result && year_matches then 0.10
     when result && !year_matches then result - 0.50
+    when result && !pagination_matches then result - 0.01
     else result
     end
   end
@@ -18,6 +20,10 @@ module ReferenceComparable
   def year_matches? rhs
     return unless rhs.year && year
     (rhs.year.to_i - year.to_i).abs <= 1
+  end
+
+  def pagination_matches? rhs
+    rhs.pagination == pagination
   end
 
   def match_title rhs
