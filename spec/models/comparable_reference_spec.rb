@@ -219,4 +219,13 @@ describe ComparableReference do
       end
     end
   end
+
+  describe 'matching everything except the pagination' do
+    it "should give it a 0.99" do
+      @lhs = ComparableReference.new :author => 'Fisher', :title => 'Myrmicinae', :type => 'ArticleReference', :pagination => '29-30', :series_volume_issue => '1', :year => '2002'
+      @rhs = ComparableReference.new :author => 'Fisher', :title => 'Myrmicinae', :type => 'ArticleReference', :pagination => '15-19', :series_volume_issue => '1', :year => '2002'
+      (@lhs <=> @rhs).should == 0.99
+    end
+  end
+
 end
