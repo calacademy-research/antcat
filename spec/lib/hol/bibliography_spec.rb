@@ -33,6 +33,10 @@ describe Hol::Bibliography do
       @hol.search_for_author 'baroni urbani'
     end
 
+    it "should convert this dude to ISO" do
+      @hol.convert_from_utf8("Csősz, S.")
+    end
+
     it "should parse each reference" do
       Hol::Bibliography.stub(:search_for_author).and_return Nokogiri::HTML <<-SEARCH_RESULTS
 <HTML>
