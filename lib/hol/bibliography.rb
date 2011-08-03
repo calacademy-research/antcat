@@ -1,3 +1,5 @@
+require 'iconv'
+
 class Hol::Bibliography
 
   def self.read_references author_name
