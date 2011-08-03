@@ -98,26 +98,26 @@ class Hol::DocumentUrlImporter
     success = (success_percent + ' success').rjust(12)
     rate = rate.rjust(8)
     time_left = time_left.rjust(13)
-    Progress.puts "#{result_string} #{success} #{rate} #{time_left} #{reference}"
+    Progress.puts "#{result_string} #{success} #{rate} #{time_left} #{reference}", true
   end
 
   def show_results
     Progress.puts
-    Progress.puts "#{missing_authors.size} missing authors:\n#{missing_authors.join("\n")}"
+    Progress.puts "#{missing_authors.size} missing authors:\n#{missing_authors.join("\n")}", true
 
     Progress.puts
     rate = Progress.rate
     elapsed = Progress.elapsed
     Progress.puts "#{Progress.processed_count} processed in #{elapsed} (#{rate})"
 
-    Progress.puts Progress.count(@success_count, Progress.processed_count, 'successful')
-    Progress.puts Progress.count(@success_count - @already_imported_count, Progress.processed_count, 'new documents')
-    Progress.puts Progress.count(@already_imported_count, Progress.processed_count, 'already imported')
-    Progress.puts Progress.count(@missing_author_count, Progress.processed_count, 'author not found')
-    Progress.puts Progress.count(@unmatched_count, Progress.processed_count, 'unmatched')
-    Progress.puts Progress.count(@unknown_count, Progress.processed_count, 'unknown references')
-    Progress.puts Progress.count(@book_failure_count, Progress.processed_count, 'book references')
-    Progress.puts Progress.count(@pdf_not_found_count, Progress.processed_count, 'PDF not found')
+    Progress.puts Progress.count(@success_count, Progress.processed_count, 'successful'), true
+    Progress.puts Progress.count(@success_count - @already_imported_count, Progress.processed_count, 'new documents'), true
+    Progress.puts Progress.count(@already_imported_count, Progress.processed_count, 'already imported'), true
+    Progress.puts Progress.count(@missing_author_count, Progress.processed_count, 'author not found'), true
+    Progress.puts Progress.count(@unmatched_count, Progress.processed_count, 'unmatched'), true
+    Progress.puts Progress.count(@unknown_count, Progress.processed_count, 'unknown references'), true
+    Progress.puts Progress.count(@book_failure_count, Progress.processed_count, 'book references'), true
+    Progress.puts Progress.count(@pdf_not_found_count, Progress.processed_count, 'PDF not found'), true
   end
 
 end
