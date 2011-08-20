@@ -12,11 +12,6 @@ unless Rails.env.production?
     end
   end
 
-  desc "Run both plain and enhanced Cucumber features"
-  task 'cucumber:all_features' => ['cucumber:plain', 'cucumber:enhanced']
-
-  task :default => [:spec, 'cucumber:all_features']
-
   begin
     require 'metric_fu'
   rescue MissingSourceFile
@@ -24,3 +19,7 @@ unless Rails.env.production?
 end
 
 AntCat::Application.load_tasks
+
+task(:cucumber).clear
+desc "Run both plain and enhanced Cucumber features"
+task :cucumber => ['cucumber:plain', 'cucumber:enhanced']
