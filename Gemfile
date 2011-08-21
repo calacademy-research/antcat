@@ -17,7 +17,7 @@ gem 'rack'
 gem 'rails'
 gem 'rake'
 gem 'sass'
-gem 'sunspot',          :require => 'sunspot'
+gem 'sunspot'
 gem 'sunspot_rails',    '~> 1.2.1'
 gem 'paperclip'
 gem 'paper_trail'
@@ -41,7 +41,6 @@ group :test do
   gem 'capybara-firebug'
   gem 'database_cleaner'
   gem 'factory_girl'
-  gem 'launchy'
   gem 'webmock'
 end
 
