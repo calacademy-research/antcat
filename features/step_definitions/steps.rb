@@ -227,7 +227,9 @@ When /I fill in "([^"]*)" with a URL to a document that doesn't exist/ do |field
 end
 
 Given "there is a reference with ID 50000 for Dolerichoderinae" do
-  Factory :unknown_reference, :id => 50000, :title => 'Dolerichoderinae'
+  reference = Factory :unknown_reference, :title => 'Dolerichoderinae'
+  sql = "UPDATE `references` SET id = 50000 WHERE id = #{reference.id}"
+  ActiveRecord::Base.connection.execute sql
 end
 
 When 'I choose a file to upload' do

@@ -221,9 +221,11 @@ describe Reference do
 
     describe "searching by ID" do
       it "should ignore everything else if an ID of sufficient length is provided" do
-        reference = Factory :reference, :id => 12345
+        reference = Factory :reference
+        sql = "UPDATE `references` SET id = 12345 WHERE id = #{reference.id}"
+        ActiveRecord::Base.connection.execute sql
         Factory :reference
-        Reference.do_search(:q => reference.id.to_s + ' 1972 Bolton').should == [reference]
+        Reference.do_search(:q => '12345 1972 Bolton').should == [Reference.find 12345]
       end
       it "should not freak out if it can't find the ID" do
         reference = Factory :reference
