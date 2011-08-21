@@ -28,9 +28,9 @@ Factory.define :place do |row|
 end
 
 Factory.define :reference do |reference|
-  reference.author_names      {[Factory(:author_name)]}
   reference.sequence(:title)  {|n| "Ants are my life#{n}"}
   reference.sequence(:citation_year)       {|n| "201#{n}d"}
+  reference.author_names      {[Factory(:author_name)]}
 end
 
 Factory.define :article_reference do |reference|
