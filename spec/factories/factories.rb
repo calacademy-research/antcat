@@ -1,5 +1,3 @@
-require 'factory_girl'
-
 Factory.define :journal do |journal|
   journal.sequence(:name) {|n| "Ants#{n}"}
 end

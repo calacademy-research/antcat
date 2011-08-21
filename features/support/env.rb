@@ -43,5 +43,4 @@ require 'webmock/cucumber'
 WebMock.disable_net_connect! :allow_localhost => true
 
 require 'capybara/firebug'
-require Rails.root + 'spec/factories/factories'
 require 'factory_girl/step_definitions'

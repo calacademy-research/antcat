@@ -12,6 +12,4 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = true
 end
 
-require Rails.root + 'spec/factories/factories'
-
 puts "in #{`pwd`}"
