@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Bolton::ReferenceMatcher do
   before do
     @matcher = Bolton::ReferenceMatcher.new
-    @match = Factory :reference, :author_names => [Factory :author_name, :name => 'Ward']
+    @match = Factory :reference, :author_names => [Factory(:author_name, :name => 'Ward')]
     @target = ComparableReference.new :author => 'Ward'
   end
 
@@ -32,7 +32,7 @@ describe Bolton::ReferenceMatcher do
   end
 
   it "should only save the highest similarity results as matches" do
-    author_names = [Factory :author_name, :name => 'Ward, P. S.']
+    author_names = [Factory(:author_name, :name => 'Ward, P. S.')]
     Reference.delete_all
     @target.should_receive(:<=>).with(Factory :reference, :author_names => author_names).and_return 0.50
     @target.should_receive(:<=>).with(Factory :reference, :author_names => author_names).and_return 0.00

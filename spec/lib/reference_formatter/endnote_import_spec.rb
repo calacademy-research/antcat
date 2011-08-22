@@ -4,7 +4,7 @@ describe ReferenceFormatter::EndnoteImport do
 
   it "should format a book reference correctly" do
     reference = Factory :book_reference,
-      :author_names => [Factory :author_name, :name => 'Bolton, B.'],
+      :author_names => [Factory(:author_name, :name => 'Bolton, B.')],
       :title => 'Ants Are My Life',
       :citation_year => '1933',
       :publisher => Factory(:publisher, :name => 'Springer Verlag', :place => Factory(:place, :name => 'Dresden')),
@@ -64,7 +64,7 @@ describe ReferenceFormatter::EndnoteImport do
 
   it "should format a article reference correctly" do
     reference = Factory :article_reference,
-      :author_names => [Factory :author_name, :name => 'MacKay, W.'],
+      :author_names => [Factory(:author_name, :name => 'MacKay, W.')],
       :citation_year => '1941',
       :title => 'A title',
       :journal => Factory(:journal, :name => 'Psyche'),
@@ -88,7 +88,7 @@ describe ReferenceFormatter::EndnoteImport do
 
   it "should strip out the italics formatting" do
     reference = Factory :article_reference,
-      :author_names => [Factory :author_name, :name => 'MacKay, W.'],
+      :author_names => [Factory(:author_name, :name => 'MacKay, W.')],
       :citation_year => '1941',
       :title => '*A title*',
       :journal => Factory(:journal, :name => 'Psyche'),
@@ -109,7 +109,7 @@ describe ReferenceFormatter::EndnoteImport do
 
   it "should export public and taxonomic notes" do
     reference = Factory :article_reference,
-      :author_names => [Factory :author_name, :name => 'MacKay, W.'],
+      :author_names => [Factory(:author_name, :name => 'MacKay, W.')],
       :citation_year => '1941',
       :title => '*A title*',
       :journal => Factory(:journal, :name => 'Psyche'),
@@ -134,7 +134,7 @@ describe ReferenceFormatter::EndnoteImport do
 
   it "should not export blank public and taxonomic notes" do
     reference = Factory :article_reference,
-      :author_names => [Factory :author_name, :name => 'MacKay, W.'],
+      :author_names => [Factory(:author_name, :name => 'MacKay, W.')],
       :citation_year => '1941',
       :title => '*A title*',
       :journal => Factory(:journal, :name => 'Psyche'),
@@ -161,7 +161,7 @@ describe ReferenceFormatter::EndnoteImport do
 
   it "should format an unknown reference correctly" do
     reference = Factory :unknown_reference,
-      :author_names => [Factory :author_name, :name => 'MacKay, W.'],
+      :author_names => [Factory(:author_name, :name => 'MacKay, W.')],
       :citation_year => '1933',
       :title => 'Another title',
       :citation => 'Dresden'

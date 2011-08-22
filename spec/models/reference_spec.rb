@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Reference do
   before :each do
-    @author_names = [Factory :author_name]
+    @author_names = [Factory(:author_name)]
   end
 
   describe "searching with Solr" do
@@ -327,7 +327,7 @@ describe Reference do
 
     describe "maintaining its order" do
       it "should show the author_names in the order in which they were added to the reference" do
-        reference = Factory(:reference, :author_names => [Factory :author_name, :name => 'Ward'])
+        reference = Factory(:reference, :author_names => [Factory(:author_name, :name => 'Ward')])
         wilden = Factory :author_name, :name => 'Wilden'
         fisher = Factory :author_name, :name => 'Fisher'
         reference.author_names << wilden
@@ -562,7 +562,7 @@ describe Reference do
 
   describe 'implementing ReferenceComparable' do
     it 'should map all fields correctly' do
-      reference = ArticleReference.create! :author_names => [Factory :author_name, :name => 'Fisher, B. L.'], :citation_year => '1981',
+      reference = ArticleReference.create! :author_names => [Factory(:author_name, :name => 'Fisher, B. L.')], :citation_year => '1981',
         :title => 'Dolichoderinae', :journal => Factory(:journal), :series_volume_issue => '1(2)', :pagination => '22-54'
       reference.author.should == 'Fisher'
       reference.year.should == 1981

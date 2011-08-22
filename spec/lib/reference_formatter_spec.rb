@@ -90,13 +90,13 @@ describe ReferenceFormatter do
 
     it "should format a nested reference" do
       reference = Factory :book_reference,
-        :author_names => [Factory :author_name, :name => 'Mayr, E.'],
+        :author_names => [Factory(:author_name, :name => 'Mayr, E.')],
         :citation_year => '2010',
         :title => 'Ants I have known',
         :publisher => Factory(:publisher, :name => 'Wiley', :place => Factory(:place, :name => 'New York')),
         :pagination => '32 pp.'
       nested_reference = Factory :nested_reference, :nested_reference => reference,
-        :author_names => [Factory :author_name, :name => 'Forel, A.'], :title => 'Les fourmis de la Suisse',
+        :author_names => [Factory(:author_name, :name => 'Forel, A.')], :title => 'Les fourmis de la Suisse',
         :citation_year => '1874', :pages_in => 'Pp. 32-45 in'
       ReferenceFormatter.format(nested_reference).should ==
         'Forel, A. 1874. Les fourmis de la Suisse. Pp. 32-45 in Mayr, E. 2010. Ants I have known. New York: Wiley, 32 pp.'
@@ -105,7 +105,7 @@ describe ReferenceFormatter do
     it "should format a citation_string correctly if the publisher doesn't have a place" do
       publisher = Publisher.create! :name => "Wiley"
       reference = Factory(:book_reference,
-                          :author_names => [Factory :author_name, :name => 'Forel, A.'],
+                          :author_names => [Factory(:author_name, :name => 'Forel, A.')],
                           :citation_year => "1874",
                           :title => "Les fourmis de la Suisse.",
                           :publisher => publisher, :pagination => "22 pp.")
@@ -114,7 +114,7 @@ describe ReferenceFormatter do
 
     describe "unsafe characters" do
       before do
-        @author_names = [Factory :author_name, :name => 'Ward, P. S.']
+        @author_names = [Factory(:author_name, :name => 'Ward, P. S.')]
         @reference = Factory :unknown_reference, :author_names => @author_names,
           :citation_year => "1874", :title => "Les fourmis de la Suisse.", :citation => '32 pp.'
       end

@@ -3,7 +3,7 @@ require 'spec_helper'
 describe CoinsHelper do
   it "should format a journal reference correctly" do
     coins = helper.coins(ArticleReference.new(
-      :author_names => [Factory :author_name, :name => 'MacKay, W.'],
+      :author_names => [Factory(:author_name, :name => 'MacKay, W.')],
       :year => '1941',
       :title => 'A title',
       :journal => Factory(:journal, :name => 'Journal Title'),
@@ -33,7 +33,7 @@ describe CoinsHelper do
 
   it "should use the numeric year" do
     coins = helper.coins(ArticleReference.new(
-      :author_names => [Factory :author_name, :name => 'MacKay, W.'],
+      :author_names => [Factory(:author_name, :name => 'MacKay, W.')],
       :year => '1941a ("1942")',
       :title => 'A title',
       :journal => Factory(:journal, :name => 'Journal Title'),
@@ -88,7 +88,7 @@ describe CoinsHelper do
 
   it "should strip out italics formatting" do
     coins = helper.coins(ArticleReference.new(
-      :author_names => [Factory :author_name, :name => 'Ward, P.S.'],
+      :author_names => [Factory(:author_name, :name => 'Ward, P.S.')],
       :year => '1941',
       :title => 'A *title*',
       :journal => Factory(:journal, :name => 'Journal Title'),
@@ -114,7 +114,7 @@ describe CoinsHelper do
 
   it "should escape HTML" do
     coins = helper.coins(ArticleReference.new(
-      :author_names => [Factory :author_name, :name => 'Ward, P.S.'],
+      :author_names => [Factory(:author_name, :name => 'Ward, P.S.')],
       :year => '1941',
       :title => '<script>',
       :journal => Factory(:journal, :name => 'Journal Title'),
@@ -141,7 +141,7 @@ describe CoinsHelper do
   it "should format a book reference correctly" do
     Factory :place, :name => 'Dresden'
     coins = helper.coins(BookReference.new(
-      :author_names => [Factory :author_name, :name => 'MacKay, W.'],
+      :author_names => [Factory(:author_name, :name => 'MacKay, W.')],
       :year => '1933',
       :title => 'Another title',
       :publisher => Factory(:publisher, :name => 'Springer Verlag', :place => Factory(:place, :name => 'Dresden')),
@@ -164,7 +164,7 @@ describe CoinsHelper do
 
   it "should format an unknown reference correctly" do
     coins = helper.coins(UnknownReference.new(
-      :author_names => [Factory :author_name, :name => 'MacKay, W.'],
+      :author_names => [Factory(:author_name, :name => 'MacKay, W.')],
       :year => '1933',
       :title => 'Another title',
       :citation => 'Dresden'))
@@ -185,7 +185,7 @@ describe CoinsHelper do
     reference = Factory :reference
     nested_reference = Factory :nested_reference, :pages_in => 'In:',
       :nested_reference => reference,
-      :author_names => [Factory :author_name, :name => 'Bolton, B.'],
+      :author_names => [Factory(:author_name, :name => 'Bolton, B.')],
       :title => 'Title', :citation_year => '2010'
     coins = helper.coins nested_reference
     check_parameters coins, [

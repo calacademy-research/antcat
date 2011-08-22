@@ -30,7 +30,7 @@ end
 def create_reference type, hash
   author = hash.delete('author') || hash.delete('authors')
   hash[:citation_year] = hash.delete 'year'
-  reference = Factory type, hash.merge(:author_names => [Factory :author_name, :name => author])
+  reference = Factory type, hash.merge(:author_names => [Factory(:author_name, :name => author)])
   @reference ||= reference
   set_timestamps reference, hash
   Reference.reindex
@@ -56,7 +56,7 @@ end
 Given /the following entry nests it/ do |table|
   data = table.hashes.first
   @nestee_reference = @reference
-  @reference = NestedReference.create! :author_names => [Factory(:author_name, :name => data[:authors])],
+  @reference = NestedReference.create! :author_names => [Factory(:author_name, :name => data[:authors)])],
     :citation_year => data[:year], :title => data[:title], :pages_in => data[:pages_in],
     :nested_reference => @nestee_reference
   Reference.reindex

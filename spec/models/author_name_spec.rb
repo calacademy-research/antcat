@@ -217,7 +217,7 @@ describe AuthorName do
     describe "when the correct name doesn't exist" do
       it "should add the correct name, delete the old name, and update its reference's" do
         Author.delete_all
-        reference = Factory :reference, :author_names => [Factory :author_name, :name => 'Ward, Phil']
+        reference = Factory :reference, :author_names => [Factory(:author_name, :name => 'Ward, Phil')]
         AuthorName.correct 'Ward, Phil', 'Ward, P. S.', false
         AuthorName.find_by_name('Ward, Phil').should be_nil
         reference.reload
@@ -229,7 +229,7 @@ describe AuthorName do
       it "should add the correct name, delete the old name, and update its references" do
         Author.delete_all
         Factory :author_name, :name => 'Ward, P. S.'
-        reference = Factory :reference, :author_names => [Factory :author_name, :name => 'Ward, Phil']
+        reference = Factory :reference, :author_names => [Factory(:author_name, :name => 'Ward, Phil')]
         AuthorName.correct 'Ward, Phil', 'Ward, P. S.', false
         AuthorName.find_by_name('Ward, Phil').should be_nil
         reference.reload
