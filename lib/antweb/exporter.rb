@@ -58,9 +58,9 @@ class Antweb::Exporter
   private
   def boolean_to_antweb boolean
     case boolean
-    when true: 'TRUE'
-    when false: 'FALSE'
-    when nil: nil
+    when true then 'TRUE'
+    when false then 'FALSE'
+    when nil then nil
     else raise
     end
   end

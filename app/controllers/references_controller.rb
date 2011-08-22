@@ -82,8 +82,8 @@ EOS
   def set_pagination
     params[:reference][:pagination] =
       case @reference
-      when ArticleReference: params[:article_pagination]
-      when BookReference: params[:book_pagination]
+      when ArticleReference then params[:article_pagination]
+      when BookReference then params[:book_pagination]
       else nil
       end
   end
@@ -138,10 +138,10 @@ EOS
 
   def new_reference
     case params[:selected_tab]
-    when 'Article': ArticleReference.new
-    when 'Book':    BookReference.new
-    when 'Nested':  NestedReference.new
-    else            UnknownReference.new
+    when 'Article' then ArticleReference.new
+    when 'Book' then    BookReference.new
+    when 'Nested' then  NestedReference.new
+    else                UnknownReference.new
     end
   end
 
