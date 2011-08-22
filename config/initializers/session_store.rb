@@ -1,3 +1,4 @@
+# coding: UTF-8
 # Be sure to restart your server when you modify this file.
 
 AntCat::Application.config.session_store :cookie_store, :key => '_antcat_session'

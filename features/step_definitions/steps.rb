@@ -1,3 +1,4 @@
+# coding: UTF-8
 
 Given /the following references? exists?/ do |table|
   Reference.delete_all

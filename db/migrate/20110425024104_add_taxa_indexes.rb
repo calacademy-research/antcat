@@ -1,3 +1,4 @@
+# coding: UTF-8
 class AddTaxaIndexes < ActiveRecord::Migration
   def self.up
     add_index "taxa", ["id", "type"], :name => "taxa_id_and_type_idx"

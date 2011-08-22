@@ -1,3 +1,4 @@
+# coding: UTF-8
 class Journal < ActiveRecord::Base
 
   validates_presence_of :name

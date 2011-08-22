@@ -1,3 +1,4 @@
+# coding: UTF-8
 class Publisher < ActiveRecord::Base
   belongs_to :place
   has_many :books

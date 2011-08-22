@@ -1,3 +1,4 @@
+# coding: UTF-8
 #  A Bolton subfamily catalog file is named NN. NAME.docx,
 #    e.g. 01. FORMICIDAE.docx
 #  and yes, the first one is actually for the whole family, rather

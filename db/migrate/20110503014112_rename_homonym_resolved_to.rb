@@ -1,3 +1,4 @@
+# coding: UTF-8
 class RenameHomonymResolvedTo < ActiveRecord::Migration
   def self.up
     rename_column :taxa, :homonym_resolved_to_id, :homonym_replaced_by_id

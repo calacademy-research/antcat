@@ -1,3 +1,4 @@
+# coding: UTF-8
 module UniqueFilename
   def self.get directory, name
     ext = File.extname name

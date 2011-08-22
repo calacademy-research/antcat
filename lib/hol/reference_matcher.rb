@@ -1,3 +1,4 @@
+# coding: UTF-8
 class Hol::ReferenceMatcher < ReferenceMatcher
 
   def match target_reference

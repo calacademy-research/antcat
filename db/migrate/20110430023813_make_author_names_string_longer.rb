@@ -1,3 +1,4 @@
+# coding: UTF-8
 class MakeAuthorNamesStringLonger < ActiveRecord::Migration
   def self.up
     remove_index :references, :name => "references_author_names_string_citation_year_idx"

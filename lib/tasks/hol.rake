@@ -1,3 +1,4 @@
+# coding: UTF-8
 #Rake.application.options.trace = true
 
 namespace :hol do

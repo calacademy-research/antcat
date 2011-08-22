@@ -1,3 +1,4 @@
+# coding: UTF-8
 class Hol::DocumentUrlImporter
 
   attr_reader :success_count,

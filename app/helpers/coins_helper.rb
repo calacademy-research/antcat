@@ -1,3 +1,4 @@
+# coding: UTF-8
 module CoinsHelper
   def coins reference
     klass = case reference

@@ -1,3 +1,4 @@
+# coding: UTF-8
 class ReferenceFormatter::EndnoteImport
   def self.format references
     references.map do |reference|

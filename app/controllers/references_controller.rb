@@ -1,3 +1,4 @@
+# coding: UTF-8
 class ReferencesController < ApplicationController
 
   before_filter :authenticate_user!, :except => [:index, :download]

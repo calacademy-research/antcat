@@ -1,3 +1,4 @@
+# coding: UTF-8
 class AuthorsController < ApplicationController
   def index
     respond_to do |format|

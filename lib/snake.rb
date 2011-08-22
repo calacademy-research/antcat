@@ -1,3 +1,4 @@
+# coding: UTF-8
 class Array
   def snake column_count
     snake = []

@@ -1,3 +1,4 @@
+# coding: UTF-8
 class Subspecies < Taxon
   belongs_to :subfamily
   belongs_to :genus

@@ -1,3 +1,4 @@
+# coding: UTF-8
 class DuplicateReferencesFinder
 
   def initialize show_progress = false

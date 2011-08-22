@@ -1,3 +1,4 @@
+# coding: UTF-8
 class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
   private
 

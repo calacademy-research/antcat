@@ -1,3 +1,4 @@
+# coding: UTF-8
 AntCat::Application.configure do
 
   config.action_controller.perform_caching = false

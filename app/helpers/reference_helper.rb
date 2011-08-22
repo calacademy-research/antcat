@@ -1,3 +1,4 @@
+# coding: UTF-8
 module ReferenceHelper
   def format_reference reference
     ReferenceFormatter.format reference

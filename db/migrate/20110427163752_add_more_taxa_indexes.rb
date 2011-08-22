@@ -1,3 +1,4 @@
+# coding: UTF-8
 class AddMoreTaxaIndexes < ActiveRecord::Migration
   def self.up
     add_index :taxa, :synonym_of_id, :name => :taxa_synonym_of_id_index

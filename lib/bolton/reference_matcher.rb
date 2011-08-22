@@ -1,3 +1,4 @@
+# coding: UTF-8
 class Bolton::ReferenceMatcher < ::ReferenceMatcher
 
   def match target

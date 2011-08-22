@@ -1,3 +1,4 @@
+# coding: UTF-8
 #  A Bolton species catalog file is named NGC-Sp<start-letters>-<end-letters>.docx,
 #  e.g. NGC-Spa-an.docx
 

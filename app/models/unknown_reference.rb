@@ -1,3 +1,4 @@
+# coding: UTF-8
 class UnknownReference < Reference
 
   validates_presence_of :citation

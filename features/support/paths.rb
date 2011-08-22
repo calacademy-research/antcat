@@ -1,3 +1,4 @@
+# coding: UTF-8
 module NavigationHelpers
   def path_to page_name
     case page_name
