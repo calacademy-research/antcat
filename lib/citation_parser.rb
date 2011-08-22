@@ -1,3 +1,4 @@
+# coding: UTF-8
 module CitationParser
 
   def self.parse string

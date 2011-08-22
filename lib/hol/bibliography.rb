@@ -1,3 +1,4 @@
+# coding: UTF-8
 require 'iconv'
 
 class Hol::Bibliography

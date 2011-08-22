@@ -1,3 +1,4 @@
+# coding: UTF-8
 module ArticleCitationParser
 
   def self.get_series_volume_issue_parts string

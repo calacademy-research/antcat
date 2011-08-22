@@ -1,3 +1,4 @@
+# coding: UTF-8
 class Bolton::Catalog::Importer
 
   def initialize show_progress = false

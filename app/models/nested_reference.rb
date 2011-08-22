@@ -1,3 +1,4 @@
+# coding: UTF-8
 class NestedReference < Reference
   belongs_to :nested_reference, :class_name => 'Reference'
 

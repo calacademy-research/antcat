@@ -1,3 +1,4 @@
+# coding: UTF-8
 AntCat::Application.routes.draw do
 
   root :to => "catalog/browser#show"

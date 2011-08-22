@@ -1,3 +1,4 @@
+# coding: UTF-8
 class Catalog::BrowserController < CatalogController
 
   def show

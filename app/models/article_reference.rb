@@ -1,3 +1,4 @@
+# coding: UTF-8
 class ArticleReference < Reference
   belongs_to :journal
 

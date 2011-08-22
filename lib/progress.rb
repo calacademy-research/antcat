@@ -1,3 +1,4 @@
+# coding: UTF-8
 # Progress.init total_items, show_progress
 # Progress.puts 'Importing...'
 # ...

@@ -1,3 +1,4 @@
+# coding: UTF-8
 class CatalogFormatter
   extend ERB::Util
   extend ActionView::Helpers::TagHelper

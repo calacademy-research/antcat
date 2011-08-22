@@ -1,3 +1,4 @@
+# coding: UTF-8
 class Taxon < ActiveRecord::Base
   set_table_name :taxa
   belongs_to :synonym_of, :class_name => 'Taxon', :foreign_key => :synonym_of_id

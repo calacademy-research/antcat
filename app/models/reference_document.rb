@@ -1,3 +1,4 @@
+# coding: UTF-8
 class ReferenceDocument < ActiveRecord::Base
   has_attached_file :file,
                     :url => ':s3_domain_url',

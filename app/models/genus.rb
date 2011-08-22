@@ -1,3 +1,4 @@
+# coding: UTF-8
 class Genus < Taxon
   belongs_to :tribe
   belongs_to :subfamily

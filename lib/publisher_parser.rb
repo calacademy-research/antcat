@@ -1,3 +1,4 @@
+# coding: UTF-8
 module PublisherParser
 
   def self.parse string

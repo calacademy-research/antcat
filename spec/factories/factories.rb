@@ -1,3 +1,4 @@
+# coding: UTF-8
 Factory.define :journal do |journal|
   journal.sequence(:name) {|n| "Ants#{n}"}
 end

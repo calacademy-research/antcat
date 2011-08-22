@@ -1,3 +1,4 @@
+# coding: UTF-8
 class ReferenceFormatter
   include ERB::Util
 

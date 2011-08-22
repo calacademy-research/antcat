@@ -1,3 +1,4 @@
+# coding: UTF-8
 #  How to import a references file from Bolton
 #  1) Open the file in Word
 #  2) Save it as web page

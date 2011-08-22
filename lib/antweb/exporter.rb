@@ -1,3 +1,4 @@
+# coding: UTF-8
 class Antweb::Exporter
   def initialize show_progress = false
     Progress.init show_progress

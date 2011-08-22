@@ -1,3 +1,4 @@
+# coding: UTF-8
 module TaxonomicHistoryHelper
 
   def taxonomic_history taxon

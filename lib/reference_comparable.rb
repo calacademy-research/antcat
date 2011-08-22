@@ -1,3 +1,4 @@
+# coding: UTF-8
 module ReferenceComparable
   def <=> rhs
     return 0.00 unless type == rhs.type

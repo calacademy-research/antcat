@@ -1,3 +1,4 @@
+# coding: UTF-8
 class Bolton::ReferencesMatcher
 
   def initialize show_progress = false

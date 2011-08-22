@@ -1,3 +1,4 @@
+# coding: UTF-8
 class ReferenceMatcher
 
   def match target

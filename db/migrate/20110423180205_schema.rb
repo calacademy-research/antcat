@@ -1,3 +1,4 @@
+# coding: UTF-8
 class Schema < ActiveRecord::Migration
   def self.up
     create_table "author_names", :force => true do |t|

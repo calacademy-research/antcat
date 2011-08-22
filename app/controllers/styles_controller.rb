@@ -1,3 +1,4 @@
+# coding: UTF-8
 class StylesController < ApplicationController
   def index
     engine= Sass::Engine.new(File.read("public/stylesheets/sass/colors.sass"), :syntax => :sass, :load_paths => ["app/stylesheets"])
