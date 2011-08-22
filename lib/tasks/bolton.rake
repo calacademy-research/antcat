@@ -1,4 +1,4 @@
-Rake.application.options.trace = true
+#Rake.application.options.trace = true
 
 $BOLTON_DATA_DIRECTORY = 'data/bolton'
 
