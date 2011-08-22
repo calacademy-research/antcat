@@ -30,7 +30,7 @@ end
 group :development, :test do
   gem 'cucumber'
   gem 'cucumber-rails'
-  gem 'ruby-debug'
+  gem 'ruby-debug19'
   gem 'rspec' 
   gem 'rspec-rails' 
 end
