@@ -204,7 +204,6 @@ DEPENDENCIES
   haml
   high_voltage
   jquery-rails (>= 0.2.6)
-  levenshtein
   lll
   mysql2 (~> 0.2)
   nokogiri
