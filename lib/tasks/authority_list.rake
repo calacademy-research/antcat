@@ -1,4 +1,4 @@
-Rake.application.options.trace = true
+#Rake.application.options.trace = true
 
 namespace :authority_list do
 
