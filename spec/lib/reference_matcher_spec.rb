@@ -3,7 +3,7 @@ require 'spec_helper'
 describe ReferenceMatcher do
   before do
     @matcher = ReferenceMatcher.new
-    @match = Factory :reference, :author_names => [Factory :author_name, :name => 'Ward']
+    @match = Factory :reference, :author_names => [Factory(:author_name, :name => 'Ward')]
     @target = ComparableReference.new :author => 'Ward'
   end
 
