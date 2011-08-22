@@ -244,7 +244,7 @@ Then 'I should see a link to that file' do
 end
 
 When /I wait for a bit(?: more)?/ do
-  sleep 3
+  sleep 1
 end
 
 Then 'I should be redirected to Amazon' do
