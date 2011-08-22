@@ -70,7 +70,7 @@ GEM
       bcrypt-ruby (~> 2.1.2)
       orm_adapter (~> 0.0.3)
       warden (~> 1.0.3)
-    devise_invitable (0.5.2)
+    devise_invitable (0.5.4)
       devise (~> 1.4.1)
       rails (>= 3.0.0, < 3.2)
     diff-lcs (1.1.2)
@@ -174,7 +174,7 @@ GEM
       polyglot
       polyglot (>= 0.3.1)
     tzinfo (0.3.29)
-    warden (1.0.4)
+    warden (1.0.5)
       rack (>= 1.0)
     webmock (1.7.4)
       addressable (~> 2.2, > 2.2.5)
