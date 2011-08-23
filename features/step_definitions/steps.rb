@@ -57,7 +57,7 @@ end
 Given /the following entry nests it/ do |table|
   data = table.hashes.first
   @nestee_reference = @reference
-  @reference = NestedReference.create! :author_names => [Factory(:author_name, :name => data[:authors)])],
+  @reference = NestedReference.create! :author_names => [Factory(:author_name, :name => data[:authors])],
     :citation_year => data[:year], :title => data[:title], :pages_in => data[:pages_in],
     :nested_reference => @nestee_reference
   Reference.reindex
@@ -386,7 +386,7 @@ Then /I should be in "(.*?)" mode/ do |mode|
   Then %{the "#{mode}" tab should be selected}
 end
 
-very_long_author_names_string = (0...26).inject([]) {|a, n| a << "AuthorWithVeryVeryVeryLongName#{('A'[0] + n).chr}, A."}.join('; ')
+very_long_author_names_string = (0...26).inject([]) {|a, n| a << "AuthorWithVeryVeryVeryLongName#{(?A.ord + n).chr}, A."}.join('; ')
 
 When /in the new edit form I fill in "reference_author_names_string" with a very long author names string/ do
   within "#reference_" do
