@@ -170,7 +170,7 @@ Dumpert, K., Maschwitz, U. & Weissflog, A. 2006. Description of five new weaver 
      }
      @bibliography.import_html contents
      reference = Bolton::Reference.first
-     reference.title.should == 'Description of five new weaver ant species of Camponotus subgenus Karavaievia Emery, 1925 from Malaysia and Thailand, with contribution to their biology, especially to colony foundation'
+     reference.title.should == 'Description of five new weaver ant species of Camponotus subgenus Karavaievia Emery, 1925 from Malaysia and Thailand, with contribution to their biology, especially to colony foundation'
    end
 
    it "should handle a colon in the title" do
