@@ -88,8 +88,7 @@ module ReferenceComparable
 
   def normalize_title! string
     remove_parenthesized_taxon_names! string
-    string.downcase!
-    convert_accents_to_ascii! string
+    string.replace string.parameterize
     string
   end
 
@@ -98,16 +97,8 @@ module ReferenceComparable
     string
   end
 
-  def convert_accents_to_ascii! string
-    string.replace convert_accents_to_ascii string
-  end
-
-  def convert_accents_to_ascii string
-    string.mb_chars.normalize(:kd).gsub(/[^\x00-\x7F]/n,"")
-  end
-
   def normalize_author string
-    convert_accents_to_ascii(string).downcase
+    string.parameterize
   end
 
   def remove_parenthesized_taxon_names! string
