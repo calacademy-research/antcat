@@ -88,7 +88,7 @@ module ReferenceComparable
 
   def normalize_title! string
     remove_parenthesized_taxon_names! string
-    string.replace string.parameterize
+    string.replace ActiveSupport::Inflector.transliterate string.downcase
     string
   end
 
@@ -98,7 +98,7 @@ module ReferenceComparable
   end
 
   def normalize_author string
-    string.parameterize
+    ActiveSupport::Inflector.transliterate string.downcase
   end
 
   def remove_parenthesized_taxon_names! string
