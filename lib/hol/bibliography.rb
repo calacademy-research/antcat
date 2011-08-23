@@ -1,6 +1,4 @@
 # coding: UTF-8
-require 'iconv'
-
 class Hol::Bibliography
 
   def self.read_references author_name
@@ -54,23 +52,10 @@ class Hol::Bibliography
   end
 
   def self.search_for_author author
-    author = convert_to_utf8 author
+    author = author.encode("ISO-8859-1")
     url = "http://osuc.biosci.ohio-state.edu/hymenoptera/manage_lit.list_pubs?author=#{CGI.escape author}"
-    string = Curl::Easy.perform(url).body_str
-    string = convert_from_utf8 string
+    string = Curl::Easy.perform(url).body_str.encode('UTF-8')
     Nokogiri::HTML string, nil, 'UTF-8'
   end
 
-  def self.convert_to_utf8 string
-    Iconv.conv 'ISO-8859-1', 'UTF-8', string
-  rescue Iconv::IllegalSequence => e
-    string = string.mb_chars.normalize(:kd).gsub(/[^\x00-\x7F]/n,"")
-    Iconv.conv 'ISO-8859-1', 'UTF-8', string
-  end
-
-  def self.convert_from_utf8 string
-    Iconv.conv 'UTF-8', 'ISO-8859-1', string
-  rescue Iconv::IllegalSequence => e
-    p e
-  end
 end
