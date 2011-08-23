@@ -226,7 +226,7 @@ describe Reference do
         sql = "UPDATE `references` SET id = 12345 WHERE id = #{reference.id}"
         ActiveRecord::Base.connection.execute sql
         Factory :reference
-        Reference.do_search(:q => '12345 1972 Bolton').should == [Reference.find 12345]
+        Reference.do_search(:q => '12345 1972 Bolton').should == [Reference.find(12345)]
       end
       it "should not freak out if it can't find the ID" do
         reference = Factory :reference
@@ -342,7 +342,7 @@ describe Reference do
   describe "principal author last name" do
     before do
       @ward = Factory :author_name, :name => 'Ward, P.'
-      @fisher = Factory:author_name, :name => 'Fisher, B.'
+      @fisher = Factory :author_name, :name => 'Fisher, B.'
     end
     it "should not freak out if there are no authors" do
       reference = Reference.create! :title => 'title', :citation_year => '1993'
