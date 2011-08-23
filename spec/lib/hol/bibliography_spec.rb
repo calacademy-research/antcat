@@ -27,15 +27,11 @@ describe Hol::Bibliography do
 
     it "should convert what it gets from HOL to UTF-8" do
       Curl::Easy.should_receive(:perform).with("http://osuc.biosci.ohio-state.edu/hymenoptera/manage_lit.list_pubs?author=baroni+urbani").and_return @curl_result
-      iso_8859_string = 'A' + 246.chr + 'B' # o with diaresis
-      utf_8_string = 'A' + 'C3'.to_i(16).chr + 'B6'.to_i(16).chr + 'B'
+      iso_8859_string = ('A' + 246.chr + 'B').force_encoding('ISO-8859-1') # o with diaresis
+      utf_8_string = 'AöB'
       @curl_result.should_receive(:body_str).and_return iso_8859_string
       Nokogiri.should_receive(:HTML).with(utf_8_string, nil, 'UTF-8').and_return 'foobar'
       @hol.search_for_author 'baroni urbani'
-    end
-
-    it "should convert this dude to ISO" do
-      @hol.convert_from_utf8("Csősz, S.")
     end
 
     it "should parse each reference" do
