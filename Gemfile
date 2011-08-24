@@ -28,11 +28,10 @@ group :development do
 end
 
 group :development, :test do
-  gem 'cucumber'
   gem 'cucumber-rails'
-  gem 'ruby-debug19'
   gem 'rspec' 
   gem 'rspec-rails' 
+  gem 'ruby-debug19'
 end
 
 group :test do
