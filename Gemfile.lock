@@ -200,7 +200,6 @@ DEPENDENCIES
   capybara
   capybara-firebug
   citrus
-  cucumber
   cucumber-rails
   curb
   database_cleaner
