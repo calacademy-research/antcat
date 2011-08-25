@@ -24,6 +24,7 @@ gem 'will_paginate'
 gem 'xml-simple'
 
 group :development do
+  gem 'engineyard'
   gem 'wirble'
 end
 
