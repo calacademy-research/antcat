@@ -17,10 +17,10 @@ gem 'rails'
 gem 'rake'
 gem 'sass'
 gem 'sunspot'
-gem 'sunspot_rails',    '~> 1.2.1'
+gem 'sunspot_rails'
 gem 'paperclip'
 gem 'paper_trail'
-gem 'will_paginate',    '~> 3.0.pre2'
+gem 'will_paginate'
 gem 'xml-simple'
 
 group :development do
