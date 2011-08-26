@@ -49,7 +49,6 @@ function setupIconVisibility() {
   $('.reference').live('mouseenter',
     function() {
       if (!isEditing()) {
-        console.log("showing " + $('.icon', $(this)).attr('name'));
         $('.icon', $(this)).show();
       }
     }).live('mouseleave',
