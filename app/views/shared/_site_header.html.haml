@@ -7,8 +7,4 @@
 
 .navigation
   = render 'shared/login'
-  = link_to 'Catalog', index_catalog_path
-  |
-  = link_to 'References', references_path
-  |
-  = link_to 'AntWeb', "http://www.antweb.org/"
+  = link_to('Catalog', index_catalog_path) + '| ' + link_to('References', references_path) + '| ' + link_to('AntWeb', "http://www.antweb.org/")

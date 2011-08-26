@@ -9,14 +9,11 @@
   #navigation_bar
     = form_tag references_path, :method => 'get', :id => 'search_form' do
       .actions
-        = link_to 'Latest additions', references_path(:commit => 'new')
+        - menu = link_to('Latest additions', references_path(:commit => 'new'))+ '| '
         - if user_signed_in?
-          |
-          = link_to 'Latest changes', references_path(:commit => 'review')
-          |
-          = link_to 'Journals', journals_path
-        |
-        = link_to 'Export to EndNote', endnote_import_path(:q => params[:q]), :confirm => @endnote_export_confirmation_message
+          - menu << link_to('Latest changes', references_path(:commit => 'review')) << '| ' << link_to('Journals', journals_path) << '| '
+        - menu << link_to('Export to EndNote', endnote_import_path(:q => params[:q]), :confirm => @endnote_export_confirmation_message)
+        = menu
 
       .search
         Search for
