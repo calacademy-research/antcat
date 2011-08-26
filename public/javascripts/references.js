@@ -35,6 +35,7 @@ function setupDisplays() {
 function setupIcons() {
   setupIconVisibility()
   if (loggedIn) {
+    setupIconHighlighting()
     setupIconClickHandlers()
   }
 }
@@ -48,12 +49,21 @@ function setupIconVisibility() {
 
   $('.reference').live('mouseenter',
     function() {
-      if (!isEditing()) {
+      if (!isEditing())
         $('.icon', $(this)).show();
-      }
     }).live('mouseleave',
     function() {
       $('.icon').hide();
+    });
+}
+
+function setupIconHighlighting() {
+  $('.icon img').live('mouseenter',
+    function() {
+      this.src = this.src.replace('off', 'on');
+    }).live('mouseleave',
+    function() {
+      this.src = this.src.replace('on', 'off');
     });
 }
 
