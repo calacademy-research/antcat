@@ -9,6 +9,7 @@ gem 'devise_invitable'
 gem 'haml'
 gem 'high_voltage'
 gem 'jquery-rails',     '>= 0.2.6'
+gem 'lll'
 gem 'mysql2',           '~> 0.2'
 gem 'nokogiri'
 gem 'rack'
@@ -25,14 +26,6 @@ gem 'xml-simple'
 group :development do
   gem 'engineyard'
   gem 'wirble'
-end
-
-# Need to use different sources for lll in dev and production
-# See http://www.cowboycoded.com/2010/08/10/using-2-sources-for-a-gem-in-different-environments-with-bundler/
-if ENV['MY_BUNDLE_ENV'] == "dev"
-  gem 'lll', :path => '~/lll'
-else
-  gem 'lll'
 end
 
 group :development, :test do
