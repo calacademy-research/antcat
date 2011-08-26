@@ -57,6 +57,7 @@ describe Bolton::Catalog::Subfamily::Importer do
     end
 
     it "should handle an unavailable genus" do
+      lll{'1'}
       @importer.parse(%{
   <i><span lang=EN-GB style='color:purple'>ANCYLOGNATHUS</span></i><span lang=EN-GB> [<i>nomen nudum</i>]</span>
       }).should == {:type => :genus_header, :name => 'Ancylognathus', :status => 'unavailable'}
