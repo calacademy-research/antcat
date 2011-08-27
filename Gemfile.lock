@@ -182,6 +182,7 @@ GEM
       ffi (>= 1.0.7)
       json_pure
       rubyzip
+    spork (0.8.5)
     sunspot (1.2.1)
       escape (= 0.0.4)
       pr_geohash (~> 1.0)
@@ -237,6 +238,7 @@ DEPENDENCIES
   rspec-rails
   ruby-debug19
   sass
+  spork
   sunspot
   sunspot_rails
   webmock
