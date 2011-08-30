@@ -10,13 +10,14 @@ namespace :references do
     Progress.init true
     references_with_documents_count = error_count = 0
     Reference.all.each do |reference|
-      Progress.tally_and_show_progress 10
-      next unless reference.document
+      Progress.tally
+      next unless reference.document && reference.document.hosted_by_us?
       references_with_documents_count += 1
-      reference.document.check_url
-      if reference.document.errors.present?
-        Progress.puts reference.document.url
-        Progress.puts reference.document.errors
+      begin
+        reference.document.actual_url
+      rescue Exception => e
+        Progress.puts e.inspect
+        Progress.puts "#{reference.id} #{reference.document.id} #{reference.document.url}"
         error_count += 1
       end
     end
