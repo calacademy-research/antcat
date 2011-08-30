@@ -65,7 +65,7 @@ class Reference < ActiveRecord::Base
     return order('updated_at DESC').paginate :page => options[:page] if options[:review]
     return order('created_at DESC').paginate :page => options[:page] if options[:whats_new]
 
-    unless options[:q]
+    unless options[:q].present?
       if paginate
         return order(:author_names_string_cache, :citation_year).paginate :page => options[:page]
       else
