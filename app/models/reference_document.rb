@@ -26,7 +26,6 @@ class ReferenceDocument < ActiveRecord::Base
     hosted_by_us? ? s3_url : url
   end
 
-  private
   def check_url
     return if file_file_name.present? or url.blank?
     # this is to avoid authentication problems when a URL to one of "our" files is copied
