@@ -12,6 +12,13 @@ class ReferenceDocument < ActiveRecord::Base
   before_validation :add_protocol_to_url
   belongs_to :reference
   validate :check_url
+  before_post_process :transliterate_file_name
+
+  def transliterate_file_name
+    extension = File.extname(file_file_name).gsub(/^\.+/, '')
+    filename = file_file_name.gsub(/\.#{extension}$/, '')
+    file.instance_write(:file_name, "#{ActiveSupport::Inflector.parameterize(filename)}.#{ActiveSupport::Inflector.parameterize(extension)}")
+  end
 
   def host= host
     return unless hosted_by_us?
