@@ -7,18 +7,19 @@
 
 - content_for :page_header do
   #navigation_bar
-    = form_tag references_path, :method => 'get', :id => 'search_form' do
-      .actions
-        - menu = link_to('Latest additions', references_path(:commit => 'new'))+ '| '
-        - if user_signed_in?
-          - menu << link_to('Latest changes', references_path(:commit => 'review')) << '| ' << link_to('Journals', journals_path) << '| '
-        - menu << link_to('Export to EndNote', endnote_import_path(:q => params[:q]), :confirm => @endnote_export_confirmation_message)
-        = menu
+    .actions
+      - menu = link_to('Latest additions', references_path(:commit => 'new'))+ '| '
+      - if user_signed_in?
+        - menu << link_to('Latest changes', references_path(:commit => 'review')) << '| ' << link_to('Journals', journals_path) << '| '
+      - menu << link_to('Export to EndNote', endnote_import_path(:q => params[:q]), :confirm => @endnote_export_confirmation_message)
+      = menu
 
+    = form_tag references_path, :method => 'get', :id => 'search_form' do
       .search
         Search for
         = text_field_tag "q", params[:q]
         = submit_tag "Go"
+
   .title
     %h2.left ANTBIB
     %h2.left A Bibliography of Ant Systematics
