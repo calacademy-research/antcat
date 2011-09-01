@@ -105,6 +105,8 @@ GEM
       thor (~> 0.14.4)
     json (1.5.3)
     json_pure (1.5.3)
+    launchy (2.0.5)
+      addressable (~> 2.2.6)
     linecache19 (0.5.12)
       ruby_core_source (>= 0.1.4)
     lll (1.11.0)
@@ -226,6 +228,7 @@ DEPENDENCIES
   haml
   high_voltage
   jquery-rails (>= 0.2.6)
+  launchy
   lll
   mysql2 (~> 0.2)
   nokogiri
