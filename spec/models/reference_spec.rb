@@ -6,6 +6,26 @@ describe Reference do
     @author_names = [Factory(:author_name)]
   end
 
+  describe "Advanced searching" do
+    it "should return an empty array if nothing is found for the author names" do
+      Factory(:reference)
+      Reference.advanced_search(:author_names_string => 'Bolton').should be_empty
+    end
+    it "should find the reference for a given author_name if it exists" do
+      bolton = reference_factory(:author_name => 'Bolton')
+      reference_factory(:author_name => 'Fisher')
+      Reference.advanced_search(:q_authors => 'Bolton').should == [bolton]
+    end
+    it "should find the reference with both author names, but not just one" do
+      bolton = Factory :author_name, :name => 'Bolton'
+      fisher = Factory :author_name, :name => 'Fisher'
+      bolton_reference = Factory :reference, :author_names => [bolton]
+      fisher_reference = Factory :reference, :author_names => [fisher]
+      bolton_fisher_reference = Factory :reference, :author_names => [bolton,fisher]
+      Reference.advanced_search(:q_authors => 'Bolton;Fisher').should == [bolton_fisher_reference]
+    end
+  end
+
   describe "searching with Solr" do
     it "should return an empty array if nothing is found for author_name" do
       Factory(:reference).index!

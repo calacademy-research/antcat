@@ -59,7 +59,25 @@ class Reference < ActiveRecord::Base
     principal_author_last_name_cache
   end
 
+  def self.advanced_search parameters = {}
+    author_names = AuthorParser.parse(parameters[:q_authors])[:names]
+    reference_ids = Reference.select('`references`.*').
+              joins(:author_names).
+              where('name IN (?)', author_names).
+              group('references.id').
+              having("COUNT(`references`.id) = #{author_names.length}")
+    Reference.where('id IN (?)', reference_ids)
+  end
+
+  def self.do_advanced_search options = {}
+    paginate = options[:format] != :endnote_import
+    results = advanced_search(options)
+    paginate ? results.paginate(:page => options[:page]) : results
+  end
+
   def self.do_search options = {}
+    return do_advanced_search(options) if options[:q_authors].present?
+
     paginate = options[:format] != :endnote_import
 
     return order('updated_at DESC').paginate :page => options[:page] if options[:review]
