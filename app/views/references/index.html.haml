@@ -14,11 +14,7 @@
       - menu << link_to('Export to EndNote', endnote_import_path(:q => params[:q]), :confirm => @endnote_export_confirmation_message)
       = menu
 
-    = form_tag references_path, :method => 'get', :id => 'search_form' do
-      .search
-        Search for
-        = text_field_tag "q", params[:q]
-        = submit_tag "Go"
+    = render 'search', :params => params
 
   .title
     %h2.left ANTBIB
@@ -26,7 +22,7 @@
     %h3.right by Philip S. Ward, et al.
     .clear
 
--unless @references.present?
+-if @references.empty?
   .no_results_found
     No results found
 
