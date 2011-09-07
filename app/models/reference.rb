@@ -60,14 +60,14 @@ class Reference < ActiveRecord::Base
   end
 
   def self.advanced_search parameters = {}
-    author_names = parameters[:q_authors].dup
+    author_names = parameters[:q].dup
     author_names = AuthorParser.parse(author_names)[:names]
     reference_ids = Reference.select('`references`.*').
               joins(:author_names).
               where('name IN (?)', author_names).
               group('references.id').
               having("COUNT(`references`.id) = #{author_names.length}")
-    Reference.where('id IN (?)', reference_ids)
+    Reference.where('id IN (?)', reference_ids).order(:author_names_string_cache, :citation_year)
   end
 
   def self.do_advanced_search options = {}
@@ -77,7 +77,7 @@ class Reference < ActiveRecord::Base
   end
 
   def self.do_search options = {}
-    return do_advanced_search(options) if options[:q_authors].present?
+    return do_advanced_search(options) if options[:advanced]
 
     paginate = options[:format] != :endnote_import
 

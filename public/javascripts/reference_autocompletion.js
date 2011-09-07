@@ -26,7 +26,11 @@ function setupAuthorAutocomplete(field) {
 }
 
 function setupAdvancedSearchAuthorAutocomplete() {
-  setupAuthorAutocomplete($('#q_authors'));
+  setupAuthorAutocomplete($('#q'));
+}
+
+function removeAdvancedSearchAuthorAutocomplete() {
+  $('#q').autocomplete('destroy');
 }
 
 function setupReferenceEditAuthorAutocomplete($reference) {
