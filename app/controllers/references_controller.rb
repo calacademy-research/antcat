@@ -4,15 +4,19 @@ class ReferencesController < ApplicationController
   before_filter :authenticate_user!, :except => [:index, :download]
 
   def index
-    params[:q] = '' if ['review', 'new', 'clear'].include? params[:commit]
+    searching = params[:q].present? || params[:q_authors].present?
+    if ['review', 'new', 'clear'].include? params[:commit]
+      params[:q] = params[:q_authors] = ''
+    end
     params[:q].strip! if params[:q]
+    params[:q_authors].strip! if params[:q_authors]
     params[:review] = params[:commit] == 'review'
     params[:whats_new] = params[:commit] == 'new'
 
     @endnote_export_confirmation_message = <<EOS
 AntCat will download these references to a file named "antcat_references.utf8.endnote_import". When your browser asks, save this file. Then use EndNote's Import function on its File menu to import the file. Choose "EndNote Import" from Import Options, and "Unicode (UTF-8)" as the Text Translation.
 EOS
-    unless params[:q].present?
+    unless searching
       @endnote_export_confirmation_message << "\nSince there are no search criteria, AntCat will download all ten thousand references. This will take several minutes."
     end
 

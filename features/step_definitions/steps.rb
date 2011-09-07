@@ -331,6 +331,10 @@ When /I fill in the search box with "(.*?)"/ do |search_term|
   When %{I fill in "q" with "#{search_term}"}
 end
 
+When /I fill in the search authors box with "(.*?)"/ do |authors|
+  When %{I fill in "q_authors" with "#{authors}"}
+end
+
 When /I press "Go" by the search box/ do
   When 'I press "Go" within "#search_form"'
 end
