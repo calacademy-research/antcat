@@ -24,6 +24,20 @@ function setupSearch() {
         return true;
     }
   });
+
+  setupAdvancedSearchAuthorAutocomplete();
+
+  $('.help_icon').qtip({
+    content: "Start typing an author's name, then choose it from the list and press Enter. Repeat for additional author names. Then press Enter to find references by all those authors.",
+    show: 'mouseover',
+    hide: 'mouseout',
+    position: {
+      corner: {
+        target: 'topLeft',
+        tooltip: 'bottomRight'
+      }
+    }
+  })
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -192,9 +206,9 @@ function showReferenceEdit($reference, options) {
 
   setupTabs($reference);
 
-  setupAuthorAutocomplete($reference);
-  setupJournalAutocomplete($reference);
-  setupPublisherAutocomplete($reference);
+  setupReferenceEditAuthorAutocomplete($reference);
+  setupReferenceEditJournalAutocomplete($reference);
+  setupReferenceEditPublisherAutocomplete($reference);
 
   $edit.show();
   $('#reference_author_names_string', $edit)[0].focus();

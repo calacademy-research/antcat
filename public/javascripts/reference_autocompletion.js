@@ -1,8 +1,8 @@
-function setupAuthorAutocomplete($reference) {
+function setupAuthorAutocomplete(field) {
   if (testing)
     return
 
-  $('.reference_edit .authors', $reference).autocomplete({
+  field.autocomplete({
     selectFirst: true,
     minLength: 3,
     source: function(request, response) {
@@ -23,6 +23,14 @@ function setupAuthorAutocomplete($reference) {
       return false;
     }
   });
+}
+
+function setupAdvancedSearchAuthorAutocomplete() {
+  setupAuthorAutocomplete($('#q_authors'));
+}
+
+function setupReferenceEditAuthorAutocomplete($reference) {
+  setupAuthorAutocomplete($('.reference_edit .authors', $reference));
 }
 
 function extractAuthorSearchTerm(string, position) {
@@ -56,7 +64,7 @@ function insertAuthor(string, position, author)
 
 ///////////////////////////////////////////////////////
 
-function setupJournalAutocomplete($reference) {
+function setupReferenceEditJournalAutocomplete($reference) {
   $('.reference_edit .journal', $reference).autocomplete({
     selectFirst: true,
     source: "/journals",
@@ -66,7 +74,7 @@ function setupJournalAutocomplete($reference) {
 
 ///////////////////////////////////////////////////////
 
-function setupPublisherAutocomplete($reference) {
+function setupReferenceEditPublisherAutocomplete($reference) {
   $('.reference_edit .publisher', $reference).autocomplete({
     selectFirst: true,
     source: "/publishers",
