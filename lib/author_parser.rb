@@ -3,6 +3,7 @@ module AuthorParser
 
   def self.parse string
     return {:names => []} unless string.present?
+    Citrus.require Rails.root.to_s + '/lib/grammar/author_grammar'
     match = AuthorGrammar.parse(string, :consume => false)
     result = match.value
 
