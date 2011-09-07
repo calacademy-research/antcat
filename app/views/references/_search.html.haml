@@ -1,0 +1,9 @@
+= form_tag references_path, :method => 'get', :id => 'search_form' do
+  .search
+    - if false
+      Search for
+      = text_field_tag "q", params[:q]
+    - else
+      Search for author(s)
+      = text_field_tag "q_authors", params[:a_authors]
+    = submit_tag "Go"
