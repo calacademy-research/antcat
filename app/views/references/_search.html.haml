@@ -1,9 +1,17 @@
 = form_tag references_path, :method => 'get', :id => 'search_form' do
   .search
+    = select_tag "search_selector", "<option>Search for</option><option>Search for author(s)</option>".html_safe
     - if false
-      Search for
       = text_field_tag "q", params[:q]
     - else
-      Search for author(s)
-      = text_field_tag "q_authors", params[:a_authors]
+      = text_field_tag "q_authors", params[:q_authors]
+      = image_tag 'help.png', :class => 'help_icon'
     = submit_tag "Go"
+
+.qtip
+  .qtip-tip
+  .qtip-wrapper
+    .qtip-contentWrapper
+      .qtip-title
+        .qtip-button
+      .qtip-content
