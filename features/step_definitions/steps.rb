@@ -29,9 +29,16 @@ Given /the following unknown references? exists?/ do |table|
 end
 
 def create_reference type, hash
-  author = hash.delete('author') || hash.delete('authors')
+  author = hash.delete('author')
+  if author
+    author_names = [Factory(:author_name, :name => author)]
+  else
+    authors = hash.delete('authors')
+    author_names = AuthorParser.parse(authors)[:names]
+    author_names = author_names.map {|author_name| Factory(:author_name, :name => author_name)}
+  end
   hash[:citation_year] = hash.delete 'year'
-  reference = Factory type, hash.merge(:author_names => [Factory(:author_name, :name => author)])
+  reference = Factory type, hash.merge(:author_names => author_names)
   @reference ||= reference
   set_timestamps reference, hash
   Reference.reindex
@@ -200,7 +207,6 @@ Then /I should (not )?see a "PDF" link/ do |should_not|
     trace << 'end'
 
   rescue Exception
-    lll{'trace'}
     raise
   end
 end
