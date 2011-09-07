@@ -25,17 +25,32 @@ function setupSearch() {
     }
   });
 
-  setupAdvancedSearchAuthorAutocomplete();
+  setupSearchBox($('#search_selector option:selected').text())
+  $('#search_selector').change(function() {
+    new_type = $('#search_selector option:selected').text()
+    if (new_type == 'Search for')
+      removeAdvancedSearchAuthorAutocomplete();
+    setupSearchBox(new_type);
+  })
+}
 
+function setupSearchBox(selector_text) {
+  if (selector_text == 'Search for') {
+    setHelpIconText("Enter keywords (including author names), a year, a year range or an ID. Keywords (including author names) are searched for in all fields (title, notes, etc.)");
+  } else {
+    setupAdvancedSearchAuthorAutocomplete();
+    setHelpIconText("Start typing an author's name, then choose it from the list and press Enter. Repeat for additional author names. Then press Enter to find references by all those authors.");
+  }
+}
+
+function setHelpIconText(text) {
   $('.help_icon').qtip({
-    content: "Start typing an author's name, then choose it from the list and press Enter. Repeat for additional author names. Then press Enter to find references by all those authors.",
+    content: text,
     show: 'mouseover',
     hide: 'mouseout',
     position: {
-      corner: {
-        target: 'topLeft',
-        tooltip: 'bottomRight'
-      }
+      adjust: {y: -7},
+      corner: {target: 'topLeft', tooltip: 'bottomRight'}
     }
   })
 }

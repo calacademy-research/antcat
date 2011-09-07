@@ -14,9 +14,9 @@ describe Reference do
     it "should find the reference for a given author_name if it exists" do
       bolton = reference_factory(:author_name => 'Bolton')
       reference_factory(:author_name => 'Fisher')
-      params = {:q_authors => 'Bolton'}
+      params = {:q => 'Bolton'}
       Reference.advanced_search(params).should == [bolton]
-      params.should == {:q_authors => 'Bolton'}
+      params.should == {:q => 'Bolton'}
     end
     it "should find the reference with both author names, but not just one" do
       bolton = Factory :author_name, :name => 'Bolton'
@@ -24,7 +24,7 @@ describe Reference do
       bolton_reference = Factory :reference, :author_names => [bolton]
       fisher_reference = Factory :reference, :author_names => [fisher]
       bolton_fisher_reference = Factory :reference, :author_names => [bolton,fisher]
-      Reference.advanced_search(:q_authors => 'Bolton;Fisher').should == [bolton_fisher_reference]
+      Reference.advanced_search(:q => 'Bolton;Fisher').should == [bolton_fisher_reference]
     end
   end
 

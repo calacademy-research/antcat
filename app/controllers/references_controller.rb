@@ -4,12 +4,12 @@ class ReferencesController < ApplicationController
   before_filter :authenticate_user!, :except => [:index, :download]
 
   def index
-    searching = params[:q].present? || params[:q_authors].present?
+    searching = params[:q].present?
+    params[:search_selector] ||= 'Search for'
     if ['review', 'new', 'clear'].include? params[:commit]
-      params[:q] = params[:q_authors] = ''
+      params[:q] = ''
     end
     params[:q].strip! if params[:q]
-    params[:q_authors].strip! if params[:q_authors]
     params[:review] = params[:commit] == 'review'
     params[:whats_new] = params[:commit] == 'new'
 
@@ -19,6 +19,8 @@ EOS
     unless searching
       @endnote_export_confirmation_message << "\nSince there are no search criteria, AntCat will download all ten thousand references. This will take several minutes."
     end
+
+    params[:advanced] = params[:search_selector] == 'Search for author(s)'
 
     respond_to do |format|
       format.html   {
