@@ -9,7 +9,7 @@ describe Reference do
   describe "Advanced searching" do
     it "should return an empty array if nothing is found for the author names" do
       Factory(:reference)
-      Reference.advanced_search(:author_names_string => 'Bolton').should be_empty
+      Reference.advanced_search(:q => 'Bolton').should be_empty
     end
     it "should find the reference for a given author_name if it exists" do
       bolton = reference_factory(:author_name => 'Bolton')
