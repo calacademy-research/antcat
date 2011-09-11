@@ -35,10 +35,11 @@ def create_reference type, hash
   else
     authors = hash.delete('authors')
     author_names = AuthorParser.parse(authors)[:names]
+    author_names_suffix = AuthorParser.parse(authors)[:suffix]
     author_names = author_names.map {|author_name| Factory(:author_name, :name => author_name)}
   end
   hash[:citation_year] = hash.delete 'year'
-  reference = Factory type, hash.merge(:author_names => author_names)
+  reference = Factory type, hash.merge(:author_names => author_names, :author_names_suffix => author_names_suffix)
   @reference ||= reference
   set_timestamps reference, hash
   Reference.reindex
