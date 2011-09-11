@@ -60,8 +60,7 @@ class Reference < ActiveRecord::Base
   end
 
   def self.advanced_search parameters = {}
-    author_names = parameters[:q].dup
-    author_names = AuthorParser.parse(author_names)[:names]
+    author_names = AuthorParser.parse(parameters[:q])[:names]
     reference_ids = Reference.select('`references`.*').
               joins(:author_names).
               where('name IN (?)', author_names).
