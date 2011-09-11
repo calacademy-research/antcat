@@ -20,9 +20,17 @@ Feature: Using the catalog
       And I choose "Browser"
     Then the browser header should be "Subfamily DOLICHODERINAE"
 
-  #Scenario: Keeping search results after going to the browser
-    #When I fill in the search box with "emeryi"
-      #And I press "Go" by the search box
-      #And I choose "Browser"
-    #Then I should see "Tapinoma emeryi" within the search results
-      #And I should see "Atta emeryi" within the search results
+  Scenario: Keeping search results after going to the browser
+    Given a subfamily exists with a name of "Dolichoderinae"
+    And a tribe exists with a name of "Dolichoderini" and a subfamily of "Dolichoderinae"
+    And a genus exists with a name of "Tapinoma" and a tribe of "Dolichoderini"
+    And a genus exists with a name of "Atta" and a tribe of "Dolichoderini"
+    And a species exists with a name of "emeryi" and a genus of "Tapinoma"
+    And a species exists with a name of "emeryi" and a genus of "Atta"
+    When I go to the catalog index
+      And I fill in the search box with "emeryi"
+      And I press "Go" by the search box
+      And I choose "Browser"
+      And show me the page
+    Then I should see "Tapinoma emeryi" within the search results
+      And I should see "Atta emeryi" within the search results
