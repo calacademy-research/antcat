@@ -61,6 +61,9 @@ Given 'the following species exist' do |table|
   end
 end
 
+And 'I debug' do
+end 
+
 Given /the following entry nests it/ do |table|
   data = table.hashes.first
   @nestee_reference = @reference
