@@ -3,6 +3,18 @@ require 'spec_helper'
 
 describe AuthorParser do
   describe "parsing author names" do
+    describe "Modifying the input string" do
+      it "should modify the string if the bang version is used" do
+        string = 'Fisher, B.L.'
+        AuthorParser.parse!(string)[:names].should == ['Fisher, B.L.']
+        string.should == ''
+      end
+      it "should not modify the string if the bang version is not used" do
+        string = 'Fisher, B.L.'
+        AuthorParser.parse(string)[:names].should == ['Fisher, B.L.']
+        string.should == 'Fisher, B.L.'
+      end
+    end
     it "should return an empty array if the string is empty" do
       ['', nil].each do |string|
         AuthorParser.parse(string)[:names].should == []
@@ -11,19 +23,19 @@ describe AuthorParser do
 
     it "should parse a single author into a one-element array" do
       string = 'Fisher, B.L.'
-      AuthorParser.parse(string)[:names].should == ['Fisher, B.L.']
+      AuthorParser.parse!(string)[:names].should == ['Fisher, B.L.']
       string.should == ''
     end
 
    it "should parse a single author + author roles into a hash" do
      string = 'Fisher, B.L. (ed.)'
-     AuthorParser.parse(string).should == {:names => ['Fisher, B.L.'], :suffix => ' (ed.)'}
+     AuthorParser.parse!(string).should == {:names => ['Fisher, B.L.'], :suffix => ' (ed.)'}
      string.should == ''
    end
 
    it "should parse multiple authors" do
      string = 'Fisher, B.L.; Wheeler, W.M.'
-     AuthorParser.parse(string)[:names].should == ['Fisher, B.L.', 'Wheeler, W.M.']
+     AuthorParser.parse!(string)[:names].should == ['Fisher, B.L.', 'Wheeler, W.M.']
      string.should == ''
    end
 
@@ -62,7 +74,7 @@ describe AuthorParser do
 
    it "should strip the space after the suffix" do
      string = "Sanetra, M; Ward, P., et al. (eds.) Ants"
-     AuthorParser.parse(string)
+     AuthorParser.parse!(string)
      string.should == 'Ants'
    end
 
@@ -100,20 +112,20 @@ describe AuthorParser do
     
    it "should handle 'Jr.'" do
      string = 'Brown, W. L., Jr.; Kempf, W. W.'
-     AuthorParser.parse(string)[:names].should == ['Brown, W. L., Jr.', 'Kempf, W. W.']
+     AuthorParser.parse!(string)[:names].should == ['Brown, W. L., Jr.', 'Kempf, W. W.']
      string.should == ''
    end
 
    it "should handle 'Jr'" do
      string = 'Brown, W. L., Jr; Kempf, W. W.'
-     AuthorParser.parse(string)[:names].should == ['Brown, W. L., Jr', 'Kempf, W. W.']
+     AuthorParser.parse!(string)[:names].should == ['Brown, W. L., Jr', 'Kempf, W. W.']
      string.should == ''
    end
 
    it "should handle a phrase that's known to be an author" do
      Factory :author_name, :name => 'Anonymous', :verified => true
      string = 'Anonymous'
-     AuthorParser.parse(string)[:names].should == ['Anonymous']
+     AuthorParser.parse!(string)[:names].should == ['Anonymous']
      string.should be_empty
    end
 
