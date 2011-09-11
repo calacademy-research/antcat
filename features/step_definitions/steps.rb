@@ -245,7 +245,7 @@ end
 
 When 'I choose a file to upload' do
   stub_request(:put, "http://s3.amazonaws.com/antcat/1/21105.pdf")
-  attach_file 'reference_document_attributes_file', Rails.root + 'features/21105.pdf'
+  attach_file 'reference_document_attributes_file', Rails.root + 'features/support/21105.pdf'
 end
 
 Then 'I should see a link to that file' do
