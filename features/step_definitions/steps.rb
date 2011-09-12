@@ -36,8 +36,12 @@ def create_reference type, hash
     authors = hash.delete('authors')
     author_names = AuthorParser.parse(authors)[:names]
     author_names_suffix = AuthorParser.parse(authors)[:suffix]
-    author_names = author_names.map {|author_name| Factory(:author_name, :name => author_name)}
+    author_names = author_names.inject([]) do |author_names, author_name|
+      author_name = AuthorName.find_by_name(author_name) || Factory(:author_name, :name => author_name)
+      author_names << author_name
+    end
   end
+
   hash[:citation_year] = hash.delete 'year'
   reference = Factory type, hash.merge(:author_names => author_names, :author_names_suffix => author_names_suffix)
   @reference ||= reference

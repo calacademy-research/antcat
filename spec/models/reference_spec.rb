@@ -18,6 +18,24 @@ describe Reference do
       Reference.advanced_search(params).should == [bolton]
       params.should == {:q => 'Bolton'}
     end
+    it "should find the references for all aliases of a given author_name" do
+      bolton = Factory :author
+      bolton_barry = Factory :author_name, :author => bolton, :name => 'Bolton, Barry'
+      bolton_b = Factory :author_name, :author => bolton, :name => 'Bolton, B.'
+      bolton_barry_reference = Factory :book_reference, :author_names => [bolton_barry], :title => '1', :pagination => '1'
+      bolton_b_reference = Factory :book_reference, :author_names => [bolton_b], :title => '2', :pagination => '2'
+      Reference.advanced_search({:q => 'Bolton, B.'}).map(&:id).should =~
+        [bolton_b_reference, bolton_barry_reference].map(&:id)
+    end
+    it "should find the references for all aliases of a given author_name when two aliases for same author are searched for" do
+      bolton = Factory :author
+      bolton_barry = Factory :author_name, :author => bolton, :name => 'Bolton, Barry'
+      bolton_b = Factory :author_name, :author => bolton, :name => 'Bolton, B.'
+      bolton_barry_reference = Factory :book_reference, :author_names => [bolton_barry], :title => '1', :pagination => '1'
+      bolton_b_reference = Factory :book_reference, :author_names => [bolton_b], :title => '2', :pagination => '2'
+      Reference.advanced_search({:q => 'Bolton, B.; Bolton, Barry'}).map(&:id).should =~
+        [bolton_b_reference, bolton_barry_reference].map(&:id)
+    end
     it "should find the reference with both author names, but not just one" do
       bolton = Factory :author_name, :name => 'Bolton'
       fisher = Factory :author_name, :name => 'Fisher'
