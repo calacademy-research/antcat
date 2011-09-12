@@ -61,11 +61,17 @@ class Reference < ActiveRecord::Base
 
   def self.advanced_search parameters = {}
     author_names = AuthorParser.parse(parameters[:q])[:names]
+    authors = Author.select('authors.id').
+      joins(:names).
+      where('name IN (?)', author_names).
+      group('authors.id')
+
     reference_ids = Reference.select('`references`.*').
               joins(:author_names).
-              where('name IN (?)', author_names).
+              joins('JOIN authors ON authors.id = author_names.author_id').
+              where('authors.id IN (?)', authors).
               group('references.id').
-              having("COUNT(`references`.id) = #{author_names.length}")
+              having("COUNT(`references`.id) = #{authors.length}")
     Reference.where('id IN (?)', reference_ids).order(:author_names_string_cache, :citation_year)
   end
 

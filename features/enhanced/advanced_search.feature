@@ -15,11 +15,7 @@ Feature: Advanced search
       |Bolton, B.           |2010 |Ants of North America|Ants 2:1-2|
     When I go to the references page
       And I select "Search for author(s)" from "search_selector"
-      And I fill in the search box with "Bolton, B.;Fisher, B."
-    Then I should see "Anthill"
-      And I should see "Ants of North America"
-      And I should see "Formis"
-    When I fill in the search box with "Bolton, B."
+      And I fill in the search box with "Bolton, B."
       And I press "Go" by the search box
     Then I should see "Anthill"
       And I should see "Ants of North America"
