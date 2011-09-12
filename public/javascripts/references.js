@@ -36,16 +36,17 @@ function setupSearch() {
 
 function setupSearchBox(selector_text) {
   if (selector_text == 'Search for') {
-    setHelpIconText("Enter keywords (including author names), a year, a year range or an ID. Keywords (including author names) are searched for in all fields (title, notes, etc.)");
+    setHelpIconText("Enter search words (including author names), a year, a year range or an ID. Words are searched for in the title, author names, journal name, publisher name, citation, cite code, and notes.)");
   } else {
     setupAdvancedSearchAuthorAutocomplete();
-    setHelpIconText("Start typing an author's name, then choose it from the list and press Enter. Repeat for additional author names. Then press Enter to find references by all those authors.");
+    setHelpIconText("Start typing an author's name, then choose it from the list and press Enter. Repeat for additional author names. Then press Enter to find references by all those authors, including references by aliases of those authors. For example, searching for Radchenko, A.G. will also find references by Radchenko, A., Radtchenko, A. G., and Radtschenko, A. G.");
   }
 }
 
 function setHelpIconText(text) {
   $('.help_icon').qtip({
     content: text,
+    style: {width: 600},
     show: 'mouseover',
     hide: 'mouseout',
     position: {
