@@ -18,7 +18,7 @@ class Antweb::Exporter
   def export_taxon taxon
     Progress.tally_and_show_progress 1000
 
-    return if taxon.invalid?
+    return unless !taxon.invalid? || taxon.unidentifiable?
 
     case taxon
     when Subfamily
