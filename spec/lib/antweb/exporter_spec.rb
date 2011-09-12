@@ -47,9 +47,13 @@ describe Antweb::Exporter do
       tribe = Factory :tribe, :subfamily => subfamily
       valid_genus = Factory :genus, :subfamily => subfamily, :tribe => tribe, :status => 'valid'
       invalid_genus = Factory :genus, :subfamily => subfamily, :tribe => tribe, :status => 'syononym'
+      unidentifiable_genus = Factory :genus, :subfamily => subfamily, :tribe => tribe, :status => 'unidentifiable'
+      unidentifiable_genus.should be_unidentifiable
+      CatalogFormatter.should_receive(:format_taxonomic_history_with_statistics).with(unidentifiable_genus, :include_invalid => false).and_return 'history'
       CatalogFormatter.should_receive(:format_taxonomic_history_with_statistics).with(valid_genus, :include_invalid => false).and_return 'history'
       CatalogFormatter.should_not_receive(:format_taxonomic_history_with_statistics).with(invalid_genus, :include_invalid => false)
       @exporter.export_taxon(valid_genus).should == [subfamily.name, tribe.name, valid_genus.name, nil, nil, nil, 'TRUE', 'TRUE', nil, nil, 'history', nil]
+      @exporter.export_taxon(unidentifiable_genus).should == [subfamily.name, tribe.name, unidentifiable_genus.name, nil, nil, nil, 'FALSE', 'FALSE', nil, nil, 'history', nil]
       @exporter.export_taxon(invalid_genus).should == nil
     end
 
