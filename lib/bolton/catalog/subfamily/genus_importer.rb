@@ -152,7 +152,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
   end
 
   def check_fossil_change genus, fossil
-    raise "Genus #{genus.name} fossil change from #{genus.fossil?} to #{fossil}" if fossil != genus.fossil
+    raise "Genus #{genus.name} fossil change from #{genus.fossil?} to #{fossil}" if !!fossil != !!genus.fossil
   end
 
   def check_existence name, genus
