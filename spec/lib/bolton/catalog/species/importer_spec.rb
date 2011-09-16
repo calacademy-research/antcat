@@ -59,10 +59,10 @@ describe Bolton::Catalog::Species::Importer do
 
       acanthomyrmex = Genus.find_by_name('Acanthomyrmex')
       acanthomyrmex.should_not be_nil
-      acanthomyrmex.fossil.should_not be_true
+      acanthomyrmex.fossil.should be_false
 
       basispinosus = acanthomyrmex.species.find_by_name('basispinosus')
-      basispinosus.fossil.should_not be_true
+      basispinosus.fossil.should be_false
       basispinosus.taxonomic_history.should == 
 %{<p><b><i>basispinosus</i></b><i>. Acanthomyrmex basispinosus</i> Moffett, 1986c: 67, figs. 8A, 9-14 (s.w.) INDONESIA (Sulawesi).</p>}
 

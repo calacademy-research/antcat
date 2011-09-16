@@ -23,7 +23,7 @@ class Antweb::Exporter
     case taxon
     when Subfamily
       convert_to_antweb_array :subfamily => taxon.name,
-                              :valid? => !taxon.invalid?,
+                              :valid? => !taxon.invalid?, :available? => !taxon.invalid?,
                               :taxonomic_history => CatalogFormatter.format_taxonomic_history_with_statistics(taxon, :include_invalid => false),
                               :fossil? => taxon.fossil
     when Genus

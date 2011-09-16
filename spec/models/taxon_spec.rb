@@ -49,6 +49,7 @@ describe Taxon do
   it "should be able to be a fossil" do
     taxon = Factory :taxon, :name => 'Cerapachynae'
     taxon.should_not be_fossil
+    taxon.fossil.should == false
     taxon.update_attribute :fossil, true
     taxon.should be_fossil
   end

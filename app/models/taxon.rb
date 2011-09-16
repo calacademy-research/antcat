@@ -8,7 +8,7 @@ class Taxon < ActiveRecord::Base
 
   scope :valid, where("status = ?", 'valid')
   scope :ordered_by_name, order(:name)
-  scope :extant, where('fossil IS NULL')
+  scope :extant, where(:fossil => false)
 
   def unavailable?;     status == 'unavailable' end
   def available?;       !unavailable? end
@@ -16,6 +16,13 @@ class Taxon < ActiveRecord::Base
   def unidentifiable?;  status == 'unidentifiable' end
   def synonym?;         status == 'synonym' end
   def homonym?;         status == 'homonym' end
+
+  before_save :set_fossil_flag
+
+  def set_fossil_flag
+    self.fossil ||= false
+    true
+  end
 
   def rank
     self.class.to_s.downcase
