@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110916204356) do
+ActiveRecord::Schema.define(:version => 20110926171027) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -61,6 +61,15 @@ ActiveRecord::Schema.define(:version => 20110916204356) do
   end
 
   add_index "bolton_references", ["ward_reference_id"], :name => "bolton_references_ward_reference_id_idx"
+
+  create_table "deep_species", :force => true do |t|
+    t.string  "name"
+    t.boolean "seen"
+    t.string  "species_name"
+    t.string  "author"
+    t.string  "year"
+    t.string  "parse_result"
+  end
 
   create_table "duplicate_references", :force => true do |t|
     t.datetime "created_at"
