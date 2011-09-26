@@ -1,4 +1,5 @@
 # coding: UTF-8
+require 'asterisk_dagger_formatting'
 class Bolton::Catalog::Importer
 
   def initialize show_progress = false
@@ -39,6 +40,7 @@ class Bolton::Catalog::Importer
     end
     taxonomic_history.gsub! /<span.*?>/, ''
     taxonomic_history.gsub! /<\/span>/, ''
+    taxonomic_history = taxonomic_history.convert_asterisks_to_daggers
     taxonomic_history
   end
 

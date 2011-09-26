@@ -157,12 +157,12 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
       aneuretinae.taxonomic_history.should ==
 '<p><b>Aneuretini</b> Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.  </p>' +
 '<p>Aneuritinae history</p>' +
-'<p><b>Tribes of Aneuretinae</b>: Aneuretini, *Pityomyrmecini.</p>' +
-'<p><b>Tribes <i>incertae sedis</i> in Aneuretinae</b>: *Miomyrmecini.</p>' +
-'<p><b>Genera (extinct) <i>incertae sedis</i> in Aneuretinae</b>: *<i>Burmomyrma, *Cananeuretus</i>. </p>' +
+'<p><b>Tribes of Aneuretinae</b>: Aneuretini, &dagger;Pityomyrmecini.</p>' +
+'<p><b>Tribes <i>incertae sedis</i> in Aneuretinae</b>: &dagger;Miomyrmecini.</p>' +
+'<p><b>Genera (extinct) <i>incertae sedis</i> in Aneuretinae</b>: <i>&dagger;Burmomyrma, &dagger;Cananeuretus</i>. </p>' +
 '<p><b>Genus <i>incertae sedis</i> in Aneuretinae</b>: <i>Wildensis</i>. </p>' +
-'<p><b>Hong (2002) genera (extinct) <i>incertae sedis</i> in Aneuretinae</b>: *<i>Curtipalpulus, *Eoleptocerites</i> (unresolved junior homonym).</p>' +
-'<p><b>Collective group name in Myrmeciinae</b>: *<i>Myrmeciites</i>.</p>' +
+'<p><b>Hong (2002) genera (extinct) <i>incertae sedis</i> in Aneuretinae</b>: <i>&dagger;Curtipalpulus, &dagger;Eoleptocerites</i> (unresolved junior homonym).</p>' +
+'<p><b>Collective group name in Myrmeciinae</b>: <i>&dagger;Myrmeciites</i>.</p>' +
 '<p>References</p>' +
 '<p>a references</p>'
 
@@ -202,7 +202,7 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
       burmomyrma.taxonomic_history.should == 
 %{<p><b><i>Burmomyrma</i></b></p><p>Burmomyrma history</p>} +
 %{<p><b>Junior synonyms of <i>BURMOMYRMA<p></p></i></b></p>} +
-%{<p>*<b><i>Burmomoma</i></b> Scudder, 1877b: 270 [as member of family Braconidae]. Type-species: *<i>Calyptites antediluvianum</i>, by monotypy. </p>} +
+%{<p><b><i>&dagger;Burmomoma</i></b> Scudder, 1877b: 270 [as member of family Braconidae]. Type-species: <i>&dagger;Calyptites antediluvianum</i>, by monotypy. </p>} +
 %{<p><b>Homonym replaced by <i>Burmomoma</i></b><p></p></p>} +
 %{<p><b><i>Decamera</i></b> Roger, 1863a: 166. Type-species: <i>Decamera nigella</i>, by monotypy. </p>} +
 %{<p><b>Decamera history<p></p></b></p>}
@@ -544,3 +544,4 @@ carli, decolor, parallelus</span></i>.</p>
     end
   end
 end
+

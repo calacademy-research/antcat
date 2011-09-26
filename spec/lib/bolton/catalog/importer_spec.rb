@@ -37,5 +37,10 @@ describe Bolton::Catalog::Importer do
 %{carli, decolor, parallelus</i>.</p>}
     end
 
+    it "should put fossil_tags inside HTML tags" do
+      Bolton::Catalog::Importer.new.clean_taxonomic_history(
+%{<p><b>*<i>atta</i></b></p>}).should == %{<p><b><i>&dagger;atta</i></b></p>}
+    end
+
   end
 end
