@@ -251,4 +251,21 @@ describe Taxon do
     end
 
   end
+
+  describe "Convert asterisks to daggers" do
+    it "should convert an asterisk to a dagger" do
+      taxon = Factory :subfamily
+      taxon.taxonomic_history = '*'
+      taxon.convert_asterisks_to_daggers!
+      taxon.taxonomic_history.should == '&dagger;'
+      taxon.reload.taxonomic_history.should == '&dagger;'
+    end
+    it "work OK if taxonomic history is nil" do
+      taxon = Factory :subfamily,  :taxonomic_history => nil
+      taxon.convert_asterisks_to_daggers!
+      taxon.taxonomic_history.should be_nil
+      taxon.reload.taxonomic_history.should be_nil
+    end
+  end
+
 end

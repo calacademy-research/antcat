@@ -1,4 +1,6 @@
 # coding: UTF-8
+require 'asterisk_dagger_formatting'
+
 class Taxon < ActiveRecord::Base
   set_table_name :taxa
   belongs_to :synonym_of, :class_name => 'Taxon', :foreign_key => :synonym_of_id
@@ -98,4 +100,7 @@ class Taxon < ActiveRecord::Base
     end
   end
 
+  def convert_asterisks_to_daggers!
+    update_attribute :taxonomic_history, taxonomic_history.convert_asterisks_to_daggers if taxonomic_history?
+  end
 end
