@@ -6,7 +6,10 @@ AntCat::Application.configure do
   # test suite.  You never need to work with it otherwise.  Remember that
   # your test database is "scratch space" for the test suite and is wiped
   # and recreated between test runs.  Don't rely on the data there!
-  config.cache_classes = false
+
+  # This must be true to get Cucumber to work with Factory Girl
+  # however, then it messes up using Spork
+  config.cache_classes = ENV['DRB'] != 'true'
 
   # Log error messages when you accidentally call methods on nil.
   config.whiny_nils = true
