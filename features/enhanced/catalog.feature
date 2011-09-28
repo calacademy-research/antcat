@@ -31,6 +31,5 @@ Feature: Using the catalog
       And I fill in the search box with "emeryi"
       And I press "Go" by the search box
       And I choose "Browser"
-      And show me the page
     Then I should see "Tapinoma emeryi" within the search results
       And I should see "Atta emeryi" within the search results
