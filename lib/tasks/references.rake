@@ -7,7 +7,7 @@ end
 namespace :references do
   desc 'Check URLs'
   task :check_urls => :environment do
-    Progress.init true
+    Progress.init
     references_with_documents_count = error_count = 0
     Reference.all.each do |reference|
       Progress.tally

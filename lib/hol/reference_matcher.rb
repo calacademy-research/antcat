@@ -18,7 +18,7 @@ class Hol::ReferenceMatcher < ReferenceMatcher
         msg = "Best match found two with same similarity (#{matches.first[:similarity]}):\n"
         msg << "#{matches.first[:match]} and\n"
         msg << "#{matches.second[:match]}"
-        Progress.puts msg, true
+        Progress.puts msg
       end
       match = matches.first
     end

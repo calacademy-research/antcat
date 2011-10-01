@@ -1,74 +1,95 @@
 # coding: UTF-8
-# Progress.init total_items, show_progress
+# Progress.init show_progress, total_items
 # Progress.puts 'Importing...'
 # ...
 # Progress.tally_and_show_progress increment
 
 class Progress
-  def self.init on, total_count = nil
-    @on = on
+
+  #################################################################################
+  # initialization
+
+  def self.init show_progress, total_count = nil, log_file_identifier = nil
+    @show_progress = show_progress
     @start = Time.now
     @processed_count = 0
     @total_count = total_count
+    open_log log_file_identifier
   end
 
-  def self.open_log name = nil
-    unless name
-      name = caller.first.match(/(.*?):/)[1]
-      name = File.basename name, File.extname(name)
+  #################################################################################
+  # basic output
+
+  def self.print string
+    log string
+    display string
+  end
+
+  def self.puts string = "\n"
+    if string[-1, 1] = "\n"
+      print string
+    else
+      print(string + "\n")
     end
-    name = Rails.root.join 'log/' + name + "-#{Rails.env}.log"
-    file = File.open name, 'w'
-    file.sync = true
-    @logger = Logger.new file
   end
 
-  def self.log_level= level
-    @log_level = level
-  end
-
-  def self.tally
-    @processed_count += 1
-  end
-
-  def self.puts string = '', log = false
-    print string + "\n"
-    info string if log
-  end
-
-  def self.print string, log = false
-    $stderr.print string if @on
-    info string if log
+  def self.display string
+    $stderr.print string if @show_progress
   end
 
   def self.dot
-    print '.'
+    display '.'
   end
 
-  def self.info object
-    string = "INFO: #{format_object(object)}"
-    log string unless @log_level == :error
-  end
-
-  def self.warning object
-    string = "WARNING: #{format_object(object)}"
-    puts string
-    log string
-  end
-
-  def self.error object
-    string = "ERROR: #{format_object(object)}"
-    puts string
-    log string
-  end
-
-  def self.log string
+  def self.log object, prefix = nil
+    string = format_object object
+    string = prefix + ': ' + string if prefix
     @logger.info string if @logger
     Rails.logger.info string
   end
 
+  def self.info object
+    log object, "INFO"
+  end
+
+  def self.warning object
+    log object, "WARNING"
+  end
+
+  def self.error object
+    log object, "ERROR"
+  end
+
+  #################################################################################
+  # formatting
+
   def self.format_object object
     object.kind_of?(String) ? object : object.inspect
+  end
+
+  def self.count count, total, label
+    "#{count} (#{percent(count, total)}) #{label}"
+  end
+
+  def self.show_count count, total, label
+    puts count count, total, label
+  end
+
+  def self.percent numerator, denominator = @processed_count
+    sprintf "%.0f%%", numerator * 100.0 / denominator
+  end
+
+  def self.mins mins
+    noun = 'min'
+    noun << 's' if mins > 1
+    sprintf "%.0f #{noun}", mins
+  end
+
+  #################################################################################
+  # tallying and reporting
+
+  def self.tally
+    @processed_count += 1
   end
 
   def self.rate processed_count = nil
@@ -84,26 +105,8 @@ class Progress
     sprintf "#{mins(mins_left)} left", mins_left
   end
 
-  def self.mins mins
-    noun = 'min'
-    noun << 's' if mins > 1
-    sprintf "%.0f #{noun}", mins
-  end
-
-  def self.percent numerator, denominator = @processed_count
-    sprintf "%.0f%%", numerator * 100.0 / denominator
-  end
-
   def self.elapsed
     mins [(elapsed_secs.to_f / 60), 1.0].max
-  end
-
-  def self.count count, total, label
-    "#{count} (#{percent(count, total)}) #{label}"
-  end
-
-  def self.show_count count, total, label
-    puts count count, total, label
   end
 
   def self.processed_count
@@ -145,7 +148,25 @@ class Progress
     "#{processed_count} processed in #{elapsed} #{rate}"
   end
 
+  ##########################################################################
+
   private
+
+  def self.open_log file_name
+    return unless file_name
+    file_name = make_file_name file_name
+    file = File.open file_name, 'w'
+    file.sync = true
+    @logger = Logger.new file
+  end
+
+  def self.make_file_name file_name
+    file_name = file_name.gsub /::/, '_'
+    file_name = file_name.underscore
+    file_name = Rails.root.join 'log/' + file_name + "-#{Rails.env}.log"
+    file_name
+  end
+
   def self.elapsed_secs
     Time.now - @start
   end

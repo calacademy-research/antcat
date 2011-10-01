@@ -3,8 +3,8 @@ require 'asterisk_dagger_formatting'
 class Bolton::Catalog::Importer
 
   def initialize show_progress = false
-    Progress.init show_progress
-    Progress.open_log self.class.name
+    @show_parsing = true
+    Progress.init show_progress, nil, self.class.name
     Progress.info "==============================="
     @error_count = 0
   end
@@ -81,7 +81,7 @@ class Bolton::Catalog::Importer
     return unless @filename_index < @filenames.size
     html = File.read @filenames[@filename_index]
     Progress.show_progress if @filename_index > 0
-    Progress.puts "Parsing #{@filenames[@filename_index]}...", true
+    Progress.puts "Parsing #{@filenames[@filename_index]}..."
     @filename_index += 1
     read_string html
   end
