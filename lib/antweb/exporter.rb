@@ -7,12 +7,17 @@ class Antweb::Exporter
   def export directory
     File.open("#{directory}/bolton.xls", 'w') do |file|
       file.puts "subfamily\ttribe\tgenus\tspecies\tspecies author date\tcountry\tvalid\tavailable\tcurrent valid name\toriginal combination\tfossil\ttaxonomic history"
+      file.puts formicidae
       Taxon.all.each do |taxon|
         row = export_taxon taxon
         file.puts row.join("\t") if row
       end
     end
     Progress.show_results
+  end
+
+  def formicidae
+    "Formicidae\t\t\t\t\t\tTRUE\tTRUE\t\t\tFALSE\t" + CatalogFormatter.format_statistics(Taxon.statistics, :include_invalid => false)
   end
 
   def export_taxon taxon
