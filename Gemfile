@@ -29,7 +29,6 @@ group :development do
 end
 
 group :development, :test do
-  gem 'awesome_print'
   gem 'cucumber-rails'
   gem 'launchy'
   gem 'rspec' 
