@@ -13,6 +13,7 @@ class Reference < ActiveRecord::Base
   belongs_to :source_reference, :polymorphic => true
   has_one :document, :class_name => 'ReferenceDocument'
   accepts_nested_attributes_for :document, :reject_if => :all_blank
+  has_and_belongs_to_many :texts
 
   searchable do
     text :title
