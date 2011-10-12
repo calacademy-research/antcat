@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110926171027) do
+ActiveRecord::Schema.define(:version => 20111012004113) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -229,24 +229,5 @@ ActiveRecord::Schema.define(:version => 20110926171027) do
   end
 
   add_index "versions", ["item_type", "item_id"], :name => "index_versions_on_item_type_and_item_id"
-
-  create_table "ward_references", :force => true do |t|
-    t.string   "cite_code"
-    t.string   "date"
-    t.string   "filename"
-    t.string   "possess"
-    t.string   "year"
-    t.integer  "reference_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.text     "authors"
-    t.text     "citation"
-    t.text     "notes"
-    t.text     "taxonomic_notes"
-    t.text     "title"
-    t.text     "editor_notes"
-  end
-
-  add_index "ward_references", ["reference_id"], :name => "ward_references_reference_id_idx"
 
 end
