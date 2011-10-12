@@ -1,5 +1,4 @@
 # coding: UTF-8
-#Rake.application.options.trace = true
 
 $BOLTON_DATA_DIRECTORY = 'data/bolton'
 
