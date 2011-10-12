@@ -62,15 +62,6 @@ ActiveRecord::Schema.define(:version => 20111012004113) do
 
   add_index "bolton_references", ["ward_reference_id"], :name => "bolton_references_ward_reference_id_idx"
 
-  create_table "deep_species", :force => true do |t|
-    t.string  "name"
-    t.boolean "seen"
-    t.string  "species_name"
-    t.string  "author"
-    t.string  "year"
-    t.string  "parse_result"
-  end
-
   create_table "duplicate_references", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
