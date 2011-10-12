@@ -3,12 +3,6 @@ Factory.define :journal do |journal|
   journal.sequence(:name) {|n| "Ants#{n}"}
 end
 
-Factory.define :ward_reference, :class => Ward::Reference do |ward_reference|
-  ward_reference.authors  'Fisher, B.L.'
-  ward_reference.title  'Ants'
-  ward_reference.citation  'New York: Wiley. 23pp.'
-end
-
 Factory.define :author do |author|
 end
 

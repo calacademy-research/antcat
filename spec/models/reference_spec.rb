@@ -463,14 +463,6 @@ describe Reference do
     end
   end
 
-  describe "polymorphic association to source of reference" do
-    it "should work" do
-      ward_reference = Factory(:ward_reference)
-      reference = Reference.create! :author_names => @author_names, :source_reference => ward_reference, :title => 'asdf', :citation_year => '2010'
-      reference.reload.source_reference.should == ward_reference
-    end
-  end
-
   describe "long fields" do
     it "should not truncate long fields" do
       Reference.create! :author_names => @author_names, :editor_notes => 'e' * 1000, :citation => 'c' * 2000,
