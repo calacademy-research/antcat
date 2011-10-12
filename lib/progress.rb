@@ -26,7 +26,7 @@ class Progress
   end
 
   def self.puts string = "\n"
-    if string[-1, 1] = "\n"
+    if string[-1, 1] == "\n"
       print string
     else
       print(string + "\n")
