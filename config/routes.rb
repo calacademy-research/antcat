@@ -1,7 +1,7 @@
 # coding: UTF-8
 AntCat::Application.routes.draw do
 
-  root :to => "catalog/browser#show"
+  root :to => "catalog/index#show"
 
   resources :authors, :only => [:index]
   resources :bolton_matches, :only => [:index]
