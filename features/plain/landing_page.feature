@@ -5,4 +5,4 @@ Feature: Going to the landing page
 
   Scenario: Going to the landing page
     When I go to the main page
-    Then I should see "Online Catalog"
+    Then the "Index" tab should be selected
