@@ -34,7 +34,7 @@ group :development, :test do
   gem 'rspec' 
   gem 'rspec-rails' 
   gem 'ruby-debug19'
-  gem 'spork'
+  gem 'spork',  '0.9.0.rc9'
 end
 
 group :test do
