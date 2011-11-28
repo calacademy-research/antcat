@@ -114,7 +114,7 @@ Then /I should (not )?see the edit form/ do |should_not|
 end
 
 Then /I should not be editing/ do
-  Then %{I should see "edit"}
+  step %{I should see "edit"}
 end
 
 Then /I should see a new edit form/ do
@@ -139,22 +139,22 @@ end
 
 When /in the new edit form I fill in "(.*?)" with "(.*?)"/ do |field, value|
   within "#reference_" do
-    When "I fill in \"#{field}\" with \"#{value}\""
+    step "I fill in \"#{field}\" with \"#{value}\""
   end
 end
 
 Then /in the new edit form the "(.*?)" field should (not )?contain "(.*?)"/ do |field, should_not, value|
   within "#reference_" do
-    Then %{the "#{field}" field should #{should_not ? 'not ' : ''}contain "#{value}"}
+    step %{the "#{field}" field should #{should_not ? 'not ' : ''}contain "#{value}"}
   end
 end
 
 When /in the new edit form I follow "(.*?)"/ do |value|
-  When "I follow \"#{value}\" within \"#reference_\""
+  step "I follow \"#{value}\" within \"#reference_\""
 end
 
 When /in the new edit form I press the "(.*?)" button/ do |button|
-  When "I press \"#{button}\" within \"#reference_\""
+  step "I press \"#{button}\" within \"#reference_\""
 end
 
 Then /there should not be an edit form/ do
@@ -162,7 +162,7 @@ Then /there should not be an edit form/ do
 end
 
 When /in the new edit form I fill in "(.*?)" with the existing reference's ID/ do |field|
-  When "in the new edit form I fill in \"#{field}\" with \"#{@reference.id}\""
+  step "in the new edit form I fill in \"#{field}\" with \"#{@reference.id}\""
 end
 
 Given 'I will confirm on the next step' do
@@ -181,21 +181,21 @@ Given 'I am not logged in' do
 end
 
 Given 'I log in' do
-  When 'I go to the main page'
+  step 'I go to the main page'
   User.delete_all
   @user = Factory :user
   click_link "Login"
-  And %{I fill in "user_email" with "#{@user.email}"}
-  And %{I fill in "user_password" with "#{@user.password}"}
-  And %{I press "Go" within "#login"}
+  step %{I fill in "user_email" with "#{@user.email}"}
+  step %{I fill in "user_password" with "#{@user.password}"}
+  step %{I press "Go" within "#login"}
 end
 
 Given 'I log out' do
-  Given %{I follow "Logout"}
+  step %{I follow "Logout"}
 end
 
 Given 'I am logged in' do
-  Given 'I log in'
+  step 'I log in'
 end
 
 Then 'I should not see the "Delete" button' do
@@ -224,21 +224,21 @@ When /^I press the "([^"]+)" button/ do |button|
 end
 
 Then "I should see the reference's ID beside its label" do
-  Then "I should see \"ID #{@reference.id}\""
+  step "I should see \"ID #{@reference.id}\""
 end
 
 When /I fill in "reference_nested_reference_id" with its own ID/ do
-  When "I fill in \"reference_nested_reference_id\" with \"#{@reference.id}\""
+  step "I fill in \"reference_nested_reference_id\" with \"#{@reference.id}\""
 end
 
 When /I fill in "([^"]*)" with a URL to a document that exists/ do |field|
   stub_request :any, "google.com/foo"
-  When "I fill in \"#{field}\" with \"google\.com/foo\""
+  step "I fill in \"#{field}\" with \"google\.com/foo\""
 end
 
 When /I fill in "([^"]*)" with a URL to a document that doesn't exist/ do |field|
   stub_request(:any, "google.com/foo").to_return :status => 404
-  When "I fill in \"#{field}\" with \"google\.com/foo\""
+  step "I fill in \"#{field}\" with \"google\.com/foo\""
 end
 
 Given "there is a reference with ID 50000 for Dolerichoderinae" do
@@ -288,7 +288,7 @@ Given /a (\w+) exists with a name of "([^"]+)" and a parent of "([^"]+)"/ do |ra
 end
 
 When /I follow "All" in the subfamilies list/ do
-  When %{I follow "All" within ".subfamilies"}
+  step %{I follow "All" within ".subfamilies"}
 end
 
 Then /^"([^"]+)" should be selected(?: in (.*))?$/ do |word, location|
@@ -299,7 +299,7 @@ end
 
 And /I (edit|delete|copy) "(.*?)"/ do |verb, author|
   reference = Reference.where('author_names_string_cache like ?', "%#{author}%").first
-  And %{I follow "#{verb}" within "#reference_#{reference.id}"}
+  step %{I follow "#{verb}" within "#reference_#{reference.id}"}
 end
 
 Given /a subfamily exists with a name of "(.*?)" and a taxonomic history of "(.*?)"/ do |taxon_name, taxonomic_history|
@@ -342,11 +342,11 @@ Given /a species exists with a name of "(.*?)" and a genus of "(.*?)"(?: and a t
 end
 
 When /I fill in the search box with "(.*?)"/ do |search_term|
-  When %{I fill in "q" with "#{search_term}"}
+  step %{I fill in "q" with "#{search_term}"}
 end
 
 When /I press "Go" by the search box/ do
-  When 'I press "Go" within "#search_form"'
+  step 'I press "Go" within "#search_form"'
 end
 
 Then /I should (not )?see the "add" icon/ do |do_not|
@@ -356,7 +356,7 @@ end
 
 Then /I should (not )?see "(.*?)" (?:with)?in (.*)$/ do |do_not, contents, location|
   with_scope location do
-    When %{I should #{do_not}see "#{contents}"}
+    step %{I should #{do_not}see "#{contents}"}
   end
 end
 
@@ -376,19 +376,19 @@ end
 
 And /I follow "(.*?)" (?:with)?in (.*)$/ do |link, location|
   with_scope location do
-    When %{I follow "#{link}"}
+    step %{I follow "#{link}"}
   end
 end
 
 And /I press "(.*?)" (?:with)?in (.*)$/ do |button, location|
   with_scope location do
-    When %{I press "#{button}"}
+    step %{I press "#{button}"}
   end
 end
 
 And /I fill in "(.*?)" with "(.*?)" (?:with)?in (.*)$/ do |field, contents, location|
   with_scope location do
-    When %{I fill in "#{field}" with "#{contents}"}
+    step %{I fill in "#{field}" with "#{contents}"}
   end
 end
 
@@ -397,23 +397,23 @@ Then /"(.*?)" tab should be selected/ do |tab|
 end
 
 Then /I should be in "(.*?)" mode/ do |mode|
-  Then %{the "#{mode}" tab should be selected}
+  step %{the "#{mode}" tab should be selected}
 end
 
 very_long_author_names_string = (0...26).inject([]) {|a, n| a << "AuthorWithVeryVeryVeryLongName#{(?A.ord + n).chr}, A."}.join('; ')
 
 When /in the new edit form I fill in "reference_author_names_string" with a very long author names string/ do
   within "#reference_" do
-    When %{I fill in "reference_author_names_string" with "#{very_long_author_names_string}"}
+    step %{I fill in "reference_author_names_string" with "#{very_long_author_names_string}"}
   end
 end
 
 Then /I should see a very long author names string/ do
-  Then %{I should see "#{very_long_author_names_string}"}
+  step %{I should see "#{very_long_author_names_string}"}
 end
 
 And /I hide tribes/ do
-  And %{I follow "hide"}
+  step %{I follow "hide"}
 end
 
 Then "I should not see any search results" do
