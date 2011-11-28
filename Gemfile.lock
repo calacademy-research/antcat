@@ -51,7 +51,7 @@ GEM
       capybara (~> 1.0)
     childprocess (0.2.2)
       ffi (~> 1.0.6)
-    citrus (2.4.0)
+    citrus (2.4.1)
     cocaine (0.2.0)
     columnize (0.3.4)
     crack (0.1.8)
