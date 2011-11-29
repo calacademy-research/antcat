@@ -246,7 +246,7 @@ DEPENDENCIES
   ruby-debug19
   sass
   spork (= 0.9.0.rc9)
-  sunspot
+  sunspot (= 1.2.1)
   sunspot_rails
   webmock
   will_paginate
