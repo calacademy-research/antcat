@@ -6,3 +6,4 @@ solr/data
 log
 s3.yml
 coverage
+pids
