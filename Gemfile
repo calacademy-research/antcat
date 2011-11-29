@@ -18,7 +18,6 @@ gem 'rake'
 gem 'sass'
 gem 'sunspot'
 gem 'sunspot_rails'
-gem 'sunspot_solr'
 gem 'paperclip'
 gem 'paper_trail'
 gem 'progress_bar'
@@ -37,6 +36,7 @@ group :development, :test do
   gem 'rspec-rails' 
   gem 'ruby-debug19'
   gem 'spork',          '0.9.0.rc9'
+  gem 'sunspot_solr'
 end
 
 group :test do
