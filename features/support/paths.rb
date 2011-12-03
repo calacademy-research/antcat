@@ -6,6 +6,8 @@ module NavigationHelpers
       root_path
     when /the references page/
       references_path
+    when /the Bolton references page/
+      bolton_references_path
     when /the page for that reference/
       reference_path(@reference || Reference.first)    
     when /the edit user page/
