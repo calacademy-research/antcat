@@ -14,6 +14,17 @@ class Bolton::Reference < ActiveRecord::Base
       joins('LEFT OUTER JOIN bolton_matches ON bolton_matches.bolton_reference_id = bolton_references.id').
       where('similarity < 0.80')
 
+  searchable do
+    text :original
+  end
+
+  def self.do_search options = {}
+    search {
+      keywords options[:q]
+      paginate :page => options[:page]
+    }.results
+  end
+
   def to_s
     "#{authors} #{year}. #{title}."
   end

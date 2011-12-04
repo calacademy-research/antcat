@@ -1,5 +1,8 @@
 - @title = 'Bolton Bibliography'
 
+- content_for :head do
+  = javascript_include_tag 'ext/jquery.qtip-1.0.0-rc3.min'
+
 %style
   :sass
     table, tr, td, tbody
@@ -8,6 +11,14 @@
       padding: 0px
       border: 0
       line-height: 1em
+
+- content_for :page_header do
+  #navigation_bar
+    = render 'search', :params => params
+
+  .title
+    %h2.left Bolton Bibliography
+    .clear
 
 %div{:style => 'margin-bottom: 6px'}= will_paginate @references
 - for bolton_reference in @references

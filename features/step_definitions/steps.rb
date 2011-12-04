@@ -16,6 +16,7 @@ Given /the following Bolton references? exists?/ do |table|
   table.hashes.each do |hash|
     Factory :bolton_reference, hash
   end
+  Bolton::Reference.reindex
 end
 
 Given /the following book references? exists?/ do |table|
