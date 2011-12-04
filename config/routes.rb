@@ -13,7 +13,6 @@ AntCat::Application.routes.draw do
     resources :duplicate_references
   end
   match     '/antcat_references.utf8.endnote_import', :to => 'references#index', :format => :endnote_import, :as => :endnote_import
-  resources :species, :only => [:index]
   resources :styles, :only => [:index]
   resource  :catalog, :only => [] do
     match     'index/(:id)', :to => 'catalog/index#show', :as => 'index'
