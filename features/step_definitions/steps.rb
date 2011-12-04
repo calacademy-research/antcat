@@ -14,7 +14,7 @@ end
 Given /the following Bolton references? exists?/ do |table|
   Bolton::Reference.delete_all
   table.hashes.each do |hash|
-    Factory :bolton_reference, :authors => hash[:authors]
+    Factory :bolton_reference, hash
   end
 end
 

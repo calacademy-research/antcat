@@ -14,7 +14,6 @@
   %div{:style => 'border: thin black solid; margin-top: 0px;margin-bottom: 16px'}
     %table{:style => 'width: 100%; background: lightgrey; border-top: thin black solid; border-bottom: thin black solid'}
       %tr
-        %td{:style => 'width: 21px; padding-right: 4px; text-align:right'}= bolton_reference.matches.first && bolton_reference.matches.first.similarity
         %td
           %table
             %tr
@@ -33,30 +32,8 @@
                   %tr
                     %td= bolton_reference.title
 
-        - for match in bolton_reference.matches
-          %table{:style => 'border-bottom: thin black solid;width: 100%'}
-            %tr
-              %td{:style => 'width: 21px; padding-right: 4px'}
-              %td
-                %table
-                  %tr
-                    %td
-                      %table
-                        %tr
-                          %td{:style => 'width:55px'}= match.reference.id
-                          %td{:style => 'width:200px'}= match.reference.author_names_string
-                          %td{:style => 'width: 108px'}= match.reference.citation_year
-                          %td{:style => 'width: 168px'}= match.reference.series_volume_issue
-                          %td{:style => 'width: 119px'}= match.reference.pagination || match.reference.pages_in
-                          %td{:style => 'width: 100px; text-align:right'}= match.reference.type
-                  %tr
-                    %td
-                      %table
-                        %tr
-                          %td= match.reference.title
-
     %table
       %tr
-        %td{:style => 'padding: 4px'}= bolton_reference.original
+        %td{:style => 'padding: 4px'}= raw bolton_reference.original
 
 %div= will_paginate @references
