@@ -2,7 +2,7 @@
 class BoltonReferencesController < ApplicationController
 
   def index
-    @references = Bolton::Reference.paginate :page => params[:page]
+    @references = Bolton::Reference.do_search params
   end
 
 end

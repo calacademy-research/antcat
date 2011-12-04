@@ -1,0 +1,14 @@
+= form_tag bolton_references_path, :method => 'get', :id => 'search_form' do
+  .search
+    Search for
+    = text_field_tag "q", params[:q]
+    = image_tag 'help.png', :class => 'help_icon'
+    = submit_tag "Go"
+
+.qtip
+  .qtip-tip
+  .qtip-wrapper
+    .qtip-contentWrapper
+      .qtip-title
+        .qtip-button
+      .qtip-content
