@@ -3,15 +3,7 @@
 - content_for :head do
   = javascript_include_tag 'ext/jquery.qtip-1.0.0-rc3.min'
   = javascript_include_tag 'bolton_references'
-
-%style
-  :sass
-    table, tr, td, tbody
-      margin-top: -1px
-      margin-bottom: -1px
-      padding: 0px
-      border: 0
-      line-height: 1em
+  = stylesheet_link_tag 'bolton_references'
 
 - content_for :page_header do
   #navigation_bar
@@ -21,31 +13,33 @@
     %h2.left Bolton References
     .clear
 
-%div{:style => 'margin-bottom: 6px'}= will_paginate @references
-- for bolton_reference in @references
-  %div{:style => 'border: thin black solid; margin-top: 0px;margin-bottom: 16px'}
-    %table{:style => 'width: 100%; background: lightgrey; border-top: thin black solid; border-bottom: thin black solid'}
-      %tr
-        %td
-          %table
-            %tr
-              %td
-                %table
-                  %tr
-                    %td{:style => 'width: 55px'}= bolton_reference.id
-                    %td{:style => 'width:200px'}= bolton_reference.authors
-                    %td{:style => 'width: 108px'}= bolton_reference.citation_year
-                    %td{:style => 'width: 168px'}= bolton_reference.series_volume_issue
-                    %td{:style => 'width: 119px'}= bolton_reference.pagination
-                    %td{:style => 'width: 100px; text-align:right'}= bolton_reference.reference_type
-            %tr
-              %td
-                %table
-                  %tr
-                    %td= bolton_reference.title
+%div= will_paginate @references
 
-    %table
-      %tr
-        %td{:style => 'padding: 4px'}= raw bolton_reference.original
+.references
+  - for bolton_reference in @references
+    .reference
+      %table
+        %tr
+          %td
+            %table
+              %tr
+                %td
+                  %table
+                    %tr
+                      %td.id= bolton_reference.id
+                      %td.authors= bolton_reference.authors
+                      %td.citation_year= bolton_reference.citation_year
+                      %td.series_volume_issue= bolton_reference.series_volume_issue
+                      %td.pagination= bolton_reference.pagination
+                      %td.reference_type= bolton_reference.reference_type
+              %tr
+                %td
+                  %table
+                    %tr
+                      %td= bolton_reference.title
+
+      %table
+        %tr
+          %td.original= raw bolton_reference.original
 
 %div= will_paginate @references
