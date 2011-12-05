@@ -26,6 +26,7 @@
                 %td
                   %table
                     %tr
+                      %td.similarity= bolton_reference.matches.first && bolton_reference.matches.first.similarity
                       %td.id= bolton_reference.id
                       %td.authors= bolton_reference.authors
                       %td.citation_year= bolton_reference.citation_year
@@ -36,6 +37,8 @@
                 %td
                   %table
                     %tr
+                      %td.similarity
+                      %td.id
                       %td= bolton_reference.title
 
         - for match in bolton_reference.matches
@@ -47,6 +50,7 @@
                     %td
                       %table
                         %tr
+                          %td.similarity
                           %td.id= match.reference.id
                           %td.authors= match.reference.author_names_string
                           %td.citation_year= match.reference.citation_year
@@ -57,6 +61,8 @@
                     %td
                       %table
                         %tr
+                          %td.similarity
+                          %td.id
                           %td= raw ReferenceFormatter.italicize match.reference.title
 
       %table
