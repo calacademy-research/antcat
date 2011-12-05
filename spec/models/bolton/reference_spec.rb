@@ -41,12 +41,6 @@ describe Bolton::Reference do
     end
   end
 
-  describe 'with_possible_matches' do
-    it 'should not blow up' do
-      Bolton::Reference.with_possible_matches
-    end
-  end
-
   describe 'Searching' do
 
     it 'should find one term' do
