@@ -40,3 +40,14 @@ Feature: View bibliography
     Then I should see "Fisher, B."
       And I should not see "Ward"
 
+  Scenario: Seeing matches
+    Given the following Bolton reference exists
+      |authors   |title|journal|series_volume_issue|pagination|citation_year|publisher|place   |original       |
+      |Ward, P.S.|Ants |Psyche |1(2)               |3         |2011a        |Wilkins  |New York|Bolton original|
+      And the following references match that Bolton reference with the given similarity
+        |title        |similarity|
+        |Ants in Pants|0.7       |
+        |Antses       |0.8       |
+    When I go to the Bolton references page
+    Then I should see "Antses"
+      And I should see "Ants in Pants"
