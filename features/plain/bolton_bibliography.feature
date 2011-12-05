@@ -46,8 +46,9 @@ Feature: View bibliography
       |Ward, P.S.|Ants |Psyche |1(2)               |3         |2011a        |Wilkins  |New York|Bolton original|
       And the following references match that Bolton reference with the given similarity
         |title        |similarity|
-        |Ants in Pants|0.7       |
+        |Ants in Pants|0.8       |
         |Antses       |0.8       |
     When I go to the Bolton references page
     Then I should see "Antses"
       And I should see "Ants in Pants"
+      And I should see "0.8"
