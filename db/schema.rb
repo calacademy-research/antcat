@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111012023203) do
+ActiveRecord::Schema.define(:version => 20111205004806) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -46,8 +46,6 @@ ActiveRecord::Schema.define(:version => 20111012023203) do
     t.string   "note"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "ward_reference_id"
-    t.boolean  "suspect"
     t.string   "title"
     t.string   "journal"
     t.string   "series_volume_issue"
@@ -58,9 +56,8 @@ ActiveRecord::Schema.define(:version => 20111012023203) do
     t.string   "publisher"
     t.string   "place"
     t.text     "original"
+    t.string   "author_year_key"
   end
-
-  add_index "bolton_references", ["ward_reference_id"], :name => "bolton_references_ward_reference_id_idx"
 
   create_table "duplicate_references", :force => true do |t|
     t.datetime "created_at"
@@ -89,6 +86,15 @@ ActiveRecord::Schema.define(:version => 20111012023203) do
   end
 
   add_index "places", ["name"], :name => "places_name_idx"
+
+  create_table "protonyms", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "authorship_id"
+  end
+
+  add_index "protonyms", ["authorship_id"], :name => "index_protonyms_on_authorship_id"
 
   create_table "publishers", :force => true do |t|
     t.string   "name"
@@ -123,6 +129,15 @@ ActiveRecord::Schema.define(:version => 20111012023203) do
 
   add_index "reference_documents", ["reference_id"], :name => "documents_reference_id_idx"
 
+  create_table "reference_locations", :force => true do |t|
+    t.integer  "reference_id"
+    t.string   "pages"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "reference_locations", ["reference_id"], :name => "index_authorships_on_reference_id"
+
   create_table "references", :force => true do |t|
     t.integer  "year"
     t.string   "possess"
@@ -150,9 +165,11 @@ ActiveRecord::Schema.define(:version => 20111012023203) do
     t.string   "author_names_suffix"
     t.string   "source_file_name"
     t.string   "principal_author_last_name_cache"
+    t.string   "bolton_author_year_key"
   end
 
   add_index "references", ["author_names_string_cache", "citation_year"], :name => "references_author_names_string_citation_year_idx", :length => {"author_names_string_cache"=>255, "citation_year"=>nil}
+  add_index "references", ["bolton_author_year_key"], :name => "index_references_on_bolton_citation_key"
   add_index "references", ["created_at"], :name => "references_created_at_idx"
   add_index "references", ["journal_id"], :name => "references_journal_id_idx"
   add_index "references", ["nested_reference_id"], :name => "references_nested_reference_id_idx"
@@ -181,6 +198,7 @@ ActiveRecord::Schema.define(:version => 20111012023203) do
     t.integer  "homonym_replaced_by_id"
     t.string   "incertae_sedis_in"
     t.integer  "species_id"
+    t.integer  "protonym_id"
   end
 
   add_index "taxa", ["genus_id"], :name => "taxa_genus_id_idx"
