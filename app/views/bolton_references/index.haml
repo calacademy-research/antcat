@@ -47,12 +47,12 @@
                     %td
                       %table
                         %tr
-                          %td{:style => 'width:55px'}= match.reference.id
-                          %td{:style => 'width:200px'}= match.reference.author_names_string
-                          %td{:style => 'width: 108px'}= match.reference.citation_year
-                          %td{:style => 'width: 168px'}= match.reference.series_volume_issue
-                          %td{:style => 'width: 119px'}= match.reference.pagination || match.reference.pages_in
-                          %td{:style => 'width: 100px; text-align:right'}= match.reference.type
+                          %td.id= match.reference.id
+                          %td.authors= match.reference.author_names_string
+                          %td.citation_year= match.reference.citation_year
+                          %td.series_volume_issue= match.reference.series_volume_issue
+                          %td.pagination= match.reference.pagination || match.reference.pages_in
+                          %td.reference_type= match.reference.type
                   %tr
                     %td
                       %table
