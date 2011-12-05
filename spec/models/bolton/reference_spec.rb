@@ -43,6 +43,12 @@ describe Bolton::Reference do
 
   describe 'Searching' do
 
+    it 'should simply return all records if there are no search terms' do
+      reference = Factory :bolton_reference, :original => 'foo'
+      Bolton::Reference.reindex
+      Bolton::Reference.do_search.should == [reference]
+    end
+
     it 'should find one term' do
       reference = Factory :bolton_reference, :original => 'foo'
       Bolton::Reference.reindex

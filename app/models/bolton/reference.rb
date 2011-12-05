@@ -15,14 +15,21 @@ class Bolton::Reference < ActiveRecord::Base
   end
 
   def self.do_search options = {}
-    solr_result_ids = search {
-      keywords options[:q]
-      order_by :id
-    }.results.map &:id
-    results = select('DISTINCT bolton_references.*').
-      joins('LEFT OUTER JOIN bolton_matches ON bolton_matches.bolton_reference_id = bolton_references.id').
-      where('bolton_references.id' => solr_result_ids)
-    results.paginate(:page => options[:page])
+    query =
+      select('DISTINCT bolton_references.*').
+        joins('LEFT OUTER JOIN bolton_matches ON bolton_matches.bolton_reference_id = bolton_references.id').
+        paginate(:page => options[:page])
+
+    if options[:q].present?
+      solr_result_ids = search {
+        keywords options[:q]
+        order_by :id
+        paginate :per_page => 5_000
+      }.results.map &:id
+      query = query.where('bolton_references.id' => solr_result_ids).paginate(:page => options[:page])
+    end
+
+    query
   end
 
   def to_s
