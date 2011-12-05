@@ -56,7 +56,15 @@ ActiveRecord::Schema.define(:version => 20111205004806) do
     t.string   "publisher"
     t.string   "place"
     t.text     "original"
-    t.string   "author_year_key"
+  end
+
+  create_table "deep_species", :force => true do |t|
+    t.string  "name"
+    t.boolean "seen"
+    t.string  "species_name"
+    t.string  "author"
+    t.string  "year"
+    t.string  "parse_result"
   end
 
   create_table "duplicate_references", :force => true do |t|
@@ -165,11 +173,9 @@ ActiveRecord::Schema.define(:version => 20111205004806) do
     t.string   "author_names_suffix"
     t.string   "source_file_name"
     t.string   "principal_author_last_name_cache"
-    t.string   "bolton_author_year_key"
   end
 
   add_index "references", ["author_names_string_cache", "citation_year"], :name => "references_author_names_string_citation_year_idx", :length => {"author_names_string_cache"=>255, "citation_year"=>nil}
-  add_index "references", ["bolton_author_year_key"], :name => "index_references_on_bolton_citation_key"
   add_index "references", ["created_at"], :name => "references_created_at_idx"
   add_index "references", ["journal_id"], :name => "references_journal_id_idx"
   add_index "references", ["nested_reference_id"], :name => "references_nested_reference_id_idx"
@@ -198,7 +204,6 @@ ActiveRecord::Schema.define(:version => 20111205004806) do
     t.integer  "homonym_replaced_by_id"
     t.string   "incertae_sedis_in"
     t.integer  "species_id"
-    t.integer  "protonym_id"
   end
 
   add_index "taxa", ["genus_id"], :name => "taxa_genus_id_idx"
