@@ -12,7 +12,6 @@ Given /the following references? exists?/ do |table|
 end
 
 Given /the following Bolton references? exists?/ do |table|
-  Bolton::Reference.delete_all
   table.hashes.each do |hash|
     @bolton_reference = Factory :bolton_reference, hash
   end
@@ -20,8 +19,6 @@ Given /the following Bolton references? exists?/ do |table|
 end
 
 Given /^the following references match that Bolton reference with the given similarity$/ do |table|
-  Reference.delete_all
-  Bolton::Match.delete_all
   table.hashes.each do |hash|
     similarity = hash.delete 'similarity'
     Factory :bolton_match, :reference => Factory(:reference, hash), :bolton_reference => @bolton_reference, :similarity => similarity
