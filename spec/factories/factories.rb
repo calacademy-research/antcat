@@ -3,7 +3,7 @@ Factory.define :journal do |journal|
   journal.sequence(:name) {|n| "Ants#{n}"}
 end
 
-Factory.define :author do |author|
+Factory.define :author do |_|
 end
 
 Factory.define :author_name do |author_name|
@@ -73,7 +73,10 @@ Factory.define :bolton_reference, :class => Bolton::Reference do |reference|
   reference.title 'New General Catalog'
 end
 
-Factory.define :reference_document do |document|
+Factory.define :bolton_match, :class => Bolton::Match do |_|
+end
+
+Factory.define :reference_document do |_|
 end
 
 Factory.define :taxon do |taxon|
