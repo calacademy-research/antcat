@@ -16,12 +16,14 @@ class Bolton::Reference < ActiveRecord::Base
 
   searchable do
     text :original
+    integer :id
   end
 
   def self.do_search options = {}
     search {
       keywords options[:q]
       paginate :page => options[:page]
+      order_by :id
     }.results
   end
 
