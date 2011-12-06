@@ -76,6 +76,14 @@ describe Bolton::Reference do
       Bolton::Reference.do_search(:q => 'Fisher 1970').should be_empty
     end
 
+    describe "Searching with a match threshold" do
+      it "should find just the references whose best match is <= a threshold" do
+        high_similarity = Factory :bolton_match, :similarity => 0.8
+        low_similarity = Factory :bolton_match, :similarity => 0.7
+        Bolton::Reference.do_search(:match_threshold => '.7').should == [low_similarity.bolton_reference]
+      end
+    end
+
   end
 
 end
