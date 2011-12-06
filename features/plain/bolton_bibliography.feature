@@ -52,3 +52,24 @@ Feature: View bibliography
     Then I should see "Antses"
       And I should see "Ants in Pants"
       And I should see "0.8"
+
+  Scenario: Seeing just references for which the best match is below a threshold
+    Given the following Bolton reference exists
+      |authors   |title|
+      |Ward, P.S.|Ants |
+    And the following reference matches that Bolton reference with the given similarity
+      |title        |similarity|
+      |Ants in Pants|0.5       |
+    And the following Bolton reference exists
+      |authors   |title       |
+      |Bolton, B.|Leafcutters |
+    And the following reference matches that Bolton reference with the given similarity
+      |title      |similarity|
+      |Leafcutters|1         |
+    When I go to the Bolton references page
+    Then I should see "Ants in Pants"
+      And I should see "Leafcutters"
+    When I fill in the match threshold with ".6"
+      And I press "Go" by the search box
+    Then I should see "Ants in Pants"
+      And I should not see "Leafcutters"

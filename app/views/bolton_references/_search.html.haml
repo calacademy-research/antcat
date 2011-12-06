@@ -2,7 +2,10 @@
   .search
     Search for
     = text_field_tag "q", params[:q]
-    = image_tag 'help.png', :class => 'help_icon'
+    = image_tag 'help.png', :id => 'q_help'
+    Best match &lt;=
+    = text_field_tag "match_threshold", params[:match_threshold]
+    = image_tag 'help.png', :id => 'match_threshold_help'
     = submit_tag "Go"
 
 = render 'shared/qtip'
