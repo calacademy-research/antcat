@@ -73,7 +73,10 @@ Factory.define :bolton_reference, :class => Bolton::Reference do |reference|
   reference.title 'New General Catalog'
 end
 
-Factory.define :bolton_match, :class => Bolton::Match do |_|
+Factory.define :bolton_match, :class => Bolton::Match do |bolton_match|
+  bolton_match.association :bolton_reference
+  bolton_match.association :reference
+  bolton_match.similarity 0.9
 end
 
 Factory.define :reference_document do |_|

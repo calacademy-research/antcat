@@ -20,6 +20,10 @@ class Bolton::Reference < ActiveRecord::Base
         joins('LEFT OUTER JOIN bolton_matches ON bolton_matches.bolton_reference_id = bolton_references.id').
         paginate(:page => options[:page])
 
+    if options[:match_threshold].present?
+      query = query.where 'similarity <= ?', options[:match_threshold]
+    end
+
     if options[:q].present?
       solr_result_ids = search {
         keywords options[:q]
