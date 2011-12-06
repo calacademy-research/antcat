@@ -18,7 +18,7 @@ Given /the following Bolton references? exists?/ do |table|
   Bolton::Reference.reindex
 end
 
-Given /^the following references match that Bolton reference with the given similarity$/ do |table|
+Given /^the following references? match(?:es)? that Bolton reference with the given similarity$/ do |table|
   table.hashes.each do |hash|
     similarity = hash.delete 'similarity'
     Factory :bolton_match, :reference => Factory(:reference, hash), :bolton_reference => @bolton_reference, :similarity => similarity
@@ -353,6 +353,10 @@ end
 Given /a species exists with a name of "(.*?)" and a genus of "(.*?)"(?: and a taxonomic history of "(.*?)")?/ do |taxon_name, parent_name, taxonomic_history|
   genus = Genus.find_by_name(parent_name) || Factory(:genus, :name => parent_name)
   Factory :species, :name => taxon_name, :genus => genus, :taxonomic_history => taxonomic_history
+end
+
+When /I fill in the match threshold with "(.*?)"/ do |match_threshold|
+  step %{I fill in "match_threshold" with "#{match_threshold}"}
 end
 
 When /I fill in the search box with "(.*?)"/ do |search_term|
