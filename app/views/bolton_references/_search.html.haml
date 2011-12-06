@@ -1,11 +1,11 @@
 = form_tag bolton_references_path, :method => 'get', :id => 'search_form' do
   .search
-    Search for
+    %span.search_item Search for
     = text_field_tag "q", params[:q]
-    = image_tag 'help.png', :id => 'q_help'
-    Best match &lt;=
+    = image_tag 'help.png', :id => :q_help, :class => :help_icon
+    %span.search_item Best match &lt;=
     = text_field_tag "match_threshold", params[:match_threshold]
-    = image_tag 'help.png', :id => 'match_threshold_help'
+    = image_tag 'help.png', :id => :match_threshold_help, :class => :help_icon
     = submit_tag "Go"
 
 = render 'shared/qtip'
