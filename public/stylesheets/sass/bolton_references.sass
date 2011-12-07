@@ -11,7 +11,6 @@ table, tr, td, tbody
   margin-top: 6px
 
 .reference
-  border: thin black solid
   margin-top: 0px
   margin-bottom: 16px
 
@@ -19,10 +18,12 @@ table, tr, td, tbody
     width: 100%
     background: lightgrey
     border-top: thin black solid
-    border-bottom: thin black solid
+    border-left: thin black solid
+    border-right: thin black solid
 
     td.id
       width: 55px
+      text-align: right
     td.authors
       width: 200px
     td.citation_year
@@ -37,14 +38,17 @@ table, tr, td, tbody
       text-align: right
     td.original
       padding: 4px
+      font-size: .9em
     td.similarity
       width: 27px
       padding-right: 4px
 
 table.match
-  border-bottom: thin black solid
   width: 100%
   background: white
+
+table.original
+  border-bottom: thin black solid
 
 #match_threshold
   width: 23px !important
