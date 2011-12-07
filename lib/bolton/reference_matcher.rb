@@ -8,5 +8,9 @@ class Bolton::ReferenceMatcher < ::ReferenceMatcher
     {:similarity => max_similarity, :matches => matches}
   end
 
+  def possible_match? _, _
+    true
+  end
+
 end
 
