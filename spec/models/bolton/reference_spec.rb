@@ -86,4 +86,13 @@ describe Bolton::Reference do
 
   end
 
+  describe "Matching" do
+    it "should have a match, references, and a match_type" do
+      reference = Factory :bolton_reference
+      reference.match.should be_nil
+      reference.possible_matches.should be_empty
+      reference.match_type.should be_nil
+      reference.match = Factory :reference
+    end
+  end
 end

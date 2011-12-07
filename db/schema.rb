@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111205004806) do
+ActiveRecord::Schema.define(:version => 20111207025425) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -56,6 +56,8 @@ ActiveRecord::Schema.define(:version => 20111205004806) do
     t.string   "publisher"
     t.string   "place"
     t.text     "original"
+    t.integer  "match_id"
+    t.string   "match_type"
   end
 
   create_table "deep_species", :force => true do |t|
