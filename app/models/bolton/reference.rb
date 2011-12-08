@@ -36,6 +36,17 @@ class Bolton::Reference < ActiveRecord::Base
     query
   end
 
+  def set_match
+    if possible_matches.size == 1
+      self.match = possible_matches.first
+      self.match_type = 'automatic'
+    else
+      self.match = nil
+      self.match_type = nil
+    end
+      save!
+  end
+
   def to_s
     "#{authors} #{year}. #{title}."
   end
