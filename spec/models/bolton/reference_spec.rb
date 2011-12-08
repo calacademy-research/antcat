@@ -92,7 +92,39 @@ describe Bolton::Reference do
       reference.match.should be_nil
       reference.possible_matches.should be_empty
       reference.match_type.should be_nil
-      reference.match = Factory :reference
+      reference.match = Factory :book_reference
+    end
+  end
+
+  describe "Setting the match" do
+    it "should not set the match if there aren't any" do
+      bolton = Factory :bolton_reference
+      bolton.set_match
+      bolton.match.should be_nil
+      bolton.match_type.should be_nil
+    end
+    it "should clear the match if there aren't any" do
+      bolton = Factory :bolton_reference, :match => Factory(:book_reference), :match_type => 'automatic'
+      bolton.set_match
+      bolton.match.should be_nil
+      bolton.match_type.should be_nil
+    end
+    it "should set the match if there is one" do
+      bolton = Factory :bolton_reference
+      reference = Factory :book_reference
+      Factory :bolton_match, :bolton_reference => bolton, :reference => reference
+      bolton.set_match
+      bolton.match.should == reference
+      bolton.match_type.should == 'automatic'
+    end
+    it "should clear the match if there are more than one" do
+      bolton = Factory :bolton_reference, :match => Factory(:book_reference), :match_type => 'automatic'
+      2.times do |_|
+        Factory :bolton_match, :bolton_reference => bolton, :reference => Factory(:book_reference)
+      end
+      bolton.set_match
+      bolton.match.should be_nil
+      bolton.match_type.should be_nil
     end
   end
 end

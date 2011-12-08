@@ -26,11 +26,7 @@ class Bolton::ReferencesMatcher
       Bolton::Match.create! :bolton_reference => result[:target], :reference => result[:match], :similarity => results[:similarity]
     end
 
-    if results[:matches].size == 1
-      bolton.match = results[:matches].first[:match]
-      bolton.match_type = 'automatic'
-      bolton.save!
-    end
+    bolton.set_match
 
     case
     when results[:similarity] == 0.00 then @unmatched_count += 1
