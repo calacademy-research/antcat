@@ -139,6 +139,14 @@ describe Bolton::Reference do
       bolton.match.should be_nil
       bolton.match_type.should be_nil
     end
+    it "should reset the match if the similarity is too low" do
+      bolton = Factory :bolton_reference, :match => Factory(:book_reference), :match_type => 'auto'
+      reference = Factory :book_reference
+      Factory :bolton_match, :bolton_reference => bolton, :reference => reference, :similarity => 0.7
+      bolton.set_match
+      bolton.match.should be_nil
+      bolton.match_type.should be_nil
+    end
     it "should clear the match if there are more than one" do
       bolton = Factory :bolton_reference, :match => Factory(:book_reference), :match_type => 'auto'
       2.times do |_|
