@@ -44,16 +44,14 @@ class Bolton::Reference < ActiveRecord::Base
   end
 
   def set_match
-    if possible_matches.size == 1
-      if possible_matches.first.similarity >= 0.8
-        self.match = possible_matches.first
-        self.match_type = 'auto'
-      end
+    if matches.size == 1 && matches.first.similarity >= 0.8
+      self.match = matches.first.reference
+      self.match_type = 'auto'
     else
       self.match = nil
       self.match_type = nil
     end
-      save!
+    save!
   end
 
   def self.set_matches
