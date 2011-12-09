@@ -19,7 +19,7 @@ describe Bolton::ReferencesMatcher do
     Bolton::Match.first.similarity.should == 0.10
     matched_bolton.possible_matches.should == [matching_reference]
     matched_bolton.match.should == matching_reference
-    matched_bolton.match_type.should == 'automatic'
+    matched_bolton.match_type.should == 'auto'
 
     unmatched_bolton.match.should be_nil
     unmatched_bolton.match_type.should be_nil

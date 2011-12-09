@@ -27,7 +27,7 @@ class Bolton::Reference < ActiveRecord::Base
     if options[:match_types].present?
       query_clauses = []
       query_clauses << 'match_type IS NULL' if options[:match_types].include? nil
-      query_clauses << 'match_type = "automatic"' if options[:match_types].include? 'automatic'
+      query_clauses << 'match_type = "auto"' if options[:match_types].include? 'auto'
       query = query.where query_clauses.join(' OR ') unless query_clauses.empty?
     end
 
@@ -46,7 +46,7 @@ class Bolton::Reference < ActiveRecord::Base
   def set_match
     if possible_matches.size == 1
       self.match = possible_matches.first
-      self.match_type = 'automatic'
+      self.match_type = 'auto'
     else
       self.match = nil
       self.match_type = nil
