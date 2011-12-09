@@ -54,6 +54,10 @@ class Bolton::Reference < ActiveRecord::Base
       save!
   end
 
+  def self.set_matches
+    all.each {|e| e.set_match}
+  end
+
   def to_s
     "#{authors} #{year}. #{title}."
   end
