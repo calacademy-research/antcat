@@ -17,4 +17,13 @@ $(function() {
       corner: {target: 'topLeft', tooltip: 'bottomRight'}
     }
   });
+  $('#match_type_help').qtip({
+    content: "'Auto' matches are those for which the score was >= 0.8. 'None' shows references without matches. Leaving all blank finds all.",
+    show: 'mouseover',
+    hide: 'mouseout',
+    position: {
+      adjust: {y: -7},
+      corner: {target: 'topLeft', tooltip: 'bottomRight'}
+    }
+  });
 })

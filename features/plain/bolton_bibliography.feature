@@ -73,3 +73,23 @@ Feature: View bibliography
       And I press "Go" by the search box
     Then I should see "Ants in Pants"
       And I should not see "Leafcutters"
+
+  Scenario: Seeing just references with a given match type
+    Given the following Bolton reference exists
+      |authors   |title|match_type|
+      |Ward, P.S.|Ants |auto      |
+      |Fisher, B.|Ant  |          |
+    When I go to the Bolton references page
+    Then the "Auto" checkbox should be checked
+      And the "None" checkbox should be checked
+      And I should see "Ward"
+      And I should see "Fisher"
+    When I uncheck "Auto"
+      And I press "Go" by the search box
+    Then I should not see "Ward"
+      And I should see "Fisher"
+    When I uncheck "None"
+      And I press "Go" by the search box
+    Then I should see "Ward"
+      And I should see "Fisher"
+

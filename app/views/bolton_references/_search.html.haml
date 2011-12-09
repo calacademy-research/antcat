@@ -3,9 +3,21 @@
     %span.search_item Search for
     = text_field_tag "q", params[:q]
     = image_tag 'help.png', :id => :q_help, :class => :help_icon
+
     %span.search_item Best match &lt;=
-    = text_field_tag "match_threshold", params[:match_threshold]
+    = text_field_tag "match_threshold", params['match_threshold']
     = image_tag 'help.png', :id => :match_threshold_help, :class => :help_icon
+
+    %span.search_item Matches:
+
+    %span.search_item= label_tag 'match_type_auto', 'Auto'
+    = check_box_tag 'match_type_auto', 'true', params['match_type_auto']
+
+    %span.search_item= label_tag 'match_type_none', 'None'
+    = check_box_tag 'match_type_none', 'true', params['match_type_none']
+
+    = image_tag 'help.png', :id => :match_type_help, :class => :help_icon
+
     = submit_tag "Go"
 
 = render 'shared/qtip'
