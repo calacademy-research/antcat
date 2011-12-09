@@ -84,6 +84,20 @@ describe Bolton::Reference do
       end
     end
 
+    describe "Searching by match type" do
+      it "should find the ones that aren't matched" do
+        bolton = Factory :bolton_reference
+        Bolton::Reference.do_search(:match_types => [nil]).should == [bolton]
+      end
+      it "should find the ones that have been matched automatically" do
+        automatic_match = Factory :bolton_reference, :match_type => 'automatic'
+        not_matched = Factory :bolton_reference, :match_type => nil
+        Bolton::Reference.do_search(:match_types => [nil]).should == [not_matched]
+        Bolton::Reference.do_search(:match_types => [nil, 'automatic']).map(&:id).should =~ [not_matched.id, automatic_match.id]
+        Bolton::Reference.do_search(:match_types => ['automatic']).map(&:id).should =~ [automatic_match.id]
+      end
+    end
+
   end
 
   describe "Matching" do
