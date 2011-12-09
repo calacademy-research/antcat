@@ -34,4 +34,11 @@ namespace :bolton do
     task :references => ['bolton:import:references', 'bolton:match:references']
   end
 
+  namespace :references do
+    desc 'Set bolton_reference match fields according to previous matching run'
+    task :set_matches => :environment do
+      Bolton::Reference.set_matches
+    end
+  end
+
 end
