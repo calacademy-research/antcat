@@ -24,6 +24,13 @@ class Bolton::Reference < ActiveRecord::Base
       query = query.where 'similarity <= ?', options[:match_threshold]
     end
 
+    if options[:match_types].present?
+      query_clauses = []
+      query_clauses << 'match_type IS NULL' if options[:match_types].include? nil
+      query_clauses << 'match_type = "automatic"' if options[:match_types].include? 'automatic'
+      query = query.where query_clauses.join(' OR ') unless query_clauses.empty?
+    end
+
     if options[:q].present?
       solr_result_ids = search {
         keywords options[:q]
