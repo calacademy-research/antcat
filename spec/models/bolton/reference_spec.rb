@@ -89,12 +89,12 @@ describe Bolton::Reference do
         bolton = Factory :bolton_reference
         Bolton::Reference.do_search(:match_types => [nil]).should == [bolton]
       end
-      it "should find the ones that have been matched automatically" do
-        automatic_match = Factory :bolton_reference, :match_type => 'automatic'
+      it "should find the ones that have been matched autoally" do
+        auto_match = Factory :bolton_reference, :match_type => 'auto'
         not_matched = Factory :bolton_reference, :match_type => nil
         Bolton::Reference.do_search(:match_types => [nil]).should == [not_matched]
-        Bolton::Reference.do_search(:match_types => [nil, 'automatic']).map(&:id).should =~ [not_matched.id, automatic_match.id]
-        Bolton::Reference.do_search(:match_types => ['automatic']).map(&:id).should =~ [automatic_match.id]
+        Bolton::Reference.do_search(:match_types => [nil, 'auto']).map(&:id).should =~ [not_matched.id, auto_match.id]
+        Bolton::Reference.do_search(:match_types => ['auto']).map(&:id).should =~ [auto_match.id]
       end
     end
 
@@ -118,7 +118,7 @@ describe Bolton::Reference do
       bolton.match_type.should be_nil
     end
     it "should clear the match if there aren't any" do
-      bolton = Factory :bolton_reference, :match => Factory(:book_reference), :match_type => 'automatic'
+      bolton = Factory :bolton_reference, :match => Factory(:book_reference), :match_type => 'auto'
       bolton.set_match
       bolton.match.should be_nil
       bolton.match_type.should be_nil
@@ -129,10 +129,10 @@ describe Bolton::Reference do
       Factory :bolton_match, :bolton_reference => bolton, :reference => reference
       bolton.set_match
       bolton.match.should == reference
-      bolton.match_type.should == 'automatic'
+      bolton.match_type.should == 'auto'
     end
     it "should clear the match if there are more than one" do
-      bolton = Factory :bolton_reference, :match => Factory(:book_reference), :match_type => 'automatic'
+      bolton = Factory :bolton_reference, :match => Factory(:book_reference), :match_type => 'auto'
       2.times do |_|
         Factory :bolton_match, :bolton_reference => bolton, :reference => Factory(:book_reference)
       end
