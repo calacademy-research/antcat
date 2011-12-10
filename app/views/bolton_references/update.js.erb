@@ -1,0 +1,2 @@
+reference = $('#bolton_reference_<%= @bolton_reference.id %>');
+reference.html("<%= escape_javascript(render :partial => "reference", :locals => {:bolton_reference =>@bolton_reference}) %>");

@@ -12,4 +12,9 @@ class BoltonReferencesController < ApplicationController
     @references = Bolton::Reference.do_search params.merge :match_types => match_types
   end
 
+  def update
+    @bolton_reference = Bolton::Reference.find params[:id]
+    respond_to {|format| format.js}
+  end
+
 end
