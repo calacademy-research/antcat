@@ -19,11 +19,21 @@ Given /the following Bolton references? exists?/ do |table|
   Bolton::Reference.reindex
 end
 
-Given /^the following references? match(?:es)? that Bolton reference with the given similarity$/ do |table|
+Given /^the following references? match(?:es)? that Bolton reference$/ do |table|
   table.hashes.each do |hash|
     similarity = hash.delete 'similarity'
-    Factory :bolton_match, :reference => Factory(:reference, hash), :bolton_reference => @bolton_reference, :similarity => similarity
+    Factory :bolton_match, :reference => Factory(:article_reference, hash), :bolton_reference => @bolton_reference, :similarity => similarity
   end
+end
+
+Then /^the Bolton reference should be (red|green)$/ do |red_or_green|
+  css_color = {'red' => 'lightpink'}[red_or_green]
+  page.should have_css ".reference > table[style='background: #{css_color}']"
+end
+
+Then /^the reference should be white/ do
+  page.should have_css '.match'
+  page.should_not have_css '.match[style]'
 end
 
 Given /the following book references? exists?/ do |table|
