@@ -10,13 +10,13 @@ describe Bolton::ReferencesMatcher do
     unmatched_bolton = Factory :bolton_reference, :authors => 'Wheeler, W.M.'
 
     Bolton::Reference.should_receive(:all).and_return [matched_bolton, unmatched_bolton]
-    matched_bolton.should_receive(:<=>).and_return 0.10
+    matched_bolton.should_receive(:<=>).and_return 0.90
     unmatched_bolton.should_not_receive(:<=>)
 
     Bolton::ReferencesMatcher.new.find_matches_for_all
 
     Bolton::Match.count.should == 1
-    Bolton::Match.first.similarity.should == 0.10
+    Bolton::Match.first.similarity.should == 0.90
     matched_bolton.possible_matches.should == [matching_reference]
     matched_bolton.match.should == matching_reference
     matched_bolton.match_type.should == 'auto'
