@@ -54,6 +54,12 @@ class Bolton::Reference < ActiveRecord::Base
     save!
   end
 
+  def set_match_manually reference
+    self.match = reference
+    self.match_type = 'manual'
+    save!
+  end
+
   def self.set_matches
     all.each {|e| e.set_match}
   end

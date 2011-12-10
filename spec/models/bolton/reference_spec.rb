@@ -123,6 +123,13 @@ describe Bolton::Reference do
       bolton.match.should be_nil
       bolton.match_type.should be_nil
     end
+    it "should set the match manually" do
+      bolton = Factory :bolton_reference
+      reference = Factory :book_reference
+      bolton.set_match_manually reference
+      bolton.match.should == reference
+      bolton.match_type.should == 'manual'
+    end
     it "should set the match if there is one" do
       bolton = Factory :bolton_reference
       reference = Factory :book_reference
