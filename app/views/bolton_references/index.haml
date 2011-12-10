@@ -41,7 +41,32 @@
                       %td.similarity
                       %td= bolton_reference.title
 
+        - if bolton_reference.match
+          - match = bolton_reference.match
+          %table.match{:style => "background: #{background_color}"}
+            %tr
+              %td
+                %table
+                  %tr
+                    %td
+                      %table
+                        %tr
+                          %td.similarity
+                          %td.authors= match.author_names_string
+                          %td.citation_year= match.citation_year
+                          %td.series_volume_issue= match.series_volume_issue
+                          %td.pagination= match.pagination || match.pages_in
+                          %td.reference_type= match.type
+                          %td.id= match.id
+                  %tr
+                    %td
+                      %table
+                        %tr
+                          %td.similarity
+                          %td= raw ReferenceFormatter.italicize match.title
+
         - for match in bolton_reference.matches
+          - next if match.reference == bolton_reference.match
           %table.match
             %tr
               %td
