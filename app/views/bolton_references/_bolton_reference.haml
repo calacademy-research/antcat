@@ -1,0 +1,18 @@
+%table
+  %tr
+    %td
+      %table
+        %tr
+          %td.similarity= bolton_reference.matches.first && bolton_reference.matches.first.similarity
+          %td.authors= bolton_reference.authors
+          %td.citation_year= bolton_reference.citation_year
+          %td.series_volume_issue= bolton_reference.series_volume_issue
+          %td.pagination= bolton_reference.pagination
+          %td.reference_type= bolton_reference.reference_type
+          %td.id= bolton_reference.id
+  %tr
+    %td
+      %table
+        %tr
+          %td.similarity
+          %td= bolton_reference.title

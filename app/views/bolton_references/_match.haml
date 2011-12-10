@@ -1,0 +1,22 @@
+- background_css = background_color ? {:style => "background: #{background_color}"} : {}
+%table.match{background_css}
+  %tr
+    %td
+      %table
+        %tr
+          %td
+            %table
+              %tr
+                %td.similarity
+                %td.authors= reference.author_names_string
+                %td.citation_year= reference.citation_year
+                %td.series_volume_issue= reference.series_volume_issue
+                %td.pagination= reference.pagination || reference.pages_in
+                %td.reference_type= reference.type
+                %td.id= reference.id
+        %tr
+          %td
+            %table
+              %tr
+                %td.similarity
+                %td= raw ReferenceFormatter.italicize reference.title

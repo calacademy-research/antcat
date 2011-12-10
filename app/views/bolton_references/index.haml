@@ -22,72 +22,14 @@
       %table{:style => "background: #{background_color}"}
         %tr
           %td
-            %table
-              %tr
-                %td
-                  %table
-                    %tr
-                      %td.similarity= bolton_reference.matches.first && bolton_reference.matches.first.similarity
-                      %td.authors= bolton_reference.authors
-                      %td.citation_year= bolton_reference.citation_year
-                      %td.series_volume_issue= bolton_reference.series_volume_issue
-                      %td.pagination= bolton_reference.pagination
-                      %td.reference_type= bolton_reference.reference_type
-                      %td.id= bolton_reference.id
-              %tr
-                %td
-                  %table
-                    %tr
-                      %td.similarity
-                      %td= bolton_reference.title
+            = render :partial => 'bolton_reference', :locals => {:bolton_reference => bolton_reference}
 
         - if bolton_reference.match
-          - match = bolton_reference.match
-          %table.match{:style => "background: #{background_color}"}
-            %tr
-              %td
-                %table
-                  %tr
-                    %td
-                      %table
-                        %tr
-                          %td.similarity
-                          %td.authors= match.author_names_string
-                          %td.citation_year= match.citation_year
-                          %td.series_volume_issue= match.series_volume_issue
-                          %td.pagination= match.pagination || match.pages_in
-                          %td.reference_type= match.type
-                          %td.id= match.id
-                  %tr
-                    %td
-                      %table
-                        %tr
-                          %td.similarity
-                          %td= raw ReferenceFormatter.italicize match.title
+          = render :partial => 'match', :locals => {:reference => bolton_reference.match, :background_color => background_color}
 
         - for match in bolton_reference.matches
           - next if match.reference == bolton_reference.match
-          %table.match
-            %tr
-              %td
-                %table
-                  %tr
-                    %td
-                      %table
-                        %tr
-                          %td.similarity
-                          %td.authors= match.reference.author_names_string
-                          %td.citation_year= match.reference.citation_year
-                          %td.series_volume_issue= match.reference.series_volume_issue
-                          %td.pagination= match.reference.pagination || match.reference.pages_in
-                          %td.reference_type= match.reference.type
-                          %td.id= match.reference.id
-                  %tr
-                    %td
-                      %table
-                        %tr
-                          %td.similarity
-                          %td= raw ReferenceFormatter.italicize match.reference.title
+          = render :partial => 'match', :locals => {:reference => match.reference, :background_color => nil}
 
       %table.original{:style => "background: #{background_color}"}
         %tr
