@@ -17,8 +17,9 @@
 
 .references
   - for bolton_reference in @references
+    - background_color = color_for_bolton_reference(bolton_reference)
     .reference
-      %table
+      %table{:style => "background: #{background_color}"}
         %tr
           %td
             %table
@@ -63,7 +64,7 @@
                           %td.similarity
                           %td= raw ReferenceFormatter.italicize match.reference.title
 
-      %table.original
+      %table.original{:style => "background: #{background_color}"}
         %tr
           %td.similarity
           %td.original= raw bolton_reference.original
