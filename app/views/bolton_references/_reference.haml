@@ -1,0 +1,18 @@
+- background_color = color_for_bolton_reference(bolton_reference)
+.reference{:id => "bolton_reference_#{bolton_reference.id}"}
+  %table{:style => "background: #{background_color}"}
+    %tr
+      %td
+        = render :partial => 'bolton_reference', :locals => {:bolton_reference => bolton_reference}
+
+    - if bolton_reference.match
+      = render :partial => 'match', :locals => {:bolton_reference => bolton_reference, :reference => bolton_reference.match, :background_color => background_color}
+
+    - for match in bolton_reference.matches
+      - next if match.reference == bolton_reference.match
+      = render :partial => 'match', :locals => {:bolton_reference => bolton_reference, :reference => match.reference, :background_color => nil}
+
+  %table.original{:style => "background: #{background_color}"}
+    %tr
+      %td.similarity
+      %td.original= raw bolton_reference.original

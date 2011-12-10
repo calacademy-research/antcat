@@ -17,23 +17,6 @@
 
 .references
   - for bolton_reference in @references
-    - background_color = color_for_bolton_reference(bolton_reference)
-    .reference
-      %table{:style => "background: #{background_color}"}
-        %tr
-          %td
-            = render :partial => 'bolton_reference', :locals => {:bolton_reference => bolton_reference}
-
-        - if bolton_reference.match
-          = render :partial => 'match', :locals => {:reference => bolton_reference.match, :background_color => background_color}
-
-        - for match in bolton_reference.matches
-          - next if match.reference == bolton_reference.match
-          = render :partial => 'match', :locals => {:reference => match.reference, :background_color => nil}
-
-      %table.original{:style => "background: #{background_color}"}
-        %tr
-          %td.similarity
-          %td.original= raw bolton_reference.original
+    = render :partial => 'reference', :locals => {:bolton_reference => bolton_reference}
 
 %div= will_paginate @references
