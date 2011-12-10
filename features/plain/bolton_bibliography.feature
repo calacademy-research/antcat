@@ -92,17 +92,3 @@ Feature: View bibliography
       And I press "Go" by the search box
     Then I should see "Ward"
       And I should see "Fisher"
-
-  Scenario: Selecting a match
-    Given the following Bolton reference exists
-      |authors   |title|
-      |Ward, P.S.|Ants |
-    And the following reference matches that Bolton reference
-      |title        |similarity|
-      |Ants in Pants|0.5       |
-    When I go to the Bolton references page
-    Then the Bolton reference should be red
-      And the reference should be white
-    When I press "Match"
-    Then the Bolton reference should be green
-      And the matched reference should be green
