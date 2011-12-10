@@ -26,14 +26,21 @@ Given /^the following references? match(?:es)? that Bolton reference$/ do |table
   end
 end
 
-Then /^the Bolton reference should be (red|green)$/ do |red_or_green|
-  css_color = {'red' => 'lightpink'}[red_or_green]
+CSS_COLORS = {'green' => 'lightgreen', 'red' => 'lightpink', 'darkgreen' => 'darkgreen'}
+
+Then /^the Bolton reference should be (red|green|darkgreen)$/ do |red_or_green|
+  css_color = CSS_COLORS[red_or_green]
   page.should have_css ".reference > table[style='background: #{css_color}']"
 end
 
-Then /^the reference should be white/ do
-  page.should have_css '.match'
-  page.should_not have_css '.match[style]'
+Then /^the (?:matched )?reference should be (green|white|darkgreen)$/ do |green_or_white|
+  css_color = CSS_COLORS[green_or_white]
+  if css_color
+    page.should have_css ".match[style='background: #{css_color}']"
+  else
+    page.should have_css '.match'
+    page.should_not have_css '.match[style]'
+  end
 end
 
 Given /the following book references? exists?/ do |table|
