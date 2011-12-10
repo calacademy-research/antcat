@@ -44,7 +44,7 @@ Feature: View bibliography
     Given the following Bolton reference exists
       |authors   |title|journal|series_volume_issue|pagination|citation_year|publisher|place   |original       |
       |Ward, P.S.|Ants |Psyche |1(2)               |3         |2011a        |Wilkins  |New York|Bolton original|
-      And the following references match that Bolton reference with the given similarity
+      And the following references match that Bolton reference
         |title        |similarity|
         |Ants in Pants|0.8       |
         |Antses       |0.8       |
@@ -57,13 +57,13 @@ Feature: View bibliography
     Given the following Bolton reference exists
       |authors   |title|
       |Ward, P.S.|Ants |
-    And the following reference matches that Bolton reference with the given similarity
+    And the following reference matches that Bolton reference
       |title        |similarity|
       |Ants in Pants|0.5       |
     And the following Bolton reference exists
       |authors   |title       |
       |Bolton, B.|Leafcutters |
-    And the following reference matches that Bolton reference with the given similarity
+    And the following reference matches that Bolton reference
       |title      |similarity|
       |Leafcutters|1         |
     When I go to the Bolton references page
@@ -93,3 +93,16 @@ Feature: View bibliography
     Then I should see "Ward"
       And I should see "Fisher"
 
+  Scenario: Selecting a match
+    Given the following Bolton reference exists
+      |authors   |title|
+      |Ward, P.S.|Ants |
+    And the following reference matches that Bolton reference
+      |title        |similarity|
+      |Ants in Pants|0.5       |
+    When I go to the Bolton references page
+    Then the Bolton reference should be red
+      And the reference should be white
+    When I press "Match"
+    Then the Bolton reference should be green
+      And the matched reference should be green
