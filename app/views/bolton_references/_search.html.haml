@@ -10,13 +10,13 @@
 
     %span.search_item Matches:
 
-    %span.search_item= label_tag 'match_type_auto', 'Auto'
-    = check_box_tag 'match_type_auto', 'true', params['match_type_auto']
+    %span.search_item= label_tag 'match_status_auto', 'Auto'
+    = check_box_tag 'match_status_auto', 'true', params['match_status_auto']
 
-    %span.search_item= label_tag 'match_type_none', 'None'
-    = check_box_tag 'match_type_none', 'true', params['match_type_none']
+    %span.search_item= label_tag 'match_status_none', 'None'
+    = check_box_tag 'match_status_none', 'true', params['match_status_none']
 
-    = image_tag 'help.png', :id => :match_type_help, :class => :help_icon
+    = image_tag 'help.png', :id => :match_status_help, :class => :help_icon
 
     = submit_tag "Go"
 

@@ -87,25 +87,25 @@ describe Bolton::Reference do
     describe "Searching by match type" do
       it "should find the ones that aren't matched" do
         bolton = Factory :bolton_reference
-        Bolton::Reference.do_search(:match_types => [nil]).should == [bolton]
+        Bolton::Reference.do_search(:match_statuses => [nil]).should == [bolton]
       end
       it "should find the ones that have been matched autoally" do
-        auto_match = Factory :bolton_reference, :match_type => 'auto'
-        not_matched = Factory :bolton_reference, :match_type => nil
-        Bolton::Reference.do_search(:match_types => [nil]).should == [not_matched]
-        Bolton::Reference.do_search(:match_types => [nil, 'auto']).map(&:id).should =~ [not_matched.id, auto_match.id]
-        Bolton::Reference.do_search(:match_types => ['auto']).map(&:id).should =~ [auto_match.id]
+        auto_match = Factory :bolton_reference, :match_status => 'auto'
+        not_matched = Factory :bolton_reference, :match_status => nil
+        Bolton::Reference.do_search(:match_statuses => [nil]).should == [not_matched]
+        Bolton::Reference.do_search(:match_statuses => [nil, 'auto']).map(&:id).should =~ [not_matched.id, auto_match.id]
+        Bolton::Reference.do_search(:match_statuses => ['auto']).map(&:id).should =~ [auto_match.id]
       end
     end
 
   end
 
   describe "Matching" do
-    it "should have a match, references, and a match_type" do
+    it "should have a match, references, and a match_status" do
       reference = Factory :bolton_reference
       reference.match.should be_nil
       reference.possible_matches.should be_empty
-      reference.match_type.should be_nil
+      reference.match_status.should be_nil
       reference.match = Factory :book_reference
     end
   end
@@ -115,20 +115,20 @@ describe Bolton::Reference do
       bolton = Factory :bolton_reference
       bolton.set_match
       bolton.match.should be_nil
-      bolton.match_type.should be_nil
+      bolton.match_status.should be_nil
     end
     it "should clear the match if there aren't any" do
-      bolton = Factory :bolton_reference, :match => Factory(:book_reference), :match_type => 'auto'
+      bolton = Factory :bolton_reference, :match => Factory(:book_reference), :match_status => 'auto'
       bolton.set_match
       bolton.match.should be_nil
-      bolton.match_type.should be_nil
+      bolton.match_status.should be_nil
     end
     it "should set the match manually" do
       bolton = Factory :bolton_reference
       reference = Factory :book_reference
       bolton.set_match_manually reference
       bolton.match.should == reference
-      bolton.match_type.should == 'manual'
+      bolton.match_status.should == 'manual'
     end
     it "should set the match if there is one" do
       bolton = Factory :bolton_reference
@@ -136,7 +136,7 @@ describe Bolton::Reference do
       Factory :bolton_match, :bolton_reference => bolton, :reference => reference
       bolton.set_match
       bolton.match.should == reference
-      bolton.match_type.should == 'auto'
+      bolton.match_status.should == 'auto'
     end
     it "should not set the match if the similarity is too low" do
       bolton = Factory :bolton_reference
@@ -144,24 +144,24 @@ describe Bolton::Reference do
       Factory :bolton_match, :bolton_reference => bolton, :reference => reference, :similarity => 0.7
       bolton.set_match
       bolton.match.should be_nil
-      bolton.match_type.should be_nil
+      bolton.match_status.should be_nil
     end
     it "should reset the match if the similarity is too low" do
-      bolton = Factory :bolton_reference, :match => Factory(:book_reference), :match_type => 'auto'
+      bolton = Factory :bolton_reference, :match => Factory(:book_reference), :match_status => 'auto'
       reference = Factory :book_reference
       Factory :bolton_match, :bolton_reference => bolton, :reference => reference, :similarity => 0.7
       bolton.set_match
       bolton.match.should be_nil
-      bolton.match_type.should be_nil
+      bolton.match_status.should be_nil
     end
     it "should clear the match if there are more than one" do
-      bolton = Factory :bolton_reference, :match => Factory(:book_reference), :match_type => 'auto'
+      bolton = Factory :bolton_reference, :match => Factory(:book_reference), :match_status => 'auto'
       2.times do |_|
         Factory :bolton_match, :bolton_reference => bolton, :reference => Factory(:book_reference)
       end
       bolton.set_match
       bolton.match.should be_nil
-      bolton.match_type.should be_nil
+      bolton.match_status.should be_nil
     end
   end
 end

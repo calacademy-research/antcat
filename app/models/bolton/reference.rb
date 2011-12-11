@@ -24,10 +24,10 @@ class Bolton::Reference < ActiveRecord::Base
       query = query.where 'similarity <= ?', options[:match_threshold]
     end
 
-    if options[:match_types].present?
+    if options[:match_statuses].present?
       query_clauses = []
-      query_clauses << 'match_type IS NULL' if options[:match_types].include? nil
-      query_clauses << 'match_type = "auto"' if options[:match_types].include? 'auto'
+      query_clauses << 'match_status IS NULL' if options[:match_statuses].include? nil
+      query_clauses << 'match_status = "auto"' if options[:match_statuses].include? 'auto'
       query = query.where query_clauses.join(' OR ') unless query_clauses.empty?
     end
 
@@ -46,17 +46,17 @@ class Bolton::Reference < ActiveRecord::Base
   def set_match
     if matches.size == 1 && matches.first.similarity >= 0.8
       self.match = matches.first.reference
-      self.match_type = 'auto'
+      self.match_status = 'auto'
     else
       self.match = nil
-      self.match_type = nil
+      self.match_status = nil
     end
     save!
   end
 
   def set_match_manually reference
     self.match = reference
-    self.match_type = 'manual'
+    self.match_status = 'manual'
     save!
   end
 
