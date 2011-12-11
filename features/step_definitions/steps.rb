@@ -43,6 +43,11 @@ Then /^the (?:matched )?reference should be (green|white|darkgreen)$/ do |green_
   end
 end
 
+Then /^I should( not)? see a "Match" button$/ do |should_not|
+  selector = should_not ? :should_not : :should
+  find("input[value='Match']").send(selector, be_present)
+end
+
 Given /the following book references? exists?/ do |table|
   table.hashes.each do |hash|
     citation = hash.delete 'citation'

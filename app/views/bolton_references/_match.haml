@@ -18,5 +18,7 @@
           %td
             %table
               %tr
-                %td.similarity= button_to "Match", bolton_reference_path(bolton_reference, :match => reference), :method => :put, :remote => true
+                %td.similarity
+                  - if bolton_reference.match != reference
+                    = button_to "Match", bolton_reference_path(bolton_reference, :match => reference), :method => :put, :remote => true
                 %td= raw ReferenceFormatter.italicize reference.title

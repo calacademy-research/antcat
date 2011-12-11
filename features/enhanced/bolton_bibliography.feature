@@ -14,6 +14,8 @@ Feature: View bibliography (JavaScript)
     When I go to the Bolton references page
     Then the Bolton reference should be red
       And the reference should be white
+      And I should see a "Match" button
     When I press "Match"
     Then the Bolton reference should be darkgreen
       And the matched reference should be darkgreen
+      And I should not see a "Match" button
