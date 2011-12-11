@@ -76,9 +76,9 @@ Feature: View bibliography
 
   Scenario: Seeing just references with a given match type
     Given the following Bolton reference exists
-      |authors   |title|match_type|
-      |Ward, P.S.|Ants |auto      |
-      |Fisher, B.|Ant  |          |
+      |authors   |title|match_status|
+      |Ward, P.S.|Ants |auto        |
+      |Fisher, B.|Ant  |            |
     When I go to the Bolton references page
     Then the "Auto" checkbox should be checked
       And the "None" checkbox should be checked

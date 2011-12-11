@@ -13,7 +13,7 @@ end
 
 Given /the following Bolton references? exists?/ do |table|
   table.hashes.each do |hash|
-    hash.delete('match_type') if hash['match_type'].blank?
+    hash.delete('match_status') if hash['match_status'].blank?
     @bolton_reference = Factory :bolton_reference, hash
   end
   Bolton::Reference.reindex
