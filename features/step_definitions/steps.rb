@@ -45,7 +45,7 @@ end
 
 Then /^I should( not)? see a "Match" button$/ do |should_not|
   selector = should_not ? :should_not : :should
-  find("input[value='Match']").send(selector, be_present)
+  page.send(selector, have_css("input[value='Match']"))
 end
 
 Given /the following book references? exists?/ do |table|
