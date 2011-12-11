@@ -1,7 +1,7 @@
 # coding: UTF-8
 module BoltonReferenceHelper
   def color_for_bolton_reference bolton_reference
-    {nil => 'lightpink', 'auto' => 'lightgreen', 'manual' => 'darkgreen'}[bolton_reference.match_type]
+    {nil => 'lightpink', 'auto' => 'lightgreen', 'manual' => 'mediumspringgreen'}[bolton_reference.match_type]
   end
 
   def italicize string

@@ -26,7 +26,7 @@ Given /^the following references? match(?:es)? that Bolton reference$/ do |table
   end
 end
 
-CSS_COLORS = {'green' => 'lightgreen', 'red' => 'lightpink', 'darkgreen' => 'darkgreen'}
+CSS_COLORS = {'green' => 'lightgreen', 'red' => 'lightpink', 'darkgreen' => 'mediumspringgreen'}
 
 Then /^the Bolton reference should be (red|green|darkgreen)$/ do |red_or_green|
   css_color = CSS_COLORS[red_or_green]
