@@ -210,7 +210,7 @@ Given 'I will confirm on the next step' do
   end
 end
 
-Then 'I should not see a "Delete" button' do
+Then 'the "Delete" button should not be visible' do
   find_button('Delete').should_not be_visible
 end
 
