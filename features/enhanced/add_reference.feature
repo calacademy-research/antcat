@@ -40,7 +40,7 @@ Feature: Add reference
   Scenario: Hide Delete button while adding
     When I follow "add"
     Then I should see a new edit form
-      And I should not see a "Delete" button
+      And the "Delete" button should not be visible
 
   Scenario: Adding a book
     When I follow "add"
