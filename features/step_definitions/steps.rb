@@ -43,9 +43,9 @@ Then /^the (?:matched )?reference should be (green|white|darkgreen)$/ do |green_
   end
 end
 
-Then /^I should( not)? see a "Match" button$/ do |should_not|
+Then /^I should( not)? see a "([^"]+)" button$/ do |should_not, button|
   selector = should_not ? :should_not : :should
-  page.send(selector, have_css("input[value='Match']"))
+  page.send(selector, have_css("input[value='#{button}']"))
 end
 
 Given /the following book references? exists?/ do |table|

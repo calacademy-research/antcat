@@ -56,6 +56,7 @@ class Bolton::Reference < ActiveRecord::Base
   end
 
   def set_match_manually reference
+    return set_match unless reference
     self.match = reference
     self.match_status = 'manual'
     save!
