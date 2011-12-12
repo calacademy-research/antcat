@@ -143,6 +143,17 @@ describe Bolton::Reference do
       bolton.match.should be_nil
       bolton.match_status.should be_nil
     end
+    it "should clear the match completely, not revert to auto" do
+      bolton = Factory :bolton_reference
+      reference = Factory :book_reference
+      Factory :bolton_match, :bolton_reference => bolton, :reference => reference
+      bolton.set_match
+      bolton.match.should == reference
+      bolton.match_status.should == 'auto'
+      bolton.set_match_manually nil
+      bolton.match.should be_nil
+      bolton.match_status.should be_nil
+    end
     it "should set the match if there is one" do
       bolton = Factory :bolton_reference
       reference = Factory :book_reference
