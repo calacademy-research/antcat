@@ -26,20 +26,20 @@ Given /^the following references? match(?:es)? that Bolton reference$/ do |table
   end
 end
 
-CSS_COLORS = {'green' => 'lightgreen', 'red' => 'lightpink', 'darkgreen' => 'mediumspringgreen'}
+# cf. bolton_references.sass
+CSS_CLASSES = {'green' => 'auto', 'red' => 'none', 'darkgreen' => 'manual'}
 
 Then /^the Bolton reference should be (red|green|darkgreen)$/ do |red_or_green|
-  css_color = CSS_COLORS[red_or_green]
-  page.should have_css ".reference > table[style='background: #{css_color}']"
+  css_class = CSS_CLASSES[red_or_green]
+  page.should have_css ".reference > table.#{css_class}"
 end
 
 Then /^the (?:matched )?reference should be (green|white|darkgreen)$/ do |green_or_white|
-  css_color = CSS_COLORS[green_or_white]
-  if css_color
-    page.should have_css ".match[style='background: #{css_color}']"
+  if green_or_white == 'white'
+    page.should have_css ".match"
   else
-    page.should have_css '.match'
-    page.should_not have_css '.match[style]'
+    css_class = CSS_CLASSES[green_or_white]
+    page.should have_css ".match.#{css_class}"
   end
 end
 
