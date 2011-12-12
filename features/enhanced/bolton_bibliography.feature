@@ -26,12 +26,12 @@ Feature: View bibliography (JavaScript)
       |Ward, P.S.|Ants |
     And the following reference matches that Bolton reference
       |title        |similarity|
-      |Ants in Pants|0.5       |
+      |Ants in Pants|0.8       |
     When I go to the Bolton references page
       And I press "Match"
     Then I should not see a "Match" button
       And I should see a "Unmatch" button
     When I press "Unmatch"
-    Then the Bolton reference should be green
+    Then the Bolton reference should be red
       And the reference should be white
       And I should see a "Match" button
