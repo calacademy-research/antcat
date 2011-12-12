@@ -79,16 +79,21 @@ Feature: View bibliography
       |authors   |title|match_status|
       |Ward, P.S.|Ants |auto        |
       |Fisher, B.|Ant  |            |
+      |Bolton, B.|Aint |manual      |
     When I go to the Bolton references page
     Then the "Auto" checkbox should be checked
+      And the "Manual" checkbox should be checked
       And the "None" checkbox should be checked
       And I should see "Ward"
       And I should see "Fisher"
+      And I should see "Bolton"
     When I uncheck "Auto"
       And I press "Go" by the search box
     Then I should not see "Ward"
       And I should see "Fisher"
+      And I should see "Bolton"
     When I uncheck "None"
       And I press "Go" by the search box
-    Then I should see "Ward"
-      And I should see "Fisher"
+    Then I should see "Bolton"
+    Then I should not see "Ward"
+      And I should not see "Fisher"
