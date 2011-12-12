@@ -1,6 +1,8 @@
 # coding: UTF-8
 class BoltonReferencesController < ApplicationController
 
+  before_filter :authenticate_user!, :except => [:index]
+
   def index
     unless params[:match_status_auto].present? ||
            params[:match_status_manual].present? ||
