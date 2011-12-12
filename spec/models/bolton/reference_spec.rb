@@ -135,6 +135,14 @@ describe Bolton::Reference do
       bolton.match.should == reference
       bolton.match_status.should == 'manual'
     end
+    it "should reset the match if the passed match is nil" do
+      bolton = Factory :bolton_reference, :match => Factory(:book_reference), :match_status => 'auto'
+      reference = Factory :book_reference
+      bolton.set_match_manually reference
+      bolton.set_match_manually nil
+      bolton.match.should be_nil
+      bolton.match_status.should be_nil
+    end
     it "should set the match if there is one" do
       bolton = Factory :bolton_reference
       reference = Factory :book_reference

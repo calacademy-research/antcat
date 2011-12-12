@@ -19,3 +19,19 @@ Feature: View bibliography (JavaScript)
     Then the Bolton reference should be darkgreen
       And the matched reference should be darkgreen
       And I should not see a "Match" button
+
+  Scenario: Deselecting a match
+    Given the following Bolton reference exists
+      |authors   |title|
+      |Ward, P.S.|Ants |
+    And the following reference matches that Bolton reference
+      |title        |similarity|
+      |Ants in Pants|0.5       |
+    When I go to the Bolton references page
+      And I press "Match"
+    Then I should not see a "Match" button
+      And I should see a "Unmatch" button
+    When I press "Unmatch"
+    Then the Bolton reference should be green
+      And the reference should be white
+      And I should see a "Match" button
