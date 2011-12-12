@@ -89,12 +89,17 @@ describe Bolton::Reference do
         bolton = Factory :bolton_reference
         Bolton::Reference.do_search(:match_statuses => [nil]).should == [bolton]
       end
-      it "should find the ones that have been matched autoally" do
+      it "should find the ones that have been matched automatically" do
         auto_match = Factory :bolton_reference, :match_status => 'auto'
         not_matched = Factory :bolton_reference, :match_status => nil
         Bolton::Reference.do_search(:match_statuses => [nil]).should == [not_matched]
         Bolton::Reference.do_search(:match_statuses => [nil, 'auto']).map(&:id).should =~ [not_matched.id, auto_match.id]
         Bolton::Reference.do_search(:match_statuses => ['auto']).map(&:id).should =~ [auto_match.id]
+      end
+      it "should find the ones that have been matched manually" do
+        manual_match = Factory :bolton_reference, :match_status => 'manual'
+        not_matched = Factory :bolton_reference, :match_status => nil
+        Bolton::Reference.do_search(:match_statuses => ['manual']).map(&:id).should =~ [manual_match.id]
       end
     end
 

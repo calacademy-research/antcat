@@ -2,12 +2,19 @@
 class BoltonReferencesController < ApplicationController
 
   def index
-    params[:match_status_none] = params[:match_status_auto] = true unless
-      params[:match_status_none].present? or params[:match_status_auto].present?
+    unless params[:match_status_auto].present? ||
+           params[:match_status_manual].present? ||
+           params[:match_status_none].present?
+      params[:match_status_auto] =
+      params[:match_status_manual] =
+      params[:match_status_none] =
+        true
+    end
 
     match_statuses = []
     match_statuses << nil if params[:match_status_none].present?
     match_statuses << 'auto' if params[:match_status_auto].present?
+    match_statuses << 'manual' if params[:match_status_manual].present?
 
     @references = Bolton::Reference.do_search params.merge :match_statuses => match_statuses
   end
