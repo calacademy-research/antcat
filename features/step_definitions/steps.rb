@@ -214,6 +214,12 @@ Then 'the "Delete" button should not be visible' do
   find_button('Delete').should_not be_visible
 end
 
+Then 'all the buttons should be disabled' do
+  disabled = page.all('.reference .button_to input[disabled=disabled][type=submit]')
+  all = page.all('.reference .button_to input[type=submit]')
+  disabled.size.should == all.size
+end
+
 Given 'I am not logged in' do
 end
 

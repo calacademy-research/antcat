@@ -5,6 +5,7 @@ Feature: View bibliography (JavaScript)
   And so I can match it
 
   Scenario: Selecting a match
+    Given I am logged in
     Given the following Bolton reference exists
       |authors   |title|
       |Ward, P.S.|Ants |
@@ -21,6 +22,7 @@ Feature: View bibliography (JavaScript)
       And I should not see a "Match" button
 
   Scenario: Deselecting a match
+    Given I am logged in
     Given the following Bolton reference exists
       |authors   |title|
       |Ward, P.S.|Ants |
@@ -35,3 +37,14 @@ Feature: View bibliography (JavaScript)
     Then the Bolton reference should be red
       And the reference should be white
       And I should see a "Match" button
+
+  Scenario: Not logged in
+    Given I am not logged in
+    Given the following Bolton reference exists
+      |authors   |title|
+      |Ward, P.S.|Ants |
+    And the following reference matches that Bolton reference
+      |title        |similarity|
+      |Ants in Pants|0.8       |
+    And I go to the Bolton references page
+    Then all the buttons should be disabled

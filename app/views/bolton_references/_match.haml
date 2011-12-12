@@ -19,8 +19,8 @@
               %tr
                 %td.similarity
                   - if bolton_reference.match != reference
-                    = button_to "Match", bolton_reference_path(bolton_reference, :match => reference), :method => :put, :remote => true
+                    = button_to "Match", bolton_reference_path(bolton_reference, :match => reference), :method => :put, :remote => true, :disabled => !user_signed_in?
                   - else
-                    = button_to "Unmatch", bolton_reference_path(bolton_reference, :match => nil), :method => :put, :remote => true
+                    = button_to "Unmatch", bolton_reference_path(bolton_reference, :match => nil), :method => :put, :remote => true, :disabled => !user_signed_in?
 
                 %td= raw ReferenceFormatter.italicize reference.title
