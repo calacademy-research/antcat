@@ -16,6 +16,12 @@
     = javascript_include_tag 'application'
 
     = stylesheet_link_tag 'ext/jquery-ui/jquery-ui-1.8.5.custom'
+
+    = stylesheet_link_tag 'screen.css', :media => 'screen, projection'
+    = stylesheet_link_tag 'print.css', :media => 'print'
+    /[if lt IE 8]
+      = stylesheet_link_tag 'ie.css', :media => 'screen, projection'
+
     = stylesheet_link_tag 'application'
 
     %link{:rel => "shortcut icon", :href => "http://www.antweb.org/images/favicon.ico"}
