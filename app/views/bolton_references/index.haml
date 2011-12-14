@@ -16,8 +16,7 @@
 %div= will_paginate @references
 
 #container
-  .references
-    - for bolton_reference in @references
-      = render 'bolton_reference', :bolton_reference => bolton_reference
+  - for bolton_reference in @references
+    = render 'bolton_reference', :bolton_reference => bolton_reference
 
 %div= will_paginate @references

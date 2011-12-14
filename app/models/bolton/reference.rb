@@ -69,6 +69,14 @@ class Bolton::Reference < ActiveRecord::Base
     "#{authors} #{year}. #{title}."
   end
 
+  def best_match_similarity
+    matches.first && matches.first.similarity
+  end
+
+  def matches_with_matched_first
+    matches.partition {|m| m.reference == match}.flatten
+  end
+
   # ReferenceComparable
   def author; authors.split(',').first; end
   def type; reference_type; end
