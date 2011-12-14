@@ -36,15 +36,17 @@ $detail_width: $blueprint_grid_columns - 2
   border: 1px black solid
   margin-bottom: 10px
 
-  .manual
+  &.manual
     background: darken(#98FB98, 10%)
-  .auto
+  &.auto
     background: lighten(#98FB98, 10%)
-  .none
+  &.none
     background: lightpink
 
   .header
     +column($blueprint_grid_columns)
+    padding: 5px
+    border-bottom: 1px black solid
 
   .margin
     +column(2)
@@ -72,10 +74,12 @@ $detail_width: $blueprint_grid_columns - 2
 
   .matches
     +column($blueprint_grid_columns, true)
+    padding: 5px
+    border-bottom: 1px black solid
 
   .match
     +column($blueprint_grid_columns, true)
 
   .footer
-    +prepend(2)
-    +column($detail_width, true)
+    +column($blueprint_grid_columns, true)
+    padding: 5px
