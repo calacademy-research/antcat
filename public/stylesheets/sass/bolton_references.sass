@@ -70,3 +70,41 @@ table.original
     background: lighten(#98FB98, 10%)
   .none
     background: lightpink
+
+// Blueprint
+
+@import 'blueprint'
+
+$blueprint_grid_columns : 19
+$blueprint_grid_width : 30px
+
+.bolton_reference
+  border: 1px black solid
+  margin-bottom: 10px
+
+  .header
+    +column(19)
+
+  .margin
+    +column(2)
+    min-height: 1px
+  .details
+    +column(17, true)
+  .fields
+    +column(17)
+
+  .authors
+    +column(4)
+  .citation_year
+    +column(2)
+  .series_volume_issue
+    +column(2)
+  .pagination_field
+    +column(2)
+  .reference_type
+    +column(4)
+  .id
+    +column(3, true)
+
+  .title
+    +column(17, true)

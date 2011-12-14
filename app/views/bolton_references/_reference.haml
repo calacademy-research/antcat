@@ -1,17 +1,8 @@
-.reference{:id => "bolton_reference_#{bolton_reference.id}"}
-  %table{:class => bolton_reference.match_status || 'none'}
-    %tr
-      %td
-        = render :partial => 'bolton_reference', :locals => {:bolton_reference => bolton_reference}
-
-    - if bolton_reference.match
-      = render :partial => 'match', :locals => {:bolton_reference => bolton_reference, :reference => bolton_reference.match, :match_status_class => bolton_reference.match_status || 'none'}
-
-    - for match in bolton_reference.matches
-      - next if match.reference == bolton_reference.match
-      = render :partial => 'match', :locals => {:bolton_reference => bolton_reference, :reference => match.reference, :match_status_class => nil}
-
-  %table.original{:class => bolton_reference.match_status || 'none'}
-    %tr
-      %td.similarity
-      %td.original= raw bolton_reference.original
+.bolton_reference{:class => bolton_reference.match_status || 'none', :id => "bolton_reference_#{bolton_reference.id}"}
+  = render 'header', :bolton_reference => bolton_reference
+  .clear
+  -#.matches
+    -#- matches = bolton_reference.matches.partition {|m| m.reference == bolton_reference.match}.flatten
+    -#- for match in matches
+      -#= render 'match', :bolton_reference => bolton_reference, :reference => match.reference, :match_status_class => nil
+  -#= render 'footer', :bolton_reference => bolton_reference
