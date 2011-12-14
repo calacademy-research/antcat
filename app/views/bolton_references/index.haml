@@ -18,6 +18,6 @@
 #container
   .references
     - for bolton_reference in @references
-      = render :partial => 'reference', :locals => {:bolton_reference => bolton_reference}
+      = render 'bolton_reference', :bolton_reference => bolton_reference
 
 %div= will_paginate @references
