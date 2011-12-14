@@ -73,8 +73,8 @@ class Bolton::Reference < ActiveRecord::Base
     matches.first && matches.first.similarity
   end
 
-  def matches_with_matched_first
-    matches.partition {|m| m.reference == match}.flatten
+  def possible_matches_with_matched_first
+    possible_matches.partition {|m| m == match}.flatten
   end
 
   # ReferenceComparable

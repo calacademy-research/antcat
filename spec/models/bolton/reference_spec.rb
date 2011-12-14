@@ -211,8 +211,9 @@ describe Bolton::Reference do
       Factory :bolton_match, :bolton_reference => bolton, :reference => second_match_reference, :similarity => 0.1
       Factory :bolton_match, :bolton_reference => bolton, :reference => matched_reference, :similarity => 0.1
       bolton.update_attribute :match, matched_reference
-      bolton.matches_with_matched_first.first.reference.should == matched_reference
-      bolton.matches_with_matched_first.map(&:id).should =~ [matched_reference.id, first_match_reference.id, second_match_reference.id]
+      possible_matches = bolton.possible_matches_with_matched_first
+      possible_matches.first.should == matched_reference
+      possible_matches.map(&:id).should =~ [matched_reference.id, first_match_reference.id, second_match_reference.id]
     end
   end
 end
