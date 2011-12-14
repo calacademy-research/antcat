@@ -188,4 +188,31 @@ describe Bolton::Reference do
       bolton.match_status.should be_nil
     end
   end
+
+  describe "Best match similarity" do
+    it "should return nil if there are none" do
+      Factory(:bolton_reference).best_match_similarity.should be_nil
+    end
+    it "should return the similarity of all its matches" do
+      bolton = Factory :bolton_reference
+      reference = Factory :book_reference
+      Factory :bolton_match, :bolton_reference => bolton, :reference => reference, :similarity => 0.1
+      bolton.best_match_similarity.should == 0.1
+    end
+  end
+
+  describe "Matches with matched first" do
+    it "return the matches, with the matched one first" do
+      bolton = Factory :bolton_reference
+      first_match_reference = Factory :book_reference
+      second_match_reference = Factory :book_reference
+      matched_reference = Factory :book_reference
+      Factory :bolton_match, :bolton_reference => bolton, :reference => first_match_reference, :similarity => 0.1
+      Factory :bolton_match, :bolton_reference => bolton, :reference => second_match_reference, :similarity => 0.1
+      Factory :bolton_match, :bolton_reference => bolton, :reference => matched_reference, :similarity => 0.1
+      bolton.update_attribute :match, matched_reference
+      bolton.matches_with_matched_first.first.reference.should == matched_reference
+      bolton.matches_with_matched_first.map(&:id).should =~ [matched_reference.id, first_match_reference.id, second_match_reference.id]
+    end
+  end
 end

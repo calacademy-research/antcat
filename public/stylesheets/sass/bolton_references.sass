@@ -7,51 +7,8 @@ table, tr, td, tbody
   border: 0
   line-height: 1em
 
-.references
-  margin-top: 6px
-
-.reference
-  margin-top: 0px
-  margin-bottom: 16px
-
-  > table
-    width: 100%
-    border-top: thin black solid
-    border-left: thin black solid
-    border-right: thin black solid
-    padding-bottom: 5px
-
-    td.id
-      width: 55px
-      text-align: right
-    td.authors
-      width: 200px
-    td.citation_year
-      width: 108px
-    td.series_volume_issue
-      width: 168px
-    td.pagination
-      width: 119px
-      padding: 0
-    td.reference_type
-      width: 100px
-      text-align: right
-    td.original
-      padding: 4px
-      font-size: .9em
-    td.similarity
-      width: 80px
-      padding-right: 4px
-
-table.match
-  width: 100%
-
 label
   margin-left: -8px
-
-table.original
-  border-bottom: thin black solid
-  padding-bottom: 0
 
 #match_threshold
   width: 23px !important
@@ -63,14 +20,6 @@ table.original
   padding-left: 6px
   line-height: 21px
 
-.reference
-  .manual
-    background: darken(#98FB98, 10%)
-  .auto
-    background: lighten(#98FB98, 10%)
-  .none
-    background: lightpink
-
 // Blueprint
 
 @import 'blueprint'
@@ -78,10 +27,20 @@ table.original
 $blueprint_grid_columns: 23
 $blueprint_grid_width: 30px
 
+#container
+  margin-top: 6px
+
 .bolton_reference
   +clearfix
   border: 1px black solid
   margin-bottom: 10px
+
+  .manual
+    background: darken(#98FB98, 10%)
+  .auto
+    background: lighten(#98FB98, 10%)
+  .none
+    background: lightpink
 
   .header
     +column(23)
