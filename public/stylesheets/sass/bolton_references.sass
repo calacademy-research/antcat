@@ -75,7 +75,7 @@ table.original
 
 @import 'blueprint'
 
-$blueprint_grid_columns: 19
+$blueprint_grid_columns: 23
 $blueprint_grid_width: 30px
 
 .bolton_reference
@@ -84,15 +84,15 @@ $blueprint_grid_width: 30px
   margin-bottom: 10px
 
   .header
-    +column(19)
+    +column(23)
 
   .margin
     +column(2)
     min-height: 1px
   .details
-    +column(17, true)
+    +column(21, true)
   .fields
-    +column(17)
+    +column(21)
 
   .authors
     +column(4)
@@ -108,8 +108,8 @@ $blueprint_grid_width: 30px
     +column(3, true)
 
   .title
-    +column(17, true)
+    +column(21, true)
 
   .footer
     +prepend(2)
-    +column(17, true)
+    +column(21, true)
