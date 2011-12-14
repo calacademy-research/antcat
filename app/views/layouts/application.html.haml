@@ -32,7 +32,7 @@
       var testing = #{Rails.env == 'test'};
       var loggedIn = #{user_signed_in?};
 
-  %body#bp.two-col#flash{:class => controller.class}
+  %body#flash{:class => controller.class}
     #page
       #site_header
         = render 'shared/site_header'
