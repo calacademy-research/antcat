@@ -1,3 +1,5 @@
--#.matches
-  -#- for match in bolton_reference.matches_with_matched_first
-    -#= render 'match', :bolton_reference => bolton_reference, :reference => match.reference, :match_status_class => nil
+- matches = bolton_reference.matches_with_matched_first
+- if matches.present?
+  .matches
+    - for match in bolton_reference.matches_with_matched_first
+      = render 'match', :bolton_reference => bolton_reference, :reference => match.reference, :match_status_class => nil

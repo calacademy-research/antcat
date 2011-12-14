@@ -1,16 +1,20 @@
 .match
   .margin
+    - disabled = !user_signed_in?
     - if bolton_reference.match != reference
-      = button_to "Match", bolton_reference_path(bolton_reference, :match => reference), :method => :put, :remote => true, :disabled => !user_signed_in?
+      - text = 'Match'
+      - match = reference
     - else
-      = button_to "Unmatch", bolton_reference_path(bolton_reference, :match => nil), :method => :put, :remote => true, :disabled => !user_signed_in?
+      - text = 'Unmatch'
+      - match = nil
+    = button_to text, bolton_reference_path(bolton_reference, :match => match), :method => :put, :remote => true, :disabled => disabled
 
   .details
     .fields
-      .authors= reference.author_names_string
-      .citation_year= reference.citation_year
+      .authors=             reference.author_names_string
+      .citation_year=       reference.citation_year
       .series_volume_issue= reference.series_volume_issue
-      .pagination= reference.pagination || reference.pages_in
-      .reference_type= reference.type
-      .id= reference.id
+      .pagination_field=    reference.pagination || reference.pages_in
+      .reference_type=      reference.type
+      .id=                  reference.id
     .title= raw ReferenceFormatter.italicize reference.title
