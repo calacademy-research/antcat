@@ -24,8 +24,9 @@ label
 
 @import 'blueprint'
 
-$blueprint_grid_columns: 23
+$blueprint_grid_columns: 25
 $blueprint_grid_width: 30px
+$detail_width: $blueprint_grid_columns - 2
 
 #container
   margin-top: 6px
@@ -43,32 +44,38 @@ $blueprint_grid_width: 30px
     background: lightpink
 
   .header
-    +column(23)
+    +column($blueprint_grid_columns)
 
   .margin
     +column(2)
     min-height: 1px
   .details
-    +column(21, true)
+    +column($detail_width, true)
   .fields
-    +column(21)
+    +column($detail_width)
 
   .authors
     +column(4)
   .citation_year
-    +column(2)
+    +column(3)
   .series_volume_issue
     +column(2)
-  .pagination_field
-    +column(2)
+  .pagination_field // don't conflict with will_paginate's .pagination
+    +column(3)
   .reference_type
     +column(4)
   .id
     +column(3, true)
 
   .title
-    +column(21, true)
+    +column($detail_width, true)
+
+  .matches
+    +column($blueprint_grid_columns, true)
+
+  .match
+    +column($blueprint_grid_columns, true)
 
   .footer
     +prepend(2)
-    +column(21, true)
+    +column($detail_width, true)
