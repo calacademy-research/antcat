@@ -1,8 +1,0 @@
-.bolton_reference{:class => bolton_reference.match_status || 'none', :id => "bolton_reference_#{bolton_reference.id}"}
-  = render 'header', :bolton_reference => bolton_reference
-  .clear
-  -#.matches
-    -#- matches = bolton_reference.matches.partition {|m| m.reference == bolton_reference.match}.flatten
-    -#- for match in matches
-      -#= render 'match', :bolton_reference => bolton_reference, :reference => match.reference, :match_status_class => nil
-  -#= render 'footer', :bolton_reference => bolton_reference

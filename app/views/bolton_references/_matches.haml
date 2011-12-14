@@ -1,0 +1,4 @@
+-#.matches
+  -#- matches = bolton_reference.matches.partition {|m| m.reference == bolton_reference.match}.flatten
+  -#- for match in matches
+    -#= render 'match', :bolton_reference => bolton_reference, :reference => match.reference, :match_status_class => nil
