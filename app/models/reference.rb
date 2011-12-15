@@ -6,8 +6,6 @@ class Reference < ActiveRecord::Base
   has_many :reference_author_names, :order => :position
   has_many :author_names, :through => :reference_author_names, :order => :position,
            :after_add => :update_author_names_caches, :after_remove => :update_author_names_caches
-  has_many :duplicate_references, :order => 'similarity DESC'
-  has_many :duplicates, :through => :duplicate_references
   belongs_to :journal
   belongs_to :publisher
   belongs_to :source_reference, :polymorphic => true
