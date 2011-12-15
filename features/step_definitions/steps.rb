@@ -31,7 +31,7 @@ CSS_CLASSES = {'green' => 'auto', 'red' => 'none', 'darkgreen' => 'manual'}
 
 Then /^the Bolton reference should be (red|green|darkgreen)$/ do |red_or_green|
   css_class = CSS_CLASSES[red_or_green]
-  page.should have_css ".reference > table.#{css_class}"
+  page.should have_css ".bolton_reference.#{css_class}"
 end
 
 Then /^the (?:matched )?reference should be (green|white|darkgreen)$/ do |green_or_white|
@@ -215,8 +215,8 @@ Then 'the "Delete" button should not be visible' do
 end
 
 Then 'all the buttons should be disabled' do
-  disabled = page.all('.reference .button_to input[disabled=disabled][type=submit]')
-  all = page.all('.reference .button_to input[type=submit]')
+  disabled = page.all('.margin .button_to input[disabled=disabled][type=submit]')
+  all = page.all('.margin .button_to input[type=submit]')
   disabled.size.should == all.size
 end
 
