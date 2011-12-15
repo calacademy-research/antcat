@@ -56,27 +56,6 @@ Feature: View bibliography
       And I should see "Manual (0)"
       And I should see "None (1)"
 
-  Scenario: Seeing just references for which the best match is below a threshold
-    Given the following Bolton reference exists
-      |authors   |title|
-      |Ward, P.S.|Ants |
-    And the following reference matches that Bolton reference
-      |title        |similarity|
-      |Ants in Pants|0.5       |
-    And the following Bolton reference exists
-      |authors   |title       |
-      |Bolton, B.|Leafcutters |
-    And the following reference matches that Bolton reference
-      |title      |similarity|
-      |Leafcutters|1         |
-    When I go to the Bolton references page
-    Then I should see "Ants in Pants"
-      And I should see "Leafcutters"
-    When I fill in the match threshold with ".6"
-      And I press "Go" by the search box
-    Then I should see "Ants in Pants"
-      And I should not see "Leafcutters"
-
   Scenario: Seeing just references with a given match type
     Given the following Bolton reference exists
       |authors   |title|match_status|
