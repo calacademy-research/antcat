@@ -29,9 +29,10 @@ label
 
 @import 'blueprint'
 
-$blueprint_grid_columns: 26
+$margin_columns: 3
+$detail_columns: 23
+$blueprint_grid_columns: $margin_columns + $detail_columns
 $blueprint_grid_width: 30px
-$detail_width: $blueprint_grid_columns - 3
 
 #container
   margin-top: 6px
@@ -56,12 +57,12 @@ $detail_width: $blueprint_grid_columns - 3
     border-bottom: 1px black solid
 
   .margin
-    +column(3)
+    +column($margin_columns)
     min-height: 1px
   .details
-    +column($detail_width, true)
+    +column($detail_columns, true)
   .fields
-    +column($detail_width)
+    +column($detail_columns)
 
   .authors
     +column(4)
@@ -77,7 +78,7 @@ $detail_width: $blueprint_grid_columns - 3
     +column(3, true)
 
   .title
-    +column($detail_width, true)
+    +column($detail_columns, true)
 
   .matches
     +column($blueprint_grid_columns, true)
@@ -90,3 +91,6 @@ $detail_width: $blueprint_grid_columns - 3
   .footer
     +column($blueprint_grid_columns, true)
     padding: 5px
+
+  input[type=submit]
+    width: 97px
