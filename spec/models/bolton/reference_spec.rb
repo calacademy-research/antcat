@@ -101,6 +101,11 @@ describe Bolton::Reference do
         not_matched = Factory :bolton_reference, :match_status => nil
         Bolton::Reference.do_search(:match_statuses => ['manual']).map(&:id).should =~ [manual_match.id]
       end
+      it "should find the ones that have been marked unmatcheable" do
+        unmatcheable = Factory :bolton_reference, :match_status => 'unmatcheable'
+        not_matched = Factory :bolton_reference, :match_status => nil
+        Bolton::Reference.do_search(:match_statuses => ['unmatcheable']).map(&:id).should =~ [unmatcheable.id]
+      end
     end
 
   end
