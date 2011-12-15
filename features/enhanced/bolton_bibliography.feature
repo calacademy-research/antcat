@@ -16,10 +16,12 @@ Feature: View bibliography (JavaScript)
     Then the Bolton reference should be red
       And the reference should be white
       And I should see a "Match" button
+      And I should see "Manual (0)"
     When I press "Match"
     Then the Bolton reference should be darkgreen
       And the matched reference should be darkgreen
       And I should not see a "Match" button
+      And I should see "Manual (1)"
 
   Scenario: Deselecting a match
     Given I am logged in
