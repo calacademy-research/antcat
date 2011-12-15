@@ -17,6 +17,7 @@
 
 #container
   - for bolton_reference in @references
-    = render 'bolton_reference', :bolton_reference => bolton_reference
+    %div{:id => "bolton_reference_#{bolton_reference.id}"}
+      = render 'bolton_reference', :bolton_reference => bolton_reference
 
 %div= will_paginate @references
