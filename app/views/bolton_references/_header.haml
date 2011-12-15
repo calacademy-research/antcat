@@ -1,13 +1,14 @@
 .header
   .margin
     = bolton_reference.best_match_similarity
-    - if bolton_reference.match_status != 'unmatcheable'
-      - text = 'Unmatcheable'
-      - match = 'unmatcheable'
-    - else
-      - text = 'Matcheable'
-      - match = nil
-    = button_to text, bolton_reference_path(bolton_reference, :match => match), :method => :put, :remote => true, :disabled => !user_signed_in?
+    - unless bolton_reference.match
+      - if bolton_reference.match_status != 'unmatcheable'
+        - text = 'Unmatcheable'
+        - match = 'unmatcheable'
+      - else
+        - text = 'Matcheable'
+        - match = nil
+      = button_to text, bolton_reference_path(bolton_reference, :match => match), :method => :put, :remote => true, :disabled => !user_signed_in?
   .details
     .fields
       .authors=             bolton_reference.authors

@@ -16,11 +16,14 @@ Feature: View bibliography (JavaScript)
     Then the Bolton reference should be red
       And the reference should be white
       And I should see a "Match" button
+      And I should see a "Unmatcheable" button
       And I should see "Manual (0)"
     When I press "Match"
     Then the Bolton reference should be darkgreen
       And the matched reference should be darkgreen
       And I should not see a "Match" button
+      And I should not see a "Unmatcheable" button
+      And I should not see a "Matcheable" button
       And I should see "Manual (1)"
 
   Scenario: Setting a reference to "unmatcheable"
