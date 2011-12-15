@@ -37,19 +37,19 @@ $blueprint_grid_width: 30px
 #container
   margin-top: 6px
 
+.manual
+  background: darken(#98FB98, 10%)
+.auto
+  background: lighten(#98FB98, 10%)
+.none
+  background: #FFB6C1
+.unmatcheable
+  background: darken(#FFB6C1, 15%)
+
 .bolton_reference
   +clearfix
   border: 1px black solid
   margin-bottom: 10px
-
-  &.manual
-    background: darken(#98FB98, 10%)
-  &.auto
-    background: lighten(#98FB98, 10%)
-  &.none
-    background: #FFB6C1
-  &.unmatcheable
-    background: darken(#FFB6C1, 15%)
 
   .header
     +column($blueprint_grid_columns)
@@ -82,11 +82,12 @@ $blueprint_grid_width: 30px
 
   .matches
     +column($blueprint_grid_columns, true)
-    padding: 5px
-    border-bottom: 1px black solid
+    background: white
 
   .match
     +column($blueprint_grid_columns, true)
+    border-bottom: 1px black solid
+    padding: 5px
 
   .footer
     +column($blueprint_grid_columns, true)
