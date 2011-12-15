@@ -1,5 +1,6 @@
-- matches = bolton_reference.matches_with_matched_first
+- matches = bolton_reference.possible_matches_with_matched_first
 - if matches.present?
   .matches
-    - for match in bolton_reference.matches_with_matched_first
-      = render 'match', :bolton_reference => bolton_reference, :reference => match.reference, :match_status_class => nil
+    - for match in matches
+      - css_class = match == bolton_reference.match ? status_css_class : nil
+      = render 'match', :bolton_reference => bolton_reference, :reference => match, :css_class => css_class

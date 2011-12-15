@@ -1,4 +1,5 @@
-.bolton_reference{:class => bolton_reference.match_status || 'none', :id => "bolton_reference_#{bolton_reference.id}"}
+- status_css_class = bolton_reference.match_status || 'none'
+.bolton_reference{:class => status_css_class, :id => "bolton_reference_#{bolton_reference.id}"}
   = render 'header', :bolton_reference => bolton_reference
-  = render 'matches', :bolton_reference => bolton_reference
+  = render 'matches', :bolton_reference => bolton_reference, :status_css_class => status_css_class
   = render 'footer', :bolton_reference => bolton_reference
