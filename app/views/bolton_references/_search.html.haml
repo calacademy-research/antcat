@@ -11,13 +11,13 @@
     %span.search_item Matches:
 
     = check_box_tag 'match_status_auto', 'true', params['match_status_auto']
-    %span.search_item= label_tag 'match_status_auto', "Auto (#{Bolton::Reference.match_status_auto_count})"
+    %span.search_item= label_tag 'match_status_auto', "Auto (#{Bolton::Reference.match_status_auto_count})", :id => 'match_status_auto_count_label'
 
     = check_box_tag 'match_status_manual', 'true', params['match_status_manual']
-    %span.search_item= label_tag 'match_status_manual', "Manual (#{Bolton::Reference.match_status_manual_count})"
+    %span.search_item= label_tag 'match_status_manual', "Manual (#{Bolton::Reference.match_status_manual_count})", :id => 'match_status_manual_count_label'
 
     = check_box_tag 'match_status_none', 'true', params['match_status_none']
-    %span.search_item= label_tag 'match_status_none', "None (#{Bolton::Reference.match_status_none_count})"
+    %span.search_item= label_tag 'match_status_none', "None (#{Bolton::Reference.match_status_none_count})", :id => 'match_status_none_count_label'
 
     = image_tag 'help.png', :id => :match_status_help, :class => :help_icon
 

@@ -1,2 +1,6 @@
 reference = $('#bolton_reference_<%= @bolton_reference.id %>');
 reference.html("<%= escape_javascript(render "bolton_reference", :bolton_reference => @bolton_reference) %>");
+
+$('#match_status_auto_count_label').html("Auto (<%= Bolton::Reference.match_status_auto_count %>)");
+$('#match_status_manual_count_label').html("Manual (<%= Bolton::Reference.match_status_manual_count %>)");
+$('#match_status_none_count_label').html("None (<%= Bolton::Reference.match_status_none_count %>)");
