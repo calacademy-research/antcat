@@ -97,5 +97,19 @@ describe Subfamily do
       }
     end
 
+    it "should differentiate between extinct genera, species and subspecies" do
+      subfamily = Factory :subfamily
+      genus = Factory :genus, :subfamily => subfamily
+      Factory :genus, :subfamily => subfamily, :fossil => true
+      Factory :species, :genus => genus
+      Factory :species, :genus => genus, :fossil => true
+      Factory :subspecies, :species => Factory(:species, :genus => genus)
+      Factory :subspecies, :species => Factory(:species, :genus => genus), :fossil => true
+      subfamily.statistics.should == {
+        :extant => {:genera => {'valid' => 1}, :species => {'valid' => 3}, :subspecies => {'valid' => 1}},
+        :fossil => {:genera => {'valid' => 1}, :species => {'valid' => 1}, :subspecies => {'valid' => 1}},
+      }
+    end
+
   end
 end

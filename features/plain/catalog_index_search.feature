@@ -92,3 +92,14 @@ Feature: Searching the catalog index
     Then I should see "Dolichoderini" in the tribes index
       And "Dolichoderini" should be selected in the tribes index
 
+  Scenario: Searching with spaces at beginning and/or end of query string
+    When I go to the catalog index
+    When I fill in the search box with " abruptus "
+      And I press "Go" by the search box
+    Then I should see "abruptus history"
+
+  Scenario: Searching for full species name, not just epithet
+    When I go to the catalog index
+    When I fill in the search box with "Dolichoderus abruptus "
+      And I press "Go" by the search box
+    Then I should see "abruptus history"

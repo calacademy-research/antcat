@@ -238,20 +238,6 @@ describe Taxon do
     end
   end
 
-  describe "statistics (for the whole family)" do
-    it "should return the statistics for each status of each rank" do
-      subfamily = Factory :subfamily
-      genus = Factory :genus, :subfamily => subfamily, :tribe => nil
-      Factory :genus, :subfamily => subfamily, :status => 'homonym', :tribe => nil
-      2.times {Factory :subfamily, :fossil => true}
-      Taxon.statistics.should == {
-        :extant => {:subfamilies => {'valid' => 1}, :genera => {'valid' => 1, 'homonym' => 1}},
-        :fossil => {:subfamilies => {'valid' => 2}}
-      }
-    end
-
-  end
-
   describe "Convert asterisks to daggers" do
     it "should convert an asterisk to a dagger" do
       taxon = Factory :subfamily
@@ -265,6 +251,14 @@ describe Taxon do
       taxon.convert_asterisks_to_daggers!
       taxon.taxonomic_history.should be_nil
       taxon.reload.taxonomic_history.should be_nil
+    end
+  end
+
+  describe "Protonym" do
+    it "should have a protonym" do
+      taxon = Family.create! :name => 'Formicidae'
+      taxon.protonym.should be_nil
+      taxon.build_protonym :name => 'Formicariae'
     end
   end
 

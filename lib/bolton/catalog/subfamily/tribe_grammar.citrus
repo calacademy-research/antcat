@@ -2,11 +2,23 @@ grammar Bolton::Catalog::Subfamily::TribeGrammar
   include Bolton::Catalog::Grammar
 
   rule tribe_section
-    tribe_header | junior_synonyms_of_tribe_header | genera_incertae_sedis_in_tribe_header
+      tribe_header
+    | junior_synonyms_of_tribe_header
+    | genera_incertae_sedis_in_tribe_header
+    | tribes_incertae_sedis_header
+    | see_also_references_section_header
+    | ichnotaxa_list
+    | ichnotaxa_header
+  end
+
+  rule see_also_references_section_header
+    ('See also general references under ' family_or_subfamily_name_uppercase '.') {
+      {:type => :see_also_references_section_header, :taxa => family_or_subfamily_name_uppercase.value}
+    }
   end
 
   rule tribe_header
-    (bold span 'Tribe' close_tags fossil_flag? bold? red uppercase_word close_tags) {
+    ('Tribe ' fossil_flag? uppercase_word) {
       value = {:type => :tribe_header, :name => uppercase_word.downcase.capitalize.strip}
       value.merge! :fossil => true if fossil_flag.present?
       value
@@ -14,14 +26,94 @@ grammar Bolton::Catalog::Subfamily::TribeGrammar
   end
 
   rule junior_synonyms_of_tribe_header
-    (bold span 'Junior synonym' 's'? ' of ' red uppercase_word close_tags_required) {
+    (/Junior synonyms? of / uppercase_word) {
       {:type => :junior_synonyms_of_tribe_header}
     }
   end
 
   rule genera_incertae_sedis_in_tribe_header
-    (bold span 'Genus ' incertae_sedis_in red capitalized_word close_tags) {
+    ('Genus ' incertae_sedis_in ' ' capitalized_word) {
       {:type => :genera_incertae_sedis_in_tribe_header}
+    }
+  end
+
+  rule tribes_incertae_sedis_header
+    ('Tribes (extinct) ' incertae_sedis_in ' ' family_or_subfamily_name_uppercase) {
+      {:type => :tribes_incertae_sedis_header}
+    }
+  end
+
+  #################################################################################
+  rule ichnotaxa_list
+    ('Ichnotaxon: ' genus_label '.') {
+      {:type => :ichnotaxa_list, :genus => genus_label.value}
+    }
+  end
+
+  rule ichnotaxa_header
+    'Ichnotaxon attached to Attini' {
+      {:type => :ichnotaxa_header}
+    }
+  end
+
+  rule ichnogenus_header
+  end
+
+  rule ichnogenus_headline
+  end
+
+  #################################################################################
+  rule tribe_taxonomic_history_item
+     tribe_incertae_sedis_history_item | regular_tribe_taxonomic_history_item
+  end
+
+  rule regular_tribe_taxonomic_history_item
+    (label:(tribe_label|subtribe_label) ' ' tribe_taxonomic_history_item_status ': ' taxonomic_history_references '.') {
+      value = {:type => :tribe_taxonomic_history_item}
+      value[:tribe] = label.value
+      value.merge! tribe_taxonomic_history_item_status.value
+      value.merge! taxonomic_history_references.value
+      value
+    }
+  end
+
+  rule tribe_taxonomic_history_item_status
+    as_tribe | as_subtribe | as_junior_synonym_of_subfamily | as_junior_synonym_of_tribe
+  end
+
+  rule as_tribe
+    ('as tribe of ' subfamily_name) {
+      {:tribe_of => subfamily_name.value}
+    }
+  end
+
+  rule as_subtribe
+    ('as subtribe of ' tribe_name) {
+      {:subtribe_of => tribe_name.value}
+    }
+  end
+
+  rule as_junior_synonym_of_subfamily
+    ('as junior synonym of ' subfamily_label) {
+      value = {:subfamily => subfamily_label.value}
+      {:as_junior_synonym_of => value}
+    }
+  end
+
+  rule as_junior_synonym_of_tribe
+    ('as junior synonym of ' tribe_label) {
+      value = {:tribe => tribe_label.value}
+      {:as_junior_synonym_of => value}
+    }
+  end
+
+  rule tribe_incertae_sedis_history_item
+    (tribe_label ' ' incertae_sedis_in ' ' subfamily_label ': ' references '.') {
+      value = {:type => :tribe_taxonomic_history_item}
+      value[:tribe] = tribe_label.value
+      value.merge! :incertae_sedis_in => captures[:subfamily_label].map(&:value)
+      value.merge! references.value
+      value
     }
   end
 

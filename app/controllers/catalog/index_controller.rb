@@ -68,6 +68,43 @@ class Catalog::IndexController < CatalogController
 
     @taxon_header_name ||= @taxon.full_label if @taxon.kind_of? Taxon
     @taxon_statistics ||= @taxon.statistics if @taxon.kind_of? Taxon
+    @taxon_status ||= status_labels[@taxon.status][:singular] if @taxon.kind_of?(Taxon) && @taxon.invalid?
+  end
+
+  def select_subfamily_and_tribes
+    @selected_subfamily = @selected_genus.subfamily || 'no_subfamily'
+    unless params[:hide_tribes] || @selected_subfamily == 'no_subfamily'
+      @selected_tribe = @selected_genus.tribe || 'no_tribe'
+      @tribes = @selected_subfamily.tribes
+    end
+  end
+
+  def select_genera
+    if @selected_subfamily == 'no_subfamily'
+      @genera = Genus.without_subfamily
+    elsif params[:hide_tribes]
+      @genera = @selected_subfamily.genera
+    else
+      @genera = @selected_genus.siblings
+    end
+  end
+
+  def select_subfamily_and_tribes
+    @selected_subfamily = @selected_genus.subfamily || 'no_subfamily'
+    unless params[:hide_tribes] || @selected_subfamily == 'no_subfamily'
+      @selected_tribe = @selected_genus.tribe || 'no_tribe'
+      @tribes = @selected_subfamily.tribes
+    end
+  end
+
+  def select_genera
+    if @selected_subfamily == 'no_subfamily'
+      @genera = Genus.without_subfamily
+    elsif params[:hide_tribes]
+      @genera = @selected_subfamily.genera
+    else
+      @genera = @selected_genus.siblings
+    end
   end
 
   def select_subfamily_and_tribes
@@ -89,26 +126,10 @@ class Catalog::IndexController < CatalogController
   end
 
   def setup_formicidae
+    @taxon ||= Family.first
     @taxon_header_name = 'Formicidae'
-    @taxon_statistics = Taxon.statistics
-  end
-
-  def select_subfamily_and_tribes
-    @selected_subfamily = @selected_genus.subfamily || 'no_subfamily'
-    unless params[:hide_tribes] || @selected_subfamily == 'no_subfamily'
-      @selected_tribe = @selected_genus.tribe || 'no_tribe'
-      @tribes = @selected_subfamily.tribes
-    end
-  end
-
-  def select_genera
-    if @selected_subfamily == 'no_subfamily'
-      @genera = Genus.without_subfamily
-    elsif params[:hide_tribes]
-      @genera = @selected_subfamily.genera
-    else
-      @genera = @selected_genus.siblings
-    end
+    @taxon_statistics = @taxon && !(@taxon =~ /^no/) && @taxon.statistics
+    @taxon_status = 'valid'
   end
 
 end

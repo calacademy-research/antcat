@@ -143,6 +143,24 @@ class CatalogFormatter
     "#{number_with_delimiter(count)} #{word}"
   end
 
+
+  def self.format_headline taxon
+    format_headline_name(taxon) + ' ' + format_headline_authorship(taxon) + ' ' + format_headline_type(taxon)
+  end
+
+  def self.format_headline_name taxon
+    return '' unless taxon && taxon != 'no_tribe' && taxon != 'no_subfamily' && taxon.protonym
+    taxon.protonym.name
+  end
+
+  def self.format_headline_authorship taxon
+    ''#format_authorship taxon.protonym
+  end
+
+  def self.format_headline_type taxon
+    ''
+  end
+
   private
   def self.css_classes_for_taxon taxon, selected = false
     css_classes = css_classes_for_rank taxon

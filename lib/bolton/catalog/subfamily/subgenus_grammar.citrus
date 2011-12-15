@@ -6,19 +6,19 @@ grammar Bolton::Catalog::Subfamily::SubgenusGrammar
   end
 
   rule subgenera_header
-    (bold span 'Subgenera of ' /.*/) {
+    ('Subgenera of ' /.*/) {
       {:type => :subgenera_header}
     }
   end
 
   rule subgenus_header
-    (bold span 'Subgenus ' italic red uppercase_word ' (' subgenus_name:uppercase_word ')' close_tags) {
-      {:type => :subgenus_header, :name => subgenus_name.downcase.capitalize.strip}
+    ('Subgenus ' italic uppercase_word ' (' subgenus_epithet:uppercase_word ')' close_tag) {
+      {:type => :subgenus_header, :name => subgenus_epithet.downcase.capitalize.strip}
     }
   end
 
   rule junior_synonyms_of_subgenus_header
-    (bold span 'Junior synonym' 's'? ' of ' italic red uppercase_word ' (' uppercase_word ')' close_tags) {
+    (/Junior synonyms? of / italic uppercase_word ' (' uppercase_word ')' close_tag) {
       {:type => :junior_synonyms_of_subgenus_header}
     }
   end

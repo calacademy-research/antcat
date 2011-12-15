@@ -2,86 +2,142 @@ grammar Bolton::Catalog::Subfamily::SubfamilyGrammar
   include Bolton::Catalog::Grammar
 
   rule subfamily_section
-    subfamily_centered_header | subfamily_header | 
-    tribes_list | genera_list | collective_group_name_list |
-    genera_incertae_sedis_header |
-    collective_group_name_header
+      subfamily_centered_header
+    | subfamily_header
+    | tribes_list
+    | genera_list
+    | collective_group_name_list
+    | collective_group_names_header
   end
 
   rule subfamily_centered_header
-    (bold span 'SUBFAMILY' close_tags fossil_flag? red uppercase_word close_tags) {
+    ('SUBFAMILY ' fossil_flag? uppercase_word) {
       {:type => :subfamily_centered_header}
     }
   end
 
   rule subfamily_header
-    (bold span 'Subfamily ' fossil_flag? red uppercase_word close_tags) {
+    ('Subfamily ' fossil_flag? uppercase_word) {
       value = {:type => :subfamily_header, :name => uppercase_word.downcase.capitalize.strip}
-      value.merge! :fossil => true if fossil_flag.present?
+      value[:fossil] = true if fossil_flag
       value
+    }
+  end
+
+  rule subfamily_taxonomic_history_item
+    (subfamily_label ' ' subfamily_taxonomic_history_item_status ': ' reference_and_bracketed_note* all_subsequent_authors:'all subsequent authors'? '.') {
+      value = {:type => :subfamily_taxonomic_history_item}
+      value[:subfamily] = subfamily_label.value
+      value.merge! subfamily_taxonomic_history_item_status.value
+      value[:references] = captures[:reference_and_bracketed_note].map(&:value)
+      value[:references] << {:all_subsequent_authors => true} if all_subsequent_authors && all_subsequent_authors != ''
+      value
+    }
+  end
+
+  rule reference_and_bracketed_note
+    (reference (' ' bracketed_phrase)? '; '?) {
+      value = reference.value
+      value.merge! :note => bracketed_phrase if bracketed_phrase
+      value
+    }
+  end
+
+  rule subfamily_taxonomic_history_item_status
+    junior_synonym_of_subfamily | as_subfamily | as_family | as_tribe_of
+  end
+
+  rule as_subfamily
+    ('as' (' ' as_subfamily_kind)? ' subfamily of Formicidae') {
+      value = {:as_subfamily => true}
+      value.merge! as_subfamily_kind.value if as_subfamily_kind
+      value
+    }
+  end
+
+  rule as_tribe_of
+    ('as tribe of Formicidae') {
+      {:as_tribe_of => {:family_name => 'Formicidae'}}
+    }
+  end
+
+  rule as_family
+    'as family' {
+      {:as_family => true}
+    }
+  end
+
+  rule as_subfamily_kind
+    ('formicoid dolichoderomorph' | 'formicoid' | 'formicomorph') {
+      {:kind => to_s}
+    }
+  end
+
+  rule junior_synonym_of_subfamily
+    ('as junior synonym of ' senior:subfamily_name) {
+      {:junior_synonym_of => senior.value}
     }
   end
 
   rule tribes_list
     (
-      (bold span 'Tribe' close_tags ': ' list_names) |
-      (bold? span 'Tribes of ' fossil_flag? capitalized_word close_tags? ': ' list_names) |
-      (bold span 'Tribe' 's'? ' ' ('(extinct) '|'(extant) ')?  (incertae_sedis_in | 'of ') capitalized_word close_tags? ':' list_names)
+      ('Tribes' 'of ' capitalized_word ': ' list_names) |
+      ('Tribes ' incertae_sedis_in ' ' capitalized_word ': ' list_names) |
+      ('Tribes (extinct) ' incertae_sedis_in ' ' capitalized_word ': ' list_names) |
+      ('Tribe: ' list_names) |
+      ('Tribes of ' fossil_flag? capitalized_word? ': ' list_names) |
+      ('Tribe' 's'? ' ' ('(extinct) '|'(extant) ')?  (incertae_sedis_in | 'of ') capitalized_word? ': ' list_names)
     ) {
       value = {:type => :tribes_list, :tribes => list_names.value}
-      value.merge! :incertae_sedis => true if incertae_sedis_in.present?
+      value[:incertae_sedis] = true if incertae_sedis_in
       value
     } 
   end
 
   rule genera_list
     (
-      (bold span 'Genus' close_tags ('of ' capitalized_word)? ':' list_names) |
-      (bold span 'Genus' s '(extinct)'? incertae_sedis_in capitalized_word close_tags? ':' list_names) |
-      (bold span 'Genera (extinct)' incertae_sedis_in 'poneroid subfamilies' close_tags ':' list_names) |
-      (bold span 'Genera (extinct)' incertae_sedis_in 'poneromorph subfamilies' close_tags ':' list_names) |
-      (bold span 'Genera of ' capitalized_word ':' close_tags list_names) |
-      (bold span 'Genera (extinct' italic ')' incertae_sedis_in capitalized_word close_tags ':' list_names) |
-      (bold span ('Hong (2002) genera '|'Genera '|'Genus ') ('(extinct) '|'(extant) ')? (incertae_sedis_in | 'of ') capitalized_word close_tags ':' list_names) |
-      (bold span 'Genera of ' black capitalized_word close_tags ':' close_tags list_names) |
-      (bold span ('Genera'|'Genus') ' (extinct) of ' fossil_flag* capitalized_word close_tags ':' list_names)
+      ('Genus' ('of ' capitalized_word)? ': ' list_names) |
+      ('Genus' s '(extinct)'? incertae_sedis_in ' ' capitalized_word? ': ' list_names) |
+      ('Genera (extinct) ' incertae_sedis_in ' poneroid subfamilies' ': ' list_names) |
+      ('Genera (extinct) ' incertae_sedis_in ' poneromorph subfamilies' ': ' list_names) |
+      ('Genera of ' capitalized_word ': ' list_names) |
+      ('Genera (extinct' italic ') ' incertae_sedis_in ' ' capitalized_word ': ' list_names) |
+      (('Hong (2002) genera '|'Genera '|'Genus ') ('(extinct) '|'(extant) ')? (incertae_sedis_in | 'of') ' ' capitalized_word ': ' list_names) |
+      (('Genera'|'Genus') ' (extinct) of ' fossil_flag* capitalized_word ': ' list_names)
     ) {
       value = {:type => :genera_list, :genera => list_names.value}
-      value[:incertae_sedis] = true if incertae_sedis_in.present?
+      value[:incertae_sedis] = true if incertae_sedis_in
       value
     } 
   end
 
   rule collective_group_name_list
-    (bold span 'Collective group name in ' fossil_flag? capitalized_word close_tags ':' list_names) {
+    ('Collective group name in ' subfamily_label ': ' list_names) {
       {:type => :collective_group_name_list, :names => list_names.value}
     } 
   end
 
-  rule collective_group_name_header
-    (bold span 'Collective group name in ' red uppercase_word close_tags_required) {
-      {:type => :collective_group_name_header}
+  rule collective_group_names_header
+    ('Collective group name in ' uppercase_word) {
+      {:type => :collective_group_names_header}
     } 
   end
 
   rule list_names
-    (s list_name (', ' list_name)* /.*/) {
+    (list_name (', ' list_name)* /.*/) {
       captures[:list_name].map(&:value)
     }
   end
 
   rule list_name
-    (italic? fossil_flag? italic? s capitalized_word tag_end? unresolved_junior_homonym:" (unresolved junior homonym)."?) {
+    (
+      (fossil_flag? capitalized_word) |
+      (italic? fossil_flag? italic? capitalized_word close_tag unresolved_junior_homonym:" (unresolved junior homonym)."?)
+    ){
       value = {:name => capitalized_word.to_s}
-      value[:fossil] = true if fossil_flag.present?
+      value[:fossil] = true if fossil_flag
       value[:status] = 'unresolved homonym' if unresolved_junior_homonym && unresolved_junior_homonym != ''
       value
-    }
-  end
-
-  rule genera_incertae_sedis_header
-    (bold span ('Genera '|'Genus ') '(extinct) '? incertae_sedis_in red uppercase_word close_tags) {
-      {:type => :genera_incertae_sedis_header}
     }
   end
 

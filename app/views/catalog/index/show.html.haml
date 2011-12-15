@@ -10,9 +10,11 @@
       %span.taxon_header
         = raw @taxon_header_name
       %span.taxon_status
-        = status_labels[@taxon.status][:singular] if @taxon.kind_of?(Taxon) && @taxon.invalid?
+        = raw @taxon_status
+      .taxon_headline
+        = raw CatalogFormatter.format_headline @taxon
       .statistics
-        = raw format_statistics @taxon_statistics
+        = raw CatalogFormatter.format_statistics @taxon_statistics
       .taxonomic_history
         = raw @taxonomic_history
     %hr

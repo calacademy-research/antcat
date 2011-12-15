@@ -79,6 +79,16 @@ describe Species do
       }
     end
 
+    it "should differentiate between extant and fossil subspecies" do
+      species = Factory :species
+      subspecies = Factory :subspecies, :species => species
+      Factory :subspecies, :species => species, :fossil => true
+      species.statistics.should == {
+        :extant => {:subspecies => {'valid' => 1}},
+        :fossil => {:subspecies => {'valid' => 1}},
+      }
+    end
+
     it "should handle 1 valid subspecies and 2 synonyms" do
       species = Factory :species
       Factory :subspecies, :species => species

@@ -3,6 +3,12 @@ require 'spec_helper'
 
 describe CatalogHelper do
 
+  describe 'Headline' do
+    it "should format a headline" do
+      taxon = Factory :family
+    end
+  end
+
   describe 'taxon header' do
     it "should return the header and CSS class based on the type of the taxon, its status and whether or not it's a fossil" do
       taxon = Factory :genus, :name => 'Atta', :fossil => true

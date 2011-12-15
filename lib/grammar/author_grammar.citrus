@@ -51,6 +51,6 @@ grammar AuthorGrammar
   end
 
   rule name_char_without_period_but_before_semicolon
-    /[\-\'\w](?=;)/u
+    /[\-\'\w](?=;)/
   end
 end

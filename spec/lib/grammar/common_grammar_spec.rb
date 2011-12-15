@@ -1,86 +1,90 @@
 # coding: UTF-8
 require 'spec_helper'
 
-describe CommonGrammar do
-  describe "parsing text" do
+describe @parser do
+  before do
+    @parser = CommonGrammar
+  end
 
-    it "should recognize text" do
-      CommonGrammar.parse(%{  a  }, :root => :text).value.should_not be_nil
-      lambda {CommonGrammar.parse(%{  <a>  }, :root => :text)}.should raise_error Citrus::ParseError
-      lambda {CommonGrammar.parse(%{  .  }, :root => :text)}.should raise_error Citrus::ParseError
+  describe "parsing a year" do
+    it "should not consider a five digit number a year" do
+      lambda {@parser.parse('18345', :root => :year, :consume => false)}.should raise_error Citrus::ParseError
     end
-
   end
 
   describe "parsing a blank line" do
 
     it "should not consider a nonblank line blank" do
-      lambda {CommonGrammar.parse(%{  a  }, :root => :blank_line)}.should raise_error Citrus::ParseError
-      CommonGrammar.parse(%{  a  }, :root => :nonblank_line).value.should == :nonblank_line
+      lambda {@parser.parse(%{  a  }, :root => :blank_line)}.should raise_error Citrus::ParseError
+      @parser.parse(%{  a  }, :root => :nonblank_line).value.should == :nonblank_line
     end
 
     it "should handle '<p> </p>' (nested empty paragraph)" do
-      CommonGrammar.parse(%{<p> </p>}, :root => :blank_line).value.should == :blank_line
+      @parser.parse(%{<p> </p>}, :root => :blank_line).value.should == :blank_line
+    end
+
+    it "should handle '<span>.</span>'" do
+      @parser.parse('<span>.</span>', :root => :blank_line).value.should == :blank_line
     end
 
     it "should handle a nonbreaking space inside a subparagraph" do
-      CommonGrammar.parse(%{<span style="mso-spacerun: yes">&nbsp;</span>}, :root => :blank_line).value.should == :blank_line
+      @parser.parse(%{<span style="mso-spacerun: yes">&nbsp;</span>}, :root => :blank_line).value.should == :blank_line
     end
 
     it "should handle a red paragraph w/nonbreaking space" do
-      CommonGrammar.parse(%{<span style="color:red"><p> </p></span>}, :root => :blank_line).value.should == :blank_line
+      @parser.parse(%{<span style="color:red"><p> </p></span>}, :root => :blank_line).value.should == :blank_line
     end
 
     it "should handle a single period" do
-      CommonGrammar.parse(%{.}, :root => :blank_line).value.should == :blank_line
+      @parser.parse(%{.}, :root => :blank_line).value.should == :blank_line
     end
 
     it "should handle a bold empty paragraph" do
-      CommonGrammar.parse(%{<b><p> </p></b>}, :root => :blank_line).value.should == :blank_line
+      @parser.parse(%{<b><p> </p></b>}, :root => :blank_line).value.should == :blank_line
     end
     it "should handle another bold empty paragraph" do
-      CommonGrammar.parse(%{<b style="mso-bidi-font-weight:normal"><span lang="EN-GB"><p> </p></span></b>}, :root => :blank_line).value.should == :blank_line
+      @parser.parse(%{<b style="mso-bidi-font-weight:normal"><span lang="EN-GB"><p> </p></span></b>}, :root => :blank_line).value.should == :blank_line
     end
 
     it "should handle an italic space" do
-      CommonGrammar.parse(%{<i> </i>}, :root => :blank_line).value.should == :blank_line
+      @parser.parse(%{<i> </i>}, :root => :blank_line).value.should == :blank_line
     end
 
     it "should handle a nonbreaking space inside a subparagraph" do
-      CommonGrammar.parse(%{<p> </p>}, :root => :blank_line).value.should == :blank_line
+      @parser.parse(%{<p> </p>}, :root => :blank_line).value.should == :blank_line
     end
     it "should handle a nonbreaking space" do
-      CommonGrammar.parse(%{ }, :root => :blank_line).value.should == :blank_line
+      @parser.parse(%{ }, :root => :blank_line).value.should == :blank_line
     end
     it "should handle a spacerun" do
-      CommonGrammar.parse(%{<span style="mso-spacerun: yes"> </span>}, :root => :blank_line).value.should == :blank_line
+      @parser.parse(%{<span style="mso-spacerun: yes"> </span>}, :root => :blank_line).value.should == :blank_line
     end
     it "should handle an empty paragraph with a font" do
-      CommonGrammar.parse(%{<span style='font-family:"Times New Roman"'><p> </p></span>}, :root => :blank_line).value.should == :blank_line
+      @parser.parse(%{<span style='font-family:"Times New Roman"'><p> </p></span>}, :root => :blank_line).value.should == :blank_line
     end
     it "should handle an empty paragraph with italics" do
-      CommonGrammar.parse(%{<i><p> </p></i>}, :root => :blank_line).value.should == :blank_line
+      @parser.parse(%{<i><p> </p></i>}, :root => :blank_line).value.should == :blank_line
     end
     it "should handle a blank bold red paragraph" do
-      CommonGrammar.parse(%{<b><span style="color:red"><p> </p></span></b>}, :root => :blank_line).value.should == :blank_line
+      @parser.parse(%{<b><span style="color:red"><p> </p></span></b>}, :root => :blank_line).value.should == :blank_line
     end
     it "should handle a namespaced paragraph with a blank" do
-      CommonGrammar.parse(%{<o:p>&nbsp;</o:p>}, :root => :blank_line).value.should == :blank_line
+      @parser.parse(%{<o:p>&nbsp;</o:p>}, :root => :blank_line).value.should == :blank_line
     end
     it "should handle a nonbreaking space inside paragraph" do
-      CommonGrammar.parse(%{<p>&nbsp;</p>}, :root => :blank_line).value.should == :blank_line
+      @parser.parse(%{<p>&nbsp;</p>}, :root => :blank_line).value.should == :blank_line
     end
     it "should handle an empty span" do
-      CommonGrammar.parse(%{<span lang="EN-GB"> </span>}, :root => :space).should_not be_nil
+      @parser.parse(%{<span lang="EN-GB"> </span>}, :root => :space).should_not be_nil
     end
     it "should just ignore this span as space" do
-      CommonGrammar.parse(%{<span lang="EN-GB">}, :root => :space).should_not be_nil
+      @parser.parse(%{<span lang="EN-GB">}, :root => :space).should_not be_nil
     end
     it "should just ignore this span as space" do
-      CommonGrammar.parse(%{<span lang=EN-GB>}, :root => :space).should_not be_nil
+      @parser.parse(%{<span lang=EN-GB>}, :root => :space).should_not be_nil
     end
     it "should just ignore this span around an empty paragraph as a blank line" do
-      CommonGrammar.parse(%{<span lang="EN-GB"><p> </p></span>}, :root => :blank_line).should_not be_nil
+      @parser.parse(%{<span lang="EN-GB"><p> </p></span>}, :root => :blank_line).should_not be_nil
     end
 
   end
@@ -88,38 +92,61 @@ describe CommonGrammar do
   describe "Uppercase and capitalized words" do
 
     it "should differentiate between a capitalized word and an uppercase word" do
-      lambda {CommonGrammar.parse(%{Abc}, :root => :uppercase_word)}.should raise_error
-      CommonGrammar.parse(%{Abc}, :root => :capitalized_word).should_not be_nil
-      CommonGrammar.parse(%{ABC}, :root => :uppercase_word).should_not be_nil
-      lambda {CommonGrammar.parse(%{ABC}, :root => :capitalized_word)}.should raise_error
+      lambda {@parser.parse(%{Abc}, :root => :uppercase_word)}.should raise_error
+      @parser.parse(%{Abc}, :root => :capitalized_word).should_not be_nil
+      @parser.parse(%{ABC}, :root => :uppercase_word).should_not be_nil
+      lambda {@parser.parse(%{ABC}, :root => :capitalized_word)}.should raise_error
     end
 
     it "should only consider them words if they are followed by word break" do
-      CommonGrammar.parse(%{ABC}, :root => :uppercase_word).should_not be_nil
-      lambda {CommonGrammar.parse(%{Abc}, :root => :uppercase_word)}.should raise_error
+      @parser.parse(%{ABC}, :root => :uppercase_word).should_not be_nil
+      lambda {@parser.parse(%{Abc}, :root => :uppercase_word)}.should raise_error
+    end
+
+    it "should not include the word break in the parsed value" do
+      lambda {@parser.parse("Abc)", :root => :uppercase_word)}.should raise_error
     end
 
     it "should not consider a single letter an uppercase or capitalized word" do
-      lambda {CommonGrammar.parse(%{A}, :root => :uppercase_word)}.should raise_error
-      lambda {CommonGrammar.parse(%{A}, :root => :capitalized_word)}.should raise_error
+      lambda {@parser.parse(%{B}, :root => :uppercase_word)}.should raise_error
+      lambda {@parser.parse(%{B}, :root => :capitalized_word)}.should raise_error
     end
 
+    it "should consider A an uppercase or capitalized word" do
+      lambda {@parser.parse(%{A}, :root => :uppercase_word)}.should_not raise_error
+      lambda {@parser.parse(%{A}, :root => :capitalized_word)}.should_not raise_error
+    end
+
+    it "should consider AN/An an uppercase or capitalized word" do
+      lambda {@parser.parse(%{AN}, :root => :uppercase_word)}.should_not raise_error
+      lambda {@parser.parse(%{An}, :root => :capitalized_word)}.should_not raise_error
+    end
+
+  end
+
+  describe "Uppercase line" do
+    it "should be a string that's all uppercase" do
+      @parser.parse(%{ABC}, :root => :uppercase_line).should_not be_nil
+    end
+    it "should not be a string that's not all uppercase" do
+      lambda {@parser.parse(%{ABC bcd}, :consume => false, :root => :uppercase_line)}.should raise_error
+    end
   end
 
   describe "Closing tags" do
 
     it "should be strict, if the close_tags_required rule is used" do
-      lambda {CommonGrammar.parse(%{ }, :root => :close_tags_required)}.should raise_error
-      CommonGrammar.parse(%{</p>}, :root => :close_tags_required).should_not be_nil 
-      CommonGrammar.parse(%{ </p> }, :root => :close_tags_required).should_not be_nil 
-      CommonGrammar.parse(%{ </p> </i> }, :root => :close_tags_required).should_not be_nil 
+      lambda {@parser.parse(%{ }, :root => :close_tags_required)}.should raise_error
+      @parser.parse(%{</p>}, :root => :close_tags_required).should_not be_nil 
+      @parser.parse(%{ </p> }, :root => :close_tags_required).should_not be_nil 
+      @parser.parse(%{ </p> </i> }, :root => :close_tags_required).should_not be_nil 
     end
 
     it "should be loose" do
-      lambda {CommonGrammar.parse(%{ }, :root => :close_tags)}.should_not raise_error
-      CommonGrammar.parse(%{</p>}, :root => :close_tags).should_not be_nil 
-      CommonGrammar.parse(%{ </p> }, :root => :close_tags).should_not be_nil 
-      CommonGrammar.parse(%{ </p> </i> }, :root => :close_tags).should_not be_nil 
+      lambda {@parser.parse(%{ }, :root => :close_tags)}.should_not raise_error
+      @parser.parse(%{</p>}, :root => :close_tags).should_not be_nil 
+      @parser.parse(%{ </p> }, :root => :close_tags).should_not be_nil 
+      @parser.parse(%{ </p> </i> }, :root => :close_tags).should_not be_nil 
     end
 
   end
@@ -127,8 +154,8 @@ describe CommonGrammar do
   describe "Color" do
 
     it "shouldn't slop over" do
-      CommonGrammar.parse(%{<span style="color:}, :root => :start_color_span_start).should_not be_nil
-      lambda {CommonGrammar.parse(%{<span> <span style="color:}, :root => :start_color_span_start)}.should raise_error
+      @parser.parse(%{<span style="color:}, :root => :start_color_span_start).should_not be_nil
+      lambda {@parser.parse(%{<span> <span style="color:}, :root => :start_color_span_start)}.should raise_error
     end
 
     describe "purple" do
@@ -150,27 +177,24 @@ describe CommonGrammar do
     end
   end
 
-  describe "Species name" do
+  it "should recognize a bracketed phrase" do
+    @parser.parse('[a phrase]', :root => :bracketed_phrase).should_not be_nil
+  end
 
-    it "should allow a lowercase word" do
-      CommonGrammar.parse('chilensis', :root => :species_name).should_not be_nil
-    end
-    it "should not allow a space" do
-      lambda {CommonGrammar.parse('chilensis negrescens', :root => :species_name)}.should raise_error
-    end
-    it "should allow a hyphen in the second position" do
-      CommonGrammar.parse('v-nigra', :root => :species_name).should_not be_nil
-    end
-    it "should not allow a hyphen in the first position" do
-      lambda {CommonGrammar.parse('-vnigra', :root => :species_name)}.should raise_error
-    end
-    it "should not allow a hyphen in the third position" do
-      lambda {CommonGrammar.parse('vn-igra', :root => :species_name)}.should raise_error
-    end
-    it "can have only two letters" do
-      CommonGrammar.parse('io', :root => :species_name).should_not be_nil
-    end
+  it "should recognize a parenthesized phrase and return its contents" do
+    @parser.parse('(a phrase)', :root => :parenthesized_phrase).value.should == 'a phrase'
+  end
 
+  it "should recognize et al." do
+    @parser.parse('<i>et al.</i>', :root => :et_al)
+  end
+
+  it "should recognize recte" do
+    @parser.parse('<i>recte</i>', :root => :recte)
+  end
+
+  it "should recognize sic" do
+    @parser.parse('<i>sic</i>', :root => :sic)
   end
 
   describe "Space" do

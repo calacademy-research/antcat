@@ -17,8 +17,13 @@ namespace :bolton do
     task :species => :environment do
       Bolton::Catalog::Species::Importer.new(true).import_files Dir.glob "#{$BOLTON_DATA_DIRECTORY}/NGC-Sp*.htm"
     end
+    desc "Import Bolton species catalog documents deeply"
+    task 'species:deep' => :environment do
+      Bolton::Catalog::Species::DeepSpeciesImporter.new(:show_progress => true, :start_from_scratch => true).
+        import_files Dir.glob "#{$BOLTON_DATA_DIRECTORY}/NGC-Sp*.htm"
+    end
     desc "Import all taxa"
-    task :taxa => ['bolton:import:subfamilies', 'bolton:import:species']
+    task :taxa => ['bolton:import:subfamilies', 'bolton:import:species:deep']
   end
 
   namespace :references do
@@ -27,8 +32,20 @@ namespace :bolton do
       Bolton::ReferencesMatcher.new(true).find_matches_for_all
     end
 
+    desc "Assign author/year keys"
+    task :assign_author_year_keys => :environment do
+      Bolton::Reference.assign_author_year_keys
+    end
+
     desc 'Import and match Bolton references'
     task :import_and_match => ['bolton:import:references', 'bolton:references:match']
+  end
+
+  namespace :references do
+    desc 'Set bolton_reference match fields according to previous matching run'
+    task :set_matches => :environment do
+      Bolton::Reference.set_matches
+    end
   end
 
 end

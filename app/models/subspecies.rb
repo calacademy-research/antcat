@@ -22,4 +22,7 @@ class Subspecies < Taxon
   def statistics
   end
 
+  def statistics
+  end
+
 end
