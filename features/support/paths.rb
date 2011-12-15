@@ -12,8 +12,6 @@ module NavigationHelpers
       reference_path(@reference || Reference.first)    
     when /the edit user page/
       '/users/edit'
-    when /the duplicate reference list/
-      duplicate_references_path
     when /the "Edit journals" page/
       journals_path
     when /the catalog index/

@@ -6,12 +6,9 @@ AntCat::Application.routes.draw do
   resources :authors, :only => [:index]
   resources :bolton_references
   match     '/documents/:id/:file_name', :to => 'references#download', :file_name => /.+/, :via => :get
-  resources :duplicate_references, :only => [:index]
   resources :journals
   resources :publishers, :only => [:index]
-  resources :references, :only => [:index, :update, :create, :destroy] do
-    resources :duplicate_references
-  end
+  resources :references, :only => [:index, :update, :create, :destroy]
   match     '/antcat_references.utf8.endnote_import', :to => 'references#index', :format => :endnote_import, :as => :endnote_import
   resources :styles, :only => [:index]
   resource  :catalog, :only => [] do

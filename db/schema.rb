@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111211002331) do
+ActiveRecord::Schema.define(:version => 20111215162958) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -68,17 +68,6 @@ ActiveRecord::Schema.define(:version => 20111211002331) do
     t.string  "year"
     t.string  "parse_result"
   end
-
-  create_table "duplicate_references", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "reference_id"
-    t.integer  "duplicate_id"
-    t.float    "similarity"
-  end
-
-  add_index "duplicate_references", ["duplicate_id"], :name => "duplicate_references_duplicate_id_idx"
-  add_index "duplicate_references", ["reference_id"], :name => "duplicate_references_reference_id_idx"
 
   create_table "journals", :force => true do |t|
     t.string   "name"
