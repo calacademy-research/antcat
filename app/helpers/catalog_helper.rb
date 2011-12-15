@@ -90,5 +90,4 @@ module CatalogHelper
     select_tag :search_type,
       options_for_select(['matching', 'beginning with', 'containing'], current_search_type || 'beginning with')
   end
-
 end

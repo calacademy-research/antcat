@@ -351,4 +351,25 @@ describe Bolton::Reference do
       reference.authors.should == 'Fisher, Martha'
     end
   end
+
+  describe 'Author year key' do
+    it "should create an author/year key when saved" do
+      bolton = Bolton::Reference.create! :authors => 'Fisher, B. L.', :citation_year => '1981', :title => 'Dolichoderinae',
+        :reference_type => 'ArticleReference', :series_volume_issue => '1(2)', :pagination => '22-54'
+      bolton.reload.author_year_key.should == 'Fisher 1981'
+    end
+
+    describe "forming the key" do
+      it "should handle multiple authors" do
+        Bolton::Reference.make_author_year_key('Lattke, J.E., Fernandez, F. & Palacio, E.E.', '1981').should ==
+          'Lattke Fernandez Palacio 1981'
+      end
+      it "should handle zero authors" do
+        Bolton::Reference.make_author_year_key('', '1981').should == '1981'
+        Bolton::Reference.make_author_year_key(nil, '1981').should == '1981'
+      end
+    end
+
+  end
+
 end

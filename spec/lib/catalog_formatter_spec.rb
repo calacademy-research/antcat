@@ -24,6 +24,11 @@ describe CatalogFormatter do
       genus.should_receive(:statistics).and_return :extant => {:species => {'valid' => 2}}
       @formatter.format_taxon_statistics(genus, :include_invalid => false).should == "<p class=\"taxon_statistics\">2 species</p>"
     end
+    it "should not leave a comma at the end if only showing valid taxa" do
+      genus = Factory :genus, :taxonomic_history => 'foo'
+      genus.should_receive(:statistics).and_return :extant => {:species => {'valid' => 2}}
+      @formatter.format_taxon_statistics(genus, :include_invalid => false).should == "<p class=\"taxon_statistics\">2 species</p>"
+    end
   end
 
   describe 'Formatting statistics' do
@@ -37,6 +42,30 @@ describe CatalogFormatter do
     it "should use commas in numbers when not showing invalid" do
       @formatter.format_statistics({:extant => {:genera => {'valid' => 2_000}}}, :include_invalid => false).should == '<p class="taxon_statistics">2,000 genera</p>'
     end
+    it "should handle both extant and fossil statistics" do
+      statistics = {
+        :extant => {:subfamilies => {'valid' => 1}, :genera => {'valid' => 2, 'synonym' => 1, 'homonym' => 2}, :species => {'valid' => 1}},
+        :fossil => {:subfamilies => {'valid' => 2}},
+      }
+      @formatter.format_statistics(statistics).should ==
+"<p class=\"taxon_statistics\">Extant: 1 valid subfamily, 2 valid genera (1 synonym, 2 homonyms), 1 valid species</p>" +
+"<p class=\"taxon_statistics\">Fossil: 2 valid subfamilies</p>"
+    end
+    it "should not include fossil statistics if not desired" do
+      statistics = {
+        :extant => {:subfamilies => {'valid' => 1}, :genera => {'valid' => 2, 'synonym' => 1, 'homonym' => 2}, :species => {'valid' => 1}},
+        :fossil => {:subfamilies => {'valid' => 2}},
+      }
+      @formatter.format_statistics(statistics, :include_fossil => false).should ==
+        "<p class=\"taxon_statistics\">1 valid subfamily, 2 valid genera (1 synonym, 2 homonyms), 1 valid species</p>"
+    end
+    it "should handle just fossil statistics" do
+      statistics = {
+        :fossil => {:subfamilies => {'valid' => 2}},
+      }
+      @formatter.format_statistics(statistics).should == "<p class=\"taxon_statistics\">Fossil: 2 valid subfamilies</p>"
+    end
+
     it "should handle both extant and fossil statistics" do
       statistics = {
         :extant => {:subfamilies => {'valid' => 1}, :genera => {'valid' => 2, 'synonym' => 1, 'homonym' => 2}, :species => {'valid' => 1}},
@@ -95,6 +124,10 @@ describe CatalogFormatter do
 
     it "should leave out invalid status if desired" do
       @formatter.format_statistics({:extant => {:genera => {'valid' => 1, 'homonym' => 2}, :species => {'valid' => 2}, :subspecies => {'valid' => 3}}}, :include_invalid => false).should == "<p class=\"taxon_statistics\">1 genus, 2 species, 3 subspecies</p>"
+    end
+
+    it "should not leave a trailing comma" do
+      @formatter.format_statistics({:extant => {:species => {'valid' => 2}}}, :include_fossil => false, :include_invalid => false).should == "<p class=\"taxon_statistics\">2 species</p>"
     end
 
     it "should not leave a trailing comma" do
@@ -220,6 +253,23 @@ describe CatalogFormatter do
     end
     it "should use commas" do
       @formatter.pluralize_with_delimiters(2000, 'bear').should == '2,000 bears'
+    end
+  end
+
+  describe "Headline formatting" do
+    it "should format the taxon name" do
+      protonym = Factory :protonym, :name => 'Atari'
+      atta = Factory :genus, :name => 'Atta', :protonym => protonym
+      @formatter.format_headline_name(atta).should == 'Atari'
+    end
+    it "should handle the special taxon 'no_tribe'" do
+      @formatter.format_headline_name('no_tribe').should be_blank
+    end
+    it "should handle the special taxon 'no_subfamily'" do
+      @formatter.format_headline_name('no_subfamily').should be_blank
+    end
+    it "should handle nil" do
+      @formatter.format_headline_name(nil).should be_blank
     end
   end
 

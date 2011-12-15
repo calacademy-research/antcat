@@ -12,6 +12,7 @@ class CatalogController < ApplicationController
       return
     end
 
+    params['q'].strip! if params['q']
     @search_params = {'search_type' => params['search_type'], 'q' => params['q']}
 
     if @search_params['q'].present?

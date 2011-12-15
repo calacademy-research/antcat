@@ -63,3 +63,8 @@ end
 at_exit do
   Sunspot.session = Sunspot::Rails::StubSessionProxy.new(Sunspot.session)
 end
+
+Before do
+  Family.delete_all
+  Factory :family, :protonym => nil
+end

@@ -100,6 +100,19 @@ describe Genus do
       }
     end
 
+    it "should be able to differentiate extinct species and subspecies" do
+      genus = Factory :genus
+      species = Factory :species, :genus => genus
+      fossil_species = Factory :species, :genus => genus, :fossil => true
+      Factory :subspecies, :species => species, :fossil => true
+      Factory :subspecies, :species => species
+      Factory :subspecies, :species => fossil_species, :fossil => true
+      genus.statistics.should == {
+        :extant => {:species => {'valid' => 1}, :subspecies => {'valid' => 1}},
+        :fossil => {:species => {'valid' => 1}, :subspecies => {'valid' => 2}},
+      }
+    end
+
   end
 
   describe "Without subfamily" do

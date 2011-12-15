@@ -1,5 +1,4 @@
 # coding: UTF-8
-
 Given /the following references? exists?/ do |table|
   Reference.delete_all
   table.hashes.each do |hash|
@@ -442,3 +441,33 @@ Given /^I will enter the ID of "Arbitrary Match" in the following dialog$/ do
   page.evaluate_script 'window.original_prompt_function = window.prompt;'
   page.evaluate_script "window.prompt = function(msg) { return '#{id}'; }"
 end
+
+############################################################
+# import_then_display
+
+Given /^the family import file contains the following lines:$/ do |table|
+  lines = table.hashes.inject('') do |lines, line|
+    lines << line[:line]
+  end
+  @import_html = make_family_import_html lines
+end
+
+def make_family_import_html content
+  %{<html><body><div class=Section1>#{content}</div></body></html>}
+end
+
+When /^I import the family file$/ do
+  Bolton::Catalog::Subfamily::Importer.new.import_html @import_html
+end
+
+Then /^I should see the following text:$/ do |table|
+  table.hashes.each do |line|
+    step "I should see \"#{line[:text]}\""
+  end
+end
+
+Given /there is a reference for "Latreille, 1809"/ do
+  Reference.delete_all
+  Factory :article_reference, :author_names => [Factory(:author_name, :name => 'Latreille')], :citation_year => '1809', :bolton_author_year_key => 'Latreille 1809'
+end
+

@@ -1,20 +1,21 @@
 # coding: UTF-8
 class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
-  private
 
-  def parse_genus attributes = {}, expect_genus_line = true
-    return unless @type == :genus_header
-    Progress.info 'parse_genus'
+  def parse_genus attributes = {}, options = {}
+    options = options.reverse_merge :expect_genus_headline => true, :header => :genus_header
+    return unless @type == options[:header]
+    Progress.method
 
     name = @parse_result[:name]
     status = @parse_result[:status]
     fossil = @parse_result[:fossil]
 
     parse_next_line
-    expect :genus_line if expect_genus_line
+    expect :genus_headline if options[:expect_genus_headline]
 
     taxonomic_history = @paragraph
-    taxonomic_history << parse_taxonomic_history
+    parse_next_line
+    taxonomic_history << parse_genus_taxonomic_history if @line
 
     genus = ::Genus.find_by_name name
     if genus
@@ -28,7 +29,6 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
       genus = ::Genus.create!({:name => name, :fossil => fossil, :status => status, :taxonomic_history => clean_taxonomic_history(taxonomic_history)}.merge(attributes))
       Progress.info "Created #{genus.name}"
     end
-
     parse_homonym_replaced_by_genus(genus)
     taxonomic_history << parse_junior_synonyms_of_genus(genus)
     taxonomic_history << parse_subgenera(genus)
@@ -37,68 +37,96 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     genus.reload.update_attributes :taxonomic_history => clean_taxonomic_history(taxonomic_history)
   end
 
+  def parse_genus_taxonomic_history
+    Progress.method
+    taxonomic_history, @parsed_taxonomic_history = parse_taxonomic_history :genus_taxonomic_history_item
+    taxonomic_history
+  end
+
+  def parsed_taxonomic_history
+    @parsed_taxonomic_history
+  end
+
   def parse_genus_references
-    return '' unless @type == :genus_references_header
-    Progress.info 'parse_genus_references'
+    return '' unless @type == :genus_references_header || @type == :genus_references_see_under
+
+    Progress.method
     parsed_text = @paragraph
-    parsed_text << parse_taxonomic_history
+    parse_reference_section = @type != :genus_references_see_under
+    parse_next_line
+    parsed_text << @paragraph
+    texts = []
+    if @type == :anything
+      texts.concat @parse_result[:texts] if @parse_result[:texts]
+      @parse_result[:texts] = texts
+      @parse_result[:type] = :reference_section
+      @type = :reference_section
+      Progress.info 'reparsed as reference_section'
+    end
+    return parsed_text unless parse_reference_section && @type == :reference_section
+    parse_next_line
+    if @type == :anything
+      texts.concat @parse_result[:texts] if @parse_result[:texts]
+      @parse_result[:texts] = texts
+      @parse_result[:type] = :reference_section
+      @type = :reference_section
+      Progress.info 'reparsed as reference_section'
+      parsed_text << @paragraph
+      parse_next_line
+    end
     parsed_text
   end
 
   def parse_homonym_replaced_by_genus genus
-    return unless @type == :homonym_replaced_by_genus_header
-    Progress.info 'parse_homonym_replaced_by_genus'
+    return '' unless @type == :homonym_replaced_by_genus_header
+    Progress.method
 
-    parse_next_line
-    expect :genus_line
-
-    name = @parse_result[:name]
-    fossil = @parse_result[:fossil]
     taxonomic_history = @paragraph
-    taxonomic_history << parse_taxonomic_history
+    parse_next_line
+    expect :genus_headline
+
+    name = @parse_result[:genus_name]
+    fossil = @parse_result[:fossil]
+    local_taxonomic_history = @paragraph
+    taxonomic_history << local_taxonomic_history
+    parse_next_line
+    taxonomic_history << parse_genus_taxonomic_history
+    local_taxonomic_history << local_taxonomic_history
     genus = ::Genus.create! :name => name, :fossil => fossil, :status => 'homonym', :homonym_replaced_by => genus,
-                          :subfamily => genus.subfamily, :tribe => genus.tribe, :taxonomic_history => clean_taxonomic_history(taxonomic_history)
+                          :subfamily => genus.subfamily, :tribe => genus.tribe, :taxonomic_history => clean_taxonomic_history(local_taxonomic_history)
+    taxonomic_history
   end
 
   def parse_junior_synonyms_of_genus genus
     return '' unless @type == :junior_synonyms_of_genus_header
-    Progress.info 'parse_junior_synonyms_of_genus'
+    Progress.method
 
     parsed_text = @paragraph
     parse_next_line
 
-    parsed_text << parse_junior_synonym_of_genus(genus) while @type == :genus_line
+    parsed_text << parse_junior_synonym_of_genus(genus) while @type == :genus_headline
 
     parsed_text
   end
 
   def parse_junior_synonym_of_genus genus
+    Progress.method
     parsed_text = ''
-    name = @parse_result[:name]
+    name = @parse_result[:genus_name]
     fossil = @parse_result[:fossil]
     taxonomic_history = @paragraph
-    taxonomic_history << parse_taxonomic_history
+    parse_next_line
+    taxonomic_history << parse_genus_taxonomic_history
     genus = ::Genus.create! :name => name, :fossil => fossil, :status => 'synonym', :synonym_of => genus,
                           :subfamily => genus.subfamily, :tribe => genus.tribe, :taxonomic_history => clean_taxonomic_history(taxonomic_history)
+    Progress.info "Created #{genus.name} junior synonym of genus"
     parsed_text << taxonomic_history
-    parsed_text << parse_homonym_replaced_by_genus_synonym
-  end
-
-  def parse_homonym_replaced_by_genus_synonym
-    return '' unless @type == :homonym_replaced_by_genus_synonym_header
-    Progress.info 'parse_homonym_replaced_by_genus_synonym'
-
-    parsed_text = @paragraph
-    parse_next_line
-
-    parsed_text << @paragraph << parse_taxonomic_history
-
-    parsed_text
+    parsed_text << parse_homonym_replaced_by_genus(genus)
   end
 
   def parse_genera_lists parent_rank, parent_attributes = {}
     return '' unless @type == :genera_list
-    Progress.info 'parse_genera_lists'
+    Progress.method
 
     parsed_text = ''
 
@@ -130,16 +158,23 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
 
   def parse_genera
     return unless @type == :genera_header || @type == :genus_header
-    Progress.info 'parse_genera'
+    Progress.method
 
     parse_next_line if @type == :genera_header
-
     parse_genus while @type == :genus_header
   end
 
-  def parse_genera_incertae_sedis
-    return unless @type == :genera_incertae_sedis_header
-    Progress.info 'parse_genera_incertae_sedis'
+  def parse_genera_of_hong
+    return unless @type == :genera_of_hong_header
+    Progress.method
+
+    parse_next_line
+    parse_genus while @type == :genus_header
+  end
+
+  def parse_genera_incertae_sedis expected_header = :genera_incertae_sedis_header
+    return unless @type == expected_header
+    Progress.method
 
     parse_next_line
     parse_genus while @type == :genus_header
@@ -147,8 +182,8 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
 
   def check_status_change genus, status
     return if status == genus.status
-    return if genus.status == 'valid' && (status == 'unidentifiable' || status == 'unavailable')
-    raise "Genus #{genus.name} status change from #{genus.status} to #{status}"
+    return if genus.status == 'valid' && status == 'unidentifiable'
+    #raise "Genus #{genus.name} status change from #{genus.status} to #{status}"
   end
 
   def check_fossil_change genus, fossil

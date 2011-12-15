@@ -7,28 +7,169 @@ grammar Bolton::Catalog::Subfamily::Grammar
   include Bolton::Catalog::Subfamily::SubgenusGrammar
 
   rule subfamily_catalog
-    a_supersubfamily_section | family_section | subfamily_section | tribe_section | genus_section | subgenus_section | blank_line | other
+      supersubfamily_section
+    | family_section
+    | subfamily_section
+    | tribe_section
+    | genus_section
+    | subgenus_section
+    | uppercase_line
+    | taxonomic_history_header
+    | collective_group_name_header
+    | references_section_header
+    | regional_and_national_faunas_header
+    | anything
   end
 
-  # Citrus 2.3.7 doesn't like rules beginning with 'super'
-  rule a_supersubfamily_section
-    a_supersubfamily_header
+  rule collective_group_name_header
+    (collective_group_label_uppercase '') {
+      value = {:type => :collective_group_name_header}
+      value.merge! collective_group_label_uppercase.value
+      value
+    } 
   end
 
-  rule a_supersubfamily_header
-    (bold span
-      (
-        ('THE ' uppercase_word ': ' ('SUBFAMILIES'|'SUBFAMILY') /.*/) |
-        ('EXTINCT SUBFAMILIES' /.*/)
-      )
-    ) {
+  rule supersubfamily_section
+    supersubfamily_header
+  end
+
+  rule supersubfamily_header
+    (('THE ' uppercase_word ': ' ('SUBFAMILIES'|'SUBFAMILY') /.*/) | ('EXTINCT SUBFAMILIES' /.*/)) {
       {:type => :supersubfamily_header}
     }
   end
 
-  rule other
-    /.*/ {
-      {:type => :other}
+  rule taxonomic_history_header
+    'Taxonomic history' {
+      {:type => :taxonomic_history_header}
+    }
+  end
+
+  ###################################################################################################
+
+  rule regional_and_national_faunas_header
+    'Regional and national faunas with keys' {
+      {:type => :regional_and_national_faunas_header}
+    }
+  end
+
+  ###################################################################################################
+
+  rule references_section_header
+    see_under_references_section_header | tribe_references_section_header | subfamily_references_section_header
+  end
+
+  rule see_under_references_section_header
+    ('Tribe' (' ' tribe_label)? ' references: see above' '.'?) {
+      value = {:type => :see_under_references_section_header}
+      value[:taxa] = tribe_label ? tribe_label.value : :tribe
+      value
+    }
+  end
+
+  rule subfamily_references_section_header
+    ('' type:(
+         subfamily_tribe_and_collective_group_name_references_header
+       | subfamily_tribe_and_genus_references_header
+       | subfamily_and_tribes_references_header
+       | tribe_and_genus_references_header
+       | subfamily_and_tribes_references_header_no_names
+       | subfamily_references_header
+    )) {
+      value = {:type => :references_section_header}
+      value.merge! type.value
+      value
+    }
+  end
+
+  rule subfamily_tribe_and_collective_group_name_references_header
+    ('Subfamily, tribe ' tribe_label ' and collective group name ' genus_label ' references') {
+      {:type => :references_section_header,
+       :taxa => {
+        :subfamily => true, :tribe => tribe_label.value, :collective_group_name => genus_label.value
+      }}
+    }
+  end
+
+  rule subfamily_references_header
+    'Subfamily references' {
+      {:taxa => {:subfamily => true}}
+    }
+  end
+
+  rule tribe_references_header
+    'Tribe references' {
+      {:type => :references_section_header, :taxa => {:tribe => true}}
+    }
+  end
+
+  rule subfamily_and_tribes_references_header_no_names
+    'Subfamily and tribes references' {
+      {:type => :references_section_header, :taxa => {:tribes => true, :subfamily => true}}
+    }
+  end
+
+  rule subfamily_tribe_and_genus_references_header
+    ('Subfamily, tribe' (' ' tribe_label)? ' and genus ' genus_label ' references') {
+      value = {}
+      value[:subfamily] = true
+      value[:tribe] = tribe_label ? tribe_label.value : true
+      value[:genus] = genus_label.value
+      {:taxa => value}
+    }
+  end
+
+  rule tribe_and_genus_references_header
+    ('Tribe' ' ' tribe_label ' and genus ' genus_label ' references') {
+      value = {}
+      value[:tribe] = tribe_label.value
+      value[:genus] = genus_label.value
+      {:taxa => value}
+    }
+  end
+
+  rule subfamily_and_tribes_references_header
+    ('Subfamily ' subfamily_label tribes:(' and tribes')? ' references' world:(', world')?) {
+      value = {}
+      value[:subfamily] = subfamily_label.value
+      value[:tribes] = true if tribes && tribes != ''
+      return_value = {:taxa => value}
+      return_value[:world] = true if world && world != ''
+      return_value
+    }
+  end
+
+  rule tribe_references_section_header
+    (
+      ('' tribe_references_section_header_see_under_with_reference) |
+      ('Tribe ' tribe_label ' references') |
+      ('Tribe and genus ' genus_label ' references') |
+      subfamily:('Subfamily and tribe ' tribe_label ' references') |
+      ('' tribe_references_header)
+    ) {
+      return tribe_references_section_header_see_under_with_reference.value if tribe_references_section_header_see_under_with_reference
+
+      return tribe_references_header.value if tribe_references_header
+
+      value = {:type => :references_section_header}
+      value[:taxa] = tribe_label.value if tribe_label
+      value[:taxa] = genus_label.value if genus_label
+      value[:taxa].merge! :subfamily => true if subfamily
+      value
+    }
+  end
+
+  rule tribe_references_section_header_see_under_with_reference
+    ('Tribe references: see under genera; ' text*) {
+      {:type => :references_section_header, :texts => captures[:text].map(&:value)}
+    }
+  end
+
+  ##############################################################
+
+  rule anything
+    (text* '') {
+      {:type => :anything, :texts => captures[:text].map(&:value)}
     }
   end
 

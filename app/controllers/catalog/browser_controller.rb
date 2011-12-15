@@ -4,7 +4,7 @@ class Catalog::BrowserController < CatalogController
   def show
     super
 
-    unless params[:id]
+    if !params[:id] || Taxon.find(params[:id]).kind_of?(Family)
       @taxa = ::Subfamily.order(:name).all
       return
     end

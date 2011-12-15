@@ -5,9 +5,9 @@ Feature: Checking for duplicates during data entry
 
   Scenario: Adding a duplicate reference
     Given the following references exist
-      |authors   |citation  |title           |year|id|
-      |Bolton, B.|Psyche 5:3|Ants are my life|2010|1 |
-      |Ward, P.  |Psyche 6:1|Ants            |2010|2 |
+      |authors   |citation  |title           |year|
+      |Bolton, B.|Psyche 5:3|Ants are my life|2010|
+      |Ward, P.  |Psyche 6:1|Ants            |2010|
       And I am logged in
     When I go to the references page
       And I follow "add"
@@ -17,13 +17,13 @@ Feature: Checking for duplicates during data entry
       And in the new edit form I fill in "reference_citation_year" with "2010"
       And in the new edit form I press the "Save" button
     Then I should see a new edit form
-    And I should see "This seems to be a duplicate of Bolton, B. 2010. Ants are my life. Psyche 5:3. 1"
+    And I should see "This seems to be a duplicate of Bolton, B. 2010. Ants are my life. Psyche 5:3"
 
   Scenario: Editing a reference that makes it a duplicate
     Given the following references exist
-      |authors   |citation  |title           |year|id|
-      |Bolton, B.|Psyche 5:3|Ants are my life|2010|1 |
-      |Ward, P.  |Psyche 6:1|Ants            |2010|2 |
+      |authors   |citation  |title           |year|
+      |Bolton, B.|Psyche 5:3|Ants are my life|2010|
+      |Ward, P.  |Psyche 6:1|Ants            |2010|
       And I am logged in
     When I go to the references page
       And I fill in the search box with "Bolton"
@@ -34,4 +34,4 @@ Feature: Checking for duplicates during data entry
       And I fill in "reference_series_volume_issue" with "6:1"
       And I press the "Save" button
     Then I should see the edit form
-    And I should see "This seems to be a duplicate of Ward, P. 2010. Ants. Psyche 6:1. 2"
+    And I should see "This seems to be a duplicate of Ward, P. 2010. Ants. Psyche 6:1"
