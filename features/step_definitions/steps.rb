@@ -361,10 +361,6 @@ Given /a species exists with a name of "(.*?)" and a genus of "(.*?)"(?: and a t
   Factory :species, :name => taxon_name, :genus => genus, :taxonomic_history => taxonomic_history
 end
 
-When /I fill in the match threshold with "(.*?)"/ do |match_threshold|
-  step %{I fill in "match_threshold" with "#{match_threshold}"}
-end
-
 When /I fill in the search box with "(.*?)"/ do |search_term|
   step %{I fill in "q" with "#{search_term}"}
 end
