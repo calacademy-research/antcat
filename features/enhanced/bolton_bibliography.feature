@@ -23,6 +23,27 @@ Feature: View bibliography (JavaScript)
       And I should not see a "Match" button
       And I should see "Manual (1)"
 
+  Scenario: Setting a reference to "unmatcheable"
+    Given I am logged in
+    Given the following Bolton reference exists
+      |authors   |title|
+      |Ward, P.S.|Ants |
+    When I go to the Bolton references page
+    Then the Bolton reference should be red
+      And I should see "None (1)"
+      And I should see "Unmatcheable (0)"
+      And I should not see a "Match" button
+    When I press "Unmatcheable"
+    Then the Bolton reference should be darkred
+      And I should see a "Matcheable" button
+      And I should see "None (0)"
+      And I should see "Unmatcheable (1)"
+    When I press "Matcheable"
+    Then the Bolton reference should be red
+      And I should see a "Unmatcheable" button
+      And I should see "None (1)"
+      And I should see "Unmatcheable (0)"
+
   Scenario: Deselecting a match
     Given I am logged in
     Given the following Bolton reference exists

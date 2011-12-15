@@ -29,9 +29,9 @@ label
 
 @import 'blueprint'
 
-$blueprint_grid_columns: 25
+$blueprint_grid_columns: 26
 $blueprint_grid_width: 30px
-$detail_width: $blueprint_grid_columns - 2
+$detail_width: $blueprint_grid_columns - 3
 
 #container
   margin-top: 6px
@@ -47,6 +47,8 @@ $detail_width: $blueprint_grid_columns - 2
     background: lighten(#98FB98, 10%)
   &.none
     background: lightpink
+  &.unmatcheable
+    background: red
 
   .header
     +column($blueprint_grid_columns)
@@ -54,7 +56,7 @@ $detail_width: $blueprint_grid_columns - 2
     border-bottom: 1px black solid
 
   .margin
-    +column(2)
+    +column(3)
     min-height: 1px
   .details
     +column($detail_width, true)
