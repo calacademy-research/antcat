@@ -52,6 +52,9 @@ Feature: View bibliography
     Then I should see "Antses"
       And I should see "Ants in Pants"
       And I should see "0.8"
+      And I should see "Auto (0)"
+      And I should see "Manual (0)"
+      And I should see "None (1)"
 
   Scenario: Seeing just references for which the best match is below a threshold
     Given the following Bolton reference exists

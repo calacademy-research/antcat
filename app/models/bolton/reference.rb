@@ -77,6 +77,19 @@ class Bolton::Reference < ActiveRecord::Base
     possible_matches.partition {|m| m == match}.flatten
   end
 
+  def self.match_status_auto_count
+    where(:match_status => 'auto').count
+  end
+
+  def self.match_status_manual_count
+    where(:match_status => 'manual').count
+  end
+
+  def self.match_status_none_count
+    where(:match_status => nil).count
+  end
+
+
   # ReferenceComparable
   def author; authors.split(',').first; end
   def type; reference_type; end

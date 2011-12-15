@@ -216,4 +216,15 @@ describe Bolton::Reference do
       possible_matches.map(&:id).should =~ [matched_reference.id, first_match_reference.id, second_match_reference.id]
     end
   end
+
+  describe "Match status counts" do 
+    it "should work" do
+      2.times {|i| Factory :bolton_reference, :match_status => nil}
+      3.times {|i| Factory :bolton_reference, :match_status => 'auto'}
+      4.times {|i| Factory :bolton_reference, :match_status => 'manual'}
+      Bolton::Reference.match_status_auto_count.should == 3
+      Bolton::Reference.match_status_manual_count.should == 4
+      Bolton::Reference.match_status_none_count.should == 2
+    end
+  end
 end
