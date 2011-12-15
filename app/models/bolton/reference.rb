@@ -29,6 +29,7 @@ class Bolton::Reference < ActiveRecord::Base
       query_clauses << 'match_status IS NULL' if options[:match_statuses].include? nil
       query_clauses << 'match_status = "auto"' if options[:match_statuses].include? 'auto'
       query_clauses << 'match_status = "manual"' if options[:match_statuses].include? 'manual'
+      query_clauses << 'match_status = "unmatcheable"' if options[:match_statuses].include? 'unmatcheable'
       query = query.where query_clauses.join(' OR ') unless query_clauses.empty?
     end
 
