@@ -55,9 +55,17 @@ class Bolton::Reference < ActiveRecord::Base
     save!
   end
 
-  def set_match_manually reference
-    self.match = reference
-    self.match_status = reference ? 'manual' : nil
+  def set_match_manually string
+    if string == 'unmatcheable'
+      self.match = nil
+      self.match_status = 'unmatcheable'
+    elsif string
+      self.match = ::Reference.find string.to_i
+      self.match_status = 'manual'
+    else
+      self.match = nil
+      self.match_status = nil
+    end
     save!
   end
 
@@ -89,6 +97,9 @@ class Bolton::Reference < ActiveRecord::Base
     where(:match_status => nil).count
   end
 
+  def self.match_status_unmatcheable_count
+    where(:match_status => 'unmatcheable').count
+  end
 
   # ReferenceComparable
   def author; authors.split(',').first; end

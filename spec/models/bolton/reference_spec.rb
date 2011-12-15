@@ -131,14 +131,21 @@ describe Bolton::Reference do
     it "should set the match manually" do
       bolton = Factory :bolton_reference
       reference = Factory :book_reference
-      bolton.set_match_manually reference
+      bolton.set_match_manually reference.id
       bolton.match.should == reference
       bolton.match_status.should == 'manual'
+    end
+    it "should set the references to unmatcheable" do
+      bolton = Factory :bolton_reference
+      reference = Factory :book_reference
+      bolton.set_match_manually 'unmatcheable'
+      bolton.match.should be_nil
+      bolton.match_status.should == 'unmatcheable'
     end
     it "should reset the match if the passed match is nil" do
       bolton = Factory :bolton_reference, :match => Factory(:book_reference), :match_status => 'auto'
       reference = Factory :book_reference
-      bolton.set_match_manually reference
+      bolton.set_match_manually reference.id
       bolton.set_match_manually nil
       bolton.match.should be_nil
       bolton.match_status.should be_nil
@@ -222,9 +229,11 @@ describe Bolton::Reference do
       2.times {|i| Factory :bolton_reference, :match_status => nil}
       3.times {|i| Factory :bolton_reference, :match_status => 'auto'}
       4.times {|i| Factory :bolton_reference, :match_status => 'manual'}
+      5.times {|i| Factory :bolton_reference, :match_status => 'unmatcheable'}
       Bolton::Reference.match_status_auto_count.should == 3
       Bolton::Reference.match_status_manual_count.should == 4
       Bolton::Reference.match_status_none_count.should == 2
+      Bolton::Reference.match_status_unmatcheable_count.should == 5
     end
   end
 end
