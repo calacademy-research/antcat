@@ -101,10 +101,10 @@ describe Bolton::Reference do
         not_matched = Factory :bolton_reference, :match_status => nil
         Bolton::Reference.do_search(:match_statuses => ['manual']).map(&:id).should =~ [manual_match.id]
       end
-      it "should find the ones that have been marked unmatcheable" do
-        unmatcheable = Factory :bolton_reference, :match_status => 'unmatcheable'
+      it "should find the ones that have been marked unmatchable" do
+        unmatchable = Factory :bolton_reference, :match_status => 'unmatchable'
         not_matched = Factory :bolton_reference, :match_status => nil
-        Bolton::Reference.do_search(:match_statuses => ['unmatcheable']).map(&:id).should =~ [unmatcheable.id]
+        Bolton::Reference.do_search(:match_statuses => ['unmatchable']).map(&:id).should =~ [unmatchable.id]
       end
     end
 
@@ -140,12 +140,12 @@ describe Bolton::Reference do
       bolton.match.should == reference
       bolton.match_status.should == 'manual'
     end
-    it "should set the references to unmatcheable" do
+    it "should set the references to unmatchable" do
       bolton = Factory :bolton_reference
       reference = Factory :book_reference
-      bolton.set_match_manually 'unmatcheable'
+      bolton.set_match_manually 'unmatchable'
       bolton.match.should be_nil
-      bolton.match_status.should == 'unmatcheable'
+      bolton.match_status.should == 'unmatchable'
     end
     it "should reset the match if the passed match is nil" do
       bolton = Factory :bolton_reference, :match => Factory(:book_reference), :match_status => 'auto'
@@ -234,11 +234,11 @@ describe Bolton::Reference do
       2.times {|i| Factory :bolton_reference, :match_status => nil}
       3.times {|i| Factory :bolton_reference, :match_status => 'auto'}
       4.times {|i| Factory :bolton_reference, :match_status => 'manual'}
-      5.times {|i| Factory :bolton_reference, :match_status => 'unmatcheable'}
+      5.times {|i| Factory :bolton_reference, :match_status => 'unmatchable'}
       Bolton::Reference.match_status_auto_count.should == 3
       Bolton::Reference.match_status_manual_count.should == 4
       Bolton::Reference.match_status_none_count.should == 2
-      Bolton::Reference.match_status_unmatcheable_count.should == 5
+      Bolton::Reference.match_status_unmatchable_count.should == 5
     end
   end
 end

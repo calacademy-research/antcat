@@ -29,7 +29,7 @@ class Bolton::Reference < ActiveRecord::Base
       query_clauses << 'match_status IS NULL' if options[:match_statuses].include? nil
       query_clauses << 'match_status = "auto"' if options[:match_statuses].include? 'auto'
       query_clauses << 'match_status = "manual"' if options[:match_statuses].include? 'manual'
-      query_clauses << 'match_status = "unmatcheable"' if options[:match_statuses].include? 'unmatcheable'
+      query_clauses << 'match_status = "unmatchable"' if options[:match_statuses].include? 'unmatchable'
       query = query.where query_clauses.join(' OR ') unless query_clauses.empty?
     end
 
@@ -57,9 +57,9 @@ class Bolton::Reference < ActiveRecord::Base
   end
 
   def set_match_manually string
-    if string == 'unmatcheable'
+    if string == 'unmatchable'
       self.match = nil
-      self.match_status = 'unmatcheable'
+      self.match_status = 'unmatchable'
     elsif string
       self.match = ::Reference.find string.to_i
       self.match_status = 'manual'
@@ -98,8 +98,8 @@ class Bolton::Reference < ActiveRecord::Base
     where(:match_status => nil).count
   end
 
-  def self.match_status_unmatcheable_count
-    where(:match_status => 'unmatcheable').count
+  def self.match_status_unmatchable_count
+    where(:match_status => 'unmatchable').count
   end
 
   # ReferenceComparable

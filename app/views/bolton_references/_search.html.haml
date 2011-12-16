@@ -13,8 +13,8 @@
     = check_box_tag 'match_status_none', 'true', params['match_status_none']
     %span.search_item= label_tag 'match_status_none', "None (#{Bolton::Reference.match_status_none_count})", :id => 'match_status_none_count_label'
 
-    = check_box_tag 'match_status_unmatcheable', 'true', params['match_status_unmatcheable']
-    %span.search_item= label_tag 'match_status_unmatcheable', "Unmatcheable (#{Bolton::Reference.match_status_unmatcheable_count})", :id => 'match_status_unmatcheable_count_label'
+    = check_box_tag 'match_status_unmatchable', 'true', params['match_status_unmatchable']
+    %span.search_item= label_tag 'match_status_unmatchable', "Unmatchable (#{Bolton::Reference.match_status_unmatchable_count})", :id => 'match_status_unmatchable_count_label'
 
     = image_tag 'help.png', :id => :match_status_help, :class => :help_icon
 
