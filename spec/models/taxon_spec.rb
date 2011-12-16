@@ -262,4 +262,14 @@ describe Taxon do
     end
   end
 
+  describe "Type" do
+    it "should have a type" do
+      family = Family.create! :name => 'Formicidae'
+      family.type_taxon.should be_nil
+      type_genus = Factory :genus, :name => 'Eormica'
+      family.update_attribute :type_taxon, type_genus
+      family.reload.type_taxon.name.should == 'Eormica'
+    end
+  end
+
 end
