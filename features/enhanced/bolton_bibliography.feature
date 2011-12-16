@@ -16,17 +16,17 @@ Feature: View bibliography (JavaScript)
     Then the Bolton reference should be red
       And the reference should be white
       And I should see a "Match" button
-      And I should see a "Unmatcheable" button
+      And I should see a "Unmatchable" button
       And I should see "Manual (0)"
     When I press "Match"
     Then the Bolton reference should be darkgreen
       And the matched reference should be darkgreen
       And I should not see a "Match" button
-      And I should not see a "Unmatcheable" button
-      And I should not see a "Matcheable" button
+      And I should not see a "Unmatchable" button
+      And I should not see a "Matchable" button
       And I should see "Manual (1)"
 
-  Scenario: Setting a reference to "unmatcheable"
+  Scenario: Setting a reference to "unmatchable"
     Given I am logged in
     Given the following Bolton reference exists
       |authors   |title|
@@ -34,18 +34,18 @@ Feature: View bibliography (JavaScript)
     When I go to the Bolton references page
     Then the Bolton reference should be red
       And I should see "None (1)"
-      And I should see "Unmatcheable (0)"
+      And I should see "Unmatchable (0)"
       And I should not see a "Match" button
-    When I press "Unmatcheable"
+    When I press "Unmatchable"
     Then the Bolton reference should be darkred
-      And I should see a "Matcheable" button
+      And I should see a "Matchable" button
       And I should see "None (0)"
-      And I should see "Unmatcheable (1)"
-    When I press "Matcheable"
+      And I should see "Unmatchable (1)"
+    When I press "Matchable"
     Then the Bolton reference should be red
-      And I should see a "Unmatcheable" button
+      And I should see a "Unmatchable" button
       And I should see "None (1)"
-      And I should see "Unmatcheable (0)"
+      And I should see "Unmatchable (0)"
 
   Scenario: Deselecting a match
     Given I am logged in

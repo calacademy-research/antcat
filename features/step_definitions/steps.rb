@@ -27,7 +27,7 @@ Given /^the following references? match(?:es)? that Bolton reference$/ do |table
 end
 
 # cf. bolton_references.sass
-CSS_CLASSES = {'green' => 'auto', 'red' => 'none', 'darkgreen' => 'manual', 'darkred' => 'unmatcheable'}
+CSS_CLASSES = {'green' => 'auto', 'red' => 'none', 'darkgreen' => 'manual', 'darkred' => 'unmatchable'}
 
 Then /^the Bolton reference should be (.+)$/ do |color|
   css_class = CSS_CLASSES[color]
