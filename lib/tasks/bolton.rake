@@ -32,9 +32,9 @@ namespace :bolton do
       Bolton::ReferencesMatcher.new(true).find_matches_for_all
     end
 
-    desc "Assign author/year keys"
-    task :assign_author_year_keys => :environment do
-      Bolton::Reference.assign_author_year_keys
+    desc "Set author/year keys"
+    task :set_keys => :environment do
+      Bolton::Reference.set_keys
     end
 
     desc 'Import and match Bolton references'

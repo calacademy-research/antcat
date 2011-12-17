@@ -356,17 +356,21 @@ describe Bolton::Reference do
     it "should create an author/year key when saved" do
       bolton = Bolton::Reference.create! :authors => 'Fisher, B. L.', :citation_year => '1981', :title => 'Dolichoderinae',
         :reference_type => 'ArticleReference', :series_volume_issue => '1(2)', :pagination => '22-54'
-      bolton.reload.author_year_key.should == 'Fisher 1981'
+      bolton.reload.key.should == 'Fisher 1981'
     end
 
     describe "forming the key" do
+      it "should pass its data to the class method" do
+        bolton_reference = Factory :bolton_reference, :authors => 'Agosti, D. & Bolton, B.', :citation_year => '1970a'
+        bolton_reference.make_key.should == 'Agosti Bolton 1970a'
+      end
       it "should handle multiple authors" do
-        Bolton::Reference.make_author_year_key('Lattke, J.E., Fernandez, F. & Palacio, E.E.', '1981').should ==
+        Bolton::Reference.make_key('Lattke, J.E., Fernandez, F. & Palacio, E.E.', '1981').should ==
           'Lattke Fernandez Palacio 1981'
       end
       it "should handle zero authors" do
-        Bolton::Reference.make_author_year_key('', '1981').should == '1981'
-        Bolton::Reference.make_author_year_key(nil, '1981').should == '1981'
+        Bolton::Reference.make_key('', '1981').should == '1981'
+        Bolton::Reference.make_key(nil, '1981').should == '1981'
       end
     end
 
