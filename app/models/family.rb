@@ -1,9 +1,9 @@
 # coding: UTF-8
 class Family < Taxon
 
-  def self.import headline, taxonomic_history
+  def self.import data
     transaction do
-      protonym = Protonym.import headline[:family_or_subfamily_name], headline[:authorship].first
+      protonym = Protonym.import data[:protonym]
       create! :name => 'Formicidae', :status => 'valid', :protonym => protonym
     end
   end
