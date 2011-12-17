@@ -3,9 +3,9 @@ require 'asterisk_dagger_formatting'
 
 class Taxon < ActiveRecord::Base
   set_table_name :taxa
-  belongs_to :synonym_of, :class_name => 'Taxon', :foreign_key => :synonym_of_id
+  belongs_to :synonym_of, :class_name => 'Taxon'
   has_one :homonym_replaced, :class_name => 'Taxon', :foreign_key => :homonym_replaced_by_id
-  belongs_to :homonym_replaced_by, :class_name => 'Taxon', :foreign_key => :homonym_replaced_by_id
+  belongs_to :homonym_replaced_by, :class_name => 'Taxon'
   validates_presence_of :name
 
   scope :valid, where("status = ?", 'valid')
