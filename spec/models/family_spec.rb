@@ -4,19 +4,30 @@ require 'spec_helper'
 describe Family do
 
   describe "Importing" do
-    it "should import the family, its protonym and the taxonomic history" do
-      reference = Factory :reference, :author_names => [Factory(:author_name, :name => 'Latreille')], :citation_year => '1809'
-      Reference.should_receive(:find_by_bolton_author_year).and_return reference
-      authorship = {:author_names=>["Latreille"], :year=>"1809", :pages=>"124"}
-      headline = {:type=>:family_group_headline, :family_or_subfamily_name=>"Formicariae", :authorship=>[{:author_names=>["Latreille"], :year=>"1809", :pages=>"124"}],
- :type_genus=>{:genus_name=>"Formica"}}
-      family = Family.import headline, :bar
+    it "should create the Family, Protonym, and Citation, and should link to the right Genus and Reference" do
+      data =  {
+        :protonym => {
+          :name => "Formicariae",
+          :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
+        },
+        :type_genus => 'Formica'
+      }
 
-      family.protonym.name.should == 'Formicariae'
+      family = Family.import(data).reload
 
-      family.protonym.authorship.pages.should == '124'
-      family.protonym.authorship.reference.citation_year.should == '1809'
-      family.protonym.authorship.reference.author_names.first.name.should == 'Latreille'
+      family.name.should == 'Formicidae'
+      family.should_not be_invalid
+      family.should_not be_fossil
+
+      protonym = family.protonym
+      protonym.name.should == 'Formicariae'
+
+      authorship = protonym.authorship
+      authorship.pages.should == '124'
+
+      reference = authorship.reference
+      reference.year.should == 1809
+      reference.author_names_string.should == 'Latreille'
     end
   end
 
