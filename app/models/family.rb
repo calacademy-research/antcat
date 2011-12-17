@@ -4,7 +4,9 @@ class Family < Taxon
   def self.import data
     transaction do
       protonym = Protonym.import data[:protonym]
-      create! :name => 'Formicidae', :status => 'valid', :protonym => protonym
+      family = create! :name => 'Formicidae', :status => 'valid', :protonym => protonym
+      ForwardReference.create! :source_id => family.id, :source_attribute => :type_taxon, :target_name => data[:type_genus]
+      family
     end
   end
 
