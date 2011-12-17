@@ -468,6 +468,6 @@ end
 
 Given /there is a reference for "Latreille, 1809"/ do
   Reference.delete_all
-  Factory :article_reference, :author_names => [Factory(:author_name, :name => 'Latreille')], :citation_year => '1809', :bolton_author_year_key => 'Latreille 1809'
+  Factory :article_reference, :author_names => [Factory(:author_name, :name => 'Latreille')], :citation_year => '1809', :bolton_key_cache => 'Latreille 1809'
 end
 
