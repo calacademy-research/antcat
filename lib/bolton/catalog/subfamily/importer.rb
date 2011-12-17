@@ -49,7 +49,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
   def import
     Taxon.delete_all
     Protonym.delete_all
-    ReferenceLocation.delete_all
+    Citation.delete_all
 
     parse_family
     #parse_supersubfamilies
