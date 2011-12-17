@@ -50,10 +50,11 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     Taxon.delete_all
     Protonym.delete_all
     Citation.delete_all
+    ForwardReference.delete_all
 
     parse_family
     #parse_supersubfamilies
-
+    ForwardReference.fixup
   ensure
     super
     Progress.puts "#{::Subfamily.count} subfamilies, #{::Tribe.count} tribes, #{::Genus.count} genera, #{::Subgenus.count} subgenera, #{::Species.count} species"
