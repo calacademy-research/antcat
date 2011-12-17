@@ -147,13 +147,13 @@ FactoryGirl.define do
   end
 
   ####################################################
-  factory :reference_location do
+  factory :citation do
     reference :factory => :article_reference
     pages '49'
   end
 
   factory :protonym do
-    authorship :factory => :reference_location 
+    authorship :factory => :citation 
     sequence(:name) {|n| "Protonym#{n}"}
   end
 
