@@ -13,20 +13,15 @@ describe Bolton::Catalog::Subfamily::Importer do
 <p>Formicidae as family: Latreille, 1809: 124 [Formicariae]; all subsequent authors. </p>
 </div></body></html>
     }
-    Family.should_receive(:import).with({
-      :type => :family_group_headline,
-      :family_or_subfamily_name => "Formicariae",
-      :authorship => [
-        {:author_names => ["Latreille"], :year=>"1809", :pages=>"124"}
-      ],
-      :type_genus => {:genus_name=>"Formica"}
-    }, {
-      :type => :family_taxonomic_history,
-      :items => [
-        {:author_names => ["Latreille"], :year => "1809", :pages => "124", :note => "[Formicariae]"},
-        {:all_subsequent_authors => true}
-      ]
-    })
+    data =  {
+      :protonym => {
+        :name => "Formicariae",
+        :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
+      },
+      :type_genus => 'Formica'
+    }
+    Family.should_receive(:import).with(data)
+
     Bolton::Catalog::Subfamily::Importer.new.import_html html
   end
 
