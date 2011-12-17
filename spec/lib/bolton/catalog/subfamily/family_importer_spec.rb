@@ -4,6 +4,7 @@ require 'spec_helper'
 describe Bolton::Catalog::Subfamily::Importer do
 
   it "should convert the HTML to an intermediate form and send it to Family.import" do
+    Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
     html = %{
 <html><body><div class=Section1>
 <p><b>FAMILY FORMICIDAE</b></p>
@@ -20,9 +21,11 @@ describe Bolton::Catalog::Subfamily::Importer do
       },
       :type_genus => 'Formica'
     }
-    Family.should_receive(:import).with(data)
 
     Bolton::Catalog::Subfamily::Importer.new.import_html html
+
+    family = Family.first
+    family.type_taxon.name.should == 'Formica'
   end
 
 end
