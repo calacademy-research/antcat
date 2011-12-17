@@ -34,7 +34,7 @@ namespace :bolton do
 
     desc "Set author/year keys"
     task :set_keys => :environment do
-      Bolton::Reference.set_keys
+      Bolton::Reference.set_key_caches
     end
 
     desc 'Import and match Bolton references'
