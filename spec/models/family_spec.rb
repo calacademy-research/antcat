@@ -5,6 +5,7 @@ describe Family do
 
   describe "Importing" do
     it "should create the Family, Protonym, and Citation, and should link to the right Genus and Reference" do
+      reference = Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
       data =  {
         :protonym => {
           :name => "Formicariae",
@@ -25,9 +26,7 @@ describe Family do
       authorship = protonym.authorship
       authorship.pages.should == '124'
 
-      reference = authorship.reference
-      reference.year.should == 1809
-      reference.author_names_string.should == 'Latreille'
+      authorship.reference.should == reference
     end
   end
 
