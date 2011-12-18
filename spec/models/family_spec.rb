@@ -11,11 +11,12 @@ describe Family do
           :name => "Formicariae",
           :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
         },
-        :type_genus => 'Formica'
+        :type_genus => 'Formica',
+        :taxonomic_history => "Formicidae as family: <ref #{reference.id}>: 124 [Formicariae]; all subsequent authors"
       }
 
       family = Family.import(data).reload
-
+      family.taxonomic_history.should == "Formicidae as family: <ref #{reference.id}>: 124 [Formicariae]; all subsequent authors"
       family.name.should == 'Formicidae'
       family.should_not be_invalid
       family.should_not be_fossil
