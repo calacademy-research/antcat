@@ -43,5 +43,8 @@ class Family < Taxon
   #def statistics
     #get_statistics [:genera, :species, :subspecies]
   #end
+  def full_label
+    name
+  end
 
 end
