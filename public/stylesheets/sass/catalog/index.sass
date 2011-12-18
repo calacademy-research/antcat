@@ -10,12 +10,19 @@ html, body, #page, .rank
   height: 11em
   overflow: auto
   margin-bottom: 6px
-  span
-    @include margins
+  @include margins
+
+  .taxon_header
     font-size: 1.3em
-    font-weight: bold
-  .taxon_status
-    font-weight: normal
+  .taxon_headline 
+    .family_group_name
+      font-weight: bold
+      padding-right: 3px
+    .genus_name
+      font-style: italic
+    a
+      padding-left: 4px
+      padding-right: 0px
 
 .taxonomic_history
   padding: 5px
@@ -51,7 +58,6 @@ td.teensy
   line-height: .99em
 
 .statistics
-  @include margins
   font-size: .85em
   font-style: italic
   p
