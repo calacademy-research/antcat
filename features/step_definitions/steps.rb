@@ -318,6 +318,20 @@ And /I (edit|delete|copy) "(.*?)"/ do |verb, author|
   step %{I follow "#{verb}" within "#reference_#{reference.id}"}
 end
 
+Given /^the Formicidae family exists$/ do
+  ForwardReference.delete_all
+  reference = Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
+  Family.delete_all
+  Family.import( 
+    :protonym => {
+      :name => "Formicariae",
+      :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
+    },
+    :type_genus => 'Formica'
+  )
+  ForwardReference.fixup
+end
+
 Given /a subfamily exists with a name of "(.*?)" and a taxonomic history of "(.*?)"/ do |taxon_name, taxonomic_history|
   Factory :subfamily, :name => taxon_name, :taxonomic_history => taxonomic_history
 end
