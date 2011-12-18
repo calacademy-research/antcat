@@ -306,4 +306,23 @@ describe Bolton::Catalog::Importer do
     end
 
   end
+
+  describe "Converting from parsed format to Text format" do
+    it "should handle an empty string" do
+      @importer.convert_parser_output_to_text({}).should == ''
+    end
+    it "should handle a phrase" do
+      data = [{:phrase => 'Phrase'}]
+      @importer.convert_parser_output_to_text(data).should == 'Phrase'
+    end
+    it "should handle a phrase inside a text" do
+      data = [{:text => [{:phrase => 'Phrase'}]}]
+      @importer.convert_parser_output_to_text(data).should == 'Phrase'
+    end
+    it "should handle a reference" do
+      reference = Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
+      data = [{:author_names => ['Latreille'], :year => '1809', :pages => '244'}]
+      @importer.convert_parser_output_to_text(data).should == "<ref #{reference.id}>, 244"
+    end
+  end
 end

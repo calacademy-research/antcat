@@ -372,4 +372,35 @@ class Bolton::Catalog::Importer
     string
   end
 
+  def convert_parser_output_to_text parser_output
+    text = ''
+    for text_item in parser_output
+      text << (
+        convert_phrase_to_text(text_item) ||
+        convert_reference_to_text(text_item) ||
+        convert_nested_text_to_text(text_item) ||
+        raise
+      )
+    end
+    text
+  end
+
+  def convert_phrase_to_text text_item
+    return unless text_item.key? :phrase
+    text = text_item[:phrase]
+    text << text_item[:delimiter] if text_item[:delimiter]
+    text
+  end
+
+  def convert_reference_to_text text_item
+    return unless text_item.key? :author_names
+    reference = Reference.find_by_bolton_key text_item
+    "<ref #{reference.id}>"
+  end
+
+  def convert_nested_text_to_text text_item
+    return unless text_item.key? :text
+    convert_parser_output_to_text text_item[:text]
+  end
+
 end
