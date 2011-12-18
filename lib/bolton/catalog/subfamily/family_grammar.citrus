@@ -76,20 +76,10 @@ grammar Bolton::Catalog::Subfamily::FamilyGrammar
   end
 
   rule family_taxonomic_history
-    ('Formicidae as family: ' family_taxonomic_history_item ('; ' family_taxonomic_history_item)* '.') {
-      {:type => :family_taxonomic_history, :items => captures[:family_taxonomic_history_item].map(&:value)}
-    }
-  end
-
-  rule family_taxonomic_history_item
-    ((reference (' ' bracketed_phrase)?) | all_subsequent_authors:'all subsequent authors') {
-      if reference
-        value = reference.value
-        value.merge! :note => bracketed_phrase if bracketed_phrase
-      else
-        value = {:all_subsequent_authors => true}
-      end
-      value
+    ('Formicidae as family: ' text) {
+      text_copy = text.value[:text]
+      text_copy.insert 0, :phrase => 'Formicidae as family', :delimiter => ': '
+      {:type => :family_taxonomic_history, :items => text_copy}
     }
   end
 
