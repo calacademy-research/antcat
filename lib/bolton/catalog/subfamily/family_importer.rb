@@ -18,14 +18,15 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
   def parse_family_record
     headline = consume :family_group_headline
     consume :taxonomic_history_header
-    consume :family_taxonomic_history
+    taxonomic_history = consume :family_taxonomic_history
 
     Family.import({
       :protonym => {
         :name => headline[:family_or_subfamily_name],
         :authorship => headline[:authorship],
       },
-      :type_genus => headline[:type_genus][:genus_name]
+      :type_genus => headline[:type_genus][:genus_name],
+      :taxonomic_history => convert_parser_output_to_text(taxonomic_history)
     })
   end
 
