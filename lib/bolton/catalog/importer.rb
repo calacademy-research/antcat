@@ -409,9 +409,15 @@ class Bolton::Catalog::Importer
 
   def convert_citation_to_text text_item
     return unless text_item.key? :author_names
-    reference = Reference.find_by_bolton_key text_item[:author_names], text_item[:year]
-    string = "<ref #{reference.id}>"
+    begin
+      reference = ::Reference.find_by_bolton_key text_item[:author_names], text_item[:year]
+      string = "<ref #{reference.id}>"
+    rescue ::Reference::BoltonReferenceNotMatched, ::Reference::BoltonReferenceNotFound
+      string = text_item[:author_names].join(', ') + ', ' + text_item[:year]
+    end
+
     string << ": #{text_item[:pages]}" if text_item[:pages]
+    string << ": #{text_item[:delimiter]}" if text_item[:delimiter]
     string
   end
 
