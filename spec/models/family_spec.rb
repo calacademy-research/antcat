@@ -151,6 +151,11 @@ describe Family do
         #:fossil => {:genera => {'valid' => 1}, :species => {'valid' => 1}, :subspecies => {'valid' => 1}},
       #}
     #end
+  describe "Full label" do
+    it "should be the family name" do
+      Factory(:family, :name => 'Formicidae').full_label.should == 'Formicidae'
+    end
+  end
 
   #end
 end
