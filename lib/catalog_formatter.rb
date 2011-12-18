@@ -4,6 +4,7 @@ class CatalogFormatter
   extend ActionView::Helpers::TagHelper
   extend ActionView::Helpers::TextHelper
   extend ActionView::Helpers::NumberHelper
+  extend ActionView::Context
 
   def self.format_taxonomic_history taxon
     string = taxon.taxonomic_history
@@ -143,23 +144,43 @@ class CatalogFormatter
     "#{number_with_delimiter(count)} #{word}"
   end
 
-
+  ###################################################
   def self.format_headline taxon
-    format_headline_name(taxon) + ' ' + format_headline_authorship(taxon) + ' ' + format_headline_type(taxon)
+    format_headline_protonym(taxon) + ' ' + format_headline_type(taxon)
+  end
+
+  def self.format_headline_protonym taxon
+    format_headline_name(taxon) + ' ' + format_headline_authorship(taxon.protonym.authorship)
   end
 
   def self.format_headline_name taxon
     return '' unless taxon && taxon != 'no_tribe' && taxon != 'no_subfamily' && taxon.protonym
-    taxon.protonym.name
+    content_tag :span, taxon.protonym.name, :class => :family_group_name
   end
 
-  def self.format_headline_authorship taxon
-    ''#format_authorship taxon.protonym
+  def self.format_headline_authorship authorship
+    content_tag :span, format_reference_key(authorship.reference) +
+      ", #{authorship.pages}.".html_safe, :class => :authorship
+  end
+
+  def self.format_reference_key reference
+    key = reference.author_names.first.last_name + ' ' + reference.citation_year
+    content_tag(:a, key, :class => :reference_key).html_safe 
   end
 
   def self.format_headline_type taxon
-    ''
+    content_tag :span, :class => :type do
+      'Type-genus: '.html_safe +
+      format_genus_name(taxon.type_taxon) +
+      '.'.html_safe
+    end
   end
+
+  def self.format_genus_name genus
+    content_tag(:a, genus.name, :class => :genus_name).html_safe
+  end
+
+  ###################################################
 
   private
   def self.css_classes_for_taxon taxon, selected = false
