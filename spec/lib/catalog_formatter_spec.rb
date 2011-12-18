@@ -260,7 +260,7 @@ describe CatalogFormatter do
     it "should format the taxon name" do
       protonym = Factory :protonym, :name => 'Atari'
       atta = Factory :genus, :name => 'Atta', :protonym => protonym
-      @formatter.format_headline_name(atta).should == 'Atari'
+      @formatter.format_headline_name(atta).should == '<span class="family_group_name">Atari</span>'
     end
     it "should handle the special taxon 'no_tribe'" do
       @formatter.format_headline_name('no_tribe').should be_blank
