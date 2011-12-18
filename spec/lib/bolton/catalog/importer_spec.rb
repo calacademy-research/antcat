@@ -322,7 +322,19 @@ describe Bolton::Catalog::Importer do
     it "should handle a reference" do
       reference = Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
       data = [{:author_names => ['Latreille'], :year => '1809', :pages => '244'}]
-      @importer.convert_parser_output_to_text(data).should == "<ref #{reference.id}>, 244"
+      @importer.convert_parser_output_to_text(data).should == "<ref #{reference.id}>: 244"
+    end
+    it "should handle a bracketed text item" do
+      data = [{:opening_bracket => '['}, {:phrase => 'all rights reserved'}, {:closing_bracket => ']'}]
+      @importer.convert_parser_output_to_text(data).should == "[all rights reserved]"
+    end
+    it "should handle a bracketed text item" do
+      data = [:text => [{:opening_bracket => '['}, {:phrase => 'all rights reserved'}, {:closing_bracket => ']'}], :delimiter => ': ']
+      @importer.convert_parser_output_to_text(data).should == "[all rights reserved]: "
+    end
+    it "should handle a bracketed family name" do
+      data = [{:opening_bracket => '['}, {:family_or_subfamily_name => 'Formicariae'}, {:closing_bracket => ']'}]
+      @importer.convert_parser_output_to_text(data).should == "[Formicariae]"
     end
   end
 end
