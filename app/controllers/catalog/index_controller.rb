@@ -9,13 +9,12 @@ class Catalog::IndexController < CatalogController
 
     @url_parameters = {:q => params[:q], :search_type => params[:search_type], :hide_tribes => params[:hide_tribes]}
 
-    setup_formicidae and return if @search_results.blank? && params[:id].blank?
-
     if params[:id] =~ /^no_/
       @taxon = params[:id]
-    else
+    elsif params[:id].present?
       @taxon = Taxon.find params[:id]
-      @taxonomic_history = @taxon.taxonomic_history
+    else
+      @taxon = Family.first
     end
 
     case @taxon
@@ -69,6 +68,7 @@ class Catalog::IndexController < CatalogController
     @taxon_header_name ||= @taxon.full_label if @taxon.kind_of? Taxon
     @taxon_statistics ||= @taxon.statistics if @taxon.kind_of? Taxon
     @taxon_status ||= status_labels[@taxon.status][:singular] if @taxon.kind_of?(Taxon) && @taxon.invalid?
+    @taxonomic_history = @taxon.taxonomic_history if @taxon.kind_of? Taxon
   end
 
   def select_subfamily_and_tribes
