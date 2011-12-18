@@ -5,18 +5,34 @@ Feature: Using the catalog index
     And view its parents and siblings
 
   Background:
-    Given a subfamily exists with a name of "Dolichoderinae" and a taxonomic history of "Dolichoderinae history"
+    Given the Formicidae family exists
+    And a subfamily exists with a name of "Dolichoderinae" and a taxonomic history of "Dolichoderinae history"
     And a tribe exists with a name of "Dolichoderini" and a subfamily of "Dolichoderinae" and a taxonomic history of "Dolichoderini history"
     And a genus exists with a name of "Dolichoderus" and a tribe of "Dolichoderini" and a taxonomic history of "Dolichoderus history"
     And a fossil genus exists with a name of "Brownerus" and a tribe of "Dolichoderini" and a taxonomic history of "Dolichoderus history"
     And a species exists with a name of "abruptus" and a genus of "Dolichoderus" and a taxonomic history of "abruptus history"
+
+  Scenario: Seeing the family
+    When I go to the catalog index
+    Then I should see "Formicidae" in the contents
+      And I should see "valid" in the contents
+      And I should see "Formicariae" in the contents
+      And I should see "1 valid genus" in the contents
+
+  Scenario: Seeing the family (even with 'no subfamily' chosen)
+    When I go to the catalog index
+      And I follow "(no subfamily)"
+    Then I should see "Formicidae" in the contents
+      And I should see "valid" in the contents
+      And I should see "Formicariae" in the contents
+      And I should see "1 valid genus" in the contents
 
   Scenario: Before selecting anything
     When I go to the catalog index
     Then I should see "Dolichoderinae" in the index
       And I should not see "Dolichoderinae history"
       And I should see "Formicidae"
-      And I should see "1 valid subfamily, 1 valid genus, 1 valid species"
+      And I should see "1 valid subfamily, 2 valid genera, 1 valid species"
 
   Scenario: Selecting a subfamily
     When I go to the catalog index

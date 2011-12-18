@@ -18,3 +18,6 @@ Feature: Importing from Bolton, then displaying it
       |text|
       |Formicidae|
       |Formicariae|
+      |Latreille, 1809|
+      |124|
+      |Formica|
