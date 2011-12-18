@@ -319,11 +319,24 @@ describe Bolton::Catalog::Importer do
       data = [{:text => [{:phrase => 'Phrase'}]}]
       @importer.convert_parser_output_to_text(data).should == 'Phrase'
     end
-    it "should handle a reference" do
-      reference = Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
-      data = [{:author_names => ['Latreille'], :year => '1809', :pages => '244'}]
-      @importer.convert_parser_output_to_text(data).should == "<ref #{reference.id}>: 244"
+
+    describe "Citations" do
+      it "should handle a citation" do
+        reference = Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
+        data = [{:author_names => ['Latreille'], :year => '1809', :pages => '244'}]
+        @importer.convert_parser_output_to_text(data).should == "<ref #{reference.id}>: 244"
+      end
+      it "should handle a citation whose reference wasn't matched" do
+        bolton_reference = Factory :bolton_reference, :authors => 'Latreille', :citation_year => '1809'
+        data = [{:author_names => ['Latreille'], :year => '1809', :pages => '244'}]
+        @importer.convert_parser_output_to_text(data).should == "Latreille, 1809: 244"
+      end
+      it "should handle a citation whose reference wasn't found" do
+        data = [{:author_names => ['Latreille'], :year => '1809', :pages => '244'}]
+        @importer.convert_parser_output_to_text(data).should == "Latreille, 1809: 244"
+      end
     end
+
     it "should handle a bracketed text item" do
       data = [{:opening_bracket => '['}, {:phrase => 'all rights reserved'}, {:closing_bracket => ']'}]
       @importer.convert_parser_output_to_text(data).should == "[all rights reserved]"
