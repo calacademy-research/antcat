@@ -373,15 +373,30 @@ class Bolton::Catalog::Importer
   end
 
   def convert_parser_output_to_text parser_output
-    text = ''
-    for text_item in parser_output
-      text << (
-        convert_phrase_to_text(text_item) ||
-        convert_reference_to_text(text_item) ||
-        convert_nested_text_to_text(text_item) ||
-        raise
-      )
+    parser_output.inject('') do |text, text_item|
+      text << convert_to_text(text_item)
     end
+  end
+
+  def convert_to_text text_item
+    convert_nested_text_to_text(text_item) ||
+    convert_phrase_to_text(text_item) ||
+    convert_citation_to_text(text_item) ||
+    convert_taxon_name_to_text(text_item) ||
+    convert_bracket_to_text(text_item) ||
+    raise("Couldn't convert #{text_item} to text")
+  end
+
+  def convert_bracket_to_text text_item
+    text = ''
+    if text_item.key? :opening_bracket
+      text << text_item[:opening_bracket]
+    elsif text_item.key? :closing_bracket
+      text << text_item[:closing_bracket]
+    else
+      return
+    end
+    text << text_item[:delimiter] if text_item[:delimiter]
     text
   end
 
@@ -392,15 +407,27 @@ class Bolton::Catalog::Importer
     text
   end
 
-  def convert_reference_to_text text_item
+  def convert_citation_to_text text_item
     return unless text_item.key? :author_names
-    reference = Reference.find_by_bolton_key text_item
-    "<ref #{reference.id}>"
+    reference = Reference.find_by_bolton_key text_item[:author_names], text_item[:year]
+    string = "<ref #{reference.id}>"
+    string << ": #{text_item[:pages]}" if text_item[:pages]
+    string
   end
 
   def convert_nested_text_to_text text_item
     return unless text_item.key? :text
-    convert_parser_output_to_text text_item[:text]
+    delimiter = text_item[:text].delete :delimiter
+    text = convert_parser_output_to_text text_item[:text]
+    text << text_item[:delimiter] if text_item[:delimiter]
+    text
+  end
+
+  def convert_taxon_name_to_text text_item
+    return unless text_item.key? :family_or_subfamily_name
+    text = text_item[:family_or_subfamily_name]
+    text << text_item[:delimiter] if text_item[:delimiter]
+    text
   end
 
 end
