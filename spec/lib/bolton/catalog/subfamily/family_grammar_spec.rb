@@ -54,9 +54,15 @@ describe Bolton::Catalog::Subfamily::FamilyGrammar do
     @grammar.parse(%{Formicidae as family: Latreille, 1809: 124 [Formicariae]; Stephens, 1829: 356; all subsequent authors.}).value.should == {
       :type => :family_taxonomic_history,
       :items => [
-        {:author_names => ['Latreille'], :year => '1809', :pages => '124', :note => '[Formicariae]'},
-        {:author_names => ['Stephens'], :year => '1829', :pages => '356'},
-        {:all_subsequent_authors => true},
+        {:phrase => 'Formicidae as family', :delimiter => ': '},
+        {:author_names => ['Latreille'], :year => '1809', :pages => '124', :delimiter => ' '},
+        {:text => [
+          {:opening_bracket => "["},
+          {:family_or_subfamily_name => "Formicariae"},
+          {:closing_bracket=> "]"},
+        ], :delimiter => '; '},
+        {:author_names => ['Stephens'], :year => '1829', :pages => '356', :delimiter => '; '},
+        {:phrase => 'all subsequent authors'},
       ]
     }
   end
