@@ -345,9 +345,14 @@ describe Bolton::Catalog::Importer do
       data = [:text => [{:opening_bracket => '['}, {:phrase => 'all rights reserved'}, {:closing_bracket => ']'}], :delimiter => ': ']
       @importer.convert_parser_output_to_text(data).should == "[all rights reserved]: "
     end
-    it "should handle a bracketed family name" do
-      data = [{:opening_bracket => '['}, {:family_or_subfamily_name => 'Formicariae'}, {:closing_bracket => ']'}]
-      @importer.convert_parser_output_to_text(data).should == "[Formicariae]"
+
+    describe "Taxon names" do
+      [:family_or_subfamily_name, :subtribe_name, :order_name, :tribe_name].each do |key|
+        it "should handle #{key}" do
+          @importer.convert_parser_output_to_text([key => 'Formicariae']).should == "Formicariae"
+        end
+      end
     end
+
   end
 end
