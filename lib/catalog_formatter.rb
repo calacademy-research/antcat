@@ -15,7 +15,7 @@ class CatalogFormatter
 
   def self.format_homonym_replaced_for_antweb taxon
     homonym_replaced = taxon.homonym_replaced
-    return unless homonym_replaced
+    return '' unless homonym_replaced
     label_and_classes = taxon_label_and_css_classes taxon, :uppercase => true
     span = content_tag('span', label_and_classes[:label], :class => label_and_classes[:css_classes])
     string = %{<p class="taxon_subsection_header">Homonym replaced by #{span}</p>}
