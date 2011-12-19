@@ -276,7 +276,23 @@ describe CatalogFormatter do
   describe "Reference key formatting" do
     it "should handle a single author" do
       reference = Factory :article_reference, :author_names => [Factory(:author_name, :name => 'Latreille, P. A.')], :citation_year => '1809'
-      CatalogFormatter.format_reference_key(reference).should == '<a class="reference_key">Latreille, 1809</a>'
+      @formatter.format_reference_key(reference).should == '<a class="reference_key">Latreille, 1809</a>'
+    end
+  end
+
+  describe "Taxonomic history formatting" do
+    before do
+      @taxon = Factory :family
+    end
+    it "should format a phrase" do
+      @taxon.update_attribute :taxonomic_history, 'phrase'
+      @formatter.format_taxonomic_history(@taxon).should == 'phrase.'
+    end
+    it "should format a ref" do
+      reference = Factory :article_reference, :author_names => [Factory(:author_name, :name => 'Latreille, P. A.')], :citation_year => '1809'
+      @taxon.update_attribute :taxonomic_history, "<ref #{reference.id}>"
+
+      @formatter.format_taxonomic_history(@taxon).should == "<a class=\"reference_key\" href=\"/references?q=#{reference.id}\">Latreille, 1809</a>."
     end
   end
 
