@@ -167,11 +167,11 @@ class CatalogFormatter
 
   def self.format_headline_authorship authorship
     content_tag :span, format_reference_key(authorship.reference) +
-      ", #{authorship.pages}.".html_safe, :class => :authorship
+      ": #{authorship.pages}.".html_safe, :class => :authorship
   end
 
   def self.format_reference_key reference
-    key = reference.author_names.first.last_name + ' ' + reference.citation_year
+    key = reference.author_names.first.last_name + ', ' + reference.citation_year
     content_tag(:a, key, :class => :reference_key).html_safe 
   end
 
