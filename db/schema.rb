@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111217023302) do
+ActiveRecord::Schema.define(:version => 20111217211341) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -69,6 +69,12 @@ ActiveRecord::Schema.define(:version => 20111217023302) do
   end
 
   add_index "citations", ["reference_id"], :name => "index_authorships_on_reference_id"
+
+  create_table "forward_references", :force => true do |t|
+    t.integer "source_id"
+    t.string  "source_attribute"
+    t.string  "target_name"
+  end
 
   create_table "journals", :force => true do |t|
     t.string   "name"
