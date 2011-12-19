@@ -411,14 +411,14 @@ class Bolton::Catalog::Importer
     return unless text_item.key? :author_names
     begin
       reference = ::Reference.find_by_bolton_key text_item[:author_names], text_item[:year]
-      string = "<ref #{reference.id}>"
+      text = "<ref #{reference.id}>"
     rescue ::Reference::BoltonReferenceNotMatched, ::Reference::BoltonReferenceNotFound
-      string = text_item[:author_names].join(', ') + ', ' + text_item[:year]
+      text = text_item[:author_names].join(', ') + ', ' + text_item[:year]
     end
 
-    string << ": #{text_item[:pages]}" if text_item[:pages]
-    string << text_item[:delimiter] if text_item[:delimiter]
-    string
+    text << ": #{text_item[:pages]}" if text_item[:pages]
+    text << text_item[:delimiter] if text_item[:delimiter]
+    text
   end
 
   def convert_nested_text_to_text text_item
@@ -431,7 +431,10 @@ class Bolton::Catalog::Importer
 
   def convert_taxon_name_to_text text_item
     [:family_or_subfamily_name, :subtribe_name, :order_name, :tribe_name].each do |key|
-      return text_item[key] if text_item.key? key
+      next unless text_item.key? key
+      text = text_item[key]
+      text << text_item[:delimiter] if text_item[:delimiter]
+      return text
     end
     nil
   end
