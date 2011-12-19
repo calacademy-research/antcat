@@ -157,7 +157,10 @@ class CatalogFormatter
   end
 
   def self.format_headline_protonym taxon
-    format_headline_name(taxon) + ' ' + format_headline_authorship(taxon.protonym.authorship)
+    return '' unless taxon
+    string = format_headline_name(taxon)
+    string << ' ' << format_headline_authorship(taxon.protonym.authorship) if taxon.protonym
+    string
   end
 
   def self.format_headline_name taxon
@@ -166,6 +169,7 @@ class CatalogFormatter
   end
 
   def self.format_headline_authorship authorship
+    return '' unless authorship
     content_tag :span, format_reference_key(authorship.reference) +
       ": #{authorship.pages}.".html_safe, :class => :authorship
   end
@@ -176,6 +180,7 @@ class CatalogFormatter
   end
 
   def self.format_headline_type taxon
+    return '' unless taxon
     content_tag :span, :class => :type do
       'Type-genus: '.html_safe +
       format_genus_name(taxon.type_taxon) +
