@@ -118,12 +118,8 @@ class Bolton::Reference < ActiveRecord::Base
 
   def self.set_key_caches
     all.each do |reference|
-<<<<<<< HEAD
       reference.set_key_cache
       reference.save!
-=======
-      reference.update_attribute :key_cache, make_key(reference.authors, reference.citation_year)
->>>>>>> Fix misname
     end
   end
 

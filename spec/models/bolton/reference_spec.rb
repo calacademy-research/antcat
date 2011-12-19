@@ -359,21 +359,11 @@ describe Bolton::Reference do
       bolton.reload.key.should == 'Fisher 1981'
     end
 
-    describe "forming the key" do
-      it "should pass its data to the class method" do
-        bolton_reference = Factory :bolton_reference, :authors => 'Agosti, D. & Bolton, B.', :citation_year => '1970a'
-        bolton_reference.make_key.should == 'Agosti Bolton 1970a'
-      end
-      it "should handle multiple authors" do
-        Bolton::Reference.make_key('Lattke, J.E., Fernandez, F. & Palacio, E.E.', '1981').should ==
-          'Lattke Fernandez Palacio 1981'
-      end
-      it "should handle zero authors" do
-        Bolton::Reference.make_key('', '1981').should == '1981'
-        Bolton::Reference.make_key(nil, '1981').should == '1981'
-      end
+  describe "Key" do
+    it "has a key" do
+      reference = Factory :bolton_reference
+      reference.key
     end
-
   end
 
 end
