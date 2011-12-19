@@ -11,14 +11,14 @@ Feature: Using the catalog
     When I choose "Browser"
     Then the "Browser" tab should be selected
 
-  Scenario: Going from index to browser with tribe selected
-    Given a subfamily exists with a name of "Dolichoderinae"
-      And a tribe exists with a name of "Dolichoderini" and a subfamily of "Dolichoderinae"
-    When I go to the catalog index
-      And I follow "Dolichoderinae"
-      And I follow "Dolichoderini"
-      And I choose "Browser"
-    Then the browser header should be "Subfamily DOLICHODERINAE"
+  #Scenario: Going from index to browser with tribe selected
+    #Given a subfamily exists with a name of "Dolichoderinae"
+      #And a tribe exists with a name of "Dolichoderini" and a subfamily of "Dolichoderinae"
+    #When I go to the catalog index
+      #And I follow "Dolichoderinae"
+      #And I follow "Dolichoderini"
+      #And I choose "Browser"
+    #Then the browser header should be "Subfamily DOLICHODERINAE"
 
   Scenario: Keeping search results after going to the browser
     Given a subfamily exists with a name of "Dolichoderinae"
@@ -27,9 +27,9 @@ Feature: Using the catalog
     And a genus exists with a name of "Atta" and a tribe of "Dolichoderini"
     And a species exists with a name of "emeryi" and a genus of "Tapinoma"
     And a species exists with a name of "emeryi" and a genus of "Atta"
-    When I go to the catalog index
-      And I fill in the search box with "emeryi"
-      And I press "Go" by the search box
-      And I choose "Browser"
-    Then I should see "Tapinoma emeryi" within the search results
-      And I should see "Atta emeryi" within the search results
+    #When I go to the catalog index
+      #And I fill in the search box with "emeryi"
+      #And I press "Go" by the search box
+      #And I choose "Browser"
+    #Then I should see "Tapinoma emeryi" within the search results
+      #And I should see "Atta emeryi" within the search results
