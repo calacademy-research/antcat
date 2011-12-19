@@ -176,7 +176,7 @@ class CatalogFormatter
 
   def self.format_reference_key reference
     key = reference.author_names.first.last_name + ', ' + reference.citation_year
-    content_tag(:a, key, :class => :reference_key).html_safe 
+    content_tag(:a, key, :href => "/references?q=#{reference.id}", :class => :reference_key).html_safe 
   end
 
   def self.format_headline_type taxon
@@ -189,13 +189,16 @@ class CatalogFormatter
   end
 
   def self.format_genus_name genus
-    content_tag(:a, genus.name, :class => :genus_name).html_safe
+    content_tag(:span, genus.name, :class => :genus_name).html_safe
   end
 
   def self.format_taxonomic_history taxon
-    string = ''
-    string << taxon.taxonomic_history << '.' if taxon.taxonomic_history
-    string
+    return '' unless taxon.taxonomic_history
+    string = taxon.taxonomic_history
+    string.gsub! /<ref (\d+)>/ do |ref|
+      format_reference_key Reference.find($1)
+    end
+    string << '.'
   end
 
   ###################################################
