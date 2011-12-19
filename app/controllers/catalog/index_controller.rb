@@ -61,6 +61,12 @@ class Catalog::IndexController < CatalogController
       @species = @selected_species.siblings
       select_subfamily_and_tribes
       select_genera
+
+    when nil
+      @taxon_header_name = ''
+      @taxon_statistics = ''
+      @taxon_status = ''
+      @taxonomic_history = ''
     end
 
     @url_parameters[:subfamily] = @selected_subfamily
@@ -68,7 +74,7 @@ class Catalog::IndexController < CatalogController
     @taxon_header_name ||= @taxon.full_label if @taxon.kind_of? Taxon
     @taxon_statistics ||= @taxon.statistics if @taxon.kind_of? Taxon
     @taxon_status ||= status_labels[@taxon.status][:singular] if @taxon.kind_of?(Taxon) && @taxon.invalid?
-    @taxonomic_history = @taxon.taxonomic_history if @taxon.kind_of? Taxon
+    @taxonomic_history ||= @taxon.taxonomic_history if @taxon.kind_of? Taxon
   end
 
   def select_subfamily_and_tribes
