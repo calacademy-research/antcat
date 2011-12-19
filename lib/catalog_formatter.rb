@@ -170,13 +170,8 @@ class CatalogFormatter
 
   def self.format_headline_authorship authorship
     return '' unless authorship
-    content_tag :span, format_reference_key(authorship.reference) +
+    content_tag :span, authorship.reference.key.to_link +
       ": #{authorship.pages}.".html_safe, :class => :authorship
-  end
-
-  def self.format_reference_key reference
-    key = reference.author_names.first.last_name + ', ' + reference.citation_year
-    content_tag(:a, key, :href => "/references?q=#{reference.id}", :class => :reference_key).html_safe 
   end
 
   def self.format_headline_type taxon
@@ -196,7 +191,7 @@ class CatalogFormatter
     return '' unless taxon.taxonomic_history
     string = taxon.taxonomic_history
     string.gsub! /<ref (\d+)>/ do |ref|
-      format_reference_key Reference.find($1)
+      Reference.find($1).key.to_link
     end
     string << '.'
   end
