@@ -276,7 +276,7 @@ describe CatalogFormatter do
   describe "Reference key formatting" do
     it "should handle a single author" do
       reference = Factory :article_reference, :author_names => [Factory(:author_name, :name => 'Latreille, P. A.')], :citation_year => '1809'
-      @formatter.format_reference_key(reference).should == '<a class="reference_key">Latreille, 1809</a>'
+      @formatter.format_reference_key(reference).should ==  "<a class=\"reference_key\" href=\"/references?q=#{reference.id}\">Latreille, 1809</a>"
     end
   end
 
