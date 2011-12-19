@@ -367,6 +367,13 @@ describe Bolton::Catalog::Importer do
           @importer.convert_parser_output_to_text([key => 'Formicariae']).should == "Formicariae"
         end
       end
+      it "should handle taxon names with other text" do
+        @importer.convert_parser_output_to_text([
+          {:family_or_subfamily_name => 'Formicariae', :delimiter => ' '},
+          {:phrase => 'or', :delimiter => ' '},
+          {:family_or_subfamily_name => 'Formicidae'},
+        ]).should == "Formicariae or Formicidae"
+      end
     end
 
   end
