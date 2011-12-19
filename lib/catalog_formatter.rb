@@ -193,7 +193,9 @@ class CatalogFormatter
   end
 
   def self.format_taxonomic_history taxon
-    taxon.taxonomic_history + '.'
+    string = ''
+    string << taxon.taxonomic_history << '.' if taxon.taxonomic_history
+    string
   end
 
   ###################################################
