@@ -266,4 +266,11 @@ describe Reference do
     end
   end
 
+  describe "Key" do
+    it "has a key" do
+      reference = Factory :article_reference
+      reference.key
+    end
+  end
+
 end
