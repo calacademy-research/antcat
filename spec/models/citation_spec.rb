@@ -11,8 +11,8 @@ describe Citation do
 
   describe "Importing" do
     it "should create the Citation, which is linked to an existing Reference" do
-      reference = Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
-      data = {:author_names => ["Latreille"], :year => "1809", :pages => "124"}
+      reference = Factory :article_reference, :bolton_key_cache => 'Latreille 1809a'
+      data = {:author_names => ["Latreille"], :year => "1809a", :pages => "124"}
 
       citation = Citation.import(data).reload
 
