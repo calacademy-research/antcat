@@ -192,6 +192,10 @@ class CatalogFormatter
     content_tag(:a, genus.name, :class => :genus_name).html_safe
   end
 
+  def self.format_taxonomic_history taxon
+    taxon.taxonomic_history + '.'
+  end
+
   ###################################################
 
   private
