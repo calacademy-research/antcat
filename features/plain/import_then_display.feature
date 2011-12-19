@@ -21,3 +21,5 @@ Feature: Importing from Bolton, then displaying it
       |Latreille, 1809|
       |124|
       |Formica|
+      |Formicidae as family:|
+      |all subsequent authors.|
