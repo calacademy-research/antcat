@@ -141,7 +141,7 @@ describe CatalogFormatter do
     describe 'Simple' do
       it "should return the field" do
         genus = Factory :genus, :taxonomic_history => 'foo'
-        @formatter.format_taxonomic_history(genus).should == 'foo'
+        @formatter.format_taxonomic_history_for_antweb(genus).should == 'foo'
       end
     end
 
@@ -149,7 +149,7 @@ describe CatalogFormatter do
       it "should return the field + the list of homonyms" do
         replacement = Factory :genus, :name => 'Dlusskyidris', :taxonomic_history => '<p>Dlusskyidris history</p>', :fossil => true
         junior_homonym = Factory :genus, :name => 'Palaeomyrmex', :taxonomic_history => '<p>Palaeomyrmex history</p>', :status => 'homonym', :homonym_replaced_by => replacement
-        @formatter.format_taxonomic_history(replacement).should == 
+        @formatter.format_taxonomic_history_for_antweb(replacement).should == 
   %{<p>Dlusskyidris history</p>} + 
   %{<p class="taxon_subsection_header">Homonym replaced by <span class="genus taxon valid">&dagger;DLUSSKYIDRIS</span></p>} +
   %{<div id="#{junior_homonym.id}"><p>Palaeomyrmex history</p></div>}
@@ -160,7 +160,7 @@ describe CatalogFormatter do
       it "should handle a simple case" do
         taxon = Factory :subfamily, :taxonomic_history => '<p>Taxonomic history</p>'
         taxon.should_receive(:statistics).and_return(:extant => {:genera => {'valid' => 1, 'homonym' => 2}, :species => {'valid' => 2}, :subspecies => {'valid' => 3}})
-        @formatter.format_taxonomic_history_with_statistics(taxon, :include_invalid => false).should == '<p class="taxon_statistics">1 genus, 2 species, 3 subspecies</p><p>Taxonomic history</p>'
+        @formatter.format_taxonomic_history_with_statistics_for_antweb(taxon, :include_invalid => false).should == '<p class="taxon_statistics">1 genus, 2 species, 3 subspecies</p><p>Taxonomic history</p>'
       end
 
       it "should handle a case with fossil and extant statistics" do
@@ -169,7 +169,7 @@ describe CatalogFormatter do
           :extant => {:genera => {'valid' => 1, 'homonym' => 2}, :species => {'valid' => 2}, :subspecies => {'valid' => 3}},
           :fossil => {:genera => {'valid' => 3}}
         )
-        @formatter.format_taxonomic_history_with_statistics(taxon, :include_invalid => false).should ==
+        @formatter.format_taxonomic_history_with_statistics_for_antweb(taxon, :include_invalid => false).should ==
           '<p class="taxon_statistics">Extant: 1 genus, 2 species, 3 subspecies</p>' +
           '<p class="taxon_statistics">Fossil: 3 genera</p>' +
           '<p>Taxonomic history</p>'
@@ -178,12 +178,12 @@ describe CatalogFormatter do
       it "should handle an even simpler case" do
         taxon = Factory :subfamily, :taxonomic_history => '<p>Taxonomic history</p>'
         taxon.should_receive(:statistics).and_return(:extant => {:genera => {'valid' => 1}, :species => {'valid' => 0}, :subspecies => {'valid' => 3}})
-        @formatter.format_taxonomic_history_with_statistics(taxon, :include_invalid => false).should == '<p class="taxon_statistics">1 genus, 0 species, 3 subspecies</p><p>Taxonomic history</p>'
+        @formatter.format_taxonomic_history_with_statistics_for_antweb(taxon, :include_invalid => false).should == '<p class="taxon_statistics">1 genus, 0 species, 3 subspecies</p><p>Taxonomic history</p>'
       end
 
       it "should just return the taxonomic history alone for a subspecies" do
         taxon = Factory :subspecies, :taxonomic_history => 'history'
-        @formatter.format_taxonomic_history_with_statistics(taxon).should == 'history'
+        @formatter.format_taxonomic_history_with_statistics_for_antweb(taxon).should == 'history'
       end
     end
 
@@ -276,7 +276,7 @@ describe CatalogFormatter do
   describe "Reference key formatting" do
     it "should handle a single author" do
       reference = Factory :article_reference, :author_names => [Factory(:author_name, :name => 'Latreille, P. A.')], :citation_year => '1809'
-      CatalogFormatter.format_reference_key(reference).should == '<a class="reference_key">Latreille 1809</a>'
+      CatalogFormatter.format_reference_key(reference).should == '<a class="reference_key">Latreille, 1809</a>'
     end
   end
 
