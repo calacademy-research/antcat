@@ -1,8 +1,5 @@
 # coding: UTF-8
-class ReferenceKeyBase
-end
-
-class ReferenceKey < ReferenceKeyBase
+class ReferenceKey
   include ActionView::Helpers::TagHelper
 
   def initialize reference
