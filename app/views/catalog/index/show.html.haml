@@ -11,10 +11,11 @@
         = raw @taxon_header_name
       %span.taxon_status
         = raw @taxon_status
-      .taxon_headline
-        = raw CatalogFormatter.format_headline @taxon
       .statistics
         = raw CatalogFormatter.format_statistics @taxon_statistics
+      .taxon_headline
+        = raw CatalogFormatter.format_headline @taxon
+      %h4 Taxonomic history
       .taxonomic_history
         = raw @taxonomic_history
     %hr
