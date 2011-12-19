@@ -337,6 +337,21 @@ describe Bolton::Catalog::Importer do
       end
     end
 
+    it "should handle a number of items" do
+      reference = Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
+      data = [
+        {:phrase => 'Formicidae as family', :delimiter => ': '},
+        {:author_names => ['Latreille'], :year => '1809', :pages => '124', :delimiter => ' '},
+        {:text => [
+          {:opening_bracket => '['},
+          {:family_or_subfamily_name => 'Formicariae'},
+          {:closing_bracket => ']'},
+        ], :delimiter => '; '},
+        {:phrase => 'all subsequent authors'},
+      ]
+      @importer.convert_parser_output_to_text(data).should == "Formicidae as family: <ref #{reference.id}>: 124 [Formicariae]; all subsequent authors"
+    end
+
     it "should handle a bracketed text item" do
       data = [{:opening_bracket => '['}, {:phrase => 'all rights reserved'}, {:closing_bracket => ']'}]
       @importer.convert_parser_output_to_text(data).should == "[all rights reserved]"

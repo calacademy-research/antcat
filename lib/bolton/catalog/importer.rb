@@ -417,7 +417,7 @@ class Bolton::Catalog::Importer
     end
 
     string << ": #{text_item[:pages]}" if text_item[:pages]
-    string << ": #{text_item[:delimiter]}" if text_item[:delimiter]
+    string << text_item[:delimiter] if text_item[:delimiter]
     string
   end
 
