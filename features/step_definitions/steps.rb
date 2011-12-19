@@ -1,4 +1,22 @@
 # coding: UTF-8
+Given /^the Formicidae family exists$/ do
+  Taxon.delete_all
+  Protonym.delete_all
+  Citation.delete_all
+  ForwardReference.delete_all
+  Reference.delete_all
+
+  Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
+  Family.import( 
+    :protonym => {
+      :name => "Formicariae",
+      :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
+    },
+    :type_genus => 'Formica'
+  )
+  ForwardReference.fixup
+end
+
 Given /the following references? exists?/ do |table|
   Reference.delete_all
   table.hashes.each do |hash|
@@ -318,20 +336,6 @@ And /I (edit|delete|copy) "(.*?)"/ do |verb, author|
   step %{I follow "#{verb}" within "#reference_#{reference.id}"}
 end
 
-Given /^the Formicidae family exists$/ do
-  ForwardReference.delete_all
-  reference = Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
-  Family.delete_all
-  Family.import( 
-    :protonym => {
-      :name => "Formicariae",
-      :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
-    },
-    :type_genus => 'Formica'
-  )
-  ForwardReference.fixup
-end
-
 Given /a subfamily exists with a name of "(.*?)" and a taxonomic history of "(.*?)"/ do |taxon_name, taxonomic_history|
   Factory :subfamily, :name => taxon_name, :taxonomic_history => taxonomic_history
 end
@@ -481,7 +485,6 @@ Then /^I should see the following text:$/ do |table|
 end
 
 Given /there is a reference for "Latreille, 1809"/ do
-  Reference.delete_all
   Factory :article_reference, :author_names => [Factory(:author_name, :name => 'Latreille')], :citation_year => '1809', :bolton_key_cache => 'Latreille 1809'
 end
 
