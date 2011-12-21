@@ -1,5 +1,7 @@
 $(function() {
   setupPage();
+  $('.reference_key').live('click', expandReferenceKey);
+  $('.reference_key_expansion').live('click', expandReferenceKey);
 })
 
 function setupPage() {
@@ -31,3 +33,7 @@ function setWidth() {
   $("#catalog .content").width($('#page').width());
 }
 
+function expandReferenceKey() {
+  $('.reference_key', $(this).parent()).toggle();
+  $('.reference_key_expansion', $(this).parent()).toggle();
+}
