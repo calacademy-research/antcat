@@ -201,6 +201,15 @@ describe Reference do
       end
     end
 
+    describe "Filtering unknown reference types" do
+      it "should just return unknown reference types if a ? is passed as the search term" do
+        known = Factory :article_reference
+        unknown = Factory :unknown_reference
+        Reference.reindex
+        Reference.do_search(:q => '?').should == [unknown]
+      end
+    end
+
     describe "sorting search results" do
       it "should sort by author_name plus year plus letter" do
         fisher1910b = reference_factory(:author_name => 'Fisher', :citation_year => '1910b')

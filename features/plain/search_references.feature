@@ -5,7 +5,7 @@ Feature: Searching references
     Or see if I have already added it
 
   Background:
-      Given the following references exist
+    Given the following references exist
       |authors    |year         |title                |citation  |
       |Fisher, B. |1995b        |Anthill              |Ants 1:1-2|
       |Forel, M.  |1995b        |Formis               |Ants 1:1-2|
@@ -91,13 +91,29 @@ Feature: Searching references
 
   Scenario: Searching by cite code that looks like a year
     Given the following references exist
-       |authors   |year |title |citation   |cite_code|
-       |Fisher, B.|1895a|title5|Ants 11:1-2|96-1984  |
-       |Fisher, B.|1895a|title6|Ants 11:2-3|97-9321  |
+      |authors   |year |title |citation   |cite_code|
+      |Fisher, B.|1895a|title5|Ants 11:1-2|96-1984  |
+      |Fisher, B.|1895a|title6|Ants 11:2-3|97-9321  |
     When I go to the references page
-      Then I should see "Ants 11:1-2"
-        And I should see "Ants 11:2-3"
-      And I fill in the search box with "96-1984"
+    Then I should see "Ants 11:1-2"
+      And I should see "Ants 11:2-3"
+    When I fill in the search box with "96-1984"
       And I press "Go" by the search box
-      Then I should see "Ants 11:1-2"
-        And I should not see "Ants 11:2-3"
+    Then I should see "Ants 11:1-2"
+      And I should not see "Ants 11:2-3"
+
+  Scenario: Seeing just "other" references (not article, book, etc.)
+    Given the following references exists
+      |authors   |year |title|citation     |
+      |Fisher, B.|1895a|Known|Psyche 11:1-2|
+    And Given the following unknown reference exists
+      |authors   |year|title  |citation      |
+      |Bolton, B.|2001|Unknown|Science 11:1-2|
+    When I go to the references page
+    Then I should see "Known"
+      And I should see "Unknown"
+    When I fill in the search box with "?"
+      And I press "Go" by the search box
+    Then I should not see "Known"
+      And I should see "Unknown"
+

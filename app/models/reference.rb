@@ -98,11 +98,18 @@ class Reference < ActiveRecord::Base
 
     string = options[:q].dup
 
+    only_show_unknown_references = false
+    question_mark_index = string.index '?'
+    if question_mark_index
+      string[question_mark_index] = ''
+      only_show_unknown_references = true
+    end
+
     if match = string.match(/\d{5,}/)
       return where(:id => match[0]).paginate :page => 1
     end
 
-    search {
+    results = search {
       start_year, end_year = extract_years string
       if start_year
         if end_year
@@ -115,7 +122,15 @@ class Reference < ActiveRecord::Base
       order_by :author_names_string
       order_by :citation_year
       paginate(:page => options[:page]) if paginate
+      paginate(:per_page => 5_000) if only_show_unknown_references
     }.results
+
+    if only_show_unknown_references
+      ids = results.map &:id
+      return where(:type => 'UnknownReference').where('id' => ids).paginate(:page => options[:page])
+    end
+
+    results
   end
 
   def check_for_duplicate
