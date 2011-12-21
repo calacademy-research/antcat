@@ -227,6 +227,15 @@ describe Bolton::Reference do
       possible_matches.first.should == matched_reference
       possible_matches.map(&:id).should =~ [matched_reference.id, first_match_reference.id, second_match_reference.id]
     end
+    it "return the match even if it's not a Bolton::Match" do
+      bolton = Factory :bolton_reference
+      matched_reference = Factory :book_reference
+
+      bolton.update_attribute :match, matched_reference
+      possible_matches = bolton.possible_matches_with_matched_first
+      possible_matches.first.should == matched_reference
+      possible_matches.map(&:id).should =~ [matched_reference.id]
+    end
   end
 
   describe "Match status counts" do 
