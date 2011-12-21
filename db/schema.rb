@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111217211341) do
+ActiveRecord::Schema.define(:version => 20111221214551) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -155,12 +155,10 @@ ActiveRecord::Schema.define(:version => 20111217211341) do
     t.text     "public_notes"
     t.text     "taxonomic_notes"
     t.text     "title"
-    t.string   "source_url"
     t.text     "citation"
     t.integer  "nested_reference_id"
     t.string   "pages_in"
     t.string   "author_names_suffix"
-    t.string   "source_file_name"
     t.string   "principal_author_last_name_cache"
     t.string   "bolton_key_cache"
   end
