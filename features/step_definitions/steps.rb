@@ -439,3 +439,9 @@ end
 Then "I should not see any search results" do
   page.should_not have_css "#search_results"
 end
+
+Given /^I will enter the ID of "Arbitrary Match" in the following dialog$/ do
+  id = Reference.find_by_title("Arbitrary Match").id
+  page.evaluate_script 'window.original_prompt_function = window.prompt;'
+  page.evaluate_script "window.prompt = function(msg) { return '#{id}'; }"
+end

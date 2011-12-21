@@ -1,6 +1,5 @@
 .header
   .margin
-    = bolton_reference.best_match_similarity
     - unless bolton_reference.match
       - if bolton_reference.match_status != 'unmatchable'
         - text = 'Unmatchable'
@@ -9,6 +8,7 @@
         - text = 'Matchable'
         - match = nil
       = button_to text, bolton_reference_path(bolton_reference, :match => match), :method => :put, :remote => true, :disabled => !user_signed_in?
+      = button_to 'Enter ID', bolton_reference_path(bolton_reference, :match => '_id_'), :method => :put, :remote => true, :disabled => !user_signed_in?, :class => 'enter_id'
   .details
     .fields
       .authors=             bolton_reference.authors
@@ -17,4 +17,4 @@
       .pagination_field=    bolton_reference.pagination
       .reference_type=      bolton_reference.reference_type
       .id=                  bolton_reference.id
-    .title=                 bolton_reference.title
+    .title=                 bolton_reference.title + " [#{bolton_reference.best_match_similarity}]"

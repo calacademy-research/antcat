@@ -74,3 +74,23 @@ Feature: View bibliography (JavaScript)
       |Ants in Pants|0.8       |
     And I go to the Bolton references page
     Then all the buttons should be disabled
+
+  Scenario: Entering the ID of a match
+    Given I am logged in
+    Given the following Bolton reference exists
+      |authors   |title|
+      |Ward, P.S.|Ants |
+    Given the following references exist
+      |authors   |title          |citation|citation_year|
+      |Ward, P.S.|Arbitrary Match|Ants 1:1|2001d        |
+    When I go to the Bolton references page
+    Then the Bolton reference should be red
+      And I should see "Manual (0)"
+      And I should not see "Arbitrary Match"
+    Given I will enter the ID of "Arbitrary Match" in the following dialog
+    When I press "Enter ID"
+    Then the Bolton reference should be darkgreen
+      And the matched reference should be darkgreen
+      And I should see a "Unmatch" button
+      And I should see "Manual (1)"
+

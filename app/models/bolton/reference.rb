@@ -83,7 +83,7 @@ class Bolton::Reference < ActiveRecord::Base
   end
 
   def possible_matches_with_matched_first
-    possible_matches.partition {|m| m == match}.flatten
+    (possible_matches + [match]).uniq.compact.partition {|m| m == match}.flatten
   end
 
   def self.match_status_auto_count
