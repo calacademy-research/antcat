@@ -4,6 +4,7 @@
 %div{:class => css_class}
   = raw format_reference reference
   = link_to 'PDF', reference.url, :class => :document_link, :target => '_blank' if downloadable
+  = reference.id
 
   %p.notes= raw italicize h reference.public_notes
   - if user_signed_in?
