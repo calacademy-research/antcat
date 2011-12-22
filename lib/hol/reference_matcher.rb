@@ -11,7 +11,7 @@ class Hol::ReferenceMatcher < ReferenceMatcher
 
   def best_match matches
     if matches.size == 1
-      match = matches.first if matches.size == 1
+      match = matches.first
     else
       matches = matches.sort_by {|match| match[:similarity]}.reverse
       if matches.first[:similarity] == matches.second[:similarity]
