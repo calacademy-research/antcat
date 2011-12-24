@@ -86,6 +86,9 @@ describe ReferenceDocument do
       document.should be_downloadable_by Factory :user
       document.should be_downloadable_by nil
     end
+    it "should be not be downloadable by anyone if it is/was on http://128.146.250.117" do
+      ReferenceDocument.new(:url => 'http://128.146.250.117').should_not be_downloadable_by Factory :user
+    end
   end
 
   describe "setting the host" do

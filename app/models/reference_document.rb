@@ -26,7 +26,11 @@ class ReferenceDocument < ActiveRecord::Base
   end
 
   def downloadable_by? user
-    url.present? && (attributes["public"] || !hosted_by_us? || user.present?)
+    url.present? && !hosted_by_hol? && (attributes["public"] || !hosted_by_us? || user.present?)
+  end
+
+  def hosted_by_hol?
+    url.present? && url =~ %r{^http://128.146.250.117}
   end
 
   def actual_url
@@ -38,6 +42,7 @@ class ReferenceDocument < ActiveRecord::Base
     # this is to avoid authentication problems when a URL to one of "our" files is copied
     # to another reference (e.g., nested)
     return if url =~ /antcat/
+    return if hosted_by_hol?
     # a URL with spaces is valid, but URI.parse rejects it
     uri = URI.parse url.gsub(/ /, '%20')
     response_code = Net::HTTP.new(uri.host, 80).request_head(uri.path).code.to_i
