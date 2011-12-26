@@ -8,6 +8,7 @@ class Bolton::Reference < ActiveRecord::Base
   has_many :possible_matches, :through => :matches, :source => :reference
 
   before_validation :set_year
+  before_save :set_key_cache
 
   searchable do
     text :original
@@ -75,7 +76,7 @@ class Bolton::Reference < ActiveRecord::Base
   end
 
   def to_s
-    "#{authors} #{year}. #{title}."
+    "#{authors} #{citation_year}. #{title}."
   end
 
   def best_match_similarity
@@ -106,7 +107,21 @@ class Bolton::Reference < ActiveRecord::Base
   def author; authors.split(',').first; end
   def type; reference_type; end
 
-  private
+  def key
+    @key ||= Bolton::ReferenceKey.new authors, citation_year
+  end
+
+  def self.set_key_caches
+    all.each do |reference|
+      reference.set_key_cache
+      reference.save!
+    end
+  end
+
+  def set_key_cache
+    self.key_cache = key.to_s :db
+  end
+
   def set_year
     self.year = ::Reference.get_year citation_year
   end

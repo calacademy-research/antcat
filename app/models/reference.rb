@@ -42,6 +42,10 @@ class Reference < ActiveRecord::Base
   scope :sorted_by_author_name, select('`references`.*').joins(:author_names).where('position = 1').order(:name)
   scope :with_principal_author_last_name, lambda {|last_name| where :principal_author_last_name_cache => last_name}
 
+  def key
+    @key || ReferenceKey.new(self)
+  end
+
   def authors reload = false
     author_names(reload).map(&:author)
   end
