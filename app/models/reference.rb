@@ -64,18 +64,18 @@ class Reference < ActiveRecord::Base
 
   def self.advanced_search parameters = {}
     author_names = AuthorParser.parse(parameters[:q])[:names]
-    authors = Author.select('authors.id').
-      joins(:names).
-      where('name IN (?)', author_names).
-      group('authors.id')
-
-    reference_ids = Reference.select('`references`.*').
-              joins(:author_names).
-              joins('JOIN authors ON authors.id = author_names.author_id').
-              where('authors.id IN (?)', authors).
-              group('references.id').
-              having("COUNT(`references`.id) = #{authors.length}")
+    authors = Author.find_by_names author_names
+    reference_ids = find_having_authors authors
     Reference.where('id IN (?)', reference_ids).order(:author_names_string_cache, :citation_year)
+  end
+
+  def self.find_having_authors authors
+    Reference.select('`references`.*').
+      joins(:author_names).
+      joins('JOIN authors ON authors.id = author_names.author_id').
+      where('authors.id IN (?)', authors).
+      group('references.id').
+      having("COUNT(`references`.id) = #{authors.length}")
   end
 
   def self.do_advanced_search options = {}
@@ -171,7 +171,6 @@ class Reference < ActiveRecord::Base
     update_attribute :principal_author_last_name_cache, principal_author_last_name
   end
 
-
   def replace_author_name old_name, new_author_name
     old_author_name = AuthorName.find_by_name old_name
     reference_author_name = reference_author_names.where(:author_name_id => old_author_name).first
@@ -220,6 +219,23 @@ class Reference < ActiveRecord::Base
     author_names_and_suffix
   end
 
+  def self.find_by_bolton_key author_names, citation_year
+    bolton_key = Bolton::ReferenceKey.new(author_names.join(' '), citation_year).to_s :db
+
+    reference = find_by_bolton_key_cache bolton_key
+    return reference if reference
+
+    bolton_reference = Bolton::Reference.find_by_key_cache bolton_key
+    raise BoltonReferenceNotFound.new("Can't find Bolton reference for #{bolton_key}") unless bolton_reference
+
+    reference = bolton_reference.match
+    raise BoltonReferenceNotMatched.new("Bolton reference for '#{bolton_key}' was found, but hasn't been matched") unless reference
+
+    reference.update_attribute :bolton_key_cache, bolton_key
+
+    reference
+  end
+
   private
   def self.extract_years string
     start_year = end_year = nil
@@ -264,4 +280,6 @@ class Reference < ActiveRecord::Base
     end
   end
 
+  class BoltonReferenceNotMatched < StandardError; end
+  class BoltonReferenceNotFound < StandardError; end
 end

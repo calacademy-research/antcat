@@ -20,7 +20,7 @@ module AuthorParser
   def self.get_name_parts string
     parts = {}
     return parts unless string.present?
-    matches = string.match /(.*?), (.*)/u
+    matches = string.match /(.*?), (.*)/
     unless matches
       parts[:last] = string
     else

@@ -339,7 +339,7 @@ describe Reference do
         reference.reload.author_names_string.should == 'Fisher, B.L.; Ward, P.S. (eds.)'
       end
 
-      it "should be possible to read from and assign to, aliased to author_names_string_cached" do
+      it "should be possible to read from and assign to, aliased to author_names_string_cache" do
         reference = Factory :reference
         reference.author_names_string = 'foo'
         reference.author_names_string.should == 'foo'
@@ -406,7 +406,7 @@ describe Reference do
       @ward.update_attributes :name => 'Bolton, B.'
       reference.reload.principal_author_last_name.should == 'Bolton'
     end
-    it "should be possible to read from, aliased to principal_author_last_name_cached" do
+    it "should be possible to read from, aliased to principal_author_last_name_cache" do
       reference = Factory :reference
       reference.principal_author_last_name_cache = 'foo'
       reference.principal_author_last_name.should == 'foo'
@@ -623,6 +623,26 @@ describe Reference do
                                :journal => journal, :series_volume_issue => '1(2)', :pagination => '22-54'
       lambda {ArticleReference.create! :author_names => [author], :citation_year => '1981', :title => 'Dolichoderinae',
                                :journal => journal, :series_volume_issue => '1(2)', :pagination => '22-54'}.should raise_error
+    end
+  end
+
+  describe "Finding the reference for a Bolton citation" do
+    it "throws an exception if it can't find the reference" do
+      lambda {Reference.find_by_bolton_key ['Bolton'], '1920'}.should raise_error
+    end
+    it "finds the reference if it was found before" do
+      reference = Factory :book_reference, :bolton_key_cache => 'Bolton 1920'
+      Reference.find_by_bolton_key(['Bolton'], '1920').should == reference
+    end
+    it "finds with multiple authors" do
+      reference = Factory :book_reference, :bolton_key_cache => 'Bolton Fisher 2011'
+      Reference.find_by_bolton_key(['Bolton, B.', 'Fisher, B.L.'], '2011').should == reference
+    end
+    it "finds the reference if it was not found before" do
+      reference = Factory :book_reference
+      bolton_reference = Factory :bolton_reference, :authors => 'Bolton, B.', :citation_year => '1920', :match => reference
+      Reference.find_by_bolton_key(['Bolton'], '1920').should == reference
+      reference.reload.bolton_key_cache.should == 'Bolton 1920'
     end
   end
 

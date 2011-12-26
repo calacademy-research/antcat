@@ -22,23 +22,14 @@ namespace :bolton do
     task :taxa => ['bolton:import:subfamilies', 'bolton:import:species']
   end
 
-  namespace :match do
+  namespace :references do
     desc 'Match Bolton references to ours'
-    task :references => :environment do
+    task :match => :environment do
       Bolton::ReferencesMatcher.new(true).find_matches_for_all
     end
-  end
 
-  namespace :import_and_match do
     desc 'Import and match Bolton references'
-    task :references => ['bolton:import:references', 'bolton:match:references']
-  end
-
-  namespace :references do
-    desc 'Set bolton_reference match fields according to previous matching run'
-    task :set_matches => :environment do
-      Bolton::Reference.set_matches
-    end
+    task :import_and_match => ['bolton:import:references', 'bolton:references:match']
   end
 
 end

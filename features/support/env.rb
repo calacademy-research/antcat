@@ -1,5 +1,8 @@
 # coding: UTF-8
 
+require 'simplecov'
+SimpleCov.start 'rails'
+
 require 'spork'
 
 Spork.prefork do

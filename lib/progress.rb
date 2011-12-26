@@ -29,7 +29,7 @@ class Progress
     if string[-1, 1] == "\n"
       print string
     else
-      print(string + "\n")
+      print string + "\n"
     end
   end
 
@@ -83,6 +83,12 @@ class Progress
     noun = 'min'
     noun << 's' if mins > 1
     sprintf "%.0f #{noun}", mins
+  end
+
+  def self.method
+    string = caller[0].to_s
+    string = string.match(/`(.*?)'/)[1].to_s
+    info ">> " + string
   end
 
   #################################################################################
