@@ -266,7 +266,7 @@ DEPENDENCIES
   paperclip
   progress_bar
   rack
-  rails
+  rails (~> 3.1)
   rake
   rspec
   rspec-rails

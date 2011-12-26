@@ -13,6 +13,50 @@
 
 ActiveRecord::Schema.define(:version => 20120115224411) do
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   create_table "author_names", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
