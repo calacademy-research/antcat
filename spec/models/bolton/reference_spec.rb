@@ -5,7 +5,7 @@ describe Bolton::Reference do
 
   describe "string representation" do
     it "should be readable and informative" do
-      bolton = Bolton::Reference.new :authors => 'Allred, D.M.', :title => "Ants of Utah", :year => 1982
+      bolton = Bolton::Reference.new :authors => 'Allred, D.M.', :title => "Ants of Utah", :citation_year => '1982'
       bolton.to_s.should == "Allred, D.M. 1982. Ants of Utah."
     end
   end
@@ -250,4 +250,21 @@ describe Bolton::Reference do
       Bolton::Reference.match_status_unmatchable_count.should == 5
     end
   end
+
+  describe 'Key' do
+    it "should create a key when saved" do
+      bolton = Bolton::Reference.create! :authors => 'Fisher, B. L.', :citation_year => '1981', :title => 'Dolichoderinae',
+        :reference_type => 'ArticleReference', :series_volume_issue => '1(2)', :pagination => '22-54'
+      bolton.reload.key_cache.should == 'Fisher 1981'
+    end
+  end
+
+  describe "Key" do
+    it "has a key" do
+      reference = Factory :bolton_reference
+      reference.key
+    end
+  end
+
+
 end

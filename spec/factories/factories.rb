@@ -71,6 +71,8 @@ end
 
 Factory.define :bolton_reference, :class => Bolton::Reference do |reference|
   reference.title 'New General Catalog'
+  reference.citation_year '2011'
+  reference.authors 'Fisher, B.L.'
 end
 
 Factory.define :bolton_match, :class => Bolton::Match do |bolton_match|
