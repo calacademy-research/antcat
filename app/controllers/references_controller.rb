@@ -36,7 +36,7 @@ EOS
   def download
     document = ReferenceDocument.find params[:id]
     if document.downloadable_by? current_user
-      redirect_to ReferenceDocument.find(params[:id]).actual_url
+      redirect_to document.actual_url
     else
       head 401
     end

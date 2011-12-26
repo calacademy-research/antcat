@@ -43,6 +43,7 @@ group :test do
   gem 'capybara-firebug'
   gem 'database_cleaner'
   gem 'factory_girl_rails'
+  gem 'simplecov',    :require => false
   gem 'webmock'
 end
 

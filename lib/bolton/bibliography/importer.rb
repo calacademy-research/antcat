@@ -3,7 +3,6 @@
 #  1) Open the file in Word
 #  2) Save it as web page
 
-
 class Bolton::Bibliography::Importer
   def initialize show_progress = false
     Progress.init show_progress

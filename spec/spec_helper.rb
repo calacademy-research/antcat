@@ -1,4 +1,8 @@
 # coding: UTF-8
+
+require 'simplecov'
+SimpleCov.start 'rails'
+
 require 'spork'
 Spork.prefork do
   ENV["RAILS_ENV"] ||= 'test'
@@ -13,7 +17,12 @@ Spork.prefork do
   RSpec.configure do |config|
     config.mock_with :rspec
     config.use_transactional_fixtures = true
+    config.fail_fast = false
   end
+end
+
+Spork.each_run do
+  FactoryGirl.reload
 end
 
 puts "in #{`pwd`}"

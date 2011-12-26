@@ -17,4 +17,15 @@ describe Author do
       Author.sorted_by_name.should == [bolton.author, fisher.author, ward.author]
     end
   end
+
+  describe "converting a list of author names to ids" do
+    it "should handle an empty list" do
+      Author.find_by_names([]).should == []
+    end
+    it "should find the ids for the names" do
+      bolton = Factory :author_name, :name => 'Bolton'
+      fisher = Factory :author_name, :name => 'Fisher'
+      Author.find_by_names(['Bolton', 'Fisher']).map(&:id).should =~ [bolton.author.id, fisher.author.id]
+    end
+  end
 end

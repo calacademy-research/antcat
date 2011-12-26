@@ -1,6 +1,5 @@
 # coding: UTF-8
 class Bolton::ReferenceKey
-
   def initialize authors_string, year
     @authors = authors_string
     @year = year
