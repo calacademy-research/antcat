@@ -1,5 +1,4 @@
 # coding: UTF-8
-
 $BOLTON_DATA_DIRECTORY = 'data/bolton'
 
 namespace :bolton do
@@ -32,20 +31,8 @@ namespace :bolton do
       Bolton::ReferencesMatcher.new(true).find_matches_for_all
     end
 
-    desc "Set author/year keys"
-    task :set_keys => :environment do
-      Bolton::Reference.set_key_caches
-    end
-
     desc 'Import and match Bolton references'
     task :import_and_match => ['bolton:import:references', 'bolton:references:match']
-  end
-
-  namespace :references do
-    desc 'Set bolton_reference match fields according to previous matching run'
-    task :set_matches => :environment do
-      Bolton::Reference.set_matches
-    end
   end
 
 end
