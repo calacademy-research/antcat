@@ -454,12 +454,6 @@ Then "I should not see any search results" do
   page.should_not have_css "#search_results"
 end
 
-Given /^I will enter the ID of "Arbitrary Match" in the following dialog$/ do
-  id = Reference.find_by_title("Arbitrary Match").id
-  page.evaluate_script 'window.original_prompt_function = window.prompt;'
-  page.evaluate_script "window.prompt = function(msg) { return '#{id}'; }"
-end
-
 ############################################################
 # import_then_display
 
@@ -488,3 +482,9 @@ Given /there is a reference for "Latreille, 1809"/ do
   Factory :article_reference, :author_names => [Factory(:author_name, :name => 'Latreille, I.')], :citation_year => '1809', :bolton_key_cache => 'Latreille 1809'
 end
 
+############################################################
+Given /^I will enter the ID of "Arbitrary Match" in the following dialog$/ do
+  id = Reference.find_by_title("Arbitrary Match").id
+  page.evaluate_script 'window.original_prompt_function = window.prompt;'
+  page.evaluate_script "window.prompt = function(msg) { return '#{id}'; }"
+end
