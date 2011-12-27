@@ -65,13 +65,17 @@ h4
   &:hover
     cursor: pointer
 
-.reference_key_expansion
-  display: none
-  padding-left: 2px
-  span
-    background: $color_reference_key_expansion
-    padding-right: 2px
+  .reference_key_expansion
+    display: none
 
-.reference_key
-  padding-left: 4px
-  padding-right: 0
+    .reference_key_expansion_text
+      background: $color_reference_key_expansion
+      &:hover
+        background: $color_link_highlight_background
+        color: $color_link_highlight
+      
+    .goto_reference_link
+      padding-right: 0
+
+  .reference_key
+    padding-right: 0
