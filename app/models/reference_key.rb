@@ -17,7 +17,7 @@ class ReferenceKey
       content_tag(:a, key, :href => '#', :class => :reference_key) +
       content_tag(:span, :class => :reference_key_expansion) do
         content_tag(:span, ReferenceFormatter.format(@reference), :class => :reference_key_expansion_text) +
-        ("<a target=\"_blank\" href=\"/references?q=#{@reference.id}\">" +
+        ("<a class=\"goto_reference_link\" target=\"_blank\" href=\"/references?q=#{@reference.id}\">" +
           content_tag(:img, '', :src => "/images/external_link.png") +
         "</a>").html_safe
       end
