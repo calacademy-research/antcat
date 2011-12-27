@@ -50,17 +50,42 @@ describe Bolton::Catalog::Subfamily::Importer do
   describe "Importing a genus" do
     def make_contents content
       @importer.should_receive(:parse_family).and_return { Factory :subfamily, :name => 'Martialinae' }
-%{<html><body><div class=Section1>
-<p class=MsoNormal align=center style='text-align:center'><b style='mso-bidi-font-weight:
-normal'><span lang=EN-GB>THE DOLICHODEROMORPHS: SUBFAMILIES ANEURETINAE AND
-DOLICHODERINAE</span></b></p>
-<p><b><span lang=EN-GB style='color:black'>SUBFAMILY</span><span lang=EN-GB> <span style='color:red'>MARTIALINAE</span></span></b></p>
-<p><b><span lang=EN-GB>Subfamily <span style='color:red'>MARTIALINAE</span></span></b></p>
-<p><b><span lang=EN-GB>Martialinae</span></b><span lang=EN-GB> Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.  </span></p>
-<p><b><span lang=EN-GB>Genus of Martialinae</span></b><span lang=EN-GB>: <i>Sphinctomyrmex</i>.</span></p>
-<p><b><span lang=EN-GB>Genus of <span style='color:red'>Martialinae</span></span></b></p>
+%{<html><body><div>
+<p>THE DOLICHODEROMORPHS: SUBFAMILIES ANEURETINAE AND DOLICHODERINAE</p>
+<p>SUBFAMILY MARTIALINAE</p>
+<p>Subfamily MARTIALINAE</p>
+<p>Martialinae Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.  </p>
+<p>Genus of Martialinae<span lang=EN-GB>: <i>Sphinctomyrmex</i>.</span></p>
+<p>Genus of Martialinae</p>
 #{content}
 </div></body></html>}
+    end
+
+    it "should import a genus" do
+      @importer.import_html make_contents %{
+<p>Genus <i>CONDYLODON</i></p>
+<p><i>Condylodon</i> Lund, 1831a: 131. Type-species: <i>Condylodon audouini</i>, by monotypy. </p>
+<p>Taxonomic history</p>
+<p><i>Condylodon</i> in family Mutillidae?: Swainson &amp; Shuckard, 1840: 173. </p>
+      }
+
+      #genus = Genus.find_by_name 'Condylodon'
+      #sphinctomyrmex.taxonomic_history.should ==
+#%{<p><b><i>Sphinctomyrmex</i></b> Mayr, 1866b: 895. Type-species: <i>Sphinctomyrmex stali</i>, by monotypy. </p>} +
+#%{<p><b>Taxonomic history<p></p></b></p>} +
+#%{<p>Sphinctomyrmex history</p>} +
+#%{<p><b>Junior synonyms of <i>SPHINCTOMYRMEX<p></p></i></b></p>} +
+#%{<p><b><i>Aethiopopone</i></b> Santschi, 1930a: 49. Type-species: <i>Sphinctomyrmex rufiventris</i>, by monotypy. </p>} +
+#%{<p><b>Taxonomic history<p></p></b></p>} +
+#%{<p><i>Aethiopopone history</i></p>} +
+
+      #aethiopopone = Genus.find_by_name 'Aethiopopone'
+      #aethiopopone.should_not be_nil
+      #aethiopopone.should be_synonym_of sphinctomyrmex
+      #aethiopopone.taxonomic_history.should == 
+#%{<p><b><i>Aethiopopone</i></b> Santschi, 1930a: 49. Type-species: <i>Sphinctomyrmex rufiventris</i>, by monotypy. </p>} +
+#%{<p><b>Taxonomic history<p></p></b></p>} +
+#%{<p><i>Aethiopopone history</i></p>}
     end
 
     describe "Importing a genus with junior synonyms" do
