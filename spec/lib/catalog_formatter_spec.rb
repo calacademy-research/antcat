@@ -290,6 +290,14 @@ describe CatalogFormatter do
       reference.should_receive(:key).and_return key_stub
       @formatter.format_taxonomic_history(@taxon).should == 'foo.'
     end
+    it "should not freak if the ref is malformed" do
+      @taxon.update_attribute :taxonomic_history, "<ref sdf>"
+      @formatter.format_taxonomic_history(@taxon).should == '<ref sdf>.'
+    end
+    it "should not freak if the ref points to a reference that doesn't exist" do
+      @taxon.update_attribute :taxonomic_history, "<ref 12345>"
+      @formatter.format_taxonomic_history(@taxon).should == '<ref 12345>.'
+    end
   end
 
 end
