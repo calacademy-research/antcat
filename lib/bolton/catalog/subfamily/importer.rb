@@ -2,7 +2,7 @@
 #  A Bolton subfamily catalog file is named NN. NAME.docx,
 #    e.g. 01. FORMICIDAE.docx
 #  and yes, the first one is actually for the whole family, rather
-#  than s 'supersubfamily' (group of subfamilies)
+#  than a 'supersubfamily' (group of subfamilies)
 #
 #  To convert a subfamily catalog file from Bolton to a format we can use:
 #  1) Open the file in Word

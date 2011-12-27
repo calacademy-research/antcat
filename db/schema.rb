@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111226171824) do
+ActiveRecord::Schema.define(:version => 20111227213955) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -206,12 +206,6 @@ ActiveRecord::Schema.define(:version => 20111226171824) do
   add_index "taxa", ["synonym_of_id"], :name => "taxa_synonym_of_id_index"
   add_index "taxa", ["tribe_id"], :name => "taxa_tribe_id_idx"
   add_index "taxa", ["type"], :name => "taxa_type_idx"
-
-  create_table "texts", :force => true do |t|
-    t.text     "marked_up_text"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "users", :force => true do |t|
     t.string   "email",                              :default => "", :null => false
