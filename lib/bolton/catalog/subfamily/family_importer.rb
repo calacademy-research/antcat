@@ -5,7 +5,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
   def parse_family
     parse_family_header
     parse_family_record
-    #parse_family_child_lists
+    parse_family_child_lists
     #parse_family_references
     #parse_family_children
   end
@@ -32,34 +32,13 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
 
   ######################################################
   def parse_family_child_lists
-    parse_list :extant_subfamilies_list, ::Subfamily, :subfamilies, :subfamily_name
-    parse_list :extinct_subfamilies_list, ::Subfamily, :subfamilies, :subfamily_name, :fossil => true
-    parse_list :extant_genera_incertae_sedis_in_family_list, ::Genus, :genera, :genus_name,
-               :incertae_sedis_in => 'family'
-    parse_list :extinct_genera_incertae_sedis_in_family_list, ::Genus, :genera, :genus_name,
-               :incertae_sedis_in => 'family', :fossil => true
-    parse_list :extant_genera_excluded_from_family_list, ::Genus, :genera, :genus_name, :status => 'excluded'
-    parse_list :extinct_genera_excluded_from_family_list, ::Genus, :genera, :genus_name, :fossil => true, :status => 'excluded'
-    parse_genus_group_nomina_nuda_in_family_list
-  end
-
-  def parse_list list_type, klass, group_key, name_key, attributes = {}
-    attributes = attributes.reverse_merge :status => 'valid'
-    expect list_type
-    @parse_result[group_key].each do |item|
-      klass.create!({:name => item[name_key]}.merge attributes)
-    end
-    parse_next_line
-  end
-
-  def parse_genus_group_nomina_nuda_in_family_list
-    expect :genus_group_nomina_nuda_in_family_list
-    @parse_result[:genera].each do |genus|
-      attributes = {:name => genus[:genus_name], :status => 'nomen nudum'}
-      attributes[:fossil] = true if genus[:fossil]
-      Genus.create! attributes
-    end
-    parse_next_line
+    consume :extant_subfamilies_list
+    consume :extinct_subfamilies_list
+    consume :extant_genera_incertae_sedis_in_family_list
+    consume :extinct_genera_incertae_sedis_in_family_list
+    consume :extant_genera_excluded_from_family_list
+    consume :extinct_genera_excluded_from_family_list
+    consume :genus_group_nomina_nuda_in_family_list
   end
 
   ##############################################################
