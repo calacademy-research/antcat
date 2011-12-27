@@ -478,8 +478,9 @@ Then /^I should see the following text:$/ do |table|
   end
 end
 
-Given /there is a reference for "Latreille, 1809"/ do
-  Factory :article_reference, :author_names => [Factory(:author_name, :name => 'Latreille, I.')], :citation_year => '1809', :bolton_key_cache => 'Latreille 1809'
+Given /there is a reference for "Latreille, I. 1809. Ants."/ do
+  Reference.delete_all
+  Factory :article_reference, :author_names => [Factory(:author_name, :name => 'Latreille, I.')], :citation_year => '1809', :title => 'Ants', :bolton_key_cache => 'Latreille 1809'
 end
 
 ############################################################
@@ -487,4 +488,20 @@ Given /^I will enter the ID of "Arbitrary Match" in the following dialog$/ do
   id = Reference.find_by_title("Arbitrary Match").id
   page.evaluate_script 'window.original_prompt_function = window.prompt;'
   page.evaluate_script "window.prompt = function(msg) { return '#{id}'; }"
+end
+
+############################################################
+Then /^I should (not )?see the reference key "([^"]+)"$/ do |should_not, text|
+  selector = should_not ? :should_not : :should
+  find(".reference_key", :text => text).send(selector, be_visible)
+end
+Then /^I should (not )?see the reference key expansion$/ do |should_not|
+  selector = should_not ? :should_not : :should
+  find(".reference_key_expansion").send(selector, be_visible)
+end
+And /^I click the reference key$/ do
+  find(".reference_key").click
+end
+And /^I click the reference key expansion$/ do
+  find(".reference_key_expansion").click
 end

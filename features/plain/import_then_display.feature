@@ -4,7 +4,7 @@ Feature: Importing from Bolton, then displaying it
   So that it's more current and easier to search than now
 
   Scenario: Importing the family
-    Given there is a reference for "Latreille, 1809"
+    Given there is a reference for "Latreille, I. 1809. Ants."
       And the family import file contains the following lines:
       |line|
       |<p><b>FAMILY FORMICIDAE</b></p>|
