@@ -1,5 +1,6 @@
 $(function() {
   setupPage();
+  setupHelp();
   $('.reference_key').live('click', expandReferenceKey);
   $('.reference_key_expansion_text').live('click', expandReferenceKey);
 })
@@ -36,4 +37,17 @@ function setWidth() {
 function expandReferenceKey() {
   $('.reference_key',           $(this).closest('.reference_key_and_expansion')).toggle();
   $('.reference_key_expansion', $(this).closest('.reference_key_and_expansion')).toggle();
+}
+
+function setupHelp() {
+  $('.document_link').qtip({
+    content: "Click to download and view the document",
+    show: 'mouseover',
+    hide: 'mouseout'
+  });
+  $('.goto_reference_link').qtip({
+    content: "Click to view/edit this reference on its own page",
+    show: 'mouseover',
+    hide: 'mouseout'
+  });
 }

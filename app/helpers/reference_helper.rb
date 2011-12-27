@@ -4,6 +4,10 @@ module ReferenceHelper
     ReferenceFormatter.format reference
   end
 
+  def format_reference_document_link reference
+    CatalogFormatter.format_reference_document_link reference, current_user
+  end
+
   def italicize string
     ReferenceFormatter.italicize string
   end
