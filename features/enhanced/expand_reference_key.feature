@@ -24,4 +24,4 @@ Feature: Expanding reference keys
       #And I should not see the reference key "Latreille, 1809"
     When I click the reference key expansion
     Then I should see the reference key "Latreille, 1809"
-      And I should not see the reference key expansion
+      #And I should not see the reference key expansion
