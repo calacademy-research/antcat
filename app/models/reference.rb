@@ -1,4 +1,5 @@
 # coding: UTF-8
+
 class Reference < ActiveRecord::Base
   include ReferenceComparable
   has_paper_trail
