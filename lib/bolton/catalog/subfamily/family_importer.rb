@@ -7,7 +7,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     parse_family_record
     parse_family_child_lists
     parse_family_references
-    #parse_family_children
+    parse_family_children
   end
 
   def parse_family_header

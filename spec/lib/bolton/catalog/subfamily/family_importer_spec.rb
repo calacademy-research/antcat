@@ -26,6 +26,21 @@ describe Bolton::Catalog::Subfamily::Importer do
 <p>Regional catalogues and checklists</p><p>NEARCTIC: Smith, M.R., 1951a: 778.</p>
 <p>Regional and national faunas with keys</p><p>PALAEARCTIC</p><p>Mayr, 1855: 299 (Austria).</p>
 
+<p>GENERA <i>INCERTAE SEDIS</i> AND EXCLUSIONS FROM FORMICIDAE</p>
+<p>Genera <i>incertae sedis</i> in FORMICIDAE</p>
+
+<p>Genus <i>CONDYLODON</i></p>
+<p><i>Condylodon</i> Lund, 1831a: 131. Type-species: <i>Condylodon audouini</i>, by monotypy. </p>
+<p>Taxonomic history</p>
+<p><i>Condylodon</i> in family Mutillidae?: Swainson &amp; Shuckard, 1840: 173. </p>
+
+<p>Genera excluded from FORMICIDAE</p>
+<p>The following were all originally described as members of Formicidae but are now excluded.</p>
+
+<p>Unavailable family-group names in FORMICIDAE</p>
+
+<p>Genus-group <i>nomina nuda</i> in FORMICIDAE</p>
+
 </div></body></html>
     }
     data =  {
@@ -39,7 +54,16 @@ describe Bolton::Catalog::Subfamily::Importer do
     Bolton::Catalog::Subfamily::Importer.new.import_html html
 
     family = Family.first
+    family.name.should == 'Formicidae'
+    family.should_not be_nil
+    family.should_not be_invalid
+    family.should_not be_fossil
     family.type_taxon.name.should == 'Formica'
+
+    genus = Genus.find_by_name 'Condylodon'
+    genus.should_not be_nil
+    genus.should_not be_invalid
+    genus.should_not be_fossil
   end
 
 end
