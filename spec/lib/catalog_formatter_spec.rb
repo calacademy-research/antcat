@@ -282,10 +282,10 @@ describe CatalogFormatter do
       @formatter.format_taxonomic_history(@taxon).should == 'phrase.'
     end
     it "should format a ref" do
-      reference = Factory :article_reference, :author_names => [Factory(:author_name, :name => 'Latreille, P. A.')], :citation_year => '1809'
+      reference = Factory :article_reference, :author_names => [Factory(:author_name, :name => 'Latreille, P. A.')], :citation_year => '1809', :title => "Ants", :journal => Factory(:journal, :name => 'Science'), :series_volume_issue => '(1)', :pagination => '3'
       @taxon.update_attribute :taxonomic_history, "<ref #{reference.id}>"
 
-      @formatter.format_taxonomic_history(@taxon).should == "<a class=\"reference_key\" href=\"/references?q=#{reference.id}\">Latreille, 1809</a>."
+      @formatter.format_taxonomic_history(@taxon).should == "<span><a class=\"reference_key\" href=\"#\">Latreille, 1809</a><a class=\"reference_key_expansion\" href=\"#\">Latreille, P. A. 1809. Ants. Science (1):3.</a></span>."
     end
   end
 
