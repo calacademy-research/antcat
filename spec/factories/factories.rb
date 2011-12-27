@@ -157,9 +157,4 @@ FactoryGirl.define do
     sequence(:name) {|n| "Protonym#{n}"}
   end
 
-  ####################################################
-  factory :text do
-    marked_up_text 'Reference'
-  end
-
 end
