@@ -147,6 +147,8 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     parsed_text
   end
 
+  #################################################################
+  # parse a subfamily or tribe's genera
   def parse_genera
     return unless @type == :genera_header || @type == :genus_header
     Progress.method
