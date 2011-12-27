@@ -311,7 +311,7 @@ describe Reference do
 
       it "should add an error and raise and exception if invalid" do
         lambda {@reference.parse_author_names_and_suffix('...asdf sdf dsfdsf')}.should raise_error ActiveRecord::RecordInvalid
-        @reference.errors.should == {:author_names_string => ["couldn't be parsed. Please post a message on http://groups.google.com/group/antcat/, and we'll fix it!"]}
+        @reference.errors.messages.should == {:author_names_string => ["couldn't be parsed. Please post a message on http://groups.google.com/group/antcat/, and we'll fix it!"]}
         @reference.author_names_string.should == '...asdf sdf dsfdsf'
       end
 
@@ -573,11 +573,9 @@ describe Reference do
     end
 
     it "should make sure it exists" do
-      reference = Factory :reference
+      reference = Factory :reference, :year => 2001
       stub_request(:any, "http://antbase.org/1.pdf").to_return :body => "Not Found", :status => 404
-      reference.document = ReferenceDocument.create :url => 'http://antbase.org/1.pdf'
-      reference.should_not be_valid
-      reference.errors.full_messages.should =~ ['Document url was not found']
+      lambda {reference.document = ReferenceDocument.create :url => 'http://antbase.org/1.pdf'}.should raise_error ActiveRecord::RecordNotSaved
     end
 
   end
