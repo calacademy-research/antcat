@@ -1,7 +1,7 @@
 $(function() {
   setupPage();
   $('.reference_key').live('click', expandReferenceKey);
-  $('.reference_key_expansion').live('click', expandReferenceKey);
+  $('.reference_key_expansion_text').live('click', expandReferenceKey);
 })
 
 function setupPage() {
@@ -34,6 +34,6 @@ function setWidth() {
 }
 
 function expandReferenceKey() {
-  $('.reference_key', $(this).parent()).toggle();
-  $('.reference_key_expansion', $(this).parent()).toggle();
+  $('.reference_key',           $(this).closest('.reference_key_and_expansion')).toggle();
+  $('.reference_key_expansion', $(this).closest('.reference_key_and_expansion')).toggle();
 }
