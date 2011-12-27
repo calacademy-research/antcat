@@ -279,7 +279,7 @@ describe CatalogFormatter do
     end
     it "should format a phrase" do
       @taxon.update_attribute :taxonomic_history, 'phrase'
-      @formatter.format_taxonomic_history(@taxon).should == 'phrase.'
+      @formatter.format_taxonomic_history(@taxon, nil).should == 'phrase.'
     end
     it "should format a ref" do
       reference = Factory :article_reference
@@ -288,15 +288,24 @@ describe CatalogFormatter do
       key_stub.should_receive(:to_link).and_return('foo')
       Reference.should_receive(:find).with(reference.id.to_s).and_return reference
       reference.should_receive(:key).and_return key_stub
-      @formatter.format_taxonomic_history(@taxon).should == 'foo.'
+      @formatter.format_taxonomic_history(@taxon, nil).should == 'foo.'
     end
     it "should not freak if the ref is malformed" do
       @taxon.update_attribute :taxonomic_history, "<ref sdf>"
-      @formatter.format_taxonomic_history(@taxon).should == '<ref sdf>.'
+      @formatter.format_taxonomic_history(@taxon, nil).should == '<ref sdf>.'
     end
     it "should not freak if the ref points to a reference that doesn't exist" do
       @taxon.update_attribute :taxonomic_history, "<ref 12345>"
-      @formatter.format_taxonomic_history(@taxon).should == '<ref 12345>.'
+      @formatter.format_taxonomic_history(@taxon, nil).should == '<ref 12345>.'
+    end
+  end
+
+  describe "PDF link formatting" do
+    it "should create a link" do
+      reference = Factory :reference
+      reference.stub(:downloadable_by?).and_return true
+      reference.stub(:url).and_return 'example.com'
+      @formatter.format_reference_document_link(reference, nil).should == '<a class="document_link" target="_blank" href="example.com">PDF</a>'
     end
   end
 

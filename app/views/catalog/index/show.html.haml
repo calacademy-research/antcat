@@ -2,6 +2,7 @@
 
 - content_for :head do
   = javascript_include_tag 'catalog/index'
+  = javascript_include_tag 'ext/jquery.qtip-1.0.0-rc3.min'
   = stylesheet_link_tag 'catalog/index'
 
 #catalog
@@ -14,7 +15,7 @@
       .statistics
         = raw CatalogFormatter.format_statistics @taxon_statistics
       .taxon_headline
-        = raw CatalogFormatter.format_headline @taxon
+        = raw @taxon_headline
       %h4 Taxonomic history
       .taxonomic_history
         = raw @taxonomic_history
@@ -26,3 +27,5 @@
       = render 'rank', :items => @tribes, :selected_item => @selected_tribe, :header => 'Tribes', :url_parameters => @url_parameters, :options => {:taxon => @taxon, :show_none => 'no_tribe', :hideable_name => 'tribes'}
     = render 'rank', :items => @genera, :selected_item => @selected_genus, :header => 'Genera', :url_parameters => @url_parameters, :options => {}
     = render 'rank', :items => @species, :selected_item => @selected_species, :header => 'Species', :url_parameters => @url_parameters, :options => {}
+
+= render 'shared/qtip'

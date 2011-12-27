@@ -152,14 +152,14 @@ class CatalogFormatter
   end
 
   ###################################################
-  def self.format_headline taxon
-    format_headline_protonym(taxon) + ' ' + format_headline_type(taxon)
+  def self.format_headline taxon, user
+    format_headline_protonym(taxon, user) + ' ' + format_headline_type(taxon)
   end
 
-  def self.format_headline_protonym taxon
+  def self.format_headline_protonym taxon, user
     return '' unless taxon
     string = format_headline_name(taxon)
-    string << ' ' << format_headline_authorship(taxon.protonym.authorship) if taxon.protonym
+    string << ' ' << format_headline_authorship(taxon.protonym.authorship, user) if taxon.protonym
     string
   end
 
@@ -168,9 +168,9 @@ class CatalogFormatter
     content_tag :span, taxon.protonym.name, :class => :family_group_name
   end
 
-  def self.format_headline_authorship authorship
+  def self.format_headline_authorship authorship, user
     return '' unless authorship
-    content_tag :span, authorship.reference.key.to_link +
+    content_tag :span, authorship.reference.key.to_link(user) +
       ": #{authorship.pages}.".html_safe, :class => :authorship
   end
 
@@ -187,13 +187,17 @@ class CatalogFormatter
     content_tag(:span, genus.name, :class => :genus_name).html_safe
   end
 
-  def self.format_taxonomic_history taxon
+  def self.format_taxonomic_history taxon, user
     return '' unless taxon.taxonomic_history
     string = taxon.taxonomic_history
     string.gsub! /<ref (\d+)>/ do |ref|
-      Reference.find($1).key.to_link rescue ref
+      Reference.find($1).key.to_link(user) rescue ref
     end
     string << '.'
+  end
+
+  def self.format_reference_document_link reference, user
+    "<a class=\"document_link\" target=\"_blank\" href=\"#{reference.url}\">PDF</a>" if reference.downloadable_by? user
   end
 
   ###################################################
