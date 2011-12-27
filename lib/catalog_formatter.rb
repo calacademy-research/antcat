@@ -191,7 +191,7 @@ class CatalogFormatter
     return '' unless taxon.taxonomic_history
     string = taxon.taxonomic_history
     string.gsub! /<ref (\d+)>/ do |ref|
-      Reference.find($1).key.to_link
+      Reference.find($1).key.to_link rescue ref
     end
     string << '.'
   end
