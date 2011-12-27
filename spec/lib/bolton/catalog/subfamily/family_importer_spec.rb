@@ -21,6 +21,11 @@ describe Bolton::Catalog::Subfamily::Importer do
 <p>Genera (extinct) excluded from Formicidae: *<i>Cariridris</i>.</p>
 <p>Genus-group <i>nomina nuda</i> in Formicidae: <i>Ancylognathus</i>.</p>
 
+<p>FAMILY FORMICIDAE REFERENCES, WORLD</p>
+<p>WORLD CATALOGUES</p><p>Roger, 1863b: 1 (Formicidae).</p>
+<p>Regional catalogues and checklists</p><p>NEARCTIC: Smith, M.R., 1951a: 778.</p>
+<p>Regional and national faunas with keys</p><p>PALAEARCTIC</p><p>Mayr, 1855: 299 (Austria).</p>
+
 </div></body></html>
     }
     data =  {

@@ -6,7 +6,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     parse_family_header
     parse_family_record
     parse_family_child_lists
-    #parse_family_references
+    parse_family_references
     #parse_family_children
   end
 
@@ -70,7 +70,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
   end
 
   def parse_family_reference_sections_with_inline_headings
-    while @type != :regional_and_national_faunas_header
+    while @type && @type != :regional_and_national_faunas_header
       parse_next_line
     end
   end
