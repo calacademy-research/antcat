@@ -81,6 +81,12 @@ describe Taxon do
     myanmyrma.should_not be_invalid
   end
 
+  it "should be able to say whether it is incertae sedis in a particular rank" do
+    myanmyrma = Factory :taxon, :name => 'Myanmyrma', :incertae_sedis_in => 'family'
+    myanmyrma.reload
+    myanmyrma.should be_incertae_sedis_in('family')
+  end
+
   it "should be able to store tons of text in taxonomic history" do
     camponotus = Factory :taxon, :name => 'Camponotus', :taxonomic_history => '1234' * 100_000
     camponotus.reload.taxonomic_history.size.should == 4 * 100_000
