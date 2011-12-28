@@ -7,7 +7,7 @@
 
 #catalog
   .content
-    = raw CatalogFormatter.format_taxon @taxon_header_name, @taxon_status, @taxon_statistics, @taxon_headline, @taxonomic_history
+    = raw CatalogFormatter.format_taxon @taxon, current_user
     %hr
 
   .index

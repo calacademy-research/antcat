@@ -21,7 +21,6 @@ class Catalog::IndexController < CatalogController
     when 'no_subfamily', Subfamily
       @selected_subfamily = @taxon
       if @selected_subfamily == 'no_subfamily'
-        setup_formicidae
         @genera = Genus.without_subfamily
       elsif params[:hide_tribes]
         @genera = @selected_subfamily.genera
@@ -63,19 +62,9 @@ class Catalog::IndexController < CatalogController
       select_genera
 
     when nil
-      @taxon_header_name = ''
-      @taxon_statistics = ''
-      @taxon_status = ''
-      @taxonomic_history = ''
     end
 
     @url_parameters[:subfamily] = @selected_subfamily
-
-    @taxon_header_name ||= @taxon.full_label if @taxon.kind_of? Taxon
-    @taxon_statistics ||= @taxon.statistics if @taxon.kind_of? Taxon
-    @taxon_status ||= status_labels[@taxon.status][:singular] if @taxon.kind_of?(Taxon) && @taxon.invalid?
-    @taxonomic_history ||= CatalogFormatter.format_taxonomic_history(@taxon, current_user) if @taxon.kind_of? Taxon
-    @taxon_headline ||= CatalogFormatter.format_headline @taxon, current_user if @taxon.kind_of? Taxon
   end
 
   def select_subfamily_and_tribes
@@ -130,13 +119,6 @@ class Catalog::IndexController < CatalogController
     else
       @genera = @selected_genus.siblings
     end
-  end
-
-  def setup_formicidae
-    @taxon ||= Family.first
-    @taxon_header_name = 'Formicidae'
-    @taxon_statistics = @taxon && !(@taxon =~ /^no/) && @taxon.statistics
-    @taxon_status = 'valid'
   end
 
 end
