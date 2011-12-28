@@ -34,6 +34,8 @@ describe Bolton::Catalog::Subfamily::Importer do
 <p>Taxonomic history</p>
 <p><i>Condylodon</i> in family Mutillidae?: Swainson &amp; Shuckard, 1840: 173. </p>
 
+<p>Genus references</p><p>Baroni Urbani, 1977c: 482 (review of genus).</p>
+
 <p>Genera excluded from FORMICIDAE</p>
 <p>The following were all originally described as members of Formicidae but are now excluded.</p>
 
@@ -43,13 +45,10 @@ describe Bolton::Catalog::Subfamily::Importer do
 
 </div></body></html>
     }
-    data =  {
-      :protonym => {
-        :name => "Formicariae",
-        :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
-      },
-      :type_genus => 'Formica'
-    }
+
+    lund = Factory :unknown_reference, :author_names => [Factory(:author_name, :name => 'Lund, A.')], :citation_year => '1831a', :title => "Ants"
+    swainson = Factory :unknown_reference, :author_names => [Factory(:author_name, :name => 'Swainson, B.'), Factory(:author_name, :name => 'Shuckard, C.')], :citation_year => '1840', :title => "More ants"
+    baroni = Factory :unknown_reference, :author_names => [Factory(:author_name, :name => 'Baroni Urbani, L.')], :citation_year => '1977c', :title => "Yet more ants"
 
     Bolton::Catalog::Subfamily::Importer.new.import_html html
 
@@ -64,6 +63,13 @@ describe Bolton::Catalog::Subfamily::Importer do
     genus.should_not be_nil
     genus.should_not be_invalid
     genus.should_not be_fossil
+    genus.should be_incertae_sedis_in 'family'
+    genus.subfamily.should be_nil
+    #genus.taxonomic_history.should == 
+
+#%{<p><i>Condylodon</i></p>}
+
+#%{<p><i>Condylodon</i> <ref #{lund.id}>: 131. Type-species: <i>Condylodon audouini</i>, by monotypy. </p><p>Taxonomic history</p><p><i>Condylodon</i> in family Mutillidae?: <ref #{swainson.id}>: 173. </p><p>Genus references</p><p><ref #{baroni.id}>: 482 (review of genus).</p>}
   end
 
 end

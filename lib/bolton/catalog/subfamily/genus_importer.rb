@@ -20,10 +20,10 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     genus = ::Genus.create!({:name => name, :fossil => fossil, :status => status, :taxonomic_history => clean_taxonomic_history(taxonomic_history)}.merge(attributes))
     Progress.info "Created #{genus.name}"
 
-    #parse_homonym_replaced_by_genus(genus)
+    parse_homonym_replaced_by_genus(genus)
     #taxonomic_history << parse_junior_synonyms_of_genus(genus)
     #taxonomic_history << parse_subgenera(genus)
-    #taxonomic_history << parse_genus_references
+    taxonomic_history << parse_genus_references
 
     genus.reload.update_attributes :taxonomic_history => clean_taxonomic_history(taxonomic_history)
   end
@@ -68,25 +68,25 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     parsed_text
   end
 
-  #def parse_homonym_replaced_by_genus genus
-    #return '' unless @type == :homonym_replaced_by_genus_header
-    #Progress.method
+  def parse_homonym_replaced_by_genus genus
+    return '' unless @type == :homonym_replaced_by_genus_header
+    Progress.method
 
-    #taxonomic_history = @paragraph
-    #parse_next_line
-    #expect :genus_headline
+    taxonomic_history = @paragraph
+    parse_next_line
+    expect :genus_headline
 
-    #name = @parse_result[:genus_name]
-    #fossil = @parse_result[:fossil]
-    #local_taxonomic_history = @paragraph
-    #taxonomic_history << local_taxonomic_history
-    #parse_next_line
-    #taxonomic_history << parse_genus_taxonomic_history
-    #local_taxonomic_history << local_taxonomic_history
-    #genus = ::Genus.create! :name => name, :fossil => fossil, :status => 'homonym', :homonym_replaced_by => genus,
-                          #:subfamily => genus.subfamily, :tribe => genus.tribe, :taxonomic_history => clean_taxonomic_history(local_taxonomic_history)
-    #taxonomic_history
-  #end
+    name = @parse_result[:genus_name]
+    fossil = @parse_result[:fossil]
+    local_taxonomic_history = @paragraph
+    taxonomic_history << local_taxonomic_history
+    parse_next_line
+    taxonomic_history << parse_genus_taxonomic_history
+    local_taxonomic_history << local_taxonomic_history
+    genus = ::Genus.create! :name => name, :fossil => fossil, :status => 'homonym', :homonym_replaced_by => genus,
+                          :subfamily => genus.subfamily, :tribe => genus.tribe, :taxonomic_history => clean_taxonomic_history(local_taxonomic_history)
+    taxonomic_history
+  end
 
   #def parse_junior_synonyms_of_genus genus
     #return '' unless @type == :junior_synonyms_of_genus_header
