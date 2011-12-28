@@ -30,6 +30,7 @@ class CatalogFormatter
   ########################################################################
 
   def self.format_taxon_statistics taxon, options = {}
+    return '' unless taxon
     statistics = taxon.statistics
     return '' unless statistics
     format_statistics statistics, options
@@ -63,7 +64,7 @@ class CatalogFormatter
     end
     strings.map do |string|
       content_tag('p', string, :class => 'taxon_statistics')
-    end.join
+    end.join.html_safe
   end
 
   def self.format_rank_statistics statistics, rank, include_invalid
@@ -188,12 +189,13 @@ class CatalogFormatter
   end
 
   def self.format_taxonomic_history taxon, user
-    return '' unless taxon.taxonomic_history
+    return '' unless taxon && taxon.taxonomic_history
     string = taxon.taxonomic_history
     string.gsub! /<ref (\d+)>/ do |ref|
       Reference.find($1).key.to_link(user) rescue ref
     end
     string << '.'
+    string.html_safe
   end
 
   def self.format_reference_document_link reference, user
@@ -202,14 +204,25 @@ class CatalogFormatter
 
   ###################################################
 
-  def self.format_taxon taxon_header_name, taxon_status, taxon_statistics, taxon_headline, taxonomic_history
-    content_tag :div, :id => :taxon_header do
-      (content_tag :span, taxon_header_name, :class => :taxon_header) +
-      (content_tag :span, taxon_status, :class => :taxon_status if taxon_status) +
-      (content_tag :div, CatalogFormatter.format_statistics(taxon_statistics).html_safe, :class => :statistics) +
-      (content_tag :div, taxon_headline, :class => :taxon_headline) +
-      (content_tag :h4, 'Taxonomic history') +
-      (content_tag :div, taxonomic_history, :class => :taxonomic_history)
+  def self.format_status taxon
+    taxon && taxon.invalid? ? status_labels[taxon.status][:singular] : ''
+  end
+
+  def self.format_taxon taxon, current_user
+    full_label        = taxon ? taxon.full_label : ''
+    headline          = format_headline taxon, current_user
+    taxonomic_history = format_taxonomic_history taxon, current_user
+    taxon_status      = format_status taxon
+    statistics        = format_taxon_statistics taxon
+    content_tag :div, :class => :antcat_taxon do
+      contents = ''
+      contents << content_tag(:span, full_label,        :class => :taxon_header)
+      contents << content_tag(:span, taxon_status,      :class => :taxon_status)
+      contents << content_tag(:div,  statistics,        :class => :statistics)
+      contents << content_tag(:div,  headline,          :class => :taxon_headline)
+      contents << content_tag(:h4,  'Taxonomic history')
+      contents << content_tag(:div,  taxonomic_history, :class => :taxonomic_history)
+      contents.html_safe
     end
   end
 
