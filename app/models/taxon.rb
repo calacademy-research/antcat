@@ -95,4 +95,8 @@ class Taxon < ActiveRecord::Base
     update_attribute :taxonomic_history, taxonomic_history.convert_asterisks_to_daggers if taxonomic_history?
   end
 
+  def incertae_sedis_in? rank
+    incertae_sedis_in == rank
+  end
+
 end
