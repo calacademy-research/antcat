@@ -372,6 +372,8 @@ class Bolton::Catalog::Importer
     string
   end
 
+  #################################################################################
+
   def convert_parser_output_to_text parser_output
     parser_output.inject('') do |text, text_item|
       text << convert_to_text(text_item)
