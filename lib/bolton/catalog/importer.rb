@@ -374,6 +374,12 @@ class Bolton::Catalog::Importer
 
   #################################################################################
 
+  def convert_parser_output_to_text parser_output
+    parser_output.inject('') do |text, text_item|
+      text << convert_to_text(text_item)
+    end
+  end
+
   def convert_parser_output_to_text text_item
     convert_nested_text_to_text(text_item) ||
     convert_phrase_to_text(text_item) ||
@@ -420,9 +426,7 @@ class Bolton::Catalog::Importer
   def convert_nested_text_to_text text_item
     return unless text_item.key? :text
     delimiter = text_item[:text].delete :delimiter
-    text = text_item[:text].inject('') do |text, item|
-      text << convert_parser_output_to_text(item)
-    end
+    text = convert_parser_output_to_text text_item[:text]
     text << text_item[:delimiter] if text_item[:delimiter]
     text
   end
