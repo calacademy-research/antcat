@@ -202,6 +202,19 @@ class CatalogFormatter
 
   ###################################################
 
+  def self.format_taxon taxon_header_name, taxon_status, taxon_statistics, taxon_headline, taxonomic_history
+    content_tag :div, :id => :taxon_header do
+      (content_tag :span, taxon_header_name, :class => :taxon_header) +
+      (content_tag :span, taxon_status, :class => :taxon_status if taxon_status) +
+      (content_tag :div, CatalogFormatter.format_statistics(taxon_statistics).html_safe, :class => :statistics) +
+      (content_tag :div, taxon_headline, :class => :taxon_headline) +
+      (content_tag :h4, 'Taxonomic history') +
+      (content_tag :div, taxonomic_history, :class => :taxonomic_history)
+    end
+  end
+
+  ###################################################
+
   private
   def self.css_classes_for_taxon taxon, selected = false
     css_classes = css_classes_for_rank taxon

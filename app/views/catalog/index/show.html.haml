@@ -7,18 +7,7 @@
 
 #catalog
   .content
-    #taxon_header
-      %span.taxon_header
-        = raw @taxon_header_name
-      %span.taxon_status
-        = raw @taxon_status
-      .statistics
-        = raw CatalogFormatter.format_statistics @taxon_statistics
-      .taxon_headline
-        = raw @taxon_headline
-      %h4 Taxonomic history
-      .taxonomic_history
-        = raw @taxonomic_history
+    = raw CatalogFormatter.format_taxon @taxon_header_name, @taxon_status, @taxon_statistics, @taxon_headline, @taxonomic_history
     %hr
 
   .index
