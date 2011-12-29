@@ -218,8 +218,8 @@ class CatalogFormatter
     end
   end
 
-  def self.format_taxonomic_history_item text, user
-    string = text.gsub /{ref (\d+)}/ do |ref|
+  def self.format_taxonomic_history_item taxt, user
+    string = taxt.gsub /{ref (\d+)}/ do |ref|
       Reference.find($1).key.to_link(user) rescue ref
     end
     string << '.'
@@ -229,7 +229,7 @@ class CatalogFormatter
   def self.format_taxonomic_history taxon, user
     return '' unless taxon
     taxon.taxonomic_history_items.inject('') do |string, taxonomic_history_item|
-      string << format_taxonomic_history_item(taxonomic_history_item.text, user)
+      string << format_taxonomic_history_item(taxonomic_history_item.taxt, user)
     end.html_safe
   end
 

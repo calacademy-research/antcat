@@ -34,7 +34,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     if @type == :taxonomic_history_header
       parse_next_line
       while @type == :anything
-        parsed_taxonomic_history << convert_parser_output_to_text(@parse_result[:texts].first[:text])
+        parsed_taxonomic_history << convert_parser_output_to_taxt(@parse_result[:texts].first[:text])
         parse_next_line
       end
     end

@@ -19,7 +19,7 @@ describe Family do
       family.name.should == 'Formicidae'
       family.should_not be_invalid
       family.should_not be_fossil
-      family.taxonomic_history_items.map(&:text).should == ['Formicidae as family']
+      family.taxonomic_history_items.map(&:taxt).should == ['Formicidae as family']
 
       protonym = family.protonym
       protonym.name.should == 'Formicariae'

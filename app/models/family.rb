@@ -6,7 +6,7 @@ class Family < Taxon
       protonym = Protonym.import data[:protonym]
       family = create! :name => 'Formicidae', :status => 'valid', :protonym => protonym
       data[:taxonomic_history].each do |item|
-        family.taxonomic_history_items.create! :text => item
+        family.taxonomic_history_items.create! :taxt => item
       end
       ForwardReference.create! :source_id => family.id, :source_attribute => :type_taxon, :target_name => data[:type_genus]
       family
