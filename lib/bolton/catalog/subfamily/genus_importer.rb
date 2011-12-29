@@ -2,40 +2,43 @@
 class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
 
   def parse_genus attributes = {}, options = {}
-    options = options.reverse_merge :expect_genus_headline => true, :header => :genus_header
+    options = options.reverse_merge :header => :genus_header
     return unless @type == options[:header]
     Progress.method
 
     name = @parse_result[:name]
-    status = 'valid'
-    fossil = @parse_result[:fossil]
-
     parse_next_line
-    expect :genus_headline if options[:expect_genus_headline]
 
-    taxonomic_history = @paragraph
-    parse_next_line
-    taxonomic_history << parse_genus_taxonomic_history if @line
+    headline = consume :genus_headline
+    taxonomic_history = parse_genus_taxonomic_history
 
-    genus = ::Genus.create!({:name => name, :fossil => fossil, :status => status, :taxonomic_history => clean_taxonomic_history(taxonomic_history)}.merge(attributes))
+    genus = Genus.import({
+      :name => name,
+      :protonym => {
+        :name => headline[:name],
+        :authorship => headline[:authorship],
+      },
+      :type_species => headline[:type_species],
+      :taxonomic_history => taxonomic_history,
+      :attributes => attributes
+    })
     Progress.info "Created #{genus.name}"
 
     parse_homonym_replaced_by_genus(genus)
-    #taxonomic_history << parse_junior_synonyms_of_genus(genus)
-    #taxonomic_history << parse_subgenera(genus)
-    taxonomic_history << parse_genus_references
-
-    genus.reload.update_attributes :taxonomic_history => clean_taxonomic_history(taxonomic_history)
+    parse_genus_references
   end
 
   def parse_genus_taxonomic_history
     Progress.method
-    taxonomic_history, @parsed_taxonomic_history = parse_taxonomic_history :genus_taxonomic_history_item
-    taxonomic_history
-  end
-
-  def parsed_taxonomic_history
-    @parsed_taxonomic_history
+    parsed_taxonomic_history = []
+    if @type == :taxonomic_history_header
+      parse_next_line
+      while @type == :anything
+        parsed_taxonomic_history << convert_parser_output_to_text(@parse_result[:texts].first[:text])
+        parse_next_line
+      end
+    end
+    parsed_taxonomic_history
   end
 
   def parse_genus_references

@@ -7,42 +7,17 @@ describe Bolton::Catalog::Subfamily::Importer do
   end
 
   describe "Parsing taxonomic history" do
-    it "should return an array of a single :text taxonomic history item" do
+    it "should return an array of text items converted to Taxt" do
+      dalla_torre = Factory :article_reference, :bolton_key_cache => 'Dalla Torre 1893'
+      swainson = Factory :article_reference, :bolton_key_cache => 'Swainson Shuckard 1840'
       @importer.initialize_parse_html %{<div>
         <p>Taxonomic history</p>
-        <p><i>Condylodon</i> forgotten all about.</p>
-      </div>}
-      @importer.parse_genus_taxonomic_history.should ==
-%{<p>Taxonomic history</p><p><i>Condylodon</i> forgotten all about.</p>}
-      @importer.parsed_taxonomic_history.should == [
-        {:type => :genus_taxonomic_history_item,
-         :texts => [{
-          :text=> [
-            {:genus_name => "Condylodon", :delimiter => " "},
-            {:phrase => "forgotten all about"}
-          ]}]
-        },
-      ]
-    end
-    it "should return an array of taxonomic history items" do
-      @importer.initialize_parse_html %{<div>
-        <p>Taxonomic history</p>
-        <p><i>Condylodon</i> in family Mutillidae?: Swainson &amp; Shuckard, 1840: 173.</p>
+        <p><i>Condylodon</i> in family Mutillidae: Swainson &amp; Shuckard, 1840: 173.</p>
         <p><i>Condylodon</i> as junior synonym of <i>Pseudomyrma</i>: Dalla Torre, 1893: 55.</p>
       </div>}
-      @importer.parse_genus_taxonomic_history.should ==
-%{<p>Taxonomic history</p><p><i>Condylodon</i> in family Mutillidae?: Swainson & Shuckard, 1840: 173.</p><p><i>Condylodon</i> as junior synonym of <i>Pseudomyrma</i>: Dalla Torre, 1893: 55.</p>}
-      @importer.parsed_taxonomic_history.should == [
-        {:type => :genus_taxonomic_history_item,
-         :genus => {:genus_name => 'Condylodon'},
-         :in => [{:taxon => [{:family_or_subfamily_name => 'Mutillidae'}], :questionable => true}],
-         :references => [{:author_names => ['Swainson', 'Shuckard'], :year => '1840', :pages => '173'}],
-        },
-        {:type => :genus_taxonomic_history_item,
-         :genus => {:genus_name => 'Condylodon'},
-         :as_junior_synonym_of => {:genus => {:genus_name => 'Pseudomyrma'}},
-         :references => [{:author_names => ['Dalla Torre'], :year => '1893', :pages => '55'}],
-        }
+      @importer.parse_genus_taxonomic_history.should == [
+        "Condylodon in family Mutillidae: {ref #{swainson.id}}: 173",
+        "Condylodon as junior synonym of Pseudomyrma: {ref #{dalla_torre.id}}: 55"
       ]
     end
   end
@@ -66,7 +41,7 @@ describe Bolton::Catalog::Subfamily::Importer do
 <p>Genus <i>CONDYLODON</i></p>
 <p><i>Condylodon</i> Lund, 1831a: 131. Type-species: <i>Condylodon audouini</i>, by monotypy. </p>
 <p>Taxonomic history</p>
-<p><i>Condylodon</i> in family Mutillidae?: Swainson &amp; Shuckard, 1840: 173. </p>
+<p><i>Condylodon</i> in family Mutillidae: Swainson &amp; Shuckard, 1840: 173. </p>
       }
 
       #genus = Genus.find_by_name 'Condylodon'

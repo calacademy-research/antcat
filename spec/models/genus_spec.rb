@@ -166,4 +166,31 @@ describe Genus do
     end
 
   end
+
+  describe "Importing" do
+    it "should work" do
+      reference = Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
+      genus = Genus.import({
+        :name => 'Atta',
+        :protonym => {
+          :name => "Atta",
+          :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
+        },
+        :type_species => {:genus_name => 'Atta', :species_epithet => 'major'},
+        :taxonomic_history => ["Atta as genus", "Atta as species"]
+      }).reload
+      genus.name.should == 'Atta'
+      genus.should_not be_invalid
+      genus.should_not be_fossil
+      genus.taxonomic_history_items.map(&:text).should == ['Atta as genus', 'Atta as species']
+
+      protonym = genus.protonym
+      protonym.name.should == 'Atta'
+
+      authorship = protonym.authorship
+      authorship.pages.should == '124'
+
+      authorship.reference.should == reference
+    end
+  end
 end

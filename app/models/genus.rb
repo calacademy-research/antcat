@@ -31,4 +31,19 @@ class Genus < Taxon
     Genus.without_subfamily.all
   end
 
+  def self.import data
+    transaction do
+      protonym = Protonym.import data[:protonym]
+      attributes = {:name => data[:name], :status => 'valid', :protonym => protonym}
+      attributes.reverse_merge! data[:attributes] if data[:attributes]
+      genus = create! attributes
+      data[:taxonomic_history].each do |item|
+        genus.taxonomic_history_items.create! :text => item
+      end
+      target_name = data[:type_species][:genus_name] + ' ' + data[:type_species][:species_epithet]
+      ForwardReference.create! :source_id => genus.id, :source_attribute => :type_taxon, :target_name => target_name
+      genus
+    end
+  end
+
 end
