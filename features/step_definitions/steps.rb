@@ -5,6 +5,7 @@ Given /^the Formicidae family exists$/ do
   Citation.delete_all
   ForwardReference.delete_all
   Reference.delete_all
+  TaxonomicHistoryItem.delete_all
 
   Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
   Family.import( 
@@ -12,7 +13,8 @@ Given /^the Formicidae family exists$/ do
       :name => "Formicariae",
       :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
     },
-    :type_genus => 'Formica'
+    :type_genus => 'Formica',
+    :taxonomic_history => 'Taxonomic history'
   )
   ForwardReference.fixup
 end
