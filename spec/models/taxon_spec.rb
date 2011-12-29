@@ -285,6 +285,15 @@ describe Taxon do
       taxon.taxonomic_history_items.create! :text => 'foo'
       taxon.reload.taxonomic_history_items.map(&:text).should == ['foo']
     end
+    it "should show the items in the order in which they were added to the taxon" do
+      taxon = Factory :family
+      taxon.taxonomic_history_items.create! :text => '1'
+      taxon.taxonomic_history_items.create! :text => '2'
+      taxon.taxonomic_history_items.create! :text => '3'
+      taxon.taxonomic_history_items.map(&:text).should == ['1','2','3']
+      taxon.taxonomic_history_items.first.move_to_bottom
+      taxon.taxonomic_history_items(true).map(&:text).should == ['2','3','1']
+    end
   end
 
 end
