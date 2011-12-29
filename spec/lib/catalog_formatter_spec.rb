@@ -273,30 +273,40 @@ describe CatalogFormatter do
     end
   end
 
-  describe "Taxonomic history formatting" do
+  describe "Taxonomic history" do
     before do
       @taxon = Factory :family
     end
-    it "should format a phrase" do
-      @taxon.update_attribute :taxonomic_history, 'phrase'
-      @formatter.format_taxonomic_history(@taxon, nil).should == 'phrase.'
+
+    describe "Taxonomic history formatting" do
+      it "should format a number of items together in order" do
+        @taxon.taxonomic_history_items.create! :text => 'Ant'
+        @taxon.taxonomic_history_items.create! :text => 'Taxonomy'
+        @formatter.format_taxonomic_history(@taxon, nil).should ==
+          '<div class="taxonomic_history_item">Ant.</div>' +
+          '<div class="taxonomic_history_item">Taxonomy.</div>'
+      end
     end
-    it "should format a ref" do
-      reference = Factory :article_reference
-      @taxon.update_attribute :taxonomic_history, "<ref #{reference.id}>"
-      key_stub = stub
-      key_stub.should_receive(:to_link).and_return('foo')
-      Reference.should_receive(:find).with(reference.id.to_s).and_return reference
-      reference.should_receive(:key).and_return key_stub
-      @formatter.format_taxonomic_history(@taxon, nil).should == 'foo.'
-    end
-    it "should not freak if the ref is malformed" do
-      @taxon.update_attribute :taxonomic_history, "<ref sdf>"
-      @formatter.format_taxonomic_history(@taxon, nil).should == '<ref sdf>.'
-    end
-    it "should not freak if the ref points to a reference that doesn't exist" do
-      @taxon.update_attribute :taxonomic_history, "<ref 12345>"
-      @formatter.format_taxonomic_history(@taxon, nil).should == '<ref 12345>.'
+
+    describe "Taxonomic history item formatting" do
+      it "should format a phrase" do
+        @formatter.format_taxonomic_history_item('phrase', nil).should == '<div class="taxonomic_history_item">phrase.</div>'
+      end
+      it "should format a ref" do
+        reference = Factory :article_reference
+        key_stub = stub
+        key_stub.should_receive(:to_link).and_return('foo')
+        Reference.should_receive(:find).with(reference.id.to_s).and_return reference
+        reference.should_receive(:key).and_return key_stub
+        @formatter.format_taxonomic_history_item("<ref #{reference.id}>", nil).should == '<div class="taxonomic_history_item">foo.</div>'
+      end
+      it "should not freak if the ref is malformed" do
+        @formatter.format_taxonomic_history_item("<ref sdf>", nil).should == '<div class="taxonomic_history_item"><ref sdf>.</div>'
+      end
+      it "should not freak if the ref points to a reference that doesn't exist" do
+        @formatter.format_taxonomic_history_item("<ref 12345>", nil).should == '<div class="taxonomic_history_item"><ref 12345>.</div>'
+      end
+
     end
   end
 

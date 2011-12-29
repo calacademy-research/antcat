@@ -188,16 +188,6 @@ class CatalogFormatter
     content_tag(:span, genus.name, :class => :genus_name).html_safe
   end
 
-  def self.format_taxonomic_history taxon, user
-    return '' unless taxon && taxon.taxonomic_history
-    string = taxon.taxonomic_history
-    string.gsub! /<ref (\d+)>/ do |ref|
-      Reference.find($1).key.to_link(user) rescue ref
-    end
-    string << '.'
-    string.html_safe
-  end
-
   def self.format_reference_document_link reference, user
     "<a class=\"document_link\" target=\"_blank\" href=\"#{reference.url}\">PDF</a>" if reference.downloadable_by? user
   end
@@ -210,20 +200,37 @@ class CatalogFormatter
 
   def self.format_taxon taxon, current_user
     full_label        = taxon ? taxon.full_label : ''
+    taxon_status      = format_status taxon
     headline          = format_headline taxon, current_user
     taxonomic_history = format_taxonomic_history taxon, current_user
-    taxon_status      = format_status taxon
     statistics        = format_taxon_statistics taxon
     content_tag :div, :class => :antcat_taxon do
       contents = ''
-      contents << content_tag(:span, full_label,        :class => :taxon_header)
-      contents << content_tag(:span, taxon_status,      :class => :taxon_status)
+      contents << content_tag(:div, :class => :header) do
+        content_tag(:span, full_label,        :class => :name) +
+        content_tag(:span, taxon_status,      :class => :status)
+      end
       contents << content_tag(:div,  statistics,        :class => :statistics)
-      contents << content_tag(:div,  headline,          :class => :taxon_headline)
+      contents << content_tag(:div,  headline,          :class => :headline)
       contents << content_tag(:h4,  'Taxonomic history')
       contents << content_tag(:div,  taxonomic_history, :class => :taxonomic_history)
       contents.html_safe
     end
+  end
+
+  def self.format_taxonomic_history_item text, user
+    string = text.gsub /<ref (\d+)>/ do |ref|
+      Reference.find($1).key.to_link(user) rescue ref
+    end
+    string << '.'
+    content_tag :div, string.html_safe, :class => :taxonomic_history_item
+  end
+
+  def self.format_taxonomic_history taxon, user
+    return '' unless taxon
+    taxon.taxonomic_history_items.inject('') do |string, taxonomic_history_item|
+      string << format_taxonomic_history_item(taxonomic_history_item.text, user)
+    end.html_safe
   end
 
   ###################################################
