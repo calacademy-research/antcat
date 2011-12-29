@@ -4,7 +4,6 @@ require 'spec_helper'
 describe Bolton::Catalog::Subfamily::Importer do
 
   it "should convert the HTML to an intermediate form and send it to Family.import" do
-    Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
     html = %{
 <html><body><div class=Section1>
 <p><b>FAMILY FORMICIDAE</b></p>
@@ -46,6 +45,7 @@ describe Bolton::Catalog::Subfamily::Importer do
 </div></body></html>
     }
 
+    latreille = Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
     lund = Factory :unknown_reference, :author_names => [Factory(:author_name, :name => 'Lund, A.')], :citation_year => '1831a', :title => "Ants"
     swainson = Factory :unknown_reference, :author_names => [Factory(:author_name, :name => 'Swainson, B.'), Factory(:author_name, :name => 'Shuckard, C.')], :citation_year => '1840', :title => "More ants"
     baroni = Factory :unknown_reference, :author_names => [Factory(:author_name, :name => 'Baroni Urbani, L.')], :citation_year => '1977c', :title => "Yet more ants"
@@ -58,6 +58,9 @@ describe Bolton::Catalog::Subfamily::Importer do
     family.should_not be_invalid
     family.should_not be_fossil
     family.type_taxon.name.should == 'Formica'
+    family.taxonomic_history_items.map(&:text).should =~ [
+      %{Formicidae as family: <ref #{latreille.id}>: 124 [Formicariae]; all subsequent authors}
+    ]
 
     genus = Genus.find_by_name 'Condylodon'
     genus.should_not be_nil
@@ -65,11 +68,9 @@ describe Bolton::Catalog::Subfamily::Importer do
     genus.should_not be_fossil
     genus.should be_incertae_sedis_in 'family'
     genus.subfamily.should be_nil
-    #genus.taxonomic_history.should == 
-
-#%{<p><i>Condylodon</i></p>}
-
-#%{<p><i>Condylodon</i> <ref #{lund.id}>: 131. Type-species: <i>Condylodon audouini</i>, by monotypy. </p><p>Taxonomic history</p><p><i>Condylodon</i> in family Mutillidae?: <ref #{swainson.id}>: 173. </p><p>Genus references</p><p><ref #{baroni.id}>: 482 (review of genus).</p>}
+    #genus.taxonomic_history_items.map(&:text).should =~ [
+      #"Condylodon in family Mutillidae?: <ref #{swainson.id}>: 173"
+    #]
   end
 
 end
