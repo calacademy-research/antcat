@@ -9,4 +9,9 @@ describe TaxonomicHistoryItem do
     item.reload
     item.text.should == 'text'
   end
+  it "can belong to a taxon" do
+    taxon = Factory :family
+    item = taxon.taxonomic_history_items.create! :text => 'foo'
+    item.reload.taxon.should == taxon 
+  end
 end
