@@ -7,6 +7,19 @@ describe Bolton::Catalog::Subfamily::Grammar do
     @grammar = Bolton::Catalog::Subfamily::Grammar
   end
 
+  it "should parse a family_group_name followed by a question mark" do
+    @grammar.parse("<i>Condylodon</i> in Ponerinae?: Emery, 1921f: 28 (footnote).", :root => :texts).value.should == {
+      :type => :texts,
+      :texts => [{
+          :text => [
+            {:genus_name => "Condylodon", :delimiter => " "},
+            {:phrase => "in", :delimiter => " "},
+            {:family_or_subfamily_name => "Ponerinae", :questionable => true, :delimiter => ": "},
+            {:author_names => ["Emery"], :year => "1921f", :pages => "28 (footnote)"},
+      ]}]
+    }
+ end
+
   it "should recognize the usual supersubfamily header" do
     @grammar.parse(%{THE DOLICHODEROMORPHS: SUBFAMILIES ANEURETINAE AND DOLICHODERINAE}).value.should == {:type => :supersubfamily_header}
   end

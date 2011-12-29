@@ -10,6 +10,10 @@ describe Bolton::Catalog::Grammar do
     @grammar.parse("Formicinae", :root => :text).value.should == {:text => [:family_or_subfamily_name => 'Formicinae']}
   end
 
+  it "should parse a family/subfamily name followed by a ?" do
+    @grammar.parse("Formicinae?", :root => :text).value.should == {:text => [:family_or_subfamily_name => 'Formicinae', :questionable => true]}
+  end
+
   it "should parse words followed by family/subfamily name" do
       @grammar.parse(%{not in Pseudomyrmecinae}, :root => :text).value.should == {
         :text => [

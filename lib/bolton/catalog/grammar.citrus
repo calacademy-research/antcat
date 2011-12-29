@@ -109,7 +109,7 @@ grammar Bolton::Catalog::Grammar
 
   rule text_element
        reference
-     | taxon_label
+     | taxon_text_element
      | text_phrase
      | bracketed_text_element
      | unparseable_text_element
@@ -118,6 +118,14 @@ grammar Bolton::Catalog::Grammar
   rule unparseable_text_element
     /[^.\)\]]+/ {
       {:unparseable => to_s}
+    }
+  end
+
+  rule taxon_text_element
+    (taxon_label questionable:'?'?) {
+       value = taxon_label.value
+       value[:questionable] = true if questionable && questionable != ''
+       value
     }
   end
 
