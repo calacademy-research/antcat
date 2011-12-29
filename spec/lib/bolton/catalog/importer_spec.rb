@@ -324,7 +324,7 @@ describe Bolton::Catalog::Importer do
       it "should handle a citation" do
         reference = Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
         data = [{:author_names => ['Latreille'], :year => '1809', :pages => '244'}]
-        @importer.convert_parser_output_to_text(data).should == "<ref #{reference.id}>: 244"
+        @importer.convert_parser_output_to_text(data).should == "{ref #{reference.id}}: 244"
       end
       it "should handle a citation whose reference wasn't matched" do
         bolton_reference = Factory :bolton_reference, :authors => 'Latreille', :citation_year => '1809'
@@ -349,7 +349,7 @@ describe Bolton::Catalog::Importer do
         ], :delimiter => '; '},
         {:phrase => 'all subsequent authors'},
       ]
-      @importer.convert_parser_output_to_text(data).should == "Formicidae as family: <ref #{reference.id}>: 124 [Formicariae]; all subsequent authors"
+      @importer.convert_parser_output_to_text(data).should == "Formicidae as family: {ref #{reference.id}}: 124 [Formicariae]; all subsequent authors"
     end
 
     it "should handle a bracketed text item" do
