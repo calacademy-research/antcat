@@ -386,6 +386,7 @@ class Bolton::Catalog::Importer
     convert_citation_to_taxt(text_item) ||
     convert_taxon_name_to_taxt(text_item) ||
     convert_bracket_to_taxt(text_item) ||
+    convert_unparseable_to_taxt(text_item) ||
     raise("Couldn't convert #{text_item} to taxt")
   end
 
@@ -407,6 +408,11 @@ class Bolton::Catalog::Importer
     taxt = text_item[:phrase]
     taxt << text_item[:delimiter] if text_item[:delimiter]
     taxt
+  end
+
+  def convert_unparseable_to_taxt text_item
+    return unless text_item.key? :unparseable
+    "{? #{text_item[:unparseable]}}"
   end
 
   def convert_citation_to_taxt text_item

@@ -352,13 +352,22 @@ describe Bolton::Catalog::Importer do
       @importer.convert_parser_output_to_taxt(data).should == "Formicidae as family: {ref #{reference.id}}: 124 [Formicariae]; all subsequent authors"
     end
 
-    it "should handle a bracketed text item" do
-      data = [{:opening_bracket => '['}, {:phrase => 'all rights reserved'}, {:closing_bracket => ']'}]
-      @importer.convert_parser_output_to_taxt(data).should == "[all rights reserved]"
+    describe "Bracketed items" do
+      it "should handle a bracketed text item" do
+        data = [{:opening_bracket => '['}, {:phrase => 'all rights reserved'}, {:closing_bracket => ']'}]
+        @importer.convert_parser_output_to_taxt(data).should == "[all rights reserved]"
+      end
+      it "should handle a bracketed text item nested in a text" do
+        data = [:text => [{:opening_bracket => '['}, {:phrase => 'all rights reserved'}, {:closing_bracket => ']'}], :delimiter => ': ']
+        @importer.convert_parser_output_to_taxt(data).should == "[all rights reserved]: "
+      end
     end
-    it "should handle a bracketed text item" do
-      data = [:text => [{:opening_bracket => '['}, {:phrase => 'all rights reserved'}, {:closing_bracket => ']'}], :delimiter => ': ']
-      @importer.convert_parser_output_to_taxt(data).should == "[all rights reserved]: "
+
+    describe "Unparseable items" do
+      it "should handle it" do
+        data = [{:unparseable=>"?: Swainson & Shuckard, 1840: 173"}]
+        @importer.convert_parser_output_to_taxt(data).should == "{? ?: Swainson & Shuckard, 1840: 173}"
+      end
     end
 
     describe "Taxon names" do
