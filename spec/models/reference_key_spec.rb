@@ -2,9 +2,9 @@
 require 'spec_helper'
 
 describe ReferenceKey do
-  it "should output a <ref xxx> for Text" do
+  it "should output a {ref xxx} for Text" do
     reference = Factory :article_reference, :author_names => [Factory(:author_name, :name => 'Bolton, B.')], :citation_year => '1970a'
-    ReferenceKey.new(reference).to_text.should == "<ref #{reference.id}>"
+    ReferenceKey.new(reference).to_text.should == "{ref #{reference.id}}"
   end
 
   describe "Link" do

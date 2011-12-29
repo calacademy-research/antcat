@@ -413,7 +413,7 @@ class Bolton::Catalog::Importer
     return unless text_item.key? :author_names
     begin
       reference = ::Reference.find_by_bolton_key text_item[:author_names], text_item[:year]
-      text = "<ref #{reference.id}>"
+      text = "{ref #{reference.id}}"
     rescue ::Reference::BoltonReferenceNotMatched, ::Reference::BoltonReferenceNotFound
       text = text_item[:author_names].join(', ') + ', ' + text_item[:year]
     end
