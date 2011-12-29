@@ -59,7 +59,7 @@ describe Bolton::Catalog::Subfamily::Importer do
     family.should_not be_fossil
     family.type_taxon.name.should == 'Formica'
     family.taxonomic_history_items.map(&:text).should =~ [
-      %{Formicidae as family: <ref #{latreille.id}>: 124 [Formicariae]; all subsequent authors}
+      %{Formicidae as family: {ref #{latreille.id}}: 124 [Formicariae]; all subsequent authors}
     ]
 
     genus = Genus.find_by_name 'Condylodon'
@@ -69,7 +69,7 @@ describe Bolton::Catalog::Subfamily::Importer do
     genus.should be_incertae_sedis_in 'family'
     genus.subfamily.should be_nil
     #genus.taxonomic_history_items.map(&:text).should =~ [
-      #"Condylodon in family Mutillidae?: <ref #{swainson.id}>: 173"
+      #"Condylodon in family Mutillidae?: {ref #{swainson.id}}: 173"
     #]
   end
 

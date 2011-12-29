@@ -298,13 +298,13 @@ describe CatalogFormatter do
         key_stub.should_receive(:to_link).and_return('foo')
         Reference.should_receive(:find).with(reference.id.to_s).and_return reference
         reference.should_receive(:key).and_return key_stub
-        @formatter.format_taxonomic_history_item("<ref #{reference.id}>", nil).should == '<div class="taxonomic_history_item">foo.</div>'
+        @formatter.format_taxonomic_history_item("{ref #{reference.id}}", nil).should == '<div class="taxonomic_history_item">foo.</div>'
       end
       it "should not freak if the ref is malformed" do
-        @formatter.format_taxonomic_history_item("<ref sdf>", nil).should == '<div class="taxonomic_history_item"><ref sdf>.</div>'
+        @formatter.format_taxonomic_history_item("{ref sdf}", nil).should == '<div class="taxonomic_history_item">{ref sdf}.</div>'
       end
       it "should not freak if the ref points to a reference that doesn't exist" do
-        @formatter.format_taxonomic_history_item("<ref 12345>", nil).should == '<div class="taxonomic_history_item"><ref 12345>.</div>'
+        @formatter.format_taxonomic_history_item("{ref 12345}", nil).should == '<div class="taxonomic_history_item">{ref 12345}.</div>'
       end
 
     end

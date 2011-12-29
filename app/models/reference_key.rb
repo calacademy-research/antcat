@@ -8,7 +8,7 @@ class ReferenceKey
   end
 
   def to_text
-    "<ref #{@reference.id}>"
+    "{ref #{@reference.id}}"
   end
 
   def to_link user
