@@ -33,7 +33,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     parsed_taxonomic_history = []
     if @type == :taxonomic_history_header
       parse_next_line
-      while @type == :anything
+      while @type == :texts
         parsed_taxonomic_history << convert_parser_output_to_taxt(@parse_result[:texts].first[:text])
         parse_next_line
       end
@@ -50,7 +50,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     parse_next_line
     parsed_text << @paragraph
     texts = []
-    if @type == :anything
+    if @type == :texts
       texts.concat @parse_result[:texts] if @parse_result[:texts]
       @parse_result[:texts] = texts
       @parse_result[:type] = :reference_section
@@ -59,7 +59,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     end
     return parsed_text unless parse_reference_section && @type == :reference_section
     parse_next_line
-    if @type == :anything
+    if @type == :texts
       texts.concat @parse_result[:texts] if @parse_result[:texts]
       @parse_result[:texts] = texts
       @parse_result[:type] = :reference_section

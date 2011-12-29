@@ -96,8 +96,8 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     parsed_taxonomic_history = []
     if @type == :taxonomic_history_header
       parse_next_line item_type
-      while @type == item_type || @type == :anything do
-        if @type == :anything
+      while @type == item_type || @type == :texts do
+        if @type == :texts
           @parse_result = @parse_result.merge :type => item_type
           @type = item_type
           Progress.info "  reparsed as #{item_type}" if @show_parsing

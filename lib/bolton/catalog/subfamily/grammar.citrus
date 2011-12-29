@@ -18,7 +18,7 @@ grammar Bolton::Catalog::Subfamily::Grammar
     | collective_group_name_header
     | references_section_header
     | regional_and_national_faunas_header
-    | anything
+    | texts
   end
 
   rule collective_group_name_header
@@ -167,9 +167,9 @@ grammar Bolton::Catalog::Subfamily::Grammar
 
   ##############################################################
 
-  rule anything
+  rule texts
     (text* '') {
-      {:type => :anything, :texts => captures[:text].map(&:value)}
+      {:type => :texts, :texts => captures[:text].map(&:value)}
     }
   end
 

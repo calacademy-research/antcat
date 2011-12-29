@@ -9,7 +9,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     parsed_text = @paragraph
     parse_next_line
 
-    if @type == :anything
+    if @type == :texts
       parse_next_line
     end
 
