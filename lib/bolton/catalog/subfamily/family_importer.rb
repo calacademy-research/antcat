@@ -26,7 +26,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
         :authorship => headline[:authorship],
       },
       :type_genus => headline[:type_genus][:genus_name],
-      :taxonomic_history => convert_parser_output_to_text(taxonomic_history[:items])
+      :taxonomic_history => [convert_parser_output_to_text(taxonomic_history[:items])]
     })
   end
 
