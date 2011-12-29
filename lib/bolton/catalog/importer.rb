@@ -432,7 +432,7 @@ class Bolton::Catalog::Importer
   end
 
   def convert_taxon_name_to_text text_item
-    [:family_or_subfamily_name, :subtribe_name, :order_name, :tribe_name].each do |key|
+    [:family_or_subfamily_name, :genus_name, :subtribe_name, :order_name, :tribe_name].each do |key|
       next unless text_item.key? key
       text = text_item[key]
       text << text_item[:delimiter] if text_item[:delimiter]
