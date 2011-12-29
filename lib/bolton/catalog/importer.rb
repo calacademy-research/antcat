@@ -381,12 +381,12 @@ class Bolton::Catalog::Importer
   end
 
   def convert_to_taxt text_item
-    convert_nested_text_to_taxt(text_item) ||
-    convert_phrase_to_taxt(text_item) ||
-    convert_citation_to_taxt(text_item) ||
-    convert_taxon_name_to_taxt(text_item) ||
-    convert_bracket_to_taxt(text_item) ||
-    convert_unparseable_to_taxt(text_item) ||
+    convert_nested_text_to_taxt(text_item)  ||
+    convert_phrase_to_taxt(text_item)       ||
+    convert_citation_to_taxt(text_item)     ||
+    convert_taxon_name_to_taxt(text_item)   ||
+    convert_bracket_to_taxt(text_item)      ||
+    convert_unparseable_to_taxt(text_item)  ||
     raise("Couldn't convert #{text_item} to taxt")
   end
 
@@ -412,14 +412,14 @@ class Bolton::Catalog::Importer
 
   def convert_unparseable_to_taxt text_item
     return unless text_item.key? :unparseable
-    "{? #{text_item[:unparseable]}}"
+    Taxt.unparseable text_item[:unparseable]
   end
 
   def convert_citation_to_taxt text_item
     return unless text_item.key? :author_names
     begin
       reference = ::Reference.find_by_bolton_key text_item[:author_names], text_item[:year]
-      taxt = "{ref #{reference.id}}"
+      taxt = Taxt.reference reference
     rescue ::Reference::BoltonReferenceNotMatched, ::Reference::BoltonReferenceNotFound
       taxt = text_item[:author_names].join(', ') + ', ' + text_item[:year]
     end
@@ -440,11 +440,15 @@ class Bolton::Catalog::Importer
   def convert_taxon_name_to_taxt text_item
     [:family_or_subfamily_name, :genus_name, :subtribe_name, :order_name, :tribe_name].each do |key|
       next unless text_item.key? key
-      taxt = text_item[key]
-      taxt << text_item[:delimiter] if text_item[:delimiter]
+      taxt = Taxt.taxon_name text_item[key]
+      add_delimiter taxt, text_item
       return taxt
     end
     nil
   end
 
+  def add_delimiter taxt, text_item
+    taxt << text_item[:delimiter] if text_item[:delimiter]
+    taxt
+  end
 end
