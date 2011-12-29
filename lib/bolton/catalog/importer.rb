@@ -380,7 +380,7 @@ class Bolton::Catalog::Importer
     end
   end
 
-  def convert_parser_output_to_text text_item
+  def convert_to_text text_item
     convert_nested_text_to_text(text_item) ||
     convert_phrase_to_text(text_item) ||
     convert_citation_to_text(text_item) ||

@@ -12,14 +12,14 @@ describe Family do
           :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
         },
         :type_genus => 'Formica',
-        :taxonomic_history => "Formicidae as family"
+        :taxonomic_history => ["Formicidae as family"]
       }
 
       family = Family.import(data).reload
-      family.taxonomic_history.should == "Formicidae as family"
       family.name.should == 'Formicidae'
       family.should_not be_invalid
       family.should_not be_fossil
+      family.taxonomic_history_items.map(&:text).should == ['Formicidae as family']
 
       protonym = family.protonym
       protonym.name.should == 'Formicariae'
