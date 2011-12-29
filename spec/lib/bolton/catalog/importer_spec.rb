@@ -362,7 +362,7 @@ describe Bolton::Catalog::Importer do
     end
 
     describe "Taxon names" do
-      [:family_or_subfamily_name, :subtribe_name, :order_name, :tribe_name].each do |key|
+      [:family_or_subfamily_name, :genus_name, :subtribe_name, :order_name, :tribe_name].each do |key|
         it "should handle #{key}" do
           @importer.convert_parser_output_to_text([key => 'Formicariae']).should == "Formicariae"
         end
