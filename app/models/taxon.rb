@@ -8,7 +8,8 @@ class Taxon < ActiveRecord::Base
   has_one     :homonym_replaced, :class_name => 'Taxon', :foreign_key => :homonym_replaced_by_id
   belongs_to  :protonym
   belongs_to  :type_taxon, :class_name => 'Taxon'
-  belongs_to  :homonym_replaced_by, :class_name => 'Taxon', :foreign_key => :homonym_replaced_by_id
+  belongs_to  :homonym_replaced_by, :class_name => 'Taxon'
+  has_many    :taxonomic_history_items
 
   validates_presence_of :name
 

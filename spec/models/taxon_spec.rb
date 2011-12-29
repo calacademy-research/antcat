@@ -278,4 +278,13 @@ describe Taxon do
     end
   end
 
+  describe "Taxonomic history items" do
+    it "should have some" do
+      taxon = Factory :family
+      taxon.taxonomic_history_items.should be_empty
+      taxon.taxonomic_history_items.create! :text => 'foo'
+      taxon.reload.taxonomic_history_items.map(&:text).should == ['foo']
+    end
+  end
+
 end
