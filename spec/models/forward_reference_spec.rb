@@ -21,6 +21,7 @@ describe ForwardReference do
     end
 
     describe "Fixing up one reference" do
+
       it "should fixup a :type_taxon" do
         family = Factory :family
         forward_reference = ForwardReference.create! :source_id => family.id, :source_attribute => :type_taxon, :target_name => 'Formica'
@@ -29,6 +30,17 @@ describe ForwardReference do
 
         genus = family.reload.type_taxon
         genus.name.should == 'Formica'
+      end
+
+      it "should fixup a :type_taxon for a species" do
+        genus = Factory :genus
+        forward_reference = ForwardReference.create! :source_id => genus.id, :source_attribute => :type_taxon, :target_name => 'Atta major'
+
+        forward_reference.fixup
+
+        species = genus.reload.type_taxon
+        species.name.should == 'Atta major'
+        species.should == Species.find_by_name('Atta major')
       end
 
     end
