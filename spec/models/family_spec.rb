@@ -12,7 +12,7 @@ describe Family do
           :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
         },
         :type_genus => 'Formica',
-        :taxonomic_history => ["Formicidae as family"]
+        :taxonomic_history => "Formicidae as family"
       }
 
       family = Family.import(data).reload
