@@ -280,8 +280,8 @@ describe CatalogFormatter do
 
     describe "Taxonomic history formatting" do
       it "should format a number of items together in order" do
-        @taxon.taxonomic_history_items.create! :text => 'Ant'
-        @taxon.taxonomic_history_items.create! :text => 'Taxonomy'
+        @taxon.taxonomic_history_items.create! :taxt => 'Ant'
+        @taxon.taxonomic_history_items.create! :taxt => 'Taxonomy'
         @formatter.format_taxonomic_history(@taxon, nil).should ==
           '<div class="taxonomic_history_item">Ant.</div>' +
           '<div class="taxonomic_history_item">Taxonomy.</div>'

@@ -374,69 +374,69 @@ class Bolton::Catalog::Importer
 
   #################################################################################
 
-  def convert_parser_output_to_text parser_output
-    parser_output.inject('') do |text, text_item|
-      text << convert_to_text(text_item)
+  def convert_parser_output_to_taxt parser_output
+    parser_output.inject('') do |taxt, text_item|
+      taxt << convert_to_taxt(text_item)
     end
   end
 
-  def convert_to_text text_item
-    convert_nested_text_to_text(text_item) ||
-    convert_phrase_to_text(text_item) ||
-    convert_citation_to_text(text_item) ||
-    convert_taxon_name_to_text(text_item) ||
-    convert_bracket_to_text(text_item) ||
-    raise("Couldn't convert #{text_item} to text")
+  def convert_to_taxt text_item
+    convert_nested_text_to_taxt(text_item) ||
+    convert_phrase_to_taxt(text_item) ||
+    convert_citation_to_taxt(text_item) ||
+    convert_taxon_name_to_taxt(text_item) ||
+    convert_bracket_to_taxt(text_item) ||
+    raise("Couldn't convert #{text_item} to taxt")
   end
 
-  def convert_bracket_to_text text_item
-    text = ''
+  def convert_bracket_to_taxt text_item
+    taxt = ''
     if text_item.key? :opening_bracket
-      text << text_item[:opening_bracket]
+      taxt << text_item[:opening_bracket]
     elsif text_item.key? :closing_bracket
-      text << text_item[:closing_bracket]
+      taxt << text_item[:closing_bracket]
     else
       return
     end
-    text << text_item[:delimiter] if text_item[:delimiter]
-    text
+    taxt << text_item[:delimiter] if text_item[:delimiter]
+    taxt
   end
 
-  def convert_phrase_to_text text_item
+  def convert_phrase_to_taxt text_item
     return unless text_item.key? :phrase
-    text = text_item[:phrase]
-    text << text_item[:delimiter] if text_item[:delimiter]
-    text
+    taxt = text_item[:phrase]
+    taxt << text_item[:delimiter] if text_item[:delimiter]
+    taxt
   end
 
-  def convert_citation_to_text text_item
+  def convert_citation_to_taxt text_item
     return unless text_item.key? :author_names
     begin
       reference = ::Reference.find_by_bolton_key text_item[:author_names], text_item[:year]
-      text = "{ref #{reference.id}}"
+      taxt = "{ref #{reference.id}}"
     rescue ::Reference::BoltonReferenceNotMatched, ::Reference::BoltonReferenceNotFound
-      text = text_item[:author_names].join(', ') + ', ' + text_item[:year]
+      taxt = text_item[:author_names].join(', ') + ', ' + text_item[:year]
     end
 
-    text << ": #{text_item[:pages]}" if text_item[:pages]
-    text << text_item[:delimiter] if text_item[:delimiter]
-    text
+    taxt << ": #{text_item[:pages]}" if text_item[:pages]
+    taxt << text_item[:delimiter] if text_item[:delimiter]
+    taxt
   end
 
-  def convert_nested_text_to_text text_item
+  def convert_nested_text_to_taxt text_item
     return unless text_item.key? :text
     delimiter = text_item[:text].delete :delimiter
-    text = convert_parser_output_to_text text_item[:text]
-    text << text_item[:delimiter] if text_item[:delimiter]
-    text
+    taxt = convert_parser_output_to_taxt text_item[:text]
+    taxt << text_item[:delimiter] if text_item[:delimiter]
+    taxt
   end
 
-  def convert_taxon_name_to_text text_item
+  def convert_taxon_name_to_taxt text_item
     [:family_or_subfamily_name, :genus_name, :subtribe_name, :order_name, :tribe_name].each do |key|
       next unless text_item.key? key
-      text = text_item[key]
-      text << text_item[:delimiter] if text_item[:delimiter]
-      return text
+      taxt = text_item[key]
+      taxt << text_item[:delimiter] if text_item[:delimiter]
+      return taxt
     end
     nil
   end

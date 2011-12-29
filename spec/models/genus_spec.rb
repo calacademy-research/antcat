@@ -182,7 +182,7 @@ describe Genus do
       genus.name.should == 'Atta'
       genus.should_not be_invalid
       genus.should_not be_fossil
-      genus.taxonomic_history_items.map(&:text).should == ['Atta as genus', 'Atta as species']
+      genus.taxonomic_history_items.map(&:taxt).should == ['Atta as genus', 'Atta as species']
 
       protonym = genus.protonym
       protonym.name.should == 'Atta'

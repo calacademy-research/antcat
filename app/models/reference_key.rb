@@ -7,7 +7,7 @@ class ReferenceKey
     @reference = reference
   end
 
-  def to_text
+  def to_taxt
     "{ref #{@reference.id}}"
   end
 

@@ -309,31 +309,31 @@ describe Bolton::Catalog::Importer do
 
   describe "Converting from parsed format to Text format" do
     it "should handle an empty string" do
-      @importer.convert_parser_output_to_text({}).should == ''
+      @importer.convert_parser_output_to_taxt({}).should == ''
     end
     it "should handle a phrase" do
       data = [{:phrase => 'Phrase'}]
-      @importer.convert_parser_output_to_text(data).should == 'Phrase'
+      @importer.convert_parser_output_to_taxt(data).should == 'Phrase'
     end
     it "should handle a phrase inside a text" do
       data = [{:text => [{:phrase => 'Phrase'}]}]
-      @importer.convert_parser_output_to_text(data).should == 'Phrase'
+      @importer.convert_parser_output_to_taxt(data).should == 'Phrase'
     end
 
     describe "Citations" do
       it "should handle a citation" do
         reference = Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
         data = [{:author_names => ['Latreille'], :year => '1809', :pages => '244'}]
-        @importer.convert_parser_output_to_text(data).should == "{ref #{reference.id}}: 244"
+        @importer.convert_parser_output_to_taxt(data).should == "{ref #{reference.id}}: 244"
       end
       it "should handle a citation whose reference wasn't matched" do
         bolton_reference = Factory :bolton_reference, :authors => 'Latreille', :citation_year => '1809'
         data = [{:author_names => ['Latreille'], :year => '1809', :pages => '244'}]
-        @importer.convert_parser_output_to_text(data).should == "Latreille, 1809: 244"
+        @importer.convert_parser_output_to_taxt(data).should == "Latreille, 1809: 244"
       end
       it "should handle a citation whose reference wasn't found" do
         data = [{:author_names => ['Latreille'], :year => '1809', :pages => '244'}]
-        @importer.convert_parser_output_to_text(data).should == "Latreille, 1809: 244"
+        @importer.convert_parser_output_to_taxt(data).should == "Latreille, 1809: 244"
       end
     end
 
@@ -349,26 +349,26 @@ describe Bolton::Catalog::Importer do
         ], :delimiter => '; '},
         {:phrase => 'all subsequent authors'},
       ]
-      @importer.convert_parser_output_to_text(data).should == "Formicidae as family: {ref #{reference.id}}: 124 [Formicariae]; all subsequent authors"
+      @importer.convert_parser_output_to_taxt(data).should == "Formicidae as family: {ref #{reference.id}}: 124 [Formicariae]; all subsequent authors"
     end
 
     it "should handle a bracketed text item" do
       data = [{:opening_bracket => '['}, {:phrase => 'all rights reserved'}, {:closing_bracket => ']'}]
-      @importer.convert_parser_output_to_text(data).should == "[all rights reserved]"
+      @importer.convert_parser_output_to_taxt(data).should == "[all rights reserved]"
     end
     it "should handle a bracketed text item" do
       data = [:text => [{:opening_bracket => '['}, {:phrase => 'all rights reserved'}, {:closing_bracket => ']'}], :delimiter => ': ']
-      @importer.convert_parser_output_to_text(data).should == "[all rights reserved]: "
+      @importer.convert_parser_output_to_taxt(data).should == "[all rights reserved]: "
     end
 
     describe "Taxon names" do
       [:family_or_subfamily_name, :genus_name, :subtribe_name, :order_name, :tribe_name].each do |key|
         it "should handle #{key}" do
-          @importer.convert_parser_output_to_text([key => 'Formicariae']).should == "Formicariae"
+          @importer.convert_parser_output_to_taxt([key => 'Formicariae']).should == "Formicariae"
         end
       end
       it "should handle taxon names with other text" do
-        @importer.convert_parser_output_to_text([
+        @importer.convert_parser_output_to_taxt([
           {:family_or_subfamily_name => 'Formicariae', :delimiter => ' '},
           {:phrase => 'or', :delimiter => ' '},
           {:family_or_subfamily_name => 'Formicidae'},
