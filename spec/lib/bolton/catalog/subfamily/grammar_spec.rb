@@ -55,4 +55,14 @@ describe Bolton::Catalog::Subfamily::Grammar do
       }
     end
   end
+
+  describe "Texts" do
+    it "should handle return anything it doesn't understand as texts" do
+      @grammar.parse('Moo-goo-gai-pan').value.should == {
+        :type => :texts,
+        :texts => [:text => [{:phrase => 'Moo-goo-gai-pan'}]]
+      }
+    end
+  end
+
 end
