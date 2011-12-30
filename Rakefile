@@ -23,10 +23,3 @@ AntCat::Application.load_tasks
 task(:cucumber).clear
 desc "Run both plain and enhanced Cucumber features"
 task :cucumber => ['cucumber:plain', 'cucumber:enhanced']
-
-desc "(Re)index Solr models (Reference, Bolton::Reference)"
-task :reindex => :environment do
-  Reference.reindex
-  Bolton::Reference.reindex
-end
-

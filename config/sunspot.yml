@@ -1,14 +1,15 @@
 production:
   solr:
-    hostname: localhost
-    port: 8983
+    hostname: index.websolr.com
+    port: 80
+    path: '/solr/da3c57802d4'
     log_level: WARNING
 
 development:
   solr:
     hostname: localhost
-    port: 8982
-    log_level: INFO
+    port: 8983
+    log_level: WARNING
 
 test:
   solr:
