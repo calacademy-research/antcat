@@ -17,9 +17,7 @@ gem 'rack'
 gem 'rails'
 gem 'rake'
 gem 'sass'
-gem 'sunspot',          '1.2.1'
 gem 'sunspot_rails'
-gem 'sunspot_solr'
 gem 'paperclip'
 gem 'paper_trail'
 gem 'will_paginate'
@@ -33,10 +31,12 @@ end
 group :development, :test do
   gem 'cucumber-rails'
   gem 'launchy'
+  gem 'progress_bar'
   gem 'rspec' 
   gem 'rspec-rails' 
   gem 'ruby-debug19'
   gem 'spork',  '0.9.0.rc9'
+  gem 'sunspot_solr'
 end
 
 group :test do
