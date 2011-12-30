@@ -19,6 +19,21 @@ describe Citation do
       citation.pages.should == '124'
       citation.reference.should == reference
     end
+    it "should handle a nested reference when the year is only with the parent" do
+      reference = Factory :nested_reference, :bolton_key_cache => 'Latreille 2004'
+      data = {
+        :author_names => ["Latreille"],
+        :in => {
+          :author_names => ["Bolton"], :year => "2004"
+        },
+        :pages=>"24"
+      }
+
+      citation = Citation.import(data).reload
+
+      citation.pages.should == '24'
+      citation.reference.should == reference
+    end
   end
 
 end
