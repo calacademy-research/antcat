@@ -418,7 +418,11 @@ class Bolton::Catalog::Importer
   def convert_citation_to_taxt text_item
     return unless text_item.key? :author_names
     begin
-      reference = ::Reference.find_by_bolton_key text_item[:author_names], text_item[:year]
+      # a nested citation is parsed without a year - use its parent's year, if nec.
+      year = text_item[:year]
+      year ||= text_item[:in][:year]
+      raise unless year 
+      reference = ::Reference.find_by_bolton_key text_item[:author_names], year
       taxt = Taxt.reference reference
     rescue ::Reference::BoltonReferenceNotMatched, ::Reference::BoltonReferenceNotFound
       taxt = text_item[:author_names].join(', ') + ', ' + text_item[:year]

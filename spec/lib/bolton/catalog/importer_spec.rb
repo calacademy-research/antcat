@@ -335,6 +335,14 @@ describe Bolton::Catalog::Importer do
         data = [{:author_names => ['Latreille'], :year => '1809', :pages => '244'}]
         @importer.convert_parser_output_to_taxt(data).should == "Latreille, 1809: 244"
       end
+      it "should handle a nested citation (i.e., without year)" do
+        reference = Factory :article_reference, :bolton_key_cache => 'Nel Perrault 2004'
+        data = [{
+          :author_names => ["Nel", "Perrault"],
+          :in => {:author_names => ["Nel", "Perrault", "Perrichot", "Néraudeau"], :year => "2004"},
+          :pages => "24"}]
+        @importer.convert_parser_output_to_taxt(data).should == "{ref #{reference.id}}: 24"
+      end
     end
 
     it "should handle a number of items" do
