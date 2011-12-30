@@ -329,11 +329,11 @@ describe Bolton::Catalog::Importer do
       it "should handle a citation whose reference wasn't matched" do
         bolton_reference = Factory :bolton_reference, :authors => 'Latreille', :citation_year => '1809'
         data = [{:author_names => ['Latreille'], :year => '1809', :pages => '244'}]
-        @importer.convert_parser_output_to_taxt(data).should == "Latreille, 1809: 244"
+        @importer.convert_parser_output_to_taxt(data).should == "{ref? Latreille, 1809}: 244"
       end
       it "should handle a citation whose reference wasn't found" do
         data = [{:author_names => ['Latreille'], :year => '1809', :pages => '244'}]
-        @importer.convert_parser_output_to_taxt(data).should == "Latreille, 1809: 244"
+        @importer.convert_parser_output_to_taxt(data).should == "{ref? Latreille, 1809}: 244"
       end
       it "should handle a nested citation (i.e., without year)" do
         reference = Factory :article_reference, :bolton_key_cache => 'Nel Perrault 2004'

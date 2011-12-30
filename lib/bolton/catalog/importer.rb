@@ -425,7 +425,7 @@ class Bolton::Catalog::Importer
       reference = ::Reference.find_by_bolton_key text_item[:author_names], year
       taxt = Taxt.reference reference
     rescue ::Reference::BoltonReferenceNotMatched, ::Reference::BoltonReferenceNotFound
-      taxt = text_item[:author_names].join(', ') + ', ' + text_item[:year]
+      taxt = Taxt.unknown_reference text_item[:author_names].join(', ') + ', ' + text_item[:year]
     end
 
     taxt << ": #{text_item[:pages]}" if text_item[:pages]
