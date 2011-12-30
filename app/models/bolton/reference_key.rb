@@ -4,7 +4,6 @@ class Bolton::ReferenceKey
   def initialize authors_string, citation_year
     @authors = authors_string
     @citation_year = citation_year
-
   end
 
   def to_s format
