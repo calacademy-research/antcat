@@ -264,10 +264,6 @@ describe Reference do
       reference = Factory :article_reference
       reference.key
     end
-    it "finds some references through hard-coded lookup" do
-      reference = Factory :book_reference, :bolton_key_cache => 'Nel Perrault Perrichot Néraudeau 2004'
-      Reference.find_by_bolton_key(['Nel', 'Perrault'], '2004').should == reference
-    end
 
   end
 
