@@ -40,26 +40,26 @@ describe Bolton::Catalog::Grammar do
 
     describe 'subsequent authors' do
       it "should handle 'subsequent authors and <reference>'" do
-        @grammar.parse(%{Emery, 1913a: 27; subsequent authors and Jaffe, 1993: 9}, :root => :taxonomic_history_references).value.should == {:references => [
+        @grammar.parse(%{Emery, 1913a: 27; subsequent authors and Jaffe, 1993: 9}, :root => :taxonomic_history_references).value_with_reference_text_removed.should == {:references => [
             {:author_names => ['Emery'], :year => '1913a', :pages => '27'},
             {:subsequent_authors => 'subsequent authors and Jaffe, 1993: 9'}
           ]}
       end
       it "should handle 'all subsequent authors and <reference>'" do
-        @grammar.parse(%{Emery, 1913a: 27; all subsequent authors and Jaffe, 1993: 9}, :root => :taxonomic_history_references).value.should == {:references => [
+        @grammar.parse(%{Emery, 1913a: 27; all subsequent authors and Jaffe, 1993: 9}, :root => :taxonomic_history_references).value_with_reference_text_removed.should == {:references => [
             {:author_names => ['Emery'], :year => '1913a', :pages => '27'},
             {:subsequent_authors => 'all subsequent authors and Jaffe, 1993: 9'}
           ]}
       end
       it "should handle 'all subsequent authors'" do
-        @grammar.parse(%{Emery, 1913a: 27; all subsequent authors}, :root => :taxonomic_history_references).value.should == {
+        @grammar.parse(%{Emery, 1913a: 27; all subsequent authors}, :root => :taxonomic_history_references).value_with_reference_text_removed.should == {
           :references => [
             {:author_names => ['Emery'], :year => '1913a', :pages => '27'},
             {:subsequent_authors => 'all subsequent authors'},
           ]}
       end
       it "should handle 'all subsequent authors to the following'" do
-        @grammar.parse(%{Emery, 1913a: 27; all subsequent authors to the following}, :root => :taxonomic_history_references).value.should == {
+        @grammar.parse(%{Emery, 1913a: 27; all subsequent authors to the following}, :root => :taxonomic_history_references).value_with_reference_text_removed.should == {
           :references => [
             {:author_names => ['Emery'], :year => '1913a', :pages => '27'},
             {:subsequent_authors => 'all subsequent authors to the following'},
@@ -68,7 +68,7 @@ describe Bolton::Catalog::Grammar do
     end
 
     it "should handle bracketed notes" do
-      @grammar.parse(%{André, 1881b: 64 [Formicidae]}, :root => :taxonomic_history_reference).value.should == {
+      @grammar.parse(%{André, 1881b: 64 [Formicidae]}, :root => :taxonomic_history_reference).value_with_reference_text_removed.should == {
         :author_names => ['André'], :year => '1881b', :pages => '64',
         :text => [
           {:opening_bracket => '['},

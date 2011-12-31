@@ -8,7 +8,7 @@ describe Bolton::Catalog::Subfamily::FamilyGrammar do
 
   describe "Family-group headline" do
     it "should recognize a family group headline" do
-      @grammar.parse(%{Formicariae Latreille, 1809: 124. Type-genus: <i>Formica</i>.}).value.should == {
+      @grammar.parse(%{Formicariae Latreille, 1809: 124. Type-genus: <i>Formica</i>.}).value_with_reference_text_removed.should == {
         :type => :family_group_headline,
         :family_or_subfamily_name => 'Formicariae',
         :authorship => [{:author_names => ['Latreille'], :year => '1809', :pages => '124'}],
@@ -16,7 +16,7 @@ describe Bolton::Catalog::Subfamily::FamilyGrammar do
       }
     end
     it "should recognize a family group headline for Myrmicites" do
-      @grammar.parse(%{Myrmicites Lepeletier de Saint-Fargeau, 1835: 169. Type-genus: <i>Myrmica</i>.}).value.should == {
+      @grammar.parse(%{Myrmicites Lepeletier de Saint-Fargeau, 1835: 169. Type-genus: <i>Myrmica</i>.}).value_with_reference_text_removed.should == {
         :type => :family_group_headline,
         :family_or_subfamily_name => 'Myrmicites',
         :authorship => [{:author_names => ['Lepeletier de Saint-Fargeau'], :year => '1835', :pages => '169'}],
@@ -34,7 +34,7 @@ describe Bolton::Catalog::Subfamily::FamilyGrammar do
 
   describe "Family-group protonym" do
     it "should recognize a family protonym" do
-      @grammar.parse(%{*Formicariae Latreille, 1809: 124}, :root => :family_group_protonym).value.should == {
+      @grammar.parse(%{*Formicariae Latreille, 1809: 124}, :root => :family_group_protonym).value_with_reference_text_removed.should == {
         :family_or_subfamily_name => 'Formicariae', :fossil => true,
         :authorship => [{:author_names => ['Latreille'], :year => '1809', :pages => '124'}],
       }
@@ -43,7 +43,7 @@ describe Bolton::Catalog::Subfamily::FamilyGrammar do
       @grammar.parse(%{Neoattini Kusnezov, 1956: 22; Kusnezov, 1964: 62}, :root => :family_group_protonym).value
     end
     it "should recognize a family protonym for a subtribe" do
-      @grammar.parse(%{Bothriomyrmecina Dubovikov, 2005a: 92}, :root => :family_group_protonym).value.should == {
+      @grammar.parse(%{Bothriomyrmecina Dubovikov, 2005a: 92}, :root => :family_group_protonym).value_with_reference_text_removed.should == {
         :subtribe_name => 'Bothriomyrmecina',
         :authorship => [{:author_names => ['Dubovikov'], :year => '2005a', :pages => '92'}],
       }
@@ -51,7 +51,7 @@ describe Bolton::Catalog::Subfamily::FamilyGrammar do
   end
 
   it "should recognize the family taxonomic history" do
-    @grammar.parse(%{Formicidae as family: Latreille, 1809: 124 [Formicariae]; Stephens, 1829: 356; all subsequent authors.}).value.should == {
+    @grammar.parse(%{Formicidae as family: Latreille, 1809: 124 [Formicariae]; Stephens, 1829: 356; all subsequent authors.}).value_with_reference_text_removed.should == {
       :type => :family_taxonomic_history,
       :items => [
         {:phrase => 'Formicidae as family', :delimiter => ': '},
@@ -83,7 +83,7 @@ describe Bolton::Catalog::Subfamily::FamilyGrammar do
   end
 
   it "should recognize the extinct genera incertae sedis list" do
-    @grammar.parse(%{Genera (extinct) <i>incertae sedis</i> in Formicidae: *<i>Condylodon</i>, <i>Hypochira</i>.}).value.should ==
+    @grammar.parse(%{Genera (extinct) <i>incertae sedis</i> in Formicidae: *<i>Condylodon</i>, <i>Hypochira</i>.}).value_with_reference_text_removed.should ==
       {:type => :extinct_genera_incertae_sedis_in_family_list, :genera => [{:genus_name => 'Condylodon', :fossil => true}, {:genus_name => 'Hypochira'}]}
   end
 
@@ -112,7 +112,7 @@ describe Bolton::Catalog::Subfamily::FamilyGrammar do
         {:type => :unavailable_family_group_name_header, :name => 'Neoattini'}
     end
     it "should parse the details" do
-      @grammar.parse(%{Alloformicinae Emery, 1925b: 9 [as "section" of Formicinae]. Section designated to include tribes Melophorini, Myrmelachistini and Plagiolepidini. Unavailable name; not based on genus rank taxon. Contained material referable to Formicinae: Bolton, 1994: 51.}, :root => :unavailable_family_group_name_detail).value.should == {
+      @grammar.parse(%{Alloformicinae Emery, 1925b: 9 [as "section" of Formicinae]. Section designated to include tribes Melophorini, Myrmelachistini and Plagiolepidini. Unavailable name; not based on genus rank taxon. Contained material referable to Formicinae: Bolton, 1994: 51.}, :root => :unavailable_family_group_name_detail).value_with_reference_text_removed.should == {
         :type => :unavailable_family_group_name_detail,
         :protonym => {:family_or_subfamily_name => 'Alloformicinae', :authorship => [{
           :author_names => ['Emery'],
@@ -149,7 +149,7 @@ describe Bolton::Catalog::Subfamily::FamilyGrammar do
     end
 
     it "should handle a colon after the taxon name (in other words, it's not a protonym)" do
-      @grammar.parse(%{Promyrmicinae: Forel, 1917: 240 [incorrect expansion of the above unavailable name to include tribes Metaponini and Pseudomyrmini]. Unavailable name.}, :root => :unavailable_family_group_name_detail).value.should == {
+      @grammar.parse(%{Promyrmicinae: Forel, 1917: 240 [incorrect expansion of the above unavailable name to include tribes Metaponini and Pseudomyrmini]. Unavailable name.}, :root => :unavailable_family_group_name_detail).value_with_reference_text_removed.should == {
         :type => :unavailable_family_group_name_detail,
         :family_or_subfamily_name => 'Promyrmicinae',
         :author_names => ['Forel'], :year => '1917', :pages => '240', :notes => [[
