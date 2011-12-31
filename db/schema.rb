@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111229224948) do
+ActiveRecord::Schema.define(:version => 20111231212935) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -172,11 +172,6 @@ ActiveRecord::Schema.define(:version => 20111229224948) do
   add_index "references", ["source_reference_id", "source_reference_type"], :name => "references_source_reference_id_source_reference_type_index"
   add_index "references", ["source_reference_id"], :name => "references_source_reference_id_idx"
   add_index "references", ["updated_at"], :name => "references_updated_at_idx"
-
-  create_table "references_texts", :id => false, :force => true do |t|
-    t.integer "text_id"
-    t.integer "reference_id"
-  end
 
   create_table "taxa", :force => true do |t|
     t.string   "name"
