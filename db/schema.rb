@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111231212935) do
+ActiveRecord::Schema.define(:version => 20111231220739) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -161,6 +161,7 @@ ActiveRecord::Schema.define(:version => 20111231212935) do
     t.string   "author_names_suffix"
     t.string   "principal_author_last_name_cache"
     t.string   "bolton_key_cache"
+    t.string   "reason_missing"
   end
 
   add_index "references", ["author_names_string_cache", "citation_year"], :name => "references_author_names_string_citation_year_idx", :length => {"author_names_string_cache"=>255, "citation_year"=>nil}
