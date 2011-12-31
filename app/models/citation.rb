@@ -3,8 +3,7 @@ class Citation < ActiveRecord::Base
   belongs_to :reference
 
   def self.import data
-    year = data[:year] || data[:in][:year]
-    reference = Reference.find_by_bolton_key data[:author_names], year
+    reference = Reference.find_or_create_by_bolton_key data
     create! :reference => reference, :pages => data[:pages]
   end
 

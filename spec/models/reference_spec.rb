@@ -264,7 +264,14 @@ describe Reference do
       reference = Factory :article_reference
       reference.key
     end
+  end
 
+  describe "Finding or creating the reference for a Bolton citation" do
+    it "creates a MissingReference if it can't find the reference" do
+      reference = Reference.find_or_create_by_bolton_key :author_names => ['Bolton'], :year => '1920', :reference_text => 'Bolton, 1920'
+      reference.citation.should == 'Bolton, 1920'
+      reference.reason_missing.should == 'no Bolton'
+    end
   end
 
   describe "Key" do
