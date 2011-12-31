@@ -10,6 +10,7 @@ describe Citation do
   end
 
   describe "Importing" do
+
     it "should create the Citation, which is linked to an existing Reference" do
       reference = Factory :article_reference, :bolton_key_cache => 'Latreille 1809a'
       data = {:author_names => ["Latreille"], :year => "1809a", :pages => "124"}
@@ -19,6 +20,16 @@ describe Citation do
       citation.pages.should == '124'
       citation.reference.should == reference
     end
+
+    it "should link to a MissingReference, if necessary" do
+      data = {:author_names => ["Latreille"], :year => "1809a", :pages => "124", :reference_text => 'Latreille, 1809a: 124'}
+      citation = Citation.import(data).reload
+      citation.pages.should == '124'
+      missing_reference = citation.reference
+      missing_reference.citation.should == 'Latreille, 1809a'
+      missing_reference.reason_missing.should == 'no Bolton'
+    end
+
     it "should handle a nested reference when the year is only with the parent" do
       reference = Factory :nested_reference, :bolton_key_cache => 'Latreille 2004'
       data = {
@@ -34,6 +45,6 @@ describe Citation do
       citation.pages.should == '24'
       citation.reference.should == reference
     end
-  end
 
+  end
 end

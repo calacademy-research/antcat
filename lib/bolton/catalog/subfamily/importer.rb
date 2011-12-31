@@ -51,6 +51,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     Protonym.delete_all
     Citation.delete_all
     ForwardReference.delete_all
+    MissingReference.delete_all
 
     parse_family
     #parse_supersubfamilies
