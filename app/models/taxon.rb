@@ -23,6 +23,7 @@ class Taxon < ActiveRecord::Base
   def unidentifiable?;  status == 'unidentifiable' end
   def synonym?;         status == 'synonym' end
   def homonym?;         status == 'homonym' end
+  def excluded?;        status == 'excluded' end
 
   before_save :set_fossil_flag
 
