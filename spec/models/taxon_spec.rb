@@ -38,6 +38,14 @@ describe Taxon do
     taxon.should be_invalid
   end
 
+  it "should be able to be excluded" do
+    taxon = Factory :taxon, :name => 'Cerapachynae'
+    taxon.should_not be_excluded
+    taxon.update_attribute :status, 'excluded'
+    taxon.should be_excluded
+    taxon.should be_invalid
+  end
+
   it "should be able to be a synonym" do
     taxon = Factory :taxon, :name => 'Cerapachynae'
     taxon.should_not be_synonym
