@@ -192,5 +192,18 @@ describe Genus do
 
       authorship.reference.should == reference
     end
+    it "should not mind if there's no type" do
+      reference = Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
+      genus = Genus.import({
+        :name => 'Atta',
+        :protonym => {
+          :name => "Atta",
+          :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
+        },
+        :taxonomic_history => ["Atta as genus", "Atta as species"]
+      }).reload
+      ForwardReference.fixup
+      genus.type_taxon.should be_nil
+    end
   end
 end
