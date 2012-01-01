@@ -307,7 +307,7 @@ describe Bolton::Catalog::Importer do
 
   end
 
-  describe "Converting from parsed format to Text format" do
+  describe "Converting from parsed format to Taxt format" do
     it "should handle an empty string" do
       @importer.convert_parser_output_to_taxt({}).should == ''
     end
@@ -383,6 +383,11 @@ describe Bolton::Catalog::Importer do
         it "should handle #{key}" do
           @importer.convert_parser_output_to_taxt([key => 'Formicariae']).should == "Formicariae"
         end
+      end
+      it "should handle family/order" do
+        @importer.convert_parser_output_to_taxt([
+          {:family_name=>"Myrmiciidae", :fossil=>true, :suborder=>"Symphyta", :delimiter=>": "}
+        ]).should == 'Myrmiciidae (Symphyta): '
       end
       it "should handle taxon names with other text" do
         @importer.convert_parser_output_to_taxt([
