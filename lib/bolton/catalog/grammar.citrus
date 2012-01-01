@@ -242,7 +242,7 @@ grammar Bolton::Catalog::Grammar
     (ref_author_names ', in ' nested_author_names:ref_author_names /,? / citation_year (/[:] / ref_pages)? (', above')? (' ' ref_forms)?) {
       value = {:author_names => ref_author_names.value,
                :in => {:author_names => nested_author_names.value,
-                       :year => citation_year}
+                       :year => citation_year.value}
               }
       value[:pages] = ref_pages.value
       value[:forms] = ref_forms.value if ref_forms
