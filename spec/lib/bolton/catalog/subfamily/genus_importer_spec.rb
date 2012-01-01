@@ -24,7 +24,7 @@ describe Bolton::Catalog::Subfamily::Importer do
 
   describe "Importing a genus" do
     def make_contents content
-      @importer.should_receive(:parse_family).and_return { Factory :subfamily, :name => 'Martialinae' }
+      @importer.should_receive(:parse_family).and_return {Factory :subfamily, :name => 'Martialinae'}
 %{<html><body><div>
 <p>THE DOLICHODEROMORPHS: SUBFAMILIES ANEURETINAE AND DOLICHODERINAE</p>
 <p>SUBFAMILY MARTIALINAE</p>
