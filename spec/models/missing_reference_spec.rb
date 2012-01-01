@@ -18,4 +18,11 @@ describe MissingReference do
     end
   end
 
+  describe "Key" do
+    it "has its own kind of key" do
+      reference = Factory :missing_reference
+      reference.key.should be_kind_of MissingReferenceKey
+    end
+  end
+
 end

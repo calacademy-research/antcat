@@ -9,4 +9,9 @@ class MissingReference < Reference
 
     create! :title => '(missing)', :reason_missing => reason, :citation => reference_key, :citation_year => year
   end
+
+  def key
+    MissingReferenceKey.new citation
+  end
+
 end
