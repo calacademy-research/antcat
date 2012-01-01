@@ -392,53 +392,39 @@ class Bolton::Catalog::Importer
 
   def convert_bracket_to_taxt text_item
     taxt = ''
-    if text_item.key? :opening_bracket
+    if text_item[:opening_bracket]
       taxt << text_item[:opening_bracket]
-    elsif text_item.key? :closing_bracket
+    elsif text_item[:closing_bracket]
       taxt << text_item[:closing_bracket]
     else
       return
     end
-    taxt << text_item[:delimiter] if text_item[:delimiter]
-    taxt
+    add_delimiter taxt, text_item
   end
 
   def convert_phrase_to_taxt text_item
-    return unless text_item.key? :phrase
+    return unless text_item[:phrase]
     taxt = text_item[:phrase]
-    taxt << text_item[:delimiter] if text_item[:delimiter]
-    taxt
+    add_delimiter taxt, text_item
   end
 
   def convert_unparseable_to_taxt text_item
-    return unless text_item.key? :unparseable
+    return unless text_item[:unparseable]
     Taxt.unparseable text_item[:unparseable]
   end
 
   def convert_citation_to_taxt text_item
-    return unless text_item.key? :author_names
-    begin
-      # a nested citation is parsed without a year - use its parent's year, if nec.
-      year = text_item[:year]
-      year ||= text_item[:in][:year]
-      raise unless year 
-      reference = ::Reference.find_by_bolton_key text_item[:author_names], year
-      taxt = Taxt.reference reference
-    rescue ::Reference::BoltonReferenceNotMatched, ::Reference::BoltonReferenceNotFound
-      taxt = Taxt.unknown_reference text_item[:author_names].join(', ') + ', ' + text_item[:year]
-    end
-
+    return unless text_item[:author_names]
+    taxt = Taxt.reference ::Reference.find_or_create_by_bolton_key text_item
     taxt << ": #{text_item[:pages]}" if text_item[:pages]
-    taxt << text_item[:delimiter] if text_item[:delimiter]
-    taxt
+    add_delimiter taxt, text_item
   end
 
   def convert_nested_text_to_taxt text_item
-    return unless text_item.key? :text
+    return unless text_item[:text]
     delimiter = text_item[:text].delete :delimiter
     taxt = convert_parser_output_to_taxt text_item[:text]
-    taxt << text_item[:delimiter] if text_item[:delimiter]
-    taxt
+    add_delimiter taxt, text_item
   end
 
   def convert_taxon_name_to_taxt text_item
@@ -446,10 +432,9 @@ class Bolton::Catalog::Importer
       return add_delimiter "#{text_item[:family_name]} (#{text_item[:suborder]})", text_item
     end
     [:order_name, :family_or_subfamily_name, :tribe_name, :subtribe_name, :collective_group_name, :genus_name].each do |key|
-      next unless text_item.key? key
+      next unless text_item[key]
       taxt = Taxt.taxon_name text_item[key]
-      add_delimiter taxt, text_item
-      return taxt
+      return add_delimiter taxt, text_item
     end
     nil
   end
@@ -458,4 +443,5 @@ class Bolton::Catalog::Importer
     taxt << text_item[:delimiter] if text_item[:delimiter]
     taxt
   end
+
 end
