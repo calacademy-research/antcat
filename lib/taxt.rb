@@ -1,7 +1,4 @@
 module Taxt
-  def self.unknown_reference string
-    "{ref? #{string}}"
-  end
   def self.unparseable string
     "{? #{string}}"
   end

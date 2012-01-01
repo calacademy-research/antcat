@@ -6,8 +6,9 @@ describe Taxt do
     it "should encode an unparseable string" do
       Taxt.unparseable('foo').should == '{? foo}'
     end
-    it "should encode a reference that wasn't found" do
-      Taxt.unknown_reference('Latreille, 1909').should == '{ref? Latreille, 1909}'
+    it "should encode an unparseable string" do
+      reference = Factory :book_reference
+      Taxt.reference(reference).should == "{ref #{reference.id}}"
     end
   end
 end
