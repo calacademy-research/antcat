@@ -38,12 +38,14 @@ describe Bolton::Catalog::Grammar do
       }]
     end
     it "can be nested" do
-      @grammar.parse('Gmelin, in Linnaeus, 1790: 2804 (w.)', :root => :authorship).value_with_reference_text_removed.should == [{
+      results = @grammar.parse('Gmelin, in Linnaeus, 1790: 2804 (w.)', :root => :authorship).value_with_reference_text_removed
+      results.should == [{
         :author_names => ['Gmelin'],
         :pages => '2804',
         :in => {:author_names => ['Linnaeus'], :year => '1790'},
         :forms => 'w.',
       }]
+      results.first[:in][:year].class.should == String
     end
   end
 
