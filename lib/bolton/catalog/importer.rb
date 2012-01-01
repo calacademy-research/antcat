@@ -442,6 +442,9 @@ class Bolton::Catalog::Importer
   end
 
   def convert_taxon_name_to_taxt text_item
+    if text_item[:family_name] && text_item[:suborder]
+      return add_delimiter "#{text_item[:family_name]} (#{text_item[:suborder]})", text_item
+    end
     [:order_name, :family_or_subfamily_name, :tribe_name, :subtribe_name, :collective_group_name, :genus_name].each do |key|
       next unless text_item.key? key
       taxt = Taxt.taxon_name text_item[key]
