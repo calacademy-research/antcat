@@ -6,16 +6,18 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     return unless @type == options[:header]
     Progress.method
 
-    name = @parse_result[:name]
+    name = @parse_result[:genus_name] || @parse_result[:name]
     parse_next_line
 
     headline = consume :genus_headline
+    name ||= headline[:genus_name]
+
     taxonomic_history = parse_genus_taxonomic_history
 
     genus = Genus.import({
       :name => name,
       :protonym => {
-        :name => headline[:name],
+        :name => headline[:name] || headline[:genus_name],
         :authorship => headline[:authorship],
       },
       :type_species => headline[:type_species],
@@ -26,6 +28,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
 
     parse_homonym_replaced_by_genus(genus)
     parse_genus_references
+    genus
   end
 
   def parse_genus_taxonomic_history
@@ -71,24 +74,12 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     parsed_text
   end
 
-  def parse_homonym_replaced_by_genus genus
-    return '' unless @type == :homonym_replaced_by_genus_header
+  def parse_homonym_replaced_by_genus replaced_by_genus
+    genus = parse_genus({:status => 'homonym'}, :header => :homonym_replaced_by_genus_header)
+    return '' unless genus
     Progress.method
 
-    taxonomic_history = @paragraph
-    parse_next_line
-    expect :genus_headline
-
-    name = @parse_result[:genus_name]
-    fossil = @parse_result[:fossil]
-    local_taxonomic_history = @paragraph
-    taxonomic_history << local_taxonomic_history
-    parse_next_line
-    taxonomic_history << parse_genus_taxonomic_history
-    local_taxonomic_history << local_taxonomic_history
-    genus = ::Genus.create! :name => name, :fossil => fossil, :status => 'homonym', :homonym_replaced_by => genus,
-                          :subfamily => genus.subfamily, :tribe => genus.tribe, :taxonomic_history => clean_taxonomic_history(local_taxonomic_history)
-    taxonomic_history
+    genus.update_attribute :homonym_replaced_by, replaced_by_genus
   end
 
   #def parse_junior_synonyms_of_genus genus

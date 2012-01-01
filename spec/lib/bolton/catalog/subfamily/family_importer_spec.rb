@@ -38,6 +38,13 @@ describe Bolton::Catalog::Subfamily::Importer do
 <p>Genera excluded from FORMICIDAE</p>
 <p>The following were all originally described as members of Formicidae but are now excluded.</p>
 
+<p>Genus *<i>PROMYRMICIUM</i></p>
+<p>*<i>Promyrmicium</i> Baroni Urbani, 1971b: 362. </p>
+
+<p>Homonym replaced by *<i>PROMYRMICIUM</i></p>
+<p>*<i>Myrmicium</i> Heer, 1870: 78. Type-species: *<i>Myrmicium boreale</i>, by monotypy. </p>
+<p>Taxonomic history</p>
+<p>[Junior homonym of *<i>Myrmicium</i> Westwood, 1854: 396 (*Pseudosiricidae).] </p>
 <p>Unavailable family-group names in FORMICIDAE</p>
 
 <p>Genus-group <i>nomina nuda</i> in FORMICIDAE</p>
@@ -73,6 +80,13 @@ describe Bolton::Catalog::Subfamily::Importer do
     species = genus.type_taxon
     species.should_not be_invalid
     species.name.should == 'Condylodon audouini'
+
+    genus = Genus.find_by_name 'Promyrmicium'
+    genus.should be_excluded
+
+    genus = Genus.find_by_name 'Myrmicium'
+    genus.should be_homonym
+    genus.homonym_replaced_by.name.should == 'Promyrmicium'
   end
 
 end
