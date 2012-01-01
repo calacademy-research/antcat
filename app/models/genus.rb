@@ -35,7 +35,7 @@ class Genus < Taxon
     transaction do
       protonym = Protonym.import data[:protonym]
       attributes = {:name => data[:name], :status => 'valid', :protonym => protonym}
-      attributes.reverse_merge! data[:attributes] if data[:attributes]
+      attributes.merge! data[:attributes] if data[:attributes]
       genus = create! attributes
       data[:taxonomic_history].each do |item|
         genus.taxonomic_history_items.create! :taxt => item
