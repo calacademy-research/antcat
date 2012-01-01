@@ -40,8 +40,12 @@ class Genus < Taxon
       data[:taxonomic_history].each do |item|
         genus.taxonomic_history_items.create! :taxt => item
       end
-      target_name = data[:type_species][:genus_name] + ' ' + data[:type_species][:species_epithet]
-      ForwardReference.create! :source_id => genus.id, :source_attribute => :type_taxon, :target_name => target_name
+
+      if data[:type_species]
+        target_name = data[:type_species][:genus_name] + ' ' + data[:type_species][:species_epithet]
+        ForwardReference.create! :source_id => genus.id, :source_attribute => :type_taxon, :target_name => target_name
+      end
+
       genus
     end
   end
