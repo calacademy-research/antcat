@@ -64,6 +64,12 @@ FactoryGirl.define do
     citation                        'New York'
   end
 
+  factory :missing_reference do
+    title         '(missing)'
+    citation_year '2009'
+    citation      'Latreille, 2009'
+  end
+
   factory :nested_reference do
     author_names                    {[Factory(:author_name)]}
     sequence(:title)                {|n| "Ants are my life#{n}"}

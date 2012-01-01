@@ -219,9 +219,7 @@ class CatalogFormatter
   end
 
   def self.format_taxonomic_history_item taxt, user
-    string = taxt.gsub /{ref (\d+)}/ do |ref|
-      Reference.find($1).key.to_link(user) rescue ref
-    end
+    string = Taxt.interpolate taxt, user
     string << '.'
     content_tag :div, string.html_safe, :class => :taxonomic_history_item
   end
