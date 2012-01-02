@@ -126,4 +126,14 @@ class Bolton::Reference < ActiveRecord::Base
     self.year = ::Reference.get_year citation_year
   end
 
+  def self.import attributes
+    reference = where(attributes).first
+    unless reference
+      reference = create! attributes.merge(:import_result => 'added')
+    else
+      reference.update_attribute :import_result, 'identical'
+    end
+    reference
+  end
+
 end
