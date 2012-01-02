@@ -127,6 +127,7 @@ class Bolton::Reference < ActiveRecord::Base
   end
 
   def self.import attributes
+    attributes[:title] = attributes[:title][0, 255]
     reference = where(attributes).first
     if reference
       reference.update_attribute :import_result, 'identical'
