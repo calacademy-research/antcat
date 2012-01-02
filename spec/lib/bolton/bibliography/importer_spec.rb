@@ -239,121 +239,111 @@ Dorow, W.H.O. & Kohout, R.J. 1995. Paleogene ants of the genus <i style="mso-bid
    @bibliography.import_html contents
  end
 
- describe 'importing book references' do
-   it "should import a book reference" do
-     contents = make_contents "Dixon, F. 1940. <i style='mso-bidi-font-style:normal'>The geology
-and fossils of the Tertiary and Cretaceous formation of Sussex</i>: 422 pp.
-London. [(31).xii.1850.]"
-     @bibliography.import_html contents
-     reference = Bolton::Reference.first
-     reference.authors.should == 'Dixon, F.'
-     reference.citation_year.should == '1940'
-     reference.year.should == 1940
-     reference.title.should == "The geology and fossils of the Tertiary and Cretaceous formation of Sussex"
-     reference.pagination.should == '422 pp.'
-     reference.place.should == 'London'
-     reference.note.should == '(31).xii.1850'
-     reference.reference_type.should == 'BookReference'
-   end
+  describe 'importing book references' do
+    it "should import a book reference" do
+      contents = make_contents "Dixon, F. 1940. <i style='mso-bidi-font-style:normal'>The geology and fossils of the Tertiary and Cretaceous formation of Sussex</i>: 422 pp. London. [(31).xii.1850.]"
+      @bibliography.import_html contents
+      reference = Bolton::Reference.first
+      reference.authors.should == 'Dixon, F.'
+      reference.citation_year.should == '1940'
+      reference.year.should == 1940
+      reference.title.should == "The geology and fossils of the Tertiary and Cretaceous formation of Sussex"
+      reference.pagination.should == '422 pp.'
+      reference.place.should == 'London'
+      reference.note.should == '(31).xii.1850'
+      reference.reference_type.should == 'BookReference'
+    end
 
-   it "should add the book information to the title" do
-     contents = make_contents %s{
-Dumpert,
-K. 1994. <i style='mso-bidi-font-style:normal'>Das Sozialleben der Ameisen</i>.
-<b style='mso-bidi-font-weight:normal'>2</b>., neubearbeitete Auflage: 257 pp.
-Berlin &amp; Hamburg. [(31.xii).1994.]
-     }
-     @bibliography.import_html contents
-     reference = Bolton::Reference.first
-     reference.authors.should == 'Dumpert, K.'
-     reference.citation_year.should == '1994'
-     reference.year.should == 1994
-     reference.title.should == 'Das Sozialleben der Ameisen. 2., neubearbeitete Auflage'
-     reference.place.should == 'Berlin & Hamburg'
-     reference.pagination.should == '257 pp.'
-     reference.note.should == '(31.xii).1994'
-   end
+    it "should add the book information to the title" do
+      contents = make_contents %s{
+  Dumpert, K. 1994. <i style='mso-bidi-font-style:normal'>Das Sozialleben der Ameisen</i>. <b style='mso-bidi-font-weight:normal'>2</b>., neubearbeitete Auflage: 257 pp.  Berlin &amp; Hamburg. [(31.xii).1994.]
+      }
+      @bibliography.import_html contents
+      reference = Bolton::Reference.first
+      reference.authors.should == 'Dumpert, K.'
+      reference.citation_year.should == '1994'
+      reference.year.should == 1994
+      reference.title.should == 'Das Sozialleben der Ameisen. 2., neubearbeitete Auflage'
+      reference.place.should == 'Berlin & Hamburg'
+      reference.pagination.should == '257 pp.'
+      reference.note.should == '(31.xii).1994'
+    end
 
-   it "should handle a subtitle (without italics)" do
-     contents = make_contents %s{
-Drury, D. 1773. <i style="mso-bidi-font-style:normal">Illustrations of Natural History</i>. Wherein are exhibited upwards of two hundred and twenty figures of exotic insects. <b style="mso-bidi-font-weight:normal">2</b>: 90 pp. London. [(31.xii).1773.]
-     }
-     @bibliography.import_html contents
-     reference = Bolton::Reference.first
-     reference.title.should == 'Illustrations of Natural History. Wherein are exhibited upwards of two hundred and twenty figures of exotic insects. 2' 
-   end
+    it "should handle a subtitle (without italics)" do
+      contents = make_contents %s{
+  Drury, D. 1773. <i style="mso-bidi-font-style:normal">Illustrations of Natural History</i>. Wherein are exhibited upwards of two hundred and twenty figures of exotic insects. <b style="mso-bidi-font-weight:normal">2</b>: 90 pp. London. [(31.xii).1773.]
+      }
+      @bibliography.import_html contents
+      reference = Bolton::Reference.first
+      reference.title.should == 'Illustrations of Natural History. Wherein are exhibited upwards of two hundred and twenty figures of exotic insects. 2' 
+    end
 
-   it "should handle an edition" do
-     contents = make_contents %s{
-Donisthorpe, H. 1927b. <i style="mso-bidi-font-style:normal">British Ants, their life-history and classification</i> (2nd. edition): 436 pp. London. [(31.xii).1927.]
-     }
-     @bibliography.import_html contents
-     reference = Bolton::Reference.first
-     reference.title.should == 'British Ants, their life-history and classification (2nd. edition)' 
-   end
+    it "should handle an edition" do
+      contents = make_contents %s{
+  Donisthorpe, H. 1927b. <i style="mso-bidi-font-style:normal">British Ants, their life-history and classification</i> (2nd. edition): 436 pp. London. [(31.xii).1927.]
+      }
+      @bibliography.import_html contents
+      reference = Bolton::Reference.first
+      reference.title.should == 'British Ants, their life-history and classification (2nd. edition)' 
+    end
 
-   it "should handle a missing note" do
-     contents = make_contents %s{
-Don, W. 2007. <i style="mso-bidi-font-style:normal">Ants of New Zealand</i>: 239 pp. Otago University Press. 
-     }
-     @bibliography.import_html contents
-     reference = Bolton::Reference.first
-     reference.note.should be_nil
-   end
+    it "should handle a missing note" do
+      contents = make_contents %s{
+  Don, W. 2007. <i style="mso-bidi-font-style:normal">Ants of New Zealand</i>: 239 pp. Otago University Press. 
+      }
+      @bibliography.import_html contents
+      reference = Bolton::Reference.first
+      reference.note.should be_nil
+    end
 
- end
+  end
 
- describe 'importing nested references' do
-   it "should work" do
-     contents = make_contents %s{
-Dlussky, G.M. & Zabelin, S.I. 1985. Fauna murav'ev Basseina R. Sumbar (Yugo-zapadnyi Kopetdag) (pp. 208-246). In Nechaevaya, N.T. <i style="mso-bidi-font-style: normal">Rastitel'nost i Zhivotnyi Mir Zaladnogo Kopetdaga</i>: 277 pp. Ashkhabad, Ylym. [22.x.1985.]
-     }
-     @bibliography.import_html contents
-     reference = Bolton::Reference.first
-     reference.title.should == "Fauna murav'ev Basseina R. Sumbar (Yugo-zapadnyi Kopetdag)"
-     reference.citation_year.should == "1985"
-     reference.pagination.should == "(pp. 208-246)"
-     reference.reference_type.should == 'NestedReference'
-   end
- end
+  describe 'importing nested references' do
+    it "should work" do
+      contents = make_contents %s{
+  Dlussky, G.M. & Zabelin, S.I. 1985. Fauna murav'ev Basseina R. Sumbar (Yugo-zapadnyi Kopetdag) (pp. 208-246). In Nechaevaya, N.T. <i style="mso-bidi-font-style: normal">Rastitel'nost i Zhivotnyi Mir Zaladnogo Kopetdaga</i>: 277 pp. Ashkhabad, Ylym. [22.x.1985.]
+      }
+      @bibliography.import_html contents
+      reference = Bolton::Reference.first
+      reference.title.should == "Fauna murav'ev Basseina R. Sumbar (Yugo-zapadnyi Kopetdag)"
+      reference.citation_year.should == "1985"
+      reference.pagination.should == "(pp. 208-246)"
+      reference.reference_type.should == 'NestedReference'
+    end
+  end
 
- describe "removing italics from a note" do
-   it "should work" do
-     contents = make_contents %s{
-Abe, M. &amp; Smith, D.R. 1991d. The genus-group names of Symphyta and their type
-species. <i style='mso-bidi-font-style:normal'>Esakia</i> <b style='mso-bidi-font-weight:
-normal'>31</b>: 1-115. [English translation of <i style="mso-bidi-font-style:normal">Paleontologicheskii Zhurnal</i> 2003 (No. 1): 40-49.]"
-     }
-     @bibliography.import_html contents
-     reference = Bolton::Reference.first
-     reference.reference_type.should == 'ArticleReference'
-     reference.note.should == 'English translation of Paleontologicheskii Zhurnal 2003 (No. 1): 40-49'
-   end
- end
+  describe "removing italics from a note" do
+    it "should work" do
+      contents = make_contents %s{
+  Abe, M. &amp; Smith, D.R. 1991d. The genus-group names of Symphyta and their type species. <i style='mso-bidi-font-style:normal'>Esakia</i> <b style='mso-bidi-font-weight: normal'>31</b>: 1-115. [English translation of <i style="mso-bidi-font-style:normal">Paleontologicheskii Zhurnal</i> 2003 (No. 1): 40-49.]"
+      }
+      @bibliography.import_html contents
+      reference = Bolton::Reference.first
+      reference.reference_type.should == 'ArticleReference'
+      reference.note.should == 'English translation of Paleontologicheskii Zhurnal 2003 (No. 1): 40-49'
+    end
+  end
 
- describe "importing references where we can't tell what it is" do
-   it "should work" do
-     contents = make_contents %s{
-Dlussky, G.M. & Perfilieva, K.S. 2003. Paleogene ants of the genus <i style="mso-bidi-font-style:normal">Archimyrmex</i> Cockerell, 1923. <i style="mso-bidi-font-style:normal">Paleontological Journal</i> 37: 39-47. [English translation of <i style="mso-bidi-font-style:normal">Paleontologicheskii Zhurnal</i> 2003 (No. 1): 40-49.] 
-     }
-     @bibliography.import_html contents
-     reference = Bolton::Reference.first
-     reference.reference_type.should == 'UnknownReference'
-     reference.citation_year.should == '2003'
-     reference.title.should == 'Paleogene ants of the genus Archimyrmex Cockerell, 1923. Paleontological Journal 37: 39-47. [English translation of Paleontologicheskii Zhurnal 2003 (No. 1): 40-49.]'
-   end
- end
+  describe "importing references where we can't tell what it is" do
+    it "should work" do
+      contents = make_contents %s{
+  Dlussky, G.M. & Perfilieva, K.S. 2003. Paleogene ants of the genus <i style="mso-bidi-font-style:normal">Archimyrmex</i> Cockerell, 1923. <i style="mso-bidi-font-style:normal">Paleontological Journal</i> 37: 39-47. [English translation of <i style="mso-bidi-font-style:normal">Paleontologicheskii Zhurnal</i> 2003 (No. 1): 40-49.] 
+      }
+      @bibliography.import_html contents
+      reference = Bolton::Reference.first
+      reference.reference_type.should == 'UnknownReference'
+      reference.citation_year.should == '2003'
+      reference.title.should == 'Paleogene ants of the genus Archimyrmex Cockerell, 1923. Paleontological Journal 37: 39-47. [English translation of Paleontologicheskii Zhurnal 2003 (No. 1): 40-49.]'
+    end
+  end
 
- describe 'saving the original' do
-   it "should simplify the HTML markup" do
-     contents = make_contents "Abe, M. &amp; Smith, D.R. 1991d. The genus-group names of Symphyta and their type
-species. <i style='mso-bidi-font-style:normal'>Esakia</i> <b style='mso-bidi-font-weight:
-normal'>31</b>: 1-115. [31.vii.1991.]"
-     @bibliography.import_html contents
-     Bolton::Reference.first.original.should == "Abe, M. & Smith, D.R. 1991d. The genus-group names of Symphyta and their type species. <i>Esakia</i> <b>31</b>: 1-115. [31.vii.1991.]"
-   end
-
- end
+  describe 'saving the original' do
+    it "should simplify the HTML markup" do
+      contents = make_contents "Abe, M. &amp; Smith, D.R. 1991d. The genus-group names of Symphyta and their type species. <i style='mso-bidi-font-style:normal'>Esakia</i> <b style='mso-bidi-font-weight: normal'>31</b>: 1-115. [31.vii.1991.]"
+      @bibliography.import_html contents
+      Bolton::Reference.first.original.should == "Abe, M. & Smith, D.R. 1991d. The genus-group names of Symphyta and their type species. <i>Esakia</i> <b>31</b>: 1-115. [31.vii.1991.]"
+    end
+  end
 
   #it "should output the offending line when the parse fails" do
     #contents = make_contents %s{asdfj;lf;jsl;dfjsf;fj}
@@ -364,15 +354,16 @@ normal'>31</b>: 1-115. [31.vii.1991.]"
   def make_contents content
     "<html>
         <body>
-<p class=MsoNormal align=center style='margin-left:.5in;text-align:center;
-text-indent:-.5in'><b style='mso-bidi-font-weight:normal'>CATALOGUE REFERENCES<o:p></o:p></b></p>
+  <p class=MsoNormal align=center style='margin-left:.5in;text-align:center;
+  text-indent:-.5in'><b style='mso-bidi-font-weight:normal'>CATALOGUE REFERENCES<o:p></o:p></b></p>
 
-<p class=MsoNormal style='text-align:justify'><o:p>&nbsp;</o:p></p>
+  <p class=MsoNormal style='text-align:justify'><o:p>&nbsp;</o:p></p>
 
-<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'>#{content}
-</p>
+  <p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'>#{content}
+  </p>
         </body>
       </html>
     "
   end
+
 end
