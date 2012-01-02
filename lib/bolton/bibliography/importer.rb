@@ -97,9 +97,21 @@ class Bolton::Bibliography::Importer
     string
   end
 
+  def display_reference reference
+    {:authors => reference.authors, :citation_year => reference.citation_year, :title => reference.title}
+  end
+
   def show_results
-    Bolton::Reference.where(:import_result => nil).each do |reference|
-      Progress.log "Unseen: #{reference}"
+    last_last_name = ''
+    Bolton::Reference.where("import_result = 'added' OR import_result IS NULL").all.sort_by do |a|
+      a.authors + a.citation_year + a.title
+    end.each do |reference|
+      this_last_name = reference.authors.split(/,|\s/).first
+      if this_last_name != last_last_name
+        Progress.log ''
+        last_last_name = this_last_name
+      end
+      Progress.log "#{reference.import_result.nil? ? "Unseen:" : "Added: "} #{display_reference reference}"
     end
     Progress.puts
     Progress.puts "#{Bolton::Reference.count.to_s.rjust(4)} total"
