@@ -40,7 +40,8 @@ class Bolton::Bibliography::Importer
   def import_reference string
     reference = nil
     begin
-      original = pre_parse!(string).dup
+      string = pre_parse! string
+      original = string.dup
       return unless reference? string
       attributes = Bolton::Bibliography::Grammar.parse(string, :consume => false).value
       post_parse attributes
@@ -60,6 +61,7 @@ class Bolton::Bibliography::Importer
     string.gsub! /\n/, ' '
     remove_attributes! string
     string.strip!
+    string = remove_span string
     string
   end
 
