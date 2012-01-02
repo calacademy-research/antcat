@@ -100,7 +100,7 @@ class Bolton::Bibliography::Importer
   end
 
   def display_reference reference
-    {:authors => reference.authors, :citation_year => reference.citation_year, :title => reference.title}
+    "#{reference.to_s} #{reference.id}"
   end
 
   def show_results
