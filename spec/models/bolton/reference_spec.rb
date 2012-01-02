@@ -266,5 +266,18 @@ describe Bolton::Reference do
     end
   end
 
+  describe "Import" do
+    it "should create a reference if none exists" do
+      reference = Bolton::Reference.import :authors => 'Fisher, B. L.', :citation_year => '1981', :title => 'Dolichoderinae', :reference_type => 'ArticleReference', :series_volume_issue => '1(2)', :pagination => '22-54'
+      reference.reload.import_result.should == 'added'
+    end
+    it "should mark existing record as identical to imported record" do
+      attributes = {:authors => 'Fisher, B. L.', :citation_year => '1981', :title => 'Dolichoderinae', :reference_type => 'ArticleReference', :series_volume_issue => '1(2)', :pagination => '22-54'}
+      reference = Bolton::Reference.create! attributes
+      reference.reload.import_result.should be_nil
 
+      reference = Bolton::Reference.import attributes
+      reference.reload.import_result.should == 'identical'
+    end
+  end
 end

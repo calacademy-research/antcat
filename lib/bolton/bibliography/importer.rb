@@ -5,8 +5,8 @@
 
 class Bolton::Bibliography::Importer
   def initialize show_progress = false
-    Progress.init show_progress
-    @success_count = 0
+    Progress.init show_progress, nil, self.class.name
+    Bolton::Reference.update_all :import_result => nil
   end
 
   def import_files filenames
@@ -14,8 +14,6 @@ class Bolton::Bibliography::Importer
       @filename = filename
       Progress.puts "Importing #{@filename}..."
       import_html File.read @filename
-      show_results
-      Progress.puts
     end
     show_results
   end
@@ -47,11 +45,9 @@ class Bolton::Bibliography::Importer
       attributes = Bolton::Bibliography::Grammar.parse(string, :consume => false).value
       post_parse attributes
       attributes.merge! :original => original
-      reference = Bolton::Reference.create! attributes
+      reference = Bolton::Reference.import attributes
     rescue Citrus::ParseError => e
-      puts e
     end
-    tally_and_show_progress reference
   end
 
   def reference? string
@@ -101,15 +97,16 @@ class Bolton::Bibliography::Importer
     string
   end
 
-  def tally_and_show_progress reference
-    @success_count += 1 if reference
-    Progress.tally_and_show_progress 100
-  end
-
   def show_results
-    Progress.show_count(@success_count, Progress.processed_count, 'successful')
-    Progress.show_count(Bolton::Reference.all(:conditions => 'reference_type != "UnknownReference"').count, Progress.processed_count, 'not unknown')
-    Progress.show_results
+    Bolton::Reference.where(:import_result => nil).each do |reference|
+      Progress.log "Unseen: #{reference}"
+    end
+    Progress.puts
+    Progress.puts "#{Bolton::Reference.count.to_s.rjust(4)} total"
+    Progress.puts "#{Bolton::Reference.where(:import_result => 'identical').count.to_s.rjust(4)} identical"
+    Progress.puts "#{Bolton::Reference.where(:import_result => 'added').count.to_s.rjust(4)} added"
+    Progress.puts "#{Bolton::Reference.where(:import_result => 'updated').count.to_s.rjust(4)} updated"
+    Progress.puts "#{Bolton::Reference.where(:import_result => nil).count.to_s.rjust(4)} not seen"
   end
 
 end
