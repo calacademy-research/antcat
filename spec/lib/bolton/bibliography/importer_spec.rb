@@ -109,6 +109,15 @@ style='mso-bidi-font-weight:normal'>15</b>: 79-87. [8.xii.1960.]
      reference.note.should == '8.xii.1960'
    end
 
+   it "should handle these extra spans" do
+     contents = make_contents %s{
+<p><span>Brown, W.L.,Jr. 2010. </span><span>The venom. <i>Martialis</i> <b>50</b>:413-423.</span></p> 
+     }
+     @bibliography.import_html contents
+     reference = Bolton::Reference.first
+     reference.authors.should == 'Brown, W.L.,Jr.'
+   end
+
    it "should handle missing space after author" do
      contents = make_contents %s{
 Brown, W.L.,Jr.1948a. A new <i style='mso-bidi-font-style:normal'>Stictoponera</i>,
