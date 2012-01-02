@@ -7,7 +7,6 @@ namespace :bolton do
   namespace :import do
     desc "Import HTML files of references from Bolton"
     task :references => :environment do
-      Bolton::Reference.delete_all
       Bolton::Bibliography::Importer.new(true).import_files Dir.glob "#{$BOLTON_DATA_DIRECTORY}/NGC-REFS(*.htm"
     end
     desc "Import Bolton subfamily catalog"
