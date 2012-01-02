@@ -345,20 +345,26 @@ Dorow, W.H.O. & Kohout, R.J. 1995. Paleogene ants of the genus <i style="mso-bid
     end
   end
 
-  #it "should output the offending line when the parse fails" do
-    #contents = make_contents %s{asdfj;lf;jsl;dfjsf;fj}
-    #@bibliography.import_html contents
-    #$stdout.should_receive(:puts).at_least(1).times
-  #end
+  describe "Importing" do
+    it "should call BoltonReference.import" do
+      contents = make_contents "Abe, M. &amp; Smith, D.R. 1991d. The genus. <i>Esakia</i> <b>31</b>: 1-115. [31.vii.1991.]"
+      reference = Factory :bolton_reference
+      Bolton::Reference.should_receive(:import).and_return reference
+      @bibliography.import_html contents
+    end
+    it "should clear the import result" do
+      seen = Factory :bolton_reference, :import_result => 'added'
+      Bolton::Bibliography::Importer.new
+      seen.reload.import_result.should be_nil
+    end
+  end
 
   def make_contents content
     "<html>
         <body>
   <p class=MsoNormal align=center style='margin-left:.5in;text-align:center;
   text-indent:-.5in'><b style='mso-bidi-font-weight:normal'>CATALOGUE REFERENCES<o:p></o:p></b></p>
-
   <p class=MsoNormal style='text-align:justify'><o:p>&nbsp;</o:p></p>
-
   <p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'>#{content}
   </p>
         </body>

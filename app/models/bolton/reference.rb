@@ -128,10 +128,15 @@ class Bolton::Reference < ActiveRecord::Base
 
   def self.import attributes
     reference = where(attributes).first
-    unless reference
-      reference = create! attributes.merge(:import_result => 'added')
-    else
+    if reference
       reference.update_attribute :import_result, 'identical'
+    else
+      reference = where(:authors => attributes[:authors], :citation_year => attributes[:citation_year], :title => attributes[:title]).first
+      if reference
+        reference.update_attributes attributes.merge(:import_result => 'updated')
+      else
+        reference = create! attributes.merge(:import_result => 'added')
+      end
     end
     reference
   end

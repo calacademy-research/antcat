@@ -279,5 +279,14 @@ describe Bolton::Reference do
       reference = Bolton::Reference.import attributes
       reference.reload.import_result.should == 'identical'
     end
+    it "should update an existing record if the authors, year and title are the same" do
+      attributes = {:authors => 'Fisher, B. L.', :citation_year => '1981', :title => 'Dolichoderinae', :reference_type => 'ArticleReference', :series_volume_issue => '1(2)', :pagination => '22-54'}
+      reference = Bolton::Reference.create! attributes
+
+      attributes[:series_volume_issue] = '2(3)'
+      reference = Bolton::Reference.import attributes
+      reference.reload.import_result.should == 'updated'
+      reference.series_volume_issue.should == '2(3)'
+    end
   end
 end
