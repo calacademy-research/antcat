@@ -62,7 +62,12 @@ class Bolton::Bibliography::Importer
     string = remove_span string
     string.strip!
     string.gsub /<p><\/p>/, ''
+    string = fix_italic_title_and_journal_title string
     string
+  end
+
+  def fix_italic_title_and_journal_title string
+    string.gsub /<i[^>]*>([[:upper:]][[:lower:]]+)\./, '<i>\1</i>.<i>'
   end
 
   def post_parse attributes
@@ -99,7 +104,7 @@ class Bolton::Bibliography::Importer
     string
   end
 
-  def display_reference reference
+  def self.display_reference reference
     "#{reference.to_s} #{reference.id}"
   end
 
