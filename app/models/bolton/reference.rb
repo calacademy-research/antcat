@@ -126,9 +126,15 @@ class Bolton::Reference < ActiveRecord::Base
     self.year = ::Reference.get_year citation_year
   end
 
-  def self.remove_spans string
+  def self.normalize_to_see_if_anything_important_changed string
     return unless string
-    string.gsub /<span.*?>(.*?)<\/span>/, '\1'
+    original_string = string.dup
+    string = string.gsub /<span.*?>.*?<\/span>/, ''
+    string = string.gsub /\s/, ''
+    if string =~ /<\/?span/
+      require 'ruby-debug';debugger;'';
+    end
+    string
   end
 
   def self.import attributes
@@ -141,11 +147,15 @@ class Bolton::Reference < ActiveRecord::Base
       unless reference
         reference = create! attributes.merge(:import_result => 'added')
       else
-        just_spans_removed = reference.original.present? && remove_spans(reference.original) == remove_spans(attributes[:original])
-        Progress.puts "Changed: #{reference.original}" unless just_spans_removed
-        reference.update_attributes attributes.merge(:import_result => just_spans_removed ? 'updated_spans_removed' : 'updated')
-        Progress.puts "To:      #{reference.original}" unless just_spans_removed
-        Progress.puts unless just_spans_removed
+        nothing_important_changed = normalize_to_see_if_anything_important_changed(reference.original) == normalize_to_see_if_anything_important_changed(attributes[:original])
+        #unless nothing_important_changed
+          #Progress.puts "Before: " + normalize_to_see_if_anything_important_changed(reference.original)
+          #Progress.puts "After:  " + normalize_to_see_if_anything_important_changed(attributes[:original])
+        #end
+        Progress.puts "Changed: #{reference.original}" unless nothing_important_changed
+        reference.update_attributes attributes.merge(:import_result => nothing_important_changed ? 'updated_spans_removed' : 'updated')
+        Progress.puts "To:      #{attributes[:original]}" unless nothing_important_changed
+        Progress.puts unless nothing_important_changed
       end
     end
     reference
