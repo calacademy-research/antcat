@@ -394,7 +394,7 @@ France </i><b style='mso-bidi-font-weight:normal'>1918</b>: 182-185.
       }
       @bibliography.import_html contents
       reference = Bolton::Reference.first
-      reference.original.should == %{Santschi, F. 1918d. Sous-genres et synonymies de <i>Cremastogaster.  Bulletin de la Société Entomologique de France </i><b>1918</b>: 182-185. [27.viii.1918.]}
+      reference.original.should == %{Santschi, F. 1918d. Sous-genres et synonymies de <i>Cremastogaster</i>.<i>  Bulletin de la Société Entomologique de France </i><b>1918</b>: 182-185. [27.viii.1918.]}
     end
 
   end
