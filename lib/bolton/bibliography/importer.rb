@@ -5,9 +5,8 @@
 
 class Bolton::Bibliography::Importer
   def initialize show_progress = false
-    #@dry_run = true
     Progress.init show_progress, nil, self.class.name
-    Bolton::Reference.update_all(:import_result => nil) unless @dry_run
+    Bolton::Reference.update_all(:import_result => nil)
   end
 
   def import_files filenames
@@ -45,7 +44,7 @@ class Bolton::Bibliography::Importer
     attributes = Bolton::Bibliography::Grammar.parse(string, :consume => false).value
     post_parse attributes
     attributes.merge! :original => original
-    Bolton::Reference.import attributes unless @dry_run
+    Bolton::Reference.import attributes
   rescue Citrus::ParseError => e
   end
 
