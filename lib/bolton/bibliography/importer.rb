@@ -6,16 +6,16 @@
 class Bolton::Bibliography::Importer
   def initialize show_progress = false
     Progress.init show_progress, nil, self.class.name
+    Bolton::Reference.update_all(:import_result => nil)
   end
 
   def import_files filenames
-    Bolton::Reference.update_all(:import_result => nil)
     filenames.each do |filename|
       @filename = filename
       Progress.puts "Importing #{@filename}..."
       import_html File.read @filename
     end
-    show_results
+    self.class.show_results
   end
 
   def import_html html
@@ -103,7 +103,7 @@ class Bolton::Bibliography::Importer
     "#{reference.to_s} #{reference.id}"
   end
 
-  def show_results
+  def self.show_results
     last_last_name = ''
     Bolton::Reference.where("(import_result = 'added' AND year != 2011) OR import_result IS NULL").all.sort_by do |a|
       a.authors + a.citation_year + a.title
