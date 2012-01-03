@@ -61,6 +61,8 @@ class Bolton::Bibliography::Importer
     remove_attributes! string
     string.strip!
     string = remove_span string
+    string.strip!
+    string.gsub /<p><\/p>/, ''
     string
   end
 
