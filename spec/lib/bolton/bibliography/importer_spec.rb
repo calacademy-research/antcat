@@ -6,6 +6,12 @@ describe Bolton::Bibliography::Importer do
     @bibliography = Bolton::Bibliography::Importer.new
   end
 
+  def diff a, b
+    a.length.times do |i|
+      raise i.to_s unless a[i] == b[i]
+    end
+  end
+
   it "importing a file should call #import_html" do
    File.should_receive(:read).with('filename').and_return('contents')
    @bibliography.should_receive(:import_html).with('contents')
@@ -179,7 +185,9 @@ Dumpert, K., Maschwitz, U. & Weissflog, A. 2006. Description of five new weaver 
      }
      @bibliography.import_html contents
      reference = Bolton::Reference.first
-     reference.title.should == 'Description of five new weaver ant species of Camponotus subgenus Karavaievia Emery, 1925 from Malaysia and Thailand, with contribution to their biology, especially to colony foundation'
+     expected = 'Description of five new weaver ant species of Camponotus subgenus Karavaievia Emery, 1925 from Malaysia and Thailand, with contribution to their biology, especially to colony foundation'
+     actual = reference.title
+     diff actual, expected
    end
 
    it "should handle a colon in the title" do
@@ -366,6 +374,20 @@ Dorow, W.H.O. & Kohout, R.J. 1995. Paleogene ants of the genus <i style="mso-bid
       Bolton::Bibliography::Importer.new
       seen.reload.import_result.should be_nil
     end
+
+    it "should handle this &nbsp; properly" do
+      contents = make_contents %{
+<p class=MsoNormal style='margin-left:.5in;text-align:justify;text-indent:-.5in'>Santschi,
+F. 1918d. Sous-genres et synonymies de <i style='mso-bidi-font-style:normal'>Cremastogaster.<span
+style="mso-spacerun: yes">&nbsp; </span>Bulletin de la Société Entomologique de
+France </i><b style='mso-bidi-font-weight:normal'>1918</b>: 182-185.
+[27.viii.1918.]</p>
+      }
+      @bibliography.import_html contents
+      reference = Bolton::Reference.first
+      reference.original.should == %{Santschi, F. 1918d. Sous-genres et synonymies de <i>Cremastogaster.  Bulletin de la Société Entomologique de France </i><b>1918</b>: 182-185. [27.viii.1918.]}
+    end
+
   end
 
   def make_contents content

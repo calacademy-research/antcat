@@ -5,7 +5,7 @@
 
 class Bolton::Bibliography::Importer
   def initialize show_progress = false
-    @dry_run = true
+    #@dry_run = true
     Progress.init show_progress, nil, self.class.name
     Bolton::Reference.update_all(:import_result => nil) unless @dry_run
   end
@@ -54,8 +54,9 @@ class Bolton::Bibliography::Importer
   end
 
   def pre_parse! string
-    string.replace CGI.unescapeHTML(string)
+    string.gsub! / /, ' ' # 0x00A0, which is what we get from Nokogiri from &nbsp;
     string.gsub! /&nbsp;/, ' '
+    string.replace CGI.unescapeHTML(string)
     string.gsub! /\n/, ' '
     remove_attributes! string
     string.strip!
@@ -121,7 +122,9 @@ class Bolton::Bibliography::Importer
     added_2011_count = Bolton::Reference.where(:import_result => 'added', :year => 2011).count
     Progress.puts "#{(added_count - added_2011_count).to_s.rjust(4)} added (not counting #{added_2011_count} published in 2011)"
 
-    Progress.puts "#{Bolton::Reference.where(:import_result => 'updated').count.to_s.rjust(4)} updated"
+    updated_count = Bolton::Reference.where(:import_result => 'updated').count
+    updated_spans_removed_count = Bolton::Reference.where(:import_result => 'updated_spans_removed').count
+    updated_count = Progress.puts "#{updated_count.to_s.rjust(4)} updated (not counting #{updated_spans_removed_count} that just had spans removed)"
     Progress.puts "#{Bolton::Reference.where(:import_result => nil).count.to_s.rjust(4)} not seen"
   end
 

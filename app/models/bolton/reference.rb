@@ -126,6 +126,11 @@ class Bolton::Reference < ActiveRecord::Base
     self.year = ::Reference.get_year citation_year
   end
 
+  def self.remove_spans string
+    return unless string
+    string.gsub /<span.*?>(.*?)<\/span>/, '\1'
+  end
+
   def self.import attributes
     attributes[:title] = attributes[:title][0, 255]
     reference = where(attributes).first
@@ -133,10 +138,14 @@ class Bolton::Reference < ActiveRecord::Base
       reference.update_attribute :import_result, 'identical'
     else
       reference = where(:authors => attributes[:authors], :citation_year => attributes[:citation_year], :title => attributes[:title]).first
-      if reference
-        reference.update_attributes attributes.merge(:import_result => 'updated')
-      else
+      unless reference
         reference = create! attributes.merge(:import_result => 'added')
+      else
+        just_spans_removed = reference.original.present? && remove_spans(reference.original) == remove_spans(attributes[:original])
+        Progress.puts "Changed: #{reference.original}" unless just_spans_removed
+        reference.update_attributes attributes.merge(:import_result => just_spans_removed ? 'updated_spans_removed' : 'updated')
+        Progress.puts "To:      #{reference.original}" unless just_spans_removed
+        Progress.puts unless just_spans_removed
       end
     end
     reference
