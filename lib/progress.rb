@@ -44,6 +44,7 @@ class Progress
   def self.log object, prefix = nil
     string = format_object object
     string = prefix + ': ' + string if prefix
+    string = string[0..-2] if string[-1] == "\n"
     @logger.info string if @logger
     Rails.logger.info string
   end
