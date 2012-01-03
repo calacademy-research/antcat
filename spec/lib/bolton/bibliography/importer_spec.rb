@@ -354,6 +354,15 @@ Dorow, W.H.O. & Kohout, R.J. 1995. Paleogene ants of the genus <i style="mso-bid
     end
   end
 
+  it "should handle when italicization in the title carries over to journal name" do
+    contents = make_contents %s{
+<p>Wheeler, G.C. &amp; Wheeler, J. 1991a. The larva of <i>Blepharidatta.<span>&nbsp; </span>Journal of the New York Entomological Society</i> <b>99</b>: 132-137.<span>&nbsp; </span>[14.ii.1991.]</p>
+    }
+    @bibliography.import_html contents
+    reference = Bolton::Reference.first
+    reference.title.should == 'The larva of Blepharidatta'
+  end
+
   describe 'saving the original' do
     it "should simplify the HTML markup" do
       contents = make_contents "Abe, M. &amp; Smith, D.R. 1991d. The genus-group names of Symphyta and their type species. <i style='mso-bidi-font-style:normal'>Esakia</i> <b style='mso-bidi-font-weight: normal'>31</b>: 1-115. [31.vii.1991.]"
