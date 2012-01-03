@@ -137,26 +137,32 @@ class Bolton::Reference < ActiveRecord::Base
     string
   end
 
+  def self.import_update reference, attributes
+    nothing_important_changed = normalize_to_see_if_anything_important_changed(reference.original) == normalize_to_see_if_anything_important_changed(attributes[:original])
+    Progress.puts "Changed: #{reference.original}" unless nothing_important_changed
+    reference.update_attributes attributes.merge(:import_result => nothing_important_changed ? 'updated_spans_removed' : 'updated')
+    Progress.puts "To:      #{attributes[:original]}" unless nothing_important_changed
+    Progress.puts unless nothing_important_changed
+  end
+
+  def self.import_updated_title reference, attributes
+    Progress.puts "Updated title for #{reference}"
+    Progress.puts "From: #{reference.title}"
+    Progress.puts "To:   #{attributes[:title]}"
+    Progress.puts
+    reference.update_attributes attributes.merge(:import_result => 'updated_title')
+  end
+
   def self.import attributes
     attributes[:title] = attributes[:title][0, 255]
-    reference = where(attributes).first
-    if reference
+    if reference = where(attributes).first
       reference.update_attribute :import_result, 'identical'
+    elsif reference = where(:authors => attributes[:authors], :citation_year => attributes[:citation_year], :title => attributes[:title]).first
+      import_update reference, attributes
+    elsif reference = where(:authors => attributes[:authors], :citation_year => attributes[:citation_year]).first
+        import_updated_title reference, attributes
     else
-      reference = where(:authors => attributes[:authors], :citation_year => attributes[:citation_year], :title => attributes[:title]).first
-      unless reference
-        reference = create! attributes.merge(:import_result => 'added')
-      else
-        nothing_important_changed = normalize_to_see_if_anything_important_changed(reference.original) == normalize_to_see_if_anything_important_changed(attributes[:original])
-        #unless nothing_important_changed
-          #Progress.puts "Before: " + normalize_to_see_if_anything_important_changed(reference.original)
-          #Progress.puts "After:  " + normalize_to_see_if_anything_important_changed(attributes[:original])
-        #end
-        Progress.puts "Changed: #{reference.original}" unless nothing_important_changed
-        reference.update_attributes attributes.merge(:import_result => nothing_important_changed ? 'updated_spans_removed' : 'updated')
-        Progress.puts "To:      #{attributes[:original]}" unless nothing_important_changed
-        Progress.puts unless nothing_important_changed
-      end
+      reference = create! attributes.merge(:import_result => 'added')
     end
     reference
   end

@@ -6,10 +6,10 @@
 class Bolton::Bibliography::Importer
   def initialize show_progress = false
     Progress.init show_progress, nil, self.class.name
-    Bolton::Reference.update_all(:import_result => nil)
   end
 
   def import_files filenames
+    Bolton::Reference.update_all(:import_result => nil)
     filenames.each do |filename|
       @filename = filename
       Progress.puts "Importing #{@filename}..."
@@ -110,10 +110,10 @@ class Bolton::Bibliography::Importer
     end.each do |reference|
       this_last_name = reference.authors.split(/,|\s/).first
       if this_last_name != last_last_name
-        Progress.log ''
+        Progress.puts
         last_last_name = this_last_name
       end
-      Progress.log "#{reference.import_result.nil? ? "Unseen:" : "Added: "} #{display_reference reference}"
+      Progress.puts "#{reference.import_result.nil? ? "Unseen:" : "Added: "} #{display_reference reference}"
     end
     Progress.puts
     Progress.puts "#{Bolton::Reference.count.to_s.rjust(4)} total"
@@ -123,9 +123,9 @@ class Bolton::Bibliography::Importer
     added_2011_count = Bolton::Reference.where(:import_result => 'added', :year => 2011).count
     Progress.puts "#{(added_count - added_2011_count).to_s.rjust(4)} added (not counting #{added_2011_count} published in 2011)"
 
-    updated_count = Bolton::Reference.where(:import_result => 'updated').count
-    updated_spans_removed_count = Bolton::Reference.where(:import_result => 'updated_spans_removed').count
-    updated_count = Progress.puts "#{updated_count.to_s.rjust(4)} updated (not counting #{updated_spans_removed_count} that just had spans removed)"
+    Progress.puts "#{Bolton::Reference.where(:import_result => 'updated_title').count.to_s.rjust(4)} updated title"
+    Progress.puts "#{Bolton::Reference.where(:import_result => 'updated').count.to_s.rjust(4)} updated other"
+    Progress.puts "#{Bolton::Reference.where(:import_result => 'updated_spans_removed').count.to_s.rjust(4)} updated (minor changes)"
     Progress.puts "#{Bolton::Reference.where(:import_result => nil).count.to_s.rjust(4)} not seen"
   end
 
