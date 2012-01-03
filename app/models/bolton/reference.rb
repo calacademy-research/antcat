@@ -153,6 +153,13 @@ class Bolton::Reference < ActiveRecord::Base
     reference.update_attributes attributes.merge(:import_result => 'updated_title')
   end
 
+  def self.import_updated_year reference, attributes
+    Progress.puts "Updated year for #{reference}"
+    Progress.puts "From #{reference.citation_year} to #{attributes[:citation_year]}"
+    Progress.puts
+    reference.update_attributes attributes.merge(:import_result => 'updated_year')
+  end
+
   def self.import attributes
     attributes[:title] = attributes[:title][0, 255]
     if reference = where(attributes).first
@@ -160,7 +167,9 @@ class Bolton::Reference < ActiveRecord::Base
     elsif reference = where(:authors => attributes[:authors], :citation_year => attributes[:citation_year], :title => attributes[:title]).first
       import_update reference, attributes
     elsif reference = where(:authors => attributes[:authors], :citation_year => attributes[:citation_year]).first
-        import_updated_title reference, attributes
+      import_updated_title reference, attributes
+  elsif reference = where(:authors => attributes[:authors], :title => attributes[:title]).first
+        import_updated_year reference, attributes
     else
       reference = create! attributes.merge(:import_result => 'added')
     end

@@ -124,6 +124,7 @@ class Bolton::Bibliography::Importer
     Progress.puts "#{(added_count - added_2011_count).to_s.rjust(4)} added (not counting #{added_2011_count} published in 2011)"
 
     Progress.puts "#{Bolton::Reference.where(:import_result => 'updated_title').count.to_s.rjust(4)} updated title"
+    Progress.puts "#{Bolton::Reference.where(:import_result => 'updated_year').count.to_s.rjust(4)} updated year"
     Progress.puts "#{Bolton::Reference.where(:import_result => 'updated').count.to_s.rjust(4)} updated other"
     Progress.puts "#{Bolton::Reference.where(:import_result => 'updated_spans_removed').count.to_s.rjust(4)} updated (minor changes)"
     Progress.puts "#{Bolton::Reference.where(:import_result => nil).count.to_s.rjust(4)} not seen"
