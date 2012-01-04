@@ -19,14 +19,13 @@ class Bolton::ReferencesMatcher
     show_results
   end
 
-  private
   def find_matches_for bolton
     results = @matcher.match bolton
     results[:matches].each do |result|
       Bolton::Match.create! :bolton_reference => result[:target], :reference => result[:match], :similarity => results[:similarity]
     end
 
-    bolton.set_match
+    bolton.update_match
 
     case
     when results[:similarity] == 0.00 then @unmatched_count += 1

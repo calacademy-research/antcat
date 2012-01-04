@@ -57,6 +57,10 @@ class Bolton::Reference < ActiveRecord::Base
     save!
   end
 
+  def update_match
+    set_match if match_status == nil || match_status == 'auto'
+  end
+
   def set_match_manually string
     if string == 'unmatchable'
       self.match = nil
