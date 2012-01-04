@@ -201,6 +201,43 @@ describe Bolton::Reference do
     end
   end
 
+  describe "Updating matches" do
+    it "should set an unmatched reference normally" do
+      bolton = Factory :bolton_reference
+      reference = Factory :reference
+      Factory :bolton_match, :bolton_reference => bolton, :reference => reference
+      bolton.update_match
+      bolton.match.should == reference
+      bolton.match_status.should == 'auto'
+    end
+    it "should leave the reference alone if it was set manually" do
+      manually_set_reference = Factory :reference
+      another_reference = Factory :reference
+      bolton = Factory :bolton_reference, :match => manually_set_reference, :match_status => 'manual'
+      Factory :bolton_match, :bolton_reference => bolton, :reference => another_reference
+      bolton.update_match
+      bolton.match.should == manually_set_reference
+      bolton.match_status.should == 'manual'
+    end
+    it "should leave the reference alone if it was set as unmatcheable" do
+      another_reference = Factory :reference
+      bolton = Factory :bolton_reference, :match_status => 'unmatchable'
+      Factory :bolton_match, :bolton_reference => bolton, :reference => another_reference
+      bolton.update_match
+      bolton.match.should be_nil
+      bolton.match_status.should == 'unmatchable'
+    end
+    it "should change the match if it was auto" do
+      auto_set_reference = Factory :reference
+      another_reference = Factory :reference
+      bolton = Factory :bolton_reference, :match => auto_set_reference, :match_status => 'auto'
+      Factory :bolton_match, :bolton_reference => bolton, :reference => another_reference
+      bolton.update_match
+      bolton.match.should == another_reference
+      bolton.match_status.should == 'auto'
+    end
+  end
+
   describe "Best match similarity" do
     it "should return nil if there are none" do
       Factory(:bolton_reference).best_match_similarity.should be_nil
