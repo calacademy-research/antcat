@@ -110,6 +110,11 @@ describe Reference do
         Reference.reindex
         Reference.do_search(:q => 'holldobler').should == [reference]
       end
+      it 'should at least find Bert, even when the diacritic is used in the search term' do
+        reference = reference_factory(:author_name => 'Hölldobler')
+        Reference.reindex
+        Reference.do_search(:q => 'Hölldobler').should == [reference]
+      end
     end
 
     describe 'searching by cite code' do
