@@ -10,34 +10,6 @@
 
 #  To import these files, run
 #    rake bolton:import:subfamilies
-#
-# Manual edits:
-#   01. FORMICIDAE        Put AFROTROPICAL AND MALAGASY on its own line
-#   02. DOLICHODERINAE    Italicize Arnoldius in "Genus Arnoldius references"
-#                         Insert ; between '(Australia synopsis) ' and 'Heterick'
-#                         Change : to ; in "species revision, key): Johnson, 1989b"
-#                         Add a space before NEBOTHRIOMYRMEX to avoid complicating code
-#                         Change a period between references to a ; in Tapinoma reference list
-#   03. FORMICOMORPHS     Remove linebreak in Acropyga's headline
-#                         Change a period between references to a ; in Lasius taxonomic history
-                            ("as junior synonym of Acanthomyops")
-#                         Fix N<i>ylander
-#                         Remove extra b from 1985bb and 1903bb
-#                         Add a space between period and "Type-species"
-#                         Remove italicized space after Sinoformica and before Hong
-#                         Change 'Type-species' to 'Type-genus' for Leptaleinae
-#   07. MYRMICOMORPHS 1   Add colon after year in '1950c 143' in two places
-#                         Fix "1957ba" to "1957a"
-#                         In Syllophopsis headline, move period outside bracket
-#   08. MYRMICOMORPHS 2   Fix italicization of "Genus OCYMYRMEX"
-#                         Don't italicize "Taxonomic history" for Phidola
-#                         Remove colon after Dilobocondyla in its headline
-#                         Remove italicized space in Sinomyrmex
-#                         Move period outside brackets in Myrmicites headline
-#   09. PONEROMORPHS      Remove italicized space in Opamyrma
-#                         Move period outside brackets in Syntermitopone headline
-#                         Remove italicized space in Eogorgites, Longicapitia
-#   11. EXTINCT SUBFAMS   Remove italicized space in Sphecomyrmodes
 
 require 'bolton/catalog/subfamily/family_importer'
 require 'bolton/catalog/subfamily/genus_importer'
