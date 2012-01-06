@@ -6,15 +6,15 @@ Feature: Searching references
 
   Background:
     Given the following references exist
-      |authors    |year         |title                |citation  |
-      |Fisher, B. |1995b        |Anthill              |Ants 1:1-2|
-      |Forel, M.  |1995b        |Formis               |Ants 1:1-2|
-      |Bolton, B. |2010 ("2011")|Ants of North America|Ants 2:1-2|
+      |authors       |year         |title                |citation  |
+      |Fisher, B.    |1995b        |Anthill              |Ants 1:1-2|
+      |Hölldobler, B.|1995b        |Formis               |Ants 1:1-2|
+      |Bolton, B.    |2010 ("2011")|Ants of North America|Ants 2:1-2|
 
   Scenario: Not searching yet
     When I go to the references page
     Then I should see "Fisher, B."
-      And I should see "Forel, M."
+      And I should see "Hölldobler, B."
       And I should see "Bolton, B."
 
   Scenario: Finding one reference for an author
@@ -23,7 +23,15 @@ Feature: Searching references
       And I press "Go" by the search box
     Then I should see "Fisher, B."
       And I should not see "Bolton, B."
-      And I should not see "Forel, M."
+      And I should not see "Hölldobler, B."
+
+  Scenario: Searching for an author name with diacritics, using the diacritics in the query
+    When I go to the references page
+      And I fill in the search box with "Hölldobler"
+      And I press "Go" by the search box
+    Then I should not see "Fisher, B."
+      And I should not see "Bolton, B."
+      And I should see "Hölldobler, B."
 
   Scenario: Finding nothing
     When I go to the references page
@@ -31,7 +39,7 @@ Feature: Searching references
       And I press "Go" by the search box
     Then I should not see "Fisher, B."
       And I should not see "Bolton, B."
-      And I should not see "Forel, M."
+      And I should not see "Hölldobler, B."
       And I should see "No results found"
 
   Scenario: Maintaining search box contents
@@ -46,7 +54,7 @@ Feature: Searching references
       And I fill in the search box with "1995"
       And I press "Go" by the search box
     Then I should see "Fisher, B. 1995"
-      And I should see "Forel, M. 1995"
+      And I should see "Hölldobler, B. 1995b"
       And I should not see "Bolton, B. 2010"
 
   Scenario: Searching by a year range
