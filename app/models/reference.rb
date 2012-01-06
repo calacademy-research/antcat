@@ -100,7 +100,7 @@ class Reference < ActiveRecord::Base
       end
     end
 
-    string = options[:q].dup
+    string = ActiveSupport::Inflector.transliterate options[:q].downcase
 
     only_show_unknown_references = false
     question_mark_index = string.index '?'
