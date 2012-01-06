@@ -8,9 +8,6 @@
 
 #  To import these files, run
 #    rake bolton:import:species
-#
-#  Manual edits:
-#   NGC-Spon-spp, italicize 'n' in 'niger' (Pachycondyla)
 
 class Bolton::Catalog::Species::Importer < Bolton::Catalog::Importer
   def import
