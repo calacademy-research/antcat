@@ -35,8 +35,9 @@ class Bolton::Reference < ActiveRecord::Base
     end
 
     if options[:q].present?
+      string = ActiveSupport::Inflector.transliterate options[:q].downcase
       solr_result_ids = search {
-        keywords options[:q]
+        keywords string
         order_by :id
         paginate :per_page => 5_000
       }.results.map &:id
