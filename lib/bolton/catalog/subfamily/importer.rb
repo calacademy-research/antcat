@@ -11,9 +11,6 @@
 #  To import these files, run
 #    rake bolton:import:subfamilies
 
-# Corrections:
-# 07. MYRMICOMORPHS 1: Fixed "AdelomyrSmex"
-
 require 'bolton/catalog/subfamily/family_importer'
 require 'bolton/catalog/subfamily/genus_importer'
 require 'bolton/catalog/subfamily/subfamily_importer'
