@@ -147,7 +147,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
 
   def check_status_change genus, status
     return if status == genus.status
-    return if genus.status == 'valid' && status == 'unidentifiable'
+    return if genus.status == 'valid' && (status == 'unidentifiable' || status == 'unavailable')
     raise "Genus #{genus.name} status change from #{genus.status} to #{status}"
   end
 
@@ -156,7 +156,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
   end
 
   def check_existence name, genus
-    raise "Genus #{name} not found" unless genus || name == 'Syntaphus'
+    raise "Genus #{name} not found" unless genus || name == 'Syntaphus' || name == 'Formicium'
   end
 
 end
