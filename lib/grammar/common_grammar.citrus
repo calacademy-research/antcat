@@ -11,6 +11,7 @@ grammar CommonGrammar
     blank_paragraph |
     empty_span |
     en_gb_span |
+    font_size_span |
     errant_red_space |
     spacerun
   end
@@ -169,6 +170,10 @@ grammar CommonGrammar
 
   rule en_gb_span
     '<span lang=' '"'? 'EN-GB' '"'? '>'
+  end
+
+  rule font_size_span
+    '<span style="font-size:11.0pt;mso-bidi-font-size: 10.0pt">'
   end
 
 end
