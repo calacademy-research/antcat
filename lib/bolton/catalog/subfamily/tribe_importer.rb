@@ -43,6 +43,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     taxonomic_history << parse_genera_lists(:tribe, :subfamily => subfamily, :tribe => tribe)
     taxonomic_history << parse_junior_synonyms_of_tribe(tribe)
     taxonomic_history << parse_genera_lists(:tribe, :subfamily => subfamily, :tribe => tribe)
+    taxonomic_history << parse_collective_group_names_list
     taxonomic_history << parse_references
 
     parse_genera
