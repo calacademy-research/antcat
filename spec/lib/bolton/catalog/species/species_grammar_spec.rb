@@ -107,6 +107,10 @@ sumatranus</span></i><span style="color:blue">, <i>tinctus</i></span>.
         }).should == {:type => :species, :name => 'angustata', :status => 'unavailable'}
       end
 
+      it "should handle this" do
+        @importer.parse('<b><i>*</i></b><i><span style="color:#7030A0">electra</span>. *Zatania electra</i> LaPolla, Kallal &amp; Brady, 2011: 3')
+      end
+
       it "should handle an unavailable subspecies without a binomial" do
         @importer.parse(%{
   <i><span style="color:purple">suturalis</span> </i>Santschi, 1921b: 426 (<b>unavailable name</b>); see under <b><i>LEPTOTHORAX</i></b>.
