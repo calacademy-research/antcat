@@ -55,10 +55,14 @@ grammar Bolton::Catalog::Species::GenusGrammar
 
   rule genus
     (
-      bold italic (red|green|brown) uppercase_word /.*/
+      bold italic (red|green|brown|purple) uppercase_word /.*/
     ) {
       value = {:type => :genus, :name => uppercase_word.downcase.capitalize}
-      value[:status] = brown.present? ? 'unresolved homonym' : 'valid'
+      value[:status] = case
+        when brown.present? then 'unresolved homonym'
+        when purple.present? then 'unavailable'
+        else 'valid'
+      end
       value
     }
   end
