@@ -83,6 +83,15 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     return taxonomic_history, parsed_taxonomic_history
   end
 
+  def get_filenames filenames
+    filenames = filenames.select do |filename|
+      if matches = File.basename(filename).match(/^(\d\d)\. /)
+        number = matches[1].to_i
+      end
+    end
+    super filenames
+  end
+
   def parse_references_sections *allowed_header_types
     parsed_text = ''
     while allowed_header_types.include? @type
