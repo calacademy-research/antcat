@@ -37,6 +37,10 @@ class Bolton::Catalog::Species::Importer < Bolton::Catalog::Importer
     Bolton::Catalog::Species::Grammar
   end
 
+  def parse_failed
+    raise "Parse failed"
+  end
+
   def parse_see_under
     return unless @type == :see_under
     parse_next_line
@@ -166,4 +170,7 @@ class Bolton::Catalog::Species::Importer < Bolton::Catalog::Importer
     species
   end
 
+  def get_filenames filenames
+    super #filenames.select {|filename| File.basename(filename) =~ /Sp(a-an)|(st-tet)/}
+  end
 end
