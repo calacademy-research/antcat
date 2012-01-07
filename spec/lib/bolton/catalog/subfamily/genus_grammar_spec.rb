@@ -56,10 +56,36 @@ describe Bolton::Catalog::Subfamily::Importer do
       }).should == {:type => :genus_header, :name => 'Cariridris', :status => 'unidentifiable', :fossil => true}
     end
 
-    it "should handle an unavailable genus" do
+    describe "Unavailable genera" do
+      it "should handle an unavailable genus" do
+        @importer.parse(%{
+    <i><span lang=EN-GB style='color:purple'>ANCYLOGNATHUS</span></i><span lang=EN-GB> [<i>nomen nudum</i>]</span>
+        }).should == {:type => :genus_header, :name => 'Ancylognathus', :status => 'unavailable'}
+      end
+      it "should handle an unavailable genus" do
+        Bolton::Catalog::Subfamily::GenusGrammar.parse(%{<b><span>Genus <i><span style="color:#7030A0">ZATANIA</span></i><p></p></span></b>}).value.should == {:type => :genus_header, :name => 'Zatania', :status => 'unavailable'}
+      end
+      it "should handle this Zatania taxonomic history item as a special case" do
+        Bolton::Catalog::Subfamily::GenusGrammar.parse(%{<i><span lang="EN-GB" style="color:#7030A0">Zatania</span></i><span lang="EN-GB"> in Formicinae}).value.should == {:type => :other}
+      end
+    end
+
+    it "should handle Ocymyrmex" do
       @importer.parse(%{
-  <i><span lang=EN-GB style='color:purple'>ANCYLOGNATHUS</span></i><span lang=EN-GB> [<i>nomen nudum</i>]</span>
-      }).should == {:type => :genus_header, :name => 'Ancylognathus', :status => 'unavailable'}
+<b><span lang="EN-GB">Genus </span><span lang="EN-GB" style="color:red"><i>OCYMYRMEX</i></span><i><span lang="EN-GB"> <p></p></span></i></b>
+      }).should == {:type => :genus_header, :name => 'Ocymyrmex', :status => 'valid'}
+    end
+
+    it "should handle Formicium" do
+      @importer.parse(%{
+<b style="mso-bidi-font-weight:normal"><span lang="EN-GB">Collective group name *<i style="mso-bidi-font-style:normal"><span style="color:green">FORMICIUM</span></i> <p></p></span></b>
+      }).should == {:type => :genus_header, :name => 'Formicium', :status => 'valid', :fossil => true}
+    end
+
+    it "should handle Formicium" do
+      @importer.parse(%{
+  <span lang="EN-GB">*<b style="mso-bidi-font-weight:normal"><i style="mso-bidi-font-style: normal">Formicium</i></b> Westwood, 1854: 393.</span>
+      }).should == {:type => :genus_line, :name => 'Formicium', :status => 'valid'}
     end
 
     it "should handle this" do
@@ -198,6 +224,11 @@ describe Bolton::Catalog::Subfamily::Importer do
       }).should == {:type => :junior_synonyms_of_genus_header}
     end
 
+    it "should be recognized when they are of a collective group name" do
+      @importer.parse(%{
+<b><span lang="EN-GB">Junior synonyms of *<i><span style="color:green">FORMICIUM</span><span style="color:red"><p></p></span></i></span></b>
+      }).should == {:type => :junior_synonyms_of_genus_header}
+    end
   end
 
   describe "Taxonomic history" do
