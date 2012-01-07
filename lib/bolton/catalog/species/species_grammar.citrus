@@ -77,7 +77,10 @@ grammar Bolton::Catalog::Species::SpeciesGrammar
   end
 
   rule unavailable_species
-    (fossil_flag? italic purple species_name /.*/) {
+    (
+      (fossil_flag? italic purple species_name /.*/) |
+      (bold italic fossil_flag? close_tags italic purple species_name /.*/)
+    ) {
       value = {:type => :species, :name => species_name.value, :status => 'unavailable'}
       value.merge! :fossil => true unless fossil_flag.blank?
       value
