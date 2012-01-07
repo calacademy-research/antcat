@@ -45,7 +45,7 @@ group :test do
   gem 'database_cleaner'
   gem 'factory_girl_rails'
   gem 'simplecov'
-  gem 'selenium-webdriver',  '!= 2.15'
+  gem 'selenium-webdriver',  '< 2.15'
   gem 'webmock'
 end
 

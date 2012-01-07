@@ -201,8 +201,8 @@ GEM
       archive-tar-minitar (>= 0.5.2)
     rubyzip (0.9.5)
     sass (3.1.12)
-    selenium-webdriver (2.16.0)
-      childprocess (>= 0.2.5)
+    selenium-webdriver (2.14.0)
+      childprocess (>= 0.2.1)
       ffi (~> 1.0.9)
       multi_json (~> 1.0.4)
       rubyzip
@@ -276,7 +276,7 @@ DEPENDENCIES
   rspec-rails
   ruby-debug19
   sass
-  selenium-webdriver (!= 2.15)
+  selenium-webdriver (< 2.15)
   simplecov
   spork (= 0.9.0.rc9)
   sunspot_rails
