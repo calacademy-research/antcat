@@ -382,4 +382,8 @@ dimidiata Forel, 1911: see under <b><i>ACROMYRMEX</i></b>.
 
   end
 
+  it "should handle this one from Bolton 1/2010 with a font size span" do
+    @importer.parse('<i style="mso-bidi-font-style:normal">pilosa. Formica pilosa</span></i><span style="font-size:11.0pt; mso-bidi-font-size:10.0pt"> Smith, F. 1857a: 54 (w.) BORNEO. </span>[Junior primary homonym of <i style="mso-bidi-font-style:normal">pilosa</i> Olivier, above.] Replacement name (first available): <i style="mso-bidi-font-style:normal">leonardi</i> Emery, 1889b: 515 (see there). Combination in <i style="mso-bidi-font-style: normal">Colobopsis</i>: Mayr, 1862: 691; in <i style="mso-bidi-font-style:normal">Camponotus</i>: Dalla Torre, 1893: 247; in <i style="mso-bidi-font-style:normal">C. (Colobopsis</i>): Forel, 1912i: 90. Senior synonym of <i style="mso-bidi-font-style:normal">pubescens</i>: Emery, 1900d: 706.')
+  end
+
 end

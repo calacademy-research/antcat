@@ -173,4 +173,9 @@ describe CommonGrammar do
 
   end
 
+  describe "Space" do
+    it "should consider this span space" do
+      CommonGrammar.parse(%{<span style="font-size:11.0pt;mso-bidi-font-size: 10.0pt">}, :root => :space).should_not be_nil
+    end
+  end
 end
