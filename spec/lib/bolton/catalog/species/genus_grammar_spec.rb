@@ -111,13 +111,20 @@ describe Bolton::Catalog::Species::Importer do
     it "should handle an unidentifiable though valid genus" do
       @importer.parse(%{<b><i><span style='color:green'>CONDYLODON</span></i></b> (Brazil)}).should == {:type => :genus, :name => 'Condylodon', :status => 'valid'}
     end
-
     it "should handle a load of other crap" do
       @importer.parse(%{<b><i><span style="color:red">PROMYOPIAS</span></i></b><span style="color:red"> </span><span style="color:black">(Afrotropical)<p></p></span>}).should == {:type => :genus, :name => 'Promyopias', :status => 'valid'}
     end
     it "should handle an empty red paragrah" do
       @importer.parse(%{<b><i><span style="color:red">ACANTHOPONERA</span></i></b><span style="color:red"> <p></p></span>
       }).should == {:type => :genus, :name => 'Acanthoponera', :status => 'valid'}
+    end
+  end
+
+  describe "parsing an unavailable genus header" do
+    it "should handle this" do
+      @importer.parse('<b><i><span style="color:#7030A0">ZATANIA<p></p></span></i></b>').should == {
+        :type => :genus, :name => 'Zatania', :status => 'unavailable'
+      }
     end
   end
 
