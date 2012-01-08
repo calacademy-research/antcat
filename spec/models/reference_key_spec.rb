@@ -2,6 +2,7 @@
 require 'spec_helper'
 
 describe ReferenceKey do
+
   it "should output a {ref xxx} for Taxt" do
     reference = Factory :article_reference, :author_names => [Factory(:author_name, :name => 'Bolton, B.')], :citation_year => '1970a'
     ReferenceKey.new(reference).to_taxt.should == "{ref #{reference.id}}"

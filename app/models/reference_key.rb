@@ -8,7 +8,7 @@ class ReferenceKey
   end
 
   def to_taxt
-    Taxt.reference self
+    Taxt.reference @reference
   end
 
   def to_link user
