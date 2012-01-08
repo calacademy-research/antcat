@@ -8,6 +8,21 @@ describe ReferenceKey do
     ReferenceKey.new(reference).to_taxt.should == "{ref #{reference.id}}"
   end
 
+  describe "Representing as a string" do
+    it "One author" do
+      reference = Factory :article_reference, :author_names => [Factory(:author_name, :name => 'Bolton, B.')], :citation_year => '1970a'
+      reference.key.to_s.should == 'Bolton, 1970a'
+    end
+    it "Two authors" do
+      reference = Factory :article_reference, :author_names => [Factory(:author_name, :name => 'Bolton, B.'), Factory(:author_name, :name => 'Fisher, B.')], :citation_year => '1970a'
+      reference.key.to_s.should == 'Bolton & Fisher, 1970a'
+    end
+    it "Three authors" do
+      reference = Factory :article_reference, :author_names => [Factory(:author_name, :name => 'Bolton, B.'), Factory(:author_name, :name => 'Fisher, B.'), Factory(:author_name, :name => 'Ward, P.S.')], :citation_year => '1970a'
+      reference.key.to_s.should == 'Bolton, Fisher & Ward, 1970a'
+    end
+  end
+
   describe "Link" do
     it "should create a link to the reference" do
       reference = Factory :article_reference, :author_names => [Factory(:author_name, :name => 'Latreille, P. A.')], :citation_year => '1809', :title => "Ants", :journal => Factory(:journal, :name => 'Science'), :series_volume_issue => '(1)', :pagination => '3'
