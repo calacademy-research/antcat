@@ -267,10 +267,16 @@ describe Reference do
   end
 
   describe "Finding or creating the reference for a Bolton citation" do
-    it "creates a MissingReference if it can't find the reference" do
+    it "creates a 'no Bolton' MissingReference if it can't find the reference" do
       reference = Reference.find_or_create_by_bolton_key :author_names => ['Bolton'], :year => '1920', :reference_text => 'Bolton, 1920'
       reference.citation.should == 'Bolton, 1920'
       reference.reason_missing.should == 'no Bolton'
+    end
+    it "creates a 'no Bolton match' MissingReference if the Bolton reference exists, but not the Reference" do
+      bolton_reference = Factory :bolton_reference, :authors => 'Bolton, B.', :citation_year => '1920'
+      data = {:author_names => ['Bolton'], :year => '1920', :reference_text => 'Bolton, 1920'}
+      reference = Reference.find_or_create_by_bolton_key data
+      reference.reason_missing.should == 'no Bolton match'
     end
     it "reuses a MissingReference" do
       data = {:author_names => ['Bolton'], :year => '1920', :reference_text => 'Bolton, 1920'}
