@@ -90,6 +90,54 @@ class Reference < ActiveRecord::Base
     self.year = self.class.citation_year_to_year citation_year
   end
 
+  def self.find_by_bolton_key author_names, citation_year
+    bolton_key = Bolton::ReferenceKey.new(author_names.join(' '), citation_year).to_s :db
+
+    reference = find_by_bolton_key_cache bolton_key
+    return reference if reference
+
+    bolton_reference = Bolton::Reference.find_by_key_cache bolton_key
+    unless bolton_reference
+      message = "Can't find Bolton reference for '#{bolton_key}'"
+      Progress.error message
+      raise BoltonReferenceNotFound.new message
+    end
+
+    reference = bolton_reference.match
+    unless reference
+      message = "Bolton reference for '#{bolton_key}' was found, but hasn't been matched"
+      Progress.error message
+      raise BoltonReferenceNotMatched.new message
+    end
+
+    reference.update_attribute :bolton_key_cache, bolton_key
+
+    reference
+  end
+
+  def self.find_or_create_by_bolton_key data
+    year = data[:year] || data[:in][:year]
+    bolton_key = Bolton::ReferenceKey.new(data[:author_names].join(' '), year).to_s :db
+
+    reference = find_by_bolton_key_cache bolton_key
+    return reference if reference
+
+    bolton_reference = Bolton::Reference.find_by_key_cache bolton_key
+    if !bolton_reference
+      reference = MissingReference.import 'no Bolton', data
+    else
+      reference = bolton_reference.match || MissingReference.import('no match for Bolton', data)
+    end
+
+    reference.update_attribute :bolton_key_cache, bolton_key
+
+    reference
+  end
+
+  def interpolation user
+    key.to_link user
+  end
+
   private
   # author names caches
   def set_author_names_caches(*)

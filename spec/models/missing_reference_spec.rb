@@ -25,4 +25,10 @@ describe MissingReference do
     end
   end
 
+  describe "Interpolation" do
+    it "should simply return the citation" do
+      Factory(:missing_reference, :citation => 'foo').interpolation.should == 'foo'
+    end
+  end
+
 end

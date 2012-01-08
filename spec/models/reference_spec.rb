@@ -281,4 +281,14 @@ describe Reference do
     end
   end
 
+  describe "Interpolation" do
+    it "should defer to its key" do
+      key = mock
+      reference = Factory :article_reference
+      reference.should_receive(:key).and_return key
+      key.should_receive(:to_link)
+      reference.interpolation nil
+    end
+  end
+
 end

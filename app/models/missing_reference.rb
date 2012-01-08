@@ -14,4 +14,8 @@ class MissingReference < Reference
     MissingReferenceKey.new citation
   end
 
+  def interpolation _ = nil
+    citation
+  end
+
 end
