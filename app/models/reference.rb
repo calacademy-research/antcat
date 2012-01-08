@@ -126,7 +126,7 @@ class Reference < ActiveRecord::Base
     if !bolton_reference
       reference = MissingReference.import 'no Bolton', data
     else
-      reference = bolton_reference.match || MissingReference.import('no match for Bolton', data)
+      reference = bolton_reference.match || MissingReference.import('no Bolton match', data)
     end
 
     reference.update_attribute :bolton_key_cache, bolton_key
