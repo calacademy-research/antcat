@@ -11,10 +11,22 @@ class ReferenceKey
     Taxt.reference @reference
   end
 
+  def to_s
+    names = @reference.author_names.map &:last_name
+    case
+    when names.size == 1
+      "#{names.first}, "
+    when names.size == 2
+      "#{names.first} & #{names.second}, "
+    else
+      string = names[0..-2].join ', '
+      string << " & " << names[-1] << ', '
+    end << @reference.citation_year
+  end
+
   def to_link user
-    key = @reference.author_names.first.last_name + ', ' + @reference.citation_year
     content_tag(:span, :class => :reference_key_and_expansion) do
-      content_tag(:a, key, :href => '#', :class => :reference_key) +
+      content_tag(:a, to_s, :href => '#', :class => :reference_key) +
       content_tag(:span, :class => :reference_key_expansion) do
         content = content_tag(:span, ReferenceFormatter.format(@reference), :class => :reference_key_expansion_text)
         document_link = CatalogFormatter.format_reference_document_link(@reference, user)
