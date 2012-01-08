@@ -272,6 +272,12 @@ describe Reference do
       reference.citation.should == 'Bolton, 1920'
       reference.reason_missing.should == 'no Bolton'
     end
+    it "reuses a MissingReference" do
+      data = {:author_names => ['Bolton'], :year => '1920', :reference_text => 'Bolton, 1920'}
+      reference = Reference.find_or_create_by_bolton_key data
+      other_reference = Reference.find_or_create_by_bolton_key data
+      reference.should == other_reference
+    end
   end
 
   describe "Key" do
