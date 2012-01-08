@@ -30,6 +30,14 @@ Given /the following references? exists?/ do |table|
   end
 end
 
+Given /^there is a missing reference$/ do
+  Factory :missing_reference, :citation => 'Adventures among Ants'
+end
+
+And /^I should not see the missing reference$/ do
+  step 'I should not see "Adventures among Ants"'
+end
+
 Given /the following Bolton references? exists?/ do |table|
   table.hashes.each do |hash|
     hash.delete('match_status') if hash['match_status'].blank?
