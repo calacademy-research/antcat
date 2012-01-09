@@ -128,7 +128,7 @@ class Bolton::Reference < ActiveRecord::Base
   end
 
   def set_year
-    self.year = ::Reference.get_year citation_year
+    self.year = ::Reference.convert_citation_year_to_year citation_year
   end
 
   def self.normalize_to_see_if_anything_important_changed string

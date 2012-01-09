@@ -166,10 +166,10 @@ class Reference < ActiveRecord::Base
     end
   end
   def set_year
-    self.year = self.class.get_year citation_year
+    self.year = self.class.convert_citation_year_to_year citation_year
   end
 
-  def self.get_year citation_year
+  def self.convert_citation_year_to_year citation_year
     if citation_year.blank?
       nil
     elsif match = citation_year.match(/\["(\d{4})"\]/)
