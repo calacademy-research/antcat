@@ -1,4 +1,7 @@
 # coding: UTF-8
+require 'reference_search'
+require 'reference_utility'
+
 class Reference < ActiveRecord::Base
   # associations
   has_many    :reference_author_names, :order => :position

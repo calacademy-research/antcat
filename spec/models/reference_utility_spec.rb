@@ -1,8 +1,6 @@
 # coding: UTF-8
 require 'spec_helper'
 
-require 'reference_utility'
-
 describe Reference do
 
   describe "replacing an author name" do

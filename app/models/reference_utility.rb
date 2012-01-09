@@ -3,7 +3,7 @@
 # These are methods used either now or at one time by Rake tasks, not
 # by application code, so could well be dead
 
-class Reference
+class Reference < ActiveRecord::Base
 
   def self.import_hol_document_urls show_progress = false
     Hol::DocumentUrlImporter.new(show_progress).import
