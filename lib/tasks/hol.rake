@@ -1,5 +1,6 @@
 # coding: UTF-8
-#Rake.application.options.trace = true
+
+require 'reference_utility'
 
 namespace :hol do
   namespace :import do
