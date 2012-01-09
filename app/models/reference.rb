@@ -43,9 +43,10 @@ class Reference < ActiveRecord::Base
   before_validation :set_year, :strip_newlines
   before_save       :set_author_names_caches
   before_destroy    :check_that_is_not_nested
-  validate              :check_for_duplicate
+  validate          :check_for_duplicate
   validates_presence_of :year, :title
 
+  # accessors
   def key
     @key ||= ReferenceKey.new(self)
   end
@@ -66,6 +67,7 @@ class Reference < ActiveRecord::Base
     principal_author_last_name_cache
   end
 
+  # search
   def self.advanced_search parameters = {}
     author_names = AuthorParser.parse(parameters[:q])[:names]
     authors = Author.find_by_names author_names
@@ -141,18 +143,44 @@ class Reference < ActiveRecord::Base
     results
   end
 
+  ## callbacks
+  # validation
   def check_for_duplicate
     duplicates = DuplicateMatcher.new.match self
     return unless duplicates.present?
     duplicate = Reference.find duplicates.first[:match]
     errors.add :base, "This seems to be a duplicate of #{ReferenceFormatter.format duplicate} #{duplicate.id}"
   end
+  def check_that_is_not_nested
+    nester = NestedReference.find_by_nested_reference_id id
+    errors.add :base, "This reference can't be deleted because it's nested in #{nester}" if nester
+    nester.nil?
+  end
 
+  # update
+  def update_author_names_caches _ = nil
+    string, principal_author_last_name = make_author_names_caches
+    update_attribute :author_names_string_cache, string
+    update_attribute :principal_author_last_name_cache, principal_author_last_name
+  end
+  def strip_newlines
+    [:title, :public_notes, :editor_notes, :taxonomic_notes].each do |field|
+      self[field].gsub! /\n/, ' ' if self[field].present?
+    end
+  end
+  def set_year
+    self.year = self.class.get_year citation_year
+  end
+
+  # utility
   def self.find_duplicate data
     possible_duplicates = Reference.where :title => data[:title], :year => get_year(data[:citation_year])
     possible_duplicates.find do |possible_duplicate|
       data[:author_names] == possible_duplicate.author_names.map(&:name)
     end
+  end
+  def self.import_hol_document_urls show_progress = false
+    Hol::DocumentUrlImporter.new(show_progress).import
   end
 
   def self.get_year citation_year
@@ -165,16 +193,6 @@ class Reference < ActiveRecord::Base
     end
   end
 
-  def self.import_hol_document_urls show_progress = false
-    Hol::DocumentUrlImporter.new(show_progress).import
-  end
-
-  def update_author_names_caches _ = nil
-    string, principal_author_last_name = make_author_names_caches
-    update_attribute :author_names_string_cache, string
-    update_attribute :principal_author_last_name_cache, principal_author_last_name
-  end
-
   def replace_author_name old_name, new_author_name
     old_author_name = AuthorName.find_by_name old_name
     reference_author_name = reference_author_names.where(:author_name_id => old_author_name).first
@@ -184,14 +202,13 @@ class Reference < ActiveRecord::Base
     update_author_names_caches
   end
 
+  # document
   def url
     document && document.url
   end
-
   def downloadable_by? user
     document && document.downloadable_by?(user)
   end
-
   def document_host= host
     document && document.host = host
   end
@@ -207,12 +224,7 @@ class Reference < ActiveRecord::Base
     s
   end
 
-  def check_that_is_not_nested
-    nester = NestedReference.find_by_nested_reference_id id
-    errors.add :base, "This reference can't be deleted because it's nested in #{nester}" if nester
-    nester.nil?
-  end
-
+  # AuthorNames
   def parse_author_names_and_suffix author_names_string
     author_names_and_suffix = AuthorName.import_author_names_string author_names_string.dup
     if author_names_and_suffix[:author_names].empty? && author_names_string.present?
@@ -266,16 +278,6 @@ class Reference < ActiveRecord::Base
 
   def set_author_names_caches(*)
     self.author_names_string_cache, self.principal_author_last_name_cache = make_author_names_caches
-  end
-
-  def set_year
-    self.year = self.class.get_year citation_year
-  end
-
-  def strip_newlines
-    [:title, :public_notes, :editor_notes, :taxonomic_notes].each do |field|
-      self[field].gsub! /\n/, ' ' if self[field].present?
-    end
   end
 
   class DuplicateMatcher < ReferenceMatcher
