@@ -134,10 +134,6 @@ class Reference < ActiveRecord::Base
     reference
   end
 
-  def interpolation user
-    key.to_link user
-  end
-
   private
   # author names caches
   def set_author_names_caches(*)

@@ -2,30 +2,11 @@
 class ReferenceFormatter
   include ERB::Util
 
-  def self.format reference, format = :html
-    case reference
-    when ArticleReference then ArticleReferenceFormatter
-    when BookReference then BookReferenceFormatter
-    when NestedReference then NestedReferenceFormatter
-    when UnknownReference then UnknownReferenceFormatter
-    else raise "Don't know what kind of reference this is: #{reference.inspect}"
-    end.new(reference, format).format
+  def self.format reference
+    make_formatter(reference).format
   end
-
-  def initialize reference, format
-    @reference = reference
-    @format = format
-  end
-
-  def format
-    s = ''
-    s << "#{h @reference.author_names_string}"
-    s << ' ' unless s.empty?
-    s << "#{h @reference.citation_year}. "
-    s << "#{self.class.italicize(self.class.add_period_if_necessary(h @reference.title))} "
-    s << self.class.italicize(format_citation)
-    s << " [#{h format_date(@reference.date)}]" if @reference.date?
-    s
+  def self.format_interpolation reference, user
+    make_formatter(reference).format_interpolation user
   end
 
   def self.italicize s
@@ -45,6 +26,25 @@ class ReferenceFormatter
     timestamp.strftime '%Y-%m-%d'
   end
 
+  def initialize reference
+    @reference = reference
+  end
+
+  def format
+    s = ''
+    s << "#{h @reference.author_names_string}"
+    s << ' ' unless s.empty?
+    s << "#{h @reference.citation_year}. "
+    s << "#{self.class.italicize(self.class.add_period_if_necessary(h @reference.title))} "
+    s << self.class.italicize(format_citation)
+    s << " [#{h format_date(@reference.date)}]" if @reference.date?
+    s
+  end
+
+  def format_interpolation user
+    @reference.key.to_link user
+  end
+
   private
   def format_date input
     date = input
@@ -62,12 +62,20 @@ class ReferenceFormatter
     date << '-' << input[6, 2]
     prefix + date + suffix
   end
+
+  def self.make_formatter reference
+    raise "Don't know what kind of reference this is: #{reference.inspect}" unless
+      ['Article', 'Book', 'Nested', 'Unknown', 'Missing'].map {|e| e + 'Reference'}.include? reference.class.name
+    (reference.class.name + 'Formatter').constantize.new reference
+  end
+
 end
 
 class ArticleReferenceFormatter < ReferenceFormatter
   def format_citation
     self.class.add_period_if_necessary "#{h @reference.journal.name} #{h @reference.series_volume_issue}:#{h @reference.pagination}"
   end
+
 end
 
 class BookReferenceFormatter < ReferenceFormatter
@@ -85,5 +93,11 @@ end
 class NestedReferenceFormatter < ReferenceFormatter
   def format_citation
     "#{h @reference.pages_in} #{ReferenceFormatter.format(@reference.nested_reference)}"
+  end
+end
+
+class MissingReferenceFormatter < ReferenceFormatter
+  def format_interpolation _ = nil
+    @reference.citation
   end
 end
