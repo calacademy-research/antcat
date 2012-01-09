@@ -16,22 +16,17 @@ class Reference < ActiveRecord::Base
 
   # Solr
   searchable do
-    text :title
-    text :author_names_string
-    text :journal_name do
-      journal.name if journal
-    end
-    text :publisher_name do
-      publisher.name if publisher
-    end
-    text :citation
-    text :cite_code
-    text :public_notes
-    text :editor_notes
-    text :taxonomic_notes
-    string :author_names_string
-    string :citation_year
     integer :year
+    string  :citation_year
+    text    :author_names_string
+    string  :author_names_string
+    text    :title
+    text    :journal_name do journal.name if journal end
+    text    :publisher_name do publisher.name if publisher end
+    text    :citation
+    text    :cite_code
+    text    :editor_notes
+    text    :taxonomic_notes
   end
 
   # Other plugins and mixins
@@ -47,6 +42,13 @@ class Reference < ActiveRecord::Base
   validates_presence_of :year, :title
 
   # accessors
+  def to_s
+    s = ''
+    s << "#{author_names_string} "
+    s << "#{citation_year}. "
+    s << "#{id}."
+    s
+  end
   def key
     @key ||= ReferenceKey.new(self)
   end
@@ -177,14 +179,6 @@ class Reference < ActiveRecord::Base
     else
       citation_year.to_i
     end
-  end
-
-  def to_s
-    s = ''
-    s << "#{author_names_string} "
-    s << "#{citation_year}. "
-    s << "#{id}."
-    s
   end
 
   # AuthorNames
