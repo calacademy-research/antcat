@@ -14,7 +14,7 @@ module Taxt
 
   def self.interpolate taxt, user = nil
     taxt.gsub /{ref (\d+)}/ do |ref|
-      Reference.find($1).interpolation user rescue ref
+      ReferenceFormatter.format_interpolation(Reference.find($1), user) rescue ref
     end
   end
 
