@@ -294,10 +294,7 @@ describe CatalogFormatter do
       end
       it "should format a ref" do
         reference = Factory :article_reference
-        key_stub = stub
-        key_stub.should_receive(:to_link).and_return('foo')
-        Reference.should_receive(:find).with(reference.id.to_s).and_return reference
-        reference.should_receive(:key).and_return key_stub
+        ReferenceFormatter.should_receive(:format_interpolation).with(reference, nil).and_return 'foo'
         @formatter.format_taxonomic_history_item("{ref #{reference.id}}", nil).should == '<div class="taxonomic_history_item">foo.</div>'
       end
       it "should not freak if the ref is malformed" do
