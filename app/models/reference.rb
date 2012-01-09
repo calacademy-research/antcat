@@ -170,25 +170,6 @@ class Reference < ActiveRecord::Base
     self.year = self.class.get_year citation_year
   end
 
-  # utility
-  def self.find_duplicate data
-    possible_duplicates = Reference.where :title => data[:title], :year => get_year(data[:citation_year])
-    possible_duplicates.find do |possible_duplicate|
-      data[:author_names] == possible_duplicate.author_names.map(&:name)
-    end
-  end
-  def self.import_hol_document_urls show_progress = false
-    Hol::DocumentUrlImporter.new(show_progress).import
-  end
-  def replace_author_name old_name, new_author_name
-    old_author_name = AuthorName.find_by_name old_name
-    reference_author_name = reference_author_names.where(:author_name_id => old_author_name).first
-    reference_author_name.author_name = new_author_name
-    reference_author_name.save!
-    author_names(true)
-    update_author_names_caches
-  end
-
   def self.get_year citation_year
     if citation_year.blank?
       nil
