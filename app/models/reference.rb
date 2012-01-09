@@ -50,19 +50,15 @@ class Reference < ActiveRecord::Base
   def key
     @key ||= ReferenceKey.new(self)
   end
-
   def authors reload = false
     author_names(reload).map &:author
   end
-
   def author_names_string
     author_names_string_cache
   end
-
   def author_names_string= string
     self.author_names_string_cache = string
   end
-
   def principal_author_last_name
     principal_author_last_name_cache
   end
@@ -144,6 +140,7 @@ class Reference < ActiveRecord::Base
   end
 
   ## callbacks
+
   # validation
   def check_for_duplicate
     duplicates = DuplicateMatcher.new.match self
@@ -182,6 +179,14 @@ class Reference < ActiveRecord::Base
   def self.import_hol_document_urls show_progress = false
     Hol::DocumentUrlImporter.new(show_progress).import
   end
+  def replace_author_name old_name, new_author_name
+    old_author_name = AuthorName.find_by_name old_name
+    reference_author_name = reference_author_names.where(:author_name_id => old_author_name).first
+    reference_author_name.author_name = new_author_name
+    reference_author_name.save!
+    author_names(true)
+    update_author_names_caches
+  end
 
   def self.get_year citation_year
     if citation_year.blank?
@@ -191,15 +196,6 @@ class Reference < ActiveRecord::Base
     else
       citation_year.to_i
     end
-  end
-
-  def replace_author_name old_name, new_author_name
-    old_author_name = AuthorName.find_by_name old_name
-    reference_author_name = reference_author_names.where(:author_name_id => old_author_name).first
-    reference_author_name.author_name = new_author_name
-    reference_author_name.save!
-    author_names(true)
-    update_author_names_caches
   end
 
   # document
@@ -233,23 +229,6 @@ class Reference < ActiveRecord::Base
       raise ActiveRecord::RecordInvalid.new self
     end
     author_names_and_suffix
-  end
-
-  def self.find_by_bolton_key author_names, citation_year
-    bolton_key = Bolton::ReferenceKey.new(author_names.join(' '), citation_year).to_s :db
-
-    reference = find_by_bolton_key_cache bolton_key
-    return reference if reference
-
-    bolton_reference = Bolton::Reference.find_by_key_cache bolton_key
-    raise BoltonReferenceNotFound.new("Can't find Bolton reference for #{bolton_key}") unless bolton_reference
-
-    reference = bolton_reference.match
-    raise BoltonReferenceNotMatched.new("Bolton reference for '#{bolton_key}' was found, but hasn't been matched") unless reference
-
-    reference.update_attribute :bolton_key_cache, bolton_key
-
-    reference
   end
 
   private
