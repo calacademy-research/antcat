@@ -1,6 +1,7 @@
 # coding: UTF-8
 class Reference < ActiveRecord::Base
   include ReferenceComparable
+  include HasDocument
 
   # associations
   has_many    :reference_author_names, :order => :position
@@ -196,17 +197,6 @@ class Reference < ActiveRecord::Base
     else
       citation_year.to_i
     end
-  end
-
-  # document
-  def url
-    document && document.url
-  end
-  def downloadable_by? user
-    document && document.downloadable_by?(user)
-  end
-  def document_host= host
-    document && document.host = host
   end
 
   # ReferenceComparable
