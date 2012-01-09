@@ -99,6 +99,5 @@ Feature: View bibliography
       |Ward, P.S.|2010d|Ant Facts|Ants 1:1|
     And there is a missing reference
     When I go to the references page
-    And show me the page
     Then I should not see the missing reference
       And I should see "Ward, P.S. 2010d. Ant Facts. Ants 1:1."
