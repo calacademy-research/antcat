@@ -1,17 +1,22 @@
 # coding: UTF-8
 class Reference < ActiveRecord::Base
   include ReferenceComparable
-  has_paper_trail
 
-  has_many :reference_author_names, :order => :position
-  has_many :author_names, :through => :reference_author_names, :order => :position,
-           :after_add => :update_author_names_caches, :after_remove => :update_author_names_caches
-  belongs_to :journal
-  belongs_to :publisher
-  belongs_to :source_reference, :polymorphic => true
-  has_one :document, :class_name => 'ReferenceDocument'
+  # associations
+  has_many    :reference_author_names, :order => :position
+  has_many    :author_names, :through => :reference_author_names, :order => :position,
+                :after_add => :update_author_names_caches, :after_remove => :update_author_names_caches
+  belongs_to  :journal
+  belongs_to  :publisher
+  belongs_to  :source_reference, :polymorphic => true
+  has_one     :document, :class_name => 'ReferenceDocument'
   accepts_nested_attributes_for :document, :reject_if => :all_blank
 
+  # scopes
+  scope :sorted_by_author_name, select('`references`.*').joins(:author_names).where('position = 1').order(:name)
+  scope :with_principal_author_last_name, lambda {|last_name| where :principal_author_last_name_cache => last_name}
+
+  # Solr
   searchable do
     text :title
     text :author_names_string
@@ -31,15 +36,15 @@ class Reference < ActiveRecord::Base
     integer :year
   end
 
+  # Other plugins
+  has_paper_trail
+
+  # validation and callbacks
   before_validation :set_year, :strip_newlines
-  before_save :set_author_names_caches
-  before_destroy :check_that_is_not_nested
-
-  validate :check_for_duplicate
+  before_save       :set_author_names_caches
+  before_destroy    :check_that_is_not_nested
+  validate              :check_for_duplicate
   validates_presence_of :year, :title
-
-  scope :sorted_by_author_name, select('`references`.*').joins(:author_names).where('position = 1').order(:name)
-  scope :with_principal_author_last_name, lambda {|last_name| where :principal_author_last_name_cache => last_name}
 
   def key
     @key || ReferenceKey.new(self)
