@@ -34,11 +34,11 @@ class Reference < ActiveRecord::Base
   include HasDocument
 
   # validation and callbacks
-  before_validation :set_year, :strip_newlines
-  before_save       :set_author_names_caches
-  before_destroy    :check_that_is_not_nested
+  before_validation :set_year_from_citation_year, :strip_newlines_from_text_fields
   validate          :check_for_duplicate
   validates_presence_of :year, :title
+  before_save       :set_author_names_caches
+  before_destroy    :check_that_is_not_nested
 
   # accessors
   def to_s
@@ -117,7 +117,7 @@ class Reference < ActiveRecord::Base
     end
 
     results = search {
-      start_year, end_year = extract_years string
+      start_year, end_year = parse_and_extract_years string
       if start_year
         if end_year
           with(:year).between(start_year..end_year)
@@ -156,17 +156,12 @@ class Reference < ActiveRecord::Base
   end
 
   # update
-  def refresh_author_names_caches _ = nil
-    string, principal_author_last_name = make_author_names_caches
-    update_attribute :author_names_string_cache, string
-    update_attribute :principal_author_last_name_cache, principal_author_last_name
-  end
-  def strip_newlines
+  def strip_newlines_from_text_fields
     [:title, :public_notes, :editor_notes, :taxonomic_notes].each do |field|
       self[field].gsub! /\n/, ' ' if self[field].present?
     end
   end
-  def set_year
+  def set_year_from_citation_year
     self.year = self.class.convert_citation_year_to_year citation_year
   end
 
@@ -191,8 +186,15 @@ class Reference < ActiveRecord::Base
     author_names_and_suffix
   end
 
+  # author names caches
+  def refresh_author_names_caches _ = nil
+    string, principal_author_last_name = make_author_names_caches
+    update_attribute :author_names_string_cache, string
+    update_attribute :principal_author_last_name_cache, principal_author_last_name
+  end
+
   private
-  def self.extract_years string
+  def self.parse_and_extract_years string
     start_year = end_year = nil
     if match = string.match(/\b(\d{4})-(\d{4}\b)/)
       start_year = match[1].to_i
@@ -207,16 +209,16 @@ class Reference < ActiveRecord::Base
     return start_year, end_year
   end
 
+  # author names caches
+  def set_author_names_caches(*)
+    self.author_names_string_cache, self.principal_author_last_name_cache = make_author_names_caches
+  end
   def make_author_names_caches
     string = author_names.map(&:name).join('; ')
     string << author_names_suffix if author_names_suffix.present?
     first_author_name = author_names.first
     last_name = first_author_name && first_author_name.last_name
     return string, last_name
-  end
-
-  def set_author_names_caches(*)
-    self.author_names_string_cache, self.principal_author_last_name_cache = make_author_names_caches
   end
 
   class DuplicateMatcher < ReferenceMatcher
