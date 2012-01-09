@@ -1,7 +1,5 @@
 # coding: UTF-8
 
-require 'reference_utility'
-
 namespace :hol do
   namespace :import do
     desc "Import HOL document URLs"
