@@ -3,7 +3,7 @@ class Reference < ActiveRecord::Base
   # associations
   has_many    :reference_author_names, :order => :position
   has_many    :author_names, :through => :reference_author_names, :order => :position,
-                :after_add => :update_author_names_caches, :after_remove => :update_author_names_caches
+                :after_add => :refresh_author_names_caches, :after_remove => :refresh_author_names_caches
   belongs_to  :journal
   belongs_to  :publisher
   belongs_to  :source_reference, :polymorphic => true
@@ -155,7 +155,7 @@ class Reference < ActiveRecord::Base
   end
 
   # update
-  def update_author_names_caches _ = nil
+  def refresh_author_names_caches _ = nil
     string, principal_author_last_name = make_author_names_caches
     update_attribute :author_names_string_cache, string
     update_attribute :principal_author_last_name_cache, principal_author_last_name
