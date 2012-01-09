@@ -15,7 +15,7 @@ class Reference
     reference_author_name.author_name = new_author_name
     reference_author_name.save!
     author_names(true)
-    update_author_names_caches
+    refresh_author_names_caches
   end
 
 end

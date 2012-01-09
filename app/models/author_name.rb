@@ -110,7 +110,7 @@ class AuthorName < ActiveRecord::Base
       author.destroy unless author.names.present?
       references.each do |reference|
         Progress.puts "Changed #{reference}"
-        reference.update_author_names_caches
+        reference.refresh_author_names_caches
         Progress.puts "     to #{reference}"
       end
     else
