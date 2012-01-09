@@ -133,12 +133,12 @@ describe Reference do
     end
 
     describe 'searching notes' do
-      it 'should find something in public notes' do
-        matching_reference = reference_factory(:author_name => 'Hölldobler', :public_notes => 'abcdef')
-        unmatching_reference = reference_factory(:author_name => 'Hölldobler', :public_notes => 'fedcba')
-        Reference.reindex
-        Reference.do_search(:q => 'abcdef').should == [matching_reference]
-      end
+      #it 'should find something in public notes' do
+        #matching_reference = reference_factory(:author_name => 'Hölldobler', :public_notes => 'abcdef')
+        #unmatching_reference = reference_factory(:author_name => 'Hölldobler', :public_notes => 'fedcba')
+        #Reference.reindex
+        #Reference.do_search(:q => 'abcdef').should == [matching_reference]
+      #end
       it 'should find something in editor notes' do
         matching_reference = reference_factory(:author_name => 'Hölldobler', :editor_notes => 'abcdef')
         unmatching_reference = reference_factory(:author_name => 'Hölldobler', :editor_notes => 'fedcba')
