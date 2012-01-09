@@ -47,7 +47,7 @@ class Reference < ActiveRecord::Base
   validates_presence_of :year, :title
 
   def key
-    @key || ReferenceKey.new(self)
+    @key ||= ReferenceKey.new(self)
   end
 
   def authors reload = false
