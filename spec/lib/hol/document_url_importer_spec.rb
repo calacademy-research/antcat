@@ -17,7 +17,7 @@ describe Hol::DocumentUrlImporter do
 
     it "should import each reference" do
       mocks = [mock_model(Reference), mock_model(Reference)]
-      Reference.stub!(:sorted_by_author_name).and_return mocks
+      Reference.stub!(:sorted_by_principal_author_last_name).and_return mocks
       mocks.each {|mock| @importer.should_receive(:import_document_url_for).with(mock).and_return 'asdf'}
       @importer.import
     end

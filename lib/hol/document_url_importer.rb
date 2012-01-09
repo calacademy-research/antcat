@@ -17,7 +17,7 @@ class Hol::DocumentUrlImporter
 
   def import
     Progress.puts "Importing document URLs..."
-    Reference.sorted_by_author_name.each do |reference|
+    Reference.sorted_by_principal_author_last_name.each do |reference|
       result_string = import_document_url_for reference
       show_progress reference, result_string
     end
