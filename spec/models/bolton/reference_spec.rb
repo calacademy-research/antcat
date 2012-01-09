@@ -352,18 +352,4 @@ describe Bolton::Reference do
     end
   end
 
-  describe 'Author year key' do
-    it "should create an author/year key when saved" do
-      bolton = Bolton::Reference.create! :authors => 'Fisher, B. L.', :citation_year => '1981', :title => 'Dolichoderinae',
-        :reference_type => 'ArticleReference', :series_volume_issue => '1(2)', :pagination => '22-54'
-      bolton.reload.key.should == 'Fisher 1981'
-    end
-
-  describe "Key" do
-    it "has a key" do
-      reference = Factory :bolton_reference
-      reference.key
-    end
-  end
-
 end
