@@ -1,8 +1,5 @@
 # coding: UTF-8
 class Reference < ActiveRecord::Base
-  include ReferenceComparable
-  include HasDocument
-
   # associations
   has_many    :reference_author_names, :order => :position
   has_many    :author_names, :through => :reference_author_names, :order => :position,
@@ -37,8 +34,10 @@ class Reference < ActiveRecord::Base
     integer :year
   end
 
-  # Other plugins
+  # Other plugins and mixins
   has_paper_trail
+  include ReferenceComparable; def author; principal_author_last_name; end
+  include HasDocument
 
   # validation and callbacks
   before_validation :set_year, :strip_newlines
@@ -179,9 +178,6 @@ class Reference < ActiveRecord::Base
       citation_year.to_i
     end
   end
-
-  # ReferenceComparable
-  def author; principal_author_last_name; end
 
   def to_s
     s = ''
