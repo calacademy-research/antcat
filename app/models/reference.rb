@@ -1,5 +1,4 @@
 # coding: UTF-8
-
 class Reference < ActiveRecord::Base
   include ReferenceComparable
   has_paper_trail
@@ -47,7 +46,7 @@ class Reference < ActiveRecord::Base
   end
 
   def authors reload = false
-    author_names(reload).map(&:author)
+    author_names(reload).map &:author
   end
 
   def author_names_string
@@ -239,7 +238,7 @@ class Reference < ActiveRecord::Base
   private
   def self.extract_years string
     start_year = end_year = nil
-    if match = string.match(/(\b\d{4})-(\d{4}\b)/)
+    if match = string.match(/\b(\d{4})-(\d{4}\b)/)
       start_year = match[1].to_i
       end_year = match[2].to_i
     elsif match = string.match(/(?:^|\s)(\d{4})\b/)
