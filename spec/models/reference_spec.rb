@@ -500,7 +500,7 @@ describe Reference do
       second_ward_reference = Factory :article_reference, :author_names => [ward, fisher]
       fisher_reference = Factory :article_reference, :author_names => [fisher, bolton]
 
-      Reference.sorted_by_author_name.map(&:id).should == [bolton_reference.id, fisher_reference.id, first_ward_reference.id, second_ward_reference.id]
+      Reference.sorted_by_principal_author_last_name.map(&:id).should == [bolton_reference.id, fisher_reference.id, first_ward_reference.id, second_ward_reference.id]
     end
   end
 

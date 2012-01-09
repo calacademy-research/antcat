@@ -11,7 +11,7 @@ class Reference < ActiveRecord::Base
   accepts_nested_attributes_for :document, :reject_if => :all_blank
 
   # scopes
-  scope :sorted_by_author_name, select('`references`.*').joins(:author_names).where('position = 1').order(:name)
+  scope :sorted_by_principal_author_last_name, order(:principal_author_last_name_cache)
   scope :with_principal_author_last_name, lambda {|last_name| where :principal_author_last_name_cache => last_name}
 
   # Solr
