@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120103210729) do
+ActiveRecord::Schema.define(:version => 20120109172820) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -149,8 +149,6 @@ ActiveRecord::Schema.define(:version => 20120103210729) do
     t.integer  "journal_id"
     t.string   "series_volume_issue"
     t.string   "pagination"
-    t.integer  "source_reference_id"
-    t.string   "source_reference_type"
     t.text     "author_names_string_cache"
     t.text     "editor_notes"
     t.text     "public_notes"
@@ -171,8 +169,6 @@ ActiveRecord::Schema.define(:version => 20120103210729) do
   add_index "references", ["journal_id"], :name => "references_journal_id_idx"
   add_index "references", ["nested_reference_id"], :name => "references_nested_reference_id_idx"
   add_index "references", ["publisher_id"], :name => "references_publisher_id_idx"
-  add_index "references", ["source_reference_id", "source_reference_type"], :name => "references_source_reference_id_source_reference_type_index"
-  add_index "references", ["source_reference_id"], :name => "references_source_reference_id_idx"
   add_index "references", ["updated_at"], :name => "references_updated_at_idx"
 
   create_table "taxa", :force => true do |t|
