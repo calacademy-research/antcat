@@ -35,21 +35,11 @@ class Reference < ActiveRecord::Base
     s << "#{id}."
     s
   end
-  def key
-    @key ||= ReferenceKey.new(self)
-  end
-  def authors reload = false
-    author_names(reload).map &:author
-  end
-  def author_names_string
-    author_names_string_cache
-  end
-  def author_names_string= string
-    self.author_names_string_cache = string
-  end
-  def principal_author_last_name
-    principal_author_last_name_cache
-  end
+  def key()                         @key ||= ReferenceKey.new(self) end
+  def authors(reload = false)       author_names(reload).map &:author end
+  def author_names_string()         author_names_string_cache end
+  def author_names_string=(string)  self.author_names_string_cache = string end
+  def principal_author_last_name()  principal_author_last_name_cache end
 
   ## callbacks
 
