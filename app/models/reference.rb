@@ -15,6 +15,7 @@ class Reference < ActiveRecord::Base
   # scopes
   scope :sorted_by_principal_author_last_name, order(:principal_author_last_name_cache)
   scope :with_principal_author_last_name, lambda {|last_name| where :principal_author_last_name_cache => last_name}
+  scope :non_missing, where('type IS NULL OR type != "MissingReference"')
 
   # Solr
   searchable do
