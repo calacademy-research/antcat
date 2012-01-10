@@ -1,6 +1,7 @@
 # coding: UTF-8
 require 'reference_search'
 require 'reference_utility'
+require 'reference_has_document'
 
 class Reference < ActiveRecord::Base
   # associations
@@ -9,8 +10,6 @@ class Reference < ActiveRecord::Base
                 :after_add => :refresh_author_names_caches, :after_remove => :refresh_author_names_caches
   belongs_to  :journal
   belongs_to  :publisher
-  has_one     :document, :class_name => 'ReferenceDocument'
-  accepts_nested_attributes_for :document, :reject_if => :all_blank
 
   # scopes
   scope :sorted_by_principal_author_last_name, order(:principal_author_last_name_cache)
@@ -20,7 +19,6 @@ class Reference < ActiveRecord::Base
   # Other plugins and mixins
   has_paper_trail
   include ReferenceComparable; def author; principal_author_last_name; end
-  include HasDocument
 
   # validation and callbacks
   before_validation :set_year_from_citation_year, :strip_newlines_from_text_fields
