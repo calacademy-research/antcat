@@ -28,13 +28,7 @@ class Reference < ActiveRecord::Base
   before_destroy    :check_not_nested
 
   # accessors
-  def to_s
-    s = ''
-    s << "#{author_names_string} "
-    s << "#{citation_year}. "
-    s << "#{id}."
-    s
-  end
+  def to_s()                        "#{author_names_string} #{citation_year}. #{id}." end
   def key()                         @key ||= ReferenceKey.new(self) end
   def authors(reload = false)       author_names(reload).map &:author end
   def author_names_string()         author_names_string_cache end
@@ -56,27 +50,16 @@ class Reference < ActiveRecord::Base
     nester.nil?
   end
 
-  # update
-  def strip_newlines_from_text_fields
-    [:title, :public_notes, :editor_notes, :taxonomic_notes].each do |field|
-      self[field].gsub! /\n/, ' ' if self[field].present?
-    end
-  end
-  def set_year_from_citation_year
-    self.year = self.class.convert_citation_year_to_year citation_year
+  # update (including observed updates)
+  def refresh_author_names_caches(*)
+    string, principal_author_last_name = make_author_names_caches
+    update_attribute :author_names_string_cache, string
+    update_attribute :principal_author_last_name_cache, principal_author_last_name
   end
 
-  def self.convert_citation_year_to_year citation_year
-    if citation_year.blank?
-      nil
-    elsif match = citation_year.match(/\["(\d{4})"\]/)
-      match[1]
-    else
-      citation_year.to_i
-    end
-  end
-
-  # AuthorNames
+  # utility
+  # Called by controller to parse an input string for author names and suffix
+  # Returns hash of parse result, or adds to the reference's errors and raises
   def parse_author_names_and_suffix author_names_string
     author_names_and_suffix = AuthorName.import_author_names_string author_names_string.dup
     if author_names_and_suffix[:author_names].empty? && author_names_string.present?
@@ -87,14 +70,27 @@ class Reference < ActiveRecord::Base
     author_names_and_suffix
   end
 
-  # author names caches
-  def refresh_author_names_caches _ = nil
-    string, principal_author_last_name = make_author_names_caches
-    update_attribute :author_names_string_cache, string
-    update_attribute :principal_author_last_name_cache, principal_author_last_name
+  def self.citation_year_to_year citation_year
+    if citation_year.blank?
+      nil
+    elsif match = citation_year.match(/\["(\d{4})"\]/)
+      match[1]
+    else
+      citation_year.to_i
+    end
   end
 
   private
+  def strip_newlines_from_text_fields
+    [:title, :public_notes, :editor_notes, :taxonomic_notes].each do |field|
+      self[field].gsub! /\n/, ' ' if self[field].present?
+    end
+  end
+
+  def set_year_from_citation_year
+    self.year = self.class.citation_year_to_year citation_year
+  end
+
   def self.parse_and_extract_years string
     start_year = end_year = nil
     if match = string.match(/\b(\d{4})-(\d{4}\b)/)
