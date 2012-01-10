@@ -18,65 +18,69 @@ class Reference < ActiveRecord::Base
     string  :author_names_string
   end
 
-  #def self.search_solr string, options, only_show_unknown_references, paginate
-    #search {
-      #start_year, end_year = parse_and_extract_years string
-      #if start_year
-        #if end_year
-          #with(:year).between(start_year..end_year)
-        #else
-          #with(:year).equal_to start_year
-        #end
-      #end
-      #keywords string
-      #order_by :author_names_string
-      #order_by :citation_year
-      #paginate(:page => options[:page]) if paginate
-      #paginate(:per_page => 5_000) if only_show_unknown_references
-    #}.results
-  #end
-
-  def self.do_do_search options = {}
+  def self.perform_search options = {}
     case
-    when options[:authors]
-      Reference.
-        select('`references`.*')
-        .joins(:author_names)
-        .joins('JOIN authors ON authors.id = author_names.author_id')
-        .where('authors.id IN (?)', options[:authors])
-        .group('references.id')
-        .having("COUNT(`references`.id) = #{options[:authors].length}")
-        .order(:author_names_string_cache, :citation_year)
-    else
+    when options[:fulltext]
+      start_year, end_year = options[:start_year], options[:end_year]
+      page = options[:page]
       search {
+        keywords options[:fulltext]
+        if start_year
+          if end_year
+            with(:year).between(start_year..end_year)
+          else
+            with(:year).equal_to start_year
+          end
+        end
+        paginate(:page => options[:page]) if options[:page]
         order_by :author_names_string
         order_by :citation_year
-        paginate(:page => options[:page])
       }.results
+
+    when options[:authors]
+      authors = options[:authors]
+      select('`references`.*').
+         joins(:author_names)
+        .joins('JOIN authors ON authors.id = author_names.author_id')
+        .where('authors.id IN (?)', authors)
+        .group('references.id')
+        .having("COUNT(`references`.id) = #{authors.length}")
+        .order(:author_names_string_cache, :citation_year)
+
+    when options[:id]
+      where(:id => options[:id])
+
+    else
+      if options[:order]
+        query = order "#{options[:order]} DESC"
+      else
+        query = order 'author_names_string_cache, citation_year'
+      end
+      query = query.paginate :page => options[:page] if options[:page]
+      query
     end
   end
 
   def self.do_search options = {}
-    return do_do_search if options.empty?
-    return do_do_search(:order => :updated_at, :page => options[:page]) if options[:review]
+    return perform_search if options.empty?
+    return perform_search(:order => :updated_at, :page => options[:page]) if options[:review]
+    return perform_search(:order => :created_at, :page => options[:page]) if options[:whats_new]
 
     if options[:authors]
       author_names = AuthorParser.parse(options[:authors])[:names]
       authors = Author.find_by_names author_names
-      return do_do_search :authors => authors, :page => options[:page]
+      return perform_search :authors => authors, :page => options[:page]
     end
 
-    #paginate = options[:format] != :endnote_import
+    fulltext_string = options[:q] || ''
 
-    #return order('created_at DESC').paginate :page => options[:page] if options[:whats_new]
+    if match = fulltext_string.match(/\d{5,}/)
+      return perform_search :id => match[0].to_i
+    end
 
-    #unless options[:q].present?
-      #if paginate
-        #return order(:author_names_string_cache, :citation_year).paginate :page => options[:page]
-      #else
-        #return order :author_names_string_cache, :citation_year
-      #end
-    #end
+    start_year, end_year = parse_and_extract_years fulltext_string
+
+    return perform_search :fulltext => fulltext_string, :start_year => start_year, :end_year => end_year, :page => options[:page]
 
     #string = ActiveSupport::Inflector.transliterate options[:q].downcase
 
@@ -85,10 +89,6 @@ class Reference < ActiveRecord::Base
     #if question_mark_index
       #string[question_mark_index] = ''
       #only_show_unknown_references = true
-    #end
-
-    #if match = string.match(/\d{5,}/)
-      #return where(:id => match[0]).paginate :page => 1
     #end
 
     #results = search_solr string, options, only_show_unknown_references, paginate
