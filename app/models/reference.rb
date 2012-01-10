@@ -57,7 +57,7 @@ class Reference < ActiveRecord::Base
     update_attribute :principal_author_last_name_cache, principal_author_last_name
   end
 
-  # utility
+  ## utility
   # Called by controller to parse an input string for author names and suffix
   # Returns hash of parse result, or adds to the reference's errors and raises
   def parse_author_names_and_suffix author_names_string
@@ -69,7 +69,6 @@ class Reference < ActiveRecord::Base
     end
     author_names_and_suffix
   end
-
   def self.citation_year_to_year citation_year
     if citation_year.blank?
       nil
