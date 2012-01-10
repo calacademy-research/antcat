@@ -91,21 +91,6 @@ class Reference < ActiveRecord::Base
     self.year = self.class.citation_year_to_year citation_year
   end
 
-  def self.parse_and_extract_years string
-    start_year = end_year = nil
-    if match = string.match(/\b(\d{4})-(\d{4}\b)/)
-      start_year = match[1].to_i
-      end_year = match[2].to_i
-    elsif match = string.match(/(?:^|\s)(\d{4})\b/)
-      start_year = match[1].to_i
-    end
-
-    return nil, nil unless (1758..(Time.now.year + 1)).include? start_year
-
-    string.gsub! /#{match[0]}/, '' if match
-    return start_year, end_year
-  end
-
   # author names caches
   def set_author_names_caches(*)
     self.author_names_string_cache, self.principal_author_last_name_cache = make_author_names_caches
