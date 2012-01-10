@@ -42,34 +42,30 @@ describe Bolton::Reference do
   end
 
   describe 'Searching' do
+    include EnableSunspot
 
     it 'should simply return all records if there are no search terms' do
       reference = Factory :bolton_reference, :original => 'foo'
-      Bolton::Reference.reindex
       Bolton::Reference.do_search.should == [reference]
     end
 
     it 'should find one term' do
       reference = Factory :bolton_reference, :original => 'foo'
-      Bolton::Reference.reindex
       Bolton::Reference.do_search(:q => 'foo').should == [reference]
     end
 
     it 'should find not find one term' do
       reference = Factory :bolton_reference, :original => 'foo'
-      Bolton::Reference.reindex
       Bolton::Reference.do_search(:q => 'bar').should be_empty
     end
 
     it 'should handle leading/trailing space' do
       reference = Factory :bolton_reference, :original => 'foo'
-      Bolton::Reference.reindex
       Bolton::Reference.do_search(:q => ' foo ').should == [reference]
     end
 
     it 'should handle multiple terms' do
       reference = Factory :bolton_reference, :original => 'Bolton 1970'
-      Bolton::Reference.reindex
       Bolton::Reference.do_search(:q => '1970 Bolton').should == [reference]
       Bolton::Reference.do_search(:q => 'Bolton').should == [reference]
       Bolton::Reference.do_search(:q => '1970').should == [reference]
