@@ -38,7 +38,14 @@ class Reference < ActiveRecord::Base
   def self.do_do_search options = {}
     case
     when options[:authors]
-      do_advanced_search options
+      Reference.
+        select('`references`.*')
+        .joins(:author_names)
+        .joins('JOIN authors ON authors.id = author_names.author_id')
+        .where('authors.id IN (?)', options[:authors])
+        .group('references.id')
+        .having("COUNT(`references`.id) = #{options[:authors].length}")
+        .order(:author_names_string_cache, :citation_year)
     else
       search {
         order_by :author_names_string
@@ -57,8 +64,6 @@ class Reference < ActiveRecord::Base
       authors = Author.find_by_names author_names
       return do_do_search :authors => authors, :page => options[:page]
     end
-
-    #return do_advanced_search(options) if options[:advanced]
 
     #paginate = options[:format] != :endnote_import
 
@@ -94,30 +99,6 @@ class Reference < ActiveRecord::Base
 
     #results
   end
-
-  def self.advanced_search options = {}
-    #author_names = AuthorParser.parse(options[:q])[:names]
-    #authors = Author.find_by_names author_names
-    reference_ids = find_having_authors options[:authors]
-    Reference.where('id IN (?)', reference_ids).order(:author_names_string_cache, :citation_year)
-  end
-
-  def self.find_having_authors authors
-    Reference.
-       select('`references`.*')
-      .joins(:author_names)
-      .joins('JOIN authors ON authors.id = author_names.author_id')
-      .where('authors.id IN (?)', authors)
-      .group('references.id')
-      .having("COUNT(`references`.id) = #{authors.length}")
-  end
-
-  def self.do_advanced_search options = {}
-    #paginate = options[:format] != :endnote_import
-    results = advanced_search(options)
-    #paginate ? results.paginate(:page => options[:page]) : results
-  end
-
 
   def self.parse_and_extract_years string
     start_year = end_year = nil
