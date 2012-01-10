@@ -1,6 +1,21 @@
 # coding: UTF-8
-
 class Reference < ActiveRecord::Base
+  class BoltonReferenceNotMatched < StandardError; end
+  class BoltonReferenceNotFound < StandardError; end
+
+  searchable do
+    integer :year
+    string  :citation_year
+    text    :author_names_string
+    string  :author_names_string
+    text    :title
+    text    :journal_name do journal.name if journal end
+    text    :publisher_name do publisher.name if publisher end
+    text    :citation
+    text    :cite_code
+    text    :editor_notes
+    text    :taxonomic_notes
+  end
 
   def self.advanced_search parameters = {}
     author_names = AuthorParser.parse(parameters[:q])[:names]
@@ -76,6 +91,5 @@ class Reference < ActiveRecord::Base
 
     results
   end
-
 
 end
