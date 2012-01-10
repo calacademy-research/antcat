@@ -17,21 +17,6 @@ class Reference < ActiveRecord::Base
   scope :with_principal_author_last_name, lambda {|last_name| where :principal_author_last_name_cache => last_name}
   scope :non_missing, where('type IS NULL OR type != "MissingReference"')
 
-  # Solr
-  searchable do
-    integer :year
-    string  :citation_year
-    text    :author_names_string
-    string  :author_names_string
-    text    :title
-    text    :journal_name do journal.name if journal end
-    text    :publisher_name do publisher.name if publisher end
-    text    :citation
-    text    :cite_code
-    text    :editor_notes
-    text    :taxonomic_notes
-  end
-
   # Other plugins and mixins
   has_paper_trail
   include ReferenceComparable; def author; principal_author_last_name; end
@@ -155,6 +140,4 @@ class Reference < ActiveRecord::Base
     end
   end
 
-  class BoltonReferenceNotMatched < StandardError; end
-  class BoltonReferenceNotFound < StandardError; end
 end
