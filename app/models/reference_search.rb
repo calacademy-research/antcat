@@ -12,6 +12,7 @@ class Reference < ActiveRecord::Base
     text    :citation
     text    :cite_code
     text    :editor_notes
+    text    :public_notes
     text    :taxonomic_notes
     string  :citation_year
     string  :author_names_string
