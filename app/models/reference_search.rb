@@ -17,23 +17,23 @@ class Reference < ActiveRecord::Base
     string  :author_names_string
   end
 
-  def self.search_solr string, options, only_show_unknown_references, paginate
-    search {
-      start_year, end_year = parse_and_extract_years string
-      if start_year
-        if end_year
-          with(:year).between(start_year..end_year)
-        else
-          with(:year).equal_to start_year
-        end
-      end
-      keywords string
-      order_by :author_names_string
-      order_by :citation_year
-      paginate(:page => options[:page]) if paginate
-      paginate(:per_page => 5_000) if only_show_unknown_references
-    }.results
-  end
+  #def self.search_solr string, options, only_show_unknown_references, paginate
+    #search {
+      #start_year, end_year = parse_and_extract_years string
+      #if start_year
+        #if end_year
+          #with(:year).between(start_year..end_year)
+        #else
+          #with(:year).equal_to start_year
+        #end
+      #end
+      #keywords string
+      #order_by :author_names_string
+      #order_by :citation_year
+      #paginate(:page => options[:page]) if paginate
+      #paginate(:per_page => 5_000) if only_show_unknown_references
+    #}.results
+  #end
 
   def self.do_do_search options = {}
     case
