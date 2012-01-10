@@ -22,10 +22,10 @@ class Reference < ActiveRecord::Base
 
   # validation and callbacks
   before_validation :set_year_from_citation_year, :strip_newlines_from_text_fields
-  validate          :check_for_duplicate
+  validate          :check_not_duplicate
   validates_presence_of :year, :title
   before_save       :set_author_names_caches
-  before_destroy    :check_that_is_not_nested
+  before_destroy    :check_not_nested
 
   # accessors
   def to_s
@@ -54,13 +54,13 @@ class Reference < ActiveRecord::Base
   ## callbacks
 
   # validation
-  def check_for_duplicate
+  def check_not_duplicate
     duplicates = DuplicateMatcher.new.match self
     return unless duplicates.present?
     duplicate = Reference.find duplicates.first[:match]
     errors.add :base, "This seems to be a duplicate of #{ReferenceFormatter.format duplicate} #{duplicate.id}"
   end
-  def check_that_is_not_nested
+  def check_not_nested
     nester = NestedReference.find_by_nested_reference_id id
     errors.add :base, "This reference can't be deleted because it's nested in #{nester}" if nester
     nester.nil?
