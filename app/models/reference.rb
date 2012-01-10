@@ -90,7 +90,6 @@ class Reference < ActiveRecord::Base
     self.year = self.class.citation_year_to_year citation_year
   end
 
-  private
   # author names caches
   def set_author_names_caches(*)
     self.author_names_string_cache, self.principal_author_last_name_cache = make_author_names_caches
