@@ -85,12 +85,10 @@ describe Reference do
     #describe 'searching by author_name' do
       #it 'should at least find Bert!' do
         #reference = reference_factory(:author_name => 'Hölldobler')
-        #Reference.reindex
         #Reference.do_search(:q => 'holldobler').should == [reference]
       #end
       #it 'should at least find Bert, even when the diacritic is used in the search term' do
         #reference = reference_factory(:author_name => 'Hölldobler')
-        #Reference.reindex
         #Reference.do_search(:q => 'Hölldobler').should == [reference]
       #end
     #end
@@ -99,13 +97,11 @@ describe Reference do
       #it "should find a cite code that's doesn't look like a current year" do
         #matching_reference = reference_factory(:author_name => 'Hölldobler', :cite_code => 'abcdef')
         #unmatching_reference = reference_factory(:author_name => 'Hölldobler', :cite_code => 'fedcba')
-        #Reference.reindex
         #Reference.do_search(:q => 'abcdef').should == [matching_reference]
       #end
 
       #it "should find a cite code that looks like a year, but not a current year" do
         #matching_reference = reference_factory(:author_name => 'Hölldobler', :cite_code => '1600')
-        #Reference.reindex
         #Reference.do_search(:q => '1600').should == [matching_reference]
       #end
     #end
@@ -114,19 +110,16 @@ describe Reference do
       ##it 'should find something in public notes' do
         ##matching_reference = reference_factory(:author_name => 'Hölldobler', :public_notes => 'abcdef')
         ##unmatching_reference = reference_factory(:author_name => 'Hölldobler', :public_notes => 'fedcba')
-        ##Reference.reindex
         ##Reference.do_search(:q => 'abcdef').should == [matching_reference]
       ##end
       #it 'should find something in editor notes' do
         #matching_reference = reference_factory(:author_name => 'Hölldobler', :editor_notes => 'abcdef')
         #unmatching_reference = reference_factory(:author_name => 'Hölldobler', :editor_notes => 'fedcba')
-        #Reference.reindex
         #Reference.do_search(:q => 'abcdef').should == [matching_reference]
       #end
       #it 'should find something in taxonomic notes' do
         #matching_reference = reference_factory(:author_name => 'Hölldobler', :taxonomic_notes => 'abcdef')
         #unmatching_reference = reference_factory(:author_name => 'Hölldobler', :taxonomic_notes => 'fedcba')
-        #Reference.reindex
         #Reference.do_search(:q => 'abcdef').should == [matching_reference]
       #end
     #end
@@ -136,7 +129,6 @@ describe Reference do
         #journal = Factory :journal, :name => 'Journal'
         #matching_reference = reference_factory(:author_name => 'Hölldobler', :journal => journal)
         #unmatching_reference = reference_factory(:author_name => 'Hölldobler')
-        #Reference.reindex
         #Reference.do_search(:q => 'journal').should == [matching_reference]
       #end
     #end
@@ -146,7 +138,6 @@ describe Reference do
         #publisher = Factory :publisher, :name => 'Publisher'
         #matching_reference = reference_factory(:author_name => 'Hölldobler', :publisher => publisher)
         #unmatching_reference = reference_factory(:author_name => 'Hölldobler')
-        #Reference.reindex
         #Reference.do_search(:q => 'Publisher').should == [matching_reference]
       #end
     #end
@@ -155,7 +146,6 @@ describe Reference do
       #it 'should find something in citation' do
         #matching_reference = reference_factory(:author_name => 'Hölldobler', :citation => 'Citation')
         #unmatching_reference = reference_factory(:author_name => 'Hölldobler')
-        #Reference.reindex
         #Reference.do_search(:q => 'Citation').should == [matching_reference]
       #end
     #end
@@ -167,7 +157,6 @@ describe Reference do
         #reference_factory(:author_name => 'Bolton', :citation_year => '1996')
         #reference_factory(:author_name => 'Bolton', :citation_year => '1997')
         #reference_factory(:author_name => 'Bolton', :citation_year => '1998')
-        #Reference.reindex
       #end
 
       #it "should return an empty array if nothing is found for year" do
@@ -179,7 +168,7 @@ describe Reference do
       #end
 
       #it "should find references in the year of the end range, even if they have extra characters" do
-        #reference_factory(:author_name => 'Bolton', :citation_year => '2004.').index!
+        #reference_factory(:author_name => 'Bolton', :citation_year => '2004.')
         #Reference.do_search(:q => '2004').map(&:year).should =~ [2004]
       #end
     #end
@@ -188,7 +177,6 @@ describe Reference do
       #it "should just return unknown reference types if a ? is passed as the search term" do
         #known = Factory :article_reference
         #unknown = Factory :unknown_reference
-        #Reference.reindex
         #Reference.do_search(:q => '?').should == [unknown]
       #end
     #end
@@ -198,7 +186,6 @@ describe Reference do
         #fisher1910b = reference_factory(:author_name => 'Fisher', :citation_year => '1910b')
         #wheeler1874 = reference_factory(:author_name => 'Wheeler', :citation_year => '1874')
         #fisher1910a = reference_factory(:author_name => 'Fisher', :citation_year => '1910a')
-        #Reference.reindex
         #Reference.do_search.should == [fisher1910a, fisher1910b, wheeler1874]
       #end
 
@@ -206,7 +193,6 @@ describe Reference do
         #a = Factory(:article_reference, :author_names => AuthorName.import_author_names_string('Abdalla, F. C.; Cruz-Landim, C. da.')[:author_names])
         #m = Factory(:article_reference, :author_names => AuthorName.import_author_names_string('Mueller, U. G.; Mikheyev, A. S.; Abbot, P.')[:author_names])
         #v = Factory(:article_reference, :author_names => AuthorName.import_author_names_string("Vinson, S. B.; MacKay, W. P.; Rebeles M.; A.; Arredondo B.; H. C.; Rodríguez R.; A. D.; González, D. A.")[:author_names])
-        #Reference.reindex
         #Reference.do_search.should == [a, m, v]
       #end
 
@@ -214,7 +200,6 @@ describe Reference do
         #a = Factory(:article_reference, :author_names => AuthorName.import_author_names_string('Abdalla, F. C.; Cruz-Landim, C. da.')[:author_names]) 
         #m = Factory(:article_reference, :author_names => AuthorName.import_author_names_string('Mueller, U. G.; Mikheyev, A. S.; Abbot, P.')[:author_names])
         #v = Factory(:article_reference, :author_names => AuthorName.import_author_names_string("Vinson, S. B.; MacKay, W. P.; Rebeles M.; A.; Arredondo B.; H. C.; Rodríguez R.; A. D.; González, D. A.")[:author_names])
-        #Reference.reindex
         #Reference.do_search.should == [a, m, v]
       #end
 
