@@ -65,51 +65,13 @@ describe Reference do
   end
 
 
-  #describe "searching with Solr" do
-    #it "should return an empty array if nothing is found for author_name" do
-      #Factory(:reference).index!
-      #Reference.search {keywords 'foo'}.results.should be_empty
-    #end
-
-    #it "should find the reference for a given author_name if it exists" do
-      #reference = reference_factory(:author_name => 'Bolton')
-      #reference_factory(:author_name => 'Fisher')
-      #Reference.reindex
-      #Reference.search {keywords 'Bolton'}.results.should == [reference]
-    #end
-
-    #it "should return an empty array if nothing is found for a given year and author_name" do
-      #reference_factory(:author_name => 'Bolton', :citation_year => '2010').index
-      #reference_factory(:author_name => 'Bolton', :citation_year => '1995').index
-      #reference_factory(:author_name => 'Fisher', :citation_year => '2011').index
-      #reference_factory(:author_name => 'Fisher', :citation_year => '1996').index
-      #Reference.search {
-        #with(:year).between(2012..2013)
-        #keywords 'Fisher'
-      #}.results.should be_empty
-    #end
-
-    #it "should return the one reference for a given year and author_name" do
-      #reference_factory(:author_name => 'Bolton', :citation_year => '2010').index
-      #reference_factory(:author_name => 'Bolton', :citation_year => '1995').index
-      #reference_factory(:author_name => 'Fisher', :citation_year => '2011').index
-      #reference = reference_factory(:author_name => 'Fisher', :citation_year => '1996')
-      #reference.index
-      #Reference.search {
-        #with(:year).between(1996..1996)
-        #keywords 'Fisher'
-      #}.results.should == [reference]
-    #end
-
-  #end
-
   #describe "Searching" do
 
     #it "should handle the current year + the next year" do
       #bolton = reference_factory(:author_name => 'Bolton', :citation_year => Time.now.year.to_s)
-      #bolton.index
+      #bolton
       #fisher = reference_factory(:author_name => 'Fisher', :citation_year => (Time.now.year + 1).to_s)
-      #fisher.index
+      #fisher
       #Reference.do_search(:q => "Bolton #{Time.now.year}").should == [bolton]
       #Reference.do_search(:q => "Fisher #{Time.now.year + 1}").should == [fisher]
     #end
@@ -329,4 +291,41 @@ describe Reference do
     end
 
   end
+
+  describe "Searching with Solr" do
+    it "should return an empty array if nothing is found for author_name" do
+      Factory :reference
+      Reference.search {keywords 'foo'}.results.should be_empty
+    end
+
+    it "should find the reference for a given author_name if it exists" do
+      reference = reference_factory(:author_name => 'Bolton')
+      reference_factory(:author_name => 'Fisher')
+      Reference.search {keywords 'Bolton'}.results.should == [reference]
+    end
+
+    it "should return an empty array if nothing is found for a given year and author_name" do
+      reference_factory(:author_name => 'Bolton', :citation_year => '2010')
+      reference_factory(:author_name => 'Bolton', :citation_year => '1995')
+      reference_factory(:author_name => 'Fisher', :citation_year => '2011')
+      reference_factory(:author_name => 'Fisher', :citation_year => '1996')
+      Reference.search {
+        with(:year).between(2012..2013)
+        keywords 'Fisher'
+      }.results.should be_empty
+    end
+
+    it "should return the one reference for a given year and author_name" do
+      reference_factory(:author_name => 'Bolton', :citation_year => '2010')
+      reference_factory(:author_name => 'Bolton', :citation_year => '1995')
+      reference_factory(:author_name => 'Fisher', :citation_year => '2011')
+      reference = reference_factory(:author_name => 'Fisher', :citation_year => '1996')
+      Reference.search {
+        with(:year).between(1996..1996)
+        keywords 'Fisher'
+      }.results.should == [reference]
+    end
+
+  end
+
 end
