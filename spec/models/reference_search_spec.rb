@@ -58,8 +58,6 @@ describe Reference do
         updated_today.update_attribute(:updated_at,  Time.now)
         Reference.record_timestamps = true
 
-        Sunspot.commit
-
         Reference.do_do_search(:order => :updated_at).should == [updated_today, updated_yesterday, updated_last_week]
       end
     end
@@ -85,7 +83,6 @@ describe Reference do
       #reference_factory(:author_name => 'Bolton', :citation_year => '1995').index
       #reference_factory(:author_name => 'Fisher', :citation_year => '2011').index
       #reference_factory(:author_name => 'Fisher', :citation_year => '1996').index
-      #Sunspot.commit
       #Reference.search {
         #with(:year).between(2012..2013)
         #keywords 'Fisher'
@@ -98,7 +95,6 @@ describe Reference do
       #reference_factory(:author_name => 'Fisher', :citation_year => '2011').index
       #reference = reference_factory(:author_name => 'Fisher', :citation_year => '1996')
       #reference.index
-      #Sunspot.commit
       #Reference.search {
         #with(:year).between(1996..1996)
         #keywords 'Fisher'
@@ -114,7 +110,6 @@ describe Reference do
       #bolton.index
       #fisher = reference_factory(:author_name => 'Fisher', :citation_year => (Time.now.year + 1).to_s)
       #fisher.index
-      #Sunspot.commit
       #Reference.do_search(:q => "Bolton #{Time.now.year}").should == [bolton]
       #Reference.do_search(:q => "Fisher #{Time.now.year + 1}").should == [fisher]
     #end
