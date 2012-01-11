@@ -331,7 +331,7 @@ describe Reference do
       end
 
       it "should convert the query string" do
-        Reference.should_receive(:perform_search).with :fulltext => '', :fulltext => 'andre', :page => 1
+        Reference.should_receive(:perform_search).with :fulltext => 'andre', :page => 1
         Reference.do_search :q => 'André'
       end
 
