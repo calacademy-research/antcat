@@ -4,6 +4,7 @@ class Reference < ActiveRecord::Base
   class BoltonReferenceNotFound < StandardError; end
 
   searchable do
+    string  :type
     integer :year
     text    :author_names_string
     text    :title
@@ -19,12 +20,13 @@ class Reference < ActiveRecord::Base
   end
 
   def self.perform_search options = {}
+    page = options[:page]
     case
     when options[:fulltext]
       start_year, end_year = options[:start_year], options[:end_year]
-      page = options[:page]
       search {
         keywords options[:fulltext]
+
         if start_year
           if end_year
             with(:year).between(start_year..end_year)
@@ -32,20 +34,37 @@ class Reference < ActiveRecord::Base
             with(:year).equal_to start_year
           end
         end
-        paginate(:page => options[:page]) if options[:page]
+
+        case options[:filter]
+        when :unknown_references_only
+          with :type, 'UnknownReference'
+        when :no_missing_references
+          without :type, 'MissingReference'
+        end
+
+        paginate :page => page if page
+
         order_by :author_names_string
         order_by :citation_year
       }.results
 
     when options[:authors]
       authors = options[:authors]
-      select('`references`.*').
+      query = select('`references`.*').
          joins(:author_names)
         .joins('JOIN authors ON authors.id = author_names.author_id')
         .where('authors.id IN (?)', authors)
         .group('references.id')
         .having("COUNT(`references`.id) = #{authors.length}")
         .order(:author_names_string_cache, :citation_year)
+
+        case options[:filter]
+        when :unknown_references_only
+          with :type, 'UnknownReference'
+        when :no_missing_references
+          without :type, 'MissingReference'
+        end
+      query 
 
     when options[:id]
       where(:id => options[:id])
@@ -56,49 +75,57 @@ class Reference < ActiveRecord::Base
       else
         query = order 'author_names_string_cache, citation_year'
       end
-      query = query.paginate :page => options[:page] if options[:page]
+      query = query.paginate :page => page if page
+      query
+      case options[:filter]
+      when :unknown_references_only
+        query = query.where 'type == "UnknownReference"'
+      when :no_missing_references, nil
+        query = query.where 'type != "MissingReference" OR type IS NULL'
+      end
       query
     end
   end
 
   def self.do_search options = {}
-    return perform_search if options.empty?
-    return perform_search(:order => :updated_at, :page => options[:page]) if options[:review]
-    return perform_search(:order => :created_at, :page => options[:page]) if options[:whats_new]
 
-    if options[:authors]
+    search_options = {}
+    if options[:format] != :endnote_import
+      search_options[:page] = options[:page] || 1
+    end
+
+    case
+    when options[:whats_new]
+      search_options.merge! :order => :created_at
+
+    when options[:review]
+      search_options.merge! :order => :updated_at
+
+    when options[:authors]
       author_names = AuthorParser.parse(options[:authors])[:names]
       authors = Author.find_by_names author_names
-      return perform_search :authors => authors, :page => options[:page]
+      search_options.merge! :authors => authors
+
+    when options.key?(:q)
+      fulltext_string = options[:q] || ''
+
+      if match = fulltext_string.match(/\d{5,}/)
+        return perform_search :id => match[0].to_i
+      end
+
+      start_year, end_year = parse_and_extract_years fulltext_string
+      filter = parse_and_extract_filter fulltext_string
+      fulltext_string = ActiveSupport::Inflector.transliterate fulltext_string.downcase
+
+      search_options[:fulltext] = fulltext_string if fulltext_string
+      search_options[:start_year] = start_year if start_year
+      search_options[:end_year] = end_year if end_year
+      search_options[:filter] = filter if filter
+
     end
 
-    fulltext_string = options[:q] || ''
+    perform_search search_options
 
-    if match = fulltext_string.match(/\d{5,}/)
-      return perform_search :id => match[0].to_i
-    end
-
-    start_year, end_year = parse_and_extract_years fulltext_string
-
-    return perform_search :fulltext => fulltext_string, :start_year => start_year, :end_year => end_year, :page => options[:page]
-
-    #string = ActiveSupport::Inflector.transliterate options[:q].downcase
-
-    #only_show_unknown_references = false
-    #question_mark_index = string.index '?'
-    #if question_mark_index
-      #string[question_mark_index] = ''
-      #only_show_unknown_references = true
-    #end
-
-    #results = search_solr string, options, only_show_unknown_references, paginate
-
-    #if only_show_unknown_references
-      #ids = results.map &:id
-      #return where(:type => 'UnknownReference').where('id' => ids).paginate(:page => options[:page])
-    #end
-
-    #results
   end
 
   def self.parse_and_extract_years string
@@ -114,6 +141,15 @@ class Reference < ActiveRecord::Base
 
     string.gsub! /#{match[0]}/, '' if match
     return start_year, end_year
+  end
+
+  def self.parse_and_extract_filter string
+    question_mark_index = string.index '?'
+    if question_mark_index
+      string[question_mark_index] = ''
+      string.strip!
+      return :unknown_references_only
+    end
   end
 
 end
