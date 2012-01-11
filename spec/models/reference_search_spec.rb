@@ -150,6 +150,14 @@ describe Reference do
           end
         end
 
+        describe "Year and fulltext" do
+          it "should work" do
+            atta2004 = Factory :book_reference, :title => 'Atta', :citation_year => '2004'
+            atta2003 = Factory :book_reference, :title => 'Atta', :citation_year => '2003'
+            formica2004 = Factory :book_reference, :title => 'Formica', :citation_year => '2003'
+            Reference.perform_search(:fulltext => 'atta', :start_year => 2004).should == [atta2004]
+          end
+        end
       end
     end
 
