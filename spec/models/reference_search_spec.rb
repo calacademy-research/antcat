@@ -309,7 +309,6 @@ describe Reference do
 
         Reference.do_search :authors => 'Bolton; Fisher'
       end
-
     end
 
     describe "Searching for an ID" do
@@ -333,6 +332,11 @@ describe Reference do
       it "should convert the query string" do
         Reference.should_receive(:perform_search).with :fulltext => 'andre', :page => 1
         Reference.do_search :q => 'André'
+      end
+
+      it "should distinguish between years and citation years" do
+        Reference.should_receive(:perform_search).with :fulltext => '1970a', :start_year => 1970, :page => 1
+        Reference.do_search :q => '1970a 1970'
       end
 
       it "should not strip the year from the string" do
