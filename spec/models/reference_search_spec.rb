@@ -235,9 +235,9 @@ describe Reference do
     end
 
     it "should find the reference for a given author_name if it exists" do
-      reference = reference_factory(:author_name => 'Bolton')
+      reference = reference_factory(:author_name => 'Ward')
       reference_factory(:author_name => 'Fisher')
-      Reference.search {keywords 'Bolton'}.results.should == [reference]
+      Reference.search {keywords 'Ward'}.results.should == [reference]
     end
 
     it "should return an empty array if nothing is found for a given year and author_name" do
@@ -269,7 +269,7 @@ describe Reference do
 
     describe "Searching for nothing" do
       it "should return everything" do
-        Reference.should_receive(:perform_search).with(:page => 1)
+        Reference.should_receive(:perform_search).with :page => 1
         Reference.do_search
       end
     end
@@ -290,6 +290,8 @@ describe Reference do
 
     describe "Searching for author(s)" do
       it "sends along the authors for the author names" do
+        AuthorName.delete_all
+        Author.delete_all
         bolton = Factory :author_name, :name => 'Bolton'
         fisher = Factory :author_name, :name => 'Bolton'
         bolton_b = Factory :author_name, :name => 'Bolton, B.', :author => bolton.author
