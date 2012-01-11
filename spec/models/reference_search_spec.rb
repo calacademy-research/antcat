@@ -319,12 +319,6 @@ describe Reference do
     end
 
     describe "Searching for text and/or years" do
-      it "should not strip the year from the string" do
-        string = '1990'
-        Reference.perform_search :fulltext => string
-        string.should == '1990'
-      end
-
       it "should extract the starting and ending years" do
         Reference.should_receive(:perform_search).with :fulltext => '', :start_year => 1992, :end_year => 1993, :page => 1
         Reference.do_search :q => '1992-1993'
@@ -338,6 +332,12 @@ describe Reference do
       it "should convert the query string" do
         Reference.should_receive(:perform_search).with :fulltext => '', :fulltext => 'andre', :page => 1
         Reference.do_search :q => 'André'
+      end
+
+      it "should not strip the year from the string" do
+        string = '1990'
+        Reference.do_search :q => string
+        string.should == '1990'
       end
 
     end

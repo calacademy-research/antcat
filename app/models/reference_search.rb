@@ -64,10 +64,13 @@ class Reference < ActiveRecord::Base
         when :no_missing_references
           without :type, 'MissingReference'
         end
+      query = query.paginate :page => page if page
       query 
 
     when options[:id]
-      where :id => options[:id]
+      query = where :id => options[:id]
+      query = query.paginate :page => page
+      query
 
     else
       if options[:order]
@@ -107,7 +110,7 @@ class Reference < ActiveRecord::Base
       search_options.merge! :authors => authors
 
     when options.key?(:q)
-      fulltext_string = options[:q] || ''
+      fulltext_string = options[:q].dup || ''
 
       if match = fulltext_string.match(/\d{5,}/)
         return perform_search :id => match[0].to_i
