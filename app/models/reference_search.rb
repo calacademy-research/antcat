@@ -67,7 +67,7 @@ class Reference < ActiveRecord::Base
       query 
 
     when options[:id]
-      where(:id => options[:id])
+      where :id => options[:id]
 
     else
       if options[:order]
