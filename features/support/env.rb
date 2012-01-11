@@ -57,3 +57,12 @@ Spork.prefork do
   require 'capybara/firebug'
   require 'factory_girl/step_definitions'
 end
+
+# this is similar to code in sunspot.rb
+Sunspot.session = Sunspot.session.original_session
+After do
+  Sunspot.remove_all! 
+end
+at_exit do
+  Sunspot.session = Sunspot::Rails::StubSessionProxy.new(Sunspot.session)
+end
