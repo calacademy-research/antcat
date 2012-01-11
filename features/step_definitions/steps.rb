@@ -16,7 +16,6 @@ Given /the following Bolton references? exists?/ do |table|
     hash.delete('match_status') if hash['match_status'].blank?
     @bolton_reference = Factory :bolton_reference, hash
   end
-  Bolton::Reference.reindex
 end
 
 Given /^the following references? match(?:es)? that Bolton reference$/ do |table|
@@ -83,7 +82,6 @@ def create_reference type, hash
   reference = Factory type, hash.merge(:author_names => author_names, :author_names_suffix => author_names_suffix)
   @reference ||= reference
   set_timestamps reference, hash
-  Reference.reindex
 end
 
 def set_timestamps reference, hash
@@ -106,7 +104,6 @@ Given /the following entry nests it/ do |table|
   @reference = NestedReference.create! :author_names => [Factory(:author_name, :name => data[:authors])],
     :citation_year => data[:year], :title => data[:title], :pages_in => data[:pages_in],
     :nested_reference => @nestee_reference
-  Reference.reindex
 end
 
 Given /that the entry has a URL that's on our site( that is public)?/ do |is_public|
