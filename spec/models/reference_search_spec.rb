@@ -309,6 +309,7 @@ describe Reference do
 
         Reference.do_search :authors => 'Bolton; Fisher'
       end
+
     end
 
     describe "Searching for an ID" do
