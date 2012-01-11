@@ -20,7 +20,7 @@ EOS
       @endnote_export_confirmation_message << "\nSince there are no search criteria, AntCat will download all ten thousand references. This will take several minutes."
     end
 
-    params[:advanced] = params[:search_selector] == 'Search for author(s)'
+    params[:authors] = params.delete(:q) if params[:search_selector] == 'Search for author(s)'
 
     respond_to do |format|
       format.html   {
