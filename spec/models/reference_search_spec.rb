@@ -4,6 +4,12 @@ require 'spec_helper'
 describe Reference do
   include EnableSunspot
 
+  before do
+    Reference.delete_all
+    # throw in a MissingReference to make sure it's not returned
+    Factory :missing_reference
+  end
+
   describe "Searching (perform_search)" do
 
     describe "Search parameters" do
@@ -161,7 +167,7 @@ describe Reference do
         Reference.perform_search(:order => :updated_at).should == [updated_today, updated_yesterday, updated_last_week]
       end
 
-      it "should be bale to sort by created_at" do
+      it "should be able to sort by created_at" do
         Reference.record_timestamps = false
         created_yesterday = reference_factory(:author_name => 'Fisher', :citation_year => '1910b')
         created_yesterday.update_attribute(:created_at,  Time.now.yesterday)
@@ -173,8 +179,6 @@ describe Reference do
 
         Reference.perform_search(:order => :created_at).should == [created_today, created_yesterday, created_last_week]
       end
-
-
      
       describe "Default sort order" do
         it "should sort by author_name plus year plus letter" do
@@ -201,22 +205,20 @@ describe Reference do
 
     end
 
+    describe "Filtering" do
+      it "should apply the :unknown_references_only filter that's passed" do
+        known = Factory :article_reference
+        unknown = Factory :unknown_reference
+        Reference.perform_search(:fulltext => '', :filter => :unknown_references_only).should == [unknown]
+      end
+      it "should apply the :no_missing_references filter that's passed" do
+        MissingReference.count.should > 0
+        reference = Factory :article_reference
+        Reference.perform_search(:fulltext => '', :filter => :no_missing_references).should == [reference]
+      end
+    end
+
   end
-
-
-  #describe "Searching" do
-
-
-    #describe "Filtering unknown reference types" do
-      #it "should just return unknown reference types if a ? is passed as the search term" do
-        #known = Factory :article_reference
-        #unknown = Factory :unknown_reference
-        #Reference.perform_search(:fulltext => '?').should == [unknown]
-      #end
-    #end
-
-
-  #end
 
   describe "Searching with Solr" do
     it "should return an empty array if nothing is found for author_name" do
@@ -259,21 +261,21 @@ describe Reference do
 
     describe "Searching for nothing" do
       it "should return everything" do
-        Reference.should_receive(:perform_search).with()
+        Reference.should_receive(:perform_search).with(:page => 1)
         Reference.do_search
       end
     end
 
     describe "Review" do
       it "should sort by updated_at" do
-        Reference.should_receive(:perform_search).with(:order => :updated_at, :page => nil)
+        Reference.should_receive(:perform_search).with :order => :updated_at, :page => 1
         Reference.do_search :review => true
       end
     end
 
     describe "New" do
       it "should sort by created_at" do
-        Reference.should_receive(:perform_search).with(:order => :created_at, :page => nil)
+        Reference.should_receive(:perform_search).with :order => :created_at, :page => 1
         Reference.do_search :whats_new => true
       end
     end
@@ -292,9 +294,10 @@ describe Reference do
           options[:authors].size.should == 2
           options[:authors].first.should == bolton.author
           options[:authors].second.should == fisher.author
+          options[:page].should == 1
         end
 
-        Reference.do_search :authors => 'Bolton; Fisher', :page => nil
+        Reference.do_search :authors => 'Bolton; Fisher'
       end
     end
 
@@ -313,40 +316,39 @@ describe Reference do
       end
 
       it "should extract the starting and ending years" do
-        Reference.should_receive(:perform_search).with :fulltext => '',
-                                                       :start_year => 1992, :end_year => 1993, :page => nil
+        Reference.should_receive(:perform_search).with :fulltext => '', :start_year => 1992, :end_year => 1993, :page => 1
         Reference.do_search :q => '1992-1993'
       end
 
       it "extract the starting year" do
-        Reference.should_receive(:perform_search).with :fulltext => '',
-                                                        :start_year => 1992, :end_year => nil, :page => nil
+        Reference.should_receive(:perform_search).with :fulltext => '', :start_year => 1992, :page => 1
         Reference.do_search :q => '1992'
+      end
+
+      it "should convert the query string" do
+        Reference.should_receive(:perform_search).with :fulltext => '', :fulltext => 'andre', :page => 1
+        Reference.do_search :q => 'André'
       end
 
     end
 
     describe "Pagination on or off for different search types" do
       it "should not paginate EndNote format" do
-        Reference.should_receive(:perform_search).with :fulltext => '',
-                                                        :start_year => nil, :end_year => nil, :page => nil
+        Reference.should_receive(:perform_search).with :fulltext => ''
         Reference.do_search :q => '', :format => :endnote_import
       end
       it "should paginate other formats" do
-        Reference.should_receive(:perform_search).with :fulltext => '', :start_year => nil, :end_year => nil, :page => 2
-        Reference.do_search :q => '', :page => 2
+        Reference.should_receive(:perform_search).with :fulltext => '', :page => 1
+        Reference.do_search :q => ''
       end
     end
 
-    #describe "Filtering unknown reference types" do
-      #it "should just return unknown reference types if a ? is passed as the search term" do
-        #known = Factory :article_reference
-        #unknown = Factory :unknown_reference
-        #Reference.perform_search(:fulltext => '?').should == [unknown]
-      #end
-    #end
+    describe "Filtering unknown reference types" do
+      it "should return only unknown reference types if a ? is passed as the search term" do
+        Reference.should_receive(:perform_search).with :fulltext => 'monroe', :filter => :unknown_references_only, :page => 1
+        Reference.do_search :q => '? Monroe'
+      end
+    end
 
   end
-
-
 end
