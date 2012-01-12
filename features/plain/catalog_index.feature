@@ -9,7 +9,7 @@ Feature: Using the catalog index
     And a subfamily exists with a name of "Dolichoderinae" and a taxonomic history of "Dolichoderinae history"
     And a tribe exists with a name of "Dolichoderini" and a subfamily of "Dolichoderinae" and a taxonomic history of "Dolichoderini history"
     And a genus exists with a name of "Dolichoderus" and a tribe of "Dolichoderini" and a taxonomic history of "Dolichoderus history"
-    And a genus exists with a name of "Dolichoderus" and no subfamily
+    And a genus exists with a name of "Atta" and no subfamily
     And a fossil genus exists with a name of "Brownerus" and a tribe of "Dolichoderini" and a taxonomic history of "Dolichoderus history"
     And a species exists with a name of "abruptus" and a genus of "Dolichoderus" and a taxonomic history of "abruptus history"
 
@@ -18,22 +18,18 @@ Feature: Using the catalog index
     Then I should see "Formicidae" in the contents
       And I should see "valid" in the contents
       And I should see "Formicariae" in the contents
-      And I should see "3 valid genera" in the contents
+      And I should see "Extant: 1 valid subfamily, 3 valid genera, 1 valid species"
+      And I should see "Fossil: 1 valid genus"
 
-  Scenario: Seeing the family (even with 'no subfamily' chosen)
-    When I go to the catalog index
-      And I follow "(no subfamily)"
-    Then I should see "Formicidae" in the contents
-      And I should see "valid" in the contents
-      And I should see "Formicariae" in the contents
-      And I should see "1 valid genus" in the contents
-
-  Scenario: Before selecting anything
+  Scenario: Seeing the subfamilies
     When I go to the catalog index
     Then I should see "Dolichoderinae" in the index
       And I should not see "Dolichoderinae history"
-      And I should see "Formicidae"
-      And I should see "1 valid subfamily, 2 valid genera, 1 valid species"
+
+  Scenario: Choosing '(no subfamilies)'
+    When I go to the catalog index
+      And I follow "(no subfamily)"
+    Then I should see "Atta" in the index
 
   #Scenario: Selecting a subfamily
     #When I go to the catalog index
