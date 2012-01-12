@@ -9,10 +9,10 @@ class Bolton::Catalog::Importer
     @error_count = 0
   end
 
-  def import_files filenames
-    filenames = get_filenames filenames
-    raise "No files" unless filenames.present?
-    initialize_parse filenames
+  def import_files file_names
+    file_names = get_file_names file_names
+    raise "No files" unless file_names.present?
+    initialize_parse file_names
     import
   end
 
