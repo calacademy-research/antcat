@@ -155,32 +155,7 @@ class Reference < ActiveRecord::Base
     end
   end
 
-  def self.find_by_bolton_key author_names, citation_year
-    bolton_key = Bolton::ReferenceKey.new(author_names.join(' '), citation_year).to_s :db
-
-    reference = find_by_bolton_key_cache bolton_key
-    return reference if reference
-
-    bolton_reference = Bolton::Reference.find_by_key_cache bolton_key
-    unless bolton_reference
-      message = "Can't find Bolton reference for '#{bolton_key}'"
-      Progress.error message
-      raise BoltonReferenceNotFound.new message
-    end
-
-    reference = bolton_reference.match
-    unless reference
-      message = "Bolton reference for '#{bolton_key}' was found, but hasn't been matched"
-      Progress.error message
-      raise BoltonReferenceNotMatched.new message
-    end
-
-    reference.update_attribute :bolton_key_cache, bolton_key
-
-    reference
-  end
-
-  def self.find_or_create_by_bolton_key data
+  def self.find_by_bolton_key data
     year = data[:year] || data[:in][:year]
     bolton_key = Bolton::ReferenceKey.new(data[:author_names].join(' '), year).to_s :db
 

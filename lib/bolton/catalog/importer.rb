@@ -415,7 +415,7 @@ class Bolton::Catalog::Importer
 
   def convert_citation_to_taxt text_item
     return unless text_item[:author_names]
-    taxt = Taxt.reference ::Reference.find_or_create_by_bolton_key text_item
+    taxt = Taxt.reference ::Reference.find_by_bolton_key text_item
     taxt << ": #{text_item[:pages]}" if text_item[:pages]
     add_delimiter taxt, text_item
   end
