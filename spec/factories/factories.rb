@@ -1,11 +1,5 @@
 # coding: UTF-8
 
-Factory.define :missing_reference do |reference|
-  reference.citation "Bolton, 2005"
-  reference.citation_year '2001'
-  reference.title '(missing)'
-end
-
 def reference_factory attributes = {}
   author_name = Factory(:author_name, :name => attributes.delete(:author_name))
   reference = Factory(:reference, attributes.merge(:author_names => [author_name]))
