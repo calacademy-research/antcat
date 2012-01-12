@@ -176,7 +176,7 @@ class CatalogFormatter
   end
 
   def self.format_headline_type taxon
-    return '' unless taxon
+    return '' unless taxon && taxon.type_taxon
     content_tag :span, :class => :type do
       'Type-genus: '.html_safe +
       format_genus_name(taxon.type_taxon) +
