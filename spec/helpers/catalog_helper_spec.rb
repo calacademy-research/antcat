@@ -18,7 +18,14 @@ describe CatalogHelper do
       it "should format a subfamily link" do
         subfamily = Factory :subfamily, :name => 'Dolichoderinae'
         taxon_link(:subfamily, subfamily, subfamily).should ==
-  %{<a href="/catalog/index/#{subfamily.id}" class="selected subfamily taxon valid">Dolichoderinae</a>}
+  %{<a href="/catalog/index/#{subfamily.id}?subfamily=#{subfamily.id}" class="selected subfamily taxon valid">Dolichoderinae</a>}
+      end
+    end
+    describe "genus" do
+      it "should format a genus link" do
+        genus = Factory :genus, :name => 'Atta'
+        taxon_link(:genus, genus, nil, :genus => genus).should ==
+  %{<a href="/catalog/index/#{genus.id}?genus=#{genus.id}" class="genus taxon valid">Atta</a>}
       end
     end
   end
