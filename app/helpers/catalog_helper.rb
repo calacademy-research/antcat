@@ -3,11 +3,20 @@ require 'snake'
 
 module CatalogHelper
 
-  def taxon_link taxon, selected, url_parameters
-    classes = 'valid'
-    #classes << ' selected' if taxon == selected
-    family = Family.first
-    link_to "(no subfamily)", "/catalog/index/#{family.id}?subfamily=none", :class => classes
+  def taxon_link rank, taxon, selected_taxon, url_parameters = {}
+    if rank == :subfamily
+      if taxon == 'none'
+        classes = 'valid'
+        classes << ' selected' if taxon == selected_taxon
+        link_to "(no subfamily)", "/catalog/index?subfamily=none", :class => classes
+      else
+        label_and_classes = CatalogFormatter.taxon_label_and_css_classes taxon, :selected => taxon == selected_taxon
+        link_to label_and_classes[:label], index_catalog_path(taxon, url_parameters), :class => label_and_classes[:css_classes]
+      end
+    elsif rank == :genus
+      label_and_classes = CatalogFormatter.taxon_label_and_css_classes taxon, :selected => taxon == selected_taxon
+      link_to label_and_classes[:label], index_catalog_path(taxon, url_parameters), :class => label_and_classes[:css_classes]
+    end
     #if taxon =~ /^no_/
       #classes = 'valid'
       #classes << ' selected' if taxon == selected
