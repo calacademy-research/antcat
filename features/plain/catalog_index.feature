@@ -25,20 +25,21 @@ Feature: Using the catalog index
     When I go to the catalog index
     Then I should see "Dolichoderinae" in the index
       And I should not see "Dolichoderinae history"
+      And I should not see "Atta"
 
   Scenario: Choosing '(no subfamilies)'
     When I go to the catalog index
       And I follow "(no subfamily)"
     Then I should see "Atta" in the index
 
-  #Scenario: Selecting a subfamily
-    #When I go to the catalog index
-      #And I follow "Dolichoderinae"
-    #Then "Dolichoderinae" should be selected
-      #And I should see "Dolichoderinae history"
-      #And I should see "Dolichoderini" in the index
-      #And I should see "Extant: 1 valid genus, 1 valid species"
-      #And I should see "Fossil: 1 valid genus"
+  Scenario: Selecting a subfamily
+    When I go to the catalog index
+      And I follow "Dolichoderinae"
+    Then "Dolichoderinae" should be selected
+      And I should see "Dolichoderinae history"
+      And I should see "Dolichoderini" in the index
+      And I should see "Extant: 1 valid genus, 1 valid species"
+      And I should see "Fossil: 1 valid genus"
 
   #Scenario: Selecting a tribe
     #When I go to the catalog index
