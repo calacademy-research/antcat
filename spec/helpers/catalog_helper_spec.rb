@@ -3,9 +3,23 @@ require 'spec_helper'
 
 describe CatalogHelper do
 
-  describe 'Headline' do
-    it "should format a headline" do
-      taxon = Factory :family
+  describe "Taxon link" do
+    describe "(no subfamily)" do
+      it "should format the '(no subfamily)' link" do
+        taxon_link(:subfamily, 'none', nil).should ==
+  %{<a href="/catalog/index?subfamily=none" class="valid">(no subfamily)</a>}
+      end
+      it "should format the '(no subfamily)' link when selected" do
+        taxon_link(:subfamily, 'none', 'none').should ==
+  %{<a href="/catalog/index?subfamily=none" class="valid selected">(no subfamily)</a>}
+      end
+    end
+    describe "subfamily" do
+      it "should format a subfamily link" do
+        subfamily = Factory :subfamily, :name => 'Dolichoderinae'
+        taxon_link(:subfamily, subfamily, subfamily).should ==
+  %{<a href="/catalog/index/#{subfamily.id}" class="selected subfamily taxon valid">Dolichoderinae</a>}
+      end
     end
   end
 
@@ -27,7 +41,6 @@ describe CatalogHelper do
   end
 
   describe 'Grouping index items' do
-
     it "should just return the items if the number of rows isn't exceeded" do
       a = Factory :species, :name => 'a'
       b = Factory :species, :name => 'b'
@@ -35,7 +48,6 @@ describe CatalogHelper do
         {:label => 'a', :id => a.id, :css_classes => 'species taxon valid'},
         {:label => 'b', :id => b.id, :css_classes => 'species taxon valid'}]
     end
-
     it "should sort the items" do
       a = Factory :species, :name => 'a'
       b = Factory :species, :name => 'b'
@@ -43,7 +55,6 @@ describe CatalogHelper do
         {:label => 'a', :id => a.id, :css_classes => 'species taxon valid'},
         {:label => 'b', :id => b.id, :css_classes => 'species taxon valid'}]
     end
-
     it "should create groups of items" do
       a = Factory :species, :name => 'a'
       b = Factory :species, :name => 'b'
@@ -52,7 +63,6 @@ describe CatalogHelper do
         {:label => 'a-b', :id => a.id, :css_classes => 'species taxon'},
         {:label => 'c', :id => c.id, :css_classes => 'species taxon'}]
     end
-
     it "should abbreviate items" do
       a = Factory :species, :name => 'Acanthomyrmex'
       b = Factory :species, :name => 'Atta'
@@ -61,30 +71,24 @@ describe CatalogHelper do
         {:label => 'Acan-Atta', :id => a.id, :css_classes => 'species taxon'},
         {:label => 'Tetramorium', :id => c.id, :css_classes => 'species taxon'}]
     end
-
     it "should prepend daggers on single items" do
       a = Factory :species, :name => 'Acanthomyrmex', :fossil => true
       helper.make_index_groups([a], 2, 4).should == [{:label => '&dagger;Acanthomyrmex', :id => a.id, :css_classes => 'species taxon valid'}]
     end
-
     it "should not have a cow if there are no items" do
       helper.make_index_groups([], 2, 4).should == []
     end
-
   end
 
   describe "search selector" do
-
     it "should return the HTML for the selector with a default selected" do
       helper.search_selector(nil).should == 
 %{<select id="search_type" name="search_type"><option value="matching">matching</option>\n<option value="beginning with" selected="selected">beginning with</option>\n<option value="containing">containing</option></select>}
     end
-
     it "should return the HTML for the selector with the specified one selected" do
       helper.search_selector('containing').should == 
 %{<select id="search_type" name="search_type"><option value="matching">matching</option>\n<option value="beginning with">beginning with</option>\n<option value="containing" selected="selected">containing</option></select>}
     end
-
   end
 
   describe "Hide link" do
@@ -99,12 +103,10 @@ describe CatalogHelper do
       taxon = Factory :genus
       helper.show_child_link({:hide_tribes => true}, 'tribes', taxon, {}).should == %{<a href="/catalog/index/#{taxon.id}">show tribes</a>}
     end
-
     it "if child is not hidden, return nil" do
       taxon = Factory :genus
       helper.show_child_link({}, 'tribes', taxon, {}).should be_nil
     end
-
   end
 
   describe "Delegation to CatalogFormatter" do
