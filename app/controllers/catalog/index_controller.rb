@@ -11,22 +11,24 @@ class Catalog::IndexController < CatalogController
 
     #if params[:id] =~ /^no_/
       #@taxon = params[:id]
-    #elsif params[:id].present?
-      #@taxon = Taxon.find params[:id]
-    #else
+    if params[:id].present?
+      @taxon = Taxon.find params[:id]
+    else
       @taxon = Family.first
-    #end
+    end
+
+    @subfamily = params[:subfamily]
+    @subfamily = Taxon.find @subfamily if @subfamily.kind_of? Taxon
 
     #case @taxon
     #when 'no_subfamily', Subfamily
-      #@selected_subfamily = @taxon
-      #if @selected_subfamily == 'no_subfamily'
-        #@genera = Genus.without_subfamily
+      if @subfamily == 'none'
+        @genera = Genus.without_subfamily
       #elsif params[:hide_tribes]
         #@genera = @selected_subfamily.genera
       #else
         #@tribes = @selected_subfamily.tribes
-      #end
+      end
 
     #when 'no_tribe', Tribe
       #@selected_tribe = @taxon
