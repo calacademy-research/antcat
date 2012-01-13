@@ -56,12 +56,12 @@ Spork.prefork do
 end
 
 # this is similar to code in sunspot.rb
-Sunspot.session = Sunspot.session.original_session
+Sunspot.session = Sunspot.session.original_session if ENV['DRB'] != 'true'
 After do
   Sunspot.remove_all! 
 end
 at_exit do
-  Sunspot.session = Sunspot::Rails::StubSessionProxy.new(Sunspot.session)
+  Sunspot.session = Sunspot::Rails::StubSessionProxy.new(Sunspot.session) if ENV['DRB'] != 'true'
 end
 
 Before do
