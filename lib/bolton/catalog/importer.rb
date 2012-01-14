@@ -433,7 +433,7 @@ class Bolton::Catalog::Importer
     end
     [:order_name, :family_or_subfamily_name, :tribe_name, :subtribe_name, :collective_group_name, :genus_name].each do |key|
       next unless text_item[key]
-      taxt = Taxt.taxon_name text_item[key]
+      taxt = Taxt.taxon_name key, text_item[key]
       return add_delimiter taxt, text_item
     end
     nil
