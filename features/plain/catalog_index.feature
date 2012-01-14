@@ -9,7 +9,7 @@ Feature: Using the catalog index
     And a subfamily exists with a name of "Dolichoderinae" and a taxonomic history of "Dolichoderinae history"
     And a tribe exists with a name of "Dolichoderini" and a subfamily of "Dolichoderinae" and a taxonomic history of "Dolichoderini history"
     And a genus exists with a name of "Dolichoderus" and a tribe of "Dolichoderini" and a taxonomic history of "Dolichoderus history"
-    And a genus exists with a name of "Atta" and no subfamily
+    And a genus exists with a name of "Atta" and no subfamily and a taxonomic history of "Atta history"
     And a fossil genus exists with a name of "Brownerus" and a tribe of "Dolichoderini" and a taxonomic history of "Dolichoderus history"
     And a species exists with a name of "abruptus" and a genus of "Dolichoderus" and a taxonomic history of "abruptus history"
 
@@ -27,10 +27,18 @@ Feature: Using the catalog index
       And I should not see "Dolichoderinae history"
       And I should not see "Atta"
 
-  Scenario: Choosing '(no subfamilies)'
+  Scenario: Choosing '(no subfamily)'
     When I go to the catalog index
       And I follow "(no subfamily)"
     Then I should see "Atta" in the index
+
+  Scenario: Selecting a genus without a subfamily
+    When I go to the catalog index
+      And I follow "(no subfamily)"
+      And I follow "Atta"
+    Then "(no subfamily)" should be selected
+      And "Atta" should be selected
+      And I should see "Atta history"
 
   Scenario: Selecting a subfamily
     When I go to the catalog index
@@ -39,7 +47,7 @@ Feature: Using the catalog index
       And I should see "Dolichoderinae history"
       And I should see "Extant: 1 valid genus, 1 valid species"
       And I should see "Fossil: 1 valid genus"
-      #And I should see "Dolichoderini" in the index
+      And I should see "Dolichoderini" in the index
 
   #Scenario: Selecting a tribe
     #When I go to the catalog index

@@ -12,13 +12,14 @@
 
   .index
 
-    = render 'rank', :rank => :subfamily, :items => @subfamilies, :selected_item => @subfamily, :header => 'Subfamilies', :url_parameters => @url_parameters, :options => {:show_none => 'none', :hideable_child_name => 'tribes'}
+    = render 'rank', :rank => :subfamily, :items => @subfamilies, :selected_item => @subfamily, :header => 'Subfamilies', :column_selections => @column_selections, :options => {:show_none => 'none', :hideable_child_name => 'tribes'}
 
     - unless @subfamily == 'none' || params[:hide_tribes]
-      = render 'rank', :rank => :tribe, :items => @tribes, :selected_item => @selected_tribe, :header => 'Tribes', :url_parameters => @url_parameters, :options => {:show_none => 'no_tribe', :hideable_name => 'tribes'}
+      -#= render 'rank', :rank => :tribe, :items => @tribes, :selected_item => @tribe, :header => 'Tribes', :column_selections => @column_selections, :options => {:show_none => 'no_tribe', :hideable_name => 'tribes'}
+      = render 'rank', :rank => :tribe, :items => @tribes, :selected_item => @tribe, :header => 'Tribes', :column_selections => @column_selections, :options => {}
 
-    = render 'rank', :rank => :genus, :items => @genera, :selected_item => @genus, :header => 'Genera', :url_parameters => @url_parameters, :options => {}
+    = render 'rank', :rank => :genus, :items => @genera, :selected_item => @genus, :header => 'Genera', :column_selections => @column_selections, :options => {}
 
-    = render 'rank', :rank => :species, :items => @species, :selected_item => @selected_species, :header => 'Species', :url_parameters => @url_parameters, :options => {}
+    = render 'rank', :rank => :species, :items => @species, :selected_item => @species, :header => 'Species', :column_selections => @column_selections, :options => {}
 
 = render 'shared/qtip'
