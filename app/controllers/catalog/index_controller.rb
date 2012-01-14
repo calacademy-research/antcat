@@ -41,7 +41,7 @@ class Catalog::IndexController < CatalogController
     when 'none'
       @genera = nil
     else
-      @tribe.genera
+      @genera = @tribe.genera
     end
     @genus = params[:genus]
     @genus = Taxon.find @genus if @genus
