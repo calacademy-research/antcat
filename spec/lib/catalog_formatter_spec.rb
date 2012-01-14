@@ -6,6 +6,66 @@ describe CatalogFormatter do
     @formatter = CatalogFormatter
   end
 
+  describe "The new world order" do
+    describe "Headline formatting" do
+      it "should format the taxon name" do
+        protonym = Factory :protonym, :name => 'Atari'
+        atta = Factory :genus, :name => 'Atta', :protonym => protonym
+        @formatter.format_headline_name(atta).should == '<span class="family_group_name">Atari</span>'
+      end
+      it "should handle the special taxon 'no_tribe'" do
+        @formatter.format_headline_name('no_tribe').should be_blank
+      end
+      it "should handle the special taxon 'no_subfamily'" do
+        @formatter.format_headline_name('no_subfamily').should be_blank
+      end
+      it "should handle nil" do
+        @formatter.format_headline_name(nil).should be_blank
+      end
+    end
+
+    describe "Taxonomic history" do
+      before do
+        @taxon = Factory :family
+      end
+      describe "Taxonomic history formatting" do
+        it "should format a number of items together in order" do
+          @taxon.taxonomic_history_items.create! :taxt => 'Ant'
+          @taxon.taxonomic_history_items.create! :taxt => 'Taxonomy'
+          @formatter.format_taxonomic_history(@taxon, nil).should ==
+            '<div class="taxonomic_history_item">Ant.</div>' +
+            '<div class="taxonomic_history_item">Taxonomy.</div>'
+        end
+      end
+      describe "Taxonomic history item formatting" do
+        it "should format a phrase" do
+          @formatter.format_taxonomic_history_item('phrase', nil).should == '<div class="taxonomic_history_item">phrase.</div>'
+        end
+        it "should format a ref" do
+          reference = Factory :article_reference
+          ReferenceFormatter.should_receive(:format_interpolation).with(reference, nil).and_return 'foo'
+          @formatter.format_taxonomic_history_item("{ref #{reference.id}}", nil).should == '<div class="taxonomic_history_item">foo.</div>'
+        end
+        it "should not freak if the ref is malformed" do
+          @formatter.format_taxonomic_history_item("{ref sdf}", nil).should == '<div class="taxonomic_history_item">{ref sdf}.</div>'
+        end
+        it "should not freak if the ref points to a reference that doesn't exist" do
+          @formatter.format_taxonomic_history_item("{ref 12345}", nil).should == '<div class="taxonomic_history_item">{ref 12345}.</div>'
+        end
+      end
+    end
+
+    describe "PDF link formatting" do
+      it "should create a link" do
+        reference = Factory :reference
+        reference.stub(:downloadable_by?).and_return true
+        reference.stub(:url).and_return 'example.com'
+        @formatter.format_reference_document_link(reference, nil).should == '<a class="document_link" target="_blank" href="example.com">PDF</a>'
+      end
+    end
+
+  end
+
   describe 'Taxon statistics' do
     it "should get the statistics, then format them" do
       subfamily = mock
@@ -253,66 +313,6 @@ describe CatalogFormatter do
     end
     it "should use commas" do
       @formatter.pluralize_with_delimiters(2000, 'bear').should == '2,000 bears'
-    end
-  end
-
-  describe "Headline formatting" do
-    it "should format the taxon name" do
-      protonym = Factory :protonym, :name => 'Atari'
-      atta = Factory :genus, :name => 'Atta', :protonym => protonym
-      @formatter.format_headline_name(atta).should == '<span class="family_group_name">Atari</span>'
-    end
-    it "should handle the special taxon 'no_tribe'" do
-      @formatter.format_headline_name('no_tribe').should be_blank
-    end
-    it "should handle the special taxon 'no_subfamily'" do
-      @formatter.format_headline_name('no_subfamily').should be_blank
-    end
-    it "should handle nil" do
-      @formatter.format_headline_name(nil).should be_blank
-    end
-  end
-
-  describe "Taxonomic history" do
-    before do
-      @taxon = Factory :family
-    end
-
-    describe "Taxonomic history formatting" do
-      it "should format a number of items together in order" do
-        @taxon.taxonomic_history_items.create! :taxt => 'Ant'
-        @taxon.taxonomic_history_items.create! :taxt => 'Taxonomy'
-        @formatter.format_taxonomic_history(@taxon, nil).should ==
-          '<div class="taxonomic_history_item">Ant.</div>' +
-          '<div class="taxonomic_history_item">Taxonomy.</div>'
-      end
-    end
-
-    describe "Taxonomic history item formatting" do
-      it "should format a phrase" do
-        @formatter.format_taxonomic_history_item('phrase', nil).should == '<div class="taxonomic_history_item">phrase.</div>'
-      end
-      it "should format a ref" do
-        reference = Factory :article_reference
-        ReferenceFormatter.should_receive(:format_interpolation).with(reference, nil).and_return 'foo'
-        @formatter.format_taxonomic_history_item("{ref #{reference.id}}", nil).should == '<div class="taxonomic_history_item">foo.</div>'
-      end
-      it "should not freak if the ref is malformed" do
-        @formatter.format_taxonomic_history_item("{ref sdf}", nil).should == '<div class="taxonomic_history_item">{ref sdf}.</div>'
-      end
-      it "should not freak if the ref points to a reference that doesn't exist" do
-        @formatter.format_taxonomic_history_item("{ref 12345}", nil).should == '<div class="taxonomic_history_item">{ref 12345}.</div>'
-      end
-
-    end
-  end
-
-  describe "PDF link formatting" do
-    it "should create a link" do
-      reference = Factory :reference
-      reference.stub(:downloadable_by?).and_return true
-      reference.stub(:url).and_return 'example.com'
-      @formatter.format_reference_document_link(reference, nil).should == '<a class="document_link" target="_blank" href="example.com">PDF</a>'
     end
   end
 
