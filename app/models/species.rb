@@ -29,4 +29,24 @@ class Species < Taxon
     genus.species
   end
 
+  def self.create_from_fixup attributes
+    name = attributes[:name]
+
+    genus_attributes = {:name => name.split.first, :status => 'valid'}
+    genus = Genus.find_by_name  genus_attributes[:name]
+    unless genus
+      genus = Genus.create! genus_attributes
+      Progress.log "FIXUP created genus #{genus.name}"
+    end
+
+    species_attributes = {:name => name, :status => 'valid'}
+    species = Species.find_by_name  species_attributes[:name]
+    unless species
+      species = Species.create! species_attributes.merge :genus => genus
+      Progress.log "FIXUP created species #{species.name}"
+    end
+
+    species
+  end
+
 end
