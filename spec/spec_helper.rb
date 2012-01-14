@@ -1,8 +1,5 @@
 # coding: UTF-8
 
-require 'simplecov'
-SimpleCov.start 'rails'
-
 require 'spork'
 Spork.prefork do
   ENV["RAILS_ENV"] ||= 'test'
