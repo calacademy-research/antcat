@@ -16,8 +16,8 @@ describe Bolton::Catalog::Subfamily::Importer do
         <p><i>Condylodon</i> as junior synonym of <i>Pseudomyrma</i>: Dalla Torre, 1893: 55.</p>
       </div>}
       @importer.parse_genus_taxonomic_history.should == [
-        "Condylodon in family Mutillidae: {ref #{swainson.id}}: 173",
-        "Condylodon as junior synonym of Pseudomyrma: {ref #{dalla_torre.id}}: 55"
+        "<i>Condylodon</i> in family Mutillidae: {ref #{swainson.id}}: 173",
+        "<i>Condylodon</i> as junior synonym of Pseudomyrma: {ref #{dalla_torre.id}}: 55"
       ]
     end
   end

@@ -74,7 +74,7 @@ describe Bolton::Catalog::Subfamily::Importer do
     genus.should be_incertae_sedis_in 'family'
     genus.subfamily.should be_nil
     genus.taxonomic_history_items.map(&:taxt).should =~ [
-      "Condylodon in family Mutillidae: {ref #{swainson.id}}: 173"
+      "<i>Condylodon</i> in family Mutillidae: {ref #{swainson.id}}: 173"
     ]
 
     species = genus.type_taxon
