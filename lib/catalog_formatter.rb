@@ -15,8 +15,8 @@ class CatalogFormatter
     content_tag :div, :class => :antcat_taxon do
       contents = ''
       contents << content_tag(:div, :class => :header) do
-        content_tag(:span, full_label,        :class => :name) +
-        content_tag(:span, taxon_status,      :class => :status)
+        content_tag(:span, full_label,  :class =>  "name taxon #{taxon.rank}") +
+        content_tag(:span, taxon_status,:class => :status)
       end
       contents << content_tag(:div,  statistics,        :class => :statistics)
       contents << content_tag(:div,  headline,          :class => :headline)
