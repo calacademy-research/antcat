@@ -69,23 +69,36 @@ describe Bolton::Catalog::Subfamily::Grammar do
   end
 
   describe "Genus record" do
+
     describe "Type species" do
       it "should handle a type-species by subsequent designation" do
-        @grammar.parse('Type-species: <i>Bothriomyrmex myops</i>, by subsequent designation of Donisthorpe, 1944e: 102.', :root => :type_species).value_with_reference_text_removed.should == {
+        @grammar.parse('Type-species: <i>Bothriomyrmex myops</i>, by subsequent designation of Donisthorpe, 1944e: 102', :root => :type_species).value_with_reference_text_removed.should == {
           :type_species => {
-            :genus_name => 'Bothriomyrmex', :species_epithet => 'myops', :by => :subsequent_designation,
-            :author_names => ['Donisthorpe'], :year => '1944e', :pages => '102'
+            :genus_name => 'Bothriomyrmex',
+            :species_epithet => 'myops',
+            :texts => [{:text => [
+                {:phrase => ', by subsequent designation of', :delimiter => ' '},
+                {:author_names => ['Donisthorpe'], :year => '1944e', :pages => '102'},
+              ]}],
           }
         }
       end
       it "should handle a type-species that it doesn't understand" do
         @grammar.parse('Type-species: none subsequent', :root => :type_species).value_with_reference_text_removed.should == {
-          :type_species => {:text => [{:phrase => 'none subsequent'}]}
+          :type_species => {:texts => [{:text => [{:phrase => 'none subsequent'}]}]}
         }
       end
-
       it "should handle a type-species that's nomen nudum" do
-        @grammar.parse('Type-species: <i>Ancylognathus lugubris</i>, <i>nomen nudum</i>.', :root => :type_species).value
+        @grammar.parse('Type-species: <i>Ancylognathus lugubris</i>, <i>nomen nudum</i>.', :root => :type_species).value_with_reference_text_removed.should == {
+          :type_species => {
+            :genus_name => 'Ancylognathus',
+            :species_epithet => 'lugubris',
+            :texts => [{:text => [
+                {:phrase => ',', :delimiter => ' '},
+                {:phrase => '<i>nomen nudum</i>'},
+            ]}]
+          }
+        }
       end
     end
 
@@ -99,7 +112,9 @@ describe Bolton::Catalog::Subfamily::Grammar do
         :genus_name => 'Odontomyrmex',
         :authorship => [{:author_names => ['André'], :year => '1905', :pages => '207'}],
         :type_species => {
-          :genus_name => 'Odontomyrmex', :species_epithet => 'quadridentatus', :by => :monotypy
+          :genus_name => 'Odontomyrmex',
+          :species_epithet => 'quadridentatus',
+          :texts => [{:text => [{:phrase => ', by monotypy'}]}]
         }
       }
     end
@@ -111,7 +126,11 @@ describe Bolton::Catalog::Subfamily::Grammar do
         :authorship => [{:author_names => ['Grimaldi', 'Engel'], :year => '2005', :pages => '446 (in table)'}],
         :nomen_nudum => true,
         :type_species => {
-          :genus_name => 'Dolichoformica', :species_epithet => 'helferi', :fossil => true, :nomen_nudum => true
+          :genus_name => 'Dolichoformica', :species_epithet => 'helferi', :fossil => true,
+          :texts => [{:text => [
+            {:phrase => ',', :delimiter => ' '},
+            {:phrase => '<i>nomen nudum</i>'}
+          ]}]
         }
       }
     end
@@ -145,7 +164,7 @@ describe Bolton::Catalog::Subfamily::Grammar do
          }],
         :type_species => {
           :genus_name => 'Calyptites', :species_epithet => 'antediluvianum', :fossil => true,
-          :by => :monotypy
+          :texts => [:text => [{:phrase => ', by monotypy'}]]
         }
       }
     end
@@ -163,22 +182,29 @@ describe Bolton::Catalog::Subfamily::Grammar do
         }],
         :type_species => {
           :genus_name => 'Formica', :subgenus_epithet => 'Hypochira', :species_epithet => 'subspinosa',
-          :by => :monotypy
+          :texts => [:text => [{:phrase => ', by monotypy'}]]
         }
       }
     end
     it "should recognize a type-species that's a junior synonym" do
-      @grammar.parse(%{*<i>Eoformica</i> Cockerell, 1921: 38. Type-species: *<i>Eoformica eocenica</i> (junior synonym of *<i>Eoformica pingue</i>), by monotypy.}).value_with_reference_text_removed.should == {
+       @grammar.parse(%{*<i>Eoformica</i> Cockerell, 1921: 38. Type-species: *<i>Eoformica eocenica</i> (junior synonym of *<i>Eoformica pingue</i>), by monotypy.}).value_with_reference_text_removed.should == {
         :type => :genus_headline,
         :genus_name => 'Eoformica',
         :fossil => true,
         :authorship => [{:author_names => ['Cockerell'], :year => '1921', :pages => '38'}],
         :type_species => {
-          :genus_name => 'Eoformica', :species_epithet => 'eocenica', :fossil => true,
-          :junior_synonym_of => {
-            :genus_name => 'Eoformica', :species_epithet => 'pingue', :fossil => true
-          },
-          :by => :monotypy
+          :genus_name => 'Eoformica',
+          :species_epithet => 'eocenica',
+          :fossil => true,
+          :texts => [
+            {:text => [
+              {:opening_parenthesis=>"("},
+              {:phrase=>"junior synonym of", :delimiter=>" "},
+              {:genus_name=>"Eoformica", :species_epithet=>"pingue", :fossil=>true},
+              {:closing_parenthesis=>")"}
+            ]},
+            {:text => [{:phrase=>", by monotypy"}]},
+          ],
         }
       }
     end
@@ -187,14 +213,16 @@ describe Bolton::Catalog::Subfamily::Grammar do
         :type => :genus_headline,
         :genus_name => 'Gerontoformica',
         :fossil => true,
-        :authorship => [{:author_names => ['Nel', 'Perrault'],
-        :in => {
-          :author_names => ['Nel', 'Perrault', 'Perrichot', 'Néraudeau'], :year => '2004'
-        },
-        :pages => '24'}],
+        :authorship => [{
+            :author_names => ['Nel', 'Perrault'],
+            :in => {:author_names => ['Nel', 'Perrault', 'Perrichot', 'Néraudeau'], :year => '2004'},
+            :pages => '24'
+        }],
         :type_species => {
-          :genus_name => 'Gerontoformica', :species_epithet => 'cretacica', :fossil => true,
-          :by => :original_designation
+          :genus_name => 'Gerontoformica',
+          :species_epithet => 'cretacica',
+          :fossil => true,
+          :texts => [{:text => [{:phrase=>", by original designation"}]}],
         }
       }
     end

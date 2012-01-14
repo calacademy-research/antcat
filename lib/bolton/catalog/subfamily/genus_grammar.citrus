@@ -110,70 +110,17 @@ grammar Bolton::Catalog::Subfamily::GenusGrammar
     }
   end
 
+  ###########################################
   rule type_species
-    nomen_nudum_type_species | normal_type_species | unknown_type_species
-  end
-
-  rule unknown_type_species
-    ('Type-species: ' text) {
-      {:type_species => text.value}
-    }
-  end
-
-  rule nomen_nudum_type_species
-    ('Type-species: ' species_label ', ' nomen_nudum '.')
-    {
-      value = species_label.value
-      value[:nomen_nudum] = true
+    ('Type-species: ' ((species_label text*) | text+)) {
+      value = {}
+      value.merge! species_label.value if species_label
+      value.merge! :texts => captures[:text].map(&:value)
       {:type_species => value}
     }
   end
 
-  rule normal_type_species
-    ('Type-species: ' species_label 
-      (' (junior synonym of ' junior_synonym_of:species_label ')')?
-      ', ' type_species_by '.'
-    ) {
-      value = species_label.value
-      value.merge! type_species_by.value
-      value[:junior_synonym_of] = junior_synonym_of.value if junior_synonym_of
-      {:type_species => value}
-    }
-  end
-
-  rule type_species_by
-    monotypy | original_designation | subsequent_designation
-  end 
-
-  rule monotypy
-    'by monotypy' {
-      {:by => :monotypy}
-    }
-  end
-
-  rule original_designation
-    'by original designation' {
-      {:by => :original_designation}
-    }
-  end
-
-  rule subsequent_designation
-    ('by subsequent designation of ' reference) {
-      value = {:by => :subsequent_designation}
-      value.merge! reference.value
-      value
-    }
-  end
-
-  rule as_placement
-    ('[as ' 'subgenus of ' genus_label ']') {
-      {:as => {
-        :rank => :subgenus,
-        :of => genus_label.value
-      }}
-    }
-  end
-
+  ###########################################
   rule junior_synonyms_of_genus_header
     (/Junior synonyms?/ ' of ' fossil_flag? italic uppercase_word close_tag /.*/) {
       {:type => :junior_synonyms_of_genus_header}
