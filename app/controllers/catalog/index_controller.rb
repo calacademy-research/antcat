@@ -46,8 +46,18 @@ class Catalog::IndexController < CatalogController
     @genus = params[:genus]
     @genus = Taxon.find @genus if @genus
 
+    # species column
+    case @genus
+    when nil
+      @species = nil
+    else
+      @species = @genus.species
+    end
+    @genus = params[:genus]
+    @genus = Taxon.find @genus if @genus
+
     # save the column selections
-    @column_selections = {:subfamily => @subfamily, :tribe => @tribe, :genus => @genus}
+    @column_selections = {:subfamily => @subfamily, :tribe => @tribe, :genus => @genus, :species => @species}
       #:q => params[:q], :search_type => params[:search_type], :hide_tribes => params[:hide_tribes]}
 
     #case @taxon
