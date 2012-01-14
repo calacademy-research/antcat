@@ -76,21 +76,6 @@ ActiveRecord::Schema.define(:version => 20120114234224) do
     t.string  "target_name"
   end
 
-  create_table "citations", :force => true do |t|
-    t.integer  "reference_id"
-    t.string   "pages"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "citations", ["reference_id"], :name => "index_authorships_on_reference_id"
-
-  create_table "forward_references", :force => true do |t|
-    t.integer "source_id"
-    t.string  "source_attribute"
-    t.string  "target_name"
-  end
-
   create_table "journals", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
