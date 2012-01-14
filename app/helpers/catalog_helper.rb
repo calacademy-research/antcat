@@ -11,7 +11,7 @@ module CatalogHelper
         link_to "(no subfamily)", "/catalog/index?subfamily=none", :class => classes
       else
         label_and_classes = CatalogFormatter.taxon_label_and_css_classes taxon, :selected => taxon == selected_taxon
-        link_to label_and_classes[:label], index_catalog_path(taxon, url_parameters), :class => label_and_classes[:css_classes]
+        link_to label_and_classes[:label], index_catalog_path(taxon, url_parameters.merge(:subfamily => taxon)), :class => label_and_classes[:css_classes]
       end
     elsif rank == :genus
       label_and_classes = CatalogFormatter.taxon_label_and_css_classes taxon, :selected => taxon == selected_taxon
