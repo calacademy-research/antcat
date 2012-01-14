@@ -27,7 +27,7 @@ class CatalogFormatter
   end
 
   def self.format_full_label taxon
-    if taxon.kind_of? Genus
+    if taxon.kind_of? Taxon
       taxon.full_name.html_safe
     else
       ''
