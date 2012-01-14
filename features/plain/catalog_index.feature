@@ -58,17 +58,17 @@ Feature: Using the catalog index
       And I should see "Dolichoderini history"
       And I should see "Dolichoderus" in the index
 
-  #Scenario: Selecting a genus
-    #When I go to the catalog index
-      #And I follow "Dolichoderinae"
-      #And I follow "Dolichoderini"
-      #And I follow "Dolichoderus"
-    #Then "Dolichoderinae" should be selected
-      #And "Dolichoderini" should be selected
-      #And "Dolichoderus" should be selected
-      #And I should see "Dolichoderus history"
-      #And I should see "1 valid species"
-      #And I should see "abruptus" in the index
+  Scenario: Selecting a genus
+    When I go to the catalog index
+      And I follow "Dolichoderinae"
+      And I follow "Dolichoderini"
+      And I follow "Dolichoderus"
+    Then "Dolichoderinae" should be selected
+      And "Dolichoderini" should be selected
+      And "Dolichoderus" should be selected
+      And I should see "Dolichoderus history"
+      And I should see "1 valid species"
+      And I should see "abruptus" in the index
 
   #Scenario: Selecting a species
     #When I go to the catalog index
