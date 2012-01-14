@@ -70,35 +70,33 @@ Feature: Using the catalog index
       And I should see "1 valid species"
       And I should see "abruptus" in the index
 
-  #Scenario: Selecting a species
-    #When I go to the catalog index
-      #And I follow "Dolichoderinae"
-      #And I follow "Dolichoderini"
-      #And I follow "Dolichoderus"
-      #And I follow "abruptus"
-    #Then "Dolichoderinae" should be selected
-      #And "Dolichoderini" should be selected
-      #And "Dolichoderus" should be selected
-      #And "abruptus" should be selected
-      #And I should see "abruptus history"
+  Scenario: Selecting a species
+    When I go to the catalog index
+      And I follow "Dolichoderinae"
+      And I follow "Dolichoderini"
+      And I follow "Dolichoderus"
+      And I follow "abruptus"
+    Then "Dolichoderinae" should be selected
+      And "Dolichoderini" should be selected
+      And "Dolichoderus" should be selected
+      And "abruptus" should be selected
+      And I should see "abruptus history"
 
-  #Scenario: Showing the "no subfamily" subfamily
-    #Given a genus exists with a name of "Cariridris" and no subfamily
-    #When I go to the catalog index
-      #And I follow "(no subfamily)"
-    #Then I should see "Cariridris"
-      #And "(no subfamily)" should be selected
-      #And I should not see "Tribes"
-      #And I should not see "show tribes"
+  Scenario: Showing the "no tribe" tribe
+    Given a genus exists with a name of "Cariridris" and a subfamily of "Dolichoderinae"
+      And a genus exists with a name of "Atta" and a subfamily of "Attaninae"
+    When I go to the catalog index
+      And I follow "Dolichoderinae"
+      And I follow "(no tribe)" in the tribes index
+    Then I should see "Cariridris" in the genera index
+      And I should not see "Atta" in the genera index
+      And "(no tribe)" should be selected in the tribes index
+      And "Dolichoderinae" should be selected in the subfamilies index
 
-  #Scenario: Showing the "no tribe" tribe
-    #Given a genus exists with a name of "Cariridris" and a subfamily of "Dolichoderinae"
-      #And a genus exists with a name of "Atta" and a subfamily of "Attaninae"
-    #When I go to the catalog index
-      #And I follow "Dolichoderinae"
-      #And I follow "(no tribe)" in the tribes index
-    #Then I should see "Cariridris" in the genera index
-      #And I should not see "Atta" in the genera index
-      #And "(no tribe)" should be selected in the tribes index
-      #And "Dolichoderinae" should be selected in the subfamilies index
-
+  Scenario: Showing the "no subfamily" subfamily
+    Given a genus exists with a name of "Cariridris" and no subfamily
+    When I go to the catalog index
+      And I follow "(no subfamily)"
+    Then I should see "Cariridris"
+      And "(no subfamily)" should be selected
+      And I should not see "Tribes"

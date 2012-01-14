@@ -39,7 +39,7 @@ class Catalog::IndexController < CatalogController
         @genera = nil
       end
     when 'none'
-      @genera = nil
+      @genera = @subfamily.genera.without_tribe
     else
       @genera = @tribe.genera
     end
@@ -49,12 +49,12 @@ class Catalog::IndexController < CatalogController
     # species column
     case @genus
     when nil
-      @species = nil
+      @specieses = nil
     else
-      @species = @genus.species
+      @specieses = @genus.species
     end
-    @genus = params[:genus]
-    @genus = Taxon.find @genus if @genus
+    @species = params[:species]
+    @species = Taxon.find @species if @species
 
     # save the column selections
     @column_selections = {:subfamily => @subfamily, :tribe => @tribe, :genus => @genus, :species => @species}

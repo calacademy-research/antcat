@@ -5,26 +5,22 @@ module CatalogHelper
 
   def taxon_link rank, taxon, selected_taxon, column_selections = {}
 
-    if rank == :subfamily && taxon == 'none'
+    if taxon == 'none'
       classes = 'valid'
       classes << ' selected' if taxon == selected_taxon
-      link_to "(no subfamily)", "/catalog/index?subfamily=none", :class => classes
+      if rank == :subfamily
+        link_to "(no subfamily)", "/catalog/index?subfamily=none", :class => classes
+      elsif rank == :tribe
+        link_to "(no tribe)", "/catalog/index?subfamily=#{column_selections[:subfamily].id}&tribe=none", :class => classes
+      end
 
     else
       label_and_classes = CatalogFormatter.taxon_label_and_css_classes taxon,
         :selected => taxon == selected_taxon
       link_to label_and_classes[:label], index_catalog_path(taxon, column_selections.merge(rank => taxon)),
         :class => label_and_classes[:css_classes]
-
     end
-    #if taxon =~ /^no_/
-      #classes = 'valid'
-      #classes << ' selected' if taxon == selected
-      #link_to "(#{taxon.gsub(/_/, ' ')})", index_catalog_path(taxon, column_selections), :class => classes
-    #else
-      #label_and_classes = CatalogFormatter.taxon_label_and_css_classes taxon, :selected => taxon == selected
-      #link_to label_and_classes[:label], index_catalog_path(taxon, column_selections), :class => label_and_classes[:css_classes]
-    #end
+
   end
 
   def hide_link name, selected, column_selections

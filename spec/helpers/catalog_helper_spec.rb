@@ -41,6 +41,11 @@ describe CatalogHelper do
         taxon_link(:tribe, tribe, nil, :subfamily => subfamily).should ==
   %{<a href="/catalog/index/#{tribe.id}?subfamily=#{subfamily.id}&amp;tribe=#{tribe.id}" class="taxon tribe valid">Atta</a>}
       end
+      it "should format the '(no tribe)' link" do
+        subfamily = Factory :subfamily, :name => 'Dolichoderinae'
+        taxon_link(:tribe, 'none', nil, :subfamily => subfamily).should ==
+  %{<a href="/catalog/index?subfamily=#{subfamily.id}&amp;tribe=none" class="valid">(no tribe)</a>}
+      end
     end
   end
 

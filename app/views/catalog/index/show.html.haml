@@ -16,10 +16,10 @@
 
     - unless @subfamily == 'none' || params[:hide_tribes]
       -#= render 'rank', :rank => :tribe, :items => @tribes, :selected_item => @tribe, :header => 'Tribes', :column_selections => @column_selections, :options => {:show_none => 'no_tribe', :hideable_name => 'tribes'}
-      = render 'rank', :rank => :tribe, :items => @tribes, :selected_item => @tribe, :header => 'Tribes', :column_selections => @column_selections, :options => {}
+      = render 'rank', :rank => :tribe, :items => @tribes, :selected_item => @tribe, :header => 'Tribes', :column_selections => @column_selections, :options => {:show_none => 'none'}
 
     = render 'rank', :rank => :genus, :items => @genera, :selected_item => @genus, :header => 'Genera', :column_selections => @column_selections, :options => {}
 
-    = render 'rank', :rank => :species, :items => @species, :selected_item => @species, :header => 'Species', :column_selections => @column_selections, :options => {}
+    = render 'rank', :rank => :species, :items => @specieses, :selected_item => @species, :header => 'Species', :column_selections => @column_selections, :options => {}
 
 = render 'shared/qtip'
