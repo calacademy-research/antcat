@@ -115,7 +115,7 @@ describe Species do
 
       species = Species.create_from_fixup :name => 'Atta major'
 
-      species.reload.name.should == 'Atta major'
+      species.reload.name.should == 'major'
       species.should_not be_invalid
       genus = Genus.find_by_name 'Atta'
       genus.should_not be_invalid
@@ -123,7 +123,7 @@ describe Species do
     end
     it "should find an existing species" do
       genus = Genus.create! :name => 'Atta', :status => 'valid'
-      existing_species = Species.create! :name => 'Atta major', :genus => genus, :status => 'valid'
+      existing_species = Species.create! :name => 'major', :genus => genus, :status => 'valid'
       species = Species.create_from_fixup :name => 'Atta major'
       species.reload.should == existing_species
     end
