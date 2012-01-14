@@ -39,11 +39,11 @@ class Species < Taxon
       Progress.log "FIXUP created genus #{genus.name}"
     end
 
-    species_attributes = {:name => name, :status => 'valid'}
+    species_attributes = {:name => name.split.second, :status => 'valid'}
     species = Species.find_by_name  species_attributes[:name]
     unless species
       species = Species.create! species_attributes.merge :genus => genus
-      Progress.log "FIXUP created species #{species.name}"
+      Progress.log "FIXUP created species #{genus.name} #{species.name}"
     end
 
     species
