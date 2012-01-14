@@ -7,7 +7,8 @@ class Catalog::IndexController < CatalogController
     #@current_path = index_catalog_path
     @subfamilies = ::Subfamily.ordered_by_name
 
-    #@url_parameters = {:q => params[:q], :search_type => params[:search_type], :hide_tribes => params[:hide_tribes]}
+    @url_parameters = {}
+      #:q => params[:q], :search_type => params[:search_type], :hide_tribes => params[:hide_tribes]}
 
     #if params[:id] =~ /^no_/
       #@taxon = params[:id]
@@ -18,7 +19,7 @@ class Catalog::IndexController < CatalogController
     end
 
     @subfamily = params[:subfamily]
-    @subfamily = Taxon.find @subfamily if @subfamily.kind_of? Taxon
+    @subfamily = Taxon.find @subfamily if @subfamily && @subfamily != 'none'
 
     #case @taxon
     #when 'no_subfamily', Subfamily
