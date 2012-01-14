@@ -79,7 +79,7 @@ describe Bolton::Catalog::Subfamily::Importer do
 
     species = genus.type_taxon
     species.should_not be_invalid
-    species.name.should == 'Condylodon audouini'
+    species.name.should == 'audouini'
 
     genus = Genus.find_by_name 'Promyrmicium'
     genus.should be_excluded
