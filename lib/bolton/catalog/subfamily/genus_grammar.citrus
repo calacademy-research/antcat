@@ -120,6 +120,15 @@ grammar Bolton::Catalog::Subfamily::GenusGrammar
     }
   end
 
+  rule as_placement
+    ('[as ' 'subgenus of ' genus_label ']') {
+      {:as => {
+        :rank => :subgenus,
+        :of => genus_label.value
+      }}
+    }
+  end
+
   ###########################################
   rule junior_synonyms_of_genus_header
     (/Junior synonyms?/ ' of ' fossil_flag? italic uppercase_word close_tag /.*/) {
