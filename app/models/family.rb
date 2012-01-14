@@ -30,4 +30,8 @@ class Family < Taxon
     name
   end
 
+  def full_name
+    name
+  end
+
 end
