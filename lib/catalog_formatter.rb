@@ -7,7 +7,7 @@ class CatalogFormatter
   extend ActionView::Context
 
   def self.format_taxon taxon, current_user
-    full_label        = taxon ? taxon.full_label : ''
+    full_label        = format_full_label taxon
     taxon_status      = format_status taxon
     headline          = format_headline taxon, current_user
     taxonomic_history = format_taxonomic_history taxon, current_user
@@ -20,9 +20,17 @@ class CatalogFormatter
       end
       contents << content_tag(:div,  statistics,        :class => :statistics)
       contents << content_tag(:div,  headline,          :class => :headline)
-      contents << content_tag(:h4,  'Taxonomic history')
+      contents << content_tag(:h4,  'Taxonomic history') if taxonomic_history.present?
       contents << content_tag(:div,  taxonomic_history, :class => :taxonomic_history)
       contents.html_safe
+    end
+  end
+
+  def self.format_full_label taxon
+    if taxon.kind_of? Genus
+      taxon.full_name.html_safe
+    else
+      ''
     end
   end
 
