@@ -43,6 +43,18 @@ describe ForwardReference do
         species.should == Species.find_by_name('Atta major')
       end
 
+      it "should find an existing genus for a species" do
+        genus = Factory :genus, :name => 'Atta'
+        forward_reference = ForwardReference.create! :source_id => genus.id, :source_attribute => :type_taxon, :target_name => 'Atta major'
+
+        forward_reference.fixup
+
+        species = genus.reload.type_taxon
+        species.name.should == 'Atta major'
+        species.should == Species.find_by_name('Atta major')
+        species.genus.should == genus
+      end
+
       it "should complain if it's fixing up something it doesn't understand" do
         genus = Factory :subspecies
         forward_reference = ForwardReference.create! :source_id => genus.id, :source_attribute => :type_taxon, :target_name => 'Atta major'

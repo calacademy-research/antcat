@@ -108,4 +108,25 @@ describe Species do
     end
   end
 
+  describe "Creating from a fixup" do
+    it "should create the species and the genus" do
+      Progress.should_receive(:log).with("FIXUP created genus Atta")
+      Progress.should_receive(:log).with("FIXUP created species Atta major")
+
+      species = Species.create_from_fixup :name => 'Atta major'
+
+      species.reload.name.should == 'Atta major'
+      species.should_not be_invalid
+      genus = Genus.find_by_name 'Atta'
+      genus.should_not be_invalid
+      genus.should == species.genus
+    end
+    it "should find an existing species" do
+      genus = Genus.create! :name => 'Atta', :status => 'valid'
+      existing_species = Species.create! :name => 'Atta major', :genus => genus, :status => 'valid'
+      species = Species.create_from_fixup :name => 'Atta major'
+      species.reload.should == existing_species
+    end
+  end
+
 end
