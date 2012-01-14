@@ -346,6 +346,7 @@ And /I (edit|delete|copy) "(.*?)"/ do |verb, author|
   step %{I follow "#{verb}" within "#reference_#{reference.id}"}
 end
 
+##########################################################
 Given /a subfamily exists with a name of "(.*?)" and a taxonomic history of "(.*?)"/ do |taxon_name, taxonomic_history|
   subfamily = Factory :subfamily, :name => taxon_name
   subfamily.taxonomic_history_items.create! :taxt => taxonomic_history
@@ -360,7 +361,8 @@ end
 Given /a genus exists with a name of "(.*?)" and a subfamily of "(.*?)"(?: and a taxonomic history of "(.*?)")?(?: and a status of "(.*?)")?/ do |taxon_name, parent_name, taxonomic_history, status|
   status ||= 'valid'
   subfamily = parent_name && (Subfamily.find_by_name(parent_name) || Factory(:subfamily, :name => parent_name))
-  Factory :genus, :name => taxon_name, :subfamily => subfamily, :tribe => nil, :taxonomic_history => taxonomic_history, :status => status
+  genus = Factory :genus, :name => taxon_name, :subfamily => subfamily, :tribe => nil, :status => status
+  genus.taxonomic_history_items.create! :taxt => taxonomic_history
 end
 
 Given /a genus exists with a name of "(.*?)" and no subfamily(?: and a taxonomic history of "(.*?)")?/ do |taxon_name, taxonomic_history|
@@ -370,22 +372,26 @@ end
 
 Given /a (fossil )?genus exists with a name of "(.*?)" and a tribe of "(.*?)"(?: and a taxonomic history of "(.*?)")?/ do |fossil, taxon_name, parent_name, taxonomic_history|
   tribe = Tribe.find_by_name(parent_name)
-  Factory :genus, :name => taxon_name, :subfamily => tribe.subfamily, :tribe => tribe, :taxonomic_history => taxonomic_history, :fossil => fossil.present?
+  genus = Factory :genus, :name => taxon_name, :subfamily => tribe.subfamily, :tribe => tribe, :fossil => fossil.present?
+  genus.taxonomic_history_items.create! :taxt => taxonomic_history
 end
 
 Given /a genus that was replaced by "(.*?)" exists with a name of "(.*?)" with a taxonomic history of "(.*?)"/ do |replacement, name, taxonomic_history|
   replacement = Genus.find_by_name(replacement) || Factory(:genus, :name => replacement)
-  Factory :genus, :name => name, :taxonomic_history => taxonomic_history, :status => 'homonym', :subfamily => replacement.subfamily, :homonym_replaced_by => replacement
+  genus = Factory :genus, :name => name, :status => 'homonym', :subfamily => replacement.subfamily, :homonym_replaced_by => replacement
+  genus.taxonomic_history_items.create! :taxt => taxonomic_history
 end
 
 Given /a genus that was synonymized to "(.*?)" exists with a name of "(.*?)" with a taxonomic history of "(.*?)"/ do |senior_synonym, name, taxonomic_history|
   senior_synonym = Genus.find_by_name(senior_synonym) || Factory(:genus, :name => senior_synonym)
-  Factory :genus, :name => name, :taxonomic_history => taxonomic_history, :status => 'synonym', :subfamily => senior_synonym.subfamily, :synonym_of => senior_synonym
+  genus = Factory :genus, :name => name, :status => 'synonym', :subfamily => senior_synonym.subfamily, :synonym_of => senior_synonym
+  genus.taxonomic_history_items.create! :taxt => taxonomic_history
 end
 
 Given /a species exists with a name of "(.*?)" and a genus of "(.*?)"(?: and a taxonomic history of "(.*?)")?/ do |taxon_name, parent_name, taxonomic_history|
   genus = Genus.find_by_name(parent_name) || Factory(:genus, :name => parent_name)
-  Factory :species, :name => taxon_name, :genus => genus, :taxonomic_history => taxonomic_history
+  species = Factory :species, :name => taxon_name, :genus => genus
+  species.taxonomic_history_items.create! :taxt => taxonomic_history
 end
 
 When /I fill in the search box with "(.*?)"/ do |search_term|
