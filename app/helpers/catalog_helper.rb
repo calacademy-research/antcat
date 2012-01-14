@@ -3,39 +3,39 @@ require 'snake'
 
 module CatalogHelper
 
-  def taxon_link rank, taxon, selected_taxon, url_parameters = {}
-    if rank == :subfamily
-      if taxon == 'none'
-        classes = 'valid'
-        classes << ' selected' if taxon == selected_taxon
-        link_to "(no subfamily)", "/catalog/index?subfamily=none", :class => classes
-      else
-        label_and_classes = CatalogFormatter.taxon_label_and_css_classes taxon, :selected => taxon == selected_taxon
-        link_to label_and_classes[:label], index_catalog_path(taxon, url_parameters.merge(:subfamily => taxon)), :class => label_and_classes[:css_classes]
-      end
-    elsif rank == :genus
-      label_and_classes = CatalogFormatter.taxon_label_and_css_classes taxon, :selected => taxon == selected_taxon
-      link_to label_and_classes[:label], index_catalog_path(taxon, url_parameters), :class => label_and_classes[:css_classes]
+  def taxon_link rank, taxon, selected_taxon, column_selections = {}
+
+    if rank == :subfamily && taxon == 'none'
+      classes = 'valid'
+      classes << ' selected' if taxon == selected_taxon
+      link_to "(no subfamily)", "/catalog/index?subfamily=none", :class => classes
+
+    else
+      label_and_classes = CatalogFormatter.taxon_label_and_css_classes taxon,
+        :selected => taxon == selected_taxon
+      link_to label_and_classes[:label], index_catalog_path(taxon, column_selections.merge(rank => taxon)),
+        :class => label_and_classes[:css_classes]
+
     end
     #if taxon =~ /^no_/
       #classes = 'valid'
       #classes << ' selected' if taxon == selected
-      #link_to "(#{taxon.gsub(/_/, ' ')})", index_catalog_path(taxon, url_parameters), :class => classes
+      #link_to "(#{taxon.gsub(/_/, ' ')})", index_catalog_path(taxon, column_selections), :class => classes
     #else
       #label_and_classes = CatalogFormatter.taxon_label_and_css_classes taxon, :selected => taxon == selected
-      #link_to label_and_classes[:label], index_catalog_path(taxon, url_parameters), :class => label_and_classes[:css_classes]
+      #link_to label_and_classes[:label], index_catalog_path(taxon, column_selections), :class => label_and_classes[:css_classes]
     #end
   end
 
-  def hide_link name, selected, url_parameters
+  def hide_link name, selected, column_selections
     hide_param = "hide_#{name}".to_sym
-    link_to 'hide', index_catalog_path(selected, url_parameters.merge(hide_param => true)), :class => :hide
+    link_to 'hide', index_catalog_path(selected, column_selections.merge(hide_param => true)), :class => :hide
   end
 
-  def show_child_link params, name, selected, url_parameters
+  def show_child_link params, name, selected, column_selections
     hide_child_param = "hide_#{name}".to_sym
     return unless params[hide_child_param]
-    link_to "show #{name}", index_catalog_path(selected, url_parameters.merge(hide_child_param => nil))
+    link_to "show #{name}", index_catalog_path(selected, column_selections.merge(hide_child_param => nil))
   end
 
   def status_labels

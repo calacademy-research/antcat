@@ -34,6 +34,14 @@ describe CatalogHelper do
   %{<a href="/catalog/index/#{genus.id}?genus=#{genus.id}" class="genus taxon valid">Atta</a>}
       end
     end
+    describe "tribe" do
+      it "should format a tribe link" do
+        tribe = Factory :tribe, :name => 'Atta'
+        subfamily = tribe.subfamily
+        taxon_link(:tribe, tribe, nil, :subfamily => subfamily).should ==
+  %{<a href="/catalog/index/#{tribe.id}?subfamily=#{subfamily.id}&amp;tribe=#{tribe.id}" class="taxon tribe valid">Atta</a>}
+      end
+    end
   end
 
   describe 'taxon header' do
