@@ -37,9 +37,9 @@ Feature: Using the catalog index
       And I follow "Dolichoderinae"
     Then "Dolichoderinae" should be selected
       And I should see "Dolichoderinae history"
-      And I should see "Dolichoderini" in the index
       And I should see "Extant: 1 valid genus, 1 valid species"
       And I should see "Fossil: 1 valid genus"
+      #And I should see "Dolichoderini" in the index
 
   #Scenario: Selecting a tribe
     #When I go to the catalog index
