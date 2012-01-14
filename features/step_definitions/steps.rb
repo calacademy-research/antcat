@@ -347,7 +347,8 @@ And /I (edit|delete|copy) "(.*?)"/ do |verb, author|
 end
 
 Given /a subfamily exists with a name of "(.*?)" and a taxonomic history of "(.*?)"/ do |taxon_name, taxonomic_history|
-  Factory :subfamily, :name => taxon_name, :taxonomic_history => taxonomic_history
+  subfamily = Factory :subfamily, :name => taxon_name
+  subfamily.taxonomic_history_items.create! :taxt => taxonomic_history
 end
 
 Given /a tribe exists with a name of "(.*?)"(?: and a subfamily of "(.*?)")?(?: and a taxonomic history of "(.*?)")?/ do |taxon_name, parent_name, taxonomic_history|
