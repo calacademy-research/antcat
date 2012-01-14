@@ -39,8 +39,8 @@ describe ForwardReference do
         forward_reference.fixup
 
         species = genus.reload.type_taxon
-        species.name.should == 'Atta major'
-        species.should == Species.find_by_name('Atta major')
+        species.name.should == 'major'
+        species.should == Species.find_by_name('major')
       end
 
       it "should find an existing genus for a species" do
@@ -50,8 +50,8 @@ describe ForwardReference do
         forward_reference.fixup
 
         species = genus.reload.type_taxon
-        species.name.should == 'Atta major'
-        species.should == Species.find_by_name('Atta major')
+        species.name.should == 'major'
+        species.should == Species.find_by_name('major')
         species.genus.should == genus
       end
 
