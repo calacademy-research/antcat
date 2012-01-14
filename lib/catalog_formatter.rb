@@ -62,8 +62,9 @@ class CatalogFormatter
 
   def self.format_headline_type taxon
     return '' unless taxon && taxon.type_taxon
+    type = taxon.type_taxon
     content_tag :span, :class => :type do
-      'Type-genus: '.html_safe +
+      "Type-#{type.type.downcase}: ".html_safe +
       format_genus_name(taxon.type_taxon) +
       '.'.html_safe
     end
@@ -89,7 +90,6 @@ class CatalogFormatter
     string << '.'
     content_tag :div, string.html_safe, :class => :taxonomic_history_item
   end
-
 
   # AntWeb
   def self.format_taxonomic_history_for_antweb taxon
