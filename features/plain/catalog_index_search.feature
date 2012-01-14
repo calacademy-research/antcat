@@ -10,11 +10,11 @@ Feature: Searching the catalog index
     And a genus exists with a name of "Dolichoderus" and a tribe of "Dolichoderini" and a taxonomic history of "Dolichoderus history"
     And a species exists with a name of "abruptus" and a genus of "Dolichoderus" and a taxonomic history of "abruptus history"
 
-  Scenario: Searching when no results
-    When I go to the catalog index
-      And I fill in the search box with "asdfjl;jsdf"
-      And I press "Go" by the search box
-    Then I should see "No results found"
+  #Scenario: Searching when no results
+    #When I go to the catalog index
+      #And I fill in the search box with "asdfjl;jsdf"
+      #And I press "Go" by the search box
+    #Then I should see "No results found"
 
   #Scenario: Searching when only one result
     #When I go to the catalog index
