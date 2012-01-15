@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120114234224) do
+ActiveRecord::Schema.define(:version => 20120115224411) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -99,6 +99,9 @@ ActiveRecord::Schema.define(:version => 20120114234224) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "authorship_id"
+    t.string   "rank"
+    t.boolean  "fossil"
+    t.boolean  "sic"
   end
 
   add_index "protonyms", ["authorship_id"], :name => "index_protonyms_on_authorship_id"
