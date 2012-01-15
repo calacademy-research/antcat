@@ -2,12 +2,12 @@
 class JournalsController < ApplicationController
 
   before_filter :authenticate_user!
-  before_filter :find_journal, :only => [:edit, :update]
+  before_filter :find_journal, only: [:edit, :update]
 
   def index
     respond_to do |format|
       format.html {@journals = Journal.list}
-      format.json {render :json => Journal.search(params[:term]).to_json}
+      format.json {render json: Journal.search(params[:term]).to_json}
     end
   end
 
@@ -29,7 +29,7 @@ class JournalsController < ApplicationController
     if @journal.update_attributes(params[:journal])
       flash[:notice] = "Successfully updated journal."
     end
-    render :edit, :journal => @journal
+    render :edit, journal: @journal
   end
 
   private

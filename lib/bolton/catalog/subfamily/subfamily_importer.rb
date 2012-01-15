@@ -22,11 +22,11 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     raise "Subfamily #{name} doesn't exist" unless subfamily
 
     taxonomic_history << parse_tribes_lists(subfamily)
-    taxonomic_history << parse_genera_lists(:subfamily, :subfamily => subfamily)
+    taxonomic_history << parse_genera_lists(:subfamily, subfamily: subfamily)
     taxonomic_history << parse_collective_group_names_list
     taxonomic_history << skip(:other)
 
-    subfamily.update_attributes :taxonomic_history => clean_taxonomic_history(taxonomic_history), :fossil => fossil
+    subfamily.update_attributes taxonomic_history: clean_taxonomic_history(taxonomic_history), fossil: fossil
 
     parse_tribes subfamily
     parse_genera

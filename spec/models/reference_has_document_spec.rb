@@ -18,7 +18,7 @@ describe Reference do
     end
 
     it "should delegate to its document" do
-      reference = Factory :reference, :document => Factory(:reference_document)
+      reference = Factory :reference, document: Factory(:reference_document)
       user = Factory :user
       reference.document.should_receive(:downloadable_by?).with(user)
       reference.downloadable_by? user
@@ -30,15 +30,15 @@ describe Reference do
       Factory(:reference).url.should be_nil
     end
     it "should delegate to its document" do
-      reference = Factory :reference, :document => Factory(:reference_document)
+      reference = Factory :reference, document: Factory(:reference_document)
       reference.document.should_receive(:url)
       reference.url
     end
 
     it "should make sure it exists" do
-      reference = Factory :reference, :year => 2001
-      stub_request(:any, "http://antbase.org/1.pdf").to_return :body => "Not Found", :status => 404
-      lambda {reference.document = ReferenceDocument.create :url => 'http://antbase.org/1.pdf'}.should raise_error ActiveRecord::RecordNotSaved
+      reference = Factory :reference, year: 2001
+      stub_request(:any, "http://antbase.org/1.pdf").to_return body: "Not Found", status: 404
+      lambda {reference.document = ReferenceDocument.create url: 'http://antbase.org/1.pdf'}.should raise_error ActiveRecord::RecordNotSaved
     end
 
   end
@@ -48,7 +48,7 @@ describe Reference do
       Factory(:reference).document_host = 'localhost'
     end
     it "should delegate to its document" do
-      reference = Factory :reference, :document => Factory(:reference_document)
+      reference = Factory :reference, document: Factory(:reference_document)
       reference.document.should_receive(:host=)
       reference.document_host = 'localhost'
     end

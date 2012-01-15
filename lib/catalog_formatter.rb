@@ -9,8 +9,8 @@ class CatalogFormatter
     string = taxon.taxonomic_history
     homonym_replaced = taxon.homonym_replaced
     if homonym_replaced
-      label_and_classes = taxon_label_and_css_classes taxon, :uppercase => true
-      span = content_tag('span', label_and_classes[:label], :class => label_and_classes[:css_classes])
+      label_and_classes = taxon_label_and_css_classes taxon, uppercase: true
+      span = content_tag('span', label_and_classes[:label], class: label_and_classes[:css_classes])
       string << %{<p class="taxon_subsection_header">Homonym replaced by #{span}</p>}
       string << %{<div id="#{homonym_replaced.id}">#{homonym_replaced.taxonomic_history}</div>}
     end
@@ -28,7 +28,7 @@ class CatalogFormatter
   end
 
   def self.format_statistics statistics, options = {}
-    options.reverse_merge! :include_invalid => true, :include_fossil => true
+    options.reverse_merge! include_invalid: true, include_fossil: true
     return '' unless statistics && statistics.present?
     strings = [:extant, :fossil].inject({}) do |strings, extant_or_fossil|
       extant_or_fossil_statistics = statistics[extant_or_fossil]
@@ -54,7 +54,7 @@ class CatalogFormatter
       []
     end
     strings.map do |string|
-      content_tag('p', string, :class => 'taxon_statistics')
+      content_tag('p', string, class: 'taxon_statistics')
     end.join
   end
 
@@ -106,7 +106,7 @@ class CatalogFormatter
     name = taxon.name.dup
     name.upcase! if options[:uppercase]
     label = fossil_symbol + h(name)
-    {:label => label.html_safe, :css_classes => css_classes_for_taxon(taxon, options[:selected])}
+    {label: label.html_safe, css_classes: css_classes_for_taxon(taxon, options[:selected])}
   end
 
   def self.css_classes_for_rank taxon
@@ -120,14 +120,14 @@ class CatalogFormatter
   def self.status_labels
     @status_labels || begin
       @status_labels = ActiveSupport::OrderedHash.new
-      @status_labels['synonym']             = {:singular => 'synonym', :plural => 'synonyms'}
-      @status_labels['homonym']             = {:singular => 'homonym', :plural => 'homonyms'}
-      @status_labels['unavailable']         = {:singular => 'unavailable', :plural => 'unavailable'}
-      @status_labels['unidentifiable']      = {:singular => 'unidentifiable', :plural => 'unidentifiable'}
-      @status_labels['excluded']            = {:singular => 'excluded', :plural => 'excluded'}
-      @status_labels['unresolved homonym']  = {:singular => 'unresolved homonym', :plural => 'unresolved homonyms'}
-      @status_labels['recombined']          = {:singular => 'transferred out of this genus', :plural => 'transferred out of this genus'}
-      @status_labels['nomen nudum']         = {:singular => 'nomen nudum', :plural => 'nomina nuda'}
+      @status_labels['synonym']             = {singular: 'synonym', plural: 'synonyms'}
+      @status_labels['homonym']             = {singular: 'homonym', plural: 'homonyms'}
+      @status_labels['unavailable']         = {singular: 'unavailable', plural: 'unavailable'}
+      @status_labels['unidentifiable']      = {singular: 'unidentifiable', plural: 'unidentifiable'}
+      @status_labels['excluded']            = {singular: 'excluded', plural: 'excluded'}
+      @status_labels['unresolved homonym']  = {singular: 'unresolved homonym', plural: 'unresolved homonyms'}
+      @status_labels['recombined']          = {singular: 'transferred out of this genus', plural: 'transferred out of this genus'}
+      @status_labels['nomen nudum']         = {singular: 'nomen nudum', plural: 'nomina nuda'}
       @status_labels
     end
   end

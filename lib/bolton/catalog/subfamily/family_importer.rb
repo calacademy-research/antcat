@@ -36,7 +36,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
   def parse_extant_subfamilies_list
     expect :extant_subfamilies_list
     @parse_result[:subfamilies].each do |subfamily|
-      ::Subfamily.create! :name => subfamily, :status => 'valid'
+      ::Subfamily.create! name: subfamily, status: 'valid'
     end
     parse_next_line
   end
@@ -44,7 +44,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
   def parse_extinct_subfamilies_list
     expect :extinct_subfamilies_list
     @parse_result[:subfamilies].each do |subfamily|
-      ::Subfamily.create! :name => subfamily, :status => 'valid', :fossil => true
+      ::Subfamily.create! name: subfamily, status: 'valid', fossil: true
     end
     parse_next_line
   end
@@ -52,7 +52,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
   def parse_extant_genera_incertae_sedis_in_family_list
     expect :extant_genera_incertae_sedis_in_family_list
     @parse_result[:genera].each do |genus|
-      Genus.create! :name => genus, :status => 'valid', :incertae_sedis_in => 'family'
+      Genus.create! name: genus, status: 'valid', incertae_sedis_in: 'family'
     end
     parse_next_line
   end
@@ -60,7 +60,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
   def parse_extinct_genera_incertae_sedis_in_family_list
     expect :extinct_genera_incertae_sedis_in_family_list
     @parse_result[:genera].each do |genus|
-      Genus.create! :name => genus, :status => 'valid', :incertae_sedis_in => 'family', :fossil => true
+      Genus.create! name: genus, status: 'valid', incertae_sedis_in: 'family', fossil: true
     end
     parse_next_line
   end
@@ -68,7 +68,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
   def parse_extant_genera_excluded_from_family_list
     expect :extant_genera_excluded_from_family_list
     @parse_result[:genera].each do |genus|
-      Genus.create! :name => genus, :status => 'excluded'
+      Genus.create! name: genus, status: 'excluded'
     end
     parse_next_line
   end
@@ -76,7 +76,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
   def parse_extinct_genera_excluded_from_family_list
     expect :extinct_genera_excluded_from_family_list
     @parse_result[:genera].each do |genus|
-      Genus.create! :name => genus, :status => 'excluded', :fossil => true
+      Genus.create! name: genus, status: 'excluded', fossil: true
     end
     parse_next_line
   end
@@ -84,7 +84,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
   def parse_genus_group_nomina_nuda_in_family_list
     expect :genus_group_nomina_nuda_in_family_list
     @parse_result[:genera].each do |genus|
-      attributes = {:name => genus[:name], :status => 'nomen nudum'}
+      attributes = {name: genus[:name], status: 'nomen nudum'}
       attributes[:fossil] = true if genus[:fossil]
       Genus.create! attributes
     end
@@ -95,7 +95,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     expect :genera_incertae_sedis_in_family_header
     parse_next_line
     expect :genus_header
-    parse_genus(:incertae_sedis_in => 'family')  while @type == :genus_header
+    parse_genus(incertae_sedis_in: 'family')  while @type == :genus_header
   end
 
   def parse_genera_excluded_from_family
@@ -103,7 +103,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     parse_next_line
     skip :other
     expect :genus_header
-    parse_genus :status => 'excluded' while @type == :genus_header
+    parse_genus status: 'excluded' while @type == :genus_header
   end
 
   def parse_unavailable_family_group_names_in_family
@@ -117,7 +117,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     expect :genus_group_nomina_nuda_in_family_header
     parse_next_line
     expect :genus_header
-    parse_genus({:status => 'nomen nudum'}, false) while @type == :genus_header
+    parse_genus({status: 'nomen nudum'}, false) while @type == :genus_header
   end
 
 end

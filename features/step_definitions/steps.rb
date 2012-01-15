@@ -5,8 +5,8 @@ Given /the following references? exists?/ do |table|
   table.hashes.each do |hash|
     citation = hash.delete 'citation'
     matches = citation.match /(\w+) (\d+):([\d\-]+)/
-    hash.merge! :journal => Factory(:journal, :name => matches[1]), :series_volume_issue => matches[2],
-      :pagination => matches[3]
+    hash.merge! journal: Factory(:journal, name: matches[1]), series_volume_issue: matches[2],
+      pagination: matches[3]
     create_reference :article_reference, hash
   end
 end
@@ -21,7 +21,7 @@ end
 Given /^the following references? match(?:es)? that Bolton reference$/ do |table|
   table.hashes.each do |hash|
     similarity = hash.delete 'similarity'
-    Factory :bolton_match, :reference => Factory(:article_reference, hash), :bolton_reference => @bolton_reference, :similarity => similarity
+    Factory :bolton_match, reference: Factory(:article_reference, hash), bolton_reference: @bolton_reference, similarity: similarity
   end
 end
 
@@ -51,9 +51,9 @@ Given /the following book references? exists?/ do |table|
   table.hashes.each do |hash|
     citation = hash.delete 'citation'
     matches = citation.match /([^:]+): (\w+), (.*)/
-    hash.merge! :publisher => Factory(:publisher, :name => matches[2],
-                                      :place => Factory(:place, :name => matches[1])),
-                :pagination => matches[3]
+    hash.merge! publisher: Factory(:publisher, name: matches[2],
+                                      place: Factory(:place, name: matches[1])),
+                pagination: matches[3]
     create_reference :book_reference, hash
   end
 end
@@ -67,19 +67,19 @@ end
 def create_reference type, hash
   author = hash.delete('author')
   if author
-    author_names = [Factory(:author_name, :name => author)]
+    author_names = [Factory(:author_name, name: author)]
   else
     authors = hash.delete('authors')
     author_names = AuthorParser.parse(authors)[:names]
     author_names_suffix = AuthorParser.parse(authors)[:suffix]
     author_names = author_names.inject([]) do |author_names, author_name|
-      author_name = AuthorName.find_by_name(author_name) || Factory(:author_name, :name => author_name)
+      author_name = AuthorName.find_by_name(author_name) || Factory(:author_name, name: author_name)
       author_names << author_name
     end
   end
 
   hash[:citation_year] = hash.delete 'year'
-  reference = Factory type, hash.merge(:author_names => author_names, :author_names_suffix => author_names_suffix)
+  reference = Factory type, hash.merge(author_names: author_names, author_names_suffix: author_names_suffix)
   @reference ||= reference
   set_timestamps reference, hash
 end
@@ -101,16 +101,16 @@ end
 Given /the following entry nests it/ do |table|
   data = table.hashes.first
   @nestee_reference = @reference
-  @reference = NestedReference.create! :author_names => [Factory(:author_name, :name => data[:authors])],
-    :citation_year => data[:year], :title => data[:title], :pages_in => data[:pages_in],
-    :nested_reference => @nestee_reference
+  @reference = NestedReference.create! author_names: [Factory(:author_name, name: data[:authors])],
+    citation_year: data[:year], title: data[:title], pages_in: data[:pages_in],
+    nested_reference: @nestee_reference
 end
 
 Given /that the entry has a URL that's on our site( that is public)?/ do |is_public|
   @reference.update_attribute :document, ReferenceDocument.create!
-  @reference.document.update_attributes :url => "localhost/documents/#{@reference.document.id}/123.pdf",
-                                        :file_file_name => '123.pdf',
-                                        :public => is_public ? true : nil
+  @reference.document.update_attributes url: "localhost/documents/#{@reference.document.id}/123.pdf",
+                                        file_file_name: '123.pdf',
+                                        public: is_public ? true : nil
 end
 
 Given /that the entry has a URL that's not on our site/ do
@@ -125,8 +125,8 @@ end
 Then /I should see these entries (with a header )?in this order:/ do |with_header, entries|
   offset = with_header ? 2 : 1
   entries.hashes.each_with_index do |e, i|
-    page.should have_css "table.references tr:nth-of-type(#{i + offset}) td", :text => e['entry']
-    page.should have_css "table.references tr:nth-of-type(#{i + offset}) td", :text => e['date']
+    page.should have_css "table.references tr:nth-of-type(#{i + offset}) td", text: e['entry']
+    page.should have_css "table.references tr:nth-of-type(#{i + offset}) td", text: e['date']
   end
 end
 
@@ -233,13 +233,13 @@ Given 'I am logged in' do
 end
 
 Then 'I should not see the "Delete" button' do
-  page.should_not have_css "button", :text => 'Delete'
+  page.should_not have_css "button", text: 'Delete'
 end
 
 Then /I should (not )?see a "PDF" link/ do |should_not|
   begin
     trace = ['Inside the I should(not) see a PDF step']
-    page_has_no_selector = page.has_no_selector?('a', :text => 'PDF')
+    page_has_no_selector = page.has_no_selector?('a', text: 'PDF')
     trace << 'after page.has_no_selector'
     unless page_has_no_selector and should_not
       trace << 'inside unless'
@@ -271,12 +271,12 @@ When /I fill in "([^"]*)" with a URL to a document that exists/ do |field|
 end
 
 When /I fill in "([^"]*)" with a URL to a document that doesn't exist/ do |field|
-  stub_request(:any, "google.com/foo").to_return :status => 404
+  stub_request(:any, "google.com/foo").to_return status: 404
   step "I fill in \"#{field}\" with \"google\.com/foo\""
 end
 
 Given "there is a reference with ID 50000 for Dolerichoderinae" do
-  reference = Factory :unknown_reference, :title => 'Dolerichoderinae'
+  reference = Factory :unknown_reference, title: 'Dolerichoderinae'
   sql = "UPDATE `references` SET id = 50000 WHERE id = #{reference.id}"
   ActiveRecord::Base.connection.execute sql
 end
@@ -289,7 +289,7 @@ end
 Then 'I should see a link to that file' do
   @reference.should_not be_nil
   @reference.reload.document.should_not be_nil
-  page.should have_css("a[href='http://127.0.0.1/documents/#{@reference.document.id}/21105.pdf']", :text => 'PDF')
+  page.should have_css("a[href='http://127.0.0.1/documents/#{@reference.document.id}/21105.pdf']", text: 'PDF')
 end
 
 When /I wait for a bit(?: more)?/ do
@@ -310,7 +310,7 @@ end
 
 Then /^"([^"]+)" should be selected(?: in (.*))?$/ do |word, location|
   with_scope location || 'the page' do
-    page.should have_css ".selected", :text => word
+    page.should have_css ".selected", text: word
   end
 end
 
@@ -320,42 +320,42 @@ And /I (edit|delete|copy) "(.*?)"/ do |verb, author|
 end
 
 Given /a subfamily exists with a name of "(.*?)" and a taxonomic history of "(.*?)"/ do |taxon_name, taxonomic_history|
-  Factory :subfamily, :name => taxon_name, :taxonomic_history => taxonomic_history
+  Factory :subfamily, name: taxon_name, taxonomic_history: taxonomic_history
 end
 
 Given /a tribe exists with a name of "(.*?)"(?: and a subfamily of "(.*?)")?(?: and a taxonomic history of "(.*?)")?/ do |taxon_name, parent_name, taxonomic_history|
-  subfamily = parent_name && (Subfamily.find_by_name(parent_name) || Factory(:subfamily, :name => parent_name))
-  Factory :tribe, :name => taxon_name, :subfamily => subfamily, :taxonomic_history => taxonomic_history
+  subfamily = parent_name && (Subfamily.find_by_name(parent_name) || Factory(:subfamily, name: parent_name))
+  Factory :tribe, name: taxon_name, subfamily: subfamily, taxonomic_history: taxonomic_history
 end
 
 Given /a genus exists with a name of "(.*?)" and a subfamily of "(.*?)"(?: and a taxonomic history of "(.*?)")?(?: and a status of "(.*?)")?/ do |taxon_name, parent_name, taxonomic_history, status|
   status ||= 'valid'
-  subfamily = parent_name && (Subfamily.find_by_name(parent_name) || Factory(:subfamily, :name => parent_name))
-  Factory :genus, :name => taxon_name, :subfamily => subfamily, :tribe => nil, :taxonomic_history => taxonomic_history, :status => status
+  subfamily = parent_name && (Subfamily.find_by_name(parent_name) || Factory(:subfamily, name: parent_name))
+  Factory :genus, name: taxon_name, subfamily: subfamily, tribe: nil, taxonomic_history: taxonomic_history, status: status
 end
 
 Given /a genus exists with a name of "(.*?)" and no subfamily(?: and a taxonomic history of "(.*?)")?/ do |taxon_name, taxonomic_history|
-  genus = Factory :genus, :name => taxon_name, :subfamily => nil, :tribe => nil, :taxonomic_history => taxonomic_history
+  genus = Factory :genus, name: taxon_name, subfamily: nil, tribe: nil, taxonomic_history: taxonomic_history
 end
 
 Given /a (fossil )?genus exists with a name of "(.*?)" and a tribe of "(.*?)"(?: and a taxonomic history of "(.*?)")?/ do |fossil, taxon_name, parent_name, taxonomic_history|
   tribe = Tribe.find_by_name(parent_name)
-  Factory :genus, :name => taxon_name, :subfamily => tribe.subfamily, :tribe => tribe, :taxonomic_history => taxonomic_history, :fossil => fossil.present?
+  Factory :genus, name: taxon_name, subfamily: tribe.subfamily, tribe: tribe, taxonomic_history: taxonomic_history, fossil: fossil.present?
 end
 
 Given /a genus that was replaced by "(.*?)" exists with a name of "(.*?)" with a taxonomic history of "(.*?)"/ do |replacement, name, taxonomic_history|
-  replacement = Genus.find_by_name(replacement) || Factory(:genus, :name => replacement)
-  Factory :genus, :name => name, :taxonomic_history => taxonomic_history, :status => 'homonym', :subfamily => replacement.subfamily, :homonym_replaced_by => replacement
+  replacement = Genus.find_by_name(replacement) || Factory(:genus, name: replacement)
+  Factory :genus, name: name, taxonomic_history: taxonomic_history, status: 'homonym', subfamily: replacement.subfamily, homonym_replaced_by: replacement
 end
 
 Given /a genus that was synonymized to "(.*?)" exists with a name of "(.*?)" with a taxonomic history of "(.*?)"/ do |senior_synonym, name, taxonomic_history|
-  senior_synonym = Genus.find_by_name(senior_synonym) || Factory(:genus, :name => senior_synonym)
-  Factory :genus, :name => name, :taxonomic_history => taxonomic_history, :status => 'synonym', :subfamily => senior_synonym.subfamily, :synonym_of => senior_synonym
+  senior_synonym = Genus.find_by_name(senior_synonym) || Factory(:genus, name: senior_synonym)
+  Factory :genus, name: name, taxonomic_history: taxonomic_history, status: 'synonym', subfamily: senior_synonym.subfamily, synonym_of: senior_synonym
 end
 
 Given /a species exists with a name of "(.*?)" and a genus of "(.*?)"(?: and a taxonomic history of "(.*?)")?/ do |taxon_name, parent_name, taxonomic_history|
-  genus = Genus.find_by_name(parent_name) || Factory(:genus, :name => parent_name)
-  Factory :species, :name => taxon_name, :genus => genus, :taxonomic_history => taxonomic_history
+  genus = Genus.find_by_name(parent_name) || Factory(:genus, name: parent_name)
+  Factory :species, name: taxon_name, genus: genus, taxonomic_history: taxonomic_history
 end
 
 When /I fill in the search box with "(.*?)"/ do |search_term|
@@ -379,16 +379,16 @@ end
 
 Then /the browser header should be "(.*?)"/ do |contents|
   words = contents.split ' '
-  page.should have_css '#browser .header .taxon_header', :text => words.first
-  page.should have_css '#browser .header .taxon_header span', :text => words.second
+  page.should have_css '#browser .header .taxon_header', text: words.first
+  page.should have_css '#browser .header .taxon_header span', text: words.second
 end
 
 Then /I should not see "(.*?)" by itself in the browser/ do |contents|
-  page.should_not have_css('.taxon_header a', :text => contents)
+  page.should_not have_css('.taxon_header a', text: contents)
 end
 
 Then /I should see "([^"]*)" italicized/ do |italicized_text|
-  page.should have_css('span.genus_or_species', :text => italicized_text)  
+  page.should have_css('span.genus_or_species', text: italicized_text)  
 end
 
 And /I follow "(.*?)" (?:with)?in (.*)$/ do |link, location|

@@ -10,8 +10,8 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     while @type == :tribes_list
       parsed_text << @paragraph
       @parse_result[:tribes].each do |tribe|
-        attributes = {:name => tribe[:name], :subfamily => subfamily, :fossil => tribe[:fossil], :status => 'valid'}
-        attributes.merge!(:incertae_sedis_in => 'subfamily') if @parse_result[:incertae_sedis]
+        attributes = {name: tribe[:name], subfamily: subfamily, fossil: tribe[:fossil], status: 'valid'}
+        attributes.merge!(incertae_sedis_in: 'subfamily') if @parse_result[:incertae_sedis]
         Tribe.create! attributes
       end
       parse_next_line
@@ -40,16 +40,16 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     raise "Tribe #{name} doesn't exist" unless tribe
 
     # genera lists can appear before or after junior synonyms
-    taxonomic_history << parse_genera_lists(:tribe, :subfamily => subfamily, :tribe => tribe)
+    taxonomic_history << parse_genera_lists(:tribe, subfamily: subfamily, tribe: tribe)
     taxonomic_history << parse_junior_synonyms_of_tribe(tribe)
-    taxonomic_history << parse_genera_lists(:tribe, :subfamily => subfamily, :tribe => tribe)
+    taxonomic_history << parse_genera_lists(:tribe, subfamily: subfamily, tribe: tribe)
     taxonomic_history << parse_collective_group_names_list
     taxonomic_history << parse_references
 
     parse_genera
     parse_genera_incertae_sedis_in_tribe
 
-    tribe.reload.update_attributes :taxonomic_history => clean_taxonomic_history(taxonomic_history)
+    tribe.reload.update_attributes taxonomic_history: clean_taxonomic_history(taxonomic_history)
   end
 
   def parse_genera_incertae_sedis_in_tribe
@@ -79,8 +79,8 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     fossil = @parse_result[:fossil]
     taxonomic_history = @paragraph
     taxonomic_history << parse_taxonomic_history
-    tribe = Tribe.create! :name => name, :fossil => fossil, :status => 'synonym', :synonym_of => tribe,
-                          :subfamily => tribe.subfamily, :taxonomic_history => clean_taxonomic_history(taxonomic_history)
+    tribe = Tribe.create! name: name, fossil: fossil, status: 'synonym', synonym_of: tribe,
+                          subfamily: tribe.subfamily, taxonomic_history: clean_taxonomic_history(taxonomic_history)
     parsed_text << taxonomic_history
   end
 

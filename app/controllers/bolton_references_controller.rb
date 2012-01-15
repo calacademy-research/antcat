@@ -1,7 +1,7 @@
 # coding: UTF-8
 class BoltonReferencesController < ApplicationController
 
-  before_filter :authenticate_user!, :except => [:index]
+  before_filter :authenticate_user!, except: [:index]
 
   def index
     unless params[:match_status_auto].present? ||
@@ -21,7 +21,7 @@ class BoltonReferencesController < ApplicationController
     match_statuses << 'manual' if params[:match_status_manual].present?
     match_statuses << 'unmatchable' if params[:match_status_unmatchable].present?
 
-    @references = Bolton::Reference.do_search params.merge :match_statuses => match_statuses
+    @references = Bolton::Reference.do_search params.merge match_statuses: match_statuses
   end
 
   def update

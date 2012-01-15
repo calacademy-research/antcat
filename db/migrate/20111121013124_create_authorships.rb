@@ -1,7 +1,7 @@
 # coding: UTF-8
 class CreateAuthorships < ActiveRecord::Migration
   def self.up
-    create_table :authorships, :force => true do |t|
+    create_table :authorships, force: true do |t|
       t.integer     :reference_id
       t.string      :pages
       t.timestamps
@@ -13,10 +13,10 @@ class CreateAuthorships < ActiveRecord::Migration
   end
 
   def self.down
-    remove_index :protonyms, :column => :authorship_id
+    remove_index :protonyms, column: :authorship_id
     remove_column :protonyms, :authorship_id
 
-    remove_index :authorships, :column => :reference_id
+    remove_index :authorships, column: :reference_id
     drop_table :authorships
   end
 end
