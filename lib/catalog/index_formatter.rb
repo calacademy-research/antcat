@@ -2,7 +2,7 @@
 module Catalog::IndexFormatter
 
   def format_taxon taxon, current_user
-    full_label        = format_full_label taxon
+    header_name       = format_header_name taxon
     taxon_status      = format_status taxon
     headline          = format_headline taxon, current_user
     taxonomic_history = format_taxonomic_history taxon, current_user
@@ -10,8 +10,8 @@ module Catalog::IndexFormatter
     content_tag :div, :class => :antcat_taxon do
       contents = ''
       contents << content_tag(:div, :class => :header) do
-        content_tag(:span, full_label,  :class =>  "taxon #{taxon.rank}") +
-        content_tag(:span, taxon_status,:class => :status)
+        content_tag(:span, header_name,  :class =>  "taxon #{taxon.rank}") +
+        content_tag(:span, taxon_status, :class => :status)
       end
       contents << content_tag(:div,  statistics,        :class => :statistics)
       contents << content_tag(:div,  headline,          :class => :headline)
@@ -21,12 +21,8 @@ module Catalog::IndexFormatter
     end
   end
 
-  def format_full_label taxon
-    if taxon.kind_of? Taxon
-      taxon.full_name.html_safe
-    else
-      ''
-    end
+  def format_header_name taxon
+    taxon.kind_of? Taxon ? taxon.full_name.html_safe : ''
   end
 
   def format_status taxon
