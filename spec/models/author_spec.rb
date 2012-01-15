@@ -10,10 +10,10 @@ describe Author do
 
   describe "sorting by first author name" do
     it "should work" do
-      ward = Factory :author_name, :name => 'Ward'
-      fisher_b_l = Factory :author_name, :name => 'Fisher, B. L.'
-      fisher = Factory :author_name, :name => 'Fisher', :author => fisher_b_l.author 
-      bolton = Factory :author_name, :name => 'Bolton'
+      ward = Factory :author_name, name: 'Ward'
+      fisher_b_l = Factory :author_name, name: 'Fisher, B. L.'
+      fisher = Factory :author_name, name: 'Fisher', author: fisher_b_l.author 
+      bolton = Factory :author_name, name: 'Bolton'
       Author.sorted_by_name.should == [bolton.author, fisher.author, ward.author]
     end
   end
@@ -23,8 +23,8 @@ describe Author do
       Author.find_by_names([]).should == []
     end
     it "should find the authors for the names" do
-      bolton = Factory :author_name, :name => 'Bolton'
-      fisher = Factory :author_name, :name => 'Fisher'
+      bolton = Factory :author_name, name: 'Bolton'
+      fisher = Factory :author_name, name: 'Fisher'
       Author.find_by_names(['Bolton', 'Fisher']).should =~ [bolton.author, fisher.author]
     end
   end

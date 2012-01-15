@@ -8,8 +8,8 @@ describe Bolton::Catalog::Subfamily::Importer do
 
   describe "Parsing taxonomic history" do
     it "should return an array of text items converted to Taxt" do
-      dalla_torre = Factory :article_reference, :bolton_key_cache => 'Dalla Torre 1893'
-      swainson = Factory :article_reference, :bolton_key_cache => 'Swainson Shuckard 1840'
+      dalla_torre = Factory :article_reference, bolton_key_cache: 'Dalla Torre 1893'
+      swainson = Factory :article_reference, bolton_key_cache: 'Swainson Shuckard 1840'
       @importer.initialize_parse_html %{<div>
         <p>Taxonomic history</p>
         <p><i>Condylodon</i> in family Mutillidae: Swainson &amp; Shuckard, 1840: 173.</p>
@@ -24,7 +24,7 @@ describe Bolton::Catalog::Subfamily::Importer do
 
   describe "Importing a genus" do
     def make_contents content
-      @importer.should_receive(:parse_family).and_return {Factory :subfamily, :name => 'Martialinae'}
+      @importer.should_receive(:parse_family).and_return {Factory :subfamily, name: 'Martialinae'}
 %{<html><body><div>
 <p>THE DOLICHODEROMORPHS: SUBFAMILIES ANEURETINAE AND DOLICHODERINAE</p>
 <p>SUBFAMILY MARTIALINAE</p>

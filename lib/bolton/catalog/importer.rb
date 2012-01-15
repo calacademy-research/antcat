@@ -25,15 +25,15 @@ class Bolton::Catalog::Importer
     begin
       @line = normalize string
       return :blank_line unless @line.present? && @line != '.'
-      parse_result = grammar.parse(@line, :root => rule).value
+      parse_result = grammar.parse(@line, root: rule).value
       Progress.info @line if @show_parsing
       Progress.info "  parsed as:\n#{parse_result.pretty_inspect}" if @show_parsing
     rescue Citrus::ParseError => e
       return parse string if rule
       Progress.error e
-      parse_result = {:type => :not_understood}
+      parse_result = {type: :not_understood}
     rescue Exception => e
-      parse_result = {:type => :not_understood}
+      parse_result = {type: :not_understood}
       Progress.info "Exception: " + e.inspect
     end
     parse_result
@@ -130,8 +130,8 @@ class Bolton::Catalog::Importer
         return
       end
     end
-    line = preprocess @paragraphs[@paragraph_index].inner_html(:encoding => 'UTF-8')
-    @paragraph = preprocess @paragraphs[@paragraph_index].to_html(:encoding => 'UTF-8')
+    line = preprocess @paragraphs[@paragraph_index].inner_html(encoding: 'UTF-8')
+    @paragraph = preprocess @paragraphs[@paragraph_index].to_html(encoding: 'UTF-8')
     @paragraph_index += 1
     Progress.tally
     line

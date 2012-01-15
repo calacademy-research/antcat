@@ -11,7 +11,7 @@ class Reference < ActiveRecord::Base
 
   def replace_author_name old_name, new_author_name
     old_author_name = AuthorName.find_by_name old_name
-    reference_author_name = reference_author_names.where(:author_name_id => old_author_name).first
+    reference_author_name = reference_author_names.where(author_name_id: old_author_name).first
     reference_author_name.author_name = new_author_name
     reference_author_name.save!
     author_names(true)

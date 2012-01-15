@@ -2,14 +2,14 @@
 module AuthorParser
 
   def self.parse! string
-    return {:names => []} unless string.present?
+    return {names: []} unless string.present?
     Citrus.require Rails.root.to_s + '/lib/grammar/author_grammar'
-    match = AuthorGrammar.parse(string, :consume => false)
+    match = AuthorGrammar.parse(string, consume: false)
     result = match.value
 
     string.gsub! /#{Regexp.escape match}/, ''
 
-    {:names => result[:names], :suffix => result[:suffix]}
+    {names: result[:names], suffix: result[:suffix]}
   end
 
   def self.parse string

@@ -57,8 +57,8 @@ class Catalog::IndexController < CatalogController
     @species = Taxon.find @species if @species
 
     # save the column selections
-    @column_selections = {:subfamily => @subfamily, :tribe => @tribe, :genus => @genus, :species => @species}
-      #:q => params[:q], :search_type => params[:search_type], :hide_tribes => params[:hide_tribes]}
+    @column_selections = {subfamily: @subfamily, tribe: @tribe, genus: @genus, species: @species}
+      #q: params[:q], search_type: params[:search_type], hide_tribes: params[:hide_tribes]}
 
     #case @taxon
     #when 'no_subfamily', Subfamily

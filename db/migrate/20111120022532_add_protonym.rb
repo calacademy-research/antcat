@@ -1,6 +1,6 @@
 class AddProtonym < ActiveRecord::Migration
   def self.up
-    create_table :protonyms, :force => true do |t|
+    create_table :protonyms, force: true do |t|
       t.string :name
       t.timestamps
     end

@@ -2,7 +2,7 @@
 class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
 
   def parse_genus attributes = {}, options = {}
-    options = options.reverse_merge :header => :genus_header
+    options = options.reverse_merge header: :genus_header
     return unless @type == options[:header]
     Progress.method
 
@@ -15,11 +15,11 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     taxonomic_history = parse_genus_taxonomic_history
 
     genus = Genus.import({
-      :name => name,
-      :protonym => headline[:protonym],
-      :type_species => headline[:type_species],
-      :taxonomic_history => taxonomic_history,
-      :attributes => attributes
+      name: name,
+      protonym: headline[:protonym],
+      type_species: headline[:type_species],
+      taxonomic_history: taxonomic_history,
+      attributes: attributes
     })
     Progress.info "Created #{genus.name}"
 
@@ -72,7 +72,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
   end
 
   def parse_homonym_replaced_by_genus replaced_by_genus
-    genus = parse_genus({:status => 'homonym'}, :header => :homonym_replaced_by_genus_header)
+    genus = parse_genus({status: 'homonym'}, header: :homonym_replaced_by_genus_header)
     return '' unless genus
     Progress.method
 
@@ -99,8 +99,8 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     #taxonomic_history = @paragraph
     #parse_next_line
     #taxonomic_history << parse_genus_taxonomic_history
-    #genus = ::Genus.create! :name => name, :fossil => fossil, :status => 'synonym', :synonym_of => genus,
-                          #:subfamily => genus.subfamily, :tribe => genus.tribe, :taxonomic_history => clean_taxonomic_history(taxonomic_history)
+    #genus = ::Genus.create! name: name, fossil: fossil, status: 'synonym', synonym_of: genus,
+                          #subfamily: genus.subfamily, tribe: genus.tribe, taxonomic_history: clean_taxonomic_history(taxonomic_history)
     #Progress.info "Created #{genus.name} junior synonym of genus"
     #parsed_text << taxonomic_history
     #parsed_text << parse_homonym_replaced_by_genus(genus)
@@ -115,8 +115,8 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     while @type == :genera_list
       parsed_text << @paragraph
       @parse_result[:genera].each do |genus|
-        attributes = {:name => genus[:name], :fossil => genus[:fossil], :status => genus[:status] || 'valid'}.merge parent_attributes
-        attributes.merge!(:incertae_sedis_in => parent_rank.to_s) if @parse_result[:incertae_sedis]
+        attributes = {name: genus[:name], fossil: genus[:fossil], status: genus[:status] || 'valid'}.merge parent_attributes
+        attributes.merge!(incertae_sedis_in: parent_rank.to_s) if @parse_result[:incertae_sedis]
 
         name = genus[:name]
         genus = ::Genus.find_by_name name

@@ -71,7 +71,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
       parse_next_line item_type
       while @type == item_type || @type == :texts do
         if @type == :texts
-          @parse_result = @parse_result.merge :type => item_type
+          @parse_result = @parse_result.merge type: item_type
           @type = item_type
           Progress.info "  reparsed as #{item_type}" if @show_parsing
         end

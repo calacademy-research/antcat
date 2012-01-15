@@ -47,9 +47,9 @@
 #<p>*<b><i><span style='color:red'>poinari</span></i></b><i>. *Acanthognathus poinari</i> Baroni Urbani, in Baroni Urbani &amp; De Andrade, 1994: 41, figs. 20, 21, 26, 27 (q.) DOMINICAN AMBER (Miocene). See also: Bolton, 2000: 17.</p>
       #}
 
-      #Factory :genus, :name => 'Acanthomyrmex', :subfamily => nil, :tribe => nil
-      #Factory :genus, :name => 'Anonychomyrma', :subfamily => nil, :tribe => nil
-      #Factory :genus, :name => 'Tetramorium', :subfamily => nil, :tribe => nil
+      #Factory :genus, name: 'Acanthomyrmex', subfamily: nil, tribe: nil
+      #Factory :genus, name: 'Anonychomyrma', subfamily: nil, tribe: nil
+      #Factory :genus, name: 'Tetramorium', subfamily: nil, tribe: nil
 
       #Progress.should_not_receive(:error)
 
@@ -80,7 +80,7 @@
 
       #Progress.should_not_receive(:error)
 
-      #Factory :genus, :name => 'Acanthomyrmex', :subfamily => nil, :tribe => nil
+      #Factory :genus, name: 'Acanthomyrmex', subfamily: nil, tribe: nil
       #@importer.import_html contents
 
       #Taxon.count.should == 2
@@ -117,14 +117,14 @@
 #<p><span style="color:black">[Note. All <i>Colobostruma</i> taxa with combination in <i>Epopostruma</i>, <i>sensu</i> Baroni Urbani &amp; De Andrade, 2007: 97-98.]</span></p>
 #<p><b><i><span style='color:red'>angusta</span></i></b><i>.  Iridomyrmex angustus</i> Stitz, 1911a: 369, fig. 15 (w.) NEW GUINEA.  Combination in <i>Anonychomyrma</i>: Shattuck, 1992a: 13.</p>
       #}
-      #Factory :genus, :name => 'Anonychomyrma'
+      #Factory :genus, name: 'Anonychomyrma'
 
       #Progress.should_not_receive :error
       #@importer.import_html contents
     #end
 
     #it "should add recombinations" do
-      #genus = Factory :genus, :name => 'Turneria'
+      #genus = Factory :genus, name: 'Turneria'
       #@importer.import_html make_contents %{
 #<p><b><i><span style='color:red'>TURNERIA</span></i></b> </p> 
 #<p><i>butteli</i> Forel, 1913; see under <b><i>IRIDOMYRMEX</i></b>.</p> 
@@ -138,7 +138,7 @@
 
   #describe "Subspecies" do
     #it "should not be OK if a subspecies is seen but not its species" do
-      #Factory :genus, :name => 'Anonychomyrma'
+      #Factory :genus, name: 'Anonychomyrma'
       #Progress.should_receive(:error).with "Subspecies Anonychomyrma chiarinii nigra was seen but not its species"
       #@importer.import_html make_contents %{
 #<p><b><i><span style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
@@ -147,7 +147,7 @@
     #end
 
     #it "should not be OK if a species is seen first, then a subspecies is seen, but the species has no subspecies list" do
-      #Factory :genus, :name => 'Anonychomyrma'
+      #Factory :genus, name: 'Anonychomyrma'
       #Progress.should_receive(:error).with "Subspecies Anonychomyrma chiarinii nigra was seen and created even though it was not in its species's subspecies list"
       #@importer.import_html make_contents %{
 #<p><b><i><span style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
@@ -157,7 +157,7 @@
     #end
 
     #it "should not be OK if a species is seen first, then a subspecies is seen, but the subspecies is not in the species's subspecies list; however, the subspecies should still be created" do
-      #Factory :genus, :name => 'Anonychomyrma'
+      #Factory :genus, name: 'Anonychomyrma'
       #Progress.should_receive(:error).with "Subspecies Anonychomyrma chiarinii nigra was seen and created even though it was not in its species's subspecies list"
       #@importer.import_html make_contents %{
 #<p><b><i><span style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
@@ -168,7 +168,7 @@
     #end
 
     #it "should be OK if a species is seen first, then a subspecies is seen, which is in the species's list" do
-      #Factory :genus, :name => 'Anonychomyrma'
+      #Factory :genus, name: 'Anonychomyrma'
       #@importer.import_html make_contents %{
 #<p><b><i><span style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
 #<p><b><i><span style='color:red'>chiarinii</span></i></b><i>. Anyonychomyrma chiarinii</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146. Current subspecies: nominal plus <i style='mso-bidi-font-style:normal'><span style='color:blue'>nigra</span></i>.</p>
@@ -181,7 +181,7 @@
     #end
 
     #it "should be OK if the subspecies is seen first, then the species is seen, and the subspecies is in the species's subspecies list" do
-      #Factory :genus, :name => 'Anonychomyrma'
+      #Factory :genus, name: 'Anonychomyrma'
       #@importer.import_html make_contents %{
 #<p><b><i><span style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
 #<p><b><i><span style='color:blue'>nigra</span></i></b><i>. Anyonychomyrma chiarinii</i> var. <i>v-nigrum</i> Forel, 1910e: 434: (w.) DEMOCRATIC REPUBLIC OF CONGO. Combination in <i>C. (Acrocoelia</i>): Emery, 1922e: 146.</p>
@@ -191,7 +191,7 @@
     #end
 
     #it "should not be OK if the subspecies is seen first, then the species is seen, but the subspecies is not in the species's subspecies list" do
-      #Factory :genus, :name => 'Anonychomyrma'
+      #Factory :genus, name: 'Anonychomyrma'
       #Progress.should_receive(:error).with "Subspecies Anonychomyrma chiarinii nigra was seen and created even though it was not in its species's subspecies list"
       #@importer.import_html make_contents %{
 #<p><b><i><span style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
@@ -201,7 +201,7 @@
     #end
 
     #it "should not be OK if a species is seen but a subspecies in its list is not seen" do
-      #Factory :genus, :name => 'Anonychomyrma'
+      #Factory :genus, name: 'Anonychomyrma'
       #Progress.should_receive(:error).with "Subspecies Anonychomyrma chiarinii fuhrmanii was in its species's subspecies list but was not seen"
       #@importer.import_html make_contents %{
 #<p><b><i><span style='color:red'>ANONYCHOMYRMA</span></i></b> (Indo-Australian, Australia)</p>
@@ -210,7 +210,7 @@
     #end
 
     #it "should report both errors if there are more than one" do
-      #Factory :genus, :name => 'Anonychomyrma'
+      #Factory :genus, name: 'Anonychomyrma'
       #Progress.should_receive(:error).with "Subspecies Anonychomyrma chiarinii nigra was seen and created even though it was not in its species's subspecies list"
       #Progress.should_receive(:error).with "Subspecies Anonychomyrma chiarinii boxi was in its species's subspecies list but was not seen"
       #Progress.should_receive(:error).with "Subspecies Anonychomyrma chiarinii fuhrmanii was in its species's subspecies list but was not seen"
@@ -222,7 +222,7 @@
     #end
 
     #it "should create a synonym if it can't find its species, but it exists in another species's subspecies list" do
-      #Factory :genus, :name => 'Acromyrmex'
+      #Factory :genus, name: 'Acromyrmex'
       #@importer.import_html make_contents %{
 #<p><b><i><span style='color:red'>ACROMYRMEX</span></i></b><span style='color:red'> </span>(Neotropical, southern Nearctic)</p>
 #<p><b><i><span style='color:blue'>carli</span></i></b><i>. Acromyrmex lundi</i> subsp. <i>carli</i> Gonçalves, 1961: 152 (w.) MEXICO. [First available use of <i>Acromyrmex lundi</i> st. <i>pubescens</i> var. <i>carli </i>Santschi, 1925a: 385; unavailable name.]</p>
@@ -238,7 +238,7 @@
     #end
 
     #it "should only create one synonym if two subspecies can't find their species, which are in another species's subspecies list" do
-      #Factory :genus, :name => 'Acromyrmex'
+      #Factory :genus, name: 'Acromyrmex'
       #@importer.import_html make_contents %{
 #<p><b><i><span style='color:red'>ACROMYRMEX</span></i></b><span style='color:red'> </span>(Neotropical, southern Nearctic)</p>
 #<p><b><i><span style='color:blue'>carli</span></i></b><i>. Acromyrmex lundi</i> subsp. <i>carli</i> Gonçalves, 1961: 152 (w.) MEXICO. [First available use of <i>Acromyrmex lundi</i> st. <i>pubescens</i> var. <i>carli </i>Santschi, 1925a: 385; unavailable name.]</p>
@@ -257,14 +257,14 @@
     #end
 
     #it "should ignore invalid species when searching for a subspecies list" do
-      #Factory :genus, :name => 'Vollenhovia'
+      #Factory :genus, name: 'Vollenhovia'
       #@importer.import_html make_contents %{
 #<p><b><i><span style='color:red'>VOLLENHOVIA</span></i></b> (Old World tropics and subtropics except Africa)</p>
 #<p><b><i><span style='color:red'>brevicornis</span></i></b><i>. Monomorium brevicorne</i> Emery, 1893e: 203 (w.) INDONESIA (Sumatra).  Combination in <i>Vollenhovia</i>: Emery, 1914f: 406 (footnote). Current subspecies: nominal plus <i style='mso-bidi-font-style: normal'><span style='color:blue'>minuta</span></i>.</p>
 #<p><i>brevicornis. Vollenhovia brevicornis</i> Emery, 1897d: 560 (w.) NEW GUINEA. [Junior secondary homonym of <i>brevicorne</i> Emery, above.] Replacement name: <i>brachycera</i> Emery, 1914f: 407 (footnote).</p>
 #<p><b><i><span style='color:blue'>minuta</span></i></b><i>. Vollenhovia brevicornis</i> var. <i>minuta</i> Viehmeyer, 1916a: 129 (w.) WEST MALAYSIA.</p>
       #}
-      #brevicornises = Species.all :conditions => ['name = ?', 'brevicornis']
+      #brevicornises = Species.all conditions: ['name = ?', 'brevicornis']
       #brevicornises.count.should == 2
       #minuta = Subspecies.find_by_name 'minuta'
       #minuta.species.status.should == 'valid'
@@ -274,12 +274,12 @@
 
   #describe "parsing a note" do
     #it "should work" do
-      #@importer.parse(%{<span style="color:black">[Note. All <i>Colobostruma</i> taxa with combination in <i>Epopostruma</i>, <i>sensu</i> Baroni Urbani &amp; De Andrade, 2007: 97-98.]</span>}).should == {:type => :note}
+      #@importer.parse(%{<span style="color:black">[Note. All <i>Colobostruma</i> taxa with combination in <i>Epopostruma</i>, <i>sensu</i> Baroni Urbani &amp; De Andrade, 2007: 97-98.]</span>}).should == {type: :note}
     #end
     #it "should parse 'Notes' as a note" do
       #@importer.parse(%{
 #[Notes. (i) The original spelling <i>Crematogaster</i> is used throughout, the incorrect subsequent spelling <i><span style="color:purple">Cremastogaster</span></i> is ignored; see catalogue of genus-group names. (ii) The spurious paper by Soulié &amp; Dicko, 1965: 85, is ignored. This publication merely repeats, inaccurately, the Wheeler, W.M. 1922a: 828 catalogue of Afrotopical <i>Crematogaster</i>, but treats the subgenera as genera; see catalogue of genus-group names.]
-      #}).should == {:type => :note}
+      #}).should == {type: :note}
     #end
   #end
 

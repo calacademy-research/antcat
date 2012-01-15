@@ -24,7 +24,7 @@ describe ForwardReference do
 
       it "should fixup a :type_taxon" do
         family = Factory :family
-        forward_reference = ForwardReference.create! :source_id => family.id, :source_attribute => :type_taxon, :target_name => 'Formica'
+        forward_reference = ForwardReference.create! source_id: family.id, source_attribute: :type_taxon, target_name: 'Formica'
 
         forward_reference.fixup
 
@@ -34,7 +34,7 @@ describe ForwardReference do
 
       it "should fixup a :type_taxon for a species" do
         genus = Factory :genus
-        forward_reference = ForwardReference.create! :source_id => genus.id, :source_attribute => :type_taxon, :target_name => 'Atta major'
+        forward_reference = ForwardReference.create! source_id: genus.id, source_attribute: :type_taxon, target_name: 'Atta major'
 
         forward_reference.fixup
 
@@ -44,8 +44,8 @@ describe ForwardReference do
       end
 
       it "should find an existing genus for a species" do
-        genus = Factory :genus, :name => 'Atta'
-        forward_reference = ForwardReference.create! :source_id => genus.id, :source_attribute => :type_taxon, :target_name => 'Atta major'
+        genus = Factory :genus, name: 'Atta'
+        forward_reference = ForwardReference.create! source_id: genus.id, source_attribute: :type_taxon, target_name: 'Atta major'
 
         forward_reference.fixup
 
@@ -57,7 +57,7 @@ describe ForwardReference do
 
       it "should complain if it's fixing up something it doesn't understand" do
         genus = Factory :subspecies
-        forward_reference = ForwardReference.create! :source_id => genus.id, :source_attribute => :type_taxon, :target_name => 'Atta major'
+        forward_reference = ForwardReference.create! source_id: genus.id, source_attribute: :type_taxon, target_name: 'Atta major'
 
         lambda {forward_reference.fixup}.should raise_error
       end
