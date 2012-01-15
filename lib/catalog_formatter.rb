@@ -63,15 +63,21 @@ class CatalogFormatter
   def self.format_headline_type taxon
     return '' unless taxon && taxon.type_taxon
     type = taxon.type_taxon
+    taxt = taxon.type_taxon_taxt
     content_tag :span, :class => :type do
       "Type-#{type.type.downcase}: ".html_safe +
-      format_genus_name(taxon.type_taxon) +
+      format_headline_type_name(type) +
+      format_headline_type_taxt(taxt) +
       '.'.html_safe
     end
   end
 
-  def self.format_genus_name genus
-    content_tag(:span, genus.name, :class => :genus_name).html_safe
+  def self.format_headline_type_name taxon
+    content_tag(:span, taxon.full_name, :class => "#{taxon.rank} name taxon").html_safe
+  end
+
+  def self.format_headline_type_taxt taxt
+    Taxt.interpolate(taxt).html_safe
   end
 
   def self.format_reference_document_link reference, user
