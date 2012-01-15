@@ -2,11 +2,7 @@
 module Formatter
   extend ActionView::Helpers::NumberHelper
 
-  def status_plural status
-    status_labels[status][:plural]
-  end
-
-  def self.status_labels
+  def status_labels
     @status_labels || begin
       @status_labels = ActiveSupport::OrderedHash.new
       @status_labels['synonym']             = {:singular => 'synonym', :plural => 'synonyms'}
@@ -23,6 +19,10 @@ module Formatter
 
   def ordered_statuses
     status_labels.keys
+  end
+
+  def status_plural status
+    status_labels[status][:plural]
   end
 
   def pluralize_with_delimiters count, word, plural = nil

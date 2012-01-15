@@ -26,36 +26,6 @@ class CatalogFormatter
     [taxon.type.downcase, 'taxon']
   end
 
-  def self.status_plural status
-    status_labels[status][:plural]
-  end
-
-  def self.status_labels
-    @status_labels || begin
-      @status_labels = ActiveSupport::OrderedHash.new
-      @status_labels['synonym']             = {:singular => 'synonym', :plural => 'synonyms'}
-      @status_labels['homonym']             = {:singular => 'homonym', :plural => 'homonyms'}
-      @status_labels['unavailable']         = {:singular => 'unavailable', :plural => 'unavailable'}
-      @status_labels['unidentifiable']      = {:singular => 'unidentifiable', :plural => 'unidentifiable'}
-      @status_labels['excluded']            = {:singular => 'excluded', :plural => 'excluded'}
-      @status_labels['unresolved homonym']  = {:singular => 'unresolved homonym', :plural => 'unresolved homonyms'}
-      @status_labels['recombined']          = {:singular => 'transferred out of this genus', :plural => 'transferred out of this genus'}
-      @status_labels['nomen nudum']         = {:singular => 'nomen nudum', :plural => 'nomina nuda'}
-      @status_labels
-    end
-  end
-
-  def self.ordered_statuses
-    status_labels.keys
-  end
-
-  def self.pluralize_with_delimiters count, word, plural = nil
-    if count != 1
-      word = plural ? plural : word.pluralize
-    end
-    "#{number_with_delimiter(count)} #{word}"
-  end
-
   def self.css_classes_for_taxon taxon, selected = false
     css_classes = css_classes_for_rank taxon
     css_classes << taxon.status.gsub(/ /, '_')
