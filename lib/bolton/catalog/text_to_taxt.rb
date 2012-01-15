@@ -1,7 +1,7 @@
-module TextToTaxt
+module Bolton::Catalog::TextToTaxt
 
   def self.convert parser_output
-    parser_output.inject('') do |taxt, text_item|
+    (parser_output || []).inject('') do |taxt, text_item|
       taxt << convert_one_text_to_taxt(text_item)
     end
   end
