@@ -5,23 +5,23 @@ describe Taxon do
 
   it "should require a name" do
     Factory.build(:taxon).should_not be_valid
-    taxon = Factory :taxon, name: 'Cerapachynae'
+    taxon = Factory :taxon, :name => 'Cerapachynae'
     taxon.name.should == 'Cerapachynae'
     taxon.should be_valid
   end
 
   it "should be (Rails) valid with a nil status" do
-    Taxon.new(name: 'Cerapachynae').should be_valid
-    Taxon.new(name: 'Cerapachynae', status: 'valid').should be_valid
+    Taxon.new(:name => 'Cerapachynae').should be_valid
+    Taxon.new(:name => 'Cerapachynae', :status => 'valid').should be_valid
   end
 
   it "when status 'valid', should not be invalid" do
-    taxon = Factory :taxon, name: 'Cerapachynae'
+    taxon = Factory :taxon, :name => 'Cerapachynae'
     taxon.should_not be_invalid
   end
 
   it "should be able to be unidentifiable" do
-    taxon = Factory :taxon, name: 'Cerapachynae'
+    taxon = Factory :taxon, :name => 'Cerapachynae'
     taxon.should_not be_unidentifiable
     taxon.update_attribute :status, 'unidentifiable'
     taxon.should be_unidentifiable
@@ -29,7 +29,7 @@ describe Taxon do
   end
 
   it "should be able to be unavailable" do
-    taxon = Factory :taxon, name: 'Cerapachynae'
+    taxon = Factory :taxon, :name => 'Cerapachynae'
     taxon.should_not be_unavailable
     taxon.should be_available
     taxon.update_attribute :status, 'unavailable'
@@ -39,7 +39,7 @@ describe Taxon do
   end
 
   it "should be able to be a synonym" do
-    taxon = Factory :taxon, name: 'Cerapachynae'
+    taxon = Factory :taxon, :name => 'Cerapachynae'
     taxon.should_not be_synonym
     taxon.update_attribute :status, 'synonym'
     taxon.should be_synonym
@@ -47,7 +47,7 @@ describe Taxon do
   end
 
   it "should be able to be a fossil" do
-    taxon = Factory :taxon, name: 'Cerapachynae'
+    taxon = Factory :taxon, :name => 'Cerapachynae'
     taxon.should_not be_fossil
     taxon.fossil.should == false
     taxon.update_attribute :fossil, true
@@ -59,50 +59,50 @@ describe Taxon do
   end
 
   it "should be able to be a synonym of something else" do
-    gauromyrmex = Factory :taxon, name: 'Gauromyrmex'
-    acalama = Factory :taxon, name: 'Acalama', status: 'synonym', synonym_of: gauromyrmex
+    gauromyrmex = Factory :taxon, :name => 'Gauromyrmex'
+    acalama = Factory :taxon, :name => 'Acalama', :status => 'synonym', :synonym_of => gauromyrmex
     acalama.reload
     acalama.should be_synonym
     acalama.reload.synonym_of.should == gauromyrmex
   end
 
   it "should be able to be a homonym of something else" do
-    neivamyrmex = Factory :taxon, name: 'Neivamyrmex'
-    acamatus = Factory :taxon, name: 'Acamatus', status: 'homonym', homonym_replaced_by: neivamyrmex
+    neivamyrmex = Factory :taxon, :name => 'Neivamyrmex'
+    acamatus = Factory :taxon, :name => 'Acamatus', :status => 'homonym', :homonym_replaced_by => neivamyrmex
     acamatus.reload
     acamatus.should be_homonym
     acamatus.homonym_replaced_by.should == neivamyrmex
   end
 
   it "should be able to have an incertae_sedis_in" do
-    myanmyrma = Factory :taxon, name: 'Myanmyrma', incertae_sedis_in: 'family'
+    myanmyrma = Factory :taxon, :name => 'Myanmyrma', :incertae_sedis_in => 'family'
     myanmyrma.reload
     myanmyrma.incertae_sedis_in.should == 'family'
     myanmyrma.should_not be_invalid
   end
 
   it "should be able to store tons of text in taxonomic history" do
-    camponotus = Factory :taxon, name: 'Camponotus', taxonomic_history: '1234' * 100_000
+    camponotus = Factory :taxon, :name => 'Camponotus', :taxonomic_history => '1234' * 100_000
     camponotus.reload.taxonomic_history.size.should == 4 * 100_000
   end
 
   describe "Current valid name" do
 
     it "if it's not a synonym: it's just the name" do
-      taxon = Taxon.create! name: 'Name'
+      taxon = Taxon.create! :name => 'Name'
       taxon.current_valid_name.should == 'Name'
     end
 
     it "if it is a synonym: the name of the target" do
-      target = Taxon.create! name: 'Target'
-      taxon = Taxon.create! name: 'Taxon', status: 'synonym', synonym_of: target
+      target = Taxon.create! :name => 'Target'
+      taxon = Taxon.create! :name => 'Taxon', :status => 'synonym', :synonym_of => target
       taxon.current_valid_name.should == 'Target'
     end
 
     it "if it is a synonym of a synonym: the name of the target's target" do
-      target_target = Taxon.create! name: 'Target_Target'
-      target = Taxon.create! name: 'Target', status: 'synonym', synonym_of: target_target
-      taxon = Taxon.create! name: 'Taxon', status: 'synonym', synonym_of: target
+      target_target = Taxon.create! :name => 'Target_Target'
+      target = Taxon.create! :name => 'Target', :status => 'synonym', :synonym_of => target_target
+      taxon = Taxon.create! :name => 'Taxon', :status => 'synonym', :synonym_of => target
       taxon.current_valid_name.should == 'Target_Target'
     end
 
@@ -110,9 +110,9 @@ describe Taxon do
 
   describe "Find name" do
     before do
-      Factory :genus, name: 'Monomorium'
-      @monoceros = Factory :genus, name: 'Monoceros'
-      @rufa = Factory :species, name: 'rufa', genus: @monoceros
+      Factory :genus, :name => 'Monomorium'
+      @monoceros = Factory :genus, :name => 'Monoceros'
+      @rufa = Factory :species, :name => 'rufa', :genus => @monoceros
     end
 
     it "should return [] if nothing matches" do
@@ -137,20 +137,20 @@ describe Taxon do
     end
 
     it "should not return anything but subfamilies, tribes, genera and species" do
-      Factory :subfamily, name: 'Lepto'
-      Factory :tribe, name: 'Lepto'
-      Factory :genus, name: 'Lepto'
-      Factory :subgenus, name: 'Lepto'
-      Factory :species, name: 'Lepto'
-      Factory :subspecies, name: 'Lepto'
+      Factory :subfamily, :name => 'Lepto'
+      Factory :tribe, :name => 'Lepto'
+      Factory :genus, :name => 'Lepto'
+      Factory :subgenus, :name => 'Lepto'
+      Factory :species, :name => 'Lepto'
+      Factory :subspecies, :name => 'Lepto'
       results = Taxon.find_name 'Lepto'
       results.size.should == 4
     end
 
     it "should sort results by name" do
-      Factory :subfamily, name: 'Lepti'
-      Factory :subfamily, name: 'Lepta'
-      Factory :subfamily, name: 'Lepte'
+      Factory :subfamily, :name => 'Lepti'
+      Factory :subfamily, :name => 'Lepta'
+      Factory :subfamily, :name => 'Lepte'
       results = Taxon.find_name 'Lept', 'beginning with'
       results.map(&:name).should == ['Lepta', 'Lepte', 'Lepti']
     end
@@ -187,7 +187,7 @@ describe Taxon do
 
     it "should think it's a synonym of something when it is" do
       senior_synonym = Factory :genus
-      junior_synonym = Factory :genus, synonym_of: senior_synonym, status: 'synonym'
+      junior_synonym = Factory :genus, :synonym_of => senior_synonym, :status => 'synonym'
       junior_synonym.should be_synonym_of senior_synonym
     end
 
@@ -204,7 +204,7 @@ describe Taxon do
 
     it "should think it's a homonym replaced by something when it is" do
       replacement = Factory :genus
-      homonym = Factory :genus, homonym_replaced_by: replacement, status: 'homonym'
+      homonym = Factory :genus, :homonym_replaced_by => replacement, :status => 'homonym'
       homonym.should be_homonym_replaced_by replacement
       replacement.homonym_replaced.should == homonym
     end
@@ -214,9 +214,9 @@ describe Taxon do
   describe "the 'valid' scope" do
     it "should only include valid taxa" do
       subfamily = Factory :subfamily
-      replacement = Factory :genus, subfamily: subfamily
-      homonym = Factory :genus, homonym_replaced_by: replacement, status: 'homonym', subfamily: subfamily
-      synonym = Factory :genus, synonym_of: replacement, status: 'synonym', subfamily: subfamily
+      replacement = Factory :genus, :subfamily => subfamily
+      homonym = Factory :genus, :homonym_replaced_by => replacement, :status => 'homonym', :subfamily => subfamily
+      synonym = Factory :genus, :synonym_of => replacement, :status => 'synonym', :subfamily => subfamily
       subfamily.genera.valid.should == [replacement]
     end
   end
@@ -224,16 +224,16 @@ describe Taxon do
   describe "the 'extant' scope" do
     it "should only include extant taxa" do
       subfamily = Factory :subfamily
-      extant_genus = Factory :genus, subfamily: subfamily
-      Factory :genus, subfamily: subfamily, fossil: true
+      extant_genus = Factory :genus, :subfamily => subfamily
+      Factory :genus, :subfamily => subfamily, :fossil => true
       subfamily.genera.extant.should == [extant_genus]
     end
   end
 
   describe "ordered by name" do
     it "should order by name" do
-      zymacros = Factory :subfamily, name: 'Zymacros'
-      atta = Factory :subfamily, name: 'Atta'
+      zymacros = Factory :subfamily, :name => 'Zymacros'
+      atta = Factory :subfamily, :name => 'Atta'
       Taxon.ordered_by_name.should == [atta, zymacros]
     end
   end
@@ -241,12 +241,12 @@ describe Taxon do
   describe "statistics (for the whole family)" do
     it "should return the statistics for each status of each rank" do
       subfamily = Factory :subfamily
-      genus = Factory :genus, subfamily: subfamily, tribe: nil
-      Factory :genus, subfamily: subfamily, status: 'homonym', tribe: nil
-      2.times {Factory :subfamily, fossil: true}
+      genus = Factory :genus, :subfamily => subfamily, :tribe => nil
+      Factory :genus, :subfamily => subfamily, :status => 'homonym', :tribe => nil
+      2.times {Factory :subfamily, :fossil => true}
       Taxon.statistics.should == {
-        extant: {subfamilies: {'valid' => 1}, genera: {'valid' => 1, 'homonym' => 1}},
-        fossil: {subfamilies: {'valid' => 2}}
+        :extant => {:subfamilies => {'valid' => 1}, :genera => {'valid' => 1, 'homonym' => 1}},
+        :fossil => {:subfamilies => {'valid' => 2}}
       }
     end
 
@@ -261,7 +261,7 @@ describe Taxon do
       taxon.reload.taxonomic_history.should == '&dagger;'
     end
     it "work OK if taxonomic history is nil" do
-      taxon = Factory :subfamily,  taxonomic_history: nil
+      taxon = Factory :subfamily,  :taxonomic_history => nil
       taxon.convert_asterisks_to_daggers!
       taxon.taxonomic_history.should be_nil
       taxon.reload.taxonomic_history.should be_nil

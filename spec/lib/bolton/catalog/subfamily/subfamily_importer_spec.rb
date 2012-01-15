@@ -31,7 +31,7 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 
     it "should parse an extinct subfamily" do
       @importer.should_receive(:parse_family).and_return {
-        Factory :subfamily, name: 'Armaniinae'
+        Factory :subfamily, :name => 'Armaniinae'
       }
       @importer.import_html make_contents %{
 <p><b><span lang=EN-GB>SUBFAMILY *<span style='color:red'>ARMANIINAE</span><o:p></o:p></span></b></p>
@@ -43,9 +43,9 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 
     it "should parse a subfamily" do
       @importer.should_receive(:parse_family).and_return {
-        Factory :subfamily, name: 'Aneuretinae'
-        Factory :subfamily, name: 'Dolichoderinae'
-        Factory :subfamily, name: 'Formicinae'
+        Factory :subfamily, :name => 'Aneuretinae'
+        Factory :subfamily, :name => 'Dolichoderinae'
+        Factory :subfamily, :name => 'Formicinae'
       }
 
       @importer.import_html make_contents %{
@@ -328,8 +328,8 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 
     it "should handle a tribe with its genera lists after its synonyms instead of before" do
       @importer.should_receive(:parse_family).and_return {
-        Factory :subfamily, name: 'Martialinae'
-        Factory :tribe, name: 'Lasiini'
+        Factory :subfamily, :name => 'Martialinae'
+        Factory :tribe, :name => 'Lasiini'
       }
       @importer.import_html make_contents %{
 <p><b><span lang=EN-GB style='color:black'>SUBFAMILY</span><span lang=EN-GB> <span style='color:red'>MARTIALINAE</span><o:p></o:p></span></b></p>
@@ -352,7 +352,7 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 
     it "should handle a collective group name section" do
       @importer.should_receive(:parse_family).and_return {
-        Factory :subfamily, name: 'Myrmicinae'
+        Factory :subfamily, :name => 'Myrmicinae'
       }
       @importer.import_html make_contents %{
 <p><b><span lang=EN-GB style='color:black'>SUBFAMILY</span><span lang=EN-GB> <span style='color:red'>MYRMICINAE</span><o:p></o:p></span></b></p>
@@ -366,7 +366,7 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
     end
 
     it "should parse a genus when there are no tribes" do
-      @importer.should_receive(:parse_family).and_return { Factory :subfamily, name: 'Martialinae' }
+      @importer.should_receive(:parse_family).and_return { Factory :subfamily, :name => 'Martialinae' }
       @importer.import_html make_contents %{
 <p><b><span lang=EN-GB style='color:black'>SUBFAMILY</span><span lang=EN-GB> <span style='color:red'>MARTIALINAE</span><o:p></o:p></span></b></p>
 <p><b><span lang=EN-GB>Subfamily <span style='color:red'>MARTIALINAE<o:p></o:p></span></span></b></p>
@@ -383,7 +383,7 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
     end
 
     it "should handle when Miomyrmex incertae sedis in subfamily also belongs to a tribe incertae sedis in subfamily (it will be both)" do
-      @importer.should_receive(:parse_family).and_return { Factory :subfamily, name: 'Dolichoderinae' }
+      @importer.should_receive(:parse_family).and_return { Factory :subfamily, :name => 'Dolichoderinae' }
       @importer.import_html make_contents %{
 <p><b><span lang=EN-GB>SUBFAMILY <span style='color:red'>DOLICHODERINAE</span><o:p></o:p></span></b></p>
 <p><b><span lang=EN-GB>Subfamily <span style='color:red'>DOLICHODERINAE</span> <o:p></o:p></span></b></p>
@@ -403,7 +403,7 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
       miomyrmecini.should_not be_nil
       miomyrmecini.incertae_sedis_in.should == 'subfamily'
 
-      miomyrmex = Genus.all conditions: ['name = ?', 'Miomyrmex']
+      miomyrmex = Genus.all :conditions => ['name = ?', 'Miomyrmex']
       miomyrmex.count.should == 1
       miomyrmex = miomyrmex.first
       miomyrmex.incertae_sedis_in.should == 'subfamily'
@@ -411,7 +411,7 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
     end
 
     it "should handle genera incertae sedis in tribe" do
-      @importer.should_receive(:parse_family).and_return { Factory :subfamily, name: 'Aneuretinae' }
+      @importer.should_receive(:parse_family).and_return { Factory :subfamily, :name => 'Aneuretinae' }
       @importer.import_html make_contents %{
 <p><b><span lang=EN-GB>SUBFAMILY <span style='color:red'>ANEURETINAE</span><o:p></o:p></span></b></p>
 <p><b><span lang=EN-GB>Subfamily <span style='color:red'>ANEURETINAE</span> <o:p></o:p></span></b></p>
@@ -436,7 +436,7 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
     end
 
     it "should allow a taxon which has been added from a list (all of them, hopefully) to be subsequently changed to unidentifiable" do
-      @importer.should_receive(:parse_family).and_return { Factory :subfamily, name: 'Aneuretinae' }
+      @importer.should_receive(:parse_family).and_return { Factory :subfamily, :name => 'Aneuretinae' }
       @importer.import_html make_contents %{
 <p><b><span lang=EN-GB>SUBFAMILY <span style='color:red'>ANEURETINAE</span><o:p></o:p></span></b></p>
 <p><b><span lang=EN-GB>Subfamily <span style='color:red'>ANEURETINAE</span> <o:p></o:p></span></b></p>
@@ -455,8 +455,8 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
     describe "situations where line needs to be preprocessed, not just parsed" do
       it "should handle a spacerun in the middle" do
         @importer.should_receive(:parse_family).and_return {
-          Factory :subfamily, name: 'Aneuretinae'
-          Factory :tribe, name: 'Miomyrmecini'
+          Factory :subfamily, :name => 'Aneuretinae'
+          Factory :tribe, :name => 'Miomyrmecini'
         }
         @importer.import_html make_contents %{
 <p><b><span lang=EN-GB>SUBFAMILY <span style='color:red'>ANEURETINAE</span><o:p></o:p></span></b></p>
@@ -478,7 +478,7 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 
     describe "taxonomic history" do
       before do
-        @importer.should_receive(:parse_family).and_return {Factory :subfamily, name: 'Aneuretinae'}
+        @importer.should_receive(:parse_family).and_return {Factory :subfamily, :name => 'Aneuretinae'}
         @contents = %{
   <p><b><span lang=EN-GB>SUBFAMILY <span style='color:red'>ANEURETINAE</span><o:p></o:p></span></b></p>
   <p><b><span lang=EN-GB>Subfamily <span style='color:red'>ANEURETINAE</span> <o:p></o:p></span></b></p>
@@ -504,7 +504,7 @@ DOLICHODERINAE<o:p></o:p></span></b></p>
 
     describe "Cleaning up taxonomic history" do
       it "should remove all attributes and spans" do
-        @importer.should_receive(:parse_family).and_return {Factory :subfamily, name: 'Aneuretinae'}
+        @importer.should_receive(:parse_family).and_return {Factory :subfamily, :name => 'Aneuretinae'}
         @contents = %{
         }
         @importer.import_html make_contents %{

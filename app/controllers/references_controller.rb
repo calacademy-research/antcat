@@ -1,7 +1,7 @@
 # coding: UTF-8
 class ReferencesController < ApplicationController
 
-  before_filter :authenticate_user!, except: [:index, :download]
+  before_filter :authenticate_user!, :except => [:index, :download]
 
   def index
     searching = params[:q].present?
@@ -27,8 +27,8 @@ EOS
         @references = Reference.do_search params
       }
       format.endnote_import  {
-        references = Reference.do_search params.merge format: :endnote_import
-        render text: ReferenceFormatter::EndnoteImport.format(references)
+        references = Reference.do_search params.merge :format => :endnote_import
+        render :text => ReferenceFormatter::EndnoteImport.format(references)
       }
     end
   end
@@ -78,11 +78,11 @@ EOS
   def destroy
     @reference = Reference.find(params[:id])
     if @reference.destroy
-      json = {success: true}
+      json = {:success => true}
     else
-      json = {success: false, message: @reference.errors[:base]}.to_json
+      json = {:success => false, :message => @reference.errors[:base]}.to_json
     end
-    render json: json
+    render :json => json
   end
 
   private
@@ -132,15 +132,15 @@ EOS
   def render_json new = false
     ActiveSupport.escape_html_entities_in_json = true
     json = {
-      isNew: new,
-      content: render_to_string(partial: 'reference',
-                                   locals: {reference: @reference, publisher_string: @publisher_string, css_class: 'reference'}),
-                                   id: @reference.id,
-                                   success: @reference.errors.empty?
+      :isNew => new,
+      :content => render_to_string(:partial => 'reference',
+                                   :locals => {:reference => @reference, :publisher_string => @publisher_string, :css_class => 'reference'}),
+                                   :id => @reference.id,
+                                   :success => @reference.errors.empty?
     }.to_json
 
     json = '<textarea>' + json + '</textarea>' unless Rails.env.test?
-    render json: json, content_type: 'text/html'
+    render :json => json, :content_type => 'text/html'
   end
 
   def new_reference

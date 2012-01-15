@@ -17,7 +17,7 @@ class Catalog::BrowserController < CatalogController
 
     case @taxon
     when Subfamily
-      @index_header_taxa = [taxon: @taxon, path: browser_catalog_path(@taxon, @search_params)]
+      @index_header_taxa = [:taxon => @taxon, :path => browser_catalog_path(@taxon, @search_params)]
       @taxa = @taxon.genera.valid
 
     when Genus, Species
@@ -28,8 +28,8 @@ class Catalog::BrowserController < CatalogController
       @index_header_taxa = []
       if @header_taxon.subfamily
         @index_header_taxa = [
-          {taxon: @header_taxon.subfamily, path: browser_catalog_path(@header_taxon.subfamily, @search_params)},
-          {taxon: @header_taxon, path: browser_catalog_path(@header_taxon, @search_params)},
+          {:taxon => @header_taxon.subfamily, :path => browser_catalog_path(@header_taxon.subfamily, @search_params)},
+          {:taxon => @header_taxon, :path => browser_catalog_path(@header_taxon, @search_params)},
         ]
       end
       @taxa = @header_taxon.species

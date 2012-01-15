@@ -1,13 +1,13 @@
 # coding: UTF-8
 class ReferenceDocument < ActiveRecord::Base
   has_attached_file :file,
-                    url: ':s3_domain_url',
-                    path: ':id/:filename',
-                    bucket: 'antcat',
-                    storage: :s3,
-                    s3_credentials: (Rails.env.production? ? '/data/antcat/shared/config/' : Rails.root + 'config/') + 's3.yml',
-                    s3_permissions: 'authenticated-read',
-                    s3_protocol: 'http'
+                    :url => ':s3_domain_url',
+                    :path => ':id/:filename',
+                    :bucket => 'antcat',
+                    :storage => :s3,
+                    :s3_credentials => (Rails.env.production? ? '/data/antcat/shared/config/' : Rails.root + 'config/') + 's3.yml',
+                    :s3_permissions => 'authenticated-read',
+                    :s3_protocol => 'http'
 
   before_validation :add_protocol_to_url
   belongs_to :reference
@@ -60,7 +60,7 @@ class ReferenceDocument < ActiveRecord::Base
   end
 
   def s3_url
-    AWS::S3::S3Object.url_for file.path, file.bucket_name, expires_in: 10
+    AWS::S3::S3Object.url_for file.path, file.bucket_name, :expires_in => 10
   end
 
 end

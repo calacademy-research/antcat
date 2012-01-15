@@ -65,8 +65,8 @@ Factory.define :missing_reference do |reference|
 end
 
 def reference_factory attributes = {}
-  author_name = Factory(:author_name, name: attributes.delete(:author_name))
-  reference = Factory(:reference, attributes.merge(author_names: [author_name]))
+  author_name = Factory(:author_name, :name => attributes.delete(:author_name))
+  reference = Factory(:reference, attributes.merge(:author_names => [author_name]))
   reference
 end
 
@@ -75,13 +75,13 @@ Factory.define :user do |user|
   user.password  'secret'
 end
 
-Factory.define :bolton_reference, class: Bolton::Reference do |reference|
+Factory.define :bolton_reference, :class => Bolton::Reference do |reference|
   reference.title 'New General Catalog'
   reference.citation_year '2011'
   reference.authors 'Fisher, B.L.'
 end
 
-Factory.define :bolton_match, class: Bolton::Match do |bolton_match|
+Factory.define :bolton_match, :class => Bolton::Match do |bolton_match|
   bolton_match.association :bolton_reference
   bolton_match.association :reference
   bolton_match.similarity 0.9

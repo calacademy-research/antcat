@@ -17,7 +17,7 @@ class Antweb::Exporter
   end
 
   def formicidae
-    "Formicidae\t\t\t\t\t\tTRUE\tTRUE\t\t\tFALSE\t" + CatalogFormatter.format_statistics(Taxon.statistics, include_invalid: false)
+    "Formicidae\t\t\t\t\t\tTRUE\tTRUE\t\t\tFALSE\t" + CatalogFormatter.format_statistics(Taxon.statistics, :include_invalid => false)
   end
 
   def export_taxon taxon
@@ -27,35 +27,35 @@ class Antweb::Exporter
 
     case taxon
     when Subfamily
-      convert_to_antweb_array subfamily: taxon.name,
+      convert_to_antweb_array :subfamily => taxon.name,
                               :valid? => !taxon.invalid?, :available? => !taxon.invalid?,
-                              taxonomic_history: CatalogFormatter.format_taxonomic_history_with_statistics(taxon, include_invalid: false),
+                              :taxonomic_history => CatalogFormatter.format_taxonomic_history_with_statistics(taxon, :include_invalid => false),
                               :fossil? => taxon.fossil
     when Genus
       subfamily_name = taxon.subfamily.try(:name) || 'incertae_sedis'
-      convert_to_antweb_array subfamily: subfamily_name,
-                              tribe: taxon.tribe && taxon.tribe.name,
-                              genus: taxon.name,
+      convert_to_antweb_array :subfamily => subfamily_name,
+                              :tribe => taxon.tribe && taxon.tribe.name,
+                              :genus => taxon.name,
                               :valid? => !taxon.invalid?, :available? => !taxon.invalid?,
-                              taxonomic_history: CatalogFormatter.format_taxonomic_history_with_statistics(taxon, include_invalid: false),
+                              :taxonomic_history => CatalogFormatter.format_taxonomic_history_with_statistics(taxon, :include_invalid => false),
                               :fossil? => taxon.fossil
     when Species
       return unless taxon.genus && taxon.genus.tribe && taxon.genus.tribe.subfamily
-      convert_to_antweb_array subfamily: taxon.genus.subfamily.name,
-                              tribe: taxon.genus.tribe.name,
-                              genus: taxon.genus.name,
-                              species: taxon.name,
+      convert_to_antweb_array :subfamily => taxon.genus.subfamily.name,
+                              :tribe => taxon.genus.tribe.name,
+                              :genus => taxon.genus.name,
+                              :species => taxon.name,
                               :valid? => !taxon.invalid?, :available? => !taxon.invalid?,
-                              taxonomic_history: CatalogFormatter.format_taxonomic_history_with_statistics(taxon, include_invalid: false),
+                              :taxonomic_history => CatalogFormatter.format_taxonomic_history_with_statistics(taxon, :include_invalid => false),
                               :fossil? => taxon.fossil
     when Subspecies
       return unless taxon.species && taxon.species.genus && taxon.species.genus.tribe && taxon.species.genus.tribe.subfamily
-      convert_to_antweb_array subfamily: taxon.species.genus.subfamily.name,
-                              tribe: taxon.species.genus.tribe.name,
-                              genus: taxon.species.genus.name,
-                              species: "#{taxon.species.name} #{taxon.name}",
+      convert_to_antweb_array :subfamily => taxon.species.genus.subfamily.name,
+                              :tribe => taxon.species.genus.tribe.name,
+                              :genus => taxon.species.genus.name,
+                              :species => "#{taxon.species.name} #{taxon.name}",
                               :valid? => !taxon.invalid?, :available? => !taxon.invalid?,
-                              taxonomic_history: CatalogFormatter.format_taxonomic_history_with_statistics(taxon, include_invalid: false),
+                              :taxonomic_history => CatalogFormatter.format_taxonomic_history_with_statistics(taxon, :include_invalid => false),
                               :fossil? => taxon.fossil
     else nil
     end

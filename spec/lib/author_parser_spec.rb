@@ -29,7 +29,7 @@ describe AuthorParser do
 
    it "should parse a single author + author roles into a hash" do
      string = 'Fisher, B.L. (ed.)'
-     AuthorParser.parse!(string).should == {names: ['Fisher, B.L.'], suffix: ' (ed.)'}
+     AuthorParser.parse!(string).should == {:names => ['Fisher, B.L.'], :suffix => ' (ed.)'}
      string.should == ''
    end
 
@@ -41,7 +41,7 @@ describe AuthorParser do
 
    it "should multiple authors with a role" do
      AuthorParser.parse("Breed, M. D.; Page, R. E. (eds.)").should ==
-       {names: ['Breed, M. D.', 'Page, R. E.'], suffix: ' (eds.)'}
+       {:names => ['Breed, M. D.', 'Page, R. E.'], :suffix => ' (eds.)'}
    end
 
    it "should handle names with hyphens" do
@@ -61,15 +61,15 @@ describe AuthorParser do
    end
 
    it "should handle 'et al.' without a comma before it" do
-     AuthorParser.parse("Sanetra, M; Ward, P. et al.").should == {names: ['Sanetra, M', 'Ward, P.'], suffix: ' et al.'}
+     AuthorParser.parse("Sanetra, M; Ward, P. et al.").should == {:names => ['Sanetra, M', 'Ward, P.'], :suffix => ' et al.'}
    end
 
    it "should handle 'et al.' with a comma before it" do
-     AuthorParser.parse("Sanetra, M; Ward, P., et al.").should == {names: ['Sanetra, M', 'Ward, P.'], suffix: ', et al.'}
+     AuthorParser.parse("Sanetra, M; Ward, P., et al.").should == {:names => ['Sanetra, M', 'Ward, P.'], :suffix => ', et al.'}
    end
 
    it "should handle 'et al. (eds.)'" do
-     AuthorParser.parse("Sanetra, M; Ward, P., et al. (eds.)").should == {names: ['Sanetra, M', 'Ward, P.'], suffix: ', et al. (eds.)'}
+     AuthorParser.parse("Sanetra, M; Ward, P., et al. (eds.)").should == {:names => ['Sanetra, M', 'Ward, P.'], :suffix => ', et al. (eds.)'}
    end
 
    it "should strip the space after the suffix" do
@@ -123,7 +123,7 @@ describe AuthorParser do
    end
 
    it "should handle a phrase that's known to be an author" do
-     Factory :author_name, name: 'Anonymous', verified: true
+     Factory :author_name, :name => 'Anonymous', :verified => true
      string = 'Anonymous'
      AuthorParser.parse!(string)[:names].should == ['Anonymous']
      string.should be_empty
@@ -134,11 +134,11 @@ describe AuthorParser do
    end
 
    it "should handle a semicolon followed by a space at the end" do
-     AuthorParser.parse('Ward, P. S.; ').should == {names: ['Ward, P. S.'], suffix: nil}
+     AuthorParser.parse('Ward, P. S.; ').should == {:names => ['Ward, P. S.'], :suffix => nil}
    end
 
    it "should handle an authors list separated by ampersand" do
-     AuthorParser.parse('Espadaler & DuMerle').should == {names: ['Espadaler', 'DuMerle'], suffix: nil}
+     AuthorParser.parse('Espadaler & DuMerle').should == {:names => ['Espadaler', 'DuMerle'], :suffix => nil}
    end
 
   end
@@ -150,16 +150,16 @@ describe AuthorParser do
      end
    end
    it "should simply return the name if there's only one word" do
-     AuthorParser.get_name_parts('Bolton').should == {last: 'Bolton'}
+     AuthorParser.get_name_parts('Bolton').should == {:last => 'Bolton'}
    end
    it "should separate the words if there are multiple" do
-     AuthorParser.get_name_parts('Bolton, B.L.').should == {last: 'Bolton', first_and_initials: 'B.L.'}
+     AuthorParser.get_name_parts('Bolton, B.L.').should == {:last => 'Bolton', :first_and_initials => 'B.L.'}
    end
    it "should use all words if there is no comma" do
-     AuthorParser.get_name_parts('Royal Academy').should == {last: 'Royal Academy'}
+     AuthorParser.get_name_parts('Royal Academy').should == {:last => 'Royal Academy'}
    end
    it "should use use all words before the comma if there are multiple" do
-     AuthorParser.get_name_parts('Baroni Urbani, C.').should == {last: 'Baroni Urbani', first_and_initials: 'C.'}
+     AuthorParser.get_name_parts('Baroni Urbani, C.').should == {:last => 'Baroni Urbani', :first_and_initials => 'C.'}
    end
   end
 

@@ -7,16 +7,16 @@ module CatalogHelper
     if taxon =~ /^no_/
       classes = 'valid'
       classes << ' selected' if taxon == selected
-      link_to "(#{taxon.gsub(/_/, ' ')})", index_catalog_path(taxon, url_parameters), class: classes
+      link_to "(#{taxon.gsub(/_/, ' ')})", index_catalog_path(taxon, url_parameters), :class => classes
     else
-      label_and_classes = CatalogFormatter.taxon_label_and_css_classes taxon, selected: taxon == selected
-      link_to label_and_classes[:label], index_catalog_path(taxon, url_parameters), class: label_and_classes[:css_classes]
+      label_and_classes = CatalogFormatter.taxon_label_and_css_classes taxon, :selected => taxon == selected
+      link_to label_and_classes[:label], index_catalog_path(taxon, url_parameters), :class => label_and_classes[:css_classes]
     end
   end
 
   def hide_link name, selected, url_parameters
     hide_param = "hide_#{name}".to_sym
-    link_to 'hide', index_catalog_path(selected, url_parameters.merge(hide_param => true)), class: :hide
+    link_to 'hide', index_catalog_path(selected, url_parameters.merge(hide_param => true)), :class => :hide
   end
 
   def show_child_link params, name, selected, url_parameters
@@ -30,7 +30,7 @@ module CatalogHelper
   end
 
   def format_statistics statistics, include_invalid = true
-    CatalogFormatter.format_statistics statistics, include_invalid: include_invalid
+    CatalogFormatter.format_statistics statistics, :include_invalid => include_invalid
   end
 
   def snake_taxon_columns items
@@ -59,7 +59,7 @@ module CatalogHelper
     groups = taxa.sort_by(&:name).in_groups_of(items_per_row, false)
     any_groups_with_more_than_one_member = false
     groups.inject([]) do |label_groups, group|
-      result = {id: group.first.id}
+      result = {:id => group.first.id}
       label_and_classes = CatalogFormatter.taxon_label_and_css_classes group.first
       any_groups_with_more_than_one_member ||= group.size > 1
       if any_groups_with_more_than_one_member
@@ -78,11 +78,11 @@ module CatalogHelper
   end
 
   def taxon_header taxon, options = {}
-    label_and_css_classes = CatalogFormatter.taxon_label_and_css_classes taxon, uppercase: true
+    label_and_css_classes = CatalogFormatter.taxon_label_and_css_classes taxon, :uppercase => true
     if options[:link]
-      (taxon.rank.capitalize + ' ' + link_to(label_and_css_classes[:label], browser_catalog_path(taxon, options[:search_params]), class: label_and_css_classes[:css_classes])).html_safe
+      (taxon.rank.capitalize + ' ' + link_to(label_and_css_classes[:label], browser_catalog_path(taxon, options[:search_params]), :class => label_and_css_classes[:css_classes])).html_safe
     else
-      (taxon.rank.capitalize + ' ' + content_tag('span', label_and_css_classes[:label], class: label_and_css_classes[:css_classes])).html_safe
+      (taxon.rank.capitalize + ' ' + content_tag('span', label_and_css_classes[:label], :class => label_and_css_classes[:css_classes])).html_safe
     end
   end
 

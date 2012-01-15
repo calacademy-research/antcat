@@ -7,10 +7,10 @@ describe Reference do
     it "should change the author name" do
       AuthorName.destroy_all
       author = Author.create!
-      uppercase = AuthorName.create! name: 'MacKay, W. P.', author: author
-      lowercase = AuthorName.create! name: 'Mackay, W. P.', author: author
+      uppercase = AuthorName.create! :name => 'MacKay, W. P.', :author => author
+      lowercase = AuthorName.create! :name => 'Mackay, W. P.', :author => author
 
-      reference = Factory :reference, author_names: [uppercase]
+      reference = Factory :reference, :author_names => [uppercase]
       reference.author_names_string.should == 'MacKay, W. P.'
 
       reference.replace_author_name 'MacKay, W. P.', lowercase
