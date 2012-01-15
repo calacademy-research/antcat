@@ -13,7 +13,7 @@ Given /^the Formicidae family exists$/ do
       :name => "Formicariae",
       :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
     },
-    :type_genus => 'Formica',
+    :type_genus => {:genus_name => 'Formica'},
     :taxonomic_history => ['Taxonomic history']
   )
   ForwardReference.fixup
