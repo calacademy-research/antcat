@@ -14,14 +14,20 @@ describe Protonym do
       reference = Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
       data = {
         :family_or_subfamily_name => "Formicariae",
-        :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}]
+        :sic => true,
+        :fossil => true,
+        :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
       }
 
       protonym = Protonym.import(data).reload
 
+      protonym.rank.should == 'family_or_subfamily'
       protonym.name.should == 'Formicariae'
       protonym.authorship.pages.should == '124'
       protonym.authorship.reference.should == reference
+      protonym.fossil.should be_true
+      protonym.sic.should be_true
     end
   end
+
 end
