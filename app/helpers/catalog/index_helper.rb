@@ -12,10 +12,9 @@ module Catalog::IndexHelper
         link_to "(no tribe)", "/catalog/index?subfamily=#{column_selections[:subfamily].id}&tribe=none", :class => classes
       end
     else
-      label_and_classes = CatalogFormatter.taxon_label_and_css_classes taxon,
-        :selected => taxon == selected_taxon
-      link_to label_and_classes[:label], index_catalog_path(taxon, column_selections.merge(rank => taxon)),
-        :class => label_and_classes[:css_classes]
+      label = CatalogFormatter.taxon_label taxon
+      css_classes = CatalogFormatter.taxon_css_classes taxon, :selected => taxon == selected_taxon
+      link_to label, index_catalog_path(taxon, column_selections.merge(rank => taxon)), :class => css_classes
     end
   end
 
