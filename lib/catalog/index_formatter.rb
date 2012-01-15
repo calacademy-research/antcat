@@ -1,5 +1,6 @@
 # coding: UTF-8
 module Catalog::IndexFormatter
+
   def format_taxon taxon, current_user
     full_label        = format_full_label taxon
     taxon_status      = format_status taxon
@@ -9,7 +10,7 @@ module Catalog::IndexFormatter
     content_tag :div, :class => :antcat_taxon do
       contents = ''
       contents << content_tag(:div, :class => :header) do
-        content_tag(:span, full_label,  :class =>  "name taxon #{taxon.rank}") +
+        content_tag(:span, full_label,  :class =>  "taxon #{taxon.rank}") +
         content_tag(:span, taxon_status,:class => :status)
       end
       contents << content_tag(:div,  statistics,        :class => :statistics)
@@ -67,7 +68,7 @@ module Catalog::IndexFormatter
   end
 
   def format_headline_type_name taxon
-    content_tag(:span, taxon.full_name, :class => "#{taxon.rank} name taxon").html_safe
+    content_tag(:span, taxon.full_name, :class => "#{taxon.rank} taxon").html_safe
   end
 
   def format_headline_type_taxt taxt
