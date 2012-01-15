@@ -4,18 +4,18 @@ require 'asterisk_dagger_formatting'
 class Taxon < ActiveRecord::Base
   set_table_name :taxa
 
-  belongs_to  :synonym_of, :class_name => 'Taxon', :foreign_key => :synonym_of_id
-  has_one     :homonym_replaced, :class_name => 'Taxon', :foreign_key => :homonym_replaced_by_id
+  belongs_to  :synonym_of, class_name: 'Taxon', foreign_key: :synonym_of_id
+  has_one     :homonym_replaced, class_name: 'Taxon', foreign_key: :homonym_replaced_by_id
   belongs_to  :protonym
-  belongs_to  :type_taxon, :class_name => 'Taxon'
-  belongs_to  :homonym_replaced_by, :class_name => 'Taxon'
-  has_many    :taxonomic_history_items, :order => :position
+  belongs_to  :type_taxon, class_name: 'Taxon'
+  belongs_to  :homonym_replaced_by, class_name: 'Taxon'
+  has_many    :taxonomic_history_items, order: :position
 
   validates_presence_of :name
 
   scope :valid, where("status = ?", 'valid')
   scope :ordered_by_name, order(:name)
-  scope :extant, where(:fossil => false)
+  scope :extant, where(fossil: false)
 
   def unavailable?;     status == 'unavailable' end
   def available?;       !unavailable? end
@@ -77,7 +77,7 @@ class Taxon < ActiveRecord::Base
   def get_statistics ranks
     statistics = {}
     ranks.each do |rank|
-      count = send(rank).count :group => [:fossil, :status]
+      count = send(rank).count group: [:fossil, :status]
       self.class.massage_count count, rank, statistics
     end
     statistics

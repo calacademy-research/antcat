@@ -4,10 +4,10 @@ require 'spec_helper'
 describe Bolton::ReferencesMatcher do
 
   it "should find the appropriate reference(s) for each" do
-    matching_reference = Factory :reference, :author_names => [Factory(:author_name, :name => 'Dlussky, G.M.')]
-    matched_bolton = Factory :bolton_reference, :authors => 'Dlussky, G.M.'
-    unmatching_reference = Factory :reference, :author_names => [Factory(:author_name, :name => 'Fisher, B.L.')]
-    unmatched_bolton = Factory :bolton_reference, :authors => 'Wheeler, W.M.'
+    matching_reference = Factory :reference, author_names: [Factory(:author_name, name: 'Dlussky, G.M.')]
+    matched_bolton = Factory :bolton_reference, authors: 'Dlussky, G.M.'
+    unmatching_reference = Factory :reference, author_names: [Factory(:author_name, name: 'Fisher, B.L.')]
+    unmatched_bolton = Factory :bolton_reference, authors: 'Wheeler, W.M.'
 
     Bolton::Reference.should_receive(:all).and_return [matched_bolton, unmatched_bolton]
     matched_bolton.should_receive(:<=>).and_return 0.90
@@ -28,8 +28,8 @@ describe Bolton::ReferencesMatcher do
 
   #it "should be able to be re-run without changing any manual matches/unmatchables" do
     ## run auto-matching
-    #matching_reference = Factory :reference, :author_names => [Factory(:author_name, :name => 'Dlussky, G.M.')]
-    #matched_bolton = Factory :bolton_reference, :authors => 'Dlussky, G.M.'
+    #matching_reference = Factory :reference, author_names: [Factory(:author_name, name: 'Dlussky, G.M.')]
+    #matched_bolton = Factory :bolton_reference, authors: 'Dlussky, G.M.'
     #Bolton::ReferencesMatcher.new.find_matches_for_all
 
     ## check the results of the auto-matching
@@ -40,7 +40,7 @@ describe Bolton::ReferencesMatcher do
     #matched_bolton.match_status.should == 'auto'
 
     ## match it manually
-    #unmatching_reference = Factory :reference, :author_names => [Factory(:author_name, :name => 'Fisher, B.L.')]
+    #unmatching_reference = Factory :reference, author_names: [Factory(:author_name, name: 'Fisher, B.L.')]
     #matched_bolton.match_status = 'manual'
     #matched_bolton.match = unmatching_reference
     #matched_bolton.save!

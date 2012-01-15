@@ -7,20 +7,20 @@ module Catalog::IndexHelper
       classes = 'valid'
       classes << ' selected' if taxon == selected_taxon
       if rank == :subfamily
-        link_to "(no subfamily)", "/catalog/index?subfamily=none", :class => classes
+        link_to "(no subfamily)", "/catalog/index?subfamily=none", class: classes
       elsif rank == :tribe
-        link_to "(no tribe)", "/catalog/index?subfamily=#{column_selections[:subfamily].id}&tribe=none", :class => classes
+        link_to "(no tribe)", "/catalog/index?subfamily=#{column_selections[:subfamily].id}&tribe=none", class: classes
       end
     else
       label = CatalogFormatter.taxon_label taxon
-      css_classes = CatalogFormatter.taxon_css_classes taxon, :selected => taxon == selected_taxon
-      link_to label, index_catalog_path(taxon, column_selections.merge(rank => taxon)), :class => css_classes
+      css_classes = CatalogFormatter.taxon_css_classes taxon, selected: taxon == selected_taxon
+      link_to label, index_catalog_path(taxon, column_selections.merge(rank => taxon)), class: css_classes
     end
   end
 
   def hide_link name, selected, column_selections
     hide_param = "hide_#{name}".to_sym
-    link_to 'hide', index_catalog_path(selected, column_selections.merge(hide_param => true)), :class => :hide
+    link_to 'hide', index_catalog_path(selected, column_selections.merge(hide_param => true)), class: :hide
   end
 
   def show_child_link params, name, selected, column_selections

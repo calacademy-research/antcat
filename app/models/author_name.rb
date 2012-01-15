@@ -1,7 +1,7 @@
 # coding: UTF-8
 class AuthorName < ActiveRecord::Base
   has_many :reference_author_names
-  has_many :references, :through => :reference_author_names
+  has_many :references, through: :reference_author_names
 
   belongs_to :author
   validates_presence_of :author
@@ -17,22 +17,22 @@ class AuthorName < ActiveRecord::Base
   def self.import data
     data.inject([]) do |author_names, name|
       author_names << (
-        all(:conditions => ['name = ?', name]).find {|possible_name| possible_name.name == name} ||
-        create!(:name => name, :author => Author.create!)
+        all(conditions: ['name = ?', name]).find {|possible_name| possible_name.name == name} ||
+        create!(name: name, author: Author.create!)
       )
     end
   end
 
   def self.search term = ''
-    all(:conditions => ["name LIKE ?", "%#{term}%"], :include => :reference_author_names,
-        :order => 'reference_author_names.created_at DESC, name').map(&:name)
+    all(conditions: ["name LIKE ?", "%#{term}%"], include: :reference_author_names,
+        order: 'reference_author_names.created_at DESC, name').map(&:name)
   end
 
   def self.import_author_names_string string
     author_data = AuthorParser.parse!(string)
-    {:author_names => import(author_data[:names]), :author_names_suffix => author_data[:suffix]}
+    {author_names: import(author_data[:names]), author_names_suffix: author_data[:suffix]}
   rescue Citrus::ParseError
-    {:author_names => [], :author_names_suffix => nil}
+    {author_names: [], author_names_suffix: nil}
   end
 
   def self.fix_missing_spaces show_progress = false
@@ -62,7 +62,7 @@ class AuthorName < ActiveRecord::Base
 
   def self.create_hyphenation_aliases show_progress = false
     Progress.init show_progress
-    all(:order => 'name').each do |author_name|
+    all(order: 'name').each do |author_name|
       next unless author_name.name =~ /-/
       Progress.puts
       Progress.print "Found name with hyphen(s): '#{author_name.name}'"
@@ -80,14 +80,14 @@ class AuthorName < ActiveRecord::Base
     names = names.map do |name|
       author_name = nil
       unless author_name = find_by_name(name)
-        author_name = create! :author => Author.create!, :name => name
+        author_name = create! author: Author.create!, name: name
       end
       author_name
     end
     author = names.first.author
     names[1..-1].each do |name|
       Progress.puts "Aliasing '#{name.name}' to '#{names.first.name}'"
-      update_all({:author_id => author.id}, {:author_id => name.author_id})
+      update_all({author_id: author.id}, {author_id: name.author_id})
       name.author.destroy unless name.author.names(true).present?
     end
   end
@@ -101,7 +101,7 @@ class AuthorName < ActiveRecord::Base
     if existing_name
       Progress.puts 'which already exists'
       references = bad_name.references.dup
-      ReferenceAuthorName.all(:conditions => ['author_name_id = ?', bad_name.id]).each do |e|
+      ReferenceAuthorName.all(conditions: ['author_name_id = ?', bad_name.id]).each do |e|
         e.author_name_id = existing_name.id
         e.save!
       end

@@ -10,8 +10,8 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     while @type == :tribes_list
       parsed_text << @paragraph
       @parse_result[:tribes].each do |tribe|
-        attributes = {:name => tribe[:name], :subfamily => subfamily, :fossil => tribe[:fossil], :status => 'valid'}
-        attributes.merge!(:incertae_sedis_in => 'subfamily') if @parse_result[:incertae_sedis]
+        attributes = {name: tribe[:name], subfamily: subfamily, fossil: tribe[:fossil], status: 'valid'}
+        attributes.merge!(incertae_sedis_in: 'subfamily') if @parse_result[:incertae_sedis]
         Tribe.create! attributes
       end
       parse_next_line
@@ -41,10 +41,10 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     raise "Tribe #{name} doesn't exist" unless tribe
 
     # genera lists can appear before or after junior synonyms
-    taxonomic_history << parse_genera_lists(:tribe, :subfamily => subfamily, :tribe => tribe)
+    taxonomic_history << parse_genera_lists(:tribe, subfamily: subfamily, tribe: tribe)
     taxonomic_history << parse_junior_synonyms_of_tribe(tribe)
-    taxonomic_history << parse_genera_lists(:tribe, :subfamily => subfamily, :tribe => tribe)
-    taxonomic_history << parse_ichnotaxa_list(:subfamily => subfamily, :tribe => tribe)
+    taxonomic_history << parse_genera_lists(:tribe, subfamily: subfamily, tribe: tribe)
+    taxonomic_history << parse_ichnotaxa_list(subfamily: subfamily, tribe: tribe)
     taxonomic_history << parse_references_sections(:references_section_header, :see_under_references_section_header)
     taxonomic_history << parse_see_also_references_section
 
@@ -52,7 +52,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     parse_genera_incertae_sedis_in_tribe
     parse_ichnotaxa
 
-    tribe.reload.update_attributes :taxonomic_history => clean_taxonomic_history(taxonomic_history)
+    tribe.reload.update_attributes taxonomic_history: clean_taxonomic_history(taxonomic_history)
   end
 
   def parse_ichnotaxa_list parents
@@ -120,8 +120,8 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     taxonomic_history = @paragraph
     parse_next_line
     taxonomic_history << parse_tribe_taxonomic_history
-    tribe = Tribe.create! :name => name, :fossil => fossil, :status => 'synonym', :synonym_of => tribe,
-                          :subfamily => tribe.subfamily, :taxonomic_history => clean_taxonomic_history(taxonomic_history)
+    tribe = Tribe.create! name: name, fossil: fossil, status: 'synonym', synonym_of: tribe,
+                          subfamily: tribe.subfamily, taxonomic_history: clean_taxonomic_history(taxonomic_history)
     parsed_text << taxonomic_history
   end
 

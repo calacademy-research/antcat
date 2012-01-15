@@ -40,7 +40,7 @@ class Hol::DocumentUrlImporter
         result = match_result
       else
         begin
-          reference.document = ReferenceDocument.create! :url => match_result.document_url
+          reference.document = ReferenceDocument.create! url: match_result.document_url
           result = :success
         rescue ActiveRecord::RecordInvalid
           result = :pdf_not_found

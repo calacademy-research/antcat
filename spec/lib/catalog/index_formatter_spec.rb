@@ -8,8 +8,8 @@ describe Catalog::IndexFormatter do
 
   describe "Headline formatting" do
     it "should format the taxon name" do
-      protonym = Factory :protonym, :name => 'Atari'
-      atta = Factory :genus, :name => 'Atta', :protonym => protonym
+      protonym = Factory :protonym, name: 'Atari'
+      atta = Factory :genus, name: 'Atta', protonym: protonym
       @formatter.format_headline_name(atta).should == '<span class="family_group_name">Atari</span>'
     end
     it "should handle the special taxon 'no_tribe'" do
@@ -24,15 +24,15 @@ describe Catalog::IndexFormatter do
 
     describe "Type" do
       it "should show the type taxon" do
-        species = Factory :species, :name => 'major'
-        genus = Factory :genus, :name => 'Atta', :type_taxon => species
+        species = Factory :species, name: 'major'
+        genus = Factory :genus, name: 'Atta', type_taxon: species
         species.update_attribute :genus, genus
         @formatter.format_headline_type(genus).should ==
 %{<span class="type">Type-species: <span class="species taxon">Atta major</span>.</span>}
       end
       it "should show the type taxon with extra Taxt" do
-        species = Factory :species, :name => 'major'
-        genus = Factory :genus, :name => 'Atta', :type_taxon => species, :type_taxon_taxt => ', by monotypy'
+        species = Factory :species, name: 'major'
+        genus = Factory :genus, name: 'Atta', type_taxon: species, type_taxon_taxt: ', by monotypy'
         species.update_attribute :genus, genus
         @formatter.format_headline_type(genus).should ==
 %{<span class="type">Type-species: <span class="species taxon">Atta major</span>, by monotypy.</span>}
@@ -46,8 +46,8 @@ describe Catalog::IndexFormatter do
     end
     describe "Taxonomic history formatting" do
       it "should format a number of items together in order" do
-        @taxon.taxonomic_history_items.create! :taxt => 'Ant'
-        @taxon.taxonomic_history_items.create! :taxt => 'Taxonomy'
+        @taxon.taxonomic_history_items.create! taxt: 'Ant'
+        @taxon.taxonomic_history_items.create! taxt: 'Taxonomy'
         @formatter.format_taxonomic_history(@taxon, nil).should ==
           '<div class="taxonomic_history_item">Ant.</div>' +
           '<div class="taxonomic_history_item">Taxonomy.</div>'

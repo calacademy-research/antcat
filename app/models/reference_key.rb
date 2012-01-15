@@ -25,14 +25,14 @@ class ReferenceKey
   end
 
   def to_link user
-    content_tag(:span, :class => :reference_key_and_expansion) do
-      content_tag(:a, to_s, :href => '#', :class => :reference_key) +
-      content_tag(:span, :class => :reference_key_expansion) do
-        content = content_tag(:span, ReferenceFormatter.format(@reference), :class => :reference_key_expansion_text)
+    content_tag(:span, class: :reference_key_and_expansion) do
+      content_tag(:a, to_s, href: '#', class: :reference_key) +
+      content_tag(:span, class: :reference_key_expansion) do
+        content = content_tag(:span, ReferenceFormatter.format(@reference), class: :reference_key_expansion_text)
         document_link = CatalogFormatter.format_reference_document_link(@reference, user)
         content << document_link.html_safe if document_link
         content << "<a class=\"goto_reference_link\" target=\"_blank\" href=\"/references?q=#{@reference.id}\">".html_safe
-        content << content_tag(:img, '', :src => "/images/external_link.png").html_safe
+        content << content_tag(:img, '', src: "/images/external_link.png").html_safe
         content << "</a>".html_safe
         content.html_safe
       end

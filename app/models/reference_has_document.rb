@@ -1,7 +1,7 @@
 # coding: UTF-8
 class Reference < ActiveRecord::Base
-  has_one :document, :class_name => 'ReferenceDocument'
-  accepts_nested_attributes_for :document, :reject_if => :all_blank
+  has_one :document, class_name: 'ReferenceDocument'
+  accepts_nested_attributes_for :document, reject_if: :all_blank
 
   def url
     document.try :url

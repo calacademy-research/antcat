@@ -12,7 +12,7 @@ module Catalog::StatisticsFormatter
   end
 
   def format_statistics statistics, options = {}
-    options.reverse_merge! :include_invalid => true, :include_fossil => true
+    options.reverse_merge! include_invalid: true, include_fossil: true
     return '' unless statistics && statistics.present?
     strings = [:extant, :fossil].inject({}) do |strings, extant_or_fossil|
       extant_or_fossil_statistics = statistics[extant_or_fossil]
@@ -38,7 +38,7 @@ module Catalog::StatisticsFormatter
       []
     end
     strings.map do |string|
-      content_tag('p', string, :class => 'taxon_statistics')
+      content_tag('p', string, class: 'taxon_statistics')
     end.join.html_safe
   end
 

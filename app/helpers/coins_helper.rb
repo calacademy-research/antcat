@@ -11,7 +11,7 @@ module CoinsHelper
 
     title = klass.new(reference).coins
 
-    content_tag(:span, "", :class => "Z3988", :title => raw(title.join("&amp;")))
+    content_tag(:span, "", class: "Z3988", title: raw(title.join("&amp;")))
   end
 end
 

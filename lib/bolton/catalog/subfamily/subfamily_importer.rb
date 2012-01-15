@@ -24,7 +24,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     taxonomic_history << parse_subfamily_child_lists(subfamily)
     taxonomic_history << parse_subfamily_references_sections
 
-    subfamily.update_attributes :taxonomic_history => clean_taxonomic_history(taxonomic_history), :fossil => fossil
+    subfamily.update_attributes taxonomic_history: clean_taxonomic_history(taxonomic_history), fossil: fossil
 
     parse_subfamily_children subfamily
 
@@ -43,7 +43,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
   def parse_subfamily_child_lists subfamily
     parsed_text = ''
     parsed_text << parse_tribes_lists(subfamily)
-    parsed_text << parse_genera_lists(:subfamily, :subfamily => subfamily)
+    parsed_text << parse_genera_lists(:subfamily, subfamily: subfamily)
     parsed_text << parse_collective_group_names_list
   end
 

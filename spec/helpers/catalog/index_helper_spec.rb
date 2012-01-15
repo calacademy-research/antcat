@@ -13,7 +13,7 @@ describe Catalog::IndexHelper do
   describe "Show child link" do
     it "if child is hidden, should create a link with all the current parameters and without hide_tribe" do
       taxon = Factory :genus
-      helper.show_child_link({:hide_tribes => true}, 'tribes', taxon, {}).should == %{<a href="/catalog/index/#{taxon.id}">show tribes</a>}
+      helper.show_child_link({hide_tribes: true}, 'tribes', taxon, {}).should == %{<a href="/catalog/index/#{taxon.id}">show tribes</a>}
     end
     it "if child is not hidden, return nil" do
       taxon = Factory :genus
@@ -27,7 +27,7 @@ describe Catalog::IndexHelper do
       helper.status_labels
     end
     it "format statistics" do
-      CatalogFormatter.should_receive(:format_statistics).with(1, :include_invalid => true)
+      CatalogFormatter.should_receive(:format_statistics).with(1, include_invalid: true)
       helper.format_statistics 1, true
     end
   end

@@ -9,7 +9,7 @@ module Catalog::BrowserHelper
     groups = taxa.sort_by(&:name).in_groups_of(items_per_row, false)
     any_groups_with_more_than_one_member = false
     groups.inject([]) do |label_groups, group|
-      result = {:id => group.first.id}
+      result = {id: group.first.id}
       label_and_classes = CatalogFormatter.taxon_label_and_css_classes group.first
       any_groups_with_more_than_one_member ||= group.size > 1
       if any_groups_with_more_than_one_member
@@ -28,11 +28,11 @@ module Catalog::BrowserHelper
   end
 
   def browser_taxon_header taxon, options = {}
-    label_and_css_classes = CatalogFormatter.taxon_label_and_css_classes taxon, :uppercase => true
+    label_and_css_classes = CatalogFormatter.taxon_label_and_css_classes taxon, uppercase: true
     if options[:link]
-      (taxon.rank.capitalize + ' ' + link_to(label_and_css_classes[:label], browser_catalog_path(taxon, options[:search_params]), :class => label_and_css_classes[:css_classes])).html_safe
+      (taxon.rank.capitalize + ' ' + link_to(label_and_css_classes[:label], browser_catalog_path(taxon, options[:search_params]), class: label_and_css_classes[:css_classes])).html_safe
     else
-      (taxon.rank.capitalize + ' ' + content_tag('span', label_and_css_classes[:label], :class => label_and_css_classes[:css_classes])).html_safe
+      (taxon.rank.capitalize + ' ' + content_tag('span', label_and_css_classes[:label], class: label_and_css_classes[:css_classes])).html_safe
     end
   end
 

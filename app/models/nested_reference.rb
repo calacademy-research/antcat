@@ -1,6 +1,6 @@
 # coding: UTF-8
 class NestedReference < Reference
-  belongs_to :nested_reference, :class_name => 'Reference'
+  belongs_to :nested_reference, class_name: 'Reference'
 
   validates_presence_of :nested_reference, :pages_in
   validate :validate_nested_reference_exists

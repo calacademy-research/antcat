@@ -21,9 +21,9 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     taxonomic_history = consume :family_taxonomic_history
 
     family = Family.import({
-      :protonym => headline[:protonym],
-      :type_genus => headline[:type_genus],
-      :taxonomic_history => [Bolton::Catalog::TextToTaxt.convert(taxonomic_history[:items])]
+      protonym: headline[:protonym],
+      type_genus: headline[:type_genus],
+      taxonomic_history: [Bolton::Catalog::TextToTaxt.convert(taxonomic_history[:items])]
     })
     Progress.info "Created #{family.name}"
   end
@@ -89,13 +89,13 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
 
   def parse_genera_incertae_sedis_in_family
     consume :genera_incertae_sedis_header
-    while parse_genus(:incertae_sedis_in => 'family'); end
+    while parse_genus(incertae_sedis_in: 'family'); end
   end
 
   def parse_genera_excluded_from_family
     consume :genera_excluded_from_family_header
     consume :genera_excluded_from_family_note
-    while parse_genus(:status => 'excluded'); end
+    while parse_genus(status: 'excluded'); end
   end
 
   def parse_unavailable_family_group_names_in_family
@@ -113,7 +113,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
 
   def parse_genus_group_nomina_nuda_in_family
     consume :genus_group_nomina_nuda_header
-    while parse_genus({:status => 'nomen nudum'}, :header => :genus_nomen_nudum_header); end
+    while parse_genus({status: 'nomen nudum'}, header: :genus_nomen_nudum_header); end
   end
 
 end
