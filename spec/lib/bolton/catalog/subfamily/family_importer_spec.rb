@@ -85,6 +85,14 @@ describe Bolton::Catalog::Subfamily::Importer do
     genus = Genus.find_by_name 'Promyrmicium'
     genus.should be_excluded
 
+    # this belongs in genus_importer_spec
+    protonym = genus.protonym
+    protonym.name.should == 'Promyrmicium'
+    protonym.rank.should == 'genus'
+    protonym.fossil.should be_true
+    protonym.authorship
+    protonym.sic
+
     genus = Genus.find_by_name 'Myrmicium'
     genus.should be_homonym
     genus.homonym_replaced_by.name.should == 'Promyrmicium'
