@@ -41,7 +41,7 @@ describe CatalogFormatter do
   describe 'taxon class' do
     it "should return the correct classes" do
       taxon = Factory :genus, :name => 'Atta'
-      @formatter.css_classes_for_taxon(taxon).should == "genus taxon valid"
+      @formatter.taxon_css_classes(taxon).should == "genus taxon valid"
     end
   end
 

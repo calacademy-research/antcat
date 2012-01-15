@@ -12,14 +12,21 @@ class CatalogFormatter
   extend Catalog::AntwebFormatter
 
   def self.taxon_label_and_css_classes taxon, options = {}
+    {:label => taxon_label(taxon, options), :css_classes => taxon_css_classes(taxon, options)}
+  end
+
+  def self.taxon_label taxon, options = {}
     fossil_symbol = taxon.fossil? ? "&dagger;" : ''
+    name = taxon.name.dup
+    name.upcase! if options[:uppercase]
+    (fossil_symbol + h(name)).html_safe
+  end
+
+  def self.taxon_css_classes taxon, options = {}
     css_classes = css_classes_for_rank taxon
     css_classes << taxon.status.gsub(/ /, '_')
     css_classes << 'selected' if options[:selected]
-    name = taxon.name.dup
-    name.upcase! if options[:uppercase]
-    label = fossil_symbol + h(name)
-    {:label => label.html_safe, :css_classes => css_classes_for_taxon(taxon, options[:selected])}
+    css_classes.sort.join ' '
   end
 
   def self.css_classes_for_rank taxon
@@ -27,10 +34,6 @@ class CatalogFormatter
   end
 
   def self.css_classes_for_taxon taxon, selected = false
-    css_classes = css_classes_for_rank taxon
-    css_classes << taxon.status.gsub(/ /, '_')
-    css_classes << 'selected' if selected
-    css_classes = css_classes.sort.join ' '
   end
 
 end
