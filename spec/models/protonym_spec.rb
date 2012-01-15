@@ -13,7 +13,7 @@ describe Protonym do
     it "should create the Protonym and the Citation, which is linked to an existing Reference" do
       reference = Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
       data = {
-        :name => "Formicariae",
+        :family_or_subfamily_name => "Formicariae",
         :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}]
       }
 

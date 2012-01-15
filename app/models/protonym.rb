@@ -5,7 +5,7 @@ class Protonym < ActiveRecord::Base
   def self.import data
     transaction do
       authorship = Citation.import data[:authorship].first
-      create! :name => data[:name], :authorship => authorship
+      create! :name => data[:family_or_subfamily_name] || data[:genus_name], :authorship => authorship
     end
   end
 end

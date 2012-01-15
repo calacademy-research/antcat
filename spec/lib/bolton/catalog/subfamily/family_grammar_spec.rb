@@ -10,8 +10,10 @@ describe Bolton::Catalog::Subfamily::FamilyGrammar do
     it "should recognize a family group headline" do
       @grammar.parse(%{Formicariae Latreille, 1809: 124. Type-genus: <i>Formica</i>.}).value_with_reference_text_removed.should == {
         :type => :family_group_headline,
-        :family_or_subfamily_name => 'Formicariae',
-        :authorship => [{:author_names => ['Latreille'], :year => '1809', :pages => '124'}],
+        :protonym => {
+          :family_or_subfamily_name => 'Formicariae',
+          :authorship => [{:author_names => ['Latreille'], :year => '1809', :pages => '124'}],
+        },
         :type_genus => {:genus_name => 'Formica'}
       }
     end
