@@ -24,7 +24,7 @@ module Catalog::IndexFormatter
   end
 
   def format_header_name taxon
-    taxon.kind_of? Taxon ? taxon.full_name.html_safe : ''
+    taxon.kind_of?(::Taxon) ? taxon.full_name.html_safe : ''
   end
 
   def format_status taxon
