@@ -24,6 +24,9 @@ describe Taxt do
     it "should leave alone a string without fields" do
       Taxt.interpolate('foo').should == 'foo'
     end
+    it "should handle nil" do
+      Taxt.interpolate(nil).should == ''
+    end
     it "should format a ref" do
       reference = Factory :article_reference
       Reference.should_receive(:find).with(reference.id.to_s).and_return reference

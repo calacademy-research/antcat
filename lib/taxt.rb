@@ -1,5 +1,12 @@
 module Taxt
 
+  def self.interpolate taxt, user = nil
+    return '' unless taxt
+    taxt.gsub /{ref (\d+)}/ do |ref|
+      ReferenceFormatter.format_interpolation(Reference.find($1), user) rescue ref
+    end
+  end
+
   def self.unparseable string
     "{? #{string}}"
   end
@@ -16,12 +23,6 @@ module Taxt
     output << name
     output << '</i>' if italicize
     output
-  end
-
-  def self.interpolate taxt, user = nil
-    taxt.gsub /{ref (\d+)}/ do |ref|
-      ReferenceFormatter.format_interpolation(Reference.find($1), user) rescue ref
-    end
   end
 
 end
