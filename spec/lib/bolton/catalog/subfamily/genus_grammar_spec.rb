@@ -109,8 +109,10 @@ describe Bolton::Catalog::Subfamily::Grammar do
     it "should recognize a genus headline" do
       @grammar.parse(%{<i>Odontomyrmex</i> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy.}).value_with_reference_text_removed.should == {
         :type => :genus_headline,
-        :genus_name => 'Odontomyrmex',
-        :authorship => [{:author_names => ['André'], :year => '1905', :pages => '207'}],
+        :protonym => {
+          :genus_name => 'Odontomyrmex',
+          :authorship => [{:author_names => ['André'], :year => '1905', :pages => '207'}],
+        },
         :type_species => {
           :genus_name => 'Odontomyrmex',
           :species_epithet => 'quadridentatus',
@@ -121,9 +123,11 @@ describe Bolton::Catalog::Subfamily::Grammar do
     it "should handle a genus headline where the genus is nomen nudum as well as the type-species" do
       @grammar.parse('*<i>Dolichoformica</i> Grimaldi & Engel, 2005: 446 (in table), <i>nomen nudum</i>. Type-species: *<i>Dolichoformica helferi</i>, <i>nomen nudum</i>.').value_with_reference_text_removed.should == {
         :type => :genus_headline,
-        :genus_name => 'Dolichoformica',
-        :fossil => true,
-        :authorship => [{:author_names => ['Grimaldi', 'Engel'], :year => '2005', :pages => '446 (in table)'}],
+        :protonym => {
+          :genus_name => 'Dolichoformica',
+          :fossil => true,
+          :authorship => [{:author_names => ['Grimaldi', 'Engel'], :year => '2005', :pages => '446 (in table)'}],
+        },
         :nomen_nudum => true,
         :type_species => {
           :genus_name => 'Dolichoformica', :species_epithet => 'helferi', :fossil => true,
@@ -139,10 +143,12 @@ describe Bolton::Catalog::Subfamily::Grammar do
       @grammar.parse(
 %{*<i>Dolichoformica</i> Grimaldi & Engel, 2005: 446 (in table), <i>nomen nudum</i>.}).value_with_reference_text_removed.should == {
         :type => :genus_headline,
-        :genus_name => 'Dolichoformica',
-        :authorship => [{:author_names => ['Grimaldi', 'Engel'], :year => '2005', :pages => '446 (in table)'}],
+        :protonym => {
+          :genus_name => 'Dolichoformica',
+          :fossil => true,
+          :authorship => [{:author_names => ['Grimaldi', 'Engel'], :year => '2005', :pages => '446 (in table)'}],
+        },
         :nomen_nudum => true,
-        :fossil => true
       }
     end
     it "should handle bracketed phrase after genus nomen nudum" do
@@ -152,16 +158,18 @@ describe Bolton::Catalog::Subfamily::Grammar do
     it "should recognize a fossil genus headline with a note" do
       @grammar.parse(%{*<i>Calyptites</i> Scudder, 1877b: 270 [as member of family Braconidae]. Type-species: *<i>Calyptites antediluvianum</i>, by monotypy.}).value_with_reference_text_removed.should == {
         :type => :genus_headline,
-        :genus_name => 'Calyptites',
-        :fossil => true,
-        :authorship => [{
-          :author_names => ['Scudder'], :year => '1877b', :pages => '270',
-          :notes => [[
-            {:phrase => 'as member of family', :delimiter => ' '},
-            {:family_or_subfamily_name => 'Braconidae'},
-            {:bracketed => true}
-          ]]
-         }],
+        :protonym => {
+          :genus_name => 'Calyptites',
+          :fossil => true,
+          :authorship => [{
+            :author_names => ['Scudder'], :year => '1877b', :pages => '270',
+            :notes => [[
+              {:phrase => 'as member of family', :delimiter => ' '},
+              {:family_or_subfamily_name => 'Braconidae'},
+              {:bracketed => true}
+            ]]
+          }],
+        },
         :type_species => {
           :genus_name => 'Calyptites', :species_epithet => 'antediluvianum', :fossil => true,
           :texts => [:text => [{:phrase => ', by monotypy'}]]
@@ -171,15 +179,17 @@ describe Bolton::Catalog::Subfamily::Grammar do
     it "should recognize a subgenus" do
       @grammar.parse(%{<i>Hypochira</i> Buckley, 1866: 169 [as subgenus of <i>Formica</i>]. Type-species: <i>Formica (Hypochira) subspinosa</i>, by monotypy.}).value_with_reference_text_removed.should == {
         :type => :genus_headline,
-        :genus_name => 'Hypochira',
-        :authorship => [{
-          :author_names => ['Buckley'], :year => '1866', :pages => '169',
-          :notes => [[
-            {:phrase => 'as subgenus of', :delimiter => ' '},
-            {:genus_name => 'Formica'},
-            {:bracketed => true},
-          ]]
-        }],
+        :protonym => {
+          :genus_name => 'Hypochira',
+          :authorship => [{
+            :author_names => ['Buckley'], :year => '1866', :pages => '169',
+            :notes => [[
+              {:phrase => 'as subgenus of', :delimiter => ' '},
+              {:genus_name => 'Formica'},
+              {:bracketed => true},
+            ]]
+          }],
+        },
         :type_species => {
           :genus_name => 'Formica', :subgenus_epithet => 'Hypochira', :species_epithet => 'subspinosa',
           :texts => [:text => [{:phrase => ', by monotypy'}]]
@@ -189,9 +199,11 @@ describe Bolton::Catalog::Subfamily::Grammar do
     it "should recognize a type-species that's a junior synonym" do
        @grammar.parse(%{*<i>Eoformica</i> Cockerell, 1921: 38. Type-species: *<i>Eoformica eocenica</i> (junior synonym of *<i>Eoformica pingue</i>), by monotypy.}).value_with_reference_text_removed.should == {
         :type => :genus_headline,
-        :genus_name => 'Eoformica',
-        :fossil => true,
-        :authorship => [{:author_names => ['Cockerell'], :year => '1921', :pages => '38'}],
+        :protonym => {
+          :genus_name => 'Eoformica',
+          :fossil => true,
+          :authorship => [{:author_names => ['Cockerell'], :year => '1921', :pages => '38'}],
+        },
         :type_species => {
           :genus_name => 'Eoformica',
           :species_epithet => 'eocenica',
@@ -211,13 +223,15 @@ describe Bolton::Catalog::Subfamily::Grammar do
     it "should recognize a type-species by original designation" do
       @grammar.parse(%{*<i>Gerontoformica</i> Nel & Perrault, in Nel, Perrault, Perrichot & Néraudeau, 2004: 24. Type-species: *<i>Gerontoformica cretacica</i>, by original designation.}).value_with_reference_text_removed.should == {
         :type => :genus_headline,
-        :genus_name => 'Gerontoformica',
-        :fossil => true,
-        :authorship => [{
-            :author_names => ['Nel', 'Perrault'],
-            :in => {:author_names => ['Nel', 'Perrault', 'Perrichot', 'Néraudeau'], :year => '2004'},
-            :pages => '24'
-        }],
+        :protonym => {
+          :genus_name => 'Gerontoformica',
+          :fossil => true,
+          :authorship => [{
+              :author_names => ['Nel', 'Perrault'],
+              :in => {:author_names => ['Nel', 'Perrault', 'Perrichot', 'Néraudeau'], :year => '2004'},
+              :pages => '24'
+          }],
+        },
         :type_species => {
           :genus_name => 'Gerontoformica',
           :species_epithet => 'cretacica',
@@ -229,46 +243,56 @@ describe Bolton::Catalog::Subfamily::Grammar do
     it "should recognize the 'genus headline' that actually describes a collective group name" do
       @grammar.parse(%{*<i>Myrmeciites</i> Archibald, Cover & Moreau, 2006: 500. [Collective group name.]}).value_with_reference_text_removed.should == {
         :type => :genus_headline,
-        :genus_name => 'Myrmeciites',
-        :fossil => true,
+        :protonym => {
+          :genus_name => 'Myrmeciites',
+          :fossil => true,
+          :authorship => [{:author_names => ['Archibald', 'Cover', 'Moreau'], :year => '2006', :pages => '500'}],
+        },
         :collective_group_name => true,
-        :authorship => [{:author_names => ['Archibald', 'Cover', 'Moreau'], :year => '2006', :pages => '500'}],
       }
     end
     it "should recognize an unnecessary replacement name" do
       @grammar.parse(%{<i>Baroniurbania</i> Pagliano & Scaramozzino, 1990: 4. Unnecessary replacement name for <i>Acantholepis</i> Mayr (junior homonym).}).value_with_reference_text_removed.should == {
         :type => :genus_headline,
-        :genus_name => 'Baroniurbania',
-        :authorship => [{:author_names => ['Pagliano', 'Scaramozzino'], :year => '1990', :pages => '4'}],
+        :protonym => {
+          :genus_name => 'Baroniurbania',
+          :authorship => [{:author_names => ['Pagliano', 'Scaramozzino'], :year => '1990', :pages => '4'}],
+        },
         :unnecessary_replacement_name_for => {:genus_name => 'Acantholepis', :authorship => [:author_names => ['Mayr']]}, :junior_homonym => true
       }
     end
     it "should recognize an unnecessary replacement name for sensu name" do
       @grammar.parse('<i>Parasima</i> Donisthorpe, 1948d: 592 [as subgenus of <i>Tetraponera</i>]. [Unnecessary replacement name for <i>Sima</i> in the sense of Emery, 1921f: 23.]').value_with_reference_text_removed.should == {
         :type => :genus_headline,
-        :genus_name => 'Parasima',
-        :authorship => [{:author_names => ['Donisthorpe'], :year => '1948d', :pages => '592',
-          :notes => [[
-            {:phrase => 'as subgenus of', :delimiter => ' '},
-            {:genus_name => 'Tetraponera'},
-            {:bracketed => true},
-          ]]}],
+        :protonym => {
+          :genus_name => 'Parasima',
+          :authorship => [{:author_names => ['Donisthorpe'], :year => '1948d', :pages => '592',
+            :notes => [[
+              {:phrase => 'as subgenus of', :delimiter => ' '},
+              {:genus_name => 'Tetraponera'},
+              {:bracketed => true},
+            ]]}],
+        },
         :unnecessary_replacement_name_for => {:genus_name => 'Sima', :sensu => {:author_names => ['Emery'], :year => '1921f', :pages => '23'}}
       }
     end
     it "should recognize an unjustified emendation" do
       @grammar.parse('<i>Ceratopachys</i> Schulz, W.A. 1906: 155, unjustified emendation of <i>Cerapachys</i>.').value_with_reference_text_removed.should == {
         :type => :genus_headline,
-        :genus_name => 'Ceratopachys',
-        :authorship => [{:author_names => ['Schulz, W.A.'], :year => '1906', :pages => '155'}],
+        :protonym => {
+          :genus_name => 'Ceratopachys',
+          :authorship => [{:author_names => ['Schulz, W.A.'], :year => '1906', :pages => '155'}],
+        },
         :unjustified_emendation_of => {:genus_name => 'Cerapachys'}
       }
     end
     it "should recognize a subsequent unjustified emendation" do
       @grammar.parse('<i>Vollenhovenia</i> Dalla Torre, 1893: 61, unjustified subsequent emendation of <i>Vollenhovia</i>.').value_with_reference_text_removed.should == {
         :type => :genus_headline,
-        :genus_name => 'Vollenhovenia',
-        :authorship => [{:author_names => ['Dalla Torre'], :year => '1893', :pages => '61'}],
+        :protonym => {
+          :genus_name => 'Vollenhovenia',
+          :authorship => [{:author_names => ['Dalla Torre'], :year => '1893', :pages => '61'}],
+        },
         :unjustified_emendation_of => {:genus_name => 'Vollenhovia'},
         :subsequent => true
       }

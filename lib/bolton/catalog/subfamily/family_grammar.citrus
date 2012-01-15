@@ -44,10 +44,10 @@ grammar Bolton::Catalog::Subfamily::FamilyGrammar
   end
 
   rule family_group_headline
-    (family_group_protonym '. ' type_genus (' ' family_group_protonym_junior_synonym_of)? '.') {
+    (family_group_protonym '. ' type_genus (' ' family_group_headline_junior_synonym_of)? '.') {
       value = {:type => :family_group_headline}
-      value.merge! family_group_protonym.value
-      value.merge! family_group_protonym_junior_synonym_of.value if family_group_protonym_junior_synonym_of
+      value[:protonym] = family_group_protonym.value
+      value.merge! family_group_headline_junior_synonym_of.value if family_group_headline_junior_synonym_of
       value.merge! type_genus.value
       value
     }

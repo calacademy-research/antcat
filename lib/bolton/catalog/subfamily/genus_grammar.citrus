@@ -74,7 +74,7 @@ grammar Bolton::Catalog::Subfamily::GenusGrammar
       | (genus_label '. ' collective_group_name:'[Collective group name.]')
     ) {
       value = {:type => :genus_headline}
-      value.merge! genus_label.value
+      value[:protonym] = genus_label.value
       value.merge! as_placement.value if as_placement
       value[:note] = bracketed_phrase.value if bracketed_phrase
       value.merge! type_species.value if type_species

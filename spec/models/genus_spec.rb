@@ -173,7 +173,7 @@ describe Genus do
       genus = Genus.import({
         :name => 'Atta',
         :protonym => {
-          :name => "Atta",
+          :genus_name => "Atta",
           :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
         },
         :type_species => {:genus_name => 'Atta', :species_epithet => 'major',
