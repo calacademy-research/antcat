@@ -11,6 +11,7 @@ class CatalogFormatter
   extend Catalog::IndexFormatter
   extend Catalog::AntwebFormatter
 
+  # deprecated
   def self.taxon_label_and_css_classes taxon, options = {}
     {:label => taxon_label(taxon, options), :css_classes => taxon_css_classes(taxon, options)}
   end
@@ -31,9 +32,6 @@ class CatalogFormatter
 
   def self.css_classes_for_rank taxon
     [taxon.type.downcase, 'taxon']
-  end
-
-  def self.css_classes_for_taxon taxon, selected = false
   end
 
 end
