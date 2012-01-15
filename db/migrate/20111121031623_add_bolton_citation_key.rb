@@ -5,7 +5,7 @@ class AddBoltonCitationKey < ActiveRecord::Migration
   end
 
   def self.down
-    remove_index :references, column: :bolton_citation_key
+    remove_index :references, :column => :bolton_citation_key
     remove_column :references, :bolton_citation_key
   end
 end

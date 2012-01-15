@@ -42,7 +42,7 @@ describe Taxt do
       Taxt.interpolate("{ref 12345}").should == '{ref 12345}'
     end
     it "should handle a MissingReference" do
-      reference = Factory :missing_reference, citation: 'Latreille, 1809'
+      reference = Factory :missing_reference, :citation => 'Latreille, 1809'
       Taxt.interpolate("{ref #{reference.id}}").should == 'Latreille, 1809'
     end
 

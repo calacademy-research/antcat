@@ -13,9 +13,9 @@ describe Bolton::Catalog::Subfamily::Importer do
 
     it "should parse a subfamily" do
       @importer.should_receive(:parse_family).and_return {
-        Factory :subfamily, name: 'Aneuretinae'
-        Factory :subfamily, name: 'Dolichoderinae'
-        Factory :subfamily, name: 'Formicinae'
+        Factory :subfamily, :name => 'Aneuretinae'
+        Factory :subfamily, :name => 'Dolichoderinae'
+        Factory :subfamily, :name => 'Formicinae'
       }
 
       @importer.import_html make_contents %{
@@ -316,7 +316,7 @@ describe Bolton::Catalog::Subfamily::Importer do
 
     it "should parse an extinct subfamily" do
       @importer.should_receive(:parse_family).and_return {
-        Factory :subfamily, name: 'Armaniinae'
+        Factory :subfamily, :name => 'Armaniinae'
       }
       @importer.import_html make_contents %{
 <p><b><span lang=EN-GB>SUBFAMILY *<span style='color:red'>ARMANIINAE</span><o:p></o:p></span></b></p>

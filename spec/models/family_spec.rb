@@ -5,17 +5,17 @@ describe Family do
 
   describe "Importing" do
     it "should create the Family, Protonym, and Citation, and should link to the right Genus and Reference" do
-      reference = Factory :article_reference, bolton_key_cache: 'Latreille 1809'
+      reference = Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
       data =  {
-        protonym: {
-          family_or_subfamily_name: "Formicariae",
-          authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}],
+        :protonym => {
+          :family_or_subfamily_name => "Formicariae",
+          :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
         },
-        type_genus: {
-          genus_name: 'Formica',
-          texts: [{text: [{phrase: ', by monotypy'}]}]
+        :type_genus => {
+          :genus_name => 'Formica',
+          :texts => [{:text => [{:phrase => ', by monotypy'}]}]
         },
-        taxonomic_history: ["Formicidae as family"]
+        :taxonomic_history => ["Formicidae as family"]
       }
 
       family = Family.import(data).reload
@@ -40,19 +40,19 @@ describe Family do
     it "should return the statistics for each status of each rank" do
       family = Factory :family
       subfamily = Factory :subfamily
-      genus = Factory :genus, subfamily: subfamily, tribe: nil
-      Factory :genus, subfamily: subfamily, status: 'homonym', tribe: nil
-      2.times {Factory :subfamily, fossil: true}
+      genus = Factory :genus, :subfamily => subfamily, :tribe => nil
+      Factory :genus, :subfamily => subfamily, :status => 'homonym', :tribe => nil
+      2.times {Factory :subfamily, :fossil => true}
       family.statistics.should == {
-        extant: {subfamilies: {'valid' => 1}, genera: {'valid' => 1, 'homonym' => 1}},
-        fossil: {subfamilies: {'valid' => 2}}
+        :extant => {:subfamilies => {'valid' => 1}, :genera => {'valid' => 1, 'homonym' => 1}},
+        :fossil => {:subfamilies => {'valid' => 2}}
       }
     end
   end
 
   describe "Full label" do
     it "should be the family name" do
-      Factory(:family, name: 'Formicidae').full_label.should == 'Formicidae'
+      Factory(:family, :name => 'Formicidae').full_label.should == 'Formicidae'
     end
   end
 

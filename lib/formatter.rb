@@ -5,14 +5,14 @@ module Formatter
   def status_labels
     @status_labels || begin
       @status_labels = ActiveSupport::OrderedHash.new
-      @status_labels['synonym']             = {singular: 'synonym', plural: 'synonyms'}
-      @status_labels['homonym']             = {singular: 'homonym', plural: 'homonyms'}
-      @status_labels['unavailable']         = {singular: 'unavailable', plural: 'unavailable'}
-      @status_labels['unidentifiable']      = {singular: 'unidentifiable', plural: 'unidentifiable'}
-      @status_labels['excluded']            = {singular: 'excluded', plural: 'excluded'}
-      @status_labels['unresolved homonym']  = {singular: 'unresolved homonym', plural: 'unresolved homonyms'}
-      @status_labels['recombined']          = {singular: 'transferred out of this genus', plural: 'transferred out of this genus'}
-      @status_labels['nomen nudum']         = {singular: 'nomen nudum', plural: 'nomina nuda'}
+      @status_labels['synonym']             = {:singular => 'synonym', :plural => 'synonyms'}
+      @status_labels['homonym']             = {:singular => 'homonym', :plural => 'homonyms'}
+      @status_labels['unavailable']         = {:singular => 'unavailable', :plural => 'unavailable'}
+      @status_labels['unidentifiable']      = {:singular => 'unidentifiable', :plural => 'unidentifiable'}
+      @status_labels['excluded']            = {:singular => 'excluded', :plural => 'excluded'}
+      @status_labels['unresolved homonym']  = {:singular => 'unresolved homonym', :plural => 'unresolved homonyms'}
+      @status_labels['recombined']          = {:singular => 'transferred out of this genus', :plural => 'transferred out of this genus'}
+      @status_labels['nomen nudum']         = {:singular => 'nomen nudum', :plural => 'nomina nuda'}
       @status_labels
     end
   end

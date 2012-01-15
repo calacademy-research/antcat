@@ -4,7 +4,7 @@ class Citation < ActiveRecord::Base
 
   def self.import data
     reference = Reference.find_by_bolton_key data
-    create! reference: reference, pages: data[:pages]
+    create! :reference => reference, :pages => data[:pages]
   end
 
 end

@@ -1,8 +1,8 @@
 # coding: UTF-8
 
 def reference_factory attributes = {}
-  author_name = Factory(:author_name, name: attributes.delete(:author_name))
-  reference = Factory(:reference, attributes.merge(author_names: [author_name]))
+  author_name = Factory(:author_name, :name => attributes.delete(:author_name))
+  reference = Factory(:reference, attributes.merge(:author_names => [author_name]))
   reference
 end
 
@@ -77,13 +77,13 @@ FactoryGirl.define do
     password  'secret'
   end
 
-  factory :bolton_reference, class: Bolton::Reference do
+  factory :bolton_reference, :class => Bolton::Reference do
     title 'New General Catalog'
     citation_year '2011'
     authors 'Fisher, B.L.'
   end
 
-  factory :bolton_match, class: Bolton::Match do
+  factory :bolton_match, :class => Bolton::Match do
     bolton_reference
     reference
     similarity 0.9
@@ -148,12 +148,12 @@ FactoryGirl.define do
 
   ####################################################
   factory :citation do
-    reference factory: :article_reference
+    reference :factory => :article_reference
     pages '49'
   end
 
   factory :protonym do
-    authorship factory: :citation 
+    authorship :factory => :citation 
     sequence(:name) {|n| "Protonym#{n}"}
   end
 

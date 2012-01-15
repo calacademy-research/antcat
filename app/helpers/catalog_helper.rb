@@ -17,7 +17,7 @@ module CatalogHelper
   end
 
   def format_statistics statistics, include_invalid = true
-    CatalogFormatter.format_statistics statistics, include_invalid: include_invalid
+    CatalogFormatter.format_statistics statistics, :include_invalid => include_invalid
   end
 
   def make_catalog_search_results_columns items
