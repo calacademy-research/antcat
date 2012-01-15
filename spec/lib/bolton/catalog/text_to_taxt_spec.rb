@@ -72,6 +72,17 @@ describe Bolton::Catalog::TextToTaxt do
     end
   end
 
+  describe "Parenthesized items" do
+    it "should handle a parenthesized text item" do
+      data = [{:opening_parenthesis => '('}, {:phrase => 'foo'}, {:closing_parenthesis => ')'}]
+      @converter.convert(data).should == "(foo)"
+    end
+    it "should handle a bracketed text item nested in a text" do
+      data = [:text => [{:opening_bracket => '['}, {:phrase => 'all rights reserved'}, {:closing_bracket => ']'}], :delimiter => ': ']
+      @converter.convert(data).should == "[all rights reserved]: "
+    end
+  end
+
   describe "Unparseable items" do
     it "should handle it" do
       data = [{:unparseable=>"?: Swainson & Shuckard, 1840: 173"}]

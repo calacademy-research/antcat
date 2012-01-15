@@ -7,24 +7,19 @@ module Bolton::Catalog::TextToTaxt
   end
 
   def self.convert_one_text_to_taxt text_item
-    nested(text_item)  ||
+    nested(text_item)       ||
     phrase(text_item)       ||
     citation(text_item)     ||
     taxon_name(text_item)   ||
-    bracket(text_item)      ||
+    brackets(text_item)     ||
     unparseable(text_item)  ||
     raise("Couldn't convert #{text_item} to taxt")
   end
 
-  def self.bracket text_item
-    taxt = ''
-    if text_item[:opening_bracket]
-      taxt << text_item[:opening_bracket]
-    elsif text_item[:closing_bracket]
-      taxt << text_item[:closing_bracket]
-    else
-      return
-    end
+  def self.brackets text_item
+    brackets = [:opening_bracket, :closing_bracket, :opening_parenthesis, :closing_parenthesis]
+    bracket = brackets.find {|e| text_item[e]} or return
+    taxt = text_item[bracket]
     add_delimiter taxt, text_item
   end
 
