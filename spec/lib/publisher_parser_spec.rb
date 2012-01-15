@@ -11,7 +11,7 @@ describe PublisherParser do
 
     it "should parse it correctly" do
       PublisherParser.parse('New York: Houghton Mifflin').should ==
-        {publisher: {name: 'Houghton Mifflin', place: 'New York'}}
+        {:publisher => {:name => 'Houghton Mifflin', :place => 'New York'}}
     end
 
     it "should not consider a single digit as a place" do

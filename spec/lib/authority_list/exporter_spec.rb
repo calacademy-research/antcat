@@ -24,10 +24,10 @@ describe AuthorityList::Exporter do
 
     describe "Outputting taxa" do
       before do
-        @subfamily = Factory :subfamily, name: 'Myrmicinae'
-        @tribe = Factory :tribe, name: 'Attini', subfamily: @subfamily
-        @genus = Factory :genus, name: 'Atta', subfamily: @subfamily, tribe: @tribe
-        @species = Factory :species, name: 'robusta', subfamily: @subfamily, genus: @genus
+        @subfamily = Factory :subfamily, :name => 'Myrmicinae'
+        @tribe = Factory :tribe, :name => 'Attini', :subfamily => @subfamily
+        @genus = Factory :genus, :name => 'Atta', :subfamily => @subfamily, :tribe => @tribe
+        @species = Factory :species, :name => 'robusta', :subfamily => @subfamily, :genus => @genus
       end
 
       it "should export a species correctly" do
@@ -46,7 +46,7 @@ describe AuthorityList::Exporter do
 
       describe "Outputting subspecies" do
         before do
-          @subspecies = Factory :subspecies, name: 'rufa', genus: @genus, species: @species
+          @subspecies = Factory :subspecies, :name => 'rufa', :genus => @genus, :species => @species
         end
 
         it "should export a subspecies correctly" do
@@ -66,18 +66,18 @@ describe AuthorityList::Exporter do
         file = stub
         File.stub(:open).and_yield file
 
-        myrmicinae = Factory :subfamily, name: 'Myrmicinae'
+        myrmicinae = Factory :subfamily, :name => 'Myrmicinae'
 
-        attini = Factory :tribe, name: 'Attini', subfamily: myrmicinae
-        cephalotini = Factory :tribe, name: 'Cephalotini', subfamily: myrmicinae
+        attini = Factory :tribe, :name => 'Attini', :subfamily => myrmicinae
+        cephalotini = Factory :tribe, :name => 'Cephalotini', :subfamily => myrmicinae
 
-        atta = Factory :genus, name: 'Atta', tribe: attini, subfamily: myrmicinae
-        cephalotes = Factory :genus, name: 'Cephalotes', tribe: cephalotini, subfamily: myrmicinae
+        atta = Factory :genus, :name => 'Atta', :tribe => attini, :subfamily => myrmicinae
+        cephalotes = Factory :genus, :name => 'Cephalotes', :tribe => cephalotini, :subfamily => myrmicinae
 
-        robusta = Factory :species, name: 'robusta', genus: atta
-        adolphi = Factory :species, name: 'adolphi', genus: cephalotes
+        robusta = Factory :species, :name => 'robusta', :genus => atta
+        adolphi = Factory :species, :name => 'adolphi', :genus => cephalotes
 
-        rufa = Factory :subspecies, name: 'rufa', species: adolphi
+        rufa = Factory :subspecies, :name => 'rufa', :species => adolphi
 
         @exporter.should_receive(:write).with(file,
           "subfamily\ttribe\tgenus\tspecies\tsubspecies\tstatus\tsenior synonym\tfossil").ordered
@@ -94,9 +94,9 @@ describe AuthorityList::Exporter do
 
     describe "Outputting the senior synonym of a species" do
       before do
-        @atta = Factory :genus, name: 'Atta'
-        @senior_synonym = Factory :species, name: 'formica', genus: @atta
-        @junior_synonym = Factory :species, name: 'robusta', genus: @atta, status: 'synonym', synonym_of: @senior_synonym
+        @atta = Factory :genus, :name => 'Atta'
+        @senior_synonym = Factory :species, :name => 'formica', :genus => @atta
+        @junior_synonym = Factory :species, :name => 'robusta', :genus => @atta, :status => 'synonym', :synonym_of => @senior_synonym
       end
 
       it "should not crash if it's a junior synonym but we don't know the senior" do

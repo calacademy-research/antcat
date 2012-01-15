@@ -10,7 +10,7 @@ describe Place do
     end
 
     it "should raise on invalid input" do
-      lambda {Place.import(name: '')}.should raise_error
+      lambda {Place.import(:name => '')}.should raise_error
     end
 
     it "should reuse an existing place" do
@@ -23,7 +23,7 @@ describe Place do
   describe 'validation' do
     it 'should require a name' do
       Place.new.should_not be_valid
-      Place.new(name: 'name').should be_valid
+      Place.new(:name => 'name').should be_valid
     end
   end
 

@@ -49,7 +49,7 @@ Spork.prefork do
   Capybara.default_wait_time = 10
 
   require 'webmock/cucumber'
-  WebMock.disable_net_connect! allow_localhost: true
+  WebMock.disable_net_connect! :allow_localhost => true
 
   require 'capybara/firebug'
   require 'factory_girl/step_definitions'

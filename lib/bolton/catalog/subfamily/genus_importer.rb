@@ -18,14 +18,14 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
 
     genus = ::Genus.find_by_name name
     if genus
-      attributes = {status: status, taxonomic_history: taxonomic_history}.merge(attributes)
+      attributes = {:status => status, :taxonomic_history => taxonomic_history}.merge(attributes)
       check_status_change genus, attributes[:status]
       check_fossil_change genus, fossil
       genus.update_attributes attributes
       Progress.info "Updated #{genus.name}"
     else
       check_existence name, genus
-      genus = ::Genus.create!({name: name, fossil: fossil, status: status, taxonomic_history: clean_taxonomic_history(taxonomic_history)}.merge(attributes))
+      genus = ::Genus.create!({:name => name, :fossil => fossil, :status => status, :taxonomic_history => clean_taxonomic_history(taxonomic_history)}.merge(attributes))
       Progress.info "Created #{genus.name}"
     end
 
@@ -34,7 +34,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     taxonomic_history << parse_subgenera(genus)
     taxonomic_history << parse_genus_references
 
-    genus.reload.update_attributes taxonomic_history: clean_taxonomic_history(taxonomic_history)
+    genus.reload.update_attributes :taxonomic_history => clean_taxonomic_history(taxonomic_history)
   end
 
   def parse_genus_references
@@ -56,8 +56,8 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     fossil = @parse_result[:fossil]
     taxonomic_history = @paragraph
     taxonomic_history << parse_taxonomic_history
-    genus = ::Genus.create! name: name, fossil: fossil, status: 'homonym', homonym_replaced_by: genus,
-                          subfamily: genus.subfamily, tribe: genus.tribe, taxonomic_history: clean_taxonomic_history(taxonomic_history)
+    genus = ::Genus.create! :name => name, :fossil => fossil, :status => 'homonym', :homonym_replaced_by => genus,
+                          :subfamily => genus.subfamily, :tribe => genus.tribe, :taxonomic_history => clean_taxonomic_history(taxonomic_history)
   end
 
   def parse_junior_synonyms_of_genus genus
@@ -78,8 +78,8 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     fossil = @parse_result[:fossil]
     taxonomic_history = @paragraph
     taxonomic_history << parse_taxonomic_history
-    genus = ::Genus.create! name: name, fossil: fossil, status: 'synonym', synonym_of: genus,
-                          subfamily: genus.subfamily, tribe: genus.tribe, taxonomic_history: clean_taxonomic_history(taxonomic_history)
+    genus = ::Genus.create! :name => name, :fossil => fossil, :status => 'synonym', :synonym_of => genus,
+                          :subfamily => genus.subfamily, :tribe => genus.tribe, :taxonomic_history => clean_taxonomic_history(taxonomic_history)
     parsed_text << taxonomic_history
     parsed_text << parse_homonym_replaced_by_genus_synonym
   end
@@ -105,8 +105,8 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     while @type == :genera_list
       parsed_text << @paragraph
       @parse_result[:genera].each do |genus|
-        attributes = {name: genus[:name], fossil: genus[:fossil], status: genus[:status] || 'valid'}.merge parent_attributes
-        attributes.merge!(incertae_sedis_in: parent_rank.to_s) if @parse_result[:incertae_sedis]
+        attributes = {:name => genus[:name], :fossil => genus[:fossil], :status => genus[:status] || 'valid'}.merge parent_attributes
+        attributes.merge!(:incertae_sedis_in => parent_rank.to_s) if @parse_result[:incertae_sedis]
 
         name = genus[:name]
         genus = ::Genus.find_by_name name

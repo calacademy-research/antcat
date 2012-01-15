@@ -379,7 +379,7 @@ Dorow, W.H.O. & Kohout, R.J. 1995. Paleogene ants of the genus <i style="mso-bid
       @bibliography.import_html contents
     end
     it "should clear the import result" do
-      seen = Factory :bolton_reference, import_result: 'added'
+      seen = Factory :bolton_reference, :import_result => 'added'
       Bolton::Bibliography::Importer.new
       seen.reload.import_result.should be_nil
     end
