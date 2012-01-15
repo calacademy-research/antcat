@@ -3,8 +3,7 @@ require 'snake'
 
 module CatalogHelper
 
-  def taxon_link rank, taxon, selected_taxon, column_selections = {}
-
+  def index_column_link rank, taxon, selected_taxon, column_selections = {}
     if taxon == 'none'
       classes = 'valid'
       classes << ' selected' if taxon == selected_taxon
@@ -13,14 +12,12 @@ module CatalogHelper
       elsif rank == :tribe
         link_to "(no tribe)", "/catalog/index?subfamily=#{column_selections[:subfamily].id}&tribe=none", :class => classes
       end
-
     else
       label_and_classes = CatalogFormatter.taxon_label_and_css_classes taxon,
         :selected => taxon == selected_taxon
       link_to label_and_classes[:label], index_catalog_path(taxon, column_selections.merge(rank => taxon)),
         :class => label_and_classes[:css_classes]
     end
-
   end
 
   def hide_link name, selected, column_selections
