@@ -6,11 +6,11 @@ describe CatalogHelper do
   describe "Taxon link" do
     describe "(no subfamily)" do
       it "should format the '(no subfamily)' link" do
-        taxon_link(:subfamily, 'none', nil).should ==
+        index_column_link(:subfamily, 'none', nil).should ==
   %{<a href="/catalog/index?subfamily=none" class="valid">(no subfamily)</a>}
       end
       it "should format the '(no subfamily)' link when selected" do
-        taxon_link(:subfamily, 'none', 'none').should ==
+        index_column_link(:subfamily, 'none', 'none').should ==
   %{<a href="/catalog/index?subfamily=none" class="valid selected">(no subfamily)</a>}
       end
     end
@@ -18,19 +18,19 @@ describe CatalogHelper do
       it "should format a subfamily link" do
         selected_subfamily = Factory :subfamily, :name => 'Formicinae'
         subfamily = Factory :subfamily, :name => 'Dolichoderinae'
-        taxon_link(:subfamily, subfamily, selected_subfamily).should ==
+        index_column_link(:subfamily, subfamily, selected_subfamily).should ==
   %{<a href="/catalog/index/#{subfamily.id}?subfamily=#{subfamily.id}" class="subfamily taxon valid">Dolichoderinae</a>}
       end
       it "should format a selected subfamily link" do
         subfamily = Factory :subfamily, :name => 'Dolichoderinae'
-        taxon_link(:subfamily, subfamily, subfamily, :subfamily => subfamily).should ==
+        index_column_link(:subfamily, subfamily, subfamily, :subfamily => subfamily).should ==
   %{<a href="/catalog/index/#{subfamily.id}?subfamily=#{subfamily.id}" class="selected subfamily taxon valid">Dolichoderinae</a>}
       end
     end
     describe "genus" do
       it "should format a genus link" do
         genus = Factory :genus, :name => 'Atta'
-        taxon_link(:genus, genus, nil, :genus => genus).should ==
+        index_column_link(:genus, genus, nil, :genus => genus).should ==
   %{<a href="/catalog/index/#{genus.id}?genus=#{genus.id}" class="genus taxon valid">Atta</a>}
       end
     end
@@ -38,12 +38,12 @@ describe CatalogHelper do
       it "should format a tribe link" do
         tribe = Factory :tribe, :name => 'Atta'
         subfamily = tribe.subfamily
-        taxon_link(:tribe, tribe, nil, :subfamily => subfamily).should ==
+        index_column_link(:tribe, tribe, nil, :subfamily => subfamily).should ==
   %{<a href="/catalog/index/#{tribe.id}?subfamily=#{subfamily.id}&amp;tribe=#{tribe.id}" class="taxon tribe valid">Atta</a>}
       end
       it "should format the '(no tribe)' link" do
         subfamily = Factory :subfamily, :name => 'Dolichoderinae'
-        taxon_link(:tribe, 'none', nil, :subfamily => subfamily).should ==
+        index_column_link(:tribe, 'none', nil, :subfamily => subfamily).should ==
   %{<a href="/catalog/index?subfamily=#{subfamily.id}&amp;tribe=none" class="valid">(no tribe)</a>}
       end
     end
