@@ -9,7 +9,7 @@ class Hol::Bibliography
   end
 
   def self.parse_reference li, author_name
-    reference = Hol::Reference.new :author => author_name
+    reference = Hol::Reference.new author: author_name
     reference.document_url = parse_document_url li
     parse_article(li, reference) || parse_book(li, reference) || parse_other(li, reference)
   end

@@ -3,9 +3,9 @@ class Bolton::Reference < ActiveRecord::Base
   include ReferenceComparable
   set_table_name :bolton_references
 
-  belongs_to :match, :class_name => '::Reference'
-  has_many :matches, :class_name => 'Bolton::Match', :foreign_key => :bolton_reference_id
-  has_many :possible_matches, :through => :matches, :source => :reference
+  belongs_to :match, class_name: '::Reference'
+  has_many :matches, class_name: 'Bolton::Match', foreign_key: :bolton_reference_id
+  has_many :possible_matches, through: :matches, source: :reference
 
   before_validation :set_year
   before_save :set_key_cache
@@ -19,7 +19,7 @@ class Bolton::Reference < ActiveRecord::Base
     query =
       select('DISTINCT bolton_references.*').
         joins('LEFT OUTER JOIN bolton_matches ON bolton_matches.bolton_reference_id = bolton_references.id').
-        paginate(:page => options[:page])
+        paginate(page: options[:page])
 
     if options[:match_threshold].present?
       query = query.where 'similarity <= ?', options[:match_threshold]
@@ -39,9 +39,9 @@ class Bolton::Reference < ActiveRecord::Base
       solr_result_ids = search {
         keywords string
         order_by :id
-        paginate :per_page => 5_000
+        paginate per_page: 5_000
       }.results.map &:id
-      query = query.where('bolton_references.id' => solr_result_ids).paginate(:page => options[:page])
+      query = query.where('bolton_references.id' => solr_result_ids).paginate(page: options[:page])
     end
 
     query
@@ -93,19 +93,19 @@ class Bolton::Reference < ActiveRecord::Base
   end
 
   def self.match_status_auto_count
-    where(:match_status => 'auto').count
+    where(match_status: 'auto').count
   end
 
   def self.match_status_manual_count
-    where(:match_status => 'manual').count
+    where(match_status: 'manual').count
   end
 
   def self.match_status_none_count
-    where(:match_status => nil).count
+    where(match_status: nil).count
   end
 
   def self.match_status_unmatchable_count
-    where(:match_status => 'unmatchable').count
+    where(match_status: 'unmatchable').count
   end
 
   # ReferenceComparable
@@ -145,7 +145,7 @@ class Bolton::Reference < ActiveRecord::Base
   def self.import_update reference, attributes
     nothing_important_changed = normalize_to_see_if_anything_important_changed(reference.original) == normalize_to_see_if_anything_important_changed(attributes[:original])
     Progress.puts "Changed: #{reference.original}" unless nothing_important_changed
-    reference.update_attributes attributes.merge(:import_result => nothing_important_changed ? 'updated_spans_removed' : 'updated')
+    reference.update_attributes attributes.merge(import_result: nothing_important_changed ? 'updated_spans_removed' : 'updated')
     Progress.puts "To:      #{attributes[:original]}" unless nothing_important_changed
     Progress.puts unless nothing_important_changed
   end
@@ -155,7 +155,7 @@ class Bolton::Reference < ActiveRecord::Base
     Progress.puts "From: #{reference.title}"
     Progress.puts "To:   #{attributes[:title]}"
     Progress.puts
-    reference.update_attributes attributes.merge(:import_result => 'updated_title')
+    reference.update_attributes attributes.merge(import_result: 'updated_title')
   end
 
   def self.import_updated_authors reference, attributes
@@ -163,30 +163,30 @@ class Bolton::Reference < ActiveRecord::Base
     Progress.puts "From: #{reference.authors}"
     Progress.puts "To:   #{attributes[:authors]}"
     Progress.puts
-    reference.update_attributes attributes.merge(:import_result => 'updated_authors')
+    reference.update_attributes attributes.merge(import_result: 'updated_authors')
   end
 
   def self.import_updated_year reference, attributes
     Progress.puts "Updated year for #{reference}"
     Progress.puts "From #{reference.citation_year} to #{attributes[:citation_year]}"
     Progress.puts
-    reference.update_attributes attributes.merge(:import_result => 'updated_year')
+    reference.update_attributes attributes.merge(import_result: 'updated_year')
   end
 
   def self.import attributes
     attributes[:title] = attributes[:title][0, 255]
     if reference = where(attributes).first
       reference.update_attribute :import_result, 'identical'
-    elsif reference = where(:authors => attributes[:authors], :citation_year => attributes[:citation_year], :title => attributes[:title]).first
+    elsif reference = where(authors: attributes[:authors], citation_year: attributes[:citation_year], title: attributes[:title]).first
       import_update reference, attributes
-    elsif reference = where(:authors => attributes[:authors], :citation_year => attributes[:citation_year]).first
+    elsif reference = where(authors: attributes[:authors], citation_year: attributes[:citation_year]).first
       import_updated_title reference, attributes
-    elsif reference = where(:authors => attributes[:authors], :title => attributes[:title]).first
+    elsif reference = where(authors: attributes[:authors], title: attributes[:title]).first
       import_updated_year reference, attributes
-    elsif reference = where(:citation_year => attributes[:citation_year], :title => attributes[:title]).first
+    elsif reference = where(citation_year: attributes[:citation_year], title: attributes[:title]).first
       import_updated_authors reference, attributes
     else
-      reference = create! attributes.merge(:import_result => 'added')
+      reference = create! attributes.merge(import_result: 'added')
     end
     reference
   end

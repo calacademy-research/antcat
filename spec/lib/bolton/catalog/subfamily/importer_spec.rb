@@ -26,7 +26,7 @@ describe Bolton::Catalog::Subfamily::Importer do
 
     it "should parse each supersubfamily" do
       @importer.should_receive(:parse_family).and_return {
-        Factory :subfamily, :name => 'Aneuretinae'
+        Factory :subfamily, name: 'Aneuretinae'
       }
       @importer.should_receive(:parse_supersubfamily).ordered.and_return true
       @importer.should_receive(:parse_supersubfamily).ordered.and_return false

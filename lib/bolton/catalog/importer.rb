@@ -27,7 +27,7 @@ class Bolton::Catalog::Importer
       parse_result = grammar.parse(string).value
       Progress.info "parsed as: #{parse_result.inspect}"
     rescue Citrus::ParseError => e
-      parse_result = {:type => :not_understood}
+      parse_result = {type: :not_understood}
       Progress.error e
       raise
       $stderr.puts e
@@ -124,8 +124,8 @@ class Bolton::Catalog::Importer
         return
       end
     end
-    @line = preprocess @paragraphs[@paragraph_index].inner_html(:encoding => 'UTF-8')
-    @paragraph = preprocess @paragraphs[@paragraph_index].to_html(:encoding => 'UTF-8')
+    @line = preprocess @paragraphs[@paragraph_index].inner_html(encoding: 'UTF-8')
+    @paragraph = preprocess @paragraphs[@paragraph_index].to_html(encoding: 'UTF-8')
     @paragraph_index += 1
     Progress.info "input line: '#{@line}'"
     Progress.tally

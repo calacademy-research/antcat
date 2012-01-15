@@ -5,15 +5,15 @@ require 'reference_has_document'
 
 class Reference < ActiveRecord::Base
   # associations
-  has_many    :reference_author_names, :order => :position
-  has_many    :author_names, :through => :reference_author_names, :order => :position,
-                :after_add => :refresh_author_names_caches, :after_remove => :refresh_author_names_caches
+  has_many    :reference_author_names, order: :position
+  has_many    :author_names, through: :reference_author_names, order: :position,
+                after_add: :refresh_author_names_caches, after_remove: :refresh_author_names_caches
   belongs_to  :journal
   belongs_to  :publisher
 
   # scopes
   scope :sorted_by_principal_author_last_name, order(:principal_author_last_name_cache)
-  scope :with_principal_author_last_name, lambda {|last_name| where :principal_author_last_name_cache => last_name}
+  scope :with_principal_author_last_name, lambda {|last_name| where principal_author_last_name_cache: last_name}
   scope :non_missing, where('type IS NULL OR type != "MissingReference"')
 
   # Other plugins and mixins

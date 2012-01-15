@@ -6,7 +6,7 @@
 class Bolton::Bibliography::Importer
   def initialize show_progress = false
     Progress.init show_progress, nil, self.class.name
-    Bolton::Reference.update_all(:import_result => nil)
+    Bolton::Reference.update_all(import_result: nil)
   end
 
   def import_files filenames
@@ -41,9 +41,9 @@ class Bolton::Bibliography::Importer
     string = pre_parse! string
     original = string.dup
     return unless reference? string
-    attributes = Bolton::Bibliography::Grammar.parse(string, :consume => false).value
+    attributes = Bolton::Bibliography::Grammar.parse(string, consume: false).value
     post_parse attributes
-    attributes.merge! :original => original
+    attributes.merge! original: original
     Bolton::Reference.import attributes
   rescue Citrus::ParseError => e
   end
@@ -122,18 +122,18 @@ class Bolton::Bibliography::Importer
     end
     Progress.puts
     Progress.puts "#{Bolton::Reference.count.to_s.rjust(4)} total"
-    Progress.puts "#{Bolton::Reference.where(:import_result => 'identical').count.to_s.rjust(4)} identical"
+    Progress.puts "#{Bolton::Reference.where(import_result: 'identical').count.to_s.rjust(4)} identical"
 
-    added_count = Bolton::Reference.where(:import_result => 'added').count
-    added_2011_count = Bolton::Reference.where(:import_result => 'added', :year => 2011).count
+    added_count = Bolton::Reference.where(import_result: 'added').count
+    added_2011_count = Bolton::Reference.where(import_result: 'added', year: 2011).count
     Progress.puts "#{(added_count - added_2011_count).to_s.rjust(4)} added (not counting #{added_2011_count} published in 2011)"
 
-    Progress.puts "#{Bolton::Reference.where(:import_result => 'updated_title').count.to_s.rjust(4)} updated title"
-    Progress.puts "#{Bolton::Reference.where(:import_result => 'updated_authors').count.to_s.rjust(4)} updated authors"
-    Progress.puts "#{Bolton::Reference.where(:import_result => 'updated_year').count.to_s.rjust(4)} updated year"
-    Progress.puts "#{Bolton::Reference.where(:import_result => 'updated').count.to_s.rjust(4)} updated other"
-    Progress.puts "#{Bolton::Reference.where(:import_result => 'updated_spans_removed').count.to_s.rjust(4)} updated (minor changes)"
-    Progress.puts "#{Bolton::Reference.where(:import_result => nil).count.to_s.rjust(4)} not seen"
+    Progress.puts "#{Bolton::Reference.where(import_result: 'updated_title').count.to_s.rjust(4)} updated title"
+    Progress.puts "#{Bolton::Reference.where(import_result: 'updated_authors').count.to_s.rjust(4)} updated authors"
+    Progress.puts "#{Bolton::Reference.where(import_result: 'updated_year').count.to_s.rjust(4)} updated year"
+    Progress.puts "#{Bolton::Reference.where(import_result: 'updated').count.to_s.rjust(4)} updated other"
+    Progress.puts "#{Bolton::Reference.where(import_result: 'updated_spans_removed').count.to_s.rjust(4)} updated (minor changes)"
+    Progress.puts "#{Bolton::Reference.where(import_result: nil).count.to_s.rjust(4)} not seen"
   end
 
 end
