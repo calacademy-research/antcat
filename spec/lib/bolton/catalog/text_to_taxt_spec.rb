@@ -1,13 +1,16 @@
 # coding: UTF-8
 require 'spec_helper'
 
-describe TextToTaxt do
+describe Bolton::Catalog::TextToTaxt do
   before do
-    @converter = TextToTaxt
+    @converter = Bolton::Catalog::TextToTaxt
   end
 
   it "should handle an empty string" do
     @converter.convert({}).should == ''
+  end
+  it "should handle nil" do
+    @converter.convert(nil).should == ''
   end
   it "should handle a phrase" do
     data = [{:phrase => 'Phrase'}]
