@@ -11,7 +11,10 @@ describe Family do
           :name => "Formicariae",
           :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
         },
-        :type_genus => 'Formica',
+        :type_genus => {
+          :genus_name => 'Formica',
+          :texts => [{:text => [{:phrase => ', by monotypy'}]}]
+        },
         :taxonomic_history => ["Formicidae as family"]
       }
 
@@ -20,6 +23,8 @@ describe Family do
       family.should_not be_invalid
       family.should_not be_fossil
       family.taxonomic_history_items.map(&:taxt).should == ['Formicidae as family']
+
+      family.type_taxon_taxt.should == ', by monotypy'
 
       protonym = family.protonym
       protonym.name.should == 'Formicariae'

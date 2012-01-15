@@ -8,7 +8,8 @@ class Family < Taxon
       data[:taxonomic_history].each do |item|
         family.taxonomic_history_items.create! :taxt => item
       end
-      ForwardReference.create! :source_id => family.id, :source_attribute => :type_taxon, :target_name => data[:type_genus]
+      family.update_attribute :type_taxon_taxt, Bolton::Catalog::TextToTaxt.convert(data[:type_genus][:texts])
+      ForwardReference.create! :source_id => family.id, :source_attribute => :type_taxon, :target_name => data[:type_genus][:genus_name]
       family
     end
   end

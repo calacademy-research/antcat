@@ -36,6 +36,10 @@ class Genus < Taxon
       protonym = Protonym.import data[:protonym]
       attributes = {:name => data[:name], :status => 'valid', :protonym => protonym}
       attributes.merge! data[:attributes] if data[:attributes]
+      if data[:type_species]
+        type_species_taxt = Bolton::Catalog::TextToTaxt.convert(data[:type_species][:texts])
+        attributes[:type_taxon_taxt] = type_species_taxt
+      end
       genus = create! attributes
       data[:taxonomic_history].each do |item|
         genus.taxonomic_history_items.create! :taxt => item

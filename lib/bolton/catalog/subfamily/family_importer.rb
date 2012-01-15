@@ -25,7 +25,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
         :name => headline[:family_or_subfamily_name],
         :authorship => headline[:authorship],
       },
-      :type_genus => headline[:type_genus][:genus_name],
+      :type_genus => headline[:type_genus],
       :taxonomic_history => [Bolton::Catalog::TextToTaxt.convert(taxonomic_history[:items])]
     })
     Progress.info "Created #{family.name}"
