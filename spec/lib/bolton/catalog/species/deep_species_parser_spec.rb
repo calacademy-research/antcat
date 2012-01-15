@@ -8,109 +8,109 @@ describe Bolton::Catalog::Species::DeepSpeciesGrammar do
 
   it "should parse a representative sample" do
     @grammar.parse(%{*<i>tucumanus</i>. *<i>Neoforelius tucumanus</i> var. <i>modesta</i> Kusnezov, 1953b: 330, figs. 1-12, no caste given, BALTIC AMBER (Eocene). [First available use of <i>Forelius maccooki</i> r. <i>fiebrigi</i> var. <i>breviscapa</i> Forel, 1913l: 241; unavailable name.] [Also described as new by Heer, 1850: 142.] Cuezzo, 2000: 216 (q.m.). Combination in *<i>Forelius</i>: Smith, F., 1992c: 95; in <i>Atta</i>: Bolton, 2002: 3. Material referred to <i>rufa</i> by Yarrow, 1955a: 4. Raised to species: Wheeler, W.C. & Wheeler, M., 1954b: 37. Status as species: Creighton, 1960: 1. Mayr, 1886d: 432 (q.m.); Forel, 1886b: xxxix (w.). Junior synonym of <i>pusillus</i>: Creighton, 1950a: 342; Petralia & Vinson, 1980: 386. Subspecies of <i>mccooki</i>: Forel, 1912h: 43. Senior synonym of <i>fiebrigi</i>, <i>pilipes</i> and material of the unavailable name <i>carmelitana</i> referred here: Cuezzo, 2000: 229. [<i>Iridomyrmex maccooki</i> Forel, 1878: 382. <i>Nomen nudum</i>.] [Misspelled as <i>paucistriatus</i> by Kempf, 1972a: 109.] Unidentifiable to genus; <i>incertae sedis</i> in <i>Formica</i>: Bolton, 1995b: 190. [Obviously incorrect.] Revived from synonymy: Kusnezov, 1957b: 16 (in key). Relationship with <i>densiventris</i>: Cole, 1954a: 89. Material of the unavailable names <i>transversa</i>, <i>clara</i> referred here by Dlussky, 1967a: 77. Revived status as species: Bernard, 1967: 298. See also: Bolton, 2000: 1. Current subspecies: nominal plus <i>alpina</i>, <i>whymperi</i>. See also: Cuezzo, 2000: 253. [Another note.]}).value_with_reference_text_removed.should == {
-      type: :species_record,
-      species_group_epithet: 'tucumanus',
-      fossil: true,
-      protonym: {
-        genus_name: 'Neoforelius',
-        species_epithet: 'tucumanus',
-        subspecies: [{type: 'var.', subspecies_epithet: 'modesta'}],
-        fossil: true,
-        authorship: [{author_names: ['Kusnezov'], year: '1953b', pages: '330, figs. 1-12', forms: 'no caste given'}],
-        locality: 'Baltic Amber (Eocene)',
+      :type => :species_record,
+      :species_group_epithet => 'tucumanus',
+      :fossil => true,
+      :protonym => {
+        :genus_name => 'Neoforelius',
+        :species_epithet => 'tucumanus',
+        :subspecies => [{:type => 'var.', :subspecies_epithet => 'modesta'}],
+        :fossil => true,
+        :authorship => [{:author_names => ['Kusnezov'], :year => '1953b', :pages => '330, figs. 1-12', :forms => 'no caste given'}],
+        :locality => 'Baltic Amber (Eocene)',
       },
-      history: [
-        {first_available_use_of: {
-          genus_name: 'Forelius',
-          species_epithet: 'maccooki',
-          subspecies: [{type: 'r.', subspecies_epithet: 'fiebrigi'}, {type: 'var.', subspecies_epithet: 'breviscapa'}],
-          authorship: [{author_names: ['Forel'], year: '1913l', pages: '241'}]
+      :history => [
+        {:first_available_use_of => {
+          :genus_name => 'Forelius',
+          :species_epithet => 'maccooki',
+          :subspecies => [{:type => 'r.', :subspecies_epithet => 'fiebrigi'}, {:type => 'var.', :subspecies_epithet => 'breviscapa'}],
+          :authorship => [{:author_names => ['Forel'], :year => '1913l', :pages => '241'}]
         }},
-        {also_described_as_new: {
-          references: [{author_names: ['Heer'], year: '1850', pages: '142'}]
+        {:also_described_as_new => {
+          :references => [{:author_names => ['Heer'], :year => '1850', :pages => '142'}]
         }},
-        {references: [
-            {author_names: ['Cuezzo'], year: '2000', pages: '216', forms: 'q.m.'}
+        {:references => [
+            {:author_names => ['Cuezzo'], :year => '2000', :pages => '216', :forms => 'q.m.'}
         ]},
-        {combinations_in: [
-          {genus_name: 'Forelius', fossil: true, references: [{author_names: ['Smith, F.'], year: '1992c', pages: '95'}]},
-          {genus_name: 'Atta', references: [{author_names: ['Bolton'], year: '2002', pages: '3'}]},
+        {:combinations_in => [
+          {:genus_name => 'Forelius', :fossil => true, :references => [{:author_names => ['Smith, F.'], :year => '1992c', :pages => '95'}]},
+          {:genus_name => 'Atta', :references => [{:author_names => ['Bolton'], :year => '2002', :pages => '3'}]},
         ]},
-        {material_referred_to: {
-          species_epithet: 'rufa',
-          references: [{author_names: ['Yarrow'], year: '1955a', pages: '4'}]
+        {:material_referred_to => {
+          :species_epithet => 'rufa',
+          :references => [{:author_names => ['Yarrow'], :year => '1955a', :pages => '4'}]
         }},
-        {raised_to_species:
-          {references: [{author_names: ['Wheeler, W.C.', 'Wheeler, M.'], year: '1954b', pages: '37'}]}
+        {:raised_to_species =>
+          {:references => [{:author_names => ['Wheeler, W.C.', 'Wheeler, M.'], :year => '1954b', :pages => '37'}]}
         },
-        {status_as_species:
-          {references: [{author_names: ['Creighton'], year: '1960', pages: '1'}]}
+        {:status_as_species =>
+          {:references => [{:author_names => ['Creighton'], :year => '1960', :pages => '1'}]}
         },
-        {references: [
-          {author_names: ['Mayr'], year: '1886d', pages: '432', forms: 'q.m.'},
-          {author_names: ['Forel'], year: '1886b', pages: 'xxxix', forms: 'w.'},
+        {:references => [
+          {:author_names => ['Mayr'], :year => '1886d', :pages => '432', :forms => 'q.m.'},
+          {:author_names => ['Forel'], :year => '1886b', :pages => 'xxxix', :forms => 'w.'},
         ]},
-        {synonym_ofs: [{
-            junior_or_senior: :junior,
-            species_epithet: 'pusillus',
-            references: [
-              {author_names: ['Creighton'], year: '1950a', pages: '342'},
-              {author_names: ['Petralia', 'Vinson'], year: '1980', pages: '386'},
+        {:synonym_ofs => [{
+            :junior_or_senior => :junior,
+            :species_epithet => 'pusillus',
+            :references => [
+              {:author_names => ['Creighton'], :year => '1950a', :pages => '342'},
+              {:author_names => ['Petralia', 'Vinson'], :year => '1980', :pages => '386'},
             ]
           }]
         },
-        {subspecies_ofs: [{
-          species: {species_epithet: 'mccooki'}, references: [{author_names: ['Forel'], year: '1912h', pages: '43'}]
+        {:subspecies_ofs => [{
+          :species => {:species_epithet => 'mccooki'}, :references => [{:author_names => ['Forel'], :year => '1912h', :pages => '43'}]
         }]},
-        {senior_synonym_ofs: [{
-          junior_synonyms: [
-            {species_epithet: 'fiebrigi'},
-            {species_epithet: 'pilipes'},
+        {:senior_synonym_ofs => [{
+          :junior_synonyms => [
+            {:species_epithet => 'fiebrigi'},
+            {:species_epithet => 'pilipes'},
           ],
-          material_of_unavailable_names_referred_here: [{species_group_epithet: 'carmelitana'}],
-          references: [{author_names: ['Cuezzo'], year: '2000', pages: '229'}]
+          :material_of_unavailable_names_referred_here => [{:species_group_epithet => 'carmelitana'}],
+          :references => [{:author_names => ['Cuezzo'], :year => '2000', :pages => '229'}]
         }]},
-        {nomen_nudum: {
-          genus_name: 'Iridomyrmex', species_epithet: 'maccooki',
-          authorship: [{author_names: ['Forel'], year: '1878', pages: '382'}]
+        {:nomen_nudum => {
+          :genus_name => 'Iridomyrmex', :species_epithet => 'maccooki',
+          :authorship => [{:author_names => ['Forel'], :year => '1878', :pages => '382'}]
         }},
-        {misspellings: [{
-          species_epithet: 'paucistriatus',
-          references: [{author_names: ['Kempf'], year: '1972a', pages: '109'}]
+        {:misspellings => [{
+          :species_epithet => 'paucistriatus',
+          :references => [{:author_names => ['Kempf'], :year => '1972a', :pages => '109'}]
         }]},
-        {unidentifiable: {
-          references: [{author_names: ['Bolton'], year: '1995b', pages: '190'}]
+        {:unidentifiable => {
+          :references => [{:author_names => ['Bolton'], :year => '1995b', :pages => '190'}]
         }},
-        {text: [
-          {opening_bracket: '['},
-          {phrase: 'Obviously incorrect', delimiter: '.'},
-          {closing_bracket: ']'},
+        {:text => [
+          {:opening_bracket => '['},
+          {:phrase => 'Obviously incorrect', :delimiter => '.'},
+          {:closing_bracket => ']'},
         ]},
-        {revived_from_synonymy: {
-          references: [{author_names: ['Kusnezov'], year: '1957b', pages: '16 (in key)'}],
+        {:revived_from_synonymy => {
+          :references => [{:author_names => ['Kusnezov'], :year => '1957b', :pages => '16 (in key)'}],
         }},
-        {relationship_with: {
-          species_epithet: 'densiventris',
-          references: [{author_names: ['Cole'], year: '1954a', pages: '89'}]
+        {:relationship_with => {
+          :species_epithet => 'densiventris',
+          :references => [{:author_names => ['Cole'], :year => '1954a', :pages => '89'}]
         }},
-        {material_of_unavailable_names_referred_here: {
-          taxa: [{species_group_epithet: 'transversa'}, {species_group_epithet: 'clara'}],
-          references: [{author_names: ['Dlussky'], year: '1967a', pages: '77'}]
+        {:material_of_unavailable_names_referred_here => {
+          :taxa => [{:species_group_epithet => 'transversa'}, {:species_group_epithet => 'clara'}],
+          :references => [{:author_names => ['Dlussky'], :year => '1967a', :pages => '77'}]
         }},
-        {revived_status_as_species: {
-          references: [{author_names: ['Bernard'], year: '1967', pages: '298'}]
+        {:revived_status_as_species => {
+          :references => [{:author_names => ['Bernard'], :year => '1967', :pages => '298'}]
         }},
-        {see_also: {
-          references: [{author_names: ['Bolton'], year: '2000', pages: '1'}]
+        {:see_also => {
+          :references => [{:author_names => ['Bolton'], :year => '2000', :pages => '1'}]
         }},
-        {subspecies: [{species_group_epithet: 'alpina'}, {species_group_epithet: 'whymperi'}]},
-        {see_also: {
-          references: [{author_names: ['Cuezzo'], year: '2000', pages: '253'}]
+        {:subspecies => [{:species_group_epithet => 'alpina'}, {:species_group_epithet => 'whymperi'}]},
+        {:see_also => {
+          :references => [{:author_names => ['Cuezzo'], :year => '2000', :pages => '253'}]
         }},
-        {text: [
-          {opening_bracket: '['},
-          {phrase: 'Another note', delimiter: '.'},
-          {closing_bracket: ']'},
+        {:text => [
+          {:opening_bracket => '['},
+          {:phrase => 'Another note', :delimiter => '.'},
+          {:closing_bracket => ']'},
         ]},
       ],
     }
@@ -126,19 +126,19 @@ describe Bolton::Catalog::Species::DeepSpeciesGrammar do
 
   it "should parse a subspecies" do
     @grammar.parse(%{<i>alpicola</i>. <i>Formica fusca</i> var. <i>alpicola</i> Gredler, 1858: 10 (w.) AUSTRIA. Relationship with <i>densiventris</i>: Cole, 1954a: 89.}).value_with_reference_text_removed.should == {
-      type: :species_record,
-      species_group_epithet: 'alpicola',
-      protonym: {
-        genus_name: 'Formica',
-        species_epithet: 'fusca',
-        subspecies: [{type: 'var.', subspecies_epithet: 'alpicola'}],
-        authorship: [{author_names: ['Gredler'], year: '1858', pages: '10', forms: 'w.'}],
-        locality: 'Austria',
+      :type => :species_record,
+      :species_group_epithet => 'alpicola',
+      :protonym => {
+        :genus_name => 'Formica',
+        :species_epithet => 'fusca',
+        :subspecies => [{:type => 'var.', :subspecies_epithet => 'alpicola'}],
+        :authorship => [{:author_names => ['Gredler'], :year => '1858', :pages => '10', :forms => 'w.'}],
+        :locality => 'Austria',
       },
-      history: [
-        {relationship_with: {
-          species_epithet: 'densiventris',
-          references: [{author_names: ['Cole'], year: '1954a', pages: '89'}]
+      :history => [
+        {:relationship_with => {
+          :species_epithet => 'densiventris',
+          :references => [{:author_names => ['Cole'], :year => '1954a', :pages => '89'}]
         }}
       ]
     }
@@ -191,58 +191,58 @@ describe Bolton::Catalog::Species::DeepSpeciesGrammar do
   describe "parsing the unparseable" do
     it "should save unparseable sentences as notes" do
       @grammar.parse(%{<i>candida</i>. <i>Formica candida</i> Smith, F. 1878b: 11 (q.) KYRGHYZSTAN. [Smith's description is repeated by Bingham, 1903: 335 (footnote).] Probable synonym of <i>picea</i> Nylander: Emery, 1925b: 249. Junior synonym of <i>picea</i> Nylander: Dlussky, 1967a: 61. Hence <i>candida</i> first available replacement name for <i>Formica picea</i> Nylander, 1846a: 917 [Junior primary homonym of <i>Formica picea</i> Leach, 1825: 292 (now in <i>Camponotus</i>).]: Bolton, 1995b: 192. Valid species, not synonymous with <i>picea</i> Nylander: Seifert, 2004: 35. Current subspecies: nominal plus <i>formosae</i>.}).value_with_reference_text_removed.should == {
-        type: :species_record,
-        species_group_epithet: 'candida',
-        protonym: {
-          genus_name: 'Formica',
-          species_epithet: 'candida',
-          authorship: [{author_names: ['Smith, F.'], year: '1878b', pages: '11', forms: 'q.'}],
-          locality: 'Kyrghyzstan',
+        :type => :species_record,
+        :species_group_epithet => 'candida',
+        :protonym => {
+          :genus_name => 'Formica',
+          :species_epithet => 'candida',
+          :authorship => [{:author_names => ['Smith, F.'], :year => '1878b', :pages => '11', :forms => 'q.'}],
+          :locality => 'Kyrghyzstan',
         },
-        history: [
-          {text: [
-            {opening_bracket: '['},
-            {phrase: "Smith's description is repeated by", delimiter: ' '},
-            {author_names: ['Bingham'], year: '1903', pages: '335 (footnote)', delimiter: '.'},
-            {closing_bracket: ']'},
+        :history => [
+          {:text => [
+            {:opening_bracket => '['},
+            {:phrase => "Smith's description is repeated by", :delimiter => ' '},
+            {:author_names => ['Bingham'], :year => '1903', :pages => '335 (footnote)', :delimiter => '.'},
+            {:closing_bracket => ']'},
           ]},
-          {synonym_ofs: [{
-            probable: true,
-            junior_or_senior: :junior,
-            species_epithet: 'picea', authorship: [{author_names: ['Nylander']}],
-            references: [{author_names: ['Emery'], year: '1925b', pages: '249'}]
+          {:synonym_ofs => [{
+            :probable => true,
+            :junior_or_senior => :junior,
+            :species_epithet => 'picea', :authorship => [{:author_names => ['Nylander']}],
+            :references => [{:author_names => ['Emery'], :year => '1925b', :pages => '249'}]
           }]},
-          {synonym_ofs: [{
-            junior_or_senior: :junior,
-            species_epithet: 'picea', authorship: [{author_names: ['Nylander']}],
-            references: [{author_names: ['Dlussky'], year: '1967a', pages: '61'}]
+          {:synonym_ofs => [{
+            :junior_or_senior => :junior,
+            :species_epithet => 'picea', :authorship => [{:author_names => ['Nylander']}],
+            :references => [{:author_names => ['Dlussky'], :year => '1967a', :pages => '61'}]
           }]},
-          {text: [
-            {phrase: "Hence", delimiter: ' '},
-            {species_group_epithet: "candida", delimiter: ' '},
-            {phrase: "first available replacement name for", delimiter: ' '},
-            {genus_name: "Formica", species_epithet: 'picea', authorship: [{author_names: ['Nylander'], year: '1846a', pages: '917'}], delimiter: ' '},
-            {text: [
-              {opening_bracket: '['},
-              {phrase: "Junior primary homonym of", delimiter: ' '},
-              {genus_name: "Formica", species_epithet: 'picea',
-               authorship: [{author_names: ['Leach'], year: '1825', pages: '292',
-                notes: [[
-                  {phrase: "now in", delimiter: ' '},
-                  {genus_name: 'Camponotus'},
+          {:text => [
+            {:phrase => "Hence", :delimiter => ' '},
+            {:species_group_epithet => "candida", :delimiter => ' '},
+            {:phrase => "first available replacement name for", :delimiter => ' '},
+            {:genus_name => "Formica", :species_epithet => 'picea', :authorship => [{:author_names => ['Nylander'], :year => '1846a', :pages => '917'}], :delimiter => ' '},
+            {:text => [
+              {:opening_bracket => '['},
+              {:phrase => "Junior primary homonym of", :delimiter => ' '},
+              {:genus_name => "Formica", :species_epithet => 'picea',
+               :authorship => [{:author_names => ['Leach'], :year => '1825', :pages => '292',
+                :notes => [[
+                  {:phrase => "now in", :delimiter => ' '},
+                  {:genus_name => 'Camponotus'},
                 ]]}],
-                delimiter: '.'
+                :delimiter => '.'
               },
               {:closing_bracket=>"]"}
             ], :delimiter=>": "},
             {:author_names=>["Bolton"], :year=>"1995b", :pages=>"192"},
           ]},
-          {text: [
-            {:phrase=>"Valid species, not synonymous with", delimiter: " "},
-            {species_group_epithet: 'picea', authorship: [{author_names: ['Nylander']}], delimiter: ': '},
-            {author_names: ['Seifert'], year: '2004', pages: '35'},
+          {:text => [
+            {:phrase=>"Valid species, not synonymous with", :delimiter => " "},
+            {:species_group_epithet => 'picea', :authorship => [{:author_names => ['Nylander']}], :delimiter => ': '},
+            {:author_names => ['Seifert'], :year => '2004', :pages => '35'},
           ]},
-          {subspecies: [{species_group_epithet: 'formosae'}]},
+          {:subspecies => [{:species_group_epithet => 'formosae'}]},
         ]
       }
     end
@@ -250,22 +250,22 @@ describe Bolton::Catalog::Species::DeepSpeciesGrammar do
 
   it "should handle a period after an unparseable" do
     @grammar.parse('<i>pediculus</i>. <i>Formica pediculus</i> Christ, 1791: 518 (w.) no locality given. [According to Emery, 1892b: 162, this is a termite, Order ISOPTERA].').value_with_reference_text_removed.should == {
-      type: :species_record,
-      species_group_epithet: 'pediculus',
-      protonym: {
-        genus_name: 'Formica',
-        species_epithet: 'pediculus',
-        authorship: [{author_names: ['Christ'], year: '1791', pages: '518', forms: 'w.'}],
-        locality: 'no locality given',
+      :type => :species_record,
+      :species_group_epithet => 'pediculus',
+      :protonym => {
+        :genus_name => 'Formica',
+        :species_epithet => 'pediculus',
+        :authorship => [{:author_names => ['Christ'], :year => '1791', :pages => '518', :forms => 'w.'}],
+        :locality => 'no locality given',
       },
-      history: [
-        {text: [
-          {opening_bracket: '['},
-          {phrase: 'According to', delimiter: ' '},
-          {author_names: ['Emery'], year: '1892b', pages: '162'},
-          {phrase: ', this is a termite, Order ISOPTERA'},
-          {closing_bracket: ']'},
-          {delimiter: '.'},
+      :history => [
+        {:text => [
+          {:opening_bracket => '['},
+          {:phrase => 'According to', :delimiter => ' '},
+          {:author_names => ['Emery'], :year => '1892b', :pages => '162'},
+          {:phrase => ', this is a termite, Order ISOPTERA'},
+          {:closing_bracket => ']'},
+          {:delimiter => '.'},
         ]}
       ]
     }
@@ -293,24 +293,24 @@ describe Bolton::Catalog::Species::DeepSpeciesGrammar do
 
   #it "should parse a legitimate start, but with unparsed history" do
     #@grammar.parse(%{*<i>tucumanus</i>. *<i>Neoforelius tucumanus</i> var. <i>modesta</i> Kusnezov, 1953b: 330, figs. 1-12, no caste given, BALTIC AMBER (Eocene). Member of unresolved <i>pilosum</i>-complex: Lattke, 1997: 165. Current subspecies: nominal plus <i>formosae</i>.}).value_with_reference_text_removed.should == {
-      #type: :species_record,
-      #species_group_epithet: 'tucumanus',
-      #fossil: true,
-      #protonym: {
-        #genus_name: 'Neoforelius',
-        #species_epithet: 'tucumanus',
-        #subspecies: [{type: 'var.', subspecies_epithet: 'modesta'}],
-        #author_names: ['Kusnezov'], year: '1953b', pages: '330, figs. 1-12', forms: 'no caste given',
-        #fossil: true,
-        #locality: 'Baltic Amber (Eocene)',
+      #:type => :species_record,
+      #:species_group_epithet => 'tucumanus',
+      #:fossil => true,
+      #:protonym => {
+        #:genus_name => 'Neoforelius',
+        #:species_epithet => 'tucumanus',
+        #:subspecies => [{:type => 'var.', :subspecies_epithet => 'modesta'}],
+        #:author_names => ['Kusnezov'], :year => '1953b', :pages => '330, figs. 1-12', :forms => 'no caste given',
+        #:fossil => true,
+        #:locality => 'Baltic Amber (Eocene)',
       #},
-      #history: [
-        #{text: [
-          #{phrase: "Member of unresolved", delimiter: " "},
-          #{species_group_epithet: "pilosum"},
-          #{unparseable: '-complex: Lattke, 1997: 165'},
+      #:history => [
+        #{:text => [
+          #{:phrase => "Member of unresolved", :delimiter => " "},
+          #{:species_group_epithet => "pilosum"},
+          #{:unparseable => '-complex: Lattke, 1997: 165'},
         #]},
-        #{subspecies: [{species_group_epithet: 'formosae'}]},
+        #{:subspecies => [{:species_group_epithet => 'formosae'}]},
       #]
     #}
   #end
@@ -318,17 +318,17 @@ describe Bolton::Catalog::Species::DeepSpeciesGrammar do
   describe "Bad protonyms" do
     it "should parse weirdness in the protonym name" do
       @grammar.parse(%{<i>expolitus</i>. <i>Aphaenogaster (Attomyrmex</i> [sic]) <i>expolitus</i> Azuma, 1950: 34, JAPAN. <i>Nomen nudum</i>. See Onoyama, 1980: 194.}).value_with_reference_text_removed.should == {
-        type: :species_record,
-        species_group_epithet: 'expolitus',
-        unparseable: '<i>Aphaenogaster (Attomyrmex</i> [sic]) <i>expolitus</i> Azuma, 1950: 34, JAPAN. <i>Nomen nudum</i>. See Onoyama, 1980: 194.'
+        :type => :species_record,
+        :species_group_epithet => 'expolitus',
+        :unparseable => '<i>Aphaenogaster (Attomyrmex</i> [sic]) <i>expolitus</i> Azuma, 1950: 34, JAPAN. <i>Nomen nudum</i>. See Onoyama, 1980: 194.'
       }
     end
     it "should parse a missing protonym" do
       @grammar.parse(%{*<i>tucumanus</i>. Unknown.}).value_with_reference_text_removed.should == {
-        type: :species_record,
-        species_group_epithet: 'tucumanus',
-        fossil: true,
-        unparseable: 'Unknown.'
+        :type => :species_record,
+        :species_group_epithet => 'tucumanus',
+        :fossil => true,
+        :unparseable => 'Unknown.'
       }
     end
   end

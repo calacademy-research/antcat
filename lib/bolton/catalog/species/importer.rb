@@ -73,8 +73,8 @@ class Bolton::Catalog::Species::Importer < Bolton::Catalog::Importer
   def parse_species genus
     return unless @type == :species
 
-    species = ::Species.create! name: @parse_result[:name], fossil: @parse_result[:fossil], status: @parse_result[:status], genus: genus,
-      taxonomic_history: clean_taxonomic_history(@paragraph)
+    species = ::Species.create! :name => @parse_result[:name], :fossil => @parse_result[:fossil], :status => @parse_result[:status], :genus => genus,
+      :taxonomic_history => clean_taxonomic_history(@paragraph)
     @subspecies_for_species[species.name] = @parse_result[:subspecies] || [] unless species.invalid?
 
     parse_next_line
@@ -84,8 +84,8 @@ class Bolton::Catalog::Species::Importer < Bolton::Catalog::Importer
   def parse_species_see_under genus
     return unless @type == :species_see_under
 
-    ::Species.create! name: @parse_result[:name], fossil: @parse_result[:fossil], status: 'recombined',
-      genus: genus, taxonomic_history: clean_taxonomic_history(@paragraph)
+    ::Species.create! :name => @parse_result[:name], :fossil => @parse_result[:fossil], :status => 'recombined',
+      :genus => genus, :taxonomic_history => clean_taxonomic_history(@paragraph)
 
     parse_next_line
     true
@@ -94,7 +94,7 @@ class Bolton::Catalog::Species::Importer < Bolton::Catalog::Importer
   def parse_subspecies genus
     return unless @type == :subspecies
 
-    subspecies = Subspecies.new name: @parse_result[:name], fossil: @parse_result[:fossil], status: @parse_result[:status], taxonomic_history: clean_taxonomic_history(@paragraph)
+    subspecies = Subspecies.new :name => @parse_result[:name], :fossil => @parse_result[:fossil], :status => @parse_result[:status], :taxonomic_history => clean_taxonomic_history(@paragraph)
     @species_for_subspecies[subspecies] = @parse_result[:species] || []
 
     parse_next_line
@@ -154,7 +154,7 @@ class Bolton::Catalog::Species::Importer < Bolton::Catalog::Importer
       # if so, we assume we have a species synonym
       if list && list.include?(subspecies.name)
         species = ::Species.find_by_genus_id_and_name genus.id, name
-        synonym = ::Species.create! name: species_name, fossil: species.fossil, status: 'synonym', synonym_of: species, genus: genus
+        synonym = ::Species.create! :name => species_name, :fossil => species.fossil, :status => 'synonym', :synonym_of => species, :genus => genus
         Progress.error "Subspecies #{genus.name} #{species_name} #{subspecies.name} was seen but not its species, but a species synonym was created (#{species.name})"
         @species_synonynm_created_for_subspecies_count += 1
         return species

@@ -3,7 +3,7 @@ require 'spec_helper'
 
 describe ReferenceDocument do
   it "should make sure it has a protocol" do
-    stub_request(:any, "http://antcat.org/1.pdf").to_return body: "Hello World!"
+    stub_request(:any, "http://antcat.org/1.pdf").to_return :body => "Hello World!"
     document = Factory :reference_document
     document.url = 'antcat.org/1.pdf'
     document.save!
@@ -13,33 +13,33 @@ describe ReferenceDocument do
   end
 
   it "should make sure it's a valid URL" do
-    document = ReferenceDocument.new url: '*'
+    document = ReferenceDocument.new :url => '*'
     document.should_not be_valid
     document.errors.full_messages.should =~ ['Url is not in a valid format']
   end
 
   it "should accept a URL with spaces" do
-    stub_request(:any, "http://antbase.org/a%20url").to_return body: "Hello World!"
-    document = ReferenceDocument.new url: 'http://antbase.org/a url'
+    stub_request(:any, "http://antbase.org/a%20url").to_return :body => "Hello World!"
+    document = ReferenceDocument.new :url => 'http://antbase.org/a url'
     document.should be_valid
   end
 
   it "don't check existence of URL when it's ours" do
-    document = ReferenceDocument.new url: 'http://antcat.org/a.pdf'
+    document = ReferenceDocument.new :url => 'http://antcat.org/a.pdf'
     document.should be_valid
   end
 
   it "should make sure it's a valid URL with a path" do
-    document = ReferenceDocument.new url: 'google.com'
+    document = ReferenceDocument.new :url => 'google.com'
     document.should_not be_valid
     document.errors.full_messages.should =~ ['Url is not in a valid format']
   end
 
   it "should make sure it exists" do
-    stub_request(:any, "http://antbase.org/1.pdf").to_return body: "Hello World!"
-    document = ReferenceDocument.create url: 'http://antbase.org/1.pdf'
+    stub_request(:any, "http://antbase.org/1.pdf").to_return :body => "Hello World!"
+    document = ReferenceDocument.create :url => 'http://antbase.org/1.pdf'
     document.should be_valid
-    stub_request(:any, "http://antbase.org/1.pdf").to_return body: "Not Found", status: 404
+    stub_request(:any, "http://antbase.org/1.pdf").to_return :body => "Not Found", :status => 404
     document.should_not be_valid
     document.errors.full_messages.should =~ ['Url was not found']
   end
@@ -73,21 +73,21 @@ describe ReferenceDocument do
       ReferenceDocument.new.should_not be_downloadable_by @user
     end
     it "should be downloadable by anyone if we just have a URL, not a file name on S3" do
-      ReferenceDocument.new(url: 'foo').should be_downloadable_by nil
+      ReferenceDocument.new(:url => 'foo').should be_downloadable_by nil
     end
     it "should not be downloadable by just anyone if we are hosting on S3" do
-      ReferenceDocument.new(url: 'foo', file_file_name: 'bar').should_not be_downloadable_by nil
+      ReferenceDocument.new(:url => 'foo', :file_file_name => 'bar').should_not be_downloadable_by nil
     end
     it "should be downloadable by a registered user if we are hosting on S3" do
-      ReferenceDocument.new(url: 'foo', file_file_name: 'bar').should be_downloadable_by Factory :user
+      ReferenceDocument.new(:url => 'foo', :file_file_name => 'bar').should be_downloadable_by Factory :user
     end
     it "should be downloadable by anyone if it's public" do
-      document = ReferenceDocument.new(url: 'foo', file_file_name: 'bar', public: true)
+      document = ReferenceDocument.new(:url => 'foo', :file_file_name => 'bar', :public => true)
       document.should be_downloadable_by Factory :user
       document.should be_downloadable_by nil
     end
     it "should be not be downloadable by anyone if it is/was on http://128.146.250.117" do
-      ReferenceDocument.new(url: 'http://128.146.250.117').should_not be_downloadable_by Factory :user
+      ReferenceDocument.new(:url => 'http://128.146.250.117').should_not be_downloadable_by Factory :user
     end
   end
 
@@ -99,13 +99,13 @@ describe ReferenceDocument do
     end
 
     it "should do nothing if the file isn't hosted by us" do
-      document = ReferenceDocument.new url: 'foo'
+      document = ReferenceDocument.new :url => 'foo'
       document.host = 'localhost'
       document.url.should == 'foo'
     end
 
     it "should insert the host in the url if the file is hosted by us" do
-      document = ReferenceDocument.create! file_file_name: 'foo'
+      document = ReferenceDocument.create! :file_file_name => 'foo'
       document.host = 'localhost'
       document.url.should == "http://localhost/documents/#{document.id}/foo"
     end

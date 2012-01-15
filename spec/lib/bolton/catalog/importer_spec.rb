@@ -18,8 +18,8 @@ describe Bolton::Catalog::Importer do
     end
 
     it "should work when the specific rule matches" do
-      @grammar.stub(:parse).with("specific rule match", root: :specific_rule).
-        and_return stub(value: :success)
+      @grammar.stub(:parse).with("specific rule match", :root => :specific_rule).
+        and_return stub(:value => :success)
       @importer.parse("specific rule match", :specific_rule).should == :success
     end
   end
