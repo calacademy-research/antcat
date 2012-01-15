@@ -176,13 +176,15 @@ describe Genus do
           :name => "Atta",
           :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
         },
-        :type_species => {:genus_name => 'Atta', :species_epithet => 'major'},
+        :type_species => {:genus_name => 'Atta', :species_epithet => 'major',
+                          :texts => [{:text => [{:phrase => ', by monotypy'}]}]},
         :taxonomic_history => ["Atta as genus", "Atta as species"]
       }).reload
       genus.name.should == 'Atta'
       genus.should_not be_invalid
       genus.should_not be_fossil
       genus.taxonomic_history_items.map(&:taxt).should == ['Atta as genus', 'Atta as species']
+      genus.type_taxon_taxt.should == ', by monotypy'
 
       protonym = genus.protonym
       protonym.name.should == 'Atta'
