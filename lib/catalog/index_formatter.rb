@@ -7,6 +7,7 @@ module Catalog::IndexFormatter
     headline          = format_headline taxon, current_user
     taxonomic_history = format_taxonomic_history taxon, current_user
     statistics        = format_taxon_statistics taxon
+
     content_tag :div, :class => :antcat_taxon do
       contents = ''
       contents << content_tag(:div, :class => :header) do
@@ -19,6 +20,7 @@ module Catalog::IndexFormatter
       contents << content_tag(:div,  taxonomic_history, :class => :taxonomic_history)
       contents.html_safe
     end
+
   end
 
   def format_header_name taxon
