@@ -40,18 +40,18 @@ class Antweb::Exporter
                               :taxonomic_history => CatalogFormatter.format_taxonomic_history_with_statistics(taxon, :include_invalid => false),
                               :fossil? => taxon.fossil
     when Species
-      return unless taxon.genus && taxon.genus.tribe && taxon.genus.tribe.subfamily
-      convert_to_antweb_array :subfamily => taxon.genus.subfamily.name,
-                              :tribe => taxon.genus.tribe.name,
+      return unless taxon.genus
+      convert_to_antweb_array :subfamily => taxon.genus.subfamily.try(:name),
+                              :tribe => taxon.genus.tribe.try(:name),
                               :genus => taxon.genus.name,
                               :species => taxon.name,
                               :valid? => !taxon.invalid?, :available? => !taxon.invalid?,
                               :taxonomic_history => CatalogFormatter.format_taxonomic_history_with_statistics(taxon, :include_invalid => false),
                               :fossil? => taxon.fossil
     when Subspecies
-      return unless taxon.species && taxon.species.genus && taxon.species.genus.tribe && taxon.species.genus.tribe.subfamily
-      convert_to_antweb_array :subfamily => taxon.species.genus.subfamily.name,
-                              :tribe => taxon.species.genus.tribe.name,
+      return unless taxon.species && taxon.species.genus
+      convert_to_antweb_array :subfamily => taxon.species.genus.subfamily.try(:name),
+                              :tribe => taxon.species.genus.tribe.try(:name),
                               :genus => taxon.species.genus.name,
                               :species => "#{taxon.species.name} #{taxon.name}",
                               :valid? => !taxon.invalid?, :available? => !taxon.invalid?,
