@@ -7,25 +7,29 @@ describe Catalog::IndexFormatter do
   end
 
   describe "Headline formatting" do
-    it "should format the taxon name" do
-      protonym = Factory :protonym, :name => 'Atari'
-      atta = Factory :genus, :name => 'Atta', :protonym => protonym
-      @formatter.format_headline_name(atta).should == '<span class="family_group_name">Atari</span>'
-    end
-    it "should handle the special taxon 'no_tribe'" do
-      @formatter.format_headline_name('no_tribe').should be_blank
-    end
-    it "should handle the special taxon 'no_subfamily'" do
-      @formatter.format_headline_name('no_subfamily').should be_blank
-    end
-    it "should handle nil" do
-      @formatter.format_headline_name(nil).should be_blank
+
+    describe "Protonym" do
+      it "should format a family name in the protonym" do
+        protonym = Factory :protonym, name: 'Formcidae', rank: 'family_or_subfamily'
+        @formatter.format_protonym_name(protonym).should ==
+          '<span class="name subfamily taxon">Formcidae</span>'
+      end
+      it "should format a genus name in the protonym" do
+        protonym = Factory :protonym, name: 'Atari', rank: 'genus'
+        @formatter.format_protonym_name(protonym).should ==
+          '<span class="genus name taxon">Atari</span>'
+      end
+      it "should format a fossil" do
+        protonym = Factory :protonym, name: 'Atari', rank: 'genus', fossil: true
+        @formatter.format_protonym_name(protonym).should ==
+          '<span class="genus name taxon">&dagger;Atari</span>'
+      end
     end
 
     describe "Type" do
       it "should show the type taxon" do
-        species = Factory :species, :name => 'major'
-        genus = Factory :genus, :name => 'Atta', :type_taxon => species
+        species = Factory :species, name: 'major'
+        genus = Factory :genus, name: 'Atta', type_taxon: species
         species.update_attribute :genus, genus
         @formatter.format_headline_type(genus).should ==
 %{<span class="type">Type-species: <span class="species taxon">Atta major</span>.</span>}
@@ -38,6 +42,7 @@ describe Catalog::IndexFormatter do
 %{<span class="type">Type-species: <span class="species taxon">Atta major</span>, by monotypy.</span>}
       end
     end
+
   end
 
   describe "Taxonomic history" do

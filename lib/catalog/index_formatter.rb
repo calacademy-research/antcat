@@ -11,7 +11,7 @@ module Catalog::IndexFormatter
     content_tag :div, :class => :antcat_taxon do
       contents = ''
       contents << content_tag(:div, :class => :header) do
-        content_tag(:span, header_name,  :class =>  "taxon #{taxon.rank}") +
+        content_tag(:span, header_name,  :class =>  "name taxon #{taxon.rank}") +
         content_tag(:span, taxon_status, :class => :status)
       end
       contents << content_tag(:div,  statistics,        :class => :statistics)
@@ -32,19 +32,24 @@ module Catalog::IndexFormatter
   end
 
   def format_headline taxon, user
-    format_headline_protonym(taxon, user) + ' ' + format_headline_type(taxon)
+    format_headline_protonym(taxon.protonym, user) + ' ' + format_headline_type(taxon)
   end
 
-  def format_headline_protonym taxon, user
-    return '' unless taxon
-    string = format_headline_name(taxon)
-    string << ' ' << format_headline_authorship(taxon.protonym.authorship, user) if taxon.protonym
+  def format_headline_protonym protonym, user
+    return '' unless protonym
+    string = format_protonym_name protonym
+    string << ' ' << format_headline_authorship(protonym.authorship, user)
     string
   end
 
-  def format_headline_name taxon
-    return '' unless taxon && taxon != 'no_tribe' && taxon != 'no_subfamily' && taxon.protonym
-    content_tag :span, taxon.protonym.name, :class => :family_group_name
+  def format_protonym_name protonym
+    return '' unless protonym
+    classes = ['name', 'taxon']
+    classes << 'genus' if protonym.rank == 'genus'
+    classes << 'subfamily' if protonym.rank == 'family_or_subfamily'
+    content_tag :span, :class => classes.sort.join(' ') do
+      name_label protonym.name, protonym.fossil
+    end
   end
 
   def format_headline_authorship authorship, user
