@@ -9,12 +9,16 @@ class Progress
   #################################################################################
   # initialization
 
-  def self.init show_progress, total_count = nil, log_file_identifier = nil
-    @show_progress = show_progress
+  def self.init show_progress, total_count = nil, log_file_name = nil, append_to_log_file = false
+    new_init show_progress: show_progress, total_count: total_count, log_file_name: log_file_name, append_to_log_file: append_to_log_file
+  end
+
+  def self.new_init options = {}
+    @show_progress = options[:show_progress]
     @start = Time.now
     @processed_count = 0
-    @total_count = total_count
-    open_log log_file_identifier
+    @total_count = options[:total_count]
+    open_log options[:log_file_name], options[:append_to_log_file]
   end
 
   #################################################################################
@@ -159,12 +163,13 @@ class Progress
 
   private
 
-  def self.open_log file_name
+  def self.open_log file_name, append
     return unless file_name
     file_name = make_file_name file_name
-    file = File.open file_name, 'w'
+    file = File.open file_name, append ? 'a' : 'w'
     file.sync = true
     @logger = Logger.new file
+    log "\n#{Time.now}" if append
   end
 
   def self.make_file_name file_name
