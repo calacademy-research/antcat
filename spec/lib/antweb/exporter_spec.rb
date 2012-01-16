@@ -69,7 +69,7 @@ describe Antweb::Exporter do
         myrmicinae = Factory :subfamily, :name => 'Myrmicinae'
         attini = Factory :tribe, :name => 'Attini', :subfamily => myrmicinae
         atta = Factory :genus, :name => 'Atta', :tribe => attini
-        species = Factory :species, :name => 'robustus', :genus => atta, :taxonomic_history => 'Taxonomic history'
+        species = Factory :species, :name => 'robustus', :genus => atta, :taxonomic_history => 'history'
         CatalogFormatter.should_receive(:format_taxonomic_history_with_statistics_for_antweb).with(species, :include_invalid => false).and_return 'history'
         @exporter.export_taxon(species).should == ['Myrmicinae', 'Attini', 'Atta', 'robustus', nil, nil, 'TRUE', 'TRUE', nil, nil, 'FALSE', 'history']
       end
@@ -77,15 +77,15 @@ describe Antweb::Exporter do
       it "should export a species without a tribe" do
         myrmicinae = Factory :subfamily, :name => 'Myrmicinae'
         atta = Factory :genus, :name => 'Atta', :subfamily => myrmicinae, :tribe => nil
-        species = Factory :species, :name => 'robustus', :genus => atta, :taxonomic_history => 'Taxonomic history'
-        CatalogFormatter.should_receive(:format_taxonomic_history_with_statistics).with(species, :include_invalid => false).and_return 'history'
+        species = Factory :species, :name => 'robustus', :genus => atta, :taxonomic_history => 'history'
+        CatalogFormatter.should_receive(:format_taxonomic_history_with_statistics_for_antweb).with(species, :include_invalid => false).and_return 'history'
         @exporter.export_taxon(species).should == ['Myrmicinae', nil, 'Atta', 'robustus', nil, nil, 'TRUE', 'TRUE', nil, nil, 'FALSE', 'history']
       end
 
       it "should export a species without a subfamily" do
         atta = Factory :genus, :name => 'Atta', :subfamily => nil, :tribe => nil
-        species = Factory :species, :name => 'robustus', :genus => atta, :taxonomic_history => 'Taxonomic history'
-        CatalogFormatter.should_receive(:format_taxonomic_history_with_statistics).with(species, :include_invalid => false).and_return 'history'
+        species = Factory :species, :name => 'robustus', :genus => atta, :taxonomic_history => 'history'
+        CatalogFormatter.should_receive(:format_taxonomic_history_with_statistics_for_antweb).with(species, :include_invalid => false).and_return 'history'
         @exporter.export_taxon(species).should == [nil, nil, 'Atta', 'robustus', nil, nil, 'TRUE', 'TRUE', nil, nil, 'FALSE', 'history']
       end
 
@@ -98,7 +98,7 @@ describe Antweb::Exporter do
         attini = Factory :tribe, :name => 'Attini', :subfamily => myrmicinae
         atta = Factory :genus, :name => 'Atta', :tribe => attini
         species = Factory :species, :name => 'robustus', :genus => atta
-        subspecies = Factory :subspecies, :name => 'emeryii', :species => species, :taxonomic_history => 'Taxonomic history'
+        subspecies = Factory :subspecies, :name => 'emeryii', :species => species, :taxonomic_history => 'history'
         CatalogFormatter.should_receive(:format_taxonomic_history_with_statistics_for_antweb).with(subspecies, :include_invalid => false).and_return 'history'
         @exporter.export_taxon(subspecies).should == ['Myrmicinae', 'Attini', 'Atta', 'robustus emeryii', nil, nil, 'TRUE', 'TRUE', nil, nil, 'FALSE', 'history']
       end
@@ -106,17 +106,17 @@ describe Antweb::Exporter do
       it "should export a subspecies without a tribe" do
         myrmicinae = Factory :subfamily, :name => 'Myrmicinae'
         atta = Factory :genus, :name => 'Atta', :subfamily => myrmicinae, :tribe => nil
-        species = Factory :species, :name => 'robustus', :genus => atta, :taxonomic_history => 'Taxonomic history'
-        subspecies = Factory :subspecies, :name => 'emeryii', :species => species, :taxonomic_history => 'Taxonomic history'
-        CatalogFormatter.should_receive(:format_taxonomic_history_with_statistics).with(subspecies, :include_invalid => false).and_return 'history'
+        species = Factory :species, :name => 'robustus', :genus => atta, :taxonomic_history => 'history'
+        subspecies = Factory :subspecies, :name => 'emeryii', :species => species, :taxonomic_history => 'history'
+        CatalogFormatter.should_receive(:format_taxonomic_history_with_statistics_for_antweb).with(subspecies, :include_invalid => false).and_return 'history'
         @exporter.export_taxon(subspecies).should == ['Myrmicinae', nil, 'Atta', 'robustus emeryii', nil, nil, 'TRUE', 'TRUE', nil, nil, 'FALSE', 'history']
       end
 
       it "should export a subspecies without a subfamily" do
         atta = Factory :genus, :name => 'Atta', :subfamily => nil, :tribe => nil
-        species = Factory :species, :name => 'robustus', :genus => atta, :taxonomic_history => 'Taxonomic history'
-        subspecies = Factory :subspecies, :name => 'emeryii', :species => species, :taxonomic_history => 'Taxonomic history'
-        CatalogFormatter.should_receive(:format_taxonomic_history_with_statistics).with(subspecies, :include_invalid => false).and_return 'history'
+        species = Factory :species, :name => 'robustus', :genus => atta, :taxonomic_history => 'history'
+        subspecies = Factory :subspecies, :name => 'emeryii', :species => species, :taxonomic_history => 'history'
+        CatalogFormatter.should_receive(:format_taxonomic_history_with_statistics_for_antweb).with(subspecies, :include_invalid => false).and_return 'history'
         @exporter.export_taxon(subspecies).should == [nil, nil, 'Atta', 'robustus emeryii', nil, nil, 'TRUE', 'TRUE', nil, nil, 'FALSE', 'history']
       end
 
