@@ -5,18 +5,18 @@ describe Protonym do
 
   it "has an authorship" do
     authorship = Factory :citation
-    protonym = Protonym.create! :authorship => authorship
+    protonym = Protonym.create! authorship: authorship
     protonym.reload.authorship.should == authorship
   end
 
   describe "Importing" do
     it "should create the Protonym and the Citation, which is linked to an existing Reference" do
-      reference = Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
+      reference = Factory :article_reference, bolton_key_cache: 'Latreille 1809'
       data = {
-        :family_or_subfamily_name => "Formicariae",
-        :sic => true,
-        :fossil => true,
-        :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
+        family_or_subfamily_name: "Formicariae",
+        sic: true,
+        fossil: true,
+        authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}],
       }
 
       protonym = Protonym.import(data).reload
