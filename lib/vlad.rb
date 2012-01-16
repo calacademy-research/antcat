@@ -2,7 +2,10 @@
 class Vlad
 
   def self.idate show_progress = false
-    Progress.new_init show_progress: show_progress, log_file_name: 'vlad', append_to_log_file: !Rails.env.test?
+    Progress.new_init show_progress: show_progress,
+                      log_file_directory: 'data/vlad',
+                      log_file_name: 'vlad',
+                      append_to_log_file: !Rails.env.test?
     results = {}
     results.merge! record_counts
     display results

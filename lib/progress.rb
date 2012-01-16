@@ -18,7 +18,7 @@ class Progress
     @start = Time.now
     @processed_count = 0
     @total_count = options[:total_count]
-    open_log options[:log_file_name], options[:append_to_log_file]
+    open_log options[:log_file_name], options[:append_to_log_file], options[:log_file_directory]
   end
 
   #################################################################################
@@ -163,19 +163,19 @@ class Progress
 
   private
 
-  def self.open_log file_name, append
+  def self.open_log file_name, append, directory
     return unless file_name
-    file_name = make_file_name file_name
+    file_name = make_file_name file_name, directory
     file = File.open file_name, append ? 'a' : 'w'
     file.sync = true
     @logger = Logger.new file
     log "\n#{Time.now}" if append
   end
 
-  def self.make_file_name file_name
+  def self.make_file_name file_name, directory
     file_name = file_name.gsub /::/, '_'
     file_name = file_name.underscore
-    file_name = Rails.root.join 'log/' + file_name + "-#{Rails.env}.log"
+    file_name = Rails.root.join (directory ? directory : 'log') + '/' + file_name + "-#{Rails.env}.log"
     file_name
   end
 
