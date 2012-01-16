@@ -17,8 +17,12 @@ class CatalogFormatter
   end
 
   def self.taxon_label taxon, options = {}
-    fossil_symbol = taxon.fossil? ? "&dagger;" : ''
-    name = taxon.name.dup
+    name_label taxon.name, taxon.fossil?, options
+  end
+
+  def self.name_label name, fossil, options = {}
+    fossil_symbol = fossil ? "&dagger;" : ''
+    name = name.dup
     name.upcase! if options[:uppercase]
     (fossil_symbol + h(name)).html_safe
   end
