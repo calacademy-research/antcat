@@ -12,10 +12,10 @@ describe Taxt do
       Taxt.reference(reference).should == "{ref #{reference.id}}"
     end
     it "should put italics back around taxon names" do
-      Taxt.taxon_name(:genus_name, 'Atta').should == "<i>Atta</i>"
+      Taxt.taxon_name(genus_name: 'Atta').should == "<i>Atta</i>"
     end
     it "should put a dagger in front" do
-      Taxt.taxon_name(:genus_name, 'Atta', true).should == "<i>&dagger;Atta</i>"
+      Taxt.taxon_name(genus_name:'Atta', fossil:true).should == "<i>&dagger;Atta</i>"
     end
   end
 
