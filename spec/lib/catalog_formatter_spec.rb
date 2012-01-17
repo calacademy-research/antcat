@@ -45,4 +45,11 @@ describe CatalogFormatter do
     end
   end
 
+  describe 'fossil' do
+    it "should prepend a dagger" do
+      @formatter.fossil('Atta', true).should == '&dagger;Atta'
+      @formatter.fossil('Atta', false).should == 'Atta'
+    end
+  end
+
 end

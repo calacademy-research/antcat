@@ -115,12 +115,12 @@ describe Bolton::Catalog::TextToTaxt do
     end
     it "should handle family/order" do
       @converter.convert([
-        {family_name:"Myrmiciidae", suborder_name:"Symphyta", delimiter:": "}
+        {family_or_subfamily_name:"Myrmiciidae", suborder_name:"Symphyta", delimiter:": "}
       ]).should == 'Myrmiciidae (Symphyta): '
     end
     it "should handle fossil family/order" do
       @converter.convert([
-        {:family_name=>"Myrmiciidae", :fossil=>true, :suborder_name=>"Symphyta", :delimiter=>": "}
+        {:family_or_subfamily_name=>"Myrmiciidae", :fossil=>true, :suborder_name=>"Symphyta", :delimiter=>": "}
       ]).should == '&dagger;Myrmiciidae (Symphyta): '
     end
     it "should handle taxon names with other text" do
