@@ -38,7 +38,19 @@ module Bolton::Catalog::TextToTaxt
     return unless text_item[:author_names]
     taxt = Taxt.reference ::Reference.find_by_bolton_key text_item
     taxt << ": #{text_item[:pages]}" if text_item[:pages]
+    taxt << notes(text_item[:notes]) if text_item[:notes]
     add_delimiter taxt, text_item
+  end
+
+  def self.notes text_items
+    items = text_items.flatten
+    taxt = ''
+    bracketed_item = items.find {|i| i[:bracketed]}
+    items.delete bracketed_item if bracketed_item
+    taxt << ' [' if bracketed_item
+    taxt << convert(items)
+    taxt << ']' if bracketed_item
+    taxt
   end
 
   def self.nested text_item
