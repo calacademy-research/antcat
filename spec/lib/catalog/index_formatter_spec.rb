@@ -64,7 +64,7 @@ describe Catalog::IndexFormatter do
       end
       it "should format a ref" do
         reference = Factory :article_reference
-        ReferenceFormatter.should_receive(:format_interpolation).with(reference, nil).and_return 'foo'
+        ReferenceFormatter.should_receive(:format_inline_citation).with(reference, nil).and_return 'foo'
         @formatter.format_taxonomic_history_item("{ref #{reference.id}}", nil).should == '<div class="taxonomic_history_item">foo.</div>'
       end
       it "should not freak if the ref is malformed" do
