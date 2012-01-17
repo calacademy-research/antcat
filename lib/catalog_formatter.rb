@@ -11,11 +11,6 @@ class CatalogFormatter
   extend Catalog::IndexFormatter
   extend Catalog::AntwebFormatter
 
-  # deprecated
-  def self.taxon_label_and_css_classes taxon, options = {}
-    {:label => taxon_label(taxon, options), :css_classes => taxon_css_classes(taxon, options)}
-  end
-
   def self.taxon_label taxon, options = {}
     name_label taxon.name, taxon.fossil?, options
   end
@@ -36,6 +31,18 @@ class CatalogFormatter
 
   def self.css_classes_for_rank taxon
     [taxon.type.downcase, 'taxon']
+  end
+
+  def self.fossil name, is_fossil
+    raise unless name
+    string = ''
+    string << '&dagger;' if is_fossil
+    string << name
+  end
+
+  # deprecated
+  def self.taxon_label_and_css_classes taxon, options = {}
+    {:label => taxon_label(taxon, options), :css_classes => taxon_css_classes(taxon, options)}
   end
 
 end

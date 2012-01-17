@@ -1,45 +1,50 @@
 module Bolton::Catalog::TextToTaxt
 
-  def self.convert parser_output
-    (parser_output || []).inject('') do |taxt, text_item|
-      taxt << convert_one_text_to_taxt(text_item)
+  def self.convert texts
+    (texts || []).inject('') do |taxt, item|
+      taxt << convert_text_to_taxt(item)
     end
   end
 
-  def self.convert_one_text_to_taxt text_item
-    nested(text_item)       ||
-    phrase(text_item)       ||
-    citation(text_item)     ||
-    taxon_name(text_item)   ||
-    brackets(text_item)     ||
-    unparseable(text_item)  ||
-    raise("Couldn't convert #{text_item} to taxt")
+  def self.convert_text_to_taxt item
+    nested(item)       ||
+    phrase(item)       ||
+    citation(item)     ||
+    taxon_name(item)   ||
+    brackets(item)     ||
+    unparseable(item)  ||
+    raise("Couldn't convert #{item} to taxt")
   end
 
-  def self.brackets text_item
-    brackets = [:opening_bracket, :closing_bracket, :opening_parenthesis, :closing_parenthesis]
-    bracket = brackets.find {|e| text_item[e]} or return
-    taxt = text_item[bracket]
-    add_delimiter taxt, text_item
+  def self.brackets item
+    keys = [:opening_bracket, :closing_bracket, :opening_parenthesis, :closing_parenthesis]
+    key, value = find_one_of(keys, item)
+    return unless key
+    add_delimiter value, item
   end
 
-  def self.phrase text_item
-    return unless text_item[:phrase]
-    taxt = text_item[:phrase]
-    add_delimiter taxt, text_item
+  def self.find_one_of keys, item
+    key = keys.find {|key| item[key]} or return
+    return key, item[key]
   end
 
-  def self.unparseable text_item
-    return unless text_item[:unparseable]
-    Taxt.encode_unparseable text_item[:unparseable]
+  def self.phrase item
+    return unless item[:phrase]
+    taxt = item[:phrase]
+    add_delimiter taxt, item
   end
 
-  def self.citation text_item
-    return unless text_item[:author_names]
-    taxt = Taxt.encode_reference ::Reference.find_by_bolton_key text_item
-    taxt << ": #{text_item[:pages]}" if text_item[:pages]
-    taxt << notes(text_item[:notes]) if text_item[:notes]
-    add_delimiter taxt, text_item
+  def self.unparseable item
+    return unless item[:unparseable]
+    Taxt.encode_unparseable item[:unparseable]
+  end
+
+  def self.citation item
+    return unless item[:author_names]
+    taxt = Taxt.encode_reference ::Reference.find_by_bolton_key item
+    taxt << ": #{item[:pages]}" if item[:pages]
+    taxt << notes(item[:notes]) if item[:notes]
+    add_delimiter taxt, item
   end
 
   def self.notes text_items
@@ -53,24 +58,24 @@ module Bolton::Catalog::TextToTaxt
     taxt
   end
 
-  def self.nested text_item
-    return unless text_item[:text]
-    delimiter = text_item[:text].delete :delimiter
-    taxt = convert text_item[:text]
-    add_delimiter taxt, text_item
+  def self.nested item
+    return unless item[:text]
+    delimiter = item[:text].delete :delimiter
+    taxt = convert item[:text]
+    add_delimiter taxt, item
   end
 
-  def self.taxon_name text_item
-    key = [:order_name, :suborder_name, :family_name, :family_or_subfamily_name, :tribe_name, :subtribe_name, :collective_group_name, :genus_name, :subgenus_name, :species_name, :subspecies_name].find do |key|
-      text_item[key]
-    end
+  def self.taxon_name item
+    keys = [:order_name, :family_name, :family_or_subfamily_name, :tribe_name, :subtribe_name, :collective_group_name, :genus_name, :subgenus_name, :species_name, :subspecies_name]
+    key, name = find_one_of(keys, item)
     return unless key
-    taxt = Taxt.encode_taxon_name text_item
-    add_delimiter taxt, text_item
+    key = key.to_s.gsub(/_name$/, '').to_sym
+    taxt = Taxt.encode_taxon_name name, key, item[:fossil], item
+    add_delimiter taxt, item
   end
 
-  def self.add_delimiter taxt, text_item
-    taxt << text_item[:delimiter] if text_item[:delimiter]
+  def self.add_delimiter taxt, item
+    taxt << item[:delimiter] if item[:delimiter]
     taxt
   end
 

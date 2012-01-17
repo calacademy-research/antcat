@@ -21,23 +21,16 @@ module Taxt
     "{ref #{reference.id}}"
   end
 
-  def self.encode_taxon_name data
-    fossil_indicator = data[:fossil] ? '&dagger;' : ''
-
-    if data[:family_name] && data[:suborder_name]
-      return "#{fossil_indicator}#{data[:family_name]} (#{data[:suborder_name]})"
+  def self.encode_taxon_name name, rank, fossil = false, data = {}
+    if name && data[:suborder_name]
+      return "#{CatalogFormatter.fossil(name, fossil)} (#{data[:suborder_name]})"
     end
 
-    key = [:order_name, :suborder_name, :family_name, :family_or_subfamily_name, :tribe_name, :subtribe_name, :collective_group_name, :genus_name, :subgenus_name, :species_name, :subspecies_name].find do |key|
-      data[key]
-    end
-    italicize = [:collective_group_name, :genus_name, :subgenus_name, :species_name, :subspecies_name].include? key
-    name = data[key]
+    italicize = [:collective_group, :genus].include? rank
 
     output = ''
     output << '<i>' if italicize
-    output << fossil_indicator
-    output << name
+    output << CatalogFormatter.fossil(name, fossil)
     output << '</i>' if italicize
     output
   end
