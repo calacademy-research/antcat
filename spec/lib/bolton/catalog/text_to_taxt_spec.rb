@@ -44,6 +44,18 @@ describe Bolton::Catalog::TextToTaxt do
         :pages => "24"}]
       @converter.convert(data).should == "{ref #{reference.id}}: 24"
     end
+    it "should handle a citation with notes" do
+      reference = Factory :article_reference, :bolton_key_cache => 'Stephens 1829'
+      data = [{
+        author_names:["Stephens"], year:"1829", pages:"356",
+        notes:[[
+          {phrase:"first spelling as", delimiter:" "},
+          {family_or_subfamily_name:"Formicidae"},
+          {bracketed:true}
+        ]],
+      }]
+      @converter.convert(data).should == "{ref #{reference.id}}: 356 [first spelling as Formicidae]"
+    end
   end
 
   it "should handle a number of items" do
