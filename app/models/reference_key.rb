@@ -8,7 +8,7 @@ class ReferenceKey
   end
 
   def to_taxt
-    Taxt.reference @reference
+    Taxt.encode_reference @reference
   end
 
   def to_s

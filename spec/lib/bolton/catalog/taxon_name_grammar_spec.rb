@@ -90,7 +90,7 @@ describe Bolton::Catalog::Grammar do
 
   describe "Myrmiciidae (Symphyta)" do
     it "should parse it" do
-      @grammar.parse('*Myrmiciidae (Symphyta)', :root => :family_or_subfamily_label).value_with_reference_text_removed.should == {:family_name => 'Myrmiciidae', :fossil => true, :suborder => 'Symphyta'}
+      @grammar.parse('*Myrmiciidae (Symphyta)', :root => :family_or_subfamily_label).value_with_reference_text_removed.should == {:family_name => 'Myrmiciidae', :fossil => true, :suborder_name => 'Symphyta'}
     end
   end
 

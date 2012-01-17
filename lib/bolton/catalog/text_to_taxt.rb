@@ -31,12 +31,12 @@ module Bolton::Catalog::TextToTaxt
 
   def self.unparseable text_item
     return unless text_item[:unparseable]
-    Taxt.unparseable text_item[:unparseable]
+    Taxt.encode_unparseable text_item[:unparseable]
   end
 
   def self.citation text_item
     return unless text_item[:author_names]
-    taxt = Taxt.reference ::Reference.find_by_bolton_key text_item
+    taxt = Taxt.encode_reference ::Reference.find_by_bolton_key text_item
     taxt << ": #{text_item[:pages]}" if text_item[:pages]
     taxt << notes(text_item[:notes]) if text_item[:notes]
     add_delimiter taxt, text_item
@@ -61,11 +61,11 @@ module Bolton::Catalog::TextToTaxt
   end
 
   def self.taxon_name text_item
-    key = [:order_name, :suborder, :family_name, :family_or_subfamily_name, :tribe_name, :subtribe_name, :collective_group_name, :genus_name, :subgenus_name, :species_name, :subspecies_name].find do |key|
+    key = [:order_name, :suborder_name, :family_name, :family_or_subfamily_name, :tribe_name, :subtribe_name, :collective_group_name, :genus_name, :subgenus_name, :species_name, :subspecies_name].find do |key|
       text_item[key]
     end
     return unless key
-    taxt = Taxt.taxon_name text_item
+    taxt = Taxt.encode_taxon_name text_item
     add_delimiter taxt, text_item
   end
 

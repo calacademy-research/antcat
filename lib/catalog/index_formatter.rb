@@ -75,7 +75,7 @@ module Catalog::IndexFormatter
   end
 
   def format_headline_type_taxt taxt
-    Taxt.interpolate(taxt).html_safe
+    Taxt.to_string(taxt).html_safe
   end
 
   def format_reference_document_link reference, user
@@ -90,7 +90,7 @@ module Catalog::IndexFormatter
   end
 
   def format_taxonomic_history_item taxt, user
-    string = Taxt.interpolate taxt, user
+    string = Taxt.to_string taxt, user
     string << '.'
     content_tag :div, string.html_safe, :class => :taxonomic_history_item
   end
