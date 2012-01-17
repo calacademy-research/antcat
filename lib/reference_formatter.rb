@@ -2,6 +2,7 @@
 class ReferenceFormatter
   include ERB::Util
 
+  ###########################
   def self.format reference
     make_formatter(reference).format
   end
@@ -26,6 +27,7 @@ class ReferenceFormatter
     timestamp.strftime '%Y-%m-%d'
   end
 
+  ###########################
   def initialize reference
     @reference = reference
   end
