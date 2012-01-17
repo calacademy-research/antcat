@@ -7,8 +7,9 @@ Given /^the Formicidae family exists$/ do
   Reference.delete_all
   TaxonomicHistoryItem.delete_all
 
-  Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
-  Family.import( 
+  Factory :article_reference, :author_names => [Factory(:author_name, :name => 'Latreille, I.')], :citation_year => '1809', :title => 'Ants', :bolton_key_cache => 'Latreille 1809'
+
+  family = Family.import( 
     :protonym => {
       :family_or_subfamily_name => "Formicariae",
       :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
@@ -495,11 +496,6 @@ Then /^I should see the following text:$/ do |table|
   table.hashes.each do |line|
     step "I should see \"#{line[:text]}\""
   end
-end
-
-Given /there is a reference for "Latreille, I. 1809. Ants."/ do
-  Reference.delete_all
-  Factory :article_reference, :author_names => [Factory(:author_name, :name => 'Latreille, I.')], :citation_year => '1809', :title => 'Ants', :bolton_key_cache => 'Latreille 1809'
 end
 
 ############################################################
