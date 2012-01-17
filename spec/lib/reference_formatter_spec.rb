@@ -222,17 +222,17 @@ describe ReferenceFormatter do
     end
   end
 
-  describe "Interpolation" do
+  describe "inline_citation" do
     it "nonmissing references should defer to the key" do
       key = mock
       reference = Factory :article_reference
       reference.should_receive(:key).and_return key
       key.should_receive(:to_link)
 
-      @formatter.format_interpolation reference, nil
+      @formatter.format_inline_citation reference, nil
     end
     it "should just output the citation for a MissingReference" do
-      @formatter.format_interpolation(Factory(:missing_reference, :citation => 'foo'), nil).should == 'foo'
+      @formatter.format_inline_citation(Factory(:missing_reference, :citation => 'foo'), nil).should == 'foo'
     end
   end
 

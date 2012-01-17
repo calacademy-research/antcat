@@ -8,7 +8,7 @@ module Taxt
   def self.decode taxt, user = nil
     return '' unless taxt
     taxt.gsub /{ref (\d+)}/ do |ref|
-      ReferenceFormatter.format_interpolation(Reference.find($1), user) rescue ref
+      ReferenceFormatter.format_inline_citation(Reference.find($1), user) rescue ref
     end
   end
 

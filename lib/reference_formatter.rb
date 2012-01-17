@@ -6,8 +6,8 @@ class ReferenceFormatter
   def self.format reference
     make_formatter(reference).format
   end
-  def self.format_interpolation reference, user
-    make_formatter(reference).format_interpolation user
+  def self.format_inline_citation reference, user
+    make_formatter(reference).format_inline_citation user
   end
 
   def self.italicize s
@@ -43,7 +43,7 @@ class ReferenceFormatter
     s
   end
 
-  def format_interpolation user
+  def format_inline_citation user
     @reference.key.to_link user
   end
 
@@ -99,7 +99,7 @@ class NestedReferenceFormatter < ReferenceFormatter
 end
 
 class MissingReferenceFormatter < ReferenceFormatter
-  def format_interpolation _ = nil
+  def format_inline_citation _ = nil
     @reference.citation
   end
 end
