@@ -49,15 +49,12 @@ module Bolton::Catalog::TextToTaxt
   end
 
   def self.taxon_name text_item
-    if text_item[:family_name] && text_item[:suborder]
-      return add_delimiter "#{text_item[:family_name]} (#{text_item[:suborder]})", text_item
+    key = [:order_name, :suborder, :family_name, :family_or_subfamily_name, :tribe_name, :subtribe_name, :collective_group_name, :genus_name, :subgenus_name, :species_name, :subspecies_name].find do |key|
+      text_item[key]
     end
-    [:order_name, :family_or_subfamily_name, :tribe_name, :subtribe_name, :collective_group_name, :genus_name].each do |key|
-      next unless text_item[key]
-      taxt = Taxt.taxon_name key, text_item[key]
-      return add_delimiter taxt, text_item
-    end
-    nil
+    return unless key
+    taxt = Taxt.taxon_name text_item
+    add_delimiter taxt, text_item
   end
 
   def self.add_delimiter taxt, text_item

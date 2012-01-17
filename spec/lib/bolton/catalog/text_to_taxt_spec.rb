@@ -98,13 +98,18 @@ describe Bolton::Catalog::TextToTaxt do
     end
     [:collective_group_name, :genus_name].each do |key|
       it "should handle #{key}" do
-        @converter.convert([key => 'Calyptities']).should == "<i>Calyptities</i>"
+        @converter.convert([key => 'Calyptites']).should == '<i>Calyptites</i>'
       end
     end
     it "should handle family/order" do
       @converter.convert([
-        {:family_name=>"Myrmiciidae", :fossil=>true, :suborder=>"Symphyta", :delimiter=>": "}
+        {family_name:"Myrmiciidae", suborder:"Symphyta", delimiter:": "}
       ]).should == 'Myrmiciidae (Symphyta): '
+    end
+    it "should handle fossil family/order" do
+      @converter.convert([
+        {:family_name=>"Myrmiciidae", :fossil=>true, :suborder=>"Symphyta", :delimiter=>": "}
+      ]).should == '&dagger;Myrmiciidae (Symphyta): '
     end
     it "should handle taxon names with other text" do
       @converter.convert([
