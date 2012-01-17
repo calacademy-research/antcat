@@ -477,7 +477,7 @@ grammar Bolton::Catalog::Grammar
 
   rule myrmiciidae
     'Myrmiciidae (Symphyta)' {
-      {:family_name => 'Myrmiciidae', :fossil => true, :suborder => 'Symphyta'}
+      {:family_name => 'Myrmiciidae', :fossil => true, :suborder_name => 'Symphyta'}
      }
   end
 
