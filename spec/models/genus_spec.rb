@@ -172,6 +172,7 @@ describe Genus do
       reference = Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
       genus = Genus.import({
         :name => 'Atta',
+        :fossil => true,
         :protonym => {
           :genus_name => "Atta",
           :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
@@ -182,7 +183,7 @@ describe Genus do
       }).reload
       genus.name.should == 'Atta'
       genus.should_not be_invalid
-      genus.should_not be_fossil
+      genus.should be_fossil
       genus.taxonomic_history_items.map(&:taxt).should == ['Atta as genus', 'Atta as species']
       genus.type_taxon_taxt.should == ', by monotypy'
 
