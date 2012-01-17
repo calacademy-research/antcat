@@ -28,8 +28,8 @@ describe Bolton::Catalog::Subfamily::Importer do
 <p>GENERA <i>INCERTAE SEDIS</i> AND EXCLUSIONS FROM FORMICIDAE</p>
 <p>Genera <i>incertae sedis</i> in FORMICIDAE</p>
 
-<p>Genus <i>CONDYLODON</i></p>
-<p><i>Condoleeza</i> Lund, 1831a: 131. Type-species: <i>Condylodon audouini</i>, by monotypy. </p>
+<p>Genus *<i>CONDYLODON</i></p>
+<p>*<i>Condoleeza</i> Lund, 1831a: 131. Type-species: <i>Condylodon audouini</i>, by monotypy. </p>
 <p>Taxonomic history</p>
 <p><i>Condylodon</i> in family Mutillidae: Swainson &amp; Shuckard, 1840: 173. </p>
 
@@ -70,7 +70,7 @@ describe Bolton::Catalog::Subfamily::Importer do
 
     genus = Genus.find_by_name 'Condylodon'
     genus.should_not be_invalid
-    genus.should_not be_fossil
+    genus.should be_fossil
     genus.should be_incertae_sedis_in 'family'
     genus.subfamily.should be_nil
     genus.taxonomic_history_items.map(&:taxt).should =~ [
@@ -82,10 +82,10 @@ describe Bolton::Catalog::Subfamily::Importer do
     species.should_not be_invalid
     species.name.should == 'audouini'
 
-    genus = Genus.find_by_name 'Promyrmicium'
-    genus.should be_excluded
-
     # this belongs in genus_importer_spec
+    genus = Genus.find_by_name 'Promyrmicium'
+    genus.should be_fossil
+    genus.should be_excluded
     protonym = genus.protonym
     protonym.name.should == 'Promyrmicium'
     protonym.rank.should == 'genus'
@@ -95,6 +95,7 @@ describe Bolton::Catalog::Subfamily::Importer do
 
     genus = Genus.find_by_name 'Myrmicium'
     genus.should be_homonym
+    genus.should be_fossil
     genus.homonym_replaced_by.name.should == 'Promyrmicium'
   end
 

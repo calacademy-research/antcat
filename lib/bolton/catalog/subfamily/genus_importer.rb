@@ -11,11 +11,13 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
 
     headline = consume :genus_headline
     name ||= headline[:protonym][:genus_name]
+    fossil ||= headline[:protonym][:fossil]
 
     taxonomic_history = parse_genus_taxonomic_history
 
     genus = Genus.import({
       :name => name,
+      :fossil => fossil,
       :protonym => headline[:protonym],
       :type_species => headline[:type_species],
       :taxonomic_history => taxonomic_history,
