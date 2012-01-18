@@ -307,7 +307,7 @@ describe Reference do
           options[:page].should == 1
         end
 
-        Reference.do_search :authors => 'Bolton; Fisher'
+        Reference.do_search is_author_search:true, q:'Bolton; Fisher'
       end
     end
 
