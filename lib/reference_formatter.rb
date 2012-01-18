@@ -39,8 +39,8 @@ class ReferenceFormatter
     s << "#{h @reference.citation_year}. "
     s << "#{self.class.italicize(self.class.add_period_if_necessary(h @reference.title))} "
     s << self.class.italicize(format_citation)
-    s << " [#{h format_date(@reference.date)}]" if @reference.date?
-    s
+    s << " [#{format_date(@reference.date)}]" if @reference.date?
+    s.html_safe
   end
 
   def format_inline_citation user
@@ -49,6 +49,8 @@ class ReferenceFormatter
 
   private
   def format_date input
+    input = h input.dup
+
     date = input
     return date if input.length < 4
 
@@ -59,8 +61,10 @@ class ReferenceFormatter
 
     date = input[0, 4]
     return prefix + date + suffix if input.length < 6
+
     date << '-' << input[4, 2]
     return prefix + date + suffix if input.length < 8
+
     date << '-' << input[6, 2]
     prefix + date + suffix
   end
@@ -100,6 +104,6 @@ end
 
 class MissingReferenceFormatter < ReferenceFormatter
   def format_inline_citation _ = nil
-    @reference.citation
+    h @reference.citation
   end
 end

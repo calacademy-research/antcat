@@ -54,8 +54,11 @@ describe Catalog::IndexFormatter do
         @taxon.taxonomic_history_items.create! :taxt => 'Ant'
         @taxon.taxonomic_history_items.create! :taxt => 'Taxonomy'
         @formatter.format_history(@taxon, nil).should ==
-          '<div class="history_item">Ant.</div>' +
-          '<div class="history_item">Taxonomy.</div>'
+          '<h4>Taxonomic history</h4>' +
+          '<div class="history">' +
+            '<div class="history_item">Ant.</div>' +
+            '<div class="history_item">Taxonomy.</div>' +
+          '</div>'
       end
     end
     describe "Taxonomic history item formatting" do
