@@ -25,7 +25,9 @@ describe Taxt do
   describe "Interpolation" do
 
     it "should leave alone a string without fields" do
-      Taxt.to_string('foo').should == 'foo'
+      string = Taxt.to_string 'foo'
+      string.should == 'foo'
+      string.should be_html_safe
     end
     it "should handle nil" do
       Taxt.to_string(nil).should == ''
