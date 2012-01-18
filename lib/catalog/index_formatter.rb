@@ -2,35 +2,37 @@
 module Catalog::IndexFormatter
 
   def format_taxon taxon, current_user
-    header_name       = format_header_name taxon
-    taxon_status      = format_status taxon
-    headline          = format_headline taxon, current_user
-    taxonomic_history = format_taxonomic_history taxon, current_user
-    statistics        = format_taxon_statistics taxon
+    header_name = format_header_name taxon
+    status      = format_status taxon
+    headline    = format_headline taxon, current_user
+    history     = format_history taxon, current_user
+    statistics  = format_taxon_statistics taxon
 
     content_tag :div, :class => :antcat_taxon do
       contents = ''
       contents << content_tag(:div, :class => :header) do
         content_tag(:span, header_name,  :class =>  "name taxon #{taxon.rank}") +
-        content_tag(:span, taxon_status, :class => :status)
+        content_tag(:span, status, :class => :status)
       end
       contents << content_tag(:div,  statistics,        :class => :statistics)
       contents << content_tag(:div,  headline,          :class => :headline)
-      contents << content_tag(:h4,  'Taxonomic history') if taxonomic_history.present?
-      contents << content_tag(:div,  taxonomic_history, :class => :taxonomic_history)
+      contents << content_tag(:h4,  'Taxonomic history') if history.present?
+      contents << content_tag(:div,  history, :class => :history)
       contents.html_safe
     end
 
   end
 
+  #######################
   def format_header_name taxon
-    taxon.kind_of?(::Taxon) ? taxon.full_name.html_safe : ''
+    taxon.full_name.html_safe
   end
 
   def format_status taxon
-    taxon && taxon.invalid? ? status_labels[taxon.status][:singular] : ''
+    taxon.invalid? ? status_labels[taxon.status][:singular] : ''
   end
 
+  #######################
   def format_headline taxon, user
     format_headline_protonym(taxon.protonym, user) + ' ' + format_headline_type(taxon)
   end
@@ -78,21 +80,23 @@ module Catalog::IndexFormatter
     Taxt.to_string(taxt).html_safe
   end
 
-  def format_reference_document_link reference, user
-    "<a class=\"document_link\" target=\"_blank\" href=\"#{reference.url}\">PDF</a>" if reference.downloadable_by? user
-  end
-
-  def format_taxonomic_history taxon, user
+  #######################
+  def format_history taxon, user
     return '' unless taxon
-    taxon.taxonomic_history_items.inject('') do |string, taxonomic_history_item|
-      string << format_taxonomic_history_item(taxonomic_history_item.taxt, user)
+    taxon.taxonomic_history_items.inject('') do |string, history_item|
+      string << format_history_item(history_item.taxt, user)
     end.html_safe
   end
 
-  def format_taxonomic_history_item taxt, user
+  def format_history_item taxt, user
     string = Taxt.to_string taxt, user
     string << '.'
-    content_tag :div, string.html_safe, :class => :taxonomic_history_item
+    content_tag :div, string.html_safe, :class => :history_item
+  end
+
+  #######################
+  def format_reference_document_link reference, user
+    "<a class=\"document_link\" target=\"_blank\" href=\"#{reference.url}\">PDF</a>" if reference.downloadable_by? user
   end
 
 end

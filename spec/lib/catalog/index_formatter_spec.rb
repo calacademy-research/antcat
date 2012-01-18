@@ -53,25 +53,25 @@ describe Catalog::IndexFormatter do
       it "should format a number of items together in order" do
         @taxon.taxonomic_history_items.create! :taxt => 'Ant'
         @taxon.taxonomic_history_items.create! :taxt => 'Taxonomy'
-        @formatter.format_taxonomic_history(@taxon, nil).should ==
-          '<div class="taxonomic_history_item">Ant.</div>' +
-          '<div class="taxonomic_history_item">Taxonomy.</div>'
+        @formatter.format_history(@taxon, nil).should ==
+          '<div class="history_item">Ant.</div>' +
+          '<div class="history_item">Taxonomy.</div>'
       end
     end
     describe "Taxonomic history item formatting" do
       it "should format a phrase" do
-        @formatter.format_taxonomic_history_item('phrase', nil).should == '<div class="taxonomic_history_item">phrase.</div>'
+        @formatter.format_history_item('phrase', nil).should == '<div class="history_item">phrase.</div>'
       end
       it "should format a ref" do
         reference = Factory :article_reference
         ReferenceFormatter.should_receive(:format_inline_citation).with(reference, nil).and_return 'foo'
-        @formatter.format_taxonomic_history_item("{ref #{reference.id}}", nil).should == '<div class="taxonomic_history_item">foo.</div>'
+        @formatter.format_history_item("{ref #{reference.id}}", nil).should == '<div class="history_item">foo.</div>'
       end
       it "should not freak if the ref is malformed" do
-        @formatter.format_taxonomic_history_item("{ref sdf}", nil).should == '<div class="taxonomic_history_item">{ref sdf}.</div>'
+        @formatter.format_history_item("{ref sdf}", nil).should == '<div class="history_item">{ref sdf}.</div>'
       end
       it "should not freak if the ref points to a reference that doesn't exist" do
-        @formatter.format_taxonomic_history_item("{ref 12345}", nil).should == '<div class="taxonomic_history_item">{ref 12345}.</div>'
+        @formatter.format_history_item("{ref 12345}", nil).should == '<div class="history_item">{ref 12345}.</div>'
       end
     end
   end
