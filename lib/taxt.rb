@@ -9,7 +9,7 @@ module Taxt
     return '' unless taxt
     taxt.gsub /{ref (\d+)}/ do |ref|
       ReferenceFormatter.format_inline_citation(Reference.find($1), user) rescue ref
-    end
+    end.html_safe
   end
 
   ################################
