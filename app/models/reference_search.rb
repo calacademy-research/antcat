@@ -104,8 +104,8 @@ class Reference < ActiveRecord::Base
     when options[:review]
       search_options.merge! :order => :updated_at
 
-    when options[:authors]
-      author_names = AuthorParser.parse(options[:authors])[:names]
+    when options[:is_author_search]
+      author_names = AuthorParser.parse(options[:q])[:names]
       authors = Author.find_by_names author_names
       search_options.merge! :authors => authors
 
