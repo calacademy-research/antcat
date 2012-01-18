@@ -67,6 +67,7 @@ ActiveRecord::Schema.define(:version => 20120118210855) do
     t.string   "pages"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "notes_taxt"
   end
 
   add_index "citations", ["reference_id"], :name => "index_authorships_on_reference_id"
