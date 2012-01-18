@@ -46,5 +46,25 @@ describe Citation do
       citation.reference.should == reference
     end
 
+    it "should handle a note" do
+      data = {
+        :author_names=>["Scudder"],
+        :year=>"1877b",
+        :pages=>"270",
+        :notes=>
+        [
+          [
+            {:phrase=>"as member of family", :delimiter=>" "},
+            {:family_or_subfamily_name=>"Braconidae"},
+            {:bracketed=>true}
+          ]
+        ],
+        :reference_text=> "Scudder, 1877b: 270 [as member of family Braconidae]"
+      }
+
+      citation = Citation.import(data).reload
+      citation.notes_taxt.should == " [as member of family Braconidae]"
+    end
+
   end
 end
