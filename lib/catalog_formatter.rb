@@ -34,13 +34,14 @@ class CatalogFormatter
   end
 
   def self.fossil name, is_fossil
-    raise unless name
     string = ''
     string << '&dagger;' if is_fossil
-    string << name
+    string << h(name)
+    string.html_safe
+  end
 
   def self.format_reference_document_link reference, user
-    "<a class=\"document_link\" target=\"_blank\" href=\"#{reference.url}\">PDF</a>" if reference.downloadable_by? user
+    "<a class=\"document_link\" target=\"_blank\" href=\"#{reference.url}\">PDF</a>".html_safe if reference.downloadable_by? user
   end
 
   # deprecated
