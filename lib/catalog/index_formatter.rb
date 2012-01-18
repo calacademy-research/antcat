@@ -94,9 +94,4 @@ module Catalog::IndexFormatter
     content_tag :div, string.html_safe, :class => :history_item
   end
 
-  #######################
-  def format_reference_document_link reference, user
-    "<a class=\"document_link\" target=\"_blank\" href=\"#{reference.url}\">PDF</a>" if reference.downloadable_by? user
-  end
-
 end
