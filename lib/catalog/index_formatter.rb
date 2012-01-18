@@ -30,8 +30,10 @@ module Catalog::IndexFormatter
   end
 
   def x_format_headline_authorship authorship, user
-    authorship = authorship.reference.key.to_link(user) + ": #{h authorship.pages}."
-    content_tag :span, authorship, :class => :authorship
+    string = authorship.reference.key.to_link(user) + ": #{h authorship.pages}"
+    string << Taxt.to_string(authorship.notes_taxt)
+    string << '.'
+    content_tag :span, string, :class => :authorship
   end
 
   def x_format_headline_type_name taxon
