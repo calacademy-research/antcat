@@ -38,6 +38,9 @@ class CatalogFormatter
     string = ''
     string << '&dagger;' if is_fossil
     string << name
+
+  def self.format_reference_document_link reference, user
+    "<a class=\"document_link\" target=\"_blank\" href=\"#{reference.url}\">PDF</a>" if reference.downloadable_by? user
   end
 
   # deprecated

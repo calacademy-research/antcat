@@ -52,4 +52,13 @@ describe CatalogFormatter do
     end
   end
 
+  describe "PDF link formatting" do
+    it "should create a link" do
+      reference = Factory :reference
+      reference.stub(:downloadable_by?).and_return true
+      reference.stub(:url).and_return 'example.com'
+      @formatter.format_reference_document_link(reference, nil).should == '<a class="document_link" target="_blank" href="example.com">PDF</a>'
+    end
+  end
+
 end
