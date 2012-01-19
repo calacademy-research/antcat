@@ -130,15 +130,20 @@ describe Bolton::Catalog::TextToTaxt do
     end
     it "should handle taxon names with other text" do
       @converter.convert([
-        {:family_or_subfamily_name => 'Formicariae', :delimiter => ' '},
-        {:phrase => 'or', :delimiter => ' '},
-        {:family_or_subfamily_name => 'Formicidae'},
+        {family_or_subfamily_name:  'Formicariae', :delimiter => ' '},
+        {phrase:  'or', :delimiter => ' '},
+        {family_or_subfamily_name:  'Formicidae'},
       ]).should == "Formicariae or Formicidae"
     end
     it "should handle a species name" do
       @converter.convert([
         {genus_name: 'Eoformica', species_epithet: 'eocenica'},
       ]).should == "<i>Eoformica eocenica</i>"
+    end
+    it "should handle a species name with subgenus" do
+      @converter.convert([
+        {genus_name:"Formica", subgenus_epithet:"Hypochira", species_epithet:"subspinosa"}
+      ]).should == "<i>Formica (Hypochira) subspinosa</i>"
     end
   end
 
