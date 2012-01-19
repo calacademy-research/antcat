@@ -17,6 +17,9 @@ describe Taxt do
     it "should handle a species name" do
       Taxt.encode_taxon_name('Eoformica', :genus, species_epithet: 'eofornica').should == "<i>Eoformica eofornica</i>"
     end
+    it "should handle a species name with subgenus" do
+      Taxt.encode_taxon_name("Formica", :genus, subgenus_epithet:"Hypochira", species_epithet:"subspinosa").should == "<i>Formica (Hypochira) subspinosa</i>"
+    end
     it "should put a question mark after questionable names" do
       Taxt.encode_taxon_name('Atta', :genus, :questionable => true).should == "<i>Atta?</i>"
     end
