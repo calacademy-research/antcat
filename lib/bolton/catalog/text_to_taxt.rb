@@ -53,8 +53,10 @@ module Bolton::Catalog::TextToTaxt
     bracketed_item = items.find {|i| i[:bracketed]}
     items.delete bracketed_item if bracketed_item
     taxt << ' [' if bracketed_item
+    taxt << ' (' unless bracketed_item
     taxt << convert(items)
     taxt << ']' if bracketed_item
+    taxt << ')' unless bracketed_item
     taxt
   end
 
