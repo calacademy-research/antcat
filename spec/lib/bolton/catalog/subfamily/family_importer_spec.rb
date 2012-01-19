@@ -76,7 +76,7 @@ describe Bolton::Catalog::Subfamily::Importer do
     genus.taxonomic_history_items.map(&:taxt).should =~ [
       "<i>Condylodon</i> in family Mutillidae: {ref #{swainson.id}}: 173"
     ]
-    genus.type_taxon_taxt.should == ', by monotypy'
+    genus.type_taxon_taxt.should == ', by monotypy.'
 
     species = genus.type_taxon
     species.should_not be_invalid

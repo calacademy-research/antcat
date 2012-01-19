@@ -35,7 +35,9 @@ describe Bolton::Catalog::Grammar do
       @grammar.parse('<i>A. (Atturus)</i>', :root => :taxon_label).value_with_reference_text_removed.should == {:genus_abbreviation => 'A.', :subgenus_epithet => 'Atturus'}
     end
     it "should parse a collective group label" do
-      @grammar.parse('*<i>Formicites</i> (collective group name)', :root => :taxon_label).value_with_reference_text_removed.should == {:collective_group_name => 'Formicites', :fossil => true}
+      result = @grammar.parse('*<i>Formicites</i> (collective group name)', root: :taxon_label, consume: false)
+      result.should == '*<i>Formicites</i>'
+      result.value_with_reference_text_removed.should == {collective_group_name: 'Formicites', fossil: true}
     end
     it "matches a species-group epithet label" do
       @grammar.parse('<i>afar</i>', :root => :taxon_label).value_with_reference_text_removed.should == {:species_group_epithet => 'afar'}
@@ -214,7 +216,7 @@ describe Bolton::Catalog::Grammar do
 
   describe "Collective group label" do
     it "should parse a collective group label" do
-      @grammar.parse('*<i>Formicites</i> (collective group name)', :root => :collective_group_label).value_with_reference_text_removed.should == {:collective_group_name => 'Formicites', :fossil => true}
+      @grammar.parse('*<i>Formicites</i> (collective group name)', root: :collective_group_label, consume: false).value_with_reference_text_removed.should == {collective_group_name: 'Formicites', fossil: true}
     end
     it "should parse an uppercase collective group name label" do
       @grammar.parse(%{*<i>MYRMICITES</i>}, :root => :collective_group_label_uppercase).value_with_reference_text_removed.should == {

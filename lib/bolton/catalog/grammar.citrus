@@ -600,7 +600,7 @@ grammar Bolton::Catalog::Grammar
   ###################################################################
 
   rule collective_group_label
-    (genus_label ' (collective group name)') {
+    (genus_label &' (collective group name)') {
       value = {:collective_group_name => genus_label.value[:genus_name]}
       value[:fossil] = true if genus_label[:fossil]
       value
