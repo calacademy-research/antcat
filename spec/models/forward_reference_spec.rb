@@ -32,6 +32,17 @@ describe ForwardReference do
         genus.name.should == 'Formica'
       end
 
+      it "should fixup a fossil :type_taxon" do
+        family = Factory :family
+        forward_reference = ForwardReference.create! source_id: family.id, source_attribute: :type_taxon, target_name: 'Formica', fossil: true
+
+        forward_reference.fixup
+
+        genus = family.reload.type_taxon
+        genus.name.should == 'Formica'
+        genus.should be_fossil
+      end
+
       it "should fixup a :type_taxon for a species" do
         genus = Factory :genus
         forward_reference = ForwardReference.create! :source_id => genus.id, :source_attribute => :type_taxon, :target_name => 'Atta major'
