@@ -67,8 +67,7 @@ grammar Bolton::Catalog::Subfamily::GenusGrammar
         (genus_label '.' /$/)
       | (genus_label ', ' unjustified_emendation)
       | (genus_label '. ' unnecessary_replacement)
-      | (genus_label '. ' type_species ' ' bracketed_phrase)
-      | (genus_label ', ' nomen_nudum '.' (' ' type_species)? (' ' bracketed_phrase)?)
+      | (genus_label ', ' nomen_nudum '.' (' ' type_species)? note:(' ' text)?)
       | (genus_label (' ' as_placement)? '. ' type_species)
       | (genus_label (' ' bracketed_phrase)? '. ' type_species)
       | (genus_label '. ' collective_group_name:'[Collective group name.]')
@@ -77,6 +76,7 @@ grammar Bolton::Catalog::Subfamily::GenusGrammar
       value[:protonym] = genus_label.value
       value.merge! as_placement.value if as_placement
       value[:note] = bracketed_phrase.value if bracketed_phrase
+      value[:note] = text.value if text
       value.merge! type_species.value if type_species
       value[:collective_group_name] = true if collective_group_name and collective_group_name != ''
       value[:nomen_nudum] = true if nomen_nudum

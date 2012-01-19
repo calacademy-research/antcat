@@ -133,7 +133,7 @@ describe Bolton::Catalog::Subfamily::Grammar do
           :genus_name => 'Dolichoformica', :species_epithet => 'helferi', :fossil => true,
           :texts => [{:text => [
             {:phrase => ',', :delimiter => ' '},
-            {:phrase => '<i>nomen nudum</i>'}
+            {:phrase=>'<i>nomen nudum</i>'}
           ], text_suffix:'.'}]
         }
       }
@@ -152,7 +152,14 @@ describe Bolton::Catalog::Subfamily::Grammar do
       }
     end
     it "should handle bracketed phrase after genus nomen nudum" do
-      @grammar.parse('<i>Myrmegis</i> Rafinesque, 1815: 124, <i>nomen nudum</i>. [Brown, 1973b: 182, places <i>Myrmegis</i> as a junior synonym of <i>Atta</i>, because the entry in Rafinesque reads, "6. <i>Myrmegis</i> R. <i>Atta</i> Latr."]').value_with_reference_text_removed
+      @grammar.parse(
+%{<i>Myrmegis</i> Rafinesque, 1815: 124, <i>nomen nudum</i>. [Brown, 1973b: 182.]}
+      ).value_with_reference_text_removed.should == {
+        type: :genus_headline,
+        protonym: {genus_name:"Myrmegis", authorship:[{author_names:["Rafinesque"], year:"1815", pages:"124"}]},
+        :note => {:text=>[{:opening_bracket=>"["}, {:author_names=>["Brown"], :year=>"1973b", :pages=>"182", :delimiter=>"."}, {:closing_bracket=>"]"}]},
+        nomen_nudum:true
+      }
     end
 
     it "should recognize a fossil genus headline with a note" do

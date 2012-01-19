@@ -29,7 +29,7 @@ describe Bolton::Catalog::Subfamily::Importer do
 <p>Genera <i>incertae sedis</i> in FORMICIDAE</p>
 
 <p>Genus *<i>CONDYLODON</i></p>
-<p>*<i>Condoleeza</i> Lund, 1831a: 131. Type-species: <i>Condylodon audouini</i>, by monotypy. </p>
+<p>*<i>Condoleeza</i> Lund, 1831a: 131. Type-species: <i>Condylodon audouini</i>, by monotypy. [Lund, 1831a: 25 says no.]</p>
 <p>Taxonomic history</p>
 <p><i>Condylodon</i> in family Mutillidae: Swainson &amp; Shuckard, 1840: 173. </p>
 
@@ -76,7 +76,7 @@ describe Bolton::Catalog::Subfamily::Importer do
     genus.taxonomic_history_items.map(&:taxt).should =~ [
       "<i>Condylodon</i> in family Mutillidae: {ref #{swainson.id}}: 173"
     ]
-    genus.type_taxon_taxt.should == ', by monotypy.'
+    genus.type_taxon_taxt.should == ", by monotypy. [{ref #{lund.id}}: 25 says no.]"
 
     species = genus.type_taxon
     species.should_not be_invalid

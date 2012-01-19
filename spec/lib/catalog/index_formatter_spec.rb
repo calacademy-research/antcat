@@ -32,14 +32,14 @@ describe Catalog::IndexFormatter do
         genus = Factory :genus, name: 'Atta', type_taxon: species
         species.update_attribute :genus, genus
         @formatter.format_headline_type(genus).should ==
-%{<span class="type">Type-species: <span class="species taxon">Atta major</span>.</span>}
+%{<span class="type">Type-species: <span class="species taxon">Atta major</span></span>}
       end
       it "should show the type taxon with extra Taxt" do
         species = Factory :species, :name => 'major'
         genus = Factory :genus, :name => 'Atta', :type_taxon => species, :type_taxon_taxt => ', by monotypy'
         species.update_attribute :genus, genus
         @formatter.format_headline_type(genus).should ==
-%{<span class="type">Type-species: <span class="species taxon">Atta major</span>, by monotypy.</span>}
+%{<span class="type">Type-species: <span class="species taxon">Atta major</span>, by monotypy</span>}
       end
     end
 

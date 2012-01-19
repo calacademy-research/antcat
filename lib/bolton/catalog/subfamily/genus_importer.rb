@@ -19,6 +19,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
       :name => name,
       :fossil => fossil,
       :protonym => headline[:protonym],
+      :note => headline[:note].try(:[], :text),
       :type_species => headline[:type_species],
       :taxonomic_history => taxonomic_history,
       :attributes => attributes
