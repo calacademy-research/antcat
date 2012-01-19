@@ -78,7 +78,6 @@ module Catalog::IndexFormatter
     content_tag :span, :class => 'type' do
       string = "Type-#{type.type.downcase}: ".html_safe
       string << format_headline_type_name(type) + format_headline_type_taxt(taxt)
-      string << '.'
       string
     end
   end
