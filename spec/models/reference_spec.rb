@@ -266,4 +266,19 @@ describe Reference do
     end
   end
 
+  describe "Short citation year" do
+    it "should be same as citation year if nothing extra" do
+      reference = Factory :article_reference, :citation_year => '1970'
+      reference.short_citation_year.should == '1970'
+    end
+    it "should allow an ordinal letter" do
+      reference = Factory :article_reference, :citation_year => '1970a'
+      reference.short_citation_year.should == '1970a'
+    end
+    it "should be trimmed if there is something extra" do
+      reference = Factory :article_reference, :citation_year => '1970a ("1971")'
+      reference.short_citation_year.should == '1970a'
+    end
+  end
+
 end

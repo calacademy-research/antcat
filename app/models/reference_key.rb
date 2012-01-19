@@ -21,7 +21,7 @@ class ReferenceKey
     else
       string = names[0..-2].join ', '
       string << " & " << names[-1] << ', '
-    end << @reference.citation_year
+    end << @reference.short_citation_year
   end
 
   def to_link user
