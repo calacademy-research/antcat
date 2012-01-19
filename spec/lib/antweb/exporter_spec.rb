@@ -82,11 +82,11 @@ describe Antweb::Exporter do
         @exporter.export_taxon(species).should == ['Myrmicinae', nil, 'Atta', 'robustus', nil, nil, 'TRUE', 'TRUE', nil, nil, 'FALSE', 'history']
       end
 
-      it "should export a species without a subfamily" do
+      it "should export a species without a subfamily as being in the 'incertae sedis' subfamily" do
         atta = Factory :genus, :name => 'Atta', :subfamily => nil, :tribe => nil
         species = Factory :species, :name => 'robustus', :genus => atta, :taxonomic_history => 'Taxonomic history'
         CatalogFormatter.should_receive(:format_taxonomic_history_with_statistics).with(species, :include_invalid => false).and_return 'history'
-        @exporter.export_taxon(species).should == [nil, nil, 'Atta', 'robustus', nil, nil, 'TRUE', 'TRUE', nil, nil, 'FALSE', 'history']
+        @exporter.export_taxon(species).should == ['incertae_sedis', nil, 'Atta', 'robustus', nil, nil, 'TRUE', 'TRUE', nil, nil, 'FALSE', 'history']
       end
 
     end
@@ -112,12 +112,12 @@ describe Antweb::Exporter do
         @exporter.export_taxon(subspecies).should == ['Myrmicinae', nil, 'Atta', 'robustus emeryii', nil, nil, 'TRUE', 'TRUE', nil, nil, 'FALSE', 'history']
       end
 
-      it "should export a subspecies without a subfamily" do
+      it "should export a subspecies without a subfamily as being in the 'incertae sedis' subfamily" do
         atta = Factory :genus, :name => 'Atta', :subfamily => nil, :tribe => nil
         species = Factory :species, :name => 'robustus', :genus => atta, :taxonomic_history => 'Taxonomic history'
         subspecies = Factory :subspecies, :name => 'emeryii', :species => species, :taxonomic_history => 'Taxonomic history'
         CatalogFormatter.should_receive(:format_taxonomic_history_with_statistics).with(subspecies, :include_invalid => false).and_return 'history'
-        @exporter.export_taxon(subspecies).should == [nil, nil, 'Atta', 'robustus emeryii', nil, nil, 'TRUE', 'TRUE', nil, nil, 'FALSE', 'history']
+        @exporter.export_taxon(subspecies).should == ['incertae_sedis', nil, 'Atta', 'robustus emeryii', nil, nil, 'TRUE', 'TRUE', nil, nil, 'FALSE', 'history']
       end
 
     end

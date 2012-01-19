@@ -41,7 +41,8 @@ class Antweb::Exporter
                               :fossil? => taxon.fossil
     when Species
       return unless taxon.genus
-      convert_to_antweb_array :subfamily => taxon.genus.subfamily.try(:name),
+      subfamily_name = taxon.genus.subfamily.try(:name) || 'incertae_sedis'
+      convert_to_antweb_array :subfamily => subfamily_name,
                               :tribe => taxon.genus.tribe.try(:name),
                               :genus => taxon.genus.name,
                               :species => taxon.name,
@@ -50,7 +51,8 @@ class Antweb::Exporter
                               :fossil? => taxon.fossil
     when Subspecies
       return unless taxon.species && taxon.species.genus
-      convert_to_antweb_array :subfamily => taxon.species.genus.subfamily.try(:name),
+      subfamily_name = taxon.genus.subfamily.try(:name) || 'incertae_sedis'
+      convert_to_antweb_array :subfamily => subfamily_name,
                               :tribe => taxon.species.genus.tribe.try(:name),
                               :genus => taxon.species.genus.name,
                               :species => "#{taxon.species.name} #{taxon.name}",
