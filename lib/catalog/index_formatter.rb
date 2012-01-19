@@ -30,7 +30,7 @@ module Catalog::IndexFormatter
   end
 
   def x_format_headline_authorship authorship, user
-    string = authorship.reference.key.to_link(user) + ": #{h authorship.pages}"
+    string = authorship.reference.key.to_link(user) + ": #{authorship.pages}"
     string << Taxt.to_string(authorship.notes_taxt)
     string << '.'
     content_tag :span, string, :class => :authorship
@@ -42,7 +42,7 @@ module Catalog::IndexFormatter
 
   #######################
   def format_header_name taxon
-    h taxon.full_name
+    taxon.full_name
   end
 
   def format_status taxon
@@ -76,10 +76,10 @@ module Catalog::IndexFormatter
     type = taxon.type_taxon
     taxt = taxon.type_taxon_taxt
     content_tag :span, :class => 'type' do
-      string = "Type-#{type.type.downcase}: "
+      string = "Type-#{type.type.downcase}: ".html_safe
       string << format_headline_type_name(type) + format_headline_type_taxt(taxt)
       string << '.'
-      string.html_safe
+      string
     end
   end
 
