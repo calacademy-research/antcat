@@ -9,6 +9,10 @@ describe ReferenceKey do
   end
 
   describe "Representing as a string" do
+    it "Citation year with extra" do
+      reference = Factory :article_reference, :author_names => [Factory(:author_name, :name => 'Bolton, B.')], :citation_year => '1970a ("1971")'
+      reference.key.to_s.should == 'Bolton, 1970a'
+    end
     it "One author" do
       reference = Factory :article_reference, :author_names => [Factory(:author_name, :name => 'Bolton, B.')], :citation_year => '1970a'
       reference.key.to_s.should == 'Bolton, 1970a'
