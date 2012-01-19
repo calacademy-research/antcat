@@ -136,13 +136,15 @@ describe Bolton::Catalog::Subfamily::FamilyGrammar do
             {:tribe_name => 'Myrmelachistini', :delimiter => ' '},
             {:phrase => 'and', :delimiter => ' '},
             {:tribe_name => 'Plagiolepidini'},
-          ]},
-          {:text => [{:phrase => 'Unavailable name', :delimiter => '; '}, {:phrase => 'not based on genus rank taxon'}]},
+          ], text_suffix:'. ', text_prefix: ' '},
+          {:text => [
+            {:phrase => 'Unavailable name', :delimiter => '; '}, {:phrase => 'not based on genus rank taxon'}
+          ], text_suffix: '. '},
           {:text => [
             {:phrase => 'Contained material referable to', :delimiter => ' '},
             {:family_or_subfamily_name => 'Formicinae', :delimiter => ': '},
             {:author_names => ['Bolton'], :year => '1994', :pages => '51'}
-          ]},
+          ], text_suffix: '.'},
         ]
       }
     end
@@ -164,7 +166,7 @@ describe Bolton::Catalog::Subfamily::FamilyGrammar do
         :additional_notes => [
           {:text => [
             {:phrase => 'Unavailable name'}
-          ]}
+          ], text_suffix:".", text_prefix:" "}
         ]
       }
     end

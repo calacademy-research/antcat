@@ -163,7 +163,7 @@ describe Bolton::Catalog::Subfamily::TribeGrammar do
         :texts => [
           :text => [
             {:author_names => ['Bolton'], :year => '2003', :pages => '30'},
-          ]
+          ], text_suffix: '.'
         ],
       }
     end

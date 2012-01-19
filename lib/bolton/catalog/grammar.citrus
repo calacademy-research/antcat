@@ -42,8 +42,10 @@ grammar Bolton::Catalog::Grammar
   ##############################################################################
 
   rule text
-    (text_delimiter* the_text:(bracketed_text_elements_with_optional_period | unbracketed_text_elements)) {
-      the_text.value
+    (prefix:text_delimiter* the_text:(bracketed_text_elements_with_optional_period | unbracketed_text_elements)) {
+      value = the_text.value
+      value.merge! text_prefix: prefix.to_s if prefix && prefix != ''
+      value
     }
   end
 
@@ -80,8 +82,10 @@ grammar Bolton::Catalog::Grammar
   end
 
   rule unbracketed_text_elements
-    (text_element_not_delimited_by_period+ '.'? ' '?) {
-      {:text => captures[:text_element_not_delimited_by_period].map(&:value)}
+    (text_element_not_delimited_by_period+ suffix:('.'? ' '?)) {
+      value = {:text => captures[:text_element_not_delimited_by_period].map(&:value)}
+      value[:text_suffix] = suffix if suffix && suffix != ''
+      value
     }
   end
 

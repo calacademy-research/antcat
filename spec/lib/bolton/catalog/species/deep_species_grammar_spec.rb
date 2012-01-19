@@ -32,7 +32,7 @@ describe Bolton::Catalog::Species::DeepSpeciesGrammar do
             {:closing_parenthesis=>")"}
           ], :delimiter=>": "},
           {:author_names=>["McArthur", "Adams"], :year=>"1996", :pages=>"41"}
-        ]
+        ], text_suffix: '.'
       }
     end
 
@@ -928,14 +928,17 @@ describe Bolton::Catalog::Species::DeepSpeciesGrammar do
           ],
           :references => [{:author_names => ['Dlussky'], :year => '2002a', :pages => '292'}],
         }]},
-        {:text => [
-          {:opening_parenthesis => '('},
-          {:phrase => 'replacement name for', :delimiter => ' '},
-          {:species_group_epithet => 'parvula', :authorship => [{:author_names => ['Dlussky']}], :fossil => true},
-          {:phrase => ", proposed subsequent to Dlussky's 2002a synonymy and hence automatic junior synonym"},
-          {:closing_parenthesis => ")"},
-          {:delimiter => "."},
-        ]},
+        {
+          :text => [
+            {:opening_parenthesis => '('},
+            {:phrase => 'replacement name for', :delimiter => ' '},
+            {:species_group_epithet => 'parvula', :authorship => [{:author_names => ['Dlussky']}], :fossil => true},
+            {:phrase => ", proposed subsequent to Dlussky's 2002a synonymy and hence automatic junior synonym"},
+            {:closing_parenthesis => ")"},
+            {:delimiter => "."},
+          ],
+          :text_prefix => '; ',
+        },
         {:see_also => {
           :references => [{:author_names => ['Dlussky'], :year => '1967b', :pages => '81'}]
         }},

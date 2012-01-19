@@ -178,7 +178,8 @@ describe Bolton::Catalog::Grammar do
           {:closing_bracket => ']'},
         ], :delimiter => ": "},
         {:author_names => ['Bolton'], :year => '1995b', :pages => '192'}
-      ]
+      ],
+      text_suffix: '.'
     }
   end
 
@@ -215,7 +216,7 @@ describe Bolton::Catalog::Grammar do
           {:closing_bracket => ']'},
         ], :delimiter => ": "},
         {:author_names => ['Bolton'], :year => '1995b', :pages => '192'}
-      ]
+      ], text_suffix: '.'
     }
   end
 
@@ -237,7 +238,7 @@ describe Bolton::Catalog::Grammar do
         {:phrase => "Valid species, not synonymous with", :delimiter => ' '},
         {:species_group_epithet => "picea", :authorship => [{:author_names => ['Nylander']}], :delimiter => ': '},
         {:author_names => ['Seifert'], :year => '2004', :pages => '35'},
-      ]
+      ], text_suffix: '.'
     }
   end
 
@@ -246,7 +247,7 @@ describe Bolton::Catalog::Grammar do
       :text => [
         {:phrase => "Smith's description is repeated by", :delimiter => ' '},
         {:author_names => ['Bingham'], :year => '1903', :pages => '335 (footnote)'},
-      ]
+      ], text_suffix: '.'
     }
   end
 
@@ -317,6 +318,18 @@ describe Bolton::Catalog::Grammar do
         {:phrase => 'Colombia', :delimiter => ' + '},
         {:phrase => 'Panama'}
       ]
+    }
+  end
+
+  it "should save the leading whitespace/delimiters" do
+    @grammar.parse(" Start here", :root => :text).value_with_reference_text_removed.should == {
+      text: [{phrase: 'Start here'}], text_prefix: ' ' 
+    }
+  end
+
+  it "should save the trailing whitespace/delimiters" do
+    @grammar.parse("Start here. ", :root => :text).value_with_reference_text_removed.should == {
+      text: [{phrase: 'Start here'}], text_suffix: '. ' 
     }
   end
 

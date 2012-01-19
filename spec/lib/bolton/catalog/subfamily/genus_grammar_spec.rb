@@ -96,7 +96,7 @@ describe Bolton::Catalog::Subfamily::Grammar do
             :texts => [{:text => [
                 {:phrase => ',', :delimiter => ' '},
                 {:phrase => '<i>nomen nudum</i>'},
-            ]}]
+            ], text_suffix:'.'}]
           }
         }
       end
@@ -116,7 +116,7 @@ describe Bolton::Catalog::Subfamily::Grammar do
         :type_species => {
           :genus_name => 'Odontomyrmex',
           :species_epithet => 'quadridentatus',
-          :texts => [{:text => [{:phrase => ', by monotypy'}]}]
+          :texts => [{:text => [{:phrase => ', by monotypy'}], :text_suffix => '.'}]
         }
       }
     end
@@ -134,7 +134,7 @@ describe Bolton::Catalog::Subfamily::Grammar do
           :texts => [{:text => [
             {:phrase => ',', :delimiter => ' '},
             {:phrase => '<i>nomen nudum</i>'}
-          ]}]
+          ], text_suffix:'.'}]
         }
       }
     end
@@ -172,7 +172,7 @@ describe Bolton::Catalog::Subfamily::Grammar do
         },
         :type_species => {
           :genus_name => 'Calyptites', :species_epithet => 'antediluvianum', :fossil => true,
-          :texts => [:text => [{:phrase => ', by monotypy'}]]
+          :texts => [:text => [{:phrase => ', by monotypy'}], text_suffix:'.']
         }
       }
     end
@@ -192,7 +192,7 @@ describe Bolton::Catalog::Subfamily::Grammar do
         },
         :type_species => {
           :genus_name => 'Formica', :subgenus_epithet => 'Hypochira', :species_epithet => 'subspinosa',
-          :texts => [:text => [{:phrase => ', by monotypy'}]]
+          :texts => [:text => [{:phrase => ', by monotypy'}], text_suffix:'.']
         }
       }
     end
@@ -214,8 +214,8 @@ describe Bolton::Catalog::Subfamily::Grammar do
               {:phrase=>"junior synonym of", :delimiter=>" "},
               {:genus_name=>"Eoformica", :species_epithet=>"pingue", :fossil=>true},
               {:closing_parenthesis=>")"}
-            ]},
-            {:text => [{:phrase=>", by monotypy"}]},
+            ], text_prefix:' '},
+            {:text => [{:phrase=>", by monotypy"}], text_suffix:'.'},
           ],
         }
       }
@@ -236,7 +236,7 @@ describe Bolton::Catalog::Subfamily::Grammar do
           :genus_name => 'Gerontoformica',
           :species_epithet => 'cretacica',
           :fossil => true,
-          :texts => [{:text => [{:phrase=>", by original designation"}]}],
+          :texts => [{:text => [{:phrase=>", by original designation"}], text_suffix:'.'}],
         }
       }
     end
