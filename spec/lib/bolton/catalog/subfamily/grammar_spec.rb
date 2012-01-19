@@ -16,7 +16,7 @@ describe Bolton::Catalog::Subfamily::Grammar do
             {:phrase => "in", :delimiter => " "},
             {:family_or_subfamily_name => "Ponerinae", :questionable => true, :delimiter => ": "},
             {:author_names => ["Emery"], :year => "1921f", :pages => "28 (footnote)"},
-      ]}]
+      ], text_suffix:'.'}]
     }
  end
 

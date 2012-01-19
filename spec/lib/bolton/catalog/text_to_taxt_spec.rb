@@ -21,6 +21,11 @@ describe Bolton::Catalog::TextToTaxt do
     @converter.convert(data).should == 'Phrase'
   end
 
+  it "should handle prefix and suffix" do
+    data = [{:text=> [{:phrase=>"junior synonym of"}], text_prefix:" ", text_suffix:'.'}]
+    @converter.convert(data).should == ' junior synonym of.'
+  end
+
   describe "Citations" do
     it "should handle a citation" do
       reference = Factory :article_reference, :bolton_key_cache => 'Latreille 1809'

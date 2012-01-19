@@ -60,9 +60,14 @@ module Bolton::Catalog::TextToTaxt
 
   def self.nested item
     return unless item[:text]
+    prefix = item.delete :text_prefix
+    suffix = item.delete :text_suffix
     delimiter = item[:text].delete :delimiter
     taxt = convert item[:text]
     add_delimiter taxt, item
+    taxt = prefix + taxt if prefix
+    taxt = taxt + suffix if suffix
+    taxt
   end
 
   def self.taxon_name item

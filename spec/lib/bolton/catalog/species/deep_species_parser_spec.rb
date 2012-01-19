@@ -236,12 +236,12 @@ describe Bolton::Catalog::Species::DeepSpeciesGrammar do
               {:closing_bracket=>"]"}
             ], :delimiter=>": "},
             {:author_names=>["Bolton"], :year=>"1995b", :pages=>"192"},
-          ]},
+          ], text_suffix: '. '},
           {:text => [
             {:phrase=>"Valid species, not synonymous with", :delimiter => " "},
             {:species_group_epithet => 'picea', :authorship => [{:author_names => ['Nylander']}], :delimiter => ': '},
             {:author_names => ['Seifert'], :year => '2004', :pages => '35'},
-          ]},
+          ], text_suffix: '. '},
           {:subspecies => [{:species_group_epithet => 'formosae'}]},
         ]
       }
