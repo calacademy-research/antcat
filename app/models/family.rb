@@ -4,12 +4,17 @@ class Family < Taxon
   def self.import data
     transaction do
       protonym = Protonym.import data[:protonym]
-      family = create! :name => 'Formicidae', :status => 'valid', :protonym => protonym
-      data[:taxonomic_history].each do |item|
-        family.taxonomic_history_items.create! :taxt => item
-      end
-      family.update_attribute :type_taxon_taxt, Bolton::Catalog::TextToTaxt.convert(data[:type_genus][:texts])
-      ForwardReference.create! :source_id => family.id, :source_attribute => :type_taxon, :target_name => data[:type_genus][:genus_name]
+      type_taxon_taxt = Bolton::Catalog::TextToTaxt.convert(data[:type_genus][:texts])
+      headline_notes_taxt = Bolton::Catalog::TextToTaxt.convert(data[:note])
+
+      family = create! name: 'Formicidae', status: 'valid', protonym: protonym,
+                       type_taxon_taxt: type_taxon_taxt,
+                       headline_notes_taxt: headline_notes_taxt
+
+      data[:taxonomic_history].each {|item| family.taxonomic_history_items.create! :taxt => item}
+
+      ForwardReference.create! :source_id => family.id, :source_attribute => :type_taxon,
+                               :target_name => data[:type_genus][:genus_name]
       family
     end
   end

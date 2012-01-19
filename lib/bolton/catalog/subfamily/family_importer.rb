@@ -23,6 +23,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     family = Family.import({
       :protonym => headline[:protonym],
       :type_genus => headline[:type_genus],
+      :note => headline[:note],
       :taxonomic_history => [Bolton::Catalog::TextToTaxt.convert(taxonomic_history[:items])]
     })
     Progress.info "Created #{family.name}"

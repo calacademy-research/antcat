@@ -34,6 +34,34 @@ describe Family do
 
       authorship.reference.should == reference
     end
+    it "should save the note (when there's not a type taxon note)" do
+      reference = Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
+      data =  {
+        :protonym => {
+          :family_or_subfamily_name => "Formicariae",
+          :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
+        },
+        :type_genus => {:genus_name => 'Formica'},
+        :note => [{:phrase=>"[Note.]"}],
+        :taxonomic_history => ["Formicidae as family"]
+      }
+
+      family = Family.import(data).reload
+      family.name.should == 'Formicidae'
+      family.should_not be_invalid
+      family.should_not be_fossil
+      family.taxonomic_history_items.map(&:taxt).should == ['Formicidae as family']
+
+      family.headline_notes_taxt.should == '[Note.]'
+
+      protonym = family.protonym
+      protonym.name.should == 'Formicariae'
+
+      authorship = protonym.authorship
+      authorship.pages.should == '124'
+
+      authorship.reference.should == reference
+    end
   end
 
   describe "Statistics" do

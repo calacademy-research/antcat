@@ -40,6 +40,10 @@ module Catalog::IndexFormatter
     content_tag(:span, fossil(taxon.full_name, taxon.fossil), :class => "#{taxon.rank} taxon")
   end
 
+  def x_css_classes_for_taxon taxon
+    "name taxon #{taxon.rank}"
+  end
+
   #######################
   def format_header_name taxon
     taxon.full_name
@@ -51,7 +55,10 @@ module Catalog::IndexFormatter
 
   #######################
   def format_headline taxon, user
-    format_headline_protonym(taxon.protonym, user) + ' ' + format_headline_type(taxon)
+    string = format_headline_protonym(taxon.protonym, user) + ' ' + format_headline_type(taxon)
+    headline_notes = format_headline_notes taxon
+    string << ' ' << headline_notes if headline_notes
+    string
   end
 
   def format_headline_protonym protonym, user
@@ -90,8 +97,9 @@ module Catalog::IndexFormatter
     Taxt.to_string taxt
   end
 
-  def x_css_classes_for_taxon taxon
-    "name taxon #{taxon.rank}"
+  def format_headline_notes taxon
+    return unless taxon.headline_notes_taxt.present?
+    Taxt.to_string taxon.headline_notes_taxt
   end
 
   #######################
