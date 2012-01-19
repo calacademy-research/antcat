@@ -14,8 +14,11 @@ describe Taxt do
     it "should put italics back around taxon names" do
       Taxt.encode_taxon_name('Atta', :genus).should == "<i>Atta</i>"
     end
+    it "should put a question mark after questionable names" do
+      Taxt.encode_taxon_name('Atta', :genus, :questionable => true).should == "<i>Atta?</i>"
+    end
     it "should put a dagger in front" do
-      Taxt.encode_taxon_name('Atta', :genus, true).should == "<i>&dagger;Atta</i>"
+      Taxt.encode_taxon_name('Atta', :genus, :fossil => true).should == "<i>&dagger;Atta</i>"
     end
     it "should not freak at a family_or_subfamily" do
       Taxt.encode_taxon_name('Dolichoderinae', :family_or_subfamily).should == "Dolichoderinae"

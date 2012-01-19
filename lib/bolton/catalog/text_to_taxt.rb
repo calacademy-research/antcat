@@ -70,7 +70,7 @@ module Bolton::Catalog::TextToTaxt
     key, name = find_one_of(keys, item)
     return unless key
     key = key.to_s.gsub(/_name$/, '').to_sym
-    taxt = Taxt.encode_taxon_name name, key, item[:fossil], item
+    taxt = Taxt.encode_taxon_name name, key, item
     add_delimiter taxt, item
   end
 

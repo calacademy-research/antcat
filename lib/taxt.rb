@@ -21,16 +21,17 @@ module Taxt
     "{ref #{reference.id}}"
   end
 
-  def self.encode_taxon_name name, rank, fossil = false, data = {}
+  def self.encode_taxon_name name, rank, data = {}
     if name && data[:suborder_name]
-      return "#{CatalogFormatter.fossil(name, fossil)} (#{data[:suborder_name]})"
+      return "#{CatalogFormatter.fossil(name, data[:fossil])} (#{data[:suborder_name]})"
     end
 
     italicize = [:collective_group, :genus].include? rank
 
     output = ''
     output << '<i>' if italicize
-    output << CatalogFormatter.fossil(name, fossil)
+    output << CatalogFormatter.fossil(name, data[:fossil])
+    output << '?' if data[:questionable]
     output << '</i>' if italicize
     output
   end
