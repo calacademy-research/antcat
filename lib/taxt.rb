@@ -28,6 +28,10 @@ module Taxt
 
     italicize = [:collective_group, :genus].include? rank
 
+    if rank == :genus && data[:species_epithet]
+      name += ' ' + data[:species_epithet]
+    end
+
     output = ''
     output << '<i>' if italicize
     output << CatalogFormatter.fossil(name, data[:fossil])

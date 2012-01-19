@@ -135,6 +135,11 @@ describe Bolton::Catalog::TextToTaxt do
         {:family_or_subfamily_name => 'Formicidae'},
       ]).should == "Formicariae or Formicidae"
     end
+    it "should handle a species name" do
+      @converter.convert([
+        {genus_name: 'Eoformica', species_epithet: 'eocenica'},
+      ]).should == "<i>Eoformica eocenica</i>"
+    end
   end
 
 end
