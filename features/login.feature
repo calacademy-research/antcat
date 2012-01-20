@@ -1,3 +1,4 @@
+@javascript
 Feature: Logging in
   As a user of AntCat
   I want to be able to log in

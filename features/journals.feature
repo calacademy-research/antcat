@@ -1,3 +1,4 @@
+@dormant
 Feature: Editing journals
   As an editor of AntCat
   I want to change the titles of journals

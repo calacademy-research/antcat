@@ -1,7 +1,7 @@
 # coding: UTF-8
 require 'spec_helper'
 
-describe Reference do
+describe Reference, slow:true do
   include EnableSunspot
 
   before do

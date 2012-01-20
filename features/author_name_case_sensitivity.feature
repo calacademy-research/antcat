@@ -1,3 +1,4 @@
+@dormant @javascript
 Feature: Author name case-sensitivity
   As Marek
   I want to respect the case of an author's name in the source of a reference

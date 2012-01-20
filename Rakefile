@@ -1,25 +1,32 @@
 require File.expand_path('../config/application', __FILE__)
 require 'rake'
 
-unless Rails.env.production?
-  require 'cucumber/rake/task'
-  namespace :cucumber do
-    Cucumber::Rake::Task.new(:plain, "Run features that don't use Selenium") do |t|
-      t.profile = 'plain'
-    end
-    Cucumber::Rake::Task.new(:enhanced, "Run features that use Selenium") do |t|
-      t.profile = 'enhanced'
-    end
-  end
-
-  begin
-    require 'metric_fu'
-  rescue MissingSourceFile
-  end
-end
-
 AntCat::Application.load_tasks
 
-task(:cucumber).clear
-desc "Run both plain and enhanced Cucumber features"
-task :cucumber => ['cucumber:plain', 'cucumber:enhanced']
+unless Rails.env.production?
+  require 'cucumber/rake/task'
+  require 'rspec/core/rake_task'
+
+  task(:spec).clear
+  RSpec::Core::RakeTask.new(:spec, "Run normal specs") do |t|
+    Rake::Task['db:test:prepare'].invoke
+    t.rspec_opts = '--tag ~slow'
+  end
+  task('spec:all').clear
+  RSpec::Core::RakeTask.new('spec:all', "Run normal and slow specs") do |_|
+    Rake::Task['db:test:prepare'].invoke
+  end
+
+  task(:cucumber).clear
+  Cucumber::Rake::Task.new :cucumber, "Run current features" do |t|
+    Rake::Task['db:test:prepare'].invoke
+    t.cucumber_opts = "--tags ~@dormant"
+  end
+  task('cucumber:all').clear
+  Cucumber::Rake::Task.new('cucumber:all', "Run normal and dormant features") do |_|
+    Rake::Task['db:test:prepare'].invoke
+  end
+
+  desc "Run all tests and features"
+  task :all => ['spec:all', 'cucumber:all']
+end

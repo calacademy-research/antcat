@@ -2,15 +2,15 @@ Feature: Using the catalog browser
   As a user of AntCat
   I want to browse the ant catalog
 
-  Background:
-    Given a subfamily exists with a name of "Dolichoderinae" and a taxonomic history of "Dolichoderinae history"
-    And a subfamily exists with a name of "Myrmicinae" and a taxonomic history of "Myrmicinae history"
-    And a genus exists with a name of "Atta" and a subfamily of "Myrmicinae" and a taxonomic history of "Atta history"
-    And a genus exists with a name of "Tetramorium" and a subfamily of "Myrmicinae" and a taxonomic history of "Tetramorium history"
-    And a genus exists with a name of "Myrmicinae" and no subfamily and a taxonomic history of "Myrmicinae history"
-    And a species exists with a name of "nigra" and a genus of "Atta" and a taxonomic history of "Atta nigra history"
-    And a species exists with a name of "attaxus" and a genus of "Tetramorium" and a taxonomic history of "Tetramorium attaxus history"
-    And a species exists with a name of "nigra" and a genus of "Tetramorium" and a taxonomic history of "Tetramorium nigra history"
+  #Background:
+    #Given a subfamily exists with a name of "Dolichoderinae" and a taxonomic history of "Dolichoderinae history"
+    #And a subfamily exists with a name of "Myrmicinae" and a taxonomic history of "Myrmicinae history"
+    #And a genus exists with a name of "Atta" and a subfamily of "Myrmicinae" and a taxonomic history of "Atta history"
+    #And a genus exists with a name of "Tetramorium" and a subfamily of "Myrmicinae" and a taxonomic history of "Tetramorium history"
+    #And a genus exists with a name of "Myrmicinae" and no subfamily and a taxonomic history of "Myrmicinae history"
+    #And a species exists with a name of "nigra" and a genus of "Atta" and a taxonomic history of "Atta nigra history"
+    #And a species exists with a name of "attaxus" and a genus of "Tetramorium" and a taxonomic history of "Tetramorium attaxus history"
+    #And a species exists with a name of "nigra" and a genus of "Tetramorium" and a taxonomic history of "Tetramorium nigra history"
     #When I go to the catalog browser
 
   #Scenario: Viewing subfamilies

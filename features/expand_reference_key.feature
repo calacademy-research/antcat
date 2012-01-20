@@ -1,3 +1,4 @@
+@javascript
 Feature: Expanding reference keys
   As an AntCat user
   When I see a short reference key
