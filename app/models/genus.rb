@@ -34,6 +34,12 @@ class Genus < Taxon
   def self.import data
     transaction do
       protonym = Protonym.import data[:protonym]
+
+      type_taxon_name = nil
+      if data[:type_species]
+        type_taxon_name = Taxt.encode_taxon_name data[:type_species][:genus_name], :genus, data[:type_species]
+      end
+
       headline_notes_taxt = Bolton::Catalog::TextToTaxt.convert(data[:note])
       attributes = {
         name:data[:name],
@@ -41,6 +47,7 @@ class Genus < Taxon
         status:'valid',
         protonym:protonym,
         headline_notes_taxt: headline_notes_taxt,
+        type_taxon_name: type_taxon_name
       }
       attributes.merge! data[:attributes] if data[:attributes]
       if data[:type_species]

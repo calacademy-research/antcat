@@ -22,6 +22,7 @@ module Taxt
   end
 
   def self.encode_taxon_name name, rank, data = {}
+    name = name.dup
     if name && data[:suborder_name]
       return "#{CatalogFormatter.fossil(name, data[:fossil])} (#{data[:suborder_name]})"
     end

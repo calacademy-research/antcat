@@ -110,7 +110,7 @@ describe Species do
 
   describe "Creating from a fixup" do
     it "should create the species, and use the passed-in genus" do
-      Progress.should_receive(:log).with("FIXUP created species Atta major (fossil)")
+      Progress.should_receive(:log).with("FIXUP created species Atta major (Atta major) (fossil)")
       genus = Factory :genus, name: 'Atta'
       species = Species.create_from_fixup genus_id: genus.id, name: 'Atta major', fossil: true
       species.reload.name.should == 'major'
@@ -119,9 +119,10 @@ describe Species do
       species.genus.should == genus
     end
 
-    it "should raise an error if the passed-in genus doesn't have the same name as the genus name in the species name" do
+    it "should not raise an error if the passed-in genus doesn't have the same name as the genus name in the species name" do
       genus = Factory :genus, name: 'NotAtta'
-      lambda {Species.create_from_fixup genus_id: genus.id, name: 'Atta major', fossil: true}.should raise_error
+      Species.create_from_fixup genus_id: genus.id, name: 'Atta major', fossil: true
+      genus.reload.type_taxon_name.should == 'Atta major'
     end
 
     it "should find an existing species" do

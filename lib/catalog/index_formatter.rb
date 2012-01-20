@@ -37,7 +37,7 @@ module Catalog::IndexFormatter
   end
 
   def x_format_headline_type_name taxon
-    content_tag(:span, taxon.type_taxon_name, :class => "#{taxon.rank} taxon")
+    content_tag(:span, taxon.type_taxon_name, :class => "#{taxon.type_taxon.rank} taxon")
   end
 
   def x_css_classes_for_taxon taxon
@@ -84,7 +84,7 @@ module Catalog::IndexFormatter
     taxt = taxon.type_taxon_taxt
     content_tag :span, :class => 'type' do
       string = "Type-#{type.type.downcase}: ".html_safe
-      string << format_headline_type_name(type) + format_headline_type_taxt(taxt)
+      string << format_headline_type_name(taxon) + format_headline_type_taxt(taxt)
       string
     end
   end
