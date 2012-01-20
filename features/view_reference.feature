@@ -1,3 +1,4 @@
+@dormant
 Feature: View reference when logged in and logged out
   As a user
   I want to see the bibliography

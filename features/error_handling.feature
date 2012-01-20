@@ -1,3 +1,4 @@
+@dormant @javascript
 Feature: Error handling
   As Phil Ward
   I want to see what's wrong when there's an error

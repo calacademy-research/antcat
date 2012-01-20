@@ -100,10 +100,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     return '' unless @type == :genera_list
     Progress.info 'parse_genera_lists'
 
-    parsed_text = ''
-
     while @type == :genera_list
-      parsed_text << @paragraph
       @parse_result[:genera].each do |genus|
         attributes = {:name => genus[:name], :fossil => genus[:fossil], :status => genus[:status] || 'valid'}.merge parent_attributes
         attributes.merge!(:incertae_sedis_in => parent_rank.to_s) if @parse_result[:incertae_sedis]
@@ -125,7 +122,6 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
       parse_next_line
     end
 
-    parsed_text
   end
 
   def parse_genera

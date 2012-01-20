@@ -1,3 +1,4 @@
+@dormant
 Feature: Reviewing features
   As an editor of AntCat
   I want to see recently changed references

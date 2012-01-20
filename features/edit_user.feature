@@ -1,3 +1,4 @@
+@dormant
 Feature: Editing a user
   As a user of AntCat
   I want to edit my password and email

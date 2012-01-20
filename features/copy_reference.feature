@@ -1,3 +1,4 @@
+@dormant @javascript
 Feature: Copy reference
   As Phil Ward
   I want to add new references using existing reference data

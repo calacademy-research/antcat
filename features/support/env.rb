@@ -63,3 +63,7 @@ end
 at_exit do
   Sunspot.session = Sunspot::Rails::StubSessionProxy.new(Sunspot.session)
 end
+
+Spork.each_run do
+  FactoryGirl.reload
+end

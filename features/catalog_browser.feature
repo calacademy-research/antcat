@@ -183,4 +183,3 @@ Feature: Using the catalog browser
   Scenario: Viewing the key
     When I follow "View full key"
     Then I should see "GREEN BOLD ITALIC"
-
