@@ -24,7 +24,6 @@ describe Family do
       family.should_not be_fossil
       family.taxonomic_history_items.map(&:taxt).should == ['Formicidae as family']
 
-      family.type_taxon_name.should == '<i>Formica</i>'
       family.type_taxon_taxt.should == ', by monotypy'
 
       protonym = family.protonym

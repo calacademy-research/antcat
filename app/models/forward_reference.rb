@@ -14,7 +14,7 @@ class ForwardReference < ActiveRecord::Base
         Species.create_from_fixup name: target_name, genus_id: source_id, fossil: fossil
       else raise
       end
-    source.update_attribute :type_taxon, target
+    source.update_attributes type_taxon: target, type_taxon_name: CatalogFormatter::fossil(target_name, fossil)
   end
 
 end
