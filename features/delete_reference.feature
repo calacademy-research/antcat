@@ -1,3 +1,4 @@
+@dormant @javascript
 Feature: Delete reference
   As Phil Ward
   I want to delete a reference

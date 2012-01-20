@@ -1,4 +1,5 @@
-Feature: View bibliography (JavaScript)
+@javascript
+Feature: View Bolton bibliography
   As an AntCat bibliography editor
   I want to see the Bolton bibliography
   So that I can compare it to AntCat's

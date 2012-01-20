@@ -1,3 +1,4 @@
+@dormant
 Feature: COinS formatting
   As a researcher
   I want to use Zotero to extract citations from AntCat
