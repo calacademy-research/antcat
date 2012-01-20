@@ -32,19 +32,17 @@ class Species < Taxon
   def self.create_from_fixup attributes
     name = attributes[:name]
     fossil = attributes[:fossil]
+    genus_name = name.split.first
+    species_epithet = name.split.second
+    genus = Genus.find attributes[:genus_id]
 
-    genus_attributes = {:name => name.split.first, :status => 'valid', :fossil => fossil}
-    genus = Genus.find_by_name  genus_attributes[:name]
-    unless genus
-      genus = Genus.create! genus_attributes
-      Progress.log "FIXUP created genus #{genus.name} #{fossil ? '(fossil)' : ''}"
-    end
+    raise "Fixing up '#{name}' in genus '#{genus.name}'" unless genus_name == genus.name
 
-    species_attributes = {:name => name.split.second, :status => 'valid', :fossil => fossil}
-    species = Species.find_by_name  species_attributes[:name]
+    species_attributes = {genus: genus, name: species_epithet, status: 'valid', fossil: fossil}
+    species = Species.find_by_name_and_genus_id  species_attributes[:name], genus.id
     unless species
-      species = Species.create! species_attributes.merge :genus => genus
-      Progress.log "FIXUP created species #{genus.name} #{species.name} #{fossil ? '(fossil)' : ''}"
+      species = Species.create! species_attributes
+      Progress.log "FIXUP created species #{genus_name} #{species_epithet} #{fossil ? '(fossil)' : ''}"
     end
 
     species

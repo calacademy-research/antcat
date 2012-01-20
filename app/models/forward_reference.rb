@@ -9,9 +9,9 @@ class ForwardReference < ActiveRecord::Base
     source = Taxon.find source_id
     target = case source
       when Family
-        Genus.create! :name => target_name, :status => 'valid', :fossil => fossil
+        Genus.create! name: target_name, status: 'valid', fossil: fossil
       when Genus
-        Species.create_from_fixup :name => target_name, :fossil => fossil
+        Species.create_from_fixup name: target_name, genus_id: source_id, fossil: fossil
       else raise
       end
     source.update_attribute :type_taxon, target

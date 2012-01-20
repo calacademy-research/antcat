@@ -168,6 +168,7 @@ describe Genus do
   end
 
   describe "Importing" do
+
     it "should work" do
       reference = Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
       genus = Genus.import({
@@ -195,6 +196,7 @@ describe Genus do
 
       authorship.reference.should == reference
     end
+
     it "should not mind if there's no type" do
       reference = Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
       genus = Genus.import({
@@ -208,5 +210,22 @@ describe Genus do
       ForwardReference.fixup
       genus.type_taxon.should be_nil
     end
+
+    it "should make sure the type-species is fixed up to point to the genus and not just to any genus with the same name" do
+      reference = Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
+
+      genus = Genus.import({
+        :name => 'Myrmicium',
+        :protonym => {
+          :name => "Myrmicium",
+          :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
+        },
+        :type_species => {:genus_name => 'Myrmicium', :species_epithet => 'heeri'},
+        :taxonomic_history => []
+      })
+      ForwardReference.fixup
+      genus.reload.type_taxon.genus.should == genus
+    end
+
   end
 end
