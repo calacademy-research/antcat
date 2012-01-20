@@ -37,7 +37,7 @@ module Catalog::IndexFormatter
   end
 
   def x_format_headline_type_name taxon
-    content_tag(:span, taxon.type_taxon_name, :class => "#{taxon.type_taxon.rank} taxon")
+    content_tag(:span, taxon.type_taxon_name.html_safe, :class => "#{taxon.type_taxon.rank} taxon")
   end
 
   def x_css_classes_for_taxon taxon
