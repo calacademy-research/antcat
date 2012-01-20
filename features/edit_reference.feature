@@ -1,3 +1,4 @@
+@dormant @javascript
 Feature: Edit reference
   As Phil Ward
   I want to change previously entered references

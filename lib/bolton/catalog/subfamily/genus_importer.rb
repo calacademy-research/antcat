@@ -46,32 +46,29 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
 
   def parse_genus_references
     return '' unless @type == :genus_references_header || @type == :genus_references_see_under
-
     Progress.method
-    parsed_text = @paragraph
-    parse_reference_section = @type != :genus_references_see_under
-    parse_next_line
-    parsed_text << @paragraph
+
+    do_parse_reference_section = @type != :genus_references_see_under
+
     texts = []
-    if @type == :texts
-      texts.concat @parse_result[:texts] if @parse_result[:texts]
-      @parse_result[:texts] = texts
-      @parse_result[:type] = :reference_section
-      @type = :reference_section
-      Progress.info 'reparsed as reference_section'
-    end
-    return parsed_text unless parse_reference_section && @type == :reference_section
+
     parse_next_line
+    do_foo texts
+
+    return unless do_parse_reference_section && @type == :reference_section
+
+    do_foo texts
+  end
+
+  def do_foo texts
     if @type == :texts
       texts.concat @parse_result[:texts] if @parse_result[:texts]
       @parse_result[:texts] = texts
       @parse_result[:type] = :reference_section
       @type = :reference_section
       Progress.info 'reparsed as reference_section'
-      parsed_text << @paragraph
       parse_next_line
     end
-    parsed_text
   end
 
   def parse_homonym_replaced_by_genus replaced_by_genus
@@ -86,17 +83,14 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     #return '' unless @type == :junior_synonyms_of_genus_header
     #Progress.method
 
-    #parsed_text = @paragraph
     #parse_next_line
 
-    #parsed_text << parse_junior_synonym_of_genus(genus) while @type == :genus_headline
+    #parse_junior_synonym_of_genus(genus) while @type == :genus_headline
 
-    #parsed_text
   #end
 
   #def parse_junior_synonym_of_genus genus
     #Progress.method
-    #parsed_text = ''
     #name = @parse_result[:genus_name]
     #fossil = @parse_result[:fossil]
     #taxonomic_history = @paragraph
@@ -105,18 +99,14 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     #genus = ::Genus.create! :name => name, :fossil => fossil, :status => 'synonym', :synonym_of => genus,
                           #:subfamily => genus.subfamily, :tribe => genus.tribe, :taxonomic_history => clean_taxonomic_history(taxonomic_history)
     #Progress.info "Created #{genus.name} junior synonym of genus"
-    #parsed_text << taxonomic_history
-    #parsed_text << parse_homonym_replaced_by_genus(genus)
+    #parse_homonym_replaced_by_genus(genus)
 #  end
 
   def parse_genera_lists parent_rank, parent_attributes = {}
-    return '' unless @type == :genera_list
+    return unless @type == :genera_list
     Progress.method
 
-    parsed_text = ''
-
     while @type == :genera_list
-      parsed_text << @paragraph
       @parse_result[:genera].each do |genus|
         attributes = {:name => genus[:name], :fossil => genus[:fossil], :status => genus[:status] || 'valid'}.merge parent_attributes
         attributes.merge!(:incertae_sedis_in => parent_rank.to_s) if @parse_result[:incertae_sedis]
@@ -138,7 +128,6 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
       parse_next_line
     end
 
-    parsed_text
   end
 
   #################################################################

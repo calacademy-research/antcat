@@ -1,3 +1,4 @@
+@dormant
 Feature: Seeing what's new
   As a user of AntCat
   I want to see recently added references

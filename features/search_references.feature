@@ -1,3 +1,4 @@
+@dormant
 Feature: Searching references
   As a user of AntCat
   I want to search for references

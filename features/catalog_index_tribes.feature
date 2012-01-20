@@ -4,15 +4,15 @@ Feature: Hiding and showing tribes in the index
   Since I may not care about that rank
   And I don't want to have to choose from the tribes
 
-  Background:
-    Given the Formicidae family exists
-    And a subfamily exists with a name of "Dolichoderinae"
-    And a tribe exists with a name of "Dolichoderini" and a subfamily of "Dolichoderinae"
-    And a tribe exists with a name of "Tapinomini" and a subfamily of "Dolichoderinae"
-    And a genus exists with a name of "Dolichoderus" and a tribe of "Dolichoderini"
-    And a genus exists with a name of "Atta" and a subfamily of "Dolichoderinae"
-    And a genus exists with a name of "Tapinoma" and a tribe of "Tapinomini"
-    And a species exists with a name of "rufa" and a genus of "Atta"
+  #Background:
+    #Given the Formicidae family exists
+    #And a subfamily exists with a name of "Dolichoderinae"
+    #And a tribe exists with a name of "Dolichoderini" and a subfamily of "Dolichoderinae"
+    #And a tribe exists with a name of "Tapinomini" and a subfamily of "Dolichoderinae"
+    #And a genus exists with a name of "Dolichoderus" and a tribe of "Dolichoderini"
+    #And a genus exists with a name of "Atta" and a subfamily of "Dolichoderinae"
+    #And a genus exists with a name of "Tapinoma" and a tribe of "Tapinomini"
+    #And a species exists with a name of "rufa" and a genus of "Atta"
 
   #Scenario: Hiding tribes
     #When I go to the catalog index
