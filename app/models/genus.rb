@@ -53,10 +53,13 @@ class Genus < Taxon
         genus.taxonomic_history_items.create! taxt: item
       end
 
-      if data[:type_species]
-        target_name = data[:type_species][:genus_name] + ' ' + data[:type_species][:species_epithet]
+      type_species = data[:type_species]
+      if type_species
+        target_name = type_species[:genus_name]
+        target_name << ' (' << type_species[:subgenus_epithet] + ')' if type_species[:subgenus_epithet]
+        target_name << ' '  << type_species[:species_epithet]
         ForwardReference.create! source_id: genus.id, source_attribute: :type_taxon, target_name: target_name,
-          fossil: data[:type_species][:fossil]
+          fossil: type_species[:fossil]
       end
 
       genus
