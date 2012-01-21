@@ -197,6 +197,19 @@ describe Genus do
       authorship.reference.should == reference
     end
 
+    it "save the subgenus part correctly" do
+      Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
+      genus = Genus.import({
+        name: 'Atta',
+        protonym: {genus_name: "Atta", authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]},
+        type_species: {genus_name: 'Atta', subgenus_epithet: 'Solis', species_epithet: 'major',
+                          texts: [{text: [{phrase: ', by monotypy'}]}]},
+        taxonomic_history: [],
+      })
+      ForwardReference.fixup
+      genus.reload.type_taxon_name.should == 'Atta (Solis) major'
+    end
+
     it "should not mind if there's no type" do
       reference = Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
       genus = Genus.import({
