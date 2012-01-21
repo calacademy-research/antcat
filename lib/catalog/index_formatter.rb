@@ -15,6 +15,7 @@ module Catalog::IndexFormatter
       contents << content_tag(:div,  statistics,:class => :statistics)
       contents << content_tag(:div,  headline,  :class => :headline)
       contents << format_history(taxon, current_user)
+      contents << format_references(taxon, current_user)
       contents
     end
 
@@ -118,4 +119,13 @@ module Catalog::IndexFormatter
     content_tag :div, string.html_safe, :class => :history_item
   end
 
+  #######################
+  def format_references taxon, user
+    return '' unless taxon.references_taxt.present?
+
+    references = Taxt.to_string taxon.references_taxt, user
+
+    content_tag(:h4,  'Genus references') +
+    content_tag(:div, references, :class => :references)
+  end
 end
