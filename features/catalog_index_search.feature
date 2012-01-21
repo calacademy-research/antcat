@@ -14,14 +14,13 @@ Feature: Searching the catalog index
     When I go to the catalog index
       And I fill in the search box with "asdfjl;jsdf"
       And I press "Go" by the search box
-      And show me the page
     Then I should see "No results found"
 
-  #Scenario: Searching when only one result
-    #When I go to the catalog index
-    #When I fill in the search box with "abruptus"
-      #And I press "Go" by the search box
-    #Then I should see "abruptus history"
+  Scenario: Searching when only one result
+    When I go to the catalog index
+    When I fill in the search box with "abruptus"
+      And I press "Go" by the search box
+    Then I should see "abruptus history"
 
   #Scenario: Searching when more than one result
     #When I go to the catalog index
