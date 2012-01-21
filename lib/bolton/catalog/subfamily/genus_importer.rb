@@ -26,8 +26,8 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     })
     Progress.info "Created #{genus.name}"
 
-    parse_homonym_replaced_by_genus(genus)
-    parse_genus_references
+    parse_homonym_replaced_by_genus genus
+    parse_genus_references genus
     genus
   end
 
@@ -44,28 +44,25 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     parsed_taxonomic_history
   end
 
-  def parse_genus_references
-    return '' unless @type == :genus_references_header || @type == :genus_references_see_under
+  def parse_genus_references genus
+    return unless @type == :genus_references_header || @type == :genus_references_see_under
     Progress.method
 
-    do_parse_reference_section = @type != :genus_references_see_under
+    multiple_reference_sections = @type != :genus_references_see_under
 
     texts = []
-
     parse_next_line
-    do_foo texts
+    collect_reference_section texts
+    collect_reference_section texts if multiple_reference_sections && @type == :reference_section
 
-    return unless do_parse_reference_section && @type == :reference_section
-
-    do_foo texts
+    genus.update_attribute :references_taxt, Bolton::Catalog::TextToTaxt.convert(texts)
   end
 
-  def do_foo texts
+  def collect_reference_section texts
     if @type == :texts
       texts.concat @parse_result[:texts] if @parse_result[:texts]
       @parse_result[:texts] = texts
-      @parse_result[:type] = :reference_section
-      @type = :reference_section
+      @parse_result[:type] = @type = :reference_section
       Progress.info 'reparsed as reference_section'
       parse_next_line
     end
