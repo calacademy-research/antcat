@@ -6,57 +6,39 @@ class Catalog::IndexController < CatalogController
 
     #@current_path = index_catalog_path
 
-    # selected taxon (on top)
-    if params[:id].present?
-      @taxon = Taxon.find params[:id]
-    else
-      @taxon = Family.first
-    end
-
-    # subfamily column
     @subfamilies = ::Subfamily.ordered_by_name
-    @subfamily = params[:subfamily]
-    @subfamily = Taxon.find @subfamily if @subfamily && @subfamily != 'none'
 
-    # tribes column
-    case @subfamily
-    when nil
-      @tribes = nil
-    when 'none'
-      @tribes = nil
-    else
-      @tribes = @subfamily.tribes
-    end
-    @tribe = params[:tribe]
-    @tribe = Taxon.find @tribe if @tribe && @tribe != 'none'
-
-    # genera column
-    case @tribe
-    when nil
+    if params[:id].blank?
+      @taxon = Family.first
+      @subfamily = params[:subfamily]
       if @subfamily == 'none'
         @genera = Genus.without_subfamily
-      else
-        @genera = nil
+        @genus = nil
       end
-    when 'none'
-      @genera = @subfamily.genera.without_tribe
-    else
-      @genera = @tribe.genera
-    end
-    @genus = params[:genus]
-    @genus = Taxon.find @genus if @genus
+      @specieses = []
+      @species = nil
 
-    # species column
-    case @genus
-    when nil
-      @specieses = nil
     else
-      @specieses = @genus.species
-    end
-    @species = params[:species]
-    @species = Taxon.find @species if @species
+      @taxon = Taxon.find params[:id]
+      case @taxon
 
-    # save the column selections
+      when Genus
+        @genus = @taxon
+        @genera = @genus.siblings
+        @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
+        @specieses = @genus.species
+        @species = nil
+
+      when Species
+        @species = @taxon
+        @specieses = @species.siblings
+        @genus = @species.genus
+        @genera = @genus.siblings
+        @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
+      end
+
+    end
+
     @column_selections = {:subfamily => @subfamily, :tribe => @tribe, :genus => @genus, :species => @species}
       #:q => params[:q], :search_type => params[:search_type], :hide_tribes => params[:hide_tribes]}
 
@@ -89,12 +71,6 @@ class Catalog::IndexController < CatalogController
         #@selected_subfamily = @selected_tribe.subfamily
       #end
 
-    #when Genus
-      #@selected_genus = @taxon
-      #select_subfamily_and_tribes
-      #select_genera
-      #@species = @selected_genus.species
-
     #when Species
       #@selected_species = @taxon
       #@selected_genus = @selected_species.genus
@@ -107,44 +83,7 @@ class Catalog::IndexController < CatalogController
 
     #@column_selections[:subfamily] = @selected_subfamily
 
-
   end
-
-  #def select_subfamily_and_tribes
-    #@selected_subfamily = @selected_genus.subfamily || 'no_subfamily'
-    #unless params[:hide_tribes] || @selected_subfamily == 'no_subfamily'
-      #@selected_tribe = @selected_genus.tribe || 'no_tribe'
-      #@tribes = @selected_subfamily.tribes
-    #end
-  #end
-
-  #def select_genera
-    #if @selected_subfamily == 'no_subfamily'
-      #@genera = Genus.without_subfamily
-    #elsif params[:hide_tribes]
-      #@genera = @selected_subfamily.genera
-    #else
-      #@genera = @selected_genus.siblings
-    #end
-  #end
-
-  #def select_subfamily_and_tribes
-    #@selected_subfamily = @selected_genus.subfamily || 'no_subfamily'
-    #unless params[:hide_tribes] || @selected_subfamily == 'no_subfamily'
-      #@selected_tribe = @selected_genus.tribe || 'no_tribe'
-      #@tribes = @selected_subfamily.tribes
-    #end
-  #end
-
-  #def select_genera
-    #if @selected_subfamily == 'no_subfamily'
-      #@genera = Genus.without_subfamily
-    #elsif params[:hide_tribes]
-      #@genera = @selected_subfamily.genera
-    #else
-      #@genera = @selected_genus.siblings
-    #end
-  #end
 
   #def select_subfamily_and_tribes
     #@selected_subfamily = @selected_genus.subfamily || 'no_subfamily'

@@ -33,12 +33,12 @@ Feature: Searching the catalog index
       #And "Dolichoderinae" should be selected in the index
       #And I should see "Dolichoderinae history"
 
-  #Scenario: Searching for a 'containing' match
-    #When I go to the catalog index
-      #And I fill in the search box with "rup"
-      #And I select "containing" from "search_type"
-      #And I press "Go" by the search box
-    #Then I should see "abruptus history"
+  Scenario: Searching for a 'containing' match
+    When I go to the catalog index
+      And I fill in the search box with "rup"
+      And I select "containing" from "search_type"
+      And I press "Go" by the search box
+    Then I should see "abruptus history"
 
   #Scenario: Following a search result
     #When I go to the catalog index
@@ -65,14 +65,14 @@ Feature: Searching the catalog index
     #Then I should not see any search results
       #And "Dolichoderini" should be selected in the index
 
-  #Scenario: Finding a genus without a subfamily or a tribe
-    #Given a genus exists with a name of "Monomorium" and no subfamily and a taxonomic history of "Monomorium history"
-    #When I go to the catalog index
-      #And I fill in the search box with "Monomorium"
-      #And I press "Go" by the search box
-    #Then I should see "Monomorium history"
-      #And "(no subfamily)" should be selected in the subfamilies index
-      #And "Monomorium" should be selected in the genera index
+  Scenario: Finding a genus without a subfamily or a tribe
+    Given a genus exists with a name of "Monomorium" and no subfamily and a taxonomic history of "Monomorium history"
+    When I go to the catalog index
+      And I fill in the search box with "Monomorium"
+      And I press "Go" by the search box
+    Then I should see "Monomorium history"
+      And "(no subfamily)" should be selected in the subfamilies index
+      And "Monomorium" should be selected in the genera index
 
   #Scenario: Finding a genus without a tribe but with a subfamily
     #Given a genus exists with a name of "Monomorium" and a subfamily of "Dolichoderinae" and a taxonomic history of "Monomorium history"

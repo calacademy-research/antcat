@@ -1,6 +1,5 @@
 # coding: UTF-8
 class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
-  private
 
   def parse_subfamily
     return unless @type == :subfamily_centered_header
