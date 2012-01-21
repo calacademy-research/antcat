@@ -1,3 +1,4 @@
+@javascript
 Feature: Using the catalog
   As a user of AntCat
   I want to use the catalog in both index and browser modes
