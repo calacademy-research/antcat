@@ -26,7 +26,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     MissingReference.delete_all
 
     parse_family
-    #parse_supersubfamilies
+    parse_supersubfamilies
     ForwardReference.fixup
   ensure
     super
