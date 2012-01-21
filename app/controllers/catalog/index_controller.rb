@@ -2,7 +2,7 @@
 class Catalog::IndexController < CatalogController
 
   def show
-    #super
+    super
 
     #@current_path = index_catalog_path
 
