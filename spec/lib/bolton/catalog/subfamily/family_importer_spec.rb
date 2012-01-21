@@ -78,6 +78,7 @@ describe Bolton::Catalog::Subfamily::Importer do
     ]
     genus.type_taxon_name.should == "Condylodon audouini"
     genus.type_taxon_taxt.should == ", by monotypy. [{ref #{lund.id}}: 25 says no.]"
+    genus.references_taxt.should == "{ref #{baroni.id}}: 482 (review of genus)."
 
     species = genus.type_taxon
     species.should_not be_invalid
