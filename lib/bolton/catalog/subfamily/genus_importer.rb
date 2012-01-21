@@ -15,7 +15,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
 
     taxonomic_history = parse_genus_taxonomic_history
 
-    genus = Genus.import({
+    genus = Genus.import(
       :name => name,
       :fossil => fossil,
       :protonym => headline[:protonym],
@@ -23,7 +23,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
       :type_species => headline[:type_species],
       :taxonomic_history => taxonomic_history,
       :attributes => attributes
-    })
+    )
     Progress.info "Created #{genus.name}"
 
     parse_homonym_replaced_by_genus genus
