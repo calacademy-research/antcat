@@ -11,30 +11,63 @@ class Catalog::IndexController < CatalogController
     if params[:id].blank?
       @taxon = Family.first
       @subfamily = params[:subfamily]
+      @tribe = params[:tribe]
       if @subfamily == 'none'
         @genera = Genus.without_subfamily
         @genus = nil
+      elsif @tribe == 'none'
+        @subfamily = Taxon.find @subfamily
+        @tribes = @subfamily.tribes
+        @genera = @subfamily.genera.without_tribe
+        @genus = nil
+      else
+        @tribe = nil
+        @tribes = nil
+        @genus = nil
+        @genera = nil
       end
-      @specieses = []
+      @specieses = nil
       @species = nil
 
     else
       @taxon = Taxon.find params[:id]
       case @taxon
 
+      when Subfamily
+        @subfamily = @taxon
+        @tribe = nil
+        @tribes = @subfamily.tribes
+        @genus = nil
+        @genera = nil
+        @species = nil
+        @specieses = nil
+
+      when Tribe
+        @tribe = @taxon
+        @subfamily = @tribe.subfamily
+        @tribes = @tribe.siblings
+        @genus = nil
+        @genera = @tribe.genera
+        @species = nil
+        @specieses = nil
+
       when Genus
         @genus = @taxon
-        @genera = @genus.siblings
         @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
-        @specieses = @genus.species
+        @tribe = @genus.tribe ? @genus.tribe : 'none'
+        @tribes = @genus.tribe ? @tribe.siblings : nil
+        @genera = @genus.siblings
         @species = nil
+        @specieses = @genus.species
 
       when Species
         @species = @taxon
-        @specieses = @species.siblings
         @genus = @species.genus
-        @genera = @genus.siblings
         @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
+        @tribe = @genus.tribe ? @genus.tribe : 'none'
+        @tribes = @genus.tribe ? @tribe.siblings : nil
+        @genera = @genus.siblings
+        @specieses = @species.siblings
       end
 
     end
