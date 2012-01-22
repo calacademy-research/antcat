@@ -28,6 +28,18 @@ describe Protonym do
       protonym.fossil.should be_true
       protonym.sic.should be_true
     end
+
+    it "should handle a tribe name protonym" do
+      reference = Factory :article_reference, bolton_key_cache: 'Latreille 1809'
+      data = {tribe_name: "Aneuretini", authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]}
+
+      protonym = Protonym.import(data).reload
+
+      protonym.rank.should == 'tribe'
+      protonym.name.should == 'Aneuretini'
+      protonym.authorship.pages.should == '124'
+      protonym.authorship.reference.should == reference
+    end
   end
 
 end

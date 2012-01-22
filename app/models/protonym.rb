@@ -13,6 +13,9 @@ class Protonym < ActiveRecord::Base
       when data[:genus_name]
         name = data[:genus_name]
         rank = 'genus'
+      when data[:tribe_name]
+        name = data[:tribe_name]
+        rank = 'tribe'
       end
 
       create! name: name, rank: rank, sic: data[:sic], fossil: data[:fossil], authorship: authorship
