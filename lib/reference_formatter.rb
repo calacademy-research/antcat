@@ -34,7 +34,7 @@ class ReferenceFormatter
 
   def format
     s = ''
-    s << "#{h @reference.author_names_string}"
+    s << "#{@reference.author_names_string}"
     s << ' ' unless s.empty?
     s << "#{h @reference.citation_year}. "
     s << "#{self.class.italicize(self.class.add_period_if_necessary(h @reference.title))} "
@@ -104,6 +104,6 @@ end
 
 class MissingReferenceFormatter < ReferenceFormatter
   def format_inline_citation _ = nil
-    h @reference.citation
+    @reference.citation
   end
 end
