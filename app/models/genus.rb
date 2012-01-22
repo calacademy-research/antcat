@@ -67,4 +67,19 @@ class Genus < Taxon
     end
   end
 
+  def self.create_from_fixup attributes
+    name = attributes[:name]
+    fossil = attributes[:fossil]
+    subfamily_id = attributes[:subfamily_id]
+
+    genus = Genus.find_by_name name
+    unless genus
+      genus = Genus.create! name: name, status: 'valid', fossil: fossil, subfamily_id: subfamily_id
+      Progress.log "FIXUP created genus #{genus.full_name}"
+    end
+
+    genus
+  end
+
+
 end
