@@ -131,8 +131,7 @@ describe Subfamily do
       subfamily.name.should == 'Aneuretinae'
       subfamily.should_not be_invalid
       subfamily.should be_fossil
-      #genus.taxonomic_history_items.map(&:taxt).should == ['Atta as genus', 'Atta as species']
-      #genus.type_taxon_taxt.should == ', by monotypy'
+      subfamily.taxonomic_history_items.map(&:taxt).should == ['Aneuretinae as subfamily', 'Aneuretini as tribe']
 
       genus = subfamily.type_taxon
       genus.name.should == 'Atta'
@@ -140,10 +139,10 @@ describe Subfamily do
       protonym = subfamily.protonym
       protonym.name.should == 'Aneuretini'
 
-      #authorship = protonym.authorship
-      #authorship.pages.should == '124'
+      authorship = protonym.authorship
+      authorship.pages.should == '6'
 
-      #authorship.reference.should == reference
+      authorship.reference.should == reference
     end
   end
 

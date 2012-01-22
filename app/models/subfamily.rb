@@ -20,9 +20,9 @@ class Subfamily < Taxon
         attributes[:type_taxon_taxt] = type_genus_taxt
       end
       subfamily = create! attributes
-      #data[:taxonomic_history].each do |item|
-        #genus.taxonomic_history_items.create! taxt: item
-      #end
+      data[:taxonomic_history].each do |item|
+        subfamily.taxonomic_history_items.create! taxt: item
+      end
 
       type_genus = data[:type_genus]
       ForwardReference.create! source_id: subfamily.id, source_attribute: :type_taxon,
