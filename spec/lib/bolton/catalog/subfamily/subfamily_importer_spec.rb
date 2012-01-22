@@ -7,66 +7,106 @@ describe Bolton::Catalog::Subfamily::Importer do
   end
 
   describe "Importing HTML" do
-    def make_contents content
-%{<html><body><div><p>THE DOLICHODEROMORPHS: SUBFAMILIES ANEURETINAE AND DOLICHODERINAE<o:p></p>#{content}</div></body></html>}
+
+    before do
+      Factory :article_reference, :author_names => [Factory(:author_name, :name => 'Latreille, I.')], :citation_year => '1809', :title => 'Ants', :bolton_key_cache => 'Latreille 1809'
+      Family.import( 
+        :protonym => {
+          :family_or_subfamily_name => "Formicariae",
+          :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
+        },
+        :type_genus => {:genus_name => 'Formica'},
+        :taxonomic_history => ['Taxonomic history']
+      )
+      ForwardReference.fixup
+      @importer.stub :parse_family
     end
 
-    it "should parse a subfamily" do
-      @importer.should_receive(:parse_family).and_return {
-        Factory :subfamily, :name => 'Aneuretinae'
-        Factory :subfamily, :name => 'Dolichoderinae'
-        Factory :subfamily, :name => 'Formicinae'
-      }
+    def make_contents content
+      %{<html><body><div><p>THE DOLICHODEROMORPHS: SUBFAMILIES ANEURETINAE AND DOLICHODERINAE<o:p></p>#{content}</div></body></html>}
+    end
 
+    it "should import a subfamily" do
+      emery = Factory :article_reference, bolton_key_cache: 'Emery 1913a'
       @importer.import_html make_contents %{
-<p>SUBFAMILY ANEURETINAE</p>
-<p>Subfamily ANEURETINAE </p>
-<p>Aneuretini Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.</p>
-<p>Taxonomic history</p>
-<p>Aneuretinae as junior synonym of Dolichoderinae: Baroni Urbani, 1989: 147.</p>
-<p>Tribes of Aneuretinae: Aneuretini, *Pityomyrmecini.</p>
-<p>Tribes <i>incertae sedis</i> in Aneuretinae: *Miomyrmecini.</p>
-<p>Genera (extinct) <i>incertae sedis</i> in Aneuretinae: *<i>Burmomyrma, *Cananeuretus</i>. </p>
-<p>Genus <i>incertae sedis</i> in Aneuretinae: <i>Wildensis</i>. </p>
-<p>Hong (2002) genera (extinct) <i>incertae sedis</i> in Aneuretinae: *<i>Curtipalpulus, *Eoleptocerites</i> (unresolved junior homonym).</p>
-
-<p>Subfamily Dolichoderinae and tribes references, world</p>
-<p>Forel, 1878: 364, 380 (diagnosis, genera).</p>
-<p>Regional and national faunas with keys</p>
-<p>André, 1882a: 127 (Europe & Algeria).</p>
-
-<p>Tribe ANEURETINI</p>
-<p>Aneuretini Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.</p>
-<p>Taxonomic history</p>
-<p>Aneuretini as tribe of Dolichoderinae: Emery, 1913a: 6; Wheeler, W.M. 1915h: 71; Forel, 1917: 247; Wheeler, W.M. 1922a: 687; Carpenter, 1930: 37; Chapman &amp; Capco, 1951: 181; Brown, 1954e: 29 (in text).</p>
-<p>Genera (extant) of Aneuretini: <i>Aneuretus</i>, <i>Aneuretellus</i>.</p>
-
-<p>Subfamily, tribe Aneuretini and genus <i>Aneuretus</i> references</p>
-<p>Forel, 1895e: 461 (diagnosis).</p>
-
-<p>Genera of Aneuretini</p>
-
-<p>Genus <i>ANEURETELLUS</i></p>
-<p><i>Aneuretellus</i> Dlussky, 1988: 54. Type-species: *<i>Aneuretellus deformis</i>, by original designation.</p>
-<p>Taxonomic history</p>
-<p>[<i>Aneuretellus</i> also described as new by Emery, 1893f: 241.]</p>
-<p>Genus *<i>Aneuretellus</i> references</p>
-<p>[Note. Entries prior to Bolton, 1995b: 44, refer to genus as <i>Acantholepis</i>.]</p>
-
-<p>Genus <i>ANEURETUS</i></p>
-<p><i>Aneuretus</i> Emery, 1893a: cclxxv. Type-species: <i>Aneuretus simoni</i>, by monotypy.</p>
-<p>Taxonomic history</p>
-<p>[<i>Aneuretus</i> also described as new by Emery, 1893f: 241.]</p>
-<p>Genus references: see under Aneuretini, above.</p>
-
-<p>Tribes (extinct) <i>incertae sedis</i> in ANEURETINAE</p>
-<p>Tribe MIOMYRMECINI</p>
-<p>Miomyrmecini Emery, 1913a: 6. Type-genus: <i>Murmetus</i>.</p>
-<p>Taxonomic history</p>
-<p>[Bracketed note]</p>
-
-<p>Genera of Hong (2002), <i>incertae sedis</i> in ANEURETINAE</p>
+        <p>SUBFAMILY ANEURETINAE</p>
+        <p>Subfamily ANEURETINAE </p>
+        <p>Aneuretini Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.</p>
       }
+      subfamily = Subfamily.find_by_name 'Aneuretinae'
+      subfamily.should_not be_invalid
+      subfamily.type_taxon_name.should == 'Aneuretus'
+
+      protonym = subfamily.protonym
+      protonym.name.should == 'Aneuretini'
+      protonym.rank.should == 'tribe'
+
+      authorship = protonym.authorship
+      authorship.reference.should == emery
+      authorship.pages.should == '6'
+
+      type_taxon = subfamily.type_taxon
+      type_taxon.name.should == 'Aneuretus'
+      type_taxon.subfamily.should == subfamily
+    end
+  end
+
+    #it "should parse a subfamily" do
+      #@importer.should_receive(:parse_family).and_return {
+        #Factory :subfamily, :name => 'Aneuretinae'
+        #Factory :subfamily, :name => 'Dolichoderinae'
+        #Factory :subfamily, :name => 'Formicinae'
+      #}
+
+      #@importer.import_html make_contents %{
+#<p>SUBFAMILY ANEURETINAE</p>
+#<p>Subfamily ANEURETINAE </p>
+#<p>Aneuretini Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.</p>
+#<p>Taxonomic history</p>
+#<p>Aneuretinae as junior synonym of Dolichoderinae: Baroni Urbani, 1989: 147.</p>
+#<p>Tribes of Aneuretinae: Aneuretini, *Pityomyrmecini.</p>
+#<p>Tribes <i>incertae sedis</i> in Aneuretinae: *Miomyrmecini.</p>
+#<p>Genera (extinct) <i>incertae sedis</i> in Aneuretinae: *<i>Burmomyrma, *Cananeuretus</i>. </p>
+#<p>Genus <i>incertae sedis</i> in Aneuretinae: <i>Wildensis</i>. </p>
+#<p>Hong (2002) genera (extinct) <i>incertae sedis</i> in Aneuretinae: *<i>Curtipalpulus, *Eoleptocerites</i> (unresolved junior homonym).</p>
+
+#<p>Subfamily Dolichoderinae and tribes references, world</p>
+#<p>Forel, 1878: 364, 380 (diagnosis, genera).</p>
+#<p>Regional and national faunas with keys</p>
+#<p>André, 1882a: 127 (Europe & Algeria).</p>
+
+#<p>Tribe ANEURETINI</p>
+#<p>Aneuretini Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.</p>
+#<p>Taxonomic history</p>
+#<p>Aneuretini as tribe of Dolichoderinae: Emery, 1913a: 6; Wheeler, W.M. 1915h: 71; Forel, 1917: 247; Wheeler, W.M. 1922a: 687; Carpenter, 1930: 37; Chapman &amp; Capco, 1951: 181; Brown, 1954e: 29 (in text).</p>
+#<p>Genera (extant) of Aneuretini: <i>Aneuretus</i>, <i>Aneuretellus</i>.</p>
+
+#<p>Subfamily, tribe Aneuretini and genus <i>Aneuretus</i> references</p>
+#<p>Forel, 1895e: 461 (diagnosis).</p>
+
+#<p>Genera of Aneuretini</p>
+
+#<p>Genus <i>ANEURETELLUS</i></p>
+#<p><i>Aneuretellus</i> Dlussky, 1988: 54. Type-species: *<i>Aneuretellus deformis</i>, by original designation.</p>
+#<p>Taxonomic history</p>
+#<p>[<i>Aneuretellus</i> also described as new by Emery, 1893f: 241.]</p>
+#<p>Genus *<i>Aneuretellus</i> references</p>
+#<p>[Note. Entries prior to Bolton, 1995b: 44, refer to genus as <i>Acantholepis</i>.]</p>
+
+#<p>Genus <i>ANEURETUS</i></p>
+#<p><i>Aneuretus</i> Emery, 1893a: cclxxv. Type-species: <i>Aneuretus simoni</i>, by monotypy.</p>
+#<p>Taxonomic history</p>
+#<p>[<i>Aneuretus</i> also described as new by Emery, 1893f: 241.]</p>
+#<p>Genus references: see under Aneuretini, above.</p>
+
+#<p>Tribes (extinct) <i>incertae sedis</i> in ANEURETINAE</p>
+#<p>Tribe MIOMYRMECINI</p>
+#<p>Miomyrmecini Emery, 1913a: 6. Type-genus: <i>Murmetus</i>.</p>
+#<p>Taxonomic history</p>
+#<p>[Bracketed note]</p>
+
+#<p>Genera of Hong (2002), <i>incertae sedis</i> in ANEURETINAE</p>
+      #}
 #<p>Junior synonyms of <i>ANEURETUS</i></p>
 #<p><i>Odontomyrmex</i> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </p>
 #<p>Odontomyrmex history</p>
@@ -299,32 +339,7 @@ describe Bolton::Catalog::Subfamily::Importer do
 
       #orthonotus = Subgenus.find_by_name 'Orthonotus'
       #orthonotus.should be_nil
-    end
+    #end
 
-    it "should parse an incertae sedis list of the supersubfamily" do
-      @importer.should_receive(:parse_family)
-      @importer.import_html make_contents %{
-<p><b><span lang=EN-GB>Genera (extinct) <i>incertae sedis</i> in poneroid subfamilies</span></b><span lang=EN-GB>: *<i>Cretopone</i>, *<i>Petropone</i>.</span></p>
-      }
-      #taxon = Genus.find_by_name 'Cretopone'
-      #taxon.should be_fossil
-      #taxon.incertae_sedis_in.should == "supersubfamily"
-      #taxon = Genus.find_by_name 'Petropone'
-      #taxon.should be_fossil
-      #taxon.incertae_sedis_in.should == "supersubfamily"
-    end
-
-    it "should parse an extinct subfamily" do
-      @importer.should_receive(:parse_family).and_return {
-        Factory :subfamily, :name => 'Armaniinae'
-      }
-      @importer.import_html make_contents %{
-<p><b><span lang=EN-GB>SUBFAMILY *<span style='color:red'>ARMANIINAE</span><o:p></o:p></span></b></p>
-<p><b><span lang=EN-GB>Subfamily *<span style='color:red'>ARMANIINAE</span> <o:p></o:p></span></b></p>
-<p><b><span lang=EN-GB>Armaniinae</span></b><span lang=EN-GB> Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.  </span></p>
-      }
-      #Subfamily.find_by_name('Armaniinae').should be_fossil
-    end
-  end
 end
 

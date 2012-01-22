@@ -6,25 +6,24 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     Progress.method
 
     parse_next_line
-    expect :subfamily_header
+    name = consume(:subfamily_header)[:name]
 
-    name = @parse_result[:name]
-    fossil = @parse_result[:fossil]
+    headline = consume :family_group_headline
+    fossil = headline[:protonym][:fossil]
 
-    get :family_group_headline
-    taxonomic_history = @paragraph
+    taxonomic_history = parse_subfamily_taxonomic_history
 
-    parse_next_line
-    taxonomic_history << parse_subfamily_taxonomic_history
+    subfamily = Subfamily.import(
+      name: name,
+      fossil: fossil,
+      protonym: headline[:protonym],
+      type_genus: headline[:type_genus],
+      taxonomic_history: taxonomic_history,
+    )
+    Progress.info "Created #{subfamily.name}"
 
-    subfamily = ::Subfamily.find_by_name(name)
-    raise "Subfamily #{name} doesn't exist" unless subfamily
-
-    taxonomic_history << parse_subfamily_child_lists(subfamily)
-    taxonomic_history << parse_subfamily_references_sections
-
-    subfamily.update_attributes :taxonomic_history => clean_taxonomic_history(taxonomic_history), :fossil => fossil
-
+    parse_subfamily_child_lists subfamily
+    parse_subfamily_references_sections
     parse_subfamily_children subfamily
 
     true
@@ -32,7 +31,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
 
   def parse_subfamily_children subfamily
     parse_tribes subfamily
-    parse_genera
+    parse_genera subfamily: subfamily
     parse_tribes_incertae_sedis subfamily
     parse_genera_incertae_sedis
     parse_genera_of_hong
@@ -40,10 +39,9 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
   end
 
   def parse_subfamily_child_lists subfamily
-    parsed_text = ''
-    parsed_text << parse_tribes_lists(subfamily)
-    parsed_text << parse_genera_lists(:subfamily, :subfamily => subfamily)
-    parsed_text << parse_collective_group_names_list
+    parse_tribes_lists(subfamily)
+    parse_genera_lists(:subfamily, :subfamily => subfamily)
+    parse_collective_group_names_list
   end
 
   def parse_subfamily_references_sections
@@ -65,9 +63,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     return '' unless @type == :collective_group_name_list
     Progress.method
 
-    parsed_text = @paragraph
     parse_next_line
-    parsed_text
   end
 
   def parse_collective_group_names
