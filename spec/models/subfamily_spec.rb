@@ -112,4 +112,39 @@ describe Subfamily do
     end
 
   end
+
+  describe "Importing" do
+    it "should work" do
+      reference = Factory :article_reference, :bolton_key_cache => 'Emery 1913a'
+      subfamily = Subfamily.import(
+        name: 'Aneuretinae',
+        fossil: true,
+        protonym: {tribe_name: "Aneuretini",
+                   authorship: [{author_names: ["Emery"], year: "1913a", pages: "6"}]},
+        type_genus: {genus_name: 'Atta'},
+        taxonomic_history: ["Aneuretinae as subfamily", "Aneuretini as tribe"]
+      )
+      
+      ForwardReference.fixup
+
+      subfamily.reload
+      subfamily.name.should == 'Aneuretinae'
+      subfamily.should_not be_invalid
+      subfamily.should be_fossil
+      #genus.taxonomic_history_items.map(&:taxt).should == ['Atta as genus', 'Atta as species']
+      #genus.type_taxon_taxt.should == ', by monotypy'
+
+      genus = subfamily.type_taxon
+      genus.name.should == 'Atta'
+
+      protonym = subfamily.protonym
+      protonym.name.should == 'Aneuretini'
+
+      #authorship = protonym.authorship
+      #authorship.pages.should == '124'
+
+      #authorship.reference.should == reference
+    end
+  end
+
 end
