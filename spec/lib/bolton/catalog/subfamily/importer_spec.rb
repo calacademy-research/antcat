@@ -11,40 +11,27 @@ describe Bolton::Catalog::Subfamily::Importer do
       %{<html><body><div class=Section1>#{content}</div></body></html>}
     end
 
-    describe "Importing the catalog" do
-
-      it "should parse the family, then the subfamilies" do
-        @importer.should_receive(:parse_family).ordered
-        #@importer.should_receive(:parse_supersubfamilies).ordered
-        @importer.import_html make_contents %{
-    <p class=MsoNormal align=center style='text-align:center'><b style='mso-bidi-font-weight:
-    normal'><span lang=EN-GB>FAMILY FORMICIDAE<o:p></o:p></span></b></p>
-        }
-      end
-
+    it "should parse the family, then the supersubfamilies" do
+      @importer.should_receive(:parse_family).ordered
+      @importer.should_receive(:parse_supersubfamilies).ordered
+      @importer.import_html make_contents %{
+  <p class=MsoNormal align=center style='text-align:center'><b style='mso-bidi-font-weight:
+  normal'><span lang=EN-GB>FAMILY FORMICIDAE<o:p></o:p></span></b></p>
+      }
     end
 
-    it "should parse each supersubfamily" do
-      @importer.should_receive(:parse_family).and_return {
-        Factory :subfamily, :name => 'Aneuretinae'
-      }
-      #@importer.should_receive(:parse_genera_lists).ordered
-      #@importer.should_receive(:parse_subfamily).ordered.and_return false
-      #@importer.should_receive(:parse_genera_lists).ordered
-      #@importer.should_receive(:parse_subfamily).ordered.and_return false
+    it "should parse a supersubfamily" do
+      @importer.should_receive(:parse_family).ordered
+      @importer.should_receive(:parse_genera_lists).ordered
+      @importer.should_receive(:parse_subfamily).ordered.and_return false
+      @importer.should_receive(:parse_genera_lists).ordered
+      @importer.should_receive(:parse_subfamily).ordered.and_return false
 
       @importer.import_html make_contents %{
-<p class=MsoNormal align=center style='text-align:center'><b style='mso-bidi-font-weight:
-normal'><span lang=EN-GB>THE DOLICHODEROMORPHS: SUBFAMILIES ANEURETINAE AND
-DOLICHODERINAE<o:p></o:p></span></b></p>
-
-<p class=MsoNormal style='margin-right:-1.25pt;text-align:justify'><span
-lang=EN-GB><o:p>&nbsp;</o:p></span></p>
-
-<p class=MsoNormal align=center style='text-align:center'><b style='mso-bidi-font-weight:
-normal'><span lang=EN-GB>THE FORMICOMORPHS: SUBFAMILY FORMICINAE<o:p></o:p></span></b></p>
+<p><b>THE DOLICHODEROMORPHS: SUBFAMILIES ANEURETINAE AND DOLICHODERINAE</p>
+<p>THE FORMICOMORPHS: SUBFAMILY FORMICINAE</p>
       }
-
     end
+
   end
 end
