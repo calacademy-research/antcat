@@ -17,6 +17,7 @@ class Catalog::IndexController < CatalogController
         @genus = nil
       elsif @tribe == 'none'
         @subfamily = Taxon.find @subfamily
+        @taxon = @subfamily
         @tribes = @subfamily.tribes
         @genera = @subfamily.genera.without_tribe
         @genus = nil

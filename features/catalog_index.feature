@@ -91,6 +91,7 @@ Feature: Using the catalog index
       And I should not see "Atta" in the genera index
       And "(no tribe)" should be selected in the tribes index
       And "Dolichoderinae" should be selected in the subfamilies index
+      And I should see "Dolichoderinae history"
 
   Scenario: Showing the "no subfamily" subfamily
     Given a genus exists with a name of "Cariridris" and no subfamily
