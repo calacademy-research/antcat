@@ -1,5 +1,6 @@
 # coding: UTF-8
 class MissingReference < Reference
+
   def self.import reason, data
     year = data[:year] || data[:in][:year]
     reference_key = data[:reference_text].dup
