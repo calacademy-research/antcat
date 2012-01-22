@@ -129,12 +129,12 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
 
   #################################################################
   # parse a subfamily or tribe's genera
-  def parse_genera
+  def parse_genera attributes = {}
     return unless @type == :genera_header || @type == :genus_header
     Progress.method
 
     parse_next_line if @type == :genera_header
-    parse_genus while @type == :genus_header
+    parse_genus attributes while @type == :genus_header
   end
 
   def parse_genera_of_hong
