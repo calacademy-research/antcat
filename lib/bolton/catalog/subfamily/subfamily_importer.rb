@@ -51,12 +51,15 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
 
   def parse_subfamily_taxonomic_history
     Progress.method
-    taxonomic_history, @parsed_subfamily_taxonomic_history = parse_taxonomic_history :subfamily_taxonomic_history_item
-    taxonomic_history
-  end
-
-  def parsed_subfamily_taxonomic_history
-    @parsed_subfamily_taxonomic_history
+    parsed_taxonomic_history = []
+    if @type == :taxonomic_history_header
+      parse_next_line
+      while @type == :texts
+        parsed_taxonomic_history << Bolton::Catalog::TextToTaxt.convert(@parse_result[:texts].first[:text])
+        parse_next_line
+      end
+    end
+    parsed_taxonomic_history
   end
 
   def parse_collective_group_names_list
