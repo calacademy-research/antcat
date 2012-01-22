@@ -170,21 +170,22 @@ describe Genus do
   describe "Importing" do
 
     it "should work" do
+      subfamily = Factory :subfamily
       reference = Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
-      genus = Genus.import({
-        :name => 'Atta',
-        :fossil => true,
-        :protonym => {
-          :genus_name => "Atta",
-          :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
-        },
-        :type_species => {:genus_name => 'Atta', :species_epithet => 'major',
-                          :texts => [{:text => [{:phrase => ', by monotypy'}]}]},
-        :taxonomic_history => ["Atta as genus", "Atta as species"]
-      }).reload
+      genus = Genus.import(
+        subfamily: subfamily,
+        name: 'Atta',
+        fossil: true,
+        protonym: {genus_name: "Atta",
+                   authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]},
+        type_species: {genus_name: 'Atta', species_epithet: 'major',
+                          texts: [{text: [{phrase: ', by monotypy'}]}]},
+        taxonomic_history: ["Atta as genus", "Atta as species"]
+      ).reload
       genus.name.should == 'Atta'
       genus.should_not be_invalid
       genus.should be_fossil
+      genus.subfamily.should == subfamily
       genus.taxonomic_history_items.map(&:taxt).should == ['Atta as genus', 'Atta as species']
       genus.type_taxon_taxt.should == ', by monotypy'
 

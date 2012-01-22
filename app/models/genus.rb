@@ -37,10 +37,11 @@ class Genus < Taxon
 
       headline_notes_taxt = Bolton::Catalog::TextToTaxt.convert(data[:note])
       attributes = {
-        name:data[:name],
-        fossil:data[:fossil],
-        status:'valid',
-        protonym:protonym,
+        subfamily: data[:subfamily],
+        name: data[:name],
+        fossil: data[:fossil],
+        status: 'valid',
+        protonym: protonym,
         headline_notes_taxt: headline_notes_taxt,
       }
       attributes.merge! data[:attributes] if data[:attributes]
