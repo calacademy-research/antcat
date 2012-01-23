@@ -48,6 +48,9 @@ describe Bolton::Catalog::Subfamily::Importer do
         <p>history</p>
 
       }
+
+      Taxon.count.should == 3
+
       subfamily = Subfamily.find_by_name 'Aneuretinae'
       subfamily.should_not be_invalid
       subfamily.type_taxon_name.should == 'Aneuretus'
@@ -67,6 +70,7 @@ describe Bolton::Catalog::Subfamily::Importer do
       subfamily.taxonomic_history_items.map(&:taxt).should =~ [
         "Aneuretinae as junior synonym of Dolichoderinae: {ref #{MissingReference.first.id}}: 147"
       ]
+
     end
   end
 
