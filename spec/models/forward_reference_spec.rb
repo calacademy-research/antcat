@@ -50,6 +50,15 @@ describe ForwardReference do
         subfamily.reload.type_taxon_name.should == 'Formica'
       end
 
+      it "should fixup a :type_taxon for a tribe" do
+        tribe = Factory :tribe
+        forward_reference = ForwardReference.create! :source_id => tribe.id, :source_attribute => :type_taxon, :target_name => 'Atta'
+        ForwardReference.fixup
+        genus = tribe.reload.type_taxon
+        genus.name.should == 'Atta'
+        tribe.reload.type_taxon_name.should == 'Atta'
+      end
+
       it "should fixup a :type_taxon for a species" do
         genus = Factory :genus, :name => 'Atta'
         forward_reference = ForwardReference.create! :source_id => genus.id, :source_attribute => :type_taxon, :target_name => 'Atta major'
