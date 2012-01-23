@@ -125,13 +125,4 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     parsed_text << taxonomic_history
   end
 
-  def parse_tribe_taxonomic_history
-    Progress.method
-    taxonomic_history, @parsed_tribe_taxonomic_history = parse_taxonomic_history :tribe_taxonomic_history_item
-    taxonomic_history
-  end
-
-  def parsed_tribe_taxonomic_history
-    @parsed_tribe_taxonomic_history
-  end
 end
