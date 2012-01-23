@@ -74,9 +74,9 @@ describe ForwardReference do
         genus = Factory :genus, :name => 'Hypochira'
         forward_reference = ForwardReference.create! :source_id => genus.id, :source_attribute => :type_taxon, :target_name => 'Formica (Hypochira) subspinosa'
         forward_reference.fixup
-
+        genus.reload
         genus.type_taxon_name.should == 'Formica (Hypochira) subspinosa'
-        species = genus.reload.type_taxon
+        species = genus.type_taxon
         species.name.should == 'subspinosa'
         species.genus.should == genus
       end
