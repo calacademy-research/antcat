@@ -22,4 +22,3 @@ class ForwardReference < ActiveRecord::Base
   end
 
 end
-
