@@ -73,8 +73,10 @@ class Catalog::IndexController < CatalogController
 
     end
 
-    @column_selections = {:subfamily => @subfamily, :tribe => @tribe, :genus => @genus, :species => @species}
-      #:q => params[:q], :search_type => params[:search_type], :hide_tribes => params[:hide_tribes]}
+    @column_selections = {
+      subfamily: @subfamily, tribe: @tribe, genus: @genus, species: @species,
+      q: params[:q], search_type: params[:search_type]
+    }
 
     #case @taxon
     #when 'no_subfamily', Subfamily

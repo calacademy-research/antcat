@@ -40,21 +40,21 @@ Feature: Searching the catalog index
       And I press "Go" by the search box
     Then I should see "abruptus history"
 
-  #Scenario: Following a search result
-    #When I go to the catalog index
-      #And I fill in the search box with "doli"
-      #And I press "Go" by the search box
-      #And I follow "Dolichoderini" in the search results
-    #Then I should see "Dolichoderini history"
-      #And I should see "Dolichoderini" in the search results
+  Scenario: Following a search result
+    When I go to the catalog index
+      And I fill in the search box with "doli"
+      And I press "Go" by the search box
+      And I follow "Dolichoderini" in the search results
+    Then I should see "Dolichoderini history"
+      And I should see "Dolichoderini" in the search results
 
-  #Scenario: Keeping search results open even after selecting another taxon
-    #When I go to the catalog index
-      #And I fill in the search box with "doli"
-      #And I press "Go" by the search box
-      #And I follow "Dolichoderini" in the search results
-      #And I follow "Dolichoderinae" in the index
-    #Then I should see "Dolichoderini" in the search results
+  Scenario: Keeping search results open even after selecting another taxon
+    When I go to the catalog index
+      And I fill in the search box with "doli"
+      And I press "Go" by the search box
+      And I follow "Dolichoderini" in the search results
+      And I follow "Dolichoderinae" in the index
+    Then I should see "Dolichoderini" in the search results
 
   Scenario: Closing the search results
     When I go to the catalog index
