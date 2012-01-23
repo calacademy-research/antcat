@@ -13,7 +13,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     name ||= headline[:protonym][:genus_name]
     fossil ||= headline[:protonym][:fossil]
 
-    taxonomic_history = parse_genus_taxonomic_history
+    history = parse_taxonomic_history
 
     genus = Genus.import(
       :name => name,
@@ -21,7 +21,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
       :protonym => headline[:protonym],
       :note => headline[:note].try(:[], :text),
       :type_species => headline[:type_species],
-      :taxonomic_history => taxonomic_history,
+      :taxonomic_history => history,
       :attributes => attributes
     )
     Progress.info "Created #{genus.name}"
@@ -77,11 +77,11 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     #Progress.method
     #name = @parse_result[:genus_name]
     #fossil = @parse_result[:fossil]
-    #taxonomic_history = @paragraph
+    #history = @paragraph
     #parse_next_line
-    #taxonomic_history << parse_genus_taxonomic_history
+    #history << parse_taxonomic_history
     #genus = ::Genus.create! :name => name, :fossil => fossil, :status => 'synonym', :synonym_of => genus,
-                          #:subfamily => genus.subfamily, :tribe => genus.tribe, :taxonomic_history => clean_taxonomic_history(taxonomic_history)
+                          #:subfamily => genus.subfamily, :tribe => genus.tribe, :taxonomic_history => clean_taxonomic_history(history)
     #Progress.info "Created #{genus.name} junior synonym of genus"
     #parse_homonym_replaced_by_genus(genus)
 #  end
