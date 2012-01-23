@@ -22,16 +22,16 @@ Feature: Searching the catalog index
       And I press "Go" by the search box
     Then I should see "abruptus history"
 
-  #Scenario: Searching when more than one result
-    #When I go to the catalog index
-      #And I fill in the search box with "doli"
-      #And I press "Go" by the search box
-    #Then I should see "Dolichoderinae" in the search results
-      #And I should see "Dolichoderini" in the search results`
-      #And I should see "Dolichoderus" in the search results`
-      #And "Dolichoderinae" should be selected in the search results
-      #And "Dolichoderinae" should be selected in the index
-      #And I should see "Dolichoderinae history"
+  Scenario: Searching when more than one result
+    When I go to the catalog index
+      And I fill in the search box with "doli"
+      And I press "Go" by the search box
+    Then I should see "Dolichoderinae" in the search results
+      And I should see "Dolichoderini" in the search results`
+      And I should see "Dolichoderus" in the search results`
+      And "Dolichoderinae" should be selected in the search results
+      And "Dolichoderinae" should be selected in the index
+      And I should see "Dolichoderinae history"
 
   Scenario: Searching for a 'containing' match
     When I go to the catalog index
@@ -93,14 +93,14 @@ Feature: Searching the catalog index
     #Then I should see "Dolichoderini" in the tribes index
       #And "Dolichoderini" should be selected in the tribes index
 
-  #Scenario: Searching with spaces at beginning and/or end of query string
-    #When I go to the catalog index
-    #When I fill in the search box with " abruptus "
-      #And I press "Go" by the search box
-    #Then I should see "abruptus history"
+  Scenario: Searching with spaces at beginning and/or end of query string
+    When I go to the catalog index
+    When I fill in the search box with " abruptus "
+      And I press "Go" by the search box
+    Then I should see "abruptus history"
 
-  #Scenario: Searching for full species name, not just epithet
-    #When I go to the catalog index
-    #When I fill in the search box with "Dolichoderus abruptus "
-      #And I press "Go" by the search box
-    #Then I should see "abruptus history"
+  Scenario: Searching for full species name, not just epithet
+    When I go to the catalog index
+    When I fill in the search box with "Dolichoderus abruptus "
+      And I press "Go" by the search box
+    Then I should see "abruptus history"
