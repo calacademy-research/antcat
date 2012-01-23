@@ -2,11 +2,11 @@
 class CatalogController < ApplicationController
 
   def show
-    #if params['commit'] == 'Clear'
-      #@search_params = {}
-      #params['q'] = params['search_type'] = nil
-      #return
-    #end
+    if params['commit'] == 'Clear'
+      @search_params = {}
+      params['q'] = params['search_type'] = nil
+      return
+    end
 
     params['q'].strip! if params['q']
 

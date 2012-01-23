@@ -56,14 +56,14 @@ Feature: Searching the catalog index
       #And I follow "Dolichoderinae" in the index
     #Then I should see "Dolichoderini" in the search results
 
-  #Scenario: Closing the search results
-    #When I go to the catalog index
-      #And I fill in the search box with "doli"
-      #And I press "Go" by the search box
-      #And I follow "Dolichoderini" in the search results
-      #And I press "Clear"
-    #Then I should not see any search results
-      #And "Dolichoderini" should be selected in the index
+  Scenario: Closing the search results
+    When I go to the catalog index
+      And I fill in the search box with "doli"
+      And I press "Go" by the search box
+      And I follow "Dolichoderini" in the search results
+      And I press "Clear"
+    Then I should not see any search results
+      And "Dolichoderini" should be selected in the index
 
   Scenario: Finding a genus without a subfamily or a tribe
     Given a genus exists with a name of "Monomorium" and no subfamily and a taxonomic history of "Monomorium history"
