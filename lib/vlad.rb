@@ -8,13 +8,29 @@ class Vlad
                       append_to_log_file: !Rails.env.test?
     results = {}
     results.merge! record_counts
+    results.merge! genera_with_tribes_but_not_subfamilies
     display results
+    results
   end
 
   def self.display results
     results[:record_counts].each do |model_class, count|
       Progress.log "#{count.to_s.rjust(7)} #{model_class}"
     end
+
+    results = results[:genera_with_tribes_but_not_subfamilies]
+    unless results.blank?
+      Progress.puts "Genera with tribes but not subfamilies"
+      results.map do |genus|
+        "#{genus.name} (tribe #{genus.tribe.name})"
+      end.sort.each do |name|
+        Progress.puts name
+      end
+    end
+  end
+
+  def self.genera_with_tribes_but_not_subfamilies
+    {genera_with_tribes_but_not_subfamilies: Genus.where("tribe_id IS NOT NULL AND subfamily_id IS NULL")}
   end
 
   def self.record_counts
