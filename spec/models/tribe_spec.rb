@@ -49,7 +49,7 @@ describe Tribe do
     it "should work" do
       reference = Factory :article_reference, :bolton_key_cache => 'Emery 1913a'
       tribe = Tribe.import(
-        name: 'Aneuretinae',
+        name: 'Aneuretini',
         fossil: true,
         protonym: {tribe_name: "Aneuretini",
                    authorship: [{author_names: ["Emery"], year: "1913a", pages: "6"}]},
