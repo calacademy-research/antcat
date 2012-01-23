@@ -24,8 +24,8 @@ describe Bolton::Catalog::Subfamily::Importer do
       @importer.should_receive(:parse_family).ordered
       @importer.should_receive(:parse_genera_lists).ordered
       @importer.should_receive(:parse_subfamily).ordered.and_return false
-      @importer.should_receive(:parse_genera_lists).ordered
-      @importer.should_receive(:parse_subfamily).ordered.and_return false
+      #@importer.should_receive(:parse_genera_lists).ordered
+      #@importer.should_receive(:parse_subfamily).ordered.and_return false
 
       @importer.import_html make_contents %{
 <p><b>THE DOLICHODEROMORPHS: SUBFAMILIES ANEURETINAE AND DOLICHODERINAE</p>
