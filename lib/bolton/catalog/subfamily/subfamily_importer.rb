@@ -39,8 +39,8 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
   end
 
   def parse_subfamily_child_lists subfamily
-    parse_tribes_lists(subfamily)
-    parse_genera_lists(:subfamily, :subfamily => subfamily)
+    parse_tribes_lists subfamily
+    parse_genera_lists :subfamily, subfamily: subfamily
     parse_collective_group_names_list
   end
 
@@ -63,14 +63,14 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
   end
 
   def parse_collective_group_names_list
-    return '' unless @type == :collective_group_name_list
+    return unless @type == :collective_group_name_list
     Progress.method
 
     parse_next_line
   end
 
   def parse_collective_group_names
-    return '' unless @type == :collective_group_names_header
+    return unless @type == :collective_group_names_header
     Progress.method
 
     parse_next_line
