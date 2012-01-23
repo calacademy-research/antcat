@@ -24,6 +24,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     tribe = Tribe.import(
       name: name,
       fossil: fossil,
+      subfamily: subfamily,
       protonym: headline[:protonym],
       type_genus: headline[:type_genus],
       taxonomic_history: history,
@@ -38,7 +39,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     parse_references_sections :references_section_header, :see_under_references_section_header
     parse_see_also_references_section
 
-    parse_genera
+    parse_genera tribe: tribe
     parse_genera_incertae_sedis_in_tribe
     parse_ichnotaxa
 

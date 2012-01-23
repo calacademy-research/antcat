@@ -46,7 +46,6 @@ describe Bolton::Catalog::Subfamily::Importer do
         <p>Aneuretini Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.</p>
         <p>Taxonomic history</p>
         <p>history</p>
-
       }
 
       Taxon.count.should == 3
@@ -70,6 +69,16 @@ describe Bolton::Catalog::Subfamily::Importer do
       subfamily.taxonomic_history_items.map(&:taxt).should =~ [
         "Aneuretinae as junior synonym of Dolichoderinae: {ref #{MissingReference.first.id}}: 147"
       ]
+
+      tribe = Tribe.find_by_name 'Aneuretini'
+      tribe.subfamily.should == subfamily
+      tribe.taxonomic_history_items.map(&:taxt).should == ["history"]
+      tribe.type_taxon_name.should == 'Aneuretus'
+
+      type_taxon = tribe.type_taxon
+      type_taxon.name.should == 'Aneuretus'
+      type_taxon.subfamily.should == subfamily
+      type_taxon.tribe.should == tribe
 
     end
   end

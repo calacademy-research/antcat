@@ -29,6 +29,7 @@ class Tribe < Taxon
       attributes = {
         name: data[:name],
         fossil: data[:fossil],
+        subfamily: data[:subfamily],
         status: 'valid',
         protonym: protonym,
       }
@@ -36,7 +37,9 @@ class Tribe < Taxon
         type_genus_taxt = Bolton::Catalog::TextToTaxt.convert(data[:type_genus][:texts])
         attributes[:type_taxon_taxt] = type_genus_taxt
       end
+
       tribe = create! attributes
+
       data[:taxonomic_history].each do |item|
         tribe.taxonomic_history_items.create! taxt: item
       end

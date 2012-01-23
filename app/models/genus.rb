@@ -38,6 +38,7 @@ class Genus < Taxon
       headline_notes_taxt = Bolton::Catalog::TextToTaxt.convert(data[:note])
       attributes = {
         subfamily: data[:subfamily],
+        tribe: data[:tribe],
         name: data[:name],
         fossil: data[:fossil],
         status: 'valid',
@@ -75,7 +76,10 @@ class Genus < Taxon
     subfamily_id = Tribe.find(tribe_id).subfamily_id if tribe_id.present?
 
     genus = Genus.find_by_name name
-    unless genus
+    if genus
+      genus.update_attribute :tribe_id, tribe_id
+      Progress.log "FIXUP updated tribe for genus #{genus.full_name}"
+    else
       genus = Genus.create! name: name, status: 'valid', fossil: fossil, subfamily_id: subfamily_id,
         tribe_id: tribe_id
       Progress.log "FIXUP created genus #{genus.full_name}"
