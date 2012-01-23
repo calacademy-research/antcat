@@ -16,3 +16,21 @@
   25286 Taxon
       0 TaxonomicHistoryItem
      13 User
+
+2012-01-23 08:12:29 -0800
+   4462 AuthorName
+  10938 Author
+   6420 Bolton::Match
+   4644 Bolton::Reference
+     28 Citation
+     21 ForwardReference
+   1708 Journal
+    226 Place
+     28 Protonym
+    459 Publisher
+  16980 ReferenceAuthorName
+   5497 ReferenceDocument
+  10821 Reference
+     37 Taxon
+    678 TaxonomicHistoryItem
+     13 User
