@@ -32,6 +32,21 @@ describe Bolton::Catalog::Subfamily::Importer do
         <p>SUBFAMILY ANEURETINAE</p>
         <p>Subfamily ANEURETINAE </p>
         <p>Aneuretini Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.</p>
+
+        <p>Taxonomic history</p>
+        <p>Aneuretinae as junior synonym of Dolichoderinae: Baroni Urbani, 1989: 147.</p>
+
+        <p>Tribes of Aneuretinae: Aneuretini, *Pityomyrmecini.</p>
+        <p>Tribes <i>incertae sedis</i> in Aneuretinae: *Miomyrmecini.</p>
+        <p>Genera (extinct) <i>incertae sedis</i> in Aneuretinae: *<i>Burmomyrma, *Cananeuretus</i>. </p>
+        <p>Genus <i>incertae sedis</i> in Aneuretinae: <i>Wildensis</i>. </p>
+        <p>Hong (2002) genera (extinct) <i>incertae sedis</i> in Aneuretinae: *<i>Curtipalpulus, *Eoleptocerites</i> (unresolved junior homonym).</p>
+
+        <p>Tribe ANEURETINI</p>
+        <p>Aneuretini Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.</p>
+        <p>Taxonomic history</p>
+        <p>history</p>
+
       }
       subfamily = Subfamily.find_by_name 'Aneuretinae'
       subfamily.should_not be_invalid
@@ -48,32 +63,12 @@ describe Bolton::Catalog::Subfamily::Importer do
       type_taxon = subfamily.type_taxon
       type_taxon.name.should == 'Aneuretus'
       type_taxon.subfamily.should == subfamily
+
+      subfamily.taxonomic_history_items.map(&:taxt).should =~ [
+        "Aneuretinae as junior synonym of Dolichoderinae: {ref #{MissingReference.first.id}}: 147"
+      ]
     end
   end
-
-    #it "should parse a subfamily" do
-      #@importer.should_receive(:parse_family).and_return {
-        #Factory :subfamily, :name => 'Aneuretinae'
-        #Factory :subfamily, :name => 'Dolichoderinae'
-        #Factory :subfamily, :name => 'Formicinae'
-      #}
-
-      #@importer.import_html make_contents %{
-#<p>SUBFAMILY ANEURETINAE</p>
-#<p>Subfamily ANEURETINAE </p>
-#<p>Aneuretini Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.</p>
-#<p>Taxonomic history</p>
-#<p>Aneuretinae as junior synonym of Dolichoderinae: Baroni Urbani, 1989: 147.</p>
-#<p>Tribes of Aneuretinae: Aneuretini, *Pityomyrmecini.</p>
-#<p>Tribes <i>incertae sedis</i> in Aneuretinae: *Miomyrmecini.</p>
-#<p>Genera (extinct) <i>incertae sedis</i> in Aneuretinae: *<i>Burmomyrma, *Cananeuretus</i>. </p>
-#<p>Genus <i>incertae sedis</i> in Aneuretinae: <i>Wildensis</i>. </p>
-#<p>Hong (2002) genera (extinct) <i>incertae sedis</i> in Aneuretinae: *<i>Curtipalpulus, *Eoleptocerites</i> (unresolved junior homonym).</p>
-
-#<p>Subfamily Dolichoderinae and tribes references, world</p>
-#<p>Forel, 1878: 364, 380 (diagnosis, genera).</p>
-#<p>Regional and national faunas with keys</p>
-#<p>André, 1882a: 127 (Europe & Algeria).</p>
 
 #<p>Tribe ANEURETINI</p>
 #<p>Aneuretini Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.</p>
