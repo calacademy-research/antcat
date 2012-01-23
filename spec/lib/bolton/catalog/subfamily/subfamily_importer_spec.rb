@@ -46,9 +46,15 @@ describe Bolton::Catalog::Subfamily::Importer do
         <p>Aneuretini Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.</p>
         <p>Taxonomic history</p>
         <p>history</p>
+        <p>Genera of Aneuretini</p>
+
+        <p>Genus <i>ANEURETELLUS</i></p>
+        <p><i>Aneuretellus</i> Dlussky, 1988: 54. Type-species: *<i>Aneuretellus deformis</i>, by original designation.</p>
+        <p>Taxonomic history</p>
+        <p>History</p>
       }
 
-      Taxon.count.should == 3
+      Taxon.count.should == 5
 
       subfamily = Subfamily.find_by_name 'Aneuretinae'
       subfamily.should_not be_invalid
@@ -80,26 +86,12 @@ describe Bolton::Catalog::Subfamily::Importer do
       type_taxon.subfamily.should == subfamily
       type_taxon.tribe.should == tribe
 
+      genus = Genus.find_by_name 'Aneuretellus'
+      genus.tribe.should == tribe
+      genus.subfamily.should == subfamily
+
     end
   end
-
-#<p>Tribe ANEURETINI</p>
-#<p>Aneuretini Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.</p>
-#<p>Taxonomic history</p>
-#<p>Aneuretini as tribe of Dolichoderinae: Emery, 1913a: 6; Wheeler, W.M. 1915h: 71; Forel, 1917: 247; Wheeler, W.M. 1922a: 687; Carpenter, 1930: 37; Chapman &amp; Capco, 1951: 181; Brown, 1954e: 29 (in text).</p>
-#<p>Genera (extant) of Aneuretini: <i>Aneuretus</i>, <i>Aneuretellus</i>.</p>
-
-#<p>Subfamily, tribe Aneuretini and genus <i>Aneuretus</i> references</p>
-#<p>Forel, 1895e: 461 (diagnosis).</p>
-
-#<p>Genera of Aneuretini</p>
-
-#<p>Genus <i>ANEURETELLUS</i></p>
-#<p><i>Aneuretellus</i> Dlussky, 1988: 54. Type-species: *<i>Aneuretellus deformis</i>, by original designation.</p>
-#<p>Taxonomic history</p>
-#<p>[<i>Aneuretellus</i> also described as new by Emery, 1893f: 241.]</p>
-#<p>Genus *<i>Aneuretellus</i> references</p>
-#<p>[Note. Entries prior to Bolton, 1995b: 44, refer to genus as <i>Acantholepis</i>.]</p>
 
 #<p>Genus <i>ANEURETUS</i></p>
 #<p><i>Aneuretus</i> Emery, 1893a: cclxxv. Type-species: <i>Aneuretus simoni</i>, by monotypy.</p>
