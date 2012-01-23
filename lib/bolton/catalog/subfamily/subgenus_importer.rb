@@ -31,7 +31,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
 
     taxonomic_history = @paragraph
     parse_next_line
-    taxonomic_history << parse_genus_taxonomic_history
+    taxonomic_history << parse_taxonomic_history
 
     raise "Subgenus #{name} already exists" if Subgenus.find_by_name name
     subgenus = Subgenus.create! :name => name, :status => 'valid', :genus => genus, :taxonomic_history => clean_taxonomic_history(taxonomic_history)
@@ -56,7 +56,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     parsed_text << @paragraph
     parse_next_line
 
-    parsed_text << @paragraph << parse_genus_taxonomic_history
+    parsed_text << @paragraph << parse_taxonomic_history
 
     parsed_text
   end
@@ -80,7 +80,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     fossil = @parse_result[:fossil]
     taxonomic_history = @paragraph
     parse_next_line
-    taxonomic_history << parse_genus_taxonomic_history
+    taxonomic_history << parse_taxonomic_history
     subgenus = Subgenus.create! :name => name, :fossil => fossil, :status => 'synonym', :synonym_of => subgenus,
                              :genus => subgenus.genus, :taxonomic_history => clean_taxonomic_history(taxonomic_history)
     Progress.info "Created #{subgenus.name} junior synonym of subgenus"

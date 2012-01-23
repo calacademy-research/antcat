@@ -6,19 +6,18 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     Progress.method
 
     parse_next_line
-    name = consume(:subfamily_header)[:name]
 
+    name = consume(:subfamily_header)[:name]
     headline = consume :family_group_headline
     fossil = headline[:protonym][:fossil]
-
-    taxonomic_history = parse_subfamily_taxonomic_history
+    history = parse_taxonomic_history
 
     subfamily = Subfamily.import(
       name: name,
       fossil: fossil,
       protonym: headline[:protonym],
       type_genus: headline[:type_genus],
-      taxonomic_history: taxonomic_history,
+      taxonomic_history: history,
     )
     Progress.info "Created #{subfamily.name}"
 
