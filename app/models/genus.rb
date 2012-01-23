@@ -71,10 +71,13 @@ class Genus < Taxon
     name = attributes[:name]
     fossil = attributes[:fossil]
     subfamily_id = attributes[:subfamily_id]
+    tribe_id = attributes[:tribe_id]
+    subfamily_id = Tribe.find(tribe_id).subfamily_id if tribe_id.present?
 
     genus = Genus.find_by_name name
     unless genus
-      genus = Genus.create! name: name, status: 'valid', fossil: fossil, subfamily_id: subfamily_id
+      genus = Genus.create! name: name, status: 'valid', fossil: fossil, subfamily_id: subfamily_id,
+        tribe_id: tribe_id
       Progress.log "FIXUP created genus #{genus.full_name}"
     end
 
