@@ -3,25 +3,14 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
   private
 
   def parse_tribes_lists subfamily
-    return '' unless @type == :tribes_list
+    return unless @type == :tribes_list
     Progress.method
-
-    parsed_text = ''
-    while @type == :tribes_list
-      parsed_text << @paragraph
-      @parse_result[:tribes].each do |tribe|
-        attributes = {:name => tribe[:name], :subfamily => subfamily, :fossil => tribe[:fossil], :status => 'valid'}
-        attributes.merge!(:incertae_sedis_in => 'subfamily') if @parse_result[:incertae_sedis]
-        Tribe.create! attributes
-      end
-      parse_next_line
-    end
-    parsed_text
+    parse_next_line while @type == :tribes_list
   end
 
   def parse_tribes subfamily
     Progress.method
-    parse_tribe(subfamily) while @type == :tribe_header
+    parse_tribe subfamily while @type == :tribe_header
   end
 
   def parse_tribe subfamily

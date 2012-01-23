@@ -89,29 +89,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
   def parse_genera_lists parent_rank, parent_attributes = {}
     return unless @type == :genera_list
     Progress.method
-
-    while @type == :genera_list
-      @parse_result[:genera].each do |genus|
-        attributes = {:name => genus[:name], :fossil => genus[:fossil], :status => genus[:status] || 'valid'}.merge parent_attributes
-        attributes.merge!(:incertae_sedis_in => parent_rank.to_s) if @parse_result[:incertae_sedis]
-
-        name = genus[:name]
-        genus = ::Genus.find_by_name name
-        if genus
-          # Several genera are listed both as incertae sedis in subfamily, and as a genus of an incertae sedis tribe
-          if ['Zherichinius', 'Miomyrmex'].include? name
-            genus.update_attributes attributes
-          else
-            raise "Genus #{name} found in more than one list"
-          end
-        else
-          ::Genus.create! attributes
-        end
-      end
-
-      parse_next_line
-    end
-
+    parse_next_line while @type == :genera_list
   end
 
   #################################################################
