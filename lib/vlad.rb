@@ -13,7 +13,7 @@ class Vlad
 
   def self.display results
     results[:record_counts].each do |model_class, count|
-      Progress.log "#{count.to_s.rjust(7)} #{model_class}"
+      Progress.puts "#{count.to_s.rjust(7)} #{model_class}"
     end
   end
 
