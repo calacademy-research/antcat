@@ -70,6 +70,17 @@ describe ForwardReference do
         genus.reload.type_taxon_name.should == 'Atta major'
       end
 
+      it "should fixup a :type_taxon for a species with a subgenus" do
+        genus = Factory :genus, :name => 'Hypochira'
+        forward_reference = ForwardReference.create! :source_id => genus.id, :source_attribute => :type_taxon, :target_name => 'Formica (Hypochira) subspinosa'
+        forward_reference.fixup
+
+        genus.type_taxon_name.should == 'Formica (Hypochira) subspinosa'
+        species = genus.reload.type_taxon
+        species.name.should == 'subspinosa'
+        species.genus.should == genus
+      end
+
       it "should complain if it's fixing up something it doesn't understand" do
         genus = Factory :subspecies
         forward_reference = ForwardReference.create! :source_id => genus.id, :source_attribute => :type_taxon, :target_name => 'Atta major'

@@ -32,7 +32,17 @@ class Species < Taxon
   def self.create_from_fixup attributes
     name = attributes[:name]
     fossil = attributes[:fossil]
-    species_epithet = name.split.second
+
+    parts = name.split ' '
+    case parts.size
+    when 3
+      genus_name = parts[0]
+      subgenus_epithet = parts[1].gsub(/\(\)/, '')
+      species_epithet = parts[2]
+    when 2
+      genus_name = parts[0]
+      species_epithet = parts[1]
+    end
 
     genus = Genus.find attributes[:genus_id]
 

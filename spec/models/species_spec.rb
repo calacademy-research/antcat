@@ -119,6 +119,16 @@ describe Species do
       species.genus.should == genus
     end
 
+    it "should handle a subgenus" do
+      Progress.should_receive(:log).with("FIXUP created species Atta major")
+      genus = Factory :genus, name: 'Atta'
+      species = Species.create_from_fixup genus_id: genus.id, name: 'Atta (Spica) major', fossil: true
+      species.reload.name.should == 'major'
+      species.should_not be_invalid
+      species.should be_fossil
+      species.genus.should == genus
+    end
+
     it "should not raise an error if the passed-in genus doesn't have the same name as the genus name in the species name" do
       genus = Factory :genus, name: 'NotAtta'
       Species.create_from_fixup genus_id: genus.id, name: 'Atta major', fossil: true
