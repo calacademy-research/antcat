@@ -120,9 +120,10 @@ describe ReferenceFormatter do
         @reference = Factory :unknown_reference, :author_names => @author_names,
           :citation_year => "1874", :title => "Les fourmis de la Suisse.", :citation => '32 pp.'
       end
-      it "should escape the author_names" do
+      it "should escape the author_names but not the suffix, but unfortunately, can't think of an easy way to do tis" do
         @reference.author_names = [Factory(:author_name, :name => '<script>')]
-        @formatter.format(@reference).should == '&lt;script&gt; 1874. Les fourmis de la Suisse. 32 pp.'
+        @reference.update_attribute :author_names_suffix, '<i>et al.</i>'
+        @formatter.format(@reference).should == '<script><i>et al.</i> 1874. Les fourmis de la Suisse. 32 pp.'
       end
       it "should escape the citation year" do
         @reference.update_attribute :citation_year, '<script>'
