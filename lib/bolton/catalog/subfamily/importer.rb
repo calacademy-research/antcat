@@ -64,23 +64,17 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     Bolton::Catalog::Subfamily::Grammar
   end
 
-  def parse_taxonomic_history item_type
-    taxonomic_history = @paragraph
+  def parse_taxonomic_history
+    Progress.method
     parsed_taxonomic_history = []
     if @type == :taxonomic_history_header
-      parse_next_line item_type
-      while @type == item_type || @type == :texts do
-        if @type == :texts
-          @parse_result = @parse_result.merge :type => item_type
-          @type = item_type
-          Progress.info "  reparsed as #{item_type}" if @show_parsing
-        end
-        taxonomic_history << @paragraph
-        parsed_taxonomic_history << @parse_result
-        parse_next_line item_type
+      parse_next_line
+      while @type == :texts
+        parsed_taxonomic_history << Bolton::Catalog::TextToTaxt.convert(@parse_result[:texts].first[:text])
+        parse_next_line
       end
     end
-    return taxonomic_history, parsed_taxonomic_history
+    parsed_taxonomic_history
   end
 
   def parse_references_sections *allowed_header_types

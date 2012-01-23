@@ -31,19 +31,6 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     genus
   end
 
-  def parse_genus_taxonomic_history
-    Progress.method
-    parsed_taxonomic_history = []
-    if @type == :taxonomic_history_header
-      parse_next_line
-      while @type == :texts
-        parsed_taxonomic_history << Bolton::Catalog::TextToTaxt.convert(@parse_result[:texts].first[:text])
-        parse_next_line
-      end
-    end
-    parsed_taxonomic_history
-  end
-
   def parse_genus_references genus
     return unless @type == :genus_references_header || @type == :genus_references_see_under
     Progress.method
