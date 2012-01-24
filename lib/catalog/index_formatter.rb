@@ -124,18 +124,32 @@ module Catalog::IndexFormatter
   def format_child_lists taxon, user
     content_tag(:div, :class => :child_lists) do
       content = ''
-      content << format_tribes_list(taxon, user)
+      content << content_tag(:div, format_tribes_lists(taxon, user), :class => :child_list)
+      content << content_tag(:div, format_genera_lists(taxon, user), :class => :child_list)
       content.html_safe
     end
   end
 
-  def format_tribes_list taxon, user
+  def format_tribes_lists taxon, user
     return '' unless taxon.kind_of? Subfamily
     content = ''
     content << content_tag(:span, "Tribes of #{taxon_label taxon}", :class => :label)
     content << ': '
     content << taxon.tribes.sort_by(&:name).inject([]) do |tribes, tribe|
       tribes << taxon_label(tribe)
+    end.join(', ').html_safe
+    content << '.'
+    content.html_safe
+  end
+
+  def format_genera_lists taxon, user
+    return '' unless taxon.kind_of? Subfamily
+    content = ''
+    content << content_tag(:span, "Genera (extinct) <i>incertae sedis</i> in #{taxon_label taxon}".html_safe, :class => :label)
+    content << ': '
+    content << taxon.genera.sort_by(&:name).inject([]) do |genera, genus|
+      genera << taxon_label(genus) if genus.fossil? && genus.incertae_sedis_in?('subfamily')
+      genera
     end.join(', ').html_safe
     content << '.'
     content.html_safe

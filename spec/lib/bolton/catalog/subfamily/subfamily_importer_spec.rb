@@ -52,9 +52,15 @@ describe Bolton::Catalog::Subfamily::Importer do
         <p><i>Aneuretellus</i> Dlussky, 1988: 54. Type-species: *<i>Aneuretellus deformis</i>, by original designation.</p>
         <p>Taxonomic history</p>
         <p>History</p>
+
+        <p>Genera <i>incertae sedis</i> in ANEURETINAE</p>
+        <p>Genus *<i>BURMOMYRMA</i></p>
+        <p>*<i>Burmomyrma</i> Dlussky, 1996: 87. Type-species: *<i>Burmomyrma rossi</i>, by original designation.</p>
+        <p>Burmomyrma history</p>
+        <p>History</p>
       }
 
-      Taxon.count.should == 5
+      Taxon.count.should == 7
 
       subfamily = Subfamily.find_by_name 'Aneuretinae'
       subfamily.should_not be_invalid
@@ -90,6 +96,13 @@ describe Bolton::Catalog::Subfamily::Importer do
       genus.tribe.should == tribe
       genus.subfamily.should == subfamily
 
+      genus = Genus.find_by_name 'Burmomyrma'
+      genus.should_not be_invalid
+      genus.should be_fossil
+      genus.tribe.should be_nil
+      genus.incertae_sedis_in.should == 'subfamily'
+      genus.subfamily.should == subfamily
+
     end
   end
 
@@ -114,12 +127,6 @@ describe Bolton::Catalog::Subfamily::Importer do
 #<p>Tribe PITYOMYRMECINI<o:p></o:p></p>
 #<p>Pityomyrmecini Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.</p>
 #<p>Pityomyrmecini history</p>
-
-#<p>Genera <i>incertae sedis</i> in ANEURETINAE</p>
-
-#<p>Genus *<i>BURMOMYRMA</i></p>
-#<p><i>Burmomyrma</i></p>
-#<p>Burmomyrma history</p>
 
 #<p>Junior synonyms of <i>BURMOMYRMA</i></p>
 

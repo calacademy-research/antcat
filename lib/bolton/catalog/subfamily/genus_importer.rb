@@ -110,12 +110,12 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     parse_genus while @type == :genus_header
   end
 
-  def parse_genera_incertae_sedis expected_header = :genera_incertae_sedis_header
+  def parse_genera_incertae_sedis rank, attributes = {}, expected_header = :genera_incertae_sedis_header
     return unless @type == expected_header
     Progress.method
 
     parse_next_line
-    parse_genus while @type == :genus_header
+    parse_genus attributes.reverse_merge(incertae_sedis_in: rank) while @type == :genus_header
   end
 
 end

@@ -32,7 +32,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     parse_tribes subfamily
     parse_genera subfamily: subfamily
     parse_tribes_incertae_sedis subfamily
-    parse_genera_incertae_sedis
+    parse_genera_incertae_sedis 'subfamily', subfamily: subfamily
     parse_genera_of_hong
     parse_collective_group_names
   end
