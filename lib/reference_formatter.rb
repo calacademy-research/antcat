@@ -1,6 +1,7 @@
 # coding: UTF-8
 class ReferenceFormatter
   include ERB::Util
+  extend ERB::Util
 
   ###########################
   def self.format reference
@@ -27,6 +28,15 @@ class ReferenceFormatter
     timestamp.strftime '%Y-%m-%d'
   end
 
+  def self.h_italic string
+    string = string.gsub /<i>/, 'xxxx'
+    string = string.gsub /<\/i>/, 'yyyy'
+    string = h string
+    string = string.gsub /xxxx/, '<i>'
+    string = string.gsub /yyyy/, '</i>'
+    string.html_safe
+  end
+
   ###########################
   def initialize reference
     @reference = reference
@@ -34,7 +44,7 @@ class ReferenceFormatter
 
   def format
     s = ''
-    s << "#{@reference.author_names_string}"
+    s << "#{h_italic @reference.author_names_string}"
     s << ' ' unless s.empty?
     s << "#{h @reference.citation_year}. "
     s << "#{self.class.italicize(self.class.add_period_if_necessary(h @reference.title))} "
@@ -42,6 +52,8 @@ class ReferenceFormatter
     s << " [#{format_date(@reference.date)}]" if @reference.date?
     s.html_safe
   end
+
+  def h_italic(string) self.class.h_italic string end
 
   def format_inline_citation user
     @reference.key.to_link user
