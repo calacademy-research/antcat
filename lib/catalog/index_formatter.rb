@@ -15,6 +15,7 @@ module Catalog::IndexFormatter
       contents << content_tag(:div,  statistics,:class => :statistics)
       contents << content_tag(:div,  headline,  :class => :headline)
       contents << format_history(taxon, current_user)
+      contents << format_child_lists(taxon, current_user)
       contents << format_references(taxon, current_user)
       contents
     end
@@ -117,6 +118,27 @@ module Catalog::IndexFormatter
     string = Taxt.to_string taxt, user
     string << '.'
     content_tag :div, string.html_safe, :class => :history_item
+  end
+
+  #######################
+  def format_child_lists taxon, user
+    content_tag(:div, :class => :child_lists) do
+      content = ''
+      content << format_tribes_list(taxon, user)
+      content.html_safe
+    end
+  end
+
+  def format_tribes_list taxon, user
+    return '' unless taxon.kind_of? Subfamily
+    content = ''
+    content << content_tag(:span, "Tribes of #{taxon_label taxon}", :class => :label)
+    content << ': '
+    content << taxon.tribes.sort_by(&:name).inject([]) do |tribes, tribe|
+      tribes << taxon_label(tribe)
+    end.join(', ').html_safe
+    content << '.'
+    content.html_safe
   end
 
   #######################
