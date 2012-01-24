@@ -114,24 +114,37 @@ describe ReferenceFormatter do
       @formatter.format(reference).should == 'Forel, A. 1874. Les fourmis de la Suisse. Wiley, 22 pp.'
     end
 
+    describe "h_italic" do
+      it "should do nothing to a normal string but mark it as safe" do
+        string = @formatter.h_italic("string")
+        string.should == "string"
+        string.should be_html_safe
+      end
+      it "should strip unsafe text, but leave italics alone" do
+        string = @formatter.h_italic("<i><script>foo</i>")
+        string.should == "<i>&lt;script&gt;foo</i>"
+        string.should be_html_safe
+      end
+    end
+
     describe "unsafe characters" do
       before do
         @author_names = [Factory(:author_name, :name => 'Ward, P. S.')]
         @reference = Factory :unknown_reference, :author_names => @author_names,
           :citation_year => "1874", :title => "Les fourmis de la Suisse.", :citation => '32 pp.'
       end
-      it "should escape the author_names but not the suffix, but unfortunately, can't think of an easy way to do tis" do
+      it "should escape everything, but let italics through" do
         @reference.author_names = [Factory(:author_name, :name => '<script>')]
         @reference.update_attribute :author_names_suffix, '<i>et al.</i>'
-        @formatter.format(@reference).should == '<script><i>et al.</i> 1874. Les fourmis de la Suisse. 32 pp.'
+        @formatter.format(@reference).should == '&lt;script&gt;<i>et al.</i> 1874. Les fourmis de la Suisse. 32 pp.'
       end
       it "should escape the citation year" do
-        @reference.update_attribute :citation_year, '<script>'
-        @formatter.format(@reference).should == 'Ward, P. S. &lt;script&gt;. Les fourmis de la Suisse. 32 pp.'
+        @reference.update_attribute :citation_year, '<script><i>'
+        @formatter.format(@reference).should == 'Ward, P. S. &lt;script&gt;&lt;i&gt;. Les fourmis de la Suisse. 32 pp.'
       end
       it "should escape the title" do
-        @reference.update_attribute :title, '<script>'
-        @formatter.format(@reference).should == 'Ward, P. S. 1874. &lt;script&gt;. 32 pp.'
+        @reference.update_attribute :title, '<script><i>'
+        @formatter.format(@reference).should == 'Ward, P. S. 1874. &lt;script&gt;&lt;i&gt;. 32 pp.'
       end
       it "should escape the title but leave the italics alone" do
         @reference.update_attribute :title, '*foo*<script>'

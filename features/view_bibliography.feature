@@ -22,11 +22,12 @@ Feature: View bibliography
 
   Scenario: Dangerous text
     Given the following references exist
-      |title   |authors|citation|year|public_notes|
-      |<script>|authors|Ants 3:3|year|{<html>}    |
+      |title              |authors|citation|year|public_notes|
+      |<script><i>Ants</i>|authors|Ants 3:3|year|{<html>}    |
     When I go to the references page
     Then I should see "<script>"
       And I should see "<html>"
+      And I should see "<i>"
 
   Scenario: Viewing more than one entry, sorted by author + date (including slug)
     Given the following references exist
