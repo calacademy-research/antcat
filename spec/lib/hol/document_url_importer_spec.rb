@@ -34,18 +34,17 @@ describe Hol::DocumentUrlImporter do
     end
 
     it "should import references in order of their first author" do
+      Reference.delete_all
       bolton = Factory :author_name, :name => 'Bolton'
       ward = Factory :author_name, :name => 'Ward'
       fisher = Factory :author_name, :name => 'Fisher'
       bolton_reference = Factory :reference, :author_names => [bolton]
-      first_ward_reference = Factory :reference, :author_names => [ward]
-      second_ward_reference = Factory :reference, :author_names => [ward]
+      ward_reference = Factory :reference, :author_names => [ward]
       fisher_reference = Factory :reference, :author_names => [fisher]
 
       @importer.should_receive(:import_document_url_for).with(bolton_reference).ordered.and_return 'asdf'
       @importer.should_receive(:import_document_url_for).with(fisher_reference).ordered.and_return 'asdf'
-      @importer.should_receive(:import_document_url_for).with(first_ward_reference).ordered.and_return 'asdf'
-      @importer.should_receive(:import_document_url_for).with(second_ward_reference).ordered.and_return 'asdf'
+      @importer.should_receive(:import_document_url_for).with(ward_reference).ordered.and_return 'asdf'
 
       @importer.import
     end
