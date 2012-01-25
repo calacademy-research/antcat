@@ -22,7 +22,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     Progress.info "Created #{subfamily.name}"
 
     parse_subfamily_child_lists subfamily
-    parse_subfamily_references_sections
+    parse_subfamily_reference_sections
     parse_subfamily_children subfamily
 
     true
@@ -43,9 +43,9 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     parse_collective_group_names_list
   end
 
-  def parse_subfamily_references_sections
+  def parse_subfamily_reference_sections
     Progress.method
-    parse_references_sections :references_section_header, :regional_and_national_faunas_header
+    parse_reference_sections :references_section_header, :regional_and_national_faunas_header
   end
 
   def parse_collective_group_names_list

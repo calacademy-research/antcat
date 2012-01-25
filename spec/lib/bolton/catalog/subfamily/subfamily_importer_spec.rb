@@ -46,8 +46,11 @@ describe Bolton::Catalog::Subfamily::Importer do
         <p>Aneuretini Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.</p>
         <p>Taxonomic history</p>
         <p>history</p>
-        <p>Genera of Aneuretini</p>
 
+        <p>Subfamily, tribe Aneuretini and genus <i>Aneuretus</i> references</p>
+        <p>Emery, 1913a: 461 (diagnosis)</p>
+
+        <p>Genera of Aneuretini</p>
         <p>Genus <i>ANEURETELLUS</i></p>
         <p><i>Aneuretellus</i> Dlussky, 1988: 54. Type-species: *<i>Aneuretellus deformis</i>, by original designation.</p>
         <p>Taxonomic history</p>
@@ -86,6 +89,8 @@ describe Bolton::Catalog::Subfamily::Importer do
       tribe.subfamily.should == subfamily
       tribe.taxonomic_history_items.map(&:taxt).should == ["history"]
       tribe.type_taxon_name.should == 'Aneuretus'
+      tribe.reference_sections.map(&:title).should == ["Subfamily, tribe Aneuretini and genus <i>Aneuretus</i> references"]
+      tribe.reference_sections.map(&:references).should == ["{ref #{emery.id}}: 461 (diagnosis)"]
 
       type_taxon = tribe.type_taxon
       type_taxon.name.should == 'Aneuretus'

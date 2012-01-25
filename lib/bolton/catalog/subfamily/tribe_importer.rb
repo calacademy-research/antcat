@@ -36,7 +36,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     parse_junior_synonyms_of_tribe tribe
     parse_genera_lists :tribe, subfamily: subfamily, tribe: tribe
     parse_ichnotaxa_list subfamily: subfamily, tribe: tribe
-    parse_references_sections :references_section_header, :see_under_references_section_header
+    parse_reference_sections tribe, :references_section_header, :see_under_references_section_header
     parse_see_also_references_section
 
     parse_genera subfamily: subfamily, tribe: tribe
