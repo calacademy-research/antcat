@@ -33,7 +33,8 @@ describe Bolton::Catalog::Subfamily::Importer do
 <p>Taxonomic history</p>
 <p><i>Condylodon</i> in family Mutillidae: Swainson &amp; Shuckard, 1840: 173. </p>
 
-<p>Genus references</p><p>Baroni Urbani, 1977c: 482 (review of genus).</p>
+<p>Genus references</p>
+<p>Baroni Urbani, 1977c: 482 (review of genus).</p>
 
 <p>Genera excluded from FORMICIDAE</p>
 <p>The following were all originally described as members of Formicidae but are now excluded.</p>
@@ -78,7 +79,8 @@ describe Bolton::Catalog::Subfamily::Importer do
     ]
     genus.type_taxon_name.should == "Condylodon audouini"
     genus.type_taxon_taxt.should == ", by monotypy. [{ref #{lund.id}}: 25 says no.]"
-    genus.references_taxt.should == "{ref #{baroni.id}}: 482 (review of genus)."
+    genus.reference_sections.map(&:title).should == ["Genus references"]
+    genus.reference_sections.map(&:references).should == ["{ref #{baroni.id}}: 482 (review of genus)."]
 
     species = genus.type_taxon
     species.should_not be_invalid
