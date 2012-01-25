@@ -96,7 +96,9 @@ module Catalog::IndexFormatter
   end
   
   def format_headline_type_taxt taxt
-    Taxt.to_string taxt
+    string = Taxt.to_string(taxt)
+    string = '.' unless string.present?
+    string
   end
 
   def format_headline_notes taxon
