@@ -54,6 +54,7 @@ Feature: Using the catalog index
       And I follow "Dolichoderinae"
       And I follow "Dolichoderini"
     Then "Dolichoderinae" should be selected
+      And I should see "Dolichoderini" in the contents
       And "Dolichoderini" should be selected
       And I should see "Dolichoderini history"
       And I should see "Dolichoderus" in the index
