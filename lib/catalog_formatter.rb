@@ -11,6 +11,12 @@ class CatalogFormatter
   extend Catalog::IndexFormatter
   extend Catalog::AntwebFormatter
 
+  def self.taxon_label_span taxon, options = {}
+    content_tag :span, class: taxon_css_classes(taxon, options) do
+      taxon_label(taxon, options).html_safe
+    end
+  end
+
   def self.taxon_label taxon, options = {}
     name_label taxon.name, taxon.fossil?, options
   end

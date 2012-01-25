@@ -6,6 +6,13 @@ describe CatalogFormatter do
     @formatter = CatalogFormatter
   end
 
+  describe "Taxon label span" do
+    it "should create a span based on the type of the taxon and its status" do
+      taxon = Factory :genus, :name => 'Atta'
+      @formatter.taxon_label_span(taxon).should == '<span class="genus taxon valid">Atta</span>'
+    end
+  end
+
   describe 'taxon label and css classes' do
     it "should return the CSS class based on the type of the taxon and its status" do
       taxon = Factory :genus, :name => 'Atta'
