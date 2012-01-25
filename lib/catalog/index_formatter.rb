@@ -17,6 +17,7 @@ module Catalog::IndexFormatter
       contents << format_history(taxon, current_user)
       contents << format_child_lists(taxon, current_user)
       contents << format_references(taxon, current_user)
+      contents << format_reference_sections(taxon, current_user)
       contents
     end
 
@@ -186,6 +187,23 @@ module Catalog::IndexFormatter
       genera << content_tag(:span, label, class: css_classes)
       genera
     end.join(', ').html_safe
+  end
+
+  #######################
+  def format_reference_sections taxon, user
+    return '' unless taxon.reference_sections.present?
+    content_tag :div, class: :reference_sections do
+      taxon.reference_sections.inject(''.html_safe) do |reference_sections, reference_section|
+        reference_sections << format_reference_section(reference_section, user)
+      end
+    end
+  end
+
+  def format_reference_section reference_section, user
+    content_tag :div, class: 'section' do
+      content_tag(:h4, Taxt.to_string(reference_section.title), class: :title) +
+      content_tag(:div, Taxt.to_string(reference_section.references), class: :references)
+    end
   end
 
   #######################

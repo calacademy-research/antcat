@@ -79,20 +79,19 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     parsed_taxonomic_history
   end
 
-  def parse_references_sections *allowed_header_types
-    parsed_text = ''
+  def parse_reference_sections taxon, *allowed_header_types
     while allowed_header_types.include? @type
-      parsed_text << parse_references_section
+      parse_reference_section taxon
       parse_next_line
     end
-    parsed_text
   end
 
-  def parse_references_section
-    parsed_text = @paragraph
-    parse_next_line :text
-    parsed_text << @paragraph
-    parsed_text
+  def parse_reference_section taxon
+    texts = Bolton::Catalog::Grammar.parse(@line, root: :text).value
+    title = Bolton::Catalog::TextToTaxt.convert texts[:text]
+    parse_next_line
+    references = Bolton::Catalog::TextToTaxt.convert @parse_result[:texts]
+    taxon.reference_sections.create! title: title, references: references
   end
 
 end

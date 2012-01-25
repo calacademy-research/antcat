@@ -80,4 +80,27 @@ describe Catalog::IndexFormatter do
     end
   end
 
+  describe "Reference sections" do
+    before do
+      @taxon = Factory :family
+    end
+    describe "Reference sections formatting" do
+      it "should format a number of items together in order" do
+        @taxon.reference_sections.create! title: 'Global references', references: 'A global reference'
+        @taxon.reference_sections.create! title: 'References', references: 'A reference'
+        @formatter.format_reference_sections(@taxon, nil).should ==
+          '<div class="reference_sections">' +
+            '<div class="section">' +
+              '<h4 class="title">Global references</h4>' +
+              '<div class="references">A global reference</div>' +
+            '</div>' +
+            '<div class="section">' +
+              '<h4 class="title">References</h4>' +
+              '<div class="references">A reference</div>' +
+            '</div>' +
+          '</div>'
+      end
+    end
+  end
+
 end
