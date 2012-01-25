@@ -121,19 +121,21 @@ module Catalog::IndexFormatter
   end
 
   #######################
+  #######################
   def format_child_lists taxon, user
-    content_tag(:div, :class => :child_lists) do
+    content_tag(:div, class: :child_lists) do
       content = ''
-      content << content_tag(:div, format_tribes_lists(taxon, user), :class => :child_list)
-      content << content_tag(:div, format_genera_lists(taxon, user), :class => :child_list)
+      content << format_tribes_lists(taxon, user)
+      content << format_genera_lists(taxon)
       content.html_safe
     end
   end
 
+  #######################
   def format_tribes_lists taxon, user
-    return '' unless taxon.kind_of? Subfamily
+    return '' unless taxon.respond_to?(:tribes) && taxon.tribes.present?
     content = ''
-    content << content_tag(:span, "Tribes of #{taxon_label taxon}", :class => :label)
+    content << content_tag(:span, "Tribes of #{taxon_label taxon}", class: :label)
     content << ': '
     content << taxon.tribes.sort_by(&:name).inject([]) do |tribes, tribe|
       tribes << taxon_label(tribe)
@@ -142,17 +144,47 @@ module Catalog::IndexFormatter
     content.html_safe
   end
 
-  def format_genera_lists taxon, user
-    return '' unless taxon.kind_of? Subfamily
-    content = ''
-    content << content_tag(:span, "Genera (extinct) <i>incertae sedis</i> in #{taxon_label taxon}".html_safe, :class => :label)
-    content << ': '
-    content << taxon.genera.sort_by(&:name).inject([]) do |genera, genus|
-      genera << taxon_label(genus) if genus.fossil? && genus.incertae_sedis_in?('subfamily')
+  #######################
+  def format_genera_lists taxon
+    return '' unless taxon.respond_to? :genera
+
+    format_genera_list(taxon, fossil: false) +
+    format_genera_list(taxon, fossil: true) +
+    format_genera_list(taxon, incertae_sedis_in: 'family')
+  end
+
+  def format_genera_list taxon, options = {}
+    genera = taxon.genera
+    genera = genera.where fossil: true if options[:fossil]
+    genera = genera.where fossil: false unless options[:fossil]
+    genera = genera.where incertae_sedis_in: 'family' if options[:incertae_sedis_in] == 'family'
+    return '' unless genera.present?
+
+    label = ''
+    label << ((genera.count > 1) ? 'Genera' : 'Genus')
+    label << ' ('
+    label << (options[:fossil] ? 'extinct' : 'extant')
+    label << ') '
+    label << "of #{taxon_label_span taxon, ignore_status: true}"
+    label.html_safe
+
+    content_tag :div, class: :child_list do
+      content = ''
+      content << content_tag(:span, label, class: :label)
+      content << ': '
+      content << format_genera_list_items(genera)
+      content << '.'
+      content.html_safe
+    end
+  end
+
+  def format_genera_list_items genera
+    genera.sort_by(&:name).inject([]) do |genera, genus|
+      label = taxon_label genus
+      css_classes = taxon_css_classes genus, ignore_status: true
+      genera << content_tag(:span, label, class: css_classes)
       genera
     end.join(', ').html_safe
-    content << '.'
-    content.html_safe
   end
 
   #######################
