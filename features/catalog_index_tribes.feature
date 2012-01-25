@@ -95,6 +95,6 @@ Feature: Hiding and showing tribes in the index
     When I go to the catalog index
       And I follow "hide"
       And I follow "(no subfamily)"
+    # This would be best, but not worth doing right now
     #Then I should not see "show tribes"
     When I follow "Atta"
-
