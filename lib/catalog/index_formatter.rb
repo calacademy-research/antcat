@@ -150,16 +150,26 @@ module Catalog::IndexFormatter
   def format_genera_lists taxon
     return '' unless taxon.respond_to? :genera
 
-    format_genera_list(taxon, fossil: false) +
-    format_genera_list(taxon, fossil: true) +
-    format_genera_list(taxon, incertae_sedis_in: 'family')
+    case taxon
+    when Family
+      format_genera_list(taxon, incertae_sedis_in: 'family', fossil: true) +
+      format_genera_list(taxon, incertae_sedis_in: 'family', fossil: false)
+    when Subfamily
+      format_genera_list(taxon, incertae_sedis_in: 'subfamily', fossil: true) +
+      format_genera_list(taxon, incertae_sedis_in: 'subfamily', fossil: false)
+    else
+      format_genera_list(taxon, fossil: false) +
+      format_genera_list(taxon, fossil: true)
+    end
   end
 
   def format_genera_list taxon, options = {}
     genera = taxon.genera
     genera = genera.where fossil: true if options[:fossil]
     genera = genera.where fossil: false unless options[:fossil]
-    genera = genera.where incertae_sedis_in: 'family' if options[:incertae_sedis_in] == 'family'
+    incertae_sedis_in = options[:incertae_sedis_in]
+    genera = genera.where incertae_sedis_in: incertae_sedis_in if incertae_sedis_in
+
     return '' unless genera.present?
 
     label = ''.html_safe
