@@ -7,13 +7,13 @@ module Catalog::IndexFormatter
     headline    = format_headline(taxon, current_user)
     statistics  = format_taxon_statistics(taxon)
 
-    content_tag :div, :class => :antcat_taxon do
-      contents = content_tag(:div, :class => :header) do
-        content_tag(:span, header_name, :class =>  x_css_classes_for_taxon(taxon)) +
-        content_tag(:span, status,      :class => :status)
+    content_tag :div, class: :antcat_taxon do
+      contents = content_tag(:div, class: :header) do
+        content_tag(:span, header_name, class: x_css_classes_for_taxon(taxon)) +
+        content_tag(:span, status,      class: :status)
       end
-      contents << content_tag(:div,  statistics,:class => :statistics)
-      contents << content_tag(:div,  headline,  :class => :headline)
+      contents << content_tag(:div,  statistics,class: :statistics)
+      contents << content_tag(:div,  headline,  class: :headline)
       contents << format_history(taxon, current_user)
       contents << format_child_lists(taxon, current_user)
       contents << format_references(taxon, current_user)
@@ -26,7 +26,7 @@ module Catalog::IndexFormatter
     classes = ['name', 'taxon']
     classes << 'genus' if rank == 'genus'
     classes << 'subfamily' if rank == 'family_or_subfamily'
-    content_tag :span, :class => classes.sort.join(' ') do
+    content_tag :span, class: classes.sort.join(' ') do
       name_label name, is_fossil
     end
   end
@@ -35,11 +35,11 @@ module Catalog::IndexFormatter
     string = authorship.reference.key.to_link(user) + ": #{authorship.pages}"
     string << Taxt.to_string(authorship.notes_taxt)
     string << '.'
-    content_tag :span, string, :class => :authorship
+    content_tag :span, string, class: :authorship
   end
 
   def x_format_headline_type_name taxon
-    content_tag(:span, taxon.type_taxon_name.html_safe, :class => "#{taxon.type_taxon.rank} taxon")
+    content_tag(:span, taxon.type_taxon_name.html_safe, class: "#{taxon.type_taxon.rank} taxon")
   end
 
   def x_css_classes_for_taxon taxon
@@ -84,7 +84,7 @@ module Catalog::IndexFormatter
     return '' unless taxon.type_taxon
     type = taxon.type_taxon
     taxt = taxon.type_taxon_taxt
-    content_tag :span, :class => 'type' do
+    content_tag :span, class: 'type' do
       string = "Type-#{type.type.downcase}: ".html_safe
       string << format_headline_type_name(taxon) + format_headline_type_taxt(taxt)
       string
@@ -111,13 +111,13 @@ module Catalog::IndexFormatter
       history << format_history_item(history_item.taxt, user)
     end
     content_tag(:h4,  'Taxonomic history') +
-    content_tag(:div, history, :class => :history)
+    content_tag(:div, history, class: :history)
   end
 
   def format_history_item taxt, user
     string = Taxt.to_string taxt, user
     string << '.'
-    content_tag :div, string.html_safe, :class => :history_item
+    content_tag :div, string.html_safe, class: :history_item
   end
 
   #######################
@@ -162,6 +162,6 @@ module Catalog::IndexFormatter
     references = Taxt.to_string taxon.references_taxt, user
 
     content_tag(:h4,  'Genus references') +
-    content_tag(:div, references, :class => :references)
+    content_tag(:div, references, class: :references)
   end
 end
