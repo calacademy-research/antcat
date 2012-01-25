@@ -160,13 +160,14 @@ module Catalog::IndexFormatter
     genera = genera.where incertae_sedis_in: 'family' if options[:incertae_sedis_in] == 'family'
     return '' unless genera.present?
 
-    label = ''
+    label = ''.html_safe
     label << ((genera.count > 1) ? 'Genera' : 'Genus')
     label << ' ('
     label << (options[:fossil] ? 'extinct' : 'extant')
     label << ') '
-    label << "of #{taxon_label_span taxon, ignore_status: true}"
-    label.html_safe
+    label << 'of '
+    label << taxon_label_span(taxon, ignore_status: true)
+    label
 
     content_tag :div, class: :child_list do
       content = ''
