@@ -13,7 +13,7 @@ grammar Bolton::Catalog::Subfamily::TribeGrammar
 
   rule see_also_references_section_header
     ('See also general references under ' family_or_subfamily_name_uppercase '.') {
-      {:type => :see_also_references_section_header, :taxa => family_or_subfamily_name_uppercase.value}
+      {:type => :see_also_references_section_header, :title => to_s}
     }
   end
 

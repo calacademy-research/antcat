@@ -177,51 +177,45 @@ describe Bolton::Catalog::Subfamily::SubfamilyGrammar do
 
     it "should handle references for multiple taxa" do
       @grammar.parse('Subfamily, tribe Aneuretini and genus <i>Aneuretus</i> references').value_with_reference_text_removed.should == {
-        :type => :references_section_header,
-        :taxa => {:subfamily => true, :tribe => {:tribe_name => 'Aneuretini'}, :genus => {:genus_name => 'Aneuretus'}}
+        type: :references_section_header,
+        title: 'Subfamily, tribe Aneuretini and genus <i>Aneuretus</i> references'
       }
     end
     it "should handle these taxa" do
       @grammar.parse('Subfamily, tribe *Formiciini and collective group name *<i>Formicium</i> references').value_with_reference_text_removed.should == {
         :type=>:references_section_header,
-        :taxa=>{
-          :subfamily=>true,
-          :tribe=>{:tribe_name=>"Formiciini", :fossil=>true},
-          :collective_group_name=>{:genus_name=>"Formicium", :fossil=>true}
-        }
+        title: 'Subfamily, tribe *Formiciini and collective group name *<i>Formicium</i> references'
       }
     end
 
     it "should handle references for multiple when the tribe isn't specified" do
       @grammar.parse('Subfamily, tribe and genus <i>Myrmecia</i> references').value_with_reference_text_removed.should == {
         :type => :references_section_header,
-        :taxa => {:subfamily => true, :tribe => true, :genus => {:genus_name => 'Myrmecia'}}
+        title: 'Subfamily, tribe and genus <i>Myrmecia</i> references'
       }
     end
     it "should handle world references for the subfamily" do
       @grammar.parse('Subfamily Formicinae references, world').value_with_reference_text_removed.should == {
         :type => :references_section_header,
-        :taxa => {:subfamily => {:subfamily_name => 'Formicinae'}},
-        :world => true
+        title: 'Subfamily Formicinae references, world'
       }
     end
     it "should handle references for the subfamily" do
       @grammar.parse('Subfamily Formicinae references').value_with_reference_text_removed.should == {
         :type => :references_section_header,
-        :taxa => {:subfamily => {:subfamily_name => 'Formicinae'}}
+        title: 'Subfamily Formicinae references'
       }
     end
     it "should handle references for the subfamily when the name is left out" do
       @grammar.parse('Subfamily references').value_with_reference_text_removed.should == {
         :type => :references_section_header,
-        :taxa => {:subfamily => true}
+        title: 'Subfamily references'
       }
     end
     it "should handle world references for the subfamily and the tribes" do
       @grammar.parse('Subfamily Dolichoderinae and tribes references, world').value_with_reference_text_removed.should == {
         :type => :references_section_header,
-        :taxa => {:subfamily => {:subfamily_name => 'Dolichoderinae'}, :tribes => true},
-        :world => true
+        title: 'Subfamily Dolichoderinae and tribes references, world'
       }
     end
   end

@@ -117,54 +117,50 @@ describe Bolton::Catalog::Subfamily::TribeGrammar do
     end
     it "should handle references for the tribe when the name is left out" do
       @grammar.parse('Tribe references').value_with_reference_text_removed.should == {
-        :type => :references_section_header,
-        :taxa => {:tribe => true}
+        type: :references_section_header,
+        title: 'Tribe references'
       }
     end
     it "should handle a see also references header" do
       @grammar.parse('See also general references under PONERINAE.').value_with_reference_text_removed.should == {
         :type => :see_also_references_section_header,
-        :taxa => {:family_or_subfamily_name => 'Ponerinae'}
+        title: 'See also general references under PONERINAE.'
       }
     end
     it "should handle references for a see above tribe" do
       @grammar.parse('Tribe Ecitonini references: see above').value_with_reference_text_removed.should == {
         :type => :see_under_references_section_header,
-        :taxa => {:tribe_name => 'Ecitonini'}
+        title: 'Tribe Ecitonini references: see above'
       }
     end
     it "should handle references for a see above tribe, not named" do
       @grammar.parse('Tribe references: see above').value_with_reference_text_removed.should == {
         :type => :see_under_references_section_header,
-        :taxa => :tribe
+        title: 'Tribe references: see above'
       }
     end
     it "should handle references for a single tribe" do
       @grammar.parse('Tribe Aneuretini references').value_with_reference_text_removed.should == {
         :type => :references_section_header,
-        :taxa => {:tribe_name => 'Aneuretini'}
+        title: 'Tribe Aneuretini references'
       }
     end
     it "should handle references for the tribe and a genus" do
       @grammar.parse('Tribe and genus <i>Myrmoteras</i> references').value_with_reference_text_removed.should == {
         :type => :references_section_header,
-        :taxa => {:genus_name => 'Myrmoteras'}
+        title: 'Tribe and genus <i>Myrmoteras</i> references'
       }
     end
     it "should handle references for the subfamily and tribe" do
       @grammar.parse('Subfamily and tribe Pseudomyrmecini references').value_with_reference_text_removed.should == {
         :type => :references_section_header,
-        :taxa => {:subfamily => true, :tribe_name => 'Pseudomyrmecini'}
+        title: 'Subfamily and tribe Pseudomyrmecini references'
       }
     end
     it "should handle a header that also includes a reference" do
       @grammar.parse('Tribe references: see under genera; Bolton, 2003: 30.').value_with_reference_text_removed.should == {
         :type => :references_section_header,
-        :texts => [
-          :text => [
-            {:author_names => ['Bolton'], :year => '2003', :pages => '30'},
-          ], text_suffix: '.'
-        ],
+        title: 'Tribe references: see under genera; Bolton, 2003: 30.'
       }
     end
   end
