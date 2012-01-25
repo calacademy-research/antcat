@@ -51,20 +51,20 @@ describe Bolton::Catalog::Subfamily::Grammar do
   describe "References header" do
     it "should handle references for a single tribe" do
       @grammar.parse('Tribe Aneuretini references').value_with_reference_text_removed.should == {
-        :type => :references_section_header,
-        :taxa => {:tribe_name => 'Aneuretini'}
+        type: :references_section_header,
+        title: 'Tribe Aneuretini references'
       }
     end
     it "should handle references for a tribe and genus" do
       @grammar.parse('Tribe Cheliomyrmecini and genus <i>Cheliomyrmex</i> references').value_with_reference_text_removed.should == {
         :type => :references_section_header,
-        :taxa => {:tribe => {:tribe_name => 'Cheliomyrmecini'}, :genus => {:genus_name => 'Cheliomyrmex'}}
+        title: 'Tribe Cheliomyrmecini and genus <i>Cheliomyrmex</i> references'
       }
     end
-    it "should handle references for subfamily and tribes (no names" do
+    it "should handle references for subfamily and tribes (no names)" do
       @grammar.parse('Subfamily and tribes references').value_with_reference_text_removed.should == {
         :type => :references_section_header,
-        :taxa => {:tribes => true, :subfamily => true}
+        title: 'Subfamily and tribes references'
       }
     end
   end
