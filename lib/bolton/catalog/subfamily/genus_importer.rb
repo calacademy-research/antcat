@@ -35,11 +35,16 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     return unless @type == :genus_references_header || @type == :genus_references_see_under
     Progress.method
 
+    title_only = @type == :genus_references_see_under
+
     texts = Bolton::Catalog::Grammar.parse(@line, root: :text).value
     title = Bolton::Catalog::TextToTaxt.convert texts[:text]
-    parse_next_line
 
-    references = Bolton::Catalog::TextToTaxt.convert @parse_result[:texts]
+    references = nil
+    unless title_only
+      parse_next_line
+      references = Bolton::Catalog::TextToTaxt.convert @parse_result[:texts]
+    end
 
     genus.reference_sections.create! title: title, references: references
     
