@@ -7,6 +7,7 @@ class AddReferenceSections < ActiveRecord::Migration
       t.text    :references
     end
     add_index :reference_sections, [:taxon_id, :position]
+    remove_column :taxa, :references_taxt
   end
 
   def down

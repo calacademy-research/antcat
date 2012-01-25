@@ -205,7 +205,6 @@ ActiveRecord::Schema.define(:version => 20120125173943) do
     t.text     "type_taxon_taxt"
     t.text     "headline_notes_taxt"
     t.text     "type_taxon_name"
-    t.text     "references_taxt"
   end
 
   add_index "taxa", ["genus_id"], :name => "taxa_genus_id_idx"
