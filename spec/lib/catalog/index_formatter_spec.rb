@@ -88,7 +88,7 @@ describe Catalog::IndexFormatter do
       it "should format a number of items together in order" do
         @taxon.reference_sections.create! title: 'Global references', references: 'A global reference'
         @taxon.reference_sections.create! title: 'References', references: 'A reference'
-        @formatter.format_reference_sections(@taxon, nil).should ==
+        @formatter.format_references(@taxon, nil).should ==
           '<div class="reference_sections">' +
             '<div class="section">' +
               '<h4 class="title">Global references</h4>' +
