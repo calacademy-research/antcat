@@ -132,27 +132,25 @@ grammar Bolton::Catalog::Subfamily::GenusGrammar
   ###########################################
   rule junior_synonyms_of_genus_header
     (/Junior synonyms?/ ' of ' fossil_flag? italic uppercase_word close_tag /.*/) {
-      {:type => :junior_synonyms_of_genus_header}
+      {:type => :junior_synonyms_of_genus_header, title: to_s}
     }
   end
 
   rule homonym_replaced_by_genus_header
     ('Homonym replaced by ' fossil_flag? italic (capitalized_word|uppercase_word) /.*/) {
-      {:type => :homonym_replaced_by_genus_header}
+      {:type => :homonym_replaced_by_genus_header, title: to_s}
     }
   end
 
   rule genus_references_header
     ('Genus' (' ' genus_label)? ' references') {
-      {:type => :genus_references_header}
+      {:type => :genus_references_header, title: to_s}
     }
   end
 
   rule genus_references_see_under
     ('Genus' (' ' genus_label)? ' references: see' (' under ' taxon_label ',')? ' above.') {
-      value = {:type => :genus_references_see_under}
-      value[:see_under] = taxon_label.value if taxon_label
-      value
+      {:type => :genus_references_see_under, title: to_s}
     }
   end
 
