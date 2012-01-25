@@ -1,6 +1,8 @@
 @import 'common'
 @import 'colors'
 
+$hanging_indent_size: 30px
+
 html, body, #page, .rank
   height: 100%
 
@@ -30,6 +32,9 @@ html, body, #page, .rank
       padding-right: 3px
   h4
   .history
+    .history_item
+      text-indent: -$hanging_indent_size
+      margin-left:  $hanging_indent_size
   .child_lists
     .label
       font-weight: bold
