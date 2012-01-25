@@ -10,6 +10,7 @@ class Taxon < ActiveRecord::Base
   belongs_to  :type_taxon, :class_name => 'Taxon'
   belongs_to  :homonym_replaced_by, :class_name => 'Taxon'
   has_many    :taxonomic_history_items, :order => :position
+  has_many    :reference_sections, :order => :position
 
   validates_presence_of :name
 
