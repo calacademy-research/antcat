@@ -60,7 +60,8 @@ describe Bolton::Catalog::Subfamily::Importer do
       genus.type_taxon_taxt.should == ", by monotypy."
       genus.type_taxon.name.should == 'audouini'
       genus.type_taxon.full_name.should == 'Condylodon audouini'
-      genus.references_taxt.should == "{ref #{baroni.id}}: 482 (review of genus)."
+      genus.reference_sections.map(&:title).should == ['Genus references']
+      genus.reference_sections.map(&:references).should == ["{ref #{baroni.id}}: 482 (review of genus)."]
 
       protonym = genus.protonym
       protonym.name.should == 'Condylodon'

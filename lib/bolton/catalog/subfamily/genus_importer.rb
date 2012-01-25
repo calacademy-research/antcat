@@ -35,26 +35,18 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     return unless @type == :genus_references_header || @type == :genus_references_see_under
     Progress.method
 
-    multiple_reference_sections = @type != :genus_references_see_under
-
-    texts = []
+    texts = Bolton::Catalog::Grammar.parse(@line, root: :text).value
+    title = Bolton::Catalog::TextToTaxt.convert texts[:text]
     parse_next_line
-    collect_reference_section texts
-    collect_reference_section texts if multiple_reference_sections && @type == :reference_section
 
-    genus.update_attribute :references_taxt, Bolton::Catalog::TextToTaxt.convert(texts)
+    references = Bolton::Catalog::TextToTaxt.convert @parse_result[:texts]
+
+    genus.reference_sections.create! title: title, references: references
+    
+    parse_next_line
   end
 
-  def collect_reference_section texts
-    if @type == :texts
-      texts.concat @parse_result[:texts] if @parse_result[:texts]
-      @parse_result[:texts] = texts
-      @parse_result[:type] = @type = :reference_section
-      Progress.info 'reparsed as reference_section'
-      parse_next_line
-    end
-  end
-
+  ################################################
   def parse_homonym_replaced_by_genus replaced_by_genus
     genus = parse_genus({:status => 'homonym'}, :header => :homonym_replaced_by_genus_header)
     return '' unless genus
