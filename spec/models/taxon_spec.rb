@@ -269,4 +269,22 @@ describe Taxon do
     end
   end
 
+  describe "Reference sections" do
+    it "should have some" do
+      taxon = Factory :family
+      taxon.reference_sections.should be_empty
+      taxon.reference_sections.create! :references => 'foo'
+      taxon.reload.reference_sections.map(&:references).should == ['foo']
+    end
+    it "should show the items in the order in which they were added to the taxon" do
+      taxon = Factory :family
+      taxon.reference_sections.create! :references => '1'
+      taxon.reference_sections.create! :references => '2'
+      taxon.reference_sections.create! :references => '3'
+      taxon.reference_sections.map(&:references).should == ['1','2','3']
+      taxon.reference_sections.first.move_to_bottom
+      taxon.reference_sections(true).map(&:references).should == ['2','3','1']
+    end
+  end
+
 end
