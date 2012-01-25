@@ -36,7 +36,11 @@ class Catalog::IndexController < CatalogController
     when Tribe
       @tribe = @taxon
       @subfamily = @tribe.subfamily
-      unless params[:hide_tribes]
+      if params[:hide_tribes]
+        @taxon = @tribe.subfamily
+        params[:id] = @taxon.id
+        @genera = @subfamily.genera
+      else
         @tribes = @tribe.siblings
         @genera = @tribe.genera
       end

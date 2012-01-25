@@ -71,7 +71,8 @@ Feature: Hiding and showing tribes in the index
       And I follow "Dolichoderinae"
       And I follow "Dolichoderini"
       And I follow "hide" in the tribes index
-    Then I should not see "Tribes"
+    Then I should not see the tribes index
+      And I should see "Dolichoderus" in the index
       And "Dolichoderinae" should be selected
       
    Scenario: Hiding tribes after selecting a genus
@@ -80,7 +81,7 @@ Feature: Hiding and showing tribes in the index
       And I follow "Dolichoderini"
       And I follow "Dolichoderus"
       And I follow "hide" in the tribes index
-    Then I should not see "Tribes"
+    Then I should not see the tribes index
       And "Dolichoderinae" should be selected
       And "Dolichoderus" should be selected
 
