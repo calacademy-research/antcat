@@ -38,7 +38,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     Progress.method
 
     headline = consume :family_group_headline
-    name = headline[:protonym][:tribe_name]
+    name = headline[:protonym][:tribe_name] || headline[:protonym][:subtribe_name]
     fossil = headline[:protonym][:fossil]
 
     history = parse_taxonomic_history
