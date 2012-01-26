@@ -150,6 +150,11 @@ describe Bolton::Catalog::TextToTaxt do
         {:genus_abbreviation=>"D.", :subgenus_epithet=>"Monacis"}
       ]).should == "<i>D. (Monacis)</i>"
     end
+    it "should handle lone species epithet" do
+      @converter.convert([
+        {species_group_epithet: "brunneus", delimiter: " "}
+      ]).should == "<i>brunneus</i> "
+    end
   end
 
 end
