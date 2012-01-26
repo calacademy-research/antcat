@@ -123,60 +123,45 @@ module Catalog::IndexFormatter
   end
 
   #######################
+
   #######################
   def format_child_lists taxon, user
     content_tag(:div, class: :child_lists) do
       content = ''
-      content << format_tribes_lists(taxon, user)
-      content << format_genera_lists(taxon)
+      content << format_child_lists_for_rank(taxon, :tribes, "Tribe", "Tribes")
+      content << format_child_lists_for_rank(taxon, :genera, "Genus", "Genera")
       content.html_safe
     end
   end
 
-  #######################
-  def format_tribes_lists taxon, user
-    return '' unless taxon.respond_to?(:tribes) && taxon.tribes.present?
-    content = ''
-    content << content_tag(:span, "Tribes of #{taxon_label taxon}", class: :label)
-    content << ': '
-    content << taxon.tribes.sort_by(&:name).inject([]) do |tribes, tribe|
-      tribes << taxon_label(tribe)
-    end.join(', ').html_safe
-    content << '.'
-    content.html_safe
-  end
+  def format_child_lists_for_rank parent, children_selector, singular_rank_name, plural_rank_name
+    return '' unless parent.respond_to?(children_selector) && parent.send(children_selector).present?
 
-  #######################
-  def format_genera_lists taxon
-    return '' unless taxon.respond_to? :genera
-
-    case taxon
-    when Family
-      format_genera_list_fossil_pairs taxon, incertae_sedis_in: 'family'
-    when Subfamily
-
-      format_genera_list_fossil_pairs taxon, incertae_sedis_in: 'subfamily'
+    if Family === parent && children_selector == :genera
+      format_child_list_fossil_pairs parent, children_selector, singular_rank_name, plural_rank_name, incertae_sedis_in: 'family'
+    elsif Subfamily === parent && children_selector == :genera
+      format_child_list_fossil_pairs parent, children_selector, singular_rank_name, plural_rank_name, incertae_sedis_in: 'subfamily'
     else
-      format_genera_list_fossil_pairs taxon
+      format_child_list_fossil_pairs parent, children_selector,singular_rank_name, plural_rank_name
     end
   end
 
-  def format_genera_list_fossil_pairs taxon, conditions = {}
+  def format_child_list_fossil_pairs parent, children_selector, singular_rank_name, plural_rank_name, conditions = {}
     extant_conditions = conditions.merge fossil: false
     extinct_conditions = conditions.merge fossil: true
-    extinct = genera_list_query taxon, extinct_conditions
-    extant = genera_list_query taxon, extant_conditions
+    extinct = rank_list_query parent, children_selector, extinct_conditions
+    extant = rank_list_query parent, children_selector, extant_conditions
     specify_extinct_or_extant = extinct.present? && extant.present?
 
-    format_genera_list(taxon, extant, specify_extinct_or_extant, extant_conditions) +
-    format_genera_list(taxon, extinct, specify_extinct_or_extant, extinct_conditions)
+    format_child_list(parent, extant, singular_rank_name, plural_rank_name, specify_extinct_or_extant, extant_conditions) +
+    format_child_list(parent, extinct, singular_rank_name, plural_rank_name, specify_extinct_or_extant, extinct_conditions)
   end
 
-  def format_genera_list taxon, genera, specify_extinct_or_extant, conditions = {}
-    return '' unless genera.present?
+  def format_child_list parent, children, singular_rank_name, plural_rank_name, specify_extinct_or_extant, conditions = {}
+    return '' unless children.present?
 
     label = ''.html_safe
-    label << ((genera.count > 1) ? 'Genera' : 'Genus')
+    label << ((children.count > 1) ? plural_rank_name : singular_rank_name)
 
     if specify_extinct_or_extant
       label << ' ('
@@ -190,33 +175,33 @@ module Catalog::IndexFormatter
       label << ' of '
     end
     
-    label << taxon_label_span(taxon, ignore_status: true)
+    label << taxon_label_span(parent, ignore_status: true)
     label
 
     content_tag :div, class: :child_list do
       content = ''
       content << content_tag(:span, label, class: :label)
       content << ': '
-      content << format_genera_list_items(genera)
+      content << format_child_list_items(children)
       content << '.'
       content.html_safe
     end
   end
 
-  def genera_list_query parent, conditions = {}
-    genera = parent.genera
-    genera = genera.where fossil: !!conditions[:fossil] if conditions.key? :fossil
+  def rank_list_query parent, children_selector, conditions = {}
+    children = parent.send children_selector
+    children = children.where fossil: !!conditions[:fossil] if conditions.key? :fossil
     incertae_sedis_in = conditions[:incertae_sedis_in]
-    genera = genera.where incertae_sedis_in: incertae_sedis_in if incertae_sedis_in
-    genera
+    children = children.where incertae_sedis_in: incertae_sedis_in if incertae_sedis_in
+    children
   end
 
-  def format_genera_list_items genera
-    genera.sort_by(&:name).inject([]) do |genera, genus|
-      label = taxon_label genus
-      css_classes = taxon_css_classes genus, ignore_status: true
-      genera << content_tag(:span, label, class: css_classes)
-      genera
+  def format_child_list_items children
+    children.sort_by(&:name).inject([]) do |children, child|
+      label = taxon_label child
+      css_classes = taxon_css_classes child, ignore_status: true
+      children << content_tag(:span, label, class: css_classes)
+      children
     end.join(', ').html_safe
   end
 
