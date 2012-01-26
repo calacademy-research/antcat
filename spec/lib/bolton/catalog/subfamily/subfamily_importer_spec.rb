@@ -47,6 +47,11 @@ describe Bolton::Catalog::Subfamily::Importer do
         <p>Taxonomic history</p>
         <p>history</p>
 
+        <p>Junior synonyms of ANEURETINI</p>
+        <p>Anonychomyrmini Donisthorpe, 1947c: 588. Type-genus: <i>Anonychomyrma</i>.</p>
+        <p>Taxonomic history</p>
+        <p>Anonychomyrmini as tribe of Dolichoderinae: Donisthorpe, 1947c: 588.</p>
+
         <p>Subfamily, tribe Aneuretini and genus <i>Aneuretus</i> references</p>
         <p>Emery, 1913a: 461 (diagnosis)</p>
 
@@ -69,7 +74,7 @@ describe Bolton::Catalog::Subfamily::Importer do
         <p>History</p>
       }
 
-      Taxon.count.should == 9
+      Taxon.count.should == 11
 
       subfamily = Subfamily.find_by_name 'Aneuretinae'
       subfamily.should_not be_invalid
@@ -103,6 +108,10 @@ describe Bolton::Catalog::Subfamily::Importer do
       type_taxon.subfamily.should == subfamily
       type_taxon.tribe.should == tribe
 
+      junior_synonym = Tribe.find_by_name 'Anonychomyrmini' 
+      junior_synonym.synonym_of.should == tribe
+      junior_synonym.should be_synonym
+
       genus = Genus.find_by_name 'Aneuretellus'
       genus.tribe.should == tribe
       genus.subfamily.should == subfamily
@@ -120,18 +129,6 @@ describe Bolton::Catalog::Subfamily::Importer do
 
     end
   end
-
-#<p>Genus <i>ANEURETUS</i></p>
-#<p><i>Aneuretus</i> Emery, 1893a: cclxxv. Type-species: <i>Aneuretus simoni</i>, by monotypy.</p>
-#<p>Taxonomic history</p>
-#<p>[<i>Aneuretus</i> also described as new by Emery, 1893f: 241.]</p>
-#<p>Genus references: see under Aneuretini, above.</p>
-
-#<p>Tribes (extinct) <i>incertae sedis</i> in ANEURETINAE</p>
-#<p>Tribe MIOMYRMECINI</p>
-#<p>Miomyrmecini Emery, 1913a: 6. Type-genus: <i>Murmetus</i>.</p>
-#<p>Taxonomic history</p>
-#<p>[Bracketed note]</p>
 
 #<p>Genera of Hong (2002), <i>incertae sedis</i> in ANEURETINAE</p>
       #}
