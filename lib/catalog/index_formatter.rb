@@ -152,32 +152,44 @@ module Catalog::IndexFormatter
 
     case taxon
     when Family
-      format_genera_list(taxon, incertae_sedis_in: 'family', fossil: true) +
-      format_genera_list(taxon, incertae_sedis_in: 'family', fossil: false)
+      format_genera_list_fossil_pairs taxon, incertae_sedis_in: 'family'
     when Subfamily
-      format_genera_list(taxon, incertae_sedis_in: 'subfamily', fossil: true) +
-      format_genera_list(taxon, incertae_sedis_in: 'subfamily', fossil: false)
+
+      format_genera_list_fossil_pairs taxon, incertae_sedis_in: 'subfamily'
     else
-      format_genera_list(taxon, fossil: false) +
-      format_genera_list(taxon, fossil: true)
+      format_genera_list_fossil_pairs taxon
     end
   end
 
-  def format_genera_list taxon, options = {}
-    genera = taxon.genera
-    genera = genera.where fossil: true if options[:fossil]
-    genera = genera.where fossil: false unless options[:fossil]
-    incertae_sedis_in = options[:incertae_sedis_in]
-    genera = genera.where incertae_sedis_in: incertae_sedis_in if incertae_sedis_in
+  def format_genera_list_fossil_pairs taxon, conditions = {}
+    extant_conditions = conditions.merge fossil: false
+    extinct_conditions = conditions.merge fossil: true
+    extinct = genera_list_query taxon, extinct_conditions
+    extant = genera_list_query taxon, extant_conditions
+    specify_extinct_or_extant = extinct.present? && extant.present?
 
+    format_genera_list(taxon, extant, specify_extinct_or_extant, extant_conditions) +
+    format_genera_list(taxon, extinct, specify_extinct_or_extant, extinct_conditions)
+  end
+
+  def format_genera_list taxon, genera, specify_extinct_or_extant, conditions = {}
     return '' unless genera.present?
 
     label = ''.html_safe
     label << ((genera.count > 1) ? 'Genera' : 'Genus')
-    label << ' ('
-    label << (options[:fossil] ? 'extinct' : 'extant')
-    label << ') '
-    label << 'of '
+
+    if specify_extinct_or_extant
+      label << ' ('
+      label << (conditions[:fossil] ? 'extinct' : 'extant')
+      label << ')'
+    end
+
+    if conditions[:incertae_sedis_in]
+      label << ' <i>incertae sedis</i> in '.html_safe
+    else
+      label << ' of '
+    end
+    
     label << taxon_label_span(taxon, ignore_status: true)
     label
 
@@ -189,6 +201,14 @@ module Catalog::IndexFormatter
       content << '.'
       content.html_safe
     end
+  end
+
+  def genera_list_query parent, conditions = {}
+    genera = parent.genera
+    genera = genera.where fossil: !!conditions[:fossil] if conditions.key? :fossil
+    incertae_sedis_in = conditions[:incertae_sedis_in]
+    genera = genera.where incertae_sedis_in: incertae_sedis_in if incertae_sedis_in
+    genera
   end
 
   def format_genera_list_items genera
