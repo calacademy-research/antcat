@@ -26,7 +26,34 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     )
     Progress.info "Created #{genus.name}"
 
+    parse_junior_synonyms_of_genus genus
     parse_homonym_replaced_by_genus genus
+    parse_genus_references genus
+    genus
+  end
+
+  def parse_genus_synonym senior_synonym
+    return unless @type == :genus_headline
+    Progress.method
+
+    headline = consume :genus_headline
+    name = headline[:protonym][:genus_name]
+    fossil ||= headline[:protonym][:fossil]
+
+    history = parse_taxonomic_history
+
+    genus = Genus.import(
+      name: name,
+      fossil: fossil,
+      protonym: headline[:protonym],
+      status: 'synonym',
+      note: headline[:note].try(:[], :text),
+      type_species: headline[:type_species],
+      taxonomic_history: history,
+      synonym_of: senior_synonym,
+    )
+    Progress.info "Created synonym #{genus.name} for #{senior_synonym.name}"
+
     parse_genus_references genus
     genus
   end
@@ -60,29 +87,16 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     genus.update_attribute :homonym_replaced_by, replaced_by_genus
   end
 
-  #def parse_junior_synonyms_of_genus genus
-    #return '' unless @type == :junior_synonyms_of_genus_header
-    #Progress.method
+  ################################################
+  def parse_junior_synonyms_of_genus genus
+    return unless @type == :junior_synonyms_of_genus_header
+    Progress.method
 
-    #parse_next_line
+    parse_next_line
+    while parse_genus_synonym(genus); end
+  end
 
-    #parse_junior_synonym_of_genus(genus) while @type == :genus_headline
-
-  #end
-
-  #def parse_junior_synonym_of_genus genus
-    #Progress.method
-    #name = @parse_result[:genus_name]
-    #fossil = @parse_result[:fossil]
-    #history = @paragraph
-    #parse_next_line
-    #history << parse_taxonomic_history
-    #genus = ::Genus.create! :name => name, :fossil => fossil, :status => 'synonym', :synonym_of => genus,
-                          #:subfamily => genus.subfamily, :tribe => genus.tribe, :taxonomic_history => clean_taxonomic_history(history)
-    #Progress.info "Created #{genus.name} junior synonym of genus"
-    #parse_homonym_replaced_by_genus(genus)
-#  end
-
+  ################################################
   def parse_genera_lists parent_rank, parent_attributes = {}
     return unless @type == :genera_list
     Progress.method

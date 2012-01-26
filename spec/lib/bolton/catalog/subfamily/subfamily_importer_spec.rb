@@ -51,19 +51,25 @@ describe Bolton::Catalog::Subfamily::Importer do
         <p>Emery, 1913a: 461 (diagnosis)</p>
 
         <p>Genera of Aneuretini</p>
+
         <p>Genus <i>ANEURETELLUS</i></p>
         <p><i>Aneuretellus</i> Dlussky, 1988: 54. Type-species: *<i>Aneuretellus deformis</i>, by original designation.</p>
         <p>Taxonomic history</p>
         <p>History</p>
 
+        <p>Junior synonyms of <i>ANEURETUS</i></p>
+        <p><i>Odontomyrmex</i> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </p>
+        <p>Taxonomic history</p>
+        <p>Odontomyrmex history</p>
+
         <p>Genera <i>incertae sedis</i> in ANEURETINAE</p>
         <p>Genus *<i>BURMOMYRMA</i></p>
         <p>*<i>Burmomyrma</i> Dlussky, 1996: 87. Type-species: *<i>Burmomyrma rossi</i>, by original designation.</p>
-        <p>Burmomyrma history</p>
+        <p>Taxonomic history</p>
         <p>History</p>
       }
 
-      Taxon.count.should == 7
+      Taxon.count.should == 9
 
       subfamily = Subfamily.find_by_name 'Aneuretinae'
       subfamily.should_not be_invalid
@@ -101,6 +107,10 @@ describe Bolton::Catalog::Subfamily::Importer do
       genus.tribe.should == tribe
       genus.subfamily.should == subfamily
 
+      junior_synonym = Genus.find_by_name 'Odontomyrmex'
+      junior_synonym.synonym_of.should == genus
+      junior_synonym.should be_synonym
+
       genus = Genus.find_by_name 'Burmomyrma'
       genus.should_not be_invalid
       genus.should be_fossil
@@ -125,10 +135,6 @@ describe Bolton::Catalog::Subfamily::Importer do
 
 #<p>Genera of Hong (2002), <i>incertae sedis</i> in ANEURETINAE</p>
       #}
-#<p>Junior synonyms of <i>ANEURETUS</i></p>
-#<p><i>Odontomyrmex</i> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </p>
-#<p>Odontomyrmex history</p>
-
 #<p>Tribe PITYOMYRMECINI<o:p></o:p></p>
 #<p>Pityomyrmecini Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.</p>
 #<p>Pityomyrmecini history</p>

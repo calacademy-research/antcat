@@ -41,7 +41,8 @@ class Genus < Taxon
         tribe: data[:tribe],
         name: data[:name],
         fossil: data[:fossil],
-        status: 'valid',
+        status: data[:status] || 'valid',
+        synonym_of: data[:synonym_of],
         protonym: protonym,
         headline_notes_taxt: headline_notes_taxt,
       }
