@@ -156,7 +156,7 @@ class Reference < ActiveRecord::Base
   end
 
   def self.find_by_bolton_key data
-    year = data[:year] || data[:in][:year]
+    year = data[:year] || data[:in] && data[:in][:year]
     bolton_key = Bolton::ReferenceKey.new(data[:author_names].join(' '), year).to_s :db
 
     reference = find_by_bolton_key_cache bolton_key
