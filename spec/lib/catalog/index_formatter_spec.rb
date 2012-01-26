@@ -103,4 +103,37 @@ describe Catalog::IndexFormatter do
     end
   end
 
+  describe "Child lists" do
+    before do
+      @subfamily = Factory :subfamily, name: 'Dolichoderinae'
+    end
+    describe "Genera list queries" do
+      it "should find all genera for the taxon if there are no conditions" do
+        Factory :genus, name: 'Atta', subfamily: @subfamily
+        Factory :genus, name: 'Eciton', subfamily: @subfamily, fossil: true
+        Factory :genus, name: 'Aneuretus', subfamily: @subfamily, fossil: true, incertae_sedis_in: 'subfamily'
+        @formatter.genera_list_query(@subfamily).map(&:name).sort.should == ['Aneuretus', 'Atta', 'Eciton']
+        @formatter.genera_list_query(@subfamily, fossil: true).map(&:name).sort.should == ['Aneuretus', 'Eciton']
+        @formatter.genera_list_query(@subfamily, incertae_sedis_in: 'subfamily').map(&:name).sort.should == ['Aneuretus']
+      end
+    end
+    describe "Genera lists" do
+      it "should format a genera list, specifying extinctness" do
+        Factory :genus, name: 'Atta', subfamily: @subfamily
+        @formatter.format_genera_list(@subfamily, Genus.all, true).should == 
+%{<div class="child_list"><span class="label">Genus (extant) of <span class="subfamily taxon">Dolichoderinae</span></span>: <span class="genus taxon">Atta</span>.</div>}
+      end
+      it "should format a genera list, not specifying extinctness" do
+        Factory :genus, name: 'Atta', subfamily: @subfamily
+        @formatter.format_genera_list(@subfamily, Genus.all, false).should == 
+%{<div class="child_list"><span class="label">Genus of <span class="subfamily taxon">Dolichoderinae</span></span>: <span class="genus taxon">Atta</span>.</div>}
+      end
+      it "should format an incertae sedis genera list" do
+        genus = Factory :genus, name: 'Atta', subfamily: @subfamily, incertae_sedis_in: 'subfamily'
+        @formatter.format_genera_list(@subfamily, [genus], false, incertae_sedis_in: 'subfamily').should == 
+%{<div class="child_list"><span class="label">Genus <i>incertae sedis</i> in <span class="subfamily taxon">Dolichoderinae</span></span>: <span class="genus taxon">Atta</span>.</div>}
+      end
+    end
+  end
+
 end
