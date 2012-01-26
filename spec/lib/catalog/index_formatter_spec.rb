@@ -112,25 +112,36 @@ describe Catalog::IndexFormatter do
         Factory :genus, name: 'Atta', subfamily: @subfamily
         Factory :genus, name: 'Eciton', subfamily: @subfamily, fossil: true
         Factory :genus, name: 'Aneuretus', subfamily: @subfamily, fossil: true, incertae_sedis_in: 'subfamily'
-        @formatter.genera_list_query(@subfamily).map(&:name).sort.should == ['Aneuretus', 'Atta', 'Eciton']
-        @formatter.genera_list_query(@subfamily, fossil: true).map(&:name).sort.should == ['Aneuretus', 'Eciton']
-        @formatter.genera_list_query(@subfamily, incertae_sedis_in: 'subfamily').map(&:name).sort.should == ['Aneuretus']
+        @formatter.child_list_query(@subfamily, :genera).map(&:name).sort.should == ['Aneuretus', 'Atta', 'Eciton']
+        @formatter.child_list_query(@subfamily, :genera, fossil: true).map(&:name).sort.should == ['Aneuretus', 'Eciton']
+        @formatter.child_list_query(@subfamily, :genera, incertae_sedis_in: 'subfamily').map(&:name).sort.should == ['Aneuretus']
+      end
+      it "should not include invalid taxa" do
+        Factory :genus, name: 'Atta', subfamily: @subfamily, :status => 'synonym'
+        Factory :genus, name: 'Eciton', subfamily: @subfamily, fossil: true
+        Factory :genus, name: 'Aneuretus', subfamily: @subfamily, fossil: true, incertae_sedis_in: 'subfamily'
+        @formatter.child_list_query(@subfamily, :genera).map(&:name).sort.should == ['Aneuretus', 'Eciton']
       end
     end
-    describe "Genera lists" do
-      it "should format a genera list, specifying extinctness" do
+    describe "Child lists" do
+      it "should format a tribes list" do
+        Factory :tribe, name: 'Attini', subfamily: @subfamily
+        @formatter.format_child_list(@subfamily, @subfamily.tribes, 'Tribe', 'Tribes', true).should == 
+%{<div class="child_list"><span class="label">Tribe (extant) of <span class="subfamily taxon">Dolichoderinae</span></span>: <span class="taxon tribe">Attini</span>.</div>}
+      end
+      it "should format a child list, specifying extinctness" do
         Factory :genus, name: 'Atta', subfamily: @subfamily
-        @formatter.format_genera_list(@subfamily, Genus.all, true).should == 
+        @formatter.format_child_list(@subfamily, Genus.all, 'Genus', 'Genera', true).should == 
 %{<div class="child_list"><span class="label">Genus (extant) of <span class="subfamily taxon">Dolichoderinae</span></span>: <span class="genus taxon">Atta</span>.</div>}
       end
       it "should format a genera list, not specifying extinctness" do
         Factory :genus, name: 'Atta', subfamily: @subfamily
-        @formatter.format_genera_list(@subfamily, Genus.all, false).should == 
+        @formatter.format_child_list(@subfamily, Genus.all, 'Genus', 'Genera', false).should == 
 %{<div class="child_list"><span class="label">Genus of <span class="subfamily taxon">Dolichoderinae</span></span>: <span class="genus taxon">Atta</span>.</div>}
       end
       it "should format an incertae sedis genera list" do
         genus = Factory :genus, name: 'Atta', subfamily: @subfamily, incertae_sedis_in: 'subfamily'
-        @formatter.format_genera_list(@subfamily, [genus], false, incertae_sedis_in: 'subfamily').should == 
+        @formatter.format_child_list(@subfamily, [genus], 'Genus', 'Genera', false, incertae_sedis_in: 'subfamily').should == 
 %{<div class="child_list"><span class="label">Genus <i>incertae sedis</i> in <span class="subfamily taxon">Dolichoderinae</span></span>: <span class="genus taxon">Atta</span>.</div>}
       end
     end
