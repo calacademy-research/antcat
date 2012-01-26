@@ -145,6 +145,11 @@ describe Bolton::Catalog::TextToTaxt do
         {genus_name:"Formica", subgenus_epithet:"Hypochira", species_epithet:"subspinosa"}
       ]).should == "<i>Formica (Hypochira) subspinosa</i>"
     end
+    it "should handle an abbreviated genus name + subgenus epithet" do
+      @converter.convert([
+        {:genus_abbreviation=>"D.", :subgenus_epithet=>"Monacis"}
+      ]).should == "<i>D. (Monacis)</i>"
+    end
   end
 
 end

@@ -73,7 +73,7 @@ module Bolton::Catalog::TextToTaxt
   end
 
   def self.taxon_name item
-    keys = [:order_name, :family_name, :family_or_subfamily_name, :tribe_name, :subtribe_name, :collective_group_name, :genus_name, :subgenus_name, :species_name, :subspecies_name]
+    keys = [:order_name, :family_name, :family_or_subfamily_name, :tribe_name, :subtribe_name, :collective_group_name, :genus_name, :subgenus_epithet, :genus_abbreviation, :subgenus_name, :species_name, :subspecies_name]
     key, name = find_one_of(keys, item)
     return unless key
     key = key.to_s.gsub(/_name$/, '').to_sym
