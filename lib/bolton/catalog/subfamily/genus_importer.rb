@@ -38,7 +38,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
 
     headline = consume :genus_headline
     name = headline[:protonym][:genus_name]
-    fossil ||= headline[:protonym][:fossil]
+    fossil = headline[:protonym][:fossil]
 
     history = parse_taxonomic_history
 
