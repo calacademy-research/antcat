@@ -27,6 +27,13 @@ module Taxt
       return "#{CatalogFormatter.fossil(name, data[:fossil])} (#{data[:suborder_name]})"
     end
 
+    if rank == :species_group_epithet
+      string = '<i>'.html_safe
+      string << CatalogFormatter.fossil(name, data[:fossil])
+      string << '</i>'.html_safe
+      return string
+    end
+
     if data[:genus_abbreviation] && data[:subgenus_epithet]
       string = '<i>'.html_safe
       string << CatalogFormatter.fossil(data[:genus_abbreviation], data[:fossil])

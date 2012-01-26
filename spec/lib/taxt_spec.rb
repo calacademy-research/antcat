@@ -23,6 +23,9 @@ describe Taxt do
     it "should handle a genus abbreviation + subgenus epithet" do
       Taxt.encode_taxon_name('', nil, genus_abbreviation: 'C.', subgenus_epithet:"Hypochira").should == "<i>C. (Hypochira)</i>"
     end
+    it "should handle a lone species epithet" do
+      Taxt.encode_taxon_name('brunneus', :species_group_epithet, species_group_epithet: 'brunneus').should == "<i>brunneus</i>"
+    end
     it "should put a question mark after questionable names" do
       Taxt.encode_taxon_name('Atta', :genus, :questionable => true).should == "<i>Atta?</i>"
     end
