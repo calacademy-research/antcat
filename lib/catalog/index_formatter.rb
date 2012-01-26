@@ -149,8 +149,8 @@ module Catalog::IndexFormatter
   def format_child_list_fossil_pairs parent, children_selector, singular_rank_name, plural_rank_name, conditions = {}
     extant_conditions = conditions.merge fossil: false
     extinct_conditions = conditions.merge fossil: true
-    extinct = rank_list_query parent, children_selector, extinct_conditions
-    extant = rank_list_query parent, children_selector, extant_conditions
+    extinct = child_list_query parent, children_selector, extinct_conditions
+    extant = child_list_query parent, children_selector, extant_conditions
     specify_extinct_or_extant = extinct.present? && extant.present?
 
     format_child_list(parent, extant, singular_rank_name, plural_rank_name, specify_extinct_or_extant, extant_conditions) +
@@ -188,11 +188,12 @@ module Catalog::IndexFormatter
     end
   end
 
-  def rank_list_query parent, children_selector, conditions = {}
+  def child_list_query parent, children_selector, conditions = {}
     children = parent.send children_selector
     children = children.where fossil: !!conditions[:fossil] if conditions.key? :fossil
     incertae_sedis_in = conditions[:incertae_sedis_in]
     children = children.where incertae_sedis_in: incertae_sedis_in if incertae_sedis_in
+    children = children.where status: 'valid'
     children
   end
 
