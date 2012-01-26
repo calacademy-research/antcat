@@ -44,9 +44,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
 
     parse_genera_lists :supersubfamily
 
-    parse_subfamily
-    return false
-    #while parse_subfamily; end
+    while parse_subfamily; end
 
     #parse_genera_incertae_sedis :poneroid_subfamilies, :genera_incertae_sedis_in_poneroid_subfamilies_header
 

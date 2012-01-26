@@ -86,7 +86,6 @@ describe Bolton::Catalog::Subfamily::Importer do
     species.should_not be_invalid
     species.name.should == 'audouini'
 
-    # this belongs in genus_importer_spec
     genus = Genus.find_by_name 'Promyrmicium'
     genus.should be_fossil
     genus.should be_excluded
