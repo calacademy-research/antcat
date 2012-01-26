@@ -30,7 +30,8 @@ class Tribe < Taxon
         name: data[:name],
         fossil: data[:fossil],
         subfamily: data[:subfamily],
-        status: 'valid',
+        synonym_of: data[:synonym_of],
+        status: data[:status] || 'valid',
         protonym: protonym,
       }
       if data[:type_genus]
