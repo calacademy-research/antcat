@@ -23,8 +23,17 @@ module Taxt
 
   def self.encode_taxon_name name, rank, data = {}
     name = name.dup
-    if name && data[:suborder_name]
+    if data[:suborder_name]
       return "#{CatalogFormatter.fossil(name, data[:fossil])} (#{data[:suborder_name]})"
+    end
+
+    if data[:genus_abbreviation] && data[:subgenus_epithet]
+      string = '<i>'.html_safe
+      string << CatalogFormatter.fossil(data[:genus_abbreviation], data[:fossil])
+      string << ' ('
+      string << data[:subgenus_epithet]
+      string << ')</i>'.html_safe
+      return string
     end
 
     italicize = [:collective_group, :genus].include? rank
