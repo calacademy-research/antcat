@@ -262,6 +262,14 @@ describe Reference, slow:true do
       }.results.should == [reference]
     end
 
+    it "should search citation year" do
+      with_letter = reference_factory(:author_name => 'Bolton', :citation_year => '2010b')
+      reference_factory(:author_name => 'Bolton', :citation_year => '2010')
+      Reference.search {
+        keywords '2010b'
+      }.results.should == [with_letter]
+    end
+
   end
 
   # this tests that Reference extracts the parameters correctly for perform_search
