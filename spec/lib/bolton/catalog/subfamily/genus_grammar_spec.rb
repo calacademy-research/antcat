@@ -335,7 +335,7 @@ describe Bolton::Catalog::Subfamily::Grammar do
 
   describe "Genus references header" do
     it "should handle a regular header" do
-      @grammar.parse(%{Genus <i>Sphinctomyrmex</i> references}).value_with_reference_text_removed.should == {type: :genus_references_header, title: 'Genus <i>Sphinctomyrmex</i> references'}
+      @grammar.parse(%{Genus <i>Sphinctomyrmex</i> references}).value_with_reference_text_removed.should == {type: :genus_references_header, genus_name: 'Sphinctomyrmex', title: 'Genus <i>Sphinctomyrmex</i> references'}
     end
     it "should handle a header without a name" do
       @grammar.parse(%{Genus references}).value_with_reference_text_removed.should == {type: :genus_references_header, title: 'Genus references'}

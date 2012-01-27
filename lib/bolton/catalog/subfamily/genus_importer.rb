@@ -42,7 +42,14 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
   end
 
   def parse_genus_references genus
-    return unless @type == :genus_references_header || @type == :genus_references_see_under
+    case @type
+    when :genus_references_header
+      parsed_genus_name = @parse_result[:genus_name]
+      return if parsed_genus_name.present? && parsed_genus_name != genus.name
+    when :genus_references_see_under
+    else
+      return
+    end
     Progress.method
 
     title_only = @type == :genus_references_see_under

@@ -144,7 +144,9 @@ grammar Bolton::Catalog::Subfamily::GenusGrammar
 
   rule genus_references_header
     ('Genus' (' ' genus_label)? ' references') {
-      {:type => :genus_references_header, title: to_s}
+      value = {:type => :genus_references_header, title: to_s}
+      value[:genus_name] = genus_label.value[:genus_name] if genus_label
+      value
     }
   end
 
