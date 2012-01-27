@@ -23,7 +23,7 @@ class Reference < ActiveRecord::Base
   # validation and callbacks
   before_validation :set_year_from_citation_year, :strip_newlines_from_text_fields
   validate          :check_not_duplicate
-  validates_presence_of :year, :title
+  validates_presence_of :title
   before_save       :set_author_names_caches
   before_destroy    :check_not_nested
 
