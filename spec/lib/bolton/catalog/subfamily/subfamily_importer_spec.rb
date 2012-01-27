@@ -57,15 +57,23 @@ describe Bolton::Catalog::Subfamily::Importer do
 
         <p>Genera of Aneuretini</p>
 
-        <p>Genus <i>ANEURETELLUS</i></p>
-        <p><i>Aneuretellus</i> Dlussky, 1988: 54. Type-species: *<i>Aneuretellus deformis</i>, by original designation.</p>
+        <p>Genus <i>ANEURETUS</i></p>
+        <p><i>Aneuretus</i> Dlussky, 1988: 54. Type-species: *<i>Aneuretus deformis</i>, by original designation.</p>
         <p>Taxonomic history</p>
-        <p>History</p>
+        <p>Aneuretus history</p>
 
         <p>Junior synonyms of <i>ANEURETUS</i></p>
         <p><i>Odontomyrmex</i> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy. </p>
         <p>Taxonomic history</p>
         <p>Odontomyrmex history</p>
+
+        <p>Homonym replaced by <i>Odontomyrmex</i></p>
+        <p><i>Diabolus</i> Roger, 1863a: 166. Type-species: <i>Diabolous nigella</i>, by monotypy. </p>
+        <p>Taxonomic history</p>
+        <p>Diabolous history</p>
+
+        <p>Genus <i>Aneuretus</i> references</p>
+        <p>Aneuretus reference</p>
 
         <p>Genera <i>incertae sedis</i> in ANEURETINAE</p>
         <p>Genus *<i>BURMOMYRMA</i></p>
@@ -74,7 +82,7 @@ describe Bolton::Catalog::Subfamily::Importer do
         <p>History</p>
       }
 
-      Taxon.count.should == 11
+      Taxon.count.should == 12
 
       subfamily = Subfamily.find_by_name 'Aneuretinae'
       subfamily.should_not be_invalid
@@ -112,15 +120,22 @@ describe Bolton::Catalog::Subfamily::Importer do
       junior_synonym.synonym_of.should == tribe
       junior_synonym.should be_synonym
 
-      genus = Genus.find_by_name 'Aneuretellus'
-      genus.tribe.should == tribe
-      genus.subfamily.should == subfamily
+      aneuretus = Genus.find_by_name 'Aneuretus'
+      aneuretus.tribe.should == tribe
+      aneuretus.subfamily.should == subfamily
+      aneuretus.reference_sections.map(&:references).should == ["Aneuretus reference"]
 
       junior_synonym = Genus.find_by_name 'Odontomyrmex'
-      junior_synonym.synonym_of.should == genus
+      junior_synonym.synonym_of.should == aneuretus
       junior_synonym.should be_synonym
-      junior_synonym.tribe.should == genus.tribe
-      junior_synonym.subfamily.should == genus.subfamily
+      junior_synonym.tribe.should == aneuretus.tribe
+      junior_synonym.subfamily.should == aneuretus.subfamily
+
+      homonym = Genus.find_by_name 'Diabolus'
+      homonym.should be_homonym
+      homonym.homonym_replaced_by.should == junior_synonym
+      homonym.tribe.should == aneuretus.tribe
+      homonym.subfamily.should == aneuretus.subfamily
 
       genus = Genus.find_by_name 'Burmomyrma'
       genus.should_not be_invalid
@@ -141,10 +156,6 @@ describe Bolton::Catalog::Subfamily::Importer do
 #<p>Junior synonyms of <i>BURMOMYRMA</i></p>
 
 #<p>*<i>Burmomoma</i> Scudder, 1877b: 270 [as member of family Braconidae]. Type-species: *<i>Calyptites antediluvianum</i>, by monotypy. </p>
-
-#<p>Homonym replaced by <i>Burmomoma</i></p>
-#<p><i>Decamera</i> Roger, 1863a: 166. Type-species: <i>Decamera nigella</i>, by monotypy. </p>
-#<p>Decamera history</p>
 
 #<p>SUBFAMILY DOLICHODERINAE</p>
 

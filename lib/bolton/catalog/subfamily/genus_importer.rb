@@ -31,11 +31,8 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     info_message << " synonym of #{parsing_synonym}" if parsing_synonym
     Progress.info info_message
 
-    unless parsing_synonym
-      parse_junior_synonyms_of_genus genus
-      parse_homonym_replaced_by_genus genus
-    end
-
+    parse_junior_synonyms_of_genus genus
+    parse_homonym_replaced_by_genus genus
     parse_genus_references genus
 
     genus
@@ -74,7 +71,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     return '' unless genus
     Progress.method
 
-    genus.update_attribute :homonym_replaced_by, replaced_by_genus
+    genus.update_attributes homonym_replaced_by: replaced_by_genus, subfamily: replaced_by_genus.subfamily, tribe: replaced_by_genus.tribe
   end
 
   ################################################
