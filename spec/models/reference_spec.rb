@@ -140,14 +140,21 @@ describe Reference do
       @reference.should_not be_valid
     end
 
-    it "should not be OK when the citation year is missing" do
-      @reference.citation_year = nil
-      @reference.should_not be_valid
-    end
-
-    it "should not be OK when the citation year is blank" do
-      @reference.citation_year = ''
-      @reference.should_not be_valid
+    describe "Difference between Missing and UnmissingReferences" do
+      it "should require the year when it's Unmissing" do
+        reference = UnmissingReference.new title: 'foo'
+        reference.citation_year = nil
+        reference.should_not be_valid
+        reference.citation_year = ''
+        reference.should_not be_valid
+      end
+      it "should not require the year when it's Missing" do
+        reference = MissingReference.create title: 'foo'
+        reference.citation_year = nil
+        reference.should be_valid
+        reference.citation_year = ''
+        reference.should be_valid
+      end
     end
 
   end
