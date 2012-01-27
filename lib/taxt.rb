@@ -1,7 +1,7 @@
 module Taxt
 
   ################################
-  def self.to_string taxt, user = nil
+  def self.to_string taxt, user
     decode taxt, user
   end
 

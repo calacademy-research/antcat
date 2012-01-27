@@ -47,12 +47,12 @@ describe Taxt do
   describe "Interpolation" do
 
     it "should leave alone a string without fields" do
-      string = Taxt.to_string 'foo'
+      string = Taxt.to_string 'foo', nil
       string.should == 'foo'
       string.should be_html_safe
     end
     it "should handle nil" do
-      Taxt.to_string(nil).should == ''
+      Taxt.to_string(nil, nil).should == ''
     end
     it "should format a ref" do
       reference = Factory :article_reference
@@ -60,17 +60,17 @@ describe Taxt do
       key_stub = stub
       reference.should_receive(:key).and_return key_stub
       key_stub.should_receive(:to_link).and_return('foo')
-      Taxt.to_string("{ref #{reference.id}}").should == 'foo'
+      Taxt.to_string("{ref #{reference.id}}", nil).should == 'foo'
     end
     it "should not freak if the ref is malformed" do
-      Taxt.to_string("{ref sdf}").should == '{ref sdf}'
+      Taxt.to_string("{ref sdf}", nil).should == '{ref sdf}'
     end
     it "should not freak if the ref points to a reference that doesn't exist" do
-      Taxt.to_string("{ref 12345}").should == '{ref 12345}'
+      Taxt.to_string("{ref 12345}", nil).should == '{ref 12345}'
     end
     it "should handle a MissingReference" do
       reference = Factory :missing_reference, :citation => 'Latreille, 1809'
-      Taxt.to_string("{ref #{reference.id}}").should == 'Latreille, 1809'
+      Taxt.to_string("{ref #{reference.id}}", nil).should == 'Latreille, 1809'
     end
 
   end

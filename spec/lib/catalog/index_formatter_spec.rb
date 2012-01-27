@@ -31,7 +31,7 @@ describe Catalog::IndexFormatter do
         species = Factory :species, name: 'major'
         genus = Factory :genus, name: 'Atta', type_taxon: species, type_taxon_name: 'Atta major'
         species.update_attribute :genus, genus
-        @formatter.format_headline_type(genus).should ==
+        @formatter.format_headline_type(genus, nil).should ==
 %{<span class="type">Type-species: <span class="species taxon">Atta major</span>.</span>}
       end
 
@@ -39,7 +39,7 @@ describe Catalog::IndexFormatter do
         species = Factory :species, :name => 'major'
         genus = Factory :genus, :name => 'Atta', :type_taxon => species, :type_taxon_taxt => ', by monotypy', type_taxon_name: 'Atta major'
         species.update_attribute :genus, genus
-        @formatter.format_headline_type(genus).should ==
+        @formatter.format_headline_type(genus, nil).should ==
 %{<span class="type">Type-species: <span class="species taxon">Atta major</span>, by monotypy</span>}
       end
     end
