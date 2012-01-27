@@ -270,6 +270,7 @@ grammar Bolton::Catalog::Grammar
       value[:year] = citation_year.value if citation_year
       value[:pages] = ref_pages.value if ref_pages
       value[:forms] = ref_forms.value if ref_forms
+      value[:reference_text] = to_s
       value
     }
   end
