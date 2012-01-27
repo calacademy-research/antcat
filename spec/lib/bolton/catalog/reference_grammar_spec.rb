@@ -8,8 +8,8 @@ describe Bolton::Catalog::Grammar do
 
   describe "Taxon authorship" do
     it "can be just a single author name" do
-      @grammar.parse('Cuezzo', :root => :authorship).value_with_reference_text_removed.should == [{
-        :author_names => ['Cuezzo']
+      @grammar.parse('Cuezzo', :root => :authorship).value.should == [{
+        author_names: ['Cuezzo'], reference_text: 'Cuezzo'
       }]
     end
     it "can be a single author name followed by 'above'" do
