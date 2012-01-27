@@ -33,7 +33,7 @@ module Catalog::IndexFormatter
 
   def x_format_headline_authorship authorship, user
     string = authorship.reference.key.to_link(user) + ": #{authorship.pages}"
-    string << Taxt.to_string(authorship.notes_taxt)
+    string << Taxt.to_string(authorship.notes_taxt, user)
     string << '.'
     content_tag :span, string, class: :authorship
   end
@@ -57,8 +57,8 @@ module Catalog::IndexFormatter
 
   #######################
   def format_headline taxon, user
-    string = format_headline_protonym(taxon.protonym, user) + ' ' + format_headline_type(taxon)
-    headline_notes = format_headline_notes taxon
+    string = format_headline_protonym(taxon.protonym, user) + ' ' + format_headline_type(taxon, user)
+    headline_notes = format_headline_notes taxon, user
     string << ' ' << headline_notes if headline_notes
     string
   end
@@ -80,13 +80,13 @@ module Catalog::IndexFormatter
     contents = x_format_headline_authorship authorship, user
   end
 
-  def format_headline_type taxon
+  def format_headline_type taxon, user
     return '' unless taxon.type_taxon
     type = taxon.type_taxon
     taxt = taxon.type_taxon_taxt
     content_tag :span, class: 'type' do
       string = "Type-#{type.type.downcase}: ".html_safe
-      string << format_headline_type_name(taxon) + format_headline_type_taxt(taxt)
+      string << format_headline_type_name(taxon) + format_headline_type_taxt(taxt, user)
       string
     end
   end
@@ -95,15 +95,15 @@ module Catalog::IndexFormatter
     x_format_headline_type_name taxon
   end
   
-  def format_headline_type_taxt taxt
-    string = Taxt.to_string(taxt)
+  def format_headline_type_taxt taxt, user
+    string = Taxt.to_string(taxt, user)
     string = '.' unless string.present?
     string
   end
 
-  def format_headline_notes taxon
+  def format_headline_notes taxon, user
     return unless taxon.headline_notes_taxt.present?
-    Taxt.to_string taxon.headline_notes_taxt
+    Taxt.to_string taxon.headline_notes_taxt, user
   end
 
   #######################
@@ -218,8 +218,8 @@ module Catalog::IndexFormatter
 
   def format_reference_section reference_section, user
     content_tag :div, class: 'section' do
-      content_tag(:h4, Taxt.to_string(reference_section.title), class: :title) +
-      content_tag(:div, Taxt.to_string(reference_section.references), class: :references)
+      content_tag(:h4, Taxt.to_string(reference_section.title, user), class: :title) +
+      content_tag(:div, Taxt.to_string(reference_section.references, user), class: :references)
     end
   end
 
