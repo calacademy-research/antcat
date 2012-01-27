@@ -119,6 +119,8 @@ describe Bolton::Catalog::Subfamily::Importer do
       junior_synonym = Genus.find_by_name 'Odontomyrmex'
       junior_synonym.synonym_of.should == genus
       junior_synonym.should be_synonym
+      junior_synonym.tribe.should == genus.tribe
+      junior_synonym.subfamily.should == genus.subfamily
 
       genus = Genus.find_by_name 'Burmomyrma'
       genus.should_not be_invalid

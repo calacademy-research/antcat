@@ -2,12 +2,15 @@
 class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
 
   def parse_genus attributes = {}, options = {}
+    parsing_synonym = attributes[:synonym_of]
     options = options.reverse_merge :header => :genus_header
     return unless @type == options[:header]
     Progress.method
 
-    name = @parse_result[:genus_name] || @parse_result[:name]
-    parse_next_line
+    unless parsing_synonym
+      name = @parse_result[:genus_name] || @parse_result[:name]
+      parse_next_line
+    end
 
     headline = consume :genus_headline
     name ||= headline[:protonym][:genus_name]
@@ -24,37 +27,17 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
       :taxonomic_history => history,
       :attributes => attributes
     )
-    Progress.info "Created #{genus.name}"
+    info_message = "Created #{genus.name}"
+    info_message << " synonym of #{parsing_synonym}" if parsing_synonym
+    Progress.info info_message
 
-    parse_junior_synonyms_of_genus genus
-    parse_homonym_replaced_by_genus genus
-    parse_genus_references genus
-    genus
-  end
-
-  def parse_genus_synonym senior_synonym
-    return unless @type == :genus_headline
-    Progress.method
-
-    headline = consume :genus_headline
-    name = headline[:protonym][:genus_name]
-    fossil = headline[:protonym][:fossil]
-
-    history = parse_taxonomic_history
-
-    genus = Genus.import(
-      name: name,
-      fossil: fossil,
-      protonym: headline[:protonym],
-      status: 'synonym',
-      note: headline[:note].try(:[], :text),
-      type_species: headline[:type_species],
-      taxonomic_history: history,
-      synonym_of: senior_synonym,
-    )
-    Progress.info "Created synonym #{genus.name} for #{senior_synonym.name}"
+    unless parsing_synonym
+      parse_junior_synonyms_of_genus genus
+      parse_homonym_replaced_by_genus genus
+    end
 
     parse_genus_references genus
+
     genus
   end
 
@@ -93,7 +76,8 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     Progress.method
 
     parse_next_line
-    while parse_genus_synonym(genus); end
+    attributes = {synonym_of: genus, status: 'synonym', subfamily: genus.subfamily, tribe: genus.tribe}
+    while parse_genus attributes, header: :genus_headline; end
   end
 
   ################################################
