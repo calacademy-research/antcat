@@ -64,7 +64,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
           tribe = taxon.tribe
           next unless tribe && tribe.synonym?
           taxon.update_attribute :tribe, tribe.synonym_of
-          Progress.puts "Changed tribe of #{taxon.name} from #{tribe.name} to #{taxon.tribe.name}"
+          Progress.log "Changed tribe of #{taxon.name} from #{tribe.name} to #{taxon.tribe.name}"
           any_changes = true
         end
       end
