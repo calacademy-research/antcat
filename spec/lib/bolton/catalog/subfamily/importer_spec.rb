@@ -33,4 +33,17 @@ describe Bolton::Catalog::Subfamily::Importer do
     end
 
   end
+
+  describe "Fixing up synonyms" do
+    it "should not affect a normal taxon" do
+      senior_synonym = Factory :tribe, name: 'Leptomyrmecini'
+      junior_synonym = Factory :tribe, name: 'Iridomyrmecina', status: 'synonym', synonym_of: senior_synonym
+      synonym_of_junior_synonym = Factory :tribe, name: 'Anatellina', status: 'synonym', synonym_of: junior_synonym
+      genus_of_synonym_of_junior_synonym = Factory :genus, name: 'Iridomyrmex', tribe: synonym_of_junior_synonym
+
+      @importer.resolve_parent_synonyms
+
+      genus_of_synonym_of_junior_synonym.reload.tribe.name.should == 'Leptomyrmecini'
+    end
+  end
 end
