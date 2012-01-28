@@ -34,13 +34,12 @@ class Rank
     identifier = identifier.first.class if identifier.kind_of? Enumerable
     identifier = identifier.first.class if identifier.kind_of? ActiveRecord::Relation
 
-    lll{%q{@_ranks}}
     rank = ranks.find {|rank| rank.includes? identifier}
-    unless rank
-      require 'ruby-debug';debugger;'';
-    end
-    #raise "Couldn't find #{identifier}" unless rank
+    raise "Couldn't find #{identifier}" unless rank
     rank
+  end
+  class << self
+    alias_method :[], :find
   end
 
   def self.ranks
@@ -53,10 +52,5 @@ class Rank
       Rank.new(string: 'Species',    plural_string: 'Species',      symbol: :species,    plural_symbol: :species,     klass: Species),
       Rank.new(string: 'Subspecies', plural_string: 'Subspecies',   symbol: :subspecies, plural_symbol: :subspecies,  klass: Subspecies),
     ]
-    lll{%q{@_ranks}}
   end
-end
-
-def Rank identifier
-  Rank.find identifier
 end

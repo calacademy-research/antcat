@@ -165,7 +165,7 @@ module Catalog::IndexFormatter
     return '' unless children.present?
 
     label = ''.html_safe
-    label << Rank(children).to_s(children.count, :capitalized)
+    label << Rank[children].to_s(children.count, :capitalized)
 
     if specify_extinct_or_extant
       label << ' ('
