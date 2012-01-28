@@ -52,7 +52,11 @@ module Catalog::IndexFormatter
   end
 
   def format_status taxon
-    taxon.invalid? ? status_labels[taxon.status][:singular] : ''
+    return '' unless taxon.invalid?
+    label = status_labels[taxon.status][:singular]
+    return label unless taxon.synonym?
+    label << ' of ' << taxon_label_span(taxon.synonym_of, ignore_status: true)
+    label.html_safe
   end
 
   #######################
