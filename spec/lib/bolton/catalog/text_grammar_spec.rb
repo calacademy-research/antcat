@@ -327,9 +327,9 @@ describe Bolton::Catalog::Grammar do
     }
   end
 
-  it "should save the trailing whitespace/delimiters" do
-    @grammar.parse("Start here. ", :root => :text).value_with_reference_text_removed.should == {
-      text: [{phrase: 'Start here'}], text_suffix: '. ' 
+  it "should handle an asterisk" do
+    @grammar.parse("*fossil taxa catalogue", :root => :text).value_with_reference_text_removed.should == {
+      text: [{phrase: '*'}, {phrase: 'fossil taxa catalogue'}]
     }
   end
 
