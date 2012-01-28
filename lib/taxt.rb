@@ -57,7 +57,7 @@ module Taxt
     output << CatalogFormatter.fossil(name, data[:fossil])
     output << '?' if data[:questionable]
     output << '</i>' if italicize
-    output << ' ' << encode_reference(::Reference.find_by_bolton_key data[:authorship].first) if data[:authorship]
+
     output
   end
 

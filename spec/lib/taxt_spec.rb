@@ -36,12 +36,6 @@ describe Taxt do
       Taxt.encode_taxon_name('Dolichoderinae', :family_or_subfamily).should == "Dolichoderinae"
     end
 
-    it "should encode the authorship, too" do
-      reference = Factory :article_reference, bolton_key_cache: 'Heer 1870'
-      Taxt.encode_taxon_name('Myrmicium', :genus, genus_name: "Myrmicium", authorship:
-                             [{author_names: ["Heer"], year: "1870"}]).should ==
-        "<i>Myrmicium</i> {ref #{reference.id}}"
-    end
   end
 
   describe "Interpolation" do

@@ -155,6 +155,23 @@ describe Bolton::Catalog::TextToTaxt do
         {species_group_epithet: "brunneus", delimiter: " "}
       ]).should == "<i>brunneus</i> "
     end
+
+  end
+
+  describe "Taxon names with authorship" do
+    it "should encode the authorship, too" do
+      reference = Factory :article_reference, bolton_key_cache: 'Gray 1841'
+      @converter.convert([{
+        genus_name: "Diabolus",
+        authorship: 
+          [{author_names: ["Gray, J.E."],
+            year: "1841",
+            pages: "400",
+            notes: [[{order_name: "Mammalia"}]],
+            reference_text: "Gray, J.E. 1841: 400 (Mammalia)"}],
+        delimiter: "."}]).should ==
+          "<i>Diabolus</i> {ref #{reference.id}}: 400 (Mammalia)."
+    end
   end
 
 end
