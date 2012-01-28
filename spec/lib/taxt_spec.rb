@@ -23,6 +23,9 @@ describe Taxt do
     it "should handle a genus abbreviation + subgenus epithet" do
       Taxt.encode_taxon_name('', nil, genus_abbreviation: 'C.', subgenus_epithet:"Hypochira").should == "<i>C. (Hypochira)</i>"
     end
+    it "should handle a genus abbreviation + species epithet" do
+      Taxt.encode_taxon_name('', nil, genus_abbreviation: 'C.', species_epithet:"major").should == "<i>C. major</i>"
+    end
     it "should handle a lone species epithet" do
       Taxt.encode_taxon_name('brunneus', :species_group_epithet, species_group_epithet: 'brunneus').should == "<i>brunneus</i>"
     end
@@ -38,8 +41,7 @@ describe Taxt do
 
   end
 
-  describe "Interpolation" do
-
+  describe "String output" do
     it "should leave alone a string without fields" do
       string = Taxt.to_string 'foo', nil
       string.should == 'foo'
@@ -66,7 +68,6 @@ describe Taxt do
       reference = Factory :missing_reference, :citation => 'Latreille, 1809'
       Taxt.to_string("{ref #{reference.id}}", nil).should == 'Latreille, 1809'
     end
-
   end
 
 end

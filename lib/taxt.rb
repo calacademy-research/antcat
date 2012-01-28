@@ -34,12 +34,16 @@ module Taxt
       return string
     end
 
-    if data[:genus_abbreviation] && data[:subgenus_epithet]
+    if data[:genus_abbreviation]
       string = '<i>'.html_safe
       string << CatalogFormatter.fossil(data[:genus_abbreviation], data[:fossil])
-      string << ' ('
-      string << data[:subgenus_epithet]
-      string << ')</i>'.html_safe
+      if data[:species_epithet]
+        string << ' ' << data[:species_epithet]
+      elsif data[:subgenus_epithet]
+        string << ' (' << data[:subgenus_epithet] << ')'
+      else raise
+      end
+      string << '</i>'.html_safe
       return string
     end
 
