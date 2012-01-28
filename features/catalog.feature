@@ -12,6 +12,7 @@ Feature: Using the catalog
     When I choose "Browser"
     Then the "Browser" tab should be selected
 
+  @javascript
   #Scenario: Going from index to browser with tribe selected
     #Given a subfamily exists with a name of "Dolichoderinae"
       #And a tribe exists with a name of "Dolichoderini" and a subfamily of "Dolichoderinae"

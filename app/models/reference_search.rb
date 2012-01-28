@@ -7,6 +7,7 @@ class Reference < ActiveRecord::Base
     string  :type
     integer :year
     text    :author_names_string
+    text    :citation_year
     text    :title
     text    :journal_name do journal.name if journal end
     text    :publisher_name do publisher.name if publisher end
