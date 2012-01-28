@@ -35,6 +35,14 @@ describe Rank do
   it "should convert from an array of taxa" do
     Rank([Genus.new]).to_s.should == 'genus'
   end
+  it "should convert from an ActiveRecord relation" do
+    Factory :genus
+    Rank(Genus.first.subfamily).to_s.should == 'subfamily'
+  end
+  it "should convert from an ActiveRecord relation" do
+    Factory :genus
+    Rank(Genus.where(true)).to_s.should == 'genus'
+  end
   it "should raise an error if it doesn't understand the input" do
     lambda {Rank('asdf')}.should raise_error
   end

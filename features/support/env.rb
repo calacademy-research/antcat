@@ -71,4 +71,5 @@ end
 
 Spork.each_run do
   FactoryGirl.reload
+  load Rails.root.join 'app/models/rank.rb'
 end

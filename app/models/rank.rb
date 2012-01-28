@@ -32,9 +32,14 @@ class Rank
   def self.find identifier
     identifier = identifier.class if identifier.kind_of? Taxon
     identifier = identifier.first.class if identifier.kind_of? Enumerable
+    identifier = identifier.first.class if identifier.kind_of? ActiveRecord::Relation
 
+    lll{%q{@_ranks}}
     rank = ranks.find {|rank| rank.includes? identifier}
-    raise "Couldn't find #{identifier}" unless rank
+    unless rank
+      require 'ruby-debug';debugger;'';
+    end
+    #raise "Couldn't find #{identifier}" unless rank
     rank
   end
 
@@ -48,6 +53,7 @@ class Rank
       Rank.new(string: 'Species',    plural_string: 'Species',      symbol: :species,    plural_symbol: :species,     klass: Species),
       Rank.new(string: 'Subspecies', plural_string: 'Subspecies',   symbol: :subspecies, plural_symbol: :subspecies,  klass: Subspecies),
     ]
+    lll{%q{@_ranks}}
   end
 end
 
