@@ -34,13 +34,9 @@ class Rank
     identifier = identifier.first.class if identifier.kind_of? Enumerable
     identifier = identifier.first.class if identifier.kind_of? ActiveRecord::Relation
 
-    rank = ranks.find {|rank| rank.includes? identifier}
-    raise "Couldn't find #{identifier}" unless rank
-    rank
+    ranks.find {|rank| rank.includes? identifier} or raise "Couldn't find #{identifier}"
   end
-  class << self
-    alias_method :[], :find
-  end
+  class << self; alias_method :[], :find end
 
   def self.ranks
     @_ranks ||= [
