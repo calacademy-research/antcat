@@ -29,10 +29,11 @@ module Catalog::BrowserHelper
 
   def browser_taxon_header taxon, options = {}
     label_and_css_classes = CatalogFormatter.taxon_label_and_css_classes taxon, :uppercase => true
+    rank = Rank[taxon].to_s(:capitalized)
     if options[:link]
-      (taxon.rank.capitalize + ' ' + link_to(label_and_css_classes[:label], browser_catalog_path(taxon, options[:search_params]), :class => label_and_css_classes[:css_classes])).html_safe
+      (rank + ' ' + link_to(label_and_css_classes[:label], browser_catalog_path(taxon, options[:search_params]), :class => label_and_css_classes[:css_classes])).html_safe
     else
-      (taxon.rank.capitalize + ' ' + content_tag('span', label_and_css_classes[:label], :class => label_and_css_classes[:css_classes])).html_safe
+      (rank + ' ' + content_tag('span', label_and_css_classes[:label], :class => label_and_css_classes[:css_classes])).html_safe
     end
   end
 
