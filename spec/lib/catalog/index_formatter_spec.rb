@@ -126,22 +126,22 @@ describe Catalog::IndexFormatter do
     describe "Child lists" do
       it "should format a tribes list" do
         Factory :tribe, name: 'Attini', subfamily: @subfamily
-        @formatter.format_child_list(@subfamily, @subfamily.tribes, 'Tribe', 'Tribes', true).should == 
+        @formatter.format_child_list(@subfamily, @subfamily.tribes, true).should == 
 %{<div class="child_list"><span class="label">Tribe (extant) of <span class="subfamily taxon">Dolichoderinae</span></span>: <span class="taxon tribe">Attini</span>.</div>}
       end
       it "should format a child list, specifying extinctness" do
         Factory :genus, name: 'Atta', subfamily: @subfamily
-        @formatter.format_child_list(@subfamily, Genus.all, 'Genus', 'Genera', true).should == 
+        @formatter.format_child_list(@subfamily, Genus.all, true).should == 
 %{<div class="child_list"><span class="label">Genus (extant) of <span class="subfamily taxon">Dolichoderinae</span></span>: <span class="genus taxon">Atta</span>.</div>}
       end
       it "should format a genera list, not specifying extinctness" do
         Factory :genus, name: 'Atta', subfamily: @subfamily
-        @formatter.format_child_list(@subfamily, Genus.all, 'Genus', 'Genera', false).should == 
+        @formatter.format_child_list(@subfamily, Genus.all, false).should == 
 %{<div class="child_list"><span class="label">Genus of <span class="subfamily taxon">Dolichoderinae</span></span>: <span class="genus taxon">Atta</span>.</div>}
       end
       it "should format an incertae sedis genera list" do
         genus = Factory :genus, name: 'Atta', subfamily: @subfamily, incertae_sedis_in: 'subfamily'
-        @formatter.format_child_list(@subfamily, [genus], 'Genus', 'Genera', false, incertae_sedis_in: 'subfamily').should == 
+        @formatter.format_child_list(@subfamily, [genus], false, incertae_sedis_in: 'subfamily').should == 
 %{<div class="child_list"><span class="label">Genus <i>incertae sedis</i> in <span class="subfamily taxon">Dolichoderinae</span></span>: <span class="genus taxon">Atta</span>.</div>}
       end
     end
