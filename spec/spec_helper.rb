@@ -20,6 +20,7 @@ end
 
 Spork.each_run do
   FactoryGirl.reload
+  load Rails.root.join 'app/models/rank.rb'
 
   # When a reference is parsed, it returns the text of what was matched in :reference_text
   # The trouble is that none of the hundreds of existing tests account for this new field,
