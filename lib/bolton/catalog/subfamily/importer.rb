@@ -27,7 +27,10 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
 
     parse_family
     parse_supersubfamilies
+
     ForwardReference.fixup
+    resolve_parent_synonyms
+
   ensure
     super
     Progress.puts "#{::Subfamily.count} subfamilies, #{::Tribe.count} tribes, #{::Genus.count} genera, #{::Subgenus.count} subgenera, #{::Species.count} species"
@@ -49,6 +52,23 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     #parse_genera_incertae_sedis :poneroid_subfamilies, :genera_incertae_sedis_in_poneroid_subfamilies_header
 
     true
+  end
+
+  def resolve_parent_synonyms
+    any_changes = true
+    while any_changes 
+      any_changes = false
+      Taxon.all.each do |taxon|
+        if taxon.respond_to? :tribe
+          # if a taxon's tribe is a synonym, set the taxon's tribe to the thing it's a synonym of
+          tribe = taxon.tribe
+          next unless tribe && tribe.synonym?
+          taxon.update_attribute :tribe, tribe.synonym_of
+          Progress.puts "Changed tribe of #{taxon.name} from #{tribe.name} to #{taxon.tribe.name}"
+          any_changes = true
+        end
+      end
+    end
   end
 
   def get_file_names file_names
