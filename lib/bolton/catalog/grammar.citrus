@@ -160,7 +160,7 @@ grammar Bolton::Catalog::Grammar
   end
 
   rule text_word
-    (/[[:alnum:],\-'&]+/) | italicized_term
+    (/[[:alnum:],\-'&]+/) | italicized_term | '*'
   end
 
   rule text_delimiter
