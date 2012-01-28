@@ -2,16 +2,16 @@
 require 'spec_helper'
 
 describe Rank do
+  it "should do all these ranks" do
+    [[:family, Family], [:subfamily, Subfamily], [:tribe, Tribe], [:genus, Genus], [:species, Species], [:subspecies, Subspecies]].each do |symbol, klass|
+      Rank(symbol).to_class.should == klass
+    end
+  end
   it "should convert a symbol to a klass" do
     Rank(:genus).to_class.should == Genus
   end
   it "should convert a klass to a symbol" do
     Rank(:genus).to_sym.should == :genus
-  end
-  it "should do all these ranks" do
-    [[:genus, Genus], [:tribe, Tribe]].each do |symbol, klass|
-      Rank(symbol).to_class.should == klass
-    end
   end
   it "should return a string" do
     Rank(:tribes).to_s.should == 'tribe'
@@ -34,5 +34,8 @@ describe Rank do
   end
   it "should convert from an array of taxa" do
     Rank([Genus.new]).to_s.should == 'genus'
+  end
+  it "should raise an error if it doesn't understand the input" do
+    lambda {Rank('asdf')}.should raise_error
   end
 end
