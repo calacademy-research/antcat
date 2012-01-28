@@ -147,4 +147,22 @@ describe Catalog::IndexFormatter do
     end
   end
 
+  describe "Status" do
+    it "should return nothing if the status is valid" do
+      taxon = Factory :genus
+      @formatter.format_status(taxon).should == ''
+    end
+    it "should show the status if there is one" do
+      taxon = Factory :genus, status: 'homonym'
+      @formatter.format_status(taxon).should == 'homonym'
+    end
+    it "should show the seniorer synonym" do
+      senior_synonym = Factory :genus, name: 'Atta'
+      taxon = Factory :genus, status: 'synonym', synonym_of: senior_synonym
+      result = @formatter.format_status(taxon)
+      result.should == 'synonym of <span class="genus taxon">Atta</span>'
+      result.should be_html_safe
+    end
+  end
+
 end
