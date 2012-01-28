@@ -34,7 +34,7 @@ class Taxon < ActiveRecord::Base
   end
 
   def rank
-    self.class.to_s.downcase
+    Rank[self].to_s
   end
 
   def children

@@ -70,15 +70,13 @@ module Catalog::StatisticsFormatter
   end
 
   def format_rank_status_count rank, status, count, label_statuses = true
-    rank = :subfamily if rank == :subfamilies and count == 1
-    rank = :genus if rank == :genera and count == 1
     if label_statuses
       count_and_status = pluralize_with_delimiters count, status, status == 'valid' ? status : status_plural(status)
     else
       count_and_status = number_with_delimiter count
     end
     string = count_and_status
-    string << " #{rank.to_s}" if status == 'valid'
+    string << " #{Rank[rank].to_s(count)}" if status == 'valid'
     string
   end
 
