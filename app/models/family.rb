@@ -20,16 +20,15 @@ class Family < Taxon
   end
 
   def statistics
-    get_statistics [[Subfamily, :subfamilies], [Genus, :genera], [Species, :species], [Subspecies, :subspecies]]
+    get_statistics Subfamily, Genus, Species, Subspecies
   end
 
-  def get_statistics ranks
-    statistics = {}
-    ranks.each do |klass, rank|
+  def get_statistics *ranks
+    ranks.inject({}) do |statistics, klass|
       count = klass.count :group => [:fossil, :status]
-      self.class.massage_count count, rank, statistics
+      self.class.massage_count count, Rank(klass).to_sym(:plural), statistics
+      statistics
     end
-    statistics
   end
 
   def full_label
