@@ -39,7 +39,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
 
   def parse_subfamily_child_lists subfamily
     parse_tribes_lists subfamily
-    parse_genera_lists :subfamily, subfamily: subfamily
+    parse_genera_lists
     parse_collective_group_names_list
   end
 
