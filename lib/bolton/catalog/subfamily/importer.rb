@@ -45,7 +45,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     Progress.method
     consume :supersubfamily_header
 
-    parse_genera_lists :supersubfamily
+    parse_genera_lists
 
     while parse_subfamily; end
 

@@ -20,9 +20,9 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     Progress.info "Created #{tribe.name}"
 
     # genera lists can appear before or after junior synonyms
-    parse_genera_lists :tribe, subfamily: subfamily, tribe: tribe
+    parse_genera_lists
     parse_junior_synonyms_of_tribe subfamily, tribe
-    parse_genera_lists :tribe, subfamily: subfamily, tribe: tribe
+    parse_genera_lists
     parse_ichnotaxa_list subfamily: subfamily, tribe: tribe
     parse_reference_sections tribe, :references_section_header, :see_under_references_section_header
     parse_see_also_references_section
