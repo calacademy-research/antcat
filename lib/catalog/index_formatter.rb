@@ -52,10 +52,14 @@ module Catalog::IndexFormatter
   end
 
   def format_status taxon
-    return '' unless taxon.invalid?
-    label = Status[taxon].to_s.dup
-    return label unless taxon.synonym?
-    label << ' of ' << taxon_label_span(taxon.synonym_of, ignore_status: true)
+    if taxon.incertae_sedis_in
+      label = "<i>incertae sedis</i> in #{Rank[taxon.incertae_sedis_in].to_s}"
+    elsif taxon.invalid?
+      label = Status[taxon].to_s.dup
+      label << ' of ' << taxon_label_span(taxon.synonym_of, ignore_status: true) if taxon.synonym?
+    else
+      label = ''
+    end
     label.html_safe
   end
 

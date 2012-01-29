@@ -163,6 +163,12 @@ describe Catalog::IndexFormatter do
       result.should == 'synonym of <span class="genus taxon">Atta</span>'
       result.should be_html_safe
     end
+    it "should show where it is incertae sedis" do
+      taxon = Factory :genus, incertae_sedis_in: 'family'
+      result = @formatter.format_status(taxon)
+      result.should == '<i>incertae sedis</i> in family'
+      result.should be_html_safe
+    end
   end
 
 end
