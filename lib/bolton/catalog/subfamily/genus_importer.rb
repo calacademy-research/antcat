@@ -85,9 +85,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
   end
 
   ################################################
-  def parse_genera_lists parent_rank, parent_attributes = {}
-    return unless @type == :genera_list
-    Progress.method
+  def parse_genera_lists
     parse_next_line while @type == :genera_list
   end
 
