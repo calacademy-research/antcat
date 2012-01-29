@@ -6,13 +6,6 @@ describe Formatter do
     @formatter = CatalogFormatter
   end
 
-  describe "Status labels" do
-    it "should return the singular and the plural for a status" do
-      @formatter.status_labels['synonym'][:singular].should == 'synonym'
-      @formatter.status_labels['synonym'][:plural].should == 'synonyms'
-    end
-  end
-
   describe "Pluralizing with commas" do
     it "should handle a single item" do
       @formatter.pluralize_with_delimiters(1, 'bear').should == '1 bear'

@@ -56,7 +56,7 @@ module Catalog::StatisticsFormatter
     return string unless include_invalid
 
     status_strings = statistics.keys.sort_by do |key|
-      ordered_statuses.index key
+      Status.ordered_statuses.index key
     end.inject([]) do |status_strings, status|
       status_strings << format_rank_status_count(:genera, status, statistics[status])
     end
@@ -71,7 +71,7 @@ module Catalog::StatisticsFormatter
 
   def format_rank_status_count rank, status, count, label_statuses = true
     if label_statuses
-      count_and_status = pluralize_with_delimiters count, status, status == 'valid' ? status : status_plural(status)
+      count_and_status = pluralize_with_delimiters count, status, Status[status].to_s(status != 'valid' ? :plural : nil)
     else
       count_and_status = number_with_delimiter count
     end
