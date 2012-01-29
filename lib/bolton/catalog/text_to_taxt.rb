@@ -13,6 +13,7 @@ module Bolton::Catalog::TextToTaxt
     taxon_name(item)   ||
     brackets(item)     ||
     unparseable(item)  ||
+    delimiter(item)    ||
     raise("Couldn't convert #{item} to taxt")
   end
 
@@ -84,6 +85,10 @@ module Bolton::Catalog::TextToTaxt
     taxt << ': ' << item[:pages] if item[:pages]
     taxt << convert(items[:notes].first) if item[:notes]
     add_delimiter taxt, item
+  end
+
+  def self.delimiter item
+    item[:delimiter] or return
   end
 
   def self.add_delimiter taxt, item
