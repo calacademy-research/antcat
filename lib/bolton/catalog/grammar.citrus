@@ -312,7 +312,8 @@ grammar Bolton::Catalog::Grammar
   end
 
   rule ref_page_section
-      figs_on_page
+      '(pending)'
+    | figs_on_page
     | ((ref_page_section_type ' '?)? ref_page_range)
     | ref_page_section_type
   end
