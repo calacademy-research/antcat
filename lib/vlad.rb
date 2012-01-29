@@ -2,10 +2,7 @@
 class Vlad
 
   def self.idate show_progress = false
-    Progress.new_init show_progress: show_progress,
-                      log_file_directory: 'data/vlad',
-                      log_file_name: 'vlad',
-                      append_to_log_file: !Rails.env.test?
+    Progress.new_init show_progress: show_progress
     results = {}
     results.merge! record_counts
     results.merge! genera_with_tribes_but_not_subfamilies
