@@ -2,90 +2,63 @@
 class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
   private
 
-  def parse_subgenera genus
-    return '' unless @type == :subgenera_header
-    Progress.method
-
-    parsed_text = @paragraph
-    parse_next_line
-
-    if @type == :texts
-      parse_next_line
-    end
-
-    expect :subgenus_header
-    parsed_text << parse_subgenus(genus) while @type == :subgenus_header
-
-    parsed_text
-  end
-
-  def parse_subgenus genus
-    return unless @type == :subgenus_header
+  def parse_subgenus attributes = {}, options = {}
+    options = options.reverse_merge :header => :genus_header
+    return unless @type == options[:header]
     Progress.method
 
     name = @parse_result[:name]
-    parsed_text = @paragraph
-
     parse_next_line
-    expect :genus_headline
 
-    taxonomic_history = @paragraph
-    parse_next_line
-    taxonomic_history << parse_taxonomic_history
+    headline = consume :genus_headline
+    name ||= headline[:protonym][:subgenus_name] || headline[:protonym][:genus_name]
+    fossil ||= headline[:protonym][:fossil]
 
-    raise "Subgenus #{name} already exists" if Subgenus.find_by_name name
-    subgenus = Subgenus.create! :name => name, :status => 'valid', :genus => genus, :taxonomic_history => clean_taxonomic_history(taxonomic_history)
-    Progress.info "Created #{subgenus.name}"
+    history = parse_taxonomic_history
 
-    taxonomic_history << parse_homonym_replaced_by_subgenus
-    taxonomic_history << parse_junior_synonyms_of_subgenus(subgenus)
-    parsed_text << taxonomic_history
+    subgenus = Subgenus.import(
+      :name => name,
+      :genus => attributes[:genus],
+      :fossil => fossil,
+      :protonym => headline[:protonym],
+      :note => headline[:note].try(:[], :text),
+      :type_species => headline[:type_species],
+      :taxonomic_history => history,
+      :attributes => attributes
+    )
+    info_message = "Created #{subgenus.name}"
+    Progress.info info_message
 
-    subgenus.reload.update_attributes :taxonomic_history => clean_taxonomic_history(taxonomic_history)
+    parse_homonym_replaced_by_subgenus subgenus
+    parse_junior_synonyms_of_subgenus subgenus
 
-    parsed_text
+    subgenus
   end
 
-  def parse_homonym_replaced_by_subgenus
-    return '' unless @type == :homonym_replaced_by_genus_header
-    Progress.method
-
-    parsed_text = @paragraph
-    parse_next_line
-
-    parsed_text << @paragraph
-    parse_next_line
-
-    parsed_text << @paragraph << parse_taxonomic_history
-
-    parsed_text
+  def parse_homonym_replaced_by_subgenus replaced_by_subgenus
+    parse_subgenus({
+      status: 'homonym', homonym_replaced_by: replaced_by_subgenus,
+      genus: replaced_by_subgenus.genus, subfamily: replaced_by_subgenus.subfamily, tribe: replaced_by_subgenus.tribe},
+      header: :homonym_replaced_by_genus_header)
   end
 
   def parse_junior_synonyms_of_subgenus subgenus
-    return '' unless @type == :junior_synonyms_of_subgenus_header
+    return unless @type == :junior_synonyms_of_subgenus_header
     Progress.method
 
-    parsed_text = @paragraph
     parse_next_line
+    attributes = {synonym_of: subgenus, status: 'synonym', subfamily: subgenus.subfamily, tribe: subgenus.tribe, genus: subgenus.genus, header: :subgenus_header}
 
-    parsed_text << parse_junior_synonym_of_subgenus(subgenus) while @type == :genus_headline
-
-    parsed_text
+    while parse_subgenus attributes, header: :subgenus_headline; end
   end
 
-  def parse_junior_synonym_of_subgenus subgenus
+  def parse_subgenera attributes = {}
+    return '' unless @type == :subgenera_header
     Progress.method
-    parsed_text = ''
-    name = @parse_result[:genus_name]
-    fossil = @parse_result[:fossil]
-    taxonomic_history = @paragraph
-    parse_next_line
-    taxonomic_history << parse_taxonomic_history
-    subgenus = Subgenus.create! :name => name, :fossil => fossil, :status => 'synonym', :synonym_of => subgenus,
-                             :genus => subgenus.genus, :taxonomic_history => clean_taxonomic_history(taxonomic_history)
-    Progress.info "Created #{subgenus.name} junior synonym of subgenus"
-    parsed_text << taxonomic_history
-  end
 
+    parse_next_line
+    parse_next_line if @type == :texts
+    parse_subgenus(attributes, header: :subgenus_header) while @type == :subgenus_header
+  end
 
 end
