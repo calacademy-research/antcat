@@ -11,6 +11,8 @@
                         Remove extra b from 1985bb and 1903bb
                         Add a space between period and "Type-species"
                         Remove italicized space after Sinoformica and before Hong
+                        To make parsing easier, inserted "(pending)" where online citations
+                          have no pagination (5 places)
   04. MYRMECIOMORPHS    Change 'Type-species' to 'Type-genus' for Leptaleinae
   07. MYRMICOMORPHS 1   Fixed "AdelomyrSmex"
                         Add colon after year in '1950c 143' in two places
