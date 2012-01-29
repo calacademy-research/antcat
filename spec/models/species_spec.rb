@@ -9,6 +9,12 @@ describe Species do
     Species.find_by_name('championi').genus.should == genus
   end
 
+  it "can have a subgenus" do
+    subgenus = Factory :subgenus, :name => 'Atta'
+    Factory :species, :name => 'championi', :subgenus => subgenus
+    Species.find_by_name('championi').subgenus.should == subgenus
+  end
+
   it "should have a subfamily" do
     genus = Factory :genus, :name => 'Atta'
     Factory :species, :name => 'championi', :genus => genus
@@ -127,6 +133,17 @@ describe Species do
       species.should_not be_invalid
       species.should be_fossil
       species.genus.should == genus
+    end
+
+    it "should handle a subgenus which was a genus at the time" do
+      Progress.should_receive(:log).with("FIXUP created species Atta major")
+      genus = Factory :genus, name: 'Atta'
+      subgenus = Factory :subgenus, name: 'Lasius', genus: genus
+      species = Species.create_from_fixup subgenus_id: subgenus.id, name: 'Lasius major'
+      species.reload.name.should == 'major'
+      species.should_not be_invalid
+      species.genus.should == genus
+      species.subgenus.should == subgenus
     end
 
     it "should not raise an error if the passed-in genus doesn't have the same name as the genus name in the species name" do
