@@ -349,6 +349,12 @@ describe Bolton::Catalog::Grammar do
       lambda {@grammar.parse(%{Emery, 1909c: 355 [Junior homonym]}, :root => :reference)}.should raise_error(Citrus::ParseError)
     end
 
+    it "should handle '(pending)' as the pagination (for online articles)" do
+      @grammar.parse('LaPolla, 2011: (pending) [online]', root: :reference).value_with_reference_text_removed.should == {
+        author_names: ['LaPolla'], year: '2011', pages: '(pending)',
+        notes: [[{phrase: 'online'}, {bracketed: true}]]
+      }
+    end
     it "should handle both parenthesized and bracketed notes for the same reference" do
       @grammar.parse('Kusnezov, 1964: 62 (alternatively spelled Palaeoattini, p. 146) [as subdivision of tribe Attini]', :root => :reference).value_with_reference_text_removed.should == {
         :author_names => ['Kusnezov'], :year => '1964', :pages => '62',
