@@ -16,6 +16,10 @@ describe Bolton::Catalog::TextToTaxt do
     data = [{:phrase => 'Phrase'}]
     @converter.convert(data).should == 'Phrase'
   end
+  it "should handle just a delimiter" do
+    data = [{:delimiter => '.'}]
+    @converter.convert(data).should == '.'
+  end
   it "should handle a phrase inside a text" do
     data = [{:text => [{:phrase => 'Phrase'}]}]
     @converter.convert(data).should == 'Phrase'
