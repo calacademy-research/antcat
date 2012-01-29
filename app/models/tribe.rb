@@ -8,7 +8,7 @@ class Tribe < Taxon
   end
 
   def full_name
-    "#{subfamily.name} #{name}"
+    name
   end
 
   def full_label
