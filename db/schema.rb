@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120126155424) do
+ActiveRecord::Schema.define(:version => 20120129204913) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -207,6 +207,7 @@ ActiveRecord::Schema.define(:version => 20120126155424) do
     t.text     "type_taxon_taxt"
     t.text     "headline_notes_taxt"
     t.text     "type_taxon_name"
+    t.integer  "subgenus_id"
   end
 
   add_index "taxa", ["genus_id"], :name => "taxa_genus_id_idx"
