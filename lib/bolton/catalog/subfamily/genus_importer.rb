@@ -31,6 +31,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     info_message << " synonym of #{parsing_synonym}" if parsing_synonym
     Progress.info info_message
 
+    parse_subgenera genus: genus
     parse_junior_synonyms_of_genus genus
     parse_homonym_replaced_by_genus genus
     parse_genus_references genus
@@ -67,11 +68,10 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
 
   ################################################
   def parse_homonym_replaced_by_genus replaced_by_genus
-    genus = parse_genus({:status => 'homonym'}, :header => :homonym_replaced_by_genus_header)
-    return '' unless genus
-    Progress.method
-
-    genus.update_attributes homonym_replaced_by: replaced_by_genus, subfamily: replaced_by_genus.subfamily, tribe: replaced_by_genus.tribe
+    parse_genus({
+      status: 'homonym', homonym_replaced_by: replaced_by_genus,
+      subfamily: replaced_by_genus.subfamily, tribe: replaced_by_genus.tribe},
+      header: :homonym_replaced_by_genus_header)
   end
 
   ################################################
@@ -81,6 +81,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
 
     parse_next_line
     attributes = {synonym_of: genus, status: 'synonym', subfamily: genus.subfamily, tribe: genus.tribe}
+
     while parse_genus attributes, header: :genus_headline; end
   end
 
