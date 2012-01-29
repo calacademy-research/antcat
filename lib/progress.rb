@@ -38,7 +38,7 @@ class Progress
   end
 
   def self.display string
-    $stderr.print string if @show_progress
+    $stdout.print string if @show_progress
   end
 
   def self.dot
