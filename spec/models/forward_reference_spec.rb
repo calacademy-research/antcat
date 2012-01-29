@@ -81,6 +81,20 @@ describe ForwardReference do
         species.genus.should == genus
       end
 
+      it "should fixup a :type_taxon for a species with a subgenus, which was a genus at type time" do
+        genus = Factory :genus, :name => 'Hypochira'
+        subgenus = Factory :subgenus, :genus => genus, name: 'Lasius'
+        forward_reference = ForwardReference.create! :source_id => subgenus.id, :source_attribute => :type_taxon, :target_name => 'Lasius major'
+        forward_reference.fixup
+        subgenus.reload
+        subgenus.type_taxon_name.should == 'Lasius major'
+        species = subgenus.type_taxon
+        species.name.should == 'major'
+        species.subgenus.should == subgenus
+        species.genus.should == subgenus.genus
+        species.subfamily.should == subgenus.genus.subfamily
+      end
+
       it "should complain if it's fixing up something it doesn't understand" do
         genus = Factory :subspecies
         forward_reference = ForwardReference.create! :source_id => genus.id, :source_attribute => :type_taxon, :target_name => 'Atta major'
