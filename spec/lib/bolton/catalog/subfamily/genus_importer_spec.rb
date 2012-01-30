@@ -6,38 +6,6 @@ describe Bolton::Catalog::Subfamily::Importer do
     @importer = Bolton::Catalog::Subfamily::Importer.new
   end
 
-  describe "Parsing taxonomic history" do
-    it "should return an array of text items converted to Taxt" do
-      dalla_torre = Factory :article_reference, :bolton_key_cache => 'Dalla Torre 1893'
-      swainson = Factory :article_reference, :bolton_key_cache => 'Swainson Shuckard 1840'
-      @importer.initialize_parse_html %{<div>
-        <p>Taxonomic history</p>
-        <p><i>Condylodon</i> in family Mutillidae: Swainson &amp; Shuckard, 1840: 173.</p>
-        <p><i>Condylodon</i> as junior synonym of <i>Pseudomyrma</i>: Dalla Torre, 1893: 55.</p>
-      </div>}
-      @importer.parse_taxonomic_history.should == [
-        "<i>Condylodon</i> in family Mutillidae: {ref #{swainson.id}}: 173",
-        "<i>Condylodon</i> as junior synonym of <i>Pseudomyrma</i>: {ref #{dalla_torre.id}}: 55"
-      ]
-    end
-  end
-
-  describe "Parsing references" do
-    it "should return an array of text items converted to Taxt" do
-      genus = Factory :genus, name: 'Lepisiota'
-      @importer.initialize_parse_html %{<div>
-        <p>Genus <i>Lepisiota</i> references</p>
-        <p>Note</p>
-        <p>Another note</p>
-      </div>}
-      @importer.parse_genus_references(genus)
-      genus.reference_sections.map(&:title).should ==
-        ["Genus <i>Lepisiota</i> references", ""]
-      genus.reference_sections.map(&:references).should ==
-        ["Note", "Another note"]
-    end
-  end
-
   describe "Importing a genus" do
     def make_contents content
       @importer.stub :parse_family
@@ -109,6 +77,38 @@ describe Bolton::Catalog::Subfamily::Importer do
 
     end
   end
+  describe "Parsing taxonomic history" do
+    it "should return an array of text items converted to Taxt" do
+      dalla_torre = Factory :article_reference, :bolton_key_cache => 'Dalla Torre 1893'
+      swainson = Factory :article_reference, :bolton_key_cache => 'Swainson Shuckard 1840'
+      @importer.initialize_parse_html %{<div>
+        <p>Taxonomic history</p>
+        <p><i>Condylodon</i> in family Mutillidae: Swainson &amp; Shuckard, 1840: 173.</p>
+        <p><i>Condylodon</i> as junior synonym of <i>Pseudomyrma</i>: Dalla Torre, 1893: 55.</p>
+      </div>}
+      @importer.parse_taxonomic_history.should == [
+        "<i>Condylodon</i> in family Mutillidae: {ref #{swainson.id}}: 173",
+        "<i>Condylodon</i> as junior synonym of <i>Pseudomyrma</i>: {ref #{dalla_torre.id}}: 55"
+      ]
+    end
+  end
+
+  describe "Parsing references" do
+    it "should return an array of text items converted to Taxt" do
+      genus = Factory :genus, name: 'Lepisiota'
+      @importer.initialize_parse_html %{<div>
+        <p>Genus <i>Lepisiota</i> references</p>
+        <p>Note</p>
+        <p>Another note</p>
+      </div>}
+      @importer.parse_genus_references(genus)
+      genus.reference_sections.map(&:title).should ==
+        ["Genus <i>Lepisiota</i> references", ""]
+      genus.reference_sections.map(&:references).should ==
+        ["Note", "Another note"]
+    end
+  end
+
 end
 
 #describe "Importing a genus with junior synonyms" do
