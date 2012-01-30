@@ -26,4 +26,20 @@ describe Vlad do
     results.map(&:id).should =~ [no_synonym.id, no_status.id]
   end
 
+  describe "Duplicate checking" do
+
+    it "should show duplicate names" do
+      Factory :genus, :name => 'Eciton'
+      Factory :genus, :name => 'Atta'
+      Factory :genus, :name => 'Atta'
+      Vlad.idate[:duplicates].map {|e| [e.name, e.count]}.should =~ [['Atta', 2]]
+    end
+    it "should be cool with same species name if genus is different" do
+      Factory :species, :name => 'niger'
+      Factory :species, :name => 'major'
+      Factory :species, :name => 'major'
+      Vlad.idate[:duplicates].should be_empty
+    end
+  end
+
 end

@@ -2,12 +2,13 @@
 class Vlad
 
   def self.idate show_progress = false
-    Progress.new_init show_progress: true
+    Progress.new_init show_progress: show_progress
 
     results = {}
     results.merge! record_counts
     results.merge! genera_with_tribes_but_not_subfamilies
     results.merge! taxa_with_mismatched_synonym_and_status
+    results.merge! duplicates
 
     display results
     results
@@ -18,6 +19,7 @@ class Vlad
     results_section.each do |model_class, count|
       Progress.puts "#{count.to_s.rjust(7)} #{model_class}"
     end
+    Progress.puts
 
     results_section = results[:genera_with_tribes_but_not_subfamilies]
     Progress.print "Genera with tribes but not subfamilies:"
@@ -31,6 +33,7 @@ class Vlad
         Progress.puts name
       end
     end
+    Progress.puts
 
     results_section = results[:taxa_with_mismatched_synonym_and_status]
     Progress.print "Taxa with mismatched synonym status and synonym_of_id:"
@@ -38,13 +41,32 @@ class Vlad
       Progress.puts " none"
     else
       Progress.puts
-      results_section.map do |taxon|
-        "#{taxon.name} #{taxon.status} #{taxon.synonym_of_id}"
+      results_section.map do |result|
+        "#{result.name} #{result.status} #{result.synonym_of_id}"
       end.sort.each do |line|
         Progress.puts line
       end
     end
+    Progress.puts
 
+    results_section = results[:duplicates]
+    Progress.print "Duplicates:"
+    if results_section.blank?
+      Progress.puts " none"
+    else
+      Progress.puts
+      results_section.map do |result|
+        "#{result[:name]} #{result[:count]}"
+      end.sort.each do |line|
+        Progress.puts line
+      end
+    end
+    Progress.puts
+
+  end
+
+  def self.duplicates
+    {duplicates: Taxon.select('name, COUNT(name) AS count').group(:name, :genus_id).having('COUNT(name) > 1')}
   end
 
   def self.taxa_with_mismatched_synonym_and_status
