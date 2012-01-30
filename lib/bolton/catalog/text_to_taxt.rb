@@ -48,17 +48,17 @@ module Bolton::Catalog::TextToTaxt
     add_delimiter taxt, item
   end
 
-  def self.notes text_items
-    items = text_items.flatten
-    taxt = ''
-    bracketed_item = items.find {|i| i[:bracketed]}
-    items.delete bracketed_item if bracketed_item
-    taxt << ' [' if bracketed_item
-    taxt << ' (' unless bracketed_item
-    taxt << convert(items)
-    taxt << ']' if bracketed_item
-    taxt << ')' unless bracketed_item
-    taxt
+  def self.notes items
+    items.inject('') do |taxt, item|
+      bracketed_item = item.find {|i| i[:bracketed]}
+      item.delete bracketed_item if bracketed_item
+      taxt << ' [' if bracketed_item
+      taxt << ' (' unless bracketed_item
+      taxt << convert(item)
+      taxt << ']' if bracketed_item
+      taxt << ')' unless bracketed_item
+      taxt
+    end
   end
 
   def self.nested item
