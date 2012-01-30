@@ -67,6 +67,13 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
           Progress.log "Changed tribe of #{taxon.name} from #{tribe.name} to #{taxon.tribe.name}"
           any_changes = true
         end
+        if taxon.respond_to? :subgenus
+          subgenus = taxon.subgenus
+          next unless subgenus && subgenus.synonym?
+          taxon.update_attribute :subgenus, subgenus.synonym_of
+          Progress.log "Changed subgenus of #{taxon.name} from #{subgenus.name} to #{taxon.subgenus.name}"
+          any_changes = true
+        end
       end
     end
   end
