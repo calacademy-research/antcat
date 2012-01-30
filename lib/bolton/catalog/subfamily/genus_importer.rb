@@ -28,7 +28,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
       :attributes => attributes
     )
     info_message = "Created #{genus.name}"
-    info_message << " synonym of #{parsing_synonym}" if parsing_synonym
+    info_message << " synonym of #{parsing_synonym.name}" if parsing_synonym
     Progress.info info_message
 
     parse_subgenera genus: genus
