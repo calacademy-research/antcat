@@ -23,7 +23,7 @@ describe Bolton::Catalog::Subfamily::Importer do
     end
 
     def make_contents content
-      %{<html><body><div><p>THE DOLICHODEROMORPHS: SUBFAMILIES ANEURETINAE AND DOLICHODERINAE<o:p></p>#{content}</div></body></html>}
+      %{<html><body><div><p>THE DOLICHODEROMORPHS: SUBFAMILIES ANEURETINAE AND DOLICHODERINAE</p>#{content}</div></body></html>}
     end
 
     it "should import a subfamily" do
