@@ -76,18 +76,17 @@ class Genus < Taxon
     tribe_id = attributes[:tribe_id]
     subfamily_id = Tribe.find(tribe_id).subfamily_id if tribe_id.present?
 
-    genus = Genus.find_by_name name
-    if genus
-      genus.update_attribute :tribe_id, tribe_id
-      Progress.log "FIXUP updated tribe for genus #{genus.full_name}"
+    genus_group = Taxon.find_genus_group_by_name name
+    if genus_group
+      genus_group.update_attribute :tribe_id, tribe_id
+      Progress.log "FIXUP updated tribe for #{genus_group.type} #{genus_group.full_name}"
     else
-      genus = Genus.create! name: name, status: 'valid', fossil: fossil, subfamily_id: subfamily_id,
+      genus_group = Genus.create! name: name, status: 'valid', fossil: fossil, subfamily_id: subfamily_id,
         tribe_id: tribe_id
-      Progress.log "FIXUP created genus #{genus.full_name}"
+      Progress.log "FIXUP created genus #{genus_group.full_name}"
     end
 
-    genus
+    genus_group
   end
-
 
 end
