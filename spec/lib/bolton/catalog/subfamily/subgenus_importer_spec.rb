@@ -60,7 +60,26 @@ describe Bolton::Catalog::Subfamily::Importer do
     orthonotus.status.should == 'homonym'
   end
 
-#<p>Junior synonyms of <i>STIGMACROS (MYAGROTERAS)</i></p>
-#<p><i>Condylomyrma</i> Santschi, 1928c: 72 [as subgenus of <i>Camponotus</i>]. Type-species: <i>Camponotus (Condylomyrma) bryani</i>, by monotypy.</p>
-#<p>Condylomyrma history</p>
+  it "should handle a synonym of a subgenus" do
+    @importer.import_html make_contents %{
+      <p>Subgenera of <i>LASIUS</i> include the nominal plus the following.</p>
+      <p>Subgenus <i>LASIUS (ACANTHOMYOPS)</i></p>
+      <p><i>Acanthomyops</i> Mayr, 1862: 652 (diagnosis in key), 699. Type-species: <i>Formica clavigera</i>, by monotypy. </p>
+      <p>Taxonomic history</p>
+      <p>History</p>
+
+      <p>Junior synonyms of <i>LASIUS (ACANTHOMYOPS)</i></p>
+      <p><i>Condylomyrma</i> Santschi, 1928c: 72. Type-species: <i>Camponotus (Condylomyrma) bryani</i>, by monotypy. </p>
+      <p>Taxonomic history</p>
+      <p>Condylomyrma history</p>
+    }
+    acanthomyops = Subgenus.find_by_name 'Acanthomyops'
+    condylomyrma = Subgenus.find_by_name 'Condylomyrma'
+    condylomyrma.should be_synonym
+    condylomyrma.should be_synonym_of acanthomyops
+
+    bryani = Species.find_by_name 'bryani'
+    bryani.subgenus.should == acanthomyops
+  end
+
 end
