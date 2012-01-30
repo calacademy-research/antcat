@@ -65,6 +65,13 @@ describe Bolton::Catalog::TextToTaxt do
       }]
       @converter.convert(data).should == "{ref #{reference.id}}: 356 [first spelling as Formicidae]"
     end
+    it "should handle notes" do
+      data = [
+        [{:phrase=>"online"}, {:bracketed=>true}],
+        [{:phrase=>"diagnosis"}]
+      ]
+      @converter.notes(data).should == " [online] (diagnosis)"
+    end
   end
 
   it "should handle a number of items" do
