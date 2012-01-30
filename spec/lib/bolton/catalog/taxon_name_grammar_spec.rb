@@ -122,6 +122,9 @@ describe Bolton::Catalog::Grammar do
       it "should accept a tribe name" do
         @grammar.parse('Ectatommini', :root => :family_group_name).value_with_reference_text_removed.should == {:tribe_name => 'Ectatommini'}
       end
+      it "should accept a tribe name ending in -ii" do
+        @grammar.parse('Dimorphomyrmii', :root => :family_group_name).value_with_reference_text_removed.should == {:tribe_name => 'Dimorphomyrmii'}
+      end
       it "should accept a subtribe name" do
         @grammar.parse('Bothriomyrmecina', :root => :family_group_name).value_with_reference_text_removed.should == {:subtribe_name => 'Bothriomyrmecina'}
       end
