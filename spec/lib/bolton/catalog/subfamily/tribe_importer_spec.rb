@@ -64,73 +64,21 @@ describe Bolton::Catalog::Subfamily::Importer do
         <p>Aneuretini history</p>
 
         <p>Junior synonyms of ANEURETINI</p>
-        <p>Anonychomyrmini Donisthorpe, 1947c: 588. Type-genus: <i>Anonychomyrma</i>.</p>
+        <p>Paleosminthuridae Donisthorpe, 1947c: 588. Type-genus: <i>Anonychomyrma</i>.</p>
         <p>Taxonomic history</p>
-        <p>Anonychomyrmini as tribe of Dolichoderinae: Donisthorpe, 1947c: 588.</p>
+        <p>Paleosminthuridae as tribe of Dolichoderinae: Donisthorpe, 1947c: 588.</p>
       }
 
-      Taxon.count.should == 12
+      Taxon.count.should == 5
 
-      subfamily = Subfamily.find_by_name 'Aneuretinae'
-      subfamily.should_not be_invalid
-      subfamily.type_taxon_name.should == 'Aneuretus'
-
-      protonym = subfamily.protonym
-      protonym.name.should == 'Aneuretini'
-      protonym.rank.should == 'tribe'
-
-      authorship = protonym.authorship
-      authorship.reference.should == emery
-      authorship.pages.should == '6'
-
-      type_taxon = subfamily.type_taxon
-      type_taxon.name.should == 'Aneuretus'
-      type_taxon.subfamily.should == subfamily
-
-      subfamily.taxonomic_history_items.map(&:taxt).should =~ [
-        "Aneuretinae as junior synonym of Dolichoderinae: {ref #{MissingReference.first.id}}: 147"
-      ]
-
-      tribe = Tribe.find_by_name 'Aneuretini'
-      tribe.subfamily.should == subfamily
-      tribe.taxonomic_history_items.map(&:taxt).should == ["history"]
-      tribe.type_taxon_name.should == 'Aneuretus'
-      tribe.reference_sections.map(&:title).should == ["Subfamily, tribe Aneuretini and genus <i>Aneuretus</i> references"]
-      tribe.reference_sections.map(&:references).should == ["{ref #{emery.id}}: 461 (diagnosis)"]
-
-      type_taxon = tribe.type_taxon
-      type_taxon.name.should == 'Aneuretus'
-      type_taxon.subfamily.should == subfamily
-      type_taxon.tribe.should == tribe
-
-      junior_synonym = Tribe.find_by_name 'Anonychomyrmini' 
-      junior_synonym.synonym_of.should == tribe
+      senior_synonym = Tribe.find_by_name 'Aneuretini'
+      junior_synonym = Tribe.find_by_name 'Paleosminthuridae'
       junior_synonym.should be_synonym
+      junior_synonym.should be_synonym_of senior_synonym
+      junior_synonym.subfamily.should == senior_synonym.subfamily
 
-      aneuretus = Genus.find_by_name 'Aneuretus'
-      aneuretus.tribe.should == tribe
-      aneuretus.subfamily.should == subfamily
-      aneuretus.reference_sections.map(&:references).should == ["Aneuretus reference"]
-
-      junior_synonym = Genus.find_by_name 'Odontomyrmex'
-      junior_synonym.synonym_of.should == aneuretus
-      junior_synonym.should be_synonym
-      junior_synonym.tribe.should == aneuretus.tribe
-      junior_synonym.subfamily.should == aneuretus.subfamily
-
-      homonym = Genus.find_by_name 'Diabolus'
-      homonym.should be_homonym
-      homonym.homonym_replaced_by.should == junior_synonym
-      homonym.tribe.should == aneuretus.tribe
-      homonym.subfamily.should == aneuretus.subfamily
-
-      genus = Genus.find_by_name 'Burmomyrma'
-      genus.should_not be_invalid
-      genus.should be_fossil
-      genus.tribe.should be_nil
-      genus.incertae_sedis_in.should == 'subfamily'
-      genus.subfamily.should == subfamily
-
+      genus_of_synonym = Genus.find_by_name 'Anonychomyrma'
+      genus_of_synonym.tribe.should == senior_synonym
     end
   end
 end
