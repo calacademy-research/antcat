@@ -55,6 +55,10 @@ class Taxon < ActiveRecord::Base
     target.name
   end
 
+  def full_name
+    name
+  end
+
   def self.find_name name, search_type = 'matching'
     query = ordered_by_name
     names = name.split ' '
@@ -73,6 +77,12 @@ class Taxon < ActiveRecord::Base
       query = query.where ['taxa.name LIKE ? AND taxa.type IN (?)', '%' + name + '%', types_sought]
     end
     query.all
+  end
+
+  def self.find_genus_group_by_name name
+    query = where ['taxa.name = ? AND taxa.type IN (?)', name, ['Genus', 'Subgenus']]
+    raise unless query.count == 1
+    query.first
   end
 
   def get_statistics ranks
