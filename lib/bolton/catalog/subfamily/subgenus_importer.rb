@@ -4,13 +4,21 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
 
   def parse_subgenus attributes = {}, options = {}
     options = options.reverse_merge :header => :genus_header
-    return unless @type == options[:header]
+    parsing_synonym = attributes[:synonym_of]
+    if parsing_synonym
+      return if @type != :subgenus_headline && @type != :genus_headline
+    else
+      return if @type != options[:header]
+    end
     Progress.method
 
-    name = @parse_result[:name]
-    parse_next_line
+    unless parsing_synonym
+      name = @parse_result[:name]
+      parse_next_line
+    end
 
     headline = consume :genus_headline
+
     name ||= headline[:protonym][:subgenus_name] || headline[:protonym][:genus_name]
     fossil ||= headline[:protonym][:fossil]
 
@@ -27,6 +35,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
       :attributes => attributes
     )
     info_message = "Created #{subgenus.name}"
+    info_message << " synonym of #{parsing_synonym.name}" if parsing_synonym
     Progress.info info_message
 
     parse_homonym_replaced_by_subgenus subgenus
@@ -47,7 +56,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     Progress.method
 
     parse_next_line
-    attributes = {synonym_of: subgenus, status: 'synonym', subfamily: subgenus.subfamily, tribe: subgenus.tribe, genus: subgenus.genus, header: :subgenus_header}
+    attributes = {synonym_of: subgenus, status: 'synonym', subfamily: subgenus.subfamily, tribe: subgenus.tribe, genus: subgenus.genus}
 
     while parse_subgenus attributes, header: :subgenus_headline; end
   end
