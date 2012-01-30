@@ -39,7 +39,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     Progress.info info_message
 
     parse_homonym_replaced_by_subgenus subgenus
-    parse_junior_synonyms_of_subgenus subgenus
+    parse_synonyms_of_subgenus subgenus
 
     subgenus
   end
@@ -51,7 +51,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
       header: :homonym_replaced_by_genus_header)
   end
 
-  def parse_junior_synonyms_of_subgenus subgenus
+  def parse_synonyms_of_subgenus subgenus
     return unless @type == :junior_synonyms_of_subgenus_header
     Progress.method
 

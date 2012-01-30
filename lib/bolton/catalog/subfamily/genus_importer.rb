@@ -32,7 +32,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     Progress.info info_message
 
     parse_subgenera genus: genus
-    parse_junior_synonyms_of_genus genus
+    parse_synonyms_of_genus genus
     parse_homonym_replaced_by_genus genus
     parse_genus_references genus
 
@@ -88,7 +88,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
   end
 
   ################################################
-  def parse_junior_synonyms_of_genus genus
+  def parse_synonyms_of_genus genus
     return unless @type == :junior_synonyms_of_genus_header
     Progress.method
 
