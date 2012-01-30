@@ -69,7 +69,7 @@ grammar Bolton::Catalog::Subfamily::FamilyGrammar
     }
   end
 
-  rule family_group_protonym_junior_synonym_of
+  rule family_group_headline_junior_synonym_of
     ('(junior synonym of ' genus_label ')') {
       {:junior_synonym_of => genus_label.value}
     }
