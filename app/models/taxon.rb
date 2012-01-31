@@ -81,7 +81,7 @@ class Taxon < ActiveRecord::Base
 
   def self.find_genus_group_by_name name
     query = where ['taxa.name = ? AND taxa.type IN (?)', name, ['Genus', 'Subgenus']]
-    raise unless query.count == 1
+    return unless query.count == 1
     query.first
   end
 
