@@ -107,7 +107,7 @@ describe Bolton::Catalog::Subfamily::Importer do
       type_taxon.subfamily.should == subfamily
 
       subfamily.taxonomic_history_items.map(&:taxt).should =~ [
-        "Aneuretinae as junior synonym of Dolichoderinae: {ref #{MissingReference.first.id}}: 147"
+        "Aneuretinae as junior synonym of Dolichoderinae: {ref #{MissingReference.first.id}}: 147."
       ]
 
       tribe = Tribe.find_by_name 'Aneuretini'

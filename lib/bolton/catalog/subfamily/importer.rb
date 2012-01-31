@@ -98,7 +98,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     if @type == :taxonomic_history_header
       parse_next_line
       while @type == :texts
-        parsed_taxonomic_history << Bolton::Catalog::TextToTaxt.convert(@parse_result[:texts].first[:text])
+        parsed_taxonomic_history << Bolton::Catalog::TextToTaxt.convert(@parse_result[:texts])
         parse_next_line
       end
     end

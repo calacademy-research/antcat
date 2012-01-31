@@ -39,7 +39,7 @@ describe Bolton::Catalog::Subfamily::Importer do
       genus.should_not be_fossil
       genus.subfamily.name.should == 'Martialinae'
       genus.taxonomic_history_items.map(&:taxt).should =~
-        ["<i>Condylodon</i> in family Mutillidae: {ref #{swainson.id}}: 173"]
+        ["<i>Condylodon</i> in family Mutillidae: {ref #{swainson.id}}: 173."]
       genus.type_taxon_name.should == "Condylodon audouini"
       genus.type_taxon_taxt.should == ", by monotypy."
       genus.type_taxon.name.should == 'audouini'
@@ -87,8 +87,8 @@ describe Bolton::Catalog::Subfamily::Importer do
         <p><i>Condylodon</i> as junior synonym of <i>Pseudomyrma</i>: Dalla Torre, 1893: 55.</p>
       </div>}
       @importer.parse_taxonomic_history.should == [
-        "<i>Condylodon</i> in family Mutillidae: {ref #{swainson.id}}: 173",
-        "<i>Condylodon</i> as junior synonym of <i>Pseudomyrma</i>: {ref #{dalla_torre.id}}: 55"
+        "<i>Condylodon</i> in family Mutillidae: {ref #{swainson.id}}: 173.",
+        "<i>Condylodon</i> as junior synonym of <i>Pseudomyrma</i>: {ref #{dalla_torre.id}}: 55."
       ]
     end
   end
