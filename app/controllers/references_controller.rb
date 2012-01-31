@@ -64,9 +64,14 @@ EOS
         # kludge around Rails 3 behavior that uses the type to look up a record - so you can't update the type!
         Reference.connection.execute "UPDATE `references` SET type = '#{@reference.type}' WHERE id = '#{@reference.id}'" unless new
         @reference.update_attributes params[:reference]
-        @reference.save!
-        set_document_host
-        raise ActiveRecord::RecordInvalid unless @reference.errors.empty?
+
+        possible_duplicate = @reference.check_for_duplicate
+        unless possible_duplicate
+          @reference.save!
+          set_document_host
+        end
+
+        raise ActiveRecord::RecordInvalid.new @reference unless @reference.errors.empty?
       end
     rescue ActiveRecord::RecordInvalid
       @reference[:id] = nil if new
