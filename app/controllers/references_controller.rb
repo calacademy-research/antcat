@@ -65,8 +65,8 @@ EOS
         Reference.connection.execute "UPDATE `references` SET type = '#{@reference.type}' WHERE id = '#{@reference.id}'" unless new
         @reference.update_attributes params[:reference]
 
-        possible_duplicate = @reference.check_for_duplicate
-        unless possible_duplicate
+        @possible_duplicate = @reference.check_for_duplicate unless params[:possible_duplicate].present?
+        unless @possible_duplicate
           @reference.save!
           set_document_host
         end
