@@ -9,7 +9,8 @@
   - html_options = Rails.env.test? ? {} : {:multipart => true}
   = form_for reference, :as => :reference, :url => url, :html => html_options do |f|
     %input{:type => 'hidden', :name => '_method', :value => method}
-    %input{:type => 'hidden', :name => 'selected_tab', :id => 'selected_tab', :class => 'selected_tab', :value => selected_tab}
+    %input{type: :hidden, name: :selected_tab, id: :selected_tab, class: :selected_tab, value: selected_tab}
+    %input{type: 'hidden', name: 'possible_duplicate', id: 'possible_duplicate', value: @possible_duplicate ? 'true' : nil}
     = render 'shared/errors_for', :resource => reference
 
     %table
@@ -97,6 +98,6 @@
               %td= reference.id
       %tr
         %td{:colspan => 4}
-          %button.submit Save
+          %button.submit= @possible_duplicate ? 'Save Anyway' : 'Save'
           %button.cancel Cancel
           %button.delete Delete
