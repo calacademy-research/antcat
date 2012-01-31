@@ -42,7 +42,7 @@ class Subgenus < Taxon
         target_name = type_species[:subgenus_name] || type_species[:genus_name]
         target_name << ' (' << type_species[:subgenus_epithet] + ')' if type_species[:subgenus_epithet]
         target_name << ' '  << type_species[:species_epithet]
-        ForwardReference.create! source_id: subgenus.id, source_attribute: :type_taxon, target_name: target_name,
+        ForwardReference.create! source_id: subgenus.id, target_name: target_name,
           fossil: type_species[:fossil]
       end
 

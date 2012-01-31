@@ -52,11 +52,9 @@ describe Subgenus do
 
       ForwardReference.fixup
 
-      type = subgenus.reload.type_taxon
-      type.name.should == 'major'
-      type.subgenus.should == subgenus
-      type.genus.should == subgenus.genus
-      type.subfamily.should == subgenus.genus.subfamily
+      subgenus.reload
+      subgenus.type_taxon_name.should == 'Atta major'
+      subgenus.type_taxon_rank.should == 'species'
     end
 
   end

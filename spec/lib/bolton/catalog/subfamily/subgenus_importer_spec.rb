@@ -77,9 +77,6 @@ describe Bolton::Catalog::Subfamily::Importer do
     condylomyrma = Subgenus.find_by_name 'Condylomyrma'
     condylomyrma.should be_synonym
     condylomyrma.should be_synonym_of acanthomyops
-
-    bryani = Species.find_by_name 'bryani'
-    bryani.subgenus.should == acanthomyops
   end
 
 end

@@ -42,8 +42,7 @@ describe Bolton::Catalog::Subfamily::Importer do
         ["<i>Condylodon</i> in family Mutillidae: {ref #{swainson.id}}: 173."]
       genus.type_taxon_name.should == "Condylodon audouini"
       genus.type_taxon_taxt.should == ", by monotypy."
-      genus.type_taxon.name.should == 'audouini'
-      genus.type_taxon.full_name.should == 'Condylodon audouini'
+      genus.type_taxon_rank.should == 'species'
       genus.reference_sections.map(&:title).should == ['Genus references']
       genus.reference_sections.map(&:references).should == ["{ref #{baroni.id}}: 482 (review of genus)."]
 

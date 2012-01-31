@@ -65,8 +65,8 @@ describe Tribe do
       tribe.should be_fossil
       tribe.taxonomic_history_items.map(&:taxt).should == ['Aneuretini history']
 
-      genus = tribe.type_taxon
-      genus.name.should == 'Atta'
+      tribe.type_taxon_name.should == 'Atta'
+      tribe.type_taxon_rank.should == 'genus'
 
       protonym = tribe.protonym
       protonym.name.should == 'Aneuretini'

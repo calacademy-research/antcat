@@ -222,7 +222,7 @@ describe Genus do
         :taxonomic_history => ["Atta as genus", "Atta as species"]
       }).reload
       ForwardReference.fixup
-      genus.type_taxon.should be_nil
+      genus.type_taxon_taxt.should be_nil
     end
 
     it "should make sure the type-species is fixed up to point to the genus and not just to any genus with the same name" do
@@ -238,7 +238,8 @@ describe Genus do
         :taxonomic_history => []
       })
       ForwardReference.fixup
-      genus.reload.type_taxon.genus.should == genus
+      genus.reload.type_taxon_name.should == 'Myrmicium heeri'
+      genus.reload.type_taxon_rank.should == 'species'
     end
 
   end

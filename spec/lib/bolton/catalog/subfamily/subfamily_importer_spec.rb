@@ -88,7 +88,7 @@ describe Bolton::Catalog::Subfamily::Importer do
         <p>History</p>
       }
 
-      Taxon.count.should == 14
+      Taxon.count.should == 8
 
       subfamily = Subfamily.find_by_name 'Aneuretinae'
       subfamily.should_not be_invalid
@@ -102,9 +102,7 @@ describe Bolton::Catalog::Subfamily::Importer do
       authorship.reference.should == emery
       authorship.pages.should == '6'
 
-      type_taxon = subfamily.type_taxon
-      type_taxon.name.should == 'Aneuretus'
-      type_taxon.subfamily.should == subfamily
+      subfamily.type_taxon_name.should == 'Aneuretus'
 
       subfamily.taxonomic_history_items.map(&:taxt).should =~ [
         "Aneuretinae as junior synonym of Dolichoderinae: {ref #{MissingReference.first.id}}: 147."
@@ -117,10 +115,8 @@ describe Bolton::Catalog::Subfamily::Importer do
       tribe.reference_sections.map(&:title).should == ["Subfamily, tribe Aneuretini and genus <i>Aneuretus</i> references"]
       tribe.reference_sections.map(&:references).should == ["{ref #{emery.id}}: 461 (diagnosis)"]
 
-      type_taxon = tribe.type_taxon
-      type_taxon.name.should == 'Aneuretus'
-      type_taxon.subfamily.should == subfamily
-      type_taxon.tribe.should == tribe
+      tribe.type_taxon_name.should == 'Aneuretus'
+      tribe.type_taxon_rank.should == 'genus'
 
       junior_synonym = Tribe.find_by_name 'Anonychomyrmini' 
       junior_synonym.synonym_of.should == tribe
