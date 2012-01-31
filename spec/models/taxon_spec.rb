@@ -296,9 +296,9 @@ describe Taxon do
       atta = Factory :subgenus, name: 'Atta'
       Taxon.find_genus_group_by_name('Atta').should == atta
     end
-    it "should raise if more than one result is found" do
+    it "should merely return nil if more than one result is found" do
       2.times {Factory :genus, name: 'Atta'}
-      -> {Taxon.find_genus_group_by_name('Atta')}.should raise_error
+      Taxon.find_genus_group_by_name('Atta')}.should be_nil
     end
   end
 
