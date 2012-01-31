@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120131011753) do
+ActiveRecord::Schema.define(:version => 20120131230145) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -74,7 +74,6 @@ ActiveRecord::Schema.define(:version => 20120131011753) do
 
   create_table "forward_references", :force => true do |t|
     t.integer "source_id"
-    t.string  "source_attribute"
     t.string  "target_name"
     t.boolean "fossil"
   end
@@ -203,12 +202,12 @@ ActiveRecord::Schema.define(:version => 20120131011753) do
     t.string   "incertae_sedis_in"
     t.integer  "species_id"
     t.integer  "protonym_id"
-    t.integer  "type_taxon_id"
     t.text     "type_taxon_taxt"
     t.text     "headline_notes_taxt"
     t.text     "type_taxon_name"
     t.integer  "subgenus_id"
     t.boolean  "hong"
+    t.string   "type_taxon_rank"
   end
 
   add_index "taxa", ["genus_id"], :name => "taxa_genus_id_idx"
