@@ -113,14 +113,6 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     parse_genus attributes while @type == :genus_header
   end
 
-  def parse_genera_of_hong
-    return unless @type == :genera_of_hong_header
-    Progress.method
-
-    parse_next_line
-    parse_genus while @type == :genus_header
-  end
-
   def parse_genera_incertae_sedis rank, attributes = {}, expected_header = :genera_incertae_sedis_header
     return unless @type == expected_header
     Progress.method

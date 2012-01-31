@@ -64,4 +64,12 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     consume :genus_headline
   end
 
+  def parse_genera_of_hong
+    return unless @type == :genera_of_hong_header
+    Progress.method
+
+    parse_next_line
+    parse_genus while @type == :genus_header
+  end
+
 end
