@@ -33,7 +33,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     parse_genera subfamily: subfamily
     parse_tribes_incertae_sedis subfamily
     parse_genera_incertae_sedis 'subfamily', subfamily: subfamily
-    parse_genera_of_hong
+    parse_genera_of_hong subfamily
     parse_collective_group_names
   end
 
@@ -64,12 +64,12 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     consume :genus_headline
   end
 
-  def parse_genera_of_hong
+  def parse_genera_of_hong subfamily
     return unless @type == :genera_of_hong_header
     Progress.method
 
     parse_next_line
-    parse_genus while @type == :genus_header
+    while parse_genus subfamily: subfamily, hong: true, incertae_sedis_in: 'subfamily'; end
   end
 
 end

@@ -80,9 +80,15 @@ describe Bolton::Catalog::Subfamily::Importer do
         <p>*<i>Burmomyrma</i> Dlussky, 1996: 87. Type-species: *<i>Burmomyrma rossi</i>, by original designation.</p>
         <p>Taxonomic history</p>
         <p>History</p>
+
+        <p>Genera of Hong (2002), <i>incertae sedis</i> in ANEURETINAE</p>
+        <p>Genus *<i>WILSONIA</i></p>
+        <p>*<i>Wilsonia</i> Hong, 2002: 608. Type-species: *<i>Wilsonia megagastrosa</i>, by original designation. </p>
+        <p>Taxonomic history</p>
+        <p>History</p>
       }
 
-      Taxon.count.should == 12
+      Taxon.count.should == 14
 
       subfamily = Subfamily.find_by_name 'Aneuretinae'
       subfamily.should_not be_invalid
@@ -143,6 +149,13 @@ describe Bolton::Catalog::Subfamily::Importer do
       genus.tribe.should be_nil
       genus.incertae_sedis_in.should == 'subfamily'
       genus.subfamily.should == subfamily
+
+      genus = Genus.find_by_name 'Wilsonia'
+      genus.tribe.should be_nil
+      genus.incertae_sedis_in.should == 'subfamily'
+      genus.subfamily.should == subfamily
+      genus.should be_hong
+      genus.status.should == Status['unresolved homonym'].to_s
 
     end
   end
