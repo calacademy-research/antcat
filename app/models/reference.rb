@@ -22,7 +22,6 @@ class Reference < ActiveRecord::Base
 
   # validation and callbacks
   before_validation :set_year_from_citation_year, :strip_newlines_from_text_fields
-  validate          :check_not_duplicate
   validates_presence_of :title
   before_save       :set_author_names_caches
   before_destroy    :check_not_nested
@@ -42,12 +41,6 @@ class Reference < ActiveRecord::Base
   ## callbacks
 
   # validation
-  def check_not_duplicate
-    duplicates = DuplicateMatcher.new.match self
-    return unless duplicates.present?
-    duplicate = Reference.find duplicates.first[:match]
-    errors.add :base, "This seems to be a duplicate of #{ReferenceFormatter.format duplicate} #{duplicate.id}"
-  end
   def check_not_nested
     nester = NestedReference.find_by_nested_reference_id id
     errors.add :base, "This reference can't be deleted because it's nested in #{nester}" if nester
@@ -72,6 +65,13 @@ class Reference < ActiveRecord::Base
       raise ActiveRecord::RecordInvalid.new self
     end
     author_names_and_suffix
+  end
+  def check_for_duplicate
+    duplicates = DuplicateMatcher.new.match self
+    return unless duplicates.present?
+    duplicate = Reference.find duplicates.first[:match]
+    errors.add :base, "This may be a duplicate of #{ReferenceFormatter.format duplicate} #{duplicate.id}.<br>To save, click \"Save Anyway\"".html_safe
+    true
   end
   def self.citation_year_to_year citation_year
     if citation_year.blank?
