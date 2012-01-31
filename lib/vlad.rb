@@ -8,6 +8,7 @@ class Vlad
     results.merge! record_counts
     results.merge! genera_with_tribes_but_not_subfamilies
     results.merge! taxa_with_mismatched_synonym_and_status
+    results.merge! taxa_with_mismatched_homonym_and_status
     results.merge! duplicates
 
     display results
@@ -49,6 +50,20 @@ class Vlad
     end
     Progress.puts
 
+    results_section = results[:taxa_with_mismatched_homonym_and_status]
+    Progress.print "Taxa with mismatched homonym status and homonym_replaced_by_id:"
+    if results_section.blank?
+      Progress.puts " none"
+    else
+      Progress.puts
+      results_section.map do |result|
+        "#{result.name} #{result.status} #{result.homonym_replaced_by_id}"
+      end.sort.each do |line|
+        Progress.puts line
+      end
+    end
+    Progress.puts
+
     results_section = results[:duplicates]
     Progress.print "Duplicates:"
     if results_section.blank?
@@ -71,6 +86,10 @@ class Vlad
 
   def self.taxa_with_mismatched_synonym_and_status
     {taxa_with_mismatched_synonym_and_status: Taxon.where("(status = 'synonym') = (synonym_of_id IS NULL)")}
+  end
+
+  def self.taxa_with_mismatched_homonym_and_status
+    {taxa_with_mismatched_synonym_and_status: Taxon.where("(status = 'homonym') = (homonym_replaced_by_id IS NULL)")}
   end
 
   def self.genera_with_tribes_but_not_subfamilies
