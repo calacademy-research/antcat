@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120126155424) do
+ActiveRecord::Schema.define(:version => 20120131011753) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -142,10 +142,12 @@ ActiveRecord::Schema.define(:version => 20120126155424) do
   add_index "reference_documents", ["reference_id"], :name => "documents_reference_id_idx"
 
   create_table "reference_sections", :force => true do |t|
-    t.integer "taxon_id"
-    t.integer "position"
-    t.string  "title"
-    t.text    "references"
+    t.integer  "taxon_id"
+    t.integer  "position"
+    t.string   "title"
+    t.text     "references"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "reference_sections", ["taxon_id", "position"], :name => "index_reference_sections_on_taxon_id_and_position"
@@ -205,6 +207,8 @@ ActiveRecord::Schema.define(:version => 20120126155424) do
     t.text     "type_taxon_taxt"
     t.text     "headline_notes_taxt"
     t.text     "type_taxon_name"
+    t.integer  "subgenus_id"
+    t.boolean  "hong"
   end
 
   add_index "taxa", ["genus_id"], :name => "taxa_genus_id_idx"
