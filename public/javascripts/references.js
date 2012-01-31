@@ -258,13 +258,13 @@ function submitReferenceEdit() {
     success: updateReference,
     dataType: 'json'
   });
-  return false
+  return false;
 }
 
 function beforeSerialize($form, options) {
   var selectedTab = $.trim($('.ui-tabs-selected', $form).text())
   $('#selected_tab', $form).val(selectedTab)
-  return true
+  return true;
 }
 
 function setupSubmit(formData, $form, options) {
