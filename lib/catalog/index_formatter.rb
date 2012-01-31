@@ -56,7 +56,7 @@ module Catalog::IndexFormatter
   def format_status taxon
     labels = []
     labels << "<i>incertae sedis</i> in #{Rank[taxon.incertae_sedis_in].to_s}" if taxon.incertae_sedis_in
-    if taxon.homonym?
+    if taxon.homonym? && taxon.homonym_replaced_by
       labels << "homonym replaced by #{taxon_label_span(taxon.homonym_replaced_by, ignore_status: true)}"
     elsif taxon.unresolved_homonym?
       labels << "unresolved junior homonym"
