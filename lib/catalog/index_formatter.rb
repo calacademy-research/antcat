@@ -152,7 +152,8 @@ module Catalog::IndexFormatter
     if Family === parent && children_selector == :genera
       format_child_list_fossil_pairs parent, children_selector, incertae_sedis_in: 'family'
     elsif Subfamily === parent && children_selector == :genera
-      format_child_list_fossil_pairs parent, children_selector, incertae_sedis_in: 'subfamily'
+      format_child_list_fossil_pairs(parent, children_selector, incertae_sedis_in: 'subfamily', hong: false) +
+      format_child_list_fossil_pairs(parent, children_selector, incertae_sedis_in: 'subfamily', hong: true)
     else
       format_child_list_fossil_pairs parent, children_selector
     end
@@ -163,7 +164,7 @@ module Catalog::IndexFormatter
     extinct_conditions = conditions.merge fossil: true
     extinct = child_list_query parent, children_selector, extinct_conditions
     extant = child_list_query parent, children_selector, extant_conditions
-    specify_extinct_or_extant = extinct.present? && extant.present?
+    specify_extinct_or_extant = extinct.present?
 
     format_child_list(parent, extant, specify_extinct_or_extant, extant_conditions) +
     format_child_list(parent, extinct, specify_extinct_or_extant, extinct_conditions)
@@ -173,7 +174,9 @@ module Catalog::IndexFormatter
     return '' unless children.present?
 
     label = ''.html_safe
-    label << Rank[children].to_s(children.count, :capitalized)
+
+    label << 'Hong (2002) ' if conditions[:hong]
+    label << Rank[children].to_s(children.count, conditions[:hong] ? nil : :capitalized)
 
     if specify_extinct_or_extant
       label << ' ('
@@ -205,7 +208,8 @@ module Catalog::IndexFormatter
     children = children.where fossil: !!conditions[:fossil] if conditions.key? :fossil
     incertae_sedis_in = conditions[:incertae_sedis_in]
     children = children.where incertae_sedis_in: incertae_sedis_in if incertae_sedis_in
-    children = children.where status: 'valid'
+    children = children.where hong: !!conditions[:hong] if conditions.key? :hong
+    children = children.where "status = 'valid' OR status = 'unresolved homonym'"
     children
   end
 
@@ -213,8 +217,9 @@ module Catalog::IndexFormatter
     children.sort_by(&:name).inject([]) do |children, child|
       label = taxon_label child
       css_classes = taxon_css_classes child, ignore_status: true
-      children << content_tag(:span, label, class: css_classes)
-      children
+      content = content_tag(:span, label, class: css_classes)
+      content << ' (unresolved junior homonym)' if child.status == Status['unresolved homonym'].to_s
+      children << content
     end.join(', ').html_safe
   end
 
