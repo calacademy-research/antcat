@@ -11,6 +11,8 @@
                         Remove extra b from 1985bb and 1903bb
                         Add a space between period and "Type-species"
                         Remove italicized space after Sinoformica and before Hong
+                        To make parsing easier, inserted "(pending)" where online citations
+                          have no pagination (5 places)
   04. MYRMECIOMORPHS    Change 'Type-species' to 'Type-genus' for Leptaleinae
   07. MYRMICOMORPHS 1   Fixed "AdelomyrSmex"
                         Add colon after year in '1950c 143' in two places
@@ -25,6 +27,11 @@
                         Move period outside brackets in Syntermitopone headline
                         Remove italicized space in Eogorgites, Longicapitia
   11. EXTINCT SUBFAMS   Remove italicized space in Sphecomyrmodes
+
+  NGC-Spa-an            Replace period after 'pallens' with comma
+                        Fix 'figs,' -> 'figs.'
+  NGC-Spcam1            Add period in 'C (Tanaemyrmex)'
+  NGC-Spon-spp          Italicize 'n' in 'niger' (Pachycondyla)
 
   NGC-Spa-an            Replace period after 'pallens' with comma
                         Fix 'figs,' -> 'figs.'
