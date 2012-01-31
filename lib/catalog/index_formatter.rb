@@ -95,7 +95,6 @@ module Catalog::IndexFormatter
 
   def format_headline_type taxon, user
     return '' unless taxon.type_taxon
-    type = taxon.type_taxon
     taxt = taxon.type_taxon_taxt
     rank = taxon.type_taxon.rank
     rank = 'genus' if rank == 'subgenus'
