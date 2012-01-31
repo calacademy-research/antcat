@@ -39,7 +39,9 @@ module Catalog::IndexFormatter
   end
 
   def x_format_headline_type_name taxon
-    content_tag(:span, taxon.type_taxon_name.html_safe, class: "#{taxon.type_taxon.rank} taxon")
+    rank = taxon.type_taxon.rank
+    rank = 'genus' if rank == 'subgenus'
+    content_tag(:span, taxon.type_taxon_name.html_safe, class: "#{rank} taxon")
   end
 
   def x_css_classes_for_taxon taxon
@@ -92,8 +94,10 @@ module Catalog::IndexFormatter
     return '' unless taxon.type_taxon
     type = taxon.type_taxon
     taxt = taxon.type_taxon_taxt
+    rank = taxon.type_taxon.rank
+    rank = 'genus' if rank == 'subgenus'
     content_tag :span, class: 'type' do
-      string = "Type-#{type.type.downcase}: ".html_safe
+      string = "Type-#{rank}: ".html_safe
       string << format_headline_type_name(taxon) + format_headline_type_taxt(taxt, user)
       string
     end
