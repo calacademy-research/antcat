@@ -28,7 +28,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     parse_see_also_references_section
 
     parse_genera subfamily: subfamily, tribe: tribe
-    parse_genera_incertae_sedis_in_tribe
+    parse_genera_incertae_sedis_in_tribe  subfamily: subfamily, tribe: tribe
     parse_ichnotaxa
 
   end
@@ -81,12 +81,12 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     parse_next_line
   end
 
-  def parse_genera_incertae_sedis_in_tribe
+  def parse_genera_incertae_sedis_in_tribe attributes
     return unless @type == :genera_incertae_sedis_in_tribe_header
     Progress.method
 
     parse_next_line
-    parse_genus while @type == :genus_header
+    parse_genus attributes.merge(incertae_sedis_in: 'tribe') while @type == :genus_header
   end
 
   def parse_ichnotaxa
