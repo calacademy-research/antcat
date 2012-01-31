@@ -89,7 +89,7 @@ class Vlad
   end
 
   def self.taxa_with_mismatched_homonym_and_status
-    {taxa_with_mismatched_synonym_and_status: Taxon.where("(status = 'homonym') = (homonym_replaced_by_id IS NULL)")}
+    {taxa_with_mismatched_homonym_and_status: Taxon.where("(status = 'homonym') = (homonym_replaced_by_id IS NULL)")}
   end
 
   def self.genera_with_tribes_but_not_subfamilies
