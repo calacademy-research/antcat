@@ -298,7 +298,7 @@ describe Taxon do
     end
     it "should merely return nil if more than one result is found" do
       2.times {Factory :genus, name: 'Atta'}
-      Taxon.find_genus_group_by_name('Atta')}.should be_nil
+      Taxon.find_genus_group_by_name('Atta').should be_nil
     end
   end
 
