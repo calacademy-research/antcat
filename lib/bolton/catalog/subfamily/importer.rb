@@ -28,6 +28,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     parse_family
     parse_supersubfamilies
 
+    do_manual_fixups
     ForwardReference.fixup
     resolve_parent_synonyms
 
@@ -117,6 +118,11 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     parse_next_line
     references = Bolton::Catalog::TextToTaxt.convert @parse_result[:texts]
     taxon.reference_sections.create! title: title, references: references
+  end
+
+  def do_manual_fixups
+    wilsonia = Genus.find_by_name 'Wilsonia'
+    wilsonia.update_attribute :status, Status['unresolved homonym'].to_s rescue nil
   end
 
 end
