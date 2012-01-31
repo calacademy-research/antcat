@@ -249,13 +249,23 @@ describe Reference do
   end
 
   describe "duplicate checking" do
-    it "should not allow a duplicate record to be saved" do
+    it "should allow a duplicate record to be saved" do
       journal = Factory :journal
       author = Factory :author_name
       original = ArticleReference.create! :author_names => [author], :citation_year => '1981', :title => 'Dolichoderinae',
                                :journal => journal, :series_volume_issue => '1(2)', :pagination => '22-54'
-      lambda {ArticleReference.create! :author_names => [author], :citation_year => '1981', :title => 'Dolichoderinae',
-                               :journal => journal, :series_volume_issue => '1(2)', :pagination => '22-54'}.should raise_error
+      ArticleReference.create! :author_names => [author], :citation_year => '1981', :title => 'Dolichoderinae',
+                               :journal => journal, :series_volume_issue => '1(2)', :pagination => '22-54'
+    end
+    it "should check possible duplication and add to errors, if any found" do
+      journal = Factory :journal
+      author = Factory :author_name
+      original = ArticleReference.create! :author_names => [author], :citation_year => '1981', :title => 'Dolichoderinae',
+                               :journal => journal, :series_volume_issue => '1(2)', :pagination => '22-54'
+      duplicate = ArticleReference.new :author_names => [author], :citation_year => '1981', :title => 'Dolichoderinae',
+                           :journal => journal, :series_volume_issue => '1(2)', :pagination => '22-54'
+      duplicate.check_for_duplicate.should be_true
+      duplicate.errors.should_not be_empty
     end
   end
 
