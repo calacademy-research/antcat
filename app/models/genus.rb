@@ -61,8 +61,7 @@ class Genus < Taxon
         target_name = type_species[:genus_name]
         target_name << ' (' << type_species[:subgenus_epithet] + ')' if type_species[:subgenus_epithet]
         target_name << ' '  << type_species[:species_epithet]
-        ForwardReference.create! source_id: genus.id, source_attribute: :type_taxon, target_name: target_name,
-          fossil: type_species[:fossil]
+        ForwardReference.create! source_id: genus.id, target_name: target_name, fossil: type_species[:fossil]
       end
 
       genus

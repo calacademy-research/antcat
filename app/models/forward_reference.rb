@@ -7,20 +7,20 @@ class ForwardReference < ActiveRecord::Base
 
   def fixup
     source = Taxon.find source_id
-    target = case source
+    rank = case source
       when Family
-        Genus.create_from_fixup name: target_name, subfamily_id: nil, fossil: fossil
+        'genus'
       when Subfamily
-        Genus.create_from_fixup name: target_name, subfamily_id: source_id, fossil: fossil
+        'genus'
       when Tribe
-        Genus.create_from_fixup name: target_name, tribe_id: source_id, fossil: fossil
+        'genus'
       when Genus
-        Species.create_from_fixup name: target_name, genus_id: source_id, fossil: fossil
+        'species'
       when Subgenus
-        Species.create_from_fixup name: target_name, subgenus_id: source_id, fossil: fossil
+        'species'
       else raise
       end
-    source.update_attributes type_taxon: target, type_taxon_name: CatalogFormatter::fossil(target_name, fossil)
+    source.update_attributes type_taxon_rank: rank, type_taxon_name: CatalogFormatter::fossil(target_name, fossil)
   end
 
 end

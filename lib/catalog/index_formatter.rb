@@ -39,7 +39,7 @@ module Catalog::IndexFormatter
   end
 
   def x_format_headline_type_name taxon
-    rank = taxon.type_taxon.rank
+    rank = taxon.type_taxon_rank
     rank = 'genus' if rank == 'subgenus'
     content_tag(:span, taxon.type_taxon_name.html_safe, class: "#{rank} taxon")
   end
@@ -94,9 +94,9 @@ module Catalog::IndexFormatter
   end
 
   def format_headline_type taxon, user
-    return '' unless taxon.type_taxon
+    return '' unless taxon.type_taxon_name
     taxt = taxon.type_taxon_taxt
-    rank = taxon.type_taxon.rank
+    rank = taxon.type_taxon_rank
     rank = 'genus' if rank == 'subgenus'
     content_tag :span, class: 'type' do
       string = "Type-#{rank}: ".html_safe

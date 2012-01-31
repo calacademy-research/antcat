@@ -13,8 +13,7 @@ class Family < Taxon
 
       data[:taxonomic_history].each {|item| family.taxonomic_history_items.create! :taxt => item}
 
-      ForwardReference.create! :source_id => family.id, :source_attribute => :type_taxon,
-                               :target_name => data[:type_genus][:genus_name]
+      ForwardReference.create! :source_id => family.id, :target_name => data[:type_genus][:genus_name]
       family
     end
   end

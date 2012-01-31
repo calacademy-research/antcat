@@ -17,7 +17,7 @@ Feature: Using the catalog index
     When I go to the catalog index
     Then I should see "Formicidae" in the contents
       And I should see "valid" in the contents
-      And I should see "Extant: 1 valid subfamily, 3 valid genera, 1 valid species"
+      And I should see "Extant: 1 valid subfamily, 3 valid genera"
       And I should see "Fossil: 1 valid genus"
 
   Scenario: Seeing the subfamilies

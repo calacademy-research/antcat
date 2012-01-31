@@ -64,7 +64,7 @@ describe Bolton::Catalog::Subfamily::Importer do
     family.name.should == 'Formicidae'
     family.should_not be_invalid
     family.should_not be_fossil
-    family.type_taxon.name.should == 'Formica'
+    family.type_taxon_name.should == 'Formica'
     family.taxonomic_history_items.map(&:taxt).should =~ [
       %{Formicidae as family: {ref #{latreille.id}}: 124 [Formicariae]; all subsequent authors}
     ]
@@ -81,10 +81,6 @@ describe Bolton::Catalog::Subfamily::Importer do
     genus.type_taxon_taxt.should == ", by monotypy. [{ref #{lund.id}}: 25 says no.]"
     genus.reference_sections.map(&:title).should == ["Genus references"]
     genus.reference_sections.map(&:references).should == ["{ref #{baroni.id}}: 482 (review of genus)."]
-
-    species = genus.type_taxon
-    species.should_not be_invalid
-    species.name.should == 'audouini'
 
     genus = Genus.find_by_name 'Promyrmicium'
     genus.should be_fossil

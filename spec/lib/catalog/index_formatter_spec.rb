@@ -28,17 +28,13 @@ describe Catalog::IndexFormatter do
 
     describe "Type" do
       it "should show the type taxon" do
-        species = Factory :species, name: 'major'
-        genus = Factory :genus, name: 'Atta', type_taxon: species, type_taxon_name: 'Atta major'
-        species.update_attribute :genus, genus
+        genus = Factory :genus, name: 'Atta', type_taxon_name: 'Atta major', type_taxon_rank: 'species'
         @formatter.format_headline_type(genus, nil).should ==
 %{<span class="type">Type-species: <span class="species taxon">Atta major</span>.</span>}
       end
 
       it "should show the type taxon with extra Taxt" do
-        species = Factory :species, :name => 'major'
-        genus = Factory :genus, :name => 'Atta', :type_taxon => species, :type_taxon_taxt => ', by monotypy', type_taxon_name: 'Atta major'
-        species.update_attribute :genus, genus
+        genus = Factory :genus, :name => 'Atta', :type_taxon_rank => 'species', :type_taxon_taxt => ', by monotypy', type_taxon_name: 'Atta major'
         @formatter.format_headline_type(genus, nil).should ==
 %{<span class="type">Type-species: <span class="species taxon">Atta major</span>, by monotypy</span>}
       end

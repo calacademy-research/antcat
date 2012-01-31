@@ -46,7 +46,7 @@ class Tribe < Taxon
       end
 
       type_genus = data[:type_genus]
-      ForwardReference.create! source_id: tribe.id, source_attribute: :type_taxon,
+      ForwardReference.create! source_id: tribe.id, 
         target_name: type_genus[:genus_name], fossil: type_genus[:fossil] if type_genus
 
       tribe

@@ -42,17 +42,13 @@ describe Bolton::Catalog::Subfamily::Importer do
         <p>Aneuretini history</p>
       }
 
-      Taxon.count.should == 3
+      Taxon.count.should == 2
 
       tribe = Tribe.find_by_name 'Aneuretini'
       tribe.subfamily.name.should == 'Aneuretinae'
       tribe.taxonomic_history_items.map(&:taxt).should == ["Aneuretini history"]
       tribe.type_taxon_name.should == 'Aneuretus'
-
-      type_taxon = tribe.type_taxon
-      type_taxon.name.should == 'Aneuretus'
-      type_taxon.subfamily.should == tribe.subfamily
-      type_taxon.tribe.should == tribe
+      tribe.type_taxon_rank.should == 'genus'
     end
 
     it "should import the junior synonym of a tribe" do
@@ -69,16 +65,13 @@ describe Bolton::Catalog::Subfamily::Importer do
         <p>Paleosminthuridae as tribe of Dolichoderinae: Donisthorpe, 1947c: 588.</p>
       }
 
-      Taxon.count.should == 5
+      Taxon.count.should == 3
 
       senior_synonym = Tribe.find_by_name 'Aneuretini'
       junior_synonym = Tribe.find_by_name 'Paleosminthuridae'
       junior_synonym.should be_synonym
       junior_synonym.should be_synonym_of senior_synonym
       junior_synonym.subfamily.should == senior_synonym.subfamily
-
-      genus_of_synonym = Genus.find_by_name 'Anonychomyrma'
-      genus_of_synonym.tribe.should == senior_synonym
     end
   end
 end
