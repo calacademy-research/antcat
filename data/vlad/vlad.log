@@ -1,16 +1,24 @@
-   4466 AuthorName
-  10942 Author
-   6420 Bolton::Match
-   4644 Bolton::Reference
-    116 Citation
-    108 ForwardReference
-   1710 Journal
-    226 Place
-    116 Protonym
-    459 Publisher
-  16991 ReferenceAuthorName
-   5502 ReferenceDocument
-  10858 Reference
-    209 Taxon
-   6188 TaxonomicHistoryItem
-     13 User
+
+Record counts
+     4467 AuthorName
+    10943 Author
+     6420 Bolton::Match
+     4644 Bolton::Reference
+      390 Citation
+      375 ForwardReference
+     1710 Journal
+      226 Place
+      390 Protonym
+      459 Publisher
+    16993 ReferenceAuthorName
+     5508 ReferenceDocument
+    10905 Reference
+      390 Taxon
+    32127 TaxonomicHistoryItem
+       13 User
+
+Duplicates
+  Myrmicium 2
+  Myrmoteratini 2
+  Oecophyllini 2
+
