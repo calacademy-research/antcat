@@ -26,10 +26,15 @@ class Taxon < ActiveRecord::Base
   def unresolved_homonym?;status == 'unresolved homonym' end
   def excluded?;        status == 'excluded' end
 
-  before_save :set_fossil_flag
+  before_save :set_fossil_flag, :set_hong_flag
 
   def set_fossil_flag
     self.fossil ||= false
+    true
+  end
+
+  def set_hong_flag
+    self.hong ||= false
     true
   end
 
