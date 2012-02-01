@@ -4,79 +4,59 @@ class Vlad
   def self.idate show_progress = false
     Progress.new_init show_progress: show_progress
 
-    results = {}
-    results.merge! record_counts
-    results.merge! genera_with_tribes_but_not_subfamilies
-    results.merge! taxa_with_mismatched_synonym_and_status
-    results.merge! taxa_with_mismatched_homonym_and_status
-    results.merge! duplicates
+    @results = {}
+    @results.merge! record_counts
+    @results.merge! genera_with_tribes_but_not_subfamilies
+    @results.merge! taxa_with_mismatched_synonym_and_status
+    @results.merge! taxa_with_mismatched_homonym_and_status
+    @results.merge! duplicates
 
-    display results
-    results
+    display
+    @results
   end
 
-  def self.display results
-    results_section = results[:record_counts]
-    results_section.each do |model_class, count|
-      Progress.puts "#{count.to_s.rjust(7)} #{model_class}"
+  def self.display_results_section section, options = {}
+    options = options.reverse_merge sort: true
+    results_section = @results[section]
+    return unless results_section.present?
+
+    Progress.puts section.to_s.gsub(/_/, ' ').capitalize
+
+    lines = results_section.map do |item|
+      yield item
     end
+
+    lines.sort! if options[:sort]
+
+    for line in lines
+      Progress.puts '  ' + line
+    end
+
+    Progress.puts
+  end
+
+  def self.display
     Progress.puts
 
-    results_section = results[:genera_with_tribes_but_not_subfamilies]
-    Progress.print "Genera with tribes but not subfamilies:"
-    if results_section.blank?
-      Progress.puts " none"
-    else
-      Progress.puts
-      results_section.map do |genus|
-        "#{genus.name} (tribe #{genus.tribe.name})"
-      end.sort.each do |name|
-        Progress.puts name
-      end
+    display_results_section :record_counts, :sort => false do |count|
+      "#{count[:count].to_s.rjust(7)} #{count[:table]}"
     end
-    Progress.puts
 
-    results_section = results[:taxa_with_mismatched_synonym_and_status]
-    Progress.print "Taxa with mismatched synonym status and synonym_of_id:"
-    if results_section.blank?
-      Progress.puts " none"
-    else
-      Progress.puts
-      results_section.map do |result|
-        "#{result.name} #{result.status} #{result.synonym_of_id}"
-      end.sort.each do |line|
-        Progress.puts line
-      end
+    display_results_section :genera_with_tribes_but_not_subfamilies do |genus|
+      "#{genus.name} (tribe #{genus.tribe.name})"
     end
-    Progress.puts
 
-    results_section = results[:taxa_with_mismatched_homonym_and_status]
-    Progress.print "Taxa with mismatched homonym status and homonym_replaced_by_id:"
-    if results_section.blank?
-      Progress.puts " none"
-    else
-      Progress.puts
-      results_section.map do |result|
-        "#{result.name} #{result.status} #{result.homonym_replaced_by_id}"
-      end.sort.each do |line|
-        Progress.puts line
-      end
+    display_results_section :taxa_with_mismatched_synonym_and_status do |taxon|
+      "#{taxon.name} #{taxon.status} #{taxon.synonym_of_id}"
     end
-    Progress.puts
 
-    results_section = results[:duplicates]
-    Progress.print "Duplicates:"
-    if results_section.blank?
-      Progress.puts " none"
-    else
-      Progress.puts
-      results_section.map do |result|
-        "#{result[:name]} #{result[:count]}"
-      end.sort.each do |line|
-        Progress.puts line
-      end
+    display_results_section :taxa_with_mismatched_homonym_and_status do |taxon|
+      "#{taxon.name} #{taxon.status} #{taxon.homonym_replaced_by_id}"
     end
-    Progress.puts
+
+    display_results_section :duplicates do |duplicate|
+      "#{duplicate[:name]} #{duplicate[:count]}"
+    end
 
   end
 
@@ -114,9 +94,8 @@ class Vlad
       Taxon,
       TaxonomicHistoryItem,
       User,
-    ].inject({}) do |counts, table|
-      counts[table] = table.count
-      counts
+    ].map do |table|
+      {table: table.to_s, count: table.count}
     end}
   end
 
