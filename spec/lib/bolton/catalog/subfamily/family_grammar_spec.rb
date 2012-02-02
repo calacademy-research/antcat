@@ -19,10 +19,12 @@ describe Bolton::Catalog::Subfamily::FamilyGrammar do
     end
     it "should recognize a family group headline for Myrmicites" do
       @grammar.parse(%{Myrmicites Lepeletier de Saint-Fargeau, 1835: 169. Type-genus: <i>Myrmica</i>.}).value_with_reference_text_removed.should == {
-        :type => :family_group_headline,
-        :family_or_subfamily_name => 'Myrmicites',
-        :authorship => [{:author_names => ['Lepeletier de Saint-Fargeau'], :year => '1835', :pages => '169'}],
-        :type_genus => {:genus_name => 'Myrmica'}
+        type: :family_group_headline,
+        protonym: {
+          family_or_subfamily_name: 'Myrmicites',
+          authorship: [{author_names: ['Lepeletier de Saint-Fargeau'], year: '1835', pages: '169'}],
+        },
+        type_genus: {genus_name: 'Myrmica'}
       }
     end
     it "should handle this non -ae taxon name" do

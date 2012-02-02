@@ -218,20 +218,24 @@ grammar Bolton::Catalog::Subfamily::FamilyGrammar
 
   rule myrmicites_headline
     'Myrmicites Lepeletier de Saint-Fargeau, 1835: 169. Type-genus: <i>Myrmica</i>.' {
-      { :type => :family_group_headline,
-        :family_or_subfamily_name => 'Myrmicites',
-        :authorship => [{:author_names => ['Lepeletier de Saint-Fargeau'], :year => '1835', :pages => '169'}],
-        :type_genus => {:genus_name => 'Myrmica'}
+      { type: :family_group_headline,
+        protonym: {
+          family_or_subfamily_name: 'Myrmicites',
+          authorship: [{author_names: ['Lepeletier de Saint-Fargeau'], year: '1835', pages: '169'}],
+        },
+        type_genus: {genus_name: 'Myrmica'}
       }
     }
   end
 
   rule ponerites_headline
     'Ponerites Lepeletier de Saint-Fargeau, 1835: 185. Type-genus: <i>Ponera</i>.' {
-      { :type => :family_group_headline,
-        :family_or_subfamily_name => 'Ponerites',
-        :authorship => [{:author_names => ['Lepeletier de Saint-Fargeau'], :year => '1835', :pages => '185'}],
-        :type_genus => {:genus_name => 'Ponera'}
+      { type: :family_group_headline,
+        protonym: {
+        family_or_subfamily_name: 'Ponerites',
+        authorship: [{author_names: ['Lepeletier de Saint-Fargeau'], year: '1835', pages: '185'}],
+        },
+        type_genus: {genus_name: 'Ponera'}
       }
     }
   end
