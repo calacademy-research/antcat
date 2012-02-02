@@ -1,24 +1,35 @@
 
 Record counts
-     4467 AuthorName
-    10943 Author
+     4481 AuthorName
+    10957 Author
      6420 Bolton::Match
      4644 Bolton::Reference
-      390 Citation
-      375 ForwardReference
-     1710 Journal
-      226 Place
-      390 Protonym
-      459 Publisher
-    16993 ReferenceAuthorName
-     5508 ReferenceDocument
-    10905 Reference
-      390 Taxon
-    32127 TaxonomicHistoryItem
+      495 Citation
+      477 ForwardReference
+     1712 Journal
+      228 Place
+      495 Protonym
+      464 Publisher
+    17025 ReferenceAuthorName
+     5554 ReferenceDocument
+    10949 Reference
+      495 Taxon
+     3802 TaxonomicHistoryItem
        13 User
 
 Duplicates
+  Ancylognathus 2
+  Holcoponera 2
   Myrmicium 2
   Myrmoteratini 2
   Oecophyllini 2
+
+Reference documents
+    10812 references
+     5554 reference documents
+     5448 references with documents
+      859 antcat
+     3872 antbase
+      573 ip_128_146_250_117
+      144 other
 
