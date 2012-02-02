@@ -46,17 +46,17 @@ class Vlad
       "#{genus.name} (tribe #{genus.tribe.name})"
     end
 
-    display_results_section :taxa_with_mismatched_synonym_and_status do |taxon|
-      "#{taxon.name} #{taxon.status} #{taxon.synonym_of_id}"
-    end
+    #display_results_section :taxa_with_mismatched_synonym_and_status do |taxon|
+      #"#{taxon.name} #{taxon.status} #{taxon.synonym_of_id}"
+    #end
 
-    display_results_section :taxa_with_mismatched_homonym_and_status do |taxon|
-      "#{taxon.name} #{taxon.status} #{taxon.homonym_replaced_by_id}"
-    end
+    #display_results_section :taxa_with_mismatched_homonym_and_status do |taxon|
+      #"#{taxon.name} #{taxon.status} #{taxon.homonym_replaced_by_id}"
+    #end
 
-    display_results_section :duplicates do |duplicate|
-      "#{duplicate[:name]} #{duplicate[:count]}"
-    end
+    #display_results_section :duplicates do |duplicate|
+      #"#{duplicate[:name]} #{duplicate[:count]}"
+    #end
 
   end
 
