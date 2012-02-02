@@ -21,7 +21,7 @@ class Subgenus < Taxon
       attributes = {
         genus: data[:genus],
         name: data[:name],
-        fossil: data[:fossil],
+        fossil: data[:fossil] || false,
         status: data[:status] || 'valid',
         synonym_of: data[:synonym_of],
         protonym: protonym,

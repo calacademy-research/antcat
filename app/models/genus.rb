@@ -40,7 +40,7 @@ class Genus < Taxon
         subfamily: data[:subfamily],
         tribe: data[:tribe],
         name: data[:name],
-        fossil: data[:fossil],
+        fossil: data[:fossil] || false,
         status: data[:status] || 'valid',
         synonym_of: data[:synonym_of],
         protonym: protonym,
@@ -70,7 +70,7 @@ class Genus < Taxon
 
   def self.create_from_fixup attributes
     name = attributes[:name]
-    fossil = attributes[:fossil]
+    fossil = attributes[:fossil] || false
     subfamily_id = attributes[:subfamily_id]
     tribe_id = attributes[:tribe_id]
     subfamily_id = Tribe.find(tribe_id).subfamily_id if tribe_id.present?

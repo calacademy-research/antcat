@@ -11,7 +11,7 @@ class Subfamily < Taxon
 
       attributes = {
         name: data[:name],
-        fossil: data[:fossil],
+        fossil: data[:fossil] || false,
         status: 'valid',
         protonym: protonym,
       }
