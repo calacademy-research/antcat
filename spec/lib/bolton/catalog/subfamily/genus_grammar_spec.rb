@@ -83,6 +83,27 @@ describe Bolton::Catalog::Subfamily::Grammar do
           }
         }
       end
+      it "should handle a type-species that's a subspecies" do
+        @grammar.parse('Type-species: <i>Tetramorium (Lobomyrmex) ferox silhavyi</i> (junior synonym of <i>Tetramorium ferox</i>), by monotypy.', :root => :type_species).value_with_reference_text_removed.should == {
+          type_species: {
+            :genus_name => 'Tetramorium',
+            :subgenus_epithet => 'Lobomyrmex',
+            :species_epithet => 'ferox',
+            :subspecies => [{:subspecies_epithet => 'silhavyi'}],
+            :texts => [
+              {:text => [
+                {:opening_parenthesis=>"("},
+                {:phrase=>"junior synonym of", :delimiter=>" "},
+                {:genus_name=>"Tetramorium", :species_epithet=>"ferox"},
+                {:closing_parenthesis=>")"}
+              ], :text_prefix=>" "},
+              {:text=> [
+                {:phrase=>", by monotypy"}
+              ], :text_suffix=>"."}
+            ]
+          }
+        }
+      end
       it "should handle a type-species that it doesn't understand" do
         @grammar.parse('Type-species: none subsequent', :root => :type_species).value_with_reference_text_removed.should == {
           type_species: {:texts => [{:text => [{:phrase => 'none subsequent'}]}]}

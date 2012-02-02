@@ -112,9 +112,9 @@ grammar Bolton::Catalog::Subfamily::GenusGrammar
 
   ###########################################
   rule type_species
-    ('Type-species: ' ((species_label text*) | text+)) {
+    ('Type-species: ' ((label:(species_label|subspecies_label) text*) | text+)) {
       value = {}
-      value.merge! species_label.value if species_label
+      value.merge! label.value if label
       value.merge! :texts => captures[:text].map(&:value)
       {:type_species => value}
     }
