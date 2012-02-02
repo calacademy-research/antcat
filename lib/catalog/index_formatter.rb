@@ -140,10 +140,10 @@ module Catalog::IndexFormatter
   #######################
   def format_child_lists taxon, user
     content_tag(:div, class: :child_lists) do
-      content = ''
+      content = ''.html_safe
       content << format_child_lists_for_rank(taxon, :tribes)
       content << format_child_lists_for_rank(taxon, :genera)
-      content.html_safe
+      content
     end
   end
 
@@ -172,7 +172,7 @@ module Catalog::IndexFormatter
   end
 
   def format_child_list parent, children, specify_extinct_or_extant, conditions = {}
-    return '' unless children.present?
+    return ''.html_safe unless children.present?
 
     label = ''.html_safe
 
@@ -195,12 +195,12 @@ module Catalog::IndexFormatter
     label
 
     content_tag :div, class: :child_list do
-      content = ''
+      content = ''.html_safe
       content << content_tag(:span, label, class: :label)
       content << ': '
       content << format_child_list_items(children)
       content << '.'
-      content.html_safe
+      content
     end
   end
 
