@@ -28,7 +28,7 @@ class Tribe < Taxon
 
       attributes = {
         name: data[:name],
-        fossil: data[:fossil],
+        fossil: data[:fossil] || false,
         subfamily: data[:subfamily],
         synonym_of: data[:synonym_of],
         status: data[:status] || 'valid',

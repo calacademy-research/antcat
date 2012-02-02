@@ -32,7 +32,7 @@ class Species < Taxon
 
   def self.create_from_fixup attributes
     name = attributes[:name]
-    fossil = attributes[:fossil]
+    fossil = attributes[:fossil] || false
 
     parts = name.split ' '
     case parts.size
