@@ -31,6 +31,7 @@ describe Bolton::Catalog::Subfamily::Importer do
       <p><i>Acanthomyops</i> Mayr, 1862: 652 (diagnosis in key), 699. Type-species: <i>Formica clavigera</i>, by monotypy. </p>
       <p>Taxonomic history</p>
       <p><i>Acanthomyops</i> in Formicinae: Mayr, 1862: 652 (in key) [Formicidae]; Mayr, 1865: 8 [Formicidae].</p>
+      <p>*<i>Ponerites</i> Dlussky, 1981b: 67 [collective group name].</p>
     }
     lasius = Genus.find_by_name 'Lasius'
 

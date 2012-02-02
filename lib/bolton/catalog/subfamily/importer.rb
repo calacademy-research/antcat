@@ -96,13 +96,21 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
     Progress.method
     parsed_taxonomic_history = []
     if @type == :taxonomic_history_header
-      parse_next_line
-      while @type == :texts
-        parsed_taxonomic_history << Bolton::Catalog::TextToTaxt.convert(@parse_result[:texts])
+      loop do
         parse_next_line
+        convert_ponerites_headline_to_text
+        break unless @type == :texts
+        parsed_taxonomic_history << Bolton::Catalog::TextToTaxt.convert(@parse_result[:texts])
       end
     end
     parsed_taxonomic_history
+  end
+
+  def convert_ponerites_headline_to_text
+    if @type == :genus_headline && @parse_result[:protonym].try(:[], :genus_name) == 'Ponerites'
+      @parse_result = grammar.parse(@line, root: :text).value
+      @type = :texts
+    end
   end
 
   def parse_reference_sections taxon, *allowed_header_types
