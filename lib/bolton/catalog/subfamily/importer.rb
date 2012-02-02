@@ -50,7 +50,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
 
     while parse_subfamily; end
 
-    #parse_genera_incertae_sedis :poneroid_subfamilies, :genera_incertae_sedis_in_poneroid_subfamilies_header
+    parse_genera_incertae_sedis 'subfamily', {}, :genera_incertae_sedis_in_poneroid_subfamilies_header
 
     true
   end
