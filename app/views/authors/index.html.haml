@@ -1,13 +1,10 @@
 - @title = 'Authors'
 
 - content_for :head do
+  = javascript_include_tag 'ext/jquery.ui.autocomplete.selectFirst', 'ext/jquery.qtip-1.0.0-rc3.min'
   = stylesheet_link_tag 'authors'
   = javascript_include_tag 'authors'
 
-.author_panel
-  = form_tag authors_path, :method => 'get', :id => 'search_form' do
-    Search for author:
-    = text_field_tag "q", params[:q]
-    = image_tag 'help.png', :class => 'help_icon'
-    = submit_tag "Go"
-  = @name
+= render 'panel', author: @authors[0]
+
+= render 'shared/qtip'

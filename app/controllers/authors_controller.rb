@@ -2,7 +2,9 @@
 class AuthorsController < ApplicationController
 
   def index
-    @name = 'Bolton, B.' if params[:q]
+    params[:q].strip! if params[:q]
+    @authors = []
+    @authors = Author.find_by_names [params[:q]] if params[:q].present?
   end
 
   def all

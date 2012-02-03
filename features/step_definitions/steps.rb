@@ -1,6 +1,6 @@
 # coding: UTF-8
 
-Given /the following references? exists?/ do |table|
+Given /^the following references? exists?$/ do |table|
   Reference.delete_all
   table.hashes.each do |hash|
     citation = hash.delete 'citation'
@@ -443,9 +443,10 @@ Given /^I will enter the ID of "Arbitrary Match" in the following dialog$/ do
   page.evaluate_script "window.prompt = function(msg) { return '#{id}'; }"
 end
 
-###########################
+###############
 Given /^the following names exist for an author$/ do |table|
+  @author = Factory :author
   table.hashes.each do |hash|
-    hash[:name]
+    @author.names.create! name: hash[:name]
   end
 end
