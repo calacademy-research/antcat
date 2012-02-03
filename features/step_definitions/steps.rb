@@ -442,3 +442,10 @@ Given /^I will enter the ID of "Arbitrary Match" in the following dialog$/ do
   page.evaluate_script 'window.original_prompt_function = window.prompt;'
   page.evaluate_script "window.prompt = function(msg) { return '#{id}'; }"
 end
+
+###########################
+Given /^the following names exist for an author$/ do |table|
+  table.hashes.each do |hash|
+    hash[:name]
+  end
+end

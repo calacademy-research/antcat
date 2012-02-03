@@ -3,7 +3,8 @@ AntCat::Application.routes.draw do
 
   root :to => "catalog/index#show"
 
-  resources :authors, :only => [:index]
+  resources :authors, :only => [:index, :all]
+  match     '/authors/all', :to => 'authors#all', :via => :get
   resources :bolton_references
   match     '/documents/:id/:file_name', :to => 'references#download', :file_name => /.+/, :via => :get
   resources :journals

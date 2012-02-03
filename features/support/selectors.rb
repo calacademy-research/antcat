@@ -24,6 +24,8 @@ module HtmlSelectorsHelpers
       "#browser .header"
     when /the search results/
       "#search_results"
+    when /an author panel/
+      ".author_panel"
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
