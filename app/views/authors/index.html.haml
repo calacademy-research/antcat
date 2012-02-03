@@ -5,6 +5,8 @@
   = stylesheet_link_tag 'authors'
   = javascript_include_tag 'authors'
 
-= render 'panel', author: @authors[0]
+- content_for :page_contents do
+  = render 'panel', author: @authors[0]
 
 = render 'shared/qtip'
+
