@@ -16,7 +16,7 @@
               - if references.present?
                 - for reference in author_name.references
                   .reference_section
-                    = ReferenceFormatter.format(reference).html_safe
+                    = ReferenceFormatter.format reference
               - else
                 No references
       - else
