@@ -1,6 +1,6 @@
 .author_panel
   = form_tag authors_path, :method => 'get', :id => 'search_form' do
-    Choose author
+    = label_tag :q, 'Choose author'
     = text_field_tag "q", params[:q]
     = image_tag 'help.png', :class => 'q help_icon'
     = submit_tag "Go"
@@ -8,17 +8,20 @@
     .name_sections
       - if author
         - for author_name in author.names.sort
+          - references = author_name.references
+          - quantity = references.present? ? references.count.to_s : 'no'
+          - noun = 'reference'
+          - noun << 's' unless references.count == 1
+          - reference_count_string = "#{quantity} #{noun}"
           .name_section
             .name
               = author_name.name
-            .references_section
-              - references = author_name.references
-              - if references.present?
-                - for reference in author_name.references
+              %span.count= reference_count_string
+            - if references.present?
+              .references_section
+                - for reference in references
                   .reference_section
                     = ReferenceFormatter.format reference
-              - else
-                No references
       - else
         No results found
 
