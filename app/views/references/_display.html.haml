@@ -6,7 +6,7 @@
   = link_to 'PDF', reference.url, :class => :document_link, :target => '_blank' if downloadable
   = reference.id
 
-  %p.notes= raw italicize h reference.public_notes
+  %p.notes= italicize h reference.public_notes
   - if user_signed_in?
-    %p.editor.notes= raw italicize h reference.editor_notes
-    %p.notes= raw italicize h reference.taxonomic_notes
+    %p.editor.notes= italicize h reference.editor_notes
+    %p.notes= italicize h reference.taxonomic_notes

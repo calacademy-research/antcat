@@ -14,7 +14,9 @@ describe ReferenceFormatter do
                           :citation_year => "1874",
                           :title => "Les fourmis de la Suisse",
                           :journal => @journal, :series_volume_issue => "26", :pagination => "1-452")
-      ReferenceFormatter.format(reference).should == 'Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.'
+      string = ReferenceFormatter.format reference
+      string.should be_html_safe
+      string.should == 'Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.'
     end
 
     it "should add a period after the title if none exists" do
@@ -210,8 +212,13 @@ describe ReferenceFormatter do
   end
 
   describe "italicizing" do
+    it "should raise if its input isn't HTML safe" do
+      -> {ReferenceFormatter.italicize "unsafe"}.should raise_error
+    end
     it "should replace asterisks and bars with spans of a certain class" do
-      ReferenceFormatter.italicize("|Hymenoptera| *Formicidae*").should == "<span class=genus_or_species>Hymenoptera</span> <span class=genus_or_species>Formicidae</span>"
+      string = ReferenceFormatter.italicize "|Hymenoptera| *Formicidae*".html_safe
+      string.should == "<span class=genus_or_species>Hymenoptera</span> <span class=genus_or_species>Formicidae</span>"
+      string.should be_html_safe
     end
   end
 
