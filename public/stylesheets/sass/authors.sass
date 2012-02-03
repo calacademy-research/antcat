@@ -1,5 +1,7 @@
 @import 'common'
 
+$tiny_font_size: 11px
+
 .author_panel
   border: thin solid black
   padding: 4px
@@ -11,4 +13,21 @@
     margin-top: 2px
     border-top: thin solid black
     .name_section
+      padding: 2px
+      .name
+        padding-left: 2px
+        font-weight: bold
 
+    .references_section
+      border: thin solid grey
+      padding: 2px
+      max-height: 100px
+      overflow: auto
+      font-size: $tiny_font_size
+      line-height: $tiny_font_size
+
+      .reference_section
+        font-size: $tiny_font_size
+        line-height: $tiny_font_size
+        .genus_or_species
+          font-size: $tiny_font_size
