@@ -39,6 +39,6 @@ Feature: Editing authors and author names
     Then I should see "Bolton, B." in the author panel
     When I fill in the search box in the last author panel with "Fisher, B."
       And I press "Go" in the last author panel
-    Then I should see "Fisher, B." in the last author panel
-      And I should see "Bolton, B." in the first author panel
+    Then I should see "Bolton, B." in the first author panel
+      And I should see "Fisher, B." in the second author panel
 

@@ -6,8 +6,12 @@
   = javascript_include_tag 'authors'
 
 - content_for :page_contents do
+  - css_classes = @panels.count > 1 ? 'half_width' : ''
   - for panel in @panels
-    = render 'panel', author: panel[:author], q: panel[:q]
+    - prompt = "Choose "
+    - prompt << "another " if panel == @panels.last && @panels.count > 1
+    - prompt << "author"
+    = render 'panel', author: panel[:author], q: panel[:q], prompt: prompt, css_classes: css_classes, other_terms: panel[:other_terms]
 
 = render 'shared/qtip'
 
