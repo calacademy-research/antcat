@@ -29,6 +29,8 @@ module HtmlSelectorsHelpers
       ".author_panel:first-of-type"
     when /the last author panel/
       ".author_panel:last-of-type"
+    when /the second author panel/
+      ".author_panel:nth-of-type(2)"
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:

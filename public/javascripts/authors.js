@@ -1,6 +1,7 @@
 $(function() {
   setupHelp();
   setupAuthorAutocomplete();
+  $("input[type=text]:last").focus();
 })
 
 function setupHelp() {

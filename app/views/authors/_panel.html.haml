@@ -1,11 +1,13 @@
--#Locals: author, q
-.author_panel
+-# Locals: author, q, prompt, css_classes, other_terms
+.author_panel{class: css_classes}
   .search
     = form_tag authors_path, :method => 'get', :id => 'search_form' do
-      = label_tag :q, 'Choose author'
+      = label_tag :q, prompt
       = text_field_tag "q", q
       = image_tag 'help.png', :class => 'q help_icon'
       = submit_tag "Go"
+      - for term in other_terms
+        = hidden_field_tag 'other_terms[]', term
   - if q.present?
     .search_result
       - if author
