@@ -24,8 +24,11 @@ module HtmlSelectorsHelpers
       "#browser .header"
     when /the search results/
       "#search_results"
-    when /an author panel/
-      ".author_panel"
+
+    when /the author panel/, /the first author panel/
+      ".author_panel:first-of-type"
+    when /the last author panel/
+      ".author_panel:last-of-type"
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:

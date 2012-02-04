@@ -2,9 +2,16 @@
 class AuthorsController < ApplicationController
 
   def index
-    params[:q].strip! if params[:q]
-    @authors = []
-    @authors = Author.find_by_names [params[:q]] if params[:q].present?
+    # gather the search term for each panel
+    @panels = []
+    @panels << {q: params[:q].strip} if params[:q]
+
+    nil_panel_added = false
+    for panel in @panels
+      panel[:author] = Author.find_by_names(panel[:q]).first
+      nil_panel_added ||= !panel[:author]
+    end
+    @panels << {} unless nil_panel_added
   end
 
   def all

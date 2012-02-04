@@ -444,9 +444,15 @@ Given /^I will enter the ID of "Arbitrary Match" in the following dialog$/ do
 end
 
 ###############
-Given /^the following names exist for an author$/ do |table|
+Given /^the following names exist for an(?:other)? author$/ do |table|
   @author = Factory :author
   table.hashes.each do |hash|
     @author.names.create! name: hash[:name]
+  end
+end
+
+When /I fill in the search box in (the (?:(?:first|last) )?author panel) with "(.*?)"/ do |parent, search_term|
+  with_scope parent do
+    step %{I fill in "q" with "#{search_term}"}
   end
 end

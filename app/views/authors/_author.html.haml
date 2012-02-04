@@ -1,0 +1,18 @@
+-# Locals: author
+.author
+  - for author_name in author.names.sort
+    .author_name
+      - references = author_name.references
+      - quantity = references.present? ? references.count.to_s : 'no'
+      - noun = 'reference'
+      - noun << 's' unless references.count == 1
+      - reference_count_string = "#{quantity} #{noun}"
+
+      .name
+        = author_name.name
+        %span.count= reference_count_string
+      - if references.present?
+        .references
+          - for reference in references
+            .reference
+              = ReferenceFormatter.format reference

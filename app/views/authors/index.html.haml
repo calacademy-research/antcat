@@ -6,7 +6,8 @@
   = javascript_include_tag 'authors'
 
 - content_for :page_contents do
-  = render 'panel', author: @authors[0]
+  - for panel in @panels
+    = render 'panel', author: panel[:author], q: panel[:q]
 
 = render 'shared/qtip'
 

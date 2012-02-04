@@ -15,7 +15,7 @@ function setupAuthorAutocomplete() {
   if (testing)
     return;
 
-  $('#q').autocomplete({
+  $('.author_panel input[type=text]').autocomplete({
     selectFirst: true,
     minLength: 3,
     source: "/authors/all"

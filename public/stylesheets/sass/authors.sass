@@ -4,40 +4,39 @@ $tiny_font_size: 11px
 
 .author_panel
   border: thin solid black
-  padding: 4px
-  margin: 4px
-  margin-left: 0
   float: left
+  margin: 4px
 
-  .no_results
-    font-size: 12px
+  .search
+    padding: 4px
 
-  .name_sections
-    margin-top: 2px
+  .search_result
+    padding: 4px
     border-top: thin solid black
-    .name_section
-      padding: 2px
-      .name
-        padding-left: 2px
-        padding-bottom: 2px
-        padding-top: 4px
-        font-weight: bold
-        .count
-          font-weight: normal
-          font-size: 12px
-          font-style: italic
-          margin-left: 6px
 
-    .references_section
-      border: thin solid grey
-      padding: 2px
-      max-height: 100px
-      overflow: auto
-      font-size: $tiny_font_size
-      line-height: $tiny_font_size
+    .none
+      font-size: 12px
 
-      .reference_section
-        font-size: $tiny_font_size
-        line-height: $tiny_font_size
-        .genus_or_species
-          font-size: $tiny_font_size
+    .author
+
+      .author_name
+        .name
+          padding-bottom: 2px
+          font-weight: bold
+          .count
+            font-weight: normal
+            font-size: 12px
+            font-style: italic
+            margin-left: 6px
+
+        .references
+          border: thin solid grey
+          padding: 2px
+          max-height: 100px
+          overflow: auto
+
+          .reference
+            font-size: $tiny_font_size
+            line-height: $tiny_font_size
+            .genus_or_species
+              font-size: $tiny_font_size
