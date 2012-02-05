@@ -1,8 +1,16 @@
 $(function() {
   setupHelp();
   setupAuthorAutocomplete();
+  setupCloseLinks();
   $("input[type=text]:last").focus();
 })
+
+function setupCloseLinks() {
+  $('.author_panel .close_link').click(function(){
+    $(this).closest('form').submit();
+    return false;
+  });
+}
 
 function setupHelp() {
   $('.q.help_icon').qtip({

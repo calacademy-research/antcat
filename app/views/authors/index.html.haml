@@ -11,7 +11,10 @@
     - prompt = "Choose "
     - prompt << "another " if panel == @panels.last && @panels.count > 1
     - prompt << "author"
-    = render 'panel', author: panel[:author], q: panel[:q], prompt: prompt, css_classes: css_classes, other_terms: panel[:other_terms]
+    - is_next_to_last = @panels.index(panel) == @panels.count - 2
+    - more_css_classes = is_next_to_last ? ' is_next_to_last' : ''
+    - show_close_button = panel != @panels.last
+    = render 'panel', author: panel[:author], q: panel[:q], prompt: prompt, css_classes: css_classes + more_css_classes, other_terms: panel[:other_terms], show_close_button: show_close_button, already_open: panel[:already_open]
 
 = render 'shared/qtip'
 

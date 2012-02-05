@@ -2,6 +2,9 @@
 
 $tiny_font_size: 11px
 
+#page_contents
+  padding-left: 6px
+
 .author_panel
   border: thin solid black
   float: left
@@ -10,10 +13,15 @@ $tiny_font_size: 11px
   margin-right: 12px
   &.half_width
     width: 47%
+  &.is_next_to_last
+    margin-bottom: 20px
 
   .search
     background: lighten(#98FB98, 10%)
     padding: 4px
+
+    .close_link
+      font-size: 11px
 
   .search_result
     padding: 4px

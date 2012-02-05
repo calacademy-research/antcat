@@ -42,3 +42,22 @@ Feature: Editing authors and author names
     Then I should see "Bolton, B." in the first author panel
       And I should see "Fisher, B." in the second author panel
 
+  @javascript
+  Scenario: Closing a panel
+    When I go to the "Authors" page
+    When I fill in the search box in the author panel with "Bolton, B."
+      And I press "Go" in the author panel
+      And I fill in the search box in the last author panel with "Fisher, B."
+      And I press "Go" in the last author panel
+    Then I should see "Bolton, B." in the first author panel
+    When I follow "close" in the first author panel
+    Then I should see "Fisher, B." in the first author panel
+
+  Scenario: Searching for an author that's already open in another panel
+    When I go to the "Authors" page
+    When I fill in the search box in the author panel with "Bolton, B."
+      And I press "Go" in the author panel
+      And I fill in the search box in the last author panel with "Bolton, B."
+      And I press "Go" in the last author panel
+    Then I should see "Bolton, B." in the first author panel
+      And I should see "This author is open in another panel" in the second author panel
