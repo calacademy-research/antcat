@@ -6,20 +6,15 @@
   = javascript_include_tag 'authors'
 
 - content_for :page_contents do
-  - css_classes = @panels.count > 1 ? 'half_width' : ''
-  - panels_with_authors_count = @panels.select{|panel| panel[:author]}.count
   - for panel in @panels
-    - prompt = "Choose "
-    - prompt << "another " if panel == @panels.last && @panels.count > 1
-    - prompt << "author"
-    - is_next_to_last = @panels.index(panel) == @panels.count - 2
-    - more_css_classes = is_next_to_last ? ' is_next_to_last' : ''
-    - show_close_button = panel != @panels.last
-    - panels_with_authors_count = @panels.inject(0) do |panels_with_authors_count, panel|
-      - panels_with_authors_count += 1 if panel[:author]
-      - panels_with_authors_count
-    - show_merge_button = panels_with_authors_count >= 2 && panel == @panels.last
-    = render 'panel', author: panel[:author], q: panel[:q], prompt: prompt, css_classes: css_classes + more_css_classes, other_terms: panel[:other_terms], show_close_button: show_close_button, already_open: panel[:already_open], show_merge_button: show_merge_button, author_names_string: @all_names_string
+    = render 'panel', panels: @panels, panel: panel
 
 = render 'shared/qtip'
 
+-#- css_classes = @panels.count > 1 ? 'half_width' : ''
+-#- is_next_to_last = @panels.index(panel) == @panels.count - 2
+-#- more_css_classes = is_next_to_last ? ' is_next_to_last' : ''
+-#- panels_with_authors_count = @panels.inject(0) do |panels_with_authors_count, panel|
+-#- panels_with_authors_count += 1 if panel[:author]
+-#- panels_with_authors_count
+-#- show_merge_button = panels_with_authors_count >= 2 && panel == @panels.last
