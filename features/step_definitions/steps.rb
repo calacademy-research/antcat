@@ -451,8 +451,8 @@ Given /^the following names exist for an(?:other)? author$/ do |table|
   end
 end
 
-When /I fill in the search box in (the (?:(?:first|last) )?author panel) with "(.*?)"/ do |parent, search_term|
+When /I fill in "([^"]+)" in (the (?:(?:first|last) )?author panel) with "(.*?)"/ do |field, parent, search_term|
   with_scope parent do
-    step %{I fill in "q" with "#{search_term}"}
+    step %{I fill in "#{field}" with "#{search_term}"}
   end
 end
