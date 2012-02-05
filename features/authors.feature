@@ -62,22 +62,10 @@ Feature: Editing authors and author names
     Then I should see "Bolton, B." in the first author panel
       And I should see "This author is open in another panel" in the second author panel
 
-  Scenario: Not logged in - can't merge
-    When I go to the "Authors" page
-    When I fill in the search box in the author panel with "Bolton, B."
-      And I press "Go" in the author panel
-    Then I should see "Bolton, B." in the author panel
-    When I fill in the search box in the last author panel with "Fisher, B."
-      And I press "Go" in the last author panel
-    Then I should see "Bolton, B." in the first author panel
-      And I should see "Fisher, B." in the second author panel
-      And I should not see "Merge these authors"
-
   Scenario: Logged in - can merge
     When I go to the "Authors" page
     When I fill in "Choose author" in the author panel with "Bolton, B."
       And I press "Go" in the author panel
-    Then I should see "Bolton, B." in the author panel
       And I fill in "Choose another author" in the last author panel with "Fisher, B."
       And I press "Go" in the last author panel
     Then I should see "Bolton, B." in the first author panel
@@ -86,3 +74,15 @@ Feature: Editing authors and author names
     When I press "Merge these authors"
     Then I should see "Bolton, B." in the first author panel
       And I should see "Fisher, B." in the first author panel
+
+  #Scenario: Not logged in - can't merge
+    #When I go to the "Authors" page
+    #When I fill in "Choose author" in the author panel with "Bolton, B."
+      #And I press "Go" in the author panel
+    #Then I should see "Bolton, B." in the author panel
+    #When I fill in "Choose author" in the last author panel with "Fisher, B."
+      #And I press "Go" in the last author panel
+    #Then I should see "Bolton, B." in the first author panel
+      #And I should see "Fisher, B." in the second author panel
+      #And I should not see "Merge these authors"
+
