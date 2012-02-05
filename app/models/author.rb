@@ -6,4 +6,17 @@ class Author < ActiveRecord::Base
   def self.find_by_names names
     Author.joins(:names).where('name IN (?)', names).group('authors.id').to_a
   end
+
+  def self.merge authors
+    transaction do
+      the_one_author = authors.first
+      for author in authors[1..-1]
+        for name in author.names
+          name.update_attribute :author, the_one_author
+        end
+        author.destroy
+      end
+    end
+  end
+
 end
