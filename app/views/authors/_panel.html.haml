@@ -25,7 +25,7 @@
             - label << 'author'
             = label_tag 'terms[]', label
             = text_field_tag 'terms[]', panel[:term]
-            = image_tag 'help.png', :class => 'q help_icon'
+            = image_tag 'help.png', class: :help_icon
             = submit_tag 'Go'
       .right
         = link_to 'close', {}, class: 'close_link' if panel != panels.last
