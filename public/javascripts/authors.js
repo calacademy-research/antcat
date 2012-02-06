@@ -16,7 +16,7 @@ function setupHelp() {
   $('.q.help_icon').qtip({
     content: "Type some letters in the author's name, then choose the name from the list.",
     show: 'mouseover',
-    hide: 'mouseout',
+    hide: 'mouseout'
   });
 }
 
