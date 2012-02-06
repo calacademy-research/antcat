@@ -7,7 +7,7 @@
 
 - content_for :page_contents do
   - for panel in @panels
-    = render 'panel', panels: @panels, panel: panel
+    = render 'panel', panels: @panels, panel: panel, all_names_string: @all_names_string
 
 = render 'shared/qtip'
 
