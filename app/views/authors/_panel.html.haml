@@ -1,36 +1,36 @@
--# Locals: authors, panels, panel
+-# Locals: panels, panel
 
-- css_classes = []
+- css_classes = [:panel]
 - css_classes << :blank if panel == panels.last
 - css_classes << :half_width if panel != panels.last && panels.count > 2
-- css_classes << ' panel'
-.author_panel{class: css_classes.join}
+
+.author_panel{class: css_classes.join(' ')}
 
   .search
     = form_tag authors_path, method: :get do
       .left
         - panels.each do |a_panel|
-          = hidden_field_tag 'term', panel[:term]
+          = hidden_field_tag 'term', panel.term
           - if a_panel != panel
-            = hidden_field_tag 'terms[]', a_panel[:term]
+            = hidden_field_tag 'terms[]', a_panel.term
           - else
             - label = 'Choose '
             - label << 'another ' if panel == panels.last && panels.count > 1
             - label << 'author'
             = label_tag 'terms[]', label
-            = text_field_tag 'terms[]', panel[:term]
+            = text_field_tag 'terms[]', panel.term
             = image_tag 'help.png', class: :help_icon
             = submit_tag 'Go'
       .right
         = link_to 'close', {}, class: 'close_link' if panel != panels.last
       .clear
 
-  - if panel[:term].present?
+  - if panel.term.present?
     .search_results
-      - if panel[:already_open]
+      - if panel.already_open
         %span.none This author is open in another panel.
-      - elsif panel[:author]
-        = render 'author', author: panel[:author]
+      - elsif panel.author
+        = render 'author', author: panel.author
       - else
         %span.none No results found. Please select from the list after typing characters in the name.
 

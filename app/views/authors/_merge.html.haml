@@ -1,10 +1,11 @@
 -# Locals: panels, names
 
 .clear
+
 .merge.panel
   = form_tag authors_merge_path do
-    - panels.each do |a_panel|
-      = hidden_field_tag 'terms[]', a_panel[:term]
+    - panels.each do |panel|
+      = hidden_field_tag 'terms[]', panel.term
     = submit_tag 'Merge these authors'
   .help
     - string = Formatter.conjuncted_list names, 'name'
