@@ -1,18 +1,10 @@
--# Locals: authors, names, panels, panel
+-# Locals: authors, panels, panel
 
-- css_classes = panel == panels.last ? 'blank' : ''
-- css_classes = panel != panels.last && panels.count > 2 ? 'half_width' : ''
-.author_panel{class: css_classes}
-
-  - if authors.count >= 2 && panel == panels.last
-    .merge
-      = form_tag authors_merge_path do
-        - panels.each do |a_panel|
-          = hidden_field_tag 'terms[]', a_panel[:term]
-        = submit_tag 'Merge these authors'
-      .help
-        - string = Formatter.conjuncted_list names, 'name'
-        = raw "Click this button to make #{string} refer to the same author, so that searching for one of the names will find the others."
+- css_classes = []
+- css_classes << :blank if panel == panels.last
+- css_classes << :half_width if panel != panels.last && panels.count > 2
+- css_classes << ' panel'
+.author_panel{class: css_classes.join}
 
   .search
     = form_tag authors_path, method: :get do
