@@ -7,14 +7,10 @@
 
 - content_for :page_contents do
   - for panel in @panels
-    = render 'panel', panels: @panels, panel: panel, all_names_string: @all_names_string
+    = render 'panel', authors: @authors, names: @names, panels: @panels, panel: panel
 
 = render 'shared/qtip'
 
 -#- css_classes = @panels.count > 1 ? 'half_width' : ''
 -#- is_next_to_last = @panels.index(panel) == @panels.count - 2
 -#- more_css_classes = is_next_to_last ? ' is_next_to_last' : ''
--#- panels_with_authors_count = @panels.inject(0) do |panels_with_authors_count, panel|
--#- panels_with_authors_count += 1 if panel[:author]
--#- panels_with_authors_count
--#- show_merge_button = panels_with_authors_count >= 2 && panel == @panels.last
