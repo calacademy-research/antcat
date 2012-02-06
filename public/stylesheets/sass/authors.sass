@@ -5,49 +5,50 @@ $tiny_font_size: 11px
 #page_contents
   padding-left: 6px
 
-.author_panel
+.panel
   border: thin solid black
-  float: left
+  width: 48%
+  background: lighten(#98FB98, 10%)
   margin: 4px
   margin-bottom: 8px
-  width: 100%
+
+.merge
+  text-align: center
+  width: 96%
+  padding: 8px
+  form
+    margin-top: 4px
+    margin-bottom: 4px
+    input
+      font-size: 14px
+  border-bottom: thin solid black
+  .help
+    text-align: left
+    font-size: 12px
+    line-height: 12px
+    font-style: italic
+    .name
+      font-size: 12px
+      font-weight: bold
+      font-style: normal
+
+.author_panel
+  float: left
 
   &.blank
-    width: auto
+    width: 48%
 
   &.half_width
     width: 48%
-  &.is_next_to_last
-    margin-bottom: 20px
-
-  .merge
-    background: lighten(#98FB98, 10%)
-    padding: 8px
-    text-align: center
-    form
-      margin-top: 4px
-      margin-bottom: 4px
-      input
-        font-size: 14px
-    border-bottom: thin solid black
-    .help
-      text-align: left
-      font-size: 12px
-      line-height: 12px
-      font-style: italic
-      .name
-        font-size: 12px
-        font-weight: bold
-        font-style: normal
 
   .search
-    background: lighten(#98FB98, 10%)
     padding: 4px
 
     .close_link
       font-size: 11px
 
   .search_results
+    background: white
     padding: 4px
     border-top: thin solid black
 

@@ -7,10 +7,9 @@
 
 - content_for :page_contents do
   - for panel in @panels
-    = render 'panel', authors: @authors, names: @names, panels: @panels, panel: panel
+    = render 'panel', authors: @authors, panels: @panels, panel: panel
+
+  - if @authors.count >= 2
+    = render 'merge', panels: @panels, names: @names
 
 = render 'shared/qtip'
-
--#- css_classes = @panels.count > 1 ? 'half_width' : ''
--#- is_next_to_last = @panels.index(panel) == @panels.count - 2
--#- more_css_classes = is_next_to_last ? ' is_next_to_last' : ''
