@@ -1,6 +1,8 @@
 # coding: UTF-8
 class AuthorsController < ApplicationController
 
+  before_filter :authenticate_user!, only: :merge
+
   def index
     create_panels
     add_blank_panel_if_necessary
