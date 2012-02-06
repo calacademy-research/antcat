@@ -1,6 +1,8 @@
 -# Locals: authors, names, panels, panel
 
-.author_panel
+- css_classes = panel == panels.last ? 'blank' : ''
+- css_classes = panel != panels.last && panels.count > 2 ? 'half_width' : ''
+.author_panel{class: css_classes}
 
   - if authors.count >= 2 && panel == panels.last
     .merge
