@@ -14,6 +14,7 @@ class AuthorsController < ApplicationController
     end
     @panels_with_authors = @panels.select{|panel| panel[:author]}
     @authors = @panels_with_authors.map{|panel| panel[:author]}
+    @names = @authors.map{|author| author.names}.flatten.map{|author_name| author_name.name}.uniq
   end
 
   def index
@@ -27,9 +28,6 @@ class AuthorsController < ApplicationController
 
     # add a blank panel if necessary
     @panels << {term: ''} unless @panels.find {|panel| !panel[:author]}
-
-    names = @authors.map{|author| author.names}.flatten.map{|author_name| author_name.name}.uniq
-    @all_names_string = Formatter.format_conjuncted_list names, 'name'
   end
 
   def merge

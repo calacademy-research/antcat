@@ -1,14 +1,16 @@
--# Locals: panels, panel, author_names_string
+-# Locals: authors, names, panels, panel
 
 .author_panel
 
-  - if panels.select{|panel| panel[:author]}.count >= 2 && panel == panels.last
+  - if authors.count >= 2 && panel == panels.last
     .merge
       = form_tag authors_merge_path do
         - panels.each do |a_panel|
           = hidden_field_tag 'terms[]', a_panel[:term]
         = submit_tag 'Merge these authors'
-      .help= "Click this button to make #{all_names_string} refer to the same author, so that searching for one of the names will find the others.".html_safe
+      .help
+        - string = Formatter.conjuncted_list names, 'name'
+        = raw "Click this button to make #{string} refer to the same author, so that searching for one of the names will find the others."
 
   .search
     = form_tag authors_path, method: :get do
