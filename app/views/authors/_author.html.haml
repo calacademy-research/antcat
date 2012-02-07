@@ -10,4 +10,4 @@
         .references
           - for reference in references
             .reference
-              = ReferenceFormatter.format reference
+              = link_to ReferenceFormatter.format(reference), "/references?q=#{reference.id}", target: '_blank'
