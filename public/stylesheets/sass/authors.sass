@@ -1,6 +1,7 @@
 @import 'common'
 
 $tiny_font_size: 11px
+$indent: 6px
 
 #page_contents
   padding-left: 6px
@@ -76,7 +77,11 @@ $tiny_font_size: 11px
           overflow: auto
 
           .reference
-            font-size: $tiny_font_size
             line-height: $tiny_font_size
-            .genus_or_species
+            text-indent: -$indent
+            margin-left: $indent
+            a
               font-size: $tiny_font_size
+              line-height: $tiny_font_size
+              .genus_or_species
+                font-size: $tiny_font_size
