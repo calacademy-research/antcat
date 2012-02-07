@@ -24,7 +24,7 @@ class AuthorsController < ApplicationController
       panel.author = nil if panel.already_open
       @authors << panel.author if panel.author
     end
-    @names = @authors.map{|author| author.names}.flatten.map{|author_name| author_name.name}.uniq
+    @names = @authors.map(&:names).flatten.map(&:name).uniq
   end
 
   def add_blank_panel_if_necessary
