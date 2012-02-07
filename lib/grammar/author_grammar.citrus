@@ -3,7 +3,9 @@ grammar AuthorGrammar
 
   rule author_names
     (author (s author_separator s author)* suffix? s) {
-      {:names => captures[:author].map(&:to_s), :suffix => suffix}
+      value = {:names => captures[:author].map(&:to_s)}
+      value[:suffix] = suffix.to_s if suffix
+      value
     }
   end
 
