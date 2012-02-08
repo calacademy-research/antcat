@@ -2,8 +2,8 @@
 
 Given /^the following names exist for an(?:other)? author$/ do |table|
   @author = Factory :author
-  table.hashes.each do |hash|
-    @author.names.create! name: hash[:name]
+  table.raw.each do |row|
+    @author.names.create! name: row.first
   end
 end
 
