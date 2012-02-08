@@ -15,76 +15,50 @@ Feature: Editing authors and author names
     And the following names exist for another author
       |name      |
       |Fisher, B.|
-
-  Scenario: Searching for an author
     When I go to the "Authors" page
     Then I should not see "Bolton, B." in the author panel
-    When I fill in "Choose author" in the author panel with "Bolton, B."
-      And I press "Go" in the author panel
+
+  Scenario: Searching for an author
+    When I search for "Bolton, B." in the author panel
     Then I should see "Bolton, B." in the author panel
       And I should see "Bolton,B." in the author panel
       And I should see "Annals of Ants" in the author panel
       And I should see "More ants" in the author panel
 
   Scenario: Searching for an author that isn't found
-    When I go to the "Authors" page
-    When I fill in "Choose author" in the author panel with "asdf"
-      And I press "Go" in the author panel
-    Then I should see "No results found" in the author panel
+    When I search for "asdf" in the author panel
+      Then I should see "No results found" in the author panel
 
   Scenario: Opening more than one search panel
-    When I go to the "Authors" page
-    When I fill in "Choose author" in the author panel with "Bolton, B."
-      And I press "Go" in the author panel
-    Then I should see "Bolton, B." in the author panel
-    When I fill in "Choose another author" in the last author panel with "Fisher, B."
-      And I press "Go" in the last author panel
+    When I search for "Bolton, B." in the author panel
+      And I search for "Fisher, B." in another author panel
     Then I should see "Bolton, B." in the first author panel
       And I should see "Fisher, B." in the second author panel
 
-  @javascript
-  Scenario: Closing a panel
-    When I go to the "Authors" page
-    When I fill in "Choose author" in the author panel with "Bolton, B."
-      And I press "Go" in the author panel
-      And I fill in "Choose another author" in the last author panel with "Fisher, B."
-      And I press "Go" in the last author panel
-    Then I should see "Bolton, B." in the first author panel
-    When I follow "close" in the first author panel
-    Then I should see "Fisher, B." in the first author panel
-
   Scenario: Searching for an author that's already open in another panel
-    When I go to the "Authors" page
-    When I fill in "Choose author" in the author panel with "Bolton, B."
-      And I press "Go" in the author panel
-      And I fill in "Choose another author" in the last author panel with "Bolton, B."
-      And I press "Go" in the last author panel
+    When I search for "Bolton, B." in the author panel
+      And I search for "Bolton, B." in another author panel
     Then I should see "Bolton, B." in the first author panel
       And I should see "This author is open in another panel" in the second author panel
 
-  Scenario: Logged in - can merge
+  @javascript
+  Scenario: Closing a panel
+    Given I search for "Bolton, B." in the author panel
+      And I search for "Fisher, B." in another author panel
+    When I close the first author panel
+    Then I should see "Fisher, B." in the first author panel
+      And I should not see "Bolton, B."
+
+  Scenario: Merging
     Given I am logged in
     When I go to the "Authors" page
-    When I fill in "Choose author" in the author panel with "Bolton, B."
-      And I press "Go" in the author panel
-      And I fill in "Choose another author" in the last author panel with "Fisher, B."
-      And I press "Go" in the last author panel
-    Then I should see "Bolton, B." in the first author panel
-      And I should see "Fisher, B." in the second author panel
-      And I should see "Click this button"
-    Given I will confirm on the next step
-    When I press "Merge these authors"
+      And I search for "Bolton, B." in the author panel
+      And I search for "Fisher, B." in another author panel
+      And I merge the authors
     Then I should see "Bolton, B." in the first author panel
       And I should see "Fisher, B." in the first author panel
 
   Scenario: Not logged in - can't merge
-    When I go to the "Authors" page
-    When I fill in "Choose author" in the author panel with "Bolton, B."
-      And I press "Go" in the author panel
-    Then I should see "Bolton, B." in the author panel
-    When I fill in "Choose author" in the last author panel with "Fisher, B."
-      And I press "Go" in the last author panel
-    Then I should see "Bolton, B." in the first author panel
-      And I should see "Fisher, B." in the second author panel
-      And I should not see "Click this button"
-
+    When I search for "Bolton, B." in the author panel
+      And I search for "Fisher, B." in another author panel
+    Then I should not be able to merge the authors

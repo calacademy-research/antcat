@@ -442,17 +442,3 @@ Given /^I will enter the ID of "Arbitrary Match" in the following dialog$/ do
   page.evaluate_script 'window.original_prompt_function = window.prompt;'
   page.evaluate_script "window.prompt = function(msg) { return '#{id}'; }"
 end
-
-###############
-Given /^the following names exist for an(?:other)? author$/ do |table|
-  @author = Factory :author
-  table.hashes.each do |hash|
-    @author.names.create! name: hash[:name]
-  end
-end
-
-When /I fill in "([^"]+)" in (the (?:(?:first|last) )?author panel) with "(.*?)"/ do |field, parent, search_term|
-  with_scope parent do
-    step %{I fill in "#{field}" with "#{search_term}"}
-  end
-end
