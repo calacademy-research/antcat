@@ -14,13 +14,17 @@ When /I fill in "([^"]+)" in (the (?:(?:first|last|another) )?author panel) with
 end
 
 When /^I search for "([^"]*)" in the author panel$/ do |term|
-  step %{I fill in "Choose author" in the author panel with "#{term}"}
-  step %{And I press "Go" in the author panel}
+  steps %{
+    And I fill in "Choose author" in the author panel with "#{term}"
+    And I press "Go" in the author panel
+  }
 end
 
 When /^I search for "([^"]*)" in another author panel$/ do |term|
-  step %{I fill in "Choose another author" in the last author panel with "#{term}"}
-  step %{I press "Go" in the last author panel}
+  steps %{
+    And I fill in "Choose another author" in the last author panel with "#{term}"
+    And I press "Go" in the last author panel
+  }
 end
 
 When /^I close the first author panel$/ do
@@ -28,8 +32,10 @@ When /^I close the first author panel$/ do
 end
 
 When /^I merge the authors$/ do
-  step %{I will confirm on the next step}
-  step %{I press "Merge these authors"}
+  steps %{
+    And I will confirm on the next step
+    And I press "Merge these authors"
+  }
 end
 
 Then /^I should not be able to merge the authors$/ do
