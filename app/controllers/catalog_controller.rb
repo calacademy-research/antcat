@@ -2,15 +2,13 @@
 class CatalogController < ApplicationController
 
   def show
-    search
-  end
-
-  def search
     if params['commit'] == 'Clear'
       @search_params = {}
       params['q'] = params['search_type'] = nil
       return
     end
+
+    params['q'].strip! if params['q']
 
     @search_params = {'search_type' => params['search_type'], 'q' => params['q']}
 
@@ -21,7 +19,7 @@ class CatalogController < ApplicationController
         @search_results_message = "No results found"
       else
         @search_results = @search_results.map do |search_result|
-          {:name => search_result.full_label, :id => search_result.id}
+          {name: search_result.full_label, id: search_result.id}
         end
         params['id'] = @search_results.first[:id] if params['id'].blank?
       end
