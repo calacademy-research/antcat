@@ -8,7 +8,7 @@ class Hol::DocumentUrlImporter
               :already_imported_count
 
   def initialize show_progress = false
-    Progress.init show_progress, ::Reference.count, self.class.name
+    Progress.init show_progress, Reference.count, self.class.name
     @matcher = Hol::ReferenceMatcher.new
     @success_count = @unmatched_count = @book_failure_count = @unknown_count =
       @pdf_not_found_count = @missing_author_count = @already_imported_count = 0
