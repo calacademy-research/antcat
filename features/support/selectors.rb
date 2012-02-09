@@ -51,7 +51,6 @@ module HtmlSelectorsHelpers
     # web steps:
     when /"(.+)"/
       $1
-
     else
       raise "Can't find mapping from \"#{locator}\" to a selector"
     end
