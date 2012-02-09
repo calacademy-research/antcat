@@ -11,11 +11,11 @@
 #  To import these files, run
 #    rake bolton:import:subfamilies
 
-require 'bolton/catalog/subfamily/family_importer'
-require 'bolton/catalog/subfamily/genus_importer'
-require 'bolton/catalog/subfamily/subfamily_importer'
-require 'bolton/catalog/subfamily/subgenus_importer'
-require 'bolton/catalog/subfamily/tribe_importer'
+require_relative 'family_importer'
+require_relative 'genus_importer'
+require_relative 'subfamily_importer'
+require_relative 'subgenus_importer'
+require_relative 'tribe_importer'
 
 class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
   private
