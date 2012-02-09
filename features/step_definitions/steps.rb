@@ -1,5 +1,9 @@
 # coding: UTF-8
 
+SHOULD_SELECTOR = Transform /^should( not)?$/ do |should_not|
+  OpenStruct.new to_sym: should_not ? :should_not : :should, to_bool: !!should_not
+end
+
 Given /^the following references? exists?$/ do |table|
   Reference.delete_all
   table.hashes.each do |hash|
@@ -42,9 +46,8 @@ Then /^the (?:matched )?reference should be (.+)$/ do |color|
   end
 end
 
-Then /^I should( not)? see a "([^"]+)" button$/ do |should_not, button|
-  selector = should_not ? :should_not : :should
-  page.send(selector, have_css("input[value='#{button}']"))
+Then /^I (#{SHOULD_SELECTOR}) see a "([^"]+)" button$/ do |should_selector, button|
+  page.send(should_selector.to_sym, have_css("input[value='#{button}']"))
 end
 
 Given /the following book references? exists?/ do |table|
@@ -134,11 +137,10 @@ Then /^there should be the HTML "(.*)"$/ do |html|
   body.should =~ /#{html}/
 end
 
-Then /I should (not )?see the edit form/ do |should_not|
-  selector = should_not ? :should_not : :should
+Then /I (#{SHOULD_SELECTOR}) see the edit form/ do |should_selector|
   css_selector = "#reference_"
   css_selector << @reference.id.to_s if @reference
-  find("#{css_selector} .reference_edit").send(selector, be_visible)
+  find("#{css_selector} .reference_edit").send should_selector.to_sym, be_visible
 end
 
 Then /I should not be editing/ do
@@ -153,8 +155,8 @@ Then 'I should not see the reference' do
   find("#reference_#{@reference.id} .reference_display").should_not be_visible
 end
 
-Then /the "(.+)" link should (not )?be visible/ do |text, should_not|
-  find_link(text).visible?.should == !should_not
+Then /the "(.+)" link (#{SHOULD_SELECTOR}) be visible/ do |text, should_selector|
+  find_link(text).send should_selector.to_sym, be_visible
 end
 
 Then 'there should be just the existing reference' do
@@ -171,9 +173,9 @@ When /in the new edit form I fill in "(.*?)" with "(.*?)"/ do |field, value|
   end
 end
 
-Then /in the new edit form the "(.*?)" field should (not )?contain "(.*?)"/ do |field, should_not, value|
+Then /in the new edit form the "(.*?)" field (?:#{SHOULD_SELECTOR}) contain "(.*?)"/ do |field, value|
   within "#reference_" do
-    step %{the "#{field}" field should #{should_not ? 'not ' : ''}contain "#{value}"}
+    step %{the "#{field}" field #{SHOULD_SELECTOR} contain "#{value}"}
   end
 end
 
