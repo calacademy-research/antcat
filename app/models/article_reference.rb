@@ -1,5 +1,5 @@
 # coding: UTF-8
-class ArticleReference < Reference
+class ArticleReference < UnmissingReference
   belongs_to :journal
 
   validates_presence_of :journal, :series_volume_issue, :pagination

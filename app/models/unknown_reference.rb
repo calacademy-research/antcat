@@ -1,5 +1,5 @@
 # coding: UTF-8
-class UnknownReference < Reference
+class UnknownReference < UnmissingReference
 
   validates_presence_of :citation
 
