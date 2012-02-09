@@ -194,4 +194,3 @@ Feature: Add reference
       And in the new edit form I fill in "reference_citation_year" with "1981"
       And in the new edit form I press the "Save" button
     Then I should see a very long author names string
-

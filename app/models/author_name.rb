@@ -17,8 +17,8 @@ class AuthorName < ActiveRecord::Base
   def self.import data
     data.inject([]) do |author_names, name|
       author_names << (
-        all(:conditions => ['name = ?', name]).find {|possible_name| possible_name.name == name} ||
-        create!(:name => name, :author => Author.create!)
+        all(conditions: ['name = ?', name]).find {|possible_name| possible_name.name == name} ||
+        create!(name: name, author: Author.create!)
       )
     end
   end

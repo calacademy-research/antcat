@@ -136,8 +136,6 @@ module Catalog::IndexFormatter
   end
 
   #######################
-
-  #######################
   def format_child_lists taxon, user
     content_tag(:div, class: :child_lists) do
       content = ''.html_safe

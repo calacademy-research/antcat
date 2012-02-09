@@ -33,11 +33,11 @@ Feature: Using the catalog index
 
   Scenario: Selecting a genus without a subfamily
     When I go to the catalog index
-      And I follow "(no subfamily)"
-      And I follow "Atta"
+    * I follow "(no subfamily)"
+    * I follow "Atta"
     Then "(no subfamily)" should be selected
-      And "Atta" should be selected
-      And I should see "Atta history"
+    And "Atta" should be selected
+    And I should see "Atta history"
 
   Scenario: Selecting a subfamily
     When I go to the catalog index

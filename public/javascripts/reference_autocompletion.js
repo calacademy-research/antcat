@@ -8,7 +8,7 @@ function setupAuthorAutocomplete(field) {
     source: function(request, response) {
       searchTerm = extractAuthorSearchTerm(this.element.val(), $(this.element).getSelection().start);
       if (searchTerm.length >= 3)
-        $.getJSON("authors", {term: searchTerm}, response);
+        $.getJSON("/authors/all", {term: searchTerm}, response);
       else
         response([]);
     },

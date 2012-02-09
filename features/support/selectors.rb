@@ -25,6 +25,15 @@ module HtmlSelectorsHelpers
     when /the search results/
       "#search_results"
 
+    when /the author panel/, /the first author panel/
+      ".author_panel:first-of-type"
+    when /the last author panel/
+      ".author_panel:last-of-type"
+    when /the second author panel/
+      ".author_panel:nth-of-type(2)"
+    when /another author panel/
+      ".author_panel:last-of-type"
+
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
     #
@@ -42,7 +51,6 @@ module HtmlSelectorsHelpers
     # web steps:
     when /"(.+)"/
       $1
-
     else
       raise "Can't find mapping from \"#{locator}\" to a selector"
     end

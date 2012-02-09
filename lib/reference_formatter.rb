@@ -11,10 +11,34 @@ class ReferenceFormatter
     make_formatter(reference).format_inline_citation user
   end
 
-  def self.italicize s
-    return unless s
-    s = s.gsub /\*(.*?)\*/, '<span class=genus_or_species>\1</span>'
-    s = s.gsub /\|(.*?)\|/, '<span class=genus_or_species>\1</span>'
+  def format
+    string = format_author_names
+    string << ' ' unless string.empty?
+    string << format_year << '. '
+    string << format_title << ' '
+    string << format_citation
+    string << " [#{format_date(@reference.date)}]" if @reference.date?
+    string
+  end
+
+  def format_year
+    h @reference.citation_year
+  end
+
+  def format_author_names
+    h @reference.author_names_string
+  end
+
+  def format_title
+    self.class.italicize self.class.add_period_if_necessary h @reference.title
+  end
+
+  def self.italicize string
+    return unless string
+    raise "Can't italicize an unsafe string" unless string.html_safe?
+    string = string.gsub /\*(.*?)\*/, '<span class=genus_or_species>\1</span>'
+    string = string.gsub /\|(.*?)\|/, '<span class=genus_or_species>\1</span>'
+    string.html_safe
   end
 
   def self.add_period_if_necessary string
@@ -78,7 +102,7 @@ class ReferenceFormatter
     return prefix + date + suffix if input.length < 8
 
     date << '-' << input[6, 2]
-    prefix + date + suffix
+    h prefix + date + suffix
   end
 
   def self.make_formatter reference
@@ -91,26 +115,26 @@ end
 
 class ArticleReferenceFormatter < ReferenceFormatter
   def format_citation
-    self.class.add_period_if_necessary "#{h @reference.journal.name} #{h @reference.series_volume_issue}:#{h @reference.pagination}"
+    self.class.italicize self.class.add_period_if_necessary "#{h @reference.journal.name} #{h @reference.series_volume_issue}:#{h @reference.pagination}".html_safe
   end
 
 end
 
 class BookReferenceFormatter < ReferenceFormatter
   def format_citation
-    self.class.add_period_if_necessary "#{h @reference.publisher}, #{h @reference.pagination}"
+    self.class.italicize self.class.add_period_if_necessary "#{h @reference.publisher}, #{h @reference.pagination}".html_safe
   end
 end
 
 class UnknownReferenceFormatter < ReferenceFormatter
   def format_citation
-    self.class.add_period_if_necessary h @reference.citation
+    self.class.italicize self.class.add_period_if_necessary h @reference.citation
   end
 end
 
 class NestedReferenceFormatter < ReferenceFormatter
   def format_citation
-    "#{h @reference.pages_in} #{ReferenceFormatter.format(@reference.nested_reference)}"
+    self.class.italicize "#{h @reference.pages_in} #{ReferenceFormatter.format(@reference.nested_reference)}".html_safe
   end
 end
 
