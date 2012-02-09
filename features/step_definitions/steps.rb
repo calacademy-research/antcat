@@ -6,16 +6,8 @@ end
 And 'I debug' do
 end 
 
-Given /the following user exists/ do |table|
-  table.hashes.each {|hash| User.create! hash}
-end
-
 Then /^there should be the HTML "(.*)"$/ do |html|
   body.should =~ /#{html}/
-end
-
-Then /the "(.+)" link (#{SHOULD_OR_SHOULD_NOT}) be visible/ do |text, should_selector|
-  find_link(text).send should_selector.to_sym, be_visible
 end
 
 Then "I should not see any error messages" do
@@ -28,27 +20,6 @@ Given 'I will confirm on the next step' do
     evaluate_script("window.confirm = function(msg) { return true; }")
   rescue Capybara::NotSupportedByDriverError
   end
-end
-
-Given 'I am not logged in' do
-end
-
-Given 'I log in' do
-  step 'I go to the main page'
-  User.delete_all
-  @user = Factory :user, :email => 'mark@example.com'
-  click_link "Login"
-  step %{I fill in "user_email" with "#{@user.email}"}
-  step %{I fill in "user_password" with "#{@user.password}"}
-  step %{I press "Go" within "#login"}
-end
-
-Given 'I log out' do
-  step %{I follow "Logout"}
-end
-
-Given 'I am logged in' do
-  step 'I log in'
 end
 
 When /^I press the "([^"]+)" button/ do |button|
