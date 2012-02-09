@@ -1,0 +1,13 @@
+-# Locals: author
+.author
+  - for author_name in author.names
+    .author_name
+      - references = author_name.references
+      .name
+        = author_name.name
+        %span.count= CatalogFormatter.count_and_noun references, 'reference'
+      - if references.present?
+        .references
+          - for reference in references
+            .reference
+              = link_to ReferenceFormatter.format(reference), "/references?q=#{reference.id}", target: '_blank'

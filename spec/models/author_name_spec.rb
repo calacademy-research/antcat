@@ -71,6 +71,12 @@ describe AuthorName do
       author_data[:author_names_suffix].should == ' (eds.)'
     end
 
+    it "should handle the Andres" do
+      author_data = AuthorName.import_author_names_string('Andre, Edm.; Andre, Ern.')
+      author_data[:author_names].first.name.should == 'Andre, Edm.'
+      author_data[:author_names].second.name.should == 'Andre, Ern.'
+    end
+
     it "should not just crap out when the input is invalid" do
       author_data = AuthorName.import_author_names_string(' ; ')
       author_data[:author_names].should == []

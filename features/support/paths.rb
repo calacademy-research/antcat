@@ -14,6 +14,8 @@ module NavigationHelpers
       '/users/edit'
     when /the "Edit journals" page/
       journals_path
+    when /the Authors page/
+      authors_path
     when /the catalog index/
       index_catalog_path
     when /the catalog browser/

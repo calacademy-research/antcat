@@ -3,7 +3,9 @@ grammar AuthorGrammar
 
   rule author_names
     (author (s author_separator s author)* suffix? s) {
-      {:names => captures[:author].map(&:to_s), :suffix => suffix}
+      value = {:names => captures[:author].map(&:to_s)}
+      value[:suffix] = suffix.to_s if suffix
+      value
     }
   end
 
@@ -20,10 +22,14 @@ grammar AuthorGrammar
   end
 
   rule initial
-    s ('dos' | 'da' | 'de' | 'di' | 'del' | 'do') |
-    s name_char '.'? '-' name_char '.' |
-    s name_char '.' |
-    s name_char_without_period_but_before_semicolon
+      (s ('dos' | 'da' | 'de' | 'di' | 'del' | 'do'))
+    | (s name_char '.'? '-' name_char '.')
+    | (s abbreviated_first_name)
+    | (s name_char_without_period_but_before_semicolon)
+  end
+
+  rule abbreviated_first_name
+    /[[:upper:]][[:lower:]]*\./
   end
 
   rule suffix

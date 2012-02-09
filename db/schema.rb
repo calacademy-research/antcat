@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120202222754) do
+ActiveRecord::Schema.define(:version => 20120207151657) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -206,7 +206,7 @@ ActiveRecord::Schema.define(:version => 20120202222754) do
     t.text     "headline_notes_taxt"
     t.text     "type_taxon_name"
     t.integer  "subgenus_id"
-    t.boolean  "hong"
+    t.boolean  "hong",                                         :default => false, :null => false
     t.string   "type_taxon_rank"
   end
 
