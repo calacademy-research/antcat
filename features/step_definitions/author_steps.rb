@@ -1,5 +1,4 @@
 # coding: UTF-8
-
 Given /^the following names exist for an(?:other)? author$/ do |table|
   @author = Factory :author
   table.raw.each do |row|
