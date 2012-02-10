@@ -1,5 +1,5 @@
-grammar Bolton::Catalog::Subfamily::SubgenusGrammar
-  include Bolton::Catalog::Grammar
+grammar Importers::Bolton::Catalog::Subfamily::SubgenusGrammar
+  include Importers::Bolton::Catalog::Grammar
 
   rule subgenus_section
     subgenera_header | subgenus_header | junior_synonyms_of_subgenus_header

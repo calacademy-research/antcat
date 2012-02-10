@@ -6,19 +6,19 @@ namespace :bolton do
   namespace :import do
     desc "Import HTML files of references from Bolton"
     task :references => :environment do
-      Bolton::Bibliography::Importer.new(true).import_files Dir.glob "#{$BOLTON_DATA_DIRECTORY}/NGC-REFS(*.htm"
+      Importers::Bolton::Bibliography::Importer.new(true).import_files Dir.glob "#{$BOLTON_DATA_DIRECTORY}/NGC-REFS(*.htm"
     end
     desc "Import Bolton subfamily catalog"
     task :subfamilies => :environment do
-      Bolton::Catalog::Subfamily::Importer.new(true).import_files Dir.glob "#{$BOLTON_DATA_DIRECTORY}/*.htm"
+      Importers::Bolton::Catalog::Subfamily::Importer.new(true).import_files Dir.glob "#{$BOLTON_DATA_DIRECTORY}/*.htm"
     end
     desc "Import Bolton species catalog documents"
     task :species => :environment do
-      Bolton::Catalog::Species::Importer.new(true).import_files Dir.glob "#{$BOLTON_DATA_DIRECTORY}/NGC-Sp*.htm"
+      Importers::Bolton::Catalog::Species::Importer.new(true).import_files Dir.glob "#{$BOLTON_DATA_DIRECTORY}/NGC-Sp*.htm"
     end
     desc "Import Bolton species catalog documents deeply"
     task 'species:deep' => :environment do
-      Bolton::Catalog::Species::DeepSpeciesImporter.new(:show_progress => true, :start_from_scratch => true).
+      Importers::Bolton::Catalog::Species::DeepSpeciesImporter.new(:show_progress => true, :start_from_scratch => true).
         import_files Dir.glob "#{$BOLTON_DATA_DIRECTORY}/NGC-Sp*.htm"
     end
     desc "Import all taxa"

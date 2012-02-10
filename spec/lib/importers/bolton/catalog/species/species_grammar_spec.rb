@@ -1,9 +1,9 @@
 # coding: UTF-8
 require 'spec_helper'
 
-describe Bolton::Catalog::Species::Importer do
+describe Importers::Bolton::Catalog::Species::Importer do
   before do
-    @importer = Bolton::Catalog::Species::Importer.new
+    @importer = Importers::Bolton::Catalog::Species::Importer.new
   end
 
   describe "Parsing species" do
@@ -68,31 +68,31 @@ sumatranus</span></i><span style="color:blue">, <i>tinctus</i></span>.
       describe "Parsing individual subspecies items in list" do
 
         it "should handle 'regular' italic blue" do
-          Bolton::Catalog::Species::Grammar.parse(%{<i><span style='color:blue'>angustulus, </span>}, :root => :subspecies_list_item).should_not be_nil
+          Importers::Bolton::Catalog::Species::Grammar.parse(%{<i><span style='color:blue'>angustulus, </span>}, :root => :subspecies_list_item).should_not be_nil
         end
 
         it "should handle just a name" do
-          Bolton::Catalog::Species::Grammar.parse(%{angustulus}, :root => :subspecies_list_item).should_not be_nil
+          Importers::Bolton::Catalog::Species::Grammar.parse(%{angustulus}, :root => :subspecies_list_item).should_not be_nil
         end
 
         it "should handle a name with a comma" do
-          Bolton::Catalog::Species::Grammar.parse(%{angustulus, }, :root => :subspecies_list_item).should_not be_nil
+          Importers::Bolton::Catalog::Species::Grammar.parse(%{angustulus, }, :root => :subspecies_list_item).should_not be_nil
         end
 
         it "should handle italic blue without a close tag" do
-          Bolton::Catalog::Species::Grammar.parse(%{<i><span style='color:blue'>angustulus, }, :root => :subspecies_list_item).should_not be_nil
+          Importers::Bolton::Catalog::Species::Grammar.parse(%{<i><span style='color:blue'>angustulus, }, :root => :subspecies_list_item).should_not be_nil
         end
 
         it "should handle unresolved junior homonym" do
-          Bolton::Catalog::Species::Grammar.parse(%{<span style='color:maroon'>carinatus</span></i> (unresolved junior homonym), }, :root => :subspecies_list_item).should_not be_nil
+          Importers::Bolton::Catalog::Species::Grammar.parse(%{<span style='color:maroon'>carinatus</span></i> (unresolved junior homonym), }, :root => :subspecies_list_item).should_not be_nil
         end
 
         it "should handle italic unresolved junior homonym" do
-          Bolton::Catalog::Species::Grammar.parse(%{<i><span style='color:maroon'>latinotus</span></i> (unresolved junior homonym), }, :root => :subspecies_list_item).should_not be_nil
+          Importers::Bolton::Catalog::Species::Grammar.parse(%{<i><span style='color:maroon'>latinotus</span></i> (unresolved junior homonym), }, :root => :subspecies_list_item).should_not be_nil
         end
 
         it "should handle italic unresolved junior homonym" do
-          Bolton::Catalog::Species::Grammar.parse(%{</span><span style='color:maroon'>striata</span></i> (unresolved junior homonym)}, :root => :subspecies_list_item).should_not be_nil
+          Importers::Bolton::Catalog::Species::Grammar.parse(%{</span><span style='color:maroon'>striata</span></i> (unresolved junior homonym)}, :root => :subspecies_list_item).should_not be_nil
         end
 
       end

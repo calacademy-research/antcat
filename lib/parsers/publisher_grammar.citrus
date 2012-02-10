@@ -1,5 +1,5 @@
-grammar PublisherGrammar
-  include CommonGrammar
+grammar Parsers::PublisherGrammar
+  include Parsers::CommonGrammar
 
   rule publisher
     (publisher_place ':' s publisher_name) {

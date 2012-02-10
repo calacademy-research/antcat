@@ -1,7 +1,7 @@
-grammar Bolton::Catalog::Grammar
-  include CommonGrammar
-  include AuthorGrammar
-  include CitationGrammar
+grammar Importers::Bolton::Catalog::Grammar
+  include Parsers::CommonGrammar
+  include Parsers::AuthorGrammar
+  include Parsers::CitationGrammar
 
   rule header
     /.*?CATALOGUE OF.*/ {

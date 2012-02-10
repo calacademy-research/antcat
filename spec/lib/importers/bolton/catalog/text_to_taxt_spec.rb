@@ -1,9 +1,9 @@
 # coding: UTF-8
 require 'spec_helper'
 
-describe Bolton::Catalog::TextToTaxt do
+describe Importers::Bolton::Catalog::TextToTaxt do
   before do
-    @converter = Bolton::Catalog::TextToTaxt
+    @converter = Importers::Bolton::Catalog::TextToTaxt
   end
 
   it "should handle an empty string" do

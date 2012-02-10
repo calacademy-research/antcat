@@ -1,9 +1,9 @@
 # coding: UTF-8
 require 'spec_helper'
 
-describe Formatter do
+describe Formatters::Formatter do
   before do
-    @formatter = Formatter
+    @formatter = Formatters::Formatter
   end
 
   describe "Formatting a count with a noun" do

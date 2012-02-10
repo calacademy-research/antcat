@@ -1,12 +1,12 @@
 # coding: UTF-8
 require 'spec_helper'
 
-describe Bolton::Catalog::Importer do
+describe Importers::Bolton::Catalog::Importer do
 
     describe "Cleaning up taxonomic history" do
 
       it "should remove all attributes and spans" do
-        Bolton::Catalog::Importer.new.clean_taxonomic_history(
+        Importers::Bolton::Catalog::Importer.new.clean_taxonomic_history(
 %{<p><b><span lang="EN-GB">Aneuretinae</span></b><span lang="EN-GB"> Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.  </span></p>} +
 %{<p class=MsoNormal style='margin-left:36.0pt;text-align:justify;text-indent:} +
 %{-36.0pt'><b style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:} +
@@ -38,7 +38,7 @@ describe Bolton::Catalog::Importer do
     end
 
     it "should put fossil_tags inside HTML tags" do
-      Bolton::Catalog::Importer.new.clean_taxonomic_history(
+      Importers::Bolton::Catalog::Importer.new.clean_taxonomic_history(
 %{<p><b>*<i>atta</i></b></p>}).should == %{<p><b><i>&dagger;atta</i></b></p>}
     end
 

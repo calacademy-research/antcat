@@ -1,5 +1,5 @@
-grammar Bolton::Catalog::Subfamily::GenusGrammar
-  include Bolton::Catalog::Grammar
+grammar Importers::Bolton::Catalog::Subfamily::GenusGrammar
+  include Importers::Bolton::Catalog::Grammar
 
   rule genus_section
     formicium_line | formicium_header | zatania_taxonomic_history_item | ocymyrmex_header | genus_header | genus_line | homonym_replaced_by_genus_header | homonym_replaced_by_genus_synonym_header |

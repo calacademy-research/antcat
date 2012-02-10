@@ -1,10 +1,10 @@
-grammar Bolton::Catalog::Subfamily::Grammar
-  include Bolton::Catalog::Grammar
-  include Bolton::Catalog::Subfamily::FamilyGrammar
-  include Bolton::Catalog::Subfamily::SubfamilyGrammar
-  include Bolton::Catalog::Subfamily::TribeGrammar
-  include Bolton::Catalog::Subfamily::GenusGrammar
-  include Bolton::Catalog::Subfamily::SubgenusGrammar
+grammar Importers::Bolton::Catalog::Subfamily::Grammar
+  include Importers::Bolton::Catalog::Grammar
+  include Importers::Bolton::Catalog::Subfamily::FamilyGrammar
+  include Importers::Bolton::Catalog::Subfamily::SubfamilyGrammar
+  include Importers::Bolton::Catalog::Subfamily::TribeGrammar
+  include Importers::Bolton::Catalog::Subfamily::GenusGrammar
+  include Importers::Bolton::Catalog::Subfamily::SubgenusGrammar
 
   rule subfamily_catalog
     a_supersubfamily_section | family_section | subfamily_section | tribe_section | genus_section | subgenus_section | blank_line | other

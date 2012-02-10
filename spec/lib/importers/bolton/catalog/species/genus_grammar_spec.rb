@@ -1,9 +1,9 @@
 # coding: UTF-8
 require 'spec_helper'
 
-describe Bolton::Catalog::Species::Importer do
+describe Importers::Bolton::Catalog::Species::Importer do
   before do
-    @importer = Bolton::Catalog::Species::Importer.new
+    @importer = Importers::Bolton::Catalog::Species::Importer.new
   end
 
   describe "parsing genus see-under heading" do

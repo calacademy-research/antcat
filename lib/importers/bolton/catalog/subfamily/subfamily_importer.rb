@@ -1,5 +1,5 @@
 # coding: UTF-8
-class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
+class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catalog::Importer
   private
 
   def parse_subfamily

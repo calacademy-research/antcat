@@ -1,5 +1,5 @@
-grammar Bolton::Catalog::Species::SpeciesGrammar
-  include Bolton::Catalog::Grammar
+grammar Importers::Bolton::Catalog::Species::SpeciesGrammar
+  include Importers::Bolton::Catalog::Grammar
 
   rule species
     homonym | available_valid_species | species_see_under | species_synonym | unavailable_species | unresolved_homonym  | unidentifiable_species

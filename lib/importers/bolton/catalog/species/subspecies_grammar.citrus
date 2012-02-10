@@ -1,5 +1,5 @@
-grammar Bolton::Catalog::Species::SubspeciesGrammar
-  include Bolton::Catalog::Grammar
+grammar Importers::Bolton::Catalog::Species::SubspeciesGrammar
+  include Importers::Bolton::Catalog::Grammar
 
   rule subspecies
     available_subspecies | homonym_subspecies

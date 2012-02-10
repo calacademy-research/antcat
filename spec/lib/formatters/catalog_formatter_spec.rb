@@ -1,9 +1,9 @@
 # coding: UTF-8
 require 'spec_helper'
 
-describe CatalogFormatter do
+describe Formatters::CatalogFormatter do
   before do
-    @formatter = CatalogFormatter
+    @formatter = Formatters::CatalogFormatter
   end
 
   describe 'Taxon statistics' do

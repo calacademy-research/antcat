@@ -17,7 +17,7 @@ require_relative 'subfamily_importer'
 require_relative 'subgenus_importer'
 require_relative 'tribe_importer'
 
-class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
+class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catalog::Importer
   private
 
   def import
@@ -76,7 +76,7 @@ class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
   end
 
   def grammar
-    Bolton::Catalog::Subfamily::Grammar
+    Importers::Bolton::Catalog::Subfamily::Grammar
   end
 
 end

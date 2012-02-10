@@ -1,7 +1,7 @@
 # coding: UTF-8
 require 'spec_helper'
 
-describe Bolton::ReferencesMatcher do
+describe Importers::Bolton::ReferencesMatcher do
 
   it "should find the appropriate reference(s) for each" do
     matching_reference = Factory :reference, :author_names => [Factory(:author_name, :name => 'Dlussky, G.M.')]
@@ -13,7 +13,7 @@ describe Bolton::ReferencesMatcher do
     matched_bolton.should_receive(:<=>).and_return 0.90
     unmatched_bolton.should_not_receive(:<=>)
 
-    Bolton::ReferencesMatcher.new.find_matches_for_all
+    Importers::Bolton::ReferencesMatcher.new.find_matches_for_all
 
     Bolton::Match.count.should == 1
     Bolton::Match.first.similarity.should == 0.90

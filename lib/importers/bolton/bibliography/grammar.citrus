@@ -1,6 +1,6 @@
-grammar Bolton::Bibliography::Grammar
-  include CommonGrammar
-  include PaginationGrammar
+grammar Importers::Bolton::Bibliography::Grammar
+  include Parsers::CommonGrammar
+  include Parsers::PaginationGrammar
 
   rule reference
     nested_reference | book_reference | article_reference | unknown_reference

@@ -1,5 +1,5 @@
-grammar Bolton::Catalog::Species::GenusGrammar
-  include Bolton::Catalog::Grammar
+grammar Importers::Bolton::Catalog::Species::GenusGrammar
+  include Importers::Bolton::Catalog::Grammar
 
   rule genus_header
     see_under_genus | fossil_genus | genus_with_crap | genus | unidentifiable_genus | transferred_genus
