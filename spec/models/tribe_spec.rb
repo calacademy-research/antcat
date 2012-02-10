@@ -17,14 +17,14 @@ describe Tribe do
     attini.children.should == attini.genera
   end
 
-  it "should have as its full name, the subfamily + its name" do
+  it "should have as its full name just its name" do
     taxon = Factory :tribe, :name => 'Attini', :subfamily => Factory(:subfamily, :name => 'Myrmicinae')
-    taxon.full_name.should == 'Myrmicinae Attini'
+    taxon.full_name.should == 'Attini'
   end
 
-  it "should have as its full label, the subfamily + its name" do
+  it "should have as its full label, just its name" do
     taxon = Factory :tribe, :name => 'Attini', :subfamily => Factory(:subfamily, :name => 'Myrmicinae')
-    taxon.full_label.should == 'Myrmicinae Attini'
+    taxon.full_label.should == 'Attini'
   end
 
   describe "Siblings" do

@@ -22,11 +22,12 @@ Feature: View bibliography
 
   Scenario: Dangerous text
     Given the following references exist
-      |title   |authors|citation|year|public_notes|
-      |<script>|authors|Ants 3:3|year|{<html>}    |
+      |title              |authors|citation|year|public_notes|
+      |<script><i>Ants</i>|authors|Ants 3:3|year|{<html>}    |
     When I go to the references page
     Then I should see "<script>"
       And I should see "<html>"
+      And I should see "<i>"
 
   Scenario: Viewing more than one entry, sorted by author + date (including slug)
     Given the following references exist
@@ -92,3 +93,12 @@ Feature: View bibliography
       |Ward, P.S. |Dolichoderinae |2010|In:     |
     When I go to the references page
     Then I should see "Ward, P.S. 2010. Dolichoderinae. In: Bolton, B. 2010. Ants. New York: Wiley, 23 pp."
+
+  Scenario: Viewing a missing reference
+    Given the following references exist
+      |authors   |year |title    |citation|
+      |Ward, P.S.|2010d|Ant Facts|Ants 1:1|
+    And there is a missing reference
+    When I go to the references page
+    Then I should not see the missing reference
+      And I should see "Ward, P.S. 2010d. Ant Facts. Ants 1:1."
