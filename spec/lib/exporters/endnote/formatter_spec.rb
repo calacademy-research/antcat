@@ -1,7 +1,10 @@
 # coding: UTF-8
 require 'spec_helper'
 
-describe ReferenceFormatter::EndnoteImport do
+describe Exporters::Endnote::Formatter do
+  before do
+    @formatter = Exporters::Endnote::Formatter
+  end
 
   it "should format a book reference correctly" do
     reference = Factory :book_reference,
@@ -10,7 +13,7 @@ describe ReferenceFormatter::EndnoteImport do
       :citation_year => '1933',
       :publisher => Factory(:publisher, :name => 'Springer Verlag', :place => Factory(:place, :name => 'Dresden')),
       :pagination => 'ix + 33pp.'
-    ReferenceFormatter::EndnoteImport.format([reference]).should ==
+    @formatter.format([reference]).should ==
 %{%0 Book
 %A Bolton, B.
 %D 1933
@@ -30,7 +33,7 @@ describe ReferenceFormatter::EndnoteImport do
       :citation_year => '1933',
       :publisher => Factory(:publisher, :name => 'Springer Verlag', :place => Factory(:place, :name => 'Dresden')),
       :pagination => 'ix + 33pp.'
-    ReferenceFormatter::EndnoteImport.format([reference]).should ==
+    Exporters::Endnote::Formatter.format([reference]).should ==
 %{%0 Book
 %A Bolton, B.
 %A Fisher, B.L.
@@ -51,7 +54,7 @@ describe ReferenceFormatter::EndnoteImport do
       :citation_year => '1933',
       :publisher => Factory(:publisher, :name => 'Springer Verlag', :place => Factory(:place, :name => 'Dresden')),
       :pagination => 'ix + 33pp.'
-    ReferenceFormatter::EndnoteImport.format([reference]).should ==
+    @formatter.format([reference]).should ==
 %{%0 Book
 %D 1933
 %T Ants Are My Life
@@ -72,7 +75,7 @@ describe ReferenceFormatter::EndnoteImport do
       :series_volume_issue => '1(2)',
       :pagination => '3-4'
     reference.create_document :url => 'http://antcat.org/article.pdf'
-    string = ReferenceFormatter::EndnoteImport.format([reference])
+    string = @formatter.format([reference])
     string.should == 
 %{%0 Journal Article
 %A MacKay, W.
@@ -95,7 +98,7 @@ describe ReferenceFormatter::EndnoteImport do
       :journal => Factory(:journal, :name => 'Psyche'),
       :series_volume_issue => '1(2)',
       :pagination => '3-4'
-    ReferenceFormatter::EndnoteImport.format([reference]).should ==
+    @formatter.format([reference]).should ==
 %{%0 Journal Article
 %A MacKay, W.
 %D 1941
@@ -118,7 +121,7 @@ describe ReferenceFormatter::EndnoteImport do
       :pagination => '3-4',
       :public_notes => 'Public notes.',
       :taxonomic_notes => 'Taxonomic notes'
-    ReferenceFormatter::EndnoteImport.format([reference]).should ==
+    @formatter.format([reference]).should ==
 %{%0 Journal Article
 %A MacKay, W.
 %D 1941
@@ -143,7 +146,7 @@ describe ReferenceFormatter::EndnoteImport do
       :pagination => '3-4',
       :public_notes => '',
       :taxonomic_notes => ''
-    ReferenceFormatter::EndnoteImport.format([reference]).should ==
+    @formatter.format([reference]).should ==
 %{%0 Journal Article
 %A MacKay, W.
 %D 1941
@@ -157,7 +160,7 @@ describe ReferenceFormatter::EndnoteImport do
   end
 
   it "should bail on a class it doesn't know about " do
-    lambda {ReferenceFormatter::EndnoteImport.format([String.new])}.should raise_error
+    lambda {@formatter.format([String.new])}.should raise_error
   end
 
   it "should format an unknown reference correctly" do
@@ -166,7 +169,7 @@ describe ReferenceFormatter::EndnoteImport do
       :citation_year => '1933',
       :title => 'Another title',
       :citation => 'Dresden'
-    ReferenceFormatter::EndnoteImport.format([reference]).should ==
+    @formatter.format([reference]).should ==
 %{%0 Generic
 %A MacKay, W.
 %D 1933
@@ -179,7 +182,7 @@ describe ReferenceFormatter::EndnoteImport do
 
   it "should not output nested references" do
     reference = Factory :nested_reference
-    ReferenceFormatter::EndnoteImport.format([reference]).should == "\n"
+    @formatter.format([reference]).should == "\n"
   end
 
 end
