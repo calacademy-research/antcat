@@ -64,8 +64,8 @@ def create_reference type, hash
     author_names = [Factory(:author_name, :name => author)]
   else
     authors = hash.delete('authors')
-    author_names = AuthorParser.parse(authors)[:names]
-    author_names_suffix = AuthorParser.parse(authors)[:suffix]
+    author_names = Parsers::AuthorParser.parse(authors)[:names]
+    author_names_suffix = Parsers::AuthorParser.parse(authors)[:suffix]
     author_names = author_names.inject([]) do |author_names, author_name|
       author_name = AuthorName.find_by_name(author_name) || Factory(:author_name, :name => author_name)
       author_names << author_name

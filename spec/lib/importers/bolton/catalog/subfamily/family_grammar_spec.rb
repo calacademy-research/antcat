@@ -1,9 +1,9 @@
 # coding: UTF-8
 require 'spec_helper'
 
-describe Bolton::Catalog::Subfamily::Importer do
+describe Importers::Bolton::Catalog::Subfamily::Importer do
   before do
-    @importer = Bolton::Catalog::Subfamily::Importer.new
+    @importer = Importers::Bolton::Catalog::Subfamily::Importer.new
   end
 
   it "should recognize the family header" do

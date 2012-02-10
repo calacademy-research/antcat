@@ -1,9 +1,9 @@
 # coding: UTF-8
 require 'spec_helper'
 
-describe Bolton::Catalog::Subfamily::Importer do
+describe Importers::Bolton::Catalog::Subfamily::Importer do
   before do
-    @importer = Bolton::Catalog::Subfamily::Importer.new
+    @importer = Importers::Bolton::Catalog::Subfamily::Importer.new
   end
 
   describe "Genus header" do
@@ -63,10 +63,10 @@ describe Bolton::Catalog::Subfamily::Importer do
         }).should == {:type => :genus_header, :name => 'Ancylognathus', :status => 'unavailable'}
       end
       it "should handle an unavailable genus" do
-        Bolton::Catalog::Subfamily::GenusGrammar.parse(%{<b><span>Genus <i><span style="color:#7030A0">ZATANIA</span></i><p></p></span></b>}).value.should == {:type => :genus_header, :name => 'Zatania', :status => 'unavailable'}
+        Importers::Bolton::Catalog::Subfamily::GenusGrammar.parse(%{<b><span>Genus <i><span style="color:#7030A0">ZATANIA</span></i><p></p></span></b>}).value.should == {:type => :genus_header, :name => 'Zatania', :status => 'unavailable'}
       end
       it "should handle this Zatania taxonomic history item as a special case" do
-        Bolton::Catalog::Subfamily::GenusGrammar.parse(%{<i><span lang="EN-GB" style="color:#7030A0">Zatania</span></i><span lang="EN-GB"> in Formicinae}).value.should == {:type => :other}
+        Importers::Bolton::Catalog::Subfamily::GenusGrammar.parse(%{<i><span lang="EN-GB" style="color:#7030A0">Zatania</span></i><span lang="EN-GB"> in Formicinae}).value.should == {:type => :other}
       end
     end
 

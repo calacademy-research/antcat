@@ -1,5 +1,5 @@
-grammar AuthorGrammar
-  include CommonGrammar
+grammar Parsers::AuthorGrammar
+  include Parsers::CommonGrammar
 
   rule author_names
     (author (s author_separator s author)* suffix? s) {

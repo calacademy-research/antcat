@@ -1,5 +1,5 @@
 # coding: UTF-8
-class Hol::DocumentUrlImporter
+class Importers::Hol::DocumentUrlImporter
   attr_reader :success_count,
               :book_failure_count,
               :unknown_count,
@@ -9,7 +9,7 @@ class Hol::DocumentUrlImporter
 
   def initialize show_progress = false
     Progress.init show_progress, Reference.count, self.class.name
-    @matcher = Hol::ReferenceMatcher.new
+    @matcher = Importers::Hol::ReferenceMatcher.new
     @success_count = @unmatched_count = @book_failure_count = @unknown_count =
       @pdf_not_found_count = @missing_author_count = @already_imported_count = 0
     @missing_authors = []

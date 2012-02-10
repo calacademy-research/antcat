@@ -1,4 +1,4 @@
-grammar CommonGrammar
+grammar Parsers::CommonGrammar
   rule s
     space*
   end

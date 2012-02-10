@@ -1,5 +1,5 @@
 # coding: UTF-8
-class Hol::ReferenceMatcher < ReferenceMatcher
+class Importers::Hol::ReferenceMatcher < ReferenceMatcher
 
   def match target_reference
     return :book_reference if target_reference.kind_of? BookReference
@@ -26,7 +26,7 @@ class Hol::ReferenceMatcher < ReferenceMatcher
   end
 
   def read_references target
-    result = Hol::Bibliography.read_references target
+    result = Importers::Hol::Bibliography.read_references target
     @no_entries_for_author = result.blank?
     result
   end

@@ -1,10 +1,10 @@
 # coding: UTF-8
-module AuthorParser
+module Parsers::AuthorParser
 
   def self.parse! string
     return {:names => []} unless string.present?
-    Citrus.require Rails.root.to_s + '/lib/grammar/author_grammar'
-    match = AuthorGrammar.parse(string, :consume => false)
+    Citrus.require Rails.root.to_s + '/lib/parsers/author_grammar'
+    match = Parsers::AuthorGrammar.parse(string, :consume => false)
     result = match.value
 
     string.gsub! /#{Regexp.escape match}/, ''

@@ -1,5 +1,5 @@
 # coding: UTF-8
-class Formatter
+class Formatters::Formatter
 
   def self.count_and_noun collection, noun
     quantity = collection.present? ? collection.count.to_s : 'no'

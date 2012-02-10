@@ -1,9 +1,9 @@
 # coding: UTF-8
 require 'spec_helper'
 
-describe Bolton::Catalog::Subfamily::Importer do
+describe Importers::Bolton::Catalog::Subfamily::Importer do
   before do
-    @importer = Bolton::Catalog::Subfamily::Importer.new
+    @importer = Importers::Bolton::Catalog::Subfamily::Importer.new
   end
 
   describe "Headers" do
@@ -302,11 +302,11 @@ describe Bolton::Catalog::Subfamily::Importer do
     describe "Parsing a group of list names" do
 
       it "should recognize one name" do
-        Bolton::Catalog::Subfamily::Grammar.parse("*<i>Myrmeciites</i>.</span>", :root => :list_names).value.should == [{:name => 'Myrmeciites', :fossil => true}]
+        Importers::Bolton::Catalog::Subfamily::Grammar.parse("*<i>Myrmeciites</i>.</span>", :root => :list_names).value.should == [{:name => 'Myrmeciites', :fossil => true}]
       end
 
       it "should recognize more than one name" do
-        Bolton::Catalog::Subfamily::Grammar.parse(%{*<i>Myrmeciites</i>, <i>Petropone</i>.</span>}, :root => :list_names).value.should ==
+        Importers::Bolton::Catalog::Subfamily::Grammar.parse(%{*<i>Myrmeciites</i>, <i>Petropone</i>.</span>}, :root => :list_names).value.should ==
           [{:name => 'Myrmeciites', :fossil => true}, {:name => 'Petropone'}]
       end
 

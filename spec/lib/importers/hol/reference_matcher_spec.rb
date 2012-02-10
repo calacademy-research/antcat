@@ -1,14 +1,14 @@
 # coding: UTF-8
 require 'spec_helper'
 
-describe Hol::ReferenceMatcher do
+describe Importers::Hol::ReferenceMatcher do
   before do
-    @matcher = Hol::ReferenceMatcher.new
+    @matcher = Importers::Hol::ReferenceMatcher.new
   end
 
   describe "No matching authors" do
     it "should return :no_entries_for_author" do
-      Hol::Bibliography.stub!(:read_references).and_return []
+      Importers::Hol::Bibliography.stub!(:read_references).and_return []
       reference = Factory.build :reference
       @matcher.match(reference).should == :no_entries_for_author
     end
@@ -19,7 +19,7 @@ describe Hol::ReferenceMatcher do
       best_match = mock
       good_match = mock
       reference = Factory.build :article_reference
-      Hol::Bibliography.stub!(:read_references).and_return [good_match, best_match]
+      Importers::Hol::Bibliography.stub!(:read_references).and_return [good_match, best_match]
       reference.should_receive(:<=>).with(best_match).and_return 0.9
       reference.should_receive(:<=>).with(good_match).and_return 0.8
       @matcher.match(reference).should == best_match

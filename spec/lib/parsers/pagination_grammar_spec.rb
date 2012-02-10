@@ -1,7 +1,10 @@
 # coding: UTF-8
 require 'spec_helper'
 
-describe PaginationGrammar do
+describe Parsers::PaginationGrammar do
+  before do
+    @parser = Parsers::PaginationGrammar
+  end
   ['1 p., 5 maps',
     '12 + 532 pp.',
     '24 pp. 24 pls.',
@@ -19,24 +22,24 @@ describe PaginationGrammar do
     'Pp. 63-396 (part)',
   ].each do |pagination|
     it "should handle '#{pagination}'" do
-      PaginationGrammar.parse(pagination).should == pagination
+      @parser.parse(pagination).should == pagination
     end
   end
 
   it "shouldn't consider '4th' a pagination" do 
-    PaginationGrammar.parse('4th', :consume => false).should == '4'
+    @parser.parse('4th', :consume => false).should == '4'
   end
 
   it 'should handle a space after a hyphen' do
-    PaginationGrammar.parse('123- 4').should == '123- 4'
+    @parser.parse('123- 4').should == '123- 4'
   end
 
   it 'should handle spaces around the hyphen' do
-    PaginationGrammar.parse('123 - 4').should == '123 - 4'
+    @parser.parse('123 - 4').should == '123 - 4'
   end
 
   it 'should handle and ampersand between clauses' do
-    PaginationGrammar.parse('131-132 & 143-145').should == '131-132 & 143-145'
+    @parser.parse('131-132 & 143-145').should == '131-132 & 143-145'
   end
 
 end

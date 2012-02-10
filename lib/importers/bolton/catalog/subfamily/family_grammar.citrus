@@ -1,5 +1,5 @@
-grammar Bolton::Catalog::Subfamily::FamilyGrammar
-  include Bolton::Catalog::Grammar
+grammar Importers::Bolton::Catalog::Subfamily::FamilyGrammar
+  include Importers::Bolton::Catalog::Grammar
 
   rule family_section
     family_header | family_group_line |

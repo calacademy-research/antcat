@@ -1,4 +1,4 @@
-module Bolton::Catalog::TextToTaxt
+module Importers::Bolton::Catalog::TextToTaxt
 
   def self.convert texts
     (texts || []).inject('') do |taxt, item|

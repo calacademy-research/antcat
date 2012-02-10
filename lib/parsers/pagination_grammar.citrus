@@ -1,5 +1,5 @@
-grammar PaginationGrammar
-  include CommonGrammar
+grammar Parsers::PaginationGrammar
+  include Parsers::CommonGrammar
 
   rule pagination
     pagination_clause ((s ('+' | ',' | '&'))? s pagination_clause)*

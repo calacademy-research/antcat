@@ -1,12 +1,12 @@
 # coding: UTF-8
 require 'spec_helper'
 
-describe Hol::DocumentUrlImporter do
+describe Importers::Hol::DocumentUrlImporter do
   before do
     stub_request(:any, "http://url.com/foo").to_return :body => "Hello World!"
-    @matcher = mock Hol::ReferenceMatcher
-    Hol::ReferenceMatcher.stub!(:new).and_return @matcher
-    @importer = Hol::DocumentUrlImporter.new
+    @matcher = mock Importers::Hol::ReferenceMatcher
+    Importers::Hol::ReferenceMatcher.stub!(:new).and_return @matcher
+    @importer = Importers::Hol::DocumentUrlImporter.new
     @hol_reference = Hol::Reference.new :document_url => 'url.com/foo'
   end
 

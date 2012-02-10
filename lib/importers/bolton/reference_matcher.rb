@@ -1,5 +1,5 @@
 # coding: UTF-8
-class Bolton::ReferenceMatcher < ::ReferenceMatcher
+class Importers::Bolton::ReferenceMatcher < ::ReferenceMatcher
 
   def match target
     matches = super

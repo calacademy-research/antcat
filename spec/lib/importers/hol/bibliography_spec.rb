@@ -1,10 +1,10 @@
 # coding: UTF-8
 require 'spec_helper'
 
-describe Hol::Bibliography do
+describe Importers::Hol::Bibliography do
   describe "getting an author's bibliography" do
     before do
-      @hol = Hol::Bibliography
+      @hol = Importers::Hol::Bibliography
       @curl_result = mock
       @curl_result.stub(:body_str).and_return ''
     end
@@ -35,7 +35,7 @@ describe Hol::Bibliography do
     end
 
     it "should parse each reference" do
-      Hol::Bibliography.stub(:search_for_author).and_return Nokogiri::HTML <<-SEARCH_RESULTS
+      Importers::Hol::Bibliography.stub(:search_for_author).and_return Nokogiri::HTML <<-SEARCH_RESULTS
 <HTML>
 <HEAD>
 <TITLE>Hymenoptera On-Line Database</TITLE>

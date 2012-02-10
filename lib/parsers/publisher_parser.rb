@@ -1,8 +1,6 @@
 # coding: UTF-8
-module PublisherParser
-
+module Parsers::PublisherParser
   def self.parse string
-    PublisherGrammar.parse(string.strip).value rescue nil
+    Parsers::PublisherGrammar.parse(string.strip).value rescue nil
   end
-
 end

@@ -1,14 +1,14 @@
 # coding: UTF-8
-class ReferenceFormatter
+class Formatters::ReferenceFormatter
   include ERB::Util
   extend ERB::Util
 
   def self.format reference, format = :html
     case reference
-    when ArticleReference then ArticleReferenceFormatter
-    when BookReference then BookReferenceFormatter
-    when NestedReference then NestedReferenceFormatter
-    when UnknownReference then UnknownReferenceFormatter
+    when ArticleReference then Formatters::ArticleReferenceFormatter
+    when BookReference then Formatters::BookReferenceFormatter
+    when NestedReference then Formatters::NestedReferenceFormatter
+    when UnknownReference then Formatters::UnknownReferenceFormatter
     else raise "Don't know what kind of reference this is: #{reference.inspect}"
     end.new(reference, format).format
   end
@@ -78,26 +78,26 @@ class ReferenceFormatter
   end
 end
 
-class ArticleReferenceFormatter < ReferenceFormatter
+class Formatters::ArticleReferenceFormatter < Formatters::ReferenceFormatter
   def format_citation
     self.class.italicize self.class.add_period_if_necessary "#{h @reference.journal.name} #{h @reference.series_volume_issue}:#{h @reference.pagination}".html_safe
   end
 end
 
-class BookReferenceFormatter < ReferenceFormatter
+class Formatters::BookReferenceFormatter < Formatters:: ReferenceFormatter
   def format_citation
     self.class.italicize self.class.add_period_if_necessary "#{h @reference.publisher}, #{h @reference.pagination}".html_safe
   end
 end
 
-class UnknownReferenceFormatter < ReferenceFormatter
+class Formatters::UnknownReferenceFormatter < Formatters::ReferenceFormatter
   def format_citation
     self.class.italicize self.class.add_period_if_necessary h @reference.citation
   end
 end
 
-class NestedReferenceFormatter < ReferenceFormatter
+class Formatters::NestedReferenceFormatter < Formatters::ReferenceFormatter
   def format_citation
-    self.class.italicize "#{h @reference.pages_in} #{ReferenceFormatter.format(@reference.nested_reference)}".html_safe
+    self.class.italicize "#{h @reference.pages_in} #{Formatters::ReferenceFormatter.format(@reference.nested_reference)}".html_safe
   end
 end

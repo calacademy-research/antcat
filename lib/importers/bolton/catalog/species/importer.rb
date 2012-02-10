@@ -9,7 +9,7 @@
 #  To import these files, run
 #    rake bolton:import:species
 
-class Bolton::Catalog::Species::Importer < Bolton::Catalog::Importer
+class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog::Importer
   def import
     @species_not_seen_count = 0
     @species_seen_but_list_is_nil_count = 0
@@ -34,7 +34,7 @@ class Bolton::Catalog::Species::Importer < Bolton::Catalog::Importer
   end
 
   def grammar
-    Bolton::Catalog::Species::Grammar
+    Importers::Bolton::Catalog::Species::Grammar
   end
 
   def parse_failed
