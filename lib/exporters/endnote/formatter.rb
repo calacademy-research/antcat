@@ -1,12 +1,12 @@
 # coding: UTF-8
-class ReferenceFormatter::EndnoteImport
+class Exporters::Endnote::Formatter
   def self.format references
     references.map do |reference|
       klass = case reference
-      when ArticleReference then ReferenceFormatter::EndnoteImport::Article
-      when BookReference then ReferenceFormatter::EndnoteImport::Book
-      when NestedReference then ReferenceFormatter::EndnoteImport::Nested
-      when UnknownReference then ReferenceFormatter::EndnoteImport::Unknown
+      when ArticleReference then Exporters::Endnote::Formatter::Article
+      when BookReference then Exporters::Endnote::Formatter::Book
+      when NestedReference then Exporters::Endnote::Formatter::Nested
+      when UnknownReference then Exporters::Endnote::Formatter::Unknown
       else raise "Don't know what kind of reference this is: #{reference.inspect}"
       end
       klass.new(reference).format
@@ -14,7 +14,7 @@ class ReferenceFormatter::EndnoteImport
   end
 end
 
-class ReferenceFormatter::EndnoteImport::Base
+class Exporters::Endnote::Formatter::Base
   def initialize reference
     @reference = reference
     @string = []
@@ -46,7 +46,7 @@ class ReferenceFormatter::EndnoteImport::Base
 
 end
 
-class ReferenceFormatter::EndnoteImport::Article < ReferenceFormatter::EndnoteImport::Base
+class Exporters::Endnote::Formatter::Article < Exporters::Endnote::Formatter::Base
   def kind
     'Journal Article'
   end
@@ -57,7 +57,7 @@ class ReferenceFormatter::EndnoteImport::Article < ReferenceFormatter::EndnoteIm
   end
 end
 
-class ReferenceFormatter::EndnoteImport::Book < ReferenceFormatter::EndnoteImport::Base
+class Exporters::Endnote::Formatter::Book < Exporters::Endnote::Formatter::Base
   def kind
     'Book'
   end
@@ -68,7 +68,7 @@ class ReferenceFormatter::EndnoteImport::Book < ReferenceFormatter::EndnoteImpor
   end
 end
 
-class ReferenceFormatter::EndnoteImport::Unknown < ReferenceFormatter::EndnoteImport::Base
+class Exporters::Endnote::Formatter::Unknown < Exporters::Endnote::Formatter::Base
   def kind
     'Generic'
   end
@@ -77,7 +77,7 @@ class ReferenceFormatter::EndnoteImport::Unknown < ReferenceFormatter::EndnoteIm
   end
 end
 
-class ReferenceFormatter::EndnoteImport::Nested < ReferenceFormatter::EndnoteImport::Base
+class Exporters::Endnote::Formatter::Nested < Exporters::Endnote::Formatter::Base
   # don't know how to get EndNote to handle nested references
   def format
     ''
