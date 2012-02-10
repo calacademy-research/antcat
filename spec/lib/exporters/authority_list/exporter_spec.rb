@@ -1,9 +1,9 @@
 # coding: UTF-8
 require 'spec_helper'
 
-describe AuthorityList::Exporter do
+describe Exporters::AuthorityList::Exporter do
   before do
-    @exporter = AuthorityList::Exporter.new
+    @exporter = Exporters::AuthorityList::Exporter.new
   end
 
   it "should write its output to the right file" do
