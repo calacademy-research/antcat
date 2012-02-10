@@ -100,6 +100,19 @@ describe Genus do
       }
     end
 
+    it "should be able to differentiate extinct species and subspecies" do
+      genus = Factory :genus
+      species = Factory :species, :genus => genus
+      fossil_species = Factory :species, :genus => genus, :fossil => true
+      Factory :subspecies, :species => species, :fossil => true
+      Factory :subspecies, :species => species
+      Factory :subspecies, :species => fossil_species, :fossil => true
+      genus.statistics.should == {
+        :extant => {:species => {'valid' => 1}, :subspecies => {'valid' => 1}},
+        :fossil => {:species => {'valid' => 1}, :subspecies => {'valid' => 2}},
+      }
+    end
+
   end
 
   describe "Without subfamily" do
@@ -152,5 +165,113 @@ describe Genus do
       genus.siblings.should =~ [genus, another_genus]
     end
 
+  end
+
+  describe "Importing" do
+
+    it "should work" do
+      subfamily = Factory :subfamily
+      reference = Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
+      genus = Genus.import(
+        subfamily: subfamily,
+        name: 'Atta',
+        fossil: true,
+        protonym: {genus_name: "Atta",
+                   authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]},
+        type_species: {genus_name: 'Atta', species_epithet: 'major',
+                          texts: [{text: [{phrase: ', by monotypy'}]}]},
+        taxonomic_history: ["Atta as genus", "Atta as species"]
+      ).reload
+      genus.name.should == 'Atta'
+      genus.should_not be_invalid
+      genus.should be_fossil
+      genus.subfamily.should == subfamily
+      genus.taxonomic_history_items.map(&:taxt).should == ['Atta as genus', 'Atta as species']
+      genus.type_taxon_taxt.should == ', by monotypy'
+
+      protonym = genus.protonym
+      protonym.name.should == 'Atta'
+
+      authorship = protonym.authorship
+      authorship.pages.should == '124'
+
+      authorship.reference.should == reference
+    end
+
+    it "save the subgenus part correctly" do
+      Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
+      genus = Genus.import({
+        name: 'Atta',
+        protonym: {genus_name: "Atta", authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]},
+        type_species: {genus_name: 'Atta', subgenus_epithet: 'Solis', species_epithet: 'major',
+                          texts: [{text: [{phrase: ', by monotypy'}]}]},
+        taxonomic_history: [],
+      })
+      ForwardReference.fixup
+      genus.reload.type_taxon_name.should == 'Atta (Solis) major'
+    end
+
+    it "should not mind if there's no type" do
+      reference = Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
+      genus = Genus.import({
+        :name => 'Atta',
+        :protonym => {
+          :name => "Atta",
+          :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
+        },
+        :taxonomic_history => ["Atta as genus", "Atta as species"]
+      }).reload
+      ForwardReference.fixup
+      genus.type_taxon_taxt.should be_nil
+    end
+
+    it "should make sure the type-species is fixed up to point to the genus and not just to any genus with the same name" do
+      reference = Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
+
+      genus = Genus.import({
+        :name => 'Myrmicium',
+        :protonym => {
+          :name => "Myrmicium",
+          :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
+        },
+        :type_species => {:genus_name => 'Myrmicium', :species_epithet => 'heeri'},
+        :taxonomic_history => []
+      })
+      ForwardReference.fixup
+      genus.reload.type_taxon_name.should == 'Myrmicium heeri'
+      genus.reload.type_taxon_rank.should == 'species'
+    end
+
+  end
+
+  describe "Creating from a fixup" do
+    before do
+      @subfamily = Factory :subfamily, name: 'Dolichoderinae'
+    end
+    it "should create the genus, and use the passed-in subfamily" do
+      Progress.should_receive(:log).with("FIXUP created genus Atta")
+      genus = Genus.create_from_fixup subfamily_id: @subfamily.id, name: 'Atta', fossil: true
+      genus.reload.name.should == 'Atta'
+      genus.should_not be_invalid
+      genus.should be_fossil
+      genus.subfamily.should == @subfamily
+    end
+
+    it "should create the genus, and use the passed-in tribe" do
+      tribe = Factory :tribe, subfamily: @subfamily
+      Progress.should_receive(:log).with("FIXUP created genus Atta")
+      genus = Genus.create_from_fixup tribe_id: tribe.id, name: 'Atta', fossil: true
+      genus.reload.name.should == 'Atta'
+      genus.should_not be_invalid
+      genus.should be_fossil
+      genus.tribe.should == tribe
+      genus.subfamily.should == @subfamily
+    end
+
+    it "should find an existing genus" do
+      existing_genus = Factory :genus, name: 'Atta', subfamily: @subfamily, status: 'valid'
+      genus = Genus.create_from_fixup subfamily_id: @subfamily.id, name: 'Atta'
+      genus.reload.should == existing_genus
+    end
   end
 end

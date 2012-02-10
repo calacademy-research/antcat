@@ -97,5 +97,52 @@ describe Subfamily do
       }
     end
 
+    it "should differentiate between extinct genera, species and subspecies" do
+      subfamily = Factory :subfamily
+      genus = Factory :genus, :subfamily => subfamily
+      Factory :genus, :subfamily => subfamily, :fossil => true
+      Factory :species, :genus => genus
+      Factory :species, :genus => genus, :fossil => true
+      Factory :subspecies, :species => Factory(:species, :genus => genus)
+      Factory :subspecies, :species => Factory(:species, :genus => genus), :fossil => true
+      subfamily.statistics.should == {
+        :extant => {:genera => {'valid' => 1}, :species => {'valid' => 3}, :subspecies => {'valid' => 1}},
+        :fossil => {:genera => {'valid' => 1}, :species => {'valid' => 1}, :subspecies => {'valid' => 1}},
+      }
+    end
+
   end
+
+  describe "Importing" do
+    it "should work" do
+      reference = Factory :article_reference, :bolton_key_cache => 'Emery 1913a'
+      subfamily = Subfamily.import(
+        name: 'Aneuretinae',
+        fossil: true,
+        protonym: {tribe_name: "Aneuretini",
+                   authorship: [{author_names: ["Emery"], year: "1913a", pages: "6"}]},
+        type_genus: {genus_name: 'Atta'},
+        taxonomic_history: ["Aneuretinae as subfamily", "Aneuretini as tribe"]
+      )
+      
+      ForwardReference.fixup
+
+      subfamily.reload
+      subfamily.name.should == 'Aneuretinae'
+      subfamily.should_not be_invalid
+      subfamily.should be_fossil
+      subfamily.taxonomic_history_items.map(&:taxt).should == ['Aneuretinae as subfamily', 'Aneuretini as tribe']
+
+      subfamily.type_taxon_name.should == 'Atta'
+
+      protonym = subfamily.protonym
+      protonym.name.should == 'Aneuretini'
+
+      authorship = protonym.authorship
+      authorship.pages.should == '6'
+
+      authorship.reference.should == reference
+    end
+  end
+
 end

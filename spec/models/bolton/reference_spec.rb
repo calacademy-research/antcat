@@ -351,4 +351,5 @@ describe Bolton::Reference do
       reference.authors.should == 'Fisher, Martha'
     end
   end
+
 end

@@ -1,13 +1,14 @@
 # coding: UTF-8
 class Bolton::ReferenceKey
-  def initialize authors_string, year
+
+  def initialize authors_string, citation_year
     @authors = authors_string
-    @year = year
+    @citation_year = citation_year
   end
 
   def to_s format
     raise unless format == :db
-    return @year unless @authors.present?
+    return @citation_year unless @authors.present?
     key = @authors.dup
     # remove initials
     key.gsub! /\b[[:upper:]]\./, ''
@@ -15,7 +16,7 @@ class Bolton::ReferenceKey
     key.gsub! /[,&]/, ''
     # collapse spaces
     key.squish!
-    key << ' ' << @year
+    key << ' ' << @citation_year if @citation_year
   end
 
 end

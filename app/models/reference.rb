@@ -22,7 +22,7 @@ class Reference < ActiveRecord::Base
 
   # validation and callbacks
   before_validation :set_year_from_citation_year, :strip_newlines_from_text_fields
-  validates_presence_of :year, :title
+  validates_presence_of :title
   before_save       :set_author_names_caches
   before_destroy    :check_not_nested
 
@@ -33,6 +33,10 @@ class Reference < ActiveRecord::Base
   def author_names_string()         author_names_string_cache end
   def author_names_string=(string)  self.author_names_string_cache = string end
   def principal_author_last_name()  principal_author_last_name_cache end
+
+  def short_citation_year
+    citation_year.gsub %r{ .*$}, ''
+  end
 
   ## callbacks
 

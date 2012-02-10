@@ -64,6 +64,11 @@ at_exit do
   Sunspot.session = Sunspot::Rails::StubSessionProxy.new(Sunspot.session) if ENV['DRB'] != 'true'
 end
 
+Before do
+  Family.delete_all
+  Factory :family, :protonym => nil
+end
+
 Spork.each_run do
   FactoryGirl.reload
 end

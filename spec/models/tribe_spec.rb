@@ -45,4 +45,37 @@ describe Tribe do
     end
   end
 
+  describe "Importing" do
+    it "should work" do
+      reference = Factory :article_reference, :bolton_key_cache => 'Emery 1913a'
+      tribe = Tribe.import(
+        name: 'Aneuretini',
+        fossil: true,
+        protonym: {tribe_name: "Aneuretini",
+                   authorship: [{author_names: ["Emery"], year: "1913a", pages: "6"}]},
+        type_genus: {genus_name: 'Atta'},
+        taxonomic_history: ["Aneuretini history"]
+      )
+      
+      ForwardReference.fixup
+      tribe.reload
+
+      tribe.name.should == 'Aneuretini'
+      tribe.should_not be_invalid
+      tribe.should be_fossil
+      tribe.taxonomic_history_items.map(&:taxt).should == ['Aneuretini history']
+
+      tribe.type_taxon_name.should == 'Atta'
+      tribe.type_taxon_rank.should == 'genus'
+
+      protonym = tribe.protonym
+      protonym.name.should == 'Aneuretini'
+
+      authorship = protonym.authorship
+      authorship.pages.should == '6'
+
+      authorship.reference.should == reference
+    end
+  end
+
 end

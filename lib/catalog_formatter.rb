@@ -113,6 +113,13 @@ class CatalogFormatter
     [taxon.type.downcase, 'taxon']
   end
 
+  def self.fossil name, is_fossil
+    string = ''
+    string << '&dagger;' if is_fossil
+    string << h(name)
+    string.html_safe
+  end
+
   def self.status_plural status
     status_labels[status][:plural]
   end
