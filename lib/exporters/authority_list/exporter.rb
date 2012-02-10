@@ -1,5 +1,5 @@
 # coding: UTF-8
-class AuthorityList::Exporter
+class Exporters::AuthorityList::Exporter
   def initialize show_progress = false
     Progress.init show_progress
   end
