@@ -48,6 +48,10 @@ class Taxon < ActiveRecord::Base
     target.name
   end
 
+  def full_name
+    name
+  end
+
   def self.find_name name, search_type = 'matching'
     query = ordered_by_name
     names = name.split ' '
@@ -109,4 +113,9 @@ class Taxon < ActiveRecord::Base
   def convert_asterisks_to_daggers!
     update_attribute :taxonomic_history, taxonomic_history.convert_asterisks_to_daggers if taxonomic_history?
   end
+
+  def incertae_sedis_in? rank
+    incertae_sedis_in == rank
+  end
+
 end

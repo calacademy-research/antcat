@@ -156,4 +156,26 @@ class Reference < ActiveRecord::Base
     end
   end
 
+  def self.find_by_bolton_key data
+    year = data[:year] || data[:in] && data[:in][:year]
+
+    return MissingReference.import 'no year', data unless year
+
+    bolton_key = Bolton::ReferenceKey.new(data[:author_names].join(' '), year).to_s :db
+
+    reference = find_by_bolton_key_cache bolton_key
+    return reference if reference
+
+    bolton_reference = Bolton::Reference.find_by_key_cache bolton_key
+    if !bolton_reference
+      reference = MissingReference.import 'no Bolton', data
+    else
+      reference = bolton_reference.match || MissingReference.import('no Bolton match', data)
+    end
+
+    reference.update_attribute :bolton_key_cache, bolton_key
+
+    reference
+  end
+
 end
