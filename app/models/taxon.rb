@@ -3,9 +3,14 @@ require 'asterisk_dagger_formatting'
 
 class Taxon < ActiveRecord::Base
   set_table_name :taxa
-  belongs_to :synonym_of, :class_name => 'Taxon'
-  has_one :homonym_replaced, :class_name => 'Taxon', :foreign_key => :homonym_replaced_by_id
-  belongs_to :homonym_replaced_by, :class_name => 'Taxon'
+
+  belongs_to  :synonym_of, :class_name => 'Taxon', :foreign_key => :synonym_of_id
+  has_one     :homonym_replaced, :class_name => 'Taxon', :foreign_key => :homonym_replaced_by_id
+  belongs_to  :protonym
+  belongs_to  :homonym_replaced_by, :class_name => 'Taxon'
+  has_many    :taxonomic_history_items, :order => :position
+  has_many    :reference_sections, :order => :position
+
   validates_presence_of :name
 
   scope :valid, where("status = ?", 'valid')
@@ -18,16 +23,11 @@ class Taxon < ActiveRecord::Base
   def unidentifiable?;  status == 'unidentifiable' end
   def synonym?;         status == 'synonym' end
   def homonym?;         status == 'homonym' end
-
-  before_save :set_fossil_flag
-
-  def set_fossil_flag
-    self.fossil ||= false
-    true
-  end
+  def unresolved_homonym?;status == 'unresolved homonym' end
+  def excluded?;        status == 'excluded' end
 
   def rank
-    self.class.to_s.downcase
+    Rank[self].to_s
   end
 
   def children
@@ -66,6 +66,12 @@ class Taxon < ActiveRecord::Base
       query = query.where ['taxa.name LIKE ? AND taxa.type IN (?)', '%' + name + '%', types_sought]
     end
     query.all
+  end
+
+  def self.find_genus_group_by_name name
+    query = where ['taxa.name = ? AND taxa.type IN (?)', name, ['Genus', 'Subgenus']]
+    return unless query.count == 1
+    query.first
   end
 
   def self.statistics
