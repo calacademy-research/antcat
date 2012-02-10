@@ -1,5 +1,4 @@
 # coding: UTF-8
-
 $BOLTON_DATA_DIRECTORY = 'data/bolton'
 
 namespace :bolton do
@@ -16,6 +15,11 @@ namespace :bolton do
     desc "Import Bolton species catalog documents"
     task :species => :environment do
       Bolton::Catalog::Species::Importer.new(true).import_files Dir.glob "#{$BOLTON_DATA_DIRECTORY}/NGC-Sp*.htm"
+    end
+    desc "Import Bolton species catalog documents deeply"
+    task 'species:deep' => :environment do
+      Bolton::Catalog::Species::DeepSpeciesImporter.new(:show_progress => true, :start_from_scratch => true).
+        import_files Dir.glob "#{$BOLTON_DATA_DIRECTORY}/NGC-Sp*.htm"
     end
     desc "Import all taxa"
     task :taxa => ['bolton:import:subfamilies', 'bolton:import:species']

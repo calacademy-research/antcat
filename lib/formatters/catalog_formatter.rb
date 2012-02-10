@@ -1,5 +1,5 @@
 # coding: UTF-8
-class CatalogFormatter
+class Formatters::CatalogFormatter
   extend ERB::Util
   extend ActionView::Helpers::TagHelper
   extend ActionView::Helpers::TextHelper

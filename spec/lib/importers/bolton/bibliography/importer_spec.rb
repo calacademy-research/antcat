@@ -13,9 +13,9 @@ describe Bolton::Bibliography::Importer do
   end
 
   it "importing a file should call #import_html" do
-   File.should_receive(:read).with('filename').and_return('contents')
+   File.should_receive(:read).with('file_name').and_return('contents')
    @bibliography.should_receive(:import_html).with('contents')
-   @bibliography.import_files ['filename']
+   @bibliography.import_files ['file_name']
    Bolton::Reference.all.should be_empty
   end
 

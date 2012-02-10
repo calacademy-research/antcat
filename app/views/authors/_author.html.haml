@@ -5,7 +5,7 @@
       - references = author_name.references
       .name
         = author_name.name
-        %span.count= Formatter.count_and_noun references, 'reference'
+        %span.count= CatalogFormatter.count_and_noun references, 'reference'
       - if references.present?
         .references
           - for reference in references

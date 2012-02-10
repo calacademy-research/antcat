@@ -6,9 +6,9 @@ Feature: Checking for duplicates during data entry
 
   Scenario: Adding a duplicate reference
     Given the following references exist
-      |authors   |citation  |title           |year|id|
-      |Bolton, B.|Psyche 5:3|Ants are my life|2010|1 |
-      |Ward, P.  |Psyche 6:1|Ants            |2010|2 |
+      |authors   |citation  |title           |year|
+      |Bolton, B.|Psyche 5:3|Ants are my life|2010|
+      |Ward, P.  |Psyche 6:1|Ants            |2010|
       And I am logged in
     When I go to the references page
       And I follow "add"
@@ -45,9 +45,9 @@ Feature: Checking for duplicates during data entry
 
   Scenario: Editing a reference that makes it a duplicate
     Given the following references exist
-      |authors   |citation  |title           |year|id|
-      |Bolton, B.|Psyche 5:3|Ants are my life|2010|1 |
-      |Ward, P.  |Psyche 6:1|Ants            |2010|2 |
+      |authors   |citation  |title           |year|
+      |Bolton, B.|Psyche 5:3|Ants are my life|2010|
+      |Ward, P.  |Psyche 6:1|Ants            |2010|
       And I am logged in
     When I go to the references page
       And I fill in the search box with "Bolton"
