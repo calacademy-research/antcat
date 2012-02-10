@@ -1,5 +1,4 @@
 # coding: UTF-8
-
 def reference_factory attributes = {}
   author_name = Factory(:author_name, :name => attributes.delete(:author_name))
   reference = Factory(:reference, attributes.merge(:author_names => [author_name]))
