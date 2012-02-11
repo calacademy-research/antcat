@@ -8,7 +8,16 @@ module CatalogHelper
   include Catalog::BrowserHelper
 
   def status_labels
-    CatalogFormatter.status_labels
+    Formatters::CatalogFormatter.status_labels
+  end
+
+  def format_statistics statistics, include_invalid = true
+    Formatters::CatalogFormatter.format_statistics statistics, :include_invalid => include_invalid
+  end
+
+  def make_catalog_search_results_columns items
+    column_count = 3
+    items.snake column_count
   end
 
   def search_selector current_search_type
@@ -16,13 +25,8 @@ module CatalogHelper
       options_for_select(['matching', 'beginning with', 'containing'], current_search_type || 'beginning with')
   end
 
-  def format_statistics statistics, include_invalid = true
-    CatalogFormatter.format_statistics statistics, :include_invalid => include_invalid
-  end
-
-  def make_catalog_search_results_columns items
-    column_count = 3
-    items.snake column_count
+  def taxonomic_history taxon
+    Formatters::CatalogFormatter.format_taxonomic_history taxon
   end
 
 end

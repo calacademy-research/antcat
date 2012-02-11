@@ -1,0 +1,52 @@
+grammar Importers::Bolton::Catalog::Species::SubspeciesGrammar
+  include Importers::Bolton::Catalog::Grammar
+
+  rule subspecies
+    available_subspecies | homonym_subspecies
+  end
+
+  rule available_subspecies
+    (available_subspecies_prefix subspecies_name:species_epithet subspecies_species_name? /.*/) {
+      value = {:type => :subspecies, :name => subspecies_name.value, :status => 'valid'}
+      value.merge! available_subspecies_prefix.value
+      value.merge! subspecies_species_name.value if subspecies_species_name && subspecies_species_name != ''
+      value
+    }
+  end
+
+  rule subspecies_species_name
+    currently_subspecies_of | species_from_full_name
+  end
+
+  rule currently_subspecies_of
+    (/.*Currently subspecies of / italic species_epithet) {
+      {:species => species_epithet.value}
+    } 
+  end
+
+  rule species_from_full_name
+    (close_tags blue? '.'? close_tags italic? '.'? s fossil_flag? capitalized_word s parenthesized_genus_name? species_epithet) {
+      {:species => species_epithet.value}
+    }
+  end
+
+  rule parenthesized_genus_name
+    s '(' capitalized_word ')' s
+  end
+
+  rule available_subspecies_prefix
+    (fossil_flag? bold? italic? blue? black? fossil_flag? close_tags bold? italic? blue?) {
+      fossil_flag ? {:fossil => true} : {}
+    }
+  end
+
+  rule homonym_subspecies
+    (fossil_flag? subspecies_flag bold italic maroon subspecies_name:species_epithet subspecies_species_name? /.*/) {
+      value = {:type => :subspecies, :name => subspecies_name.value, :status => 'homonym'}
+      value.merge! :fossil => true unless fossil_flag.blank?
+      value.merge! subspecies_species_name.value if subspecies_species_name && subspecies_species_name != ''
+      value
+    }
+  end
+
+end

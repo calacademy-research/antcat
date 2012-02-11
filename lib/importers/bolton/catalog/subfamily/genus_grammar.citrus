@@ -1,0 +1,159 @@
+grammar Importers::Bolton::Catalog::Subfamily::GenusGrammar
+  include Importers::Bolton::Catalog::Grammar
+
+  rule genus_section
+      genus_header
+    | genus_nomen_nudum_header
+    | genus_headline
+    | homonym_replaced_by_genus_header
+    | genera_of_hong_header
+    | genera_header
+    | genera_incertae_sedis_in_poneroid_subfamilies_header
+    | genera_incertae_sedis_header
+    | junior_synonyms_of_genus_header
+    | genus_references_see_under
+    | genus_references_header
+  end
+  
+  rule genera_header
+    (('Genera'|'Genus') ' of ' taxon_label) {
+      {:type => :genera_header}
+    }
+  end
+
+  rule genera_incertae_sedis_header
+    (('Genera'|'Genus') ' ' '(extinct) '? incertae_sedis_in ' ' uppercase_word) {
+      {:type => :genera_incertae_sedis_header}
+    }
+  end
+
+  rule genera_incertae_sedis_in_poneroid_subfamilies_header
+    ('Genera ' incertae_sedis_in ' poneroid subfamilies') {
+      {:type => :genera_incertae_sedis_in_poneroid_subfamilies_header}
+    }
+  end
+
+  rule genera_of_hong_header
+    ('Genera of Hong (2002), ' incertae_sedis_in ' ' family_or_subfamily_name_uppercase) {
+      {:type => :genera_of_hong_header}
+    }
+  end
+
+  rule genus_header
+    ('Genus ' fossil_flag? italic uppercase_word close_tag (' ' genus_header_note)?) {
+      value = {:type => :genus_header, :name => uppercase_word.downcase.capitalize.strip}
+      value[:fossil] = true if fossil_flag.present?
+      value.merge! genus_header_note.value if genus_header_note
+      value
+    }
+  end
+
+  rule genus_nomen_nudum_header
+    (fossil_flag? italic uppercase_word close_tag ' [' nomen_nudum ']') {
+      value = {:type => :genus_nomen_nudum_header, :name => uppercase_word.downcase.capitalize.strip}
+      value[:fossil] = true if fossil_flag.present?
+      value
+    }
+  end
+
+  rule genus_header_note
+    ('[' family_group_name ']') {
+      {:note => {:name => family_group_name}}
+    }
+  end
+
+  rule genus_headline
+    (
+        (genus_label '.' /$/)
+      | (genus_label ', ' unjustified_emendation)
+      | (genus_label '. ' unnecessary_replacement)
+      | (genus_label ', ' nomen_nudum '.' (' ' type_species)? note:(' ' text)?)
+      | (genus_label (' ' as_placement)? '. ' type_species)
+      | (genus_label (' ' bracketed_phrase)? '. ' type_species)
+      | (genus_label '. ' collective_group_name:'[Collective group name.]')
+    ) {
+      value = {:type => :genus_headline}
+      value[:protonym] = genus_label.value
+      value.merge! as_placement.value if as_placement
+      value[:note] = bracketed_phrase.value if bracketed_phrase
+      value[:note] = text.value if text
+      value.merge! type_species.value if type_species
+      value[:collective_group_name] = true if collective_group_name and collective_group_name != ''
+      value[:nomen_nudum] = true if nomen_nudum
+      value.merge! unnecessary_replacement.value if unnecessary_replacement
+      value.merge! unjustified_emendation.value if unjustified_emendation
+      value
+    }
+  end
+
+  rule unjustified_emendation
+    ('unjustified' subsequent:(' subsequent')? ' emendation of ' genus_label '.') {
+      value = {:unjustified_emendation_of => genus_label.value}
+      value[:subsequent] = true if subsequent && subsequent != ''
+      value
+    }
+  end
+
+  rule unnecessary_replacement
+    unnecessary_replacement_junior_homonym | unnecessary_replacement_sensu
+  end
+
+  rule unnecessary_replacement_junior_homonym
+    ('Unnecessary replacement name for ' genus_label ' (junior homonym).') {
+      {:unnecessary_replacement_name_for => genus_label.value, :junior_homonym => true}
+    }
+  end
+
+  rule unnecessary_replacement_sensu
+    ('[Unnecessary replacement name for ' genus_label ' in the sense of ' reference '.]') {
+      {:unnecessary_replacement_name_for => genus_label.value.merge!(:sensu => reference.value)}
+    }
+  end
+
+  ###########################################
+  rule type_species
+    ('Type-species: ' ((label:(species_label|subspecies_label) text*) | text+)) {
+      value = {}
+      value.merge! label.value if label
+      value.merge! :texts => captures[:text].map(&:value)
+      {:type_species => value}
+    }
+  end
+
+  rule as_placement
+    ('[as ' 'subgenus of ' genus_label ']') {
+      {:as => {
+        :rank => :subgenus,
+        :of => genus_label.value
+      }}
+    }
+  end
+
+  ###########################################
+  rule junior_synonyms_of_genus_header
+    (/Junior synonyms?/ ' of ' fossil_flag? italic uppercase_word close_tag /.*/) {
+      {:type => :junior_synonyms_of_genus_header, title: to_s}
+    }
+  end
+
+  rule homonym_replaced_by_genus_header
+    ('Homonym replaced by ' fossil_flag? italic (capitalized_word|uppercase_word) /.*/) {
+      {:type => :homonym_replaced_by_genus_header, title: to_s}
+    }
+  end
+
+  rule genus_references_header
+    ('Genus' (' ' genus_label)? ' references') {
+      value = {:type => :genus_references_header, title: to_s}
+      value[:genus_name] = genus_label.value[:genus_name] if genus_label
+      value
+    }
+  end
+
+  rule genus_references_see_under
+    ('Genus' (' ' genus_label)? ' references: see' (' under ' taxon_label ',')? ' above.') {
+      {:type => :genus_references_see_under, title: to_s}
+    }
+  end
+
+end

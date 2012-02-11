@@ -28,7 +28,7 @@ EOS
       }
       format.endnote_import  {
         references = Reference.do_search params.merge :format => :endnote_import
-        render :text => ReferenceFormatter::EndnoteImport.format(references)
+        render text: Exporters::Endnote::Formatter.format(references)
       }
     end
   end

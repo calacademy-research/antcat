@@ -6,7 +6,7 @@
 class Reference < ActiveRecord::Base
 
   def self.import_hol_document_urls show_progress = false
-    Hol::DocumentUrlImporter.new(show_progress).import
+    Importers::Hol::DocumentUrlImporter.new(show_progress).import
   end
 
   def replace_author_name old_name, new_author_name

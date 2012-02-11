@@ -5,9 +5,9 @@
       - references = author_name.references
       .name
         = author_name.name
-        %span.count= CatalogFormatter.count_and_noun references, 'reference'
+        %span.count= Formatters::CatalogFormatter.count_and_noun references, 'reference'
       - if references.present?
         .references
           - for reference in references
             .reference
-              = link_to ReferenceFormatter.format(reference), "/references?q=#{reference.id}", target: '_blank'
+              = link_to Formatters::ReferenceFormatter.format(reference), "/references?q=#{reference.id}", target: '_blank'

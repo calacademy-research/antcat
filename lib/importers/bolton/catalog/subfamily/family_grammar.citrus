@@ -1,0 +1,250 @@
+<<<<<<< HEAD
+grammar Bolton::Catalog::Subfamily::FamilyGrammar
+  include CommonGrammar
+  include Bolton::Catalog::Grammar
+||||||| merged common ancestors
+grammar Bolton::Catalog::Subfamily::FamilyGrammar
+  include Bolton::Catalog::Grammar
+=======
+grammar Importers::Bolton::Catalog::Subfamily::FamilyGrammar
+  include Importers::Bolton::Catalog::Grammar
+>>>>>>> master
+
+  rule family_section
+      family_references_header
+    | family_centered_header
+    | family_header
+    | family_taxonomic_history
+    | family_group_headline
+
+    | extant_subfamilies_list
+    | extinct_subfamilies_list
+
+    | extant_genera_incertae_sedis_in_family_list
+    | extinct_genera_incertae_sedis_in_family_list
+    | extant_genera_excluded_from_family_list
+    | extinct_genera_excluded_from_family_list
+    | genus_group_nomina_nuda_in_family_list
+
+    | regional_catalogues_header
+    | genera_incertae_sedis_header
+    | genera_excluded_from_family_header
+    | genera_excluded_from_family_note
+    | genera_incertae_sedis_and_exclusions_header
+    | unavailable_family_group_name_header
+    | unavailable_family_group_names_header
+    | genus_group_nomina_nuda_header
+
+    | myrmicites_headline
+    | ponerites_headline
+  end
+
+  rule family_centered_header
+    'FAMILY FORMICIDAE' {
+      {:type => :family_centered_header}
+    }
+  end
+
+  rule family_header
+    'Family FORMICIDAE' {
+      {:type => :family_header}
+    }
+  end
+
+  rule family_group_headline
+    (family_group_protonym '. ' type_genus (' ' family_group_headline_junior_synonym_of)? '.') {
+      value = {:type => :family_group_headline}
+      value[:protonym] = family_group_protonym.value
+      value.merge! family_group_headline_junior_synonym_of.value if family_group_headline_junior_synonym_of
+      value.merge! type_genus.value
+      value
+    }
+  end
+
+  rule family_group_protonym
+    (fossil_flag? family_group_name (' (' sic ')')? ' ' authorship) {
+      value = family_group_name.value
+      value[:fossil] = true if fossil_flag
+      value[:sic] = true if sic
+      value[:authorship] = authorship.value
+      value
+    }
+  end
+
+  rule type_genus
+    ('Type-genus: ' genus_label) {
+      {:type_genus => genus_label.value}
+    }
+  end
+
+  rule family_group_headline_junior_synonym_of
+    ('(junior synonym of ' genus_label ')') {
+      {:junior_synonym_of => genus_label.value}
+    }
+  end
+
+  rule family_taxonomic_history
+    ('Formicidae as family: ' text) {
+      text_copy = text.value[:text]
+      text_copy.insert 0, :phrase => 'Formicidae as family', :delimiter => ': '
+      {:type => :family_taxonomic_history, :items => text_copy}
+    }
+  end
+
+  ###################################################################################################
+
+  rule extant_subfamilies_list
+    ('Subfamilies of Formicidae (extant): ' subfamily_name_list '.') {
+      {:type => :extant_subfamilies_list, :subfamilies => subfamily_name_list.value}
+    } 
+  end
+
+  rule extinct_subfamilies_list
+    ('Subfamilies of Formicidae (extinct): ' subfamily_name_list '.') {
+      {:type => :extinct_subfamilies_list, :subfamilies => subfamily_name_list.value}
+    } 
+  end
+
+  rule subfamily_name_list
+    (subfamily_label (', ' subfamily_label)*) {
+      captures[:subfamily_label].map &:value
+    }
+  end
+
+  ###################################################################################################
+
+  rule extant_genera_incertae_sedis_in_family_list
+    ('Genera (extant) ' incertae_sedis_in ' Formicidae: '  genus_name_list '.') {
+      {:type => :extant_genera_incertae_sedis_in_family_list, :genera => genus_name_list.value}
+    } 
+  end
+
+  rule extinct_genera_incertae_sedis_in_family_list
+    ('Genera (extinct) ' incertae_sedis_in ' Formicidae: ' genus_name_list '.') {
+      {:type => :extinct_genera_incertae_sedis_in_family_list, :genera => genus_name_list.value}
+    } 
+  end
+
+  rule extant_genera_excluded_from_family_list
+    ('Genera (extant) excluded from Formicidae: '  genus_name_list '.') {
+      {:type => :extant_genera_excluded_from_family_list, :genera => genus_name_list.value}
+    } 
+  end
+
+  rule extinct_genera_excluded_from_family_list
+    ('Genera (extinct) excluded from Formicidae: '  genus_name_list '.') {
+      {:type => :extinct_genera_excluded_from_family_list, :genera => genus_name_list.value}
+    } 
+  end
+
+  rule genus_group_nomina_nuda_in_family_list
+    ('Genus-group ' nomina_nuda_in ' Formicidae: ' genus_name_list '.') {
+      {:type => :genus_group_nomina_nuda_in_family_list, :genera => genus_name_list.value}
+    } 
+  end
+
+  rule genus_name_list
+    (genus_label (', ' genus_label)*) {
+      captures[:genus_label].map &:value
+    }
+  end
+
+
+  ##############################################################
+
+  rule unavailable_family_group_name_header
+    (family_group_name_uppercase ' [unavailable name]') {
+      {:type => :unavailable_family_group_name_header, :name => family_group_name_uppercase.titleize}
+    }
+  end
+
+  rule unavailable_family_group_name_detail
+    ((family_group_protonym|(family_group_name ': ' reference)) '.' text*) {
+      value = {:type => :unavailable_family_group_name_detail}
+      if family_group_protonym
+        value[:protonym] = family_group_protonym.value
+      else
+        value.merge! family_group_name.value
+        value.merge! reference.value
+      end
+      value[:additional_notes] = captures[:text].map &:value
+      value
+    }
+  end
+
+  ##############################################################
+
+  rule genera_incertae_sedis_and_exclusions_header
+    'GENERA <i>INCERTAE SEDIS</i> AND EXCLUSIONS FROM FORMICIDAE' {
+      :genera_incertae_sedis_and_exclusions_header
+    }
+  end
+
+  rule family_references_header
+    'FAMILY FORMICIDAE REFERENCES, WORLD' {
+      {:type => :family_references_header}
+    }
+  end
+
+  rule regional_catalogues_header
+    'Regional catalogues and checklists' {
+      {:type => :regional_catalogues_header}
+    }
+  end
+
+  rule genera_incertae_sedis_header
+    'Genera <i>incertae sedis</i> in FORMICIDAE' {
+      {:type => :genera_incertae_sedis_header}
+    }
+  end
+
+  rule genera_excluded_from_family_header
+    'Genera excluded from FORMICIDAE' {
+      {:type => :genera_excluded_from_family_header}
+    }
+  end
+
+  rule genera_excluded_from_family_note
+    'The following were all originally described as members of Formicidae but are now excluded.' {
+      {:type => :genera_excluded_from_family_note}
+    }
+  end
+
+  rule unavailable_family_group_names_header
+    'Unavailable family-group names in FORMICIDAE' {
+      {:type => :unavailable_family_group_names_header}
+    }
+  end
+
+  rule genus_group_nomina_nuda_header
+    'Genus-group <i>nomina nuda</i> in FORMICIDAE' {
+      {:type => :genus_group_nomina_nuda_header}
+    }
+  end
+
+  ##############################################################
+
+  rule myrmicites_headline
+    'Myrmicites Lepeletier de Saint-Fargeau, 1835: 169. Type-genus: <i>Myrmica</i>.' {
+      { type: :family_group_headline,
+        protonym: {
+          family_or_subfamily_name: 'Myrmicites',
+          authorship: [{author_names: ['Lepeletier de Saint-Fargeau'], year: '1835', pages: '169'}],
+        },
+        type_genus: {genus_name: 'Myrmica'}
+      }
+    }
+  end
+
+  rule ponerites_headline
+    'Ponerites Lepeletier de Saint-Fargeau, 1835: 185. Type-genus: <i>Ponera</i>.' {
+      { type: :family_group_headline,
+        protonym: {
+        family_or_subfamily_name: 'Ponerites',
+        authorship: [{author_names: ['Lepeletier de Saint-Fargeau'], year: '1835', pages: '185'}],
+        },
+        type_genus: {genus_name: 'Ponera'}
+      }
+    }
+  end
+end
