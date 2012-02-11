@@ -57,11 +57,3 @@ Then /^I should (not )?see the tribes index$/ do |should_not|
   selector = should_not ? :should_not : :should
   page.send selector, have_css('.index .tribes')
 end
-
-Given /^there is a missing reference$/ do
-  Factory :missing_reference, :citation => 'Adventures among Ants'
-end
-
-And /^I should not see the missing reference$/ do
-  step 'I should not see "Adventures among Ants"'
-end
