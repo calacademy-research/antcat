@@ -3,41 +3,11 @@ class Formatters::ReferenceFormatter
   include ERB::Util
   extend ERB::Util
 
-  def self.format reference, format = :html
-    case reference
-    when ArticleReference then Formatters::ArticleReferenceFormatter
-    when BookReference then Formatters::BookReferenceFormatter
-    when NestedReference then Formatters::NestedReferenceFormatter
-    when UnknownReference then Formatters::UnknownReferenceFormatter
-    else raise "Don't know what kind of reference this is: #{reference.inspect}"
-    end.new(reference, format).format
+  def self.format reference
+    make_formatter(reference).format
   end
-
-  def initialize reference, format
-    @reference = reference
-    @format = format
-  end
-
-  def format
-    string = format_author_names
-    string << ' ' unless string.empty?
-    string << format_year << '. '
-    string << format_title << ' '
-    string << format_citation
-    string << " [#{format_date(@reference.date)}]" if @reference.date?
-    string
-  end
-
-  def format_year
-    h @reference.citation_year
-  end
-
-  def format_author_names
-    h @reference.author_names_string
-  end
-
-  def format_title
-    self.class.italicize self.class.add_period_if_necessary h @reference.title
+  def self.format_inline_citation reference, user
+    make_formatter(reference).format_inline_citation user
   end
 
   def self.italicize string
@@ -59,7 +29,49 @@ class Formatters::ReferenceFormatter
     timestamp.strftime '%Y-%m-%d'
   end
 
+  def self.h_italic string
+    string = string.gsub /<i>/, 'xxxx'
+    string = string.gsub /<\/i>/, 'yyyy'
+    string = h string
+    string = string.gsub /xxxx/, '<i>'
+    string = string.gsub /yyyy/, '</i>'
+    string.html_safe
+  end
+
+  ##################
+  def initialize reference
+    @reference = reference
+  end
+
+  def format
+    string = format_author_names
+    string << ' ' unless string.empty?
+    string << format_year << '. '
+    string << format_title << ' '
+    string << format_citation
+    string << " [#{format_date(@reference.date)}]" if @reference.date?
+    string
+  end
+
+  def format_author_names
+    h @reference.author_names_string
+  end
+
+  def format_year
+    h @reference.citation_year
+  end
+
+  def format_title
+    self.class.italicize self.class.add_period_if_necessary h @reference.title
+  end
+
+  def format_inline_citation user
+    @reference.key.to_link user
+  end
+
   private
+  def h_italic(string) self.class.h_italic string end
+
   def format_date input
     date = input
     return date if input.length < 4
@@ -75,6 +87,12 @@ class Formatters::ReferenceFormatter
     return prefix + date + suffix if input.length < 8
     date << '-' << input[6, 2]
     h prefix + date + suffix
+  end
+
+  def self.make_formatter reference
+    raise "Don't know what kind of reference this is: #{reference.inspect}" unless
+      ['Article', 'Book', 'Nested', 'Unknown', 'Missing'].map {|e| e + 'Reference'}.include? reference.class.name
+    ('Formatters::' + reference.class.name + 'Formatter').constantize.new reference
   end
 end
 
@@ -99,5 +117,11 @@ end
 class Formatters::NestedReferenceFormatter < Formatters::ReferenceFormatter
   def format_citation
     self.class.italicize "#{h @reference.pages_in} #{Formatters::ReferenceFormatter.format(@reference.nested_reference)}".html_safe
+  end
+end
+
+class Formatters::MissingReferenceFormatter < Formatters::ReferenceFormatter
+  def format_inline_citation _ = nil
+    @reference.citation
   end
 end
