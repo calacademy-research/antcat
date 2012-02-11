@@ -69,7 +69,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
   def parse_junior_synonym_of_subgenus subgenus
     parsed_text = ''
     name = @parse_result[:name]
-    fossil = @parse_result[:fossil]
+    fossil = @parse_result[:fossil] || false
     taxonomic_history = @paragraph
     taxonomic_history << parse_taxonomic_history
     genus = Subgenus.create! :name => name, :fossil => fossil, :status => 'synonym', :synonym_of => subgenus,

@@ -10,7 +10,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     expect :subfamily_header
 
     name = @parse_result[:name]
-    fossil = @parse_result[:fossil]
+    fossil = @parse_result[:fossil] || false
 
     parse_next_line
     expect :family_group_line

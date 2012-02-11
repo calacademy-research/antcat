@@ -10,7 +10,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     while @type == :tribes_list
       parsed_text << @paragraph
       @parse_result[:tribes].each do |tribe|
-        attributes = {:name => tribe[:name], :subfamily => subfamily, :fossil => tribe[:fossil], :status => 'valid'}
+        attributes = {:name => tribe[:name], :subfamily => subfamily, :fossil => tribe[:fossil] || false, :status => 'valid'}
         attributes.merge!(:incertae_sedis_in => 'subfamily') if @parse_result[:incertae_sedis]
         Tribe.create! attributes
       end
@@ -28,7 +28,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     Progress.log 'parse_tribe'
 
     name = @parse_result[:name]
-    fossil = @parse_result[:fossil]
+    fossil = @parse_result[:fossil] || false
 
     parse_next_line
     expect :family_group_line
@@ -76,7 +76,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     Progress.log 'parse_junior_synonym_of_tribe'
     parsed_text = ''
     name = @parse_result[:name]
-    fossil = @parse_result[:fossil]
+    fossil = @parse_result[:fossil] || false
     taxonomic_history = @paragraph
     taxonomic_history << parse_taxonomic_history
     tribe = Tribe.create! :name => name, :fossil => fossil, :status => 'synonym', :synonym_of => tribe,
