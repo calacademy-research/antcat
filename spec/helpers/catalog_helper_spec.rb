@@ -6,14 +6,14 @@ describe CatalogHelper do
   describe 'taxon header' do
     it "should return the header and CSS class based on the type of the taxon, its status and whether or not it's a fossil" do
       taxon = Factory :genus, :name => 'Atta', :fossil => true
-      taxon_header = helper.taxon_header taxon, :link => true
+      taxon_header = helper.browser_taxon_header taxon, :link => true
       taxon_header.should ==
         %{Genus <a href="#{browser_catalog_path taxon}" class="genus taxon valid">&dagger;ATTA</a>}
       taxon_header.should be_html_safe
     end
     it "should be able to not include a link" do
       taxon = Factory :genus, :name => 'Atta', :fossil => true
-      taxon_header = helper.taxon_header taxon
+      taxon_header = helper.browser_taxon_header taxon
       taxon_header.should ==
         %{Genus <span class="genus taxon valid">&dagger;ATTA</span>}
       taxon_header.should be_html_safe
