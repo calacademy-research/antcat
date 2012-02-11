@@ -8,7 +8,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
 
     name = @parse_result[:name]
     status = @parse_result[:status]
-    fossil = @parse_result[:fossil]
+    fossil = @parse_result[:fossil] || false
 
     parse_next_line
     expect :genus_line if expect_genus_line
@@ -53,7 +53,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     expect :genus_line
 
     name = @parse_result[:name]
-    fossil = @parse_result[:fossil]
+    fossil = @parse_result[:fossil] || false
     taxonomic_history = @paragraph
     taxonomic_history << parse_taxonomic_history
     genus = ::Genus.create! :name => name, :fossil => fossil, :status => 'homonym', :homonym_replaced_by => genus,
@@ -75,7 +75,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
   def parse_junior_synonym_of_genus genus
     parsed_text = ''
     name = @parse_result[:name]
-    fossil = @parse_result[:fossil]
+    fossil = @parse_result[:fossil] || false
     taxonomic_history = @paragraph
     taxonomic_history << parse_taxonomic_history
     genus = ::Genus.create! :name => name, :fossil => fossil, :status => 'synonym', :synonym_of => genus,
@@ -105,7 +105,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     while @type == :genera_list
       parsed_text << @paragraph
       @parse_result[:genera].each do |genus|
-        attributes = {:name => genus[:name], :fossil => genus[:fossil], :status => genus[:status] || 'valid'}.merge parent_attributes
+        attributes = {:name => genus[:name], :fossil => genus[:fossil] || false, :status => genus[:status] || 'valid'}.merge parent_attributes
         attributes.merge!(:incertae_sedis_in => parent_rank.to_s) if @parse_result[:incertae_sedis]
 
         name = genus[:name]
