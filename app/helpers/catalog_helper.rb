@@ -59,4 +59,8 @@ module CatalogHelper
       options_for_select(['matching', 'beginning with', 'containing'], current_search_type || 'beginning with')
   end
 
+  def taxonomic_history taxon
+    Formatters::CatalogFormatter.format_taxonomic_history taxon
+  end
+
 end
