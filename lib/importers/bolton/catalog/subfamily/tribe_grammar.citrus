@@ -1,5 +1,5 @@
-grammar Bolton::Catalog::Subfamily::TribeGrammar
-  include Bolton::Catalog::Grammar
+grammar Importers::Bolton::Catalog::Subfamily::TribeGrammar
+  include Importers::Bolton::Catalog::Grammar
 
   rule tribe_section
     tribe_header | junior_synonyms_of_tribe_header | genera_incertae_sedis_in_tribe_header

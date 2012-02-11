@@ -35,7 +35,7 @@ class Genus < Taxon
     transaction do
       protonym = Protonym.import data[:protonym]
 
-      headline_notes_taxt = Bolton::Catalog::TextToTaxt.convert(data[:note])
+      headline_notes_taxt = Importers::Bolton::Catalog::TextToTaxt.convert(data[:note])
       attributes = {
         subfamily: data[:subfamily],
         tribe: data[:tribe],
@@ -48,7 +48,7 @@ class Genus < Taxon
       }
       attributes.merge! data[:attributes] if data[:attributes]
       if data[:type_species]
-        type_species_taxt = Bolton::Catalog::TextToTaxt.convert(data[:type_species][:texts])
+        type_species_taxt = Importers::Bolton::Catalog::TextToTaxt.convert(data[:type_species][:texts])
         attributes[:type_taxon_taxt] = type_species_taxt
       end
       genus = create! attributes

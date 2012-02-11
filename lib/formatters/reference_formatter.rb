@@ -84,7 +84,7 @@ class Formatters::ArticleReferenceFormatter < Formatters::ReferenceFormatter
   end
 end
 
-class Formatters::BookReferenceFormatter < Formatters:: ReferenceFormatter
+class Formatters::BookReferenceFormatter < Formatters::ReferenceFormatter
   def format_citation
     self.class.italicize self.class.add_period_if_necessary "#{h @reference.publisher}, #{h @reference.pagination}".html_safe
   end

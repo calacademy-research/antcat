@@ -1,8 +1,8 @@
-grammar Bolton::Catalog::Species::Grammar
-  include Bolton::Catalog::Grammar
-  include Bolton::Catalog::Species::GenusGrammar
-  include Bolton::Catalog::Species::SpeciesGrammar
-  include Bolton::Catalog::Species::SubspeciesGrammar
+grammar Importers::Bolton::Catalog::Species::Grammar
+  include Importers::Bolton::Catalog::Grammar
+  include Importers::Bolton::Catalog::Species::GenusGrammar
+  include Importers::Bolton::Catalog::Species::SpeciesGrammar
+  include Importers::Bolton::Catalog::Species::SubspeciesGrammar
 
   rule record
     header | blank_line | genus_header | species | subspecies | note

@@ -103,11 +103,11 @@ describe CatalogHelper do
 
   describe "Delegation to CatalogFormatter" do
     it "status labels" do
-      CatalogFormatter.should_receive :status_labels
+      Formatters::CatalogFormatter.should_receive :status_labels
       helper.status_labels
     end
     it "format statistics" do
-      CatalogFormatter.should_receive(:format_statistics).with(1, :include_invalid => true)
+      Formatters::CatalogFormatter.should_receive(:format_statistics).with(1, :include_invalid => true)
       helper.format_statistics 1, true
     end
   end
