@@ -16,7 +16,7 @@ class Subfamily < Taxon
         protonym: protonym,
       }
       if data[:type_genus]
-        type_genus_taxt = Bolton::Catalog::TextToTaxt.convert(data[:type_genus][:texts])
+        type_genus_taxt = Importers::Bolton::Catalog::TextToTaxt.convert(data[:type_genus][:texts])
         attributes[:type_taxon_taxt] = type_genus_taxt
       end
       subfamily = create! attributes

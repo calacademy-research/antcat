@@ -20,7 +20,7 @@ class ForwardReference < ActiveRecord::Base
         'species'
       else raise
       end
-    source.update_attributes type_taxon_rank: rank, type_taxon_name: CatalogFormatter::fossil(target_name, fossil)
+    source.update_attributes type_taxon_rank: rank, type_taxon_name: Formatters::CatalogFormatter::fossil(target_name, fossil)
   end
 
 end

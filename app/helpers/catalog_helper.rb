@@ -10,7 +10,7 @@ module CatalogHelper
       classes << ' selected' if taxon == selected
       link_to "(#{taxon.gsub(/_/, ' ')})", index_catalog_path(taxon, url_parameters), :class => classes
     else
-      label_and_classes = CatalogFormatter.taxon_label_and_css_classes taxon, :selected => taxon == selected
+      label_and_classes = Formatters::CatalogFormatter.taxon_label_and_css_classes taxon, :selected => taxon == selected
       link_to label_and_classes[:label], index_catalog_path(taxon, url_parameters), :class => label_and_classes[:css_classes]
     end
   end
@@ -27,11 +27,11 @@ module CatalogHelper
   end
 
   def status_labels
-    CatalogFormatter.status_labels
+    Formatters::CatalogFormatter.status_labels
   end
 
   def format_statistics statistics, include_invalid = true
-    CatalogFormatter.format_statistics statistics, :include_invalid => include_invalid
+    Formatters::CatalogFormatter.format_statistics statistics, :include_invalid => include_invalid
   end
 
   def snake_taxon_columns items

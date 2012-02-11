@@ -8,7 +8,7 @@ module Taxt
   def self.decode taxt, user = nil
     return '' unless taxt
     taxt.gsub /{ref (\d+)}/ do |ref|
-      ReferenceFormatter.format_inline_citation(Reference.find($1), user) rescue ref
+      Formatters::ReferenceFormatter.format_inline_citation(Reference.find($1), user) rescue ref
     end.html_safe
   end
 
@@ -24,19 +24,19 @@ module Taxt
   def self.encode_taxon_name name, rank, data = {}
     name = name.dup
     if data[:suborder_name]
-      return "#{CatalogFormatter.fossil(name, data[:fossil])} (#{data[:suborder_name]})"
+      return "#{Formatters::CatalogFormatter.fossil(name, data[:fossil])} (#{data[:suborder_name]})"
     end
 
     if rank == :species_group_epithet
       string = '<i>'.html_safe
-      string << CatalogFormatter.fossil(name, data[:fossil])
+      string << Formatters::CatalogFormatter.fossil(name, data[:fossil])
       string << '</i>'.html_safe
       return string
     end
 
     if data[:genus_abbreviation]
       string = '<i>'.html_safe
-      string << CatalogFormatter.fossil(data[:genus_abbreviation], data[:fossil])
+      string << Formatters::CatalogFormatter.fossil(data[:genus_abbreviation], data[:fossil])
       if data[:species_epithet]
         string << ' ' << data[:species_epithet]
       elsif data[:subgenus_epithet]
@@ -58,7 +58,7 @@ module Taxt
 
     output = ''
     output << '<i>' if italicize
-    output << CatalogFormatter.fossil(name, data[:fossil])
+    output << Formatters::CatalogFormatter.fossil(name, data[:fossil])
     output << '?' if data[:questionable]
     output << '</i>' if italicize
 
