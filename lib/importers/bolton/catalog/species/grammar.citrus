@@ -1,0 +1,17 @@
+grammar Importers::Bolton::Catalog::Species::Grammar
+  include Importers::Bolton::Catalog::Grammar
+  include Importers::Bolton::Catalog::Species::GenusGrammar
+  include Importers::Bolton::Catalog::Species::SpeciesGrammar
+  include Importers::Bolton::Catalog::Species::SubspeciesGrammar
+
+  rule record
+    header | blank_line | genus_header | species | subspecies | note
+  end
+
+  rule note
+    (black? '[Note' /.*/) {
+      {:type => :note}
+    }
+  end
+
+end

@@ -78,11 +78,24 @@ class Taxon < ActiveRecord::Base
     query.first
   end
 
+  def self.statistics
+    get_statistics [[Subfamily, :subfamilies], [Genus, :genera], [Species, :species], [Subspecies, :subspecies]]
+  end
+
   def get_statistics ranks
     statistics = {}
     ranks.each do |rank|
       count = send(rank).count :group => [:fossil, :status]
       self.class.massage_count count, rank, statistics
+    end
+    statistics
+  end
+
+  def self.get_statistics ranks
+    statistics = {}
+    ranks.each do |klass, rank|
+      count = klass.count :group => [:fossil, :status]
+      massage_count count, rank, statistics
     end
     statistics
   end

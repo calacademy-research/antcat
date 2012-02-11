@@ -70,7 +70,7 @@ class Reference < ActiveRecord::Base
     duplicates = DuplicateMatcher.new.match self
     return unless duplicates.present?
     duplicate = Reference.find duplicates.first[:match]
-    errors.add :base, "This may be a duplicate of #{ReferenceFormatter.format duplicate} #{duplicate.id}.<br>To save, click \"Save Anyway\"".html_safe
+    errors.add :base, "This may be a duplicate of #{Formatters::ReferenceFormatter.format duplicate} #{duplicate.id}.<br>To save, click \"Save Anyway\"".html_safe
     true
   end
   def self.citation_year_to_year citation_year
