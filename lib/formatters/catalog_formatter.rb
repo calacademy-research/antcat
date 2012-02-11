@@ -5,6 +5,8 @@ class Formatters::CatalogFormatter
   extend ActionView::Helpers::TextHelper
   extend ActionView::Helpers::NumberHelper
 
+  extend Formatters::Formatter
+
   def self.format_taxonomic_history taxon
     string = taxon.taxonomic_history
     homonym_replaced = taxon.homonym_replaced
@@ -118,6 +120,10 @@ class Formatters::CatalogFormatter
     string << '&dagger;' if is_fossil
     string << h(name)
     string.html_safe
+  end
+
+  def self.format_reference_document_link reference, user
+    "<a class=\"document_link\" target=\"_blank\" href=\"#{reference.url}\">PDF</a>".html_safe if reference.downloadable_by? user
   end
 
   def self.status_plural status
