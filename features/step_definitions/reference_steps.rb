@@ -257,11 +257,3 @@ Given "there is a reference with ID 50000 for Dolerichoderinae" do
   sql = "UPDATE `references` SET id = 50000 WHERE id = #{reference.id}"
   ActiveRecord::Base.connection.execute sql
 end
-
-Given /^there is a missing reference$/ do
-  Factory :missing_reference, :citation => 'Adventures among Ants'
-end
-
-And /^I should not see the missing reference$/ do
-  step 'I should not see "Adventures among Ants"'
-end
