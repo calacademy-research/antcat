@@ -22,6 +22,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
 
   def import
     Taxon.delete_all
+    require 'ruby-debug';debugger;'';
 
     parse_family
     parse_supersubfamilies
