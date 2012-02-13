@@ -73,7 +73,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
   def parse_species genus
     return unless @type == :species
 
-    species = ::Species.create! :name => @parse_result[:name], :fossil => @parse_result[:fossil] || false, :status => @parse_result[:status], :genus => genus,
+    species = ::Species.create! :name => @parse_result[:name], :fossil => @parse_result[:fossil], :status => @parse_result[:status], :genus => genus,
       :taxonomic_history => clean_taxonomic_history(@paragraph)
     @subspecies_for_species[species.name] = @parse_result[:subspecies] || [] unless species.invalid?
 
@@ -84,7 +84,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
   def parse_species_see_under genus
     return unless @type == :species_see_under
 
-    ::Species.create! :name => @parse_result[:name], :fossil => @parse_result[:fossil] || false, :status => 'recombined',
+    ::Species.create! :name => @parse_result[:name], :fossil => @parse_result[:fossil], :status => 'recombined',
       :genus => genus, :taxonomic_history => clean_taxonomic_history(@paragraph)
 
     parse_next_line
@@ -94,7 +94,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
   def parse_subspecies genus
     return unless @type == :subspecies
 
-    subspecies = Subspecies.new :name => @parse_result[:name], :fossil => @parse_result[:fossil] || false, :status => @parse_result[:status], :taxonomic_history => clean_taxonomic_history(@paragraph)
+    subspecies = Subspecies.new :name => @parse_result[:name], :fossil => @parse_result[:fossil], :status => @parse_result[:status], :taxonomic_history => clean_taxonomic_history(@paragraph)
     @species_for_subspecies[subspecies] = @parse_result[:species] || []
 
     parse_next_line
