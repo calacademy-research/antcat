@@ -2,157 +2,119 @@ grammar Importers::Bolton::Catalog::Subfamily::GenusGrammar
   include Importers::Bolton::Catalog::Grammar
 
   rule genus_section
-      genus_header
-    | genus_nomen_nudum_header
-    | genus_headline
-    | homonym_replaced_by_genus_header
-    | genera_of_hong_header
-    | genera_header
-    | genera_incertae_sedis_in_poneroid_subfamilies_header
-    | genera_incertae_sedis_header
-    | junior_synonyms_of_genus_header
-    | genus_references_see_under
-    | genus_references_header
+    formicium_line | formicium_header | zatania_taxonomic_history_item | ocymyrmex_header | genus_header | genus_line | homonym_replaced_by_genus_header | homonym_replaced_by_genus_synonym_header |
+    genera_header | junior_synonyms_of_genus_header | genus_references_header
   end
   
-  rule genera_header
-    (('Genera'|'Genus') ' of ' taxon_label) {
-      {:type => :genera_header}
+  rule ocymyrmex_header
+    (bold span 'Genus ' close_tags red italic 'OCYMYRMEX' /.*/) {
+      {:type => :genus_header, :name => 'Ocymyrmex', :status => 'valid'}
     }
   end
 
-  rule genera_incertae_sedis_header
-    (('Genera'|'Genus') ' ' '(extinct) '? incertae_sedis_in ' ' uppercase_word) {
-      {:type => :genera_incertae_sedis_header}
+  rule zatania_taxonomic_history_item
+    (italic span 'Zatania' close_tags 'in Formicinae' /.*/) {
+      {:type => :other}
     }
   end
 
-  rule genera_incertae_sedis_in_poneroid_subfamilies_header
-    ('Genera ' incertae_sedis_in ' poneroid subfamilies') {
-      {:type => :genera_incertae_sedis_in_poneroid_subfamilies_header}
+  rule formicium_header
+    (bold span 'Collective group name *' italic green 'FORMICIUM' /.*/) {
+      {:type => :genus_header, :name => 'Formicium', :status => 'valid', :fossil => true}
     }
   end
 
-  rule genera_of_hong_header
-    ('Genera of Hong (2002), ' incertae_sedis_in ' ' family_or_subfamily_name_uppercase) {
-      {:type => :genera_of_hong_header}
+  rule formicium_line
+    (span '*' bold italic 'Formicium' /.*/) {
+      {:type => :genus_line, :name => 'Formicium', :status => 'valid'}
     }
   end
 
   rule genus_header
-    ('Genus ' fossil_flag? italic uppercase_word close_tag (' ' genus_header_note)?) {
-      value = {:type => :genus_header, :name => uppercase_word.downcase.capitalize.strip}
-      value[:fossil] = true if fossil_flag.present?
-      value.merge! genus_header_note.value if genus_header_note
-      value
-    }
+    valid_genus_header | unidentifiable_genus_header | unavailable_genus_header | unresolved_homonym_genus_header
   end
 
-  rule genus_nomen_nudum_header
-    (fossil_flag? italic uppercase_word close_tag ' [' nomen_nudum ']') {
-      value = {:type => :genus_nomen_nudum_header, :name => uppercase_word.downcase.capitalize.strip}
-      value[:fossil] = true if fossil_flag.present?
-      value
-    }
-  end
-
-  rule genus_header_note
-    ('[' family_group_name ']') {
-      {:note => {:name => family_group_name}}
-    }
-  end
-
-  rule genus_headline
+  rule valid_genus_header
     (
-        (genus_label '.' /$/)
-      | (genus_label ', ' unjustified_emendation)
-      | (genus_label '. ' unnecessary_replacement)
-      | (genus_label ', ' nomen_nudum '.' (' ' type_species)? note:(' ' text)?)
-      | (genus_label (' ' as_placement)? '. ' type_species)
-      | (genus_label (' ' bracketed_phrase)? '. ' type_species)
-      | (genus_label '. ' collective_group_name:'[Collective group name.]')
+      (span 'Genus' s fossil_flag? bold italic red uppercase_word close_tags '[Myrmeciinae]' close_tags) |
+      (bold italic? span 'Genus' close_tags fossil_flag? close_tags? bold? italic? red s uppercase_word close_tags)
     ) {
-      value = {:type => :genus_headline}
-      value[:protonym] = genus_label.value
-      value.merge! as_placement.value if as_placement
-      value[:note] = bracketed_phrase.value if bracketed_phrase
-      value[:note] = text.value if text
-      value.merge! type_species.value if type_species
-      value[:collective_group_name] = true if collective_group_name and collective_group_name != ''
-      value[:nomen_nudum] = true if nomen_nudum
-      value.merge! unnecessary_replacement.value if unnecessary_replacement
-      value.merge! unjustified_emendation.value if unjustified_emendation
+      value = {:type => :genus_header, :name => uppercase_word.downcase.capitalize.strip, :status => 'valid'}
+      value.merge! :fossil => true if fossil_flag.present?
       value
     }
   end
 
-  rule unjustified_emendation
-    ('unjustified' subsequent:(' subsequent')? ' emendation of ' genus_label '.') {
-      value = {:unjustified_emendation_of => genus_label.value}
-      value[:subsequent] = true if subsequent && subsequent != ''
+  rule unidentifiable_genus_header
+    (bold span 'Genus ' fossil_flag? italic green uppercase_word close_tags) {
+      value = {:type => :genus_header, :name => uppercase_word.downcase.capitalize.strip, :status => 'unidentifiable'}
+      value.merge! :fossil => true if fossil_flag.present?
       value
     }
   end
 
-  rule unnecessary_replacement
-    unnecessary_replacement_junior_homonym | unnecessary_replacement_sensu
-  end
-
-  rule unnecessary_replacement_junior_homonym
-    ('Unnecessary replacement name for ' genus_label ' (junior homonym).') {
-      {:unnecessary_replacement_name_for => genus_label.value, :junior_homonym => true}
+  rule unresolved_homonym_genus_header
+    (bold span 'Genus ' fossil_flag? italic brown uppercase_word close_tags) {
+      value = {:type => :genus_header, :name => uppercase_word.downcase.capitalize.strip, :status => 'unresolved homonym'}
+      value.merge! :fossil => true if fossil_flag.present?
+      value
     }
   end
 
-  rule unnecessary_replacement_sensu
-    ('[Unnecessary replacement name for ' genus_label ' in the sense of ' reference '.]') {
-      {:unnecessary_replacement_name_for => genus_label.value.merge!(:sensu => reference.value)}
+  rule unavailable_genus_header
+    (
+      (bold span 'Genus ' italic purple uppercase_word /.*/) |
+      (italic purple uppercase_word /.*/) |
+      (span fossil_flag italic purple uppercase_word /.*/)
+    ) {
+      value = {:type => :genus_header, :name => uppercase_word.downcase.capitalize.strip, :status => 'unavailable'}
+      value[:fossil] = true if fossil_flag
+      value
     }
   end
 
-  ###########################################
-  rule type_species
-    ('Type-species: ' ((label:(species_label|subspecies_label) text*) | text+)) {
-      value = {}
-      value.merge! label.value if label
-      value.merge! :texts => captures[:text].map(&:value)
-      {:type_species => value}
+  rule genus_line
+    (
+      (bold italic span fossil_flag? capitalized_word close_tags /.*/) |
+      (span fossil_flag bold italic capitalized_word close_tags /.*/) |
+      (span fossil_flag italic capitalized_word /.*Type-species:.*/) |
+      (span fossil_flag italic capitalized_word close_tags /.*\[Collective group name\.\].*/) |
+      (italic span capitalized_word close_tags_required /.*Type-species:.*/) |
+      (italic purple capitalized_word close_tags_required s /[^\[]/ /.*/)
+    ) {
+      value = {:type => :genus_line, :name => capitalized_word.to_s}
+      value.merge! :fossil => true if fossil_flag.present?
+      value
     }
   end
 
-  rule as_placement
-    ('[as ' 'subgenus of ' genus_label ']') {
-      {:as => {
-        :rank => :subgenus,
-        :of => genus_label.value
-      }}
+  rule genera_header
+    (bold span ('Genera '|'Genus ') 'of ' red capitalized_word close_tags) {
+      {:type => :genera_header}
     }
   end
 
-  ###########################################
   rule junior_synonyms_of_genus_header
-    (/Junior synonyms?/ ' of ' fossil_flag? italic uppercase_word close_tag /.*/) {
-      {:type => :junior_synonyms_of_genus_header, title: to_s}
+    (bold span 'Junior synonym' 's'? ' of ' fossil_flag? italic (red|green) uppercase_word close_tags_required /.*/) {
+      {:type => :junior_synonyms_of_genus_header}
     }
   end
 
   rule homonym_replaced_by_genus_header
-    ('Homonym replaced by ' fossil_flag? italic (capitalized_word|uppercase_word) /.*/) {
-      {:type => :homonym_replaced_by_genus_header, title: to_s}
+    (bold span 'Homonym replaced by ' fossil_flag? italic (green|red) uppercase_word /.*/) {
+      {:type => :homonym_replaced_by_genus_header}
+    }
+  end
+
+  rule homonym_replaced_by_genus_synonym_header
+    (bold span 'Homonym replaced by ' fossil_flag? italic (green|red) capitalized_word /.*/) {
+      {:type => :homonym_replaced_by_genus_synonym_header}
     }
   end
 
   rule genus_references_header
-    ('Genus' (' ' genus_label)? ' references') {
-      value = {:type => :genus_references_header, title: to_s}
-      value[:genus_name] = genus_label.value[:genus_name] if genus_label
-      value
-    }
-  end
-
-  rule genus_references_see_under
-    ('Genus' (' ' genus_label)? ' references: see' (' under ' taxon_label ',')? ' above.') {
-      {:type => :genus_references_see_under, title: to_s}
+    (bold span "Genus " italic red capitalized_word close_tags "references" close_tags (': see above.' close_tags)?) {
+      {:type => :genus_references_header}
     }
   end
 

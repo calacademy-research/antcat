@@ -16,7 +16,7 @@ grammar Importers::Bolton::Catalog::Species::GenusGrammar
   end
 
   rule genus_group_name
-    fossil_flag? (genus_epithet|subgenus_epithet)
+    fossil_flag? (genus_name|subgenus_name)
   end
 
   rule see_under_referent
@@ -42,7 +42,7 @@ grammar Importers::Bolton::Catalog::Species::GenusGrammar
   rule transferred_genus
     (fossil_flag? italic green uppercase_word /.*?transferred to.*/) {
       value = {:type => :genus, :name => uppercase_word.downcase.capitalize, :status => 'unidentifiable'}
-      value.merge! :fossil => true if fossil_flag
+      value.merge! :fossil => true unless fossil_flag.blank?
       value
     }
   end

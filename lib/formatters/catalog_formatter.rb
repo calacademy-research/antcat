@@ -7,9 +7,8 @@ class Formatters::CatalogFormatter
   extend ActionView::Context
 
   extend Formatters::Formatter
-  extend Formatters::Catalog::StatisticsFormatter
-  extend Formatters::Catalog::IndexFormatter
-  extend Formatters::Catalog::AntwebFormatter
+  extend Formatters::StatisticsFormatter
+  extend Formatters::IndexFormatter
 
   def self.taxon_label_span taxon, options = {}
     content_tag :span, class: taxon_css_classes(taxon, options) do
