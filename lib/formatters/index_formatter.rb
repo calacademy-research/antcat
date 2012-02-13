@@ -131,7 +131,7 @@ module Formatters::IndexFormatter
   end
 
   def format_history_item taxt, user
-    string = ReferenceFormatter.add_period_if_necessary Taxt.to_string taxt, user
+    string = Formatters::ReferenceFormatter.add_period_if_necessary Taxt.to_string taxt, user
     content_tag :div, string.html_safe, class: :history_item
   end
 

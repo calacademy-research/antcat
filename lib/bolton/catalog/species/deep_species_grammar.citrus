@@ -1,0 +1,521 @@
+grammar Bolton::Catalog::Species::DeepSpeciesGrammar
+  include Bolton::Catalog::Grammar
+
+  rule root
+      catalog_header
+    | note
+    | genus_see_under
+    | genus_header
+    | species_group_record
+    | species_see_under
+  end
+
+  ###############################################################
+
+  rule species_group_record
+    (species_group_epithet_label ('. '|'.'|' ') protonym_and_history) {
+      value = {:type => :species_record}
+      value.merge! species_group_epithet_label.value
+      value.merge! protonym_and_history.value
+      value
+    }
+  end
+
+  rule protonym_and_history
+    ((species:(subspecies_label|species_label) (/,? / locality)? '.'? history?) | unparseable:/.+/) {
+      return {:unparseable => unparseable} if unparseable
+      value = {}
+      value.merge! :protonym => species.value
+      value[:protonym][:locality] = locality.value if locality
+      value.merge! history.value if history
+      value
+    }
+  end
+
+  rule catalog_header
+    'CATALOGUE OF SPECIES-GROUP TAXA' {
+      {:type => :catalog_header}
+    }
+  end
+
+  rule genus_header
+    (fossil_flag? italic uppercase_word tag_ends (' ' parenthesized_phrase)?) {
+      {:type => :genus_header, :name => uppercase_word.titlecase}
+    }
+  end
+
+  rule genus_see_under
+    (fossil_flag? italic uppercase_word tag_end (' ' authorship)? ' '? ':'? ' '? ('see under '|'transferred to ') fossil_flag? italic uppercase_word tag_end '.'?) {
+      {:type => :genus_see_under}
+    }
+  end 
+
+  rule species_see_under
+    ((species_epithet_label (' ' bracketed_phrase)? /[;:,]/ ' see ' 'under '? fossil_flag? italic (uppercase_word|species_group_epithet) tag_end /.*/) |
+     (/.+see under.+/) |
+     (/.+see / reference /.*/)
+    ) { 
+      {:type => :species_see_under}
+    }
+  end 
+
+  rule note
+    ('[Note' /.*/) {
+      {:type => :note, :text => to_s}
+    }
+  end
+
+  #############################################################
+
+  rule locality
+    ('('? text:(valid_locality | quoted_locality | no_locality | no_type_locality) ')'?) {
+      text.value
+    }
+  end
+
+  rule no_type_locality
+    'no type-locality given ' parenthesized_phrase
+  end
+
+  rule no_locality
+    'no locality' ' given'?
+  end
+
+  rule valid_locality
+    (locality_phrase rest:(' ' parenthesized_phrase)*) {
+      string = locality_phrase.titlecase
+      # titlecase doesn't handle accented characters, so brute force it for the one
+      # locality we know needs it: SÃO TOMÉ & PRÍNCIPE
+      string.gsub! /Ã/, 'ã'
+      string.gsub! /É/, 'é'
+      string.gsub! /Í/, 'í'
+      string + rest
+    }
+  end
+
+  rule locality_phrase
+    locality_word (locality_word_separator locality_word)*
+  end
+
+  rule locality_word_separator
+     ' & ' | /[ \/]/
+  end
+
+  rule quoted_locality
+    /".*?"/ ('; locality in error' | ' ' parenthesized_phrase)?
+  end
+
+  rule locality_word
+    (uppercase_word | 'U.S.A.') (' '? '?')?
+  end
+
+  #############################################################
+
+  rule history
+    history_item+ {
+      {:history => captures[:history_item].map(&:value)}
+    }
+  end
+
+  rule history_item
+    (' '? item:(optionally_bracketed_item | references_history_item | text)) {
+      item.value
+    }
+  end
+
+  rule item
+      replacement_for
+    | homonym_with_replacement
+    | originally_nomen_nudum
+    | species_nomen_nudum
+    | unresolved_homonym
+    | first_available_use_of
+    | also_described_as_new
+    | replacement_name
+    | homonym_of
+    | first_available_replacement_for
+    | misspellings
+    | current_subspecies
+    | see_also
+    | revived_status_as_species
+    | currently_subspecies_of
+    | nomen_nudum_material_referred_here
+    | material_of_unavailable_names_referred_here
+    | synonym_ofs
+    | combinations_in
+    | subspecies_ofs
+    | raised_to_species
+    | status_as_species
+    | unavailable_name
+    | senior_synonym_ofs
+    | unidentifiable
+    | revived_from_synonymy
+    | relationship_with
+    | material_referred_to
+    | type_material_redescribed
+  end
+
+  rule optionally_bracketed_item
+    (('[' item '.'? ']' '.'?) | (item '.'?)) {
+      item.value
+    }
+  end
+
+  rule references_history_item
+    (references '.'?) {
+      references.value
+    }
+  end
+
+  ###############################################################
+
+  rule originally_nomen_nudum
+    (italic 'Nomen nudum' close_tag
+     (', attributed to ' ref_author_name)?
+     ('; material referred to ' referred_to:species_group_epithet_label ' by ' referred_to_references:references)?) {
+      value = {}
+      value[:material_referred_to] = referred_to.value if referred_to
+      value[:attributed_to] = ref_author_name.value if ref_author_name
+      value.merge! referred_to_references.value if referred_to_references
+      {:nomen_nudum => value}
+    }
+  end
+
+  rule also_described_as_new
+    ('Also described as new by ' references) {
+      {:also_described_as_new => references.value}
+    }
+  end
+
+  rule first_available_use_of
+    (('First available use of ' species:(subspecies_label|species_label) '; unavailable name'?) |
+     (                          species:(subspecies_label|species_label) '; unavailable name')
+    ) {
+      {:first_available_use_of => species.value}
+    }
+  end
+
+  ###############################################################
+  rule replacement_for
+    (replacement_name_for '. ' homonym_of) {
+      value = {:replacement_for => replacement_name_for.value}
+      value[:replacement_for].merge! homonym_of.value
+      value
+    }
+  end
+
+  rule homonym_with_replacement
+    (homonym_of ' ' replacement_name) {
+      value = homonym_of.value
+      value[:homonym_of].merge! :replacement => replacement_name.value
+      value
+    }
+  end
+
+  rule replacement_name_for
+    (('Replacement'|'and hence first available replacement') ' name for ' species:(species_label|species_epithet_label)) {
+      species.value
+    }
+  end
+
+  rule replacement_name
+    ('Replacement name: ' species_epithet_label) {
+      species_epithet_label.value
+    }
+  end
+
+  rule homonym_of
+    ('['? 'Junior primary homonym of ' species:(species_label|species_epithet_label) (' ' now_in_genus)? '.]') {
+      value = {:primary_or_secondary => :primary}.merge! species.value
+      value.merge! now_in_genus.value if now_in_genus
+      {:homonym_of => value}
+    }
+  end
+
+  rule now_in_genus
+    ('(now in ' genus_label ')') {
+      {:now_in => genus_label.value}
+    }
+  end
+
+  rule unresolved_homonym
+    ('Unresolved junior primary homonym of ' species:(species_label|species_epithet_label)) {
+      value = {:primary_or_secondary => :primary}.merge! species.value
+      value[:unresolved] = true
+      {:homonym_of => value}
+    }
+  end
+
+  #############################################################
+
+  rule first_available_replacement_for
+    (('First'|'and hence first') ' available replacement name for ' species:(species_label | species_epithet_label) ': ' references) {
+      value = species.value.merge references.value
+      {:first_available_replacement_for => value}
+    }
+  end
+
+  rule species_nomen_nudum
+    (species_label '. ' italic 'Nomen nudum' tag_end) {
+      {:nomen_nudum => species_label.value}
+    }
+  end
+
+  rule relationship_with
+    ('Relationship with ' species_epithet_label ': ' references) {
+      {:relationship_with => species_epithet_label.value.merge!(references.value)}
+    }
+  end
+
+  rule currently_subspecies_of
+    ('Currently subspecies of ' species_epithet_label ': ' references) {
+      {:currently_subspecies_of => {:species => species_epithet_label.value}.merge!(references.value)}
+    }
+  end
+
+  rule raised_to_species
+    (
+      ( revived:'Revived from synonymy and raised to species' |
+        ('Raised to species and material of the unavailable name' 's'? ' ' species_group_epithet_label_list ' referred here') |
+        ('Raised to species and senior synonym of ' species_epithet_label) |
+        'Raised to species'
+      ) (': '|' by ') references) {
+      value = references.value
+      value[:revived_from_synonymy] = true if revived
+      value[:revived] = true if revived_status
+      value[:senior_synonym_of] = species_epithet_label.value if species_epithet_label
+      value[:material_of_unavailable_names_referred_here] = species_group_epithet_label_list.value if species_group_epithet_label_list
+      {:raised_to_species => value}
+    }
+  end
+
+  rule revived_from_synonymy
+    ('Revived from synonymy'
+      status:((' and'|', with') ' status as species')?
+      (' and senior synonym of ' senior_synonym_of:species_epithet_label)?
+      raised_and_senior:(', raised to species and senior synonym of ' raised_senior_synonym_of:species_epithet_label)?
+      (' as subspecies of ' subspecies_of:species_epithet_label)?
+      ': ' references) {
+      value = references.value
+      value.merge! :status_as_species => true if status && status != ''
+      value.merge! :raised_to_species => true if raised_and_senior and raised_and_senior != ''
+      value.merge! :subspecies_of => subspecies_of.value if subspecies_of
+      value.merge! :senior_synonym_of => senior_synonym_of.value if senior_synonym_of
+      value.merge! :senior_synonym_of => raised_senior_synonym_of.value if raised_senior_synonym_of
+      {:revived_from_synonymy => value}
+    }
+  end
+
+  rule status_as_species
+    ('Status as species: ' references) {
+      {:status_as_species => references.value}
+    }
+  end
+
+  rule type_material_redescribed
+    ('Type-material redescribed: ' references) {
+      {:type_material_redescribed => references.value}
+    }
+  end
+
+  rule revived_status_as_species
+    ('Revived status as species' (' and senior synonym of ' species_group_epithet_label_list)? ': ' references) {
+      value = references.value
+      value[:junior_synonyms] = species_group_epithet_label_list.value if species_group_epithet_label_list
+      {:revived_status_as_species => value}
+    }
+  end
+
+  rule unidentifiable
+    (('Unidentifiable to genus;'|'Unidentifiable taxon' ','?) (' ' incertae_sedis_in ' ' italic 'Formica' close_tag)? ': ' references) {
+      {:unidentifiable => references.value}
+    }
+  end
+
+  rule nomen_nudum_material_referred_here
+    ('Material of the ' italic 'nomen nudum' close_tag ' ' species_group_epithet_label ' referred here' (': '|' by ') references) {
+      {:nomen_nudum_material_referred_here => species_group_epithet_label.value.merge(references.value)}
+    }
+  end
+
+  rule material_of_unavailable_names_referred_here
+    ('Material of the unavailable name' 's'? ' ' species_group_epithet_label_list ' referred here' (': '| ' by ') references) {
+      {:material_of_unavailable_names_referred_here => {:taxa => species_group_epithet_label_list.value}.merge!(references.value)}
+    }
+  end
+
+  rule material_referred_to
+    ('Material referred to ' species_epithet_label (' by '|': ') references) {
+      {:material_referred_to => species_epithet_label.value.merge(references.value)}
+    }
+  end
+
+  rule current_subspecies
+    ('Current subspecies: nominal plus ' subspecies_list) {
+      {:subspecies => subspecies_list.value}
+    }
+  end
+
+  rule subspecies_list
+    (subspecies_list_item (', ' subspecies_list_item)*) {
+      captures[:subspecies_list_item].map &:value
+    }
+  end
+
+  rule subspecies_list_item
+    (species_group_epithet_label homonym:(' (unresolved junior homonym)')?) {
+      value = species_group_epithet_label.value
+      value.merge! :unresolved_homonym => true if homonym && homonym != ''
+      value
+    }
+  end
+
+  #############################################################
+  rule misspellings
+    misspelling+ {
+      {:misspellings => captures[:misspelling].map(&:value)}
+    }
+  end
+
+  rule misspelling
+    (('Name misspelled ' | 'Misspelled as '|' and as ') species_epithet_label ' by ' references) {
+      species_epithet_label.value.merge! references.value
+    }
+  end
+
+  #############################################################
+  rule subspecies_ofs
+    subspecies_of+ {
+      {:subspecies_ofs => captures[:subspecies_of].map(&:value)}
+    }
+  end
+
+  rule subspecies_of
+    (('Subspecies of ' | '; of ') species_epithet_label (' ' material_referred_to_subspecies)? ': ' references) {
+      value = {:species => species_epithet_label.value}.merge! references.value
+      value.merge! material_referred_to_subspecies.value if material_referred_to_subspecies
+      value
+    }
+  end
+
+  rule material_referred_to_subspecies
+    ('and material of the unavailable name ' species_group_epithet_label ' referred here') {
+      {:material_referred_here => {:unavailable => true}.merge(species_group_epithet_label.value)}
+    }
+  end
+
+  #############################################################
+  rule unavailable_name
+    unavailable_name_published_as_junior_synonym | unavailable_name_with_material_referred_to | plain_unavailable_name
+  end
+
+  rule plain_unavailable_name
+    ('Unavailable name' (' (' references ')')?) {
+      value = references ? references.value : {}
+      {:unavailable_name => value}
+    }
+  end
+
+  rule unavailable_name_published_as_junior_synonym
+    ('Unavailable name (published as junior synonym; ' references ')') {
+      value = references.value
+      value[:published_as_junior_synonym] = true
+      {:unavailable_name => value}
+    }
+  end
+
+  rule unavailable_name_with_material_referred_to
+    ('Unavailable name' (' (' parenthesized_references:references ')')? '; material referred to ' species_epithet_label ' by ' referrer:references) {
+      value = {}
+      value.merge! parenthesized_references.value if parenthesized_references
+      value[:material_referred_to] = species_epithet_label.value.merge referrer.value
+      {:unavailable_name => value}
+    }
+  end
+
+  ###############################################################
+  rule synonym_ofs
+    synonym_of+ {
+      {:synonym_ofs => captures[:synonym_of].map(&:value)}
+    }
+  end
+
+  rule synonym_of
+    ((  unknown_junior_or_senior:'Synonym '
+      | 'Junior synonym '
+      | provisional:'Provisional junior synonym '
+      | possible:'Possible junior synonym '
+      | '; '
+      | probable:'Probable synonym '
+     )
+    'of ' species_epithet_label ': ' references (' ' replacement_for)?) {
+      value = species_epithet_label.value.merge! references.value
+      value[:junior_or_senior] = :junior unless unknown_junior_or_senior && unknown_junior_or_senior != ''
+      value[:probable] = true if probable && probable != ''
+      value[:provisional] = true if provisional && provisional != ''
+      value[:possible] = true if possible && possible != ''
+      value.merge! replacement_for.value if replacement_for
+      value
+    }
+  end
+
+  ###############################################################
+  rule combinations_in
+    combination_in+ {
+      {:combinations_in => captures[:combination_in].map(&:value)}
+    }
+  end
+
+  rule combination_in
+    (('Combination in '|'; in ') genus_group_label ': ' references) {
+      genus_group_label.value.merge! references.value
+    }
+  end
+
+  ###############################################################
+  rule senior_synonym_ofs
+    ('Senior synonym of ' senior_synonym_of+ ('; of ' senior_synonym_of+)*) {
+      {:senior_synonym_ofs => captures[:senior_synonym_of].map(&:value)}
+    }
+  end
+
+  rule senior_synonym_of
+    (senior_synonym_of_list
+     (','? ' and material of the unavailable name' 's'? ' ' species_group_epithet_label_list ' referred here')?
+      ': '
+      references
+    ) {
+      value = {:junior_synonyms => senior_synonym_of_list.value}.merge! references.value
+      value[:material_of_unavailable_names_referred_here] = species_group_epithet_label_list.value if species_group_epithet_label_list
+      value
+    }
+  end
+
+  rule senior_synonym_of_list
+    (senior_synonym_of_list_item (', ' senior_synonym_of_list_item)*) {
+      captures[:senior_synonym_of_list_item].map &:value
+    }
+  end
+
+  rule senior_synonym_of_list_item
+    (species_epithet_label (' (and its junior synonym' 's'? ' ' junior:species_epithet_label (', ' junior:species_epithet_label)* ')')?) {
+      value = species_epithet_label.value
+      value.merge! :junior_synonyms => captures[:junior].map(&:value) if junior
+      value
+    }
+  end
+
+  #############################################################
+  rule see_also
+    (('See also:' | specific_see_also_text) ' '? references) {
+      value = references.value
+      value[:text] = specific_see_also_text if specific_see_also_text
+      {:see_also => value}
+    }
+  end
+
+  rule specific_see_also_text
+    'See also comment in' | 'See:'
+  end
+
+end
