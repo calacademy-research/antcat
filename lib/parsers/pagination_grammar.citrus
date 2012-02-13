@@ -32,6 +32,14 @@ grammar Parsers::PaginationGrammar
     roman_number ('-' roman_number)?
   end
 
+  rule arabic_number
+    /\b[\d]+/
+  end
+
+  rule roman_number
+    /\b[ivxlc]+\b/
+  end
+
   rule note
     '(' [^)]+ ')' |
     '[' [^\]]+ ']'
