@@ -1,0 +1,77 @@
+grammar Bolton::Catalog::Species::GenusGrammar
+  include Bolton::Catalog::Grammar
+
+  rule genus_header
+    see_under_genus | fossil_genus | genus_with_crap | genus | unidentifiable_genus | transferred_genus
+  end
+
+  rule see_under_genus
+    (((genus_group_name see_under_referent) | (genus_group_name s genus_author? see_under_referent)) s italic? /[.,]?/ close_tags) {
+      {:type => :see_under}
+    }
+  end
+
+  rule genus_author
+    author (', ' year)?
+  end
+
+  rule genus_group_name
+    fossil_flag? (genus_epithet|subgenus_epithet)
+  end
+
+  rule see_under_referent
+    ':'? close_tags?  'see under ' fossil_flag? bold genus_name tag_end
+  end
+
+  rule genus_name
+    (italic black uppercase_word tag_end tag_end?) | (italic uppercase_word s tag_end?)
+  end
+
+  rule subgenus_name
+    italic blue uppercase_word s tag_end tag_end
+  end
+
+  rule unidentifiable_genus
+    (fossil_flag? italic green uppercase_word /.*/) {
+      value = {:type => :genus, :name => uppercase_word.downcase.capitalize, :status => 'unidentifiable'}
+      value.merge! :fossil => true unless fossil_flag.blank?
+      value
+    }
+  end
+
+  rule transferred_genus
+    (fossil_flag? italic green uppercase_word /.*?transferred to.*/) {
+      value = {:type => :genus, :name => uppercase_word.downcase.capitalize, :status => 'unidentifiable'}
+      value.merge! :fossil => true if fossil_flag
+      value
+    }
+  end
+
+  rule fossil_genus
+    (fossil_flag genus) {
+      genus.value.merge :fossil => true
+    }
+  end
+
+  rule genus
+    (
+      bold italic (red|green|brown|purple) uppercase_word /.*/
+    ) {
+      value = {:type => :genus, :name => uppercase_word.downcase.capitalize}
+      value[:status] = case
+        when brown.present? then 'unresolved homonym'
+        when purple.present? then 'unavailable'
+        else 'valid'
+      end
+      value
+    }
+  end
+
+  rule genus_with_crap
+    (bold italic red uppercase_word tag_end tag_end tag_end red space tag_end black parenthesized_phrase '<p></p>' tag_end) {
+      {:type => :genus, :name => uppercase_word.downcase.capitalize, :status => 'valid'}
+    }
+
+  end
+
+end
