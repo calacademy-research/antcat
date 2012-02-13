@@ -6,8 +6,8 @@ grammar Importers::Bolton::Catalog::Species::SpeciesGrammar
   end
 
   rule species_see_under
-    (species_synonym_prefix? species_name /.* see under .*[A-Z]{2,}.*/) {
-      value = {:type => :species, :name => species_name.value, :status => 'recombined'}
+    (species_synonym_prefix? species_epithet /.* see under .*[A-Z]{2,}.*/) {
+      value = {:type => :species, :name => species_epithet.value, :status => 'recombined'}
       value.merge! species_synonym_prefix.value if species_synonym_prefix.present?
       value
     }
@@ -18,8 +18,8 @@ grammar Importers::Bolton::Catalog::Species::SpeciesGrammar
   end
 
   rule species_synonym
-    (species_synonym_prefix? species_name /.*/) {
-      value = {:type => :species, :name => species_name.value, :status => 'synonym'}
+    (species_synonym_prefix? species_epithet /.*/) {
+      value = {:type => :species, :name => species_epithet.value, :status => 'synonym'}
       value.merge! species_synonym_prefix.value if species_synonym_prefix.present?
       value
     }
@@ -46,11 +46,11 @@ grammar Importers::Bolton::Catalog::Species::SpeciesGrammar
         (italic fossil_flag? bold red) |
         (bold italic fossil_flag? red)
       )
-      species_name
+      species_epithet
       subspecies_list?
       /.*/
     ) {
-      value = {:type => :species, :name => species_name.value, :status => 'valid'}
+      value = {:type => :species, :name => species_epithet.value, :status => 'valid'}
       value.merge! :fossil => true unless fossil_flag.blank?
       value.merge! :subspecies => subspecies_list.value unless subspecies_list.blank?
       value
@@ -63,8 +63,8 @@ grammar Importers::Bolton::Catalog::Species::SpeciesGrammar
   end
 
   rule subspecies_list_item
-    (subspecies_list_item_prefix species_name subspecies_list_item_suffix) {
-      species_name.value
+    (subspecies_list_item_prefix species_epithet subspecies_list_item_suffix) {
+      species_epithet.value
     }
   end
 
@@ -89,32 +89,32 @@ grammar Importers::Bolton::Catalog::Species::SpeciesGrammar
 
   rule unidentifiable_species
     (
-      (bold italic green species_name tag_end tag_end tag_end italic '.' /.*/) |
-      (italic green species_name /.*/) |
-      (fossil_flag? bold  italic green species_name tag_end tag_end tag_end /.*/) |
-      (fossil_flag? italic green species_name tag_end '.' s fossil_flag? binomial tag_end /.*/)
+      (bold italic green species_epithet tag_end tag_end tag_end italic '.' /.*/) |
+      (italic green species_epithet /.*/) |
+      (fossil_flag? bold  italic green species_epithet tag_end tag_end tag_end /.*/) |
+      (fossil_flag? italic green species_epithet tag_end '.' s fossil_flag? binomial tag_end /.*/)
     ){
-      value = {:type => :species, :name => species_name.value, :status => 'unidentifiable'}
+      value = {:type => :species, :name => species_epithet.value, :status => 'unidentifiable'}
       value.merge! :fossil => true unless fossil_flag.blank?
       value
     }
   end
 
   rule homonym
-    (fossil_flag? italic species_name '.' /.*?Junior (primary|secondary) homonym.*?Replacement name: / '*'? italic replacement_name tag_end /.*/) {
-      value = {:type => :species, :name => species_name.value, :status => 'homonym', :homonym_replaced_by => replacement_name.value}
+    (fossil_flag? italic species_epithet '.' /.*?Junior (primary|secondary) homonym.*?Replacement name: / '*'? italic replacement_name tag_end /.*/) {
+      value = {:type => :species, :name => species_epithet.value, :status => 'homonym', :homonym_replaced_by => replacement_name.value}
       value.merge! :fossil => true unless fossil_flag.blank?
       value
     }
   end
 
   rule replacement_name
-    species_name
+    species_epithet
   end
 
   rule unresolved_homonym
-    (fossil_flag? bold italic (maroon|brown) species_name subspecies_list? /.*/) {
-      value = {:type => :species, :name => species_name.value, :status => 'unresolved homonym'}
+    (fossil_flag? bold italic maroon species_epithet subspecies_list? /.*/) {
+      value = {:type => :species, :name => species_epithet.value, :status => 'unresolved homonym'}
       value.merge! :fossil => true unless fossil_flag.blank?
       value.merge! :subspecies => subspecies_list.value unless subspecies_list.blank?
       value
@@ -122,7 +122,7 @@ grammar Importers::Bolton::Catalog::Species::SpeciesGrammar
   end
 
   rule binomial
-    fossil_flag? capitalized_word s subgenus? s species_name
+    fossil_flag? capitalized_word s subgenus? s species_epithet
   end
 
   rule subgenus
