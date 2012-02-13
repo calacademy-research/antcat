@@ -1,5 +1,5 @@
 # coding: UTF-8
-class Formatters::Formatters::ReferenceFormatter
+class Formatters::ReferenceFormatter
   include ERB::Util
   extend ERB::Util
 
@@ -96,31 +96,31 @@ class Formatters::Formatters::ReferenceFormatter
   end
 end
 
-class Formatters::ArticleFormatters::ReferenceFormatter < Formatters::Formatters::ReferenceFormatter
+class Formatters::ArticleReferenceFormatter < Formatters::ReferenceFormatter
   def format_citation
     self.class.italicize self.class.add_period_if_necessary "#{h @reference.journal.name} #{h @reference.series_volume_issue}:#{h @reference.pagination}".html_safe
   end
 end
 
-class Formatters::BookFormatters::ReferenceFormatter < Formatters::Formatters::ReferenceFormatter
+class Formatters::BookReferenceFormatter < Formatters::ReferenceFormatter
   def format_citation
     self.class.italicize self.class.add_period_if_necessary "#{h @reference.publisher}, #{h @reference.pagination}".html_safe
   end
 end
 
-class Formatters::UnknownFormatters::ReferenceFormatter < Formatters::Formatters::ReferenceFormatter
+class Formatters::UnknownReferenceFormatter < Formatters::ReferenceFormatter
   def format_citation
     self.class.italicize self.class.add_period_if_necessary h @reference.citation
   end
 end
 
-class Formatters::NestedFormatters::ReferenceFormatter < Formatters::Formatters::ReferenceFormatter
+class Formatters::NestedReferenceFormatter < Formatters::ReferenceFormatter
   def format_citation
-    self.class.italicize "#{h @reference.pages_in} #{Formatters::Formatters::ReferenceFormatter.format(@reference.nested_reference)}".html_safe
+    self.class.italicize "#{h @reference.pages_in} #{Formatters::ReferenceFormatter.format(@reference.nested_reference)}".html_safe
   end
 end
 
-class Formatters::MissingFormatters::ReferenceFormatter < Formatters::Formatters::ReferenceFormatter
+class Formatters::MissingReferenceFormatter < Formatters::ReferenceFormatter
   def format_inline_citation _ = nil
     @reference.citation
   end

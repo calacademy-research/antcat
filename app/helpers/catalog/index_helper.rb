@@ -15,8 +15,8 @@ module Catalog::IndexHelper
         link_to "(no tribe)", "/catalog/index?#{parameters}", :class => classes
       end
     else
-      label = CatalogFormatter.taxon_label taxon
-      css_classes = CatalogFormatter.taxon_css_classes taxon, :selected => taxon == selected_taxon
+      label = Formatters::CatalogFormatter.taxon_label taxon
+      css_classes = Formatters::CatalogFormatter.taxon_css_classes taxon, :selected => taxon == selected_taxon
       link_to label, index_catalog_path(taxon, page_parameters.merge(rank => taxon)), :class => css_classes
     end
   end
