@@ -1,9 +1,9 @@
 # coding: UTF-8
 require 'spec_helper'
 
-describe Bolton::Catalog::Importer do
+describe Importers::Bolton::Catalog::Importer do
   before do
-    @importer = Bolton::Catalog::Importer.new
+    @importer = Importers::Bolton::Catalog::Importer.new
   end
 
   describe "Parsing" do
@@ -13,7 +13,7 @@ describe Bolton::Catalog::Importer do
     end
 
     it "should allow parsing a specific rule, but returning any matching rule if that one is not matched" do
-      @importer.stub(:grammar).and_return Bolton::Catalog::Subfamily::Grammar
+      @importer.stub(:grammar).and_return Importers::Bolton::Catalog::Subfamily::Grammar
       @importer.parse('UPPERCASE LINE', :tribe_section)[:type].should == :uppercase_line
     end
 
@@ -296,12 +296,12 @@ describe Bolton::Catalog::Importer do
     end
 
     it "should put fossil_tags inside HTML tags" do
-      Bolton::Catalog::Importer.new.clean_taxonomic_history(
+      Importers::Bolton::Catalog::Importer.new.clean_taxonomic_history(
 %{<p><b>*<i>atta</i></b></p>}).should == %{<p><b><i>&dagger;atta</i></b></p>}
     end
 
     it "should put fossil_tags inside HTML tags" do
-      Bolton::Catalog::Importer.new.clean_taxonomic_history(
+      Importers::Bolton::Catalog::Importer.new.clean_taxonomic_history(
 %{<p><b>*<i>atta</i></b></p>}).should == %{<p><b><i>&dagger;atta</i></b></p>}
     end
 

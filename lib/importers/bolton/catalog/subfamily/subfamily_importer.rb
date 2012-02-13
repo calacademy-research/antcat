@@ -1,91 +1,59 @@
 # coding: UTF-8
-<<<<<<< HEAD
-class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
-||||||| merged common ancestors
-class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
-  private
-=======
 class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catalog::Importer
   private
->>>>>>> master
 
   def parse_subfamily
     return unless @type == :subfamily_centered_header
-    Progress.method
+    Progress.info 'parse_subfamily'
 
     parse_next_line
+    expect :subfamily_header
 
-<<<<<<< HEAD
-    name = consume(:subfamily_header)[:name]
-    headline = consume :family_group_headline
-    fossil = headline[:protonym][:fossil]
-    history = parse_taxonomic_history
-||||||| merged common ancestors
-    name = @parse_result[:name]
-    fossil = @parse_result[:fossil]
-=======
     name = @parse_result[:name]
     fossil = @parse_result[:fossil] || false
->>>>>>> master
 
-    subfamily = Subfamily.import(
-      name: name,
-      fossil: fossil,
-      protonym: headline[:protonym],
-      type_genus: headline[:type_genus],
-      taxonomic_history: history,
-    )
-    Progress.info "Created #{subfamily.name}"
+    parse_next_line
+    expect :family_group_line
+    taxonomic_history = @paragraph
 
-    parse_subfamily_child_lists subfamily
-    parse_subfamily_reference_sections subfamily
-    parse_subfamily_children subfamily
+    taxonomic_history << parse_taxonomic_history
+
+    subfamily = ::Subfamily.find_by_name(name)
+    raise "Subfamily #{name} doesn't exist" unless subfamily
+
+    taxonomic_history << parse_tribes_lists(subfamily)
+    taxonomic_history << parse_genera_lists(:subfamily, :subfamily => subfamily)
+    taxonomic_history << parse_collective_group_names_list
+    taxonomic_history << skip(:other)
+
+    subfamily.update_attributes :taxonomic_history => clean_taxonomic_history(taxonomic_history), :fossil => fossil
+
+    parse_tribes subfamily
+    parse_genera
+    parse_genera_incertae_sedis
+    parse_collective_group_names
 
     true
   end
 
-  def parse_subfamily_children subfamily
-    parse_tribes subfamily
-    parse_genera subfamily: subfamily
-    parse_tribes_incertae_sedis subfamily
-    parse_genera_incertae_sedis 'subfamily', subfamily: subfamily
-    parse_genera_of_hong subfamily
-    parse_collective_group_names
-  end
-
-  def parse_subfamily_child_lists subfamily
-    parse_tribes_lists subfamily
-    parse_genera_lists
-    parse_collective_group_names_list
-  end
-
-  def parse_subfamily_reference_sections taxon
-    Progress.method
-    parse_reference_sections taxon, :references_section_header, :regional_and_national_faunas_header
-  end
-
   def parse_collective_group_names_list
-    return unless @type == :collective_group_name_list
-    Progress.method
+    return '' unless @type == :collective_group_name_list
+    Progress.info 'parse_collective_group_names'
 
+    parsed_text = @paragraph
     parse_next_line
+    parsed_text
   end
 
   def parse_collective_group_names
-    return unless @type == :collective_group_names_header
-    Progress.method
+    return '' unless @type == :collective_group_name_header
+    Progress.info 'parse_collective_group_name_header'
 
     parse_next_line
-    consume :collective_group_name_header
-    consume :genus_headline
-  end
-
-  def parse_genera_of_hong subfamily
-    return unless @type == :genera_of_hong_header
-    Progress.method
-
+    expect :other
     parse_next_line
-    while parse_genus subfamily: subfamily, hong: true, incertae_sedis_in: 'subfamily'; end
+    expect :genus_line
+    parse_next_line
   end
 
 end

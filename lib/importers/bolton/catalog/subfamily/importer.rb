@@ -2,7 +2,7 @@
 #  A Bolton subfamily catalog file is named NN. NAME.docx,
 #    e.g. 01. FORMICIDAE.docx
 #  and yes, the first one is actually for the whole family, rather
-#  than a 'supersubfamily' (which is what I call a group of subfamilies)
+#  than a 'supersubfamily' (group of subfamilies)
 #
 #  To convert a subfamily catalog file from Bolton to a format we can use:
 #  1) Open the file in Word
@@ -17,30 +17,14 @@ require_relative 'subfamily_importer'
 require_relative 'subgenus_importer'
 require_relative 'tribe_importer'
 
-<<<<<<< HEAD
-class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
-||||||| merged common ancestors
-class Bolton::Catalog::Subfamily::Importer < Bolton::Catalog::Importer
-  private
-
-=======
 class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catalog::Importer
   private
 
->>>>>>> master
   def import
     Taxon.delete_all
-    Protonym.delete_all
-    Citation.delete_all
-    ForwardReference.delete_all
-    MissingReference.delete_all
 
     parse_family
     parse_supersubfamilies
-
-    do_manual_fixups
-    ForwardReference.fixup
-    resolve_parent_synonyms
 
   ensure
     super
@@ -53,102 +37,46 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
 
   def parse_supersubfamily
     return unless @type
-    Progress.method
-    consume :supersubfamily_header
+    Progress.info 'parse_supersubfamily'
+    expect :supersubfamily_header
+    parse_next_line
 
-    parse_genera_lists
+    parse_genera_lists :supersubfamily
 
     while parse_subfamily; end
-
-    parse_genera_incertae_sedis 'subfamily', {}, :genera_incertae_sedis_in_poneroid_subfamilies_header
-
     true
   end
 
-  def resolve_parent_synonyms
-    any_changes = true
-    while any_changes 
-      any_changes = false
-      Taxon.all.each do |taxon|
-        if taxon.respond_to? :tribe
-          # if a taxon's tribe is a synonym, set the taxon's tribe to the thing it's a synonym of
-          tribe = taxon.tribe
-          next unless tribe && tribe.synonym?
-          taxon.update_attribute :tribe, tribe.synonym_of
-          Progress.log "Changed tribe of #{taxon.name} from #{tribe.name} to #{taxon.tribe.name}"
-          any_changes = true
-        end
-        if taxon.respond_to? :subgenus
-          subgenus = taxon.subgenus
-          next unless subgenus && subgenus.synonym?
-          taxon.update_attribute :subgenus, subgenus.synonym_of
-          Progress.log "Changed subgenus of #{taxon.name} from #{subgenus.name} to #{taxon.subgenus.name}"
-          any_changes = true
-        end
-      end
-    end
-  end
-
-  def get_file_names file_names
-    selected = file_names.select do |file_name|
-      base_name = File.basename(file_name)
-      numeric_prefix = base_name.match /^(\d\d). /
-      numeric_prefix && (number = numeric_prefix[1].to_i) && (number == 1 || number == 9)
-    end
-    super selected
-  end
-
-  def grammar
-    Bolton::Catalog::Subfamily::Grammar
-  end
-
+  private
   def parse_taxonomic_history
-    Progress.method
-    parsed_taxonomic_history = []
-    if @type == :taxonomic_history_header
-      loop do
-        parse_next_line
-        convert_ponerites_headline_to_text
-        break unless @type == :texts
-        parsed_taxonomic_history << Bolton::Catalog::TextToTaxt.convert(@parse_result[:texts])
+    Progress.info 'parse_taxonomic_history'
+    taxonomic_history = ''
+    loop do
+      parse_next_line
+      break if @type != :other
+      taxonomic_history << @paragraph
+    end
+    taxonomic_history
+  end
+
+  def parse_references
+    Progress.info 'parse_references'
+    parsed_text = ''
+    parsed_text << parse_taxonomic_history if @type == :other
+    parsed_text
+  end
+
+  def get_filenames filenames
+    filenames = filenames.select do |filename|
+      if matches = File.basename(filename).match(/^(\d\d)\. /)
+        number = matches[1].to_i
       end
     end
-    parsed_taxonomic_history
+    super filenames
   end
 
-<<<<<<< HEAD
-  def convert_ponerites_headline_to_text
-    if @type == :genus_headline && @parse_result[:protonym].try(:[], :genus_name) == 'Ponerites'
-      @parse_result = grammar.parse(@line, root: :text).value
-      @type = :texts
-    end
-  end
-
-  def parse_reference_sections taxon, *allowed_header_types
-    while allowed_header_types.include? @type
-      parse_reference_section taxon
-      parse_next_line
-    end
-  end
-
-  def parse_reference_section taxon
-    texts = Bolton::Catalog::Grammar.parse(@line, root: :text).value
-    title = Bolton::Catalog::TextToTaxt.convert texts[:text]
-    parse_next_line
-    references = Bolton::Catalog::TextToTaxt.convert @parse_result[:texts]
-    taxon.reference_sections.create! title: title, references: references
-  end
-
-  def do_manual_fixups
-    wilsonia = Genus.find_by_name 'Wilsonia'
-    wilsonia.update_attribute :status, Status['unresolved homonym'].to_s rescue nil
-||||||| merged common ancestors
-  def grammar
-    Bolton::Catalog::Subfamily::Grammar
-=======
   def grammar
     Importers::Bolton::Catalog::Subfamily::Grammar
->>>>>>> master
   end
 
 end

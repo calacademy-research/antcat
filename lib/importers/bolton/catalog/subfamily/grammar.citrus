@@ -7,124 +7,28 @@ grammar Importers::Bolton::Catalog::Subfamily::Grammar
   include Importers::Bolton::Catalog::Subfamily::SubgenusGrammar
 
   rule subfamily_catalog
-      supersubfamily_section
-    | family_section
-    | subfamily_section
-    | tribe_section
-    | genus_section
-    | subgenus_section
-    | uppercase_line
-    | taxonomic_history_header
-    | collective_group_name_header
-    | references_section_header
-    | regional_and_national_faunas_header
-    | texts
+    a_supersubfamily_section | family_section | subfamily_section | tribe_section | genus_section | subgenus_section | blank_line | other
   end
 
-  rule collective_group_name_header
-    (collective_group_label_uppercase '') {
-      value = {:type => :collective_group_name_header}
-      value.merge! collective_group_label_uppercase.value
-      value
-    } 
+  # Citrus 2.3.7 doesn't like rules beginning with 'super'
+  rule a_supersubfamily_section
+    a_supersubfamily_header
   end
 
-  rule supersubfamily_section
-    supersubfamily_header
-  end
-
-  rule supersubfamily_header
-    (('THE ' uppercase_word ': ' ('SUBFAMILIES'|'SUBFAMILY') /.*/) | ('EXTINCT SUBFAMILIES' /.*/)) {
+  rule a_supersubfamily_header
+    (bold span
+      (
+        ('THE ' uppercase_word ': ' ('SUBFAMILIES'|'SUBFAMILY') /.*/) |
+        ('EXTINCT SUBFAMILIES' /.*/)
+      )
+    ) {
       {:type => :supersubfamily_header}
     }
   end
 
-  rule taxonomic_history_header
-    'Taxonomic history' {
-      {:type => :taxonomic_history_header}
-    }
-  end
-
-  ###################################################################################################
-
-  rule regional_and_national_faunas_header
-    'Regional and national faunas with keys' {
-      {:type => :regional_and_national_faunas_header}
-    }
-  end
-
-  ###################################################################################################
-
-  rule references_section_header
-    see_under_references_section_header | tribe_references_section_header | subfamily_references_section_header
-  end
-
-  rule see_under_references_section_header
-    ('Tribe' (' ' tribe_label)? ' references: see above' '.'?) {
-      {:type => :see_under_references_section_header, title: to_s}
-    }
-  end
-
-  rule subfamily_references_section_header
-    ('' type:(
-         subfamily_tribe_and_collective_group_name_references_header
-       | subfamily_tribe_and_genus_references_header
-       | subfamily_and_tribes_references_header
-       | tribe_and_genus_references_header
-       | subfamily_and_tribes_references_header_no_names
-       | subfamily_references_header
-    )) {
-      {type: :references_section_header, title: to_s}
-    }
-  end
-
-  rule subfamily_tribe_and_collective_group_name_references_header
-    'Subfamily, tribe ' tribe_label ' and collective group name ' genus_label ' references'
-  end
-
-  rule subfamily_references_header
-    'Subfamily references'
-  end
-
-  rule tribe_references_header
-    'Tribe references'
-  end
-
-  rule subfamily_and_tribes_references_header_no_names
-    'Subfamily and tribes references'
-  end
-
-  rule subfamily_tribe_and_genus_references_header
-    'Subfamily, tribe' (' ' tribe_label)? ' and genus ' genus_label ' references'
-  end
-
-  rule tribe_and_genus_references_header
-    'Tribe' ' ' tribe_label ' and genus ' genus_label ' references'
-  end
-
-  rule subfamily_and_tribes_references_header
-    'Subfamily ' subfamily_label tribes:(' and tribes')? ' references' world:(', world')?
-  end
-
-  rule tribe_references_section_header
-    ( ('' tribe_references_section_header_see_under_with_reference) |
-      ('Tribe ' tribe_label ' references') |
-      ('Tribe and genus ' genus_label ' references') |
-      subfamily:('Subfamily and tribe ' tribe_label ' references') |
-      ('' tribe_references_header)) {
-      {type: :references_section_header, title: to_s}
-    }
-  end
-
-  rule tribe_references_section_header_see_under_with_reference
-    ('Tribe references: see under genera; ' text*)
-  end
-
-  ##############################################################
-
-  rule texts
-    (text* '') {
-      {:type => :texts, :texts => captures[:text].map(&:value)}
+  rule other
+    /.*/ {
+      {:type => :other}
     }
   end
 
