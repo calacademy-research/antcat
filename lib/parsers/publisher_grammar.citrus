@@ -8,7 +8,7 @@ grammar Parsers::PublisherGrammar
   end
 
   rule publisher_place
-    /[^a-z:\d][^:\d]{2,}/u
+    /[^a-z:\d][^:\d]{2,}/
   end
 
   rule publisher_name
