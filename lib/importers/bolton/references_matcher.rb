@@ -1,5 +1,5 @@
 # coding: UTF-8
-class Bolton::ReferencesMatcher
+class Importers::Bolton::ReferencesMatcher
 
   def initialize show_progress = false
     Progress.init show_progress, Bolton::Reference.count
