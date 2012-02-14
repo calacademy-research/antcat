@@ -1,9 +1,9 @@
 # coding: UTF-8
 require 'spec_helper'
 
-describe Bolton::ReferenceMatcher do
+describe Importers::Bolton::ReferenceMatcher do
   before do
-    @matcher = Bolton::ReferenceMatcher.new
+    @matcher = Importers::Bolton::ReferenceMatcher.new
     @match = Factory :reference, :author_names => [Factory(:author_name, :name => 'Ward')]
     @target = ComparableReference.new :author => 'Ward'
   end
