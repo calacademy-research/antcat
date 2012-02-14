@@ -8,6 +8,11 @@ describe ReferenceHelper do
     Formatters::ReferenceFormatter.should_receive :format
     helper.format_reference  Factory :reference
   end
+  #it "#format_reference_document_link should delegate to the formatter" do
+    #Formatters::CatalogFormatter.should_receive :format_reference_document_link
+    # problem with calling 'current_user' in the helper
+    #helper.format_reference_document_link  Factory :reference
+  #end
   it "#italicize should delegate to the formatter" do
     Formatters::ReferenceFormatter.should_receive :italicize
     helper.italicize 'string'
