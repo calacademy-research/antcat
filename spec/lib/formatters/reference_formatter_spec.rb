@@ -116,19 +116,6 @@ describe Formatters::ReferenceFormatter do
       @formatter.format(reference).should == 'Forel, A. 1874. Les fourmis de la Suisse. Wiley, 22 pp.'
     end
 
-    describe "h_italic" do
-      it "should do nothing to a normal string but mark it as safe" do
-        string = @formatter.h_italic("string")
-        string.should == "string"
-        string.should be_html_safe
-      end
-      it "should strip unsafe text, but leave italics alone" do
-        string = @formatter.h_italic("<i><script>foo</i>")
-        string.should == "<i>&lt;script&gt;foo</i>"
-        string.should be_html_safe
-      end
-    end
-
     describe "unsafe characters" do
       before do
         @author_names = [Factory(:author_name, :name => 'Ward, P. S.')]

@@ -29,15 +29,6 @@ class Formatters::ReferenceFormatter
     timestamp.strftime '%Y-%m-%d'
   end
 
-  def self.h_italic string
-    string = string.gsub /<i>/, 'xxxx'
-    string = string.gsub /<\/i>/, 'yyyy'
-    string = h string
-    string = string.gsub /xxxx/, '<i>'
-    string = string.gsub /yyyy/, '</i>'
-    string.html_safe
-  end
-
   ##################
   def initialize reference
     @reference = reference
@@ -70,8 +61,6 @@ class Formatters::ReferenceFormatter
   end
 
   private
-  def h_italic(string) self.class.h_italic string end
-
   def format_date input
     date = input
     return date if input.length < 4
