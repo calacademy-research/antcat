@@ -1,7 +1,7 @@
 # coding: UTF-8
 require 'spec_helper'
 
-describe @parser do
+describe Parsers::CommonGrammar do
   before do
     @parser = Parsers::CommonGrammar
   end
