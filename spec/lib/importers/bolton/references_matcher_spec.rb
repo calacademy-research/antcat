@@ -13,7 +13,7 @@ describe Importers::Bolton::ReferencesMatcher do
     matched_bolton.should_receive(:<=>).and_return 0.90
     unmatched_bolton.should_not_receive(:<=>)
 
-    Bolton::ReferencesMatcher.new.find_matches_for_all
+    Importers::Bolton::ReferencesMatcher.new.find_matches_for_all
 
     Bolton::Match.count.should == 1
     Bolton::Match.first.similarity.should == 0.90
