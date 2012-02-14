@@ -10,4 +10,8 @@ module ApplicationHelper
     end
   end
 
+  def feedback_link
+    mail_to 'mark@mwilden.com', 'Feedback', target: '_blank', subject: 'AntCat feedback'
+  end
+
 end
