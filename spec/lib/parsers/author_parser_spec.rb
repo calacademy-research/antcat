@@ -122,6 +122,18 @@ describe Parsers::AuthorParser do
      string.should == ''
    end
 
+   it "should handle 'Sr.'" do
+     string = 'Brown, W. L., Sr.'
+     @parser.parse!(string)[:names].should == ['Brown, W. L., Sr.']
+     string.should == ''
+   end
+
+   it "should handle 'III'" do
+     string = 'Morrison, W.R., III'
+     @parser.parse!(string)[:names].should == ['Morrison, W.R., III']
+     string.should == ''
+   end
+
    it "should handle 'Jr'" do
      string = 'Brown, W. L., Jr; Kempf, W. W.'
      @parser.parse!(string)[:names].should == ['Brown, W. L., Jr', 'Kempf, W. W.']
