@@ -6,7 +6,7 @@
       - items << link_to('Logout', destroy_user_session_path)
     - else
       - items << link_to('Login', '#', class: :link)
-    - items << link_to('Feedback', '#', class: :link)
+    - items << feedback_link
     = make_link_menu items
 
   .form

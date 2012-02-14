@@ -75,3 +75,7 @@ end
 Then "I should not see any search results" do
   page.should_not have_css "#search_results"
 end
+
+Then "I should be on an email form" do
+  # no idea how to detect this
+end
