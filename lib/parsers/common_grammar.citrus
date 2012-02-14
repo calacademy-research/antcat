@@ -11,13 +11,8 @@ grammar Parsers::CommonGrammar
     blank_paragraph |
     empty_span |
     en_gb_span |
-    font_size_span |
     errant_red_space |
     spacerun
-  end
-
-  rule text
-    /[^<>.]+/
   end
 
   rule question_mark
@@ -80,6 +75,14 @@ grammar Parsers::CommonGrammar
     /<\/\w+>/
   end
 
+  rule tag_ends
+    tag_end*
+  end
+
+  rule close_tag
+    tag_end
+  end
+
   rule close_tags
     (space | tag_end)*
   end
@@ -92,24 +95,50 @@ grammar Parsers::CommonGrammar
     /[[:alpha:]]+/
   end
 
-  rule species_name
+  rule species_epithet
     /[[:lower:]][[:lower:]\-][[:lower:]]*/
   end
 
   rule uppercase_word
-    /[[:upper:]]{2,}\b/
+    /([[:upper:]]{2,}|A|AN)\b/
+  end
+
+  rule uppercase_phrase
+    (uppercase_word (/,? / uppercase_word)*) {
+      {:type => :uppercase_phrase, :text => to_s}
+    }
+  end
+
+  rule uppercase_line
+    (uppercase_phrase /$/) {
+      {:type => :uppercase_line, :text => to_s}
+    }
+  end
+
+  rule number
+    arabic_number
+  end
+
+  rule roman_number
+    /\b[iIvVxXlLcC]+\b/
+  end
+
+  rule arabic_number
+    /\b[\d]+/
   end
 
   rule capitalized_word
-    /[[:upper:]][[:lower:]]+\b/
+    /([[:upper:]][[:lower:]]+|A)\b/
   end
 
   rule parenthesized_phrase
-    /\(.+?\)/
+    ('(' contents:/[^)]+/ ')') {
+      contents
+    } 
   end
 
   rule year
-    /\d{4}/
+    ('17'|'18'|'19'|'20'|'21') /\d{2}/ !/\d/
   end
 
   rule citation_year
@@ -117,7 +146,7 @@ grammar Parsers::CommonGrammar
   end
 
   rule blank_line
-    (/^/ (blank_paragraph_with_font | blank_paragraph_with_formatting | bold_empty_paragraph | blank_paragraph_italic | '.' | s) /$/) {
+  (/^/ (blank_paragraph_with_font | blank_paragraph_with_formatting | bold_empty_paragraph | blank_paragraph_italic | (span '.' tag_end) | '.' | s) s /$/) {
       :blank_line
     }
   end
@@ -172,8 +201,20 @@ grammar Parsers::CommonGrammar
     '<span lang=' '"'? 'EN-GB' '"'? '>'
   end
 
-  rule font_size_span
-    '<span style="font-size:11.0pt;mso-bidi-font-size: 10.0pt">'
+  rule bracketed_phrase
+    /\[.*?\]/
+  end
+
+  rule et_al
+    italic 'et al.' close_tag
+  end
+
+  rule recte
+    italic 'recte' close_tag
+  end
+
+  rule sic
+    italic 'sic' close_tag
   end
 
 end

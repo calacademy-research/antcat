@@ -30,6 +30,12 @@ When /I wait for a bit(?: more)?/ do
   sleep 1
 end
 
+Then /^"([^"]+)" should be selected(?: in (.*))?$/ do |word, location|
+  with_scope location || 'the page' do
+    page.should have_css ".selected", :text => word
+  end
+end
+
 When /I fill in the search box with "(.*?)"/ do |search_term|
   step %{I fill in "q" with "#{search_term}"}
 end

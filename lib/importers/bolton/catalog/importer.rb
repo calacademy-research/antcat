@@ -1,6 +1,5 @@
 # coding: UTF-8
 require 'asterisk_dagger_formatting'
-
 class Importers::Bolton::Catalog::Importer
 
   def initialize show_progress = false

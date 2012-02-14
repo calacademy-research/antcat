@@ -5,7 +5,7 @@ module ReferenceHelper
   end
 
   def format_reference_document_link reference
-    Formatters::Formatters::CatalogFormatter.format_reference_document_link reference, current_user
+    Formatters::CatalogFormatter.format_reference_document_link reference, current_user
   end
 
   def format_reference_document_link reference
