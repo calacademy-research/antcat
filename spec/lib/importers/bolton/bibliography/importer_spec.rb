@@ -1,9 +1,9 @@
 # coding: UTF-8
 require 'spec_helper'
 
-describe Importers::Importers::Bolton::Bibliography::Importer do
+describe Importers::Bolton::Bibliography::Importer do
   before do
-    @bibliography = Importers::Importers::Bolton::Bibliography::Importer.new
+    @bibliography = Importers::Bolton::Bibliography::Importer.new
   end
 
   def diff a, b
