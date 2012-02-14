@@ -14,7 +14,7 @@ grammar Parsers::AuthorGrammar
   end
 
   rule author_suffix
-    (', Jr' '.'?) | ', II'
+    (', Jr' '.'?) | (', Sr' '.'?) | ', III' | ', II'
   end
 
   rule author_separator

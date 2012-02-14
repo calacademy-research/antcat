@@ -30,7 +30,7 @@ describe Importers::Bolton::ReferencesMatcher do
     ## run auto-matching
     #matching_reference = Factory :reference, :author_names => [Factory(:author_name, :name => 'Dlussky, G.M.')]
     #matched_bolton = Factory :bolton_reference, :authors => 'Dlussky, G.M.'
-    #Bolton::ReferencesMatcher.new.find_matches_for_all
+    #Importers::Bolton::ReferencesMatcher.new.find_matches_for_all
 
     ## check the results of the auto-matching
     #Bolton::Match.count.should == 1
@@ -46,7 +46,7 @@ describe Importers::Bolton::ReferencesMatcher do
     #matched_bolton.save!
 
     ## run auto-matching again
-    #Bolton::ReferencesMatcher.new.find_matches_for_all
+    #Importers::Bolton::ReferencesMatcher.new.find_matches_for_all
 
     ## and make sure the manual stuff stayed
     #matched_bolton.match_status = 'manual'
