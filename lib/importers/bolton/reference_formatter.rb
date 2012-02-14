@@ -1,5 +1,5 @@
 # coding: UTF-8
-class Importers::Bolton::Bibliography::ReferenceFormatter
+class Bolton::Bibliography::ReferenceFormatter
   include ERB::Util
 
   def self.format reference, format = :html

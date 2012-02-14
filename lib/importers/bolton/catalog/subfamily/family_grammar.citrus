@@ -1,6 +1,6 @@
 grammar Importers::Bolton::Catalog::Subfamily::FamilyGrammar
   include Parsers::CommonGrammar
-  include Importers::Bolton::Catalog::Grammar
+  include Importers::Importers::Bolton::Catalog::Grammar
 
   rule family_section
       family_references_header
