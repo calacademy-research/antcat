@@ -1,9 +1,9 @@
 # coding: UTF-8
 require 'spec_helper'
 
-describe Bolton::Bibliography::Importer do
+describe Importers::Importers::Bolton::Bibliography::Importer do
   before do
-    @bibliography = Bolton::Bibliography::Importer.new
+    @bibliography = Importers::Importers::Bolton::Bibliography::Importer.new
   end
 
   def diff a, b
@@ -252,7 +252,7 @@ Dorow, W.H.O. & Kohout, R.J. 1995. Paleogene ants of the genus <i style="mso-bid
 
  it 'should skip over a note' do
    contents = make_contents %s{Note: in publications the following name appears as either Dubovikoff or Dubovikov; the latter is used here throughout.  }
-   Bolton::Bibliography::Importer.should_not_receive(:parse)
+   Importers::Bolton::Bibliography::Importer.should_not_receive(:parse)
    @bibliography.import_html contents
  end
 
@@ -380,7 +380,7 @@ Dorow, W.H.O. & Kohout, R.J. 1995. Paleogene ants of the genus <i style="mso-bid
     end
     it "should clear the import result" do
       seen = Factory :bolton_reference, :import_result => 'added'
-      Bolton::Bibliography::Importer.new
+      Importers::Bolton::Bibliography::Importer.new
       seen.reload.import_result.should be_nil
     end
 

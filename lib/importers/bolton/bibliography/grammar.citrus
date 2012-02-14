@@ -1,4 +1,4 @@
-grammar Bolton::Bibliography::Grammar
+grammar Importers::Bolton::Bibliography::Grammar
   include Parsers::CommonGrammar
   include Parsers::PaginationGrammar
 
