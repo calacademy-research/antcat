@@ -3,7 +3,7 @@
 #  1) Open the file in Word
 #  2) Save it as web page
 
-class Bolton::Bibliography::Importer
+class Importers::Bolton::Bibliography::Importer
   def initialize show_progress = false
     Progress.init show_progress, nil, self.class.name
     Bolton::Reference.update_all(:import_result => nil)
@@ -41,7 +41,7 @@ class Bolton::Bibliography::Importer
     string = pre_parse! string
     original = string.dup
     return unless reference? string
-    attributes = Bolton::Bibliography::Grammar.parse(string, :consume => false).value
+    attributes = Importers::Bolton::Bibliography::Grammar.parse(string, :consume => false).value
     post_parse attributes
     attributes.merge! :original => original
     Bolton::Reference.import attributes
