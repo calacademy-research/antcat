@@ -116,13 +116,26 @@ describe Formatters::ReferenceFormatter do
       @formatter.format(reference).should == 'Forel, A. 1874. Les fourmis de la Suisse. Wiley, 22 pp.'
     end
 
+    describe "h_italic" do
+      it "should do nothing to a normal string but mark it as safe" do
+        string = @formatter.h_italic("string")
+        string.should == "string"
+        string.should be_html_safe
+      end
+      it "should strip unsafe text, but leave italics alone" do
+        string = @formatter.h_italic("<i><script>foo</i>")
+        string.should == "<i>&lt;script&gt;foo</i>"
+        string.should be_html_safe
+      end
+    end
+
     describe "unsafe characters" do
       before do
         @author_names = [Factory(:author_name, :name => 'Ward, P. S.')]
         @reference = Factory :unknown_reference, :author_names => @author_names,
           :citation_year => "1874", :title => "Les fourmis de la Suisse.", :citation => '32 pp.'
       end
-      it "should escape the author_names" do
+      it "should escape everything, but let italics through" do
         @reference.author_names = [Factory(:author_name, :name => '<script>')]
         @formatter.format(@reference).should == '&lt;script&gt; 1874. Les fourmis de la Suisse. 32 pp.'
       end
@@ -240,6 +253,20 @@ describe Formatters::ReferenceFormatter do
   describe "formatting a timestamp" do
     it "should use a short format" do
       @formatter.format_timestamp(Time.parse('2001-1-2')).should == '2001-01-02'
+    end
+  end
+
+  describe "inline_citation" do
+    it "nonmissing references should defer to the key" do
+      key = mock
+      reference = Factory :article_reference
+      reference.should_receive(:key).and_return key
+      key.should_receive(:to_link)
+
+      @formatter.format_inline_citation reference, nil
+    end
+    it "should just output the citation for a MissingReference" do
+      @formatter.format_inline_citation(Factory(:missing_reference, :citation => 'foo'), nil).should == 'foo'
     end
   end
 
