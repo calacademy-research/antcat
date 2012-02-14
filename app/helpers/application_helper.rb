@@ -11,7 +11,14 @@ module ApplicationHelper
   end
 
   def feedback_link
-    mail_to 'mark@mwilden.com', 'Feedback', target: '_blank', subject: 'AntCat feedback'
+    mail_to 'mark@mwilden.com', 'Feedback', target: '_blank', subject: 'AntCat feedback', body: <<-EOS
+Thanks for helping us make AntCat better by replacing this message with your comments, suggestions, and questions. You may also want to check out the AntCat Google group at https://groups.google.com/forum/?fromgroups#!forum/antcat where we discuss the project.
+
+Mark Wilden
+Web Applications Developer
+California Academy of Sciences
+http://antcat.org
+      EOS
   end
 
 end
