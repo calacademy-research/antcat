@@ -1,9 +1,13 @@
 #login
+  - items = []
   .link
     - if user_signed_in?
-      = link_to(current_user.email, edit_user_registration_path) + '| ' + link_to('Logout', destroy_user_session_path)
+      - items << link_to(current_user.email, edit_user_registration_path)
+      - items << link_to('Logout', destroy_user_session_path)
     - else
-      = link_to 'Login', '#', :class => :link
+      - items << link_to('Login', '#', class: :link)
+    - items << link_to('Feedback', '#', class: :link)
+    = make_link_menu items
 
   .form
     = form_tag user_session_path do
@@ -14,4 +18,4 @@
       = submit_tag "Go"
       %br
       %span.small
-        = check_box_tag("user[remember_me]", "1", true) + "Remember me " + '| ' + link_to('Forgot password?', new_user_password_path) + '| ' + link_to('Cancel', '#', :class => :link)
+        = make_link_menu check_box_tag("user[remember_me]", "1", true) + "Remember me ",  link_to('Forgot password?', new_user_password_path), link_to('Cancel', '#', class: :link)
