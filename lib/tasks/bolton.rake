@@ -33,7 +33,7 @@ namespace :bolton do
   namespace :references do
     desc 'Match Bolton references to ours'
     task :match => :environment do
-      Bolton::ReferencesMatcher.new(true).find_matches_for_all
+      Importers::Bolton::ReferencesMatcher.new(true).find_matches_for_all
     end
 
     desc 'Import and match Bolton references'
