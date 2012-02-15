@@ -40,11 +40,21 @@ grammar Importers::Bolton::Catalog::Subfamily::GenusGrammar
   end
 
   rule genus_header
+    (regular_genus_header | collective_group_name_genus_header)
+  end
+
+  rule regular_genus_header
     ('Genus ' fossil_flag? italic uppercase_word close_tag (' ' genus_header_note)?) {
       value = {:type => :genus_header, :name => uppercase_word.downcase.capitalize.strip}
       value[:fossil] = true if fossil_flag.present?
       value.merge! genus_header_note.value if genus_header_note
       value
+    }
+  end
+
+  rule collective_group_name_genus_header
+    'Collective group name *<i>FORMICIUM</i>' {
+      {:type => :genus_header}
     }
   end
 
