@@ -98,6 +98,8 @@ class Reference < ActiveRecord::Base
       search_options[:page] = options[:page] || 1
     end
 
+    search_options[:no_missing_references] = true
+
     case
     when options[:whats_new]
       search_options.merge! :order => :created_at
