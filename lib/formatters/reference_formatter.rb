@@ -79,9 +79,7 @@ class Formatters::ReferenceFormatter
   end
 
   def self.make_formatter reference
-    raise "Don't know what kind of reference this is: #{reference.inspect}" unless
-      ['Article', 'Book', 'Nested', 'Unknown', 'Missing'].map {|e| e + 'Reference'}.include? reference.class.name
-    ('Formatters::' + reference.class.name + 'Formatter').constantize.new reference
+    reference.to_class('Formatter', 'Formatters::').new reference
   end
 end
 
