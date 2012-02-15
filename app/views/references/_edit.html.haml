@@ -78,12 +78,13 @@
       %tr
         %td= label_tag :reference_public_notes, 'Public notes'
         %td{:colspan => 3, :class => :right_side_field}= f.text_area :public_notes, :rows => 2
-      %tr
-        %td= label_tag :reference_editor_notes, 'Editor notes'
-        %td{:colspan => 3, :class => :right_side_field}= f.text_area :editor_notes, :rows => 2
-      %tr
-        %td= label_tag :reference_taxonomic_notes, 'Taxonomic notes'
-        %td{:colspan => 3, :class => :right_side_field}= f.text_area :taxonomic_notes, :rows => 2
+      - if user_signed_in?
+        %tr
+          %td= label_tag :reference_editor_notes, 'Editor notes'
+          %td{:colspan => 3, :class => :right_side_field}= f.text_area :editor_notes, :rows => 2
+        %tr
+          %td= label_tag :reference_taxonomic_notes, 'Taxonomic notes'
+          %td{:colspan => 3, :class => :right_side_field}= f.text_area :taxonomic_notes, :rows => 2
       %tr
         %td{:colspan => 4}
           %table.small_fields
