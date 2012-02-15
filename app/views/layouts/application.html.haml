@@ -27,10 +27,9 @@
     %link{:rel => "shortcut icon", :href => "http://www.antweb.org/images/favicon.ico"}
 
     = yield :head
-
     :javascript
       var testing = #{Rails.env == 'test'};
-      var loggedIn = #{user_signed_in?};
+      var user_can_edit = #{ReleaseType.user_can_edit?};
 
   %body#flash{:class => controller.class}
     #page
