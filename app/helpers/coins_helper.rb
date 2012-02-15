@@ -45,7 +45,7 @@ class CoinsHelperBase
   end
 end
 
-class ArticleCoinsHelper < CoinsHelperBase
+class ArticleReferenceCoinsHelper < CoinsHelperBase
   def kind
     'journal'
   end
@@ -62,7 +62,7 @@ class ArticleCoinsHelper < CoinsHelperBase
   end
 end
 
-class BookCoinsHelper < CoinsHelperBase
+class BookReferenceCoinsHelper < CoinsHelperBase
   def kind
     'book'
   end
@@ -77,7 +77,7 @@ class BookCoinsHelper < CoinsHelperBase
   end
 end
 
-class UnknownCoinsHelper < CoinsHelperBase
+class UnknownReferenceCoinsHelper < CoinsHelperBase
   def kind
     'dc'
   end
@@ -90,7 +90,7 @@ class UnknownCoinsHelper < CoinsHelperBase
   end
 end
 
-class NestedCoinsHelper < CoinsHelperBase
+class NestedReferenceCoinsHelper < CoinsHelperBase
   def kind
     'dc'
   end
