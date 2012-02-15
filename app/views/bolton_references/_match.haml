@@ -1,6 +1,6 @@
 .match{:class => css_class}
   .margin
-    - disabled = ReleaseType.user_can_not_edit?
+    - disabled = user_can_not_edit?
     - if bolton_reference.match != reference
       - text = 'Match'
       - match = reference
