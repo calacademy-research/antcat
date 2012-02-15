@@ -78,7 +78,7 @@
       %tr
         %td= label_tag :reference_public_notes, 'Public notes'
         %td{:colspan => 3, :class => :right_side_field}= f.text_area :public_notes, :rows => 2
-      - if user_signed_in?
+      - if user_can_edit?
         %tr
           %td= label_tag :reference_editor_notes, 'Editor notes'
           %td{:colspan => 3, :class => :right_side_field}= f.text_area :editor_notes, :rows => 2
