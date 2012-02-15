@@ -1,6 +1,18 @@
 # coding: UTF-8
 module ApplicationHelper
 
+  def user_is_editor?
+    user_signed_in?
+  end
+
+  def user_can_edit?
+    ReleaseType.user_can_edit?
+  end
+
+  def user_can_not_edit?
+    ReleaseType.user_can_not_edit?
+  end
+
   def make_link_menu *items
     content_tag :span, class: 'link_menu' do |content|
       items.flatten.inject("".html_safe) do |string, item|

@@ -7,8 +7,8 @@
       - else
         - text = 'Matchable'
         - match = nil
-      = button_to text, bolton_reference_path(bolton_reference, :match => match), :method => :put, :remote => true, :disabled => ReleaseType.user_can_not_edit?
-      = button_to 'Enter ID', bolton_reference_path(bolton_reference, :match => '_id_'), :method => :put, :remote => true, :disabled => ReleaseType.user_can_not_edit?, :class => 'enter_id'
+      = button_to text, bolton_reference_path(bolton_reference, :match => match), :method => :put, :remote => true, :disabled => user_can_not_edit?
+      = button_to 'Enter ID', bolton_reference_path(bolton_reference, :match => '_id_'), :method => :put, :remote => true, :disabled => user_can_not_edit?, :class => 'enter_id'
   .details
     .fields
       .authors=             bolton_reference.authors

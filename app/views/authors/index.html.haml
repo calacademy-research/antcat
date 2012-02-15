@@ -9,7 +9,7 @@
   - for panel in @panels
     = render 'panel', panels: @panels, panel: panel
 
-  - if @authors.count >= 2 && ReleaseType.user_can_edit?
+  - if @authors.count >= 2 && user_can_edit?
     = render 'merge', panels: @panels, names: @names
 
 = render 'shared/qtip'
