@@ -7,6 +7,6 @@
   = reference.id
 
   %p.notes= italicize h reference.public_notes
-  - if user_signed_in?
+  - if user_is_editor?
     %p.editor.notes= italicize h reference.editor_notes
     %p.notes= italicize h reference.taxonomic_notes
