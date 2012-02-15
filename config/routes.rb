@@ -15,7 +15,7 @@ AntCat::Application.routes.draw do
   resources :styles, :only => [:index]
   resource  :catalog, :only => [] do
     match     'index/(:id)', :to => 'catalog/index#show', :as => 'index'
-    match     'browser/(:id)', :to => 'catalog/browser#show', :as => 'browser'
+    match     'browser/(:id)', :to => 'catalog/browser#show', :as => 'browser' unless ReleaseType.preview?
   end
 
   devise_for :users
