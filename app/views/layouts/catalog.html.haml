@@ -9,8 +9,9 @@
       .actions.catalog_view_selector
         = label_tag 'index_view', 'Index'
         = radio_button_tag 'view_selector', 'Index', controller.class.name =~ /Index/, :id => 'index_view', :path => index_catalog_url(@taxon, :q => params['q'], :search_type => params[:search_type])
-        = label_tag 'browser_view', 'Browser'
-        = radio_button_tag 'view_selector', 'Browser', controller.class.name =~ /Browser/, :id => 'browser_view', :path => browser_catalog_url(@taxon, :q => params['q'], :search_type => params[:search_type])
+        - unless ReleaseType.preview?
+          = label_tag 'browser_view', 'Browser' unless ReleaseType.preview?
+          = radio_button_tag 'view_selector', 'Browser', controller.class.name =~ /Browser/, :id => 'browser_view', :path => browser_catalog_url(@taxon, :q => params['q'], :search_type => params[:search_type]) unless ReleaseType.preview?
 
       .search
         Search for name
