@@ -9,7 +9,7 @@
   #navigation_bar
     .actions
       - items = [link_to('Latest additions', references_path(:commit => 'new'))]
-      - if user_signed_in?
+      - if ReleaseType.user_can_edit?
         - items << link_to('Latest changes', references_path(:commit => 'review'))
         - items << link_to('Journals', journals_path)
       - items << link_to('Export to EndNote', endnote_import_path(:q => params[:q]), :confirm => @endnote_export_confirmation_message)
@@ -52,7 +52,7 @@
         %td.date
           = format_timestamp reference.created_at
 
-  - if user_signed_in?
+  - if ReleaseType.user_can_edit?
     %tr.reference_template_row
       %td
         = render 'reference', :reference => nil, :publisher_string => @publisher_string, :css_class => 'reference_template'

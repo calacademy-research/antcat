@@ -1,7 +1,7 @@
 $(function() {
   setupSearch();
   setupDisplays();
-  if (loggedIn) {
+  if (user_can_edit) {
     setupEdits();
   }
 })
@@ -64,17 +64,17 @@ function setupDisplays() {
 
 function setupIcons() {
   setupIconVisibility()
-  if (loggedIn) {
+  if (user_can_edit) {
     setupIconHighlighting()
     setupIconClickHandlers()
   }
 }
 
 function setupIconVisibility() {
-  if (!testing || !loggedIn)
+  if (!testing || !user_can_edit)
     $('.icon').hide();
 
-  if (!loggedIn)
+  if (!user_can_edit)
     return
 
   $('.reference').live('mouseenter',
