@@ -103,9 +103,11 @@ grammar Importers::Bolton::Catalog::Subfamily::SubfamilyGrammar
       ('Genera of ' capitalized_word ': ' list_names) |
       ('Genera (extinct' italic ') ' incertae_sedis_in ' ' capitalized_word ': ' list_names) |
       (('Hong (2002) genera '|'Genera '|'Genus ') ('(extinct) '|'(extant) ')? (incertae_sedis_in | 'of') ' ' capitalized_word ': ' list_names) |
-      (('Genera'|'Genus') ' (extinct) of ' fossil_flag* capitalized_word ': ' list_names)
+      (('Genera'|'Genus') ' (extinct) of ' fossil_flag* capitalized_word ': ' list_names) |
+      ('Collective group name in *Formiciini: *<i>Formicium</i>.')
     ) {
-      value = {:type => :genera_list, :genera => list_names.value}
+      value = {:type => :genera_list}
+      value[:genera] = list_names.value if list_names
       value[:incertae_sedis] = true if incertae_sedis_in
       value
     } 

@@ -72,6 +72,10 @@ describe Importers::Bolton::Catalog::Subfamily::SubfamilyGrammar do
       it "should be recognized for an extinct subfamily" do
         @grammar.parse(%{Genera (extinct) of *Armaniini: *<i>Archaeopone</i>.}).value_with_reference_text_removed.should == {:type => :genera_list, :genera => [{:name => 'Archaeopone', :fossil => true}]}
       end
+      it "should be recognized for an extinct subfamily" do
+        @grammar.parse(%{Collective group name in *Formiciini: *<i>Formicium</i>.}).value_with_reference_text_removed.should == {:type => :genera_list}
+      end
+
     end
 
     describe "Genera incertae sedis lists" do

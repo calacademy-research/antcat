@@ -38,7 +38,6 @@ describe Importers::Bolton::Catalog::Subfamily::Grammar do
         }
       end
     end
-
   end
 
   describe "Genus headers" do
@@ -49,13 +48,15 @@ describe Importers::Bolton::Catalog::Subfamily::Grammar do
       it "should recognize the beginning of a fossil genus" do
         @grammar.parse(%{Genus *<i>ANEURETELLUS</i>}).value_with_reference_text_removed.should == {type: :genus_header, :name => 'Aneuretellus', :fossil => true}
       end
-
       it "should handle it when there's a subfamily at the end" do
         @grammar.parse(%{Genus *<i>YPRESIOMYRMA</i> [Myrmeciinae]}).value_with_reference_text_removed.should ==
           {type: :genus_header, :name => 'Ypresiomyrma', :fossil => true, :note => {:name => 'Myrmeciinae'}}
       end
+      it "should handle a collective group name" do
+        @grammar.parse(%{Collective group name *<i>FORMICIUM</i>}).value_with_reference_text_removed.should ==
+          {type: :genus_header}
+      end
     end
-
     describe "Genus nomen nudum header" do
       it "should handle it" do
         @grammar.parse(%{<i>ANCYLOGNATHUS</i> [<i>nomen nudum</i>]}).value_with_reference_text_removed.should == {type: :genus_nomen_nudum_header, :name => 'Ancylognathus'}
@@ -65,7 +66,6 @@ describe Importers::Bolton::Catalog::Subfamily::Grammar do
           {type: :genus_nomen_nudum_header, :name => 'Dolichoformica', :fossil => true}
       end
     end
-
   end
 
   describe "Genus record" do
