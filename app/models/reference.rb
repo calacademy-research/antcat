@@ -82,6 +82,13 @@ class Reference < ActiveRecord::Base
       citation_year.to_i
     end
   end
+  def to_class suffix = '', prefix = ''
+    class_name = self.class.name
+    raise "Don't know what kind of reference this is: #{inspect}" unless
+      ['Article', 'Book', 'Nested', 'Unknown', 'Missing'].map {|e| e + 'Reference'}.include? class_name
+    class_name = prefix + class_name + suffix
+    class_name.constantize
+  end
 
   private
   def strip_newlines_from_text_fields
