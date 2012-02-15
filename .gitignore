@@ -8,3 +8,4 @@ s3.yml
 coverage
 .rspec
 pids
+tags
