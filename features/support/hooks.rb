@@ -4,6 +4,7 @@ require 'release_type'
 Before do
   Family.delete_all
   Factory :family, protonym: nil
+  $ReleaseType = ProductionReleaseType.new
 end
 
 Before('@preview') do
