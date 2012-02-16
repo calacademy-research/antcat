@@ -126,7 +126,7 @@ function editReference() {
 function deleteReference() {
   $reference = $(this).closest('.reference');
   $reference.addClass('about_to_be_deleted');
-  if (confirm('Do you want to delete this reference?')) {
+  if (confirm(delete_confirmation_message)) {
     $.post($reference.find('form').attr('action'), {'_method': 'delete'},
       function(data){
         if (data.success) {
