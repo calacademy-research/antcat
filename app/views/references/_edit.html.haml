@@ -99,6 +99,6 @@
               %td= reference.id
       %tr
         %td{:colspan => 4}
-          %button.submit= @possible_duplicate ? 'Save Anyway' : 'Save'
+          %button.submit= previewize @possible_duplicate ? 'Save Anyway' : 'Save'
           %button.cancel Cancel
-          %button.delete Delete
+          %button.delete= previewize 'Delete'
