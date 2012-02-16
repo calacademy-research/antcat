@@ -28,7 +28,7 @@
     = yield :head
     :javascript
       var testing = #{Rails.env == 'test'};
-      var user_can_edit = #{user_can_edit?};
+      var user_can_edit = #{!!user_can_edit?};
 
   %body#flash{:class => controller.class}
     #page

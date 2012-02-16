@@ -1,5 +1,10 @@
 # coding: UTF-8
 module ApplicationHelper
+  require 'release_type'
+
+  def preview?
+    $ReleaseType.preview?
+  end
 
   def user_is_editor?
     user_signed_in?
@@ -10,7 +15,9 @@ module ApplicationHelper
   end
 
   def user_can_not_edit?
-    ReleaseType.user_can_not_edit?
+    !user_can_edit?
+  end
+
   def make_title title
     string = ''.html_safe
     string << "#{title} - " if title
