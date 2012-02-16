@@ -11,6 +11,12 @@ module ApplicationHelper
 
   def user_can_not_edit?
     ReleaseType.user_can_not_edit?
+  def make_title title
+    string = ''.html_safe
+    string << "#{title} - " if title
+    string << $ReleaseType.title
+    string << (Rails.env.production? ? '' : " (#{Rails.env})")
+    content_tag :span, string
   end
 
   def make_link_menu *items
