@@ -1,11 +1,15 @@
 # coding: UTF-8
 class AuthorsController < ApplicationController
-
   before_filter :authenticate_user!, only: :merge
+  skip_before_filter :authenticate_user!, :if => :preview?
 
   def index
     create_panels
     add_blank_panel_if_necessary
+  end
+
+  def preview?
+    $ReleaseType.preview?
   end
 
   def create_panels
