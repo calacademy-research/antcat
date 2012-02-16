@@ -56,6 +56,15 @@ Feature: Editing authors and author names
     Then I should see "Bolton, B." in the first author panel
     And I should see "Fisher, B." in the first author panel
 
+  @preview
+  Scenario: Merging, in preview environment
+    When I go to the Authors page
+    And I search for "Bolton, B." in the author panel
+    And I search for "Fisher, B." in another author panel
+    And I merge the authors
+    Then I should see "Bolton, B." in the first author panel
+    And I should see "Fisher, B." in the first author panel
+
   Scenario: Not logged in - can't merge
     When I search for "Bolton, B." in the author panel
     And I search for "Fisher, B." in another author panel
