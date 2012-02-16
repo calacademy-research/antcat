@@ -208,5 +208,6 @@ Feature: Add reference
       And in the new edit form I fill in "article_pagination" with "1"
       And in the new edit form I fill in "reference_citation_year" with "1981"
       And in the new edit form I press the "Save" button
+      And I wait for a bit
     Then I should see a very long author names string
 
