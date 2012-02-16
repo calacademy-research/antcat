@@ -23,7 +23,7 @@ module ApplicationHelper
     string << "#{title} - " if title
     string << $ReleaseType.title
     string << (Rails.env.production? ? '' : " (#{Rails.env})")
-    content_tag :span, string
+    string
   end
 
   def make_link_menu *items
