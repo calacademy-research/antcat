@@ -6,7 +6,7 @@
   = form_tag authors_merge_path do
     - panels.each do |panel|
       = hidden_field_tag 'terms[]', panel.term
-    = submit_tag 'Merge these authors', confirm: 'Do you want to merge these authors?'
+    = submit_tag previewize 'Merge these authors', confirm: previewize 'Do you want to merge these authors?'
   .help
     - string = Formatters::CatalogFormatter.conjuncted_list names, 'name'
     = raw "Click this button to make #{string} refer to the same author, so that searching for one of the names finds the others."
