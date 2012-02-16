@@ -32,6 +32,21 @@ Feature: Add reference
       And I should not be editing
       And I should see "Ward, B.L.; Bolton, B. 1992. Between Pacific Tides. Ants 2:1."
 
+  @preview
+  Scenario: Adding when not logged in, but in preview environment
+    When I log out
+    And I go to the references page
+    When I follow "add"
+      And in the new edit form I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
+      And in the new edit form I fill in "reference_title" with "Between Pacific Tides"
+      And in the new edit form I fill in "journal_name" with "Ants"
+      And in the new edit form I fill in "reference_series_volume_issue" with "2"
+      And in the new edit form I fill in "article_pagination" with "1"
+      And in the new edit form I fill in "reference_citation_year" with "1992"
+      And in the new edit form I press the "Save" button
+      And I should not be editing
+      And I should see "Ward, B.L.; Bolton, B. 1992. Between Pacific Tides. Ants 2:1."
+
   Scenario: Adding a reference but then cancelling
     When I follow "add"
       And in the new edit form I fill in "reference_title" with "Mark Wilden"
