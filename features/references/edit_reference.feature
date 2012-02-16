@@ -29,6 +29,21 @@ Feature: Edit reference
     Then I should be on the references page
       And I should see "Ward, B.L.; Bolton, B. 2010. Ant Title"
 
+  @preview
+  Scenario: Edit a reference in the preview environment
+    Given the following references exist
+      |authors|citation  |cite_code|created_at|date    |possess|title|updated_at|year|
+      |authors|Psyche 5:3|CiteCode |today     |20100712|Possess|title|today     |2010|
+    Given I am not logged in
+    When I go to the references page
+    * I follow "edit"
+    * I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
+    * I fill in "reference_title" with "Ant Title"
+    * I press the "Save" button
+    * I wait for a bit
+    Then I should be on the references page
+    And I should see "Ward, B.L.; Bolton, B. 2010. Ant Title"
+
   Scenario: Inserting an author name into the middle of the list
     Given I am logged in
       And the following references exist
