@@ -6,7 +6,7 @@ module ApplicationHelper
   end
 
   def user_can_edit?
-    ReleaseType.user_can_edit?
+    $ReleaseType.user_can_edit? current_user
   end
 
   def user_can_not_edit?

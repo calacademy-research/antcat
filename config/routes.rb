@@ -1,4 +1,6 @@
 # coding: UTF-8
+require 'release_type'
+
 AntCat::Application.routes.draw do
 
   root :to => "catalog/index#show"
@@ -15,7 +17,7 @@ AntCat::Application.routes.draw do
   resources :styles, :only => [:index]
   resource  :catalog, :only => [] do
     match     'index/(:id)', :to => 'catalog/index#show', :as => 'index'
-    match     'browser/(:id)', :to => 'catalog/browser#show', :as => 'browser' unless ReleaseType.preview?
+    match     'browser/(:id)', :to => 'catalog/browser#show', :as => 'browser' unless $ReleaseType.preview?
   end
 
   devise_for :users
