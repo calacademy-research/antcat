@@ -27,7 +27,6 @@ gem 'xml-simple'
 
 group :development do
   gem 'engineyard'
-  gem 'engineyard-dns'
   gem 'wirble'
 end
 
