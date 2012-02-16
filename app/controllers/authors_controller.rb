@@ -8,10 +8,6 @@ class AuthorsController < ApplicationController
     add_blank_panel_if_necessary
   end
 
-  def preview?
-    $ReleaseType.preview?
-  end
-
   def create_panels
     params[:terms] ||= []
 
