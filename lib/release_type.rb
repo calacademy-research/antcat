@@ -13,7 +13,6 @@ class ProductionReleaseType < ReleaseType
 end
 
 class PreviewReleaseType < ReleaseType
-  def banner; content_tag :div, "preview", class: :preview end
   def title; 'Preview of AntCat' end
   def preview?; true end
   def user_can_edit?(_); true end
