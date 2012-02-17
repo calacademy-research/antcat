@@ -7,8 +7,8 @@ Feature: Delete reference
 
   Scenario: Delete a reference
     Given the following references exist
-      |authors   |citation|year|title|
-      |Fisher, B.|Psyche 2:1|year|title|
+      | authors    | citation   | year | title |
+      | Fisher, B. | Psyche 2:1 | year | title |
     And I am logged in
     When I go to the references page
     * I will confirm on the next step
@@ -19,8 +19,8 @@ Feature: Delete reference
   @preview
   Scenario: Delete a reference when not logged in, but in preview mode
     Given the following references exist
-      |authors   |citation|year|title|
-      |Fisher, B.|Psyche 2:1|year|title|
+      | authors    | citation   | year | title |
+      | Fisher, B. | Psyche 2:1 | year | title |
     And I am not logged in
     When I go to the references page
     * I will confirm on the next step

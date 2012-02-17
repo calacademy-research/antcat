@@ -32,8 +32,8 @@ Feature: Edit reference
   @preview
   Scenario: Edit a reference in the preview environment
     Given the following references exist
-      |authors|citation  |cite_code|created_at|date    |possess|title|updated_at|year|
-      |authors|Psyche 5:3|CiteCode |today     |20100712|Possess|title|today     |2010|
+      | authors | citation   | cite_code | created_at | date     | possess | title | updated_at | year |
+      | authors | Psyche 5:3 | CiteCode  | today      | 20100712 | Possess | title | today      | 2010 |
     Given I am not logged in
     When I go to the references page
     * I follow "edit"
