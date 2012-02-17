@@ -19,24 +19,8 @@ function enterID() {
 }
 
 function setupHelp() {
-  $('#q_help').qtip({
-    content: "Enter search words, e.g. 'Bolton 2011'. References matching all words will be displayed.",
-    show: 'mouseover',
-    hide: 'mouseout',
-    style: { name: 'dark' },
-    position: {
-      adjust: {y: -7},
-      corner: {target: 'topLeft', tooltip: 'bottomRight'}
-    }
-  });
-  $('#match_status_help').qtip({
-    content: "'Auto' matches are those for which the score was >= 0.8. 'None' shows references without matches.",
-    show: 'mouseover',
-    hide: 'mouseout',
-    style: { name: 'dark' },
-    position: {
-      adjust: {y: -7},
-      corner: {target: 'topLeft', tooltip: 'bottomRight'}
-    }
-  });
+  setupQtip('#q_help', "Enter search words, e.g. 'Bolton 2011'. References matching all words will be displayed.",
+    {position: {adjust: {y: -7}, corner: {target: 'topLeft', tooltip: 'bottomRight'}}});
+  setupQtip('#match_status_help', "'Auto' matches are those for which the score was >= 0.8. 'None' shows references without matches.",
+    {position: { adjust: {y: -7}, corner: {target: 'topLeft', tooltip: 'bottomRight'}}});
 }
