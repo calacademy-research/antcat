@@ -44,16 +44,7 @@ function setupSearchBox(selector_text) {
 }
 
 function setHelpIconText(text) {
-  $('.help_icon').qtip({
-    content: text,
-    style: {width: 600},
-    show: 'mouseover',
-    hide: 'mouseout',
-    position: {
-      adjust: {y: -7},
-      corner: {target: 'topLeft', tooltip: 'bottomRight'}
-    }
-  })
+  setupQtip('.help_icon', text, {style: {width: 600}, position: {adjust: {y: -7}, corner: {target: 'topLeft', tooltip: 'bottomRight'}}})
 }
 
 /////////////////////////////////////////////////////////////////////////
