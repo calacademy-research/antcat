@@ -6,6 +6,7 @@ Feature: Forgetting my password
   Scenario: Forgetting my password
     Given I am not logged in
     When I go to the main page
-      And I follow "Login"
-      And I follow "Forgot password"
+    And I follow "Login"
+    And I follow "Forgot password"
     Then I should be on the forgot password page
+
