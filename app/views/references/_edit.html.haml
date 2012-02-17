@@ -71,9 +71,10 @@
             = document_form.text_field :url
             = label_tag :document_public, 'Internal but public?'
             = document_form.check_box :public
-        %tr
-          %td= label_tag :document_file, 'Upload'
-          %td= document_form.file_field :file
+        - unless $ReleaseType.preview?
+          %tr
+            %td= label_tag :document_file, 'Upload'
+            %td= document_form.file_field :file
 
       %tr
         %td= label_tag :reference_public_notes, 'Public notes'
