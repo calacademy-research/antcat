@@ -3,16 +3,16 @@ Feature: Editing authors and author names
   I want to edit/add/assign authors to names and vice versa
   So that they are correct
 
-  Background:
+  Background: 
     Given the following names exist for an author
-      |Bolton, B.|
-      |Bolton,B. |
+      | Bolton, B. |
+      | Bolton,B.  |
     And the following references exist
-      |authors   |title         |year|citation  |
-      |Bolton, B.|Annals of Ants|2010|Psyche 1:1|
-      |Bolton,B. |More ants     |2011|Psyche 2:2|
+      | authors    | title          | year | citation   |
+      | Bolton, B. | Annals of Ants | 2010 | Psyche 1:1 |
+      | Bolton,B.  | More ants      | 2011 | Psyche 2:2 |
     And the following names exist for another author
-      |Fisher, B.|
+      | Fisher, B. |
     When I go to the Authors page
     Then I should not see "Bolton, B." in the author panel
 
@@ -60,3 +60,4 @@ Feature: Editing authors and author names
     When I search for "Bolton, B." in the author panel
     And I search for "Fisher, B." in another author panel
     Then I should not be able to merge the authors
+

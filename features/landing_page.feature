@@ -6,3 +6,4 @@ Feature: Going to the landing page
   Scenario: Going to the landing page
     When I go to the main page
     Then the "Index" tab should be selected
+

@@ -3,10 +3,10 @@ Feature: Logging in
   I want to be able to log in
   So I can edit references
 
-  Background:
+  Background: 
     Given the following user exists
-      |email            |password|password_confirmation|
-      |email@example.com|secret  |secret               |
+      | email             | password | password_confirmation |
+      | email@example.com | secret   | secret                |
 
   @javascript
   Scenario: Logging in successfully
@@ -26,3 +26,4 @@ Feature: Logging in
     * I press "Go" to log in
     Then I should be on the login page
     And I should see "AntCat"
+

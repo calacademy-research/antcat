@@ -6,14 +6,14 @@ Feature: Delete reference
   Or so I can delete one that turns out to have been a duplicate
 
   Scenario: Delete a reference
-      And the following references exist
-      |authors   |citation|year|title|
-      |Fisher, B.|Psyche 2:1|year|title|
-      And I am logged in
-      And I go to the references page
+    And the following references exist
+      | authors    | citation   | year | title |
+      | Fisher, B. | Psyche 2:1 | year | title |
+    And I am logged in
+    And I go to the references page
     Then I should see "Fisher, B."
     Given I will confirm on the next step
     When I follow "edit"
-      And I press the "Delete" button
+    And I press the "Delete" button
     Then I should not see "Fisher, B."
 
