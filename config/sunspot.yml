@@ -4,13 +4,7 @@ production:
     port: 80
     path: <%=
       require 'release_type'
-      if $ReleaseType.preview?
-        puts '++++++++++ PREVIEW ++++++++++'
-        '/solr/86db0cc797f'
-      else
-        puts '********** RELEASE **********'
-        '/solr/da3c57802d4'
-      end
+      $ReleaseType.preview? ? '/solr/86db0cc797f' : '/solr/da3c57802d4'
     %>
     log_level: WARNING
 
