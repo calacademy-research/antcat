@@ -31,3 +31,7 @@ function setWidth() {
   $("#catalog .content").width($('#page').width());
 }
 
+function setupHelp() {
+  setupQtip('.document_link', "Click to download and view the document");
+  setupQtip('.goto_reference_link', "Click to view/edit this reference on its own page");
+}
