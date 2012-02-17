@@ -42,12 +42,14 @@ function expandReferenceKey() {
 function setupHelp() {
   $('.document_link').qtip({
     content: "Click to download and view the document",
+    style: { name: 'dark' },
     show: 'mouseover',
     hide: 'mouseout'
   });
   $('.goto_reference_link').qtip({
     content: "Click to view/edit this reference on its own page",
     show: 'mouseover',
+    style: { name: 'dark' },
     hide: 'mouseout'
   });
 }
