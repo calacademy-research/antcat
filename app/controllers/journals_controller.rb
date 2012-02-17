@@ -1,7 +1,7 @@
 # coding: UTF-8
 class JournalsController < ApplicationController
-
   before_filter :authenticate_user!
+  skip_before_filter :authenticate_user!, :if => :preview?
   before_filter :find_journal, :only => [:edit, :update]
 
   def index
