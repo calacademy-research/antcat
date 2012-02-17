@@ -53,9 +53,9 @@ Feature: View bibliography
   @preview
   Scenario: Even in preview environment, don't give access to our private PDFs
     Given the following references exist
-      |authors   |year |title    |citation|cite_code|possess|date    |
-      |Ward, P.S.|2010d|Ant Facts|Ants 1:1|232      |PSW    |20100712|
-      And that the entry has a URL that's on our site
+      | authors    | year  | title     | citation | cite_code | possess | date     |
+      | Ward, P.S. | 2010d | Ant Facts | Ants 1:1 | 232       | PSW     | 20100712 |
+    And that the entry has a URL that's on our site
     When I go to the references page
     Then I should not see a "PDF" link
 
