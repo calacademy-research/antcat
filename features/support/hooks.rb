@@ -1,6 +1,4 @@
 # coding: UTF-8
-require 'release_type'
-
 Before do
   Family.delete_all
   Factory :family, protonym: nil
