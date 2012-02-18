@@ -118,4 +118,14 @@ class Taxon < ActiveRecord::Base
     incertae_sedis_in == rank
   end
 
+  def child_list_query children_selector, conditions = {}
+    children = send children_selector
+    children = children.where fossil: !!conditions[:fossil] if conditions.key? :fossil
+    incertae_sedis_in = conditions[:incertae_sedis_in]
+    children = children.where incertae_sedis_in: incertae_sedis_in if incertae_sedis_in
+    children = children.where hong: !!conditions[:hong] if conditions.key? :hong
+    children = children.where "status = 'valid' OR status = 'unresolved homonym'"
+    children
+  end
+
 end

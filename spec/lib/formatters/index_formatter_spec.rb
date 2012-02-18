@@ -104,22 +104,6 @@ describe Formatters::IndexFormatter do
     before do
       @subfamily = Factory :subfamily, name: 'Dolichoderinae'
     end
-    describe "Genera list queries" do
-      it "should find all genera for the taxon if there are no conditions" do
-        Factory :genus, name: 'Atta', subfamily: @subfamily
-        Factory :genus, name: 'Eciton', subfamily: @subfamily, fossil: true
-        Factory :genus, name: 'Aneuretus', subfamily: @subfamily, fossil: true, incertae_sedis_in: 'subfamily'
-        @formatter.child_list_query(@subfamily, :genera).map(&:name).sort.should == ['Aneuretus', 'Atta', 'Eciton']
-        @formatter.child_list_query(@subfamily, :genera, fossil: true).map(&:name).sort.should == ['Aneuretus', 'Eciton']
-        @formatter.child_list_query(@subfamily, :genera, incertae_sedis_in: 'subfamily').map(&:name).sort.should == ['Aneuretus']
-      end
-      it "should not include invalid taxa" do
-        Factory :genus, name: 'Atta', subfamily: @subfamily, :status => 'synonym'
-        Factory :genus, name: 'Eciton', subfamily: @subfamily, fossil: true
-        Factory :genus, name: 'Aneuretus', subfamily: @subfamily, fossil: true, incertae_sedis_in: 'subfamily'
-        @formatter.child_list_query(@subfamily, :genera).map(&:name).sort.should == ['Aneuretus', 'Eciton']
-      end
-    end
     describe "Child lists" do
       it "should format a tribes list" do
         Factory :tribe, name: 'Attini', subfamily: @subfamily

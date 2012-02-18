@@ -306,4 +306,24 @@ describe Taxon do
     end
   end
 
+  describe "Child list queries" do
+    before do
+      @subfamily = Factory :subfamily, name: 'Dolichoderinae'
+    end
+    it "should find all genera for the taxon if there are no conditions" do
+      Factory :genus, name: 'Atta', subfamily: @subfamily
+      Factory :genus, name: 'Eciton', subfamily: @subfamily, fossil: true
+      Factory :genus, name: 'Aneuretus', subfamily: @subfamily, fossil: true, incertae_sedis_in: 'subfamily'
+      @subfamily.child_list_query(:genera).map(&:name).sort.should == ['Aneuretus', 'Atta', 'Eciton']
+      @subfamily.child_list_query(:genera, fossil: true).map(&:name).sort.should == ['Aneuretus', 'Eciton']
+      @subfamily.child_list_query(:genera, incertae_sedis_in: 'subfamily').map(&:name).sort.should == ['Aneuretus']
+    end
+    it "should not include invalid taxa" do
+      Factory :genus, name: 'Atta', subfamily: @subfamily, :status => 'synonym'
+      Factory :genus, name: 'Eciton', subfamily: @subfamily, fossil: true
+      Factory :genus, name: 'Aneuretus', subfamily: @subfamily, fossil: true, incertae_sedis_in: 'subfamily'
+      @subfamily.child_list_query(:genera).map(&:name).sort.should == ['Aneuretus', 'Eciton']
+    end
+  end
+
 end

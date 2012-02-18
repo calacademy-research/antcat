@@ -130,8 +130,8 @@ module Formatters::IndexFormatter
   def format_child_list_fossil_pairs parent, children_selector, conditions = {}
     extant_conditions = conditions.merge fossil: false
     extinct_conditions = conditions.merge fossil: true
-    extinct = child_list_query parent, children_selector, extinct_conditions
-    extant = child_list_query parent, children_selector, extant_conditions
+    extinct = parent.child_list_query children_selector, extinct_conditions
+    extant = parent.child_list_query children_selector, extant_conditions
     specify_extinct_or_extant = extinct.present?
 
     format_child_list(parent, extant, specify_extinct_or_extant, extant_conditions) +
@@ -169,16 +169,6 @@ module Formatters::IndexFormatter
       content << '.'
       content
     end
-  end
-
-  def child_list_query parent, children_selector, conditions = {}
-    children = parent.send children_selector
-    children = children.where fossil: !!conditions[:fossil] if conditions.key? :fossil
-    incertae_sedis_in = conditions[:incertae_sedis_in]
-    children = children.where incertae_sedis_in: incertae_sedis_in if incertae_sedis_in
-    children = children.where hong: !!conditions[:hong] if conditions.key? :hong
-    children = children.where "status = 'valid' OR status = 'unresolved homonym'"
-    children
   end
 
   def format_child_list_items children
