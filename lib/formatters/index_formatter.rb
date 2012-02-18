@@ -172,18 +172,9 @@ module Formatters::IndexFormatter
   end
 
   def format_child_list_items children
-    children.sort_by(&:name).inject([]) do |children, child|
-      label = taxon_label child
-      css_classes = taxon_css_classes child, ignore_status: true
-      content = content_tag(:span, label, class: css_classes)
-      content << ' (unresolved junior homonym)' if child.status == Status['unresolved homonym'].to_s
-      children << content
+    children.sort_by(&:name).inject([]) do |string, child|
+      string << taxon_label_span(child, ignore_status: true, indicate_unresolved_junior_homonym: true)
     end.join(', ').html_safe
-  end
-
-  #######################
-
-  def format_reference_section reference_section, user
   end
 
 end
