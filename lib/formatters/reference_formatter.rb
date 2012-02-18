@@ -2,10 +2,12 @@
 class Formatters::ReferenceFormatter
   include ERB::Util
   extend ERB::Util
+  include Formatters::Formatter
 
   def self.format reference
     make_formatter(reference).format
   end
+
   def self.format_inline_citation reference, user
     make_formatter(reference).format_inline_citation user
   end
@@ -16,13 +18,6 @@ class Formatters::ReferenceFormatter
     string = string.gsub /\*(.*?)\*/, '<span class=genus_or_species>\1</span>'
     string = string.gsub /\|(.*?)\|/, '<span class=genus_or_species>\1</span>'
     string.html_safe
-  end
-
-  def self.add_period_if_necessary string
-    return unless string
-    return string if string.empty?
-    return string + '.' unless string[-1..-1] =~ /[.!?]/
-    string
   end
 
   def self.format_timestamp timestamp
@@ -53,7 +48,7 @@ class Formatters::ReferenceFormatter
   end
 
   def format_title
-    self.class.italicize self.class.add_period_if_necessary h @reference.title
+    self.class.italicize add_period_if_necessary h @reference.title
   end
 
   def format_inline_citation user
@@ -85,19 +80,19 @@ end
 
 class Formatters::ArticleReferenceFormatter < Formatters::ReferenceFormatter
   def format_citation
-    self.class.italicize self.class.add_period_if_necessary "#{h @reference.journal.name} #{h @reference.series_volume_issue}:#{h @reference.pagination}".html_safe
+    self.class.italicize add_period_if_necessary "#{h @reference.journal.name} #{h @reference.series_volume_issue}:#{h @reference.pagination}".html_safe
   end
 end
 
 class Formatters::BookReferenceFormatter < Formatters::ReferenceFormatter
   def format_citation
-    self.class.italicize self.class.add_period_if_necessary "#{h @reference.publisher}, #{h @reference.pagination}".html_safe
+    self.class.italicize add_period_if_necessary "#{h @reference.publisher}, #{h @reference.pagination}".html_safe
   end
 end
 
 class Formatters::UnknownReferenceFormatter < Formatters::ReferenceFormatter
   def format_citation
-    self.class.italicize self.class.add_period_if_necessary h @reference.citation
+    self.class.italicize add_period_if_necessary h @reference.citation
   end
 end
 

@@ -1,5 +1,6 @@
 # coding: UTF-8
 module Formatters::IndexFormatter
+  include Formatters::Formatter
 
   def x_format_protonym_name name, rank, is_fossil
     classes = ['name', 'taxon']
@@ -100,7 +101,7 @@ module Formatters::IndexFormatter
   end
 
   def format_history_item taxt, user
-    string = Formatters::ReferenceFormatter.add_period_if_necessary Taxt.to_string taxt, user
+    string = add_period_if_necessary Taxt.to_string taxt, user
     content_tag :div, class: :history_item do
       content = content_tag :a, title: 'edit', href: '#', class: [:icon, :edit] do
         content_tag(:img, '', src: '/images/edit_off.png', :alt => 'edit').html_safe
