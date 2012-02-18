@@ -1,27 +1,6 @@
 # coding: UTF-8
 module Formatters::IndexFormatter
 
-  def format_taxon taxon, current_user
-    header_name = format_header_name(taxon)
-    status      = format_status(taxon)
-    headline    = format_headline(taxon, current_user)
-    statistics  = format_taxon_statistics(taxon)
-
-    content_tag :div, class: :antcat_taxon do
-      contents = content_tag(:div, class: :header) do
-        content_tag(:span, header_name, class: x_css_classes_for_taxon(taxon)) +
-        content_tag(:span, status,      class: :status)
-      end
-      contents << content_tag(:div,  statistics,class: :statistics)
-      contents << content_tag(:div,  headline,  class: :headline)
-      contents << format_history(taxon, current_user)
-      contents << format_child_lists(taxon, current_user)
-      contents << format_references(taxon, current_user)
-      contents
-    end
-
-  end
-
   def x_format_protonym_name name, rank, is_fossil
     classes = ['name', 'taxon']
     classes << 'genus' if rank == 'genus'
@@ -120,29 +99,18 @@ module Formatters::IndexFormatter
     Taxt.to_string taxon.headline_notes_taxt, user
   end
 
-  #######################
-  def format_history taxon, user
-    return '' unless taxon.taxonomic_history_items.present?
-    history = taxon.taxonomic_history_items.inject(''.html_safe) do |history, history_item|
-      history << format_history_item(history_item.taxt, user)
-    end
-    content_tag(:h4,  'Taxonomic history') +
-    content_tag(:div, history, class: :history)
-  end
-
   def format_history_item taxt, user
     string = Formatters::ReferenceFormatter.add_period_if_necessary Taxt.to_string taxt, user
-    content_tag :div, string.html_safe, class: :history_item
+    content_tag :div, class: :history_item do
+      content = content_tag :a, title: 'edit', href: '#', class: [:icon, :edit] do
+        content_tag(:img, '', src: '/images/edit_off.png', :alt => 'edit').html_safe
+      end.html_safe
+      content << string.html_safe 
+    end.html_safe
   end
 
   #######################
   def format_child_lists taxon, user
-    content_tag(:div, class: :child_lists) do
-      content = ''.html_safe
-      content << format_child_lists_for_rank(taxon, :tribes)
-      content << format_child_lists_for_rank(taxon, :genera)
-      content
-    end
   end
 
   def format_child_lists_for_rank parent, children_selector
@@ -223,20 +191,8 @@ module Formatters::IndexFormatter
   end
 
   #######################
-  def format_references taxon, user
-    return '' unless taxon.reference_sections.present?
-    content_tag :div, class: :reference_sections do
-      taxon.reference_sections.inject(''.html_safe) do |reference_sections, reference_section|
-        reference_sections << format_reference_section(reference_section, user)
-      end
-    end
-  end
 
   def format_reference_section reference_section, user
-    content_tag :div, class: 'section' do
-      content_tag(:h4, Taxt.to_string(reference_section.title, user), class: :title) +
-      content_tag(:div, Taxt.to_string(reference_section.references, user), class: :references)
-    end
   end
 
 end
