@@ -29,5 +29,12 @@ module Formatters::Formatter
     end.html_safe
   end
 
+  def add_period_if_necessary string
+    return unless string
+    return string if string.empty?
+    return string + '.' unless string[-1..-1] =~ /[.!?]/
+    string
+  end
+
 end
 
