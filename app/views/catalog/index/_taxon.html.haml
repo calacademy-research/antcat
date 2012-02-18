@@ -1,0 +1,25 @@
+-# Locals: taxon, user
+.antcat_taxon
+
+  .header
+    %span{class: Formatters::CatalogFormatter.x_css_classes_for_taxon(taxon)}= Formatters::CatalogFormatter.format_header_name taxon
+    %span.status= Formatters::CatalogFormatter.format_status taxon
+
+  .statistics= Formatters::CatalogFormatter.format_taxon_statistics taxon
+  .headline= Formatters::CatalogFormatter.format_headline taxon, user
+
+  - if taxon.taxonomic_history_items.present?
+    %h4 Taxonomic history
+    - for history_item in taxon.taxonomic_history_items do
+      =Formatters::CatalogFormatter.format_history_item history_item.taxt, user 
+
+  - if taxon.reference_sections.present?
+    .reference_sections
+      - for reference_section in taxon.reference_sections do
+        .section
+          %h4.title= Taxt.to_string reference_section.title, user
+          .references= Taxt.to_string reference_section.references, user
+
+  .child_lists
+    =Formatters::CatalogFormatter.format_child_lists_for_rank taxon, :tribes
+    =Formatters::CatalogFormatter.format_child_lists_for_rank taxon, :genera

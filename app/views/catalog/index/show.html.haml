@@ -7,7 +7,7 @@
 
 #catalog
   .content
-    = raw Formatters::CatalogFormatter.format_taxon @taxon, current_user
+    = render 'taxon', taxon: @taxon, user: current_user
     %hr
 
   .index
