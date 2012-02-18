@@ -43,62 +43,62 @@ describe Formatters::IndexFormatter do
 
   end
 
-  describe "Taxonomic history" do
-    before do
-      @taxon = Factory :family
-    end
-    describe "Taxonomic history formatting" do
-      it "should format a number of items together in order" do
-        @taxon.taxonomic_history_items.create! :taxt => 'Ant'
-        @taxon.taxonomic_history_items.create! :taxt => 'Taxonomy'
-        @formatter.format_history(@taxon, nil).should ==
-          '<h4>Taxonomic history</h4>' +
-          '<div class="history">' +
-            '<div class="history_item">Ant.</div>' +
-            '<div class="history_item">Taxonomy.</div>' +
-          '</div>'
-      end
-    end
-    describe "Taxonomic history item formatting" do
-      it "should format a phrase" do
-        @formatter.format_history_item('phrase', nil).should == '<div class="history_item">phrase.</div>'
-      end
-      it "should format a ref" do
-        reference = Factory :article_reference
-        Formatters::ReferenceFormatter.should_receive(:format_inline_citation).with(reference, nil).and_return 'foo'
-        @formatter.format_history_item("{ref #{reference.id}}", nil).should == '<div class="history_item">foo.</div>'
-      end
-      it "should not freak if the ref is malformed" do
-        @formatter.format_history_item("{ref sdf}", nil).should == '<div class="history_item">{ref sdf}.</div>'
-      end
-      it "should not freak if the ref points to a reference that doesn't exist" do
-        @formatter.format_history_item("{ref 12345}", nil).should == '<div class="history_item">{ref 12345}.</div>'
-      end
-    end
-  end
+  #describe "Taxonomic history" do
+    #before do
+      #@taxon = Factory :family
+    #end
+    #describe "Taxonomic history formatting" do
+      #it "should format a number of items together in order" do
+        #@taxon.taxonomic_history_items.create! :taxt => 'Ant'
+        #@taxon.taxonomic_history_items.create! :taxt => 'Taxonomy'
+        #@formatter.format_history(@taxon, nil).should ==
+          #'<h4>Taxonomic history</h4>' +
+          #'<div class="history">' +
+            #'<div class="history_item">Ant.</div>' +
+            #'<div class="history_item">Taxonomy.</div>' +
+          #'</div>'
+      #end
+    #end
+    #describe "Taxonomic history item formatting" do
+      #it "should format a phrase" do
+        #@formatter.format_history_item('phrase', nil).should == '<div class="history_item">phrase.</div>'
+      #end
+      #it "should format a ref" do
+        #reference = Factory :article_reference
+        #Formatters::ReferenceFormatter.should_receive(:format_inline_citation).with(reference, nil).and_return 'foo'
+        #@formatter.format_history_item("{ref #{reference.id}}", nil).should == '<div class="history_item">foo.</div>'
+      #end
+      #it "should not freak if the ref is malformed" do
+        #@formatter.format_history_item("{ref sdf}", nil).should == '<div class="history_item">{ref sdf}.</div>'
+      #end
+      #it "should not freak if the ref points to a reference that doesn't exist" do
+        #@formatter.format_history_item("{ref 12345}", nil).should == '<div class="history_item">{ref 12345}.</div>'
+      #end
+    #end
+  #end
 
-  describe "Reference sections" do
-    before do
-      @taxon = Factory :family
-    end
-    describe "Reference sections formatting" do
-      it "should format a number of items together in order" do
-        @taxon.reference_sections.create! title: 'Global references', references: 'A global reference'
-        @taxon.reference_sections.create! title: 'References', references: 'A reference'
-        @formatter.format_references(@taxon, nil).should ==
-          '<div class="reference_sections">' +
-            '<div class="section">' +
-              '<h4 class="title">Global references</h4>' +
-              '<div class="references">A global reference</div>' +
-            '</div>' +
-            '<div class="section">' +
-              '<h4 class="title">References</h4>' +
-              '<div class="references">A reference</div>' +
-            '</div>' +
-          '</div>'
-      end
-    end
-  end
+  #describe "Reference sections" do
+    #before do
+      #@taxon = Factory :family
+    #end
+    #describe "Reference sections formatting" do
+      #it "should format a number of items together in order" do
+        #@taxon.reference_sections.create! title: 'Global references', references: 'A global reference'
+        #@taxon.reference_sections.create! title: 'References', references: 'A reference'
+        #@formatter.format_references(@taxon, nil).should ==
+          #'<div class="reference_sections">' +
+            #'<div class="section">' +
+              #'<h4 class="title">Global references</h4>' +
+              #'<div class="references">A global reference</div>' +
+            #'</div>' +
+            #'<div class="section">' +
+              #'<h4 class="title">References</h4>' +
+              #'<div class="references">A reference</div>' +
+            #'</div>' +
+          #'</div>'
+      #end
+    #end
+  #end
 
   describe "Child lists" do
     before do
