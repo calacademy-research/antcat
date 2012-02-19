@@ -1,44 +1,13 @@
 @import 'common'
 @import 'colors'
 
-$hanging_indent_size: 30px
+@import 'taxon'
 
 html, body, #page, .rank
   height: 100%
 
 #page_contents
   padding-bottom: 3px
-
-.antcat_taxon
-  height: 11em
-  overflow: auto
-  margin-bottom: 6px
-  @include margins
-
-  .header
-    .name
-      color: black !important
-      padding-right: 12px
-      font-size: 18px
-      font-weight: bold
-    .status
-
-  .statistics
-
-  .headline 
-    .name
-      font-weight: bold
-    .subfamily.name
-      padding-right: 3px
-  h4
-  .history
-    .history_item
-      text-indent: -$hanging_indent_size
-      margin-left:  $hanging_indent_size
-  .child_lists
-    .label
-      font-weight: bold
-  .references
 
 #catalog
   margin-top: 2px
@@ -63,19 +32,6 @@ html, body, #page, .rank
 td.taxon_item
   padding-right: 13px
   padding-left: $left_margin
-
-td.teensy
-  font-size: .90em
-  line-height: .99em
-
-.statistics
-  font-size: .85em
-  font-style: italic
-  p
-    line-height: 1.1em
-
-h4
-  font-weight: bold
 
 .reference_key_and_expansion
   &:hover
