@@ -35,6 +35,7 @@ module Formatters::Formatter
     return string + '.' unless string[-1..-1] =~ /[.!?]/
     string
   end
+  module_function :add_period_if_necessary
 
 end
 
