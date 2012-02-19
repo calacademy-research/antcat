@@ -55,4 +55,8 @@ http://antcat.org
     $ReleaseType.preview? ? (content_tag :div, 'preview', class: :preview) : ''
   end
 
+  def add_period_if_necessary string
+    Formatters::Formatter.add_period_if_necessary string
+  end
+
 end
