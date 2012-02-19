@@ -6,6 +6,7 @@
     %span.status= Formatters::CatalogFormatter.format_status taxon
 
   .statistics= Formatters::CatalogFormatter.format_taxon_statistics taxon
+
   .headline= Formatters::CatalogFormatter.format_headline taxon, user
 
   - if taxon.taxonomic_history_items.present?
@@ -14,8 +15,12 @@
       - for history_item in taxon.taxonomic_history_items do
         - string = add_period_if_necessary Taxt.to_string history_item.taxt, user
         .history_item
-          %a{title: 'edit', href: '#', class: [:icon, :edit]}
-            %img{src: '/images/edit_off.png', alt: 'edit'}
+          %table
+            %tr
+              %td.icons
+                %a{title: 'edit', href: '#', class: [:icon, :edit]}
+                  %img{src: '/images/edit_off.png', alt: 'edit'}
+              %td.item= string
 
   - if taxon.reference_sections.present?
     .reference_sections
