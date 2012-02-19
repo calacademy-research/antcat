@@ -15,6 +15,7 @@ class Formatters::CatalogFormatter
       taxon_label(taxon, options).html_safe
     end
     content << ' (unresolved junior homonym)' if Status[taxon.status] == Status['unresolved homonym'] && options[:indicate_unresolved_junior_homonym]
+    content
   end
 
   def self.taxon_label taxon, options = {}
