@@ -1,0 +1,11 @@
+-#Locals: item
+%div.history_item{:id => "history_item_#{item.id}"}
+  %table
+    %tr
+      %td.icons
+        %a.icon.edit{:title => 'edit', :href => '#'}
+          = image_tag 'edit_off.png', :alt => 'edit'
+      %td.history_item_body
+        = render 'catalog/index/history_item/display', item: item
+        - if user_can_edit?
+          = render 'catalog/index/history_item/edit', item: item
