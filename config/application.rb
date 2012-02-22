@@ -3,7 +3,7 @@ require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
 
-Bundler.require(:default, Rails.env) if defined?(Bundler)
+Bundler.require *Rails.groups(assets: %w(development test)) if defined? Bundler
 
 module AntCat
   class Application < Rails::Application
@@ -13,5 +13,8 @@ module AntCat
     config.autoload_paths += Dir["#{config.root}/lib/**/"]
     config.encoding = "utf-8"
     config.time_zone = 'UTC'
+
+    config.assets.enabled = true
+    config.assets.version = '1.0'
   end
 end
