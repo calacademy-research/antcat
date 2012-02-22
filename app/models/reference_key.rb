@@ -2,6 +2,8 @@
 class ReferenceKey
   include ActionView::Helpers::TagHelper
   include ActionView::Context
+  include Sprockets::Helpers::RailsHelper
+  include Sprockets::Helpers::IsolatedHelper
 
   def initialize reference
     @reference = reference
@@ -32,7 +34,7 @@ class ReferenceKey
         document_link = Formatters::CatalogFormatter.format_reference_document_link @reference, user
         content << document_link if document_link
         content << "<a class=\"goto_reference_link\" target=\"_blank\" href=\"/references?q=#{@reference.id}\">".html_safe
-        content << content_tag(:img, '', :src => "/images/external_link.png")
+        content << image_tag('external_link.png')
         content << "</a>".html_safe
         content.html_safe
       end
