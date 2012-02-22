@@ -16,14 +16,12 @@
 
     = stylesheet_link_tag 'ext/jquery-ui/jquery-ui-1.8.5.custom'
 
-    = stylesheet_link_tag 'screen', :media => 'screen, projection'
-    = stylesheet_link_tag 'print', :media => 'print'
     /[if lt IE 8]
       = stylesheet_link_tag 'ie', :media => 'screen, projection'
 
     = stylesheet_link_tag 'application'
 
-    %link{:rel => "shortcut icon", :href => "http://www.antweb.org/images/favicon.ico"}
+    %link{rel: 'shortcut icon', href: 'http://www.antweb.org/favicon.ico'}
 
     = yield :head
 
