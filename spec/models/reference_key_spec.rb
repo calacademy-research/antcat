@@ -39,7 +39,7 @@ describe ReferenceKey do
           "<span class=\"reference_key_expansion\">" +
             "<span class=\"reference_key_expansion_text\">Latreille, P. A. 1809. Ants. Science (1):3.</span>" +
             "<a class=\"document_link\" target=\"_blank\" href=\"example.com\">PDF</a>" +
-            "<a class=\"goto_reference_link\" target=\"_blank\" href=\"/references?q=#{reference.id}\"><img src=\"/images/external_link.png\"></img></a>" +
+            "<a class=\"goto_reference_link\" target=\"_blank\" href=\"/references?q=#{reference.id}\"><img alt=\"External_link\" src=\"/assets/external_link.png\" /></a>" +
           "</span>" +
         "</span>"
     end
@@ -51,7 +51,7 @@ describe ReferenceKey do
           "<a class=\"reference_key\" href=\"#\">Latreille, 1809</a>" + 
           "<span class=\"reference_key_expansion\">" +
             "<span class=\"reference_key_expansion_text\">Latreille, P. A. 1809. Ants. Science (1):3.</span>" +
-            "<a class=\"goto_reference_link\" target=\"_blank\" href=\"/references?q=#{reference.id}\"><img src=\"/images/external_link.png\"></img></a>" +
+            "<a class=\"goto_reference_link\" target=\"_blank\" href=\"/references?q=#{reference.id}\"><img alt=\"External_link\" src=\"/assets/external_link.png\" /></a>" +
           "</span>" +
         "</span>"
     end
