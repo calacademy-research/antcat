@@ -1,3 +1,6 @@
+//= require jquery
+//= require jquery-ui
+
 document.documentElement.className = 'js'; // FOUC fix
 
 //preloadImages();
