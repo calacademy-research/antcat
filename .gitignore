@@ -9,3 +9,4 @@ coverage
 .rspec
 pids
 tags
+.sass-cache
