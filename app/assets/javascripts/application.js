@@ -1,4 +1,5 @@
 //= require jquery
+//= require jquery_ujs
 //= require jquery-ui
 
 document.documentElement.className = 'js'; // FOUC fix
