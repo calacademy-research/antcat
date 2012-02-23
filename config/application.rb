@@ -14,6 +14,8 @@ module AntCat
     config.encoding = "utf-8"
     config.time_zone = 'UTC'
 
+    config.assets.initialize_on_precompile = false
+
     config.assets.enabled = true
     config.assets.version = '1.0'
   end
