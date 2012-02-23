@@ -56,12 +56,14 @@ AntCat::Application.configure do
 
   # Compress JavaScripts and CSS
   config.assets.compress = true
+  config.assets.js_compressor = :uglifier
+  config.assets.css_compressor = :yui
 
   # Don't fallback to assets pipeline if a precompiled asset is missed
   config.assets.compile = false
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
-  # config.assets.precompile += %w( search.js )
+  config.assets.precompile += ["*.css", "*.js", "ext/*"]
 
   # Generate digests for assets URLs
   config.assets.digest = true
