@@ -260,7 +260,8 @@ function beforeSerialize($form, options) {
 
 function setupSubmit(formData, $form, options) {
   var $spinnerElement = $('button', $form).parent();
-  $spinnerElement.spinner({position: 'left', img: '/stylesheets/ext/jquery-ui/images/ui-anim_basic_16x16.gif'});
+  $spinnerElement.spinner({position: 'left', img: "<%= asset_path('ui-anim_basic_16x16.gif') %>"});
+  ''
   $('input', $spinnerElement).attr('disabled', 'disabled');
   $('button', $spinnerElement).attr('disabled', 'disabled');
   return true;
