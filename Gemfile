@@ -50,7 +50,7 @@ group :test do
 end
 
 group :assets do
-  gem 'sass-rails', '~> 3.1.0'
   gem 'compass-rails'
+  gem 'sass-rails', '~> 3.1.0'
   gem 'uglifier'
 end
