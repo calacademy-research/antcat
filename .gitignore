@@ -10,3 +10,4 @@ coverage
 pids
 tags
 .sass-cache
+public/assets
