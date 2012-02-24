@@ -79,13 +79,15 @@ function setupIconVisibility() {
 }
 
 function setupIconHighlighting() {
-  $('.icon img').live('mouseenter',
-    function() {
-      this.src = this.src.replace('off', 'on');
-    }).live('mouseleave',
-    function() {
-      this.src = this.src.replace('on', 'off');
-    });
+  // with the asset pipeline and fingerprinting,
+  // this won't work. Use jQuery-ui: 'http://jqueryui.com/docs/Theming/API'
+  <%#$('.icon img').live('mouseenter',%>
+    <%#function() {%>
+      <%#this.src = this.src.replace('off', 'on');%>
+    <%#}).live('mouseleave',%>
+    <%#function() {%>
+      <%#this.src = this.src.replace('on', 'off');%>
+    <%#});%>
 }
 
 function setupIconClickHandlers() {
