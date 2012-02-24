@@ -1,3 +1,4 @@
+@dormant
 Feature: Using the catalog browser
   As a user of AntCat
   I want to browse the ant catalog

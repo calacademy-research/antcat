@@ -1,3 +1,4 @@
+@dormant
 Feature: Editing authors and author names
   As an editor of AntCat
   I want to edit/add/assign authors to names and vice versa
