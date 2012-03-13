@@ -1,3 +1,4 @@
+# coding: UTF-8
 require_relative 'config/application'
 require 'rake'
 
