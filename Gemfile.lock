@@ -55,6 +55,13 @@ GEM
     chunky_png (1.2.5)
     citrus (2.4.1)
     cocaine (0.2.1)
+    coffee-rails (3.1.1)
+      coffee-script (>= 2.2.0)
+      railties (~> 3.1.0)
+    coffee-script (2.2.0)
+      coffee-script-source
+      execjs
+    coffee-script-source (1.2.0)
     columnize (0.3.4)
     compass (0.12.rc.1)
       chunky_png (~> 1.2)
@@ -259,6 +266,7 @@ DEPENDENCIES
   capybara
   capybara-firebug
   citrus
+  coffee-rails
   compass
   compass-rails
   cucumber-rails
