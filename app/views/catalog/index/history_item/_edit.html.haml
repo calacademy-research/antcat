@@ -1,1 +1,6 @@
-=text_area_tag :taxt_editor, Taxt.to_editable(TaxonomicHistoryItem.first.taxt, nil), :rows => 1, class: 'taxt_edit_box'
+- item = Taxon.first.taxonomic_history_items.first
+= form_for [item.taxon, item] do |f|
+  =text_area_tag :taxt_editor, Taxt.to_editable(item.taxt, nil), rows: 1, class: 'taxt_edit_box'
+  %div
+    %button.submit Save
+    %button.cancel Cancel
