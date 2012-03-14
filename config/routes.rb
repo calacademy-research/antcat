@@ -20,7 +20,7 @@ AntCat::Application.routes.draw do
   match     '/antcat_references.utf8.endnote_import', to: 'references#index', format: :endnote_import, as: :endnote_import
   resources :styles, only: [:index]
 
-  resources :families, controller: :taxa do
+  resources :families, controller: :catalog do
     resources :taxonomic_history_items
   end
 
