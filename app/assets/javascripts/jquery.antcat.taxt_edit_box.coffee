@@ -10,8 +10,8 @@ class AntCat.TaxtEditBox
     @open_tag = options.open_tag
     @dashboard = new TaxtEditBox.DebugDashboard @ if options.show_debug_dashboard
     @dashboard?.show_status 'before'
-    @value options.value
-    @last_value options.value
+    @value @control.val()
+    @last_value @control.val()
     @control.bind 'keyup keydown mouseup dblclick', @handle_event
     this
 
