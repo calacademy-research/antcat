@@ -41,6 +41,18 @@ describe Taxt do
 
   end
 
+  describe "To editable taxt" do
+    it "should use the inline citation format followed by the id" do
+      key = mock 'key'
+      key.should_receive(:to_s).and_return('Fisher, 1922')
+      reference = mock 'reference', id: 36
+      Reference.should_receive(:find).and_return reference
+      reference.stub(:key).and_return key
+      user = Factory :user
+      Taxt.to_editable("{ref #{reference.id}}", user).should == "{Fisher, 1922 10}"
+    end
+  end
+
   describe "String output" do
     it "should leave alone a string without fields" do
       string = Taxt.to_string 'foo', nil
