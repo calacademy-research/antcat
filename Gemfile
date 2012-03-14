@@ -3,7 +3,6 @@ source :rubygems
 gem 'acts_as_list'
 gem 'aws-s3',           :require => 'aws/s3', :git => 'git://github.com/emk/aws-s3.git'
 gem 'citrus'
-gem 'coffee-rails'
 gem 'compass'
 gem 'curb',             :require => 'curl'
 gem 'devise'
@@ -51,6 +50,7 @@ group :test do
 end
 
 group :assets do
+  gem 'coffee-rails'
   gem 'compass-rails'
   gem 'sass-rails', '~> 3.1.0'
   gem 'uglifier'
