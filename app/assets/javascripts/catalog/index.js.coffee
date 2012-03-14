@@ -1,13 +1,39 @@
+panel_class = 'inline-form-panel'
+panel_class_selector = '.' + panel_class
+
 $ ->
   setupPage()
   setupHelp()
   setupIcons()
   setupReferenceKeys()
-  setupTaxtEditBoxes()
+  setupEdits()
 
-setupTaxtEditBoxes = ->
+setupEdits = ->
+  $("#{panel_class_selector} .edit").hide()
+  $("#{panel_class_selector} .edit .submit").live 'click', submitReferenceEdit
+  $("#{panel_class_selector} .edit .cancel").live 'click', cancelReferenceEdit
   $('.taxt_edit_box').taxt_edit_box()
-  $('.taxt_edit_box').first().focus()
+
+submitReferenceEdit = ->
+  $(this).closest('form').ajaxSubmit
+    beforeSubmit: setupSubmit
+    success: updateReference
+    dataType: 'json'
+  false
+
+cancelReferenceEdit = ->
+  $reference = $(this).closest panel_class_selector
+  unless $reference.attr('id') is 'reference_'
+    id = $reference.attr('id')
+    restoreReference $reference
+    $reference = $('#' + id)
+    $('.display', $reference).show().effect 'highlight', {}, 3000
+  false
+
+restoreReference = ($reference) ->
+  id = $reference.attr('id')
+  $reference.replaceWith $('#saved_reference')
+  $('#saved_reference').attr('id', id).show()
 
 setupPage = ->
   setDimensions()
@@ -49,15 +75,12 @@ isEditing = ->
 
 setupIcons = ->
   setupIconVisibility()
-  if user_can_edit
-    setupIconHighlighting()
-    setupIconClickHandlers()
+  setupIconHighlighting()
+  setupIconClickHandlers()
 
 setupIconVisibility = ->
-  if not testing or not user_can_edit
+  if not testing
     $('.icon').hide()
-
-  return unless user_can_edit
 
   $('.history_item').live('mouseenter',
     ->
@@ -81,3 +104,18 @@ setupIconClickHandlers = ->
   $('.icon.edit').live('click', editHistoryItem)
 
 editHistoryItem = ->
+  return false if isEditing()
+  $panel = $(this).closest panel_class_selector
+  saveReference $panel
+  showReferenceEdit $panel
+  false
+
+saveReference = ($reference) ->
+  $('#saved_reference').remove()
+  $reference.clone(true).attr('id', 'saved_reference').appendTo('body').hide()
+
+showReferenceEdit = ($reference, options) ->
+  options = {} unless options
+  $('.display', $reference).hide()
+  $('.icon').hide() unless testing
+  $('.edit', $reference).show()
