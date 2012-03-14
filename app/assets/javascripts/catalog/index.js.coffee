@@ -4,15 +4,15 @@ $ ->
   setupIcons()
   setupReferenceKeys()
 
-setupPage ->
+setupPage = ->
   setDimensions()
   $(window).resize = setDimensions
 
-setDimensions ->
+setDimensions = ->
   setHeight()
   setWidth()
 
-setHeight ->
+setHeight = ->
   height = $('#page').height() -
     $('#site_header').height() -
     $('#page_header').height() - 2 -
@@ -24,31 +24,31 @@ setHeight ->
   $("#catalog").height(height)
   $("#catalog .index").height(height - $("#catalog .content").height())
 
-setWidth ->
+setWidth = ->
   $("#catalog .content").width($('#page').width())
 
-setupReferenceKeys ->
+setupReferenceKeys = ->
   $('.reference_key').live('click', expandReferenceKey)
   $('.reference_key_expansion_text').live('click', expandReferenceKey)
 
-expandReferenceKey ->
+expandReferenceKey = ->
   $('.reference_key',           $(this).closest('.reference_key_and_expansion')).toggle()
   $('.reference_key_expansion', $(this).closest('.reference_key_and_expansion')).toggle()
 
-setupHelp ->
+setupHelp = ->
   setupQtip('.document_link', "Click to download and view the document")
   setupQtip('.goto_reference_link', "Click to view/edit this reference on its own page")
 
-isEditing ->
+isEditing = ->
   false
 
-setupIcons ->
+setupIcons = ->
   setupIconVisibility()
   if user_can_edit
     setupIconHighlighting()
     setupIconClickHandlers()
 
-setupIconVisibility ->
+setupIconVisibility = ->
   if not testing or not user_can_edit
     $('.icon').hide()
 
@@ -63,7 +63,7 @@ setupIconVisibility ->
       $('.icon').hide()
     )
 
-setupIconHighlighting ->
+setupIconHighlighting = ->
   $('.icon img').live('mouseenter',
     ->
       this.src = this.src.replace('off', 'on')
@@ -72,7 +72,7 @@ setupIconHighlighting ->
       this.src = this.src.replace('on', 'off')
     )
 
-setupIconClickHandlers ->
+setupIconClickHandlers = ->
   $('.icon.edit').live('click', editHistoryItem)
 
-editHistoryItem ->
+editHistoryItem = ->
