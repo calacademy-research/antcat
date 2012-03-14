@@ -1,8 +1,18 @@
-$ -> 
+$ ->
   setupPage()
   setupHelp()
   setupIcons()
   setupReferenceKeys()
+  setupTaxtEditBoxes()
+
+setupTaxtEditBoxes = ->
+  for control in $('.taxt_edit_box')
+    value = convert_display_to_editable_taxt()
+    $(control).taxt_edit_box(value: value)
+  $('.taxt_edit_box').first().focus()
+
+convert_display_to_editable_taxt = ->
+  "{Latreille, 1809 2pu6}"
 
 setupPage = ->
   setDimensions()
