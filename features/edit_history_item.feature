@@ -11,7 +11,7 @@ Feature: Editing a history item
   Scenario: Editing a history item
     When I go to the catalog
     Then the history should be "Taxonomic history"
-    When I click the edit icon
-    When I edit the history item to "(none)"
-    And I save my changes
+    * I click the edit icon
+    * I edit the history item to "(none)"
+    * I save my changes
     Then the history should be "(none)"

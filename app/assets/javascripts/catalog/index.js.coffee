@@ -26,42 +26,6 @@ edit = ->
   show_form $panel
   false
 
-setup_page = ->
-  set_dimensions()
-  $(window).resize = set_dimensions
-
-set_dimensions = ->
-  set_height()
-  set_width()
-
-set_height = ->
-  height = $('#page').height() -
-    $('#site_header').height() -
-    $('#page_header').height() - 2 -
-    $('#page_notice').height() -
-    $('#page_alert').height() -
-    $('#search_results').height() - 3 - 2 - 2 -
-    $('#taxon_key').height() - 2 -
-    $('#site_footer').height() - 8
-  $("#catalog").height(height)
-  $("#catalog .index").height(height - $("#catalog .content").height())
-
-set_width = ->
-  $("#catalog .content").width($('#page').width())
-
-#--------------------------------------------------
-setup_reference_keys = ->
-  $('.reference_key').live 'click', toggle_reference_key_expansion
-  $('.reference_key_expansion_text').live 'click', toggle_reference_key_expansion
-
-toggle_reference_key_expansion = ->
-  $('.reference_key',           $(this).closest('.reference_key_and_expansion')).toggle()
-  $('.reference_key_expansion', $(this).closest('.reference_key_and_expansion')).toggle()
-
-#--------------------------------------------------
-setup_help = ->
-  setupQtip('.document_link', "Click to download and view the document")
-  setupQtip('.goto_reference_link', "Click to view/edit this reference on its own page")
 show_form = ($panel, options) ->
   options = {} unless options
   $('div.display', $panel).hide()
@@ -110,6 +74,44 @@ restore_form = ($panel) ->
 
 is_editing = ->
   false
+
+#--------------------------------------------------
+setup_page = ->
+  set_dimensions()
+  $(window).resize = set_dimensions
+
+set_dimensions = ->
+  set_height()
+  set_width()
+
+set_height = ->
+  height = $('#page').height() -
+    $('#site_header').height() -
+    $('#page_header').height() - 2 -
+    $('#page_notice').height() -
+    $('#page_alert').height() -
+    $('#search_results').height() - 3 - 2 - 2 -
+    $('#taxon_key').height() - 2 -
+    $('#site_footer').height() - 8
+  $("#catalog").height(height)
+  $("#catalog .index").height(height - $("#catalog .content").height())
+
+set_width = ->
+  $("#catalog .content").width($('#page').width())
+
+#--------------------------------------------------
+setup_reference_keys = ->
+  $('.reference_key').live 'click', toggle_reference_key_expansion
+  $('.reference_key_expansion_text').live 'click', toggle_reference_key_expansion
+
+toggle_reference_key_expansion = ->
+  $('.reference_key',           $(this).closest('.reference_key_and_expansion')).toggle()
+  $('.reference_key_expansion', $(this).closest('.reference_key_and_expansion')).toggle()
+
+#--------------------------------------------------
+setup_help = ->
+  setupQtip('.document_link', "Click to download and view the document")
+  setupQtip('.goto_reference_link', "Click to view/edit this reference on its own page")
 
 #--------------------------------------------------
 setup_icons = ->
