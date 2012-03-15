@@ -51,10 +51,10 @@ set_width = ->
 
 #--------------------------------------------------
 setup_reference_keys = ->
-  $('.reference_key').live 'click', expand_reference_key
-  $('.reference_key_expansion_text').live 'click', expand_reference_key
+  $('.reference_key').live 'click', toggle_reference_key_expansion
+  $('.reference_key_expansion_text').live 'click', toggle_reference_key_expansion
 
-expand_reference_key = ->
+toggle_reference_key_expansion = ->
   $('.reference_key',           $(this).closest('.reference_key_and_expansion')).toggle()
   $('.reference_key_expansion', $(this).closest('.reference_key_and_expansion')).toggle()
 
