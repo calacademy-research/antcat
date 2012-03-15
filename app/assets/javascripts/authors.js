@@ -17,7 +17,7 @@ function setupHelp() {
 }
 
 function setupAuthorAutocomplete() {
-  if (testing)
+  if (AntCat.testing)
     return;
 
   $('.author_panel input[type=text]').autocomplete({
