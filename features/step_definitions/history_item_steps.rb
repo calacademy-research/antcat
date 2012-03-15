@@ -1,6 +1,6 @@
 # coding: UTF-8
 Then /^the history should be "(.*)"$/ do |history|
-  page.should have_css '.history .display', text: history
+  page.find('div.display').text.should =~ /#{history}\.?/
 end
 
 When /^I click the edit icon$/ do
@@ -12,6 +12,6 @@ When /^I edit the history item to "([^"]*)"$/ do |history|
 end
 
 When /^I save my changes$/ do
-  step 'I click "Save"'
+  step 'I press "Save"'
 end
 
