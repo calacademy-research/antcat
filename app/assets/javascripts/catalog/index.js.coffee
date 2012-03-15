@@ -21,8 +21,8 @@ setup_forms = ->
 show_form = ($panel, options) ->
   options = {} unless options
   $('.display', $panel).hide()
-  $('.icon').hide() unless testing
   $('.edit', $panel).show()
+  $('.icon').hide() unless AntCat.testing
 
 submit_form = ->
   $(this).closest('form').ajaxSubmit
@@ -74,7 +74,7 @@ setup_icons = ->
   setup_icon_click_handlers()
 
 setup_icon_visibility = ->
-  if not testing
+  if not AntCat.testing
     $('.icon').hide()
 
   $('.history_item').live('mouseenter',

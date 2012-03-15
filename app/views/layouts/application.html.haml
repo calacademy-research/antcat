@@ -10,6 +10,12 @@
     -# FOUC fix
     %style{:type => 'text/css'}=".js #flash {display:none;}"
 
+    :javascript
+      if (typeof AntCat === 'undefined') AntCat = {};
+      AntCat.testing = #{Rails.env == 'test'};
+      AntCat.user_can_edit = #{!!user_can_edit?};
+      AntCat.delete_confirmation_message = "#{previewize('Do you want to delete this reference?')}";
+
     = javascript_include_tag 'google_analytics' if Rails.env == 'production' && $ReleaseType.production?
     = javascript_include_tag 'application'
 
@@ -23,11 +29,6 @@
     %link{rel: 'shortcut icon', href: '/favicon.ico'}
 
     = yield :head
-
-    :javascript
-      var testing = #{Rails.env == 'test'};
-      var user_can_edit = #{!!user_can_edit?};
-      var delete_confirmation_message = "#{previewize('Do you want to delete this reference?')}";
 
   %body#flash{:class => controller.class}
     #page

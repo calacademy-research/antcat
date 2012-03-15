@@ -1,5 +1,5 @@
 function setupAuthorAutocomplete(field) {
-  if (testing)
+  if (AntCat.testing)
     return
 
   field.autocomplete({

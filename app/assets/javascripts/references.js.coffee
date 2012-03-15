@@ -44,13 +44,13 @@ setupDisplays = ->
 
 setupIcons = ->
   setupIconVisibility()
-  if user_can_edit
+  if AntCat.user_can_edit
     setupIconHighlighting()
     setupIconClickHandlers()
 
 setupIconVisibility = ->
-  $('.icon').hide() if not testing or not user_can_edit
-  unless user_can_edit
+  $('.icon').hide() if not AntCat.testing or not AntCat.user_can_edit
+  unless AntCat.user_can_edit
     $('.reference').live('mouseenter', ->
       $('.icon', $(this)).show() unless isEditing()
     ).live 'mouseleave', ->
@@ -148,7 +148,7 @@ removeSavedReference = ->
 showReferenceEdit = ($reference, options) ->
   options = {} unless options
   $('.reference_display', $reference).hide()
-  $('.icon').hide() unless testing
+  $('.icon').hide() unless AntCat.testing
   $edit = $('.reference_edit', $reference)
   $('.delete', $edit).hide() unless options.showDeleteButton
   setupTabs $reference
@@ -226,4 +226,4 @@ isEditing = ->
 $ ->
   setupSearch()
   setupDisplays()
-  setupEdits() if user_can_edit
+  setupEdits() if AntCat.user_can_edit
