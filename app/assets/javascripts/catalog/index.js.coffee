@@ -2,48 +2,119 @@ panel_class = 'inline-form-panel'
 panel_class_selector = '.' + panel_class
 
 $ ->
-  setupPage()
-  setupHelp()
-  setupIcons()
-  setupReferenceKeys()
-  setupEdits()
+  setup_page()
+  setup_help()
+  setup_icons()
+  setup_reference_keys()
+  setup_forms()
 
-setupEdits = ->
-  $("#{panel_class_selector} .edit").hide()
-  $("#{panel_class_selector} .edit .submit").live 'click', submitReferenceEdit
-  $("#{panel_class_selector} .edit .cancel").live 'click', cancelReferenceEdit
-  $('.taxt_edit_box').taxt_edit_box()
+#--------------------------------------------------
+setup_forms = ->
+  $("#{panel_class_selector} .edit")
+    .hide()
+    .find('.submit')
+      .live('click', submit_form)
+    .end()
+    .find('.cancel')
+      .live('click', cancel_form)
 
-submitReferenceEdit = ->
+show_form = ($panel, options) ->
+  options = {} unless options
+  $('.display', $panel).hide()
+  $('.icon').hide() unless testing
+  $('.edit', $panel).show()
+
+submit_form = ->
   $(this).closest('form').ajaxSubmit
-    beforeSubmit: setupSubmit
-    success: updateReference
+    success: update_form
     dataType: 'json'
   false
 
-cancelReferenceEdit = ->
-  $reference = $(this).closest panel_class_selector
-  unless $reference.attr('id') is 'reference_'
-    id = $reference.attr('id')
-    restoreReference $reference
-    $reference = $('#' + id)
-    $('.display', $reference).show().effect 'highlight', {}, 3000
+update_form = (data, statusText, xhr, $form) ->
+  $panel = $('#item_' + (if data.isNew then "" else data.id))
+  $edit = $('.edit', $panel)
+  $spinnerElement = $('button', $edit).parent()
+  $('input', $spinnerElement).attr 'disabled', ""
+  $('button', $spinnerElement).attr 'disabled', ""
+  $spinnerElement.spinner 'remove'
+  $panel.parent().html data.content
+  unless data.success
+    $panel = $('#item_' + (if data.isNew then "" else data.id))
+    show_form $panel
+    return
+  $panel = $('#item_' + data.id)
+  $('.edit', $panel).hide()
+  $('.display', $panel).show().effect 'highlight', {}, 3000
+
+cancel_form = ->
+  $panel = $(this).closest panel_class_selector
+  unless $panel.attr('id') is 'item_'
+    id = $panel.attr('id')
+    restore_form $panel
+    $panel = $('#' + id)
+    $('.display', $panel).show().effect 'highlight', {}, 3000
   false
 
-restoreReference = ($reference) ->
-  id = $reference.attr('id')
-  $reference.replaceWith $('#saved_reference')
-  $('#saved_reference').attr('id', id).show()
+save_form = ($panel) ->
+  $('#saved_item').remove()
+  $panel.clone(true).attr('id', 'saved_item').appendTo('body').hide()
 
-setupPage = ->
-  setDimensions()
-  $(window).resize = setDimensions
+restore_form = ($panel) ->
+  id = $panel.attr('id')
+  $panel.replaceWith $('#saved_item')
+  $('#saved_item').attr('id', id).show()
 
-setDimensions = ->
-  setHeight()
-  setWidth()
+is_editing = ->
+  false
 
-setHeight = ->
+#--------------------------------------------------
+setup_icons = ->
+  setup_icon_visibility()
+  setup_icon_highlighting()
+  setup_icon_click_handlers()
+
+setup_icon_visibility = ->
+  if not testing
+    $('.icon').hide()
+
+  $('.history_item').live('mouseenter',
+    ->
+      unless is_editing()
+        $('.icon', $(this)).show()
+    ).live('mouseleave',
+    ->
+      $('.icon').hide()
+    )
+
+setup_icon_highlighting = ->
+  $('.icon img').live('mouseenter',
+    ->
+      this.src = this.src.replace 'off', 'on'
+    ).live('mouseleave',
+    ->
+      this.src = this.src.replace 'on', 'off'
+    )
+
+setup_icon_click_handlers = ->
+  $('.icon.edit').live 'click', edit
+
+edit = ->
+  return false if is_editing()
+  $panel = $(this).closest panel_class_selector
+  save_form $panel
+  show_form $panel
+  false
+
+#--------------------------------------------------
+setup_page = ->
+  set_dimensions()
+  $(window).resize = set_dimensions
+
+set_dimensions = ->
+  set_height()
+  set_width()
+
+set_height = ->
   height = $('#page').height() -
     $('#site_header').height() -
     $('#page_header').height() - 2 -
@@ -55,67 +126,19 @@ setHeight = ->
   $("#catalog").height(height)
   $("#catalog .index").height(height - $("#catalog .content").height())
 
-setWidth = ->
+set_width = ->
   $("#catalog .content").width($('#page').width())
 
-setupReferenceKeys = ->
-  $('.reference_key').live('click', expandReferenceKey)
-  $('.reference_key_expansion_text').live('click', expandReferenceKey)
+#--------------------------------------------------
+setup_reference_keys = ->
+  $('.reference_key').live 'click', expand_reference_key
+  $('.reference_key_expansion_text').live 'click', expand_reference_key
 
-expandReferenceKey = ->
+expand_reference_key = ->
   $('.reference_key',           $(this).closest('.reference_key_and_expansion')).toggle()
   $('.reference_key_expansion', $(this).closest('.reference_key_and_expansion')).toggle()
 
-setupHelp = ->
+#--------------------------------------------------
+setup_help = ->
   setupQtip('.document_link', "Click to download and view the document")
   setupQtip('.goto_reference_link', "Click to view/edit this reference on its own page")
-
-isEditing = ->
-  false
-
-setupIcons = ->
-  setupIconVisibility()
-  setupIconHighlighting()
-  setupIconClickHandlers()
-
-setupIconVisibility = ->
-  if not testing
-    $('.icon').hide()
-
-  $('.history_item').live('mouseenter',
-    ->
-      unless isEditing()
-        $('.icon', $(this)).show()
-    ).live('mouseleave',
-    ->
-      $('.icon').hide()
-    )
-
-setupIconHighlighting = ->
-  $('.icon img').live('mouseenter',
-    ->
-      this.src = this.src.replace('off', 'on')
-    ).live('mouseleave',
-    ->
-      this.src = this.src.replace('on', 'off')
-    )
-
-setupIconClickHandlers = ->
-  $('.icon.edit').live('click', editHistoryItem)
-
-editHistoryItem = ->
-  return false if isEditing()
-  $panel = $(this).closest panel_class_selector
-  saveReference $panel
-  showReferenceEdit $panel
-  false
-
-saveReference = ($reference) ->
-  $('#saved_reference').remove()
-  $reference.clone(true).attr('id', 'saved_reference').appendTo('body').hide()
-
-showReferenceEdit = ($reference, options) ->
-  options = {} unless options
-  $('.display', $reference).hide()
-  $('.icon').hide() unless testing
-  $('.edit', $reference).show()
