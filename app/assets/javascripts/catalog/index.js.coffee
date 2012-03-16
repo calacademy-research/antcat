@@ -8,7 +8,7 @@ $ ->
   setup_reference_keys()
   setup_forms()
 
-  $('.icon.edit').click()
+  $('.icon.edit').click() unless AntCat.testing
 
 #--------------------------------------------------
 setup_forms = ->
