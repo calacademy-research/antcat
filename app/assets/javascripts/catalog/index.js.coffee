@@ -37,6 +37,7 @@ show_form = ($panel, options) ->
 submit_form = ->
   $(this).closest('form').ajaxSubmit
     success: update_form
+    error: handle_error
     dataType: 'json'
   false
 
@@ -55,6 +56,9 @@ update_form = (data, statusText, xhr, $form) ->
   $panel = $('#item_' + data.id)
   $('div.edit', $panel).hide()
   $('div.display', $panel).show().effect 'highlight', {}, 3000
+
+handle_error = (jq_xhr, text_status, error_thrown) ->
+  alert "#{error_thrown}\n\nOh, shoot. It looks like there's a bug preventing this item from being saved.\n\nPlease report this situation to Mark Wilden (mark@mwilden.com) and we'll fix it."
 
 cancel_form = ->
   $panel = $(this).closest panel_class_selector
