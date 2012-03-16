@@ -1,7 +1,18 @@
 # coding: UTF-8
 class TaxonomicHistoryItemsController < ApplicationController
+
   def update
-    TaxonomicHistoryItem.find(params[:id]).update_attribute :taxt, params[:taxt_editor]
-    redirect_to index_catalog_path params[:family_id]
+    @item = TaxonomicHistoryItem.find params[:id]
+    @item.update_attribute :taxt, params[:taxt_editor]
+    ActiveSupport.escape_html_entities_in_json = true
+    json = {
+      isNew: false,
+      content: render_to_string(partial: 'catalog/index/history_item/item', locals: {item: @item}),
+      id: @item.id,
+      success: @item.errors.empty?
+    }.to_json
+
+    render json: json, content_type: 'text/html'
   end
+
 end

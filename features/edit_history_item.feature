@@ -18,8 +18,8 @@ Feature: Editing a history item
 
   Scenario: Changing a history item, but cancelling
     When I go to the catalog
-    Then the history should be "Taxonomic history"
+    Then the history should be "Taxonomic history."
     * I click the edit icon
     * I edit the history item to "(none)"
     * I press "Cancel"
-    Then the history should be "Taxonomic history"
+    Then the history should be "Taxonomic history."
