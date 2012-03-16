@@ -46,24 +46,20 @@ setup_submit = (formData, $form, options) ->
   start_spinning $form
 
 start_spinning = ($form) ->
-  $spinnerElement = $('button', $form).parent()
+  $spinnerElement = $(':button', $form).parent()
   $spinnerElement.spinner position: 'left', img: '/assets/ui-anim_basic_16x16.gif'
   #spinnerElement.spinner({position: 'left', img: "<%= asset_path('ui-anim_basic_16x16.gif') %>"})
-  $('input', $spinnerElement).attr 'disabled', 'disabled'
-  $('button', $spinnerElement).attr 'disabled', 'disabled'
+  $(':button', $spinnerElement).attr 'disabled', 'disabled'
 
 stop_spinning = ($edit) ->
-  $spinnerElement = $('button', $edit).parent()
-  $('input', $spinnerElement).attr 'disabled', ""
-  $('button', $spinnerElement).attr 'disabled', ""
+  $spinnerElement = $('.spinner')
+  $(':button', $spinnerElement).removeAttr 'disabled'
   $spinnerElement.spinner 'remove'
 
 update_form = (data, statusText, xhr, $form) ->
+  stop_spinning()
   $panel = $('#item_' + (if data.isNew then "" else data.id))
   $edit = $('div.edit', $panel)
-
-  stop_spinning $edit
-
   $panel.parent().html data.content
   unless data.success
     $panel = $('#item_' + (if data.isNew then "" else data.id))
@@ -74,7 +70,8 @@ update_form = (data, statusText, xhr, $form) ->
   $('div.display', $panel).show().effect 'highlight', {}, 3000
 
 handle_error = (jq_xhr, text_status, error_thrown) ->
-  alert "#{error_thrown}\n\nOh, shoot. It looks like there's a bug preventing this item from being saved.\n\nPlease report this situation to Mark Wilden (mark@mwilden.com) and we'll fix it."
+  stop_spinning()
+  alert "Oh, shoot. It looks like a bug prevented this item from being saved.\n\nPlease report this situation to Mark Wilden (mark@mwilden.com) and we'll fix it.\n\n#{error_thrown}" unless AntCat.testing
 
 cancel_form = ->
   $panel = $(this).closest panel_class_selector

@@ -30,6 +30,8 @@
         return this.each(function() {
             var l=0, t=0, w=0, h=0, shim=0, $s;
             var $this = $(this);
+
+            $this.addClass('spinner');
             
             // removal handling
             if (options == 'remove' || options == 'close') {
@@ -38,6 +40,7 @@
                 if (typeof $s != 'undefined') {
                     $s.remove();
                     $this.removeData('spinner').removeData('opts');
+                    $this.removeClass('spinner');
                     if (o.hide) $this.css('visibility', 'visible');
                     o.onFinish.call(this);
                     return;
