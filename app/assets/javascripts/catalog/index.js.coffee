@@ -8,6 +8,8 @@ $ ->
   setup_reference_keys()
   setup_forms()
 
+  $('.icon.edit').click()
+
 #--------------------------------------------------
 setup_forms = ->
   $("#{panel_class_selector} div.edit")
