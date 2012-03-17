@@ -79,17 +79,18 @@ cancel_form = ->
     id = $panel.attr('id')
     restore_form $panel
     $panel = $('#' + id)
+    $('div.edit', $panel).hide()
     $('div.display', $panel).show().effect 'highlight', {}, 3000
   false
 
+original_value_key = panel_class + '_original_value'
 save_form = ($panel) ->
-  $('#saved_item').remove()
-  $panel.clone(true).attr('id', 'saved_item').appendTo('body').hide()
+  $taxt_edit_box = $('textarea', $panel)
+  $taxt_edit_box.data original_value_key, $taxt_edit_box.val()
 
 restore_form = ($panel) ->
-  id = $panel.attr('id')
-  $panel.replaceWith $('#saved_item')
-  $('#saved_item').attr('id', id).show()
+  $taxt_edit_box = $('textarea', $panel)
+  $taxt_edit_box.val $taxt_edit_box.data original_value_key
 
 is_editing = ->
   false
@@ -102,7 +103,6 @@ setup_page = ->
 set_dimensions = ->
   set_height()
   set_width()
-
 set_height = ->
   height = $('#page').height() -
     $('#site_header').height() -
