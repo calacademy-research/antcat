@@ -1,7 +1,7 @@
 # coding: UTF-8
 class Tribe < Taxon
   belongs_to :subfamily
-  has_many :genera, :class_name => 'Genus', :order => :name
+  has_many :genera, :order => :name
 
   def children
     genera

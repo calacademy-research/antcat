@@ -3,7 +3,7 @@ class Subgenus < Taxon
   belongs_to :genus
   belongs_to :tribe
   belongs_to :subfamily
-  has_many :species, :class_name => 'Species', :order => :name
+  has_many :species, :order => :name
   validates_presence_of :genus
 
   def children

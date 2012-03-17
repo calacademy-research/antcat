@@ -3,7 +3,7 @@ class Species < Taxon
   belongs_to :subfamily
   belongs_to :genus
   belongs_to :subgenus
-  has_many :subspecies, class_name: 'Subspecies', order: :name
+  has_many :subspecies, order: :name
   before_create :set_subfamily
 
   def set_subfamily

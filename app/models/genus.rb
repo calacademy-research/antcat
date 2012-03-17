@@ -2,9 +2,9 @@
 class Genus < Taxon
   belongs_to :tribe
   belongs_to :subfamily
-  has_many :species, class_name: 'Species', order: :name
-  has_many :subspecies, class_name: 'Subspecies', order: :name
-  has_many :subgenera, class_name: 'Subgenus', order: :name
+  has_many :species, order: :name
+  has_many :subspecies, order: :name
+  has_many :subgenera, order: :name
 
   scope :without_subfamily, where(subfamily_id: nil).order(:name)
   scope :without_tribe, where(tribe_id: nil)
