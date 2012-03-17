@@ -3,7 +3,7 @@ class TaxonomicHistoryItemsController < ApplicationController
 
   def update
     @item = TaxonomicHistoryItem.find params[:id]
-    @item.update_attribute :taxt, Taxt.from_editable(params[:taxt_editor])
+    @item.update_taxt_from_editable params[:taxt_editor]
     json = {
       isNew: false,
       content: render_to_string(partial: 'catalog/index/history_item/item', locals: {item: @item}),
