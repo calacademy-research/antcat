@@ -156,4 +156,7 @@ FactoryGirl.define do
     sequence(:name) {|n| "Protonym#{n}"}
   end
 
+  factory :taxonomic_history_item do
+  end
+
 end
