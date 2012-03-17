@@ -16,6 +16,15 @@ Feature: Editing a history item
     * I save my changes
     Then the history should be "(none)"
 
+  Scenario: Editing a history item with a reference in it
+    Given there is a reference for "Bolton, 2005"
+    When I go to the catalog
+    Then I should not see "Bolton, 2005"
+    When I click the edit icon
+    * I edit the history item to include that reference
+    * I save my changes
+    Then the history should be "Bolton, 2005."
+
   Scenario: Changing a history item, but cancelling
     When I go to the catalog
     Then the history should be "Taxonomic history."
