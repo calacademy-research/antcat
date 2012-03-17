@@ -4,7 +4,6 @@ class TaxonomicHistoryItemsController < ApplicationController
   def update
     @item = TaxonomicHistoryItem.find params[:id]
     @item.update_attribute :taxt, params[:taxt_editor]
-    ActiveSupport.escape_html_entities_in_json = true
     json = {
       isNew: false,
       content: render_to_string(partial: 'catalog/index/history_item/item', locals: {item: @item}),
