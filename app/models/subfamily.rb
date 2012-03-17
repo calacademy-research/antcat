@@ -1,9 +1,9 @@
 # coding: UTF-8
 class Subfamily < Taxon
   has_many :tribes, :order => :name
-  has_many :genera, :class_name => 'Genus', :order => :name
-  has_many :species, :class_name => 'Species', :order => :name
-  has_many :subspecies, :class_name => 'Subspecies', :order => :name
+  has_many :genera, :order => :name
+  has_many :species, :order => :name
+  has_many :subspecies, :order => :name
 
   def self.import data
     transaction do
