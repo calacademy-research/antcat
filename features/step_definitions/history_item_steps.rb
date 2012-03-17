@@ -15,3 +15,12 @@ When /^I save my changes$/ do
   step 'I press "Save"'
 end
 
+Given /^there is a reference for "Bolton, 2005"$/ do
+  @reference = Factory :article_reference, :author_names => [Factory(:author_name, :name => 'Bolton')], :citation_year => '2005'
+end
+
+Given /^I edit the history item to include that reference$/ do
+  key = Taxt.id_for_editable @reference.id
+  step %{I edit the history item to "{#{key}}"}
+end
+
