@@ -25,6 +25,7 @@ edit = ->
   $panel = $(this).closest panel_class_selector
   save_form $panel
   show_form $panel
+  $('.taxt_edit_box', $panel).first().focus()
   false
 
 show_form = ($panel, options) ->
