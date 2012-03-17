@@ -41,15 +41,32 @@ describe Taxt do
 
   end
 
-  describe "To editable taxt" do
-    it "should use the inline citation format followed by the id" do
-      key = mock 'key'
-      key.should_receive(:to_s).and_return('Fisher, 1922')
-      reference = mock 'reference', id: 36
-      Reference.should_receive(:find).and_return reference
-      reference.stub(:key).and_return key
-      user = Factory :user
-      Taxt.to_editable("{ref #{reference.id}}", user).should == "{Fisher, 1922 10}"
+  describe "Editable taxt" do
+    describe "To editable taxt" do
+      it "should use the inline citation format followed by the id" do
+        key = mock 'key'
+        key.should_receive(:to_s).and_return 'Fisher, 1922'
+        reference = mock 'reference', id: 36
+        Reference.should_receive(:find).and_return reference
+        reference.stub(:key).and_return key
+        user = Factory :user
+        editable_key = Taxt.id_for_editable reference.id
+        Taxt.to_editable("{ref #{reference.id}}", user).should == "{Fisher, 1922 #{editable_key}}"
+      end
+    end
+    describe "From editable taxt" do
+      it "should use the inline citation format followed by the id" do
+        reference = Factory :article_reference
+        editable_key = Taxt.id_for_editable reference.id
+        Taxt.from_editable("{Fisher, 1922 #{editable_key}}").should == "{ref #{reference.id}}"
+      end
+      it "should handle more than one reference" do
+        reference = Factory :article_reference
+        other_reference = Factory :article_reference
+        editable_key = Taxt.id_for_editable reference.id
+        other_editable_key = Taxt.id_for_editable other_reference.id
+        Taxt.from_editable("{Fisher, 1922 #{editable_key}}, also {Bolton, 1970 #{other_editable_key}}").should == "{ref #{reference.id}}, also {ref #{other_reference.id}}"
+      end
     end
   end
 
