@@ -1,4 +1,4 @@
-.edit
+.form
   = form_for [item.taxon, item] do |f|
     =text_area_tag :taxt_editor, Taxt.to_editable(item.taxt, nil), rows: 1, class: 'taxt_edit_box'
     %div
