@@ -3,7 +3,6 @@ panel_class_selector = '.' + panel_class
 
 $ ->
   setup_page()
-  setup_help()
   setup_icons()
   setup_reference_keys()
   setup_forms()
@@ -129,11 +128,6 @@ setup_reference_keys = ->
 toggle_reference_key_expansion = ->
   $('.reference_key',           $(this).closest('.reference_key_and_expansion')).toggle()
   $('.reference_key_expansion', $(this).closest('.reference_key_and_expansion')).toggle()
-
-#--------------------------------------------------
-setup_help = ->
-  setupQtip('.document_link', "Click to download and view the document")
-  setupQtip('.goto_reference_link', "Click to view/edit this reference on its own page")
 
 #--------------------------------------------------
 setup_icons = ->
