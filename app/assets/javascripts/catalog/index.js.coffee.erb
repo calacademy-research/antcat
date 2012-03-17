@@ -8,7 +8,14 @@ $ ->
   setup_reference_keys()
   setup_forms()
 
-  #$('.icon.edit').click() unless AntCat.testing
+  setup_testing_or_development()
+
+setup_testing_or_development = ->
+  if AntCat.testing
+    $('.icon.edit').show()
+  else
+    if AntCat.environment is 'development'
+      $('.icon.edit').click()
 
 #--------------------------------------------------
 setup_forms = ->
