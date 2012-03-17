@@ -12,8 +12,18 @@ module Taxt
     end
   end
 
+  def self.from_editable editable_taxt
+    editable_taxt.gsub /{((.*?)? )?(\w+)}/ do |ref|
+      "{ref #{id_from_editable $3}}"
+    end
+  end
+
   def self.id_for_editable id
     id.to_i.to_s 36
+  end
+
+  def self.id_from_editable editable_id
+    editable_id.to_i 36
   end
 
   def self.decode taxt, user = nil
