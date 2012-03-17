@@ -93,7 +93,7 @@ restore_form = ($panel) ->
   $taxt_edit_box.val $taxt_edit_box.data original_value_key
 
 is_editing = ->
-  false
+  $("#{panel_class_selector} div.edit").is ':visible'
 
 #--------------------------------------------------
 setup_page = ->
