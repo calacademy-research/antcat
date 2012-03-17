@@ -12,6 +12,7 @@
 
     :javascript
       if (typeof AntCat === 'undefined') AntCat = {};
+      AntCat.environment = '#{Rails.env}';
       AntCat.testing = #{Rails.env == 'test'};
       AntCat.user_can_edit = #{!!user_can_edit?};
       AntCat.delete_confirmation_message = "#{previewize('Do you want to delete this reference?')}";
