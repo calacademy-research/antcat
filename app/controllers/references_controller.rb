@@ -135,7 +135,6 @@ EOS
   end
 
   def render_json new = false
-    ActiveSupport.escape_html_entities_in_json = true
     json = {
       :isNew => new,
       :content => render_to_string(:partial => 'reference',

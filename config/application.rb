@@ -20,3 +20,5 @@ module AntCat
     config.assets.version = '1.0'
   end
 end
+
+ActiveSupport::JSON::Encoding.escape_html_entities_in_json = true
