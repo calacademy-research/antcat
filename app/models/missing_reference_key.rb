@@ -9,4 +9,8 @@ class MissingReferenceKey
     @citation.html_safe
   end
 
+  def to_s
+    @citation
+  end
+
 end
