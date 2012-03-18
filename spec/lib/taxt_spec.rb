@@ -57,6 +57,9 @@ describe Taxt do
         editable_key = Taxt.id_for_editable reference.id
         Taxt.to_editable("{ref #{reference.id}}").should == "{Fisher, 2011 #{editable_key}}"
       end
+      it "should handle a reference we don't even know is missing" do
+        Taxt.to_editable("{ref 123}").should == "{3f}"
+      end
     end
     describe "From editable taxt" do
       it "should use the inline citation format followed by the id" do
