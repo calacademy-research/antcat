@@ -49,9 +49,8 @@ describe Taxt do
         reference = mock 'reference', id: 36
         Reference.should_receive(:find).and_return reference
         reference.stub(:key).and_return key
-        user = Factory :user
         editable_key = Taxt.id_for_editable reference.id
-        Taxt.to_editable("{ref #{reference.id}}", user).should == "{Fisher, 1922 #{editable_key}}"
+        Taxt.to_editable("{ref #{reference.id}}").should == "{Fisher, 1922 #{editable_key}}"
       end
     end
     describe "From editable taxt" do
