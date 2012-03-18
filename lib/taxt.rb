@@ -9,7 +9,8 @@ module Taxt
   def self.to_editable taxt
     return '' unless taxt
     taxt.gsub /{ref (\d+)}/ do |ref|
-      "{#{Reference.find($1).key.to_s} #{id_for_editable $1}}" rescue ref
+      editable_id = id_for_editable $1
+      "{#{Reference.find($1).key.to_s} #{editable_id}}" rescue "{#{editable_id}}"
     end
   end
 
