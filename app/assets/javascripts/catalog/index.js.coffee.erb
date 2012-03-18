@@ -1,5 +1,6 @@
 panel_class = 'inline-form-panel'
 panel_class_selector = '.' + panel_class
+spinner_path = "<%= asset_path 'ui-anim_basic_16x16.gif' %>"
 
 $ ->
   setup_page()
@@ -7,7 +8,12 @@ $ ->
   setup_reference_keys()
   setup_forms()
 
+  preload_images()
+
   setup_testing_or_development()
+
+preload_images = ->
+  (new Image()).src = spinner_path
 
 setup_testing_or_development = ->
   if AntCat.testing
@@ -54,7 +60,7 @@ submit_form = ->
 
 start_spinning = ($form) ->
   $spinnerElement = $(':button', $form).parent()
-  $spinnerElement.spinner position: 'left', img: "<%= asset_path 'ui-anim_basic_16x16.gif' %>"
+  $spinnerElement.spinner position: 'left', img: spinner_path
   $(':button', $spinnerElement).attr 'disabled', 'disabled'
 
 stop_spinning = ->
