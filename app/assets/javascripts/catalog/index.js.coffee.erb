@@ -60,7 +60,7 @@ submit_form = ->
 
 start_spinning = ($form) ->
   $spinnerElement = $(':button', $form).parent()
-  $spinnerElement.spinner position: 'left', img: spinner_path
+  $spinnerElement.spinner position: 'left', leftOffset: 7, img: spinner_path
   $(':button', $spinnerElement).attr 'disabled', 'disabled'
 
 stop_spinning = ->

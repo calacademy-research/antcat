@@ -61,7 +61,7 @@
             if (opts.position == 'right') {
                 l = pos.left + w + 10 + 'px';
             } else if (opts.position == 'left') {
-                l = pos.left - opts.width - 10 + 'px';
+                l = pos.left - opts.width - 10 + opts.leftOffset + 'px';
             } else {
                 l = pos.left + Math.round(.5 * w) - Math.round(.5 * opts.width) + 'px';
             }
@@ -86,6 +86,7 @@
         , img       : 'spinner.gif' // path to spinner img
         , height    : 16            // height of spinner img
         , width     : 16            // width of spinner img
+        , leftOffset: 0             // left offset
         , zIndex    : 1001          // z-index of spinner
         , hide      : false         // whether to hide the elem
         , onStart   : function(){ } // start callback
