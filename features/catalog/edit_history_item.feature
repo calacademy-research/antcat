@@ -25,6 +25,13 @@ Feature: Editing a history item
     * I save my changes
     Then the history should be "Bolton, 2005."
 
+  Scenario: Editing a history item and including an unparseable or unknown reference id
+    When I go to the catalog
+    * I click the edit icon
+    * I edit the history item to "{123}"
+    * I press "Save"
+    Then I should see an error message about the unfound reference
+
   Scenario: Changing a history item, but cancelling
     When I go to the catalog
     Then the history should be "Taxonomic history."
