@@ -52,6 +52,11 @@ describe Taxt do
         editable_key = Taxt.id_for_editable reference.id
         Taxt.to_editable("{ref #{reference.id}}").should == "{Fisher, 1922 #{editable_key}}"
       end
+      it "should handle a missing reference" do
+        reference = Factory :missing_reference, citation: 'Fisher, 2011'
+        editable_key = Taxt.id_for_editable reference.id
+        Taxt.to_editable("{ref #{reference.id}}").should == "{Fisher, 2011 #{editable_key}}"
+      end
     end
     describe "From editable taxt" do
       it "should use the inline citation format followed by the id" do
