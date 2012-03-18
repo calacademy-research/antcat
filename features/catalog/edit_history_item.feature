@@ -16,21 +16,24 @@ Feature: Editing a history item
     * I save my changes
     Then the history should be "(none)"
 
-  Scenario: Editing a history item with a reference in it
-    Given there is a reference for "Bolton, 2005"
-    When I go to the catalog
-    Then I should not see "Bolton, 2005"
-    When I click the edit icon
-    * I edit the history item to include that reference
-    * I save my changes
-    Then the history should be "Bolton, 2005."
+  # These are difficult to test, since it's not possible to type a {
+  # The error could be caused by other actions, like pasting, though
 
-  Scenario: Editing a history item and including an unparseable or unknown reference id
-    When I go to the catalog
-    * I click the edit icon
-    * I edit the history item to "{123}"
-    * I press "Save"
-    Then I should see an error message about the unfound reference
+  #Scenario: Editing a history item with a reference in it
+    #Given there is a reference for "Bolton, 2005"
+    #When I go to the catalog
+    #Then I should not see "Bolton, 2005"
+    #When I click the edit icon
+    #* I edit the history item to include that reference
+    #* I save my changes
+    #Then the history should be "Bolton, 2005."
+
+  #Scenario: Editing a history item and including an unparseable or unknown reference id
+    #When I go to the catalog
+    #* I click the edit icon
+    #* I edit the history item to "{123}"
+    #* I press "Save"
+    #Then I should see an error message about the unfound reference
 
   Scenario: Changing a history item, but cancelling
     When I go to the catalog
