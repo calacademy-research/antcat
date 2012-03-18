@@ -6,7 +6,7 @@ module Taxt
     decode taxt, user
   end
 
-  def self.to_editable taxt, user
+  def self.to_editable taxt
     return '' unless taxt
     taxt.gsub /{ref (\d+)}/ do |ref|
       "{#{Reference.find($1).key.to_s} #{id_for_editable $1}}" rescue ref
