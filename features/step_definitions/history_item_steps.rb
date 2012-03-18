@@ -13,6 +13,7 @@ end
 
 When /^I save my changes$/ do
   step 'I press "Save"'
+  step 'I wait for a bit'
 end
 
 Given /^there is a reference for "Bolton, 2005"$/ do
@@ -24,3 +25,6 @@ Given /^I edit the history item to include that reference$/ do
   step %{I edit the history item to "{#{key}}"}
 end
 
+Then /^I should see an error message about the unfound reference$/ do
+  step %{I should see "The reference '{123}' could not be found. Was the ID changed by mistake?"}
+end
