@@ -33,7 +33,12 @@ describe TaxonomicHistoryItem do
       item.reload.taxt.should == "{ref #{reference.id}}, also {ref #{other_reference.id}}"
     end
 
+    it "should have errors if a reference isn't found" do
+      item.errors.should be_empty
+      item.update_taxt_from_editable '{123}'
+      item.errors.should_not be_empty
+    end
+
     it "should have errors if braces are unbalanced"
-    it "should have errors if a reference isn't found"
   end
 end
