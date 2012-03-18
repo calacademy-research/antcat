@@ -67,6 +67,9 @@ describe Taxt do
         other_editable_key = Taxt.id_for_editable other_reference.id
         Taxt.from_editable("{Fisher, 1922 #{editable_key}}, also {Bolton, 1970 #{other_editable_key}}").should == "{ref #{reference.id}}, also {ref #{other_reference.id}}"
       end
+      it "should raise an exception if a reference can't be found and include the failing tag" do
+        expect {Taxt.from_editable('asdf {123}')}.to raise_error Taxt::ReferenceNotFound, '{123}'
+      end
     end
   end
 
