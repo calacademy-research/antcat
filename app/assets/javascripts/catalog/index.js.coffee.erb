@@ -24,6 +24,8 @@ setup_forms = ->
     .end()
     .find('.cancel')
       .live('click', cancel_form)
+    .end()
+    .find('textarea').taxt_edit_box()
 
 #--------------------------------------------------
 edit = ->
