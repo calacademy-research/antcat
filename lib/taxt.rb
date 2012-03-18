@@ -1,4 +1,5 @@
 module Taxt
+  class ReferenceNotFound < StandardError; end
 
   ################################
   def self.to_string taxt, user
@@ -14,7 +15,9 @@ module Taxt
 
   def self.from_editable editable_taxt
     editable_taxt.gsub /{((.*?)? )?(\w+)}/ do |ref|
-      "{ref #{id_from_editable $3}}"
+      id = id_from_editable $3
+      raise ReferenceNotFound.new(ref) unless Reference.find_by_id id
+      "{ref #{id}}"
     end
   end
 
