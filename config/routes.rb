@@ -42,6 +42,8 @@ AntCat::Application.routes.draw do
     resources :taxonomic_history_items
   end
 
+  match '/test', to:'test#test'
+
   devise_for :users
 
 end
