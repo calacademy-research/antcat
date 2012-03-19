@@ -31,8 +31,10 @@ setup_forms = ->
     .find('.cancel')
       .live('click', cancel_form)
     .end()
-    .find('textarea')
-      .taxt_edit_box()
+    .setup_taxt_edit_boxes()
+
+$.fn.setup_taxt_edit_boxes = ->
+  return this.each -> $(this).find('textarea').taxt_edit_box()
 
 #--------------------------------------------------
 edit = ->
@@ -77,9 +79,8 @@ update_form = (data, statusText, xhr, $form) ->
   $panel.replaceWith data.content
   $panel = $('#item_' + data.id)
   $('div.form', $panel)
+    .setup_taxt_edit_boxes()
     .hide()
-    .find('textarea')
-      .taxt_edit_box()
   $('div.display', $panel).show().effect 'highlight', {}, 3000
 
 show_error_messages = ($form, html) ->
