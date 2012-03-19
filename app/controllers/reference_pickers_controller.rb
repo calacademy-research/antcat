@@ -4,7 +4,7 @@ class ReferencePickersController < ApplicationController
   #skip_before_filter :authenticate_user!, :if => :preview?
 
   def create
-    @references = Reference.do_search q: '128176'
+    @references = Reference.do_search q: params[:q]
     render partial: 'create'
     #searching = params[:q].present?
     #params[:search_selector] ||= 'Search for'
