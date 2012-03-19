@@ -17,7 +17,7 @@ class AntCat.TaxtEditBox
 
   handle_event: (event) =>
     if @is_tag_opening_event(event) and @is_tag_selected()
-      @open_tag() if @open_tag
+      @open_tag.call @ if @open_tag
       return false
     if event.type is 'keyup' or event.type is 'mouseup'
       @dashboard?.show_event event
