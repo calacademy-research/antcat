@@ -1,0 +1,8 @@
+= form_tag references_path, :method => 'get', :id => 'search_form' do
+  .search
+    = select_tag "search_selector", options_for_select(["Search for", "Search for author(s)"], params[:search_selector])
+    = text_field_tag "q", params[:q]
+    = image_tag 'help.png', :class => 'help_icon'
+    = submit_tag "Go"
+
+= render 'shared/qtip'
