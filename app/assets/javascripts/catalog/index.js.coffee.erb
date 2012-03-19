@@ -76,7 +76,10 @@ update_form = (data, statusText, xhr, $form) ->
     return
   $panel.replaceWith data.content
   $panel = $('#item_' + data.id)
-  $('div.form', $panel).hide()
+  $('div.form', $panel)
+    .hide()
+    .find('textarea')
+      .taxt_edit_box()
   $('div.display', $panel).show().effect 'highlight', {}, 3000
 
 show_error_messages = ($form, html) ->
