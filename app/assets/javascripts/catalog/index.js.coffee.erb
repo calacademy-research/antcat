@@ -34,7 +34,9 @@ setup_forms = ->
     .setup_taxt_edit_boxes()
 
 $.fn.setup_taxt_edit_boxes = ->
-  return this.each -> $(this).find('textarea').taxt_edit_box()
+  return this.each -> $(this).find('textarea').taxt_edit_box open_tag: open_tag
+
+open_tag = ->
 
 #--------------------------------------------------
 edit = ->
