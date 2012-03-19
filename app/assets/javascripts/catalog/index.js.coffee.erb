@@ -37,6 +37,7 @@ $.fn.setup_taxt_edit_boxes = ->
   return this.each -> $(this).find('textarea').taxt_edit_box open_tag: open_tag
 
 open_tag = ->
+  new AntCat.ReferencePicker this
 
 #--------------------------------------------------
 edit = ->
