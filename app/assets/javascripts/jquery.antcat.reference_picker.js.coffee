@@ -1,7 +1,6 @@
 window.AntCat or= {}
 
 class AntCat.ReferencePicker
-  constructor: ($taxt_edit_box) ->
-    @taxt_edit_box = $taxt_edit_box
-    alert @taxt_edit_box.control.closest('.inline-form-panel').attr('id')
-    this
+  constructor: ($container) ->
+    $container.append("<div class='antcat-reference-picker'></div>")
+    $('.antcat-reference-picker').load '/reference_pickers', q: '128176'
