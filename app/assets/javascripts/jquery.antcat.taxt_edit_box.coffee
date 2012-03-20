@@ -7,7 +7,6 @@ if $?
 class AntCat.TaxtEditBox
   constructor: ($control, options = {}) ->
     @control = $control
-    @open_tag = options.open_tag
     @dashboard = new TaxtEditBox.DebugDashboard @ if options.show_debug_dashboard
     @dashboard?.show_status 'before'
     @value @control.val()
@@ -17,7 +16,7 @@ class AntCat.TaxtEditBox
 
   handle_event: (event) =>
     if @is_tag_opening_event(event) and @is_tag_selected()
-      @open_tag @ if @open_tag
+      @open_reference_editor()
       return false
     if event.type is 'keyup' or event.type is 'mouseup'
       @dashboard?.show_event event
@@ -37,7 +36,19 @@ class AntCat.TaxtEditBox
     @last_value new_value
     @value new_value if new_value isnt current_value
     @set_position current_position
+
+  open_reference_editor: =>
+    $(':button', @control.closest('form')).hide()
+    $('.antcat-reference-picker').remove()
+    id = TaxtEditBox.extract_id_from_editable_taxt @selection()
+    new AntCat.ReferencePicker $(@control).closest('form'), id
  
+  @extract_id_from_editable_taxt: (taxt) ->
+    TaxtEditBox.id_from_editable taxt.match(/{((.*?)? )?(\w+)}/)[3]
+
+  @id_from_editable: (id) ->
+    parseInt id, 36
+
   select_tag_if_caret_inside: =>
     tag_indexes = TaxtEditBox.enclosing_tag_indexes @value(), @start()
     return unless tag_indexes

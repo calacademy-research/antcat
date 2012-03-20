@@ -34,19 +34,7 @@ setup_forms = ->
     .setup_taxt_edit_boxes()
 
 $.fn.setup_taxt_edit_boxes = ->
-  return this.each -> $(this).find('textarea').taxt_edit_box open_tag: open_tag
-
-#--------------------------------------------------
-open_tag = ($taxt_edit_box) ->
-  id = extract_id_from_editable_taxt $taxt_edit_box.selection()
-  $('.antcat-reference-picker').remove()
-  new AntCat.ReferencePicker $($taxt_edit_box.control).closest('form'), id
-
-extract_id_from_editable_taxt = (taxt) ->
-  id_from_editable taxt.match(/{((.*?)? )?(\w+)}/)[3]
-
-id_from_editable = (id) ->
-  parseInt id, 36
+  return this.each -> $(this).find('textarea').taxt_edit_box()
 
 #--------------------------------------------------
 edit = ->
