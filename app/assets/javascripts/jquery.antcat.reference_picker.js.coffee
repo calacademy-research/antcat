@@ -8,15 +8,11 @@ class AntCat.ReferencePicker
       $container.append("<div class='antcat-reference-picker'></div>")
 
     $('.antcat-reference-picker', $container).load '/reference_pickers', q: id, ->
-      $('.antcat-reference-picker', $container)
-        .find('.icons')
-          .hide()
-          .end()
-        .find('.reference_edit')
-          .hide()
-          .end()
-        .find(':button.close')
+      $('.antcat-reference-picker')
+        .find(':button.close', $container)
           .click ->
             $('.antcat-reference-picker').remove()
             result_handler() if result_handler
             false
+          .end()
+        .show()
