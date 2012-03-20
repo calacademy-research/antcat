@@ -38,10 +38,12 @@ class AntCat.TaxtEditBox
     @set_position current_position
 
   open_reference_editor: =>
-    $(':button', @control.closest('form')).hide()
+    $form = @control.closest('form')
     $('.antcat-reference-picker').remove()
     id = TaxtEditBox.extract_id_from_editable_taxt @selection()
-    new AntCat.ReferencePicker $(@control).closest('form'), id
+    new AntCat.ReferencePicker $form, id, @handle_result
+
+  handle_result: =>
  
   @extract_id_from_editable_taxt: (taxt) ->
     TaxtEditBox.id_from_editable taxt.match(/{((.*?)? )?(\w+)}/)[3]
