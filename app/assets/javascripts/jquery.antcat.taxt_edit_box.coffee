@@ -12,7 +12,7 @@ class AntCat.TaxtEditBox
     @value @control.val()
     @last_value @control.val()
     @control.bind 'keyup keydown mouseup dblclick', @handle_event
-    this
+    @
 
   handle_event: (event) =>
     if @is_tag_opening_event(event) and @is_tag_selected()
