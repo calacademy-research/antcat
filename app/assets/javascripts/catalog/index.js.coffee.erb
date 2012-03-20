@@ -38,7 +38,8 @@ $.fn.setup_taxt_edit_boxes = ->
 
 #--------------------------------------------------
 open_tag = ($taxt_edit_box) ->
-  id = extract_id_from_editable_taxt $taxt_edit_box.value()
+  id = extract_id_from_editable_taxt $taxt_edit_box.selection()
+  $('.antcat-reference-picker').remove()
   new AntCat.ReferencePicker $($taxt_edit_box.control).closest('form'), id
 
 extract_id_from_editable_taxt = (taxt) ->

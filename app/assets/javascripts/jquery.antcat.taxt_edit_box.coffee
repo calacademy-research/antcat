@@ -44,6 +44,9 @@ class AntCat.TaxtEditBox
     @set_selection tag_indexes.left, tag_indexes.right
     true
 
+  selection: =>
+    @value()[@start()...@end()]
+
   is_tag_selected: =>
     @value().charAt(@start())   is '{' and
     @value().charAt(@end() - 1) is '}'
