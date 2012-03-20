@@ -3,8 +3,9 @@ window.AntCat or= {}
 class AntCat.ReferencePicker
 
   constructor: ($container, id, result_handler) ->
-    $('.antcat-reference-picker', $container).remove()
-    $container.append("<div class='antcat-reference-picker'></div>")
+
+    if $('.antcat-reference-picker', $container).length is 0
+      $container.append("<div class='antcat-reference-picker'></div>")
 
     $('.antcat-reference-picker', $container).load '/reference_pickers', q: id, ->
       $('.antcat-reference-picker', $container)
