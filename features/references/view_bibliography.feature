@@ -98,6 +98,9 @@ Feature: View bibliography
       | authors    | year | title | citation                |
       | Bolton, B. | 2010 | Ants  | New York: Wiley, 23 pp. |
     And the following entry nests it
+    Given the following references exist
+      | authors | citation   | title | year | public_notes | editor_notes | taxonomic_notes |
+      | authors | Psyche 3:3 | title | 2010 | Public       | Editor       | Taxonomy        |
       | authors    | title          | year | pages_in |
       | Ward, P.S. | Dolichoderinae | 2010 | In:      |
     When I go to the references page
@@ -111,4 +114,26 @@ Feature: View bibliography
     When I go to the references page
     Then I should not see the missing reference
     And I should see "Ward, P.S. 2010d. Ant Facts. Ants 1:1."
+
+  @dormant
+  Scenario: Not logged in
+    Given the following references exist
+      | authors | citation   | title | year | public_notes | editor_notes | taxonomic_notes |
+      | authors | Psyche 3:3 | title | 2010 | Public       | Editor       | Taxonomy        |
+    Given I am not logged in
+    When I go to the references page
+    Then I should see "Public"
+    And I should not see "Editor"
+    And I should not see "Taxonomy"
+
+  @dormant
+  Scenario: Logged in
+    Given the following references exist
+      | authors | citation   | title | year | public_notes | editor_notes | taxonomic_notes |
+      | authors | Psyche 3:3 | title | 2010 | Public       | Editor       | Taxonomy        |
+    When I log in
+    And I go to the references page
+    Then I should see "Public"
+    And I should see "Editor"
+    And I should see "Taxonomy"
 
