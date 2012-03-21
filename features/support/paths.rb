@@ -24,6 +24,8 @@ module NavigationHelpers
       '/users/password/new'
     when /the login page/
       '/users/sign_in'
+    when /the reference picker widget test page/
+      '/widget_tests/reference_picker'
     else
       raise "#{page_name} not found"
     end

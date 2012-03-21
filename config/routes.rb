@@ -44,7 +44,7 @@ AntCat::Application.routes.draw do
 
   resources :reference_pickers
 
-  match '/test', to:'test#test'
+  match '/widget_tests/reference_picker', to: 'widget_tests#reference_picker'
 
   devise_for :users
 
