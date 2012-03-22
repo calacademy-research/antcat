@@ -98,7 +98,7 @@ class Reference < ActiveRecord::Base
       search_options[:page] = options[:page] || 1
     end
 
-    search_options[:no_missing_references] = true
+    search_options[:filter] = :no_missing_references
 
     case
     when options[:whats_new]

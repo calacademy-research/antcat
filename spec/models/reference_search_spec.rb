@@ -277,21 +277,21 @@ describe Reference, slow:true do
 
     describe "Searching for nothing" do
       it "should return everything" do
-        Reference.should_receive(:perform_search).with page: 1, no_missing_references: true
+        Reference.should_receive(:perform_search).with page: 1, filter: :no_missing_references
         Reference.do_search
       end
     end
 
     describe "Review" do
       it "should sort by updated_at" do
-        Reference.should_receive(:perform_search).with :order => :updated_at, :page => 1, no_missing_references: true
+        Reference.should_receive(:perform_search).with :order => :updated_at, :page => 1, filter: :no_missing_references
         Reference.do_search :review => true
       end
     end
 
     describe "New" do
       it "should sort by created_at" do
-        Reference.should_receive(:perform_search).with :order => :created_at, :page => 1, no_missing_references: true
+        Reference.should_receive(:perform_search).with :order => :created_at, :page => 1, filter: :no_missing_references
         Reference.do_search :whats_new => true
       end
     end
@@ -328,22 +328,22 @@ describe Reference, slow:true do
 
     describe "Searching for text and/or years" do
       it "should extract the starting and ending years" do
-        Reference.should_receive(:perform_search).with :fulltext => '', :start_year => 1992, :end_year => 1993, :page => 1, no_missing_references: true
+        Reference.should_receive(:perform_search).with :fulltext => '', :start_year => 1992, :end_year => 1993, :page => 1, filter: :no_missing_references
         Reference.do_search :q => '1992-1993'
       end
 
       it "extract the starting year" do
-        Reference.should_receive(:perform_search).with :fulltext => '', :start_year => 1992, :page => 1, no_missing_references: true
+        Reference.should_receive(:perform_search).with :fulltext => '', :start_year => 1992, :page => 1, filter: :no_missing_references
         Reference.do_search :q => '1992'
       end
 
       it "should convert the query string" do
-        Reference.should_receive(:perform_search).with :fulltext => 'andre', :page => 1, no_missing_references: true
+        Reference.should_receive(:perform_search).with :fulltext => 'andre', :page => 1, filter: :no_missing_references
         Reference.do_search :q => 'André'
       end
 
       it "should distinguish between years and citation years" do
-        Reference.should_receive(:perform_search).with :fulltext => '1970a', :start_year => 1970, :page => 1, no_missing_references: true
+        Reference.should_receive(:perform_search).with :fulltext => '1970a', :start_year => 1970, :page => 1, filter: :no_missing_references
         Reference.do_search :q => '1970a 1970'
       end
 
@@ -357,18 +357,18 @@ describe Reference, slow:true do
 
     describe "Pagination on or off for different search types" do
       it "should not paginate EndNote format" do
-        Reference.should_receive(:perform_search).with :fulltext => '', no_missing_references: true
+        Reference.should_receive(:perform_search).with :fulltext => '', filter: :no_missing_references
         Reference.do_search :q => '', :format => :endnote_import
       end
       it "should paginate other formats" do
-        Reference.should_receive(:perform_search).with :fulltext => '', :page => 1, no_missing_references: true
+        Reference.should_receive(:perform_search).with :fulltext => '', :page => 1, filter: :no_missing_references
         Reference.do_search :q => ''
       end
     end
 
     describe "Filtering unknown reference types" do
       it "should return only unknown reference types if a ? is passed as the search term" do
-        Reference.should_receive(:perform_search).with :fulltext => 'monroe', :filter => :unknown_references_only, :page => 1, no_missing_references: true
+        Reference.should_receive(:perform_search).with :fulltext => 'monroe', :filter => :unknown_references_only, :page => 1
         Reference.do_search :q => '? Monroe'
       end
     end
