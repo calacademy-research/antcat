@@ -1,13 +1,15 @@
-= render 'search', :params => params
+= form_tag reference_pickers_path, id: 'search_form' do
+  = select_tag "search_selector", options_for_select(["Search for", "Search for author(s)"], params[:search_selector])
+  = text_field_tag "q", params[:q]
+  = image_tag 'help.png', class: 'help_icon'
+  = submit_tag "Go", id: 'go_button'
+  = button_tag 'Close', class: 'close'
 
 -if @references.empty?
   .no_results_found
     No results found
 
-= button_tag 'Close', class: 'close'
-
 %table.references
-
   - for reference in @references
     %tr.reference_row
       %td
@@ -20,3 +22,5 @@
         -#= render 'reference', :reference => nil, :publisher_string => @publisher_string, :css_class => 'reference_template'
 
 %div= will_paginate @references
+
+= render 'shared/qtip'
