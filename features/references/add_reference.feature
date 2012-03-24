@@ -37,6 +37,7 @@ Feature: Add reference
     When I log out
     And I go to the references page
     When I follow "add"
+    And I wait for a bit
     And in the new edit form I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
     And in the new edit form I fill in "reference_title" with "Between Pacific Tides"
     And in the new edit form I fill in "journal_name" with "Ants"
