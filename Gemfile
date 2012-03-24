@@ -45,7 +45,7 @@ group :test do
   gem 'capybara-firebug'
   gem 'database_cleaner'
   gem 'factory_girl_rails'
-  gem 'selenium-webdriver',  '< 2.15'
+  gem 'selenium-webdriver'
   gem 'webmock'
 end
 
