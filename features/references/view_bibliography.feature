@@ -98,9 +98,6 @@ Feature: View bibliography
       | authors    | year | title | citation                |
       | Bolton, B. | 2010 | Ants  | New York: Wiley, 23 pp. |
     And the following entry nests it
-    Given the following references exist
-      | authors | citation   | title | year | public_notes | editor_notes | taxonomic_notes |
-      | authors | Psyche 3:3 | title | 2010 | Public       | Editor       | Taxonomy        |
       | authors    | title          | year | pages_in |
       | Ward, P.S. | Dolichoderinae | 2010 | In:      |
     When I go to the references page
