@@ -28,4 +28,4 @@ class AntCat.ReferencePicker
   get_search_results: =>
     if $('.antcat-reference-picker', @container).length is 0
       @container.append("<div class='antcat-reference-picker'></div>")
-    $('.antcat-reference-picker', @container).load '/reference_pickers', id: 128176, @setup_picker
+    $('.antcat-reference-picker', @container).load '/reference_pickers', q: @container.find('#q').val(), @setup_picker
