@@ -58,13 +58,6 @@ class Reference < ActiveRecord::Base
         .group('references.id')
         .having("COUNT(`references`.id) = #{authors.length}")
         .order(:author_names_string_cache, :citation_year)
-
-        case options[:filter]
-        when :unknown_references_only
-          with :type, 'UnknownReference'
-        when :no_missing_references
-          without :type, 'MissingReference'
-        end
       query = query.paginate :page => page if page
       query 
 
