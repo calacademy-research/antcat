@@ -22,12 +22,15 @@ module Taxt
     end
   end
 
+  # this value is duplicated in jquery.antcat.taxt_edit_box.coffee
+  EDITABLE_ID_DIGITS = %{abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ$-_.+!*'(),)-=~`!}
+
   def self.id_for_editable id
-    id.to_i.to_s 36
+    AnyBase.base_10_to_base_x id.to_i, EDITABLE_ID_DIGITS
   end
 
   def self.id_from_editable editable_id
-    editable_id.to_i 36
+    AnyBase.base_x_to_base_10 editable_id, EDITABLE_ID_DIGITS
   end
 
   def self.decode taxt, user = nil

@@ -58,7 +58,7 @@ describe Taxt do
         Taxt.to_editable("{ref #{reference.id}}").should == "{Fisher, 2011 #{editable_key}}"
       end
       it "should handle a reference we don't even know is missing" do
-        Taxt.to_editable("{ref 123}").should == "{3f}"
+        Taxt.to_editable("{ref 123}").should == "{bI}"
       end
     end
     describe "From editable taxt" do
