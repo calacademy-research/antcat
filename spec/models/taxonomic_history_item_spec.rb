@@ -39,6 +39,6 @@ describe TaxonomicHistoryItem do
       item.errors.should_not be_empty
     end
 
-    it "should have errors if braces are unbalanced"
+    #it "should have errors if braces are unbalanced"
   end
 end
