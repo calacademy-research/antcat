@@ -48,8 +48,21 @@ class AntCat.TaxtEditBox
   @extract_id_from_editable_taxt: (taxt) ->
     TaxtEditBox.id_from_editable taxt.match(/{((.*?)? )?(\w+)}/)[3]
 
+  # this value is duplicated in lib/taxt.rb
+  @EDITABLE_ID_DIGITS = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ$-_.+!*'(),)-=~`!"
+
   @id_from_editable: (id) ->
-    parseInt id, 36
+    result = 0
+    base = @EDITABLE_ID_DIGITS.length
+    multiplier = 1
+    index = id.length - 1
+    while true
+      digit = id[index]
+      digit_value = $.inArray digit, @EDITABLE_ID_DIGITS
+      result += digit_value * multiplier
+      multiplier *= base
+      index -= 1
+      return result if index < 0
 
   select_tag_if_caret_inside: =>
     tag_indexes = TaxtEditBox.enclosing_tag_indexes @value(), @start()
