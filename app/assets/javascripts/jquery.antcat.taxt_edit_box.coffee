@@ -45,11 +45,10 @@ class AntCat.TaxtEditBox
 
   handle_result: =>
  
-  @extract_id_from_editable_taxt: (taxt) ->
-    TaxtEditBox.id_from_editable taxt.match(/{((.*?)? )?(\w+)}/)[3]
-
   # this value is duplicated in lib/taxt.rb
-  @EDITABLE_ID_DIGITS = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ$-_.+!*'(),)-=~`!"
+  @EDITABLE_ID_DIGITS = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ$_.+!*'(),-=~`!"
+  @extract_id_from_editable_taxt: (taxt) ->
+    TaxtEditBox.id_from_editable taxt.match("{((.*?)? )?([#{@EDITABLE_ID_DIGITS}]+)}")[3]
 
   # this code is duplicated in lib/taxt.rb
   @id_from_editable: (id) ->
