@@ -5,7 +5,10 @@ class AntCat.ReferencePicker
   constructor: (@container, @id, @result_handler) ->
     if $('.antcat-reference-picker', @container).length is 0
       @container.append("<div class='antcat-reference-picker'></div>")
-    $('.antcat-reference-picker', @container).load '/reference_pickers', id: @id, @setup_picker
+    $('.antcat-reference-picker', @container).load '/reference_pickers', id: @id, =>
+      @setup_picker()
+      $('.ui-selectee').first().addClass('ui-selected')
+    @
 
   setup_picker: =>
     $('.antcat-reference-picker')
@@ -20,6 +23,8 @@ class AntCat.ReferencePicker
           @get_search_results()
           false
         .end()
+      .find('.references')
+        .selectable(filter: '.reference')
     $('.antcat-reference-picker')
       .show()
       .find('#q')
