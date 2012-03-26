@@ -14,16 +14,16 @@ module Taxt
     end
   end
 
+  # this value is duplicated in jquery.antcat.taxt_edit_box.coffee
+  EDITABLE_ID_DIGITS = %{abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ$-_.+!*'(),)-=~`!}
+
   def self.from_editable editable_taxt
-    editable_taxt.gsub /{((.*?)? )?(\w+)}/ do |ref|
+    editable_taxt.gsub /{((.*?)? )?([#{Regexp.escape EDITABLE_ID_DIGITS}]+)}/ do |ref|
       id = id_from_editable $3
       raise ReferenceNotFound.new(ref) unless Reference.find_by_id id
       "{ref #{id}}"
     end
   end
-
-  # this value is duplicated in jquery.antcat.taxt_edit_box.coffee
-  EDITABLE_ID_DIGITS = %{abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ$-_.+!*'(),)-=~`!}
 
   def self.id_for_editable id
     AnyBase.base_10_to_base_x id.to_i, EDITABLE_ID_DIGITS
