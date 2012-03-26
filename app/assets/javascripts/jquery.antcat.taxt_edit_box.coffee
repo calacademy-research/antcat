@@ -51,18 +51,19 @@ class AntCat.TaxtEditBox
   # this value is duplicated in lib/taxt.rb
   @EDITABLE_ID_DIGITS = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ$-_.+!*'(),)-=~`!"
 
+  # this code is duplicated in lib/taxt.rb
   @id_from_editable: (id) ->
     result = 0
     base = @EDITABLE_ID_DIGITS.length
     multiplier = 1
-    index = id.length - 1
+    index = 0
     while true
       digit = id[index]
       digit_value = $.inArray digit, @EDITABLE_ID_DIGITS
       result += digit_value * multiplier
       multiplier *= base
-      index -= 1
-      return result if index < 0
+      index += 1
+      return result if index >= id.length
 
   select_tag_if_caret_inside: =>
     tag_indexes = TaxtEditBox.enclosing_tag_indexes @value(), @start()
