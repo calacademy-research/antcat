@@ -26,11 +26,12 @@ module Taxt
   end
 
   def self.id_for_editable id
-    AnyBase.base_10_to_base_x id.to_i, EDITABLE_ID_DIGITS
+    AnyBase.base_10_to_base_x(id.to_i, EDITABLE_ID_DIGITS).reverse
   end
 
+  # this code is duplicated in jquery.antcat.taxt_edit_box.coffee
   def self.id_from_editable editable_id
-    AnyBase.base_x_to_base_10 editable_id, EDITABLE_ID_DIGITS
+    AnyBase.base_x_to_base_10 editable_id.reverse, EDITABLE_ID_DIGITS
   end
 
   def self.decode taxt, user = nil
