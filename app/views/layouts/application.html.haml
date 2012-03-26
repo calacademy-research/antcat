@@ -1,14 +1,14 @@
 !!!
-%html{:xmlns => 'http://www.w3.org/1999/xhtml', 'xml:lang' => 'en', :lang => 'en'}
+%html{xmlns: 'http://www.w3.org/1999/xhtml', 'xml:lang' => 'en', lang: 'en'}
 
   %head
     %title= make_title @title
-    %meta{'http-equiv' => "content-type", :content => "text/html;charset=UTF-8"}
+    %meta{'http-equiv' => "content-type", content: "text/html;charset=UTF-8"}
 
     = csrf_meta_tag
 
     -# FOUC fix
-    %style{:type => 'text/css'}=".js #flash {display:none;}"
+    %style{type: 'text/css'}=".js #flash {display:none;}"
 
     :javascript
       if (typeof AntCat === 'undefined') AntCat = {};
@@ -20,10 +20,10 @@
     = javascript_include_tag 'google_analytics' if Rails.env == 'production' && $ReleaseType.production?
     = javascript_include_tag 'application'
 
-    = stylesheet_link_tag 'screen', :media => 'screen, projection'
-    = stylesheet_link_tag 'print', :media => 'print'
+    = stylesheet_link_tag 'screen', media: 'screen, projection'
+    = stylesheet_link_tag 'print', media: 'print'
     /[if IE]
-      = stylesheet_link_tag 'ie', :media => 'screen, projection'
+      = stylesheet_link_tag 'ie', media: 'screen, projection'
     = stylesheet_link_tag 'application'
     = stylesheet_link_tag 'ext/jquery-ui.custom.css'
 
@@ -31,7 +31,7 @@
 
     = yield :head
 
-  %body#flash{:class => controller.class}
+  %body#flash{class: controller.class}
     #page
       #site_header
         = render 'shared/site_header'
