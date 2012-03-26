@@ -60,6 +60,11 @@ describe Taxt do
       it "should handle a reference we don't even know is missing" do
         Taxt.to_editable("{ref 123}").should == "{bI}"
       end
+      it "should handle a dollar sign in an editable id" do
+        reference = mock 'reference', id: 1247
+        Reference.should_receive(:find_by_id).and_return reference
+        Taxt.from_editable("{Bolton, 1970 p$}").should == "{ref 1247}"
+      end
     end
     describe "From editable taxt" do
       it "should use the inline citation format followed by the id" do
