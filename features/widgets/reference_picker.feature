@@ -3,10 +3,11 @@ Feature: Reference picker
 
   Background:
     Given the following references exist
-      | authors        | year          | title                 | citation   |
-      | Fisher, B.     | 1995b         | Anthill               | Ants 1:1-2 |
-      | Hölldobler, B. | 1995b         | Formis                | Ants 1:1-2 |
-      | Bolton, B.     | 2010 ("2011") | Ants of North America | Ants 2:1-2 |
+      | authors                 | year          | title                 | citation   |
+      | Bolton, B.              | 2010 ("2011") | Bolton's book         | Ants 2:1-2 |
+      | Fisher, B.              | 1995b         | Fisher's book         | Ants 1:1-2 |
+      | Fisher, B.; Bolton, B.  | 1995b         | Fisher Bolton book    | Ants 1:1-2 |
+      | Hölldobler, B.          | 1995b         | Bert's book           | Ants 1:1-2 |
 
   Scenario: Seeing the picker
     When I go to the reference picker widget test page
@@ -14,9 +15,9 @@ Feature: Reference picker
 
   Scenario: Searching
     When I go to the reference picker widget test page
-    * I fill in the search box with "Bolton"
-    * I press "Go" by the search box
-    Then I should see "Bolton, B."
-    * I should not see "Fisher, B."
-    * I should not see "Hölldobler, B."
+    And I search for "Bolton"
+    Then I should see "Bolton's book"
+    * I should see "Fisher Bolton book"
+    * I should not see "Bert's book"
+    * I should not see "Fisher's book"
 
