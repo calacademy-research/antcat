@@ -21,3 +21,9 @@ Feature: Reference picker
     * I should not see "Bert's book"
     * I should not see "Fisher's book"
 
+  Scenario: Searching for multiple authors
+    When I go to the reference picker widget test page
+    And I search for the authors "Bolton, B.;Fisher, B."
+    Then I should see "Fisher Bolton book"
+    And I should not see "Fisher's book"
+    And I should not see "Bolton's book"
