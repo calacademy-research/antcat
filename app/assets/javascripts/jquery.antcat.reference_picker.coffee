@@ -12,6 +12,17 @@ class AntCat.ReferencePicker
   setup_picker: =>
     $('.antcat-reference-picker')
 
+      .find(':button.ok', @container)
+        .click =>
+          $('.antcat-reference-picker').remove()
+          @result_handler() if @result_handler
+          false
+        .end()
+
+      .find(':button,:submit')
+        .button()
+        .end()
+
       .find(':button.close', @container)
         .click =>
           $('.antcat-reference-picker').remove()
@@ -26,7 +37,9 @@ class AntCat.ReferencePicker
         .end()
 
       .find('.references')
-        .selectable(filter: '.reference')
+        .selectable(
+          filter: '.reference'
+          stop: @enable_or_disable_ok_button)
         .end()
 
       .find("#reference_#{@id}")
@@ -36,6 +49,15 @@ class AntCat.ReferencePicker
       .show()
       .find('#q')
         .focus()
+
+      @enable_or_disable_ok_button()
+
+  enable_or_disable_ok_button: =>
+    ok_button = @container.find ':button.ok'
+    if $('.ui-selected').length is 0
+      ok_button.attr 'disabled', 'disabled'
+    else
+      ok_button.removeAttr 'disabled'
 
   get_search_results: =>
     $('.antcat-reference-picker', @container).load '/reference_pickers', q: @container.find('#q').val(), @setup_picker
