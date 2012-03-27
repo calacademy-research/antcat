@@ -58,4 +58,8 @@ class AntCat.ReferencePicker
       ok_button.removeAttr 'disabled'
 
   get_search_results: =>
-    $('.antcat-reference-picker', @container).load '/reference_pickers', q: @container.find('#q').val(), @setup_picker
+    $('.antcat-reference-picker', @container)
+      .load '/reference_pickers',
+            q: @container.find('#q').val(),
+            search_selector: @container.find('#search_selector').val(),
+            @setup_picker

@@ -28,3 +28,14 @@ end
 Then /^I should see an error message about the unfound reference$/ do
   step %{I should see "The reference '{123}' could not be found. Was the ID changed?"}
 end
+
+When /^I search for "([^"]*)"$/ do |search_term|
+  step "I fill in the search box with \"#{search_term}\""
+  step "I press \"Go\" by the search box"
+end
+
+When /^I search for the authors "([^"]*)"$/ do |authors|
+  step %{I select "Search for author(s)" from "search_selector"}
+  step %{I fill in the search box with "Bolton, B.;Fisher, B."}
+  step %{I press "Go" by the search box}
+end
