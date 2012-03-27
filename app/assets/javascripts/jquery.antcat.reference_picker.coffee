@@ -37,9 +37,7 @@ class AntCat.ReferencePicker
         .end()
 
       .find('.references')
-        .selectable(
-          filter: '.reference'
-          stop: @enable_or_disable_ok_button)
+        .selectable(filter: '.reference', stop: @enable_or_disable_ok_button)
         .end()
 
       .find("#reference_#{@id}")
