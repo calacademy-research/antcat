@@ -11,23 +11,28 @@ class AntCat.ReferencePicker
 
   setup_picker: =>
     $('.antcat-reference-picker')
+
       .find(':button.close', @container)
         .click =>
           $('.antcat-reference-picker').remove()
           @result_handler() if @result_handler
           false
         .end()
+
       .find('form', @container)
         .submit =>
           @get_search_results()
           false
         .end()
+
       .find('.references')
         .selectable(filter: '.reference')
+        .end()
 
-    $("#reference_#{@id}").addClass 'ui-selected'
+      .find("#reference_#{@id}")
+        .addClass('ui-selected')
+        .end()
 
-    $('.antcat-reference-picker')
       .show()
       .find('#q')
         .focus()
