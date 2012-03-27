@@ -7,7 +7,6 @@ class AntCat.ReferencePicker
       @container.append("<div class='antcat-reference-picker'></div>")
     $('.antcat-reference-picker', @container).load '/reference_pickers', id: @id, =>
       @setup_picker()
-      $('.ui-selectee').first().addClass('ui-selected')
     @
 
   setup_picker: =>
@@ -25,6 +24,9 @@ class AntCat.ReferencePicker
         .end()
       .find('.references')
         .selectable(filter: '.reference')
+
+    $("#reference_#{@id}").addClass 'ui-selected'
+
     $('.antcat-reference-picker')
       .show()
       .find('#q')
