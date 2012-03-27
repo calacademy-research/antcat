@@ -57,8 +57,8 @@ class AntCat.TaxtEditBox
     multiplier = 1
     index = 0
     while true
-      digit = id[index]
-      digit_value = $.inArray digit, @EDITABLE_ID_DIGITS
+      digit = id.charAt index
+      digit_value = @EDITABLE_ID_DIGITS.indexOf digit
       result += digit_value * multiplier
       multiplier *= base
       index += 1
