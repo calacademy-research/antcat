@@ -2,7 +2,7 @@
 class ReferencePickersController < ApplicationController
 
   def create
-    params[:search_selector] ||= 'Search for'
+    params[:search_selector] ||= 'Search for author(s)'
     if params[:id].present?
       @references = Reference.perform_search id: params[:id]
     else
