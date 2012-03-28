@@ -1,4 +1,4 @@
-= form_tag reference_pickers_path, id: 'search_form' do
+= form_tag reference_pickers_path, id: 'search_form', autocomplete: 'off' do
   = button_tag 'OK', class: 'ok'
   = button_tag 'Cancel', class: 'close'
   = select_tag "search_selector", options_for_select(["Search for", "Search for author(s)"], params[:search_selector])
