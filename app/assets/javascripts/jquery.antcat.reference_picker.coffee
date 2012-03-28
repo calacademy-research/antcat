@@ -30,6 +30,15 @@ class AntCat.ReferencePicker
         .submit =>
           @get_search_results()
           false
+
+        .find('#search_selector')
+          .change ->
+            new_type = $('#search_selector option:selected').text()
+            if new_type is 'Search for'
+              AntCat.ReferencePicker.remove_author_autocomplete()
+            else
+              AntCat.ReferencePicker.add_author_autocomplete($('#q'))
+          .end()
         .end()
 
       .find('.references')
@@ -45,7 +54,7 @@ class AntCat.ReferencePicker
       .find('#q')
         .focus()
 
-      AntCat.ReferencePicker.setup_author_autocomplete @container.find('.antcat-reference-picker #q')
+      AntCat.ReferencePicker.add_author_autocomplete @container.find('.antcat-reference-picker #q')
 
       @enable_or_disable_ok_button()
 
@@ -67,7 +76,10 @@ class AntCat.ReferencePicker
     @container.find('.antcat-reference-picker').remove()
     @result_handler() if @result_handler
 
-  @setup_author_autocomplete: (field) =>
+  @remove_author_autocomplete: ->
+    $('#q').autocomplete 'destroy';
+
+  @add_author_autocomplete: (field) =>
     return if AntCat.testing
     field.autocomplete
       selectFirst: true
