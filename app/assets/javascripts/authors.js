@@ -21,7 +21,7 @@ function setupAuthorAutocomplete() {
     return;
 
   $('.author_panel input[type=text]').autocomplete({
-    selectFirst: true,
+    autoFocus: true,
     minLength: 3,
     source: "/authors/all"
   });
