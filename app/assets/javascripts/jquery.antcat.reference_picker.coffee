@@ -97,11 +97,11 @@ class AntCat.ReferencePicker
           result_handler []
 
     focus: ->
-      false
+      false # don't update the search textbox when the autocomplete item changes
 
-    select: (event, ui) ->
+    select: (event, data) ->
       $this = $(@)
-      value_and_position = AntCat.ReferencePicker.insert_author($this.val(), $this.getSelection().start, ui.item.value)
+      value_and_position = AntCat.ReferencePicker.insert_author($this.val(), $this.getSelection().start, data.item.value)
       $this.val value_and_position.string
       $this.setCaretPos value_and_position.position + 1
       false
