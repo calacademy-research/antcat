@@ -43,7 +43,7 @@ class Reference < ActiveRecord::Base
           without :type, 'MissingReference'
         end
 
-        paginate :page => page if page
+        paginate page: page if page
 
         order_by :author_names_string
         order_by :citation_year
@@ -58,12 +58,12 @@ class Reference < ActiveRecord::Base
         .group('references.id')
         .having("COUNT(`references`.id) = #{authors.length}")
         .order(:author_names_string_cache, :citation_year)
-      query = query.paginate :page => page if page
+      query = query.paginate page: page if page
       query 
 
     when options[:id]
-      query = where :id => options[:id]
-      query = query.paginate :page => page
+      query = where id: options[:id]
+      query = query.paginate page: page
       query
 
     else
@@ -72,7 +72,7 @@ class Reference < ActiveRecord::Base
       else
         query = order 'author_names_string_cache, citation_year'
       end
-      query = query.paginate :page => page if page
+      query = query.paginate page: page if page
       query
       case options[:filter]
       when :unknown_references_only
@@ -95,21 +95,21 @@ class Reference < ActiveRecord::Base
 
     case
     when options[:whats_new]
-      search_options.merge! :order => :created_at
+      search_options.merge! order: :created_at
 
     when options[:review]
-      search_options.merge! :order => :updated_at
+      search_options.merge! order: :updated_at
 
     when options[:is_author_search]
       author_names = Parsers::AuthorParser.parse(options[:q])[:names]
       authors = Author.find_by_names author_names
-      search_options.merge! :authors => authors
+      search_options.merge! authors: authors
 
     when options.key?(:q)
       fulltext_string = options[:q].dup || ''
 
       if match = fulltext_string.match(/\d{5,}/)
-        return perform_search :id => match[0].to_i
+        return perform_search id: match[0].to_i
       end
 
       start_year, end_year = parse_and_extract_years fulltext_string
