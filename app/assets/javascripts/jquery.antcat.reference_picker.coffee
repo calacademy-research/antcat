@@ -105,12 +105,12 @@ class AntCat.ReferencePicker
   @extract_author_search_term: (string, position) =>
     return ""  if string.length is 0
     before_cursor = string.substring 0, position
-    last_semicolon = before_cursor.lastIndexOf ";"
-    $.trim before_cursor.substring last_semicolon + 1, position
+    prior_semicolon = before_cursor.lastIndexOf ";"
+    $.trim before_cursor.substring prior_semicolon + 1, position
 
   @insert_author: (string, position, author) ->
     if string.length is 0
-      return {string: string, position: 0)
+      return {string: string, position: 0}
     before_cursor = string.substring 0, position
     prior_semicolon = before_cursor.lastIndexOf ";"
 
