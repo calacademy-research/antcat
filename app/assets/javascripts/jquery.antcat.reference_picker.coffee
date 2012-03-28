@@ -104,9 +104,9 @@ class AntCat.ReferencePicker
 
   @extract_author_search_term: (string, position) =>
     return ""  if string.length is 0
-    before_cursor = string.substring(0, position)
-    last_semicolon = before_cursor.lastIndexOf(";")
-    $.trim before_cursor.substring(last_semicolon + 1, position)
+    before_cursor = string.substring 0, position
+    last_semicolon = before_cursor.lastIndexOf ";"
+    $.trim before_cursor.substring last_semicolon + 1, position
 
   @insert_author: (string, position, author) ->
     if string.length is 0
@@ -114,14 +114,14 @@ class AntCat.ReferencePicker
         string: string
         position: 0
       )
-    before_cursor = string.substring(0, position)
-    prior_semicolon = before_cursor.lastIndexOf(";")
-    before_prior_semicolon = string.substring(0, prior_semicolon)
+    before_cursor = string.substring 0, position
+    prior_semicolon = before_cursor.lastIndexOf ";"
+    before_prior_semicolon = string.substring 0, prior_semicolon
     before_prior_semicolon += "; "  if before_prior_semicolon.length > 0
-    after_cursor = string.substring(position, string.length)
-    string = before_prior_semicolon + author + "; " + $.trim(after_cursor)
-    after_cursor = string.substring(position, string.length)
-    next_semicolon = after_cursor.indexOf(";")
+    after_cursor = string.substring position, string.length
+    string = before_prior_semicolon + author + "; " + $.trim after_cursor
+    after_cursor = string.substring position, string.length
+    next_semicolon = after_cursor.indexOf ";"
     position = next_semicolon + position + 2
     string: string
     position: position
