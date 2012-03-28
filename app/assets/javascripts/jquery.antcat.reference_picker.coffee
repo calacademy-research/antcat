@@ -110,21 +110,22 @@ class AntCat.ReferencePicker
 
   @insert_author: (string, position, author) ->
     if string.length is 0
-      return (
-        string: string
-        position: 0
-      )
+      return {string: string, position: 0)
     before_cursor = string.substring 0, position
     prior_semicolon = before_cursor.lastIndexOf ";"
+
     before_prior_semicolon = string.substring 0, prior_semicolon
     before_prior_semicolon += "; "  if before_prior_semicolon.length > 0
+
     after_cursor = string.substring position, string.length
+
     string = before_prior_semicolon + author + "; " + $.trim after_cursor
+
     after_cursor = string.substring position, string.length
     next_semicolon = after_cursor.indexOf ";"
     position = next_semicolon + position + 2
-    string: string
-    position: position
+
+    {string: string, position: position}
 
   ENTER: 13
 
