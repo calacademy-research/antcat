@@ -9,6 +9,8 @@ class AntCat.ReferencePicker
       @setup_picker()
     @
 
+  ENTER: 13
+
   setup_picker: =>
     $('.antcat-reference-picker')
 
@@ -31,6 +33,11 @@ class AntCat.ReferencePicker
         .end()
 
       .find('form', @container)
+        .keypress (event) =>
+          return true unless event.which is @ENTER
+          @get_search_results()
+          false
+
         .submit =>
           @get_search_results()
           false
