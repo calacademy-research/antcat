@@ -3,36 +3,25 @@ window.AntCat or= {}
 class AntCat.ReferencePicker
 
   constructor: (@container, @id, @result_handler) ->
-    if $('.antcat-reference-picker', @container).length is 0
+    if @container.find('.antcat-reference-picker').length is 0
       @container.append("<div class='antcat-reference-picker'></div>")
-    $('.antcat-reference-picker', @container).load '/reference_pickers', id: @id, =>
-      @setup_picker()
+    @container.find('.antcat-reference-picker').load '/reference_pickers', id: @id, @setup_picker
     @
 
-  ENTER: 13
-
   setup_picker: =>
-    $('.antcat-reference-picker')
+    @container.find('.antcat-reference-picker')
 
-      .find(':button.ok', @container)
-        .click =>
-          $('.antcat-reference-picker').remove()
-          @result_handler() if @result_handler
-          false
-        .end()
-
-      .find(':button,:submit')
+      .find(':button, :submit')
         .button()
         .end()
 
-      .find(':button.close', @container)
+      .find(':button.close, :button.ok')
         .click =>
-          $('.antcat-reference-picker').remove()
-          @result_handler() if @result_handler
+          @close()
           false
         .end()
 
-      .find('form', @container)
+      .find('form')
         .keypress (event) =>
           return true unless event.which is @ENTER
           @get_search_results()
@@ -52,21 +41,29 @@ class AntCat.ReferencePicker
         .end()
 
       .show()
+
       .find('#q')
         .focus()
 
       @enable_or_disable_ok_button()
 
   enable_or_disable_ok_button: =>
-    ok_button = @container.find ':button.ok'
-    if $('.ui-selected').length is 0
+    ok_button = @container.find '.antcat-reference-picker :button.ok'
+    if @container.find('.antcat-reference-picker .ui-selected').length is 0
       ok_button.attr 'disabled', 'disabled'
     else
       ok_button.removeAttr 'disabled'
 
   get_search_results: =>
-    $('.antcat-reference-picker', @container)
+    @container.find('.antcat-reference-picker')
       .load '/reference_pickers',
-            q: @container.find('#q').val(),
-            search_selector: @container.find('#search_selector').val(),
+            q: @container.find('.antcat-reference-picker #q').val(),
+            search_selector: @container.find('.antcat-reference-picker #search_selector').val(),
             @setup_picker
+
+  close: =>
+    @container.find('.antcat-reference-picker').remove()
+    @result_handler() if @result_handler
+
+  ENTER: 13
+
