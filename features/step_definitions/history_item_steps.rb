@@ -30,6 +30,7 @@ Then /^I should see an error message about the unfound reference$/ do
 end
 
 When /^I search for "([^"]*)"$/ do |search_term|
+  step %{I select "Search for" from "search_selector"}
   step "I fill in the search box with \"#{search_term}\""
   step "I press \"Go\" by the search box"
 end
