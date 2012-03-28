@@ -38,6 +38,7 @@ class AntCat.ReferencePicker
               AntCat.ReferencePicker.remove_author_autocomplete()
             else
               AntCat.ReferencePicker.add_author_autocomplete($('#q'))
+            $('#q').focus()
           .end()
         .end()
 
