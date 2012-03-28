@@ -2,10 +2,10 @@ window.AntCat or= {}
 
 class AntCat.ReferencePicker
 
-  constructor: (parent, @id, @result_handler) ->
+  constructor: (parent, @reference_id, @result_handler) ->
     @widget = $("<div class='antcat-reference-picker'></div>")
       .appendTo(parent)
-      .load '/reference_pickers', id: @id, @setup_picker
+      .load '/reference_pickers', id: @reference_id, @setup_picker
     @
 
   setup_picker: =>
@@ -48,7 +48,7 @@ class AntCat.ReferencePicker
         .selectable(filter: '.reference', stop: @enable_or_disable_ok_button)
         .end()
 
-      .find("#reference_#{@id}")
+      .find("#reference_#{@reference_id}")
         .addClass('ui-selected')
         .end()
 
