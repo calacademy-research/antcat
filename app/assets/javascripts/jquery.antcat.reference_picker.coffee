@@ -2,14 +2,14 @@ window.AntCat or= {}
 
 class AntCat.ReferencePicker
 
-  constructor: (@container, @id, @result_handler) ->
-    if @container.find('.antcat-reference-picker').length is 0
-      @container.append("<div class='antcat-reference-picker'></div>")
-    @container.find('.antcat-reference-picker').load '/reference_pickers', id: @id, @setup_picker
+  constructor: (parent, @id, @result_handler) ->
+    @widget = $("<div class='antcat-reference-picker'></div>")
+      .appendTo(parent)
+      .load '/reference_pickers', id: @id, @setup_picker
     @
 
   setup_picker: =>
-    @container.find('.antcat-reference-picker')
+    @widget
 
       .find(':button, :submit')
         .button()
@@ -57,26 +57,26 @@ class AntCat.ReferencePicker
       .find('#q')
         .focus()
 
-      AntCat.ReferencePicker.add_author_autocomplete @container.find('.antcat-reference-picker #q')
+      AntCat.ReferencePicker.add_author_autocomplete @widget.find '#q'
 
       @enable_or_disable_ok_button()
 
   enable_or_disable_ok_button: =>
-    ok_button = @container.find '.antcat-reference-picker :button.ok'
-    if @container.find('.antcat-reference-picker .ui-selected').length is 0
+    ok_button = @widget.find ':button.ok'
+    if @widget.find('.ui-selected').length is 0
       ok_button.attr 'disabled', 'disabled'
     else
       ok_button.removeAttr 'disabled'
 
   get_search_results: =>
-    @container.find('.antcat-reference-picker')
+    @widget
       .load '/reference_pickers',
-            q: @container.find('.antcat-reference-picker #q').val(),
-            search_selector: @container.find('.antcat-reference-picker #search_selector').val(),
+            q: @widget.find('#q').val(),
+            search_selector: @widget.find('#search_selector').val(),
             @setup_picker
 
   close: =>
-    @container.find('.antcat-reference-picker').remove()
+    @widget.remove()
     @result_handler() if @result_handler
 
   @remove_author_autocomplete: ->
