@@ -85,7 +85,7 @@ class AntCat.ReferencePicker
   @add_author_autocomplete: (field) =>
     return if AntCat.testing
     field.autocomplete
-      selectFirst: true
+      autoFocus: true
       minLength: 3
       source: (request, result_handler) ->
         search_term = AntCat.ReferencePicker.extract_author_search_term(@element.val(), $(@element).getSelection().start)

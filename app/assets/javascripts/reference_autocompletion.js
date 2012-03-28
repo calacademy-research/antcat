@@ -3,7 +3,7 @@ function setupAuthorAutocomplete(field) {
     return
 
   field.autocomplete({
-    selectFirst: true,
+    autoFocus: true,
     minLength: 3,
     source: function(request, response) {
       searchTerm = extractAuthorSearchTerm(this.element.val(), $(this.element).getSelection().start);
@@ -70,7 +70,7 @@ function insertAuthor(string, position, author)
 
 function setupReferenceEditJournalAutocomplete($reference) {
   $('.reference_edit .journal', $reference).autocomplete({
-    selectFirst: true,
+    autoFocus: true,
     source: "/journals",
     minLength: 3
   });
@@ -80,7 +80,7 @@ function setupReferenceEditJournalAutocomplete($reference) {
 
 function setupReferenceEditPublisherAutocomplete($reference) {
   $('.reference_edit .publisher', $reference).autocomplete({
-    selectFirst: true,
+    autoFocus: true,
     source: "/publishers",
     minLength: 3
   });
