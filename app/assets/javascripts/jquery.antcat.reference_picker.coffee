@@ -9,6 +9,7 @@ class AntCat.ReferencePicker
     @
 
   setup_picker: =>
+    @textbox = @widget.find '#q'
     @widget
 
       .find(':button, :submit')
@@ -38,9 +39,9 @@ class AntCat.ReferencePicker
               AntCat.ReferencePicker.remove_author_autocomplete()
               $('#search_selector').closest('form').removeAttr 'autocomplete'
             else
-              AntCat.ReferencePicker.add_author_autocomplete($('#q'))
+              AntCat.ReferencePicker.add_author_autocomplete @textbox
               $('#search_selector').closest('form').attr 'autocomplete', 'off'
-            $('#q').focus()
+            @textbox.focus()
           .end()
         .end()
 
@@ -54,12 +55,9 @@ class AntCat.ReferencePicker
 
       .show()
 
-      .find('#q')
-        .focus()
-
-      AntCat.ReferencePicker.add_author_autocomplete @widget.find '#q'
-
-      @enable_or_disable_ok_button()
+    AntCat.ReferencePicker.add_author_autocomplete @textbox
+    @enable_or_disable_ok_button()
+    @textbox.focus()
 
   enable_or_disable_ok_button: =>
     ok_button = @widget.find ':button.ok'
@@ -71,7 +69,7 @@ class AntCat.ReferencePicker
   get_search_results: =>
     @widget
       .load '/reference_pickers',
-            q: @widget.find('#q').val(),
+            q: @textbox.val(),
             search_selector: @widget.find('#search_selector').val(),
             @setup_picker
 
