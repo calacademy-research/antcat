@@ -16,7 +16,7 @@ class AntCat.ReferencePicker
         .button()
         .end()
 
-      .find(':button.close, :button.ok')
+      .find(':button.ok, :button.close')
         .click =>
           @close()
           false
@@ -25,11 +25,11 @@ class AntCat.ReferencePicker
       .find('form')
         .keypress (event) =>
           return true unless event.which is @ENTER
-          @get_search_results()
+          @search()
           false
 
         .submit =>
-          @get_search_results()
+          @search()
           false
 
         .find('#search_selector')
@@ -66,7 +66,7 @@ class AntCat.ReferencePicker
     else
       ok_button.removeAttr 'disabled'
 
-  get_search_results: =>
+  search: =>
     @widget
       .load '/reference_pickers',
             q: @textbox.val(),
@@ -88,9 +88,7 @@ class AntCat.ReferencePicker
       source: (request, result_handler) ->
         search_term = AntCat.ReferencePicker.extract_author_search_term(@element.val(), $(@element).getSelection().start)
         if search_term.length >= 3
-          $.getJSON "/authors/all",
-            term: search_term
-          , result_handler
+          $.getJSON "/authors/all", term: search_term, result_handler
         else
           result_handler []
 
