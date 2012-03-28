@@ -36,8 +36,10 @@ class AntCat.ReferencePicker
             new_type = $('#search_selector option:selected').text()
             if new_type is 'Search for'
               AntCat.ReferencePicker.remove_author_autocomplete()
+              $('#search_selector').closest('form').removeAttr 'autocomplete'
             else
               AntCat.ReferencePicker.add_author_autocomplete($('#q'))
+              $('#search_selector').closest('form').attr 'autocomplete', 'off'
             $('#q').focus()
           .end()
         .end()
