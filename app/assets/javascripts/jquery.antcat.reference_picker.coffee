@@ -80,21 +80,21 @@ class AntCat.ReferencePicker
     @result_handler() if @result_handler
 
   @remove_author_autocomplete: ->
-    $('#q').autocomplete 'destroy';
+    $('#q').autocomplete 'destroy'
 
   @add_author_autocomplete: (field) =>
     return if AntCat.testing
     field.autocomplete
       selectFirst: true
       minLength: 3
-      source: (request, response) ->
+      source: (request, result_handler) ->
         search_term = AntCat.ReferencePicker.extract_author_search_term(@element.val(), $(@element).getSelection().start)
         if search_term.length >= 3
           $.getJSON "/authors/all",
             term: search_term
-          , response
+          , result_handler
         else
-          response []
+          result_handler []
 
     focus: ->
       false
