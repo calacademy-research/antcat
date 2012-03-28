@@ -36,10 +36,10 @@ class AntCat.ReferencePicker
           .change ->
             new_type = $('#search_selector option:selected').text()
             if new_type is 'Search for'
-              AntCat.ReferencePicker.remove_author_autocomplete()
+              AntCat.ReferencePicker.disable_author_autocomplete()
               $('#search_selector').closest('form').removeAttr 'autocomplete'
             else
-              AntCat.ReferencePicker.add_author_autocomplete @textbox
+              @enable_author_autocomplete()
               $('#search_selector').closest('form').attr 'autocomplete', 'off'
             @textbox.focus()
           .end()
@@ -55,7 +55,7 @@ class AntCat.ReferencePicker
 
       .show()
 
-    AntCat.ReferencePicker.add_author_autocomplete @textbox
+    @enable_author_autocomplete()
     @enable_or_disable_ok_button()
     @textbox.focus()
 
@@ -77,12 +77,9 @@ class AntCat.ReferencePicker
     @widget.remove()
     @result_handler() if @result_handler
 
-  @remove_author_autocomplete: ->
-    $('#q').autocomplete 'destroy'
-
-  @add_author_autocomplete: (field) =>
+  enable_author_autocomplete: =>
     return if AntCat.testing
-    field.autocomplete
+    @textbox.autocomplete
       autoFocus: true
       minLength: 3
       source: (request, result_handler) ->
@@ -100,6 +97,9 @@ class AntCat.ReferencePicker
       @textbox.val value_and_position.string
       @textbox.setCaretPos value_and_position.position + 1
       false
+
+  @disable_author_autocomplete: ->
+    $('#q').autocomplete 'destroy'
 
   @extract_author_search_term: (string, position) =>
     return ""  if string.length is 0
