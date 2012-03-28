@@ -45,7 +45,7 @@ class AntCat.ReferencePicker
       .find('#q')
         .focus()
 
-      AntCat.reference_picker_setupAuthorAutocomplete @container.find('.antcat-reference-picker #q')
+      AntCat.reference_picker_setup_author_autocomplete @container.find('.antcat-reference-picker #q')
 
       @enable_or_disable_ok_button()
 
