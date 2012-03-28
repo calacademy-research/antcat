@@ -1,7 +1,9 @@
 - content_for :head do
   = stylesheet_link_tag 'catalog/catalog'
   = stylesheet_link_tag 'jquery.antcat.reference_picker.css'
-  = javascript_include_tag 'catalog/catalog', 'catalog/taxon_key', 'reference_picker_autocompletion', 'jquery.antcat.taxt_edit_box.js', 'jquery.antcat.reference_picker.js'
+  = javascript_include_tag 'catalog/catalog', 'catalog/taxon_key'
+  = javascript_include_tag 'ext/jquery.ui.autocomplete.selectFirst'
+  = javascript_include_tag 'jquery.antcat.taxt_edit_box.js', 'jquery.antcat.reference_picker.js'
 
 - content_for :page_header do
   #navigation_bar
