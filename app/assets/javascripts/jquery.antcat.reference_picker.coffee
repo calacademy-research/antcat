@@ -10,6 +10,7 @@ class AntCat.ReferencePicker
 
   setup_picker: =>
     @textbox = @widget.find '#q'
+    @search_selector = @widget.find '#search_selector'
     @widget
 
       .find(':button, :submit')
@@ -32,17 +33,6 @@ class AntCat.ReferencePicker
           @search()
           false
 
-        .find('#search_selector')
-          .change ->
-            new_type = $('#search_selector option:selected').text()
-            if new_type is 'Search for'
-              AntCat.ReferencePicker.disable_author_autocomplete()
-              $('#search_selector').closest('form').removeAttr 'autocomplete'
-            else
-              @enable_author_autocomplete()
-              $('#search_selector').closest('form').attr 'autocomplete', 'off'
-            @textbox.focus()
-          .end()
         .end()
 
       .find('.references')
@@ -54,6 +44,17 @@ class AntCat.ReferencePicker
         .end()
 
       .show()
+
+    @search_selector
+      .change =>
+        new_type = @search_selector.find('option:selected').text()
+        if new_type is 'Search for'
+          @disable_author_autocomplete()
+          @search_selector.closest('form').removeAttr 'autocomplete'
+        else
+          @enable_author_autocomplete()
+          @search_selector.closest('form').attr 'autocomplete', 'off'
+        @textbox.focus()
 
     @enable_author_autocomplete()
     @enable_or_disable_ok_button()
@@ -70,7 +71,7 @@ class AntCat.ReferencePicker
     @widget
       .load '/reference_pickers',
             q: @textbox.val(),
-            search_selector: @widget.find('#search_selector').val(),
+            search_selector: @search_selector.val(),
             @setup_picker
 
   close: =>
@@ -98,8 +99,8 @@ class AntCat.ReferencePicker
       @textbox.setCaretPos value_and_position.position + 1
       false
 
-  @disable_author_autocomplete: ->
-    $('#q').autocomplete 'destroy'
+  disable_author_autocomplete: =>
+    @textbox.autocomplete 'destroy'
 
   @extract_author_search_term: (string, position) =>
     return ""  if string.length is 0
