@@ -5,7 +5,7 @@ class AntCat.ReferencePicker
   constructor: (parent, @reference_id, @result_handler) ->
     @widget = $("<div class='antcat-reference-picker'></div>")
       .appendTo(parent)
-      .load '/reference_pickers', id: @reference_id, @setup_picker
+      .load '/reference_picker', $.param(id: @reference_id), @setup_picker
     @
 
   setup_picker: =>
@@ -69,9 +69,8 @@ class AntCat.ReferencePicker
 
   search: =>
     @widget
-      .load '/reference_pickers',
-            q: @textbox.val(),
-            search_selector: @search_selector.val(),
+      .load '/reference_picker',
+            $.param(q: @textbox.val(), search_selector: @search_selector.val()),
             @setup_picker
 
   close: =>

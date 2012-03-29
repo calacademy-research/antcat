@@ -42,7 +42,7 @@ AntCat::Application.routes.draw do
     resources :taxonomic_history_items
   end
 
-  resources :reference_pickers
+  resource :reference_picker, only: :show
 
   match '/widget_tests/reference_picker', to: 'widget_tests#reference_picker'
 

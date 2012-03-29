@@ -1,7 +1,7 @@
 # coding: UTF-8
 class ReferencePickersController < ApplicationController
 
-  def create
+  def show
     params[:search_selector] ||= 'Search for author(s)'
     if params[:id].present?
       @references = Reference.perform_search id: params[:id]
@@ -13,7 +13,7 @@ class ReferencePickersController < ApplicationController
       @references = Reference.do_search params
     end
 
-    render partial: 'create'
+    render partial: 'show'
     raise if @references.size == Reference.count
   end
 
