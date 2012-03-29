@@ -1,10 +1,10 @@
-= form_tag reference_pickers_path, id: 'search_form', autocomplete: 'off' do
+= form_tag reference_pickers_path do
   = button_tag 'OK', class: 'ok'
   = button_tag 'Cancel', class: 'close'
   = select_tag "search_selector", options_for_select(["Search for", "Search for author(s)"], params[:search_selector])
   = text_field_tag "q", params[:q]
   = image_tag 'help.png', class: 'help_icon'
-  = submit_tag "Go", id: 'go_button'
+  = submit_tag 'Go'
 
 -if @references.empty?
   .no_results_found
@@ -15,12 +15,6 @@
     %tr.reference_row
       %td
         = render 'reference', :reference => reference, :publisher_string => '', :css_class => 'reference'
-        -#= render 'reference', :reference => reference, :publisher_string => @publisher_string, :css_class => 'reference'
-
-  -#- if user_can_edit?
-    -#%tr.reference_template_row
-      -#%td
-        -#= render 'reference', :reference => nil, :publisher_string => @publisher_string, :css_class => 'reference_template'
 
 %div= will_paginate @references
 
