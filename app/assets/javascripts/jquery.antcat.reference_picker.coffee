@@ -5,45 +5,37 @@ class AntCat.ReferencePicker
   constructor: (parent, @reference_id, @result_handler) ->
     @widget = $("<div class='antcat-reference-picker'></div>")
       .appendTo(parent)
-      .load '/reference_picker', $.param(id: @reference_id), @setup_picker
+      .load '/reference_picker', $.param(id: @reference_id), @initialize
     @
 
-  setup_picker: =>
+  initialize: =>
     self = @
     @textbox = @widget.find '#q'
     @search_selector = @widget.find '#search_selector'
     @widget
-
       .find(':button, :submit')
         .button()
         .end()
-
       .find(':button.ok, :button.close')
         .click =>
           @close()
           false
         .end()
-
       .find('form')
         .keypress (event) =>
           return true unless event.which is @ENTER
           @search()
           false
-
         .submit =>
           @search()
           false
-
         .end()
-
       .find('.references')
         .selectable(filter: '.reference', stop: @enable_or_disable_ok_button)
         .end()
-
       .find("#reference_#{@reference_id}")
         .addClass('ui-selected')
         .end()
-
       .find('.pagination a')
         .click ->
           self.load_clicked_page this
@@ -78,10 +70,8 @@ class AntCat.ReferencePicker
       ok_button.removeAttr 'disabled'
 
   search: =>
-    @widget
-      .load '/reference_picker',
-            $.param(q: @textbox.val(), search_selector: @search_selector.val()),
-            @setup_picker
+    params = $.param q: @textbox.val(), search_selector: @search_selector.val()
+    @widget.load '/reference_picker', params, @initialize
 
   close: =>
     @widget.remove()
