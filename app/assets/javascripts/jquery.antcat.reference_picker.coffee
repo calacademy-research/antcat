@@ -9,6 +9,7 @@ class AntCat.ReferencePicker
     @
 
   setup_picker: =>
+    self = @
     @textbox = @widget.find '#q'
     @search_selector = @widget.find '#search_selector'
     @widget
@@ -43,6 +44,11 @@ class AntCat.ReferencePicker
         .addClass('ui-selected')
         .end()
 
+      .find('.pagination a')
+        .click ->
+          self.load_clicked_page this
+          false
+        .end()
       .show()
 
     @search_selector
@@ -59,6 +65,10 @@ class AntCat.ReferencePicker
     @enable_author_autocomplete()
     @enable_or_disable_ok_button()
     @textbox.focus()
+
+  load_clicked_page: (link) =>
+    url = $(link).attr('href') + '&' + @widget.find('> form').serialize()
+    @widget.load url, @initialize
 
   enable_or_disable_ok_button: =>
     ok_button = @widget.find ':button.ok'
