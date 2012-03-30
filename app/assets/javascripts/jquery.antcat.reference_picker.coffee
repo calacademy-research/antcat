@@ -4,13 +4,15 @@ class AntCat.ReferencePicker
 
   constructor: (parent, @reference_id, @result_handler) ->
     @widget = $("<div class='antcat-reference-picker'></div>")
-    @widget.append("<form></form>")
     @widget.appendTo(parent)
     @widget.show()
+    @widget.fadeTo 0, 0.5
+    @widget.append('<img src="/assets/ui-anim_basic_16x16.gif">')
     @load $.param(id: @reference_id)
     @
 
   initialize: =>
+    @widget.fadeTo 0, 1.0
     @loading = false
 
     self = @
@@ -67,15 +69,18 @@ class AntCat.ReferencePicker
       url = '/reference_picker?' + url
     @loading = true
     @widget.find('*').attr 'disabled', 'disabled'
-    @widget.find('form').spinner position: 'center', img: "/assets/ui-anim_basic_16x16.gif"
-    $.ajax
-      url: url
-      dataType: 'html'
-      success: (data) =>
-        @widget.find('form').spinner 'remove'
-        @widget.html data
-        @initialize()
-      error: (xhr) => debugger
+    @widget.fadeTo 0, 0.75
+    @widget.find('#throbber').show()
+    # use this delay to observe spinner
+    setTimeout (=>
+      $.ajax
+        url: url
+        dataType: 'html'
+        success: (data) =>
+          @widget.find('#throbber').hide()
+          @widget.html data
+          @initialize()
+        error: (xhr) => debugger), 0
 
   load_clicked_page: (link) =>
     @load $(link).attr('href') + '&' + @widget.find('> form').serialize()

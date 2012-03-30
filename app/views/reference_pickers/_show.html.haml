@@ -5,6 +5,7 @@
   = text_field_tag "q", params[:q]
   = image_tag 'help.png', class: 'help_icon'
   = submit_tag 'Go'
+  = image_tag 'ui-anim_basic_16x16.gif', id: 'throbber', style: 'display:none'
   = will_paginate @references, remote: true
 
 -if @references.empty?
