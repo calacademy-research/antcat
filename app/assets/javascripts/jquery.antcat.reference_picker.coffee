@@ -4,11 +4,15 @@ class AntCat.ReferencePicker
 
   constructor: (parent, @reference_id, @result_handler) ->
     @widget = $("<div class='antcat-reference-picker'></div>")
-      .appendTo(parent)
-      .load '/reference_picker', $.param(id: @reference_id), @initialize
+    @widget.append("<form></form>")
+    @widget.appendTo(parent)
+    @widget.show()
+    @load $.param(id: @reference_id)
     @
 
   initialize: =>
+    @loading = false
+
     self = @
     @textbox = @widget.find '#q'
     @search_selector = @widget.find '#search_selector'
@@ -58,9 +62,23 @@ class AntCat.ReferencePicker
     @enable_or_disable_ok_button()
     @textbox.focus()
 
+  load: (url) =>
+    if url.indexOf('/reference_picker') is -1
+      url = '/reference_picker?' + url
+    @loading = true
+    @widget.find('*').attr 'disabled', 'disabled'
+    @widget.find('form').spinner position: 'center', img: "/assets/ui-anim_basic_16x16.gif"
+    $.ajax
+      url: url
+      dataType: 'html'
+      success: (data) =>
+        @widget.find('form').spinner 'remove'
+        @widget.html data
+        @initialize()
+      error: (xhr) => debugger
+
   load_clicked_page: (link) =>
-    url = $(link).attr('href') + '&' + @widget.find('> form').serialize()
-    @widget.load url, @initialize
+    @load $(link).attr('href') + '&' + @widget.find('> form').serialize()
 
   enable_or_disable_ok_button: =>
     ok_button = @widget.find ':button.ok'
@@ -71,7 +89,7 @@ class AntCat.ReferencePicker
 
   search: =>
     params = $.param q: @textbox.val(), search_selector: @search_selector.val()
-    @widget.load '/reference_picker', params, @initialize
+    @load params
 
   close: =>
     @widget.remove()
