@@ -16,6 +16,8 @@ class AntCat.TaxtEditBox
 
   handle_event: (event) =>
     if @is_tag_opening_event(event) and @is_tag_selected()
+      @tag_start = @start()
+      @tag_end = @end()
       @open_reference_editor()
       return false
     if event.type is 'keyup' or event.type is 'mouseup'
@@ -43,7 +45,9 @@ class AntCat.TaxtEditBox
     id = TaxtEditBox.extract_id_from_editable_taxt @selection()
     new AntCat.ReferencePicker $form, id, @handle_result
 
-  handle_result: =>
+  handle_result: (taxt) =>
+    new_value = @value()[...@tag_start] + taxt + @value()[@tag_end...]
+    @value new_value
  
   # this value is duplicated in lib/taxt.rb
   @EDITABLE_ID_DIGITS = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ$_.+!*'(),-=~`!"
