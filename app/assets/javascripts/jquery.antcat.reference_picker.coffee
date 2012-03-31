@@ -97,8 +97,13 @@ class AntCat.ReferencePicker
     @load params
 
   close: =>
+    $selected_reference = @widget.find(".reference").first()
+    if $selected_reference
+      taxt = $selected_reference.data 'taxt'
+    else
+      taxt = 'No selection'
     @widget.remove()
-    @result_handler() if @result_handler
+    @result_handler(taxt) if @result_handler
 
   enable_author_autocomplete: =>
     return if AntCat.testing
