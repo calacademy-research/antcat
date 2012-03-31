@@ -1,5 +1,5 @@
 - reference ||= Reference.new
-%div{:id => "reference_#{reference.id}", :class => css_class}
+%div{:id => "reference_#{reference.id}", :class => css_class, 'data-taxt' => Taxt.to_editable_reference(reference)}
   %table.reference_table
     %tr
       %td.icons
