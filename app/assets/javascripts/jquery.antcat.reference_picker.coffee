@@ -112,8 +112,8 @@ class AntCat.ReferencePicker
         else
           result_handler []
 
-    focus: ->
-      false # don't update the search textbox when the autocomplete item changes
+    # don't update the search textbox when the autocomplete item changes
+    focus: -> false
 
     select: (event, data) =>
       value_and_position = AntCat.ReferencePicker.insert_author(@textbox.val(), @textbox.getSelection().start, data.item.value)
