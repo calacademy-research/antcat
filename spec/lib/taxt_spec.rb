@@ -41,6 +41,15 @@ describe Taxt do
 
   end
 
+  describe "Editable reference tag" do
+    it "should return the tag" do
+      reference = Factory :article_reference
+      reference.stub(:key).and_return 'Latreille, 1809'
+      reference.stub(:id).and_return '1234'
+      editable_key = Taxt.id_for_editable reference.id
+      Taxt.to_editable_reference(reference).should == '{Latreille, 1809 cq}'
+    end
+  end
   describe "Editable taxt" do
     describe "To editable taxt" do
       it "should use the inline citation format followed by the id" do

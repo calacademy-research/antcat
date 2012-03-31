@@ -10,8 +10,13 @@ module Taxt
     return '' unless taxt
     taxt.gsub /{ref (\d+)}/ do |ref|
       editable_id = id_for_editable $1
-      "{#{Reference.find($1).key.to_s} #{editable_id}}" rescue "{#{editable_id}}"
+      to_editable_reference Reference.find($1) rescue "{#{editable_id}}"
     end
+  end
+
+  def self.to_editable_reference reference
+    editable_id = id_for_editable reference.id
+    "{#{reference.key.to_s} #{editable_id}}"
   end
 
   # this value is duplicated in jquery.antcat.taxt_edit_box.coffee
