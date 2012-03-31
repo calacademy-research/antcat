@@ -37,7 +37,12 @@ class AntCat.ReferencePicker
           false
         .end()
       .find('.references')
-        .selectable(filter: '.reference', stop: @enable_or_disable_ok_button)
+        .selectable(filter: '.reference', stop: @enable_or_disable_ok_button, cancel: '.ui-selected')
+        .end()
+      .find('.reference')
+        .dblclick =>
+          @close()
+          false
         .end()
       .find("#reference_#{@reference_id}")
         .addClass('ui-selected')
@@ -97,7 +102,7 @@ class AntCat.ReferencePicker
     @load params
 
   close: =>
-    $selected_reference = @widget.find(".reference").first()
+    $selected_reference = @widget.find('.ui-selected').first()
     if $selected_reference
       taxt = $selected_reference.data 'taxt'
     else
