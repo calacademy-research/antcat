@@ -170,13 +170,13 @@ setup_icon_visibility = ->
     )
 
 setup_icon_highlighting = ->
-  $('.icon img').live('mouseenter',
-    ->
-      this.src = this.src.replace 'off', 'on'
-    ).live('mouseleave',
-    ->
-      this.src = this.src.replace 'on', 'off'
-    )
+  <%#$('.icon img').live('mouseenter',%>
+    <%#->%>
+      <%#this.src = this.src.replace 'off', 'on'%>
+    <%#).live('mouseleave',%>
+    <%#->%>
+      <%#this.src = this.src.replace 'on', 'off'%>
+    <%#)%>
 
 setup_icon_click_handlers = ->
   $('.icon.edit').live 'click', edit
