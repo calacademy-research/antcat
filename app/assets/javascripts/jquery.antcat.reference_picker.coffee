@@ -92,19 +92,20 @@ class AntCat.ReferencePicker
 
   enable_or_disable_ok_button: =>
     ok_button = @widget.find ':button.ok'
-    if @widget.find('.ui-selected').length is 0
+    if @selected_reference()
       ok_button.attr 'disabled', 'disabled'
     else
       ok_button.removeAttr 'disabled'
 
   search: =>
-    params = $.param q: @textbox.val(), search_selector: @search_selector.val()
-    @load params
+    @load $.param q: @textbox.val(), search_selector: @search_selector.val()
+
+  selected_reference: =>
+    @widget.find('.ui-selected').first()
 
   close: =>
-    $selected_reference = @widget.find('.ui-selected').first()
-    if $selected_reference
-      taxt = $selected_reference.data 'taxt'
+    if @selected_reference()
+      taxt = @selected_reference().data 'taxt'
     else
       taxt = 'No selection'
     @widget.remove()
