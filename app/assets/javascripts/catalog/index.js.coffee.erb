@@ -49,7 +49,14 @@ show_form = ($panel, options) ->
   options = {} unless options
   $('div.display', $panel).hide()
   $('.icon').hide() unless AntCat.testing
+  size_edit_box $panel
   $('div.form', $panel).show()
+
+size_edit_box = ($panel) ->
+  # make the textarea of the form the same height as the item it's editing
+  height = parseInt $('div.display', $panel).css 'height'
+  height += 30
+  $panel.find('.taxt_edit_box').css 'height', "#{height}px"
 
 submit_form = ->
   $form = $(this).closest('form')
