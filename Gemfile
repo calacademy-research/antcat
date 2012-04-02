@@ -3,7 +3,6 @@ source :rubygems
 gem 'acts_as_list'
 gem 'aws-s3',           :require => 'aws/s3', :git => 'git://github.com/emk/aws-s3.git'
 gem 'citrus'
-gem 'compass'
 gem 'curb',             :require => 'curl'
 gem 'devise'
 gem 'devise_invitable'
@@ -17,34 +16,32 @@ gem 'progress_bar'
 gem 'rack'
 gem 'rails'
 gem 'rake'
-gem 'sass'
 gem 'sunspot_rails'
-gem 'sunspot_solr'
 gem 'paperclip'
 gem 'paper_trail'
 gem 'will_paginate'
 gem 'xml-simple'
+
+group :development, :test do
+  gem 'launchy'
+  gem 'ruby-debug19'
+  gem 'spork',        '0.9.0.rc9'
+  gem 'sunspot_solr'
+end
 
 group :development do
   gem 'engineyard'
   gem 'wirble'
 end
 
-group :development, :test do
-  gem 'cucumber-rails'
-  gem 'launchy'
-  gem 'rspec' 
-  gem 'rspec-rails' 
-  gem 'ruby-debug19'
-  gem 'spork',  '0.9.0.rc9'
-  gem 'sunspot_solr'
-end
-
 group :test do
   gem 'capybara'
   gem 'capybara-firebug'
+  gem 'cucumber-rails'
   gem 'database_cleaner'
   gem 'factory_girl_rails'
+  gem 'rspec' 
+  gem 'rspec-rails' 
   gem 'selenium-webdriver'
   gem 'webmock'
 end
@@ -52,6 +49,6 @@ end
 group :assets do
   gem 'coffee-rails'
   gem 'compass-rails'
-  gem 'sass-rails', '~> 3.1.0'
+  gem 'sass-rails'
   gem 'uglifier'
 end
