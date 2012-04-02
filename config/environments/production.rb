@@ -45,6 +45,7 @@ AntCat::Application.configure do
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
 
+  # Setup SSMTP in /data/ssmtp/ssmtp.conf
   config.action_mailer.default_url_options = { :host => 'antcat.org' }
 
   # Disable Rails's static asset server (Apache or nginx will already do this)
