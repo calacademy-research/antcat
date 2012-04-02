@@ -101,7 +101,7 @@ cancel_form = ->
     restore_form $panel
     $panel = $('#' + id)
     $('div.form', $panel).hide()
-    $('div.display', $panel).show().effect 'highlight', {}, 3000
+    $('div.display', $panel).show()
   false
 
 original_value_key = panel_class + '_original_value'
