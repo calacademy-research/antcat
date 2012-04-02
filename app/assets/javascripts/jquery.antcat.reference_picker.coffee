@@ -92,7 +92,7 @@ class AntCat.ReferencePicker
 
   enable_or_disable_ok_button: =>
     ok_button = @widget.find ':button.ok'
-    if @selected_reference()
+    if not @selected_reference()
       ok_button.attr 'disabled', 'disabled'
     else
       ok_button.removeAttr 'disabled'
