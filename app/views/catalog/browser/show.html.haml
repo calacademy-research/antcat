@@ -2,7 +2,6 @@
 
 - content_for :head do
   = javascript_include_tag 'catalog/browser'
-  = stylesheet_link_tag 'catalog/browser'
 
   :javascript
     var selectedBrowserTaxonID = #{@selected_browser_taxon.try(:id) || 0};
