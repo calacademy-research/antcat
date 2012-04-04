@@ -20,10 +20,10 @@
     = javascript_include_tag 'google_analytics' if Rails.env == 'production' && $ReleaseType.production?
     = javascript_include_tag 'application'
 
-    = stylesheet_link_tag 'screen', media: 'screen, projection'
-    = stylesheet_link_tag 'print', media: 'print'
+    = stylesheet_link_tag 'blueprint/screen', media: 'screen, projection'
+    = stylesheet_link_tag 'blueprint/print', media: 'print'
     /[if IE]
-      = stylesheet_link_tag 'ie', media: 'screen, projection'
+      = stylesheet_link_tag 'blueprint/ie', media: 'screen, projection'
 
     = stylesheet_link_tag 'application'
 
