@@ -26,6 +26,7 @@
       = stylesheet_link_tag 'blueprint/ie', media: 'screen, projection'
 
     = stylesheet_link_tag 'application'
+    = stylesheet_link_tag controller.class.to_s.gsub('Controller', '').underscore
 
     %link{rel: 'shortcut icon', href: '/favicon.ico'}
 
