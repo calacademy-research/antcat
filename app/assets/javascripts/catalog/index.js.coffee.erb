@@ -26,9 +26,11 @@ setup_testing_or_development = ->
 setup_forms = ->
   $("#{panel_class_selector} div.form")
     .find('.submit')
+      .button()
       .live('click', submit_form)
     .end()
     .find('.cancel')
+      .button()
       .live('click', cancel_form)
     .end()
     .setup_taxt_edit_boxes()
