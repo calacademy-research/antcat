@@ -53,6 +53,7 @@ show_form = ($panel, options) ->
   $('.icon').hide() unless AntCat.testing
   size_edit_box $panel
   $('div.form', $panel).show()
+  set_dimensions()
 
 size_edit_box = ($panel) ->
   # make the textarea of the form the same height as the item it's editing
@@ -136,6 +137,13 @@ set_dimensions = ->
   set_width()
 
 set_height = ->
+  if is_editing()
+    $("#page").height('auto')
+    $(".antcat_taxon").height('auto')
+  else
+    $("#page").height('100%')
+    $(".antcat_taxon").height('20em')
+
   height = $('#page').height() -
     $('#site_header').height() -
     $('#page_header').height() - 2 -
@@ -144,8 +152,13 @@ set_height = ->
     $('#search_results').height() - 3 - 2 - 2 -
     $('#taxon_key').height() - 2 -
     $('#site_footer').height() - 8
-  $("#catalog").height(height)
-  $("#catalog .index").height(height - $("#catalog .content").height())
+
+  if is_editing()
+    $("#catalog").css('height', 'auto')
+    $("#catalog .index").css('height', 'auto')
+  else
+    $("#catalog").height(height)
+    $("#catalog .index").height(height - $("#catalog .content").height())
 
 set_width = ->
   $("#catalog .content").width($('#page').width())
