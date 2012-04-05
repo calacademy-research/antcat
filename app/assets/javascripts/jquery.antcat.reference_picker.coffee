@@ -76,16 +76,14 @@ class AntCat.ReferencePicker
     @widget.find('*').attr 'disabled', 'disabled'
     @widget.fadeTo 0, 0.75
     @widget.find('#throbber').show()
-    # use this delay to observe spinner
-    setTimeout (=>
-      $.ajax
-        url: url
-        dataType: 'html'
-        success: (data) =>
-          @widget.find('#throbber').hide()
-          @widget.html data
-          @initialize()
-        error: (xhr) => debugger), 0
+    $.ajax
+      url: url
+      dataType: 'html'
+      success: (data) =>
+        @widget.find('#throbber').hide()
+        @widget.html data
+        @initialize()
+      error: (xhr) => debugger
 
   load_clicked_page: (link) =>
     @load $(link).attr('href') + '&' + @widget.find('> form').serialize()
