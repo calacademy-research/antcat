@@ -41,11 +41,13 @@ class AntCat.TaxtEditBox
 
   open_reference_editor: =>
     $form = @control.closest('form')
+    $form.find('.buttons').hide()
     $('.antcat-reference-picker').remove()
     id = TaxtEditBox.extract_id_from_editable_taxt @selection()
     new AntCat.ReferencePicker $form, id, @handle_result
 
   handle_result: (taxt) =>
+    @control.closest('form').find('.buttons').show()
     new_value = @value()[...@tag_start] + taxt + @value()[@tag_end...]
     @value new_value
  
