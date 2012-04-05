@@ -1,3 +1,7 @@
+%table.references
+  %tr.reference_row
+    %td#selected_reference
+
 = form_tag reference_picker_path, id: 'search_form' do
   = button_tag 'OK', class: 'ok ui-priority-primary'
   = button_tag 'Cancel', class: 'close ui-priority-secondary'
@@ -12,7 +16,7 @@
   .no_results_found
     No results found
 
-%table.references
+%table.references#other_references
   - for reference in @references
     %tr.reference_row
       %td
