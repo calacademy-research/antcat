@@ -12,7 +12,7 @@
   = image_tag 'ui-anim_basic_16x16.gif', id: 'throbber', style: 'display:none'
   = will_paginate @references, remote: true
 
-- if @references.size > 1 || @references.first != @selected_reference
+- if @references.first != @selected_reference
 
   -if @references.empty?
     .no_results_found
