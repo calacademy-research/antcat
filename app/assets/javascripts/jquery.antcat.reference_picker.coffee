@@ -14,6 +14,7 @@ class AntCat.ReferencePicker
   initialize: =>
     @widget.fadeTo 0, 1.0
     @loading = false
+    @current_selection = null
 
     self = @
     @textbox = @widget.find '#q'
@@ -37,7 +38,7 @@ class AntCat.ReferencePicker
           false
         .end()
       .find('.references')
-        .selectable(filter: '.reference', stop: @enable_or_disable_ok_button, cancel: '.ui-selected')
+        .selectable(filter: '.reference', stop: @handle_new_selection, cancel: '.ui-selected')
         .end()
       .find('.reference')
         .dblclick =>
@@ -52,6 +53,10 @@ class AntCat.ReferencePicker
           self.load_clicked_page this
           false
         .end()
+
+    @handle_new_selection()
+
+    @widget
       .show()
 
     @search_selector
@@ -66,7 +71,7 @@ class AntCat.ReferencePicker
         @textbox.focus()
 
     @enable_author_autocomplete()
-    @enable_or_disable_ok_button()
+    @handle_new_selection()
     @textbox.focus()
 
   load: (url) =>
@@ -88,14 +93,23 @@ class AntCat.ReferencePicker
   load_clicked_page: (link) =>
     @load $(link).attr('href') + '&' + @widget.find('> form').serialize()
 
-  enable_or_disable_ok_button: =>
-    @widget.find(':button.ok').toggleClass 'ui-state-disabled', not @selected_reference()
+  handle_new_selection: =>
+    new_selection = @selected_reference()
+    return unless new_selection is not @current_selection
+    @current_selection = new_selection
+
+    @widget.find(':button.ok').toggleClass 'ui-state-disabled', not @current_selection
+    return unless @current_selection
+
+    @widget.find('#selected_reference').html @current_selection.clone true
+    # hide the only reference if it's the selected_reference
+    @selected_reference.hide()
 
   search: =>
     @load $.param q: @textbox.val(), search_selector: @search_selector.val()
 
   selected_reference: =>
-    selected_references = @widget.find('.reference.ui-selected')
+    selected_references = @widget.find('#other_references .reference.ui-selected')
     return unless selected_references.length > 0
     selected_references.first()
 
