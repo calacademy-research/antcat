@@ -52,7 +52,7 @@ class AntCat.TaxtEditBox
     @value new_value
  
   # this value is duplicated in lib/taxt.rb
-  @EDITABLE_ID_DIGITS = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ$_.+!*'(),-=~`!"
+  @EDITABLE_ID_DIGITS = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
   @extract_id_from_editable_taxt: (taxt) ->
     TaxtEditBox.id_from_editable taxt.match("{((.*?)? )?([#{@EDITABLE_ID_DIGITS}]+)}")[3]
 
