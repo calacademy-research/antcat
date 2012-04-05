@@ -90,6 +90,12 @@ update_form = (data, statusText, xhr, $form) ->
   $panel = $('#item_' + data.id)
   $('div.form', $panel)
     .setup_taxt_edit_boxes()
+    .find('.submit')
+      .button()
+      .end()
+    .find('.cancel')
+      .button()
+      .end()
     .hide()
 
 show_error_messages = ($form, html) ->
