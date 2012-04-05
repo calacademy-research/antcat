@@ -91,17 +91,15 @@ class AntCat.ReferencePicker
     @load $(link).attr('href') + '&' + @widget.find('> form').serialize()
 
   enable_or_disable_ok_button: =>
-    ok_button = @widget.find ':button.ok'
-    if not @selected_reference()
-      ok_button.attr 'disabled', 'disabled'
-    else
-      ok_button.removeAttr 'disabled'
+    @widget.find(':button.ok').toggleClass 'ui-state-disabled', not @selected_reference()
 
   search: =>
     @load $.param q: @textbox.val(), search_selector: @search_selector.val()
 
   selected_reference: =>
-    @widget.find('.ui-selected').first()
+    selected_references = @widget.find('.reference.ui-selected')
+    return unless selected_references.length > 0
+    selected_references.first()
 
   close: =>
     if @selected_reference()
