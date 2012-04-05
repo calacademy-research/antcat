@@ -100,7 +100,7 @@ class AntCat.ReferencePicker
     @widget.find(':button.ok').toggleClass 'ui-state-disabled', not @current_selection
     return unless @current_selection
 
-    @widget.find('.selected_references td').html @current_selection.clone true
+    @widget.find('.selected_reference td').html @current_selection.clone true
     @selected_reference.hide()
 
   search: =>
