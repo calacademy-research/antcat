@@ -8,7 +8,7 @@ class AntCat.ReferencePicker
     @widget.show()
     @widget.fadeTo 0, 0.5
     @widget.append('<img src="/assets/ui-anim_basic_16x16.gif">')
-    @load $.param(id: @reference_id)
+    @load()
     @
 
   initialize: =>
@@ -19,6 +19,7 @@ class AntCat.ReferencePicker
     self = @
     @textbox = @widget.find '#q'
     @search_selector = @widget.find '#search_selector'
+
     @widget
       .find(':button, :submit')
         .button()
@@ -74,9 +75,10 @@ class AntCat.ReferencePicker
     @handle_new_selection()
     @textbox.focus()
 
-  load: (url) =>
+  load: (url = '') =>
     if url.indexOf('/reference_picker') is -1
       url = '/reference_picker?' + url
+    url = url + '&' + $.param id: @reference_id
     @loading = true
     @widget.find('*').attr 'disabled', 'disabled'
     @widget.fadeTo 0, 0.75
