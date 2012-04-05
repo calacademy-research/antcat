@@ -1,6 +1,6 @@
-%table.references
+%table.references.selected_reference
   %tr.reference_row
-    %td#selected_reference
+    %td= render 'reference', reference: @selected_reference, publisher_string: '', css_class: 'reference'
 
 = form_tag reference_picker_path, id: 'search_form' do
   = button_tag 'OK', class: 'ok ui-priority-primary'
@@ -12,14 +12,16 @@
   = image_tag 'ui-anim_basic_16x16.gif', id: 'throbber', style: 'display:none'
   = will_paginate @references, remote: true
 
--if @references.empty?
-  .no_results_found
-    No results found
+- if @references.size > 1 || @references.first != @selected_reference
 
-%table.references#other_references
-  - for reference in @references
-    %tr.reference_row
-      %td
-        = render 'reference', :reference => reference, :publisher_string => '', :css_class => 'reference'
+  -if @references.empty?
+    .no_results_found
+      No results found
+
+  %table.references.all_references
+    - for reference in @references
+      %tr.reference_row
+        %td
+          = render 'reference', :reference => reference, :publisher_string => '', :css_class => 'reference'
 
 = render 'shared/qtip'

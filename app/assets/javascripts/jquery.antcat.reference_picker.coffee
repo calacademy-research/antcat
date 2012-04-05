@@ -38,7 +38,7 @@ class AntCat.ReferencePicker
           @search()
           false
         .end()
-      .find('.references')
+      .find('.all_references')
         .selectable(filter: '.reference', stop: @handle_new_selection, cancel: '.ui-selected')
         .end()
       .find('.reference')
@@ -46,7 +46,7 @@ class AntCat.ReferencePicker
           @close()
           false
         .end()
-      .find("#reference_#{@reference_id}")
+      .find(".all_references #reference_#{@reference_id}")
         .addClass('ui-selected')
         .end()
       .find('.pagination a')
@@ -54,11 +54,6 @@ class AntCat.ReferencePicker
           self.load_clicked_page this
           false
         .end()
-
-    @handle_new_selection()
-
-    @widget
-      .show()
 
     @search_selector
       .change =>
@@ -73,6 +68,8 @@ class AntCat.ReferencePicker
 
     @enable_author_autocomplete()
     @handle_new_selection()
+
+    @widget.show()
     @textbox.focus()
 
   load: (url = '') =>
@@ -103,15 +100,14 @@ class AntCat.ReferencePicker
     @widget.find(':button.ok').toggleClass 'ui-state-disabled', not @current_selection
     return unless @current_selection
 
-    @widget.find('#selected_reference').html @current_selection.clone true
-    # hide the only reference if it's the selected_reference
+    @widget.find('.selected_references td').html @current_selection.clone true
     @selected_reference.hide()
 
   search: =>
     @load $.param q: @textbox.val(), search_selector: @search_selector.val()
 
   selected_reference: =>
-    selected_references = @widget.find('#other_references .reference.ui-selected')
+    selected_references = @widget.find('.all_references .reference.ui-selected')
     return unless selected_references.length > 0
     selected_references.first()
 
