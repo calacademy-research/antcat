@@ -47,7 +47,7 @@ describe Taxt do
       reference.stub(:key).and_return 'Latreille, 1809'
       reference.stub(:id).and_return '1234'
       editable_key = Taxt.id_for_editable reference.id
-      Taxt.to_editable_reference(reference).should == '{Latreille, 1809 cq}'
+      Taxt.to_editable_reference(reference).should == '{Latreille, 1809 Ut}'
     end
   end
   describe "Editable taxt" do
@@ -67,12 +67,7 @@ describe Taxt do
         Taxt.to_editable("{ref #{reference.id}}").should == "{Fisher, 2011 #{editable_key}}"
       end
       it "should handle a reference we don't even know is missing" do
-        Taxt.to_editable("{ref 123}").should == "{Kb}"
-      end
-      it "should handle a dollar sign in an editable id" do
-        reference = mock 'reference', id: 1217
-        Reference.should_receive(:find_by_id).and_return reference
-        Taxt.from_editable("{Bolton, 1970 $p}").should == "{ref 1217}"
+        Taxt.to_editable("{ref 123}").should == "{Zb}"
       end
     end
     describe "From editable taxt" do

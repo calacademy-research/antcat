@@ -20,7 +20,7 @@ module Taxt
   end
 
   # this value is duplicated in jquery.antcat.taxt_edit_box.coffee
-  EDITABLE_ID_DIGITS = %{abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ$_.+!*'(),-=~`!}
+  EDITABLE_ID_DIGITS = %{abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ}
 
   def self.from_editable editable_taxt
     editable_taxt.gsub /{((.*?)? )?([#{Regexp.escape EDITABLE_ID_DIGITS}]+)}/ do |ref|
