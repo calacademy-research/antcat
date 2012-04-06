@@ -57,9 +57,8 @@ show_form = ($panel, options) ->
 
 size_edit_box = ($panel) ->
   # make the textarea of the form the same height as the item it's editing
-  height = parseInt $('div.display', $panel).css 'height'
-  height += 30
-  $panel.find('.taxt_edit_box').css 'height', "#{height}px"
+  display_height = $panel.find('div.display').height()
+  $panel.find('.taxt_edit_box').height(display_height + 30)
 
 submit_form = ->
   $form = $(this).closest('form')
@@ -160,8 +159,8 @@ set_height = ->
     $('#site_footer').height() - 8
 
   if is_editing()
-    $("#catalog").css('height', 'auto')
-    $("#catalog .index").css('height', 'auto')
+    $("#catalog").height('auto')
+    $("#catalog .index").height('auto')
   else
     $("#catalog").height(height)
     $("#catalog .index").height(height - $("#catalog .content").height())
