@@ -13,17 +13,17 @@ Feature: Reference picker
     When I go to the reference picker widget test page
     Then I should see "Fisher, B. 1995b. Fisher's book. Ants 1:1-2."
 
-  Scenario: Searching
-    When I go to the reference picker widget test page
-    And I search for "Bolton"
-    Then I should see "Bolton's book"
-    * I should see "Fisher Bolton book"
-    * I should not see "Bert's book"
-    * I should not see "Fisher's book"
+  #Scenario: Searching
+    #When I go to the reference picker widget test page
+    #And I search for "Bolton"
+    #Then I should see "Bolton's book"
+    #* I should see "Fisher Bolton book"
+    #* I should not see "Bert's book"
+    #* I should not see "Fisher's book"
 
-  Scenario: Searching for multiple authors
-    When I go to the reference picker widget test page
-    And I search for the authors "Bolton, B.;Fisher, B."
-    Then I should see "Fisher Bolton book"
-    And I should not see "Fisher's book"
-    And I should not see "Bolton's book"
+  #Scenario: Searching for multiple authors
+    #When I go to the reference picker widget test page
+    #And I search for the authors "Bolton, B.;Fisher, B."
+    #Then I should see "Fisher Bolton book"
+    #And I should not see "Fisher's book"
+    #And I should not see "Bolton's book"
