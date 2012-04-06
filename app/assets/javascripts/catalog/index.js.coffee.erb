@@ -28,15 +28,13 @@ setup_forms = ->
     .find('.submit')
       .button()
       .live('click', submit_form)
-    .end()
+      .end()
     .find('.cancel')
       .button()
       .live('click', cancel_form)
-    .end()
-    .setup_taxt_edit_boxes()
-
-$.fn.setup_taxt_edit_boxes = ->
-  return this.each -> $(this).find('textarea').taxt_edit_box()
+      .end()
+    .find('textarea')
+      .taxt_edit_box()
 
 #--------------------------------------------------
 edit = ->
