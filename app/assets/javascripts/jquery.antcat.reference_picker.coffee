@@ -93,27 +93,18 @@ class AntCat.ReferencePicker
     @load $(link).attr('href') + '&' + @widget.find('> form').serialize()
 
   handle_new_selection: =>
-    new_selection = @selected_reference()
-    return unless new_selection is not @current_selection
-    @current_selection = new_selection
-
-    @widget.find(':button.ok').toggleClass 'ui-state-disabled', not @current_selection
-    return unless @current_selection
-
-    @widget.find('.selected_reference td').html @current_selection.clone true
-    @selected_reference.hide()
+    selected_references = @widget.find('.all_references .reference.ui-selected')
+    return if selected_references.length is 0
+    selected_reference = selected_references.first()
+    @widget.find('.selected_reference td').html selected_reference.clone true
 
   search: =>
     @load $.param q: @textbox.val(), search_selector: @search_selector.val()
 
-  selected_reference: =>
-    selected_references = @widget.find('.all_references .reference.ui-selected')
-    return unless selected_references.length > 0
-    selected_references.first()
-
   close: =>
-    if @selected_reference()
-      taxt = @selected_reference().data 'taxt'
+    selected_references = @widget.find '.selected_reference .reference'
+    if selected_references.length > 0
+      taxt = selected_references.first().data 'taxt'
     else
       taxt = 'No selection'
     @widget.remove()
