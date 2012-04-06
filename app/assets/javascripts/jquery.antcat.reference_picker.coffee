@@ -46,7 +46,7 @@ class AntCat.ReferencePicker
           @close()
           false
         .end()
-      .find(".all_references #reference_#{@reference_id}")
+      .find(".selected_reference, .all_references #reference_#{@reference_id}")
         .addClass('ui-selected')
         .end()
       .find('.pagination a')
