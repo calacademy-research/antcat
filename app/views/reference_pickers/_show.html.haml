@@ -10,7 +10,7 @@
   = image_tag 'help.png', class: 'help_icon'
   = submit_tag 'Go', class: 'ui-priority-primary'
   = image_tag 'ui-anim_basic_16x16.gif', id: 'throbber', style: 'display:none'
-  = will_paginate @references, remote: true
+  = will_paginate @references
 
 - if @references.first != @selected_reference
 
