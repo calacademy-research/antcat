@@ -56,6 +56,7 @@ class AntCat.ReferencePicker
         .end()
 
     @search_selector
+      .selectmenu(wrapperElement: "<span />")
       .change =>
         new_type = @search_selector.find('option:selected').text()
         if new_type is 'Search for'
