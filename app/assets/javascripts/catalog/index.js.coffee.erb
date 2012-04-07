@@ -1,4 +1,5 @@
 panel_class = 'inline-form-panel'
+original_value_key = panel_class + '_original_value'
 spinner_path = "<%= asset_path 'ui-anim_basic_16x16.gif' %>"
 
 $ ->
@@ -118,8 +119,6 @@ cancel_form = ->
     $('div.form', $panel).hide()
     $('div.display', $panel).show()
   false
-
-original_value_key = panel_class + '_original_value'
 
 save_form = ($panel) ->
   $taxt_edit_box = $('textarea', $panel)
