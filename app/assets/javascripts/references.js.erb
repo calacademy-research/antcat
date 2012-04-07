@@ -62,11 +62,11 @@ function setupIcons() {
 }
 
 function setupIconVisibility() {
-  if (!AntCat.testing || !AntCat.user_can_edit)
-    $('.icon').hide();
-
   if (!AntCat.user_can_edit)
     return
+
+  if (AntCat.testing)
+    $('.icon').show();
 
   $('.reference').live('mouseenter',
     function() {
