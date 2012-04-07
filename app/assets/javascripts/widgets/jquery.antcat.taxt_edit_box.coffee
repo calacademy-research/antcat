@@ -57,7 +57,6 @@ class AntCat.TaxtEditBox
     selection = '<span class=antcat-taxt-simulated-selection>' + text[@start()...@end()] + '</span>'
     after_selection = text[@end()...]
     text = before_selection + selection + after_selection
-    console.log text
     simulation = $("<p class=antcat-taxt-simulation>#{text}</p>")
     simulation.height @control.height()
     simulation.insertAfter @control
