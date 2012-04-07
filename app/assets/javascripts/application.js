@@ -2,6 +2,7 @@
 //= require jquery_ujs
 //= require jquery-ui
 //= require qtip
+//= require jquery.antcat.utility
 //= require_tree ./ext
 
 document.documentElement.className = 'js'; // FOUC fix
