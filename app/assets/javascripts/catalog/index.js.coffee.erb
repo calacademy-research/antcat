@@ -1,5 +1,4 @@
 panel_class = 'inline-form-panel'
-panel_class_selector = '.' + panel_class
 spinner_path = "<%= asset_path 'ui-anim_basic_16x16.gif' %>"
 
 $ ->
@@ -24,7 +23,7 @@ setup_testing_or_development = ->
 
 #--------------------------------------------------
 setup_forms = ->
-  $("#{panel_class_selector} div.form")
+  $(".#{panel_class} div.form")
     .find('.submit')
       .button()
       .live('click', submit_form)
@@ -39,7 +38,7 @@ setup_forms = ->
 #--------------------------------------------------
 edit = ->
   return false if is_editing()
-  $panel = $(this).closest panel_class_selector
+  $panel = $(this).closest ".#{panel_class}"
   save_form $panel
   show_form $panel
   $('.taxt_edit_box', $panel).first().focus()
@@ -110,7 +109,7 @@ handle_error = (jq_xhr, text_status, error_thrown) ->
   alert "Oh, shoot. It looks like a bug prevented this item from being saved.\n\nPlease report this situation to Mark Wilden (mark@mwilden.com) and we'll fix it.\n\n#{error_thrown}" unless AntCat.testing
 
 cancel_form = ->
-  $panel = $(this).closest panel_class_selector
+  $panel = $(this).closest ".#{panel_class}"
   clear_error_messages $panel
   unless $panel.attr('id') is 'item_'
     id = $panel.attr('id')
@@ -131,7 +130,7 @@ restore_form = ($panel) ->
   $taxt_edit_box.val $taxt_edit_box.data original_value_key
 
 is_editing = ->
-  $("#{panel_class_selector} div.form").is ':visible'
+  $(".#{panel_class} div.form").is ':visible'
 
 #--------------------------------------------------
 setup_page = ->
