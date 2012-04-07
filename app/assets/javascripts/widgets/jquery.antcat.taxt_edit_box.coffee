@@ -42,15 +42,36 @@ class AntCat.TaxtEditBox
   open_reference_editor: =>
     $form = @control.closest('form')
     $form.find('.buttons').hide()
+    @replace_text_area_with_simulation()
     $('.antcat-reference-picker').remove()
     id = TaxtEditBox.extract_id_from_editable_taxt @selection()
-    new AntCat.ReferencePicker $form, id, @handle_result
+    new AntCat.ReferencePicker $form, id, @handle_reference_picker_result
 
-  handle_result: (taxt) =>
+  # We need to indicate the selected reference in the taxt edit box event
+  # when the focus has moved to the reference picker, so the user can see
+  # what they're editing. So replace the text area (and its selection) with
+  # a paragraph with a highlighted span
+  replace_text_area_with_simulation: =>
+    text = @control.val()
+    before_selection = text[...@start()]
+    selection = '<span class=antcat-taxt-simulated-selection>' + text[@start()...@end()] + '</span>'
+    after_selection = text[@end()...]
+    text = before_selection + selection + after_selection
+    console.log text
+    simulation = $("<p class=antcat-taxt-simulation>#{text}</p>")
+    simulation.height @control.height()
+    simulation.insertAfter @control
+    @control.hide()
+  replace_simulation_with_text_area: =>
+    $('.antcat-taxt-simulation').remove()
+    @control.show()
+ 
+  handle_reference_picker_result: (taxt) =>
     @control.closest('form').find('.buttons').show()
     new_value = @value()[...@tag_start] + taxt + @value()[@tag_end...]
     @value new_value
- 
+    @replace_simulation_with_text_area()
+
   # this value is duplicated in lib/taxt.rb
   @EDITABLE_ID_DIGITS = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
   @extract_id_from_editable_taxt: (taxt) ->
