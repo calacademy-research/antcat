@@ -49,8 +49,7 @@ edit = ->
   $panel.find('.taxt_edit_box').first().focus()
   false
 
-show_form = ($panel, options) ->
-  options = {} unless options
+show_form = ($panel) ->
   $panel.find('div.display').hide()
   $('.icon').hide() unless AntCat.testing
   size_edit_box $panel
