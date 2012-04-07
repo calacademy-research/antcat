@@ -46,15 +46,15 @@ edit = ->
   $panel = $(this).closest ".#{panel_class}"
   save_form_values $panel
   show_form $panel
-  $('.taxt_edit_box', $panel).first().focus()
+  $panel.find('.taxt_edit_box').first().focus()
   false
 
 show_form = ($panel, options) ->
   options = {} unless options
-  $('div.display', $panel).hide()
+  $panel.find('div.display').hide()
   $('.icon').hide() unless AntCat.testing
   size_edit_box $panel
-  $('div.form', $panel).show()
+  $panel.find('div.form').show()
   set_dimensions()
 
 submit_form = ->
@@ -75,7 +75,7 @@ update_form = (data, statusText, xhr, $form) ->
   $panel.replaceWith data.content
   $panel = $('#item_' + data.id)
 
-  setup_form $('div.form', $panel)
+  setup_form $panel.find('div.form')
 
 cancel_form = ->
   $panel = $(this).closest ".#{panel_class}"
@@ -84,8 +84,8 @@ cancel_form = ->
     id = $panel.attr('id')
     restore_form_values $panel
     $panel = $('#' + id)
-    $('div.form', $panel).hide()
-    $('div.display', $panel).show()
+    $panel.find('div.form').hide()
+    $panel.find('div.display').show()
   false
 
 handle_error = (jq_xhr, text_status, error_thrown) ->
@@ -109,11 +109,11 @@ stop_spinning = ->
   $spinnerElement.spinner 'remove'
 
 save_form_values = ($panel) ->
-  $taxt_edit_box = $('textarea', $panel)
+  $taxt_edit_box = $panel.find('textarea')
   $taxt_edit_box.data original_value_key, $taxt_edit_box.val()
 
 restore_form_values = ($panel) ->
-  $taxt_edit_box = $('textarea', $panel)
+  $taxt_edit_box = $panel.find('textarea')
   $taxt_edit_box.val $taxt_edit_box.data original_value_key
 
 show_error_messages = ($form, html) ->
