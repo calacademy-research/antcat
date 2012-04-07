@@ -4,7 +4,7 @@
 
 = form_tag reference_picker_path, id: 'search_form' do
   = button_tag 'OK', class: 'ok ui-priority-primary'
-  = button_tag 'Cancel', class: 'close ui-priority-secondary'
+  = button_tag 'Cancel', class: 'close ui-priority-primary'
   = select_tag "search_selector", options_for_select(["Search for", "Search for author(s)"], params[:search_selector])
   = text_field_tag "q", params[:q]
   = image_tag 'help.png', class: 'help_icon'
