@@ -24,14 +24,18 @@ setup_testing_or_development = ->
 
 #--------------------------------------------------
 setup_forms = ->
-  $(".#{panel_class} div.form")
+  $(".#{panel_class} div.form").each ->
+    setup_form $(this)
+
+setup_form = ($form) ->
+  $form
     .find('.submit')
       .button()
-      .live('click', submit_form)
+      .click(submit_form)
       .end()
     .find('.cancel')
       .button()
-      .live('click', cancel_form)
+      .click(cancel_form)
       .end()
     .find('textarea')
       .taxt_edit_box()
@@ -86,17 +90,7 @@ update_form = (data, statusText, xhr, $form) ->
   $panel.replaceWith data.content
   $panel = $('#item_' + data.id)
 
-  $('div.form', $panel)
-    .find('.submit')
-      .button()
-      .end()
-    .find('.cancel')
-      .button()
-      .end()
-    .find('textarea')
-      .taxt_edit_box()
-      .end()
-    .hide()
+  setup_form $('div.form', $panel)
 
 show_error_messages = ($form, html) ->
   clear_error_messages $form
