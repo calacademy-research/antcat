@@ -85,13 +85,16 @@ update_form = (data, statusText, xhr, $form) ->
     return
   $panel.replaceWith data.content
   $panel = $('#item_' + data.id)
+
   $('div.form', $panel)
-    .setup_taxt_edit_boxes()
     .find('.submit')
       .button()
       .end()
     .find('.cancel')
       .button()
+      .end()
+    .find('textarea')
+      .taxt_edit_box()
       .end()
     .hide()
 
