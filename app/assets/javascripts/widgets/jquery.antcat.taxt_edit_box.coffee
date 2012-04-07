@@ -70,6 +70,7 @@ class AntCat.TaxtEditBox
     new_value = @value()[...@tag_start] + taxt + @value()[@tag_end...]
     @value new_value
     @replace_simulation_with_text_area()
+    @set_selection @tag_start, @tag_start + taxt.length - 1
 
   # this value is duplicated in lib/taxt.rb
   @EDITABLE_ID_DIGITS = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
