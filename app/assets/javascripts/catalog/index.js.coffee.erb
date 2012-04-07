@@ -70,11 +70,11 @@ submit_form = ->
 start_spinning = ($form) ->
   $spinnerElement = $(':button', $form).parent()
   $spinnerElement.spinner position: 'left', leftOffset: 1, img: spinner_path
-  $(':button', $spinnerElement).addClass('ui-state-disabled')
+  $(':button', $spinnerElement).disable()
 
 stop_spinning = ->
   $spinnerElement = $('.spinner')
-  $(':button', $spinnerElement).removeClass('ui-state-disabled')
+  $(':button', $spinnerElement).enable()
   $spinnerElement.spinner 'remove'
 
 update_form = (data, statusText, xhr, $form) ->
