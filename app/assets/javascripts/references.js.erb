@@ -276,6 +276,9 @@ function updateReference(data, statusText, xhr, $form) {
   $reference = $('#reference_' + data.id);
   $('.reference_edit', $reference).hide();
 
+  if (AntCat.testing)
+    $('.icon', $reference).show();
+
   $('.reference_display', $reference)
     .show()
     .effect("highlight", {}, 3000)
