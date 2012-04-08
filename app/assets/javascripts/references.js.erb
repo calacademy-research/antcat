@@ -56,7 +56,6 @@ function setupDisplays() {
 function setupIcons() {
   setupIconVisibility()
   if (AntCat.user_can_edit) {
-    setupIconHighlighting()
     setupIconClickHandlers()
   }
 }
@@ -76,18 +75,6 @@ function setupIconVisibility() {
     function() {
       $('.icon').hide();
     });
-}
-
-function setupIconHighlighting() {
-  // with the asset pipeline and fingerprinting,
-  // this won't work. Use jQuery-ui: 'http://jqueryui.com/docs/Theming/API'
-  //<%#$('.icon img').live('mouseenter',%>
-  //  <%#function() {%>
-  //    <%#this.src = this.src.replace('off', 'on');%>
-  //  <%#}).live('mouseleave',%>
-  //  <%#function() {%>
-  //    <%#this.src = this.src.replace('on', 'off');%>
-  //  <%#});%>
 }
 
 function setupIconClickHandlers() {
