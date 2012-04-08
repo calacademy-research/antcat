@@ -3,14 +3,18 @@
     %td= render 'reference', reference: @selected_reference, publisher_string: '', css_class: 'reference'
 
 = form_tag reference_picker_path, id: 'search_form' do
-  = button_tag 'OK', class: 'ok ui-priority-primary'
-  = button_tag 'Cancel', class: 'close ui-priority-primary'
-  = select_tag "search_selector", options_for_select(["Search for", "Search for author(s)"], params[:search_selector])
-  = text_field_tag "q", params[:q]
-  = image_tag 'help.png', class: 'help_icon'
-  = submit_tag 'Go', class: 'ui-priority-primary'
-  = image_tag 'ui-anim_basic_16x16.gif', id: 'throbber', style: 'display:none'
+  .ok_cancel_controls
+    = button_tag 'OK', class: 'ok ui-priority-primary'
+    = button_tag 'Cancel', class: 'close ui-priority-primary'
+  .search_controls
+    = select_tag "search_selector", options_for_select(["Search for", "Search for author(s)"], params[:search_selector])
+    = text_field_tag "q", params[:q]
+    = image_tag 'help.png', class: 'help_icon'
+    = submit_tag 'Go', class: 'ui-priority-primary'
   = will_paginate @references
+  .throbber
+    = image_tag 'ui-anim_basic_16x16.gif', id: 'throbber'
+  .clear
 
 - if @references.first != @selected_reference || @references.size != 1
 
