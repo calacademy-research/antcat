@@ -12,7 +12,6 @@ class AntCat.ReferencePicker
 
   initialize: =>
     @widget.fadeTo 0, 1.0
-    @loading = false
     @current_selection = null
 
     self = @
@@ -76,7 +75,6 @@ class AntCat.ReferencePicker
     if url.indexOf('/reference_picker') is -1
       url = '/reference_picker?' + url
     url = url + '&' + $.param id: @reference_id
-    @loading = true
     @widget.find('*').attr 'disabled', 'disabled'
     @widget.fadeTo 0, 0.75
     @widget.find('#throbber').show()
