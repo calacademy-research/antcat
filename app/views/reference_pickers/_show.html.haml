@@ -10,7 +10,7 @@
     = select_tag "search_selector", options_for_select(["Search for", "Search for author(s)"], params[:search_selector])
     = text_field_tag "q", params[:q]
     = image_tag 'help.png', class: 'help_icon'
-    = submit_tag 'Go', class: 'ui-priority-primary'
+    = button_tag 'Go', class: 'ui-priority-primary'
   = will_paginate @references
   .throbber
     = image_tag 'ui-anim_basic_16x16.gif', id: 'throbber'
