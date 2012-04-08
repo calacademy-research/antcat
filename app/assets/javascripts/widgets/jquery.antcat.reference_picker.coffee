@@ -36,7 +36,7 @@ class AntCat.ReferencePicker
           @search()
           false
         .end()
-      .find('.all_references')
+      .find('.search_results')
         .selectable(filter: '.reference', stop: @handle_new_selection, cancel: '.ui-selected')
         .end()
       .find('.reference')
@@ -44,7 +44,7 @@ class AntCat.ReferencePicker
           @close()
           false
         .end()
-      .find(".selected_reference, .all_references #reference_#{@reference_id}")
+      .find(".selected_reference, .search_results #reference_#{@reference_id}")
         .addClass('ui-selected')
         .end()
       .find('.pagination a')
@@ -91,7 +91,7 @@ class AntCat.ReferencePicker
     @load $(link).attr('href') + '&' + @widget.find('> form').serialize()
 
   handle_new_selection: =>
-    selected_references = @widget.find('.all_references .reference.ui-selected')
+    selected_references = @widget.find('.search_results .reference.ui-selected')
     return if selected_references.length is 0
     selected_reference = selected_references.first()
     @widget.find('.selected_reference td').html selected_reference.clone true
