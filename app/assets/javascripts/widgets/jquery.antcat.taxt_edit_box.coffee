@@ -47,11 +47,11 @@ class AntCat.TaxtEditBox
     id = TaxtEditBox.extract_id_from_editable_taxt @selection()
     new AntCat.ReferencePicker $form, id, @handle_reference_picker_result
 
-  # We need to indicate the selected reference in the taxt edit box event
-  # when the focus has moved to the reference picker, so the user can see
-  # what they're editing. So replace the text area (and its selection) with
-  # a paragraph with a highlighted span
   replace_text_area_with_simulation: =>
+    # We need to indicate the selected reference in the taxt edit box event
+    # when the focus has moved to the reference picker, so the user can see
+    # what they're editing. So replace the text area (and its selection) with
+    # a paragraph that has a highlighted span
     text = @control.val()
     before_selection = text[...@start()]
     selection = '<span class=antcat-taxt-simulated-selection>' + text[@start()...@end()] + '</span>'
