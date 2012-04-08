@@ -6,7 +6,6 @@ class AntCat.ReferencePicker
     @widget = $("<div class='antcat-reference-picker ui-widget'></div>")
     @widget.appendTo(parent)
     @widget.show()
-    @widget.fadeTo 0, 0.5
     @widget.append('<img src="/assets/ui-anim_basic_16x16.gif">')
     @load()
     @
