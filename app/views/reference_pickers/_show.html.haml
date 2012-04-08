@@ -2,7 +2,7 @@
   %tr.reference_row
     %td= render 'reference', reference: @selected_reference, publisher_string: '', css_class: 'reference'
 
-= form_tag reference_picker_path, id: 'search_form' do
+= form_tag reference_picker_path, class: 'search_form' do
   .ok_cancel_controls
     = button_tag 'OK', class: 'ok ui-priority-primary'
     = button_tag 'Cancel', class: 'close ui-priority-primary'
