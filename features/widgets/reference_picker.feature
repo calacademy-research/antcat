@@ -10,7 +10,7 @@ Feature: Reference picker
       | Hölldobler, B.          | 1995b         | Bert's book           | Ants 1:1-2 |
 
   Scenario: Seeing the picker
-    When I go to the reference picker widget test page
+    When I visit the reference picker widget test page, opened to the first reference
     Then I should see "Fisher, B. 1995b. Fisher's book. Ants 1:1-2."
 
   #Scenario: Searching

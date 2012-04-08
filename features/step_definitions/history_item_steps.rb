@@ -39,4 +39,6 @@ When /^I search for the authors "([^"]*)"$/ do |authors|
   step %{I select "Search for author(s)" from "search_selector"}
   step %{I fill in the search box with "Bolton, B.;Fisher, B."}
   step %{I press "Go" by the search box}
+When /^I visit the reference picker widget test page, opened to the first reference$/ do
+  visit "/widget_tests/reference_picker?id=#{Reference.first.id}"
 end
