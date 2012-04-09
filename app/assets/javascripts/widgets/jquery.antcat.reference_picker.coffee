@@ -8,6 +8,7 @@ class AntCat.ReferencePicker
     @widget.show()
     @widget.append('<img src="/assets/ui-anim_basic_16x16.gif">')
     @load()
+    @help_verb = if @reference_id then 'use' else 'insert'
     @
 
   initialize: =>
@@ -105,6 +106,10 @@ class AntCat.ReferencePicker
       @widget.find('.selected_reference td').html search_result.clone(true).removeClass('ui-selected ui-selectee')
     selected_reference = @widget.find('.selected_reference .reference')
     @widget.toggleClass 'has-no-selection', selected_reference.length == 0
+    @update_help_banner()
+  update_help_banner: =>
+      help = "Click OK to #{@help_verb} this reference"
+    @widget.find('.help_banner').text help
 
   search: =>
     @load $.param q: @textbox.val(), search_selector: @search_selector.val()
