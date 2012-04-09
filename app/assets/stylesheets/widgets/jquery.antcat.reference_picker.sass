@@ -26,8 +26,6 @@
     .ok_cancel_controls
       float: left
       display: inline
-    &.has-no-selection .ok_cancel_controls
-      display: none
 
     .pagination
       padding: 2px 40px 0 52px
@@ -60,8 +58,6 @@
         font-family: "Lucida Grande", "sans-serif"
         font-weight: bold
         font-size: 11px
-    &.has-no-selection .search_controls
-      float: left
 
   .search_results
     .ui-selectee
@@ -81,3 +77,11 @@
 
   #throbber
     display: none
+
+  &.has-no-selection
+    .selected_reference
+      display: none
+    .ok_cancel_controls
+      display: none
+    .search_controls
+      float: left

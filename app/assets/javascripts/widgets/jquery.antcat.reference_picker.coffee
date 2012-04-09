@@ -104,7 +104,7 @@ class AntCat.ReferencePicker
     if search_result
       @widget.find('.selected_reference td').html search_result.clone(true).removeClass('ui-selected ui-selectee')
     selected_reference = @widget.find('.selected_reference .reference')
-    @widget.find('.search_form').toggleClass 'has-no-selection', selected_reference.length == 0
+    @widget.toggleClass 'has-no-selection', selected_reference.length == 0
 
   search: =>
     @load $.param q: @textbox.val(), search_selector: @search_selector.val()
