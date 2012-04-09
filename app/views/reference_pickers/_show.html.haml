@@ -1,6 +1,11 @@
+-#Locals: references, selected_reference
+- references
+- selected_reference
+
 %table.references.selected_reference
   %tr.reference_row
     %td= render 'reference', reference: @selected_reference, publisher_string: '', css_class: 'reference'
+        = render 'reference', reference: selected_reference, publisher_string: '', css_class: 'reference'
 
 = form_tag reference_picker_path, class: 'search_form' do
   .ok_cancel_controls
@@ -11,14 +16,13 @@
     = text_field_tag "q", params[:q]
     = image_tag 'help.png', class: 'help_icon'
     = button_tag 'Go', class: 'ui-priority-primary'
-  = will_paginate @references
   .throbber
     = image_tag 'ui-anim_basic_16x16.gif', id: 'throbber'
   .clear
 
 - if @references.first != @selected_reference || @references.size != 1
 
-  -if @references.empty?
+  -if references.empty?
     .no_results_found
       No results found
 
