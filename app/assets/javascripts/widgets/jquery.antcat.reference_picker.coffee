@@ -55,6 +55,8 @@ class AntCat.ReferencePicker
       .find('.search_form#q')
         .focus()
 
+    @setup_icon_visibility()
+
     @search_selector
       .selectmenu(wrapperElement: "<span />")
       .change =>
@@ -161,3 +163,12 @@ class AntCat.ReferencePicker
 
   ENTER: 13
 
+  # -----------------------------------------
+  setup_icon_visibility: =>
+    self = @
+    $('.icon').show() if AntCat.testing
+    $('.reference')
+      .live('mouseenter', -> $('.icon', $(this)).show() unless self.is_editing())
+      .live('mouseleave', -> $('.icon').hide())
+
+  is_editing: => false
