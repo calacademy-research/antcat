@@ -111,8 +111,19 @@ class AntCat.ReferencePicker
       @widget.find('.selected_reference td').html search_result.clone(true).removeClass('ui-selected ui-selectee')
     @widget.toggleClass 'has-no-selection', not @selected_reference()
     @update_help_banner()
+
   update_help_banner: =>
-      help = "Click OK to #{@help_verb} this reference"
+    any_search_results = @widget.find('.search_results .reference').length > 0
+    if @selected_reference()
+      if any_search_results
+        help = "Click OK to #{@help_verb} this reference, or choose another one"
+      else
+        help = "Click OK to #{@help_verb} this reference, or search for another one"
+    else
+      if any_search_results
+        help = "Choose a reference to #{@help_verb}"
+      else
+        help = "Find a reference to #{@help_verb}"
     @widget.find('.help_banner').text help
 
   search: =>
