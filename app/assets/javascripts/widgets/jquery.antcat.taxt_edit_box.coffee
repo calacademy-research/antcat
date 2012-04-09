@@ -1,8 +1,7 @@
 window.AntCat or= {}
 
-if $?
-  $.fn.taxt_edit_box = (options = {}) ->
-    return this.each -> new AntCat.TaxtEditBox $(this), options
+$.fn.taxt_edit_box = (options = {}) ->
+  return this.each -> new AntCat.TaxtEditBox $(this), options
 
 class AntCat.TaxtEditBox
   constructor: ($control, options = {}) ->
