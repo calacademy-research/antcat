@@ -27,3 +27,15 @@ Feature: Reference picker
     Then I should see "Fisher Bolton book"
     And I should not see "Fisher's book"
     And I should not see "Bolton's book"
+
+  Scenario: Editing the selected reference
+    When I visit the reference picker widget test page, opened to the first reference
+    When I follow "edit"
+    #Then I should see the edit form
+    #And I should not see the reference
+    #When I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
+    #And I fill in "reference_title" with "Ant Title"
+    #And I press the "Save" button
+    #And I wait for a bit
+    #Then I should be on the references page
+    #And I should see "Ward, B.L.; Bolton, B. 2010. Ant Title"
