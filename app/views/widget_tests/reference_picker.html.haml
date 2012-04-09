@@ -5,5 +5,5 @@
   = javascript_include_tag 'widget_tests/reference_picker'
 
   :javascript
-    AntCat.test_reference_id = #{params[:id].present? ? params[:id] : 'null'};
+    AntCat.test_reference_id = #{params[:id].present? ? Reference.first.id : 'null'};
 
