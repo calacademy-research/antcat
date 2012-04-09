@@ -14,17 +14,25 @@ class AntCat.TaxtEditBox
     @
 
   handle_event: (event) =>
-    if @is_tag_opening_event(event) and @is_tag_selected()
+    if not @is_tag_selected() and @is_new_tag_event event
       @tag_start = @start()
       @tag_end = @end()
       @open_reference_editor()
       return false
+
+    if @is_tag_selected() and @is_tag_opening_event event
+      @tag_start = @start()
+      @tag_end = @end()
+      @open_reference_editor()
+      return false
+
     if event.type is 'keyup' or event.type is 'mouseup'
       @dashboard?.show_event event
       @dashboard?.show_status 'before'
       @handle_change()
       @select_tag_if_caret_inside()
       @dashboard?.show_status 'after'
+
     true
 
   handle_change: =>
@@ -104,10 +112,14 @@ class AntCat.TaxtEditBox
     @value().charAt(@end() - 1) is '}'
 
   is_tag_opening_event: (event) =>
-    event.type is 'keydown' and
-      (event.which is @LEFT_PARENTHESIS and event.shiftKey or
-       event.which is @ENTER) or
+    @is_new_tag_event(event) or
+    event.type is 'keydown' and event.which is @ENTER or
     event.type is 'dblclick'
+
+  is_new_tag_event: (event) =>
+    event.type is 'keydown' and
+    event.which is @LEFT_PARENTHESIS and
+    event.shiftKey
 
   value:      => @control.val arguments...
   last_value: => @control.data @data_key, arguments...
