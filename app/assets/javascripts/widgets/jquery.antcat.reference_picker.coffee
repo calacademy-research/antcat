@@ -100,12 +100,16 @@ class AntCat.ReferencePicker
     return if results.length is 0
     results.first()
 
+  selected_reference: =>
+    references = @widget.find('.selected_reference .reference')
+    return if references.length is 0
+    references.first()
+
   handle_new_selection: =>
     search_result = @selected_search_result()
     if search_result
       @widget.find('.selected_reference td').html search_result.clone(true).removeClass('ui-selected ui-selectee')
-    selected_reference = @widget.find('.selected_reference .reference')
-    @widget.toggleClass 'has-no-selection', selected_reference.length == 0
+    @widget.toggleClass 'has-no-selection', not @selected_reference()
     @update_help_banner()
   update_help_banner: =>
       help = "Click OK to #{@help_verb} this reference"
