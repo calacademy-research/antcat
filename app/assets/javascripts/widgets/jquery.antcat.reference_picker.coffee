@@ -94,11 +94,17 @@ class AntCat.ReferencePicker
   load_clicked_page: (link) =>
     @load $(link).attr('href') + '&' + @widget.find('> form').serialize()
 
+  selected_search_result: =>
+    results = @widget.find '.search_results .reference.ui-selected'
+    return if results.length is 0
+    results.first()
+
   handle_new_selection: =>
-    selected_references = @widget.find('.search_results .reference.ui-selected')
-    return if selected_references.length is 0
-    selected_reference = selected_references.first()
-    @widget.find('.selected_reference td').html selected_reference.clone(true).removeClass('ui-selected ui-selectee')
+    search_result = @selected_search_result()
+    if search_result
+      @widget.find('.selected_reference td').html search_result.clone(true).removeClass('ui-selected ui-selectee')
+    selected_reference = @widget.find('.selected_reference .reference')
+    @widget.find('.search_form').toggleClass 'has-no-selection', selected_reference.length == 0
 
   search: =>
     @load $.param q: @textbox.val(), search_selector: @search_selector.val()
