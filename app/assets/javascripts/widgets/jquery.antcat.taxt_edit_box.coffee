@@ -118,7 +118,7 @@ class AntCat.TaxtEditBox
 
   is_new_tag_event: (event) =>
     event.type is 'keydown' and
-    event.which is @LEFT_PARENTHESIS and
+    event.which is @LEFT_BRACKET and
     event.shiftKey
 
   value:      => @control.val arguments...
@@ -132,7 +132,7 @@ class AntCat.TaxtEditBox
 
   data_key: 'old_value'
   ENTER: 13
-  LEFT_PARENTHESIS: 219
+  LEFT_BRACKET: 219
 
   this.enclosing_tag_indexes = (text, position) ->
     opening_bracket_index = position - 1
