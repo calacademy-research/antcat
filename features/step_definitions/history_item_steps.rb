@@ -16,6 +16,10 @@ When /^I save my changes$/ do
   step 'I wait for a bit'
 end
 
+When /In the search box, I press "Go"/ do
+  step 'I press "Go" within ".search_form"'
+end
+
 Given /^there is a reference for "Bolton, 2005"$/ do
   @reference = Factory :article_reference, :author_names => [Factory(:author_name, :name => 'Bolton')], :citation_year => '2005'
 end
@@ -30,15 +34,19 @@ Then /^I should see an error message about the unfound reference$/ do
 end
 
 When /^I search for "([^"]*)"$/ do |search_term|
-  step %{I select "Search for" from "search_selector"}
+  # this is to make the selectmenu work
+  step %{I follow "Search for"}
+  step %{I follow "Search for"}
   step "I fill in the search box with \"#{search_term}\""
-  step "I press \"Go\" by the search box"
+  step %{In the search box, I press "Go"}
 end
 
 When /^I search for the authors "([^"]*)"$/ do |authors|
-  step %{I select "Search for author(s)" from "search_selector"}
+  step %{I follow "Search for author(s)"}
   step %{I fill in the search box with "Bolton, B.;Fisher, B."}
-  step %{I press "Go" by the search box}
+  step %{In the search box, I press "Go"}
+end
+
 When /^I visit the reference picker widget test page, opened to the first reference$/ do
   visit "/widget_tests/reference_picker?id=#{Reference.first.id}"
 end
