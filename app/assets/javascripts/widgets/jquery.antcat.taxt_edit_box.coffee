@@ -51,7 +51,7 @@ class AntCat.TaxtEditBox
     $form.find('.buttons').hide()
     @replace_text_area_with_simulation()
     $('.antcat-reference-picker').remove()
-    id = TaxtEditBox.extract_id_from_editable_taxt @selection()
+    id = if @is_tag_selected() then TaxtEditBox.extract_id_from_editable_taxt @selection() else null
     new AntCat.ReferencePicker $form, id, @handle_reference_picker_result
 
   replace_text_area_with_simulation: =>
