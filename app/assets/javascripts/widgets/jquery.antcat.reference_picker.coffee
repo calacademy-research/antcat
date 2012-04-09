@@ -124,7 +124,7 @@ class AntCat.ReferencePicker
         help = "Choose a reference to #{@help_verb}"
       else
         help = "Find a reference to #{@help_verb}"
-    @widget.find('.help_banner').text help
+    @widget.find('.help_banner .help_banner_text').text help
 
   search: =>
     @load $.param q: @textbox.val(), search_selector: @search_selector.val()
