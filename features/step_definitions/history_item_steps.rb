@@ -50,3 +50,28 @@ end
 When /^I visit the reference picker widget test page, opened to the first reference$/ do
   visit "/widget_tests/reference_picker?id=#{Reference.first.id}"
 end
+
+When /^I edit the reference$/ do
+  within ".selected_reference" do
+    step 'I follow "edit"'
+  end
+end
+
+When /^I set the authors to "([^"]*)"$/ do |names|
+  within ".selected_reference .reference_edit" do
+    step %{I fill in "reference_author_names_string" with "#{names}"}
+  end
+end
+
+When /^I set the title to "([^"]*)"$/ do |title|
+  within ".selected_reference .reference_edit" do
+    step %{I fill in "reference_title" with "#{title}"}
+  end
+end
+
+When /^I save the form$/ do
+  within ".selected_reference .reference_edit" do
+    step %{I press "Save"}
+  end
+end
+
