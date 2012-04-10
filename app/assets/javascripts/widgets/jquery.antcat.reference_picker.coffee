@@ -56,7 +56,7 @@ class AntCat.ReferencePicker
       .find('.search_form#q')
         .focus()
 
-    @setup_icon_visibility()
+    @setup_edit_icons()
 
     @search_selector
       .selectmenu(wrapperElement: "<span />")
@@ -191,11 +191,42 @@ class AntCat.ReferencePicker
   ENTER: 13
 
   # -----------------------------------------
-  setup_icon_visibility: =>
+  setup_edit_icons: =>
     self = @
     $('.icon').show() if AntCat.testing
     $('.reference')
       .live('mouseenter', -> $('.icon', $(this)).show() unless self.is_editing())
       .live('mouseleave', -> $('.icon').hide())
+    $('.icon.edit').live 'click', -> self.edit_reference this
 
-  is_editing: => false
+  edit_reference: (icon) ->
+    return if @is_editing()
+    $reference = $(icon).closest '.reference'
+    #saveReference($reference)
+    @show_reference_edit $reference
+    false
+
+  show_reference_edit: ($reference) =>
+    $('.reference_display', $reference).hide()
+    $('.icon', $reference).hide() unless AntCat.testing
+
+    $edit = $('.reference_edit', $reference)
+
+    #setupTabs($reference)
+
+    #setupReferenceEditAuthorAutocomplete($reference)
+    #setupReferenceEditJournalAutocomplete($reference)
+    #setupReferenceEditPublisherAutocomplete($reference)
+
+    $edit.show()
+    @fade_everything_but $reference
+    $edit.find('input[type=text]:first').focus()
+  
+  fade_everything_but: ($element) =>
+    while true
+      $element.siblings().fadeTo 'fast', 0.4
+      $element = $element.parent()
+      break if $element.hasClass 'antcat-reference-picker'
+
+  is_editing: =>
+    @widget.find('.reference_edit:visible').length > 0
