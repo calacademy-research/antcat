@@ -57,6 +57,7 @@ class AntCat.ReferencePicker
         .focus()
 
     @setup_edit_icons()
+    @setup_edits()
 
     @search_selector
       .selectmenu(wrapperElement: "<span />")
@@ -198,6 +199,19 @@ class AntCat.ReferencePicker
       .live('mouseenter', -> $('.icon', $(this)).show() unless self.is_editing())
       .live('mouseleave', -> $('.icon').hide())
     $('.icon.edit').live 'click', -> self.edit_reference this
+
+  setup_edits: =>
+    $('.reference_edit').hide()
+    $('.reference_edit .submit').live('click', @submit_reference_edit)
+    $('.reference_edit .cancel').live('click', @cancel_reference_edit)
+
+  submit_reference_edit: =>
+    alert 'submitting'
+    false
+
+  cancel_reference_edit: =>
+    alert 'cancelling'
+    false
 
   edit_reference: (icon) ->
     return if @is_editing()
