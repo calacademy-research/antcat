@@ -235,10 +235,9 @@ class AntCat.ReferencePicker
     $edit.find('input[type=text]:first').focus()
   
   fade_everything_but: ($element) =>
-    while true
+    while not $element.hasClass 'antcat-reference-picker'
       $element.siblings().fadeTo 'fast', 0.4
       $element = $element.parent()
-      break if $element.hasClass 'antcat-reference-picker'
 
   is_editing: =>
     @widget.find('.reference_edit:visible').length > 0
