@@ -201,11 +201,15 @@ class AntCat.ReferencePicker
     $('.icon.edit').live 'click', -> self.edit_reference this
 
   setup_edits: =>
+    self = @
     $('.reference_edit').hide()
-    $('.reference_edit .submit').live('click', @submit_reference_edit)
+    $('.reference_edit .submit').live('click', -> self.submit_reference_edit this)
     $('.reference_edit .cancel').live('click', @cancel_reference_edit)
 
-  submit_reference_edit: =>
+  submit_reference_edit: (submit_button) =>
+    $(submit_button).closest('form').ajaxSubmit
+      #success: -> alert 'success'
+      #error: -> alert 'error'
     false
 
   cancel_reference_edit: =>
