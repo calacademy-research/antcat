@@ -208,9 +208,15 @@ class AntCat.ReferencePicker
 
   submit_reference_edit: (submit_button) =>
     $(submit_button).closest('form').ajaxSubmit
+      beforeSerialize: @before_serialize
       #success: -> alert 'success'
       #error: -> alert 'error'
     false
+
+  before_serialize: ($form, options) =>
+    selectedTab = $.trim($('.ui-tabs-selected', $form).text())
+    $('#selected_tab', $form).val selectedTab
+    true
 
   cancel_reference_edit: =>
     false
@@ -228,7 +234,7 @@ class AntCat.ReferencePicker
 
     $edit = $('.reference_edit', $reference)
 
-    #setupTabs($reference)
+    @setup_tabs $reference
 
     #setupReferenceEditAuthorAutocomplete($reference)
     #setupReferenceEditJournalAutocomplete($reference)
@@ -237,7 +243,25 @@ class AntCat.ReferencePicker
     $edit.show()
     @fade_everything_but $reference
     $edit.find('input[type=text]:first').focus()
-  
+
+  setup_tabs: ($reference) =>
+    id = $reference.attr('id')
+    selected_tab = $('.selected_tab', $reference).val()
+
+    $('.tabs .article-tab', $reference).attr('href', '#reference_article' + id)
+    $('.tabs .article-tab-section', $reference).attr('id', 'reference_article' + id)
+
+    $('.tabs .book-tab', $reference).attr('href', '#reference_book' + id)
+    $('.tabs .book-tab-section', $reference).attr('id', 'reference_book' + id)
+
+    $('.tabs .nested-tab', $reference).attr('href', '#reference_nested' + id)
+    $('.tabs .nested-tab-section', $reference).attr('id', 'reference_nested' + id)
+
+    $('.tabs .unknown-tab', $reference).attr('href', '#reference_unknown' + id)
+    $('.tabs .unknown-tab-section', $reference).attr('id', 'reference_unknown' + id)
+
+    $('.tabs', $reference).tabs({selected: selected_tab})
+      
   fade_everything_but: ($element) =>
     while not $element.hasClass 'antcat-reference-picker'
       $element.siblings().fadeTo 'fast', 0.4
