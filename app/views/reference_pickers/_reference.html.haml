@@ -7,6 +7,5 @@
           = image_tag 'edit_off.png', :alt => 'edit'
       %td.reference_item
         = render 'display', :reference => reference if !reference.new_record? && reference.errors.empty?
-        - if user_can_edit?
-          - publisher_string = ''
-          = render 'edit', :reference => reference, :publisher_string => publisher_string
+        - publisher_string = ''
+        = render 'edit', :reference => reference, :publisher_string => publisher_string
