@@ -206,11 +206,9 @@ class AntCat.ReferencePicker
     $('.reference_edit .cancel').live('click', @cancel_reference_edit)
 
   submit_reference_edit: =>
-    alert 'submitting'
     false
 
   cancel_reference_edit: =>
-    alert 'cancelling'
     false
 
   edit_reference: (icon) ->
