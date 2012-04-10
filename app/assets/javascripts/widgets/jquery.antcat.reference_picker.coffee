@@ -116,9 +116,10 @@ class AntCat.ReferencePicker
     any_search_results = @widget.find('.search_results .reference').length > 0
     if @selected_reference()
       if any_search_results
-        help = "Click OK to #{@help_verb} this reference, or choose another one"
+        other_verb = 'choose'
       else
-        help = "Click OK to #{@help_verb} this reference, or search for another one"
+        other_verb = 'search for'
+      help = "Click OK to #{@help_verb} this reference, or #{other_verb} a different one"
     else
       if any_search_results
         help = "Choose a reference to #{@help_verb}"
