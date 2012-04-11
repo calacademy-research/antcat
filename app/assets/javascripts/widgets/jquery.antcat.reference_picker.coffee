@@ -42,7 +42,6 @@ class AntCat.ReferencePicker
 
     @setup_search_form()
     @setup_references()
-    @setup_edit_icons()
     @setup_edits()
     @handle_new_selection()
     @textbox.focus()
@@ -88,11 +87,11 @@ class AntCat.ReferencePicker
         @textbox.focus()
 
   setup_references: =>
+    self = @
     @widget
-      .find('.search_results')
-        .selectable(filter: '.reference', stop: @handle_new_selection, cancel: '.ui-selected')
-        .end()
       .find('.reference')
+        .mouseenter((-> $('.icon.edit', $(this)).show() unless self.is_editing()))
+        .mouseleave((-> $('.icon.edit').hide()))
         .dblclick =>
           @close()
           false
@@ -100,6 +99,11 @@ class AntCat.ReferencePicker
       .find(".selected_reference, .search_results #reference_#{@reference_id}")
         .addClass('ui-selected')
         .end()
+      .find('.search_results')
+        .selectable(filter: '.reference', stop: @handle_new_selection, cancel: '.ui-selected')
+        .end()
+    @widget.find('.icon.edit').show() if AntCat.testing
+    @widget.find('.icon.edit').click -> self.edit_reference this
 
   selected_search_result: =>
     results = @widget.find '.search_results .reference.ui-selected'
@@ -193,14 +197,6 @@ class AntCat.ReferencePicker
   ENTER: 13
 
   # -----------------------------------------
-  setup_edit_icons: =>
-    self = @
-    $('.icon.edit').show() if AntCat.testing
-    $('.reference')
-      .live('mouseenter', -> $('.icon.edit', $(this)).show() unless self.is_editing())
-      .live('mouseleave', -> $('.icon.edit').hide())
-    $('.icon.edit').live 'click', -> self.edit_reference this
-
   setup_edits: =>
     self = @
     $('.reference_edit').hide()
