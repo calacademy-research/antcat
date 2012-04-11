@@ -33,6 +33,10 @@ class ReferenceDocument < ActiveRecord::Base
     url.present? && url =~ %r{^http://128.146.250.117}
   end
 
+  def hosted_by_antbase?
+    url.present? && url =~ %r{^http://antbase\.org}
+  end
+
   def actual_url
     hosted_by_us? ? s3_url : url
   end
@@ -42,7 +46,7 @@ class ReferenceDocument < ActiveRecord::Base
     # this is to avoid authentication problems when a URL to one of "our" files is copied
     # to another reference (e.g., nested)
     return if url =~ /antcat/
-    return if hosted_by_hol?
+    return if hosted_by_hol? || hosted_by_antbase?
     # a URL with spaces is valid, but URI.parse rejects it
     uri = URI.parse url.gsub(/ /, '%20')
     response_code = Net::HTTP.new(uri.host, 80).request_head(uri.path).code.to_i

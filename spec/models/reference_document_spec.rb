@@ -19,8 +19,8 @@ describe ReferenceDocument do
   end
 
   it "should accept a URL with spaces" do
-    stub_request(:any, "http://antbase.org/a%20url").to_return :body => "Hello World!"
-    document = ReferenceDocument.new :url => 'http://antbase.org/a url'
+    stub_request(:any, "http://antwiki.org/a%20url").to_return :body => "Hello World!"
+    document = ReferenceDocument.new :url => 'http://antwiki.org/a url'
     document.should be_valid
   end
 
@@ -36,10 +36,10 @@ describe ReferenceDocument do
   end
 
   it "should make sure it exists" do
-    stub_request(:any, "http://antbase.org/1.pdf").to_return :body => "Hello World!"
-    document = ReferenceDocument.create :url => 'http://antbase.org/1.pdf'
+    stub_request(:any, "http://antwiki.org/1.pdf").to_return :body => "Hello World!"
+    document = ReferenceDocument.create :url => 'http://antwiki.org/1.pdf'
     document.should be_valid
-    stub_request(:any, "http://antbase.org/1.pdf").to_return :body => "Not Found", :status => 404
+    stub_request(:any, "http://antwiki.org/1.pdf").to_return :body => "Not Found", :status => 404
     document.should_not be_valid
     document.errors.full_messages.should =~ ['Url was not found']
   end

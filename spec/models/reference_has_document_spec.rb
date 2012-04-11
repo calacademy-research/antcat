@@ -37,8 +37,8 @@ describe Reference do
 
     it "should make sure it exists" do
       reference = Factory :reference, :year => 2001
-      stub_request(:any, "http://antbase.org/1.pdf").to_return :body => "Not Found", :status => 404
-      lambda {reference.document = ReferenceDocument.create :url => 'http://antbase.org/1.pdf'}.should raise_error ActiveRecord::RecordNotSaved
+      stub_request(:any, "http://antwiki.org/1.pdf").to_return :body => "Not Found", :status => 404
+      lambda {reference.document = ReferenceDocument.create :url => 'http://antwiki.org/1.pdf'}.should raise_error ActiveRecord::RecordNotSaved
     end
 
   end
