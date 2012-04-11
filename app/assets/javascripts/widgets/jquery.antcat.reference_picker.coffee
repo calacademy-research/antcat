@@ -70,8 +70,6 @@ class AntCat.ReferencePicker
           self.load_clicked_page this
           false
         .end()
-      .find('.search_form#q')
-        .focus()
 
     @setup_search_selector()
 
