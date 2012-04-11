@@ -12,6 +12,28 @@ class AntCat.ReferencePicker
       .appendTo(parent)
       .append '<img src="/assets/ui-anim_basic_16x16.gif">'
 
+  load: (url = '') =>
+    if url.indexOf('/reference_picker') is -1
+      url = '/reference_picker?' + url
+    url = url + '&' + $.param id: @reference_id if @reference_id
+    @widget.find('*').attr 'disabled', 'disabled'
+    @widget.fadeTo 0, 0.75
+    @widget.find('#throbber').show()
+    $.ajax
+      url: url
+      dataType: 'html'
+      success: (data) =>
+        @widget.find('#throbber').hide()
+        @widget.html data
+        @initialize()
+      error: (xhr) => debugger
+
+  search: =>
+    @load $.param q: @textbox.val(), search_selector: @search_selector.val()
+
+  load_clicked_page: (link) =>
+    @load $(link).attr('href') + '&' + @widget.find('> form').serialize()
+
   initialize: =>
     @widget.fadeTo 0, 1.0
 
@@ -77,25 +99,6 @@ class AntCat.ReferencePicker
     @widget.show()
     @textbox.focus()
 
-  load: (url = '') =>
-    if url.indexOf('/reference_picker') is -1
-      url = '/reference_picker?' + url
-    url = url + '&' + $.param id: @reference_id if @reference_id
-    @widget.find('*').attr 'disabled', 'disabled'
-    @widget.fadeTo 0, 0.75
-    @widget.find('#throbber').show()
-    $.ajax
-      url: url
-      dataType: 'html'
-      success: (data) =>
-        @widget.find('#throbber').hide()
-        @widget.html data
-        @initialize()
-      error: (xhr) => debugger
-
-  load_clicked_page: (link) =>
-    @load $(link).attr('href') + '&' + @widget.find('> form').serialize()
-
   selected_search_result: =>
     results = @widget.find '.search_results .reference.ui-selected'
     return if results.length is 0
@@ -128,9 +131,6 @@ class AntCat.ReferencePicker
       else
         help = "Find a reference to #{help_verb}"
     @widget.find('.help_banner .help_banner_text').text help
-
-  search: =>
-    @load $.param q: @textbox.val(), search_selector: @search_selector.val()
 
   close: =>
     selected_references = @widget.find '.selected_reference .reference'
