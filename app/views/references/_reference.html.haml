@@ -14,7 +14,7 @@
         %a.icon.delete{:title => 'delete', :href => '#'}
           = image_tag 'delete_off.png', :alt => 'delete'
       %td.reference_item
-        = render 'display', :reference => reference if !reference.new_record? && reference.errors.empty?
+        = render 'references/display', :reference => reference if !reference.new_record? && reference.errors.empty?
         - if user_can_edit?
-          = render 'edit', :reference => reference, :publisher_string => publisher_string
+          = render 'references/edit', :reference => reference, :publisher_string => publisher_string
         = render 'shared/coins', :reference => reference if !reference.new_record? && reference.errors.empty?
