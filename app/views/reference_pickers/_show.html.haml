@@ -35,6 +35,6 @@
   %table.references.search_results
     - for reference in @references
       %tr.reference_row
-        %td = render '/references/reference', reference: reference, publisher_string: '', css_class: 'reference'
+        %td= render '/references/reference', reference: reference, publisher_string: '', css_class: 'reference'
 
 = render 'shared/qtip'
