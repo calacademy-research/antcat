@@ -32,7 +32,7 @@ class AntCat.ReferencePicker
     @load $.param q: @textbox.val(), search_selector: @search_selector.val()
 
   load_clicked_page: (link) =>
-    @load $(link).attr('href') + '&' + @widget.find('> form').serialize()
+    @load $(link).attr('href') + '&' + @widget.find('> .search_form').serialize()
 
   setup: =>
     #@widget.fadeTo 0, 1.0
