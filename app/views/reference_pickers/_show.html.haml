@@ -27,7 +27,7 @@
     = image_tag 'ui-anim_basic_16x16.gif', id: 'throbber'
   .clear
 
-- if references && (references.first != selected_reference || references.size != 1)
+- if references && (references.first != selected_reference || references.size != 1 || params[:q].present?)
 
   -if references.empty?
     .no_results_found No results found
