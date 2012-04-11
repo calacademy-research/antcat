@@ -239,11 +239,10 @@ class AntCat.ReferencePicker
 
     $reference.parent().html data.content
 
-    #if (!data.success) {
-      #$reference = $('#reference_' + (data.isNew ? '' : data.id))
-      #showReferenceEdit($reference)
-      #return
-    #}
+    unless data.success
+      $reference = $('#reference_' + if data.isNew then '' else data.id)
+      @show_reference_edit $reference
+      return
 
     $reference = $('#reference_' + data.id)
     $edit = $('.reference_edit', $reference)
