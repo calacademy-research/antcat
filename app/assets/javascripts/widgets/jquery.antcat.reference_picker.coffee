@@ -239,31 +239,32 @@ class AntCat.ReferencePicker
     true
 
   update_reference: (data, statusText, xhr, $form) =>
-    $reference = $('#reference_' + if data.isNew then '' else data.id)
-    $edit = $('.reference_edit', $reference)
+    id = '#reference_' + if data.isNew then '' else data.id
+    $(id).parent().html data.content
+    $reference = $ id
+
+    @setup_references()
 
     #$spinnerElement = $('button', $edit).parent()
     #$('input', $spinnerElement).attr('disabled', '')
     #$('button', $spinnerElement).attr('disabled', '')
     #$spinnerElement.spinner('remove')
 
-    $reference.parent().html data.content
-
     unless data.success
-      $reference = $('#reference_' + if data.isNew then '' else data.id)
       @show_reference_form $reference
       return
 
-    $reference = $('#reference_' + data.id)
-    $edit = $('.reference_edit', $reference)
-    @set_sibling_opacity $edit, '1'
-    $('.reference_edit', $reference).hide()
+    $reference
+      .find('.reference_edit')
+        .hide()
+        .end()
+      .find('.reference_display')
+        .show()
+        .effect("highlight", {}, 3000)
 
-    $('.icon.edit', $reference).show() if (AntCat.testing)
+    $edit.find('.icon.edit').show() if AntCat.testing
 
-    $('.reference_display', $reference)
-      .show()
-      .effect("highlight", {}, 3000)
+    #@set_sibling_opacity $edit, '1'
 
   cancel_reference_edit: =>
     false
