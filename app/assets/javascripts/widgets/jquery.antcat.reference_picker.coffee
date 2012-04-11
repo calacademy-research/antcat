@@ -45,7 +45,6 @@ class AntCat.ReferencePicker
     @setup_edit_icons()
     @setup_edits()
     @handle_new_selection()
-    @widget.show()
     @textbox.focus()
 
   setup_search_form: =>
