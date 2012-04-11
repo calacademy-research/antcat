@@ -194,10 +194,10 @@ class AntCat.ReferencePicker
   # -----------------------------------------
   setup_edit_icons: =>
     self = @
-    $('.icon').show() if AntCat.testing
+    $('.icon.edit').show() if AntCat.testing
     $('.reference')
-      .live('mouseenter', -> $('.icon', $(this)).show() unless self.is_editing())
-      .live('mouseleave', -> $('.icon').hide())
+      .live('mouseenter', -> $('.icon.edit', $(this)).show() unless self.is_editing())
+      .live('mouseleave', -> $('.icon.edit').hide())
     $('.icon.edit').live 'click', -> self.edit_reference this
 
   setup_edits: =>
@@ -250,7 +250,7 @@ class AntCat.ReferencePicker
     @set_sibling_opacity $edit, '1'
     $('.reference_edit', $reference).hide()
 
-    $('.icon', $reference).show() if (AntCat.testing)
+    $('.icon.edit', $reference).show() if (AntCat.testing)
 
     $('.reference_display', $reference)
       .show()
@@ -258,7 +258,7 @@ class AntCat.ReferencePicker
 
   show_reference_edit: ($reference) =>
     $('.reference_display', $reference).hide()
-    $('.icon', $reference).hide() unless AntCat.testing
+    $('.icon.edit', $reference).hide() unless AntCat.testing
 
     $edit = $('.reference_edit', $reference)
 
