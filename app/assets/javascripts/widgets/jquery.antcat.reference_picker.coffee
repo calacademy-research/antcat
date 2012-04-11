@@ -41,20 +41,7 @@ class AntCat.ReferencePicker
     @textbox = @widget.find '#q'
 
     @setup_search_form()
-
-    @widget
-      .find('.search_results')
-        .selectable(filter: '.reference', stop: @handle_new_selection, cancel: '.ui-selected')
-        .end()
-      .find('.reference')
-        .dblclick =>
-          @close()
-          false
-        .end()
-      .find(".selected_reference, .search_results #reference_#{@reference_id}")
-        .addClass('ui-selected')
-        .end()
-
+    @setup_references()
     @setup_edit_icons()
     @setup_edits()
     @handle_new_selection()
@@ -89,6 +76,11 @@ class AntCat.ReferencePicker
       .find('.search_form#q')
         .focus()
 
+    @setup_search_selector()
+
+    @enable_author_autocomplete()
+
+  setup_search_selector: =>
     @search_selector
       .selectmenu(wrapperElement: "<span />")
       .change =>
@@ -101,7 +93,19 @@ class AntCat.ReferencePicker
           @search_selector.closest('form').attr 'autocomplete', 'off'
         @textbox.focus()
 
-    @enable_author_autocomplete()
+  setup_references: =>
+    @widget
+      .find('.search_results')
+        .selectable(filter: '.reference', stop: @handle_new_selection, cancel: '.ui-selected')
+        .end()
+      .find('.reference')
+        .dblclick =>
+          @close()
+          false
+        .end()
+      .find(".selected_reference, .search_results #reference_#{@reference_id}")
+        .addClass('ui-selected')
+        .end()
 
   selected_search_result: =>
     results = @widget.find '.search_results .reference.ui-selected'
