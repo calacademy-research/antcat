@@ -3,11 +3,14 @@ window.AntCat or= {}
 class AntCat.ReferencePicker
 
   constructor: (parent, @reference_id, @result_handler) ->
-    @widget = $("<div class='antcat-reference-picker ui-widget'></div>")
-    @widget.appendTo parent
-    @widget.append '<img src="/assets/ui-anim_basic_16x16.gif">'
+    @create parent
     @load()
     @
+
+  create: (parent) =>
+    @widget = $("<div class='antcat-reference-picker ui-widget'></div>")
+      .appendTo(parent)
+      .append '<img src="/assets/ui-anim_basic_16x16.gif">'
 
   initialize: =>
     @widget.fadeTo 0, 1.0
