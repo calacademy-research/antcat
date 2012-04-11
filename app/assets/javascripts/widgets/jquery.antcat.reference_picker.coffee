@@ -72,8 +72,7 @@ class AntCat.ReferencePicker
         .end()
 
     @setup_search_selector()
-
-    @enable_author_autocomplete()
+    @enable_search_author_autocomplete()
 
   setup_search_selector: =>
     @search_selector
@@ -81,10 +80,10 @@ class AntCat.ReferencePicker
       .change =>
         new_type = @search_selector.find('option:selected').text()
         if new_type is 'Search for'
-          @disable_author_autocomplete()
+          @disable_search_author_autocomplete()
           @search_selector.closest('form').removeAttr 'autocomplete'
         else
-          @enable_author_autocomplete()
+          @enable_search_author_autocomplete()
           @search_selector.closest('form').attr 'autocomplete', 'off'
         @textbox.focus()
 
@@ -144,7 +143,7 @@ class AntCat.ReferencePicker
     @widget.remove()
     @result_handler(taxt) if @result_handler
 
-  enable_author_autocomplete: =>
+  enable_search_author_autocomplete: =>
     return if AntCat.testing
     @textbox.autocomplete
       autoFocus: true
@@ -155,17 +154,15 @@ class AntCat.ReferencePicker
           $.getJSON "/authors/all", term: search_term, result_handler
         else
           result_handler []
-
     # don't update the search textbox when the autocomplete item changes
     focus: -> false
-
     select: (event, data) =>
       value_and_position = AntCat.ReferencePicker.insert_author(@textbox.val(), @textbox.getSelection().start, data.item.value)
       @textbox.val value_and_position.string
       @textbox.setCaretPos value_and_position.position + 1
       false
 
-  disable_author_autocomplete: =>
+  disable_search_author_autocomplete: =>
     @textbox.autocomplete 'destroy'
 
   @extract_author_search_term: (string, position) =>
