@@ -25,7 +25,7 @@ class AntCat.ReferencePicker
       success: (data) =>
         @widget.find('#throbber').hide()
         @widget.html data
-        @initialize()
+        @setup()
       error: (xhr) => debugger
 
   search: =>
@@ -34,13 +34,35 @@ class AntCat.ReferencePicker
   load_clicked_page: (link) =>
     @load $(link).attr('href') + '&' + @widget.find('> form').serialize()
 
-  initialize: =>
+  setup: =>
     @widget.fadeTo 0, 1.0
 
-    self = @
-    @textbox = @widget.find '#q'
     @search_selector = @widget.find '#search_selector'
+    @textbox = @widget.find '#q'
 
+    @setup_search_form()
+
+    @widget
+      .find('.search_results')
+        .selectable(filter: '.reference', stop: @handle_new_selection, cancel: '.ui-selected')
+        .end()
+      .find('.reference')
+        .dblclick =>
+          @close()
+          false
+        .end()
+      .find(".selected_reference, .search_results #reference_#{@reference_id}")
+        .addClass('ui-selected')
+        .end()
+
+    @setup_edit_icons()
+    @setup_edits()
+    @handle_new_selection()
+    @widget.show()
+    @textbox.focus()
+
+  setup_search_form: =>
+    self = @
     @widget
       .find(':button, :submit')
         .button()
@@ -59,17 +81,6 @@ class AntCat.ReferencePicker
           @search()
           false
         .end()
-      .find('.search_results')
-        .selectable(filter: '.reference', stop: @handle_new_selection, cancel: '.ui-selected')
-        .end()
-      .find('.reference')
-        .dblclick =>
-          @close()
-          false
-        .end()
-      .find(".selected_reference, .search_results #reference_#{@reference_id}")
-        .addClass('ui-selected')
-        .end()
       .find('.pagination a')
         .click ->
           self.load_clicked_page this
@@ -77,9 +88,6 @@ class AntCat.ReferencePicker
         .end()
       .find('.search_form#q')
         .focus()
-
-    @setup_edit_icons()
-    @setup_edits()
 
     @search_selector
       .selectmenu(wrapperElement: "<span />")
@@ -94,10 +102,6 @@ class AntCat.ReferencePicker
         @textbox.focus()
 
     @enable_author_autocomplete()
-    @handle_new_selection()
-
-    @widget.show()
-    @textbox.focus()
 
   selected_search_result: =>
     results = @widget.find '.search_results .reference.ui-selected'
