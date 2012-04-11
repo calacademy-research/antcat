@@ -29,13 +29,10 @@ Feature: Reference picker
     And I should not see "Bolton's book"
 
   Scenario: Editing the selected reference
+    Given I am logged in
     When I visit the reference picker widget test page, opened to the first reference
-    When I follow "edit"
-    #Then I should see the edit form
-    #And I should not see the reference
-    #When I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
-    #And I fill in "reference_title" with "Ant Title"
-    #And I press the "Save" button
-    #And I wait for a bit
-    #Then I should be on the references page
-    #And I should see "Ward, B.L.; Bolton, B. 2010. Ant Title"
+    And I edit the reference
+    When I set the authors to "Ward, B.L.; Bolton, B."
+    And I set the title to "Ant Title"
+    And I save the form
+    Then I should see "Ward, B.L.; Bolton, B. 1995b. Ant Title"

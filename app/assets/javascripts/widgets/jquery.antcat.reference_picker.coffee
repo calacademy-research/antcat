@@ -209,8 +209,8 @@ class AntCat.ReferencePicker
   submit_reference_edit: (submit_button) =>
     $(submit_button).closest('form').ajaxSubmit
       beforeSerialize: @before_serialize
-      #success: -> alert 'success'
-      #error: -> alert 'error'
+      success: @update_reference
+      dataType: 'json'
     false
 
   before_serialize: ($form, options) =>
@@ -227,6 +227,33 @@ class AntCat.ReferencePicker
     #saveReference($reference)
     @show_reference_edit $reference
     false
+
+  update_reference: (data, statusText, xhr, $form) =>
+    $reference = $('#reference_' + if data.isNew then '' else data.id)
+    $edit = $('.reference_edit', $reference)
+
+    #$spinnerElement = $('button', $edit).parent()
+    #$('input', $spinnerElement).attr('disabled', '')
+    #$('button', $spinnerElement).attr('disabled', '')
+    #$spinnerElement.spinner('remove')
+
+    $reference.parent().html data.content
+
+    #if (!data.success) {
+      #$reference = $('#reference_' + (data.isNew ? '' : data.id))
+      #showReferenceEdit($reference)
+      #return
+    #}
+
+    $reference = $('#reference_' + data.id)
+    $('.reference_edit', $reference).hide()
+
+    ##$('.icon', $reference).show() if (AntCat.testing)
+
+    $('.antcat-reference-picker').show()
+    $('.reference_display', $reference)
+      .show()
+      .effect("highlight", {}, 3000)
 
   show_reference_edit: ($reference) =>
     $('.reference_display', $reference).hide()
