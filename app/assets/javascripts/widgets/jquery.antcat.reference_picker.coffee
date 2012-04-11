@@ -246,11 +246,12 @@ class AntCat.ReferencePicker
     #}
 
     $reference = $('#reference_' + data.id)
+    $edit = $('.reference_edit', $reference)
+    @set_sibling_opacity $edit, '1'
     $('.reference_edit', $reference).hide()
 
-    ##$('.icon', $reference).show() if (AntCat.testing)
+    $('.icon', $reference).show() if (AntCat.testing)
 
-    $('.antcat-reference-picker').show()
     $('.reference_display', $reference)
       .show()
       .effect("highlight", {}, 3000)
@@ -268,7 +269,7 @@ class AntCat.ReferencePicker
     #setupReferenceEditPublisherAutocomplete($reference)
 
     $edit.show()
-    @fade_everything_but $reference
+    @set_sibling_opacity $edit, '.3'
     $edit.find('input[type=text]:first').focus()
 
   setup_tabs: ($reference) =>
@@ -289,9 +290,9 @@ class AntCat.ReferencePicker
 
     $('.tabs', $reference).tabs({selected: selected_tab})
       
-  fade_everything_but: ($element) =>
+  set_sibling_opacity: ($element, opacity) =>
     while not $element.hasClass 'antcat-reference-picker'
-      $element.siblings().fadeTo 'fast', 0.4
+      $element.siblings().css 'opacity', opacity
       $element = $element.parent()
 
   is_editing: =>
