@@ -14,7 +14,6 @@ class AntCat.ReferencePicker
 
   initialize: =>
     @widget.fadeTo 0, 1.0
-    @current_selection = null
 
     self = @
     @textbox = @widget.find '#q'
