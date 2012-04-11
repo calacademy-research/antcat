@@ -267,8 +267,10 @@ class AntCat.ReferencePicker
     #setupReferenceEditJournalAutocomplete($reference)
     #setupReferenceEditPublisherAutocomplete($reference)
 
+    $('.delete', $edit).hide()
     $edit.show()
     @set_sibling_opacity $edit, '.3'
+
     $edit.find('input[type=text]:first').focus()
 
   setup_tabs: ($reference) =>
