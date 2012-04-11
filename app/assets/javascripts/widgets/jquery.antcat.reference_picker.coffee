@@ -4,11 +4,9 @@ class AntCat.ReferencePicker
 
   constructor: (parent, @reference_id, @result_handler) ->
     @widget = $("<div class='antcat-reference-picker ui-widget'></div>")
-    @widget.appendTo(parent)
-    @widget.show()
-    @widget.append('<img src="/assets/ui-anim_basic_16x16.gif">')
+    @widget.appendTo parent
+    @widget.append '<img src="/assets/ui-anim_basic_16x16.gif">'
     @load()
-    @help_verb = if @reference_id then 'use' else 'insert'
     @
 
   initialize: =>
@@ -114,18 +112,19 @@ class AntCat.ReferencePicker
     @update_help_banner()
 
   update_help_banner: =>
+    help_verb = if @reference_id then 'use' else 'insert'
     any_search_results = @widget.find('.search_results .reference').length > 0
     if @selected_reference()
       if any_search_results
         other_verb = 'choose'
       else
         other_verb = 'search for'
-      help = "Click OK to #{@help_verb} this reference, or #{other_verb} a different one"
+      help = "Click OK to #{help_verb} this reference, or #{other_verb} a different one"
     else
       if any_search_results
-        help = "Choose a reference to #{@help_verb}"
+        help = "Choose a reference to #{help_verb}"
       else
-        help = "Find a reference to #{@help_verb}"
+        help = "Find a reference to #{help_verb}"
     @widget.find('.help_banner .help_banner_text').text help
 
   search: =>
