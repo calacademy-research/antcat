@@ -36,3 +36,11 @@ Feature: Reference picker
     And I set the title to "Ant Title"
     And I save the form
     Then I should see "Ward, B.L.; Bolton, B. 1995b. Ant Title"
+
+  Scenario: Error when editing reference
+    Given I am logged in
+    When I visit the reference picker widget test page, opened to the first reference
+    And I edit the reference
+    When I set the title to ""
+    And I save the form
+    And I should see "Title can't be blank"
