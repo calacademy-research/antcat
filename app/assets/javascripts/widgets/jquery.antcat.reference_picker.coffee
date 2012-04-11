@@ -49,22 +49,20 @@ class AntCat.ReferencePicker
 
   setup_search_form: =>
     self = @
-    @widget
+    @widget.find('.search_form')
+      .submit =>
+        @search()
+        false
+      .keypress (event) =>
+        return true unless event.which is @ENTER
+        @search()
+        false
       .find(':button, :submit')
         .button()
         .end()
       .find(':button.ok, :button.close')
         .click =>
           @close()
-          false
-        .end()
-      .find('form')
-        .keypress (event) =>
-          return true unless event.which is @ENTER
-          @search()
-          false
-        .submit =>
-          @search()
           false
         .end()
       .find('.pagination a')
