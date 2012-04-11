@@ -51,7 +51,6 @@ class AntCat.ReferencePicker
 
     @setup_search_form()
     @setup_references()
-    @setup_edits()
     @handle_new_selection()
     @textbox.focus()
 
@@ -172,11 +171,60 @@ class AntCat.ReferencePicker
   ENTER: 13
 
   # -----------------------------------------
-  setup_edits: =>
+  edit_reference: (icon) ->
+    return if @is_editing()
+    $reference = $(icon).closest '.reference'
+    #saveReference($reference)
+    @show_reference_form $reference
+    false
+
+  show_reference_form: ($reference) =>
     self = @
-    $('.reference_edit').hide()
-    $('.reference_edit .submit').live('click', -> self.submit_reference_edit this)
-    $('.reference_edit .cancel').live('click', @cancel_reference_edit)
+    $edit = $reference.find '.reference_edit'
+
+    $edit
+      .find(':button, :submit')
+        .button()
+        .end()
+      .find('.submit')
+        .click ->
+          self.submit_reference_edit this
+        .end()
+      .find('.cancel')
+        .click(@cancel_reference_edit)
+        .end()
+      .find('.delete')
+        .hide()
+        .end()
+
+    @setup_tabs $reference
+
+    #setupReferenceEditAuthorAutocomplete($reference)
+    #setupReferenceEditJournalAutocomplete($reference)
+    #setupReferenceEditPublisherAutocomplete($reference)
+
+    #@set_sibling_opacity $edit, '.3'
+
+    $edit.find('.icon.edit').hide() unless AntCat.testing
+
+    $reference.find('.reference_display').hide()
+    $edit
+      .show()
+      .find('input[type=text]:first')
+        .focus()
+
+  setup_tabs: ($reference) =>
+    id = $reference.attr('id')
+    selected_tab = $('.selected_tab', $reference).val()
+    $('.tabs .article-tab', $reference).attr('href', '#reference_article' + id)
+    $('.tabs .article-tab-section', $reference).attr('id', 'reference_article' + id)
+    $('.tabs .book-tab', $reference).attr('href', '#reference_book' + id)
+    $('.tabs .book-tab-section', $reference).attr('id', 'reference_book' + id)
+    $('.tabs .nested-tab', $reference).attr('href', '#reference_nested' + id)
+    $('.tabs .nested-tab-section', $reference).attr('id', 'reference_nested' + id)
+    $('.tabs .unknown-tab', $reference).attr('href', '#reference_unknown' + id)
+    $('.tabs .unknown-tab-section', $reference).attr('id', 'reference_unknown' + id)
+    $('.tabs', $reference).tabs({selected: selected_tab})
 
   submit_reference_edit: (submit_button) =>
     $(submit_button).closest('form').ajaxSubmit
@@ -189,16 +237,6 @@ class AntCat.ReferencePicker
     selectedTab = $.trim($('.ui-tabs-selected', $form).text())
     $('#selected_tab', $form).val selectedTab
     true
-
-  cancel_reference_edit: =>
-    false
-
-  edit_reference: (icon) ->
-    return if @is_editing()
-    $reference = $(icon).closest '.reference'
-    #saveReference($reference)
-    @show_reference_edit $reference
-    false
 
   update_reference: (data, statusText, xhr, $form) =>
     $reference = $('#reference_' + if data.isNew then '' else data.id)
@@ -213,7 +251,7 @@ class AntCat.ReferencePicker
 
     unless data.success
       $reference = $('#reference_' + if data.isNew then '' else data.id)
-      @show_reference_edit $reference
+      @show_reference_form $reference
       return
 
     $reference = $('#reference_' + data.id)
@@ -227,42 +265,9 @@ class AntCat.ReferencePicker
       .show()
       .effect("highlight", {}, 3000)
 
-  show_reference_edit: ($reference) =>
-    $('.reference_display', $reference).hide()
-    $('.icon.edit', $reference).hide() unless AntCat.testing
+  cancel_reference_edit: =>
+    false
 
-    $edit = $('.reference_edit', $reference)
-
-    @setup_tabs $reference
-
-    #setupReferenceEditAuthorAutocomplete($reference)
-    #setupReferenceEditJournalAutocomplete($reference)
-    #setupReferenceEditPublisherAutocomplete($reference)
-
-    $('.delete', $edit).hide()
-    $edit.show()
-    @set_sibling_opacity $edit, '.3'
-
-    $edit.find('input[type=text]:first').focus()
-
-  setup_tabs: ($reference) =>
-    id = $reference.attr('id')
-    selected_tab = $('.selected_tab', $reference).val()
-
-    $('.tabs .article-tab', $reference).attr('href', '#reference_article' + id)
-    $('.tabs .article-tab-section', $reference).attr('id', 'reference_article' + id)
-
-    $('.tabs .book-tab', $reference).attr('href', '#reference_book' + id)
-    $('.tabs .book-tab-section', $reference).attr('id', 'reference_book' + id)
-
-    $('.tabs .nested-tab', $reference).attr('href', '#reference_nested' + id)
-    $('.tabs .nested-tab-section', $reference).attr('id', 'reference_nested' + id)
-
-    $('.tabs .unknown-tab', $reference).attr('href', '#reference_unknown' + id)
-    $('.tabs .unknown-tab-section', $reference).attr('id', 'reference_unknown' + id)
-
-    $('.tabs', $reference).tabs({selected: selected_tab})
-      
   # -----------------------------------------
   set_sibling_opacity: ($element, opacity) =>
     while not $element.hasClass 'antcat-reference-picker'
