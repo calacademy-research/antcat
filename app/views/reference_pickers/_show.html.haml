@@ -33,7 +33,7 @@
     .no_results_found No results found
 
   %table.references.search_results
-    - for reference in @references
+    - for reference in references
       %tr.reference_row
         %td= render '/references/reference', reference: reference, publisher_string: '', css_class: 'reference'
 
