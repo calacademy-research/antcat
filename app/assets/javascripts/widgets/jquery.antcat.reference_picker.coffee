@@ -34,6 +34,15 @@ class AntCat.ReferencePicker
   load_clicked_page: (link) =>
     @load $(link).attr('href') + '&' + @widget.find('> .search_form').serialize()
 
+  close: =>
+    selected_references = @widget.find '.selected_reference .reference'
+    if selected_references.length > 0
+      taxt = selected_references.first().data 'taxt'
+    else
+      taxt = 'No selection'
+    @widget.remove()
+    @result_handler taxt if @result_handler
+
   setup: =>
     #@widget.fadeTo 0, 1.0
 
@@ -105,16 +114,6 @@ class AntCat.ReferencePicker
     @widget.find('.icon.edit').show() if AntCat.testing
     @widget.find('.icon.edit').click -> self.edit_reference this
 
-  selected_search_result: =>
-    results = @widget.find '.search_results .reference.ui-selected'
-    return if results.length is 0
-    results.first()
-
-  selected_reference: =>
-    references = @widget.find('.selected_reference .reference')
-    return if references.length is 0
-    references.first()
-
   handle_new_selection: =>
     search_result = @selected_search_result()
     if search_result
@@ -122,31 +121,7 @@ class AntCat.ReferencePicker
     @widget.toggleClass 'has-no-selection', not @selected_reference()
     @update_help_banner()
 
-  update_help_banner: =>
-    help_verb = if @reference_id then 'use' else 'insert'
-    any_search_results = @widget.find('.search_results .reference').length > 0
-    if @selected_reference()
-      if any_search_results
-        other_verb = 'choose'
-      else
-        other_verb = 'search for'
-      help = "Click OK to #{help_verb} this reference, or #{other_verb} a different one"
-    else
-      if any_search_results
-        help = "Choose a reference to #{help_verb}"
-      else
-        help = "Find a reference to #{help_verb}"
-    @widget.find('.help_banner .help_banner_text').text help
-
-  close: =>
-    selected_references = @widget.find '.selected_reference .reference'
-    if selected_references.length > 0
-      taxt = selected_references.first().data 'taxt'
-    else
-      taxt = 'No selection'
-    @widget.remove()
-    @result_handler(taxt) if @result_handler
-
+  # -----------------------------------------
   enable_search_author_autocomplete: =>
     return if AntCat.testing
     @textbox.autocomplete
@@ -288,6 +263,7 @@ class AntCat.ReferencePicker
 
     $('.tabs', $reference).tabs({selected: selected_tab})
       
+  # -----------------------------------------
   set_sibling_opacity: ($element, opacity) =>
     while not $element.hasClass 'antcat-reference-picker'
       $element.siblings().css 'opacity', opacity
@@ -295,3 +271,30 @@ class AntCat.ReferencePicker
 
   is_editing: =>
     @widget.find('.reference_edit:visible').length > 0
+
+  selected_search_result: =>
+    results = @widget.find '.search_results .reference.ui-selected'
+    return if results.length is 0
+    results.first()
+
+  selected_reference: =>
+    references = @widget.find('.selected_reference .reference')
+    return if references.length is 0
+    references.first()
+
+  update_help_banner: =>
+    help_verb = if @reference_id then 'use' else 'insert'
+    any_search_results = @widget.find('.search_results .reference').length > 0
+    if @selected_reference()
+      if any_search_results
+        other_verb = 'choose'
+      else
+        other_verb = 'search for'
+      help = "Click OK to #{help_verb} this reference, or #{other_verb} a different one"
+    else
+      if any_search_results
+        help = "Choose a reference to #{help_verb}"
+      else
+        help = "Find a reference to #{help_verb}"
+    @widget.find('.help_banner .help_banner_text').text help
+
