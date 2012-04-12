@@ -8,9 +8,18 @@ class AntCat.ReferencePicker
     @
 
   create: (parent) =>
-    @widget = $("<div class='antcat-reference-picker ui-widget'></div>")
-      .appendTo(parent)
-      .append '<img src="/assets/ui-anim_basic_16x16.gif">'
+    @widget = $('<div/>').addClass 'antcat-reference-picker ui-widget'
+    @widget.append @help_banner_bootstrap()
+
+    @widget.appendTo parent
+
+  help_banner_bootstrap: =>
+    help_banner_text = $('<span/>')
+      .addClass('help_banner_text')
+      .text('Loading...')
+    $('<div/>')
+      .addClass('help_banner')
+      .append help_banner_text
 
   load: (url = '') =>
     if url.indexOf('/reference_picker') is -1
