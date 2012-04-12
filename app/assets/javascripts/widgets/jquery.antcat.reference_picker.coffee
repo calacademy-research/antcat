@@ -286,7 +286,7 @@ class AntCat.ReferencePicker
   selected_reference: =>
     references = @widget.find('.selected_reference .reference')
     return if references.length is 0
-    references.first()
+    references
 
   update_help_banner: =>
     help_verb = if @reference_id then 'use' else 'insert'
