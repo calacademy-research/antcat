@@ -132,6 +132,16 @@ class AntCat.ReferencePicker
     @widget.toggleClass 'has-no-selection', not @selected_reference()
     @update_help_banner()
 
+  selected_search_result: =>
+    results = @widget.find '.search_results .reference_display.ui-selected'
+    return if results.length is 0
+    results.closest '.reference'
+
+  selected_reference: =>
+    references = @widget.find('.selected_reference .reference')
+    return if references.length is 0
+    references
+
   # -----------------------------------------
   enable_search_author_autocomplete: =>
     return if AntCat.testing
@@ -289,16 +299,6 @@ class AntCat.ReferencePicker
 
   is_editing: =>
     @widget.find('.reference_edit:visible').length > 0
-
-  selected_search_result: =>
-    results = @widget.find '.search_results .reference_display.ui-selected'
-    return if results.length is 0
-    results.closest '.reference'
-
-  selected_reference: =>
-    references = @widget.find('.selected_reference .reference')
-    return if references.length is 0
-    references
 
   update_help_banner: =>
     help_verb = if @reference_id then 'use' else 'insert'
