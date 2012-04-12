@@ -34,14 +34,20 @@ class AntCat.ReferencePicker
   load_clicked_page: (link) =>
     @load $(link).attr('href') + '&' + @widget.find('> .search_form').serialize()
 
-  close: =>
-    selected_references = @widget.find '.selected_reference .reference'
-    if selected_references.length > 0
-      taxt = selected_references.first().data 'taxt'
+  close: (cancel = false) =>
+    if cancel
+      taxt = null
     else
-      taxt = 'No selection'
+      selected_references = @widget.find '.selected_reference .reference'
+      if selected_references.length > 0
+        taxt = selected_references.first().data 'taxt'
+      else
+        taxt = 'No selection'
     @widget.remove()
     @result_handler taxt if @result_handler
+
+  cancel: =>
+    @close true
 
   setup: =>
     #@widget.fadeTo 0, 1.0
@@ -67,9 +73,14 @@ class AntCat.ReferencePicker
       .find(':button, :submit')
         .button()
         .end()
-      .find(':button.ok, :button.close')
+      .find(':button.ok')
         .click =>
           @close()
+          false
+        .end()
+      .find(':button.close')
+        .click =>
+          @cancel()
           false
         .end()
       .find('.pagination a')
