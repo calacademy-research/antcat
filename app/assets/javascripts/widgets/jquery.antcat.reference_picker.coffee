@@ -240,7 +240,7 @@ class AntCat.ReferencePicker
 
   update_reference: (data, statusText, xhr, $form) =>
     id = '#reference_' + if data.isNew then '' else data.id
-    $(id).parent().html data.content
+    $(id).each -> $(@).parent().html data.content
     $reference = $ id
 
     @setup_references()
