@@ -1,7 +1,9 @@
 -#Locals: reference
 
 - reference ||= Reference.new
-%div{id: "reference_#{reference.id}", class: css_class, 'data-taxt' => Taxt.to_editable_reference(reference)}
+- id = "reference_#{reference.id}"
+- css_class << ' ' << id
+%div{id: id, class: css_class, 'data-taxt' => Taxt.to_editable_reference(reference)}
   %table.reference_table
     %tr
       %td.icons

@@ -46,8 +46,8 @@ class AntCat.ReferencePicker
   setup: =>
     #@widget.fadeTo 0, 1.0
 
-    @search_selector = @widget.find '#search_selector'
-    @textbox = @widget.find '#q'
+    @search_selector = @widget.find '.search_selector'
+    @textbox = @widget.find '.q'
 
     @setup_search_form()
     @setup_references()
@@ -104,7 +104,7 @@ class AntCat.ReferencePicker
           @close()
           false
         .end()
-      .find(".selected_reference, .search_results #reference_#{@reference_id}")
+      .find(".selected_reference, .search_results .reference_#{@reference_id}")
         .addClass('ui-selected')
         .end()
       .find('.search_results')
@@ -239,7 +239,7 @@ class AntCat.ReferencePicker
     true
 
   update_reference: (data, statusText, xhr, $form) =>
-    id = '#reference_' + if data.isNew then '' else data.id
+    id = '.reference_' + if data.isNew then '' else data.id
     $(id).each -> $(@).parent().html data.content
     $reference = $ id
 
