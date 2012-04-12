@@ -38,11 +38,11 @@ class AntCat.ReferencePicker
     if cancel
       taxt = null
     else
-      selected_references = @widget.find '.selected_reference .reference'
-      if selected_references.length > 0
-        taxt = selected_references.first().data 'taxt'
+      selected_reference = @selected_reference()
+      if selected_reference
+        taxt = selected_reference.data 'taxt'
       else
-        taxt = 'No selection'
+        taxt = null
     @widget.remove()
     @result_handler taxt if @result_handler
 
