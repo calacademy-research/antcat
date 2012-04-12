@@ -104,11 +104,11 @@ class AntCat.ReferencePicker
           @close()
           false
         .end()
-      .find(".selected_reference, .search_results .reference_#{@reference_id}")
+      .find(".search_results .reference_#{@reference_id} .reference_display")
         .addClass('ui-selected')
         .end()
       .find('.search_results')
-        .selectable(filter: '.reference', stop: @handle_new_selection, cancel: '.ui-selected')
+        .selectable(filter: '.reference_display', stop: @handle_new_selection, cancel: '.icons, .reference_edit')
         .end()
     @widget.find('.icon.edit').show() if AntCat.testing
     @widget.find('.icon.edit').click -> self.edit_reference this
@@ -279,9 +279,9 @@ class AntCat.ReferencePicker
     @widget.find('.reference_edit:visible').length > 0
 
   selected_search_result: =>
-    results = @widget.find '.search_results .reference.ui-selected'
+    results = @widget.find '.search_results .reference_display.ui-selected'
     return if results.length is 0
-    results.first()
+    results.closest '.reference'
 
   selected_reference: =>
     references = @widget.find('.selected_reference .reference')
