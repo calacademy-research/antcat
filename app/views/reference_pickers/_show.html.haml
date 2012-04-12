@@ -20,6 +20,7 @@
     = text_field_tag "q", params[:q], class: 'q'
     = image_tag 'help.png', class: 'help_icon'
     = button_tag 'Go', class: 'ui-priority-primary'
+    = button_tag 'Close', class: 'ui-priority-primary close'
 
   = will_paginate references if references
 
