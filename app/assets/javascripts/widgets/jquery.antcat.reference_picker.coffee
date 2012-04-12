@@ -108,6 +108,7 @@ class AntCat.ReferencePicker
         .addClass('ui-selected')
         .end()
       .find('.search_results')
+        .selectable('destroy')
         .selectable(filter: '.reference_display', stop: @handle_new_selection, cancel: '.icons, .reference_edit')
         .end()
     @widget.find('.icon.edit').show() if AntCat.testing
