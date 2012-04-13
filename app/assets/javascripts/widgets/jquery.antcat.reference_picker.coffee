@@ -2,7 +2,8 @@ window.AntCat or= {}
 
 class AntCat.ReferencePicker
 
-  constructor: (parent, @reference_id, @result_handler) ->
+  constructor: (parent, @original_reference_id, @result_handler) ->
+    @current_reference_id = @original_reference_id
     @create parent
     @load()
     @
@@ -23,7 +24,7 @@ class AntCat.ReferencePicker
   load: (url = '') =>
     if url.indexOf('/reference_picker') is -1
       url = '/reference_picker?' + url
-    url = url + '&' + $.param id: @reference_id if @reference_id
+    url = url + '&' + $.param id: @current_reference_id if @current_reference_id
 
     @widget
       .find('.throbber img')
@@ -51,7 +52,7 @@ class AntCat.ReferencePicker
     @load $(link).attr('href') + '&' + @widget.find('> .search_form').serialize()
 
   close: (cancel = false) =>
-    taxt = if not cancel and @selected_reference() then @selected_reference().data 'taxt' else null
+    taxt = if not cancel and @current_reference() then @current_reference().data 'taxt' else null
     @widget.remove()
     @result_handler taxt if @result_handler
 
@@ -120,7 +121,7 @@ class AntCat.ReferencePicker
           @close()
           false
         .end()
-      .find(".search_results .reference_#{@reference_id} .reference_display")
+      .find(".search_results .reference_#{@current_reference_id} .reference_display")
         .addClass('ui-selected')
         .end()
       .find('.search_results')
@@ -138,7 +139,8 @@ class AntCat.ReferencePicker
           .html(search_result.clone(true).removeClass 'ui-selected ui-selectee')
           .find('.reference_display')
             .effect("highlight", {color: 'lightgreen'}, 3000)
-    @widget.toggleClass 'has-no-selection', not @selected_reference()
+    @current_reference_id = if @current_reference() then @current_reference().data 'reference-id' else null
+    @widget.toggleClass 'has-no-selection', not @current_reference()
     @update_help_banner()
 
   selected_search_result: =>
@@ -146,7 +148,7 @@ class AntCat.ReferencePicker
     return if results.length is 0
     results.closest '.reference'
 
-  selected_reference: =>
+  current_reference: =>
     references = @widget.find('.selected_reference .reference')
     return if references.length is 0
     references
@@ -312,9 +314,9 @@ class AntCat.ReferencePicker
     @widget.find('.reference_edit:visible').length > 0
 
   update_help_banner: =>
-    help_verb = if @reference_id then 'use' else 'insert'
+    help_verb = if @original_reference_id then 'use' else 'insert'
     any_search_results = @widget.find('.search_results .reference').length > 0
-    if @selected_reference()
+    if @current_reference()
       if any_search_results
         other_verb = 'choose'
       else
