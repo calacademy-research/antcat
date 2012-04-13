@@ -132,18 +132,18 @@ class AntCat.ReferencePicker
     @widget.find('.icon.edit').click -> self.edit_reference this
 
   handle_new_selection: =>
-    search_result = @selected_search_result()
-    if search_result
+    selected_reference = @selected_reference()
+    if selected_reference
       @widget
         .find('.current_reference td')
-          .html(search_result.clone(true).removeClass 'ui-selected ui-selectee')
+          .html(selected_reference.clone(true).removeClass 'ui-selected ui-selectee')
           .find('.reference_display')
             .effect("highlight", {color: 'lightgreen'}, 3000)
     @current_reference_id = if @current_reference() then @current_reference().data 'reference-id' else null
     @widget.toggleClass 'has-no-current-reference', not @current_reference()
     @update_help_banner()
 
-  selected_search_result: =>
+  selected_reference: =>
     results = @widget.find '.search_results .reference_display.ui-selected'
     return if results.length is 0
     results.closest '.reference'
@@ -314,18 +314,18 @@ class AntCat.ReferencePicker
     @widget.find('.reference_edit:visible').length > 0
 
   update_help_banner: =>
-    help_verb = if @original_reference_id then 'use' else 'insert'
+    verb = if @original_reference_id then 'use' else 'insert'
     any_search_results = @widget.find('.search_results .reference').length > 0
     if @current_reference()
       if any_search_results
         other_verb = 'choose'
       else
         other_verb = 'search for'
-      help = "Click OK to #{help_verb} this reference, or #{other_verb} a different one"
+      help = "Click OK to #{verb} this reference, or #{other_verb} a different one"
     else
       if any_search_results
-        help = "Choose a reference to #{help_verb}"
+        help = "Choose a reference to #{verb}"
       else
-        help = "Find a reference to #{help_verb}"
+        help = "Find a reference to #{verb}"
     @widget.find('.help_banner .help_banner_text').text help
 
