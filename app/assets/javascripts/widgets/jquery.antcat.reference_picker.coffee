@@ -138,7 +138,11 @@ class AntCat.ReferencePicker
   handle_new_selection: =>
     search_result = @selected_search_result()
     if search_result
-      @widget.find('.selected_reference td').html search_result.clone(true).removeClass('ui-selected ui-selectee')
+      @widget
+        .find('.selected_reference td')
+          .html(search_result.clone(true).removeClass 'ui-selected ui-selectee')
+          .find('.reference_display')
+            .effect("highlight", {color: 'lightgreen'}, 3000)
     @widget.toggleClass 'has-no-selection', not @selected_reference()
     @update_help_banner()
 
