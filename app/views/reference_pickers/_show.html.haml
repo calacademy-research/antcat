@@ -10,6 +10,8 @@
         = render '/references/reference', reference: selected_reference, publisher_string: '', css_class: 'reference'
 
 = form_tag reference_picker_path, class: 'search_form' do
+  .throbber
+    = image_tag 'ui-anim_basic_16x16.gif'
 
   .ok_cancel_controls
     = button_tag 'OK', class: 'ok ui-priority-primary'
@@ -24,8 +26,6 @@
 
   = will_paginate references if references
 
-  .throbber
-    = image_tag 'ui-anim_basic_16x16.gif', id: 'throbber'
   .clear
 
 - if references && (references.first != selected_reference || references.size != 1 || params[:q].present?)

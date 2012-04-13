@@ -27,12 +27,11 @@ class AntCat.ReferencePicker
     url = url + '&' + $.param id: @reference_id if @reference_id
     #@widget.find('*').attr 'disabled', 'disabled'
     #@widget.fadeTo 0, 0.75
-    #@widget.find('#throbber').show()
+    @widget.find('.throbber img').show()
     $.ajax
       url: url
       dataType: 'html'
       success: (data) =>
-        @widget.find('#throbber').hide()
         @widget.html data
         @setup()
       error: (xhr) => debugger
