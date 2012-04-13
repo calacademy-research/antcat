@@ -16,7 +16,7 @@ class AntCat.ReferencePicker
   help_banner_bootstrap: =>
     help_banner_text = $('<span/>')
       .addClass('help_banner_text')
-      .text('Loading...')
+      .html('Loading&hellip;')
     $('<div/>')
       .addClass('help_banner')
       .append help_banner_text
