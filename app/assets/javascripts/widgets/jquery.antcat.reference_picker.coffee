@@ -10,7 +10,6 @@ class AntCat.ReferencePicker
   create: (parent) =>
     @widget = $('<div/>').addClass 'antcat-reference-picker ui-widget'
     @widget.append @help_banner_bootstrap()
-
     @widget.appendTo parent
 
   help_banner_bootstrap: =>
@@ -28,6 +27,7 @@ class AntCat.ReferencePicker
     #@widget.find('*').attr 'disabled', 'disabled'
     #@widget.fadeTo 0, 0.75
     @widget.find('.throbber img').show()
+    #setTimeout(=> $.ajax
     $.ajax
       url: url
       dataType: 'html'
@@ -35,6 +35,7 @@ class AntCat.ReferencePicker
         @widget.html data
         @setup()
       error: (xhr) => debugger
+    #2000)
 
   search: =>
     @load $.param q: @textbox.val(), search_selector: @search_selector.val()
