@@ -45,14 +45,7 @@ class AntCat.ReferencePicker
     @load $(link).attr('href') + '&' + @widget.find('> .search_form').serialize()
 
   close: (cancel = false) =>
-    if cancel
-      taxt = null
-    else
-      selected_reference = @selected_reference()
-      if selected_reference
-        taxt = selected_reference.data 'taxt'
-      else
-        taxt = null
+    taxt = if not cancel and @selected_reference() then @selected_reference().data 'taxt' else null
     @widget.remove()
     @result_handler taxt if @result_handler
 
