@@ -1,13 +1,13 @@
--#Locals: references, selected_reference
+-#Locals: references, current_reference
 
 .help_banner
   %span.help_banner_text
 
-%table.selected_reference.references
+%table.current_reference.references
   %tr.reference_row
     %td
-      - if selected_reference
-        = render '/references/reference', reference: selected_reference, publisher_string: '', css_class: 'reference'
+      - if current_reference
+        = render '/references/reference', reference: current_reference, publisher_string: '', css_class: 'reference'
 
 = form_tag reference_picker_path, class: 'search_form' do
   .throbber
@@ -29,7 +29,7 @@
 
   .clear
 
-- if references && (references.first != selected_reference || references.size != 1 || params[:q].present?)
+- if references && (references.first != current_reference || references.size != 1 || params[:q].present?)
 
   -if references.empty?
     .no_results_found No results found

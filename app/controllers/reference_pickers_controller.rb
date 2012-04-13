@@ -6,7 +6,7 @@ class ReferencePickersController < ApplicationController
 
     if params[:id].present?
       @references = Reference.perform_search id: params[:id]
-      @selected_reference = @references.first
+      @current_reference = @references.first
     end
 
     if params[:q].present?
@@ -15,7 +15,7 @@ class ReferencePickersController < ApplicationController
       @references = Reference.do_search params
     end
 
-    render partial: 'show', locals: {selected_reference: @selected_reference, references: @references}
+    render partial: 'show', locals: {current_reference: @current_reference, references: @references}
   end
 
 end
