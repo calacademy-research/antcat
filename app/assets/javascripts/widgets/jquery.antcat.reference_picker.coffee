@@ -249,17 +249,21 @@ class AntCat.ReferencePicker
         .focus()
 
   setup_tabs: ($reference) =>
-    id = $reference.attr('id')
-    selected_tab = $('.selected_tab', $reference).val()
-    $('.tabs .article-tab', $reference).attr('href', '#reference_article' + id)
-    $('.tabs .article-tab-section', $reference).attr('id', 'reference_article' + id)
-    $('.tabs .book-tab', $reference).attr('href', '#reference_book' + id)
-    $('.tabs .book-tab-section', $reference).attr('id', 'reference_book' + id)
-    $('.tabs .nested-tab', $reference).attr('href', '#reference_nested' + id)
-    $('.tabs .nested-tab-section', $reference).attr('id', 'reference_nested' + id)
-    $('.tabs .unknown-tab', $reference).attr('href', '#reference_unknown' + id)
-    $('.tabs .unknown-tab-section', $reference).attr('id', 'reference_unknown' + id)
-    $('.tabs', $reference).tabs({selected: selected_tab})
+    $tabs = $reference.find '.tabs'
+
+    $tabs.find('> ul').remove()
+    $list = $('<ul/>').prependTo $tabs
+
+    $tabs.find('.tabbable').each ->
+      id = 'A' + Math.random().toString().replace '.', ''
+      $list_item = $('<li/>').appendTo $list
+      $a = $('<a/>')
+        .appendTo($list_item)
+        .text($(this).data('title'))
+        .attr 'href', '#' + id
+      $(this).attr 'id', id
+
+    $tabs.tabs selected: $reference.find('.selected_tab').val()
 
   submit_reference_edit: (submit_button) =>
     $(submit_button).closest('form').ajaxSubmit
