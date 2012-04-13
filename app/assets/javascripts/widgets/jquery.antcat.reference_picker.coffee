@@ -269,6 +269,7 @@ class AntCat.ReferencePicker
     $(submit_button).closest('form').ajaxSubmit
       beforeSerialize: @before_serialize
       success: @update_reference
+      error: (->)
       dataType: 'json'
     false
 
