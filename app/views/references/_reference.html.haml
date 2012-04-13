@@ -1,4 +1,4 @@
--#Locals: reference
+-#Locals: reference, edit_template_directory
 
 - reference ||= Reference.new
 - id = "reference_#{reference.id}"
@@ -18,5 +18,5 @@
       %td.reference_item
         = render 'references/display', :reference => reference if !reference.new_record? && reference.errors.empty?
         - if user_can_edit?
-          = render 'references/edit', :reference => reference, :publisher_string => publisher_string
+          = render "#{edit_template_directory}/edit", :reference => reference, :publisher_string => publisher_string
         = render 'shared/coins', :reference => reference if !reference.new_record? && reference.errors.empty?

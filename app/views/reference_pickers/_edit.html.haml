@@ -4,7 +4,7 @@
 - selected_tab = [ArticleReference, BookReference, NestedReference, UnknownReference].index(reference.class) || 0
 
 .reference_edit.ui-corner-all.ui-widget-content.ui-widget
-  - url = reference.new_record? ? references_path(edit_template_directory: 'references') : reference_path(reference, edit_template_directory: 'references')
+  - url = reference.new_record? ? references_path(edit_template_directory: 'reference_pickers') : reference_path(reference, edit_template_directory: 'reference_pickers')
   - method = reference.new_record? ? 'post' : 'put'
   - html_options = Rails.env.test? ? {} : {:multipart => true}
   = form_for reference, :as => :reference, :url => url, :html => html_options do |f|
@@ -28,17 +28,8 @@
         %td{:colspan => 3, :class => :right_side_field}= f.text_area :title, :rows => 2
       %tr
         %td.tabs{:colspan => 4}
-          %ul
-            %li
-              %a{:class => 'article-tab', :href => "#tabs-article-#{reference.id}"}Article
-            %li
-              %a{:class => 'book-tab', :href => "#tabs-book-#{reference.id}"}Book
-            %li
-              %a{:class => 'nested-tab', :href => "#tabs-nested-#{reference.id}"}Nested
-            %li
-              %a{:class => 'unknown-tab', :href => "#tabs-unknown-#{reference.id}"}Other
 
-          %div{:class => 'article-tab-section', :id => "tabs-article-#{reference.id}"}
+          .tabbable{'data-title' => 'Journal'}
             = label_tag :journal_name, 'Journal'
             = text_field_tag :journal_name, journal_name, :class => 'journal'
             = label_tag :reference_series_volume_issue, 'Series volume issue'
@@ -46,13 +37,13 @@
             = label_tag :article_pagination, 'Pagination'
             = text_field_tag :article_pagination, reference.pagination, :class => 'pages'
 
-          %div{:class => 'book-tab-section', :id => "tabs-book-#{reference.id}"}
+          .tabbable{'data-title' => 'Book'}
             = label_tag :publisher_string, 'Publisher'
             = text_field_tag :publisher_string, publisher_string, :class => 'publisher'
             = label_tag :book_pagination, 'Pagination'
             = text_field_tag :book_pagination, reference.pagination, :class => 'pages'
 
-          %div{:class => 'nested-tab-section', :id => "tabs-nested-#{reference.id}"}
+          .tabbable{'data-title' => 'Nested'}
             = label_tag :reference_pages_in, 'Pages in'
             = f.text_field :pages_in, :class => 'pages'
             = label_tag :reference_nested_reference_id, 'Nested reference ID'
@@ -60,7 +51,7 @@
             %p.help
               %span.help= raw "To find, edit or add the nested reference in a new browser window, click #{link_to 'here', references_path(:q => reference.nested_reference_id), :target => '_blank'}"
 
-          %div{:class => 'unknown-tab-section', :id => "tabs-unknown-#{reference.id}"}
+          .tabbable{'data-title' => 'Other'}
             = label_tag :reference_citation, 'Citation'
             = f.text_area :citation, :rows => 2
 
