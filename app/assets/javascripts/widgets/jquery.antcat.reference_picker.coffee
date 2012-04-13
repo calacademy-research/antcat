@@ -24,8 +24,6 @@ class AntCat.ReferencePicker
     if url.indexOf('/reference_picker') is -1
       url = '/reference_picker?' + url
     url = url + '&' + $.param id: @reference_id if @reference_id
-    #@widget.find('*').attr 'disabled', 'disabled'
-    #@widget.fadeTo 0, 0.75
 
     @widget
       .find('.throbber img')
@@ -35,6 +33,7 @@ class AntCat.ReferencePicker
         .addClass('ui-state-disabled')
         .end()
 
+    # debug code to leave throbber up for a little while
     #setTimeout(=> $.ajax
     $.ajax
       url: url
@@ -60,8 +59,6 @@ class AntCat.ReferencePicker
     @close true
 
   setup: =>
-    #@widget.fadeTo 0, 1.0
-
     @search_selector = @widget.find '.search_selector'
     @textbox = @widget.find '.q'
 
@@ -109,10 +106,8 @@ class AntCat.ReferencePicker
         new_type = @search_selector.find('option:selected').text()
         if new_type is 'Search for'
           @disable_search_author_autocomplete()
-          @search_selector.closest('form').removeAttr 'autocomplete'
         else
           @enable_search_author_autocomplete()
-          @search_selector.closest('form').attr 'autocomplete', 'off'
         @textbox.focus()
 
   setup_references: =>
@@ -158,6 +153,7 @@ class AntCat.ReferencePicker
 
   # -----------------------------------------
   enable_search_author_autocomplete: =>
+    @search_selector.closest('form').attr 'autocomplete', 'off'
     return if AntCat.testing
     @textbox.autocomplete
       autoFocus: true
@@ -178,6 +174,7 @@ class AntCat.ReferencePicker
 
   disable_search_author_autocomplete: =>
     @textbox.autocomplete 'destroy'
+    @search_selector.closest('form').removeAttr 'autocomplete'
 
   @extract_author_search_term: (string, position) =>
     return ""  if string.length is 0
