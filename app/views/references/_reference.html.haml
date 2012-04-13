@@ -3,7 +3,7 @@
 - reference ||= Reference.new
 - id = "reference_#{reference.id}"
 - css_class << ' ' << id
-%div{id: id, class: css_class, 'data-taxt' => Taxt.to_editable_reference(reference)}
+%div{id: id, class: css_class, 'data-reference-id' => reference.id, 'data-taxt' => Taxt.to_editable_reference(reference)}
   %table.reference_table
     %tr
       %td.icons
