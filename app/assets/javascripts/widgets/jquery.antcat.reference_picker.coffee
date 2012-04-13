@@ -27,6 +27,7 @@ class AntCat.ReferencePicker
     #@widget.find('*').attr 'disabled', 'disabled'
     #@widget.fadeTo 0, 0.75
     @widget.find('.throbber img').show()
+    @widget.find('.search_form .controls').addClass 'ui-state-disabled'
     #setTimeout(=> $.ajax
     $.ajax
       url: url

@@ -13,18 +13,19 @@
   .throbber
     = image_tag 'ui-anim_basic_16x16.gif'
 
-  .ok_cancel_controls
-    = button_tag 'OK', class: 'ok ui-priority-primary'
-    = button_tag 'Cancel', class: 'close ui-priority-primary'
+  .controls
+    .ok_cancel_controls
+      = button_tag 'OK', class: 'ok ui-priority-primary'
+      = button_tag 'Cancel', class: 'close ui-priority-primary'
 
-  .search_controls
-    = select_tag "search_selector", options_for_select(["Search for", "Search for author(s)"], params[:search_selector]), class: 'search_selector'
-    = text_field_tag "q", params[:q], class: 'q'
-    = image_tag 'help.png', class: 'help_icon'
-    = button_tag 'Go', class: 'ui-priority-primary'
-    = button_tag 'Cancel', class: 'ui-priority-primary close'
+    .search_controls
+      = select_tag "search_selector", options_for_select(["Search for", "Search for author(s)"], params[:search_selector]), class: 'search_selector'
+      = text_field_tag "q", params[:q], class: 'q'
+      = image_tag 'help.png', class: 'help_icon'
+      = button_tag 'Go', class: 'ui-priority-primary'
+      = button_tag 'Cancel', class: 'ui-priority-primary close'
 
-  = will_paginate references if references
+    = will_paginate references if references
 
   .clear
 
