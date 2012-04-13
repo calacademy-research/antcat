@@ -1,7 +1,12 @@
 # coding: UTF-8
 class ReferencesController < ApplicationController
   before_filter :authenticate_user!, :except => [:index, :download]
+  before_filter :default_edit_template_directory
   skip_before_filter :authenticate_user!, :if => :preview?
+
+  def default_edit_template_directory
+    params[:edit_template_directory] ||= 'references'
+  end
 
   def index
     searching = params[:q].present?
@@ -138,7 +143,7 @@ EOS
     json = {
       :isNew => new,
       :content => render_to_string(:partial => 'reference',
-                                   :locals => {:reference => @reference, :publisher_string => @publisher_string, :css_class => 'reference'}),
+                                   :locals => {:reference => @reference, :publisher_string => @publisher_string, :css_class => 'reference', edit_template_directory: params[:edit_template_directory]}),
                                    :id => @reference.id,
                                    :success => @reference.errors.empty?
     }.to_json
