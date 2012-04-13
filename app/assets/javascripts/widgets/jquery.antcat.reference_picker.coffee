@@ -135,12 +135,12 @@ class AntCat.ReferencePicker
     search_result = @selected_search_result()
     if search_result
       @widget
-        .find('.selected_reference td')
+        .find('.current_reference td')
           .html(search_result.clone(true).removeClass 'ui-selected ui-selectee')
           .find('.reference_display')
             .effect("highlight", {color: 'lightgreen'}, 3000)
     @current_reference_id = if @current_reference() then @current_reference().data 'reference-id' else null
-    @widget.toggleClass 'has-no-selection', not @current_reference()
+    @widget.toggleClass 'has-no-current-reference', not @current_reference()
     @update_help_banner()
 
   selected_search_result: =>
@@ -149,7 +149,7 @@ class AntCat.ReferencePicker
     results.closest '.reference'
 
   current_reference: =>
-    references = @widget.find('.selected_reference .reference')
+    references = @widget.find('.current_reference .reference')
     return if references.length is 0
     references
 
