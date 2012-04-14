@@ -14,12 +14,14 @@ class AntCat.ReferencePicker
     @widget.appendTo parent
 
   help_banner_bootstrap: =>
-    help_banner_text = $('<span/>')
-      .addClass('help_banner_text')
+    $form = $('<form/>').addClass 'search_form'
+    $throbber = $('<div/>').addClass('throbber').appendTo $form
+    $controls = $('<div/>').addClass('controls').appendTo $form
+    $help_banner = $('<div/>').addClass('help_banner').appendTo $form
+    help_banner_text = $('<span/>').addClass('help_banner_text').appendTo($help_banner)
       .html('Loading&hellip;')
-    $('<div/>')
-      .addClass('help_banner')
-      .append help_banner_text
+      .css('margin-top', '4px')
+    $form
 
   load: (url = '') =>
     if url.indexOf('/reference_picker') is -1
@@ -35,15 +37,14 @@ class AntCat.ReferencePicker
         .end()
 
     # debug code to leave throbber up for a little while
-    #setTimeout(=> $.ajax
-    $.ajax
+    setTimeout(=> $.ajax
       url: url
       dataType: 'html'
       success: (data) =>
         @widget.html data
         @setup()
       error: (xhr) => debugger
-    #2000)
+    0)
 
   search: =>
     @load $.param q: @textbox.val(), search_selector: @search_selector.val()
