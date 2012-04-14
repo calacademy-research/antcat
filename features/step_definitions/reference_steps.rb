@@ -221,9 +221,6 @@ Then 'I should see a link to that file' do
   page.should have_css("a[href='http://127.0.0.1/documents/#{@reference.document.id}/21105.pdf']", :text => 'PDF')
 end
 
-Then 'I should be redirected to Amazon' do
-end
-
 And /I (edit|delete|copy) "(.*?)"/ do |verb, author|
   reference = Reference.where('author_names_string_cache like ?', "%#{author}%").first
   step %{I follow "#{verb}" within "#reference_#{reference.id}"}

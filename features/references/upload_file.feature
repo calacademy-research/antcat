@@ -16,8 +16,6 @@ Feature: Upload a file
     And I wait for a bit
     And I wait for a bit more
     Then I should see a link to that file
-    When I follow "PDF"
-    Then I should be redirected to Amazon
 
   Scenario: Clearing the URL after uploading the file
     Given I am logged in
