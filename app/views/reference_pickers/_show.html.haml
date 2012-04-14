@@ -18,7 +18,6 @@
     .search_controls
       = select_tag "search_selector", options_for_select(["Search for", "Search for author(s)"], params[:search_selector]), class: 'search_selector'
       = text_field_tag "q", params[:q], class: 'q'
-      = image_tag 'help.png', class: 'help_icon'
       = button_tag 'Go', class: 'ui-priority-primary'
       = button_tag 'Cancel', class: 'ui-priority-primary close'
 
