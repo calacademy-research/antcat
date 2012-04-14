@@ -50,6 +50,7 @@ Feature: Add reference
 
   Scenario: Adding a reference but then cancelling
     When I follow "add"
+    And I wait for a bit
     And in the new edit form I fill in "reference_title" with "Mark Wilden"
     And in the new edit form I press the "Cancel" button
     Then there should be just the existing reference
