@@ -1,8 +1,5 @@
 -#Locals: references, current_reference
 
-.help_banner
-  %span.help_banner_text
-
 %table.current_reference.references
   %tr.reference_row
     %td
@@ -26,6 +23,9 @@
       = button_tag 'Cancel', class: 'ui-priority-primary close'
 
     = will_paginate references if references
+
+    .help_banner
+      %span.help_banner_text
 
   .clear
 
