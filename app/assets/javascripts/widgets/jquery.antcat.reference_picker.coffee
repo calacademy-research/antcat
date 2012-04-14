@@ -332,5 +332,5 @@ class AntCat.ReferencePicker
         help = "Choose a reference to #{verb}"
       else
         help = "Find a reference to #{verb}"
-    @widget.find('.help_banner .help_banner_text').text help
+    @widget.find('.help_banner_text').text help
 
