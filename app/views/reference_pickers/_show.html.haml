@@ -13,7 +13,7 @@
   .controls
     .ok_cancel_controls
       = button_tag 'OK', class: 'ok ui-priority-primary'
-      = button_tag 'Cancel', class: 'close ui-priority-primary'
+      = button_tag 'Cancel', class: 'close ui-priority-secondary'
 
     .search_controls
       = select_tag "search_selector", options_for_select(["Search for", "Search for author(s)"], params[:search_selector]), class: 'search_selector'
