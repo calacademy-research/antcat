@@ -54,8 +54,9 @@ class AntCat.ReferencePicker
 
   close: (cancel = false) =>
     taxt = if not cancel and @current_reference() then @current_reference().data 'taxt' else null
-    @widget.remove()
-    @result_handler taxt if @result_handler
+    @widget.slideUp 'fast', =>
+      @widget.remove()
+      @result_handler taxt if @result_handler
 
   cancel: =>
     @close true
