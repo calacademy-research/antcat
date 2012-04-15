@@ -19,7 +19,6 @@ class AntCat.ReferencePicker
     $controls = $('<div/>').addClass('controls').appendTo $form
     $help_banner = $('<div/>').addClass('help_banner').appendTo $form
     help_banner_text = $('<span/>').addClass('help_banner_text').appendTo($help_banner)
-      .html('Loading&hellip;')
       .css('margin-top', '4px')
     $form
 
@@ -28,13 +27,13 @@ class AntCat.ReferencePicker
       url = '/reference_picker?' + url
     url = url + '&' + $.param id: @current_reference_id if @current_reference_id
 
-    @widget
-      .find('.throbber img')
-        .show()
-        .end()
-      .find('.search_form .controls')
-        .addClass('ui-state-disabled')
-        .end()
+    $throbber_image = @widget.find('.throbber img')
+    if $throbber_image.length > 0
+      @widget.find('.help_banner_text').html('')
+      $throbber_image.show()
+    else
+      @widget.find('.help_banner_text').html 'Loading&hellip;'
+
 
     # debug code to leave throbber up for a little while
     setTimeout(=> $.ajax
