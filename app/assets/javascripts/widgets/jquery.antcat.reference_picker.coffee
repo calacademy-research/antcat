@@ -229,9 +229,6 @@ class AntCat.ReferencePicker
       .find('.cancel')
         .click(@cancel_reference_edit)
         .end()
-      .find('.delete')
-        .hide()
-        .end()
 
     @setup_tabs $reference
 
