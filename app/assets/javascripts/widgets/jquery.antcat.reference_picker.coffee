@@ -17,7 +17,8 @@ class AntCat.ReferencePicker
     $form = $('<form/>').addClass 'search_form'
     $throbber = $('<div/>').addClass('throbber').appendTo $form
     $controls = $('<div/>').addClass('controls').appendTo $form
-    $help_banner = $('<div/>').addClass('help_banner').appendTo $form
+    $help_banner = $('<div/>').addClass('help_banner').appendTo($form)
+      .css('margin-left', '11px')
     help_banner_text = $('<span/>').addClass('help_banner_text').appendTo($help_banner)
       .css('margin-top', '4px')
     $form
