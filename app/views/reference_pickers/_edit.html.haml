@@ -91,5 +91,5 @@
               %td= reference.id
       %tr
         %td{:colspan => 4}
-          %button.submit= previewize @possible_duplicate ? 'Save Anyway' : 'Save'
-          %button.cancel Cancel
+          %button.ui-priority-primary.submit= @possible_duplicate ? 'Save Anyway' : 'Save'
+          %button.ui-priority-secondary.cancel Cancel
