@@ -17,6 +17,9 @@
           = button_tag 'OK', class: 'ok ui-priority-primary'
           = button_tag 'Cancel', class: 'close ui-priority-secondary'
 
+        .add_controls
+          = button_tag 'Add', class: 'add ui-priority-primary'
+
         .search_controls
           = select_tag "search_selector", options_for_select(["Search for", "Search for author(s)"], params[:search_selector]), class: 'search_selector'
           = text_field_tag "q", params[:q], class: 'q'
