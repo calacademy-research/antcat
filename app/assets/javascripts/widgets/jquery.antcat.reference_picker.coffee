@@ -248,8 +248,6 @@ class AntCat.ReferencePicker
     @setup_reference_edit_journal_autocomplete $reference
     @setup_reference_edit_publisher_autocomplete $reference
 
-    #@set_sibling_opacity $edit, '.3'
-
     $edit.find('.icon.edit').hide() unless AntCat.testing
 
     @widget.find('.search_form').addClass('ui-state-disabled')
@@ -329,17 +327,10 @@ class AntCat.ReferencePicker
 
     $edit.find('.icon.edit').show() if AntCat.testing
 
-    #@set_sibling_opacity $edit, '1'
-
   cancel_reference_edit: =>
     false
 
   # -----------------------------------------
-  set_sibling_opacity: ($element, opacity) =>
-    while not $element.hasClass 'antcat-reference-picker'
-      $element.siblings().css 'opacity', opacity
-      $element = $element.parent()
-
   is_editing: =>
     @widget.find('.reference_edit:visible').length > 0
 
