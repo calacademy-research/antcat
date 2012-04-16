@@ -236,9 +236,9 @@ class AntCat.ReferencePicker
 
     @setup_tabs $reference
 
-    #setupReferenceEditAuthorAutocomplete($reference)
-    #setupReferenceEditJournalAutocomplete($reference)
-    #setupReferenceEditPublisherAutocomplete($reference)
+    @setup_reference_edit_author_autocomplete $reference
+    @setup_reference_edit_journal_autocomplete $reference
+    @setup_reference_edit_publisher_autocomplete $reference
 
     #@set_sibling_opacity $edit, '.3'
 
@@ -338,3 +338,35 @@ class AntCat.ReferencePicker
         help = "Find a reference to #{verb}"
     @widget.find('.help_banner_text').text help
 
+  # -----------------------------------------
+  setup_reference_edit_author_autocomplete: ($reference) =>
+    return if AntCat.testing
+    $field = $reference.find '.reference_edit .authors'
+    $field.autocomplete
+      autoFocus: true
+      minLength: 3
+      source: (request, result_handler) ->
+        search_term = AntCat.ReferencePicker.extract_author_search_term(@element.val(), $(@element).getSelection().start)
+        if search_term.length >= 3
+          $.getJSON "/authors/all", term: search_term, result_handler
+        else
+          result_handler []
+    # don't update the search textbox when the autocomplete item changes
+    focus: -> false
+    select: (event, data) =>
+      value_and_position = AntCat.ReferencePicker.insert_author($field.val(), $field.getSelection().start, data.item.value)
+      $field.val value_and_position.string
+      $field.setCaretPos value_and_position.position + 1
+      false
+
+  setup_reference_edit_journal_autocomplete: ($reference) =>
+    $reference.find('.reference_edit .journal').autocomplete
+      autoFocus: true,
+      source: "/journals",
+      minLength: 3
+
+  setup_reference_edit_publisher_autocomplete: ($reference) =>
+    $reference.find('.reference_edit .publisher').autocomplete
+      autoFocus: true,
+      source: "/publishers",
+      minLength: 3
