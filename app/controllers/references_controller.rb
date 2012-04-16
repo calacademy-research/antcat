@@ -1,12 +1,7 @@
 # coding: UTF-8
 class ReferencesController < ApplicationController
   before_filter :authenticate_user!, :except => [:index, :download]
-  before_filter :default_edit_template_directory
   skip_before_filter :authenticate_user!, :if => :preview?
-
-  def default_edit_template_directory
-    params[:edit_template_directory] ||= 'references'
-  end
 
   def index
     searching = params[:q].present?
@@ -142,10 +137,10 @@ EOS
   def render_json new = false
     json = {
       :isNew => new,
-      :content => render_to_string(:partial => 'reference',
-                                   :locals => {:reference => @reference, :publisher_string => @publisher_string, :css_class => 'reference', edit_template_directory: params[:edit_template_directory]}),
-                                   :id => @reference.id,
-                                   :success => @reference.errors.empty?
+      :content => render_to_string(:partial => params[:picker].present? ? 'reference_pickers/reference' : 'references/reference',
+                                   :locals => {:reference => @reference, :publisher_string => @publisher_string, :css_class => 'reference'}),
+      :id => @reference.id,
+      :success => @reference.errors.empty?
     }.to_json
 
     json = '<textarea>' + json + '</textarea>' unless Rails.env.test?

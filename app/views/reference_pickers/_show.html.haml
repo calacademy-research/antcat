@@ -4,7 +4,7 @@
   %tr.reference_row
     %td
       - if current_reference
-        = render '/references/reference', reference: current_reference, publisher_string: '', css_class: 'reference', edit_template_directory: 'reference_pickers'
+        = render 'reference', reference: current_reference, publisher_string: '', css_class: 'reference'
 
 = form_tag reference_picker_path, class: 'search_form' do
   -# this table is to provide a fixed-width column for the throbber beside
@@ -39,6 +39,6 @@
   %table.references.search_results
     - for reference in references
       %tr.reference_row
-        %td= render '/references/reference', reference: reference, publisher_string: '', css_class: 'reference', edit_template_directory: 'reference_pickers'
+        %td= render 'reference', reference: reference, publisher_string: '', css_class: 'reference'
 
 = render 'shared/qtip'
