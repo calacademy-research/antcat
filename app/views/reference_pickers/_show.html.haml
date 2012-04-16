@@ -1,5 +1,8 @@
 -#Locals: references, current_reference
 
+.template
+  = render 'reference', reference: nil, publisher_string: '', css_class: 'reference_template'
+
 %table.current_reference.references
   %tr.reference_row
     %td
