@@ -142,8 +142,8 @@ class AntCat.ReferencePicker
       @widget
         .find('.current_reference td')
           .html(selected_reference.clone(true).removeClass 'ui-selected ui-selectee')
-          .find('.reference_display')
-            .effect("highlight", {color: 'lightgreen'}, 3000)
+          #.find('.reference_display')
+            #.effect("highlight", {color: 'lightgreen'}, 3000)
     @current_reference_id = if @current_reference() then @current_reference().data 'reference-id' else null
     @widget.toggleClass 'has-no-current-reference', not @current_reference()
     @update_help_banner()
@@ -317,7 +317,7 @@ class AntCat.ReferencePicker
 
     @widget.find('.search_form').removeClass('ui-state-disabled')
 
-    @widget.find('.search_results').find($reference).effect("highlight", {}, 3000)
+    #@widget.find('.search_results').find($reference).effect("highlight", {}, 3000)
 
     $edit.find('.icon.edit').show() if AntCat.testing
 
