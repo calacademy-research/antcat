@@ -308,7 +308,6 @@ class AntCat.ReferencePicker
         .end()
       .each -> $(@).parent().html data.content
 
-    @setup_references()
     $reference = @widget.find reference_selector
 
     unless data.success
@@ -322,6 +321,7 @@ class AntCat.ReferencePicker
       .find('.reference_display')
         .show()
         .end()
+    @setup_references()
 
     @widget.find('.search_form').removeClass('ui-state-disabled')
 
