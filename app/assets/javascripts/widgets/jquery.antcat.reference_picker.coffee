@@ -243,6 +243,7 @@ class AntCat.ReferencePicker
       .find('.cancel')
         .click(@cancel_reference_form)
         .end()
+    $reference.find('.icon.edit').hide() unless AntCat.testing
 
     @setup_tabs $reference
 
@@ -250,7 +251,6 @@ class AntCat.ReferencePicker
     @setup_reference_edit_journal_autocomplete $reference
     @setup_reference_edit_publisher_autocomplete $reference
 
-    $edit.find('.icon.edit').hide() unless AntCat.testing
 
     @widget.find('.search_form').addClass('ui-state-disabled')
 
