@@ -244,6 +244,8 @@ class AntCat.ReferencePicker
 
     $edit.find('.icon.edit').hide() unless AntCat.testing
 
+    @widget.find('.search_form').addClass('ui-state-disabled')
+
     $reference.find('.reference_display').hide()
     $edit
       .show()
@@ -268,6 +270,15 @@ class AntCat.ReferencePicker
     $tabs.tabs selected: $reference.find('.selected_tab').val()
 
   submit_reference_edit: (submit_button) =>
+    $(submit_button).closest('.spinner_container')
+      .spinner
+        position: 'left'
+        img: '/assets/ui-anim_basic_16x16.gif'
+      .find('button')
+        .addClass 'ui-state-disabled'
+
+    #$('input', $spinnerElement).attr('disabled', 'disabled');
+
     $(submit_button).closest('form').ajaxSubmit
       beforeSerialize: @before_serialize
       success: @update_reference
@@ -282,15 +293,15 @@ class AntCat.ReferencePicker
 
   update_reference: (data, statusText, xhr, $form) =>
     id = '.reference_' + if data.isNew then '' else data.id
+
+    $(id).find('.spinner_container').spinner 'remove'
+    #$('input', $spinnerElement).attr('disabled', '')
+    #$('button', $spinnerElement).attr('disabled', '')
+
     $(id).each -> $(@).parent().html data.content
     $reference = $ id
 
     @setup_references()
-
-    #$spinnerElement = $('button', $edit).parent()
-    #$('input', $spinnerElement).attr('disabled', '')
-    #$('button', $spinnerElement).attr('disabled', '')
-    #$spinnerElement.spinner('remove')
 
     unless data.success
       @show_reference_form $reference
@@ -303,6 +314,8 @@ class AntCat.ReferencePicker
       .find('.reference_display')
         .show()
         .end()
+
+    @widget.find('.search_form').removeClass('ui-state-disabled')
 
     @widget.find('.search_results').find($reference).effect("highlight", {}, 3000)
 
