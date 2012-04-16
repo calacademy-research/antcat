@@ -302,7 +302,9 @@ class AntCat.ReferencePicker
         .end()
       .find('.reference_display')
         .show()
-        .effect("highlight", {}, 3000)
+        .end()
+
+    @widget.find('.search_results').find($reference).effect("highlight", {}, 3000)
 
     $edit.find('.icon.edit').show() if AntCat.testing
 
