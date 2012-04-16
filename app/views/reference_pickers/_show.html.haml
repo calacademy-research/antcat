@@ -7,24 +7,24 @@
         = render '/references/reference', reference: current_reference, publisher_string: '', css_class: 'reference', edit_template_directory: 'reference_pickers'
 
 = form_tag reference_picker_path, class: 'search_form' do
-  .throbber
-    = image_tag 'ui-anim_basic_16x16.gif'
+  %table
+    %tr
+      %td.throbber= image_tag 'ui-anim_basic_16x16.gif'
+      %td
+        .ok_cancel_controls
+          = button_tag 'OK', class: 'ok ui-priority-primary'
+          = button_tag 'Cancel', class: 'close ui-priority-secondary'
 
-  .controls
-    .ok_cancel_controls
-      = button_tag 'OK', class: 'ok ui-priority-primary'
-      = button_tag 'Cancel', class: 'close ui-priority-secondary'
+        .search_controls
+          = select_tag "search_selector", options_for_select(["Search for", "Search for author(s)"], params[:search_selector]), class: 'search_selector'
+          = text_field_tag "q", params[:q], class: 'q'
+          = button_tag 'Go', class: 'ui-priority-primary'
+          = button_tag 'Cancel', class: 'ui-priority-primary close'
 
-    .search_controls
-      = select_tag "search_selector", options_for_select(["Search for", "Search for author(s)"], params[:search_selector]), class: 'search_selector'
-      = text_field_tag "q", params[:q], class: 'q'
-      = button_tag 'Go', class: 'ui-priority-primary'
-      = button_tag 'Cancel', class: 'ui-priority-primary close'
+        = will_paginate references if references
 
-    = will_paginate references if references
-
-  .help_banner
-    %span.help_banner_text
+        .help_banner
+          %span.help_banner_text
 
 - if references && (references.first != current_reference || references.size != 1 || params[:q].present?)
 
