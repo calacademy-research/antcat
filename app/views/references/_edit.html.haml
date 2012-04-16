@@ -4,7 +4,7 @@
 - selected_tab = [ArticleReference, BookReference, NestedReference, UnknownReference].index(reference.class) || 0
 
 .reference_edit.ui-corner-all.ui-widget-content.ui-widget
-  - url = reference.new_record? ? references_path(picker: true) : reference_path(reference, picker: true)
+  - url = reference.new_record? ? references_path : reference_path
   - method = reference.new_record? ? 'post' : 'put'
   - html_options = Rails.env.test? ? {} : {:multipart => true}
   = form_for reference, :as => :reference, :url => url, :html => html_options do |f|
