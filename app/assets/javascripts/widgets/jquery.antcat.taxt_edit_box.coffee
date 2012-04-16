@@ -61,7 +61,8 @@ class AntCat.TaxtEditBox
     # a paragraph that has a highlighted span
     text = @control.val()
     before_selection = text[...@start()]
-    selection = '<span class=antcat-taxt-simulated-selection>' + text[@start()...@end()] + '</span>'
+    selection = if @is_tag_selected() then text[@start()...@end()] else ' {Inserting...} '
+    selection = '<span class=antcat-taxt-simulated-selection>' +  selection + '</span>'
     after_selection = text[@end()...]
     text = before_selection + selection + after_selection
     simulation = $("<p class=antcat-taxt-simulation>#{text}</p>")
