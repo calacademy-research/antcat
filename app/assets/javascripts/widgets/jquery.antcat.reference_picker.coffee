@@ -236,10 +236,10 @@ class AntCat.ReferencePicker
         .end()
       .find('.submit')
         .click ->
-          self.submit_reference_edit this
+          self.submit_reference_form this
         .end()
       .find('.cancel')
-        .click(@cancel_reference_edit)
+        .click(@cancel_reference_form)
         .end()
 
     @setup_tabs $reference
@@ -275,7 +275,7 @@ class AntCat.ReferencePicker
 
     $tabs.tabs selected: $reference.find('.selected_tab').val()
 
-  submit_reference_edit: (submit_button) =>
+  submit_reference_form: (submit_button) =>
     $(submit_button).closest('.spinner_container')
       .spinner
         position: 'left'
@@ -327,7 +327,7 @@ class AntCat.ReferencePicker
 
     $edit.find('.icon.edit').show() if AntCat.testing
 
-  cancel_reference_edit: =>
+  cancel_reference_form: =>
     false
 
   # -----------------------------------------
