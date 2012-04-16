@@ -15,12 +15,16 @@ class AntCat.ReferencePicker
 
   help_banner_bootstrap: =>
     $form = $('<form/>').addClass 'search_form'
-    $throbber = $('<div/>').addClass('throbber').appendTo $form
-    $controls = $('<div/>').addClass('controls').appendTo $form
-    $help_banner = $('<div/>').addClass('help_banner').appendTo($form)
-      .css('margin-left', '11px')
+    $table = $('<table/>').appendTo $form
+    $tr     = $('<tr/>').appendTo $table
+    $td       = $('<td/>').addClass('throbber').appendTo $tr
+    $throbber   = $('<div/>').addClass('throbber').appendTo $form
+    $td       = $('<td/>').appendTo $tr
+    $div        = $('<div/>').addClass('ok_cancel_controls').appendTo $td
+    $div        = $('<div/>').addClass('search_controls').appendTo $td
+    $div        = $('<div/>').addClass('pagination').appendTo $td
+    $help_banner= $('<div/>').addClass('help_banner').appendTo($td)
     help_banner_text = $('<span/>').addClass('help_banner_text').appendTo($help_banner)
-      .css('margin-top', '4px')
     $form
 
   load: (url = '') =>
@@ -34,7 +38,6 @@ class AntCat.ReferencePicker
       $throbber_image.show()
     else
       @widget.find('.help_banner_text').html 'Loading&hellip;'
-
 
     # debug code to leave throbber up for a little while
     setTimeout(=> $.ajax
