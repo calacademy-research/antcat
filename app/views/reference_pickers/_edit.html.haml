@@ -90,6 +90,6 @@
               %td= label_tag :reference_id, 'ID'
               %td= reference.id
       %tr
-        %td{:colspan => 4}
+        %td.spinner_container{:colspan => 4}
           %button.ui-priority-primary.submit= @possible_duplicate ? 'Save Anyway' : 'Save'
           %button.ui-priority-secondary.cancel Cancel
