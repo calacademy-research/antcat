@@ -222,13 +222,13 @@ class AntCat.ReferencePicker
     return if @is_editing()
     $reference = $(icon).closest '.reference'
     #saveReference($reference)
-    @show_reference_form $reference
+    @open_reference_form $reference
     false
 
   add_reference: =>
     false
 
-  show_reference_form: ($reference) =>
+  open_reference_form: ($reference) =>
     self = @
     $edit = $reference.find '.reference_edit'
 
@@ -312,7 +312,7 @@ class AntCat.ReferencePicker
     $reference = @widget.find reference_selector
 
     unless data.success
-      @show_reference_form $reference
+      @open_reference_form $reference
       return
 
     $reference
