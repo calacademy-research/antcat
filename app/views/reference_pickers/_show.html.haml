@@ -7,6 +7,8 @@
         = render '/references/reference', reference: current_reference, publisher_string: '', css_class: 'reference', edit_template_directory: 'reference_pickers'
 
 = form_tag reference_picker_path, class: 'search_form' do
+  -# this table is to provide a fixed-width column for the throbber beside
+  -# a variable width and height column for the controls
   %table
     %tr
       %td.throbber= image_tag 'ui-anim_basic_16x16.gif'
