@@ -262,7 +262,7 @@ class AntCat.ReferencePicker
 
   setup_tabs: ($reference) =>
     $tabs = $reference.find '.tabs'
-
+    $tabs.tabs 'destroy'
     $tabs.find('> ul').remove()
     $list = $('<ul/>').prependTo $tabs
 
