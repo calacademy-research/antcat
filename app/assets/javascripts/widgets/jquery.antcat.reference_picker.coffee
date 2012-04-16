@@ -300,11 +300,12 @@ class AntCat.ReferencePicker
     true
 
   update_reference: (data, statusText, xhr, $form) =>
-    #$('input', $spinnerElement).attr('disabled', '')
-    #$('button', $spinnerElement).attr('disabled', '')
     reference_selector = if data.isNew then '.current_reference .reference' else ".reference_#{data.id}"
 
     @widget.find(reference_selector)
+      .find('.spinner_container')
+        .spinner('remove')
+        .end()
       .each -> $(@).parent().html data.content
 
     @setup_references()
