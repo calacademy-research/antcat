@@ -314,13 +314,6 @@ class AntCat.ReferencePicker
       @open_reference_form $reference
       return
 
-    $reference
-      .find('.reference_edit')
-        .hide()
-        .end()
-      .find('.reference_display')
-        .show()
-        .end()
     @setup_references()
 
     @widget.find('.search_form').removeClass('ui-state-disabled')
