@@ -128,6 +128,8 @@ class AntCat.ReferencePicker
         .mouseenter((-> $('.icon.edit', $(this)).show() unless self.is_editing()))
         .mouseleave((-> $('.icon.edit').hide()))
         .dblclick =>
+          if @is_editing()
+            return true
           @close()
           false
         .end()
