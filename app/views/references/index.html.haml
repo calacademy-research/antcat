@@ -42,7 +42,7 @@
   - for reference in @references
     %tr.reference_row
       %td
-        = render 'reference', :reference => reference, :publisher_string => @publisher_string, :css_class => 'reference', edit_template_directory: 'references'
+        = render 'reference', :reference => reference, :publisher_string => @publisher_string, :css_class => 'reference'
       - if params[:review]
         %td.date
           = format_timestamp reference.updated_at
@@ -53,6 +53,6 @@
   - if user_can_edit?
     %tr.reference_template_row
       %td
-        = render 'reference', :reference => nil, :publisher_string => @publisher_string, :css_class => 'reference_template', edit_template_directory: 'references'
+        = render 'reference', :reference => nil, :publisher_string => @publisher_string, :css_class => 'reference_template'
 
 %div= will_paginate @references
