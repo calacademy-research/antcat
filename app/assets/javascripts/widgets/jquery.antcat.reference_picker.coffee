@@ -91,6 +91,11 @@ class AntCat.ReferencePicker
           @close()
           false
         .end()
+      .find(':button.add')
+        .click =>
+          @add_reference()
+          false
+        .end()
       .find(':button.close')
         .click =>
           @cancel()
@@ -218,6 +223,9 @@ class AntCat.ReferencePicker
     @show_reference_form $reference
     false
 
+  add_reference: =>
+    false
+
   show_reference_form: ($reference) =>
     self = @
     $edit = $reference.find '.reference_edit'
@@ -343,7 +351,7 @@ class AntCat.ReferencePicker
         other_verb = 'choose'
       else
         other_verb = 'search for'
-      help = "Click OK to #{verb} this reference, or #{other_verb} a different one"
+      help = "Click OK to #{verb} this reference, or add or #{other_verb} a different one"
     else
       if any_search_results
         help = "Choose a reference to #{verb}"
