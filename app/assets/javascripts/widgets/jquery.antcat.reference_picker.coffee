@@ -226,6 +226,12 @@ class AntCat.ReferencePicker
     false
 
   add_reference: =>
+    $reference = @widget.find('.template .reference').clone()
+    @widget.find('.current_reference td').html $reference
+    $reference = @widget.find('.current_reference .reference')
+    @current_reference_id = null
+    @open_reference_form $reference
+    @widget.toggleClass 'has-no-current-reference', false
     false
 
   open_reference_form: ($reference) =>
