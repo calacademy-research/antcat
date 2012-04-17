@@ -127,11 +127,6 @@ class AntCat.ReferencePicker
       .find('.reference')
         .mouseenter((-> $('.icon.edit', $(this)).show() unless self.is_editing()))
         .mouseleave((-> $('.icon.edit').hide()))
-        .dblclick =>
-          if @is_editing()
-            return true
-          @close()
-          false
         .end()
       .find(".search_results .reference_#{@current_reference_id} .reference_display")
         .addClass('ui-selected')
