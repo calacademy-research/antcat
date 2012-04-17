@@ -144,8 +144,6 @@ class AntCat.ReferencePicker
       @widget
         .find('.current_reference td')
           .html(selected_reference.clone(true).removeClass 'ui-selected ui-selectee')
-          #.find('.reference_display')
-            #.effect("highlight", {color: 'lightgreen'}, 3000)
     @current_reference_id = if @current_reference() then @current_reference().data 'reference-id' else null
     @widget.toggleClass 'has-no-current-reference', not @current_reference()
     @update_help_banner()
@@ -216,7 +214,6 @@ class AntCat.ReferencePicker
   edit_reference: (icon) ->
     return if @is_editing()
     $reference = $(icon).closest '.reference'
-    #saveReference($reference)
     @open_reference_form $reference
     false
 
@@ -231,9 +228,7 @@ class AntCat.ReferencePicker
 
   open_reference_form: ($reference) =>
     self = @
-    $edit = $reference.find '.reference_edit'
-
-    $edit
+    $reference.find('.reference_edit')
       .find(':button, :submit')
         .button()
         .end()
@@ -252,14 +247,16 @@ class AntCat.ReferencePicker
     @setup_reference_edit_journal_autocomplete $reference
     @setup_reference_edit_publisher_autocomplete $reference
 
-
     @widget.find('.search_form').addClass('ui-state-disabled')
 
-    $reference.find('.reference_display').hide()
-    $edit
-      .show()
-      .find('input[type=text]:first')
-        .focus()
+    $reference
+      .find('.reference_display')
+        .hide()
+        .end()
+      .find('.reference_edit')
+        .show()
+        .find('input[type=text]:first').focus()
+        .end()
 
   setup_tabs: ($reference) =>
     $tabs = $reference.find '.tabs'
@@ -286,8 +283,6 @@ class AntCat.ReferencePicker
       .find('button')
         .addClass 'ui-state-disabled'
 
-    #$('input', $spinnerElement).attr('disabled', 'disabled');
-
     $(submit_button).closest('form').ajaxSubmit
       beforeSerialize: @before_serialize
       success: @update_reference
@@ -302,25 +297,16 @@ class AntCat.ReferencePicker
 
   update_reference: (data, statusText, xhr, $form) =>
     reference_selector = if data.isNew then '.current_reference .reference' else ".reference_#{data.id}"
-
     @widget.find(reference_selector)
       .find('.spinner_container')
         .spinner('remove')
         .end()
       .each -> $(@).parent().html data.content
-
-    $reference = @widget.find reference_selector
-
     unless data.success
-      @open_reference_form $reference
+      @open_reference_form @widget.find reference_selector
       return
-
     @setup_references()
-
     @widget.find('.search_form').removeClass('ui-state-disabled')
-
-    #@widget.find('.search_results').find($reference).effect("highlight", {}, 3000)
-
     $edit.find('.icon.edit').show() if AntCat.testing
 
   cancel_reference_form: =>
