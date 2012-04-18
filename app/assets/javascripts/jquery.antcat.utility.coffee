@@ -1,5 +1,6 @@
-$.fn.enable = ->
-  return $(this).each -> $(this).addClass 'ui-state-enable'
+#Something seems to overrie this method - it doesn't get called
+#$.fn.enable = ->
+  #$(this).removeClass 'ui-state-disabled'
 
 $.fn.disable = ->
-  return $(this).each -> $(this).addClass 'ui-state-disable'
+  $(this).addClass 'ui-state-disabled'

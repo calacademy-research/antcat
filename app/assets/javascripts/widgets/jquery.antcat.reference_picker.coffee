@@ -38,6 +38,7 @@ class AntCat.ReferencePicker
       $throbber_image.show()
     else
       @widget.find('.help_banner_text').html 'Loading&hellip;'
+    @widget.find('.search_form .controls').disable()
 
     # debug code to leave throbber up for a little while
     setTimeout(=> $.ajax
@@ -83,6 +84,8 @@ class AntCat.ReferencePicker
         return true unless event.which is @ENTER
         @search()
         false
+      .find('.controls')
+        .removeClass('ui-state-disabled')
       .find(':button, :submit')
         .button()
         .end()
@@ -247,7 +250,7 @@ class AntCat.ReferencePicker
     @setup_reference_edit_journal_autocomplete $reference
     @setup_reference_edit_publisher_autocomplete $reference
 
-    @widget.find('.search_form').addClass('ui-state-disabled')
+    @widget.find('.search_form .controls').disable()
 
     $reference
       .find('.reference_display')
@@ -281,7 +284,7 @@ class AntCat.ReferencePicker
         position: 'left'
         img: '/assets/ui-anim_basic_16x16.gif'
       .find('button')
-        .addClass 'ui-state-disabled'
+        .disable()
 
     $(submit_button).closest('form').ajaxSubmit
       beforeSerialize: @before_serialize
@@ -306,7 +309,7 @@ class AntCat.ReferencePicker
       @open_reference_form @widget.find reference_selector
       return
     @setup_references()
-    @widget.find('.search_form').removeClass('ui-state-disabled')
+    @widget.find('.search_form .controls').removeClass 'ui-state-disabled'
     $edit.find('.icon.edit').show() if AntCat.testing
 
   cancel_reference_form: =>
