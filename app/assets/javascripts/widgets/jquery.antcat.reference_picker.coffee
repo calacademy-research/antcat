@@ -10,10 +10,10 @@ class AntCat.ReferencePicker
 
   create: (parent) =>
     @widget = $('<div/>').addClass 'antcat-reference-picker ui-widget ui-widget-content ui-corner-all'
-    @widget.append @help_banner_bootstrap()
+    @widget.append @bootstrap_help_banner()
     @widget.appendTo parent
 
-  help_banner_bootstrap: =>
+  bootstrap_help_banner: =>
     $form = $('<form/>').addClass 'search_form'
     $table = $('<table/>').appendTo $form
     $tr     = $('<tr/>').appendTo $table
@@ -69,12 +69,12 @@ class AntCat.ReferencePicker
     @search_selector = @widget.find '.search_selector'
     @textbox = @widget.find '.q'
 
-    @setup_search_form()
+    @setup_search()
     @setup_references()
     @handle_new_selection()
     @textbox.focus()
 
-  setup_search_form: =>
+  setup_search: =>
     self = @
     @widget.find('.search_form')
       .submit =>
@@ -96,7 +96,7 @@ class AntCat.ReferencePicker
         .end()
       .find(':button.add')
         .click =>
-          @add_reference()
+          @add()
           false
         .end()
       .find(':button.close')
@@ -139,7 +139,7 @@ class AntCat.ReferencePicker
         .selectable(filter: '.reference_display', stop: @handle_new_selection, cancel: '.icons, .reference_edit')
         .end()
     @widget.find('.icon.edit').show() if AntCat.testing
-    @widget.find('.icon.edit').click -> self.edit_reference this
+    @widget.find('.icon.edit').click -> self.edit this
 
   handle_new_selection: =>
     selected_reference = @selected_reference()
@@ -214,22 +214,22 @@ class AntCat.ReferencePicker
   ENTER: 13
 
   # -----------------------------------------
-  edit_reference: (icon) ->
+  edit: (icon) ->
     return if @is_editing()
     $reference = $(icon).closest '.reference'
-    @open_reference_form $reference
+    @open_form $reference
     false
 
-  add_reference: =>
+  add: =>
     $reference = @widget.find('.template .reference').clone()
     @widget.find('.current_reference td').html $reference
     $reference = @widget.find('.current_reference .reference')
     @current_reference_id = null
-    @open_reference_form $reference
+    @open_form $reference
     @widget.toggleClass 'has-no-current-reference', false
     false
 
-  open_reference_form: ($reference) =>
+  open_form: ($reference) =>
     self = @
     $reference.find('.reference_edit')
       .find(':button, :submit')
@@ -237,10 +237,10 @@ class AntCat.ReferencePicker
         .end()
       .find('.submit')
         .click ->
-          self.submit_reference_form this
+          self.submit_form this
         .end()
       .find('.cancel')
-        .click(@cancel_reference_form)
+        .click(@cancel_form)
         .end()
     $reference.find('.icon.edit').hide() unless AntCat.testing
 
@@ -278,7 +278,7 @@ class AntCat.ReferencePicker
 
     $tabs.tabs selected: $reference.find('.selected_tab').val()
 
-  submit_reference_form: (submit_button) =>
+  submit_form: (submit_button) =>
     $(submit_button).closest('.spinner_container')
       .spinner
         position: 'left'
@@ -288,7 +288,7 @@ class AntCat.ReferencePicker
 
     $(submit_button).closest('form').ajaxSubmit
       beforeSerialize: @before_serialize
-      success: @update_reference
+      success: @handle_submit_response
       error: (->)
       dataType: 'json'
     false
@@ -298,21 +298,24 @@ class AntCat.ReferencePicker
     $('#selected_tab', $form).val selectedTab
     true
 
-  update_reference: (data, statusText, xhr, $form) =>
+  handle_submit_response: (data, statusText, xhr, $form) =>
     reference_selector = if data.isNew then '.current_reference .reference' else ".reference_#{data.id}"
-    @widget.find(reference_selector)
-      .find('.spinner_container')
-        .spinner('remove')
-        .end()
-      .each -> $(@).parent().html data.content
+    @update_form $(reference_selector), data.content
     unless data.success
-      @open_reference_form @widget.find reference_selector
+      @open_form @widget.find reference_selector
       return
     @setup_references()
     @widget.find('.search_form .controls').removeClass 'ui-state-disabled'
     $edit.find('.icon.edit').show() if AntCat.testing
 
-  cancel_reference_form: =>
+  update_form: ($reference, content) =>
+    $reference
+      .find('.spinner_container')
+        .spinner('remove')
+        .end()
+      .each -> $(@).parent().html content
+
+  cancel_form: =>
     false
 
   # -----------------------------------------
