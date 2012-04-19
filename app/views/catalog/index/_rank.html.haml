@@ -8,6 +8,9 @@
           .hide_show= hide_link options[:hideable_name], page_parameters[:id], page_parameters
         - if options[:hideable_child_name]
           .hide_show= show_child_link params, options[:hideable_child_name], page_parameters[:id], page_parameters
+        - if options[:addable]
+          .add
+            %a{href: '#'} add
     %tr
       %td
         - if items
