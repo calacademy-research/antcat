@@ -305,6 +305,7 @@ class AntCat.ReferencePicker
       @open_form @widget.find reference_selector
       return
     @setup_references()
+    @widget.find(reference_selector).effect("highlight", {color: 'darkgreen'}, 3000)
     @widget.find('.search_form .controls').removeClass 'ui-state-disabled'
     $edit.find('.icon.edit').show() if AntCat.testing
 
