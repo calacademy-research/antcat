@@ -64,7 +64,7 @@ class AntCat.HistoryItemForm
     start_spinning $form
     $form.ajaxSubmit
       success: @update_form
-      error: handle_error
+      error: @handle_error
       dataType: 'json'
     false
 
@@ -87,16 +87,16 @@ class AntCat.HistoryItemForm
       $panel.find('div.display').show()
     false
 
+  handle_error: (jq_xhr, text_status, error_thrown) =>
+    stop_spinning()
+    alert "Oh, shoot. It looks like a bug prevented this item from being saved.\n\nPlease report this situation to Mark Wilden (mark@mwilden.com) and we'll fix it.\n\n#{error_thrown}" unless AntCat.testing
+
 #--------------------------------------------------
 edit = ->
   return false if is_editing()
   $form = new AntCat.HistoryItemForm $(this).closest ".#{panel_class}"
   set_dimensions()
   false
-
-handle_error = (jq_xhr, text_status, error_thrown) ->
-  stop_spinning()
-  alert "Oh, shoot. It looks like a bug prevented this item from being saved.\n\nPlease report this situation to Mark Wilden (mark@mwilden.com) and we'll fix it.\n\n#{error_thrown}" unless AntCat.testing
 
 #--------------------------------------------------
 start_spinning = ($form) ->
