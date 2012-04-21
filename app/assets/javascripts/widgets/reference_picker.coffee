@@ -81,7 +81,7 @@ class AntCat.ReferencePicker
         @search()
         false
       .keypress (event) =>
-        return true unless event.which is @ENTER
+        return true unless event.which is $.ui.keyCode.ENTER
         @search()
         false
       .find('.controls')
