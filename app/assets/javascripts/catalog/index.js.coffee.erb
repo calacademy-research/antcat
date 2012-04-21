@@ -45,7 +45,7 @@ class AntCat.HistoryItemForm
         .end()
       .find('.cancel')
         .button()
-        .click(cancel_form)
+        .click(-> self.cancel_form this )
         .end()
       .find('textarea')
         .taxt_edit_box()
@@ -76,22 +76,22 @@ class AntCat.HistoryItemForm
       return
     $panel.replaceWith data.content
 
+  cancel_form: (button) ->
+    $panel = $(button).closest ".#{panel_class}"
+    clear_error_messages $panel
+    unless $panel.attr('id') is 'item_'
+      id = $panel.attr('id')
+      restore_form_values $panel
+      $panel = $('#' + id)
+      $panel.find('div.form').hide()
+      $panel.find('div.display').show()
+    false
+
 #--------------------------------------------------
 edit = ->
   return false if is_editing()
   $form = new AntCat.HistoryItemForm $(this).closest ".#{panel_class}"
   set_dimensions()
-  false
-
-cancel_form = ->
-  $panel = $(this).closest ".#{panel_class}"
-  clear_error_messages $panel
-  unless $panel.attr('id') is 'item_'
-    id = $panel.attr('id')
-    restore_form_values $panel
-    $panel = $('#' + id)
-    $panel.find('div.form').hide()
-    $panel.find('div.display').show()
   false
 
 handle_error = (jq_xhr, text_status, error_thrown) ->
