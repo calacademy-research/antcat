@@ -3,6 +3,7 @@ $ ->
   space_out_images()
   $(window).resize space_out_images
   setup_login()
+  setup_reference_keys()
   $('input[type=text]:visible:first').focus()
 
 preload_images = ->
@@ -26,3 +27,10 @@ setup_login = ->
 
 $.fn.disable = ->
   $(this).addClass 'ui-state-disabled'
+
+setup_reference_keys = ->
+  $('.reference_key, .reference_key_expansion_text').live 'click', ->
+    $(this)
+      .closest('.reference_key_and_expansion')
+      .find('.reference_key, .reference_key_expansion')
+      .toggle()
