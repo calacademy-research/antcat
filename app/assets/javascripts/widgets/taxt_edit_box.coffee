@@ -121,7 +121,7 @@ class AntCat.TaxtEditBox
 
   is_tag_opening_event: (event) =>
     @is_new_tag_event(event) or
-    event.type is 'keydown' and event.which is @ENTER or
+    event.type is 'keydown' and event.which is $.ui.keyCode.ENTER or
     event.type is 'dblclick'
 
   is_new_tag_event: (event) =>
@@ -139,7 +139,6 @@ class AntCat.TaxtEditBox
   set_selection: (left, right) => @control.setSelection left, right + 1
 
   data_key: 'old_value'
-  ENTER: 13
   LEFT_BRACKET: 219
 
   this.enclosing_tag_indexes = (text, position) ->
