@@ -6,7 +6,6 @@ $ ->
   setup_page()
   setup_icons()
   setup_reference_keys()
-  setup_forms()
 
   preload_images()
 
@@ -23,46 +22,47 @@ setup_testing_or_development = ->
       <%#$('.icon.edit').click()%>
 
 #--------------------------------------------------
-setup_forms = ->
-  $(".#{panel_class} div.form").each ->
-    setup_form $(this)
-
-setup_form = ($form) ->
-  $form
-    .find('.submit')
-      .button()
-      .click(submit_form)
-      .end()
-    .find('.cancel')
-      .button()
-      .click(cancel_form)
-      .end()
-    .find('textarea')
-      .taxt_edit_box()
-
-#--------------------------------------------------
 class AntCat.HistoryItemForm
   constructor: (@widget) ->
     @save_form_values()
     @show_form()
     return @
 
+  show_form: =>
+    @widget.find('div.display').hide()
+    $('.icon').hide() unless AntCat.testing
+    @widget.find('div.form').show()
+    @size_edit_box()
+    @setup_form()
+    @widget.find('.taxt_edit_box').first().focus()
+
+  setup_form: =>
+    @widget.find('form')
+      .find('.submit')
+        .button()
+        .click(submit_form)
+        .end()
+      .find('.cancel')
+        .button()
+        .click(cancel_form)
+        .end()
+      .find('textarea')
+        .taxt_edit_box()
+
   save_form_values: =>
     $taxt_edit_box = @widget.find 'textarea'
     $taxt_edit_box.data original_value_key, $taxt_edit_box.val()
 
-  show_form: =>
-    @widget.find('div.display').hide()
-    $('.icon').hide() unless AntCat.testing
-    size_edit_box @widget
-    @widget.find('div.form').show()
-    @widget.find('.taxt_edit_box').first().focus()
-    set_dimensions()
+  size_edit_box: =>
+    # make the textarea of the form the same height as the item it's editing
+    display_height = @widget.find('div.display').height()
+    @widget.find('.taxt_edit_box').height display_height + 30
 
 #--------------------------------------------------
 edit = ->
   return false if is_editing()
   $form = new AntCat.HistoryItemForm $(this).closest ".#{panel_class}"
+  set_dimensions()
   false
 
 submit_form = ->
@@ -101,11 +101,6 @@ handle_error = (jq_xhr, text_status, error_thrown) ->
   alert "Oh, shoot. It looks like a bug prevented this item from being saved.\n\nPlease report this situation to Mark Wilden (mark@mwilden.com) and we'll fix it.\n\n#{error_thrown}" unless AntCat.testing
 
 #--------------------------------------------------
-size_edit_box = ($panel) ->
-  # make the textarea of the form the same height as the item it's editing
-  display_height = $panel.find('div.display').height()
-  $panel.find('.taxt_edit_box').height(display_height + 30)
-
 start_spinning = ($form) ->
   $spinnerElement = $(':button', $form).parent()
   $spinnerElement.spinner position: 'left', leftOffset: 1, img: spinner_path
