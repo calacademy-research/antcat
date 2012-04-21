@@ -23,21 +23,21 @@ setup_testing_or_development = ->
 
 #--------------------------------------------------
 class AntCat.HistoryItemForm
-  constructor: (@widget) ->
+  constructor: (@element) ->
     @save_form_values()
     @show_form()
     return @
 
   show_form: =>
-    @widget.find('div.display').hide()
+    @element.find('div.display').hide()
     $('.icon').hide() unless AntCat.testing
-    @widget.find('div.form').show()
+    @element.find('div.form').show()
     @size_edit_box()
     @setup_form()
-    @widget.find('.taxt_edit_box').first().focus()
+    @element.find('.taxt_edit_box').first().focus()
 
   setup_form: =>
-    @widget.find('form')
+    @element.find('form')
       .find('.submit')
         .button()
         .click(submit_form)
@@ -50,13 +50,13 @@ class AntCat.HistoryItemForm
         .taxt_edit_box()
 
   save_form_values: =>
-    $taxt_edit_box = @widget.find 'textarea'
+    $taxt_edit_box = @element.find 'textarea'
     $taxt_edit_box.data original_value_key, $taxt_edit_box.val()
 
   size_edit_box: =>
     # make the textarea of the form the same height as the item it's editing
-    display_height = @widget.find('div.display').height()
-    @widget.find('.taxt_edit_box').height display_height + 30
+    display_height = @element.find('div.display').height()
+    @element.find('.taxt_edit_box').height display_height + 30
 
 #--------------------------------------------------
 edit = ->
