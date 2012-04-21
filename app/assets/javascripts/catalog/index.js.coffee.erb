@@ -4,7 +4,6 @@ original_value_key = panel_class + '_original_value'
 $ ->
   $(window).resize set_dimensions
   set_dimensions()
-  setup_reference_keys()
   $('.history_item').history_item_form()
   setup_testing_or_development()
 
@@ -165,10 +164,3 @@ set_height = ->
 
 set_width = ->
   $("#catalog .content").width($('#page').width())
-
-#--------------------------------------------------
-setup_reference_keys = ->
-  $('.reference_key, .reference_key_expansion_text').live 'click', ->
-    $(this).closest('.reference_key_and_expansion').find('.reference_key, .reference_key_expansion').toggle()
-
-#--------------------------------------------------
