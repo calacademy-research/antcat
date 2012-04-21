@@ -1,8 +1,13 @@
 $ ->
+  preload_images()
   space_out_images()
   $(window).resize space_out_images
   setup_login()
   $('input[type=text]:visible:first').focus()
+
+preload_images = ->
+  for image in ['/assets/header_bg.png', '/assets/antcat_logo.png', '/assets/site_header_ant_5.png']
+    (new Image()).src = image
 
 space_out_images = ->
   total_image_width = 379 + 154 + 124
