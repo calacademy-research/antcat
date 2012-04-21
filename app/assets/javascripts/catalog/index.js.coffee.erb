@@ -37,10 +37,11 @@ class AntCat.HistoryItemForm
     @element.find('.taxt_edit_box').first().focus()
 
   setup_form: =>
+    self = @
     @element.find('form')
       .find('.submit')
         .button()
-        .click(submit_form)
+        .click(-> self.submit_form this )
         .end()
       .find('.cancel')
         .button()
@@ -58,20 +59,20 @@ class AntCat.HistoryItemForm
     display_height = @element.find('div.display').height()
     @element.find('.taxt_edit_box').height display_height + 30
 
+  submit_form: (button) =>
+    $form = $(button).closest('form')
+    start_spinning $form
+    $form.ajaxSubmit
+      success: update_form
+      error: handle_error
+      dataType: 'json'
+    false
+
 #--------------------------------------------------
 edit = ->
   return false if is_editing()
   $form = new AntCat.HistoryItemForm $(this).closest ".#{panel_class}"
   set_dimensions()
-  false
-
-submit_form = ->
-  $form = $(this).closest('form')
-  start_spinning $form
-  $form.ajaxSubmit
-    success: update_form
-    error: handle_error
-    dataType: 'json'
   false
 
 update_form = (data, statusText, xhr, $form) ->
@@ -82,8 +83,6 @@ update_form = (data, statusText, xhr, $form) ->
     return
   $panel.replaceWith data.content
   $panel = $('#item_' + data.id)
-
-  setup_form $panel.find('div.form')
 
 cancel_form = ->
   $panel = $(this).closest ".#{panel_class}"
