@@ -41,20 +41,29 @@ setup_form = ($form) ->
       .taxt_edit_box()
 
 #--------------------------------------------------
+class AntCat.HistoryItemForm
+  constructor: (@widget) ->
+    @save_form_values()
+    @show_form()
+    return @
+
+  save_form_values: =>
+    $taxt_edit_box = @widget.find 'textarea'
+    $taxt_edit_box.data original_value_key, $taxt_edit_box.val()
+
+  show_form: =>
+    @widget.find('div.display').hide()
+    $('.icon').hide() unless AntCat.testing
+    size_edit_box @widget
+    @widget.find('div.form').show()
+    @widget.find('.taxt_edit_box').first().focus()
+    set_dimensions()
+
+#--------------------------------------------------
 edit = ->
   return false if is_editing()
-  $panel = $(this).closest ".#{panel_class}"
-  save_form_values $panel
-  show_form $panel
-  $panel.find('.taxt_edit_box').first().focus()
+  $form = new AntCat.HistoryItemForm $(this).closest ".#{panel_class}"
   false
-
-show_form = ($panel) ->
-  $panel.find('div.display').hide()
-  $('.icon').hide() unless AntCat.testing
-  size_edit_box $panel
-  $panel.find('div.form').show()
-  set_dimensions()
 
 submit_form = ->
   $form = $(this).closest('form')
@@ -106,10 +115,6 @@ stop_spinning = ->
   $spinnerElement = $('.spinner')
   $(':button', $spinnerElement).enable()
   $spinnerElement.spinner 'remove'
-
-save_form_values = ($panel) ->
-  $taxt_edit_box = $panel.find('textarea')
-  $taxt_edit_box.data original_value_key, $taxt_edit_box.val()
 
 restore_form_values = ($panel) ->
   $taxt_edit_box = $panel.find('textarea')
