@@ -52,9 +52,8 @@ edit = ->
 show_form = ($panel) ->
   $panel.find('div.display').hide()
   $('.icon').hide() unless AntCat.testing
+  size_edit_box $panel
   $panel.find('div.form').show()
-
-  # panel
   set_dimensions()
 
 submit_form = ->
@@ -93,6 +92,11 @@ handle_error = (jq_xhr, text_status, error_thrown) ->
   alert "Oh, shoot. It looks like a bug prevented this item from being saved.\n\nPlease report this situation to Mark Wilden (mark@mwilden.com) and we'll fix it.\n\n#{error_thrown}" unless AntCat.testing
 
 #--------------------------------------------------
+size_edit_box = ($panel) ->
+  # make the textarea of the form the same height as the item it's editing
+  display_height = $panel.find('div.display').height()
+  $panel.find('.taxt_edit_box').height(display_height + 30)
+
 start_spinning = ($form) ->
   $spinnerElement = $(':button', $form).parent()
   $spinnerElement.spinner position: 'left', leftOffset: 1, img: spinner_path
