@@ -72,7 +72,7 @@ class AntCat.HistoryItemForm
     @stop_spinning()
     $panel = $('#item_' + (if data.isNew then "" else data.id))
     if not data.success
-      show_error_messages $form, data.content
+      @show_error_messages $form, data.content
       return
     $panel.replaceWith data.content
 
@@ -81,11 +81,15 @@ class AntCat.HistoryItemForm
     clear_error_messages $panel
     unless $panel.attr('id') is 'item_'
       id = $panel.attr('id')
-      restore_form_values $panel
+      @restore_form_values()
       $panel = $('#' + id)
       $panel.find('div.form').hide()
       $panel.find('div.display').show()
     false
+
+  restore_form_values: =>
+    $taxt_edit_box = @element.find('textarea')
+    $taxt_edit_box.val $taxt_edit_box.data original_value_key
 
   handle_error: (jq_xhr, text_status, error_thrown) =>
     @stop_spinning()
@@ -101,20 +105,16 @@ class AntCat.HistoryItemForm
       .enable()
       .spinner 'remove'
 
+  show_error_messages: ($form, html) ->
+    clear_error_messages $form
+    $form.prepend $(html).find 'ul.error_messages'
+
 #--------------------------------------------------
 edit = ->
   return false if is_editing()
   $form = new AntCat.HistoryItemForm $(this).closest ".#{panel_class}"
   set_dimensions()
   false
-
-restore_form_values = ($panel) ->
-  $taxt_edit_box = $panel.find('textarea')
-  $taxt_edit_box.val $taxt_edit_box.data original_value_key
-
-show_error_messages = ($form, html) ->
-  clear_error_messages $form
-  $form.prepend $(html).find('ul.error_messages')
 
 clear_error_messages = ($form) ->
   $('ul.error_messages', $form).remove()
