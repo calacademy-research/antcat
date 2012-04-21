@@ -27,13 +27,15 @@ class AntCat.HistoryItemForm
 
   initialize: ($element) =>
     @element = $element
-    @element.find('.icon').hide() unless AntCat.testing
+    @element_class = 'history_item'
     @element
+      .addClass(@element_class)
       .mouseenter(=> @element.find('.icon').show() unless @is_editing())
       .mouseleave(=> @element.find('.icon').hide())
       .find('.icon.edit').click @edit
+    @element.find('.icon').hide() unless AntCat.testing
 
-  @is_editing: -> $(".#{panel_class} div.form").is ':visible'
+  @is_editing: -> $(".#{@element_class} div.form").is ':visible'
   is_editing: => @element.find('div.form') is ':visible'
 
   show: =>
@@ -90,11 +92,11 @@ class AntCat.HistoryItemForm
     $panel.replaceWith data.content
     @initialize $(panel_selector)
 
-  cancel_form: (button) ->
-    $panel = $(button).closest ".#{panel_class}"
+  cancel_form: (button) =>
+    $form = $(button).closest('form')
     @clear_error_messages()
-    unless $panel.attr('id') is 'item_'
-      id = $panel.attr('id')
+    unless @element.attr('id') is 'item_'
+      id = @element.attr('id')
       @restore_form_values()
       $panel = $('#' + id)
       $panel.find('div.form').hide()
