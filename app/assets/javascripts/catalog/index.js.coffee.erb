@@ -1,18 +1,12 @@
 panel_class = 'inline-form-panel'
 original_value_key = panel_class + '_original_value'
-spinner_path = "<%= asset_path 'ui-anim_basic_16x16.gif' %>"
 
 $ ->
-  setup_page()
+  $(window).resize set_dimensions
+  set_dimensions()
   setup_reference_keys()
-
   $('.history_item').history_item_form()
-  preload_images()
-
   setup_testing_or_development()
-
-preload_images = ->
-  (new Image()).src = spinner_path
 
 setup_testing_or_development = ->
   if AntCat.testing
@@ -21,29 +15,27 @@ setup_testing_or_development = ->
     <%#if AntCat.environment is 'development'%>
       <%#$('.icon.edit').click()%>
 
-$.fn.history_item_form = ->
-  return this.each -> new AntCat.HistoryItemForm $(this)
-
 #--------------------------------------------------
+$.fn.history_item_form = ->
+  this.each -> new AntCat.HistoryItemForm $(this)
+
 class AntCat.HistoryItemForm
   constructor: ($element) ->
-    @setup $element
+    @spinner_path = "<%= asset_path 'ui-anim_basic_16x16.gif' %>"
+    (new Image()).src = @spinner_path
+    @initialize $element
     return @
 
-  setup: ($element) =>
+  initialize: ($element) =>
     @element = $element
-    @setup_icons()
-
-  setup_icons: =>
-    console.log 'setup_icons'
-    @setup_icon_visibility()
-    @element.find('.icon.edit').click @edit
-
-  setup_icon_visibility: =>
     @element.find('.icon').hide() unless AntCat.testing
     @element
-      .mouseenter(=> @element.find('.icon').show() unless is_editing())
+      .mouseenter(=> @element.find('.icon').show() unless @is_editing())
       .mouseleave(=> @element.find('.icon').hide())
+      .find('.icon.edit').click @edit
+
+  @is_editing: -> $(".#{panel_class} div.form").is ':visible'
+  is_editing: => @element.find('div.form') is ':visible'
 
   show: =>
     @save_form_values()
@@ -53,7 +45,7 @@ class AntCat.HistoryItemForm
     @element.find('div.display').hide()
     $('.icon').hide() unless AntCat.testing
     @element.find('div.form').show()
-    @size_edit_box()
+    @resize_edit_box()
     @setup_form()
     @element.find('.taxt_edit_box').first().focus()
 
@@ -75,7 +67,7 @@ class AntCat.HistoryItemForm
     $taxt_edit_box = @element.find 'textarea'
     $taxt_edit_box.data original_value_key, $taxt_edit_box.val()
 
-  size_edit_box: =>
+  resize_edit_box: =>
     # make the textarea of the form the same height as the item it's editing
     display_height = @element.find('div.display').height()
     @element.find('.taxt_edit_box').height display_height + 30
@@ -97,7 +89,7 @@ class AntCat.HistoryItemForm
       @show_error_messages $form, data.content
       return
     $panel.replaceWith data.content
-    @setup $(panel_selector)
+    @initialize $(panel_selector)
 
   cancel_form: (button) ->
     $panel = $(button).closest ".#{panel_class}"
@@ -121,7 +113,7 @@ class AntCat.HistoryItemForm
   start_spinning: =>
     @element.find(':button')
       .disable()
-      .parent().spinner position: 'left', leftOffset: 1, img: spinner_path
+      .parent().spinner position: 'left', leftOffset: 1, img: @spinner_path
 
   stop_spinning: =>
     @element.find('.spinner')
@@ -136,26 +128,19 @@ class AntCat.HistoryItemForm
     @element.find('ul.error_messages').remove()
 
   edit: =>
-    return false if is_editing()
+    return false if @is_editing()
     @show()
     set_dimensions()
     false
 
 #--------------------------------------------------
 
-is_editing = ->
-  $(".#{panel_class} div.form").is ':visible'
-
-setup_page = ->
-  $(window).resize set_dimensions
-  set_dimensions()
-
 set_dimensions = ->
   set_height()
   set_width()
 
 set_height = ->
-  if is_editing()
+  if AntCat.HistoryItemForm.is_editing()
     $("#page").height('auto')
     $(".antcat_taxon").height('auto')
   else
@@ -171,7 +156,7 @@ set_height = ->
     $('#taxon_key').height() - 2 -
     $('#site_footer').height() - 8
 
-  if is_editing()
+  if AntCat.HistoryItemForm.is_editing()
     $("#catalog").height('auto')
     $("#catalog .index").height('auto')
   else
