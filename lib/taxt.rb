@@ -19,7 +19,7 @@ module Taxt
     "{#{reference.key.to_s} #{editable_id}}"
   end
 
-  # this value is duplicated in jquery.antcat.taxt_edit_box.coffee
+  # this value is duplicated in taxt_edit_box.coffee
   EDITABLE_ID_DIGITS = %{abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ}
 
   def self.from_editable editable_taxt
@@ -34,7 +34,7 @@ module Taxt
     AnyBase.base_10_to_base_x(id.to_i, EDITABLE_ID_DIGITS).reverse
   end
 
-  # this code is duplicated in jquery.antcat.taxt_edit_box.coffee
+  # this code is duplicated in taxt_edit_box.coffee
   def self.id_from_editable editable_id
     AnyBase.base_x_to_base_10 editable_id.reverse, EDITABLE_ID_DIGITS
   end
