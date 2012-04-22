@@ -339,11 +339,11 @@ class AntCat.ReferencePicker
 class AntCat.ReferenceForm extends AntCat.Form
 
   setup: =>
-    @setup_reference_edit_author_autocomplete()
-    @setup_reference_edit_journal_autocomplete()
-    @setup_reference_edit_publisher_autocomplete()
+    @setup_author_autocomplete()
+    @setup_journal_autocomplete()
+    @setup_publisher_autocomplete()
 
-  setup_reference_edit_author_autocomplete: =>
+  setup_author_autocomplete: =>
     return if AntCat.testing
     @element.find('.authors').autocomplete
       autoFocus: true
@@ -361,13 +361,13 @@ class AntCat.ReferenceForm extends AntCat.Form
         $(@).setCaretPos value_and_position.position + 1
         false
 
-  setup_reference_edit_journal_autocomplete: =>
+  setup_journal_autocomplete: =>
     @element.find('.journal').autocomplete
       autoFocus: true,
       source: "/journals",
       minLength: 3
 
-  setup_reference_edit_publisher_autocomplete: =>
+  setup_publisher_autocomplete: =>
     @element.find('.publisher').autocomplete
       autoFocus: true,
       source: "/publishers",
