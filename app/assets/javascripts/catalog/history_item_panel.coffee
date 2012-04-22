@@ -32,22 +32,7 @@ class AntCat.HistoryItemPanel
     $('.icon').hide() unless AntCat.testing
     @element.find('div.form').show()
     @resize_edit_box()
-    @setup_form()
     @element.find('.taxt_edit_box').first().focus()
-
-  setup_form: =>
-    self = @
-    @element.find('form')
-      .find('.submit')
-        .button()
-        .click(-> self.submit_form this )
-        .end()
-      .find('.cancel')
-        .button()
-        .click(-> self.cancel_form this )
-        .end()
-      .find('textarea')
-        .taxt_edit_box()
 
   save_form_values: =>
     panel_class = 'inline-form-panel'
@@ -60,15 +45,6 @@ class AntCat.HistoryItemPanel
     display_height = @element.find('div.display').height()
     @element.find('.taxt_edit_box').height display_height + 30
 
-  submit_form: (button) =>
-    $form = $(button).closest('form')
-    @start_spinning()
-    $form.ajaxSubmit
-      success: @update_form
-      error: @handle_error
-      dataType: 'json'
-    false
-
   update_form: (data, statusText, xhr, $form) =>
     @stop_spinning()
     panel_selector = '#item_' + (if data.isNew then "" else data.id)
@@ -78,17 +54,6 @@ class AntCat.HistoryItemPanel
       return
     $panel.replaceWith data.content
     @initialize $(panel_selector)
-
-  cancel_form: (button) =>
-    $form = $(button).closest('form')
-    @clear_error_messages()
-    unless @element.attr('id') is 'item_'
-      id = @element.attr('id')
-      @restore_form_values()
-      $panel = $('#' + id)
-      $panel.find('div.form').hide()
-      $panel.find('div.display').show()
-    false
 
   restore_form_values: =>
     $taxt_edit_box = @element.find('textarea')
@@ -130,4 +95,35 @@ $.fn.history_item_panel = (options = {}) ->
 #----------------------------------------------
 class AntCat.HistoryItemForm
 
-  constructor: ($element, options = {}) ->
+  constructor: (@element, options = {}) ->
+    self = @
+    @element
+      .find('.submit')
+        .button()
+        .click(-> self.submit_form this )
+        .end()
+      .find('.cancel')
+        .button()
+        .click(-> self.cancel_form this )
+        .end()
+      .find('textarea')
+        .taxt_edit_box()
+
+  submit_form: (button) =>
+    @start_spinning()
+    @element.ajaxSubmit
+      success: @update_form
+      error: @handle_error
+      dataType: 'json'
+    false
+
+  cancel_form: (button) =>
+    @clear_error_messages()
+    unless @element.attr('id') is 'item_'
+      id = @element.attr('id')
+      @restore_form_values()
+      $panel = $('#' + id)
+      $panel.find('div.form').hide()
+      $panel.find('div.display').show()
+    false
+
