@@ -125,9 +125,7 @@ class AntCat.ReferencePicker
   setup_references: =>
     self = @
     @widget
-      .find('.reference')
-        .mouseenter((-> $('.icon.edit', $(this)).show() unless self.is_editing()))
-        .mouseleave((-> $('.icon.edit').hide()))
+      .find('.reference').reference_panel()
         .end()
       .find(".search_results .reference_#{@current_reference_id} .reference_display")
         .addClass('ui-selected')
@@ -369,3 +367,9 @@ class AntCat.ReferenceForm extends AntCat.Form
       autoFocus: true,
       source: "/publishers",
       minLength: 3
+
+class AntCat.ReferencePanel extends AntCat.Panel
+
+$.fn.reference_panel = (options = {}) ->
+  return this.each -> new AntCat.ReferencePanel $(this), options
+
