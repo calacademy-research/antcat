@@ -9,7 +9,7 @@ class AntCat.HistoryItemPanel
   initialize: ($element) =>
     @element = $element
     @element
-      .addClass(AntCat.HistoryItemPanel.element_class)
+      .addClass(@element_class)
       .mouseenter(=> @element.find('.icon').show() unless @is_editing())
       .mouseleave(=> @element.find('.icon').hide())
       .find('.icon.edit').click @edit
@@ -27,6 +27,8 @@ class AntCat.HistoryItemPanel
     @options.on_edit_opened() if @options.on_edit_opened
     false
 
+  element_class: 'history_item'
+
   create_form: ($element, options) -> new AntCat.HistoryItemForm $element, options
   on_edit_done: (panel_selector, new_content) =>
     $(panel_selector).replaceWith new_content
@@ -36,7 +38,6 @@ class AntCat.HistoryItemPanel
     @element.find('div.form').hide()
     @element.find('div.display').show()
 
-  @element_class: 'history_item'
 
   resize_edit_box: =>
     # make the textarea of the form the same height as the item it's editing
