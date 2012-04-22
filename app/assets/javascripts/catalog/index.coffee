@@ -3,7 +3,7 @@ $ ->
   $(window).resize set_dimensions
   $('.history_item').history_item_panel on_edit_opened: set_dimensions
   $('.icon.edit').show() if AntCat.testing
-  $('.icon.edit').click() if AntCat.environment is 'development'
+  #$('.icon.edit').click() if AntCat.environment is 'development'
 
 set_dimensions = ->
   set_height()
