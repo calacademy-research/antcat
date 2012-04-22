@@ -340,8 +340,7 @@ class AntCat.ReferencePicker
   # -----------------------------------------
   setup_reference_edit_author_autocomplete: ($reference) =>
     return if AntCat.testing
-    $field = $reference.find '.reference_edit .authors'
-    $field.autocomplete
+    $reference.find('.reference_edit .authors').autocomplete
       autoFocus: true
       minLength: 3
       source: (request, result_handler) ->
@@ -350,13 +349,12 @@ class AntCat.ReferencePicker
           $.getJSON "/authors/all", term: search_term, result_handler
         else
           result_handler []
-    # don't update the search textbox when the autocomplete item changes
-    focus: -> false
-    select: (event, data) =>
-      value_and_position = AntCat.ReferencePicker.insert_author($field.val(), $field.getSelection().start, data.item.value)
-      $field.val value_and_position.string
-      $field.setCaretPos value_and_position.position + 1
-      false
+      focus: -> false # don't update the search textbox when the autocomplete item changes
+      select: (event, data) ->
+        value_and_position = AntCat.ReferencePicker.insert_author($(@).val(), $(@).getSelection().start, data.item.value)
+        $(@).val value_and_position.string
+        $(@).setCaretPos value_and_position.position + 1
+        false
 
   setup_reference_edit_journal_autocomplete: ($reference) =>
     $reference.find('.reference_edit .journal').autocomplete
