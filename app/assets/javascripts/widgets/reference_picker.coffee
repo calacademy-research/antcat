@@ -1,5 +1,3 @@
-window.AntCat or= {}
-
 class AntCat.ReferencePicker
 
   constructor: (parent, @original_reference_id, @result_handler) ->
@@ -165,6 +163,7 @@ class AntCat.ReferencePicker
   enable_search_author_autocomplete: =>
     @search_selector.closest('form').attr 'autocomplete', 'off'
     return if AntCat.testing
+    self = @
     @textbox.autocomplete
       autoFocus: true
       minLength: 3
@@ -176,10 +175,10 @@ class AntCat.ReferencePicker
           result_handler []
     # don't update the search textbox when the autocomplete item changes
     focus: -> false
-    select: (event, data) =>
-      value_and_position = AntCat.ReferencePicker.insert_author(@textbox.val(), @textbox.getSelection().start, data.item.value)
-      @textbox.val value_and_position.string
-      @textbox.setCaretPos value_and_position.position + 1
+    select: (event, data) ->
+      value_and_position = AntCat.ReferencePicker.insert_author(@element.val(), @element.getSelection().start, data.item.value)
+      @element.val value_and_position.string
+      @element.setCaretPos value_and_position.position + 1
       false
 
   disable_search_author_autocomplete: =>
@@ -210,8 +209,6 @@ class AntCat.ReferencePicker
     position = next_semicolon + position + 2
 
     {string: string, position: position}
-
-  ENTER: 13
 
   # -----------------------------------------
   edit: (icon) ->
