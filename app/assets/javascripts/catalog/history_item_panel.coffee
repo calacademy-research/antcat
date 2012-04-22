@@ -16,24 +16,6 @@ class AntCat.HistoryItemPanel
       .find('.icon.edit').click @edit
     @element.find('.icon').hide() unless AntCat.testing
 
-  @element_class: 'history_item'
-  @is_editing: -> $(".#{AntCat.HistoryItemPanel.element_class} div.form").is ':visible'
-
-  is_editing: => @element.find('div.form').is ':visible'
-
-  resize_edit_box: =>
-    # make the textarea of the form the same height as the item it's editing
-    display_height = @element.find('div.display').height()
-    @element.find('.taxt_edit_box').height display_height + 30
-
-  handle_error: (jq_xhr, text_status, error_thrown) =>
-    @stop_spinning()
-    alert "Oh, shoot. It looks like a bug prevented this item from being saved.\n\nPlease report this situation to Mark Wilden (mark@mwilden.com) and we'll fix it.\n\n#{error_thrown}" unless AntCat.testing
-
-  show_error_messages: ($form, html) ->
-    clear_error_messages()
-    $form.prepend $(html).find 'ul.error_messages'
-
   edit: =>
     return false if @is_editing()
     @element.find('div.display').hide()
@@ -53,6 +35,16 @@ class AntCat.HistoryItemPanel
   on_edit_cancelled: =>
     @element.find('div.form').hide()
     @element.find('div.display').show()
+
+  @element_class: 'history_item'
+  @is_editing: -> $(".#{AntCat.HistoryItemPanel.element_class} div.form").is ':visible'
+
+  is_editing: => @element.find('div.form').is ':visible'
+
+  resize_edit_box: =>
+    # make the textarea of the form the same height as the item it's editing
+    display_height = @element.find('div.display').height()
+    @element.find('.taxt_edit_box').height display_height + 30
 
 $.fn.history_item_panel = (options = {}) ->
   return this.each -> new AntCat.HistoryItemPanel $(this), options
@@ -95,7 +87,7 @@ class AntCat.HistoryItemForm
     panel_selector = '#item_' + (if data.isNew then "" else data.id)
     $panel = $ panel_selector
     if not data.success
-      @show_error_messages $form, data.content
+      @show_error_messages data.content
       return
     @on_done panel_selector, data.content
 
@@ -104,9 +96,6 @@ class AntCat.HistoryItemForm
     @restore_form_values() unless @is_new_item()
     @on_cancel() if @on_cancel
     false
-
-  is_new_item: =>
-    false #@element.attr('id') is 'item_'
 
   start_spinning: =>
     @element.find(':button')
@@ -117,6 +106,10 @@ class AntCat.HistoryItemForm
     @element.find('.spinner')
       .enable()
       .spinner 'remove'
+
+  show_error_messages: (html) ->
+    clear_error_messages()
+    @element.prepend $(html).find 'ul.error_messages'
 
   clear_error_messages: =>
     @element.find('ul.error_messages').remove()
@@ -132,3 +125,10 @@ class AntCat.HistoryItemForm
     panel_class = 'inline-form-panel'
     original_value_key = panel_class + '_original_value'
     $taxt_edit_box.val $taxt_edit_box.data original_value_key
+
+  handle_error: (jq_xhr, text_status, error_thrown) =>
+    @stop_spinning()
+    alert "Oh, shoot. It looks like a bug prevented this item from being saved.\n\nPlease report this situation to Mark Wilden (mark@mwilden.com) and we'll fix it.\n\n#{error_thrown}" unless AntCat.testing
+
+  is_new_item: =>
+    false #@element.attr('id') is 'item_'
