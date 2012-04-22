@@ -37,14 +37,13 @@ class AntCat.HistoryItemPanel
     @element.find('div.display').show()
 
   @element_class: 'history_item'
-  @is_editing: -> $(".#{AntCat.HistoryItemPanel.element_class} div.form").is ':visible'
-
-  is_editing: => @element.find('div.form').is ':visible'
 
   resize_edit_box: =>
     # make the textarea of the form the same height as the item it's editing
     display_height = @element.find('div.display').height()
     @element.find('.taxt_edit_box').height display_height + 30
+  @is_editing: -> $('.antcat_form').is ':visible'
+  is_editing: => @element.find('.antcat_form').is ':visible'
 
 $.fn.history_item_panel = (options = {}) ->
   return this.each -> new AntCat.HistoryItemPanel $(this), options
@@ -53,6 +52,7 @@ $.fn.history_item_panel = (options = {}) ->
 class AntCat.HistoryItemForm
 
   constructor: (@element, options = {}) ->
+    @element.addClass 'antcat_form'
     @on_done = options.on_done
     @on_cancel = options.on_cancel
     @save_form_values()
