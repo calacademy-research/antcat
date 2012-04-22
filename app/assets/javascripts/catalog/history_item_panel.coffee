@@ -120,8 +120,14 @@ class AntCat.HistoryItemPanel
   edit: =>
     return false if @is_editing()
     @show()
+    new AntCat.HistoryItemForm(@element.find 'div.form form')
     @on_edit_opened() if @on_edit_opened
     false
 
 $.fn.history_item_panel = (options = {}) ->
   return this.each -> new AntCat.HistoryItemPanel $(this), options
+
+#----------------------------------------------
+class AntCat.HistoryItemForm
+
+  constructor: ($element, options = {}) ->
