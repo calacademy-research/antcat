@@ -243,9 +243,7 @@ class AntCat.ReferencePicker
 
     @setup_tabs $reference
 
-    @setup_reference_edit_author_autocomplete $reference
-    @setup_reference_edit_journal_autocomplete $reference
-    @setup_reference_edit_publisher_autocomplete $reference
+    (new AntCat.ReferenceForm $reference.find('.reference_edit form')).setup()
 
     @widget.find('.search_form .controls').disable()
 
@@ -337,10 +335,17 @@ class AntCat.ReferencePicker
       help += ', or add one'
     @widget.find('.help_banner_text').text help
 
-  # -----------------------------------------
-  setup_reference_edit_author_autocomplete: ($reference) =>
+# ---------------------------------------
+class AntCat.ReferenceForm extends AntCat.Form
+
+  setup: =>
+    @setup_reference_edit_author_autocomplete()
+    @setup_reference_edit_journal_autocomplete()
+    @setup_reference_edit_publisher_autocomplete()
+
+  setup_reference_edit_author_autocomplete: =>
     return if AntCat.testing
-    $reference.find('.reference_edit .authors').autocomplete
+    @element.find('.authors').autocomplete
       autoFocus: true
       minLength: 3
       source: (request, result_handler) ->
@@ -356,14 +361,14 @@ class AntCat.ReferencePicker
         $(@).setCaretPos value_and_position.position + 1
         false
 
-  setup_reference_edit_journal_autocomplete: ($reference) =>
-    $reference.find('.reference_edit .journal').autocomplete
+  setup_reference_edit_journal_autocomplete: =>
+    @element.find('.journal').autocomplete
       autoFocus: true,
       source: "/journals",
       minLength: 3
 
-  setup_reference_edit_publisher_autocomplete: ($reference) =>
-    $reference.find('.reference_edit .publisher').autocomplete
+  setup_reference_edit_publisher_autocomplete: =>
+    @element.find('.publisher').autocomplete
       autoFocus: true,
       source: "/publishers",
       minLength: 3
