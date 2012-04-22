@@ -4,8 +4,6 @@ class AntCat.HistoryItemPanel
 
   constructor: ($element, options = {}) ->
     @on_edit_opened = options.on_edit_opened
-    @spinner_path = 'assets/ui-anim_basic_16x16.gif'
-    (new Image()).src = @spinner_path
     @initialize $element
     return @
 
@@ -24,7 +22,6 @@ class AntCat.HistoryItemPanel
   is_editing: => @element.find('div.form').is ':visible'
 
   show: =>
-    @save_form_values()
     @show_form()
 
   show_form: =>
@@ -33,12 +30,6 @@ class AntCat.HistoryItemPanel
     @element.find('div.form').show()
     @resize_edit_box()
     @element.find('.taxt_edit_box').first().focus()
-
-  save_form_values: =>
-    panel_class = 'inline-form-panel'
-    original_value_key = panel_class + '_original_value'
-    $taxt_edit_box = @element.find 'textarea'
-    $taxt_edit_box.data original_value_key, $taxt_edit_box.val()
 
   resize_edit_box: =>
     # make the textarea of the form the same height as the item it's editing
@@ -55,20 +46,9 @@ class AntCat.HistoryItemPanel
     $panel.replaceWith data.content
     @initialize $(panel_selector)
 
-  restore_form_values: =>
-    $taxt_edit_box = @element.find('textarea')
-    panel_class = 'inline-form-panel'
-    original_value_key = panel_class + '_original_value'
-    $taxt_edit_box.val $taxt_edit_box.data original_value_key
-
   handle_error: (jq_xhr, text_status, error_thrown) =>
     @stop_spinning()
     alert "Oh, shoot. It looks like a bug prevented this item from being saved.\n\nPlease report this situation to Mark Wilden (mark@mwilden.com) and we'll fix it.\n\n#{error_thrown}" unless AntCat.testing
-
-  start_spinning: =>
-    @element.find(':button')
-      .disable()
-      .parent().spinner position: 'left', leftOffset: 1, img: @spinner_path
 
   stop_spinning: =>
     @element.find('.spinner')
@@ -78,9 +58,6 @@ class AntCat.HistoryItemPanel
   show_error_messages: ($form, html) ->
     clear_error_messages()
     $form.prepend $(html).find 'ul.error_messages'
-
-  clear_error_messages: =>
-    @element.find('ul.error_messages').remove()
 
   edit: =>
     return false if @is_editing()
@@ -96,6 +73,9 @@ $.fn.history_item_panel = (options = {}) ->
 class AntCat.HistoryItemForm
 
   constructor: (@element, options = {}) ->
+    @save_form_values()
+    @spinner_path = 'assets/ui-anim_basic_16x16.gif'
+    (new Image()).src = @spinner_path
     self = @
     @element
       .find('.submit')
@@ -127,3 +107,22 @@ class AntCat.HistoryItemForm
       $panel.find('div.display').show()
     false
 
+  start_spinning: =>
+    @element.find(':button')
+      .disable()
+      .parent().spinner position: 'left', leftOffset: 1, img: @spinner_path
+
+  clear_error_messages: =>
+    @element.find('ul.error_messages').remove()
+
+  save_form_values: =>
+    panel_class = 'inline-form-panel'
+    original_value_key = panel_class + '_original_value'
+    $taxt_edit_box = @element.find 'textarea'
+    $taxt_edit_box.data original_value_key, $taxt_edit_box.val()
+
+  restore_form_values: =>
+    $taxt_edit_box = @element.find('textarea')
+    panel_class = 'inline-form-panel'
+    original_value_key = panel_class + '_original_value'
+    $taxt_edit_box.val $taxt_edit_box.data original_value_key
