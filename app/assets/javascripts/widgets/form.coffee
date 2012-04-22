@@ -7,7 +7,7 @@ class AntCat.Form
     @on_done = options.on_done
     @on_cancel = options.on_cancel
     @save_form_values()
-    @spinner_path = 'assets/ui-anim_basic_16x16.gif'
+    @spinner_path = '/assets/ui-anim_basic_16x16.gif'
     (new Image()).src = @spinner_path
     self = @
     @element
