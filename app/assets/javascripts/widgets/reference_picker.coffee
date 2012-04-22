@@ -46,7 +46,7 @@ class AntCat.ReferencePicker
       dataType: 'html'
       success: (data) =>
         @widget.html data
-        @setup()
+        @initialize()
       error: (xhr) => debugger
     0)
 
@@ -65,7 +65,7 @@ class AntCat.ReferencePicker
   cancel: =>
     @close true
 
-  setup: =>
+  initialize: =>
     @search_selector = @widget.find '.search_selector'
     @textbox = @widget.find '.q'
 
