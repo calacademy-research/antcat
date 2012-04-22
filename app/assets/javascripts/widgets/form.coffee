@@ -2,10 +2,8 @@ window.AntCat or= {}
 
 class AntCat.Form
 
-  constructor: (@element, options = {}) ->
+  constructor: (@element, @options = {}) ->
     @element.addClass 'antcat_form'
-    @on_done = options.on_done
-    @on_cancel = options.on_cancel
     @save_form_values()
     @spinner_path = '/assets/ui-anim_basic_16x16.gif'
     (new Image()).src = @spinner_path
@@ -35,12 +33,12 @@ class AntCat.Form
     if not data.success
       @show_error_messages data.content
       return
-    @on_done panel_selector, data.content
+    @options.on_done panel_selector, data.content
 
   cancel_form: (button) =>
     @clear_error_messages()
     @restore_form_values() unless @is_new_item()
-    @on_cancel() if @on_cancel
+    @options.on_cancel() if @options.on_cancel
     false
 
   start_spinning: =>
