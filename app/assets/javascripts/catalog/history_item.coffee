@@ -11,6 +11,15 @@ $.fn.history_item_panel = (options = {}) ->
 
 class AntCat.HistoryItemForm extends AntCat.Form
 
+  constructor: ->
+    super
+    @element
+      .find('textarea')
+        .taxt_edit_box()
+        .end()
+      .find('.taxt_edit_box').first()
+        .focus()
+
   original_value_key: 'original_value'
 
   save_form_values: =>
