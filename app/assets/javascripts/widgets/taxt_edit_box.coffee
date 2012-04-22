@@ -69,6 +69,7 @@ class AntCat.TaxtEditBox
     simulation.height @control.height()
     simulation.insertAfter @control
     @control.hide()
+
   replace_simulation_with_text_area: =>
     $('.antcat-taxt-simulation').remove()
     @control.show()
