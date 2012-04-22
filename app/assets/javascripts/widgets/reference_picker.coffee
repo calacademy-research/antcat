@@ -239,9 +239,9 @@ class AntCat.ReferencePicker
       .find('.cancel')
         .click(@cancel_form)
         .end()
-    $reference.find('.icon.edit').hide() unless AntCat.testing
+    #$reference.find('.icon.edit').hide() unless AntCat.testing
 
-    (new AntCat.ReferenceForm $reference.find('.reference_edit form')).setup()
+    (new AntCat.ReferenceForm $reference.find('.reference_edit form'), on_done: @on_done).setup()
 
     @widget.find('.search_form .controls').disable()
 
