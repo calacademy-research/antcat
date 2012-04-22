@@ -1,6 +1,6 @@
 window.AntCat or= {}
 
-class AntCat.HistoryItemForm
+class AntCat.HistoryItemPanel
 
   constructor: ($element, options = {}) ->
     @on_edit_opened = options.on_edit_opened
@@ -12,14 +12,14 @@ class AntCat.HistoryItemForm
   initialize: ($element) =>
     @element = $element
     @element
-      .addClass(AntCat.HistoryItemForm.element_class)
+      .addClass(AntCat.HistoryItemPanel.element_class)
       .mouseenter(=> @element.find('.icon').show() unless @is_editing())
       .mouseleave(=> @element.find('.icon').hide())
       .find('.icon.edit').click @edit
     @element.find('.icon').hide() unless AntCat.testing
 
   @element_class: 'history_item'
-  @is_editing: -> $(".#{AntCat.HistoryItemForm.element_class} div.form").is ':visible'
+  @is_editing: -> $(".#{AntCat.HistoryItemPanel.element_class} div.form").is ':visible'
 
   is_editing: => @element.find('div.form').is ':visible'
 
@@ -123,5 +123,5 @@ class AntCat.HistoryItemForm
     @on_edit_opened() if @on_edit_opened
     false
 
-$.fn.history_item_form = (options = {}) ->
-  return this.each -> new AntCat.HistoryItemForm $(this), options
+$.fn.history_item_panel = (options = {}) ->
+  return this.each -> new AntCat.HistoryItemPanel $(this), options
