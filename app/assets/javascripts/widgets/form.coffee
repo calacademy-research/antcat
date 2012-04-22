@@ -54,7 +54,7 @@ class AntCat.Form
       .spinner 'remove'
 
   show_error_messages: (html) ->
-    clear_error_messages()
+    @clear_error_messages()
     @element.prepend $(html).find 'ul.error_messages'
 
   clear_error_messages: =>
