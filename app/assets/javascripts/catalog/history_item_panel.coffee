@@ -21,12 +21,13 @@ class AntCat.HistoryItemPanel
     $('.icon').hide() unless AntCat.testing
     @element.find('div.form').show()
     @resize_edit_box()
-    new AntCat.HistoryItemForm @element.find('div.form form'),
+    @create_form @element.find('div.form form'),
       on_done: @on_edit_done
       on_cancel: @on_edit_cancelled
     @options.on_edit_opened() if @options.on_edit_opened
     false
 
+  create_form: ($element, options) -> new AntCat.HistoryItemForm $element, options
   on_edit_done: (panel_selector, new_content) =>
     $(panel_selector).replaceWith new_content
     @initialize $(panel_selector)
