@@ -14,7 +14,7 @@ class AntCat.Panel
     @element.find('.icon').hide() unless AntCat.testing
 
   edit: =>
-    return false if @is_editing()
+    return if @is_editing()
 
     $('.icon').hide() unless AntCat.testing
     @element.find('div.display').hide()
