@@ -92,6 +92,8 @@ class AntCat.HistoryItemForm
 
   restore_form_values: =>
     $taxt_edit_box = @element.find('textarea')
+    panel_class = 'inline-form-panel'
+    original_value_key = panel_class + '_original_value'
     $taxt_edit_box.val $taxt_edit_box.data original_value_key
 
   handle_error: (jq_xhr, text_status, error_thrown) =>
