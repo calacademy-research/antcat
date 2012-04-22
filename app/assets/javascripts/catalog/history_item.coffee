@@ -1,5 +1,3 @@
-window.AntCat or= {}
-
 class AntCat.HistoryItemPanel extends AntCat.Panel
   element_class: 'history_item'
   create_form: ($element, options) -> new AntCat.HistoryItemForm $element, options
@@ -13,14 +11,12 @@ $.fn.history_item_panel = (options = {}) ->
 
 class AntCat.HistoryItemForm extends AntCat.Form
 
+  original_value_key: 'original_value'
+
   save_form_values: =>
-    panel_class = 'inline-form-panel'
-    original_value_key = panel_class + '_original_value'
     $taxt_edit_box = @element.find 'textarea'
-    $taxt_edit_box.data original_value_key, $taxt_edit_box.val()
+    $taxt_edit_box.data @original_value_key, $taxt_edit_box.val()
 
   restore_form_values: =>
-    $taxt_edit_box = @element.find('textarea')
-    panel_class = 'inline-form-panel'
-    original_value_key = panel_class + '_original_value'
+    $taxt_edit_box = @element.find 'textarea'
     $taxt_edit_box.val $taxt_edit_box.data original_value_key
