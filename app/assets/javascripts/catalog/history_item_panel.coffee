@@ -62,9 +62,14 @@ class AntCat.HistoryItemPanel
   edit: =>
     return false if @is_editing()
     @show()
-    new AntCat.HistoryItemForm(@element.find 'div.form form')
+    new AntCat.HistoryItemForm(@element.find('div.form form'),
+      on_cancel: @on_edit_cancelled)
     @on_edit_opened() if @on_edit_opened
     false
+
+  on_edit_cancelled: =>
+    @element.find('div.form').hide()
+    @element.find('div.display').show()
 
 $.fn.history_item_panel = (options = {}) ->
   return this.each -> new AntCat.HistoryItemPanel $(this), options
@@ -73,6 +78,7 @@ $.fn.history_item_panel = (options = {}) ->
 class AntCat.HistoryItemForm
 
   constructor: (@element, options = {}) ->
+    @on_cancel = options.on_cancel
     @save_form_values()
     @spinner_path = 'assets/ui-anim_basic_16x16.gif'
     (new Image()).src = @spinner_path
@@ -99,13 +105,12 @@ class AntCat.HistoryItemForm
 
   cancel_form: (button) =>
     @clear_error_messages()
-    unless @element.attr('id') is 'item_'
-      id = @element.attr('id')
-      @restore_form_values()
-      $panel = $('#' + id)
-      $panel.find('div.form').hide()
-      $panel.find('div.display').show()
+    @restore_form_values() unless @is_new_item()
+    @on_cancel() if @on_cancel
     false
+
+  is_new_item: =>
+    false #@element.attr('id') is 'item_'
 
   start_spinning: =>
     @element.find(':button')
