@@ -19,12 +19,11 @@ class AntCat.Form
         .button()
         .click(-> self.cancel_form this)
         .end()
-
-      .find('textarea')
-        .taxt_edit_box()
-        .end()
-      .find('.taxt_edit_box').first()
-        .focus()
+      #.find('textarea')
+        #.taxt_edit_box()
+        #.end()
+      #.find('.taxt_edit_box').first()
+        #.focus()
 
   submit_form: (button) =>
     @start_spinning()
@@ -72,3 +71,7 @@ class AntCat.Form
 
   is_new_item: =>
     false #@element.attr('id') is 'item_'
+
+  save_form_values: =>
+
+  restore_form_values: =>
