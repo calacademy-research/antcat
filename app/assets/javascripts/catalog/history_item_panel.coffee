@@ -21,16 +21,6 @@ class AntCat.HistoryItemPanel
 
   is_editing: => @element.find('div.form').is ':visible'
 
-  show: =>
-    @show_form()
-
-  show_form: =>
-    @element.find('div.display').hide()
-    $('.icon').hide() unless AntCat.testing
-    @element.find('div.form').show()
-    @resize_edit_box()
-    @element.find('.taxt_edit_box').first().focus()
-
   resize_edit_box: =>
     # make the textarea of the form the same height as the item it's editing
     display_height = @element.find('div.display').height()
@@ -46,7 +36,10 @@ class AntCat.HistoryItemPanel
 
   edit: =>
     return false if @is_editing()
-    @show()
+    @element.find('div.display').hide()
+    $('.icon').hide() unless AntCat.testing
+    @element.find('div.form').show()
+    @resize_edit_box()
     new AntCat.HistoryItemForm @element.find('div.form form'),
       on_done: @on_edit_done
       on_cancel: @on_edit_cancelled
@@ -77,14 +70,17 @@ class AntCat.HistoryItemForm
     @element
       .find('.submit')
         .button()
-        .click(-> self.submit_form this )
+        .click(-> self.submit_form this)
         .end()
       .find('.cancel')
         .button()
-        .click(-> self.cancel_form this )
+        .click(-> self.cancel_form this)
         .end()
       .find('textarea')
         .taxt_edit_box()
+        .end()
+      .find('.taxt_edit_box').first()
+        .focus()
 
   submit_form: (button) =>
     @start_spinning()
