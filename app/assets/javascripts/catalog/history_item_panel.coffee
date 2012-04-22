@@ -2,8 +2,7 @@ window.AntCat or= {}
 
 class AntCat.HistoryItemPanel
 
-  constructor: ($element, options = {}) ->
-    @on_edit_opened = options.on_edit_opened
+  constructor: ($element, @options = {}) ->
     @initialize $element
     return @
 
@@ -25,7 +24,7 @@ class AntCat.HistoryItemPanel
     new AntCat.HistoryItemForm @element.find('div.form form'),
       on_done: @on_edit_done
       on_cancel: @on_edit_cancelled
-    @on_edit_opened() if @on_edit_opened
+    @options.on_edit_opened() if @options.on_edit_opened
     false
 
   on_edit_done: (panel_selector, new_content) =>
