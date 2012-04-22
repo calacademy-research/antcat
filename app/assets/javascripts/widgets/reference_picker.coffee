@@ -241,8 +241,6 @@ class AntCat.ReferencePicker
         .end()
     $reference.find('.icon.edit').hide() unless AntCat.testing
 
-    @setup_tabs $reference
-
     (new AntCat.ReferenceForm $reference.find('.reference_edit form')).setup()
 
     @widget.find('.search_form .controls').disable()
@@ -255,23 +253,6 @@ class AntCat.ReferencePicker
         .show()
         .find('input[type=text]:first').focus()
         .end()
-
-  setup_tabs: ($reference) =>
-    $tabs = $reference.find '.tabs'
-    $tabs.tabs 'destroy'
-    $tabs.find('> ul').remove()
-    $list = $('<ul/>').prependTo $tabs
-
-    $tabs.find('.tabbable').each ->
-      id = 'A' + Math.random().toString().replace '.', ''
-      $list_item = $('<li/>').appendTo $list
-      $a = $('<a/>')
-        .appendTo($list_item)
-        .text($(this).data('title'))
-        .attr 'href', '#' + id
-      $(this).attr 'id', id
-
-    $tabs.tabs selected: $reference.find('.selected_tab').val()
 
   submit_form: (submit_button) =>
     $(submit_button).closest('.spinner_container')
@@ -342,6 +323,22 @@ class AntCat.ReferenceForm extends AntCat.Form
     @setup_author_autocomplete()
     @setup_journal_autocomplete()
     @setup_publisher_autocomplete()
+    @setup_tabs()
+
+  setup_tabs: =>
+    $tabs = @element.find '.tabs'
+    $tabs.tabs 'destroy'
+    $tabs.find('> ul').remove()
+    $list = $('<ul/>').prependTo $tabs
+    $tabs.find('.tabbable').each ->
+      id = 'A' + Math.random().toString().replace '.', ''
+      $list_item = $('<li/>').appendTo $list
+      $a = $('<a/>')
+        .appendTo($list_item)
+        .text($(this).data('title'))
+        .attr 'href', '#' + id
+      $(this).attr 'id', id
+    $tabs.tabs selected: @element.find('.selected_tab').val()
 
   setup_author_autocomplete: =>
     return if AntCat.testing
