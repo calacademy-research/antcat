@@ -28,4 +28,4 @@ class AntCat.HistoryItemForm extends AntCat.Form
 
   restore_form_values: =>
     $taxt_edit_box = @element.find 'textarea'
-    $taxt_edit_box.val $taxt_edit_box.data original_value_key
+    $taxt_edit_box.val $taxt_edit_box.data @original_value_key
