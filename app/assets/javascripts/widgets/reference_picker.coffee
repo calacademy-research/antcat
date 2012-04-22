@@ -134,8 +134,6 @@ class AntCat.ReferencePicker
         .selectable('destroy')
         .selectable(filter: '.reference_display', stop: @handle_new_selection, cancel: '.icons, .reference_edit')
         .end()
-    @widget.find('.icon.edit').show() if AntCat.testing
-    @widget.find('.icon.edit').click -> self.edit this
 
   handle_new_selection: =>
     selected_reference = @selected_reference()
@@ -209,12 +207,6 @@ class AntCat.ReferencePicker
     {string: string, position: position}
 
   # -----------------------------------------
-  edit: (icon) ->
-    return if @is_editing()
-    $reference = $(icon).closest '.reference'
-    @open_form $reference
-    false
-
   add: =>
     $reference = @widget.find('.template .reference').clone()
     @widget.find('.current_reference td').html $reference
@@ -223,34 +215,6 @@ class AntCat.ReferencePicker
     @open_form $reference
     @widget.toggleClass 'has-no-current-reference', false
     false
-
-  open_form: ($reference) =>
-    self = @
-    $reference.find('.reference_edit')
-      .find(':button, :submit')
-        .button()
-        .end()
-      .find('.submit')
-        .click ->
-          self.submit_form this
-        .end()
-      .find('.cancel')
-        .click(@cancel_form)
-        .end()
-    #$reference.find('.icon.edit').hide() unless AntCat.testing
-
-    (new AntCat.ReferenceForm $reference.find('.reference_edit form'), on_done: @on_done).setup()
-
-    @widget.find('.search_form .controls').disable()
-
-    $reference
-      .find('.reference_display')
-        .hide()
-        .end()
-      .find('.reference_edit')
-        .show()
-        .find('input[type=text]:first').focus()
-        .end()
 
   submit_form: (submit_button) =>
     $(submit_button).closest('.spinner_container')
@@ -315,6 +279,14 @@ class AntCat.ReferencePicker
     @widget.find('.help_banner_text').text help
 
 # ---------------------------------------
+class AntCat.ReferencePanel extends AntCat.Panel
+  create_form: ($element, options) => new AntCat.ReferenceForm $element, options
+  setup_form: => @element.find('.search_form .controls').disable()
+
+$.fn.reference_panel = (options = {}) ->
+  return this.each -> new AntCat.ReferencePanel $(this), options
+
+# ---------------------------------------
 class AntCat.ReferenceForm extends AntCat.Form
 
   setup: =>
@@ -367,9 +339,3 @@ class AntCat.ReferenceForm extends AntCat.Form
       autoFocus: true,
       source: "/publishers",
       minLength: 3
-
-class AntCat.ReferencePanel extends AntCat.Panel
-
-$.fn.reference_panel = (options = {}) ->
-  return this.each -> new AntCat.ReferencePanel $(this), options
-
