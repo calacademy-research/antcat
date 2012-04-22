@@ -36,24 +36,9 @@ class AntCat.HistoryItemPanel
     display_height = @element.find('div.display').height()
     @element.find('.taxt_edit_box').height display_height + 30
 
-  update_form: (data, statusText, xhr, $form) =>
-    @stop_spinning()
-    panel_selector = '#item_' + (if data.isNew then "" else data.id)
-    $panel = $ panel_selector
-    if not data.success
-      @show_error_messages $form, data.content
-      return
-    $panel.replaceWith data.content
-    @initialize $(panel_selector)
-
   handle_error: (jq_xhr, text_status, error_thrown) =>
     @stop_spinning()
     alert "Oh, shoot. It looks like a bug prevented this item from being saved.\n\nPlease report this situation to Mark Wilden (mark@mwilden.com) and we'll fix it.\n\n#{error_thrown}" unless AntCat.testing
-
-  stop_spinning: =>
-    @element.find('.spinner')
-      .enable()
-      .spinner 'remove'
 
   show_error_messages: ($form, html) ->
     clear_error_messages()
@@ -62,10 +47,15 @@ class AntCat.HistoryItemPanel
   edit: =>
     return false if @is_editing()
     @show()
-    new AntCat.HistoryItemForm(@element.find('div.form form'),
-      on_cancel: @on_edit_cancelled)
+    new AntCat.HistoryItemForm @element.find('div.form form'),
+      on_done: @on_edit_done
+      on_cancel: @on_edit_cancelled
     @on_edit_opened() if @on_edit_opened
     false
+
+  on_edit_done: (panel_selector, new_content) =>
+    $(panel_selector).replaceWith new_content
+    @initialize $(panel_selector)
 
   on_edit_cancelled: =>
     @element.find('div.form').hide()
@@ -78,6 +68,7 @@ $.fn.history_item_panel = (options = {}) ->
 class AntCat.HistoryItemForm
 
   constructor: (@element, options = {}) ->
+    @on_done = options.on_done
     @on_cancel = options.on_cancel
     @save_form_values()
     @spinner_path = 'assets/ui-anim_basic_16x16.gif'
@@ -103,6 +94,15 @@ class AntCat.HistoryItemForm
       dataType: 'json'
     false
 
+  update_form: (data, statusText, xhr, $form) =>
+    @stop_spinning()
+    panel_selector = '#item_' + (if data.isNew then "" else data.id)
+    $panel = $ panel_selector
+    if not data.success
+      @show_error_messages $form, data.content
+      return
+    @on_done panel_selector, data.content
+
   cancel_form: (button) =>
     @clear_error_messages()
     @restore_form_values() unless @is_new_item()
@@ -116,6 +116,11 @@ class AntCat.HistoryItemForm
     @element.find(':button')
       .disable()
       .parent().spinner position: 'left', leftOffset: 1, img: @spinner_path
+
+  stop_spinning: =>
+    @element.find('.spinner')
+      .enable()
+      .spinner 'remove'
 
   clear_error_messages: =>
     @element.find('ul.error_messages').remove()
