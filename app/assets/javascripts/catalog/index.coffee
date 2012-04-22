@@ -1,7 +1,7 @@
 $ ->
   set_dimensions()
   $(window).resize set_dimensions
-  $('.history_item').history_item_form on_edit_opened: set_dimensions
+  $('.history_item').history_item_panel on_edit_opened: set_dimensions
   setup_testing_or_development()
 
 setup_testing_or_development = ->
@@ -15,7 +15,7 @@ set_dimensions = ->
   set_width()
 
 set_height = ->
-  if AntCat.HistoryItemForm.is_editing()
+  if AntCat.HistoryItemPanel.is_editing()
     $("#page").height('auto')
     $(".antcat_taxon").height('auto')
   else
@@ -31,7 +31,7 @@ set_height = ->
     $('#taxon_key').height() - 2 -
     $('#site_footer').height() - 8
 
-  if AntCat.HistoryItemForm.is_editing()
+  if AntCat.HistoryItemPanel.is_editing()
     $("#catalog").height('auto')
     $("#catalog .index").height('auto')
   else
