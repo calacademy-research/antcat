@@ -12,7 +12,9 @@ $.fn.history_item_panel = (options = {}) ->
   return this.each -> new AntCat.HistoryItemPanel $(this), options
 
 #----------------------------------------------
-class AntCat.HistoryItemForm
+class AntCat.Form
+
+class AntCat.HistoryItemForm extends AntCat.Form
 
   constructor: (@element, options = {}) ->
     @element.addClass 'antcat_form'
@@ -31,6 +33,7 @@ class AntCat.HistoryItemForm
         .button()
         .click(-> self.cancel_form this)
         .end()
+
       .find('textarea')
         .taxt_edit_box()
         .end()
