@@ -1,7 +1,8 @@
 - content_for :head do
   = stylesheet_link_tag 'catalog/catalog'
-  = javascript_include_tag 'catalog/catalog', 'catalog/taxon_key', 'catalog/history_item_panel'
+  = javascript_include_tag 'widgets/panel'
   = javascript_include_tag 'widgets/taxt_edit_box', 'widgets/reference_picker'
+  = javascript_include_tag 'catalog/catalog', 'catalog/taxon_key', 'catalog/history_item_panel'
 
 - content_for :page_header do
   #navigation_bar
