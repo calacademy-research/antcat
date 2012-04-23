@@ -2,9 +2,9 @@
 
 - reference ||= Reference.new
 - css_class = 'reference'
-- css_class << " reference_#{reference.id}" if reference.id
+- css_class << " item_#{reference.id}" if reference.id
 
-%div{class: css_class, 'data-reference-id' => reference.id, 'data-taxt' => Taxt.to_editable_reference(reference)}
+%div{class: css_class, 'data-id' => reference.id, 'data-taxt' => Taxt.to_editable_reference(reference)}
   %table.reference_table
     %tr
       %td.icons

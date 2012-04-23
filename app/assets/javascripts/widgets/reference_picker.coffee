@@ -141,7 +141,7 @@ class AntCat.ReferencePicker
       @widget
         .find('.current_reference td')
           .html(selected_reference.clone(true).removeClass 'ui-selected ui-selectee')
-    @current_reference_id = if @current_reference() then @current_reference().data 'reference-id' else null
+    @current_reference_id = if @current_reference() then @current_reference().data 'id' else null
     @widget.toggleClass 'has-no-current-reference', not @current_reference()
     @update_help_banner()
 
