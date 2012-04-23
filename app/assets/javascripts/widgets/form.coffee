@@ -1,22 +1,22 @@
 window.AntCat or= {}
 
 class AntCat.Form
+  constructor: ($element, @options = {}) -> @initialize $element
 
-  constructor: (@element, @options = {}) ->
-    @element.addClass 'antcat_form'
-    @save_form_values()
-    @spinner_path = '/assets/ui-anim_basic_16x16.gif'
-    (new Image()).src = @spinner_path
-    self = @
+  initialize: ($element) =>
+    @element = $element
     @element
+      .addClass('antcat_form')
       .find('.submit')
         .button()
-        .click(-> self.submit this)
+        .click(@submit)
         .end()
       .find('.cancel')
         .button()
-        .click(-> self.cancel this)
+        .click(@cancel)
         .end()
+    @save_form_values()
+    (new Image()).src = @spinner_path
 
   submit: =>
     @start_spinning()
@@ -69,3 +69,4 @@ class AntCat.Form
   save_form_values: =>
 
   restore_form_values: =>
+  spinner_path: '/assets/ui-anim_basic_16x16.gif'
