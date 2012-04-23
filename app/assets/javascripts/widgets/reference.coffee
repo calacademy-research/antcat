@@ -1,7 +1,10 @@
 class AntCat.ReferencePanel extends AntCat.Panel
   element_class: 'reference'
   @element_class: 'reference'
-  create_form: ($element, options) => new AntCat.ReferenceForm $element, options
+  create_form: ($element, options) =>
+    options = $.extend {}, options
+    options.on_done = (reference_selector) => @options.on_edit_done(reference_selector)
+    new AntCat.ReferenceForm $element, options
   setup_form: => @element.find('.search_form .controls').disable()
 
 $.fn.reference_panel = (options = {}) ->
@@ -66,8 +69,9 @@ class AntCat.ReferenceForm extends AntCat.Form
     $('#selected_tab', $form).val selectedTab
     true
 
-    #$reference.each -> $(@).parent().html content
-    #@setup_references()
-    #@widget.find(reference_selector).effect("highlight", {color: 'darkgreen'}, 3000)
-    #@widget.find('.search_form .controls').removeClass 'ui-state-disabled'
-    #$edit.find('.icon.edit').show() if AntCat.testing
+  update: (data, statusText, xhr, $form) =>
+    reference_selector = if data.isNew then '.current_reference .reference' else ".item_#{data.id}"
+    @stop_spinning()
+    $(reference_selector).each -> $(@).parent().html data.content
+    return unless data.success
+    @options.on_done reference_selector
