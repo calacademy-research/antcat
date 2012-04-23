@@ -65,3 +65,9 @@ class AntCat.ReferenceForm extends AntCat.Form
     selectedTab = $.trim($('.ui-tabs-selected', $form).text())
     $('#selected_tab', $form).val selectedTab
     true
+
+    #$reference.each -> $(@).parent().html content
+    #@setup_references()
+    #@widget.find(reference_selector).effect("highlight", {color: 'darkgreen'}, 3000)
+    #@widget.find('.search_form .controls').removeClass 'ui-state-disabled'
+    #$edit.find('.icon.edit').show() if AntCat.testing
