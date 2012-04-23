@@ -39,5 +39,5 @@ class AntCat.Panel
     @element.find('div.edit').hide()
     @element.find('div.display').show()
 
+  is_editing: => @form.is_editing()
   @is_editing: -> $(".#{@element_class} .antcat_form:first").is ':visible'
-  is_editing: => @element.find('div.edit:first').is ':visible'
