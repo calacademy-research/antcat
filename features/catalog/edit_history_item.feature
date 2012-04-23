@@ -42,3 +42,10 @@ Feature: Editing a history item
     * I edit the history item to "(none)"
     * I press "Cancel"
     Then the history should be "Taxonomic history."
+
+  Scenario: Having an error with the item (because it's blank)
+    When I go to the catalog
+    * I click the edit icon
+    * I edit the history item to ""
+    * I save my changes
+    Then I should see "Taxt can't be blank"
