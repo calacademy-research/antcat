@@ -59,6 +59,7 @@ class AntCat.TaxtEditBox
     # when the focus has moved to the reference picker, so the user can see
     # what they're editing. So replace the text area (and its selection) with
     # a paragraph that has a highlighted span
+    @control.siblings('.antcat-taxt-simulation').remove()
     text = @control.val()
     before_selection = text[...@start()]
     selection = if @is_tag_selected() then text[@start()...@end()] else ' {Inserting...} '
