@@ -18,18 +18,20 @@ class AntCat.Panel
     @show_form()
     false
 
-
-  on_edit_done: (new_content) =>
+  on_edit_update: (new_content) =>
     id = @element.data 'id'
     @element.replaceWith new_content
     @initialize $(".item_#{id}")
 
   on_edit_cancelled: =>
+    @hide_form()
+
   show_form: =>
     $('.icon').hide() unless AntCat.testing
     @element.find('div.display').hide()
     @element.find('div.edit').show()
 
+  hide_form: =>
     @element.find('div.edit').hide()
     @element.find('div.display').show()
 
