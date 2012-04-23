@@ -37,6 +37,9 @@ class AntCat.Form
       @show_error_messages data.content
       return
     @options.on_done panel_selector, data.content
+  handle_error: (jq_xhr, text_status, error_thrown) =>
+    @stop_spinning()
+    alert "Oh, shoot. It looks like a bug prevented this item from being saved.\n\nPlease report this situation to Mark Wilden (mark@mwilden.com) and we'll fix it.\n\n#{error_thrown}" unless AntCat.testing
 
   cancel_form: (button) =>
     @clear_error_messages()
@@ -60,10 +63,6 @@ class AntCat.Form
 
   clear_error_messages: =>
     @element.find('ul.error_messages').remove()
-
-  handle_error: (jq_xhr, text_status, error_thrown) =>
-    @stop_spinning()
-    alert "Oh, shoot. It looks like a bug prevented this item from being saved.\n\nPlease report this situation to Mark Wilden (mark@mwilden.com) and we'll fix it.\n\n#{error_thrown}" unless AntCat.testing
 
   is_new_item: =>
     false #@element.attr('id') is 'item_'
