@@ -280,6 +280,8 @@ class AntCat.ReferencePicker
 
 # ---------------------------------------
 class AntCat.ReferencePanel extends AntCat.Panel
+  element_class: 'reference'
+  @element_class: 'reference'
   create_form: ($element, options) => new AntCat.ReferenceForm $element, options
   setup_form: => @element.find('.search_form .controls').disable()
 

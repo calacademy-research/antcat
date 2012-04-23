@@ -40,5 +40,5 @@ class AntCat.Panel
 
   setup_form: =>
 
-  @is_editing: -> $("#{@element_class} .antcat_form:first").is ':visible'
+  @is_editing: -> $(".#{@element_class} .antcat_form:first").is ':visible'
   is_editing: => @element.find('.antcat_form:first').is ':visible'
