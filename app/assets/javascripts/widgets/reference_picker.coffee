@@ -12,18 +12,16 @@ class AntCat.ReferencePicker
     @element.appendTo parent
 
   bootstrap_help_banner: =>
-    $form = $('<form/>').addClass 'search_form'
-    $table = $('<table/>').appendTo $form
-    $tr     = $('<tr/>').appendTo $table
-    $td       = $('<td/>').addClass('throbber').appendTo $tr
-    $throbber   = $('<div/>').addClass('throbber').appendTo $form
-    $td       = $('<td/>').appendTo $tr
-    $div        = $('<div/>').addClass('ok_cancel_controls').appendTo $td
-    $div        = $('<div/>').addClass('search_controls').appendTo $td
-    $div        = $('<div/>').addClass('pagination').appendTo $td
-    $help_banner= $('<div/>').addClass('help_banner').appendTo($td)
-    help_banner_text = $('<span/>').addClass('help_banner_text').appendTo($help_banner)
-    $form
+    $ """
+    <form class='search_form'>
+      <table><tr><td/><td>
+        <div class='ok_cancel_controls'/>
+        <div class='search_controls'/>
+        <div class='help_banner'><span class='help_banner_text'/></div>
+      </td></tr></table>
+      <div class='throbber'/>
+    </form>
+    """
 
   load: (url = '') =>
     if url.indexOf('/reference_picker') is -1
