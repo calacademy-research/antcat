@@ -1,6 +1,7 @@
 -#Locals: item
 
-%div.history_item{id: "item_#{item.id}"}
+- css_class = "history_item item_#{item.id}"
+%div{class: css_class, 'data-id' => item.id}
   %table
     %tr
       %td.icons
