@@ -5,7 +5,7 @@ class AntCat.HistoryItemPanel extends AntCat.Panel
   show_form: =>
     # make the textarea of the form the same height as the item it's editing
     display_height = @element.find('div.display').height()
-    @element.find('.taxt_edit_box').height display_height
+    @element.find('.taxt_edit_box').height display_height unless display_height is 0
     super
 
 $.fn.history_item_panel = (options = {}) ->
