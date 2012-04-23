@@ -31,10 +31,9 @@ class AntCat.Form
 
   update: (data, statusText, xhr, $form) =>
     @stop_spinning()
-    if not data.success
-      @show_error_messages data.content
-      return
-    @options.on_done data.content
+    @options.on_update data.content
+    return if not data.success
+    @options.on_done
 
   handle_error: (jq_xhr, text_status, error_thrown) =>
     @stop_spinning()
@@ -69,4 +68,7 @@ class AntCat.Form
   save_form_values: =>
 
   restore_form_values: =>
+
   spinner_path: '/assets/ui-anim_basic_16x16.gif'
+
+  is_editing: => @element.is ':visible'
