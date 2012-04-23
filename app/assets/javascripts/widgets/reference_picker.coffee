@@ -7,9 +7,9 @@ class AntCat.ReferencePicker
     @
 
   create: (parent) =>
-    @widget = $('<div/>').addClass 'antcat_reference_picker ui-widget ui-widget-content ui-corner-all'
-    @widget.append @bootstrap_help_banner()
-    @widget.appendTo parent
+    @element = $('<div/>').addClass 'antcat_reference_picker ui-widget ui-widget-content ui-corner-all'
+    @element.append @bootstrap_help_banner()
+    @element.appendTo parent
 
   bootstrap_help_banner: =>
     $form = $('<form/>').addClass 'search_form'
@@ -30,20 +30,20 @@ class AntCat.ReferencePicker
       url = '/reference_picker?' + url
     url = url + '&' + $.param id: @current_reference_id if @current_reference_id
 
-    $throbber_image = @widget.find('.throbber img')
+    $throbber_image = @element.find('.throbber img')
     if $throbber_image.length > 0
-      @widget.find('.help_banner_text').html('')
+      @element.find('.help_banner_text').html('')
       $throbber_image.show()
     else
-      @widget.find('.help_banner_text').html 'Loading&hellip;'
-    @widget.find('.search_form .controls').disable()
+      @element.find('.help_banner_text').html 'Loading&hellip;'
+    @element.find('.search_form .controls').disable()
 
     # debug code to leave throbber up for a little while
     setTimeout(=> $.ajax
       url: url
       dataType: 'html'
       success: (data) =>
-        @widget.html data
+        @element.html data
         @initialize()
       error: (xhr) => debugger
     0)
@@ -52,20 +52,20 @@ class AntCat.ReferencePicker
     @load $.param q: @textbox.val(), search_selector: @search_selector.val()
 
   load_clicked_page: (link) =>
-    @load $(link).attr('href') + '&' + @widget.find('> .search_form').serialize()
+    @load $(link).attr('href') + '&' + @element.find('> .search_form').serialize()
 
   close: (cancel = false) =>
     taxt = if not cancel and @current_reference() then @current_reference().data 'taxt' else null
-    @widget.slideUp 'fast', =>
-      @widget.remove()
+    @element.slideUp 'fast', =>
+      @element.remove()
       @result_handler taxt if @result_handler
 
   cancel: =>
     @close true
 
   initialize: =>
-    @search_selector = @widget.find '.search_selector'
-    @textbox = @widget.find '.q'
+    @search_selector = @element.find '.search_selector'
+    @textbox = @element.find '.q'
 
     @setup_search()
     @setup_references()
@@ -74,7 +74,7 @@ class AntCat.ReferencePicker
 
   setup_search: =>
     self = @
-    @widget.find('.search_form')
+    @element.find('.search_form')
       .submit =>
         @search()
         false
@@ -124,7 +124,7 @@ class AntCat.ReferencePicker
 
   setup_references: =>
     self = @
-    @widget
+    @element
       .find('.reference').reference_panel()
         .end()
       .find(".search_results .reference_#{@current_reference_id} div.display")
@@ -138,20 +138,20 @@ class AntCat.ReferencePicker
   handle_new_selection: =>
     selected_reference = @selected_reference()
     if selected_reference
-      @widget
+      @element
         .find('.current_reference td')
           .html(selected_reference.clone(true).removeClass 'ui-selected ui-selectee')
     @current_reference_id = if @current_reference() then @current_reference().data 'id' else null
-    @widget.toggleClass 'has-no-current-reference', not @current_reference()
+    @element.toggleClass 'has-no-current-reference', not @current_reference()
     @update_help_banner()
 
   selected_reference: =>
-    results = @widget.find '.search_results div.display.ui-selected'
+    results = @element.find '.search_results div.display.ui-selected'
     return if results.length is 0
     results.closest '.reference'
 
   current_reference: =>
-    references = @widget.find('.current_reference .reference')
+    references = @element.find('.current_reference .reference')
     return if references.length is 0
     references
 
@@ -207,43 +207,9 @@ class AntCat.ReferencePicker
     {string: string, position: position}
 
   # -----------------------------------------
-  add: =>
-    $reference = @widget.find('.template .reference').clone()
-    @widget.find('.current_reference td').html $reference
-    $reference = @widget.find('.current_reference .reference')
-    @current_reference_id = null
-    @open_form $reference
-    @widget.toggleClass 'has-no-current-reference', false
-    false
-
-  handle_submit_response: (data, statusText, xhr, $form) =>
-    reference_selector = if data.isNew then '.current_reference .reference' else ".reference_#{data.id}"
-    @update_form $(reference_selector), data.content
-    unless data.success
-      @open_form @widget.find reference_selector
-      return
-    @setup_references()
-    @widget.find(reference_selector).effect("highlight", {color: 'darkgreen'}, 3000)
-    @widget.find('.search_form .controls').removeClass 'ui-state-disabled'
-    $edit.find('.icon.edit').show() if AntCat.testing
-
-  update_form: ($reference, content) =>
-    $reference
-      .find('.spinner_container')
-        .spinner('remove')
-        .end()
-      .each -> $(@).parent().html content
-
-  cancel_form: =>
-    false
-
-  # -----------------------------------------
-  is_editing: =>
-    @widget.find('div.edit:visible').length > 0
-
   update_help_banner: =>
     verb = if @original_reference_id then 'use' else 'insert'
-    any_search_results = @widget.find('.search_results .reference').length > 0
+    any_search_results = @element.find('.search_results .reference').length > 0
     if @current_reference()
       if any_search_results
         other_verb = 'choose'
@@ -256,4 +222,4 @@ class AntCat.ReferencePicker
       else
         help = "Find a reference to #{verb}"
       help += ', or add one'
-    @widget.find('.help_banner_text').text help
+    @element.find('.help_banner_text').text help
