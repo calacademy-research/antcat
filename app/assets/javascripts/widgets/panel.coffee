@@ -5,7 +5,6 @@ class AntCat.Panel
   constructor: ($element, @options = {}) -> @initialize $element
 
   initialize: ($element) =>
-    console.log $element.attr 'class'
     @element = $element
     @element
       .addClass(@element_class)
