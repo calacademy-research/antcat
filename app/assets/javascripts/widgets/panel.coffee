@@ -5,9 +5,11 @@ class AntCat.Panel
   constructor: ($element, @options = {}) -> @initialize $element
 
   initialize: ($element) =>
+    console.log $element.attr 'class'
     @element = $element
+    @element
       .addClass(@element_class)
-      .mouseenter(=> @element.find('.icon').show() unless @is_editing())
+      .mouseenter(=> @element.find('.icon').show())
       .mouseleave(=> @element.find('.icon').hide())
       .find('.icon.edit').click(@edit)
     @element.find('.icon').hide() unless AntCat.testing
@@ -34,4 +36,4 @@ class AntCat.Panel
     @element.find('div.display').show()
 
   @is_editing: -> $(".#{@element_class} .antcat_form:first").is ':visible'
-  is_editing: => @element.find('.antcat_form:first').is ':visible'
+  is_editing: => false #@element.find('.antcat_form:first').is ':visible'
