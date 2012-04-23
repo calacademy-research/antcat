@@ -123,7 +123,7 @@ class AntCat.ReferencePicker
   setup_references: =>
     self = @
     @element
-      .find('.reference').reference_panel(on_edit_done: @on_edit_done)
+      .find('.reference').reference_panel(on_edit_done: @on_reference_edit_done)
         .end()
       .find(".search_results .reference_#{@current_reference_id} div.display")
         .addClass('ui-selected')
@@ -133,7 +133,7 @@ class AntCat.ReferencePicker
         .selectable(filter: 'div.display', stop: @handle_new_selection, cancel: '.icons')
         .end()
 
-  on_edit_done: (reference_selector) =>
+  on_reference_edit_done: (reference_selector) =>
   handle_new_selection: =>
     selected_reference = @selected_reference()
     if selected_reference
