@@ -137,7 +137,7 @@ EOS
   def render_json new = false
     json = {
       :isNew => new,
-      :content => render_to_string(:partial => params[:picker].present? ? 'reference_pickers/reference' : 'references/reference',
+      :content => render_to_string(:partial => params[:picker].present? ? 'reference_pickers/panel' : 'references/reference',
                                    :locals => {:reference => @reference, :publisher_string => @publisher_string, :css_class => 'reference'}),
       :id => @reference.id,
       :success => @reference.errors.empty?
