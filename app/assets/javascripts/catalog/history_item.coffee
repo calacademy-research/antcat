@@ -1,5 +1,6 @@
 class AntCat.HistoryItemPanel extends AntCat.Panel
   element_class: 'history_item'
+  @element_class: 'history_item'
   create_form: ($element, options) -> new AntCat.HistoryItemForm $element, options
   setup_form: =>
     # make the textarea of the form the same height as the item it's editing
