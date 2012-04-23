@@ -1,8 +1,7 @@
 window.AntCat or= {}
 
 class AntCat.Panel
-
-  constructor: ($element, @options = {}) -> @initialize $element
+  constructor: ($element) -> @initialize $element
 
   initialize: ($element) =>
     @element = $element
@@ -12,15 +11,10 @@ class AntCat.Panel
       .mouseleave(=> @element.find('.icon').hide())
       .find('.icon.edit').click(@edit)
     @element.find('.icon').hide() unless AntCat.testing
+    @form = @create_form @element.find('div.edit form'), on_update: @on_edit_update, on_done: @on_edit_done, on_cancel: @on_edit_cancelled
 
   edit: =>
     return if @is_editing()
-    $('.icon').hide() unless AntCat.testing
-    @element.find('div.display').hide()
-    @element.find('div.edit').show()
-    @create_form @element.find('div.edit form'), on_done: @on_edit_done, on_cancel: @on_edit_cancelled
-    @setup_form()
-    @options.on_edit_opened() if @options.on_edit_opened
     @show_form()
     false
 
