@@ -22,11 +22,12 @@ class AntCat.Panel
     @options.on_edit_opened() if @options.on_edit_opened
     false
 
-    $(panel_selector).replaceWith new_content
-    @initialize $(panel_selector)
   setup_form: =>
 
   on_edit_done: (new_content) =>
+    id = @element.data 'id'
+    @element.replaceWith new_content
+    @initialize $(".item_#{id}")
 
   on_edit_cancelled: =>
     @element.find('div.edit').hide()
