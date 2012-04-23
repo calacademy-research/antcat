@@ -3,7 +3,7 @@ class AntCat.ReferencePanel extends AntCat.Panel
   @element_class: 'reference'
   create_form: ($element, options) =>
     options = $.extend {}, options
-    options.on_done = (reference_selector) => @options.on_edit_done(reference_selector)
+    options.on_done = (reference_selector) => @options.on_edit_done reference_selector
     new AntCat.ReferenceForm $element, options
   setup_form: => @element.find('.search_form .controls').disable()
 
