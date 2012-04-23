@@ -149,7 +149,7 @@ class AntCat.ReferencePicker
         .effect("highlight", {color: 'darkgreen'}, 3000)
         .end()
       .find('.search_form .controls')
-        .removeClass 'ui-state-disabled'
+        .removeClass('ui-state-disabled')
         .end()
     @element.find('.icon.edit').show() if AntCat.testing
 
