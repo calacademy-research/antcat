@@ -132,7 +132,7 @@ class AntCat.ReferencePicker
         .end()
       .find('.search_results')
         .selectable('destroy')
-        .selectable(filter: 'div.display', stop: @handle_new_selection, cancel: '.icons, div.edit')
+        .selectable(filter: 'div.display', stop: @handle_new_selection, cancel: '.icons')
         .end()
 
   handle_new_selection: =>
