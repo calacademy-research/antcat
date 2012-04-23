@@ -13,7 +13,7 @@
     %h4 Taxonomic history
     .history
       - for history_item in taxon.taxonomic_history_items do
-        = render 'catalog/index/history_item/item', item: history_item
+        = render 'catalog/index/history_item/panel', item: history_item
 
   - if taxon.reference_sections.present?
     .reference_sections
