@@ -46,6 +46,15 @@ class AntCat.ReferencePicker
       error: (xhr) => debugger
     0)
 
+  initialize: =>
+    @search_selector = @element.find '.search_selector'
+    @textbox = @element.find '.q'
+
+    @setup_search()
+    @setup_references()
+    @handle_new_selection()
+    @textbox.focus()
+
   search: =>
     @load $.param q: @textbox.val(), search_selector: @search_selector.val()
 
@@ -60,15 +69,6 @@ class AntCat.ReferencePicker
 
   cancel: =>
     @close true
-
-  initialize: =>
-    @search_selector = @element.find '.search_selector'
-    @textbox = @element.find '.q'
-
-    @setup_search()
-    @setup_references()
-    @handle_new_selection()
-    @textbox.focus()
 
   setup_search: =>
     self = @
