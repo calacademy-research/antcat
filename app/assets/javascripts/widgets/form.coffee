@@ -18,7 +18,7 @@ class AntCat.Form
         .click(-> self.cancel this)
         .end()
 
-  submit: (button) =>
+  submit: =>
     @start_spinning()
     @element.ajaxSubmit
       beforeSerialize: @before_serialize
@@ -40,7 +40,7 @@ class AntCat.Form
     @stop_spinning()
     alert "Oh, shoot. It looks like a bug prevented this item from being saved.\n\nPlease report this situation to Mark Wilden (mark@mwilden.com) and we'll fix it.\n\n#{error_thrown}" unless AntCat.testing
 
-  cancel: (button) =>
+  cancel: =>
     @clear_error_messages()
     @restore_form_values() unless @is_new_item()
     @options.on_cancel() if @options.on_cancel
