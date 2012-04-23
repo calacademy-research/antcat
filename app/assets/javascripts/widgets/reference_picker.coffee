@@ -127,12 +127,12 @@ class AntCat.ReferencePicker
     @widget
       .find('.reference').reference_panel()
         .end()
-      .find(".search_results .reference_#{@current_reference_id} .reference_display")
+      .find(".search_results .reference_#{@current_reference_id} div.display")
         .addClass('ui-selected')
         .end()
       .find('.search_results')
         .selectable('destroy')
-        .selectable(filter: '.reference_display', stop: @handle_new_selection, cancel: '.icons, .reference_edit')
+        .selectable(filter: 'div.display', stop: @handle_new_selection, cancel: '.icons, div.edit')
         .end()
 
   handle_new_selection: =>
@@ -146,7 +146,7 @@ class AntCat.ReferencePicker
     @update_help_banner()
 
   selected_reference: =>
-    results = @widget.find '.search_results .reference_display.ui-selected'
+    results = @widget.find '.search_results div.display.ui-selected'
     return if results.length is 0
     results.closest '.reference'
 
@@ -259,7 +259,7 @@ class AntCat.ReferencePicker
 
   # -----------------------------------------
   is_editing: =>
-    @widget.find('.reference_edit:visible').length > 0
+    @widget.find('div.edit:visible').length > 0
 
   update_help_banner: =>
     verb = if @original_reference_id then 'use' else 'insert'

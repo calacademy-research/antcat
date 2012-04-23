@@ -58,19 +58,19 @@ When /^I edit the reference$/ do
 end
 
 When /^I set the authors to "([^"]*)"$/ do |names|
-  within ".current_reference .reference_edit" do
+  within ".current_reference div.edit" do
     step %{I fill in "reference_author_names_string" with "#{names}"}
   end
 end
 
 When /^I set the title to "([^"]*)"$/ do |title|
-  within ".current_reference .reference_edit" do
+  within ".current_reference div.edit" do
     step %{I fill in "reference_title" with "#{title}"}
   end
 end
 
 When /^I save the form$/ do
-  within ".current_reference .reference_edit" do
+  within ".current_reference div.edit" do
     step %{I press "Save"}
   end
 end
