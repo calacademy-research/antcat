@@ -9,7 +9,8 @@ $.fn.reference_panel = (options = {}) ->
 
 class AntCat.ReferenceForm extends AntCat.Form
 
-  setup: =>
+  constructor: ->
+    super
     @setup_author_autocomplete()
     @setup_journal_autocomplete()
     @setup_publisher_autocomplete()
