@@ -31,12 +31,11 @@ class AntCat.Form
 
   update_form: (data, statusText, xhr, $form) =>
     @stop_spinning()
-    panel_selector = '#item_' + (if data.isNew then "" else data.id)
-    $panel = $ panel_selector
     if not data.success
       @show_error_messages data.content
       return
-    @options.on_done panel_selector, data.content
+    @options.on_done data.content
+
   handle_error: (jq_xhr, text_status, error_thrown) =>
     @stop_spinning()
     alert "Oh, shoot. It looks like a bug prevented this item from being saved.\n\nPlease report this situation to Mark Wilden (mark@mwilden.com) and we'll fix it.\n\n#{error_thrown}" unless AntCat.testing
