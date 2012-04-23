@@ -14,7 +14,6 @@ class AntCat.Panel
     @form = @create_form @element.find('div.edit form'), on_update: @on_edit_update, on_done: @on_edit_done, on_cancel: @on_edit_cancelled
 
   edit: =>
-    return if @is_editing()
     @show_form()
     false
 
@@ -36,5 +35,5 @@ class AntCat.Panel
     @element.find('div.edit').hide()
     @element.find('div.display').show()
 
-  is_editing: => @form.is_editing()
+  is_editing: => @form.is ':visible'
   @is_editing: -> $(".#{@element_class} .antcat_form:first").is ':visible'
