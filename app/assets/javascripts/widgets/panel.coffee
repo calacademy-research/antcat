@@ -18,10 +18,11 @@ class AntCat.Panel
     @show_form()
     false
 
-  on_edit_update: (new_content) =>
+  on_edit_update: (new_content, error) =>
     id = @element.data 'id'
     @element.replaceWith new_content
     @initialize $(".item_#{id}")
+    if error then @show_form() else @hide_form()
 
   on_edit_cancelled: =>
     @hide_form()
