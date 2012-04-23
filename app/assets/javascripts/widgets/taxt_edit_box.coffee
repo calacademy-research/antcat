@@ -50,7 +50,7 @@ class AntCat.TaxtEditBox
     $form = @control.closest('form')
     $form.find('.buttons').hide()
     @replace_text_area_with_simulation()
-    $('.antcat-reference-picker').remove()
+    $('.antcat_reference_picker').remove()
     id = if @is_tag_selected() then TaxtEditBox.extract_id_from_editable_taxt @selection() else null
     new AntCat.ReferencePicker $form, id, @handle_reference_picker_result
 
@@ -59,20 +59,20 @@ class AntCat.TaxtEditBox
     # when the focus has moved to the reference picker, so the user can see
     # what they're editing. So replace the text area (and its selection) with
     # a paragraph that has a highlighted span
-    @control.siblings('.antcat-taxt-simulation').remove()
+    @control.siblings('.antcat_taxt_simulation').remove()
     text = @control.val()
     before_selection = text[...@start()]
     selection = if @is_tag_selected() then text[@start()...@end()] else ' {Inserting...} '
-    selection = '<span class=antcat-taxt-simulated-selection>' +  selection + '</span>'
+    selection = '<span class=antcat_taxt_simulated_selection>' +  selection + '</span>'
     after_selection = text[@end()...]
     text = before_selection + selection + after_selection
-    simulation = $("<p class=antcat-taxt-simulation>#{text}</p>")
+    simulation = $("<p class=antcat_taxt_simulation>#{text}</p>")
     simulation.height @control.height()
     simulation.insertAfter @control
     @control.hide()
 
   replace_simulation_with_text_area: =>
-    $('.antcat-taxt-simulation').remove()
+    @control.siblings('.antcat_taxt_simulation').remove()
     @control.show()
  
   handle_reference_picker_result: (taxt) =>
@@ -193,7 +193,7 @@ class AntCat.TaxtEditBox
     text
 
 class AntCat.TaxtEditBox.DebugDashboard
-  @dashboard_id: 'antcat-taxteditbox-dashboard'
+  @dashboard_id: 'antcat_taxteditbox_dashboard'
   constructor: (@taxt_edit_box) ->
     DebugDashboard.add_html()
 

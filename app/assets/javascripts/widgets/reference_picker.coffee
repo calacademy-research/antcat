@@ -7,7 +7,7 @@ class AntCat.ReferencePicker
     @
 
   create: (parent) =>
-    @widget = $('<div/>').addClass 'antcat-reference-picker ui-widget ui-widget-content ui-corner-all'
+    @widget = $('<div/>').addClass 'antcat_reference_picker ui-widget ui-widget-content ui-corner-all'
     @widget.append @bootstrap_help_banner()
     @widget.appendTo parent
 
