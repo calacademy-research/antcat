@@ -60,3 +60,8 @@ class AntCat.ReferenceForm extends AntCat.Form
       autoFocus: true,
       source: "/publishers",
       minLength: 3
+
+  before_serialize: ($form, options) =>
+    selectedTab = $.trim($('.ui-tabs-selected', $form).text())
+    $('#selected_tab', $form).val selectedTab
+    true
