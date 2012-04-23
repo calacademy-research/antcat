@@ -3,7 +3,7 @@
 - journal_name = reference.respond_to?(:journal) ? (reference.journal && reference.journal.name) : ''
 - selected_tab = [ArticleReference, BookReference, NestedReference, UnknownReference].index(reference.class) || 0
 
-.reference_edit.ui-corner-all.ui-widget-content.ui-widget
+.reference_edit.edit.ui-corner-all.ui-widget-content.ui-widget
   - url = reference.new_record? ? references_path(picker: true) : reference_path(reference, picker: true)
   - method = reference.new_record? ? 'post' : 'put'
   - html_options = Rails.env.test? ? {} : {:multipart => true}
