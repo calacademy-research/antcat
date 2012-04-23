@@ -2,6 +2,10 @@
 require 'spec_helper'
 
 describe TaxonomicHistoryItem do
+  it "can't be blank" do
+    TaxonomicHistoryItem.new.should_not be_valid
+    TaxonomicHistoryItem.new(taxt: '').should_not be_valid
+  end
   it "should have some taxt" do
     item = TaxonomicHistoryItem.new :taxt => 'taxt'
     item.should be_valid
