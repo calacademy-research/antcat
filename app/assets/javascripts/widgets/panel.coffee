@@ -18,9 +18,9 @@ class AntCat.Panel
 
     $('.icon').hide() unless AntCat.testing
     @element.find('div.display').hide()
-    @element.find('div.form').show()
+    @element.find('div.edit').show()
 
-    @create_form @element.find('div.form form'),
+    @create_form @element.find('div.edit form'),
       on_done: @on_edit_done
       on_cancel: @on_edit_cancelled
 
@@ -35,7 +35,7 @@ class AntCat.Panel
     @initialize $(panel_selector)
 
   on_edit_cancelled: =>
-    @element.find('div.form').hide()
+    @element.find('div.edit').hide()
     @element.find('div.display').show()
 
   setup_form: =>
