@@ -134,6 +134,16 @@ class AntCat.ReferencePicker
         .end()
 
   on_reference_edit_done: (reference_selector) =>
+    @setup_references()
+    @element
+      .find(reference_selector)
+        .effect("highlight", {color: 'darkgreen'}, 3000)
+        .end()
+      .find('.search_form .controls')
+        .removeClass 'ui-state-disabled'
+        .end()
+    @element.find('.icon.edit').show() if AntCat.testing
+
   handle_new_selection: =>
     selected_reference = @selected_reference()
     if selected_reference
