@@ -216,26 +216,6 @@ class AntCat.ReferencePicker
     @widget.toggleClass 'has-no-current-reference', false
     false
 
-  submit_form: (submit_button) =>
-    $(submit_button).closest('.spinner_container')
-      .spinner
-        position: 'left'
-        img: '/assets/ui-anim_basic_16x16.gif'
-      .find('button')
-        .disable()
-
-    $(submit_button).closest('form').ajaxSubmit
-      beforeSerialize: @before_serialize
-      success: @handle_submit_response
-      error: (->)
-      dataType: 'json'
-    false
-
-  before_serialize: ($form, options) =>
-    selectedTab = $.trim($('.ui-tabs-selected', $form).text())
-    $('#selected_tab', $form).val selectedTab
-    true
-
   handle_submit_response: (data, statusText, xhr, $form) =>
     reference_selector = if data.isNew then '.current_reference .reference' else ".reference_#{data.id}"
     @update_form $(reference_selector), data.content

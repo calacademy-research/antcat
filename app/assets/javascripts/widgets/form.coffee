@@ -21,10 +21,13 @@ class AntCat.Form
   submit_form: (button) =>
     @start_spinning()
     @element.ajaxSubmit
+      beforeSerialize: @before_serialize
       success: @update_form
       error: @handle_error
       dataType: 'json'
     false
+
+  before_serialize: ($form, options) => true
 
   update_form: (data, statusText, xhr, $form) =>
     @stop_spinning()
