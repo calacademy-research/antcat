@@ -39,6 +39,7 @@ end
 Given /a tribe exists with a name of "(.*?)"(?: and a subfamily of "(.*?)")?(?: and a taxonomic history of "(.*?)")?/ do |taxon_name, parent_name, taxonomic_history|
   subfamily = parent_name && (Subfamily.find_by_name(parent_name) || Factory(:subfamily, :name => parent_name))
   taxon = Factory :tribe, :name => taxon_name, :subfamily => subfamily, taxonomic_history: taxonomic_history
+  taxonomic_history = 'none' unless taxonomic_history.present?
   taxon.taxonomic_history_items.create! :taxt => taxonomic_history
 end
 
@@ -46,16 +47,19 @@ Given /a genus exists with a name of "(.*?)" and a subfamily of "(.*?)"(?: and a
   status ||= 'valid'
   subfamily = parent_name && (Subfamily.find_by_name(parent_name) || Factory(:subfamily, :name => parent_name))
   taxon =Factory :genus, :name => taxon_name, :subfamily => subfamily, :tribe => nil, :status => status, taxonomic_history: taxonomic_history
+  taxonomic_history = 'none' unless taxonomic_history.present?
   taxon.taxonomic_history_items.create! :taxt => taxonomic_history 
 end
 
 Given /a genus exists with a name of "(.*?)" and no subfamily(?: and a taxonomic history of "(.*?)")?/ do |taxon_name, taxonomic_history|
   genus = Factory :genus, :name => taxon_name, :subfamily => nil, :tribe => nil, taxonomic_history: taxonomic_history
+  taxonomic_history = 'none' unless taxonomic_history.present?
   genus.taxonomic_history_items.create! :taxt => taxonomic_history
 end
 
 Given /a (fossil )?genus exists with a name of "(.*?)" and a tribe of "(.*?)"(?: and a taxonomic history of "(.*?)")?/ do |fossil, taxon_name, parent_name, taxonomic_history|
   tribe = Tribe.find_by_name(parent_name)
+  taxonomic_history = 'none' unless taxonomic_history.present?
   taxon = Factory :genus, :name => taxon_name, :subfamily => tribe.subfamily, :tribe => tribe, :fossil => fossil.present?, taxonomic_history: taxonomic_history
   taxon.taxonomic_history_items.create! taxt: taxonomic_history
 end
@@ -75,6 +79,7 @@ end
 Given /a species exists with a name of "(.*?)" and a genus of "(.*?)"(?: and a taxonomic history of "(.*?)")?/ do |taxon_name, parent_name, taxonomic_history|
   genus = Genus.find_by_name(parent_name) || Factory(:genus, :name => parent_name)
   taxon = Factory :species, :name => taxon_name, :genus => genus, taxonomic_history: taxonomic_history
+  taxonomic_history = 'none' unless taxonomic_history.present?
   taxon.taxonomic_history_items.create!  taxt: taxonomic_history
 end
 
