@@ -1,7 +1,7 @@
 $ ->
   set_dimensions()
   $(window).resize set_dimensions
-  $('.history_item').history_item_panel on_edit_opened: set_dimensions
+  $('.history_item').history_item_panel on_form_open: set_dimensions
   $('.icon.edit').show() if AntCat.testing
   #$('.icon.edit').click() if AntCat.environment is 'development'
 

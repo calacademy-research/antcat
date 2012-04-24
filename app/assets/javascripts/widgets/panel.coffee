@@ -1,7 +1,7 @@
 window.AntCat or= {}
 
 class AntCat.Panel
-  constructor: ($element) -> @initialize $element
+  constructor: ($element, @options = {}) -> @initialize $element
 
   initialize: ($element) =>
     @element = $element
@@ -16,9 +16,12 @@ class AntCat.Panel
       on_cancel: @on_form_cancelled
 
   edit: =>
+    @on_form_open()
     @save_panel()
     @show_form()
     false
+
+  on_form_open: =>
 
   on_form_update: (content, error) =>
     @replace_panel content
