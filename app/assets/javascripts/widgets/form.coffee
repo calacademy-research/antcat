@@ -16,7 +16,6 @@ class AntCat.Form
         .click(@cancel)
         .end()
     @save_form_values()
-    (new Image()).src = @spinner_path
 
   submit: =>
     @start_spinning()
@@ -48,7 +47,7 @@ class AntCat.Form
   start_spinning: =>
     @element.find(':button')
       .disable()
-      .parent().spinner position: 'left', leftOffset: 1, img: @spinner_path
+      .parent().spinner position: 'left', leftOffset: 1, img: AntCat.spinner_path
 
   stop_spinning: =>
     @element.find('.spinner')
@@ -68,7 +67,5 @@ class AntCat.Form
   save_form_values: =>
 
   restore_form_values: =>
-
-  spinner_path: '/assets/ui-anim_basic_16x16.gif'
 
   is_editing: => @element.is ':visible'

@@ -7,8 +7,11 @@ $ ->
   $('input[type=text]:visible:first').focus()
 
 preload_images = ->
-  for image in ['/assets/header_bg.png', '/assets/antcat_logo.png', '/assets/site_header_ant_5.png']
+  for image in ['/assets/header_bg.png', '/assets/antcat_logo.png', '/assets/site_header_ant_5.png', '/assets/ui-anim_basic_16x16.gif']
     (new Image()).src = image
+
+AntCat or= {}
+AntCat.spinner_path = '/assets/ui-anim_basic_16x16.gif'
 
 space_out_images = ->
   total_image_width = 379 + 154 + 124
