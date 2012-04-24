@@ -16,6 +16,9 @@ class AntCat.Form
         .click(@cancel)
         .end()
 
+  open: =>
+    @options.on_open() if @options.on_open
+
   submit: =>
     @start_spinning()
     @element.ajaxSubmit

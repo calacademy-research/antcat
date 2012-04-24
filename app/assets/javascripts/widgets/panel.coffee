@@ -10,13 +10,14 @@ class AntCat.Panel
       .mouseenter(=> @element.find('.icon').show() unless @is_editing())
       .mouseleave(=> @element.find('.icon').hide())
       .find('.icon.edit').click(@edit)
-    @create_form @element.find('div.edit form'),
+    @form = @create_form @element.find('div.edit form'),
+      on_open: @on_form_open
       on_update: @on_form_update
       on_done: @on_form_done
       on_cancel: @on_form_cancel
+    $('.icon').show() if AntCat.testing
 
   edit: =>
-    @on_form_open()
     @save_panel()
     @show_form()
     false
@@ -48,6 +49,7 @@ class AntCat.Panel
     $('.icon').hide() unless AntCat.testing
     @element.find('div.display').hide()
     @element.find('div.edit').show()
+    @form.open()
 
   hide_form: =>
     @element.find('div.edit').hide()
