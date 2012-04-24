@@ -25,16 +25,14 @@ class AntCat.Form
       dataType: 'json'
     false
 
-  before_serialize: ($form, options) => true
+  cancel: =>
+    @options.on_cancel() if @options.on_cancel
+    false
 
   update: (data, statusText, xhr, $form) =>
     @stop_spinning()
     @options.on_update data
     @options.on_done if data.success
-
-  cancel: =>
-    @options.on_cancel() if @options.on_cancel
-    false
 
   handle_error: (jq_xhr, text_status, error_thrown) =>
     @stop_spinning()
@@ -49,3 +47,5 @@ class AntCat.Form
     @element.find('.spinner')
       .enable()
       .spinner 'remove'
+
+  before_serialize: ($form, options) => true
