@@ -22,6 +22,10 @@ class AntCat.Panel
     @replace_panel new_content
     if error then @show_form() else @hide_form()
 
+  on_edit_cancelled: =>
+    @restore_panel()
+    @hide_form()
+
   replace_panel: (content) =>
     id = @element.data 'id'
     @element.replaceWith content
@@ -29,12 +33,9 @@ class AntCat.Panel
 
   save_panel: =>
     @saved_content = @element.get(0).outerHTML
+
   restore_panel: =>
     @replace_panel @saved_content
-
-  on_edit_cancelled: =>
-    @restore_panel()
-    @hide_form()
 
   show_form: =>
     $('.icon').hide() unless AntCat.testing
