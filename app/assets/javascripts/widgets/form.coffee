@@ -29,7 +29,7 @@ class AntCat.Form
 
   update: (data, statusText, xhr, $form) =>
     @stop_spinning()
-    @options.on_update data.content, not data.success
+    @options.on_update data
     @options.on_done if data.success
 
   cancel: =>

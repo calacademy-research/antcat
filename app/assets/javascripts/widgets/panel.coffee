@@ -13,7 +13,7 @@ class AntCat.Panel
     @create_form @element.find('div.edit form'),
       on_update: @on_form_update
       on_done: @on_form_done
-      on_cancel: @on_form_cancelled
+      on_cancel: @on_form_cancel
 
   edit: =>
     @on_form_open()
@@ -23,11 +23,13 @@ class AntCat.Panel
 
   on_form_open: =>
 
-  on_form_update: (content, error) =>
-    @replace_panel content
-    if error then @show_form() else @hide_form()
+  on_form_update: (data) =>
+    @replace_panel data.content
+    if data.success then @hide_form() else @show_form()
 
-  on_form_cancelled: =>
+  on_form_done: =>
+
+  on_form_cancel: =>
     @restore_panel()
     @hide_form()
 
