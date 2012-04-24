@@ -21,13 +21,3 @@ class AntCat.HistoryItemForm extends AntCat.Form
         .end()
       .find('.taxt_edit_box').first()
         .focus()
-
-  original_value_key: 'original_value'
-
-  save_form_values: =>
-    $taxt_edit_box = @element.find 'textarea'
-    $taxt_edit_box.data @original_value_key, $taxt_edit_box.val()
-
-  restore_form_values: =>
-    $taxt_edit_box = @element.find 'textarea'
-    $taxt_edit_box.val $taxt_edit_box.data @original_value_key
