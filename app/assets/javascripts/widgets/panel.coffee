@@ -10,22 +10,21 @@ class AntCat.Panel
       .mouseenter(=> @element.find('.icon').show() unless @is_editing())
       .mouseleave(=> @element.find('.icon').hide())
       .find('.icon.edit').click(@edit)
-    @element.find('.icon').hide() unless AntCat.testing
     @create_form @element.find('div.edit form'),
-      on_update: @on_edit_update
-      on_done: @on_edit_done
-      on_cancel: @on_edit_cancelled
+      on_update: @on_form_update
+      on_done: @on_form_done
+      on_cancel: @on_form_cancelled
 
   edit: =>
     @save_panel()
     @show_form()
     false
 
-  on_edit_update: (new_content, error) =>
-    @replace_panel new_content
+  on_form_update: (content, error) =>
+    @replace_panel content
     if error then @show_form() else @hide_form()
 
-  on_edit_cancelled: =>
+  on_form_cancelled: =>
     @restore_panel()
     @hide_form()
 
