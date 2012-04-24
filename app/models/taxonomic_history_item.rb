@@ -5,8 +5,7 @@ class TaxonomicHistoryItem < ActiveRecord::Base
   validates_presence_of :taxt
 
   def update_taxt_from_editable editable_taxt
-    update_attribute :taxt, Taxt.from_editable(editable_taxt)
-    valid?
+    update_attributes taxt: Taxt.from_editable(editable_taxt)
   rescue Taxt::ReferenceNotFound => e
     errors.add :base, "The reference '#{e}' could not be found. Was the ID changed?"
   end

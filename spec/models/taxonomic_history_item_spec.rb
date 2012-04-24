@@ -22,6 +22,13 @@ describe TaxonomicHistoryItem do
   describe "Updating taxt from editable taxt" do
     let(:item) {Factory :taxonomic_history_item}
 
+    it "should not blow up on blank input but should be invalid and have errors" do
+      item.update_taxt_from_editable ''
+      item.errors.should_not be_empty
+      item.taxt.should == ''
+      item.should_not be_valid
+    end
+
     it "should pass non-tags straight through" do
       item.update_taxt_from_editable 'abc'
       item.reload.taxt.should == 'abc'
