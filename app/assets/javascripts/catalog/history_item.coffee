@@ -9,18 +9,13 @@ class AntCat.HistoryItemPanel extends AntCat.Panel
     @element.find('.taxt_edit_box').height display_height unless display_height is 0
   on_form_open: =>
     @options.on_form_open()
+    @element.find('textarea').focus()
     super
 
 $.fn.history_item_panel = (options = {}) ->
   this.each -> new AntCat.HistoryItemPanel $(this), options
 
 class AntCat.HistoryItemForm extends AntCat.Form
-
-  constructor: ->
+  initialize: ($element) ->
     super
-    @element
-      .find('textarea')
-        .taxt_edit_box()
-        .end()
-      .find('.taxt_edit_box').first()
-        .focus()
+    @element.find('textarea').taxt_edit_box()
