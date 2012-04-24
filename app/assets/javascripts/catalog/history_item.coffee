@@ -9,7 +9,7 @@ class AntCat.HistoryItemPanel extends AntCat.Panel
     super
 
 $.fn.history_item_panel = (options = {}) ->
-  return this.each -> new AntCat.HistoryItemPanel $(this), options
+  this.each -> new AntCat.HistoryItemPanel $(this), options
 
 class AntCat.HistoryItemForm extends AntCat.Form
 
