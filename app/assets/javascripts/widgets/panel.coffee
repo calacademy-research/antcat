@@ -12,6 +12,7 @@ class AntCat.Panel
       .find('.icon.edit').click(@edit)
     @form = @create_form @element.find('div.edit form'),
       on_open: @on_form_open
+      on_close: @on_form_close
       on_update: @on_form_update
       on_done: @on_form_done
       on_cancel: @on_form_cancel
@@ -23,6 +24,8 @@ class AntCat.Panel
     false
 
   on_form_open: =>
+
+  on_form_close: =>
 
   on_form_update: (data) =>
     @replace_panel data.content
@@ -54,6 +57,7 @@ class AntCat.Panel
   hide_form: =>
     @element.find('div.edit').hide()
     @element.find('div.display').show()
+    @form.close()
 
   is_editing: => @element.find('div.edit').is ':visible'
   @is_editing: -> $(".#{@element_class} .antcat_form:first").is ':visible'

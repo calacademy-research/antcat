@@ -124,9 +124,10 @@ class AntCat.ReferencePicker
     self = @
     @element
       .find('.reference').reference_panel(
-          on_edit_open: @on_reference_edit_open
-          on_edit_done: @on_reference_edit_done
-          on_edit_cancel: @on_reference_edit_cancel)
+          on_form_open: @on_reference_form_open
+          on_form_close: @on_reference_form_close
+          on_form_done: @on_reference_form_done
+          on_form_cancel: @on_reference_form_cancel)
         .end()
       .find(".search_results .reference_#{@current_reference_id} div.display")
         .addClass('ui-selected')
@@ -136,13 +137,13 @@ class AntCat.ReferencePicker
         .selectable(filter: 'div.display', stop: @handle_new_selection, cancel: '.icons')
         .end()
 
-  on_reference_edit_open: =>
+  on_reference_form_open: =>
     @element.find('.search_form .controls').disable()
 
-  on_reference_edit_cancel: =>
+  on_reference_form_close: =>
     @element.find('.search_form .controls').removeClass 'ui-state-disabled'
 
-  on_reference_edit_done: (reference_selector) =>
+  on_reference_form_done: (reference_selector) =>
     @setup_references()
     @element
       .find(reference_selector)
