@@ -157,6 +157,7 @@ FactoryGirl.define do
   end
 
   factory :taxonomic_history_item do
+    taxt 'Taxonomic history'
   end
 
 end
