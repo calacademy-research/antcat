@@ -14,16 +14,26 @@ class AntCat.Panel
     @form = @create_form @element.find('div.edit form'), on_update: @on_edit_update, on_done: @on_edit_done, on_cancel: @on_edit_cancelled
 
   edit: =>
+    @save_panel()
     @show_form()
     false
 
   on_edit_update: (new_content, error) =>
-    id = @element.data 'id'
-    @element.replaceWith new_content
-    @initialize $(".item_#{id}")
+    @replace_panel new_content
     if error then @show_form() else @hide_form()
 
+  replace_panel: (content) =>
+    id = @element.data 'id'
+    @element.replaceWith content
+    @initialize $(".item_#{id}")
+
+  save_panel: =>
+    @saved_content = @element.get(0).outerHTML
+  restore_panel: =>
+    @replace_panel @saved_content
+
   on_edit_cancelled: =>
+    @restore_panel()
     @hide_form()
 
   show_form: =>
