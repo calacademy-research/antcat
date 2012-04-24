@@ -3,6 +3,9 @@ class AntCat.ReferencePanel extends AntCat.Panel
   @element_class: 'reference'
   create_form: ($element, options) => new AntCat.ReferenceForm $element, options
 
+  on_form_open: => @options.on_form_open()
+  on_form_close: => @options.on_form_close()
+
 $.fn.reference_panel = (options = {}) ->
   return this.each -> new AntCat.ReferencePanel $(this), options
 
