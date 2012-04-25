@@ -141,17 +141,10 @@ class AntCat.ReferencePicker
 
   on_reference_form_open: => @disable_search_controls()
   on_reference_form_close: => @enable_search_controls()
-
   on_reference_form_done: ($panel) =>
+    id = $panel.data 'id'
+    $(".item_#{id}").replaceWith $panel
     @setup_references()
-    @element
-      .find(reference_selector)
-        .effect("highlight", {color: 'darkgreen'}, 3000)
-        .end()
-      .find('.search_form .controls')
-        .removeClass('ui-state-disabled')
-        .end()
-    @element.find('.icon.edit').show() if AntCat.testing
 
   handle_new_selection: =>
     selected_reference = @selected_reference()
