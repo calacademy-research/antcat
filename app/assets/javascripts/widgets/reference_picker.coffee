@@ -143,7 +143,7 @@ class AntCat.ReferencePicker
   on_reference_form_close: => @enable_search_controls()
   on_reference_form_done: ($panel) =>
     id = $panel.data 'id'
-    $(".item_#{id}").replaceWith $panel
+    $(".item_#{id}").each -> $(@).replaceWith $panel.clone()
     @setup_references()
 
   handle_new_selection: =>
