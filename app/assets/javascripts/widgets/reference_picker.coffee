@@ -143,7 +143,7 @@ class AntCat.ReferencePicker
   on_reference_form_open: => @disable_search_controls()
   on_reference_form_close: => @enable_search_controls()
 
-  on_reference_form_done: =>
+  on_reference_form_done: ($panel) =>
     @setup_references()
     @element
       .find(reference_selector)
