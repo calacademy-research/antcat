@@ -147,9 +147,9 @@ class AntCat.ReferencePicker
     @setup_references()
 
   handle_new_selection: =>
-    selected_reference = @selected_reference()
-    if selected_reference
-      @element.find('.current_reference td').html selected_reference.clone()
+    $selected_reference = @selected_reference()
+    if $selected_reference
+      @element.find('.current_reference td').html $selected_reference.clone()
       $new_current_reference = @element.find('.current_reference .reference')
       $new_current_reference
         .find('div.display').removeClass('ui-selected ui-selectee').end()
