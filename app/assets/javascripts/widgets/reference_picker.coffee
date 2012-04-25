@@ -143,7 +143,7 @@ class AntCat.ReferencePicker
   on_reference_form_close: =>
     @element.find('.search_form .controls').removeClass 'ui-state-disabled'
 
-  on_reference_form_done: (reference_selector) =>
+  on_reference_form_done: =>
     @setup_references()
     @element
       .find(reference_selector)
@@ -159,7 +159,13 @@ class AntCat.ReferencePicker
     if selected_reference
       @element
         .find('.current_reference td')
-          .html(selected_reference.clone(true).removeClass 'ui-selected ui-selectee')
+          .html(selected_reference.clone().removeClass 'ui-selected ui-selectee')
+          .find('.reference')
+            .reference_panel(
+                on_form_open: @on_reference_form_open
+                on_form_close: @on_reference_form_close
+                on_form_done: @on_reference_form_done
+                on_form_cancel: @on_reference_form_cancel)
     @current_reference_id = if @current_reference() then @current_reference().data 'id' else null
     @element.toggleClass 'has-no-current-reference', not @current_reference()
     @update_help_banner()
