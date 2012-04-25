@@ -31,7 +31,7 @@ class AntCat.Panel
     @replace_panel data.content
     if data.success then @hide_form() else @show_form()
 
-  on_form_done: =>
+  on_form_done: (data) =>
 
   on_form_cancel: =>
     @restore_panel()

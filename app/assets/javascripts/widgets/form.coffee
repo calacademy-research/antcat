@@ -36,7 +36,7 @@ class AntCat.Form
   update: (data, statusText, xhr, $form) =>
     @stop_spinning()
     @options.on_update data
-    @options.on_done() if data.success and @options.on_done
+    @options.on_done data if data.success and @options.on_done
 
   handle_error: (jq_xhr, text_status, error_thrown) =>
     @stop_spinning()
