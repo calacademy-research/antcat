@@ -38,9 +38,9 @@ class AntCat.Panel
     @hide_form()
 
   replace_panel: (content) =>
-    id = @element.data 'id'
-    @element.replaceWith content
-    @initialize $(".item_#{id}")
+    $content = $(content)
+    @element.replaceWith $content
+    @initialize $content
 
   save_panel: =>
     @saved_content = @element.get(0).outerHTML
