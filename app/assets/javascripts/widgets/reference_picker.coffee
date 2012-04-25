@@ -129,8 +129,7 @@ class AntCat.ReferencePicker
       .find('.reference').reference_panel(
           on_form_open: @on_reference_form_open
           on_form_close: @on_reference_form_close
-          on_form_done: @on_reference_form_done
-          on_form_cancel: @on_reference_form_cancel)
+          on_form_done: @on_reference_form_done)
         .end()
       .find(".search_results .reference_#{@current_reference_id} div.display")
         .addClass('ui-selected')
