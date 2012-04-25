@@ -5,6 +5,7 @@ class AntCat.ReferencePanel extends AntCat.Panel
 
   on_form_open: => @options.on_form_open()
   on_form_close: => @options.on_form_close()
+  on_form_done: => @options.on_form_done()
 
 $.fn.reference_panel = (options = {}) ->
   return this.each -> new AntCat.ReferencePanel $(this), options
