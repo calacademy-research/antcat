@@ -10,8 +10,7 @@ class AntCat.Panel
       .mouseenter(=> @element.find('.icon').show() unless AntCat.Panel.is_editing())
       .mouseleave(=> @element.find('.icon').hide())
       .find('.icon.edit').click(@edit)
-      ('.icon').hide()
-      if AntCat.testing then $('.icon').show()
+    if AntCat.testing then $('.icon').show() else $('.icon').hide()
 
   edit: =>
     @save_panel()
