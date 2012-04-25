@@ -7,7 +7,7 @@ class AntCat.ReferencePanel extends AntCat.Panel
   on_form_close: =>
     @element.effect("highlight", {color: 'darkgreen'}, 3000)
     @options.on_form_close()
-  on_form_done: => @options.on_form_done @element
+  on_form_done: (data) => @options.on_form_done $(data.content)
 
 $.fn.reference_panel = (options = {}) ->
   return this.each -> new AntCat.ReferencePanel $(this), options
