@@ -134,7 +134,7 @@ class AntCat.ReferencePicker
         .end()
       .find('.search_results')
         .selectable('destroy')
-        .selectable(filter: 'div.display', stop: @handle_new_selection, cancel: '.icons')
+        .selectable(filter: 'div.display', stop: @handle_new_selection, cancel: '.icons, div.edit')
         .end()
 
   on_reference_form_open: =>
