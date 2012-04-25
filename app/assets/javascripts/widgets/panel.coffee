@@ -7,10 +7,11 @@ class AntCat.Panel
     @element = $element
     @element
       .addClass(@element_class)
-      .mouseenter(=> @element.find('.icon').show() unless @is_editing())
+      .mouseenter(=> @element.find('.icon').show() unless AntCat.Panel.is_editing())
       .mouseleave(=> @element.find('.icon').hide())
       .find('.icon.edit').click(@edit)
-    $('.icon').show() if AntCat.testing
+      ('.icon').hide()
+      if AntCat.testing then $('.icon').show()
 
   edit: =>
     @save_panel()
@@ -62,5 +63,4 @@ class AntCat.Panel
     @element.find('div.display').show()
     @form().close()
 
-  is_editing: => @element.find('div.edit').is ':visible'
-  @is_editing: -> $(".#{@element_class} .antcat_form:first").is ':visible'
+  @is_editing: -> $('.antcat_form').is ':visible'
