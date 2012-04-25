@@ -120,6 +120,9 @@ class AntCat.ReferencePicker
           @enable_search_author_autocomplete()
         @textbox.focus()
 
+  enable_search_controls: => @element.find('.search_form .controls').removeClass 'ui-state-disabled'
+  disable_search_controls: => @element.find('.search_form .controls').disable()
+
   setup_references: =>
     self = @
     @element
@@ -137,11 +140,8 @@ class AntCat.ReferencePicker
         .selectable(filter: 'div.display', stop: @handle_new_selection, cancel: '.icons, div.edit')
         .end()
 
-  on_reference_form_open: =>
-    @element.find('.search_form .controls').disable()
-
-  on_reference_form_close: =>
-    @element.find('.search_form .controls').removeClass 'ui-state-disabled'
+  on_reference_form_open: => @disable_search_controls()
+  on_reference_form_close: => @enable_search_controls()
 
   on_reference_form_done: =>
     @setup_references()
