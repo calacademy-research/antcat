@@ -7,7 +7,7 @@ $ ->
   $('.rank .genera .add a').click add_genus
 
 add_genus = ->
-  $div = $('div.edit.taxon_form')
+  $div = $('.new_taxon_form .taxon_form')
   new AntCat.TaxonForm $div
   $div.show()
 

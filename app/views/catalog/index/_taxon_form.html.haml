@@ -1,0 +1,19 @@
+.taxon_form
+  - genus = Genus.new
+
+  .edit.ui-corner-all.ui-widget-content.ui-widget
+    = form_for genus do |f|
+      = render 'shared/errors_for', :resource => genus
+
+      %table
+        %col{:width => '50px'}
+        %col{:width => '*'}
+        %col{:align => 'right', :width => '34px'}
+        %col{:width => '100px'}
+        %tr
+          %td= label_tag :name
+          %td= f.text_field :name
+        %tr
+          %td.spinner_container{:colspan => 4}
+            %button.ui-priority-primary.submit= @possible_duplicate ? 'Save Anyway' : 'Save'
+            %button.ui-priority-secondary.cancel Cancel
