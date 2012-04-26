@@ -4,6 +4,12 @@ $ ->
   $('.history_item').history_item_panel on_form_open: set_dimensions
   $('.icon.edit').show() if AntCat.testing
   #$('.icon.edit').click() if AntCat.environment is 'development'
+  $('.rank .genera .add a').click add_genus
+
+add_genus = ->
+  $div = $('div.edit.taxon_form')
+  new AntCat.TaxonForm $div
+  $div.show()
 
 set_dimensions = ->
   set_height()
