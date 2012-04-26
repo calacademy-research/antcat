@@ -92,7 +92,7 @@ class AntCat.ReferencePicker
         .end()
       .find(':button.add')
         .click =>
-          @add()
+          @add_reference()
           false
         .end()
       .find(':button.close')
@@ -122,6 +122,10 @@ class AntCat.ReferencePicker
 
   enable_search_controls: => @element.find('.search_form .controls').removeClass 'ui-state-disabled'
   disable_search_controls: => @element.find('.search_form .controls').disable()
+
+  # -----------------------------------------
+  add_reference: =>
+    @make_current @element.find('.template .reference'), true
 
   setup_references: =>
     self = @
