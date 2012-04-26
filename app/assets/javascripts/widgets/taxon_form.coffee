@@ -4,7 +4,6 @@ class AntCat.TaxonForm extends AntCat.Form
     super
     @open()
 
-  cancel: =>
   open: =>
     @element.closest('.taxon_form').show()
     super
@@ -13,18 +12,20 @@ class AntCat.TaxonForm extends AntCat.Form
     @element.closest('.taxon_form').hide()
     super
 
+  cancel: =>
     @close()
     super
 
   submit: =>
     @start_spinning()
     @element.ajaxSubmit
-      success: @cancel
+      success: @update
       error: @handle_error
       dataType: 'json'
-      type: 'POST'
     false
 
   update: (data, statusText, xhr, $form) =>
-
-
+    new_content = $(data.content)
+    @element.closest('.taxon_form').replaceWith new_content
+    @initialize new_content.find 'form'
+    @open()
