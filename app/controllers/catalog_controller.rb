@@ -1,6 +1,19 @@
 # coding: UTF-8
 class CatalogController < ApplicationController
 
+  def create
+    item = Genus.new name: params[:genus][:name]
+    item.save
+
+    json = {
+      isNew: true,
+      content: render_to_string(partial: 'catalog/index/taxon_form', locals: {item: item}),
+      success: item.errors.empty?
+    }.to_json
+
+    render json: json, content_type: 'text/html'
+  end
+
   def show
     if params['commit'] == 'Clear'
       @search_params = {}
