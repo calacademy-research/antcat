@@ -1,9 +1,9 @@
 .taxon_form
-  - genus = Genus.new
+  - item ||= Genus.new
 
   .edit.ui-corner-all.ui-widget-content.ui-widget
-    = form_for genus do |f|
-      = render 'shared/errors_for', resource: genus
+    = form_for item do |f|
+      = render 'shared/errors_for', resource: item
 
       %table
         %col{:width => '50px'}
