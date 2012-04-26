@@ -6,10 +6,7 @@ $ ->
   #$('.icon.edit').click() if AntCat.environment is 'development'
   $('.rank .genera .add a').click add_genus
 
-add_genus = ->
-  $div = $('.new_taxon_form .taxon_form')
-  new AntCat.TaxonForm $div
-  $div.show()
+add_genus = -> new AntCat.TaxonForm $('.new_taxon_form .taxon_form')
 
 set_dimensions = ->
   set_height()
