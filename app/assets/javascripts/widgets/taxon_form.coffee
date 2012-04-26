@@ -18,3 +18,6 @@ class AntCat.TaxonForm extends AntCat.Form
       type: 'POST'
     false
 
+  update: (data, statusText, xhr, $form) =>
+
+
