@@ -69,3 +69,7 @@ When /^I set the title to "([^"]*)"$/ do |title|
   end
 end
 
+When /^I set the genus name to "([^"]*)"$/ do |name|
+  step %{I fill in "genus_name" with "#{name}"}
+end
+
