@@ -16,7 +16,9 @@ class AntCat.Form
         .click(@cancel)
         .end()
 
-  open: => @options.on_open() if @options.on_open
+  open: =>
+    @element.find('input[type=text]:visible:first').focus()
+    @options.on_open() if @options.on_open
 
   close: => @options.on_close() if @options.on_close
 
