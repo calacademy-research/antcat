@@ -12,6 +12,8 @@ Feature: Adding a taxon
 
   Scenario: Adding a genus
     When I go to the catalog
+    And I follow "Dolichoderinae" in the families index
+    And I follow "Dolichoderini" in the tribes index
     And I follow "add" in the genera index
     And I set the genus name to "Atta"
     And I save my changes
