@@ -27,10 +27,14 @@ setup_login = ->
 #_something seems to override this method when it's named
 # enable - it doesn't get called
 $.fn.undisable = ->
-  $(this).removeClass 'ui-state-disabled'
+  $(this)
+    .removeClass('ui-state-disabled')
+    .removeAttr('disabled')
 
 $.fn.disable = ->
-  $(this).addClass 'ui-state-disabled'
+  $(this)
+    .addClass('ui-state-disabled')
+    .attr('disabled', 'true')
 
 setup_reference_keys = ->
   $('.reference_key, .reference_key_expansion_text').live 'click', ->
