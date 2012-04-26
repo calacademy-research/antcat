@@ -53,5 +53,6 @@ class AntCat.Form
     @element.find('.spinner')
       .enable()
       .spinner 'remove'
+    @element.find(':button').undisable()
 
   before_serialize: ($form, options) => true

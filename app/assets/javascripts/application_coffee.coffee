@@ -24,9 +24,10 @@ setup_login = ->
   $('#login .form').hide()
   $('#login a.link').click -> $('#login div').toggle()
 
-#_something seems to overrie this method - it doesn't get called
-#$.fn.enable = ->
-  #$(this).removeClass 'ui-state-disabled'
+#_something seems to override this method when it's named
+# enable - it doesn't get called
+$.fn.undisable = ->
+  $(this).removeClass 'ui-state-disabled'
 
 $.fn.disable = ->
   $(this).addClass 'ui-state-disabled'
