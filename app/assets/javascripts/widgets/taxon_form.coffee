@@ -25,6 +25,9 @@ class AntCat.TaxonForm extends AntCat.Form
     false
 
   update: (data, statusText, xhr, $form) =>
+    if data.success
+      location.reload true
+      return
     new_content = $(data.content)
     @element.closest('.taxon_form').replaceWith new_content
     @initialize new_content.find 'form'
