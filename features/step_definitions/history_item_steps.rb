@@ -69,9 +69,3 @@ When /^I set the title to "([^"]*)"$/ do |title|
   end
 end
 
-When /^I save the form$/ do
-  within ".current_reference div.edit" do
-    step %{I press "Save"}
-  end
-end
-
