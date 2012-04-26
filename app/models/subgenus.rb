@@ -34,7 +34,7 @@ class Subgenus < Taxon
       end
       subgenus = create! attributes
       data[:taxonomic_history].each do |item|
-        subgenus.taxonomic_history_items.create! taxt: item
+        subgenus.taxonomic_history_items.create! taxt: item if item.present?
       end
 
       type_species = data[:type_species]
