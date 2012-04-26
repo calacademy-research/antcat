@@ -50,9 +50,7 @@ class AntCat.Form
       .parent().spinner position: 'left', leftOffset: 1, img: AntCat.spinner_path
 
   stop_spinning: =>
-    @element.find('.spinner')
-      .enable()
-      .spinner 'remove'
+    @element.find('.spinner').spinner 'remove'
     @element.find(':button').undisable()
 
   before_serialize: ($form, options) => true
