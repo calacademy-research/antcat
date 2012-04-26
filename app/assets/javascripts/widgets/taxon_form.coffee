@@ -2,11 +2,17 @@ class AntCat.TaxonForm extends AntCat.Form
 
   constructor: ->
     super
-    @element.closest('.taxon_form').show()
     @open()
 
   cancel: =>
+  open: =>
+    @element.closest('.taxon_form').show()
+    super
+
+  close: =>
     @element.closest('.taxon_form').hide()
+    super
+
     @close()
     super
 
