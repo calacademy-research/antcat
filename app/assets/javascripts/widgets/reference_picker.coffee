@@ -146,17 +146,20 @@ class AntCat.ReferencePicker
     $(".item_#{id}").each -> $(@).replaceWith $panel.clone()
     @setup_references()
 
+  make_current: ($panel, edit = false) =>
+    @element.find('.current_reference td').html $panel.clone()
+    $new_current_reference = @element.find('.current_reference .reference')
+    $new_current_reference
+      .find('div.display').removeClass('ui-selected ui-selectee').end()
+      .reference_panel(
+          on_form_open: @on_reference_form_open
+          on_form_close: @on_reference_form_close
+          on_form_done: @on_reference_form_done
+          edit: edit)
+
   handle_new_selection: =>
     $selected_reference = @selected_reference()
-    if $selected_reference
-      @element.find('.current_reference td').html $selected_reference.clone()
-      $new_current_reference = @element.find('.current_reference .reference')
-      $new_current_reference
-        .find('div.display').removeClass('ui-selected ui-selectee').end()
-        .reference_panel(
-            on_form_open: @on_reference_form_open
-            on_form_close: @on_reference_form_close
-            on_form_done: @on_reference_form_done)
+    @make_current $selected_reference if $selected_reference
 
     @current_reference_id = if @current_reference() then @current_reference().data 'id' else null
     @element.toggleClass 'has-no-current-reference', not @current_reference()
