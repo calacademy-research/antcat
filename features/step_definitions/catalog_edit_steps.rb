@@ -73,3 +73,7 @@ When /^I set the genus name to "([^"]*)"$/ do |name|
   step %{I fill in "genus_name" with "#{name}"}
 end
 
+When /^I add a reference and choose it for the protonym/ do
+  #"I add a reference"
+  #"I click OK to choose the reference"
+end
