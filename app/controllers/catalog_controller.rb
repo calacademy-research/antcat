@@ -3,7 +3,10 @@ class CatalogController < ApplicationController
 
   def create
     tribe = Tribe.find params[:genus][:tribe]
-    genus = Genus.new name: params[:genus][:name], tribe: params[:genus][:tribe_id]
+    genus = Genus.new(
+      name: params[:genus][:name],
+      status: 'valid',
+      tribe: tribe)
     genus.save
 
     json = {
