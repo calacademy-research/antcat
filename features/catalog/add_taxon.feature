@@ -1,4 +1,4 @@
-@javascript
+@javascript @editing
 Feature: Adding a taxon
   As an editor of AntCat
   I want to add taxa
@@ -22,7 +22,9 @@ Feature: Adding a taxon
 
   Scenario: Trying to add a genus with a blank name
     When I go to the catalog
-    And I follow "add" in the genera index
-    And I set the genus name to ""
-    And I save my changes
+    * I follow "Dolichoderinae" in the subfamilies index
+    * I follow "Dolichoderini" in the tribes index
+    * I follow "add" in the genera index
+    * I set the genus name to ""
+    * I save my changes
     Then I should see "Name can't be blank"

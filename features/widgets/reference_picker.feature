@@ -1,4 +1,4 @@
-@javascript
+@javascript @editing
 Feature: Reference picker
 
   Background:
@@ -34,7 +34,7 @@ Feature: Reference picker
     And I edit the reference
     When I set the authors to "Ward, B.L.; Bolton, B."
     And I set the title to "Ant Title"
-    And I save the form
+    And I save my changes
     Then I should see "Ward, B.L.; Bolton, B. 1995b. Ant Title"
 
   Scenario: Error when editing reference
@@ -42,5 +42,5 @@ Feature: Reference picker
     When I visit the reference picker widget test page, opened to the first reference
     And I edit the reference
     When I set the title to ""
-    And I save the form
+    And I save my changes
     And I should see "Title can't be blank"

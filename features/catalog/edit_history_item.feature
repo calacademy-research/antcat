@@ -1,4 +1,4 @@
-@javascript
+@javascript @editing
 Feature: Editing a history item
   As an editor of AntCat
   I want to change previously entered taxonomic history items

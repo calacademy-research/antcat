@@ -7,7 +7,7 @@
   = stylesheet_link_tag 'ext/jquery.ui.selectmenu.css'
 
 #catalog
-  - can_add_genus = @tribe
+  - can_add_genus = @tribe && @tribe != 'none'
   .content
     = render 'taxon', taxon: @taxon, user: current_user
     %hr
