@@ -17,6 +17,7 @@ Feature: Adding a taxon
     * I follow "add" in the genera index
     Then I should see "Adding genus to Dolichoderini"
     When I set the genus name to "Atta"
+    And I add a reference and choose it for the protonym
     * I save my changes
     Then I should see "Atta" in the genera index
 
