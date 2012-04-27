@@ -2,13 +2,14 @@
 class CatalogController < ApplicationController
 
   def create
-    item = Genus.new name: params[:genus][:name]
-    item.save
+    tribe = Tribe.find params[:genus][:tribe]
+    genus = Genus.new name: params[:genus][:name], tribe: params[:genus][:tribe_id]
+    genus.save
 
     json = {
       isNew: true,
-      content: render_to_string(partial: 'catalog/index/taxon_form', locals: {item: item}),
-      success: item.errors.empty?
+      content: render_to_string(partial: 'catalog/index/taxon_form', locals: {genus: genus, tribe: tribe}),
+      success: genus.errors.empty?
     }.to_json
 
     render json: json, content_type: 'text/html'
