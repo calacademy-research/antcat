@@ -12,11 +12,12 @@ Feature: Adding a taxon
 
   Scenario: Adding a genus
     When I go to the catalog
-    And I follow "Dolichoderinae" in the families index
-    And I follow "Dolichoderini" in the tribes index
-    And I follow "add" in the genera index
-    And I set the genus name to "Atta"
-    And I save my changes
+    * I follow "Dolichoderinae" in the subfamilies index
+    * I follow "Dolichoderini" in the tribes index
+    * I follow "add" in the genera index
+    Then I should see "Adding genus to Dolichoderini"
+    When I set the genus name to "Atta"
+    * I save my changes
     Then I should see "Atta" in the genera index
 
   Scenario: Trying to add a genus with a blank name

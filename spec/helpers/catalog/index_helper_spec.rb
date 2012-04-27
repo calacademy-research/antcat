@@ -32,4 +32,10 @@ describe Catalog::IndexHelper do
     end
   end
 
+  describe "Making the 'Creating... message'" do
+    it "should look like this" do
+      helper.creating_taxon_message(:genus, Factory(:subfamily, :name => 'Formicinae')).should =~ /.*?ing genus .*? Formicinae/
+    end
+  end
+
 end

@@ -1,8 +1,14 @@
-- item ||= Genus.new
+-#Locals: genus, tribe
+-#Members: @possible_duplicate
 
 .taxon_form.ui-corner-all.ui-widget-content.ui-widget
-  = form_for item do |f|
-    = render 'shared/errors_for', resource: item
+  - genus ||= Genus.new
+  = form_for genus do |f|
+    = creating_taxon_message :genus, tribe
+    = render 'shared/errors_for', resource: genus
+
+    -#%input{type: 'hidden', name: 'subfamily_id', value: subfamily_id}
+    %input{type: 'hidden', name: 'genus[tribe]', value: tribe.id}
 
     %table
       %col{:width => '50px'}
