@@ -1,31 +1,9 @@
 class AntCat.ReferenceField
 
-  constructor: (parent, @original_reference_id, @result_handler, use_existing) ->
+  constructor: (@element, @original_reference_id) ->
     @current_reference_id = @original_reference_id
-    if use_existing
-      @element = parent.find '.antcat_reference_field'
-      @initialize()
-    else
-      @create parent
-      @load()
+    @initialize()
     @
-
-  create: (parent) =>
-    @element = $('<div/>').addClass 'antcat_reference_field ui-widget ui-widget-content ui-corner-all'
-    @element.append @bootstrap_help_banner()
-    @element.appendTo parent
-
-  bootstrap_help_banner: =>
-    $ """
-    <form class='search_form'>
-      <table><tr><td/><td>
-        <div class='ok_cancel_controls'/>
-        <div class='search_controls'/>
-        <div class='help_banner'><span class='help_banner_text'/></div>
-      </td></tr></table>
-      <div class='throbber'/>
-    </form>
-    """
 
   load: (url = '') =>
     if url.indexOf('/reference_field') is -1
