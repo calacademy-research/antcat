@@ -215,6 +215,7 @@ class AntCat.ReferenceField
   # -----------------------------------------
   update_help_banner: =>
     verb = if @original_reference_id then 'use' else 'insert'
+    verb = 'use'
     any_search_results = @element.find('.search_results .reference').length > 0
     if @current_reference()
       if any_search_results
