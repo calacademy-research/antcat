@@ -11,6 +11,9 @@ class AntCat.HistoryItemPanel extends AntCat.Panel
     @options.on_form_open()
     @element.find('textarea').focus()
     super
+  on_form_close: =>
+    @options.on_form_close()
+    super
 
 $.fn.history_item_panel = (options = {}) ->
   this.each -> new AntCat.HistoryItemPanel $(this), options
