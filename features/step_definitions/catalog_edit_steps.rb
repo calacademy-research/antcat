@@ -51,6 +51,10 @@ When /^I visit the reference picker widget test page, opened to the first refere
   visit "/widget_tests/reference_picker?id=#{Reference.first.id}"
 end
 
+When /^I visit the reference field widget test page, opened to the first reference$/ do
+  visit "/widget_tests/reference_field?id=#{Reference.first.id}"
+end
+
 When /^I edit the reference$/ do
   within ".current_reference" do
     step 'I follow "edit"'

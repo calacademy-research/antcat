@@ -135,9 +135,16 @@ EOS
   end
 
   def render_json new = false
+    template =
+    case
+      when params[:picker].present? then 'reference_pickers/panel'
+      when params[:field].present? then 'reference_fields/panel'
+      else 'references/reference'
+    end
+
     json = {
       :isNew => new,
-      :content => render_to_string(:partial => params[:picker].present? ? 'reference_pickers/panel' : 'references/reference',
+      :content => render_to_string(:partial => template,
                                    :locals => {:reference => @reference, :publisher_string => @publisher_string, :css_class => 'reference'}),
       :id => @reference.id,
       :success => @reference.errors.empty?
