@@ -107,6 +107,7 @@ class AntCat.ReferenceField
 
   # -----------------------------------------
   add_reference: =>
+    @element.removeClass 'has-no-current-reference'
     @make_current @element.find('.template .reference'), true
 
   setup_references: =>
