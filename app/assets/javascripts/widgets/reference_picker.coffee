@@ -1,9 +1,13 @@
 class AntCat.ReferencePicker
 
-  constructor: (parent, @original_reference_id, @result_handler) ->
+  constructor: (parent, @original_reference_id, @result_handler, use_existing) ->
     @current_reference_id = @original_reference_id
-    @create parent
-    @load()
+    if use_existing
+      @element = parent.find '.antcat_reference_picker'
+      @initialize()
+    else
+      @create parent
+      @load()
     @
 
   create: (parent) =>
