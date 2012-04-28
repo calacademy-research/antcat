@@ -26,6 +26,8 @@ module NavigationHelpers
       '/users/sign_in'
     when /the reference picker widget test page/
       '/widget_tests/reference_picker'
+    when /the reference field widget test page/
+      '/widget_tests/reference_field'
     else
       raise "#{page_name} not found"
     end

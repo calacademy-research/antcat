@@ -43,8 +43,10 @@ AntCat::Application.routes.draw do
   end
 
   resource :reference_picker, only: :show
+  resource :reference_field, only: :show
 
   match '/widget_tests/reference_picker', to: 'widget_tests#reference_picker'
+  match '/widget_tests/reference_field', to: 'widget_tests#reference_field'
 
   devise_for :users
 
