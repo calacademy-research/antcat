@@ -152,7 +152,7 @@ EOS
     }.to_json
 
     json = '<textarea>' + json + '</textarea>' unless
-      params[:picker].present? or params[:field].present? or Rails.env.test?
+      params[:picker].present? || params[:field].present? || Rails.env.test?
     render :json => json, :content_type => 'text/html'
   end
 
