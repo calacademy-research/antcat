@@ -11,11 +11,11 @@ class AntCat.NestedForm
     @element = $element
     @element
       .addClass('nested_form')
-      .find('> .submit')
+      .find('> .buttons .submit')
         .button()
-        .click -> self.submit(this)
+        .click(-> self.submit this)
         .end()
-      .find('> .cancel')
+      .find('> .buttons .cancel')
         .button()
         .click(@cancel)
         .end()
@@ -55,12 +55,14 @@ class AntCat.NestedForm
     alert "Oh, shoot. It looks like a bug prevented this item from being saved.\n\nPlease report this situation to Mark Wilden (mark@mwilden.com) and we'll fix it.\n\n#{error_thrown}" unless AntCat.testing
 
   start_spinning: =>
-    @element.find(':button')
+    @element.find('> .buttons :button')
       .disable()
       .parent().spinner position: 'left', leftOffset: 1, img: AntCat.spinner_path
 
   stop_spinning: =>
-    @element.find('.spinner').spinner 'remove'
-    @element.find(':button').undisable()
+    @element.find('> .spinner').spinner 'remove'
+    @element.find('> .buttons :button').undisable()
 
-  before_serialize: ($form, options) => true
+  before_serialize: ($form, options) =>
+    return @options.before_serialize($form, options) if @options.before_serialize
+    true
