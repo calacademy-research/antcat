@@ -131,7 +131,8 @@ EOS
   end
 
   def clear_document_params_if_necessary
-    params[:reference][:document_attributes][:id] = nil unless params[:reference][:document_attributes][:url].present?
+    return unless params[:document_attributes]
+    params[:document_attributes][:id] = nil unless params[:reference][:document_attributes][:url].present?
   end
 
   def render_json new = false

@@ -55,17 +55,17 @@
             = label_tag :reference_citation, 'Citation'
             = f.text_area :citation, :rows => 2
 
-      = f.fields_for :document, reference.document || ReferenceDocument.new do |document_form|
-        %tr
-          %td= label_tag :document_url, 'Source URL'
-          %td{:colspan => 3, :class => :right_side_field}
-            = document_form.text_field :url
-            = label_tag :document_public, 'Internal but public?'
-            = document_form.check_box :public
-        - unless $ReleaseType.preview?
-          %tr
-            %td= label_tag :document_file, 'Upload'
-            %td= document_form.file_field :file
+      -#= f.fields_for :document, reference.document || ReferenceDocument.new do |document_form|
+        -#%tr
+          -#%td= label_tag :document_url, 'Source URL'
+          -#%td{:colspan => 3, :class => :right_side_field}
+            -#= document_form.text_field :url
+            -#= label_tag :document_public, 'Internal but public?'
+            -#= document_form.check_box :public
+        -#- unless $ReleaseType.preview?
+          -#%tr
+            -#%td= label_tag :document_file, 'Upload'
+            -#%td= document_form.file_field :file
 
       %tr
         %td= label_tag :reference_public_notes, 'Public notes'
