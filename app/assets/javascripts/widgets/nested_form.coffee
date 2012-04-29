@@ -20,6 +20,12 @@ class AntCat.NestedForm
         .click(@cancel)
         .end()
 
+  open: =>
+    @element.find('input[type=text]:visible:first').focus()
+    @options.on_open() if @options.on_open
+
+  close: => @options.on_close() if @options.on_close
+
   submit: (button) =>
     @start_spinning()
     $nested_form = $(button).closest('.nested_form').clone()
@@ -34,12 +40,6 @@ class AntCat.NestedForm
         console.log error_thrown
       type: 'POST'
     false
-
-  open: =>
-    @element.find('input[type=text]:visible:first').focus()
-    @options.on_open() if @options.on_open
-
-  close: => @options.on_close() if @options.on_close
 
   cancel: =>
     @options.on_cancel() if @options.on_cancel
