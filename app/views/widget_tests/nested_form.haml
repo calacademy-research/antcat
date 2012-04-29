@@ -1,4 +1,4 @@
-- @title = 'Simulated Form Test'
+- @title = 'Nested Form Test'
 
 - content_for :head do
   =javascript_include_tag 'widgets/nested_form'
@@ -7,8 +7,10 @@
 - content_for :page_contents do
   %form.test
     .nested_form
-      = text_field_tag 'Name'
-      = button_tag 'Save', class: 'save'
-      .nested_form
-        = text_field_tag "Name"
-        = button_tag 'Save Son', class: 'save_son'
+      = text_field_tag 'Name', 'Mark'
+      .buttons
+        = button_tag 'Save', class: 'save submit'
+      .nested_form{style: 'margin-top: 4px'}
+        = text_field_tag 'Name', "Bertrand"
+        .buttons
+          = button_tag 'Save Son', class: 'save_son submit'
