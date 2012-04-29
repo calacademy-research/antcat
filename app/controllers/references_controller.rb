@@ -151,7 +151,8 @@ EOS
       :success => @reference.errors.empty?
     }.to_json
 
-    json = '<textarea>' + json + '</textarea>' unless Rails.env.test?
+    json = '<textarea>' + json + '</textarea>' unless
+      params[:picker].present? or params[:field].present? or Rails.env.test?
     render :json => json, :content_type => 'text/html'
   end
 
