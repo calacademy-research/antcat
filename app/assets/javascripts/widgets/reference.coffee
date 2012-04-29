@@ -14,7 +14,7 @@ class AntCat.ReferencePanel extends AntCat.Panel
 $.fn.reference_panel = (options = {}) ->
   return this.each -> new AntCat.ReferencePanel $(this), options
 
-class AntCat.ReferenceForm extends AntCat.Form
+class AntCat.ReferenceForm extends AntCat.NestedForm
 
   initialize: ->
     super
