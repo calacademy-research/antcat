@@ -47,6 +47,7 @@ AntCat::Application.routes.draw do
 
   match '/widget_tests/reference_picker', to: 'widget_tests#reference_picker'
   match '/widget_tests/reference_field', to: 'widget_tests#reference_field'
+  match '/widget_tests/simulated_form', to: 'widget_tests#simulated_form'
 
   devise_for :users
 
