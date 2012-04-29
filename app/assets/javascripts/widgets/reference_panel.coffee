@@ -1,3 +1,6 @@
+$.fn.reference_panel = (options = {}) ->
+  return this.each -> new AntCat.ReferencePanel $(this), options
+
 class AntCat.ReferencePanel extends AntCat.Panel
   constructor: ->
     super
@@ -18,9 +21,6 @@ class AntCat.ReferencePanel extends AntCat.Panel
       on_update: @on_form_update
       on_done: @on_form_done
       on_cancel: @on_form_cancel
-
-$.fn.reference_panel = (options = {}) ->
-  return this.each -> new AntCat.ReferencePanel $(this), options
 
 class AntCat.ReferenceForm extends AntCat.NestedForm
 
