@@ -10,7 +10,7 @@ Feature: Reference picker
       | Hölldobler, B.          | 1995b         | Bert's book           | Ants 1:1-2 |
 
   Scenario: Seeing the picker
-    When I visit the reference picker widget test page, opened to the first reference
+    When I go to the reference picker widget test page, opened to the first reference
     Then I should see "Fisher, B. 1995b. Fisher's book. Ants 1:1-2."
 
   Scenario: Searching
@@ -30,7 +30,7 @@ Feature: Reference picker
 
   Scenario: Editing the selected reference
     Given I am logged in
-    When I visit the reference picker widget test page, opened to the first reference
+    When I go to the reference picker widget test page, opened to the first reference
     And I edit the reference
     When I set the authors to "Ward, B.L.; Bolton, B."
     And I set the title to "Ant Title"
@@ -39,7 +39,7 @@ Feature: Reference picker
 
   Scenario: Error when editing reference
     Given I am logged in
-    When I visit the reference picker widget test page, opened to the first reference
+    When I go to the reference picker widget test page, opened to the first reference
     And I edit the reference
     When I set the title to ""
     And I save my changes

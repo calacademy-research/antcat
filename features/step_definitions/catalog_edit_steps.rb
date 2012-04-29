@@ -51,14 +51,6 @@ When /^I search for the authors "([^"]*)"$/ do |authors|
   step %{In the search box, I press "Go"}
 end
 
-When /^I go to the reference picker widget test page, opened to the first reference$/ do
-  visit "/widget_tests/reference_picker?id=#{Reference.first.id}"
-end
-
-When /^I go to the reference field widget test page$/ do
-  visit "/widget_tests/reference_field"
-end
-
 When /^I edit the reference$/ do
   within ".current_reference" do
     step 'I follow "edit"'

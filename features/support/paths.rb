@@ -24,6 +24,8 @@ module NavigationHelpers
       '/users/password/new'
     when /the login page/
       '/users/sign_in'
+    when /the reference picker widget test page, opened to the first reference/
+      "/widget_tests/reference_picker?id=#{Reference.first.id}"
     when /the reference picker widget test page/
       '/widget_tests/reference_picker'
     when /the reference field widget test page/
