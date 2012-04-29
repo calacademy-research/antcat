@@ -28,18 +28,22 @@ class AntCat.NestedForm
 
   submit: (button) =>
     @start_spinning()
-    $nested_form = $(button).closest('.nested_form').clone()
-    $nested_form.find('.nested_form').remove()
-    $form = $('<form/>')
-    $form.html $nested_form
-    $form.action = '/widget_tests/nested_form'
+    $form = @convert_to_form()
     $form.ajaxSubmit
       beforeSerialize: @before_serialize
       success: @update
-      error: (jq_xhr, text_status, error_thrown) ->
-        console.log error_thrown
-      type: 'POST'
+      error: @handle_error
     false
+
+  convert_to_form: =>
+    $nested_form = @element.clone()
+    $nested_form.find('.nested_form').remove()
+    $form = $('<form/>')
+    $form.html $nested_form
+    $form.attr 'action', $nested_form.data 'action'
+    $form.attr 'multipart', $nested_form.data 'multipart'
+    $form.attr 'method', $nested_form.data 'method'
+    $form
 
   cancel: =>
     @options.on_cancel() if @options.on_cancel
