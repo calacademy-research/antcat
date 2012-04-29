@@ -107,7 +107,6 @@ class AntCat.ReferenceField
 
   # -----------------------------------------
   add_reference: =>
-    @element.removeClass 'has-no-current-reference'
     @make_current @element.find('.template .reference'), true
 
   setup_references: =>
@@ -134,6 +133,7 @@ class AntCat.ReferenceField
     @setup_references()
 
   make_current: ($panel, edit = false) =>
+    @element.removeClass 'has-no-current-reference'
     @element.find('.current_reference td').html $panel.clone()
     $new_current_reference = @element.find('.current_reference .reference')
     $new_current_reference
