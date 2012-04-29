@@ -53,7 +53,7 @@
 
           .tabbable{'data-title' => 'Other'}
             = label_tag :reference_citation, 'Citation'
-            = text_area_tag 'reference[:citation]', reference.citation, :rows => 2
+            = text_area_tag 'reference[citation]', reference.citation, :rows => 2
 
       -#= f.fields_for :document, reference.document || ReferenceDocument.new do |document_form|
         -#%tr
