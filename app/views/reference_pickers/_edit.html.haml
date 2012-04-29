@@ -25,7 +25,7 @@
         %td{:class => :right_side_field}= text_field_tag :citation_year, reference.citation_year, name: 'reference[citation_year]'
       %tr
         %td= label_tag :reference_title, 'Title'
-        %td{:colspan => 3, :class => :right_side_field}= text_area_tag :title, reference.title, :rows => 2, name: 'reference[title]'
+        %td{:colspan => 3, :class => :right_side_field}= text_area_tag 'reference[title]', reference.title, :rows => 2
       %tr
         %td.tabs{:colspan => 4}
 
@@ -53,7 +53,7 @@
 
           .tabbable{'data-title' => 'Other'}
             = label_tag :reference_citation, 'Citation'
-            = text_area_tag :citation, reference.citation, :rows => 2, name: 'reference[citation]'
+            = text_area_tag 'reference[:citation]', reference.citation, :rows => 2
 
       -#= f.fields_for :document, reference.document || ReferenceDocument.new do |document_form|
         -#%tr
@@ -69,14 +69,14 @@
 
       %tr
         %td= label_tag :reference_public_notes, 'Public notes'
-        %td{:colspan => 3, :class => :right_side_field}= text_area_tag :public_notes, reference.public_notes, :rows => 2, name: 'reference[public_notes]'
+        %td{:colspan => 3, :class => :right_side_field}= text_area_tag 'reference[public_notes]', reference.public_notes, :rows => 2
       - if user_is_editor?
         %tr
           %td= label_tag :reference_editor_notes, 'Editor notes'
-          %td{:colspan => 3, :class => :right_side_field}= text_area_tag :editor_notes, reference.editor_notes, :rows => 2, name: 'reference[editor_notes]'
+          %td{:colspan => 3, :class => :right_side_field}= text_area_tag 'reference[editor_notes]', reference.editor_notes, :rows => 2
         %tr
           %td= label_tag :reference_taxonomic_notes, 'Taxonomic notes'
-          %td{:colspan => 3, :class => :right_side_field}= text_area_tag :taxonomic_notes, reference.taxonomic_notes, :rows => 2, name: 'reference[taxonomic_notes]'
+          %td{:colspan => 3, :class => :right_side_field}= text_area_tag 'reference[taxonomic_notes]', reference.taxonomic_notes, :rows => 2
       %tr
         %td{:colspan => 4}
           %table.small_fields
