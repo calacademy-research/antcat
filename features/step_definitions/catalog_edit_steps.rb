@@ -21,6 +21,10 @@ When /^I save my changes$/ do
   step 'I wait for a bit'
 end
 
+When /^I save the form$/ do
+  step 'I save my changes'
+end
+
 When /In the search box, I press "Go"/ do
   step 'I press "Go" within ".search_form"'
 end
@@ -51,8 +55,8 @@ When /^I visit the reference picker widget test page, opened to the first refere
   visit "/widget_tests/reference_picker?id=#{Reference.first.id}"
 end
 
-When /^I visit the reference field widget test page, opened to the first reference$/ do
-  visit "/widget_tests/reference_field?id=#{Reference.first.id}"
+When /^I visit the reference field widget test page$/ do
+  visit "/widget_tests/reference_field"
 end
 
 When /^I edit the reference$/ do
@@ -80,4 +84,9 @@ end
 When /^I add a reference and choose it for the protonym/ do
   #"I add a reference"
   #"I click OK to choose the reference"
+end
+
+When /^I add a reference by Brian Fisher$/ do
+  step 'I press "Add"'
+  step %{I fill in "reference_author_names_string" with "Fisher, B.L."}
 end
