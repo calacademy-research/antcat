@@ -1,7 +1,7 @@
 window.AntCat or= {}
 
-$.fn.nested_form = ->
-  return this.each -> new AntCat.NestedForm $(this)
+$.fn.nested_form = (options = {}) ->
+  this.each -> new AntCat.NestedForm $(this, options)
 
 class AntCat.NestedForm
   constructor: ($element, @options = {}) -> @initialize $element
@@ -22,14 +22,14 @@ class AntCat.NestedForm
 
   submit: (button) =>
     @start_spinning()
-    console.log 'submitting'
     $nested_form = $(button).closest('.nested_form').clone()
     $nested_form.find('.nested_form').remove()
     $form = $('<form/>')
     $form.html $nested_form
     $form.action = '/widget_tests/nested_form'
     $form.ajaxSubmit
-      success: -> console.log 'success'
+      beforeSerialize: @before_serialize
+      success: @update
       error: (jq_xhr, text_status, error_thrown) ->
         console.log error_thrown
       type: 'POST'
@@ -47,7 +47,7 @@ class AntCat.NestedForm
 
   update: (data, statusText, xhr, $form) =>
     @stop_spinning()
-    @options.on_update data
+    @options.on_update data if @options.on_update
     @options.on_done data if data.success and @options.on_done
 
   handle_error: (jq_xhr, text_status, error_thrown) =>
