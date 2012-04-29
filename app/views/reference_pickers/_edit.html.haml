@@ -6,8 +6,8 @@
 .edit.ui-corner-all.ui-widget-content.ui-widget
   - url = reference.new_record? ? references_path(picker: true) : reference_path(reference, picker: true)
   - method = reference.new_record? ? 'post' : 'put'
-  - html_options = Rails.env.test? ? {} : {:multipart => true}
-  = form_for reference, :as => :reference, :url => url, :html => html_options do |f|
+  - data_multipart = Rails.env.test? ? '' : 'true'
+  .nested_form{'data-action' => url, 'data-method' => method, 'data-multipart' => data_multipart}
     %input{:type => 'hidden', :name => '_method', :value => method}
     %input{type: :hidden, name: :selected_tab, id: :selected_tab, class: :selected_tab, value: selected_tab}
     %input{type: 'hidden', name: 'possible_duplicate', id: 'possible_duplicate', value: @possible_duplicate ? 'true' : nil}
@@ -20,12 +20,12 @@
       %col{:width => '100px'}
       %tr
         %td= label_tag :reference_author_names_string, 'Authors'
-        %td.authors= f.text_field :author_names_string, :class => 'authors'
+        %td.authors= text_field_tag :author_names_string, reference.author_names_string, :class => 'authors', name: 'reference[author_names_string]'
         %td{:style => 'padding-right: 5px'}= label_tag :reference_citation_year, 'Year'
-        %td{:class => :right_side_field}= f.text_field :citation_year
+        %td{:class => :right_side_field}= text_field_tag :citation_year, reference.citation_year, name: 'reference[citation_year]'
       %tr
         %td= label_tag :reference_title, 'Title'
-        %td{:colspan => 3, :class => :right_side_field}= f.text_area :title, :rows => 2
+        %td{:colspan => 3, :class => :right_side_field}= text_area_tag :title, reference.title, :rows => 2, name: 'reference[title]'
       %tr
         %td.tabs{:colspan => 4}
 
@@ -33,7 +33,7 @@
             = label_tag :journal_name, 'Journal'
             = text_field_tag :journal_name, journal_name, :class => 'journal'
             = label_tag :reference_series_volume_issue, 'Series volume issue'
-            = f.text_field :series_volume_issue, :class => 'series_volume_issue'
+            = text_field_tag :series_volume_issue, reference.series_volume_issue, :class => 'series_volume_issue', name: 'reference[series_volume_issue]'
             = label_tag :article_pagination, 'Pagination'
             = text_field_tag :article_pagination, reference.pagination, :class => 'pages'
 
@@ -45,15 +45,15 @@
 
           .tabbable{'data-title' => 'Nested'}
             = label_tag :reference_pages_in, 'Pages in'
-            = f.text_field :pages_in, :class => 'pages'
+            = text_field_tag :pages_in, reference.pages_in, :class => 'pages', name: 'reference[pages_in]'
             = label_tag :reference_nested_reference_id, 'Nested reference ID'
-            = f.text_field :nested_reference_id, :class => 'pages'
+            = text_field_tag :nested_reference_id, reference.nested_reference_id, :class => 'pages', name: 'reference[nested_reference_id]'
             %p.help
               %span.help= raw "To find, edit or add the nested reference in a new browser window, click #{link_to 'here', references_path(:q => reference.nested_reference_id), :target => '_blank'}"
 
           .tabbable{'data-title' => 'Other'}
             = label_tag :reference_citation, 'Citation'
-            = f.text_area :citation, :rows => 2
+            = text_area_tag :citation, reference.citation, :rows => 2, name: 'reference[citation]'
 
       -#= f.fields_for :document, reference.document || ReferenceDocument.new do |document_form|
         -#%tr
@@ -69,24 +69,24 @@
 
       %tr
         %td= label_tag :reference_public_notes, 'Public notes'
-        %td{:colspan => 3, :class => :right_side_field}= f.text_area :public_notes, :rows => 2
+        %td{:colspan => 3, :class => :right_side_field}= text_area_tag :public_notes, reference.public_notes, :rows => 2, name: 'reference[public_notes]'
       - if user_is_editor?
         %tr
           %td= label_tag :reference_editor_notes, 'Editor notes'
-          %td{:colspan => 3, :class => :right_side_field}= f.text_area :editor_notes, :rows => 2
+          %td{:colspan => 3, :class => :right_side_field}= text_area_tag :editor_notes, reference.editor_notes, :rows => 2, name: 'reference[editor_notes]'
         %tr
           %td= label_tag :reference_taxonomic_notes, 'Taxonomic notes'
-          %td{:colspan => 3, :class => :right_side_field}= f.text_area :taxonomic_notes, :rows => 2
+          %td{:colspan => 3, :class => :right_side_field}= text_area_tag :taxonomic_notes, reference.taxonomic_notes, :rows => 2, name: 'reference[taxonomic_notes]'
       %tr
         %td{:colspan => 4}
           %table.small_fields
             %tr
               %td{:style => 'padding-right: 5px'}= label_tag :reference_cite_code, 'Cite code'
-              %td.cite_code= f.text_field :cite_code
+              %td.cite_code= text_field_tag :cite_code, reference.cite_code, name: 'reference[cite_code]'
               %td= label_tag :reference_possess, 'Possess'
-              %td.possess= f.text_field :possess
+              %td.possess= text_field_tag :possess, reference.possess, name: 'reference[possess]'
               %td= label_tag :reference_date, 'Date'
-              %td.date= f.text_field :date
+              %td.date= text_field_tag :date, reference.date, name: 'reference[date]'
               %td= label_tag :reference_id, 'ID'
               %td= reference.id
       %tr
