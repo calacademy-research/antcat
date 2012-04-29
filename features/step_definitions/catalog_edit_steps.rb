@@ -65,13 +65,13 @@ end
 
 When /^I set the authors to "([^"]*)"$/ do |names|
   within ".current_reference div.edit" do
-    step %{I fill in "reference_author_names_string" with "#{names}"}
+    step %{I fill in "reference[author_names_string]" with "#{names}"}
   end
 end
 
 When /^I set the title to "([^"]*)"$/ do |title|
   within ".current_reference div.edit" do
-    step %{I fill in "reference_title" with "#{title}"}
+    step %{I fill in "reference[title]" with "#{title}"}
   end
 end
 
@@ -86,11 +86,10 @@ end
 
 When /^I add a reference by Brian Fisher$/ do
   step 'I press "Add"'
-  step %{I fill in "reference_author_names_string" with "Fisher, B.L."}
-  step %{I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."}
-  step %{I fill in "reference_title" with "Between Pacific Tides"}
+  step %{I fill in "reference[author_names_string]" with "Fisher, B.L."}
+  step %{I fill in "reference[title]" with "Between Pacific Tides"}
   step %{I fill in "journal_name" with "Ants"}
-  step %{I fill in "reference_series_volume_issue" with "2"}
+  step %{I fill in "reference[series_volume_issue]" with "2"}
   step %{I fill in "article_pagination" with "1"}
-  step %{I fill in "reference_citation_year" with "1992"}
+  step %{I fill in "reference[citation_year]" with "1992"}
 end
