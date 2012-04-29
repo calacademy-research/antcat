@@ -37,6 +37,13 @@ Feature: Reference picker
     And I save my changes
     Then I should see "Ward, B.L.; Bolton, B. 1995b. Ant Title"
 
+  Scenario: Adding a selected reference
+    Given I am logged in
+    When I go to the reference picker widget test page
+    And I add a reference by Brian Fisher
+    And I save my changes
+    Then I should see "Ward, B.L.; Bolton, B. 1992. Between Pacific Tides. Ants 2:1."
+
   Scenario: Error when editing reference
     Given I am logged in
     When I go to the reference picker widget test page, opened to the first reference
