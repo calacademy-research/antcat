@@ -7,9 +7,8 @@ class WidgetTestsController < ApplicationController
   def reference_field
   end
 
-  def simulated_form
-    lll {"params['Name']"}
-    lll{%q{request.method}}
+  def nested_form
+    lll params['Name']
     head 200 if request.method == 'POST'
   end
 
