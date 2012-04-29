@@ -37,7 +37,12 @@ class AntCat.NestedForm
     false
 
   convert_to_form: =>
+    $textareas = @element.find 'textarea'
     $nested_form = @element.clone()
+    $nested_textareas = $nested_form.find 'textarea'
+    for i in [0...$textareas.length]
+      $($nested_textareas[i]).val $($textareas[i]).val()
+
     $nested_form.find('.nested_form').remove()
     $form = $('<form/>')
     $form.html $nested_form
