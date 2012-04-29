@@ -33,6 +33,7 @@ class AntCat.NestedForm
       beforeSerialize: @before_serialize
       success: @update
       error: @handle_error
+      dataType: 'json'
     false
 
   convert_to_form: =>
@@ -41,7 +42,6 @@ class AntCat.NestedForm
     $form = $('<form/>')
     $form.html $nested_form
     $form.attr 'action', $nested_form.data 'action'
-    $form.attr 'multipart', $nested_form.data 'multipart'
     $form.attr 'method', $nested_form.data 'method'
     $form
 
