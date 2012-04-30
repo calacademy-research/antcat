@@ -13,7 +13,7 @@ class AntCat.ReferencePicker
 
   bootstrap_help_banner: =>
     $ """
-    <form class='search_form'>
+    <div class='search_form nested_form'>
       <table><tr><td/><td>
         <div class='ok_cancel_controls'/>
         <div class='search_controls'/>
@@ -34,7 +34,7 @@ class AntCat.ReferencePicker
       $throbber_image.show()
     else
       @element.find('.help_banner_text').html 'Loading&hellip;'
-    @element.find('.search_form .controls').disable()
+    @search_form.find('.controls').disable()
 
     # debug code to leave throbber up for a little while
     setTimeout(=> $.ajax
@@ -47,10 +47,11 @@ class AntCat.ReferencePicker
     0)
 
   initialize: =>
-    @search_selector = @element.find '.search_selector'
-    @textbox = @element.find '.q'
     @template = @element.find '> .template'
     @current = @element.find '> .current'
+    @search_form = @element.find '> .search_form'
+    @search_selector = @element.find '.search_selector'
+    @textbox = @element.find '.q'
 
     @setup_search()
     @setup_references()
@@ -64,9 +65,8 @@ class AntCat.ReferencePicker
     @load $(link).attr('href') + '&' + @serialize_search_form()
 
   serialize_search_form: =>
-    $search_form = @element.find '.search_form'
-    $textareas = $search_form.find 'textarea'
-    $nested_form = $search_form.clone()
+    $textareas = @search_form.find 'textarea'
+    $nested_form = @search_form.clone()
     $nested_textareas = $nested_form.find 'textarea'
     for i in [0...$textareas.length]
       $($nested_textareas[i]).val $($textareas[i]).val()
@@ -89,8 +89,7 @@ class AntCat.ReferencePicker
 
   setup_search: =>
     self = @
-    @element.find('.search_form')
-
+    @search_form
       .find('.controls')
         .removeClass('ui-state-disabled')
         .find(':button')
@@ -149,15 +148,14 @@ class AntCat.ReferencePicker
           @enable_search_author_autocomplete()
         @textbox.focus()
 
-  enable_search_controls: => @element.find('.search_form .controls').removeClass 'ui-state-disabled'
-  disable_search_controls: => @element.find('.search_form .controls').disable()
+  enable_search_controls: => @search_form.find('.controls').removeClass 'ui-state-disabled'
+  disable_search_controls: => @search_form.find('.controls').disable()
 
   # -----------------------------------------
   add_reference: =>
     @make_current @template.find('.reference'), true
 
   setup_references: =>
-    self = @
     @element
       .find('.reference').reference_panel(
           on_form_open: @on_reference_form_open
@@ -213,7 +211,6 @@ class AntCat.ReferencePicker
   enable_search_author_autocomplete: =>
     @search_selector.closest('form').attr 'autocomplete', 'off'
     return if AntCat.testing
-    self = @
     @textbox.autocomplete
       autoFocus: true
       minLength: 3
