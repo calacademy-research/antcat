@@ -9,13 +9,12 @@ class AntCat.NestedForm
     @initialize $element
 
   initialize: ($element) =>
-    self = @
     @element = $element
     @element
       .addClass('nested_form')
       .find(@options.button_container)
         .find(':button').button().end()
-        .find(':button.submit').click(-> self.submit this).end()
+        .find(':button.submit').click(@submit).end()
         .find(':button.cancel').click(@cancel).end()
         .end()
 
@@ -25,7 +24,7 @@ class AntCat.NestedForm
 
   close: => @options.on_close() if @options.on_close
 
-  submit: (button) =>
+  submit: =>
     @start_spinning()
     $form = @convert_to_form()
     $form.ajaxSubmit
