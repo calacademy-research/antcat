@@ -34,7 +34,7 @@ class AntCat.ReferencePicker
       $throbber_image.show()
     else
       @element.find('.help_banner_text').html 'Loading&hellip;'
-    @search_form.find('.controls').disable()
+    @element.find('.search_form .controls').disable()
 
     # debug code to leave throbber up for a little while
     setTimeout(=> $.ajax
