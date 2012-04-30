@@ -24,7 +24,8 @@ class AntCat.ReferencePanel extends AntCat.Panel
 
 class AntCat.ReferenceForm extends AntCat.NestedForm
 
-  initialize: ->
+  initialize: ($element) ->
+    @options.button_container = '> table > tbody > tr.buttons > td.buttons'
     super
     @setup_author_autocomplete()
     @setup_journal_autocomplete()

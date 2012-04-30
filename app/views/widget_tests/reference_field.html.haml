@@ -24,7 +24,7 @@
       %tr
         %td= label_tag 'Reference'
         %td No reference selected
-      %tr
-        %td.spinner_container{:colspan => 4}
+      %tr.buttons
+        %td.buttons{:colspan => 4}
           %button.ui-priority-primary.submit= @possible_duplicate ? 'Save Anyway' : 'Save'
           %button.ui-priority-secondary.cancel Cancel

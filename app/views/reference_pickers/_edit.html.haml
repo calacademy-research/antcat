@@ -89,7 +89,7 @@
               %td.date= text_field_tag :date, reference.date, name: 'reference[date]'
               %td= label_tag :reference_id, 'ID'
               %td= reference.id
-      %tr
-        %td.spinner_container{:colspan => 4}
+      %tr.buttons
+        %td.buttons{:colspan => 4}
           %button.ui-priority-primary.submit= @possible_duplicate ? 'Save Anyway' : 'Save'
           %button.ui-priority-secondary.cancel Cancel
