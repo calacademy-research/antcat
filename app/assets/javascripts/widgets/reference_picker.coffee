@@ -209,7 +209,7 @@ class AntCat.ReferencePicker
 
   # -----------------------------------------
   enable_search_author_autocomplete: =>
-    @search_selector.closest('form').attr 'autocomplete', 'off'
+    @enable_browser_autocomplete false
     return if AntCat.testing
     @textbox.autocomplete
       autoFocus: true
@@ -230,7 +230,10 @@ class AntCat.ReferencePicker
 
   disable_search_author_autocomplete: =>
     @textbox.autocomplete 'destroy'
-    @search_selector.closest('form').removeAttr 'autocomplete'
+    @enable_browser_autocomplete true
+
+  enable_browser_autocomplete: (on_or_off) =>
+    @element.closest('form').attr 'autocomplete', if on_or_off then '' else 'off'
 
   @extract_author_search_term: (string, position) =>
     return ""  if string.length is 0
