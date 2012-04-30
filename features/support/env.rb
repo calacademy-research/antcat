@@ -20,7 +20,6 @@ Spork.prefork do
   require 'webmock/cucumber'
   WebMock.disable_net_connect! allow_localhost: true
 
-  require 'capybara/firebug'
   require 'factory_girl/step_definitions'
 end
 

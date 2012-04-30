@@ -36,7 +36,6 @@ end
 
 group :test do
   gem 'capybara'
-  gem 'capybara-firebug'
   gem 'cucumber-rails'
   gem 'database_cleaner'
   gem 'factory_girl_rails'
