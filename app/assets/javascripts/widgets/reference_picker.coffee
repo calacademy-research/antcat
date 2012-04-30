@@ -63,7 +63,22 @@ class AntCat.ReferencePicker
     @load $.param q: @textbox.val(), search_selector: @search_selector.val()
 
   load_clicked_page: (link) =>
-    @load $(link).attr('href') + '&' + @element.find('> .search_form').serialize()
+    @load $(link).attr('href') + '&' + @serialize_search_form()
+
+  serialize_search_form: =>
+    $search_form = @element.find '.search_form'
+    $textareas = $search_form.find 'textarea'
+    $nested_form = $search_form.clone()
+    $nested_textareas = $nested_form.find 'textarea'
+    for i in [0...$textareas.length]
+      $($nested_textareas[i]).val $($textareas[i]).val()
+
+    $nested_form.find('.nested_form').remove()
+    $form = $('<form/>')
+    $form.html $nested_form
+    $form.attr 'action', $nested_form.data 'action'
+    $form.attr 'method', $nested_form.data 'method'
+    $form.serialize()
 
   close: (cancel = false) =>
     taxt = if not cancel and @current_reference() then @current_reference().data 'taxt' else null
