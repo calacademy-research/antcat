@@ -49,6 +49,8 @@ class AntCat.ReferencePicker
   initialize: =>
     @search_selector = @element.find '.search_selector'
     @textbox = @element.find '.q'
+    @template = @element.find '> .template'
+    @current = @element.find '> .current'
 
     @setup_search()
     @setup_references()
@@ -152,7 +154,7 @@ class AntCat.ReferencePicker
 
   # -----------------------------------------
   add_reference: =>
-    @make_current @element.find('.template .reference'), true
+    @make_current @template.find('.reference'), true
 
   setup_references: =>
     self = @
@@ -178,8 +180,8 @@ class AntCat.ReferencePicker
     @setup_references()
 
   make_current: ($panel, edit = false) =>
-    @element.find('.current_reference td').html $panel.clone()
-    $new_current_reference = @element.find('.current_reference .reference')
+    @current.find('td').html $panel.clone()
+    $new_current_reference = @current.find('.reference')
     $new_current_reference
       .find('div.display').removeClass('ui-selected ui-selectee').end()
       .reference_panel(
