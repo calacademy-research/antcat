@@ -38,7 +38,8 @@ group :test do
   gem 'capybara'
   gem 'cucumber-rails'
   gem 'database_cleaner'
-  gem 'factory_girl_rails'
+  # until can deal with ambiguous step defs in FG 3.0
+  gem 'factory_girl_rails', '1.5.0'
   gem 'rspec' 
   gem 'rspec-rails' 
   gem 'selenium-webdriver'

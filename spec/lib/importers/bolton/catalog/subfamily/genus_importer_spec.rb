@@ -22,10 +22,10 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
     end
 
     it "should work" do
-      latreille = Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
-      lund = Factory :unknown_reference, :bolton_key_cache => 'Lund 1831a'
-      swainson = Factory :unknown_reference, :bolton_key_cache => 'Swainson Shuckard 1840'
-      baroni = Factory :unknown_reference, :bolton_key_cache => 'Baroni Urbani 1977c'
+      latreille = FactoryGirl.create :article_reference, :bolton_key_cache => 'Latreille 1809'
+      lund = FactoryGirl.create :unknown_reference, :bolton_key_cache => 'Lund 1831a'
+      swainson = FactoryGirl.create :unknown_reference, :bolton_key_cache => 'Swainson Shuckard 1840'
+      baroni = FactoryGirl.create :unknown_reference, :bolton_key_cache => 'Baroni Urbani 1977c'
 
       @importer.import_html make_contents %{
         <p>Genus <i>CONDYLODON</i></p>
@@ -78,8 +78,8 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
   end
   describe "Parsing taxonomic history" do
     it "should return an array of text items converted to Taxt" do
-      dalla_torre = Factory :article_reference, :bolton_key_cache => 'Dalla Torre 1893'
-      swainson = Factory :article_reference, :bolton_key_cache => 'Swainson Shuckard 1840'
+      dalla_torre = FactoryGirl.create :article_reference, :bolton_key_cache => 'Dalla Torre 1893'
+      swainson = FactoryGirl.create :article_reference, :bolton_key_cache => 'Swainson Shuckard 1840'
       @importer.initialize_parse_html %{<div>
         <p>Taxonomic history</p>
         <p><i>Condylodon</i> in family Mutillidae: Swainson &amp; Shuckard, 1840: 173.</p>
@@ -94,7 +94,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
 
   describe "Parsing references" do
     it "should return an array of text items converted to Taxt" do
-      genus = Factory :genus, name: 'Lepisiota'
+      genus = FactoryGirl.create :genus, name: 'Lepisiota'
       @importer.initialize_parse_html %{<div>
         <p>Genus <i>Lepisiota</i> references</p>
         <p>Note</p>

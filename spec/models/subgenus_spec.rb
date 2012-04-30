@@ -6,21 +6,21 @@ describe Subgenus do
   it "must have a genus" do
     colobopsis = Subgenus.new :name => 'Colobopsis'
     colobopsis.should_not be_valid
-    colobopsis.genus = Factory :genus, :name => 'Camponotus'
+    colobopsis.genus = FactoryGirl.create :genus, :name => 'Camponotus'
     colobopsis.save!
     colobopsis.reload.genus.name.should == 'Camponotus'
   end
 
   describe "Statistics" do
     it "should have none" do
-      Factory(:subgenus).statistics.should be_nil
+      FactoryGirl.create(:subgenus).statistics.should be_nil
     end
   end
 
   describe "Importing" do
     it "should work" do
-      genus = Factory :genus
-      reference = Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
+      genus = FactoryGirl.create :genus
+      reference = FactoryGirl.create :article_reference, :bolton_key_cache => 'Latreille 1809'
 
       subgenus = Subgenus.import(
         genus: genus,

@@ -4,10 +4,10 @@ require 'spec_helper'
 describe CoinsHelper do
   it "should format a journal reference correctly" do
     coins = helper.coins(ArticleReference.new(
-      :author_names => [Factory(:author_name, :name => 'MacKay, W.')],
+      :author_names => [FactoryGirl.create(:author_name, :name => 'MacKay, W.')],
       :year => '1941',
       :title => 'A title',
-      :journal => Factory(:journal, :name => 'Journal Title'),
+      :journal => FactoryGirl.create(:journal, :name => 'Journal Title'),
       :series_volume_issue => '1(2)',
       :pagination => '3-4'
     ))
@@ -34,10 +34,10 @@ describe CoinsHelper do
 
   it "should use the numeric year" do
     coins = helper.coins(ArticleReference.new(
-      :author_names => [Factory(:author_name, :name => 'MacKay, W.')],
+      :author_names => [FactoryGirl.create(:author_name, :name => 'MacKay, W.')],
       :year => '1941a ("1942")',
       :title => 'A title',
-      :journal => Factory(:journal, :name => 'Journal Title'),
+      :journal => FactoryGirl.create(:journal, :name => 'Journal Title'),
       :series_volume_issue => '1(2)',
       :pagination => '3-4'
     ))
@@ -60,11 +60,11 @@ describe CoinsHelper do
 
   it "should add multiple authors" do
     coins = helper.coins(ArticleReference.new(
-      :author_names => [Factory(:author_name, :name => 'MacKay, W. P.'),
-                        Factory(:author_name, :name => 'Lowrie, D.')],
+      :author_names => [FactoryGirl.create(:author_name, :name => 'MacKay, W. P.'),
+                        FactoryGirl.create(:author_name, :name => 'Lowrie, D.')],
       :year => '1941',
       :title => 'A title',
-      :journal => Factory(:journal, :name => 'Journal Title'),
+      :journal => FactoryGirl.create(:journal, :name => 'Journal Title'),
       :series_volume_issue => '1(2)',
       :pagination => '3-4'
     ))
@@ -89,10 +89,10 @@ describe CoinsHelper do
 
   it "should strip out italics formatting" do
     coins = helper.coins(ArticleReference.new(
-      :author_names => [Factory(:author_name, :name => 'Ward, P.S.')],
+      :author_names => [FactoryGirl.create(:author_name, :name => 'Ward, P.S.')],
       :year => '1941',
       :title => 'A *title*',
-      :journal => Factory(:journal, :name => 'Journal Title'),
+      :journal => FactoryGirl.create(:journal, :name => 'Journal Title'),
       :series_volume_issue => '1(2)',
       :pagination => '3-4'
     ))
@@ -115,10 +115,10 @@ describe CoinsHelper do
 
   it "should escape HTML" do
     coins = helper.coins(ArticleReference.new(
-      :author_names => [Factory(:author_name, :name => 'Ward, P.S.')],
+      :author_names => [FactoryGirl.create(:author_name, :name => 'Ward, P.S.')],
       :year => '1941',
       :title => '<script>',
-      :journal => Factory(:journal, :name => 'Journal Title'),
+      :journal => FactoryGirl.create(:journal, :name => 'Journal Title'),
       :series_volume_issue => '1(2)',
       :pagination => '3-4'
     ))
@@ -140,12 +140,12 @@ describe CoinsHelper do
   end
 
   it "should format a book reference correctly" do
-    Factory :place, :name => 'Dresden'
+    FactoryGirl.create :place, :name => 'Dresden'
     coins = helper.coins(BookReference.new(
-      :author_names => [Factory(:author_name, :name => 'MacKay, W.')],
+      :author_names => [FactoryGirl.create(:author_name, :name => 'MacKay, W.')],
       :year => '1933',
       :title => 'Another title',
-      :publisher => Factory(:publisher, :name => 'Springer Verlag', :place => Factory(:place, :name => 'Dresden')),
+      :publisher => FactoryGirl.create(:publisher, :name => 'Springer Verlag', :place => FactoryGirl.create(:place, :name => 'Dresden')),
       :pagination => 'ix + 33pp.'
     ))
     check_parameters coins, [
@@ -165,7 +165,7 @@ describe CoinsHelper do
 
   it "should format an unknown reference correctly" do
     coins = helper.coins(UnknownReference.new(
-      :author_names => [Factory(:author_name, :name => 'MacKay, W.')],
+      :author_names => [FactoryGirl.create(:author_name, :name => 'MacKay, W.')],
       :year => '1933',
       :title => 'Another title',
       :citation => 'Dresden'))
@@ -183,10 +183,10 @@ describe CoinsHelper do
   end
 
   it "should just provide very basic stuff for nested references for now" do
-    reference = Factory :reference
-    nested_reference = Factory :nested_reference, :pages_in => 'In:',
+    reference = FactoryGirl.create :reference
+    nested_reference = FactoryGirl.create :nested_reference, :pages_in => 'In:',
       :nested_reference => reference,
-      :author_names => [Factory(:author_name, :name => 'Bolton, B.')],
+      :author_names => [FactoryGirl.create(:author_name, :name => 'Bolton, B.')],
       :title => 'Title', :citation_year => '2010'
     coins = helper.coins nested_reference
     check_parameters coins, [

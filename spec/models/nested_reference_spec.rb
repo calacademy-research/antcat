@@ -5,8 +5,8 @@ describe NestedReference do
 
   describe "validation" do
     before do
-      @reference = NestedReference.new :title => 'asdf', :author_names => [Factory(:author_name)], :citation_year => '2010',
-        :nested_reference => Factory(:reference), :pages_in => 'Pp 2 in:'
+      @reference = NestedReference.new :title => 'asdf', :author_names => [FactoryGirl.create(:author_name)], :citation_year => '2010',
+        :nested_reference => FactoryGirl.create(:reference), :pages_in => 'Pp 2 in:'
     end
     it "should be valid with the attributes given above" do
       @reference.should be_valid
@@ -28,9 +28,9 @@ describe NestedReference do
       @reference.should_not be_valid
     end
     it "should not point to something that points to itself" do
-      inner_most = Factory :book_reference
-      middle = Factory :nested_reference, :nested_reference => inner_most
-      top = Factory :nested_reference, :nested_reference => middle 
+      inner_most = FactoryGirl.create :book_reference
+      middle = FactoryGirl.create :nested_reference, :nested_reference => inner_most
+      top = FactoryGirl.create :nested_reference, :nested_reference => middle 
       middle.nested_reference = top
       middle.should_not be_valid
     end
@@ -38,8 +38,8 @@ describe NestedReference do
 
   describe "deletion" do
     it "should not be possible to delete a nestee" do
-      reference = NestedReference.create! :title => 'asdf', :author_names => [Factory(:author_name)], :citation_year => '2010',
-        :nested_reference => Factory(:reference), :pages_in => 'Pp 2 in:'
+      reference = NestedReference.create! :title => 'asdf', :author_names => [FactoryGirl.create(:author_name)], :citation_year => '2010',
+        :nested_reference => FactoryGirl.create(:reference), :pages_in => 'Pp 2 in:'
       reference.nested_reference.destroy.should be_false
     end
 

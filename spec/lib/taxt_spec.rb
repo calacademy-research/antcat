@@ -8,7 +8,7 @@ describe Taxt do
       Taxt.encode_unparseable('foo').should == '{? foo}'
     end
     it "should encode a reference" do
-      reference = Factory :book_reference
+      reference = FactoryGirl.create :book_reference
       Taxt.encode_reference(reference).should == "{ref #{reference.id}}"
     end
     it "should put italics back around taxon names" do
@@ -43,7 +43,7 @@ describe Taxt do
 
   describe "Editable reference tag" do
     it "should return the tag" do
-      reference = Factory :article_reference
+      reference = FactoryGirl.create :article_reference
       reference.stub(:key).and_return 'Latreille, 1809'
       reference.stub(:id).and_return '1234'
       editable_key = Taxt.id_for_editable reference.id
@@ -62,7 +62,7 @@ describe Taxt do
         Taxt.to_editable("{ref #{reference.id}}").should == "{Fisher, 1922 #{editable_key}}"
       end
       it "should handle a missing reference" do
-        reference = Factory :missing_reference, citation: 'Fisher, 2011'
+        reference = FactoryGirl.create :missing_reference, citation: 'Fisher, 2011'
         editable_key = Taxt.id_for_editable reference.id
         Taxt.to_editable("{ref #{reference.id}}").should == "{Fisher, 2011 #{editable_key}}"
       end
@@ -72,13 +72,13 @@ describe Taxt do
     end
     describe "From editable taxt" do
       it "should use the inline citation format followed by the id" do
-        reference = Factory :article_reference
+        reference = FactoryGirl.create :article_reference
         editable_key = Taxt.id_for_editable reference.id
         Taxt.from_editable("{Fisher, 1922 #{editable_key}}").should == "{ref #{reference.id}}"
       end
       it "should handle more than one reference" do
-        reference = Factory :article_reference
-        other_reference = Factory :article_reference
+        reference = FactoryGirl.create :article_reference
+        other_reference = FactoryGirl.create :article_reference
         editable_key = Taxt.id_for_editable reference.id
         other_editable_key = Taxt.id_for_editable other_reference.id
         Taxt.from_editable("{Fisher, 1922 #{editable_key}}, also {Bolton, 1970 #{other_editable_key}}").should == "{ref #{reference.id}}, also {ref #{other_reference.id}}"
@@ -99,7 +99,7 @@ describe Taxt do
       Taxt.to_string(nil, nil).should == ''
     end
     it "should format a ref" do
-      reference = Factory :article_reference
+      reference = FactoryGirl.create :article_reference
       Reference.should_receive(:find).with(reference.id.to_s).and_return reference
       key_stub = stub
       reference.should_receive(:key).and_return key_stub
@@ -113,7 +113,7 @@ describe Taxt do
       Taxt.to_string("{ref 12345}", nil).should == '{ref 12345}'
     end
     it "should handle a MissingReference" do
-      reference = Factory :missing_reference, :citation => 'Latreille, 1809'
+      reference = FactoryGirl.create :missing_reference, :citation => 'Latreille, 1809'
       Taxt.to_string("{ref #{reference.id}}", nil).should == 'Latreille, 1809'
     end
   end

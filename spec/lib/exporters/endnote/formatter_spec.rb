@@ -7,11 +7,11 @@ describe Exporters::Endnote::Formatter do
   end
 
   it "should format a book reference correctly" do
-    reference = Factory :book_reference,
-      :author_names => [Factory(:author_name, :name => 'Bolton, B.')],
+    reference = FactoryGirl.create :book_reference,
+      :author_names => [FactoryGirl.create(:author_name, :name => 'Bolton, B.')],
       :title => 'Ants Are My Life',
       :citation_year => '1933',
-      :publisher => Factory(:publisher, :name => 'Springer Verlag', :place => Factory(:place, :name => 'Dresden')),
+      :publisher => FactoryGirl.create(:publisher, :name => 'Springer Verlag', :place => FactoryGirl.create(:place, :name => 'Dresden')),
       :pagination => 'ix + 33pp.'
     @formatter.format([reference]).should ==
 %{%0 Book
@@ -27,11 +27,11 @@ describe Exporters::Endnote::Formatter do
   end
 
   it "should format multiple authors correctly" do
-    reference = Factory :book_reference,
-      :author_names => [Factory(:author_name, :name => 'Bolton, B.'), Factory(:author_name, :name => 'Fisher, B.L.')],
+    reference = FactoryGirl.create :book_reference,
+      :author_names => [FactoryGirl.create(:author_name, :name => 'Bolton, B.'), FactoryGirl.create(:author_name, :name => 'Fisher, B.L.')],
       :title => 'Ants Are My Life',
       :citation_year => '1933',
-      :publisher => Factory(:publisher, :name => 'Springer Verlag', :place => Factory(:place, :name => 'Dresden')),
+      :publisher => FactoryGirl.create(:publisher, :name => 'Springer Verlag', :place => FactoryGirl.create(:place, :name => 'Dresden')),
       :pagination => 'ix + 33pp.'
     Exporters::Endnote::Formatter.format([reference]).should ==
 %{%0 Book
@@ -48,11 +48,11 @@ describe Exporters::Endnote::Formatter do
   end
 
   it "should not emit %A if there is no author" do
-    reference = Factory :book_reference,
+    reference = FactoryGirl.create :book_reference,
       :author_names => [],
       :title => 'Ants Are My Life',
       :citation_year => '1933',
-      :publisher => Factory(:publisher, :name => 'Springer Verlag', :place => Factory(:place, :name => 'Dresden')),
+      :publisher => FactoryGirl.create(:publisher, :name => 'Springer Verlag', :place => FactoryGirl.create(:place, :name => 'Dresden')),
       :pagination => 'ix + 33pp.'
     @formatter.format([reference]).should ==
 %{%0 Book
@@ -67,11 +67,11 @@ describe Exporters::Endnote::Formatter do
   end
 
   it "should format a article reference correctly" do
-    reference = Factory :article_reference,
-      :author_names => [Factory(:author_name, :name => 'MacKay, W.')],
+    reference = FactoryGirl.create :article_reference,
+      :author_names => [FactoryGirl.create(:author_name, :name => 'MacKay, W.')],
       :citation_year => '1941',
       :title => 'A title',
-      :journal => Factory(:journal, :name => 'Psyche'),
+      :journal => FactoryGirl.create(:journal, :name => 'Psyche'),
       :series_volume_issue => '1(2)',
       :pagination => '3-4'
     reference.create_document :url => 'http://antcat.org/article.pdf'
@@ -91,11 +91,11 @@ describe Exporters::Endnote::Formatter do
   end
 
   it "should strip out the italics formatting" do
-    reference = Factory :article_reference,
-      :author_names => [Factory(:author_name, :name => 'MacKay, W.')],
+    reference = FactoryGirl.create :article_reference,
+      :author_names => [FactoryGirl.create(:author_name, :name => 'MacKay, W.')],
       :citation_year => '1941',
       :title => '*A title*',
-      :journal => Factory(:journal, :name => 'Psyche'),
+      :journal => FactoryGirl.create(:journal, :name => 'Psyche'),
       :series_volume_issue => '1(2)',
       :pagination => '3-4'
     @formatter.format([reference]).should ==
@@ -112,11 +112,11 @@ describe Exporters::Endnote::Formatter do
   end
 
   it "should export public and taxonomic notes" do
-    reference = Factory :article_reference,
-      :author_names => [Factory(:author_name, :name => 'MacKay, W.')],
+    reference = FactoryGirl.create :article_reference,
+      :author_names => [FactoryGirl.create(:author_name, :name => 'MacKay, W.')],
       :citation_year => '1941',
       :title => '*A title*',
-      :journal => Factory(:journal, :name => 'Psyche'),
+      :journal => FactoryGirl.create(:journal, :name => 'Psyche'),
       :series_volume_issue => '1(2)',
       :pagination => '3-4',
       :public_notes => 'Public notes.',
@@ -137,11 +137,11 @@ describe Exporters::Endnote::Formatter do
   end
 
   it "should not export blank public and taxonomic notes" do
-    reference = Factory :article_reference,
-      :author_names => [Factory(:author_name, :name => 'MacKay, W.')],
+    reference = FactoryGirl.create :article_reference,
+      :author_names => [FactoryGirl.create(:author_name, :name => 'MacKay, W.')],
       :citation_year => '1941',
       :title => '*A title*',
-      :journal => Factory(:journal, :name => 'Psyche'),
+      :journal => FactoryGirl.create(:journal, :name => 'Psyche'),
       :series_volume_issue => '1(2)',
       :pagination => '3-4',
       :public_notes => '',
@@ -164,8 +164,8 @@ describe Exporters::Endnote::Formatter do
   end
 
   it "should format an unknown reference correctly" do
-    reference = Factory :unknown_reference,
-      :author_names => [Factory(:author_name, :name => 'MacKay, W.')],
+    reference = FactoryGirl.create :unknown_reference,
+      :author_names => [FactoryGirl.create(:author_name, :name => 'MacKay, W.')],
       :citation_year => '1933',
       :title => 'Another title',
       :citation => 'Dresden'
@@ -181,7 +181,7 @@ describe Exporters::Endnote::Formatter do
   end
 
   it "should not output nested references" do
-    reference = Factory :nested_reference
+    reference = FactoryGirl.create :nested_reference
     @formatter.format([reference]).should == "\n"
   end
 

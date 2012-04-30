@@ -36,11 +36,11 @@ describe Rank do
     Rank[[Genus.new]].to_s.should == 'genus'
   end
   it "should convert from an ActiveRecord relation" do
-    Factory :genus
+    FactoryGirl.create :genus
     Rank[Genus.first.subfamily].to_s.should == 'subfamily'
   end
   it "should convert from an ActiveRecord relation" do
-    Factory :genus
+    FactoryGirl.create :genus
     Rank[Genus.where(true)].to_s.should == 'genus'
   end
   it "should raise an error if it doesn't understand the input" do

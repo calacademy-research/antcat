@@ -141,7 +141,7 @@ describe Parsers::AuthorParser do
    end
 
    it "should handle a phrase that's known to be an author" do
-     Factory :author_name, :name => 'Anonymous', :verified => true
+     FactoryGirl.create :author_name, :name => 'Anonymous', :verified => true
      string = 'Anonymous'
      @parser.parse!(string)[:names].should == ['Anonymous']
      string.should be_empty

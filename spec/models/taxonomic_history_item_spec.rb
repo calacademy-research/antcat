@@ -14,13 +14,13 @@ describe TaxonomicHistoryItem do
     item.taxt.should == 'taxt'
   end
   it "can belong to a taxon" do
-    taxon = Factory :family
+    taxon = FactoryGirl.create :family
     item = taxon.taxonomic_history_items.create! :taxt => 'foo'
     item.reload.taxon.should == taxon 
   end
 
   describe "Updating taxt from editable taxt" do
-    let(:item) {Factory :taxonomic_history_item}
+    let(:item) {FactoryGirl.create :taxonomic_history_item}
 
     it "should not blow up on blank input but should be invalid and have errors" do
       item.update_taxt_from_editable ''
@@ -35,8 +35,8 @@ describe TaxonomicHistoryItem do
     end
 
     it "should convert from editable tags to tags" do
-      reference = Factory :article_reference
-      other_reference = Factory :article_reference
+      reference = FactoryGirl.create :article_reference
+      other_reference = FactoryGirl.create :article_reference
       editable_key = Taxt.id_for_editable reference.id
       other_editable_key = Taxt.id_for_editable other_reference.id
 

@@ -7,7 +7,7 @@ describe Reference, slow:true do
   before do
     Reference.delete_all
     # throw in a MissingReference to make sure it's not returned
-    Factory :missing_reference
+    FactoryGirl.create :missing_reference
   end
 
   describe "Searching (perform_search)" do
@@ -16,48 +16,48 @@ describe Reference, slow:true do
 
       describe "Searching for nothing" do
         it "should return everything" do
-          reference = Factory :reference
+          reference = FactoryGirl.create :reference
           Reference.perform_search.should == [reference]
         end
       end
 
       describe "Authors" do
         it "should return an empty array if nothing is found for the author names" do
-          Reference.perform_search(:authors => [Factory(:author)]).should be_empty
+          Reference.perform_search(:authors => [FactoryGirl.create(:author)]).should be_empty
         end
         it "should find the reference for a given author_name if it exists" do
-          bolton = Factory :author_name
-          reference = Factory :book_reference, :author_names => [bolton]
-          Factory :book_reference, :author_names => [Factory(:author_name, :name => 'Fisher')]
+          bolton = FactoryGirl.create :author_name
+          reference = FactoryGirl.create :book_reference, :author_names => [bolton]
+          FactoryGirl.create :book_reference, :author_names => [FactoryGirl.create(:author_name, :name => 'Fisher')]
           results = Reference.perform_search(:authors => [bolton.author])
           results.should == [reference]
         end
         it "should find the references for all aliases of a given author_name" do
-          bolton = Factory :author
-          bolton_barry = Factory :author_name, :author => bolton, :name => 'Bolton, Barry'
-          bolton_b = Factory :author_name, :author => bolton, :name => 'Bolton, B.'
-          bolton_barry_reference = Factory :book_reference, :author_names => [bolton_barry], :title => '1', :pagination => '1'
-          bolton_b_reference = Factory :book_reference, :author_names => [bolton_b], :title => '2', :pagination => '2'
+          bolton = FactoryGirl.create :author
+          bolton_barry = FactoryGirl.create :author_name, :author => bolton, :name => 'Bolton, Barry'
+          bolton_b = FactoryGirl.create :author_name, :author => bolton, :name => 'Bolton, B.'
+          bolton_barry_reference = FactoryGirl.create :book_reference, :author_names => [bolton_barry], :title => '1', :pagination => '1'
+          bolton_b_reference = FactoryGirl.create :book_reference, :author_names => [bolton_b], :title => '2', :pagination => '2'
           Reference.perform_search(:authors => [bolton]).map(&:id).should =~
             [bolton_b_reference, bolton_barry_reference].map(&:id)
         end
         it "should find the reference with both author names, but not just one" do
-          bolton = Factory :author_name, :name => 'Bolton'
-          fisher = Factory :author_name, :name => 'Fisher'
-          bolton_reference = Factory :reference, :author_names => [bolton]
-          fisher_reference = Factory :reference, :author_names => [fisher]
-          bolton_fisher_reference = Factory :reference, :author_names => [bolton,fisher]
+          bolton = FactoryGirl.create :author_name, :name => 'Bolton'
+          fisher = FactoryGirl.create :author_name, :name => 'Fisher'
+          bolton_reference = FactoryGirl.create :reference, :author_names => [bolton]
+          fisher_reference = FactoryGirl.create :reference, :author_names => [fisher]
+          bolton_fisher_reference = FactoryGirl.create :reference, :author_names => [bolton,fisher]
           Reference.perform_search(:authors => [bolton.author, fisher.author]).should == [bolton_fisher_reference]
         end
       end
 
       describe "ID" do
         it "should ignore everything else if an ID of sufficient length is provided" do
-          reference = Factory :reference
+          reference = FactoryGirl.create :reference
           Reference.perform_search(:id => reference.id).should == [reference]
         end
         it "should not freak out if it can't find the ID" do
-          Factory :reference
+          FactoryGirl.create :reference
           Reference.perform_search(:id => 23).should == []
         end
       end
@@ -106,7 +106,7 @@ describe Reference, slow:true do
 
         describe 'Journal name' do
           it 'should find something in journal name' do
-            journal = Factory :journal, :name => 'Journal'
+            journal = FactoryGirl.create :journal, :name => 'Journal'
             matching_reference = reference_factory(:author_name => 'Hölldobler', :journal => journal)
             unmatching_reference = reference_factory(:author_name => 'Hölldobler')
             Reference.perform_search(:fulltext => 'journal').should == [matching_reference]
@@ -115,7 +115,7 @@ describe Reference, slow:true do
 
         describe 'Publisher name' do
           it 'should find something in publisher name' do
-            publisher = Factory :publisher, :name => 'Publisher'
+            publisher = FactoryGirl.create :publisher, :name => 'Publisher'
             matching_reference = reference_factory(:author_name => 'Hölldobler', :publisher => publisher)
             unmatching_reference = reference_factory(:author_name => 'Hölldobler')
             Reference.perform_search(:fulltext => 'Publisher').should == [matching_reference]
@@ -152,9 +152,9 @@ describe Reference, slow:true do
 
         describe "Year and fulltext" do
           it "should work" do
-            atta2004 = Factory :book_reference, :title => 'Atta', :citation_year => '2004'
-            atta2003 = Factory :book_reference, :title => 'Atta', :citation_year => '2003'
-            formica2004 = Factory :book_reference, :title => 'Formica', :citation_year => '2003'
+            atta2004 = FactoryGirl.create :book_reference, :title => 'Atta', :citation_year => '2004'
+            atta2003 = FactoryGirl.create :book_reference, :title => 'Atta', :citation_year => '2003'
+            formica2004 = FactoryGirl.create :book_reference, :title => 'Formica', :citation_year => '2003'
             Reference.perform_search(:fulltext => 'atta', :start_year => 2004).should == [atta2004]
           end
         end
@@ -197,16 +197,16 @@ describe Reference, slow:true do
         end
 
         it "should sort by multiple author_names using their order in each reference" do
-          a = Factory(:article_reference, :author_names => AuthorName.import_author_names_string('Abdalla, F. C.; Cruz-Landim, C. da.')[:author_names])
-          m = Factory(:article_reference, :author_names => AuthorName.import_author_names_string('Mueller, U. G.; Mikheyev, A. S.; Abbot, P.')[:author_names])
-          v = Factory(:article_reference, :author_names => AuthorName.import_author_names_string("Vinson, S. B.; MacKay, W. P.; Rebeles M.; A.; Arredondo B.; H. C.; Rodríguez R.; A. D.; González, D. A.")[:author_names])
+          a = FactoryGirl.create(:article_reference, :author_names => AuthorName.import_author_names_string('Abdalla, F. C.; Cruz-Landim, C. da.')[:author_names])
+          m = FactoryGirl.create(:article_reference, :author_names => AuthorName.import_author_names_string('Mueller, U. G.; Mikheyev, A. S.; Abbot, P.')[:author_names])
+          v = FactoryGirl.create(:article_reference, :author_names => AuthorName.import_author_names_string("Vinson, S. B.; MacKay, W. P.; Rebeles M.; A.; Arredondo B.; H. C.; Rodríguez R.; A. D.; González, D. A.")[:author_names])
           Reference.perform_search.should == [a, m, v]
         end
 
         it "should sort by multiple author_names using their order in each reference" do
-          a = Factory(:article_reference, :author_names => AuthorName.import_author_names_string('Abdalla, F. C.; Cruz-Landim, C. da.')[:author_names]) 
-          m = Factory(:article_reference, :author_names => AuthorName.import_author_names_string('Mueller, U. G.; Mikheyev, A. S.; Abbot, P.')[:author_names])
-          v = Factory(:article_reference, :author_names => AuthorName.import_author_names_string("Vinson, S. B.; MacKay, W. P.; Rebeles M.; A.; Arredondo B.; H. C.; Rodríguez R.; A. D.; González, D. A.")[:author_names])
+          a = FactoryGirl.create(:article_reference, :author_names => AuthorName.import_author_names_string('Abdalla, F. C.; Cruz-Landim, C. da.')[:author_names]) 
+          m = FactoryGirl.create(:article_reference, :author_names => AuthorName.import_author_names_string('Mueller, U. G.; Mikheyev, A. S.; Abbot, P.')[:author_names])
+          v = FactoryGirl.create(:article_reference, :author_names => AuthorName.import_author_names_string("Vinson, S. B.; MacKay, W. P.; Rebeles M.; A.; Arredondo B.; H. C.; Rodríguez R.; A. D.; González, D. A.")[:author_names])
           Reference.perform_search.should == [a, m, v]
         end
       end
@@ -215,13 +215,13 @@ describe Reference, slow:true do
 
     describe "Filtering" do
       it "should apply the :unknown_references_only filter that's passed" do
-        known = Factory :article_reference
-        unknown = Factory :unknown_reference
+        known = FactoryGirl.create :article_reference
+        unknown = FactoryGirl.create :unknown_reference
         Reference.perform_search(:fulltext => '', :filter => :unknown_references_only).should == [unknown]
       end
       it "should apply the :no_missing_references filter that's passed" do
         MissingReference.count.should > 0
-        reference = Factory :article_reference
+        reference = FactoryGirl.create :article_reference
         Reference.perform_search(:fulltext => '', :filter => :no_missing_references).should == [reference]
       end
     end
@@ -230,7 +230,7 @@ describe Reference, slow:true do
 
   describe "Searching with Solr" do
     it "should return an empty array if nothing is found for author_name" do
-      Factory :reference
+      FactoryGirl.create :reference
       Reference.search {keywords 'foo'}.results.should be_empty
     end
 
@@ -300,13 +300,13 @@ describe Reference, slow:true do
       it "sends along the authors for the author names" do
         AuthorName.delete_all
         Author.delete_all
-        bolton = Factory :author_name, :name => 'Bolton'
-        fisher = Factory :author_name, :name => 'Bolton'
-        bolton_b = Factory :author_name, :name => 'Bolton, B.', :author => bolton.author
+        bolton = FactoryGirl.create :author_name, :name => 'Bolton'
+        fisher = FactoryGirl.create :author_name, :name => 'Bolton'
+        bolton_b = FactoryGirl.create :author_name, :name => 'Bolton, B.', :author => bolton.author
 
-        Factory :book_reference, :author_names => [bolton], :citation_year => '2001'
-        Factory :book_reference, :author_names => [bolton_b], :citation_year => '2005'
-        Factory :book_reference, :author_names => [fisher], :citation_year => '2003'
+        FactoryGirl.create :book_reference, :author_names => [bolton], :citation_year => '2001'
+        FactoryGirl.create :book_reference, :author_names => [bolton_b], :citation_year => '2005'
+        FactoryGirl.create :book_reference, :author_names => [fisher], :citation_year => '2003'
 
         Reference.should_receive(:perform_search) do |options|
           options[:authors].size.should == 2
@@ -382,7 +382,7 @@ describe Reference, slow:true do
       reference.reason_missing.should == 'no Bolton'
     end
     it "creates a 'no Bolton match' MissingReference if the Bolton reference exists, but not the Reference" do
-      bolton_reference = Factory :bolton_reference, :authors => 'Bolton, B.', :citation_year => '1920'
+      bolton_reference = FactoryGirl.create :bolton_reference, :authors => 'Bolton, B.', :citation_year => '1920'
       data = {:author_names => ['Bolton'], :year => '1920', :reference_text => 'Bolton, 1920'}
       reference = Reference.find_by_bolton_key data
       reference.reason_missing.should == 'no Bolton match'

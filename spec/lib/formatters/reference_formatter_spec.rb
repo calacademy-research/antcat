@@ -3,15 +3,15 @@ require 'spec_helper'
 
 describe Formatters::ReferenceFormatter do
   before do
-    @journal = Factory :journal, :name => "Neue Denkschriften"
-    @author_name = Factory :author_name, :name => "Forel, A."
-    @publisher = Factory :publisher
+    @journal = FactoryGirl.create :journal, :name => "Neue Denkschriften"
+    @author_name = FactoryGirl.create :author_name, :name => "Forel, A."
+    @publisher = FactoryGirl.create :publisher
     @formatter = Formatters::ReferenceFormatter
   end
 
   describe "formatting reference" do
     it "should format the reference" do
-      reference = Factory(:article_reference, :author_names => [@author_name],
+      reference = FactoryGirl.create(:article_reference, :author_names => [@author_name],
                           :citation_year => "1874",
                           :title => "Les fourmis de la Suisse",
                           :journal => @journal, :series_volume_issue => "26", :pagination => "1-452")
@@ -21,7 +21,7 @@ describe Formatters::ReferenceFormatter do
     end
 
     it "should add a period after the title if none exists" do
-      reference = Factory(:article_reference, :author_names => [@author_name],
+      reference = FactoryGirl.create(:article_reference, :author_names => [@author_name],
                           :citation_year => "1874",
                           :title => "Les fourmis de la Suisse",
                           :journal => @journal, :series_volume_issue => "26", :pagination => "1-452")
@@ -29,7 +29,7 @@ describe Formatters::ReferenceFormatter do
     end
 
     it "should not add a period after the author_names' suffix" do
-      reference = Factory(:article_reference, :author_names => [@author_name],
+      reference = FactoryGirl.create(:article_reference, :author_names => [@author_name],
                           :citation_year => "1874",
                           :title => "Les fourmis de la Suisse",
                           :journal => @journal, :series_volume_issue => "26", :pagination => "1-452")
@@ -38,7 +38,7 @@ describe Formatters::ReferenceFormatter do
     end
 
     it "should not add a period after the title if it ends with a question mark" do
-      reference = Factory(:article_reference, :author_names => [@author_name],
+      reference = FactoryGirl.create(:article_reference, :author_names => [@author_name],
                           :citation_year => "1874",
                           :title => "Les fourmis de la Suisse?",
                           :journal => @journal, :series_volume_issue => "26", :pagination => "1-452")
@@ -46,7 +46,7 @@ describe Formatters::ReferenceFormatter do
     end
 
     it "should not add a period after the title if it ends with an exclamation mark" do
-      reference = Factory(:article_reference, :author_names => [@author_name],
+      reference = FactoryGirl.create(:article_reference, :author_names => [@author_name],
                           :citation_year => "1874",
                           :title => "Les fourmis de la Suisse!",
                           :journal => @journal, :series_volume_issue => "26", :pagination => "1-452")
@@ -54,7 +54,7 @@ describe Formatters::ReferenceFormatter do
     end
 
     it "should not add a period after the title if there's already one" do
-      reference = Factory(:article_reference, :author_names => [@author_name],
+      reference = FactoryGirl.create(:article_reference, :author_names => [@author_name],
                           :citation_year => "1874",
                           :title => "Les fourmis de la Suisse.",
                           :journal => @journal, :series_volume_issue => "26", :pagination => "1-452")
@@ -62,7 +62,7 @@ describe Formatters::ReferenceFormatter do
     end
 
     it "should add a period after the citation if none exists" do
-      reference = Factory(:article_reference, :author_names => [@author_name],
+      reference = FactoryGirl.create(:article_reference, :author_names => [@author_name],
                           :citation_year => "1874",
                           :title => "Les fourmis de la Suisse.",
                           :journal => @journal, :series_volume_issue => "26", :pagination => "1-452")
@@ -70,7 +70,7 @@ describe Formatters::ReferenceFormatter do
     end
 
     it "should not add a period after the citation if there's already one" do
-      reference = Factory(:article_reference, :author_names => [@author_name],
+      reference = FactoryGirl.create(:article_reference, :author_names => [@author_name],
                           :citation_year => "1874",
                           :title => "Les fourmis de la Suisse.",
                           :journal => @journal, :series_volume_issue => "26", :pagination => "1-452.")
@@ -78,7 +78,7 @@ describe Formatters::ReferenceFormatter do
     end
 
     it "should separate the publisher and the pagination with a comma" do
-      reference = Factory(:book_reference, :author_names => [@author_name],
+      reference = FactoryGirl.create(:book_reference, :author_names => [@author_name],
                           :citation_year => "1874",
                           :title => "Les fourmis de la Suisse.",
                           :publisher => @publisher, :pagination => "22 pp.")
@@ -86,21 +86,21 @@ describe Formatters::ReferenceFormatter do
     end
 
     it "should format an unknown reference" do
-      reference = Factory(:unknown_reference, :author_names => [@author_name],
+      reference = FactoryGirl.create(:unknown_reference, :author_names => [@author_name],
                           :citation_year => "1874",
                           :title => "Les fourmis de la Suisse.", :citation => 'New York')
       @formatter.format(reference).should == 'Forel, A. 1874. Les fourmis de la Suisse. New York.'
     end
 
     it "should format a nested reference" do
-      reference = Factory :book_reference,
-        :author_names => [Factory(:author_name, :name => 'Mayr, E.')],
+      reference = FactoryGirl.create :book_reference,
+        :author_names => [FactoryGirl.create(:author_name, :name => 'Mayr, E.')],
         :citation_year => '2010',
         :title => 'Ants I have known',
-        :publisher => Factory(:publisher, :name => 'Wiley', :place => Factory(:place, :name => 'New York')),
+        :publisher => FactoryGirl.create(:publisher, :name => 'Wiley', :place => FactoryGirl.create(:place, :name => 'New York')),
         :pagination => '32 pp.'
-      nested_reference = Factory :nested_reference, :nested_reference => reference,
-        :author_names => [Factory(:author_name, :name => 'Forel, A.')], :title => 'Les fourmis de la Suisse',
+      nested_reference = FactoryGirl.create :nested_reference, :nested_reference => reference,
+        :author_names => [FactoryGirl.create(:author_name, :name => 'Forel, A.')], :title => 'Les fourmis de la Suisse',
         :citation_year => '1874', :pages_in => 'Pp. 32-45 in'
       @formatter.format(nested_reference).should ==
         'Forel, A. 1874. Les fourmis de la Suisse. Pp. 32-45 in Mayr, E. 2010. Ants I have known. New York: Wiley, 32 pp.'
@@ -108,8 +108,8 @@ describe Formatters::ReferenceFormatter do
 
     it "should format a citation_string correctly if the publisher doesn't have a place" do
       publisher = Publisher.create! :name => "Wiley"
-      reference = Factory(:book_reference,
-                          :author_names => [Factory(:author_name, :name => 'Forel, A.')],
+      reference = FactoryGirl.create(:book_reference,
+                          :author_names => [FactoryGirl.create(:author_name, :name => 'Forel, A.')],
                           :citation_year => "1874",
                           :title => "Les fourmis de la Suisse.",
                           :publisher => publisher, :pagination => "22 pp.")
@@ -118,12 +118,12 @@ describe Formatters::ReferenceFormatter do
 
     describe "unsafe characters" do
       before do
-        @author_names = [Factory(:author_name, :name => 'Ward, P. S.')]
-        @reference = Factory :unknown_reference, :author_names => @author_names,
+        @author_names = [FactoryGirl.create(:author_name, :name => 'Ward, P. S.')]
+        @reference = FactoryGirl.create :unknown_reference, :author_names => @author_names,
           :citation_year => "1874", :title => "Les fourmis de la Suisse.", :citation => '32 pp.'
       end
       it "should escape everything, but let italics through" do
-        @reference.author_names = [Factory(:author_name, :name => '<script>')]
+        @reference.author_names = [FactoryGirl.create(:author_name, :name => '<script>')]
         @formatter.format(@reference).should == '&lt;script&gt; 1874. Les fourmis de la Suisse. 32 pp.'
       end
       it "should escape the citation year" do
@@ -144,37 +144,37 @@ describe Formatters::ReferenceFormatter do
       end
 
       it "should escape the citation in an article reference" do
-        reference = Factory :article_reference, :title => 'Ants are my life', :author_names => @author_names,
-          :journal => Factory(:journal, :name => '<script>'), :citation_year => '2010d', :series_volume_issue => '<', :pagination => '>'
+        reference = FactoryGirl.create :article_reference, :title => 'Ants are my life', :author_names => @author_names,
+          :journal => FactoryGirl.create(:journal, :name => '<script>'), :citation_year => '2010d', :series_volume_issue => '<', :pagination => '>'
         @formatter.format(reference).should == 'Ward, P. S. 2010d. Ants are my life. &lt;script&gt; &lt;:&gt;.'
       end
 
       it "should escape the citation in a book reference" do
-        reference = Factory :book_reference, :citation_year => '2010d', :title => 'Ants are my life', :author_names => @author_names,
-          :publisher => Factory(:publisher, :name => '<', :place => Factory(:place, :name => '>')), :pagination => '>'
+        reference = FactoryGirl.create :book_reference, :citation_year => '2010d', :title => 'Ants are my life', :author_names => @author_names,
+          :publisher => FactoryGirl.create(:publisher, :name => '<', :place => FactoryGirl.create(:place, :name => '>')), :pagination => '>'
         @formatter.format(reference).should == 'Ward, P. S. 2010d. Ants are my life. &gt;: &lt;, &gt;.'
       end
 
       it "should escape the citation in an unknown reference" do
-        reference = Factory :unknown_reference, :title => 'Ants are my life', :citation_year => '2010d', :author_names => @author_names, :citation => '>'
+        reference = FactoryGirl.create :unknown_reference, :title => 'Ants are my life', :citation_year => '2010d', :author_names => @author_names, :citation => '>'
         @formatter.format(reference).should == 'Ward, P. S. 2010d. Ants are my life. &gt;.'
       end
 
       it "should escape the citation in a nested reference" do
-        nested_reference = Factory :unknown_reference, :title => "Ants are my life", :citation_year => '2010d', :author_names => @author_names
-        reference = Factory :nested_reference, :title => "Ants are my life", :citation_year => '2010d', :author_names => @author_names, :pages_in => '>', :nested_reference => nested_reference
+        nested_reference = FactoryGirl.create :unknown_reference, :title => "Ants are my life", :citation_year => '2010d', :author_names => @author_names
+        reference = FactoryGirl.create :nested_reference, :title => "Ants are my life", :citation_year => '2010d', :author_names => @author_names, :pages_in => '>', :nested_reference => nested_reference
         @formatter.format(reference).should == 'Ward, P. S. 2010d. Ants are my life. &gt; Ward, P. S. 2010d. Ants are my life. New York.'
       end
 
     end
 
     it "should italicize the title and citation" do
-      reference = Factory :unknown_reference, :citation_year => '2010d', :author_names => [], :citation => '*Ants*', :title => '*Tapinoma*'
+      reference = FactoryGirl.create :unknown_reference, :citation_year => '2010d', :author_names => [], :citation => '*Ants*', :title => '*Tapinoma*'
       @formatter.format(reference).should == "2010d. <span class=genus_or_species>Tapinoma</span>. <span class=genus_or_species>Ants</span>."
     end
 
     it "should not have a space at the beginning when there are no authors" do
-      reference = Factory :unknown_reference, :citation_year => '2010d', :author_names => [], :citation => 'Ants', :title => 'Tapinoma'
+      reference = FactoryGirl.create :unknown_reference, :citation_year => '2010d', :author_names => [], :citation => 'Ants', :title => 'Tapinoma'
       @formatter.format(reference).should == "2010d. Tapinoma. Ants."
     end
 
@@ -201,7 +201,7 @@ describe Formatters::ReferenceFormatter do
     end
 
     def make date
-      @reference = Factory(:article_reference, :author_names => [@author_name],
+      @reference = FactoryGirl.create(:article_reference, :author_names => [@author_name],
                            :citation_year => "1874",
                            :title => "Les fourmis de la Suisse.",
                            :journal => @journal, :series_volume_issue => "26", :pagination => "1-452.", :date => date)
@@ -226,14 +226,14 @@ describe Formatters::ReferenceFormatter do
   describe "inline_citation" do
     it "nonmissing references should defer to the key" do
       key = mock
-      reference = Factory :article_reference
+      reference = FactoryGirl.create :article_reference
       reference.should_receive(:key).and_return key
       key.should_receive(:to_link)
 
       @formatter.format_inline_citation reference, nil
     end
     it "should just output the citation for a MissingReference" do
-      @formatter.format_inline_citation(Factory(:missing_reference, :citation => 'foo'), nil).should == 'foo'
+      @formatter.format_inline_citation(FactoryGirl.create(:missing_reference, :citation => 'foo'), nil).should == 'foo'
     end
   end
 
@@ -246,14 +246,14 @@ describe Formatters::ReferenceFormatter do
   describe "inline_citation" do
     it "nonmissing references should defer to the key" do
       key = mock
-      reference = Factory :article_reference
+      reference = FactoryGirl.create :article_reference
       reference.should_receive(:key).and_return key
       key.should_receive(:to_link)
 
       @formatter.format_inline_citation reference, nil
     end
     it "should just output the citation for a MissingReference" do
-      @formatter.format_inline_citation(Factory(:missing_reference, :citation => 'foo'), nil).should == 'foo'
+      @formatter.format_inline_citation(FactoryGirl.create(:missing_reference, :citation => 'foo'), nil).should == 'foo'
     end
   end
 

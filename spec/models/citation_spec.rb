@@ -4,7 +4,7 @@ require 'spec_helper'
 describe Citation do
 
   it "has a Reference" do
-    reference = Factory :reference
+    reference = FactoryGirl.create :reference
     citation = Citation.create! :reference => reference
     citation.reload.reference.should == reference
   end
@@ -12,7 +12,7 @@ describe Citation do
   describe "Importing" do
 
     it "should create the Citation, which is linked to an existing Reference" do
-      reference = Factory :article_reference, :bolton_key_cache => 'Latreille 1809a'
+      reference = FactoryGirl.create :article_reference, :bolton_key_cache => 'Latreille 1809a'
       data = {:author_names => ["Latreille"], :year => "1809a", :pages => "124"}
 
       citation = Citation.import(data).reload
@@ -31,7 +31,7 @@ describe Citation do
     end
 
     it "should handle a nested reference when the year is only with the parent" do
-      reference = Factory :nested_reference, :bolton_key_cache => 'Latreille 2004'
+      reference = FactoryGirl.create :nested_reference, :bolton_key_cache => 'Latreille 2004'
       data = {
         :author_names => ["Latreille"],
         :in => {

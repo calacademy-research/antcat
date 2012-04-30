@@ -36,20 +36,20 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
 
   describe "Fixing up synonyms" do
     it "should fix up a genus to point to the senior synonym" do
-      senior_synonym = Factory :tribe, name: 'Leptomyrmecini'
-      junior_synonym = Factory :tribe, name: 'Iridomyrmecina', status: 'synonym', synonym_of: senior_synonym
-      synonym_of_junior_synonym = Factory :tribe, name: 'Anatellina', status: 'synonym', synonym_of: junior_synonym
-      genus_of_synonym_of_junior_synonym = Factory :genus, name: 'Iridomyrmex', tribe: synonym_of_junior_synonym
+      senior_synonym = FactoryGirl.create :tribe, name: 'Leptomyrmecini'
+      junior_synonym = FactoryGirl.create :tribe, name: 'Iridomyrmecina', status: 'synonym', synonym_of: senior_synonym
+      synonym_of_junior_synonym = FactoryGirl.create :tribe, name: 'Anatellina', status: 'synonym', synonym_of: junior_synonym
+      genus_of_synonym_of_junior_synonym = FactoryGirl.create :genus, name: 'Iridomyrmex', tribe: synonym_of_junior_synonym
 
       @importer.resolve_parent_synonyms
 
       genus_of_synonym_of_junior_synonym.reload.tribe.name.should == 'Leptomyrmecini'
     end
     it "should fixup the species of a subgenus to point to the senior synonym" do
-      genus = Factory :genus, name: 'Camponotus'
-      senior_synonym = Factory :subgenus, name: 'Mayria', genus: genus
-      junior_synonym = Factory :subgenus, name: 'Myrmosega', status: 'synonym', synonym_of: senior_synonym
-      species_of_junior_synonym = Factory :species, subgenus: junior_synonym, genus: genus
+      genus = FactoryGirl.create :genus, name: 'Camponotus'
+      senior_synonym = FactoryGirl.create :subgenus, name: 'Mayria', genus: genus
+      junior_synonym = FactoryGirl.create :subgenus, name: 'Myrmosega', status: 'synonym', synonym_of: senior_synonym
+      species_of_junior_synonym = FactoryGirl.create :species, subgenus: junior_synonym, genus: genus
 
       @importer.resolve_parent_synonyms
 

@@ -4,13 +4,13 @@ require 'spec_helper'
 describe Protonym do
 
   it "has an authorship" do
-    authorship = Factory :citation
+    authorship = FactoryGirl.create :citation
     protonym = Protonym.create! authorship: authorship
     protonym.reload.authorship.should == authorship
   end
 
   describe "Importing" do
-  before do @reference = Factory :article_reference, bolton_key_cache: 'Latreille 1809' end
+  before do @reference = FactoryGirl.create :article_reference, bolton_key_cache: 'Latreille 1809' end
 
     it "should create the Protonym and the Citation, which is linked to an existing Reference" do
       data = {
