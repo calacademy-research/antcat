@@ -77,33 +77,45 @@ class AntCat.ReferencePicker
   setup_search: =>
     self = @
     @element.find('.search_form')
-      .submit =>
-        @search()
-        false
-      .keypress (event) =>
-        return true unless event.which is $.ui.keyCode.ENTER
-        @search()
-        false
+
       .find('.controls')
         .removeClass('ui-state-disabled')
-      .find(':button, :submit')
-        .button()
+        .find(':button')
+          .button()
+          .end()
         .end()
+
       .find(':button.ok')
         .click =>
           @close()
           false
         .end()
-      .find(':button.add')
-        .click =>
-          @add_reference()
-          false
-        .end()
+
       .find(':button.close')
         .click =>
           @cancel()
           false
         .end()
+
+      .find(':button.add')
+        .click =>
+          @add_reference()
+          false
+        .end()
+
+      .find(':button.go')
+        .click =>
+          @search()
+          false
+        .end()
+
+      .find('.q')
+        .keypress (event) =>
+          return true unless event.which is $.ui.keyCode.ENTER
+          @search()
+          false
+        .end()
+
       .find('.pagination a')
         .click ->
           self.load_clicked_page this
