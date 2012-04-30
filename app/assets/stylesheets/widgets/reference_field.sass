@@ -21,7 +21,7 @@ $antcat_reference_field_gutter_size: 20px
   .template
     display: none
 
-  .current_reference
+  .current
     width: 100%
 
   .search_form
@@ -87,7 +87,7 @@ $antcat_reference_field_gutter_size: 20px
     margin-left: 3px
 
   &.has-no-current-reference
-    .current_reference
+    .current
       display: none
     .ok_cancel_controls
       display: none !important
@@ -95,6 +95,6 @@ $antcat_reference_field_gutter_size: 20px
       button.close
         display: inline
 
-  .current_reference, .reference_item .ui-selected
+  .current, .reference_item .ui-selected
     color: $color_current_reference_being_edited_by_reference_field !important
     background-color: $color_current_reference_being_edited_by_reference_field_background !important

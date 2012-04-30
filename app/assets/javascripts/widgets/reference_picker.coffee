@@ -205,7 +205,7 @@ class AntCat.ReferencePicker
     results.closest '.reference'
 
   current_reference: =>
-    references = @element.find('.current_reference .reference')
+    references = @current.find('.reference')
     return if references.length is 0
     references
 

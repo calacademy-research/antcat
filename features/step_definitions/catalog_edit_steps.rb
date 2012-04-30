@@ -52,7 +52,7 @@ When /^I search for the authors "([^"]*)"$/ do |authors|
 end
 
 When /^I edit the reference$/ do
-  within ".current_reference" do
+  within ".current" do
     step 'I follow "edit"'
   end
 end
@@ -64,13 +64,13 @@ When /^I add a reference$/ do
 end
 
 When /^I set the authors to "([^"]*)"$/ do |names|
-  within ".current_reference div.edit" do
+  within ".current div.edit" do
     step %{I fill in "reference[author_names_string]" with "#{names}"}
   end
 end
 
 When /^I set the title to "([^"]*)"$/ do |title|
-  within ".current_reference div.edit" do
+  within ".current div.edit" do
     step %{I fill in "reference[title]" with "#{title}"}
   end
 end
