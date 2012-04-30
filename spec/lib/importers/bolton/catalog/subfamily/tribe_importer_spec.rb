@@ -9,7 +9,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
   describe "Importing HTML" do
 
     before do
-      Factory :article_reference, :author_names => [Factory(:author_name, :name => 'Latreille, I.')], :citation_year => '1809', :title => 'Ants', :bolton_key_cache => 'Latreille 1809'
+      FactoryGirl.create :article_reference, :author_names => [FactoryGirl.create(:author_name, :name => 'Latreille, I.')], :citation_year => '1809', :title => 'Ants', :bolton_key_cache => 'Latreille 1809'
       Family.import( 
         :protonym => {
           :family_or_subfamily_name => "Formicariae",
@@ -34,7 +34,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
     end
 
     it "should import a tribe" do
-      emery = Factory :article_reference, bolton_key_cache: 'Emery 1913a'
+      emery = FactoryGirl.create :article_reference, bolton_key_cache: 'Emery 1913a'
       @importer.import_html make_contents %{
         <p>Tribe ANEURETINI</p>
         <p>Aneuretini Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.</p>
@@ -52,7 +52,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
     end
 
     it "should import the junior synonym of a tribe" do
-      emery = Factory :article_reference, bolton_key_cache: 'Emery 1913a'
+      emery = FactoryGirl.create :article_reference, bolton_key_cache: 'Emery 1913a'
       @importer.import_html make_contents %{
         <p>Tribe ANEURETINI</p>
         <p>Aneuretini Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.</p>

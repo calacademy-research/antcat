@@ -1,7 +1,7 @@
 # coding: UTF-8
 def reference_factory attributes = {}
-  author_name = Factory(:author_name, :name => attributes.delete(:author_name))
-  reference = Factory(:reference, attributes.merge(:author_names => [author_name]))
+  author_name = FactoryGirl.create(:author_name, :name => attributes.delete(:author_name))
+  reference = FactoryGirl.create(:reference, attributes.merge(:author_names => [author_name]))
   reference
 end
 
@@ -30,11 +30,11 @@ FactoryGirl.define do
   factory :reference do
     sequence(:title)          {|n| "Ants are my life#{n}"}
     sequence(:citation_year)  {|n| "201#{n}d"}
-    author_names              {[Factory(:author_name)]}
+    author_names              {[FactoryGirl.create(:author_name)]}
   end
 
   factory :article_reference do
-    author_names                    {[Factory(:author_name)]}
+    author_names                    {[FactoryGirl.create(:author_name)]}
     sequence(:title)                {|n| "Ants are my life#{n}"}
     sequence(:citation_year)        {|n| "201#{n}d"}
     journal
@@ -43,7 +43,7 @@ FactoryGirl.define do
   end
 
   factory :book_reference do
-    author_names                    {[Factory(:author_name)]}
+    author_names                    {[FactoryGirl.create(:author_name)]}
     sequence(:title)                {|n| "Ants are my life#{n}"}
     sequence(:citation_year)        {|n| "201#{n}d"}
     publisher
@@ -51,7 +51,7 @@ FactoryGirl.define do
   end
 
   factory :unknown_reference do
-    author_names                    {[Factory(:author_name)]}
+    author_names                    {[FactoryGirl.create(:author_name)]}
     sequence(:title)                {|n| "Ants are my life#{n}"}
     sequence(:citation_year)        {|n| "201#{n}d"}
     citation                        'New York'
@@ -64,11 +64,11 @@ FactoryGirl.define do
   end
 
   factory :nested_reference do
-    author_names                    {[Factory(:author_name)]}
+    author_names                    {[FactoryGirl.create(:author_name)]}
     sequence(:title)                {|n| "Ants are my life#{n}"}
     sequence(:citation_year)        {|n| "201#{n}d"}
     pages_in                        'In: '
-    nested_reference                {Factory :book_reference}
+    nested_reference                {FactoryGirl.create :book_reference}
   end
 
   factory :user do

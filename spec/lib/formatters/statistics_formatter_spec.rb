@@ -21,12 +21,12 @@ describe Formatters::StatisticsFormatter do
       @formatter.format_taxon_statistics(subfamily).should == ''
     end
     it "should not leave a comma at the end if only showing valid taxa" do
-      genus = Factory :genus, :taxonomic_history => 'foo'
+      genus = FactoryGirl.create :genus, :taxonomic_history => 'foo'
       genus.should_receive(:statistics).and_return :extant => {:species => {'valid' => 2}}
       @formatter.format_taxon_statistics(genus, :include_invalid => false).should == "<p class=\"taxon_statistics\">2 species</p>"
     end
     it "should not leave a comma at the end if only showing valid taxa" do
-      genus = Factory :genus, :taxonomic_history => 'foo'
+      genus = FactoryGirl.create :genus, :taxonomic_history => 'foo'
       genus.should_receive(:statistics).and_return :extant => {:species => {'valid' => 2}}
       @formatter.format_taxon_statistics(genus, :include_invalid => false).should == "<p class=\"taxon_statistics\">2 species</p>"
     end
@@ -114,8 +114,8 @@ describe Formatters::StatisticsFormatter do
     end
 
     it "should handle when there are no valid rank members" do
-      species = Factory :species
-      Factory :subspecies, :species => species, :status => 'synonym'
+      species = FactoryGirl.create :species
+      FactoryGirl.create :subspecies, :species => species, :status => 'synonym'
       @formatter.format_statistics(:extant => {:subspecies => {'synonym' => 1}}).should == "<p class=\"taxon_statistics\">(1 synonym)</p>"
     end
 

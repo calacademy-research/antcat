@@ -32,7 +32,7 @@ describe MissingReference do
 
   describe "Key" do
     it "has its own kind of key" do
-      reference = Factory :missing_reference
+      reference = FactoryGirl.create :missing_reference
       reference.key.should be_kind_of MissingReferenceKey
     end
   end

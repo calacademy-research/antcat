@@ -9,7 +9,7 @@ describe AuthorName do
   it "has many references" do
     author_name = AuthorName.create! :name => 'Fisher, B.L.', :author => @author
 
-    reference = Factory(:reference)
+    reference = FactoryGirl.create(:reference)
     author_name.references << reference
 
     author_name.references.first.should == reference
@@ -23,7 +23,7 @@ describe AuthorName do
   it "must have an author" do
     author_name = AuthorName.new :name => 'Ward, P. S.'
     author_name.should_not be_valid
-    author_name.author = Factory :author
+    author_name.author = FactoryGirl.create :author
     author_name.should be_valid
   end
 
@@ -47,8 +47,8 @@ describe AuthorName do
 
   describe "editing" do
     it "should update associated references when the name is changed" do
-      author_name = Factory :author_name, :name => 'Ward'
-      reference = Factory :reference, :author_names => [author_name]
+      author_name = FactoryGirl.create :author_name, :name => 'Ward'
+      reference = FactoryGirl.create :reference, :author_names => [author_name]
       author_name.update_attribute :name, 'Fisher'
       reference.reload.author_names_string.should == 'Fisher'
     end
@@ -113,7 +113,7 @@ describe AuthorName do
       ['Never Used', 'Recent', 'Old', 'Most Recent'].each do |name|
         AuthorName.create! :name => name, :author => @author
       end
-      reference = Factory :reference, :author_names => [AuthorName.find_by_name('Most Recent')]
+      reference = FactoryGirl.create :reference, :author_names => [AuthorName.find_by_name('Most Recent')]
       ReferenceAuthorName.create! :created_at => Time.now - 5, :author_name => AuthorName.find_by_name('Recent'),
                                   :reference => reference
       ReferenceAuthorName.create! :created_at => Time.now - 10, :author_name => AuthorName.find_by_name('Old'),
@@ -164,7 +164,7 @@ describe AuthorName do
     it "should find an existing author that has the space and transfer references to it" do
       ward_with_spaces = AuthorName.create! :name => 'Ward, P. S.', :author => @author
       ward_without_spaces = AuthorName.create! :name => 'Ward, P.S.', :author => @author
-      reference = Factory :reference, :author_names => [ward_without_spaces]
+      reference = FactoryGirl.create :reference, :author_names => [ward_without_spaces]
       AuthorName.fix_missing_spaces
       reference.author_names(true).should == [ward_with_spaces]
       AuthorName.count.should == 1
@@ -173,18 +173,18 @@ describe AuthorName do
 
   describe "create aliases for names differing only in hyphenation" do
     it "should change author to nonhyphenated one's author" do
-      with_hyphen = Factory :author_name, :name => 'Ward, P.-S.'
-      without_hyphen = Factory :author_name, :name => 'Ward, P. S.'
-      reference = Factory :reference, :author_names => [without_hyphen]
+      with_hyphen = FactoryGirl.create :author_name, :name => 'Ward, P.-S.'
+      without_hyphen = FactoryGirl.create :author_name, :name => 'Ward, P. S.'
+      reference = FactoryGirl.create :reference, :author_names => [without_hyphen]
       AuthorName.create_hyphenation_aliases
       author = reference.authors(true).first
       author.names.should =~ [with_hyphen, without_hyphen]
     end
     it "should do nothing if the author is already the same as the nonhyphenated one's author" do
-      author = Factory :author
-      with_hyphen = Factory :author_name, :name => 'Ward, P.-S.', :author => author
-      without_hyphen = Factory :author_name, :name => 'Ward, P. S.', :author => author
-      reference = Factory :reference, :author_names => [without_hyphen]
+      author = FactoryGirl.create :author
+      with_hyphen = FactoryGirl.create :author_name, :name => 'Ward, P.-S.', :author => author
+      without_hyphen = FactoryGirl.create :author_name, :name => 'Ward, P. S.', :author => author
+      reference = FactoryGirl.create :reference, :author_names => [without_hyphen]
       AuthorName.create_hyphenation_aliases
       with_hyphen.reload.author.reload.should == author
       without_hyphen.reload.author.reload.should == author
@@ -194,8 +194,8 @@ describe AuthorName do
   describe "aliasing" do
     it "should create aliases between all the provided names and delete the extra authors" do
       Author.delete_all
-      Factory :author_name, :name => 'Ward, P. S.'
-      Factory :author_name, :name => 'Ward, Phil'
+      FactoryGirl.create :author_name, :name => 'Ward, P. S.'
+      FactoryGirl.create :author_name, :name => 'Ward, Phil'
       AuthorName.alias false, 'Ward, P. S.', 'Ward, Phil'
       AuthorName.find_by_name('Ward, P. S.').author.should == AuthorName.find_by_name('Ward, Phil').author
       Author.count.should == 1
@@ -211,7 +211,7 @@ describe AuthorName do
       martinez_ibanez = Author.create!
       AuthorName.create! :name => 'Martínez Ibáñez, M. D.', :author => martinez_ibanez
       AuthorName.create! :name => 'Martínez-Ibáñez, M. D.', :author => martinez_ibanez
-      Factory :author_name, :name => 'Martínez-Ibañez, D.'
+      FactoryGirl.create :author_name, :name => 'Martínez-Ibañez, D.'
       AuthorName.alias false, "Martínez Ibáñez, M. D.", "Martínez-Ibañez, D.", "Martínez-Ibáñez, M. D."
       Author.count.should == 1
       author = AuthorName.find_by_name("Martínez Ibáñez, M. D.").author 
@@ -224,7 +224,7 @@ describe AuthorName do
     describe "when the correct name doesn't exist" do
       it "should add the correct name, delete the old name, and update its reference's" do
         Author.delete_all
-        reference = Factory :reference, :author_names => [Factory(:author_name, :name => 'Ward, Phil')]
+        reference = FactoryGirl.create :reference, :author_names => [FactoryGirl.create(:author_name, :name => 'Ward, Phil')]
         AuthorName.correct 'Ward, Phil', 'Ward, P. S.', false
         AuthorName.find_by_name('Ward, Phil').should be_nil
         reference.reload
@@ -235,8 +235,8 @@ describe AuthorName do
     describe "when the correct name does exist" do
       it "should add the correct name, delete the old name, and update its references" do
         Author.delete_all
-        Factory :author_name, :name => 'Ward, P. S.'
-        reference = Factory :reference, :author_names => [Factory(:author_name, :name => 'Ward, Phil')]
+        FactoryGirl.create :author_name, :name => 'Ward, P. S.'
+        reference = FactoryGirl.create :reference, :author_names => [FactoryGirl.create(:author_name, :name => 'Ward, Phil')]
         AuthorName.correct 'Ward, Phil', 'Ward, P. S.', false
         AuthorName.find_by_name('Ward, Phil').should be_nil
         reference.reload
@@ -248,10 +248,10 @@ describe AuthorName do
       describe "when the correct name does exist and it has other names" do
         it "shouldn't delete the author" do
           Author.delete_all
-          author = Factory :author
-          good = Factory :author_name, :name => 'Ward, P. S.', :author => author
-          bad = Factory :author_name, :name => 'Ward, Phil', :author => author
-          reference = Factory :reference, :author_names => [bad]
+          author = FactoryGirl.create :author
+          good = FactoryGirl.create :author_name, :name => 'Ward, P. S.', :author => author
+          bad = FactoryGirl.create :author_name, :name => 'Ward, Phil', :author => author
+          reference = FactoryGirl.create :reference, :author_names => [bad]
           AuthorName.correct 'Ward, Phil', 'Ward, P. S.', false
           AuthorName.find_by_name('Ward, Phil').should be_nil
           AuthorName.find_by_name('Ward, P. S.').author.should == author
@@ -265,16 +265,16 @@ describe AuthorName do
   describe "finding preposition synonyms" do
     ['Le', 'La', 'De'].each do |preposition|
       it "should find names that differ only in having a space after the initial #{preposition}" do
-        no_space = Factory :author_name, :name => "#{preposition}farge, M."
-        with_space = Factory :author_name, :name => "#{preposition} Farge, M."
-        Factory :author_name, :name => "#{preposition}me, M."
+        no_space = FactoryGirl.create :author_name, :name => "#{preposition}farge, M."
+        with_space = FactoryGirl.create :author_name, :name => "#{preposition} Farge, M."
+        FactoryGirl.create :author_name, :name => "#{preposition}me, M."
         AuthorName.find_preposition_synonyms.should == [[with_space, no_space]]
       end
     end
     it "should find names that differ only in having a preposition in the back instead of the front" do
-      in_front = Factory :author_name, :name => "La Farge, M."
-      in_back = Factory :author_name, :name => "Farge, M., La"
-      Factory :author_name, :name => "me, M., La"
+      in_front = FactoryGirl.create :author_name, :name => "La Farge, M."
+      in_back = FactoryGirl.create :author_name, :name => "Farge, M., La"
+      FactoryGirl.create :author_name, :name => "me, M., La"
       AuthorName.find_preposition_synonyms.should == [[in_front, in_back]]
     end
   end

@@ -23,7 +23,7 @@ describe ForwardReference do
     describe "Fixing up one reference" do
 
       it "should fixup a type taxon" do
-        family = Factory :family
+        family = FactoryGirl.create :family
         forward_reference = ForwardReference.create! :source_id => family.id, :target_name => 'Formica'
         forward_reference.fixup
         family.reload
@@ -32,7 +32,7 @@ describe ForwardReference do
       end
 
       it "should fixup a type taxon for a subfamily" do
-        subfamily = Factory :subfamily
+        subfamily = FactoryGirl.create :subfamily
         forward_reference = ForwardReference.create! :source_id => subfamily.id, :target_name => 'Formica'
         ForwardReference.fixup
         subfamily.reload
@@ -41,7 +41,7 @@ describe ForwardReference do
       end
 
       it "should fixup a type taxon for a tribe" do
-        tribe = Factory :tribe
+        tribe = FactoryGirl.create :tribe
         forward_reference = ForwardReference.create! :source_id => tribe.id, :target_name => 'Atta'
         ForwardReference.fixup
         tribe.reload
@@ -50,7 +50,7 @@ describe ForwardReference do
       end
 
       it "should fixup a type taxon for a species" do
-        genus = Factory :genus, :name => 'Atta'
+        genus = FactoryGirl.create :genus, :name => 'Atta'
         forward_reference = ForwardReference.create! :source_id => genus.id, :target_name => 'Atta major'
         forward_reference.fixup
         genus.reload
@@ -59,7 +59,7 @@ describe ForwardReference do
       end
 
       it "should fixup a type taxon for a species with a subgenus" do
-        genus = Factory :genus, :name => 'Hypochira'
+        genus = FactoryGirl.create :genus, :name => 'Hypochira'
         forward_reference = ForwardReference.create! :source_id => genus.id, :target_name => 'Formica (Hypochira) subspinosa'
         forward_reference.fixup
         genus.reload
@@ -68,8 +68,8 @@ describe ForwardReference do
       end
 
       it "should fixup a type taxon for a species with a subgenus, which was a genus at type time" do
-        genus = Factory :genus, :name => 'Hypochira'
-        subgenus = Factory :subgenus, :genus => genus, name: 'Lasius'
+        genus = FactoryGirl.create :genus, :name => 'Hypochira'
+        subgenus = FactoryGirl.create :subgenus, :genus => genus, name: 'Lasius'
         forward_reference = ForwardReference.create! :source_id => subgenus.id, :target_name => 'Lasius major'
         forward_reference.fixup
         subgenus.reload
@@ -78,7 +78,7 @@ describe ForwardReference do
       end
 
       it "should complain if it's fixing up something it doesn't understand" do
-        genus = Factory :subspecies
+        genus = FactoryGirl.create :subspecies
         forward_reference = ForwardReference.create! :source_id => genus.id, :target_name => 'Atta major'
         lambda {forward_reference.fixup}.should raise_error
       end

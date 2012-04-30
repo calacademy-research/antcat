@@ -10,7 +10,7 @@ describe Reference do
       uppercase = AuthorName.create! :name => 'MacKay, W. P.', :author => author
       lowercase = AuthorName.create! :name => 'Mackay, W. P.', :author => author
 
-      reference = Factory :reference, :author_names => [uppercase]
+      reference = FactoryGirl.create :reference, :author_names => [uppercase]
       reference.author_names_string.should == 'MacKay, W. P.'
 
       reference.replace_author_name 'MacKay, W. P.', lowercase

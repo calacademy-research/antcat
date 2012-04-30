@@ -32,7 +32,7 @@ describe Importers::Bolton::Catalog::TextToTaxt do
 
   describe "Citations" do
     it "should handle a citation" do
-      reference = Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
+      reference = FactoryGirl.create :article_reference, :bolton_key_cache => 'Latreille 1809'
       data = [{:author_names => ['Latreille'], :year => '1809', :pages => '244'}]
       @converter.convert(data).should == "{ref #{reference.id}}: 244"
     end
@@ -41,12 +41,12 @@ describe Importers::Bolton::Catalog::TextToTaxt do
       @converter.convert(data).should == "{ref #{MissingReference.first.id}}: 244"
     end
     it "should handle a citation whose reference wasn't matched" do
-      bolton_reference = Factory :bolton_reference, :authors => 'Latreille', :citation_year => '1809'
+      bolton_reference = FactoryGirl.create :bolton_reference, :authors => 'Latreille', :citation_year => '1809'
       data = [{:author_names => ['Latreille'], :year => '1809', :pages => '244', :reference_text => 'Latreille, 1809'}]
       @converter.convert(data).should == "{ref #{MissingReference.first.id}}: 244"
     end
     it "should handle a nested citation (i.e., without year)" do
-      reference = Factory :article_reference, :bolton_key_cache => 'Nel Perrault 2004'
+      reference = FactoryGirl.create :article_reference, :bolton_key_cache => 'Nel Perrault 2004'
       data = [{
         :author_names => ["Nel", "Perrault"],
         :in => {:author_names => ["Nel", "Perrault", "Perrichot", "Néraudeau"], :year => "2004"},
@@ -54,7 +54,7 @@ describe Importers::Bolton::Catalog::TextToTaxt do
       @converter.convert(data).should == "{ref #{reference.id}}: 24"
     end
     it "should handle a citation with notes" do
-      reference = Factory :article_reference, :bolton_key_cache => 'Stephens 1829'
+      reference = FactoryGirl.create :article_reference, :bolton_key_cache => 'Stephens 1829'
       data = [{
         author_names:["Stephens"], year:"1829", pages:"356",
         notes:[[
@@ -75,7 +75,7 @@ describe Importers::Bolton::Catalog::TextToTaxt do
   end
 
   it "should handle a number of items" do
-    reference = Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
+    reference = FactoryGirl.create :article_reference, :bolton_key_cache => 'Latreille 1809'
     data = [
       {:phrase => 'Formicidae as family', :delimiter => ': '},
       {:author_names => ['Latreille'], :year => '1809', :pages => '124', :delimiter => ' '},
@@ -176,7 +176,7 @@ describe Importers::Bolton::Catalog::TextToTaxt do
 
   describe "Taxon names with authorship" do
     it "should encode the authorship, too" do
-      reference = Factory :article_reference, bolton_key_cache: 'Gray 1841'
+      reference = FactoryGirl.create :article_reference, bolton_key_cache: 'Gray 1841'
       @converter.convert([{
         genus_name: "Diabolus",
         authorship: 

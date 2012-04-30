@@ -4,7 +4,7 @@ require 'spec_helper'
 describe ReferenceMatcher do
   before do
     @matcher = ReferenceMatcher.new
-    @match = Factory :reference, :author_names => [Factory(:author_name, :name => 'Ward')]
+    @match = FactoryGirl.create :reference, :author_names => [FactoryGirl.create(:author_name, :name => 'Ward')]
     @target = ComparableReference.new :author => 'Ward'
   end
 
@@ -21,7 +21,7 @@ describe ReferenceMatcher do
   end
     
   it "should handle an author last name with an apostrophe in it (regression)" do
-    @match.update_attributes :author_names => [Factory(:author_name, :name => "Arnol'di, G.")]
+    @match.update_attributes :author_names => [FactoryGirl.create(:author_name, :name => "Arnol'di, G.")]
     @target.author = "Arnol'di"
     @target.should_receive(:<=>).and_return 0.10
 

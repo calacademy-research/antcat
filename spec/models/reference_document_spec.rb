@@ -4,7 +4,7 @@ require 'spec_helper'
 describe ReferenceDocument do
   it "should make sure it has a protocol" do
     stub_request(:any, "http://antcat.org/1.pdf").to_return :body => "Hello World!"
-    document = Factory :reference_document
+    document = FactoryGirl.create :reference_document
     document.url = 'antcat.org/1.pdf'
     document.save!
     document.reload.url.should == 'http://antcat.org/1.pdf'
@@ -45,7 +45,7 @@ describe ReferenceDocument do
   end
 
   it "should create the URL for an uploaded file so that it goes to our controller" do
-    document = Factory :reference_document
+    document = FactoryGirl.create :reference_document
     document.file_file_name = '1.pdf'
     document.host = 'antcat.org'
     document.reload.url.should == "http://antcat.org/documents/#{document.id}/1.pdf"
@@ -53,12 +53,12 @@ describe ReferenceDocument do
 
   describe "actual url" do
     it "simply be the url, if the document's not on Amazon" do
-      document = Factory :reference_document
+      document = FactoryGirl.create :reference_document
       document.update_attribute :url, 'foo'
       document.reload.actual_url.should == 'foo'
     end
     it "should go to Amazon, if necessary" do
-      document = Factory :reference_document
+      document = FactoryGirl.create :reference_document
       document.file_file_name = '1.pdf'
       document.host = 'antcat.org'
       document.reload.actual_url.should match /http:\/\/s3\.amazonaws\.com\/antcat\/#{document.id}\/1\.pdf\?AWSAccessKeyId=/
@@ -67,7 +67,7 @@ describe ReferenceDocument do
 
   describe "downloadable_by?" do
     before do
-      @user = Factory :user
+      @user = FactoryGirl.create :user
     end
     it "should not be downloadable if there is no url" do
       ReferenceDocument.new.should_not be_downloadable_by @user
@@ -79,15 +79,15 @@ describe ReferenceDocument do
       ReferenceDocument.new(:url => 'foo', :file_file_name => 'bar').should_not be_downloadable_by nil
     end
     it "should be downloadable by a registered user if we are hosting on S3" do
-      ReferenceDocument.new(:url => 'foo', :file_file_name => 'bar').should be_downloadable_by Factory :user
+      ReferenceDocument.new(:url => 'foo', :file_file_name => 'bar').should be_downloadable_by FactoryGirl.create :user
     end
     it "should be downloadable by anyone if it's public" do
       document = ReferenceDocument.new(:url => 'foo', :file_file_name => 'bar', :public => true)
-      document.should be_downloadable_by Factory :user
+      document.should be_downloadable_by FactoryGirl.create :user
       document.should be_downloadable_by nil
     end
     it "should be not be downloadable by anyone if it is/was on http://128.146.250.117" do
-      ReferenceDocument.new(:url => 'http://128.146.250.117').should_not be_downloadable_by Factory :user
+      ReferenceDocument.new(:url => 'http://128.146.250.117').should_not be_downloadable_by FactoryGirl.create :user
     end
   end
 

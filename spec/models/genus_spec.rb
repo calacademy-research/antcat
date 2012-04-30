@@ -4,30 +4,30 @@ require 'spec_helper'
 describe Genus do
 
   it "should have a tribe" do
-    attini = Factory :tribe, :name => 'Attini', :subfamily => Factory(:subfamily, :name => 'Myrmicinae')
-    Factory :genus, :name => 'Atta', :tribe => attini
+    attini = FactoryGirl.create :tribe, :name => 'Attini', :subfamily => FactoryGirl.create(:subfamily, :name => 'Myrmicinae')
+    FactoryGirl.create :genus, :name => 'Atta', :tribe => attini
     Genus.find_by_name('Atta').tribe.should == attini
   end
 
   it "should have species, which are its children" do
-    atta = Factory :genus, :name => 'Atta'
-    Factory :species, :name => 'robusta', :genus => atta
-    Factory :species, :name => 'saltensis', :genus => atta
+    atta = FactoryGirl.create :genus, :name => 'Atta'
+    FactoryGirl.create :species, :name => 'robusta', :genus => atta
+    FactoryGirl.create :species, :name => 'saltensis', :genus => atta
     atta = Genus.find_by_name('Atta')
     atta.species.map(&:name).should =~ ['robusta', 'saltensis']
     atta.children.should == atta.species
   end
 
   it "should have subspecies" do
-    genus = Factory :genus
-    Factory :subspecies, :species => Factory(:species, :genus => genus)
+    genus = FactoryGirl.create :genus
+    FactoryGirl.create :subspecies, :species => FactoryGirl.create(:species, :genus => genus)
     genus.should have(1).subspecies
   end
 
   it "should have subgenera" do
-    atta = Factory :genus, :name => 'Atta'
-    Factory :subgenus, :name => 'robusta', :genus => atta
-    Factory :subgenus, :name => 'saltensis', :genus => atta
+    atta = FactoryGirl.create :genus, :name => 'Atta'
+    FactoryGirl.create :subgenus, :name => 'robusta', :genus => atta
+    FactoryGirl.create :subgenus, :name => 'saltensis', :genus => atta
     atta = Genus.find_by_name('Atta')
     atta.subgenera.map(&:name).should =~ ['robusta', 'saltensis']
   end
@@ -35,12 +35,12 @@ describe Genus do
   describe "Full name" do
 
     it "is the genus name" do
-      taxon = Factory :genus, :name => 'Atta', :subfamily => Factory(:subfamily, :name => 'Dolichoderinae')
+      taxon = FactoryGirl.create :genus, :name => 'Atta', :subfamily => FactoryGirl.create(:subfamily, :name => 'Dolichoderinae')
       taxon.full_name.should == 'Atta'
     end
 
     it "is just the genus name if there is no subfamily" do
-      taxon = Factory :genus, :name => 'Atta', :subfamily => nil
+      taxon = FactoryGirl.create :genus, :name => 'Atta', :subfamily => nil
       taxon.full_name.should == 'Atta'
     end
 
@@ -49,12 +49,12 @@ describe Genus do
   describe "Full label" do
 
     it "is the genus name" do
-      taxon = Factory :genus, :name => 'Atta', :subfamily => Factory(:subfamily, :name => 'Dolichoderinae')
+      taxon = FactoryGirl.create :genus, :name => 'Atta', :subfamily => FactoryGirl.create(:subfamily, :name => 'Dolichoderinae')
       taxon.full_label.should == '<i>Atta</i>'
     end
 
     it "is just the genus name if there is no subfamily" do
-      taxon = Factory :genus, :name => 'Atta', :subfamily => nil
+      taxon = FactoryGirl.create :genus, :name => 'Atta', :subfamily => nil
       taxon.full_label.should == '<i>Atta</i>'
     end
 
@@ -63,37 +63,37 @@ describe Genus do
   describe "Statistics" do
 
     it "should handle 0 children" do
-      genus = Factory :genus
+      genus = FactoryGirl.create :genus
       genus.statistics.should == {}
     end
 
     it "should handle 1 valid species" do
-      genus = Factory :genus
-      species = Factory :species, :genus => genus
+      genus = FactoryGirl.create :genus
+      species = FactoryGirl.create :species, :genus => genus
       genus.statistics.should == {:extant => {:species => {'valid' => 1}}}
     end
 
     it "should handle 1 valid species and 2 synonyms" do
-      genus = Factory :genus
-      Factory :species, :genus => genus
-      2.times {Factory :species, :genus => genus, :status => 'synonym'}
+      genus = FactoryGirl.create :genus
+      FactoryGirl.create :species, :genus => genus
+      2.times {FactoryGirl.create :species, :genus => genus, :status => 'synonym'}
       genus.statistics.should == {:extant => {:species => {'valid' => 1, 'synonym' => 2}}}
     end
 
     it "should handle 1 valid species with 2 valid subspecies" do
-      genus = Factory :genus
-      species = Factory :species, :genus => genus
-      2.times {Factory :subspecies, :species => species}
+      genus = FactoryGirl.create :genus
+      species = FactoryGirl.create :species, :genus => genus
+      2.times {FactoryGirl.create :subspecies, :species => species}
       genus.statistics.should == {:extant => {:species => {'valid' => 1}, :subspecies => {'valid' => 2}}}
     end
 
     it "should be able to differentiate extinct species and subspecies" do
-      genus = Factory :genus
-      species = Factory :species, :genus => genus
-      fossil_species = Factory :species, :genus => genus, :fossil => true
-      Factory :subspecies, :species => species, :fossil => true
-      Factory :subspecies, :species => species
-      Factory :subspecies, :species => fossil_species, :fossil => true
+      genus = FactoryGirl.create :genus
+      species = FactoryGirl.create :species, :genus => genus
+      fossil_species = FactoryGirl.create :species, :genus => genus, :fossil => true
+      FactoryGirl.create :subspecies, :species => species, :fossil => true
+      FactoryGirl.create :subspecies, :species => species
+      FactoryGirl.create :subspecies, :species => fossil_species, :fossil => true
       genus.statistics.should == {
         :extant => {:species => {'valid' => 1}, :subspecies => {'valid' => 1}},
         :fossil => {:species => {'valid' => 1}, :subspecies => {'valid' => 2}},
@@ -101,12 +101,12 @@ describe Genus do
     end
 
     it "should be able to differentiate extinct species and subspecies" do
-      genus = Factory :genus
-      species = Factory :species, :genus => genus
-      fossil_species = Factory :species, :genus => genus, :fossil => true
-      Factory :subspecies, :species => species, :fossil => true
-      Factory :subspecies, :species => species
-      Factory :subspecies, :species => fossil_species, :fossil => true
+      genus = FactoryGirl.create :genus
+      species = FactoryGirl.create :species, :genus => genus
+      fossil_species = FactoryGirl.create :species, :genus => genus, :fossil => true
+      FactoryGirl.create :subspecies, :species => species, :fossil => true
+      FactoryGirl.create :subspecies, :species => species
+      FactoryGirl.create :subspecies, :species => fossil_species, :fossil => true
       genus.statistics.should == {
         :extant => {:species => {'valid' => 1}, :subspecies => {'valid' => 1}},
         :fossil => {:species => {'valid' => 1}, :subspecies => {'valid' => 2}},
@@ -117,17 +117,17 @@ describe Genus do
 
   describe "Without subfamily" do
     it "should just return the genera with no subfamily" do
-      cariridris = Factory :genus, :subfamily => nil
-      atta = Factory :genus
+      cariridris = FactoryGirl.create :genus, :subfamily => nil
+      atta = FactoryGirl.create :genus
       Genus.without_subfamily.all.should == [cariridris]
     end
   end
 
   describe "Without tribe" do
     it "should just return the genera with no tribe" do
-      tribe = Factory :tribe
-      cariridris = Factory :genus, :tribe => tribe, :subfamily => tribe.subfamily
-      atta = Factory :genus, :subfamily => tribe.subfamily, :tribe => nil
+      tribe = FactoryGirl.create :tribe
+      cariridris = FactoryGirl.create :genus, :tribe => tribe, :subfamily => tribe.subfamily
+      atta = FactoryGirl.create :genus, :subfamily => tribe.subfamily, :tribe => nil
       Genus.without_tribe.all.should == [atta]
     end
   end
@@ -135,33 +135,33 @@ describe Genus do
   describe "Siblings" do
 
     it "should return itself when there are no others" do
-      Factory :genus
-      tribe = Factory :tribe
-      genus = Factory :genus, :tribe => tribe, :subfamily => tribe.subfamily
+      FactoryGirl.create :genus
+      tribe = FactoryGirl.create :tribe
+      genus = FactoryGirl.create :genus, :tribe => tribe, :subfamily => tribe.subfamily
       genus.siblings.should == [genus]
     end
 
     it "should return itself and its tribe's other genera" do
-      Factory :genus
-      tribe = Factory :tribe
-      genus = Factory :genus, :tribe => tribe, :subfamily => tribe.subfamily
-      another_genus = Factory :genus, :tribe => tribe, :subfamily => tribe.subfamily
+      FactoryGirl.create :genus
+      tribe = FactoryGirl.create :tribe
+      genus = FactoryGirl.create :genus, :tribe => tribe, :subfamily => tribe.subfamily
+      another_genus = FactoryGirl.create :genus, :tribe => tribe, :subfamily => tribe.subfamily
       genus.siblings.should =~ [genus, another_genus]
     end
 
     it "when there's no subfamily, should return all the genera with no subfamilies" do
-      Factory :genus
-      genus = Factory :genus, :subfamily => nil, :tribe => nil
-      another_genus = Factory :genus, :subfamily => nil, :tribe => nil
+      FactoryGirl.create :genus
+      genus = FactoryGirl.create :genus, :subfamily => nil, :tribe => nil
+      another_genus = FactoryGirl.create :genus, :subfamily => nil, :tribe => nil
       genus.siblings.should =~ [genus, another_genus]
     end
 
     it "when there's no tribe, return the other genera in its subfamily without tribes" do
-      subfamily = Factory :subfamily
-      tribe = Factory :tribe, :subfamily => subfamily
-      Factory :genus, :tribe => tribe, :subfamily => subfamily
-      genus = Factory :genus, :subfamily => subfamily, :tribe => nil
-      another_genus = Factory :genus, :subfamily => subfamily, :tribe => nil
+      subfamily = FactoryGirl.create :subfamily
+      tribe = FactoryGirl.create :tribe, :subfamily => subfamily
+      FactoryGirl.create :genus, :tribe => tribe, :subfamily => subfamily
+      genus = FactoryGirl.create :genus, :subfamily => subfamily, :tribe => nil
+      another_genus = FactoryGirl.create :genus, :subfamily => subfamily, :tribe => nil
       genus.siblings.should =~ [genus, another_genus]
     end
 
@@ -170,8 +170,8 @@ describe Genus do
   describe "Importing" do
 
     it "should work" do
-      subfamily = Factory :subfamily
-      reference = Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
+      subfamily = FactoryGirl.create :subfamily
+      reference = FactoryGirl.create :article_reference, :bolton_key_cache => 'Latreille 1809'
       genus = Genus.import(
         subfamily: subfamily,
         name: 'Atta',
@@ -199,7 +199,7 @@ describe Genus do
     end
 
     it "save the subgenus part correctly" do
-      Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
+      FactoryGirl.create :article_reference, :bolton_key_cache => 'Latreille 1809'
       genus = Genus.import({
         name: 'Atta',
         protonym: {genus_name: "Atta", authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]},
@@ -212,7 +212,7 @@ describe Genus do
     end
 
     it "should not mind if there's no type" do
-      reference = Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
+      reference = FactoryGirl.create :article_reference, :bolton_key_cache => 'Latreille 1809'
       genus = Genus.import({
         :name => 'Atta',
         :protonym => {
@@ -226,7 +226,7 @@ describe Genus do
     end
 
     it "should make sure the type-species is fixed up to point to the genus and not just to any genus with the same name" do
-      reference = Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
+      reference = FactoryGirl.create :article_reference, :bolton_key_cache => 'Latreille 1809'
 
       genus = Genus.import({
         :name => 'Myrmicium',
@@ -246,7 +246,7 @@ describe Genus do
 
   describe "Creating from a fixup" do
     before do
-      @subfamily = Factory :subfamily, name: 'Dolichoderinae'
+      @subfamily = FactoryGirl.create :subfamily, name: 'Dolichoderinae'
     end
     it "should create the genus, and use the passed-in subfamily" do
       Progress.should_receive(:log).with("FIXUP created genus Atta")
@@ -258,7 +258,7 @@ describe Genus do
     end
 
     it "should create the genus, and use the passed-in tribe" do
-      tribe = Factory :tribe, subfamily: @subfamily
+      tribe = FactoryGirl.create :tribe, subfamily: @subfamily
       Progress.should_receive(:log).with("FIXUP created genus Atta")
       genus = Genus.create_from_fixup tribe_id: tribe.id, name: 'Atta', fossil: true
       genus.reload.name.should == 'Atta'
@@ -269,7 +269,7 @@ describe Genus do
     end
 
     it "should find an existing genus" do
-      existing_genus = Factory :genus, name: 'Atta', subfamily: @subfamily, status: 'valid'
+      existing_genus = FactoryGirl.create :genus, name: 'Atta', subfamily: @subfamily, status: 'valid'
       genus = Genus.create_from_fixup subfamily_id: @subfamily.id, name: 'Atta'
       genus.reload.should == existing_genus
     end

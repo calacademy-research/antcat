@@ -53,10 +53,10 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
 </div></body></html>
     }
 
-    latreille = Factory :article_reference, :bolton_key_cache => 'Latreille 1809'
-    lund = Factory :unknown_reference, :bolton_key_cache => 'Lund 1831a'
-    swainson = Factory :unknown_reference, :bolton_key_cache => 'Swainson Shuckard 1840'
-    baroni = Factory :unknown_reference, :bolton_key_cache => 'Baroni Urbani 1977c'
+    latreille = FactoryGirl.create :article_reference, :bolton_key_cache => 'Latreille 1809'
+    lund = FactoryGirl.create :unknown_reference, :bolton_key_cache => 'Lund 1831a'
+    swainson = FactoryGirl.create :unknown_reference, :bolton_key_cache => 'Swainson Shuckard 1840'
+    baroni = FactoryGirl.create :unknown_reference, :bolton_key_cache => 'Baroni Urbani 1977c'
 
     Importers::Bolton::Catalog::Subfamily::Importer.new.import_html html
 

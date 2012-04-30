@@ -20,24 +20,24 @@ describe Journal do
 
   describe "searching" do
     it "should do fuzzy matching of journal names" do
-      Factory(:journal, :name => 'American Bibliographic Proceedings')
-      Factory(:journal, :name => 'Playboy')
+      FactoryGirl.create(:journal, :name => 'American Bibliographic Proceedings')
+      FactoryGirl.create(:journal, :name => 'Playboy')
       Journal.search('ABP').should == ['American Bibliographic Proceedings']
     end
 
     it "should require matching the first letter" do
-      Factory(:journal, :name => 'ABC')
+      FactoryGirl.create(:journal, :name => 'ABC')
       Journal.search('BC').should == []
     end
 
     it "should return results in order of most used" do
       ['Most Used', 'Never Used', 'Occasionally Used', 'Rarely Used'].each do |name|
-        Factory :journal, :name => name
+        FactoryGirl.create :journal, :name => name
       end
-      2.times {Factory :article_reference, :journal => Journal.find_by_name('Rarely Used')}
-      3.times {Factory :article_reference, :journal => Journal.find_by_name('Occasionally Used')}
-      4.times {Factory :article_reference, :journal => Journal.find_by_name('Most Used')}
-      0.times {Factory :article_reference, :journal => Journal.find_by_name('Never Used')}
+      2.times {FactoryGirl.create :article_reference, :journal => Journal.find_by_name('Rarely Used')}
+      3.times {FactoryGirl.create :article_reference, :journal => Journal.find_by_name('Occasionally Used')}
+      4.times {FactoryGirl.create :article_reference, :journal => Journal.find_by_name('Most Used')}
+      0.times {FactoryGirl.create :article_reference, :journal => Journal.find_by_name('Never Used')}
 
       Journal.search.should == ['Most Used', 'Occasionally Used', 'Rarely Used', 'Never Used']
     end
