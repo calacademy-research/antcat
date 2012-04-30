@@ -4,20 +4,19 @@ $.fn.nested_form = (options = {}) ->
   this.each -> AntCat.NestedForm $(this), options
 
 class AntCat.NestedForm
-  constructor: ($element, @options = {}) -> @initialize $element
+  constructor: ($element, @options = {}) ->
+    @options.button_container or= '> .buttons'
+    @initialize $element
 
   initialize: ($element) =>
     self = @
     @element = $element
     @element
       .addClass('nested_form')
-      .find('button.submit')
-        .button()
-        .click(-> self.submit this)
-        .end()
-      .find('button.cancel')
-        .button()
-        .click(@cancel)
+      .find(@options.button_container)
+        .find(':button').button().end()
+        .find(':button.submit').click(-> self.submit this).end()
+        .find(':button.cancel').click(@cancel).end()
         .end()
 
   open: =>
