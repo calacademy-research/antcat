@@ -51,9 +51,3 @@ Then /^I should (not )?see the tribes index$/ do |should_not|
   selector = should_not ? :should_not : :should
   page.send selector, have_css('.index .tribes')
 end
-
-When /^I save the current reference form$/ do
-  within ".current_reference div.edit" do
-    step %{I press "Save"}
-  end
-end
