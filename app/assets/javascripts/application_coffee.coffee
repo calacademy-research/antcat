@@ -42,3 +42,8 @@ setup_reference_keys = ->
       .closest('.reference_key_and_expansion')
       .find('.reference_key, .reference_key_expansion')
       .toggle()
+
+# find just the topmost elements that match - don't drill down into them
+$.fn.find_topmost = ->
+  self = @
+  @filter -> not self.is $(this).parents()
