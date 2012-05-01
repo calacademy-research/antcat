@@ -1,7 +1,7 @@
 window.AntCat or= {}
 
 $.fn.nested_form = (options = {}) ->
-  this.each -> AntCat.NestedForm $(this), options
+  this.each -> new AntCat.NestedForm $(this), options
 
 class AntCat.NestedForm
   constructor: ($element, @options = {}) ->
