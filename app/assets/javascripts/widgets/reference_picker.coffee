@@ -52,6 +52,7 @@ class AntCat.ReferencePicker
     @search_form = @element.find '> .search_form'
     @search_selector = @element.find '.search_selector'
     @textbox = @element.find '.q'
+    @search_results = @element.find '.search_results'
 
     @setup_search()
     @setup_references()
@@ -162,13 +163,15 @@ class AntCat.ReferencePicker
           on_form_close: @on_reference_form_close
           on_form_done: @on_reference_form_done)
         .end()
-      .find(".search_results .reference_#{@current_reference_id} div.display")
+
+    @search_results
+      .find(".reference_#{@current_reference_id} div.display")
         .addClass('ui-selected')
         .end()
-      .find('.search_results')
-        .selectable('destroy')
-        .selectable(filter: 'div.display', stop: @handle_new_selection, cancel: '.icons, div.edit')
-        .end()
+
+    @search_results.find(".reference_#{@current_reference_id} div.display")
+      .selectable('destroy')
+      .selectable(filter: 'div.display', stop: @handle_new_selection, cancel: '.icons, div.edit')
 
   on_reference_form_open: => @disable_search_controls()
   on_reference_form_close: => @enable_search_controls()
@@ -198,7 +201,7 @@ class AntCat.ReferencePicker
     @update_help_banner()
 
   selected_reference: =>
-    results = @element.find '.search_results div.display.ui-selected'
+    results = @search_results.find 'div.display.ui-selected'
     return if results.length is 0
     results.closest '.reference'
 
@@ -263,7 +266,7 @@ class AntCat.ReferencePicker
   # -----------------------------------------
   update_help_banner: =>
     verb = if @original_reference_id then 'use' else 'insert'
-    any_search_results = @element.find('.search_results .reference').length > 0
+    any_search_results = @search_results.find('.reference').length > 0
     if @current_reference()
       if any_search_results
         other_verb = 'choose'
