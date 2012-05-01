@@ -1,5 +1,5 @@
 $.fn.reference_panel = (options = {}) ->
-  return this.each -> new AntCat.ReferencePanel $(this), options
+  this.each -> new AntCat.ReferencePanel $(this), options
 
 class AntCat.ReferencePanel extends AntCat.Panel
   constructor: ->
