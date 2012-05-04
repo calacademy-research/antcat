@@ -2,7 +2,7 @@
 class Importers::Bolton::Catalog::Species::DeepSpeciesImporter < Importers::Bolton::Catalog::Importer
 
   def initialize options = {}
-    @options = options.reverse_merge :show_progress => false
+    @options = options.reverse_merge show_progress: false
     @continue_after_parse_error = true
     @return_blank_lines = true
     super @options[:show_progress]
