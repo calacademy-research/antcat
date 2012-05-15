@@ -45,12 +45,13 @@ class Progress
     display '.'
   end
 
-  def self.log object, prefix = nil
+  def self.log object, prefix = nil, display = false
     string = format_object object
     string = prefix + ': ' + string if prefix
     string = string[0..-2] if string[-1] == "\n"
     @logger.info string if @logger
     Rails.logger.info string
+    puts string if display
   end
 
   def self.info object
@@ -62,7 +63,7 @@ class Progress
   end
 
   def self.error object
-    log object, "ERROR"
+    log object, "ERROR", true
   end
 
   #################################################################################
