@@ -1,0 +1,110 @@
+/* line 6, sass/authors.sass */
+#page_contents {
+  padding-left: 6px;
+}
+
+/* line 9, sass/authors.sass */
+.panel {
+  border: thin solid black;
+  width: 48%;
+  background: #c9fdc9;
+  margin: 4px;
+  margin-bottom: 8px;
+}
+
+/* line 16, sass/authors.sass */
+.merge {
+  text-align: center;
+  width: 96%;
+  padding: 8px;
+  border-bottom: thin solid black;
+}
+/* line 20, sass/authors.sass */
+.merge form {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+/* line 23, sass/authors.sass */
+.merge form input {
+  font-size: 14px;
+}
+/* line 26, sass/authors.sass */
+.merge .help {
+  padding-top: 6px;
+  text-align: left;
+  font-size: 12px;
+  line-height: 12px;
+  font-style: italic;
+}
+/* line 32, sass/authors.sass */
+.merge .help .name {
+  font-size: 12px;
+  font-weight: bold;
+  font-style: normal;
+}
+
+/* line 37, sass/authors.sass */
+.author_panel {
+  float: left;
+}
+/* line 40, sass/authors.sass */
+.author_panel.blank {
+  width: 48%;
+}
+/* line 43, sass/authors.sass */
+.author_panel.half_width {
+  width: 48%;
+}
+/* line 46, sass/authors.sass */
+.author_panel .search {
+  padding: 4px;
+}
+/* line 49, sass/authors.sass */
+.author_panel .search .close_link {
+  font-size: 11px;
+}
+/* line 52, sass/authors.sass */
+.author_panel .search_results {
+  background: white;
+  padding: 4px;
+  border-top: thin solid black;
+}
+/* line 57, sass/authors.sass */
+.author_panel .search_results .none {
+  font-size: 12px;
+}
+/* line 63, sass/authors.sass */
+.author_panel .search_results .author .author_name .name {
+  padding-bottom: 2px;
+  font-weight: bold;
+}
+/* line 66, sass/authors.sass */
+.author_panel .search_results .author .author_name .name .count {
+  font-weight: normal;
+  font-size: 12px;
+  font-style: italic;
+  margin-left: 6px;
+}
+/* line 72, sass/authors.sass */
+.author_panel .search_results .author .author_name .references {
+  border: thin solid grey;
+  padding: 2px;
+  margin-bottom: 4px;
+  max-height: 100px;
+  overflow: auto;
+}
+/* line 79, sass/authors.sass */
+.author_panel .search_results .author .author_name .references .reference {
+  line-height: 11px;
+  text-indent: -6px;
+  margin-left: 6px;
+}
+/* line 83, sass/authors.sass */
+.author_panel .search_results .author .author_name .references .reference a {
+  font-size: 11px;
+  line-height: 11px;
+}
+/* line 86, sass/authors.sass */
+.author_panel .search_results .author .author_name .references .reference a .genus_or_species {
+  font-size: 11px;
+}
