@@ -1,0 +1,231 @@
+/* line 3, sass/bolton_references.sass */
+table, tr, td, tbody {
+  margin-top: -1px;
+  margin-bottom: -1px;
+  padding: 0px;
+  border: 0;
+  line-height: 1em;
+}
+
+/* line 10, sass/bolton_references.sass */
+#navigation_bar {
+  height: 33px;
+}
+/* line 12, sass/bolton_references.sass */
+#navigation_bar .search input[type=text] {
+  height: 17px;
+}
+
+/* line 15, sass/bolton_references.sass */
+label {
+  margin-left: -8px;
+}
+
+/* line 18, sass/bolton_references.sass */
+.search {
+  margin-top: 3px;
+}
+
+/* line 21, sass/bolton_references.sass */
+.search_item {
+  padding-left: 6px;
+  line-height: 21px;
+}
+
+/* line 34, sass/bolton_references.sass */
+#container {
+  margin-top: 6px;
+}
+
+/* line 37, sass/bolton_references.sass */
+.manual {
+  background: #67f967;
+}
+
+/* line 39, sass/bolton_references.sass */
+.auto {
+  background: #c9fdc9;
+}
+
+/* line 41, sass/bolton_references.sass */
+.none {
+  background: #ffc5ce;
+}
+
+/* line 43, sass/bolton_references.sass */
+.unmatchable {
+  background: #ff8396;
+}
+
+/* line 46, sass/bolton_references.sass */
+.bolton_reference {
+  overflow: hidden;
+  *zoom: 1;
+  border: 1px black solid;
+  margin-bottom: 10px;
+}
+/* line 51, sass/bolton_references.sass */
+.bolton_reference .header {
+  display: inline;
+  float: left;
+  margin-right: 10px;
+  width: 1030px;
+  padding: 5px;
+  border-bottom: 1px black solid;
+}
+/* line 147, ../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.11.7/frameworks/blueprint/stylesheets/blueprint/_grid.scss */
+* html .bolton_reference .header {
+  overflow-x: hidden;
+}
+/* line 56, sass/bolton_references.sass */
+.bolton_reference .margin {
+  display: inline;
+  float: left;
+  margin-right: 10px;
+  width: 110px;
+  min-height: 1px;
+}
+/* line 147, ../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.11.7/frameworks/blueprint/stylesheets/blueprint/_grid.scss */
+* html .bolton_reference .margin {
+  overflow-x: hidden;
+}
+/* line 59, sass/bolton_references.sass */
+.bolton_reference .details {
+  display: inline;
+  float: left;
+  margin-right: 0;
+  width: 910px;
+}
+/* line 147, ../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.11.7/frameworks/blueprint/stylesheets/blueprint/_grid.scss */
+* html .bolton_reference .details {
+  overflow-x: hidden;
+}
+/* line 61, sass/bolton_references.sass */
+.bolton_reference .fields {
+  display: inline;
+  float: left;
+  margin-right: 10px;
+  width: 910px;
+}
+/* line 147, ../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.11.7/frameworks/blueprint/stylesheets/blueprint/_grid.scss */
+* html .bolton_reference .fields {
+  overflow-x: hidden;
+}
+/* line 64, sass/bolton_references.sass */
+.bolton_reference .authors {
+  display: inline;
+  float: left;
+  margin-right: 10px;
+  width: 150px;
+}
+/* line 147, ../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.11.7/frameworks/blueprint/stylesheets/blueprint/_grid.scss */
+* html .bolton_reference .authors {
+  overflow-x: hidden;
+}
+/* line 66, sass/bolton_references.sass */
+.bolton_reference .citation_year {
+  display: inline;
+  float: left;
+  margin-right: 10px;
+  width: 110px;
+}
+/* line 147, ../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.11.7/frameworks/blueprint/stylesheets/blueprint/_grid.scss */
+* html .bolton_reference .citation_year {
+  overflow-x: hidden;
+}
+/* line 68, sass/bolton_references.sass */
+.bolton_reference .series_volume_issue {
+  display: inline;
+  float: left;
+  margin-right: 10px;
+  width: 70px;
+}
+/* line 147, ../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.11.7/frameworks/blueprint/stylesheets/blueprint/_grid.scss */
+* html .bolton_reference .series_volume_issue {
+  overflow-x: hidden;
+}
+/* line 70, sass/bolton_references.sass */
+.bolton_reference .pagination_field {
+  display: inline;
+  float: left;
+  margin-right: 10px;
+  width: 110px;
+}
+/* line 147, ../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.11.7/frameworks/blueprint/stylesheets/blueprint/_grid.scss */
+* html .bolton_reference .pagination_field {
+  overflow-x: hidden;
+}
+/* line 72, sass/bolton_references.sass */
+.bolton_reference .reference_type {
+  display: inline;
+  float: left;
+  margin-right: 10px;
+  width: 150px;
+}
+/* line 147, ../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.11.7/frameworks/blueprint/stylesheets/blueprint/_grid.scss */
+* html .bolton_reference .reference_type {
+  overflow-x: hidden;
+}
+/* line 74, sass/bolton_references.sass */
+.bolton_reference .id {
+  display: inline;
+  float: left;
+  margin-right: 0;
+  width: 110px;
+}
+/* line 147, ../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.11.7/frameworks/blueprint/stylesheets/blueprint/_grid.scss */
+* html .bolton_reference .id {
+  overflow-x: hidden;
+}
+/* line 77, sass/bolton_references.sass */
+.bolton_reference .title {
+  display: inline;
+  float: left;
+  margin-right: 0;
+  width: 910px;
+}
+/* line 147, ../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.11.7/frameworks/blueprint/stylesheets/blueprint/_grid.scss */
+* html .bolton_reference .title {
+  overflow-x: hidden;
+}
+/* line 80, sass/bolton_references.sass */
+.bolton_reference .matches {
+  display: inline;
+  float: left;
+  margin-right: 0;
+  width: 1030px;
+  background: white;
+}
+/* line 147, ../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.11.7/frameworks/blueprint/stylesheets/blueprint/_grid.scss */
+* html .bolton_reference .matches {
+  overflow-x: hidden;
+}
+/* line 84, sass/bolton_references.sass */
+.bolton_reference .match {
+  display: inline;
+  float: left;
+  margin-right: 0;
+  width: 1030px;
+  border-bottom: 1px black solid;
+  padding: 5px;
+}
+/* line 147, ../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.11.7/frameworks/blueprint/stylesheets/blueprint/_grid.scss */
+* html .bolton_reference .match {
+  overflow-x: hidden;
+}
+/* line 89, sass/bolton_references.sass */
+.bolton_reference .footer {
+  display: inline;
+  float: left;
+  margin-right: 0;
+  width: 1030px;
+  padding: 5px;
+}
+/* line 147, ../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.11.7/frameworks/blueprint/stylesheets/blueprint/_grid.scss */
+* html .bolton_reference .footer {
+  overflow-x: hidden;
+}
+/* line 93, sass/bolton_references.sass */
+.bolton_reference form.button_to > div {
+  text-align: center;
+}

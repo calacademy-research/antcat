@@ -1,0 +1,204 @@
+/* line 3, sass/references.sass */
+#page .title, #page_notice, #page_alert {
+  padding-left: 50px;
+}
+
+/* line 6, sass/references.sass */
+#page_contents {
+  padding-left: 0;
+}
+
+/* line 9, sass/references.sass */
+.pagination {
+  padding: 2px 40px 0 52px;
+}
+
+/* line 12, sass/references.sass */
+.no_results_found {
+  padding: 2px 40px 0 52px;
+  color: red;
+}
+
+/* line 16, sass/references.sass */
+a.source_link {
+  font-size: 0.7em;
+}
+
+/* line 19, sass/references.sass */
+td.reference_item {
+  vertical-align: top;
+}
+
+/* line 23, sass/references.sass */
+.reference_edit .ui-tabs .ui-tabs-nav li {
+  font-weight: normal;
+}
+/* line 25, sass/references.sass */
+.reference_edit .ui-tabs-panel {
+  padding-left: 3px;
+  padding-right: 5px;
+}
+/* line 28, sass/references.sass */
+.reference_edit .ui-tabs .ui-tabs-nav li a {
+  padding: 1px 5px;
+}
+/* line 30, sass/references.sass */
+.reference_edit .ui-widget-header {
+  font-weight: normal;
+  border: none;
+}
+/* line 33, sass/references.sass */
+.reference_edit .ui-widget {
+  font-size: 1em;
+}
+
+/* line 36, sass/references.sass */
+.reference_table {
+  width: 100%;
+}
+
+/* line 39, sass/references.sass */
+.reference_display {
+  color: #4f4f4f;
+}
+/* line 41, sass/references.sass */
+.reference_display.downloadable {
+  color: black;
+}
+
+/* line 44, sass/references.sass */
+.reference.about_to_be_deleted {
+  background-color: lightyellow;
+}
+
+/* line 47, sass/references.sass */
+.reference_template, .reference_template_row {
+  display: none;
+}
+
+/* line 51, sass/references.sass */
+.reference_edit ul.error_messages {
+  margin: 0 0 3px 5px;
+}
+/* line 53, sass/references.sass */
+.reference_edit table {
+  width: 100%;
+}
+/* line 55, sass/references.sass */
+.reference_edit table td {
+  padding: 0 0 3px 0;
+  vertical-align: middle;
+}
+/* line 58, sass/references.sass */
+.reference_edit table td input[type=text], .reference_edit table td textarea {
+  width: 100%;
+}
+/* line 60, sass/references.sass */
+.reference_edit table td.authors {
+  padding-right: 4px;
+}
+/* line 62, sass/references.sass */
+.reference_edit table td input.year {
+  width: 100%;
+}
+/* line 64, sass/references.sass */
+.reference_edit table td input.pages {
+  width: 80px;
+}
+/* line 66, sass/references.sass */
+.reference_edit table td input.series_volume_issue {
+  width: 150px;
+}
+/* line 69, sass/references.sass */
+.reference_edit table td table.small_fields {
+  width: auto;
+}
+/* line 71, sass/references.sass */
+.reference_edit table td table.small_fields td.cite_code {
+  padding-right: 8px;
+}
+/* line 73, sass/references.sass */
+.reference_edit table td table.small_fields td.cite_code input {
+  width: 70px;
+}
+/* line 76, sass/references.sass */
+.reference_edit table td table.small_fields td.possess input {
+  width: 100px;
+}
+/* line 78, sass/references.sass */
+.reference_edit table td table.small_fields td.date {
+  padding-left: 8px;
+}
+/* line 80, sass/references.sass */
+.reference_edit table td table.small_fields td.date input {
+  width: 75px;
+}
+
+/* line 83, sass/references.sass */
+table.reference-fields {
+  width: 800px;
+}
+/* line 85, sass/references.sass */
+table.reference-fields .wide {
+  width: 100%;
+}
+/* line 87, sass/references.sass */
+table.reference-fields .small {
+  width: 100px;
+}
+
+/* line 90, sass/references.sass */
+td.authors {
+  padding-right: 5px;
+}
+
+/* line 93, sass/references.sass */
+.icons {
+  width: 44px;
+  padding-top: 0px;
+  vertical-align: top;
+}
+/* line 98, sass/references.sass */
+.icons a:hover, .icons a:active:hover, .icons a:hover:hover, .icons a:focus:hover, .icons a:visited:hover {
+  background: none;
+}
+
+/* line 101, sass/references.sass */
+.icon {
+  float: left;
+  height: 16px;
+  padding: 0;
+  margin: 0;
+}
+
+/* line 107, sass/references.sass */
+p.notes {
+  margin: 0 20px;
+}
+
+/* line 110, sass/references.sass */
+p.help {
+  margin-top: 5px;
+}
+
+/* line 113, sass/references.sass */
+td.date_header {
+  font-weight: bold;
+}
+
+/* line 116, sass/references.sass */
+td.date {
+  width: 75px;
+  vertical-align: top;
+}
+
+/* line 120, sass/references.sass */
+.search input[type=text]#q {
+  width: 200px;
+}
+
+/* line 123, sass/references.sass */
+.help_icon {
+  vertical-align: middle;
+  margin-left: 3px;
+}

@@ -1,0 +1,11 @@
+/* line 1, sass/ie.sass */
+h2, h3 {
+  padding-bottom: 0;
+}
+
+/* line 5, sass/ie.sass */
+img.help_icon, .search_item {
+  margin-top: -10px;
+  padding-right: 3px;
+  top: -100px;
+}
