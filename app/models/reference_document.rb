@@ -67,4 +67,25 @@ class ReferenceDocument < ActiveRecord::Base
     AWS::S3::S3Object.url_for file.path, file.bucket_name, :expires_in => 10
   end
 
+  def self.upload_antbase_pdf pdf
+    key = File.basename pdf, '.pdf'
+    reference_document = where("url LIKE '%/#{key}.pdf'").first
+    reference_document.upload_antbase_pdf pdf if reference_document
+    reference_document
+  end
+
+  def upload_antbase_pdf pdf
+    return if url =~ /antcat\.org/
+    if !reference
+      puts id
+      return
+    end
+    File.open pdf do |file|
+      self.public = reference.year < 1923
+      self.file = file
+      save!
+      self.host = 'antcat.org'
+    end
+  end
+
 end
