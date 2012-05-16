@@ -51,7 +51,7 @@ class Progress
     string = string[0..-2] if string[-1] == "\n"
     @logger.info string if @logger
     Rails.logger.info string
-    puts string if display
+    display string if display
   end
 
   def self.info object
