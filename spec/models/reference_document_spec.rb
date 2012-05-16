@@ -112,4 +112,40 @@ describe ReferenceDocument do
 
   end
 
+  describe "uploading PDFs from antbase" do
+    it "should find the document and tell it to upload" do
+      document = FactoryGirl.create :reference_document
+      ReferenceDocument.should_receive(:where).and_return [document]
+      document.should_receive(:upload_antbase_pdf).with('1488.pdf')
+      ReferenceDocument.upload_antbase_pdf '1488.pdf'
+    end
+    it "should do somezing" do
+      document = FactoryGirl.create :reference_document, reference: FactoryGirl.create(:reference)
+      File.should_receive(:open).with('1488.pdf')
+      document.upload_antbase_pdf '1488.pdf'
+    end
+    it "should not upload the file if it's already been uploaded" do
+      document = FactoryGirl.create :reference_document
+      document.url = "http://antcat.org/documents/#{document.reference_id}/1488.pdf"
+      document.should_not_receive(:save!)
+      document.upload_antbase_pdf '1488.pdf'
+    end
+    it "should mark the file as public if published in 1923 or later" do
+      public_reference = FactoryGirl.create :book_reference, citation_year: '1922'
+      public_document = FactoryGirl.create :reference_document, reference: public_reference
+      file = mock
+      File.should_receive(:open).with('1488.pdf').and_yield file
+      public_document.should_receive(:public=).with true
+      public_document.upload_antbase_pdf '1488.pdf'
+    end
+    it "should mark the file as public if published in 1923 or later" do
+      nonpublic_reference = FactoryGirl.create :book_reference, citation_year: '1923'
+      nonpublic_document = FactoryGirl.create :reference_document, reference: nonpublic_reference
+      file = mock
+      File.should_receive(:open).with('1488.pdf').and_yield file
+      nonpublic_document.should_receive(:public=).with false
+      nonpublic_document.upload_antbase_pdf '1488.pdf'
+    end
+  end
+
 end
