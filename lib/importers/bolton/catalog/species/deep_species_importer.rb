@@ -6,36 +6,65 @@ class Importers::Bolton::Catalog::Species::DeepSpeciesImporter < Importers::Bolt
     @continue_after_parse_error = true
     @return_blank_lines = false
     super @options[:show_progress]
+    Progress.show_errors
   end
 
   def import
-    @error_count = @non_species_count = @success_count = 0
+    @genus_count =
+      @genus_not_found_count =
+      @duplicate_genera_that_need_resolving_count =
+    @species_count =
+    @error_count =
+    @ignored_count =
+    0
 
     while @line
       case @type
+
       when :not_understood
         @error_count += 1
-      when :catalog_header, :genus_see_under, :genus_header, :species_see_under, :blank_line, :note
-        @non_species_count += 1
-      when :species_record, :subspecies_record
-        @success_count += 1
-      else
-        raise "Unexpected type: #{@type}"
-      end
 
-      if @error_count + @non_species_count + @success_count != Progress.processed_count
-        pp @parse_result
-        raise "Totals don't match"
+      when :catalog_header, :genus_see_under, :species_see_under, :note
+        @ignored_count += 1
+
+      when :genus_header
+        @genus_count += 1
+        @genus = nil
+        matching_genus_names = Genus.where name: @parse_result[:name]
+        if matching_genus_names.empty?
+          Progress.error "Genus '#{@parse_result[:name]}' did not exist"
+          @genus_not_found_count += 1
+        elsif matching_genus_names.size > 1
+          Progress.error "More than one genus '#{@parse_result[:name]}'"
+          @duplicate_genera_that_need_resolving_count += 1
+        else
+          @genus = matching_genus_names.first
+        end
+
+      when :species_record
+        if @genus
+          species = ::Species.create! name: @parse_result[:species_group_epithet],
+                                      fossil: @parse_result[:fossil] || false,
+                                      status: @parse_result[:status] || 'valid',
+                                      genus: @genus
+          @species_count += 1
+        else Progress.error "Species with no active genus: #{@line}"
+        end
+
+      else raise "Unexpected type: #{@type}"
       end
 
       parse_next_line
     end
 
     Progress.show_results
-    species_lines = Progress.processed_count - @non_species_count
-    Progress.puts "#{species_lines} total species lines"
-    Progress.show_count @success_count, species_lines, "species lines parsed"
-    Progress.show_count @error_count, Progress.processed_count, "errors"
+    unignored_lines_count = Progress.processed_count - @ignored_count
+    Progress.puts "#{unignored_lines_count} lines"
+    Progress.puts "#{@genus_count} genera"
+    Progress.puts "#{@species_count} species"
+    Progress.puts "#{@genus_not_found_count} genera not found"
+    Progress.puts "#{@duplicate_genera_that_need_resolving_count} duplicate genera that need resolving"
+    Progress.puts "#{@error_count} could not understand"
   end
 
   def grammar
