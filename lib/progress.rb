@@ -15,10 +15,15 @@ class Progress
 
   def self.new_init options = {}
     @show_progress = options[:show_progress]
+    @show_errors = options[:show_errors]
     @start = Time.now
     @processed_count = 0
     @total_count = options[:total_count]
     open_log options[:log_file_name], options[:append_to_log_file], options[:log_file_directory]
+  end
+
+  def self.show_errors
+    @show_errors = true
   end
 
   #################################################################################
@@ -63,7 +68,7 @@ class Progress
   end
 
   def self.error object
-    log object, "ERROR", true
+    log object, "ERROR", @show_errors
   end
 
   #################################################################################
