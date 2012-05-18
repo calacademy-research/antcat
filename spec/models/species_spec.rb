@@ -160,4 +160,40 @@ describe Species do
     end
   end
 
+  describe "Importing" do
+
+    it "should work" do
+      #subfamily = FactoryGirl.create :subfamily
+      genus = FactoryGirl.create :genus
+      #reference = FactoryGirl.create :article_reference, :bolton_key_cache => 'Latreille 1809'
+      species = Species.import(
+        #subfamily: subfamily,
+        genus: genus,
+        name: 'major',
+        fossil: true,
+        #protonym: {genus_name: "Atta",
+                   #authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]},
+        #type_species: {genus_name: 'Atta', species_epithet: 'major',
+                          #texts: [{text: [{phrase: ', by monotypy'}]}]},
+        #taxonomic_history: ["Atta as genus", "Atta as species"]
+      ).reload
+      species.name.should == 'major'
+      species.should_not be_invalid
+      species.should be_fossil
+      species.genus.should == genus
+      #genus.subfamily.should == subfamily
+      #genus.taxonomic_history_items.map(&:taxt).should == ['Atta as genus', 'Atta as species']
+      #genus.type_taxon_taxt.should == ', by monotypy'
+
+      #protonym = genus.protonym
+      #protonym.name.should == 'Atta'
+
+      #authorship = protonym.authorship
+      #authorship.pages.should == '124'
+
+      #authorship.reference.should == reference
+    end
+
+  end
+
 end
