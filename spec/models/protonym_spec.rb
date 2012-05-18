@@ -10,7 +10,7 @@ describe Protonym do
   end
 
   describe "Importing" do
-  before do @reference = FactoryGirl.create :article_reference, bolton_key_cache: 'Latreille 1809' end
+    before do @reference = FactoryGirl.create :article_reference, bolton_key_cache: 'Latreille 1809' end
 
     it "should create the Protonym and the Citation, which is linked to an existing Reference" do
       data = {
@@ -48,6 +48,15 @@ describe Protonym do
 
       protonym.rank.should == 'subgenus'
       protonym.name.should == 'Aneuretini'
+      protonym.authorship.pages.should == '124'
+      protonym.authorship.reference.should == @reference
+    end
+
+    it "should handle a species protonym" do
+      data = {genus_name: "Heteromyrmex", species_epithet: 'atopogaster', authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]}
+      protonym = Protonym.import(data).reload
+      protonym.rank.should == 'species'
+      protonym.name.should == 'Heteromyrmex atopogaster'
       protonym.authorship.pages.should == '124'
       protonym.authorship.reference.should == @reference
     end
