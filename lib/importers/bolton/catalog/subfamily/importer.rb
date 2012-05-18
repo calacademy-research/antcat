@@ -100,7 +100,12 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
         parse_next_line
         convert_ponerites_headline_to_text
         break unless @type == :texts
-        parsed_taxonomic_history << Importers::Bolton::Catalog::TextToTaxt.convert(@parse_result[:texts])
+        item = Importers::Bolton::Catalog::TextToTaxt.convert(@parse_result[:texts])
+        if item.present?
+          parsed_taxonomic_history << item if item.present?
+        else
+          Progress.error "Blank taxonomic history item: #{@line}"
+        end
       end
     end
     parsed_taxonomic_history
