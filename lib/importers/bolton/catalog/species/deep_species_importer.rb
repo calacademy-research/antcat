@@ -2,6 +2,8 @@
 class Importers::Bolton::Catalog::Species::DeepSpeciesImporter < Importers::Bolton::Catalog::Importer
 
   def initialize options = {}
+    ::Species.delete_all
+    ::Subspecies.delete_all
     @options = options.reverse_merge show_progress: false
     @continue_after_parse_error = true
     @return_blank_lines = false
@@ -47,6 +49,7 @@ class Importers::Bolton::Catalog::Species::DeepSpeciesImporter < Importers::Bolt
                                       fossil: @parse_result[:fossil] || false,
                                       status: @parse_result[:status] || 'valid',
                                       genus: @genus
+          raise if species.reload.invalid?
           @species_count += 1
         else Progress.error "Species with no active genus: #{@line}"
         end
