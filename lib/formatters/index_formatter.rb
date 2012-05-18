@@ -5,6 +5,7 @@ module Formatters::IndexFormatter
   def x_format_protonym_name name, rank, is_fossil
     classes = ['name', 'taxon']
     classes << 'genus' if rank == 'genus'
+    classes << 'species' if rank == 'species'
     classes << 'subfamily' if rank == 'family_or_subfamily'
     content_tag :span, class: classes.sort.join(' ') do
       name_label name, is_fossil
@@ -50,10 +51,16 @@ module Formatters::IndexFormatter
 
   #######################
   def format_headline taxon, user
-    string = format_headline_protonym(taxon.protonym, user) + ' ' + format_headline_type(taxon, user)
+    string = format_headline_epithet taxon
+    string << format_headline_protonym(taxon.protonym, user) + ' ' + format_headline_type(taxon, user)
     headline_notes = format_headline_notes taxon, user
     string << ' ' << headline_notes if headline_notes
     string
+  end
+
+  def format_headline_epithet taxon
+    return ''.html_safe unless taxon.kind_of? Species
+    content_tag :span, "#{taxon.name}. ".html_safe, class: 'epithet'
   end
 
   def format_headline_protonym protonym, user
