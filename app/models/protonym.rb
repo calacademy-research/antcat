@@ -10,6 +10,9 @@ class Protonym < ActiveRecord::Base
       when data[:family_or_subfamily_name]
         name = data[:family_or_subfamily_name]
         rank = 'family_or_subfamily'
+      when data[:species_epithet]
+        name = data[:genus_name] + ' ' + data[:species_epithet]
+        rank = 'species'
       when data[:genus_name]
         name = data[:genus_name]
         rank = 'genus'
