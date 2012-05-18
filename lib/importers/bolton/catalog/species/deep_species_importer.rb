@@ -8,7 +8,7 @@ class Importers::Bolton::Catalog::Species::DeepSpeciesImporter < Importers::Bolt
     @continue_after_parse_error = true
     @return_blank_lines = false
     super @options[:show_progress]
-    Progress.show_errors
+    Progress.total_count = 25870
   end
 
   def import
