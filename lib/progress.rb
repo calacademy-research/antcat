@@ -16,14 +16,18 @@ class Progress
   def self.new_init options = {}
     @show_progress = options[:show_progress]
     @show_errors = options[:show_errors]
+    @total_count = options[:total_count]
     @start = Time.now
     @processed_count = 0
-    @total_count = options[:total_count]
     open_log options[:log_file_name], options[:append_to_log_file], options[:log_file_directory]
   end
 
   def self.show_errors
     @show_errors = true
+  end
+
+  def self.total_count= value
+    @total_count = value
   end
 
   #################################################################################
@@ -130,18 +134,14 @@ class Progress
     @processed_count
   end
 
-  def self.total_count
-    @total_count
-  end
-
   def self.show_progress increment = nil
     return unless increment.nil? or processed_count % increment == 0
     puts progress_message
   end
 
   def self.progress_message
-    if total_count
-      count = "#{processed_count}/#{total_count}".rjust(12)
+    if @total_count
+      count = "#{processed_count}/#{@total_count}".rjust(12)
       rate = self.rate.rjust(10)
       time_left = self.time_left.rjust(11)
       "#{count} #{rate} #{time_left}"
