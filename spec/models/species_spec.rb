@@ -165,15 +165,14 @@ describe Species do
     it "should work" do
       subfamily = FactoryGirl.create :subfamily
       genus = FactoryGirl.create :genus, subfamily: subfamily
-      #reference = FactoryGirl.create :article_reference, :bolton_key_cache => 'Latreille 1809'
+      reference = FactoryGirl.create :article_reference, :bolton_key_cache => 'Latreille 1809'
+
       species = Species.import(
         genus: genus,
         name: 'major',
         fossil: true,
-        #protonym: {genus_name: "Atta",
-                   #authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]},
-        #type_species: {genus_name: 'Atta', species_epithet: 'major',
-                          #texts: [{text: [{phrase: ', by monotypy'}]}]},
+        protonym: {genus_name: "Atta", species_epithet: 'major',
+                   authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]},
         #taxonomic_history: ["Atta as genus", "Atta as species"]
       ).reload
       species.name.should == 'major'
@@ -184,13 +183,13 @@ describe Species do
       #genus.taxonomic_history_items.map(&:taxt).should == ['Atta as genus', 'Atta as species']
       #genus.type_taxon_taxt.should == ', by monotypy'
 
-      #protonym = genus.protonym
-      #protonym.name.should == 'Atta'
+      protonym = species.protonym
+      protonym.name.should == 'Atta major'
 
-      #authorship = protonym.authorship
-      #authorship.pages.should == '124'
+      authorship = protonym.authorship
+      authorship.pages.should == '124'
 
-      #authorship.reference.should == reference
+      authorship.reference.should == reference
     end
 
   end
