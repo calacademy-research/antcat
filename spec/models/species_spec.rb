@@ -163,11 +163,10 @@ describe Species do
   describe "Importing" do
 
     it "should work" do
-      #subfamily = FactoryGirl.create :subfamily
-      genus = FactoryGirl.create :genus
+      subfamily = FactoryGirl.create :subfamily
+      genus = FactoryGirl.create :genus, subfamily: subfamily
       #reference = FactoryGirl.create :article_reference, :bolton_key_cache => 'Latreille 1809'
       species = Species.import(
-        #subfamily: subfamily,
         genus: genus,
         name: 'major',
         fossil: true,
@@ -181,7 +180,7 @@ describe Species do
       species.should_not be_invalid
       species.should be_fossil
       species.genus.should == genus
-      #genus.subfamily.should == subfamily
+      species.subfamily.should == subfamily
       #genus.taxonomic_history_items.map(&:taxt).should == ['Atta as genus', 'Atta as species']
       #genus.type_taxon_taxt.should == ', by monotypy'
 

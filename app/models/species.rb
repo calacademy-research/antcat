@@ -36,7 +36,6 @@ class Species < Taxon
 
       #headline_notes_taxt = Importers::Bolton::Catalog::TextToTaxt.convert(data[:note])
       attributes = {
-        #subfamily: data[:subfamily],
         #tribe: data[:tribe],
         genus: data[:genus],
         name: data[:name],
