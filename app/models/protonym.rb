@@ -4,7 +4,7 @@ class Protonym < ActiveRecord::Base
 
   def self.import data
     transaction do
-      authorship = Citation.import data[:authorship].first
+      authorship = Citation.import data[:authorship].first if data[:authorship]
 
       case 
       when data[:family_or_subfamily_name]
