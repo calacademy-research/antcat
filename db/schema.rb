@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120519171304) do
+ActiveRecord::Schema.define(:version => 20120519173337) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -68,6 +68,7 @@ ActiveRecord::Schema.define(:version => 20120519171304) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "notes_taxt"
+    t.string   "forms"
   end
 
   add_index "citations", ["reference_id"], :name => "index_authorships_on_reference_id"

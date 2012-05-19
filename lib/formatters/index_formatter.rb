@@ -32,7 +32,7 @@ module Formatters::IndexFormatter
     return '' unless protonym
     string = format_protonym_name protonym
     string << ' ' << format_headline_authorship(protonym.authorship, user)
-    string << ' ' << protonym.locality << '.' if protonym.locality
+    string << ' ' << protonym.locality.upcase << '.' if protonym.locality
     string
   end
 
@@ -49,8 +49,8 @@ module Formatters::IndexFormatter
   def format_headline_authorship authorship, user
     return '' unless authorship
     string = authorship.reference.key.to_link(user) + ": #{authorship.pages}"
-    string << Taxt.to_string(authorship.notes_taxt, user)
-    string << '.'
+    string << " (#{authorship.forms})" if authorship.forms
+    string << ' ' << Taxt.to_string(authorship.notes_taxt, user) if authorship.notes_taxt
     content_tag :span, string, class: :authorship
   end
 

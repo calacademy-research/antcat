@@ -18,7 +18,7 @@ describe Protonym do
         sic: true,
         fossil: true,
         locality: 'U.S.A.',
-        authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}],
+        authorship: [{author_names: ["Latreille"], year: "1809", pages: "124", forms: 'w.q.'}],
       }
 
       protonym = Protonym.import(data).reload
@@ -27,6 +27,7 @@ describe Protonym do
       protonym.name.should == 'Formicariae'
       protonym.authorship.pages.should == '124'
       protonym.authorship.reference.should == @reference
+      protonym.authorship.forms.should == 'w.q.'
       protonym.fossil.should be_true
       protonym.sic.should be_true
       protonym.locality.should == 'U.S.A.'
