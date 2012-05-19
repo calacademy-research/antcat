@@ -13,12 +13,13 @@ describe Citation do
 
     it "should create the Citation, which is linked to an existing Reference" do
       reference = FactoryGirl.create :article_reference, :bolton_key_cache => 'Latreille 1809a'
-      data = {:author_names => ["Latreille"], :year => "1809a", :pages => "124"}
+      data = {author_names: ['Latreille'], year: '1809a', pages: '124', forms: 'w.q.'}
 
       citation = Citation.import(data).reload
 
       citation.pages.should == '124'
       citation.reference.should == reference
+      citation.forms.should == 'w.q.'
     end
 
     it "should link to a MissingReference, if necessary" do

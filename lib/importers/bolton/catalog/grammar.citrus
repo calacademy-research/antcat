@@ -346,7 +346,7 @@ grammar Importers::Bolton::Catalog::Grammar
   ###############################################################
   rule ref_forms
     (('(' ref_form_components ')') | no_caste_given:'no caste given') {
-      ref_form_components && ref_form_components != '' ? ref_form_components : no_caste_given
+      (ref_form_components && ref_form_components != '' ? ref_form_components : no_caste_given).to_s
     }
   end
 
