@@ -34,21 +34,17 @@ class Species < Taxon
     transaction do
       protonym = Protonym.import data[:protonym] if data[:protonym]
 
-      #headline_notes_taxt = Importers::Bolton::Catalog::TextToTaxt.convert(data[:note])
       attributes = {
-        #tribe: data[:tribe],
         genus: data[:genus],
         name: data[:name],
         fossil: data[:fossil] || false,
         status: data[:status] || 'valid',
-        #synonym_of: data[:synonym_of],
         protonym: protonym,
-        #headline_notes_taxt: headline_notes_taxt,
       }
       species = create! attributes
-      #data[:taxonomic_history].each do |item|
-        #genus.taxonomic_history_items.create! taxt: item
-      #end
+      data[:history].each do |item|
+        species.taxonomic_history_items.create! taxt: item
+      end
 
       species
     end
