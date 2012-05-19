@@ -2,33 +2,6 @@
 module Formatters::IndexFormatter
   include Formatters::Formatter
 
-  def x_format_protonym_name name, rank, is_fossil
-    classes = ['name', 'taxon']
-    classes << 'genus' if rank == 'genus'
-    classes << 'species' if rank == 'species'
-    classes << 'subfamily' if rank == 'family_or_subfamily'
-    content_tag :span, class: classes.sort.join(' ') do
-      name_label name, is_fossil
-    end
-  end
-
-  def x_format_headline_authorship authorship, user
-    string = authorship.reference.key.to_link(user) + ": #{authorship.pages}"
-    string << Taxt.to_string(authorship.notes_taxt, user)
-    string << '.'
-    content_tag :span, string, class: :authorship
-  end
-
-  def x_format_headline_type_name taxon
-    rank = taxon.type_taxon_rank
-    rank = 'genus' if rank == 'subgenus'
-    content_tag(:span, taxon.type_taxon_name.html_safe, class: "#{rank} taxon")
-  end
-
-  def x_css_classes_for_taxon taxon
-    "name taxon #{taxon.rank}"
-  end
-
   #######################
   def format_header_name taxon
     taxon.full_name
@@ -66,12 +39,21 @@ module Formatters::IndexFormatter
   end
 
   def format_protonym_name protonym
-    string = x_format_protonym_name protonym.name, protonym.rank, protonym.fossil
+    classes = ['name', 'taxon']
+    classes << 'genus' if protonym.rank == 'genus'
+    classes << 'species' if protonym.rank == 'species'
+    classes << 'subfamily' if protonym.rank == 'family_or_subfamily'
+    content_tag :span, class: classes.sort.join(' ') do
+      name_label protonym.name, protonym.fossil
+    end
   end
 
   def format_headline_authorship authorship, user
     return '' unless authorship
-    contents = x_format_headline_authorship authorship, user
+    string = authorship.reference.key.to_link(user) + ": #{authorship.pages}"
+    string << Taxt.to_string(authorship.notes_taxt, user)
+    string << '.'
+    content_tag :span, string, class: :authorship
   end
 
   def format_headline_type taxon, user
@@ -87,7 +69,9 @@ module Formatters::IndexFormatter
   end
 
   def format_headline_type_name taxon
-    x_format_headline_type_name taxon
+    rank = taxon.type_taxon_rank
+    rank = 'genus' if rank == 'subgenus'
+    content_tag :span, taxon.type_taxon_name.html_safe, class: "#{rank} taxon"
   end
   
   def format_headline_type_taxt taxt, user

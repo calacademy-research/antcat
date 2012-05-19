@@ -2,7 +2,7 @@
 .antcat_taxon
 
   .header
-    %span{class: Formatters::CatalogFormatter.x_css_classes_for_taxon(taxon)}= Formatters::CatalogFormatter.format_header_name taxon
+    %span{class: Formatters::CatalogFormatter.css_classes_for_rank(taxon)}= Formatters::CatalogFormatter.format_header_name taxon
     %span.status= Formatters::CatalogFormatter.format_status taxon
 
   .statistics= Formatters::CatalogFormatter.format_taxon_statistics taxon
