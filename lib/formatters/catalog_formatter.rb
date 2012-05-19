@@ -35,7 +35,7 @@ class Formatters::CatalogFormatter
   end
 
   def self.css_classes_for_rank taxon
-    [taxon.type.downcase, 'taxon']
+    [taxon.type.downcase, 'taxon', 'name']
   end
 
   def self.fossil name, is_fossil
@@ -51,7 +51,7 @@ class Formatters::CatalogFormatter
 
   # deprecated
   def self.taxon_label_and_css_classes taxon, options = {}
-    {:label => taxon_label(taxon, options), :css_classes => taxon_css_classes(taxon, options)}
+    {label: taxon_label(taxon, options), css_classes: taxon_css_classes(taxon, options)}
   end
 
 end
