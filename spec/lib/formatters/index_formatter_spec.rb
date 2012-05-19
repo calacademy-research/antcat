@@ -108,22 +108,22 @@ describe Formatters::IndexFormatter do
       it "should format a tribes list" do
         FactoryGirl.create :tribe, name: 'Attini', subfamily: @subfamily
         @formatter.format_child_list(@subfamily, @subfamily.tribes, true).should == 
-%{<div class="child_list"><span class="label">Tribe (extant) of <span class="subfamily taxon">Dolichoderinae</span></span>: <span class="taxon tribe">Attini</span>.</div>}
+%{<div class="child_list"><span class="label">Tribe (extant) of <span class="name subfamily taxon">Dolichoderinae</span></span>: <span class="name taxon tribe">Attini</span>.</div>}
       end
       it "should format a child list, specifying extinctness" do
         FactoryGirl.create :genus, name: 'Atta', subfamily: @subfamily
         @formatter.format_child_list(@subfamily, Genus.all, true).should == 
-%{<div class="child_list"><span class="label">Genus (extant) of <span class="subfamily taxon">Dolichoderinae</span></span>: <span class="genus taxon">Atta</span>.</div>}
+%{<div class="child_list"><span class="label">Genus (extant) of <span class="name subfamily taxon">Dolichoderinae</span></span>: <span class="genus name taxon">Atta</span>.</div>}
       end
       it "should format a genera list, not specifying extinctness" do
         FactoryGirl.create :genus, name: 'Atta', subfamily: @subfamily
         @formatter.format_child_list(@subfamily, Genus.all, false).should == 
-%{<div class="child_list"><span class="label">Genus of <span class="subfamily taxon">Dolichoderinae</span></span>: <span class="genus taxon">Atta</span>.</div>}
+%{<div class="child_list"><span class="label">Genus of <span class="name subfamily taxon">Dolichoderinae</span></span>: <span class="genus name taxon">Atta</span>.</div>}
       end
       it "should format an incertae sedis genera list" do
         genus = FactoryGirl.create :genus, name: 'Atta', subfamily: @subfamily, incertae_sedis_in: 'subfamily'
         @formatter.format_child_list(@subfamily, [genus], false, incertae_sedis_in: 'subfamily').should == 
-%{<div class="child_list"><span class="label">Genus <i>incertae sedis</i> in <span class="subfamily taxon">Dolichoderinae</span></span>: <span class="genus taxon">Atta</span>.</div>}
+%{<div class="child_list"><span class="label">Genus <i>incertae sedis</i> in <span class="name subfamily taxon">Dolichoderinae</span></span>: <span class="genus name taxon">Atta</span>.</div>}
       end
     end
   end
@@ -141,7 +141,7 @@ describe Formatters::IndexFormatter do
       senior_synonym = FactoryGirl.create :genus, name: 'Atta'
       taxon = FactoryGirl.create :genus, status: 'synonym', synonym_of: senior_synonym
       result = @formatter.format_status(taxon)
-      result.should == 'synonym of <span class="genus taxon">Atta</span>'
+      result.should == 'synonym of <span class="genus name taxon">Atta</span>'
       result.should be_html_safe
     end
     it "should show where it is incertae sedis" do
