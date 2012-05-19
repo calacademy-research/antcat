@@ -49,7 +49,8 @@ class Importers::Bolton::Catalog::Species::DeepSpeciesImporter < Importers::Bolt
                                      fossil: @parse_result[:fossil] || false,
                                      status: @parse_result[:status] || 'valid',
                                      genus: @genus,
-                                     protonym: @parse_result[:protonym]
+                                     protonym: @parse_result[:protonym],
+                                     history: @parse_result[:history]
           raise if species.reload.invalid?
           @species_count += 1
         else Progress.error "Species with no active genus: #{@line}"

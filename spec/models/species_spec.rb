@@ -173,7 +173,7 @@ describe Species do
         fossil: true,
         protonym: {genus_name: "Atta", species_epithet: 'major',
                    authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]},
-        #taxonomic_history: ["Atta as genus", "Atta as species"]
+        history: ["Atta as genus", "Atta as species"]
       ).reload
       species.name.should == 'major'
       species.should_not be_invalid

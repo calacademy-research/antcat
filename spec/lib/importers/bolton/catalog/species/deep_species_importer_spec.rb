@@ -9,7 +9,7 @@ describe Importers::Bolton::Catalog::Species::DeepSpeciesImporter do
   it "should link species to existing genera" do
     contents = make_contents %{
 <p><i>ACANTHOMYRMEX</i> (Oriental, Indo-Australian)</p>
-<p><i>basispinosus</i>. <i>Acanthomyrmex basispinosus</i> Moffett, 1986c: 67, figs. 8A, 9-14 (s.w.) INDONESIA (Sulawesi).</p>
+<p><i>basispinosus</i>. <i>Acanthomyrmex basispinosus</i> Moffett, 1986c: 67, figs. 8A, 9-14 (s.w.) INDONESIA (Sulawesi). Combination in <i>Dorylus (Shuckardia)</i>: Emery, 1895j: 740.</p>
     }
     Progress.should_not_receive(:error)
     FactoryGirl.create :genus, name: 'Acanthomyrmex', subfamily: nil, tribe: nil
@@ -24,6 +24,9 @@ describe Importers::Bolton::Catalog::Species::DeepSpeciesImporter do
 
     basispinosus.protonym.locality.should == 'Indonesia (Sulawesi)'
     basispinosus.protonym.authorship.forms.should == 's.w.'
+
+    history = basispinosus.taxonomic_history_items
+    history.size.should == 1
   end
 
   def make_contents content
