@@ -21,6 +21,8 @@ describe Importers::Bolton::Catalog::Species::DeepSpeciesImporter do
     acanthomyrmex.should_not be_nil
     basispinosus = acanthomyrmex.species.find_by_name 'basispinosus'
     basispinosus.genus.should == acanthomyrmex
+
+    basispinosus.protonym.locality.should == 'Indonesia (Sulawesi)'
   end
 
   def make_contents content

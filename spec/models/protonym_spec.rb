@@ -17,6 +17,7 @@ describe Protonym do
         family_or_subfamily_name: "Formicariae",
         sic: true,
         fossil: true,
+        locality: 'U.S.A.',
         authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}],
       }
 
@@ -28,6 +29,7 @@ describe Protonym do
       protonym.authorship.reference.should == @reference
       protonym.fossil.should be_true
       protonym.sic.should be_true
+      protonym.locality.should == 'U.S.A.'
     end
 
     it "should handle a tribe name protonym" do

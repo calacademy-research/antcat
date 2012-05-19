@@ -2,7 +2,6 @@
 module Formatters::IndexFormatter
   include Formatters::Formatter
 
-  #######################
   def format_header_name taxon
     taxon.full_name
   end
@@ -22,7 +21,6 @@ module Formatters::IndexFormatter
     labels.join(', ').html_safe
   end
 
-  #######################
   def format_headline taxon, user
     string = format_headline_protonym(taxon.protonym, user) + ' ' + format_headline_type(taxon, user)
     headline_notes = format_headline_notes taxon, user
@@ -33,8 +31,8 @@ module Formatters::IndexFormatter
   def format_headline_protonym protonym, user
     return '' unless protonym
     string = format_protonym_name protonym
-    string << ' '
-    string << format_headline_authorship(protonym.authorship, user)
+    string << ' ' << format_headline_authorship(protonym.authorship, user)
+    string << ' ' << protonym.locality << '.' if protonym.locality
     string
   end
 

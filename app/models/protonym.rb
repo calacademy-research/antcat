@@ -24,7 +24,12 @@ class Protonym < ActiveRecord::Base
         rank = 'tribe'
       end
 
-      create! name: name, rank: rank, sic: data[:sic], fossil: data[:fossil], authorship: authorship
+      create! name: name,
+              rank: rank,
+              sic: data[:sic],
+              fossil: data[:fossil],
+              authorship: authorship,
+              locality: data[:locality]
 
     end
   end
