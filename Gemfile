@@ -23,7 +23,10 @@ gem 'will_paginate'
 gem 'xml-simple'
 
 group :development, :test do
+  gem 'cucumber-rails'
   gem 'launchy'
+  gem 'rspec'
+  gem 'rspec-rails'
   gem 'ruby-debug19'
   gem 'spork',        '0.9.0.rc9'
   gem 'sunspot_solr'
@@ -36,12 +39,9 @@ end
 
 group :test do
   gem 'capybara'
-  gem 'cucumber-rails'
   gem 'database_cleaner'
   # until can deal with ambiguous step defs in FG 3.0
   gem 'factory_girl_rails', '1.5.0'
-  gem 'rspec' 
-  gem 'rspec-rails' 
   gem 'selenium-webdriver'
   gem 'webmock'
 end
