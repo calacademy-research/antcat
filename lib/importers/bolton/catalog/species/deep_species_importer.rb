@@ -50,7 +50,7 @@ class Importers::Bolton::Catalog::Species::DeepSpeciesImporter < Importers::Bolt
                                      status: @parse_result[:status] || 'valid',
                                      genus: @genus,
                                      protonym: @parse_result[:protonym],
-                                     history: @parse_result[:history]
+                                     history: parse_taxonomic_history(@parse_result[:history])
           raise if species.reload.invalid?
           @species_count += 1
         else Progress.error "Species with no active genus: #{@line}"
@@ -74,6 +74,25 @@ class Importers::Bolton::Catalog::Species::DeepSpeciesImporter < Importers::Bolt
 
   def grammar
     Importers::Bolton::Catalog::Species::DeepSpeciesGrammar
+  end
+
+  def parse_taxonomic_history history
+    Progress.method
+    parsed_taxonomic_history = []
+    #if @type == :taxonomic_history_header
+      #loop do
+        #parse_next_line
+        #convert_ponerites_headline_to_text
+        #break unless @type == :texts
+        #item = Importers::Bolton::Catalog::TextToTaxt.convert(@parse_result[:texts])
+        #if item.present?
+          #parsed_taxonomic_history << item if item.present?
+        #else
+          #Progress.error "Blank taxonomic history item: #{@line}"
+        #end
+      #end
+    #end
+    parsed_taxonomic_history
   end
 
 end

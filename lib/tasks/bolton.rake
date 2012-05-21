@@ -19,7 +19,7 @@ namespace :bolton do
     desc "Import Bolton species catalog documents deeply"
     task 'species:deep' => :environment do
       Importers::Bolton::Catalog::Species::DeepSpeciesImporter.new(show_progress: true).
-        import_files Dir.glob "#{$BOLTON_DATA_DIRECTORY}/NGC-Sp*.htm"
+        import_files Dir.glob "#{$BOLTON_DATA_DIRECTORY}/NGC-Spa-an.htm"
     end
     desc "Import all taxa"
     task taxa: ['bolton:import:subfamilies', 'bolton:import:species:deep']

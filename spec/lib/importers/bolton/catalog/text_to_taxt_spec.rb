@@ -37,12 +37,12 @@ describe Importers::Bolton::Catalog::TextToTaxt do
       @converter.convert(data).should == "{ref #{reference.id}}: 244"
     end
     it "should handle a citation whose reference wasn't found" do
-      data = [{:author_names => ['Latreille'], :year => '1809', :pages => '244', :reference_text => 'Latreill, 1809'}]
+      data = [{:author_names => ['Latreille'], :year => '1809', :pages => '244', :matched_text => 'Latreill, 1809'}]
       @converter.convert(data).should == "{ref #{MissingReference.first.id}}: 244"
     end
     it "should handle a citation whose reference wasn't matched" do
       bolton_reference = FactoryGirl.create :bolton_reference, :authors => 'Latreille', :citation_year => '1809'
-      data = [{:author_names => ['Latreille'], :year => '1809', :pages => '244', :reference_text => 'Latreille, 1809'}]
+      data = [{:author_names => ['Latreille'], :year => '1809', :pages => '244', :matched_text => 'Latreille, 1809'}]
       @converter.convert(data).should == "{ref #{MissingReference.first.id}}: 244"
     end
     it "should handle a nested citation (i.e., without year)" do
@@ -184,7 +184,7 @@ describe Importers::Bolton::Catalog::TextToTaxt do
             year: "1841",
             pages: "400",
             notes: [[{order_name: "Mammalia"}]],
-            reference_text: "Gray, J.E. 1841: 400 (Mammalia)"}],
+            matched_text: "Gray, J.E. 1841: 400 (Mammalia)"}],
         delimiter: "."}]).should ==
           "<i>Diabolus</i> {ref #{reference.id}}: 400 (Mammalia)."
     end

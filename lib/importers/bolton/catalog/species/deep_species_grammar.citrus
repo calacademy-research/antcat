@@ -119,7 +119,7 @@ grammar Importers::Bolton::Catalog::Species::DeepSpeciesGrammar
 
   rule history_item
     (' '? item:(optionally_bracketed_item | references_history_item | text)) {
-      item.value
+      item.value.merge! matched_text: to_s
     }
   end
 
