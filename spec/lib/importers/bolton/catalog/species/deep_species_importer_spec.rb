@@ -43,4 +43,16 @@ describe Importers::Bolton::Catalog::Species::DeepSpeciesImporter do
     }
   end
 
+  describe "Parsing taxonomic history" do
+    it "should handle nothing" do
+      @importer.parse_taxonomic_history([]).should == []
+    end
+    #it "should work" do
+      #history = [{matched_text: "Combination in :combinations_in=>[{:genus_name=>"Dorylus", :subgenus_epithet=>"Shuckardia", :references=>[{:author_names=>["Emery"], :year=>"1895j", :pages=>"740", :matched_text=>"Emery, 1895j: 740"}]}]}]}
+      #@importer.parse_taxonomic_history(history).should == [
+        #"Combination in 
+      #]
+    #end
+  end
+
 end

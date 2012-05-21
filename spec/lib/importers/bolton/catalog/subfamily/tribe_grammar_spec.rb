@@ -8,40 +8,40 @@ describe Importers::Bolton::Catalog::Subfamily::TribeGrammar do
 
   describe "Tribe header" do
     it "should be recognized" do
-      @grammar.parse(%{Tribe MYRMECIINI}).value_with_reference_text_removed.should == {:type => :tribe_header, :name => 'Myrmeciini'}
+      @grammar.parse(%{Tribe MYRMECIINI}).value_with_matched_text_removed.should == {:type => :tribe_header, :name => 'Myrmeciini'}
     end
     it "should be recognized when it's extinct" do
-      @grammar.parse(%{Tribe *MIOMYRMECINI}).value_with_reference_text_removed.should == {:type => :tribe_header, :name => 'Miomyrmecini', :fossil => true}
+      @grammar.parse(%{Tribe *MIOMYRMECINI}).value_with_matched_text_removed.should == {:type => :tribe_header, :name => 'Miomyrmecini', :fossil => true}
     end
     it "should be recognized when the asterisk is in a different place" do
-      @grammar.parse(%{Tribe *PITYOMYRMECINI}).value_with_reference_text_removed.should == {:type => :tribe_header, :name => 'Pityomyrmecini', :fossil => true}
+      @grammar.parse(%{Tribe *PITYOMYRMECINI}).value_with_matched_text_removed.should == {:type => :tribe_header, :name => 'Pityomyrmecini', :fossil => true}
     end
   end
 
   describe "Junior synonyms of tribe header" do
     it "should be recognized" do
-      @grammar.parse(%{Junior synonym of ECTATOMMINI}).value_with_reference_text_removed.should == {:type => :junior_synonyms_of_tribe_header}
+      @grammar.parse(%{Junior synonym of ECTATOMMINI}).value_with_matched_text_removed.should == {:type => :junior_synonyms_of_tribe_header}
     end
     it "should be recognized when plural" do
-      @grammar.parse(%{Junior synonyms of LEPTOMYRMECINI}).value_with_reference_text_removed.should == {:type => :junior_synonyms_of_tribe_header}
+      @grammar.parse(%{Junior synonyms of LEPTOMYRMECINI}).value_with_matched_text_removed.should == {:type => :junior_synonyms_of_tribe_header}
     end
   end
 
   describe "Genera incertae sedis in tribe" do
     it "should be recognized" do
-      @grammar.parse(%{Genus <i>incertae sedis</i> in Heteroponerini}).value_with_reference_text_removed.should == {:type => :genera_incertae_sedis_in_tribe_header}
+      @grammar.parse(%{Genus <i>incertae sedis</i> in Heteroponerini}).value_with_matched_text_removed.should == {:type => :genera_incertae_sedis_in_tribe_header}
     end
   end
 
   describe "Tribes incertae sedis in subfamily header" do
     it "should be recognized" do
-      @grammar.parse(%{Tribes (extinct) <i>incertae sedis</i> in DOLICHODERINAE}).value_with_reference_text_removed.should == {:type => :tribes_incertae_sedis_header}
+      @grammar.parse(%{Tribes (extinct) <i>incertae sedis</i> in DOLICHODERINAE}).value_with_matched_text_removed.should == {:type => :tribes_incertae_sedis_header}
     end
   end
 
   describe "Taxonomic history items" do
     it "should parse 'tribe of'" do
-      @grammar.parse(%{Aneuretini as tribe of Dolichoderinae: Emery, 1913a: 6; all subsequent authors.}, :root => :tribe_taxonomic_history_item).value_with_reference_text_removed.should ==
+      @grammar.parse(%{Aneuretini as tribe of Dolichoderinae: Emery, 1913a: 6; all subsequent authors.}, :root => :tribe_taxonomic_history_item).value_with_matched_text_removed.should ==
         {:type => :tribe_taxonomic_history_item,
           :tribe => {:tribe_name => 'Aneuretini'},
           :tribe_of => {:subfamily_name => 'Dolichoderinae'},
@@ -52,7 +52,7 @@ describe Importers::Bolton::Catalog::Subfamily::TribeGrammar do
         }
     end
     it "should parse 'subtribe of'" do
-      @grammar.parse(%{Stictoponerini as subtribe of Aneuretini: Arnol'di, 1930d: 161.}, :root => :tribe_taxonomic_history_item).value_with_reference_text_removed.should ==
+      @grammar.parse(%{Stictoponerini as subtribe of Aneuretini: Arnol'di, 1930d: 161.}, :root => :tribe_taxonomic_history_item).value_with_matched_text_removed.should ==
         {:type => :tribe_taxonomic_history_item,
           :tribe => {:tribe_name => 'Stictoponerini'},
           :subtribe_of => {:tribe_name => 'Aneuretini'},
@@ -60,7 +60,7 @@ describe Importers::Bolton::Catalog::Subfamily::TribeGrammar do
         }
     end
     it "should parse a subtribe 'as subtribe of'" do
-      @grammar.parse(%{Bothriomyrmecina as subtribe of Iridomyrmecini: Dubovikov, 2005a: 92.}, :root => :tribe_taxonomic_history_item).value_with_reference_text_removed.should ==
+      @grammar.parse(%{Bothriomyrmecina as subtribe of Iridomyrmecini: Dubovikov, 2005a: 92.}, :root => :tribe_taxonomic_history_item).value_with_matched_text_removed.should ==
         {:type => :tribe_taxonomic_history_item,
           :tribe => {:subtribe_name => 'Bothriomyrmecina'},
           :subtribe_of => {:tribe_name => 'Iridomyrmecini'},
@@ -68,7 +68,7 @@ describe Importers::Bolton::Catalog::Subfamily::TribeGrammar do
         }
     end
     it "should parse 'junior synonym of'" do
-      @grammar.parse(%{*Pityomyrmecini as junior synonym of Dolichoderinae: Shattuck, 1992c: 5.}, :root => :tribe_taxonomic_history_item).value_with_reference_text_removed.should ==
+      @grammar.parse(%{*Pityomyrmecini as junior synonym of Dolichoderinae: Shattuck, 1992c: 5.}, :root => :tribe_taxonomic_history_item).value_with_matched_text_removed.should ==
         {:type => :tribe_taxonomic_history_item,
           :tribe => {:tribe_name => 'Pityomyrmecini', :fossil => true},
           :as_junior_synonym_of => {:subfamily => {:subfamily_name => 'Dolichoderinae'}},
@@ -77,7 +77,7 @@ describe Importers::Bolton::Catalog::Subfamily::TribeGrammar do
     end
 
     it "should parse 'junior synonym of' a tribe" do
-      @grammar.parse('Anonychomyrmini as junior synonym of Leptomyrmecini: Ward, Brady, <i>et al.</i> 2010: 361.', :root => :tribe_taxonomic_history_item).value_with_reference_text_removed.should == {:type => :tribe_taxonomic_history_item,
+      @grammar.parse('Anonychomyrmini as junior synonym of Leptomyrmecini: Ward, Brady, <i>et al.</i> 2010: 361.', :root => :tribe_taxonomic_history_item).value_with_matched_text_removed.should == {:type => :tribe_taxonomic_history_item,
         :tribe => {:tribe_name => 'Anonychomyrmini'},
         :as_junior_synonym_of => {:tribe => {:tribe_name => 'Leptomyrmecini'}},
         :references => [{:author_names => ['Ward', 'Brady', '<i>et al.</i>'], :year => '2010', :pages => '361'}],
@@ -85,7 +85,7 @@ describe Importers::Bolton::Catalog::Subfamily::TribeGrammar do
     end
 
     it "should parse 'incertae sedis in <subfamily>'" do
-      @grammar.parse(%{*Pityomyrmecini <i>incertae sedis</i> in Dolichoderinae: Ward, Brady, <i>et al.</i> 2010: 362.}, :root => :tribe_taxonomic_history_item).value_with_reference_text_removed.should == {
+      @grammar.parse(%{*Pityomyrmecini <i>incertae sedis</i> in Dolichoderinae: Ward, Brady, <i>et al.</i> 2010: 362.}, :root => :tribe_taxonomic_history_item).value_with_matched_text_removed.should == {
         :type => :tribe_taxonomic_history_item,
         :tribe => {:tribe_name => "Pityomyrmecini", :fossil => true},
         :incertae_sedis_in => [{:subfamily_name => 'Dolichoderinae'}],
@@ -98,13 +98,13 @@ describe Importers::Bolton::Catalog::Subfamily::TribeGrammar do
 
   describe "Ichnotaxon" do
     it "list should be recognized" do
-      @grammar.parse('Ichnotaxon: *<i>Attaichnus</i>.').value_with_reference_text_removed.should == {
+      @grammar.parse('Ichnotaxon: *<i>Attaichnus</i>.').value_with_matched_text_removed.should == {
         :type => :ichnotaxa_list, :genus => {:genus_name => 'Attaichnus', :fossil => true}
       }
     end
 
     it "items should be recognized" do
-      @grammar.parse('Ichnotaxon attached to Attini', :root => :ichnotaxa_header).value_with_reference_text_removed.should == {
+      @grammar.parse('Ichnotaxon attached to Attini', :root => :ichnotaxa_header).value_with_matched_text_removed.should == {
         :type => :ichnotaxa_header
       }
     end
@@ -116,49 +116,49 @@ describe Importers::Bolton::Catalog::Subfamily::TribeGrammar do
       @grammar = Importers::Bolton::Catalog::Subfamily::Grammar
     end
     it "should handle references for the tribe when the name is left out" do
-      @grammar.parse('Tribe references').value_with_reference_text_removed.should == {
+      @grammar.parse('Tribe references').value_with_matched_text_removed.should == {
         type: :references_section_header,
         title: 'Tribe references'
       }
     end
     it "should handle a see also references header" do
-      @grammar.parse('See also general references under PONERINAE.').value_with_reference_text_removed.should == {
+      @grammar.parse('See also general references under PONERINAE.').value_with_matched_text_removed.should == {
         :type => :see_also_references_section_header,
         title: 'See also general references under PONERINAE.'
       }
     end
     it "should handle references for a see above tribe" do
-      @grammar.parse('Tribe Ecitonini references: see above').value_with_reference_text_removed.should == {
+      @grammar.parse('Tribe Ecitonini references: see above').value_with_matched_text_removed.should == {
         :type => :see_under_references_section_header,
         title: 'Tribe Ecitonini references: see above'
       }
     end
     it "should handle references for a see above tribe, not named" do
-      @grammar.parse('Tribe references: see above').value_with_reference_text_removed.should == {
+      @grammar.parse('Tribe references: see above').value_with_matched_text_removed.should == {
         :type => :see_under_references_section_header,
         title: 'Tribe references: see above'
       }
     end
     it "should handle references for a single tribe" do
-      @grammar.parse('Tribe Aneuretini references').value_with_reference_text_removed.should == {
+      @grammar.parse('Tribe Aneuretini references').value_with_matched_text_removed.should == {
         :type => :references_section_header,
         title: 'Tribe Aneuretini references'
       }
     end
     it "should handle references for the tribe and a genus" do
-      @grammar.parse('Tribe and genus <i>Myrmoteras</i> references').value_with_reference_text_removed.should == {
+      @grammar.parse('Tribe and genus <i>Myrmoteras</i> references').value_with_matched_text_removed.should == {
         :type => :references_section_header,
         title: 'Tribe and genus <i>Myrmoteras</i> references'
       }
     end
     it "should handle references for the subfamily and tribe" do
-      @grammar.parse('Subfamily and tribe Pseudomyrmecini references').value_with_reference_text_removed.should == {
+      @grammar.parse('Subfamily and tribe Pseudomyrmecini references').value_with_matched_text_removed.should == {
         :type => :references_section_header,
         title: 'Subfamily and tribe Pseudomyrmecini references'
       }
     end
     it "should handle a header that also includes a reference" do
-      @grammar.parse('Tribe references: see under genera; Bolton, 2003: 30.').value_with_reference_text_removed.should == {
+      @grammar.parse('Tribe references: see under genera; Bolton, 2003: 30.').value_with_matched_text_removed.should == {
         :type => :references_section_header,
         title: 'Tribe references: see under genera; Bolton, 2003: 30.'
       }

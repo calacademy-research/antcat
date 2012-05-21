@@ -173,15 +173,18 @@ describe Species do
         fossil: true,
         protonym: {genus_name: "Atta", species_epithet: 'major',
                    authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]},
-        history: ["Atta as genus", "Atta as species"]
+        history: [
+          {:combinations_in=>
+            [{:genus_name=>"Dorylus", :subgenus_epithet=>"Shuckardia", :references=> [{:author_names=>["Emery"], :year=>"1895j", :pages=>"740", :matched_text=>"Emery, 1895j: 740"}]},
+             {:genus_name=>"Aenictus", :references=> [{:author_names=>["Emery"], :year=>"1901d", :pages=>"43", :matched_text=>"Emery, 1901d: 43"}]}]}
+        ]
       ).reload
       species.name.should == 'major'
       species.should_not be_invalid
       species.should be_fossil
       species.genus.should == genus
       species.subfamily.should == subfamily
-      #genus.taxonomic_history_items.map(&:taxt).should == ['Atta as genus', 'Atta as species']
-      #genus.type_taxon_taxt.should == ', by monotypy'
+      species.taxonomic_history_items.map(&:taxt).should == ['Atta major as species', 'Atta major as subspecies']
 
       protonym = species.protonym
       protonym.name.should == 'Atta major'

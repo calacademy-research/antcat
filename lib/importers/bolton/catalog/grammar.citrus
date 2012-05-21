@@ -182,7 +182,7 @@ grammar Importers::Bolton::Catalog::Grammar
       value = the_reference.value
       notes = captures[:reference_note]
       value[:notes] = notes.map(&:value) if notes.present?
-      value[:reference_text] = to_s
+      value[:matched_text] = to_s
       value
     }
   end
@@ -270,7 +270,7 @@ grammar Importers::Bolton::Catalog::Grammar
       value[:year] = citation_year.value if citation_year
       value[:pages] = ref_pages.value if ref_pages
       value[:forms] = ref_forms.value if ref_forms
-      value[:reference_text] = to_s
+      value[:matched_text] = to_s
       value
     }
   end

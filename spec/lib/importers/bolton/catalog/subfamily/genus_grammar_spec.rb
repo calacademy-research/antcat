@@ -9,31 +9,31 @@ describe Importers::Bolton::Catalog::Subfamily::Grammar do
   describe "Genera header" do
     describe "Genera header" do
       it "should be recognized" do
-        @grammar.parse(%{Genera of Aneuretini}).value_with_reference_text_removed.should == {type: :genera_header}
+        @grammar.parse(%{Genera of Aneuretini}).value_with_matched_text_removed.should == {type: :genera_header}
       end
       it "should be recognized when there's only one genus" do
-        @grammar.parse(%{Genus of Dolichoderini}).value_with_reference_text_removed.should == {type: :genera_header}
+        @grammar.parse(%{Genus of Dolichoderini}).value_with_matched_text_removed.should == {type: :genera_header}
       end
       it "should be recognized when it's this one weird tribe name" do
-        @grammar.parse(%{Genus of Platythyreini}, :root => :genera_header).value_with_reference_text_removed.should == {type: :genera_header}
+        @grammar.parse(%{Genus of Platythyreini}, :root => :genera_header).value_with_matched_text_removed.should == {type: :genera_header}
       end
     end
 
     describe "Genera incertae sedis header" do
       it "should be recognized" do
-        @grammar.parse(%{Genera <i>incertae sedis</i> in ANEURETINAE}).value_with_reference_text_removed.should == {type: :genera_incertae_sedis_header}
+        @grammar.parse(%{Genera <i>incertae sedis</i> in ANEURETINAE}).value_with_matched_text_removed.should == {type: :genera_incertae_sedis_header}
       end
       it "should be recognized when there's only one genus" do
-        @grammar.parse(%{Genus <i>incertae sedis</i> in ANEURETINAE}).value_with_reference_text_removed.should == {type: :genera_incertae_sedis_header}
+        @grammar.parse(%{Genus <i>incertae sedis</i> in ANEURETINAE}).value_with_matched_text_removed.should == {type: :genera_incertae_sedis_header}
       end
       it "should be recognized when extinct" do
-        @grammar.parse(%{Genera (extinct) <i>incertae sedis</i> in DOLICHODERINAE}).value_with_reference_text_removed.should == {type: :genera_incertae_sedis_header}
+        @grammar.parse(%{Genera (extinct) <i>incertae sedis</i> in DOLICHODERINAE}).value_with_matched_text_removed.should == {type: :genera_incertae_sedis_header}
       end
       it "should be recognized when Hong's" do
-        @grammar.parse(%{Genera of Hong (2002), <i>incertae sedis</i> in FORMICINAE}).value_with_reference_text_removed.should == {type: :genera_of_hong_header}
+        @grammar.parse(%{Genera of Hong (2002), <i>incertae sedis</i> in FORMICINAE}).value_with_matched_text_removed.should == {type: :genera_of_hong_header}
       end
       it "should be recognized in poneroid subfamilies" do
-        @grammar.parse('Genera <i>incertae sedis</i> in poneroid subfamilies').value_with_reference_text_removed.should == {
+        @grammar.parse('Genera <i>incertae sedis</i> in poneroid subfamilies').value_with_matched_text_removed.should == {
           type: :genera_incertae_sedis_in_poneroid_subfamilies_header
         }
       end
@@ -43,26 +43,26 @@ describe Importers::Bolton::Catalog::Subfamily::Grammar do
   describe "Genus headers" do
     describe "Genus header" do
       it "should recognize a genus header" do
-        @grammar.parse(%{Genus <i>ATTA</i>}).value_with_reference_text_removed.should == {type: :genus_header, :name => 'Atta'}
+        @grammar.parse(%{Genus <i>ATTA</i>}).value_with_matched_text_removed.should == {type: :genus_header, :name => 'Atta'}
       end
       it "should recognize the beginning of a fossil genus" do
-        @grammar.parse(%{Genus *<i>ANEURETELLUS</i>}).value_with_reference_text_removed.should == {type: :genus_header, :name => 'Aneuretellus', :fossil => true}
+        @grammar.parse(%{Genus *<i>ANEURETELLUS</i>}).value_with_matched_text_removed.should == {type: :genus_header, :name => 'Aneuretellus', :fossil => true}
       end
       it "should handle it when there's a subfamily at the end" do
-        @grammar.parse(%{Genus *<i>YPRESIOMYRMA</i> [Myrmeciinae]}).value_with_reference_text_removed.should ==
+        @grammar.parse(%{Genus *<i>YPRESIOMYRMA</i> [Myrmeciinae]}).value_with_matched_text_removed.should ==
           {type: :genus_header, :name => 'Ypresiomyrma', :fossil => true, :note => {:name => 'Myrmeciinae'}}
       end
       it "should handle a collective group name" do
-        @grammar.parse(%{Collective group name *<i>FORMICIUM</i>}).value_with_reference_text_removed.should ==
+        @grammar.parse(%{Collective group name *<i>FORMICIUM</i>}).value_with_matched_text_removed.should ==
           {type: :genus_header}
       end
     end
     describe "Genus nomen nudum header" do
       it "should handle it" do
-        @grammar.parse(%{<i>ANCYLOGNATHUS</i> [<i>nomen nudum</i>]}).value_with_reference_text_removed.should == {type: :genus_nomen_nudum_header, :name => 'Ancylognathus'}
+        @grammar.parse(%{<i>ANCYLOGNATHUS</i> [<i>nomen nudum</i>]}).value_with_matched_text_removed.should == {type: :genus_nomen_nudum_header, :name => 'Ancylognathus'}
       end
       it "should handle a fossil nomen nudum header" do
-        @grammar.parse(%{*<i>DOLICHOFORMICA</i> [<i>nomen nudum</i>]}).value_with_reference_text_removed.should ==
+        @grammar.parse(%{*<i>DOLICHOFORMICA</i> [<i>nomen nudum</i>]}).value_with_matched_text_removed.should ==
           {type: :genus_nomen_nudum_header, :name => 'Dolichoformica', :fossil => true}
       end
     end
@@ -72,7 +72,7 @@ describe Importers::Bolton::Catalog::Subfamily::Grammar do
 
     describe "Type species" do
       it "should handle a type-species by subsequent designation" do
-        @grammar.parse('Type-species: <i>Bothriomyrmex myops</i>, by subsequent designation of Donisthorpe, 1944e: 102', :root => :type_species).value_with_reference_text_removed.should == {
+        @grammar.parse('Type-species: <i>Bothriomyrmex myops</i>, by subsequent designation of Donisthorpe, 1944e: 102', :root => :type_species).value_with_matched_text_removed.should == {
           type_species: {
             :genus_name => 'Bothriomyrmex',
             :species_epithet => 'myops',
@@ -84,7 +84,7 @@ describe Importers::Bolton::Catalog::Subfamily::Grammar do
         }
       end
       it "should handle a type-species that's a subspecies" do
-        @grammar.parse('Type-species: <i>Tetramorium (Lobomyrmex) ferox silhavyi</i> (junior synonym of <i>Tetramorium ferox</i>), by monotypy.', :root => :type_species).value_with_reference_text_removed.should == {
+        @grammar.parse('Type-species: <i>Tetramorium (Lobomyrmex) ferox silhavyi</i> (junior synonym of <i>Tetramorium ferox</i>), by monotypy.', :root => :type_species).value_with_matched_text_removed.should == {
           type_species: {
             :genus_name => 'Tetramorium',
             :subgenus_epithet => 'Lobomyrmex',
@@ -105,12 +105,12 @@ describe Importers::Bolton::Catalog::Subfamily::Grammar do
         }
       end
       it "should handle a type-species that it doesn't understand" do
-        @grammar.parse('Type-species: none subsequent', :root => :type_species).value_with_reference_text_removed.should == {
+        @grammar.parse('Type-species: none subsequent', :root => :type_species).value_with_matched_text_removed.should == {
           type_species: {:texts => [{:text => [{:phrase => 'none subsequent'}]}]}
         }
       end
       it "should handle a type-species that's nomen nudum" do
-        @grammar.parse('Type-species: <i>Ancylognathus lugubris</i>, <i>nomen nudum</i>.', :root => :type_species).value_with_reference_text_removed.should == {
+        @grammar.parse('Type-species: <i>Ancylognathus lugubris</i>, <i>nomen nudum</i>.', :root => :type_species).value_with_matched_text_removed.should == {
           type_species: {
             :genus_name => 'Ancylognathus',
             :species_epithet => 'lugubris',
@@ -128,7 +128,7 @@ describe Importers::Bolton::Catalog::Subfamily::Grammar do
     end
 
     it "should recognize a genus headline" do
-      @grammar.parse(%{<i>Odontomyrmex</i> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy.}).value_with_reference_text_removed.should == {
+      @grammar.parse(%{<i>Odontomyrmex</i> André, 1905: 207. Type-species: <i>Odontomyrmex quadridentatus</i>, by monotypy.}).value_with_matched_text_removed.should == {
         type: :genus_headline,
         :protonym => {
           :genus_name => 'Odontomyrmex',
@@ -142,7 +142,7 @@ describe Importers::Bolton::Catalog::Subfamily::Grammar do
       }
     end
     it "should handle a genus headline where the genus is nomen nudum as well as the type-species" do
-      @grammar.parse('*<i>Dolichoformica</i> Grimaldi & Engel, 2005: 446 (in table), <i>nomen nudum</i>. Type-species: *<i>Dolichoformica helferi</i>, <i>nomen nudum</i>.').value_with_reference_text_removed.should == {
+      @grammar.parse('*<i>Dolichoformica</i> Grimaldi & Engel, 2005: 446 (in table), <i>nomen nudum</i>. Type-species: *<i>Dolichoformica helferi</i>, <i>nomen nudum</i>.').value_with_matched_text_removed.should == {
         type: :genus_headline,
         :protonym => {
           :genus_name => 'Dolichoformica',
@@ -162,7 +162,7 @@ describe Importers::Bolton::Catalog::Subfamily::Grammar do
 
     it "should recognize a genus headline with nomen nudum" do
       @grammar.parse(
-%{*<i>Dolichoformica</i> Grimaldi & Engel, 2005: 446 (in table), <i>nomen nudum</i>.}).value_with_reference_text_removed.should == {
+%{*<i>Dolichoformica</i> Grimaldi & Engel, 2005: 446 (in table), <i>nomen nudum</i>.}).value_with_matched_text_removed.should == {
         type: :genus_headline,
         :protonym => {
           :genus_name => 'Dolichoformica',
@@ -175,7 +175,7 @@ describe Importers::Bolton::Catalog::Subfamily::Grammar do
     it "should handle bracketed phrase after genus nomen nudum" do
       @grammar.parse(
 %{<i>Myrmegis</i> Rafinesque, 1815: 124, <i>nomen nudum</i>. [Brown, 1973b: 182.]}
-      ).value_with_reference_text_removed.should == {
+      ).value_with_matched_text_removed.should == {
         type: :genus_headline,
         protonym: {genus_name:"Myrmegis", authorship:[{author_names:["Rafinesque"], year:"1815", pages:"124"}]},
         :note => {:text=>[{:opening_bracket=>"["}, {:author_names=>["Brown"], :year=>"1973b", :pages=>"182", :delimiter=>"."}, {:closing_bracket=>"]"}]},
@@ -184,7 +184,7 @@ describe Importers::Bolton::Catalog::Subfamily::Grammar do
     end
 
     it "should recognize a fossil genus headline with a note" do
-      @grammar.parse(%{*<i>Calyptites</i> Scudder, 1877b: 270 [as member of family Braconidae]. Type-species: *<i>Calyptites antediluvianum</i>, by monotypy.}).value_with_reference_text_removed.should == {
+      @grammar.parse(%{*<i>Calyptites</i> Scudder, 1877b: 270 [as member of family Braconidae]. Type-species: *<i>Calyptites antediluvianum</i>, by monotypy.}).value_with_matched_text_removed.should == {
         type: :genus_headline,
         :protonym => {
           :genus_name => 'Calyptites',
@@ -205,7 +205,7 @@ describe Importers::Bolton::Catalog::Subfamily::Grammar do
       }
     end
     it "should recognize a subgenus" do
-      @grammar.parse(%{<i>Hypochira</i> Buckley, 1866: 169 [as subgenus of <i>Formica</i>]. Type-species: <i>Formica (Hypochira) subspinosa</i>, by monotypy.}).value_with_reference_text_removed.should == {
+      @grammar.parse(%{<i>Hypochira</i> Buckley, 1866: 169 [as subgenus of <i>Formica</i>]. Type-species: <i>Formica (Hypochira) subspinosa</i>, by monotypy.}).value_with_matched_text_removed.should == {
         type: :genus_headline,
         :protonym => {
           :genus_name => 'Hypochira',
@@ -225,7 +225,7 @@ describe Importers::Bolton::Catalog::Subfamily::Grammar do
       }
     end
     it "should recognize a type-species that's a junior synonym" do
-       @grammar.parse(%{*<i>Eoformica</i> Cockerell, 1921: 38. Type-species: *<i>Eoformica eocenica</i> (junior synonym of *<i>Eoformica pingue</i>), by monotypy.}).value_with_reference_text_removed.should == {
+       @grammar.parse(%{*<i>Eoformica</i> Cockerell, 1921: 38. Type-species: *<i>Eoformica eocenica</i> (junior synonym of *<i>Eoformica pingue</i>), by monotypy.}).value_with_matched_text_removed.should == {
         type: :genus_headline,
         :protonym => {
           :genus_name => 'Eoformica',
@@ -249,7 +249,7 @@ describe Importers::Bolton::Catalog::Subfamily::Grammar do
       }
     end
     it "should recognize a type-species by original designation" do
-      @grammar.parse(%{*<i>Gerontoformica</i> Nel & Perrault, in Nel, Perrault, Perrichot & Néraudeau, 2004: 24. Type-species: *<i>Gerontoformica cretacica</i>, by original designation.}).value_with_reference_text_removed.should == {
+      @grammar.parse(%{*<i>Gerontoformica</i> Nel & Perrault, in Nel, Perrault, Perrichot & Néraudeau, 2004: 24. Type-species: *<i>Gerontoformica cretacica</i>, by original designation.}).value_with_matched_text_removed.should == {
         type: :genus_headline,
         :protonym => {
           :genus_name => 'Gerontoformica',
@@ -269,7 +269,7 @@ describe Importers::Bolton::Catalog::Subfamily::Grammar do
       }
     end
     it "should recognize the 'genus headline' that actually describes a collective group name" do
-      @grammar.parse(%{*<i>Myrmeciites</i> Archibald, Cover & Moreau, 2006: 500. [Collective group name.]}).value_with_reference_text_removed.should == {
+      @grammar.parse(%{*<i>Myrmeciites</i> Archibald, Cover & Moreau, 2006: 500. [Collective group name.]}).value_with_matched_text_removed.should == {
         type: :genus_headline,
         :protonym => {
           :genus_name => 'Myrmeciites',
@@ -280,7 +280,7 @@ describe Importers::Bolton::Catalog::Subfamily::Grammar do
       }
     end
     it "should recognize an unnecessary replacement name" do
-      @grammar.parse(%{<i>Baroniurbania</i> Pagliano & Scaramozzino, 1990: 4. Unnecessary replacement name for <i>Acantholepis</i> Mayr (junior homonym).}).value_with_reference_text_removed.should == {
+      @grammar.parse(%{<i>Baroniurbania</i> Pagliano & Scaramozzino, 1990: 4. Unnecessary replacement name for <i>Acantholepis</i> Mayr (junior homonym).}).value_with_matched_text_removed.should == {
         type: :genus_headline,
         :protonym => {
           :genus_name => 'Baroniurbania',
@@ -290,7 +290,7 @@ describe Importers::Bolton::Catalog::Subfamily::Grammar do
       }
     end
     it "should recognize an unnecessary replacement name for sensu name" do
-      @grammar.parse('<i>Parasima</i> Donisthorpe, 1948d: 592 [as subgenus of <i>Tetraponera</i>]. [Unnecessary replacement name for <i>Sima</i> in the sense of Emery, 1921f: 23.]').value_with_reference_text_removed.should == {
+      @grammar.parse('<i>Parasima</i> Donisthorpe, 1948d: 592 [as subgenus of <i>Tetraponera</i>]. [Unnecessary replacement name for <i>Sima</i> in the sense of Emery, 1921f: 23.]').value_with_matched_text_removed.should == {
         type: :genus_headline,
         :protonym => {
           :genus_name => 'Parasima',
@@ -305,7 +305,7 @@ describe Importers::Bolton::Catalog::Subfamily::Grammar do
       }
     end
     it "should recognize an unjustified emendation" do
-      @grammar.parse('<i>Ceratopachys</i> Schulz, W.A. 1906: 155, unjustified emendation of <i>Cerapachys</i>.').value_with_reference_text_removed.should == {
+      @grammar.parse('<i>Ceratopachys</i> Schulz, W.A. 1906: 155, unjustified emendation of <i>Cerapachys</i>.').value_with_matched_text_removed.should == {
         type: :genus_headline,
         :protonym => {
           :genus_name => 'Ceratopachys',
@@ -315,7 +315,7 @@ describe Importers::Bolton::Catalog::Subfamily::Grammar do
       }
     end
     it "should recognize a subsequent unjustified emendation" do
-      @grammar.parse('<i>Vollenhovenia</i> Dalla Torre, 1893: 61, unjustified subsequent emendation of <i>Vollenhovia</i>.').value_with_reference_text_removed.should == {
+      @grammar.parse('<i>Vollenhovenia</i> Dalla Torre, 1893: 61, unjustified subsequent emendation of <i>Vollenhovia</i>.').value_with_matched_text_removed.should == {
         :type => :genus_headline,
         :protonym => {
           :genus_name => 'Vollenhovenia',
@@ -329,46 +329,46 @@ describe Importers::Bolton::Catalog::Subfamily::Grammar do
 
   describe "Homonym replaced by genus header" do
     it "should be recognized" do
-      @grammar.parse(%{Homonym replaced by *<i>PROMYRMICIUM</i>}).value_with_reference_text_removed.should == {:type => :homonym_replaced_by_genus_header, title: 'Homonym replaced by *<i>PROMYRMICIUM</i>'}
+      @grammar.parse(%{Homonym replaced by *<i>PROMYRMICIUM</i>}).value_with_matched_text_removed.should == {:type => :homonym_replaced_by_genus_header, title: 'Homonym replaced by *<i>PROMYRMICIUM</i>'}
     end
     it "should be recognized" do
-      @grammar.parse(%{Homonym replaced by <i>STIGMACROS</i>}).value_with_reference_text_removed.should == {:type => :homonym_replaced_by_genus_header, title: 'Homonym replaced by <i>STIGMACROS</i>'}
+      @grammar.parse(%{Homonym replaced by <i>STIGMACROS</i>}).value_with_matched_text_removed.should == {:type => :homonym_replaced_by_genus_header, title: 'Homonym replaced by <i>STIGMACROS</i>'}
     end
     it "should be recognized as :other when a homonym-replaced-by in a synonym" do
-      @grammar.parse(%{Homonym replaced by <i>Karawajewella</i>}).value_with_reference_text_removed.should == {:type => :homonym_replaced_by_genus_header, title: 'Homonym replaced by <i>Karawajewella</i>'}
+      @grammar.parse(%{Homonym replaced by <i>Karawajewella</i>}).value_with_matched_text_removed.should == {:type => :homonym_replaced_by_genus_header, title: 'Homonym replaced by <i>Karawajewella</i>'}
     end
   end
 
   describe "Junior synonym headers" do
     it "should recognize a header for the group of synonyms" do
-      @grammar.parse(%{Junior synonyms of <i>ANEURETUS</i>}).value_with_reference_text_removed.should == {:type => :junior_synonyms_of_genus_header, title: 'Junior synonyms of <i>ANEURETUS</i>'}
+      @grammar.parse(%{Junior synonyms of <i>ANEURETUS</i>}).value_with_matched_text_removed.should == {:type => :junior_synonyms_of_genus_header, title: 'Junior synonyms of <i>ANEURETUS</i>'}
     end
     it "should recognize a header for the group of synonyms when there's only one" do
-      @grammar.parse(%{Junior synonym of <i>ANEURETUS</i>}).value_with_reference_text_removed.should == {:type => :junior_synonyms_of_genus_header, title: 'Junior synonym of <i>ANEURETUS</i>'}
+      @grammar.parse(%{Junior synonym of <i>ANEURETUS</i>}).value_with_matched_text_removed.should == {:type => :junior_synonyms_of_genus_header, title: 'Junior synonym of <i>ANEURETUS</i>'}
     end
     it "should recognize a header for the group of synonyms when there's a period after the closing tags" do
-      @grammar.parse(%{Junior synonyms of <i>ACROPYGA</i>.}).value_with_reference_text_removed.should == {:type => :junior_synonyms_of_genus_header, title: 'Junior synonyms of <i>ACROPYGA</i>.'}
+      @grammar.parse(%{Junior synonyms of <i>ACROPYGA</i>.}).value_with_matched_text_removed.should == {:type => :junior_synonyms_of_genus_header, title: 'Junior synonyms of <i>ACROPYGA</i>.'}
     end
     it "should be recognized when they are of a fossil" do
-      @grammar.parse(%{Junior synonyms of *<i>ARCHIMYRMEX</i>}).value_with_reference_text_removed.should == {:type => :junior_synonyms_of_genus_header, title: 'Junior synonyms of *<i>ARCHIMYRMEX</i>'}
+      @grammar.parse(%{Junior synonyms of *<i>ARCHIMYRMEX</i>}).value_with_matched_text_removed.should == {:type => :junior_synonyms_of_genus_header, title: 'Junior synonyms of *<i>ARCHIMYRMEX</i>'}
     end
   end
 
   describe "Genus references header" do
     it "should handle a regular header" do
-      @grammar.parse(%{Genus <i>Sphinctomyrmex</i> references}).value_with_reference_text_removed.should == {type: :genus_references_header, genus_name: 'Sphinctomyrmex', title: 'Genus <i>Sphinctomyrmex</i> references'}
+      @grammar.parse(%{Genus <i>Sphinctomyrmex</i> references}).value_with_matched_text_removed.should == {type: :genus_references_header, genus_name: 'Sphinctomyrmex', title: 'Genus <i>Sphinctomyrmex</i> references'}
     end
     it "should handle a header without a name" do
-      @grammar.parse(%{Genus references}).value_with_reference_text_removed.should == {type: :genus_references_header, title: 'Genus references'}
+      @grammar.parse(%{Genus references}).value_with_matched_text_removed.should == {type: :genus_references_header, title: 'Genus references'}
     end
     it "should handle a 'see above' header" do
-      @grammar.parse(%{Genus <i>Myrmoteras</i> references: see above.}).value_with_reference_text_removed.should == {type: :genus_references_see_under, title: 'Genus <i>Myrmoteras</i> references: see above.'}
+      @grammar.parse(%{Genus <i>Myrmoteras</i> references: see above.}).value_with_matched_text_removed.should == {type: :genus_references_see_under, title: 'Genus <i>Myrmoteras</i> references: see above.'}
     end
     it "should handle a 'see above' header without the genus name" do
-      @grammar.parse(%{Genus references: see above.}).value_with_reference_text_removed.should == {type: :genus_references_see_under, title: 'Genus references: see above.'}
+      @grammar.parse(%{Genus references: see above.}).value_with_matched_text_removed.should == {type: :genus_references_see_under, title: 'Genus references: see above.'}
     end
     it "should handle a 'see above' header without the genus name" do
-      @grammar.parse(%{Genus references: see under Aneuretini, above.}).value_with_reference_text_removed.should == {
+      @grammar.parse(%{Genus references: see under Aneuretini, above.}).value_with_matched_text_removed.should == {
         type: :genus_references_see_under,
         title: 'Genus references: see under Aneuretini, above.'
       }

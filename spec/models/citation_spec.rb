@@ -23,7 +23,7 @@ describe Citation do
     end
 
     it "should link to a MissingReference, if necessary" do
-      data = {:author_names => ["Latreille"], :year => "1809a", :pages => "124", :reference_text => 'Latreille, 1809a: 124'}
+      data = {:author_names => ["Latreille"], :year => "1809a", :pages => "124", :matched_text => 'Latreille, 1809a: 124'}
       citation = Citation.import(data).reload
       citation.pages.should == '124'
       missing_reference = citation.reference
@@ -60,7 +60,7 @@ describe Citation do
             {:bracketed=>true}
           ]
         ],
-        :reference_text=> "Scudder, 1877b: 270 [as member of family Braconidae]"
+        :matched_text=> "Scudder, 1877b: 270 [as member of family Braconidae]"
       }
 
       citation = Citation.import(data).reload

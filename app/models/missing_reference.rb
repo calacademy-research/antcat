@@ -3,7 +3,7 @@ class MissingReference < Reference
 
   def self.import reason, data
     year = data[:year] || data[:in].try(:[], :year)
-    reference_key = data[:reference_text].dup
+    reference_key = data[:matched_text].dup
 
     first_colon_index = reference_key.index ':'
     reference_key = reference_key[0, first_colon_index] if first_colon_index
