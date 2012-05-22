@@ -78,7 +78,7 @@ class Importers::Bolton::Catalog::Species::DeepSpeciesImporter < Importers::Bolt
 
   def parse_taxonomic_history history
     Progress.method
-    history.inject([]) do |items, item|
+    (history || []).inject([]) do |items, item|
       text = Importers::Bolton::Catalog::Grammar.parse(item[:matched_text], root: :text).value
       taxt = Importers::Bolton::Catalog::TextToTaxt.convert text[:text]
       if taxt.present?
