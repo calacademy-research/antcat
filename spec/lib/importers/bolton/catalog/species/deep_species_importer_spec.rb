@@ -44,11 +44,13 @@ describe Importers::Bolton::Catalog::Species::DeepSpeciesImporter do
   end
 
   describe "Parsing taxonomic history" do
+
     it "should handle nothing" do
       @importer.parse_taxonomic_history([]).should == []
       @importer.parse_taxonomic_history(nil).should == []
     end
-    it "should work" do
+
+    it "should handle the happy case" do
       reference = FactoryGirl.create :article_reference, bolton_key_cache: 'Gray 1969'
       history = [{
         see_also: {references: [{author_names:['Gray'], year:'1969', pages:'94', matched_text:'Gray, 1969: 94'}]},
@@ -56,6 +58,7 @@ describe Importers::Bolton::Catalog::Species::DeepSpeciesImporter do
       }]
       @importer.parse_taxonomic_history(history).should == ["See also {ref #{reference.id}}: 94"]
     end
+
     it "should handle a single taxonomic history item that needs to be parsed as more than one taxt" do
       wheeler = FactoryGirl.create :article_reference, bolton_key_cache: 'Wheeler 1927h'
       emery = FactoryGirl.create :article_reference, bolton_key_cache: 'Emery 1915g'
@@ -67,6 +70,19 @@ describe Importers::Bolton::Catalog::Species::DeepSpeciesImporter do
       history.should == [
         "Replacement name for <i>Acropyga silvestrii</i> {ref #{wheeler.id}}: 100",
         "[Junior primary homonym of <i>Acropyga silvestrii</i> {ref #{emery.id}}: 21.]"
+      ]
+    end
+
+    it "should handle forms with a reference" do
+      reference = FactoryGirl.create :article_reference, bolton_key_cache: 'Mann 1916'
+      @importer.parse_taxonomic_history([{
+        references: [{
+          author_names: ['Mann'], year: '1916', pages: '452', forms: 'q',
+          matched_text: 'Mann, 1916: 452 (q)'
+        }],
+        matched_text: 'Mann, 1916: 452 (q).'
+      }]).should == [
+        "{ref #{reference.id}}: 452 (q)"
       ]
     end
   end
