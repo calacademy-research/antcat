@@ -10,7 +10,7 @@ describe Formatters::CatalogFormatter do
     it "should create a span based on the type of the taxon and its status" do
       taxon = FactoryGirl.create :genus, :name => 'Atta'
       result = @formatter.taxon_label_span(taxon)
-      result.should == '<span class="genus taxon valid">Atta</span>'
+      result.should == '<span class="genus name taxon valid">Atta</span>'
       result.should be_html_safe
     end
   end
@@ -20,7 +20,7 @@ describe Formatters::CatalogFormatter do
       taxon = FactoryGirl.create :genus, :name => 'Atta'
       taxon_label_and_css_classes = @formatter.taxon_label_and_css_classes(taxon)
       taxon_label_and_css_classes[:label].should == 'Atta'
-      taxon_label_and_css_classes[:css_classes].should == 'genus taxon valid'
+      taxon_label_and_css_classes[:css_classes].should == 'genus name taxon valid'
     end
     it "should prepend a fossil symbol" do
       taxon = FactoryGirl.create :genus, :name => 'Atta', :fossil => true
@@ -28,7 +28,7 @@ describe Formatters::CatalogFormatter do
     end
     it "should handle being selected" do
       taxon = FactoryGirl.create :genus, :name => 'Atta'
-      @formatter.taxon_label_and_css_classes(taxon, :selected => true)[:css_classes].should == 'genus selected taxon valid'
+      @formatter.taxon_label_and_css_classes(taxon, :selected => true)[:css_classes].should == 'genus name selected taxon valid'
     end
     it "should handle upper case" do
       taxon = FactoryGirl.create :genus, :name => 'Atta'
@@ -43,14 +43,14 @@ describe Formatters::CatalogFormatter do
   describe 'taxon rank css classes' do
     it 'should return the right ones' do
       taxon = FactoryGirl.create :genus, :name => 'Atta'
-      @formatter.css_classes_for_rank(taxon).should == ['genus', 'taxon']
+      @formatter.css_classes_for_rank(taxon).should =~ ['genus', 'taxon', 'name']
     end
   end
 
   describe 'taxon class' do
     it "should return the correct classes" do
       taxon = FactoryGirl.create :genus, :name => 'Atta'
-      @formatter.taxon_css_classes(taxon).should == "genus taxon valid"
+      @formatter.taxon_css_classes(taxon).should == "genus name taxon valid"
     end
   end
 
