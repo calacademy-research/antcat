@@ -41,6 +41,7 @@ class Species < Taxon
         status: data[:status] || 'valid',
         protonym: protonym,
       }
+
       species = create! attributes
       data[:history].each do |item|
         species.taxonomic_history_items.create! taxt: item
