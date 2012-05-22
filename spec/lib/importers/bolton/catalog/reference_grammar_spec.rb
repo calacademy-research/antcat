@@ -405,22 +405,22 @@ describe Importers::Bolton::Catalog::Grammar do
        :matched_text => string}
   end
 
-  describe "deep_delete_reference_text" do
+  describe "deep_delete_matched_text" do
     it "shouldn't mess with a nonhash" do
-      2.deep_delete_reference_text.should == 2
+      2.deep_delete_matched_text.should == 2
     end
     it "shouldn't mess with a hash without the key" do
-      {:foo => :bar}.deep_delete_reference_text.should == {:foo => :bar}
+      {:foo => :bar}.deep_delete_matched_text.should == {:foo => :bar}
     end
     it "should delete the key" do
-      {:foo => :bar, :matched_text => 1}.deep_delete_reference_text.should == {:foo => :bar}
+      {:foo => :bar, :matched_text => 1}.deep_delete_matched_text.should == {:foo => :bar}
     end
     it "should delete the key in an array of hashes" do
-      [{:foo => :bar, :matched_text => 1}].deep_delete_reference_text.should == [{:foo => :bar}]
+      [{:foo => :bar, :matched_text => 1}].deep_delete_matched_text.should == [{:foo => :bar}]
     end
     it "handle this" do
       data = {:a => {:matched_text=> '1'}}
-      data.deep_delete_reference_text.should == {:a => {}}
+      data.deep_delete_matched_text.should == {:a => {}}
     end
   end
 
