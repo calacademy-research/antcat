@@ -38,7 +38,7 @@ module Formatters::IndexFormatter
 
   def format_locality locality
     return '' unless locality.present?
-    locality = locality.upcase
+    locality = locality.upcase.gsub(/\(.+?\)/) {|text| text.titlecase}
     ' ' << locality << '.'
   end
 
