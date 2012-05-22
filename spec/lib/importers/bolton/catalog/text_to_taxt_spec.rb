@@ -53,6 +53,7 @@ describe Importers::Bolton::Catalog::TextToTaxt do
         :pages => "24"}]
       @converter.convert(data).should == "{ref #{reference.id}}: 24"
     end
+
     it "should handle a citation with notes" do
       reference = FactoryGirl.create :article_reference, :bolton_key_cache => 'Stephens 1829'
       data = [{
@@ -65,6 +66,13 @@ describe Importers::Bolton::Catalog::TextToTaxt do
       }]
       @converter.convert(data).should == "{ref #{reference.id}}: 356 [first spelling as Formicidae]"
     end
+
+    it "should handle a citation with form" do
+      reference = FactoryGirl.create :article_reference, :bolton_key_cache => 'Stephens 1829'
+      data = [{author_names:["Stephens"], year:"1829", pages:"356", forms: 'q'}]
+      @converter.convert(data).should == "{ref #{reference.id}}: 356 (q)"
+    end
+
     it "should handle notes" do
       data = [
         [{:phrase=>"online"}, {:bracketed=>true}],
@@ -72,6 +80,7 @@ describe Importers::Bolton::Catalog::TextToTaxt do
       ]
       @converter.notes(data).should == " [online] (diagnosis)"
     end
+
   end
 
   it "should handle a number of items" do
