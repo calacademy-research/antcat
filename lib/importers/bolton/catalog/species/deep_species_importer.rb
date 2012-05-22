@@ -51,8 +51,9 @@ class Importers::Bolton::Catalog::Species::DeepSpeciesImporter < Importers::Bolt
                                      genus: @genus,
                                      protonym: @parse_result[:protonym],
                                      history: parse_taxonomic_history(@parse_result[:history])
-          raise if species.reload.invalid?
+          set_status_from_history @genus, species, @parse_result[:history]
           @species_count += 1
+
         else Progress.error "Species with no active genus: #{@line}"
         end
 
@@ -70,6 +71,17 @@ class Importers::Bolton::Catalog::Species::DeepSpeciesImporter < Importers::Bolt
     Progress.puts "#{@genus_not_found_count} genera not found"
     Progress.puts "#{@duplicate_genera_that_need_resolving_count} duplicate genera that need resolving"
     Progress.puts "#{@error_count} could not understand"
+  end
+
+  def set_status_from_history genus, species, history
+    return unless history
+    synonym_of = history.first[:synonym_ofs].try :first
+    if synonym_of
+      senior = Species.find_by_genus_id_and_name genus.id, synonym_of[:species_epithet]
+      species.update_attributes status: 'synonym', synonym_of: senior
+    else
+      species.update_attributes status: 'valid'
+    end
   end
 
   def grammar
