@@ -51,6 +51,7 @@ class Genus < Taxon
         type_species_taxt = Importers::Bolton::Catalog::TextToTaxt.convert(data[:type_species][:texts])
         attributes[:type_taxon_taxt] = type_species_taxt
       end
+
       genus = create! attributes
       data[:taxonomic_history].each do |item|
         genus.taxonomic_history_items.create! taxt: item
