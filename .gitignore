@@ -2,10 +2,8 @@ coverage
 log
 pids
 tmp
-
 public/assets
 solr/data
-
 .rspec
 database.yml
 s3.yml
@@ -14,3 +12,4 @@ screencasts
 selenium
 mind maps
 data/pdfs
+.sass-cache
