@@ -41,6 +41,12 @@ grammar Importers::Bolton::Catalog::Grammar
 
   ##############################################################################
 
+  rule texts
+    (text* '') {
+      {:type => :texts, :texts => captures[:text].map(&:value)}
+    }
+  end
+
   rule text
     (prefix:text_delimiter* the_text:(bracketed_text_elements_with_optional_period | unbracketed_text_elements)) {
       value = the_text.value
