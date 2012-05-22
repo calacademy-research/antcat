@@ -46,6 +46,7 @@ describe Importers::Bolton::Catalog::Species::DeepSpeciesImporter do
   describe "Parsing taxonomic history" do
     it "should handle nothing" do
       @importer.parse_taxonomic_history([]).should == []
+      @importer.parse_taxonomic_history(nil).should == []
     end
     it "should work" do
       reference = FactoryGirl.create :article_reference, bolton_key_cache: 'Gray 1969'
