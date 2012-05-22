@@ -10,7 +10,6 @@
   .headline= Formatters::CatalogFormatter.format_headline taxon, current_user
 
   - if taxon.taxonomic_history_items.present?
-    %h4 Taxonomic history
     .history
       - for history_item in taxon.taxonomic_history_items do
         = render 'catalog/index/history_item/panel', item: history_item
