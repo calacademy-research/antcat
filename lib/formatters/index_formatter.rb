@@ -32,8 +32,14 @@ module Formatters::IndexFormatter
     return '' unless protonym
     string = format_protonym_name protonym
     string << ' ' << format_headline_authorship(protonym.authorship, user)
-    string << ' ' << protonym.locality.upcase << '.' if protonym.locality
+    string << format_locality(protonym.locality)
     string
+  end
+
+  def format_locality locality
+    return '' unless locality.present?
+    locality = locality.upcase
+    ' ' << locality << '.'
   end
 
   def format_protonym_name protonym
