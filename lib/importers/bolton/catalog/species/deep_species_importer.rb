@@ -78,21 +78,16 @@ class Importers::Bolton::Catalog::Species::DeepSpeciesImporter < Importers::Bolt
 
   def parse_taxonomic_history history
     Progress.method
-    parsed_taxonomic_history = []
-    #if @type == :taxonomic_history_header
-      #loop do
-        #parse_next_line
-        #convert_ponerites_headline_to_text
-        #break unless @type == :texts
-        #item = Importers::Bolton::Catalog::TextToTaxt.convert(@parse_result[:texts])
-        #if item.present?
-          #parsed_taxonomic_history << item if item.present?
-        #else
-          #Progress.error "Blank taxonomic history item: #{@line}"
-        #end
-      #end
-    #end
-    parsed_taxonomic_history
+    history.inject([]) do |items, item|
+      text = Importers::Bolton::Catalog::Grammar.parse(item[:matched_text], root: :text).value
+      taxt = Importers::Bolton::Catalog::TextToTaxt.convert text[:text]
+      if taxt.present?
+        items << taxt
+      else
+        Progress.error "Blank taxonomic history item: #{@line}"
+      end
+      items
+    end
   end
 
 end
