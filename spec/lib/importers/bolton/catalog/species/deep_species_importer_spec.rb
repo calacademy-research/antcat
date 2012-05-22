@@ -29,6 +29,17 @@ describe Importers::Bolton::Catalog::Species::DeepSpeciesImporter do
     history.size.should == 1
   end
 
+  it "should link a synonym to its senior when the senior has already been seen" do
+    contents = make_contents %{
+<p><i>ACANTHOMYRMEX</i> (Oriental, Indo-Australian)</p>
+<p><i>ferox</i>. <i>Acanthomyrmex ferox</i> Moffett, 1986c: 67 (s.w.) INDONESIA.</p>
+<p><i>dyak</i>. <i>Acanthomyrmex dyak</i> Moffett, 1986c: 67 (s.w.) INDONESIA. Junior synonym of <i>ferox</i>: Moffett, 1986c: 70.</p>
+    }
+    FactoryGirl.create :genus, name: 'Acanthomyrmex', subfamily: nil, tribe: nil
+    @importer.import_html contents
+    Species.find_by_name('dyak').should be_synonym_of Species.find_by_name 'ferox'
+  end
+
   def make_contents content
     %{
 <html> <head> <title>CATALOGUE OF SPECIES-GROUP TAXA</title> </head>
