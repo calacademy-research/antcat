@@ -120,12 +120,4 @@ grammar Importers::Bolton::Catalog::Subfamily::Grammar
     ('Tribe references: see under genera; ' text*)
   end
 
-  ##############################################################
-
-  rule texts
-    (text* '') {
-      {:type => :texts, :texts => captures[:text].map(&:value)}
-    }
-  end
-
 end
