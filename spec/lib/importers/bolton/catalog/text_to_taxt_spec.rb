@@ -16,6 +16,10 @@ describe Importers::Bolton::Catalog::TextToTaxt do
     data = [{:phrase => 'Phrase'}]
     @converter.convert(data).should == 'Phrase'
   end
+  it "should strip leading and trailing blanks" do
+    data = [{:phrase => ' Phrase '}]
+    @converter.convert(data).should == 'Phrase'
+  end
   it "should handle just a delimiter" do
     data = [{:delimiter => '.'}]
     @converter.convert(data).should == '.'
