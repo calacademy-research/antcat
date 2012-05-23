@@ -14,15 +14,10 @@ namespace :bolton do
     end
     desc "Import Bolton species catalog documents"
     task species: :environment do
-      Importers::Bolton::Catalog::Species::Importer.new(true).import_files Dir.glob "#{$BOLTON_DATA_DIRECTORY}/NGC-Sp*.htm"
-    end
-    desc "Import Bolton species catalog documents deeply"
-    task 'species:deep' => :environment do
-      Importers::Bolton::Catalog::Species::Importer.new(show_progress: true).
-        import_files Dir.glob "#{$BOLTON_DATA_DIRECTORY}/NGC-Spa-an.htm"
+      Importers::Bolton::Catalog::Species::Importer.new(show_progress: true).import_files Dir.glob "#{$BOLTON_DATA_DIRECTORY}/NGC-Spa-an.htm"
     end
     desc "Import all taxa"
-    task taxa: ['bolton:import:subfamilies', 'bolton:import:species:deep']
+    task taxa: ['bolton:import:subfamilies', 'bolton:import:species']
   end
 
   namespace :references do
