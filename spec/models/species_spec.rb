@@ -114,52 +114,6 @@ describe Species do
     end
   end
 
-  describe "Creating from a fixup" do
-    it "should create the species, and use the passed-in genus" do
-      Progress.should_receive(:log).with("FIXUP created species Atta major")
-      genus = FactoryGirl.create :genus, name: 'Atta'
-      species = Species.create_from_fixup genus_id: genus.id, name: 'Atta major', fossil: true
-      species.reload.name.should == 'major'
-      species.should_not be_invalid
-      species.should be_fossil
-      species.genus.should == genus
-    end
-
-    it "should handle a subgenus" do
-      Progress.should_receive(:log).with("FIXUP created species Atta major")
-      genus = FactoryGirl.create :genus, name: 'Atta'
-      species = Species.create_from_fixup genus_id: genus.id, name: 'Atta (Spica) major', fossil: true
-      species.reload.name.should == 'major'
-      species.should_not be_invalid
-      species.should be_fossil
-      species.genus.should == genus
-    end
-
-    it "should handle a subgenus which was a genus at the time" do
-      Progress.should_receive(:log).with("FIXUP created species Atta major")
-      genus = FactoryGirl.create :genus, name: 'Atta'
-      subgenus = FactoryGirl.create :subgenus, name: 'Lasius', genus: genus
-      species = Species.create_from_fixup subgenus_id: subgenus.id, name: 'Lasius major'
-      species.reload.name.should == 'major'
-      species.should_not be_invalid
-      species.genus.should == genus
-      species.subgenus.should == subgenus
-    end
-
-    it "should not raise an error if the passed-in genus doesn't have the same name as the genus name in the species name" do
-      genus = FactoryGirl.create :genus, name: 'NotAtta'
-      Species.create_from_fixup genus_id: genus.id, name: 'Atta major', fossil: true
-      genus.reload.should == genus
-    end
-
-    it "should find an existing species" do
-      genus = Genus.create! name: 'Atta', status: 'valid'
-      existing_species = Species.create! name: 'major', genus: genus, status: 'valid'
-      species = Species.create_from_fixup genus_id: genus.id, name: 'Atta major'
-      species.reload.should == existing_species
-    end
-  end
-
   describe "Importing" do
 
     it "should work" do

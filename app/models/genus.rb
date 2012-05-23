@@ -69,24 +69,4 @@ class Genus < Taxon
     end
   end
 
-  def self.create_from_fixup attributes
-    name = attributes[:name]
-    fossil = attributes[:fossil] || false
-    subfamily_id = attributes[:subfamily_id]
-    tribe_id = attributes[:tribe_id]
-    subfamily_id = Tribe.find(tribe_id).subfamily_id if tribe_id.present?
-
-    genus_group = Taxon.find_genus_group_by_name name
-    if genus_group
-      genus_group.update_attribute :tribe_id, tribe_id
-      Progress.log "FIXUP updated tribe for #{genus_group.type} #{genus_group.full_name}"
-    else
-      genus_group = Genus.create! name: name, status: 'valid', fossil: fossil, subfamily_id: subfamily_id,
-        tribe_id: tribe_id
-      Progress.log "FIXUP created genus #{genus_group.full_name}"
-    end
-
-    genus_group
-  end
-
 end
