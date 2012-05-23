@@ -326,4 +326,30 @@ describe Taxon do
     end
   end
 
+  describe "Cascading delete" do
+    it "should delete the protonym when the taxon is deleted" do
+      Taxon.count.should be_zero
+      Protonym.count.should be_zero
+
+      genus = FactoryGirl.create :genus, tribe: nil, subfamily: nil
+      Taxon.count.should == 1
+      Protonym.count.should == 1
+
+      genus.destroy
+      Taxon.count.should be_zero
+      Protonym.count.should be_zero
+    end
+    it "should delete history and reference sections when the taxon is deleted" do
+      Taxon.count.should be_zero
+      ReferenceSection.count.should be_zero
+
+      genus = FactoryGirl.create :genus, tribe: nil, subfamily: nil
+      genus.reference_sections.create! title: 'title', references: 'references'
+      ReferenceSection.count.should == 1
+
+      genus.destroy
+      ReferenceSection.count.should be_zero
+    end
+  end
+
 end

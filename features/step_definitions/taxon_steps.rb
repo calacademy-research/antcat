@@ -1,11 +1,8 @@
 # coding: UTF-8
 Given /^the Formicidae family exists$/ do
-  Taxon.delete_all
-  Protonym.delete_all
-  Citation.delete_all
-  ForwardReference.delete_all
-  Reference.delete_all
-  TaxonomicHistoryItem.delete_all
+  Taxon.destroy_all
+  ForwardReference.destroy_all
+  Reference.destroy_all
 
   Factory :article_reference, :author_names => [Factory(:author_name, :name => 'Latreille, I.')], :citation_year => '1809', :title => 'Ants', :bolton_key_cache => 'Latreille 1809'
 

@@ -1,6 +1,6 @@
 # coding: UTF-8
 Before do
-  Family.delete_all
+  Family.destroy_all
   Factory :family, protonym: nil
   $ReleaseType = ProductionReleaseType.new
 end
