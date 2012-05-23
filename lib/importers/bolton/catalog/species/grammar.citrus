@@ -1,4 +1,4 @@
-grammar Importers::Bolton::Catalog::Species::DeepSpeciesGrammar
+grammar Importers::Bolton::Catalog::Species::Grammar
   include Importers::Bolton::Catalog::Grammar
 
   rule root

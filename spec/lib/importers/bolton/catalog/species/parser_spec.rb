@@ -1,9 +1,9 @@
 # coding: UTF-8
 require 'spec_helper'
 
-describe Importers::Bolton::Catalog::Species::DeepSpeciesGrammar do
+describe Importers::Bolton::Catalog::Species::Grammar do
   before do
-    @grammar = Importers::Bolton::Catalog::Species::DeepSpeciesGrammar
+    @grammar = Importers::Bolton::Catalog::Species::Grammar
   end
 
   it "should parse a representative sample" do
