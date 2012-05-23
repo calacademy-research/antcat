@@ -244,34 +244,4 @@ describe Genus do
 
   end
 
-  describe "Creating from a fixup" do
-    before do
-      @subfamily = FactoryGirl.create :subfamily, name: 'Dolichoderinae'
-    end
-    it "should create the genus, and use the passed-in subfamily" do
-      Progress.should_receive(:log).with("FIXUP created genus Atta")
-      genus = Genus.create_from_fixup subfamily_id: @subfamily.id, name: 'Atta', fossil: true
-      genus.reload.name.should == 'Atta'
-      genus.should_not be_invalid
-      genus.should be_fossil
-      genus.subfamily.should == @subfamily
-    end
-
-    it "should create the genus, and use the passed-in tribe" do
-      tribe = FactoryGirl.create :tribe, subfamily: @subfamily
-      Progress.should_receive(:log).with("FIXUP created genus Atta")
-      genus = Genus.create_from_fixup tribe_id: tribe.id, name: 'Atta', fossil: true
-      genus.reload.name.should == 'Atta'
-      genus.should_not be_invalid
-      genus.should be_fossil
-      genus.tribe.should == tribe
-      genus.subfamily.should == @subfamily
-    end
-
-    it "should find an existing genus" do
-      existing_genus = FactoryGirl.create :genus, name: 'Atta', subfamily: @subfamily, status: 'valid'
-      genus = Genus.create_from_fixup subfamily_id: @subfamily.id, name: 'Atta'
-      genus.reload.should == existing_genus
-    end
-  end
 end
