@@ -83,6 +83,16 @@ describe ForwardReference do
         lambda {forward_reference.fixup}.should raise_error
       end
 
+      it "should fixup a senior synonym" do
+        genus = FactoryGirl.create :genus
+        junior_synonym = FactoryGirl.create :species, genus: genus
+        senior_synonym = FactoryGirl.create :species, name: 'major', genus: genus
+        forward_reference = ForwardReference.create! :source_id => junior_synonym.id, :target_name => 'major', target_parent: genus.id
+        forward_reference.fixup
+        junior_synonym.reload
+        junior_synonym.should be_synonym_of senior_synonym
+      end
+
     end
   end
 
