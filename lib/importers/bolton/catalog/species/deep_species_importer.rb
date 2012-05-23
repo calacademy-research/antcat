@@ -2,8 +2,9 @@
 class Importers::Bolton::Catalog::Species::DeepSpeciesImporter < Importers::Bolton::Catalog::Importer
 
   def initialize options = {}
-    ::Species.delete_all
-    ::Subspecies.delete_all
+    Species.delete_all
+    Subspecies.delete_all
+    ForwardReference.delete_all
     @options = options.reverse_merge show_progress: false
     @continue_after_parse_error = true
     @return_blank_lines = false
@@ -50,8 +51,8 @@ class Importers::Bolton::Catalog::Species::DeepSpeciesImporter < Importers::Bolt
                                      status: @parse_result[:status] || 'valid',
                                      genus: @genus,
                                      protonym: @parse_result[:protonym],
+                                     raw_history: @parse_result[:history],
                                      history: parse_taxonomic_history(@parse_result[:history])
-          set_status_from_history @genus, species, @parse_result[:history]
           @species_count += 1
 
         else Progress.error "Species with no active genus: #{@line}"
@@ -63,6 +64,8 @@ class Importers::Bolton::Catalog::Species::DeepSpeciesImporter < Importers::Bolt
       parse_next_line
     end
 
+    ForwardReference.fixup
+
     Progress.show_results
     unignored_lines_count = Progress.processed_count - @ignored_count
     Progress.puts "#{unignored_lines_count} lines"
@@ -71,17 +74,6 @@ class Importers::Bolton::Catalog::Species::DeepSpeciesImporter < Importers::Bolt
     Progress.puts "#{@genus_not_found_count} genera not found"
     Progress.puts "#{@duplicate_genera_that_need_resolving_count} duplicate genera that need resolving"
     Progress.puts "#{@error_count} could not understand"
-  end
-
-  def set_status_from_history genus, species, history
-    return unless history
-    synonym_of = history.first[:synonym_ofs].try :first
-    if synonym_of
-      senior = Species.find_by_genus_id_and_name genus.id, synonym_of[:species_epithet]
-      species.update_attributes status: 'synonym', synonym_of: senior
-    else
-      species.update_attributes status: 'valid'
-    end
   end
 
   def grammar
