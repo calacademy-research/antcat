@@ -19,11 +19,9 @@ require_relative 'tribe_importer'
 
 class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catalog::Importer
   def import
-    Taxon.delete_all
-    Protonym.delete_all
-    Citation.delete_all
-    ForwardReference.delete_all
-    MissingReference.delete_all
+    Taxon.destroy_all
+    ForwardReference.destroy_all
+    MissingReference.destroy_all
 
     parse_family
     parse_supersubfamilies

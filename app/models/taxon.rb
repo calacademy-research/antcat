@@ -6,10 +6,10 @@ class Taxon < ActiveRecord::Base
 
   belongs_to  :synonym_of, :class_name => 'Taxon', :foreign_key => :synonym_of_id
   has_one     :homonym_replaced, :class_name => 'Taxon', :foreign_key => :homonym_replaced_by_id
-  belongs_to  :protonym
+  belongs_to  :protonym, dependent: :destroy
   belongs_to  :homonym_replaced_by, :class_name => 'Taxon'
-  has_many    :taxonomic_history_items, :order => :position
-  has_many    :reference_sections, :order => :position
+  has_many    :taxonomic_history_items, order: :position, dependent: :destroy
+  has_many    :reference_sections, :order => :position, dependent: :destroy
 
   validates_presence_of :name
 

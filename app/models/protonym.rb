@@ -1,6 +1,6 @@
 # coding: UTF-8
 class Protonym < ActiveRecord::Base
-  belongs_to :authorship, :class_name => 'Citation'
+  belongs_to :authorship, class_name: 'Citation', dependent: :destroy
 
   def self.import data
     transaction do

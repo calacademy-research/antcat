@@ -66,4 +66,16 @@ describe Protonym do
 
   end
 
+  describe "Cascading delete" do
+    it "should delete the citation when the protonym is deleted" do
+      genus = FactoryGirl.create :genus, tribe: nil, subfamily: nil
+      Protonym.count.should == 1
+      Citation.count.should == 1
+
+      genus.destroy
+      Protonym.count.should be_zero
+      Citation.count.should be_zero
+    end
+  end
+
 end
