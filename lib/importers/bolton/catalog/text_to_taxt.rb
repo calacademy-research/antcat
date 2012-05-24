@@ -3,7 +3,7 @@ module Importers::Bolton::Catalog::TextToTaxt
   def self.convert texts
     (texts || []).inject('') do |taxt, item|
       taxt << convert_text_to_taxt(item)
-    end.strip
+    end
   end
 
   def self.convert_text_to_taxt item
