@@ -83,11 +83,15 @@ module Taxt
 
     italicize = [:collective_group, :genus].include? rank
 
-    if rank == :genus && data[:species_epithet]
-      if data [:subgenus_epithet]
+    if rank == :genus
+      if data[:species_epithet]
+        if data [:subgenus_epithet]
+          name += " (#{data[:subgenus_epithet]})"
+        end
+        name += ' ' + data[:species_epithet]
+      elsif data[:subgenus_epithet]
         name += " (#{data[:subgenus_epithet]})"
       end
-      name += ' ' + data[:species_epithet]
     end
 
     output = ''
