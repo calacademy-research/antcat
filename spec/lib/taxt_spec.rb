@@ -23,6 +23,9 @@ describe Taxt do
     it "should handle a genus abbreviation + subgenus epithet" do
       Taxt.encode_taxon_name('', nil, genus_abbreviation: 'C.', subgenus_epithet:"Hypochira").should == "<i>C. (Hypochira)</i>"
     end
+    it "should handle a genus name + subgenus epithet" do
+      Taxt.encode_taxon_name('Acanthostichus', :genus, subgenus_epithet:"Ctenopyga").should == "<i>Acanthostichus (Ctenopyga)</i>"
+    end
     it "should handle a genus abbreviation + species epithet" do
       Taxt.encode_taxon_name('', nil, genus_abbreviation: 'C.', species_epithet:"major").should == "<i>C. major</i>"
     end
