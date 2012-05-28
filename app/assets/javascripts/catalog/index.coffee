@@ -21,18 +21,19 @@ set_height = (taxon_area_height = 'fixed') ->
     set_fixed_height()
   else
     set_auto_height()
+  set_catalog_height()
 
 set_auto_height = ->
-  $("#page").height 'auto'
+  $('#page').css 'overflow', 'auto'
   $(".antcat_taxon").height 'auto'
   $(".antcat_taxon").css 'min-height', '20em'
-  $("#catalog").height 'auto'
-  $("#catalog .index").height 'auto'
 
 set_fixed_height = ->
-  $("#page").height '100%'
+  $('#page').css 'overflow', 'visible'
   $(".antcat_taxon").height '20em'
   $(".antcat_taxon").css 'min-height', ''
+
+set_catalog_height = ->
   height = calculate_catalog_height()
   $("#catalog").height height
   $("#catalog .index").height height - $("#catalog .content").height()
