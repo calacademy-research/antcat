@@ -29,7 +29,7 @@ set_auto_height = ->
   $(".antcat_taxon").css 'min-height', '20em'
 
 set_fixed_height = ->
-  $('#page').css 'overflow', 'visible'
+  $('#page').css 'overflow', 'inherit'
   $(".antcat_taxon").height '20em'
   $(".antcat_taxon").css 'min-height', ''
 
