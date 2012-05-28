@@ -20,26 +20,23 @@ set_height = (taxon_area_height = 'fixed') ->
   if taxon_area_height is 'fixed'
     $("#page").height '100%'
     $(".antcat_taxon").height '20em'
-    $(".antcat_taxon").css 'max-height', ''
+    $(".antcat_taxon").css 'min-height', ''
+
+    height = $('#page').height() -
+      $('#site_header').height() -
+      $('#page_header').height() - 2 -
+      $('#page_notice').height() -
+      $('#page_alert').height() -
+      $('#search_results').height() - 3 - 2 - 2 -
+      $('#taxon_key').height() - 2 -
+      $('#site_footer').height() - 8
+    $("#catalog").height height
+    $("#catalog .index").height height - $("#catalog .content").height()
+
   else
     $("#page").height 'auto'
     $(".antcat_taxon").height 'auto'
-    $(".antcat_taxon").css 'max-height',
-      if taxon_area_height is 'maxed' then '' else '20em'
-
-  height = $('#page').height() -
-    $('#site_header').height() -
-    $('#page_header').height() - 2 -
-    $('#page_notice').height() -
-    $('#page_alert').height() -
-    $('#search_results').height() - 3 - 2 - 2 -
-    $('#taxon_key').height() - 2 -
-    $('#site_footer').height() - 8
-
-  if taxon_area_height is 'fixed'
-    $("#catalog").height height
-    $("#catalog .index").height height - $("#catalog .content").height()
-  else
+    $(".antcat_taxon").css 'min-height', '20em'
     $("#catalog").height 'auto'
     $("#catalog .index").height 'auto'
 
