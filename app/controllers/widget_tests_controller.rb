@@ -8,7 +8,6 @@ class WidgetTestsController < ApplicationController
   end
 
   def nested_form
-    lll params['Name']
     head 200 if request.method == 'POST'
   end
 
