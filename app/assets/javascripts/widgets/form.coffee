@@ -8,10 +8,12 @@ class AntCat.Form
     @element
       .addClass('antcat_form')
       .find('.submit')
+        .unbutton()
         .button()
         .click(@submit)
         .end()
       .find('.cancel')
+        .unbutton()
         .button()
         .click(@cancel)
         .end()
