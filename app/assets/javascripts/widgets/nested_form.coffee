@@ -13,10 +13,14 @@ class AntCat.NestedForm
     @element
       .addClass('nested_form')
       .find(@options.button_container)
-        .find(':button').button().end()
+        .find(':button').unbutton().button().end()
         .find(':button.submit').click(@submit).end()
         .find(':button.cancel').click(@cancel).end()
         .end()
+      .keypress (event) =>
+        return true unless event.which is $.ui.keyCode.ENTER
+        @submit()
+        false
 
   open: =>
     @element.find('input[type=text]:visible:first').focus()
