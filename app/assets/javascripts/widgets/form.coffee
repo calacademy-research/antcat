@@ -1,22 +1,25 @@
 window.AntCat or= {}
 
 class AntCat.Form
-  constructor: ($element, @options = {}) -> @initialize $element
+  @css_class = 'antcat_form'
+
+  constructor: ($element, @options = {}) ->
+    @options.button_container or= '> .buttons'
+    @initialize $element
 
   initialize: ($element) =>
     @element = $element
     @element
-      .addClass('antcat_form')
-      .find('.submit')
-        .unbutton()
-        .button()
-        .click(@submit)
+      .addClass(AntCat.Form.css_class)
+      .find(@options.button_container)
+        .find(':button').unbutton().button().end()
+        .find(':button.submit').click(@submit).end()
+        .find(':button.cancel').click(@cancel).end()
         .end()
-      .find('.cancel')
-        .unbutton()
-        .button()
-        .click(@cancel)
-        .end()
+      .keypress (event) =>
+        return true unless event.which is $.ui.keyCode.ENTER
+        @submit()
+        false
 
   open: =>
     @element.find('input[type=text]:visible:first').focus()
@@ -26,21 +29,28 @@ class AntCat.Form
 
   submit: =>
     @start_spinning()
-    @element.ajaxSubmit
+    @form().ajaxSubmit
       beforeSerialize: @before_serialize
       success: @update
       error: @handle_error
       dataType: 'json'
     false
+  form: => @element
+  before_serialize: ($form, options) =>
+    return @options.before_serialize($form, options) if @options.before_serialize
+    true
 
   cancel: =>
     @options.on_cancel() if @options.on_cancel
+    @close()
     false
 
   update: (data, statusText, xhr, $form) =>
     @stop_spinning()
-    @options.on_update data
-    @options.on_done data if data.success and @options.on_done
+    @options.on_update data if @options.on_update
+    if data.success
+      @options.on_done data if @options.on_done
+      @close()
 
   handle_error: (jq_xhr, text_status, error_thrown) =>
     @stop_spinning()
@@ -53,6 +63,5 @@ class AntCat.Form
 
   stop_spinning: =>
     @element.find('.spinner').spinner 'remove'
-    @element.find(':button').undisable()
+    @element.find('.buttons :button').undisable()
 
-  before_serialize: ($form, options) => true
