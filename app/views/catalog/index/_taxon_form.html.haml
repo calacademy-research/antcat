@@ -21,7 +21,6 @@
       %tr
         %td= label_tag 'Authorship'
         %td.reference_picker
-          = render 'reference_pickers/show', references: nil, current_reference: nil
       %tr
         %td.spinner_container{:colspan => 4}
           %button.ui-priority-primary.submit= @possible_duplicate ? 'Save Anyway' : 'Save'
