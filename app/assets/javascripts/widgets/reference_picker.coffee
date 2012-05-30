@@ -1,15 +1,15 @@
 class AntCat.ReferencePicker
 
-  constructor: (parent, @original_reference_id, @result_handler) ->
+  constructor: ($parent, @original_reference_id, @result_handler) ->
     @current_reference_id = @original_reference_id
-    @create parent
+    @create $parent
     @load()
     @
 
-  create: (parent) =>
+  create: ($parent) =>
     @element = $('<div/>').addClass 'antcat_reference_picker ui-widget ui-widget-content ui-corner-all'
     @element.append @bootstrap_help_banner()
-    @element.appendTo parent
+    @element.appendTo $parent
 
   bootstrap_help_banner: =>
     $ """
