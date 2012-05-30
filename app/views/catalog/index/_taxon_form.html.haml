@@ -4,7 +4,7 @@
 .taxon_form.ui-corner-all.ui-widget-content.ui-widget
   - genus ||= Genus.new
   = form_for genus do |f|
-    = creating_taxon_message :genus, tribe
+    %span.creating_taxon_message= creating_taxon_message :genus, tribe
     = render 'shared/errors_for', resource: genus
 
     -#%input{type: 'hidden', name: 'subfamily_id', value: subfamily_id}
