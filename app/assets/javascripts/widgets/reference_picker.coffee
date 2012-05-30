@@ -81,8 +81,9 @@ class AntCat.ReferencePicker
     self = @
     @search_form
       .find('.controls')
-        .removeClass('ui-state-disabled')
+        .undisable()
         .find(':button')
+          .unbutton()
           .button()
           .end()
         .end()
@@ -120,7 +121,7 @@ class AntCat.ReferencePicker
 
       .find('.pagination a')
         .click ->
-          self.load_clicked_page this
+          self.load_clicked_page @
           false
         .end()
 
@@ -138,7 +139,7 @@ class AntCat.ReferencePicker
           @enable_search_author_autocomplete()
         @textbox.focus()
 
-  enable_search_controls: => @search_form.find('.controls').removeClass 'ui-state-disabled'
+  enable_search_controls: => @search_form.find('.controls').undisable()
   disable_search_controls: => @search_form.find('.controls').disable()
 
   # -----------------------------------------
@@ -201,8 +202,8 @@ class AntCat.ReferencePicker
 
   # -----------------------------------------
   enable_search_author_autocomplete: =>
-    @enable_browser_autocomplete false
     return if AntCat.testing
+    @enable_browser_autocomplete false
     @textbox.autocomplete
       autoFocus: true
       minLength: 3
