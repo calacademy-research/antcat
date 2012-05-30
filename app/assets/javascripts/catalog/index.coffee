@@ -50,4 +50,4 @@ calculate_catalog_height = ->
   $('#site_footer').height() - 8
 
 set_width = ->
-  $("#catalog .content").width $('#page').width()
+  $("#catalog .content, #catalog .new_taxon_form").width $('#page').width()
