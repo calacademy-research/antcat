@@ -139,7 +139,6 @@ EOS
     template =
     case
       when params[:picker].present? then 'reference_pickers/panel'
-      when params[:field].present? then 'reference_fields/panel'
       else 'references/reference'
     end
 

@@ -1,7 +1,7 @@
 - @title = 'Reference Field Test'
 
 - content_for :head do
-  = javascript_include_tag 'widgets/panel', 'widgets/form', 'widgets/nested_form', 'widgets/reference_panel', 'widgets/reference_field'
+  = javascript_include_tag 'widgets/panel', 'widgets/form', 'widgets/nested_form', 'widgets/reference_panel', 'widgets/reference_picker'
   = javascript_include_tag 'widget_tests/reference_field'
 
   :javascript
@@ -17,7 +17,7 @@
       %tr
         %td= label_tag 'Authorship'
         %td.reference_field
-          = render 'reference_fields/show', references: nil, current_reference: nil
+          = render 'reference_picker/show', references: nil, current_reference: nil
       %tr
         %td= label_tag :name
         %td= text_field_tag :name

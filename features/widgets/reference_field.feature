@@ -6,4 +6,4 @@ Feature: Reference field
     Then I should see "No reference selected"
     When I add a reference by Brian Fisher
     And I save my changes
-    #Then I should see "Reference by Fisher selected"
+    Then I should see "Reference by Fisher selected"
