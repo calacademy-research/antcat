@@ -32,31 +32,29 @@ setup_login = ->
 #_something seems to override this method when it's named
 # enable - it doesn't get called
 $.fn.undisable = ->
-  $(this)
-    .removeClass('ui-state-disabled')
-    .removeAttr('disabled')
+  @.removeClass('ui-state-disabled')
+   .removeAttr('disabled')
 
 $.fn.disable = ->
-  $(this)
-    .addClass('ui-state-disabled')
-    .attr('disabled', 'true')
+  @.addClass('ui-state-disabled')
+   .attr('disabled', 'true')
 
 setup_reference_keys = ->
   $('.reference_key, .reference_key_expansion_text').live 'click', ->
-    $(this)
-      .closest('.reference_key_and_expansion')
-      .find('.reference_key, .reference_key_expansion')
-      .toggle()
+    $(@).closest('.reference_key_and_expansion')
+           .find('.reference_key, .reference_key_expansion')
+           .toggle()
 
 # find just the topmost elements that match - don't drill down into them
 $.fn.find_topmost = ->
   self = @
-  @filter -> not self.is $(this).parents()
+  @filter -> not self.is @parents()
 
 # calling button('destroy') isn't getting through to the destroy function
 # for some reason to do with jQuery UI's widget factory, so do this part
 # manually
 $.fn.unbutton = ->
-  button_text = $(this).find '.ui-button-text'
-  return this unless button_text.length > 0
-  this.html button_text.html()
+  button_text = @find '.ui-button-text'
+  return @ unless button_text.length > 0
+  @html button_text.html()
+  @
