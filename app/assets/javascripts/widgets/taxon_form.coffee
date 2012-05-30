@@ -6,7 +6,7 @@ class AntCat.TaxonForm extends AntCat.Form
     @open()
 
   open: =>
-    @element.closest('.taxon_form').show()
+    @element.closest('.taxon_form').show 'slidedown'
     super
 
   close: =>
