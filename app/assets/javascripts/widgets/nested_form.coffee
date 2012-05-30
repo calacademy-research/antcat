@@ -16,19 +16,22 @@ class AntCat.NestedForm extends AntCat.Form
   @css_class = 'nested_form'
 
   form: =>
-    $nested_form = @element.clone()
-    @copy_text_area_values $nested_form
-    $nested_form.find('.nested_form').remove()
+    AntCat.NestedForm.create_form_from @element
+
+  @create_form_from: ($source) ->
+    $target_form = $source.clone()
+    AntCat.NestedForm.copy_text_area_values $source, $target_form
+    $target_form.find('.nested_form').remove()
     $form = $('<form/>')
-    $form.html $nested_form
-    $form.attr 'action', $nested_form.data 'action'
-    $form.attr 'method', $nested_form.data 'method'
+    $form.html $target_form
+    $form.attr 'action', $target_form.data 'action'
+    $form.attr 'method', $target_form.data 'method'
     $form
 
-  copy_text_area_values: ($target) =>
+  @copy_text_area_values: ($source, $target) ->
     # Fix bug in FireFox/jQuery where the value of textareas
     # isn't copied when the textarea is cloned
-    $source_textareas = @element.find 'textarea'
+    $source_textareas = $source.find 'textarea'
     $target_textareas = $target.find 'textarea'
     for i in [0...$source_textareas.length]
       $target_textareas.eq(i).val $source_textareas.eq(i).val()
