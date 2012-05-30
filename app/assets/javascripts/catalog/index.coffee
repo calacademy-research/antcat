@@ -8,9 +8,9 @@ $ ->
   #$('.icon.edit').click() if AntCat.environment is 'development'
   $('.rank .genera .add a').click add_genus
 
-add_genus = -> new AntCat.TaxonForm $('.new_taxon_form form')
-  on_open: -> set_height: 'maxed'
-  on_close: -> set_height: 'fixed'
+add_genus = -> new AntCat.TaxonForm $('.taxon_form form'),
+  on_open: -> set_height 'auto'
+  on_close: -> set_height 'fixed'
 
 set_dimensions = ->
   set_height()
@@ -19,14 +19,15 @@ set_dimensions = ->
 set_height = (taxon_area_height = 'fixed') ->
   if taxon_area_height is 'fixed'
     set_fixed_height()
+    set_catalog_height()
   else
     set_auto_height()
-  set_catalog_height()
 
 set_auto_height = ->
   $('#page').css 'overflow', 'auto'
   $(".antcat_taxon").height 'auto'
   $(".antcat_taxon").css 'min-height', '20em'
+  $('#catalog .index').css 'height', ''
 
 set_fixed_height = ->
   $('#page').css 'overflow', 'inherit'
