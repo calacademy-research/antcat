@@ -7,6 +7,8 @@ class AntCat.ReferencePicker
     @
 
   create: ($parent) =>
+    @element = $parent.find('> .antcat_reference_picker')
+    return if @element.length > 0
     @element = $('<div/>').addClass 'antcat_reference_picker ui-widget ui-widget-content ui-corner-all'
     @element.append @bootstrap_help_banner()
     @element.appendTo $parent
