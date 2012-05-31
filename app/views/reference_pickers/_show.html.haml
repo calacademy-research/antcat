@@ -9,39 +9,40 @@
       - if current_reference
         = render 'reference_pickers/panel', reference: current_reference, publisher_string: ''
 
-.search_form.nested_form
-  -# this table is to provide a fixed-width column for the throbber beside
-  -# a variable width and height column for the controls
-  %table
-    %tr
-      %td.throbber= image_tag 'ui-anim_basic_16x16.gif'
-      %td.controls
-        .ok_cancel_controls
-          = button_tag 'OK', class: 'ok ui-priority-primary'
-          = button_tag 'Cancel', class: 'close ui-priority-secondary'
+.expansion
+  .search_form.nested_form
+    -# this table is to provide a fixed-width column for the throbber beside
+    -# a variable width and height column for the controls
+    %table
+      %tr
+        %td.throbber= image_tag 'ui-anim_basic_16x16.gif'
+        %td.controls
+          .ok_cancel_controls
+            = button_tag 'OK', class: 'ok ui-priority-primary'
+            = button_tag 'Cancel', class: 'close ui-priority-secondary'
 
-        .add_controls
-          = button_tag 'Add', class: 'add ui-priority-primary'
+          .add_controls
+            = button_tag 'Add', class: 'add ui-priority-primary'
 
-        .search_controls
-          = select_tag "search_selector", options_for_select(["Search for", "Search for author(s)"], params[:search_selector]), class: 'search_selector'
-          = text_field_tag "q", params[:q], class: 'q'
-          = button_tag 'Go', class: 'go ui-priority-primary'
-          = button_tag 'Cancel', class: 'close ui-priority-secondary'
+          .search_controls
+            = select_tag "search_selector", options_for_select(["Search for", "Search for author(s)"], params[:search_selector]), class: 'search_selector'
+            = text_field_tag "q", params[:q], class: 'q'
+            = button_tag 'Go', class: 'go ui-priority-primary'
+            = button_tag 'Cancel', class: 'close ui-priority-secondary'
 
-        = will_paginate references if references
+          = will_paginate references if references
 
-        .help_banner
-          %span.help_banner_text
+          .help_banner
+            %span.help_banner_text
 
-- if references && (references.first != current_reference || references.size != 1 || params[:q].present?)
+  - if references && (references.first != current_reference || references.size != 1 || params[:q].present?)
 
-  -if references.empty?
-    .no_results_found No results found
+    -if references.empty?
+      .no_results_found No results found
 
-  %table.references.search_results
-    - for reference in references
-      %tr.reference_row
-        %td= render 'reference_pickers/panel', reference: reference, publisher_string: ''
+    %table.references.search_results
+      - for reference in references
+        %tr.reference_row
+          %td= render 'reference_pickers/panel', reference: reference, publisher_string: ''
 
-= render 'shared/qtip'
+  = render 'shared/qtip'
