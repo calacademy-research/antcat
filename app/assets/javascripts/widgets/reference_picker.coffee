@@ -15,14 +15,16 @@ class AntCat.ReferencePicker
 
   bootstrap_help_banner: =>
     $ """
-    <div class='search_form nested_form'>
-      <table><tr><td/><td>
-        <div class='ok_cancel_controls'/>
-        <div class='search_controls'/>
-        <div class='help_banner'><span class='help_banner_text'/></div>
-      </td></tr></table>
-      <div class='throbber'/>
-    </form>
+    <div class='expansion'>
+      <div class='search_form nested_form'>
+        <table><tr><td/><td>
+          <div class='ok_cancel_controls'/>
+          <div class='search_controls'/>
+          <div class='help_banner'><span class='help_banner_text'/></div>
+        </td></tr></table>
+        <div class='throbber'/>
+      </div>
+    </div>
     """
 
   load: (url = '') =>
@@ -51,7 +53,8 @@ class AntCat.ReferencePicker
   initialize: =>
     @template = @element.find '> .template'
     @current = @element.find '> .current'
-    @search_form = @element.find '> .search_form'
+    @current.click => @toggle_expanded()
+    @search_form = @element.find '> .expansion .search_form'
     @search_selector = @element.find '.search_selector'
     @textbox = @element.find '.q'
     @search_results = @element.find '.search_results'
@@ -60,6 +63,13 @@ class AntCat.ReferencePicker
     @setup_references()
     @handle_new_selection()
     @textbox.focus()
+
+  toggle_expanded: =>
+    $expansion = @element.find('.expansion')
+    if $expansion.is ':hidden'
+      @element.find('.expansion').show()
+    else
+      @element.find('.expansion').hide()
 
   search: =>
     @load $.param q: @textbox.val(), search_selector: @search_selector.val()
