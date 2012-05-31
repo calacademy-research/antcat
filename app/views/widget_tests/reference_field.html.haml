@@ -9,7 +9,7 @@
     AntCat.test_reference_id = #{params[:id].present? ? Reference.first.id : 'null'};
 
 - content_for :page_contents do
-  %form#form.antcat_form.ui-corner-all.ui-widget-content.ui-widget
+  %form#taxon_form.antcat_form.ui-corner-all.ui-widget-content.ui-widget
     %table
       %col{:width => '50px'}
       %col{:width => '*'}
