@@ -1,13 +1,12 @@
 -#Locals: references, current_reference
 
 .template
-  = render 'reference_pickers/panel', reference: nil, publisher_string: ''
+  = render 'reference_pickers/panel', reference: Reference.new, publisher_string: ''
 
 %table.references.current
   %tr.reference_row
     %td
-      - if current_reference
-        = render 'reference_pickers/panel', reference: current_reference, publisher_string: ''
+      = render 'reference_pickers/panel', reference: current_reference, publisher_string: ''
 
 .expansion
   .search_form.nested_form
