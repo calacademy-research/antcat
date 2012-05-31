@@ -167,11 +167,11 @@ class AntCat.ReferencePicker
         .end()
 
     @search_results
-      .find(".reference_#{@current_reference_id} div.display")
+      .find(".reference item_#{@current_reference_id} div.display")
         .addClass('ui-selected')
         .end()
 
-    @search_results.find(".reference_#{@current_reference_id} div.display")
+    @search_results.find('.reference')
       .selectable('destroy')
       .selectable(filter: 'div.display', stop: @handle_new_selection, cancel: '.icons, div.edit')
 
