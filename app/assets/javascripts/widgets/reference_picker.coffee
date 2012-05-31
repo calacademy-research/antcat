@@ -210,6 +210,7 @@ class AntCat.ReferencePicker
   current_reference: =>
     references = @current.find('.reference')
     return if references.length is 0
+    return unless references.data 'id'
     references
 
   # -----------------------------------------
