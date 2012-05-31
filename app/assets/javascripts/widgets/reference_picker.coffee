@@ -54,10 +54,10 @@ class AntCat.ReferencePicker
     @template = @element.find '> .template'
     @current = @element.find '> .current'
     @current.click => @toggle_expanded()
-    @search_form = @element.find '> .expansion .search_form'
-    @search_selector = @element.find '.search_selector'
-    @textbox = @element.find '.q'
-    @search_results = @element.find '.search_results'
+    @search_form = @element.find '> .expansion > .search_form'
+    @search_selector = @search_form.find '.search_selector'
+    @textbox = @search_form.find '.q'
+    @search_results = @element.find '> .expansion > .search_results'
 
     @setup_search()
     @setup_references()
