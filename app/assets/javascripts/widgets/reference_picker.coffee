@@ -268,18 +268,17 @@ class AntCat.ReferencePicker
 
   # -----------------------------------------
   update_help_banner: =>
-    verb = if @original_reference_id then 'use' else 'insert'
     any_search_results = @search_results.find('.reference').length > 0
     if @current_reference()
       if any_search_results
         other_verb = 'choose'
       else
         other_verb = 'search for'
-      help = "Click OK to #{verb} this reference, or add or #{other_verb} a different one"
+      help = "Click OK to use this reference, or add or #{other_verb} a different one"
     else
       if any_search_results
-        help = "Choose a reference to #{verb}"
+        help = "Choose a reference to use"
       else
-        help = "Find a reference to #{verb}"
+        help = "Find a reference to use"
       help += ', or add one'
     @element.find('.help_banner_text').text help
