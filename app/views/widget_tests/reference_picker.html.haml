@@ -3,6 +3,3 @@
 - content_for :head do
   = javascript_include_tag 'widgets/panel', 'widgets/form', 'widgets/nested_form', 'widgets/reference_panel', 'widgets/reference_picker'
   = javascript_include_tag 'widget_tests/reference_picker'
-
-  :javascript
-    AntCat.test_reference_id = #{params[:id].present? ? Reference.first.id : 'null'};

@@ -5,6 +5,7 @@ class WidgetTestsController < ApplicationController
   end
 
   def reference_field
+    @taxon = Family.first
   end
 
   def nested_form
