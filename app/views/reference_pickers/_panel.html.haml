@@ -18,5 +18,3 @@
         - if reference
           = render 'reference_pickers/display', reference: reference if !reference.new_record? && reference.errors.empty?
           = render 'reference_pickers/edit', reference: reference, publisher_string: publisher_string
-        - else
-          (none)
