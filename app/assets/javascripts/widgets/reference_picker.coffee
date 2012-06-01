@@ -1,17 +1,22 @@
 class AntCat.ReferencePicker
 
-  constructor: ($parent, @original_reference_id, @result_handler) ->
-    @current_reference_id = @original_reference_id
-    @create $parent
-    @load()
+  constructor: ($parent, @options = {}) ->
+    @current_reference_id = @options.id
+    @options.static_or_dynamic ||= 'static'
+    @create_if_necessary $parent
+    @element = $parent.find('> .antcat_reference_picker')
+    if @options.static_or_dynamic == 'dynamic'
+      @load()
+    else
+      @initialize()
     @
 
-  create: ($parent) =>
-    @element = $parent.find('> .antcat_reference_picker')
-    return if @element.length > 0
-    @element = $('<div/>').addClass 'antcat_reference_picker ui-widget ui-widget-content ui-corner-all'
-    @element.append @bootstrap_help_banner()
-    @element.appendTo $parent
+  create_if_necessary: ($parent) =>
+    element = $parent.find('> .antcat_reference_picker')
+    return if element.length > 0
+    element = $('<div/>').addClass 'antcat_reference_picker ui-widget ui-widget-content ui-corner-all'
+    element.append @bootstrap_help_banner()
+    element.appendTo $parent
 
   bootstrap_help_banner: =>
     $ """
@@ -53,23 +58,21 @@ class AntCat.ReferencePicker
   initialize: =>
     @template = @element.find '> .template'
     @current = @element.find '> .current'
-    @current.click => @toggle_expanded()
+    @current.click => @toggle_expansion()
     @search_form = @element.find '> .expansion > .search_form'
     @search_selector = @search_form.find '.search_selector'
     @textbox = @search_form.find '.q'
     @search_results = @element.find '> .expansion > .search_results'
+    @expansion = @element.find '.expansion'
 
     @setup_search()
     @setup_references()
     @handle_new_selection()
     @textbox.focus()
 
-  toggle_expanded: =>
-    $expansion = @element.find('.expansion')
-    if $expansion.is ':hidden'
-      @element.find('.expansion').show()
-    else
-      @element.find('.expansion').hide()
+  show_expansion: => @expansion.show('slidedown'); @setup_search_selector()
+  hide_expansion: => @expansion.hide('slideup')
+  toggle_expansion: => if @expansion.is ':hidden' then @show_expansion() else @hide_expansion()
 
   search: =>
     @load $.param q: @textbox.val(), search_selector: @search_selector.val()
@@ -142,6 +145,7 @@ class AntCat.ReferencePicker
 
   setup_search_selector: =>
     @search_selector
+      .selectmenu('destroy')
       .selectmenu(wrapperElement: "<span />")
       .change =>
         new_type = @search_selector.find('option:selected').text()
