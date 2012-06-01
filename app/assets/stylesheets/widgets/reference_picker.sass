@@ -85,8 +85,14 @@ $antcat_reference_picker_gutter_size: 20px
     vertical-align: middle
     margin-left: 3px
 
-  &.has-no-current-reference
-    .current
+  .has_no_current_reference
+    display: none
+
+  &.has_no_current_reference
+    .has_no_current_reference
+      display: block
+    .has_current_reference
+      display: none
     .ok_cancel_controls
       display: none !important
     .search_controls
