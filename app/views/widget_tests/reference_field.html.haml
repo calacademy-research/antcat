@@ -5,9 +5,6 @@
   = javascript_include_tag 'widget_tests/reference_field'
   = stylesheet_link_tag 'catalog/taxon_form'
 
-  :javascript
-    AntCat.test_reference_id = #{params[:id].present? ? Reference.first.id : 'null'};
-
 - content_for :page_contents do
   %form#taxon_form.antcat_form.ui-corner-all.ui-widget-content.ui-widget
     %table
@@ -17,9 +14,11 @@
       %col{:width => '100px'}
       %tr
         %td.authorship= label_tag 'Authorship'
+
         %td.reference_field
           .antcat_reference_picker.ui-widget.ui-widget-content.ui-corner-all
-            = render 'reference_pickers/show', references: nil, current_reference: nil
+            = render 'reference_pickers/show', references: nil, current_reference: @taxon.protonym.authorship.reference
+
       %tr
         %td= label_tag :name
         %td= text_field_tag :name
