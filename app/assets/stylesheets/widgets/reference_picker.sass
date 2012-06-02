@@ -2,6 +2,7 @@
 @import 'reference'
 @import 'ext/jquery.ui.selectmenu'
 
+$expand_collapse_width: 16px
 $antcat_reference_picker_color_background: desaturate(#98FB98, 50%) // palegreen
 $antcat_reference_picker_color_form_background: desaturate(#006400, 50%) // darkgreen
 $antcat_reference_picker_color_help: lightgray
@@ -14,6 +15,11 @@ $antcat_reference_picker_gutter_size: 20px
   margin-top: 4px
   margin-bottom: 4px
 
+  .expand_collapse_icon
+    width: $expand_collapse_width !important
+    img
+      display: none
+
   .icons
     width: $antcat_reference_picker_gutter_size !important
 
@@ -22,6 +28,8 @@ $antcat_reference_picker_gutter_size: 20px
 
   .current
     width: 100%
+    .expand_collapse_icon img
+      display: inline
 
   .expansion
     display: none
