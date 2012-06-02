@@ -14,9 +14,12 @@
       %td.expand_collapse_icon
         = image_tag 'collapsed.png', alt: ''
       %td.icons
-        %a.icon.edit{title: 'edit', href: '#'}
-          = image_tag 'edit_off.png', alt: 'edit'
+        - if reference
+          %a.icon.edit{title: 'edit', href: '#'}
+            = image_tag 'edit_off.png', alt: 'edit'
       %td.reference_item
         - if reference
           = render 'reference_pickers/display', reference: reference if !reference.new_record? && reference.errors.empty?
           = render 'reference_pickers/edit', reference: reference, publisher_string: publisher_string
+        - else
+          (none)

@@ -15,7 +15,7 @@
       %tr
         %td.authorship= label_tag 'Authorship'
         %td#authorship_picker.antcat_reference_picker.ui-widget.ui-widget-content.ui-corner-all
-          = render 'reference_pickers/show', references: nil, current_reference: @taxon.protonym.authorship.reference
+          = render 'reference_pickers/show', references: nil, current_reference: Reference.first
       %tr
         %td.authorship= label_tag 'Authorship'
         %td#other_authorship_field.antcat_reference_picker.ui-widget.ui-widget-content.ui-corner-all

@@ -6,10 +6,7 @@
 %table.references.current
   %tr.reference_row
     %td
-      %div.has_current_reference
-        = render 'reference_pickers/panel', reference: current_reference, publisher_string: ''
-      %div.has_no_current_reference
-        (none)
+      = render 'reference_pickers/panel', reference: current_reference, publisher_string: ''
 
 .expansion
   .search_form.nested_form
