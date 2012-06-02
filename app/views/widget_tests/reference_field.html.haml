@@ -14,14 +14,12 @@
       %col{:width => '100px'}
       %tr
         %td.authorship= label_tag 'Authorship'
-        %td.reference_field
-          .antcat_reference_picker.ui-widget.ui-widget-content.ui-corner-all
-            = render 'reference_pickers/show', references: nil, current_reference: @taxon.protonym.authorship.reference
+        %td#authorship_picker.antcat_reference_picker.ui-widget.ui-widget-content.ui-corner-all
+          = render 'reference_pickers/show', references: nil, current_reference: @taxon.protonym.authorship.reference
       %tr
         %td.authorship= label_tag 'Authorship'
-        %td.reference_field
-          .antcat_reference_picker.ui-widget.ui-widget-content.ui-corner-all
-            = render 'reference_pickers/show', references: nil, current_reference: nil
+        %td#other_authorship_field.antcat_reference_picker.ui-widget.ui-widget-content.ui-corner-all
+          = render 'reference_pickers/show', references: nil, current_reference: nil
 
       %tr
         %td= label_tag :name
