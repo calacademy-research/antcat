@@ -60,13 +60,13 @@ class AntCat.ReferencePicker
   toggle_expansion: => if @expansion.is ':hidden' then @show_expansion() else @hide_expansion()
 
   search: =>
-    @load $.param q: @textbox.val(), search_selector: @search_selector.val()
+    @load @get_search_form_parameters()
 
   load_clicked_page: (link) =>
     @load $(link).attr('href') + '&' + @get_search_form_parameters()
 
   get_search_form_parameters: =>
-    AntCat.NestedForm.create_form_from(@search_form).serialize()
+    $.param q: @textbox.val(), search_selector: @search_selector.val()
 
   close: (cancel = false) =>
     taxt = if not cancel and @current_reference() then @current_reference().data 'taxt' else null
