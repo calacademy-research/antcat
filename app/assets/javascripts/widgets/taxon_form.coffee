@@ -2,7 +2,7 @@ class AntCat.TaxonForm extends AntCat.Form
 
   constructor: ->
     super
-    new AntCat.ReferencePicker @element.find('.reference_picker'), null, null, true
+    new AntCat.ReferencePicker @element.find('.antcat_reference_picker'), null, null, true
     @open()
 
   open: =>
