@@ -50,9 +50,9 @@ class AntCat.TaxtEditBox
     $form = @control.closest('form')
     $form.find('.buttons').hide()
     @replace_text_area_with_simulation()
-    $('.antcat_reference_picker').remove()
     id = if @is_tag_selected() then TaxtEditBox.extract_id_from_editable_taxt @selection() else null
-    new AntCat.ReferencePicker $form, id, @handle_reference_picker_result
+    $picker = $form.find('.antcat_reference_picker')
+    new AntCat.ReferencePicker $picker, id, @handle_reference_picker_result
 
   replace_text_area_with_simulation: =>
     # We need to indicate the selected reference in the taxt edit box event
