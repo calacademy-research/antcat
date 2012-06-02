@@ -2,10 +2,9 @@ class AntCat.ReferencePicker
 
   constructor: ($parent, @options = {}) ->
     @current_reference_id = @options.id
-    @options.static_or_dynamic ||= 'static'
     @create_if_necessary $parent
     @element = $parent.find('> .antcat_reference_picker')
-    if @options.static_or_dynamic == 'dynamic'
+    if @current_reference_id
       @load()
     else
       @initialize()
@@ -65,13 +64,21 @@ class AntCat.ReferencePicker
     @search_results = @element.find '> .expansion > .search_results'
     @expansion = @element.find '.expansion'
 
+    @show_expansion() if @options.expanded
+
     @setup_search()
     @setup_references()
     @handle_new_selection()
     @textbox.focus()
 
-  show_expansion: => @expansion.show('slidedown'); @setup_search_selector()
-  hide_expansion: => @expansion.hide('slideup')
+  show_expansion: =>
+    @element.find('.expand_collapse_icon img').attr 'src', '/assets/expanded.png', alt: 'expand'
+    @expansion.show()
+    # apparently, can't setup selectmenu unless it's visible
+    @setup_search_selector()
+  hide_expansion: =>
+    @expansion.hide('slideup')
+    @element.find('.expand_collapse_icon img').attr 'src', '/assets/collapsed.png', alt: 'collapse'
   toggle_expansion: => if @expansion.is ':hidden' then @show_expansion() else @hide_expansion()
 
   search: =>
