@@ -72,13 +72,13 @@ class AntCat.ReferencePicker
     @textbox.focus()
 
   show_expansion: =>
-    @element.find('.expand_collapse_icon img').attr 'src', '/assets/expanded.png', alt: 'expand'
+    @element.find('.expand_collapse_icon img').attr 'src', AntCat.expanded_image_path
     @expansion.show()
     # apparently, can't setup selectmenu unless it's visible
     @setup_search_selector()
   hide_expansion: =>
     @expansion.hide()
-    @element.find('.expand_collapse_icon img').attr 'src', '/assets/collapsed.png', alt: 'collapse'
+    @element.find('.expand_collapse_icon img').attr 'src', AntCat.collapsed_image_path
   toggle_expansion: => if @expansion.is ':hidden' then @show_expansion() else @hide_expansion()
 
   search: =>

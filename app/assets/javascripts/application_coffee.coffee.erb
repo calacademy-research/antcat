@@ -12,11 +12,15 @@ preload_images = ->
     '<%= image_path 'antcat_logo.png' %>'
     '<%= image_path 'site_header_ant_5.png' %>'
     '<%= image_path 'ui-anim_basic_16x16.gif' %>'
+    '<%= image_path 'collapsed.png' %>'
+    '<%= image_path 'expanded.png' %>'
   ]
     (new Image()).src = image
 
 AntCat or= {}
 AntCat.spinner_path = '<%= image_path 'ui-anim_basic_16x16.gif' %>'
+AntCat.collapsed_image_path = '<%= image_path 'collapsed.png' %>'
+AntCat.expanded_image_path = '<%= image_path 'expanded.png' %>'
 
 space_out_images = ->
   total_image_width = 379 + 154 + 124
