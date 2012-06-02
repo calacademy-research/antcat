@@ -28,6 +28,7 @@ class AntCat.ReferencePicker
       success: (data) =>
         @element.html data
         @initialize()
+        @show_expansion()
       error: (xhr) => debugger
     0)
 
