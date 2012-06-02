@@ -1,35 +1,12 @@
 class AntCat.ReferencePicker
 
-  constructor: ($parent, @options = {}) ->
+  constructor: (@element, @options = {}) ->
     @current_reference_id = @options.id
-    @create_if_necessary $parent
-    @element = $parent.find('> .antcat_reference_picker')
     if @current_reference_id
       @load()
     else
       @initialize()
     @
-
-  create_if_necessary: ($parent) =>
-    element = $parent.find('> .antcat_reference_picker')
-    return if element.length > 0
-    element = $('<div/>').addClass 'antcat_reference_picker ui-widget ui-widget-content ui-corner-all'
-    element.append @bootstrap_help_banner()
-    element.appendTo $parent
-
-  bootstrap_help_banner: =>
-    $ """
-    <div class='expansion'>
-      <div class='search_form nested_form'>
-        <table><tr><td/><td>
-          <div class='ok_cancel_controls'/>
-          <div class='search_controls'/>
-          <div class='help_banner'><span class='help_banner_text'/></div>
-        </td></tr></table>
-        <div class='throbber'/>
-      </div>
-    </div>
-    """
 
   load: (url = '') =>
     if url.indexOf('/reference_picker') is -1
