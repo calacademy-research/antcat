@@ -77,7 +77,7 @@ class AntCat.ReferencePicker
     # apparently, can't setup selectmenu unless it's visible
     @setup_search_selector()
   hide_expansion: =>
-    @expansion.hide('slideup')
+    @expansion.hide()
     @element.find('.expand_collapse_icon img').attr 'src', '/assets/collapsed.png', alt: 'collapse'
   toggle_expansion: => if @expansion.is ':hidden' then @show_expansion() else @hide_expansion()
 
