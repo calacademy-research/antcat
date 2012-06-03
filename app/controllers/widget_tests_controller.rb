@@ -2,6 +2,7 @@
 class WidgetTestsController < ApplicationController
 
   def reference_picker
+    @reference = Reference.first if params[:id]
   end
 
   def reference_field

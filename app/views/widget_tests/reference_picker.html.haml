@@ -3,3 +3,7 @@
 - content_for :head do
   = javascript_include_tag 'widgets/panel', 'widgets/form', 'widgets/nested_form', 'widgets/reference_panel', 'widgets/reference_picker'
   = javascript_include_tag 'widget_tests/reference_picker'
+
+- content_for :page_contents do
+  #authorship_picker.antcat_reference_picker.ui-widget.ui-widget-content.ui-corner-all
+    = render 'reference_pickers/show', references: nil, current_reference: @reference
