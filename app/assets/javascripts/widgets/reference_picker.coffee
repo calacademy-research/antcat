@@ -33,6 +33,7 @@ class AntCat.ReferencePicker
     0)
 
   initialize: =>
+    @element.addClass 'modal' if @options.modal
     @template = @element.find '> .template'
     @current = @element.find '> .current'
     @current.click => @toggle_expansion()
