@@ -4,7 +4,7 @@
   = render 'reference_pickers/panel', reference: Reference.new, publisher_string: ''
 
 %table.references.current
-  %tr.reference_row
+  %tr
     %td
       = render 'reference_pickers/panel', reference: current_reference, publisher_string: ''
 
@@ -42,7 +42,7 @@
 
     %table.references.search_results
       - for reference in references
-        %tr.reference_row
+        %tr
           %td= render 'reference_pickers/panel', reference: reference, publisher_string: ''
 
   = render 'shared/qtip'
