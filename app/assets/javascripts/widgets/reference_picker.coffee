@@ -13,13 +13,8 @@ class AntCat.ReferencePicker
       url = '/reference_picker?' + url
     url = url + '&' + $.param id: @current_reference_id if @current_reference_id
 
-    $throbber_image = @element.find('.throbber img')
-    if $throbber_image.length > 0
-      @element.find('.help_banner_text').html('')
-      $throbber_image.show()
-    else
-      @element.find('.help_banner_text').html 'Loading&hellip;'
-    @element.find('> .expansion > .search_form .controls').disable()
+    @element.find('.throbber img').show()
+    @disable_search_controls()
 
     # debug code to leave throbber up for a little while
     setTimeout(=> $.ajax
@@ -275,4 +270,8 @@ class AntCat.ReferencePicker
       else
         help = "Find a reference to use"
       help += ', or add one'
-    @element.find('.help_banner_text').text help
+    @set_help_banner help
+
+  set_help_banner: (text) =>
+    @element.find('.help_banner_text').text text
+
