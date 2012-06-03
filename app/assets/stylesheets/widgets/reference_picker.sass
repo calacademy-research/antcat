@@ -113,8 +113,12 @@ $antcat_reference_picker_gutter_size: 20px
     .ok_cancel_controls
       display: none !important
   &.modal
+    .expansion
+      display: block
     .ok_cancel_controls
       display: inline-block !important
+    .expand_collapse_icon img
+      display: none
 
   .current, .reference_item .ui-selected
     color: $color_current_reference_being_edited_by_reference_picker !important

@@ -23,7 +23,7 @@ class AntCat.ReferencePicker
       success: (data) =>
         @element.html data
         @initialize()
-        @show_expansion()
+        @show_expansion() unless @options.modal
       error: (xhr) => debugger
     0)
 
@@ -31,7 +31,7 @@ class AntCat.ReferencePicker
     @element.addClass 'modal' if @options.modal
     @template = @element.find '> .template'
     @current = @element.find '> .current'
-    @current.click => @toggle_expansion()
+    @current.click => @toggle_expansion() unless @options.modal
     @search_form = @element.find '> .expansion > .search_form'
     @search_selector = @search_form.find '.search_selector'
     @textbox = @search_form.find '.q'
