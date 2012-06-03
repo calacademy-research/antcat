@@ -50,9 +50,9 @@ setup_reference_keys = ->
            .toggle()
 
 # find just the topmost elements that match - don't drill down into them
-$.fn.find_topmost = ->
-  self = @
-  @filter -> not self.is @parents()
+$.fn.find_topmost = (selector) ->
+  all_elements = @find(selector)
+  all_elements.filter -> not all_elements.is $(@).parents()
 
 # calling button('destroy') isn't getting through to the destroy function
 # for some reason to do with jQuery UI's widget factory, so do this part

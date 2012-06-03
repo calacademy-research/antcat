@@ -44,7 +44,7 @@ class AntCat.Panel
     @replace_panel @saved_content
 
   form: =>
-    @_form or= @create_form @element.find('div.edit form'),
+    @_form or= @create_form @element.find_topmost('div.edit form'),
       on_open: @on_form_open
       on_close: @on_form_close
       on_update: @on_form_update
@@ -53,14 +53,14 @@ class AntCat.Panel
 
   show_form: =>
     $('.icon').hide() unless AntCat.testing
-    @element.find('div.display').hide()
-    @element.find('div.edit').show()
+    @element.find_topmost('div.display').hide()
+    @element.find_topmost('div.edit').show()
     @form().open()
 
   hide_form: =>
-    @element.find('div.edit').hide()
-    @element.find('div.display').show()
+    @element.find_topmost('div.edit').hide()
+    @element.find_topmost('div.display').show()
     @form().close()
 
   is_editing: =>
-    @element.find('div.edit').is ':visible'
+    @element.find_topmost('div.edit').is ':visible'
