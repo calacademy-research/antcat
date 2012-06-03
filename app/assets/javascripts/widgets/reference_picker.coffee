@@ -156,10 +156,8 @@ class AntCat.ReferencePicker
       .find(".reference item_#{@current_reference_id} div.display")
         .addClass('ui-selected')
         .end()
-
-    @search_results.find('.reference')
       .selectable('destroy')
-      .selectable(filter: 'div.display', stop: @handle_new_selection)
+      .selectable(filter: 'div.display', stop: @handle_new_selection, cancel: '.expand_collapse_icon, .icons, div.edit')
 
   on_reference_form_open: => @disable_search_controls()
   on_reference_form_close: => @enable_search_controls()
