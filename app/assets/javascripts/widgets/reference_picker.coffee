@@ -190,6 +190,10 @@ class AntCat.ReferencePicker
     @current_reference_id = if @current_reference() then @current_reference().data 'id' else null
     @element.toggleClass 'has_no_current_reference', not @current_reference()
     @update_help_banner()
+    @options.on_change(@value()) if @options.on_change
+
+  value: =>
+    @current_reference_id
 
   selected_reference: =>
     results = @search_results.find 'div.display.ui-selected'
