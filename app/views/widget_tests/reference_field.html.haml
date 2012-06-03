@@ -24,9 +24,11 @@
       %tr
         %td= label_tag :name
         %td= text_field_tag :name
+
       %tr
         %td= label_tag 'Reference'
-        %td No reference selected
+        %td#selected_reference No reference selected
+
       %tr.buttons
         %td.buttons{:colspan => 4}
           %button.ui-priority-primary.submit= @possible_duplicate ? 'Save Anyway' : 'Save'
