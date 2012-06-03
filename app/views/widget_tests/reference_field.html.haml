@@ -12,14 +12,6 @@
       %col{:width => '*'}
       %col{:align => 'right', :width => '34px'}
       %col{:width => '100px'}
-      %tr
-        %td.authorship= label_tag 'Authorship'
-        %td#authorship_picker.antcat_reference_picker.ui-widget.ui-widget-content.ui-corner-all
-          = render 'reference_pickers/show', references: nil, current_reference: Reference.first
-      %tr
-        %td.authorship= label_tag 'Authorship'
-        %td#other_authorship_field.antcat_reference_picker.ui-widget.ui-widget-content.ui-corner-all
-          = render 'reference_pickers/show', references: nil, current_reference: nil
 
       %tr
         %td= label_tag :name
@@ -28,6 +20,18 @@
       %tr
         %td= label_tag 'Reference'
         %td#selected_reference No reference selected
+
+      %tr
+        %td.authorship= label_tag 'Authorship'
+        %td
+          #authorship_picker.antcat_reference_picker.ui-widget.ui-widget-content.ui-corner-all
+            = render 'reference_pickers/show', references: nil, current_reference: Reference.first
+
+      %tr
+        %td.authorship= label_tag 'Authorship'
+        %td
+          #other_authorship_field.antcat_reference_picker.ui-widget.ui-widget-content.ui-corner-all
+            = render 'reference_pickers/show', references: nil, current_reference: nil
 
       %tr.buttons
         %td.buttons{:colspan => 4}

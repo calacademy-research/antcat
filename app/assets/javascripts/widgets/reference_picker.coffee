@@ -159,7 +159,7 @@ class AntCat.ReferencePicker
 
     @search_results.find('.reference')
       .selectable('destroy')
-      .selectable(filter: 'div.display', stop: @handle_new_selection, cancel: '.icons, div.edit')
+      .selectable(filter: 'div.display', stop: @handle_new_selection)
 
   on_reference_form_open: => @disable_search_controls()
   on_reference_form_close: => @enable_search_controls()
@@ -169,7 +169,9 @@ class AntCat.ReferencePicker
     @setup_references()
 
   make_current: ($panel, edit = false) =>
-    @current.find('td').html $panel.clone()
+    $current_contents = @current.find '> tbody > tr > td'
+    $new_contents = $panel.clone()
+    $current_contents.html $new_contents
     $new_current_reference = @current.find('.reference')
     $new_current_reference
       .find('div.display').removeClass('ui-selected ui-selectee').end()
@@ -181,13 +183,13 @@ class AntCat.ReferencePicker
     @element.removeClass 'has_no_current_reference'
 
   handle_new_selection: =>
-    $selected_reference = @selected_reference()
-    @make_current $selected_reference if $selected_reference
+    #$selected_reference = @selected_reference()
+    #@make_current $selected_reference if $selected_reference
 
-    @current_reference_id = if @current_reference() then @current_reference().data 'id' else null
-    @element.toggleClass 'has_no_current_reference', not @current_reference()
-    @update_help_banner()
-    @options.on_change(@value()) if @options.on_change
+    #@current_reference_id = if @current_reference() then @current_reference().data 'id' else null
+    #@element.toggleClass 'has_no_current_reference', not @current_reference()
+    #@update_help_banner()
+    #@options.on_change(@value()) if @options.on_change
 
   value: =>
     @current_reference_id
@@ -195,6 +197,7 @@ class AntCat.ReferencePicker
   selected_reference: =>
     results = @search_results.find 'div.display.ui-selected'
     return if results.length is 0
+    console.log results
     results.closest '.reference'
 
   current_reference: =>
