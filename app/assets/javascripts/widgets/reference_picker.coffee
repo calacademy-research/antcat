@@ -181,13 +181,13 @@ class AntCat.ReferencePicker
     @element.removeClass 'has_no_current_reference'
 
   handle_new_selection: =>
-    #$selected_reference = @selected_reference()
-    #@make_current $selected_reference if $selected_reference
+    $selected_reference = @selected_reference()
+    @make_current $selected_reference if $selected_reference
 
-    #@current_reference_id = if @current_reference() then @current_reference().data 'id' else null
-    #@element.toggleClass 'has_no_current_reference', not @current_reference()
-    #@update_help_banner()
-    #@options.on_change(@value()) if @options.on_change
+    @current_reference_id = if @current_reference() then @current_reference().data 'id' else null
+    @element.toggleClass 'has_no_current_reference', not @current_reference()
+    @update_help_banner()
+    @options.on_change(@value()) if @options.on_change
 
   value: =>
     @current_reference_id
