@@ -263,7 +263,8 @@ class AntCat.ReferencePicker
         other_verb = 'choose'
       else
         other_verb = 'search for'
-      help = "Click OK to use this reference, or add or #{other_verb} a different one"
+      help = if @options.modal then "Click OK to use" else "Use"
+      help += " this reference, or add or #{other_verb} a different one"
     else
       if any_search_results
         help = "Choose a reference to use"
