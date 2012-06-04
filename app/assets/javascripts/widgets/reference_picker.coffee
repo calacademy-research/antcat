@@ -6,9 +6,6 @@ class AntCat.ReferencePicker
       @load()
     else
       @initialize()
-      if @options.modal
-        @element.show()
-        @show_expansion()
     @
 
   load: (url = '') =>
@@ -17,7 +14,7 @@ class AntCat.ReferencePicker
     url = url + '&' + $.param id: @current_reference_id if @current_reference_id
 
     @element.find('.throbber img').show()
-    @disable_search_controls()
+    @find_search_form().find('.controls').disable()
 
     # debug code to leave throbber up for a little while
     setTimeout(=> $.ajax
@@ -26,7 +23,6 @@ class AntCat.ReferencePicker
       success: (data) =>
         @element.html data
         @initialize()
-        @show_expansion() if @options.modal
       error: (xhr) => debugger
     0)
 
@@ -35,18 +31,21 @@ class AntCat.ReferencePicker
     @template = @element.find '> .template'
     @current = @element.find '> .current'
     @current.click => @toggle_expansion() unless @options.modal
-    @search_form = @element.find '> .expansion > .search_form'
+    @search_form = @find_search_form()
     @search_selector = @search_form.find '.search_selector'
     @textbox = @search_form.find '.q'
     @search_results = @element.find '> .expansion > .search_results'
     @expansion = @element.find '.expansion'
 
-    @show_expansion() if @options.expanded
-
     @setup_search()
     @setup_references()
     @handle_new_selection()
+
+    @element.show()
+    @show_expansion() if @options.modal
     @textbox.focus()
+
+  find_search_form: => @element.find '> .expansion > .search_form'
 
   show_expansion: =>
     @element.find('.expand_collapse_icon img').attr 'src', AntCat.expanded_image_path
