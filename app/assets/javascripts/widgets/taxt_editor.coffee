@@ -171,8 +171,7 @@ class AntCat.TaxtEditor
       if not in_tag
         if text.charAt(i) is '{'
           in_tag = true
-          start = i
-          ++i
+          start = i++
         else
           if text.charAt(i) is '}'
             text = text[...start] + text[i + 1..]
@@ -183,8 +182,7 @@ class AntCat.TaxtEditor
       else
         if text.charAt(i) is '}'
           in_tag = false
-          ++i
-          start = i
+          start = ++i
         else
           if text.charAt(i) is '{'
             text = text[...start] + text[i..]
