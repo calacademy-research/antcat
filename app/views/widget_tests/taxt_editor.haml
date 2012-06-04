@@ -8,5 +8,5 @@
 - content_for :page_contents do
   #taxt_editor
     = text_area_tag :taxt_edit_box, "Mark's the best", rows: 1, class: 'taxt_edit_box'
-    #taxt_edit_box_reference_picker.antcat_reference_picker.ui-widget.ui-widget-content.ui-corner-all
+    .antcat_reference_picker.ui-widget.ui-widget-content.ui-corner-all
       = render 'reference_pickers/show', references: nil, current_reference: nil

@@ -4,8 +4,11 @@ $.fn.taxt_editor = (options = {}) ->
   return this.each -> new AntCat.TaxtEditBox $(this), options
 
 class AntCat.TaxtEditBox
-  constructor: ($control, options = {}) ->
-    @control = $control
+  constructor: (@element, options = {}) ->
+    @element.addClass 'taxt_editor'
+    @control = @element.find 'textarea'
+    @control.addClass 'taxt_edit_box'
+    @reference_picker = @element.find_topmost '.antcat_reference_picker'
     @dashboard = new TaxtEditBox.DebugDashboard @ if options.show_debug_dashboard
     @dashboard?.show_status 'before'
     @value @control.val()
@@ -51,8 +54,7 @@ class AntCat.TaxtEditBox
     $form.find('.buttons').hide()
     @replace_text_area_with_simulation()
     id = if @is_tag_selected() then TaxtEditBox.extract_id_from_editable_taxt @selection() else null
-    $picker = $form.find('.antcat_reference_picker')
-    new AntCat.ReferencePicker $picker, id, @handle_reference_picker_result, modal: true
+    new AntCat.ReferencePicker @reference_picker, id, @handle_reference_picker_result, modal: true
 
   replace_text_area_with_simulation: =>
     # We need to indicate the selected reference in the taxt edit box event
