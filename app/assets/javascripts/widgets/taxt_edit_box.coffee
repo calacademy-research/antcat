@@ -52,7 +52,7 @@ class AntCat.TaxtEditBox
     @replace_text_area_with_simulation()
     id = if @is_tag_selected() then TaxtEditBox.extract_id_from_editable_taxt @selection() else null
     $picker = $form.find('.antcat_reference_picker')
-    new AntCat.ReferencePicker $picker, id, @handle_reference_picker_result
+    new AntCat.ReferencePicker $picker, id, @handle_reference_picker_result, modal: true
 
   replace_text_area_with_simulation: =>
     # We need to indicate the selected reference in the taxt edit box event
