@@ -4,12 +4,12 @@ $.fn.taxt_editor = (options = {}) ->
   return this.each -> new AntCat.TaxtEditor $(this), options
 
 class AntCat.TaxtEditor
-  constructor: (@element, options = {}) ->
+  constructor: (@element, @options = {}) ->
     @element.addClass 'taxt_editor'
     @control = @element.find 'textarea'
     @control.addClass 'taxt_edit_box'
     @reference_picker = @element.find_topmost '.antcat_reference_picker'
-    @dashboard = new TaxtEditor.DebugDashboard @ if options.show_debug_dashboard
+    @dashboard = new TaxtEditor.DebugDashboard @ if @options.show_debug_dashboard
     @dashboard?.show_status 'before'
     @value @control.val()
     @last_value @control.val()
@@ -50,8 +50,9 @@ class AntCat.TaxtEditor
     @set_position current_position
 
   open_reference_picker: =>
-    $form = @control.closest('form')
-    $form.find('.buttons').hide()
+    @options.on_open_reference_picker() if @options.on_open_reference_picker
+    #$form = @control.closest('form')
+    #$form.find('.buttons').hide()
     @replace_text_area_with_simulation()
     id = if @is_tag_selected() then TaxtEditor.extract_id_from_editable_taxt @selection() else null
     new AntCat.ReferencePicker @reference_picker, id, @handle_reference_picker_result, modal: true
@@ -78,7 +79,8 @@ class AntCat.TaxtEditor
     @control.show()
  
   handle_reference_picker_result: (taxt) =>
-    @control.closest('form').find('.buttons').show()
+    @options.on_close_reference_picker() if @options.on_close_reference_picker
+    #@control.closest('form').find('.buttons').show()
 
     if taxt
       new_value = @value()[...@tag_start] + taxt + @value()[@tag_end...]
