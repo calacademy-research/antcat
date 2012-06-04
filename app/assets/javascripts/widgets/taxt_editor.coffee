@@ -136,7 +136,7 @@ class AntCat.TaxtEditor
     event.shiftKey
 
   value:      => @control.val arguments...
-  last_value: => @control.data @data_key, arguments...
+  last_value: => @control.data 'last_value', arguments...
   start:      => @control.getSelection().start
   end:        => @control.getSelection().end
   focus:      => @control.focus()
@@ -144,7 +144,6 @@ class AntCat.TaxtEditor
   set_position:  (position)    => @control.setCaretPos position + 1
   set_selection: (left, right) => @control.setSelection left, right + 1
 
-  data_key: 'old_value'
   LEFT_BRACKET: 219
 
   this.enclosing_tag_indexes = (text, position) ->
