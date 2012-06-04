@@ -17,13 +17,13 @@ class AntCat.TaxtEditBox
     if not @is_tag_selected() and @is_new_tag_event event
       @tag_start = @start()
       @tag_end = @end()
-      @open_reference_editor()
+      @open_reference_picker()
       return false
 
     if @is_tag_selected() and @is_tag_opening_event event
       @tag_start = @start()
       @tag_end = @end()
-      @open_reference_editor()
+      @open_reference_picker()
       return false
 
     if event.type is 'keyup' or event.type is 'mouseup'
@@ -46,7 +46,7 @@ class AntCat.TaxtEditBox
     @value new_value if new_value isnt current_value
     @set_position current_position
 
-  open_reference_editor: =>
+  open_reference_picker: =>
     $form = @control.closest('form')
     $form.find('.buttons').hide()
     @replace_text_area_with_simulation()
