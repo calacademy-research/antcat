@@ -1,15 +1,15 @@
 window.AntCat or= {}
 
 $.fn.taxt_editor = (options = {}) ->
-  return this.each -> new AntCat.TaxtEditBox $(this), options
+  return this.each -> new AntCat.TaxtEditor $(this), options
 
-class AntCat.TaxtEditBox
+class AntCat.TaxtEditor
   constructor: (@element, options = {}) ->
     @element.addClass 'taxt_editor'
     @control = @element.find 'textarea'
     @control.addClass 'taxt_edit_box'
     @reference_picker = @element.find_topmost '.antcat_reference_picker'
-    @dashboard = new TaxtEditBox.DebugDashboard @ if options.show_debug_dashboard
+    @dashboard = new TaxtEditor.DebugDashboard @ if options.show_debug_dashboard
     @dashboard?.show_status 'before'
     @value @control.val()
     @last_value @control.val()
@@ -44,7 +44,7 @@ class AntCat.TaxtEditBox
     return if old_value is current_value
 
     current_position = @start()
-    new_value = TaxtEditBox.remove_unbalanced_tags current_value
+    new_value = TaxtEditor.remove_unbalanced_tags current_value
     @last_value new_value
     @value new_value if new_value isnt current_value
     @set_position current_position
@@ -53,7 +53,7 @@ class AntCat.TaxtEditBox
     $form = @control.closest('form')
     $form.find('.buttons').hide()
     @replace_text_area_with_simulation()
-    id = if @is_tag_selected() then TaxtEditBox.extract_id_from_editable_taxt @selection() else null
+    id = if @is_tag_selected() then TaxtEditor.extract_id_from_editable_taxt @selection() else null
     new AntCat.ReferencePicker @reference_picker, id, @handle_reference_picker_result, modal: true
 
   replace_text_area_with_simulation: =>
@@ -94,7 +94,7 @@ class AntCat.TaxtEditBox
   # this value is duplicated in lib/taxt.rb
   @EDITABLE_ID_DIGITS = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
   @extract_id_from_editable_taxt: (taxt) ->
-    TaxtEditBox.id_from_editable taxt.match("{((.*?)? )?([#{@EDITABLE_ID_DIGITS}]+)}")[3]
+    TaxtEditor.id_from_editable taxt.match("{((.*?)? )?([#{@EDITABLE_ID_DIGITS}]+)}")[3]
 
   # this code is duplicated in lib/taxt.rb
   @id_from_editable: (id) ->
@@ -111,7 +111,7 @@ class AntCat.TaxtEditBox
       return result if index >= id.length
 
   select_tag_if_caret_inside: =>
-    tag_indexes = TaxtEditBox.enclosing_tag_indexes @value(), @start()
+    tag_indexes = TaxtEditor.enclosing_tag_indexes @value(), @start()
     return unless tag_indexes
     @set_selection tag_indexes.left, tag_indexes.right
     true
@@ -194,7 +194,7 @@ class AntCat.TaxtEditBox
     text = text[0...start] if in_tag
     text
 
-class AntCat.TaxtEditBox.DebugDashboard
+class AntCat.TaxtEditor.DebugDashboard
   @dashboard_id: 'antcat_taxteditbox_dashboard'
   constructor: (@taxt_editor) ->
     DebugDashboard.add_html()
@@ -253,7 +253,7 @@ class AntCat.TaxtEditBox.DebugDashboard
     value = @taxt_editor.value()
     start_selection = @taxt_editor.start()
     end_selection = @taxt_editor.end()
-    enclosing_tag = AntCat.TaxtEditBox.enclosing_tag_indexes value, start_selection
+    enclosing_tag = AntCat.TaxtEditor.enclosing_tag_indexes value, start_selection
 
     $('.value', $status_panel).text value
 
