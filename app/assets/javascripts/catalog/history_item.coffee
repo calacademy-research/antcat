@@ -21,4 +21,4 @@ $.fn.history_item_panel = (options = {}) ->
 class AntCat.HistoryItemForm extends AntCat.Form
   initialize: ($element) ->
     super
-    @element.find('textarea').taxt_editor()
+    @element.find('.taxt_editor').taxt_editor()
