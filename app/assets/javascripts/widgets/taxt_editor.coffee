@@ -1,6 +1,6 @@
 window.AntCat or= {}
 
-$.fn.taxt_edit_box = (options = {}) ->
+$.fn.taxt_editor = (options = {}) ->
   return this.each -> new AntCat.TaxtEditBox $(this), options
 
 class AntCat.TaxtEditBox
@@ -194,7 +194,7 @@ class AntCat.TaxtEditBox
 
 class AntCat.TaxtEditBox.DebugDashboard
   @dashboard_id: 'antcat_taxteditbox_dashboard'
-  constructor: (@taxt_edit_box) ->
+  constructor: (@taxt_editor) ->
     DebugDashboard.add_html()
 
   @add_html: ->
@@ -248,9 +248,9 @@ class AntCat.TaxtEditBox.DebugDashboard
   show_status: (before_or_after) =>
     $status_panel = $ "##{DebugDashboard.dashboard_id} .status .#{before_or_after}"
 
-    value = @taxt_edit_box.value()
-    start_selection = @taxt_edit_box.start()
-    end_selection = @taxt_edit_box.end()
+    value = @taxt_editor.value()
+    start_selection = @taxt_editor.start()
+    end_selection = @taxt_editor.end()
     enclosing_tag = AntCat.TaxtEditBox.enclosing_tag_indexes value, start_selection
 
     $('.value', $status_panel).text value
@@ -263,8 +263,8 @@ class AntCat.TaxtEditBox.DebugDashboard
 
     $('.start_selection', $status_panel).text start_selection
     $('.end_selection', $status_panel).text end_selection
-    $('.selection', $status_panel).text @taxt_edit_box.value()[start_selection...end_selection]
-    $('.is_tag_selected', $status_panel).text if @taxt_edit_box.is_tag_selected() then 'T' else 'F'
+    $('.selection', $status_panel).text @taxt_editor.value()[start_selection...end_selection]
+    $('.is_tag_selected', $status_panel).text if @taxt_editor.is_tag_selected() then 'T' else 'F'
 
   show_event: (event) =>
     $event_panel = $ "##{DebugDashboard.dashboard_id} .event .keyup_mouseup"
