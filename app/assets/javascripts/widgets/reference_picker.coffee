@@ -6,7 +6,9 @@ class AntCat.ReferencePicker
       @load()
     else
       @initialize()
-      @show_expansion() if @options.modal
+      if @options.modal
+        @element.show()
+        @show_expansion()
     @
 
   load: (url = '') =>
@@ -69,8 +71,7 @@ class AntCat.ReferencePicker
   close: (cancel = false) =>
     taxt = if not cancel and @current_reference() then @current_reference().data 'taxt' else null
     @element.slideUp 'fast', =>
-      @element.remove()
-      @result_handler taxt if @result_handler
+      @options.on_done taxt if @options.on_done
 
   cancel: =>
     @close true
@@ -196,7 +197,6 @@ class AntCat.ReferencePicker
   selected_reference: =>
     results = @search_results.find 'div.display.ui-selected'
     return if results.length is 0
-    console.log results
     results.closest '.reference'
 
   current_reference: =>
