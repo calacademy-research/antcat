@@ -6,6 +6,7 @@ class AntCat.ReferencePicker
       @load()
     else
       @initialize()
+      @show_expansion() if @options.modal
     @
 
   load: (url = '') =>
@@ -23,7 +24,7 @@ class AntCat.ReferencePicker
       success: (data) =>
         @element.html data
         @initialize()
-        @show_expansion() unless @options.modal
+        @show_expansion() if @options.modal
       error: (xhr) => debugger
     0)
 
