@@ -46,7 +46,7 @@ AntCat::Application.routes.draw do
 
   match '/widget_tests/reference_picker', to: 'widget_tests#reference_picker'
   match '/widget_tests/reference_field', to: 'widget_tests#reference_field'
-  match '/widget_tests/nested_form', to: 'widget_tests#nested_form'
+  match '/widget_tests/taxt_edit_box', to: 'widget_tests#taxt_edit_box'
 
   devise_for :users
 

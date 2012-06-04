@@ -30,8 +30,6 @@ module NavigationHelpers
       '/widget_tests/reference_picker'
     when /the reference field widget test page/
       '/widget_tests/reference_field'
-    when /the nested form test page/
-      '/widget_tests/nested_form'
     else
       raise "#{page_name} not found"
     end
