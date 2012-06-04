@@ -9,7 +9,7 @@ class WidgetTestsController < ApplicationController
     @taxon = Family.first
   end
 
-  def taxt_edit_box
+  def taxt_editor
     @taxon = Family.first
   end
 
