@@ -1,0 +1,12 @@
+- @title = 'Taxt Edit Box Test'
+
+- content_for :head do
+  = javascript_include_tag 'widgets/panel', 'widgets/form', 'widgets/nested_form', 'widgets/reference_panel', 'widgets/reference_picker'
+  = javascript_include_tag 'widgets/taxt_edit_box'
+  = javascript_include_tag 'widget_tests/taxt_edit_box'
+
+- content_for :page_contents do
+  #taxt_edit_box.taxt_edit_box
+    = text_area_tag :taxt_edit_box, "Mark's the best", rows: 1, class: 'taxt_edit_box'
+    #taxt_edit_box_reference_picker.antcat_reference_picker.ui-widget.ui-widget-content.ui-corner-all
+      = render 'reference_pickers/show', references: nil, current_reference: nil
