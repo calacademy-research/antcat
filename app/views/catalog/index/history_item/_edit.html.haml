@@ -1,9 +1,12 @@
 .edit.ui-widget-content
   = form_for [item.taxon, item] do |f|
     = render 'shared/errors_for', :resource => item
-    = text_area_tag :taxt_editor, Taxt.to_editable(item.taxt), rows: 1, class: 'taxt_edit_box'
+
+    .taxt_editor
+      = text_area_tag :taxt_editor, Taxt.to_editable(item.taxt), rows: 1, class: 'taxt_edit_box'
+      .antcat_reference_picker.ui-widget.ui-widget-content.ui-corner-all
+        = render 'reference_pickers/show', references: nil, current_reference: nil
+
     .buttons
       %button.submit.ui-priority-primary Save
       %button.cancel.ui-priority-secondary Cancel
-    .antcat_reference_picker.ui-widget.ui-widget-content.ui-corner-all
-      = render 'reference_pickers/show', references: nil, current_reference: Family.first.protonym.authorship.reference
