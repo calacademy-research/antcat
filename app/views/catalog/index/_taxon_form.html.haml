@@ -10,17 +10,54 @@
     -#%input{type: 'hidden', name: 'subfamily_id', value: subfamily_id}
     %input{type: 'hidden', name: 'genus[tribe]', value: tribe.id}
 
-    %table
+    %table{style: 'width:100%'}
       %col{:width => '50px'}
       %col{:width => '*'}
       %col{:align => 'right', :width => '34px'}
       %col{:width => '100px'}
+
       %tr
         %td= label_tag :name
         %td= f.text_field :name
+
       %tr
-        %td= label_tag 'Authorship'
-        %td.reference_picker
+        %td
+        %td
+          .ui-dialog-titlebar.ui-widget-header.ui-corner-all
+            %span.ui-dialog-title Protonym
+          .ui-dialog-content.ui-widget-content
+            %table{style: 'width:100%'}
+              %tr
+                %td= label_tag :name
+                %td= f.text_field :name
+              %tr
+                %td{colspan:2}
+                  .ui-dialog-titlebar.ui-widget-header.ui-corner-all
+                    %span.ui-dialog-title Authorship
+                  .ui-dialog-content.ui-widget-content
+                    (picker)
+
+      %tr
+        %td
+        %td
+          .ui-dialog-titlebar.ui-widget-header.ui-corner-all
+            %span.ui-dialog-title Type
+          .ui-dialog-content.ui-widget-content
+
+      %tr
+        %td
+        %td
+          .ui-dialog-titlebar.ui-widget-header.ui-corner-all
+            %span.ui-dialog-title History
+          .ui-dialog-content.ui-widget-content
+
+      %tr
+        %td
+        %td
+          .ui-dialog-titlebar.ui-widget-header.ui-corner-all
+            %span.ui-dialog-title References
+          .ui-dialog-content.ui-widget-content
+
       %tr
         %td.spinner_container{:colspan => 4}
           %button.ui-priority-primary.submit= @possible_duplicate ? 'Save Anyway' : 'Save'
