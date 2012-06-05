@@ -1,6 +1,7 @@
 # coding: UTF-8
 class Protonym < ActiveRecord::Base
   belongs_to :authorship, class_name: 'Citation', dependent: :destroy
+  belongs_to :name_object, class_name: 'Name', foreign_key: 'name_id'
 
   def self.import data
     transaction do
@@ -16,7 +17,8 @@ class Protonym < ActiveRecord::Base
         name << ' ' + data[:species_epithet]
         if data[:subspecies]
           subspecies = data[:subspecies].first
-          name << ' ' + subspecies[:type] << ' ' << subspecies[:subspecies_epithet]
+          name << ' ' + subspecies[:type] if subspecies[:type]
+          name << ' ' << subspecies[:subspecies_epithet]
         end
         rank = 'species'
       when data[:genus_name]
@@ -30,12 +32,13 @@ class Protonym < ActiveRecord::Base
         rank = 'tribe'
       end
 
-      create! name: name,
-              rank: rank,
-              sic: data[:sic],
-              fossil: data[:fossil],
-              authorship: authorship,
-              locality: data[:locality]
+      create! name:         name,
+              name_object:  Name.import(name),
+              rank:         rank,
+              sic:          data[:sic],
+              fossil:       data[:fossil],
+              authorship:   authorship,
+              locality:     data[:locality]
 
     end
   end
