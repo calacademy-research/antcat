@@ -101,7 +101,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
         break unless @type == :texts
         item = Importers::Bolton::Catalog::TextToTaxt.convert @parse_result[:texts]
         if item.present?
-          parsed_taxonomic_history << item
+          parsed_taxonomic_history << item if item.present?
         else
           Progress.error "Blank taxonomic history item: #{@line}"
         end
