@@ -92,7 +92,7 @@ FactoryGirl.define do
   end
 
   ####################################################
-  factory :name_object do
+  factory :name do
   end
 
   ####################################################
