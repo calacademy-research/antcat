@@ -18,7 +18,7 @@ class AntCat.HistoryItemPanel extends AntCat.Panel
 $.fn.history_item_panel = (options = {}) ->
   this.each -> new AntCat.HistoryItemPanel $(this), options
 
-class AntCat.HistoryItemForm extends AntCat.Form
+class AntCat.HistoryItemForm extends AntCat.NestedForm
   initialize: ($element) ->
     super
     @element.find('.taxt_editor').taxt_editor()
