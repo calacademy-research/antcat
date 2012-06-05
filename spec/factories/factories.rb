@@ -92,6 +92,10 @@ FactoryGirl.define do
   end
 
   ####################################################
+  factory :name_object do
+  end
+
+  ####################################################
   factory :taxon do
     protonym
     status  'valid'
