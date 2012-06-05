@@ -20,12 +20,12 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     consume :taxonomic_history_header
     taxonomic_history = consume :family_taxonomic_history
 
-    family = Family.import({
-      :protonym => headline[:protonym],
-      :type_genus => headline[:type_genus],
-      :note => headline[:note],
-      :taxonomic_history => [Importers::Bolton::Catalog::TextToTaxt.convert(taxonomic_history[:items])]
-    })
+    family = Family.import(
+      protonym:           headline[:protonym],
+      type_genus:         headline[:type_genus],
+      note:               headline[:note],
+      taxonomic_history:  [Importers::Bolton::Catalog::TextToTaxt.convert(taxonomic_history[:items])]
+    )
     Progress.info "Created #{family.name}"
   end
 
