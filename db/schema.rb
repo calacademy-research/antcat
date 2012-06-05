@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120605172441) do
+ActiveRecord::Schema.define(:version => 20120605210657) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -112,9 +112,11 @@ ActiveRecord::Schema.define(:version => 20120605172441) do
     t.boolean  "fossil"
     t.boolean  "sic"
     t.string   "locality"
+    t.integer  "name_id"
   end
 
   add_index "protonyms", ["authorship_id"], :name => "index_protonyms_on_authorship_id"
+  add_index "protonyms", ["name_id"], :name => "protonyms_name_id_idx"
 
   create_table "publishers", :force => true do |t|
     t.string   "name"
