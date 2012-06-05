@@ -25,14 +25,16 @@ class Tribe < Taxon
   def self.import data
     transaction do
       protonym = Protonym.import data[:protonym]
+      name = Name.import data[:name]
 
       attributes = {
-        name: data[:name],
-        fossil: data[:fossil] || false,
-        subfamily: data[:subfamily],
+        name:       data[:name],
+        name_object:name,
+        fossil:     data[:fossil] || false,
+        subfamily:  data[:subfamily],
         synonym_of: data[:synonym_of],
-        status: data[:status] || 'valid',
-        protonym: protonym,
+        status:     data[:status] || 'valid',
+        protonym:   protonym,
       }
       if data[:type_genus]
         type_genus_taxt = Importers::Bolton::Catalog::TextToTaxt.convert(data[:type_genus][:texts])
