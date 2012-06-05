@@ -8,6 +8,13 @@ describe Taxon do
     taxon.name.should == 'Cerapachynae'
     taxon.should be_valid
   end
+  it "should have a name object" do
+    Factory.build(:taxon).should_not be_valid
+    name = FactoryGirl.create :name, name: 'Cerapachynae'
+    taxon = FactoryGirl.create :taxon, name: 'Cerapachynae', name_object: name
+    taxon.name_object.name.should == 'Cerapachynae'
+    taxon.should be_valid
+  end
   it "should be (Rails) valid with a nil status" do
     Taxon.new(:name => 'Cerapachynae').should be_valid
     Taxon.new(:name => 'Cerapachynae', :status => 'valid').should be_valid
