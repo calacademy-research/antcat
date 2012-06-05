@@ -16,16 +16,18 @@ class Subgenus < Taxon
   def self.import data
     transaction do
       protonym = Protonym.import data[:protonym]
+      name = Name.import data[:name]
 
       headline_notes_taxt = Importers::Bolton::Catalog::TextToTaxt.convert(data[:note])
       attributes = {
-        genus: data[:genus],
-        name: data[:name],
-        fossil: data[:fossil] || false,
-        status: data[:status] || 'valid',
-        synonym_of: data[:synonym_of],
-        protonym: protonym,
-        headline_notes_taxt: headline_notes_taxt,
+        genus:                data[:genus],
+        name:                 data[:name],
+        name_object:          name,
+        fossil:               data[:fossil] || false,
+        status:               data[:status] || 'valid',
+        synonym_of:           data[:synonym_of],
+        protonym:             protonym,
+        headline_notes_taxt:  headline_notes_taxt,
       }
       attributes.merge! data[:attributes] if data[:attributes]
       if data[:type_species]

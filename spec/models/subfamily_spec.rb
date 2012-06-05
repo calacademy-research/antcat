@@ -129,6 +129,7 @@ describe Subfamily do
 
       subfamily.reload
       subfamily.name.should == 'Aneuretinae'
+      subfamily.name_object.name.should == 'Aneuretinae'
       subfamily.should_not be_invalid
       subfamily.should be_fossil
       subfamily.taxonomic_history_items.map(&:taxt).should == ['Aneuretinae as subfamily', 'Aneuretini as tribe']
