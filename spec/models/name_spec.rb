@@ -7,7 +7,7 @@ describe Name do
 
   describe "Importing" do
     it "should work" do
-      name = Name.import name: 'Atta'
+      name = Name.import 'Atta'
       name.reload.name.should == 'Atta'
     end
   end
