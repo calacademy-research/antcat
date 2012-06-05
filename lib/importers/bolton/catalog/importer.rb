@@ -41,17 +41,6 @@ class Importers::Bolton::Catalog::Importer
     parse_result
   end
 
-  def clean_taxonomic_history taxonomic_history
-    taxonomic_history = taxonomic_history.dup
-    ['i', 'b', 'p'].each do |tag|
-      taxonomic_history.gsub! /<#{tag}.*?>/, "<#{tag}>"
-    end
-    taxonomic_history.gsub! /<span.*?>/, ''
-    taxonomic_history.gsub! /<\/span>/, ''
-    taxonomic_history = taxonomic_history.convert_asterisks_to_daggers
-    taxonomic_history
-  end
-
   def get_file_names file_names
     file_names.sort_by {|file_name| File.basename(file_name, File.extname(file_name))}
   end
