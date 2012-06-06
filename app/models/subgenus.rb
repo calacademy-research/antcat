@@ -16,7 +16,7 @@ class Subgenus < Taxon
   def self.import data
     transaction do
       protonym = Protonym.import data[:protonym]
-      name = Name.import data[:name]
+      name = NameObject.import data[:name]
 
       headline_notes_taxt = Importers::Bolton::Catalog::TextToTaxt.convert(data[:note])
       attributes = {

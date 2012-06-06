@@ -1,7 +1,7 @@
 # coding: UTF-8
 class Protonym < ActiveRecord::Base
   belongs_to :authorship, class_name: 'Citation', dependent: :destroy
-  belongs_to :name_object, class_name: 'Name', foreign_key: 'name_id'
+  belongs_to :name_object
 
   def self.import data
     transaction do
@@ -33,7 +33,7 @@ class Protonym < ActiveRecord::Base
       end
 
       create! name:         name,
-              name_object:  Name.import(name),
+              name_object:  NameObject.import(name),
               rank:         rank,
               sic:          data[:sic],
               fossil:       data[:fossil],

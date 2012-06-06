@@ -33,7 +33,7 @@ class Species < Taxon
   def self.import data
     transaction do
       protonym = Protonym.import data[:protonym] if data[:protonym]
-      name = Name.import data[:name]
+      name = NameObject.import data[:name]
 
       attributes = {
         genus:        data[:genus],

@@ -25,7 +25,7 @@ class Tribe < Taxon
   def self.import data
     transaction do
       protonym = Protonym.import data[:protonym]
-      name = Name.import data[:name]
+      name = NameObject.import data[:name]
 
       attributes = {
         name:       data[:name],

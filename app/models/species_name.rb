@@ -1,3 +1,3 @@
-class SpeciesName < Name
+class SpeciesName < NameObject
 
 end
