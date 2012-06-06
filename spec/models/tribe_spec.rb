@@ -61,7 +61,7 @@ describe Tribe do
       tribe.reload
 
       tribe.name.should == 'Aneuretini'
-      tribe.name_object.name.should == 'Aneuretini'
+      tribe.name_object.name_object_name.should == 'Aneuretini'
       tribe.should_not be_invalid
       tribe.should be_fossil
       tribe.taxonomic_history_items.map(&:taxt).should == ['Aneuretini history']

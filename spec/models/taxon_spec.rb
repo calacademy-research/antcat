@@ -10,9 +10,9 @@ describe Taxon do
   end
   it "should have a name object" do
     Factory.build(:taxon).should_not be_valid
-    name = FactoryGirl.create :name, name: 'Cerapachynae'
+    name = FactoryGirl.create :name, name_object_name: 'Cerapachynae'
     taxon = FactoryGirl.create :taxon, name: 'Cerapachynae', name_object: name
-    taxon.name_object.name.should == 'Cerapachynae'
+    taxon.name_object.name_object_name.should == 'Cerapachynae'
     taxon.should be_valid
   end
   it "should be (Rails) valid with a nil status" do
