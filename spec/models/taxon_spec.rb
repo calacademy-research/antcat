@@ -94,18 +94,18 @@ describe Taxon do
 
   describe "Current valid name" do
     it "if it's not a synonym: it's just the name" do
-      taxon = Taxon.create! :name => 'Name', name_object: Factory(:name_object)
+      taxon = Factory :taxon, name: 'Name'
       taxon.current_valid_name.should == 'Name'
     end
     it "if it is a synonym: the name of the target" do
-      target = Taxon.create! :name => 'Target', name_object: Factory(:name_object)
-      taxon = Taxon.create! :name => 'Taxon', :status => 'synonym', :synonym_of => target, name_object: Factory(:name_object)
+      target = Factory :taxon, :name => 'Target'
+      taxon = Factory :taxon, :name => 'Taxon', :status => 'synonym', :synonym_of => target, name_object: Factory(:name_object)
       taxon.current_valid_name.should == 'Target'
     end
     it "if it is a synonym of a synonym: the name of the target's target" do
-      target_target = Taxon.create! :name => 'Target_Target', name_object: Factory(:name_object)
-      target = Taxon.create! :name => 'Target', :status => 'synonym', :synonym_of => target_target, name_object: Factory(:name_object)
-      taxon = Taxon.create! :name => 'Taxon', :status => 'synonym', :synonym_of => target, name_object: Factory(:name_object)
+      target_target = Factory :taxon, :name => 'Target_Target'
+      target = Factory :taxon, :name => 'Target', :status => 'synonym', :synonym_of => target_target
+      taxon = Factory :taxon, :name => 'Taxon', :status => 'synonym', :synonym_of => target
       taxon.current_valid_name.should == 'Target_Target'
     end
   end
