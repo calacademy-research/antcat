@@ -15,7 +15,7 @@ class Taxon < ActiveRecord::Base
   validates   :name_object_id, presence: true
 
   scope :valid, where("status = ?", 'valid')
-  scope :ordered_by_name, joins(:name_object).order(:name_object_name)
+  scope :ordered_by_name, joins(:name_object).order('name_objects.name_object_name')
   scope :extant, where(:fossil => false)
 
   def unavailable?;     status == 'unavailable' end
@@ -58,17 +58,18 @@ class Taxon < ActiveRecord::Base
     names = name.split ' '
     if names.size > 1
       query = query.joins 'JOIN taxa genera ON genera.id = taxa.genus_id'
-      query = query.where ['genera.name = ?', names.first]
+      query = query.joins 'JOIN name_objects gno ON gno.id = genera.name_object_id'
+      query = query.where ['gno.name_object_name = ?', names.first]
       name = names.second
     end
     types_sought = ['Subfamily', 'Tribe', 'Genus', 'Species']
     case search_type
     when 'matching'
-      query = query.where ['taxa.name = ? AND taxa.type IN (?)', name, types_sought]
+      query = query.where ['name_objects.name_object_name = ? AND taxa.type IN (?)', name, types_sought]
     when 'beginning with'
-      query = query.where ['taxa.name LIKE ? AND taxa.type IN (?)', name + '%', types_sought]
+      query = query.where ['name_objects.name_object_name LIKE ? AND taxa.type IN (?)', name + '%', types_sought]
     when 'containing'
-      query = query.where ['taxa.name LIKE ? AND taxa.type IN (?)', '%' + name + '%', types_sought]
+      query = query.where ['name_objects.name_object_name LIKE ? AND taxa.type IN (?)', '%' + name + '%', types_sought]
     end
     query.all
   end
