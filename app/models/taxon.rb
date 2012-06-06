@@ -15,7 +15,7 @@ class Taxon < ActiveRecord::Base
   validates   :name_object_id, presence: true
 
   scope :valid, where("status = ?", 'valid')
-  scope :ordered_by_name, order(:name)
+  scope :ordered_by_name, joins(:name_object).order(:name_object_name)
   scope :extant, where(:fossil => false)
 
   def unavailable?;     status == 'unavailable' end
@@ -50,7 +50,7 @@ class Taxon < ActiveRecord::Base
   end
 
   def full_name
-    name
+    name_object.name_object_name
   end
 
   def self.find_name name, search_type = 'matching'
