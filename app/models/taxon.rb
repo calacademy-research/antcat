@@ -73,13 +73,7 @@ class Taxon < ActiveRecord::Base
     query.all
   end
 
-  def self.find_genus_group_by_name name
-    query = where ['taxa.name = ? AND taxa.type IN (?)', name, ['Genus', 'Subgenus']]
-    return unless query.count == 1
-    query.first
-  end
-
-  def self.statistics
+  ef self.statistics
     get_statistics [[Subfamily, :subfamilies], [Genus, :genera], [Species, :species], [Subspecies, :subspecies]]
   end
 
