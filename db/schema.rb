@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120606141350) do
+ActiveRecord::Schema.define(:version => 20120606151636) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -88,7 +88,7 @@ ActiveRecord::Schema.define(:version => 20120606141350) do
 
   add_index "journals", ["name"], :name => "journals_name_idx"
 
-  create_table "names", :force => true do |t|
+  create_table "name_objects", :force => true do |t|
     t.string   "name_object_name"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -118,11 +118,11 @@ ActiveRecord::Schema.define(:version => 20120606141350) do
     t.boolean  "fossil"
     t.boolean  "sic"
     t.string   "locality"
-    t.integer  "name_id"
+    t.integer  "name_object_id"
   end
 
   add_index "protonyms", ["authorship_id"], :name => "index_protonyms_on_authorship_id"
-  add_index "protonyms", ["name_id"], :name => "protonyms_name_id_idx"
+  add_index "protonyms", ["name_object_id"], :name => "protonyms_name_id_idx"
 
   create_table "publishers", :force => true do |t|
     t.string   "name"
@@ -225,14 +225,14 @@ ActiveRecord::Schema.define(:version => 20120606141350) do
     t.integer  "subgenus_id"
     t.boolean  "hong",                                         :default => false, :null => false
     t.string   "type_taxon_rank"
-    t.integer  "name_id"
+    t.integer  "name_object_id"
   end
 
   add_index "taxa", ["genus_id"], :name => "taxa_genus_id_idx"
   add_index "taxa", ["homonym_replaced_by_id"], :name => "taxa_homonym_resolved_to_id_index"
   add_index "taxa", ["id", "type"], :name => "taxa_id_and_type_idx"
   add_index "taxa", ["name"], :name => "taxa_name_idx"
-  add_index "taxa", ["name_id"], :name => "taxa_name_id_idx"
+  add_index "taxa", ["name_object_id"], :name => "taxa_name_id_idx"
   add_index "taxa", ["species_id"], :name => "taxa_species_id_index"
   add_index "taxa", ["subfamily_id"], :name => "taxa_subfamily_id_idx"
   add_index "taxa", ["synonym_of_id"], :name => "taxa_synonym_of_id_index"

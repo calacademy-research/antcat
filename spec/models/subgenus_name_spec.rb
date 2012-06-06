@@ -7,6 +7,6 @@ describe SubgenusName do
     name.should be_valid
     name.name_object_name = 'Atta'
     name.save!
-    Name.find(name).name_object_name.should == 'Atta'
+    NameObject.find(name).name_object_name.should == 'Atta'
   end
 end
