@@ -73,7 +73,7 @@ class Taxon < ActiveRecord::Base
     query.all
   end
 
-  ef self.statistics
+  def self.statistics
     get_statistics [[Subfamily, :subfamilies], [Genus, :genera], [Species, :species], [Subspecies, :subspecies]]
   end
 
