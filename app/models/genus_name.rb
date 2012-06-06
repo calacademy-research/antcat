@@ -1,0 +1,3 @@
+class GenusName < GenusGroupName
+
+end

@@ -1,0 +1,2 @@
+class SubgenusName < GenusName
+end

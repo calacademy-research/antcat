@@ -1,0 +1,3 @@
+class SpeciesName < Name
+
+end

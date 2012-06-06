@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120605210657) do
+ActiveRecord::Schema.define(:version => 20120605211612) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -92,6 +92,12 @@ ActiveRecord::Schema.define(:version => 20120605210657) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "type"
+    t.integer  "genus_name_id"
+    t.integer  "species_name_id"
+    t.string   "subspecies_qualifier"
+    t.integer  "next_subspecies_name_id"
+    t.integer  "prior_subspecies_name_id"
   end
 
   create_table "places", :force => true do |t|
