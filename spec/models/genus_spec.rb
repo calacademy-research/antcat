@@ -217,7 +217,7 @@ describe Genus do
       genus = Genus.import({
         :name => 'Atta',
         :protonym => {
-          :name => "Atta",
+          :genus_name => "Atta",
           :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
         },
         :taxonomic_history => ["Atta as genus", "Atta as species"]
@@ -232,7 +232,7 @@ describe Genus do
       genus = Genus.import({
         :name => 'Myrmicium',
         :protonym => {
-          :name => "Myrmicium",
+          :genus_name => "Myrmicium",
           :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
         },
         :type_species => {:genus_name => 'Myrmicium', :species_epithet => 'heeri'},
