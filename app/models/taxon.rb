@@ -27,6 +27,10 @@ class Taxon < ActiveRecord::Base
   def unresolved_homonym?;status == 'unresolved homonym' end
   def excluded?;        status == 'excluded' end
 
+  def name
+    name_object.name_object_name
+  end
+
   def rank
     Rank[self].to_s
   end
