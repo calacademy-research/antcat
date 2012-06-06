@@ -98,28 +98,28 @@ FactoryGirl.define do
 
   ####################################################
   factory :taxon do
-    name_object {FactoryGirl.create :name_object, name_object_name: 'Fred'}
+    name_object {|a| FactoryGirl.create :name_object, name_object_name: a.name}
     protonym
     status  'valid'
   end
 
   factory :family do
     name     'Formicidae'
-    name_object {FactoryGirl.create :name_object, name_object_name: 'Fred'}
+    name_object {|a| FactoryGirl.create :name_object, name_object_name: a.name}
     protonym
     status  'valid'
   end
 
   factory :subfamily do
     sequence(:name) {|n| "Subfamily#{n}"}
-    name_object {FactoryGirl.create :name_object, name_object_name: 'Fred'}
+    name_object {|a| FactoryGirl.create :name_object, name_object_name: a.name}
     protonym
     status  'valid'
   end
 
   factory :tribe do
     sequence(:name) {|n| "Tribe#{n}"}
-    name_object {FactoryGirl.create :name_object, name_object_name: 'Fred'}
+    name_object {|a| FactoryGirl.create :name_object, name_object_name: a.name}
     subfamily
     protonym
     status  'valid'
@@ -127,7 +127,7 @@ FactoryGirl.define do
 
   factory :genus do
     sequence(:name) {|n| "Genus#{n}"}
-    name_object {FactoryGirl.create :name_object, name_object_name: 'Fred'}
+    name_object {|a| FactoryGirl.create :name_object, name_object_name: a.name}
     tribe
     subfamily   {|a| a.tribe && a.tribe.subfamily}
     protonym
@@ -136,7 +136,7 @@ FactoryGirl.define do
 
   factory :subgenus do
     sequence(:name) {|n| "Subgenus#{n}"}
-    name_object {FactoryGirl.create :name_object, name_object_name: 'Fred'}
+    name_object {|a| FactoryGirl.create :name_object, name_object_name: a.name}
     genus
     protonym
     status  'valid'
@@ -144,7 +144,7 @@ FactoryGirl.define do
 
   factory :species do
     sequence(:name) {|n| "Species#{n}"}
-    name_object {FactoryGirl.create :name_object, name_object_name: 'Fred'}
+    name_object {|a| FactoryGirl.create :name_object, name_object_name: a.name}
     genus
     protonym
     status  'valid'
@@ -152,7 +152,7 @@ FactoryGirl.define do
 
   factory :subspecies do
     sequence(:name) {|n| "Subspecies#{n}"}
-    name_object {FactoryGirl.create :name_object, name_object_name: 'Fred'}
+    name_object {|a| FactoryGirl.create :name_object, name_object_name: a.name}
     species
     protonym
     status  'valid'
