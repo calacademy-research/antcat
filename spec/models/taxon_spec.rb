@@ -298,21 +298,6 @@ describe Taxon do
     end
   end
 
-  describe "Finding a genus or a subgenus" do
-    it "should find a genus" do
-      atta = FactoryGirl.create :genus, name: 'Atta'
-      Taxon.find_genus_group_by_name('Atta').should == atta
-    end
-    it "should find a subgenus" do
-      atta = FactoryGirl.create :subgenus, name: 'Atta'
-      Taxon.find_genus_group_by_name('Atta').should == atta
-    end
-    it "should merely return nil if more than one result is found" do
-      2.times {FactoryGirl.create :genus, name: 'Atta'}
-      Taxon.find_genus_group_by_name('Atta').should be_nil
-    end
-  end
-
   describe "Child list queries" do
     before do
       @subfamily = FactoryGirl.create :subfamily, name: 'Dolichoderinae'
