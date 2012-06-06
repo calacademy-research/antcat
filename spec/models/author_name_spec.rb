@@ -50,7 +50,7 @@ describe AuthorName do
       author_name = FactoryGirl.create :author_name, :name => 'Ward'
       reference = FactoryGirl.create :reference, :author_names => [author_name]
       author_name.update_attribute :name, 'Fisher'
-      reference.reload.author_names_string.should == 'Fisher'
+      Reference.find(reference.id).author_names_string.should == 'Fisher'
     end
   end
 
@@ -149,17 +149,17 @@ describe AuthorName do
     it "should not mess with missing space before comma" do
       author = AuthorName.create! :name => 'Ward, P. S., Jr.', :author => @author
       AuthorName.fix_missing_spaces
-      author.reload.name.should == 'Ward, P. S., Jr.'
+      AuthorName.find(author).name.should == 'Ward, P. S., Jr.'
     end
     it "should not mess with missing space before hyphen" do
       author = AuthorName.create! :name => 'Ward, P.-S.', :author => @author
       AuthorName.fix_missing_spaces
-      author.reload.name.should == 'Ward, P.-S.'
+      AuthorName.find(author).name.should == 'Ward, P.-S.'
     end
     it "should find and fix the author names with missing spaces and fix them" do
       author = AuthorName.create! :name => 'Ward, P.S.', :author => @author
       AuthorName.fix_missing_spaces
-      author.reload.name.should == 'Ward, P. S.'
+      AuthorName.find(author).name.should == 'Ward, P. S.'
     end
     it "should find an existing author that has the space and transfer references to it" do
       ward_with_spaces = AuthorName.create! :name => 'Ward, P. S.', :author => @author
@@ -186,8 +186,8 @@ describe AuthorName do
       without_hyphen = FactoryGirl.create :author_name, :name => 'Ward, P. S.', :author => author
       reference = FactoryGirl.create :reference, :author_names => [without_hyphen]
       AuthorName.create_hyphenation_aliases
-      with_hyphen.reload.author.reload.should == author
-      without_hyphen.reload.author.reload.should == author
+      Author.find(AuthorName.find(with_hyphen).author).should == author
+      Author.find(AuthorName.find(without_hyphen).author).should == author
     end
   end
 
@@ -227,7 +227,7 @@ describe AuthorName do
         reference = FactoryGirl.create :reference, :author_names => [FactoryGirl.create(:author_name, :name => 'Ward, Phil')]
         AuthorName.correct 'Ward, Phil', 'Ward, P. S.', false
         AuthorName.find_by_name('Ward, Phil').should be_nil
-        reference.reload
+        reference = Reference.find reference
         reference.author_names.map(&:name).should == ['Ward, P. S.']
         reference.author_names_string.should == 'Ward, P. S.'
       end
@@ -239,7 +239,7 @@ describe AuthorName do
         reference = FactoryGirl.create :reference, :author_names => [FactoryGirl.create(:author_name, :name => 'Ward, Phil')]
         AuthorName.correct 'Ward, Phil', 'Ward, P. S.', false
         AuthorName.find_by_name('Ward, Phil').should be_nil
-        reference.reload
+        reference = Reference.find reference
         reference.author_names.map(&:name).should == ['Ward, P. S.']
         reference.author_names_string.should == 'Ward, P. S.'
         AuthorName.count.should == 1
