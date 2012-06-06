@@ -98,6 +98,13 @@ FactoryGirl.define do
 
   ####################################################
   factory :taxon do
+    ignore {name}
+    name_object {FactoryGirl.create :name_object, name_object_name: name}
+    protonym
+    status  'valid'
+  end
+
+  factory :taxon do
     name_object {|a| FactoryGirl.create :name_object, name_object_name: a.name}
     protonym
     status  'valid'

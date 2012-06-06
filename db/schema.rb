@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120606151636) do
+ActiveRecord::Schema.define(:version => 20120606183236) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -204,7 +204,6 @@ ActiveRecord::Schema.define(:version => 20120606151636) do
   add_index "references", ["updated_at"], :name => "references_updated_at_idx"
 
   create_table "taxa", :force => true do |t|
-    t.string   "name"
     t.string   "type"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -231,7 +230,6 @@ ActiveRecord::Schema.define(:version => 20120606151636) do
   add_index "taxa", ["genus_id"], :name => "taxa_genus_id_idx"
   add_index "taxa", ["homonym_replaced_by_id"], :name => "taxa_homonym_resolved_to_id_index"
   add_index "taxa", ["id", "type"], :name => "taxa_id_and_type_idx"
-  add_index "taxa", ["name"], :name => "taxa_name_idx"
   add_index "taxa", ["name_object_id"], :name => "taxa_name_id_idx"
   add_index "taxa", ["species_id"], :name => "taxa_species_id_index"
   add_index "taxa", ["subfamily_id"], :name => "taxa_subfamily_id_idx"
