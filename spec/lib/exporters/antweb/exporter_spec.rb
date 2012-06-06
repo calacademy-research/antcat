@@ -8,13 +8,13 @@ describe Antweb::Exporter do
 
   describe "exporting one taxon" do
     it "should export a subfamily" do
-      ponerinae = Subfamily.create! :name => 'Ponerinae', :status => 'valid', :taxonomic_history => '<p>Ponerinae</p>'
+      ponerinae = Factory :subfamily, :name => 'Ponerinae', :status => 'valid', :taxonomic_history => '<p>Ponerinae</p>'
       FactoryGirl.create :genus, :subfamily => ponerinae, :tribe => nil
       @exporter.export_taxon(ponerinae).should == ['Ponerinae', nil, nil, nil, nil, nil, 'TRUE', 'TRUE', nil, nil, 'FALSE', '<p class="taxon_statistics">1 genus</p><p>Ponerinae</p>']
     end
 
     it "should export fossil taxa" do
-      ponerinae = Subfamily.create! :name => 'Ponerinae', :status => 'valid', :taxonomic_history => '<p>Ponerinae</p>'
+      ponerinae = Factory :subfamily, :name => 'Ponerinae', :status => 'valid', :taxonomic_history => '<p>Ponerinae</p>'
       FactoryGirl.create :genus, :subfamily => ponerinae, :tribe => nil
       fossil = FactoryGirl.create :genus, :subfamily => ponerinae, :tribe => nil, :fossil => true, :name => 'Atta', :taxonomic_history => 'Atta'
       @exporter.export_taxon(ponerinae).should == ['Ponerinae', nil, nil, nil, nil, nil, 'TRUE', 'TRUE', nil, nil, 'FALSE', '<p class="taxon_statistics">Extant: 1 genus</p><p class="taxon_statistics">Fossil: 1 genus</p><p>Ponerinae</p>']
@@ -22,22 +22,22 @@ describe Antweb::Exporter do
     end
 
     it "should export a genus" do
-      myrmicinae = Subfamily.create! :name => 'Myrmicinae', :status => 'valid'
-      dacetini = Tribe.create! :name => 'Dacetini', :subfamily => myrmicinae, :status => 'valid'
-      acanthognathus = Genus.create! :name => 'Acanothognathus', :subfamily => myrmicinae, :tribe => dacetini, :status => 'valid', :taxonomic_history => '<i>Acanthognathous</i>'
+      myrmicinae = Factory :subfamily, :name => 'Myrmicinae', :status => 'valid'
+      dacetini = Factory :tribe, :name => 'Dacetini', :subfamily => myrmicinae, :status => 'valid'
+      acanthognathus = Factory :genus, :name => 'Acanothognathus', :subfamily => myrmicinae, :tribe => dacetini, :status => 'valid', :taxonomic_history => '<i>Acanthognathous</i>'
       Exporters::Antweb::Formatter.should_receive(:format_taxonomic_history_with_statistics_for_antweb).with(acanthognathus, :include_invalid => false).and_return 'history'
       @exporter.export_taxon(acanthognathus).should == ['Myrmicinae', 'Dacetini', 'Acanothognathus', nil, nil, nil, 'TRUE', 'TRUE', nil, nil, 'FALSE', 'history']
     end
 
     it "should export a genus without a tribe" do
-      myrmicinae = Subfamily.create! :name => 'Myrmicinae', :status => 'valid'
-      acanthognathus = Genus.create! :name => 'Acanothognathus', :subfamily => myrmicinae, :status => 'valid', :taxonomic_history => '<i>Acanthognathous</i>'
+      myrmicinae = Factory :subfamily, :name => 'Myrmicinae', :status => 'valid'
+      acanthognathus = Factory :genus, tribe: nil, :name => 'Acanothognathus', :subfamily => myrmicinae, :status => 'valid', :taxonomic_history => '<i>Acanthognathous</i>'
       Exporters::Antweb::Formatter.should_receive(:format_taxonomic_history_with_statistics_for_antweb).with(acanthognathus, :include_invalid => false).and_return 'history'
       @exporter.export_taxon(acanthognathus).should == ['Myrmicinae', nil, 'Acanothognathus', nil, nil, nil, 'TRUE', 'TRUE', nil, nil, 'FALSE', 'history']
     end
 
     it "should export a genus without a subfamily as being in 'incertae_sedis'" do
-      acanthognathus = Genus.create! :name => 'Acanothognathus', :status => 'valid', :taxonomic_history => '<i>Acanthognathous</i>'
+      acanthognathus = Factory :genus, tribe: nil, subfamily: nil, :name => 'Acanothognathus', :status => 'valid', :taxonomic_history => '<i>Acanthognathous</i>'
       Exporters::Antweb::Formatter.should_receive(:format_taxonomic_history_with_statistics_for_antweb).with(acanthognathus, :include_invalid => false).and_return 'history'
       @exporter.export_taxon(acanthognathus).should == ['incertae_sedis', nil, 'Acanothognathus', nil, nil, nil, 'TRUE', 'TRUE', nil, nil, 'FALSE', 'history']
     end

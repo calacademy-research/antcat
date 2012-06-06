@@ -3,21 +3,20 @@ require 'spec_helper'
 
 describe Taxon do
   it "should require a name" do
-    Factory.build(:taxon).should_not be_valid
+    Factory.build(:taxon, name_object: nil).should_not be_valid
     taxon = FactoryGirl.create :taxon, :name => 'Cerapachynae'
     taxon.name.should == 'Cerapachynae'
     taxon.should be_valid
   end
   it "should have a name object" do
-    Factory.build(:taxon).should_not be_valid
-    name = FactoryGirl.create :name, name_object_name: 'Cerapachynae'
+    name = FactoryGirl.create :name_object, name_object_name: 'Cerapachynae'
     taxon = FactoryGirl.create :taxon, name: 'Cerapachynae', name_object: name
     taxon.name_object.name_object_name.should == 'Cerapachynae'
     taxon.should be_valid
   end
   it "should be (Rails) valid with a nil status" do
-    Taxon.new(:name => 'Cerapachynae').should be_valid
-    Taxon.new(:name => 'Cerapachynae', :status => 'valid').should be_valid
+    Taxon.new(:name => 'Cerapachynae', name_object: Factory(:name_object)).should be_valid
+    Taxon.new(:name => 'Cerapachynae', name_object: Factory(:name_object), :status => 'valid').should be_valid
   end
   it "when status 'valid', should not be invalid" do
     taxon = FactoryGirl.create :taxon, :name => 'Cerapachynae'
@@ -95,18 +94,18 @@ describe Taxon do
 
   describe "Current valid name" do
     it "if it's not a synonym: it's just the name" do
-      taxon = Taxon.create! :name => 'Name'
+      taxon = Taxon.create! :name => 'Name', name_object: Factory(:name_object)
       taxon.current_valid_name.should == 'Name'
     end
     it "if it is a synonym: the name of the target" do
-      target = Taxon.create! :name => 'Target'
-      taxon = Taxon.create! :name => 'Taxon', :status => 'synonym', :synonym_of => target
+      target = Taxon.create! :name => 'Target', name_object: Factory(:name_object)
+      taxon = Taxon.create! :name => 'Taxon', :status => 'synonym', :synonym_of => target, name_object: Factory(:name_object)
       taxon.current_valid_name.should == 'Target'
     end
     it "if it is a synonym of a synonym: the name of the target's target" do
-      target_target = Taxon.create! :name => 'Target_Target'
-      target = Taxon.create! :name => 'Target', :status => 'synonym', :synonym_of => target_target
-      taxon = Taxon.create! :name => 'Taxon', :status => 'synonym', :synonym_of => target
+      target_target = Taxon.create! :name => 'Target_Target', name_object: Factory(:name_object)
+      target = Taxon.create! :name => 'Target', :status => 'synonym', :synonym_of => target_target, name_object: Factory(:name_object)
+      taxon = Taxon.create! :name => 'Taxon', :status => 'synonym', :synonym_of => target, name_object: Factory(:name_object)
       taxon.current_valid_name.should == 'Target_Target'
     end
   end
@@ -256,7 +255,7 @@ describe Taxon do
 
   describe "Protonym" do
     it "should have a protonym" do
-      taxon = Family.create! :name => 'Formicidae'
+      taxon = Family.create! :name => 'Formicidae', name_object: Factory(:name_object)
       taxon.protonym.should be_nil
       taxon.build_protonym :name => 'Formicariae'
     end
