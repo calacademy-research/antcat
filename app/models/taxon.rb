@@ -39,6 +39,7 @@ class Taxon < ActiveRecord::Base
   end
 
   def name
+    return '' if new_record? and not name_object
     name_object.name_object_name
   end
 
