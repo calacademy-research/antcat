@@ -71,7 +71,7 @@ class Catalog::IndexController < CatalogController
     if params[:hide_tribes]
       @genera = @subfamily == 'none' ? Genus.without_subfamily.ordered_by_name : @subfamily.genera.ordered_by_name
     else
-      @genera = @genus.siblings.ordered_by_name
+      @genera = @genus.siblings
       @tribe = @genus.tribe ? @genus.tribe : 'none'
       @tribes = @subfamily == 'none' ? nil : @subfamily.tribes.ordered_by_name
     end
