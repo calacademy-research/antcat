@@ -2,11 +2,11 @@
 class Genus < Taxon
   belongs_to :tribe
   belongs_to :subfamily
-  has_many :species, order: :name
-  has_many :subspecies, order: :name
-  has_many :subgenera, order: :name
+  has_many :species
+  has_many :subspecies
+  has_many :subgenera
 
-  scope :without_subfamily, where(subfamily_id: nil).order(:name)
+  scope :without_subfamily, where(subfamily_id: nil)
   scope :without_tribe, where(tribe_id: nil)
 
   def children
@@ -40,7 +40,6 @@ class Genus < Taxon
       attributes = {
         subfamily: data[:subfamily],
         tribe: data[:tribe],
-        name: data[:name],
         name_object: name,
         fossil: data[:fossil] || false,
         status: data[:status] || 'valid',

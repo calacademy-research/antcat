@@ -15,6 +15,7 @@ class Taxon < ActiveRecord::Base
   validates   :name_object_id, presence: true
 
   scope :valid, where("status = ?", 'valid')
+  scope :with_names, joins(:name_object)
   scope :ordered_by_name, joins(:name_object).order('name_objects.name_object_name')
   scope :extant, where(:fossil => false)
 
@@ -26,6 +27,16 @@ class Taxon < ActiveRecord::Base
   def homonym?;         status == 'homonym' end
   def unresolved_homonym?;status == 'unresolved homonym' end
   def excluded?;        status == 'excluded' end
+
+  def self.find_by_name name
+    taxon = with_names.where("name_object_name = '#{name}'").first
+    taxon && Taxon.find_by_id(taxon.id)
+  end
+
+  def self.find_by_genus_id_and_name genus_id, name
+    taxon = with_names.where(genus_id: genus_id).where("name_object_name = '#{name}'").first
+    taxon && Taxon.find_by_id(taxon.id)
+  end
 
   def name
     name_object.name_object_name

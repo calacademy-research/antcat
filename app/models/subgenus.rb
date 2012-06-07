@@ -3,7 +3,7 @@ class Subgenus < Taxon
   belongs_to :genus
   belongs_to :tribe
   belongs_to :subfamily
-  has_many :species, :order => :name
+  has_many :species
   validates_presence_of :genus
 
   def children
@@ -21,7 +21,6 @@ class Subgenus < Taxon
       headline_notes_taxt = Importers::Bolton::Catalog::TextToTaxt.convert(data[:note])
       attributes = {
         genus:                data[:genus],
-        name:                 data[:name],
         name_object:          name,
         fossil:               data[:fossil] || false,
         status:               data[:status] || 'valid',

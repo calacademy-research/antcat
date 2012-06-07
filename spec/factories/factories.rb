@@ -97,44 +97,40 @@ FactoryGirl.define do
   end
 
   ####################################################
+  sequence(:taxon_name) {|n| "Taxon#{n}"}
+
   factory :taxon do
-    ignore {name}
+    ignore {name generate(:taxon_name)}
     name_object {FactoryGirl.create :name_object, name_object_name: name}
     protonym
     status  'valid'
   end
 
-  factory :taxon do
-    name_object {|a| FactoryGirl.create :name_object, name_object_name: a.name}
-    protonym
-    status  'valid'
-  end
-
   factory :family do
-    name     'Formicidae'
-    name_object {|a| FactoryGirl.create :name_object, name_object_name: a.name}
+    ignore {name 'Formicidae'}
+    name_object {FactoryGirl.create :name_object, name_object_name: name}
     protonym
     status  'valid'
   end
 
   factory :subfamily do
-    sequence(:name) {|n| "Subfamily#{n}"}
-    name_object {|a| FactoryGirl.create :name_object, name_object_name: a.name}
+    ignore {name generate(:taxon_name)}
+    name_object {FactoryGirl.create :name_object, name_object_name: name}
     protonym
     status  'valid'
   end
 
   factory :tribe do
-    sequence(:name) {|n| "Tribe#{n}"}
-    name_object {|a| FactoryGirl.create :name_object, name_object_name: a.name}
+    ignore {name generate(:taxon_name)}
+    name_object {FactoryGirl.create :name_object, name_object_name: name}
     subfamily
     protonym
     status  'valid'
   end
 
   factory :genus do
-    sequence(:name) {|n| "Genus#{n}"}
-    name_object {|a| FactoryGirl.create :name_object, name_object_name: a.name}
+    ignore {name generate(:taxon_name)}
+    name_object {FactoryGirl.create :name_object, name_object_name: name}
     tribe
     subfamily   {|a| a.tribe && a.tribe.subfamily}
     protonym
@@ -142,24 +138,24 @@ FactoryGirl.define do
   end
 
   factory :subgenus do
-    sequence(:name) {|n| "Subgenus#{n}"}
-    name_object {|a| FactoryGirl.create :name_object, name_object_name: a.name}
+    ignore {name generate(:taxon_name)}
+    name_object {FactoryGirl.create :name_object, name_object_name: name}
     genus
     protonym
     status  'valid'
   end
 
   factory :species do
-    sequence(:name) {|n| "Species#{n}"}
-    name_object {|a| FactoryGirl.create :name_object, name_object_name: a.name}
+    ignore {name generate(:taxon_name)}
+    name_object {FactoryGirl.create :name_object, name_object_name: name}
     genus
     protonym
     status  'valid'
   end
 
   factory :subspecies do
-    sequence(:name) {|n| "Subspecies#{n}"}
-    name_object {|a| FactoryGirl.create :name_object, name_object_name: a.name}
+    ignore {name generate(:taxon_name)}
+    name_object {FactoryGirl.create :name_object, name_object_name: name}
     species
     protonym
     status  'valid'

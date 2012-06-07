@@ -19,7 +19,7 @@ describe Importers::Bolton::Catalog::Species::Importer do
 
     acanthomyrmex = Genus.find_by_name 'Acanthomyrmex'
     acanthomyrmex.should_not be_nil
-    basispinosus = acanthomyrmex.species.find_by_name 'basispinosus'
+    basispinosus = Species.find_by_name 'basispinosus'
     basispinosus.genus.should == acanthomyrmex
 
     basispinosus.protonym.locality.should == 'Indonesia (Sulawesi)'

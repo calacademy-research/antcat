@@ -134,7 +134,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
 
   def do_manual_fixups
     wilsonia = Genus.find_by_name 'Wilsonia'
-    wilsonia.update_attribute :status, Status['unresolved homonym'].to_s rescue nil
+    wilsonia.update_attribute :status, Status['unresolved homonym'].to_s if wilsonia
   end
 
 end

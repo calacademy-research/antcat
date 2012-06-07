@@ -4,27 +4,27 @@ require 'spec_helper'
 describe Taxon do
   it "should require a name" do
     Factory.build(:taxon, name_object: nil).should_not be_valid
-    taxon = taxon_factory :taxon, :name => 'Cerapachynae'
+    taxon = FactoryGirl.create :taxon, name: 'Cerapachynae'
     taxon.name.should == 'Cerapachynae'
     taxon.should be_valid
   end
   it "should be (Rails) valid with a nil status" do
-    taxon_factory(:taxon, :name => 'Cerapachynae').should be_valid
-    taxon_factory(:taxon, :name => 'Cerapachynae', :status => 'valid').should be_valid
+    FactoryGirl.build(:taxon, name: 'Cerapachynae').should be_valid
+    FactoryGirl.build(:taxon, name: 'Cerapachynae', status: 'valid').should be_valid
   end
   it "when status 'valid', should not be invalid" do
-    taxon = taxon_factory :taxon, :name => 'Cerapachynae'
+    taxon = FactoryGirl.build :taxon, name: 'Cerapachynae'
     taxon.should_not be_invalid
   end
   it "should be able to be unidentifiable" do
-    taxon = taxon_factory :taxon, :name => 'Cerapachynae'
+    taxon = FactoryGirl.build :taxon, name: 'Cerapachynae'
     taxon.should_not be_unidentifiable
     taxon.update_attribute :status, 'unidentifiable'
     taxon.should be_unidentifiable
     taxon.should be_invalid
   end
   it "should be able to be unavailable" do
-    taxon = taxon_factory :taxon, :name => 'Cerapachynae'
+    taxon = FactoryGirl.build :taxon, name: 'Cerapachynae'
     taxon.should_not be_unavailable
     taxon.should be_available
     taxon.update_attribute :status, 'unavailable'
@@ -33,21 +33,21 @@ describe Taxon do
     taxon.should be_invalid
   end
   it "should be able to be excluded" do
-    taxon = taxon_factory :taxon, :name => 'Cerapachynae'
+    taxon = FactoryGirl.build :taxon, name: 'Cerapachynae'
     taxon.should_not be_excluded
     taxon.update_attribute :status, 'excluded'
     taxon.should be_excluded
     taxon.should be_invalid
   end
   it "should be able to be a synonym" do
-    taxon = taxon_factory :taxon, :name => 'Cerapachynae'
+    taxon = FactoryGirl.build :taxon, name: 'Cerapachynae'
     taxon.should_not be_synonym
     taxon.update_attribute :status, 'synonym'
     taxon.should be_synonym
     taxon.should be_invalid
   end
   it "should be able to be a fossil" do
-    taxon = taxon_factory :taxon, :name => 'Cerapachynae'
+    taxon = FactoryGirl.build :taxon, name: 'Cerapachynae'
     taxon.should_not be_fossil
     taxon.fossil.should == false
     taxon.update_attribute :fossil, true
@@ -57,59 +57,58 @@ describe Taxon do
     lambda {Taxon.new.children}.should raise_error NotImplementedError
   end
   it "should be able to be a synonym of something else" do
-    gauromyrmex = taxon_factory :taxon, :name => 'Gauromyrmex'
-    acalama = taxon_factory :taxon, :name => 'Acalama', :status => 'synonym', :synonym_of => gauromyrmex
+    gauromyrmex = FactoryGirl.create :taxon, name: 'Gauromyrmex'
+    acalama = FactoryGirl.create :taxon, name: 'Acalama', status: 'synonym', synonym_of: gauromyrmex
     acalama.reload
     acalama.should be_synonym
     acalama.reload.synonym_of.should == gauromyrmex
   end
   it "should be able to be a homonym of something else" do
-    neivamyrmex = taxon_factory :taxon, :name => 'Neivamyrmex'
-    acamatus = taxon_factory :taxon, :name => 'Acamatus', :status => 'homonym', :homonym_replaced_by => neivamyrmex
+    neivamyrmex = FactoryGirl.create :taxon, name: 'Neivamyrmex'
+    acamatus = FactoryGirl.create :taxon, name: 'Acamatus', status: 'homonym', homonym_replaced_by: neivamyrmex
     acamatus.reload
     acamatus.should be_homonym
     acamatus.homonym_replaced_by.should == neivamyrmex
   end
   it "should be able to have an incertae_sedis_in" do
-    myanmyrma = taxon_factory :taxon, :name => 'Myanmyrma', :incertae_sedis_in => 'family'
+    myanmyrma = FactoryGirl.create :taxon, name: 'Myanmyrma', incertae_sedis_in: 'family'
     myanmyrma.reload
     myanmyrma.incertae_sedis_in.should == 'family'
     myanmyrma.should_not be_invalid
   end
   it "should be able to say whether it is incertae sedis in a particular rank" do
-    myanmyrma = taxon_factory :taxon, :name => 'Myanmyrma', :incertae_sedis_in => 'family'
+    myanmyrma = FactoryGirl.create :taxon, name: 'Myanmyrma', incertae_sedis_in: 'family'
     myanmyrma.reload
     myanmyrma.should be_incertae_sedis_in('family')
   end
   it "should be able to store tons of text in taxonomic history" do
-    camponotus = taxon_factory :taxon, :name => 'Camponotus', :taxonomic_history => '1234' * 100_000
+    camponotus = FactoryGirl.create :taxon, name: 'Camponotus', taxonomic_history: '1234' * 100_000
     camponotus.reload.taxonomic_history.size.should == 4 * 100_000
   end
 
   describe "Current valid name" do
     it "if it's not a synonym: it's just the name" do
-      taxon = taxon_factory :taxon, name: 'Name'
+      taxon = Factory :taxon, name: 'Name'
       taxon.current_valid_name.should == 'Name'
     end
     it "if it is a synonym: the name of the target" do
-      target = taxon_factory :taxon, :name => 'Target'
-      taxon = taxon_factory :taxon, :name => 'Taxon', :status => 'synonym', :synonym_of => target
+      target = Factory :taxon, name: 'Target'
+      taxon = Factory :taxon, name: 'Taxon', status: 'synonym', synonym_of: target
       taxon.current_valid_name.should == 'Target'
     end
     it "if it is a synonym of a synonym: the name of the target's target" do
-      target_target = taxon_factory :taxon, :name => 'Target_Target'
-      target = taxon_factory :taxon, :name => 'Target', :status => 'synonym', :synonym_of => target_target
-      taxon = taxon_factory :taxon, :name => 'Taxon', :status => 'synonym', :synonym_of => target
+      target_target = Factory :taxon, name: 'Target_Target'
+      target = Factory :taxon, name: 'Target', status: 'synonym', synonym_of: target_target
+      taxon = Factory :taxon, name: 'Taxon', status: 'synonym', synonym_of: target
       taxon.current_valid_name.should == 'Target_Target'
     end
   end
 
   describe "Find name" do
     before do
-      require 'ruby-debug';debugger;'';
-      taxon_factory :genus, name: 'Monomorium'
-      @monoceros = taxon_factory :genus, :name => 'Monoceros'
-      @rufa = taxon_factory :species, :name => 'rufa', :genus => @monoceros
+      FactoryGirl.create :genus, name: 'Monomorium'
+      @monoceros = FactoryGirl.create :genus, name: 'Monoceros'
+      @rufa = FactoryGirl.create :species, name: 'rufa', genus: @monoceros
     end
     it "should return [] if nothing matches" do
       Taxon.find_name('sdfsdf').should == []
@@ -128,19 +127,19 @@ describe Taxon do
       results.size.should == 2
     end
     it "should not return anything but subfamilies, tribes, genera and species" do
-      taxon_factory :subfamily, :name => 'Lepto'
-      taxon_factory :tribe, :name => 'Lepto'
-      taxon_factory :genus, :name => 'Lepto'
-      taxon_factory :subgenus, :name => 'Lepto'
-      taxon_factory :species, :name => 'Lepto'
-      taxon_factory :subspecies, :name => 'Lepto'
+      FactoryGirl.create :subfamily, name: 'Lepto'
+      FactoryGirl.create :tribe, name: 'Lepto'
+      FactoryGirl.create :genus, name: 'Lepto'
+      FactoryGirl.create :subgenus, name: 'Lepto'
+      FactoryGirl.create :species, name: 'Lepto'
+      FactoryGirl.create :subspecies, name: 'Lepto'
       results = Taxon.find_name 'Lepto'
       results.size.should == 4
     end
     it "should sort results by name" do
-      taxon_factory :subfamily, :name => 'Lepti'
-      taxon_factory :subfamily, :name => 'Lepta'
-      taxon_factory :subfamily, :name => 'Lepte'
+      FactoryGirl.create :subfamily, name: 'Lepti'
+      FactoryGirl.create :subfamily, name: 'Lepta'
+      FactoryGirl.create :subfamily, name: 'Lepte'
       results = Taxon.find_name 'Lept', 'beginning with'
       results.map(&:name).should == ['Lepta', 'Lepte', 'Lepti']
     end
@@ -159,33 +158,33 @@ describe Taxon do
 
   describe ".rank" do
     it "should return a lowercase version" do
-      taxon_factory(:subfamily).rank.should == 'subfamily'
+      FactoryGirl.create(:subfamily).rank.should == 'subfamily'
     end
   end
 
   describe "being a synonym of" do
     it "should not think it's a synonym of something when it's not" do
-      genus = taxon_factory :genus
-      another_genus = taxon_factory :genus
+      genus = FactoryGirl.create :genus
+      another_genus = FactoryGirl.create :genus
       genus.should_not be_synonym_of another_genus
     end
     it "should think it's a synonym of something when it is" do
-      senior_synonym = taxon_factory :genus
-      junior_synonym = taxon_factory :genus, :synonym_of => senior_synonym, :status => 'synonym'
+      senior_synonym = FactoryGirl.create :genus
+      junior_synonym = FactoryGirl.create :genus, synonym_of: senior_synonym, status: 'synonym'
       junior_synonym.should be_synonym_of senior_synonym
     end
   end
 
   describe "being a homonym replaced by something" do
     it "should not think it's a homonym replaced by something when it's not" do
-      genus = taxon_factory :genus
-      another_genus = taxon_factory :genus
+      genus = FactoryGirl.create :genus
+      another_genus = FactoryGirl.create :genus
       genus.should_not be_homonym_replaced_by another_genus
       genus.homonym_replaced.should be_nil
     end
     it "should think it's a homonym replaced by something when it is" do
-      replacement = taxon_factory :genus
-      homonym = taxon_factory :genus, :homonym_replaced_by => replacement, :status => 'homonym'
+      replacement = FactoryGirl.create :genus
+      homonym = FactoryGirl.create :genus, homonym_replaced_by: replacement, status: 'homonym'
       homonym.should be_homonym_replaced_by replacement
       replacement.homonym_replaced.should == homonym
     end
@@ -193,40 +192,40 @@ describe Taxon do
 
   describe "the 'valid' scope" do
     it "should only include valid taxa" do
-      subfamily = taxon_factory :subfamily
-      replacement = taxon_factory :genus, :subfamily => subfamily
-      homonym = taxon_factory :genus, :homonym_replaced_by => replacement, :status => 'homonym', :subfamily => subfamily
-      synonym = taxon_factory :genus, :synonym_of => replacement, :status => 'synonym', :subfamily => subfamily
+      subfamily = FactoryGirl.create :subfamily
+      replacement = FactoryGirl.create :genus, subfamily: subfamily
+      homonym = FactoryGirl.create :genus, homonym_replaced_by: replacement, status: 'homonym', subfamily: subfamily
+      synonym = FactoryGirl.create :genus, synonym_of: replacement, status: 'synonym', subfamily: subfamily
       subfamily.genera.valid.should == [replacement]
     end
   end
 
   describe "the 'extant' scope" do
     it "should only include extant taxa" do
-      subfamily = taxon_factory :subfamily
-      extant_genus = taxon_factory :genus, :subfamily => subfamily
-      taxon_factory :genus, :subfamily => subfamily, :fossil => true
+      subfamily = FactoryGirl.create :subfamily
+      extant_genus = FactoryGirl.create :genus, subfamily: subfamily
+      FactoryGirl.create :genus, subfamily: subfamily, fossil: true
       subfamily.genera.extant.should == [extant_genus]
     end
   end
 
   describe "ordered by name" do
     it "should order by name" do
-      zymacros = taxon_factory :subfamily, :name => 'Zymacros'
-      atta = taxon_factory :subfamily, :name => 'Atta'
+      zymacros = FactoryGirl.create :subfamily, name: 'Zymacros'
+      atta = FactoryGirl.create :subfamily, name: 'Atta'
       Taxon.ordered_by_name.should == [atta, zymacros]
     end
   end
 
   describe "statistics (for the whole family)" do
     it "should return the statistics for each status of each rank" do
-      subfamily = taxon_factory :subfamily
-      genus = taxon_factory :genus, :subfamily => subfamily, :tribe => nil
-      taxon_factory :genus, :subfamily => subfamily, :status => 'homonym', :tribe => nil
-      2.times {taxon_factory :subfamily, :fossil => true}
+      subfamily = FactoryGirl.create :subfamily
+      genus = FactoryGirl.create :genus, subfamily: subfamily, tribe: nil
+      FactoryGirl.create :genus, subfamily: subfamily, status: 'homonym', tribe: nil
+      2.times {FactoryGirl.create :subfamily, fossil: true}
       Taxon.statistics.should == {
-        :extant => {:subfamilies => {'valid' => 1}, :genera => {'valid' => 1, 'homonym' => 1}},
-        :fossil => {:subfamilies => {'valid' => 2}}
+        extant: {:subfamilies => {'valid' => 1}, :genera => {'valid' => 1, 'homonym' => 1}},
+        fossil: {:subfamilies => {'valid' => 2}}
       }
     end
 
@@ -234,14 +233,14 @@ describe Taxon do
 
   describe "Convert asterisks to daggers" do
     it "should convert an asterisk to a dagger" do
-      taxon = taxon_factory :subfamily
+      taxon = FactoryGirl.create :subfamily
       taxon.taxonomic_history = '*'
       taxon.convert_asterisks_to_daggers!
       taxon.taxonomic_history.should == '&dagger;'
       taxon.reload.taxonomic_history.should == '&dagger;'
     end
     it "work OK if taxonomic history is nil" do
-      taxon = taxon_factory :subfamily,  :taxonomic_history => nil
+      taxon = FactoryGirl.create :subfamily,  taxonomic_history: nil
       taxon.convert_asterisks_to_daggers!
       taxon.taxonomic_history.should be_nil
       taxon.reload.taxonomic_history.should be_nil
@@ -250,24 +249,24 @@ describe Taxon do
 
   describe "Protonym" do
     it "should have a protonym" do
-      taxon = Family.create! :name => 'Formicidae', name_object: Factory(:name_object)
+      taxon = Family.new
       taxon.protonym.should be_nil
-      taxon.build_protonym :name => 'Formicariae'
+      taxon.build_protonym name: 'Formicariae'
     end
   end
 
   describe "Taxonomic history items" do
     it "should have some" do
-      taxon = taxon_factory :family
+      taxon = FactoryGirl.create :family
       taxon.taxonomic_history_items.should be_empty
-      taxon.taxonomic_history_items.create! :taxt => 'foo'
+      taxon.taxonomic_history_items.create! taxt: 'foo'
       taxon.reload.taxonomic_history_items.map(&:taxt).should == ['foo']
     end
     it "should show the items in the order in which they were added to the taxon" do
-      taxon = taxon_factory :family
-      taxon.taxonomic_history_items.create! :taxt => '1'
-      taxon.taxonomic_history_items.create! :taxt => '2'
-      taxon.taxonomic_history_items.create! :taxt => '3'
+      taxon = FactoryGirl.create :family
+      taxon.taxonomic_history_items.create! taxt: '1'
+      taxon.taxonomic_history_items.create! taxt: '2'
+      taxon.taxonomic_history_items.create! taxt: '3'
       taxon.taxonomic_history_items.map(&:taxt).should == ['1','2','3']
       taxon.taxonomic_history_items.first.move_to_bottom
       taxon.taxonomic_history_items(true).map(&:taxt).should == ['2','3','1']
@@ -276,16 +275,16 @@ describe Taxon do
 
   describe "Reference sections" do
     it "should have some" do
-      taxon = taxon_factory :family
+      taxon = FactoryGirl.create :family
       taxon.reference_sections.should be_empty
-      taxon.reference_sections.create! :references => 'foo'
+      taxon.reference_sections.create! references: 'foo'
       taxon.reload.reference_sections.map(&:references).should == ['foo']
     end
     it "should show the items in the order in which they were added to the taxon" do
-      taxon = taxon_factory :family
-      taxon.reference_sections.create! :references => '1'
-      taxon.reference_sections.create! :references => '2'
-      taxon.reference_sections.create! :references => '3'
+      taxon = FactoryGirl.create :family
+      taxon.reference_sections.create! references: '1'
+      taxon.reference_sections.create! references: '2'
+      taxon.reference_sections.create! references: '3'
       taxon.reference_sections.map(&:references).should == ['1','2','3']
       taxon.reference_sections.first.move_to_bottom
       taxon.reference_sections(true).map(&:references).should == ['2','3','1']
@@ -294,20 +293,20 @@ describe Taxon do
 
   describe "Child list queries" do
     before do
-      @subfamily = taxon_factory :subfamily, name: 'Dolichoderinae'
+      @subfamily = FactoryGirl.create :subfamily, name: 'Dolichoderinae'
     end
     it "should find all genera for the taxon if there are no conditions" do
-      taxon_factory :genus, name: 'Atta', subfamily: @subfamily
-      taxon_factory :genus, name: 'Eciton', subfamily: @subfamily, fossil: true
-      taxon_factory :genus, name: 'Aneuretus', subfamily: @subfamily, fossil: true, incertae_sedis_in: 'subfamily'
+      FactoryGirl.create :genus, name: 'Atta', subfamily: @subfamily
+      FactoryGirl.create :genus, name: 'Eciton', subfamily: @subfamily, fossil: true
+      FactoryGirl.create :genus, name: 'Aneuretus', subfamily: @subfamily, fossil: true, incertae_sedis_in: 'subfamily'
       @subfamily.child_list_query(:genera).map(&:name).sort.should == ['Aneuretus', 'Atta', 'Eciton']
       @subfamily.child_list_query(:genera, fossil: true).map(&:name).sort.should == ['Aneuretus', 'Eciton']
       @subfamily.child_list_query(:genera, incertae_sedis_in: 'subfamily').map(&:name).sort.should == ['Aneuretus']
     end
     it "should not include invalid taxa" do
-      taxon_factory :genus, name: 'Atta', subfamily: @subfamily, :status => 'synonym'
-      taxon_factory :genus, name: 'Eciton', subfamily: @subfamily, fossil: true
-      taxon_factory :genus, name: 'Aneuretus', subfamily: @subfamily, fossil: true, incertae_sedis_in: 'subfamily'
+      FactoryGirl.create :genus, name: 'Atta', subfamily: @subfamily, status: 'synonym'
+      FactoryGirl.create :genus, name: 'Eciton', subfamily: @subfamily, fossil: true
+      FactoryGirl.create :genus, name: 'Aneuretus', subfamily: @subfamily, fossil: true, incertae_sedis_in: 'subfamily'
       @subfamily.child_list_query(:genera).map(&:name).sort.should == ['Aneuretus', 'Eciton']
     end
   end
@@ -317,7 +316,7 @@ describe Taxon do
       Taxon.count.should be_zero
       Protonym.count.should be_zero
 
-      genus = taxon_factory :genus, tribe: nil, subfamily: nil
+      genus = FactoryGirl.create :genus, tribe: nil, subfamily: nil
       Taxon.count.should == 1
       Protonym.count.should == 1
 
@@ -329,7 +328,7 @@ describe Taxon do
       Taxon.count.should be_zero
       ReferenceSection.count.should be_zero
 
-      genus = taxon_factory :genus, tribe: nil, subfamily: nil
+      genus = FactoryGirl.create :genus, tribe: nil, subfamily: nil
       genus.reference_sections.create! title: 'title', references: 'references'
       ReferenceSection.count.should == 1
 
