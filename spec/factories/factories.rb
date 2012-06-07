@@ -5,6 +5,10 @@ def reference_factory attributes = {}
   reference
 end
 
+def name_factory name, other_attributes = {}
+  {name_object: Name.create(name: name)}.merge other_attributes
+end
+
 FactoryGirl.define do
 
   factory :author
@@ -92,45 +96,39 @@ FactoryGirl.define do
   end
 
   ####################################################
-  factory :name do
-    name 'Atta'
+  factory :name_object, class: Name do
+    name 'foo'
   end
 
   ####################################################
-  sequence(:taxon_name) {|n| "Taxon#{n}"}
 
   factory :taxon do
-    ignore {name generate(:taxon_name)}
-    name {FactoryGirl.create :name, name: name}
+    name_object
     protonym
     status  'valid'
   end
 
   factory :family do
-    ignore {name 'Formicidae'}
-    name {FactoryGirl.create :name, name: name}
+    name_object
     protonym
     status  'valid'
   end
 
   factory :subfamily do
-    ignore {name generate(:taxon_name)}
-    name {FactoryGirl.create :name, name: name}
+    name_object
     protonym
     status  'valid'
   end
 
   factory :tribe do
-    ignore {name generate(:taxon_name)}
-    name {FactoryGirl.create :name, name: name}
+    name_object
     subfamily
     protonym
     status  'valid'
   end
 
   factory :genus do
-    ignore {name generate(:taxon_name)}
-    name {FactoryGirl.create :name, name: name}
+    name_object
     tribe
     subfamily   {|a| a.tribe && a.tribe.subfamily}
     protonym
@@ -138,24 +136,21 @@ FactoryGirl.define do
   end
 
   factory :subgenus do
-    ignore {name generate(:taxon_name)}
-    name {FactoryGirl.create :name, name: name}
+    name_object
     genus
     protonym
     status  'valid'
   end
 
   factory :species do
-    ignore {name generate(:taxon_name)}
-    name {FactoryGirl.create :name, name: name}
+    name_object
     genus
     protonym
     status  'valid'
   end
 
   factory :subspecies do
-    ignore {name generate(:taxon_name)}
-    name {FactoryGirl.create :name, name: name}
+    name_object
     species
     protonym
     status  'valid'
@@ -168,8 +163,8 @@ FactoryGirl.define do
   end
 
   factory :protonym do
-    authorship :factory => :citation 
-    sequence(:name) {|n| "Protonym#{n}"}
+    authorship factory: :citation 
+    name_object
   end
 
   factory :taxonomic_history_item do

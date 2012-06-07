@@ -29,15 +29,15 @@ describe Vlad do
   #describe "Duplicate checking" do
 
     #it "should show duplicate names" do
-      #FactoryGirl.create :genus, name: 'Eciton'
-      #FactoryGirl.create :genus, name: 'Atta'
-      #FactoryGirl.create :genus, name: 'Atta'
+      #FactoryGirl.create :genus, name_factory('Eciton')
+      #FactoryGirl.create :genus, name_factory('Atta')
+      #FactoryGirl.create :genus, name_factory('Atta')
       #Vlad.idate[:duplicates].map {|e| [e.name, e.count]}.should =~ [['Atta', 2]]
     #end
     #it "should be cool with same species name if genus is different" do
-      #FactoryGirl.create :species, name: 'niger'
-      #FactoryGirl.create :species, name: 'major'
-      #FactoryGirl.create :species, name: 'major'
+      #FactoryGirl.create :species, name_factory('niger')
+      #FactoryGirl.create :species, name_factory('major')
+      #FactoryGirl.create :species, name_factory('major')
       #Vlad.idate[:duplicates].should be_empty
     #end
   #end

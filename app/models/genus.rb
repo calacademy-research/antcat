@@ -40,7 +40,7 @@ class Genus < Taxon
       attributes = {
         subfamily: data[:subfamily],
         tribe: data[:tribe],
-        name: name,
+        name_object: name,
         fossil: data[:fossil] || false,
         status: data[:status] || 'valid',
         synonym_of: data[:synonym_of],

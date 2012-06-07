@@ -21,7 +21,7 @@ class Subgenus < Taxon
       headline_notes_taxt = Importers::Bolton::Catalog::TextToTaxt.convert(data[:note])
       attributes = {
         genus:                data[:genus],
-        name:                 name,
+        name_object:          name,
         fossil:               data[:fossil] || false,
         status:               data[:status] || 'valid',
         synonym_of:           data[:synonym_of],

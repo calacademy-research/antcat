@@ -11,10 +11,10 @@ class Subfamily < Taxon
       name = Name.import data[:name]
 
       attributes = {
-        name:     name,
-        fossil:   data[:fossil] || false,
-        status:   'valid',
-        protonym: protonym,
+        name_object:name,
+        fossil:     data[:fossil] || false,
+        status:     'valid',
+        protonym:   protonym,
       }
       if data[:type_genus]
         type_genus_taxt = Importers::Bolton::Catalog::TextToTaxt.convert(data[:type_genus][:texts])

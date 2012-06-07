@@ -36,11 +36,11 @@ class Species < Taxon
       name = Name.import data[:name]
 
       attributes = {
-        genus:    data[:genus],
-        name:     name,
-        fossil:   data[:fossil] || false,
-        status:   data[:status] || 'valid',
-        protonym: protonym,
+        genus:      data[:genus],
+        name_object:name,
+        fossil:     data[:fossil] || false,
+        status:     data[:status] || 'valid',
+        protonym:   protonym,
       }
       species = create! attributes
       data[:history].each do |item|

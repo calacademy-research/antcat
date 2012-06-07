@@ -28,7 +28,7 @@ class Tribe < Taxon
       name = Name.import data[:name]
 
       attributes = {
-        name:       name,
+        name_object:name,
         fossil:     data[:fossil] || false,
         subfamily:  data[:subfamily],
         synonym_of: data[:synonym_of],
