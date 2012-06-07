@@ -8,9 +8,9 @@ describe Subspecies do
   end
 
   it "must have a species" do
-    subspecies = FactoryGirl.build :subspecies, name: 'Colobopsis', species: nil
+    subspecies = FactoryGirl.build :subspecies, name_factory('Colobopsis', species: nil)
     subspecies.should_not be_valid
-    subspecies.species = FactoryGirl.create :species, :name => 'christi'
+    subspecies.species = FactoryGirl.create :species, name_factory('christi')
     subspecies.save!
     subspecies.reload.species.name.should == 'christi'
   end
@@ -29,14 +29,14 @@ describe Subspecies do
 
   describe "Full name" do
     it "is the the genus, the species, and the subspecies name" do
-      taxon = FactoryGirl.create :subspecies, :name => 'biggus', :species => FactoryGirl.create(:species, :name => 'emeryi', :genus => FactoryGirl.create(:genus, :name => 'Atta', :subfamily => FactoryGirl.create(:subfamily, :name => 'Dolichoderinae')))
+      taxon = FactoryGirl.create :subspecies, name_factory('biggus', :species => FactoryGirl.create(:species, name_factory('emeryi', :genus => FactoryGirl.create(:genus, name_factory('Atta', :subfamily => FactoryGirl.create(:subfamily, name_factory('Dolichoderinae')))))))
       taxon.full_name.should == 'Atta emeryi biggus'
     end
   end
 
   describe "Full label" do
     it "is the the genus, the species, and the subspecies name" do
-      taxon = FactoryGirl.create :subspecies, :name => 'biggus', :species => FactoryGirl.create(:species, :name => 'emeryi', :genus => FactoryGirl.create(:genus, :name => 'Atta', :subfamily => FactoryGirl.create(:subfamily, :name => 'Dolichoderinae')))
+      taxon = FactoryGirl.create :subspecies, name_factory('biggus', :species => FactoryGirl.create(:species, name_factory('emeryi', :genus => FactoryGirl.create(:genus, name_factory('Atta', :subfamily => FactoryGirl.create(:subfamily, name_factory('Dolichoderinae')))))))
       taxon.full_label.should == '<i>Atta emeryi biggus</i>'
     end
   end

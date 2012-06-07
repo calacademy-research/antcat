@@ -4,15 +4,15 @@ require 'spec_helper'
 describe Genus do
 
   it "should have a tribe" do
-    attini = FactoryGirl.create :tribe, :name => 'Attini', :subfamily => FactoryGirl.create(:subfamily, :name => 'Myrmicinae')
-    FactoryGirl.create :genus, :name => 'Atta', :tribe => attini
+    attini = FactoryGirl.create :tribe, name_factory('Attini', :subfamily => FactoryGirl.create(:subfamily, name_factory('Myrmicinae')))
+    FactoryGirl.create :genus, name_factory('Atta', :tribe => attini)
     Genus.find_by_name('Atta').tribe.should == attini
   end
 
   it "should have species, which are its children" do
-    atta = FactoryGirl.create :genus, :name => 'Atta'
-    FactoryGirl.create :species, :name => 'robusta', :genus => atta
-    FactoryGirl.create :species, :name => 'saltensis', :genus => atta
+    atta = FactoryGirl.create :genus, name_factory('Atta')
+    FactoryGirl.create :species, name_factory('robusta', :genus => atta)
+    FactoryGirl.create :species, name_factory('saltensis', :genus => atta)
     atta = Genus.find_by_name('Atta')
     atta.species.map(&:name).should =~ ['robusta', 'saltensis']
     atta.children.should == atta.species
@@ -25,9 +25,9 @@ describe Genus do
   end
 
   it "should have subgenera" do
-    atta = FactoryGirl.create :genus, :name => 'Atta'
-    FactoryGirl.create :subgenus, :name => 'robusta', :genus => atta
-    FactoryGirl.create :subgenus, :name => 'saltensis', :genus => atta
+    atta = FactoryGirl.create :genus, name_factory('Atta')
+    FactoryGirl.create :subgenus, name_factory('robusta', :genus => atta)
+    FactoryGirl.create :subgenus, name_factory('saltensis', :genus => atta)
     atta = Genus.find_by_name('Atta')
     atta.subgenera.map(&:name).should =~ ['robusta', 'saltensis']
   end
@@ -35,12 +35,12 @@ describe Genus do
   describe "Full name" do
 
     it "is the genus name" do
-      taxon = FactoryGirl.create :genus, :name => 'Atta', :subfamily => FactoryGirl.create(:subfamily, :name => 'Dolichoderinae')
+      taxon = FactoryGirl.create :genus, name_factory('Atta', :subfamily => FactoryGirl.create(:subfamily, name_factory('Dolichoderinae')))
       taxon.full_name.should == 'Atta'
     end
 
     it "is just the genus name if there is no subfamily" do
-      taxon = FactoryGirl.create :genus, :name => 'Atta', :subfamily => nil
+      taxon = FactoryGirl.create :genus, name_factory('Atta', :subfamily => nil)
       taxon.full_name.should == 'Atta'
     end
 
@@ -49,12 +49,12 @@ describe Genus do
   describe "Full label" do
 
     it "is the genus name" do
-      taxon = FactoryGirl.create :genus, :name => 'Atta', :subfamily => FactoryGirl.create(:subfamily, :name => 'Dolichoderinae')
+      taxon = FactoryGirl.create :genus, name_factory('Atta', :subfamily => FactoryGirl.create(:subfamily, name_factory('Dolichoderinae')))
       taxon.full_label.should == '<i>Atta</i>'
     end
 
     it "is just the genus name if there is no subfamily" do
-      taxon = FactoryGirl.create :genus, :name => 'Atta', :subfamily => nil
+      taxon = FactoryGirl.create :genus, name_factory('Atta', :subfamily => nil)
       taxon.full_label.should == '<i>Atta</i>'
     end
 

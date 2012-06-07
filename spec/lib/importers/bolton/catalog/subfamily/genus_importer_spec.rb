@@ -94,7 +94,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
 
   describe "Parsing references" do
     it "should return an array of text items converted to Taxt" do
-      genus = FactoryGirl.create :genus, name: 'Lepisiota'
+      genus = FactoryGirl.create :genus, name_factory('Lepisiota')
       @importer.initialize_parse_html %{<div>
         <p>Genus <i>Lepisiota</i> references</p>
         <p>Note</p>

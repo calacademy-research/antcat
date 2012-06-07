@@ -50,7 +50,7 @@ describe ForwardReference do
       end
 
       it "should fixup a type taxon for a species" do
-        genus = FactoryGirl.create :genus, :name => 'Atta'
+        genus = FactoryGirl.create :genus, name_factory('Atta')
         forward_reference = ForwardReference.create! :source_id => genus.id, :target_name => 'Atta major'
         forward_reference.fixup
         genus.reload
@@ -59,7 +59,7 @@ describe ForwardReference do
       end
 
       it "should fixup a type taxon for a species with a subgenus" do
-        genus = FactoryGirl.create :genus, :name => 'Hypochira'
+        genus = FactoryGirl.create :genus, name_factory('Hypochira')
         forward_reference = ForwardReference.create! :source_id => genus.id, :target_name => 'Formica (Hypochira) subspinosa'
         forward_reference.fixup
         genus.reload
@@ -68,8 +68,8 @@ describe ForwardReference do
       end
 
       it "should fixup a type taxon for a species with a subgenus, which was a genus at type time" do
-        genus = FactoryGirl.create :genus, :name => 'Hypochira'
-        subgenus = FactoryGirl.create :subgenus, :genus => genus, name: 'Lasius'
+        genus = FactoryGirl.create :genus, name_factory('Hypochira')
+        subgenus = FactoryGirl.create :subgenus, name_factory('Lasius', :genus => genus)
         forward_reference = ForwardReference.create! :source_id => subgenus.id, :target_name => 'Lasius major'
         forward_reference.fixup
         subgenus.reload
@@ -86,7 +86,7 @@ describe ForwardReference do
       it "should fixup a senior synonym" do
         genus = FactoryGirl.create :genus
         junior_synonym = FactoryGirl.create :species, genus: genus
-        senior_synonym = FactoryGirl.create :species, name: 'major', genus: genus
+        senior_synonym = FactoryGirl.create :species, name_factory('major', genus: genus)
         forward_reference = ForwardReference.create! :source_id => junior_synonym.id, :target_name => 'major', target_parent: genus.id
         forward_reference.fixup
         junior_synonym.reload

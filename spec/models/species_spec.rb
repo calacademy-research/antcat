@@ -4,32 +4,32 @@ require 'spec_helper'
 describe Species do
 
   it "should have a genus" do
-    genus = FactoryGirl.create :genus, :name => 'Atta'
-    FactoryGirl.create :species, :name => 'championi', :genus => genus
+    genus = FactoryGirl.create :genus, name_factory('Atta')
+    FactoryGirl.create :species, name_factory('championi', :genus => genus)
     Species.find_by_name('championi').genus.should == genus
   end
 
   it "can have a subgenus" do
-    subgenus = FactoryGirl.create :subgenus, :name => 'Atta'
-    FactoryGirl.create :species, :name => 'championi', :subgenus => subgenus
+    subgenus = FactoryGirl.create :subgenus, name_factory('Atta')
+    FactoryGirl.create :species, name_factory('championi', :subgenus => subgenus)
     Species.find_by_name('championi').subgenus.should == subgenus
   end
 
   it "should have a subfamily" do
-    genus = FactoryGirl.create :genus, :name => 'Atta'
-    FactoryGirl.create :species, :name => 'championi', :genus => genus
+    genus = FactoryGirl.create :genus, name_factory('Atta')
+    FactoryGirl.create :species, name_factory('championi', :genus => genus)
     Species.find_by_name('championi').subfamily.should == genus.subfamily
   end
 
   it "doesn't need a genus" do
-    FactoryGirl.create :species, :name => 'championi', :genus => nil
+    FactoryGirl.create :species, name_factory('championi', :genus => nil)
     Species.find_by_name('championi').genus.should be_nil
   end
 
   it "should have subspecies, which are its children" do
-    species = FactoryGirl.create :species, :name => 'chilensis'
-    FactoryGirl.create :subspecies, :name => 'robusta', :species => species
-    FactoryGirl.create :subspecies, :name => 'saltensis', :species => species
+    species = FactoryGirl.create :species, name_factory('chilensis')
+    FactoryGirl.create :subspecies, name_factory('robusta', :species => species)
+    FactoryGirl.create :subspecies, name_factory('saltensis', :species => species)
     species = Species.find_by_name 'chilensis'
     species.subspecies.map(&:name).should =~ ['robusta', 'saltensis']
     species.children.should == species.subspecies
@@ -37,28 +37,28 @@ describe Species do
 
   describe "Full name" do
     it "should handle it when it has a subfamily" do
-      subfamily = FactoryGirl.create :subfamily, :name => 'Dolichoderinae'
-      genus = FactoryGirl.create :genus, :subfamily => subfamily, :name => 'Myrmicium'
-      species = FactoryGirl.create :species, :genus => genus, :name => 'shattucki'
+      subfamily = FactoryGirl.create :subfamily, name_factory('Dolichoderinae')
+      genus = FactoryGirl.create :genus, name_factory('Myrmicium', :subfamily => subfamily)
+      species = FactoryGirl.create :species, name_factory('shattucki', :genus => genus)
       species.full_name.should == 'Myrmicium shattucki'
     end
     it "should handle it when it has no subfamily" do
-      genus = FactoryGirl.create :genus, :subfamily => nil, :name => 'Myrmicium'
-      species = FactoryGirl.create :species, :genus => genus, :name => 'shattucki'
+      genus = FactoryGirl.create :genus, name_factory('Myrmicium', :subfamily => nil)
+      species = FactoryGirl.create :species, name_factory('shattucki', :genus => genus)
       species.full_name.should == 'Myrmicium shattucki'
     end
   end
 
   describe "Full label" do
     it "should handle it when it has a subfamily" do
-      subfamily = FactoryGirl.create :subfamily, :name => 'Dolichoderinae'
-      genus = FactoryGirl.create :genus, :subfamily => subfamily, :name => 'Myrmicium'
-      species = FactoryGirl.create :species, :genus => genus, :name => 'shattucki'
+      subfamily = FactoryGirl.create :subfamily, name_factory('Dolichoderinae')
+      genus = FactoryGirl.create :genus, name_factory('Myrmicium', :subfamily => subfamily)
+      species = FactoryGirl.create :species, name_factory('shattucki', :genus => genus)
       species.full_label.should == '<i>Myrmicium shattucki</i>'
     end
     it "should handle it when it has no subfamily" do
-      genus = FactoryGirl.create :genus, :subfamily => nil, :name => 'Myrmicium'
-      species = FactoryGirl.create :species, :genus => genus, :name => 'shattucki'
+      genus = FactoryGirl.create :genus, name_factory('Myrmicium', :subfamily => nil)
+      species = FactoryGirl.create :species, name_factory('shattucki', :genus => genus)
       species.full_label.should == '<i>Myrmicium shattucki</i>'
     end
   end
@@ -157,7 +157,7 @@ describe Species do
     end
     it "should recognize a synonym_of" do
       genus = FactoryGirl.create :genus
-      ferox = FactoryGirl.create :species, name: 'ferox', genus: genus
+      ferox = FactoryGirl.create :species, name_factory('ferox', genus: genus)
       species = FactoryGirl.create :species, genus: genus
       history = 
         [{:synonym_ofs=>
@@ -174,7 +174,7 @@ describe Species do
     end
     it "should recognize a synonym_of even if it's not the first item in the history" do
       genus = FactoryGirl.create :genus
-      ferox = FactoryGirl.create :species, name: 'texanus', genus: genus
+      ferox = FactoryGirl.create :species, name_factory('texanus', genus: genus)
       species = FactoryGirl.create :species, genus: genus
       history = 
         [{:combinations_in=>

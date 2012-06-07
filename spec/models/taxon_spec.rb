@@ -3,28 +3,28 @@ require 'spec_helper'
 
 describe Taxon do
   it "should require a name" do
-    Factory.build(:taxon, name: nil).should_not be_valid
-    taxon = FactoryGirl.create :taxon, name: 'Cerapachynae'
+    Factory.build(:taxon, name_object: nil).should_not be_valid
+    taxon = FactoryGirl.create :taxon, name_factory('Cerapachynae')
     taxon.name.should == 'Cerapachynae'
     taxon.should be_valid
   end
   it "should be (Rails) valid with a nil status" do
-    FactoryGirl.build(:taxon, name: 'Cerapachynae').should be_valid
-    FactoryGirl.build(:taxon, name: 'Cerapachynae', status: 'valid').should be_valid
+    FactoryGirl.build(:taxon, name_factory('Cerapachynae')).should be_valid
+    FactoryGirl.build(:taxon, name_factory('Cerapachynae'), status: 'valid').should be_valid
   end
   it "when status 'valid', should not be invalid" do
-    taxon = FactoryGirl.build :taxon, name: 'Cerapachynae'
+    taxon = FactoryGirl.build :taxon, name_factory('Cerapachynae')
     taxon.should_not be_invalid
   end
   it "should be able to be unidentifiable" do
-    taxon = FactoryGirl.build :taxon, name: 'Cerapachynae'
+    taxon = FactoryGirl.build :taxon, name_factory('Cerapachynae')
     taxon.should_not be_unidentifiable
     taxon.update_attribute :status, 'unidentifiable'
     taxon.should be_unidentifiable
     taxon.should be_invalid
   end
   it "should be able to be unavailable" do
-    taxon = FactoryGirl.build :taxon, name: 'Cerapachynae'
+    taxon = FactoryGirl.build :taxon, name_factory('Cerapachynae')
     taxon.should_not be_unavailable
     taxon.should be_available
     taxon.update_attribute :status, 'unavailable'
@@ -33,21 +33,21 @@ describe Taxon do
     taxon.should be_invalid
   end
   it "should be able to be excluded" do
-    taxon = FactoryGirl.build :taxon, name: 'Cerapachynae'
+    taxon = FactoryGirl.build :taxon, name_factory('Cerapachynae')
     taxon.should_not be_excluded
     taxon.update_attribute :status, 'excluded'
     taxon.should be_excluded
     taxon.should be_invalid
   end
   it "should be able to be a synonym" do
-    taxon = FactoryGirl.build :taxon, name: 'Cerapachynae'
+    taxon = FactoryGirl.build :taxon, name_factory('Cerapachynae')
     taxon.should_not be_synonym
     taxon.update_attribute :status, 'synonym'
     taxon.should be_synonym
     taxon.should be_invalid
   end
   it "should be able to be a fossil" do
-    taxon = FactoryGirl.build :taxon, name: 'Cerapachynae'
+    taxon = FactoryGirl.build :taxon, name_factory('Cerapachynae')
     taxon.should_not be_fossil
     taxon.fossil.should == false
     taxon.update_attribute :fossil, true
@@ -57,58 +57,58 @@ describe Taxon do
     lambda {Taxon.new.children}.should raise_error NotImplementedError
   end
   it "should be able to be a synonym of something else" do
-    gauromyrmex = FactoryGirl.create :taxon, name: 'Gauromyrmex'
-    acalama = FactoryGirl.create :taxon, name: 'Acalama', status: 'synonym', synonym_of: gauromyrmex
+    gauromyrmex = FactoryGirl.create :taxon, name_factory('Gauromyrmex')
+    acalama = FactoryGirl.create :taxon, name_factory('Acalama').merge(status: 'synonym', synonym_of: gauromyrmex)
     acalama.reload
     acalama.should be_synonym
     acalama.reload.synonym_of.should == gauromyrmex
   end
   it "should be able to be a homonym of something else" do
-    neivamyrmex = FactoryGirl.create :taxon, name: 'Neivamyrmex'
-    acamatus = FactoryGirl.create :taxon, name: 'Acamatus', status: 'homonym', homonym_replaced_by: neivamyrmex
+    neivamyrmex = FactoryGirl.create :taxon, name_factory('Neivamyrmex')
+    acamatus = FactoryGirl.create :taxon, name_factory('Acamatus').merge(status: 'homonym', homonym_replaced_by: neivamyrmex)
     acamatus.reload
     acamatus.should be_homonym
     acamatus.homonym_replaced_by.should == neivamyrmex
   end
   it "should be able to have an incertae_sedis_in" do
-    myanmyrma = FactoryGirl.create :taxon, name: 'Myanmyrma', incertae_sedis_in: 'family'
+    myanmyrma = FactoryGirl.create :taxon, name_factory('Myanmyrma').merge(incertae_sedis_in: 'family')
     myanmyrma.reload
     myanmyrma.incertae_sedis_in.should == 'family'
     myanmyrma.should_not be_invalid
   end
   it "should be able to say whether it is incertae sedis in a particular rank" do
-    myanmyrma = FactoryGirl.create :taxon, name: 'Myanmyrma', incertae_sedis_in: 'family'
+    myanmyrma = FactoryGirl.create :taxon, name_factory('Myanmyrma').merge(incertae_sedis_in: 'family')
     myanmyrma.reload
     myanmyrma.should be_incertae_sedis_in('family')
   end
   it "should be able to store tons of text in taxonomic history" do
-    camponotus = FactoryGirl.create :taxon, name: 'Camponotus', taxonomic_history: '1234' * 100_000
+    camponotus = FactoryGirl.create :taxon, name_factory('Camponotus').merge(taxonomic_history: '1234' * 100_000)
     camponotus.reload.taxonomic_history.size.should == 4 * 100_000
   end
 
   describe "Current valid name" do
     it "if it's not a synonym: it's just the name" do
-      taxon = Factory :taxon, name: 'Name'
+      taxon = Factory :taxon, name_factory('Name')
       taxon.current_valid_name.should == 'Name'
     end
     it "if it is a synonym: the name of the target" do
-      target = Factory :taxon, name: 'Target'
-      taxon = Factory :taxon, name: 'Taxon', status: 'synonym', synonym_of: target
+      target = Factory :taxon, name_factory('Target')
+      taxon = Factory :taxon, name_factory('Taxon').merge(status: 'synonym', synonym_of: target)
       taxon.current_valid_name.should == 'Target'
     end
     it "if it is a synonym of a synonym: the name of the target's target" do
-      target_target = Factory :taxon, name: 'Target_Target'
-      target = Factory :taxon, name: 'Target', status: 'synonym', synonym_of: target_target
-      taxon = Factory :taxon, name: 'Taxon', status: 'synonym', synonym_of: target
+      target_target = Factory :taxon, name_factory('Target_Target')
+      target = Factory :taxon, name_factory('Target').merge(status: 'synonym', synonym_of: target_target)
+      taxon = Factory :taxon, name_factory('Taxon').merge(status: 'synonym', synonym_of: target)
       taxon.current_valid_name.should == 'Target_Target'
     end
   end
 
   describe "Find name" do
     before do
-      FactoryGirl.create :genus, name: 'Monomorium'
-      @monoceros = FactoryGirl.create :genus, name: 'Monoceros'
-      @rufa = FactoryGirl.create :species, name: 'rufa', genus: @monoceros
+      FactoryGirl.create :genus, name_factory('Monomorium')
+      @monoceros = FactoryGirl.create :genus, name_factory('Monoceros')
+      @rufa = FactoryGirl.create :species, name_factory('rufa').merge(genus: @monoceros)
     end
     it "should return [] if nothing matches" do
       Taxon.find_name('sdfsdf').should == []
@@ -127,19 +127,19 @@ describe Taxon do
       results.size.should == 2
     end
     it "should not return anything but subfamilies, tribes, genera and species" do
-      FactoryGirl.create :subfamily, name: 'Lepto'
-      FactoryGirl.create :tribe, name: 'Lepto'
-      FactoryGirl.create :genus, name: 'Lepto'
-      FactoryGirl.create :subgenus, name: 'Lepto'
-      FactoryGirl.create :species, name: 'Lepto'
-      FactoryGirl.create :subspecies, name: 'Lepto'
+      FactoryGirl.create :subfamily, name_factory('Lepto')
+      FactoryGirl.create :tribe, name_factory('Lepto')
+      FactoryGirl.create :genus, name_factory('Lepto')
+      FactoryGirl.create :subgenus, name_factory('Lepto')
+      FactoryGirl.create :species, name_factory('Lepto')
+      FactoryGirl.create :subspecies, name_factory('Lepto')
       results = Taxon.find_name 'Lepto'
       results.size.should == 4
     end
     it "should sort results by name" do
-      FactoryGirl.create :subfamily, name: 'Lepti'
-      FactoryGirl.create :subfamily, name: 'Lepta'
-      FactoryGirl.create :subfamily, name: 'Lepte'
+      FactoryGirl.create :subfamily, name_factory('Lepti')
+      FactoryGirl.create :subfamily, name_factory('Lepta')
+      FactoryGirl.create :subfamily, name_factory('Lepte')
       results = Taxon.find_name 'Lept', 'beginning with'
       results.map(&:name).should == ['Lepta', 'Lepte', 'Lepti']
     end
@@ -211,8 +211,8 @@ describe Taxon do
 
   describe "ordered by name" do
     it "should order by name" do
-      zymacros = FactoryGirl.create :subfamily, name: 'Zymacros'
-      atta = FactoryGirl.create :subfamily, name: 'Atta'
+      zymacros = FactoryGirl.create :subfamily, name_factory('Zymacros')
+      atta = FactoryGirl.create :subfamily, name_factory('Atta')
       Taxon.ordered_by_name.should == [atta, zymacros]
     end
   end
@@ -251,7 +251,7 @@ describe Taxon do
     it "should have a protonym" do
       taxon = Family.new
       taxon.protonym.should be_nil
-      taxon.build_protonym name: 'Formicariae'
+      taxon.build_protonym name_factory('Formicariae')
     end
   end
 
@@ -293,20 +293,20 @@ describe Taxon do
 
   describe "Child list queries" do
     before do
-      @subfamily = FactoryGirl.create :subfamily, name: 'Dolichoderinae'
+      @subfamily = FactoryGirl.create :subfamily, name_factory('Dolichoderinae')
     end
     it "should find all genera for the taxon if there are no conditions" do
-      FactoryGirl.create :genus, name: 'Atta', subfamily: @subfamily
-      FactoryGirl.create :genus, name: 'Eciton', subfamily: @subfamily, fossil: true
-      FactoryGirl.create :genus, name: 'Aneuretus', subfamily: @subfamily, fossil: true, incertae_sedis_in: 'subfamily'
+      FactoryGirl.create :genus, name_factory('Atta').merge(subfamily: @subfamily)
+      FactoryGirl.create :genus, name_factory('Eciton').merge(subfamily: @subfamily, fossil: true)
+      FactoryGirl.create :genus, name_factory('Aneuretus').merge(subfamily: @subfamily, fossil: true, incertae_sedis_in: 'subfamily')
       @subfamily.child_list_query(:genera).map(&:name).sort.should == ['Aneuretus', 'Atta', 'Eciton']
       @subfamily.child_list_query(:genera, fossil: true).map(&:name).sort.should == ['Aneuretus', 'Eciton']
       @subfamily.child_list_query(:genera, incertae_sedis_in: 'subfamily').map(&:name).sort.should == ['Aneuretus']
     end
     it "should not include invalid taxa" do
-      FactoryGirl.create :genus, name: 'Atta', subfamily: @subfamily, status: 'synonym'
-      FactoryGirl.create :genus, name: 'Eciton', subfamily: @subfamily, fossil: true
-      FactoryGirl.create :genus, name: 'Aneuretus', subfamily: @subfamily, fossil: true, incertae_sedis_in: 'subfamily'
+      FactoryGirl.create :genus, name_factory('Atta').merge(subfamily: @subfamily, status: 'synonym')
+      FactoryGirl.create :genus, name_factory('Eciton').merge(subfamily: @subfamily, fossil: true)
+      FactoryGirl.create :genus, name_factory('Aneuretus').merge(subfamily: @subfamily, fossil: true, incertae_sedis_in: 'subfamily')
       @subfamily.child_list_query(:genera).map(&:name).sort.should == ['Aneuretus', 'Eciton']
     end
   end

@@ -11,12 +11,12 @@ class Taxon < ActiveRecord::Base
   has_many    :taxonomic_history_items, order: :position, dependent: :destroy
   has_many    :reference_sections, :order => :position, dependent: :destroy
 
-  belongs_to  :name
-  validates   :name_id, presence: true
+  belongs_to  :name_object, class_name: 'Name'
+  validates   :name_object, presence: true
 
   scope :valid, where("status = ?", 'valid')
-  scope :with_names, joins(:name).readonly(false)
-  scope :ordered_by_name, joins(:name).readonly(false).order('names.name')
+  scope :with_names, joins(:name_object).readonly(false)
+  scope :ordered_by_name, joins(:name_object).readonly(false).order('names.name')
   scope :extant, where(fossil: false)
   scope :find_by_name, lambda {|name| with_names.where([:name, name])}
 
@@ -40,8 +40,8 @@ class Taxon < ActiveRecord::Base
   end
 
   def name
-    return '' if new_record? and not attributes['name_id']
-    Name.find(attributes['name_id']).name
+    return '' if new_record? and not name_object
+    name_object.name
   end
 
   def rank
@@ -63,11 +63,11 @@ class Taxon < ActiveRecord::Base
   def current_valid_name
     target = self
     target = target.synonym_of while target.synonym_of
-    target.name.name
+    target.name
   end
 
   def full_name
-    name.name
+    name
   end
 
   def self.find_name name, search_type = 'matching'
@@ -75,7 +75,7 @@ class Taxon < ActiveRecord::Base
     names = name.split ' '
     if names.size > 1
       query = query.joins 'JOIN taxa genera ON genera.id = taxa.genus_id'
-      query = query.joins 'JOIN names gno ON gno.id = genera.name_id'
+      query = query.joins 'JOIN names gno ON gno.id = genera.name_object_id'
       query = query.where ['gno.name = ?', names.first]
       name = names.second
     end

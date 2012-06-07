@@ -4,18 +4,18 @@ require 'spec_helper'
 describe Subfamily do
 
   it "should have tribes, which are its children" do
-    subfamily = FactoryGirl.create :subfamily, :name => 'Myrmicinae'
-    FactoryGirl.create :tribe, :name => 'Attini', :subfamily => subfamily
-    FactoryGirl.create :tribe, :name => 'Dacetini', :subfamily => subfamily
+    subfamily = FactoryGirl.create :subfamily, name_factory('Myrmicinae')
+    FactoryGirl.create :tribe, name_factory('Attini', :subfamily => subfamily)
+    FactoryGirl.create :tribe, name_factory('Dacetini', :subfamily => subfamily)
     subfamily.tribes.map(&:name).should =~ ['Attini', 'Dacetini']
     subfamily.tribes.should == subfamily.children
   end
 
   it "should have genera" do
-    myrmicinae = FactoryGirl.create :subfamily, :name => 'Myrmicinae'
-    dacetini = FactoryGirl.create :tribe, :name => 'Dacetini', :subfamily => myrmicinae
-    FactoryGirl.create :genus, :name => 'Atta', :subfamily => myrmicinae, :tribe => FactoryGirl.create(:tribe, :name => 'Attini', :subfamily => myrmicinae)
-    FactoryGirl.create :genus, :name => 'Acanthognathus', :subfamily => myrmicinae, :tribe => FactoryGirl.create(:tribe, :name => 'Dacetini', :subfamily => myrmicinae)
+    myrmicinae = FactoryGirl.create :subfamily, name_factory('Myrmicinae')
+    dacetini = FactoryGirl.create :tribe, name_factory('Dacetini', :subfamily => myrmicinae)
+    FactoryGirl.create :genus, name_factory('Atta', :subfamily => myrmicinae, :tribe => FactoryGirl.create(:tribe, name_factory('Attini', :subfamily => myrmicinae)))
+    FactoryGirl.create :genus, name_factory('Acanthognathus', :subfamily => myrmicinae, :tribe => FactoryGirl.create(:tribe, name_factory('Dacetini'), :subfamily => myrmicinae))
     myrmicinae.genera.map(&:name).should =~ ['Atta', 'Acanthognathus']
   end
 
@@ -36,14 +36,14 @@ describe Subfamily do
 
   describe "Full name" do
     it "is just the name" do
-      taxon = FactoryGirl.create :subfamily, :name => 'Dolichoderinae'
+      taxon = FactoryGirl.create :subfamily, name_factory('Dolichoderinae')
       taxon.full_name.should == 'Dolichoderinae'
     end
   end
 
   describe "Full label" do
     it "is just the name" do
-      taxon = FactoryGirl.create :subfamily, :name => 'Dolichoderinae'
+      taxon = FactoryGirl.create :subfamily, name_factory('Dolichoderinae')
       taxon.full_label.should == 'Dolichoderinae'
     end
   end
