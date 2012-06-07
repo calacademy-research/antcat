@@ -4,9 +4,10 @@ require 'spec_helper'
 describe Subgenus do
 
   it "must have a genus" do
-    colobopsis = Subgenus.new :name => 'Colobopsis', name_object: Factory(:name_object)
+    colobopsis = FactoryGirl.build :subgenus, name: 'Colobopsis', genus: nil
     colobopsis.should_not be_valid
-    colobopsis.genus = FactoryGirl.create :genus, :name => 'Camponotus'
+    colobopsis.genus = FactoryGirl.create :genus, name: 'Camponotus'
+
     colobopsis.save!
     colobopsis.reload.genus.name.should == 'Camponotus'
   end

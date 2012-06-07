@@ -3,7 +3,7 @@ class Species < Taxon
   belongs_to :subfamily
   belongs_to :genus
   belongs_to :subgenus
-  has_many :subspecies, order: :name
+  has_many :subspecies
   before_create :set_subfamily
 
   def set_subfamily
@@ -37,7 +37,6 @@ class Species < Taxon
 
       attributes = {
         genus:        data[:genus],
-        name:         data[:name],
         name_object:  name,
         fossil:       data[:fossil] || false,
         status:       data[:status] || 'valid',

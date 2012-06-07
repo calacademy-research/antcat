@@ -8,7 +8,7 @@ describe Subspecies do
   end
 
   it "must have a species" do
-    subspecies = Subspecies.new :name => 'Colobopsis', name_object: Factory(:name_object)
+    subspecies = FactoryGirl.build :subspecies, name: 'Colobopsis', species: nil
     subspecies.should_not be_valid
     subspecies.species = FactoryGirl.create :species, :name => 'christi'
     subspecies.save!

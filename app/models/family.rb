@@ -8,8 +8,7 @@ class Family < Taxon
       type_taxon_taxt = Importers::Bolton::Catalog::TextToTaxt.convert(data[:type_genus][:texts])
       headline_notes_taxt = Importers::Bolton::Catalog::TextToTaxt.convert(data[:note])
 
-      family = create! name:                'Formicidae',
-                       name_object:         name,
+      family = create! name_object:         name,
                        status:              'valid',
                        protonym:            protonym,
                        type_taxon_taxt:     type_taxon_taxt,

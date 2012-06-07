@@ -1,9 +1,9 @@
 # coding: UTF-8
 class Subfamily < Taxon
-  has_many :tribes, :order => :name
-  has_many :genera, :order => :name
-  has_many :species, :order => :name
-  has_many :subspecies, :order => :name
+  has_many :tribes
+  has_many :genera
+  has_many :species
+  has_many :subspecies
 
   def self.import data
     transaction do
@@ -11,7 +11,6 @@ class Subfamily < Taxon
       name = NameObject.import data[:name]
 
       attributes = {
-        name:        data[:name],
         name_object: name,
         fossil:      data[:fossil] || false,
         status:      'valid',

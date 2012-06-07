@@ -35,7 +35,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
       when :genus_header
         @genus_count += 1
         @genus = nil
-        matching_genus_names = Genus.where name: @parse_result[:name]
+        matching_genus_names = Genus.with_names.where "name_objects.name_object_name = '#{@parse_result[:name]}'"
         if matching_genus_names.empty?
           Progress.error "Genus '#{@parse_result[:name]}' did not exist"
           @genus_not_found_count += 1

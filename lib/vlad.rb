@@ -9,7 +9,7 @@ class Vlad
     @results.merge! genera_with_tribes_but_not_subfamilies
     @results.merge! taxa_with_mismatched_synonym_and_status
     @results.merge! taxa_with_mismatched_homonym_and_status
-    @results.merge! duplicates
+    #@results.merge! duplicates
     @results.merge! reference_documents
 
     display
@@ -55,9 +55,9 @@ class Vlad
       "#{taxon.name} #{taxon.status} #{taxon.homonym_replaced_by_id}"
     end
 
-    display_results_section :duplicates do |duplicate|
-      "#{duplicate[:name]} #{duplicate[:count]}"
-    end
+    #display_results_section :duplicates do |duplicate|
+      #"#{duplicate[:name]} #{duplicate[:count]}"
+    #end
 
     Progress.puts "Reference documents"
     results = @results[:reference_documents]
@@ -71,9 +71,10 @@ class Vlad
 
   end
 
-  def self.duplicates
-    {duplicates: Taxon.select('name, COUNT(name) AS count').group(:name, :genus_id).having('COUNT(name) > 1')}
-  end
+  #def self.duplicates
+    #{duplicates:
+     #Taxon.with_names.select('name_objects.name_object_name AS name, COUNT(name_objects.name_object_name) AS count').group('name_objects.name_object_name', :genus_id).having('COUNT(name_objects.name_object_name) > 1')}
+  #end
 
   def self.taxa_with_mismatched_synonym_and_status
     {taxa_with_mismatched_synonym_and_status: Taxon.where("(status = 'synonym') = (synonym_of_id IS NULL)")}

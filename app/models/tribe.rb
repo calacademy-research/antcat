@@ -1,7 +1,7 @@
 # coding: UTF-8
 class Tribe < Taxon
   belongs_to :subfamily
-  has_many :genera, :order => :name
+  has_many :genera
 
   def children
     genera
@@ -28,7 +28,6 @@ class Tribe < Taxon
       name = NameObject.import data[:name]
 
       attributes = {
-        name:       data[:name],
         name_object:name,
         fossil:     data[:fossil] || false,
         subfamily:  data[:subfamily],
