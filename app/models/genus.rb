@@ -26,9 +26,9 @@ class Genus < Taxon
   end
 
   def siblings
-    tribe && tribe.genera ||
-    subfamily && subfamily.genera.without_tribe.all ||
-    Genus.without_subfamily.all
+    tribe && tribe.genera.ordered_by_name ||
+    subfamily && subfamily.genera.without_tribe.ordered_by_name ||
+    Genus.without_subfamily.ordered_by_name
   end
 
   def self.import data
