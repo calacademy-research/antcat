@@ -6,7 +6,7 @@ Feature: Hiding and showing tribes in the index
 
   Background: 
     Given the Formicidae family exists
-    And a subfamily exists with a name of "Dolichoderinae"
+    And a subfamily exists with a name of "Dolichoderinae" and a taxonomic history of "asdf"
     And a tribe exists with a name of "Dolichoderini" and a subfamily of "Dolichoderinae"
     And a tribe exists with a name of "Tapinomini" and a subfamily of "Dolichoderinae"
     And a genus exists with a name of "Dolichoderus" and a tribe of "Dolichoderini"
