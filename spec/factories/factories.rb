@@ -92,8 +92,8 @@ FactoryGirl.define do
   end
 
   ####################################################
-  factory :name_object do
-    name_object_name 'Atta'
+  factory :name do
+    name 'Atta'
   end
 
   ####################################################
@@ -101,28 +101,28 @@ FactoryGirl.define do
 
   factory :taxon do
     ignore {name generate(:taxon_name)}
-    name_object {FactoryGirl.create :name_object, name_object_name: name}
+    name {FactoryGirl.create :name, name: name}
     protonym
     status  'valid'
   end
 
   factory :family do
     ignore {name 'Formicidae'}
-    name_object {FactoryGirl.create :name_object, name_object_name: name}
+    name {FactoryGirl.create :name, name: name}
     protonym
     status  'valid'
   end
 
   factory :subfamily do
     ignore {name generate(:taxon_name)}
-    name_object {FactoryGirl.create :name_object, name_object_name: name}
+    name {FactoryGirl.create :name, name: name}
     protonym
     status  'valid'
   end
 
   factory :tribe do
     ignore {name generate(:taxon_name)}
-    name_object {FactoryGirl.create :name_object, name_object_name: name}
+    name {FactoryGirl.create :name, name: name}
     subfamily
     protonym
     status  'valid'
@@ -130,7 +130,7 @@ FactoryGirl.define do
 
   factory :genus do
     ignore {name generate(:taxon_name)}
-    name_object {FactoryGirl.create :name_object, name_object_name: name}
+    name {FactoryGirl.create :name, name: name}
     tribe
     subfamily   {|a| a.tribe && a.tribe.subfamily}
     protonym
@@ -139,7 +139,7 @@ FactoryGirl.define do
 
   factory :subgenus do
     ignore {name generate(:taxon_name)}
-    name_object {FactoryGirl.create :name_object, name_object_name: name}
+    name {FactoryGirl.create :name, name: name}
     genus
     protonym
     status  'valid'
@@ -147,7 +147,7 @@ FactoryGirl.define do
 
   factory :species do
     ignore {name generate(:taxon_name)}
-    name_object {FactoryGirl.create :name_object, name_object_name: name}
+    name {FactoryGirl.create :name, name: name}
     genus
     protonym
     status  'valid'
@@ -155,7 +155,7 @@ FactoryGirl.define do
 
   factory :subspecies do
     ignore {name generate(:taxon_name)}
-    name_object {FactoryGirl.create :name_object, name_object_name: name}
+    name {FactoryGirl.create :name, name: name}
     species
     protonym
     status  'valid'

@@ -35,7 +35,6 @@ describe Subgenus do
       )
 
       subgenus.name.should == 'Atta'
-      subgenus.name_object.name_object_name.should == 'Atta'
       subgenus.should_not be_invalid
       subgenus.should be_fossil
       subgenus.genus.should == genus

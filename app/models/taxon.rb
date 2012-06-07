@@ -11,13 +11,14 @@ class Taxon < ActiveRecord::Base
   has_many    :taxonomic_history_items, order: :position, dependent: :destroy
   has_many    :reference_sections, :order => :position, dependent: :destroy
 
-  belongs_to  :name_object
-  validates   :name_object_id, presence: true
+  belongs_to  :name
+  validates   :name_id, presence: true
 
   scope :valid, where("status = ?", 'valid')
-  scope :with_names, joins(:name_object)
-  scope :ordered_by_name, joins(:name_object).order('name_objects.name_object_name')
-  scope :extant, where(:fossil => false)
+  scope :with_names, joins(:name).readonly(false)
+  scope :ordered_by_name, joins(:name).readonly(false).order('names.name')
+  scope :extant, where(fossil: false)
+  scope :find_by_name, lambda {|name| with_names.where([:name, name])}
 
   def unavailable?;     status == 'unavailable' end
   def available?;       !unavailable? end
@@ -29,18 +30,18 @@ class Taxon < ActiveRecord::Base
   def excluded?;        status == 'excluded' end
 
   def self.find_by_name name
-    taxon = with_names.where("name_object_name = '#{name}'").first
+    taxon = with_names.where(['name = ?', name]).first
     taxon && Taxon.find_by_id(taxon.id)
   end
 
   def self.find_by_genus_id_and_name genus_id, name
-    taxon = with_names.where(genus_id: genus_id).where("name_object_name = '#{name}'").first
+    taxon = with_names.where(genus_id: genus_id).where("name = '#{name}'").first
     taxon && Taxon.find_by_id(taxon.id)
   end
 
   def name
-    return '' if new_record? and not name_object
-    name_object.name_object_name
+    return '' if new_record? and not attributes['name_id']
+    Name.find(attributes['name_id']).name
   end
 
   def rank
@@ -62,11 +63,11 @@ class Taxon < ActiveRecord::Base
   def current_valid_name
     target = self
     target = target.synonym_of while target.synonym_of
-    target.name_object.name_object_name
+    target.name.name
   end
 
   def full_name
-    name_object.name_object_name
+    name.name
   end
 
   def self.find_name name, search_type = 'matching'
@@ -74,18 +75,18 @@ class Taxon < ActiveRecord::Base
     names = name.split ' '
     if names.size > 1
       query = query.joins 'JOIN taxa genera ON genera.id = taxa.genus_id'
-      query = query.joins 'JOIN name_objects gno ON gno.id = genera.name_object_id'
-      query = query.where ['gno.name_object_name = ?', names.first]
+      query = query.joins 'JOIN names gno ON gno.id = genera.name_id'
+      query = query.where ['gno.name = ?', names.first]
       name = names.second
     end
     types_sought = ['Subfamily', 'Tribe', 'Genus', 'Species']
     case search_type
     when 'matching'
-      query = query.where ['name_objects.name_object_name = ? AND taxa.type IN (?)', name, types_sought]
+      query = query.where ['names.name = ? AND taxa.type IN (?)', name, types_sought]
     when 'beginning with'
-      query = query.where ['name_objects.name_object_name LIKE ? AND taxa.type IN (?)', name + '%', types_sought]
+      query = query.where ['names.name LIKE ? AND taxa.type IN (?)', name + '%', types_sought]
     when 'containing'
-      query = query.where ['name_objects.name_object_name LIKE ? AND taxa.type IN (?)', '%' + name + '%', types_sought]
+      query = query.where ['names.name LIKE ? AND taxa.type IN (?)', '%' + name + '%', types_sought]
     end
     query.all
   end

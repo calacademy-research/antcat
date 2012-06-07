@@ -34,13 +34,13 @@ class Genus < Taxon
   def self.import data
     transaction do
       protonym = Protonym.import data[:protonym]
-      name = NameObject.import data[:name]
+      name = Name.import data[:name]
 
       headline_notes_taxt = Importers::Bolton::Catalog::TextToTaxt.convert(data[:note])
       attributes = {
         subfamily: data[:subfamily],
         tribe: data[:tribe],
-        name_object: name,
+        name: name,
         fossil: data[:fossil] || false,
         status: data[:status] || 'valid',
         synonym_of: data[:synonym_of],

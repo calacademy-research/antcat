@@ -1,3 +1,3 @@
-class GenusGroupName < NameObject
+class GenusGroupName < Name
 
 end

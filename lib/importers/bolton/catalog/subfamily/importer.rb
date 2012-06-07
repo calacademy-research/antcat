@@ -19,7 +19,7 @@ require_relative 'tribe_importer'
 
 class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catalog::Importer
   def import
-    NameObject.destroy_all
+    Name.destroy_all
     Taxon.destroy_all
     ForwardReference.destroy_all
     MissingReference.destroy_all

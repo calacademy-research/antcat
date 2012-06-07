@@ -5,8 +5,8 @@ describe SubgenusName do
   it "should exist" do
     name = SubgenusName.new
     name.should_not be_valid
-    name.name_object_name = 'Atta'
+    name.name = 'Atta'
     name.save!
-    NameObject.find(name).name_object_name.should == 'Atta'
+    Name.find(name).name.should == 'Atta'
   end
 end

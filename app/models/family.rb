@@ -3,12 +3,12 @@ class Family < Taxon
 
   def self.import data
     transaction do
-      name = NameObject.import 'Formicidae'
+      name = Name.import 'Formicidae'
       protonym = Protonym.import data[:protonym]
       type_taxon_taxt = Importers::Bolton::Catalog::TextToTaxt.convert(data[:type_genus][:texts])
       headline_notes_taxt = Importers::Bolton::Catalog::TextToTaxt.convert(data[:note])
 
-      family = create! name_object:         name,
+      family = create! name:                name,
                        status:              'valid',
                        protonym:            protonym,
                        type_taxon_taxt:     type_taxon_taxt,

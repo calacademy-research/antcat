@@ -8,13 +8,13 @@ class Subfamily < Taxon
   def self.import data
     transaction do
       protonym = Protonym.import data[:protonym]
-      name = NameObject.import data[:name]
+      name = Name.import data[:name]
 
       attributes = {
-        name_object: name,
-        fossil:      data[:fossil] || false,
-        status:      'valid',
-        protonym:    protonym,
+        name:     name,
+        fossil:   data[:fossil] || false,
+        status:   'valid',
+        protonym: protonym,
       }
       if data[:type_genus]
         type_genus_taxt = Importers::Bolton::Catalog::TextToTaxt.convert(data[:type_genus][:texts])

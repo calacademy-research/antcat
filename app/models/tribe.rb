@@ -25,10 +25,10 @@ class Tribe < Taxon
   def self.import data
     transaction do
       protonym = Protonym.import data[:protonym]
-      name = NameObject.import data[:name]
+      name = Name.import data[:name]
 
       attributes = {
-        name_object:name,
+        name:       name,
         fossil:     data[:fossil] || false,
         subfamily:  data[:subfamily],
         synonym_of: data[:synonym_of],
