@@ -25,7 +25,6 @@ describe Protonym do
 
       protonym.rank.should == 'family_or_subfamily'
       protonym.name.should == 'Formicariae'
-      protonym.name_object.name_object_name.should == 'Formicariae'
       protonym.authorship.pages.should == '124'
       protonym.authorship.reference.should == @reference
       protonym.authorship.forms.should == 'w.q.'

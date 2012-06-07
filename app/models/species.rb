@@ -33,14 +33,14 @@ class Species < Taxon
   def self.import data
     transaction do
       protonym = Protonym.import data[:protonym] if data[:protonym]
-      name = NameObject.import data[:name]
+      name = Name.import data[:name]
 
       attributes = {
-        genus:        data[:genus],
-        name_object:  name,
-        fossil:       data[:fossil] || false,
-        status:       data[:status] || 'valid',
-        protonym:     protonym,
+        genus:    data[:genus],
+        name:     name,
+        fossil:   data[:fossil] || false,
+        status:   data[:status] || 'valid',
+        protonym: protonym,
       }
       species = create! attributes
       data[:history].each do |item|

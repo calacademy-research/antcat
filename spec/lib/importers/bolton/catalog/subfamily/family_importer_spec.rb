@@ -62,7 +62,6 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
 
     family = Family.first
     family.name.should == 'Formicidae'
-    family.name_object.name_object_name.should == 'Formicidae'
     family.should_not be_invalid
     family.should_not be_fossil
     family.type_taxon_name.should == 'Formica'

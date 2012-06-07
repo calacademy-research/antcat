@@ -73,7 +73,7 @@ class Vlad
 
   #def self.duplicates
     #{duplicates:
-     #Taxon.with_names.select('name_objects.name_object_name AS name, COUNT(name_objects.name_object_name) AS count').group('name_objects.name_object_name', :genus_id).having('COUNT(name_objects.name_object_name) > 1')}
+     #Taxon.with_names.select('names.name AS name, COUNT(names.name) AS count').group('names.name', :genus_id).having('COUNT(names.name) > 1')}
   #end
 
   def self.taxa_with_mismatched_synonym_and_status

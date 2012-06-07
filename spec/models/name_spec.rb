@@ -1,14 +1,14 @@
 require 'spec_helper'
 
-describe NameObject do
+describe Name do
   it "should have a name" do
-    NameObject.new(name_object_name:'NameObject').name_object_name.should == 'NameObject'
+    Name.new(name:'Name').name.should == 'Name'
   end
 
   describe "Importing" do
     it "should work" do
-      name = NameObject.import 'Atta'
-      name.reload.name_object_name.should == 'Atta'
+      name = Name.import 'Atta'
+      name.reload.name.should == 'Atta'
     end
   end
 end

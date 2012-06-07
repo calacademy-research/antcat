@@ -130,7 +130,6 @@ describe Species do
         history: ['Atta major as species', 'Atta major as subspecies']
       ).reload
       species.name.should == 'major'
-      species.name_object.name_object_name.should == 'major'
       species.should_not be_invalid
       species.should be_fossil
       species.genus.should == genus

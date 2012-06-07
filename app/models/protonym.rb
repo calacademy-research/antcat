@@ -1,7 +1,12 @@
 # coding: UTF-8
 class Protonym < ActiveRecord::Base
   belongs_to :authorship, class_name: 'Citation', dependent: :destroy
-  belongs_to :name_object
+  belongs_to :name
+
+  def name
+    return '' if new_record? and not self.name
+    self.name.name
+  end
 
   def self.import data
     transaction do
@@ -32,8 +37,7 @@ class Protonym < ActiveRecord::Base
         rank = 'tribe'
       end
 
-      create! name:         name,
-              name_object:  NameObject.import(name),
+      create! name:         Name.import(name),
               rank:         rank,
               sic:          data[:sic],
               fossil:       data[:fossil],

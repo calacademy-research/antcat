@@ -3,7 +3,7 @@ require 'spec_helper'
 
 describe Taxon do
   it "should require a name" do
-    Factory.build(:taxon, name_object: nil).should_not be_valid
+    Factory.build(:taxon, name: nil).should_not be_valid
     taxon = FactoryGirl.create :taxon, name: 'Cerapachynae'
     taxon.name.should == 'Cerapachynae'
     taxon.should be_valid
