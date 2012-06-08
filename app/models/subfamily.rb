@@ -36,14 +36,6 @@ class Subfamily < Taxon
     tribes
   end
 
-  def full_name
-    name
-  end
-
-  def full_label
-    full_name
-  end
-
   def statistics
     get_statistics [:genera, :species, :subspecies]
   end

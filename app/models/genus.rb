@@ -17,10 +17,6 @@ class Genus < Taxon
     "<i>#{full_name}</i>"
   end
 
-  def full_name
-    name
-  end
-
   def statistics
     get_statistics [:species, :subspecies]
   end
