@@ -15,7 +15,7 @@ describe Subfamily do
     myrmicinae = FactoryGirl.create :subfamily, name_factory('Myrmicinae')
     dacetini = FactoryGirl.create :tribe, name_factory('Dacetini', :subfamily => myrmicinae)
     FactoryGirl.create :genus, name_factory('Atta', :subfamily => myrmicinae, :tribe => FactoryGirl.create(:tribe, name_factory('Attini', :subfamily => myrmicinae)))
-    FactoryGirl.create :genus, name_factory('Acanthognathus', :subfamily => myrmicinae, :tribe => FactoryGirl.create(:tribe, name_factory('Dacetini'), :subfamily => myrmicinae))
+    FactoryGirl.create :genus, name_factory('Acanthognathus', :subfamily => myrmicinae, :tribe => FactoryGirl.create(:tribe, name_factory('Dacetini', :subfamily => myrmicinae)))
     myrmicinae.genera.map(&:name).should =~ ['Atta', 'Acanthognathus']
   end
 
