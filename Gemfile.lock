@@ -114,7 +114,7 @@ GEM
     gherkin (2.9.3)
       json (>= 1.4.6)
     haml (3.1.4)
-    high_voltage (1.0.1)
+    high_voltage (1.1.1)
     highline (1.6.11)
     hike (1.2.1)
     i18n (0.6.0)
