@@ -1,5 +1,5 @@
 # coding: UTF-8
-Given /^the following references? exists?$/ do |table|
+Given /^(?:this|these) references? exists?$/ do |table|
   Reference.delete_all
   table.hashes.each do |hash|
     citation = hash.delete 'citation'
@@ -10,7 +10,7 @@ Given /^the following references? exists?$/ do |table|
   end
 end
 
-Given /the following Bolton references? exists?/ do |table|
+Given /(?:these|this) Bolton references? exists?/ do |table|
   table.hashes.each do |hash|
     hash.delete('match_status') if hash['match_status'].blank?
     @bolton_reference = FactoryGirl.create :bolton_reference, hash
@@ -41,7 +41,7 @@ Then /^the (?:matched )?reference should be (.+)$/ do |color|
   end
 end
 
-Given /the following book references? exists?/ do |table|
+Given /(?:these|this) book references? exists?/ do |table|
   table.hashes.each do |hash|
     citation = hash.delete 'citation'
     matches = citation.match /([^:]+): (\w+), (.*)/
@@ -52,7 +52,7 @@ Given /the following book references? exists?/ do |table|
   end
 end
 
-Given /the following unknown references? exists?/ do |table|
+Given /(?:these|this) unknown references? exists?/ do |table|
   table.hashes.each do |hash|
     create_reference :unknown_reference, hash
   end

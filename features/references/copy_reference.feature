@@ -8,7 +8,7 @@ Feature: Copy reference
   Scenario: Copy a reference
     When I go to the references page
     And I log in
-    And the following references exist
+    And these references exist
       | authors    | title          | citation | year |
       | Ward, P.S. | Annals of Ants | Ants 1:2 | 1910 |
     When I go to the references page
@@ -21,7 +21,7 @@ Feature: Copy reference
 
   Scenario: Copy a reference with a document
     Given I am logged in
-    And the following references exist
+    And these references exist
       | authors    | title          | citation | year |
       | Ward, P.S. | Annals of Ants | Ants 1:2 | 1910 |
     And that the entry has a URL that's on our site
@@ -34,7 +34,7 @@ Feature: Copy reference
 
   Scenario: Copy a reference with a cite code and date
     Given I am logged in
-    And the following references exist
+    And these references exist
       | authors    | title          | citation | year | cite_code | date     |
       | Ward, P.S. | Annals of Ants | Ants 1:2 | 1910 | ABCD      | 19900101 |
     And that the entry has a URL that's on our site

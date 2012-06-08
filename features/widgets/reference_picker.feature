@@ -2,7 +2,7 @@
 Feature: Reference picker
 
   Background:
-    Given the following references exist
+    Given these references exist
       | authors                 | year          | title                 | citation   |
       | Fisher, B.              | 1995b         | Fisher's book         | Ants 1:1-2 |
       | Bolton, B.              | 2010 ("2011") | Bolton's book         | Ants 2:1-2 |

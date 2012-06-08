@@ -6,7 +6,7 @@ Feature: Delete reference
   Or so I can delete one that turns out to have been a duplicate
 
   Scenario: Delete a reference
-    Given the following references exist
+    Given these references exist
       | authors    | citation   | year | title |
       | Fisher, B. | Psyche 2:1 | year | title |
     And I am logged in
@@ -18,7 +18,7 @@ Feature: Delete reference
 
   @preview
   Scenario: Delete a reference when not logged in, but in preview mode
-    Given the following references exist
+    Given these references exist
       | authors    | citation   | year | title |
       | Fisher, B. | Psyche 2:1 | year | title |
     And I am not logged in

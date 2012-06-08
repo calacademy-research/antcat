@@ -1,5 +1,5 @@
 # coding: UTF-8
-Given /the following user exists/ do |table|
+Given /this user exists/ do |table|
   table.hashes.each {|hash| User.create! hash}
 end
 

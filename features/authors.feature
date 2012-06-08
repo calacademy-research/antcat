@@ -8,7 +8,7 @@ Feature: Editing authors and author names
     Given the following names exist for an author
       | Bolton, B. |
       | Bolton,B.  |
-    And the following references exist
+    And these references exist
       | authors    | title          | year | citation   |
       | Bolton, B. | Annals of Ants | 2010 | Psyche 1:1 |
       | Bolton,B.  | More ants      | 2011 | Psyche 2:2 |

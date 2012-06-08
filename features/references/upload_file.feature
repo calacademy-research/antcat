@@ -6,7 +6,7 @@ Feature: Upload a file
 
   Scenario: Upload file
     Given I am logged in
-    And the following references exist
+    And these references exist
       | authors    | title | citation   | year |
       | Ward, P.S. | Ants  | Psyche 5:3 | 2010 |
     When I go to the references page
@@ -19,7 +19,7 @@ Feature: Upload a file
 
   Scenario: Clearing the URL after uploading the file
     Given I am logged in
-    And the following references exist
+    And these references exist
       | authors    | title          | citation | year |
       | Ward, P.S. | Annals of Ants | Ants 1:2 | 1910 |
     And that the entry has a URL that's on our site
