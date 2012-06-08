@@ -64,6 +64,13 @@ describe Protonym do
       protonym.authorship.reference.should == @reference
     end
 
+    it "should handle a subtribe protonym" do
+      data = {subtribe_name: 'Bothriomyrmecina', authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]}
+      protonym = Protonym.find Protonym.import(data)
+      protonym.rank.should == 'subtribe'
+      protonym.name.should == 'Bothriomyrmecina'
+    end
+
   end
 
   describe "Cascading delete" do

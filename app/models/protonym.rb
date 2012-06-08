@@ -13,6 +13,9 @@ class Protonym < ActiveRecord::Base
       authorship = Citation.import data[:authorship].first if data[:authorship]
 
       case 
+      when data[:subtribe_name]
+        name = data[:subtribe_name]
+        rank = 'subtribe'
       when data[:family_or_subfamily_name]
         name = data[:family_or_subfamily_name]
         rank = 'family_or_subfamily'
