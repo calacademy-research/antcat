@@ -1,12 +1,7 @@
 # coding: UTF-8
 class Protonym < ActiveRecord::Base
+  include Nameable
   belongs_to :authorship, class_name: 'Citation', dependent: :destroy
-  belongs_to :name_object, class_name: 'Name'
-
-  def name
-    return '' if new_record? and not name_object
-    name_object.name
-  end
 
   def self.import data
     transaction do

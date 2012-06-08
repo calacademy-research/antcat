@@ -2,6 +2,8 @@
 require 'asterisk_dagger_formatting'
 
 class Taxon < ActiveRecord::Base
+  include Nameable
+
   set_table_name :taxa
 
   belongs_to  :synonym_of, :class_name => 'Taxon', :foreign_key => :synonym_of_id
@@ -10,9 +12,6 @@ class Taxon < ActiveRecord::Base
   belongs_to  :homonym_replaced_by, :class_name => 'Taxon'
   has_many    :taxonomic_history_items, order: :position, dependent: :destroy
   has_many    :reference_sections, :order => :position, dependent: :destroy
-
-  belongs_to  :name_object, class_name: 'Name'
-  validates   :name_object, presence: true
 
   scope :valid, where("status = ?", 'valid')
   scope :with_names, joins(:name_object).readonly(false)
@@ -37,11 +36,6 @@ class Taxon < ActiveRecord::Base
   def self.find_by_genus_id_and_name genus_id, name
     taxon = with_names.where(genus_id: genus_id).where("name = '#{name}'").first
     taxon && Taxon.find_by_id(taxon.id)
-  end
-
-  def name
-    return '' if new_record? and not name_object
-    name_object.name
   end
 
   def rank
