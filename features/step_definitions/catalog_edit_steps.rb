@@ -30,7 +30,7 @@ When /In the search box, I press "Go"/ do
 end
 
 Given /^there is a reference for "Bolton, 2005"$/ do
-  @reference = Factory :article_reference, :author_names => [Factory(:author_name, :name => 'Bolton')], :citation_year => '2005'
+  @reference = FactoryGirl.create :article_reference, :author_names => [FactoryGirl.create(:author_name, :name => 'Bolton')], :citation_year => '2005'
 end
 
 Then /^I should see an error message about the unfound reference$/ do

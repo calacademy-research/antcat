@@ -3,14 +3,14 @@ require 'spec_helper'
 
 describe Taxon do
   it "should require a name" do
-    Factory.build(:taxon, name_object: nil).should_not be_valid
+    FactoryGirl.build(:taxon, name_object: nil).should_not be_valid
     taxon = FactoryGirl.create :taxon, name_factory('Cerapachynae')
     taxon.name.should == 'Cerapachynae'
     taxon.should be_valid
   end
   it "should be (Rails) valid with a nil status" do
     FactoryGirl.build(:taxon, name_factory('Cerapachynae')).should be_valid
-    FactoryGirl.build(:taxon, name_factory('Cerapachynae'), status: 'valid').should be_valid
+    FactoryGirl.build(:taxon, name_factory('Cerapachynae', status: 'valid')).should be_valid
   end
   it "when status 'valid', should not be invalid" do
     taxon = FactoryGirl.build :taxon, name_factory('Cerapachynae')
@@ -88,18 +88,18 @@ describe Taxon do
 
   describe "Current valid name" do
     it "if it's not a synonym: it's just the name" do
-      taxon = Factory :taxon, name_factory('Name')
+      taxon = FactoryGirl.create :taxon, name_factory('Name')
       taxon.current_valid_name.should == 'Name'
     end
     it "if it is a synonym: the name of the target" do
-      target = Factory :taxon, name_factory('Target')
-      taxon = Factory :taxon, name_factory('Taxon').merge(status: 'synonym', synonym_of: target)
+      target = FactoryGirl.create :taxon, name_factory('Target')
+      taxon = FactoryGirl.create :taxon, name_factory('Taxon').merge(status: 'synonym', synonym_of: target)
       taxon.current_valid_name.should == 'Target'
     end
     it "if it is a synonym of a synonym: the name of the target's target" do
-      target_target = Factory :taxon, name_factory('Target_Target')
-      target = Factory :taxon, name_factory('Target').merge(status: 'synonym', synonym_of: target_target)
-      taxon = Factory :taxon, name_factory('Taxon').merge(status: 'synonym', synonym_of: target)
+      target_target = FactoryGirl.create :taxon, name_factory('Target_Target')
+      target = FactoryGirl.create :taxon, name_factory('Target').merge(status: 'synonym', synonym_of: target_target)
+      taxon = FactoryGirl.create :taxon, name_factory('Taxon').merge(status: 'synonym', synonym_of: target)
       taxon.current_valid_name.should == 'Target_Target'
     end
   end
