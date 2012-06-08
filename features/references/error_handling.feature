@@ -6,7 +6,7 @@ Feature: Error handling
 
   Scenario: Cancelling edit after an error
     Given I am logged in
-    And the following reference exists
+    And this reference exists
       | authors   | year | title                    | citation      |
       | Forel, A. | 1874 | Les fourmis de la Suisse | Neue 26:1-452 |
     When I go to the references page

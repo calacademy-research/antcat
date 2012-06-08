@@ -7,7 +7,7 @@ Feature: View Bolton bibliography
 
   Scenario: Selecting a match
     Given I am logged in
-    Given the following Bolton reference exists
+    Given this Bolton reference exists
       | authors    | title |
       | Ward, P.S. | Ants  |
     And the following reference matches that Bolton reference
@@ -29,7 +29,7 @@ Feature: View Bolton bibliography
 
   Scenario: Setting a reference to "unmatchable"
     Given I am logged in
-    Given the following Bolton reference exists
+    Given this Bolton reference exists
       | authors    | title |
       | Ward, P.S. | Ants  |
     When I go to the Bolton references page
@@ -50,7 +50,7 @@ Feature: View Bolton bibliography
 
   Scenario: Deselecting a match
     Given I am logged in
-    Given the following Bolton reference exists
+    Given this Bolton reference exists
       | authors    | title |
       | Ward, P.S. | Ants  |
     And the following reference matches that Bolton reference
@@ -67,7 +67,7 @@ Feature: View Bolton bibliography
 
   Scenario: Not logged in
     Given I am not logged in
-    Given the following Bolton reference exists
+    Given this Bolton reference exists
       | authors    | title |
       | Ward, P.S. | Ants  |
     And the following reference matches that Bolton reference
@@ -78,10 +78,10 @@ Feature: View Bolton bibliography
 
   Scenario: Entering the ID of a match
     Given I am logged in
-    Given the following Bolton reference exists
+    Given this Bolton reference exists
       | authors    | title |
       | Ward, P.S. | Ants  |
-    Given the following references exist
+    Given these references exist
       | authors    | title           | citation | citation_year |
       | Ward, P.S. | Arbitrary Match | Ants 1:1 | 2001d         |
     When I go to the Bolton references page

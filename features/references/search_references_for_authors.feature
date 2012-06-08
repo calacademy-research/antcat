@@ -9,7 +9,7 @@ Feature: Search references for authors
 
   Scenario: Searching for one author only
     Given I am logged in
-    And the following references exist
+    And these references exist
       | authors               | year  | title                 | citation   |
       | Fisher, B.;Bolton, B. | 1995b | Anthill               | Ants 1:1-2 |
       | Forel, M.             | 1995b | Formis                | Ants 1:1-2 |
@@ -24,7 +24,7 @@ Feature: Search references for authors
 
   Scenario: Searching for multiple authors
     Given I am logged in
-    And the following references exist
+    And these references exist
       | authors               | year  | title                 | citation   |
       | Fisher, B.;Bolton, B. | 1995b | Anthill               | Ants 1:1-2 |
       | Forel, M.             | 1995b | Formis                | Ants 1:1-2 |

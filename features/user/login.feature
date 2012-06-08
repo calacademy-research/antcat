@@ -4,7 +4,7 @@ Feature: Logging in
   So I can edit references
 
   Background: 
-    Given the following user exists
+    Given this user exists
       | email             | password | password_confirmation |
       | email@example.com | secret   | secret                |
 

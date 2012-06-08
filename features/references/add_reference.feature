@@ -6,7 +6,7 @@ Feature: Add reference
 
   Background: 
     Given I am logged in
-    And the following references exist
+    And these references exist
       | author     | title          | year | citation   |
       | Ward, P.S. | Annals of Ants | 2010 | Psyche 1:1 |
     And I go to the references page

@@ -6,7 +6,7 @@ Feature: COinS formatting
   And so I can use the citations in my own documents
 
   Scenario: Including COinS on index page
-    And the following references exist
+    And these references exist
       | authors | title | year | citation       |
       | AUTHORS | TITLE | 1999 | Ecology 12:333 |
     When I go to the references page

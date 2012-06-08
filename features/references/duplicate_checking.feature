@@ -5,7 +5,7 @@ Feature: Checking for duplicates during data entry
   So that there are no duplicate references
 
   Scenario: Adding a duplicate reference
-    Given the following references exist
+    Given these references exist
       | authors    | citation   | title            | year |
       | Bolton, B. | Psyche 5:3 | Ants are my life | 2010 |
       | Ward, P.   | Psyche 6:1 | Ants             | 2010 |
@@ -21,7 +21,7 @@ Feature: Checking for duplicates during data entry
     And I should see "This may be a duplicate of Bolton, B. 2010. Ants are my life. Psyche 5:3."
 
   Scenario: Adding a duplicate reference, but saving it anyway
-    Given the following references exist
+    Given these references exist
       | authors    | citation   | title            | year | id |
       | Bolton, B. | Psyche 5:3 | Ants are my life | 2010 | 1  |
       | Ward, P.   | Psyche 6:1 | Ants             | 2010 | 2  |
@@ -44,7 +44,7 @@ Feature: Checking for duplicates during data entry
     And I should see "Bolton, B. 2010. Ants are my life. Psyche 5:3."
 
   Scenario: Editing a reference that makes it a duplicate
-    Given the following references exist
+    Given these references exist
       | authors    | citation   | title            | year |
       | Bolton, B. | Psyche 5:3 | Ants are my life | 2010 |
       | Ward, P.   | Psyche 6:1 | Ants             | 2010 |
