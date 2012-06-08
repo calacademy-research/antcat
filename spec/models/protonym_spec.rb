@@ -5,8 +5,8 @@ describe Protonym do
 
   it "has an authorship" do
     authorship = FactoryGirl.create :citation
-    protonym = Protonym.create! authorship: authorship
-    protonym.reload.authorship.should == authorship
+    protonym = Protonym.create! name_factory('Protonym', authorship: authorship)
+    Protonym.find(protonym).authorship.should == authorship
   end
 
   describe "Importing" do
