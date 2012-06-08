@@ -33,12 +33,4 @@ class Family < Taxon
     end
   end
 
-  def full_label
-    name
-  end
-
-  def full_name
-    name
-  end
-
 end

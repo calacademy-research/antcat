@@ -7,14 +7,6 @@ class Tribe < Taxon
     genera
   end
 
-  def full_name
-    name
-  end
-
-  def full_label
-    full_name
-  end
-
   def statistics
   end
 
