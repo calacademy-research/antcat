@@ -73,7 +73,7 @@ class Taxon < ActiveRecord::Base
     names = name.split ' '
     if names.size > 1
       query = query.joins 'JOIN taxa genera ON genera.id = taxa.genus_id'
-      query = query.joins 'JOIN names gno ON gno.id = genera.name_object_id'
+      query = query.joins 'JOIN names gno ON gno.id = genera.name_id'
       query = query.where ['gno.name = ?', names.first]
       name = names.second
     end
