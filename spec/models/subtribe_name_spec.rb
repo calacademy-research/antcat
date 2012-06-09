@@ -1,15 +1,17 @@
 # coding: UTF-8
 require 'spec_helper'
 
-describe SpeciesName do
+describe SubtribeName do
 
   describe "Importing" do
 
     it "should recognize its key and set its name appropriately" do
-      name = Name.import '', genus_name: 'Atta', species_epithet: 'major'
-      SpeciesName.find(name).name.should == 'Atta major'
+      name = Name.import '', subtribe_name: 'Aneuretina'
+      SubtribeName.find(name).name.should == 'Aneuretina'
     end
 
   end
 
 end
+
+
