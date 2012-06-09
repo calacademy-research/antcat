@@ -1,7 +1,7 @@
 # coding: UTF-8
 Before do
   Family.destroy_all
-  FactoryGirl.create :family, protonym: nil
+  Factory :family, protonym: nil
   $ReleaseType = ProductionReleaseType.new
 end
 
