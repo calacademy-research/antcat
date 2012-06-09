@@ -174,7 +174,7 @@ describe Genus do
       reference = FactoryGirl.create :article_reference, :bolton_key_cache => 'Latreille 1809'
       genus = Genus.import(
         subfamily: subfamily,
-        name: 'Atta',
+        genus_name: 'Atta',
         fossil: true,
         protonym: {genus_name: "Atta",
                    authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]},
@@ -201,7 +201,7 @@ describe Genus do
     it "save the subgenus part correctly" do
       FactoryGirl.create :article_reference, :bolton_key_cache => 'Latreille 1809'
       genus = Genus.import({
-        name: 'Atta',
+        genus_name: 'Atta',
         protonym: {genus_name: "Atta", authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]},
         type_species: {genus_name: 'Atta', subgenus_epithet: 'Solis', species_epithet: 'major',
                           texts: [{text: [{phrase: ', by monotypy'}]}]},
@@ -214,7 +214,7 @@ describe Genus do
     it "should not mind if there's no type" do
       reference = FactoryGirl.create :article_reference, :bolton_key_cache => 'Latreille 1809'
       genus = Genus.import({
-        :name => 'Atta',
+        :genus_name => 'Atta',
         :protonym => {
           :genus_name => "Atta",
           :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
@@ -229,7 +229,7 @@ describe Genus do
       reference = FactoryGirl.create :article_reference, :bolton_key_cache => 'Latreille 1809'
 
       genus = Genus.import({
-        :name => 'Myrmicium',
+        :genus_name => 'Myrmicium',
         :protonym => {
           :genus_name => "Myrmicium",
           :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],

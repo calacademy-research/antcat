@@ -10,7 +10,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     history = parse_taxonomic_history
 
     tribe = Tribe.import(
-      name: name,
+      tribe_name: name,
       fossil: fossil,
       subfamily: subfamily,
       protonym: headline[:protonym],
@@ -44,7 +44,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     history = parse_taxonomic_history
 
     tribe = Tribe.import(
-      name: name,
+      tribe_name: name,
       fossil: fossil,
       subfamily: subfamily,
       status: 'synonym',

@@ -8,7 +8,7 @@ class Subfamily < Taxon
   def self.import data
     transaction do
       protonym = Protonym.import data[:protonym]
-      name = Name.import data[:name]
+      name = Name.import data
 
       attributes = {
         name_object:name,

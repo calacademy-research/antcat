@@ -6,7 +6,7 @@ describe SpeciesName do
   describe "Importing" do
 
     it "should recognize its key and set its name appropriately" do
-      name = Name.import '', genus_name: 'Atta', species_epithet: 'major'
+      name = Name.import genus_name: 'Atta', species_epithet: 'major'
       SpeciesName.find(name).name.should == 'Atta major'
     end
 

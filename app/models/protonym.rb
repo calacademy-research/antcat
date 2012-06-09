@@ -30,7 +30,7 @@ class Protonym < ActiveRecord::Base
         rank = 'family_or_subfamily'
       end
 
-      create! name_object:  Name.import(name, data),
+      create! name_object:  Name.import(data),
               rank:         rank,
               sic:          data[:sic],
               fossil:       data[:fossil],

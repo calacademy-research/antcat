@@ -67,8 +67,6 @@ describe Protonym do
       protonym.name.should == 'Heteromyrmex atopogaster'
     end
 
-    it "should handle a subspecies protonym"
-
   end
 
   describe "Cascading delete" do

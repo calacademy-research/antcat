@@ -6,7 +6,7 @@ describe FamilyOrSubfamilyName do
   describe "Importing" do
 
     it "should recognize its key and set its name appropriately" do
-      name = Name.import '', family_or_subfamily_name: 'Formicidae'
+      name = Name.import family_or_subfamily_name: 'Formicidae'
       FamilyOrSubfamilyName.find(name).name.should == 'Formicidae'
     end
 
