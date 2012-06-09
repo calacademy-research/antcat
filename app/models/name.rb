@@ -8,6 +8,7 @@ class Name < ActiveRecord::Base
 
     subclass = case
     when data[:genus_name] then GenusName
+    else Name
     end
     subclass.create! name: name
   end
