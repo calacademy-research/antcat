@@ -7,12 +7,12 @@ class Name < ActiveRecord::Base
   end
 
   def self.import name, data = {}
-    case
-    when data[:species_epithet] then SpeciesName
-    when data[:genus_name] then GenusName
-    when data[:subgenus_name] then SubgenusName
-    else Name
-    end.new.import name, data
+    SpeciesName.import(name, data)  or
+    SubgenusName.import(name, data) or
+    GenusName.import(name, data)    or
+    SubtribeName.import(name, data) or
+    TribeName.import(name, data)    or
+    FamilyOrSubfamilyName.import(name, data)
   end
 
   def import name, data
