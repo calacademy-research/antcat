@@ -21,8 +21,7 @@ describe Protonym do
         authorship: [{author_names: ["Latreille"], year: "1809", pages: "124", forms: 'w.q.'}],
       }
 
-      protonym = Protonym.import(data).reload
-
+      protonym = Protonym.find Protonym.import(data)
       protonym.rank.should == 'family_or_subfamily'
       protonym.name.should == 'Formicariae'
       protonym.authorship.pages.should == '124'
@@ -35,33 +34,30 @@ describe Protonym do
 
     it "should handle a tribe name protonym" do
       data = {tribe_name: "Aneuretini", authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]}
-
-      protonym = Protonym.import(data).reload
-
+      protonym = Protonym.find Protonym.import(data)
       protonym.rank.should == 'tribe'
       protonym.name.should == 'Aneuretini'
-      protonym.authorship.pages.should == '124'
-      protonym.authorship.reference.should == @reference
+    end
+
+    it "should handle a genus protonym" do
+      data = {genus_name: "Atta", authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]}
+      protonym = Protonym.find Protonym.import(data)
+      protonym.rank.should == 'genus'
+      protonym.name.should == 'Atta'
     end
 
     it "should handle a subgenus protonym" do
       data = {subgenus_name: "Aneuretini", authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]}
-
-      protonym = Protonym.import(data).reload
-
+      protonym = Protonym.find Protonym.import(data)
       protonym.rank.should == 'subgenus'
       protonym.name.should == 'Aneuretini'
-      protonym.authorship.pages.should == '124'
-      protonym.authorship.reference.should == @reference
     end
 
     it "should handle a species protonym" do
       data = {genus_name: "Heteromyrmex", species_epithet: 'atopogaster', authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]}
-      protonym = Protonym.import(data).reload
+      protonym = Protonym.find Protonym.import(data)
       protonym.rank.should == 'species'
       protonym.name.should == 'Heteromyrmex atopogaster'
-      protonym.authorship.pages.should == '124'
-      protonym.authorship.reference.should == @reference
     end
 
     it "should handle a subtribe protonym" do
