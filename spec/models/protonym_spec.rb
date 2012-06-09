@@ -32,11 +32,18 @@ describe Protonym do
       protonym.locality.should == 'U.S.A.'
     end
 
-    it "should handle a tribe name protonym" do
+    it "should handle a tribe protonym" do
       data = {tribe_name: "Aneuretini", authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]}
       protonym = Protonym.find Protonym.import(data)
       protonym.rank.should == 'tribe'
       protonym.name.should == 'Aneuretini'
+    end
+
+    it "should handle a subtribe protonym" do
+      data = {subtribe_name: 'Bothriomyrmecina', authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]}
+      protonym = Protonym.find Protonym.import(data)
+      protonym.rank.should == 'subtribe'
+      protonym.name.should == 'Bothriomyrmecina'
     end
 
     it "should handle a genus protonym" do
@@ -60,12 +67,7 @@ describe Protonym do
       protonym.name.should == 'Heteromyrmex atopogaster'
     end
 
-    it "should handle a subtribe protonym" do
-      data = {subtribe_name: 'Bothriomyrmecina', authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]}
-      protonym = Protonym.find Protonym.import(data)
-      protonym.rank.should == 'subtribe'
-      protonym.name.should == 'Bothriomyrmecina'
-    end
+    it "should handle a subspecies protonym"
 
   end
 
