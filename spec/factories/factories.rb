@@ -96,11 +96,14 @@ FactoryGirl.define do
   end
 
   ####################################################
-  factory :name_object, class: Name do
-    name 'foo'
+  factory :name do
+    name 'Atta'
   end
 
   ####################################################
+  factory :name_object, class: Name do
+    name 'foo'
+  end
 
   factory :taxon do
     name_object
