@@ -22,9 +22,13 @@ describe Name do
         name = Name.import 'Formicidae', family_name: 'Formicidae'
         name.should be_kind_of Name
       end
-      it "should create an object of the appropriate subclass" do
+      it "should create a GenusName" do
         name = Name.import 'Atta', genus_name: 'Atta'
         name.should be_kind_of GenusName
+      end
+      it "should create a SubgenusName" do
+        name = Name.import 'Atta', subgenus_name: 'Atta'
+        name.should be_kind_of SubgenusName
       end
     end
 
