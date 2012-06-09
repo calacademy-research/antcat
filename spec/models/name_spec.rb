@@ -16,10 +16,18 @@ describe Name do
       new_name = Name.import 'Atta'
       new_name.should == existing_name
     end
-    it "should create an object of the appropriate subclass" do
-      name = Name.import 'Atta', genus_name: 'Atta'
-      name.should be_kind_of GenusName
+
+    describe "Creating the right subclass" do
+      it "should create a regular Name for most things" do
+        name = Name.import 'Formicidae', family_name: 'Formicidae'
+        name.should be_kind_of Name
+      end
+      it "should create an object of the appropriate subclass" do
+        name = Name.import 'Atta', genus_name: 'Atta'
+        name.should be_kind_of GenusName
+      end
     end
+
   end
 
 end
