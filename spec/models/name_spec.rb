@@ -30,6 +30,12 @@ describe Name do
         name = Name.import 'Atta', subgenus_name: 'Atta'
         name.should be_kind_of SubgenusName
       end
+      it "should create a SpeciesName" do
+        name = Name.import 'major', species_epithet: 'major', genus_name: 'Atta'
+        name.should be_kind_of SpeciesName
+        name.full_name.should == 'Atta major'
+        name.genus_name.should == GenusName.find_by_name('Atta')
+      end
     end
 
   end

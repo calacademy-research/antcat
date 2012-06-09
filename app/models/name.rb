@@ -8,6 +8,7 @@ class Name < ActiveRecord::Base
 
   def self.import name, data = {}
     case
+    when data[:species_epithet] then SpeciesName
     when data[:genus_name] then GenusName
     when data[:subgenus_name] then SubgenusName
     else Name
