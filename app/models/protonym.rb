@@ -8,12 +8,6 @@ class Protonym < ActiveRecord::Base
       authorship = Citation.import data[:authorship].first if data[:authorship]
 
       case 
-      when data[:subtribe_name]
-        name = data[:subtribe_name]
-        rank = 'subtribe'
-      when data[:family_or_subfamily_name]
-        name = data[:family_or_subfamily_name]
-        rank = 'family_or_subfamily'
       when data[:species_epithet]
         name = data[:genus_name].dup
         name << ' (' << data[:subgenus_epithet] << ') ' if data[:subgenus_epithet]
@@ -24,15 +18,16 @@ class Protonym < ActiveRecord::Base
           name << ' ' << subspecies[:subspecies_epithet]
         end
         rank = 'species'
-      when data[:genus_name]
-        name = data[:genus_name]
-        rank = 'genus'
       when data[:subgenus_name]
-        name = data[:subgenus_name]
         rank = 'subgenus'
+      when data[:genus_name]
+        rank = 'genus'
+      when data[:subtribe_name]
+        rank = 'subtribe'
       when data[:tribe_name]
-        name = data[:tribe_name]
         rank = 'tribe'
+      when data[:family_or_subfamily_name]
+        rank = 'family_or_subfamily'
       end
 
       create! name_object:  Name.import(name, data),
