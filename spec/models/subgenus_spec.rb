@@ -25,7 +25,7 @@ describe Subgenus do
 
       subgenus = Subgenus.import(
         genus: genus,
-        name: 'Atta',
+        subgenus_name: 'Atta',
         fossil: true,
         protonym: {subgenus_name: "Atta",
                    authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]},

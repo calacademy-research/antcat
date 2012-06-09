@@ -14,7 +14,7 @@ class GenusGroupTaxon < Taxon
   def self.import data, name_key, attributes = {}
     transaction do
       protonym = Protonym.import data[:protonym]
-      name = Name.import data[:name]
+      name = Name.import data
 
       headline_notes_taxt = Importers::Bolton::Catalog::TextToTaxt.convert(data[:note])
       attributes.merge!(

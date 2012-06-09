@@ -117,7 +117,7 @@ describe Subfamily do
     it "should work" do
       reference = FactoryGirl.create :article_reference, :bolton_key_cache => 'Emery 1913a'
       subfamily = Subfamily.import(
-        name: 'Aneuretinae',
+        subfamily_name: 'Aneuretinae',
         fossil: true,
         protonym: {tribe_name: "Aneuretini",
                    authorship: [{author_names: ["Emery"], year: "1913a", pages: "6"}]},

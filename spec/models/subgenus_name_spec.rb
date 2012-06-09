@@ -6,7 +6,7 @@ describe SubgenusName do
   describe "Importing" do
 
     it "should recognize its key and set its name appropriately" do
-      name = Name.import '', subgenus_name: 'Atta'
+      name = Name.import subgenus_name: 'Atta'
       SubgenusName.find(name).name.should == 'Atta'
     end
 

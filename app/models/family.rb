@@ -3,7 +3,7 @@ class Family < Taxon
 
   def self.import data
     transaction do
-      name = Name.import 'Formicidae'
+      name = Name.import family_name: 'Formicidae'
       protonym = Protonym.import data[:protonym]
       type_taxon_taxt = Importers::Bolton::Catalog::TextToTaxt.convert(data[:type_genus][:texts])
       headline_notes_taxt = Importers::Bolton::Catalog::TextToTaxt.convert(data[:note])

@@ -1,6 +1,6 @@
 class TribeName < Name
 
-  def self.import name, data = {}
+  def self.import data
     return unless name = data[:tribe_name]
     create! name: name
   end

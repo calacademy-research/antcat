@@ -25,7 +25,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     history = parse_taxonomic_history
 
     subgenus = Subgenus.import(
-      :name => name,
+      :subgenus_name => name,
       :genus => attributes[:genus],
       :fossil => fossil,
       :protonym => headline[:protonym],
