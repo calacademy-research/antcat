@@ -15,7 +15,7 @@ class Protonym < ActiveRecord::Base
         name = data[:family_or_subfamily_name]
         rank = 'family_or_subfamily'
       when data[:species_epithet]
-        name = data[:genus_name]
+        name = data[:genus_name].dup
         name << ' (' << data[:subgenus_epithet] << ') ' if data[:subgenus_epithet]
         name << ' ' + data[:species_epithet]
         if data[:subspecies]
@@ -35,7 +35,7 @@ class Protonym < ActiveRecord::Base
         rank = 'tribe'
       end
 
-      create! name_object:  Name.import(name),
+      create! name_object:  Name.import(name, data),
               rank:         rank,
               sic:          data[:sic],
               fossil:       data[:fossil],
