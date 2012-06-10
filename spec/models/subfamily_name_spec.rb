@@ -8,6 +8,11 @@ describe SubfamilyName do
       name = Name.import subfamily_name: 'Aneuretinae'
       SubfamilyName.find(name).name.should == 'Aneuretinae'
     end
+    it "should reuse names" do
+      FactoryGirl.create :name, name: 'Dolichoderinae'
+      Name.import subfamily_name: 'Dolichoderinae'
+      Name.count.should == 1
+    end
   end
 
 end

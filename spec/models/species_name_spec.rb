@@ -11,6 +11,18 @@ describe SpeciesName do
       name.name.should == 'major'
       name.full_name.should == 'Atta major'
     end
+    it "should reuse names" do
+      Name.import genus_name: 'Atta', species_epithet: 'major'
+      Name.count.should == 2
+      Name.import genus_name: 'Atta', species_epithet: 'major'
+      Name.count.should == 2
+    end
+    it "should not reuse name for another genus" do
+      Name.import genus_name: 'Eciton', species_epithet: 'major'
+      Name.count.should == 2
+      Name.import genus_name: 'Atta', species_epithet: 'major'
+      Name.count.should == 4
+    end
 
   end
 
