@@ -3,6 +3,11 @@ class Protonym < ActiveRecord::Base
   include Nameable
   belongs_to :authorship, class_name: 'Citation', dependent: :destroy
 
+  def name
+    return '' if new_record? and not name_object
+    name_object.full_name
+  end
+
   def self.import data
     transaction do
       authorship = Citation.import data[:authorship].first if data[:authorship]
@@ -39,4 +44,5 @@ class Protonym < ActiveRecord::Base
 
     end
   end
+
 end
