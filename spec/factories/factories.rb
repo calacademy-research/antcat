@@ -6,7 +6,8 @@ def reference_factory attributes = {}
 end
 
 def name_factory name, other_attributes = {}
-  {name_object: Name.create(name: name)}.merge other_attributes
+  klass = other_attributes.delete(:class) || Name
+  {name_object: klass.create(name: name)}.merge other_attributes
 end
 
 FactoryGirl.define do

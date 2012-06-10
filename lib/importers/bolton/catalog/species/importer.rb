@@ -48,7 +48,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
 
       when :species_record
         if @genus
-          species = ::Species.import name: @parse_result[:species_group_epithet],
+          species = ::Species.import species_epithet: @parse_result[:species_group_epithet],
                                      fossil: @parse_result[:fossil] || false,
                                      status: @parse_result[:status] || 'valid',
                                      genus: @genus,
