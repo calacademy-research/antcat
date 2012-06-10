@@ -107,8 +107,8 @@ describe Taxon do
   describe "Find name" do
     before do
       FactoryGirl.create :genus, name_object: FactoryGirl.create(:name, name: 'Monomorium')
-      @monoceros = FactoryGirl.create :genus, name_object: FactoryGirl.create(:genus_name, name: 'Monoceros')
-      species_name = FactoryGirl.create(:species_name, name: 'rufa', epithet: 'rufa', genus_name: @monoceros.name_object)
+      @monoceros = FactoryGirl.create :genus, name_object: FactoryGirl.create(:genus_group_name, name: 'Monoceros')
+      species_name = FactoryGirl.create(:species_name, name: 'rufa', epithet: 'rufa', genus_group_name: @monoceros.name_object)
       @rufa = FactoryGirl.create :species, genus: @monoceros, name_object: species_name
     end
     it "should return [] if nothing matches" do
