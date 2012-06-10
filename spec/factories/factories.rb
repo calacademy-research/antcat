@@ -112,6 +112,8 @@ FactoryGirl.define do
     sequence(:name) {|n| "Subtribe#{n}"}
   end
 
+  factory :genus_group_name do
+    sequence(:name) {|n| "GenusGroup#{n}"}
   end
 
   factory :genus_name do
@@ -123,11 +125,14 @@ FactoryGirl.define do
   end
 
   factory :species_name do
-    genus_name
     sequence(:name) {|n| "Species#{n}"}
+    genus_group_name
   end
 
   ####################################################
+
+  # this factory seems to only be necessary because
+  # of the assocation lines below
   factory :name_object, class: Name do
     name
   end
