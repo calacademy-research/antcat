@@ -53,13 +53,6 @@ describe Protonym do
       protonym.name.should == 'Atta'
     end
 
-    it "should handle a subgenus protonym" do
-      data = {subgenus_name: "Aneuretini", authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]}
-      protonym = Protonym.find Protonym.import(data)
-      protonym.rank.should == 'subgenus'
-      protonym.name.should == 'Aneuretini'
-    end
-
     it "should handle a species protonym" do
       data = {genus_name: "Heteromyrmex", species_epithet: 'atopogaster', authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]}
       protonym = Protonym.find Protonym.import(data)
