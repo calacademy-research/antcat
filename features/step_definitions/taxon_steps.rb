@@ -29,7 +29,8 @@ Given /a (\w+) exists with a name of "([^"]+)" and a parent of "([^"]+)"/ do |ra
 end
 
 Given /a subfamily exists with a name of "(.*?)" and a taxonomic history of "(.*?)"/ do |taxon_name, taxonomic_history|
-  taxon = Factory :subfamily, name_factory(taxon_name, taxonomic_history: taxonomic_history)
+  name = FactoryGirl.create :subfamily_name, name: taxon_name
+  taxon = FactoryGirl.create :subfamily, name_object: name, taxonomic_history: taxonomic_history
   taxon.taxonomic_history_items.create! :taxt => taxonomic_history
 end
 
