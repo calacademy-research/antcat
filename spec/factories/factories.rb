@@ -5,11 +5,6 @@ def reference_factory attributes = {}
   reference
 end
 
-def name_factory name, other_attributes = {}
-  klass = other_attributes.delete(:class) || Name
-  {name_object: klass.create(name: name)}.merge other_attributes
-end
-
 FactoryGirl.define do
 
   factory :author
@@ -101,38 +96,79 @@ FactoryGirl.define do
     name 'Atta'
   end
 
+  factory :family_name do
+    name 'Formicidae'
+  end
+
+  factory :subfamily_name do
+    name 'Dolichoderinae'
+  end
+
+  factory :tribe_name do
+    name 'Dolichoderini'
+  end
+
+  factory :subtribe_name do
+    name 'Dolichoderina'
+  end
+
+  factory :genus_name do
+    name 'Atta'
+  end
+
+  factory :subgenus_name do
+    name 'Subatta'
+  end
+
+  factory :species_name do
+    name 'major'
+    genus_name
+  end
+
+  factory :subspecies_name do
+    name 'major'
+    genus_name
+  end
+
   ####################################################
   factory :name_object, class: Name do
-    name 'foo'
+    name
   end
 
   factory :taxon do
-    name_object
+    association :name_object, factory: :name
     protonym
     status  'valid'
   end
 
   factory :family do
-    name_object
+    association :name_object, factory: :family_name
     protonym
     status  'valid'
   end
 
   factory :subfamily do
-    name_object
+    association :name_object, factory: :subfamily_name
     protonym
     status  'valid'
   end
 
   factory :tribe do
-    name_object
+    association :name_object, factory: :tribe_name
+    subfamily
+    protonym
+    status  'valid'
+  end
+
+  factory :subtribe do
+    association :name_object, factory: :subtribe_name
     subfamily
     protonym
     status  'valid'
   end
 
   factory :genus do
-    name_object
+    association :name_object, factory: :genus_name
     tribe
     subfamily   {|a| a.tribe && a.tribe.subfamily}
     protonym
@@ -140,21 +176,21 @@ FactoryGirl.define do
   end
 
   factory :subgenus do
-    name_object
+    association :name_object, factory: :subgenus_name
     genus
     protonym
     status  'valid'
   end
 
   factory :species do
-    name_object
+    association :name_object, factory: :species_name
     genus
     protonym
     status  'valid'
   end
 
   factory :subspecies do
-    name_object
+    association :name_object, factory: :subspecies_name
     species
     protonym
     status  'valid'
