@@ -5,7 +5,7 @@ describe Protonym do
 
   it "has an authorship" do
     authorship = FactoryGirl.create :citation
-    protonym = Protonym.create! name_factory('Protonym', authorship: authorship)
+    protonym = Protonym.create! name_object: FactoryGirl.create(:name, name: 'Protonym'), authorship: authorship
     Protonym.find(protonym).authorship.should == authorship
   end
 

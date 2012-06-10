@@ -125,11 +125,6 @@ FactoryGirl.define do
     genus_name
   end
 
-  factory :subspecies_name do
-    name 'major'
-    genus_name
-  end
-
   ####################################################
   factory :name_object, class: Name do
     name
@@ -190,7 +185,7 @@ FactoryGirl.define do
   end
 
   factory :subspecies do
-    association :name_object, factory: :subspecies_name
+    association :name_object, factory: :species_name
     species
     protonym
     status  'valid'

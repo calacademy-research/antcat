@@ -8,36 +8,36 @@ describe Antweb::Exporter do
 
   describe "exporting one taxon" do
     it "should export a subfamily" do
-      ponerinae = Factory :subfamily, name_factory('Ponerinae', :status => 'valid', :taxonomic_history => '<p>Ponerinae</p>')
+      ponerinae = Factory :subfamily, name_object: FactoryGirl.create(:name, name: 'Ponerinae'), :status => 'valid', :taxonomic_history => '<p>Ponerinae</p>'
       FactoryGirl.create :genus, :subfamily => ponerinae, :tribe => nil
       @exporter.export_taxon(ponerinae).should == ['Ponerinae', nil, nil, nil, nil, nil, 'TRUE', 'TRUE', nil, nil, 'FALSE', '<p class="taxon_statistics">1 genus</p><p>Ponerinae</p>']
     end
 
     it "should export fossil taxa" do
-      ponerinae = Factory :subfamily, name_factory('Ponerinae', :status => 'valid', :taxonomic_history => '<p>Ponerinae</p>')
+      ponerinae = Factory :subfamily, name_object: FactoryGirl.create(:name, name: 'Ponerinae'), :status => 'valid', :taxonomic_history => '<p>Ponerinae</p>'
       FactoryGirl.create :genus, :subfamily => ponerinae, :tribe => nil
-      fossil = FactoryGirl.create :genus, name_factory('Atta', :taxonomic_history => 'Atta', :subfamily => ponerinae, :tribe => nil, :fossil => true)
+      fossil = FactoryGirl.create :genus, name_object: FactoryGirl.create(:name, name: 'Atta'), :taxonomic_history => 'Atta', :subfamily => ponerinae, :tribe => nil, :fossil => true
       @exporter.export_taxon(ponerinae).should == ['Ponerinae', nil, nil, nil, nil, nil, 'TRUE', 'TRUE', nil, nil, 'FALSE', '<p class="taxon_statistics">Extant: 1 genus</p><p class="taxon_statistics">Fossil: 1 genus</p><p>Ponerinae</p>']
       @exporter.export_taxon(fossil).should == ['Ponerinae', nil, 'Atta', nil, nil, nil, 'TRUE', 'TRUE', nil, nil, 'TRUE', 'Atta']
     end
 
     it "should export a genus" do
-      myrmicinae = Factory :subfamily, name_factory('Myrmicinae', :status => 'valid')
-      dacetini = Factory :tribe, name_factory('Dacetini', :subfamily => myrmicinae, :status => 'valid')
-      acanthognathus = Factory :genus, name_factory('Acanothognathus', :subfamily => myrmicinae, :tribe => dacetini, :status => 'valid', :taxonomic_history => '<i>Acanthognathous</i>')
+      myrmicinae = Factory :subfamily, name_object: FactoryGirl.create(:name, name: 'Myrmicinae'), :status => 'valid'
+      dacetini = Factory :tribe, name_object: FactoryGirl.create(:name, name: 'Dacetini'), :subfamily => myrmicinae, :status => 'valid'
+      acanthognathus = Factory :genus, name_object: FactoryGirl.create(:name, name: 'Acanothognathus'), :subfamily => myrmicinae, :tribe => dacetini, :status => 'valid', :taxonomic_history => '<i>Acanthognathous</i>'
       Exporters::Antweb::Formatter.should_receive(:format_taxonomic_history_with_statistics_for_antweb).with(acanthognathus, :include_invalid => false).and_return 'history'
       @exporter.export_taxon(acanthognathus).should == ['Myrmicinae', 'Dacetini', 'Acanothognathus', nil, nil, nil, 'TRUE', 'TRUE', nil, nil, 'FALSE', 'history']
     end
 
     it "should export a genus without a tribe" do
-      myrmicinae = Factory :subfamily, name_factory('Myrmicinae', :status => 'valid')
-      acanthognathus = Factory :genus, name_factory('Acanothognathus', :subfamily => myrmicinae, :status => 'valid', :taxonomic_history => '<i>Acanthognathous</i>', tribe: nil)
+      myrmicinae = Factory :subfamily, name_object: FactoryGirl.create(:name, name: 'Myrmicinae'), :status => 'valid'
+      acanthognathus = Factory :genus, name_object: FactoryGirl.create(:name, name: 'Acanothognathus'), :subfamily => myrmicinae, :status => 'valid', :taxonomic_history => '<i>Acanthognathous</i>', tribe: nil
       Exporters::Antweb::Formatter.should_receive(:format_taxonomic_history_with_statistics_for_antweb).with(acanthognathus, :include_invalid => false).and_return 'history'
       @exporter.export_taxon(acanthognathus).should == ['Myrmicinae', nil, 'Acanothognathus', nil, nil, nil, 'TRUE', 'TRUE', nil, nil, 'FALSE', 'history']
     end
 
     it "should export a genus without a subfamily as being in 'incertae_sedis'" do
-      acanthognathus = Factory :genus, name_factory('Acanothognathus', :status => 'valid', :taxonomic_history => '<i>Acanthognathous</i>', tribe: nil, subfamily: nil)
+      acanthognathus = Factory :genus, name_object: FactoryGirl.create(:name, name: 'Acanothognathus'), :status => 'valid', :taxonomic_history => '<i>Acanthognathous</i>', tribe: nil, subfamily: nil
       Exporters::Antweb::Formatter.should_receive(:format_taxonomic_history_with_statistics_for_antweb).with(acanthognathus, :include_invalid => false).and_return 'history'
       @exporter.export_taxon(acanthognathus).should == ['incertae_sedis', nil, 'Acanothognathus', nil, nil, nil, 'TRUE', 'TRUE', nil, nil, 'FALSE', 'history']
     end
@@ -66,25 +66,25 @@ describe Antweb::Exporter do
     describe "Exporting species" do
 
       it "should export one correctly" do
-        myrmicinae = FactoryGirl.create :subfamily, name_factory('Myrmicinae')
-        attini = FactoryGirl.create :tribe, name_factory('Attini', :subfamily => myrmicinae)
-        atta = FactoryGirl.create :genus, name_factory('Atta', :tribe => attini)
-        species = FactoryGirl.create :species, name_factory('robustus', :genus => atta, :taxonomic_history => 'history')
+        myrmicinae = FactoryGirl.create :subfamily, name_object: FactoryGirl.create(:name, name: 'Myrmicinae')
+        attini = FactoryGirl.create :tribe, name_object: FactoryGirl.create(:name, name: 'Attini'), :subfamily => myrmicinae
+        atta = FactoryGirl.create :genus, name_object: FactoryGirl.create(:name, name: 'Atta'), :tribe => attini
+        species = FactoryGirl.create :species, name_object: FactoryGirl.create(:name, name: 'robustus'), :genus => atta, :taxonomic_history => 'history'
         Exporters::Antweb::Formatter.should_receive(:format_taxonomic_history_with_statistics_for_antweb).with(species, :include_invalid => false).and_return 'history'
         @exporter.export_taxon(species).should == ['Myrmicinae', 'Attini', 'Atta', 'robustus', nil, nil, 'TRUE', 'TRUE', nil, nil, 'FALSE', 'history']
       end
 
       it "should export a species without a tribe" do
-        myrmicinae = FactoryGirl.create :subfamily, name_factory('Myrmicinae')
-        atta = FactoryGirl.create :genus, name_factory('Atta', :subfamily => myrmicinae, :tribe => nil)
-        species = FactoryGirl.create :species, name_factory('robustus', :genus => atta, :taxonomic_history => 'history')
+        myrmicinae = FactoryGirl.create :subfamily, name_object: FactoryGirl.create(:name, name: 'Myrmicinae')
+        atta = FactoryGirl.create :genus, name_object: FactoryGirl.create(:name, name: 'Atta'), :subfamily => myrmicinae, :tribe => nil
+        species = FactoryGirl.create :species, name_object: FactoryGirl.create(:name, name: 'robustus'), :genus => atta, :taxonomic_history => 'history'
         Exporters::Antweb::Formatter.should_receive(:format_taxonomic_history_with_statistics_for_antweb).with(species, :include_invalid => false).and_return 'history'
         @exporter.export_taxon(species).should == ['Myrmicinae', nil, 'Atta', 'robustus', nil, nil, 'TRUE', 'TRUE', nil, nil, 'FALSE', 'history']
       end
 
       it "should export a species without a subfamily as being in the 'incertae sedis' subfamily" do
-        atta = FactoryGirl.create :genus, name_factory('Atta', :subfamily => nil, :tribe => nil)
-        species = FactoryGirl.create :species, name_factory('robustus', :genus => atta, :taxonomic_history => 'history')
+        atta = FactoryGirl.create :genus, name_object: FactoryGirl.create(:name, name: 'Atta'), :subfamily => nil, :tribe => nil
+        species = FactoryGirl.create :species, name_object: FactoryGirl.create(:name, name: 'robustus'), :genus => atta, :taxonomic_history => 'history'
         Exporters::Antweb::Formatter.should_receive(:format_taxonomic_history_with_statistics_for_antweb).with(species, :include_invalid => false).and_return 'history'
         @exporter.export_taxon(species).should == ['incertae_sedis', nil, 'Atta', 'robustus', nil, nil, 'TRUE', 'TRUE', nil, nil, 'FALSE', 'history']
       end
@@ -94,28 +94,28 @@ describe Antweb::Exporter do
     describe "Exporting subspecies" do
 
       it "should export one correctly" do
-        myrmicinae = FactoryGirl.create :subfamily, name_factory('Myrmicinae')
-        attini = FactoryGirl.create :tribe, name_factory('Attini', :subfamily => myrmicinae)
-        atta = FactoryGirl.create :genus, name_factory('Atta', :tribe => attini)
-        species = FactoryGirl.create :species, name_factory('robustus', :genus => atta)
-        subspecies = FactoryGirl.create :subspecies, name_factory('emeryii', :species => species, :taxonomic_history => 'history')
+        myrmicinae = FactoryGirl.create :subfamily, name_object: FactoryGirl.create(:name, name: 'Myrmicinae')
+        attini = FactoryGirl.create :tribe, name_object: FactoryGirl.create(:name, name: 'Attini'), :subfamily => myrmicinae
+        atta = FactoryGirl.create :genus, name_object: FactoryGirl.create(:name, name: 'Atta'), :tribe => attini
+        species = FactoryGirl.create :species, name_object: FactoryGirl.create(:name, name: 'robustus'), :genus => atta
+        subspecies = FactoryGirl.create :subspecies, name_object: FactoryGirl.create(:name, name: 'emeryii'), :species => species, :taxonomic_history => 'history'
         Exporters::Antweb::Formatter.should_receive(:format_taxonomic_history_with_statistics_for_antweb).with(subspecies, :include_invalid => false).and_return 'history'
         @exporter.export_taxon(subspecies).should == ['Myrmicinae', 'Attini', 'Atta', 'robustus emeryii', nil, nil, 'TRUE', 'TRUE', nil, nil, 'FALSE', 'history']
       end
 
       it "should export a subspecies without a tribe" do
-        myrmicinae = FactoryGirl.create :subfamily, name_factory('Myrmicinae')
-        atta = FactoryGirl.create :genus, name_factory('Atta', :subfamily => myrmicinae, :tribe => nil)
-        species = FactoryGirl.create :species, name_factory('robustus', :genus => atta, :taxonomic_history => 'history')
-        subspecies = FactoryGirl.create :subspecies, name_factory('emeryii', :species => species, :taxonomic_history => 'history')
+        myrmicinae = FactoryGirl.create :subfamily, name_object: FactoryGirl.create(:name, name: 'Myrmicinae')
+        atta = FactoryGirl.create :genus, name_object: FactoryGirl.create(:name, name: 'Atta'), :subfamily => myrmicinae, :tribe => nil
+        species = FactoryGirl.create :species, name_object: FactoryGirl.create(:name, name: 'robustus'), :genus => atta, :taxonomic_history => 'history'
+        subspecies = FactoryGirl.create :subspecies, name_object: FactoryGirl.create(:name, name: 'emeryii'), :species => species, :taxonomic_history => 'history'
         Exporters::Antweb::Formatter.should_receive(:format_taxonomic_history_with_statistics_for_antweb).with(subspecies, :include_invalid => false).and_return 'history'
         @exporter.export_taxon(subspecies).should == ['Myrmicinae', nil, 'Atta', 'robustus emeryii', nil, nil, 'TRUE', 'TRUE', nil, nil, 'FALSE', 'history']
       end
 
       it "should export a subspecies without a subfamily as being in the 'incertae sedis' subfamily" do
-        atta = FactoryGirl.create :genus, name_factory('Atta', :subfamily => nil, :tribe => nil)
-        species = FactoryGirl.create :species, name_factory('robustus', :genus => atta, :taxonomic_history => 'history')
-        subspecies = FactoryGirl.create :subspecies, name_factory('emeryii', :species => species, :taxonomic_history => 'history')
+        atta = FactoryGirl.create :genus, name_object: FactoryGirl.create(:name, name: 'Atta'), :subfamily => nil, :tribe => nil
+        species = FactoryGirl.create :species, name_object: FactoryGirl.create(:name, name: 'robustus'), :genus => atta, :taxonomic_history => 'history'
+        subspecies = FactoryGirl.create :subspecies, name_object: FactoryGirl.create(:name, name: 'emeryii'), :species => species, :taxonomic_history => 'history'
         Exporters::Antweb::Formatter.should_receive(:format_taxonomic_history_with_statistics_for_antweb).with(subspecies, :include_invalid => false).and_return 'history'
         @exporter.export_taxon(subspecies).should == ['incertae_sedis', nil, 'Atta', 'robustus emeryii', nil, nil, 'TRUE', 'TRUE', nil, nil, 'FALSE', 'history']
       end
