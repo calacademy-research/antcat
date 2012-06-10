@@ -21,7 +21,7 @@ describe Importers::Bolton::Catalog::Subfamily::FamilyGrammar do
       @grammar.parse(%{Myrmicites Lepeletier de Saint-Fargeau, 1835: 169. Type-genus: <i>Myrmica</i>.}).value_with_matched_text_removed.should == {
         type: :family_group_headline,
         protonym: {
-          family_or_subfamily_name: 'Myrmicites',
+          genus_name: 'Myrmicites',
           authorship: [{author_names: ['Lepeletier de Saint-Fargeau'], year: '1835', pages: '169'}],
         },
         type_genus: {genus_name: 'Myrmica'}
@@ -44,7 +44,10 @@ describe Importers::Bolton::Catalog::Subfamily::FamilyGrammar do
       }
     end
     it "should recognize a family protonym for a tribe" do
-      @grammar.parse(%{Neoattini Kusnezov, 1956: 22; Kusnezov, 1964: 62}, :root => :family_group_protonym).value
+      @grammar.parse(%{Neoattini Kusnezov, 1956: 22}, :root => :family_group_protonym).value
+    end
+    it "should recognize a family protonym for a genus" do
+      @grammar.parse(%{Ponerites Kusnezov, 1956: 22}, :root => :family_group_protonym).value[:genus_name].should == 'Ponerites'
     end
     it "should recognize a family protonym for a subtribe" do
       @grammar.parse(%{Bothriomyrmecina Dubovikov, 2005a: 92}, :root => :family_group_protonym).value_with_matched_text_removed.should == {
