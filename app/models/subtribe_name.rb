@@ -5,4 +5,8 @@ class SubtribeName < Name
     Name.find_by_name(name) || create!(name: name)
   end
 
+  def rank
+    'subtribe'
+  end
+
 end

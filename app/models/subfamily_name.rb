@@ -5,4 +5,8 @@ class SubfamilyName < FamilyOrSubfamilyName
     Name.find_by_name(name) || create!(name: name)
   end
 
+  def rank
+    'subfamily'
+  end
+
 end

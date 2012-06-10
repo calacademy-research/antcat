@@ -5,4 +5,8 @@ class GenusName < GenusGroupName
     Name.find_by_name(name) || create!(name: name)
   end
 
+  def rank
+    'genus'
+  end
+
 end

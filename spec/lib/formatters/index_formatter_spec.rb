@@ -11,17 +11,17 @@ describe Formatters::IndexFormatter do
 
     describe "Protonym" do
       it "should format a family name in the protonym" do
-        protonym = FactoryGirl.create :protonym, name_object: FactoryGirl.create(:name, name: 'Formcidae'), rank: 'family_or_subfamily'
+        protonym = FactoryGirl.create :protonym, name_object: FactoryGirl.create(:name, name: 'Formcidae')
         @formatter.format_protonym_name(protonym).should ==
           '<span class="name subfamily taxon">Formcidae</span>'
       end
       it "should format a genus name in the protonym" do
-        protonym = FactoryGirl.create :protonym, name_object: FactoryGirl.create(:name, name: 'Atari'), rank: 'genus'
+        protonym = FactoryGirl.create :protonym, name_object: FactoryGirl.create(:name, name: 'Atari')
         @formatter.format_protonym_name(protonym).should ==
           '<span class="genus name taxon">Atari</span>'
       end
       it "should format a fossil" do
-        protonym = FactoryGirl.create :protonym, name_object: FactoryGirl.create(:name, name: 'Atari'), rank: 'genus', fossil: true
+        protonym = FactoryGirl.create :protonym, name_object: FactoryGirl.create(:name, name: 'Atari'), fossil: true
         @formatter.format_protonym_name(protonym).should ==
           '<span class="genus name taxon">&dagger;Atari</span>'
       end
