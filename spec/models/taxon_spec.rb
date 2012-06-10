@@ -252,7 +252,7 @@ describe Taxon do
     it "should have a protonym" do
       taxon = Family.new
       taxon.protonym.should be_nil
-      taxon.build_protonym FactoryGirl.create(:name, name: 'Formicariae')
+      taxon.build_protonym name_object: FactoryGirl.create(:name, name: 'Formicariae')
     end
   end
 

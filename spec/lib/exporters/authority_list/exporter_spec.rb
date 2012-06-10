@@ -24,10 +24,10 @@ describe Exporters::AuthorityList::Exporter do
 
     describe "Outputting taxa" do
       before do
-        @subfamily = FactoryGirl.create :subfamily, name_factory('Myrmicinae')
-        @tribe = FactoryGirl.create :tribe, name_factory('Attini', :subfamily => @subfamily)
-        @genus = FactoryGirl.create :genus, name_factory('Atta', :subfamily => @subfamily, :tribe => @tribe)
-        @species = FactoryGirl.create :species, name_factory('robusta', :subfamily => @subfamily, :genus => @genus)
+        @subfamily = FactoryGirl.create :subfamily, name_object: FactoryGirl.create(:name, name: 'Myrmicinae')
+        @tribe = FactoryGirl.create :tribe, name_object: FactoryGirl.create(:name, name: 'Attini'), :subfamily => @subfamily
+        @genus = FactoryGirl.create :genus, name_object: FactoryGirl.create(:name, name: 'Atta'), :subfamily => @subfamily, :tribe => @tribe
+        @species = FactoryGirl.create :species, name_object: FactoryGirl.create(:name, name: 'robusta'), :subfamily => @subfamily, :genus => @genus
       end
 
       it "should export a species correctly" do
@@ -46,7 +46,7 @@ describe Exporters::AuthorityList::Exporter do
 
       describe "Outputting subspecies" do
         before do
-          @subspecies = FactoryGirl.create :subspecies, name_factory('rufa', :genus => @genus, :species => @species)
+          @subspecies = FactoryGirl.create :subspecies, name_object: FactoryGirl.create(:name, name: 'rufa'), :genus => @genus, :species => @species
         end
 
         it "should export a subspecies correctly" do
@@ -66,18 +66,18 @@ describe Exporters::AuthorityList::Exporter do
         file = stub
         File.stub(:open).and_yield file
 
-        myrmicinae = FactoryGirl.create :subfamily, name_factory('Myrmicinae')
+        myrmicinae = FactoryGirl.create :subfamily, name_object: FactoryGirl.create(:name, name: 'Myrmicinae')
 
-        attini = FactoryGirl.create :tribe, name_factory('Attini', :subfamily => myrmicinae)
-        cephalotini = FactoryGirl.create :tribe, name_factory('Cephalotini', :subfamily => myrmicinae)
+        attini = FactoryGirl.create :tribe, name_object: FactoryGirl.create(:name, name: 'Attini'), :subfamily => myrmicinae
+        cephalotini = FactoryGirl.create :tribe, name_object: FactoryGirl.create(:name, name: 'Cephalotini'), :subfamily => myrmicinae
 
-        atta = FactoryGirl.create :genus, name_factory('Atta', :tribe => attini, :subfamily => myrmicinae)
-        cephalotes = FactoryGirl.create :genus, name_factory('Cephalotes', :tribe => cephalotini, :subfamily => myrmicinae)
+        atta = FactoryGirl.create :genus, name_object: FactoryGirl.create(:name, name: 'Atta'), :tribe => attini, :subfamily => myrmicinae
+        cephalotes = FactoryGirl.create :genus, name_object: FactoryGirl.create(:name, name: 'Cephalotes'), :tribe => cephalotini, :subfamily => myrmicinae
 
-        robusta = FactoryGirl.create :species, name_factory('robusta', :genus => atta)
-        adolphi = FactoryGirl.create :species, name_factory('adolphi', :genus => cephalotes)
+        robusta = FactoryGirl.create :species, name_object: FactoryGirl.create(:name, name: 'robusta'), :genus => atta
+        adolphi = FactoryGirl.create :species, name_object: FactoryGirl.create(:name, name: 'adolphi'), :genus => cephalotes
 
-        rufa = FactoryGirl.create :subspecies, name_factory('rufa', :species => adolphi)
+        rufa = FactoryGirl.create :subspecies, name_object: FactoryGirl.create(:name, name: 'rufa'), :species => adolphi
 
         @exporter.should_receive(:write).with(file,
           "subfamily\ttribe\tgenus\tspecies\tsubspecies\tstatus\tsenior synonym\tfossil").ordered
@@ -94,9 +94,9 @@ describe Exporters::AuthorityList::Exporter do
 
     describe "Outputting the senior synonym of a species" do
       before do
-        @atta = FactoryGirl.create :genus, name_factory('Atta')
-        @senior_synonym = FactoryGirl.create :species, name_factory('formica', :genus => @atta)
-        @junior_synonym = FactoryGirl.create :species, name_factory('robusta', :genus => @atta, :status => 'synonym', :synonym_of => @senior_synonym)
+        @atta = FactoryGirl.create :genus, name_object: FactoryGirl.create(:name, name: 'Atta')
+        @senior_synonym = FactoryGirl.create :species, name_object: FactoryGirl.create(:name, name: 'formica'), :genus => @atta
+        @junior_synonym = FactoryGirl.create :species, name_object: FactoryGirl.create(:name, name: 'robusta'), :genus => @atta, :status => 'synonym', :synonym_of => @senior_synonym
       end
 
       it "should not crash if it's a junior synonym but we don't know the senior" do

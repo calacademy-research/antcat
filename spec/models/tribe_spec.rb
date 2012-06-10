@@ -4,26 +4,26 @@ require 'spec_helper'
 describe Tribe do
 
   it "should have a subfamily" do
-    subfamily = FactoryGirl.create :subfamily, name_factory('Myrmicinae')
-    FactoryGirl.create :tribe, name_factory('Attini', :subfamily => subfamily)
+    subfamily = FactoryGirl.create :subfamily, name_object: FactoryGirl.create(:name, name: 'Myrmicinae')
+    FactoryGirl.create :tribe, name_object: FactoryGirl.create(:name, name: 'Attini'), :subfamily => subfamily
     Tribe.find_by_name('Attini').subfamily.should == subfamily
   end
 
   it "should have genera, which are its children" do
-    attini = FactoryGirl.create :tribe, name_factory('Attini')
-    FactoryGirl.create :genus, name_factory('Acromyrmex', :tribe => attini)
-    FactoryGirl.create :genus, name_factory('Atta', :tribe => attini)
+    attini = FactoryGirl.create :tribe, name_object: FactoryGirl.create(:name, name: 'Attini')
+    FactoryGirl.create :genus, name_object: FactoryGirl.create(:name, name: 'Acromyrmex'), :tribe => attini
+    FactoryGirl.create :genus, name_object: FactoryGirl.create(:name, name: 'Atta'), :tribe => attini
     attini.genera.map(&:name).should =~ ['Atta', 'Acromyrmex']
     attini.children.should == attini.genera
   end
 
   it "should have as its full name just its name" do
-    taxon = FactoryGirl.create :tribe, name_factory('Attini', :subfamily => FactoryGirl.create(:subfamily, name_factory('Myrmicinae')))
+    taxon = FactoryGirl.create :tribe, name_object: FactoryGirl.create(:name, name: 'Attini'), :subfamily => FactoryGirl.create(:subfamily, name_object: FactoryGirl.create(:name, name: 'Myrmicinae'))
     taxon.full_name.should == 'Attini'
   end
 
   it "should have as its full label, just its name" do
-    taxon = FactoryGirl.create :tribe, name_factory('Attini', :subfamily => FactoryGirl.create(:subfamily, name_factory('Myrmicinae')))
+    taxon = FactoryGirl.create :tribe, name_object: FactoryGirl.create(:name, name: 'Attini'), :subfamily => FactoryGirl.create(:subfamily, name_object: FactoryGirl.create(:name, name: 'Myrmicinae'))
     taxon.full_label.should == 'Attini'
   end
 
