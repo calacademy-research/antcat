@@ -96,6 +96,10 @@ FactoryGirl.define do
     sequence(:name) {|n| "Name#{n}"}
   end
 
+  factory :family_or_subfamily_name do
+    name 'FamilyOrSubfamily'
+  end
+
   factory :family_name do
     name 'Family'
   end
