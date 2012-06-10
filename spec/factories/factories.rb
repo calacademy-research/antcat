@@ -93,36 +93,38 @@ FactoryGirl.define do
 
   ####################################################
   factory :name do
-    name 'Atta'
+    sequence(:name) {|n| "Name#{n}"}
   end
 
   factory :family_name do
-    name 'Formicidae'
+    name 'Family'
   end
 
   factory :subfamily_name do
-    name 'Dolichoderinae'
+    sequence(:name) {|n| "Subfamily#{n}"}
   end
 
   factory :tribe_name do
-    name 'Dolichoderini'
+    sequence(:name) {|n| "Tribe#{n}"}
   end
 
   factory :subtribe_name do
-    name 'Dolichoderina'
+    sequence(:name) {|n| "Subtribe#{n}"}
+  end
+
   end
 
   factory :genus_name do
-    name 'Atta'
+    sequence(:name) {|n| "Genus#{n}"}
   end
 
   factory :subgenus_name do
-    name 'Subatta'
+    sequence(:name) {|n| "Subgenus#{n}"}
   end
 
   factory :species_name do
-    name 'major'
     genus_name
+    sequence(:name) {|n| "Species#{n}"}
   end
 
   ####################################################
