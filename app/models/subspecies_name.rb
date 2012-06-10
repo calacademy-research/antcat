@@ -1,3 +1,3 @@
-class SpeciesName < Name
+class SubspeciesName < Name
 
 end
