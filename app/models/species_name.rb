@@ -22,4 +22,8 @@ class SpeciesName < Name
     genus_group_name.name + ' ' + epithet
   end
 
+  def rank
+    'species'
+  end
+
 end

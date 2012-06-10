@@ -5,4 +5,8 @@ class FamilyOrSubfamilyName < Name
     create! name: name
   end
 
+  def rank
+    'family_or_subfamily'
+  end
+
 end
