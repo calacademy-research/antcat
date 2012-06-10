@@ -118,12 +118,12 @@ describe Species do
 
     it "should work" do
       subfamily = FactoryGirl.create :subfamily
-      genus = FactoryGirl.create :genus, subfamily: subfamily
+      genus = FactoryGirl.create :genus, name_factory('Fiona', class: GenusName, subfamily: subfamily)
       reference = FactoryGirl.create :article_reference, :bolton_key_cache => 'Latreille 1809'
 
       species = Species.import(
         genus: genus,
-        name: 'major',
+        species_epithet: 'major',
         fossil: true,
         protonym: {genus_name: "Atta", species_epithet: 'major',
                    authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]},
