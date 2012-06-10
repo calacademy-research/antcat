@@ -8,6 +8,11 @@ describe FamilyName do
       name = Name.import family_name: 'Formicidae'
       FamilyName.find(name).name.should == 'Formicidae'
     end
+    it "should not reuse names" do
+      Name.import family_name: 'Formicidae'
+      Name.import family_name: 'Formicidae'
+      Name.count.should == 2
+    end
   end
 
 end

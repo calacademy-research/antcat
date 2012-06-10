@@ -9,6 +9,11 @@ describe SubtribeName do
       name = Name.import subtribe_name: 'Aneuretina'
       SubtribeName.find(name).name.should == 'Aneuretina'
     end
+    it "should reuse names" do
+      FactoryGirl.create :name, name: 'Dolichoderina'
+      Name.import subtribe_name: 'Dolichoderina'
+      Name.count.should == 1
+    end
 
   end
 
