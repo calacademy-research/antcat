@@ -90,9 +90,6 @@ module Formatters::IndexFormatter
   end
 
   #######################
-  def format_child_lists taxon, user
-  end
-
   def format_child_lists_for_rank parent, children_selector
     return '' unless parent.respond_to?(children_selector) && parent.send(children_selector).present?
 
