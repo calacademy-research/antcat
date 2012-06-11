@@ -93,7 +93,7 @@ FactoryGirl.define do
 
   ####################################################
   factory :name do
-    sequence(:name) {|n| "Name#{n}"}
+    sequence(:name) {|n| raise; "Name#{n}"}
   end
 
   factory :family_or_subfamily_name do
@@ -138,12 +138,12 @@ FactoryGirl.define do
 
   # this factory seems to only be necessary because
   # of the assocation lines below
-  factory :name_object, class: Name do
+  factory :name_object, class: GenusName do
     name
   end
 
   factory :taxon do
-    association :name_object, factory: :name
+    association :name_object, factory: :genus_name
     protonym
     status  'valid'
   end
@@ -211,7 +211,7 @@ FactoryGirl.define do
 
   factory :protonym do
     authorship factory: :citation 
-    name_object
+    association :name_object, factory: :genus_name
   end
 
   factory :taxonomic_history_item do
