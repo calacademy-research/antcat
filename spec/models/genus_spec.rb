@@ -207,8 +207,7 @@ describe Genus do
                           texts: [{text: [{phrase: ', by monotypy'}]}]},
         taxonomic_history: [],
       })
-      ForwardReference.fixup
-      genus.reload.type_name.name.should == 'Atta (Solis) major'
+      Genus.find(genus).type_name.full_name.should == 'Atta (Solis) major'
     end
 
     it "should not mind if there's no type" do
@@ -237,9 +236,9 @@ describe Genus do
         :type_species => {:genus_name => 'Myrmicium', :species_epithet => 'heeri'},
         :taxonomic_history => []
       })
-      ForwardReference.fixup
-      genus.reload.type_name.name.should == 'Myrmicium heeri'
-      genus.reload.type_name.rank.should == 'species'
+      genus = Genus.find genus
+      genus.type_name.full_name.should == 'Myrmicium heeri'
+      genus.type_name.rank.should == 'species'
     end
 
   end

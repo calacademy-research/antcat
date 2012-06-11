@@ -28,14 +28,18 @@ describe Formatters::IndexFormatter do
     end
 
     describe "Type" do
+      before do
+        @genus_name = FactoryGirl.create :genus_name, name: 'Atta'
+        @species_name = FactoryGirl.create :species_name, name: 'major', epithet: 'major', genus_group_name: @genus_name
+      end
       it "should show the type taxon" do
-        genus = FactoryGirl.create :genus, name_object: FactoryGirl.create(:name, name: 'Atta'), type_taxon_name: 'Atta major', type_taxon_rank: 'species'
+        genus = FactoryGirl.create :genus, name_object: @genus_name, type_name: @species_name
         @formatter.format_headline_type(genus, nil).should ==
 %{<span class="type">Type-species: <span class="species taxon">Atta major</span>.</span>}
       end
 
       it "should show the type taxon with extra Taxt" do
-        genus = FactoryGirl.create :genus, name_object: FactoryGirl.create(:name, name: 'Atta'), :type_taxon_rank => 'species', :type_taxon_taxt => ', by monotypy', type_taxon_name: 'Atta major'
+        genus = FactoryGirl.create :genus, name_object: @genus_name, type_name: @species_name, type_taxon_taxt: ', by monotypy'
         @formatter.format_headline_type(genus, nil).should ==
 %{<span class="type">Type-species: <span class="species taxon">Atta major</span>, by monotypy</span>}
       end
