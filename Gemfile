@@ -28,7 +28,7 @@ group :development, :test do
   gem 'rspec'
   gem 'rspec-rails'
   gem 'ruby-debug19'
-  gem 'spork',        '0.9.0.rc9'
+  gem 'spork'
   gem 'sunspot_solr'
 end
 
@@ -40,8 +40,7 @@ end
 group :test do
   gem 'capybara'
   gem 'database_cleaner'
-  # until can deal with ambiguous step defs in FG 3.0
-  gem 'factory_girl_rails', '1.5.0'
+  gem 'factory_girl_rails'
   gem 'selenium-webdriver'
   gem 'webmock'
 end
