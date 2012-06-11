@@ -126,6 +126,7 @@ FactoryGirl.define do
 
   factory :subgenus_name do
     sequence(:name) {|n| "Subgenus#{n}"}
+    genus_group_name
   end
 
   factory :species_name do
