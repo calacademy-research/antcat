@@ -55,8 +55,8 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
       <p>Taxonomic history</p>
       <p>Orthonotus history</p>
     }
-    acanthomyops = Subgenus.find_by_name 'Acanthomyops'
-    orthonotus = Subgenus.find_by_name 'Orthonotus'
+    acanthomyops = Subgenus.find_by_name 'Lasius (Acanthomyops)'
+    orthonotus = Subgenus.find_by_name 'Lasius (Orthonotus)'
     orthonotus.homonym_replaced_by.should == acanthomyops
     orthonotus.status.should == 'homonym'
   end
@@ -74,8 +74,8 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
       <p>Taxonomic history</p>
       <p>Condylomyrma history</p>
     }
-    acanthomyops = Subgenus.find_by_name 'Acanthomyops'
-    condylomyrma = Subgenus.find_by_name 'Condylomyrma'
+    acanthomyops = Subgenus.find_by_name 'Lasius (Acanthomyops)'
+    condylomyrma = Subgenus.find_by_name 'Lasius (Condylomyrma)'
     condylomyrma.should be_synonym
     condylomyrma.should be_synonym_of acanthomyops
   end
