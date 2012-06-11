@@ -220,7 +220,6 @@ describe Genus do
         },
         :taxonomic_history => ["Atta as genus", "Atta as species"]
       }).reload
-      ForwardReference.fixup
       genus.type_taxon_taxt.should be_nil
     end
 

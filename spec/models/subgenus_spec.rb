@@ -52,8 +52,6 @@ describe Subgenus do
 
       authorship.reference.should == reference
 
-      ForwardReference.fixup
-
       subgenus.reload
       subgenus.type_name.full_name.should == 'Atta major'
       subgenus.type_name.rank.should == 'species'

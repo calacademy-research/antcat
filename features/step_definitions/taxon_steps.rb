@@ -14,7 +14,6 @@ Given /^the Formicidae family exists$/ do
     :type_genus => {:genus_name => 'Formica'},
     :taxonomic_history => ['Taxonomic history']
   )
-  ForwardReference.fixup
 end
 
 Given 'the following species exist' do |table|

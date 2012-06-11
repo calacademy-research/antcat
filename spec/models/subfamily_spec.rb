@@ -125,8 +125,6 @@ describe Subfamily do
         taxonomic_history: ["Aneuretinae as subfamily", "Aneuretini as tribe"]
       )
       
-      ForwardReference.fixup
-
       subfamily.reload
       subfamily.name.should == 'Aneuretinae'
       subfamily.should_not be_invalid

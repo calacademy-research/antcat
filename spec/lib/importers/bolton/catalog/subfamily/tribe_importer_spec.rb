@@ -18,7 +18,6 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
         :type_genus => {:genus_name => 'Formica'},
         :taxonomic_history => ['Taxonomic history']
       )
-      ForwardReference.fixup
       @importer.stub :parse_family
     end
 
