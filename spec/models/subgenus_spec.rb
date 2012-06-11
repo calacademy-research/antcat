@@ -53,7 +53,7 @@ describe Subgenus do
       authorship.reference.should == reference
 
       subgenus.reload
-      subgenus.type_name.full_name.should == 'Atta major'
+      subgenus.type_name.name.should == 'Atta major'
       subgenus.type_name.rank.should == 'species'
     end
 

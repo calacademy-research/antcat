@@ -8,8 +8,8 @@ describe SpeciesName do
     it "should recognize its key and set its name appropriately" do
       name = Name.import genus_name: 'Atta', species_epithet: 'major'
       name = SpeciesName.find name
-      name.name.should == 'major'
-      name.full_name.should == 'Atta major'
+      name.epithet.should == 'major'
+      name.name.should == 'Atta major'
     end
     it "should reuse names" do
       Name.import genus_name: 'Atta', species_epithet: 'major'
@@ -26,8 +26,8 @@ describe SpeciesName do
     it "should import a species name with a subgenus name" do
       name = Name.import genus_name: 'Atta', subgenus_epithet: 'Subatta', species_epithet: 'major'
       name = SpeciesName.find name
-      name.name.should == 'major'
-      name.full_name.should == 'Atta (Subatta) major'
+      name.epithet.should == 'major'
+      name.name.should == 'Atta (Subatta) major'
     end
 
   end

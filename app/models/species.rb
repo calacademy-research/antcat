@@ -61,7 +61,7 @@ class Species < Taxon
       if item[:synonym_ofs]
         for synonym_of in item[:synonym_ofs]
           genus = species.genus
-          senior_name = synonym_of[:species_epithet]
+          senior_name = genus.name + ' ' + synonym_of[:species_epithet]
           senior = Species.find_by_genus_id_and_name genus.id, senior_name
           if senior
             species.update_attributes status: 'synonym', synonym_of: senior

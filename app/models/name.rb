@@ -14,8 +14,4 @@ class Name < ActiveRecord::Base
     raise "No Name subclass wanted #{data}"
   end
 
-  def full_name
-    name
-  end
-
 end

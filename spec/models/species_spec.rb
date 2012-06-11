@@ -5,14 +5,14 @@ describe Species do
 
   it "should have a genus" do
     genus = FactoryGirl.create :genus, name_object: FactoryGirl.create(:name, name: 'Atta')
-    FactoryGirl.create :species, name_object: FactoryGirl.create(:name, name: 'championi'), :genus => genus
-    Species.find_by_name('championi').genus.should == genus
+    FactoryGirl.create :species, name_object: FactoryGirl.create(:name, name: 'Atta championi'), :genus => genus
+    Species.find_by_name('Atta championi').genus.should == genus
   end
 
   it "can have a subgenus" do
     subgenus = FactoryGirl.create :subgenus, name_object: FactoryGirl.create(:name, name: 'Atta')
-    FactoryGirl.create :species, name_object: FactoryGirl.create(:name, name: 'championi'), :subgenus => subgenus
-    Species.find_by_name('championi').subgenus.should == subgenus
+    FactoryGirl.create :species, name_object: FactoryGirl.create(:name, name: 'Atta championi'), :subgenus => subgenus
+    Species.find_by_name('Atta championi').subgenus.should == subgenus
   end
 
   it "should have a subfamily" do
@@ -129,7 +129,7 @@ describe Species do
                    authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]},
         history: ['Atta major as species', 'Atta major as subspecies']
       ).reload
-      species.name.should == 'major'
+      species.name.should == 'Fiona major'
       species.should_not be_invalid
       species.should be_fossil
       species.genus.should == genus
@@ -156,8 +156,8 @@ describe Species do
       end
     end
     it "should recognize a synonym_of" do
-      genus = FactoryGirl.create :genus
-      ferox = FactoryGirl.create :species, name_object: FactoryGirl.create(:name, name: 'ferox'), genus: genus
+      genus = FactoryGirl.create :genus, name_object: FactoryGirl.create(:genus_name, name: 'Atta')
+      ferox = FactoryGirl.create :species, name_object: FactoryGirl.create(:name, name: 'Atta ferox'), genus: genus
       species = FactoryGirl.create :species, genus: genus
       history = 
         [{:synonym_ofs=>
@@ -173,8 +173,8 @@ describe Species do
       species.reload.should be_synonym
     end
     it "should recognize a synonym_of even if it's not the first item in the history" do
-      genus = FactoryGirl.create :genus
-      ferox = FactoryGirl.create :species, name_object: FactoryGirl.create(:name, name: 'texanus'), genus: genus
+      genus = FactoryGirl.create :genus, name_object: FactoryGirl.create(:genus_name, name: 'Atta')
+      ferox = FactoryGirl.create :species, name_object: FactoryGirl.create(:name, name: 'Atta texanus'), genus: genus
       species = FactoryGirl.create :species, genus: genus
       history = 
         [{:combinations_in=>

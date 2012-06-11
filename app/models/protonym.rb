@@ -5,7 +5,7 @@ class Protonym < ActiveRecord::Base
 
   def name
     return '' if new_record? and not name_object
-    name_object.full_name
+    name_object.name
   end
 
   def rank
