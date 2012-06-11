@@ -104,4 +104,3 @@ Feature: Searching the catalog index
     When I fill in the search box with "Dolichoderus abruptus "
     And I press "Go" by the search box
     Then I should see "abruptus history"
-
