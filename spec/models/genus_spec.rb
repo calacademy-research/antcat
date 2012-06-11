@@ -187,7 +187,7 @@ describe Genus do
       genus.should be_fossil
       genus.subfamily.should == subfamily
       genus.taxonomic_history_items.map(&:taxt).should == ['Atta as genus', 'Atta as species']
-      genus.type_taxon_taxt.should == ', by monotypy'
+      genus.type_taxt.should == ', by monotypy'
 
       protonym = genus.protonym
       protonym.name.should == 'Atta'
@@ -220,7 +220,7 @@ describe Genus do
         },
         :taxonomic_history => ["Atta as genus", "Atta as species"]
       }).reload
-      genus.type_taxon_taxt.should be_nil
+      genus.type_taxt.should be_nil
     end
 
     it "should make sure the type-species is fixed up to point to the genus and not just to any genus with the same name" do

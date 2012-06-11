@@ -62,7 +62,7 @@ module Formatters::IndexFormatter
 
   def format_headline_type taxon, user
     return '' unless taxon.type_name
-    taxt = taxon.type_taxon_taxt
+    taxt = taxon.type_taxt
     rank = taxon.type_name.rank
     rank = 'genus' if rank == 'subgenus'
     content_tag :span, class: 'type' do

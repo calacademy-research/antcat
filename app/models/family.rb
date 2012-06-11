@@ -6,14 +6,14 @@ class Family < Taxon
       name = Name.import family_name: 'Formicidae'
       protonym = Protonym.import data[:protonym]
       type_name = Name.import data[:type_genus]
-      type_taxon_taxt = Importers::Bolton::Catalog::TextToTaxt.convert(data[:type_genus][:texts])
+      type_taxt = Importers::Bolton::Catalog::TextToTaxt.convert(data[:type_genus][:texts])
       headline_notes_taxt = Importers::Bolton::Catalog::TextToTaxt.convert(data[:note])
 
       family = create! name_object:         name,
                        status:              'valid',
                        protonym:            protonym,
                        type_name:           type_name,
-                       type_taxon_taxt:     type_taxon_taxt,
+                       type_taxt:           type_taxt,
                        headline_notes_taxt: headline_notes_taxt
 
       data[:taxonomic_history].each {|item| family.taxonomic_history_items.create! :taxt => item}
