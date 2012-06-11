@@ -19,7 +19,7 @@ class Subgenus < GenusGroupTaxon
       attributes.merge! data[:attributes] if data[:attributes]
       if data[:type_species]
         attributes[:type_name] = Name.import data[:type_species]
-        attributes[:type_taxon_taxt] = Importers::Bolton::Catalog::TextToTaxt.convert data[:type_species][:texts]
+        attributes[:type_taxt] = Importers::Bolton::Catalog::TextToTaxt.convert data[:type_species][:texts]
       end
       subgenus = create! attributes
       data[:taxonomic_history].each do |item|

@@ -39,7 +39,7 @@ describe Formatters::IndexFormatter do
       end
 
       it "should show the type taxon with extra Taxt" do
-        genus = FactoryGirl.create :genus, name_object: @genus_name, type_name: @species_name, type_taxon_taxt: ', by monotypy'
+        genus = FactoryGirl.create :genus, name_object: @genus_name, type_name: @species_name, type_taxt: ', by monotypy'
         @formatter.format_headline_type(genus, nil).should ==
 %{<span class="type">Type-species: <span class="species taxon">Atta major</span>, by monotypy</span>}
       end

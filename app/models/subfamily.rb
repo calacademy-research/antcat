@@ -15,7 +15,7 @@ class Subfamily < Taxon
       }
       if data[:type_genus]
         attributes[:type_name] = Name.import data[:type_genus]
-        attributes[:type_taxon_taxt] = Importers::Bolton::Catalog::TextToTaxt.convert data[:type_genus][:texts]
+        attributes[:type_taxt] = Importers::Bolton::Catalog::TextToTaxt.convert data[:type_genus][:texts]
       end
       subfamily = create! attributes
       data[:taxonomic_history].each do |item|

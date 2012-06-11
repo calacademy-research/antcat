@@ -26,7 +26,7 @@ describe Family do
 
       family.type_name.name.should == 'Formica'
       family.type_name.rank.should == 'genus'
-      family.type_taxon_taxt.should == ', by monotypy'
+      family.type_taxt.should == ', by monotypy'
 
       protonym = family.protonym
       protonym.name.should == 'Formicariae'
