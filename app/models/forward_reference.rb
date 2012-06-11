@@ -10,7 +10,7 @@ class ForwardReference < ActiveRecord::Base
     case source
     when Species
       senior_synonym = Taxon.find_by_genus_id_and_name target_parent, target_name
-      Progress.error "Couldn't find species '#{target_name}' for genus #{target_parent}" unless senior_synonym
+      Progress.error "Couldn't find species '#{target_epithet}' for genus #{target_parent}" unless senior_synonym
       source.update_attributes status: 'synonym', synonym_of: senior_synonym
     end
   end

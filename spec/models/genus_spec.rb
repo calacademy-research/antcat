@@ -207,7 +207,7 @@ describe Genus do
                           texts: [{text: [{phrase: ', by monotypy'}]}]},
         taxonomic_history: [],
       })
-      Genus.find(genus).type_name.full_name.should == 'Atta (Solis) major'
+      Genus.find(genus).type_name.name.should == 'Atta (Solis) major'
     end
 
     it "should not mind if there's no type" do
@@ -236,7 +236,7 @@ describe Genus do
         :taxonomic_history => []
       })
       genus = Genus.find genus
-      genus.type_name.full_name.should == 'Myrmicium heeri'
+      genus.type_name.name.should == 'Myrmicium heeri'
       genus.type_name.rank.should == 'species'
     end
 

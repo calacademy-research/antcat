@@ -17,11 +17,11 @@ class SpeciesName < Name
     name = Name.find_by_genus_group_name_id_and_epithet genus_group_name.id, data[:species_epithet]
     return name if name
 
-    create! name: data[:species_epithet], epithet: data[:species_epithet], genus_group_name: genus_group_name
-  end
-
-  def full_name
-    genus_group_name.name + ' ' + epithet
+    create!({
+      name:             genus_group_name.name + ' ' + data[:species_epithet],
+      epithet:          data[:species_epithet],
+      genus_group_name: genus_group_name,
+    })
   end
 
   def rank

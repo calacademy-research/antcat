@@ -40,7 +40,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
       genus.subfamily.name.should == 'Martialinae'
       genus.taxonomic_history_items.map(&:taxt).should =~
         ["<i>Condylodon</i> in family Mutillidae: {ref #{swainson.id}}: 173."]
-      genus.type_name.full_name.should == "Condylodon audouini"
+      genus.type_name.name.should == "Condylodon audouini"
       genus.type_taxt.should == ", by monotypy."
       genus.type_name.rank.should == 'species'
       genus.reference_sections.map(&:title).should == ['Genus references']

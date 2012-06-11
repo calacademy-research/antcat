@@ -19,7 +19,7 @@ describe Importers::Bolton::Catalog::Species::Importer do
 
     acanthomyrmex = Genus.find_by_name 'Acanthomyrmex'
     acanthomyrmex.should_not be_nil
-    basispinosus = Species.find_by_name 'basispinosus'
+    basispinosus = Species.find_by_name 'Acanthomyrmex basispinosus'
     basispinosus.genus.should == acanthomyrmex
 
     basispinosus.protonym.locality.should == 'Indonesia (Sulawesi)'
@@ -37,7 +37,7 @@ describe Importers::Bolton::Catalog::Species::Importer do
     }
     FactoryGirl.create :genus, name_object: FactoryGirl.create(:genus_name, name: 'Acanthomyrmex'), subfamily: nil, tribe: nil
     @importer.import_html contents
-    Species.find_by_name('dyak').should be_synonym_of Species.find_by_name 'ferox'
+    Species.find_by_name('Acanthomyrmex dyak').should be_synonym_of Species.find_by_name 'Acanthomyrmex ferox'
   end
 
   it "should link a synonym to its senior when the senior has not already been seen" do
@@ -48,7 +48,7 @@ describe Importers::Bolton::Catalog::Species::Importer do
     }
     FactoryGirl.create :genus, name_object: FactoryGirl.create(:genus_name, name: 'Acanthomyrmex'), subfamily: nil, tribe: nil
     @importer.import_html contents
-    Species.find_by_name('dyak').should be_synonym_of Species.find_by_name 'ferox'
+    Species.find_by_name('Acanthomyrmex dyak').should be_synonym_of Species.find_by_name 'Acanthomyrmex ferox'
   end
 
   def make_contents content

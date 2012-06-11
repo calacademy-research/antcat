@@ -30,7 +30,7 @@ describe Formatters::IndexFormatter do
     describe "Type" do
       before do
         @genus_name = FactoryGirl.create :genus_name, name: 'Atta'
-        @species_name = FactoryGirl.create :species_name, name: 'major', epithet: 'major', genus_group_name: @genus_name
+        @species_name = FactoryGirl.create :species_name, name: 'Atta major', epithet: 'major', genus_group_name: @genus_name
       end
       it "should show the type taxon" do
         genus = FactoryGirl.create :genus, name_object: @genus_name, type_name: @species_name
