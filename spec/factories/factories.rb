@@ -131,6 +131,7 @@ FactoryGirl.define do
 
   factory :species_name do
     sequence(:name) {|n| "Species#{n}"}
+    epithet {name}
     genus_group_name
   end
 
@@ -144,24 +145,28 @@ FactoryGirl.define do
 
   factory :taxon do
     association :name_object, factory: :genus_name
+    association :type_name, factory: :species_name
     protonym
     status  'valid'
   end
 
   factory :family do
     association :name_object, factory: :family_name
+    association :type_name, factory: :genus_name
     protonym
     status  'valid'
   end
 
   factory :subfamily do
     association :name_object, factory: :subfamily_name
+    association :type_name, factory: :genus_name
     protonym
     status  'valid'
   end
 
   factory :tribe do
     association :name_object, factory: :tribe_name
+    association :type_name, factory: :genus_name
     subfamily
     protonym
     status  'valid'
@@ -169,6 +174,7 @@ FactoryGirl.define do
 
   factory :subtribe do
     association :name_object, factory: :subtribe_name
+    association :type_name, factory: :genus_name
     subfamily
     protonym
     status  'valid'
@@ -176,6 +182,7 @@ FactoryGirl.define do
 
   factory :genus do
     association :name_object, factory: :genus_name
+    association :type_name, factory: :species_name
     tribe
     subfamily   {|a| a.tribe && a.tribe.subfamily}
     protonym
@@ -184,6 +191,7 @@ FactoryGirl.define do
 
   factory :subgenus do
     association :name_object, factory: :subgenus_name
+    association :type_name, factory: :species_name
     genus
     protonym
     status  'valid'
