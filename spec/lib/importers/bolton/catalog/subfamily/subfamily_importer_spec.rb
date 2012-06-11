@@ -18,7 +18,6 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
         :type_genus => {:genus_name => 'Formica'},
         :taxonomic_history => ['Taxonomic history']
       )
-      ForwardReference.fixup
       @importer.stub :parse_family
     end
 
@@ -92,7 +91,8 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
 
       subfamily = Subfamily.find_by_name 'Aneuretinae'
       subfamily.should_not be_invalid
-      subfamily.type_taxon_name.should == 'Aneuretus'
+      subfamily.type_name.name.should == 'Aneuretus'
+      subfamily.type_name.rank.should == 'genus'
 
       protonym = subfamily.protonym
       protonym.name.should == 'Aneuretini'
@@ -102,7 +102,8 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
       authorship.reference.should == emery
       authorship.pages.should == '6'
 
-      subfamily.type_taxon_name.should == 'Aneuretus'
+      subfamily.type_name.name.should == 'Aneuretus'
+      subfamily.type_name.rank.should == 'genus'
 
       subfamily.taxonomic_history_items.map(&:taxt).should =~ [
         "Aneuretinae as junior synonym of Dolichoderinae: {ref #{MissingReference.first.id}}: 147."
@@ -111,12 +112,10 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
       tribe = Tribe.find_by_name 'Aneuretini'
       tribe.subfamily.should == subfamily
       tribe.taxonomic_history_items.map(&:taxt).should == ["history"]
-      tribe.type_taxon_name.should == 'Aneuretus'
+      tribe.type_name.name.should == 'Aneuretus'
+      tribe.type_name.rank.should == 'genus'
       tribe.reference_sections.map(&:title).should == ["Subfamily, tribe Aneuretini and genus <i>Aneuretus</i> references"]
       tribe.reference_sections.map(&:references).should == ["{ref #{emery.id}}: 461 (diagnosis)"]
-
-      tribe.type_taxon_name.should == 'Aneuretus'
-      tribe.type_taxon_rank.should == 'genus'
 
       junior_synonym = Tribe.find_by_name 'Anonychomyrmini' 
       junior_synonym.synonym_of.should == tribe
