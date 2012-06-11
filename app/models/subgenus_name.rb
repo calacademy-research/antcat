@@ -5,7 +5,6 @@ class SubgenusName < GenusGroupName
 
   def self.import data
     return unless epithet = data[:subgenus_epithet]
-
     if data[:genus]
       genus_group_name = data[:genus].name_object
     else
