@@ -266,8 +266,7 @@ describe Taxon do
       taxon.type_name.rank.should == 'family'
     end
     it "should not be required" do
-      taxon = FactoryGirl.create :family
-      taxon.type_name.should be_nil
+      taxon = FactoryGirl.create :family, type_name: nil
       taxon.should be_valid
     end
   end
