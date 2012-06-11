@@ -57,7 +57,6 @@ describe Tribe do
         taxonomic_history: ["Aneuretini history"]
       )
       
-      ForwardReference.fixup
       tribe.reload
 
       tribe.name.should == 'Aneuretini'
