@@ -35,7 +35,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
     }
     lasius = Genus.find_by_name 'Lasius'
 
-    acanthomyops = Subgenus.find_by_name 'Acanthomyops'
+    acanthomyops = Subgenus.find_by_name 'Lasius (Acanthomyops)'
     acanthomyops.genus.should == lasius
     acanthomyops.type_taxon_name.should == 'Formica clavigera'
 
