@@ -64,7 +64,8 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
     family.name.should == 'Formicidae'
     family.should_not be_invalid
     family.should_not be_fossil
-    family.type_taxon_name.should == 'Formica'
+    family.type_name.name.should == 'Formica'
+    family.type_name.rank.should == 'genus'
     family.taxonomic_history_items.map(&:taxt).should =~ [
       %{Formicidae as family: {ref #{latreille.id}}: 124 [Formicariae]; all subsequent authors}
     ]
@@ -77,7 +78,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
     genus.taxonomic_history_items.map(&:taxt).should =~ [
       "<i>Condylodon</i> in family Mutillidae: {ref #{swainson.id}}: 173."
     ]
-    genus.type_taxon_name.should == "Condylodon audouini"
+    genus.type_name.name.should == "Condylodon audouini"
     genus.type_taxon_taxt.should == ", by monotypy. [{ref #{lund.id}}: 25 says no.]"
     genus.reference_sections.map(&:title).should == ["Genus references"]
     genus.reference_sections.map(&:references).should == ["{ref #{baroni.id}}: 482 (review of genus)."]

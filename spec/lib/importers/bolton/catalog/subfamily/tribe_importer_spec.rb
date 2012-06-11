@@ -47,8 +47,8 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
       tribe = Tribe.find_by_name 'Aneuretini'
       tribe.subfamily.name.should == 'Aneuretinae'
       tribe.taxonomic_history_items.map(&:taxt).should == ["Aneuretini history"]
-      tribe.type_taxon_name.should == 'Aneuretus'
-      tribe.type_taxon_rank.should == 'genus'
+      tribe.type_name.name.should == 'Aneuretus'
+      tribe.type_name.rank.should == 'genus'
     end
 
     it "should import the junior synonym of a tribe" do

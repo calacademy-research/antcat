@@ -208,7 +208,7 @@ describe Genus do
         taxonomic_history: [],
       })
       ForwardReference.fixup
-      genus.reload.type_taxon_name.should == 'Atta (Solis) major'
+      genus.reload.type_name.name.should == 'Atta (Solis) major'
     end
 
     it "should not mind if there's no type" do
@@ -238,8 +238,8 @@ describe Genus do
         :taxonomic_history => []
       })
       ForwardReference.fixup
-      genus.reload.type_taxon_name.should == 'Myrmicium heeri'
-      genus.reload.type_taxon_rank.should == 'species'
+      genus.reload.type_name.name.should == 'Myrmicium heeri'
+      genus.reload.type_name.rank.should == 'species'
     end
 
   end

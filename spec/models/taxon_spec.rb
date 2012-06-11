@@ -256,6 +256,22 @@ describe Taxon do
     end
   end
 
+  describe "Type name" do
+    it "should have a type name" do
+      taxon = FactoryGirl.create :family
+      taxon.type_name = FactoryGirl.create(:family_name, name: 'Formicariae')
+      taxon.save!
+      taxon = Taxon.find taxon
+      taxon.type_name.name.should == 'Formicariae'
+      taxon.type_name.rank.should == 'family'
+    end
+    it "should not be required" do
+      taxon = FactoryGirl.create :family
+      taxon.type_name.should be_nil
+      taxon.should be_valid
+    end
+  end
+
   describe "Taxonomic history items" do
     it "should have some" do
       taxon = FactoryGirl.create :family

@@ -133,7 +133,8 @@ describe Subfamily do
       subfamily.should be_fossil
       subfamily.taxonomic_history_items.map(&:taxt).should == ['Aneuretinae as subfamily', 'Aneuretini as tribe']
 
-      subfamily.type_taxon_name.should == 'Atta'
+      subfamily.type_name.name.should == 'Atta'
+      subfamily.type_name.rank.should == 'genus'
 
       protonym = subfamily.protonym
       protonym.name.should == 'Aneuretini'

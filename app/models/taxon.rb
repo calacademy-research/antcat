@@ -12,6 +12,7 @@ class Taxon < ActiveRecord::Base
   belongs_to  :homonym_replaced_by, :class_name => 'Taxon'
   has_many    :taxonomic_history_items, order: :position, dependent: :destroy
   has_many    :reference_sections, :order => :position, dependent: :destroy
+  belongs_to  :type_name, class_name: 'Name', foreign_key: :type_name_id
 
   scope :valid, where("status = ?", 'valid')
   scope :with_names, joins(:name_object).readonly(false)

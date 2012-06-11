@@ -42,7 +42,7 @@ describe Subgenus do
       genus.subgenera.map(&:id).should == [subgenus.id]
       #subgenus.subfamily.should == genus.subfamily
       subgenus.taxonomic_history_items.map(&:taxt).should == ['Atta as subgenus', 'Atta as species']
-      subgenus.type_taxon_taxt.should == ', by monotypy'
+      subgenus.type_name.taxt.should == ', by monotypy'
 
       protonym = subgenus.protonym
       protonym.name.should == 'Atta (Subatta)'
@@ -55,8 +55,8 @@ describe Subgenus do
       ForwardReference.fixup
 
       subgenus.reload
-      subgenus.type_taxon_name.should == 'Atta major'
-      subgenus.type_taxon_rank.should == 'species'
+      subgenus.type_name.name.should == 'Atta major'
+      subgenus.type_name.rank.should == 'species'
     end
 
   end
