@@ -25,6 +25,8 @@ class Genus < GenusGroupTaxon
 
       headline_notes_taxt = Importers::Bolton::Catalog::TextToTaxt.convert(data[:note])
       attributes.merge!(
+        subfamily:            data[:subfamily],
+        tribe:                data[:tribe],
         name_object:          name,
         fossil:               data[:fossil] || false,
         status:               data[:status] || 'valid',
