@@ -62,7 +62,7 @@ module Formatters::IndexFormatter
 
   def format_headline_type taxon, user
     return '' unless taxon.try(:type_name).name
-    taxt = taxon.type_name.taxt
+    taxt = taxon.type_taxon_taxt
     rank = taxon.type_name.rank
     rank = 'genus' if rank == 'subgenus'
     content_tag :span, class: 'type' do
@@ -75,7 +75,7 @@ module Formatters::IndexFormatter
   def format_headline_type_name taxon
     rank = taxon.type_name.rank
     rank = 'genus' if rank == 'subgenus'
-    content_tag :span, taxon.type_name.name.html_safe, class: "#{rank} taxon"
+    content_tag :span, taxon.type_name.full_name.html_safe, class: "#{rank} taxon"
   end
   
   def format_headline_type_taxt taxt, user
