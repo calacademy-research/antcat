@@ -30,14 +30,14 @@ describe Subspecies do
   describe "Full name" do
     it "is the the genus, the species, and the subspecies name" do
       taxon = FactoryGirl.create :subspecies, name_object: FactoryGirl.create(:name, name: 'biggus'), :species => FactoryGirl.create(:species, name_object: FactoryGirl.create(:name, name: 'emeryi'), :genus => FactoryGirl.create(:genus, name_object: FactoryGirl.create(:name, name: 'Atta'), :subfamily => FactoryGirl.create(:subfamily, name_object: FactoryGirl.create(:name, name: 'Dolichoderinae'))))
-      taxon.full_name.should == 'Atta emeryi biggus'
+      taxon.name.should == 'Atta emeryi biggus'
     end
   end
 
   describe "Full label" do
     it "is the the genus, the species, and the subspecies name" do
       taxon = FactoryGirl.create :subspecies, name_object: FactoryGirl.create(:name, name: 'biggus'), :species => FactoryGirl.create(:species, name_object: FactoryGirl.create(:name, name: 'emeryi'), :genus => FactoryGirl.create(:genus, name_object: FactoryGirl.create(:name, name: 'Atta'), :subfamily => FactoryGirl.create(:subfamily, name_object: FactoryGirl.create(:name, name: 'Dolichoderinae'))))
-      taxon.full_label.should == '<i>Atta emeryi biggus</i>'
+      taxon.label.should == '<i>Atta emeryi biggus</i>'
     end
   end
 

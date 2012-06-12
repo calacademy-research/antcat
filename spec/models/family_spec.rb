@@ -82,7 +82,7 @@ describe Family do
 
   describe "Full label" do
     it "should be the family name" do
-      FactoryGirl.create(:family, name_object: FactoryGirl.create(:name, name: 'Formicidae')).full_label.should == 'Formicidae'
+      FactoryGirl.create(:family, name_object: FactoryGirl.create(:name, name: 'Formicidae')).label.should == 'Formicidae'
     end
   end
 

@@ -61,7 +61,7 @@ class Exporters::AuthorityList::Exporter
 
   def get_senior_synonym_of taxon
     return '' unless taxon.synonym?
-    taxon.synonym_of.try(:full_name) || ''
+    taxon.synonym_of.try(:name) || ''
   end
 
 end

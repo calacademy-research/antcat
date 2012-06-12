@@ -36,12 +36,12 @@ describe Genus do
 
     it "is the genus name" do
       taxon = FactoryGirl.create :genus, name_object: FactoryGirl.create(:name, name: 'Atta'), :subfamily => FactoryGirl.create(:subfamily, name_object: FactoryGirl.create(:name, name: 'Dolichoderinae'))
-      taxon.full_name.should == 'Atta'
+      taxon.name.should == 'Atta'
     end
 
     it "is just the genus name if there is no subfamily" do
       taxon = FactoryGirl.create :genus, name_object: FactoryGirl.create(:name, name: 'Atta'), :subfamily => nil
-      taxon.full_name.should == 'Atta'
+      taxon.name.should == 'Atta'
     end
 
   end
@@ -50,12 +50,12 @@ describe Genus do
 
     it "is the genus name" do
       taxon = FactoryGirl.create :genus, name_object: FactoryGirl.create(:name, name: 'Atta'), :subfamily => FactoryGirl.create(:subfamily, name_object: FactoryGirl.create(:name, name: 'Dolichoderinae'))
-      taxon.full_label.should == '<i>Atta</i>'
+      taxon.label.should == '<i>Atta</i>'
     end
 
     it "is just the genus name if there is no subfamily" do
       taxon = FactoryGirl.create :genus, name_object: FactoryGirl.create(:name, name: 'Atta'), :subfamily => nil
-      taxon.full_label.should == '<i>Atta</i>'
+      taxon.label.should == '<i>Atta</i>'
     end
 
   end

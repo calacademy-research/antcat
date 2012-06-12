@@ -14,14 +14,6 @@ class Species < Taxon
     subspecies
   end
 
-  def full_name
-    "#{genus.name} #{name}"
-  end
-
-  def full_label
-    "<i>#{full_name}</i>"
-  end
-
   def statistics
     get_statistics [:subspecies]
   end

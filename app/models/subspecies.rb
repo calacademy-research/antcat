@@ -11,14 +11,6 @@ class Subspecies < Taxon
     self.genus = species.genus
   end
 
-  def full_label
-    "<i>#{full_name}</i>"
-  end
-
-  def full_name
-    "#{species.genus.name} #{species.name} #{name}"
-  end
-
   def statistics
   end
 

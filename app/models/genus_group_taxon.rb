@@ -7,8 +7,8 @@ class GenusGroupTaxon < Taxon
     species
   end
 
-  def full_label
-    "<i>#{full_name}</i>"
+  def label
+    "<i>#{name}</i>"
   end
 
 end

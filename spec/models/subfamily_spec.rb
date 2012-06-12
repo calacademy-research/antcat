@@ -37,14 +37,14 @@ describe Subfamily do
   describe "Full name" do
     it "is just the name" do
       taxon = FactoryGirl.create :subfamily, name_object: FactoryGirl.create(:name, name: 'Dolichoderinae')
-      taxon.full_name.should == 'Dolichoderinae'
+      taxon.name.should == 'Dolichoderinae'
     end
   end
 
   describe "Full label" do
     it "is just the name" do
       taxon = FactoryGirl.create :subfamily, name_object: FactoryGirl.create(:name, name: 'Dolichoderinae')
-      taxon.full_label.should == 'Dolichoderinae'
+      taxon.label.should == 'Dolichoderinae'
     end
   end
 
