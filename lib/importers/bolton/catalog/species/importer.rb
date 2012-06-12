@@ -65,7 +65,9 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
       parse_next_line
     end
 
+    Progress.print 'Fixing up synonyms...'
     ForwardReference.fixup
+    Progress.puts
 
     Progress.show_results
     unignored_lines_count = Progress.processed_count - @ignored_count
