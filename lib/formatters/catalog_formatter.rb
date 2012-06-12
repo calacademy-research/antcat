@@ -19,7 +19,7 @@ class Formatters::CatalogFormatter
   end
 
   def self.taxon_label taxon, options = {}
-    name_label taxon.name, taxon.fossil?, options
+    name_label taxon.epithet , taxon.fossil?, options
   end
 
   def self.name_label name, fossil, options = {}
