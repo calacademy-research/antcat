@@ -40,12 +40,12 @@ describe Species do
       subfamily = FactoryGirl.create :subfamily, name_object: FactoryGirl.create(:name, name: 'Dolichoderinae')
       genus = FactoryGirl.create :genus, name_object: FactoryGirl.create(:name, name: 'Myrmicium'), :subfamily => subfamily
       species = FactoryGirl.create :species, name_object: FactoryGirl.create(:name, name: 'shattucki'), :genus => genus
-      species.full_name.should == 'Myrmicium shattucki'
+      species.name.should == 'Myrmicium shattucki'
     end
     it "should handle it when it has no subfamily" do
       genus = FactoryGirl.create :genus, name_object: FactoryGirl.create(:name, name: 'Myrmicium'), :subfamily => nil
       species = FactoryGirl.create :species, name_object: FactoryGirl.create(:name, name: 'shattucki'), :genus => genus
-      species.full_name.should == 'Myrmicium shattucki'
+      species.name.should == 'Myrmicium shattucki'
     end
   end
 
@@ -54,12 +54,12 @@ describe Species do
       subfamily = FactoryGirl.create :subfamily, name_object: FactoryGirl.create(:name, name: 'Dolichoderinae')
       genus = FactoryGirl.create :genus, name_object: FactoryGirl.create(:name, name: 'Myrmicium'), :subfamily => subfamily
       species = FactoryGirl.create :species, name_object: FactoryGirl.create(:name, name: 'shattucki'), :genus => genus
-      species.full_label.should == '<i>Myrmicium shattucki</i>'
+      species.label.should == '<i>Myrmicium shattucki</i>'
     end
     it "should handle it when it has no subfamily" do
       genus = FactoryGirl.create :genus, name_object: FactoryGirl.create(:name, name: 'Myrmicium'), :subfamily => nil
       species = FactoryGirl.create :species, name_object: FactoryGirl.create(:name, name: 'shattucki'), :genus => genus
-      species.full_label.should == '<i>Myrmicium shattucki</i>'
+      species.label.should == '<i>Myrmicium shattucki</i>'
     end
   end
 

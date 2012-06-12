@@ -61,11 +61,7 @@ class Taxon < ActiveRecord::Base
     target.name
   end
 
-  def full_name
-    name
-  end
-
-  def full_label
+  def label
     name
   end
 

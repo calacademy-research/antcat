@@ -19,12 +19,12 @@ describe Tribe do
 
   it "should have as its full name just its name" do
     taxon = FactoryGirl.create :tribe, name_object: FactoryGirl.create(:name, name: 'Attini'), :subfamily => FactoryGirl.create(:subfamily, name_object: FactoryGirl.create(:name, name: 'Myrmicinae'))
-    taxon.full_name.should == 'Attini'
+    taxon.name.should == 'Attini'
   end
 
   it "should have as its full label, just its name" do
     taxon = FactoryGirl.create :tribe, name_object: FactoryGirl.create(:name, name: 'Attini'), :subfamily => FactoryGirl.create(:subfamily, name_object: FactoryGirl.create(:name, name: 'Myrmicinae'))
-    taxon.full_label.should == 'Attini'
+    taxon.label.should == 'Attini'
   end
 
   describe "Siblings" do

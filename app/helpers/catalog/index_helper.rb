@@ -48,7 +48,7 @@ module Catalog::IndexHelper
   end
 
   def creating_taxon_message rank, parent
-    "Adding #{rank} to #{parent.full_name}"
+    "Adding #{rank} to #{parent.name}"
   end
 
 end
