@@ -13,3 +13,4 @@ selenium
 mind maps
 data/pdfs
 .sass-cache
+backups/*.tmp
