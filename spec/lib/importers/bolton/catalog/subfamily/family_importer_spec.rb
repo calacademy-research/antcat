@@ -61,10 +61,10 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
     Importers::Bolton::Catalog::Subfamily::Importer.new.import_html html
 
     family = Family.first
-    family.name.should == 'Formicidae'
+    family.name.to_s.should == 'Formicidae'
     family.should_not be_invalid
     family.should_not be_fossil
-    family.type_name.name.should == 'Formica'
+    family.type_name.to_s.should == 'Formica'
     family.type_name.rank.should == 'genus'
     family.taxonomic_history_items.map(&:taxt).should =~ [
       %{Formicidae as family: {ref #{latreille.id}}: 124 [Formicariae]; all subsequent authors}
@@ -78,7 +78,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
     genus.taxonomic_history_items.map(&:taxt).should =~ [
       "<i>Condylodon</i> in family Mutillidae: {ref #{swainson.id}}: 173."
     ]
-    genus.type_name.name.should == "Condylodon audouini"
+    genus.type_name.to_s.should == "Condylodon audouini"
     genus.type_taxt.should == ", by monotypy. [{ref #{lund.id}}: 25 says no.]"
     genus.reference_sections.map(&:title).should == ["Genus references"]
     genus.reference_sections.map(&:references).should == ["{ref #{baroni.id}}: 482 (review of genus)."]
@@ -87,7 +87,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
     genus.should be_fossil
     genus.should be_excluded
     protonym = genus.protonym
-    protonym.name.should == 'Promyrmicium'
+    protonym.name.to_s.should == 'Promyrmicium'
     protonym.rank.should == 'genus'
     protonym.fossil.should be_true
     protonym.authorship
@@ -96,7 +96,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
     genus = Genus.find_by_name 'Myrmicium'
     genus.should be_homonym
     genus.should be_fossil
-    genus.homonym_replaced_by.name.should == 'Promyrmicium'
+    genus.homonym_replaced_by.name.to_s.should == 'Promyrmicium'
   end
 
 end

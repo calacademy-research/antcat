@@ -21,7 +21,7 @@ class Genus < GenusGroupTaxon
   def self.import data, attributes = {}
     transaction do
       attributes.merge!(
-        name_object:          Name.import(data),
+        name:          Name.import(data),
         fossil:               data[:fossil] || false,
         status:               data[:status] || 'valid',
         protonym:             Protonym.import(data[:protonym]),

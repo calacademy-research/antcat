@@ -4,12 +4,12 @@ require 'spec_helper'
 describe Subgenus do
 
   it "must have a genus" do
-    colobopsis = FactoryGirl.build :subgenus, name_object: FactoryGirl.create(:name, name: 'Colobopsis'), genus: nil
+    colobopsis = FactoryGirl.build :subgenus, name: FactoryGirl.create(:name, name: 'Colobopsis'), genus: nil
     colobopsis.should_not be_valid
-    colobopsis.genus = FactoryGirl.create :genus, name_object: FactoryGirl.create(:name, name: 'Camponotus')
+    colobopsis.genus = FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Camponotus')
 
     colobopsis.save!
-    colobopsis.reload.genus.name.should == 'Camponotus'
+    colobopsis.reload.genus.name.to_s.should == 'Camponotus'
   end
 
   describe "Statistics" do
@@ -20,7 +20,7 @@ describe Subgenus do
 
   describe "Importing" do
     it "should work" do
-      genus = FactoryGirl.create :genus, name_object: FactoryGirl.create(:genus_name, name: 'Atta')
+      genus = FactoryGirl.create :genus, name: FactoryGirl.create(:genus_name, name: 'Atta')
       reference = FactoryGirl.create :article_reference, :bolton_key_cache => 'Latreille 1809'
 
       subgenus = Subgenus.import(
@@ -34,8 +34,8 @@ describe Subgenus do
         taxonomic_history: ["Atta as subgenus", "Atta as species"]
       )
 
-      subgenus.name.should == 'Atta (Subatta)'
-      subgenus.name_object.epithet.should == 'Subatta'
+      subgenus.name.to_s.should == 'Atta (Subatta)'
+      subgenus.name.epithet.should == 'Subatta'
       subgenus.should_not be_invalid
       subgenus.should be_fossil
       subgenus.genus.should == genus
@@ -45,7 +45,7 @@ describe Subgenus do
       subgenus.type_taxt.should == ', by monotypy'
 
       protonym = subgenus.protonym
-      protonym.name.should == 'Atta (Subatta)'
+      protonym.name.to_s.should == 'Atta (Subatta)'
 
       authorship = protonym.authorship
       authorship.pages.should == '124'
@@ -53,7 +53,7 @@ describe Subgenus do
       authorship.reference.should == reference
 
       subgenus.reload
-      subgenus.type_name.name.should == 'Atta major'
+      subgenus.type_name.to_s.should == 'Atta major'
       subgenus.type_name.rank.should == 'species'
     end
 

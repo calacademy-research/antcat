@@ -17,7 +17,7 @@ class Tribe < Taxon
   def self.import data
     transaction do
       attributes = {
-        name_object:  Name.import(data),
+        name:  Name.import(data),
         fossil:       data[:fossil] || false,
         status:       data[:status] || 'valid',
         protonym:     Protonym.import(data[:protonym]),

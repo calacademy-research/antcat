@@ -12,7 +12,7 @@ describe Importers::Bolton::Catalog::Species::Importer do
 <p><i>basispinosus</i>. <i>Acanthomyrmex basispinosus</i> Moffett, 1986c: 67, figs. 8A, 9-14 (s.w.) INDONESIA (Sulawesi). Combination in <i>Dorylus (Shuckardia)</i>: Emery, 1895j: 740.</p>
     }
     Progress.should_not_receive(:error)
-    FactoryGirl.create :genus, name_object: FactoryGirl.create(:genus_name, name: 'Acanthomyrmex'), subfamily: nil, tribe: nil
+    FactoryGirl.create :genus, name: FactoryGirl.create(:genus_name, name: 'Acanthomyrmex'), subfamily: nil, tribe: nil
     @importer.import_html contents
 
     Taxon.count.should == 2
@@ -35,7 +35,7 @@ describe Importers::Bolton::Catalog::Species::Importer do
 <p><i>ferox</i>. <i>Acanthomyrmex ferox</i> Moffett, 1986c: 67 (s.w.) INDONESIA.</p>
 <p><i>dyak</i>. <i>Acanthomyrmex dyak</i> Moffett, 1986c: 67 (s.w.) INDONESIA. Junior synonym of <i>ferox</i>: Moffett, 1986c: 70.</p>
     }
-    FactoryGirl.create :genus, name_object: FactoryGirl.create(:genus_name, name: 'Acanthomyrmex'), subfamily: nil, tribe: nil
+    FactoryGirl.create :genus, name: FactoryGirl.create(:genus_name, name: 'Acanthomyrmex'), subfamily: nil, tribe: nil
     @importer.import_html contents
     Species.find_by_name('Acanthomyrmex dyak').should be_synonym_of Species.find_by_name 'Acanthomyrmex ferox'
   end
@@ -46,7 +46,7 @@ describe Importers::Bolton::Catalog::Species::Importer do
 <p><i>dyak</i>. <i>Acanthomyrmex dyak</i> Moffett, 1986c: 67 (s.w.) INDONESIA. Junior synonym of <i>ferox</i>: Moffett, 1986c: 70.</p>
 <p><i>ferox</i>. <i>Acanthomyrmex ferox</i> Moffett, 1986c: 67 (s.w.) INDONESIA.</p>
     }
-    FactoryGirl.create :genus, name_object: FactoryGirl.create(:genus_name, name: 'Acanthomyrmex'), subfamily: nil, tribe: nil
+    FactoryGirl.create :genus, name: FactoryGirl.create(:genus_name, name: 'Acanthomyrmex'), subfamily: nil, tribe: nil
     @importer.import_html contents
     Species.find_by_name('Acanthomyrmex dyak').should be_synonym_of Species.find_by_name 'Acanthomyrmex ferox'
   end

@@ -37,17 +37,17 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
       genus = Genus.find_by_name 'Condylodon'
       genus.should_not be_invalid
       genus.should_not be_fossil
-      genus.subfamily.name.should == 'Martialinae'
+      genus.subfamily.name.to_s.should == 'Martialinae'
       genus.taxonomic_history_items.map(&:taxt).should =~
         ["<i>Condylodon</i> in family Mutillidae: {ref #{swainson.id}}: 173."]
-      genus.type_name.name.should == "Condylodon audouini"
+      genus.type_name.to_s.should == "Condylodon audouini"
       genus.type_taxt.should == ", by monotypy."
       genus.type_name.rank.should == 'species'
       genus.reference_sections.map(&:title).should == ['Genus references']
       genus.reference_sections.map(&:references).should == ["{ref #{baroni.id}}: 482 (review of genus)."]
 
       protonym = genus.protonym
-      protonym.name.should == 'Condylodon'
+      protonym.name.to_s.should == 'Condylodon'
       protonym.rank.should == 'genus'
       protonym.authorship.reference.should == lund
       protonym.authorship.pages.should == '131'
@@ -94,13 +94,13 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
 
   describe "Parsing references" do
     it "should return an array of text items converted to Taxt" do
-      genus = FactoryGirl.create :genus, name_object: FactoryGirl.create(:name, name: 'Lepisiota')
+      genus = FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Lepisiota')
       @importer.initialize_parse_html %{<div>
         <p>Genus <i>Lepisiota</i> references</p>
         <p>Note</p>
         <p>Another note</p>
       </div>}
-      @importer.parse_genus_references(genus)
+      @importer.parse_genus_references genus
       genus.reference_sections.map(&:title).should ==
         ["Genus <i>Lepisiota</i> references", ""]
       genus.reference_sections.map(&:references).should ==

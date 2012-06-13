@@ -44,9 +44,9 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
       Taxon.count.should == 2
 
       tribe = Tribe.find_by_name 'Aneuretini'
-      tribe.subfamily.name.should == 'Aneuretinae'
+      tribe.subfamily.name.to_s.should == 'Aneuretinae'
       tribe.taxonomic_history_items.map(&:taxt).should == ["Aneuretini history"]
-      tribe.type_name.name.should == 'Aneuretus'
+      tribe.type_name.to_s.should == 'Aneuretus'
       tribe.type_name.rank.should == 'genus'
     end
 

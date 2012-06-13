@@ -4,17 +4,17 @@ require 'spec_helper'
 describe Genus do
 
   it "should have a tribe" do
-    attini = FactoryGirl.create :tribe, name_object: FactoryGirl.create(:name, name: 'Attini'), :subfamily => FactoryGirl.create(:subfamily, name_object: FactoryGirl.create(:name, name: 'Myrmicinae'))
-    FactoryGirl.create :genus, name_object: FactoryGirl.create(:name, name: 'Atta'), :tribe => attini
+    attini = FactoryGirl.create :tribe, name: FactoryGirl.create(:name, name: 'Attini'), :subfamily => FactoryGirl.create(:subfamily, name: FactoryGirl.create(:name, name: 'Myrmicinae'))
+    FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Atta'), :tribe => attini
     Genus.find_by_name('Atta').tribe.should == attini
   end
 
   it "should have species, which are its children" do
-    atta = FactoryGirl.create :genus, name_object: FactoryGirl.create(:name, name: 'Atta')
-    FactoryGirl.create :species, name_object: FactoryGirl.create(:name, name: 'robusta'), :genus => atta
-    FactoryGirl.create :species, name_object: FactoryGirl.create(:name, name: 'saltensis'), :genus => atta
+    atta = FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Atta')
+    FactoryGirl.create :species, name: FactoryGirl.create(:name, name: 'robusta'), :genus => atta
+    FactoryGirl.create :species, name: FactoryGirl.create(:name, name: 'saltensis'), :genus => atta
     atta = Genus.find_by_name('Atta')
-    atta.species.map(&:name).should =~ ['robusta', 'saltensis']
+    atta.species.map(&:name).map(&:to_s).should =~ ['robusta', 'saltensis']
     atta.children.should == atta.species
   end
 
@@ -25,23 +25,23 @@ describe Genus do
   end
 
   it "should have subgenera" do
-    atta = FactoryGirl.create :genus, name_object: FactoryGirl.create(:name, name: 'Atta')
-    FactoryGirl.create :subgenus, name_object: FactoryGirl.create(:name, name: 'robusta'), :genus => atta
-    FactoryGirl.create :subgenus, name_object: FactoryGirl.create(:name, name: 'saltensis'), :genus => atta
+    atta = FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Atta')
+    FactoryGirl.create :subgenus, name: FactoryGirl.create(:name, name: 'robusta'), :genus => atta
+    FactoryGirl.create :subgenus, name: FactoryGirl.create(:name, name: 'saltensis'), :genus => atta
     atta = Genus.find_by_name('Atta')
-    atta.subgenera.map(&:name).should =~ ['robusta', 'saltensis']
+    atta.subgenera.map(&:name).map(&:to_s).should =~ ['robusta', 'saltensis']
   end
 
   describe "Full name" do
 
     it "is the genus name" do
-      taxon = FactoryGirl.create :genus, name_object: FactoryGirl.create(:name, name: 'Atta'), :subfamily => FactoryGirl.create(:subfamily, name_object: FactoryGirl.create(:name, name: 'Dolichoderinae'))
-      taxon.name.should == 'Atta'
+      taxon = FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Atta'), :subfamily => FactoryGirl.create(:subfamily, name: FactoryGirl.create(:name, name: 'Dolichoderinae'))
+      taxon.name.to_s.should == 'Atta'
     end
 
     it "is just the genus name if there is no subfamily" do
-      taxon = FactoryGirl.create :genus, name_object: FactoryGirl.create(:name, name: 'Atta'), :subfamily => nil
-      taxon.name.should == 'Atta'
+      taxon = FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Atta'), :subfamily => nil
+      taxon.name.to_s.should == 'Atta'
     end
 
   end
@@ -49,12 +49,12 @@ describe Genus do
   describe "Full label" do
 
     it "is the genus name" do
-      taxon = FactoryGirl.create :genus, name_object: FactoryGirl.create(:name, name: 'Atta'), :subfamily => FactoryGirl.create(:subfamily, name_object: FactoryGirl.create(:name, name: 'Dolichoderinae'))
+      taxon = FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Atta'), :subfamily => FactoryGirl.create(:subfamily, name: FactoryGirl.create(:name, name: 'Dolichoderinae'))
       taxon.label.should == '<i>Atta</i>'
     end
 
     it "is just the genus name if there is no subfamily" do
-      taxon = FactoryGirl.create :genus, name_object: FactoryGirl.create(:name, name: 'Atta'), :subfamily => nil
+      taxon = FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Atta'), :subfamily => nil
       taxon.label.should == '<i>Atta</i>'
     end
 
@@ -182,7 +182,7 @@ describe Genus do
                           texts: [{text: [{phrase: ', by monotypy'}]}]},
         taxonomic_history: ["Atta as genus", "Atta as species"]
       ).reload
-      genus.name.should == 'Atta'
+      genus.name.to_s.should == 'Atta'
       genus.epithet.should == 'Atta'
       genus.should_not be_invalid
       genus.should be_fossil
@@ -191,7 +191,7 @@ describe Genus do
       genus.type_taxt.should == ', by monotypy'
 
       protonym = genus.protonym
-      protonym.name.should == 'Atta'
+      protonym.name.to_s.should == 'Atta'
 
       authorship = protonym.authorship
       authorship.pages.should == '124'
@@ -208,7 +208,7 @@ describe Genus do
                           texts: [{text: [{phrase: ', by monotypy'}]}]},
         taxonomic_history: [],
       })
-      Genus.find(genus).type_name.name.should == 'Atta (Solis) major'
+      Genus.find(genus).type_name.to_s.should == 'Atta (Solis) major'
     end
 
     it "should not mind if there's no type" do
@@ -237,7 +237,7 @@ describe Genus do
         :taxonomic_history => []
       })
       genus = Genus.find genus
-      genus.type_name.name.should == 'Myrmicium heeri'
+      genus.type_name.to_s.should == 'Myrmicium heeri'
       genus.type_name.rank.should == 'species'
     end
 

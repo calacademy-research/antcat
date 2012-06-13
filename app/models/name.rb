@@ -15,4 +15,8 @@ class Name < ActiveRecord::Base
     raise "No Name subclass wanted #{data}"
   end
 
+  def to_s
+    name
+  end
+
 end

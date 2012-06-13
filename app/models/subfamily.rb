@@ -8,7 +8,7 @@ class Subfamily < Taxon
   def self.import data
     transaction do
       attributes = {
-        name_object:  Name.import(data),
+        name:  Name.import(data),
         fossil:       data[:fossil] || false,
         status:       'valid',
         protonym:     Protonym.import(data[:protonym]),

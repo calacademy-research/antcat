@@ -27,35 +27,38 @@ class Antweb::Exporter
 
     case taxon
     when Subfamily
-      convert_to_antweb_array :subfamily => taxon.name,
+      convert_to_antweb_array :subfamily => taxon.name.to_s,
                               :valid? => !taxon.invalid?, :available? => !taxon.invalid?,
                               :taxonomic_history => Exporters::Antweb::Formatter.format_taxonomic_history_with_statistics_for_antweb(taxon, :include_invalid => false),
                               :fossil? => taxon.fossil
     when Genus
-      subfamily_name = taxon.subfamily.try(:name) || 'incertae_sedis'
+      subfamily_name = taxon.subfamily && taxon.subfamily.name.to_s || 'incertae_sedis'
+      tribe_name = taxon.tribe && taxon.tribe.name.to_s
       convert_to_antweb_array :subfamily => subfamily_name,
-                              :tribe => taxon.tribe && taxon.tribe.name,
-                              :genus => taxon.name,
+                              :tribe => tribe_name,
+                              :genus => taxon.name.to_s,
                               :valid? => !taxon.invalid?, :available? => !taxon.invalid?,
                               :taxonomic_history => Exporters::Antweb::Formatter.format_taxonomic_history_with_statistics_for_antweb(taxon, :include_invalid => false),
                               :fossil? => taxon.fossil
     when Species
       return unless taxon.genus
-      subfamily_name = taxon.genus.subfamily.try(:name) || 'incertae_sedis'
+      subfamily_name = taxon.genus.subfamily && taxon.genus.subfamily.name.to_s || 'incertae_sedis'
+      tribe_name = taxon.genus.tribe && taxon.genus.tribe.name.to_s
       convert_to_antweb_array :subfamily => subfamily_name,
-                              :tribe => taxon.genus.tribe.try(:name),
-                              :genus => taxon.genus.name,
-                              :species => taxon.name,
+                              :tribe => tribe_name,
+                              :genus => taxon.genus.name.to_s,
+                              :species => taxon.name.to_s,
                               :valid? => !taxon.invalid?, :available? => !taxon.invalid?,
                               :taxonomic_history => Exporters::Antweb::Formatter.format_taxonomic_history_with_statistics_for_antweb(taxon, :include_invalid => false),
                               :fossil? => taxon.fossil
     when Subspecies
       return unless taxon.species && taxon.species.genus
-      subfamily_name = taxon.genus.subfamily.try(:name) || 'incertae_sedis'
+      subfamily_name = taxon.species.genus.subfamily && taxon.species.genus.subfamily.name.to_s || 'incertae_sedis'
+      tribe_name = taxon.species.genus.tribe && taxon.species.genus.tribe.name.to_s
       convert_to_antweb_array :subfamily => subfamily_name,
-                              :tribe => taxon.species.genus.tribe.try(:name),
-                              :genus => taxon.species.genus.name,
-                              :species => "#{taxon.species.name} #{taxon.name}",
+                              :tribe => tribe_name,
+                              :genus => taxon.species.genus.name.to_s,
+                              :species => taxon.name.to_s,
                               :valid? => !taxon.invalid?, :available? => !taxon.invalid?,
                               :taxonomic_history => Exporters::Antweb::Formatter.format_taxonomic_history_with_statistics_for_antweb(taxon, :include_invalid => false),
                               :fossil? => taxon.fossil
