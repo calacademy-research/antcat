@@ -54,7 +54,10 @@ describe SubspeciesName do
       superba.prior_subspecies_name.should == alpina
     end
 
-    it "should handle subspecies with subgenera"
+    it "should import a subspecies name with a subgenus name" do
+      name = Name.import genus_name: 'Atta', subgenus_epithet: 'Subatta', species_epithet: 'major', subspecies: [{:type => 'r.', species_group_epithet: 'alpina'}]
+      SubspeciesName.find(name).to_s.should == 'Atta (Subatta) major r. alpina'
+    end
 
     it "should report back on all its epithets if asked" do
       name = Name.import genus_name: 'Atta', species_epithet: 'major', subspecies: [
