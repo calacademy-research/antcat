@@ -39,6 +39,10 @@ class SubspeciesName < Name
     subspecies_name
   end
 
+  def subspecies_epithets
+    name.match(/\b#{species_name.epithet}\b.*/).to_s
+  end
+
   def rank
     'subspecies'
   end
