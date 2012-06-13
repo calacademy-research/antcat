@@ -16,4 +16,9 @@ module Nameable
     name_object.epithet || name_object.name
   end
 
+  def rank
+    return '' if new_record? and not name_object
+    name_object.rank
+  end
+
 end
