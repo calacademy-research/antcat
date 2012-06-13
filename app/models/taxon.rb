@@ -15,8 +15,8 @@ class Taxon < ActiveRecord::Base
   belongs_to  :type_name, class_name: 'Name', foreign_key: :type_name_id
 
   scope :valid, where("status = ?", 'valid')
-  scope :with_names, joins(:name_object).readonly(false)
-  scope :ordered_by_name, joins(:name_object).readonly(false).order('names.name')
+  scope :with_names, joins(:name).readonly(false)
+  scope :ordered_by_name, joins(:name).readonly(false).order('names.name')
   scope :extant, where(fossil: false)
   scope :find_by_name, lambda {|name| with_names.where([:name, name])}
 
@@ -58,11 +58,11 @@ class Taxon < ActiveRecord::Base
   def current_valid_name
     target = self
     target = target.synonym_of while target.synonym_of
-    target.name
+    target.name.to_s
   end
 
   def label
-    name
+    name.to_s
   end
 
   def self.find_name name, search_type = 'matching'

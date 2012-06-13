@@ -43,7 +43,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     case @type
     when :genus_references_header
       parsed_genus_name = @parse_result[:genus_name]
-      return if parsed_genus_name.present? && parsed_genus_name != genus.name
+      return if parsed_genus_name.present? && parsed_genus_name != genus.name.to_s
     when :genus_references_see_under
     else
       return

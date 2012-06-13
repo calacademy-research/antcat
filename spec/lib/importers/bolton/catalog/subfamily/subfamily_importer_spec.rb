@@ -91,18 +91,18 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
 
       subfamily = Subfamily.find_by_name 'Aneuretinae'
       subfamily.should_not be_invalid
-      subfamily.type_name.name.should == 'Aneuretus'
+      subfamily.type_name.to_s.should == 'Aneuretus'
       subfamily.type_name.rank.should == 'genus'
 
       protonym = subfamily.protonym
-      protonym.name.should == 'Aneuretini'
+      protonym.name.to_s.should == 'Aneuretini'
       protonym.rank.should == 'tribe'
 
       authorship = protonym.authorship
       authorship.reference.should == emery
       authorship.pages.should == '6'
 
-      subfamily.type_name.name.should == 'Aneuretus'
+      subfamily.type_name.to_s.should == 'Aneuretus'
       subfamily.type_name.rank.should == 'genus'
 
       subfamily.taxonomic_history_items.map(&:taxt).should =~ [
@@ -112,7 +112,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
       tribe = Tribe.find_by_name 'Aneuretini'
       tribe.subfamily.should == subfamily
       tribe.taxonomic_history_items.map(&:taxt).should == ["history"]
-      tribe.type_name.name.should == 'Aneuretus'
+      tribe.type_name.to_s.should == 'Aneuretus'
       tribe.type_name.rank.should == 'genus'
       tribe.reference_sections.map(&:title).should == ["Subfamily, tribe Aneuretini and genus <i>Aneuretus</i> references"]
       tribe.reference_sections.map(&:references).should == ["{ref #{emery.id}}: 461 (diagnosis)"]

@@ -3,7 +3,7 @@ module Formatters::IndexFormatter
   include Formatters::Formatter
 
   def format_header_name taxon
-    taxon.name
+    taxon.name.to_s
   end
 
   def format_status taxon
@@ -48,7 +48,7 @@ module Formatters::IndexFormatter
     classes << 'species' if protonym.rank == 'species'
     classes << 'subfamily' if protonym.rank == 'family_or_subfamily'
     content_tag :span, class: classes.sort.join(' ') do
-      name_label protonym.name, protonym.fossil
+      name_label protonym.name.to_s, protonym.fossil
     end
   end
 
@@ -75,7 +75,7 @@ module Formatters::IndexFormatter
   def format_headline_type_name taxon
     rank = taxon.type_name.rank
     rank = 'genus' if rank == 'subgenus'
-    content_tag :span, taxon.type_name.name.html_safe, class: "#{rank} taxon"
+    content_tag :span, taxon.type_name.to_s.html_safe, class: "#{rank} taxon"
   end
   
   def format_headline_type_taxt taxt, user

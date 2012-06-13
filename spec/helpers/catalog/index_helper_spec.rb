@@ -34,7 +34,7 @@ describe Catalog::IndexHelper do
 
   describe "Making the 'Creating... message'" do
     it "should look like this" do
-      helper.creating_taxon_message(:genus, FactoryGirl.create(:subfamily, name_object: FactoryGirl.create(:name, name: 'Formicinae'))).should =~ /.*?ing genus .*? Formicinae/
+      helper.creating_taxon_message(:genus, FactoryGirl.create(:subfamily, name: FactoryGirl.create(:name, name: 'Formicinae'))).should =~ /.*?ing genus .*? Formicinae/
     end
   end
 

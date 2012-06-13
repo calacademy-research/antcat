@@ -4,19 +4,19 @@ require 'spec_helper'
 describe Subfamily do
 
   it "should have tribes, which are its children" do
-    subfamily = FactoryGirl.create :subfamily, name_object: FactoryGirl.create(:name, name: 'Myrmicinae')
-    FactoryGirl.create :tribe, name_object: FactoryGirl.create(:name, name: 'Attini'), :subfamily => subfamily
-    FactoryGirl.create :tribe, name_object: FactoryGirl.create(:name, name: 'Dacetini'), :subfamily => subfamily
-    subfamily.tribes.map(&:name).should =~ ['Attini', 'Dacetini']
+    subfamily = FactoryGirl.create :subfamily, name: FactoryGirl.create(:name, name: 'Myrmicinae')
+    FactoryGirl.create :tribe, name: FactoryGirl.create(:name, name: 'Attini'), :subfamily => subfamily
+    FactoryGirl.create :tribe, name: FactoryGirl.create(:name, name: 'Dacetini'), :subfamily => subfamily
+    subfamily.tribes.map(&:name).map(&:to_s).should =~ ['Attini', 'Dacetini']
     subfamily.tribes.should == subfamily.children
   end
 
   it "should have genera" do
-    myrmicinae = FactoryGirl.create :subfamily, name_object: FactoryGirl.create(:name, name: 'Myrmicinae')
-    dacetini = FactoryGirl.create :tribe, name_object: FactoryGirl.create(:name, name: 'Dacetini'), :subfamily => myrmicinae
-    FactoryGirl.create :genus, name_object: FactoryGirl.create(:name, name: 'Atta'), :subfamily => myrmicinae, :tribe => FactoryGirl.create(:tribe, name_object: FactoryGirl.create(:name, name: 'Attini'), :subfamily => myrmicinae)
-    FactoryGirl.create :genus, name_object: FactoryGirl.create(:name, name: 'Acanthognathus'), :subfamily => myrmicinae, :tribe => FactoryGirl.create(:tribe, name_object: FactoryGirl.create(:name, name: 'Dacetini'), :subfamily => myrmicinae)
-    myrmicinae.genera.map(&:name).should =~ ['Atta', 'Acanthognathus']
+    myrmicinae = FactoryGirl.create :subfamily, name: FactoryGirl.create(:name, name: 'Myrmicinae')
+    dacetini = FactoryGirl.create :tribe, name: FactoryGirl.create(:name, name: 'Dacetini'), :subfamily => myrmicinae
+    FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Atta'), :subfamily => myrmicinae, :tribe => FactoryGirl.create(:tribe, name: FactoryGirl.create(:name, name: 'Attini'), :subfamily => myrmicinae)
+    FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Acanthognathus'), :subfamily => myrmicinae, :tribe => FactoryGirl.create(:tribe, name: FactoryGirl.create(:name, name: 'Dacetini'), :subfamily => myrmicinae)
+    myrmicinae.genera.map(&:name).map(&:to_s).should =~ ['Atta', 'Acanthognathus']
   end
 
   it "should have species" do
@@ -36,14 +36,14 @@ describe Subfamily do
 
   describe "Full name" do
     it "is just the name" do
-      taxon = FactoryGirl.create :subfamily, name_object: FactoryGirl.create(:name, name: 'Dolichoderinae')
-      taxon.name.should == 'Dolichoderinae'
+      taxon = FactoryGirl.create :subfamily, name: FactoryGirl.create(:name, name: 'Dolichoderinae')
+      taxon.name.to_s.should == 'Dolichoderinae'
     end
   end
 
   describe "Full label" do
     it "is just the name" do
-      taxon = FactoryGirl.create :subfamily, name_object: FactoryGirl.create(:name, name: 'Dolichoderinae')
+      taxon = FactoryGirl.create :subfamily, name: FactoryGirl.create(:name, name: 'Dolichoderinae')
       taxon.label.should == 'Dolichoderinae'
     end
   end
@@ -126,16 +126,16 @@ describe Subfamily do
       )
       
       subfamily.reload
-      subfamily.name.should == 'Aneuretinae'
+      subfamily.name.to_s.should == 'Aneuretinae'
       subfamily.should_not be_invalid
       subfamily.should be_fossil
       subfamily.taxonomic_history_items.map(&:taxt).should == ['Aneuretinae as subfamily', 'Aneuretini as tribe']
 
-      subfamily.type_name.name.should == 'Atta'
+      subfamily.type_name.to_s.should == 'Atta'
       subfamily.type_name.rank.should == 'genus'
 
       protonym = subfamily.protonym
-      protonym.name.should == 'Aneuretini'
+      protonym.name.to_s.should == 'Aneuretini'
 
       authorship = protonym.authorship
       authorship.pages.should == '6'

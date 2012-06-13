@@ -19,17 +19,17 @@ describe Family do
       }
 
       family = Family.import(data).reload
-      family.name.should == 'Formicidae'
+      family.name.to_s.should == 'Formicidae'
       family.should_not be_invalid
       family.should_not be_fossil
       family.taxonomic_history_items.map(&:taxt).should == ['Formicidae as family']
 
-      family.type_name.name.should == 'Formica'
+      family.type_name.to_s.should == 'Formica'
       family.type_name.rank.should == 'genus'
       family.type_taxt.should == ', by monotypy'
 
       protonym = family.protonym
-      protonym.name.should == 'Formicariae'
+      protonym.name.to_s.should == 'Formicariae'
 
       authorship = protonym.authorship
       authorship.pages.should == '124'
@@ -49,7 +49,7 @@ describe Family do
       }
 
       family = Family.import(data).reload
-      family.name.should == 'Formicidae'
+      family.name.to_s.should == 'Formicidae'
       family.should_not be_invalid
       family.should_not be_fossil
       family.taxonomic_history_items.map(&:taxt).should == ['Formicidae as family']
@@ -57,7 +57,7 @@ describe Family do
       family.headline_notes_taxt.should == '[Note.]'
 
       protonym = family.protonym
-      protonym.name.should == 'Formicariae'
+      protonym.name.to_s.should == 'Formicariae'
 
       authorship = protonym.authorship
       authorship.pages.should == '124'
@@ -82,7 +82,7 @@ describe Family do
 
   describe "Full label" do
     it "should be the family name" do
-      FactoryGirl.create(:family, name_object: FactoryGirl.create(:name, name: 'Formicidae')).label.should == 'Formicidae'
+      FactoryGirl.create(:family, name: FactoryGirl.create(:name, name: 'Formicidae')).label.should == 'Formicidae'
     end
   end
 

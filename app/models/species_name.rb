@@ -9,7 +9,7 @@ class SpeciesName < Name
     if data[:subgenus_epithet]
       genus_group_name = SubgenusName.import data
     elsif data[:genus]
-      genus_group_name = data[:genus].name_object
+      genus_group_name = data[:genus].name
     else
       genus_group_name = GenusName.import data
     end
@@ -18,7 +18,7 @@ class SpeciesName < Name
     return name if name
 
     create!({
-      name:             genus_group_name.name + ' ' + data[:species_epithet],
+      name:             "#{genus_group_name} #{data[:species_epithet]}",
       epithet:          data[:species_epithet],
       genus_group_name: genus_group_name,
     })

@@ -37,7 +37,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
 
     acanthomyops = Subgenus.find_by_name 'Lasius (Acanthomyops)'
     acanthomyops.genus.should == lasius
-    acanthomyops.type_name.name.should == 'Formica clavigera'
+    acanthomyops.type_name.to_s.should == 'Formica clavigera'
 
     lasius.subgenera.map(&:id).should == [acanthomyops.id]
   end

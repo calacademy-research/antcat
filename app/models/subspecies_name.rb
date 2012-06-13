@@ -10,33 +10,33 @@ class SubspeciesName < Name
     return unless data[:subspecies]
 
     if data[:species]
-      species_name = data[:species].name_object
+      species_name = data[:species].name
     else
       species_name = SpeciesName.import data
     end
 
-    name = species_name.name.dup
+    name_string = species_name.name.dup
     for subspecies in data[:subspecies]
-      name << ' ' << subspecies[:type] if subspecies[:type]
-      name << ' ' << subspecies[:species_group_epithet]
+      name_string << ' ' << subspecies[:type] if subspecies[:type]
+      name_string << ' ' << subspecies[:species_group_epithet]
     end
 
-    name_object = Name.find_by_name name
-    return name_object if name_object
+    name = Name.find_by_name name_string
+    return name if name
 
     subspecies = data[:subspecies].first
-    name_object = create! name: name, epithet: subspecies[:species_group_epithet], subspecies_qualifier: subspecies[:type], species_name: species_name
-    subspecies_name_object = name_object
-    prior_name_object = name_object
+    name = create! name: name_string, epithet: subspecies[:species_group_epithet], subspecies_qualifier: subspecies[:type], species_name: species_name
+    subspecies_name = name
+    prior_name = name
 
     subspecies = data[:subspecies].second
     if subspecies
-      name_object = create! name: name, epithet: subspecies[:species_group_epithet], subspecies_qualifier: subspecies[:type], species_name: species_name,
-        prior_subspecies_name: prior_name_object
-      prior_name_object.update_attribute :next_subspecies_name, name_object
+      name = create! name: name_string, epithet: subspecies[:species_group_epithet], subspecies_qualifier: subspecies[:type], species_name: species_name,
+        prior_subspecies_name: prior_name
+      prior_name.update_attribute :next_subspecies_name, name
     end
 
-    subspecies_name_object
+    subspecies_name
   end
 
   def rank

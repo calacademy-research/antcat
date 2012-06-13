@@ -29,7 +29,7 @@ class Species < Taxon
 
       attributes = {
         genus:      data[:genus],
-        name_object:name,
+        name:name,
         fossil:     data[:fossil] || false,
         status:     data[:status] || 'valid',
         protonym:   protonym,
@@ -53,12 +53,12 @@ class Species < Taxon
       if item[:synonym_ofs]
         for synonym_of in item[:synonym_ofs]
           genus = species.genus
-          senior_name = genus.name + ' ' + synonym_of[:species_epithet]
-          senior = Species.find_by_genus_id_and_name genus.id, senior_name
+          senior_name_string = "#{genus.name} #{synonym_of[:species_epithet]}"
+          senior = Species.find_by_genus_id_and_name genus.id, senior_name_string
           if senior
             species.update_attributes status: 'synonym', synonym_of: senior
           else
-            ForwardReference.create! source_id: species.id, target_parent: genus.id, target_name: senior_name
+            ForwardReference.create! source_id: species.id, target_parent: genus.id, target_name: senior_name_string
           end
         end
       end

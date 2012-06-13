@@ -137,35 +137,29 @@ FactoryGirl.define do
 
   ####################################################
 
-  # this factory seems to only be necessary because
-  # of the assocation lines below
-  factory :name_object, class: GenusName do
-    name
-  end
-
   factory :taxon do
-    association :name_object, factory: :genus_name
+    association :name, factory: :genus_name
     association :type_name, factory: :species_name
     protonym
     status  'valid'
   end
 
   factory :family do
-    association :name_object, factory: :family_name
+    association :name, factory: :family_name
     association :type_name, factory: :genus_name
     protonym
     status  'valid'
   end
 
   factory :subfamily do
-    association :name_object, factory: :subfamily_name
+    association :name, factory: :subfamily_name
     association :type_name, factory: :genus_name
     protonym
     status  'valid'
   end
 
   factory :tribe do
-    association :name_object, factory: :tribe_name
+    association :name, factory: :tribe_name
     association :type_name, factory: :genus_name
     subfamily
     protonym
@@ -173,7 +167,7 @@ FactoryGirl.define do
   end
 
   factory :subtribe do
-    association :name_object, factory: :subtribe_name
+    association :name, factory: :subtribe_name
     association :type_name, factory: :genus_name
     subfamily
     protonym
@@ -181,7 +175,7 @@ FactoryGirl.define do
   end
 
   factory :genus do
-    association :name_object, factory: :genus_name
+    association :name, factory: :genus_name
     association :type_name, factory: :species_name
     tribe
     subfamily   {|a| a.tribe && a.tribe.subfamily}
@@ -190,7 +184,7 @@ FactoryGirl.define do
   end
 
   factory :subgenus do
-    association :name_object, factory: :subgenus_name
+    association :name, factory: :subgenus_name
     association :type_name, factory: :species_name
     genus
     protonym
@@ -198,14 +192,14 @@ FactoryGirl.define do
   end
 
   factory :species do
-    association :name_object, factory: :species_name
+    association :name, factory: :species_name
     genus
     protonym
     status  'valid'
   end
 
   factory :subspecies do
-    association :name_object, factory: :species_name
+    association :name, factory: :species_name
     species
     protonym
     status  'valid'
@@ -219,7 +213,7 @@ FactoryGirl.define do
 
   factory :protonym do
     authorship factory: :citation 
-    association :name_object, factory: :genus_name
+    association :name, factory: :genus_name
   end
 
   factory :taxonomic_history_item do
