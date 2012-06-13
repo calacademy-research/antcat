@@ -135,6 +135,12 @@ FactoryGirl.define do
     genus_group_name
   end
 
+  factory :subspecies_name do
+    sequence(:name) {|n| "Subspecies#{n}"}
+    epithet {name}
+    species_name
+  end
+
   ####################################################
 
   factory :taxon do
