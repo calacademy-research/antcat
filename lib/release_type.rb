@@ -1,6 +1,7 @@
 # coding: UTF-8
 
 class ReleaseType 
+  include ActionView::Helpers::TagHelper
   def title; 'AntCat' end
   def user_can_edit?(user) user || preview? end
   def user_can_not_edit?(user); !user_can_edit user end
@@ -18,4 +19,3 @@ class PreviewReleaseType < ReleaseType
 end
 
 $ReleaseType = PreviewReleaseType.new
-
