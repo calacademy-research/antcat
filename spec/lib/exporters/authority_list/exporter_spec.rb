@@ -94,9 +94,9 @@ describe Exporters::AuthorityList::Exporter do
 
     describe "Outputting the senior synonym of a species" do
       before do
-        @atta = FactoryGirl.create :genus, name_object: FactoryGirl.create(:name, name: 'Atta')
-        @senior_synonym = FactoryGirl.create :species, name_object: FactoryGirl.create(:name, name: 'formica'), :genus => @atta
-        @junior_synonym = FactoryGirl.create :species, name_object: FactoryGirl.create(:name, name: 'robusta'), :genus => @atta, :status => 'synonym', :synonym_of => @senior_synonym
+        @atta = FactoryGirl.create :genus, name_object: FactoryGirl.create(:genus_name, name: 'Atta')
+        @senior_synonym = FactoryGirl.create :species, name_object: FactoryGirl.create(:species_name, name: 'Atta formica', genus_group_name: @atta.name_object), :genus => @atta
+        @junior_synonym = FactoryGirl.create :species, name_object: FactoryGirl.create(:species_name, name: 'Atta robusta', genus_group_name: @atta.name_object), :genus => @atta, :status => 'synonym', :synonym_of => @senior_synonym
       end
 
       it "should not crash if it's a junior synonym but we don't know the senior" do
