@@ -7,7 +7,6 @@ class SubspeciesName < Name
     return unless data[:subspecies]
 
     epithet = data[:subspecies].first[:species_group_epithet]
-    raise unless data[:genus]
 
     if data[:species]
       species_name = data[:species].name_object
@@ -19,14 +18,14 @@ class SubspeciesName < Name
     return name if name
 
     create!({
-      name:             genus_group_name.name + ' ' + species_name.name + ' ' + epithet,
-      epithet:          epithet,
-      genus_group_name: data[:genus],
+      name:         species_name.name + ' ' + epithet,
+      epithet:      epithet,
+      species_name: species_name,
     })
   end
 
   def rank
-    'species'
+    'subspecies'
   end
 
 end
