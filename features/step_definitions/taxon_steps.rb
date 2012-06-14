@@ -74,8 +74,8 @@ Given /a genus that was synonymized to "(.*?)" exists with a name of "(.*?)" wit
 end
 
 Given /a species exists with a name of "(.*?)" and a genus of "(.*?)"(?: and a taxonomic history of "(.*?)")?/ do |taxon_name, parent_name, taxonomic_history|
-  genus = Genus.find_by_name(parent_name) || Factory(:genus, name: FactoryGirl.create(:name, name: parent_name))
-  taxon = Factory :species, name: FactoryGirl.create(:name, name: taxon_name), :genus => genus, taxonomic_history: taxonomic_history
+  genus = Genus.find_by_name(parent_name) || Factory(:genus, name: FactoryGirl.create(:genus_name, name: parent_name))
+  taxon = Factory :species, name: FactoryGirl.create(:species_name, name: "#{parent_name} #{taxon_name}"), :genus => genus, taxonomic_history: taxonomic_history
   taxonomic_history = 'none' unless taxonomic_history.present?
   taxon.taxonomic_history_items.create!  taxt: taxonomic_history
 end
