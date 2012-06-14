@@ -10,6 +10,9 @@ describe SubgenusName do
       name = SubgenusName.find(name)
       name.name.should == 'Atta (Subatta)'
       name.epithet.should == 'Subatta'
+      name.to_s.should == 'Atta (Subatta)'
+      name.to_html.should == '<i>Atta</i> <i>(Subatta)</i>'
+      name.html_epithet.should == '<i>Subatta</i>'
     end
     it "should reuse names" do
       Name.import genus_name: 'Atta', subgenus_epithet: 'Subatta'

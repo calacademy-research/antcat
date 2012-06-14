@@ -7,7 +7,12 @@ describe SubtribeName do
 
     it "should recognize its key and set its name appropriately" do
       name = Name.import subtribe_name: 'Aneuretina'
-      SubtribeName.find(name).name.should == 'Aneuretina'
+      name = SubtribeName.find name
+      name.name.should == 'Aneuretina'
+      name.epithet.should == 'Aneuretina'
+      name.to_s.should == 'Aneuretina'
+      name.to_html.should == 'Aneuretina'
+      name.html_epithet.should == 'Aneuretina'
     end
     it "should reuse names" do
       FactoryGirl.create :name, name: 'Dolichoderina'

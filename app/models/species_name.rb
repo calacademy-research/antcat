@@ -1,27 +1,28 @@
 class SpeciesName < Name
 
-  belongs_to :genus_group_name
-  validates :genus_group_name, presence: true
+  def self.get_name data
+    data[:species_epithet]
+  end
 
-  def self.import data
-    return unless data[:species_epithet]
-
+  def self.get_parent_name data
     if data[:subgenus_epithet]
-      genus_group_name = SubgenusName.import data
+      SubgenusName.import_data data
     elsif data[:genus]
-      genus_group_name = data[:genus].name
+      data[:genus].name
     else
-      genus_group_name = GenusName.import data
+      GenusName.import_data data
     end
+  end
 
-    name = Name.find_by_genus_group_name_id_and_epithet genus_group_name.id, data[:species_epithet]
-    return name if name
-
-    create!({
-      name:             "#{genus_group_name} #{data[:species_epithet]}",
-      epithet:          data[:species_epithet],
-      genus_group_name: genus_group_name,
-    })
+  def self.make_attributes name, data
+    attributes = {
+      epithet:      name,
+      html_epithet: "<i>#{name}</i>",
+    }
+    parent_name = get_parent_name data
+    attributes[:name]      = "#{parent_name} #{attributes[:epithet]}"
+    attributes[:html_name] = "#{parent_name.to_html} #{attributes[:html_epithet]}"
+    attributes
   end
 
   def rank

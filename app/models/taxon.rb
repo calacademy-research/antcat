@@ -61,10 +61,6 @@ class Taxon < ActiveRecord::Base
     target.name.to_s
   end
 
-  def label
-    name.to_s
-  end
-
   def self.find_name name, search_type = 'matching'
     query = ordered_by_name
     names = name.split ' '

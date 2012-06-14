@@ -1,8 +1,7 @@
 class FamilyOrSubfamilyName < Name
 
-  def self.import data
-    return unless name = data[:family_or_subfamily_name]
-    create! name: name
+  def self.get_name data
+    data[:family_or_subfamily_name]
   end
 
   def rank

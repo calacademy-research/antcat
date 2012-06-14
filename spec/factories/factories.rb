@@ -94,51 +94,79 @@ FactoryGirl.define do
   ####################################################
   factory :name do
     sequence(:name) {|n| raise; "Name#{n}"}
+    html_name       {name}
+    epithet         {name}
+    html_epithet    {html_name}
   end
 
   factory :family_or_subfamily_name do
     name 'FamilyOrSubfamily'
+    html_name       {name}
+    epithet         {name}
+    html_epithet    {html_name}
   end
 
   factory :family_name do
     name 'Family'
+    html_name       {name}
+    epithet         {name}
+    html_epithet    {html_name}
   end
 
   factory :subfamily_name do
     sequence(:name) {|n| "Subfamily#{n}"}
+    html_name       {name}
+    epithet         {name}
+    html_epithet    {html_name}
   end
 
   factory :tribe_name do
     sequence(:name) {|n| "Tribe#{n}"}
+    html_name       {name}
+    epithet         {name}
+    html_epithet    {html_name}
   end
 
   factory :subtribe_name do
     sequence(:name) {|n| "Subtribe#{n}"}
+    html_name       {name}
+    epithet         {name}
+    html_epithet    {html_name}
   end
 
   factory :genus_group_name do
     sequence(:name) {|n| "GenusGroup#{n}"}
+    html_name       {"<i>#{name}</i>"}
+    epithet         {name}
+    html_epithet    {html_name}
   end
 
   factory :genus_name do
     sequence(:name) {|n| "Genus#{n}"}
+    html_name       {"<i>#{name}</i>"}
+    epithet         {name}
+    html_epithet    {"<i>#{name}</i>"}
   end
 
   factory :subgenus_name do
-    sequence(:name) {|n| "Subgenus#{n}"}
-    genus_group_name
+    sequence(:name) {|n| "Atta (Subgenus#{n})"}
+    html_name       {"<i>Atta</i> <i>(#{name})</i>"}
+    epithet         {name.match(/\((.*)\)/)[1]}
+    html_epithet    {"<i>#{epithet}</i>"}
   end
 
   factory :species_name do
-    sequence(:name) {|n| "Species#{n}"}
-    epithet {name}
-    genus_group_name
+    sequence(:name) {|n| "Atta species#{n}"}
+    html_name       {"<i>#{name}</i>"}
+    epithet         {name.match(/Atta (.*)/)[1]}
+    html_epithet    {"<i>#{epithet}</i>"}
   end
 
   factory :subspecies_name do
-    sequence(:name) {|n| "Subspecies#{n}"}
-    epithet {name}
-    species_name
+    sequence(:name) {|n| "Atta species subspecies#{n}"}
+    html_name       {"<i>#{name}</i>"}
+    epithet         {name.match(/Atta species (.*)/)[1]}
+    html_epithet    {"<i>#{epithet}</i>"}
   end
 
   ####################################################

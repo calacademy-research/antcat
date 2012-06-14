@@ -7,7 +7,12 @@ describe GenusName do
 
     it "should recognize its key and set its name appropriately" do
       name = Name.import genus_name: 'Atta'
-      GenusName.find(name).name.should == 'Atta'
+      name = GenusName.find name
+      name.name.should == 'Atta'
+      name.epithet.should == 'Atta'
+      name.to_s.should == 'Atta'
+      name.to_html.should == '<i>Atta</i>'
+      name.html_epithet.should == '<i>Atta</i>'
     end
     it "should reuse names" do
       FactoryGirl.create :name, name: 'Atta'

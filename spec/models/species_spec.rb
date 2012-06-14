@@ -39,7 +39,7 @@ describe Species do
     it "should handle it" do
       subfamily = FactoryGirl.create :subfamily, name: FactoryGirl.create(:subfamily_name, name: 'Dolichoderinae')
       genus = FactoryGirl.create :genus, name: FactoryGirl.create(:genus_name, name: 'Myrmicium'), :subfamily => subfamily
-      species = FactoryGirl.create :species, name: FactoryGirl.create(:species_name, name: 'Myrmicium shattucki', ), :genus => genus
+      species = FactoryGirl.create :species, name: FactoryGirl.create(:species_name, name: 'Myrmicium shattucki', epithet: 'shattucki'), :genus => genus
       species.name.to_s.should == 'Myrmicium shattucki'
     end
   end

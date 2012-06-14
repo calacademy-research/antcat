@@ -1,8 +1,17 @@
 class GenusName < GenusGroupName
 
-  def self.import data
-    return unless name = data[:genus_name]
-    Name.find_by_name(name) || create!(name: name)
+  def self.get_name data
+    data[:genus_name]
+  end
+
+  def self.make_attributes name, data
+    html_name = "<i>#{name}</i>"
+    {
+      name:         name,
+      html_name:    html_name,
+      epithet:      name,
+      html_epithet: html_name,
+    }
   end
 
   def rank

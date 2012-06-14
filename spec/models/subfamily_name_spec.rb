@@ -6,7 +6,12 @@ describe SubfamilyName do
   describe "Importing" do
     it "should recognize its key and set its name appropriately" do
       name = Name.import subfamily_name: 'Aneuretinae'
-      SubfamilyName.find(name).name.should == 'Aneuretinae'
+      name = SubfamilyName.find name
+      name.name.should == 'Aneuretinae'
+      name.epithet.should == 'Aneuretinae'
+      name.to_s.should == 'Aneuretinae'
+      name.to_html.should == 'Aneuretinae'
+      name.html_epithet.should == 'Aneuretinae'
     end
     it "should reuse names" do
       FactoryGirl.create :name, name: 'Dolichoderinae'

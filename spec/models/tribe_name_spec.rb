@@ -7,7 +7,12 @@ describe TribeName do
 
     it "should recognize its key and set its name appropriately" do
       name = Name.import tribe_name: 'Aneuretini'
-      TribeName.find(name).name.should == 'Aneuretini'
+      name = TribeName.find name
+      name.name.should == 'Aneuretini'
+      name.epithet.should == 'Aneuretini'
+      name.to_s.should == 'Aneuretini'
+      name.to_html.should == 'Aneuretini'
+      name.html_epithet.should == 'Aneuretini'
     end
     it "should reuse names" do
       FactoryGirl.create :name, name: 'Dolichoderini'
