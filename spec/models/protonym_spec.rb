@@ -22,7 +22,7 @@ describe Protonym do
       }
 
       protonym = Protonym.find Protonym.import(data)
-      protonym.rank.should == 'family_or_subfamily'
+      protonym.name.rank.should == 'family_or_subfamily'
       protonym.name.to_s.should == 'Formicariae'
       protonym.authorship.pages.should == '124'
       protonym.authorship.reference.should == @reference
@@ -35,28 +35,28 @@ describe Protonym do
     it "should handle a tribe protonym" do
       data = {tribe_name: "Aneuretini", authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]}
       protonym = Protonym.find Protonym.import(data)
-      protonym.rank.should == 'tribe'
+      protonym.name.rank.should == 'tribe'
       protonym.name.to_s.should == 'Aneuretini'
     end
 
     it "should handle a subtribe protonym" do
       data = {subtribe_name: 'Bothriomyrmecina', authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]}
       protonym = Protonym.find Protonym.import(data)
-      protonym.rank.should == 'subtribe'
+      protonym.name.rank.should == 'subtribe'
       protonym.name.to_s.should == 'Bothriomyrmecina'
     end
 
     it "should handle a genus protonym" do
       data = {genus_name: "Atta", authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]}
       protonym = Protonym.find Protonym.import(data)
-      protonym.rank.should == 'genus'
+      protonym.name.rank.should == 'genus'
       protonym.name.to_s.should == 'Atta'
     end
 
     it "should handle a species protonym" do
       data = {genus_name: "Heteromyrmex", species_epithet: 'atopogaster', authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]}
       protonym = Protonym.find Protonym.import(data)
-      protonym.rank.should == 'species'
+      protonym.name.rank.should == 'species'
       protonym.name.to_s.should == 'Heteromyrmex atopogaster'
     end
 

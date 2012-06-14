@@ -183,7 +183,7 @@ describe Genus do
         taxonomic_history: ["Atta as genus", "Atta as species"]
       ).reload
       genus.name.to_s.should == 'Atta'
-      genus.epithet.should == 'Atta'
+      genus.name.epithet.should == 'Atta'
       genus.should_not be_invalid
       genus.should be_fossil
       genus.subfamily.should == subfamily

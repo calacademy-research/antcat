@@ -44,15 +44,6 @@ describe Species do
     end
   end
 
-  describe "Label" do
-    it "should handle it" do
-      subfamily = FactoryGirl.create :subfamily, name: FactoryGirl.create(:name, name: 'Dolichoderinae')
-      genus = FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Myrmicium'), :subfamily => subfamily
-      species = FactoryGirl.create :species, name: FactoryGirl.create(:name, name: 'Myrmicium shattucki'), :genus => genus
-      #species.label.should == '<i>Myrmicium shattucki</i>'
-    end
-  end
-
   describe "Statistics" do
 
     it "should handle 0 children" do

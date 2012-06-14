@@ -6,12 +6,4 @@ module Nameable
     includer.validates   :name, presence: true
   end
 
-  def epithet
-    name.epithet || name.name
-  end
-
-  def rank
-    name.rank
-  end
-
 end
