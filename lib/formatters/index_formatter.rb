@@ -44,9 +44,9 @@ module Formatters::IndexFormatter
 
   def format_protonym_name protonym
     classes = ['name', 'taxon']
-    classes << 'genus' if protonym.rank == 'genus'
-    classes << 'species' if protonym.rank == 'species'
-    classes << 'subfamily' if protonym.rank == 'family_or_subfamily'
+    classes << 'genus' if protonym.name.rank == 'genus'
+    classes << 'species' if protonym.name.rank == 'species'
+    classes << 'subfamily' if protonym.name.rank == 'family_or_subfamily'
     content_tag :span, class: classes.sort.join(' ') do
       name_label protonym.name.to_s, protonym.fossil
     end

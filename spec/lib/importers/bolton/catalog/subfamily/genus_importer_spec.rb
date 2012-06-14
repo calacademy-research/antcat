@@ -48,7 +48,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
 
       protonym = genus.protonym
       protonym.name.to_s.should == 'Condylodon'
-      protonym.rank.should == 'genus'
+      protonym.name.rank.should == 'genus'
       protonym.authorship.reference.should == lund
       protonym.authorship.pages.should == '131'
     end

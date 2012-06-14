@@ -163,7 +163,7 @@ describe Taxon do
 
   describe ".rank" do
     it "should return a lowercase version" do
-      FactoryGirl.create(:subfamily).rank.should == 'subfamily'
+      FactoryGirl.create(:subfamily).name.rank.should == 'subfamily'
     end
   end
 

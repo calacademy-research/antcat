@@ -96,7 +96,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
 
       protonym = subfamily.protonym
       protonym.name.to_s.should == 'Aneuretini'
-      protonym.rank.should == 'tribe'
+      protonym.name.rank.should == 'tribe'
 
       authorship = protonym.authorship
       authorship.reference.should == emery

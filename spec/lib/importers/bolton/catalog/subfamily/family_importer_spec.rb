@@ -88,7 +88,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
     genus.should be_excluded
     protonym = genus.protonym
     protonym.name.to_s.should == 'Promyrmicium'
-    protonym.rank.should == 'genus'
+    protonym.name.rank.should == 'genus'
     protonym.fossil.should be_true
     protonym.authorship
     protonym.sic
