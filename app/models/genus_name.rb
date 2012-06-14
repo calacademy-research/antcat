@@ -1,4 +1,4 @@
-class GenusName < GenusGroupName
+class GenusName < Name
 
   def self.get_name data
     data[:genus_name]

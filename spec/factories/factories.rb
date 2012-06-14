@@ -134,13 +134,6 @@ FactoryGirl.define do
     html_epithet    {html_name}
   end
 
-  factory :genus_group_name do
-    sequence(:name) {|n| "GenusGroup#{n}"}
-    html_name       {"<i>#{name}</i>"}
-    epithet         {name}
-    html_epithet    {html_name}
-  end
-
   factory :genus_name do
     sequence(:name) {|n| "Genus#{n}"}
     html_name       {"<i>#{name}</i>"}

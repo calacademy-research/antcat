@@ -1,8 +1,6 @@
 # coding: UTF-8
 require 'asterisk_dagger_formatting'
-
 class Taxon < ActiveRecord::Base
-  include Nameable
 
   set_table_name :taxa
 
@@ -13,6 +11,8 @@ class Taxon < ActiveRecord::Base
   has_many    :taxonomic_history_items, order: :position, dependent: :destroy
   has_many    :reference_sections, :order => :position, dependent: :destroy
   belongs_to  :type_name, class_name: 'Name', foreign_key: :type_name_id
+  belongs_to  :name
+  validates   :name, presence: true
 
   scope :valid, where("status = ?", 'valid')
   scope :with_names, joins(:name).readonly(false)
