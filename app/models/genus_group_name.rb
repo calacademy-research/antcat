@@ -1,3 +1,0 @@
-class GenusGroupName < Name
-
-end

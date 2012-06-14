@@ -107,7 +107,7 @@ describe Taxon do
   describe "Find name" do
     before do
       FactoryGirl.create :genus, name: FactoryGirl.create(:genus_name, name: 'Monomorium')
-      @monoceros = FactoryGirl.create :genus, name: FactoryGirl.create(:genus_group_name, name: 'Monoceros')
+      @monoceros = FactoryGirl.create :genus, name: FactoryGirl.create(:genus_name, name: 'Monoceros')
       species_name = FactoryGirl.create(:species_name, name: 'Monoceros rufa', epithet: 'rufa')
       @rufa = FactoryGirl.create :species, genus: @monoceros, name: species_name
     end
