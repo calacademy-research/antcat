@@ -24,10 +24,10 @@ describe ForwardReference do
 
       it "should fixup a senior synonym" do
         genus = FactoryGirl.create :genus
-        species_name = FactoryGirl.create(:species_name, name: 'minor', genus_group_name: genus.name)
+        species_name = FactoryGirl.create :species_name, name: 'Atta minor'
         junior_synonym = FactoryGirl.create :species, genus: genus
         senior_synonym = FactoryGirl.create :species, name: species_name, genus: genus
-        forward_reference = ForwardReference.create! :source_id => junior_synonym.id, :target_name => 'minor', target_parent: genus.id
+        forward_reference = ForwardReference.create! source_id: junior_synonym.id, target_name: 'Atta minor', target_parent: genus.id
         forward_reference.fixup
         junior_synonym.reload
         junior_synonym.should be_synonym_of senior_synonym

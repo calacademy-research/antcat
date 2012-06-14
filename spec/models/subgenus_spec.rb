@@ -27,7 +27,7 @@ describe Subgenus do
         genus: genus,
         subgenus_epithet: 'Subatta',
         fossil: true,
-        protonym: {genus_name: genus.name, subgenus_epithet: "Subatta",
+        protonym: {genus: genus.name, subgenus_epithet: "Subatta",
                    authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]},
         type_species: {genus_name: 'Atta', subgenus_name: 'Subatta', species_epithet: 'major',
                           texts: [{text: [{phrase: ', by monotypy'}]}]},

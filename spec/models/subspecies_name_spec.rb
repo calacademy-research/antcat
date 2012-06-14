@@ -8,8 +8,10 @@ describe SubspeciesName do
     it "should recognize its key and set its name appropriately" do
       name = Name.import genus_name: 'Atta', species_epithet: 'major', subspecies: [{species_group_epithet: 'alpina'}]
       name = SubspeciesName.find name
-      name.epithet.should == 'alpina'
       name.name.should == 'Atta major alpina'
+      name.to_html.should == '<i>Atta</i> <i>major</i> <i>alpina</i>'
+      name.epithet.should == 'alpina'
+      name.html_epithet.should == '<i>alpina</i>'
     end
     it "should reuse names" do
       attributes = {genus_name: 'Atta', species_epithet: 'major', subspecies: [{species_group_epithet: 'alpina'}]}
@@ -25,12 +27,13 @@ describe SubspeciesName do
       Name.count.should == 5
     end
 
-    it "should handle a subspecies qualifiers" do
+    it "should handle subspecies types" do
       name = Name.import genus_name: 'Atta', species_epithet: 'major', subspecies: [{:type => 'r.', species_group_epithet: 'alpina'}]
       name = SubspeciesName.find name
-      name.epithet.should == 'alpina'
-      name.name.should == 'Atta major r. alpina'
-      #name.label.should == '<i>Atta major</i> r. <i>alpina</i>'
+      name.to_s.should == 'Atta major r. alpina'
+      name.to_html.should == '<i>Atta</i> <i>major</i> r. <i>alpina</i>'
+      name.epithet.should == 'r. alpina'
+      name.html_epithet.should == 'r. <i>alpina</i>'
     end
 
     it "should handle multiple subspecies epithets" do
@@ -39,25 +42,8 @@ describe SubspeciesName do
         {species_group_epithet: 'superba', :type => 'r.'}
       ]
       name = SubspeciesName.find name
-      name.epithet.should == 'alpina'
+      name.epithet.should == 'alpina r. superba'
       name.name.should == 'Atta major alpina r. superba'
-    end
-
-    it "multiple subspecies epithets should create separate names for each epithet" do
-      name = Name.import genus_name: 'Atta', species_epithet: 'major', subspecies: [
-        {species_group_epithet: 'alpina'},
-        {species_group_epithet: 'balto', type: 'subsp.'},
-        {species_group_epithet: 'superba', :type => 'r.'}
-      ]
-      alpina = Name.find_by_epithet 'alpina'
-      balto = Name.find_by_epithet 'balto'
-      superba = Name.find_by_epithet 'superba'
-      alpina.prior_subspecies_name.should be_nil
-      alpina.next_subspecies_name.should == balto
-      balto.prior_subspecies_name.should == alpina
-      balto.next_subspecies_name.should == superba
-      superba.prior_subspecies_name.should == balto
-      superba.next_subspecies_name.should be_nil
     end
 
     it "should import a subspecies name with a subgenus name" do
@@ -65,14 +51,6 @@ describe SubspeciesName do
       SubspeciesName.find(name).to_s.should == 'Atta (Subatta) major r. alpina'
     end
 
-    it "should report back on all its epithets if asked" do
-      name = Name.import genus_name: 'Atta', species_epithet: 'major', subspecies: [
-        {species_group_epithet: 'alpina'},
-        {species_group_epithet: 'balto', type: 'subsp.'},
-        {species_group_epithet: 'superba', type: 'r.'}
-      ]
-      name.subspecies_epithets.should == 'major alpina subsp. balto r. superba'
-    end
   end
 
 end

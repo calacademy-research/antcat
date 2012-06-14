@@ -6,7 +6,7 @@ class Protonym < ActiveRecord::Base
   def self.import data
     transaction do
       authorship = Citation.import data[:authorship].first if data[:authorship]
-      create! name:  Name.import(data),
+      create! name:         Name.import(data),
               sic:          data[:sic],
               fossil:       data[:fossil],
               authorship:   authorship,

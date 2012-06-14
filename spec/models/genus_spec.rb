@@ -46,16 +46,16 @@ describe Genus do
 
   end
 
-  describe "Full label" do
+  describe "Label" do
 
     it "is the genus name" do
-      taxon = FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Atta'), :subfamily => FactoryGirl.create(:subfamily, name: FactoryGirl.create(:name, name: 'Dolichoderinae'))
-      taxon.label.should == '<i>Atta</i>'
+      taxon = FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Atta', html_name: '<i>Atta</i>'), :subfamily => FactoryGirl.create(:subfamily, name: FactoryGirl.create(:name, name: 'Dolichoderinae'))
+      taxon.name.to_html.should == '<i>Atta</i>'
     end
 
     it "is just the genus name if there is no subfamily" do
-      taxon = FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Atta'), :subfamily => nil
-      taxon.label.should == '<i>Atta</i>'
+      taxon = FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Atta', html_name: '<i>Atta</i>'), :subfamily => nil
+      taxon.name.to_html.should == '<i>Atta</i>'
     end
 
   end

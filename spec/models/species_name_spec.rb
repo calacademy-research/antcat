@@ -8,8 +8,10 @@ describe SpeciesName do
     it "should recognize its key and set its name appropriately" do
       name = Name.import genus_name: 'Atta', species_epithet: 'major'
       name = SpeciesName.find name
-      name.epithet.should == 'major'
       name.name.should == 'Atta major'
+      name.to_html.should == '<i>Atta</i> <i>major</i>'
+      name.epithet.should == 'major'
+      name.html_epithet.should == '<i>major</i>'
     end
     it "should reuse names" do
       Name.import genus_name: 'Atta', species_epithet: 'major'

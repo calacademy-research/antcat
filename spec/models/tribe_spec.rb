@@ -22,9 +22,9 @@ describe Tribe do
     taxon.name.to_s.should == 'Attini'
   end
 
-  it "should have as its full label, just its name" do
+  it "should have as its label, just its name" do
     taxon = FactoryGirl.create :tribe, name: FactoryGirl.create(:name, name: 'Attini'), :subfamily => FactoryGirl.create(:subfamily, name: FactoryGirl.create(:name, name: 'Myrmicinae'))
-    taxon.label.should == 'Attini'
+    taxon.name.to_html.should == 'Attini'
   end
 
   describe "Siblings" do
