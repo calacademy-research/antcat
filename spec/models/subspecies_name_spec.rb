@@ -12,6 +12,8 @@ describe SubspeciesName do
       name.to_html.should == '<i>Atta</i> <i>major</i> <i>alpina</i>'
       name.epithet.should == 'alpina'
       name.html_epithet.should == '<i>alpina</i>'
+      name.epithets.should == 'major alpina'
+      name.html_epithets.should == '<i>major</i> <i>alpina</i>'
     end
     it "should reuse names" do
       attributes = {genus_name: 'Atta', species_epithet: 'major', subspecies: [{species_group_epithet: 'alpina'}]}
@@ -32,23 +34,21 @@ describe SubspeciesName do
       name = SubspeciesName.find name
       name.to_s.should == 'Atta major r. alpina'
       name.to_html.should == '<i>Atta</i> <i>major</i> r. <i>alpina</i>'
-      name.epithet.should == 'r. alpina'
-      name.html_epithet.should == 'r. <i>alpina</i>'
-    end
-
-    it "should handle multiple subspecies epithets" do
-      name = Name.import genus_name: 'Atta', species_epithet: 'major', subspecies: [
-        {species_group_epithet: 'alpina'},
-        {species_group_epithet: 'superba', :type => 'r.'}
-      ]
-      name = SubspeciesName.find name
-      name.epithet.should == 'alpina r. superba'
-      name.name.should == 'Atta major alpina r. superba'
+      name.epithet.should == 'alpina'
+      name.html_epithet.should == '<i>alpina</i>'
+      name.epithets.should == 'major r. alpina'
+      name.html_epithets.should == '<i>major</i> r. <i>alpina</i>'
     end
 
     it "should import a subspecies name with a subgenus name" do
       name = Name.import genus_name: 'Atta', subgenus_epithet: 'Subatta', species_epithet: 'major', subspecies: [{:type => 'r.', species_group_epithet: 'alpina'}]
-      SubspeciesName.find(name).to_s.should == 'Atta (Subatta) major r. alpina'
+      name = SubspeciesName.find name
+      name.to_s.should == 'Atta (Subatta) major r. alpina'
+      name.to_html.should == '<i>Atta</i> <i>(Subatta)</i> <i>major</i> r. <i>alpina</i>'
+      name.epithet.should == 'alpina'
+      name.html_epithet.should == '<i>alpina</i>'
+      name.epithets.should == 'major r. alpina'
+      name.html_epithets.should == '<i>major</i> r. <i>alpina</i>'
     end
 
   end

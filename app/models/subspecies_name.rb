@@ -5,24 +5,30 @@ class SubspeciesName < Name
   end
 
   def self.make_attributes _, data
-    attributes = {epithet: '', html_epithet: ''}
+    attributes = {epithets: '', html_epithets: ''}
     for subspecies in data[:subspecies]
       type = subspecies[:type]
       if type
-        attributes[:epithet]      << type << ' '
-        attributes[:html_epithet] << type << ' '
+        attributes[:epithets]      << type << ' '
+        attributes[:html_epithets] << type << ' '
       end
       epithet = subspecies[:species_group_epithet]
-      attributes[:epithet]      << "#{epithet} "
-      attributes[:html_epithet] << "<i>#{epithet}</i> "
+      html_epithet  = "<i>#{epithet}</i>"
+      attributes[:epithets]      << "#{epithet} "
+      attributes[:html_epithets] << "#{html_epithet} "
+      # save the last subspecies epithet as 'the' epithet
+      attributes[:epithet]       = epithet
+      attributes[:html_epithet]  = html_epithet
     end
 
-    attributes[:epithet].strip!
-    attributes[:html_epithet].strip!
+    attributes[:epithets].strip!
+    attributes[:html_epithets].strip!
 
     parent_name = get_parent_name data
-    attributes[:name]      = "#{parent_name} #{attributes[:epithet]}"
-    attributes[:html_name] = "#{parent_name.to_html} #{attributes[:html_epithet]}"
+    attributes[:name]          = "#{parent_name} #{attributes[:epithets]}"
+    attributes[:html_name]     = "#{parent_name.to_html} #{attributes[:html_epithets]}"
+    attributes[:epithets]      = "#{parent_name.epithet} #{attributes[:epithets]}"
+    attributes[:html_epithets] = "#{parent_name.html_epithet} #{attributes[:html_epithets]}"
 
     attributes
   end

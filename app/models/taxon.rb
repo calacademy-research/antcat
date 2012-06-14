@@ -63,21 +63,15 @@ class Taxon < ActiveRecord::Base
 
   def self.find_name name, search_type = 'matching'
     query = ordered_by_name
-    names = name.split ' '
-    if names.size > 1
-      query = query.joins 'JOIN taxa genera ON genera.id = taxa.genus_id'
-      query = query.joins 'JOIN names gno ON gno.id = genera.name_id'
-      query = query.where ['gno.name = ?', names.first]
-      name = names.second
-    end
+    column = name.split(' ').size > 1 ?  'name' : 'epithet'
     types_sought = ['Subfamily', 'Tribe', 'Genus', 'Species']
     case search_type
     when 'matching'
-      query = query.where ['names.name = ? AND taxa.type IN (?)', name, types_sought]
+      query = query.where ["names.#{column} = ?    AND taxa.type IN (?)", name, types_sought]
     when 'beginning with'
-      query = query.where ['names.name LIKE ? AND taxa.type IN (?)', name + '%', types_sought]
+      query = query.where ["names.#{column} LIKE ? AND taxa.type IN (?)", name + '%', types_sought]
     when 'containing'
-      query = query.where ['names.name LIKE ? AND taxa.type IN (?)', '%' + name + '%', types_sought]
+      query = query.where ["names.#{column} LIKE ? AND taxa.type IN (?)", '%' + name + '%', types_sought]
     end
     query.all
   end
