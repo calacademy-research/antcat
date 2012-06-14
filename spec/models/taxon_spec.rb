@@ -147,7 +147,11 @@ describe Taxon do
 
     describe "Finding full species name" do
       it "should search for full species name" do
-        results = Taxon.find_name 'Monoceros rufa'
+        results = Taxon.find_name 'Monoceros rufa '
+        results.first.should == @rufa
+      end
+      it "should search for whole name, even when using beginning with, even with trailing space" do
+        results = Taxon.find_name 'Monoceros rufa ', 'beginning with'
         results.first.should == @rufa
       end
       it "should search for partial species name" do
