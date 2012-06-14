@@ -46,3 +46,5 @@ AntCat::Application.configure do
   config.assets.debug = false
   config.assets.digest = false
 end
+
+require 'lll'

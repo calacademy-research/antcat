@@ -12,3 +12,5 @@ AntCat::Application.configure do
   config.assets.compress = false
   config.assets.debug = true
 end
+
+require 'lll'
