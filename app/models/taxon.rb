@@ -4,21 +4,26 @@ class Taxon < ActiveRecord::Base
 
   set_table_name :taxa
 
-  belongs_to  :synonym_of, :class_name => 'Taxon', :foreign_key => :synonym_of_id
-  has_one     :homonym_replaced, :class_name => 'Taxon', :foreign_key => :homonym_replaced_by_id
-  belongs_to  :protonym, dependent: :destroy
-  belongs_to  :homonym_replaced_by, :class_name => 'Taxon'
-  has_many    :taxonomic_history_items, order: :position, dependent: :destroy
-  has_many    :reference_sections, :order => :position, dependent: :destroy
-  belongs_to  :type_name, class_name: 'Name', foreign_key: :type_name_id
   belongs_to  :name
   validates   :name, presence: true
 
-  scope :valid, where("status = ?", 'valid')
-  scope :with_names, joins(:name).readonly(false)
+  belongs_to  :protonym, dependent: :destroy
+
+  belongs_to  :type_name, class_name: 'Name', foreign_key: :type_name_id
+
+  belongs_to  :synonym_of, :class_name => 'Taxon', :foreign_key => :synonym_of_id
+
+  belongs_to  :homonym_replaced_by, :class_name => 'Taxon'
+  has_one     :homonym_replaced, :class_name => 'Taxon', :foreign_key => :homonym_replaced_by_id
+
+  has_many    :taxonomic_history_items, order: :position, dependent: :destroy
+  has_many    :reference_sections, :order => :position, dependent: :destroy
+
+  scope :valid,           where("status = ?", 'valid')
+  scope :with_names,      joins(:name).readonly(false)
   scope :ordered_by_name, joins(:name).readonly(false).order('names.name')
-  scope :extant, where(fossil: false)
-  scope :find_by_name, lambda {|name| with_names.where([:name, name])}
+  scope :extant,          where(fossil: false)
+  scope :find_by_name,    lambda {|name| with_names.where([:name, name])}
 
   def unavailable?;     status == 'unavailable' end
   def available?;       !unavailable? end
