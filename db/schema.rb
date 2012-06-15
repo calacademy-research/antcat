@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120614221159) do
+ActiveRecord::Schema.define(:version => 20120615005351) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -77,7 +77,6 @@ ActiveRecord::Schema.define(:version => 20120614221159) do
     t.integer "source_id"
     t.string  "target_name"
     t.boolean "fossil"
-    t.integer "target_parent"
   end
 
   create_table "journals", :force => true do |t|
