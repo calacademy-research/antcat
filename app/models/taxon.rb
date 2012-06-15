@@ -7,13 +7,12 @@ class Taxon < ActiveRecord::Base
   # name
   belongs_to  :name
   validates   :name, presence: true
+  scope :with_names,      joins(:name).readonly(false)
+  scope :ordered_by_name, with_names.order('names.name')
   def self.find_by_name name
     taxon = with_names.where(['name = ?', name]).first
     taxon && Taxon.find_by_id(taxon.id)
   end
-  scope :find_by_name,    lambda {|name| with_names.where([:name, name])}
-  scope :with_names,      joins(:name).readonly(false)
-  scope :ordered_by_name, joins(:name).readonly(false).order('names.name')
   def self.find_name name, search_type = 'matching'
     name = name.dup.strip
     query = ordered_by_name
