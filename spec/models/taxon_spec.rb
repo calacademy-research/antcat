@@ -104,6 +104,17 @@ describe Taxon do
     end
   end
 
+  describe "Find by name" do
+    it "should return nil if nothing matches" do
+      Taxon.find_by_name('sdfsdf').should == nil
+    end
+    it "should return one of the items if there are more than one (bad!)" do
+      name = FactoryGirl.create :genus_name, name: 'Monomorium'
+      2.times {FactoryGirl.create :genus, name: name}
+      Taxon.find_by_name('Monomorium').name.name.should == 'Monomorium'
+    end
+  end
+
   describe "Find name" do
     before do
       FactoryGirl.create :genus, name: FactoryGirl.create(:genus_name, name: 'Monomorium')
