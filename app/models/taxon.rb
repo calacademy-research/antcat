@@ -5,9 +5,8 @@ class Taxon < ActiveRecord::Base
 
   ###############################################
   # name
-  belongs_to  :name
-  validates   :name, presence: true
-  scope :with_names,      joins(:name).readonly(false)
+  belongs_to  :name; validates :name, presence: true
+  scope :with_names, joins(:name).readonly(false)
   scope :ordered_by_name, with_names.order('names.name')
   def self.find_by_name name
     taxon = with_names.where(['name = ?', name]).first
@@ -29,27 +28,23 @@ class Taxon < ActiveRecord::Base
     query.all
   end
 
-  belongs_to  :protonym, dependent: :destroy
-
-  belongs_to  :type_name, class_name: 'Name', foreign_key: :type_name_id
-
   ###############################################
   # synonym
-  belongs_to  :synonym_of, :class_name => 'Taxon', :foreign_key => :synonym_of_id
+  belongs_to :synonym_of, class_name: 'Taxon', foreign_key: :synonym_of_id
   def synonym?; status == 'synonym' end
-  def synonym_of? taxon
-    synonym_of == taxon
-  end
+  def synonym_of? taxon; synonym_of == taxon end
 
   ###############################################
   # homonym
-  belongs_to  :homonym_replaced_by, :class_name => 'Taxon'
-  has_one     :homonym_replaced, :class_name => 'Taxon', :foreign_key => :homonym_replaced_by_id
+  belongs_to  :homonym_replaced_by, class_name: 'Taxon'
+  has_one     :homonym_replaced, class_name: 'Taxon', foreign_key: :homonym_replaced_by_id
   def homonym?; status == 'homonym' end
-  def homonym_replaced_by? taxon
-    homonym_replaced_by == taxon
-  end
+  def homonym_replaced_by? taxon; homonym_replaced_by == taxon end
 
+  ###############################################
+  # other associations
+  belongs_to  :protonym, dependent: :destroy
+  belongs_to  :type_name, class_name: 'Name', foreign_key: :type_name_id
   has_many    :taxonomic_history_items, order: :position, dependent: :destroy
   has_many    :reference_sections, :order => :position, dependent: :destroy
 
@@ -57,14 +52,15 @@ class Taxon < ActiveRecord::Base
   # statuses, fossil
   scope :valid,           where("status = ?", 'valid')
   scope :extant,          where(fossil: false)
-  def unavailable?;     status == 'unavailable' end
-  def available?;       !unavailable? end
-  def invalid?;         status != 'valid' end
-  def unidentifiable?;  status == 'unidentifiable' end
+  def unavailable?;       status == 'unavailable' end
+  def available?;         !unavailable? end
+  def invalid?;           status != 'valid' end
+  def unidentifiable?;    status == 'unidentifiable' end
   def unresolved_homonym?;status == 'unresolved homonym' end
-  def excluded?;        status == 'excluded' end
-  def incertae_sedis_in? rank; incertae_sedis_in == rank end
+  def excluded?;          status == 'excluded' end
+  def incertae_sedis_in?  rank; incertae_sedis_in == rank end
 
+  ###############################################
   def rank
     Rank[self].to_s
   end
