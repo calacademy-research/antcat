@@ -14,8 +14,4 @@ class GenusName < Name
     }
   end
 
-  def rank
-    'genus'
-  end
-
 end

@@ -4,8 +4,4 @@ class TribeName < Name
     data[:tribe_name]
   end
 
-  def rank
-    'tribe'
-  end
-
 end

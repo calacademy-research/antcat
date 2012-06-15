@@ -4,8 +4,4 @@ class SubtribeName < Name
     data[:subtribe_name]
   end
 
-  def rank
-    'subtribe'
-  end
-
 end

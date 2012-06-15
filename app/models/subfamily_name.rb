@@ -4,8 +4,4 @@ class SubfamilyName < FamilyOrSubfamilyName
     data[:subfamily_name]
   end
 
-  def rank
-    'subfamily'
-  end
-
 end
