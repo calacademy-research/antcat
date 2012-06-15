@@ -2,7 +2,6 @@
 class Subgenus < GenusGroupTaxon
   belongs_to :genus
   validates_presence_of :genus
-  belongs_to :tribe
   has_many :species
 
   def self.import data, attributes = {}
