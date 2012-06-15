@@ -25,8 +25,4 @@ class SpeciesName < Name
     attributes
   end
 
-  def rank
-    'species'
-  end
-
 end

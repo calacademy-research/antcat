@@ -18,8 +18,4 @@ class SubgenusName < Name
     }
   end
 
-  def rank
-    'subgenus'
-  end
-
 end

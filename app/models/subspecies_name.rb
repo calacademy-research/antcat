@@ -37,8 +37,4 @@ class SubspeciesName < Name
     data[:species] ? data[:species].name : SpeciesName.import_data(data)
   end
 
-  def rank
-    'subspecies'
-  end
-
 end
