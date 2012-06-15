@@ -39,11 +39,6 @@ class Taxon < ActiveRecord::Base
     taxon && Taxon.find_by_id(taxon.id)
   end
 
-  def self.find_by_genus_id_and_name genus_id, name
-    taxon = with_names.where(genus_id: genus_id).where("name = '#{name}'").first
-    taxon && Taxon.find_by_id(taxon.id)
-  end
-
   def rank
     Rank[self].to_s
   end
