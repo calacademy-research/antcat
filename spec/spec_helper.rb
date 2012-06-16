@@ -47,3 +47,12 @@ Spork.each_run do
 end
 
 puts "in #{`pwd`}"
+
+def create_genus name
+  FactoryGirl.create :genus, name: FactoryGirl.create(:genus_name, name: name)
+end
+
+def create_subspecies name, attributes = {}
+  attributes = attributes.merge name: FactoryGirl.create(:subspecies_name, name: name)
+  FactoryGirl.build :subspecies, attributes
+end
