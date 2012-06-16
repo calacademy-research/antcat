@@ -10,9 +10,10 @@ class SubgenusName < Name
 
   def self.make_attributes name, data
     parent_name = get_parent_name data
+    html_epithet = '<i>'.html_safe + name + '</i>'.html_safe
     {
       epithet:      name,
-      html_epithet: "<i>#{name}</i>",
+      html_epithet: html_epithet,
       name:         "#{parent_name} (#{name})",
       html_name:    "#{parent_name.to_html} <i>(#{name})</i>",
     }

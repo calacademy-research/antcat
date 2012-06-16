@@ -17,7 +17,7 @@ class SpeciesName < Name
   def self.make_attributes name, data
     attributes = {
       epithet:      name,
-      html_epithet: "<i>#{name}</i>",
+      html_epithet: '<i>'.html_safe + name + '</i>'.html_safe
     }
     parent_name = get_parent_name data
     attributes[:name]      = "#{parent_name} #{attributes[:epithet]}"
