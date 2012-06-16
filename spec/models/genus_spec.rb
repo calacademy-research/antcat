@@ -20,7 +20,7 @@ describe Genus do
 
   it "should have subspecies" do
     genus = FactoryGirl.create :genus
-    FactoryGirl.create :subspecies, :species => FactoryGirl.create(:species, :genus => genus)
+    FactoryGirl.create :subspecies, genus: genus
     genus.should have(1).subspecies
   end
 
@@ -30,34 +30,6 @@ describe Genus do
     FactoryGirl.create :subgenus, name: FactoryGirl.create(:name, name: 'saltensis'), :genus => atta
     atta = Genus.find_by_name('Atta')
     atta.subgenera.map(&:name).map(&:to_s).should =~ ['robusta', 'saltensis']
-  end
-
-  describe "Full name" do
-
-    it "is the genus name" do
-      taxon = FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Atta'), :subfamily => FactoryGirl.create(:subfamily, name: FactoryGirl.create(:name, name: 'Dolichoderinae'))
-      taxon.name.to_s.should == 'Atta'
-    end
-
-    it "is just the genus name if there is no subfamily" do
-      taxon = FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Atta'), :subfamily => nil
-      taxon.name.to_s.should == 'Atta'
-    end
-
-  end
-
-  describe "Label" do
-
-    it "is the genus name" do
-      taxon = FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Atta', html_name: '<i>Atta</i>'), :subfamily => FactoryGirl.create(:subfamily, name: FactoryGirl.create(:name, name: 'Dolichoderinae'))
-      taxon.name.to_html.should == '<i>Atta</i>'
-    end
-
-    it "is just the genus name if there is no subfamily" do
-      taxon = FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Atta', html_name: '<i>Atta</i>'), :subfamily => nil
-      taxon.name.to_html.should == '<i>Atta</i>'
-    end
-
   end
 
   describe "Statistics" do
@@ -82,34 +54,34 @@ describe Genus do
 
     it "should handle 1 valid species with 2 valid subspecies" do
       genus = FactoryGirl.create :genus
-      species = FactoryGirl.create :species, :genus => genus
-      2.times {FactoryGirl.create :subspecies, :species => species}
-      genus.statistics.should == {:extant => {:species => {'valid' => 1}, :subspecies => {'valid' => 2}}}
+      species = FactoryGirl.create :species, genus: genus
+      2.times {FactoryGirl.create :subspecies, species: species, genus: genus}
+      genus.statistics.should == {extant: {species: {'valid' => 1}, subspecies: {'valid' => 2}}}
     end
 
     it "should be able to differentiate extinct species and subspecies" do
       genus = FactoryGirl.create :genus
-      species = FactoryGirl.create :species, :genus => genus
-      fossil_species = FactoryGirl.create :species, :genus => genus, :fossil => true
-      FactoryGirl.create :subspecies, :species => species, :fossil => true
-      FactoryGirl.create :subspecies, :species => species
-      FactoryGirl.create :subspecies, :species => fossil_species, :fossil => true
+      species = FactoryGirl.create :species, genus: genus
+      fossil_species = FactoryGirl.create :species, genus: genus, fossil: true
+      FactoryGirl.create :subspecies, genus: genus, species: species, fossil: true
+      FactoryGirl.create :subspecies, genus: genus, species: species
+      FactoryGirl.create :subspecies, genus: genus, species: fossil_species, fossil: true
       genus.statistics.should == {
-        :extant => {:species => {'valid' => 1}, :subspecies => {'valid' => 1}},
-        :fossil => {:species => {'valid' => 1}, :subspecies => {'valid' => 2}},
+        extant: {species: {'valid' => 1}, subspecies: {'valid' => 1}},
+        fossil: {species: {'valid' => 1}, subspecies: {'valid' => 2}},
       }
     end
 
     it "should be able to differentiate extinct species and subspecies" do
       genus = FactoryGirl.create :genus
-      species = FactoryGirl.create :species, :genus => genus
-      fossil_species = FactoryGirl.create :species, :genus => genus, :fossil => true
-      FactoryGirl.create :subspecies, :species => species, :fossil => true
-      FactoryGirl.create :subspecies, :species => species
-      FactoryGirl.create :subspecies, :species => fossil_species, :fossil => true
+      species = FactoryGirl.create :species, genus: genus
+      fossil_species = FactoryGirl.create :species, genus: genus, fossil: true
+      FactoryGirl.create :subspecies, genus: genus, species: species, fossil: true
+      FactoryGirl.create :subspecies, genus: genus, species: species
+      FactoryGirl.create :subspecies, genus: genus, species: fossil_species, fossil: true
       genus.statistics.should == {
-        :extant => {:species => {'valid' => 1}, :subspecies => {'valid' => 1}},
-        :fossil => {:species => {'valid' => 1}, :subspecies => {'valid' => 2}},
+        extant: {species: {'valid' => 1}, subspecies: {'valid' => 1}},
+        fossil: {species: {'valid' => 1}, subspecies: {'valid' => 2}},
       }
     end
 
