@@ -29,7 +29,7 @@ class Species < Taxon
 
       attributes = {
         genus:      data[:genus],
-        name:name,
+        name:       name,
         fossil:     data[:fossil] || false,
         status:     data[:status] || 'valid',
         protonym:   protonym,
