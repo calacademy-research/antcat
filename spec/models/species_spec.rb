@@ -126,6 +126,24 @@ describe Species do
       authorship.reference.should == reference
     end
 
+    describe "Importing subspecies" do
+      it "should work" do
+        genus = FactoryGirl.create :genus, name: FactoryGirl.create(:genus_name, name: 'Camponotus')
+        taxon = Species.import(
+          genus:                  genus,
+          species_group_epithet:  'refectus',
+          protonym: {
+            genus_name:           'Camponotus',
+            subgenus_epithet:     'Myrmeurynota',
+            species_epithet:      'gilviventris',
+            subspecies: [{type:   'var.',
+              subspecies_epithet: 'refectus',
+         }]})
+        taxon.should be_kind_of Subspecies
+        taxon.name.to_s.should == 'Camponotus (Myrmeurynota) gilviventris var. refectus'
+      end
+    end
+
   end
 
   describe "Setting status from history" do
