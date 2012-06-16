@@ -28,9 +28,9 @@ describe Subfamily do
 
   it "should have subspecies" do
     subfamily = FactoryGirl.create :subfamily
-    genus = FactoryGirl.create :genus, :subfamily => subfamily
-    species = FactoryGirl.create :species, :genus => genus
-    subspecies = FactoryGirl.create :subspecies, :species => species
+    genus = FactoryGirl.create :genus, subfamily: subfamily
+    species = FactoryGirl.create :species, genus: genus
+    subspecies = FactoryGirl.create :subspecies, genus: genus, species: species
     subfamily.should have(1).subspecies
   end
 
@@ -78,36 +78,36 @@ describe Subfamily do
     it "should handle 1 valid genus with 2 valid species, one of which has a subspecies" do
       subfamily = FactoryGirl.create :subfamily
       genus = FactoryGirl.create :genus, :subfamily => subfamily
-      FactoryGirl.create :species, :genus => genus
-      FactoryGirl.create :subspecies, :species => FactoryGirl.create(:species, :genus => genus)
-      subfamily.statistics.should == {:extant => {:genera => {'valid' => 1}, :species => {'valid' => 2}, :subspecies => {'valid' => 1}}}
+      FactoryGirl.create :species, genus: genus
+      FactoryGirl.create :subspecies, genus: genus, species: FactoryGirl.create(:species, genus: genus)
+      subfamily.statistics.should == {extant: {genera: {'valid' => 1}, species: {'valid' => 2}, subspecies: {'valid' => 1}}}
     end
 
     it "should differentiate between extinct genera, species and subspecies" do
       subfamily = FactoryGirl.create :subfamily
-      genus = FactoryGirl.create :genus, :subfamily => subfamily
-      FactoryGirl.create :genus, :subfamily => subfamily, :fossil => true
-      FactoryGirl.create :species, :genus => genus
-      FactoryGirl.create :species, :genus => genus, :fossil => true
-      FactoryGirl.create :subspecies, :species => FactoryGirl.create(:species, :genus => genus)
-      FactoryGirl.create :subspecies, :species => FactoryGirl.create(:species, :genus => genus), :fossil => true
+      genus = FactoryGirl.create :genus, subfamily: subfamily
+      FactoryGirl.create :genus, subfamily: subfamily, fossil: true
+      FactoryGirl.create :species, genus: genus
+      FactoryGirl.create :species, genus: genus, fossil: true
+      FactoryGirl.create :subspecies, genus: genus, species: FactoryGirl.create(:species, genus: genus)
+      FactoryGirl.create :subspecies, genus: genus, species: FactoryGirl.create(:species, genus: genus), fossil: true
       subfamily.statistics.should == {
-        :extant => {:genera => {'valid' => 1}, :species => {'valid' => 3}, :subspecies => {'valid' => 1}},
-        :fossil => {:genera => {'valid' => 1}, :species => {'valid' => 1}, :subspecies => {'valid' => 1}},
+        extant: {genera: {'valid' => 1}, species: {'valid' => 3}, subspecies: {'valid' => 1}},
+        :fossil => {genera: {'valid' => 1}, species: {'valid' => 1}, subspecies: {'valid' => 1}},
       }
     end
 
     it "should differentiate between extinct genera, species and subspecies" do
       subfamily = FactoryGirl.create :subfamily
-      genus = FactoryGirl.create :genus, :subfamily => subfamily
-      FactoryGirl.create :genus, :subfamily => subfamily, :fossil => true
-      FactoryGirl.create :species, :genus => genus
-      FactoryGirl.create :species, :genus => genus, :fossil => true
-      FactoryGirl.create :subspecies, :species => FactoryGirl.create(:species, :genus => genus)
-      FactoryGirl.create :subspecies, :species => FactoryGirl.create(:species, :genus => genus), :fossil => true
+      genus = FactoryGirl.create :genus, subfamily: subfamily
+      FactoryGirl.create :genus, subfamily: subfamily, fossil: true
+      FactoryGirl.create :species, genus: genus
+      FactoryGirl.create :species, genus: genus, fossil: true
+      FactoryGirl.create :subspecies, genus: genus, species: FactoryGirl.create(:species, genus: genus)
+      FactoryGirl.create :subspecies, genus: genus, species: FactoryGirl.create(:species, genus: genus), fossil: true
       subfamily.statistics.should == {
-        :extant => {:genera => {'valid' => 1}, :species => {'valid' => 3}, :subspecies => {'valid' => 1}},
-        :fossil => {:genera => {'valid' => 1}, :species => {'valid' => 1}, :subspecies => {'valid' => 1}},
+        extant: {genera: {'valid' => 1}, species: {'valid' => 3}, subspecies: {'valid' => 1}},
+        fossil: {genera: {'valid' => 1}, species: {'valid' => 1}, subspecies: {'valid' => 1}},
       }
     end
 
