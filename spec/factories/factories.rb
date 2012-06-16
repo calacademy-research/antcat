@@ -228,6 +228,7 @@ FactoryGirl.define do
   factory :subspecies do
     association :name, factory: :species_name
     species
+    genus
     protonym
     status  'valid'
   end
