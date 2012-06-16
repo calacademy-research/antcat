@@ -49,16 +49,17 @@ class Species < Taxon
 
     species.update_attributes status: 'valid'
 
+    genus = species.genus
+
     for item in history
       if item[:synonym_ofs]
         for synonym_of in item[:synonym_ofs]
-          genus = species.genus
-          senior_name_string = "#{genus.name} #{synonym_of[:species_epithet]}"
-          senior = Species.find_by_name senior_name_string
+          name = Name.import synonym_of.merge(genus: genus)
+          senior = Species.find_by_name name.name
           if senior
             species.update_attributes status: 'synonym', synonym_of: senior
           else
-            ForwardReference.create! source_id: species.id, target_name: senior_name_string
+            ForwardReference.create! fixee: species, fixee_attribute: 'synonym_of', name: name
           end
         end
       end

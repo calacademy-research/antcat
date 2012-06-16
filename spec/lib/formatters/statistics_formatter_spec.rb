@@ -21,12 +21,12 @@ describe Formatters::StatisticsFormatter do
       @formatter.format_taxon_statistics(subfamily).should == ''
     end
     it "should not leave a comma at the end if only showing valid taxa" do
-      genus = FactoryGirl.create :genus, :taxonomic_history => 'foo'
+      genus = FactoryGirl.create :genus
       genus.should_receive(:statistics).and_return :extant => {:species => {'valid' => 2}}
       @formatter.format_taxon_statistics(genus, :include_invalid => false).should == "<p class=\"taxon_statistics\">2 species</p>"
     end
     it "should not leave a comma at the end if only showing valid taxa" do
-      genus = FactoryGirl.create :genus, :taxonomic_history => 'foo'
+      genus = FactoryGirl.create :genus
       genus.should_receive(:statistics).and_return :extant => {:species => {'valid' => 2}}
       @formatter.format_taxon_statistics(genus, :include_invalid => false).should == "<p class=\"taxon_statistics\">2 species</p>"
     end

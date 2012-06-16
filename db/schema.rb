@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120615005351) do
+ActiveRecord::Schema.define(:version => 20120615231943) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -74,9 +74,9 @@ ActiveRecord::Schema.define(:version => 20120615005351) do
   add_index "citations", ["reference_id"], :name => "index_authorships_on_reference_id"
 
   create_table "forward_references", :force => true do |t|
-    t.integer "source_id"
-    t.string  "target_name"
-    t.boolean "fossil"
+    t.integer "name_id"
+    t.integer "fixee_id"
+    t.string  "fixee_attribute"
   end
 
   create_table "journals", :force => true do |t|
@@ -204,8 +204,7 @@ ActiveRecord::Schema.define(:version => 20120615005351) do
     t.string   "type"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "fossil",                                       :default => false, :null => false
-    t.text     "taxonomic_history",      :limit => 2147483647
+    t.boolean  "fossil",                 :default => false, :null => false
     t.string   "status"
     t.integer  "subfamily_id"
     t.integer  "tribe_id"
@@ -218,7 +217,7 @@ ActiveRecord::Schema.define(:version => 20120615005351) do
     t.text     "type_taxt"
     t.text     "headline_notes_taxt"
     t.integer  "subgenus_id"
-    t.boolean  "hong",                                         :default => false, :null => false
+    t.boolean  "hong",                   :default => false, :null => false
     t.integer  "name_id"
     t.integer  "type_name_id"
   end
