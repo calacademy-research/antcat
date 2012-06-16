@@ -5,7 +5,7 @@ class GenusName < Name
   end
 
   def self.make_attributes name, data
-    html_name = "<i>#{name}</i>"
+    html_name = '<i>'.html_safe + name + '</i>'.html_safe
     {
       name:         name,
       html_name:    html_name,

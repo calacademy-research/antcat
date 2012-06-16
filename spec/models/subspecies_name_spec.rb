@@ -15,6 +15,13 @@ describe SubspeciesName do
       name.epithets.should == 'major alpina'
       name.html_epithets.should == '<i>major</i> <i>alpina</i>'
     end
+    it "escape bad characters" do
+      name = Name.import genus_name: 'Atta', species_epithet: 'major', subspecies: [{species_group_epithet: 'alpi>na'}]
+      name = SubspeciesName.find name
+      name.html_name.should == '<i>Atta</i> <i>major</i> <i>alpi&gt;na</i>'
+      name.html_epithet.should == '<i>alpi&gt;na</i>'
+      name.html_epithets.should == '<i>major</i> <i>alpi&gt;na</i>'
+    end
     it "should reuse names" do
       attributes = {genus_name: 'Atta', species_epithet: 'major', subspecies: [{species_group_epithet: 'alpina'}]}
       Name.import attributes
@@ -56,7 +63,6 @@ describe SubspeciesName do
       name = SubspeciesName.find name
       name.to_s.should == 'Atta (Subatta) major r. alpina'
     end
-
   end
 
 end
