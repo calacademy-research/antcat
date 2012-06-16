@@ -81,10 +81,6 @@ describe Taxon do
     myanmyrma.reload
     myanmyrma.should be_incertae_sedis_in('family')
   end
-  it "should be able to store tons of text in taxonomic history" do
-    camponotus = FactoryGirl.create :taxon, taxonomic_history: '1234' * 100_000
-    camponotus.reload.taxonomic_history.size.should == 4 * 100_000
-  end
 
   describe "Current valid name" do
     it "if it's not a synonym: it's just the name" do
