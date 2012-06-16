@@ -12,7 +12,7 @@ class SubspeciesName < Name
         attributes[:epithets]      << type << ' '
         attributes[:html_epithets] << type << ' '
       end
-      epithet = subspecies[:species_group_epithet]
+      epithet = subspecies[:species_group_epithet] || subspecies[:subspecies_epithet]
       html_epithet  = "<i>#{epithet}</i>"
       attributes[:epithets]      << "#{epithet} "
       attributes[:html_epithets] << "#{html_epithet} "
