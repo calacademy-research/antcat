@@ -6,6 +6,23 @@ describe Importers::Bolton::Catalog::Species::Importer do
     @importer = Importers::Bolton::Catalog::Species::Importer.new
   end
 
+  describe "Importing subspecies" do
+    before do
+      @contents = make_contents %{
+        <p><i>CAMPONOTUS</i></p>
+        <p>
+          <i>refectus</i>. <i>Camponotus (Myrmeurynota) gilviventris</i> var. <i>refectus</i> Wheeler, W.M. 1937b: 460 (w.) CUBA.
+        </p>
+      }
+      @genus = create_genus 'Camponotus'
+      @importer.import_html @contents
+    end
+
+    it "should create a subspecies" do
+      Subspecies.find_by_name('Camponotus (Myrmeurynota) gilviventris var. refectus').should_not be_nil
+    end
+  end
+
   it "should link species to existing genera" do
     contents = make_contents %{
 <p><i>ACANTHOMYRMEX</i> (Oriental, Indo-Australian)</p>
