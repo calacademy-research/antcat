@@ -150,6 +150,10 @@ describe Species do
          }]})
         taxon.should be_kind_of Subspecies
         taxon.name.to_s.should == 'Camponotus (Myrmeurynota) gilviventris var. refectus'
+        reference = SpeciesEpithetReference.first
+        reference.fixee.should == taxon
+        reference.genus.should == genus
+        reference.epithet.should == 'gilviventris'
       end
     end
 

@@ -36,6 +36,17 @@ class Species < Taxon
         protonym:   protonym,
       }
       species = klass.create! attributes
+
+      if species.kind_of? Subspecies
+        SpeciesEpithetReference.create!(
+          fixee:            species,
+          fixee_table:      'taxa',
+          fixee_attribute: 'species_id',
+          genus:            data[:genus],
+          epithet:          data[:protonym][:species_epithet],
+        )
+      end
+
       (data[:history] || []).each do |item|
         species.taxonomic_history_items.create! taxt: item
       end
