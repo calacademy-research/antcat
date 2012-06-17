@@ -48,12 +48,16 @@ end
 
 puts "in #{`pwd`}"
 
-def create_genus name, attributes = {}
+def create_genus name = 'Atta', attributes = {}
   create_taxon name, :genus, :genus_name, attributes
 end
 
 def create_subgenus name, attributes = {}
   create_taxon name, :subgenus, :subgenus_name, attributes
+end
+
+def create_species name, attributes = {}
+  create_taxon name, :species, :species_name, attributes
 end
 
 def create_subspecies name, attributes = {}
