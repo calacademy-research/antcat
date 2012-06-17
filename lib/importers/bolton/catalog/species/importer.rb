@@ -20,6 +20,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     @species_count =
     @error_count =
     @ignored_count =
+    @species_without_protonym_count =
     0
 
     while @line
@@ -47,14 +48,19 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
 
       when :species_record
         if @genus
-          species = ::Species.import species_epithet: @parse_result[:species_group_epithet],
-                                     fossil: @parse_result[:fossil] || false,
-                                     status: @parse_result[:status] || 'valid',
-                                     genus: @genus,
-                                     protonym: @parse_result[:protonym],
-                                     raw_history: @parse_result[:history],
-                                     history: parse_taxonomic_history(@parse_result[:history])
-          @species_count += 1
+          begin
+            species = ::Species.import species_epithet: @parse_result[:species_group_epithet],
+                                      fossil: @parse_result[:fossil] || false,
+                                      status: @parse_result[:status] || 'valid',
+                                      genus: @genus,
+                                      protonym: @parse_result[:protonym],
+                                      raw_history: @parse_result[:history],
+                                      history: parse_taxonomic_history(@parse_result[:history])
+            @species_count += 1
+          rescue Species::NoProtonymError
+            Progress.error "Species without protonym: #{@line}"
+            @species_without_protonym_count += 1
+          end
 
         else Progress.error "Species with no active genus: #{@line}"
         end
@@ -76,6 +82,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     Progress.puts "#{@species_count} species"
     Progress.puts "#{@genus_not_found_count} genera not found"
     Progress.puts "#{@duplicate_genera_that_need_resolving_count} duplicate genera that need resolving"
+    Progress.puts "#{@species_without_protonym_count} species without protonyms"
     Progress.puts "#{@error_count} could not understand"
   end
 

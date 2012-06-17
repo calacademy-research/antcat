@@ -25,6 +25,7 @@ class Species < Taxon
   def self.import data
     transaction do
       protonym = Protonym.import data[:protonym] if data[:protonym]
+      raise NoProtonymError unless protonym
       name = Name.import data[:protonym].merge genus: data[:genus]
       klass = name.kind_of?(SubspeciesName) ? Subspecies : self
       attributes = {
@@ -66,4 +67,5 @@ class Species < Taxon
     end
   end
 
+  class NoProtonymError < StandardError; end
 end

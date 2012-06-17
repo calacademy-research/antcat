@@ -126,6 +126,15 @@ describe Species do
       authorship.reference.should == reference
     end
 
+    it "should not freak if there is no protonym" do
+      genus = create_genus 'Afropone'
+      -> {Species.import(
+        genus:                  genus,
+        species_group_epithet:  'orapa',
+        unparseable: '*<i>Afropone</i> (?) <i>orapa</i> Dlussky, Brothers & Rasnitsyn, 2004: 9, fig. 12 (m.) BOTSWANA (Cretaceous).'
+      )}.should raise_error Species::NoProtonymError
+    end
+
     describe "Importing subspecies" do
       it "should work" do
         genus = FactoryGirl.create :genus, name: FactoryGirl.create(:genus_name, name: 'Camponotus')
