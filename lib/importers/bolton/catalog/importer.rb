@@ -6,7 +6,6 @@ class Importers::Bolton::Catalog::Importer
   def initialize show_progress = false
     @show_parsing = true
     Progress.init show_progress, nil, self.class.name
-    Progress.info "==============================="
     @error_count = 0
   end
 
