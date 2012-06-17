@@ -48,11 +48,19 @@ end
 
 puts "in #{`pwd`}"
 
-def create_genus name
-  FactoryGirl.create :genus, name: FactoryGirl.create(:genus_name, name: name)
+def create_genus name, attributes = {}
+  create_taxon name, attributes, :genus, :genus_name
+end
+
+def create_subgenus name, attributes = {}
+  create_taxon name, attributes, :subgenus, :subgenus_name
 end
 
 def create_subspecies name, attributes = {}
-  attributes = attributes.merge name: FactoryGirl.create(:subspecies_name, name: name)
-  FactoryGirl.build :subspecies, attributes
+  create_taxon name, attributes, :subspecies, :subspecies_name
+end
+
+def create_taxon name, attributes, taxon_factory, name_factory
+  attributes = attributes.merge name: FactoryGirl.create(name_factory, name: name)
+  FactoryGirl.build taxon_factory, attributes
 end
