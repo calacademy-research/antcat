@@ -7,19 +7,20 @@ describe Importers::Bolton::Catalog::Species::Importer do
   end
 
   describe "Importing subspecies" do
-    before do
-      @contents = make_contents %{
-        <p><i>CAMPONOTUS</i></p>
-        <p>
-          <i>refectus</i>. <i>Camponotus (Myrmeurynota) gilviventris</i> var. <i>refectus</i> Wheeler, W.M. 1937b: 460 (w.) CUBA.
-        </p>
-      }
-      @genus = create_genus 'Camponotus'
-      @importer.import_html @contents
-    end
+    it "should work" do
+      genus = create_genus 'Camponotus'
+      subgenus = create_subgenus 'Camponotus (Myrmeurynota)'
 
-    it "should create a subspecies" do
-      Subspecies.find_by_name('Camponotus (Myrmeurynota) gilviventris var. refectus').should_not be_nil
+      @importer.import_html make_contents %{
+        <p><i>CAMPONOTUS</i></p>
+        <p><i>gilviventris</i>. <i>Camponotus gilviventris</i> Roger, 1863a: 145 (w.) CUBA.
+                Combination in <i>C. (Myrmeurynota)</i>: Forel, 1914a: 274.
+                Current subspecies: nominal plus <i>refectus</i>, <i>renormatus</i>.</p>
+        <p><i>refectus</i>. <i>Camponotus (Myrmeurynota) gilviventris</i> var. <i>refectus</i> Wheeler, W.M. 1937b: 460 (w.) CUBA.</p>
+      }
+      subspecies = Subspecies.find_by_name 'Camponotus (Myrmeurynota) gilviventris var. refectus'
+      subspecies.genus.name.to_s.should == 'Camponotus'
+      subspecies.species.name.to_s.should == 'Camponotus gilviventris'
     end
   end
 
