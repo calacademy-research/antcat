@@ -16,13 +16,12 @@ describe Subspecies do
   end
 
   it "must have a genus" do
-    subspecies = create_subspecies 'Atta major colobopsis', genus: nil, species: nil
+    subspecies = create_subspecies 'Atta major colobopsis', genus: nil, species: nil, build: true
     subspecies.should_not be_valid
   end
 
   it "has its subfamily assigned from its genus" do
     subspecies = create_subspecies 'Atta major colobopsis', genus: @genus
-    subspecies.save!
     subspecies.subfamily.should == @genus.subfamily
   end
 
