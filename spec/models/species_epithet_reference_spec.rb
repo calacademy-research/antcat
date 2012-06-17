@@ -15,7 +15,7 @@ describe SpeciesEpithetReference do
         genus:            genus,
         epithet:          'major',
       }
-      SpeciesEpithetReference.new.fixup
+      SpeciesEpithetReference.new(attributes).fixup
       Subspecies.find(subspecies).species.name.to_s.should == 'Atta major'
     end
   end
