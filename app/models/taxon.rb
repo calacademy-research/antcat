@@ -12,6 +12,12 @@ class Taxon < ActiveRecord::Base
     taxon = with_names.where(['name = ?', name]).first
     taxon && Taxon.find_by_id(taxon.id)
   end
+  def self.find_by_genus_id_and_epithet genus_id, epithet
+    results = with_names.where(['genus_id = ? AND epithet = ?', genus_id, epithet])
+    return nil if results.empty?
+    raise "Too many" if results.size > 1
+    results.first
+  end
   def self.find_name name, search_type = 'matching'
     name = name.dup.strip
     query = ordered_by_name

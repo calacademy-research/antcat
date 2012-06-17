@@ -111,6 +111,17 @@ describe Taxon do
     end
   end
 
+  describe "Find by genus id and epithet" do
+    it "should return nil if nothing matches" do
+      Taxon.find_by_genus_id_and_epithet(1234, 'sdfsdf').should == nil
+    end
+    it "should return the one item" do
+      genus = create_genus 'Atta'
+      species = create_species 'Atta major', genus: genus
+      Taxon.find_by_genus_id_and_epithet(genus.id, 'major').should == species
+    end
+  end
+
   describe "Find name" do
     before do
       FactoryGirl.create :genus, name: FactoryGirl.create(:genus_name, name: 'Monomorium')
