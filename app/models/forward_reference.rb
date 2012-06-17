@@ -1,9 +1,8 @@
 # coding: UTF-8
 class ForwardReference < ActiveRecord::Base
 
-  belongs_to :name; validates :name, presence: true
-  belongs_to :fixee, class_name: 'Taxon'; validates :fixee, presence: true
-  validates :fixee_attribute, presence: true
+  belongs_to :name
+  belongs_to :fixee, class_name: 'Taxon'
 
   def self.fixup
     all.each {|e| e.fixup}
