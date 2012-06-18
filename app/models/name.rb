@@ -41,16 +41,13 @@ class Name < ActiveRecord::Base
 
   def self.make_epithet_set epithet
     epithets = [epithet]
-
-    epithets << epithet.gsub(/([bcdfghjklmnprstvxyz])a$/, '\1us')
-    epithets << epithet.gsub(/([bcdfghjklmnprstvxyz])us$/, '\1a')
-
-    epithets << epithet.gsub(/([bcdfghjklmnpqrstvxyz])ua$/, '\1uus')
-    epithets << epithet.gsub(/([bcdfghjklmnpqrstvxyz])uus$/, '\1ua')
-
-    epithets << epithet.gsub(/([bcdfghjklmnprstvxyz])ii$/, '\1i')
-    epithets << epithet.gsub(/([bcdfghjklmnprstvxyz])i$/, '\1ii')
-
+    [['[bcdfghjklmnprstvxyz]',  'a',  'us'],
+     ['[bcdfghjklmnpqrstvxyz]', 'ua', 'uus'],
+     ['[bcdfghjklmnprstvxyz]',  'ii', 'i'],
+    ].each do |prefix, first_variant, second_variant|
+      epithets << epithet.gsub(/(#{prefix})#{first_variant}$/, "\\1#{second_variant}")
+      epithets << epithet.gsub(/(#{prefix})#{second_variant}$/,"\\1#{first_variant}")
+    end
     epithets.uniq
   end
 end
