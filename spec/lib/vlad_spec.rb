@@ -16,6 +16,15 @@ describe Vlad do
     results.first.should == genus_with_tribe_but_not_subfamily
   end
 
+  it "should show subspecies without species" do
+    species = create_species
+    subspecies_with_species = create_subspecies 'Atta major minor', species: species
+    subspecies_without_species = create_subspecies 'Atta major minor', species: nil
+    results = Vlad.idate[:subspecies_without_species]
+    results.count.should == 1
+    results.first.should == subspecies_without_species
+  end
+
   it "should show taxa whose status doesn't match their synonym_of" do
     tribe = FactoryGirl.create :tribe
     no_synonym = FactoryGirl.create :genus, status: 'synonym'
