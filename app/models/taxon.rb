@@ -13,7 +13,7 @@ class Taxon < ActiveRecord::Base
     taxon && Taxon.find_by_id(taxon.id)
   end
   def self.find_by_genus_id_and_epithet genus_id, target_epithet
-    for epithet in make_epithet_search_set target_epithet
+    for epithet in Name.make_epithet_set target_epithet
       results = with_names.where(['genus_id = ? AND epithet = ?', genus_id, epithet])
       next if results.empty?
       if results.size > 1
@@ -25,14 +25,6 @@ class Taxon < ActiveRecord::Base
     end
     nil
   end
-
-  def self.make_epithet_search_set epithet
-    epithets = [epithet]
-    epithets << epithet.gsub(/([bcdfghjklmnprstvxyz])a$/, '\1us')
-    epithets << epithet.gsub(/([bcdfghjklmnprstvxyz])us$/, '\1a')
-    epithets.uniq
-  end
-
   def self.find_name name, search_type = 'matching'
     name = name.dup.strip
     query = ordered_by_name
