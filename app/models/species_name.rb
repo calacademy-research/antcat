@@ -1,7 +1,7 @@
 class SpeciesName < Name
 
   def self.get_name data
-    data[:species_epithet]
+    data[:species_epithet] || data[:species_group_epithet]
   end
 
   def self.get_parent_name data
