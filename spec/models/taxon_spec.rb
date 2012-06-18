@@ -129,15 +129,6 @@ describe Taxon do
     end
   end
 
-  describe "Making an epithet search set" do
-    it "should convert masculine to feminine" do
-      Taxon.make_epithet_search_set('serratulus').should =~ ['serratula', 'serratulus']
-    end
-    it "should convert feminine to masculine" do
-      Taxon.make_epithet_search_set('serratula').should =~ ['serratula', 'serratulus']
-    end
-  end
-
   describe "Find name" do
     before do
       FactoryGirl.create :genus, name: FactoryGirl.create(:genus_name, name: 'Monomorium')

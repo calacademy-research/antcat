@@ -39,4 +39,18 @@ class Name < ActiveRecord::Base
     self.class.name[0, self.class.name.rindex('Name')].underscore
   end
 
+  def self.make_epithet_set epithet
+    epithets = [epithet]
+
+    epithets << epithet.gsub(/([bcdfghjklmnprstvxyz])a$/, '\1us')
+    epithets << epithet.gsub(/([bcdfghjklmnprstvxyz])us$/, '\1a')
+
+    epithets << epithet.gsub(/([bcdfghjklmnpqrstvxyz])ua$/, '\1uus')
+    epithets << epithet.gsub(/([bcdfghjklmnpqrstvxyz])uus$/, '\1ua')
+
+    epithets << epithet.gsub(/([bcdfghjklmnprstvxyz])ii$/, '\1i')
+    epithets << epithet.gsub(/([bcdfghjklmnprstvxyz])i$/, '\1ii')
+
+    epithets.uniq
+  end
 end
