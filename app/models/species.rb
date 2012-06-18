@@ -26,8 +26,34 @@ class Species < Taxon
     transaction do
       protonym = Protonym.import data[:protonym] if data[:protonym]
       raise NoProtonymError unless protonym
-      name = Name.import data[:protonym].merge genus: data[:genus]
-      klass = name.kind_of?(SubspeciesName) ? Subspecies : self
+
+      # are we importing a species or a subspecies?
+
+      # does it have "Current subspecies:" in its history?
+      has_current_subspecies_in_history = false
+      for item in data[:raw_history] or []
+        if item[:subspecies]
+          has_current_subspecies_in_history = true
+          break
+        end
+      end
+      if has_current_subspecies_in_history
+        klass = Species
+      else
+        # is the protonym for a subspecies?
+        if protonym.name.kind_of? SubspeciesName
+          klass = Subspecies
+        else
+          klass = Species
+        end
+      end
+
+      if klass == Species
+        name = Name.import data
+      else
+        name = Name.import data[:protonym].merge genus: data[:genus]
+      end
+
       attributes = {
         genus:      data[:genus],
         name:       name,
@@ -35,6 +61,7 @@ class Species < Taxon
         status:     data[:status] || 'valid',
         protonym:   protonym,
       }
+
       species = klass.create! attributes
 
       if species.kind_of? Subspecies

@@ -157,6 +157,25 @@ describe Species do
       end
     end
 
+    describe "Importing a species with a subspecies protonym" do
+      it "should work" do
+        genus = create_genus 'Aenictus'
+        taxon = Species.import(
+          genus:                  genus,
+          species_group_epithet:  'alluaudi',
+          protonym: {
+            genus_name:           'Aenictus',
+            species_epithet:      'bottegoi',
+            subspecies: [{type:   'var.',
+              subspecies_epithet: 'alluaudi',
+            }]
+          },
+          raw_history: [{subspecies: [{species_group_epithet: 'falcifer'}]}],
+        )
+        taxon.should be_kind_of Species
+      end
+    end
+
   end
 
   describe "Setting status from history" do
