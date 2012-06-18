@@ -136,7 +136,7 @@ describe Species do
     end
 
     describe "Importing subspecies" do
-      it "should work" do
+      it "should handle the happy case" do
         genus = create_genus 'Camponotus'
         taxon = Species.import(
           genus:                  genus,
@@ -156,9 +156,8 @@ describe Species do
         reference.epithet.should == 'gilviventris'
       end
     end
-
-    describe "Importing a species with a subspecies protonym" do
-      it "should work" do
+    describe "Importing species that look like subspecies" do
+      it "should import a species with a subspecies protonym and a list of subspecies" do
         genus = create_genus 'Aenictus'
         taxon = Species.import(
           genus:                  genus,
@@ -174,10 +173,8 @@ describe Species do
         )
         taxon.should be_kind_of Species
       end
-    end
 
-    describe "Importing a species with a subspecies protonym that was raised to species" do
-      it "should work" do
+      it "should import a species with a subspecies protonym that was raised to species" do
         genus = create_genus 'Anonychomyrma'
         taxon = Species.import(
           genus:                  genus,
