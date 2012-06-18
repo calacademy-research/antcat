@@ -9,6 +9,7 @@ class Vlad
     @results.merge! genera_with_tribes_but_not_subfamilies
     @results.merge! taxa_with_mismatched_synonym_and_status
     @results.merge! taxa_with_mismatched_homonym_and_status
+    @results.merge! subspecies_without_species
     #@results.merge! duplicates
     @results.merge! reference_documents
 
@@ -55,6 +56,10 @@ class Vlad
       "#{taxon.name} #{taxon.status} #{taxon.homonym_replaced_by_id}"
     end
 
+    display_results_section :subspecies_without_species do |taxon|
+      "#{taxon.name}"
+    end
+
     #display_results_section :duplicates do |duplicate|
       #"#{duplicate[:name]} #{duplicate[:count]}"
     #end
@@ -82,6 +87,10 @@ class Vlad
 
   def self.taxa_with_mismatched_homonym_and_status
     {taxa_with_mismatched_homonym_and_status: Taxon.where("(status = 'homonym') = (homonym_replaced_by_id IS NULL)")}
+  end
+
+  def self.subspecies_without_species
+    {subspecies_without_species: Subspecies.where('species_id IS NULL')}
   end
 
   def self.genera_with_tribes_but_not_subfamilies
