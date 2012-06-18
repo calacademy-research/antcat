@@ -40,11 +40,12 @@ class Name < ActiveRecord::Base
   end
 
   def self.make_epithet_set epithet
+    consonants = 'bcdfghjklmnprstvxyz'
     epithets = [epithet]
-    [['[bcdfghjklmnprstvxyz]',  'a',  'us'],
-     ['[bcdfghjklmnpqrstvxyz]', 'ua', 'uus'],
-     ['[bcdfghjklmnprstvxyz]',  'ii', 'i'],
-     ['[bcdfghjklmnprstvxyz]',  'eus', 'ea'],
+    [["[#{consonants}]",  'a',  'us'],
+     ["[#{consonants}q]", 'ua', 'uus'],
+     ["[#{consonants}]",  'ii', 'i'],
+     ["[#{consonants}]",  'eus', 'ea'],
     ].each do |prefix, first_variant, second_variant|
       epithets << epithet.gsub(/(#{prefix})#{first_variant}$/, "\\1#{second_variant}")
       epithets << epithet.gsub(/(#{prefix})#{second_variant}$/,"\\1#{first_variant}")
