@@ -71,7 +71,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
       parse_next_line
     end
 
-    Progress.print 'Fixing up synonyms...'
+    Progress.print 'Fixing up names...'
     ForwardReference.fixup
     Progress.puts
 
