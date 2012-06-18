@@ -44,6 +44,7 @@ class Name < ActiveRecord::Base
     [['[bcdfghjklmnprstvxyz]',  'a',  'us'],
      ['[bcdfghjklmnpqrstvxyz]', 'ua', 'uus'],
      ['[bcdfghjklmnprstvxyz]',  'ii', 'i'],
+     ['[bcdfghjklmnprstvxyz]',  'eus', 'ea'],
     ].each do |prefix, first_variant, second_variant|
       epithets << epithet.gsub(/(#{prefix})#{first_variant}$/, "\\1#{second_variant}")
       epithets << epithet.gsub(/(#{prefix})#{second_variant}$/,"\\1#{first_variant}")

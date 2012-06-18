@@ -20,11 +20,11 @@ describe Name do
     end
 
     describe "Masculine-feminine" do
-      it "should convert between -a and -us" do
+      it "should convert between these" do
         should_be_same_epithet 'magus', 'maga'
-      end
-      it "should convert between -uus and -ua" do
+        should_be_same_epithet 'diabolicus', 'diabolica'
         should_be_same_epithet 'equus', 'equa'
+        should_be_same_epithet 'aneus', 'anea'
       end
     end
 
