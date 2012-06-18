@@ -56,7 +56,7 @@ def create_subgenus name, attributes = {}
   create_taxon name, :subgenus, :subgenus_name, attributes
 end
 
-def create_species name, attributes = {}
+def create_species name = 'Atta major', attributes = {}
   create_taxon name, :species, :species_name, attributes
 end
 
@@ -66,6 +66,6 @@ end
 
 def create_taxon name, taxon_factory, name_factory, attributes
   build = attributes.delete :build
-  attributes = attributes.merge name: FactoryGirl.create(name_factory, name: name)
+  attributes = attributes.reverse_merge name: FactoryGirl.create(name_factory, name: name)
   FactoryGirl.send(build ? :build : :create, taxon_factory, attributes)
 end
