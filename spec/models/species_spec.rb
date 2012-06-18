@@ -176,6 +176,25 @@ describe Species do
       end
     end
 
+    describe "Importing a species with a subspecies protonym that was raised to species" do
+      it "should work" do
+        genus = create_genus 'Anonychomyrma'
+        taxon = Species.import(
+          genus:                  genus,
+          species_group_epithet:  'malandana',
+          protonym: {
+            genus_name:           'Iridomyrmex',
+            species_epithet:      'innocens',
+            subspecies: [{type:   'r.',
+              subspecies_epithet: 'malandanus',
+            }]
+          },
+          raw_history: [{raised_to_species: {references:[]}}]
+        )
+        taxon.should be_kind_of Species
+      end
+    end
+
   end
 
   describe "Setting status from history" do
