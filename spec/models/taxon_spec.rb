@@ -116,9 +116,25 @@ describe Taxon do
       Taxon.find_by_genus_id_and_epithet(1234, 'sdfsdf').should == nil
     end
     it "should return the one item" do
-      genus = create_genus 'Atta'
-      species = create_species 'Atta major', genus: genus
-      Taxon.find_by_genus_id_and_epithet(genus.id, 'major').should == species
+      species_name = FactoryGirl.create :species_name, epithet: 'serratula'
+      species = create_species 'Atta serratula', name: species_name
+      Taxon.find_by_genus_id_and_epithet(species.genus.id, 'serratula').should == species
+    end
+    describe "Finding mandatory spelling changes" do
+      it "should find -a when asked to find -us" do
+        species_name = FactoryGirl.create :species_name, epithet: 'serratula'
+        species = create_species 'Atta serratula', name: species_name
+        Taxon.find_by_genus_id_and_epithet(species.genus.id, 'serratulus').should == species
+      end
+    end
+  end
+
+  describe "Making an epithet search set" do
+    it "should convert masculine to feminine" do
+      Taxon.make_epithet_search_set('serratulus').should =~ ['serratula', 'serratulus']
+    end
+    it "should convert feminine to masculine" do
+      Taxon.make_epithet_search_set('serratula').should =~ ['serratula', 'serratulus']
     end
   end
 
