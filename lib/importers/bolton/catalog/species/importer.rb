@@ -55,7 +55,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
                                       genus: @genus,
                                       protonym: @parse_result[:protonym],
                                       raw_history: @parse_result[:history],
-                                      history: parse_taxonomic_history(@parse_result[:history])
+                                      history: convert_taxonomic_history_to_taxts(@parse_result[:history])
             @species_count += 1
           rescue Species::NoProtonymError
             Progress.error "Species without protonym: #{@line}"
@@ -90,7 +90,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     Importers::Bolton::Catalog::Species::Grammar
   end
 
-  def parse_taxonomic_history history
+  def convert_taxonomic_history_to_taxts history
     Progress.method
     (history || []).inject([]) do |items, item|
       for text in Importers::Bolton::Catalog::Grammar.parse(item[:matched_text], root: :texts).value[:texts]
