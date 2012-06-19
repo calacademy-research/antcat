@@ -17,7 +17,9 @@ class SpeciesEpithetReference < ForwardReference
     valid_targets = targets.select {|target| target.status == 'valid'}
     other_targets = targets.select {|target| target.status != 'valid' and target.status != 'homonym'}
     case
-    when valid_targets.size > 1 then raise "Too many valid_targets"
+    when valid_targets.size > 1
+      Progress.error "Found multiple valid targets among #{targets.map(&:name).map(&:to_s).join(', ')}"
+      return nil
     when valid_targets.empty? then other_targets.first
     else valid_targets.first
     end
