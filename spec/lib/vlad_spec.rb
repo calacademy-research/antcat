@@ -9,7 +9,7 @@ describe Vlad do
   it "should show taxon counts by rank" do
     FactoryGirl.create :family
     results = Vlad.idate[:taxon_counts]
-    results.should =~ [{'family' => 1}]
+    results.should =~ [['Family', 1]]
   end
 
   it "should show genera with tribes but not subfamilies" do
