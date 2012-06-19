@@ -9,14 +9,23 @@ describe Name do
   describe "Making an epithet search set" do
 
     describe "Masculine-feminine-neuter" do
-      it "should convert between these" do
-        Name.make_epithet_set('subterranea').should =~ ['subterraneus', 'subterranea', 'subterraneum']
-        Name.make_epithet_set('subterraneus').should =~ ['subterranea', 'subterraneus', 'subterraneum']
-        Name.make_epithet_set('subterraneum').should =~ ['subterraneum', 'subterraneus', 'subterranea']
-        Name.make_epithet_set('equus').should =~ ['equus', 'equa', 'equum']
-        Name.make_epithet_set('anea').should =~ ['aneus', 'anea', 'aneum']
-        Name.make_epithet_set('fuscovarius').should =~ ['fuscovarius', 'fuscovaria', 'fuscovarium']
-        Name.make_epithet_set('eugeniae').should =~ ['eugeniae', 'eugenii']
+      describe "First declension" do
+        it "should convert between these" do
+          Name.make_epithet_set('subterranea').should =~ ['subterraneus', 'subterranea', 'subterraneum']
+          Name.make_epithet_set('subterraneus').should =~ ['subterranea', 'subterraneus', 'subterraneum']
+          Name.make_epithet_set('subterraneum').should =~ ['subterraneum', 'subterraneus', 'subterranea']
+          Name.make_epithet_set('equus').should =~ ['equus', 'equa', 'equum']
+          Name.make_epithet_set('anea').should =~ ['aneus', 'anea', 'aneum']
+          Name.make_epithet_set('fuscovarius').should =~ ['fuscovarius', 'fuscovaria', 'fuscovarium']
+          Name.make_epithet_set('eugeniae').should =~ ['eugeniae', 'eugenii']
+          Name.make_epithet_set('eugeniae').should =~ ['eugeniae', 'eugenii']
+        end
+      end
+      describe "Third declension" do
+        it "should convert between these" do
+          Name.make_epithet_set('patruele').should =~ ['patruele', 'patruelis']
+          Name.make_epithet_set('patruelis').should =~ ['patruelis', 'patruele']
+        end
       end
     end
 
