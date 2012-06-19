@@ -39,11 +39,12 @@ describe SpeciesEpithetReference do
         SpeciesEpithetReference.pick_validest(targets).should == valid_species
       end
 
-      it "should raise an error if there is more than one valid" do
+      it "should raise log an error and return nil if there is more than one valid" do
         valid_species = create_species
         another_valid_species = create_species
         targets = [another_valid_species, valid_species]
-        -> {SpeciesEpithetReference.pick_validest(targets)}.should raise_error
+        Progress.should_receive :error
+        SpeciesEpithetReference.pick_validest(targets).should be_nil
       end
 
       it "should not pick the homonym, no matter what" do
