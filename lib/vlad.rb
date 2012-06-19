@@ -6,6 +6,7 @@ class Vlad
 
     @results = {}
     @results.merge! record_counts
+    @results.merge! taxon_counts
     @results.merge! genera_with_tribes_but_not_subfamilies
     @results.merge! taxa_with_mismatched_synonym_and_status
     @results.merge! taxa_with_mismatched_homonym_and_status
@@ -42,6 +43,10 @@ class Vlad
 
     display_results_section :record_counts, :sort => false do |count|
       "#{count[:count].to_s.rjust(7)} #{count[:table]}"
+    end
+
+    display_results_section :taxon_counts, sort: false do |count|
+      "#{count.first.rjust(11)} #{count.second}"
     end
 
     display_results_section :genera_with_tribes_but_not_subfamilies do |genus|
@@ -95,6 +100,13 @@ class Vlad
 
   def self.genera_with_tribes_but_not_subfamilies
     {genera_with_tribes_but_not_subfamilies: Genus.where("tribe_id IS NOT NULL AND subfamily_id IS NULL")}
+  end
+
+  def self.taxon_counts
+    taxon_counts = Taxon.select('type, COUNT(*) AS count').group(:type).map do |result|
+      [result['type'], result['count'].to_i]
+    end
+    {taxon_counts: taxon_counts}
   end
 
   def self.record_counts

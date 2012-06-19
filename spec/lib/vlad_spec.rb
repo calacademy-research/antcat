@@ -6,6 +6,12 @@ describe Vlad do
     Vlad.idate
   end
 
+  it "should show taxon counts by rank" do
+    FactoryGirl.create :family
+    results = Vlad.idate[:taxon_counts]
+    results.should =~ [{'family' => 1}]
+  end
+
   it "should show genera with tribes but not subfamilies" do
     tribe = FactoryGirl.create :tribe
     genus_with_tribe_but_not_subfamily = FactoryGirl.create :genus, subfamily: nil, tribe: tribe
