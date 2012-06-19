@@ -17,22 +17,31 @@ describe Name do
           Name.make_epithet_set('equus').should =~ ['equus', 'equa', 'equum']
           Name.make_epithet_set('anea').should =~ ['aneus', 'anea', 'aneum']
           Name.make_epithet_set('fuscovarius').should =~ ['fuscovarius', 'fuscovaria', 'fuscovarium']
-          Name.make_epithet_set('eugeniae').should =~ ['eugeniae', 'eugenii']
-          Name.make_epithet_set('eugeniae').should =~ ['eugeniae', 'eugenii']
+          Name.make_epithet_set('euguniae').should =~ ['euguniae', 'eugunii']
+          Name.make_epithet_set('eugunii').should =~ ['eugunii', 'euguniae', 'euguni']
         end
       end
       describe "Third declension" do
         it "should convert between these" do
-          Name.make_epithet_set('patruele').should =~ ['patruele', 'patruelis']
-          Name.make_epithet_set('patruelis').should =~ ['patruelis', 'patruele']
+          Name.make_epithet_set('fatruele').should =~ ['fatruele', 'fatruelis']
+          Name.make_epithet_set('fatruelis').should =~ ['fatruelis', 'fatruele']
         end
       end
     end
 
-    it "should convert names deemed identical" do
-      Name.make_epithet_set('lundii').should == ['lundii', 'lundiae', 'lundi']
-      Name.make_epithet_set('lundi').should == ['lundi', 'lundae', 'lundii']
-      Name.make_epithet_set('lundae').should == ['lundae', 'lundi']
+    describe "Names deemed identical" do
+      it "should handle -i and -ii" do
+        Name.make_epithet_set('lundii').should == ['lundii', 'lundiae', 'lundi']
+        Name.make_epithet_set('lundi').should == ['lundi', 'lundae', 'lundii']
+        Name.make_epithet_set('lundae').should == ['lundae', 'lundi']
+      end
+      it "should handle -e- and -ae-" do
+        Name.make_epithet_set('levis').should == ['levis', 'leve', 'laevis', 'laeve']
+        Name.make_epithet_set('laevis').should == ['laevis', 'laeve', 'levis', 'leve']
+      end
+      it "should handle -p- and -ph-" do
+        Name.make_epithet_set('delpina').should =~ ['delpinus', 'delphinus', 'delpina', 'delphina', 'delpinum', 'delphinum']
+      end
     end
 
   end

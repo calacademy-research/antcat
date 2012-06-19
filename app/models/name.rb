@@ -45,6 +45,28 @@ class Name < ActiveRecord::Base
     epithets.concat first_declension_genitive_singular(epithet)
     epithets.concat third_declension_nominative_singular(epithet)
     epithets.concat make_deemed_identical_set(epithet)
+
+    more_epithets = epithets.inject([]) do |epithets, epithet|
+      consonants = '(?:[bcdfghjklmnprstvxyz][ei]?|qu)'
+      epithets << epithet.gsub(/(#{consonants})e(#{consonants})/) do |string|
+        if ['ter', 'del'].include?(string)
+          string
+        else
+          $1 + 'ae' + $2
+        end
+      end
+      epithets << epithet.gsub(/(#{consonants})ae(#{consonants})/) do |string|
+        $1 + 'e' + $2
+      end
+    end
+    epithets.concat more_epithets
+
+    more_epithets = epithets.inject([]) do |epithets, epithet|
+      epithets << epithet.gsub(/ph/, 'p')
+      epithets << epithet.gsub(/p([^h])/, 'ph\1')
+    end
+    epithets.concat more_epithets
+
     epithets.uniq
   end
 
