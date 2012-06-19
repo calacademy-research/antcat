@@ -158,7 +158,7 @@ FactoryGirl.define do
   factory :subspecies_name do
     sequence(:name) {|n| "Atta species subspecies#{n}"}
     html_name       {"<i>#{name}</i>"}
-    epithet         {name.match(/^\w+ \w+ (.*)/)[1]}
+    epithet         {name.match(/^\w+ \w+ (.*)/).try(:[],1) || 'minor'}
     html_epithet    {"<i>#{epithet}</i>"}
   end
 
