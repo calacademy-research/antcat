@@ -43,6 +43,7 @@ class Name < ActiveRecord::Base
     epithets = [epithet]
     epithets.concat first_declension_nominative_singular(epithet)
     epithets.concat first_declension_genitive_singular(epithet)
+    epithets.concat third_declension_nominative_singular(epithet)
     epithets.concat make_deemed_identical_set(epithet)
     epithets.uniq
   end
@@ -63,6 +64,10 @@ class Name < ActiveRecord::Base
 
   def self.first_declension_genitive_singular epithet
     decline epithet, '[bcdfghjklmnprstvxyz]i?', ['i', 'ae']
+  end
+
+  def self.third_declension_nominative_singular epithet
+    decline epithet, '[bcdfghjklmnprstvxyz]', ['e', 'is']
   end
 
   def self.make_deemed_identical_set epithet
