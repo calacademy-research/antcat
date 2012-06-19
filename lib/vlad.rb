@@ -54,15 +54,15 @@ class Vlad
     end
 
     display_results_section :taxa_with_mismatched_synonym_and_status do |taxon|
-      "#{taxon.name} #{taxon.status} #{taxon.synonym_of_id}"
+      "#{taxon.name} (#{taxon.status}) #{taxon.synonym_of_id}"
     end
 
     display_results_section :taxa_with_mismatched_homonym_and_status do |taxon|
-      "#{taxon.name} #{taxon.status} #{taxon.homonym_replaced_by_id}"
+      "#{taxon.name} (#{taxon.status}) #{taxon.homonym_replaced_by_id}"
     end
 
     display_results_section :subspecies_without_species do |taxon|
-      "#{taxon.name}"
+      "#{taxon.name} (#{taxon.status})"
     end
 
     #display_results_section :duplicates do |duplicate|
