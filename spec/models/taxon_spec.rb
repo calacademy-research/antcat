@@ -118,13 +118,13 @@ describe Taxon do
     it "should return the one item" do
       species_name = FactoryGirl.create :species_name, epithet: 'serratula'
       species = create_species 'Atta serratula', name: species_name
-      Taxon.find_by_genus_id_and_epithet(species.genus.id, 'serratula').should == species
+      Taxon.find_by_genus_id_and_epithet(species.genus.id, 'serratula').should == [species]
     end
     describe "Finding mandatory spelling changes" do
       it "should find -a when asked to find -us" do
         species_name = FactoryGirl.create :species_name, epithet: 'serratula'
         species = create_species 'Atta serratula', name: species_name
-        Taxon.find_by_genus_id_and_epithet(species.genus.id, 'serratulus').should == species
+        Taxon.find_by_genus_id_and_epithet(species.genus.id, 'serratulus').should == [species]
       end
     end
   end
