@@ -190,6 +190,29 @@ describe Species do
         )
         taxon.should be_kind_of Species
       end
+
+      it "should import a subspecies with a subspecies protonym for a different species than current" do
+        genus = create_genus 'Camponotus'
+        species_name = FactoryGirl.create :species_name, name: 'Camponotus hova', epithet: 'hova'
+        species = FactoryGirl.create :species, name: species_name, genus: genus
+
+        taxon = Species.import(
+          genus:                  genus,
+          species_group_epithet:  'radamae',
+          protonym: {
+            genus_name:           'Camponotus',
+            species_epithet:      'maculatus',
+            subspecies: [{type:   'r.',
+              subspecies_epithet: 'radamae',
+            }]
+          },
+          raw_history: [{currently_subspecies_of: {species: {species_epithet: 'hova'}}}]
+        )
+        ForwardReference.fixup
+        taxon = Taxon.find taxon
+        taxon.should be_kind_of Subspecies
+        taxon.species.name.to_s.should == 'Camponotus hova'
+      end
     end
 
   end

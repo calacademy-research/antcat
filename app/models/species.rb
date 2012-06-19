@@ -24,8 +24,20 @@ class Species < Taxon
 
   def self.get_class_from_history history
     for item in history or []
+      return Subspecies if item[:currently_subspecies_of]
       return Species if item[:subspecies]
+    end
+    for item in history or []
       return Species if item[:raised_to_species]
+    end
+    nil
+  end
+
+  def self.get_currently_subspecies_of_from_history history
+    for item in history or []
+      if item[:currently_subspecies_of]
+        return item[:currently_subspecies_of][:species][:species_epithet]
+      end
     end
     nil
   end
@@ -60,12 +72,14 @@ class Species < Taxon
       species = klass.create! attributes
 
       if species.kind_of? Subspecies
+        target_epithet = get_currently_subspecies_of_from_history data[:raw_history]
+        target_epithet ||=  data[:protonym][:species_epithet]
         SpeciesEpithetReference.create!(
           fixee:            species,
           fixee_table:      'taxa',
           fixee_attribute: 'species_id',
           genus:            data[:genus],
-          epithet:          data[:protonym][:species_epithet],
+          epithet:          target_epithet,
         )
       end
 
