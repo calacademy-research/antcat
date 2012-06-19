@@ -12,19 +12,15 @@ class Taxon < ActiveRecord::Base
     taxon = with_names.where(['name = ?', name]).first
     taxon && Taxon.find_by_id(taxon.id)
   end
+
   def self.find_by_genus_id_and_epithet genus_id, target_epithet
     for epithet in Name.make_epithet_set target_epithet
       results = with_names.where(['genus_id = ? AND epithet = ?', genus_id, epithet])
-      next if results.empty?
-      if results.size > 1
-        Progress.error "More than one result from finding genus '#{Genus.find(genus_id).name}', epithet '#{epithet}'"
-        Progress.puts results.map(&:name).map(&:to_s).join(', ')
-        return nil
-      end
-      return results.first
+      return results unless results.empty?
     end
     nil
   end
+
   def self.find_name name, search_type = 'matching'
     name = name.dup.strip
     query = ordered_by_name
