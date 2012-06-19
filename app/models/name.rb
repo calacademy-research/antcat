@@ -39,54 +39,48 @@ class Name < ActiveRecord::Base
     self.class.name[0, self.class.name.rindex('Name')].underscore
   end
 
-  def self.add_epithets epithet, epithets, prefix, variant1, variant2
-    if epithet =~ /[#{prefix}]#{variant1}$/
-      epithets << epithet.gsub(/([#{prefix}])#{variant1}$/, "\\1#{variant2}")
-      return true
-    end
-    if epithet =~ /[#{prefix}]#{variant2}$/
-      epithets << epithet.gsub(/([#{prefix}])#{variant2}$/, "\\1#{variant1}")
-      return true
-    end
-  end
-
-  def self.replace_suffix epithet, prefix, suffix, new_suffix
-    epithet.gsub /([#{prefix}])#{suffix}$/, "\\1#{new_suffix}"
-  end
-
-  def self.has_suffix epithet, prefix, suffix
-    epithet =~ /[#{prefix}]#{suffix}$/
-  end
-
-  def self.add_ii_epithets epithet, epithets
-    consonants = 'bcdfghjklmnprstvxyz'
-    if has_suffix epithet, consonants, 'ii'
-      epithets << replace_suffix(epithet, consonants, 'ii', 'i')
-      epithets << replace_suffix(epithet, consonants, 'ii', 'iae')
-      return true
-    end
-    if has_suffix epithet, consonants, 'iae'
-      epithets << replace_suffix(epithet, consonants, 'iae', 'ii')
-      return true
-    end
-    if has_suffix epithet, consonants, 'i'
-      epithets << replace_suffix(epithet, consonants, 'i', 'ii')
-      epithets << replace_suffix(epithet, consonants, 'i', 'ae')
-      return true
-    end
-    if has_suffix epithet, consonants, 'ae'
-      epithets << replace_suffix(epithet, consonants, 'ae', 'i')
-      return true
-    end
-  end
-
   def self.make_epithet_set epithet
-    consonants = 'bcdfghjklmnprstvxyz'
     epithets = [epithet]
-    add_ii_epithets(epithet, epithets) or
-    add_epithets(epithet, epithets, consonants, 'a',  'us') or
-    add_epithets(epithet, epithets, consonants + 'q', 'ua', 'uus') or
-    add_epithets(epithet, epithets, consonants, 'ea', 'eus')
+    epithets.concat first_declension_nominative_singular(epithet)
+    epithets.concat first_declension_genitive_singular(epithet)
+    epithets.concat make_deemed_identical_set(epithet)
+    epithets.uniq
+  end
+
+  def self.decline epithet, stem, endings
+    epithets = []
+    endings_regexp = '(' + endings.join('|') + ')'
+    return epithets unless epithet =~ /#{stem}#{endings_regexp}$/
+    for ending in endings
+      epithets << epithet.gsub(/(#{stem})#{endings_regexp}$/, "\\1#{ending}")
+    end
     epithets
   end
+
+  def self.first_declension_nominative_singular epithet
+    decline epithet, '(?:[bcdfghjklmnprstvxyz][ei]?|qu)', ['us', 'a', 'um']
+  end
+
+  def self.first_declension_genitive_singular epithet
+    decline epithet, '[bcdfghjklmnprstvxyz]i?', ['i', 'ae']
+  end
+
+  def self.make_deemed_identical_set epithet
+    epithets = []
+    if has_ending epithet, 'i'
+      epithets << replace_ending(epithet, 'i', 'ii')
+    elsif has_ending epithet, 'ii'
+      epithets << replace_ending(epithet, 'ii', 'i')
+    end
+    epithets
+  end
+
+  def self.has_ending epithet, ending, stem = '[bcdfghjklmnprstvxyz]'
+    epithet =~ /#{stem}#{ending}$/
+  end
+
+  def self.replace_ending epithet, old_ending, new_ending, stem = '[bcdfghjklmnprstvxyz]'
+    epithet.gsub /(#{stem})#{old_ending}$/, "\\1#{new_ending}"
+  end
+
 end
