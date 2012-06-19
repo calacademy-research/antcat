@@ -111,6 +111,9 @@ class Species < Taxon
           end
         end
       end
+      if item[:homonym_of]
+        species.update_attributes status: 'homonym'
+      end
     end
   end
 
