@@ -48,24 +48,29 @@ end
 
 puts "in #{`pwd`}"
 
-def create_genus name = 'Atta', attributes = {}
-  create_taxon name, :genus, :genus_name, attributes
+def create_genus name_or_attributes = 'Atta', attributes = {}
+  create_taxon name_or_attributes, :genus, :genus_name, attributes
 end
 
-def create_subgenus name, attributes = {}
-  create_taxon name, :subgenus, :subgenus_name, attributes
+def create_subgenus name_or_attributes, attributes = {}
+  create_taxon name_or_attributes, :subgenus, :subgenus_name, attributes
 end
 
-def create_species name = 'Atta major', attributes = {}
-  create_taxon name, :species, :species_name, attributes
+def create_species name_or_attributes = 'Atta major', attributes = {}
+  create_taxon name_or_attributes, :species, :species_name, attributes
 end
 
-def create_subspecies name, attributes = {}
-  create_taxon name, :subspecies, :subspecies_name, attributes
+def create_subspecies name_or_attributes, attributes = {}
+  create_taxon name_or_attributes, :subspecies, :subspecies_name, attributes
 end
 
-def create_taxon name, taxon_factory, name_factory, attributes
+def create_taxon name_or_attributes, taxon_factory, name_factory, attributes
+  if name_or_attributes.kind_of? String
+    attributes = attributes.reverse_merge name: FactoryGirl.create(name_factory, name: name_or_attributes)
+  else
+    attributes = name_or_attributes
+  end
+
   build = attributes.delete :build
-  attributes = attributes.reverse_merge name: FactoryGirl.create(name_factory, name: name)
   FactoryGirl.send(build ? :build : :create, taxon_factory, attributes)
 end
