@@ -3,7 +3,7 @@ module Formatters::IndexFormatter
   include Formatters::Formatter
 
   def format_header_name taxon
-    taxon.name.to_s
+    taxon.name.to_html.html_safe
   end
 
   def format_status taxon
