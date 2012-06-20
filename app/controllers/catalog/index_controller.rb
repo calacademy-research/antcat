@@ -49,14 +49,14 @@ class Catalog::IndexController < CatalogController
       @genus = @taxon
       @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
       setup_genus_parent_columns
-      @specieses = @genus.species.ordered_by_name
+      @specieses = @genus.species_group_descendants
 
     when Species
       @species = @taxon
       @genus = @species.genus
       @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
       setup_genus_parent_columns
-      @specieses = @species.siblings.ordered_by_name
+      @specieses = @genus.species_group_descendants
     end
 
     @page_parameters = {

@@ -75,9 +75,15 @@ end
 
 Given /a species exists with a name of "(.*?)" and a genus of "(.*?)"(?: and a taxonomic history of "(.*?)")?/ do |taxon_name, parent_name, taxonomic_history|
   genus = Genus.find_by_name(parent_name) || Factory(:genus, name: FactoryGirl.create(:genus_name, name: parent_name))
-  taxon = Factory :species, name: FactoryGirl.create(:species_name, name: "#{parent_name} #{taxon_name}"), genus: genus
+  @species = Factory :species, name: FactoryGirl.create(:species_name, name: "#{parent_name} #{taxon_name}"), genus: genus
   taxonomic_history = 'none' unless taxonomic_history.present?
-  taxon.taxonomic_history_items.create!  taxt: taxonomic_history
+  @species.taxonomic_history_items.create!  taxt: taxonomic_history
+end
+
+Given /a subspecies exists for that species with a name of "(.*?)" and an epithet of "(.*?)" and a taxonomic history of "(.*?)"/ do |name, epithet, history|
+  subspecies = Factory :subspecies, name: FactoryGirl.create(:subspecies_name, name: name, epithet: epithet), species: @species, genus: @species.genus
+  history = 'none' unless history.present?
+  subspecies.taxonomic_history_items.create! taxt: history
 end
 
 Given /a (\w+) exists with a name of "([^"]+)" and a parent of "([^"]+)"/ do |rank, name, parent_name|
