@@ -116,7 +116,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
 
   def convert_ponerites_headline_to_text
     if @type == :genus_headline && @parse_result[:protonym].try(:[], :genus_name) == 'Ponerites'
-      @parse_result = grammar.parse(@line, root: :text).value
+      @parse_result = {texts: [grammar.parse(@line, root: :text).value]}
       @type = :texts
     end
   end
