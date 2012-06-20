@@ -139,6 +139,25 @@ describe Genus do
 
   end
 
+  describe "Species group descendants" do
+    before do
+      @genus = create_genus
+    end
+    it "should return an empty array if there are none" do
+      @genus.species_group_descendants.should == []
+    end
+    it "should return all the species" do
+      species = create_species genus: @genus
+      @genus.species_group_descendants.should == [species]
+    end
+    it "should return all the species and subspecies of the genus" do
+      species = create_species genus: @genus
+      subgenus = create_subgenus genus: @genus
+      subspecies = create_subspecies genus: @genus, species: species
+      @genus.species_group_descendants.should =~ [species, subspecies]
+    end
+  end
+
   describe "Importing" do
 
     it "should work" do
