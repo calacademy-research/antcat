@@ -29,7 +29,7 @@ module Formatters::IndexFormatter
   end
 
   def format_headline_protonym protonym, user
-    return '' unless protonym
+    return ''.html_safe unless protonym
     string = format_protonym_name protonym
     string << ' ' << format_headline_authorship(protonym.authorship, user)
     string << format_locality(protonym.locality)
