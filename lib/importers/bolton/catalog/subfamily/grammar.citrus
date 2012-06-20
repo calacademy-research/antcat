@@ -41,7 +41,7 @@ grammar Importers::Bolton::Catalog::Subfamily::Grammar
 
   rule taxonomic_history_header
     'Taxonomic history' {
-      {:type => :taxonomic_history_header}
+      {type: :taxonomic_history_header}
     }
   end
 
