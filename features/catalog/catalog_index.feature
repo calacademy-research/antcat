@@ -85,6 +85,18 @@ Feature: Using the catalog index
     And "abruptus" should be selected
     And I should see "abruptus history"
 
+  Scenario: Selecting a subspecies from the species list
+    When I go to the catalog index
+    And I follow "Dolichoderinae"
+    And I follow "Dolichoderini"
+    And I follow "Dolichoderus"
+    Then I should see "abruptus" in the index
+    And I should see "minor" in the index
+    When I follow "minor"
+    Then I should see "minor history"
+    And I should see "abruptus" in the index
+    And I should see "minor" in the index
+
   Scenario: Showing the "no tribe" tribe
     Given a genus exists with a name of "Cariridris" and a subfamily of "Dolichoderinae"
     And a genus exists with a name of "Atta" and a subfamily of "Attaninae"
