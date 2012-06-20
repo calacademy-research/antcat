@@ -12,6 +12,7 @@ Feature: Using the catalog index
     And a genus exists with a name of "Atta" and no subfamily and a taxonomic history of "Atta history"
     And a fossil genus exists with a name of "Brownerus" and a tribe of "Dolichoderini" and a taxonomic history of "Dolichoderus history"
     And a species exists with a name of "abruptus" and a genus of "Dolichoderus" and a taxonomic history of "abruptus history"
+    And a subspecies exists for that species with a name of "Dolichoderus abruptus minor" and an epithet of "minor" and a taxonomic history of "minor history"
 
   Scenario: Seeing the family
     When I go to the catalog index
@@ -68,8 +69,9 @@ Feature: Using the catalog index
     And "Dolichoderini" should be selected
     And "Dolichoderus" should be selected
     And I should see "Dolichoderus history"
-    And I should see "1 valid species"
+    And I should see "1 valid species, 1 valid subspecies"
     And I should see "abruptus" in the index
+    And I should see "minor" in the index
 
   Scenario: Selecting a species
     When I go to the catalog index
