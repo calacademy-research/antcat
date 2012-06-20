@@ -90,6 +90,16 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
         "<i>Condylodon</i> as junior synonym of <i>Pseudomyrma</i>: {ref #{dalla_torre.id}}: 55."
       ]
     end
+    it "should handle the special case of Ponerites, which looks like a genus_headline" do
+      dlussky = FactoryGirl.create :article_reference, :bolton_key_cache => 'Dlussky 1981b'
+      @importer.initialize_parse_html %{<div>
+        <p>Taxonomic history</p>
+        <p><i>Ponerites</i> Dlussky, 1981b: 67 [collective group name].</p>
+      </div>}
+      @importer.parse_taxonomic_history.should == [
+        "<i>Ponerites</i> {ref #{dlussky.id}}: 67 [collective group name]."
+      ]
+    end
   end
 
   describe "Parsing references" do
