@@ -13,12 +13,15 @@ Feature: Using the catalog index
     And a fossil genus exists with a name of "Brownerus" and a tribe of "Dolichoderini" and a taxonomic history of "Dolichoderus history"
     And a species exists with a name of "abruptus" and a genus of "Dolichoderus" and a taxonomic history of "abruptus history"
     And a subspecies exists for that species with a name of "Dolichoderus abruptus minor" and an epithet of "minor" and a taxonomic history of "minor history"
+    And a genus exists with a name of "Camponotus" and a subfamily of "Dolichoderinae" and a taxonomic history of "Campononotus history"
+    And a subgenus exists with a name of "Subcamponotus" and a genus of "Camponotus" and a taxonomic history of "Subcamponotus history"
+    And a species exists with a name of "subabruptus" and a subgenus of "Camponotus (Subcamponotus)" and a taxonomic history of "subabruptus history"
 
   Scenario: Seeing the family
     When I go to the catalog index
     Then I should see "Formicidae" in the contents
     And I should see "valid" in the contents
-    And I should see "Extant: 1 valid tribe, 1 valid subfamily, 2 valid genera"
+    And I should see "Extant: 1 valid tribe, 1 valid subfamily, 3 valid genera, 2 valid species, 1 valid subspecies"
     And I should see "Fossil: 1 valid genus"
 
   Scenario: Seeing the subfamilies
@@ -46,7 +49,7 @@ Feature: Using the catalog index
     Then "Dolichoderinae" should be selected
     And I should see "Dolichoderini" in the contents
     And I should see "Dolichoderinae history"
-    And I should see "Extant: 1 valid tribe, 1 valid genus, 1 valid species"
+    And I should see "Extant: 1 valid tribe, 2 valid genera, 2 valid species, 1 valid subspecies"
     And I should see "Fossil: 1 valid genus"
     And I should see "Dolichoderini" in the index
 
@@ -72,6 +75,21 @@ Feature: Using the catalog index
     And I should see "1 valid species, 1 valid subspecies"
     And I should see "abruptus" in the index
     And I should see "minor" in the index
+
+  #Scenario: Selecting a subgenus
+    #When I go to the catalog index
+    #And I follow "Dolichoderinae"
+    #And I follow "Dolichoderini"
+    #And I follow "Dolichoderus"
+    #And I follow "Subdolichoderus"
+    #Then "Dolichoderinae" should be selected
+    #And "Dolichoderini" should be selected
+    #And "Dolichoderus" should be selected
+    #And "Subdolichoderus" should be selected
+    #And I should see "Subdolichoderus history"
+    #And I should see "1 valid species, 1 valid subspecies"
+    #And I should see "abruptus" in the index
+    #And I should see "minor" in the index
 
   Scenario: Selecting a species
     When I go to the catalog index

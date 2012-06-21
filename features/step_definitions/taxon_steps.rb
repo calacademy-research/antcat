@@ -73,9 +73,24 @@ Given /a genus that was synonymized to "(.*?)" exists with a name of "(.*?)" wit
   taxon.taxonomic_history_items.create! taxt: taxonomic_history
 end
 
+Given /a subgenus exists with a name of "(.*?)"(?: and a genus of "(.*?)")?(?: and a taxonomic history of "(.*?)")?/ do |epithet, parent_name, taxonomic_history|
+  genus = parent_name && (Genus.find_by_name(parent_name) || Factory(:genus, name: FactoryGirl.create(:genus_name, name: parent_name)))
+  name = parent_name + ' (' + epithet + ')'
+  subgenus = Factory :subgenus, name: FactoryGirl.create(:subgenus_name, name: name, epithet: epithet), genus: genus
+  taxonomic_history = 'none' unless taxonomic_history.present?
+  subgenus.taxonomic_history_items.create! taxt: taxonomic_history
+end
+
 Given /a species exists with a name of "(.*?)" and a genus of "(.*?)"(?: and a taxonomic history of "(.*?)")?/ do |taxon_name, parent_name, taxonomic_history|
   genus = Genus.find_by_name(parent_name) || Factory(:genus, name: FactoryGirl.create(:genus_name, name: parent_name))
   @species = Factory :species, name: FactoryGirl.create(:species_name, name: "#{parent_name} #{taxon_name}"), genus: genus
+  taxonomic_history = 'none' unless taxonomic_history.present?
+  @species.taxonomic_history_items.create!  taxt: taxonomic_history
+end
+
+Given /a species exists with a name of "(.*?)" and a subgenus of "(.*?)"(?: and a taxonomic history of "(.*?)")?/ do |taxon_name, parent_name, taxonomic_history|
+  subgenus = Subgenus.find_by_name(parent_name) || Factory(:subgenus, name: FactoryGirl.create(:subgenus_name, name: parent_name))
+  @species = Factory :species, name: FactoryGirl.create(:species_name, name: "#{parent_name} #{taxon_name}"), subgenus: subgenus, genus: subgenus.genus
   taxonomic_history = 'none' unless taxonomic_history.present?
   @species.taxonomic_history_items.create!  taxt: taxonomic_history
 end
