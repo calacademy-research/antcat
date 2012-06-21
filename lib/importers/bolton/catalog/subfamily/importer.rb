@@ -33,7 +33,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
 
     do_manual_fixups
     ForwardReference.fixup
-    resolve_parent_synonyms
+    #resolve_parent_synonyms
 
   ensure
     super
