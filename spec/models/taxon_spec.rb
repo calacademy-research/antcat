@@ -247,20 +247,6 @@ describe Taxon do
     end
   end
 
-  describe "statistics (for the whole family)" do
-    it "should return the statistics for each status of each rank" do
-      subfamily = FactoryGirl.create :subfamily
-      genus = FactoryGirl.create :genus, subfamily: subfamily, tribe: nil
-      FactoryGirl.create :genus, subfamily: subfamily, status: 'homonym', tribe: nil
-      2.times {FactoryGirl.create :subfamily, fossil: true}
-      Taxon.statistics.should == {
-        extant: {:subfamilies => {'valid' => 1}, :genera => {'valid' => 1, 'homonym' => 1}},
-        fossil: {:subfamilies => {'valid' => 2}}
-      }
-    end
-
-  end
-
   describe "Protonym" do
     it "should have a protonym" do
       taxon = Family.new
