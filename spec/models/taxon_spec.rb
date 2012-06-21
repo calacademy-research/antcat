@@ -111,6 +111,17 @@ describe Taxon do
     end
   end
 
+  describe "Find by epithet" do
+    it "should return nil if nothing matches" do
+      Taxon.find_by_epithet('sdfsdf').should be_empty
+    end
+    it "should return all the items if there is more than one" do
+      FactoryGirl.create :species_name, name: 'Monomorium alta', epithet: 'alta'
+      FactoryGirl.create :species_name, name: 'Atta alta', epithet: 'alta'
+      Taxon.find_by_epithet('alta').map(&:name).map(&:to_s).should =~ ['Monomorium alta', 'Atta alta']
+    end
+  end
+
   describe "Find by genus id and epithet" do
     it "should return nil if nothing matches" do
       Taxon.find_by_genus_id_and_epithet(1234, 'sdfsdf').should == nil
