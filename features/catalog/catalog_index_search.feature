@@ -9,6 +9,7 @@ Feature: Searching the catalog index
     And a tribe exists with a name of "Dolichoderini" and a subfamily of "Dolichoderinae" and a taxonomic history of "Dolichoderini history"
     And a genus exists with a name of "Dolichoderus" and a tribe of "Dolichoderini" and a taxonomic history of "Dolichoderus history"
     And a species exists with a name of "abruptus" and a genus of "Dolichoderus" and a taxonomic history of "abruptus history"
+    And a subspecies exists for that species with a name of "Dolichoderus abruptus minor" and an epithet of "minor" and a taxonomic history of "minor history"
 
   Scenario: Searching when no results
     When I go to the catalog index
@@ -104,3 +105,9 @@ Feature: Searching the catalog index
     When I fill in the search box with "Dolichoderus abruptus "
     And I press "Go" by the search box
     Then I should see "abruptus history"
+
+  Scenario: Searching for subspecies
+    When I go to the catalog index
+    When I fill in the search box with "minor"
+    And I press "Go" by the search box
+    Then I should see "minor history"

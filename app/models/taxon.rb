@@ -25,7 +25,7 @@ class Taxon < ActiveRecord::Base
     name = name.dup.strip
     query = ordered_by_name
     column = name.split(' ').size > 1 ?  'name' : 'epithet'
-    types_sought = ['Subfamily', 'Tribe', 'Genus', 'Species']
+    types_sought = ['Subfamily', 'Tribe', 'Genus', 'Species', 'Subspecies']
     case search_type
     when 'matching'
       query = query.where ["names.#{column} = ?    AND taxa.type IN (?)", name, types_sought]
