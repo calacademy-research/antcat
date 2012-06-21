@@ -48,8 +48,12 @@ class Catalog::IndexController < CatalogController
     when Genus
       @genus = @taxon
       @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
+      if params[:hide_subgenera]
+        @specieses = @genus.species_group_descendants
+      else
+        @subgenera = @genus.subgenera.ordered_by_name
+      end
       setup_genus_parent_columns
-      @specieses = @genus.species_group_descendants
 
     when Species
       @species = @taxon
@@ -70,7 +74,8 @@ class Catalog::IndexController < CatalogController
     @page_parameters = {
       id: params[:id], subfamily: @subfamily, tribe: @tribe, genus: @genus, species: @species,
       q: params[:q], search_type: params[:search_type],
-      hide_tribes: params[:hide_tribes]
+      hide_tribes: params[:hide_tribes],
+      hide_subgenera: params[:hide_subgenera],
     }
 
   end

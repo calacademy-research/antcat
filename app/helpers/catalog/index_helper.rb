@@ -9,6 +9,7 @@ module Catalog::IndexHelper
       if rank == :subfamily
         parameters = "subfamily=none"
         parameters << "&hide_tribes=true" if page_parameters[:hide_tribes]
+        parameters << "&hide_subgenera=true" if page_parameters[:hide_subgenera]
         link_to "(no subfamily)", "/catalog/index?#{parameters}", :class => classes
       elsif rank == :tribe
         parameters = "subfamily=#{page_parameters[:subfamily].id}&tribe=none"
