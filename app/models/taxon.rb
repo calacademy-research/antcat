@@ -12,6 +12,9 @@ class Taxon < ActiveRecord::Base
     taxon = with_names.where(['name = ?', name]).first
     taxon && Taxon.find_by_id(taxon.id)
   end
+  def self.find_by_epithet epithet
+    joins(:name).readonly(false).where ['epithet = ?', epithet]
+  end
 
   def self.find_by_genus_id_and_epithet genus_id, target_epithet
     for epithet in Name.make_epithet_set target_epithet
