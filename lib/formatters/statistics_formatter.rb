@@ -17,7 +17,7 @@ module Formatters::StatisticsFormatter
     strings = [:extant, :fossil].inject({}) do |strings, extant_or_fossil|
       extant_or_fossil_statistics = statistics[extant_or_fossil]
       if extant_or_fossil_statistics
-        string = [:subfamilies, :genera, :species, :subspecies].inject([]) do |rank_strings, rank|
+        string = [:tribes, :subfamilies, :genera, :species, :subspecies].inject([]) do |rank_strings, rank|
           string = format_rank_statistics(extant_or_fossil_statistics, rank, options[:include_invalid])
           rank_strings << string if string.present?
           rank_strings

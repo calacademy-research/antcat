@@ -96,6 +96,11 @@ describe Formatters::StatisticsFormatter do
       @formatter.format_statistics(statistics).should == "<p class=\"taxon_statistics\">1 valid subfamily, 2 valid genera (1 synonym, 2 homonyms), 1 valid species</p>"
     end
 
+    it "should handle tribes" do
+      statistics = {extant: {tribes: {'valid' => 1}}}
+      @formatter.format_statistics(statistics).should == "<p class=\"taxon_statistics\">1 valid tribe</p>"
+    end
+
     it "should format a subfamily's statistics correctly" do
       statistics = {:extant => {:genera => {'valid' => 2, 'synonym' => 1, 'homonym' => 2}, :species => {'valid' => 1}}}
       @formatter.format_statistics(statistics).should == "<p class=\"taxon_statistics\">2 valid genera (1 synonym, 2 homonyms), 1 valid species</p>"
