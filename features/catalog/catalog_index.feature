@@ -18,7 +18,7 @@ Feature: Using the catalog index
     When I go to the catalog index
     Then I should see "Formicidae" in the contents
     And I should see "valid" in the contents
-    And I should see "Extant: 1 valid subfamily, 2 valid genera"
+    And I should see "Extant: 1 valid tribe, 1 valid subfamily, 2 valid genera"
     And I should see "Fossil: 1 valid genus"
 
   Scenario: Seeing the subfamilies
@@ -46,7 +46,7 @@ Feature: Using the catalog index
     Then "Dolichoderinae" should be selected
     And I should see "Dolichoderini" in the contents
     And I should see "Dolichoderinae history"
-    And I should see "Extant: 1 valid genus, 1 valid species"
+    And I should see "Extant: 1 valid tribe, 1 valid genus, 1 valid species"
     And I should see "Fossil: 1 valid genus"
     And I should see "Dolichoderini" in the index
 
