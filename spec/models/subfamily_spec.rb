@@ -111,6 +111,14 @@ describe Subfamily do
       }
     end
 
+    it "should count tribes" do
+      subfamily = FactoryGirl.create :subfamily
+      tribe = FactoryGirl.create :tribe, subfamily: subfamily
+      subfamily.statistics.should == {
+        extant: {tribes: {'valid' => 1}}
+      }
+    end
+
   end
 
   describe "Importing" do

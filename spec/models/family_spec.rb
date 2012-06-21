@@ -70,12 +70,13 @@ describe Family do
     it "should return the statistics for each status of each rank" do
       family = FactoryGirl.create :family
       subfamily = FactoryGirl.create :subfamily
-      genus = FactoryGirl.create :genus, :subfamily => subfamily, :tribe => nil
-      FactoryGirl.create :genus, :subfamily => subfamily, :status => 'homonym', :tribe => nil
+      tribe = FactoryGirl.create :tribe, subfamily: subfamily
+      genus = FactoryGirl.create :genus, :subfamily => subfamily, :tribe => tribe
+      FactoryGirl.create :genus, :subfamily => subfamily, :status => 'homonym', :tribe => tribe
       2.times {FactoryGirl.create :subfamily, :fossil => true}
       family.statistics.should == {
-        :extant => {:subfamilies => {'valid' => 1}, :genera => {'valid' => 1, 'homonym' => 1}},
-        :fossil => {:subfamilies => {'valid' => 2}}
+        :extant => {subfamilies: {'valid' => 1}, tribes: {'valid' => 1}, genera: {'valid' => 1, 'homonym' => 1}},
+        :fossil => {subfamilies: {'valid' => 2}}
       }
     end
   end

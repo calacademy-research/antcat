@@ -30,7 +30,7 @@ class Subfamily < Taxon
   end
 
   def statistics
-    get_statistics [:genera, :species, :subspecies]
+    get_statistics [:tribes, :genera, :species, :subspecies]
   end
 
 end
