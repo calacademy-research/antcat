@@ -8,6 +8,7 @@ class Tribe < Taxon
   end
 
   def statistics
+    get_statistics [:genera]
   end
 
   def siblings

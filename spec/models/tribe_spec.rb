@@ -40,8 +40,10 @@ describe Tribe do
   end
 
   describe "Statistics" do
-    it "should have none" do
-      FactoryGirl.create(:tribe).statistics.should be_nil
+    it "should include the number of genera" do
+      tribe = FactoryGirl.create :tribe
+      genus = FactoryGirl.create :genus, tribe: tribe
+      tribe.statistics.should == {:extant => {:genera => {'valid' => 1}}}
     end
   end
 
