@@ -40,6 +40,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
   end
 
   def parse_genus_references genus
+    Progress.method
     case @type
     when :genus_references_header
       parsed_genus_name = @parse_result[:genus_name]
@@ -81,6 +82,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
 
   ################################################
   def parse_homonym_replaced_by_genus replaced_by_genus
+    Progress.method
     parse_genus({
       status: 'homonym', homonym_replaced_by: replaced_by_genus,
       subfamily: replaced_by_genus.subfamily, tribe: replaced_by_genus.tribe},
