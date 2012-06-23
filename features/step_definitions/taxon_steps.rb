@@ -106,3 +106,23 @@ Given /a (\w+) exists with a name of "([^"]+)" and a parent of "([^"]+)"/ do |ra
   Taxon.find_by_name(name).update_attribute :parent, Taxon.find_by_name(parent_name)
 end
 
+Given /^subfamily "(.*?)" exists$/ do |name|
+  @subfamily = FactoryGirl.create :subfamily, name: FactoryGirl.create(:subfamily_name, name: name)
+  @subfamily.taxonomic_history_items.create! taxt: "#{name} history"
+end
+Given /^tribe "(.*?)" exists in that subfamily$/ do |name|
+  @tribe = FactoryGirl.create :tribe, subfamily: @subfamily, name: FactoryGirl.create(:tribe_name, name: name)
+end
+Given /^genus "(.*?)" exists in that tribe$/ do |name|
+  @genus = FactoryGirl.create :genus, subfamily: @subfamily, tribe: @tribe, name: FactoryGirl.create(:genus_name, name: name)
+end
+Given /^subgenus "(.*?)" exists in that genus$/ do |name|
+  @subgenus = FactoryGirl.create :subgenus, subfamily: @subfamily, tribe: @tribe, genus: @genus, name: FactoryGirl.create(:subgenus_name, name: name)
+  @subgenus.taxonomic_history_items.create! taxt: "#{name} history"
+end
+Given /^species "(.*?)" exists in that subgenus$/ do |name|
+  @species = FactoryGirl.create :species, subfamily: @subfamily, genus: @genus, subgenus: @subgenus, name: FactoryGirl.create(:species_name, name: name)
+end
+Given /^subspecies "(.*?)" exists in that species$/ do |name|
+  @subspecies = FactoryGirl.create :subspecies, subfamily: @subfamily, genus: @genus, species: @species, name: FactoryGirl.create(:subspecies_name, name: name)
+end
