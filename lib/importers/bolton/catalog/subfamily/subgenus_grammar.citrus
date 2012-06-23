@@ -6,8 +6,8 @@ grammar Importers::Bolton::Catalog::Subfamily::SubgenusGrammar
   end
 
   rule subgenera_header
-    ('Subgenera of ' /.*/) {
-      {:type => :subgenera_header}
+    ('Subgenera of ' italic genus_name_uppercase /.*/) {
+      {:type => :subgenera_header, name: genus_name_uppercase.value[:genus_name]}
     }
   end
 
