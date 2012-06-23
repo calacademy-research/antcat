@@ -62,7 +62,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
   end
 
   def parse_subgenera attributes = {}
-    return '' unless @type == :subgenera_header
+    return '' unless @type == :subgenera_header && @parse_result[:name] == attributes[:genus].name.to_s
     Progress.method
 
     parse_next_line

@@ -31,8 +31,11 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     info_message << " synonym of #{parsing_synonym.name}" if parsing_synonym
     Progress.info info_message
 
+    # look for subgenera before...
     parse_subgenera genus: genus
     parse_synonyms_of_genus genus
+    # ...and after looking for synonyms
+    parse_subgenera genus: genus
     parse_homonym_replaced_by_genus genus
     parse_genus_references genus
 

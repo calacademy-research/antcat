@@ -10,7 +10,7 @@ describe Importers::Bolton::Catalog::Subfamily::SubgenusGrammar do
 
     describe "Subgenera header" do
       it "should be recognized" do
-        @grammar.parse(%{Subgenera of <i>MYRMOTERAS</i> include the nominal plus the following.}).value.should == {:type => :subgenera_header}
+        @grammar.parse(%{Subgenera of <i>MYRMOTERAS</i> include the nominal plus the following.}, root: :subgenera_header).value.should == {type: :subgenera_header, name: 'Myrmoteras'}
       end
     end
 

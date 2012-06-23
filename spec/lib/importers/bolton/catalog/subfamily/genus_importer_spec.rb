@@ -73,9 +73,34 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
         acrostigma.should_not be_nil
         acrostigma.should be_homonym_replaced_by sphinctomyrmex
       end
+    end
 
+    describe "Importing a genus followed by its synonym followed by a subgenus of the first one (not the synonym)" do
+      it "should work" do
+        @importer.import_html make_contents %{
+          <p>Genus <i>LASIUS</i></p>
+          <p><i>Lasius</i> Fabricius, 1804: 415. Type-species: <i>Formica nigra</i>, by subsequent designation of Bingham, 1903: 338.</p>
+          <p>Taxonomic history</p>
+          <p>Lasius history</p>
+
+          <p>Junior synonyms of <i>LASIUS</i></p>
+          <p>*<i>Tylolasius</i> Zhang, 1989: 295. Type-species: *<i>Tylolasius inflatus</i>, by original designation.</p>
+          <p>Taxonomic history</p>
+          <p>Tylolasius taxonomic history<i>Acrostigma</i> Emery, 1891a: 149 (Formicidae).]</p>
+
+          <p>Subgenera of <i>LASIUS</i> include the nominal plus the following.</p>
+
+          <p>Subgenus <i>LASIUS (ACANTHOMYOPS)</i></p>
+          <p><i>Acanthomyops</i> Mayr, 1862: 652 (diagnosis in key), 699. Type-species: <i>Formica clavigera</i>, by monotypy.</p>
+          <p>Taxonomic history</p>
+          <p>Acanthomyops taxonomic history</p>
+        }
+        acanthomyops = Taxon.find_by_epithet('Acanthomyops').first
+        acanthomyops.genus.should == Genus.find_by_name('Lasius')
+      end
     end
   end
+
   describe "Parsing taxonomic history" do
     it "should return an array of text items converted to Taxt" do
       dalla_torre = FactoryGirl.create :article_reference, :bolton_key_cache => 'Dalla Torre 1893'
