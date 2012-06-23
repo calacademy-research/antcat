@@ -7,6 +7,7 @@ class Catalog::IndexController < CatalogController
     #@current_path = index_catalog_path
 
     params[:id] = Family.first.id if params[:id].blank?
+    params[:hide_subgenera] = true if params[:hide_subgenera].nil?
     @taxon = Taxon.find params[:id]
 
     @subfamilies = ::Subfamily.ordered_by_name
