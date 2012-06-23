@@ -144,21 +144,21 @@ FactoryGirl.define do
   factory :subgenus_name do
     sequence(:name) {|n| "Atta (Subgenus#{n})"}
     html_name       {"<i>Atta</i> <i>(#{name})</i>"}
-    epithet         {name.match(/\((.*)\)/)[1]}
+    epithet         {name.split(' ').last}
     html_epithet    {"<i>#{epithet}</i>"}
   end
 
   factory :species_name do
     sequence(:name) {|n| "Atta species#{n}"}
     html_name       {"<i>#{name}</i>"}
-    epithet         {name.match(/^\w+ (.*)/)[1]}
+    epithet         {name.split(' ').last}
     html_epithet    {"<i>#{epithet}</i>"}
   end
 
   factory :subspecies_name do
     sequence(:name) {|n| "Atta species subspecies#{n}"}
     html_name       {"<i>#{name}</i>"}
-    epithet         {name.match(/^\w+ \w+ (.*)/).try(:[],1) || 'minor'}
+    epithet         {name.split(' ').last}
     html_epithet    {"<i>#{epithet}</i>"}
   end
 
