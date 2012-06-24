@@ -18,7 +18,8 @@ module Catalog::IndexHelper
     else
       label = Formatters::CatalogFormatter.taxon_label taxon
       css_classes = Formatters::CatalogFormatter.taxon_css_classes taxon, selected: taxon == selected_taxon
-      link_to label, index_catalog_path(taxon, page_parameters.merge(rank => taxon)), class: css_classes
+      # Using index_catalog_path slows things way down when used a lot (like making 1000 Camponotus species links)
+      link_to label, "/catalog/index/#{taxon.id}?#{page_parameters.to_query}", class: css_classes
     end
   end
 
