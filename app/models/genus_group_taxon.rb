@@ -11,8 +11,4 @@ class GenusGroupTaxon < Taxon
     "<i>#{name}</i>"
   end
 
-  def species_group_descendants
-    Taxon.where(genus_id: id).where('taxa.type != ?', 'subgenus').joins(:name).order('names.epithet')
-  end
-
 end

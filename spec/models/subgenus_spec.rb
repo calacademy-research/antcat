@@ -18,6 +18,19 @@ describe Subgenus do
     end
   end
 
+  describe "Species group descendants" do
+    before do
+      @subgenus = create_subgenus 'Subdolichoderus'
+    end
+    it "should return an empty array if there are none" do
+      @subgenus.species_group_descendants.should == []
+    end
+    it "should return all the species" do
+      species = create_species subgenus: @subgenus
+      @subgenus.species_group_descendants.should == [species]
+    end
+  end
+
   describe "Importing" do
     it "should work" do
       genus = FactoryGirl.create :genus, name: FactoryGirl.create(:genus_name, name: 'Atta')
