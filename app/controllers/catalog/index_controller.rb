@@ -56,6 +56,14 @@ class Catalog::IndexController < CatalogController
       end
       setup_genus_parent_columns
 
+    when Subgenus
+      @subgenus = @taxon
+      @genus = @subgenus.genus
+      @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
+      @subgenera = @genus.subgenera.ordered_by_name
+      setup_genus_parent_columns
+      @specieses = @subgenus.species_group_descendants
+
     when Species
       @species = @taxon
       @genus = @species.genus
