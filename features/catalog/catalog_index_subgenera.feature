@@ -27,3 +27,13 @@ Feature: Using the catalog index
     And I follow "Dolichoderus"
     And I follow "show subgenera"
     Then I should see "Subdolichoderus"
+
+  Scenario: Selecting a subgenus
+    When I go to the catalog index
+    And I follow "Dolichoderinae"
+    And I follow "Dolichoderini"
+    And I follow "Dolichoderus"
+    And I follow "show subgenera"
+    And I follow "Subdolichoderus"
+    Then I should see "Dolichoderus (Subdolichoderus) history"
+    And I should see "abruptus" in the species index
