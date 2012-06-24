@@ -18,6 +18,10 @@ class Genus < GenusGroupTaxon
     Genus.without_subfamily.ordered_by_name
   end
 
+  def species_group_descendants
+    Taxon.where(genus_id: id).where('taxa.type != ?', 'subgenus').joins(:name).order('names.epithet')
+  end
+
   def self.import data, attributes = {}
     transaction do
       attributes.merge!(

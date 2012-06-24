@@ -4,6 +4,10 @@ class Subgenus < GenusGroupTaxon
   validates_presence_of :genus
   has_many :species
 
+  def species_group_descendants
+    Taxon.where(subgenus_id: id).where('taxa.type != ?', 'subgenus').joins(:name).order('names.epithet')
+  end
+
   def self.import data, attributes = {}
     transaction do
       attributes.merge!(
