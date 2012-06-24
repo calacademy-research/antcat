@@ -7,7 +7,7 @@ class Taxon < ActiveRecord::Base
   # name
   belongs_to  :name; validates :name, presence: true
   scope :with_names, joins(:name).readonly(false)
-  scope :ordered_by_name, with_names.order('names.name')
+  scope :ordered_by_name, with_names.order('names.name').includes(:name)
   def self.find_by_name name
     taxon = with_names.where(['name = ?', name]).first
     taxon && Taxon.find_by_id(taxon.id)
