@@ -50,9 +50,9 @@ class Catalog::IndexController < CatalogController
       @genus = @taxon
       @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
       if params[:hide_subgenera]
-        @specieses = @genus.species_group_descendants
+        @specieses = @genus.species_group_descendants.includes(:name)
       else
-        @subgenera = @genus.subgenera.ordered_by_name
+        @subgenera = @genus.subgenera.ordered_by_name.includes(:name)
       end
       setup_genus_parent_columns
 
@@ -60,23 +60,23 @@ class Catalog::IndexController < CatalogController
       @subgenus = @taxon
       @genus = @subgenus.genus
       @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
-      @subgenera = @genus.subgenera.ordered_by_name
+      @subgenera = @genus.subgenera.ordered_by_name.includes(:name)
       setup_genus_parent_columns
-      @specieses = @subgenus.species_group_descendants
+      @specieses = @subgenus.species_group_descendants.includes(:name)
 
     when Species
       @species = @taxon
       @genus = @species.genus
       @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
       setup_genus_parent_columns
-      @specieses = @genus.species_group_descendants
+      @specieses = @genus.species_group_descendants.includes(:name)
 
     when Subspecies
       @species = @taxon
       @genus = @species.genus
       @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
       setup_genus_parent_columns
-      @specieses = @genus.species_group_descendants
+      @specieses = @genus.species_group_descendants.includes(:name)
 
     end
 
@@ -111,7 +111,7 @@ class Catalog::IndexController < CatalogController
     if params[:hide_tribes]
       @genera = @subfamily == 'none' ? Genus.without_subfamily.ordered_by_name : @subfamily.genera.ordered_by_name
     else
-      @genera = @genus.siblings
+      @genera = @genus.siblings.includes(:name)
       @tribe = @genus.tribe ? @genus.tribe : 'none'
       @tribes = @subfamily == 'none' ? nil : @subfamily.tribes.ordered_by_name
     end
