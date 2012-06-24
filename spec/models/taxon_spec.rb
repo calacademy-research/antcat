@@ -163,7 +163,7 @@ describe Taxon do
       results = Taxon.find_name('Mono', 'containing')
       results.size.should == 2
     end
-    it "should not return anything but subfamilies, tribes, genera, species,and subspecies" do
+    it "should not return anything but subfamilies, tribes, genera, subgenera, species,and subspecies" do
       FactoryGirl.create :subfamily, name: FactoryGirl.create(:name, name: 'Lepto')
       FactoryGirl.create :tribe, name: FactoryGirl.create(:name, name: 'Lepto')
       FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Lepto')
@@ -171,7 +171,7 @@ describe Taxon do
       FactoryGirl.create :species, name: FactoryGirl.create(:name, name: 'Lepto')
       FactoryGirl.create :subspecies, name: FactoryGirl.create(:name, name: 'Lepto')
       results = Taxon.find_name 'Lepto'
-      results.size.should == 5
+      results.size.should == 6
     end
     it "should sort results by name" do
       FactoryGirl.create :subfamily, name: FactoryGirl.create(:name, name: 'Lepti')

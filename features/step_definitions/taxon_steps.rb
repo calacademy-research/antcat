@@ -121,7 +121,9 @@ Given /^genus "(.*?)" exists in that tribe$/ do |name|
   @genus.taxonomic_history_items.create! taxt: "#{name} history"
 end
 Given /^subgenus "(.*?)" exists in that genus$/ do |name|
-  @subgenus = FactoryGirl.create :subgenus, subfamily: @subfamily, tribe: @tribe, genus: @genus, name: FactoryGirl.create(:subgenus_name, name: name)
+  epithet = name.match(/\((.*?)\)/)[1]
+  name = FactoryGirl.create :subgenus_name, name: name, epithet: epithet
+  @subgenus = FactoryGirl.create :subgenus, subfamily: @subfamily, tribe: @tribe, genus: @genus, name: name
   @subgenus.taxonomic_history_items.create! taxt: "#{name} history"
 end
 Given /^species "(.*?)" exists in that subgenus$/ do |name|

@@ -114,8 +114,8 @@ Feature: Searching the catalog index
     And I press "Go" by the search box
     Then I should see "minor history"
 
-  Scenario: Searching for subspecies
+  Scenario: Searching for subgenus
     When I go to the catalog index
-    When I fill in the search box with "minor"
+    When I fill in the search box with "Subdol"
     And I press "Go" by the search box
-    Then I should see "minor history"
+    Then I should see "Dolichoderus (Subdolichoderus) history"
