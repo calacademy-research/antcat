@@ -12,10 +12,6 @@ class Genus < GenusGroupTaxon
     get_statistics [:species, :subspecies]
   end
 
-  def species_group_descendants
-    Taxon.where(genus_id: id).where('taxa.type != ?', 'subgenus').joins(:name).order('names.epithet')
-  end
-
   def siblings
     tribe && tribe.genera.ordered_by_name ||
     subfamily && subfamily.genera.without_tribe.ordered_by_name ||
