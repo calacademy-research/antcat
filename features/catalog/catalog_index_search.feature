@@ -5,11 +5,13 @@ Feature: Searching the catalog index
 
   Background: 
     Given the Formicidae family exists
-    And a subfamily exists with a name of "Dolichoderinae" and a taxonomic history of "Dolichoderinae history"
-    And a tribe exists with a name of "Dolichoderini" and a subfamily of "Dolichoderinae" and a taxonomic history of "Dolichoderini history"
-    And a genus exists with a name of "Dolichoderus" and a tribe of "Dolichoderini" and a taxonomic history of "Dolichoderus history"
-    And a species exists with a name of "abruptus" and a genus of "Dolichoderus" and a taxonomic history of "abruptus history"
-    And a subspecies exists for that species with a name of "Dolichoderus abruptus minor" and an epithet of "minor" and a taxonomic history of "minor history"
+    And subfamily "Dolichoderinae" exists
+    And tribe "Dolichoderini" exists in that subfamily
+    And genus "Dolichoderus" exists in that tribe
+    And species "Dolichoderus major" exists in that genus
+    And subgenus "Dolichoderus (Subdolichoderus)" exists in that genus
+    And species "Dolichoderus (Subdolichoderus) abruptus" exists in that subgenus
+    And subspecies "Dolichoderus (Subdolichoderus) abruptus minor" exists in that species
 
   Scenario: Searching when no results
     When I go to the catalog index
@@ -102,9 +104,15 @@ Feature: Searching the catalog index
 
   Scenario: Searching for full species name, not just epithet
     When I go to the catalog index
-    When I fill in the search box with "Dolichoderus abruptus "
+    When I fill in the search box with "Dolichoderus major "
     And I press "Go" by the search box
-    Then I should see "abruptus history"
+    Then I should see "Dolichoderus major history"
+
+  Scenario: Searching for subspecies
+    When I go to the catalog index
+    When I fill in the search box with "minor"
+    And I press "Go" by the search box
+    Then I should see "minor history"
 
   Scenario: Searching for subspecies
     When I go to the catalog index
