@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120617022431) do
+ActiveRecord::Schema.define(:version => 20120624020931) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -102,6 +102,8 @@ ActiveRecord::Schema.define(:version => 20120617022431) do
     t.string   "epithets"
     t.string   "html_epithets"
   end
+
+  add_index "names", ["name", "type"], :name => "index_names_on_name_and_type"
 
   create_table "places", :force => true do |t|
     t.string   "name"
@@ -227,14 +229,17 @@ ActiveRecord::Schema.define(:version => 20120617022431) do
   end
 
   add_index "taxa", ["genus_id"], :name => "taxa_genus_id_idx"
-  add_index "taxa", ["homonym_replaced_by_id"], :name => "taxa_homonym_resolved_to_id_index"
+  add_index "taxa", ["homonym_replaced_by_id"], :name => "index_taxa_on_homonym_replaced_by_id"
   add_index "taxa", ["id", "type"], :name => "taxa_id_and_type_idx"
   add_index "taxa", ["name_id"], :name => "taxa_name_id_idx"
+  add_index "taxa", ["protonym_id"], :name => "index_taxa_on_protonym_id"
   add_index "taxa", ["species_id"], :name => "taxa_species_id_index"
   add_index "taxa", ["subfamily_id"], :name => "taxa_subfamily_id_idx"
+  add_index "taxa", ["subgenus_id"], :name => "index_taxa_on_subgenus_id"
   add_index "taxa", ["synonym_of_id"], :name => "taxa_synonym_of_id_index"
   add_index "taxa", ["tribe_id"], :name => "taxa_tribe_id_idx"
   add_index "taxa", ["type"], :name => "taxa_type_idx"
+  add_index "taxa", ["type_name_id"], :name => "index_taxa_on_type_name_id"
 
   create_table "taxonomic_history_items", :force => true do |t|
     t.text     "taxt"
@@ -243,6 +248,8 @@ ActiveRecord::Schema.define(:version => 20120617022431) do
     t.integer  "taxon_id"
     t.integer  "position"
   end
+
+  add_index "taxonomic_history_items", ["taxon_id"], :name => "index_taxonomic_history_items_on_taxon_id"
 
   create_table "users", :force => true do |t|
     t.string   "email",                              :default => "", :null => false
