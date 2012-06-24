@@ -7,7 +7,7 @@ class Catalog::IndexController < CatalogController
     #@current_path = index_catalog_path
 
     params[:id] = Family.first.id if params[:id].blank?
-    params[:hide_subgenera] = true if params[:hide_subgenera].nil?
+    convert_params_to_boolean
     @taxon = Taxon.find params[:id]
 
     @subfamilies = ::Subfamily.ordered_by_name
@@ -79,6 +79,24 @@ class Catalog::IndexController < CatalogController
       hide_subgenera: params[:hide_subgenera],
     }
 
+  end
+
+  def convert_param_to_boolean key, default
+    case params[key]
+    when nil
+      params[key] = default
+    when 'true'
+      params[key] = true
+    when 'false'
+      params[key] = false
+    else
+      params[key] = true
+    end
+  end
+
+  def convert_params_to_boolean
+    convert_param_to_boolean :hide_tribes, false
+    convert_param_to_boolean :hide_subgenera, true
   end
 
   def setup_genus_parent_columns

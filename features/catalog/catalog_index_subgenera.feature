@@ -20,17 +20,10 @@ Feature: Using the catalog index
     And I follow "Dolichoderus"
     Then I should not see "Subdolichoderus"
 
-  Scenario: Selecting a subgenus
+  Scenario: Showing subgenera
     When I go to the catalog index
     And I follow "Dolichoderinae"
     And I follow "Dolichoderini"
     And I follow "Dolichoderus"
-    And I follow "Subdolichoderus"
-    Then "Dolichoderinae" should be selected
-    And "Dolichoderini" should be selected
-    And "Dolichoderus" should be selected
-    And "Subdolichoderus" should be selected
-    And I should see "Dolichoderus (Subdolichoderus) history"
-    And I should see "1 valid species, 1 valid subspecies"
-    And I should see "abruptus" in the index
-    And I should see "minor" in the index
+    And I follow "show subgenera"
+    Then I should see "Subdolichoderus"
