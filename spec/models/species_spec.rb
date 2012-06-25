@@ -229,18 +229,21 @@ describe Species do
       genus = FactoryGirl.create :genus, name: FactoryGirl.create(:genus_name, name: 'Atta')
       ferox = FactoryGirl.create :species, name: FactoryGirl.create(:name, name: 'Atta ferox'), genus: genus
       species = FactoryGirl.create :species, genus: genus
-      history = 
-        [{:synonym_ofs=>
-            [{:species_epithet=>"ferox",
-              :references=>
-                [{:author_names=>["Moffett"],
-                  :year=>"1986c",
-                  :pages=>"70",
-                  :matched_text=>"Moffett, 1986c: 70"}],
-              :junior_or_senior=>:junior}],
-            :matched_text=>" Junior synonym of <i>ferox</i>: Moffett, 1986c: 70."}]
+      history = [{synonym_ofs: [{species_epithet: 'ferox', junior_or_senior: :junior}]}]
       Species.set_status_from_history species, history
-      species.reload.should be_synonym
+      species = Species.find species
+      species.should be_synonym
+      species.synonym_of?(ferox).should be_true
+    end
+    it "should find the senior synonym using declension rules" do
+      genus = FactoryGirl.create :genus, name: FactoryGirl.create(:genus_name, name: 'Atta')
+      magna = FactoryGirl.create :species, name: FactoryGirl.create(:species_name, name: 'Atta magna', epithet: 'magna'), genus: genus
+      species = FactoryGirl.create :species, genus: genus
+      history = [{synonym_ofs: [{species_epithet: 'magnus', junior_or_senior: :junior}]}]
+      Species.set_status_from_history species, history
+      species = Species.find species
+      species.should be_synonym
+      species.synonym_of?(ferox).should be_true
     end
     it "should recognize a synonym_of even if it's not the first item in the history" do
       genus = FactoryGirl.create :genus, name: FactoryGirl.create(:genus_name, name: 'Atta')
