@@ -15,7 +15,7 @@ module Formatters::IndexFormatter
       labels << "unresolved junior homonym"
     elsif taxon.invalid?
       label = Status[taxon].to_s.dup
-      label << ' of ' << taxon_label_span(taxon.synonym_of, ignore_status: true) if taxon.synonym?
+      label << ' of ' << taxon_label_span(taxon.synonym_of, ignore_status: true) if taxon.synonym? && taxon.synonym_of
       labels << label
     end
     labels.join(', ').html_safe
