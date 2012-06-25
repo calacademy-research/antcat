@@ -148,6 +148,10 @@ describe Formatters::IndexFormatter do
       result.should == 'synonym of <span class="genus name taxon">Atta</span>'
       result.should be_html_safe
     end
+    it "should not freak out if the senior synonym hasn't been set yet" do
+      taxon = FactoryGirl.create :genus, status: 'synonym', synonym_of: nil
+      @formatter.format_status(taxon).should == 'synonym'
+    end
     it "should show where it is incertae sedis" do
       taxon = FactoryGirl.create :genus, incertae_sedis_in: 'family'
       result = @formatter.format_status(taxon)
