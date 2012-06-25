@@ -31,6 +31,7 @@
   NGC-Spa-an            Replace period after 'pallens' with comma
                         Fix 'figs,' -> 'figs.'
   NGC-Spcam1            Add period in 'C (Tanaemyrmex)'
+  NGC-Spcam1            Add period in ' var '
   NGC-Spon-spp          Italicize 'n' in 'niger' (Pachycondyla)
 
   NGC-Spa-an            Replace period after 'pallens' with comma
