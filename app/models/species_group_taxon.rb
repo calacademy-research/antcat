@@ -25,6 +25,10 @@ class SpeciesGroupTaxon < Taxon
     end
   end
 
+  def self.get_taxon_class protonym, history
+    get_taxon_class_from_history(history) || get_taxon_class_from_protonym(protonym)
+  end
+
   def self.get_taxon_class_from_history history
     for item in history or []
       return Subspecies if item[:currently_subspecies_of]
@@ -40,16 +44,8 @@ class SpeciesGroupTaxon < Taxon
     protonym.name.kind_of?(SubspeciesName) ? Subspecies : Species
   end
 
-  def self.get_taxon_class protonym, history
-    get_taxon_class_from_history(history) || get_taxon_class_from_protonym(protonym)
-  end
-
   def self.import_data protonym, data
-    if self == Species
-      name = Name.import data
-    else
-      name = Name.import data[:protonym].merge genus: data[:genus]
-    end
+    name = import_name data
 
     attributes = {
       genus:      data[:genus],
@@ -59,60 +55,47 @@ class SpeciesGroupTaxon < Taxon
       protonym:   protonym,
     }
 
-    species = create! attributes
+    species_group_taxon = create! attributes
 
-    if species.kind_of? Subspecies
-      target_epithet = get_currently_subspecies_of_from_history data[:raw_history]
-      target_epithet ||=  data[:protonym][:species_epithet]
-      SpeciesEpithetReference.create!(
-        fixee:            species,
-        fixee_table:      'taxa',
-        fixee_attribute: 'species_id',
-        genus:            data[:genus],
-        epithet:          target_epithet,
-      )
-    end
+    species_group_taxon.do_stuff_after_creating_taxon data
 
     (data[:history] || []).each do |item|
-      species.taxonomic_history_items.create! taxt: item
+      species_group_taxon.taxonomic_history_items.create! taxt: item
     end
-    set_status_from_history species, data[:raw_history]
 
-    species
+    species_group_taxon
   end
 
-  def self.set_status_from_history species, history
+  def do_stuff_after_creating_taxon data
+    set_status_from_history data[:raw_history]
+  end
+
+  def set_status_from_history history
     return unless history.present?
 
-    species.update_attributes status: 'valid'
+    status_record = get_status_from_history history
+    update_attributes status: status_record[:status] if status_record
 
-    genus = species.genus
+    check_synonym_status status_record
+  end
 
-    for item in history
-      if item[:synonym_ofs]
-        for synonym_of in item[:synonym_ofs]
-          name = Name.import synonym_of.merge(genus: genus)
-          senior = Species.find_by_name name.name
-          if senior
-            species.update_attributes status: 'synonym', synonym_of: senior
-          else
-            ForwardReference.create! fixee: species, fixee_attribute: 'synonym_of', name: name
-          end
-        end
-      end
-      if item[:homonym_of]
-        species.update_attributes status: 'homonym'
-      end
+  def check_synonym_status status_record
+    if status_record && status_record[:synonym]
+      name = SpeciesName.import genus: genus, epithet: status_record[:parent_epithet]
+      ForwardReference.create! fixee: self, fixee_attribute: 'synonym_of', name: name
     end
   end
 
-  def self.get_currently_subspecies_of_from_history history
-    for item in history or []
-      if item[:currently_subspecies_of]
-        return item[:currently_subspecies_of][:species][:species_epithet]
+  def get_status_from_history history
+    status = nil
+    for item in history
+      if item[:synonym_ofs]
+        return {status: 'synonym', parent_epithet: item[:species_group_epithet]}
+      elsif item[:homonym_of]
+        status = {status: 'homonym'}
       end
     end
-    nil
+    status
   end
 
   class NoProtonymError < StandardError; end

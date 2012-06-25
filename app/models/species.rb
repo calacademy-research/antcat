@@ -6,4 +6,8 @@ class Species < SpeciesGroupTaxon
     genus.species
   end
 
+  def self.import_name data
+    Name.import data
+  end
+
 end
