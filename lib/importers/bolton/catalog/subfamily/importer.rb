@@ -23,7 +23,6 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     ReferenceSection.delete_all
     TaxonomicHistoryItem.delete_all
     MissingReference.delete_all
-    ForwardReference.delete_all
     Citation.delete_all
     Protonym.delete_all
     Taxon.delete_all
@@ -32,7 +31,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     parse_supersubfamilies
 
     do_manual_fixups
-    ForwardReference.fixup
+
     #resolve_parent_synonyms
 
   ensure
