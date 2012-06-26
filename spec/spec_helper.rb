@@ -48,11 +48,15 @@ end
 
 puts "in #{`pwd`}"
 
+def create_subfamily name_or_attributes = 'Dolichoderinae', attributes = {}
+  create_taxon name_or_attributes, :subfamily, :subfamily_name, attributes
+end
+
 def create_genus name_or_attributes = 'Atta', attributes = {}
   create_taxon name_or_attributes, :genus, :genus_name, attributes
 end
 
-def create_subgenus name_or_attributes, attributes = {}
+def create_subgenus name_or_attributes = 'Atta (Subatta)', attributes = {}
   create_taxon name_or_attributes, :subgenus, :subgenus_name, attributes
 end
 
