@@ -124,18 +124,18 @@ describe Taxon do
 
   describe "Find by genus id and epithet" do
     it "should return nil if nothing matches" do
-      Taxon.find_epithet_in_genus(1234, 'sdfsdf').should == nil
+      Taxon.find_epithet_in_genus('sdfsdf', 1234).should == nil
     end
     it "should return the one item" do
       species_name = FactoryGirl.create :species_name, epithet: 'serratula'
       species = create_species 'Atta serratula', name: species_name
-      Taxon.find_epithet_in_genus(species.genus.id, 'serratula').should == [species]
+      Taxon.find_epithet_in_genus('serratula', species.genus.id).should == [species]
     end
     describe "Finding mandatory spelling changes" do
       it "should find -a when asked to find -us" do
         species_name = FactoryGirl.create :species_name, epithet: 'serratula'
         species = create_species 'Atta serratula', name: species_name
-        Taxon.find_epithet_in_genus(species.genus.id, 'serratulus').should == [species]
+        Taxon.find_epithet_in_genus('serratulus', species.genus.id).should == [species]
       end
     end
   end

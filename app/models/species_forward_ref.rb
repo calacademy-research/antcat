@@ -11,26 +11,13 @@ class SpeciesForwardRef < ActiveRecord::Base
   end
 
   def fixup
-    candidates = Species.find_epithet_in_genus genus_id, epithet
-    species = self.class.pick_validest candidates
-    if species.nil?
+    specieses = Species.find_validest_for_epithet_in_genus epithet, genus
+    if specieses.empty?
       Progress.error "Couldn't find species '#{epithet}' in genus '#{genus.name}' when fixing up '#{fixee_attribute}' in '#{fixee.name}'"
+    elsif specieses.count > 1
+      Progress.error "Found multiple valid targets among #{specieses.map(&:name).map(&:to_s).join(', ')}"
     else
-      fixee.update_attributes fixee_attribute.to_sym => species
-    end
-  end
-
-
-  def self.pick_validest targets
-    return unless targets
-    valid_targets = targets.select {|target| target.status == 'valid'}
-    other_targets = targets.select {|target| target.status != 'valid' and target.status != 'homonym'}
-    case
-    when valid_targets.size > 1
-      Progress.error "Found multiple valid targets among #{targets.map(&:name).map(&:to_s).join(', ')}"
-      return nil
-    when valid_targets.empty? then other_targets.first
-    else valid_targets.first
+      fixee.update_attributes fixee_attribute.to_sym => specieses.first
     end
   end
 
