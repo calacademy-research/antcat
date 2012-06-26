@@ -109,54 +109,54 @@ describe SpeciesForwardRef do
       fixee.synonym_of.should == fixer
     end
 
-    #it "should look for and find the referenced species" do
-      #genus = create_genus
-      #species = create_species 'Atta major', genus: genus
-      #subspecies = create_subspecies 'Atta major splendens', genus: genus, species: nil
-      #attributes = {
-        #fixee:           subspecies,
-        #fixee_table:     'taxa',
-        #fixee_attribute: 'species_id',
-        #genus:           genus,
-        #epithet:         'major',
-      #}
-      #SpeciesEpithetReference.should_receive(:pick_validest).and_return species
-      #SpeciesEpithetReference.new(attributes).fixup
-      #Subspecies.find(subspecies).species.name.to_s.should == 'Atta major'
-    #end
+    describe "Picking the validest target" do
+      it "should pick the validest target when fixing up" do
+        genus = create_genus 'Atta'
+        fixee = create_species genus: genus
+        forward_ref = SpeciesForwardRef.create!({
+          fixee: fixee, fixee_attribute: 'synonym_of_id',
+          genus: genus, epithet: 'magna'
+        })
+        invalid_fixer = create_species 'Atta magnus', genus: genus, status: 'homonym'
+        fixer = create_species 'Atta magnus', genus: genus
 
-    #describe "Picking the validest target" do
-      #it "should return nil if there is none" do
-        #targets = []
-        #SpeciesEpithetReference.pick_validest(targets).should be_nil
-      #end
+        forward_ref.fixup
 
-      #it "should return nil if there is none" do
-        #targets = nil
-        #SpeciesEpithetReference.pick_validest(targets).should be_nil
-      #end
+        fixee = Taxon.find fixee
+        fixee.synonym_of.should == fixer
+      end
 
-      #it "should pick the best target, if there is more than one" do
-        #invalid_species = create_species status: 'homonym'
-        #valid_species = create_species status: 'valid'
-        #targets = [invalid_species, valid_species]
-        #SpeciesEpithetReference.pick_validest(targets).should == valid_species
-      #end
+      it "should return nil if there is none" do
+        targets = []
+        SpeciesForwardRef.pick_validest(targets).should be_nil
+      end
 
-      #it "should raise log an error and return nil if there is more than one valid" do
-        #valid_species = create_species
-        #another_valid_species = create_species
-        #targets = [another_valid_species, valid_species]
-        #Progress.should_receive :error
-        #SpeciesEpithetReference.pick_validest(targets).should be_nil
-      #end
+      it "should return nil if there is none" do
+        targets = nil
+        SpeciesForwardRef.pick_validest(targets).should be_nil
+      end
 
-      #it "should not pick the homonym, no matter what" do
-        #homonym_species = create_species status: 'homonym'
-        #targets = [homonym_species]
-        #SpeciesEpithetReference.pick_validest(targets).should be_nil
-      #end
+      it "should pick the best target, if there is more than one" do
+        invalid_species = create_species status: 'homonym'
+        valid_species = create_species status: 'valid'
+        targets = [invalid_species, valid_species]
+        SpeciesForwardRef.pick_validest(targets).should == valid_species
+      end
 
-    #end
+      it "should raise log an error and return nil if there is more than one valid" do
+        valid_species = create_species
+        another_valid_species = create_species
+        targets = [another_valid_species, valid_species]
+        Progress.should_receive :error
+        SpeciesForwardRef.pick_validest(targets).should be_nil
+      end
+
+      it "should not pick the homonym, no matter what" do
+        homonym_species = create_species status: 'homonym'
+        targets = [homonym_species]
+        SpeciesForwardRef.pick_validest(targets).should be_nil
+      end
+
+    end
   end
 end
