@@ -12,16 +12,6 @@ describe Species do
     species.children.should == species.subspecies
   end
 
-  describe "Name" do
-    it "should handle it" do
-      subfamily = create_subfamily 'Dolichoderinae'
-      genus = create_genus 'Myrmicium', subfamily: subfamily
-      name = FactoryGirl.create(:species_name, name: 'Myrmicium shattucki', epithet: 'shattucki'), genus: genus
-      species = FactoryGirl.create :species, name: FactoryGirl.create(:species_name, name: 'Myrmicium shattucki', epithet: 'shattucki'), genus: genus
-      species.name.to_s.should == 'Myrmicium shattucki'
-    end
-  end
-
   describe "Statistics" do
 
     it "should handle 0 children" do
