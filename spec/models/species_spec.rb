@@ -54,12 +54,12 @@ describe Species do
   end
 
   describe "Siblings" do
-    it "should return itself and its subfamily's other tribes" do
-      FactoryGirl.create :tribe
-      subfamily = FactoryGirl.create :subfamily
-      tribe = FactoryGirl.create :tribe, subfamily: subfamily
-      another_tribe = FactoryGirl.create :tribe, subfamily: subfamily
-      tribe.siblings.should =~ [tribe, another_tribe]
+    it "should return itself and its genus's species" do
+      FactoryGirl.create :species
+      genus = FactoryGirl.create :genus
+      species = FactoryGirl.create :species, genus: genus
+      another_species = FactoryGirl.create :species, genus: genus
+      species.siblings.should =~ [species, another_species]
     end
   end
 
