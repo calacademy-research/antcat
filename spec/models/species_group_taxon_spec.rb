@@ -40,4 +40,13 @@ describe SpeciesGroupTaxon do
     taxon.subfamily.should == genus.subfamily
   end
 
+  describe "Importing" do
+    it "should raise an error if there is no protonym" do
+      genus = create_genus 'Afropone'
+      -> {
+        SpeciesGroupTaxon.import(genus: genus, species_group_epithet: 'orapa', unparseable: 'asdfasdf')
+      }.should raise_error Species::NoProtonymError
+    end
+  end
+
 end
