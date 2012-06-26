@@ -79,3 +79,8 @@ def create_taxon name_or_attributes, taxon_factory, name_factory, attributes
   build = attributes.delete :build
   FactoryGirl.send(build ? :build : :create, taxon_factory, attributes)
 end
+
+def create_name name
+  parts = name.split(' ')
+  FactoryGirl.create :name, name: parts.first, epithet: parts.second
+end
