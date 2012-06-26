@@ -9,9 +9,9 @@ class Subspecies < SpeciesGroupTaxon
     Name.import data[:protonym].merge genus: data[:genus]
   end
 
-  def do_stuff_after_creating_taxon data
+  def self.after_creating taxon, data
     super
-    create_forward_ref_to_parent_species data
+    taxon.create_forward_ref_to_parent_species data
   end
 
   def create_forward_ref_to_parent_species data
