@@ -70,8 +70,8 @@ end
 
 def create_taxon name_or_attributes, taxon_factory, name_factory, attributes
   if name_or_attributes.kind_of? String
-    epithet = name_or_attributes.split(' ').second
-    attributes = attributes.reverse_merge name: FactoryGirl.create(name_factory, name: name_or_attributes, epithet: epithet)
+    name, epithet = get_name_parts name_or_attributes
+    attributes = attributes.reverse_merge name: FactoryGirl.create(name_factory, name: name, epithet: epithet)
   else
     attributes = name_or_attributes
   end
@@ -80,7 +80,13 @@ def create_taxon name_or_attributes, taxon_factory, name_factory, attributes
   FactoryGirl.send(build ? :build : :create, taxon_factory, attributes)
 end
 
+def get_name_parts name
+  parts = name.split ' '
+  epithet = parts.last unless parts.size < 2
+  return name, epithet
+end
+
 def create_name name
-  parts = name.split(' ')
-  FactoryGirl.create :name, name: parts.first, epithet: parts.second
+  name, epithet = get_name_parts name
+  FactoryGirl.create :name, name: name, epithet: epithet
 end
