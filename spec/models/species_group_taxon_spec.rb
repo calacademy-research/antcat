@@ -74,7 +74,25 @@ describe SpeciesGroupTaxon do
       ref.epithet.should == 'ferox'
     end
 
+    it "should recognize a synonym_of even if it's not the first item in the history" do
+      genus = create_genus 'Atta'
+      texanus = create_species 'Atta texanus', genus: genus
+      species = create_species genus: genus
+      history = [
+        {combinations_in: [{genus_name:"Acanthostichus"}]},
+        {synonym_ofs: [{species_epithet: 'ferox'}]},
+      ]
 
+      species.set_status_from_history history
+
+      species = Species.find species
+      species.should be_synonym
+
+      ref = SpeciesForwardRef.first
+      ref.fixee.should == species
+      ref.genus.should == genus
+      ref.epithet.should == 'ferox'
+    end
 
   end
 end
