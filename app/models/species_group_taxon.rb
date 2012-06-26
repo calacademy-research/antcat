@@ -15,25 +15,24 @@ class SpeciesGroupTaxon < Taxon
   def self.import data
     transaction do
       protonym = import_protonym data
-      species_or_subspecies = get_taxon_class protonym, data[:raw_history]
-      species_or_subspecies.import_data protonym, data
+      taxon_class = get_taxon_class protonym, data[:raw_history]
+      taxon_class.import_data protonym, data
     end
   end
 
   def self.import_protonym data
     protonym = Protonym.import data[:protonym] if data[:protonym]
-    raise NoProtonymError unless protonym
-    protonym
+    protonym or raise NoProtonymError
   end
 
   def self.get_taxon_class protonym, history
-    get_taxon_class_from_history(history) ||
+    get_taxon_class_from_history(history) or
     get_taxon_class_from_protonym(protonym)
   end
 
   def self.get_taxon_class_from_history history
     return unless history.present?
-    get_current_taxon_class(history) ||
+    get_current_taxon_class(history) or
     get_latest_taxon_class(history)
   end
 
