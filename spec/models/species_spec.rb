@@ -55,10 +55,10 @@ describe Species do
 
   describe "Siblings" do
     it "should return itself and its genus's species" do
-      FactoryGirl.create :species
-      genus = FactoryGirl.create :genus
-      species = FactoryGirl.create :species, genus: genus
-      another_species = FactoryGirl.create :species, genus: genus
+      create_species
+      genus = create_genus
+      species = create_species genus: genus
+      another_species = create_species genus: genus
       species.siblings.should =~ [species, another_species]
     end
   end
