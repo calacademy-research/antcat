@@ -70,7 +70,8 @@ end
 
 def create_taxon name_or_attributes, taxon_factory, name_factory, attributes
   if name_or_attributes.kind_of? String
-    attributes = attributes.reverse_merge name: FactoryGirl.create(name_factory, name: name_or_attributes)
+    epithet = name_or_attributes.split(' ').second
+    attributes = attributes.reverse_merge name: FactoryGirl.create(name_factory, name: name_or_attributes, epithet: epithet)
   else
     attributes = name_or_attributes
   end
