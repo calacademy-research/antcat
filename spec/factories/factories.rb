@@ -218,6 +218,13 @@ FactoryGirl.define do
     status  'valid'
   end
 
+  factory :species_group_taxon do
+    association :name, factory: :species_name
+    genus
+    protonym
+    status  'valid'
+  end
+
   factory :species do
     association :name, factory: :species_name
     genus

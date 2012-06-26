@@ -3,42 +3,6 @@ require 'spec_helper'
 
 describe Species do
 
-  describe "SpeciesGroupTaxon inheritance" do
-    it "can have a subfamily" do
-      genus = create_genus 'Afropone'
-      FactoryGirl.create :species, name: FactoryGirl.create(:name, name: 'championi'), genus: genus
-      Species.find_by_name('championi').subfamily.should == genus.subfamily
-    end
-
-    it "doesn't have to have a subfamily" do
-      FactoryGirl.create(:species, subfamily: nil).should be_valid
-    end
-
-    it "must have a genus" do
-      species = FactoryGirl.build :species, genus: nil
-      species.should_not be_valid
-      genus = create_genus 'Afropone'
-      species.update_attributes genus: genus
-      species = Species.find species
-      species.should be_valid
-      species.genus.should == genus
-    end
-
-    it "can have a subgenus" do
-      subgenus = create_subgenus 'Atta (Subatta)'
-      FactoryGirl.create :species, name: FactoryGirl.create(:name, name: 'Atta championi'), subgenus: subgenus
-      Species.find_by_name('Atta championi').subgenus.should == subgenus
-    end
-
-    it "has its subfamily set from its genus" do
-      genus = create_genus
-      genus.subfamily.should_not be_nil
-      species = create_species genus: genus, subfamily: nil
-      species.subfamily.should == genus.subfamily
-    end
-
-  end
-
   it "should have subspecies, which are its children" do
     species = FactoryGirl.create :species, name: FactoryGirl.create(:name, name: 'chilensis')
     FactoryGirl.create :subspecies, name: FactoryGirl.create(:name, name: 'robusta'), species: species
