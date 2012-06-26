@@ -16,7 +16,7 @@ class Taxon < ActiveRecord::Base
     joins(:name).readonly(false).where ['epithet = ?', epithet]
   end
 
-  def self.find_by_genus_id_and_epithet genus_id, target_epithet
+  def self.find_epithet_in_genus genus_id, target_epithet
     for epithet in Name.make_epithet_set target_epithet
       results = with_names.where(['genus_id = ? AND epithet = ?', genus_id, epithet])
       return results unless results.empty?

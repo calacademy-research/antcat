@@ -11,7 +11,7 @@ class SpeciesForwardRef < ActiveRecord::Base
   end
 
   def fixup
-    results = Taxon.find_by_genus_id_and_epithet genus.id, epithet
+    results = Taxon.find_epithet_in_genus genus.id, epithet
     value = nil
     if results.nil?
       Progress.error "Couldn't find species '#{epithet}' in genus '#{genus.name}' when fixing up '#{fixee_attribute}' in '#{fixee.name}'"
