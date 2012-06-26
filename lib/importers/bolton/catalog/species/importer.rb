@@ -71,9 +71,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
       parse_next_line
     end
 
-    Progress.print 'Fixing up names...'
-    ForwardReference.fixup
-    Progress.puts
+    finish_importing
 
     Progress.show_results
     unignored_lines_count = Progress.processed_count - @ignored_count
@@ -84,6 +82,13 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     Progress.puts "#{@duplicate_genera_that_need_resolving_count} duplicate genera that need resolving"
     Progress.puts "#{@species_without_protonym_count} species without protonyms"
     Progress.puts "#{@error_count} could not understand"
+  end
+
+  def finish_importing
+    Progress.print 'Fixing up names...'
+    ForwardReference.fixup
+    SpeciesForwardRef.fixup
+    Progress.puts
   end
 
   def grammar

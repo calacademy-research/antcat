@@ -79,7 +79,7 @@ describe SpeciesForwardRef do
         fixee.synonym_of.should be_nil
       end
 
-      it "clear the attribute and record an error if there is more than one results" do
+      it "clear the attribute and record an error if there is more than one result" do
         genus = create_genus 'Atta'
         fixee = create_species
         forward_ref = SpeciesForwardRef.create!({

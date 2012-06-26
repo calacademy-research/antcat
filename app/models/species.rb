@@ -6,8 +6,12 @@ class Species < SpeciesGroupTaxon
     genus.species
   end
 
-  def self.import_name data
-    Name.import data
+  def children
+    subspecies
+  end
+
+  def statistics
+    get_statistics [:subspecies]
   end
 
 end

@@ -1,7 +1,7 @@
 # coding: UTF-8
 class SpeciesGroupTaxon < Taxon
   belongs_to :subfamily
-  belongs_to :genus
+  belongs_to :genus; validates :genus, presence: true
   belongs_to :subgenus
   before_create :set_subfamily
 
@@ -9,35 +9,48 @@ class SpeciesGroupTaxon < Taxon
     self.subfamily = genus.subfamily if genus
   end
 
-  def children
-    subspecies
-  end
-
-  def statistics
-    get_statistics [:subspecies]
-  end
+  ##################################################
+  # importing
 
   def self.import data
     transaction do
-      protonym = Protonym.import data[:protonym] if data[:protonym]
-      raise NoProtonymError unless protonym
-      get_taxon_class(protonym, data[:raw_history]).import_data protonym, data
+      protonym = import_protonym data
+      species_or_subspecies = get_taxon_class protonym, data[:raw_history]
+      species_or_subspecies.import_data protonym, data
     end
+  end
+
+  def self.import_protonym data
+    protonym = Protonym.import data[:protonym] if data[:protonym]
+    raise NoProtonymError unless protonym
+    protonym
   end
 
   def self.get_taxon_class protonym, history
-    get_taxon_class_from_history(history) || get_taxon_class_from_protonym(protonym)
+    get_taxon_class_from_history(history) ||
+    get_taxon_class_from_protonym(protonym)
   end
 
   def self.get_taxon_class_from_history history
-    for item in history or []
+    return unless history.present?
+    get_current_taxon_class(history) ||
+    get_latest_taxon_class(history)
+  end
+
+  def self.get_current_taxon_class history
+    for item in history
       return Subspecies if item[:currently_subspecies_of]
       return Species if item[:subspecies]
     end
-    for item in history or []
-      return Species if item[:raised_to_species]
-    end
     nil
+  end
+
+  def self.get_latest_taxon_class history
+    klass = nil
+    for item in history
+      klass = Species if item[:raised_to_species]
+    end
+    klass
   end
 
   def self.get_taxon_class_from_protonym protonym
@@ -46,42 +59,46 @@ class SpeciesGroupTaxon < Taxon
 
   def self.import_data protonym, data
     name = import_name data
-
-    attributes = {
+    taxon = create!(
       genus:      data[:genus],
       name:       name,
       fossil:     data[:fossil] || false,
       status:     data[:status] || 'valid',
       protonym:   protonym,
-    }
-
-    species_group_taxon = create! attributes
-
-    species_group_taxon.do_stuff_after_creating_taxon data
-
-    (data[:history] || []).each do |item|
-      species_group_taxon.taxonomic_history_items.create! taxt: item
-    end
-
-    species_group_taxon
+    )
+    after_creating taxon, data
+    taxon
   end
 
-  def do_stuff_after_creating_taxon data
-    set_status_from_history data[:raw_history]
+  def self.import_name data
+    Name.import data
+  end
+
+  def self.after_creating taxon, data
+    taxon.create_history_items data[:history]
+    taxon.set_status_from_history data[:raw_history]
+  end
+
+  def create_history_items history
+    return unless history.present?
+    for item in history
+      taxonomic_history_items.create! taxt: item
+    end
   end
 
   def set_status_from_history history
     return unless history.present?
 
     status_record = get_status_from_history history
-    update_attributes status: status_record[:status] if status_record
-
-    check_synonym_status status_record
+    if status_record
+      update_attributes status: status_record[:status]
+      check_synonym_status status_record
+    end
   end
 
   def check_synonym_status status_record
-    if status_record && status_record[:synonym]
-      name = SpeciesName.import genus: genus, epithet: status_record[:parent_epithet]
+    if status_record[:status] == 'synonym'
+      name = SpeciesName.import_data genus: genus, species_epithet: status_record[:parent_epithet]
       ForwardReference.create! fixee: self, fixee_attribute: 'synonym_of', name: name
     end
   end
@@ -90,7 +107,7 @@ class SpeciesGroupTaxon < Taxon
     status = nil
     for item in history
       if item[:synonym_ofs]
-        return {status: 'synonym', parent_epithet: item[:species_group_epithet]}
+        return {status: 'synonym', parent_epithet: item[:species_epithet]}
       elsif item[:homonym_of]
         status = {status: 'homonym'}
       end
