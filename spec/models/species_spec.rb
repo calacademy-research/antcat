@@ -4,45 +4,45 @@ require 'spec_helper'
 describe Species do
 
   it "should have subspecies, which are its children" do
-    species = FactoryGirl.create :species, name: FactoryGirl.create(:name, name: 'chilensis')
-    FactoryGirl.create :subspecies, name: FactoryGirl.create(:name, name: 'robusta'), species: species
-    FactoryGirl.create :subspecies, name: FactoryGirl.create(:name, name: 'saltensis'), species: species
-    species = Species.find_by_name 'chilensis'
-    species.subspecies.map(&:name).map(&:to_s).should =~ ['robusta', 'saltensis']
+    species = create_species 'Atta chilensis'
+    create_subspecies 'Atta chilensis robusta', species: species
+    create_subspecies 'Atta chilensis saltensis', species: species
+    species = Species.find_by_name 'Atta chilensis'
+    species.subspecies.map(&:name).map(&:epithet).should =~ ['robusta', 'saltensis']
     species.children.should == species.subspecies
   end
 
   describe "Statistics" do
     it "should handle 0 children" do
-      FactoryGirl.create(:species).statistics.should == {}
+      create_species.statistics.should == {}
     end
     it "should handle 1 valid subspecies" do
-      species = FactoryGirl.create :species
-      subspecies = FactoryGirl.create :subspecies, species: species
+      species = create_species
+      subspecies = create_subspecies species: species
       species.statistics.should == {extant: {subspecies: {'valid' => 1}}}
     end
     it "should differentiate between extant and fossil subspecies" do
-      species = FactoryGirl.create :species
-      subspecies = FactoryGirl.create :subspecies, species: species
-      FactoryGirl.create :subspecies, species: species, fossil: true
+      species = create_species
+      subspecies = create_subspecies species: species
+      create_subspecies species: species, fossil: true
       species.statistics.should == {
         extant: {subspecies: {'valid' => 1}},
         fossil: {subspecies: {'valid' => 1}},
       }
     end
     it "should differentiate between extant and fossil subspecies" do
-      species = FactoryGirl.create :species
-      subspecies = FactoryGirl.create :subspecies, species: species
-      FactoryGirl.create :subspecies, species: species, fossil: true
+      species = create_species
+      subspecies = create_subspecies species: species
+      create_subspecies species: species, fossil: true
       species.statistics.should == {
         extant: {subspecies: {'valid' => 1}},
         fossil: {subspecies: {'valid' => 1}},
       }
     end
     it "should handle 1 valid subspecies and 2 synonyms" do
-      species = FactoryGirl.create :species
-      FactoryGirl.create :subspecies, species: species
-      2.times {FactoryGirl.create :subspecies, species: species, status: 'synonym'}
+      species = create_species
+      create_subspecies species: species
+      2.times {create_subspecies species: species, status: 'synonym'}
       species.statistics.should == {extant: {subspecies: {'valid' => 1, 'synonym' => 2}}}
     end
 
