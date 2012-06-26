@@ -27,11 +27,11 @@ describe Importers::Bolton::Catalog::Species::Importer do
 
   it "should link species to existing genera" do
     contents = make_contents %{
-<p><i>ACANTHOMYRMEX</i> (Oriental, Indo-Australian)</p>
-<p><i>basispinosus</i>. <i>Acanthomyrmex basispinosus</i> Moffett, 1986c: 67, figs. 8A, 9-14 (s.w.) INDONESIA (Sulawesi). Combination in <i>Dorylus (Shuckardia)</i>: Emery, 1895j: 740.</p>
+      <p><i>ACANTHOMYRMEX</i> (Oriental, Indo-Australian)</p>
+      <p><i>basispinosus</i>. <i>Acanthomyrmex basispinosus</i> Moffett, 1986c: 67, figs. 8A, 9-14 (s.w.) INDONESIA (Sulawesi). Combination in <i>Dorylus (Shuckardia)</i>: Emery, 1895j: 740.</p>
     }
     Progress.should_not_receive(:error)
-    FactoryGirl.create :genus, name: FactoryGirl.create(:genus_name, name: 'Acanthomyrmex'), subfamily: nil, tribe: nil
+    create_genus 'Acanthomyrmex', subfamily: nil, tribe: nil
     @importer.import_html contents
 
     Taxon.count.should == 2
@@ -63,27 +63,27 @@ describe Importers::Bolton::Catalog::Species::Importer do
   end
 
   it "should link a synonym to its senior when the senior has not already been seen" do
+    create_genus 'Acanthomyrmex', subfamily: nil, tribe: nil
     contents = make_contents %{
-<p><i>ACANTHOMYRMEX</i> (Oriental, Indo-Australian)</p>
-<p><i>dyak</i>. <i>Acanthomyrmex dyak</i> Moffett, 1986c: 67 (s.w.) INDONESIA. Junior synonym of <i>ferox</i>: Moffett, 1986c: 70.</p>
-<p><i>ferox</i>. <i>Acanthomyrmex ferox</i> Moffett, 1986c: 67 (s.w.) INDONESIA.</p>
+      <p><i>ACANTHOMYRMEX</i> (Oriental, Indo-Australian)</p>
+      <p><i>dyak</i>. <i>Acanthomyrmex dyak</i> Moffett, 1986c: 67 (s.w.) INDONESIA. Junior synonym of <i>ferox</i>: Moffett, 1986c: 70.</p>
+      <p><i>ferox</i>. <i>Acanthomyrmex ferox</i> Moffett, 1986c: 67 (s.w.) INDONESIA.</p>
     }
-    FactoryGirl.create :genus, name: FactoryGirl.create(:genus_name, name: 'Acanthomyrmex'), subfamily: nil, tribe: nil
     @importer.import_html contents
     Species.find_by_name('Acanthomyrmex dyak').should be_synonym_of Species.find_by_name 'Acanthomyrmex ferox'
   end
 
   def make_contents content
     %{
-<html> <head> <title>CATALOGUE OF SPECIES-GROUP TAXA</title> </head>
-<body>
-<div class=Section1>
-<p><b>CATALOGUE OF SPECIES-GROUP TAXA<o:p></o:p></b></p>
-<p><o:p>&nbsp;</o:p></p>
-<p><o:p>&nbsp;</o:p></p>
-      #{content}
-<p><o:p>&nbsp;</o:p></p>
-</div> </body> </html>
+      <html> <head> <title>CATALOGUE OF SPECIES-GROUP TAXA</title> </head>
+      <body>
+      <div class=Section1>
+      <p><b>CATALOGUE OF SPECIES-GROUP TAXA<o:p></o:p></b></p>
+      <p><o:p>&nbsp;</o:p></p>
+      <p><o:p>&nbsp;</o:p></p>
+            #{content}
+      <p><o:p>&nbsp;</o:p></p>
+      </div> </body> </html>
     }
   end
 
