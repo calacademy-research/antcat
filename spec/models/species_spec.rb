@@ -126,4 +126,37 @@ describe Species do
 
     end
   end
+
+  describe "Picking the validest " do
+    it "should return nil if there is none" do
+      targets = []
+      Species.pick_validest(targets).should be_nil
+    end
+
+    it "should return nil if there is none" do
+      targets = nil
+      Species.pick_validest(targets).should be_nil
+    end
+
+    it "should pick the best target, if there is more than one" do
+      invalid_species = create_species status: 'homonym'
+      valid_species = create_species status: 'valid'
+      targets = [invalid_species, valid_species]
+      Species.pick_validest(targets).should == [valid_species]
+    end
+
+    it "should return all the targets if there's no clear choice" do
+      valid_species = create_species
+      another_valid_species = create_species
+      targets = [another_valid_species, valid_species]
+      Species.pick_validest(targets).should =~ [valid_species, another_valid_species]
+    end
+
+    it "should not pick the homonym, no matter what" do
+      homonym_species = create_species status: 'homonym'
+      targets = [homonym_species]
+      Species.pick_validest(targets).should be_nil
+    end
+
+  end
 end
