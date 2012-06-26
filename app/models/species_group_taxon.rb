@@ -87,7 +87,6 @@ class SpeciesGroupTaxon < Taxon
 
   def set_status_from_history history
     return unless history.present?
-
     status_record = get_status_from_history history
     if status_record
       update_attributes status: status_record[:status]
@@ -96,17 +95,24 @@ class SpeciesGroupTaxon < Taxon
   end
 
   def check_synonym_status status_record
-    if status_record[:status] == 'synonym'
-      name = SpeciesName.import_data genus: genus, species_epithet: status_record[:parent_epithet]
-      ForwardReference.create! fixee: self, fixee_attribute: 'synonym_of', name: name
-    end
+    return unless status_record[:status] == 'synonym'
+    create_forward_ref_to_senior_synonym status_record[:parent_epithet]
+  end
+
+  def create_forward_ref_to_senior_synonym epithet
+    SpeciesForwardRef.create!(
+      fixee:            self,
+      fixee_attribute: 'synonym_of_id',
+      genus:            genus,
+      epithet:          epithet,
+    )
   end
 
   def get_status_from_history history
     status = nil
     for item in history
       if item[:synonym_ofs]
-        return {status: 'synonym', parent_epithet: item[:species_epithet]}
+        return {status: 'synonym', parent_epithet: item[:synonym_ofs].first[:species_epithet]}
       elsif item[:homonym_of]
         status = {status: 'homonym'}
       end
