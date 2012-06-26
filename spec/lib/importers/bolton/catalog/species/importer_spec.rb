@@ -49,15 +49,17 @@ describe Importers::Bolton::Catalog::Species::Importer do
   end
 
   it "should link a synonym to its senior when the senior has already been seen" do
+    create_genus 'Acanthomyrmex'
     contents = make_contents %{
-<p><i>ACANTHOMYRMEX</i> (Oriental, Indo-Australian)</p>
-<p><i>ferox</i>. <i>Acanthomyrmex ferox</i> Moffett, 1986c: 67 (s.w.) INDONESIA.</p>
-<p><i>dyak</i>. <i>Acanthomyrmex dyak</i> Moffett, 1986c: 67 (s.w.) INDONESIA. Junior synonym of <i>ferox</i>: Moffett, 1986c: 70.</p>
+      <p><i>ACANTHOMYRMEX</i></p>
+      <p><i>ferox</i>. <i>Acanthomyrmex ferox</i> Moffett, 1986c: 67.w.) INDONESIA.</p>
+      <p><i>dyak</i>. <i>Acanthomyrmex dyak</i> Moffett, 1986c: 67.w.) INDONESIA. Junior synonym of <i>ferox</i>: Moffett, 1986c: 70.</p>
     }
-    FactoryGirl.create :genus, name: FactoryGirl.create(:genus_name, name: 'Acanthomyrmex'), subfamily: nil, tribe: nil
     @importer.import_html contents
-    ForwardReference.fixup
-    Species.find_by_name('Acanthomyrmex dyak').should be_synonym_of Species.find_by_name 'Acanthomyrmex ferox'
+    @importer.finish_importing
+    dyak = Species.find_by_name 'Acanthomyrmex dyak'
+    ferox = Species.find_by_name 'Acanthomyrmex ferox'
+    dyak.should be_synonym_of ferox
   end
 
   it "should link a synonym to its senior when the senior has not already been seen" do
