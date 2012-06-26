@@ -18,6 +18,7 @@ describe Importers::Bolton::Catalog::Species::Importer do
                 Current subspecies: nominal plus <i>refectus</i>, <i>renormatus</i>.</p>
         <p><i>refectus</i>. <i>Camponotus (Myrmeurynota) gilviventris</i> var. <i>refectus</i> Wheeler, W.M. 1937b: 460 (w.) CUBA.</p>
       }
+      @importer.finish_importing
       subspecies = Subspecies.find_by_name 'Camponotus (Myrmeurynota) gilviventris var. refectus'
       subspecies.genus.name.to_s.should == 'Camponotus'
       subspecies.species.name.to_s.should == 'Camponotus gilviventris'
@@ -55,6 +56,7 @@ describe Importers::Bolton::Catalog::Species::Importer do
     }
     FactoryGirl.create :genus, name: FactoryGirl.create(:genus_name, name: 'Acanthomyrmex'), subfamily: nil, tribe: nil
     @importer.import_html contents
+    ForwardReference.fixup
     Species.find_by_name('Acanthomyrmex dyak').should be_synonym_of Species.find_by_name 'Acanthomyrmex ferox'
   end
 
