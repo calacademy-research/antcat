@@ -11,7 +11,7 @@ class Vlad
     @results.merge! taxa_with_mismatched_synonym_and_status
     @results.merge! taxa_with_mismatched_homonym_and_status
     @results.merge! subspecies_without_species
-    #@results.merge! duplicates
+    @results.merge! duplicates
     @results.merge! reference_documents
 
     display
@@ -23,7 +23,7 @@ class Vlad
     results_section = @results[section]
     return unless results_section.present?
 
-    Progress.puts section.to_s.gsub(/_/, ' ').capitalize
+    Progress.puts section.to_s.gsub(/_/, ' ').capitalize + ": #{results_section.size}"
 
     lines = results_section.map do |item|
       yield item
@@ -53,10 +53,6 @@ class Vlad
       "#{genus.name} (tribe #{genus.tribe.name})"
     end
 
-    display_results_section :taxa_with_mismatched_synonym_and_status do |taxon|
-      "#{taxon.name} (#{taxon.status}) #{taxon.synonym_of_id}"
-    end
-
     display_results_section :taxa_with_mismatched_homonym_and_status do |taxon|
       "#{taxon.name} (#{taxon.status}) #{taxon.homonym_replaced_by_id}"
     end
@@ -65,9 +61,9 @@ class Vlad
       "#{taxon.name} (#{taxon.status})"
     end
 
-    #display_results_section :duplicates do |duplicate|
-      #"#{duplicate[:name]} #{duplicate[:count]}"
-    #end
+    display_results_section :duplicates do |duplicate|
+      "#{duplicate[:name]} #{duplicate[:count]}"
+    end
 
     Progress.puts "Reference documents"
     results = @results[:reference_documents]
@@ -79,12 +75,22 @@ class Vlad
     end
     Progress.puts
 
+    display_results_section :taxa_with_mismatched_synonym_and_status do |taxon|
+      "#{taxon.name} (#{taxon.status}) #{taxon.synonym_of_id}"
+    end
+
   end
 
-  #def self.duplicates
-    #{duplicates:
-     #Taxon.with_names.select('names.name AS name, COUNT(names.name) AS count').group('names.name', :genus_id).having('COUNT(names.name) > 1')}
-  #end
+  def self.duplicates
+    {duplicates:
+     Taxon.select('names.name AS name, COUNT(names.name) AS count').
+           with_names.
+           group('names.name', :genus_id).
+           having('COUNT(names.name) > 1').
+           all.
+           map {|row| {name: row['name'], count: row['count']}}
+    }
+  end
 
   def self.taxa_with_mismatched_synonym_and_status
     {taxa_with_mismatched_synonym_and_status: Taxon.where("(status = 'synonym') = (synonym_of_id IS NULL)")}

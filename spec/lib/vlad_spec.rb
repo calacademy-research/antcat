@@ -41,21 +41,20 @@ describe Vlad do
     results.map(&:id).should =~ [no_synonym.id, no_status.id]
   end
 
-  #describe "Duplicate checking" do
-
-    #it "should show duplicate names" do
-      #FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Eciton')
-      #FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Atta')
-      #FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Atta')
-      #Vlad.idate[:duplicates].map {|e| [e.name, e.count]}.should =~ [['Atta', 2]]
-    #end
-    #it "should be cool with same species name if genus is different" do
-      #FactoryGirl.create :species, name: FactoryGirl.create(:name, name: 'niger')
-      #FactoryGirl.create :species, name: FactoryGirl.create(:name, name: 'major')
-      #FactoryGirl.create :species, name: FactoryGirl.create(:name, name: 'major')
-      #Vlad.idate[:duplicates].should be_empty
-    #end
-  #end
+  describe "Duplicate checking" do
+    it "should show duplicate names" do
+      create_genus 'Eciton'
+      create_genus 'Atta'
+      create_genus 'Atta'
+      Vlad.idate[:duplicates].map {|e| [e[:name], e[:count]]}.should =~ [['Atta', 2]]
+    end
+    it "should be cool with same species name if genus is different" do
+      create_species 'Atta niger'
+      create_species 'Betta major'
+      create_species 'Kappa major'
+      Vlad.idate[:duplicates].should be_empty
+    end
+  end
 
   describe "Reference document locations" do
     it "should summarize where reference documents are" do
