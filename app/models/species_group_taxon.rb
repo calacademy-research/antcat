@@ -88,10 +88,8 @@ class SpeciesGroupTaxon < Taxon
   def set_status_from_history history
     return unless history.present?
     status_record = get_status_from_history history
-    if status_record
-      update_attributes status: status_record[:status]
-      check_synonym_status status_record
-    end
+    update_attributes status: status_record[:status]
+    check_synonym_status status_record
   end
 
   def check_synonym_status status_record
@@ -109,10 +107,12 @@ class SpeciesGroupTaxon < Taxon
   end
 
   def get_status_from_history history
-    status = nil
+    status = {status: 'valid'}
     for item in history
       if item[:synonym_ofs]
-        return {status: 'synonym', parent_epithet: item[:synonym_ofs].first[:species_epithet]}
+        status = {status: 'synonym', parent_epithet: item[:synonym_ofs].first[:species_epithet]}
+      elsif item[:revived_from_synonymy]
+        status = {status: 'valid'}
       elsif item[:homonym_of]
         status = {status: 'homonym'}
       end

@@ -57,6 +57,7 @@ describe SpeciesGroupTaxon do
         SpeciesGroupTaxon.find(species).status.should == 'valid'
       end
     end
+
     it "should recognize a synonym_of" do
       genus = create_genus 'Atta'
       ferox = create_species 'Atta ferox', genus: genus
@@ -92,6 +93,21 @@ describe SpeciesGroupTaxon do
       ref.fixee.should == species
       ref.genus.should == genus
       ref.epithet.should == 'ferox'
+    end
+
+    it "should overrule synonymy with revival from synonymy" do
+      genus = create_genus 'Atta'
+      ferox = create_species 'Atta ferox', genus: genus
+      species = create_species 'Atta dyak', genus: genus
+      history = [
+        {synonym_ofs: [{species_epithet: 'ferox'}]},
+        {revived_from_synonymy: true},
+      ]
+
+      species.set_status_from_history history
+
+      species = Species.find species
+      species.should_not be_synonym
     end
 
   end
