@@ -6,9 +6,9 @@ describe SpeciesForwardRef do
   describe "The object" do
     before do
       @valid_attributes = {
-        fixee:           FactoryGirl.create(:species),
+        fixee:           create_species,
         fixee_attribute: 'synonym_id',
-        genus:           FactoryGirl.create(:genus),
+        genus:           create_genus,
         epithet:         'major',
       }
     end
