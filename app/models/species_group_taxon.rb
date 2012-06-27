@@ -47,9 +47,15 @@ class SpeciesGroupTaxon < Taxon
   def self.get_latest_taxon_class history
     klass = nil
     for item in history
-      klass = Species if item[:raised_to_species]
+      klass = Species if item_raised_to_species?(item)
     end
     klass
+  end
+
+  def self.item_raised_to_species? item
+    return true if item[:raised_to_species]
+    text = item[:text].try(:first).try(:[], :phrase)
+    text and text =~ /Raised to species/
   end
 
   def self.get_taxon_class_from_protonym protonym

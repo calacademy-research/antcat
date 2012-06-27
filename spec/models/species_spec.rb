@@ -124,6 +124,23 @@ describe Species do
         taxon.should be_kind_of Species
       end
 
+      it "should import a species with a subspecies protonym that has 'raised to species' in the text" do
+        genus = create_genus 'Anonychomyrma'
+        taxon = Species.import(
+          genus:                  genus,
+          species_group_epithet:  'malandana',
+          protonym: {
+            genus_name:           'Iridomyrmex',
+            species_epithet:      'innocens',
+            subspecies: [{type:   'r.',
+              subspecies_epithet: 'malandanus',
+            }]
+          },
+          raw_history: [{text: [{phrase:'Raised to species and senior synonym of', delimiter:' '}]}]
+        )
+        taxon.should be_kind_of Species
+      end
+
     end
   end
 
