@@ -72,6 +72,7 @@ describe SpeciesGroupTaxon do
     end
 
   end
+
   describe "Importing" do
     it "should raise an error if there is no protonym" do
       genus = create_genus 'Afropone'
@@ -95,12 +96,9 @@ describe SpeciesGroupTaxon do
       ferox = create_species 'Atta ferox', genus: genus
       species = create_species 'Atta dyak', genus: genus
       history = [{synonym_ofs: [{species_epithet: 'ferox'}]}]
-
       species.set_status_from_history history
-
       species = Species.find species
       species.should be_synonym
-
       ref = SpeciesForwardRef.first
       ref.fixee.should == species
       ref.genus.should == genus
@@ -115,12 +113,9 @@ describe SpeciesGroupTaxon do
         {combinations_in: [{genus_name:"Acanthostichus"}]},
         {synonym_ofs: [{species_epithet: 'ferox'}]},
       ]
-
       species.set_status_from_history history
-
       species = Species.find species
       species.should be_synonym
-
       ref = SpeciesForwardRef.first
       ref.fixee.should == species
       ref.genus.should == genus
@@ -135,11 +130,23 @@ describe SpeciesGroupTaxon do
         {synonym_ofs: [{species_epithet: 'ferox'}]},
         {revived_from_synonymy: true},
       ]
-
       species.set_status_from_history history
-
       species = Species.find species
       species.should_not be_synonym
+    end
+  end
+
+  describe "Getting status from history" do
+    it "should consider an empty history as valid" do
+      Species.get_status_from_history([
+      ]).should == {status: 'valid'}
+    end
+    it "should stop on 'first available replacement' and make it valid" do
+      SpeciesGroupTaxon.get_status_from_history([
+        {synonym_ofs: [{species_epithet: 'ferox'}]},
+        {text: [{phrase:'hence first available replacement name for', delimiter: ' '}]},
+        {homonym_of: {primary_or_secondary: :primary, genus_name: 'Formice'}},
+      ]).should == {status: 'valid'}
     end
 
   end

@@ -65,9 +65,7 @@ class SpeciesGroupTaxon < Taxon
   end
 
   def self.item_raised_to_species? item
-    return true if item[:raised_to_species]
-    text = item[:text].try(:first).try(:[], :phrase)
-    text and text =~ /Raised to species/
+    item[:raised_to_species] or item_text_matches?(item, /Raised to species/)
   end
 
   def self.get_taxon_class_from_protonym protonym
@@ -125,17 +123,32 @@ class SpeciesGroupTaxon < Taxon
   end
 
   def get_status_from_history history
+    self.class.get_status_from_history history
+  end
+
+  def self.get_status_from_history history
     status = {status: 'valid'}
     for item in history
       if item[:synonym_ofs]
         status = {status: 'synonym', parent_epithet: item[:synonym_ofs].first[:species_epithet]}
       elsif item[:revived_from_synonymy]
         status = {status: 'valid'}
+      elsif item_first_available_replacement?(item)
+        return {status: 'valid'}
       elsif item[:homonym_of]
         status = {status: 'homonym'}
       end
     end
     status
+  end
+
+  def self.item_first_available_replacement? item
+    item_text_matches? item, /[fF]irst available replacement/
+  end
+
+  def self.item_text_matches? item, regexp
+    text = item[:text].try(:first).try(:[], :phrase)
+    text and text =~ regexp
   end
 
   class NoProtonymError < StandardError; end
