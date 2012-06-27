@@ -37,7 +37,7 @@ class Vlad
       "#{taxon.name} (#{taxon.status}) #{taxon.homonym_replaced_by_id}"
     end
 
-    display_results_section :subspecies_without_species do |taxon|
+    display_results_section :subspecies_without_species, reverse_order: true do |taxon|
       "#{taxon.name} (#{taxon.status})"
     end
 
@@ -55,7 +55,7 @@ class Vlad
     end
     Progress.puts
 
-    display_results_section :taxa_with_mismatched_synonym_and_status do |taxon|
+    display_results_section :taxa_with_mismatched_synonym_and_status, reverse_order: true do |taxon|
       "#{taxon.name} (#{taxon.status}) #{taxon.synonym_of_id}"
     end
 
@@ -69,6 +69,7 @@ class Vlad
     display_section_header section_key
     lines = results_section.map {|item| yield item}
     lines.sort! if options[:sort]
+    lines.reverse! if options[:reverse_order]
     lines.each {|line| Progress.puts '  ' + line}
     display_section_header section_key
 
