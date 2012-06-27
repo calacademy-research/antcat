@@ -18,26 +18,6 @@ class Vlad
     @results
   end
 
-  def self.display_results_section section, options = {}
-    options = options.reverse_merge sort: true
-    results_section = @results[section]
-    return unless results_section.present?
-
-    Progress.puts section.to_s.gsub(/_/, ' ').capitalize + ": #{results_section.size}"
-
-    lines = results_section.map do |item|
-      yield item
-    end
-
-    lines.sort! if options[:sort]
-
-    for line in lines
-      Progress.puts '  ' + line
-    end
-
-    Progress.puts
-  end
-
   def self.display
     Progress.puts
 
@@ -79,6 +59,24 @@ class Vlad
       "#{taxon.name} (#{taxon.status}) #{taxon.synonym_of_id}"
     end
 
+  end
+
+  def self.display_results_section section_key, options = {}
+    options = options.reverse_merge sort: true
+    results_section = @results[section_key]
+    return unless results_section.present?
+
+    display_section_header section_key
+    lines = results_section.map {|item| yield item}
+    lines.sort! if options[:sort]
+    lines.each {|line| Progress.puts '  ' + line}
+    display_section_header section_key
+
+    Progress.puts
+  end
+
+  def self.display_section_header section_key
+    Progress.puts section_key.to_s.gsub(/_/, ' ').capitalize + ": #{@results[section_key].size}"
   end
 
   def self.duplicates
