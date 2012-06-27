@@ -54,9 +54,7 @@ describe SpeciesForwardRef do
         genus: genus, epithet: 'major'
       })
       fixer = create_species 'Atta major', genus: genus
-
       forward_ref.fixup
-
       fixee = Taxon.find fixee
       fixee.synonym_of.should == fixer
     end
@@ -69,9 +67,7 @@ describe SpeciesForwardRef do
         genus: genus, epithet: 'major'
       })
       Progress.should_receive :error
-
       forward_ref.fixup
-
       fixee = Taxon.find fixee
       fixee.synonym_of.should be_nil
     end
@@ -86,9 +82,7 @@ describe SpeciesForwardRef do
       name = create_name 'Atta major'
       2.times {create_species genus: genus, name: name}
       Progress.should_receive :error
-
       forward_ref.fixup
-
       fixee = Taxon.find fixee
       fixee.synonym_of.should be_nil
     end
@@ -101,9 +95,20 @@ describe SpeciesForwardRef do
         genus: genus, epithet: 'magna'
       })
       fixer = create_species 'Atta magnus', genus: genus
-
       forward_ref.fixup
+      fixee = Taxon.find fixee
+      fixee.synonym_of.should == fixer
+    end
 
+    it "should find a senior synonym subspecies" do
+      genus = create_genus 'Atta'
+      fixee = create_subspecies genus: genus
+      forward_ref = SpeciesForwardRef.create!({
+        fixee: fixee, fixee_attribute: 'synonym_of_id',
+        genus: genus, epithet: 'molestans'
+      })
+      fixer = create_subspecies 'Atta magnus molestans', genus: genus
+      forward_ref.fixup
       fixee = Taxon.find fixee
       fixee.synonym_of.should == fixer
     end
@@ -117,9 +122,7 @@ describe SpeciesForwardRef do
       })
       invalid_fixer = create_species 'Atta magnus', genus: genus, status: 'homonym'
       fixer = create_species 'Atta magnus', genus: genus
-
       forward_ref.fixup
-
       fixee = Taxon.find fixee
       fixee.synonym_of.should == fixer
     end

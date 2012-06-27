@@ -11,7 +11,7 @@ class SpeciesForwardRef < ActiveRecord::Base
   end
 
   def fixup
-    specieses = Species.find_validest_for_epithet_in_genus epithet, genus
+    specieses = SpeciesGroupTaxon.find_validest_for_epithet_in_genus epithet, genus
     if specieses.blank?
       Progress.error "Couldn't find species '#{epithet}' in genus '#{genus.name}' when fixing up '#{fixee_attribute}' in '#{fixee.name}'"
     elsif specieses.count > 1
