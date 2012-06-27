@@ -53,8 +53,7 @@ describe SpeciesForwardRef do
         fixee: fixee, fixee_attribute: 'synonym_of_id',
         genus: genus, epithet: 'major'
       })
-      fixer = create_species genus: genus,
-        name: FactoryGirl.create(:species_name, name: 'Atta major', epithet: 'major')
+      fixer = create_species 'Atta major', genus: genus
 
       forward_ref.fixup
 
