@@ -77,7 +77,7 @@ describe SpeciesGroupTaxon do
       genus = create_genus 'Afropone'
       -> {
         SpeciesGroupTaxon.import(genus: genus, species_group_epithet: 'orapa', unparseable: 'asdfasdf')
-      }.should raise_error Species::NoProtonymError
+      }.should raise_error SpeciesGroupTaxon::NoProtonymError
     end
   end
 
