@@ -7,15 +7,21 @@ class SubspeciesName < Name
   def self.make_attributes _, data
     attributes = {epithets: '', html_epithets: ''.html_safe}
     for subspecies in data[:subspecies]
+      # use the specified subspecies epithet for the last component
+      if data[:subspecies_epithet] && subspecies == data[:subspecies].last
+        epithet = data[:subspecies_epithet]
+      else
+        epithet = subspecies[:species_group_epithet] || subspecies[:subspecies_epithet]
+      end
       type = subspecies[:type]
       if type
         attributes[:epithets]      << type << ' '
-        attributes[:html_epithets] << type << ' ' end
-      epithet = subspecies[:species_group_epithet] || subspecies[:subspecies_epithet]
-      html_epithet = '<i>'.html_safe + epithet + '</i>'.html_safe
+        attributes[:html_epithets] << type << ' '
+      end
+      html_epithet = italicize epithet
       attributes[:epithets]      << "#{epithet} "
       attributes[:html_epithets] << html_epithet << ' '
-      # save the last subspecies epithet as 'the' epithet
+
       attributes[:epithet]       = epithet
       attributes[:html_epithet]  = html_epithet
     end
@@ -29,6 +35,10 @@ class SubspeciesName < Name
     attributes[:epithets]      = "#{parent_name.epithet} #{attributes[:epithets]}"
     attributes[:html_epithets] = "#{parent_name.html_epithet} #{attributes[:html_epithets]}"
     attributes
+  end
+
+  def self.italicize string
+    '<i>'.html_safe + string + '</i>'.html_safe
   end
 
   def self.get_parent_name data

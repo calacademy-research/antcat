@@ -69,6 +69,18 @@ describe Subspecies do
       ref.genus.should == genus
       ref.epithet.should == 'hova'
     end
-  end
 
+    it "should use the right epithet when the protonym differs" do
+      subspecies = Species.import(
+        species_group_epithet:  'brunneus',
+        protonym: { genus_name: 'Aenictus',
+          species_epithet:      'soudanicus',
+          subspecies: [{type:   'var.', subspecies_epithet: 'brunnea'}]
+        },
+        genus: create_genus,
+      )
+      subspecies.name.epithet.should == 'brunneus'
+    end
+
+  end
 end
