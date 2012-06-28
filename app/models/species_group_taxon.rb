@@ -128,7 +128,7 @@ class SpeciesGroupTaxon < Taxon
 
   def self.get_status_from_history history
     status = {status: 'valid'}
-    for item in history
+    for item in history or []
       if item[:synonym_ofs]
         status = {status: 'synonym', parent_epithet: item[:synonym_ofs].first[:species_epithet]}
       elsif revived_from_synonymy?(item)
