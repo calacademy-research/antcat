@@ -134,6 +134,20 @@ describe SpeciesGroupTaxon do
       species = Species.find species
       species.should_not be_synonym
     end
+
+    it "should overrule synonymy with raisal to species with revival from synonymy" do
+      genus = create_genus 'Atta'
+      ferox = create_species 'Atta ferox', genus: genus
+      species = create_species 'Atta dyak', genus: genus
+      history = [
+        {synonym_ofs: [{species_epithet: 'ferox'}]},
+        {raised_to_species: {revived_from_synonymy:true}},
+      ]
+      species.set_status_from_history history
+      species = Species.find species
+      species.should_not be_synonym
+    end
+
   end
 
   describe "Getting status from history" do

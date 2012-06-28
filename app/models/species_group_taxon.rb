@@ -131,7 +131,7 @@ class SpeciesGroupTaxon < Taxon
     for item in history
       if item[:synonym_ofs]
         status = {status: 'synonym', parent_epithet: item[:synonym_ofs].first[:species_epithet]}
-      elsif item[:revived_from_synonymy]
+      elsif revived_from_synonymy?(item)
         status = {status: 'valid'}
       elsif item_first_available_replacement?(item)
         return {status: 'valid'}
@@ -140,6 +140,11 @@ class SpeciesGroupTaxon < Taxon
       end
     end
     status
+  end
+
+  def self.revived_from_synonymy? item
+    item[:revived_from_synonymy] ||
+    item[:raised_to_species].try(:[], :revived_from_synonymy)
   end
 
   def self.item_first_available_replacement? item
