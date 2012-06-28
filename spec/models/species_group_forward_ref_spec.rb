@@ -1,7 +1,7 @@
 # coding: UTF-8
 require 'spec_helper'
 
-describe SpeciesForwardRef do
+describe SpeciesGroupForwardRef do
 
   describe "The object" do
     before do
@@ -13,23 +13,23 @@ describe SpeciesForwardRef do
       }
     end
     it "is valid with the valid attributes" do
-      SpeciesForwardRef.new(@valid_attributes).should be_valid
+      SpeciesGroupForwardRef.new(@valid_attributes).should be_valid
     end
     it "needs a fixee" do
       @valid_attributes.delete :fixee
-      SpeciesForwardRef.new(@valid_attributes).should_not be_valid
+      SpeciesGroupForwardRef.new(@valid_attributes).should_not be_valid
     end
     it "needs a fixee_attribute" do
       @valid_attributes.delete :fixee_attribute
-      SpeciesForwardRef.new(@valid_attributes).should_not be_valid
+      SpeciesGroupForwardRef.new(@valid_attributes).should_not be_valid
     end
     it "needs a genus" do
       @valid_attributes.delete :genus
-      SpeciesForwardRef.new(@valid_attributes).should_not be_valid
+      SpeciesGroupForwardRef.new(@valid_attributes).should_not be_valid
     end
     it "needs a epithet" do
       @valid_attributes.delete :epithet
-      SpeciesForwardRef.new(@valid_attributes).should_not be_valid
+      SpeciesGroupForwardRef.new(@valid_attributes).should_not be_valid
     end
   end
 
@@ -37,10 +37,10 @@ describe SpeciesForwardRef do
     it "should call each's fixup method" do
       first = mock
       second = mock
-      SpeciesForwardRef.should_receive(:all).and_return [first, second]
+      SpeciesGroupForwardRef.should_receive(:all).and_return [first, second]
       first.should_receive :fixup
       second.should_receive :fixup
-      SpeciesForwardRef.fixup
+      SpeciesGroupForwardRef.fixup
     end
   end
 
@@ -49,7 +49,7 @@ describe SpeciesForwardRef do
     it "should set the synonym_of attribute to a taxon matching a name" do
       genus = create_genus 'Atta'
       fixee = create_species
-      forward_ref = SpeciesForwardRef.create!({
+      forward_ref = SpeciesGroupForwardRef.create!({
         fixee: fixee, fixee_attribute: 'synonym_of_id',
         genus: genus, epithet: 'major'
       })
@@ -62,7 +62,7 @@ describe SpeciesForwardRef do
     it "clear the attribute and record an error if there are no results" do
       genus = create_genus 'Atta'
       fixee = create_species
-      forward_ref = SpeciesForwardRef.create!({
+      forward_ref = SpeciesGroupForwardRef.create!({
         fixee: fixee, fixee_attribute: 'synonym_of_id',
         genus: genus, epithet: 'major'
       })
@@ -75,7 +75,7 @@ describe SpeciesForwardRef do
     it "clear the attribute and record an error if there is more than one result" do
       genus = create_genus 'Atta'
       fixee = create_species
-      forward_ref = SpeciesForwardRef.create!({
+      forward_ref = SpeciesGroupForwardRef.create!({
         fixee: fixee, fixee_attribute: 'synonym_of_id',
         genus: genus, epithet: 'major'
       })
@@ -90,7 +90,7 @@ describe SpeciesForwardRef do
     it "should use declension rules to find Atta magnus when the synonym is to Atta magna" do
       genus = create_genus 'Atta'
       fixee = create_species genus: genus
-      forward_ref = SpeciesForwardRef.create!({
+      forward_ref = SpeciesGroupForwardRef.create!({
         fixee: fixee, fixee_attribute: 'synonym_of_id',
         genus: genus, epithet: 'magna'
       })
@@ -103,7 +103,7 @@ describe SpeciesForwardRef do
     it "should find a senior synonym subspecies" do
       genus = create_genus 'Atta'
       fixee = create_subspecies genus: genus
-      forward_ref = SpeciesForwardRef.create!({
+      forward_ref = SpeciesGroupForwardRef.create!({
         fixee: fixee, fixee_attribute: 'synonym_of_id',
         genus: genus, epithet: 'molestans'
       })
@@ -116,7 +116,7 @@ describe SpeciesForwardRef do
     it "should pick the validest target when fixing up" do
       genus = create_genus 'Atta'
       fixee = create_species genus: genus
-      forward_ref = SpeciesForwardRef.create!({
+      forward_ref = SpeciesGroupForwardRef.create!({
         fixee: fixee, fixee_attribute: 'synonym_of_id',
         genus: genus, epithet: 'magna'
       })

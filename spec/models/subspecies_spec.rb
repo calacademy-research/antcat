@@ -41,7 +41,7 @@ describe Subspecies do
         }]})
       subspecies = Subspecies.find subspecies
       subspecies.name.to_s.should == 'Camponotus (Myrmeurynota) gilviventris var. refectus'
-      ref = SpeciesForwardRef.first
+      ref = SpeciesGroupForwardRef.first
       ref.fixee.should == subspecies
       ref.genus.should == genus
       ref.epithet.should == 'gilviventris'
@@ -64,7 +64,7 @@ describe Subspecies do
       )
       subspecies = Subspecies.find subspecies
       subspecies.name.to_s.should == 'Camponotus maculatus r. radamae'
-      ref = SpeciesForwardRef.first
+      ref = SpeciesGroupForwardRef.first
       ref.fixee.should == subspecies
       ref.genus.should == genus
       ref.epithet.should == 'hova'

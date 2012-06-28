@@ -1,5 +1,5 @@
 # coding: UTF-8
-class SpeciesForwardRef < ActiveRecord::Base
+class SpeciesGroupForwardRef < ActiveRecord::Base
 
   belongs_to :fixee, class_name: 'Taxon'; validates :fixee, presence: true
   validates  :fixee_attribute, presence: true

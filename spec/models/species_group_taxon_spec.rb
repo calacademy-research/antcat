@@ -99,7 +99,7 @@ describe SpeciesGroupTaxon do
       species.set_status_from_history history
       species = Species.find species
       species.should be_synonym
-      ref = SpeciesForwardRef.first
+      ref = SpeciesGroupForwardRef.first
       ref.fixee.should == species
       ref.genus.should == genus
       ref.epithet.should == 'ferox'
@@ -116,7 +116,7 @@ describe SpeciesGroupTaxon do
       species.set_status_from_history history
       species = Species.find species
       species.should be_synonym
-      ref = SpeciesForwardRef.first
+      ref = SpeciesGroupForwardRef.first
       ref.fixee.should == species
       ref.genus.should == genus
       ref.epithet.should == 'ferox'
