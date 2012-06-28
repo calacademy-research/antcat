@@ -133,11 +133,11 @@ class SpeciesGroupTaxon < Taxon
         status = {status: 'valid'}
       elsif item[:synonym_ofs]
         status = {status: 'synonym', parent_epithet: item[:synonym_ofs].first[:species_epithet]}
-      elsif revived_from_synonymy?(item)
+      elsif item_revived_from_synonymy?(item)
         status = {status: 'valid'}
       elsif item_first_available_replacement?(item)
         return {status: 'valid'}
-      elsif item[:homonym_of]
+      elsif item_homonym?(item)
         status = {status: 'homonym'}
       elsif item[:unavailable_name]
         status = {status: 'unavailable'}
@@ -150,7 +150,11 @@ class SpeciesGroupTaxon < Taxon
     status
   end
 
-  def self.revived_from_synonymy? item
+  def self.item_homonym? item
+    item[:homonym_of] || item_text_matches?(item, /homonym/i)
+  end
+
+  def self.item_revived_from_synonymy? item
     item[:revived_from_synonymy] ||
     item[:raised_to_species].try(:[], :revived_from_synonymy)
   end
@@ -160,8 +164,10 @@ class SpeciesGroupTaxon < Taxon
   end
 
   def self.item_text_matches? item, regexp
-    text = item[:text].try(:first).try(:[], :phrase)
-    text and text =~ regexp
+    for text in item[:text] or []
+      return true if text[:phrase] =~ regexp
+    end
+    false
   end
 
   class NoProtonymError < StandardError; end
