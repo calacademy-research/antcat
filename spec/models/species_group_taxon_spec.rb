@@ -169,6 +169,18 @@ describe SpeciesGroupTaxon do
         {text: [{phrase: 'Unidentifiable taxon', delimiter: ' '}]},
       ]).should == {status: 'unidentifiable'}
     end
+
+    it "should handle 'homonym' in the text" do
+      SpeciesGroupTaxon.get_status_from_history([
+        {text: [
+          {opening_bracket: '['},
+          {phrase: 'Junior secondary homonym of', delimiter: ' '},
+          {genus_name: 'Sericomyrmex', species_epithet: 'gallardoi', authorship:[{author_names:['Santschi'], matched_text: 'Santschi, above'}], delimiter: '.'},
+          {closing_bracket: ']'}
+        ]}
+      ]).should == {status: 'homonym'}
+    end
+
   end
 
 end
