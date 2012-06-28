@@ -6,8 +6,10 @@ class Subspecies < SpeciesGroupTaxon
   end
 
   def self.import_name data
-    # create the name from the current genus + protonym + headline epithet
-    Name.import data[:protonym].merge(genus: data[:genus]).merge(subspecies_epithet: data[:species_group_epithet])
+    name_data = data[:protonym]
+    name_data[:genus] = data[:genus]
+    name_data[:subspecies_epithet] = data[:species_group_epithet] || data[:species_epithet]
+    Name.import name_data
   end
 
   def self.after_creating taxon, data
