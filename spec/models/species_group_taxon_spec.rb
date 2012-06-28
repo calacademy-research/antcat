@@ -157,6 +157,13 @@ describe SpeciesGroupTaxon do
       ]).should == {status: 'nomen nudum'}
     end
 
+    it "should consider anything with a subspecies list to be valid" do
+      SpeciesGroupTaxon.get_status_from_history([
+        {synonym_ofs: [{species_epithet: 'ferox'}]},
+        {subspecies: [{species_group_epithet: 'falcifer'}]},
+      ]).should == {status: 'valid'}
+    end
+
   end
 
 end
