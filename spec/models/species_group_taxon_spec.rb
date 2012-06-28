@@ -164,6 +164,11 @@ describe SpeciesGroupTaxon do
       ]).should == {status: 'valid'}
     end
 
+    it "should handle 'unidentifiable' in the text" do
+      SpeciesGroupTaxon.get_status_from_history([
+        {text: [{phrase: 'Unidentifiable taxon', delimiter: ' '}]},
+      ]).should == {status: 'unidentifiable'}
+    end
   end
 
 end

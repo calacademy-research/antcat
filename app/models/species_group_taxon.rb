@@ -143,6 +143,8 @@ class SpeciesGroupTaxon < Taxon
         status = {status: 'unavailable'}
       elsif item[:nomen_nudum]
         status = {status: 'nomen nudum'}
+      elsif item_text_matches?(item, /unidentifiable/i)
+        status = {status: 'unidentifiable'}
       end
     end
     status
