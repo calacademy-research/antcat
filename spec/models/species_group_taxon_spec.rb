@@ -145,12 +145,16 @@ describe SpeciesGroupTaxon do
       end
     end
 
-    describe "Unavailable names" do
-      it "should get handled" do
-        SpeciesGroupTaxon.get_status_from_history([
-          {unavailable_name: true}
-        ]).should == {status: 'unavailable'}
-      end
+    it "should handle an unavailable name" do
+      SpeciesGroupTaxon.get_status_from_history([
+        {unavailable_name: true}
+      ]).should == {status: 'unavailable'}
+    end
+
+    it "should handle a nomen nudum" do
+      SpeciesGroupTaxon.get_status_from_history([
+        {nomen_nudum: true}
+      ]).should == {status: 'nomen nudum'}
     end
 
   end
