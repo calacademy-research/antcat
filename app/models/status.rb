@@ -49,8 +49,6 @@ class Status
                                          plural_label: 'excluded'),
       Status.new(string: 'unresolved homonym',  label: 'unresolved homonym',
                                          plural_label: 'unresolved homonyms'),
-      Status.new(string: 'recombined',          label: 'transferred out of this genus',
-                                         plural_label: 'transferred out of this genus'),
       Status.new(string: 'nomen nudum',         label: 'nomen nudum',
                                          plural_label: 'nomina nuda'),
     ]
