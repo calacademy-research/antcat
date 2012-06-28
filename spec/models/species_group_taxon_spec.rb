@@ -106,45 +106,51 @@ describe SpeciesGroupTaxon do
       end
     end
 
-    it "should recognize a synonym_of" do
-      SpeciesGroupTaxon.get_status_from_history([
-        {synonym_ofs: [{species_epithet: 'ferox'}]},
-      ]).should == {status: 'synonym', parent_epithet: 'ferox'}
+    describe "Synonyms" do
+      it "should recognize a synonym_of" do
+        SpeciesGroupTaxon.get_status_from_history([
+          {synonym_ofs: [{species_epithet: 'ferox'}]},
+        ]).should == {status: 'synonym', parent_epithet: 'ferox'}
+      end
+      it "should recognize a synonym_of even if it's not the first item in the history" do
+        SpeciesGroupTaxon.get_status_from_history([
+          {combinations_in: [{genus_name:"Acanthostichus"}]},
+          {synonym_ofs: [{species_epithet: 'ferox'}]},
+        ]).should == {status: 'synonym', parent_epithet: 'ferox'}
+      end
+      it "should overrule synonymy with revival from synonymy" do
+        SpeciesGroupTaxon.get_status_from_history([
+          {synonym_ofs: [{species_epithet: 'ferox'}]},
+          {revived_from_synonymy: true},
+        ]).should == {status: 'valid'}
+      end
+      it "should overrule synonymy with raisal to species with revival from synonymy" do
+        SpeciesGroupTaxon.get_status_from_history([
+          {synonym_ofs: [{species_epithet: 'ferox'}]},
+          {raised_to_species: {revived_from_synonymy:true}},
+        ]).should == {status: 'valid'}
+      end
+      it "should stop on 'first available replacement' and make it valid" do
+        SpeciesGroupTaxon.get_status_from_history([
+          {synonym_ofs: [{species_epithet: 'ferox'}]},
+          {text: [{phrase:'hence first available replacement name for', delimiter: ' '}]},
+          {homonym_of: {primary_or_secondary: :primary, genus_name: 'Formice'}},
+        ]).should == {status: 'valid'}
+      end
+      it "should overrule synonymy with raisal to species with revival from synonymy" do
+        SpeciesGroupTaxon.get_status_from_history([
+          {synonym_ofs: [{species_epithet: 'ferox'}]},
+          {raised_to_species: {revived_from_synonymy:true}},
+        ]).should == {status: 'valid'}
+      end
     end
 
-    it "should recognize a synonym_of even if it's not the first item in the history" do
-      SpeciesGroupTaxon.get_status_from_history([
-        {combinations_in: [{genus_name:"Acanthostichus"}]},
-        {synonym_ofs: [{species_epithet: 'ferox'}]},
-      ]).should == {status: 'synonym', parent_epithet: 'ferox'}
-    end
-
-    it "should overrule synonymy with revival from synonymy" do
-      SpeciesGroupTaxon.get_status_from_history([
-        {synonym_ofs: [{species_epithet: 'ferox'}]},
-        {revived_from_synonymy: true},
-      ]).should == {status: 'valid'}
-    end
-
-    it "should overrule synonymy with raisal to species with revival from synonymy" do
-      SpeciesGroupTaxon.get_status_from_history([
-        {synonym_ofs: [{species_epithet: 'ferox'}]},
-        {raised_to_species: {revived_from_synonymy:true}},
-      ]).should == {status: 'valid'}
-    end
-
-    it "should stop on 'first available replacement' and make it valid" do
-      SpeciesGroupTaxon.get_status_from_history([
-        {synonym_ofs: [{species_epithet: 'ferox'}]},
-        {text: [{phrase:'hence first available replacement name for', delimiter: ' '}]},
-        {homonym_of: {primary_or_secondary: :primary, genus_name: 'Formice'}},
-      ]).should == {status: 'valid'}
-    end
-    it "should overrule synonymy with raisal to species with revival from synonymy" do
-      SpeciesGroupTaxon.get_status_from_history([
-        {synonym_ofs: [{species_epithet: 'ferox'}]},
-        {raised_to_species: {revived_from_synonymy:true}},
-      ]).should == {status: 'valid'}
+    describe "Unavailable names" do
+      it "should get handled" do
+        SpeciesGroupTaxon.get_status_from_history([
+          {unavailable_name: true}
+        ]).should == {status: 'unavailable'}
+      end
     end
 
   end
