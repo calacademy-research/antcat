@@ -137,6 +137,8 @@ class SpeciesGroupTaxon < Taxon
         return {status: 'valid'}
       elsif item[:homonym_of]
         status = {status: 'homonym'}
+      elsif item[:unavailable_name]
+        status = {status: 'unavailable'}
       end
     end
     status
