@@ -83,15 +83,7 @@ describe SpeciesGroupTaxon do
   end
 
   describe "Setting status from history" do
-    it "should handle no history" do
-      species = FactoryGirl.create :species_group_taxon
-      for history in [nil, []]
-        species.set_status_from_history history
-        SpeciesGroupTaxon.find(species).status.should == 'valid'
-      end
-    end
-
-    it "should recognize a synonym_of" do
+    it "should recognize a synonym_of and set the status accordingly" do
       genus = create_genus 'Atta'
       ferox = create_species 'Atta ferox', genus: genus
       species = create_species 'Atta dyak', genus: genus
@@ -104,57 +96,43 @@ describe SpeciesGroupTaxon do
       ref.genus.should == genus
       ref.epithet.should == 'ferox'
     end
-
-    it "should recognize a synonym_of even if it's not the first item in the history" do
-      genus = create_genus 'Atta'
-      texanus = create_species 'Atta texanus', genus: genus
-      species = create_species genus: genus
-      history = [
-        {combinations_in: [{genus_name:"Acanthostichus"}]},
-        {synonym_ofs: [{species_epithet: 'ferox'}]},
-      ]
-      species.set_status_from_history history
-      species = Species.find species
-      species.should be_synonym
-      ref = SpeciesGroupForwardRef.first
-      ref.fixee.should == species
-      ref.genus.should == genus
-      ref.epithet.should == 'ferox'
-    end
-
-    it "should overrule synonymy with revival from synonymy" do
-      genus = create_genus 'Atta'
-      ferox = create_species 'Atta ferox', genus: genus
-      species = create_species 'Atta dyak', genus: genus
-      history = [
-        {synonym_ofs: [{species_epithet: 'ferox'}]},
-        {revived_from_synonymy: true},
-      ]
-      species.set_status_from_history history
-      species = Species.find species
-      species.should_not be_synonym
-    end
-
-    it "should overrule synonymy with raisal to species with revival from synonymy" do
-      genus = create_genus 'Atta'
-      ferox = create_species 'Atta ferox', genus: genus
-      species = create_species 'Atta dyak', genus: genus
-      history = [
-        {synonym_ofs: [{species_epithet: 'ferox'}]},
-        {raised_to_species: {revived_from_synonymy:true}},
-      ]
-      species.set_status_from_history history
-      species = Species.find species
-      species.should_not be_synonym
-    end
-
   end
 
   describe "Getting status from history" do
     it "should consider an empty history as valid" do
-      Species.get_status_from_history([
+      for history in [nil, []]
+        SpeciesGroupTaxon.get_status_from_history(history).should ==
+          {status: 'valid'}
+      end
+    end
+
+    it "should recognize a synonym_of" do
+      SpeciesGroupTaxon.get_status_from_history([
+        {synonym_ofs: [{species_epithet: 'ferox'}]},
+      ]).should == {status: 'synonym', parent_epithet: 'ferox'}
+    end
+
+    it "should recognize a synonym_of even if it's not the first item in the history" do
+      SpeciesGroupTaxon.get_status_from_history([
+        {combinations_in: [{genus_name:"Acanthostichus"}]},
+        {synonym_ofs: [{species_epithet: 'ferox'}]},
+      ]).should == {status: 'synonym', parent_epithet: 'ferox'}
+    end
+
+    it "should overrule synonymy with revival from synonymy" do
+      SpeciesGroupTaxon.get_status_from_history([
+        {synonym_ofs: [{species_epithet: 'ferox'}]},
+        {revived_from_synonymy: true},
       ]).should == {status: 'valid'}
     end
+
+    it "should overrule synonymy with raisal to species with revival from synonymy" do
+      SpeciesGroupTaxon.get_status_from_history([
+        {synonym_ofs: [{species_epithet: 'ferox'}]},
+        {raised_to_species: {revived_from_synonymy:true}},
+      ]).should == {status: 'valid'}
+    end
+
     it "should stop on 'first available replacement' and make it valid" do
       SpeciesGroupTaxon.get_status_from_history([
         {synonym_ofs: [{species_epithet: 'ferox'}]},
@@ -162,6 +140,13 @@ describe SpeciesGroupTaxon do
         {homonym_of: {primary_or_secondary: :primary, genus_name: 'Formice'}},
       ]).should == {status: 'valid'}
     end
+    it "should overrule synonymy with raisal to species with revival from synonymy" do
+      SpeciesGroupTaxon.get_status_from_history([
+        {synonym_ofs: [{species_epithet: 'ferox'}]},
+        {raised_to_species: {revived_from_synonymy:true}},
+      ]).should == {status: 'valid'}
+    end
 
   end
+
 end
