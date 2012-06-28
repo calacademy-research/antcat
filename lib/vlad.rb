@@ -128,7 +128,7 @@ class Vlad
       ReferenceAuthorName,
       ReferenceDocument,
       Reference,
-      SpeciesForwardRef,
+      SpeciesGroupForwardRef,
       Taxon,
       TaxonomicHistoryItem,
       User,

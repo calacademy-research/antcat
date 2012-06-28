@@ -4,7 +4,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
   def initialize options = {}
     Species.delete_all
     Subspecies.delete_all
-    SpeciesForwardRef.delete_all
+    SpeciesGroupForwardRef.delete_all
 
     @options = options.reverse_merge show_progress: false
     @continue_after_parse_error = true
@@ -86,7 +86,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
 
   def finish_importing
     Progress.print 'Fixing up names...'
-    SpeciesForwardRef.fixup
+    SpeciesGroupForwardRef.fixup
     Progress.puts
   end
 

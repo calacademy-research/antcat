@@ -114,7 +114,7 @@ class SpeciesGroupTaxon < Taxon
   end
 
   def create_forward_ref_to_senior_synonym epithet
-    SpeciesForwardRef.create!(
+    SpeciesGroupForwardRef.create!(
       fixee:            self,
       fixee_attribute: 'synonym_of_id',
       genus:            genus,
