@@ -7,6 +7,7 @@ class Vlad
     @results = {}
     @results.merge! record_counts
     @results.merge! taxon_counts
+    @results.merge! status_counts
     @results.merge! genera_with_tribes_but_not_subfamilies
     @results.merge! taxa_with_mismatched_synonym_and_status
     @results.merge! taxa_with_mismatched_homonym_and_status
@@ -57,6 +58,10 @@ class Vlad
 
     display_results_section :taxa_with_mismatched_synonym_and_status, reverse_order: true do |taxon|
       "#{taxon.name} (#{taxon.status}) #{taxon.synonym_of_id}"
+    end
+
+    display_results_section :status_counts, sort: false do |count|
+      "#{count.first.rjust(19)} #{count.second}"
     end
 
   end
@@ -112,6 +117,13 @@ class Vlad
       [result['type'], result['count'].to_i]
     end
     {taxon_counts: taxon_counts}
+  end
+
+  def self.status_counts
+    status_counts = Taxon.select('status, COUNT(*) AS count').group(:status).order('count DESC').map do |result|
+      [result['status'], result['count'].to_i]
+    end
+    {status_counts: status_counts}
   end
 
   def self.record_counts

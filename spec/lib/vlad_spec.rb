@@ -12,6 +12,13 @@ describe Vlad do
     results.should =~ [['Family', 1]]
   end
 
+  it "should show taxon counts by status" do
+    FactoryGirl.create :family, status: 'synonym'
+    2.times {FactoryGirl.create :family, status: 'valid'}
+    results = Vlad.idate[:status_counts]
+    results.should =~ [['valid', 2], ['synonym', 1]]
+  end
+
   it "should show genera with tribes but not subfamilies" do
     tribe = FactoryGirl.create :tribe
     genus_with_tribe_but_not_subfamily = FactoryGirl.create :genus, subfamily: nil, tribe: tribe
