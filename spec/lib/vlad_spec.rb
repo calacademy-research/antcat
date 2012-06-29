@@ -49,17 +49,23 @@ describe Vlad do
   end
 
   describe "Duplicate checking" do
-    it "should show duplicate names" do
+    it "should show duplicate valid names" do
       create_genus 'Eciton'
       create_genus 'Atta'
       create_genus 'Atta'
-      Vlad.idate[:duplicates].map {|e| [e[:name], e[:count]]}.should =~ [['Atta', 2]]
+      Vlad.idate[:duplicate_valids].map {|e| [e[:name], e[:count]]}.should =~ [['Atta', 2]]
     end
     it "should be cool with same species name if genus is different" do
       create_species 'Atta niger'
       create_species 'Betta major'
       create_species 'Kappa major'
-      Vlad.idate[:duplicates].should be_empty
+      Vlad.idate[:duplicate_valids].should be_empty
+    end
+    it "should be cool with same species name if status is different" do
+      genus = create_genus
+      create_species 'Atta major', genus: genus
+      create_species 'Atta major', genus: genus
+      Vlad.idate[:duplicate_valids].should_not be_empty
     end
   end
 

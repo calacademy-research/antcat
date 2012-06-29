@@ -12,7 +12,7 @@ class Vlad
     @results.merge! taxa_with_mismatched_synonym_and_status
     @results.merge! taxa_with_mismatched_homonym_and_status
     @results.merge! subspecies_without_species
-    @results.merge! duplicates
+    @results.merge! duplicate_valids
     @results.merge! reference_documents
 
     display
@@ -42,7 +42,7 @@ class Vlad
       "#{taxon.name} (#{taxon.status})"
     end
 
-    display_results_section :duplicates do |duplicate|
+    display_results_section :duplicate_valids do |duplicate|
       "#{duplicate[:name]} #{duplicate[:count]}"
     end
 
@@ -85,11 +85,12 @@ class Vlad
     Progress.puts section_key.to_s.gsub(/_/, ' ').capitalize + ": #{@results[section_key].size}"
   end
 
-  def self.duplicates
-    {duplicates:
+  def self.duplicate_valids
+    {duplicate_valids:
      Taxon.select('names.name AS name, COUNT(names.name) AS count').
            with_names.
            group('names.name', :genus_id).
+           where(status: 'valid').
            having('COUNT(names.name) > 1').
            all.
            map {|row| {name: row['name'], count: row['count']}}
