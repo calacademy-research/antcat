@@ -147,9 +147,15 @@ class SpeciesGroupTaxon < Taxon
         status = {status: 'nomen nudum'}
       elsif item_text_matches?(item, /unidentifiable/i)
         status = {status: 'unidentifiable'}
+      elsif item_excluded?(item)
+        status = {status: 'excluded'}
       end
     end
     status
+  end
+
+  def self.item_excluded? item
+    item_text_matches? item, /Excluded from Formicidae/i
   end
 
   def self.item_unresolved_homonym? item
@@ -171,7 +177,7 @@ class SpeciesGroupTaxon < Taxon
 
   def self.item_text_matches? item, regexp
     for text in item[:text] or []
-      return true if text[:phrase] =~ regexp
+      return true if text[:matched_text] =~ regexp
     end
     false
   end

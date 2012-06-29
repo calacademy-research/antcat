@@ -133,7 +133,7 @@ describe SpeciesGroupTaxon do
       it "should stop on 'first available replacement' and make it valid" do
         SpeciesGroupTaxon.get_status_from_history([
           {synonym_ofs: [{species_epithet: 'ferox'}]},
-          {text: [{phrase:'hence first available replacement name for', delimiter: ' '}]},
+          {text: [{matched_text: 'hence first available replacement name for'}]},
           {homonym_of: {primary_or_secondary: :primary, genus_name: 'Formice'}},
         ]).should == {status: 'valid'}
       end
@@ -166,18 +166,13 @@ describe SpeciesGroupTaxon do
 
     it "should handle 'unidentifiable' in the text" do
       SpeciesGroupTaxon.get_status_from_history([
-        {text: [{phrase: 'Unidentifiable taxon', delimiter: ' '}]},
+        {text: [{matched_text: 'Unidentifiable taxon'}]},
       ]).should == {status: 'unidentifiable'}
     end
 
     it "should handle 'homonym' in the text" do
       SpeciesGroupTaxon.get_status_from_history([
-        {text: [
-          {opening_bracket: '['},
-          {phrase: 'Junior secondary homonym of', delimiter: ' '},
-          {genus_name: 'Sericomyrmex', species_epithet: 'gallardoi', authorship:[{author_names:['Santschi'], matched_text: 'Santschi, above'}], delimiter: '.'},
-          {closing_bracket: ']'}
-        ]}
+        {text: [{matched_text: '[Junior secondary homonym of <i>Cerapachys cooperi</i> Arnold, 1915: 14.]'}]},
       ]).should == {status: 'homonym'}
     end
 
@@ -187,6 +182,12 @@ describe SpeciesGroupTaxon do
         {currently_subspecies_of: {}},
       ]).should == {status: 'unresolved homonym'}
     end
-  end
 
+    it "should a taxon excluded from Formicidae" do
+      SpeciesGroupTaxon.get_status_from_history([
+        {text: [{matched_text: 'Excluded from Formicidae'}]}
+      ]).should == {status: 'excluded'}
+    end
+
+  end
 end
