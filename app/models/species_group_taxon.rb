@@ -137,6 +137,8 @@ class SpeciesGroupTaxon < Taxon
         status = {status: 'valid'}
       elsif item_first_available_replacement?(item)
         return {status: 'valid'}
+      elsif item_unresolved_homonym?(item)
+        status = {status: 'unresolved homonym'}
       elsif item_homonym?(item)
         status = {status: 'homonym'}
       elsif item[:unavailable_name]
@@ -148,6 +150,10 @@ class SpeciesGroupTaxon < Taxon
       end
     end
     status
+  end
+
+  def self.item_unresolved_homonym? item
+    item[:homonym_of].try(:[], :unresolved)
   end
 
   def self.item_homonym? item
