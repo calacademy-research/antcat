@@ -181,6 +181,12 @@ describe SpeciesGroupTaxon do
       ]).should == {status: 'homonym'}
     end
 
+    it "should handle an unresolved homonym even if it's a current subspecies" do
+      SpeciesGroupTaxon.get_status_from_history([
+        {homonym_of: {:unresolved=>true}},
+        {currently_subspecies_of: {}},
+      ]).should == {status: 'unresolved homonym'}
+    end
   end
 
 end
