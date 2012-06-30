@@ -8,15 +8,13 @@ describe Vlad do
 
   it "should show taxon counts by rank" do
     FactoryGirl.create :family
-    results = Vlad.idate[:taxon_counts]
-    results.should =~ [['Family', 1]]
+    Vlad::TaxonCounts.query.should =~ [['Family', 1]]
   end
 
   it "should show taxon counts by status" do
     FactoryGirl.create :family, status: 'synonym'
     2.times {FactoryGirl.create :family, status: 'valid'}
-    results = Vlad.idate[:status_counts]
-    results.should =~ [['valid', 2], ['synonym', 1]]
+    Vlad::StatusCounts.query.should =~ [['valid', 2], ['synonym', 1]]
   end
 
   it "should show genera with tribes but not subfamilies" do
@@ -24,7 +22,7 @@ describe Vlad do
     genus_with_tribe_but_not_subfamily = FactoryGirl.create :genus, subfamily: nil, tribe: tribe
     genus_with_tribe_and_subfamily = FactoryGirl.create :genus, subfamily: tribe.subfamily, tribe: tribe
     genus_with_subfamily_but_not_tribe = FactoryGirl.create :genus, subfamily: tribe.subfamily, tribe: nil
-    results = Vlad.idate[:genera_with_tribes_but_not_subfamilies]
+    results = Vlad::GeneraWithTribesButNotSubfamilies.query
     results.count.should == 1
     results.first.should == genus_with_tribe_but_not_subfamily
   end
@@ -33,7 +31,7 @@ describe Vlad do
     species = create_species
     subspecies_with_species = create_subspecies 'Atta major minor', species: species
     subspecies_without_species = create_subspecies 'Atta major minor', species: nil
-    results = Vlad.idate[:subspecies_without_species]
+    results = Vlad::SubspeciesWithoutSpecies.query
     results.count.should == 1
     results.first.should == subspecies_without_species
   end
@@ -44,7 +42,7 @@ describe Vlad do
     no_status = FactoryGirl.create :tribe, synonym_of: tribe
     ok = FactoryGirl.create :species, synonym_of: FactoryGirl.create(:species), status: 'synonym'
 
-    results = Vlad.idate[:taxa_with_mismatched_synonym_and_status]
+    results = Vlad::TaxaWithMismatchedSynonymAndStatus.query
     results.map(&:id).should =~ [no_synonym.id, no_status.id]
   end
 
@@ -53,19 +51,19 @@ describe Vlad do
       create_genus 'Eciton'
       create_genus 'Atta'
       create_genus 'Atta'
-      Vlad.idate[:duplicate_valids].map {|e| [e[:name], e[:count]]}.should =~ [['Atta', 2]]
+      Vlad::DuplicateValids.query.map {|e| [e[:name], e[:count]]}.should =~ [['Atta', 2]]
     end
     it "should be cool with same species name if genus is different" do
       create_species 'Atta niger'
       create_species 'Betta major'
       create_species 'Kappa major'
-      Vlad.idate[:duplicate_valids].should be_empty
+      Vlad::DuplicateValids.query.should be_empty
     end
     it "should be cool with same species name if status is different" do
       genus = create_genus
       create_species 'Atta major', genus: genus
       create_species 'Atta major', genus: genus
-      Vlad.idate[:duplicate_valids].should_not be_empty
+      Vlad::DuplicateValids.query.should_not be_empty
     end
   end
 
@@ -82,7 +80,7 @@ describe Vlad do
       reference_without_document = FactoryGirl.create :article_reference
       document_without_reference = FactoryGirl.create :reference_document
 
-      results = Vlad.reference_documents[:reference_documents]
+      results = Vlad::ReferenceDocumentCounts.query
       results[:references_count].should == 11
       results[:reference_documents_count].should == 11
       results[:references_with_documents_count].should == 10
