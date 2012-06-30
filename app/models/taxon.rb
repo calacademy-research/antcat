@@ -89,6 +89,10 @@ class Taxon < ActiveRecord::Base
     target.name.to_s
   end
 
+  def inspect
+    "#{id} #{name} (#{status})"
+  end
+
   ###############################################
   # statistics
 
