@@ -56,6 +56,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
                                       protonym: @parse_result[:protonym],
                                       raw_history: @parse_result[:history],
                                       history: convert_taxonomic_history_to_taxts(@parse_result[:history])
+            Progress.log "Imported #{species.inspect}"
             @species_count += 1
           rescue Species::NoProtonymError
             Progress.error "Species without protonym: #{@line}"
