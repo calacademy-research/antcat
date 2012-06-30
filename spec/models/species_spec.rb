@@ -140,8 +140,7 @@ describe Species do
         )
         taxon.should be_kind_of Species
       end
-
     end
-  end
 
+  end
 end

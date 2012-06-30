@@ -133,7 +133,7 @@ describe SpeciesGroupTaxon do
       it "should stop on 'first available replacement' and make it valid" do
         SpeciesGroupTaxon.get_status_from_history([
           {synonym_ofs: [{species_epithet: 'ferox'}]},
-          {text: [{matched_text: 'hence first available replacement name for'}]},
+          {text: [], matched_text: 'hence first available replacement name for'},
           {homonym_of: {primary_or_secondary: :primary, genus_name: 'Formice'}},
         ]).should == {status: 'valid'}
       end
@@ -164,15 +164,22 @@ describe SpeciesGroupTaxon do
       ]).should == {status: 'valid'}
     end
 
-    it "should handle 'unidentifiable' in the text" do
-      SpeciesGroupTaxon.get_status_from_history([
-        {text: [{matched_text: 'Unidentifiable taxon'}]},
-      ]).should == {status: 'unidentifiable'}
+    describe "Unidentifiable taxa" do
+      it "should handle explicit parse" do
+        SpeciesGroupTaxon.get_status_from_history([
+          {unidentifiable: true}
+        ]).should == {status: 'unidentifiable'}
+      end
+      it "should handle 'unidentifiable' in the text" do
+        SpeciesGroupTaxon.get_status_from_history([
+          {text: [], matched_text: 'Unidentifiable taxon'},
+        ]).should == {status: 'unidentifiable'}
+      end
     end
 
     it "should handle 'homonym' in the text" do
       SpeciesGroupTaxon.get_status_from_history([
-        {text: [{matched_text: '[Junior secondary homonym of <i>Cerapachys cooperi</i> Arnold, 1915: 14.]'}]},
+        {text: [], matched_text: '[Junior secondary homonym of <i>Cerapachys cooperi</i> Arnold, 1915: 14.]'},
       ]).should == {status: 'homonym'}
     end
 
@@ -185,8 +192,20 @@ describe SpeciesGroupTaxon do
 
     it "should a taxon excluded from Formicidae" do
       SpeciesGroupTaxon.get_status_from_history([
-        {text: [{matched_text: 'Excluded from Formicidae'}]}
+        {text: [], matched_text: 'Excluded from Formicidae'}
       ]).should == {status: 'excluded'}
+    end
+
+    it "should handle it when information is in matched_text" do
+      taxon = SpeciesGroupTaxon.get_status_from_history([
+        {text: [], matched_text: ' Unidentifiable taxon, <i>incertae sedis</i> in <i>Acromyrmex</i>: Kempf, 1972a: 16.'}
+      ]).should == {status: 'unidentifiable'}
+    end
+
+    it "should handle unnecessary replacement name in text" do
+      taxon = SpeciesGroupTaxon.get_status_from_history([
+        {text: [], matched_text: ' Unnecessary replacement name for <i>Odontomachus tyrannicus</i> Smith, F. 1861b: 44 and hence junior synonym of <i>gladiator</i> Mayr, 1862: 712, the first available replacement name: Brown, 1978c: 556.'}
+      ]).should == {status: 'synonym', parent_epithet: 'gladiator'}
     end
 
   end
