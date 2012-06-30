@@ -3,160 +3,112 @@ class Vlad
 
   def self.idate show_progress = false
     Progress.new_init show_progress: show_progress
-
-    @results = {}
-    @results.merge! record_counts
-    @results.merge! taxon_counts
-    @results.merge! status_counts
-    @results.merge! genera_with_tribes_but_not_subfamilies
-    @results.merge! taxa_with_mismatched_synonym_and_status
-    @results.merge! taxa_with_mismatched_homonym_and_status
-    @results.merge! subspecies_without_species
-    @results.merge! duplicate_valids
-    @results.merge! reference_documents
-
-    display
-    @results
-  end
-
-  def self.display
     Progress.puts
 
-    display_results_section :record_counts, :sort => false do |count|
-      "#{count[:count].to_s.rjust(7)} #{count[:table]}"
+    #Statistic.descendants.each &:display
+    Problem.descendants.each &:display
+  end
+
+  class Report
+    def self.display_results_section results, options = {}
+      return unless results.present?
+      options = options.reverse_merge sort: true
+      display_section_header results.count
+      lines = results.map {|item| yield item}
+      lines.sort! if options[:sort]
+      lines.reverse! if options[:reverse_order]
+      lines.each {|line| Progress.puts '  ' + line}
+      display_section_header results.count if results.count > 100
+
+      Progress.puts
     end
 
-    display_results_section :taxon_counts, sort: false do |count|
-      "#{count.first.rjust(11)} #{count.second}"
-    end
-
-    display_results_section :genera_with_tribes_but_not_subfamilies do |genus|
-      "#{genus.name} (tribe #{genus.tribe.name})"
-    end
-
-    display_results_section :taxa_with_mismatched_homonym_and_status do |taxon|
-      "#{taxon.name} (#{taxon.status}) #{taxon.homonym_replaced_by_id}"
-    end
-
-    display_results_section :subspecies_without_species, reverse_order: true do |taxon|
-      "#{taxon.name} (#{taxon.status})"
-    end
-
-    display_results_section :duplicate_valids do |duplicate|
-      "#{duplicate[:name]} #{duplicate[:count]}"
-    end
-
-    Progress.puts "Reference documents"
-    results = @results[:reference_documents]
-    Progress.puts "  #{results[:references_count].to_s.rjust(7)} references"
-    Progress.puts "  #{results[:reference_documents_count].to_s.rjust(7)} reference documents"
-    Progress.puts "  #{results[:references_with_documents_count].to_s.rjust(7)} references with documents"
-    for result in results[:locations]
-      Progress.puts "  #{result.second.to_s.rjust(7)} #{result.first}"
-    end
-    Progress.puts
-
-    display_results_section :taxa_with_mismatched_synonym_and_status, reverse_order: true do |taxon|
-      "#{taxon.name} (#{taxon.status}) #{taxon.synonym_of_id}"
-    end
-
-    display_results_section :status_counts, sort: false do |count|
-      "#{count.first.rjust(19)} #{count.second}"
+    def self.display_section_header count
+      Progress.puts "#{self.name.demodulize.titleize.capitalize}: #{count}"
     end
 
   end
 
-  def self.display_results_section section_key, options = {}
-    options = options.reverse_merge sort: true
-    results_section = @results[section_key]
-    return unless results_section.present?
-
-    display_section_header section_key
-    lines = results_section.map {|item| yield item}
-    lines.sort! if options[:sort]
-    lines.reverse! if options[:reverse_order]
-    lines.each {|line| Progress.puts '  ' + line}
-    display_section_header section_key
-
-    Progress.puts
+  class Problem < Report
   end
 
-  def self.display_section_header section_key
-    Progress.puts section_key.to_s.gsub(/_/, ' ').capitalize + ": #{@results[section_key].size}"
+  class Statistic < Report
   end
 
-  def self.duplicate_valids
-    {duplicate_valids:
-     Taxon.select('names.name AS name, COUNT(names.name) AS count').
-           with_names.
-           group('names.name', :genus_id).
-           where(status: 'valid').
-           having('COUNT(names.name) > 1').
-           all.
-           map {|row| {name: row['name'], count: row['count']}}
-    }
-  end
-
-  def self.taxa_with_mismatched_synonym_and_status
-    {taxa_with_mismatched_synonym_and_status: Taxon.where("(status = 'synonym') = (synonym_of_id IS NULL)")}
-  end
-
-  def self.taxa_with_mismatched_homonym_and_status
-    {taxa_with_mismatched_homonym_and_status: Taxon.where("(status = 'homonym') = (homonym_replaced_by_id IS NULL)")}
-  end
-
-  def self.subspecies_without_species
-    {subspecies_without_species: Subspecies.where('species_id IS NULL')}
-  end
-
-  def self.genera_with_tribes_but_not_subfamilies
-    {genera_with_tribes_but_not_subfamilies: Genus.where("tribe_id IS NOT NULL AND subfamily_id IS NULL")}
-  end
-
-  def self.taxon_counts
-    taxon_counts = Taxon.select('type, COUNT(*) AS count').group(:type).map do |result|
-      [result['type'], result['count'].to_i]
+  class TaxonCounts < Statistic
+    def self.display
+      display_results_section query, sort: false do |count|
+        "#{count.first.rjust(11)} #{count.second}"
+      end
     end
-    {taxon_counts: taxon_counts}
-  end
-
-  def self.status_counts
-    status_counts = Taxon.select('status, COUNT(*) AS count').group(:status).order('count DESC').map do |result|
-      [result['status'], result['count'].to_i]
+    def self.query
+      Taxon.select('type, COUNT(*) AS count').group(:type).map do |result|
+        [result['type'], result['count'].to_i]
+      end
     end
-    {status_counts: status_counts}
   end
 
-  def self.record_counts
-    {:record_counts => [
-      AuthorName,
-      Author,
-      Bolton::Match,
-      Bolton::Reference,
-      Citation,
-      Journal,
-      Place,
-      Protonym,
-      Publisher,
-      ReferenceAuthorName,
-      ReferenceDocument,
-      Reference,
-      SpeciesGroupForwardRef,
-      Taxon,
-      TaxonomicHistoryItem,
-      User,
-    ].map do |table|
-      {table: table.to_s, count: table.count}
-    end}
+  class StatusCounts < Statistic
+    def self.display
+      display_results_section query, sort: false do |count|
+        "#{count.first.rjust(19)} #{count.second}"
+      end
+    end
+    def self.query
+      Taxon.select('status, COUNT(*) AS count').group(:status).order('count DESC').map do |result|
+        [result['status'], result['count'].to_i]
+      end
+    end
   end
 
-  def self.reference_documents
+  class RecordCounts < Statistic
+    def self.display
+      display_results_section query, sort: false do |result|
+        "#{result[:count].to_s.rjust(7)} #{result[:table]}"
+      end
+    end
+    def self.query
+      [ AuthorName,
+        Author,
+        Bolton::Match,
+        Bolton::Reference,
+        Citation,
+        Journal,
+        Place,
+        Protonym,
+        Publisher,
+        ReferenceAuthorName,
+        ReferenceDocument,
+        Reference,
+        SpeciesGroupForwardRef,
+        Taxon,
+        TaxonomicHistoryItem,
+        User,
+      ].map do |table|
+        {table: table.to_s, count: table.count}
+      end
+    end
+  end
+
+  class ReferenceDocumentCounts < Statistic
+    def self.display
+      return
+      Progress.puts "Reference documents"
+      results = query
+      Progress.puts "  #{results[:references_count].to_s.rjust(7)} references"
+      Progress.puts "  #{results[:reference_documents_count].to_s.rjust(7)} reference documents"
+      Progress.puts "  #{results[:references_with_documents_count].to_s.rjust(7)} references with documents"
+      for result in results[:locations]
+        Progress.puts "  #{result.second.to_s.rjust(7)} #{result.first}"
+      end
+      Progress.puts
+    end
+    def self.query
      value = {
       references_count: Reference.non_missing.count,
       reference_documents_count: ReferenceDocument.count,
       references_with_documents_count: Reference.find_by_sql('select count(distinct `references`.id) as count from `references` join reference_documents on `references`.id = reference_documents.reference_id').first[:count],
     }
-
     locations = {antcat: 0, antbase: 0, ip_128_146_250_117: 0, other: 0}
     for reference in Reference.non_missing do
       next unless reference.document
@@ -168,7 +120,71 @@ class Vlad
       end
     end
     value[:locations] = locations
-    {reference_documents: value}
+    value
+    end
+  end
+
+  ##############################################################################
+
+  class GeneraWithTribesButNotSubfamilies < Problem
+    def self.display
+      display_results_section query do |genus|
+        "#{genus.name} (tribe #{genus.tribe.name})"
+      end
+    end
+    def self.query
+      Genus.where "tribe_id IS NOT NULL AND subfamily_id IS NULL"
+    end
+  end
+
+  class TaxaWithMismatchedHomonymAndStatus < Problem
+    def self.display
+      display_results_section query do |taxon|
+        "#{taxon.name} (#{taxon.status}) #{taxon.homonym_replaced_by_id}"
+      end
+    end
+    def self.query
+      Taxon.where "(status = 'homonym') = (homonym_replaced_by_id IS NULL)"
+    end
+  end
+
+  class SubspeciesWithoutSpecies < Problem
+    def self.display
+      display_results_section query, reverse_order: true do |taxon|
+        "#{taxon.name} (#{taxon.status})"
+      end
+    end
+    def self.query
+      Subspecies.where "species_id IS NULL"
+    end
+  end
+
+  class TaxaWithMismatchedSynonymAndStatus < Problem
+    def self.display
+      display_results_section query, reverse_order: true do |taxon|
+        "#{taxon.name} (#{taxon.status}) #{taxon.synonym_of_id}"
+      end
+    end
+    def self.query
+      Taxon.where "(status = 'synonym') = (synonym_of_id IS NULL)"
+    end
+  end
+
+  class DuplicateValids < Problem
+    def self.display
+      display_results_section query do |duplicate|
+        "#{duplicate[:name]} #{duplicate[:count]}"
+      end
+    end
+    def self.query
+     Taxon.select('names.name AS name, COUNT(names.name) AS count').
+           with_names.
+           group('names.name', :genus_id).
+           where(status: 'valid').
+           having('COUNT(names.name) > 1').
+           all.
+           map {|row| {name: row['name'], count: row['count']}}
+    end
   end
 
 end
