@@ -131,6 +131,8 @@ class SpeciesGroupTaxon < Taxon
     for item in history or []
       if item[:subspecies]
         status = {status: 'valid'}
+      elsif item[:matched_text] =~ /Unnecessary replacement.*?hence junior synonym of <i>(\w+)<\/i>/
+        status = {status: 'synonym', parent_epithet: $1}
       elsif item[:synonym_ofs]
         status = {status: 'synonym', parent_epithet: item[:synonym_ofs].first[:species_epithet]}
       elsif item_revived_from_synonymy?(item)
@@ -145,13 +147,21 @@ class SpeciesGroupTaxon < Taxon
         status = {status: 'unavailable'}
       elsif item[:nomen_nudum]
         status = {status: 'nomen nudum'}
-      elsif item_text_matches?(item, /unidentifiable/i)
+      elsif item_unidentifiable?(item)
         status = {status: 'unidentifiable'}
       elsif item_excluded?(item)
         status = {status: 'excluded'}
       end
     end
     status
+  end
+
+  def self.item_text_matches? item, regexp
+    item[:matched_text] =~ regexp
+  end
+
+  def self.item_unidentifiable? item
+    item[:unidentifiable] || item_text_matches?(item, /unidentifiable/i)
   end
 
   def self.item_excluded? item
@@ -173,13 +183,6 @@ class SpeciesGroupTaxon < Taxon
 
   def self.item_first_available_replacement? item
     item_text_matches? item, /[fF]irst available replacement/
-  end
-
-  def self.item_text_matches? item, regexp
-    for text in item[:text] or []
-      return true if text[:matched_text] =~ regexp
-    end
-    false
   end
 
   class NoProtonymError < StandardError; end
