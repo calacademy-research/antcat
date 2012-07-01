@@ -47,6 +47,12 @@ describe Importers::Bolton::Catalog::Species::History do
         {homonym_of: {primary_or_secondary: :primary, genus_name: 'Formice'}},
       ]).status.should == 'valid'
     end
+    it "should stop on 'Replacement name for' and make it valid" do
+      @klass.new([
+        {text: [], matched_text: ' Replacement name for <i>Acromyrmex gallardoi</i> Santschi, 1936d: 411.'},
+        {text: [], matched_text: '[Junior secondary homonym of <i>Sericomyrmex gallardoi</i> Santschi, 1920d: 379.]'},
+      ]).status.should == 'valid'
+    end
     it "should overrule synonymy with raisal to species with revival from synonymy" do
       @klass.new([
         {synonym_ofs: [{species_epithet: 'ferox'}]},
