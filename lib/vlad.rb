@@ -5,7 +5,7 @@ class Vlad
     Progress.new_init show_progress: show_progress
     Progress.puts
 
-    #Statistic.descendants.each &:display
+    Statistic.descendants.each &:display
     Problem.descendants.each &:display
   end
 
