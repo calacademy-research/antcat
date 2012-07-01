@@ -41,6 +41,7 @@ class Name < ActiveRecord::Base
 
   def self.make_epithet_set epithet
     epithets = [epithet]
+    epithets.concat frequent_misspellings(epithet)
     epithets.concat first_declension_nominative_singular(epithet)
     epithets.concat first_declension_genitive_singular(epithet)
     epithets.concat third_declension_nominative_singular(epithet)
@@ -68,6 +69,10 @@ class Name < ActiveRecord::Base
     epithets.concat more_epithets
 
     epithets.uniq
+  end
+
+  def self.frequent_misspellings epithet
+    epithet == 'alfaroi' ? ['alfari'] : []
   end
 
   def self.decline epithet, stem, endings
