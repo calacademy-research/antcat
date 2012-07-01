@@ -31,16 +31,15 @@ class Importers::Bolton::Catalog::Species::History
         return true
       else
         item = peek_next_item
-        if item[:matched_text] =~ /First replacement name: <i>(\w+)<\/i>/
+        if item && item[:matched_text] =~ /First replacement name: <i>(\w+)<\/i>/
           @epithet = $1
           get_next_item
         end
         @status = 'homonym'
         return true
       end
-    elsif @item[:matched_text] =~ /Junior primary homonym of <i>(\w+)<\/i>/i
+    elsif @item[:matched_text] =~ /homonym/i
       @status = 'homonym'
-      @epithet = $1
       return true
     end
   end
