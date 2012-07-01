@@ -44,6 +44,12 @@ describe Name do
       end
     end
 
+    describe "Names frequently misspelled" do
+      it "should translate them, but just one time" do
+        Name.make_epithet_set('alfaroi').should == ['alfaroi', 'alfari']
+      end
+    end
+
   end
 
 end
