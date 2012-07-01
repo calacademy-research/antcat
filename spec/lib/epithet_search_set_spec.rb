@@ -11,7 +11,7 @@ describe EpithetSearchSet do
         EpithetSearchSet.new('equus').epithets.should =~ ['equus', 'equa', 'equum']
         EpithetSearchSet.new('anea').epithets.should =~ ['aneus', 'anea', 'aneum']
         EpithetSearchSet.new('fuscovarius').epithets.should =~ ['fuscovarius', 'fuscovaria', 'fuscovarium']
-        EpithetSearchSet.new('euguniae').epithets.should =~ ['euguniae', 'eugunii']
+        EpithetSearchSet.new('euguniae').epithets.should =~ ['euguniae', 'eugunii', 'euguni']
         EpithetSearchSet.new('eugunii').epithets.should =~ ['eugunii', 'euguniae', 'euguni']
       end
     end
@@ -27,7 +27,7 @@ describe EpithetSearchSet do
     it "should handle -i and -ii" do
       EpithetSearchSet.new('lundii').epithets.should == ['lundii', 'lundiae', 'lundi']
       EpithetSearchSet.new('lundi').epithets.should == ['lundi', 'lundae', 'lundii']
-      EpithetSearchSet.new('lundae').epithets.should == ['lundae', 'lundi']
+      EpithetSearchSet.new('lundae').epithets.should == ['lundae', 'lundi', 'lundii']
     end
     it "should handle -e- and -ae-" do
       EpithetSearchSet.new('levis').epithets.should == ['levis', 'leve', 'laevis', 'laeve']
@@ -39,8 +39,10 @@ describe EpithetSearchSet do
   end
 
   describe "Names frequently misspelled" do
-    it "should translate them, but just one time" do
-      EpithetSearchSet.new('alfaroi').epithets.should == ['alfaroi', 'alfari']
+    it "should translate them, but just one time and in only one direction" do
+      EpithetSearchSet.new('alfaroi').epithets.should == ['alfaroi', 'alfari', 'alfarae', 'alfarii']
+      EpithetSearchSet.new('alfari').epithets.should == ['alfari', 'alfarae', 'alfarii']
+      EpithetSearchSet.new('columbica').epithets.should == ['columbica', 'colombica', 'columbicus', 'columbicum', 'colombicus', 'colombicum']
     end
   end
 
