@@ -73,6 +73,19 @@ describe Importers::Bolton::Catalog::Species::Importer do
     Species.find_by_name('Acanthomyrmex dyak').should be_synonym_of Species.find_by_name 'Acanthomyrmex ferox'
   end
 
+  #it "should recognize a homonym and link to it" do
+    #create_genus 'Acropyga', subfamily: nil, tribe: nil
+    #contents = make_contents %{
+      #<p><i>ACROPYGA</i></p>
+      #<p><i>silvestrii</i>. <i>Acropyga (Rhizomyrma) silvestrii</i> Wheeler, W.M. 1927h: 100. [Junior primary homonym of <i>silvestrii</i> Emery, below.] Replacement name: <i>indosinensis</i> Wheeler, W.M. 1935c: 72.
+      #<p><i>silvestrii</i>. <i>Acropyga silvestrii</i> Emery, 1915g: 21. 11 (w.) ETHIOPIA.</p>
+#</p>    }
+    #@importer.import_html contents
+    #junior_homonym = Taxon.find_by_name 'Acropyga silvestrii'
+    #senior_homonym = Taxon.find_by_name 'Acropyga silvestrii'
+    #junior_homonym.homonym_replaced_by?(senior_homonym).should be
+  #end
+
   def make_contents content
     %{
       <html> <head> <title>CATALOGUE OF SPECIES-GROUP TAXA</title> </head>

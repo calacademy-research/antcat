@@ -137,7 +137,7 @@ class Vlad
     end
   end
 
-  class TaxaWithMismatchedHomonymAndStatus < Problem
+  class TaxaWithMismatchedHomonymAndStatus #< Problem
     def self.display
       display_results_section query do |taxon|
         "#{taxon.name} (#{taxon.status}) #{taxon.homonym_replaced_by_id}"
