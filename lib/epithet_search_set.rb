@@ -3,17 +3,59 @@ class EpithetSearchSet
   attr_reader :epithets
 
   def initialize epithet
-    @epithet = epithet
-    @epithets = [@epithet]
+    epithets = [epithet]
+    epithets = frequent_misspellings epithets
+    epithets = declensions epithets
+    epithets = orthographic epithets
+    epithets = deemed_identical epithets
+    @epithets = epithets.uniq
+  end
 
-    frequent_misspellings
-    first_declension_nominative_singular
-    first_declension_genitive_singular
-    third_declension_nominative_singular
-    make_deemed_identical_set
+  def frequent_misspellings epithets
+    epithets.concat(epithets.inject([]) do |epithets, epithet|
+      epithets << 'alfari' if epithet == 'alfaroi'
+      epithets << epithet.gsub(/^columbic/, 'colombic') if epithet =~ /^columbic/
+      epithets
+    end).uniq
+  end
 
-    more_epithets = @epithets.inject([]) do |epithets, epithet|
-      consonants = '(?:[bcdfghjklmnprstvxyz][ei]?|qu)'
+  def declensions epithets
+    epithets.concat(epithets.inject([]) do |epithets, epithet|
+      epithets << epithet
+      epithets.concat first_declension_nominative_singular epithet
+      epithets.concat first_declension_genitive_singular epithet
+      epithets.concat third_declension_nominative_singular epithet
+      epithets
+    end).uniq
+  end
+
+  def first_declension_nominative_singular epithet
+    decline epithet, "(?:[#{CONSONANTS}][ei]?|qu)", ['us', 'a', 'um']
+  end
+
+  def first_declension_genitive_singular epithet
+    decline epithet, "[#{CONSONANTS}]i?", ['i', 'ae']
+  end
+
+  def third_declension_nominative_singular epithet
+    decline epithet, "[#{CONSONANTS}]", ['e', 'is']
+  end
+
+  def decline epithet, stem, endings
+    endings_regexp = '(' + endings.join('|') + ')'
+    return [] unless epithet =~ /#{stem}#{endings_regexp}$/
+    endings.map {|ending| epithet.gsub(/(#{stem})#{endings_regexp}$/, "\\1#{ending}")}
+  end
+
+  def orthographic epithets
+    epithets = ae_and_e epithets
+    epithets.concat p_and_ph epithets
+    epithets.uniq
+  end
+
+  def ae_and_e epithets
+    epithets.concat(epithets.inject([]) do |epithets, epithet|
+      consonants = "(?:[#{CONSONANTS}][ei]?|qu)"
       epithets << epithet.gsub(/(#{consonants})e(#{consonants})/) do |string|
         if ['ter', 'del'].include?(string)
           string
@@ -24,56 +66,42 @@ class EpithetSearchSet
       epithets << epithet.gsub(/(#{consonants})ae(#{consonants})/) do |string|
         $1 + 'e' + $2
       end
-    end
-    @epithets.concat more_epithets
+      epithets
+    end).uniq
+  end
 
-    more_epithets = @epithets.inject([]) do |epithets, epithet|
+  def p_and_ph epithets
+    epithets.concat(epithets.inject([]) do |epithets, epithet|
       epithets << epithet.gsub(/ph/, 'p')
       epithets << epithet.gsub(/p([^h])/, 'ph\1')
-    end
-    @epithets.concat more_epithets
-
-    @epithets = @epithets.uniq
+      epithets
+    end).uniq
   end
 
-  def frequent_misspellings
-    @epithets.concat @epithet == 'alfaroi' ? ['alfari'] : []
+  def deemed_identical epithets
+    lll('start'){%q{epithets}}
+    v = epithets.concat(epithets.inject([]) do |epithets, epithet|
+      if ends_with epithet, 'i'
+        epithets << replace_ending(epithet, 'i', 'ii')
+      elsif ends_with epithet, 'ii'
+        epithets << replace_ending(epithet, 'ii', 'i')
+      end
+      epithets
+    end).uniq
+    lll('end'){%q{epithets}}
   end
 
-  def decline stem, endings
-    endings_regexp = '(' + endings.join('|') + ')'
-    return unless @epithet =~ /#{stem}#{endings_regexp}$/
-    for ending in endings
-      @epithets << @epithet.gsub(/(#{stem})#{endings_regexp}$/, "\\1#{ending}")
-    end
+  def ends_with epithet, ending
+    epithet =~ /[#{CONSONANTS}]#{ending}$/
   end
 
-  def first_declension_nominative_singular
-    decline '(?:[bcdfghjklmnprstvxyz][ei]?|qu)', ['us', 'a', 'um']
+  def replace_ending epithet, old_ending, new_ending
+    epithet.gsub /([#{CONSONANTS}])#{old_ending}$/, "\\1#{new_ending}"
   end
 
-  def first_declension_genitive_singular
-    decline '[bcdfghjklmnprstvxyz]i?', ['i', 'ae']
+  def replace_stem epithet, new_stem, stem = "[#{CONSONANTS}]"
+    epithet.gsub /^#{stem}/, new_stem
   end
 
-  def third_declension_nominative_singular
-    decline '[bcdfghjklmnprstvxyz]', ['e', 'is']
-  end
-
-  def make_deemed_identical_set
-    if has_ending 'i'
-      @epithets << replace_ending('i', 'ii')
-    elsif has_ending 'ii'
-      @epithets << replace_ending('ii', 'i')
-    end
-  end
-
-  def has_ending ending, stem = '[bcdfghjklmnprstvxyz]'
-    @epithet =~ /#{stem}#{ending}$/
-  end
-
-  def replace_ending old_ending, new_ending, stem = '[bcdfghjklmnprstvxyz]'
-    @epithet.gsub /(#{stem})#{old_ending}$/, "\\1#{new_ending}"
-  end
-
+  CONSONANTS = 'bcdfghjklmnprstvxyz'
 end
