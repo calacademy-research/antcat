@@ -136,7 +136,7 @@ describe Species do
               subspecies_epithet: 'malandanus',
             }]
           },
-          raw_history: [{text: [{matched_text:'Raised to species and senior synonym of', delimiter:' '}]}]
+          raw_history: [{text: [], matched_text:'Raised to species and senior synonym of', delimiter:' '}]
         )
         taxon.should be_kind_of Species
       end
