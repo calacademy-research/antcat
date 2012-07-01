@@ -18,12 +18,12 @@ describe Formatters::IndexFormatter do
       it "should format a genus name in the protonym" do
         protonym = FactoryGirl.create :protonym, name: FactoryGirl.create(:genus_name, name: 'Atari')
         @formatter.format_protonym_name(protonym).should ==
-          '<span class="genus name taxon">Atari</span>'
+          '<span class="genus name taxon"><i>Atari</i></span>'
       end
       it "should format a fossil" do
         protonym = FactoryGirl.create :protonym, name: FactoryGirl.create(:genus_name, name: 'Atari'), fossil: true
         @formatter.format_protonym_name(protonym).should ==
-          '<span class="genus name taxon">&dagger;Atari</span>'
+          '<span class="genus name taxon">&dagger;<i>Atari</i></span>'
       end
     end
 
