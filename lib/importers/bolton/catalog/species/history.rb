@@ -38,7 +38,7 @@ class Importers::Bolton::Catalog::Species::History
         @status = 'homonym'
         return true
       end
-    elsif @item[:matched_text] =~ /homonym/i
+    elsif @item[:matched_text] =~ /\bhomonym\b/i
       @status = 'homonym'
       return true
     end
