@@ -18,9 +18,7 @@ class Name < ActiveRecord::Base
   def self.import_data data
     return unless name = get_name(data)
     attributes = make_attributes name, data
-    existing_name = Name.find_by_name attributes[:name]
-    return existing_name if existing_name
-    create! attributes
+    Name.find_by_name(attributes[:name]) or create!(attributes)
   end
 
   def self.make_attributes name, data
