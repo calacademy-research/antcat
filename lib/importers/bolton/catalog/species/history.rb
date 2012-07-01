@@ -38,8 +38,9 @@ class Importers::Bolton::Catalog::Species::History
         @status = 'homonym'
         return true
       end
-    elsif text_matches? @item, /homonym/i
+    elsif @item[:matched_text] =~ /Junior primary homonym of <i>(\w+)<\/i>/i
       @status = 'homonym'
+      @epithet = $1
       return true
     end
   end
