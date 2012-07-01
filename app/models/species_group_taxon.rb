@@ -65,7 +65,7 @@ class SpeciesGroupTaxon < Taxon
   end
 
   def self.item_raised_to_species? item
-    item[:raised_to_species] or item_text_matches?(item, /Raised to species/)
+    item[:raised_to_species] or item[:matched_text] =~ /Raised to species/
   end
 
   def self.get_taxon_class_from_protonym protonym
@@ -110,7 +110,12 @@ class SpeciesGroupTaxon < Taxon
 
   def check_synonym_status status_record
     return unless status_record[:status] == 'synonym'
-    create_forward_ref_to_senior_synonym status_record[:parent_epithet]
+    create_forward_ref_to_senior_synonym status_record[:epithet]
+  end
+
+  def get_status_from_history history
+    history = Importers::Bolton::Catalog::Species::History.new(history)
+    {status: history.status, epithet: history.epithet}
   end
 
   def create_forward_ref_to_senior_synonym epithet
