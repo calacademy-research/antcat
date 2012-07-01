@@ -48,7 +48,7 @@ module Formatters::IndexFormatter
     classes << 'species' if protonym.name.rank == 'species'
     classes << 'subfamily' if protonym.name.rank == 'family_or_subfamily'
     content_tag :span, class: classes.sort.join(' ') do
-      name_label protonym.name.to_s, protonym.fossil
+      name_label protonym.name.to_html.html_safe, protonym.fossil
     end
   end
 
