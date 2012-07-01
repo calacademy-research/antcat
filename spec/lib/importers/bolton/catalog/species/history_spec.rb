@@ -86,7 +86,7 @@ describe Importers::Bolton::Catalog::Species::History do
   end
 
   it "should handle 'homonym' in the text" do
-    @klass.new([{text: [], matched_text: '[Junior secondary homonym of <i>Cerapachys cooperi</i> Arnold, 1915: 14.]'},]).status.should == 'homonym'
+    @klass.new([{text: [], matched_text: '[Junior secondary homonym of <i>Cerapachys cooperi</i> Arnold, 1915: 14.]'}]).status.should == 'homonym'
   end
 
   it "should handle an unresolved homonym even if it's a current subspecies" do
