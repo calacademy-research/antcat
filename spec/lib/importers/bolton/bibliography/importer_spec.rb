@@ -248,13 +248,13 @@ Dorow, W.H.O. & Kohout, R.J. 1995. Paleogene ants of the genus <i style="mso-bid
      reference.note.should == 'English translation of Paleontologicheskii Zhurnal 2003 (No. 1): 40-49'
    end
 
- end
+  end
 
- it 'should skip over a note' do
-   contents = make_contents %s{Note: in publications the following name appears as either Dubovikoff or Dubovikov; the latter is used here throughout.  }
-   Importers::Bolton::Bibliography::Importer.should_not_receive(:parse)
-   @bibliography.import_html contents
- end
+  it 'should skip over a note' do
+    contents = make_contents %s{Note: in publications the following name appears as either Dubovikoff or Dubovikov; the latter is used here throughout.  }
+    Importers::Bolton::Bibliography::Importer.should_not_receive(:parse)
+    @bibliography.import_html contents
+  end
 
   describe 'importing book references' do
     it "should import a book reference" do
