@@ -28,7 +28,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
       :attributes => attributes
     )
     info_message = "Created #{genus.inspect}"
-    info_message << " synonym of #{parsing_synonym.name}" if parsing_synonym
+    info_message << " synonym of #{parsing_synonym.inspect}" if parsing_synonym
     Progress.info info_message
 
     # look for subgenera before...
@@ -37,6 +37,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     # ...and after looking for synonyms
     parse_subgenera genus: genus
     parse_homonym_replaced_by_genus genus
+    parse_homonym_and_synonym_of_genus genus
     parse_genus_references genus
 
     genus
@@ -95,6 +96,17 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
   ################################################
   def parse_synonyms_of_genus genus
     return unless @type == :junior_synonyms_of_genus_header
+    Progress.method
+
+    parse_next_line
+    attributes = {synonym_of: genus, status: 'synonym', subfamily: genus.subfamily, tribe: genus.tribe}
+
+    while parse_genus attributes, header: :genus_headline; end
+  end
+
+  ################################################
+  def parse_homonym_and_synonym_of_genus genus
+    return unless @type == :junior_homonym_and_junior_synonym_of_genus_header
     Progress.method
 
     parse_next_line

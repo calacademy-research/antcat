@@ -354,6 +354,12 @@ describe Importers::Bolton::Catalog::Subfamily::Grammar do
     end
   end
 
+  describe "Junior homonym and synonym header" do
+    it "should recognize it" do
+      @grammar.parse(%{Junior homonym and junior synonym of *<i>CAMPONOTITES</i>}).value_with_matched_text_removed.should == {:type => :junior_homonym_and_junior_synonym_of_genus_header, title: 'Junior homonym and junior synonym of *<i>CAMPONOTITES</i>'}
+    end
+  end
+
   describe "Genus references header" do
     it "should handle a regular header" do
       @grammar.parse(%{Genus <i>Sphinctomyrmex</i> references}).value_with_matched_text_removed.should == {type: :genus_references_header, genus_name: 'Sphinctomyrmex', title: 'Genus <i>Sphinctomyrmex</i> references'}

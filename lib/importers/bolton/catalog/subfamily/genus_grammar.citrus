@@ -11,6 +11,7 @@ grammar Importers::Bolton::Catalog::Subfamily::GenusGrammar
     | genera_incertae_sedis_in_poneroid_subfamilies_header
     | genera_incertae_sedis_header
     | junior_synonyms_of_genus_header
+    | junior_homonym_and_junior_synonym_of_genus_header
     | genus_references_see_under
     | genus_references_header
   end
@@ -143,6 +144,12 @@ grammar Importers::Bolton::Catalog::Subfamily::GenusGrammar
   rule junior_synonyms_of_genus_header
     (/Junior synonyms?/ ' of ' fossil_flag? italic uppercase_word close_tag /.*/) {
       {:type => :junior_synonyms_of_genus_header, title: to_s}
+    }
+  end
+
+  rule junior_homonym_and_junior_synonym_of_genus_header
+    ('Junior homonym and junior synonym of ' fossil_flag? italic uppercase_word close_tag /.*/) {
+      {:type => :junior_homonym_and_junior_synonym_of_genus_header, title: to_s}
     }
   end
 
