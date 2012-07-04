@@ -26,7 +26,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
       note:               headline[:note],
       taxonomic_history:  [Importers::Bolton::Catalog::TextToTaxt.convert(taxonomic_history[:items])]
     )
-    Progress.info "Created #{family.name}"
+    Progress.info "Created #{family.inspect}"
   end
 
   ######################################################

@@ -17,7 +17,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
       type_genus: headline[:type_genus],
       taxonomic_history: history,
     )
-    Progress.info "Created #{tribe.name}"
+    Progress.info "Created #{tribe.inspect}"
 
     # genera lists can appear before or after synonyms
     parse_genera_lists
@@ -53,7 +53,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
       type_genus: headline[:type_genus],
       taxonomic_history: history,
     )
-    Progress.info "Created #{tribe.name}: synonym for #{senior_synonym.name}"
+    Progress.info "Created #{tribe.inspect}: synonym for #{senior_synonym.inspect}"
     true
   end
 
