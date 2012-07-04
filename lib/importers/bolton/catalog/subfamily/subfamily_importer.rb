@@ -33,8 +33,8 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     parse_genera subfamily: subfamily
     parse_tribes_incertae_sedis subfamily
     parse_genera_incertae_sedis 'subfamily', subfamily: subfamily
-    parse_collective_group_names
     parse_genera_of_hong subfamily
+    parse_collective_group_names
   end
 
   def parse_subfamily_child_lists subfamily
@@ -62,8 +62,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     parse_next_line
     consume :collective_group_name_header
     consume :genus_headline
-    consume :taxonomic_history_header
-    consume :texts
+    parse_taxonomic_history
   end
 
   def parse_genera_of_hong subfamily
