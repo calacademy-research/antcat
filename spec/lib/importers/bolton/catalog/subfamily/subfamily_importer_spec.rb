@@ -80,6 +80,12 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
         <p>Taxonomic history</p>
         <p>History</p>
 
+        <p>Collective group name in ANEURETINAE</p>
+        <p>*<i>MYRMECIITES</i></p>
+        <p>*<i>Myrmeciites </i>Archibald, Cover &amp; Moreau, 2006: 500. [Collective group name.]</p>
+        <p>Taxonomic history</p>
+        <p>*<i>Myrmeciites incertae sedis</i> in Hymenoptera: <i>sensu</i> Baroni Urbani, 2008: 7.</p>
+
         <p>Genera of Hong (2002), <i>incertae sedis</i> in ANEURETINAE</p>
         <p>Genus *<i>WILSONIA</i></p>
         <p>*<i>Wilsonia</i> Hong, 2002: 608. Type-species: *<i>Wilsonia megagastrosa</i>, by original designation. </p>
