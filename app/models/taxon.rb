@@ -90,7 +90,9 @@ class Taxon < ActiveRecord::Base
   end
 
   def inspect
-    "#{id} #{name} (#{status} #{type.downcase})"
+    string = "#{name} (#{status} #{type.downcase} #{id})"
+    string << " incertae sedis in #{incertae_sedis_in}" if incertae_sedis_in.present?
+    string
   end
 
   ###############################################
