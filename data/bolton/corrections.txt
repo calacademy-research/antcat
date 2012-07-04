@@ -3,6 +3,7 @@
   03. FORMICOMORPHS     Add a space between period and "Type-species"
                         To make parsing easier, inserted "(pending)" where online citations
                           have no pagination (Munoz-Lopez 2011)
+  04. MYRMECIOMORPHS    Add "Taxonomic history" header to Myrmeciites
   08. MYRMICOMORPHS 2   Fix italicization of "Genus OCYMYRMEX" to put italics inside red
   09. PONEROMORPHS      Remove italicized space in Opamyrma
   NGC-Spcam1            Add period in ' var '
