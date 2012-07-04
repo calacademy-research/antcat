@@ -37,4 +37,13 @@ class Tribe < Taxon
     end
   end
 
+  def inspect
+    string = super
+    if subfamily
+      string << ", #{subfamily.name} #{subfamily.id}"
+      string << " #{subfamily.status}" if subfamily.invalid?
+    end
+    string
+  end
+
 end

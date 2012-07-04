@@ -90,7 +90,7 @@ class Taxon < ActiveRecord::Base
   end
 
   def inspect
-    "#{id} #{name} (#{status})"
+    "#{id} #{name} (#{status} #{type.downcase})"
   end
 
   ###############################################
