@@ -34,7 +34,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
       :taxonomic_history => history,
       :attributes => attributes
     )
-    info_message = "Created #{subgenus.name}"
+    info_message = "Created #{subgenus.inspect}"
     info_message << " synonym of #{parsing_synonym.name}" if parsing_synonym
     Progress.info info_message
 

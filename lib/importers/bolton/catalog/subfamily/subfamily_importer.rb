@@ -19,7 +19,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
       type_genus: headline[:type_genus],
       taxonomic_history: history,
     )
-    Progress.info "Created #{subfamily.name}"
+    Progress.info "Created #{subfamily.inspect}"
 
     parse_subfamily_child_lists subfamily
     parse_subfamily_reference_sections subfamily
