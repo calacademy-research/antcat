@@ -75,7 +75,7 @@ module Formatters::IndexFormatter
   def format_headline_type_name taxon
     rank = taxon.type_name.rank
     rank = 'genus' if rank == 'subgenus'
-    content_tag :span, taxon.type_name.to_s.html_safe, class: "#{rank} taxon"
+    content_tag :span, taxon.type_name.to_html.html_safe, class: "#{rank} taxon"
   end
   
   def format_headline_type_taxt taxt, user
