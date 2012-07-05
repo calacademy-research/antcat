@@ -295,6 +295,9 @@ describe Importers::Bolton::Catalog::Grammar do
     it "should handle 'page?'" do
       @grammar.parse('page?', :root => :ref_pages).value_with_matched_text_removed.should == 'page?'
     end
+    it "should handle 'pagination?'" do
+      @grammar.parse('pagination?', :root => :ref_pages).value_with_matched_text_removed.should == 'pagination?'
+    end
 
     describe "and years" do
       it "can consider a year a page number instead of a citation_year" do

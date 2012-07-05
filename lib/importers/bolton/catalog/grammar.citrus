@@ -329,7 +329,7 @@ grammar Importers::Bolton::Catalog::Grammar
   end
 
   rule ref_page_section_type
-    /figs?\./ | /pls?./ | 'no.' | /page\??/
+    /figs?\./ | /pls?./ | 'no.' | /page\??/ | /pagination\?/
   end
 
   rule ref_page_range
