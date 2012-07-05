@@ -99,12 +99,17 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
         acanthomyops.genus.should == Genus.find_by_name('Lasius')
       end
 
-      it "should skip this particular record" do
+      it "should handle this second version of Ancylognathus" do
         @importer.import_html make_contents %{
+          <p>Genus <i>ANCYLOGNATHUS</i></p>
+          <p><i>Ancylognathus</i> Fabricius, 1804: 415.</p>
+
           <p>Genus <i>ECITON</i></p>
           <p><i>Eciton</i> Fabricius, 1804: 415.</p>
+
           <p>Junior synonyms of <i>ECITON</i></p>
           <p><i>Ancylognathus</i> Lund, 1831a: 121, 135. Type-species: <i>Ancylognathus lugubris</i>, <i>nomen nudum</i>.</p>
+          <p><i>Camptognatha</i> Gray, G.R. 1832: 516.  Type-species: <i>Camptognatha testacea</i>, by monotypy. </p>
         }
       end
 

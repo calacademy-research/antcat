@@ -19,6 +19,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     history = parse_taxonomic_history
 
     if attributes[:status] == 'synonym' and name == 'Ancylognathus'
+      genus = Genus.find_by_name 'Ancylognathus'
       Progress.info "Skipping Ancylognathus 'synonym'"
     else
       genus = Genus.import(
@@ -42,9 +43,9 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
       parse_homonym_replaced_by_genus genus
       parse_homonym_and_synonym_of_genus genus
       parse_genus_references genus
-
-      genus
     end
+
+    genus
 
   end
 
@@ -94,7 +95,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     Progress.method
     parse_genus({
       status: 'homonym', homonym_replaced_by: replaced_by_genus,
-      subfamily: replaced_by_genus.try(:subfamily), tribe: replaced_by_genus.try(:tribe)},
+      subfamily: replaced_by_genus.subfamily, tribe: replaced_by_genus.tribe},
       header: :homonym_replaced_by_genus_header)
   end
 
@@ -115,7 +116,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     Progress.method
 
     parse_next_line
-    attributes = {synonym_of: genus, status: 'synonym', subfamily: genus.try(:subfamily), tribe: genus.try(:tribe)}
+    attributes = {synonym_of: genus, status: 'synonym', subfamily: genus.subfamily, tribe: genus.tribe}
 
     while parse_genus attributes, header: :genus_headline; end
   end
