@@ -13,14 +13,16 @@ class GenusGroupTaxon < Taxon
 
   def inspect
     string = super
+    string << ' (' if subfamily || tribe
     if subfamily
-      string << ", #{subfamily.name} #{subfamily.id}"
+      string << " #{subfamily.name} #{subfamily.id}"
       string << " #{subfamily.status}" if subfamily.invalid?
     end
     if tribe
-      string << ", #{tribe.name} #{tribe.id}"
+      string << " #{tribe.name} #{tribe.id}"
       string << " #{tribe.status}" if tribe.invalid?
     end
+    string << ')' if subfamily || tribe
     string
   end
 
