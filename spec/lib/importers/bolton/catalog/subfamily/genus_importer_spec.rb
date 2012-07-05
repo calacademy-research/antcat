@@ -98,6 +98,16 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
         acanthomyops = Taxon.find_by_epithet('Acanthomyops').first
         acanthomyops.genus.should == Genus.find_by_name('Lasius')
       end
+
+      it "should skip this particular record" do
+        @importer.import_html make_contents %{
+          <p>Genus <i>ECITON</i></p>
+          <p><i>Eciton</i> Fabricius, 1804: 415.</p>
+          <p>Junior synonyms of <i>ECITON</i></p>
+          <p><i>Ancylognathus</i> Lund, 1831a: 121, 135. Type-species: <i>Ancylognathus lugubris</i>, <i>nomen nudum</i>.</p>
+        }
+      end
+
     end
   end
 

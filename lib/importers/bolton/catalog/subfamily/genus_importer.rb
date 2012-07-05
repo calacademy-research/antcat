@@ -18,29 +18,34 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
 
     history = parse_taxonomic_history
 
-    genus = Genus.import(
-      :genus_name => name,
-      :fossil => fossil,
-      :protonym => headline[:protonym],
-      :note => headline[:note].try(:[], :text),
-      :type_species => headline[:type_species],
-      :taxonomic_history => history,
-      :attributes => attributes
-    )
-    info_message = "Created #{genus.inspect}"
-    info_message << " synonym of #{parsing_synonym.inspect}" if parsing_synonym
-    Progress.info info_message
+    if attributes[:status] == 'synonym' and name == 'Ancylognathus'
+      Progress.info "Skipping Ancylognathus 'synonym'"
+    else
+      genus = Genus.import(
+        :genus_name => name,
+        :fossil => fossil,
+        :protonym => headline[:protonym],
+        :note => headline[:note].try(:[], :text),
+        :type_species => headline[:type_species],
+        :taxonomic_history => history,
+        :attributes => attributes
+      )
+      info_message = "Created #{genus.inspect}"
+      info_message << " synonym of #{parsing_synonym.inspect}" if parsing_synonym
+      Progress.info info_message
 
-    # look for subgenera before...
-    parse_subgenera genus: genus
-    parse_synonyms_of_genus genus
-    # ...and after looking for synonyms
-    parse_subgenera genus: genus
-    parse_homonym_replaced_by_genus genus
-    parse_homonym_and_synonym_of_genus genus
-    parse_genus_references genus
+      # look for subgenera before...
+      parse_subgenera genus: genus
+      parse_synonyms_of_genus genus
+      # ...and after looking for synonyms
+      parse_subgenera genus: genus
+      parse_homonym_replaced_by_genus genus
+      parse_homonym_and_synonym_of_genus genus
+      parse_genus_references genus
 
-    genus
+      genus
+    end
+
   end
 
   def parse_genus_references genus
@@ -89,7 +94,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     Progress.method
     parse_genus({
       status: 'homonym', homonym_replaced_by: replaced_by_genus,
-      subfamily: replaced_by_genus.subfamily, tribe: replaced_by_genus.tribe},
+      subfamily: replaced_by_genus.try(:subfamily), tribe: replaced_by_genus.try(:tribe)},
       header: :homonym_replaced_by_genus_header)
   end
 
@@ -110,7 +115,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     Progress.method
 
     parse_next_line
-    attributes = {synonym_of: genus, status: 'synonym', subfamily: genus.subfamily, tribe: genus.tribe}
+    attributes = {synonym_of: genus, status: 'synonym', subfamily: genus.try(:subfamily), tribe: genus.try(:tribe)}
 
     while parse_genus attributes, header: :genus_headline; end
   end
