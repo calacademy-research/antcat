@@ -34,12 +34,12 @@ describe Formatters::IndexFormatter do
       it "should show the type taxon" do
         genus = create_genus 'Atta', type_name: @species_name
         @formatter.format_headline_type(genus, nil).should ==
-%{<span class="type">Type-species: <span class="species taxon">Atta major</span>.</span>}
+%{<span class="type">Type-species: <span class="species taxon"><i>Atta major</i></span>.</span>}
       end
       it "should show the type taxon with extra Taxt" do
         genus = create_genus 'Atta', type_name: @species_name, type_taxt: ', by monotypy'
         @formatter.format_headline_type(genus, nil).should ==
-%{<span class="type">Type-species: <span class="species taxon">Atta major</span>, by monotypy</span>}
+%{<span class="type">Type-species: <span class="species taxon"><i>Atta major</i></span>, by monotypy</span>}
       end
 
     end
