@@ -56,6 +56,10 @@ describe Importers::Bolton::Catalog::Subfamily::Grammar do
         @grammar.parse(%{Collective group name *<i>FORMICIUM</i>}).value_with_matched_text_removed.should ==
           {type: :genus_header}
       end
+      it "should handle an ichnotaxon" do
+        @grammar.parse(%{Ichnogenus *<i>ATTAICHNUS</i>}).value_with_matched_text_removed.should ==
+          {type: :genus_header}
+      end
     end
     describe "Genus nomen nudum header" do
       it "should handle it" do
