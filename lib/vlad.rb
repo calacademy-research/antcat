@@ -79,7 +79,17 @@ class Vlad
         Publisher,
         ReferenceAuthorName,
         ReferenceDocument,
+
+        # UnmissingReference subclasses need to be loaded
+        # for UnmissingReference.count to work
         Reference,
+        ArticleReference,
+        BookReference,
+        NestedReference,
+        UnknownReference,
+        UnmissingReference,
+        MissingReference,
+
         SpeciesGroupForwardRef,
         Taxon,
         TaxonomicHistoryItem,
