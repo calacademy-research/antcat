@@ -57,9 +57,11 @@ grammar Importers::Bolton::Catalog::Subfamily::TribeGrammar
   end
 
   rule ichnogenus_header
+    genus_header
   end
 
   rule ichnogenus_headline
+    genus_headline 
   end
 
   #################################################################################
