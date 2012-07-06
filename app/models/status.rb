@@ -51,6 +51,8 @@ class Status
                                          plural_label: 'unresolved homonyms'),
       Status.new(string: 'nomen nudum',         label: 'nomen nudum',
                                          plural_label: 'nomina nuda'),
+      Status.new(string: 'ichnotaxon',          label: 'ichnotaxon',
+                                         plural_label: 'ichnotaxa'),
     ]
     end
 end

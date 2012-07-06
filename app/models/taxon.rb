@@ -70,6 +70,7 @@ class Taxon < ActiveRecord::Base
   def available?;         !unavailable? end
   def invalid?;           status != 'valid' end
   def unidentifiable?;    status == 'unidentifiable' end
+  def ichnotaxon?;        status == 'ichnotaxon' end
   def unresolved_homonym?;status == 'unresolved homonym' end
   def excluded?;          status == 'excluded' end
   def incertae_sedis_in?  rank; incertae_sedis_in == rank end
