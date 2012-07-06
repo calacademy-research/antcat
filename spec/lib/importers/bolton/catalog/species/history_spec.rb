@@ -121,4 +121,23 @@ describe Importers::Bolton::Catalog::Species::History do
     history.status.should == 'homonym'
     #history.epithet.should == 'menozzii'
   end
+
+  it "shouldn't get confused by this" do
+    history = @klass.new [
+      {text: [
+        {opening_bracket: '['}, {phrase: 'Junior secondary homonym of', delimiter: ' '}, {closing_bracket: ']'},
+       ], matched_text:  ' [Junior secondary homonym of <i>macrocephala</i> Erichson, above.]'
+      },
+      {senior_synonym_ofs:  []},
+      {text:  [
+        {genus_abbreviation: 'C.', species_epithet: 'geralensis', delimiter: ' '},
+        {phrase: 'first available replacement name for', delimiter: ' '},
+        {species_group_epithet: 'macrocephalus', authorship: [{author_names: ['Emery'], matched_text: 'Emery'}], delimiter: ': '},
+        {author_names: ['Shattuck', "McArthur"], year: '1995', pages: '122', matched_text: 'Shattuck & McArthur, 1995: 122'}
+       ], text_suffix: '.', matched_text:  ' <i>C. geralensis</i> first available replacement name for <i>macrocephalus</i> Emery: Shattuck & McArthur, 1995: 122.'
+      },
+    ]
+    history.status.should == 'homonym'
+  end
+
 end

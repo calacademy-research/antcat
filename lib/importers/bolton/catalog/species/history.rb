@@ -86,7 +86,7 @@ class Importers::Bolton::Catalog::Species::History
   end
 
   def check_first_available_replacement
-    if text_matches?(@item, /[fF]irst available replacement/) ||
+    if text_matches?(@item, /(First|hence first) available replacement/) ||
        text_matches?(@item, /Replacement name for/)
       @status = 'valid'
       return true
