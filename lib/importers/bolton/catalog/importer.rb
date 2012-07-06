@@ -163,6 +163,7 @@ class Importers::Bolton::Catalog::Importer
   def normalize string
     fix_ending_punctuation(
     fix_et_al(
+    fix_u_s_a(
     squish_spaces(
     fix_no_space_after_semicolon(
     fix_double_periods(
@@ -174,11 +175,15 @@ class Importers::Bolton::Catalog::Importer
     remove_mismatched_brackets(
     replace_character_entities(
     fix_utf_characters(
-      string)))))))))))))
+      string))))))))))))))
   end
 
   def fix_no_space_after_semicolon string
     string.gsub /;(\S)/, '; \1'
+  end
+
+  def fix_u_s_a string
+    string.gsub /U\. ?S\. ?A./, 'U.S.A.'
   end
 
   def fix_et_al string

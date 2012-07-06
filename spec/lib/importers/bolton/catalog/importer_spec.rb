@@ -250,6 +250,13 @@ describe Importers::Bolton::Catalog::Importer do
       end
     end
 
+    describe "Fixing U. S. A." do
+      it "should work" do
+        @importer.normalize('U. S. A.').should == 'U.S.A.'
+        @importer.normalize('U.S. A.').should == 'U.S.A.'
+      end
+    end
+
     describe "Removing unmatched brackets and parentheses" do
       it "should remove a mismatched brackets" do
         @importer.remove_mismatched_brackets("[a]]").should == '[a]'
