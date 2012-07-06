@@ -47,4 +47,18 @@ class Genus < GenusGroupTaxon
     end
   end
 
+  def self.import_attaichnus subfamily, tribe
+    note = Importers::Bolton::Catalog::Grammar.parse(%{Included ichnospecies: *<i>Attaichnus kuenzelii</i>. [Ichnofossil, purportedly fossil traces of workings attributable to attine ants.]}, root: :texts).value[:texts]
+    import(
+      genus_name: 'Attaichnus',
+      subfamily: subfamily,
+      tribe: tribe,
+      status: 'ichnotaxon',
+      fossil: true,
+      protonym: {genus_name: 'Attaichnus', authorship: [{author_names: ['Laza'], year: '1982', pages: '112', matched_text: 'Laza, 1982: 112'}]},
+      note: note,
+      taxonomic_history: [],
+    )
+  end
+
 end
