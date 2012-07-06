@@ -62,6 +62,18 @@ describe Importers::Bolton::Catalog::Species::Importer do
     dyak.should be_synonym_of ferox
   end
 
+  it "should handle this" do
+    create_genus 'Camponotus'
+    contents = make_contents %{
+      <p><i>CAMPONOTUS</i></p>
+      <p><i>ferox</i>. <i>Acanthomyrmex ferox</i> Moffett, 1986c: 67.w.) INDONESIA.</p>
+      <p><i>macrocephalus</i>. <i>Camponotus macrocephalus</i> Emery, 1894c: 169 (s.) BRAZIL. [Junior secondary homonym of <i>macrocephala</i> Erichson, above.] Emery, 1920c: 36 (q.). Combination in <i>C. (Myrmamblys)</i>: Forel, 1912i: 90; in <i>C. (Pseudocolobopsis)</i>: Emery, 1920b: 259. Senior synonym of <i>geralensis</i>, <i>luederwaldti</i>: Kempf, 1968b: 408. <i>C. geralensis</i> first available replacement name for <i>macrocephalus</i> Emery: Shattuck & McArthur, 1995: 122.</p>
+    }
+    @importer.import_html contents
+    @importer.finish_importing
+    Species.find_by_name('Camponotus macrocephalus').should be_homonym
+  end
+
   it "should link a synonym to its senior when the senior has not already been seen" do
     create_genus 'Acanthomyrmex', subfamily: nil, tribe: nil
     contents = make_contents %{
