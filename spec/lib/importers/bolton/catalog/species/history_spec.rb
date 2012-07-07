@@ -89,11 +89,17 @@ describe Importers::Bolton::Catalog::Species::History do
     @klass.new([{text: [], matched_text: '[Junior secondary homonym of <i>Cerapachys cooperi</i> Arnold, 1915: 14.]'}]).status.should == 'homonym'
   end
 
-  it "should handle an unresolved homonym even if it's a current subspecies" do
-    @klass.new([
-      {homonym_of: {:unresolved=>true}},
-      {currently_subspecies_of: {}},
-    ]).status.should == 'unresolved homonym'
+  describe "Unresolved homonyms" do
+    it "should handle an unresolved homonym even if it's a current subspecies" do
+      @klass.new([
+        {homonym_of: {:unresolved=>true}},
+        {currently_subspecies_of: {}},
+      ]).status.should == 'unresolved homonym'
+    end
+    it "should handle an unresolved homonym in text" do
+      @klass.new([{text: [], matched_text: ' [Unresolved junior primary homonym of <i>longiceps</i> Santschi, above (Bolton, 1995b: 156).]'},
+      ]).status.should == 'unresolved homonym'
+    end
   end
 
   it "should a taxon excluded from Formicidae" do
@@ -130,14 +136,16 @@ describe Importers::Bolton::Catalog::Species::History do
       },
       {senior_synonym_ofs:  []},
       {text:  [
-        {genus_abbreviation: 'C.', species_epithet: 'geralensis', delimiter: ' '},
-        {phrase: 'first available replacement name for', delimiter: ' '},
-        {species_group_epithet: 'macrocephalus', authorship: [{author_names: ['Emery'], matched_text: 'Emery'}], delimiter: ': '},
-        {author_names: ['Shattuck', "McArthur"], year: '1995', pages: '122', matched_text: 'Shattuck & McArthur, 1995: 122'}
-       ], text_suffix: '.', matched_text:  ' <i>C. geralensis</i> first available replacement name for <i>macrocephalus</i> Emery: Shattuck & McArthur, 1995: 122.'
+        {genus_abbreviation: 'C.', species_epithet: 'geralensis'},
+        {phrase: 'oldest synonym and hence first available replacement name'},
+       ], matched_text: ' [<i>clara</i> oldest synonym and hence first available replacement name.]'
       },
     ]
     history.status.should == 'homonym'
+  end
+
+  it "should handle 'un' in the text" do
+    @klass.new([{text: [], matched_text: '[Junior secondary homonym of <i>Cerapachys cooperi</i> Arnold, 1915: 14.]'}]).status.should == 'homonym'
   end
 
 end
