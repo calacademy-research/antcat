@@ -38,9 +38,16 @@ class Importers::Bolton::Catalog::Species::History
         @status = 'homonym'
         return true
       end
+
+    elsif text_matches?(@item, 'Unresolved junior primary homonym')
+      skip_rest_of_history
+      @status = 'unresolved homonym'
+      return true
+
     elsif @item[:matched_text] =~ /\bhomonym\b/i
       @status = 'homonym'
       return true
+
     end
   end
 
@@ -86,6 +93,7 @@ class Importers::Bolton::Catalog::Species::History
   end
 
   def check_first_available_replacement
+    return false if text_matches? @item, 'oldest synonym and hence first available replacement name'
     if text_matches?(@item, /(First|hence first) available replacement/) ||
        text_matches?(@item, /Replacement name for/)
       @status = 'valid'
