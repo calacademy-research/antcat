@@ -39,7 +39,7 @@ module Formatters::IndexFormatter
   def format_locality locality
     return '' unless locality.present?
     locality = locality.upcase.gsub(/\(.+?\)/) {|text| text.titlecase}
-    ' ' << locality << '.'
+    add_period_if_necessary ' ' + locality
   end
 
   def format_protonym_name protonym
