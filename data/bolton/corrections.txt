@@ -7,3 +7,4 @@
   08. MYRMICOMORPHS 2   Fix italicization of "Genus OCYMYRMEX" to put italics inside red
   09. PONEROMORPHS      Remove italicized space in Opamyrma
   NGC-Spcam1            Add period in ' var '
+  NGC-Spst-tet          Deleted duplicate Strumigenys ocypete
