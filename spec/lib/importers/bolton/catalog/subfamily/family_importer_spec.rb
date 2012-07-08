@@ -3,7 +3,7 @@ require 'spec_helper'
 
 describe Importers::Bolton::Catalog::Subfamily::Importer do
 
-  it "should convert the HTML to an intermediate form and send it to Family.import" do
+  it "should import Formicidae" do
     html = %{
 <html><body><div class=Section1>
 <p><b>FAMILY FORMICIDAE</b></p>
