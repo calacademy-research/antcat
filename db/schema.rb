@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120703164806) do
+ActiveRecord::Schema.define(:version => 20120708190222) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -157,6 +157,7 @@ ActiveRecord::Schema.define(:version => 20120703164806) do
     t.text     "references"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "subtitle"
   end
 
   add_index "reference_sections", ["taxon_id", "position"], :name => "index_reference_sections_on_taxon_id_and_position"
