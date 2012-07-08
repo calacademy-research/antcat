@@ -32,7 +32,8 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
         <p><i>Condylodon</i> Lund, 1831a: 131. Type-species: <i>Condylodon audouini</i>, by monotypy. </p>
         <p>Taxonomic history</p>
         <p><i>Condylodon</i> in family Mutillidae: Swainson &amp; Shuckard, 1840: 173. </p>
-        <p>Genus references</p><p>Baroni Urbani, 1977c: 482 (review of genus).</p>
+        <p>Genus references</p>
+        <p>Baroni Urbani, 1977c: 482 (review of genus).</p>
       }
       genus = Genus.find_by_name 'Condylodon'
       genus.should_not be_invalid
@@ -44,7 +45,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
       genus.type_taxt.should == ", by monotypy."
       genus.type_name.rank.should == 'species'
       genus.reference_sections.map(&:title).should == ['Genus references']
-      genus.reference_sections.map(&:references).should == ["{ref #{baroni.id}}: 482 (review of genus)."]
+      genus.reference_sections.map(&:references).should == ["{ref #{baroni.id}}: 482 (review of genus)"]
 
       protonym = genus.protonym
       protonym.name.to_s.should == 'Condylodon'
@@ -114,6 +115,38 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
       end
 
     end
+
+    describe "Importing a genus with junior synonyms" do
+      it "should not include the genus's references at the end of a junior synonym's taxonomic history" do
+        bolton = FactoryGirl.create :article_reference, :bolton_key_cache => 'Bolton 1995b'
+        @importer.import_html make_contents %{
+          <p>Genus <i>SPHINCTOMYRMEX</i></p>
+          <p><i>Sphinctomyrmex</i> Mayr, 1866b: 895. Type-species: <i>Sphinctomyrmex stali</i>, by monotypy. </p>
+          <p>Taxonomic history</p>
+          <p>Sphinctomyrmex history</p>
+
+          <p>Junior synonyms of <i>SPHINCTOMYRMEX</i></p>
+
+          <p><i>Aethiopopone</i> Santschi, 1930a: 49. Type-species: <i>Sphinctomyrmex rufiventris</i>, by monotypy. </p>
+          <p>Taxonomic history</p>
+          <p><i>Aethiopopone</i> history</p>
+
+          <p><b>Genus <i>Sphinctomyrmex</i> references <p></p></b></p>
+          <p>[Note. Entries prior to Bolton, 1995b: 44, refer to genus as <i>Acantholepis</i>.]</p>
+          <p>Sphinctomyrmex references</p>
+        }
+        sphinctomyrmex = Genus.find_by_name 'Sphinctomyrmex'
+        sphinctomyrmex.taxonomic_history_items.map(&:taxt).should == ['Sphinctomyrmex history']
+        sphinctomyrmex.reference_sections.map(&:references).should == [
+          "[Note. Entries prior to {ref #{bolton.id}}: 44, refer to genus as <i>Acantholepis</i>.]",
+          'Sphinctomyrmex references',
+        ]
+        aethiopopone = Genus.find_by_name 'Aethiopopone'
+        aethiopopone.taxonomic_history_items.map(&:taxt).should == ['<i>Aethiopopone</i> history']
+        aethiopopone.reference_sections.should == []
+      end
+    end
+
   end
 
   describe "Parsing taxonomic history" do
@@ -159,44 +192,3 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
   end
 
 end
-
-#describe "Importing a genus with junior synonyms" do
-  #it "should not include the genus's references at the end of a junior synonym's taxonomic history" do
-    #@importer.import_html make_contents %{
-#<p>Genus <i>SPHINCTOMYRMEX</i></p>
-#<p><i>Sphinctomyrmex</i> Mayr, 1866b: 895. Type-species: <i>Sphinctomyrmex stali</i>, by monotypy. </p>
-#<p>Taxonomic history</p>
-#<p>Sphinctomyrmex history</p>
-
-#<p>Junior synonyms of <i>SPHINCTOMYRMEX</i></p>
-
-#<p><i>Aethiopopone</i> Santschi, 1930a: 49. Type-species: <i>Sphinctomyrmex rufiventris</i>, by monotypy. </p>
-#<p>Taxonomic history</p>
-#<p><i>Aethiopopone history</i></p>
-
-#<p><b>Genus <i>Sphinctomyrmex</i> references <p></p></b></p>
-#<p>[Note. Entries prior to Bolton, 1995b: 44, refer to genus as <i>Acantholepis</i>.]</p>
-#<p>Sphinctomyrmex references</p>
-    #}
-
-    #sphinctomyrmex = Genus.find_by_name 'Sphinctomyrmex'
-    #sphinctomyrmex.should_not be_nil
-    #sphinctomyrmex.taxonomic_history.should ==
-#%{<p><b><i>Sphinctomyrmex</i></b> Mayr, 1866b: 895. Type-species: <i>Sphinctomyrmex stali</i>, by monotypy. </p>} +
-#%{<p><b>Taxonomic history<p></p></b></p>} +
-#%{<p>Sphinctomyrmex history</p>} +
-#%{<p><b>Junior synonyms of <i>SPHINCTOMYRMEX<p></p></i></b></p>} +
-#%{<p><b><i>Aethiopopone</i></b> Santschi, 1930a: 49. Type-species: <i>Sphinctomyrmex rufiventris</i>, by monotypy. </p>} +
-#%{<p><b>Taxonomic history<p></p></b></p>} +
-#%{<p><i>Aethiopopone history</i></p>} +
-
-    #aethiopopone = Genus.find_by_name 'Aethiopopone'
-    #aethiopopone.should_not be_nil
-    #aethiopopone.should be_synonym_of sphinctomyrmex
-    #aethiopopone.taxonomic_history.should == 
-#%{<p><b><i>Aethiopopone</i></b> Santschi, 1930a: 49. Type-species: <i>Sphinctomyrmex rufiventris</i>, by monotypy. </p>} +
-#%{<p><b>Taxonomic history<p></p></b></p>} +
-#%{<p><i>Aethiopopone history</i></p>}
-  #end
-
-#end
