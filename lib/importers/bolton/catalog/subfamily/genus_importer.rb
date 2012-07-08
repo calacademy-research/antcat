@@ -42,7 +42,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
       parse_subgenera genus: genus
       parse_homonym_replaced_by_genus genus
       parse_homonym_and_synonym_of_genus genus
-      parse_genus_references genus
+      parse_references genus
     end
 
     genus
