@@ -18,9 +18,9 @@
     .reference_sections
       - for reference_section in taxon.reference_sections do
         .section
-          %h4.title= Taxt.to_string reference_section.title, current_user
-          .subtitle= Taxt.to_string reference_section.subtitle, current_user if reference_section.subtitle
-          .references= Taxt.to_sentence reference_section.references, current_user
+          - [:title, :subtitle, :references].each do |field|
+            - if reference_section[field].present?
+              %div{class: field}= Taxt.to_string reference_section[field], current_user
 
   .child_lists
     =Formatters::CatalogFormatter.format_child_lists_for_rank taxon, :tribes
