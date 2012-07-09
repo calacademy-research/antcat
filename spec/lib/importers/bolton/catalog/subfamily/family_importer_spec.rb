@@ -106,7 +106,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
     genus.type_name.to_s.should == "Condylodon audouini"
     genus.type_taxt.should == ", by monotypy. [{ref #{lund.id}}: 25 says no.]"
     genus.reference_sections.map(&:title).should == ["Genus references"]
-    genus.reference_sections.map(&:references).should == ["{ref #{baroni.id}}: 482 (review of genus)"]
+    genus.reference_sections.map(&:references).should == ["{ref #{baroni.id}}: 482 (review of genus)."]
 
     genus = Genus.find_by_name 'Promyrmicium'
     genus.should be_fossil
