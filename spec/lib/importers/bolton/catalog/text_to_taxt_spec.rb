@@ -49,15 +49,14 @@ describe Importers::Bolton::Catalog::TextToTaxt do
       data = [{:author_names => ['Latreille'], :year => '1809', :pages => '244', :matched_text => 'Latreille, 1809'}]
       @converter.convert(data).should == "{ref #{MissingReference.first.id}}: 244"
     end
-    it "should handle a nested citation (i.e., without year)" do
-      reference = FactoryGirl.create :article_reference, :bolton_key_cache => 'Nel Perrault 2004'
+    it "should handle a nested citation" do
+      reference = FactoryGirl.create :article_reference, :bolton_key_cache => 'Holldobler Wilson 1990'
       data = [{
-        :author_names => ["Nel", "Perrault"],
-        :in => {:author_names => ["Nel", "Perrault", "Perrichot", "Néraudeau"], :year => "2004"},
+        :author_names => ["Bolton"],
+        :in => {:author_names => ["Holldobler", "Wilson"], :year => "1990"},
         :pages => "24"}]
-      @converter.convert(data).should == "{ref #{reference.id}}: 24"
+      @converter.convert(data).should == "Bolton, in {ref #{reference.id}}: 24"
     end
-
     it "should handle a citation with notes" do
       reference = FactoryGirl.create :article_reference, :bolton_key_cache => 'Stephens 1829'
       data = [{

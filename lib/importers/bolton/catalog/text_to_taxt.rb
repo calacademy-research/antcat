@@ -42,7 +42,9 @@ module Importers::Bolton::Catalog::TextToTaxt
 
   def self.citation item
     return unless item[:author_names]
-    taxt = Taxt.encode_reference ::Reference.find_by_bolton_key item
+    taxt = ''
+    taxt << item[:author_names].join(' & ') << ', in ' if item[:in]
+    taxt << Taxt.encode_reference(::Reference.find_by_bolton_key item)
     taxt << ": #{item[:pages]}" if item[:pages]
     taxt << " (#{item[:forms]})" if item[:forms]
     taxt << notes(item[:notes]) if item[:notes]
