@@ -16,7 +16,7 @@ module CatalogHelper
   end
 
   def make_catalog_search_results_columns items
-    column_count = 3
+    column_count = 5
     items.snake column_count
   end
 
