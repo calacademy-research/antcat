@@ -23,8 +23,8 @@ AntCat.collapsed_image_path = '<%= image_path 'collapsed.png' %>'
 AntCat.expanded_image_path = '<%= image_path 'expanded.png' %>'
 
 space_out_images = ->
-  total_image_width = 379 + 154 + 124
-  image_count = 7
+  total_image_width = 103 + 50 + 31 + 118 + 103 + 108
+  image_count = 6
   available_width = $('#site_footer .images').width()
   margin_in_between = (available_width - total_image_width) / (image_count - 1)
   $("#site_footer .spacer").width margin_in_between
