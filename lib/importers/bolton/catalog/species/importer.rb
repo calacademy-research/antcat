@@ -72,6 +72,8 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
       parse_next_line
     end
 
+    do_manual_fixups
+
     finish_importing
 
     Progress.show_results
@@ -89,6 +91,11 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     Progress.print 'Fixing up names...'
     SpeciesGroupForwardRef.fixup
     Progress.puts
+  end
+
+  def do_manual_fixups
+    foreli = Species.with_names.where(['name = ?',  'Temnothorax foreli']).second
+    foreli.update_attribute :status, 'homonym' if foreli
   end
 
   def grammar
