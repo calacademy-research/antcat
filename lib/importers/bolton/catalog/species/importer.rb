@@ -94,8 +94,9 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
   end
 
   def do_manual_fixups
-    foreli = Species.with_names.where(['name = ?',  'Temnothorax foreli']).second
-    foreli.update_attribute :status, 'homonym' if foreli
+    set_status_manually 'Temnothorax foreli', 'homonym', 1
+    set_status_manually 'Temnothorax manni', 'homonym', 1, 2
+    set_status_manually 'Tetramorium pauper', 'homonym', 1
   end
 
   def grammar
