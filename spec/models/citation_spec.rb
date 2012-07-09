@@ -32,13 +32,13 @@ describe Citation do
     end
 
     it "should handle a nested reference when the year is only with the parent" do
-      reference = FactoryGirl.create :nested_reference, :bolton_key_cache => 'Latreille 2004'
+      reference = FactoryGirl.create :nested_reference, bolton_key_cache: 'Bolton 2004'
       data = {
-        :author_names => ["Latreille"],
-        :in => {
-          :author_names => ["Bolton"], :year => "2004"
+        author_names: ['Latreille'],
+        in: {
+          author_names: ['Bolton'], year: '2004'
         },
-        :pages=>"24"
+        pages: '24'
       }
 
       citation = Citation.import(data).reload
