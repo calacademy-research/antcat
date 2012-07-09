@@ -78,26 +78,18 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
       @importer.initialize_parse_html %{<div>
         <p>Tribe references</p>
         <p>Note</p>
-        <p>Another note</p>
         <p>Genera of Heteroponerini</p>
       </div>}
-      @importer.parse_references tribe
+      @importer.parse_reference_sections tribe, :references_section_header
 
-      tribe.should have(2).reference_sections
+      tribe.should have(1).reference_section
 
       reference_section = tribe.reference_sections.first
       reference_section.title.should == 'Tribe references'
       reference_section.subtitle.should be_blank
       reference_section.references.should == 'Note'
-
-      reference_section = tribe.reference_sections.second
-      reference_section.title.should be_blank
-      reference_section.subtitle.should be_blank
-      reference_section.references.should == 'Another note'
     end
 
-    it "should handle a family references section"
-    it "should handle a references section with more than one line"
   end
 
 end

@@ -125,26 +125,6 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     Importers::Bolton::Catalog::TextToTaxt.convert texts[:text]
   end
 
-  def parse_references taxon
-    Progress.method
-    return unless [:references_section_header, :genus_references_header].include? @type
-
-    if @type == :genus_references_header
-      parsed_genus_name = @parse_result[:genus_name]
-      return if parsed_genus_name.present? && parsed_genus_name != taxon.name.to_s
-    end
-
-    title = convert_line_to_taxt @line
-    parse_next_line
-    references = convert_line_to_taxt @line
-    taxon.reference_sections.create! title: title, references: references
-    parse_next_line
-    return unless @type == :texts
-    references = convert_line_to_taxt @line
-    taxon.reference_sections.create! references: references
-    parse_next_line
-  end
-
   def parse_reference_sections taxon, *allowed_header_types
     while allowed_header_types.include? @type
       parse_reference_section taxon
