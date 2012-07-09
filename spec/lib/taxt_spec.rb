@@ -121,4 +121,16 @@ describe Taxt do
     end
   end
 
+  describe "Sentence output" do
+    before do
+      @reference = FactoryGirl.create :missing_reference, :citation => 'Latreille, 1809'
+    end
+    it "should add a period" do
+      Taxt.to_sentence("{ref #{@reference.id}}", nil).should == 'Latreille, 1809.'
+    end
+    it "should not add a period if one's already there" do
+      Taxt.to_sentence("{ref #{@reference.id}}.", nil).should == 'Latreille, 1809.'
+    end
+  end
+
 end

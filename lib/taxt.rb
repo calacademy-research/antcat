@@ -6,6 +6,11 @@ module Taxt
     decode taxt, user
   end
 
+  def self.to_sentence taxt, user
+    string = decode taxt, user
+    Formatters::Formatter.add_period_if_necessary string
+  end
+
   def self.to_editable taxt
     return '' unless taxt
     taxt.gsub /{ref (\d+)}/ do |ref|
