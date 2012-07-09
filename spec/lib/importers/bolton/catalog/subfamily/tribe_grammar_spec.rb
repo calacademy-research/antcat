@@ -28,8 +28,11 @@ describe Importers::Bolton::Catalog::Subfamily::TribeGrammar do
   end
 
   describe "Genera incertae sedis in tribe" do
-    it "should be recognized" do
+    it "should be recognized in the singular" do
       @grammar.parse(%{Genus <i>incertae sedis</i> in Heteroponerini}).value_with_matched_text_removed.should == {:type => :genera_incertae_sedis_in_tribe_header}
+    end
+    it "should be recognized in the plural" do
+      @grammar.parse(%{Genera <i>incertae sedis</i> in Heteroponerini}).value_with_matched_text_removed.should == {:type => :genera_incertae_sedis_in_tribe_header}
     end
   end
 
