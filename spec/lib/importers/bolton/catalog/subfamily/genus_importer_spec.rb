@@ -45,7 +45,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
       genus.type_taxt.should == ", by monotypy."
       genus.type_name.rank.should == 'species'
       genus.reference_sections.map(&:title).should == ['Genus references']
-      genus.reference_sections.map(&:references).should == ["{ref #{baroni.id}}: 482 (review of genus)"]
+      genus.reference_sections.map(&:references).should == ["{ref #{baroni.id}}: 482 (review of genus)."]
 
       protonym = genus.protonym
       protonym.name.to_s.should == 'Condylodon'
