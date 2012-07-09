@@ -4,9 +4,9 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
 
   def parse_family
     parse_family_header
-    parse_family_record
+    family = parse_family_record
     parse_family_child_lists
-    parse_family_references
+    parse_family_references family
     parse_family_children
   end
 
@@ -27,6 +27,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
       taxonomic_history:  [Importers::Bolton::Catalog::TextToTaxt.convert(taxonomic_history[:items])]
     )
     Progress.info "Created #{family.inspect}"
+    family
   end
 
   ######################################################
@@ -41,41 +42,54 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
   end
 
   ##############################################################
-  def parse_family_references
-    parse_world_references
-    parse_regional_catalogs
-    parse_regional_fauna
+  def parse_family_references family
+    parse_world_references family
+    parse_regional_catalogs family
+    parse_regional_fauna family
   end
 
-  def parse_world_references
-    consume :family_references_header
-    parse_family_reference_sections
+  def parse_world_references family
+    expect :family_references_header
+    title = convert_line_to_taxt @line
+    parse_next_line
+    parse_family_reference_sections family, title
   end
 
-  def parse_regional_catalogs
-    consume :regional_catalogues_header
-    parse_family_reference_sections_with_inline_headings
+  def parse_regional_catalogs family
+    expect :regional_catalogues_header
+    title = convert_line_to_taxt @line
+    parse_next_line
+    parse_family_reference_sections_with_inline_headings family, title
   end
 
-  def parse_regional_fauna
-    consume :regional_and_national_faunas_header
-    parse_family_reference_sections
+  def parse_regional_fauna family
+    expect :regional_and_national_faunas_header
+    title = convert_line_to_taxt @line
+    parse_next_line
+    parse_family_reference_sections family, title
   end
 
-  def parse_family_reference_sections
+  def parse_family_reference_sections family, title
     while @type == :uppercase_line
-      parse_family_reference_section
+      subtitle = convert_line_to_taxt @line
+      parse_family_reference_section family, title, subtitle
+      title = nil
     end
   end
 
-  def parse_family_reference_sections_with_inline_headings
-    while @type && @type != :regional_and_national_faunas_header
+  def parse_family_reference_sections_with_inline_headings family, title
+    while @type == :texts
+      references = convert_line_to_taxt @line
+      family.reference_sections.create! title: title, references: references
       parse_next_line
+      title = nil
     end
   end
 
-  def parse_family_reference_section
+  def parse_family_reference_section family, title, subtitle
     parse_next_line :text
+    references = convert_line_to_taxt @line
+    family.reference_sections.create! title: title, subtitle: subtitle, references: references
     parse_next_line
   end
 
