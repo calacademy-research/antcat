@@ -32,7 +32,7 @@ grammar Importers::Bolton::Catalog::Subfamily::TribeGrammar
   end
 
   rule genera_incertae_sedis_in_tribe_header
-    ('Genus ' incertae_sedis_in ' ' capitalized_word) {
+    (/Genus|Genera/ ' ' incertae_sedis_in ' ' capitalized_word) {
       {:type => :genera_incertae_sedis_in_tribe_header}
     }
   end
