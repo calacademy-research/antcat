@@ -57,39 +57,4 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
     end
   end
 
-  describe "Importing reference sections" do
-    it "should handle a section with just a header and some references" do
-      genus = FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Lepisiota')
-      @importer.initialize_parse_html %{<div>
-        <p>Genus <i>Lepisiota</i> references</p>
-        <p>Note</p>
-        <p>Genus *<i>SYNTAPHUS</i></p>
-      </div>}
-      @importer.parse_references genus
-      genus.should have(1).reference_sections
-      reference_section = genus.reference_sections.first
-      reference_section.title.should == 'Genus <i>Lepisiota</i> references'
-      reference_section.subtitle.should be_blank
-      reference_section.references.should == 'Note'
-    end
-
-    it "should handle a section with a header and more than one paragraph" do
-      tribe = FactoryGirl.create :tribe, name: FactoryGirl.create(:name, name: 'Lepisiota')
-      @importer.initialize_parse_html %{<div>
-        <p>Tribe references</p>
-        <p>Note</p>
-        <p>Genera of Heteroponerini</p>
-      </div>}
-      @importer.parse_reference_sections tribe, :references_section_header
-
-      tribe.should have(1).reference_section
-
-      reference_section = tribe.reference_sections.first
-      reference_section.title.should == 'Tribe references'
-      reference_section.subtitle.should be_blank
-      reference_section.references.should == 'Note'
-    end
-
-  end
-
 end
