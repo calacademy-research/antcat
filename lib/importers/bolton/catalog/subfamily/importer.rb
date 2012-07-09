@@ -142,6 +142,8 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
   def do_manual_fixups
     wilsonia = Genus.find_by_name 'Wilsonia'
     wilsonia.update_attribute :status, Status['unresolved homonym'].to_s if wilsonia
+    hypochira = Genus.find_by_name 'Hypochira'
+    hypochira.update_attribute :status, Status['unidentifiable'].to_s if hypochira
   end
 
 end
