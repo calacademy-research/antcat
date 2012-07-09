@@ -21,9 +21,16 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
 <p>Genus-group <i>nomina nuda</i> in Formicidae: <i>Ancylognathus</i>.</p>
 
 <p>FAMILY FORMICIDAE REFERENCES, WORLD</p>
-<p>WORLD CATALOGUES</p><p>Roger, 1863b: 1 (Formicidae).</p>
-<p>Regional catalogues and checklists</p><p>NEARCTIC: Smith, M.R., 1951a: 778.</p>
-<p>Regional and national faunas with keys</p><p>PALAEARCTIC</p><p>Mayr, 1855: 299 (Austria).</p>
+
+<p>WORLD CATALOGUES</p>
+<p>Roger, 1863b: 1 (Formicidae).</p>
+
+<p>Regional catalogues and checklists</p>
+<p>NEARCTIC: Latreille, 1809: 778.</p>
+
+<p>Regional and national faunas with keys</p>
+<p>PALAEARCTIC</p>
+<p>Mayr, 1855: 299 (Austria).</p>
 
 <p>GENERA <i>INCERTAE SEDIS</i> AND EXCLUSIONS FROM FORMICIDAE</p>
 <p>Genera <i>incertae sedis</i> in FORMICIDAE</p>
@@ -54,9 +61,11 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
     }
 
     latreille = FactoryGirl.create :article_reference, :bolton_key_cache => 'Latreille 1809'
+    mayr = FactoryGirl.create :article_reference, :bolton_key_cache => 'Mayr 1855'
     lund = FactoryGirl.create :unknown_reference, :bolton_key_cache => 'Lund 1831a'
     swainson = FactoryGirl.create :unknown_reference, :bolton_key_cache => 'Swainson Shuckard 1840'
     baroni = FactoryGirl.create :unknown_reference, :bolton_key_cache => 'Baroni Urbani 1977c'
+    roger = FactoryGirl.create :unknown_reference, :bolton_key_cache => 'Roger 1863b'
 
     Importers::Bolton::Catalog::Subfamily::Importer.new.import_html html
 
@@ -70,6 +79,22 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
       %{Formicidae as family: {ref #{latreille.id}}: 124 [Formicariae]; all subsequent authors}
     ]
 
+    family.should have(3).reference_sections
+    reference_section = family.reference_sections.first
+    reference_section.title.should == 'FAMILY FORMICIDAE REFERENCES, WORLD'
+    reference_section.subtitle.should == 'WORLD CATALOGUES'
+    reference_section.references.should == "{ref #{roger.id}}: 1 (Formicidae)"
+
+    reference_section = family.reference_sections.second
+    reference_section.title.should == 'Regional catalogues and checklists'
+    reference_section.subtitle.should be_blank
+    reference_section.references.should == "NEARCTIC: {ref #{latreille.id}}: 778"
+
+    reference_section = family.reference_sections.third
+    reference_section.title.should == 'Regional and national faunas with keys'
+    reference_section.subtitle.should == 'PALAEARCTIC'
+    reference_section.references.should == "{ref #{mayr.id}}: 299 (Austria)"
+
     genus = Genus.find_by_name 'Condylodon'
     genus.should_not be_invalid
     genus.should be_fossil
@@ -81,7 +106,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
     genus.type_name.to_s.should == "Condylodon audouini"
     genus.type_taxt.should == ", by monotypy. [{ref #{lund.id}}: 25 says no.]"
     genus.reference_sections.map(&:title).should == ["Genus references"]
-    genus.reference_sections.map(&:references).should == ["{ref #{baroni.id}}: 482 (review of genus)."]
+    genus.reference_sections.map(&:references).should == ["{ref #{baroni.id}}: 482 (review of genus)"]
 
     genus = Genus.find_by_name 'Promyrmicium'
     genus.should be_fossil
