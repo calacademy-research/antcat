@@ -91,6 +91,9 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     Progress.print 'Fixing up names...'
     SpeciesGroupForwardRef.fixup
     set_status_manually 'Camponotus abdominalis', 'homonym', 0
+    set_status_manually 'Camponotus (Camponotus) herculeanus var. rubens', 'synonym', 0
+    Subspecies.find_by_name('Camponotus (Camponotus) herculeanus var. rubens').update_attribute :synonym_of_id,
+      Species.find_by_name('Camponotus novaeboracensis')
     Progress.puts
   end
 
@@ -99,6 +102,8 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     set_status_manually 'Temnothorax manni', 'homonym', 1, 2
     set_status_manually 'Tetramorium pauper', 'homonym', 1
     set_status_manually 'Camponotus abdominalis', 'valid', 0
+    set_status_manually 'Camponotus (Camponotus) herculeanus var. rubens', 'valid', 0
+    set_status_manually 'Camponotus terebrans', 'valid', 0
   end
 
   def grammar
