@@ -52,6 +52,10 @@ def create_subfamily name_or_attributes = 'Dolichoderinae', attributes = {}
   create_taxon name_or_attributes, :subfamily, :subfamily_name, attributes
 end
 
+def create_tribe name_or_attributes = 'Attini', attributes = {}
+  create_taxon name_or_attributes, :tribe, :tribe_name, attributes
+end
+
 def create_genus name_or_attributes = 'Atta', attributes = {}
   create_taxon name_or_attributes, :genus, :genus_name, attributes
 end
