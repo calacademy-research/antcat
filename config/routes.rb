@@ -3,16 +3,13 @@ require 'release_type'
 
 AntCat::Application.routes.draw do
 
-  root to: "catalog/index#show"
+  root to: 'catalog#show'
 
   resources :authors, only: [:index, :all, :merge]
   match     '/authors/all', to: 'authors#all', via: :get
   match     '/authors/merge', to: 'authors#merge', via: :post
+  match     'catalog/(:id)' => 'catalog#show', as: :catalog, via: :get
   resources :bolton_references
-  resource  :catalog, only: [] do
-    match     'index/(:id)', to: 'catalog/index#show', as: 'index'
-    match     'browser/(:id)', to: 'catalog/browser#show', as: 'browser'
-  end
   match     '/documents/:id/:file_name', to: 'references#download', file_name: /.+/, via: :get
   resources :journals
   resources :publishers, only: [:index]

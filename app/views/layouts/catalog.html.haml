@@ -1,8 +1,7 @@
 - content_for :head do
-  = stylesheet_link_tag 'catalog/catalog'
   = javascript_include_tag 'widgets/panel', 'widgets/form', 'widgets/nested_form', 'widgets/reference_panel', 'widgets/reference_picker', 'widgets/taxon_form'
   = javascript_include_tag 'widgets/taxt_editor'
-  = javascript_include_tag 'catalog/catalog', 'catalog/taxon_key', 'catalog/history_item'
+  = javascript_include_tag 'catalog', 'catalog/taxon_key', 'catalog/history_item'
 
 - content_for :page_header do
   #navigation_bar
@@ -21,8 +20,7 @@
   = render 'shared/catalog_title'
 
 - content_for :page_contents do
-  = render 'catalog/search_results', :search_results => @search_results, :taxon => @taxon,
-    :path => controller.class.name =~ /Index/ ? :index_catalog_path : :browser_catalog_path
+  = render 'catalog/search_results', search_results: @search_results, taxon: @taxon, path: :catalog_path
   = yield
   .clear
   = render 'catalog/taxon_key'
