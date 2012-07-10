@@ -1,9 +1,8 @@
-- @title = 'Catalog Index'
+- @title = 'Catalog'
 
 - content_for :head do
-  = javascript_include_tag 'catalog/index', 'qtip'
+  = javascript_include_tag 'catalog', 'qtip'
   = javascript_include_tag 'ext/jquery.ui.selectmenu.js', 'ext/jquery.spinner.js'
-  = stylesheet_link_tag 'catalog/index'
   = stylesheet_link_tag 'ext/jquery.ui.selectmenu.css'
 
 #catalog
@@ -13,7 +12,7 @@
     %hr
 
   .new_taxon_form
-    = render 'catalog/index/taxon_form', tribe: @tribe if can_add_genus
+    = render 'catalog/taxon_form', tribe: @tribe if can_add_genus
 
   .index
     = render   'rank', rank: :subfamily,items: @subfamilies, selected_item: @subfamily, page_parameters: @page_parameters, options: {show_none: 'none', hideable_child_name: 'tribes'}

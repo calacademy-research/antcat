@@ -12,7 +12,7 @@
   - if taxon.taxonomic_history_items.present?
     .history
       - for history_item in taxon.taxonomic_history_items do
-        = render 'catalog/index/history_item/panel', item: history_item
+        = render 'catalog/history_item/panel', item: history_item
 
   - if taxon.reference_sections.present?
     .reference_sections

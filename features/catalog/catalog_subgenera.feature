@@ -1,4 +1,4 @@
-Feature: Using the catalog index
+Feature: Using the catalog
   As a user of AntCat
   I want to view the taxonomy of ants hierarchically
   So that I can choose a taxon easily
@@ -14,14 +14,14 @@ Feature: Using the catalog index
     And subspecies "Dolichoderus (Subdolichoderus) abruptus minor" exists in that species
 
   Scenario: Subgenera are initially hidden
-    When I go to the catalog index
+    When I go to the catalog
     And I follow "Dolichoderinae"
     And I follow "Dolichoderini"
     And I follow "Dolichoderus"
     Then I should not see "Subdolichoderus"
 
   Scenario: Showing subgenera
-    When I go to the catalog index
+    When I go to the catalog
     And I follow "Dolichoderinae"
     And I follow "Dolichoderini"
     And I follow "Dolichoderus"
@@ -29,7 +29,7 @@ Feature: Using the catalog index
     Then I should see "Subdolichoderus"
 
   Scenario: Selecting a subgenus
-    When I go to the catalog index
+    When I go to the catalog
     And I follow "Dolichoderinae"
     And I follow "Dolichoderini"
     And I follow "Dolichoderus"

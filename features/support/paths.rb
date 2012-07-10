@@ -16,10 +16,8 @@ module NavigationHelpers
       journals_path
     when /the Authors page/
       authors_path
-    when /the catalog( index)?/
-      index_catalog_path
-    when /the catalog browser/
-      browser_catalog_path
+    when /the catalog/
+      catalog_path
     when /the forgot password page/
       '/users/password/new'
     when /the login page/

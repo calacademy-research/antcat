@@ -1,9 +1,49 @@
 @import 'widgets/taxt_editor'
 @import 'widgets/reference_picker'
 @import 'common'
-@import 'taxon'
-@import 'history_item'
-@import 'taxon_form'
+@import 'catalog/taxon'
+@import 'catalog/history_item'
+@import 'catalog/taxon_form'
+
+#navigation_bar
+  .actions.catalog_view_selector
+    left: -3px
+    margin-top: 0
+    position: absolute
+    font-weight: bold
+    label
+      height: 28px
+
+#search_results
+  @include margins
+  margin-bottom: 3px
+  a
+    padding-top: 0
+    padding-bottom: 0
+    padding-left: $link_padding
+    padding-right: $link_padding
+    margin-right: 6px
+    line-height: 1em
+
+#page_contents
+  padding: 0
+
+#taxon_key
+  width: 100%
+  td
+    white-space: nowrap
+  span
+    font-style: italic
+    margin-right: 8px
+    &.title
+      font-weight: bold
+      font-style: normal
+      margin-right: 4px
+  a
+    cursor: pointer
+    font-weight: bold
+    font-style: normal
+    margin-left: 10px
 
 html, body, #page, .rank
   height: 100%
