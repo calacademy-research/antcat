@@ -24,6 +24,7 @@ class Importers::Bolton::Catalog::Species::History
   end
 
   def check_homonym
+    return false if @item[:subspecies]
     if @item[:homonym_of]
       if @item[:homonym_of][:unresolved]
         skip_rest_of_history
