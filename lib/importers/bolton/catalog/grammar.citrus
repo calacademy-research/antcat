@@ -563,7 +563,7 @@ grammar Importers::Bolton::Catalog::Grammar
   end
 
   rule subgenus_name
-    (genus_name_or_abbreviation ' (' subgenus_epithet ')') {
+    (genus_name_or_abbreviation ' (' subgenus_epithet '?'? ')') {
       genus_name_or_abbreviation.value.merge subgenus_epithet.value
     }
   end
