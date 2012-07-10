@@ -11,8 +11,8 @@ class Importers::Bolton::Catalog::Species::History
 
   def determine_status
     while get_next_item
-      next if check_synonym
-      return if check_first_available_replacement
+      return if check_definitive_status_indicators
+      check_synonym or
       check_homonym or
       check_having_subspecies or
       check_revival_from_synonymy or
@@ -23,8 +23,15 @@ class Importers::Bolton::Catalog::Species::History
     end
   end
 
+  def check_definitive_status_indicators
+    return true if check_first_available_replacement
+    if @item[:subspecies] or @item[:currently_subspecies_of]
+      @status = 'valid'
+      return true
+    end
+  end
+
   def check_homonym
-    return false if @item[:subspecies]
     if @item[:homonym_of]
       if @item[:homonym_of][:unresolved]
         skip_rest_of_history
