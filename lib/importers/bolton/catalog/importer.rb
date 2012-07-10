@@ -368,12 +368,10 @@ class Importers::Bolton::Catalog::Importer
 
   def set_status_manually name, status, *indexes
     for i in indexes
-      begin
         Taxon.with_names.where(['name = ?', name])[i].update_attribute :status, status
-      rescue
-        raise unless Rails.env.test?
-      end
     end
+  rescue
+    # don't care if it's not there
   end
 
 end
