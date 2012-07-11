@@ -368,7 +368,7 @@ class Importers::Bolton::Catalog::Importer
 
   def set_status_manually name, status, *indexes
     for i in indexes
-        Taxon.with_names.where(['name = ?', name])[i].update_attribute :status, status
+      Taxon.with_names.where(['name = ?', name])[i].update_attribute :status, status
     end
   rescue
     # don't care if it's not there
