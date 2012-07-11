@@ -3,102 +3,92 @@ class EpithetSearchSet
   attr_reader :epithets
 
   def initialize epithet
-    @epithets = [epithet]
-    frequent_misspellings
-    declensions
-    orthographic
-    deemed_identical
+    @epithet = epithet
+    @epithets = ([epithet] + frequent_misspellings + declensions + orthographic + deemed_identical).uniq
   end
 
   ####################
   def frequent_misspellings
-    @epithets.concat(@epithets.inject([]) do |epithets, epithet|
-      epithets << 'alfari' if epithet == 'alfaroi'
-      epithets << epithet.gsub(/^columbic/, 'colombic') if epithet =~ /^columbic/
-      epithets
-    end).uniq!
+    epithets = []
+    epithets << 'alfari' if @epithet == 'alfaroi'
+    epithets << @epithet.gsub(/^columbic/, 'colombic') if @epithet =~ /^columbic/
+    epithets
   end
 
   ####################
   def declensions
-    @epithets.concat(@epithets.inject([]) do |epithets, epithet|
-      epithets.concat first_declension_nominative_singular epithet
-      epithets.concat first_declension_genitive_singular epithet
-      epithets.concat first_and_second_declension_adjectives_in_er_nominative_singular epithet
-      epithets.concat third_declension_nominative_singular epithet
-    end).uniq!
+    first_declension_nominative_singular +
+    first_declension_genitive_singular +
+    first_and_second_declension_adjectives_in_er_nominative_singular +
+    third_declension_nominative_singular
   end
 
-  def first_declension_nominative_singular epithet
-    decline epithet, "(?:[#{CONSONANTS}][ei]?|qu)", ['us', 'a', 'um']
+  def first_declension_nominative_singular
+    decline "(?:[#{CONSONANTS}][ei]?|qu)", ['us', 'a', 'um']
   end
 
-  def first_declension_genitive_singular epithet
-    decline epithet, "[#{CONSONANTS}]i?", ['i', 'ae']
+  def first_declension_genitive_singular
+    decline "[#{CONSONANTS}]i?", ['i', 'ae']
   end
 
-  def third_declension_nominative_singular epithet
-    decline epithet, "[#{CONSONANTS}]", ['e', 'is']
+  def third_declension_nominative_singular
+    decline "[#{CONSONANTS}]", ['e', 'is']
   end
 
-  def first_and_second_declension_adjectives_in_er_nominative_singular epithet
-    decline epithet, "[#{CONSONANTS}]", ['er', 'era', 'erum']
+  def first_and_second_declension_adjectives_in_er_nominative_singular
+    decline "[#{CONSONANTS}]", ['er', 'era', 'erum']
   end
 
-  def decline epithet, stem, endings
+  def decline stem, endings
     endings_regexp = '(' + endings.join('|') + ')'
-    return [] unless epithet =~ /#{stem}#{endings_regexp}$/
-    endings.map {|ending| epithet.gsub(/(#{stem})#{endings_regexp}$/, "\\1#{ending}")}
+    return [] unless @epithet =~ /#{stem}#{endings_regexp}$/
+    endings.map {|ending| @epithet.gsub(/(#{stem})#{endings_regexp}$/, "\\1#{ending}")}
   end
 
   ####################
   def orthographic
-    ae_and_e
-    p_and_ph
-    v_and_w
+    ae_and_e + p_and_ph + v_and_w
   end
 
   def ae_and_e
-    @epithets.concat(@epithets.inject([]) do |epithets, epithet|
-      consonants = "(?:[#{CONSONANTS}][ei]?|qu)"
-      epithets << epithet.gsub(/(#{consonants})e(#{consonants})/) do |string|
-        if ['ter', 'del'].include?(string)
-          string
-        else
-          $1 + 'ae' + $2
-        end
+    epithets = []
+    consonants = "(?:[#{CONSONANTS}][ei]?|qu)"
+    epithets << @epithet.gsub(/(#{consonants})e(#{consonants})/) do |string|
+      if ['ter', 'del'].include?(string)
+        string
+      else
+        $1 + 'ae' + $2
       end
-      epithets << epithet.gsub(/(#{consonants})ae(#{consonants})/) do |string|
-        $1 + 'e' + $2
-      end
-      epithets
-    end).uniq!
+    end
+    epithets << @epithet.gsub(/(#{consonants})ae(#{consonants})/) do |string|
+      $1 + 'e' + $2
+    end
+    epithets
   end
 
   def p_and_ph
-    @epithets.concat(@epithets.inject([]) do |epithets, epithet|
-      epithets << epithet.gsub(/ph/, 'p')
-      epithets << epithet.gsub(/p([^h])/, 'ph\1')
-    end).uniq!
+    epithets = []
+    epithets << @epithet.gsub(/ph/, 'p')
+    epithets << @epithet.gsub(/p([^h])/, 'ph\1')
+    epithets
   end
 
   def v_and_w
-    @epithets.concat(@epithets.inject([]) do |epithets, epithet|
-      epithets << epithet.gsub(/v/, 'w')
-      epithets << epithet.gsub(/w/, 'v')
-    end).uniq!
+    epithets = []
+    epithets << @epithet.gsub(/v/, 'w')
+    epithets << @epithet.gsub(/w/, 'v')
+    epithets
   end
 
   ####################
   def deemed_identical
-    @epithets.concat(@epithets.inject([]) do |epithets, epithet|
-      if ends_with epithet, 'i'
-        epithets << replace_ending(epithet, 'i', 'ii')
-      elsif ends_with epithet, 'ii'
-        epithets << replace_ending(epithet, 'ii', 'i')
-      end
-      epithets
-    end).uniq!
+    epithets = []
+    if ends_with @epithet, 'i'
+      epithets << replace_ending(@epithet, 'i', 'ii')
+    elsif ends_with @epithet, 'ii'
+      epithets << replace_ending(@epithet, 'ii', 'i')
+    end
+    epithets
   end
 
   def ends_with epithet, ending
