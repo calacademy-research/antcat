@@ -50,6 +50,7 @@ class EpithetSearchSet
   def orthographic
     ae_and_e
     p_and_ph
+    v_and_w
   end
 
   def ae_and_e
@@ -73,6 +74,13 @@ class EpithetSearchSet
     @epithets.concat(@epithets.inject([]) do |epithets, epithet|
       epithets << epithet.gsub(/ph/, 'p')
       epithets << epithet.gsub(/p([^h])/, 'ph\1')
+    end).uniq!
+  end
+
+  def v_and_w
+    @epithets.concat(@epithets.inject([]) do |epithets, epithet|
+      epithets << epithet.gsub(/v/, 'w')
+      epithets << epithet.gsub(/w/, 'v')
     end).uniq!
   end
 

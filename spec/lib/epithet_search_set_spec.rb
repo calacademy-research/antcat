@@ -36,6 +36,9 @@ describe EpithetSearchSet do
     it "should handle -p- and -ph-" do
       EpithetSearchSet.new('delpina').epithets.should =~ ['delpinus', 'delphinus', 'delpina', 'delphina', 'delpinum', 'delphinum']
     end
+    it "should handle -v- and -w-" do
+      EpithetSearchSet.new('acwabimans').epithets.should =~ ['acwabimans', 'acvabimans']
+    end
   end
 
   describe "Names frequently misspelled" do
