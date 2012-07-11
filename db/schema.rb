@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120708190222) do
+ActiveRecord::Schema.define(:version => 20120711215525) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -202,6 +202,13 @@ ActiveRecord::Schema.define(:version => 20120708190222) do
     t.string   "fixee_attribute"
     t.integer  "genus_id"
     t.string   "epithet"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "synonyms", :force => true do |t|
+    t.integer  "senior_id"
+    t.integer  "junior_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
