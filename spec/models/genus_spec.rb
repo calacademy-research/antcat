@@ -215,9 +215,22 @@ describe Genus do
       genus.type_taxt.should be_nil
     end
 
+    it "should create synonyms" do
+      senior = create_genus
+      junior = Genus.import(
+        genus_name: 'Atta',
+        protonym: {genus_name: "Atta"},
+        attributes: {synonym_of: senior},
+        taxonomic_history: []
+      )
+      junior.junior_synonyms.should be_empty
+      junior.senior_synonyms.should == [senior]
+      senior.junior_synonyms.should == [junior]
+      senior.senior_synonyms.should be_empty
+    end
+
     it "should make sure the type-species is fixed up to point to the genus and not just to any genus with the same name" do
       reference = FactoryGirl.create :article_reference, :bolton_key_cache => 'Latreille 1809'
-
       genus = Genus.import({
         :genus_name => 'Myrmicium',
         :protonym => {
@@ -233,5 +246,4 @@ describe Genus do
     end
 
   end
-
 end

@@ -368,4 +368,16 @@ describe Taxon do
     end
   end
 
+  describe "Synonyms" do
+    it "should have junior and senior synonyms" do
+      senior = create_genus
+      junior = create_genus
+      Synonym.create! junior_synonym: junior, senior_synonym: senior
+      senior.should have(1).junior_synonym
+      senior.should have(0).senior_synonyms
+      junior.should have(1).senior_synonym
+      junior.should have(0).junior_synonyms
+    end
+  end
+
 end

@@ -47,6 +47,10 @@ class Taxon < ActiveRecord::Base
   belongs_to :synonym_of, class_name: 'Taxon', foreign_key: :synonym_of_id
   def synonym?; status == 'synonym' end
   def synonym_of? taxon; synonym_of == taxon end
+  has_many :synonyms_as_junior, foreign_key: :junior_synonym_id, class_name: 'Synonym'
+  has_many :synonyms_as_senior, foreign_key: :senior_synonym_id, class_name: 'Synonym'
+  has_many :junior_synonyms, through: :synonyms_as_senior
+  has_many :senior_synonyms, through: :synonyms_as_junior
 
   ###############################################
   # homonym
