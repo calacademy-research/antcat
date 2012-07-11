@@ -97,7 +97,11 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
           <p>Acanthomyops taxonomic history</p>
         }
         acanthomyops = Taxon.find_by_epithet('Acanthomyops').first
-        acanthomyops.genus.should == Genus.find_by_name('Lasius')
+        lasius = Genus.find_by_name 'Lasius'
+        acanthomyops.genus.should == lasius
+        tylolasius = Genus.find_by_name 'Tylolasius'
+        lasius.junior_synonyms.should == [tylolasius]
+        tylolasius.senior_synonyms.should == [lasius]
       end
 
       it "should handle this second version of Ancylognathus" do
