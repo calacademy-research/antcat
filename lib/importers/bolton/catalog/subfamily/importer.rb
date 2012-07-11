@@ -25,6 +25,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     MissingReference.delete_all
     Citation.delete_all
     Protonym.delete_all
+    Synonym.delete_all
     Taxon.delete_all
 
     parse_family
