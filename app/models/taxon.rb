@@ -132,4 +132,12 @@ class Taxon < ActiveRecord::Base
     children
   end
 
+  ###############################################
+  # statistics
+
+  def import_synonyms data
+    senior = data[:attributes].try :[], :synonym_of
+    Synonym.create! junior_synonym: self, senior_synonym: senior if senior
+  end
+
 end

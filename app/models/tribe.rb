@@ -30,6 +30,7 @@ class Tribe < Taxon
         attributes[:type_taxt] = Importers::Bolton::Catalog::TextToTaxt.convert data[:type_genus][:texts]
       end
       tribe = create! attributes
+      tribe.import_synonyms data
       data[:taxonomic_history].each do |item|
         tribe.taxonomic_history_items.create! taxt: item
       end

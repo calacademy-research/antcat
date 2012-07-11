@@ -47,14 +47,9 @@ class Genus < GenusGroupTaxon
   end
 
   def import_taxonomic_history data
-    data[:taxonomic_history].each do |item|
+    for item in data[:taxonomic_history]
       taxonomic_history_items.create! taxt: item if item.present?
     end
-  end
-
-  def import_synonyms data
-    senior = data[:attributes].try :[], :synonym_of
-    Synonym.create! junior_synonym: self, senior_synonym: senior if senior
   end
 
   def self.import_attaichnus subfamily, tribe
