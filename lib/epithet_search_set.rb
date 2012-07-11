@@ -24,6 +24,7 @@ class EpithetSearchSet
     @epithets.concat(@epithets.inject([]) do |epithets, epithet|
       epithets.concat first_declension_nominative_singular epithet
       epithets.concat first_declension_genitive_singular epithet
+      epithets.concat first_and_second_declension_adjectives_in_er_nominative_singular epithet
       epithets.concat third_declension_nominative_singular epithet
     end).uniq!
   end
@@ -38,6 +39,10 @@ class EpithetSearchSet
 
   def third_declension_nominative_singular epithet
     decline epithet, "[#{CONSONANTS}]", ['e', 'is']
+  end
+
+  def first_and_second_declension_adjectives_in_er_nominative_singular epithet
+    decline epithet, "[#{CONSONANTS}]", ['er', 'era', 'erum']
   end
 
   def decline epithet, stem, endings

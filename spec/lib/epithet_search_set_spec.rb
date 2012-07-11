@@ -13,6 +13,11 @@ describe EpithetSearchSet do
         EpithetSearchSet.new('fuscovarius').epithets.should =~ ['fuscovarius', 'fuscovaria', 'fuscovarium']
         EpithetSearchSet.new('euguniae').epithets.should =~ ['euguniae', 'eugunii', 'euguni']
         EpithetSearchSet.new('eugunii').epithets.should =~ ['eugunii', 'euguniae', 'euguni']
+    describe "First and second declension adjectives in -er" do
+      it "should at least handle coniger" do
+        EpithetSearchSet.new('coniger').epithets.should == ['coniger', 'conigera', 'conigerum', 'conigaer', 'conigaera', 'conigaerum']
+        EpithetSearchSet.new('conigera').epithets.should == ['conigera', 'conigerus', 'conigerum', 'coniger', 'conigaera', 'conigaerus', 'conigaerum', 'conigaer']
+        EpithetSearchSet.new('conigerum').epithets.should == ['conigerum', 'conigerus', 'conigera', 'coniger', 'conigaerum', 'conigaerus', 'conigaera', 'conigaer']
       end
     end
     describe "Third declension" do
