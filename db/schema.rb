@@ -207,8 +207,8 @@ ActiveRecord::Schema.define(:version => 20120711215525) do
   end
 
   create_table "synonyms", :force => true do |t|
-    t.integer  "senior_id"
-    t.integer  "junior_id"
+    t.integer  "senior_synonym_id"
+    t.integer  "junior_synonym_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
