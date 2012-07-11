@@ -40,11 +40,21 @@ class Genus < GenusGroupTaxon
         attributes[:type_taxt] = Importers::Bolton::Catalog::TextToTaxt.convert data[:type_species][:texts]
       end
       genus = create! attributes
-      data[:taxonomic_history].each do |item|
-        genus.taxonomic_history_items.create! taxt: item if item.present?
-      end
+      genus.import_synonyms data
+      genus.import_taxonomic_history data
       genus
     end
+  end
+
+  def import_taxonomic_history data
+    data[:taxonomic_history].each do |item|
+      taxonomic_history_items.create! taxt: item if item.present?
+    end
+  end
+
+  def import_synonyms data
+    senior = data[:attributes].try :[], :synonym_of
+    Synonym.create! junior_synonym: self, senior_synonym: senior if senior
   end
 
   def self.import_attaichnus subfamily, tribe
