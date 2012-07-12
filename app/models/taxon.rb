@@ -133,7 +133,7 @@ class Taxon < ActiveRecord::Base
   end
 
   ###############################################
-  # statistics
+  # import
 
   def import_synonyms attributes
     senior = attributes[:synonym_of]
