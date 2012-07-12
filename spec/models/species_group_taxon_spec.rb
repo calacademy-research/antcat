@@ -95,11 +95,12 @@ describe SpeciesGroupTaxon do
       species = Species.find species
       species.should be_synonym
       ref = SpeciesGroupForwardRef.all.first
-      ref.fixee.should == species
+      ref.fixee.junior_synonym.should == species
+      ref.fixee_attribute.should == 'senior_synonym'
       ref.genus.should == genus
       ref.epithet.should == 'ferox'
       ref = SpeciesGroupForwardRef.all.second
-      ref.fixee.should == species
+      ref.fixee.junior_synonym.should == species
       ref.genus.should == genus
       ref.epithet.should == 'xerox'
     end
