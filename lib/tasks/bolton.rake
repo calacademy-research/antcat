@@ -15,7 +15,7 @@ namespace :bolton do
     desc "Import Bolton species catalog documents"
     task species: :environment do
       Importers::Bolton::Catalog::Species::Importer.new(show_progress: true).import_files(
-        Dir.glob("#{$BOLTON_DATA_DIRECTORY}/NGC-Spf*.htm")
+        Dir.glob("#{$BOLTON_DATA_DIRECTORY}/NGC-Sp*.htm")
       )
     end
     desc "Import all taxa"
