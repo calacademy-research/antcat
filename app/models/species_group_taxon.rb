@@ -110,21 +110,23 @@ class SpeciesGroupTaxon < Taxon
 
   def check_synonym_status status_record
     return unless status_record[:status] == 'synonym'
-    create_forward_ref_to_senior_synonym status_record[:epithet]
+    create_forward_ref_to_senior_synonym status_record[:epithets]
   end
 
   def get_status_from_history history
     history = Importers::Bolton::Catalog::Species::History.new(history)
-    {status: history.status, epithet: history.epithet}
+    {status: history.status, epithets: history.epithets}
   end
 
-  def create_forward_ref_to_senior_synonym epithet
-    SpeciesGroupForwardRef.create!(
-      fixee:            self,
-      fixee_attribute: 'synonym_of_id',
-      genus:            genus,
-      epithet:          epithet,
-    )
+  def create_forward_ref_to_senior_synonym epithets
+    for epithet in epithets
+      SpeciesGroupForwardRef.create!(
+        fixee:            self,
+        fixee_attribute: 'synonym_of_id',
+        genus:            genus,
+        epithet:          epithet,
+      )
+    end
   end
 
   class NoProtonymError < StandardError; end

@@ -1,6 +1,6 @@
 # coding: UTF-8
 class Importers::Bolton::Catalog::Species::History
-  attr_reader :status, :epithet
+  attr_reader :status, :epithets
 
   def initialize history
     @history = history
@@ -40,7 +40,7 @@ class Importers::Bolton::Catalog::Species::History
       else
         item = peek_next_item
         if item && item[:matched_text] =~ /First replacement name: <i>(\w+)<\/i>/
-          @epithet = $1
+          @epithets = [$1]
           get_next_item
         end
         @status = 'homonym'
@@ -69,11 +69,11 @@ class Importers::Bolton::Catalog::Species::History
   def check_synonym
     if @item[:matched_text] =~ /Unnecessary replacement.*?hence junior synonym of <i>(\w+)<\/i>/
       @status = 'synonym'
-      @epithet = $1
+      @epithets = [$1]
       return true
     elsif @item[:synonym_ofs]
       @status = 'synonym'
-      @epithet = @item[:synonym_ofs].first[:species_epithet]
+      @epithets = @item[:synonym_ofs].map {|e| e[:species_epithet]}
       return true
     end
   end

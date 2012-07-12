@@ -18,7 +18,7 @@ describe Importers::Bolton::Catalog::Species::History do
         {synonym_ofs: [{species_epithet: 'ferox'}]},
       ])
       history.status.should == 'synonym'
-      history.epithet.should == 'ferox'
+      history.epithets.should == ['ferox']
     end
     it "should recognize a synonym_of even if it's not the first item in the history" do
       history = @klass.new([
@@ -26,7 +26,7 @@ describe Importers::Bolton::Catalog::Species::History do
         {synonym_ofs: [{species_epithet: 'ferox'}]},
       ])
       history.status.should == 'synonym'
-      history.epithet.should == 'ferox'
+      history.epithets.should == ['ferox']
     end
     it "should overrule synonymy with revival from synonymy" do
       @klass.new([
@@ -113,7 +113,7 @@ describe Importers::Bolton::Catalog::Species::History do
   it "should handle unnecessary replacement name in text" do
     history = @klass.new([{text: [], matched_text: ' Unnecessary replacement name for <i>Odontomachus tyrannicus</i> Smith, F. 1861b: 44 and hence junior synonym of <i>gladiator</i> Mayr, 1862: 712, the first available replacement name: Brown, 1978c: 556.'}])
     history.status.should == 'synonym'
-    history.epithet.should == 'gladiator'
+    history.epithets.should == ['gladiator']
   end
 
   it "should handle both a first and second replacement name" do
@@ -125,7 +125,7 @@ describe Importers::Bolton::Catalog::Species::History do
       {text: [], matched_text: "Second (unnecessary) replacement name: <i>ineditus</i> Baroni Urbani, 1971b: 360."},
         ])
     history.status.should == 'homonym'
-    #history.epithet.should == 'menozzii'
+    #history.epithets.should == ['menozzii']
   end
 
   it "shouldn't get confused by this" do
