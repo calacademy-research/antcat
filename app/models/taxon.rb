@@ -135,8 +135,8 @@ class Taxon < ActiveRecord::Base
   ###############################################
   # statistics
 
-  def import_synonyms data
-    senior = data[:attributes].try :[], :synonym_of
+  def import_synonyms attributes
+    senior = attributes[:synonym_of]
     Synonym.create! junior_synonym: self, senior_synonym: senior if senior
   end
 
