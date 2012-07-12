@@ -40,7 +40,7 @@ class Genus < GenusGroupTaxon
         attributes[:type_taxt] = Importers::Bolton::Catalog::TextToTaxt.convert data[:type_species][:texts]
       end
       genus = create! attributes
-      genus.import_synonyms data
+      genus.import_synonyms attributes
       genus.import_taxonomic_history data
       genus
     end
