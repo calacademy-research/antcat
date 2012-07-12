@@ -16,7 +16,10 @@ class SpeciesGroupForwardRef < ActiveRecord::Base
     elsif specieses.count > 1
       Progress.error "Found multiple valid targets among #{specieses.map(&:name).map(&:to_s).join(', ')}"
     else
-      fixee.update_attributes fixee_attribute.to_sym => specieses.first.id
+      species = specieses.first
+      # updating the id instead of the association doesn't do anything
+      fixee.junior_synonym.update_attributes synonym_of: species if fixee.kind_of? Synonym
+      fixee.update_attributes fixee_attribute.to_sym => species
     end
   end
 

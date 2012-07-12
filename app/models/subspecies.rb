@@ -22,7 +22,7 @@ class Subspecies < SpeciesGroupTaxon
     epithet ||= data[:protonym][:species_epithet]
     SpeciesGroupForwardRef.create!(
       fixee:            self,
-      fixee_attribute: 'species_id',
+      fixee_attribute: 'species',
       genus:            data[:genus],
       epithet:          epithet,
     )
