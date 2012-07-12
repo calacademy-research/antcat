@@ -5,9 +5,11 @@ describe SpeciesGroupForwardRef do
 
   describe "The object" do
     before do
+      @species = create_species
+      @synonym = Synonym.create! junior_synonym: @species
       @valid_attributes = {
-        fixee:           create_species,
-        fixee_attribute: 'synonym_id',
+        fixee:           @synonym,
+        fixee_attribute: 'senior_synonym',
         genus:           create_genus,
         epithet:         'major',
       }
@@ -45,86 +47,116 @@ describe SpeciesGroupForwardRef do
   end
 
   describe "Fixing up one forward reference" do
+    before do
+      @genus = create_genus 'Atta'
+    end
 
-    it "should set the synonym_of attribute to a taxon matching a name" do
-      genus = create_genus 'Atta'
-      fixee = create_species
+    describe "Fixing up forward reference to parent species of subspecies" do
+      it "should find a senior synonym subspecies" do
+        species = create_species 'Atta molestans', genus: @genus
+        subspecies = create_subspecies genus: @genus
+        forward_ref = SpeciesGroupForwardRef.create!({
+          fixee: subspecies, fixee_attribute: 'species',
+          genus: @genus, epithet: 'molestans'
+        })
+        forward_ref.fixup
+        subspecies.reload
+        subspecies.species.name.to_s.should == 'Atta molestans'
+      end
+    end
+
+    it "should set seniors of the synonyms and the synonym_of attribute to a taxon matching a name" do
+      junior = create_species
+      synonym = Synonym.create! junior_synonym: junior
       forward_ref = SpeciesGroupForwardRef.create!({
-        fixee: fixee, fixee_attribute: 'synonym_of_id',
-        genus: genus, epithet: 'major'
+        fixee: synonym, fixee_attribute: 'senior_synonym',
+        genus: @genus, epithet: 'major'
       })
-      fixer = create_species 'Atta major', genus: genus
+      senior = create_species 'Atta major', genus: @genus
       forward_ref.fixup
-      fixee = Taxon.find fixee
-      fixee.synonym_of.should == fixer
+      synonym.reload
+      junior = synonym.junior_synonym
+      senior = synonym.senior_synonym
+      junior.senior_synonyms.should == [senior]
+      junior.synonym_of?(senior).should be_true
+      senior.junior_synonyms.should == [junior]
     end
 
     it "clear the attribute and record an error if there are no results" do
-      genus = create_genus 'Atta'
-      fixee = create_species
+      junior = create_species
+      synonym = Synonym.create! junior_synonym: junior
       forward_ref = SpeciesGroupForwardRef.create!({
-        fixee: fixee, fixee_attribute: 'synonym_of_id',
-        genus: genus, epithet: 'major'
+        fixee: synonym, fixee_attribute: 'senior_synonym',
+        genus: @genus, epithet: 'major'
       })
       Progress.should_receive :error
       forward_ref.fixup
-      fixee = Taxon.find fixee
-      fixee.synonym_of.should be_nil
+      junior = synonym.reload.junior_synonym
+      junior.synonym_of.should be_nil
+      junior.should have(0).senior_synonyms
+      junior.should have(0).junior_synonyms
     end
 
     it "clear the attribute and record an error if there is more than one result" do
-      genus = create_genus 'Atta'
-      fixee = create_species
+      junior = create_species
+      synonym = Synonym.create! junior_synonym: junior
       forward_ref = SpeciesGroupForwardRef.create!({
-        fixee: fixee, fixee_attribute: 'synonym_of_id',
-        genus: genus, epithet: 'major'
+        fixee: synonym, fixee_attribute: 'senior_synonym',
+        genus: @genus, epithet: 'major'
       })
-      name = create_name 'Atta major'
-      2.times {create_species genus: genus, name: name}
+      2.times {create_species 'Atta major', genus: @genus}
       Progress.should_receive :error
       forward_ref.fixup
-      fixee = Taxon.find fixee
-      fixee.synonym_of.should be_nil
+      junior = synonym.reload.junior_synonym
+      junior.synonym_of.should be_nil
+      junior.should have(0).senior_synonyms
+      junior.should have(0).junior_synonyms
     end
 
     it "should use declension rules to find Atta magnus when the synonym is to Atta magna" do
-      genus = create_genus 'Atta'
-      fixee = create_species genus: genus
+      junior = create_species genus: @genus
+      synonym = Synonym.create! junior_synonym: junior
       forward_ref = SpeciesGroupForwardRef.create!({
-        fixee: fixee, fixee_attribute: 'synonym_of_id',
-        genus: genus, epithet: 'magna'
+        fixee: synonym, fixee_attribute: 'senior_synonym',
+        genus: @genus, epithet: 'magna'
       })
-      fixer = create_species 'Atta magnus', genus: genus
+      senior = create_species 'Atta magnus', genus: @genus
       forward_ref.fixup
-      fixee = Taxon.find fixee
-      fixee.synonym_of.should == fixer
+      synonym.reload
+      junior = synonym.junior_synonym
+      senior = synonym.senior_synonym
+      junior.senior_synonyms.should == [senior]
+      junior.synonym_of?(senior).should be_true
+      senior.junior_synonyms.should == [junior]
     end
 
     it "should find a senior synonym subspecies" do
-      genus = create_genus 'Atta'
-      fixee = create_subspecies genus: genus
+      junior = create_subspecies genus: @genus
+      synonym = Synonym.create! junior_synonym: junior
       forward_ref = SpeciesGroupForwardRef.create!({
-        fixee: fixee, fixee_attribute: 'synonym_of_id',
-        genus: genus, epithet: 'molestans'
+        fixee: synonym, fixee_attribute: 'senior_synonym',
+        genus: @genus, epithet: 'molestans'
       })
-      fixer = create_subspecies 'Atta magnus molestans', genus: genus
+      senior = create_subspecies 'Atta magnus molestans', genus: @genus
       forward_ref.fixup
-      fixee = Taxon.find fixee
-      fixee.synonym_of.should == fixer
+      junior = synonym.reload.junior_synonym
+      junior.synonym_of.should == senior
+      junior.senior_synonyms.should == [senior]
     end
 
     it "should pick the validest target when fixing up" do
-      genus = create_genus 'Atta'
-      fixee = create_species genus: genus
+      junior = create_species genus: @genus
+      synonym = Synonym.create! junior_synonym: junior
       forward_ref = SpeciesGroupForwardRef.create!({
-        fixee: fixee, fixee_attribute: 'synonym_of_id',
-        genus: genus, epithet: 'magna'
+        fixee: synonym, fixee_attribute: 'senior_synonym',
+        genus: @genus, epithet: 'magna'
       })
-      invalid_fixer = create_species 'Atta magnus', genus: genus, status: 'homonym'
-      fixer = create_species 'Atta magnus', genus: genus
+      invalid_senior = create_species 'Atta magnus', genus: @genus, status: 'homonym'
+      senior = create_species 'Atta magnus', genus: @genus
       forward_ref.fixup
-      fixee = Taxon.find fixee
-      fixee.synonym_of.should == fixer
+      junior = synonym.reload.junior_synonym
+      junior.synonym_of.should == senior
+      junior.senior_synonyms.should == [senior]
     end
 
   end
