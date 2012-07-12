@@ -87,14 +87,21 @@ describe SpeciesGroupTaxon do
       genus = create_genus 'Atta'
       ferox = create_species 'Atta ferox', genus: genus
       species = create_species 'Atta dyak', genus: genus
-      history = [{synonym_ofs: [{species_epithet: 'ferox'}]}]
+      history = [{synonym_ofs: [
+        {species_epithet: 'ferox'},
+        {species_epithet: 'xerox'},
+      ]}]
       species.set_status_from_history history
       species = Species.find species
       species.should be_synonym
-      ref = SpeciesGroupForwardRef.first
+      ref = SpeciesGroupForwardRef.all.first
       ref.fixee.should == species
       ref.genus.should == genus
       ref.epithet.should == 'ferox'
+      ref = SpeciesGroupForwardRef.all.second
+      ref.fixee.should == species
+      ref.genus.should == genus
+      ref.epithet.should == 'xerox'
     end
 
     #it "should recognize a homonym_of and set the status accordingly" do
