@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120711215525) do
+ActiveRecord::Schema.define(:version => 20120712030800) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -204,6 +204,7 @@ ActiveRecord::Schema.define(:version => 20120711215525) do
     t.string   "epithet"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "fixee_type"
   end
 
   create_table "synonyms", :force => true do |t|
