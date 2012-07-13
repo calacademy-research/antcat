@@ -6,6 +6,7 @@ grammar Importers::Bolton::Catalog::Species::Grammar
     | note
     | genus_see_under
     | genus_header
+    | species_see_under_with_brackets
     | species_group_record
     | species_see_under
   end
@@ -56,6 +57,12 @@ grammar Importers::Bolton::Catalog::Species::Grammar
      (/.+see / reference /.*/)
     ) { 
       {:type => :species_see_under}
+    }
+  end 
+
+  rule species_see_under_with_brackets
+    (species_epithet_label /.*?; see under / italic uppercase_word /.*/) {
+      {type: :species_see_under}
     }
   end 
 
