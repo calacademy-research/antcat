@@ -899,6 +899,14 @@ describe Importers::Bolton::Catalog::Species::Grammar do
       it "should detect 'see under...above'" do
         @grammar.parse("<i>nigricans</i>: see <i>nigrescens</i>, above.", :root => :species_see_under)
       end
+      it "should handle a bracketed note after the authorship'" do
+        line = "<i>grisea</i> Forel, 1910 [<i>Sima</i>]; see under <i>PLATYTHYREA</i>."
+        @grammar.parse(line).value[:type].should == :species_see_under
+      end
+      it "should handle a bracketed note after the authorship'" do
+        line = '<i>affinotuberum</i> Forel, 1874: 88. (<i>nomen nudum</i>); see under <i>LEPTOTHORAX</i>.'
+        @grammar.parse(line).value[:type].should == :species_see_under
+      end
     end
 
     describe "Genus see-under lines" do
