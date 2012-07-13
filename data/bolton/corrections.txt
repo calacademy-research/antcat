@@ -4,7 +4,10 @@
                         To make parsing easier, inserted "(pending)" where online citations
                           have no pagination (Munoz-Lopez 2011)
   04. MYRMECIOMORPHS    Add "Taxonomic history" header to Myrmeciites
+  07. MYRMICOMORPHS 1   Changed underlined "Monomorium" to italics
   08. MYRMICOMORPHS 2   Fix italicization of "Genus OCYMYRMEX" to put italics inside red
+                        Removed odd comma in "Mayr, 1853a: 147; Souli‚, 1964: 398."
+                        Unitalicized "in" in "<i>incertae sedis in [...]"
   09. PONEROMORPHS      Remove italicized space in Opamyrma
   NGC-Spcam1            Add period in ' var '
   NGC-Spst-tet          Deleted duplicate Strumigenys ocypete
