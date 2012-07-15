@@ -215,9 +215,9 @@ describe Taxon do
       genus.should_not be_synonym_of another_genus
     end
     it "should think it's a synonym of something when it is" do
-      senior_synonym = FactoryGirl.create :genus
-      junior_synonym = FactoryGirl.create :genus, synonym_of: senior_synonym, status: 'synonym'
-      junior_synonym.should be_synonym_of senior_synonym
+      senior = FactoryGirl.create :genus
+      junior = create_junior_synonym senior
+      junior.should be_synonym_of senior
     end
   end
 

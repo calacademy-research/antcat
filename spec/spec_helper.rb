@@ -94,3 +94,9 @@ def create_name name
   name, epithet = get_name_parts name
   FactoryGirl.create :name, name: name, epithet: epithet
 end
+
+def create_junior_synonym senior
+  junior = FactoryGirl.create :genus, synonym_of: senior, status: 'synonym'
+  synonym = Synonym.create! senior_synonym: senior, junior_synonym: junior
+  junior
+end
