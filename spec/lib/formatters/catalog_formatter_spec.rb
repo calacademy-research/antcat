@@ -147,8 +147,8 @@ describe Formatters::CatalogFormatter do
     end
     it "should show the seniorer synonym" do
       senior_synonym = create_genus 'Atta'
-      taxon = create_genus status: 'synonym', synonym_of: senior_synonym
-      result = @formatter.format_status(taxon)
+      taxon = create_junior_synonym senior_synonym
+      result = @formatter.format_status taxon
       result.should == 'synonym of <span class="genus name taxon"><i>Atta</i></span>'
       result.should be_html_safe
     end
