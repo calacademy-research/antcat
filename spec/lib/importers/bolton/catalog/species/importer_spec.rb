@@ -85,6 +85,17 @@ describe Importers::Bolton::Catalog::Species::Importer do
     Species.find_by_name('Acanthomyrmex dyak').should be_synonym_of Species.find_by_name 'Acanthomyrmex ferox'
   end
 
+  it "should pick the valid genus when there's two" do
+    create_genus 'Acanthomyrmex', status: 'synonym'
+    valid = create_genus 'Acanthomyrmex', status: 'valid'
+    contents = make_contents %{
+      <p><i>ACANTHOMYRMEX</i></p>
+      <p><i>dyak</i>. <i>Acanthomyrmex dyak</i> Moffett, 1986c: 67 (s.w.) INDONESIA. Junior synonym of <i>ferox</i>: Moffett, 1986c: 70.</p>
+    }
+    @importer.import_html contents
+    Species.find_by_name('Acanthomyrmex dyak').genus.should == valid
+  end
+
   #it "should recognize a homonym and link to it" do
     #create_genus 'Acropyga', subfamily: nil, tribe: nil
     #contents = make_contents %{

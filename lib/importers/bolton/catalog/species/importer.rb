@@ -36,6 +36,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
         @genus_count += 1
         @genus = nil
         matching_genus_names = Genus.with_names.where "name = '#{@parse_result[:name]}'"
+        matching_genus_names.keep_if {|e| not e.invalid?} if matching_genus_names.count > 1
         if matching_genus_names.empty?
           Progress.error "Genus '#{@parse_result[:name]}' did not exist"
           @genus_not_found_count += 1
@@ -82,8 +83,8 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     Progress.puts "#{@genus_count} genera"
     Progress.puts "#{@species_count} species"
     Progress.puts "#{@genus_not_found_count} genera not found"
-    Progress.puts "#{@duplicate_genera_that_need_resolving_count} duplicate genera that need resolving"
-    Progress.puts "#{@species_without_protonym_count} species without protonyms"
+    Progress.puts "#{@duplicate_genera_that_need_resolving_count} duplicate genera that need resolving" if @duplicate_genera_that_need_resolving_count > 0
+    Progress.puts "#{@species_without_protonym_count} species without protonyms" if @species_without_protonym_count > 0
     Progress.puts "#{@error_count} could not understand"
   end
 
