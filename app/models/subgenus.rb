@@ -25,6 +25,7 @@ class Subgenus < GenusGroupTaxon
         attributes[:type_taxt] = Importers::Bolton::Catalog::TextToTaxt.convert data[:type_species][:texts]
       end
       subgenus = create! attributes
+      subgenus.import_synonyms attributes
       data[:taxonomic_history].each do |item|
         subgenus.taxonomic_history_items.create! taxt: item if item.present?
       end
