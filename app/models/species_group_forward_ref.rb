@@ -6,7 +6,7 @@ class SpeciesGroupForwardRef < ActiveRecord::Base
   validates  :epithet, presence: true 
 
   def self.fixup
-    all.each {|e| e.fixup}
+    all.each &:fixup
   end
 
   def fixup
