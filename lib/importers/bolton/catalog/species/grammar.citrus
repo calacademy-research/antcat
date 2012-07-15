@@ -61,7 +61,7 @@ grammar Importers::Bolton::Catalog::Species::Grammar
   end 
 
   rule species_see_under_with_brackets
-    (species_epithet_label /.*?; see under / italic uppercase_word /.*/) {
+    (species_epithet_label /.*?; see under / fossil_flag? italic uppercase_word /.*/) {
       {type: :species_see_under}
     }
   end 
