@@ -209,7 +209,7 @@ describe Taxon do
     end
     it "should think it's a synonym of something when it is" do
       senior = FactoryGirl.create :genus
-      junior = create_junior_synonym senior
+      junior = create_synonym senior
       junior.should be_synonym_of senior
     end
   end
@@ -234,7 +234,7 @@ describe Taxon do
       subfamily = FactoryGirl.create :subfamily
       replacement = FactoryGirl.create :genus, subfamily: subfamily
       homonym = FactoryGirl.create :genus, homonym_replaced_by: replacement, status: 'homonym', subfamily: subfamily
-      synonym = create_junior_synonym replacement, subfamily: subfamily
+      synonym = create_synonym replacement, subfamily: subfamily
       subfamily.genera.valid.should == [replacement]
     end
   end
