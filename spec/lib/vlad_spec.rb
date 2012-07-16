@@ -36,14 +36,12 @@ describe Vlad do
     results.first.should == subspecies_without_species
   end
 
-  it "should show taxa whose status doesn't match their synonym_of" do
-    tribe = FactoryGirl.create :tribe
-    no_synonym = FactoryGirl.create :genus, status: 'synonym'
-    no_status = FactoryGirl.create :tribe, synonym_of: tribe
-    ok = FactoryGirl.create :species, synonym_of: FactoryGirl.create(:species), status: 'synonym'
-
-    results = Vlad::TaxaWithMismatchedSynonymAndStatus.query
-    results.map(&:id).should =~ [no_synonym.id, no_status.id]
+  it "should show taxa with synonym status, but no synonyms" do
+    genus = create_genus
+    no_synonym = create_genus status: 'synonym'
+    has_synonym = create_junior_synonym genus
+    results = Vlad::SynonymsWithoutSeniors.query
+    results.map(&:id).should =~ [no_synonym.id]
   end
 
   describe "Duplicate checking" do
