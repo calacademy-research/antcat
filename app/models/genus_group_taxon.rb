@@ -41,10 +41,7 @@ class GenusGroupTaxon < Taxon
         headline_notes_taxt:  Importers::Bolton::Catalog::TextToTaxt.convert(data[:note]),
       ).merge! parent_attributes data, attributes
       attributes.merge! data[:attributes] if data[:attributes]
-      if data[:type_species]
-        attributes[:type_name] = Name.import data[:type_species]
-        attributes[:type_taxt] = Importers::Bolton::Catalog::TextToTaxt.convert data[:type_species][:texts]
-      end
+      attributes.merge! get_type_attributes :type_species, data
       senior = attributes.delete :synonym_of
       taxon = create! attributes
       taxon.import_synonyms senior

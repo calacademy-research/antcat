@@ -24,10 +24,7 @@ class Tribe < Taxon
         protonym:     Protonym.import(data[:protonym]),
         subfamily:    data[:subfamily],
       }
-      if data[:type_genus]
-        attributes[:type_name] = Name.import data[:type_genus]
-        attributes[:type_taxt] = Importers::Bolton::Catalog::TextToTaxt.convert data[:type_genus][:texts]
-      end
+      attributes.merge! get_type_attributes :type_genus, data
       senior = data.delete :synonym_of
       tribe = create! attributes
       tribe.import_synonyms senior
