@@ -39,7 +39,7 @@ describe Vlad do
   it "should show taxa with synonym status, but no synonyms" do
     genus = create_genus
     no_synonym = create_genus status: 'synonym'
-    has_synonym = create_junior_synonym genus
+    has_synonym = create_synonym genus
     results = Vlad::SynonymsWithoutSeniors.query
     results.map(&:id).should =~ [no_synonym.id]
   end
