@@ -169,14 +169,14 @@ class Vlad
     end
   end
 
-  class TaxaWithMismatchedSynonymAndStatus < Problem
+  class SynonymsWithoutSeniors < Problem
+    def self.query
+      Taxon.find_by_sql "SELECT taxa.id FROM taxa LEFT OUTER JOIN synonyms on taxa.id = synonyms.junior_synonym_id WHERE status = 'synonym' AND synonyms.id IS NULL"
+    end
     def self.display
       display_results_section query, reverse_order: true do |taxon|
-        "#{taxon.name} (#{taxon.status}) #{taxon.synonym_of_id}"
+        Taxon.find(taxon).name
       end
-    end
-    def self.query
-      Taxon.where "(status = 'synonym') = (synonym_of_id IS NULL)"
     end
   end
 
