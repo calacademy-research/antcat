@@ -23,14 +23,14 @@ class Tribe < Taxon
         status:       data[:status] || 'valid',
         protonym:     Protonym.import(data[:protonym]),
         subfamily:    data[:subfamily],
-        synonym_of:   data[:synonym_of],
       }
       if data[:type_genus]
         attributes[:type_name] = Name.import data[:type_genus]
         attributes[:type_taxt] = Importers::Bolton::Catalog::TextToTaxt.convert data[:type_genus][:texts]
       end
+      senior = data.delete :synonym_of
       tribe = create! attributes
-      tribe.import_synonyms attributes
+      tribe.import_synonyms senior
       data[:taxonomic_history].each do |item|
         tribe.taxonomic_history_items.create! taxt: item
       end
