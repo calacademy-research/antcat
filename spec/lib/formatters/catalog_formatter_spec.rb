@@ -145,12 +145,20 @@ describe Formatters::CatalogFormatter do
       taxon = create_genus status: 'homonym'
       @formatter.format_status(taxon).should == 'homonym'
     end
-    it "should show the seniorer synonym" do
+    it "should show one synonym" do
       senior_synonym = create_genus 'Atta'
       taxon = create_junior_synonym senior_synonym
       result = @formatter.format_status taxon
       result.should == 'synonym of <span class="genus name taxon"><i>Atta</i></span>'
       result.should be_html_safe
+    end
+    it "should show all synonyms" do
+      senior_synonym = create_genus 'Atta'
+      other_senior_synonym = create_genus 'Eciton'
+      taxon = create_junior_synonym senior_synonym
+      Synonym.create! senior_synonym: other_senior_synonym, junior_synonym: taxon
+      result = @formatter.format_status taxon
+      result.should == 'synonym of <span class="genus name taxon"><i>Atta</i></span>, <span class="genus name taxon"><i>Eciton</i></span>'
     end
     it "should not freak out if the senior synonym hasn't been set yet" do
       taxon = create_genus status: 'synonym', synonym_of: nil
