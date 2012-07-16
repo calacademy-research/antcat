@@ -93,9 +93,16 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     SpeciesGroupForwardRef.fixup
     set_status_manually 'Camponotus abdominalis', 'homonym', 0
     set_status_manually 'Camponotus (Camponotus) herculeanus var. rubens', 'synonym', 0
-    Subspecies.find_by_name('Camponotus (Camponotus) herculeanus var. rubens').update_attribute :synonym_of,
-      Species.find_by_name('Camponotus novaeboracensis') rescue nil
+    set_synonym 'Camponotus (Camponotus) herculeanus var. rubens', 'Camponotus novaeboracensis'
     Progress.puts
+  end
+
+  def set_synonym junior, senior
+    junior = Taxon.find_by_name junior
+    senior = Taxon.find_by_name senior
+    Synonym.create! junior_synonym: junior, senior_synonym: senior
+    junior.update_attribute :status, 'synonym'
+  rescue
   end
 
   def do_manual_fixups
