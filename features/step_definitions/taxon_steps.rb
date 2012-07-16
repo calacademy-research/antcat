@@ -67,12 +67,6 @@ Given /a genus that was replaced by "(.*?)" exists with a name of "(.*?)" with a
   taxon.taxonomic_history_items.create! taxt: taxonomic_history
 end
 
-Given /a genus that was synonymized to "(.*?)" exists with a name of "(.*?)" with a taxonomic history of "(.*?)"/ do |senior_synonym, name, taxonomic_history|
-  senior_synonym = Genus.find_by_name(senior_synonym) || Factory(:genus, name: FactoryGirl.create(:name, name: senior_synonym))
-  taxon = Factory :genus, name: FactoryGirl.create(:name, name: name), status: 'synonym', subfamily: senior_synonym.subfamily, synonym_of: senior_synonym
-  taxon.taxonomic_history_items.create! taxt: taxonomic_history
-end
-
 Given /a subgenus exists with a name of "(.*?)"(?: and a genus of "(.*?)")?(?: and a taxonomic history of "(.*?)")?/ do |epithet, parent_name, taxonomic_history|
   genus = parent_name && (Genus.find_by_name(parent_name) || Factory(:genus, name: FactoryGirl.create(:genus_name, name: parent_name)))
   name = parent_name + ' (' + epithet + ')'
