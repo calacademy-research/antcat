@@ -56,6 +56,10 @@ def create_tribe name_or_attributes = 'Attini', attributes = {}
   create_taxon name_or_attributes, :tribe, :tribe_name, attributes
 end
 
+def create_taxon name_or_attributes = 'Atta', attributes = {}
+  create_taxon name_or_attributes, :genus, :genus_name, attributes
+end
+
 def create_genus name_or_attributes = 'Atta', attributes = {}
   create_taxon name_or_attributes, :genus, :genus_name, attributes
 end
@@ -95,8 +99,8 @@ def create_name name
   FactoryGirl.create :name, name: name, epithet: epithet
 end
 
-def create_junior_synonym senior
-  junior = FactoryGirl.create :genus, synonym_of: senior, status: 'synonym'
+def create_junior_synonym senior, attributes = {}
+  junior = create_genus attributes.merge synonym_of: senior, status: 'synonym'
   synonym = Synonym.create! senior_synonym: senior, junior_synonym: junior
   junior
 end

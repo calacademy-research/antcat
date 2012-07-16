@@ -63,13 +63,6 @@ describe Taxon do
   it "should raise if anyone calls #children directly" do
     lambda {Taxon.new.children}.should raise_error NotImplementedError
   end
-  it "should be able to be a synonym of something else" do
-    gauromyrmex = FactoryGirl.create :taxon
-    acalama = FactoryGirl.create :taxon, status: 'synonym', synonym_of: gauromyrmex
-    acalama.reload
-    acalama.should be_synonym
-    acalama.reload.synonym_of.should == gauromyrmex
-  end
   it "should be able to be a homonym of something else" do
     neivamyrmex = FactoryGirl.create :taxon
     acamatus = FactoryGirl.create :taxon, status: 'homonym', homonym_replaced_by: neivamyrmex
@@ -241,7 +234,7 @@ describe Taxon do
       subfamily = FactoryGirl.create :subfamily
       replacement = FactoryGirl.create :genus, subfamily: subfamily
       homonym = FactoryGirl.create :genus, homonym_replaced_by: replacement, status: 'homonym', subfamily: subfamily
-      synonym = FactoryGirl.create :genus, synonym_of: replacement, status: 'synonym', subfamily: subfamily
+      synonym = create_junior_synonym replacement, subfamily: subfamily
       subfamily.genera.valid.should == [replacement]
     end
   end
