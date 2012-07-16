@@ -66,10 +66,15 @@ class Formatters::CatalogFormatter
       labels << "unresolved junior homonym"
     elsif taxon.invalid?
       label = Status[taxon].to_s.dup
-      label << ' of ' << taxon_label_span(taxon.synonym_of, ignore_status: true) if taxon.synonym? && taxon.synonym_of
+      label << format_synonyms(taxon)
       labels << label
     end
     labels.join(', ').html_safe
+  end
+
+  def self.format_synonyms taxon
+    return '' unless taxon.senior_synonyms.count > 0
+    ' of ' << taxon.senior_synonyms.map {|e| taxon_label_span(e, ignore_status: true)}.join(', ')
   end
 
   def self.format_headline taxon, user
