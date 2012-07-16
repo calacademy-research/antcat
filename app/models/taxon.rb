@@ -44,7 +44,6 @@ class Taxon < ActiveRecord::Base
 
   ###############################################
   # synonym
-  belongs_to :synonym_of, class_name: 'Taxon', foreign_key: :synonym_of_id
   def synonym?; status == 'synonym' end
   def synonym_of? taxon; senior_synonyms.include? taxon end
   has_many :synonyms_as_junior, foreign_key: :junior_synonym_id, class_name: 'Synonym'
@@ -135,8 +134,7 @@ class Taxon < ActiveRecord::Base
   ###############################################
   # import
 
-  def import_synonyms attributes
-    senior = attributes[:synonym_of]
+  def import_synonyms senior
     Synonym.create! junior_synonym: self, senior_synonym: senior if senior
   end
 

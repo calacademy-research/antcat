@@ -161,7 +161,7 @@ describe Formatters::CatalogFormatter do
       result.should == 'synonym of <span class="genus name taxon"><i>Atta</i></span>, <span class="genus name taxon"><i>Eciton</i></span>'
     end
     it "should not freak out if the senior synonym hasn't been set yet" do
-      taxon = create_genus status: 'synonym', synonym_of: nil
+      taxon = create_genus status: 'synonym'
       @formatter.format_status(taxon).should == 'synonym'
     end
     it "should show where it is incertae sedis" do

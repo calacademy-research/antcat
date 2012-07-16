@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120712030800) do
+ActiveRecord::Schema.define(:version => 20120716021031) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -223,7 +223,6 @@ ActiveRecord::Schema.define(:version => 20120712030800) do
     t.integer  "subfamily_id"
     t.integer  "tribe_id"
     t.integer  "genus_id"
-    t.integer  "synonym_of_id"
     t.integer  "homonym_replaced_by_id"
     t.string   "incertae_sedis_in"
     t.integer  "species_id"
@@ -245,7 +244,6 @@ ActiveRecord::Schema.define(:version => 20120712030800) do
   add_index "taxa", ["species_id"], :name => "taxa_species_id_index"
   add_index "taxa", ["subfamily_id"], :name => "taxa_subfamily_id_idx"
   add_index "taxa", ["subgenus_id"], :name => "index_taxa_on_subgenus_id"
-  add_index "taxa", ["synonym_of_id"], :name => "taxa_synonym_of_id_index"
   add_index "taxa", ["tribe_id"], :name => "taxa_tribe_id_idx"
   add_index "taxa", ["type"], :name => "taxa_type_idx"
   add_index "taxa", ["type_name_id"], :name => "index_taxa_on_type_name_id"

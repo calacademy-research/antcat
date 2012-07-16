@@ -38,7 +38,6 @@ class GenusGroupTaxon < Taxon
         fossil:               data[:fossil] || false,
         status:               data[:status] || 'valid',
         protonym:             Protonym.import(data[:protonym]),
-        synonym_of:           data[:synonym_of],
         headline_notes_taxt:  Importers::Bolton::Catalog::TextToTaxt.convert(data[:note]),
       ).merge! parent_attributes data, attributes
       attributes.merge! data[:attributes] if data[:attributes]
@@ -46,8 +45,9 @@ class GenusGroupTaxon < Taxon
         attributes[:type_name] = Name.import data[:type_species]
         attributes[:type_taxt] = Importers::Bolton::Catalog::TextToTaxt.convert data[:type_species][:texts]
       end
+      senior = attributes.delete :synonym_of
       taxon = create! attributes
-      taxon.import_synonyms attributes
+      taxon.import_synonyms senior
       taxon.import_taxonomic_history data
       taxon
     end

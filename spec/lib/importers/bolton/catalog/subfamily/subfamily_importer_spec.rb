@@ -124,8 +124,8 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
       tribe.reference_sections.map(&:references).should == ["{ref #{emery.id}}: 461 (diagnosis)"]
 
       junior_synonym = Tribe.find_by_name 'Anonychomyrmini' 
-      junior_synonym.synonym_of.should == tribe
       junior_synonym.should be_synonym
+      junior_synonym.should be_synonym_of tribe
 
       aneuretus = Genus.find_by_name 'Aneuretus'
       aneuretus.tribe.should == tribe
@@ -133,7 +133,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
       aneuretus.reference_sections.map(&:references).should == ["Aneuretus reference"]
 
       junior_synonym = Genus.find_by_name 'Odontomyrmex'
-      junior_synonym.synonym_of.should == aneuretus
+      junior_synonym.should be_synonym_of aneuretus
       junior_synonym.should be_synonym
       junior_synonym.tribe.should == aneuretus.tribe
       junior_synonym.subfamily.should == aneuretus.subfamily

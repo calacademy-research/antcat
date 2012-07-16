@@ -65,7 +65,7 @@ describe SpeciesGroupForwardRef do
       end
     end
 
-    it "should set seniors of the synonyms and the synonym_of attribute to a taxon matching a name" do
+    it "should add a senior synonym matching a name" do
       junior = create_species
       synonym = Synonym.create! junior_synonym: junior
       forward_ref = SpeciesGroupForwardRef.create!({
@@ -78,7 +78,7 @@ describe SpeciesGroupForwardRef do
       junior = synonym.junior_synonym
       senior = synonym.senior_synonym
       junior.senior_synonyms.should == [senior]
-      junior.synonym_of?(senior).should be_true
+      junior.should be_synonym_of  senior
       senior.junior_synonyms.should == [junior]
     end
 
@@ -92,7 +92,6 @@ describe SpeciesGroupForwardRef do
       Progress.should_receive :error
       forward_ref.fixup
       junior = synonym.reload.junior_synonym
-      junior.synonym_of.should be_nil
       junior.should have(0).senior_synonyms
       junior.should have(0).junior_synonyms
     end
@@ -108,7 +107,6 @@ describe SpeciesGroupForwardRef do
       Progress.should_receive :error
       forward_ref.fixup
       junior = synonym.reload.junior_synonym
-      junior.synonym_of.should be_nil
       junior.should have(0).senior_synonyms
       junior.should have(0).junior_synonyms
     end
@@ -126,7 +124,7 @@ describe SpeciesGroupForwardRef do
       junior = synonym.junior_synonym
       senior = synonym.senior_synonym
       junior.senior_synonyms.should == [senior]
-      junior.synonym_of?(senior).should be_true
+      junior.should be_synonym_of senior
       senior.junior_synonyms.should == [junior]
     end
 
@@ -140,7 +138,7 @@ describe SpeciesGroupForwardRef do
       senior = create_subspecies 'Atta magnus molestans', genus: @genus
       forward_ref.fixup
       junior = synonym.reload.junior_synonym
-      junior.synonym_of.should == senior
+      junior.should be_synonym_of senior
       junior.senior_synonyms.should == [senior]
     end
 
@@ -155,7 +153,7 @@ describe SpeciesGroupForwardRef do
       senior = create_species 'Atta magnus', genus: @genus
       forward_ref.fixup
       junior = synonym.reload.junior_synonym
-      junior.synonym_of.should == senior
+      junior.should be_synonym_of senior
       junior.senior_synonyms.should == [senior]
     end
 
