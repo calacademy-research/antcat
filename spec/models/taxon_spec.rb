@@ -88,14 +88,14 @@ describe Taxon do
       taxon.current_valid_name.should == 'Name'
     end
     it "if it is a synonym: the name of the target" do
-      target = Factory :taxon, name: FactoryGirl.create(:name, name: 'Target')
-      taxon = Factory :taxon, status: 'synonym', synonym_of: target
+      target = create_genus 'Target'
+      taxon = create_synonym target
       taxon.current_valid_name.should == 'Target'
     end
     it "if it is a synonym of a synonym: the name of the target's target" do
-      target_target = Factory :taxon, name: FactoryGirl.create(:name, name: 'Target_Target')
-      target = Factory :taxon, status: 'synonym', synonym_of: target_target
-      taxon = Factory :taxon, status: 'synonym', synonym_of: target
+      target_target = create_taxon 'Target_Target'
+      target = create_synonym target_target
+      taxon = create_synonym target
       taxon.current_valid_name.should == 'Target_Target'
     end
   end

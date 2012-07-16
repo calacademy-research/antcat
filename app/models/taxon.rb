@@ -90,7 +90,7 @@ class Taxon < ActiveRecord::Base
 
   def current_valid_name
     target = self
-    target = target.synonym_of while target.synonym_of
+    target = target.senior_synonyms.first while target.synonym?
     target.name.to_s
   end
 
