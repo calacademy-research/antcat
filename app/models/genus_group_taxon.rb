@@ -23,6 +23,7 @@ class GenusGroupTaxon < Taxon
       string << " #{tribe.status}" if tribe.invalid?
     end
     string << ')' if subfamily || tribe
+    string << " #{id}"
     string
   end
 
