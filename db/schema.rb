@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120717004525) do
+ActiveRecord::Schema.define(:version => 20120717022134) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -234,6 +234,7 @@ ActiveRecord::Schema.define(:version => 20120717004525) do
     t.integer  "name_id"
     t.integer  "type_name_id"
     t.text     "genus_species_header_note"
+    t.boolean  "type_fossil"
   end
 
   add_index "taxa", ["genus_id"], :name => "taxa_genus_id_idx"
