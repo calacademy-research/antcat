@@ -77,6 +77,10 @@ class Formatters::CatalogFormatter
     ' of ' << taxon.senior_synonyms.map {|e| taxon_label_span(e, ignore_status: true)}.join(', ')
   end
 
+  def self.format_genus_species_header_note taxon, user
+    format_notes taxon.genus_species_header_note, user
+  end
+
   def self.format_headline taxon, user
     string = format_headline_protonym(taxon.protonym, user) + ' ' + format_headline_type(taxon, user)
     headline_notes = format_headline_notes taxon, user
@@ -141,8 +145,12 @@ class Formatters::CatalogFormatter
   end
 
   def self.format_headline_notes taxon, user
-    return unless taxon.headline_notes_taxt.present?
-    Taxt.to_string taxon.headline_notes_taxt, user
+    format_notes taxon.headline_notes_taxt, user
+  end
+
+  def self.format_notes taxt, user
+    return unless taxt.present?
+    Taxt.to_string taxt, user
   end
 
   #######################
