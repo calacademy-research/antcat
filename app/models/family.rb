@@ -19,6 +19,10 @@ class Family < Taxon
     end
   end
 
+  def genera
+    Genus.without_subfamily
+  end
+
   def statistics
     get_statistics Tribe, Subfamily, Genus, Species, Subspecies
   end
