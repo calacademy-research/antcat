@@ -28,7 +28,7 @@ Feature: Using the catalog
     When I go to the catalog
     Then I should see "Dolichoderinae" in the index
     And I should not see "Dolichoderinae history"
-    And I should not see "Atta"
+    And I should not see "Atta" in the index
 
   Scenario: Choosing '(no subfamily)'
     When I go to the catalog
