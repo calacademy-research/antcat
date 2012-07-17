@@ -13,10 +13,7 @@ class Subfamily < Taxon
         status:       'valid',
         protonym:     Protonym.import(data[:protonym]),
       }
-      if data[:type_genus]
-        attributes[:type_name] = Name.import data[:type_genus]
-        attributes[:type_taxt] = Importers::Bolton::Catalog::TextToTaxt.convert data[:type_genus][:texts]
-      end
+      attributes.merge! get_type_attributes :type_genus, data
       subfamily = create! attributes
       data[:taxonomic_history].each do |item|
         subfamily.taxonomic_history_items.create! taxt: item
