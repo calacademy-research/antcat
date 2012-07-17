@@ -142,6 +142,7 @@ class Taxon < ActiveRecord::Base
     attributes = {}
     if data[key]
       attributes[:type_name] = Name.import data[key]
+      attributes[:type_fossil] = data[key][:fossil]
       attributes[:type_taxt] = Importers::Bolton::Catalog::TextToTaxt.convert data[key][:texts]
     end
     attributes
