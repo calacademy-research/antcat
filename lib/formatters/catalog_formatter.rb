@@ -135,7 +135,8 @@ class Formatters::CatalogFormatter
   def self.format_headline_type_name taxon
     rank = taxon.type_name.rank
     rank = 'genus' if rank == 'subgenus'
-    content_tag :span, taxon.type_name.to_html.html_safe, class: "#{rank} taxon"
+    name = fossil taxon.type_name.to_html.html_safe, taxon.type_fossil
+    content_tag :span, name, class: "#{rank} taxon"
   end
   
   def self.format_headline_type_taxt taxt, user
