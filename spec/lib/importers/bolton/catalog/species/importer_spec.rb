@@ -62,6 +62,17 @@ describe Importers::Bolton::Catalog::Species::Importer do
     dyak.should be_synonym_of ferox
   end
 
+  it "should handle a genus header note" do
+    create_genus 'Crematogaster'
+    contents = make_contents %{
+      <p><i>CREMATOGASTER</i></p>
+      <p>[Notes.]
+    }
+    @importer.import_html contents
+    @importer.finish_importing
+    Genus.find_by_name('Crematogaster').genus_species_header_note.should == '[Notes.]'
+  end
+
   it "should handle this" do
     create_genus 'Camponotus'
     contents = make_contents %{

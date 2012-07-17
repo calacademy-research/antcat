@@ -29,7 +29,10 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
       when :not_understood
         @error_count += 1
 
-      when :catalog_header, :genus_see_under, :species_see_under, :note
+      when :note
+        @genus.update_attribute :genus_species_header_note, convert_line_to_taxt(@parse_result[:text]) if @genus
+
+      when :catalog_header, :genus_see_under, :species_see_under
         @ignored_count += 1
 
       when :genus_header
