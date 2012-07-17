@@ -121,11 +121,6 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     end
   end
 
-  def convert_line_to_taxt line
-    texts = Importers::Bolton::Catalog::Grammar.parse(line, root: :text).value
-    Importers::Bolton::Catalog::TextToTaxt.convert texts[:text]
-  end
-
   def parse_reference_sections taxon, *allowed_header_types
     while allowed_header_types.include? @type
       parse_reference_section taxon
