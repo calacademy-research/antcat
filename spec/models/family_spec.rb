@@ -96,4 +96,13 @@ describe Family do
       family.genera.should == [genus_without_subfamily]
     end
   end
+
+  describe "Subfamilies" do
+    it "should include all the subfamilies" do
+      family = create_family
+      subfamily = create_subfamily
+      family.subfamilies.should == [subfamily]
+    end
+  end
+
 end
