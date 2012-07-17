@@ -48,6 +48,10 @@ end
 
 puts "in #{`pwd`}"
 
+def create_family
+  create_taxon_object 'Formicidae', :family, :family_name
+end
+
 def create_subfamily name_or_attributes = 'Dolichoderinae', attributes = {}
   create_taxon_object name_or_attributes, :subfamily, :subfamily_name, attributes
 end
@@ -76,7 +80,7 @@ def create_subspecies name_or_attributes, attributes = {}
   create_taxon_object name_or_attributes, :subspecies, :subspecies_name, attributes
 end
 
-def create_taxon_object name_or_attributes, taxon_factory, name_factory, attributes
+def create_taxon_object name_or_attributes, taxon_factory, name_factory, attributes = {}
   if name_or_attributes.kind_of? String
     name, epithet = get_name_parts name_or_attributes
     attributes = attributes.reverse_merge name: FactoryGirl.create(name_factory, name: name, epithet: epithet)
