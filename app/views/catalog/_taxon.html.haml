@@ -7,6 +7,9 @@
 
   .statistics= Formatters::CatalogFormatter.format_taxon_statistics taxon
 
+  - if taxon.genus_species_header_note.present?
+    .genus_species_header_note= Formatters::CatalogFormatter.format_genus_species_header_note taxon, current_user
+
   .headline= Formatters::CatalogFormatter.format_headline taxon, current_user
 
   - if taxon.taxonomic_history_items.present?
