@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120716021031) do
+ActiveRecord::Schema.define(:version => 20120717004525) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -218,7 +218,7 @@ ActiveRecord::Schema.define(:version => 20120716021031) do
     t.string   "type"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "fossil",                 :default => false, :null => false
+    t.boolean  "fossil",                    :default => false, :null => false
     t.string   "status"
     t.integer  "subfamily_id"
     t.integer  "tribe_id"
@@ -230,9 +230,10 @@ ActiveRecord::Schema.define(:version => 20120716021031) do
     t.text     "type_taxt"
     t.text     "headline_notes_taxt"
     t.integer  "subgenus_id"
-    t.boolean  "hong",                   :default => false, :null => false
+    t.boolean  "hong",                      :default => false, :null => false
     t.integer  "name_id"
     t.integer  "type_name_id"
+    t.text     "genus_species_header_note"
   end
 
   add_index "taxa", ["genus_id"], :name => "taxa_genus_id_idx"
