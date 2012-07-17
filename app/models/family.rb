@@ -20,7 +20,11 @@ class Family < Taxon
   end
 
   def genera
-    Genus.without_subfamily
+    Genus.without_subfamily.ordered_by_name
+  end
+
+  def subfamilies
+    Subfamily.ordered_by_name
   end
 
   def statistics
