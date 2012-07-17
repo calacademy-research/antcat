@@ -87,4 +87,13 @@ describe Family do
     end
   end
 
+  describe "Genera" do
+    it "should include genera without subfamilies" do
+      family = create_family
+      subfamily = create_subfamily
+      genus_without_subfamily = create_genus subfamily: nil
+      genus_with_subfamily = create_genus subfamily: subfamily
+      family.genera.should == [genus_without_subfamily]
+    end
+  end
 end
