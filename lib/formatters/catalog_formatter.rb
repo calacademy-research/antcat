@@ -158,9 +158,7 @@ class Formatters::CatalogFormatter
   def self.format_child_lists_for_rank parent, children_selector
     return '' unless parent.respond_to?(children_selector) && parent.send(children_selector).present?
 
-    if Family === parent && children_selector == :genera
-      format_child_list_fossil_pairs parent, children_selector, incertae_sedis_in: 'family'
-    elsif Subfamily === parent && children_selector == :genera
+    if Subfamily === parent && children_selector == :genera
       format_child_list_fossil_pairs(parent, children_selector, incertae_sedis_in: 'subfamily', hong: false) +
       format_child_list_fossil_pairs(parent, children_selector, incertae_sedis_in: 'subfamily', hong: true)
     else
@@ -181,7 +179,6 @@ class Formatters::CatalogFormatter
 
   def self.format_child_list parent, children, specify_extinct_or_extant, conditions = {}
     return ''.html_safe unless children.present?
-
     label = ''.html_safe
 
     label << 'Hong (2002) ' if conditions[:hong]
@@ -200,7 +197,6 @@ class Formatters::CatalogFormatter
     end
     
     label << taxon_label_span(parent, ignore_status: true)
-    label
 
     content_tag :div, class: :child_list do
       content = ''.html_safe

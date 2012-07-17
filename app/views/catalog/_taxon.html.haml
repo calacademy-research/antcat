@@ -17,6 +17,11 @@
       - for history_item in taxon.taxonomic_history_items do
         = render 'catalog/history_item/panel', item: history_item
 
+  .child_lists
+    =Formatters::CatalogFormatter.format_child_lists_for_rank taxon, :subfamilies
+    =Formatters::CatalogFormatter.format_child_lists_for_rank taxon, :tribes
+    =Formatters::CatalogFormatter.format_child_lists_for_rank taxon, :genera
+
   - if taxon.reference_sections.present?
     .reference_sections
       - for reference_section in taxon.reference_sections do
@@ -24,7 +29,3 @@
           - [:title, :subtitle, :references].each do |field|
             - if reference_section[field].present?
               %div{class: field}= Taxt.to_string reference_section[field], current_user
-
-  .child_lists
-    =Formatters::CatalogFormatter.format_child_lists_for_rank taxon, :tribes
-    =Formatters::CatalogFormatter.format_child_lists_for_rank taxon, :genera
