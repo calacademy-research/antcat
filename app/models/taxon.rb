@@ -63,7 +63,7 @@ class Taxon < ActiveRecord::Base
   belongs_to  :protonym, dependent: :destroy
   belongs_to  :type_name, class_name: 'Name', foreign_key: :type_name_id
   has_many    :taxonomic_history_items, order: :position, dependent: :destroy
-  has_many    :reference_sections, :order => :position, dependent: :destroy
+  has_many    :reference_sections, order: :position, dependent: :destroy
 
   ###############################################
   # statuses, fossil
