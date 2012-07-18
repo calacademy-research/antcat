@@ -115,15 +115,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
 
   def parse_unavailable_family_group_names_in_family
     consume :unavailable_family_group_names_header
-    parse_unavailable_family_group_name while @type == :unavailable_family_group_name_header
-  end
-
-  def parse_unavailable_family_group_name
-    return unless @type == :unavailable_family_group_name_header
-    loop do
-      parse_next_line :unavailable_family_group_name_detail
-      break unless @type == :unavailable_family_group_name_detail
-    end
+    while parse_unavailable_family_group_name; end
   end
 
   def parse_genus_group_nomina_nuda_in_family

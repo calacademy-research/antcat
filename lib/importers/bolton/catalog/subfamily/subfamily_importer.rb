@@ -1,12 +1,13 @@
 # coding: UTF-8
 class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catalog::Importer
 
-  def parse_subfamily
-    return unless @type == :subfamily_centered_header
+  def parse_subfamily options = {skip_centered_header: true}
+    if options[:skip_centered_header]
+      return unless @type == :subfamily_centered_header
+      parse_next_line
+    end
+
     Progress.method
-
-    parse_next_line
-
     name = consume(:subfamily_header)[:name]
     headline = consume :family_group_headline
     fossil = headline[:protonym][:fossil]
@@ -71,6 +72,33 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
 
     parse_next_line
     while parse_genus subfamily: subfamily, hong: true, incertae_sedis_in: 'subfamily'; end
+  end
+
+  def parse_unavailable_family_group_name
+    return unless @type == :unavailable_family_group_name_header
+    Progress.method
+
+    name = @parse_result[:name]
+
+    parse_next_line :unavailable_family_group_name_detail
+    protonym = @parse_result[:protonym]
+    headline_notes_taxt = Importers::Bolton::Catalog::TextToTaxt.convert(@parse_result[:additional_notes])
+    taxonomic_history = []
+    loop do
+      parse_next_line
+      break unless @type == :texts
+      taxonomic_history << Importers::Bolton::Catalog::TextToTaxt.convert(@parse_result[:texts])
+    end
+
+    subfamily = Subfamily.import(
+      subfamily_name:     name,
+      status:             'unavailable',
+      protonym:           protonym,
+      taxonomic_history:  taxonomic_history,
+      headline_notes_taxt:headline_notes_taxt,
+    )
+    Progress.info "Created #{subfamily.inspect}"
+    true
   end
 
 end

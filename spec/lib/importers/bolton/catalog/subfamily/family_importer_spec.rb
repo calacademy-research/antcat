@@ -53,7 +53,11 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
 <p>*<i>Myrmicium</i> Heer, 1870: 78. Type-species: *<i>Myrmicium boreale</i>, by monotypy. </p>
 <p>Taxonomic history</p>
 <p>[Junior homonym of *<i>Myrmicium</i> Westwood, 1854: 396 (*Pseudosiricidae).] </p>
+
 <p>Unavailable family-group names in FORMICIDAE</p>
+<p>ALLOFORMICINAE [unavailable name]</p>
+<p>Alloformicinae Emery, 1925b: 9 [as "section" of Formicinae]. Section designated to include tribe Melophorini: Bolton, 1994: 51.</p>
+<p>Promyrmicinae: Forel, 1917: 240 [incorrect expansion of the above unavailable name to include tribes Metaponini and Pseudomyrmini]. Unavailable name.</p>
 
 <p>Genus-group <i>nomina nuda</i> in FORMICIDAE</p>
 
@@ -66,6 +70,9 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
     swainson = FactoryGirl.create :unknown_reference, :bolton_key_cache => 'Swainson Shuckard 1840'
     baroni = FactoryGirl.create :unknown_reference, :bolton_key_cache => 'Baroni Urbani 1977c'
     roger = FactoryGirl.create :unknown_reference, :bolton_key_cache => 'Roger 1863b'
+    bolton = FactoryGirl.create :unknown_reference, :bolton_key_cache => 'Bolton 1994'
+    emery = FactoryGirl.create :unknown_reference, :bolton_key_cache => 'Emery 1925b'
+    forel = FactoryGirl.create :unknown_reference, :bolton_key_cache => 'Forel 1917'
 
     Importers::Bolton::Catalog::Subfamily::Importer.new.import_html html
 
@@ -122,6 +129,14 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
     genus.should be_homonym
     genus.should be_fossil
     genus.homonym_replaced_by.name.to_s.should == 'Promyrmicium'
+
+    subfamily = Subfamily.find_by_name 'Alloformicinae'
+    subfamily.status.should == 'unavailable'
+    subfamily.protonym.name.to_s.should == 'Alloformicinae'
+    subfamily.headline_notes_taxt.should == " Section designated to include tribe Melophorini: {ref #{bolton.id}}: 51."
+    subfamily.taxonomic_history_items.map(&:taxt).should =~ [
+      "Promyrmicinae: {ref #{forel.id}}: 240 [incorrect expansion of the above unavailable name to include tribes Metaponini and Pseudomyrmini]. Unavailable name."
+    ]
   end
 
 end
