@@ -8,10 +8,11 @@ class Subfamily < Taxon
   def self.import data
     transaction do
       attributes = {
-        name:         Name.import(data),
-        fossil:       data[:fossil] || false,
-        status:       'valid',
-        protonym:     Protonym.import(data[:protonym]),
+        name:                Name.import(data),
+        fossil:              data[:fossil] || false,
+        status:              data[:status] ||'valid',
+        protonym:            Protonym.import(data[:protonym]),
+        headline_notes_taxt: data[:headline_notes_taxt],
       }
       attributes.merge! get_type_attributes :type_genus, data
       subfamily = create! attributes
