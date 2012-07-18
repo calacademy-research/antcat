@@ -128,6 +128,7 @@ class Taxon < ActiveRecord::Base
     children = children.where incertae_sedis_in: incertae_sedis_in if incertae_sedis_in
     children = children.where hong: !!conditions[:hong] if conditions.key? :hong
     children = children.where "status = 'valid' OR status = 'unresolved homonym'"
+    children = children.ordered_by_name
     children
   end
 
