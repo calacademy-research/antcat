@@ -209,7 +209,7 @@ class Formatters::CatalogFormatter
   end
 
   def self.format_child_list_items children
-    children.sort_by(&:name).inject([]) do |string, child|
+    children.inject([]) do |string, child|
       string << taxon_label_span(child, ignore_status: true, indicate_unresolved_junior_homonym: true)
     end.join(', ').html_safe
   end
