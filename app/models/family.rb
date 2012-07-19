@@ -28,7 +28,7 @@ class Family < Taxon
   end
 
   def statistics
-    get_statistics Tribe, Subfamily, Genus, Species, Subspecies
+    get_statistics Subfamily, Tribe, Genus, Species, Subspecies
   end
 
   def get_statistics *ranks
