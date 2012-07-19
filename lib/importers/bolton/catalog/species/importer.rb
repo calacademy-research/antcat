@@ -116,6 +116,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     set_status_manually 'Camponotus (Camponotus) herculeanus var. rubens', 'valid', 0
     set_status_manually 'Camponotus terebrans', 'valid', 0
     set_status_manually 'Ectatomma permagnum', 'valid', 0
+    set_status_manually 'Attaichnus kuenzelii', 'ichnotaxon', 0
   end
 
   def grammar
