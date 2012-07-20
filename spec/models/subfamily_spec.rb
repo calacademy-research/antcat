@@ -11,6 +11,13 @@ describe Subfamily do
     subfamily.tribes.should == subfamily.children
   end
 
+  it "should have collective group names" do
+    subfamily = create_subfamily
+    collective_group_name = create_genus status: 'collective group name', subfamily: subfamily
+    create_genus subfamily: subfamily
+    subfamily.reload.collective_group_names.should == [collective_group_name]
+  end
+
   it "should have genera" do
     myrmicinae = FactoryGirl.create :subfamily, name: FactoryGirl.create(:name, name: 'Myrmicinae')
     dacetini = FactoryGirl.create :tribe, name: FactoryGirl.create(:name, name: 'Dacetini'), :subfamily => myrmicinae
