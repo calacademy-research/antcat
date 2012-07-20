@@ -93,7 +93,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
         <p>*<i>Myrmeciites incertae sedis</i> in Hymenoptera: <i>sensu</i> Baroni Urbani, 2008: 7.</p>
       }
 
-      Taxon.count.should == 8
+      Taxon.count.should == 9
 
       subfamily = Subfamily.find_by_name 'Aneuretinae'
       subfamily.should_not be_invalid
@@ -158,6 +158,8 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
       genus.should be_hong
       genus.status.should == Status['unresolved homonym'].to_s
 
+      collective_group_name = Genus.find_by_name 'Myrmeciites'
+      collective_group_name.should be_collective_group_name
     end
   end
 end

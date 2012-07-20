@@ -23,6 +23,13 @@ describe Taxon do
     taxon.should be_unidentifiable
     taxon.should be_invalid
   end
+  it "should be able to be a collective group name" do
+    taxon = FactoryGirl.build :taxon
+    taxon.should_not be_collective_group_name
+    taxon.update_attribute :status, 'collective group name'
+    taxon.should be_collective_group_name
+    taxon.should be_invalid
+  end
   it "should be able to be an ichnotaxon" do
     taxon = FactoryGirl.build :taxon
     taxon.should_not be_ichnotaxon
