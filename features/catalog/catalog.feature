@@ -20,7 +20,7 @@ Feature: Using the catalog
     When I go to the catalog
     Then I should see "Formicidae" in the contents
     And I should see "valid" in the contents
-    And I should see "Extant: 1 valid tribe, 1 valid subfamily, 3 valid genera, 2 valid species, 1 valid subspecies"
+    And I should see "Extant: 1 valid subfamily, 1 valid tribe, 3 valid genera, 2 valid species, 1 valid subspecies"
     And I should see "Fossil: 1 valid genus"
     And I should see "Subfamily of Formicidae: Dolichoderinae."
 
