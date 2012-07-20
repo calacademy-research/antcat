@@ -67,16 +67,17 @@ class Taxon < ActiveRecord::Base
 
   ###############################################
   # statuses, fossil
-  scope :valid,           where("status = ?", 'valid')
-  scope :extant,          where(fossil: false)
-  def unavailable?;       status == 'unavailable' end
-  def available?;         !unavailable? end
-  def invalid?;           status != 'valid' end
-  def unidentifiable?;    status == 'unidentifiable' end
-  def ichnotaxon?;        status == 'ichnotaxon' end
-  def unresolved_homonym?;status == 'unresolved homonym' end
-  def excluded?;          status == 'excluded' end
-  def incertae_sedis_in?  rank; incertae_sedis_in == rank end
+  scope :valid,               where("status = ?", 'valid')
+  scope :extant,              where(fossil: false)
+  def unavailable?;           status == 'unavailable' end
+  def available?;             !unavailable? end
+  def invalid?;               status != 'valid' end
+  def unidentifiable?;        status == 'unidentifiable' end
+  def ichnotaxon?;            status == 'ichnotaxon' end
+  def unresolved_homonym?;    status == 'unresolved homonym' end
+  def excluded?;              status == 'excluded' end
+  def incertae_sedis_in?      rank; incertae_sedis_in == rank end
+  def collective_group_name?; status == 'collective group name' end
 
   ###############################################
   def rank

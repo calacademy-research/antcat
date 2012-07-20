@@ -35,7 +35,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     parse_tribes_incertae_sedis subfamily
     parse_genera_incertae_sedis 'subfamily', subfamily: subfamily
     parse_genera_of_hong subfamily
-    parse_collective_group_names
+    parse_collective_group_names subfamily
   end
 
   def parse_subfamily_child_lists subfamily
@@ -56,14 +56,13 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     parse_next_line
   end
 
-  def parse_collective_group_names
+  def parse_collective_group_names subfamily
     return unless @type == :collective_group_names_header
     Progress.method
 
     parse_next_line
-    consume :collective_group_name_header
-    consume :genus_headline
-    parse_taxonomic_history
+    attributes = {subfamily: subfamily, status: 'collective group name'}
+    while parse_genus attributes, header: :collective_group_name_header; end
   end
 
   def parse_genera_of_hong subfamily
