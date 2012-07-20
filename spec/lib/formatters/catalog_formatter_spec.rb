@@ -133,6 +133,11 @@ describe Formatters::CatalogFormatter do
         @formatter.format_child_list(@subfamily, [genus], false, incertae_sedis_in: 'subfamily').should == 
 %{<div class="child_list"><span class="label">Genus <i>incertae sedis</i> in <span class="name subfamily taxon">Dolichoderinae</span></span>: <span class="genus name taxon"><i>Atta</i></span>.</div>}
       end
+      it "should format a list of collective group names" do
+        genus = create_genus 'Atta', subfamily: @subfamily, status: 'collective group name'
+        @formatter.format_collective_group_name_child_list(@subfamily).should ==
+%{<div class="child_list"><span class="label">Collective group name in <span class="name subfamily taxon">Dolichoderinae</span></span>: <span class="genus name taxon"><i>Atta</i></span>.</div>}
+      end
     end
   end
 
