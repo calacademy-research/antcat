@@ -53,8 +53,8 @@ class Status
                                              plural_label: 'nomina nuda'),
       Status.new(string: 'ichnotaxon',              label: 'ichnotaxon',
                                              plural_label: 'ichnotaxa'),
-      Status.new(string: 'collective group name',   label: 'collective group name',
-                                             plural_label: 'collective group names'),
+      Status.new(string: 'collective group name',   label: 'Collective group name',
+                                             plural_label: 'Collective group names'),
     ]
     end
 end
