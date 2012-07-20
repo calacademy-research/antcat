@@ -684,7 +684,7 @@ grammar Importers::Bolton::Catalog::Grammar
   end
 
   rule species_label
-    (fossil_flag? italic genus_or_subgenus ' ' species_epithet close_tag (' ' authorship)?) {
+    (fossil_flag? italic genus_or_subgenus ' ' '(?) '? species_epithet close_tag (' ' authorship)?) {
       value = genus_or_subgenus.value.merge species_epithet.value
       value[:fossil] = true if fossil_flag
       value[:authorship] = authorship.value if authorship

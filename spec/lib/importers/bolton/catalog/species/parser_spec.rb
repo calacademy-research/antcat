@@ -341,7 +341,21 @@ describe Importers::Bolton::Catalog::Species::Grammar do
     @grammar.parse(%{*<i>vetula</i>.*<i>Nylanderia vetula</i> LaPolla & Dlussky, 2010: 263, fig. 3 (w.) DOMINICAN AMBER.}).value
   end
 
-  # This fails with 'stack level too deep'
+  it "should handle a (?) after a genus name" do
+    @grammar.parse(%{*<i>tabanifluviensis</i>. *<i>Myrmeciites (?) tabanifluviensis</i> Archibald, 2006: 502.}).value_with_matched_text_removed.should == {
+      type: :species_record,
+      species_group_epithet: 'tabanifluviensis',
+      fossil: true,
+      protonym: {
+        genus_name: 'Myrmeciites',
+        species_epithet: 'tabanifluviensis',
+        fossil: true,
+        authorship: [{author_names: ['Archibald'], year: '2006', pages: '502'}],
+      },
+    }
+  end
+
+  # This just spins
   #it "should handle a subspecies without a subspecies type" do
     #@grammar.parse('<i>nura</i>. <i>Crematogaster longispina</i> <i>nura</i> Ozdikmen, 2010c: 989.').value
   #end

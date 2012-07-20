@@ -228,6 +228,14 @@ describe Importers::Bolton::Catalog::Grammar do
     end
   end
 
+  describe "Question marks" do
+    it "should ignore them" do
+      @grammar.parse('<i>Myrmeciites (?) tabanifluviensis</i>', root: :species_label).value_with_matched_text_removed.should == {
+        genus_name: 'Myrmeciites', species_epithet: 'tabanifluviensis'
+      }
+    end
+  end
+
   describe "Species-group names" do
     describe "Species epithet" do
       it "should parse a species epithet" do
