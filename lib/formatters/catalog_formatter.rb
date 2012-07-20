@@ -166,6 +166,12 @@ class Formatters::CatalogFormatter
     end
   end
 
+  def self.format_collective_group_name_child_list parent
+    children_selector = :collective_group_names
+    return '' unless parent.respond_to?(children_selector) && parent.send(children_selector).present?
+    format_child_list parent, parent.send(children_selector), false, collective_group_names: true
+  end
+
   def self.format_child_list_fossil_pairs parent, children_selector, conditions = {}
     extant_conditions = conditions.merge fossil: false
     extinct_conditions = conditions.merge fossil: true
@@ -182,7 +188,12 @@ class Formatters::CatalogFormatter
     label = ''.html_safe
 
     label << 'Hong (2002) ' if conditions[:hong]
-    label << Rank[children].to_s(children.count, conditions[:hong] ? nil : :capitalized)
+
+    if conditions[:collective_group_names]
+      label << Status['collective group name'].to_s(children.count, :capitalized)
+    else
+      label << Rank[children].to_s(children.count, conditions[:hong] ? nil : :capitalized)
+    end
 
     if specify_extinct_or_extant
       label << ' ('
@@ -192,13 +203,15 @@ class Formatters::CatalogFormatter
 
     if conditions[:incertae_sedis_in]
       label << ' <i>incertae sedis</i> in '.html_safe
+    elsif conditions[:collective_group_names]
+      label << ' in '
     else
       label << ' of '
     end
     
     label << taxon_label_span(parent, ignore_status: true)
 
-    content_tag :div, class: :child_list do
+    r = content_tag :div, class: :child_list do
       content = ''.html_safe
       content << content_tag(:span, label, class: :label)
       content << ': '
