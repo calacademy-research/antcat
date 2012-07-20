@@ -14,15 +14,6 @@ grammar Importers::Bolton::Catalog::Grammar
     '*' s | black '*' tag_end
   end
 
-  rule region
-    (s errant_red_space? /\(.+?\)?$/) |
-    (span s parenthesized_phrase errant_paragraph tag_end)
-  end
-
-  rule errant_paragraph
-    '<p></p>'
-  end
-
   rule incertae_sedis_in
     italic 'incertae sedis' close_tag ' in'
   end
