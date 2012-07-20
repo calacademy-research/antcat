@@ -4,6 +4,7 @@ class Subfamily < Taxon
   has_many :genera
   has_many :species
   has_many :subspecies
+  has_many :collective_group_names, class_name: 'Genus', conditions: 'status = "collective group name"'
 
   def self.import data
     transaction do
