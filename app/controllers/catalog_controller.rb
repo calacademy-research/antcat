@@ -81,6 +81,7 @@ class CatalogController < ApplicationController
         @taxon = @tribe.subfamily
         params[:id] = @taxon.id
         @genera = @subfamily.genera.ordered_by_name
+        params[:hide_tribes] = false
       else
         @tribes = @tribe.siblings.ordered_by_name
         @genera = @tribe.genera.ordered_by_name
