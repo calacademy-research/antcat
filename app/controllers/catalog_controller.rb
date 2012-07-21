@@ -1,23 +1,6 @@
 # coding: UTF-8
 class CatalogController < ApplicationController
 
-  def create
-    tribe = Tribe.find params[:genus][:tribe]
-    genus = Genus.new(
-      name: params[:genus][:name],
-      status: 'valid',
-      tribe: tribe)
-    genus.save
-
-    json = {
-      isNew: true,
-      content: render_to_string(partial: 'catalog/taxon_form', locals: {genus: genus, tribe: tribe}),
-      success: genus.errors.empty?
-    }.to_json
-
-    render json: json, content_type: 'text/html'
-  end
-
   def sort_out_search_parameters
     if params['commit'] == 'Clear'
       @search_params = {}
@@ -156,6 +139,23 @@ class CatalogController < ApplicationController
       @tribe = @genus.tribe ? @genus.tribe : 'none'
       @tribes = @subfamily == 'none' ? nil : @subfamily.tribes.ordered_by_name
     end
+  end
+
+  def create
+    tribe = Tribe.find params[:genus][:tribe]
+    genus = Genus.new(
+      name: params[:genus][:name],
+      status: 'valid',
+      tribe: tribe)
+    genus.save
+
+    json = {
+      isNew: true,
+      content: render_to_string(partial: 'catalog/taxon_form', locals: {genus: genus, tribe: tribe}),
+      success: genus.errors.empty?
+    }.to_json
+
+    render json: json, content_type: 'text/html'
   end
 
 end
