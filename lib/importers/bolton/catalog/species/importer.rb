@@ -117,6 +117,9 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     set_status_manually 'Camponotus terebrans', 'valid'
     set_status_manually 'Ectatomma permagnum', 'valid'
     set_status_manually 'Attaichnus kuenzelii', 'ichnotaxon'
+    set_status_manually 'Myrmeciites goliath', 'collective group name'
+    set_status_manually 'Myrmeciites herculeanus', 'collective group name'
+    set_status_manually 'Myrmeciites tabanifluviensis', 'collective group name'
   end
 
   def grammar
