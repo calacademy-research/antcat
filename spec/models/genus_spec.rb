@@ -245,5 +245,13 @@ describe Genus do
       genus.type_name.rank.should == 'species'
     end
 
+    describe "Manual 'importing'" do
+      it "should import Formicites" do
+        Genus.import_formicites
+        genus = Genus.find_by_name 'Formicites'
+        genus.status.should == 'collective group name'
+      end
+    end
+
   end
 end
