@@ -143,7 +143,7 @@ class CatalogController < ApplicationController
   end
 
   def convert_params_to_boolean
-    convert_param_to_boolean :hide_tribes, false
+    convert_param_to_boolean :hide_tribes, true
     convert_param_to_boolean :hide_subgenera, true
   end
 
