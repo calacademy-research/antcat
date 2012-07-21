@@ -94,8 +94,8 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
   def finish_importing
     Progress.print 'Fixing up names...'
     SpeciesGroupForwardRef.fixup
-    set_status_manually 'Camponotus abdominalis', 'homonym', 0
-    set_status_manually 'Camponotus (Camponotus) herculeanus var. rubens', 'synonym', 0
+    set_status_manually 'Camponotus abdominalis', 'homonym'
+    set_status_manually 'Camponotus (Camponotus) herculeanus var. rubens', 'synonym'
     set_synonym 'Camponotus (Camponotus) herculeanus var. rubens', 'Camponotus novaeboracensis'
     Progress.puts
   end
@@ -110,13 +110,13 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
 
   def do_manual_fixups
     set_status_manually 'Temnothorax foreli', 'homonym', 1
-    set_status_manually 'Temnothorax manni', 'homonym', 1, 2
+    set_status_manually 'Temnothorax manni', 'homonym', [1, 2]
     set_status_manually 'Tetramorium pauper', 'homonym', 1
-    set_status_manually 'Camponotus abdominalis', 'valid', 0
-    set_status_manually 'Camponotus (Camponotus) herculeanus var. rubens', 'valid', 0
-    set_status_manually 'Camponotus terebrans', 'valid', 0
-    set_status_manually 'Ectatomma permagnum', 'valid', 0
-    set_status_manually 'Attaichnus kuenzelii', 'ichnotaxon', 0
+    set_status_manually 'Camponotus abdominalis', 'valid'
+    set_status_manually 'Camponotus (Camponotus) herculeanus var. rubens', 'valid'
+    set_status_manually 'Camponotus terebrans', 'valid'
+    set_status_manually 'Ectatomma permagnum', 'valid'
+    set_status_manually 'Attaichnus kuenzelii', 'ichnotaxon'
   end
 
   def grammar
