@@ -375,7 +375,7 @@ class Importers::Bolton::Catalog::Importer
     Importers::Bolton::Catalog::TextToTaxt.convert texts[:text]
   end
 
-  def set_status_manually name, status, indexes = []
+  def set_status_manually name, status, indexes = [0]
     for i in [indexes].flatten
       Taxon.with_names.where(['name = ?', name])[i].update_attribute :status, status
     end
