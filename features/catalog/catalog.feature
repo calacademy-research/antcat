@@ -45,6 +45,7 @@ Feature: Using the catalog
 
   Scenario: Selecting a subfamily
     When I go to the catalog
+    And I follow "show tribes"
     And I follow "Dolichoderinae"
     Then "Dolichoderinae" should be selected
     And I should see "Dolichoderini" in the contents
@@ -104,18 +105,18 @@ Feature: Using the catalog
     And I should see "abruptus" in the index
     And I should see "minor" in the index
 
-  Scenario: Showing the "no tribe" tribe
-    Given a genus exists with a name of "Cariridris" and a subfamily of "Dolichoderinae"
-    And a genus exists with a name of "Atta" and a subfamily of "Attaninae"
-    When I go to the catalog
-    And I follow "show tribes"
-    And I follow "Dolichoderinae"
-    And I follow "(no tribe)" in the tribes index
-    Then I should see "Cariridris" in the genera index
-    And I should not see "Atta" in the genera index
-    And "(no tribe)" should be selected in the tribes index
-    And "Dolichoderinae" should be selected in the subfamilies index
-    And I should see "Dolichoderinae history"
+  #Scenario: Showing the "no tribe" tribe
+    #Given a genus exists with a name of "Cariridris" and a subfamily of "Dolichoderinae"
+    #And a genus exists with a name of "Atta" and a subfamily of "Attaninae"
+    #When I go to the catalog
+    #And I follow "show tribes"
+    #And I follow "Dolichoderinae"
+    #And I follow "(no tribe)" in the tribes index
+    #Then I should see "Cariridris" in the genera index
+    #And I should not see "Atta" in the genera index
+    #And "(no tribe)" should be selected in the tribes index
+    #And "Dolichoderinae" should be selected in the subfamilies index
+    #And I should see "Dolichoderinae history"
 
   Scenario: Showing the "no subfamily" subfamily
     Given a genus exists with a name of "Cariridris" and no subfamily
