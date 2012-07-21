@@ -139,7 +139,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     set_status_manually 'Wilsonia', 'unresolved homonym'
     set_status_manually 'Hypochira', 'unidentifiable'
     set_status_manually 'Formicium', 'collective group name'
-    Genus.import_formicites
+    Genus.import_formicites unless Rails.env.test?
   end
 
 end
