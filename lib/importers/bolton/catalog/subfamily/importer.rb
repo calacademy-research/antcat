@@ -138,6 +138,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
   def do_manual_fixups
     set_status_manually 'Wilsonia', 'unresolved homonym', 0
     set_status_manually 'Hypochira', 'unidentifiable', 0
+    Genus.import_formicites
   end
 
 end

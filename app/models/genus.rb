@@ -35,5 +35,17 @@ class Genus < GenusGroupTaxon
       taxonomic_history: [],
     )
   end
+  def self.import_formicites
+    parse_result = Importers::Bolton::Catalog::Subfamily::Grammar.parse(
+      '*<i>Formicites</i> Dlussky, 1981: 75. [Collective group name.]', root: :genus_headline).value
+    history = Importers::Bolton::Catalog::Importer.convert_line_to_taxt '*<i>Formicites</i> material absorbed into *<i>Eoformica</i>: Dlussky & Rasnitsyn, 2002: 424.'
+    genus = import(
+      genus_name: 'Formicites',
+      status: 'collective group name',
+      fossil: true,
+      protonym: parse_result[:protonym],
+      taxonomic_history: [history],
+    )
+  end
 
 end
