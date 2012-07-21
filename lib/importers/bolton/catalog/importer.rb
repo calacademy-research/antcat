@@ -367,16 +367,19 @@ class Importers::Bolton::Catalog::Importer
   end
 
   def convert_line_to_taxt line
+    self.class.convert_line_to_taxt line
+  end
+
+  def self.convert_line_to_taxt line
     texts = Importers::Bolton::Catalog::Grammar.parse(line, root: :text).value
     Importers::Bolton::Catalog::TextToTaxt.convert texts[:text]
   end
 
-  def set_status_manually name, status, *indexes
-    for i in indexes
+  def set_status_manually name, status, indexes
+    for i in [indexes].flatten
       Taxon.with_names.where(['name = ?', name])[i].update_attribute :status, status
     end
   rescue
-    # don't care if it's not there
   end
 
 end
