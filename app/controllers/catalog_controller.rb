@@ -1,57 +1,46 @@
 # coding: UTF-8
 class CatalogController < ApplicationController
 
-  def sort_out_search_parameters
-    if params['commit'] == 'Clear'
-      @search_params = {}
-      params['q'] = params['search_type'] = nil
-      return
-    end
+  def show
+    @parameters = HashWithIndifferentAccess.new
+    @parameters[:id] = params[:id] if params[:id]
+    @parameters[:child] = params[:child] if params[:child]
+    @parameters[:q] = params[:q].strip if params[:q]
+    @parameters[:search_type] = params[:search_type] if params[:search_type]
+    @parameters[:hide_tribes] = params[:hide_tribes] ? params[:hide_tribes] : true
+    @parameters[:hide_subgenera] = params[:hide_subgenera] ? params[:hide_subgenera] : true
 
-    params['q'].strip! if params['q']
-
-    @search_params = {'search_type' => params['search_type'], 'q' => params['q']}
-
-    if @search_params['q'].present?
-      params['id'] = nil if params[:is_search_form].present?
-      @search_results = Taxon.find_name @search_params['q'], @search_params['search_type']
+    if params[:commit] == 'Clear'
+      @parameters[:q] = @parameters[:search_type] = nil
+    elsif @parameters[:q].present?
+      @parameters[:id] = nil if params[:is_search_form].present?
+      @search_results = Taxon.find_name @parameters[:q], @parameters[:search_type]
       unless @search_results.present?
-        @search_results_message = "No results found"
+        @search_results_message = 'No results found'
       else
         @search_results = @search_results.map do |search_result|
           {name: search_result.name.html_name, id: search_result.id}
         end
-        params['id'] = @search_results.first[:id] if params['id'].blank?
+        @parameters[:id] = @search_results.first[:id] if @parameters[:id].blank?
       end
     end
-  end
 
-  def show
-    sort_out_search_parameters
-
-    params[:id] = Family.first.id if params[:id].blank?
-    convert_params_to_boolean
-    @taxon = Taxon.find params[:id]
+    @parameters[:id] = Family.first.id if @parameters[:id].blank?
+    @taxon = Taxon.find @parameters[:id]
 
     @subfamilies = ::Subfamily.ordered_by_name
 
     case @taxon
 
     when Family
-      @subfamily = params[:subfamily]
-      @tribe = params[:tribe]
-      if @subfamily == 'none'
+      if @parameters[:child] == 'none'
+        @subfamily = 'none'
         @genera = Genus.without_subfamily.ordered_by_name
-      elsif @tribe == 'none'
-        @subfamily = Taxon.find @subfamily
-        @taxon = @subfamily
-        @tribes = @subfamily.tribes.ordered_by_name
-        @genera = @subfamily.genera.without_tribe.ordered_by_name
       end
 
     when Subfamily
       @subfamily = @taxon
-      if params[:hide_tribes]
+      if @parameters[:hide_tribes]
         @genera = @subfamily.genera.ordered_by_name
       else
         @tribes = @subfamily.tribes.ordered_by_name
@@ -60,11 +49,11 @@ class CatalogController < ApplicationController
     when Tribe
       @tribe = @taxon
       @subfamily = @tribe.subfamily
-      if params[:hide_tribes]
+      if @parameters[:hide_tribes]
         @taxon = @tribe.subfamily
-        params[:id] = @taxon.id
+        @parameters[:id] = @taxon.id
         @genera = @subfamily.genera.ordered_by_name
-        params[:hide_tribes] = false
+        @parameters[:hide_tribes] = false
       else
         @tribes = @tribe.siblings.ordered_by_name
         @genera = @tribe.genera.ordered_by_name
@@ -73,7 +62,7 @@ class CatalogController < ApplicationController
     when Genus
       @genus = @taxon
       @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
-      if params[:hide_subgenera]
+      if @parameters[:hide_subgenera]
         @specieses = @genus.species_group_descendants.includes(:name)
       else
         @subgenera = @genus.subgenera.ordered_by_name.includes(:name)
@@ -104,35 +93,14 @@ class CatalogController < ApplicationController
 
     end
 
-    @page_parameters = {
-      id: params[:id], subfamily: @subfamily, tribe: @tribe, genus: @genus, species: @species,
-      q: params[:q], search_type: params[:search_type],
-      hide_tribes: params[:hide_tribes],
-      hide_subgenera: params[:hide_subgenera],
-    }
-
-  end
-
-  def convert_param_to_boolean key, default
-    case params[key]
-    when nil
-      params[key] = default
-    when 'true'
-      params[key] = true
-    when 'false'
-      params[key] = false
-    else
-      params[key] = true
-    end
-  end
-
-  def convert_params_to_boolean
-    convert_param_to_boolean :hide_tribes, true
-    convert_param_to_boolean :hide_subgenera, true
+    @parameters[:subfamily] = params[:subfamily] if params[:subfamily]
+    @parameters[:tribe] = params[:tribe] if params[:tribe]
+    @parameters[:genus] = params[:genus] if params[:genus]
+    @parameters[:species] = params[:species] if params[:species]
   end
 
   def setup_genus_parent_columns
-    if params[:hide_tribes]
+    if @parameters[:hide_tribes]
       @genera = @subfamily == 'none' ? Genus.without_subfamily.ordered_by_name : @subfamily.genera.ordered_by_name
     else
       @genera = @genus.siblings.includes(:name)

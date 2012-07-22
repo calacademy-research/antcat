@@ -5,9 +5,9 @@
       %td.header
         = rank.to_s :plural, :capitalized
         - if options[:hideable_name]
-          .hide_show= hide_link options[:hideable_name], page_parameters[:id], page_parameters
+          .hide_show= hide_link options[:hideable_name], @parameters[:id], @parameters
         - if options[:hideable_child_name]
-          .hide_show= show_child_link params, options[:hideable_child_name], page_parameters[:id], page_parameters
+          .hide_show= show_child_link options[:hideable_child_name], @parameters[:id], @parameters
         - if options[:addable]
           .add
             %a{href: '#'} add
@@ -24,4 +24,4 @@
                 - row.each do |item|
                   %td{:class => css_class}
                     - if item
-                      = index_column_link rank.to_sym, item, selected_item, page_parameters
+                      = index_column_link rank.to_sym, item, selected_item, @parameters
