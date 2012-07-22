@@ -9,7 +9,7 @@
       = hidden_field_tag 'id', params[:id]
       .search
         Search for name
-        = search_selector params[:search_type]
+        = search_selector params[:st]
         = text_field_tag 'q', params[:q]
         = submit_tag  'Go'
         = submit_tag 'Clear' if @search_results.present? && @search_results.size > 1

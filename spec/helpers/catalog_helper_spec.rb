@@ -6,11 +6,11 @@ describe CatalogHelper do
   describe "search selector" do
     it "should return the HTML for the selector with a default selected" do
       helper.search_selector(nil).should == 
-%{<select id="search_type" name="search_type"><option value="matching">matching</option>\n<option value="beginning with" selected="selected">beginning with</option>\n<option value="containing">containing</option></select>}
+%{<select id="st" name="st"><option value="matching">matching</option>\n<option value="beginning with" selected="selected">beginning with</option>\n<option value="containing">containing</option></select>}
     end
     it "should return the HTML for the selector with the specified one selected" do
       helper.search_selector('containing').should == 
-%{<select id="search_type" name="search_type"><option value="matching">matching</option>\n<option value="beginning with">beginning with</option>\n<option value="containing" selected="selected">containing</option></select>}
+%{<select id="st" name="st"><option value="matching">matching</option>\n<option value="beginning with">beginning with</option>\n<option value="containing" selected="selected">containing</option></select>}
     end
   end
 
