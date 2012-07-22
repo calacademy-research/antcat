@@ -39,7 +39,7 @@ Feature: Searching the catalog
   Scenario: Searching for a 'containing' match
     When I go to the catalog
     And I fill in the search box with "rup"
-    And I select "containing" from "search_type"
+    And I select "containing" from "st"
     And I press "Go" by the search box
     Then I should see "abruptus history"
 

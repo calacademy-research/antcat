@@ -27,9 +27,13 @@ class CatalogController < ApplicationController
     @parameters[:q] = @parameters[:st] = nil
   end
 
+  def translate_search_selector_value_to_english value
+    {'m' => 'matching', 'bw' => 'beginning with', 'c' => 'containing'}[value]
+  end
+
   def do_search
     return unless @parameters[:q].present?
-    @search_results = Taxon.find_name @parameters[:q], @parameters[:st]
+    @search_results = Taxon.find_name @parameters[:q], translate_search_selector_value_to_english(@parameters[:st])
     if @search_results.blank?
       @search_results_message = 'No results found'
     else
