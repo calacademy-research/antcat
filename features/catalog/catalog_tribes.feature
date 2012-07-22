@@ -14,10 +14,25 @@ Feature: Hiding and showing tribes in the index
     And a genus exists with a name of "Tapinoma" and a tribe of "Tapinomini"
     And a genus exists with a name of "Atta" and no subfamily and a taxonomic history of "Atta history"
     And a species exists with a name of "rufa" and a genus of "Atta"
+    And a species exists with a name of "major" and a genus of "Dolichoderus"
+
+  Scenario: Not showing tribes initially
+    When I go to the catalog
+    And I follow "Dolichoderinae"
+    Then "Dolichoderinae" should be selected
+    And I should not see "Dolichoderini" in the index
+    And I should see "Dolichoderus" in the index
+    When I follow "Dolichoderus"
+    Then "Dolichoderinae" should be selected
+    And "Dolichoderus" should be selected
+    And I should not see "Dolichoderini" in the index
+    When I follow "major"
+    Then "Dolichoderinae" should be selected
+    And "Dolichoderus" should be selected
+    And "major" should be selected
 
   Scenario: Hiding tribes
     When I go to the catalog
-    And I follow "show tribes"
     And I follow "Dolichoderinae"
     Then I should see "Dolichoderini" in the index
     And I should not see "show tribes"
