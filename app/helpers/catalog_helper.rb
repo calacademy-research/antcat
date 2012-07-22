@@ -15,9 +15,8 @@ module CatalogHelper
     items.snake column_count
   end
 
-  def search_selector current_search_type
-    select_tag :st,
-      options_for_select(['matching', 'beginning with', 'containing'], current_search_type || 'beginning with')
+  def search_selector search_type
+    select_tag :st, options_for_select([['matching', 'm'], ['beginning with', 'bw'], ['containing', 'c']], search_type || 'bw')
   end
 
   def index_column_link rank, taxon, selected_taxon, parent_taxon, parameters = {}
