@@ -7,7 +7,7 @@
           - if item
             %td
               - css_class = params[:id].to_s == item[:id].to_s ? 'selected' : nil
-              - parameters = @page_parameters.dup
+              - parameters = @parameters.dup
               - parameters.delete :id
               = link_to raw(item[:name]), send(path, item[:id], parameters), class: css_class
 
