@@ -60,4 +60,10 @@ describe CatalogHelper do
     end
   end
 
+  describe "Index column link" do
+    it "should work" do
+      helper.index_column_link(:subfamily, 'none', 'none').should == '<a href="/catalog?child=none" class="valid selected">(no subfamily)</a>' 
+    end
+  end
+
 end
