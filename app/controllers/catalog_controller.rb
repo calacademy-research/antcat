@@ -1,18 +1,23 @@
 # coding: UTF-8
 class CatalogController < ApplicationController
-  before_filter :get_parameters
 
   def show
-    go_search false
+    get_parameters
+    do_search
     setup_taxon_and_index
     render :show
   end
 
   def search
+    get_parameters
     if params[:commit] == 'Clear'
       clear_search
     else
-      go_search true
+      do_search
+      if @search_results.present?
+        @parameters[:id] = @search_results.first[:id]
+        @parameters[:child] = nil
+      end
     end
     setup_taxon_and_index
     render :show
@@ -22,7 +27,7 @@ class CatalogController < ApplicationController
     @parameters[:q] = @parameters[:search_type] = nil
   end
 
-  def go_search always_set_id
+  def do_search
     return unless @parameters[:q].present?
     @search_results = Taxon.find_name @parameters[:q], @parameters[:search_type]
     if @search_results.blank?
@@ -30,10 +35,6 @@ class CatalogController < ApplicationController
     else
       @search_results = @search_results.map do |search_result|
         {name: search_result.name.html_name, id: search_result.id}
-      end
-      if always_set_id or @parameters[:id].blank?
-        @parameters[:id] = @search_results.first[:id]
-        @parameters[:child] = nil
       end
     end
   end
