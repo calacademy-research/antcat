@@ -35,11 +35,11 @@ describe CatalogHelper do
   describe "Show child link" do
     it "if child is hidden, should create a link with all the current parameters and without hide_tribe" do
       taxon = FactoryGirl.create :genus
-      helper.show_child_link({hide_tribes: true}, 'tribes', taxon, {}).should == %{<a href="/catalog/#{taxon.id}?hide_tribes=false">show tribes</a>}
+      helper.show_child_link('tribes', taxon, hide_tribes: true).should == %{<a href="/catalog/#{taxon.id}?hide_tribes=false">show tribes</a>}
     end
     it "if child is not hidden, return nil" do
       taxon = FactoryGirl.create :genus
-      helper.show_child_link({}, 'tribes', taxon, {}).should be_nil
+      helper.show_child_link('tribes', taxon, {}).should be_nil
     end
   end
 

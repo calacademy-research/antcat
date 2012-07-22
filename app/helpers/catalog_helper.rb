@@ -24,36 +24,35 @@ module CatalogHelper
     Formatters::CatalogFormatter.format_taxonomic_history taxon
   end
 
-  def index_column_link rank, taxon, selected_taxon, page_parameters = {}
+  def index_column_link rank, taxon, selected_taxon, parameters = {}
     if taxon == 'none'
       classes = 'valid'
       classes << ' selected' if taxon == selected_taxon
       if rank == :subfamily
-        parameters = "subfamily=none"
-        parameters << "&hide_tribes=true" if page_parameters[:hide_tribes]
-        parameters << "&hide_subgenera=true" if page_parameters[:hide_subgenera]
-        link_to "(no subfamily)", "/catalog?#{parameters}", class: classes
+        #our_parameters[:hide_tribes] << "&hide_tribes=true" if parameters[:hide_tribes]
+        #our_parameters[:hide_subgenera] << "&hide_subgenera=true" if parameters[:hide_subgenera]
+        link_to '(no subfamily)', '/catalog?child=none', class: classes
       elsif rank == :tribe
-        parameters = "subfamily=#{page_parameters[:subfamily].id}&tribe=none"
-        link_to "(no tribe)", "/catalog?#{parameters}", class: classes
+        our_parameters = "subfamily=#{parameters[:subfamily].id}&tribe=none"
+        link_to "(no tribe)", "/catalog?#{our_parameters}", class: classes
       end
     else
       label = Formatters::CatalogFormatter.taxon_label taxon
       css_classes = Formatters::CatalogFormatter.taxon_css_classes taxon, selected: taxon == selected_taxon
       # Using ndex_catalog_path slows things way down when used a lot (like making 1000 Camponotus species links)
-      link_to label, "/catalog/#{taxon.id}?#{page_parameters.to_query}", class: css_classes
+      link_to label, "/catalog/#{taxon.id}?#{parameters.to_query}", class: css_classes
     end
   end
 
-  def hide_link name, selected, page_parameters
+  def hide_link name, selected, parameters
     hide_param = "hide_#{name}".to_sym
-    link_to 'hide', catalog_path(selected, page_parameters.merge(hide_param => true)), class: :hide
+    link_to 'hide', catalog_path(selected, parameters.merge(hide_param => true)), class: :hide
   end
 
-  def show_child_link params, name, selected, page_parameters
+  def show_child_link name, selected, parameters
     hide_child_param = "hide_#{name}".to_sym
-    return unless params[hide_child_param]
-    link_to "show #{name}", catalog_path(selected, page_parameters.merge(hide_child_param => false))
+    return unless parameters[hide_child_param]
+    link_to "show #{name}", catalog_path(selected, parameters.merge(hide_child_param => false))
   end
 
   def snake_taxon_columns items
