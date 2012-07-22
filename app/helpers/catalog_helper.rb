@@ -16,7 +16,7 @@ module CatalogHelper
   end
 
   def search_selector current_search_type
-    select_tag :search_type,
+    select_tag :st,
       options_for_select(['matching', 'beginning with', 'containing'], current_search_type || 'beginning with')
   end
 

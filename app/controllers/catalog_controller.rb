@@ -24,12 +24,12 @@ class CatalogController < ApplicationController
   end
 
   def clear_search
-    @parameters[:q] = @parameters[:search_type] = nil
+    @parameters[:q] = @parameters[:st] = nil
   end
 
   def do_search
     return unless @parameters[:q].present?
-    @search_results = Taxon.find_name @parameters[:q], @parameters[:search_type]
+    @search_results = Taxon.find_name @parameters[:q], @parameters[:st]
     if @search_results.blank?
       @search_results_message = 'No results found'
     else
@@ -119,7 +119,7 @@ class CatalogController < ApplicationController
     @parameters[:id] = params[:id] if params[:id]
     @parameters[:child] = params[:child] if params[:child]
     @parameters[:q] = params[:q].strip if params[:q]
-    @parameters[:search_type] = params[:search_type] if params[:search_type]
+    @parameters[:st] = params[:st] if params[:st]
   end
 
   def create
