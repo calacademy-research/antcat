@@ -20,10 +20,6 @@ module CatalogHelper
       options_for_select(['matching', 'beginning with', 'containing'], current_search_type || 'beginning with')
   end
 
-  def taxonomic_history taxon
-    Formatters::CatalogFormatter.format_taxonomic_history taxon
-  end
-
   def index_column_link rank, taxon, selected_taxon, parent_taxon, parameters = {}
     parameters = parameters.dup
     parameters.delete :id
