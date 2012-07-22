@@ -60,9 +60,13 @@ class CatalogController < ApplicationController
     when Subfamily
       @subfamily = @taxon
 
-      @tribes = @subfamily.tribes.ordered_by_name
-      if @parameters[:child] == 'none'
-        @tribe = 'none'
+      if @parameters[:show_tribes]
+        @tribes = @subfamily.tribes.ordered_by_name
+        if @parameters[:child] == 'none'
+          @tribe = 'none'
+          @genera = @subfamily.genera.ordered_by_name
+        end
+      else
         @genera = @subfamily.genera.ordered_by_name
       end
 
@@ -124,6 +128,7 @@ class CatalogController < ApplicationController
     @parameters[:child] = params[:child] if params[:child]
     @parameters[:q] = params[:q].strip if params[:q]
     @parameters[:st] = params[:st] if params[:st]
+    @parameters[:show_tribes] = false
   end
 
   def create
