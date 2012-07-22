@@ -3,41 +3,39 @@ class CatalogController < ApplicationController
   before_filter :get_parameters
 
   def show
-    if @parameters[:q].present?
-      @search_results = Taxon.find_name @parameters[:q], @parameters[:search_type]
-      if @search_results.blank?
-        @search_results_message = 'No results found'
-      else
-        @search_results = @search_results.map do |search_result|
-          {name: search_result.name.html_name, id: search_result.id}
-        end
-      end
-      if @parameters[:id].blank?
-        @parameters[:id] = @search_results.first[:id]
-        @parameters[:child] = nil
-      end
-    end
+    go_search false
     setup_taxon_and_index
     render :show
   end
 
   def search
     if params[:commit] == 'Clear'
-      @parameters[:q] = @parameters[:search_type] = nil
-    elsif @parameters[:q].present?
-      @search_results = Taxon.find_name @parameters[:q], @parameters[:search_type]
-      if @search_results.blank?
-        @search_results_message = 'No results found'
-      else
-        @search_results = @search_results.map do |search_result|
-          {name: search_result.name.html_name, id: search_result.id}
-        end
+      clear_search
+    else
+      go_search true
+    end
+    setup_taxon_and_index
+    render :show
+  end
+
+  def clear_search
+    @parameters[:q] = @parameters[:search_type] = nil
+  end
+
+  def go_search always_set_id
+    return unless @parameters[:q].present?
+    @search_results = Taxon.find_name @parameters[:q], @parameters[:search_type]
+    if @search_results.blank?
+      @search_results_message = 'No results found'
+    else
+      @search_results = @search_results.map do |search_result|
+        {name: search_result.name.html_name, id: search_result.id}
+      end
+      if always_set_id or @parameters[:id].blank?
         @parameters[:id] = @search_results.first[:id]
         @parameters[:child] = nil
       end
     end
-    setup_taxon_and_index
-    render :show
   end
 
   def setup_taxon_and_index
