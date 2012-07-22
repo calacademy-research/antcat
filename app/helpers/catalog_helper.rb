@@ -24,35 +24,49 @@ module CatalogHelper
     Formatters::CatalogFormatter.format_taxonomic_history taxon
   end
 
-  def index_column_link rank, taxon, selected_taxon, parameters = {}
+  def index_column_link rank, taxon, selected_taxon, parent_taxon, parameters = {}
+    parameters = parameters.dup
+    parameters.delete :id
+    parameters.delete :child
     if taxon == 'none'
+      parameters[:child] = 'none'
       classes = 'valid'
       classes << ' selected' if taxon == selected_taxon
       if rank == :subfamily
-        #our_parameters[:hide_tribes] << "&hide_tribes=true" if parameters[:hide_tribes]
-        #our_parameters[:hide_subgenera] << "&hide_subgenera=true" if parameters[:hide_subgenera]
-        link_to '(no subfamily)', '/catalog?child=none', class: classes
+        id_string = ''
+        label = '(no subfamily)'
       elsif rank == :tribe
-        our_parameters = "subfamily=#{parameters[:subfamily].id}&tribe=none"
-        link_to "(no tribe)", "/catalog?#{our_parameters}", class: classes
+        id_string = "/#{parent_taxon.id}"
+        label = '(no tribe)'
       end
     else
+      id_string = "/#{taxon.id}"
       label = Formatters::CatalogFormatter.taxon_label taxon
-      css_classes = Formatters::CatalogFormatter.taxon_css_classes taxon, selected: taxon == selected_taxon
-      # Using ndex_catalog_path slows things way down when used a lot (like making 1000 Camponotus species links)
-      link_to label, "/catalog/#{taxon.id}?#{parameters.to_query}", class: css_classes
+      classes = Formatters::CatalogFormatter.taxon_css_classes taxon, selected: taxon == selected_taxon
     end
+    parameters_string = parameters.empty? ? '' : "?#{parameters.to_query}"
+    link_to label, "/catalog#{id_string}#{parameters_string}", class: classes
+  end
+
+  def search_result_link item, parameters
+    parameters = parameters.dup
+    css_class = item[:id] == parameters[:id] ? 'selected' : nil
+    parameters.delete :id
+    parameters.delete :child
+    parameters_string = parameters.empty? ? '' : "?#{parameters.to_query}"
+    link_to raw(item[:name]), "/catalog/#{item[:id]}#{parameters_string}", class: css_class
   end
 
   def hide_link name, selected, parameters
-    hide_param = "hide_#{name}".to_sym
-    link_to 'hide', catalog_path(selected, parameters.merge(hide_param => true)), class: :hide
+    #hide_param = "hide_#{name}".to_sym
+    #link_to 'hide', catalog_path(selected, parameters.merge(hide_param => true)), class: :hide
+    ''
   end
 
   def show_child_link name, selected, parameters
-    hide_child_param = "hide_#{name}".to_sym
-    return unless parameters[hide_child_param]
-    link_to "show #{name}", catalog_path(selected, parameters.merge(hide_child_param => false))
+    #hide_child_param = "hide_#{name}".to_sym
+    #return unless parameters[hide_child_param]
+    #link_to "show #{name}", catalog_path(selected, parameters.merge(hide_child_param => false))
   end
 
   def snake_taxon_columns items

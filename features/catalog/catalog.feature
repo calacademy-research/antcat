@@ -45,7 +45,6 @@ Feature: Using the catalog
 
   Scenario: Selecting a subfamily
     When I go to the catalog
-    And I follow "show tribes"
     And I follow "Dolichoderinae"
     Then "Dolichoderinae" should be selected
     And I should see "Dolichoderini" in the contents
@@ -56,7 +55,6 @@ Feature: Using the catalog
 
   Scenario: Selecting a tribe
     When I go to the catalog
-    And I follow "show tribes"
     And I follow "Dolichoderinae"
     And I follow "Dolichoderini"
     Then "Dolichoderinae" should be selected
@@ -67,7 +65,6 @@ Feature: Using the catalog
 
   Scenario: Selecting a genus
     When I go to the catalog
-    And I follow "show tribes"
     And I follow "Dolichoderinae"
     And I follow "Dolichoderini"
     And I follow "Dolichoderus"
@@ -81,7 +78,6 @@ Feature: Using the catalog
 
   Scenario: Selecting a species
     When I go to the catalog
-    And I follow "show tribes"
     And I follow "Dolichoderinae"
     And I follow "Dolichoderini"
     And I follow "Dolichoderus"
@@ -94,7 +90,6 @@ Feature: Using the catalog
 
   Scenario: Selecting a subspecies from the species list
     When I go to the catalog
-    And I follow "show tribes"
     And I follow "Dolichoderinae"
     And I follow "Dolichoderini"
     And I follow "Dolichoderus"
@@ -109,7 +104,6 @@ Feature: Using the catalog
     #Given a genus exists with a name of "Cariridris" and a subfamily of "Dolichoderinae"
     #And a genus exists with a name of "Atta" and a subfamily of "Attaninae"
     #When I go to the catalog
-    #And I follow "show tribes"
     #And I follow "Dolichoderinae"
     #And I follow "(no tribe)" in the tribes index
     #Then I should see "Cariridris" in the genera index
@@ -121,7 +115,6 @@ Feature: Using the catalog
   Scenario: Showing the "no subfamily" subfamily
     Given a genus exists with a name of "Cariridris" and no subfamily
     When I go to the catalog
-    And I follow "show tribes"
     And I follow "(no subfamily)"
     Then I should see "Cariridris"
     And "(no subfamily)" should be selected

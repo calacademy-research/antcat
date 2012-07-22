@@ -5,26 +5,21 @@
 
 - content_for :page_header do
   #navigation_bar
-    = form_tag @current_path, :method => 'get', :id => 'search_form' do
-      = hidden_field_tag "is_search_form", true
-
+    = form_tag '/catalog/search', method: :get do
+      = hidden_field_tag 'id', params[:id]
       .search
         Search for name
         = search_selector params[:search_type]
-        = hidden_field_tag "id", params[:id]
-        = hidden_field_tag "hide_tribes", params[:hide_tribes]
-        = hidden_field_tag "hide_subgenera", params[:hide_subgenera]
-        = text_field_tag "q", params[:q]
-        = submit_tag  "Go"
-        - if @search_results.present? && @search_results.size > 1
-          = submit_tag "Clear"
+        = text_field_tag 'q', params[:q]
+        = submit_tag  'Go'
+        = submit_tag 'Clear' if @search_results.present? && @search_results.size > 1
         = @search_results_message
   = render 'shared/catalog_title'
 
 - content_for :page_contents do
-  = render 'catalog/search_results', search_results: @search_results, taxon: @taxon, path: :catalog_path
+  = render 'search_results', search_results: @search_results, taxon: @taxon
   = yield
   .clear
-  = render 'catalog/taxon_key'
+  = render 'taxon_key'
 
-= render :file => 'layouts/application'
+= render file: 'layouts/application'
