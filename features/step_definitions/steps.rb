@@ -41,7 +41,7 @@ When /I fill in the search box with "(.*?)"/ do |search_term|
 end
 
 When /I press "Go" by the search box/ do
-  step 'I press "Go" within "#search_form"'
+  step 'I press "Go" within "#navigation_bar form"'
 end
 
 Then /I should (not )?see "(.*?)" (?:with)?in (.*)$/ do |do_not, contents, location|

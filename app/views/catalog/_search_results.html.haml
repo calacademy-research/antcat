@@ -5,10 +5,5 @@
       %tr
         - row.each do |item|
           - if item
-            %td
-              - css_class = params[:id].to_s == item[:id].to_s ? 'selected' : nil
-              - parameters = @parameters.dup
-              - parameters.delete :id
-              = link_to raw(item[:name]), send(path, item[:id], parameters), class: css_class
-
+            %td= search_result_link item, @parameters
   %hr
