@@ -53,9 +53,9 @@ module CatalogHelper
   end
 
   def hide_link name, selected, parameters
-    #hide_param = "hide_#{name}".to_sym
-    #link_to 'hide', catalog_path(selected, parameters.merge(hide_param => true)), class: :hide
-    ''
+    showing_child = "show_#{name}".to_sym
+    parameters_string = parameters.empty? ? '' : "?#{parameters.to_query}"
+    link_to 'hide', "/catalog/hide_#{name}#{parameters_string}"
   end
 
   def show_child_link name, selected, parameters

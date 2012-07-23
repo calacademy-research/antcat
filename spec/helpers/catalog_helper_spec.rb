@@ -26,10 +26,10 @@ describe CatalogHelper do
   end
 
   describe "Hide link" do
-    #it "should create a link with all the current parameters + hide_tribe => true" do
-      #taxon = FactoryGirl.create :genus
-      #helper.hide_link('tribes', taxon, {}).should == %{<a href="/catalog/#{taxon.id}?hide_tribes=true" class="hide">hide</a>}
-    #end
+    it "should create a link to the hide tribes action with all the current parameters" do
+      taxon = FactoryGirl.create :genus
+      helper.hide_link('tribes', taxon, {}).should == '<a href="/catalog/hide_tribes">hide</a>'
+    end
   end
 
   describe "Show child link" do
