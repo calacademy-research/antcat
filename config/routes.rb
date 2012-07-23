@@ -13,6 +13,8 @@ AntCat::Application.routes.draw do
   match     'catalog/search' => 'catalog#search', as: :catalog, via: :get
   match     'catalog/show_tribes' => 'catalog#show_tribes', as: :catalog, via: :get
   match     'catalog/hide_tribes' => 'catalog#hide_tribes', as: :catalog, via: :get
+  match     'catalog/show_subgenera' => 'catalog#show_subgenera', as: :catalog, via: :get
+  match     'catalog/hide_subgenera' => 'catalog#hide_subgenera', as: :catalog, via: :get
   match     'catalog/(:id)' => 'catalog#show', as: :catalog, via: :get
 
   resources :bolton_references

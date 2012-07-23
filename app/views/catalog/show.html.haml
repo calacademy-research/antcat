@@ -19,8 +19,8 @@
     - if @parameters[:show_tribes] and not @subfamily == 'none'
       = render 'rank', rank: :tribe,    items: @tribes,     selected_item: @tribe,     parent: @subfamily,options: {show_none: 'none', hideable_name: 'tribes'}
     = render   'rank', rank: :genus,    items: @genera,     selected_item: @genus,     parent: nil,       options: {hideable_child_name: 'subgenera'}
-    -#- unless @parameters[:hide_subgenera]
-    = render  'rank',  rank: :subgenus, items: @subgenera,  selected_item: @subgenus,  parent: nil,       options: {hideable_name: 'subgenera'}
+    - if @parameters[:show_subgenera]
+      = render'rank',  rank: :subgenus, items: @subgenera,  selected_item: @subgenus,  parent: nil,       options: {hideable_name: 'subgenera'}
     = render  'rank',  rank: :species,  items: @specieses,  selected_item: @species,   parent: nil,       options: {}
 
 = render 'shared/qtip'
