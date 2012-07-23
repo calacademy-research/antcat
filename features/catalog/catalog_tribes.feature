@@ -31,6 +31,13 @@ Feature: Hiding and showing tribes in the index
     And "Dolichoderus" should be selected
     And "major" should be selected
 
+  Scenario: Showing tribes
+    When I go to the catalog
+    Then I should not see "Dolichoderini" in the index
+    When I follow "Dolichoderinae"
+    And I follow "show tribes"
+    Then I should see "Dolichoderini" in the index
+
   Scenario: Hiding tribes
     When I go to the catalog
     And I follow "Dolichoderinae"
