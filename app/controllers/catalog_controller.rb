@@ -39,6 +39,22 @@ class CatalogController < ApplicationController
     render :show
   end
 
+  def show_subgenera
+    get_parameters
+    @parameters[:show_subgenera] = true
+    do_search
+    setup_taxon_and_index
+    render :show
+  end
+
+  def hide_subgenera
+    get_parameters
+    @parameters.delete :show_subgenera
+    do_search
+    setup_taxon_and_index
+    render :show
+  end
+
   def clear_search
     @parameters[:q] = @parameters[:st] = nil
   end
@@ -98,7 +114,7 @@ class CatalogController < ApplicationController
       @genus = @taxon
       @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
       setup_genus_parent_columns
-      unless params[:show_subgenera]
+      unless @parameters[:show_subgenera]
         @specieses = @genus.species_group_descendants.ordered_by_name
       else
         @subgenera = @genus.subgenera.ordered_by_name.ordered_by_name
@@ -146,6 +162,7 @@ class CatalogController < ApplicationController
     @parameters[:q] = params[:q].strip if params[:q]
     @parameters[:st] = params[:st] if params[:st]
     @parameters[:show_tribes] = params[:show_tribes] if params[:show_tribes]
+    @parameters[:show_subgenera] = params[:show_subgenera] if params[:show_subgenera]
   end
 
   def create
