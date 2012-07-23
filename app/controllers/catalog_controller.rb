@@ -33,7 +33,7 @@ class CatalogController < ApplicationController
 
   def hide_tribes
     get_parameters
-    @parameters[:hide_tribes] = true
+    @parameters.delete :show_tribes
     do_search
     setup_taxon_and_index
     render :show
@@ -95,45 +95,46 @@ class CatalogController < ApplicationController
 
     when Genus
       @genus = @taxon
-      @tribe = @genus.tribe ? @genus.tribe : 'none'
       @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
-
-      @tribes = @subfamily.tribes.ordered_by_name unless @subfamily == 'none'
-      @genera = @genus.siblings.ordered_by_name
-      @subgenera = @genus.subgenera.ordered_by_name
-      @specieses = @genus.species_group_descendants.ordered_by_name
+      setup_genus_parent_columns
+      unless params[:show_subgenera]
+        @specieses = @genus.species_group_descendants.ordered_by_name
+      else
+        @subgenera = @genus.subgenera.ordered_by_name.ordered_by_name
+      end
 
     when Subgenus
       @subgenus = @taxon
       @genus = @subgenus.genus
-      @tribe = @genus.tribe ? @genus.tribe : 'none'
       @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
-
-      @tribes = @subfamily.tribes.ordered_by_name unless @subfamily == 'none'
-      @genera = @genus.siblings.ordered_by_name
       @subgenera = @genus.subgenera.ordered_by_name
+      setup_genus_parent_columns
       @specieses = @subgenus.species_group_descendants.ordered_by_name
 
     when Species
       @species = @taxon
       @genus = @species.genus
-      @tribe = @genus.tribe ? @genus.tribe : 'none'
       @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
-
-      @tribes = @subfamily.tribes.ordered_by_name unless @subfamily == 'none'
-      @genera = @genus.siblings.ordered_by_name
+      setup_genus_parent_columns
       @specieses = @genus.species_group_descendants.ordered_by_name
 
     when Subspecies
       @species = @taxon
       @genus = @species.genus
-      @tribe = @genus.tribe ? @genus.tribe : 'none'
       @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
-
-      @tribes = @subfamily.tribes.ordered_by_name unless @subfamily == 'none'
-      @genera = @genus.siblings.ordered_by_name
+      setup_genus_parent_columns
       @specieses = @genus.species_group_descendants.ordered_by_name
 
+    end
+  end
+
+  def setup_genus_parent_columns
+    unless @parameters[:show_tribes]
+      @genera = @subfamily == 'none' ? Genus.without_subfamily.ordered_by_name : @subfamily.genera.ordered_by_name
+    else
+      @genera = @genus.siblings.ordered_by_name
+      @tribe = @genus.tribe ? @genus.tribe : 'none'
+      @tribes = @subfamily == 'none' ? nil : @subfamily.tribes.ordered_by_name
     end
   end
 

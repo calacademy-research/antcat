@@ -40,14 +40,13 @@ Feature: Hiding and showing tribes in the index
 
   Scenario: Hiding tribes
     When I go to the catalog
+    And I follow "show tribes"
     And I follow "Dolichoderinae"
     Then I should see "Dolichoderini" in the index
     And I should not see "show tribes"
     When I follow "hide"
     Then I should not see "Dolichoderini" in the index
     And I should see "show tribes"
-    And I should see "Dolichoderus" in the index
-    And I should see "Atta" in the index
 
   Scenario: Selecting a genus after hiding tribes
     When I go to the catalog
