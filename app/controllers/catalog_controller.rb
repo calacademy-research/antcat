@@ -29,7 +29,7 @@ class CatalogController < ApplicationController
         id = @search_results.first[:id]
         @taxon = Taxon.find id
         @parameters[:id] = id
-        @parameters[:child] = nil
+        @parameters.delete :child
       end
     end
     setup_taxon_and_index
@@ -49,7 +49,7 @@ class CatalogController < ApplicationController
     if @taxon.kind_of? Tribe
       @taxon = @taxon.subfamily
       @parameters[:id] = @taxon.id
-      @parameters[:child] = nil
+      @parameters.delete :child
     end
     setup_taxon_and_index
     render :show
@@ -157,12 +157,12 @@ class CatalogController < ApplicationController
   end
 
   def setup_genus_parent_columns
-    unless @parameters[:show_tribes]
-      @genera = @subfamily == 'none' ? Genus.without_subfamily.ordered_by_name : @subfamily.genera.ordered_by_name
-    else
+    if @parameters[:show_tribes]
       @genera = @genus.siblings.ordered_by_name
       @tribe = @genus.tribe ? @genus.tribe : 'none'
       @tribes = @subfamily == 'none' ? nil : @subfamily.tribes.ordered_by_name
+    else
+      @genera = @subfamily == 'none' ? Genus.without_subfamily.ordered_by_name : @subfamily.genera.ordered_by_name
     end
   end
 
