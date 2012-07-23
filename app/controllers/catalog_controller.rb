@@ -26,7 +26,9 @@ class CatalogController < ApplicationController
     else
       do_search
       if @search_results.present?
-        @parameters[:id] = @search_results.first[:id]
+        id = @search_results.first[:id]
+        @taxon = Taxon.find id
+        @parameters[:id] = id
         @parameters[:child] = nil
       end
     end
@@ -47,6 +49,7 @@ class CatalogController < ApplicationController
     if @taxon.kind_of? Tribe
       @taxon = @taxon.subfamily
       @parameters[:id] = @taxon.id
+      @parameters[:child] = nil
     end
     setup_taxon_and_index
     render :show
