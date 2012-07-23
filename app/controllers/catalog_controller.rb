@@ -23,6 +23,22 @@ class CatalogController < ApplicationController
     render :show
   end
 
+  def show_tribes
+    get_parameters
+    @parameters[:show_tribes] = true
+    do_search
+    setup_taxon_and_index
+    render :show
+  end
+
+  def hide_tribes
+    get_parameters
+    @parameters[:hide_tribes] = true
+    do_search
+    setup_taxon_and_index
+    render :show
+  end
+
   def clear_search
     @parameters[:q] = @parameters[:st] = nil
   end
@@ -119,7 +135,6 @@ class CatalogController < ApplicationController
       @specieses = @genus.species_group_descendants.ordered_by_name
 
     end
-
   end
 
   def get_parameters
@@ -128,7 +143,7 @@ class CatalogController < ApplicationController
     @parameters[:child] = params[:child] if params[:child]
     @parameters[:q] = params[:q].strip if params[:q]
     @parameters[:st] = params[:st] if params[:st]
-    @parameters[:show_tribes] = false
+    @parameters[:show_tribes] = params[:show_tribes] if params[:show_tribes]
   end
 
   def create

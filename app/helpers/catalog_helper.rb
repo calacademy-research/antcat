@@ -59,9 +59,10 @@ module CatalogHelper
   end
 
   def show_child_link name, selected, parameters
-    #hide_child_param = "hide_#{name}".to_sym
-    #return unless parameters[hide_child_param]
-    #link_to "show #{name}", catalog_path(selected, parameters.merge(hide_child_param => false))
+    showing_child = "show_#{name}".to_sym
+    return if parameters[showing_child]
+    parameters_string = parameters.empty? ? '' : "?#{parameters.to_query}"
+    link_to "show #{name}", "/catalog/show_#{name}#{parameters_string}"
   end
 
   def snake_taxon_columns items
