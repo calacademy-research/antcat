@@ -90,6 +90,7 @@ class CatalogController < ApplicationController
       @tribe = @taxon
       @subfamily = @tribe.subfamily
 
+      @parameters[:show_tribes] = true
       @tribes = @tribe.siblings.ordered_by_name
       @genera = @tribe.genera.ordered_by_name
 

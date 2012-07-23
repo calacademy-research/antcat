@@ -30,10 +30,13 @@ Feature: Using the catalog
     And I should not see "Dolichoderinae history"
     And I should not see "Atta" in the index
 
-  Scenario: Choosing '(no subfamily)'
+  Scenario: Showing the "no subfamily" subfamily
+    Given a genus exists with a name of "Cariridris" and no subfamily
     When I go to the catalog
     And I follow "(no subfamily)"
-    Then I should see "Atta" in the index
+    Then I should see "Cariridris"
+    And "(no subfamily)" should be selected
+    And I should not see "Tribes"
 
   Scenario: Selecting a genus without a subfamily
     When I go to the catalog
@@ -47,14 +50,13 @@ Feature: Using the catalog
     When I go to the catalog
     And I follow "Dolichoderinae"
     Then "Dolichoderinae" should be selected
-    And I should see "Dolichoderini" in the contents
     And I should see "Dolichoderinae history"
     And I should see "Extant: 1 valid tribe, 2 valid genera, 2 valid species, 1 valid subspecies"
     And I should see "Fossil: 1 valid genus"
-    And I should see "Dolichoderini" in the index
 
   Scenario: Selecting a tribe
     When I go to the catalog
+    And I follow "show tribes"
     And I follow "Dolichoderinae"
     And I follow "Dolichoderini"
     Then "Dolichoderinae" should be selected
@@ -66,10 +68,8 @@ Feature: Using the catalog
   Scenario: Selecting a genus
     When I go to the catalog
     And I follow "Dolichoderinae"
-    And I follow "Dolichoderini"
     And I follow "Dolichoderus"
     Then "Dolichoderinae" should be selected
-    And "Dolichoderini" should be selected
     And "Dolichoderus" should be selected
     And I should see "Dolichoderus history"
     And I should see "1 valid species, 1 valid subspecies"
@@ -79,11 +79,9 @@ Feature: Using the catalog
   Scenario: Selecting a species
     When I go to the catalog
     And I follow "Dolichoderinae"
-    And I follow "Dolichoderini"
     And I follow "Dolichoderus"
     And I follow "abruptus"
     Then "Dolichoderinae" should be selected
-    And "Dolichoderini" should be selected
     And "Dolichoderus" should be selected
     And "abruptus" should be selected
     And I should see "abruptus history"
@@ -91,7 +89,6 @@ Feature: Using the catalog
   Scenario: Selecting a subspecies from the species list
     When I go to the catalog
     And I follow "Dolichoderinae"
-    And I follow "Dolichoderini"
     And I follow "Dolichoderus"
     Then I should see "abruptus" in the index
     And I should see "minor" in the index
@@ -100,23 +97,16 @@ Feature: Using the catalog
     And I should see "abruptus" in the index
     And I should see "minor" in the index
 
-  #Scenario: Showing the "no tribe" tribe
-    #Given a genus exists with a name of "Cariridris" and a subfamily of "Dolichoderinae"
-    #And a genus exists with a name of "Atta" and a subfamily of "Attaninae"
-    #When I go to the catalog
-    #And I follow "Dolichoderinae"
-    #And I follow "(no tribe)" in the tribes index
-    #Then I should see "Cariridris" in the genera index
-    #And I should not see "Atta" in the genera index
-    #And "(no tribe)" should be selected in the tribes index
-    #And "Dolichoderinae" should be selected in the subfamilies index
-    #And I should see "Dolichoderinae history"
-
-  Scenario: Showing the "no subfamily" subfamily
-    Given a genus exists with a name of "Cariridris" and no subfamily
+  Scenario: Showing the "no tribe" tribe
+    Given a genus exists with a name of "Cariridris" and a subfamily of "Dolichoderinae"
+    And a genus exists with a name of "Atta" and a subfamily of "Attaninae"
     When I go to the catalog
-    And I follow "(no subfamily)"
-    Then I should see "Cariridris"
-    And "(no subfamily)" should be selected
-    And I should not see "Tribes"
+    And I follow "Dolichoderinae"
+    And I follow "show tribes"
+    And I follow "(no tribe)" in the tribes index
+    Then I should see "Cariridris" in the genera index
+    And I should not see "Atta" in the genera index
+    And "(no tribe)" should be selected in the tribes index
+    And "Dolichoderinae" should be selected in the subfamilies index
+    And I should see "Dolichoderinae history"
 

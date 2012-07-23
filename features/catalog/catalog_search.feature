@@ -80,6 +80,7 @@ Feature: Searching the catalog
   Scenario: Finding a genus without a tribe but with a subfamily
     Given a genus exists with a name of "Monomorium" and a subfamily of "Dolichoderinae" and a taxonomic history of "Monomorium history"
     When I go to the catalog
+    And I follow "show tribes"
     And I fill in the search box with "Monomorium"
     And I press "Go" by the search box
     Then I should see "Monomorium history"
@@ -87,14 +88,12 @@ Feature: Searching the catalog
     And "(no tribe)" should be selected in the tribes index
     And "Monomorium" should be selected in the genera index
 
-  #Scenario: Finding a tribe when tribes are hidden
-    #When I go to the catalog
-    #And I follow "Dolichoderinae"
-    #And I follow "hide" in the tribes index
-    #And I fill in the search box with "Dolichoderini"
-    #And I press "Go" by the search box
-    #Then I should see "Dolichoderini" in the tribes index
-    #And "Dolichoderini" should be selected in the tribes index
+  Scenario: Finding a tribe when tribes are hidden
+    When I go to the catalog
+    And I follow "Dolichoderinae"
+    And I fill in the search box with "Dolichoderini"
+    And I press "Go" by the search box
+    Then I should see "Dolichoderini" in the tribes index
 
   Scenario: Searching with spaces at beginning and/or end of query string
     When I go to the catalog
