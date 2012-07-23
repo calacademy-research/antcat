@@ -4,12 +4,12 @@ class CatalogController < ApplicationController
 
   def setup_parameters_and_find_taxon
     @parameters = HashWithIndifferentAccess.new
-    @parameters[:id] = params[:id] if params[:id]
-    @parameters[:child] = params[:child] if params[:child]
-    @parameters[:q] = params[:q].strip if params[:q]
-    @parameters[:st] = params[:st] if params[:st]
-    @parameters[:show_tribes] = params[:show_tribes] if params[:show_tribes]
-    @parameters[:show_subgenera] = params[:show_subgenera] if params[:show_subgenera]
+    @parameters[:id] = params[:id] if params[:id].present?
+    @parameters[:child] = params[:child] if params[:child].present?
+    @parameters[:q] = params[:q].strip if params[:q].present?
+    @parameters[:st] = params[:st] if params[:st].present?
+    @parameters[:show_tribes] = params[:show_tribes] if params[:show_tribes].present?
+    @parameters[:show_subgenera] = params[:show_subgenera] if params[:show_subgenera].present?
     @parameters[:id] = Family.first.id if @parameters[:id].blank?
     @taxon = Taxon.find @parameters[:id]
   end
