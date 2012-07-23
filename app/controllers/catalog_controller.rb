@@ -1,15 +1,26 @@
 # coding: UTF-8
 class CatalogController < ApplicationController
+  before_filter :setup_parameters_and_find_taxon
+
+  def setup_parameters_and_find_taxon
+    @parameters = HashWithIndifferentAccess.new
+    @parameters[:id] = params[:id] if params[:id]
+    @parameters[:child] = params[:child] if params[:child]
+    @parameters[:q] = params[:q].strip if params[:q]
+    @parameters[:st] = params[:st] if params[:st]
+    @parameters[:show_tribes] = params[:show_tribes] if params[:show_tribes]
+    @parameters[:show_subgenera] = params[:show_subgenera] if params[:show_subgenera]
+    @parameters[:id] = Family.first.id if @parameters[:id].blank?
+    @taxon = Taxon.find @parameters[:id]
+  end
 
   def show
-    get_parameters
     do_search
     setup_taxon_and_index
     render :show
   end
 
   def search
-    get_parameters
     if params[:commit] == 'Clear'
       clear_search
     else
@@ -24,7 +35,6 @@ class CatalogController < ApplicationController
   end
 
   def show_tribes
-    get_parameters
     @parameters[:show_tribes] = true
     do_search
     setup_taxon_and_index
@@ -32,15 +42,17 @@ class CatalogController < ApplicationController
   end
 
   def hide_tribes
-    get_parameters
     @parameters.delete :show_tribes
     do_search
+    if @taxon.kind_of? Tribe
+      @taxon = @taxon.subfamily
+      @parameters[:id] = @taxon.id
+    end
     setup_taxon_and_index
     render :show
   end
 
   def show_subgenera
-    get_parameters
     @parameters[:show_subgenera] = true
     do_search
     setup_taxon_and_index
@@ -48,7 +60,6 @@ class CatalogController < ApplicationController
   end
 
   def hide_subgenera
-    get_parameters
     @parameters.delete :show_subgenera
     do_search
     setup_taxon_and_index
@@ -76,9 +87,6 @@ class CatalogController < ApplicationController
   end
 
   def setup_taxon_and_index
-    @parameters[:id] = Family.first.id if @parameters[:id].blank?
-    @taxon = Taxon.find @parameters[:id]
-
     @subfamilies = ::Subfamily.ordered_by_name
 
     case @taxon
@@ -153,16 +161,6 @@ class CatalogController < ApplicationController
       @tribe = @genus.tribe ? @genus.tribe : 'none'
       @tribes = @subfamily == 'none' ? nil : @subfamily.tribes.ordered_by_name
     end
-  end
-
-  def get_parameters
-    @parameters = HashWithIndifferentAccess.new
-    @parameters[:id] = params[:id] if params[:id]
-    @parameters[:child] = params[:child] if params[:child]
-    @parameters[:q] = params[:q].strip if params[:q]
-    @parameters[:st] = params[:st] if params[:st]
-    @parameters[:show_tribes] = params[:show_tribes] if params[:show_tribes]
-    @parameters[:show_subgenera] = params[:show_subgenera] if params[:show_subgenera]
   end
 
   def create
