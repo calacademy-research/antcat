@@ -355,9 +355,17 @@ describe Importers::Bolton::Catalog::Species::Grammar do
     }
   end
 
+  it "should handle this quoted phrase, but it doesn't" do
+    #@grammar.parse(%{<i>nutans</i>. <i>Camponotus nutans</i> Mayr, 1867c: 440 (w.) "am Schiffe gefunden" (type-locality INDONESIA (Sumatra), see Emery, 1896d: 374).}).value
+  end
+
+  it "should handle these nested parentheses after a quoted passage" do
+    @grammar.parse(%{<i>antillana</i>. <i>Prenolepis guatemalensis</i> r. <i>antillana</i> Forel, 1893g: 340 (w.q.m.) ANTILLES. Combination in <i>Pr. (Nylanderia)</i>: Forel, 1912i: 66; in <i>Paratrechina (Nylanderia)</i>: Emery, 1925b: 223; in <i>Nylanderia</i>: Kempf, 1972a: 168; in <i>Paratrechina</i>: Brandão, 1991: 368; in <i>Nylanderia</i>: LaPolla, Brady & Shattuck, 2010a: 127. Currently subspecies of <i>vividula</i>: Forel, 1912i: 66.}).value
+  end
+
   # This just spins
-  #it "should handle a subspecies without a subspecies type" do
+  it "should handle a subspecies without a subspecies type" do
     #@grammar.parse('<i>nura</i>. <i>Crematogaster longispina</i> <i>nura</i> Ozdikmen, 2010c: 989.').value
-  #end
+  end
 
 end
