@@ -538,8 +538,8 @@ grammar Importers::Bolton::Catalog::Grammar
   end
 
   rule genus_abbreviation
-    /[[:upper:]]\./ {
-      {:genus_abbreviation => to_s}
+    /[[:upper:]][[:lower:]]?\./ {
+      {genus_abbreviation: to_s}
     }
   end
 

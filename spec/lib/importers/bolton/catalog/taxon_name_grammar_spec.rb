@@ -34,6 +34,9 @@ describe Importers::Bolton::Catalog::Grammar do
     it "matches an abbreviated genus + subgenus label" do
       @grammar.parse('<i>A. (Atturus)</i>', :root => :taxon_label).value_with_matched_text_removed.should == {:genus_abbreviation => 'A.', :subgenus_epithet => 'Atturus'}
     end
+    it "parses a genus abbreviation with two letters" do
+      @grammar.parse('<i>Pr. (Nylanderia)</i>', root: :taxon_label).value_with_matched_text_removed.should == {genus_abbreviation: 'Pr.', subgenus_epithet: 'Nylanderia'}
+    end
     it "should parse a collective group label" do
       result = @grammar.parse('*<i>Formicites</i> (collective group name)', root: :taxon_label, consume: false)
       result.should == '*<i>Formicites</i>'
