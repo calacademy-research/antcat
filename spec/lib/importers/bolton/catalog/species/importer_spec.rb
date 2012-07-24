@@ -137,8 +137,8 @@ describe Importers::Bolton::Catalog::Species::Importer do
   describe "Parsing taxonomic history" do
 
     it "should handle nothing" do
-      @importer.convert_taxonomic_history_to_taxts([]).should == []
-      @importer.convert_taxonomic_history_to_taxts(nil).should == []
+      @importer.class.convert_taxonomic_history_to_taxts([]).should == []
+      @importer.class.convert_taxonomic_history_to_taxts(nil).should == []
     end
 
     it "should handle the happy case" do
@@ -147,7 +147,7 @@ describe Importers::Bolton::Catalog::Species::Importer do
         see_also: {references: [{author_names:['Gray'], year:'1969', pages:'94', matched_text:'Gray, 1969: 94'}]},
         matched_text: 'See also Gray, 1969: 94'
       }]
-      @importer.convert_taxonomic_history_to_taxts(history).should == ["See also {ref #{reference.id}}: 94"]
+      @importer.class.convert_taxonomic_history_to_taxts(history).should == ["See also {ref #{reference.id}}: 94"]
     end
 
     it "should handle a single taxonomic history item that needs to be parsed as more than one taxt" do
@@ -157,7 +157,7 @@ describe Importers::Bolton::Catalog::Species::Importer do
         see_also: {},
         matched_text: 'Replacement name for <i>Acropyga silvestrii</i> Wheeler, W.M. 1927h: 100. [Junior primary homonym of <i>Acropyga silvestrii</i> Emery, 1915g: 21.]'
       }]
-      history = @importer.convert_taxonomic_history_to_taxts history
+      history = @importer.class.convert_taxonomic_history_to_taxts history
       history.should == [
         "Replacement name for <i>Acropyga silvestrii</i> {ref #{wheeler.id}}: 100",
         "[Junior primary homonym of <i>Acropyga silvestrii</i> {ref #{emery.id}}: 21.]"
@@ -166,7 +166,7 @@ describe Importers::Bolton::Catalog::Species::Importer do
 
     it "should handle forms with a reference" do
       reference = FactoryGirl.create :article_reference, bolton_key_cache: 'Mann 1916'
-      @importer.convert_taxonomic_history_to_taxts([{
+      @importer.class.convert_taxonomic_history_to_taxts([{
         references: [{
           author_names: ['Mann'], year: '1916', pages: '452', forms: 'q',
           matched_text: 'Mann, 1916: 452 (q)'
