@@ -143,4 +143,15 @@ describe Species do
     end
 
   end
+
+  describe "A manual import" do
+    it "should import Myrmicium heerii" do
+      genus = create_genus 'Myrmicium', status: 'excluded'
+      Species.import_myrmicium_heerii
+      species = Species.find_by_name 'Myrmicium heerii'
+      species.status.should == 'excluded'
+      species.genus.name.to_s.should == 'Myrmicium'
+    end
+  end
+
 end
