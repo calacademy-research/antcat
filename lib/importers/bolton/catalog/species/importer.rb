@@ -120,7 +120,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     set_status_manually 'Myrmeciites goliath', 'collective group name'
     set_status_manually 'Myrmeciites herculeanus', 'collective group name'
     set_status_manually 'Myrmeciites tabanifluviensis', 'collective group name'
-    Species.import_myrmicium_heeri unless Rails.env.test?
+    Species.import_myrmicium_heerii unless Rails.env.test?
   end
 
   def grammar
