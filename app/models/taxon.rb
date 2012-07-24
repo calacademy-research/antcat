@@ -14,6 +14,10 @@ class Taxon < ActiveRecord::Base
     taxon && Taxon.find_by_id(taxon.id)
   end
 
+  def self.find_all_by_name name
+    with_names.where ['name = ?', name]
+  end
+
   def self.find_by_epithet epithet
     joins(:name).readonly(false).where ['epithet = ?', epithet]
   end
