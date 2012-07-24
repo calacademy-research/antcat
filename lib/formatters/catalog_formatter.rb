@@ -23,7 +23,7 @@ class Formatters::CatalogFormatter
 
   def self.name_label name, fossil, options = {}
     name = name.upcase if options[:uppercase]
-    fossil name, fossil 
+    format_fossil name, fossil 
   end
 
   def self.taxon_css_classes taxon, options = {}
@@ -37,7 +37,7 @@ class Formatters::CatalogFormatter
     [taxon.type.downcase, 'taxon', 'name']
   end
 
-  def self.fossil name, is_fossil
+  def self.format_fossil name, is_fossil
     string = ''
     string << '&dagger;' if is_fossil
     string << h(name)
@@ -135,7 +135,7 @@ class Formatters::CatalogFormatter
   def self.format_headline_type_name taxon
     rank = taxon.type_name.rank
     rank = 'genus' if rank == 'subgenus'
-    name = fossil taxon.type_name.to_html.html_safe, taxon.type_fossil
+    name = format_fossil taxon.type_name.to_html.html_safe, taxon.type_fossil
     content_tag :span, name, class: "#{rank} taxon"
   end
   
