@@ -59,7 +59,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
                                       genus: @genus,
                                       protonym: @parse_result[:protonym],
                                       raw_history: @parse_result[:history],
-                                      history: convert_taxonomic_history_to_taxts(@parse_result[:history])
+                                      history: self.class.convert_taxonomic_history_to_taxts(@parse_result[:history])
             Progress.info "Imported #{species.inspect}"
             @species_count += 1
           rescue Species::NoProtonymError
@@ -127,7 +127,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     Importers::Bolton::Catalog::Species::Grammar
   end
 
-  def convert_taxonomic_history_to_taxts history
+  def self.convert_taxonomic_history_to_taxts history
     Progress.method
     (history || []).inject([]) do |items, item|
       for text in Importers::Bolton::Catalog::Grammar.parse(item[:matched_text], root: :texts).value[:texts]
