@@ -7,8 +7,6 @@
   #navigation_bar
     = form_tag '/catalog/search', method: :get do
       = hidden_field_tag 'id', @parameters[:id]
-      = hidden_field_tag 'show_tribes', @parameters[:show_tribes]
-      = hidden_field_tag 'show_subgenera', @parameters[:show_subgenera]
       .search
         Search for name
         = search_selector @parameters[:st]

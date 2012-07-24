@@ -7,7 +7,10 @@
         - if options[:hideable_name]
           .hide_show= hide_link options[:hideable_name], @parameters[:id], @parameters
         - if options[:hideable_child_name]
-          .hide_show= show_child_link options[:hideable_child_name], @parameters[:id], @parameters
+          .hide_show
+            - showing_child = "show_#{options[:hideable_child_name]}".to_sym
+            - unless session[showing_child]
+              = show_child_link options[:hideable_child_name], @parameters[:id], @parameters
         - if options[:addable]
           .add
             %a{href: '#'} add
