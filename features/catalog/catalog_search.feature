@@ -95,6 +95,12 @@ Feature: Searching the catalog
     And I press "Go" by the search box
     Then I should see "Dolichoderini" in the tribes index
 
+  Scenario: Finding a subgenus when subgenera are hidden
+    When I go to the catalog
+    And I fill in the search box with "Subdolichoderus"
+    And I press "Go" by the search box
+    Then "Subdolichoderus" should be selected in the subgenera index
+
   Scenario: Searching with spaces at beginning and/or end of query string
     When I go to the catalog
     When I fill in the search box with " abruptus "
