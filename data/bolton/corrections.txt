@@ -12,4 +12,6 @@
   NGC-Spap-ca           Italicize a parenthesis in shanwangensis
   NGC-Spcam1            Add period in ' var '
   NGC-Sppg-las          Unitalicize a parenthesis in striatula
+                        Don't italicize "in" in "Combination in Lasius"
+  NGC-Spleu-mi.htm      Don't italicize "of" in "use of Stenamma"
   NGC-Spst-tet          Deleted duplicate Strumigenys ocypete
