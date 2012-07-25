@@ -127,4 +127,3 @@ Feature: Hiding and showing tribes in the index
     And I follow "hide"
     And I follow "(no subfamily)"
     When I follow "Atta"
-
