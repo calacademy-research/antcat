@@ -38,6 +38,8 @@ class CatalogController < ApplicationController
 
   def hide_subgenera
     session[:show_subgenera] = false
+    taxon = Taxon.find @parameters[:id]
+    set_id_parameter taxon.genus.id if taxon.kind_of? Subgenus
     redirect_to_id
   end
 
