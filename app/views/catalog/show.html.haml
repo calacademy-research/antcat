@@ -16,10 +16,10 @@
 
   .index
     = render   'rank', rank: :subfamily,items: @subfamilies,selected_item: @subfamily, parent: nil,       options: {show_none: 'none', hideable_child_name: 'tribes'}
-    - if @showing_tribes and @subfamily != 'none'
+    - if session[:show_tribes] and @subfamily != 'none'
       = render 'rank', rank: :tribe,    items: @tribes,     selected_item: @tribe,     parent: @subfamily,options: {show_none: 'none', hideable_name: 'tribes'}
     = render   'rank', rank: :genus,    items: @genera,     selected_item: @genus,     parent: nil,       options: {hideable_child_name: 'subgenera'}
-    - if @showing_subgenera
+    - if session[:show_subgenera]
       = render'rank',  rank: :subgenus, items: @subgenera,  selected_item: @subgenus,  parent: nil,       options: {hideable_name: 'subgenera'}
     = render  'rank',  rank: :species,  items: @specieses,  selected_item: @species,   parent: nil,       options: {}
 
