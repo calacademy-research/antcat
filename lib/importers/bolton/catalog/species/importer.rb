@@ -20,7 +20,6 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     @species_count =
     @error_count =
     @ignored_count =
-    @species_without_protonym_count =
     0
 
     while @line
@@ -62,9 +61,6 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
                                       history: self.class.convert_taxonomic_history_to_taxts(@parse_result[:history])
             Progress.info "Imported #{species.inspect}"
             @species_count += 1
-          rescue Species::NoProtonymError
-            Progress.error "Species without protonym: #{@line}"
-            @species_without_protonym_count += 1
           end
 
         else Progress.error "Species with no active genus: #{@line}"
@@ -87,7 +83,6 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     Progress.puts "#{@species_count} species"
     Progress.puts "#{@genus_not_found_count} genera not found"
     Progress.puts "#{@duplicate_genera_that_need_resolving_count} duplicate genera that need resolving" if @duplicate_genera_that_need_resolving_count > 0
-    Progress.puts "#{@species_without_protonym_count} species without protonyms" if @species_without_protonym_count > 0
     Progress.puts "#{@error_count} could not understand"
   end
 
