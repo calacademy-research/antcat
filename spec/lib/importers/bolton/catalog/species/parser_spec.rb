@@ -291,30 +291,6 @@ describe Importers::Bolton::Catalog::Species::Grammar do
     @grammar.parse(%{<i>stitzi</i>. <i>Formica rufa</i> subsp. <i>truncicola</i> ab. <i>stitzi</i> Krausse, 1926d: 264 (w.) GERMANY. Unavailable name. [<i>Formica truncorum</i> ab. <i>stitzi</i> Stitz, 1939: 347; unavailable name.]. Material referred to <i>truncorum</i> by Dlussky, 1967a: 81.}).value
   end
 
-  #it "should parse a legitimate start, but with unparsed history" do
-    #@grammar.parse(%{*<i>tucumanus</i>. *<i>Neoforelius tucumanus</i> var. <i>modesta</i> Kusnezov, 1953b: 330, figs. 1-12, no caste given, BALTIC AMBER (Eocene). Member of unresolved <i>pilosum</i>-complex: Lattke, 1997: 165. Current subspecies: nominal plus <i>formosae</i>.}).value_with_matched_text_removed.should == {
-      #:type => :species_record,
-      #:species_group_epithet => 'tucumanus',
-      #:fossil => true,
-      #:protonym => {
-        #:genus_name => 'Neoforelius',
-        #:species_epithet => 'tucumanus',
-        #:subspecies => [{:type => 'var.', :subspecies_epithet => 'modesta'}],
-        #:author_names => ['Kusnezov'], :year => '1953b', :pages => '330, figs. 1-12', :forms => 'no caste given',
-        #:fossil => true,
-        #:locality => 'Baltic Amber (Eocene)',
-      #},
-      #:history => [
-        #{:text => [
-          #{:phrase => "Member of unresolved", :delimiter => " "},
-          #{:species_group_epithet => "pilosum"},
-          #{:unparseable => '-complex: Lattke, 1997: 165'},
-        #]},
-        #{:subspecies => [{:species_group_epithet => 'formosae'}]},
-      #]
-    #}
-  #end
-
   describe "Bad protonyms" do
     it "should parse weirdness in the protonym name" do
       @grammar.parse(%{<i>expolitus</i>. <i>Aphaenogaster (Attomyrmex</i> [sic]) <i>expolitus</i> Azuma, 1950: 34, JAPAN. <i>Nomen nudum</i>. See Onoyama, 1980: 194.}).value_with_matched_text_removed.should == {
@@ -355,17 +331,8 @@ describe Importers::Bolton::Catalog::Species::Grammar do
     }
   end
 
-  it "should handle this quoted phrase, but it doesn't" do
-    #@grammar.parse(%{<i>nutans</i>. <i>Camponotus nutans</i> Mayr, 1867c: 440 (w.) "am Schiffe gefunden" (type-locality INDONESIA (Sumatra), see Emery, 1896d: 374).}).value
-  end
-
   it "should handle these nested parentheses after a quoted passage" do
     @grammar.parse(%{<i>antillana</i>. <i>Prenolepis guatemalensis</i> r. <i>antillana</i> Forel, 1893g: 340 (w.q.m.) ANTILLES. Combination in <i>Pr. (Nylanderia)</i>: Forel, 1912i: 66; in <i>Paratrechina (Nylanderia)</i>: Emery, 1925b: 223; in <i>Nylanderia</i>: Kempf, 1972a: 168; in <i>Paratrechina</i>: Brandão, 1991: 368; in <i>Nylanderia</i>: LaPolla, Brady & Shattuck, 2010a: 127. Currently subspecies of <i>vividula</i>: Forel, 1912i: 66.}).value
-  end
-
-  # This just spins
-  it "should handle a subspecies without a subspecies type" do
-    #@grammar.parse('<i>nura</i>. <i>Crematogaster longispina</i> <i>nura</i> Ozdikmen, 2010c: 989.').value
   end
 
 end
