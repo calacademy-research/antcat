@@ -3,9 +3,9 @@ class CatalogController < ApplicationController
   before_filter :get_parameters
 
   def show
+    @parameters[:id] = Family.first.id if @parameters[:id].blank?
     do_search
     setup_taxon_and_index
-    render :show
   end
 
   def search
@@ -13,12 +13,7 @@ class CatalogController < ApplicationController
       clear_search
     else
       do_search
-      if @search_results.present?
-        id = @search_results.first[:id]
-        @taxon = Taxon.find id
-        @parameters[:id] = id
-        @parameters.delete :child
-      end
+      set_id_parameter @search_results.first[:id] if @search_results.present?
     end
     setup_taxon_and_index
     render :show
@@ -26,51 +21,36 @@ class CatalogController < ApplicationController
 
   def show_tribes
     session[:show_tribes] = true
-    redirect_to @parameters.merge action: :show
+    redirect_to_id
   end
 
   def hide_tribes
     session[:show_tribes] = false
-    do_search
-    if @taxon.kind_of? Tribe
-      @taxon = @taxon.subfamily
-      @parameters[:id] = @taxon.id
-      @parameters.delete :child
-    end
-    redirect_to @parameters.merge action: :show
+    taxon = Taxon.find @parameters[:id]
+    set_id_parameter taxon.subfamily.id if taxon.kind_of? Tribe
+    redirect_to_id
   end
 
   def show_subgenera
     session[:show_subgenera] = true
-    redirect_to @parameters.merge action: :show
+    redirect_to_id
   end
 
   def hide_subgenera
     session[:show_subgenera] = false
-    redirect_to @parameters.merge action: :show
+    redirect_to_id
   end
 
-  def clear_search
-    @parameters[:q] = @parameters[:st] = nil
+  def redirect_to_id
+    id = @parameters.delete :id
+    id_string = "/#{id}"
+    parameters_string = @parameters.empty? ? '' : "?#{@parameters.to_query}"
+    redirect_to "/catalog#{id_string}#{parameters_string}"
   end
 
-  def translate_search_selector_value_to_english value
-    {'m' => 'matching', 'bw' => 'beginning with', 'c' => 'containing'}[value]
-  end
-
-  def do_search
-    return unless @parameters[:q].present?
-    @search_results = Taxon.find_name @parameters[:q], translate_search_selector_value_to_english(@parameters[:st])
-    if @search_results.blank?
-      @search_results_message = 'No results found'
-    else
-      @search_results = @search_results.map do |search_result|
-        {name: search_result.name.html_name, id: search_result.id}
-      end
-    end
-  end
-
+  ##########################
   def setup_taxon_and_index
+    @taxon = Taxon.find @parameters[:id]
     @subfamilies = ::Subfamily.ordered_by_name
 
     case @taxon
@@ -148,16 +128,32 @@ class CatalogController < ApplicationController
     end
   end
 
-  def get_parameters
-    @parameters = HashWithIndifferentAccess.new
-    @parameters[:id] = params[:id] if params[:id].present?
-    @parameters[:child] = params[:child] if params[:child].present?
-    @parameters[:q] = params[:q].strip if params[:q].present?
-    @parameters[:st] = params[:st] if params[:st].present?
-    @parameters[:id] = Family.first.id if @parameters[:id].blank?
-    @taxon = Taxon.find @parameters[:id]
+  ##########################
+  def do_search
+    return unless @parameters[:q].present?
+    @search_results = Taxon.find_name @parameters[:q], translate_search_selector_value_to_english(@parameters[:st])
+    if @search_results.blank?
+      @search_results_message = 'No results found'
+    else
+      @search_results = @search_results.map do |search_result|
+        {name: search_result.name.html_name, id: search_result.id}
+      end
+    end
   end
 
+  def set_id_to_first_search_result
+  end
+
+  def clear_search
+    @parameters.delete :q
+    @parameters.delete :st
+  end
+
+  def translate_search_selector_value_to_english value
+    {'m' => 'matching', 'bw' => 'beginning with', 'c' => 'containing'}[value]
+  end
+
+  ##########################
   def create
     tribe = Tribe.find params[:genus][:tribe]
     genus = Genus.new(
@@ -173,6 +169,24 @@ class CatalogController < ApplicationController
     }.to_json
 
     render json: json, content_type: 'text/html'
+  end
+
+  ##########################
+  def get_parameters
+    @parameters = HashWithIndifferentAccess.new
+    @parameters[:id] = params[:id] if params[:id].present?
+    @parameters[:child] = params[:child] if params[:child].present?
+    @parameters[:q] = params[:q].strip if params[:q].present?
+    @parameters[:st] = params[:st] if params[:st].present?
+  end
+
+  def set_id_parameter id, child = nil
+    @parameters[:id] = id
+    if child
+      @parameters[:child] = child
+    else
+      @parameters.delete :child
+    end
   end
 
 end
