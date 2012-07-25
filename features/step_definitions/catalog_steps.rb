@@ -29,7 +29,7 @@ And /^I click the reference key expansion$/ do
   find(".reference_key_expansion").click
 end
 
-Then /^I should (not )?see the tribes index$/ do |should_not|
+Then /^I should (not )?see the (\w+) index$/ do |should_not, rank|
   selector = should_not ? :should_not : :should
-  page.send selector, have_css('.index .tribes')
+  page.send selector, have_css(".index .#{rank}")
 end

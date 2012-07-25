@@ -34,3 +34,13 @@ Feature: Using the catalog
     And I follow "Subdolichoderus"
     Then I should see "Dolichoderus (Subdolichoderus) history"
     And I should see "abruptus" in the species index
+
+  Scenario: Hiding subgenera after selecting a subgenus
+    When I go to the catalog
+    And I follow "Dolichoderinae"
+    And I follow "Dolichoderus"
+    And I follow "show subgenera"
+    And I follow "Subdolichoderus"
+    And I follow "hide" in the subgenera index
+    Then I should not see the subgenera index
+    And "Dolichoderus" should be selected
