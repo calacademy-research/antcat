@@ -1,23 +1,6 @@
 # coding: UTF-8
 class CatalogController < ApplicationController
-  before_filter :setup_parameters_and_find_taxon
-
-  def setup_parameters_and_find_taxon
-    @parameters = HashWithIndifferentAccess.new
-    @parameters[:id] = params[:id] if params[:id].present?
-    @parameters[:child] = params[:child] if params[:child].present?
-    @parameters[:q] = params[:q].strip if params[:q].present?
-    @parameters[:st] = params[:st] if params[:st].present?
-    @parameters[:id] = Family.first.id if @parameters[:id].blank?
-    @taxon = Taxon.find @parameters[:id]
-
-    get_view_options
-  end
-
-  def get_view_options
-    @showing_tribes = session[:show_tribes] if session[:show_tribes].present?
-    @showing_subgenera = session[:show_subgenera] if session[:show_subgenera].present?
-  end
+  before_filter :get_parameters
 
   def show
     do_search
@@ -42,7 +25,7 @@ class CatalogController < ApplicationController
   end
 
   def show_tribes
-    @showing_tribes = session[:show_tribes] = true
+    session[:show_tribes] = true
     redirect_to @parameters.merge action: :show
   end
 
@@ -63,7 +46,7 @@ class CatalogController < ApplicationController
   end
 
   def hide_subgenera
-    @showing_subgenera = session[:show_subgenera] = false
+    session[:show_subgenera] = false
     redirect_to @parameters.merge action: :show
   end
 
@@ -101,7 +84,7 @@ class CatalogController < ApplicationController
     when Subfamily
       @subfamily = @taxon
 
-      if @showing_tribes
+      if session[:show_tribes]
         @tribes = @subfamily.tribes.ordered_by_name
         if @parameters[:child] == 'none'
           @tribe = 'none'
@@ -115,7 +98,7 @@ class CatalogController < ApplicationController
       @tribe = @taxon
       @subfamily = @tribe.subfamily
 
-      @showing_tribes = session[:show_tribes] = true
+      session[:show_tribes] = true
       @tribes = @tribe.siblings.ordered_by_name
       @genera = @tribe.genera.ordered_by_name
 
@@ -123,7 +106,7 @@ class CatalogController < ApplicationController
       @genus = @taxon
       @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
       setup_genus_parent_columns
-      unless @showing_subgenera
+      unless session[:show_subgenera]
         @specieses = @genus.species_group_descendants.ordered_by_name
       else
         @subgenera = @genus.subgenera.ordered_by_name.ordered_by_name
@@ -133,7 +116,7 @@ class CatalogController < ApplicationController
       @subgenus = @taxon
       @genus = @subgenus.genus
       @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
-      @showing_subgenera = session[:show_subgenera] = true
+      session[:show_subgenera] = true
       @subgenera = @genus.subgenera.ordered_by_name
       setup_genus_parent_columns
       @specieses = @subgenus.species_group_descendants.ordered_by_name
@@ -156,13 +139,23 @@ class CatalogController < ApplicationController
   end
 
   def setup_genus_parent_columns
-    if @showing_tribes
+    if session[:show_tribes]
       @genera = @genus.siblings.ordered_by_name
       @tribe = @genus.tribe ? @genus.tribe : 'none'
       @tribes = @subfamily == 'none' ? nil : @subfamily.tribes.ordered_by_name
     else
       @genera = @subfamily == 'none' ? Genus.without_subfamily.ordered_by_name : @subfamily.genera.ordered_by_name
     end
+  end
+
+  def get_parameters
+    @parameters = HashWithIndifferentAccess.new
+    @parameters[:id] = params[:id] if params[:id].present?
+    @parameters[:child] = params[:child] if params[:child].present?
+    @parameters[:q] = params[:q].strip if params[:q].present?
+    @parameters[:st] = params[:st] if params[:st].present?
+    @parameters[:id] = Family.first.id if @parameters[:id].blank?
+    @taxon = Taxon.find @parameters[:id]
   end
 
   def create
