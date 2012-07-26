@@ -137,4 +137,8 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     end
   end
 
+  def get_file_names _
+    super Dir.glob("#{$BOLTON_DATA_DIRECTORY}/NGC-Sp*.htm")
+  end
+
 end
