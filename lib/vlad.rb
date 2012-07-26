@@ -10,6 +10,12 @@ class Vlad
 
   ###########
   class Report
+    def self.display_result_count count
+      return if count.zero?
+      display_section_header count
+
+      Progress.puts
+    end
     def self.display_results_section results, options = {}
       return unless results.present?
       options = options.reverse_merge sort: true
@@ -160,12 +166,10 @@ class Vlad
 
   class AuthorsWithoutNames < Problem
     def self.query
-      Taxon.where "(status = 'homonym') = (homonym_replaced_by_id IS NULL)"
+      Author.find_by_sql "SELECT authors.id FROM authors LEFT OUTER JOIN author_names on authors.id = author_names.author_id WHERE author_names.id IS NULL"
     end
     def self.display
-      display_results_section query do |taxon|
-        "#{taxon.name} (#{taxon.status}) #{taxon.homonym_replaced_by_id}"
-      end
+      display_result_count query.size
     end
   end
 
