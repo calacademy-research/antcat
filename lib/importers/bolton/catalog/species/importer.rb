@@ -39,7 +39,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
         @genus = nil
         matching_genus_names = Genus.with_names.where "name = '#{@parse_result[:name]}'"
         matching_genus_names.keep_if {|e| not e.invalid?} if matching_genus_names.count > 1
-        if matching_genus_names.empty?
+        if matching_genus_names.empty? and @parse_result[:name] != 'Myrmicium'
           Progress.error "Genus '#{@parse_result[:name]}' did not exist"
           @genus_not_found_count += 1
         elsif matching_genus_names.size > 1
