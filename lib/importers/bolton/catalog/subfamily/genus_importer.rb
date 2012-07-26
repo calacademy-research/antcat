@@ -90,7 +90,6 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
 
   end
 
-  ################################################
   def parse_homonym_replaced_by_genus replaced_by_genus
     Progress.method
     parse_genus({
@@ -99,7 +98,6 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
       header: :homonym_replaced_by_genus_header)
   end
 
-  ################################################
   def parse_synonyms_of_genus genus
     return unless @type == :junior_synonyms_of_genus_header
     Progress.method
@@ -110,7 +108,6 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     while parse_genus attributes, header: :genus_headline; end
   end
 
-  ################################################
   def parse_homonym_and_synonym_of_genus genus
     return unless @type == :junior_homonym_and_junior_synonym_of_genus_header
     Progress.method
@@ -121,12 +118,10 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     while parse_genus attributes, header: :genus_headline; end
   end
 
-  ################################################
   def parse_genera_lists
     parse_next_line while @type == :genera_list
   end
 
-  #################################################################
   # parse a subfamily or tribe's genera
   def parse_genera attributes = {}
     return unless @type == :genera_header || @type == :genus_header
