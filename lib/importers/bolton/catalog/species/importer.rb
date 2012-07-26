@@ -14,8 +14,8 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
   end
 
   def import
-    @genus_count =
-      @genus_not_found_count =
+    @genus_headers_count =
+      @genera_not_found_count =
       @duplicate_genera_that_need_resolving_count =
     @species_count =
     @error_count =
@@ -35,13 +35,13 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
         @ignored_count += 1
 
       when :genus_header
-        @genus_count += 1
+        @genus_headers_count += 1
         @genus = nil
         matching_genus_names = Genus.with_names.where "name = '#{@parse_result[:name]}'"
         matching_genus_names.keep_if {|e| not e.invalid?} if matching_genus_names.count > 1
         if matching_genus_names.empty? and @parse_result[:name] != 'Myrmicium'
           Progress.error "Genus '#{@parse_result[:name]}' did not exist"
-          @genus_not_found_count += 1
+          @genera_not_found_count += 1
         elsif matching_genus_names.size > 1
           Progress.error "More than one genus '#{@parse_result[:name]}'"
           @duplicate_genera_that_need_resolving_count += 1
@@ -76,14 +76,17 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
 
     finish_importing
 
+    Progress.puts
     Progress.show_results
     unignored_lines_count = Progress.processed_count - @ignored_count
-    Progress.puts "#{unignored_lines_count} lines"
-    Progress.puts "#{@genus_count} genera"
+    Progress.puts "#{unignored_lines_count} unignored lines"
+    Progress.puts "#{@ignored_count} see-unders (ignored)"
+    Progress.puts "#{@genus_headers_count} genus headers"
     Progress.puts "#{@species_count} species"
-    Progress.puts "#{@genus_not_found_count} genera not found"
-    Progress.puts "#{@duplicate_genera_that_need_resolving_count} duplicate genera that need resolving" if @duplicate_genera_that_need_resolving_count > 0
-    Progress.puts "#{@error_count} could not understand"
+    Progress.puts "#{@genera_not_found_count} genera not found" unless @genera_not_found_count.zero?
+    Progress.puts "#{@duplicate_genera_that_need_resolving_count} duplicate genera that need resolving" unless @duplicate_genera_that_need_resolving_count.zero?
+    Progress.puts "#{@error_count} could not understand" unless @error_count.zero?
+    Progress.puts
   end
 
   def finish_importing
@@ -139,6 +142,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
 
   def get_file_names _
     super Dir.glob("#{$BOLTON_DATA_DIRECTORY}/NGC-Sp*.htm")
+    #['cr', 'st-tet'].map {|e| "#{$BOLTON_DATA_DIRECTORY}/NGC-Sp#{e}.htm"}
   end
 
 end
