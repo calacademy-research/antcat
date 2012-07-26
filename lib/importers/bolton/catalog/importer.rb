@@ -25,16 +25,16 @@ class Importers::Bolton::Catalog::Importer
     begin
       @line = normalize string
       return :blank_line unless @line.present? && @line != '.'
-      parse_result = grammar.parse(@line, :root => rule).value
       Progress.info @line if @show_parsing
+      parse_result = grammar.parse(@line, root: rule).value
       Progress.info "  parsed as:\n#{parse_result.pretty_inspect}" if @show_parsing
     rescue Citrus::ParseError => e
       return parse string if rule
       Progress.error e
-      parse_result = {:type => :not_understood}
+      parse_result = {type: :not_understood}
     rescue Exception => e
-      parse_result = {:type => :not_understood}
-      Progress.info "Exception: " + e.inspect
+      parse_result = {type: :not_understood}
+      Progress.error "Exception: " + e.inspect
     end
     parse_result
   end
