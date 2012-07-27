@@ -1,12 +1,9 @@
 # coding: UTF-8
 class Rank
-  attr_reader :hash
-
   def initialize hash
     @hash = hash
   end
 
-  #############
   def to_sym *options
     options.include?(:plural) ? @hash[:plural_symbol] : @hash[:symbol]
   end
@@ -23,7 +20,6 @@ class Rank
   def to_class
     @hash[:klass]
   end
-  #############
 
   def includes? identifier
     @hash.values.include? identifier
