@@ -70,7 +70,7 @@ class CatalogController < ApplicationController
         @tribes = @subfamily.tribes.ordered_by_name
         if @parameters[:child] == 'none'
           @tribe = 'none'
-          @genera = @subfamily.genera.ordered_by_name
+          @genera = @subfamily.genera.without_tribe.ordered_by_name
         end
       else
         @genera = @subfamily.genera.ordered_by_name
