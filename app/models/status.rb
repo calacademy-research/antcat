@@ -1,7 +1,6 @@
 # coding: UTF-8
 class Status
   extend ActionView::Helpers::NumberHelper
-  attr_reader :hash
 
   def initialize hash
     @hash = hash
@@ -11,9 +10,9 @@ class Status
     numeric_argument = options.find {|option| option.kind_of? Numeric}
     options << :plural if numeric_argument && numeric_argument > 1
 
-    s = (options.include?(:plural) ? @hash[:plural_label] : @hash[:label]).dup
-    s.downcase! unless options.include? :capitalized
-    s
+    string = (options.include?(:plural) ? @hash[:plural_label] : @hash[:label]).dup
+    string.downcase! unless options.include? :capitalized
+    string
   end
 
   def self.ordered_statuses
