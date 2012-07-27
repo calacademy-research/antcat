@@ -9,7 +9,7 @@ Feature: Logging in
       | email@example.com | secret   | secret                |
 
   @javascript
-  Scenario: Logging in successfully
+  Scenario: Logging in successfully from the login page
     Given I am not logged in
     * I go to the login page
     * I fill in the email field with "email@example.com"
@@ -17,7 +17,17 @@ Feature: Logging in
     * I press "Log in"
     Then I should be on the main page
 
-  Scenario: Logging in unsuccesfully
+  @javascript
+  Scenario: Logging in successfully from the main page
+    Given I am not logged in
+    * I go to the main page
+    * I follow "Login"
+    * I fill in the email field with "email@example.com"
+    * I fill in the password field with "secret"
+    * I press "Go" to log in
+    Then I should be on the main page
+
+  Scenario: Logging in unsuccessfully
     Given I am not logged in
     * I go to the main page
     * I follow "Login"
@@ -27,3 +37,12 @@ Feature: Logging in
     Then I should be on the login page
     And I should see "AntCat"
 
+  @javascript
+  Scenario: Returning to previous page 
+    Given I am not logged in
+    * I go to the references page
+    * I follow "Login"
+    * I fill in the email field with "email@example.com"
+    * I fill in the password field with "secret"
+    * I press "Go" to log in
+    Then I should be on the references page
