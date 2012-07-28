@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
   end
 
   def save_location
-    session[:user_return_to] = request.url
+    session[:user_return_to] = request.url unless request.url =~ %r{/users/}
   end
 
 end
