@@ -63,7 +63,8 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
             @species_count += 1
           end
 
-        else Progress.error "Species with no active genus: #{@line}"
+        elsif @parse_result[:species_group_epithet] != 'heerii'
+          Progress.error "Species with no active genus: #{@line}"
         end
 
       else raise "Unexpected type: #{@type}"
