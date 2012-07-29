@@ -29,6 +29,20 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     true
   end
 
+  ###########
+  def parse_subfamily_child_lists subfamily
+    parse_tribes_lists subfamily
+    parse_genera_lists
+    parse_collective_group_names_list
+  end
+
+  ###########
+  def parse_subfamily_reference_sections taxon
+    Progress.method
+    parse_reference_sections taxon, :references_section_header, :regional_and_national_faunas_header
+  end
+
+  ###########
   def parse_subfamily_children subfamily
     parse_tribes subfamily
     parse_genera subfamily: subfamily
@@ -36,17 +50,6 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     parse_genera_incertae_sedis 'subfamily', subfamily: subfamily
     parse_genera_of_hong subfamily
     parse_collective_group_names subfamily
-  end
-
-  def parse_subfamily_child_lists subfamily
-    parse_tribes_lists subfamily
-    parse_genera_lists
-    parse_collective_group_names_list
-  end
-
-  def parse_subfamily_reference_sections taxon
-    Progress.method
-    parse_reference_sections taxon, :references_section_header, :regional_and_national_faunas_header
   end
 
   def parse_collective_group_names_list
