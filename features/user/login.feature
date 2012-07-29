@@ -35,7 +35,16 @@ Feature: Logging in
     * I fill in the password field with "asd;fljl;jsdfljsdfj"
     * I press "Go" to log in
     Then I should be on the login page
-    And I should see "AntCat"
+
+  Scenario: Forgot password
+    Given I am not logged in
+    * I go to the main page
+    * I follow "Login"
+    * I fill in the email field with "email@example.com"
+    * I fill in the password field with "asd;fljl;jsdfljsdfj"
+    * I press "Go" to log in
+    * I follow "forgot password"
+    Then I should be on the forgot password page
 
   @javascript
   Scenario: Returning to previous page 
