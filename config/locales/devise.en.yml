@@ -6,40 +6,40 @@ en:
       not_found: "not found"
       not_locked: "was not locked"
       not_saved:
-        one: "1 error prohibited this %{resource} from being saved:"
-        other: "%{count} errors prohibited this %{resource} from being saved:"
+        one: "1 error prevented this %{resource} from being saved:"
+        other: "%{count} errors prevented this %{resource} from being saved:"
 
   devise:
     failure:
-      unauthenticated: 'You need to log in before continuing.'
-      unconfirmed: 'You have to confirm your account before continuing.'
-      locked: 'Your account is locked.'
-      invalid: 'Invalid email or password.'
-      invalid_token: 'Invalid authentication token.'
-      timeout: 'Your session expired. Please log in again to continue.'
-      inactive: 'Your account was not activated yet.'
+      unauthenticated: 'Please log in before continuing'
+      unconfirmed: 'Please confirm your account before continuing'
+      locked: 'Your account is locked'
+      invalid: "Sorry - either the email address or the password wasn't right"
+      invalid_token: 'Invalid authentication token'
+      timeout: 'Your session expired. Please log in again to continue'
+      inactive: "Your account hasn't been activated yet"
     sessions:
       link: 'Log in'
-      signed_in: 'You are logged in'
-      signed_out: 'You have been logged out'
-      unauthenticated: 'You need to log in before continuing'
-      unconfirmed: 'You need to confirm your account before continuing'
+      signed_in: "You're logged in"
+      signed_out: "You're logged out"
+      unauthenticated: 'Please log in before continuing'
+      unconfirmed: 'Please confirm your account before continuing'
       locked: 'Your account is locked'
-      invalid: 'Invalid email or password'
+      invalid: "Sorry - either the email address or the password wasn't right"
       invalid_token: 'Invalid authentication token'
     passwords:
       link: 'Forgot password?'
-      send_instructions: 'You will receive an email with instructions about how to reset your password in a few minutes'
-      updated: 'Your password has been changed. You are now logged in.'
+      send_instructions: "You'll receive an email with instructions about how to reset your password in a few minutes"
+      updated: "Your password has been changed. You're now logged in"
     confirmations:
       link: "Didn't receive confirmation instructions?"
-      send_instructions: 'You will receive an email with instructions about how to confirm your account in a few minutes'
+      send_instructions: "You'll receive an email with instructions about how to confirm your account in a few minutes"
       confirmed: 'Your account has been confirmed. You are now logged in.'
     registrations:
       updated: 'Your account has been updated'
     unlocks:
       link: "Didn't receive unlock instructions?"
-      send_instructions: 'You will receive an email with instructions about how to unlock your account in a few minutes'
+      send_instructions: "You'll receive an email with instructions about how to unlock your account in a few minutes"
       unlocked: 'Your account was unlocked. You are now logged in.'
     mailer:
       confirmation_instructions: 'Confirmation instructions'
