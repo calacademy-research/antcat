@@ -13,7 +13,14 @@ class SpeciesGroupForwardRef < ActiveRecord::Base
     specieses = SpeciesGroupTaxon.find_validest_for_epithet_in_genus epithet, genus
     if specieses.blank?
       unless fixee.kind_of? Subspecies or we_dont_care_about? epithet, genus
-        Progress.error "Couldn't find species '#{epithet}' in genus '#{genus.name}' when fixing up '#{fixee_attribute}' in '#{fixee.inspect}'"
+        Progress.error(
+          "Couldn't find species #{epithet} in genus #{genus.name} when fixing up " +
+          if fixee.kind_of? Synonym
+            "senior synonym of #{fixee.junior_synonym.inspect}"
+          else
+            "species for #{fixee.inspect}"
+          end
+        )
       end
     elsif specieses.count > 1
       Progress.error "Found multiple valid targets among #{specieses.map(&:name).map(&:to_s).join(', ')}"
