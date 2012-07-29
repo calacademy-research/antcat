@@ -2,9 +2,10 @@
 class Exporters::Antweb::Formatter
 
   def self.format_taxonomic_history_for_antweb taxon
-    string = taxon.taxonomic_history
-    string << format_homonym_replaced_for_antweb(taxon)
-    string.html_safe if string
+    ''
+    #string = taxon.taxonomic_history
+    #string << format_homonym_replaced_for_antweb(taxon)
+    #string.html_safe if string
   end
 
   def self.format_homonym_replaced_for_antweb taxon
