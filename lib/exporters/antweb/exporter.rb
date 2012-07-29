@@ -57,7 +57,7 @@ class Antweb::Exporter
       convert_to_antweb_array :subfamily => subfamily_name,
                               :tribe => tribe_name,
                               :genus => taxon.genus.name.to_s,
-                              :species => taxon.name.epithet,
+                              :species => taxon.name.epithets,
                               :valid? => !taxon.invalid?, :available? => !taxon.invalid?,
                               :taxonomic_history => Exporters::Antweb::Formatter.format_taxonomic_history_with_statistics_for_antweb(taxon, :include_invalid => false),
                               :fossil? => taxon.fossil
