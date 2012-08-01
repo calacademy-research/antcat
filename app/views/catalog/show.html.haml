@@ -8,7 +8,7 @@
 #catalog
   - can_add_genus = @tribe && @tribe != 'none'
   .content
-    = render 'taxon', taxon: @taxon, user: current_user
+    = CatalogFormatter.taxon @taxon, current_user, params
     %hr
 
   .new_taxon_form

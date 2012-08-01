@@ -1,14 +1,105 @@
 # coding: UTF-8
+
 class Formatters::CatalogFormatter
   extend ERB::Util
   extend ActionView::Helpers::TagHelper
   extend ActionView::Helpers::TextHelper
   extend ActionView::Helpers::NumberHelper
   extend ActionView::Context
+  extend AbstractController::Rendering
 
   extend Formatters::Formatter
   extend Formatters::StatisticsFormatter
 
+  def self.taxon taxon, user, params
+    content_tag :div, class: 'antcat_taxon' do
+      content = ''.html_safe
+      content << header(taxon)
+      content << statistics(taxon)
+      content << genus_species_header_note(taxon, user)
+      content << headline(taxon, user)
+      content << history(taxon, params, user)
+      content << child_lists(taxon, user)
+      content << references(taxon, user)
+      content
+    end
+  end
+
+  def self.header taxon
+    content_tag :div, class: 'header' do
+      content = ''.html_safe
+      content << content_tag(:span, format_header_name(taxon), class: css_classes_for_rank(taxon))
+      content << ' '
+      content << content_tag(:span, format_status(taxon), class: 'status')
+      content
+    end
+  end
+
+  def self.statistics taxon
+    content_tag :div, format_taxon_statistics(taxon), class: 'statistics'
+  end
+
+  def self.genus_species_header_note taxon, current_user
+    if taxon.genus_species_header_note.present?
+      content_tag :div, format_genus_species_header_note(taxon, current_user), class: 'genus_species_header_note'
+    end
+  end
+
+  def self.headline taxon, current_user
+    content_tag :div, format_headline(taxon, current_user), class: 'headline'
+  end
+
+  def self.history taxon, params, current_user
+    if taxon.taxonomic_history_items.present?
+      content_tag :div, class: 'history' do
+        content = ''.html_safe
+        for item in taxon.taxonomic_history_items do
+          css_class = "history_item item_#{item.id}"
+          content << content_tag(:div, class: css_class, 'data-id' => item.id) do
+            content_tag :table do
+              content_tag :tr do
+                content = ''.html_safe
+                content << content_tag(:td, class: 'history_item_body') do
+                  add_period_if_necessary Taxt.to_string item.taxt, current_user
+                end
+                content
+              end
+            end
+          end
+        end
+        content
+      end
+    end
+  end
+
+  def self.child_lists taxon, current_user
+    content_tag :div, class: 'child_lists' do
+      content = ''.html_safe
+      content << format_child_lists_for_rank(taxon, :subfamilies)
+      content << format_child_lists_for_rank(taxon, :tribes)
+      content << format_child_lists_for_rank(taxon, :genera)
+      content << format_collective_group_name_child_list(taxon)
+      content
+    end
+  end
+
+  def self.references taxon, current_user
+    if taxon.reference_sections.present?
+      content_tag :div, class: 'reference_sections' do
+        for reference_section in taxon.reference_sections do
+          content_tag :div, class: 'section' do
+            [:title, :subtitle, :references].each do |field|
+              if reference_section[field].present?
+                content_tag :div, Taxt.to_string(reference_section[field], current_user), class: field
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+
+  ###########
   def self.taxon_label_span taxon, options = {}
     content = content_tag :span, class: taxon_css_classes(taxon, options) do
       taxon_label(taxon, options).html_safe
