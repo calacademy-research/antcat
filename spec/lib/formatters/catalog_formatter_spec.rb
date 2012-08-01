@@ -6,6 +6,12 @@ describe Formatters::CatalogFormatter do
     @formatter = Formatters::CatalogFormatter
   end
 
+  describe "Taxon" do
+    it "should work" do
+      @formatter.taxon create_genus, nil, {}
+    end
+  end
+
   describe "Taxon label span" do
     it "should create a span based on the type of the taxon and its status" do
       taxon = FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Atta')
