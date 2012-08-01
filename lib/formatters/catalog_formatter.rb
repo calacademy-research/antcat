@@ -11,14 +11,14 @@ class Formatters::CatalogFormatter
   extend Formatters::Formatter
   extend Formatters::StatisticsFormatter
 
-  def self.taxon taxon, user, params
+  def self.taxon taxon, user
     content_tag :div, class: 'antcat_taxon' do
       content = ''.html_safe
       content << header(taxon)
       content << statistics(taxon)
       content << genus_species_header_note(taxon, user)
       content << headline(taxon, user)
-      content << history(taxon, params, user)
+      content << history(taxon, user)
       content << child_lists(taxon, user)
       content << references(taxon, user)
       content
@@ -49,7 +49,7 @@ class Formatters::CatalogFormatter
     content_tag :div, format_headline(taxon, user), class: 'headline'
   end
 
-  def self.history taxon, params, user
+  def self.history taxon, user
     if taxon.taxonomic_history_items.present?
       content_tag :div, class: 'history' do
         content = ''.html_safe
