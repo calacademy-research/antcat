@@ -39,17 +39,17 @@ class Formatters::CatalogFormatter
     content_tag :div, format_taxon_statistics(taxon), class: 'statistics'
   end
 
-  def self.genus_species_header_note taxon, current_user
+  def self.genus_species_header_note taxon, user
     if taxon.genus_species_header_note.present?
-      content_tag :div, format_genus_species_header_note(taxon, current_user), class: 'genus_species_header_note'
+      content_tag :div, format_genus_species_header_note(taxon, user), class: 'genus_species_header_note'
     end
   end
 
-  def self.headline taxon, current_user
-    content_tag :div, format_headline(taxon, current_user), class: 'headline'
+  def self.headline taxon, user
+    content_tag :div, format_headline(taxon, user), class: 'headline'
   end
 
-  def self.history taxon, params, current_user
+  def self.history taxon, params, user
     if taxon.taxonomic_history_items.present?
       content_tag :div, class: 'history' do
         content = ''.html_safe
@@ -60,7 +60,7 @@ class Formatters::CatalogFormatter
               content_tag :tr do
                 content = ''.html_safe
                 content << content_tag(:td, class: 'history_item_body') do
-                  add_period_if_necessary Taxt.to_string item.taxt, current_user
+                  add_period_if_necessary Taxt.to_string item.taxt, user
                 end
                 content
               end
@@ -72,7 +72,7 @@ class Formatters::CatalogFormatter
     end
   end
 
-  def self.child_lists taxon, current_user
+  def self.child_lists taxon, user
     content_tag :div, class: 'child_lists' do
       content = ''.html_safe
       content << format_child_lists_for_rank(taxon, :subfamilies)
@@ -83,14 +83,14 @@ class Formatters::CatalogFormatter
     end
   end
 
-  def self.references taxon, current_user
+  def self.references taxon, user
     if taxon.reference_sections.present?
       content_tag :div, class: 'reference_sections' do
         for reference_section in taxon.reference_sections do
           content_tag :div, class: 'section' do
             [:title, :subtitle, :references].each do |field|
               if reference_section[field].present?
-                content_tag :div, Taxt.to_string(reference_section[field], current_user), class: field
+                content_tag :div, Taxt.to_string(reference_section[field], user), class: field
               end
             end
           end
