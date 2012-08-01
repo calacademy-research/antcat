@@ -58,11 +58,11 @@ class Formatters::CatalogFormatter
           content << content_tag(:div, class: css_class, 'data-id' => item.id) do
             content_tag :table do
               content_tag :tr do
-                content = ''.html_safe
-                content << content_tag(:td, class: 'history_item_body') do
+                inner_content = ''.html_safe
+                inner_content << content_tag(:td, class: 'history_item_body') do
                   add_period_if_necessary Taxt.to_string item.taxt, user
                 end
-                content
+                inner_content
               end
             end
           end
