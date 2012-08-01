@@ -8,7 +8,7 @@ describe Formatters::CatalogFormatter do
 
   describe "Taxon" do
     it "should work" do
-      @formatter.taxon create_genus, nil, {}
+      @formatter.taxon create_genus, nil
     end
   end
 
