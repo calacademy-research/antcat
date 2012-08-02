@@ -33,12 +33,30 @@ class Name < ActiveRecord::Base
     html_name
   end
 
+  def to_html_with_fossil fossil
+    string = ''.html_safe
+    string << html_dagger if fossil
+    string << html_name.html_safe
+    string
+  end
+
   def rank
     self.class.name[0, self.class.name.rindex('Name')].underscore
   end
 
   def self.make_epithet_set epithet
     EpithetSearchSet.new(epithet).epithets
+  end
+
+  def html_epithet_with_fossil fossil
+    string = ''.html_safe
+    string << html_dagger if fossil
+    string << html_epithet.html_safe
+    string
+  end
+
+  def html_dagger
+    '&dagger;'.html_safe
   end
 
 end
