@@ -39,6 +39,7 @@ class Name < ActiveRecord::Base
     string << html_name.html_safe
     string
   end
+  alias :html_name_with_fossil :to_html_with_fossil
 
   def rank
     self.class.name[0, self.class.name.rindex('Name')].underscore
