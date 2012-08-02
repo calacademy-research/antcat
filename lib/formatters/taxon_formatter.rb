@@ -46,13 +46,13 @@ class Formatters::TaxonFormatter
       labels << "unresolved junior homonym"
     elsif @taxon.invalid?
       label = Status[@taxon].to_s.dup
-      label << synonyms
+      label << senior_synonym_list
       labels << label
     end
     labels.join(', ').html_safe
   end
 
-  def synonyms
+  def senior_synonym_list
     return '' unless @taxon.senior_synonyms.count > 0
     ' of ' << @taxon.senior_synonyms.map {|e| Formatters::CatalogFormatter.taxon_label_span(e, ignore_status: true)}.join(', ')
   end
@@ -126,10 +126,14 @@ class Formatters::TaxonFormatter
 
   def headline_authorship authorship
     return '' unless authorship
-    string = authorship.reference.key.to_link(@user) + ": #{authorship.pages}"
+    string = reference_link(authorship.reference) + ": #{authorship.pages}"
     string << " (#{authorship.forms})" if authorship.forms
     string << ' ' << Taxt.to_string(authorship.notes_taxt, @user) if authorship.notes_taxt
     content_tag :span, string, class: :authorship
+  end
+
+  def reference_link reference
+    reference.key.to_link @user
   end
 
   def locality locality
@@ -147,22 +151,22 @@ class Formatters::TaxonFormatter
   def history
     if @taxon.taxonomic_history_items.present?
       content_tag :div, class: 'history' do
-        content = ''.html_safe
-        for item in @taxon.taxonomic_history_items do
-          css_class = "history_item item_#{item.id}"
-          content << content_tag(:div, class: css_class, 'data-id' => item.id) do
-            content_tag :table do
-              content_tag :tr do
-                inner_content = ''.html_safe
-                inner_content << content_tag(:td, class: 'history_item_body') do
-                  add_period_if_necessary Taxt.to_string item.taxt, @user
-                end
-                inner_content
-              end
-            end
+        @taxon.taxonomic_history_items.inject(''.html_safe) do |content, item|
+          content << history_item(item)
+        end
+      end
+    end
+  end
+
+  def history_item item
+    css_class = "history_item item_#{item.id}"
+    content_tag :div, class: css_class, 'data-id' => item.id do
+      content_tag :table do
+        content_tag :tr do
+          content_tag :td, class: 'history_item_body' do
+            add_period_if_necessary Taxt.to_string item.taxt, @user
           end
         end
-        content
       end
     end
   end
