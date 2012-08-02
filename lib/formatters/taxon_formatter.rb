@@ -255,16 +255,18 @@ class Formatters::TaxonFormatter
   def references
     if @taxon.reference_sections.present?
       content_tag :div, class: 'reference_sections' do
-        content = ''.html_safe
-        for reference_section in @taxon.reference_sections do
-          content << content_tag(:div, class: 'section') do
-            inner_content = ''.html_safe
-            [:title, :subtitle, :references].each do |field|
-              if reference_section[field].present?
-                inner_content << content_tag(:div, Taxt.to_string(reference_section[field], @user), class: field)
-              end
-            end
-          end
+        @taxon.reference_sections.inject(''.html_safe) do |content, section|
+          content << reference_section(section)
+        end
+      end
+    end
+  end
+
+  def reference_section section
+    content_tag :div, class: 'section' do
+      [:title, :subtitle, :references].inject(''.html_safe) do |content, field|
+        if section[field].present?
+          content << content_tag(:div, Taxt.to_string(section[field], @user), class: field)
         end
         content
       end
