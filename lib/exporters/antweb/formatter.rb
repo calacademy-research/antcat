@@ -19,7 +19,7 @@ class Exporters::Antweb::Formatter
   end
 
   def self.format_taxonomic_history_with_statistics_for_antweb taxon, options = {}
-    Formatters::CatalogFormatter.format_taxon_statistics(taxon, options) + format_taxonomic_history_for_antweb(taxon)
+    Formatters::StatisticsFormatter.taxon_statistics(taxon, options) + format_taxonomic_history_for_antweb(taxon)
   end
 
 end
