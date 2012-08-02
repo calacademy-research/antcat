@@ -1,4 +1,4 @@
-class SubgenusName < Name
+class SubgenusName < GenusGroupName
 
   def self.get_name data
     data[:subgenus_epithet]

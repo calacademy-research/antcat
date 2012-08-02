@@ -1,4 +1,4 @@
-class SpeciesName < Name
+class SpeciesName < SpeciesGroupName
 
   def self.get_name data
     data[:species_epithet] || data[:species_group_epithet]

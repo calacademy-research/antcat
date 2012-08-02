@@ -1,4 +1,4 @@
-class SubspeciesName < Name
+class SubspeciesName < SpeciesGroupName
 
   def self.get_name data
     data[:subspecies]
