@@ -28,7 +28,7 @@ describe Formatters::TaxonFormatter do
       it "should format a fossil" do
         protonym = FactoryGirl.create :protonym, name: FactoryGirl.create(:genus_name, name: 'Atari'), fossil: true
         @formatter.new(nil).protonym_name(protonym).should ==
-          '<span class="genus name taxon">&dagger;<i>Atari</i></span>'
+          '<span class="genus name taxon"><i>&dagger;</i><i>Atari</i></span>'
       end
     end
 
