@@ -19,12 +19,13 @@ module Formatters::CatalogFormatter
   end
 
   def self.taxon_label taxon, options = {}
-    name_label taxon.name.html_epithet.html_safe, taxon.fossil?, options
+    name_label taxon.name, taxon.fossil?, options
   end
 
   def self.name_label name, fossil, options = {}
+    name = name.html_epithet_with_fossil fossil
     name = name.upcase if options[:uppercase]
-    format_fossil name, fossil 
+    name
   end
 
   def self.taxon_css_classes taxon, options = {}

@@ -110,7 +110,7 @@ class Formatters::TaxonFormatter
   def headline_type_name
     rank = @taxon.type_name.rank
     rank = 'genus' if rank == 'subgenus'
-    name = Formatters::CatalogFormatter.format_fossil @taxon.type_name.to_html.html_safe, @taxon.type_fossil
+    name = @taxon.type_name.to_html_with_fossil @taxon.type_fossil
     content_tag :span, name, class: "#{rank} taxon"
   end
   
@@ -120,7 +120,7 @@ class Formatters::TaxonFormatter
     classes << 'species' if protonym.name.rank == 'species'
     classes << 'subfamily' if protonym.name.rank == 'family_or_subfamily'
     content_tag :span, class: classes.sort.join(' ') do
-      Formatters::CatalogFormatter.name_label protonym.name.to_html.html_safe, protonym.fossil
+      Formatters::CatalogFormatter.name_label protonym.name, protonym.fossil?
     end
   end
 
