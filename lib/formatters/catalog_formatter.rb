@@ -19,10 +19,16 @@ module Formatters::CatalogFormatter
   end
 
   def self.taxon_label taxon, options = {}
-    name_label taxon.name, taxon.fossil?, options
+    epithet_label taxon.name, taxon.fossil?, options
   end
 
   def self.name_label name, fossil, options = {}
+    name = name.html_name_with_fossil fossil
+    name = name.upcase if options[:uppercase]
+    name
+  end
+
+  def self.epithet_label name, fossil, options = {}
     name = name.html_epithet_with_fossil fossil
     name = name.upcase if options[:uppercase]
     name
