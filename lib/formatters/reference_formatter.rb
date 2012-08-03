@@ -15,8 +15,8 @@ class Formatters::ReferenceFormatter
   def self.italicize string
     return unless string
     raise "Can't italicize an unsafe string" unless string.html_safe?
-    string = string.gsub /\*(.*?)\*/, '<span class=genus_or_species>\1</span>'
-    string = string.gsub /\|(.*?)\|/, '<span class=genus_or_species>\1</span>'
+    string = string.gsub /\*(.*?)\*/, '<i>\1</i>'
+    string = string.gsub /\|(.*?)\|/, '<i>\1</i>'
     string.html_safe
   end
 

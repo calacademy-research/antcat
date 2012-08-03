@@ -136,7 +136,7 @@ describe Formatters::ReferenceFormatter do
       end
       it "should escape the title but leave the italics alone" do
         @reference.update_attribute :title, '*foo*<script>'
-        @formatter.format(@reference).should == 'Ward, P. S. 1874. <span class=genus_or_species>foo</span>&lt;script&gt;. 32 pp.'
+        @formatter.format(@reference).should == 'Ward, P. S. 1874. <i>foo</i>&lt;script&gt;. 32 pp.'
       end
       it "should escape the date" do
         @reference.update_attribute :date, '1933>'
@@ -170,7 +170,7 @@ describe Formatters::ReferenceFormatter do
 
     it "should italicize the title and citation" do
       reference = FactoryGirl.create :unknown_reference, :citation_year => '2010d', :author_names => [], :citation => '*Ants*', :title => '*Tapinoma*'
-      @formatter.format(reference).should == "2010d. <span class=genus_or_species>Tapinoma</span>. <span class=genus_or_species>Ants</span>."
+      @formatter.format(reference).should == "2010d. <i>Tapinoma</i>. <i>Ants</i>."
     end
 
     it "should not have a space at the beginning when there are no authors" do
@@ -216,9 +216,9 @@ describe Formatters::ReferenceFormatter do
     it "should raise if its input isn't HTML safe" do
       -> {@formatter.italicize "unsafe"}.should raise_error
     end
-    it "should replace asterisks and bars with spans of a certain class" do
+    it "should replace asterisks and bars with italics" do
       string = @formatter.italicize "|Hymenoptera| *Formicidae*".html_safe
-      string.should == "<span class=genus_or_species>Hymenoptera</span> <span class=genus_or_species>Formicidae</span>"
+      string.should == "<i>Hymenoptera</i> <i>Formicidae</i>"
       string.should be_html_safe
     end
   end
