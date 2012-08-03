@@ -214,8 +214,8 @@ class Formatters::TaxonFormatter
   end
 
   def child_list parent, children, specify_extinct_or_extant, conditions = {}
-    return ''.html_safe unless children.present?
     label = ''.html_safe
+    return label unless children.present?
 
     label << 'Hong (2002) ' if conditions[:hong]
 
