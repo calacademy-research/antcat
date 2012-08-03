@@ -68,7 +68,7 @@ class Formatters::TaxonFormatter
   ##########
   def genus_species_header_note
     if @taxon.genus_species_header_note.present?
-      content_tag :div, genus_species_header_note(@taxon, @user), class: 'genus_species_header_note'
+      content_tag :div, detaxt(@taxon.genus_species_header_note), class: 'genus_species_header_note'
     end
   end
 
@@ -104,7 +104,7 @@ class Formatters::TaxonFormatter
   end
 
   def headline_type_taxt taxt
-    string = Taxt.to_string(taxt, @user)
+    string = detaxt taxt
     string = '.' unless string.present?
     string
   end
@@ -130,7 +130,7 @@ class Formatters::TaxonFormatter
     return '' unless authorship
     string = reference_link(authorship.reference) + ": #{authorship.pages}"
     string << " (#{authorship.forms})" if authorship.forms
-    string << ' ' << Taxt.to_string(authorship.notes_taxt, @user) if authorship.notes_taxt
+    string << ' ' << detaxt(authorship.notes_taxt) if authorship.notes_taxt
     content_tag :span, string, class: :authorship
   end
 
@@ -146,7 +146,7 @@ class Formatters::TaxonFormatter
 
   def headline_notes
     return unless @taxon.headline_notes_taxt.present?
-    Taxt.to_string @taxon.headline_notes_taxt, @user
+    detaxt @taxon.headline_notes_taxt
   end
 
   ##########
@@ -166,7 +166,7 @@ class Formatters::TaxonFormatter
       content_tag :table do
         content_tag :tr do
           content_tag :td, class: 'history_item_body' do
-            add_period_if_necessary Taxt.to_string item.taxt, @user
+            add_period_if_necessary detaxt item.taxt
           end
         end
       end
@@ -272,11 +272,17 @@ class Formatters::TaxonFormatter
     content_tag :div, class: 'section' do
       [:title, :subtitle, :references].inject(''.html_safe) do |content, field|
         if section[field].present?
-          content << content_tag(:div, Taxt.to_string(section[field], @user), class: field)
+          content << content_tag(:div, detaxt(section[field]), class: field)
         end
         content
       end
     end
+  end
+
+  ############
+  def detaxt taxt
+    return '' unless taxt.present?
+    Taxt.to_string taxt, @user
   end
 
 end
