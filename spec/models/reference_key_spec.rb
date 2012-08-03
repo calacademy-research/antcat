@@ -3,8 +3,14 @@ require 'spec_helper'
 
 describe ReferenceKey do
 
+  before do
+    @bolton = FactoryGirl.create :author_name, name: 'Bolton, B.'
+    @fisher = FactoryGirl.create :author_name, name: 'Fisher, B.'
+    @ward = FactoryGirl.create :author_name, name: 'Ward, P.S.'
+  end
+
   it "should output a {ref xxx} for Taxt" do
-    reference = FactoryGirl.create :article_reference, :author_names => [FactoryGirl.create(:author_name, :name => 'Bolton, B.')], :citation_year => '1970a'
+    reference = FactoryGirl.create :article_reference, :author_names => [@bolton], citation_year: '1970a'
     ReferenceKey.new(reference).to_taxt.should == "{ref #{reference.id}}"
   end
 
@@ -13,30 +19,32 @@ describe ReferenceKey do
       BookReference.new.key.to_s.should == ''
     end
     it "Citation year with extra" do
-      reference = FactoryGirl.create :article_reference, :author_names => [FactoryGirl.create(:author_name, :name => 'Bolton, B.')], :citation_year => '1970a ("1971")'
+      reference = FactoryGirl.create :article_reference, :author_names => [@bolton], citation_year: '1970a ("1971")'
       reference.key.to_s.should == 'Bolton, 1970a'
     end
     it "No authors" do
-      reference = FactoryGirl.create :article_reference, :author_names => [], :citation_year => '1970a'
+      reference = FactoryGirl.create :article_reference, :author_names => [], citation_year: '1970a'
       reference.key.to_s.should == '[no authors], 1970a'
     end
     it "One author" do
-      reference = FactoryGirl.create :article_reference, :author_names => [FactoryGirl.create(:author_name, :name => 'Bolton, B.')], :citation_year => '1970a'
+      reference = FactoryGirl.create :article_reference, :author_names => [@bolton], citation_year: '1970a'
       reference.key.to_s.should == 'Bolton, 1970a'
     end
     it "Two authors" do
-      reference = FactoryGirl.create :article_reference, :author_names => [FactoryGirl.create(:author_name, :name => 'Bolton, B.'), FactoryGirl.create(:author_name, :name => 'Fisher, B.')], :citation_year => '1970a'
+      reference = FactoryGirl.create :article_reference, :author_names => [@bolton, @fisher], citation_year: '1970a'
       reference.key.to_s.should == 'Bolton & Fisher, 1970a'
     end
     it "Three authors" do
-      reference = FactoryGirl.create :article_reference, :author_names => [FactoryGirl.create(:author_name, :name => 'Bolton, B.'), FactoryGirl.create(:author_name, :name => 'Fisher, B.'), FactoryGirl.create(:author_name, :name => 'Ward, P.S.')], :citation_year => '1970a'
+      reference = FactoryGirl.create :article_reference, :author_names => [@bolton, @fisher, @ward], citation_year: '1970a'
       reference.key.to_s.should == 'Bolton, Fisher & Ward, 1970a'
     end
   end
 
   describe "Link" do
     before do
-      @reference = FactoryGirl.create :article_reference, author_names: [FactoryGirl.create(:author_name, name: 'Latreille, P. A.')], citation_year: '1809', title: "Ants", :journal => FactoryGirl.create(:journal, name: 'Science'), series_volume_issue: '(1)', pagination: '3'
+      latreille = FactoryGirl.create :author_name, name: 'Latreille, P. A.'
+      science = FactoryGirl.create :journal, name: 'Science'
+      @reference = FactoryGirl.create :article_reference, author_names: [latreille], citation_year: '1809', title: "Ants", journal: science, series_volume_issue: '(1)', pagination: '3'
       @reference.stub(:url).and_return 'example.com'
     end
     it "should create a link to the reference" do
