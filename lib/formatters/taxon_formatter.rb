@@ -36,7 +36,7 @@ class Formatters::TaxonFormatter
   end
 
   def header_name
-    @taxon.name.to_html.html_safe
+    @taxon.name.to_html_with_fossil @taxon.fossil?
   end
 
   def status
