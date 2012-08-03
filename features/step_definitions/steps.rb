@@ -51,7 +51,7 @@ Then /I should (not )?see "(.*?)" (?:with)?in (.*)$/ do |do_not, contents, locat
 end
 
 Then /I should see "([^"]*)" italicized/ do |italicized_text|
-  page.should have_css('span.genus_or_species', :text => italicized_text)  
+  page.should have_css('i', text: italicized_text)
 end
 
 And /I follow "(.*?)" (?:with)?in (.*)$/ do |link, location|
