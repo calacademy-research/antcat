@@ -1,13 +1,12 @@
 # coding: UTF-8
-class Antweb::Exporter
+class Exporters::Antweb::Exporter
   def initialize show_progress = false
-    Progress.init show_progress
+    Progress.init show_progress, Taxon.count
   end
 
   def export directory
     File.open("#{directory}/bolton.txt", 'w') do |file|
       file.puts "subfamily\ttribe\tgenus\tspecies\tspecies author date\tcountry\tvalid\tavailable\tcurrent valid name\toriginal combination\tfossil\ttaxonomic history"
-      file.puts formicidae
       Taxon.all.each do |taxon|
         row = export_taxon taxon
         file.puts row.join("\t") if row
@@ -16,53 +15,39 @@ class Antweb::Exporter
     Progress.show_results
   end
 
-  def formicidae
-    "Formicidae\t\t\t\t\t\tTRUE\tTRUE\t\t\tFALSE\t" + Formatters::CatalogFormatter.format_statistics(Taxon.statistics, :include_invalid => false)
-  end
-
   def export_taxon taxon
-    Progress.tally_and_show_progress 1000
+    Progress.tally_and_show_progress 100
 
     return unless !taxon.invalid? || taxon.unidentifiable?
 
+    attributes = {
+      valid?: !taxon.invalid?,
+      available?: !taxon.invalid?,
+      fossil?: taxon.fossil,
+      taxonomic_history: Exporters::Antweb::Formatter.new(taxon).format
+    }
+
     case taxon
+    when Family
+      convert_to_antweb_array attributes.merge subfamily: ''
     when Subfamily
-      convert_to_antweb_array :subfamily => taxon.name.to_s,
-                              :valid? => !taxon.invalid?, :available? => !taxon.invalid?,
-                              :taxonomic_history => Exporters::Antweb::Formatter.format_taxonomic_history_with_statistics_for_antweb(taxon, :include_invalid => false),
-                              :fossil? => taxon.fossil
+      convert_to_antweb_array attributes.merge subfamily: taxon.name.to_s
     when Genus
       subfamily_name = taxon.subfamily && taxon.subfamily.name.to_s || 'incertae_sedis'
       tribe_name = taxon.tribe && taxon.tribe.name.to_s
-      convert_to_antweb_array :subfamily => subfamily_name,
-                              :tribe => tribe_name,
-                              :genus => taxon.name.to_s,
-                              :valid? => !taxon.invalid?, :available? => !taxon.invalid?,
-                              :taxonomic_history => Exporters::Antweb::Formatter.format_taxonomic_history_with_statistics_for_antweb(taxon, :include_invalid => false),
-                              :fossil? => taxon.fossil
+      convert_to_antweb_array attributes.merge subfamily: subfamily_name, tribe: tribe_name, genus: taxon.name.to_s
     when Species
       return unless taxon.genus
       subfamily_name = taxon.genus.subfamily && taxon.genus.subfamily.name.to_s || 'incertae_sedis'
       tribe_name = taxon.genus.tribe && taxon.genus.tribe.name.to_s
-      convert_to_antweb_array :subfamily => subfamily_name,
-                              :tribe => tribe_name,
-                              :genus => taxon.genus.name.to_s,
-                              :species => taxon.name.epithet,
-                              :valid? => !taxon.invalid?, :available? => !taxon.invalid?,
-                              :taxonomic_history => Exporters::Antweb::Formatter.format_taxonomic_history_with_statistics_for_antweb(taxon, :include_invalid => false),
-                              :fossil? => taxon.fossil
+      convert_to_antweb_array attributes.merge subfamily: subfamily_name, tribe: tribe_name, genus: taxon.genus.name.to_s, species: taxon.name.epithet
     when Subspecies
       subfamily_name = taxon.genus.subfamily && taxon.genus.subfamily.name.to_s || 'incertae_sedis'
       tribe_name = taxon.genus.tribe && taxon.genus.tribe.name.to_s
-      convert_to_antweb_array :subfamily => subfamily_name,
-                              :tribe => tribe_name,
-                              :genus => taxon.genus.name.to_s,
-                              :species => taxon.name.epithets,
-                              :valid? => !taxon.invalid?, :available? => !taxon.invalid?,
-                              :taxonomic_history => Exporters::Antweb::Formatter.format_taxonomic_history_with_statistics_for_antweb(taxon, :include_invalid => false),
-                              :fossil? => taxon.fossil
+      convert_to_antweb_array attributes.merge subfamily: subfamily_name, tribe: tribe_name, genus: taxon.genus.name.to_s, species: taxon.name.epithets
     else nil
     end
+
   end
 
   private
