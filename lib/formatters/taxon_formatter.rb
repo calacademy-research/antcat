@@ -76,8 +76,8 @@ class Formatters::TaxonFormatter
   def headline
     content_tag :div, class: 'headline' do
       string = headline_protonym + ' ' + headline_type
-      headline_notes = @taxon.headline_notes_taxt
-      string << ' ' << headline_notes if headline_notes
+      notes = headline_notes
+      string << ' ' << notes if notes
       string
     end
   end
