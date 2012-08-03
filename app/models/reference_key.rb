@@ -37,20 +37,33 @@ class ReferenceKey
       content_tag(:span, class: :reference_key_and_expansion) do
         content_tag(:a, short, title: long.html_safe, href: '#', class: :reference_key) +
         content_tag(:span, class: :reference_key_expansion) do
-          content = content_tag(:span, long, title: short.html_safe, class: :reference_key_expansion_text)
-          document_link = Formatters::CatalogFormatter.format_reference_document_link @reference, user
-          content << document_link if document_link
-          content << %{<a class="goto_reference_link" target="_blank" href="/references?q=#{@reference.id}">}.html_safe
-          content << image_tag('external_link.png')
-          content << "</a>".html_safe
-          content.html_safe
+          content = ''.html_safe
+          content << reference_key_expansion_text(long, short)
+          content << document_link(user)
+          content << goto_reference_link
+          content
         end
       end
     else
       content = content_tag :a, short, target: '_blank', title: long.html_safe, href: "http://antcat.org/references?q=#{@reference.id}".html_safe
-      document_link = Formatters::CatalogFormatter.format_reference_document_link @reference, user
-      content << ' ' << document_link if document_link
+      content << document_link(user)
       content
+    end
+  end
+
+  def reference_key_expansion_text long, short
+    content = content_tag :span, long, title: short, class: :reference_key_expansion_text
+  end
+
+  def document_link user
+    string = Formatters::CatalogFormatter.format_reference_document_link @reference, user
+    return '' unless string
+    ' '.html_safe + string
+  end
+
+  def goto_reference_link
+    content_tag :a, class: 'goto_reference_link', target: '_blank', href: "/references?q=#{@reference.id}" do
+      image_tag 'external_link.png'
     end
   end
 
