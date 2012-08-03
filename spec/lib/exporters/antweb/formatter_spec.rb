@@ -6,4 +6,9 @@ describe Exporters::Antweb::Formatter do
     @formatter = Exporters::Antweb::Formatter
   end
 
+  describe "it" do
+    it "should" do
+      @formatter.new(create_genus, nil).format
+    end
+  end
 end

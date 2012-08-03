@@ -12,7 +12,7 @@ class Formatters::TaxonFormatter
     content_tag :div, class: 'antcat_taxon' do
       content = ''.html_safe
       content << header
-      content << statistics
+      content << statistics(include_invalid: include_invalid)
       content << genus_species_header_note
       content << headline
       content << history
@@ -21,6 +21,8 @@ class Formatters::TaxonFormatter
       content
     end
   end
+
+  def include_invalid; true end
 
   ##########
   def header
