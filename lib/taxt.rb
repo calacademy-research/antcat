@@ -2,8 +2,8 @@ module Taxt
   class ReferenceNotFound < StandardError; end
 
   ################################
-  def self.to_string taxt, user
-    decode taxt, user
+  def self.to_string taxt, user = nil, options = {}
+    decode taxt, user, options
   end
 
   def self.to_sentence taxt, user
@@ -44,10 +44,10 @@ module Taxt
     AnyBase.base_x_to_base_10 editable_id.reverse, EDITABLE_ID_DIGITS
   end
 
-  def self.decode taxt, user = nil
+  def self.decode taxt, user = nil, options = {}
     return '' unless taxt
     taxt.gsub /{ref (\d+)}/ do |ref|
-      Formatters::ReferenceFormatter.format_inline_citation(Reference.find($1), user) rescue ref
+      Formatters::ReferenceFormatter.format_inline_citation(Reference.find($1), user, options) rescue ref
     end.html_safe
   end
 
