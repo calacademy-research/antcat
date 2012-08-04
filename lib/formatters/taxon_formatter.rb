@@ -135,7 +135,7 @@ class Formatters::TaxonFormatter
   end
 
   def reference_link reference
-    reference.key.to_link @user
+    reference.key.to_link @user, expand: expand_references?
   end
 
   def locality locality
@@ -281,9 +281,11 @@ class Formatters::TaxonFormatter
   end
 
   ############
+  def expand_references?; true end
+
   def detaxt taxt
     return '' unless taxt.present?
-    Taxt.to_string taxt, @user
+    Taxt.to_string taxt, @user, expand: expand_references?
   end
 
 end

@@ -15,10 +15,6 @@ class Exporters::Antweb::Formatter < Formatters::TaxonFormatter
     '<p><b>Taxonomic history</b></p>'.html_safe + super
   end
 
-  def reference_link reference
-    reference.key.to_link @user, expansion: false
-  end
-
   def homonym_replaced_for taxon
     homonym_replaced = taxon.homonym_replaced
     return '' unless homonym_replaced
@@ -28,5 +24,7 @@ class Exporters::Antweb::Formatter < Formatters::TaxonFormatter
     string << %{<div id="#{homonym_replaced.id}">#{homonym_replaced.taxonomic_history}</div>}
     string
   end
+
+  def expand_references?; false end
 
 end
