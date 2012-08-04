@@ -8,8 +8,8 @@ class Formatters::ReferenceFormatter
     make_formatter(reference).format
   end
 
-  def self.format_inline_citation reference, user
-    make_formatter(reference).format_inline_citation user
+  def self.format_inline_citation reference, user = nil, options = {}
+    make_formatter(reference).format_inline_citation user, options
   end
 
   def self.italicize string
@@ -51,8 +51,8 @@ class Formatters::ReferenceFormatter
     self.class.italicize add_period_if_necessary h @reference.title
   end
 
-  def format_inline_citation user
-    @reference.key.to_link user
+  def format_inline_citation user, options = {}
+    @reference.key.to_link user, options
   end
 
   private
@@ -103,7 +103,7 @@ class Formatters::NestedReferenceFormatter < Formatters::ReferenceFormatter
 end
 
 class Formatters::MissingReferenceFormatter < Formatters::ReferenceFormatter
-  def format_inline_citation _ = nil
+  def format_inline_citation reference = nil, user = nil, options = nil
     @reference.citation
   end
 end
