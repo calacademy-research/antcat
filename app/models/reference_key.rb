@@ -62,7 +62,7 @@ class ReferenceKey
   end
 
   def make_to_link_title string
-    string.gsub %r{<i>(.*)</i>}, '\1'
+    Formatters::Formatter.unitalicize string
   end
 
   def reference_key_expansion_text reference_string, reference_key_string

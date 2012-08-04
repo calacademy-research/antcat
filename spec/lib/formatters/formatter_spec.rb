@@ -3,7 +3,7 @@ require 'spec_helper'
 
 describe Formatters::Formatter do
   before do
-    @formatter = Formatters::CatalogFormatter
+    @formatter = Formatters::Formatter
   end
 
  describe "Pluralizing with commas" do
@@ -34,6 +34,18 @@ describe Formatters::Formatter do
     end
     it "should use commas" do
       @formatter.pluralize_with_delimiters(2000, 'bear').should == '2,000 bears'
+    end
+  end
+
+  describe "italicization" do
+    it "should italicize" do
+      string = @formatter.italicize('Atta')
+      string.should == '<i>Atta</i>'
+      string.should be_html_safe
+    end
+    it "should unitalicize" do
+      string = @formatter.unitalicize('Attini <i>Atta major</i> r.')
+      string.should == 'Attini Atta major r.'
     end
   end
 

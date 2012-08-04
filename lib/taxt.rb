@@ -67,14 +67,11 @@ module Taxt
     end
 
     if rank == :species_group_epithet
-      string = '<i>'.html_safe
-      string << Formatters::CatalogFormatter.format_fossil(name, data[:fossil])
-      string << '</i>'.html_safe
-      return string
+      return Formatters::Formatter.italicize Formatters::CatalogFormatter.format_fossil name, data[:fossil]
     end
 
     if data[:genus_abbreviation]
-      string = '<i>'.html_safe
+      string = ''.html_safe
       string << Formatters::CatalogFormatter.format_fossil(data[:genus_abbreviation], data[:fossil])
       if data[:species_epithet]
         string << ' ' << data[:species_epithet]
@@ -82,8 +79,7 @@ module Taxt
         string << ' (' << data[:subgenus_epithet] << ')'
       else raise
       end
-      string << '</i>'.html_safe
-      return string
+      return Formatters::Formatter.italicize string
     end
 
     italicize = [:collective_group, :genus].include? rank
@@ -99,11 +95,9 @@ module Taxt
       end
     end
 
-    output = ''
-    output << '<i>' if italicize
-    output << Formatters::CatalogFormatter.format_fossil(name, data[:fossil])
+    output = Formatters::CatalogFormatter.format_fossil(name, data[:fossil])
     output << '?' if data[:questionable]
-    output << '</i>' if italicize
+    output = Formatters::Formatter.italicize output if italicize
 
     output
   end

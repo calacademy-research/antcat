@@ -17,7 +17,7 @@ class SpeciesName < SpeciesGroupName
   def self.make_attributes name, data
     attributes = {
       epithet:      name,
-      html_epithet: '<i>'.html_safe + name + '</i>'.html_safe
+      html_epithet: Formatters::Formatter.italicize(name),
     }
     parent_name = get_parent_name data
     attributes[:name]      = "#{parent_name} #{attributes[:epithet]}"

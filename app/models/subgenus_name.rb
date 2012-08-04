@@ -10,12 +10,12 @@ class SubgenusName < GenusGroupName
 
   def self.make_attributes name, data
     parent_name = get_parent_name data
-    html_epithet = '<i>'.html_safe + name + '</i>'.html_safe
+    html_epithet = Formatters::Formatter.italicize name
     {
       epithet:      name,
       html_epithet: html_epithet,
       name:         "#{parent_name} (#{name})",
-      html_name:    "#{parent_name.to_html} <i>(#{name})</i>",
+      html_name:    "#{parent_name.to_html} #{Formatters::Formatter.italicize "(#{name})"}",
     }
   end
 
