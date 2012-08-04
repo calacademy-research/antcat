@@ -29,7 +29,7 @@ class Exporters::Antweb::Exporter
 
     case taxon
     when Family
-      convert_to_antweb_array attributes.merge subfamily: ''
+      convert_to_antweb_array attributes.merge subfamily: 'Formicidae'
     when Subfamily
       convert_to_antweb_array attributes.merge subfamily: taxon.name.to_s
     when Genus
