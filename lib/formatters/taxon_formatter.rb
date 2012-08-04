@@ -175,12 +175,13 @@ class Formatters::TaxonFormatter
 
   ##########
   def child_lists
+    content = ''.html_safe
+    content << child_lists_for_rank(@taxon, :subfamilies)
+    content << child_lists_for_rank(@taxon, :tribes)
+    content << child_lists_for_rank(@taxon, :genera)
+    content << collective_group_name_child_list(@taxon)
+    return unless content.present?
     content_tag :div, class: 'child_lists' do
-      content = ''.html_safe
-      content << child_lists_for_rank(@taxon, :subfamilies)
-      content << child_lists_for_rank(@taxon, :tribes)
-      content << child_lists_for_rank(@taxon, :genera)
-      content << collective_group_name_child_list(@taxon)
       content
     end
   end
