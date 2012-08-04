@@ -44,16 +44,16 @@ describe ReferenceKey do
     before do
       latreille = FactoryGirl.create :author_name, name: 'Latreille, P. A.'
       science = FactoryGirl.create :journal, name: 'Science'
-      @reference = FactoryGirl.create :article_reference, author_names: [latreille], citation_year: '1809', title: "Ants", journal: science, series_volume_issue: '(1)', pagination: '3'
+      @reference = FactoryGirl.create :article_reference, author_names: [latreille], citation_year: '1809', title: "*Atta*", journal: science, series_volume_issue: '(1)', pagination: '3'
       @reference.stub(:url).and_return 'example.com'
     end
     it "should create a link to the reference" do
       @reference.stub(:downloadable_by?).and_return true
       @reference.key.to_link(nil).should ==
         %{<span class="reference_key_and_expansion">} +
-          %{<a class="reference_key" href="#" title="Latreille, P. A. 1809. Ants. Science (1):3.">Latreille, 1809</a>} + 
+          %{<a class="reference_key" href="#" title="Latreille, P. A. 1809. <i>Atta</i>. Science (1):3.">Latreille, 1809</a>} +
           %{<span class="reference_key_expansion">} +
-            %{<span class="reference_key_expansion_text" title="Latreille, 1809">Latreille, P. A. 1809. Ants. Science (1):3.</span>} +
+            %{<span class="reference_key_expansion_text" title="Latreille, 1809">Latreille, P. A. 1809. <i>Atta</i>. Science (1):3.</span>} +
             %{ } +
             %{<a class="document_link" target="_blank" href="example.com">PDF</a>} +
             %{<a class="goto_reference_link" href="/references?q=#{@reference.id}" target="_blank"><img alt="External_link" src="/assets/external_link.png" /></a>} +
@@ -64,9 +64,9 @@ describe ReferenceKey do
       @reference.stub(:downloadable_by?).and_return false
       @reference.key.to_link(nil).should ==
         %{<span class="reference_key_and_expansion">} +
-          %{<a class="reference_key" href="#" title="Latreille, P. A. 1809. Ants. Science (1):3.">Latreille, 1809</a>} + 
+          %{<a class="reference_key" href="#" title="Latreille, P. A. 1809. <i>Atta</i>. Science (1):3.">Latreille, 1809</a>} +
           %{<span class="reference_key_expansion">} +
-            %{<span class="reference_key_expansion_text" title="Latreille, 1809">Latreille, P. A. 1809. Ants. Science (1):3.</span>} +
+            %{<span class="reference_key_expansion_text" title="Latreille, 1809">Latreille, P. A. 1809. <i>Atta</i>. Science (1):3.</span>} +
             %{<a class="goto_reference_link" href="/references?q=#{@reference.id}" target="_blank"><img alt="External_link" src="/assets/external_link.png" /></a>} +
           %{</span>} +
         %{</span>}
@@ -75,12 +75,12 @@ describe ReferenceKey do
       it "should not include the PDF link, if not available to the user" do
         @reference.stub(:downloadable_by?).and_return false
         @reference.key.to_link(nil, expansion: false).should ==
-          %{<a href="http://antcat.org/references?q=#{@reference.id}" target="_blank" title="Latreille, P. A. 1809. Ants. Science (1):3.">Latreille, 1809</a>}
+          %{<a href="http://antcat.org/references?q=#{@reference.id}" target="_blank" title="Latreille, P. A. 1809. Atta. Science (1):3.">Latreille, 1809</a>}
       end
       it "should include the PDF link, if available to the user" do
         @reference.stub(:downloadable_by?).and_return true
         @reference.key.to_link(nil, expansion: false).should ==
-          %{<a href="http://antcat.org/references?q=#{@reference.id}" target="_blank" title="Latreille, P. A. 1809. Ants. Science (1):3.">Latreille, 1809</a>} +
+          %{<a href="http://antcat.org/references?q=#{@reference.id}" target="_blank" title="Latreille, P. A. 1809. Atta. Science (1):3.">Latreille, 1809</a>} +
           %{ } +
           %{<a class="document_link" target="_blank" href="example.com">PDF</a>}
       end
