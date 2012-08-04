@@ -18,7 +18,7 @@ class SubspeciesName < SpeciesGroupName
         attributes[:epithets]      << type << ' '
         attributes[:html_epithets] << type << ' '
       end
-      html_epithet = italicize epithet
+      html_epithet = Formatters::Formatter.italicize epithet
       attributes[:epithets]      << "#{epithet} "
       attributes[:html_epithets] << html_epithet << ' '
 
@@ -35,10 +35,6 @@ class SubspeciesName < SpeciesGroupName
     attributes[:epithets]      = "#{parent_name.epithet} #{attributes[:epithets]}"
     attributes[:html_epithets] = "#{parent_name.html_epithet} #{attributes[:html_epithets]}"
     attributes
-  end
-
-  def self.italicize string
-    '<i>'.html_safe + string + '</i>'.html_safe
   end
 
   def self.get_parent_name data

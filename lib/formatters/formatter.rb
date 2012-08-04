@@ -1,6 +1,9 @@
 # coding: UTF-8
 module Formatters::Formatter
- extend ActionView::Helpers::NumberHelper
+  extend ActionView::Helpers::NumberHelper
+  extend ActionView::Helpers::TagHelper
+
+  module_function
 
   def pluralize_with_delimiters count, word, plural = nil
     if count != 1
@@ -35,7 +38,13 @@ module Formatters::Formatter
     return string + '.' unless string[-1..-1] =~ /[.!?]/
     string
   end
-  module_function :add_period_if_necessary
+
+  def italicize string
+    content_tag :i, string
+  end
+
+  def unitalicize string
+    string.gsub %r{<i>(.*)</i>}, '\1'
+  end
 
 end
-

@@ -8,7 +8,7 @@ class GenusGroupTaxon < Taxon
   end
 
   def label
-    "<i>#{name}</i>"
+    Formatters::Formatter.italicize name
   end
 
   def inspect
