@@ -16,7 +16,7 @@ class Exporters::Antweb::Formatter < Formatters::TaxonFormatter
   end
 
   def reference_link reference
-    reference.key.to_link @user, expand: false
+    reference.key.to_link @user, expansion: false
   end
 
   def homonym_replaced_for taxon
