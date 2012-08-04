@@ -31,28 +31,32 @@ class ReferenceKey
 
   def to_link user, options = {}
     options = options.reverse_merge expansion: true
-    short = to_s
-    long = Formatters::ReferenceFormatter.format @reference
+    reference_key_string = to_s
+    reference_string = Formatters::ReferenceFormatter.format @reference
     if options[:expansion]
       content_tag(:span, class: :reference_key_and_expansion) do
-        content_tag(:a, short, title: long.html_safe, href: '#', class: :reference_key) +
+        content_tag(:a, reference_key_string, title: reference_string.html_safe, href: '#', class: :reference_key) +
         content_tag(:span, class: :reference_key_expansion) do
           content = ''.html_safe
-          content << reference_key_expansion_text(long, short)
+          content << reference_key_expansion_text(reference_string, reference_key_string)
           content << document_link(user)
           content << goto_reference_link
           content
         end
       end
     else
-      content = content_tag :a, short, target: '_blank', title: long.html_safe, href: "http://antcat.org/references?q=#{@reference.id}".html_safe
+      content = content_tag :a, reference_key_string, target: '_blank', title: make_to_link_title(reference_string), href: "http://antcat.org/references?q=#{@reference.id}".html_safe
       content << document_link(user)
       content
     end
   end
 
-  def reference_key_expansion_text long, short
-    content = content_tag :span, long, title: short, class: :reference_key_expansion_text
+  def make_to_link_title string
+    string.gsub %r{<i>(.*)</i>}, '\1'
+  end
+
+  def reference_key_expansion_text reference_string, reference_key_string
+    content = content_tag :span, reference_string, title: reference_key_string, class: :reference_key_expansion_text
   end
 
   def document_link user

@@ -15,6 +15,10 @@ class Exporters::Antweb::Formatter < Formatters::TaxonFormatter
     '<p><b>Taxonomic history</b></p>'.html_safe + super
   end
 
+  def reference_link reference
+    reference.key.to_link @user, expand: false
+  end
+
   def homonym_replaced_for taxon
     homonym_replaced = taxon.homonym_replaced
     return '' unless homonym_replaced
