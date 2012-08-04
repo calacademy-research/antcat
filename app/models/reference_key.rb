@@ -34,26 +34,28 @@ class ReferenceKey
     reference_key_string = to_s
     reference_string = Formatters::ReferenceFormatter.format @reference
     if options[:expansion]
-      to_link_with_expansion
+      to_link_with_expansion reference_key_string, reference_string, user
     else
-      to_link_without_expansion
+      to_link_without_expansion reference_key_string, reference_string, user
     end
   end
 
-  def to_link_with_expansion reference_string, reference_key_string
+  def to_link_with_expansion reference_key_string, reference_string, user
     content_tag :span, class: :reference_key_and_expansion do
-      content_tag :a, reference_key_string, title: reference_string.html_safe, href: '#', class: :reference_key +
-      content_tag :span, class: :reference_key_expansion do
-        content = ''.html_safe
-        content << reference_key_expansion_text(reference_string, reference_key_string)
-        content << document_link(user)
-        content << goto_reference_link
-        content
+      content = ''.html_safe
+      content << content_tag(:a, reference_key_string, title: reference_string.html_safe, href: '#', class: :reference_key)
+      content << content_tag(:span, class: :reference_key_expansion) do
+        inner_content = ''.html_safe
+        inner_content << reference_key_expansion_text(reference_string, reference_key_string)
+        inner_content << document_link(user)
+        inner_content << goto_reference_link
+        inner_content
       end
+      content
     end
   end
 
-  def to_link_without_expansion reference_string, reference_key_string
+  def to_link_without_expansion reference_key_string, reference_string, user
     content = content_tag :a, reference_key_string, target: '_blank', title: make_to_link_title(reference_string), href: "http://antcat.org/references?q=#{@reference.id}".html_safe
     content << document_link(user)
     content
