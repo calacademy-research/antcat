@@ -47,4 +47,8 @@ module Formatters::Formatter
     string.gsub %r{<i>(.*)</i>}, '\1'
   end
 
+  def embolden string
+    content_tag :b, string
+  end
+
 end

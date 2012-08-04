@@ -49,4 +49,12 @@ describe Formatters::Formatter do
     end
   end
 
+  describe "bold" do
+    it "should bold" do
+      string = @formatter.embolden('Atta')
+      string.should == '<b>Atta</b>'
+      string.should be_html_safe
+    end
+  end
+
 end

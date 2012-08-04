@@ -7,7 +7,7 @@ class Exporters::Antweb::Formatter < Formatters::TaxonFormatter
   end
 
   def protonym_name protonym
-    ('<b>' + super + '</b>').html_safe
+    Formatters::Formatter.embolden super
   end
 
   def history
