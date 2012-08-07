@@ -165,11 +165,19 @@ class Formatters::TaxonFormatter
     content_tag :div, class: css_class, 'data-id' => item.id do
       content_tag :table do
         content_tag :tr do
-          content_tag :td, class: 'history_item_body' do
-            add_period_if_necessary detaxt item.taxt
-          end
+          history_item_body item
         end
       end
+    end
+  end
+
+  def history_item_body_attributes
+    {}
+  end
+
+  def history_item_body item
+    content_tag :td, history_item_body_attributes.merge(class: 'history_item_body') do
+      add_period_if_necessary detaxt item.taxt
     end
   end
 

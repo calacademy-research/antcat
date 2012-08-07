@@ -27,4 +27,8 @@ class Exporters::Antweb::Formatter < Formatters::TaxonFormatter
 
   def expand_references?; false end
 
+  def history_item_body_attributes
+    {style: 'font-size: 13px'}
+  end
+
 end
