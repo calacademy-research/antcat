@@ -18,4 +18,4 @@ class PreviewReleaseType < ReleaseType
   def user_can_edit?(_); true end
 end
 
-$ReleaseType = PreviewReleaseType.new
+$ReleaseType = ProductionReleaseType.new
