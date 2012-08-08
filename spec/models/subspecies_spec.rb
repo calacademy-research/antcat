@@ -77,7 +77,7 @@ describe Subspecies do
           species_epithet:      'soudanicus',
           subspecies: [{type:   'var.', subspecies_epithet: 'brunnea'}]
         },
-        genus: create_genus,
+        genus: @genus,
       )
       subspecies.name.epithet.should == 'brunneus'
     end

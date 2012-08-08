@@ -20,9 +20,9 @@ describe Subfamily do
 
   it "should have genera" do
     myrmicinae = FactoryGirl.create :subfamily, name: FactoryGirl.create(:name, name: 'Myrmicinae')
-    dacetini = FactoryGirl.create :tribe, name: FactoryGirl.create(:name, name: 'Dacetini'), :subfamily => myrmicinae
-    FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Atta'), :subfamily => myrmicinae, :tribe => FactoryGirl.create(:tribe, name: FactoryGirl.create(:name, name: 'Attini'), :subfamily => myrmicinae)
-    FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Acanthognathus'), :subfamily => myrmicinae, :tribe => FactoryGirl.create(:tribe, name: FactoryGirl.create(:name, name: 'Dacetini'), :subfamily => myrmicinae)
+    dacetini = FactoryGirl.create :tribe, name: FactoryGirl.create(:name, name: 'Dacetini'), subfamily: myrmicinae
+    create_genus 'Atta', subfamily: myrmicinae, tribe: create_tribe('Attini', subfamily: myrmicinae)
+    create_genus 'Acanthognathus', subfamily: myrmicinae, tribe: dacetini
     myrmicinae.genera.map(&:name).map(&:to_s).should =~ ['Atta', 'Acanthognathus']
   end
 

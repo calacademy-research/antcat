@@ -12,8 +12,9 @@ describe Vlad do
   end
 
   it "should show taxon counts by status" do
-    FactoryGirl.create :family, status: 'synonym'
-    2.times {FactoryGirl.create :family, status: 'valid'}
+    FactoryGirl.create :family, status: 'synonym', name: create_name('Family1')
+    FactoryGirl.create :family, status: 'valid', name: create_name('Family2')
+    FactoryGirl.create :family, status: 'valid', name: create_name('Family3')
     Vlad::StatusCounts.query.should =~ [['valid', 2], ['synonym', 1]]
   end
 
@@ -47,8 +48,8 @@ describe Vlad do
   describe "Duplicate checking" do
     it "should show duplicate valid names" do
       create_genus 'Eciton'
-      create_genus 'Atta'
-      create_genus 'Atta'
+      genus = create_genus 'Atta'
+      create_genus name: genus.name
       Vlad::DuplicateValids.query.map {|e| [e[:name], e[:count]]}.should =~ [['Atta', 2]]
     end
     it "should be cool with same species name if genus is different" do
@@ -59,8 +60,8 @@ describe Vlad do
     end
     it "should be cool with same species name if status is different" do
       genus = create_genus
-      create_species 'Atta major', genus: genus
-      create_species 'Atta major', genus: genus
+      species = create_species 'Atta major', genus: genus
+      create_species name: species.name, genus: genus
       Vlad::DuplicateValids.query.should_not be_empty
     end
   end

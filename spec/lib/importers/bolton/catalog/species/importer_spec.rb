@@ -97,8 +97,8 @@ describe Importers::Bolton::Catalog::Species::Importer do
   end
 
   it "should pick the valid genus when there's two" do
-    create_genus 'Acanthomyrmex', status: 'synonym'
-    valid = create_genus 'Acanthomyrmex', status: 'valid'
+    genus = create_genus 'Acanthomyrmex', status: 'synonym'
+    valid = create_genus name: genus.name, status: 'valid'
     contents = make_contents %{
       <p><i>ACANTHOMYRMEX</i></p>
       <p><i>dyak</i>. <i>Acanthomyrmex dyak</i> Moffett, 1986c: 67 (s.w.) INDONESIA. Junior synonym of <i>ferox</i>: Moffett, 1986c: 70.</p>
