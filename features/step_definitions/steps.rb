@@ -75,3 +75,8 @@ end
 Then "I should not see any search results" do
   page.should_not have_css "#search_results"
 end
+
+Then /^the page title should have "([^"]*)" in it$/ do |title|
+  page.should have_css('title', text: /#{title}/)
+end
+

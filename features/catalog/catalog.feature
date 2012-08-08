@@ -23,6 +23,7 @@ Feature: Using the catalog
     And I should see "Extant: 1 valid subfamily, 1 valid tribe, 3 valid genera, 2 valid species, 1 valid subspecies"
     And I should see "Fossil: 1 valid genus"
     And I should see "Subfamily of Formicidae: Dolichoderinae."
+    And the page title should have "Formicidae" in it
 
   Scenario: Seeing the subfamilies
     When I go to the catalog
