@@ -26,7 +26,7 @@ class ReferenceDocument < ActiveRecord::Base
   end
 
   def downloadable_by? user
-    url.present? && !hosted_by_hol? && (attributes["public"] || !hosted_by_us? || user.present?)
+    url.present?
   end
 
   def hosted_by_hol?

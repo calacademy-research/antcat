@@ -75,8 +75,8 @@ describe ReferenceDocument do
     it "should be downloadable by anyone if we just have a URL, not a file name on S3" do
       ReferenceDocument.new(:url => 'foo').should be_downloadable_by nil
     end
-    it "should not be downloadable by just anyone if we are hosting on S3" do
-      ReferenceDocument.new(:url => 'foo', :file_file_name => 'bar').should_not be_downloadable_by nil
+    it "should be downloadable by just anyone if we are hosting on S3" do
+      ReferenceDocument.new(:url => 'foo', :file_file_name => 'bar').should be_downloadable_by nil
     end
     it "should be downloadable by a registered user if we are hosting on S3" do
       ReferenceDocument.new(:url => 'foo', :file_file_name => 'bar').should be_downloadable_by FactoryGirl.create :user
@@ -86,8 +86,8 @@ describe ReferenceDocument do
       document.should be_downloadable_by FactoryGirl.create :user
       document.should be_downloadable_by nil
     end
-    it "should be not be downloadable by anyone if it is/was on http://128.146.250.117" do
-      ReferenceDocument.new(:url => 'http://128.146.250.117').should_not be_downloadable_by FactoryGirl.create :user
+    it "should be downloadable by anyone if it is/was on http://128.146.250.117" do
+      ReferenceDocument.new(:url => 'http://128.146.250.117').should be_downloadable_by FactoryGirl.create :user
     end
   end
 
