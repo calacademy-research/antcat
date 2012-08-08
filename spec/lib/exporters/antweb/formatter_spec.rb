@@ -16,7 +16,7 @@ describe Exporters::Antweb::Formatter do
       authorship = Citation.create! reference: reference, pages: '12'
       name = FactoryGirl.create :genus_name, name: 'Atta'
       protonym = Protonym.create! name: name, authorship: authorship
-      genus = create_genus 'Atta', protonym: protonym
+      genus = create_genus name: name, protonym: protonym
       species = create_species 'Atta major', genus: genus
       genus.update_attribute :type_name, species.name
       @formatter.new(genus).format.should ==

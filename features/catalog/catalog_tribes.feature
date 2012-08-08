@@ -12,7 +12,7 @@ Feature: Hiding and showing tribes in the index
     And a genus exists with a name of "Dolichoderus" and a tribe of "Dolichoderini"
     And a genus exists with a name of "Atta" and a subfamily of "Dolichoderinae"
     And a genus exists with a name of "Tapinoma" and a tribe of "Tapinomini"
-    And a genus exists with a name of "Atta" and no subfamily and a taxonomic history of "Atta history"
+    And a genus exists with a name of "Eciton" and no subfamily and a taxonomic history of "Eciton history"
     And a species exists with a name of "rufa" and a genus of "Atta"
     And a species exists with a name of "major" and a genus of "Dolichoderus"
 
@@ -137,4 +137,4 @@ Feature: Hiding and showing tribes in the index
     And I follow "show tribes"
     And I follow "hide"
     And I follow "(no subfamily)"
-    When I follow "Atta"
+    When I follow "Eciton"

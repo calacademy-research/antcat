@@ -1,6 +1,6 @@
 class Name < ActiveRecord::Base
 
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: true
 
   def self.import data
     SubspeciesName.import_data(data) or

@@ -100,7 +100,6 @@ Feature: Using the catalog
 
   Scenario: Showing the "no tribe" tribe
     Given a genus exists with a name of "Cariridris" and a subfamily of "Dolichoderinae"
-    And a genus exists with a name of "Atta" and a subfamily of "Attaninae"
     When I go to the catalog
     And I follow "Dolichoderinae"
     And I follow "show tribes"

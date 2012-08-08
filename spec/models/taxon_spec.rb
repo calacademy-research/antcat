@@ -169,13 +169,13 @@ describe Taxon do
       results.size.should == 2
     end
     it "should not return anything but subfamilies, tribes, genera, subgenera, species,and subspecies" do
-      FactoryGirl.create :subfamily, name: FactoryGirl.create(:name, name: 'Lepto')
-      FactoryGirl.create :tribe, name: FactoryGirl.create(:name, name: 'Lepto')
-      FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Lepto')
-      FactoryGirl.create :subgenus, name: FactoryGirl.create(:name, name: 'Lepto')
-      FactoryGirl.create :species, name: FactoryGirl.create(:name, name: 'Lepto')
-      FactoryGirl.create :subspecies, name: FactoryGirl.create(:name, name: 'Lepto')
-      results = Taxon.find_name 'Lepto'
+      create_subfamily 'Lepto'
+      create_tribe 'Lepto1'
+      create_genus 'Lepto2'
+      create_subgenus 'Lepto3'
+      create_species 'Lepto4'
+      create_subspecies 'Lepto5'
+      results = Taxon.find_name 'Lepto', 'beginning with'
       results.size.should == 6
     end
     it "should sort results by name" do
@@ -370,8 +370,8 @@ describe Taxon do
 
   describe "Synonyms" do
     it "should have junior and senior synonyms" do
-      senior = create_genus
-      junior = create_genus
+      senior = create_genus 'Atta'
+      junior = create_genus 'Eciton'
       Synonym.create! junior_synonym: junior, senior_synonym: senior
       senior.should have(1).junior_synonym
       senior.should have(0).senior_synonyms

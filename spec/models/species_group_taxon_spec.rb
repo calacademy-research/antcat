@@ -59,8 +59,8 @@ describe SpeciesGroupTaxon do
     end
 
     it "should return all the targets if there's no clear choice" do
-      valid_species = create_species
-      another_valid_species = create_species
+      valid_species = create_species 'Atta major'
+      another_valid_species = create_species 'Atta minor'
       targets = [another_valid_species, valid_species]
       SpeciesGroupTaxon.pick_validest(targets).should =~ [valid_species, another_valid_species]
     end

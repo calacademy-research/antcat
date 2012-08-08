@@ -6,6 +6,11 @@ describe Name do
     Name.new(name:'Name').name.should == 'Name'
   end
 
+  it "should not allow duplicates" do
+    Name.create! name: 'Atta'
+    Name.new(name: 'Atta').should_not be_valid
+  end
+
   it "should format the fossil symbol" do
     SpeciesName.new(html_epithet: '<i>major</i>').html_epithet_with_fossil(true).should == '<i>&dagger;</i><i>major</i>'
     SpeciesName.new(html_epithet: '<i>major</i>').html_epithet_with_fossil(false).should == '<i>major</i>'

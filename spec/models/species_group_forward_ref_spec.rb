@@ -66,13 +66,13 @@ describe SpeciesGroupForwardRef do
     end
 
     it "should add a senior synonym matching a name" do
-      junior = create_species
+      junior = create_species 'Atta major'
       synonym = Synonym.create! junior_synonym: junior
       forward_ref = SpeciesGroupForwardRef.create!({
         fixee: synonym, fixee_attribute: 'senior_synonym',
         genus: @genus, epithet: 'major'
       })
-      senior = create_species 'Atta major', genus: @genus
+      senior = create_species name: junior.name, genus: @genus
       forward_ref.fixup
       synonym.reload
       junior = synonym.junior_synonym
@@ -103,7 +103,7 @@ describe SpeciesGroupForwardRef do
         fixee: synonym, fixee_attribute: 'senior_synonym',
         genus: @genus, epithet: 'major'
       })
-      2.times {create_species 'Atta major', genus: @genus}
+      2.times {create_species name: junior.name, genus: @genus}
       Progress.should_receive :error
       forward_ref.fixup
       junior = synonym.reload.junior_synonym
@@ -150,7 +150,7 @@ describe SpeciesGroupForwardRef do
         genus: @genus, epithet: 'magna'
       })
       invalid_senior = create_species 'Atta magnus', genus: @genus, status: 'homonym'
-      senior = create_species 'Atta magnus', genus: @genus
+      senior = create_species name: invalid_senior.name, genus: @genus
       forward_ref.fixup
       junior = synonym.reload.junior_synonym
       junior.should be_synonym_of senior
