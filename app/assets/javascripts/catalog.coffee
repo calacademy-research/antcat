@@ -26,12 +26,12 @@ set_height = (taxon_area_height = 'fixed') ->
 set_auto_height = ->
   $('#page').css 'overflow', 'auto'
   $(".antcat_taxon").height 'auto'
-  $(".antcat_taxon").css 'min-height', '20em'
+  $(".antcat_taxon").css 'min-height', calculate_content_height
   $('#catalog .index').css 'height', ''
 
 set_fixed_height = ->
   $('#page').css 'overflow', 'inherit'
-  $(".antcat_taxon").height '20em'
+  $(".antcat_taxon").height calculate_content_height
   $(".antcat_taxon").css 'min-height', ''
 
 set_catalog_height = ->
@@ -48,6 +48,12 @@ calculate_catalog_height = ->
   $('#search_results').height() - 3 - 2 - 2 -
   $('#taxon_key').height() - 2 -
   $('#site_footer').height() - 8
+
+calculate_content_height = ->
+  page_height = $('#page').height()
+  return 200 if page_height > 800
+  return 90 if page_height > 600
+  30
 
 set_width = ->
   $("#catalog .content, #catalog .new_taxon_form").width $('#page').width()
