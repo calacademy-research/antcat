@@ -18,7 +18,7 @@ class Exporters::Antweb::Exporter
   def export_taxon taxon
     Progress.tally_and_show_progress 100
 
-    return unless !taxon.invalid? || taxon.unidentifiable?
+    return unless self.class.exportable? taxon
 
     attributes = {
       valid?: !taxon.invalid?,
@@ -48,6 +48,10 @@ class Exporters::Antweb::Exporter
     else nil
     end
 
+  end
+
+  def self.exportable? taxon
+    !taxon.invalid? || taxon.unidentifiable?
   end
 
   private
