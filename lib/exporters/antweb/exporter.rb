@@ -51,7 +51,7 @@ class Exporters::Antweb::Exporter
   end
 
   def self.exportable? taxon
-    !taxon.invalid? || taxon.unidentifiable?
+    !taxon.kind_of?(Subgenus) && !taxon.kind_of?(Tribe) && (!taxon.invalid? || taxon.unidentifiable?)
   end
 
   private
