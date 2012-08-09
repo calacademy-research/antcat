@@ -46,8 +46,28 @@ describe Formatters::TaxonFormatter do
         @formatter.new(genus).headline_type.should ==
 %{<span class="type">Type-species: <span class="species taxon"><i>Atta major</i></span>, by monotypy</span>}
       end
-
     end
+
+    describe "Linking to the other site" do
+      it "should link to a species" do
+        subfamily = create_subfamily 'Dolichoderinae'
+        genus = create_genus 'Atta', subfamily: subfamily
+        species = create_species 'Atta major', genus: genus, subfamily: subfamily
+        @formatter.new(species).link_to_other_site.should == %{<a href="http://www.antweb.org/description.do?name=major&genus=atta&rank=species&project=worldants">AntWeb</a>}
+      end
+      it "should link to a subspecies" do
+        subfamily = create_subfamily 'Dolichoderinae'
+        genus = create_genus 'Atta', subfamily: subfamily
+        species = create_species 'Atta major', genus: genus, subfamily: subfamily
+        species = create_subspecies 'Atta major nigrans', species: species, genus: genus, subfamily: subfamily
+        @formatter.new(species).link_to_other_site.should == %{<a href="http://www.antweb.org/description.do?name=major nigrans&genus=atta&rank=species&project=worldants">AntWeb</a>}
+      end
+      it "should not link to an invalid taxon" do
+        subfamily = create_subfamily 'Dolichoderinae', status: 'synonym'
+        @formatter.new(subfamily).link_to_other_site.should be_nil
+      end
+    end
+
   end
 
   describe "Child lists" do

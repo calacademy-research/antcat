@@ -78,6 +78,8 @@ class Formatters::TaxonFormatter
       string = headline_protonym + ' ' + headline_type
       notes = headline_notes
       string << ' ' << notes if notes
+      link = link_to_other_site
+      string << ' ' << link if link
       string
     end
   end
@@ -147,6 +149,14 @@ class Formatters::TaxonFormatter
   def headline_notes
     return unless @taxon.headline_notes_taxt.present?
     detaxt @taxon.headline_notes_taxt
+  end
+
+  def link_to_other_site
+    Exporters::Antweb::Formatter.link_to_taxon @taxon
+  end
+
+  def self.link_to_taxon taxon
+    %{<a href="http://www.antcat.org/catalog/#{taxon.id}">AntCat</a>}.html_safe
   end
 
   ##########
