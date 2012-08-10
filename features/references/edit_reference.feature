@@ -181,7 +181,7 @@ Feature: Edit reference
       | Ward, P.S. | 2010d | Ant Facts | Ants 1:1 |
     And that the entry has a URL that's on our site
     When I go to the references page
-    Then I should not see a "PDF" link
+    Then I should see a "PDF" link
     When I log in
     And I go to the references page
     And I follow "edit"
