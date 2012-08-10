@@ -51,7 +51,7 @@ describe ReferenceKey do
       @reference.stub(:downloadable_by?).and_return true
       @reference.key.to_link(nil).should ==
         %{<span class="reference_key_and_expansion">} +
-          %{<a class="reference_key" href="#" title="Latreille, P. A. 1809. <i>Atta</i>. Science (1):3.">Latreille, 1809</a>} +
+          %{<a class="reference_key" href="#" title="Latreille, P. A. 1809. Atta. Science (1):3.">Latreille, 1809</a>} +
           %{<span class="reference_key_expansion">} +
             %{<span class="reference_key_expansion_text" title="Latreille, 1809">Latreille, P. A. 1809. <i>Atta</i>. Science (1):3.</span>} +
             %{ } +
@@ -64,7 +64,7 @@ describe ReferenceKey do
       @reference.stub(:downloadable_by?).and_return false
       @reference.key.to_link(nil).should ==
         %{<span class="reference_key_and_expansion">} +
-          %{<a class="reference_key" href="#" title="Latreille, P. A. 1809. <i>Atta</i>. Science (1):3.">Latreille, 1809</a>} +
+          %{<a class="reference_key" href="#" title="Latreille, P. A. 1809. Atta. Science (1):3.">Latreille, 1809</a>} +
           %{<span class="reference_key_expansion">} +
             %{<span class="reference_key_expansion_text" title="Latreille, 1809">Latreille, P. A. 1809. <i>Atta</i>. Science (1):3.</span>} +
             %{<a class="goto_reference_link" href="/references?q=#{@reference.id}" target="_blank"><img alt="External_link" src="/assets/external_link.png" /></a>} +
