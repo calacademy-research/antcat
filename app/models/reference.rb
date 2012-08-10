@@ -21,7 +21,7 @@ class Reference < ActiveRecord::Base
   include ReferenceComparable; def author; principal_author_last_name; end
 
   # validation and callbacks
-  before_validation :set_year_from_citation_year, :strip_newlines_from_text_fields
+  before_validation :set_year_from_citation_year, :strip_text_fields
   validates_presence_of :title
   before_save       :set_author_names_caches
   before_destroy    :check_not_nested
@@ -91,9 +91,14 @@ class Reference < ActiveRecord::Base
   end
 
   private
-  def strip_newlines_from_text_fields
+  def strip_text_fields
     [:title, :public_notes, :editor_notes, :taxonomic_notes].each do |field|
-      self[field].gsub! /\n/, ' ' if self[field].present?
+      value = self[field]
+      next unless value.present?
+      value.gsub! /(\n|\r|\n\r|\r\n)/, ' '
+      value.strip!
+      value.squeeze! ' '
+      self[field] = value
     end
   end
 
