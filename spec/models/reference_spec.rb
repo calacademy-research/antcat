@@ -180,14 +180,27 @@ describe Reference do
   describe "entering a newline in the title, public_notes, editor_notes or taxonomic_notes" do
     it "should strip the newline" do
       reference = FactoryGirl.create :reference
-      reference.title = 'A\nB'
+      reference.title = "A\nB"
       reference.public_notes = "A\nB"
       reference.editor_notes = "A\nB"
       reference.taxonomic_notes = "A\nB"
       reference.save!
+      reference.title.should == "A B"
       reference.public_notes.should == "A B"
       reference.editor_notes.should == "A B"
       reference.taxonomic_notes.should == "A B"
+    end
+    it "should handle all sorts of newlines" do
+      reference = FactoryGirl.create :reference
+      reference.title = "A\r\nB"
+      reference.save!
+      reference.title.should == "A B"
+    end
+    it "should completely remove newlines at the beginning and end" do
+      reference = FactoryGirl.create :reference
+      reference.title = "\r\nA\r\nB\n\n"
+      reference.save!
+      reference.title.should == "A B"
     end
   end
 
