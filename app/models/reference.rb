@@ -92,7 +92,7 @@ class Reference < ActiveRecord::Base
 
   private
   def strip_text_fields
-    [:title, :public_notes, :editor_notes, :taxonomic_notes].each do |field|
+    [:title, :public_notes, :editor_notes, :taxonomic_notes, :citation].each do |field|
       value = self[field]
       next unless value.present?
       value.gsub! /(\n|\r|\n\r|\r\n)/, ' '
