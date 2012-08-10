@@ -51,4 +51,8 @@ module Formatters::Formatter
     content_tag :b, string
   end
 
+  def link contents, href, attributes = {}
+    content_tag(:a, contents, attributes.reverse_merge(target: '_blank', href: href)).html_safe
+  end
+
 end
