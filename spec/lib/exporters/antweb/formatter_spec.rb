@@ -33,7 +33,7 @@ describe Exporters::Antweb::Formatter do
             %{ } +
             %{<span class="type">Type-species: <span class="species taxon"><i>Atta major</i></span>.</span>} +
             %{ } +
-            %{<a href="http://www.antcat.org/catalog/#{genus.id}">AntCat</a>} +
+            %{<a href="http://www.antcat.org/catalog/#{genus.id}" target="_blank">AntCat</a>} +
           %{</div>} +
         %{</div>}
     end

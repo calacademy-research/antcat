@@ -156,7 +156,7 @@ class Formatters::TaxonFormatter
   end
 
   def self.link_to_taxon taxon
-    %{<a href="http://www.antcat.org/catalog/#{taxon.id}">AntCat</a>}.html_safe
+    Formatters::Formatter.link AntCat, "http://www.antcat.org/catalog/#{taxon.id}".html_safe
   end
 
   ##########
