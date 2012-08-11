@@ -78,8 +78,8 @@ class Formatters::TaxonFormatter
       string = headline_protonym + ' ' + headline_type
       notes = headline_notes
       string << ' ' << notes if notes
-      link = link_to_other_site
-      string << ' ' << link if link
+      string << ' ' << link_to_other_site if link_to_other_site
+      string << ' ' << link_to_antwiki if link_to_antwiki
       string
     end
   end
@@ -155,8 +155,12 @@ class Formatters::TaxonFormatter
     Exporters::Antweb::Formatter.link_to_taxon @taxon
   end
 
+  def link_to_antwiki
+    Formatters::Formatter.link 'AntWiki', "http://ants.csiro.au/#{@taxon.name.to_s.gsub(/ /, '_')}"
+  end
+
   def self.link_to_taxon taxon
-    Formatters::Formatter.link AntCat, "http://www.antcat.org/catalog/#{taxon.id}".html_safe
+    Formatters::Formatter.link 'AntCat', "http://www.antcat.org/catalog/#{taxon.id}"
   end
 
   ##########
