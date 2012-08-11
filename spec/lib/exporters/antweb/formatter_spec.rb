@@ -34,6 +34,8 @@ describe Exporters::Antweb::Formatter do
             %{<span class="type">Type-species: <span class="species taxon"><i>Atta major</i></span>.</span>} +
             %{ } +
             %{<a href="http://www.antcat.org/catalog/#{genus.id}" target="_blank">AntCat</a>} +
+            %{ } +
+            %{<a href="http://ants.csiro.au/Atta" target="_blank">AntWiki</a>} +
           %{</div>} +
         %{</div>}
     end
