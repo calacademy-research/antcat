@@ -8,6 +8,8 @@ class SubspeciesName < SpeciesGroupName
     attributes = {epithets: '', html_epithets: ''.html_safe}
     for subspecies in data[:subspecies]
       # use the specified subspecies epithet for the last component
+      # this is in case it has a different gender ending than the epithet
+      # in the protonym
       if data[:subspecies_epithet] && subspecies == data[:subspecies].last
         epithet = data[:subspecies_epithet]
       else
