@@ -14,8 +14,6 @@ describe Importers::Bolton::Catalog::Species::Importer do
       @importer.import_html make_contents %{
         <p><i>CAMPONOTUS</i></p>
         <p><i>gilviventris</i>. <i>Camponotus gilviventris</i> Roger, 1863a: 145 (w.) CUBA.
-                Combination in <i>C. (Myrmeurynota)</i>: Forel, 1914a: 274.
-                Current subspecies: nominal plus <i>refectus</i>, <i>renormatus</i>.</p>
         <p><i>refectus</i>. <i>Camponotus (Myrmeurynota) gilviventris</i> var. <i>refectus</i> Wheeler, W.M. 1937b: 460 (w.) CUBA.</p>
       }
       @importer.finish_importing
