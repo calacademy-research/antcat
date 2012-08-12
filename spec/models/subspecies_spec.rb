@@ -49,8 +49,7 @@ describe Subspecies do
 
     it "should import a subspecies that has a subspecies protonym for a different species than current" do
       genus = create_genus 'Camponotus'
-      species_name = FactoryGirl.create :species_name, name: 'Camponotus hova', epithet: 'hova'
-      species = create_species name: species_name, genus: genus
+      create_species 'Camponotus hova'
 
       subspecies = Species.import(
         genus:                  genus,
