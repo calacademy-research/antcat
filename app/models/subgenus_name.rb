@@ -8,7 +8,7 @@ class SubgenusName < GenusGroupName
     data[:genus] ? data[:genus].name : GenusName.import_data(data)
   end
 
-  def self.make_attributes name, data
+  def self.make_import_attributes name, data
     parent_name = get_parent_name data
     html_epithet = Formatters::Formatter.italicize name
     {

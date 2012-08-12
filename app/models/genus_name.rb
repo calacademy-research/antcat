@@ -4,7 +4,7 @@ class GenusName < GenusGroupName
     data[:genus_name]
   end
 
-  def self.make_attributes name, data
+  def self.make_import_attributes name, data
     html_name = Formatters::Formatter.italicize name
     {
       name:         name,

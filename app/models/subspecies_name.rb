@@ -4,7 +4,7 @@ class SubspeciesName < SpeciesGroupName
     data[:subspecies]
   end
 
-  def self.make_attributes _, data
+  def self.make_import_attributes _, data
     attributes = {epithets: '', html_epithets: ''.html_safe}
     for subspecies in data[:subspecies]
       # use the specified subspecies epithet for the last component

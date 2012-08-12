@@ -17,11 +17,11 @@ class Name < ActiveRecord::Base
 
   def self.import_data data
     return unless name = get_name(data)
-    attributes = make_attributes name, data
+    attributes = make_import_attributes name, data
     Name.find_by_name(attributes[:name]) or create!(attributes)
   end
 
-  def self.make_attributes name, data
+  def self.make_import_attributes name, data
     {name: name, html_name: name, epithet: name, html_epithet: name}
   end
 
