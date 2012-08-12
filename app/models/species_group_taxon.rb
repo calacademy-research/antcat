@@ -110,7 +110,7 @@ class SpeciesGroupTaxon < Taxon
 
   def check_synonym_status status_record
     return unless status_record[:status] == 'synonym'
-    create_forward_ref_to_senior_synonym status_record[:epithets]
+    create_forward_refs_to_senior_synonyms status_record[:epithets]
   end
 
   def get_status_from_history history
@@ -118,7 +118,7 @@ class SpeciesGroupTaxon < Taxon
     {status: history.status, epithets: history.epithets}
   end
 
-  def create_forward_ref_to_senior_synonym epithets
+  def create_forward_refs_to_senior_synonyms epithets
     for epithet in epithets
       synonym = Synonym.create! junior_synonym: self
       SpeciesGroupForwardRef.create!(
