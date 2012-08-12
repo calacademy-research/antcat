@@ -14,7 +14,7 @@ class SpeciesName < SpeciesGroupName
     end
   end
 
-  def self.make_attributes name, data
+  def self.make_import_attributes name, data
     attributes = {
       epithet:      name,
       html_epithet: Formatters::Formatter.italicize(name),
