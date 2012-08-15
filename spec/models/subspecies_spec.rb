@@ -62,11 +62,26 @@ describe Subspecies do
         raw_history: [{currently_subspecies_of: {species: {species_epithet: 'hova'}}}]
       )
       subspecies = Subspecies.find subspecies
-      subspecies.name.to_s.should == 'Camponotus maculatus r. radamae'
+      subspecies.name.to_s.should == 'Camponotus hova maculatus r. radamae'
       ref = SpeciesGroupForwardRef.first
       ref.fixee.should == subspecies
       ref.genus.should == genus
       ref.epithet.should == 'hova'
+    end
+
+    it "should import a subspecies that has a species protonym" do
+      genus = create_genus 'Acromyrmex'
+      subspecies = Species.import(
+        genus:                  genus,
+        species_group_epithet:  'boliviensis',
+        protonym: {
+          genus_name:           'Acromyrmex',
+          species_epithet:      'boliviensis',
+        },
+        raw_history: [{currently_subspecies_of: {species: {species_epithet: 'lundii'}}}]
+      )
+      subspecies = Subspecies.find subspecies
+      subspecies.name.to_s.should == 'Acromyrmex lundii boliviensis'
     end
 
     it "should use the right epithet when the protonym differs" do
