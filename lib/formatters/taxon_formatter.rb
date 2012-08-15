@@ -156,7 +156,7 @@ class Formatters::TaxonFormatter
   end
 
   def link_to_antwiki
-    Formatters::Formatter.link 'AntWiki', "http://ants.csiro.au/#{@taxon.name.to_s.gsub(/ /, '_')}"
+    Formatters::Formatter.link 'AntWiki', "http://www.antwiki.org/#{@taxon.name.to_s.gsub(/ /, '_')}"
   end
 
   def self.link_to_taxon taxon

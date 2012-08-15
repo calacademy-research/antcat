@@ -35,7 +35,7 @@ describe Exporters::Antweb::Formatter do
             %{ } +
             %{<a href="http://www.antcat.org/catalog/#{genus.id}" target="_blank">AntCat</a>} +
             %{ } +
-            %{<a href="http://ants.csiro.au/Atta" target="_blank">AntWiki</a>} +
+            %{<a href="http://www.antwiki.org/Atta" target="_blank">AntWiki</a>} +
           %{</div>} +
         %{</div>}
     end

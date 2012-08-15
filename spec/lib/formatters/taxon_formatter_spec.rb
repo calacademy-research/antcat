@@ -71,11 +71,11 @@ describe Formatters::TaxonFormatter do
     describe "Linking to AntWiki" do
       it "should link to a subfamily" do
         @formatter.new(create_subfamily 'Dolichoderinae').link_to_antwiki.should ==
-          %{<a href="http://ants.csiro.au/Dolichoderinae" target="_blank">AntWiki</a>}
+          %{<a href="http://www.antwiki.org/Dolichoderinae" target="_blank">AntWiki</a>}
       end
       it "should link to a species" do
         @formatter.new(create_species 'Atta major').link_to_antwiki.should ==
-          %{<a href="http://ants.csiro.au/Atta_major" target="_blank">AntWiki</a>}
+          %{<a href="http://www.antwiki.org/Atta_major" target="_blank">AntWiki</a>}
       end
     end
   end
