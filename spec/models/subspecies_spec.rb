@@ -47,26 +47,39 @@ describe Subspecies do
       ref.epithet.should == 'gilviventris'
     end
 
-    it "should import a subspecies that has a subspecies protonym for a different species than current" do
-      genus = create_genus 'Camponotus'
-      create_species 'Camponotus hova'
+    describe "When the protonym has a different species" do
+      it "should insert the species from the 'Currently subspecies of' history item" do
+        genus = create_genus 'Camponotus'
+        create_species 'Camponotus hova'
+        subspecies = Species.import(
+          genus:                  genus,
+          species_group_epithet:  'radamae',
+          protonym: {
+            genus_name:           'Camponotus',
+            species_epithet:      'maculatus',
+            subspecies: [{type:   'r.', subspecies_epithet: 'radamae'}]
+          },
+          raw_history: [{currently_subspecies_of: {species: {species_epithet: 'hova'}}}]
+        )
+        Subspecies.find(subspecies).name.to_s.should == 'Camponotus hova maculatus r. radamae'
+      end
 
-      subspecies = Species.import(
-        genus:                  genus,
-        species_group_epithet:  'radamae',
-        protonym: {
-          genus_name:           'Camponotus',
-          species_epithet:      'maculatus',
-          subspecies: [{type:   'r.', subspecies_epithet: 'radamae'}]
-        },
-        raw_history: [{currently_subspecies_of: {species: {species_epithet: 'hova'}}}]
-      )
-      subspecies = Subspecies.find subspecies
-      subspecies.name.to_s.should == 'Camponotus hova maculatus r. radamae'
-      ref = SpeciesGroupForwardRef.first
-      ref.fixee.should == subspecies
-      ref.genus.should == genus
-      ref.epithet.should == 'hova'
+      it "should insert the species from the 'Revived from synonymy as subspecies of' history item" do
+        genus = create_genus 'Crematogaster'
+        create_species 'Crematogaster castanea'
+
+        subspecies = Species.import(
+          genus:                  genus,
+          species_group_epithet:  'mediorufa',
+          protonym: {
+            genus_name:           'Crematogaster',
+            species_epithet:      'tricolor',
+            subspecies: [{type:   'var.', subspecies_epithet: 'mediorufa'}]
+          },
+          raw_history: [{revived_from_synonymy: {subspecies_of: {species_epithet: 'castanea'}}}],
+        )
+        Subspecies.find(subspecies).name.to_s.should == 'Crematogaster castanea tricolor var. mediorufa'
+      end
     end
 
     it "should import a subspecies that has a species protonym" do
