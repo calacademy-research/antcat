@@ -38,12 +38,15 @@ class Subspecies < SpeciesGroupTaxon
   end
 
   def self.get_currently_subspecies_of_from_history history
+    parent_species = nil
     for item in history or []
       if item[:currently_subspecies_of]
-        return item[:currently_subspecies_of][:species][:species_epithet]
+        parent_species = item[:currently_subspecies_of][:species][:species_epithet]
+      elsif item[:revived_from_synonymy]
+        parent_species = item[:revived_from_synonymy][:subspecies_of].try(:[], :species_epithet)
       end
     end
-    nil
+    parent_species
   end
 
 end
