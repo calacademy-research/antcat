@@ -12,11 +12,11 @@ describe GenusName do
       name.epithet.should == 'Atta'
       name.to_s.should == 'Atta'
       name.to_html.should == '<i>Atta</i>'
-      name.html_epithet.should == '<i>Atta</i>'
+      name.epithet_html.should == '<i>Atta</i>'
     end
     it "should escape bad characters" do
       name = Name.import genus_name: 'A>tta'
-      name.html_epithet.should == '<i>A&gt;tta</i>'
+      name.epithet_html.should == '<i>A&gt;tta</i>'
     end
     it "should reuse names" do
       FactoryGirl.create :name, name: 'Atta'

@@ -12,11 +12,11 @@ describe SubgenusName do
       name.epithet.should == 'Subatta'
       name.to_s.should == 'Atta (Subatta)'
       name.to_html.should == '<i>Atta</i> <i>(Subatta)</i>'
-      name.html_epithet.should == '<i>Subatta</i>'
+      name.epithet_html.should == '<i>Subatta</i>'
     end
     it "should escape bad characters" do
       name = Name.import genus_name: 'Atta', subgenus_epithet: 'Suba>tta'
-      name.html_epithet.should == '<i>Suba&gt;tta</i>'
+      name.epithet_html.should == '<i>Suba&gt;tta</i>'
     end
     it "should reuse names" do
       Name.import genus_name: 'Atta', subgenus_epithet: 'Subatta'

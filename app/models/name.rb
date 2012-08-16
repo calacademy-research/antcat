@@ -22,7 +22,7 @@ class Name < ActiveRecord::Base
   end
 
   def self.make_import_attributes name, data
-    {name: name, html_name: name, epithet: name, html_epithet: name}
+    {name: name, name_html: name, epithet: name, epithet_html: name}
   end
 
   def to_s
@@ -30,13 +30,13 @@ class Name < ActiveRecord::Base
   end
 
   def to_html
-    html_name
+    name_html
   end
 
   def to_html_with_fossil fossil
     string = ''.html_safe
-    string << html_dagger if fossil
-    string << html_name.html_safe
+    string << dagger_html if fossil
+    string << name_html.html_safe
     string
   end
   alias :html_name_with_fossil :to_html_with_fossil
@@ -49,14 +49,14 @@ class Name < ActiveRecord::Base
     EpithetSearchSet.new(epithet).epithets
   end
 
-  def html_epithet_with_fossil fossil
+  def epithet_with_fossil_html fossil
     string = ''.html_safe
-    string << html_dagger if fossil
-    string << html_epithet.html_safe
+    string << dagger_html if fossil
+    string << epithet_html.html_safe
     string
   end
 
-  def html_dagger
+  def dagger_html
     '&dagger;'.html_safe
   end
 

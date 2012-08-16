@@ -94,72 +94,72 @@ FactoryGirl.define do
   ####################################################
   factory :name do
     sequence(:name) {|n| raise; "Name#{n}"}
-    html_name       {name}
+    name_html       {name}
     epithet         {name}
-    html_epithet    {html_name}
+    epithet_html    {name_html}
   end
 
   factory :family_or_subfamily_name do
     name 'FamilyOrSubfamily'
-    html_name       {name}
+    name_html       {name}
     epithet         {name}
-    html_epithet    {html_name}
+    epithet_html    {name_html}
   end
 
   factory :family_name do
     name 'Family'
-    html_name       {name}
+    name_html       {name}
     epithet         {name}
-    html_epithet    {html_name}
+    epithet_html    {name_html}
   end
 
   factory :subfamily_name do
     sequence(:name) {|n| "Subfamily#{n}"}
-    html_name       {name}
+    name_html       {name}
     epithet         {name}
-    html_epithet    {html_name}
+    epithet_html    {name_html}
   end
 
   factory :tribe_name do
     sequence(:name) {|n| "Tribe#{n}"}
-    html_name       {name}
+    name_html       {name}
     epithet         {name}
-    html_epithet    {html_name}
+    epithet_html    {name_html}
   end
 
   factory :subtribe_name do
     sequence(:name) {|n| "Subtribe#{n}"}
-    html_name       {name}
+    name_html       {name}
     epithet         {name}
-    html_epithet    {html_name}
+    epithet_html    {name_html}
   end
 
   factory :genus_name do
     sequence(:name) {|n| "Genus#{n}"}
-    html_name       {"<i>#{name}</i>"}
+    name_html       {"<i>#{name}</i>"}
     epithet         {name}
-    html_epithet    {"<i>#{name}</i>"}
+    epithet_html    {"<i>#{name}</i>"}
   end
 
   factory :subgenus_name do
     sequence(:name) {|n| "Atta (Subgenus#{n})"}
-    html_name       {"<i>Atta</i> <i>(#{name})</i>"}
+    name_html       {"<i>Atta</i> <i>(#{name})</i>"}
     epithet         {name.split(' ').last}
-    html_epithet    {"<i>#{epithet}</i>"}
+    epithet_html    {"<i>#{epithet}</i>"}
   end
 
   factory :species_name do
     sequence(:name) {|n| "Atta species#{n}"}
-    html_name       {"<i>#{name}</i>"}
+    name_html       {"<i>#{name}</i>"}
     epithet         {name.split(' ').last}
-    html_epithet    {"<i>#{epithet}</i>"}
+    epithet_html    {"<i>#{epithet}</i>"}
   end
 
   factory :subspecies_name do
     sequence(:name) {|n| "Atta species subspecies#{n}"}
-    html_name       {"<i>#{name}</i>"}
+    name_html       {"<i>#{name}</i>"}
     epithet         {name.split(' ').last}
-    html_epithet    {"<i>#{epithet}</i>"}
+    epithet_html    {"<i>#{epithet}</i>"}
   end
 
   ####################################################

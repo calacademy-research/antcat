@@ -1,7 +1,7 @@
 class GenusGroupName < Name
 
-  def html_dagger
-    '<i>&dagger;</i>'.html_safe
+  def dagger_html
+    Formatters::Formatter.italicize super
   end
 
 end

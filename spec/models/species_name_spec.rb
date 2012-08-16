@@ -11,12 +11,12 @@ describe SpeciesName do
       name.name.should == 'Atta major'
       name.to_html.should == '<i>Atta</i> <i>major</i>'
       name.epithet.should == 'major'
-      name.html_epithet.should == '<i>major</i>'
+      name.epithet_html.should == '<i>major</i>'
     end
     it "escape bad characters" do
       name = Name.import genus_name: 'Atta', species_epithet: 'm>ajor'
       name = Name.find name
-      name.html_epithet.should == '<i>m&gt;ajor</i>'
+      name.epithet_html.should == '<i>m&gt;ajor</i>'
     end
     it "should reuse names" do
       Name.import genus_name: 'Atta', species_epithet: 'major'

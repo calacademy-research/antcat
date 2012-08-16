@@ -138,7 +138,7 @@ class CatalogController < ApplicationController
       @search_results_message = 'No results found'
     else
       @search_results = @search_results.map do |search_result|
-        {name: search_result.name.html_name, id: search_result.id}
+        {name: search_result.name.name_html, id: search_result.id}
       end
     end
   end
