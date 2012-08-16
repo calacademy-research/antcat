@@ -65,7 +65,18 @@ class Exporters::Antweb::Exporter
   end
 
   def convert_to_antweb_array values
-    [values[:subfamily], values[:tribe], values[:genus], values[:species], nil, nil, boolean_to_antweb(values[:valid?]), boolean_to_antweb(values[:available?]), values[:current_valid_name], nil, boolean_to_antweb(values[:fossil?]), values[:taxonomic_history]]
+    [values[:subfamily],
+     values[:tribe],
+     values[:genus],
+     values[:species],
+     nil,
+     nil,
+     boolean_to_antweb(values[:valid?]),
+     boolean_to_antweb(values[:available?]),
+     values[:current_valid_name],
+     nil,
+     boolean_to_antweb(values[:fossil?]),
+     values[:taxonomic_history]]
   end
 
 end
