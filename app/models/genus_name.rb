@@ -5,12 +5,12 @@ class GenusName < GenusGroupName
   end
 
   def self.make_import_attributes name, data
-    html_name = Formatters::Formatter.italicize name
+    name_html = Formatters::Formatter.italicize name
     {
       name:         name,
-      html_name:    html_name,
+      name_html:    name_html,
       epithet:      name,
-      html_epithet: html_name,
+      epithet_html: name_html,
     }
   end
 

@@ -17,11 +17,11 @@ class SpeciesName < SpeciesGroupName
   def self.make_import_attributes name, data
     attributes = {
       epithet:      name,
-      html_epithet: Formatters::Formatter.italicize(name),
+      epithet_html: Formatters::Formatter.italicize(name),
     }
     parent_name = get_parent_name data
     attributes[:name]      = "#{parent_name} #{attributes[:epithet]}"
-    attributes[:html_name] = "#{parent_name.to_html} #{attributes[:html_epithet]}"
+    attributes[:name_html] = "#{parent_name.to_html} #{attributes[:epithet_html]}"
     attributes
   end
 

@@ -12,7 +12,7 @@ describe SubtribeName do
       name.epithet.should == 'Aneuretina'
       name.to_s.should == 'Aneuretina'
       name.to_html.should == 'Aneuretina'
-      name.html_epithet.should == 'Aneuretina'
+      name.epithet_html.should == 'Aneuretina'
     end
     it "should reuse names" do
       FactoryGirl.create :name, name: 'Dolichoderina'

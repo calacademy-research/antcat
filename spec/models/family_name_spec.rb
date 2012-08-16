@@ -11,7 +11,7 @@ describe FamilyName do
       name.epithet.should == 'Formicidae'
       name.to_s.should == 'Formicidae'
       name.to_html.should == 'Formicidae'
-      name.html_epithet.should == 'Formicidae'
+      name.epithet_html.should == 'Formicidae'
     end
     it "should reuse names" do
       Name.import family_name: 'Formicidae'

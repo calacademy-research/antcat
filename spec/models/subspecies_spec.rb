@@ -40,7 +40,7 @@ describe Subspecies do
             subspecies_epithet: 'refectus',
         }]})
       subspecies = Subspecies.find subspecies
-      subspecies.name.to_s.should == 'Camponotus (Myrmeurynota) gilviventris var. refectus'
+      subspecies.name.to_s.should == 'Camponotus (Myrmeurynota) gilviventris refectus'
       ref = SpeciesGroupForwardRef.first
       ref.fixee.should == subspecies
       ref.genus.should == genus
@@ -61,7 +61,7 @@ describe Subspecies do
           },
           raw_history: [{currently_subspecies_of: {species: {species_epithet: 'hova'}}}]
         )
-        Subspecies.find(subspecies).name.to_s.should == 'Camponotus hova maculatus r. radamae'
+        Subspecies.find(subspecies).name.to_s.should == 'Camponotus hova maculatus radamae'
       end
 
       it "should insert the species from the 'Revived from synonymy as subspecies of' history item" do
@@ -78,7 +78,7 @@ describe Subspecies do
           },
           raw_history: [{revived_from_synonymy: {subspecies_of: {species_epithet: 'castanea'}}}],
         )
-        Subspecies.find(subspecies).name.to_s.should == 'Crematogaster castanea tricolor var. mediorufa'
+        Subspecies.find(subspecies).name.to_s.should == 'Crematogaster castanea tricolor mediorufa'
       end
     end
 

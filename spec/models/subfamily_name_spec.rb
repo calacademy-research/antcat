@@ -11,7 +11,7 @@ describe SubfamilyName do
       name.epithet.should == 'Aneuretinae'
       name.to_s.should == 'Aneuretinae'
       name.to_html.should == 'Aneuretinae'
-      name.html_epithet.should == 'Aneuretinae'
+      name.epithet_html.should == 'Aneuretinae'
     end
     it "should reuse names" do
       FactoryGirl.create :name, name: 'Dolichoderinae'
