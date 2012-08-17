@@ -89,24 +89,6 @@ describe Taxon do
     myanmyrma.should be_incertae_sedis_in('family')
   end
 
-  describe "Current valid name" do
-    it "if it's not a synonym: it's just the name" do
-      taxon = Factory :taxon, name: FactoryGirl.create(:name, name: 'Name')
-      taxon.current_valid_name.should == 'Name'
-    end
-    it "if it is a synonym: the name of the target" do
-      target = create_genus 'Target'
-      taxon = create_synonym target
-      taxon.current_valid_name.should == 'Target'
-    end
-    it "if it is a synonym of a synonym: the name of the target's target" do
-      target_target = create_taxon 'Target_Target'
-      target = create_synonym target_target
-      taxon = create_synonym target
-      taxon.current_valid_name.should == 'Target_Target'
-    end
-  end
-
   describe "Find by name" do
     it "should return nil if nothing matches" do
       Taxon.find_by_name('sdfsdf').should == nil
