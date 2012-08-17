@@ -11,6 +11,7 @@ class GenusName < GenusGroupName
       name_html:    name_html,
       epithet:      name,
       epithet_html: name_html,
+      protonym_html:name_html,
     }
   end
 

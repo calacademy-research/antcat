@@ -22,7 +22,7 @@ class Name < ActiveRecord::Base
   end
 
   def self.make_import_attributes name, data
-    {name: name, name_html: name, epithet: name, epithet_html: name}
+    {name: name, name_html: name, epithet: name, epithet_html: name, protonym_html: name}
   end
 
   def to_s
