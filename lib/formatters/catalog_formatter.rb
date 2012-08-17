@@ -23,9 +23,13 @@ module Formatters::CatalogFormatter
   end
 
   def self.name_label name, fossil, options = {}
-    name = name.html_name_with_fossil fossil
+    name = name.to_html_with_fossil fossil
     name = name.upcase if options[:uppercase]
     name
+  end
+
+  def self.protonym_label protonym
+    protonym.name.protonym_with_fossil_html protonym.fossil
   end
 
   def self.epithet_label name, fossil, options = {}

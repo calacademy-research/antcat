@@ -39,7 +39,6 @@ class Name < ActiveRecord::Base
     string << name_html.html_safe
     string
   end
-  alias :html_name_with_fossil :to_html_with_fossil
 
   def rank
     self.class.name[0, self.class.name.rindex('Name')].underscore
@@ -53,6 +52,17 @@ class Name < ActiveRecord::Base
     string = ''.html_safe
     string << dagger_html if fossil
     string << epithet_html.html_safe
+    string
+  end
+
+  def protonym_with_fossil_html fossil
+    string = ''.html_safe
+    string << dagger_html if fossil
+    if protonym_html.present?
+      string << protonym_html.html_safe
+    else
+      string << name_html.html_safe
+    end
     string
   end
 
