@@ -119,13 +119,7 @@ class Formatters::TaxonFormatter
   end
   
   def protonym_name protonym
-    classes = ['name', 'taxon']
-    classes << 'genus' if protonym.name.rank == 'genus'
-    classes << 'species' if protonym.name.rank == 'species'
-    classes << 'subfamily' if protonym.name.rank == 'family_or_subfamily'
-    content_tag :span, class: classes.sort.join(' ') do
-      Formatters::CatalogFormatter.name_label protonym.name, protonym.fossil?
-    end
+    content_tag :span, Formatters::CatalogFormatter.protonym_label(protonym)
   end
 
   def headline_authorship authorship
