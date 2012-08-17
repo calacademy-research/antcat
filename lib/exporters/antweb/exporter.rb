@@ -73,7 +73,7 @@ class Exporters::Antweb::Exporter
      nil,
      boolean_to_antweb(values[:valid?]),
      boolean_to_antweb(values[:available?]),
-     values[:current_valid_name],
+     nil,
      nil,
      boolean_to_antweb(values[:fossil?]),
      values[:taxonomic_history]]
