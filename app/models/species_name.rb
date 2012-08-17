@@ -20,8 +20,9 @@ class SpeciesName < SpeciesGroupName
       epithet_html: Formatters::Formatter.italicize(name),
     }
     parent_name = get_parent_name data
-    attributes[:name]      = "#{parent_name} #{attributes[:epithet]}"
-    attributes[:name_html] = "#{parent_name.to_html} #{attributes[:epithet_html]}"
+    attributes[:name]          = "#{parent_name} #{attributes[:epithet]}"
+    attributes[:name_html]     = "#{parent_name.to_html} #{attributes[:epithet_html]}"
+    attributes[:protonym_html] = attributes[:name_html]
     attributes
   end
 
