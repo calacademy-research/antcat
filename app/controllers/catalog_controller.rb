@@ -52,7 +52,7 @@ class CatalogController < ApplicationController
 
   ##########################
   def setup_taxon_and_index
-    @taxon = Taxon.find @parameters[:id]
+    @taxon = Taxon.find_by_id(@parameters[:id]) || Family.first
     @subfamilies = ::Subfamily.ordered_by_name
 
     case @taxon
