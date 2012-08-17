@@ -59,13 +59,19 @@ class SpeciesGroupTaxon < Taxon
   def self.get_latest_taxon_class history
     klass = nil
     for item in history
-      klass = Species if item_raised_to_species?(item)
+      if item_raised_to_species?(item) then klass = Species
+      elsif item_revived_as_subspecies?(item) then klass = Subspecies
+      end
     end
     klass
   end
 
   def self.item_raised_to_species? item
     item[:raised_to_species] or item[:matched_text] =~ /Raised to species/
+  end
+
+  def self.item_revived_as_subspecies? item
+    item[:revived_from_synonymy] && item[:revived_from_synonymy][:subspecies_of]
   end
 
   def self.get_taxon_class_from_protonym protonym

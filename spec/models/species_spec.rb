@@ -140,6 +140,20 @@ describe Species do
         )
         taxon.should be_kind_of Species
       end
+
+      it "should import a subspecies that was revived from synonymy as a species" do
+        genus = create_genus 'Crematogaster'
+        taxon = Species.import(
+          genus:                  genus,
+          species_group_epithet:  'tricolor',
+          protonym: {
+            genus_name:           'Crematogaster',
+            species_epithet:      'tricolor',
+          },
+          raw_history: [{revived_from_synonymy: {references:[], subspecies_of: {species_epithet: 'castanea'}}}]
+        )
+        Subspecies.find_by_name('Crematogaster castanea tricolor').should_not be_nil
+      end
     end
 
   end
