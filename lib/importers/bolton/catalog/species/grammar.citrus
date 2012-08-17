@@ -304,12 +304,12 @@ grammar Importers::Bolton::Catalog::Species::Grammar
       (' as subspecies of ' subspecies_of:species_epithet_label)?
       ': ' references) {
       value = references.value
-      value.merge! :status_as_species => true if status && status != ''
-      value.merge! :raised_to_species => true if raised_and_senior and raised_and_senior != ''
-      value.merge! :subspecies_of => subspecies_of.value if subspecies_of
-      value.merge! :senior_synonym_of => senior_synonym_of.value if senior_synonym_of
-      value.merge! :senior_synonym_of => raised_senior_synonym_of.value if raised_senior_synonym_of
-      {:revived_from_synonymy => value}
+      value[:status_as_species] = true if status && status != ''
+      value[:raised_to_species] = true if raised_and_senior and raised_and_senior != ''
+      value[:subspecies_of] = subspecies_of.value if subspecies_of
+      value[:senior_synonym_of] = senior_synonym_of.value if senior_synonym_of
+      value[:senior_synonym_of] = raised_senior_synonym_of.value if raised_senior_synonym_of
+      {revived_from_synonymy: value}
     }
   end
 
