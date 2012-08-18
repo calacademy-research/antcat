@@ -104,20 +104,6 @@ describe SpeciesGroupTaxon do
       ref.genus.should == genus
       ref.epithet.should == 'xerox'
     end
-
-    #it "should recognize a homonym_of and set the status accordingly" do
-      #genus = create_genus 'Acropyga'
-      #senior_homonym = create_species 'Acropyga sylvestrii', genus: genus
-      #junior_homonym = create_species 'Acropyga sylvestrii', genus: genus
-      #history = [{synonym_ofs: [{species_epithet: 'ferox'}]}]
-      #species.set_status_from_history history
-      #species = Species.find species
-      #species.should be_synonym
-      #ref = SpeciesGroupForwardRef.first
-      #ref.fixee.should == species
-      #ref.genus.should == genus
-      #ref.epithet.should == 'ferox'
-    #end
   end
 
 end
