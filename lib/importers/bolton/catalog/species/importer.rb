@@ -143,7 +143,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
 
   def get_file_names _
     super Dir.glob("#{$BOLTON_DATA_DIRECTORY}/NGC-Sp*.htm")
-    #['cr', 'st-tet'].map {|e| "#{$BOLTON_DATA_DIRECTORY}/NGC-Sp#{e}.htm"}
+    #[''].map {|e| "#{$BOLTON_DATA_DIRECTORY}/NGC-Sp#{e}.htm"}
   end
 
 end
