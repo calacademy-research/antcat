@@ -149,6 +149,7 @@ describe Importers::Bolton::Catalog::Species::History do
   end
 
   describe "Species that became valid after being invalid" do
+
     it "should handle becoming a species after being a subspecies and a synonym" do
       @klass.new([
         {synonym_ofs: [{species_epithet:'minutum', junior_or_senior: :junior}]},
@@ -156,6 +157,14 @@ describe Importers::Bolton::Catalog::Species::History do
         {status_as_species: {references: []}},
       ]).status.should == 'valid'
     end
+
+    it "should handle being revived and raised" do
+      @klass.new([
+        {subspecies_ofs: [{species: {species_epithet: 'minutum'}}]},
+        {revived_from_synonymy: {raised_to_species: true}},
+      ]).status.should == 'valid'
+    end
+
   end
 
 end
