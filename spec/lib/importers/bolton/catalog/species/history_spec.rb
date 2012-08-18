@@ -148,4 +148,14 @@ describe Importers::Bolton::Catalog::Species::History do
     @klass.new([{text: [], matched_text: '[Junior secondary homonym of <i>Cerapachys cooperi</i> Arnold, 1915: 14.]'}]).status.should == 'homonym'
   end
 
+  describe "Species that became valid after being invalid" do
+    it "should handle becoming a species after being a subspecies and a synonym" do
+      @klass.new([
+        {synonym_ofs: [{species_epithet:'minutum', junior_or_senior: :junior}]},
+        {subspecies_ofs: [{species: {species_epithet: 'minutum'}}]},
+        {status_as_species: {references: []}},
+      ]).status.should == 'valid'
+    end
+  end
+
 end
