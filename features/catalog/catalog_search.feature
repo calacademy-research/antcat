@@ -15,9 +15,9 @@ Feature: Searching the catalog
 
   Scenario: Searching when no results
     When I go to the catalog
-    And I fill in the search box with "asdfjl;jsdf"
+    And I fill in the search box with "zxxz"
     And I press "Go" by the search box
-    Then I should see "No results found"
+    Then I should see "No results found for name beginning with 'zxxz'" in the search results
 
   Scenario: Searching when only one result
     When I go to the catalog
