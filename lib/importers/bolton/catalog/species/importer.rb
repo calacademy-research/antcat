@@ -112,7 +112,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     set_status_manually 'Temnothorax manni', 'homonym', [1, 2]
     set_status_manually 'Tetramorium pauper', 'homonym', 1
     set_status_manually 'Camponotus abdominalis', 'valid'
-    set_status_manually 'Camponotus (Camponotus) herculeanus var. rubens', 'valid'
+    set_status_manually 'Camponotus (Camponotus) herculeanus rubens', 'valid'
     set_status_manually 'Camponotus terebrans', 'valid'
     set_status_manually 'Ectatomma permagnum', 'valid'
     set_status_manually 'Attaichnus kuenzelii', 'ichnotaxon'
