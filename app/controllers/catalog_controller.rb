@@ -133,9 +133,10 @@ class CatalogController < ApplicationController
   ##########################
   def do_search
     return unless @parameters[:q].present?
-    @search_results = Taxon.find_name @parameters[:q], translate_search_selector_value_to_english(@parameters[:st])
+    search_selector_value = translate_search_selector_value_to_english @parameters[:st]
+    @search_results = Taxon.find_name @parameters[:q], search_selector_value
     if @search_results.blank?
-      @search_results_message = 'No results found'
+      @search_results_message = "No results found for name #{search_selector_value} '#{@parameters[:q]}'"
     else
       @search_results = @search_results.map do |search_result|
         {name: search_result.name.name_html, id: search_result.id}
