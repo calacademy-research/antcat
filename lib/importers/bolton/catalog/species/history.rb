@@ -1,11 +1,12 @@
 # coding: UTF-8
 class Importers::Bolton::Catalog::Species::History
-  attr_reader :status, :epithets
+  attr_reader :status, :epithets, :taxon_subclass
 
   def initialize history
     @history = history
     @index = 0
     @status = 'valid'
+    determine_taxon_subclass
     determine_status
   end
 
@@ -22,6 +23,11 @@ class Importers::Bolton::Catalog::Species::History
       check_nomen_nudum or
       check_excluded
     end
+  end
+
+  def determine_taxon_subclass
+    return unless @history.present?
+    get_current_taxon_class or get_latest_taxon_class
   end
 
   def check_definitive_status_indicators
@@ -158,6 +164,30 @@ class Importers::Bolton::Catalog::Species::History
 
   def skip_rest_of_history
     @index = @history.size
+  end
+
+  def get_current_taxon_class
+    for item in @history
+      @taxon_subclass = Subspecies and return if item[:currently_subspecies_of]
+      @taxon_subclass = Species and return if item[:subspecies]
+    end
+    nil
+  end
+
+  def get_latest_taxon_class
+    for item in @history
+      if item_raised_to_species?(item) then @taxon_subclass = Species
+      elsif item_revived_as_subspecies?(item) then @taxon_subclass = Subspecies
+      end
+    end
+  end
+
+  def item_raised_to_species? item
+    item[:raised_to_species] or item[:matched_text] =~ /Raised to species/
+  end
+
+  def item_revived_as_subspecies? item
+    item[:revived_from_synonymy] && item[:revived_from_synonymy][:subspecies_of]
   end
 
 end

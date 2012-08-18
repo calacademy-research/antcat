@@ -42,40 +42,13 @@ class SpeciesGroupTaxon < Taxon
     get_taxon_class_from_protonym(protonym)
   end
 
-  def self.get_taxon_class_from_history history
-    return unless history.present?
-    get_current_taxon_class(history) or
-    get_latest_taxon_class(history)
-  end
-
-  def self.get_current_taxon_class history
-    for item in history
-      return Subspecies if item[:currently_subspecies_of]
-      return Species if item[:subspecies]
-    end
-    nil
-  end
-
-  def self.get_latest_taxon_class history
-    klass = nil
-    for item in history
-      if item_raised_to_species?(item) then klass = Species
-      elsif item_revived_as_subspecies?(item) then klass = Subspecies
-      end
-    end
-    klass
-  end
-
-  def self.item_raised_to_species? item
-    item[:raised_to_species] or item[:matched_text] =~ /Raised to species/
-  end
-
-  def self.item_revived_as_subspecies? item
-    item[:revived_from_synonymy] && item[:revived_from_synonymy][:subspecies_of]
-  end
-
   def self.get_taxon_class_from_protonym protonym
     protonym.name.kind_of?(SubspeciesName) ? Subspecies : Species
+  end
+
+  def self.get_taxon_class_from_history history
+    history = Importers::Bolton::Catalog::Species::History.new history
+    history.taxon_subclass
   end
 
   def self.import_data protonym, data

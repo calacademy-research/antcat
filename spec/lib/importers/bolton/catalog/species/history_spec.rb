@@ -31,7 +31,7 @@ describe Importers::Bolton::Catalog::Species::History do
     it "should overrule synonymy with revival from synonymy" do
       @klass.new([
         {synonym_ofs: [{species_epithet: 'ferox'}]},
-        {revived_from_synonymy: true},
+        {revived_from_synonymy: {}},
       ]).status.should == 'valid'
     end
     it "should overrule synonymy with raisal to species with revival from synonymy" do
