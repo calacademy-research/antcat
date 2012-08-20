@@ -91,7 +91,7 @@ class Vlad
         UnmissingReference,
         MissingReference,
 
-        SpeciesGroupForwardRef,
+        ForwardRef,
         Synonym,
         Taxon,
         TaxonomicHistoryItem,

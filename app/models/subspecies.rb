@@ -29,7 +29,7 @@ class Subspecies < SpeciesGroupTaxon
   def create_forward_ref_to_parent_species data
     epithet = self.class.get_currently_subspecies_of_from_history data[:raw_history]
     epithet ||= data[:protonym][:species_epithet]
-    SpeciesGroupForwardRef.create!(
+    ForwardRefToParentSpecies.create!(
       fixee:            self,
       fixee_attribute: 'species',
       genus:            data[:genus],

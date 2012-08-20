@@ -94,12 +94,12 @@ describe SpeciesGroupTaxon do
       species.set_status_from_history history
       species = Species.find species
       species.should be_synonym
-      ref = SpeciesGroupForwardRef.all.first
+      ref = ForwardRefToSeniorSynonym.all.first
       ref.fixee.junior_synonym.should == species
       ref.fixee_attribute.should == 'senior_synonym'
       ref.genus.should == genus
       ref.epithet.should == 'ferox'
-      ref = SpeciesGroupForwardRef.all.second
+      ref = ForwardRefToSeniorSynonym.all.second
       ref.fixee.junior_synonym.should == species
       ref.genus.should == genus
       ref.epithet.should == 'xerox'

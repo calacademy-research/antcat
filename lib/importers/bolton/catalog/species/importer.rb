@@ -4,7 +4,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
   def initialize options = {}
     Species.delete_all
     Subspecies.delete_all
-    SpeciesGroupForwardRef.delete_all
+    ForwardRef.delete_all
 
     @options = options.reverse_merge show_progress: false
     @continue_after_parse_error = true
@@ -92,7 +92,8 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
 
   def finish_importing
     Progress.print 'Fixing up names...'
-    SpeciesGroupForwardRef.fixup
+    lll{%q{ForwardRef.all}}
+    ForwardRef.fixup
     set_status_manually 'Camponotus abdominalis', 'homonym'
     set_status_manually 'Camponotus (Camponotus) herculeanus var. rubens', 'synonym'
     set_synonym 'Camponotus (Camponotus) herculeanus rubens', 'Camponotus novaeboracensis'

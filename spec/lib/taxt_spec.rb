@@ -42,6 +42,16 @@ describe Taxt do
       Taxt.encode_taxon_name('Dolichoderinae', :family_or_subfamily).should == "Dolichoderinae"
     end
 
+    describe "Genus name" do
+      it "should create a ForwardRef from the item to the genus" do
+        taxt = Taxt.encode_taxon_name 'Atta', :genus_name
+        forward_ref_id = taxt.match(/^{tax (\d+)}$/)[1]
+        forward_ref_id.should_not be_blank
+        forward_ref.name.to_s.should == 'Atta'
+        forward_ref.name.to_s.should == 'Atta'
+      end
+    end
+
   end
 
   describe "Editable reference tag" do
