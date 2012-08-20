@@ -96,6 +96,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     set_status_manually 'Camponotus abdominalis', 'homonym'
     set_status_manually 'Camponotus (Camponotus) herculeanus var. rubens', 'synonym'
     set_synonym 'Camponotus (Camponotus) herculeanus rubens', 'Camponotus novaeboracensis'
+    set_status_manually 'Camponotus pallens', 'homonym', 1
     Progress.puts
   end
 
