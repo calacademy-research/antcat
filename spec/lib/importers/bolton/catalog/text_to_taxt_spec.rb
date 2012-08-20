@@ -133,7 +133,9 @@ describe Importers::Bolton::Catalog::TextToTaxt do
   describe "Taxon names" do
     [:order_name, :family_or_subfamily_name, :tribe_name, :subtribe_name].each do |key|
       it "should handle #{key}" do
-        @converter.convert([key => 'Formicariae']).should == "Formicariae"
+        taxt = @converter.convert([key => 'Formicariae'])
+        forward_ref_id = taxt.match(/{(\d+)}/)[1]
+        TaxtTaxon
       end
     end
     [:collective_group_name, :genus_name].each do |key|
@@ -189,16 +191,16 @@ describe Importers::Bolton::Catalog::TextToTaxt do
   describe "Taxon names with authorship" do
     it "should encode the authorship, too" do
       reference = FactoryGirl.create :article_reference, bolton_key_cache: 'Gray 1841'
+      genus = create_genus 'Diabolus'
       @converter.convert([{
         genus_name: "Diabolus",
         authorship: 
           [{author_names: ["Gray, J.E."],
             year: "1841",
             pages: "400",
-            notes: [[{order_name: "Mammalia"}]],
             matched_text: "Gray, J.E. 1841: 400 (Mammalia)"}],
         delimiter: "."}]).should ==
-          "<i>Diabolus</i> {ref #{reference.id}}: 400 (Mammalia)."
+          "{tax #{genus.id}} {ref #{reference.id}}: 400."
     end
   end
 

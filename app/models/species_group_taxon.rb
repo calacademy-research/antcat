@@ -100,7 +100,7 @@ class SpeciesGroupTaxon < Taxon
   def create_forward_refs_to_senior_synonyms epithets
     for epithet in epithets
       synonym = Synonym.create! junior_synonym: self
-      SpeciesGroupForwardRef.create!(
+      ForwardRefToSeniorSynonym.create!(
         fixee:            synonym,
         fixee_attribute: 'senior_synonym',
         genus:            genus,

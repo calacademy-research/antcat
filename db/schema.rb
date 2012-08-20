@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120817191252) do
+ActiveRecord::Schema.define(:version => 20120820190527) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -72,6 +72,17 @@ ActiveRecord::Schema.define(:version => 20120817191252) do
   end
 
   add_index "citations", ["reference_id"], :name => "index_authorships_on_reference_id"
+
+  create_table "forward_refs", :force => true do |t|
+    t.integer  "fixee_id"
+    t.string   "fixee_attribute"
+    t.integer  "genus_id"
+    t.string   "epithet"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "fixee_type"
+    t.string   "type"
+  end
 
   create_table "journals", :force => true do |t|
     t.string   "name"
@@ -194,16 +205,6 @@ ActiveRecord::Schema.define(:version => 20120817191252) do
   add_index "references", ["nested_reference_id"], :name => "references_nested_reference_id_idx"
   add_index "references", ["publisher_id"], :name => "references_publisher_id_idx"
   add_index "references", ["updated_at"], :name => "references_updated_at_idx"
-
-  create_table "species_group_forward_refs", :force => true do |t|
-    t.integer  "fixee_id"
-    t.string   "fixee_attribute"
-    t.integer  "genus_id"
-    t.string   "epithet"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "fixee_type"
-  end
 
   create_table "synonyms", :force => true do |t|
     t.integer  "senior_synonym_id"

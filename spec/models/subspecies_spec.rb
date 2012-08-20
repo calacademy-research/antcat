@@ -41,7 +41,7 @@ describe Subspecies do
         }]})
       subspecies = Subspecies.find subspecies
       subspecies.name.to_s.should == 'Camponotus (Myrmeurynota) gilviventris refectus'
-      ref = SpeciesGroupForwardRef.first
+      ref = ForwardRefToParentSpecies.first
       ref.fixee.should == subspecies
       ref.genus.should == genus
       ref.epithet.should == 'gilviventris'

@@ -60,6 +60,11 @@ module Taxt
     "{ref #{reference.id}}"
   end
 
+  def self.encode_genus_name name
+    genus = Genus.find_by_name name
+    "{tax #{genus.id}}"
+  end
+
   def self.encode_taxon_name name, rank, data = {}
     name = name.dup
     if data[:suborder_name]

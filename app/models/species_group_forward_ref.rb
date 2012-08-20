@@ -1,40 +1,7 @@
 # coding: UTF-8
-class SpeciesGroupForwardRef < ActiveRecord::Base
-  belongs_to :fixee, polymorphic: true; validates :fixee, presence: true
-  validates  :fixee_attribute, presence: true
+class SpeciesGroupForwardRef < ForwardRef
+
   belongs_to :genus; validates :genus, presence: true
   validates  :epithet, presence: true 
-
-  def self.fixup
-    all.each &:fixup
-  end
-
-  def fixup
-    specieses = SpeciesGroupTaxon.find_validest_for_epithet_in_genus epithet, genus
-    if specieses.blank?
-      unless fixee.kind_of? Subspecies or we_dont_care_about? epithet, genus
-        Progress.error(
-          "Couldn't find species #{epithet} in genus #{genus.name} when fixing up " +
-          if fixee.kind_of? Synonym
-            "senior synonym of #{fixee.junior_synonym.inspect}"
-          else
-            "species for #{fixee.inspect}"
-          end
-        )
-      end
-    elsif specieses.count > 1
-      Progress.error "Found multiple valid targets among #{specieses.map(&:name).map(&:to_s).join(', ')}"
-    else
-      species = specieses.first
-      unless fixee.kind_of? Synonym
-        species = species.species if species.respond_to? :species
-      end
-      fixee.update_attributes fixee_attribute.to_sym => species
-    end
-  end
-
-  def we_dont_care_about? genus, epithet
-    genus == 'Leptothorax'
-  end
 
 end
