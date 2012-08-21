@@ -11,44 +11,51 @@ describe Taxt do
       reference = FactoryGirl.create :book_reference
       Taxt.encode_reference(reference).should == "{ref #{reference.id}}"
     end
-    it "should put italics back around taxon names" do
-      Taxt.encode_taxon_name('Atta', :genus).should == "<i>Atta</i>"
-    end
-    it "should handle a species name" do
-      Taxt.encode_taxon_name('Eoformica', :genus, species_epithet: 'eofornica').should == "<i>Eoformica eofornica</i>"
-    end
-    it "should handle a species name with subgenus" do
-      Taxt.encode_taxon_name("Formica", :genus, subgenus_epithet:"Hypochira", species_epithet:"subspinosa").should == "<i>Formica (Hypochira) subspinosa</i>"
-    end
-    it "should handle a genus abbreviation + subgenus epithet" do
-      Taxt.encode_taxon_name('', nil, genus_abbreviation: 'C.', subgenus_epithet:"Hypochira").should == "<i>C. (Hypochira)</i>"
-    end
-    it "should handle a genus name + subgenus epithet" do
-      Taxt.encode_taxon_name('Acanthostichus', :genus, subgenus_epithet:"Ctenopyga").should == "<i>Acanthostichus (Ctenopyga)</i>"
-    end
-    it "should handle a genus abbreviation + species epithet" do
-      Taxt.encode_taxon_name('', nil, genus_abbreviation: 'C.', species_epithet:"major").should == "<i>C. major</i>"
-    end
-    it "should handle a lone species epithet" do
-      Taxt.encode_taxon_name('brunneus', :species_group_epithet, species_group_epithet: 'brunneus').should == "<i>brunneus</i>"
-    end
-    it "should put a question mark after questionable names" do
-      Taxt.encode_taxon_name('Atta', :genus, :questionable => true).should == "<i>Atta?</i>"
-    end
-    it "should put a dagger in front" do
-      Taxt.encode_taxon_name('Atta', :genus, :fossil => true).should == "<i>&dagger;Atta</i>"
-    end
-    it "should not freak at a family_or_subfamily" do
-      Taxt.encode_taxon_name('Dolichoderinae', :family_or_subfamily).should == "Dolichoderinae"
-    end
 
-    describe "Genus name" do
-      it "should find or create the Name" do
-        atta = create_genus 'Atta'
-        taxt = Taxt.encode_genus_name 'Atta'
-        name_id = taxt.match(/^{nam (\d+)}$/)[1]
-        Name.find(name_id).name.to_s.should == 'Atta'
+    describe "Encoding a taxon name" do
+      it "should put italics back around taxon names" do
+        Taxt.encode_taxon_name('Atta', :genus).should == "<i>Atta</i>"
       end
+      it "should handle a genus name" do
+        Taxt.encode_taxon_name('Atta', :genus).should == "{nam #{Name.find_by_name('Atta').id}}"
+      end
+      it "should handle a species name" do
+        Taxt.encode_taxon_name('Eoformica', :genus, species_epithet: 'eofornica').should == "<i>Eoformica eofornica</i>"
+      end
+      it "should handle a species name with subgenus" do
+        Taxt.encode_taxon_name("Formica", :genus, subgenus_epithet:"Hypochira", species_epithet:"subspinosa").should == "<i>Formica (Hypochira) subspinosa</i>"
+      end
+      it "should handle a genus abbreviation + subgenus epithet" do
+        Taxt.encode_taxon_name('', nil, genus_abbreviation: 'C.', subgenus_epithet:"Hypochira").should == "<i>C. (Hypochira)</i>"
+      end
+      it "should handle a genus name + subgenus epithet" do
+        Taxt.encode_taxon_name('Acanthostichus', :genus, subgenus_epithet:"Ctenopyga").should == "<i>Acanthostichus (Ctenopyga)</i>"
+      end
+      it "should handle a genus abbreviation + species epithet" do
+        Taxt.encode_taxon_name('', nil, genus_abbreviation: 'C.', species_epithet:"major").should == "<i>C. major</i>"
+      end
+      it "should handle a lone species epithet" do
+        Taxt.encode_taxon_name('brunneus', :species_group_epithet, species_group_epithet: 'brunneus').should == "<i>brunneus</i>"
+      end
+      it "should put a question mark after questionable names" do
+        Taxt.encode_taxon_name('Atta', :genus, questionable: true).should == "{nam #{Name.find_by_name('Atta').id}}"
+      end
+      it "should put a dagger in front" do
+        Taxt.encode_taxon_name('Atta', :genus, :fossil => true).should == "<i>&dagger;Atta</i>"
+      end
+      it "should not freak at a family_or_subfamily" do
+        Taxt.encode_taxon_name('Dolichoderinae', :family_or_subfamily).should == "Dolichoderinae"
+      end
+
+      describe "Genus name" do
+        it "should find or create a Name tag in the taxt" do
+          atta = create_genus 'Atta'
+          taxt = Taxt.encode_genus_name 'Atta'
+          name_id = taxt.match(/^{nam (\d+)}$/)[1]
+          Name.find(name_id).name.to_s.should == 'Atta'
+        end
+      end
+
     end
 
   end
@@ -110,23 +117,32 @@ describe Taxt do
     it "should handle nil" do
       Taxt.to_string(nil, nil).should == ''
     end
-    it "should format a ref" do
-      reference = FactoryGirl.create :article_reference
-      Reference.should_receive(:find).with(reference.id.to_s).and_return reference
-      key_stub = stub
-      reference.should_receive(:key).and_return key_stub
-      key_stub.should_receive(:to_link).and_return('foo')
-      Taxt.to_string("{ref #{reference.id}}", nil).should == 'foo'
+    describe "References" do
+      it "should format a ref" do
+        reference = FactoryGirl.create :article_reference
+        Reference.should_receive(:find).with(reference.id.to_s).and_return reference
+        key_stub = stub
+        reference.should_receive(:key).and_return key_stub
+        key_stub.should_receive(:to_link).and_return('foo')
+        Taxt.to_string("{ref #{reference.id}}", nil).should == 'foo'
+      end
+      it "should not freak if the ref is malformed" do
+        Taxt.to_string("{ref sdf}", nil).should == '{ref sdf}'
+      end
+      it "should not freak if the ref points to a reference that doesn't exist" do
+        Taxt.to_string("{ref 12345}", nil).should == '{ref 12345}'
+      end
+      it "should handle a MissingReference" do
+        reference = FactoryGirl.create :missing_reference, :citation => 'Latreille, 1809'
+        Taxt.to_string("{ref #{reference.id}}", nil).should == 'Latreille, 1809'
+      end
     end
-    it "should not freak if the ref is malformed" do
-      Taxt.to_string("{ref sdf}", nil).should == '{ref sdf}'
-    end
-    it "should not freak if the ref points to a reference that doesn't exist" do
-      Taxt.to_string("{ref 12345}", nil).should == '{ref 12345}'
-    end
-    it "should handle a MissingReference" do
-      reference = FactoryGirl.create :missing_reference, :citation => 'Latreille, 1809'
-      Taxt.to_string("{ref #{reference.id}}", nil).should == 'Latreille, 1809'
+
+    describe "Taxon" do
+      it "should format a taxon" do
+        genus = create_genus 'Atta'
+        Taxt.to_string("{tax #{genus.id}}").should == '<i>Atta</i>'
+      end
     end
   end
 

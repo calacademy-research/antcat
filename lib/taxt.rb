@@ -46,8 +46,10 @@ module Taxt
 
   def self.decode taxt, user = nil, options = {}
     return '' unless taxt
-    taxt.gsub /{ref (\d+)}/ do |ref|
+    taxt.gsub(/{ref (\d+)}/) do |ref|
       Formatters::ReferenceFormatter.format_inline_citation(Reference.find($1), user, options) rescue ref
+    end.gsub(/{tax (\d+)}/) do |tax|
+      Formatters::CatalogFormatter.format_taxon(Taxon.find($1)) rescue tax
     end.html_safe
   end
 
@@ -76,7 +78,7 @@ module Taxt
     end
 
     if rank == :genus
-      return encode_genus_name name, data[:fixee]
+      return encode_genus_name name
     end
 
     if data[:genus_abbreviation]
