@@ -61,8 +61,8 @@ module Taxt
   end
 
   def self.encode_genus_name name
-    genus = Genus.find_by_name name
-    "{tax #{genus.id}}"
+    name = Name.import genus_name: name
+    "{nam #{name.id}}"
   end
 
   def self.encode_taxon_name name, rank, data = {}
@@ -73,6 +73,10 @@ module Taxt
 
     if rank == :species_group_epithet
       return Formatters::Formatter.italicize Formatters::CatalogFormatter.format_fossil name, data[:fossil]
+    end
+
+    if rank == :genus
+      return encode_genus_name name, data[:fixee]
     end
 
     if data[:genus_abbreviation]
