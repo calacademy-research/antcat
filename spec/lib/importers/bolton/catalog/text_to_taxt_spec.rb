@@ -131,11 +131,26 @@ describe Importers::Bolton::Catalog::TextToTaxt do
   end
 
   describe "Taxon names" do
+    describe "Importing" do
+      it "should convert the text to taxt, and update the fixee's attribute_name" do
+        texts = [{text: [{genus_name:"Calyptites"}]}]
+        @converter.import texts, :taxt do
+          item = TaxonomicHistoryItem.create! taxt: 'dummy'
+        end
+        TaxonomicHistoryItem.first.taxt.should == "{fwd #{ForwardRefFromTaxt.first.id}}"
+      end
+    end
+    it "should create a name and a forward reference" do
+      fixee = FactoryGirl.create :taxonomic_history_item
+      taxt = @converter.forward_reference_to_taxon_name fixee, genus_name: 'Calyptites'
+      forward_ref = ForwardRefFromTaxt.first
+      taxt.should == "{fwd #{ForwardRefFromTaxt.first.id}}"
+      forward_ref.name.to_s.should == 'Calyptites'
+      forward_ref.fixee.should == fixee
+    end
     [:order_name, :family_or_subfamily_name, :tribe_name, :subtribe_name].each do |key|
       it "should handle #{key}" do
-        taxt = @converter.convert([key => 'Formicariae'])
-        forward_ref_id = taxt.match(/{(\d+)}/)[1]
-        TaxtTaxon
+        @converter.convert([key => 'Formicariae']).should == "Formicariae"
       end
     end
     [:collective_group_name, :genus_name].each do |key|
