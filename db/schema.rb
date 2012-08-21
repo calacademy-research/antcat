@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120820190527) do
+ActiveRecord::Schema.define(:version => 20120821010046) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -82,6 +82,7 @@ ActiveRecord::Schema.define(:version => 20120820190527) do
     t.datetime "updated_at"
     t.string   "fixee_type"
     t.string   "type"
+    t.integer  "name_id"
   end
 
   create_table "journals", :force => true do |t|
