@@ -43,12 +43,11 @@ describe Taxt do
     end
 
     describe "Genus name" do
-      it "should create a ForwardRef from the item to the genus" do
-        taxt = Taxt.encode_taxon_name 'Atta', :genus_name
-        forward_ref_id = taxt.match(/^{tax (\d+)}$/)[1]
-        forward_ref_id.should_not be_blank
-        forward_ref.name.to_s.should == 'Atta'
-        forward_ref.name.to_s.should == 'Atta'
+      it "should find or create the Name" do
+        atta = create_genus 'Atta'
+        taxt = Taxt.encode_genus_name 'Atta'
+        name_id = taxt.match(/^{nam (\d+)}$/)[1]
+        Name.find(name_id).name.to_s.should == 'Atta'
       end
     end
 
