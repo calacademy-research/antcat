@@ -92,7 +92,6 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
 
   def finish_importing
     Progress.print 'Fixing up names...'
-    lll{%q{ForwardRef.all}}
     ForwardRef.fixup
     set_status_manually 'Camponotus abdominalis', 'homonym'
     set_status_manually 'Camponotus (Camponotus) herculeanus var. rubens', 'synonym'
