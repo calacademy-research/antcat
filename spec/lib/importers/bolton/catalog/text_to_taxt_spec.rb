@@ -140,13 +140,10 @@ describe Importers::Bolton::Catalog::TextToTaxt do
         TaxonomicHistoryItem.first.taxt.should == "{fwd #{ForwardRefFromTaxt.first.id}}"
       end
     end
-    it "should create a name and a forward reference" do
-      fixee = FactoryGirl.create :taxonomic_history_item
-      taxt = @converter.forward_reference_to_taxon_name fixee, genus_name: 'Calyptites'
-      forward_ref = ForwardRefFromTaxt.first
-      taxt.should == "{fwd #{ForwardRefFromTaxt.first.id}}"
-      forward_ref.name.to_s.should == 'Calyptites'
-      forward_ref.fixee.should == fixee
+    it "should create a name" do
+      taxt = @converter.taxon_name genus_name: 'Calyptites'
+      name = Name.find_by_name 'Calyptites'
+      taxt.should == "{nam #{name.id}}"
     end
     [:order_name, :family_or_subfamily_name, :tribe_name, :subtribe_name].each do |key|
       it "should handle #{key}" do
@@ -216,6 +213,48 @@ describe Importers::Bolton::Catalog::TextToTaxt do
             matched_text: "Gray, J.E. 1841: 400 (Mammalia)"}],
         delimiter: "."}]).should ==
           "{tax #{genus.id}} {ref #{reference.id}}: 400."
+    end
+  end
+
+  describe "Fixing up the {nam} tags to {tax} tags, where possible" do
+
+    describe "Fixing up a lot" do
+      it "should change the record" do
+        taxon = create_genus
+        name = taxon.name
+        history_item = FactoryGirl.create :taxonomic_history_item, taxt: "{nam #{name.id}}"
+        @converter.replace_names_with_taxa
+        history_item.reload.taxt.should == "{tax #{taxon.id}}"
+      end
+    end
+
+    describe "Fixing up one" do
+      it "handle if the field is empty" do
+        @converter.replace_names_with_taxa_in_field(nil).should == nil
+      end
+      it "should be OK if there are no tags" do
+        @converter.replace_names_with_taxa_in_field('text').should == 'text'
+      end
+      it "should find the taxon matching the name" do
+        taxon = create_genus
+        name = taxon.name
+        @converter.replace_names_with_taxa_in_field("{nam #{name.id}}").should == "{tax #{taxon.id}}"
+      end
+      it "should leave it as a {nam} if it can't be found" do
+        name = create_name 'Eciton'
+        @converter.replace_names_with_taxa_in_field("{nam #{name.id}}").should == "{nam #{name.id}}"
+      end
+      it "should log an error if it can't be found" do
+        name = create_name 'Eciton'
+        Progress.should_receive :error
+        @converter.replace_names_with_taxa_in_field "{nam #{name.id}}"
+      end
+      it "should log an error if more than one is found" do
+        name = create_name 'Atta'
+        2.times {|i| create_genus name: name}
+        Progress.should_receive :error
+        @converter.replace_names_with_taxa_in_field "{nam #{name.id}}"
+      end
     end
   end
 

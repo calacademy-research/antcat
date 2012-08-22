@@ -1,34 +1,28 @@
 module Importers::Bolton::Catalog::TextToTaxt
 
-  def self.import texts, attribute_name, &block
-    object = yield
-    taxt = convert object, texts
-    object.update_attribute attribute_name, taxt
-  end
-
-  def self.convert fixee, texts
+  def self.convert texts
     (texts || []).inject('') do |taxt, item|
-      taxt << convert_text_to_taxt(fixee, item)
+      taxt << convert_text_to_taxt(item)
     end
   end
 
-  def self.convert_text_to_taxt fixee, item
-    nested(fixee, item) or
+  def self.convert_text_to_taxt item
+    nested(item) or
     phrase(item)  or
     citation(item)  or
-    forward_reference_to_taxon_name(fixee, item)  or
+    taxon_name(item)  or
     brackets(item) or
     unparseable(item) or
     delimiter(item) or
     raise "Couldn't convert #{item} to taxt"
   end
 
-  def self.nested fixee, item
+  def self.nested item
     return unless item[:text]
     prefix = item.delete :text_prefix
     suffix = item.delete :text_suffix
     delimiter = item[:text].delete :delimiter
-    taxt = convert fixee, item[:text]
+    taxt = convert item[:text]
     add_delimiter taxt, item
     taxt = prefix + taxt if prefix
     taxt = taxt + suffix if suffix
@@ -52,28 +46,19 @@ module Importers::Bolton::Catalog::TextToTaxt
     add_delimiter taxt, item
   end
 
-  def self.forward_reference_to_taxon_name fixee, item
+  def self.taxon_name item
     keys = [:order_name, :family_name, :family_or_subfamily_name, :tribe_name, :subtribe_name, :collective_group_name, :genus_name, :subgenus_epithet, :genus_abbreviation, :subgenus_name, :species_name, :subspecies_name, :species_epithet, :species_group_epithet]
     key, name = find_one_of(keys, item)
     return unless key
     key = key.to_s.gsub(/_name$/, '').to_sym
 
     taxt = Taxt.encode_taxon_name name, key, item
-    taxt = create_forward_references_to_taxon_names fixee, taxt
 
     authorship = item[:authorship]
     taxt << ' ' << citation(item[:authorship].first) if authorship
     taxt << ': ' << item[:pages] if item[:pages]
     taxt << convert(items[:notes].first) if item[:notes]
     add_delimiter taxt, item
-  end
-
-  def self.create_forward_references_to_taxon_names fixee, taxt
-    taxt = taxt.gsub /{nam (\d+)}/ do |match|
-      name_id = $1
-      forward_ref = ForwardRefFromTaxt.create! fixee: fixee, fixee_attribute: 'taxt', name_id: name_id
-      "{fwd #{forward_ref.id}}"
-    end
   end
 
   def self.brackets item
@@ -113,6 +98,37 @@ module Importers::Bolton::Catalog::TextToTaxt
   def self.find_one_of keys, item
     key = keys.find {|key| item[key]} or return
     return key, item[key]
+  end
+
+  def self.replace_names_with_taxa
+    [[Taxon,                [:type_taxt, :headline_notes_taxt, :genus_species_header_note]],
+     [ReferenceSection,     [:title, :subtitle, :references]],
+     [TaxonomicHistoryItem, [:taxt]],
+    ].each do |klass, fields|
+      for record in klass.send :all
+        for field in fields
+          record[field] = replace_names_with_taxa_in_field record[field] if record[field]
+        end
+        record.save!
+      end
+    end
+  end
+
+  def self.replace_names_with_taxa_in_field taxt
+    return unless taxt
+    taxt.gsub /{nam (\d+)}/ do |match|
+      taxa = Taxon.where(name_id: $1)
+
+      if taxa.blank?
+        Progress.error "Couldn't find name #{name}"
+        match
+      elsif taxa.count > 1
+        Progress.error "Found multiple valid targets among #{taxa.map(&:name).map(&:to_s).join(', ')}"
+        match
+      else
+        "{tax #{taxa.first.id}}"
+      end
+    end
   end
 
 end
