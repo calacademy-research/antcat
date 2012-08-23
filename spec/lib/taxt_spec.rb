@@ -130,7 +130,7 @@ describe Taxt do
 
   describe "String output" do
     it "should put italics back around taxon names" do
-      Taxt.encode_taxon_name('Atta', :genus).should == "<i>Atta</i>"
+      Taxt.encode_taxon_name(genus_name: 'Atta').should == "<i>Atta</i>"
     end
     it "should leave alone a string without fields" do
       string = Taxt.to_string 'foo', nil
