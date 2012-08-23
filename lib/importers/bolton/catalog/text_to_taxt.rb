@@ -52,7 +52,7 @@ module Importers::Bolton::Catalog::TextToTaxt
     return unless key
     key = key.to_s.gsub(/_name$/, '').to_sym
 
-    taxt = Taxt.encode_taxon_name name, key, item
+    taxt = Taxt.encode_taxon_name item
 
     authorship = item[:authorship]
     taxt << ' ' << citation(item[:authorship].first) if authorship
