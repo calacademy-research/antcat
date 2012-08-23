@@ -48,8 +48,10 @@ module Taxt
     return '' unless taxt
     taxt.gsub(/{ref (\d+)}/) do |ref|
       Formatters::ReferenceFormatter.format_inline_citation(Reference.find($1), user, options) rescue ref
+    end.gsub(/{nam (\d+)}/) do |nam|
+      Name.find($1).to_html rescue nam
     end.gsub(/{tax (\d+)}/) do |tax|
-      Formatters::CatalogFormatter.format_taxon(Taxon.find($1)) rescue tax
+      Taxon.find($1).name.to_html rescue tax
     end.html_safe
   end
 
