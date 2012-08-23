@@ -131,20 +131,6 @@ describe Importers::Bolton::Catalog::TextToTaxt do
   end
 
   describe "Taxon names" do
-    describe "Importing" do
-      it "should convert the text to taxt, and update the fixee's attribute_name" do
-        texts = [{text: [{genus_name:"Calyptites"}]}]
-        @converter.import texts, :taxt do
-          item = TaxonomicHistoryItem.create! taxt: 'dummy'
-        end
-        TaxonomicHistoryItem.first.taxt.should == "{fwd #{ForwardRefFromTaxt.first.id}}"
-      end
-    end
-    it "should create a name" do
-      taxt = @converter.taxon_name genus_name: 'Calyptites'
-      name = Name.find_by_name 'Calyptites'
-      taxt.should == "{nam #{name.id}}"
-    end
     [:order_name, :family_or_subfamily_name, :tribe_name, :subtribe_name].each do |key|
       it "should handle #{key}" do
         @converter.convert([key => 'Formicariae']).should == "Formicariae"
