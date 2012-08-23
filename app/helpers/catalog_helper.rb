@@ -70,8 +70,8 @@ module CatalogHelper
     else
       column_count = column_count.ceil
     end
-    if column_count >= 4
-      column_count = 4
+    if column_count >= 3
+      column_count = 3
       css_class << ' teensy'
     end
     return items.snake(column_count), css_class
