@@ -62,55 +62,8 @@ module Taxt
     "{ref #{reference.id}}"
   end
 
-  def self.encode_genus_name name
-    name = Name.import genus_name: name
-    "{nam #{name.id}}"
-  end
-
-  def self.encode_taxon_name name, rank, data = {}
-    name = name.dup
-    if data[:suborder_name]
-      return "#{Formatters::CatalogFormatter.format_fossil(name, data[:fossil])} (#{data[:suborder_name]})"
-    end
-
-    if rank == :species_group_epithet
-      return Formatters::Formatter.italicize Formatters::CatalogFormatter.format_fossil name, data[:fossil]
-    end
-
-    if rank == :genus
-      return encode_genus_name name
-    end
-
-    if data[:genus_abbreviation]
-      string = ''.html_safe
-      string << Formatters::CatalogFormatter.format_fossil(data[:genus_abbreviation], data[:fossil])
-      if data[:species_epithet]
-        string << ' ' << data[:species_epithet]
-      elsif data[:subgenus_epithet]
-        string << ' (' << data[:subgenus_epithet] << ')'
-      else raise
-      end
-      return Formatters::Formatter.italicize string
-    end
-
-    italicize = [:collective_group, :genus].include? rank
-
-    if rank == :genus
-      if data[:species_epithet]
-        if data [:subgenus_epithet]
-          name += " (#{data[:subgenus_epithet]})"
-        end
-        name += ' ' + data[:species_epithet]
-      elsif data[:subgenus_epithet]
-        name += " (#{data[:subgenus_epithet]})"
-      end
-    end
-
-    output = Formatters::CatalogFormatter.format_fossil(name, data[:fossil])
-    output << '?' if data[:questionable]
-    output = Formatters::Formatter.italicize output if italicize
-
-    output
+  def self.encode_taxon_name data
+    "{nam #{Name.import(data).id}}"
   end
 
 end

@@ -13,51 +13,70 @@ describe Taxt do
     end
 
     describe "Encoding a taxon name" do
-      it "should put italics back around taxon names" do
-        Taxt.encode_taxon_name('Atta', :genus).should == "<i>Atta</i>"
-      end
-      it "should handle a genus name" do
-        Taxt.encode_taxon_name('Atta', :genus).should == "{nam #{Name.find_by_name('Atta').id}}"
-      end
-      it "should handle a species name" do
-        Taxt.encode_taxon_name('Eoformica', :genus, species_epithet: 'eofornica').should == "<i>Eoformica eofornica</i>"
-      end
-      it "should handle a species name with subgenus" do
-        Taxt.encode_taxon_name("Formica", :genus, subgenus_epithet:"Hypochira", species_epithet:"subspinosa").should == "<i>Formica (Hypochira) subspinosa</i>"
-      end
-      it "should handle a genus abbreviation + subgenus epithet" do
-        Taxt.encode_taxon_name('', nil, genus_abbreviation: 'C.', subgenus_epithet:"Hypochira").should == "<i>C. (Hypochira)</i>"
-      end
-      it "should handle a genus name + subgenus epithet" do
-        Taxt.encode_taxon_name('Acanthostichus', :genus, subgenus_epithet:"Ctenopyga").should == "<i>Acanthostichus (Ctenopyga)</i>"
-      end
-      it "should handle a genus abbreviation + species epithet" do
-        Taxt.encode_taxon_name('', nil, genus_abbreviation: 'C.', species_epithet:"major").should == "<i>C. major</i>"
-      end
-      it "should handle a lone species epithet" do
-        Taxt.encode_taxon_name('brunneus', :species_group_epithet, species_group_epithet: 'brunneus').should == "<i>brunneus</i>"
-      end
-      it "should put a question mark after questionable names" do
-        Taxt.encode_taxon_name('Atta', :genus, questionable: true).should == "{nam #{Name.find_by_name('Atta').id}}"
-      end
-      it "should put a dagger in front" do
-        Taxt.encode_taxon_name('Atta', :genus, :fossil => true).should == "<i>&dagger;Atta</i>"
-      end
-      it "should not freak at a family_or_subfamily" do
-        Taxt.encode_taxon_name('Dolichoderinae', :family_or_subfamily).should == "Dolichoderinae"
-      end
 
-      describe "Genus name" do
-        it "should find or create a Name tag in the taxt" do
-          atta = create_genus 'Atta'
-          taxt = Taxt.encode_genus_name 'Atta'
-          name_id = taxt.match(/^{nam (\d+)}$/)[1]
-          Name.find(name_id).name.to_s.should == 'Atta'
+      describe "Creating/using Names" do
+        it "should create a name if necessary" do
+          Name.count.should == 0
+          taxt = Taxt.encode_taxon_name genus_name: 'Atta'
+          Name.count.should == 1
+          taxt.should == "{nam #{Name.first.id}}"
+        end
+        it "should reuse a name if possible" do
+          create_name 'Atta'
+          Name.count.should == 1
+          taxt = Taxt.encode_taxon_name genus_name: 'Atta'
+          Name.count.should == 1
+          taxt.should == "{nam #{Name.first.id}}"
         end
       end
 
-    end
+      it "should create a {nam 1234} tag, pointing to the Name" do
+        name = create_name 'Atta'
+        Taxt.encode_taxon_name(genus_name: 'Atta').should == "{nam #{name.id}}"
+      end
 
+      it "should handle a genus name" do
+        name = create_name 'Atta'
+        Taxt.encode_taxon_name(genus_name: 'Atta').should == "{nam #{name.id}}"
+      end
+      it "should handle a species name" do
+        name = create_name 'Eoformica eofornica'
+        Taxt.encode_taxon_name(genus_name: 'Eoformica', species_epithet: 'eofornica').should == "{nam #{name.id}}"
+      end
+      it "should handle a species name with subgenus" do
+        name = create_name 'Formica (Hypochira) subspinosa'
+        Taxt.encode_taxon_name(genus_name: 'Formica', subgenus_epithet: 'Hypochira', species_epithet: 'subspinosa').should == "{nam #{name.id}}"
+      end
+      #it "should handle a genus abbreviation + subgenus epithet" do
+        #Taxt.encode_taxon_name('', nil, genus_abbreviation: 'C.', subgenus_epithet:"Hypochira").should == "<i>C. (Hypochira)</i>"
+      #end
+      it "should handle a genus name + subgenus epithet" do
+        name = create_name 'Acanthostichus (Ctenopyga)'
+        Taxt.encode_taxon_name(genus_name: 'Acanthostichus', subgenus_epithet: 'Ctenopyga').should == "{nam #{name.id}}"
+      end
+      #it "should handle a genus abbreviation + species epithet" do
+        #Taxt.encode_taxon_name('', nil, genus_abbreviation: 'C.', species_epithet:"major").should == "<i>C. major</i>"
+      #end
+      #it "should handle a lone species epithet" do
+        #name = create_name 'brunneus'
+        #Taxt.encode_taxon_name('brunneus', :species_group_epithet, species_group_epithet: 'brunneus').should == "<i>brunneus</i>"
+      #end
+      #it "should handle a lone species epithet when accompanied by the genus" do
+        #name = create_name 'brunneus'
+        #Taxt.encode_taxon_name('brunneus', :species_group_epithet, species_group_epithet: 'brunneus').should == "<i>brunneus</i>"
+      #end
+      #it "should put a question mark after questionable names" do
+        #Taxt.encode_taxon_name('Atta', :genus, questionable: true).should == "{nam #{Name.find_by_name('Atta').id}}"
+      #end
+      #it "should put a dagger in front" do
+        #Taxt.encode_taxon_name('Atta', :genus, :fossil => true).should == "<i>&dagger;Atta</i>"
+      #end
+      it "should not freak at a family_or_subfamily" do
+        name = create_name 'Dolichoderinae'
+        Taxt.encode_taxon_name(family_or_subfamily_name: 'Dolichoderinae').should == "{nam #{name.id}}"
+      end
+
+    end
   end
 
   describe "Editable reference tag" do
@@ -69,6 +88,7 @@ describe Taxt do
       Taxt.to_editable_reference(reference).should == '{Latreille, 1809 Ut}'
     end
   end
+
   describe "Editable taxt" do
     describe "To editable taxt" do
       it "should use the inline citation format followed by the id" do
@@ -109,6 +129,9 @@ describe Taxt do
   end
 
   describe "String output" do
+    it "should put italics back around taxon names" do
+      Taxt.encode_taxon_name('Atta', :genus).should == "<i>Atta</i>"
+    end
     it "should leave alone a string without fields" do
       string = Taxt.to_string 'foo', nil
       string.should == 'foo'
@@ -142,6 +165,36 @@ describe Taxt do
       it "should format a taxon" do
         genus = create_genus 'Atta'
         Taxt.to_string("{tax #{genus.id}}").should == '<i>Atta</i>'
+      end
+      it "should handle a genus name" do
+        Taxt.to_string('Atta', :genus).should == "{nam #{Name.find_by_name('Atta').id}}"
+      end
+      it "should handle a species name" do
+        Taxt.to_string('Eoformica', :genus, species_epithet: 'eofornica').should == "<i>Eoformica eofornica</i>"
+      end
+      it "should handle a species name with subgenus" do
+        Taxt.to_string("Formica", :genus, subgenus_epithet:"Hypochira", species_epithet:"subspinosa").should == "<i>Formica (Hypochira) subspinosa</i>"
+      end
+      it "should handle a genus abbreviation + subgenus epithet" do
+        Taxt.to_string('', nil, genus_abbreviation: 'C.', subgenus_epithet:"Hypochira").should == "<i>C. (Hypochira)</i>"
+      end
+      it "should handle a genus name + subgenus epithet" do
+        Taxt.to_string('Acanthostichus', :genus, subgenus_epithet:"Ctenopyga").should == "<i>Acanthostichus (Ctenopyga)</i>"
+      end
+      it "should handle a genus abbreviation + species epithet" do
+        Taxt.to_string('', nil, genus_abbreviation: 'C.', species_epithet:"major").should == "<i>C. major</i>"
+      end
+      it "should handle a lone species epithet" do
+        Taxt.to_string('brunneus', :species_group_epithet, species_group_epithet: 'brunneus').should == "<i>brunneus</i>"
+      end
+      it "should put a question mark after questionable names" do
+        Taxt.to_string('Atta', :genus, questionable: true).should == "{nam #{Name.find_by_name('Atta').id}}"
+      end
+      it "should put a dagger in front" do
+        Taxt.to_string('Atta', :genus, :fossil => true).should == "<i>&dagger;Atta</i>"
+      end
+      it "should not freak at a family_or_subfamily" do
+        Taxt.to_string('Dolichoderinae', :family_or_subfamily).should == "Dolichoderinae"
       end
     end
   end
