@@ -129,18 +129,17 @@ describe Taxt do
   end
 
   describe "String output" do
-    it "should put italics back around taxon names" do
-      Taxt.encode_taxon_name(genus_name: 'Atta').should == "<i>Atta</i>"
-    end
+
     it "should leave alone a string without fields" do
-      string = Taxt.to_string 'foo', nil
+      string = Taxt.to_string 'foo'
       string.should == 'foo'
       string.should be_html_safe
     end
     it "should handle nil" do
-      Taxt.to_string(nil, nil).should == ''
+      Taxt.to_string(nil).should == ''
     end
-    describe "References" do
+
+    describe "Reference" do
       it "should format a ref" do
         reference = FactoryGirl.create :article_reference
         Reference.should_receive(:find).with(reference.id.to_s).and_return reference
@@ -161,42 +160,26 @@ describe Taxt do
       end
     end
 
-    describe "Taxon" do
-      it "should format a taxon" do
-        genus = create_genus 'Atta'
-        Taxt.to_string("{tax #{genus.id}}").should == '<i>Atta</i>'
+    describe "Name" do
+      it "should return the HTML version of the name" do
+        name = Factory.create :subspecies_name, name_html: '<i>Atta major minor</i>'
+        Taxt.to_string("{nam #{name.id}}").should == '<i>Atta major minor</i>'
       end
-      it "should handle a genus name" do
-        Taxt.to_string('Atta', :genus).should == "{nam #{Name.find_by_name('Atta').id}}"
-      end
-      it "should handle a species name" do
-        Taxt.to_string('Eoformica', :genus, species_epithet: 'eofornica').should == "<i>Eoformica eofornica</i>"
-      end
-      it "should handle a species name with subgenus" do
-        Taxt.to_string("Formica", :genus, subgenus_epithet:"Hypochira", species_epithet:"subspinosa").should == "<i>Formica (Hypochira) subspinosa</i>"
-      end
-      it "should handle a genus abbreviation + subgenus epithet" do
-        Taxt.to_string('', nil, genus_abbreviation: 'C.', subgenus_epithet:"Hypochira").should == "<i>C. (Hypochira)</i>"
-      end
-      it "should handle a genus name + subgenus epithet" do
-        Taxt.to_string('Acanthostichus', :genus, subgenus_epithet:"Ctenopyga").should == "<i>Acanthostichus (Ctenopyga)</i>"
-      end
-      it "should handle a genus abbreviation + species epithet" do
-        Taxt.to_string('', nil, genus_abbreviation: 'C.', species_epithet:"major").should == "<i>C. major</i>"
-      end
-      it "should handle a lone species epithet" do
-        Taxt.to_string('brunneus', :species_group_epithet, species_group_epithet: 'brunneus').should == "<i>brunneus</i>"
-      end
-      it "should put a question mark after questionable names" do
-        Taxt.to_string('Atta', :genus, questionable: true).should == "{nam #{Name.find_by_name('Atta').id}}"
-      end
-      it "should put a dagger in front" do
-        Taxt.to_string('Atta', :genus, :fossil => true).should == "<i>&dagger;Atta</i>"
-      end
-      it "should not freak at a family_or_subfamily" do
-        Taxt.to_string('Dolichoderinae', :family_or_subfamily).should == "Dolichoderinae"
+      it "should not freak if the name can't be found" do
+        Taxt.to_string("{nam 12345}").should == '{nam 12345}'
       end
     end
+
+    describe "Taxon" do
+      it "should use the HTML version of the taxon's name" do
+        genus = create_genus name: FactoryGirl.create(:genus_name, name_html: '<i>Atta</i>')
+        Taxt.to_string("{tax #{genus.id}}").should == '<i>Atta</i>'
+      end
+      it "should not freak if the taxon can't be found" do
+        Taxt.to_string("{tax 12345}").should == '{tax 12345}'
+      end
+    end
+
   end
 
   describe "Sentence output" do
