@@ -67,7 +67,8 @@ describe Importers::Bolton::Catalog::TextToTaxt do
           {bracketed:true}
         ]],
       }]
-      @converter.convert(data).should == "{ref #{reference.id}}: 356 [first spelling as Formicidae]"
+      name = create_name 'Formicidae'
+      @converter.convert(data).should == "{ref #{reference.id}}: 356 [first spelling as {nam #{name.id}}]"
     end
 
     it "should handle a citation with form" do
@@ -98,7 +99,8 @@ describe Importers::Bolton::Catalog::TextToTaxt do
       ], :delimiter => '; '},
       {:phrase => 'all subsequent authors'},
     ]
-    @converter.convert(data).should == "Formicidae as family: {ref #{reference.id}}: 124 [Formicariae]; all subsequent authors"
+    name = create_name 'Formicariae'
+    @converter.convert(data).should == "Formicidae as family: {ref #{reference.id}}: 124 [{nam #{name.id}}]; all subsequent authors"
   end
 
   describe "Bracketed items" do
@@ -133,56 +135,66 @@ describe Importers::Bolton::Catalog::TextToTaxt do
   describe "Taxon names" do
     [:order_name, :family_or_subfamily_name, :tribe_name, :subtribe_name].each do |key|
       it "should handle #{key}" do
-        @converter.convert([key => 'Formicariae']).should == "Formicariae"
+        Taxt.should_receive(:encode_taxon_name).and_return '{nam 1234}'
+        @converter.convert([key => 'Formicariae']).should == '{nam 1234}'
       end
     end
     [:collective_group_name, :genus_name].each do |key|
       it "should handle #{key}" do
-        @converter.convert([key => 'Calyptites']).should == '<i>Calyptites</i>'
+        Taxt.should_receive(:encode_taxon_name).and_return '{nam 1234}'
+        @converter.convert([key => 'Calyptites']).should == '{nam 1234}'
       end
     end
     it "should handle family/order" do
+      Taxt.should_receive(:encode_taxon_name).and_return '{nam 1234}'
       @converter.convert([
         {family_or_subfamily_name:"Myrmiciidae", suborder_name:"Symphyta", delimiter:": "}
-      ]).should == 'Myrmiciidae (Symphyta): '
+      ]).should == '{nam 1234}: '
     end
-    it "should handle fossil family/order" do
-      @converter.convert([
-        {:family_or_subfamily_name=>"Myrmiciidae", :fossil=>true, :suborder_name=>"Symphyta", :delimiter=>": "}
-      ]).should == '&dagger;Myrmiciidae (Symphyta): '
-    end
+    #it "should handle fossil family/order" do
+      #Taxt.should_receive(:encode_taxon_name).and_return '{nam 1234}'
+      #@converter.convert([
+        #{:family_or_subfamily_name=>"Myrmiciidae", :fossil=>true, :suborder_name=>"Symphyta", :delimiter=>": "}
+      #]).should == '&dagger;Myrmiciidae (Symphyta): '
+    #end
     it "should handle taxon names with other text" do
+      Taxt.should_receive(:encode_taxon_name).and_return '{nam 1234}'
+      Taxt.should_receive(:encode_taxon_name).and_return '{nam 5678}'
       @converter.convert([
         {family_or_subfamily_name:  'Formicariae', :delimiter => ' '},
         {phrase:  'or', :delimiter => ' '},
         {family_or_subfamily_name:  'Formicidae'},
-      ]).should == "Formicariae or Formicidae"
+      ]).should == "{nam 1234} or {nam 5678}"
     end
     it "should handle a species name" do
+      Taxt.should_receive(:encode_taxon_name).and_return '{nam 1234}'
       @converter.convert([
         {genus_name: 'Eoformica', species_epithet: 'eocenica'},
-      ]).should == "<i>Eoformica eocenica</i>"
+      ]).should == '{nam 1234}'
     end
     it "should handle a species name with subgenus" do
+      Taxt.should_receive(:encode_taxon_name).and_return '{nam 1234}'
       @converter.convert([
         {genus_name:"Formica", subgenus_epithet:"Hypochira", species_epithet:"subspinosa"}
-      ]).should == "<i>Formica (Hypochira) subspinosa</i>"
+      ]).should == '{nam 1234}'
     end
     it "should handle an abbreviated genus name + subgenus epithet" do
+      Taxt.should_receive(:encode_taxon_name).and_return '{nam 1234}'
       @converter.convert([
         {:genus_abbreviation=>"D.", :subgenus_epithet=>"Monacis"}
-      ]).should == "<i>D. (Monacis)</i>"
+      ]).should == '{nam 1234}'
     end
     it "should handle an abbreviated genus name + species epithet" do
+      Taxt.should_receive(:encode_taxon_name).and_return '{nam 1234}'
       @converter.convert([
         {:genus_abbreviation=>"D.", :species_epithet=>"major"}
-      ]).should == "<i>D. major</i>"
+      ]).should == '{nam 1234}'
     end
-    it "should handle lone species epithet" do
-      @converter.convert([
-        {species_group_epithet: "brunneus", delimiter: " "}
-      ]).should == "<i>brunneus</i> "
-    end
+    #it "should handle lone species epithet" do
+      #@converter.convert([
+        #{species_group_epithet: "brunneus", delimiter: " "}
+      #]).should == '{nam 1234}'
+    #end
 
   end
 
@@ -198,7 +210,7 @@ describe Importers::Bolton::Catalog::TextToTaxt do
             pages: "400",
             matched_text: "Gray, J.E. 1841: 400 (Mammalia)"}],
         delimiter: "."}]).should ==
-          "{tax #{genus.id}} {ref #{reference.id}}: 400."
+          "{nam #{genus.name.id}} {ref #{reference.id}}: 400."
     end
   end
 

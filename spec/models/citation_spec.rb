@@ -64,7 +64,7 @@ describe Citation do
       }
 
       citation = Citation.import(data).reload
-      citation.notes_taxt.should == " [as member of family Braconidae]"
+      citation.notes_taxt.should == " [as member of family {nam #{Name.find_by_name('Braconidae').id}}]"
     end
 
   end
