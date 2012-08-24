@@ -157,8 +157,8 @@ describe Importers::Bolton::Catalog::Species::Importer do
       }]
       history = @importer.class.convert_taxonomic_history_to_taxts history
       history.should == [
-        "Replacement name for <i>Acropyga silvestrii</i> {ref #{wheeler.id}}: 100",
-        "[Junior primary homonym of <i>Acropyga silvestrii</i> {ref #{emery.id}}: 21.]"
+        "Replacement name for {nam #{Name.find_by_name('Acropyga silvestrii').id}} {ref #{wheeler.id}}: 100",
+        "[Junior primary homonym of {nam #{Name.find_by_name('Acropyga silvestrii').id}} {ref #{emery.id}}: 21.]"
       ]
     end
 

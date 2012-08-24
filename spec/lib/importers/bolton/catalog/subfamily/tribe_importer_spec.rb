@@ -45,7 +45,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
 
       tribe = Tribe.find_by_name 'Aneuretini'
       tribe.subfamily.name.to_s.should == 'Aneuretinae'
-      tribe.taxonomic_history_items.map(&:taxt).should == ["Aneuretini history"]
+      tribe.taxonomic_history_items.map(&:taxt).should == ["{nam #{Name.find_by_name('Aneuretini').id}} history"]
       tribe.type_name.to_s.should == 'Aneuretus'
       tribe.type_name.rank.should == 'genus'
     end

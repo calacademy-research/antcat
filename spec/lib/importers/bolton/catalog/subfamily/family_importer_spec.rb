@@ -30,7 +30,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
 
 <p>Regional and national faunas with keys</p>
 <p>PALAEARCTIC</p>
-<p>Mayr, 1855: 299 (Austria).</p>
+<p>Mayr, 1855: 299.</p>
 
 <p>GENERA <i>INCERTAE SEDIS</i> AND EXCLUSIONS FROM FORMICIDAE</p>
 <p>Genera <i>incertae sedis</i> in FORMICIDAE</p>
@@ -83,14 +83,14 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
     family.type_name.to_s.should == 'Formica'
     family.type_name.rank.should == 'genus'
     family.taxonomic_history_items.map(&:taxt).should =~ [
-      %{Formicidae as family: {ref #{latreille.id}}: 124 [Formicariae]; all subsequent authors}
+      %{Formicidae as family: {ref #{latreille.id}}: 124 [{nam #{Name.find_by_name('Formicariae').id}}]; all subsequent authors}
     ]
 
     family.should have(3).reference_sections
     reference_section = family.reference_sections.first
     reference_section.title.should == 'FAMILY FORMICIDAE REFERENCES, WORLD'
     reference_section.subtitle.should == 'WORLD CATALOGUES'
-    reference_section.references.should == "{ref #{roger.id}}: 1 (Formicidae)"
+    reference_section.references.should == "{ref #{roger.id}}: 1 ({nam #{Name.find_by_name('Formicidae').id}})"
 
     reference_section = family.reference_sections.second
     reference_section.title.should == 'Regional catalogues and checklists'
@@ -100,7 +100,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
     reference_section = family.reference_sections.third
     reference_section.title.should == 'Regional and national faunas with keys'
     reference_section.subtitle.should == 'PALAEARCTIC'
-    reference_section.references.should == "{ref #{mayr.id}}: 299 (Austria)"
+    reference_section.references.should == "{ref #{mayr.id}}: 299"
 
     genus = Genus.find_by_name 'Condylodon'
     genus.should_not be_invalid
@@ -108,7 +108,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
     genus.should be_incertae_sedis_in 'family'
     genus.subfamily.should be_nil
     genus.taxonomic_history_items.map(&:taxt).should =~ [
-      "<i>Condylodon</i> in family Mutillidae: {ref #{swainson.id}}: 173."
+      "{nam #{Name.find_by_name('Condylodon').id}} in family {nam #{Name.find_by_name('Mutillidae').id}}: {ref #{swainson.id}}: 173."
     ]
     genus.type_name.to_s.should == "Condylodon audouini"
     genus.type_taxt.should == ", by monotypy. [{ref #{lund.id}}: 25 says no.]"
@@ -133,9 +133,9 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
     subfamily = Subfamily.find_by_name 'Alloformicinae'
     subfamily.status.should == 'unavailable'
     subfamily.protonym.name.to_s.should == 'Alloformicinae'
-    subfamily.headline_notes_taxt.should == " Section designated to include tribe Melophorini: {ref #{bolton.id}}: 51."
+    subfamily.headline_notes_taxt.should == " Section designated to include tribe {nam #{Name.find_by_name('Melophorini').id}}: {ref #{bolton.id}}: 51."
     subfamily.taxonomic_history_items.map(&:taxt).should =~ [
-      "Promyrmicinae: {ref #{forel.id}}: 240 [incorrect expansion of the above unavailable name to include tribes Metaponini and Pseudomyrmini]. Unavailable name."
+      "{nam #{Name.find_by_name('Promyrmicinae').id}}: {ref #{forel.id}}: 240 [incorrect expansion of the above unavailable name to include tribes {nam #{Name.find_by_name('Metaponini').id}} and {nam #{Name.find_by_name('Pseudomyrmini').id}}]. Unavailable name."
     ]
   end
 
