@@ -7,6 +7,7 @@ class Name < ActiveRecord::Base
     SpeciesName.import_data(data)    or
     SubgenusName.import_data(data)   or
     GenusName.import_data(data)      or
+    CollectiveGroupName.import_data(data) or
     SubtribeName.import_data(data)   or
     TribeName.import_data(data)      or
     SubfamilyName.import_data(data)  or
