@@ -12,6 +12,7 @@ class Name < ActiveRecord::Base
     SubfamilyName.import_data(data)  or
     FamilyName.import_data(data)     or
     FamilyOrSubfamilyName.import_data(data) or
+    OrderName.import_data(data)      or
     raise "No Name subclass wanted #{data}"
   end
 
