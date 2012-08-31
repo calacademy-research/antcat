@@ -53,12 +53,12 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
         if @genus
           begin
             species = ::Species.import species_epithet: @parse_result[:species_group_epithet],
-                                      fossil: @parse_result[:fossil] || false,
-                                      status: @parse_result[:status] || 'valid',
-                                      genus: @genus,
-                                      protonym: @parse_result[:protonym],
-                                      raw_history: @parse_result[:history],
-                                      history: self.class.convert_taxonomic_history_to_taxts(@parse_result[:history])
+                                       fossil: @parse_result[:fossil] || false,
+                                       status: @parse_result[:status] || 'valid',
+                                       genus: @genus,
+                                       protonym: @parse_result[:protonym],
+                                       raw_history: @parse_result[:history],
+                                       history: self.class.convert_taxonomic_history_to_taxts(@parse_result[:history])
             Progress.info "Imported #{species.inspect}"
             @species_count += 1
           end
