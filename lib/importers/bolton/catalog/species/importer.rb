@@ -58,7 +58,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
                                        genus: @genus,
                                        protonym: @parse_result[:protonym],
                                        raw_history: @parse_result[:history],
-                                       history: self.class.convert_taxonomic_history_to_taxts(@parse_result[:history])
+                                       history: self.class.convert_taxonomic_history_to_taxts(@parse_result[:history], @genus)
             Progress.info "Imported #{species.inspect}"
             @species_count += 1
           end
@@ -127,11 +127,11 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     Importers::Bolton::Catalog::Species::Grammar
   end
 
-  def self.convert_taxonomic_history_to_taxts history
+  def self.convert_taxonomic_history_to_taxts history, genus = nil
     Progress.method
     (history || []).inject([]) do |items, item|
       for text in Importers::Bolton::Catalog::Grammar.parse(item[:matched_text], root: :texts).value[:texts]
-        taxt = Importers::Bolton::Catalog::TextToTaxt.convert text[:text]
+        taxt = Importers::Bolton::Catalog::TextToTaxt.convert text[:text], genus
         if taxt.present?
           items << taxt
         else
