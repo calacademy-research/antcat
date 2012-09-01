@@ -1,8 +1,8 @@
 module Importers::Bolton::Catalog::TextToTaxt
 
-  def self.convert texts
+  def self.convert texts, genus = nil
     (texts || []).inject('') do |taxt, item|
-      taxt << convert_text_to_taxt(item)
+      taxt << convert_text_to_taxt(item.merge genus: genus)
     end
   end
 

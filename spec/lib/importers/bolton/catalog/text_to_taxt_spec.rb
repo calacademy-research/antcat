@@ -172,6 +172,11 @@ describe Importers::Bolton::Catalog::TextToTaxt do
         {genus_name: 'Eoformica', species_epithet: 'eocenica'},
       ]).should == '{nam 1234}'
     end
+    it "should handle a species name when the genus is provided as an object" do
+      genus = create_genus
+      Taxt.should_receive(:encode_taxon_name).with(genus: genus, species_epithet: 'eocenica').and_return '{nam 1234}'
+      @converter.convert([{species_epithet: 'eocenica'}], genus).should == '{nam 1234}'
+    end
     it "should handle a species name with subgenus" do
       Taxt.should_receive(:encode_taxon_name).and_return '{nam 1234}'
       @converter.convert([
