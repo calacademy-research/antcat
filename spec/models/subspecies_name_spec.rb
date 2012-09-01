@@ -14,6 +14,16 @@ describe SubspeciesName do
       name.epithet_html.should == '<i>alpina</i>'
       name.epithets.should == 'major alpina'
     end
+
+    it "should recognize a subspecies name with :subspecies_epithet as the key" do
+      name = Name.import genus_name: 'Formica', species_epithet: 'rufa', subspecies: [
+        {subspecies_epithet: 'obscuripes', type: 'r.'},
+        {subspecies_epithet: 'whymperi', type: 'var.'},
+      ]
+      name = SubspeciesName.find name
+      name.name.should == 'Formica rufa obscuripes whymperi'
+    end
+
     it "escape bad characters" do
       name = Name.import genus_name: 'Atta', species_epithet: 'major', subspecies: [{species_group_epithet: 'alpi>na'}]
       name = SubspeciesName.find name
