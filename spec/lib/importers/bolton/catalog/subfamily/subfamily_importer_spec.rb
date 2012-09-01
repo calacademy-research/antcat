@@ -72,7 +72,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
         <p>Diabolous history</p>
 
         <p>Genus <i>Aneuretus</i> references</p>
-        <p>Aneuretus reference</p>
+        <p><i>Aneuretus</i> reference</p>
 
         <p>Genera <i>incertae sedis</i> in ANEURETINAE</p>
         <p>Genus *<i>BURMOMYRMA</i></p>
