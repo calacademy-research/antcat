@@ -90,7 +90,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
         <p>*<i>MYRMECIITES</i></p>
         <p>*<i>Myrmeciites </i>Archibald, Cover &amp; Moreau, 2006: 500. [Collective group name.]</p>
         <p>Taxonomic history</p>
-        <p>*<i>Myrmeciites incertae sedis</i> in Hymenoptera: <i>sensu</i> Baroni Urbani, 2008: 7.</p>
+        <p>*<i>Myrmeciites incertae sedis</i> in Hymenoptera: Baroni Urbani, 2008: 7.</p>
       }
 
       Taxon.count.should == 9
