@@ -180,6 +180,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
   end
 
   describe "Parsing references" do
+
     it "should return an array of text items converted to Taxt" do
       genus = FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Lepisiota')
       @importer.initialize_parse_html %{<div>
@@ -192,6 +193,27 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
         ["Genus {nam #{Name.find_by_name('Lepisiota').id}} references", ""]
       genus.reference_sections.map(&:references).should == ["Note", "Another note"]
     end
-  end
 
+    describe "Genus reference sections with abbreviated genus names" do
+      it "should handle this genus reference section with a subgenus name with abbreviated genus" do
+        genus = FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Dolichoderus')
+        @importer.initialize_parse_html %{<div>
+          <p>Genus <i>Dolichoderus</i> references</p>
+          <p>Key <i>D. (Dolichoderus)</i></p>
+        </div>}
+        @importer.parse_genus_references genus
+        Name.find_by_name('Dolichoderus (Dolichoderus)').should_not be_nil
+      end
+      it "should handle this genus reference section with a species name with abbreviated genus" do
+        genus = FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Dolichoderus')
+        @importer.initialize_parse_html %{<div>
+          <p>Genus <i>Dolichoderus</i> references</p>
+          <p>Key <i>D. cuspidatus</i></p>
+        </div>}
+        @importer.parse_genus_references genus
+        Name.find_by_name('Dolichoderus cuspidatus').should_not be_nil
+      end
+    end
+
+  end
 end
