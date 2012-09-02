@@ -59,7 +59,6 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     else
       return
     end
-    Progress.method
 
     title_only = @type == :genus_references_see_under
     references_only = false
