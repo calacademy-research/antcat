@@ -174,15 +174,17 @@ describe Importers::Bolton::Catalog::TextToTaxt do
     end
     it "should handle a species name when the genus is provided as an object" do
       genus = create_genus
-      Taxt.should_receive(:encode_taxon_name).with(genus: genus, species_epithet: 'eocenica').and_return '{nam 1234}'
-      @converter.convert([{species_epithet: 'eocenica'}], genus).should == '{nam 1234}'
+      genus_name = genus.name.to_s
+      Taxt.should_receive(:encode_taxon_name).with(genus_name: genus_name, species_epithet: 'eocenica').and_return '{nam 1234}'
+      @converter.convert([{species_epithet: 'eocenica'}], genus_name).should == '{nam 1234}'
     end
-    it "should pass the genus back to a nested convert" do
+    it "should pass the genus_name back to a nested convert" do
       genus = create_genus
-      Taxt.should_receive(:encode_taxon_name).with(genus: genus, species_epithet: 'eocenica').and_return '{nam 1234}'
-      Taxt.should_receive(:encode_taxon_name).with(genus: genus, species_epithet: 'major').and_return '{nam 1234}'
+      genus_name = genus.name.to_s
+      Taxt.should_receive(:encode_taxon_name).with(genus_name: genus_name, species_epithet: 'eocenica').and_return '{nam 1234}'
+      Taxt.should_receive(:encode_taxon_name).with(genus_name: genus_name, species_epithet: 'major').and_return '{nam 1234}'
       data = [{text: [{species_epithet: 'eocenica'}, {species_epithet: 'major'}]}]
-      @converter.convert data, genus
+      @converter.convert data, genus_name
 
     end
     it "should handle a species name with subgenus" do

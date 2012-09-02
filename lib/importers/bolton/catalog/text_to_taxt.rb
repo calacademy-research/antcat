@@ -1,8 +1,8 @@
 module Importers::Bolton::Catalog::TextToTaxt
 
-  def self.convert texts, genus = nil
+  def self.convert texts, genus_name = nil
     (texts || []).inject('') do |taxt, item|
-      item = item.merge genus: genus if genus
+      item = item.reverse_merge genus_name: genus_name if genus_name
       taxt << convert_text_to_taxt(item)
     end
   end
@@ -22,9 +22,9 @@ module Importers::Bolton::Catalog::TextToTaxt
     return unless item[:text]
     prefix = item.delete :text_prefix
     suffix = item.delete :text_suffix
-    genus = item.delete :genus
+    genus_name = item.delete :genus_name
     delimiter = item[:text].delete :delimiter
-    taxt = convert item[:text], genus
+    taxt = convert item[:text], genus_name
     add_delimiter taxt, item
     taxt = prefix + taxt if prefix
     taxt = taxt + suffix if suffix
