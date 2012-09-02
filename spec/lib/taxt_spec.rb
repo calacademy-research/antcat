@@ -34,7 +34,6 @@ describe Taxt do
         name = create_name 'Atta'
         Taxt.encode_taxon_name(genus_name: 'Atta').should == "{nam #{name.id}}"
       end
-
       it "should handle a genus name" do
         name = create_name 'Atta'
         Taxt.encode_taxon_name(genus_name: 'Atta').should == "{nam #{name.id}}"
