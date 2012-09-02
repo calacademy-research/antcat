@@ -206,6 +206,12 @@ describe Importers::Bolton::Catalog::TextToTaxt do
       ]).should == '{nam 1234}'
     end
 
+    it "should handle an abbreviated genus name + species epithet" do
+      current_genus = create_genus
+      data = [{family_or_subfamily_name: 'Mutillidae', delimiter: ': '}]
+      @converter.convert(data, current_genus.name.to_s).should == "{nam #{Name.find_by_name('Mutillidae').id}}: "
+    end
+
   end
 
   describe "Taxon names with authorship" do

@@ -1,8 +1,8 @@
 module Importers::Bolton::Catalog::TextToTaxt
 
   def self.convert texts, genus_name = nil
+    @genus_name = genus_name
     (texts || []).inject('') do |taxt, item|
-      item = item.reverse_merge genus_name: genus_name if genus_name
       taxt << convert_text_to_taxt(item)
     end
   end
@@ -22,9 +22,8 @@ module Importers::Bolton::Catalog::TextToTaxt
     return unless item[:text]
     prefix = item.delete :text_prefix
     suffix = item.delete :text_suffix
-    genus_name = item.delete :genus_name
     delimiter = item[:text].delete :delimiter
-    taxt = convert item[:text], genus_name
+    taxt = convert item[:text], @genus_name
     add_delimiter taxt, item
     taxt = prefix + taxt if prefix
     taxt = taxt + suffix if suffix
@@ -54,13 +53,27 @@ module Importers::Bolton::Catalog::TextToTaxt
     return unless key
     key = key.to_s.gsub(/_name$/, '').to_sym
 
-    taxt = Taxt.encode_taxon_name item
+    name_item = fill_in_genus_if_necessary item
+    taxt = Taxt.encode_taxon_name name_item
 
     authorship = item[:authorship]
     taxt << ' ' << citation(item[:authorship].first) if authorship
     taxt << ': ' << item[:pages] if item[:pages]
-    taxt << convert(items[:notes].first) if item[:notes]
+    taxt << convert(items[:notes].first, @genus_name) if item[:notes]
     add_delimiter taxt, item
+  end
+
+  def self.fill_in_genus_if_necessary item
+    item = item.dup
+    if item[:genus_abbreviation]
+      item.delete :genus_abbreviation 
+      item[:genus_name] = @genus_name
+    elsif item[:subgenus_epithet] || item[:species_epithet] || item[:species_group_epithet]
+      unless item[:genus] || item[:genus_name]
+        item[:genus_name] = @genus_name
+      end
+    end
+    item
   end
 
   def self.brackets item
@@ -85,7 +98,7 @@ module Importers::Bolton::Catalog::TextToTaxt
       item.delete bracketed_item if bracketed_item
       taxt << ' [' if bracketed_item
       taxt << ' (' unless bracketed_item
-      taxt << convert(item)
+      taxt << convert(item, @genus_name)
       taxt << ']' if bracketed_item
       taxt << ')' unless bracketed_item
       taxt
