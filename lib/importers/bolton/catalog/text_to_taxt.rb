@@ -22,8 +22,9 @@ module Importers::Bolton::Catalog::TextToTaxt
     return unless item[:text]
     prefix = item.delete :text_prefix
     suffix = item.delete :text_suffix
+    genus = item.delete :genus
     delimiter = item[:text].delete :delimiter
-    taxt = convert item[:text]
+    taxt = convert item[:text], genus
     add_delimiter taxt, item
     taxt = prefix + taxt if prefix
     taxt = taxt + suffix if suffix

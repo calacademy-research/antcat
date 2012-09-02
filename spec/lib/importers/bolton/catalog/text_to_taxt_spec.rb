@@ -177,6 +177,14 @@ describe Importers::Bolton::Catalog::TextToTaxt do
       Taxt.should_receive(:encode_taxon_name).with(genus: genus, species_epithet: 'eocenica').and_return '{nam 1234}'
       @converter.convert([{species_epithet: 'eocenica'}], genus).should == '{nam 1234}'
     end
+    it "should pass the genus back to a nested convert" do
+      genus = create_genus
+      Taxt.should_receive(:encode_taxon_name).with(genus: genus, species_epithet: 'eocenica').and_return '{nam 1234}'
+      Taxt.should_receive(:encode_taxon_name).with(genus: genus, species_epithet: 'major').and_return '{nam 1234}'
+      data = [{text: [{species_epithet: 'eocenica'}, {species_epithet: 'major'}]}]
+      @converter.convert data, genus
+
+    end
     it "should handle a species name with subgenus" do
       Taxt.should_receive(:encode_taxon_name).and_return '{nam 1234}'
       @converter.convert([

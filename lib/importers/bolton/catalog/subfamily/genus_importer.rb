@@ -70,7 +70,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
       references = nil
       unless title_only || references_only
         parse_next_line
-        references = Importers::Bolton::Catalog::TextToTaxt.convert @parse_result[:texts]
+        references = Importers::Bolton::Catalog::TextToTaxt.convert @parse_result[:texts], genus
       end
 
       if references_only
