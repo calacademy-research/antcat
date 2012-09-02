@@ -16,7 +16,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     name ||= headline[:protonym][:genus_name]
     fossil ||= headline[:protonym][:fossil]
 
-    history = parse_taxonomic_history
+    history = parse_taxonomic_history name
 
     if attributes[:status] == 'synonym' and name == 'Ancylognathus'
       genus = Genus.find_by_name 'Ancylognathus'
@@ -65,12 +65,12 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
 
     loop do
       texts = Importers::Bolton::Catalog::Grammar.parse(@line, root: :text).value
-      title = Importers::Bolton::Catalog::TextToTaxt.convert texts[:text]
+      title = Importers::Bolton::Catalog::TextToTaxt.convert texts[:text], genus.name.to_s
 
       references = nil
       unless title_only || references_only
         parse_next_line
-        references = Importers::Bolton::Catalog::TextToTaxt.convert @parse_result[:texts], genus
+        references = Importers::Bolton::Catalog::TextToTaxt.convert @parse_result[:texts], genus.name.to_s
       end
 
       if references_only

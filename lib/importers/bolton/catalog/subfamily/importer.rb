@@ -95,7 +95,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     Importers::Bolton::Catalog::Subfamily::Grammar
   end
 
-  def parse_taxonomic_history
+  def parse_taxonomic_history genus_name = nil
     Progress.method
     taxts = []
     if @type == :taxonomic_history_header
@@ -103,7 +103,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
         parse_next_line
         convert_ponerites_headline_to_text
         break unless @type == :texts
-        item = Importers::Bolton::Catalog::TextToTaxt.convert @parse_result[:texts]
+        item = Importers::Bolton::Catalog::TextToTaxt.convert @parse_result[:texts], genus_name
         if item.present?
           taxts << item if item.present?
         else
@@ -128,10 +128,10 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     end
   end
 
-  def parse_reference_section taxon
+  def parse_reference_section taxon, genus_name
     title = convert_line_to_taxt @line
     parse_next_line
-    references = Importers::Bolton::Catalog::TextToTaxt.convert @parse_result[:texts]
+    references = Importers::Bolton::Catalog::TextToTaxt.convert @parse_result[:texts], genus_name
     taxon.reference_sections.create! title: title, references: references
   end
 

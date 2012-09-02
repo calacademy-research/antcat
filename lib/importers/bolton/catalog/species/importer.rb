@@ -127,11 +127,11 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     Importers::Bolton::Catalog::Species::Grammar
   end
 
-  def self.convert_taxonomic_history_to_taxts history, genus = nil
+  def self.convert_taxonomic_history_to_taxts history, genus_name = nil
     Progress.method
     (history || []).inject([]) do |items, item|
       for text in Importers::Bolton::Catalog::Grammar.parse(item[:matched_text], root: :texts).value[:texts]
-        taxt = Importers::Bolton::Catalog::TextToTaxt.convert text[:text], genus
+        taxt = Importers::Bolton::Catalog::TextToTaxt.convert text[:text], genus_name
         if taxt.present?
           items << taxt
         else
