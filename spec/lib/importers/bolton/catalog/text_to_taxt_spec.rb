@@ -203,11 +203,6 @@ describe Importers::Bolton::Catalog::TextToTaxt do
         {:genus_abbreviation=>"D.", :species_epithet=>"major"}
       ]).should == '{nam 1234}'
     end
-    #it "should handle lone species epithet" do
-      #@converter.convert([
-        #{species_group_epithet: "brunneus", delimiter: " "}
-      #]).should == '{nam 1234}'
-    #end
 
   end
 
