@@ -128,10 +128,10 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     end
   end
 
-  def parse_reference_section taxon, genus_name
+  def parse_reference_section taxon
     title = convert_line_to_taxt @line
     parse_next_line
-    references = Importers::Bolton::Catalog::TextToTaxt.convert @parse_result[:texts], genus_name
+    references = Importers::Bolton::Catalog::TextToTaxt.convert @parse_result[:texts], taxon.name.to_s
     taxon.reference_sections.create! title: title, references: references
   end
 
