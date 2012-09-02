@@ -135,15 +135,15 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
           <p>Taxonomic history</p>
           <p><i>Aethiopopone</i> history</p>
 
-          <p><b>Genus <i>Sphinctomyrmex</i> references <p></p></b></p>
+          <p><b>Genus <i>Sphinctomyrmex</i> references</b></p>
           <p>[Note. Entries prior to Bolton, 1995b: 44, refer to genus as <i>Acantholepis</i>.]</p>
-          <p>Sphinctomyrmex references</p>
+          <p><i>Sphinctomyrmex</i> references</p>
         }
         sphinctomyrmex = Genus.find_by_name 'Sphinctomyrmex'
         sphinctomyrmex.taxonomic_history_items.map(&:taxt).should == ['Sphinctomyrmex history']
         sphinctomyrmex.reference_sections.map(&:references).should == [
           "[Note. Entries prior to {ref #{bolton.id}}: 44, refer to genus as {nam #{Name.find_by_name('Acantholepis').id}}.]",
-          'Sphinctomyrmex references',
+          "{nam #{Name.find_by_name('Sphinctomyrmex').id}} references",
         ]
         aethiopopone = Genus.find_by_name 'Aethiopopone'
         aethiopopone.taxonomic_history_items.map(&:taxt).should == ["{nam #{aethiopopone.name.id}} history"]
