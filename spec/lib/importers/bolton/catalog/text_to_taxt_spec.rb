@@ -151,6 +151,11 @@ describe Importers::Bolton::Catalog::TextToTaxt do
         {family_or_subfamily_name:"Myrmiciidae", suborder_name:"Symphyta", delimiter:": "}
       ]).should == '{nam 1234}: '
     end
+    it "should not get confused by there being a current genus while a family-group name is seen" do
+      current_genus = create_genus
+      data = [{family_or_subfamily_name: 'Mutillidae', delimiter: ': '}]
+      @converter.convert(data, current_genus.name.to_s).should == "{nam #{Name.find_by_name('Mutillidae').id}}: "
+    end
     #it "should handle fossil family/order" do
       #Taxt.should_receive(:encode_taxon_name).and_return '{nam 1234}'
       #@converter.convert([
@@ -166,50 +171,41 @@ describe Importers::Bolton::Catalog::TextToTaxt do
         {family_or_subfamily_name:  'Formicidae'},
       ]).should == "{nam 1234} or {nam 5678}"
     end
-    it "should handle a species name" do
-      Taxt.should_receive(:encode_taxon_name).and_return '{nam 1234}'
-      @converter.convert([
-        {genus_name: 'Eoformica', species_epithet: 'eocenica'},
-      ]).should == '{nam 1234}'
-    end
-    it "should handle a species name when the genus is provided as an object" do
-      genus = create_genus
-      genus_name = genus.name.to_s
-      Taxt.should_receive(:encode_taxon_name).with(genus_name: genus_name, species_epithet: 'eocenica').and_return '{nam 1234}'
-      @converter.convert([{species_epithet: 'eocenica'}], genus_name).should == '{nam 1234}'
-    end
-    it "should pass the genus_name back to a nested convert" do
-      genus = create_genus
-      genus_name = genus.name.to_s
-      Taxt.should_receive(:encode_taxon_name).with(genus_name: genus_name, species_epithet: 'eocenica').and_return '{nam 1234}'
-      Taxt.should_receive(:encode_taxon_name).with(genus_name: genus_name, species_epithet: 'major').and_return '{nam 1234}'
-      data = [{text: [{species_epithet: 'eocenica'}, {species_epithet: 'major'}]}]
-      @converter.convert data, genus_name
 
-    end
-    it "should handle a species name with subgenus" do
-      Taxt.should_receive(:encode_taxon_name).and_return '{nam 1234}'
-      @converter.convert([
-        {genus_name:"Formica", subgenus_epithet:"Hypochira", species_epithet:"subspinosa"}
-      ]).should == '{nam 1234}'
-    end
-    it "should handle an abbreviated genus name + subgenus epithet" do
-      Taxt.should_receive(:encode_taxon_name).and_return '{nam 1234}'
-      @converter.convert([
-        {:genus_abbreviation=>"D.", :subgenus_epithet=>"Monacis"}
-      ]).should == '{nam 1234}'
-    end
-    it "should handle an abbreviated genus name + species epithet" do
-      Taxt.should_receive(:encode_taxon_name).and_return '{nam 1234}'
-      @converter.convert([
-        {:genus_abbreviation=>"D.", :species_epithet=>"major"}
-      ]).should == '{nam 1234}'
-    end
-
-    it "should handle an abbreviated genus name + species epithet" do
-      current_genus = create_genus
-      data = [{family_or_subfamily_name: 'Mutillidae', delimiter: ': '}]
-      @converter.convert(data, current_genus.name.to_s).should == "{nam #{Name.find_by_name('Mutillidae').id}}: "
+    describe "Converting species names" do
+      it "should handle a species name" do
+        data = {genus_name: 'Eoformica', species_epithet: 'eocenica'}
+        Taxt.should_receive(:encode_taxon_name).with(data).and_return '{nam 1234}'
+        @converter.convert([data]).should == '{nam 1234}'
+      end
+      it "should handle a species name when the genus is provided as an object" do
+        genus_name = create_genus.name.to_s
+        data = {genus_name: genus_name, species_epithet: 'eocenica'}
+        Taxt.should_receive(:encode_taxon_name).with(data).and_return '{nam 1234}'
+        @converter.convert([data], genus_name).should == '{nam 1234}'
+      end
+      it "should pass the genus_name back to a nested convert" do
+        genus_name = create_genus.name.to_s
+        data = [{genus_name: genus_name, species_epithet: 'eocenica'}, {genus_name: genus_name, species_epithet: 'major'}]
+        Taxt.should_receive(:encode_taxon_name).with(data.first).and_return '{nam 1234}'
+        Taxt.should_receive(:encode_taxon_name).with(data.second).and_return '{nam 5678}'
+        @converter.convert(data, genus_name).should == '{nam 1234}{nam 5678}'
+      end
+      it "should handle a species name with subgenus" do
+        data = {genus_name: 'Formica', subgenus_epithet: 'Hypochira', species_epithet: 'subspinosa'}
+        Taxt.should_receive(:encode_taxon_name).and_return '{nam 1234}'
+        @converter.convert([data]).should == '{nam 1234}'
+      end
+      it "should handle an abbreviated genus name + subgenus epithet" do
+        Taxt.should_receive(:encode_taxon_name).
+          with(genus_name: 'Atta', subgenus_epithet: 'Monacis').and_return '{nam 1234}'
+        @converter.convert([{genus_abbreviation: 'D.', subgenus_epithet: 'Monacis'}], 'Atta').should == '{nam 1234}'
+      end
+      it "should handle an abbreviated genus name + species epithet" do
+        Taxt.should_receive(:encode_taxon_name).
+          with(genus_name: 'Atta', species_epithet: 'major').and_return '{nam 1234}'
+        @converter.convert([{genus_abbreviation: 'A.', species_epithet: 'major'}], 'Atta').should == '{nam 1234}'
+      end
     end
 
   end
