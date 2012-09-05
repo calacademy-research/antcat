@@ -55,7 +55,7 @@ describe ReferenceKey do
           %{<span class="reference_key_expansion">} +
             %{<span class="reference_key_expansion_text" title="Latreille, 1809">Latreille, P. A. 1809. <i>Atta</i>. Science (1):3.</span>} +
             %{ } +
-            %{<a class="document_link" target="_blank" href="example.com">PDF</a>} +
+            %{<a class="document_link" href="example.com" target="_blank">PDF</a>} +
             %{<a class="goto_reference_link" href="/references?q=#{@reference.id}" target="_blank"><img alt="External_link" src="/assets/external_link.png" /></a>} +
           %{</span>} +
         %{</span>}
@@ -82,7 +82,15 @@ describe ReferenceKey do
         @reference.key.to_link(nil, expansion: false).should ==
           %{<a href="http://antcat.org/references?q=#{@reference.id}" target="_blank" title="Latreille, P. A. 1809. Atta. Science (1):3.">Latreille, 1809</a>} +
           %{ } +
-          %{<a class="document_link" target="_blank" href="example.com">PDF</a>}
+          %{<a class="document_link" href="example.com" target="_blank">PDF</a>}
+      end
+    end
+    describe "Handling quotes in the title" do
+      it "should escape them, but just once" do
+        latreille = FactoryGirl.create :author_name, name: 'Latreille, P. A.'
+        @reference = FactoryGirl.create :unknown_reference, author_names: [latreille], citation_year: '1809', title: '"Atta"'
+        @reference.key.to_link(nil, expansion: false).should ==
+          %{<a href="http://antcat.org/references?q=#{@reference.id}" target="_blank" title="Latreille, P. A. 1809. &quot;Atta&quot;. New York.">Latreille, 1809</a>}
       end
     end
   end
