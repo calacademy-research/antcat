@@ -66,7 +66,7 @@ describe Formatters::CatalogFormatter do
       reference = FactoryGirl.create :reference
       reference.stub(:downloadable_by?).and_return true
       reference.stub(:url).and_return 'example.com'
-      @formatter.format_reference_document_link(reference, nil).should == '<a class="document_link" target="_blank" href="example.com">PDF</a>'
+      @formatter.format_reference_document_link(reference, nil).should == '<a class="document_link" href="example.com" target="_blank">PDF</a>'
     end
   end
 
