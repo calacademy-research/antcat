@@ -127,16 +127,16 @@ describe Importers::Bolton::Catalog::Subfamily::SubfamilyGrammar do
   describe "Taxonomic history items" do
 
     it "should parse 'junior synonym of'" do
-      @grammar.parse(%{Aneuretinae as junior synonym of Dolichoderinae: Baroni Urbani, 1989: 147.}, :root => :subfamily_taxonomic_history_item).value_with_matched_text_removed.should ==
-        {:type => :subfamily_taxonomic_history_item,
+      @grammar.parse(%{Aneuretinae as junior synonym of Dolichoderinae: Baroni Urbani, 1989: 147.}, :root => :subfamily_history_item).value_with_matched_text_removed.should ==
+        {:type => :subfamily_history_item,
           :subfamily => {:subfamily_name => 'Aneuretinae'},
           :junior_synonym_of => {:subfamily_name => 'Dolichoderinae'},
           :references => [{:author_names => ['Baroni Urbani'], :year => '1989', :pages => '147'}],
         }
     end
     it "should parse 'as subfamily of Formicidae'" do
-      @grammar.parse(%{Aneuretinae as subfamily of Formicidae: Clark, 1951: 16 (footnote); all subsequent authors.}, :root => :subfamily_taxonomic_history_item).value_with_matched_text_removed.should ==
-        {:type => :subfamily_taxonomic_history_item,
+      @grammar.parse(%{Aneuretinae as subfamily of Formicidae: Clark, 1951: 16 (footnote); all subsequent authors.}, :root => :subfamily_history_item).value_with_matched_text_removed.should ==
+        {:type => :subfamily_history_item,
           :subfamily => {:subfamily_name => 'Aneuretinae'},
           :as_subfamily => true,
           :references => [
@@ -146,8 +146,8 @@ describe Importers::Bolton::Catalog::Subfamily::SubfamilyGrammar do
         }
     end
     it "should parse 'as tribe of Formicidae'" do
-      @grammar.parse(%{Dolichoderinae as tribe of Formicidae: André, 1882a: 127 [Dolichoderidae].}, :root => :subfamily_taxonomic_history_item).value_with_matched_text_removed.should ==
-        {:type => :subfamily_taxonomic_history_item,
+      @grammar.parse(%{Dolichoderinae as tribe of Formicidae: André, 1882a: 127 [Dolichoderidae].}, :root => :subfamily_history_item).value_with_matched_text_removed.should ==
+        {:type => :subfamily_history_item,
           :subfamily => {:subfamily_name => 'Dolichoderinae'},
           :as_tribe_of => {:family_name => 'Formicidae'},
           :references => [{:author_names => ['André'], :year => '1882a', :pages => '127', :note => '[Dolichoderidae]'}],
@@ -155,8 +155,8 @@ describe Importers::Bolton::Catalog::Subfamily::SubfamilyGrammar do
     end
     it "should parse a kind of subfamily" do
       ['formicoid', 'formicomorph', 'formicoid dolichoderomorph'].each do |kind|
-        @grammar.parse("Aneuretinae as #{kind} subfamily of Formicidae: Bolton, 2003: 18, 79.", :root => :subfamily_taxonomic_history_item).value_with_matched_text_removed.should ==
-          {:type => :subfamily_taxonomic_history_item,
+        @grammar.parse("Aneuretinae as #{kind} subfamily of Formicidae: Bolton, 2003: 18, 79.", :root => :subfamily_history_item).value_with_matched_text_removed.should ==
+          {:type => :subfamily_history_item,
             :subfamily => {:subfamily_name => 'Aneuretinae'},
             :as_subfamily => true, :kind => kind,
             :references => [{:author_names => ['Bolton'], :year => '2003', :pages => '18, 79'}],
@@ -165,8 +165,8 @@ describe Importers::Bolton::Catalog::Subfamily::SubfamilyGrammar do
     end
 
     it "should recognize the history as a family" do
-      @grammar.parse(%{Dolichoderinae as family: Emery, 1894g: 378 [Dolichoderidae].}, :root => :subfamily_taxonomic_history_item).value_with_matched_text_removed.should == {
-        :type => :subfamily_taxonomic_history_item,
+      @grammar.parse(%{Dolichoderinae as family: Emery, 1894g: 378 [Dolichoderidae].}, :root => :subfamily_history_item).value_with_matched_text_removed.should == {
+        :type => :subfamily_history_item,
         :subfamily => {:subfamily_name => 'Dolichoderinae'},
         :as_family => true,
         :references => [{:author_names => ['Emery'], :year => '1894g', :pages => '378', :note => '[Dolichoderidae]'}]

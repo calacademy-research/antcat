@@ -6,7 +6,7 @@ grammar Importers::Bolton::Catalog::Subfamily::FamilyGrammar
       family_references_header
     | family_centered_header
     | family_header
-    | family_taxonomic_history
+    | family_history
     | family_group_headline
 
     | extant_subfamilies_list
@@ -72,11 +72,11 @@ grammar Importers::Bolton::Catalog::Subfamily::FamilyGrammar
     }
   end
 
-  rule family_taxonomic_history
+  rule family_history
     ('Formicidae as family: ' text) {
       text_copy = text.value[:text]
       text_copy.insert 0, :phrase => 'Formicidae as family', :delimiter => ': '
-      {:type => :family_taxonomic_history, :items => text_copy}
+      {:type => :family_history, :items => text_copy}
     }
   end
 

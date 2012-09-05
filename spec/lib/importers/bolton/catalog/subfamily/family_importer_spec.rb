@@ -82,7 +82,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
     family.should_not be_fossil
     family.type_name.to_s.should == 'Formica'
     family.type_name.rank.should == 'genus'
-    family.taxonomic_history_items.map(&:taxt).should =~ [
+    family.history_items.map(&:taxt).should =~ [
       %{Formicidae as family: {ref #{latreille.id}}: 124 [{nam #{Name.find_by_name('Formicariae').id}}]; all subsequent authors}
     ]
 
@@ -107,7 +107,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
     genus.should be_fossil
     genus.should be_incertae_sedis_in 'family'
     genus.subfamily.should be_nil
-    genus.taxonomic_history_items.map(&:taxt).should =~ [
+    genus.history_items.map(&:taxt).should =~ [
       "{nam #{Name.find_by_name('Condylodon').id}} in family {nam #{Name.find_by_name('Mutillidae').id}}: {ref #{swainson.id}}: 173."
     ]
     genus.type_name.to_s.should == "Condylodon audouini"
@@ -134,7 +134,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
     subfamily.status.should == 'unavailable'
     subfamily.protonym.name.to_s.should == 'Alloformicinae'
     subfamily.headline_notes_taxt.should == " Section designated to include tribe {nam #{Name.find_by_name('Melophorini').id}}: {ref #{bolton.id}}: 51."
-    subfamily.taxonomic_history_items.map(&:taxt).should =~ [
+    subfamily.history_items.map(&:taxt).should =~ [
       "{nam #{Name.find_by_name('Promyrmicinae').id}}: {ref #{forel.id}}: 240 [incorrect expansion of the above unavailable name to include tribes {nam #{Name.find_by_name('Metaponini').id}} and {nam #{Name.find_by_name('Pseudomyrmini').id}}]. Unavailable name."
     ]
   end

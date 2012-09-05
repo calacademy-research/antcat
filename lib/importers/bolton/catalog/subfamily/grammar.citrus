@@ -14,7 +14,7 @@ grammar Importers::Bolton::Catalog::Subfamily::Grammar
     | genus_section
     | subgenus_section
     | uppercase_line
-    | taxonomic_history_header
+    | history_header
     | collective_group_name_header
     | references_section_header
     | regional_and_national_faunas_header
@@ -39,9 +39,9 @@ grammar Importers::Bolton::Catalog::Subfamily::Grammar
     }
   end
 
-  rule taxonomic_history_header
+  rule history_header
     'Taxonomic history' {
-      {type: :taxonomic_history_header}
+      {type: :history_header}
     }
   end
 

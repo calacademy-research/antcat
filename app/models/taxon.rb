@@ -66,7 +66,7 @@ class Taxon < ActiveRecord::Base
   # other associations
   belongs_to  :protonym, dependent: :destroy
   belongs_to  :type_name, class_name: 'Name', foreign_key: :type_name_id
-  has_many    :taxonomic_history_items, order: :position, dependent: :destroy
+  has_many    :history_items, class_name: 'TaxonHistoryItem', order: :position, dependent: :destroy
   has_many    :reference_sections, order: :position, dependent: :destroy
 
   ###############################################

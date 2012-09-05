@@ -11,14 +11,14 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     name = consume(:subfamily_header)[:name]
     headline = consume :family_group_headline
     fossil = headline[:protonym][:fossil]
-    history = parse_taxonomic_history
+    history = parse_history
 
     subfamily = Subfamily.import(
       subfamily_name: name,
       fossil: fossil,
       protonym: headline[:protonym],
       type_genus: headline[:type_genus],
-      taxonomic_history: history,
+      history: history,
     )
     Progress.info "Created #{subfamily.inspect}"
 
@@ -85,18 +85,18 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     parse_next_line :unavailable_family_group_name_detail
     protonym = @parse_result[:protonym]
     headline_notes_taxt = Importers::Bolton::Catalog::TextToTaxt.convert(@parse_result[:additional_notes])
-    taxonomic_history = []
+    history = []
     loop do
       parse_next_line
       break unless @type == :texts
-      taxonomic_history << Importers::Bolton::Catalog::TextToTaxt.convert(@parse_result[:texts])
+      history << Importers::Bolton::Catalog::TextToTaxt.convert(@parse_result[:texts])
     end
 
     subfamily = Subfamily.import(
       subfamily_name:     name,
       status:             'unavailable',
       protonym:           protonym,
-      taxonomic_history:  taxonomic_history,
+      history:            history,
       headline_notes_taxt:headline_notes_taxt,
     )
     Progress.info "Created #{subfamily.inspect}"

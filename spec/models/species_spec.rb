@@ -78,7 +78,7 @@ describe Species do
       species.should be_fossil
       species.genus.should == genus
       species.subfamily.should == subfamily
-      species.taxonomic_history_items.map(&:taxt).should == ['Atta major as species', 'Atta major as subspecies']
+      species.history_items.map(&:taxt).should == ['Atta major as species', 'Atta major as subspecies']
 
       protonym = species.protonym
       protonym.name.to_s.should == 'Atta major'

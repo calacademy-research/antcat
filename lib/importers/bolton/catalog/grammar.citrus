@@ -729,15 +729,15 @@ grammar Importers::Bolton::Catalog::Grammar
 
   ####################################
 
-  rule taxonomic_history_references
-    (taxonomic_history_reference ('; ' taxonomic_history_reference)* ('; ' subsequent_authors)*) {
-      value = captures[:taxonomic_history_reference].map(&:value)
+  rule history_references
+    (history_reference ('; ' history_reference)* ('; ' subsequent_authors)*) {
+      value = captures[:history_reference].map(&:value)
       value << {:subsequent_authors => subsequent_authors.to_s} if subsequent_authors
       {:references => value}
     }
   end
 
-  rule taxonomic_history_reference
+  rule history_reference
     (reference (' ' bracketed_text)? ) {
       value = reference.value
       value.merge! bracketed_text.value if bracketed_text

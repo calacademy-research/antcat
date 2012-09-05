@@ -1,8 +1,8 @@
 # coding: UTF-8
-class TaxonomicHistoryItemsController < ApplicationController
+class TaxonHistoryItemsController < ApplicationController
 
   def update
-    @item = TaxonomicHistoryItem.find params[:id]
+    @item = TaxonHistoryItem.find params[:id]
     @item.update_taxt_from_editable params[:taxt_editor]
     json = {
       isNew: false,

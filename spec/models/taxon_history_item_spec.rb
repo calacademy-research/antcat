@@ -1,13 +1,13 @@
 # coding: UTF-8
 require 'spec_helper'
 
-describe TaxonomicHistoryItem do
+describe TaxonHistoryItem do
   it "can't be blank" do
-    TaxonomicHistoryItem.new.should_not be_valid
-    TaxonomicHistoryItem.new(taxt: '').should_not be_valid
+    TaxonHistoryItem.new.should_not be_valid
+    TaxonHistoryItem.new(taxt: '').should_not be_valid
   end
   it "should have some taxt" do
-    item = TaxonomicHistoryItem.new :taxt => 'taxt'
+    item = TaxonHistoryItem.new :taxt => 'taxt'
     item.should be_valid
     item.save!
     item.reload
@@ -15,12 +15,12 @@ describe TaxonomicHistoryItem do
   end
   it "can belong to a taxon" do
     taxon = FactoryGirl.create :family
-    item = taxon.taxonomic_history_items.create! :taxt => 'foo'
+    item = taxon.history_items.create! :taxt => 'foo'
     item.reload.taxon.should == taxon 
   end
 
   describe "Updating taxt from editable taxt" do
-    let(:item) {FactoryGirl.create :taxonomic_history_item}
+    let(:item) {FactoryGirl.create :history_item}
 
     it "should not blow up on blank input but should be invalid and have errors" do
       item.update_taxt_from_editable ''
@@ -50,6 +50,5 @@ describe TaxonomicHistoryItem do
       item.errors.should_not be_empty
     end
 
-    #it "should have errors if braces are unbalanced"
   end
 end

@@ -59,7 +59,7 @@ describe Importers::Bolton::Catalog::Subfamily::FamilyGrammar do
 
   it "should recognize the family taxonomic history" do
     @grammar.parse(%{Formicidae as family: Latreille, 1809: 124 [Formicariae]; Stephens, 1829: 356; all subsequent authors.}).value_with_matched_text_removed.should == {
-      :type => :family_taxonomic_history,
+      :type => :family_history,
       :items => [
         {:phrase => 'Formicidae as family', :delimiter => ': '},
         {:author_names => ['Latreille'], :year => '1809', :pages => '124', :delimiter => ' '},

@@ -12,8 +12,8 @@ class Family < Taxon
       }
       attributes.merge! get_type_attributes :type_genus, data
       family = create! attributes
-      data[:taxonomic_history].each do |item|
-        family.taxonomic_history_items.create! taxt: item
+      data[:history].each do |item|
+        family.history_items.create! taxt: item
       end
       family
     end

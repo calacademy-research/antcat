@@ -44,7 +44,7 @@ describe Subgenus do
                    authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]},
         type_species: {genus_name: 'Atta', subgenus_name: 'Subatta', species_epithet: 'major',
                           texts: [{text: [{phrase: ', by monotypy'}]}]},
-        taxonomic_history: ["Atta as subgenus", "Atta as species"]
+        history: ["Atta as subgenus", "Atta as species"]
       )
 
       subgenus.name.to_s.should == 'Atta (Subatta)'
@@ -54,7 +54,7 @@ describe Subgenus do
       subgenus.genus.should == genus
       genus.subgenera.map(&:id).should == [subgenus.id]
       #subgenus.subfamily.should == genus.subfamily
-      subgenus.taxonomic_history_items.map(&:taxt).should == ['Atta as subgenus', 'Atta as species']
+      subgenus.history_items.map(&:taxt).should == ['Atta as subgenus', 'Atta as species']
       subgenus.type_taxt.should == ', by monotypy'
 
       protonym = subgenus.protonym

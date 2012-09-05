@@ -251,7 +251,7 @@ FactoryGirl.define do
     association :name, factory: :genus_name
   end
 
-  factory :taxonomic_history_item do
+  factory :history_item, class: TaxonHistoryItem do
     taxt 'Taxonomic history'
   end
 

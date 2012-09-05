@@ -56,7 +56,7 @@ describe Tribe do
         protonym: {tribe_name: "Aneuretini",
                    authorship: [{author_names: ["Emery"], year: "1913a", pages: "6"}]},
         type_genus: {genus_name: 'Atta'},
-        taxonomic_history: ["Aneuretini history"]
+        history: ["Aneuretini history"]
       )
       
       tribe.reload
@@ -64,7 +64,7 @@ describe Tribe do
       tribe.name.to_s.should == 'Aneuretini'
       tribe.should_not be_invalid
       tribe.should be_fossil
-      tribe.taxonomic_history_items.map(&:taxt).should == ['Aneuretini history']
+      tribe.history_items.map(&:taxt).should == ['Aneuretini history']
 
       tribe.type_name.to_s.should == 'Atta'
       tribe.type_name.rank.should == 'genus'

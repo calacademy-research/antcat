@@ -171,14 +171,14 @@ describe Genus do
                    authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]},
         type_species: {genus_name: 'Atta', species_epithet: 'major',
                           texts: [{text: [{phrase: ', by monotypy'}]}]},
-        taxonomic_history: ["Atta as genus", "Atta as species"]
+        history: ["Atta as genus", "Atta as species"]
       ).reload
       genus.name.to_s.should == 'Atta'
       genus.name.epithet.should == 'Atta'
       genus.should_not be_invalid
       genus.should be_fossil
       genus.subfamily.should == subfamily
-      genus.taxonomic_history_items.map(&:taxt).should == ['Atta as genus', 'Atta as species']
+      genus.history_items.map(&:taxt).should == ['Atta as genus', 'Atta as species']
       genus.type_taxt.should == ', by monotypy'
 
       protonym = genus.protonym
@@ -197,7 +197,7 @@ describe Genus do
         protonym: {genus_name: "Atta", authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]},
         type_species: {genus_name: 'Atta', subgenus_epithet: 'Solis', species_epithet: 'major',
                           texts: [{text: [{phrase: ', by monotypy'}]}]},
-        taxonomic_history: [],
+        history: [],
       })
       Genus.find(genus).type_name.to_s.should == 'Atta (Solis) major'
     end
@@ -210,7 +210,7 @@ describe Genus do
           :genus_name => "Atta",
           :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
         },
-        :taxonomic_history => ["Atta as genus", "Atta as species"]
+        :history => ["Atta as genus", "Atta as species"]
       }).reload
       genus.type_taxt.should be_nil
     end
@@ -221,7 +221,7 @@ describe Genus do
         genus_name: 'Atta',
         protonym: {genus_name: "Atta"},
         attributes: {synonym_of: senior},
-        taxonomic_history: []
+        history: []
       )
       junior.junior_synonyms.should be_empty
       junior.senior_synonyms.should == [senior]
@@ -238,7 +238,7 @@ describe Genus do
           :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
         },
         :type_species => {:genus_name => 'Myrmicium', :species_epithet => 'heeri'},
-        :taxonomic_history => []
+        :history => []
       })
       genus = Genus.find genus
       genus.type_name.to_s.should == 'Myrmicium heeri'

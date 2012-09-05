@@ -271,18 +271,18 @@ describe Taxon do
   describe "Taxonomic history items" do
     it "should have some" do
       taxon = FactoryGirl.create :family
-      taxon.taxonomic_history_items.should be_empty
-      taxon.taxonomic_history_items.create! taxt: 'foo'
-      taxon.reload.taxonomic_history_items.map(&:taxt).should == ['foo']
+      taxon.history_items.should be_empty
+      taxon.history_items.create! taxt: 'foo'
+      taxon.reload.history_items.map(&:taxt).should == ['foo']
     end
     it "should show the items in the order in which they were added to the taxon" do
       taxon = FactoryGirl.create :family
-      taxon.taxonomic_history_items.create! taxt: '1'
-      taxon.taxonomic_history_items.create! taxt: '2'
-      taxon.taxonomic_history_items.create! taxt: '3'
-      taxon.taxonomic_history_items.map(&:taxt).should == ['1','2','3']
-      taxon.taxonomic_history_items.first.move_to_bottom
-      taxon.taxonomic_history_items(true).map(&:taxt).should == ['2','3','1']
+      taxon.history_items.create! taxt: '1'
+      taxon.history_items.create! taxt: '2'
+      taxon.history_items.create! taxt: '3'
+      taxon.history_items.map(&:taxt).should == ['1','2','3']
+      taxon.history_items.first.move_to_bottom
+      taxon.history_items(true).map(&:taxt).should == ['2','3','1']
     end
   end
 

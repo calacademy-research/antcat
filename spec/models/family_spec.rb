@@ -15,14 +15,14 @@ describe Family do
           :genus_name => 'Formica',
           :texts => [{:text => [{:phrase => ', by monotypy'}]}]
         },
-        :taxonomic_history => ["Formicidae as family"]
+        :history => ["Formicidae as family"]
       }
 
       family = Family.import(data).reload
       family.name.to_s.should == 'Formicidae'
       family.should_not be_invalid
       family.should_not be_fossil
-      family.taxonomic_history_items.map(&:taxt).should == ['Formicidae as family']
+      family.history_items.map(&:taxt).should == ['Formicidae as family']
 
       family.type_name.to_s.should == 'Formica'
       family.type_name.rank.should == 'genus'
@@ -45,14 +45,14 @@ describe Family do
         },
         :type_genus => {:genus_name => 'Formica'},
         :note => [{:phrase=>"[Note.]"}],
-        :taxonomic_history => ["Formicidae as family"]
+        :history => ["Formicidae as family"]
       }
 
       family = Family.import(data).reload
       family.name.to_s.should == 'Formicidae'
       family.should_not be_invalid
       family.should_not be_fossil
-      family.taxonomic_history_items.map(&:taxt).should == ['Formicidae as family']
+      family.history_items.map(&:taxt).should == ['Formicidae as family']
 
       family.headline_notes_taxt.should == '[Note.]'
 

@@ -22,7 +22,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     name ||= headline[:protonym][:subgenus_name] || headline[:protonym][:genus_name]
     fossil ||= headline[:protonym][:fossil]
 
-    history = parse_taxonomic_history
+    history = parse_history
 
     subgenus = Subgenus.import(
       :subgenus_epithet => name,
@@ -31,7 +31,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
       :protonym => headline[:protonym],
       :note => headline[:note].try(:[], :text),
       :type_species => headline[:type_species],
-      :taxonomic_history => history,
+      :history => history,
       :attributes => attributes
     )
     info_message = "Created #{subgenus.inspect}"

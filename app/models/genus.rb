@@ -32,7 +32,7 @@ class Genus < GenusGroupTaxon
       fossil: true,
       protonym: {genus_name: 'Attaichnus', authorship: [{author_names: ['Laza'], year: '1982', pages: '112', matched_text: 'Laza, 1982: 112'}]},
       note: note,
-      taxonomic_history: [],
+      history: [],
     )
   end
   def self.import_formicites
@@ -44,7 +44,7 @@ class Genus < GenusGroupTaxon
       status: 'collective group name',
       fossil: true,
       protonym: parse_result[:protonym],
-      taxonomic_history: [history],
+      history: [history],
     )
   end
 
