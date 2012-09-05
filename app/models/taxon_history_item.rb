@@ -1,5 +1,5 @@
 # coding: UTF-8
-class TaxonomicHistoryItem < ActiveRecord::Base
+class TaxonHistoryItem < ActiveRecord::Base
   belongs_to :taxon
   acts_as_list :scope => :taxon
   validates_presence_of :taxt

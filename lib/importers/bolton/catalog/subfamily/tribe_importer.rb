@@ -7,7 +7,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     name = consume(:tribe_header)[:name]
     headline = consume :family_group_headline
     fossil = headline[:protonym][:fossil]
-    history = parse_taxonomic_history
+    history = parse_history
 
     tribe = Tribe.import(
       tribe_name: name,
@@ -15,7 +15,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
       subfamily: subfamily,
       protonym: headline[:protonym],
       type_genus: headline[:type_genus],
-      taxonomic_history: history,
+      history: history,
     )
     Progress.info "Created #{tribe.inspect}"
 
@@ -41,7 +41,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     name = headline[:protonym][:tribe_name] || headline[:protonym][:subtribe_name] || headline[:protonym][:family_or_subfamily_name]
     fossil = headline[:protonym][:fossil]
 
-    history = parse_taxonomic_history
+    history = parse_history
 
     tribe = Tribe.import(
       tribe_name: name,
@@ -51,7 +51,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
       synonym_of: senior_synonym,
       protonym: headline[:protonym],
       type_genus: headline[:type_genus],
-      taxonomic_history: history,
+      history: history,
     )
     Progress.info "Created #{tribe.inspect}: synonym for #{senior_synonym.inspect}"
     true

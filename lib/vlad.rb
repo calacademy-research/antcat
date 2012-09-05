@@ -94,7 +94,7 @@ class Vlad
         ForwardRef,
         Synonym,
         Taxon,
-        TaxonomicHistoryItem,
+        TaxonHistoryItem,
         User,
       ].map do |table|
         {table: table.to_s, count: table.count}

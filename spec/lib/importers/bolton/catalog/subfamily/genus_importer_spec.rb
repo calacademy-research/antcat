@@ -39,7 +39,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
       genus.should_not be_invalid
       genus.should_not be_fossil
       genus.subfamily.name.to_s.should == 'Martialinae'
-      genus.taxonomic_history_items.map(&:taxt).should =~
+      genus.history_items.map(&:taxt).should =~
         ["{nam #{Name.find_by_name('Condylodon').id}} in family {nam #{Name.find_by_name('Mutillidae').id}}: {ref #{swainson.id}}: 173."]
       genus.type_name.to_s.should == "Condylodon audouini"
       genus.type_taxt.should == ", by monotypy."
@@ -140,13 +140,13 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
           <p><i>Sphinctomyrmex</i> references</p>
         }
         sphinctomyrmex = Genus.find_by_name 'Sphinctomyrmex'
-        sphinctomyrmex.taxonomic_history_items.map(&:taxt).should == ['Sphinctomyrmex history']
+        sphinctomyrmex.history_items.map(&:taxt).should == ['Sphinctomyrmex history']
         sphinctomyrmex.reference_sections.map(&:references).should == [
           "[Note. Entries prior to {ref #{bolton.id}}: 44, refer to genus as {nam #{Name.find_by_name('Acantholepis').id}}.]",
           "{nam #{Name.find_by_name('Sphinctomyrmex').id}} references",
         ]
         aethiopopone = Genus.find_by_name 'Aethiopopone'
-        aethiopopone.taxonomic_history_items.map(&:taxt).should == ["{nam #{aethiopopone.name.id}} history"]
+        aethiopopone.history_items.map(&:taxt).should == ["{nam #{aethiopopone.name.id}} history"]
         aethiopopone.reference_sections.should == []
       end
     end
@@ -162,7 +162,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
         <p><i>Condylodon</i> in family Mutillidae: Swainson &amp; Shuckard, 1840: 173.</p>
         <p><i>Condylodon</i> as junior synonym of <i>Pseudomyrma</i>: Dalla Torre, 1893: 55.</p>
       </div>}
-      @importer.parse_taxonomic_history.should == [
+      @importer.parse_history.should == [
         "{nam #{Name.find_by_name('Condylodon').id}} in family {nam #{Name.find_by_name('Mutillidae').id}}: {ref #{swainson.id}}: 173.",
         "{nam #{Name.find_by_name('Condylodon').id}} as junior synonym of {nam #{Name.find_by_name('Pseudomyrma').id}}: {ref #{dalla_torre.id}}: 55."
       ]
@@ -173,7 +173,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
         <p>Taxonomic history</p>
         <p><i>Ponerites</i> Dlussky, 1981b: 67 [collective group name].</p>
       </div>}
-      @importer.parse_taxonomic_history.should == [
+      @importer.parse_history.should == [
         "{nam #{Name.find_by_name('Ponerites').id}} {ref #{dlussky.id}}: 67 [collective group name]."
       ]
     end

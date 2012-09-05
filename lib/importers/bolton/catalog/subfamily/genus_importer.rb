@@ -16,7 +16,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     name ||= headline[:protonym][:genus_name]
     fossil ||= headline[:protonym][:fossil]
 
-    history = parse_taxonomic_history name
+    history = parse_history name
 
     if attributes[:status] == 'synonym' and name == 'Ancylognathus'
       genus = Genus.find_by_name 'Ancylognathus'
@@ -28,7 +28,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
         :protonym => headline[:protonym],
         :note => headline[:note].try(:[], :text),
         :type_species => headline[:type_species],
-        :taxonomic_history => history,
+        :history => history,
         :attributes => attributes
       )
       info_message = "Created #{genus.inspect}"

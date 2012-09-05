@@ -17,14 +17,14 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
 
   def parse_family_record
     headline = consume :family_group_headline
-    consume :taxonomic_history_header
-    taxonomic_history = consume :family_taxonomic_history
+    consume :history_header
+    history = consume :family_history
 
     family = Family.import(
-      protonym:           headline[:protonym],
-      type_genus:         headline[:type_genus],
-      note:               headline[:note],
-      taxonomic_history:  [Importers::Bolton::Catalog::TextToTaxt.convert(taxonomic_history[:items])]
+      protonym:   headline[:protonym],
+      type_genus: headline[:type_genus],
+      note:       headline[:note],
+      history:    [Importers::Bolton::Catalog::TextToTaxt.convert(history[:items])]
     )
     Progress.info "Created #{family.inspect}"
     family

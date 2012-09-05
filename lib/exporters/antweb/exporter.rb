@@ -24,7 +24,7 @@ class Exporters::Antweb::Exporter
       valid?: !taxon.invalid?,
       available?: !taxon.invalid?,
       fossil?: taxon.fossil,
-      taxonomic_history: Exporters::Antweb::Formatter.new(taxon).format
+      history: Exporters::Antweb::Formatter.new(taxon).format
     }
 
     case taxon
@@ -76,7 +76,7 @@ class Exporters::Antweb::Exporter
      nil,
      nil,
      boolean_to_antweb(values[:fossil?]),
-     values[:taxonomic_history]]
+     values[:history]]
   end
 
 end

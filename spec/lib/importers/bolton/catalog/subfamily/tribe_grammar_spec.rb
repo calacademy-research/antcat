@@ -44,8 +44,8 @@ describe Importers::Bolton::Catalog::Subfamily::TribeGrammar do
 
   describe "Taxonomic history items" do
     it "should parse 'tribe of'" do
-      @grammar.parse(%{Aneuretini as tribe of Dolichoderinae: Emery, 1913a: 6; all subsequent authors.}, :root => :tribe_taxonomic_history_item).value_with_matched_text_removed.should ==
-        {:type => :tribe_taxonomic_history_item,
+      @grammar.parse(%{Aneuretini as tribe of Dolichoderinae: Emery, 1913a: 6; all subsequent authors.}, :root => :tribe_history_item).value_with_matched_text_removed.should ==
+        {:type => :tribe_history_item,
           :tribe => {:tribe_name => 'Aneuretini'},
           :tribe_of => {:subfamily_name => 'Dolichoderinae'},
           :references => [
@@ -55,24 +55,24 @@ describe Importers::Bolton::Catalog::Subfamily::TribeGrammar do
         }
     end
     it "should parse 'subtribe of'" do
-      @grammar.parse(%{Stictoponerini as subtribe of Aneuretini: Arnol'di, 1930d: 161.}, :root => :tribe_taxonomic_history_item).value_with_matched_text_removed.should ==
-        {:type => :tribe_taxonomic_history_item,
+      @grammar.parse(%{Stictoponerini as subtribe of Aneuretini: Arnol'di, 1930d: 161.}, :root => :tribe_history_item).value_with_matched_text_removed.should ==
+        {:type => :tribe_history_item,
           :tribe => {:tribe_name => 'Stictoponerini'},
           :subtribe_of => {:tribe_name => 'Aneuretini'},
           :references => [{:author_names => ["Arnol'di"], :year => '1930d', :pages => '161'}],
         }
     end
     it "should parse a subtribe 'as subtribe of'" do
-      @grammar.parse(%{Bothriomyrmecina as subtribe of Iridomyrmecini: Dubovikov, 2005a: 92.}, :root => :tribe_taxonomic_history_item).value_with_matched_text_removed.should ==
-        {:type => :tribe_taxonomic_history_item,
+      @grammar.parse(%{Bothriomyrmecina as subtribe of Iridomyrmecini: Dubovikov, 2005a: 92.}, :root => :tribe_history_item).value_with_matched_text_removed.should ==
+        {:type => :tribe_history_item,
           :tribe => {:subtribe_name => 'Bothriomyrmecina'},
           :subtribe_of => {:tribe_name => 'Iridomyrmecini'},
           :references => [{:author_names => ["Dubovikov"], :year => '2005a', :pages => '92'}],
         }
     end
     it "should parse 'junior synonym of'" do
-      @grammar.parse(%{*Pityomyrmecini as junior synonym of Dolichoderinae: Shattuck, 1992c: 5.}, :root => :tribe_taxonomic_history_item).value_with_matched_text_removed.should ==
-        {:type => :tribe_taxonomic_history_item,
+      @grammar.parse(%{*Pityomyrmecini as junior synonym of Dolichoderinae: Shattuck, 1992c: 5.}, :root => :tribe_history_item).value_with_matched_text_removed.should ==
+        {:type => :tribe_history_item,
           :tribe => {:tribe_name => 'Pityomyrmecini', :fossil => true},
           :as_junior_synonym_of => {:subfamily => {:subfamily_name => 'Dolichoderinae'}},
           :references => [{:author_names => ['Shattuck'], :year => '1992c', :pages => '5'}],
@@ -80,7 +80,7 @@ describe Importers::Bolton::Catalog::Subfamily::TribeGrammar do
     end
 
     it "should parse 'junior synonym of' a tribe" do
-      @grammar.parse('Anonychomyrmini as junior synonym of Leptomyrmecini: Ward, Brady, <i>et al.</i> 2010: 361.', :root => :tribe_taxonomic_history_item).value_with_matched_text_removed.should == {:type => :tribe_taxonomic_history_item,
+      @grammar.parse('Anonychomyrmini as junior synonym of Leptomyrmecini: Ward, Brady, <i>et al.</i> 2010: 361.', :root => :tribe_history_item).value_with_matched_text_removed.should == {:type => :tribe_history_item,
         :tribe => {:tribe_name => 'Anonychomyrmini'},
         :as_junior_synonym_of => {:tribe => {:tribe_name => 'Leptomyrmecini'}},
         :references => [{:author_names => ['Ward', 'Brady', '<i>et al.</i>'], :year => '2010', :pages => '361'}],
@@ -88,8 +88,8 @@ describe Importers::Bolton::Catalog::Subfamily::TribeGrammar do
     end
 
     it "should parse 'incertae sedis in <subfamily>'" do
-      @grammar.parse(%{*Pityomyrmecini <i>incertae sedis</i> in Dolichoderinae: Ward, Brady, <i>et al.</i> 2010: 362.}, :root => :tribe_taxonomic_history_item).value_with_matched_text_removed.should == {
-        :type => :tribe_taxonomic_history_item,
+      @grammar.parse(%{*Pityomyrmecini <i>incertae sedis</i> in Dolichoderinae: Ward, Brady, <i>et al.</i> 2010: 362.}, :root => :tribe_history_item).value_with_matched_text_removed.should == {
+        :type => :tribe_history_item,
         :tribe => {:tribe_name => "Pityomyrmecini", :fossil => true},
         :incertae_sedis_in => [{:subfamily_name => 'Dolichoderinae'}],
         :references => [

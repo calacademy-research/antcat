@@ -232,7 +232,7 @@ describe Importers::Bolton::Catalog::TextToTaxt do
       it "should change the record" do
         taxon = create_genus
         name = taxon.name
-        history_item = FactoryGirl.create :taxonomic_history_item, taxt: "{nam #{name.id}}"
+        history_item = FactoryGirl.create :history_item, taxt: "{nam #{name.id}}"
         @converter.replace_names_with_taxa
         history_item.reload.taxt.should == "{tax #{taxon.id}}"
       end

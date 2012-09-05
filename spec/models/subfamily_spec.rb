@@ -137,14 +137,14 @@ describe Subfamily do
         protonym: {tribe_name: "Aneuretini",
                    authorship: [{author_names: ["Emery"], year: "1913a", pages: "6"}]},
         type_genus: {genus_name: 'Atta'},
-        taxonomic_history: ["Aneuretinae as subfamily", "Aneuretini as tribe"]
+        history: ["Aneuretinae as subfamily", "Aneuretini as tribe"]
       )
       
       subfamily.reload
       subfamily.name.to_s.should == 'Aneuretinae'
       subfamily.should_not be_invalid
       subfamily.should be_fossil
-      subfamily.taxonomic_history_items.map(&:taxt).should == ['Aneuretinae as subfamily', 'Aneuretini as tribe']
+      subfamily.history_items.map(&:taxt).should == ['Aneuretinae as subfamily', 'Aneuretini as tribe']
 
       subfamily.type_name.to_s.should == 'Atta'
       subfamily.type_name.rank.should == 'genus'

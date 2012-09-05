@@ -21,7 +21,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
   def import
     Name.delete_all
     ReferenceSection.delete_all
-    TaxonomicHistoryItem.delete_all
+    TaxonHistoryItem.delete_all
     MissingReference.delete_all
     Citation.delete_all
     Protonym.delete_all
@@ -95,10 +95,10 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     Importers::Bolton::Catalog::Subfamily::Grammar
   end
 
-  def parse_taxonomic_history genus_name = nil
+  def parse_history genus_name = nil
     Progress.method
     taxts = []
-    if @type == :taxonomic_history_header
+    if @type == :history_header
       loop do
         parse_next_line
         convert_ponerites_headline_to_text

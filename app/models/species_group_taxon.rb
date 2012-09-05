@@ -76,7 +76,7 @@ class SpeciesGroupTaxon < Taxon
   def create_history_items history
     return unless history.present?
     for item in history
-      taxonomic_history_items.create! taxt: item
+      history_items.create! taxt: item
     end
   end
 

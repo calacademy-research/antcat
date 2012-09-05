@@ -159,9 +159,9 @@ class Formatters::TaxonFormatter
 
   ##########
   def history
-    if @taxon.taxonomic_history_items.present?
+    if @taxon.history_items.present?
       content_tag :div, class: 'history' do
-        @taxon.taxonomic_history_items.inject(''.html_safe) do |content, item|
+        @taxon.history_items.inject(''.html_safe) do |content, item|
           content << history_item(item)
         end
       end

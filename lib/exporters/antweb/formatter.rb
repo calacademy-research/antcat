@@ -11,7 +11,7 @@ class Exporters::Antweb::Formatter < Formatters::TaxonFormatter
   end
 
   def history
-    return unless @taxon.taxonomic_history_items.present?
+    return unless @taxon.history_items.present?
     '<p><b>Taxonomic history</b></p>'.html_safe + super
   end
 
@@ -21,7 +21,7 @@ class Exporters::Antweb::Formatter < Formatters::TaxonFormatter
     label_and_classes = taxon_label_and_css_classes taxon, :uppercase => true
     span = content_tag('span', label_and_classes[:label], :class => label_and_classes[:css_classes])
     string = %{<p class="taxon_subsection_header">Homonym replaced by #{span}</p>}
-    string << %{<div id="#{homonym_replaced.id}">#{homonym_replaced.taxonomic_history}</div>}
+    string << %{<div id="#{homonym_replaced.id}">#{homonym_replaced.history}</div>}
     string
   end
 

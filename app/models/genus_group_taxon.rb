@@ -45,14 +45,14 @@ class GenusGroupTaxon < Taxon
       senior = attributes.delete :synonym_of
       taxon = create! attributes
       taxon.import_synonyms senior
-      taxon.import_taxonomic_history data
+      taxon.import_history data
       taxon
     end
   end
 
-  def import_taxonomic_history data
-    for item in data[:taxonomic_history].select &:present?
-      taxonomic_history_items.create! taxt: item
+  def import_history data
+    for item in data[:history].select &:present?
+      history_items.create! taxt: item
     end
   end
 

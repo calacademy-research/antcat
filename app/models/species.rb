@@ -24,7 +24,7 @@ class Species < SpeciesGroupTaxon
            genus: myrmicium,
            protonym: parse_result[:protonym],
            raw_history: parse_result[:history],
-           history: Importers::Bolton::Catalog::Species::Importer.convert_taxonomic_history_to_taxts(parse_result[:history])
+           history: Importers::Bolton::Catalog::Species::Importer.convert_history_to_taxts(parse_result[:history])
   end
 
 end

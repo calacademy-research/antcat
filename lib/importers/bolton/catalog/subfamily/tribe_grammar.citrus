@@ -65,21 +65,21 @@ grammar Importers::Bolton::Catalog::Subfamily::TribeGrammar
   end
 
   #################################################################################
-  rule tribe_taxonomic_history_item
-     tribe_incertae_sedis_history_item | regular_tribe_taxonomic_history_item
+  rule tribe_history_item
+     tribe_incertae_sedis_history_item | regular_tribe_history_item
   end
 
-  rule regular_tribe_taxonomic_history_item
-    (label:(tribe_label|subtribe_label) ' ' tribe_taxonomic_history_item_status ': ' taxonomic_history_references '.') {
-      value = {:type => :tribe_taxonomic_history_item}
+  rule regular_tribe_history_item
+    (label:(tribe_label|subtribe_label) ' ' tribe_history_item_status ': ' history_references '.') {
+      value = {:type => :tribe_history_item}
       value[:tribe] = label.value
-      value.merge! tribe_taxonomic_history_item_status.value
-      value.merge! taxonomic_history_references.value
+      value.merge! tribe_history_item_status.value
+      value.merge! history_references.value
       value
     }
   end
 
-  rule tribe_taxonomic_history_item_status
+  rule tribe_history_item_status
     as_tribe | as_subtribe | as_junior_synonym_of_subfamily | as_junior_synonym_of_tribe
   end
 
@@ -111,7 +111,7 @@ grammar Importers::Bolton::Catalog::Subfamily::TribeGrammar
 
   rule tribe_incertae_sedis_history_item
     (tribe_label ' ' incertae_sedis_in ' ' subfamily_label ': ' references '.') {
-      value = {:type => :tribe_taxonomic_history_item}
+      value = {:type => :tribe_history_item}
       value[:tribe] = tribe_label.value
       value.merge! :incertae_sedis_in => captures[:subfamily_label].map(&:value)
       value.merge! references.value

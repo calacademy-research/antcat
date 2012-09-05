@@ -16,7 +16,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
           :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
         },
         :type_genus => {:genus_name => 'Formica'},
-        :taxonomic_history => ['Taxonomic history']
+        :history => ['Taxonomic history']
       )
       @importer.stub :parse_family
     end
@@ -111,13 +111,13 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
       subfamily.type_name.to_s.should == 'Aneuretus'
       subfamily.type_name.rank.should == 'genus'
 
-      subfamily.taxonomic_history_items.map(&:taxt).should =~ [
+      subfamily.history_items.map(&:taxt).should =~ [
         "{nam #{Name.find_by_name('Aneuretinae').id}} as junior synonym of {nam #{Name.find_by_name('Dolichoderinae').id}}: {ref #{MissingReference.first.id}}: 147."
       ]
 
       tribe = Tribe.find_by_name 'Aneuretini'
       tribe.subfamily.should == subfamily
-      tribe.taxonomic_history_items.map(&:taxt).should == ["history"]
+      tribe.history_items.map(&:taxt).should == ["history"]
       tribe.type_name.to_s.should == 'Aneuretus'
       tribe.type_name.rank.should == 'genus'
       tribe.reference_sections.map(&:title).should == ["Subfamily, tribe {nam #{Name.find_by_name('Aneuretini').id}} and genus {nam #{Name.find_by_name('Aneuretus').id}} references"]

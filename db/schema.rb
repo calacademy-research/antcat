@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120830194344) do
+ActiveRecord::Schema.define(:version => 20120905151149) do
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
@@ -250,7 +250,7 @@ ActiveRecord::Schema.define(:version => 20120830194344) do
   add_index "taxa", ["type"], :name => "taxa_type_idx"
   add_index "taxa", ["type_name_id"], :name => "index_taxa_on_type_name_id"
 
-  create_table "taxonomic_history_items", :force => true do |t|
+  create_table "taxon_history_items", :force => true do |t|
     t.text     "taxt"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -258,7 +258,7 @@ ActiveRecord::Schema.define(:version => 20120830194344) do
     t.integer  "position"
   end
 
-  add_index "taxonomic_history_items", ["taxon_id"], :name => "index_taxonomic_history_items_on_taxon_id"
+  add_index "taxon_history_items", ["taxon_id"], :name => "index_taxonomic_history_items_on_taxon_id"
 
   create_table "users", :force => true do |t|
     t.string   "email",                              :default => "", :null => false
