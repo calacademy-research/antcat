@@ -2,6 +2,8 @@
 module Formatters::Formatter
   extend ActionView::Helpers::NumberHelper
   extend ActionView::Helpers::TagHelper
+  include ERB::Util
+  extend ERB::Util
 
   module_function
 
@@ -44,7 +46,7 @@ module Formatters::Formatter
   end
 
   def unitalicize string
-    string.gsub %r{<i>(.*)</i>}, '\1'
+    string.gsub(%r{<i>(.*)</i>}, '\1').html_safe
   end
 
   def embolden string
@@ -52,7 +54,15 @@ module Formatters::Formatter
   end
 
   def link contents, href, attributes = {}
-    content_tag(:a, contents, attributes.reverse_merge(target: '_blank', href: href)).html_safe
+    attributes = attributes.dup
+    attributes[:target] = '_blank' unless attributes.include? :target
+    attributes.delete(:target) if attributes[:target].nil?
+    attributes[:href] = href
+    attributes_string = attributes.keys.sort.inject(''.html_safe) do |string, key|
+      term = %{#{key}="#{attributes[key]}" }
+      string << "#{key}=\"#{h attributes[key]}\" ".html_safe
+    end
+    '<a '.html_safe + attributes_string.strip.html_safe + '>'.html_safe + contents + '</a>'.html_safe
   end
 
 end
