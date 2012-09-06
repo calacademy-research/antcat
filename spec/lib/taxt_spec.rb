@@ -34,6 +34,10 @@ describe Taxt do
         name = create_name 'Atta'
         Taxt.encode_taxon_name(genus_name: 'Atta').should == "{nam #{name.id}}"
       end
+      it "should handle a family-group name" do
+        name = create_name 'Dolichoderinae'
+        Taxt.encode_taxon_name(family_or_subfamily_name: 'Dolichoderinae').should == "{nam #{name.id}}"
+      end
       it "should handle a genus name" do
         name = create_name 'Atta'
         Taxt.encode_taxon_name(genus_name: 'Atta').should == "{nam #{name.id}}"
@@ -46,34 +50,19 @@ describe Taxt do
         name = create_name 'Formica (Hypochira) subspinosa'
         Taxt.encode_taxon_name(genus_name: 'Formica', subgenus_epithet: 'Hypochira', species_epithet: 'subspinosa').should == "{nam #{name.id}}"
       end
-      #it "should handle a genus abbreviation + subgenus epithet" do
-        #Taxt.encode_taxon_name('', nil, genus_abbreviation: 'C.', subgenus_epithet:"Hypochira").should == "<i>C. (Hypochira)</i>"
-      #end
       it "should handle a genus name + subgenus epithet" do
         name = create_name 'Acanthostichus (Ctenopyga)'
         Taxt.encode_taxon_name(genus_name: 'Acanthostichus', subgenus_epithet: 'Ctenopyga').should == "{nam #{name.id}}"
       end
-      #it "should handle a genus abbreviation + species epithet" do
-        #Taxt.encode_taxon_name('', nil, genus_abbreviation: 'C.', species_epithet:"major").should == "<i>C. major</i>"
-      #end
-      #it "should handle a lone species epithet" do
-        #name = create_name 'brunneus'
-        #Taxt.encode_taxon_name('brunneus', :species_group_epithet, species_group_epithet: 'brunneus').should == "<i>brunneus</i>"
-      #end
-      #it "should handle a lone species epithet when accompanied by the genus" do
-        #name = create_name 'brunneus'
-        #Taxt.encode_taxon_name('brunneus', :species_group_epithet, species_group_epithet: 'brunneus').should == "<i>brunneus</i>"
-      #end
+      it "if there isn't a genus name for a species epithet, just convert it to italicized text" do
+        Taxt.encode_taxon_name(species_group_epithet: 'brunneus').should == "{epi brunneus}"
+      end
       #it "should put a question mark after questionable names" do
         #Taxt.encode_taxon_name('Atta', :genus, questionable: true).should == "{nam #{Name.find_by_name('Atta').id}}"
       #end
       #it "should put a dagger in front" do
         #Taxt.encode_taxon_name('Atta', :genus, :fossil => true).should == "<i>&dagger;Atta</i>"
       #end
-      it "should not freak at a family_or_subfamily" do
-        name = create_name 'Dolichoderinae'
-        Taxt.encode_taxon_name(family_or_subfamily_name: 'Dolichoderinae').should == "{nam #{name.id}}"
-      end
 
     end
   end
