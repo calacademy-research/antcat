@@ -26,7 +26,7 @@ describe Importers::Bolton::Catalog::Species::Importer do
   it "should link species to existing genera" do
     contents = make_contents %{
       <p><i>ACANTHOMYRMEX</i> (Oriental, Indo-Australian)</p>
-      <p><i>basispinosus</i>. <i>Acanthomyrmex basispinosus</i> Moffett, 1986c: 67, figs. 8A, 9-14 (s.w.) INDONESIA (Sulawesi). Combination in <i>Dorylus (Shuckardia)</i>: Emery, 1895j: 740.</p>
+      <p><i>basispinosus</i>. <i>Acanthomyrmex basispinosus</i> Moffett, 1986c: 67, figs. 8A, 9-14 (s.w.) INDONESIA (Sulawesi).</p>
     }
     Progress.should_not_receive(:error)
     create_genus 'Acanthomyrmex', subfamily: nil, tribe: nil
@@ -41,9 +41,6 @@ describe Importers::Bolton::Catalog::Species::Importer do
 
     basispinosus.protonym.locality.should == 'Indonesia (Sulawesi)'
     basispinosus.protonym.authorship.forms.should == 's.w.'
-
-    history = basispinosus.history_items
-    history.size.should == 1
   end
 
   it "should link a synonym to its senior when the senior has already been seen" do
@@ -165,6 +162,12 @@ describe Importers::Bolton::Catalog::Species::Importer do
         "Replacement name for {nam #{Name.find_by_name('Acropyga silvestrii').id}} {ref #{wheeler.id}}: 100",
         "[Junior primary homonym of {nam #{Name.find_by_name('Acropyga silvestrii').id}} {ref #{emery.id}}: 21.]"
       ]
+    end
+
+    it "should handle Combination in..." do
+      history = [{matched_text: "Combination in"}]
+      history = @importer.class.convert_history_to_taxts history
+      history.should == ["Combination in"]
     end
 
     it "should handle forms with a reference" do

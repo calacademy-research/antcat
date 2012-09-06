@@ -493,7 +493,7 @@ grammar Importers::Bolton::Catalog::Grammar
   end
 
   rule subtribe_name
-    /[[:upper:]][[:lower:]]{2,}(ina|iti)/ {
+    /[[:upper:]][[:lower:]]{2,}(ina|iti)\b/ {
       {:subtribe_name => to_s}
     }
   end
