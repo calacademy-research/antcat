@@ -86,7 +86,8 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     selected = file_names.select do |file_name|
       base_name = File.basename(file_name)
       numeric_prefix = base_name.match /^(\d\d). /
-      numeric_prefix && true #(number = numeric_prefix[1].to_i) && (number == 1 || number == 11)
+      #numeric_prefix && true #(number = numeric_prefix[1].to_i) && (number == 1 || number == 11)
+      numeric_prefix && (number = numeric_prefix[1].to_i) && (number == 1 || number == 3)
     end
     super selected
   end
