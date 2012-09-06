@@ -98,8 +98,8 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     set_synonym 'Camponotus (Camponotus) herculeanus rubens', 'Camponotus novaeboracensis'
     set_status_manually 'Camponotus pallens', 'homonym', 1
     Progress.puts
-    Progress.print 'Replacing {nam} with {tax}'
-    TextToTaxt.replace_names_with_taxa
+    Progress.print 'Replacing {nam} with {tax}...'
+    Importers::Bolton::Catalog::TextToTaxt.replace_names_with_taxa
     Progress.puts
   end
 
