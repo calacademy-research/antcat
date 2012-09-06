@@ -18,7 +18,13 @@ describe Importers::Bolton::Catalog::Subfamily::Grammar do
             {:author_names => ["Emery"], :year => "1921f", :pages => "28 (footnote)"},
       ], text_suffix:'.'}]
     }
- end
+  end
+
+  it "should parse 'Combination in..." do
+    @grammar.parse("Combination in", root: :texts).value_with_matched_text_removed.should == {
+      type: :texts, texts: [{text:[ {phrase: "Combination in"}]}]
+    }
+  end
 
   it "should recognize the usual supersubfamily header" do
     @grammar.parse(%{THE DOLICHODEROMORPHS: SUBFAMILIES ANEURETINAE AND DOLICHODERINAE}).value_with_matched_text_removed.should == {:type => :supersubfamily_header}

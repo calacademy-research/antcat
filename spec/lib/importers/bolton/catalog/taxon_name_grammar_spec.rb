@@ -25,6 +25,9 @@ describe Importers::Bolton::Catalog::Grammar do
     it "matches a subtribe name" do
       @grammar.parse('Bothriomyrmecina', :root => :taxon_label).value_with_matched_text_removed.should == {:subtribe_name => 'Bothriomyrmecina'}
     end
+    it "doesn't match 'Combination'" do
+      -> {@grammar.parse('Combination', root: :subtribe_name, consume: false).value_with_matched_text_removed.should == {:subtribe_name => 'Bothriomyrmecina'}}.should raise_error Citrus::ParseError
+    end
     it "matches a genus label" do
       @grammar.parse('*<i>Atta</i>', :root => :taxon_label).value_with_matched_text_removed.should == {:genus_name => 'Atta', :fossil => true}
     end
