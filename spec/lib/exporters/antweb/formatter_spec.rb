@@ -25,7 +25,7 @@ describe Exporters::Antweb::Formatter do
             %{<p class="taxon_statistics">1 species</p>} +
           %{</div>} +
           %{<div class="headline">} +
-            %{<b><span><i>Atta</i></span></b> } +
+            %{<b><i>Atta</i></b> } +
             %{<span class="authorship">} +
               %{<a href="http://antcat.org/references?q=#{reference.id}" target="_blank" title="Bolton, B. 2010a. Ants I have known. Psyche 1:2.">Bolton, 2010a</a>} +
               %{: 12} +

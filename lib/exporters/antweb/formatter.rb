@@ -6,10 +6,6 @@ class Exporters::Antweb::Formatter < Formatters::TaxonFormatter
   def header
   end
 
-  def protonym_name protonym
-    Formatters::Formatter.embolden super
-  end
-
   def history
     return unless @taxon.history_items.present?
     '<p><b>Taxonomic history</b></p>'.html_safe + super
