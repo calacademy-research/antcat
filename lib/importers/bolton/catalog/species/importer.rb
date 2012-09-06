@@ -58,7 +58,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
                                        genus: @genus,
                                        protonym: @parse_result[:protonym],
                                        raw_history: @parse_result[:history],
-                                       history: self.class.convert_history_to_taxts(@parse_result[:history], @genus)
+                                       history: self.class.convert_history_to_taxts(@parse_result[:history], @genus.name)
             Progress.info "Imported #{species.inspect}"
             @species_count += 1
           end
