@@ -71,6 +71,11 @@ describe Importers::Bolton::Catalog::Species::Importer do
     Genus.find_by_name('Crematogaster').genus_species_header_note.should == '[Notes.]'
   end
 
+  it "should convert the {nam}s in taxt to {tax}s" do
+    Importers::Bolton::Catalog::TextToTaxt.should_receive :replace_names_with_taxa
+    @importer.finish_importing
+  end
+
   it "should handle this" do
     create_genus 'Camponotus'
     contents = make_contents %{
