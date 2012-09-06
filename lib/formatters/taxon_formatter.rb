@@ -13,7 +13,7 @@ class Formatters::TaxonFormatter
       content = ''.html_safe
       content << header
       content << statistics(include_invalid: include_invalid)
-      content << genus_species_header_note
+      content << genus_species_header_notes_taxt
       content << headline
       content << history
       content << child_lists
@@ -66,9 +66,9 @@ class Formatters::TaxonFormatter
   end
 
   ##########
-  def genus_species_header_note
-    if @taxon.genus_species_header_note.present?
-      content_tag :div, detaxt(@taxon.genus_species_header_note), class: 'genus_species_header_note'
+  def genus_species_header_notes_taxt
+    if @taxon.genus_species_header_notes_taxt.present?
+      content_tag :div, detaxt(@taxon.genus_species_header_notes_taxt), class: 'genus_species_header_notes_taxt'
     end
   end
 

@@ -65,7 +65,7 @@ describe Importers::Bolton::Catalog::Species::Importer do
     }
     @importer.import_html contents
     @importer.finish_importing
-    Genus.find_by_name('Crematogaster').genus_species_header_note.should == '[Notes.]'
+    Genus.find_by_name('Crematogaster').genus_species_header_notes_taxt.should == '[Notes.]'
   end
 
   it "should convert the {nam}s in taxt to {tax}s" do
