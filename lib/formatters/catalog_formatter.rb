@@ -57,7 +57,7 @@ module Formatters::CatalogFormatter
   end
 
   def self.format_reference_document_link reference, user
-    "<a class=\"document_link\" target=\"_blank\" href=\"#{reference.url}\">PDF</a>".html_safe if reference.downloadable_by? user
+    link 'PDF', reference.url, class: 'document_link' if reference.downloadable_by? user
   end
 
   # deprecated

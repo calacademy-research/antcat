@@ -1,6 +1,5 @@
 @import 'common'
 
-$tiny_font_size: 11px
 $indent: 6px
 
 #page_contents
@@ -26,8 +25,7 @@ $indent: 6px
   .help
     padding-top: 6px
     text-align: left
-    font-size: 12px
-    line-height: 12px
+    @include solid_12_font
     font-style: italic
     .name
       font-size: 12px
@@ -77,11 +75,10 @@ $indent: 6px
           overflow: auto
 
           .reference
-            line-height: $tiny_font_size
+            @include solid_tiny_font
             text-indent: -$indent
             margin-left: $indent
             a
-              font-size: $tiny_font_size
-              line-height: $tiny_font_size
+              @include solid_tiny_font
               .genus_or_species
-                font-size: $tiny_font_size
+                @include solid_tiny_font
