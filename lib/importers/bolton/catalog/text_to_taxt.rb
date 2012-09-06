@@ -116,7 +116,7 @@ module Importers::Bolton::Catalog::TextToTaxt
   end
 
   def self.replace_names_with_taxa
-    [[Taxon,            [:type_taxt, :headline_notes_taxt, :genus_species_header_note]],
+    [[Taxon,            [:type_taxt, :headline_notes_taxt, :genus_species_header_notes_taxt]],
      [ReferenceSection, [:title, :subtitle, :references]],
      [TaxonHistoryItem, [:taxt]],
     ].each do |klass, fields|
