@@ -159,11 +159,9 @@ class Formatters::TaxonFormatter
     Formatters::Formatter.link 'AntCat', "http://www.antcat.org/catalog/#{taxon.id}"
   end
 
-  def self.format_taxon_link taxon
+  def self.link_to_taxon taxon
     label = taxon.name.to_html_with_fossil(taxon.fossil?)
-    content_tag :a, label, href: "/catalog/#{taxon.id}"
-  rescue Exception => e
-    lll{%q{e}}
+    content_tag :a, label, href: %{/catalog/#{taxon.id}}
   end
 
   ##########

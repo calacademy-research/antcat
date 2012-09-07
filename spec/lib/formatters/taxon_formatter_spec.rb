@@ -183,7 +183,12 @@ describe Formatters::TaxonFormatter do
           %{<a href="http://www.antcat.org/catalog/#{genus.id}" target="_blank">AntCat</a>}
       end
     end
-    describe "Creating a link from AntCat to a taxon on AntCat"
+    describe "Creating a link from AntCat to a taxon on AntCat" do
+      it "should creat the link" do
+        genus = create_genus 'Atta'
+        @formatter.link_to_taxon(genus).should == %{<a href="/catalog/#{genus.id}"><i>Atta</i></a>}
+      end
+    end
   end
 
 end
