@@ -147,8 +147,11 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
   end
 
   def get_file_names _
-    #super Dir.glob("#{$BOLTON_DATA_DIRECTORY}/NGC-Sp*.htm")
-    ['cam1'].map {|e| "#{$BOLTON_DATA_DIRECTORY}/NGC-Sp#{e}.htm"}
+    if AntCat::ImportAllFiles
+      super Dir.glob("#{$BOLTON_DATA_DIRECTORY}/NGC-Sp*.htm")
+    else
+      ['cam1'].map {|e| "#{$BOLTON_DATA_DIRECTORY}/NGC-Sp#{e}.htm"}
+    end
   end
 
 end
