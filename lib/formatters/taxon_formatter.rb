@@ -1,6 +1,7 @@
 # coding: UTF-8
 class Formatters::TaxonFormatter
   include ActionView::Helpers::TagHelper
+  extend ActionView::Helpers::TagHelper
   include ActionView::Context
   include Formatters::Formatter
 
@@ -155,6 +156,13 @@ class Formatters::TaxonFormatter
 
   def self.link_to_taxon taxon
     Formatters::Formatter.link 'AntCat', "http://www.antcat.org/catalog/#{taxon.id}"
+  end
+
+  def self.format_taxon_link taxon
+    label = taxon.name.to_html_with_fossil(taxon.fossil?)
+    content_tag :a, label, href: "/catalog/#{taxon.id}"
+  rescue Exception => e
+    lll{%q{e}}
   end
 
   ##########
