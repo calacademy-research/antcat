@@ -47,17 +47,27 @@ module Taxt
   def self.decode taxt, user = nil, options = {}
     return '' unless taxt
     taxt.gsub(/{ref (\d+)}/) do |ref|
-      Formatters::ReferenceFormatter.format_inline_citation(Reference.find($1), user, options) rescue ref
+      decode_reference ref, $1, user, options
     end.gsub(/{nam (\d+)}/) do |nam|
-      Name.find($1).to_html rescue nam
+      decode_name nam, $1
     end.gsub(/{tax (\d+)}/) do |tax|
-      begin
-        taxon = Taxon.find $1
-        taxon.name.to_html_with_fossil taxon.fossil?
-      rescue
-        tax
-      end
+      decode_taxon tax, $1
     end.html_safe
+  end
+
+  def self.decode_reference whole_match, reference_id_match, user, options
+    Formatters::ReferenceFormatter.format_inline_citation(Reference.find(reference_id_match), user, options) rescue whole_match
+  end
+
+  def self.decode_name whole_match, name_id_match
+    Name.find(name_id_match).to_html rescue whole_match
+  end
+
+  def self.decode_taxon whole_match, taxon_id_match
+    taxon = Taxon.find taxon_id_match
+    taxon.name.to_html_with_fossil taxon.fossil?
+  rescue
+    whole_match
   end
 
   ################################
