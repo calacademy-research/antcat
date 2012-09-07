@@ -175,4 +175,15 @@ describe Formatters::TaxonFormatter do
     end
   end
 
+  describe "Taxon link class methods" do
+    describe "Creating a link from another site to a taxon on AntCat" do
+      it "should create the link" do
+        genus = create_genus
+        @formatter.link_to_antcat(genus).should ==
+          %{<a href="http://www.antcat.org/catalog/#{genus.id}" target="_blank">AntCat</a>}
+      end
+    end
+    describe "Creating a link from AntCat to a taxon on AntCat"
+  end
+
 end

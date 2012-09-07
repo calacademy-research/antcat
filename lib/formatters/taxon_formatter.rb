@@ -155,7 +155,7 @@ class Formatters::TaxonFormatter
   end
 
   ###########
-  def self.link_to_antcat_taxon taxon
+  def self.link_to_antcat taxon
     Formatters::Formatter.link 'AntCat', "http://www.antcat.org/catalog/#{taxon.id}"
   end
 

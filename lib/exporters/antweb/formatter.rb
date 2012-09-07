@@ -28,7 +28,7 @@ class Exporters::Antweb::Formatter < Formatters::TaxonFormatter
   end
 
   def link_to_other_site
-    Formatters::TaxonFormatter.link_to_antcat_taxon @taxon
+    Formatters::TaxonFormatter.link_to_antcat @taxon
   end
 
   def self.link_to_antweb_taxon taxon
