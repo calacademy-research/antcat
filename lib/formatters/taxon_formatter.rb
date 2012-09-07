@@ -147,14 +147,15 @@ class Formatters::TaxonFormatter
   end
 
   def link_to_other_site
-    Exporters::Antweb::Formatter.link_to_taxon @taxon
+    Exporters::Antweb::Formatter.link_to_antweb_taxon @taxon
   end
 
   def link_to_antwiki
     Formatters::Formatter.link 'AntWiki', "http://www.antwiki.org/#{@taxon.name.to_s.gsub(/ /, '_')}"
   end
 
-  def self.link_to_taxon taxon
+  ###########
+  def self.link_to_antcat_taxon taxon
     Formatters::Formatter.link 'AntCat', "http://www.antcat.org/catalog/#{taxon.id}"
   end
 

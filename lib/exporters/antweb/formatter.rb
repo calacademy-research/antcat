@@ -28,10 +28,10 @@ class Exporters::Antweb::Formatter < Formatters::TaxonFormatter
   end
 
   def link_to_other_site
-    Formatters::TaxonFormatter.link_to_taxon @taxon
+    Formatters::TaxonFormatter.link_to_antcat_taxon @taxon
   end
 
-  def self.link_to_taxon taxon
+  def self.link_to_antweb_taxon taxon
     return if taxon.kind_of? Family
     return unless Exporters::Antweb::Exporter.exportable? taxon
     url = %{http://www.antweb.org/description.do?}
