@@ -51,7 +51,12 @@ module Taxt
     end.gsub(/{nam (\d+)}/) do |nam|
       Name.find($1).to_html rescue nam
     end.gsub(/{tax (\d+)}/) do |tax|
-      Taxon.find($1).name.to_html rescue tax
+      begin
+        taxon = Taxon.find $1
+        taxon.name.to_html_with_fossil taxon.fossil?
+      rescue
+        tax
+      end
     end.html_safe
   end
 
