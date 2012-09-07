@@ -71,6 +71,8 @@ module Taxt
 
   def self.encode_taxon_name data
     "{nam #{Name.import(data).id}}"
+  rescue
+    "{epi #{data[:species_group_epithet]}}"
   end
 
 end
