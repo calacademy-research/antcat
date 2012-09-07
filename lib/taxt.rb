@@ -65,7 +65,7 @@ module Taxt
 
   def self.decode_taxon whole_match, taxon_id_match
     taxon = Taxon.find taxon_id_match
-    taxon.name.to_html_with_fossil taxon.fossil?
+    Formatters::TaxonFormatter.format_taxon_link taxon
   rescue
     whole_match
   end

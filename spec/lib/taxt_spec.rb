@@ -161,11 +161,11 @@ describe Taxt do
     describe "Taxon" do
       it "should use the HTML version of the taxon's name" do
         genus = create_genus name: FactoryGirl.create(:genus_name, name_html: '<i>Atta</i>')
-        Taxt.to_string("{tax #{genus.id}}").should == '<i>Atta</i>'
+        Taxt.to_string("{tax #{genus.id}}").should == %{<a href="/catalog/#{genus.id}"><i>Atta</i></a>}
       end
       it "should include the fossil symbol if applicable" do
         genus = create_genus name: FactoryGirl.create(:genus_name, name_html: '<i>Atta</i>'), fossil: true
-        Taxt.to_string("{tax #{genus.id}}").should == '<i>&dagger;</i><i>Atta</i>'
+        Taxt.to_string("{tax #{genus.id}}").should == %{<a href="/catalog/#{genus.id}"><i>&dagger;</i><i>Atta</i></a>}
       end
       it "should not freak if the taxon can't be found" do
         Taxt.to_string("{tax 12345}").should == '{tax 12345}'
