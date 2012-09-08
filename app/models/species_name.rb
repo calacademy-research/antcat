@@ -9,6 +9,8 @@ class SpeciesName < SpeciesGroupName
       SubgenusName.import_data data
     elsif data[:genus]
       data[:genus].name
+    elsif data[:genus_name] && data[:genus_name].kind_of?(Name)
+      data[:genus_name]
     else
       GenusName.import_data data
     end
