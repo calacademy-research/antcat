@@ -57,7 +57,7 @@ class Formatters::TaxonFormatter
 
   def senior_synonym_list
     return '' unless @taxon.senior_synonyms.count > 0
-    ' of ' << @taxon.senior_synonyms.map {|e| Formatters::CatalogFormatter.taxon_label_span(e, ignore_status: true)}.join(', ')
+    ' of ' << @taxon.senior_synonyms.map {|e| Formatters::TaxonFormatter.link_to_taxon(e)}.join(', ')
   end
 
   ##########
@@ -151,12 +151,12 @@ class Formatters::TaxonFormatter
   end
 
   def link_to_antwiki
-    Formatters::Formatter.link 'AntWiki', "http://www.antwiki.org/#{@taxon.name.to_s.gsub(/ /, '_')}"
+    Formatters::Formatter.link_to_external_site 'AntWiki', "http://www.antwiki.org/#{@taxon.name.to_s.gsub(/ /, '_')}"
   end
 
   ###########
   def self.link_to_antcat taxon
-    Formatters::Formatter.link 'AntCat', "http://www.antcat.org/catalog/#{taxon.id}"
+    Formatters::Formatter.link_to_external_site 'AntCat', "http://www.antcat.org/catalog/#{taxon.id}"
   end
 
   def self.link_to_taxon taxon

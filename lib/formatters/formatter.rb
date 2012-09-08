@@ -65,4 +65,8 @@ module Formatters::Formatter
     '<a '.html_safe + attributes_string.strip.html_safe + '>'.html_safe + contents + '</a>'.html_safe
   end
 
+  def link_to_external_site label, url
+    link label.downcase, url, class: 'link_to_external_site'
+  end
+
 end

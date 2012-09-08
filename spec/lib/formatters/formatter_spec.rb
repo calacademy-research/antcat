@@ -57,10 +57,18 @@ describe Formatters::Formatter do
     end
   end
 
-  describe "link" do
-    it "should make a link to a new tab" do
-      @formatter.link('Atta', 'www.antcat.org/1', title: '1').should ==
-        %{<a href="www.antcat.org/1" target="_blank" title="1">Atta</a>}
+  describe "Link creation" do
+    describe "link" do
+      it "should make a link to a new tab" do
+        @formatter.link('Atta', 'www.antcat.org/1', title: '1').should ==
+          %{<a href="www.antcat.org/1" target="_blank" title="1">Atta</a>}
+      end
+    end
+    describe "link_to_external_site" do
+      it "should make a downcased link with the right class" do
+        @formatter.link_to_external_site('Atta', 'www.antcat.org/1').should ==
+          %{<a class="link_to_external_site" href="www.antcat.org/1" target="_blank">atta</a>}
+      end
     end
   end
 

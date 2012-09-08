@@ -46,7 +46,7 @@ class Exporters::Antweb::Formatter < Formatters::TaxonFormatter
       %{name=#{taxon.name.to_s.downcase}&rank=subfamily}
     end
     url << %{&project=worldants}
-    Formatters::Formatter.link 'AntWeb', url.html_safe
+    Formatters::Formatter.link_to_external_site 'AntWeb', url.html_safe
   end
 
 end
