@@ -83,29 +83,29 @@ describe Formatters::TaxonFormatter do
     end
     describe "Child lists" do
       it "should format a tribes list" do
-        create_tribe 'Attini', subfamily: @subfamily
+        attini = create_tribe 'Attini', subfamily: @subfamily
         @formatter.new(nil).child_list(@subfamily, @subfamily.tribes, true).should == 
-%{<div class="child_list"><span class="label">Tribe (extant) of <span class="name subfamily taxon">Dolichoderinae</span></span>: <span class="name taxon tribe">Attini</span>.</div>}
+%{<div class="child_list"><span class="label">Tribe (extant) of <span class="name subfamily taxon">Dolichoderinae</span></span>: <a href="/catalog/#{attini.id}">Attini</a>.</div>}
       end
       it "should format a child list, specifying extinctness" do
-        create_genus 'Atta', subfamily: @subfamily
+        atta = create_genus 'Atta', subfamily: @subfamily
         @formatter.new(nil).child_list(@subfamily, Genus.all, true).should == 
-%{<div class="child_list"><span class="label">Genus (extant) of <span class="name subfamily taxon">Dolichoderinae</span></span>: <span class="genus name taxon"><i>Atta</i></span>.</div>}
+%{<div class="child_list"><span class="label">Genus (extant) of <span class="name subfamily taxon">Dolichoderinae</span></span>: <a href="/catalog/#{atta.id}"><i>Atta</i></a>.</div>}
       end
       it "should format a genera list, not specifying extinctness" do
-        create_genus 'Atta', subfamily: @subfamily
+        atta = create_genus 'Atta', subfamily: @subfamily
         @formatter.new(nil).child_list(@subfamily, Genus.all, false).should == 
-%{<div class="child_list"><span class="label">Genus of <span class="name subfamily taxon">Dolichoderinae</span></span>: <span class="genus name taxon"><i>Atta</i></span>.</div>}
+%{<div class="child_list"><span class="label">Genus of <span class="name subfamily taxon">Dolichoderinae</span></span>: <a href="/catalog/#{atta.id}"><i>Atta</i></a>.</div>}
       end
       it "should format an incertae sedis genera list" do
         genus = create_genus 'Atta', subfamily: @subfamily, incertae_sedis_in: 'subfamily'
         @formatter.new(nil).child_list(@subfamily, [genus], false, incertae_sedis_in: 'subfamily').should == 
-%{<div class="child_list"><span class="label">Genus <i>incertae sedis</i> in <span class="name subfamily taxon">Dolichoderinae</span></span>: <span class="genus name taxon"><i>Atta</i></span>.</div>}
+%{<div class="child_list"><span class="label">Genus <i>incertae sedis</i> in <span class="name subfamily taxon">Dolichoderinae</span></span>: <a href="/catalog/#{genus.id}"><i>Atta</i></a>.</div>}
       end
       it "should format a list of collective group names" do
         genus = create_genus 'Atta', subfamily: @subfamily, status: 'collective group name'
         @formatter.new(nil).collective_group_name_child_list(@subfamily).should ==
-%{<div class="child_list"><span class="label">Collective group name in <span class="name subfamily taxon">Dolichoderinae</span></span>: <span class="genus name taxon"><i>Atta</i></span>.</div>}
+%{<div class="child_list"><span class="label">Collective group name in <span class="name subfamily taxon">Dolichoderinae</span></span>: <a href="/catalog/#{genus.id}"><i>Atta</i></a>.</div>}
       end
     end
   end
