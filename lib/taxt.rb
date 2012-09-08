@@ -46,12 +46,14 @@ module Taxt
 
   def self.decode taxt, user = nil, options = {}
     return '' unless taxt
-    taxt.gsub(/{ref (\d+)}/) do |ref|
-      decode_reference ref, $1, user, options
-    end.gsub(/{nam (\d+)}/) do |nam|
-      decode_name nam, $1
-    end.gsub(/{tax (\d+)}/) do |tax|
-      decode_taxon tax, $1
+    taxt.gsub(/{ref (\d+)}/) do |whole_match|
+      decode_reference whole_match, $1, user, options
+    end.gsub(/{nam (\d+)}/) do |whole_match|
+      decode_name whole_match, $1
+    end.gsub(/{tax (\d+)}/) do |whole_match|
+      decode_taxon whole_match, $1
+    end.gsub(/{epi (\w+)}/) do |_|
+      decode_epithet $1
     end.html_safe
   end
 
@@ -68,6 +70,10 @@ module Taxt
     Formatters::TaxonFormatter.link_to_taxon taxon
   rescue
     whole_match
+  end
+
+  def self.decode_epithet epithet
+    Formatters::Formatter.italicize epithet
   end
 
   ################################
