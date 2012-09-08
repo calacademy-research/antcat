@@ -30,6 +30,13 @@ describe SubgenusName do
       Name.import genus_name: 'Atta', subgenus_epithet: 'Subatta'
       Name.count.should == 4
     end
+
+    it "should import from a genus name object and a subgenus_epithet" do
+      genus_name = create_genus('Eciton').name
+      name = Name.import genus_name: genus_name, subgenus_epithet: 'Subatta'
+      name = Name.find name
+      name.name.should == 'Eciton (Subatta)'
+    end
   end
 
 end
