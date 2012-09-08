@@ -73,7 +73,7 @@ describe Importers::Bolton::Catalog::Species::Importer do
     @importer.finish_importing
   end
 
-  it "should handle this" do
+  it "should handle this kind of homonym" do
     create_genus 'Camponotus'
     contents = make_contents %{
       <p><i>CAMPONOTUS</i></p>
