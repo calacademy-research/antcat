@@ -277,7 +277,7 @@ class Formatters::TaxonFormatter
 
   def child_list_items children
     children.inject([]) do |string, child|
-      string << Formatters::CatalogFormatter.taxon_label_span(child, ignore_status: true, indicate_unresolved_junior_homonym: true)
+      string << Formatters::TaxonFormatter.link_to_taxon(child)
     end.join(', ').html_safe
   end
 
