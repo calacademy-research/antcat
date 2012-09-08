@@ -172,6 +172,12 @@ describe Taxt do
       end
     end
 
+    describe "Epithet" do
+      it "should italicize the word" do
+        Taxt.to_string('{epi major}').should == '<i>major</i>'
+      end
+    end
+
   end
 
   describe "Sentence output" do
