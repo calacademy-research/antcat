@@ -123,7 +123,7 @@ describe Formatters::TaxonFormatter do
       senior_synonym = create_genus 'Atta'
       taxon = create_synonym senior_synonym
       result = @formatter.new(taxon).status
-      result.should == 'synonym of <span class="genus name taxon"><i>Atta</i></span>'
+      result.should == %{synonym of <a href="/catalog/#{senior_synonym.id}"><i>Atta</i></a>}
       result.should be_html_safe
     end
     it "should show all synonyms" do
@@ -132,7 +132,7 @@ describe Formatters::TaxonFormatter do
       taxon = create_synonym senior_synonym
       Synonym.create! senior_synonym: other_senior_synonym, junior_synonym: taxon
       result = @formatter.new(taxon).status
-      result.should == 'synonym of <span class="genus name taxon"><i>Atta</i></span>, <span class="genus name taxon"><i>Eciton</i></span>'
+      result.should == %{synonym of <a href="/catalog/#{senior_synonym.id}"><i>Atta</i></a>, <a href="/catalog/#{other_senior_synonym.id}"><i>Eciton</i></a>}
     end
     it "should not freak out if the senior synonym hasn't been set yet" do
       taxon = create_genus status: 'synonym'
