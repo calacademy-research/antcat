@@ -5,7 +5,13 @@ class SubgenusName < GenusGroupName
   end
 
   def self.get_parent_name data
-    data[:genus] ? data[:genus].name : GenusName.import_data(data)
+    if data[:genus]
+      data[:genus].name
+    elsif data[:genus_name] && data[:genus_name].kind_of?(Name)
+      data[:genus_name]
+    else
+      GenusName.import_data data
+    end
   end
 
   def self.make_import_attributes name, data

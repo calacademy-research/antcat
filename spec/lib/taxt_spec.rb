@@ -54,15 +54,14 @@ describe Taxt do
         name = create_name 'Acanthostichus (Ctenopyga)'
         Taxt.encode_taxon_name(genus_name: 'Acanthostichus', subgenus_epithet: 'Ctenopyga').should == "{nam #{name.id}}"
       end
+      it "should handle a genus name object + subgenus epithet" do
+        genus = create_genus 'Camponotus'
+        name = create_name 'Camponotus (Ctenopyga)'
+        Taxt.encode_taxon_name(genus_name: genus.name, subgenus_epithet: 'Ctenopyga').should == "{nam #{name.id}}"
+      end
       it "if there isn't a genus name for a species epithet, just convert it to italicized text" do
         Taxt.encode_taxon_name(species_group_epithet: 'brunneus').should == "{epi brunneus}"
       end
-      #it "should put a question mark after questionable names" do
-        #Taxt.encode_taxon_name('Atta', :genus, questionable: true).should == "{nam #{Name.find_by_name('Atta').id}}"
-      #end
-      #it "should put a dagger in front" do
-        #Taxt.encode_taxon_name('Atta', :genus, :fossil => true).should == "<i>&dagger;Atta</i>"
-      #end
 
     end
   end
