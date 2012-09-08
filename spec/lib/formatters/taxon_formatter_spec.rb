@@ -50,14 +50,14 @@ describe Formatters::TaxonFormatter do
         subfamily = create_subfamily 'Dolichoderinae'
         genus = create_genus 'Atta', subfamily: subfamily
         species = create_species 'Atta major', genus: genus, subfamily: subfamily
-        @formatter.new(species).link_to_other_site.should == %{<a href="http://www.antweb.org/description.do?name=major&genus=atta&rank=species&project=worldants" target="_blank">AntWeb</a>}
+        @formatter.new(species).link_to_other_site.should == %{<a class="link_to_external_site" href="http://www.antweb.org/description.do?name=major&genus=atta&rank=species&project=worldants" target="_blank">antweb</a>}
       end
       it "should link to a subspecies" do
         subfamily = create_subfamily 'Dolichoderinae'
         genus = create_genus 'Atta', subfamily: subfamily
         species = create_species 'Atta major', genus: genus, subfamily: subfamily
         species = create_subspecies 'Atta major nigrans', species: species, genus: genus, subfamily: subfamily
-        @formatter.new(species).link_to_other_site.should == %{<a href="http://www.antweb.org/description.do?name=major nigrans&genus=atta&rank=species&project=worldants" target="_blank">AntWeb</a>}
+        @formatter.new(species).link_to_other_site.should == %{<a class="link_to_external_site" href="http://www.antweb.org/description.do?name=major nigrans&genus=atta&rank=species&project=worldants" target="_blank">antweb</a>}
       end
       it "should not link to an invalid taxon" do
         subfamily = create_subfamily 'Dolichoderinae', status: 'synonym'
@@ -68,11 +68,11 @@ describe Formatters::TaxonFormatter do
     describe "Linking to AntWiki" do
       it "should link to a subfamily" do
         @formatter.new(create_subfamily 'Dolichoderinae').link_to_antwiki.should ==
-          %{<a href="http://www.antwiki.org/Dolichoderinae" target="_blank">AntWiki</a>}
+          %{<a class="link_to_external_site" href="http://www.antwiki.org/Dolichoderinae" target="_blank">antwiki</a>}
       end
       it "should link to a species" do
         @formatter.new(create_species 'Atta major').link_to_antwiki.should ==
-          %{<a href="http://www.antwiki.org/Atta_major" target="_blank">AntWiki</a>}
+          %{<a class="link_to_external_site" href="http://www.antwiki.org/Atta_major" target="_blank">antwiki</a>}
       end
     end
   end
@@ -180,7 +180,7 @@ describe Formatters::TaxonFormatter do
       it "should create the link" do
         genus = create_genus
         @formatter.link_to_antcat(genus).should ==
-          %{<a href="http://www.antcat.org/catalog/#{genus.id}" target="_blank">AntCat</a>}
+          %{<a class="link_to_external_site" href="http://www.antcat.org/catalog/#{genus.id}" target="_blank">antcat</a>}
       end
     end
     describe "Creating a link from AntCat to a taxon on AntCat" do
