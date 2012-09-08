@@ -36,6 +36,12 @@ describe SpeciesName do
       name.epithet.should == 'major'
       name.name.should == 'Atta (Subatta) major'
     end
+    it "should import from a genus name object and a species_group_epithet" do
+      genus_name = create_genus('Eciton').name
+      name = Name.import genus_name: genus_name, species_group_epithet: 'major'
+      name = Name.find name
+      name.name.should == 'Eciton major'
+    end
 
   end
 
