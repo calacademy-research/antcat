@@ -158,9 +158,7 @@ class Vlad
       Name.find_by_sql 'SELECT name FROM names LEFT OUTER JOIN taxa on taxa.name_id = names.id WHERE taxa.id IS NULL'
     end
     def self.display
-      display_results_section query do |name|
-        name.name
-      end
+      display_result_count query.size
     end
   end
 
