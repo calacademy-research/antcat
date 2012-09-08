@@ -28,6 +28,16 @@ describe Vlad do
     results.first.should == genus_with_tribe_but_not_subfamily
   end
 
+  it "should show names without taxa" do
+    create_subfamily type_name: nil, protonym: nil
+    create_name 'Atta'
+    Name.count.should == 2
+    Taxon.count.should == 1
+    results = Vlad::NamesWithoutTaxa.query
+    results.count.should == 1
+    results.first.name.should == 'Atta'
+  end
+
   #it "should show subspecies without species" do
     #species = create_species
     #subspecies_with_species = create_subspecies 'Atta major minor', species: species
