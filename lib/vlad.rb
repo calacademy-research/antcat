@@ -153,6 +153,17 @@ class Vlad
     end
   end
 
+  class NamesWithoutTaxa < Problem
+    def self.query
+      Name.find_by_sql 'SELECT name FROM names LEFT OUTER JOIN taxa on taxa.name_id = names.id WHERE taxa.id IS NULL'
+    end
+    def self.display
+      display_results_section query do |name|
+        name.name
+      end
+    end
+  end
+
   class TaxaWithMismatchedHomonymAndStatus #< Problem
     def self.query
       Taxon.where "(status = 'homonym') = (homonym_replaced_by_id IS NULL)"
