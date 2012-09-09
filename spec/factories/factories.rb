@@ -153,6 +153,7 @@ FactoryGirl.define do
     name_html       {"<i>#{name}</i>"}
     epithet         {name.split(' ').last}
     epithet_html    {"<i>#{epithet}</i>"}
+    protonym_html   {name_html}
   end
 
   factory :subspecies_name do
@@ -160,6 +161,7 @@ FactoryGirl.define do
     name_html       {"<i>#{name}</i>"}
     epithet         {name.split(' ').last}
     epithet_html    {"<i>#{epithet}</i>"}
+    protonym_html   {name_html}
   end
 
   ####################################################
