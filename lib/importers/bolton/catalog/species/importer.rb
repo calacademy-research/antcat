@@ -58,7 +58,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
                                        genus: @genus,
                                        protonym: @parse_result[:protonym],
                                        raw_history: @parse_result[:history],
-                                       history: self.class.convert_history_to_taxts(@parse_result[:history], @genus.name)
+                                       history: self.class.convert_history_to_taxts(@parse_result[:history], @genus.name, @parse_result[:species_group_epithet])
             Progress.info "Imported #{species.inspect}"
             @species_count += 1
           end
@@ -131,18 +131,36 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     Importers::Bolton::Catalog::Species::Grammar
   end
 
-  def self.convert_history_to_taxts history, genus_name = nil
+  def self.convert_history_to_taxts history, genus_name = nil, species_name = nil
     Progress.method
-    (history || []).inject([]) do |items, item|
-      for text in Importers::Bolton::Catalog::Grammar.parse(item[:matched_text], root: :texts).value[:texts]
-        taxt = Importers::Bolton::Catalog::TextToTaxt.convert text[:text], genus_name
-        if taxt.present?
-          items << taxt
-        else
-          Progress.error "Blank taxonomic history item: #{@line}"
-        end
+    (history || []).inject([]) do |taxts, item|
+      taxts.concat convert_item_to_taxts(item, genus_name, species_name)
+    end
+  end
+
+  def self.convert_item_to_taxts item, genus_name, species_name
+    texts = Importers::Bolton::Catalog::Grammar.parse(item[:matched_text], root: :texts).value[:texts]
+    if item[:matched_text] =~ /^\s*Current subspecies:/
+      change_key texts, :species_group_epithet, :subspecies_epithet
+    end
+    texts.inject([]) do |taxts, text|
+      taxts << Importers::Bolton::Catalog::TextToTaxt.convert(text[:text], genus_name, species_name)
+    end
+  end
+
+  def self.change_key object, from, to
+    if object.kind_of? Hash
+      if object.key? from
+        object[to] = object[from]
+        object.delete from
       end
-      items
+      for subobject in object.values
+        change_key subobject, from, to
+      end
+    elsif object.kind_of? Array
+      for subobject in object
+        change_key subobject, from, to
+      end
     end
   end
 
