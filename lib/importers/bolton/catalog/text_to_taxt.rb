@@ -1,7 +1,7 @@
 module Importers::Bolton::Catalog::TextToTaxt
 
-  def self.convert texts, genus_name = nil
-    @genus_name = genus_name
+  def self.convert texts, genus_name = nil, species_epithet = nil
+    @genus_name, @species_epithet = genus_name, species_epithet
     (texts || []).inject('') do |taxt, item|
       taxt << convert_text_to_taxt(item)
     end
@@ -48,12 +48,14 @@ module Importers::Bolton::Catalog::TextToTaxt
   end
 
   def self.taxon_name item
-    keys = [:order_name, :family_name, :family_or_subfamily_name, :tribe_name, :subtribe_name, :collective_group_name, :genus_name, :subgenus_epithet, :genus_abbreviation, :subgenus_name, :species_name, :subspecies_name, :species_epithet, :species_group_epithet]
+    keys = [:order_name, :family_name, :family_or_subfamily_name, :tribe_name, :subtribe_name, :collective_group_name, :genus_name, :subgenus_epithet, :genus_abbreviation, :subgenus_name, :species_name, :subspecies_name, :species_epithet, :species_group_epithet, :subspecies_epithet]
     key, name = find_one_of(keys, item)
     return unless key
     key = key.to_s.gsub(/_name$/, '').to_sym
 
-    name_item = fill_in_genus_if_necessary item
+    name_item = item.dup
+    fill_in_genus_if_necessary name_item
+    fill_in_species_if_necessary name_item
     taxt = Taxt.encode_taxon_name name_item
 
     authorship = item[:authorship]
@@ -64,16 +66,24 @@ module Importers::Bolton::Catalog::TextToTaxt
   end
 
   def self.fill_in_genus_if_necessary item
-    item = item.dup
     if item[:genus_abbreviation]
       item.delete :genus_abbreviation 
       item[:genus_name] = @genus_name
-    elsif item[:subgenus_epithet] || item[:species_epithet] || item[:species_group_epithet]
+    elsif item[:subgenus_epithet] || item[:species_epithet] || item[:species_group_epithet] || item[:subspecies_epithet]
       unless item[:genus] || item[:genus_name]
         item[:genus_name] = @genus_name
       end
     end
-    item
+  end
+
+  def self.fill_in_species_if_necessary item
+    if item[:subspecies_epithet] || item[:subspecies]
+      item[:species_epithet] ||= @species_epithet
+    end
+    if item[:subspecies_epithet]
+      item[:subspecies] = [{subspecies_epithet: item[:subspecies_epithet]}]
+      item.delete :subspecies_epithet
+    end
   end
 
   def self.brackets item

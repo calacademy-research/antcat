@@ -208,6 +208,13 @@ describe Importers::Bolton::Catalog::TextToTaxt do
       end
     end
 
+    describe "Converting subspecies names" do
+      it "should handle subspecies epithet" do
+        Taxt.should_receive(:encode_taxon_name).with(genus_name: 'Atta', species_epithet: 'major', subspecies: [{subspecies_epithet: 'rufa'}]).and_return '{nam 1234}'
+        @converter.convert([{subspecies_epithet: 'rufa'}], 'Atta', 'major').should == '{nam 1234}'
+      end
+    end
+
   end
 
   describe "Taxon names with authorship" do
