@@ -34,7 +34,8 @@ describe SpeciesName do
       name = Name.import genus_name: 'Atta', subgenus_epithet: 'Subatta', species_epithet: 'major'
       name = SpeciesName.find name
       name.epithet.should == 'major'
-      name.name.should == 'Atta (Subatta) major'
+      name.name.should == 'Atta major'
+      name.protonym_html.should == '<i>Atta</i> <i>(Subatta)</i> <i>major</i>'
     end
     it "should import from a genus name object and a species_group_epithet" do
       genus_name = create_genus('Eciton').name

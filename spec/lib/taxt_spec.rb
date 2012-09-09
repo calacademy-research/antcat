@@ -46,10 +46,6 @@ describe Taxt do
         name = create_name 'Eoformica eofornica'
         Taxt.encode_taxon_name(genus_name: 'Eoformica', species_epithet: 'eofornica').should == "{nam #{name.id}}"
       end
-      it "should handle a species name with subgenus" do
-        name = create_name 'Formica (Hypochira) subspinosa'
-        Taxt.encode_taxon_name(genus_name: 'Formica', subgenus_epithet: 'Hypochira', species_epithet: 'subspinosa').should == "{nam #{name.id}}"
-      end
       it "should handle a genus name + subgenus epithet" do
         name = create_name 'Acanthostichus (Ctenopyga)'
         Taxt.encode_taxon_name(genus_name: 'Acanthostichus', subgenus_epithet: 'Ctenopyga').should == "{nam #{name.id}}"
@@ -61,6 +57,15 @@ describe Taxt do
       end
       it "if there isn't a genus name for a species epithet, just convert it to italicized text" do
         Taxt.encode_taxon_name(species_group_epithet: 'brunneus').should == "{epi brunneus}"
+      end
+      it "should handle a species name with subgenus" do
+        name = create_name 'Formica subspinosa'
+        Taxt.encode_taxon_name(genus_name: 'Formica', subgenus_epithet: 'Hypochira', species_epithet: 'subspinosa').should == "{nam #{name.id}}"
+      end
+      it "should handle a subspecies name" do
+        name = FactoryGirl.create :subspecies_name, name: 'Eoformica eofornica major'
+        rc = Taxt.encode_taxon_name(genus_name: 'Eoformica', species_epithet: 'eofornica', subspecies: [{subspecies_epithet: 'major'}])
+        rc.should == "{nam #{name.id}}"
       end
 
     end

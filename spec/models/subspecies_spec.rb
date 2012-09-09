@@ -40,7 +40,7 @@ describe Subspecies do
             subspecies_epithet: 'refectus',
         }]})
       subspecies = Subspecies.find subspecies
-      subspecies.name.to_s.should == 'Camponotus (Myrmeurynota) gilviventris refectus'
+      subspecies.name.to_s.should == 'Camponotus gilviventris refectus'
       ref = ForwardRefToParentSpecies.first
       ref.fixee.should == subspecies
       ref.genus.should == genus
