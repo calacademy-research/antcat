@@ -164,6 +164,26 @@ describe Importers::Bolton::Catalog::Species::Importer do
       ]
     end
 
+    describe "change_key" do
+      it "should dive deep" do
+        text = [
+          {text: [
+            {phrase: 'Current subspecies', delimiter: ': '},
+            {phrase: 'nominal plus', delimiter: ' '},
+            {species_group_epithet: 'fuhrmanni'}
+         ], text_suffix: '.', text_prefix: ' '}
+        ]
+        @importer.class.change_key text, :species_group_epithet, :subspecies_epithet
+        text.should == [
+          {text: [
+            {phrase: 'Current subspecies', delimiter: ': '},
+            {phrase: 'nominal plus', delimiter: ' '},
+            {subspecies_epithet: 'fuhrmanni'}
+         ], text_suffix: '.', text_prefix: ' '}
+        ]
+      end
+    end
+
     it "should handle Combination in..." do
       history = [{matched_text: "Combination in"}]
       history = @importer.class.convert_history_to_taxts history
