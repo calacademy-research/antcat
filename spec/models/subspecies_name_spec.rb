@@ -58,8 +58,8 @@ describe SubspeciesName do
     it "should import a subspecies name with a subgenus name" do
       name = Name.import genus_name: 'Atta', subgenus_epithet: 'Subatta', species_epithet: 'major', subspecies: [{:type => 'r.', species_group_epithet: 'alpina'}]
       name = SubspeciesName.find name
-      name.to_s.should == 'Atta (Subatta) major alpina'
-      name.to_html.should == '<i>Atta</i> <i>(Subatta)</i> <i>major</i> <i>alpina</i>'
+      name.to_s.should == 'Atta major alpina'
+      name.to_html.should == '<i>Atta</i> <i>major</i> <i>alpina</i>'
       name.epithet.should == 'alpina'
       name.epithet_html.should == '<i>alpina</i>'
       name.epithets.should == 'major alpina'
@@ -68,7 +68,7 @@ describe SubspeciesName do
 
     it "should import a subspecies name designated by :subspecies_epithet" do
       name = Name.import genus_name: 'Atta', subgenus_epithet: 'Subatta', species_epithet: 'major', subspecies: [{:type => 'r.', subspecies_epithet: 'alpina'}]
-      name.to_s.should == 'Atta (Subatta) major alpina'
+      name.to_s.should == 'Atta major alpina'
     end
 
     it "should import a subspecies, using the epithet from the headline, not the protonym" do

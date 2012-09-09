@@ -199,7 +199,7 @@ describe Genus do
                           texts: [{text: [{phrase: ', by monotypy'}]}]},
         history: [],
       })
-      Genus.find(genus).type_name.to_s.should == 'Atta (Solis) major'
+      Genus.find(genus).type_name.to_s.should == 'Atta major'
     end
 
     it "should not mind if there's no type" do

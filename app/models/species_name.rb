@@ -5,14 +5,23 @@ class SpeciesName < SpeciesGroupName
   end
 
   def self.get_parent_name data
+    @subgenus_name = nil
+    if data[:genus_name]
+      if data[:genus_name].kind_of?(Name)
+        genus_name = data[:genus_name]
+      else
+        genus_name = GenusName.import_data data
+      end
+    end
     if data[:subgenus_epithet]
-      SubgenusName.import_data data
+      @subgenus_name = SubgenusName.import_data data
+      genus_name
     elsif data[:genus]
       data[:genus].name
     elsif data[:genus_name] && data[:genus_name].kind_of?(Name)
       data[:genus_name]
     else
-      GenusName.import_data data
+      genus_name
     end
   end
 
@@ -24,7 +33,12 @@ class SpeciesName < SpeciesGroupName
     parent_name = get_parent_name data
     attributes[:name]          = "#{parent_name} #{attributes[:epithet]}"
     attributes[:name_html]     = "#{parent_name.to_html} #{attributes[:epithet_html]}"
-    attributes[:protonym_html] = attributes[:name_html]
+    if @subgenus_name
+      attributes[:protonym_html] = "#{@subgenus_name.protonym_html} #{attributes[:epithet_html]}"
+    else
+      attributes[:protonym_html] = "#{parent_name.to_html} #{attributes[:epithet_html]}"
+    end
+
     attributes
   end
 

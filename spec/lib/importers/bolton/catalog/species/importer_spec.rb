@@ -17,7 +17,7 @@ describe Importers::Bolton::Catalog::Species::Importer do
         <p><i>refectus</i>. <i>Camponotus (Myrmeurynota) gilviventris</i> var. <i>refectus</i> Wheeler, W.M. 1937b: 460 (w.) CUBA.</p>
       }
       @importer.finish_importing
-      subspecies = Subspecies.find_by_name 'Camponotus (Myrmeurynota) gilviventris refectus'
+      subspecies = Subspecies.find_by_name 'Camponotus gilviventris refectus'
       subspecies.genus.name.to_s.should == 'Camponotus'
       subspecies.species.name.to_s.should == 'Camponotus gilviventris'
     end
