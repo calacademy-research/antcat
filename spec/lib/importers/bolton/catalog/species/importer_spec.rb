@@ -23,6 +23,19 @@ describe Importers::Bolton::Catalog::Species::Importer do
     end
   end
 
+  it "should create history items with subspecies names for 'Current subspecies'" do
+    genus = create_genus 'Camponotus'
+    @importer.import_html make_contents %{
+      <p><i>CAMPONOTUS</i></p>
+      <p><i>gilviventris</i>. <i>Camponotus gilviventris</i> Roger, 1863a: 2. Current subspecies: <i>refectus</i></p>
+      <p><i>refectus</i>. <i>Camponotus gilviventris</i> var. <i>refectus</i> Roger, 1863a: 2. Currently subspecies of <i>gilviventris</i></p>
+    }
+    species = Species.find_by_name 'Camponotus gilviventris'
+    subspecies = Subspecies.find_by_name 'Camponotus gilviventris refectus'
+    subspecies.history_items.first.taxt.should == %{Currently subspecies of {tax #{species.id}}}
+    species.history_items.first.taxt.should == %{Current subspecies: {tax #{subspecies.id}}}
+  end
+
   it "should link species to existing genera" do
     contents = make_contents %{
       <p><i>ACANTHOMYRMEX</i> (Oriental, Indo-Australian)</p>
@@ -182,6 +195,13 @@ describe Importers::Bolton::Catalog::Species::Importer do
          ], text_suffix: '.', text_prefix: ' '}
         ]
       end
+    end
+
+    it "should replace keys with subspecies keys on 'Current subspecies:'" do
+      history = [{subspecies:[{species_group_epithet:"fuhrmanni"}], matched_text: ' Current subspecies: nominal plus <i>fuhrmanni</i>.'}]
+      history = @importer.class.convert_history_to_taxts history, 'Atta', 'major'
+      subspecies_name = SubspeciesName.find_by_name 'Atta major fuhrmanni'
+      history.should == ["Current subspecies: nominal plus {nam #{subspecies_name.id}}"]
     end
 
     it "should handle Combination in..." do
