@@ -7,7 +7,7 @@ describe Importers::Bolton::Catalog::Species::Importer do
   end
 
   describe "Importing subspecies" do
-    it "should work" do
+    it "should import a subspecies of a species of a subgenus" do
       genus = create_genus 'Camponotus'
       subgenus = create_subgenus 'Camponotus (Myrmeurynota)'
 
@@ -21,6 +21,27 @@ describe Importers::Bolton::Catalog::Species::Importer do
       subspecies.genus.name.to_s.should == 'Camponotus'
       subspecies.species.name.to_s.should == 'Camponotus gilviventris'
     end
+    it "should import a subspecies of a species inside a genus when the protonym genus is different" do
+      genus = create_genus 'Camponotus'
+      protonym_genus = create_subgenus 'Pheidologeton (Aneleus)'
+
+      @importer.import_html make_contents %{
+        <p><i>CAMPONOTUS</i></p>
+        <p><i>spinosa</i>. <i>Pheidologeton (Aneleus) perpusillus</i> subsp. <i>spinosus</i> Roger, 1863a: 145 (w.) CUBA.
+      }
+      @importer.finish_importing
+      Subspecies.find_by_name('Camponotus perpusillus spinosa').should_not be_nil
+    end
+  end
+
+  it "imports a species under the current genus name, not the protonym's" do
+    genus = create_genus 'Camponotus'
+    @importer.import_html make_contents %{
+      <p><i>CAMPONOTUS</i></p>
+      <p><i>spinosa</i>. <i>Pheidologeton spinosa</i> Roger, 1863a: 145 (w.) CUBA.
+    }
+    @importer.finish_importing
+    Species.find_by_name('Camponotus spinosa').should_not be_nil
   end
 
   it "should create history items with subspecies names for 'Current subspecies'" do
