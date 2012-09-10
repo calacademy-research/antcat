@@ -10,7 +10,12 @@ class ForwardRefToParentSpecies < SpeciesGroupForwardRef
     else
       species = specieses.first
       species = species.species if species.respond_to? :species
-      fixee.update_attributes fixee_attribute.to_sym => species
+      fixee.update_attribute fixee_attribute.to_sym, species
+      if epithet != species.name.epithet
+        for field in [:name, :name_html, :epithet, :epithet_html, :epithets, :protonym_html]
+          fixee.name.update_attribute field, fixee.name[field].gsub(/\b#{epithet}\b/, species.name.epithet)
+        end
+      end
     end
   end
 
