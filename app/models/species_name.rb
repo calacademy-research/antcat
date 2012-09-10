@@ -6,20 +6,18 @@ class SpeciesName < SpeciesGroupName
 
   def self.get_parent_name data
     @subgenus_name = nil
-    if data[:genus_name]
+    if data[:subgenus_epithet]
+      @subgenus_name = SubgenusName.import_data data
+    end
+    if data[:genus]
+      data[:genus].name
+    elsif data[:genus_name]
       if data[:genus_name].kind_of?(Name)
         genus_name = data[:genus_name]
       else
         genus_name = GenusName.import_data data
       end
-    end
-    if data[:subgenus_epithet]
-      @subgenus_name = SubgenusName.import_data data
       genus_name
-    elsif data[:genus]
-      data[:genus].name
-    elsif data[:genus_name] && data[:genus_name].kind_of?(Name)
-      data[:genus_name]
     else
       genus_name
     end
