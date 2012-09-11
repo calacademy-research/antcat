@@ -61,6 +61,15 @@ describe Importers::Bolton::Catalog::Species::History do
     end
   end
 
+  describe "Revival" do
+    it "should recognize this text string" do
+      @klass.new([
+        {synonym_ofs: [{species_epithet: 'ferox'}]},
+        {text: [], matched_text: ' Revived from synonymy, revived status as species and senior synonym of <i>australiae</i>: Kohout, 1988c: 430. '},
+      ]).status.should == 'valid'
+    end
+  end
+
   it "should handle an unavailable name" do
     @klass.new([{unavailable_name: true}]).status.should == 'unavailable'
   end
@@ -165,6 +174,19 @@ describe Importers::Bolton::Catalog::Species::History do
       ]).status.should == 'valid'
     end
 
+  end
+
+  describe "Determining whether it's a species or a subspecies by looking at history" do
+    it "should return nil if the history doesn't help" do
+      @klass.new([{synonym_ofs: [{species_epithet:'minutum', junior_or_senior: :junior}]}]).taxon_subclass.should be_nil
+    end
+    it "should handle becoming a species after being a subspecies and a synonym" do
+      @klass.new([
+        {synonym_ofs: [{species_epithet:'minutum', junior_or_senior: :junior}]},
+        {subspecies_ofs: [{species: {species_epithet: 'minutum'}}]},
+        {status_as_species: {references: []}},
+      ]).taxon_subclass.should == Species
+    end
   end
 
 end
