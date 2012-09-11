@@ -94,7 +94,9 @@ class Importers::Bolton::Catalog::Species::History
 
   def check_revival_from_synonymy
     if @item[:revived_from_synonymy] ||
-       @item[:raised_to_species].try(:[], :revived_from_synonymy)
+       @item[:raised_to_species].try(:[], :revived_from_synonymy) ||
+       text_matches?(@item, /revived from synonym/i)
+
       @status = 'valid'
       return true
     end
@@ -166,6 +168,7 @@ class Importers::Bolton::Catalog::Species::History
     @index = @history.size
   end
 
+  ################
   def get_current_taxon_class
     for item in @history
       @taxon_subclass = Subspecies and return if item[:currently_subspecies_of]
