@@ -168,7 +168,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     if AntCat::ImportAllFiles
       super Dir.glob("#{$BOLTON_DATA_DIRECTORY}/NGC-Sp*.htm")
     else
-      ['can-cr'].map {|e| "#{$BOLTON_DATA_DIRECTORY}/NGC-Sp#{e}.htm"}
+      ['g-las'].map {|e| "#{$BOLTON_DATA_DIRECTORY}/NGC-Sp#{e}.htm"}
     end
   end
 

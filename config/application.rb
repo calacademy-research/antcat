@@ -6,7 +6,7 @@ require 'rails/all'
 Bundler.require *Rails.groups(assets: %w(development test)) if defined? Bundler
 
 module AntCat
-  ImportAllFiles = false
+  ImportAllFiles = true
   class Application < Rails::Application
     config.action_mailer.delivery_method = :sendmail
     config.action_mailer.sendmail_settings = {:arguments => '-i'}
