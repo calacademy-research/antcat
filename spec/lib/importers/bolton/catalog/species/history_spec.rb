@@ -68,6 +68,100 @@ describe Importers::Bolton::Catalog::Species::History do
         {text: [], matched_text: ' Revived from synonymy, revived status as species and senior synonym of <i>australiae</i>: Kohout, 1988c: 430. '},
       ]).status.should == 'valid'
     end
+    it "should overrule synonymy with revival from synonymy" do
+      @klass.new([
+        {synonym_ofs: [{species_epithet: 'ferox'}]},
+        {revived_from_synonymy: {}},
+      ]).status.should == 'valid'
+    end
+    it "should recognize revived as species" do
+      @klass.new([
+        {synonym_ofs: [{species_epithet: 'ferox'}]},
+        {revived_status_as_species: {}},
+      ]).status.should == 'valid'
+    end
+    it "should recognize revived as species" do
+      @klass.new([
+  {:first_available_use_of=>
+     {:genus_name=>"Formica",
+      :species_epithet=>"exsecta",
+      :subspecies=>
+       [{:subspecies_epithet=>"pressilabris", :type=>"subsp."},
+        {:subspecies_epithet=>"foreli", :type=>"var."}],
+      :authorship=>
+       [{:author_names=>["Emery"],
+         :year=>"1909b",
+         :pages=>"192",
+         :matched_text=>"Emery, 1909b: 192"}]},
+    :matched_text=>
+     " [First available use of <i>Formica exsecta</i> subsp. <i>pressilabris</i> var. <i>foreli</i> Emery, 1909b: 192; unavailable name.]"},
+   {:combinations_in=>
+     [{:genus_abbreviation=>"F.",
+       :subgenus_epithet=>"Coptoformica",
+       :references=>
+        [{:author_names=>["Müller"],
+          :year=>"1923",
+          :pages=>"146",
+          :matched_text=>"Müller, 1923: 146"}]}],
+    :matched_text=>
+     " Combination in <i>F. (Coptoformica)</i>: Müller, 1923: 146."},
+   {:subspecies_ofs=>
+     [{:species=>{:species_epithet=>"pressilabris"},
+       :references=>
+        [{:author_names=>["Müller"],
+          :year=>"1923",
+          :pages=>"146",
+          :matched_text=>"Müller, 1923: 146"}]}],
+    :matched_text=>" Subspecies of <i>pressilabris</i>: Müller, 1923: 146."},
+   {:revived_status_as_species=>
+     {:references=>
+       [{:author_names=>["Dlussky"],
+         :year=>"1964",
+         :pages=>"1033",
+         :matched_text=>"Dlussky, 1964: 1033"},
+        {:author_names=>["Bernard"],
+         :year=>"1967",
+         :pages=>"324",
+         :matched_text=>"Bernard, 1967: 324"},
+        {:author_names=>["Kutter"],
+         :year=>"1977c",
+         :pages=>"284",
+         :matched_text=>"Kutter, 1977c: 284"}]},
+    :matched_text=>
+     " Revived status as species: Dlussky, 1964: 1033; Bernard, 1967: 324; Kutter, 1977c: 284."},
+   {:synonym_ofs=>
+     [{:species_epithet=>"pressilabris",
+       :references=>
+        [{:author_names=>["Arakelian"],
+          :year=>"1994",
+          :pages=>"97",
+          :matched_text=>"Arakelian, 1994: 97"},
+         {:author_names=>["Seifert"],
+          :year=>"1994",
+          :pages=>"41",
+          :matched_text=>"Seifert, 1994: 41"}],
+       :junior_or_senior=>:junior}],
+    :matched_text=>
+     " Junior synonym of <i>pressilabris</i>: Arakelian, 1994: 97; Seifert, 1994: 41."},
+   {:revived_status_as_species=>
+     {:references=>
+       [{:author_names=>["Seifert"],
+         :year=>"2000a",
+         :pages=>"543",
+         :matched_text=>"Seifert, 2000a: 543"}],
+      :junior_synonyms=>
+       [{:species_group_epithet=>"goesswaldi"},
+        {:species_group_epithet=>"naefi"},
+        {:species_group_epithet=>"tamarae"}]},
+    :matched_text=>
+     " Revived status as species and senior synonym of <i>goesswaldi</i>, <i>naefi</i>, <i>tamarae</i>: Seifert, 2000a: 543."}
+      ]).status.should == 'valid'
+    end
+
+    it "should set anything thats a first available replacement name as a Species" do
+      @klass.new([{:text=> [], matched_text: " Junior synonym of <i>australis</i> Forel, 1900b: 68 [junior secondary homonym of <i>australis</i> Forel, 1895f: 422] and hence first available replacement name: Brown, 1975: 22."}
+      ]).taxon_subclass.should == Species
+    end
   end
 
   it "should handle an unavailable name" do

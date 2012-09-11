@@ -30,13 +30,14 @@ class Importers::Bolton::Catalog::Species::History
     if text_matches?(/(First|hence first) available replacement/) ||
        text_matches?(/Replacement name for/)
       @status = 'valid'
+      @taxon_subclass = Species
       skip_rest_of_history
       return true
     end
   end
 
   def check_revival_from_synonymy
-    if @item[:revived_from_synonymy] || text_matches?(/revived from synonym/i)
+    if @item[:revived_from_synonymy] || @item[:revived_status_as_species] || text_matches?(/revived from synonym/i)
       @status = 'valid'
       if @item[:revived_from_synonymy] && @item[:revived_from_synonymy][:subspecies_of]
         @taxon_subclass = Subspecies
