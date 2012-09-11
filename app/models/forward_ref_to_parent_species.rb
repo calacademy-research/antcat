@@ -9,7 +9,7 @@ class ForwardRefToParentSpecies < SpeciesGroupForwardRef
       Progress.error "Found multiple valid targets among #{specieses.map(&:name).map(&:to_s).join(', ')}"
     else
       species = specieses.first
-      species = species.species if species.respond_to? :species
+      return if species.kind_of? Subspecies
       fixee.update_attribute fixee_attribute.to_sym, species
       if epithet != species.name.epithet
         for field in [:name, :name_html, :epithet, :epithet_html, :epithets, :protonym_html]
