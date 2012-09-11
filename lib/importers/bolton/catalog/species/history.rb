@@ -188,7 +188,8 @@ class Importers::Bolton::Catalog::Species::History
   def item_raised_to_species? item
     item[:raised_to_species] or
     item[:revived_from_synonymy].try(:[], :raised_to_species) or
-    item[:matched_text] =~ /Raised to species/
+    item[:matched_text] =~ /Raised to species/ or
+    item[:status_as_species]
   end
 
   def item_revived_as_subspecies? item
