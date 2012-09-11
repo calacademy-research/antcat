@@ -50,7 +50,7 @@ class Importers::Bolton::Catalog::Species::History
 
   def check_raised_to_species
     if @item[:raised_to_species] or
-       @item[:matched_text] =~ /Raised to species/
+       @item[:matched_text] =~ /Raised to species/i
       @status = 'valid'
       @taxon_subclass = Species
       return true
