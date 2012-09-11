@@ -6,18 +6,18 @@ class Importers::Bolton::Catalog::Species::History
     @history = history
     @index = 0
     @status = 'valid'
-    determine_taxon_subclass
-    determine_status
+    analyze
   end
 
-  def determine_status
+  def analyze
     while get_next_item
-      return if check_definitive_status_indicators
-      check_status_as_species or
+      check_first_available_replacement or
+      check_revival_from_synonymy or
+      check_raised_to_species or
+      check_species or
+      check_subspecies or
       check_synonym or
       check_homonym or
-      check_having_subspecies or
-      check_revival_from_synonymy or
       check_unavailable_name or
       check_unidentifiable or
       check_nomen_nudum or
@@ -25,21 +25,48 @@ class Importers::Bolton::Catalog::Species::History
     end
   end
 
-  def determine_taxon_subclass
-    return unless @history.present?
-    get_current_taxon_class or get_latest_taxon_class
-  end
-
-  def check_definitive_status_indicators
-    return true if check_first_available_replacement
-    if @item[:subspecies] or @item[:currently_subspecies_of]
+  def check_first_available_replacement
+    return false if text_matches? 'oldest synonym and hence first available replacement name'
+    if text_matches?(/(First|hence first) available replacement/) ||
+       text_matches?(/Replacement name for/)
       @status = 'valid'
+      skip_rest_of_history
       return true
     end
   end
 
-  def check_status_as_species
-    if @item[:status_as_species]
+  def check_revival_from_synonymy
+    if @item[:revived_from_synonymy] || text_matches?(/revived from synonym/i)
+      @status = 'valid'
+      if @item[:revived_from_synonymy] && @item[:revived_from_synonymy][:subspecies_of]
+        @taxon_subclass = Subspecies
+      else
+        @taxon_subclass = Species
+      end
+      return true
+    end
+  end
+
+  def check_raised_to_species
+    if @item[:raised_to_species] or
+       @item[:matched_text] =~ /Raised to species/
+      @status = 'valid'
+      @taxon_subclass = Species
+      return true
+    end
+  end
+
+  def check_species
+    if @item[:status_as_species] || @item[:subspecies]
+      @status = 'valid'
+      @taxon_subclass = Species
+      return true
+    end
+  end
+
+  def check_subspecies
+    if @item[:currently_subspecies_of]
+      @taxon_subclass = Subspecies
       @status = 'valid'
       return true
     end
@@ -61,7 +88,7 @@ class Importers::Bolton::Catalog::Species::History
         return true
       end
 
-    elsif text_matches?(@item, 'Unresolved junior primary homonym')
+    elsif text_matches?('Unresolved junior primary homonym')
       skip_rest_of_history
       @status = 'unresolved homonym'
       return true
@@ -70,13 +97,6 @@ class Importers::Bolton::Catalog::Species::History
       @status = 'homonym'
       return true
 
-    end
-  end
-
-  def check_having_subspecies
-    if @item[:subspecies]
-      @status = 'valid'
-      return true
     end
   end
 
@@ -92,35 +112,9 @@ class Importers::Bolton::Catalog::Species::History
     end
   end
 
-  def check_revival_from_synonymy
-    if @item[:revived_from_synonymy] ||
-       @item[:raised_to_species].try(:[], :revived_from_synonymy) ||
-       text_matches?(@item, /revived from synonym/i)
-
-      @status = 'valid'
-      return true
-    end
-  end
-
   def check_unidentifiable
-    if @item[:unidentifiable] || text_matches?(@item, /unidentifiable/i)
+    if @item[:unidentifiable] || text_matches?(/unidentifiable/i)
       @status = 'unidentifiable'
-      return true
-    end
-  end
-
-  def check_excluded
-    if text_matches? @item, /Excluded from Formicidae/i
-      @status = 'unidentifiable'
-      return true
-    end
-  end
-
-  def check_first_available_replacement
-    return false if text_matches? @item, 'oldest synonym and hence first available replacement name'
-    if text_matches?(@item, /(First|hence first) available replacement/) ||
-       text_matches?(@item, /Replacement name for/)
-      @status = 'valid'
       return true
     end
   end
@@ -140,15 +134,16 @@ class Importers::Bolton::Catalog::Species::History
   end
 
   def check_excluded
-    if text_matches? @item, /Excluded from Formicidae/i
+    if text_matches? /Excluded from Formicidae/i
       @status = 'excluded'
       return true
     end
   end
 
-  def text_matches? item, regexp
+  ############
+  def text_matches? regexp
     @matches = nil
-    return unless text = item[:matched_text]
+    return unless text = @item[:matched_text]
     @matches = text.match regexp
     @matches.present?
   end
@@ -166,34 +161,6 @@ class Importers::Bolton::Catalog::Species::History
 
   def skip_rest_of_history
     @index = @history.size
-  end
-
-  ################
-  def get_current_taxon_class
-    for item in @history
-      @taxon_subclass = Subspecies and return if item[:currently_subspecies_of]
-      @taxon_subclass = Species and return if item[:subspecies]
-    end
-    nil
-  end
-
-  def get_latest_taxon_class
-    for item in @history
-      if item_raised_to_species?(item) then @taxon_subclass = Species
-      elsif item_revived_as_subspecies?(item) then @taxon_subclass = Subspecies
-      end
-    end
-  end
-
-  def item_raised_to_species? item
-    item[:raised_to_species] or
-    item[:revived_from_synonymy].try(:[], :raised_to_species) or
-    item[:matched_text] =~ /Raised to species/ or
-    item[:status_as_species]
-  end
-
-  def item_revived_as_subspecies? item
-    item[:revived_from_synonymy] && item[:revived_from_synonymy][:subspecies_of]
   end
 
 end
