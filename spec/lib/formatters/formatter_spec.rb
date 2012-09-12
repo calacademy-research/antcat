@@ -65,9 +65,9 @@ describe Formatters::Formatter do
       end
     end
     describe "link_to_external_site" do
-      it "should make a downcased link with the right class" do
+      it "should make a link with the right class" do
         @formatter.link_to_external_site('Atta', 'www.antcat.org/1').should ==
-          %{<a class="link_to_external_site" href="www.antcat.org/1" target="_blank">atta</a>}
+          %{<a class="link_to_external_site" href="www.antcat.org/1" target="_blank">Atta</a>}
       end
     end
   end

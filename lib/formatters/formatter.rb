@@ -66,7 +66,7 @@ module Formatters::Formatter
   end
 
   def link_to_external_site label, url
-    link label.downcase, url, class: 'link_to_external_site'
+    link label, url, class: 'link_to_external_site'
   end
 
 end
