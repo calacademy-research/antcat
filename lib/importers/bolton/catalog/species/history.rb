@@ -66,7 +66,7 @@ class Importers::Bolton::Catalog::Species::History
   end
 
   def check_subspecies
-    if @item[:currently_subspecies_of]
+    if @item[:currently_subspecies_of] or text_matches? /currently subspecies of/i
       @taxon_subclass = Subspecies
       @status = 'valid'
       return true
