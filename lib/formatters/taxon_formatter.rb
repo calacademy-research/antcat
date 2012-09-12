@@ -36,8 +36,32 @@ class Formatters::TaxonFormatter
     end
   end
 
+  def header_link taxon, label
+    link label, %{http://www.antcat.org/catalog/#{taxon.id}}, target: nil
+  end
+
   def header_name
-    @taxon.name.to_html_with_fossil @taxon.fossil?
+    string = ''.html_safe
+    if @taxon.kind_of?(Species) or @taxon.kind_of?(Subspecies)
+      genus = @taxon.genus
+      string << header_link(genus, genus.name.to_html_with_fossil(genus.fossil?))
+      string << ' '.html_safe
+      if @taxon.kind_of? Species
+        string << header_link(@taxon, @taxon.name.epithet_html.html_safe)
+      else @taxon.kind_of? Subspecies
+        species = @taxon.species
+        if species
+          string << header_link(species, species.name.epithet_html.html_safe)
+          string << ' '.html_safe
+          string << header_link(@taxon, @taxon.name.epithet_html.html_safe)
+        else
+          string << header_link(@taxon, @taxon.name.epithets.html_safe)
+        end
+      end
+    else
+      string << header_link(@taxon, @taxon.name.to_html_with_fossil(@taxon.fossil?))
+    end
+    string
   end
 
   def status
