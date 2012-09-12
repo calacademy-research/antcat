@@ -167,6 +167,12 @@ describe Taxt do
         genus = create_genus name: FactoryGirl.create(:genus_name, name_html: '<i>Atta</i>')
         Taxt.to_string("{tax #{genus.id}}").should == %{<a href="/catalog/#{genus.id}"><i>Atta</i></a>}
       end
+      it "should be able to use a different link formatter" do
+        genus = create_genus name: FactoryGirl.create(:genus_name, name_html: '<i>Atta</i>')
+        formatter = mock
+        formatter.should_receive :link_to_taxon
+        Taxt.to_string("{tax #{genus.id}}", nil, formatter: formatter)
+      end
       it "should include the fossil symbol if applicable" do
         genus = create_genus name: FactoryGirl.create(:genus_name, name_html: '<i>Atta</i>'), fossil: true
         Taxt.to_string("{tax #{genus.id}}").should == %{<a href="/catalog/#{genus.id}"><i>&dagger;</i><i>Atta</i></a>}
