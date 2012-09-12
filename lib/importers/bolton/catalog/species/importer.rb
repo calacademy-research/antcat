@@ -73,7 +73,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
       parse_next_line
     end
 
-    do_manual_fixups
+    do_manual_fixups unless Rails.env.test?
 
     finish_importing
 
@@ -93,20 +93,29 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
   def finish_importing
     Progress.print 'Fixing up names...'
     ForwardRef.fixup
-    set_status_manually 'Camponotus abdominalis', 'homonym'
-    set_status_manually 'Camponotus (Camponotus) herculeanus var. rubens', 'synonym'
-    set_synonym 'Camponotus (Camponotus) herculeanus rubens', 'Camponotus novaeboracensis'
-    set_status_manually 'Camponotus pallens', 'homonym', 1
+
+    do_manual_fixups_after_fixups unless Rails.env.test?
+
     Progress.puts
     Progress.print 'Replacing {nam} with {tax}...'
     Importers::Bolton::Catalog::TextToTaxt.replace_names_with_taxa
     Progress.puts
   end
 
-  def set_synonym junior, senior
+  def do_manual_fixups_after_fixups
+    set_status_manually 'Camponotus abdominalis', 'homonym'
+    set_status_manually 'Camponotus (Camponotus) herculeanus var. rubens', 'synonym'
+    self.class.set_synonym 'Camponotus (Camponotus) herculeanus rubens', 'Camponotus novaeboracensis'
+    self.class.set_synonym 'Formica occidua', 'Formica moki'
+    set_status_manually 'Camponotus pallens', 'homonym', 1
+  end
+
+  def self.set_synonym junior, senior
     junior = Taxon.find_by_name junior
     senior = Taxon.find_by_name senior
+    Synonym.where(junior_synonym_id: senior, senior_synonym_id: junior).destroy_all
     Synonym.create! junior_synonym: junior, senior_synonym: senior
+    senior.update_attribute :status, 'valid'
     junior.update_attribute :status, 'synonym'
   rescue
   end
@@ -124,7 +133,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     set_status_manually 'Myrmeciites herculeanus', 'collective group name'
     set_status_manually 'Myrmeciites tabanifluviensis', 'collective group name'
     set_status_manually 'Paraprionopelta minima', 'valid'
-    Species.import_myrmicium_heerii unless Rails.env.test?
+    Species.import_myrmicium_heerii
   end
 
   def grammar

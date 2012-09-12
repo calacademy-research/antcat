@@ -245,4 +245,43 @@ describe Importers::Bolton::Catalog::Species::Importer do
     end
   end
 
+  describe "Fixup methods" do
+    describe "Setting synonyms" do
+      it "should make one the synonym of the other and set statuses" do
+        junior = create_genus 'Atta'
+        senior = create_genus 'Attaboi'
+        junior.status.should == 'valid'
+        junior.should_not be_synonym_of senior
+        senior.status.should == 'valid'
+        senior.should_not be_synonym_of junior
+
+        @importer.set_synonym junior.name.to_s, senior.name.to_s
+        junior.reload
+        senior.reload
+
+        junior.status.should == 'synonym'
+        junior.should be_synonym_of senior
+        senior.status.should == 'valid'
+        senior.should_not be_synonym_of junior
+      end
+    end
+    describe "Swapping synonymy" do
+      it "should make one the synonym of the other and set statuses" do
+        atta = create_genus 'Atta'
+        attaboi = create_genus 'Attaboi'
+        @importer.set_synonym 'Atta', 'Attaboi'
+        atta.reload; attaboi.reload
+        atta.should be_synonym_of attaboi
+
+        @importer.set_synonym 'Attaboi', 'Atta'
+
+        atta.reload; attaboi.reload
+        attaboi.status.should == 'synonym'
+        attaboi.should be_synonym_of atta
+        atta.status.should == 'valid'
+        atta.should_not be_synonym_of attaboi
+      end
+    end
+  end
+
 end
