@@ -54,13 +54,6 @@ describe Formatters::CatalogFormatter do
     end
   end
 
-  describe 'format_fossil' do
-    it "should prepend a dagger" do
-      @formatter.format_fossil('Atta', true).should == '&dagger;Atta'
-      @formatter.format_fossil('Atta', false).should == 'Atta'
-    end
-  end
-
   describe "PDF link formatting" do
     it "should create a link" do
       reference = FactoryGirl.create :reference

@@ -49,13 +49,6 @@ module Formatters::CatalogFormatter
     [taxon.type.downcase, 'taxon', 'name']
   end
 
-  def self.format_fossil name, is_fossil
-    string = ''
-    string << '&dagger;' if is_fossil
-    string << h(name)
-    string.html_safe
-  end
-
   def self.format_reference_document_link reference, user
     link 'PDF', reference.url, class: 'document_link' if reference.downloadable_by? user
   end
