@@ -164,6 +164,12 @@ describe Importers::Bolton::Catalog::Species::History do
     end
   end
 
+  it "should read 'currently subspecies of' in the text" do
+    @klass.new([
+      {text: [], matched_text: " Currently subspecies of <i>adamsi</i> (as the latter name has priority over <i>whymperi</i>): Bolton, 1995b: 206."}
+    ]).taxon_subclass.should == Subspecies
+  end
+
   it "should handle an unavailable name" do
     @klass.new([{unavailable_name: true}]).status.should == 'unavailable'
   end
