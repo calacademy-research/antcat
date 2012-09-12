@@ -19,6 +19,7 @@ describe Exporters::Antweb::Formatter do
       genus = create_genus name: name, protonym: protonym
       species = create_species 'Atta major', genus: genus
       genus.update_attribute :type_name, species.name
+      item = genus.history_items.create taxt: "Mark's the best"
       @formatter.new(genus).format.should ==
         %{<div class="antcat_taxon">} +
           %{<div class="statistics">} +
@@ -37,6 +38,10 @@ describe Exporters::Antweb::Formatter do
             %{ } +
             %{<a class="link_to_external_site" href="http://www.antwiki.org/Atta" target="_blank">antwiki</a>} +
           %{</div>} +
+          %{<p><b>Taxonomic history</b></p>} +
+          %{<div class="history"><div class="history_item item_#{item.id}" data-id="#{item.id}">} +
+            %{<table><tr><td class="history_item_body" style="font-size: 13px">Mark's the best.</td></tr></table>} +
+          %{</div></div>} +
         %{</div>}
     end
   end
