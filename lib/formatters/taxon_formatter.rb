@@ -81,7 +81,7 @@ class Formatters::TaxonFormatter
 
   def senior_synonym_list
     return '' unless @taxon.senior_synonyms.count > 0
-    ' of ' << @taxon.senior_synonyms.map {|e| Formatters::TaxonFormatter.link_to_taxon(e)}.join(', ')
+    ' of ' << @taxon.senior_synonyms.map {|e| self.class.link_to_taxon(e)}.join(', ')
   end
 
   ##########
@@ -179,8 +179,8 @@ class Formatters::TaxonFormatter
   end
 
   ###########
-  def self.link_to_antcat taxon
-    Formatters::Formatter.link_to_external_site 'AntCat', "http://www.antcat.org/catalog/#{taxon.id}"
+  def self.link_to_antcat taxon, label = 'AntCat'
+    Formatters::Formatter.link_to_external_site label, "http://www.antcat.org/catalog/#{taxon.id}"
   end
 
   def self.link_to_taxon taxon
@@ -301,7 +301,7 @@ class Formatters::TaxonFormatter
 
   def child_list_items children
     children.inject([]) do |string, child|
-      string << Formatters::TaxonFormatter.link_to_taxon(child)
+      string << self.class.link_to_taxon(child)
     end.join(', ').html_safe
   end
 
@@ -332,7 +332,7 @@ class Formatters::TaxonFormatter
 
   def detaxt taxt
     return '' unless taxt.present?
-    Taxt.to_string taxt, @user, expansion: expand_references?
+    Taxt.to_string taxt, @user, expansion: expand_references?, formatter: self.class
   end
 
 end

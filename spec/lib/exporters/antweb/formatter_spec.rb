@@ -19,7 +19,7 @@ describe Exporters::Antweb::Formatter do
       genus = create_genus name: name, protonym: protonym
       species = create_species 'Atta major', genus: genus
       genus.update_attribute :type_name, species.name
-      item = genus.history_items.create taxt: "Mark's the best"
+      item = genus.history_items.create taxt: "Taxon: {tax #{species.id}} Name: {nam #{species.name.id}} Epithet: {epi major}"
       @formatter.new(genus).format.should ==
         %{<div class="antcat_taxon">} +
           %{<div class="statistics">} +
@@ -34,13 +34,15 @@ describe Exporters::Antweb::Formatter do
             %{ } +
             %{<span class="type">Type-species: <span class="species taxon"><i>Atta major</i></span>.</span>} +
             %{ } +
-            %{<a class="link_to_external_site" href="http://www.antcat.org/catalog/#{genus.id}" target="_blank">antcat</a>} +
+            %{<a class="link_to_external_site" href="http://www.antcat.org/catalog/#{genus.id}" target="_blank">AntCat</a>} +
             %{ } +
-            %{<a class="link_to_external_site" href="http://www.antwiki.org/Atta" target="_blank">antwiki</a>} +
+            %{<a class="link_to_external_site" href="http://www.antwiki.org/Atta" target="_blank">AntWiki</a>} +
           %{</div>} +
           %{<p><b>Taxonomic history</b></p>} +
           %{<div class="history"><div class="history_item item_#{item.id}" data-id="#{item.id}">} +
-            %{<table><tr><td class="history_item_body" style="font-size: 13px">Mark's the best.</td></tr></table>} +
+            %{<table><tr><td class="history_item_body" style="font-size: 13px">} +
+              %{Taxon: <a class="link_to_external_site" href="http://www.antcat.org/catalog/#{species.id}" target="_blank"><i>Atta major</i></a> Name: <i>Atta major</i> Epithet: <i>major</i>.} +
+            %{</td></tr></table>} +
           %{</div></div>} +
         %{</div>}
     end

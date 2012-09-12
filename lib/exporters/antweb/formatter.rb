@@ -49,4 +49,8 @@ class Exporters::Antweb::Formatter < Formatters::TaxonFormatter
     Formatters::Formatter.link_to_external_site 'AntWeb', url.html_safe
   end
 
+  def self.link_to_taxon taxon
+    link_to_antcat taxon, taxon.name.to_html_with_fossil(taxon.fossil?).html_safe
+  end
+
 end
