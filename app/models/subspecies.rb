@@ -16,8 +16,7 @@ class Subspecies < SpeciesGroupTaxon
   def self.adjust_species_when_differs_from_protonym name_data, history
     currently_subspecies_of = get_currently_subspecies_of_from_history history
     return unless currently_subspecies_of
-    name_data[:subspecies] ||= []
-    name_data[:subspecies].unshift subspecies_epithet: name_data[:species_epithet]
+    name_data[:subspecies] ||= [subspecies_epithet: name_data[:species_epithet]]
     name_data[:species_epithet] = currently_subspecies_of
   end
 

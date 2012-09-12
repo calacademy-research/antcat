@@ -48,20 +48,51 @@ describe Subspecies do
     end
 
     describe "When the protonym has a different species" do
-      it "should insert the species from the 'Currently subspecies of' history item" do
-        genus = create_genus 'Camponotus'
-        create_species 'Camponotus hova'
-        subspecies = Species.import(
-          genus:                  genus,
-          species_group_epithet:  'radamae',
-          protonym: {
-            genus_name:           'Camponotus',
-            species_epithet:      'maculatus',
-            subspecies: [{type:   'r.', subspecies_epithet: 'radamae'}]
-          },
-          raw_history: [{currently_subspecies_of: {species: {species_epithet: 'hova'}}}]
-        )
-        Subspecies.find(subspecies).name.to_s.should == 'Camponotus hova maculatus radamae'
+      describe "Currently subspecies of:" do
+        it "should insert the species from the 'Currently subspecies of' history item" do
+          genus = create_genus 'Camponotus'
+          create_species 'Camponotus hova'
+          subspecies = Species.import(
+            genus:                  genus,
+            species_group_epithet:  'radamae',
+            protonym: {
+              genus_name:           'Camponotus',
+              species_epithet:      'maculatus',
+              subspecies: [{type:   'r.', subspecies_epithet: 'radamae'}]
+            },
+            raw_history: [{currently_subspecies_of: {species: {species_epithet: 'hova'}}}]
+          )
+          Subspecies.find(subspecies).name.to_s.should == 'Camponotus hova radamae'
+        end
+        it "should import a subspecies that has a species protonym" do
+          genus = create_genus 'Acromyrmex'
+          subspecies = Species.import(
+            genus:                  genus,
+            species_group_epithet:  'boliviensis',
+            protonym: {
+              genus_name:           'Acromyrmex',
+              species_epithet:      'boliviensis',
+            },
+            raw_history: [{currently_subspecies_of: {species: {species_epithet: 'lundii'}}}]
+          )
+          subspecies = Subspecies.find subspecies
+          subspecies.name.to_s.should == 'Acromyrmex lundii boliviensis'
+        end
+        it "if it's already a subspecies, don't just keep adding on to its epithets, but replace the middle one(s)" do
+          genus = create_genus 'Crematogaster'
+          create_species 'Crematogaster jehovae'
+          subspecies = Species.import(
+            genus:                  genus,
+            species_group_epithet:  'mosis',
+            protonym: {
+              genus_name:           'Camponotus',
+              species_epithet:      'auberti',
+              subspecies: [{type:   'var.', subspecies_epithet: 'mosis'}]
+            },
+            raw_history: [{currently_subspecies_of: {species: {species_epithet: 'jehovae'}}}]
+          )
+          Subspecies.find(subspecies).name.to_s.should == 'Crematogaster jehovae mosis'
+        end
       end
 
       it "should insert the species from the 'Revived from synonymy as subspecies of' history item" do
@@ -78,23 +109,8 @@ describe Subspecies do
           },
           raw_history: [{revived_from_synonymy: {subspecies_of: {species_epithet: 'castanea'}}}],
         )
-        Subspecies.find(subspecies).name.to_s.should == 'Crematogaster castanea tricolor mediorufa'
+        Subspecies.find(subspecies).name.to_s.should == 'Crematogaster castanea mediorufa'
       end
-    end
-
-    it "should import a subspecies that has a species protonym" do
-      genus = create_genus 'Acromyrmex'
-      subspecies = Species.import(
-        genus:                  genus,
-        species_group_epithet:  'boliviensis',
-        protonym: {
-          genus_name:           'Acromyrmex',
-          species_epithet:      'boliviensis',
-        },
-        raw_history: [{currently_subspecies_of: {species: {species_epithet: 'lundii'}}}]
-      )
-      subspecies = Subspecies.find subspecies
-      subspecies.name.to_s.should == 'Acromyrmex lundii boliviensis'
     end
 
     it "should use the right epithet when the protonym differs" do
