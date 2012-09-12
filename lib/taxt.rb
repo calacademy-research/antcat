@@ -51,7 +51,7 @@ module Taxt
     end.gsub(/{nam (\d+)}/) do |whole_match|
       decode_name whole_match, $1
     end.gsub(/{tax (\d+)}/) do |whole_match|
-      decode_taxon whole_match, $1
+      decode_taxon whole_match, $1, options
     end.gsub(/{epi (\w+)}/) do |_|
       decode_epithet $1
     end.html_safe
@@ -65,9 +65,9 @@ module Taxt
     Name.find(name_id_match).to_html rescue whole_match
   end
 
-  def self.decode_taxon whole_match, taxon_id_match
+  def self.decode_taxon whole_match, taxon_id_match, options
     taxon = Taxon.find taxon_id_match
-    Formatters::TaxonFormatter.link_to_taxon taxon
+    (options[:formatter] || Formatters::TaxonFormatter).link_to_taxon taxon
   rescue
     whole_match
   end
