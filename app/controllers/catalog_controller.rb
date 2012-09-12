@@ -144,9 +144,6 @@ class CatalogController < ApplicationController
     end
   end
 
-  def set_id_to_first_search_result
-  end
-
   def clear_search
     @parameters.delete :q
     @parameters.delete :st
