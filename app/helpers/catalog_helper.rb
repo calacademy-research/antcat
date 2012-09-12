@@ -45,10 +45,11 @@ module CatalogHelper
 
   def search_result_link item, parameters
     parameters = parameters.dup
-    css_class = item[:id] == parameters[:id] ? 'selected' : nil
+    css_class = item[:id].to_s == parameters[:id] ? 'selected' : nil
     parameters.delete :id
     parameters.delete :child
     parameters_string = parameters.empty? ? '' : "?#{parameters.to_query}"
+      lll{%q{css_class}}
     link_to raw(item[:name]), "/catalog/#{item[:id]}#{parameters_string}", class: css_class
   end
 
