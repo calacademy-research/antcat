@@ -29,4 +29,21 @@ describe Reference do
     end
   end
 
+  describe "when a MissingReference is found" do
+    before do
+      @found_reference = FactoryGirl.create :article_reference
+      @missing_reference = FactoryGirl.create :missing_reference
+    end
+    it "should replace references in taxt to the MissingReference to the found reference" do
+      item = TaxonHistoryItem.create! taxt: "{ref #{@missing_reference.id}}"
+      @missing_reference.replace_with @found_reference
+      item.reload.taxt.should == "{ref #{@found_reference.id}}"
+    end
+    it "should replace references in citations" do
+      citation = Citation.create! reference: @missing_reference
+      @missing_reference.replace_with @found_reference
+      citation.reload.reference.should == @found_reference
+    end
+  end
+
 end

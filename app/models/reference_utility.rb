@@ -18,4 +18,26 @@ class Reference < ActiveRecord::Base
     refresh_author_names_caches
   end
 
+  def replace_with reference
+    TaxonHistoryItem
+    [[Taxon,            [:type_taxt, :headline_notes_taxt, :genus_species_header_notes_taxt]],
+     [ReferenceSection, [:title, :subtitle, :references]],
+     [TaxonHistoryItem, [:taxt]],
+    ].each do |klass, fields|
+      for record in klass.send :all
+        for field in fields
+          next unless record[field]
+          record[field] = record[field].gsub /{ref #{id}}/, "{ref #{reference.id}}"
+        end
+        record.save!
+      end
+    end
+
+    for klass in [Citation, Bolton::Match]
+      klass.where(reference_id: id).update_all(reference_id: reference.id)
+    end
+    NestedReference.where(nested_reference_id: id).update_all(nested_reference_id: reference.id)
+
+  end
+
 end
