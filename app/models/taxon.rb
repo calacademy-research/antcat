@@ -71,7 +71,7 @@ class Taxon < ActiveRecord::Base
 
   ###############################################
   # statuses, fossil
-  scope :valid,               where("status = ?", 'valid')
+  scope :valid,               where(status: 'valid')
   scope :extant,              where(fossil: false)
   def unavailable?;           status == 'unavailable' end
   def available?;             !unavailable? end
