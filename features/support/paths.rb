@@ -28,6 +28,8 @@ module NavigationHelpers
       '/widget_tests/reference_picker'
     when /the reference field widget test page/
       '/widget_tests/reference_field'
+    when /the taxt editor test page/
+      '/widget_tests/taxt_editor'
     else
       raise "#{page_name} not found"
     end
