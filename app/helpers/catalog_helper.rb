@@ -49,7 +49,6 @@ module CatalogHelper
     parameters.delete :id
     parameters.delete :child
     parameters_string = parameters.empty? ? '' : "?#{parameters.to_query}"
-      lll{%q{css_class}}
     link_to raw(item[:name]), "/catalog/#{item[:id]}#{parameters_string}", class: css_class
   end
 
