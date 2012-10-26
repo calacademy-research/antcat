@@ -155,7 +155,16 @@ class Vlad
 
   class NamesWithoutTaxa < Problem
     def self.query
-      Name.find_by_sql 'SELECT name FROM names LEFT OUTER JOIN taxa on taxa.name_id = names.id WHERE taxa.id IS NULL'
+      Name.find_by_sql(
+        %{SELECT names.id FROM names } +
+          %{LEFT OUTER JOIN taxa taxa_name_id      ON taxa_name_id.name_id = names.id } +
+          %{LEFT OUTER JOIN taxa taxa_type_name_id ON taxa_type_name_id.type_name_id = names.id } +
+          %{LEFT OUTER JOIN protonyms              ON protonyms.name_id = names.id } +
+          %{WHERE } +
+            %{taxa_name_id.id IS null AND } +
+            %{taxa_type_name_id.id IS null AND } +
+            %{protonyms.id IS null }
+      ).map {|e| Name.find e['id']}
     end
     def self.display
       display_result_count query.size
