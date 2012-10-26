@@ -28,14 +28,15 @@ describe Vlad do
     results.first.should == genus_with_tribe_but_not_subfamily
   end
 
-  it "should show names without taxa" do
-    create_subfamily type_name: nil, protonym: nil
-    create_name 'Atta'
-    Name.count.should == 2
-    Taxon.count.should == 1
+  it "should show names without taxa, protonyms or type names" do
+    eciton = create_name 'Eciton'
+    formica = create_name 'Formica'
+    atta = create_name 'Atta'
+    create_subfamily type_name: eciton, protonym: nil
+    create_subfamily type_name: nil, protonym: FactoryGirl.create(:protonym, name: formica)
     results = Vlad::NamesWithoutTaxa.query
     results.count.should == 1
-    results.first.name.should == 'Atta'
+    results.first.to_s.should == 'Atta'
   end
 
   #it "should show subspecies without species" do
