@@ -167,7 +167,9 @@ class Vlad
       ).map {|e| Name.find e['id']}
     end
     def self.display
-      display_result_count query.size
+      display_results_section query do |name|
+        name.name
+      end
     end
   end
 
