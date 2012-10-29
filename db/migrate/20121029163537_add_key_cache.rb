@@ -1,7 +1,7 @@
 class AddKeyCache < ActiveRecord::Migration
   def up
 
-    add_column :references, :key_cache, :string
+    add_column :references, :key_cache, :string rescue nil
 
     # this populates the cached key once, but new ones and modifications won't update the cache
     Reference.all.each do |reference|
