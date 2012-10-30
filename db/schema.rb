@@ -11,7 +11,28 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121029163855) do
+ActiveRecord::Schema.define(:version => 20121029163537) do
+
+  create_table "antwiki_valid_taxa", :force => true do |t|
+    t.string   "name"
+    t.string   "subfamilia"
+    t.string   "tribus"
+    t.string   "genus"
+    t.string   "species"
+    t.string   "binomial"
+    t.string   "binomial_authority"
+    t.string   "subspecies"
+    t.string   "trinomial"
+    t.string   "trinomial_authority"
+    t.string   "author"
+    t.string   "year"
+    t.string   "changed_comb"
+    t.string   "type_locality_country"
+    t.string   "source"
+    t.string   "images"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "author_names", :force => true do |t|
     t.string   "name"
