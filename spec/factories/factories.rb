@@ -257,4 +257,8 @@ FactoryGirl.define do
     taxt 'Taxonomic history'
   end
 
+  ####################################################
+  factory :antwiki_valid_taxon do
+  end
+
 end
