@@ -1,6 +1,6 @@
 class CreateAntwikiValidTaxa < ActiveRecord::Migration
   def up
-    create_table :antwiki_valid_taxa, force: true do |t|
+    create_table :antwiki_valid_taxa, id: false, force: true do |t|
       t.string :name
       t.string :subfamilia
       t.string :tribus

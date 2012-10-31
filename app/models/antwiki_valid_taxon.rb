@@ -1,4 +1,4 @@
 # coding: UTF-8
-class AntWikiValidTaxon < ActiveRecord::Base
+class AntwikiValidTaxon < ActiveRecord::Base
   set_table_name :antwiki_valid_taxa
 end
