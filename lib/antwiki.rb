@@ -2,25 +2,24 @@
 module Antwiki
 
   def self.compare_valid show_progress = false
-    Progress.new_init show_progress: show_progress
-    Progress.total_count = 14499
-    results = {}
-    results[:missing_from_antcat] = []
-    results[:invalid_in_antcat] = []
-    results[:count] = 0
-
-    AntwikiValidTaxon.all.each do |antwiki_taxon|
-      results[:count] += 1
-      antcat_taxon = Taxon.find_by_name antwiki_taxon.name
+    Progress.new_init show_progress: show_progress, total_count: 14498
+    AntwikiValidTaxon.update_all result: nil
+    AntwikiValidTaxon.find_each do |antwiki_taxon|
+      antwiki_name = antwiki_taxon.name
+      antcat_taxon = Taxon.find_by_name antwiki_name
       if antcat_taxon.blank?
-        results[:missing_from_antcat] << antwiki_taxon.name
+        if antwiki_taxon.year == '2012'
+          antwiki_taxon.update_attribute :result, 'new'
+        else
+          antwiki_taxon.update_attribute :result, 'missing'
+        end
       elsif antcat_taxon.status != 'valid'
-        results[:invalid_in_antcat] << antwiki_taxon.name
+        antwiki_taxon.update_attribute :result, antcat_taxon.status
       end
-      Progress.tally_and_show_progress 10
+      Progress.tally_and_show_progress 100
     end
-
-    results
+    Progress.show_results
+    pp AntwikiValidTaxon.group(:result).count if show_progress
   end
 
 end
