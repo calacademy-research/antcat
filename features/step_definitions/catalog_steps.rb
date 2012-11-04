@@ -33,3 +33,9 @@ Then /^I should (not )?see the (\w+) index$/ do |should_not, rank|
   selector = should_not ? :should_not : :should
   page.send selector, have_css(".index .#{rank}")
 end
+
+Then /^I should (not )?see that "([^"]*)" is a synonym of "([^"]*)"$/ do |should_not, junior, senior|
+  page.should have_css '.header .taxon', text: junior
+  page.should have_css '.header .status', text: "synonym of #{senior}"
+end
+
