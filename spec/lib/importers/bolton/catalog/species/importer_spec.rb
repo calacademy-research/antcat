@@ -255,7 +255,7 @@ describe Importers::Bolton::Catalog::Species::Importer do
         senior.status.should == 'valid'
         senior.should_not be_synonym_of junior
 
-        @importer.set_synonym junior.name.to_s, senior.name.to_s
+        @importer.class.set_synonym junior.name.to_s, senior.name.to_s
         junior.reload
         senior.reload
 
@@ -269,11 +269,11 @@ describe Importers::Bolton::Catalog::Species::Importer do
       it "should make one the synonym of the other and set statuses" do
         atta = create_genus 'Atta'
         attaboi = create_genus 'Attaboi'
-        @importer.set_synonym 'Atta', 'Attaboi'
+        @importer.class.set_synonym 'Atta', 'Attaboi'
         atta.reload; attaboi.reload
         atta.should be_synonym_of attaboi
 
-        @importer.set_synonym 'Attaboi', 'Atta'
+        @importer.class.set_synonym 'Attaboi', 'Atta'
 
         atta.reload; attaboi.reload
         attaboi.status.should == 'synonym'
