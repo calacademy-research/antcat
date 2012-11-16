@@ -45,7 +45,7 @@ module CatalogHelper
 
   def search_result_link item, parameters
     parameters = parameters.dup
-    css_class = item[:id].to_s == parameters[:id] ? 'selected' : nil
+    css_class = item[:id].to_s == parameters[:id].to_s ? 'selected' : nil
     parameters.delete :id
     parameters.delete :child
     parameters_string = parameters.empty? ? '' : "?#{parameters.to_query}"
