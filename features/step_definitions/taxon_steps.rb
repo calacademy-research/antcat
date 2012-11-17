@@ -106,6 +106,9 @@ Given /^subfamily "(.*?)" exists$/ do |name|
   @subfamily = FactoryGirl.create :subfamily, name: FactoryGirl.create(:subfamily_name, name: name)
   @subfamily.history_items.create! taxt: "#{name} history"
 end
+Given /^the unavailable subfamily "(.*?)" exists$/ do |name|
+  @subfamily = FactoryGirl.create :subfamily, status: 'unavailable', name: FactoryGirl.create(:subfamily_name, name: name)
+end
 Given /^tribe "(.*?)" exists in that subfamily$/ do |name|
   @tribe = FactoryGirl.create :tribe, subfamily: @subfamily, name: FactoryGirl.create(:tribe_name, name: name)
   @tribe.history_items.create! taxt: "#{name} history"
