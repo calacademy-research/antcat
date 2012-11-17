@@ -11,6 +11,8 @@ AntCat::Application.routes.draw do
 
   match     'catalog/index/(:id)' => 'catalog#show', as: :catalog, via: :get # for compatibility
   match     'catalog/search' => 'catalog#search', as: :catalog, via: :get
+  match     'catalog/show_unavailable_subfamilies', as: :catalog, via: :get
+  match     'catalog/hide_unavailable_subfamilies', as: :catalog, via: :get
   match     'catalog/show_tribes' => 'catalog#show_tribes', as: :catalog, via: :get
   match     'catalog/hide_tribes' => 'catalog#hide_tribes', as: :catalog, via: :get
   match     'catalog/show_subgenera' => 'catalog#show_subgenera', as: :catalog, via: :get

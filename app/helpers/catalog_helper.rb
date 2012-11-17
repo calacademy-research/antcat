@@ -57,6 +57,14 @@ module CatalogHelper
     link_to 'hide', "/catalog/hide_#{name}#{parameters_string}"
   end
 
+  def hide_or_show_unavailable_subfamilies_link is_hiding_link, parameters
+    parameters_string = parameters.empty? ? '' : "?#{parameters.to_query}"
+    command = is_hiding_link ? 'hide' : 'show' 
+    action = command.dup << '_unavailable_subfamilies'
+    text = command + ' unavailable'
+    link_to text, "/catalog/#{action}#{parameters_string}"
+  end
+
   def show_child_link name, selected, parameters
     parameters_string = parameters.empty? ? '' : "?#{parameters.to_query}"
     link_to "show #{name}", "/catalog/show_#{name}#{parameters_string}"

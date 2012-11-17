@@ -4,6 +4,10 @@
     %tr
       %td.header
         = rank.to_s :plural, :capitalized
+
+        - if options[:can_show_unavailable]
+          .hide_show= hide_or_show_unavailable_subfamilies_link session[:show_unavailable_subfamilies], @parameters
+
         - if options[:hideable_name]
           .hide_show= hide_link options[:hideable_name], @parameters[:id], @parameters
         - if options[:hideable_child_name]

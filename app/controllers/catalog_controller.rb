@@ -31,6 +31,17 @@ class CatalogController < ApplicationController
     redirect_to_id
   end
 
+  def show_unavailable_subfamilies
+    session[:show_unavailable_subfamilies] = true
+    redirect_to_id
+  end
+
+  def hide_unavailable_subfamilies
+    session[:show_unavailable_subfamilies] = false
+    taxon = Family.first
+    redirect_to_id
+  end
+
   def show_subgenera
     session[:show_subgenera] = true
     redirect_to_id
@@ -53,7 +64,12 @@ class CatalogController < ApplicationController
   ##########################
   def setup_taxon_and_index
     @taxon = Taxon.find_by_id(@parameters[:id]) || Family.first
-    @subfamilies = ::Subfamily.ordered_by_name
+
+    if session[:show_unavailable_subfamilies]
+      @subfamilies = ::Subfamily.ordered_by_name
+    else
+      @subfamilies = ::Subfamily.ordered_by_name.where "status != 'unavailable'"
+    end
 
     case @taxon
 
