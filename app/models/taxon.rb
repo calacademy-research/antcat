@@ -55,6 +55,13 @@ class Taxon < ActiveRecord::Base
   has_many :junior_synonyms, through: :synonyms_as_senior
   has_many :senior_synonyms, through: :synonyms_as_junior
 
+  def become_junior_synonym_of senior
+    Synonym.where(junior_synonym_id: senior, senior_synonym_id: self).destroy_all
+    Synonym.create! junior_synonym: self, senior_synonym: senior
+    senior.update_attribute :status, 'valid'
+    update_attribute :status, 'synonym'
+  end
+
   ###############################################
   # homonym
   belongs_to  :homonym_replaced_by, class_name: 'Taxon'

@@ -113,10 +113,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
   def self.set_synonym junior, senior
     junior = Taxon.find_by_name junior
     senior = Taxon.find_by_name senior
-    Synonym.where(junior_synonym_id: senior, senior_synonym_id: junior).destroy_all
-    Synonym.create! junior_synonym: junior, senior_synonym: senior
-    senior.update_attribute :status, 'valid'
-    junior.update_attribute :status, 'synonym'
+    junior.become_junior_synonym_of senior
   rescue
   end
 
