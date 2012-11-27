@@ -360,6 +360,24 @@ describe Taxon do
       junior.should have(1).senior_synonym
       junior.should have(0).junior_synonyms
     end
+
+    describe "Reversing synonymy" do
+      it "should make one the synonym of the other and set statuses" do
+        atta = create_genus 'Atta'
+        attaboi = create_genus 'Attaboi'
+
+        atta.become_junior_synonym_of attaboi
+        atta.reload; attaboi.reload
+        atta.should be_synonym_of attaboi
+
+        attaboi.become_junior_synonym_of atta
+        atta.reload; attaboi.reload
+        attaboi.status.should == 'synonym'
+        attaboi.should be_synonym_of atta
+        atta.status.should == 'valid'
+        atta.should_not be_synonym_of attaboi
+      end
+    end
   end
 
 end

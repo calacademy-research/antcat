@@ -265,23 +265,6 @@ describe Importers::Bolton::Catalog::Species::Importer do
         senior.should_not be_synonym_of junior
       end
     end
-    describe "Swapping synonymy" do
-      it "should make one the synonym of the other and set statuses" do
-        atta = create_genus 'Atta'
-        attaboi = create_genus 'Attaboi'
-        @importer.class.set_synonym 'Atta', 'Attaboi'
-        atta.reload; attaboi.reload
-        atta.should be_synonym_of attaboi
-
-        @importer.class.set_synonym 'Attaboi', 'Atta'
-
-        atta.reload; attaboi.reload
-        attaboi.status.should == 'synonym'
-        attaboi.should be_synonym_of atta
-        atta.status.should == 'valid'
-        atta.should_not be_synonym_of attaboi
-      end
-    end
   end
 
 end
