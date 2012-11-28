@@ -35,7 +35,11 @@ Then /^I should (not )?see the (\w+) index$/ do |should_not, rank|
 end
 
 Then /^I should (not )?see that "([^"]*)" is a synonym of "([^"]*)"$/ do |should_not, junior, senior|
-  page.should have_css '.header .taxon', text: junior
-  page.should have_css '.header .status', text: "synonym of #{senior}"
+  selector = should_not ? :should_not : :should
+  page.send selector, have_css('.header .taxon', text: junior)
+  page.send selector, have_css('.header .status', text: "synonym of #{senior}")
 end
 
+Then /^I should see the catalog entry for "([^"]*)"$/ do |taxon|
+  page.should have_css('.header .taxon', text: taxon)
+end
