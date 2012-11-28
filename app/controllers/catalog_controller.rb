@@ -208,6 +208,14 @@ class CatalogController < ApplicationController
     @parameters[:child] = params[:child] if params[:child].present?
     @parameters[:q] = params[:q].strip if params[:q].present?
     @parameters[:st] = params[:st] if params[:st].present?
+    handle_edit_mode
+  end
+
+  def handle_edit_mode
+    mode = params[:mode]
+    return unless mode.present? 
+    session[:mode] = mode
+    params.delete :mode
   end
 
   def set_id_parameter id, child = nil
