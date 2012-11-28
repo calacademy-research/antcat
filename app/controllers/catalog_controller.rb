@@ -198,6 +198,7 @@ class CatalogController < ApplicationController
       new_junior = taxon
     end
     new_junior.become_junior_synonym_of new_senior
+    ReverseSynonymyEdit.create! new_junior: new_junior, new_senior: new_senior, user: current_user
     redirect_to_id
   end
 
