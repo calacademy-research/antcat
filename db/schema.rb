@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121126175308) do
+ActiveRecord::Schema.define(:version => 20121128165139) do
 
   create_table "antwiki_valid_taxa", :id => false, :force => true do |t|
     t.string   "name"
@@ -93,6 +93,15 @@ ActiveRecord::Schema.define(:version => 20121126175308) do
   end
 
   add_index "citations", ["reference_id"], :name => "index_authorships_on_reference_id"
+
+  create_table "editing_history", :force => true do |t|
+    t.string   "type"
+    t.integer  "user_id"
+    t.integer  "new_junior_id"
+    t.integer  "new_senior_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "forward_refs", :force => true do |t|
     t.integer  "fixee_id"
