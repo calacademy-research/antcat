@@ -8,9 +8,10 @@
 #catalog
   - can_add_genus = @tribe && @tribe != 'none'
   .content
-    - editing_buttons_content = editing_buttons @taxon, @parameters
-    - if editing_buttons_content.present?
-      #editing_buttons= editing_buttons_content
+    - if current_user && session[:mode] == 'edit'
+      - editing_buttons_content = editing_buttons @taxon, @parameters
+      - if editing_buttons_content.present?
+        #editing_buttons= editing_buttons_content
     = Formatters::TaxonFormatter.new(@taxon, current_user).format
     %hr
 

@@ -38,5 +38,5 @@ end
 
 Given 'I am logged in as an editor and have editing turned on' do
   step 'I log in'
-  # turn on editing
+  visit '/catalog?mode=edit'
 end

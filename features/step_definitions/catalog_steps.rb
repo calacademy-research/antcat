@@ -43,3 +43,16 @@ end
 Then /^I should see the catalog entry for "([^"]*)"$/ do |taxon|
   page.should have_css('.header .taxon', text: taxon)
 end
+
+Then /^I should (not )?see the editing buttons$/ do |should_not|
+  selector = should_not ? :should_not : :should
+  page.send selector, have_css('input[value="Reverse synonymy"]')
+end
+
+And /^I turn on editing mode/ do
+  visit '/catalog?mode=edit'
+end
+
+And /^I turn off editing mode/ do
+  visit '/catalog?mode=view'
+end
