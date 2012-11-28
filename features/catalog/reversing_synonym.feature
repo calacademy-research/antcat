@@ -10,7 +10,7 @@ Feature: Reversing synonymy
     And I am logged in as an editor and have editing turned on
     When I go to the catalog entry for "Solenopsis invicta"
     Then I should see that "Solenopsis invicta" is a synonym of "Solenopsis wagneri"
-    #Given that I will confirm on the next step
+    Then I should see the editing buttons
     When I press "Reverse synonymy"
     Then I should see the catalog entry for "Solenopsis invicta"
     Then I should not see that "Solenopsis invicta" is a synonym of "Solenopsis wagneri"
@@ -18,6 +18,12 @@ Feature: Reversing synonymy
     Then I should see that "Solenopsis wagneri" is a synonym of "Solenopsis invicta"
 
   Scenario: Reversing synonym from the senior side
-  Scenario: Can't see buttons if not logged in as editor
-  Scenario: Can't see buttons if editing not turned on
-  Scenario: Pushing the button but not confirming
+    Given there is a species "Solenopsis invicta" which is a junior synonym of "Solenopsis wagneri"
+    And I am logged in as an editor and have editing turned on
+    When I go to the catalog entry for "Solenopsis wagneri"
+    Then I should not see that "Solenopsis wagneri" is a synonym of "Solenopsis invicta"
+    When I press "Reverse synonymy"
+    Then I should see the catalog entry for "Solenopsis wagneri"
+    Then I should see that "Solenopsis wagneri" is a synonym of "Solenopsis invicta"
+    When I go to the catalog entry for "Solenopsis invicta"
+    Then I should not see that "Solenopsis invicta" is a synonym of "Solenopsis wagneri"
