@@ -56,3 +56,10 @@ end
 And /^I turn off editing mode/ do
   visit '/catalog?mode=view'
 end
+
+And /^there should be an editing history record showing that the new junior synonym is "([^"]*)" and the new senior synonym is "([^"]*)"/ do |junior, senior|
+  editing_history = ReverseSynonymyEdit.first
+  editing_history.new_junior.name.to_s.should == junior
+  editing_history.new_senior.name.to_s.should == senior
+  editing_history.user.should_not be_blank
+end

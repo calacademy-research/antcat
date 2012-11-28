@@ -16,6 +16,7 @@ Feature: Reversing synonymy
     Then I should not see that "Solenopsis invicta" is a synonym of "Solenopsis wagneri"
     When I go to the catalog entry for "Solenopsis wagneri"
     Then I should see that "Solenopsis wagneri" is a synonym of "Solenopsis invicta"
+    And there should be an editing history record showing that the new junior synonym is "Solenopsis wagneri" and the new senior synonym is "Solenopsis invicta"
 
   Scenario: Reversing synonym from the senior side
     Given there is a species "Solenopsis invicta" which is a junior synonym of "Solenopsis wagneri"
