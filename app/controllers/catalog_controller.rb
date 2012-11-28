@@ -188,6 +188,20 @@ class CatalogController < ApplicationController
   end
 
   ##########################
+  def reverse_synonymy
+    taxon = Taxon.find @parameters[:id]
+    if taxon.synonym?
+      new_junior = taxon.senior_synonyms.first
+      new_senior = taxon
+    else
+      new_senior = taxon.junior_synonyms.first
+      new_junior = taxon
+    end
+    new_junior.become_junior_synonym_of new_senior
+    redirect_to_id
+  end
+
+  ##########################
   def get_parameters
     @parameters = HashWithIndifferentAccess.new
     @parameters[:id] = params[:id] if params[:id].present?
