@@ -52,6 +52,15 @@ module CatalogHelper
     link_to raw(item[:name]), "/catalog/#{item[:id]}#{parameters_string}", class: css_class
   end
 
+  ############
+  def editing_buttons taxon, parameters
+    return '' unless taxon.junior_synonyms.present? or taxon.senior_synonyms.present?
+    parameters_string = parameters.empty? ? '' : "?#{parameters.to_query}"
+    form_tag "/catalog/#{taxon.id}/reverse_synonymy#{parameters_string}", method: :get do
+      submit_tag 'Reverse synonymy'
+    end
+  end
+
   def hide_link name, selected, parameters
     parameters_string = parameters.empty? ? '' : "?#{parameters.to_query}"
     link_to 'hide', "/catalog/hide_#{name}#{parameters_string}"

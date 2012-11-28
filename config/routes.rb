@@ -19,6 +19,8 @@ AntCat::Application.routes.draw do
   match     'catalog/hide_subgenera' => 'catalog#hide_subgenera', as: :catalog, via: :get
   match     'catalog/(:id)' => 'catalog#show', as: :catalog, via: :get
 
+  match     '/catalog/:id/reverse_synonymy' => 'catalog#reverse_synonymy'
+
   resources :bolton_references
   match     '/documents/:id/:file_name', to: 'references#download', file_name: /.+/, via: :get
   resources :journals
