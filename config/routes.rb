@@ -20,6 +20,7 @@ AntCat::Application.routes.draw do
   match     'catalog/(:id)' => 'catalog#show', as: :catalog, via: :get
 
   match     '/catalog/:id/reverse_synonymy' => 'catalog#reverse_synonymy'
+  match     '/catalog/:id/elevate_subspecies' => 'catalog#elevate_subspecies'
 
   resources :bolton_references
   match     '/documents/:id/:file_name', to: 'references#download', file_name: /.+/, via: :get
