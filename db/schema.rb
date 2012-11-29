@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121128165139) do
+ActiveRecord::Schema.define(:version => 20121129013230) do
 
   create_table "antwiki_valid_taxa", :id => false, :force => true do |t|
     t.string   "name"
@@ -101,6 +101,8 @@ ActiveRecord::Schema.define(:version => 20121128165139) do
     t.integer  "new_senior_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "taxon_id"
+    t.integer  "old_species_id"
   end
 
   create_table "forward_refs", :force => true do |t|
