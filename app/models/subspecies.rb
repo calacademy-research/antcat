@@ -5,6 +5,26 @@ class Subspecies < SpeciesGroupTaxon
   def statistics
   end
 
+  def elevate_to_species
+    new_name_string = species.genus.name.to_s + ' ' + name.epithet
+    raise if Species.find_by_name new_name_string
+    new_name = SpeciesName.find_by_name new_name_string
+    new_name ||= SpeciesName.new
+    new_name.update_attributes({
+      name:           new_name_string,
+      name_html:      Formatters::Formatter.italicize(new_name_string),
+      epithet:        name.epithet,
+      epithet_html:   name.epithet_html,
+      epithets:       nil,
+      protonym_html:  name.protonym_html,
+    })
+    update_attributes name: new_name, species: nil
+    Subspecies.connection.execute "UPDATE taxa SET type = 'Species' WHERE id = '#{id}'"
+  end
+
+  ############################
+  # import
+
   def self.import_name data
     name_data = data[:protonym]
     name_data[:genus] = data[:genus]

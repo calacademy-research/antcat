@@ -25,6 +25,87 @@ describe Subspecies do
     subspecies.subfamily.should == @genus.subfamily
   end
 
+  describe "Elevating to species" do
+    it "should turn the record into a Species" do
+      taxon = create_subspecies 'Atta major colobopsis'
+      taxon.should be_kind_of Subspecies
+      taxon.elevate_to_species
+      taxon = Species.find taxon.id
+      taxon.should be_kind_of Species
+    end
+    it "should form the new species name from the epithet" do
+      species = create_species 'Atta major', genus: @genus
+      subspecies_name = SubspeciesName.create!({
+        name:           'Atta major colobopsis',
+        name_html:      '<i>Atta major colobopsis</i>',
+        epithet:        'colobopsis',
+        epithet_html:   '<i>colobopsis</i>',
+        epithets:       'major colobopsis',
+        protonym_html:  '<i>Atta major colobopsis</i>',
+      })
+      taxon = create_subspecies name: subspecies_name, genus: @genus, species: species
+      taxon.elevate_to_species
+      taxon = Species.find taxon.id
+      taxon.name.name.should == 'Atta colobopsis'
+      taxon.name.name_html.should == '<i>Atta colobopsis</i>'
+      taxon.name.epithet.should == 'colobopsis'
+      taxon.name.epithet_html.should == '<i>colobopsis</i>'
+      taxon.name.epithets.should be_nil
+      taxon.name.protonym_html.should == '<i>Atta major colobopsis</i>'
+    end
+    it "should create the new species name, if necessary" do
+      species = create_species 'Atta major', genus: @genus
+      subspecies_name = SubspeciesName.create!({
+        name:           'Atta major colobopsis',
+        name_html:      '<i>Atta major colobopsis</i>',
+        epithet:        'colobopsis',
+        epithet_html:   '<i>colobopsis</i>',
+        epithets:       'major colobopsis',
+        protonym_html:  '<i>Atta major colobopsis</i>',
+      })
+      taxon = create_subspecies name: subspecies_name, genus: @genus, species: species
+      name_count = Name.count
+      taxon.elevate_to_species
+      Name.count.should == name_count + 1
+    end
+    it "should find an existing species name, if possible" do
+      species = create_species 'Atta major', genus: @genus
+      subspecies_name = SubspeciesName.create!({
+        name:           'Atta major colobopsis',
+        name_html:      '<i>Atta major colobopsis</i>',
+        epithet:        'colobopsis',
+        epithet_html:   '<i>colobopsis</i>',
+        epithets:       'major colobopsis',
+        protonym_html:  '<i>Atta major colobopsis</i>',
+      })
+      species_name = SpeciesName.create!({
+        name:           'Atta colobopsis',
+        name_html:      '<i>Atta colobopsis</i>',
+        epithet:        'colobopsis',
+        epithet_html:   '<i>colobopsis</i>',
+        epithets:       nil,
+        protonym_html:  '<i>Atta major colobopsis</i>',
+      })
+      taxon = create_subspecies name: subspecies_name, genus: @genus, species: species
+      taxon.elevate_to_species
+      taxon = Species.find taxon.id
+      taxon.name.should == species_name
+    end
+    it "should crash and burn if the species already exists" do
+      species = create_species 'Atta major', genus: @genus
+      subspecies_name = SubspeciesName.create!({
+        name:           'Atta batta major',
+        name_html:      '<i>Atta batta major</i>',
+        epithet:        'major',
+        epithet_html:   '<i>major</i>',
+        epithets:       'batta major',
+        protonym_html:  '<i>Atta batta major</i>',
+      })
+      taxon = create_subspecies name: subspecies_name, species: species
+      -> {taxon.elevate_to_species}.should raise_error
+    end
+  end
+
   describe "Importing" do
 
     it "should create the subspecies and the forward ref" do
@@ -126,4 +207,5 @@ describe Subspecies do
     end
 
   end
+
 end
