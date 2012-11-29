@@ -54,11 +54,23 @@ module CatalogHelper
 
   ############
   def editing_buttons taxon, parameters
-    return '' unless taxon.junior_synonyms.present? or taxon.senior_synonyms.present?
+    show_reverse_synonymy = taxon.junior_synonyms.present? || taxon.senior_synonyms.present?
+    show_elevate_subspecies = taxon.kind_of? Subspecies
+    return '' unless show_reverse_synonymy || show_elevate_subspecies
+
+    contents = ''.html_safe
     parameters_string = parameters.empty? ? '' : "?#{parameters.to_query}"
-    form_tag "/catalog/#{taxon.id}/reverse_synonymy#{parameters_string}", method: :get do
-      submit_tag 'Reverse synonymy'
+    if show_reverse_synonymy
+      contents << form_tag("/catalog/#{taxon.id}/reverse_synonymy#{parameters_string}", method: :get) do
+        submit_tag 'Reverse synonymy'
+      end
     end
+    if show_elevate_subspecies
+      contents << form_tag("/catalog/#{taxon.id}/elevate_subspecies#{parameters_string}", method: :get) do
+        submit_tag 'Elevate to species' if show_elevate_subspecies
+      end
+    end
+    contents
   end
 
   def hide_link name, selected, parameters
