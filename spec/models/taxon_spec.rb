@@ -377,6 +377,19 @@ describe Taxon do
         atta.status.should == 'valid'
         atta.should_not be_synonym_of attaboi
       end
+
+      it "should not create dupliate synonym in case of synonym cycle" do
+        atta = create_genus 'Atta', status: 'synonym'
+        attaboi = create_genus 'Attaboi', status: 'synonym'
+        Synonym.create! junior_synonym: atta, senior_synonym: attaboi
+        Synonym.create! junior_synonym: attaboi, senior_synonym: atta
+        Synonym.count.should == 2
+
+        atta.become_junior_synonym_of attaboi
+        Synonym.count.should == 1
+        atta.should be_synonym_of attaboi
+        attaboi.should_not be_synonym_of atta
+      end
     end
   end
 
