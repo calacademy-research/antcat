@@ -57,6 +57,7 @@ class Taxon < ActiveRecord::Base
 
   def become_junior_synonym_of senior
     Synonym.where(junior_synonym_id: senior, senior_synonym_id: self).destroy_all
+    Synonym.where(senior_synonym_id: senior, junior_synonym_id: self).destroy_all
     Synonym.create! junior_synonym: self, senior_synonym: senior
     senior.update_attribute :status, 'valid'
     update_attribute :status, 'synonym'
