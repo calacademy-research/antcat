@@ -2,7 +2,6 @@
 require 'spec_helper'
 
 describe Species do
-
   it "should have subspecies, which are its children" do
     species = create_species 'Atta chilensis'
     create_subspecies 'Atta chilensis robusta', species: species
@@ -46,6 +45,20 @@ describe Species do
       species.statistics.should == {extant: {subspecies: {'valid' => 1, 'synonym' => 2}}}
     end
 
+  end
+
+  describe "Becoming subspecies" do
+    before do
+      @genus = create_genus 'Atta'
+    end
+    it "should turn the record into a Subspecies" do
+      major = create_species 'Atta major', genus: @genus
+      taxon = create_species 'Atta minor', genus: @genus
+      taxon.should be_kind_of Species
+      taxon.become_subspecies_of major
+      taxon = Subspecies.find taxon.id
+      taxon.should be_kind_of Subspecies
+    end
   end
 
   describe "Siblings" do
