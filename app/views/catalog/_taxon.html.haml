@@ -1,0 +1,16 @@
+-# Locals: taxon
+.antcat_taxon
+
+  - formatter = Formatters::TaxonFormatter.new taxon, current_user
+  = formatter.header
+  = formatter.statistics
+  = formatter.genus_species_header_notes_taxt
+  = formatter.headline
+
+  - if taxon.history_items.present?
+    .history
+      -#- for history_item in taxon.taxonomic_history_items do
+        -#= render 'catalog/index/history_item/panel', item: history_item
+
+  = formatter.child_lists
+  = formatter.references
