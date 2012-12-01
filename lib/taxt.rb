@@ -94,4 +94,21 @@ module Taxt
     end
   end
 
+  ################################
+  def self.replace replace_what, replace_with
+    TaxonHistoryItem
+    [[Taxon,            [:type_taxt, :headline_notes_taxt, :genus_species_header_notes_taxt]],
+     [ReferenceSection, [:title, :subtitle, :references]],
+     [TaxonHistoryItem, [:taxt]],
+    ].each do |klass, fields|
+      for record in klass.send :all
+        for field in fields
+          next unless record[field]
+          record[field] = record[field].gsub replace_what, replace_with
+        end
+        record.save!
+      end
+    end
+  end
+
 end
