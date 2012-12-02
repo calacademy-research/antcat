@@ -157,8 +157,19 @@ class AntCat.ReferencePicker
       .find(".reference item_#{@current_reference_id} div.display")
         .addClass('ui-selected')
         .end()
-      .selectable('destroy')
-      .selectable(filter: 'div.display', stop: @handle_new_selection, cancel: '.expand_collapse_icon, .icons, div.edit')
+
+    @element.find('div.display').bind 'click', @handle_click
+    @element.find('div.display').hover(@hover, @unhover)
+
+  hover: (event) =>
+    $(event.target).addClass('ui-selecting')
+  unhover: (event) =>
+    $(event.target).removeClass('ui-selecting')
+
+  handle_click: (event) =>
+    @element.find('div.display').removeClass('ui-selected').removeClass('ui-selecting')
+    $(event.target).addClass('ui-selected')
+    @handle_new_selection()
 
   on_reference_form_open: => @disable_search_controls()
   on_reference_form_close: => @enable_search_controls()
