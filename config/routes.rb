@@ -31,25 +31,25 @@ AntCat::Application.routes.draw do
   resources :styles, only: [:index]
 
   resources :families, controller: :catalog do
-    resources :history_items
+    resources :taxon_history_items
   end
   resources :subfamilies, controller: :catalog do
-    resources :history_items
+    resources :taxon_history_items
   end
   resources :tribes, controller: :catalog do
-    resources :history_items
+    resources :taxon_history_items
   end
   resources :genera, controller: :catalog do
-    resources :history_items
+    resources :taxon_history_items
   end
   resources :subgenera, controller: :catalog do
-    resources :history_items
+    resources :taxon_history_items
   end
   resources :species, controller: :catalog do
-    resources :history_items
+    resources :taxon_history_items
   end
   resources :subspecies, controller: :catalog do
-    resources :history_items
+    resources :taxon_history_items
   end
 
   resource :reference_picker, only: :show
