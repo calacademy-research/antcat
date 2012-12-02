@@ -5,9 +5,10 @@
   %table
     %tr
       %td.icons
-        %a.icon.edit{title: 'edit', href: '#'}
-          = image_tag 'edit_off.png', alt: 'edit'
+        - if user_can_edit_catalog
+          %a.icon.edit{title: 'edit', href: '#'}
+            = image_tag 'edit_off.png', alt: 'edit'
       %td.history_item_body
         = render 'catalog/history_item/display', item: item
-        -#- if user_can_edit?
-        = render 'catalog/history_item/edit', item: item
+        - if user_can_edit_catalog
+          = render 'catalog/history_item/edit', item: item
