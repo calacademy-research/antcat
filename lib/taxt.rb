@@ -52,8 +52,6 @@ module Taxt
       decode_name whole_match, $1
     end.gsub(/{tax (\d+)}/) do |whole_match|
       decode_taxon whole_match, $1, options
-    end.gsub(/{epi (\w+)}/) do |_|
-      decode_epithet $1
     end.html_safe
   end
 
@@ -72,10 +70,6 @@ module Taxt
     whole_match
   end
 
-  def self.decode_epithet epithet
-    Formatters::Formatter.italicize epithet
-  end
-
   ################################
   def self.encode_unparseable string
     "{? #{string}}"
@@ -86,12 +80,7 @@ module Taxt
   end
 
   def self.encode_taxon_name data
-    epithet = data[:species_group_epithet] || data[:species_epithet]
-    if data[:genus_name] or not epithet
-      "{nam #{Name.import(data).id}}"
-    else
-      "{epi #{epithet}}"
-    end
+    "{nam #{Name.import(data).id}}"
   end
 
   ################################
