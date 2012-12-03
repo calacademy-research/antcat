@@ -59,9 +59,9 @@ class AntCat.Form
   start_spinning: =>
     @element.find(':button')
       .disable()
-      .parent().spinner position: 'left', leftOffset: 1, img: AntCat.spinner_path
+      #.parent().spinner position: 'left', leftOffset: 1, img: AntCat.spinner_path
 
   stop_spinning: =>
-    @element.find('.spinner').spinner 'remove'
+    #@element.find('.spinner').spinner 'remove'
     @element.find('.buttons :button').undisable()
 
