@@ -16,10 +16,10 @@ class AntCat.Form
         .find(':button.submit').click(@submit).end()
         .find(':button.cancel').click(@cancel).end()
         .end()
-      .keypress (event) =>
-        return true unless event.which is $.ui.keyCode.ENTER
-        @submit()
-        false
+      #.keypress (event) =>
+        #return true unless event.which is $.ui.keyCode.ENTER
+        #@submit()
+        #false
 
   open: =>
     @element.find('input[type=text]:visible:first').focus()
