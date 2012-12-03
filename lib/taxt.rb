@@ -13,15 +13,33 @@ module Taxt
 
   def self.to_editable taxt
     return '' unless taxt
-    taxt.gsub /{ref (\d+)}/ do |ref|
-      editable_id = id_for_editable $1
-      to_editable_reference Reference.find($1) rescue "{#{editable_id}}"
+    taxt = taxt.dup
+
+    if taxt =~ /{ref/
+      taxt.gsub! /{ref (\d+)}/ do |ref|
+        editable_id = id_for_editable $1
+        to_editable_reference Reference.find($1) rescue "{#{editable_id}}"
+      end
     end
+
+    if taxt =~ /{tax/
+      taxt.gsub! /{tax (\d+)}/ do |tax|
+        editable_id = id_for_editable $1
+        to_editable_taxon Taxon.find($1) rescue "{#{editable_id}}"
+      end
+    end
+
+    taxt
   end
 
   def self.to_editable_reference reference
     editable_id = id_for_editable reference.id
     "{#{reference.key.to_s} #{editable_id}}"
+  end
+
+  def self.to_editable_taxon taxon
+    editable_id = id_for_editable taxon.id
+    "{#{taxon.name} #{editable_id}}"
   end
 
   # this value is duplicated in taxt_editor.coffee

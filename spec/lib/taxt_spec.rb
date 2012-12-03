@@ -55,9 +55,6 @@ describe Taxt do
         name = create_name 'Camponotus (Ctenopyga)'
         Taxt.encode_taxon_name(genus_name: genus.name, subgenus_epithet: 'Ctenopyga').should == "{nam #{name.id}}"
       end
-      it "if there isn't a genus name for a species epithet, just convert it to italicized text" do
-        Taxt.encode_taxon_name(species_group_epithet: 'brunneus').should == "{epi brunneus}"
-      end
       it "should handle a species name with subgenus" do
         name = create_name 'Formica subspinosa'
         Taxt.encode_taxon_name(genus_name: 'Formica', subgenus_epithet: 'Hypochira', species_epithet: 'subspinosa').should == "{nam #{name.id}}"
@@ -71,36 +68,36 @@ describe Taxt do
     end
   end
 
-  describe "Editable reference tag" do
-    it "should return the tag" do
-      reference = FactoryGirl.create :article_reference
-      reference.stub(:key).and_return 'Latreille, 1809'
-      reference.stub(:id).and_return '1234'
-      editable_key = Taxt.id_for_editable reference.id
-      Taxt.to_editable_reference(reference).should == '{Latreille, 1809 Ut}'
-    end
-  end
-
   describe "Editable taxt" do
     describe "To editable taxt" do
-      it "should use the inline citation format followed by the id" do
-        key = mock 'key'
-        key.should_receive(:to_s).and_return 'Fisher, 1922'
-        reference = mock 'reference', id: 36
-        Reference.should_receive(:find).and_return reference
-        reference.stub(:key).and_return key
-        editable_key = Taxt.id_for_editable reference.id
-        Taxt.to_editable("{ref #{reference.id}}").should == "{Fisher, 1922 #{editable_key}}"
+      describe "References" do
+        it "should use the inline citation format followed by the id" do
+          key = mock 'key'
+          key.should_receive(:to_s).and_return 'Fisher, 1922'
+          reference = mock 'reference', id: 36
+          Reference.should_receive(:find).and_return reference
+          reference.stub(:key).and_return key
+          editable_key = Taxt.id_for_editable reference.id
+          Taxt.to_editable("{ref #{reference.id}}").should == "{Fisher, 1922 #{editable_key}}"
+        end
+        it "should handle a missing reference" do
+          reference = FactoryGirl.create :missing_reference, citation: 'Fisher, 2011'
+          editable_key = Taxt.id_for_editable reference.id
+          Taxt.to_editable("{ref #{reference.id}}").should == "{Fisher, 2011 #{editable_key}}"
+        end
+        it "should handle a reference we don't even know is missing" do
+          Taxt.to_editable("{ref 123}").should == "{Zb}"
+        end
       end
-      it "should handle a missing reference" do
-        reference = FactoryGirl.create :missing_reference, citation: 'Fisher, 2011'
-        editable_key = Taxt.id_for_editable reference.id
-        Taxt.to_editable("{ref #{reference.id}}").should == "{Fisher, 2011 #{editable_key}}"
-      end
-      it "should handle a reference we don't even know is missing" do
-        Taxt.to_editable("{ref 123}").should == "{Zb}"
+      describe "Taxa" do
+        it "should use the taxon's name followed by its id" do
+          genus = create_genus 'Atta'
+          editable_key = Taxt.id_for_editable genus.id
+          Taxt.to_editable("{tax #{genus.id}}").should == "{Atta #{editable_key}}"
+        end
       end
     end
+
     describe "From editable taxt" do
       it "should use the inline citation format followed by the id" do
         reference = FactoryGirl.create :article_reference
@@ -179,12 +176,6 @@ describe Taxt do
       end
       it "should not freak if the taxon can't be found" do
         Taxt.to_string("{tax 12345}").should == '{tax 12345}'
-      end
-    end
-
-    describe "Epithet" do
-      it "should italicize the word" do
-        Taxt.to_string('{epi major}').should == '<i>major</i>'
       end
     end
 
