@@ -1,5 +1,9 @@
 module Taxt
   class ReferenceNotFound < StandardError; end
+  class ReferenceNotFound < StandardError; end
+  class TaxonNotFound < StandardError; end
+  class NameNotFound < StandardError; end
+  class IdNotFound < StandardError; end
 
   ################################
   def self.to_string taxt, user = nil, options = {}
@@ -11,20 +15,21 @@ module Taxt
     Formatters::Formatter.add_period_if_necessary string
   end
 
+  ################################
   def self.to_editable taxt
     return '' unless taxt
     taxt = taxt.dup
 
     if taxt =~ /{ref/
       taxt.gsub! /{ref (\d+)}/ do |ref|
-        editable_id = id_for_editable $1
+        editable_id = id_for_editable $1, 1
         to_editable_reference Reference.find($1) rescue "{#{editable_id}}"
       end
     end
 
     if taxt =~ /{tax/
       taxt.gsub! /{tax (\d+)}/ do |tax|
-        editable_id = id_for_editable $1
+        editable_id = id_for_editable $1, 2
         to_editable_taxon Taxon.find($1) rescue "{#{editable_id}}"
       end
     end
@@ -33,12 +38,12 @@ module Taxt
   end
 
   def self.to_editable_reference reference
-    editable_id = id_for_editable reference.id
+    editable_id = id_for_editable reference.id, 1
     "{#{reference.key.to_s} #{editable_id}}"
   end
 
   def self.to_editable_taxon taxon
-    editable_id = id_for_editable taxon.id
+    editable_id = id_for_editable taxon.id, 2
     "{#{taxon.name} #{editable_id}}"
   end
 
@@ -46,20 +51,32 @@ module Taxt
   EDITABLE_ID_DIGITS = %{abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ}
 
   def self.from_editable editable_taxt
-    editable_taxt.gsub /{((.*?)? )?([#{Regexp.escape EDITABLE_ID_DIGITS}]+)}/ do |ref|
-      id = id_from_editable $3
-      raise ReferenceNotFound.new(ref) unless Reference.find_by_id id
-      "{ref #{id}}"
+    editable_taxt.gsub /{((.*?)? )?([#{Regexp.escape EDITABLE_ID_DIGITS}]+)}/ do |string|
+      id, type_number = id_from_editable $3
+      case type_number
+      when 1
+        raise ReferenceNotFound.new(string) unless Reference.find_by_id id
+        "{ref #{id}}"
+      when 2
+        raise TaxonNotFound.new(string) unless Taxon.find id
+        "{tax #{id}}"
+      when 3
+        raise NameNotFound.new(string) unless Name.find id
+        "{nam #{id}}"
+      end
     end
   end
 
-  def self.id_for_editable id
-    AnyBase.base_10_to_base_x(id.to_i, EDITABLE_ID_DIGITS).reverse
+  def self.id_for_editable id, type_number
+    AnyBase.base_10_to_base_x(id.to_i * 10 + type_number, EDITABLE_ID_DIGITS).reverse
   end
 
   # this code is duplicated in taxt_editor.coffee
   def self.id_from_editable editable_id
-    AnyBase.base_x_to_base_10 editable_id.reverse, EDITABLE_ID_DIGITS
+    number = AnyBase.base_x_to_base_10(editable_id.reverse, EDITABLE_ID_DIGITS) 
+    id = number / 10
+    type_number = number % 10
+    return id, type_number
   end
 
   def self.decode taxt, user = nil, options = {}

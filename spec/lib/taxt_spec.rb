@@ -69,50 +69,57 @@ describe Taxt do
   end
 
   describe "Editable taxt" do
+
     describe "To editable taxt" do
       describe "References" do
-        it "should use the inline citation format followed by the id" do
+        it "should use the inline citation format followed by the id, with type number" do
           key = mock 'key'
           key.should_receive(:to_s).and_return 'Fisher, 1922'
           reference = mock 'reference', id: 36
           Reference.should_receive(:find).and_return reference
           reference.stub(:key).and_return key
-          editable_key = Taxt.id_for_editable reference.id
+          editable_key = Taxt.id_for_editable reference.id, 1
           Taxt.to_editable("{ref #{reference.id}}").should == "{Fisher, 1922 #{editable_key}}"
         end
         it "should handle a missing reference" do
           reference = FactoryGirl.create :missing_reference, citation: 'Fisher, 2011'
-          editable_key = Taxt.id_for_editable reference.id
+          editable_key = Taxt.id_for_editable reference.id, 1
           Taxt.to_editable("{ref #{reference.id}}").should == "{Fisher, 2011 #{editable_key}}"
         end
         it "should handle a reference we don't even know is missing" do
-          Taxt.to_editable("{ref 123}").should == "{Zb}"
+          Taxt.to_editable("{ref 123}").should == "{Rt}"
         end
       end
       describe "Taxa" do
         it "should use the taxon's name followed by its id" do
           genus = create_genus 'Atta'
-          editable_key = Taxt.id_for_editable genus.id
+          editable_key = Taxt.id_for_editable genus.id, 2
           Taxt.to_editable("{tax #{genus.id}}").should == "{Atta #{editable_key}}"
         end
       end
     end
 
     describe "From editable taxt" do
-      it "should use the inline citation format followed by the id" do
-        reference = FactoryGirl.create :article_reference
-        editable_key = Taxt.id_for_editable reference.id
-        Taxt.from_editable("{Fisher, 1922 #{editable_key}}").should == "{ref #{reference.id}}"
+      describe "{ref}" do
+        it "should use the inline citation format followed by the id" do
+          reference = FactoryGirl.create :article_reference
+          editable_key = Taxt.id_for_editable reference.id, 1
+          Taxt.from_editable("{Fisher, 1922 #{editable_key}}").should == "{ref #{reference.id}}"
+        end
+        it "should handle more than one reference" do
+          reference = FactoryGirl.create :article_reference
+          other_reference = FactoryGirl.create :article_reference
+          editable_key = Taxt.id_for_editable reference.id, 1
+          other_editable_key = Taxt.id_for_editable other_reference.id, 1
+          Taxt.from_editable("{Fisher, 1922 #{editable_key}}, also {Bolton, 1970 #{other_editable_key}}").should == "{ref #{reference.id}}, also {ref #{other_reference.id}}"
+        end
       end
-      it "should handle more than one reference" do
-        reference = FactoryGirl.create :article_reference
-        other_reference = FactoryGirl.create :article_reference
-        editable_key = Taxt.id_for_editable reference.id
-        other_editable_key = Taxt.id_for_editable other_reference.id
-        Taxt.from_editable("{Fisher, 1922 #{editable_key}}, also {Bolton, 1970 #{other_editable_key}}").should == "{ref #{reference.id}}, also {ref #{other_reference.id}}"
-      end
-      it "should raise an exception if a reference can't be found and include the failing tag" do
-        expect {Taxt.from_editable('asdf {123}')}.to raise_error Taxt::ReferenceNotFound, '{123}'
+      describe "Taxa" do
+        it "should use the taxon's name followed by its id" do
+          genus = create_genus 'Atta'
+          editable_key = Taxt.id_for_editable genus.id, 2
+          Taxt.from_editable("{Atta #{editable_key}}").should == "{tax #{genus.id}}"
+        end
       end
     end
   end

@@ -110,7 +110,7 @@ class AntCat.TaxtEditor
       result += digit_value * multiplier
       multiplier *= base
       index += 1
-      return result if index >= id.length
+      return result / 10 if index >= id.length
 
   select_tag_if_caret_inside: =>
     tag_indexes = TaxtEditor.enclosing_tag_indexes @value(), @start()
