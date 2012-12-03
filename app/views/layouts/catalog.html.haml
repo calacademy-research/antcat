@@ -10,7 +10,7 @@
       .search
         Search for name
         = search_selector @parameters[:st]
-        = text_field_tag 'q', @parameters[:q]
+        = text_field_tag 'qq', @parameters[:qq]
         = submit_tag  'Go'
         = submit_tag 'Clear' if (@search_results.present? && @search_results.size > 1) || @search_results_message
   = render 'shared/catalog_title'

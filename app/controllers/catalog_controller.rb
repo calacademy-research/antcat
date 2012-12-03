@@ -148,11 +148,11 @@ class CatalogController < ApplicationController
 
   ##########################
   def do_search
-    return unless @parameters[:q].present?
+    return unless @parameters[:qq].present?
     search_selector_value = translate_search_selector_value_to_english @parameters[:st]
-    @search_results = Taxon.find_name @parameters[:q], search_selector_value
+    @search_results = Taxon.find_name @parameters[:qq], search_selector_value
     if @search_results.blank?
-      @search_results_message = "No results found for name #{search_selector_value} '#{@parameters[:q]}'"
+      @search_results_message = "No results found for name #{search_selector_value} '#{@parameters[:qq]}'"
     else
       @search_results = @search_results.map do |search_result|
         {name: search_result.name.name_html, id: search_result.id}
@@ -161,7 +161,7 @@ class CatalogController < ApplicationController
   end
 
   def clear_search
-    @parameters.delete :q
+    @parameters.delete :qq
     @parameters.delete :st
   end
 
@@ -216,7 +216,7 @@ class CatalogController < ApplicationController
     @parameters = HashWithIndifferentAccess.new
     @parameters[:id] = params[:id] if params[:id].present?
     @parameters[:child] = params[:child] if params[:child].present?
-    @parameters[:q] = params[:q].strip if params[:q].present?
+    @parameters[:qq] = params[:qq].strip if params[:qq].present?
     @parameters[:st] = params[:st] if params[:st].present?
     handle_edit_mode
   end
