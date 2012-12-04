@@ -166,7 +166,6 @@ class AntCat.ReferencePicker
     $target = $(event.target)
     $target = $target.closest('.display') unless $target.hasClass('display')
     $target.addClass('ui-selecting')
-    console.log($target)
   unhover: (event) =>
     $(event.target).removeClass('ui-selecting')
 
