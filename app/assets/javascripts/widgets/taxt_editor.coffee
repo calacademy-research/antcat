@@ -1,5 +1,16 @@
 window.AntCat or= {}
 
+# A TaxtEditor is a textarea with associated reference_picker
+# and taxon pickers:
+#
+# identify the container (can be anything)
+# .taxt_editor
+#    the textarea (can be anything)
+#    = text_area_tag :taxt_editor, Taxt.to_editable(item.taxt), rows: 1, class: 'taxt_edit_box'
+#    the reference picker (must be .antcat_reference_picker)
+#    .antcat_reference_picker
+#      = render 'reference_pickers/show', references: nil, current_reference: nil
+
 $.fn.taxt_editor = (options = {}) ->
   return this.each -> new AntCat.TaxtEditor $(this), options
 
@@ -51,8 +62,6 @@ class AntCat.TaxtEditor
 
   open_reference_picker: =>
     @options.on_open_reference_picker() if @options.on_open_reference_picker
-    #$form = @control.closest('form')
-    #$form.find('.buttons').hide()
     @replace_text_area_with_simulation()
     id = if @is_tag_selected() then TaxtEditor.extract_id_from_editable_taxt @selection() else null
     new AntCat.ReferencePicker @reference_picker, id: id, on_done: @handle_reference_picker_result, modal: true
@@ -80,7 +89,6 @@ class AntCat.TaxtEditor
  
   handle_reference_picker_result: (taxt) =>
     @options.on_close_reference_picker() if @options.on_close_reference_picker
-    #@control.closest('form').find('.buttons').show()
 
     if taxt
       new_value = @value()[...@tag_start] + taxt + @value()[@tag_end...]
