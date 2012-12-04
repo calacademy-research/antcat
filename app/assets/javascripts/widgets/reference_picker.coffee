@@ -154,7 +154,7 @@ class AntCat.ReferencePicker
         .end()
 
     @search_results
-      .find(".reference item_#{@current_reference_id} div.display")
+      .find(".reference .item_#{@current_reference_id} div.display")
         .addClass('ui-selected')
         .end()
 
