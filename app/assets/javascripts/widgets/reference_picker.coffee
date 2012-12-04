@@ -181,6 +181,7 @@ class AntCat.ReferencePicker
     $(".item_#{id}").each -> $(@).replaceWith $panel.clone()
     @setup_references()
 
+  # 'current' is the reference panel at the top of the picker, above the search controls
   make_current: ($panel, edit = false) =>
     $current_contents = @current.find '> tbody > tr > td'
     $new_contents = $panel.clone()
