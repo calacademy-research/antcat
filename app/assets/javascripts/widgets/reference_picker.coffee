@@ -162,7 +162,11 @@ class AntCat.ReferencePicker
     @element.find('div.display').hover(@hover, @unhover)
 
   hover: (event) =>
-    $(event.target).addClass('ui-selecting')
+    @search_results.find('.display').removeClass('ui-selecting')
+    $target = $(event.target)
+    $target = $target.closest('.display') unless $target.hasClass('display')
+    $target.addClass('ui-selecting')
+    console.log($target)
   unhover: (event) =>
     $(event.target).removeClass('ui-selecting')
 
