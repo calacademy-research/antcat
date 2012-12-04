@@ -53,6 +53,7 @@ class AntCat.ReferencePicker
     # apparently, can't setup selectmenu unless it's visible
     @setup_search_selector()
     @textbox.focus()
+
   hide_expansion: =>
     @expansion.hide()
     @element.find('.expand_collapse_icon img').attr 'src', AntCat.collapsed_image_path
