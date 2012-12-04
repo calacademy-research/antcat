@@ -30,6 +30,12 @@ module HtmlSelectorsHelpers
     when /another author panel/
       ".author_panel:last-of-type"
 
+    when /the search box/
+      "#q"
+
+    when /the catalog search box/
+      "#qq"
+
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
     #
