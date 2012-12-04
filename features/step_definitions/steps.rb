@@ -36,6 +36,10 @@ Then /^"([^"]+)" should be selected(?: in (.*))?$/ do |word, location|
   end
 end
 
+When /I fill in the catalog search box with "(.*?)"/ do |search_term|
+  step %{I fill in "qq" with "#{search_term}"}
+end
+
 When /I fill in the search box with "(.*?)"/ do |search_term|
   step %{I fill in "q" with "#{search_term}"}
 end

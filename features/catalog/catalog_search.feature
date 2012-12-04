@@ -15,19 +15,19 @@ Feature: Searching the catalog
 
   Scenario: Searching when no results
     When I go to the catalog
-    And I fill in the search box with "zxxz"
+    And I fill in the catalog search box with "zxxz"
     And I press "Go" by the search box
     Then I should see "No results found for name beginning with 'zxxz'" in the search results
 
   Scenario: Searching when only one result
     When I go to the catalog
-    When I fill in the search box with "abruptus"
+    When I fill in the catalog search box with "abruptus"
     And I press "Go" by the search box
     Then I should see "abruptus history"
 
   Scenario: Searching when more than one result
     When I go to the catalog
-    And I fill in the search box with "doli"
+    And I fill in the catalog search box with "doli"
     And I press "Go" by the search box
     Then I should see "Dolichoderinae" in the search results
     And I should see "Dolichoderini" in the search results`
@@ -38,14 +38,14 @@ Feature: Searching the catalog
 
   Scenario: Searching for a 'containing' match
     When I go to the catalog
-    And I fill in the search box with "rup"
+    And I fill in the catalog search box with "rup"
     And I select "containing" from "st"
     And I press "Go" by the search box
     Then I should see "abruptus history"
 
   Scenario: Following a search result
     When I go to the catalog
-    And I fill in the search box with "doli"
+    And I fill in the catalog search box with "doli"
     And I press "Go" by the search box
     And I follow "Dolichoderini" in the search results
     Then I should see "Dolichoderini history"
@@ -53,7 +53,7 @@ Feature: Searching the catalog
 
   Scenario: Keeping search results open even after selecting another taxon
     When I go to the catalog
-    And I fill in the search box with "doli"
+    And I fill in the catalog search box with "doli"
     And I press "Go" by the search box
     And I follow "Dolichoderini" in the search results
     And I follow "Dolichoderinae" in the index
@@ -61,7 +61,7 @@ Feature: Searching the catalog
 
   Scenario: Closing the search results
     When I go to the catalog
-    And I fill in the search box with "doli"
+    And I fill in the catalog search box with "doli"
     And I press "Go" by the search box
     And I follow "Dolichoderini" in the search results
     And I press "Clear"
@@ -71,7 +71,7 @@ Feature: Searching the catalog
   Scenario: Finding a genus without a subfamily or a tribe
     Given a genus exists with a name of "Monomorium" and no subfamily and a taxonomic history of "Monomorium history"
     When I go to the catalog
-    And I fill in the search box with "Monomorium"
+    And I fill in the catalog search box with "Monomorium"
     And I press "Go" by the search box
     Then I should see "Monomorium history"
     And "(no subfamily)" should be selected in the subfamilies index
@@ -81,7 +81,7 @@ Feature: Searching the catalog
     Given a genus exists with a name of "Monomorium" and a subfamily of "Dolichoderinae" and a taxonomic history of "Monomorium history"
     When I go to the catalog
     And I follow "show tribes"
-    And I fill in the search box with "Monomorium"
+    And I fill in the catalog search box with "Monomorium"
     And I press "Go" by the search box
     Then I should see "Monomorium history"
     And "Dolichoderinae" should be selected in the subfamilies index
@@ -91,36 +91,36 @@ Feature: Searching the catalog
   Scenario: Finding a tribe when tribes are hidden
     When I go to the catalog
     And I follow "Dolichoderinae"
-    And I fill in the search box with "Dolichoderini"
+    And I fill in the catalog search box with "Dolichoderini"
     And I press "Go" by the search box
     Then I should see "Dolichoderini" in the tribes index
 
   Scenario: Finding a subgenus when subgenera are hidden
     When I go to the catalog
-    And I fill in the search box with "Subdolichoderus"
+    And I fill in the catalog search box with "Subdolichoderus"
     And I press "Go" by the search box
     Then "Subdolichoderus" should be selected in the subgenera index
 
   Scenario: Searching with spaces at beginning and/or end of query string
     When I go to the catalog
-    When I fill in the search box with " abruptus "
+    When I fill in the catalog search box with " abruptus "
     And I press "Go" by the search box
     Then I should see "abruptus history"
 
   Scenario: Searching for full species name, not just epithet
     When I go to the catalog
-    When I fill in the search box with "Dolichoderus major "
+    When I fill in the catalog search box with "Dolichoderus major "
     And I press "Go" by the search box
     Then I should see "Dolichoderus major history"
 
   Scenario: Searching for subspecies
     When I go to the catalog
-    When I fill in the search box with "minor"
+    When I fill in the catalog search box with "minor"
     And I press "Go" by the search box
     Then I should see "minor history"
 
   Scenario: Searching for subgenus
     When I go to the catalog
-    When I fill in the search box with "Subdol"
+    When I fill in the catalog search box with "Subdol"
     And I press "Go" by the search box
     Then I should see "Dolichoderus (Subdolichoderus) history"
