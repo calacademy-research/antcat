@@ -133,7 +133,7 @@ Feature: Edit reference
     When I fill in "reference_author_names_string" with ""
     And I fill in "reference_title" with ""
     And I fill in "reference_citation_year" with ""
-    And I fill in "journal_name" with ""
+    And I fill in "reference_journal_name" with ""
     And I fill in "reference_series_volume_issue" with ""
     And I fill in "article_pagination" with ""
     And I press the "Save" button
@@ -277,7 +277,7 @@ Feature: Edit reference
     When I go to the references page
     And I edit "Bolton"
     And I follow "Article"
-    And I fill in "journal_name" with "Ant Journal"
+    And I fill in "reference_journal_name" with "Ant Journal"
     And I fill in "reference_series_volume_issue" with "1"
     And I fill in "article_pagination" with "2"
     And I press the "Save" button

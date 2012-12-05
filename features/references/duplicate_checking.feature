@@ -14,7 +14,7 @@ Feature: Checking for duplicates during data entry
     And I follow "add"
     And in the new edit form I fill in "reference_author_names_string" with "Bolton, B."
     And in the new edit form I fill in "reference_title" with "Ants are my life"
-    And in the new edit form I fill in "journal_name" with "Psyche"
+    And in the new edit form I fill in "reference_journal_name" with "Psyche"
     And in the new edit form I fill in "reference_citation_year" with "2010"
     And in the new edit form I press the "Save" button
     Then I should see a new edit form
@@ -30,7 +30,7 @@ Feature: Checking for duplicates during data entry
     And I follow "add"
     And in the new edit form I fill in "reference_author_names_string" with "Bolton, B."
     And in the new edit form I fill in "reference_title" with "Ants are my life"
-    And in the new edit form I fill in "journal_name" with "Psyche"
+    And in the new edit form I fill in "reference_journal_name" with "Psyche"
     And in the new edit form I fill in "reference_series_volume_issue" with "5"
     And in the new edit form I fill in "article_pagination" with "3"
     And in the new edit form I fill in "reference_citation_year" with "2010a"
