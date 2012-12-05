@@ -67,7 +67,7 @@ Feature: Add reference
     And in the new edit form I fill in "reference_title" with "A reference title"
     And in the new edit form I fill in "reference_citation_year" with "1981"
     And in the new edit form I follow "Book"
-    And in the new edit form I fill in "publisher_string" with "New York:Houghton Mifflin"
+    And in the new edit form I fill in "reference_publisher_string" with "New York:Houghton Mifflin"
     And in the new edit form I fill in "book_pagination" with "32 pp."
     And in the new edit form I press the "Save" button
     Then I should be on the references page
@@ -195,12 +195,24 @@ Feature: Add reference
     And in the new edit form I fill in "reference_author_names_string" with "Ward, B.L"
     And in the new edit form I fill in "reference_title" with "A reference title"
     And in the new edit form I follow "Book"
-    And in the new edit form I fill in "publisher_string" with "Pensoft, Sophia"
+    And in the new edit form I fill in "reference_publisher_string" with "Pensoft, Sophia"
     And in the new edit form I fill in "book_pagination" with "1"
     And in the new edit form I fill in "reference_citation_year" with "1981"
     And in the new edit form I press the "Save" button
     Then I should see "Publisher string couldn't be parsed. In general, use the format 'Place: Publisher'. Otherwise, please post a message on http://groups.google.com/group/antcat/, and we'll see what we can do!"
-    And in the new edit form the "publisher_string" field should contain "Pensoft, Sophia"
+    And in the new edit form the "reference_publisher_string" field should contain "Pensoft, Sophia"
+
+  Scenario: When adding with an error, the publisher string the user entered should not change
+    When I follow "add"
+    And in the new edit form I fill in "reference_author_names_string" with "Ward, B.L"
+    And in the new edit form I fill in "reference_title" with "A reference title"
+    And in the new edit form I follow "Book"
+    And in the new edit form I fill in "reference_publisher_string" with "Pensoft, Sophia"
+    And in the new edit form I fill in "book_pagination" with "1"
+    And in the new edit form I fill in "reference_citation_year" with "1981"
+    And in the new edit form I press the "Save" button
+    Then I should see "Publisher string couldn't be parsed. In general, use the format 'Place: Publisher'. Otherwise, please post a message on http://groups.google.com/group/antcat/, and we'll see what we can do!"
+    And in the new edit form the "reference_publisher_string" field should contain "Pensoft, Sophia"
 
   Scenario: Very long author string
     When I follow "add"
