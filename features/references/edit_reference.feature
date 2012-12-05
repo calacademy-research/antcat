@@ -76,7 +76,7 @@ Feature: Edit reference
     When I go to the references page
     When I follow "edit"
     And I follow "Book"
-    And I fill in "publisher_string" with "New York: Wiley"
+    And I fill in "reference_publisher_string" with "New York: Wiley"
     And I fill in "book_pagination" with "22 pp."
     And I press the "Save" button
     Then I should see "Fisher, B. 2010. Ants. New York: Wiley, 22 pp."
@@ -88,7 +88,7 @@ Feature: Edit reference
       | Fisher, B. | Ants  | New York: Wiley, 22 pp. | 2010 |
     When I go to the references page
     When I follow "edit"
-    And I fill in "publisher_string" with "New York: Harcourt"
+    And I fill in "reference_publisher_string" with "New York: Harcourt"
     And I press the "Save" button
     Then I should see "Fisher, B. 2010. Ants. New York: Harcourt, 22 pp."
 
@@ -113,7 +113,7 @@ Feature: Edit reference
     When I fill in "reference_author_names_string" with ""
     And I fill in "reference_title" with ""
     And I fill in "reference_citation_year" with ""
-    And I fill in "publisher_string" with ""
+    And I fill in "reference_publisher_string" with ""
     And I fill in "book_pagination" with ""
     And I press the "Save" button
     And I wait for a bit

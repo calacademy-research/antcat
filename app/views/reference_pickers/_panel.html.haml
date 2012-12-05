@@ -1,4 +1,4 @@
--#Locals: reference, publisher_string
+-#Locals: reference
 
 - css_class = 'reference'
 - if reference
@@ -20,6 +20,6 @@
       %td.reference_item
         - if reference
           = render 'reference_pickers/display', reference: reference if !reference.new_record? && reference.errors.empty?
-          = render 'reference_pickers/edit', reference: reference, publisher_string: publisher_string
+          = render 'reference_pickers/edit', reference: reference
         - else
           (none)

@@ -18,5 +18,5 @@
       %td.reference_item
         = render 'display', :reference => reference if !reference.new_record? && reference.errors.empty?
         - if user_can_edit?
-          = render 'edit', :reference => reference, :publisher_string => publisher_string
+          = render 'edit', :reference => reference
         = render 'shared/coins', :reference => reference if !reference.new_record? && reference.errors.empty?

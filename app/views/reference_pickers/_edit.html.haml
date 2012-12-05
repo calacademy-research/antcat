@@ -1,6 +1,6 @@
 -#This is pretty much a copy of references/_edit
 - reference ||= Reference.new
-- publisher_string ||= reference.respond_to?(:publisher) ? (reference.publisher && reference.publisher.to_s) : ''
+- reference.publisher_string ||= reference.respond_to?(:publisher) ? (reference.publisher && reference.publisher.to_s) : ''
 - journal_name = reference.respond_to?(:journal) ? (reference.journal && reference.journal.name) : ''
 - selected_tab = [ArticleReference, BookReference, NestedReference, UnknownReference].index(reference.class) || 0
 
@@ -40,7 +40,7 @@
 
           .tabbable{'data-title' => 'Book'}
             = label_tag :publisher_string, 'Publisher'
-            = text_field_tag :publisher_string, publisher_string, :class => 'publisher'
+            = text_field_tag :publisher_string, reference.publisher_string, :class => 'publisher'
             = label_tag :book_pagination, 'Pagination'
             = text_field_tag :book_pagination, reference.pagination, :class => 'pages'
 
