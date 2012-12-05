@@ -1,12 +1,12 @@
 -#Locals: references, current_reference
 
 .template
-  = render 'reference_pickers/panel', reference: Reference.new, publisher_string: ''
+  = render 'reference_pickers/panel', reference: Reference.new
 
 %table.references.current
   %tr
     %td
-      = render 'reference_pickers/panel', reference: current_reference, publisher_string: ''
+      = render 'reference_pickers/panel', reference: current_reference
 
 .expansion
   .search_form.nested_form
@@ -43,6 +43,6 @@
     %table.references.search_results
       - for reference in references
         %tr
-          %td= render 'reference_pickers/panel', reference: reference, publisher_string: ''
+          %td= render 'reference_pickers/panel', reference: reference
 
   = render 'shared/qtip'

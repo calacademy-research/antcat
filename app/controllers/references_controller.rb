@@ -120,7 +120,6 @@ EOS
     publisher = Publisher.import_string publisher_string
     if publisher.nil? and publisher_string.present?
       @reference.errors.add :publisher_string, "Publisher string couldn't be parsed. In general, use the format 'Place: Publisher'. Otherwise, please post a message on http://groups.google.com/group/antcat/, and we'll see what we can do!"
-      @publisher_string = publisher_string
       raise ActiveRecord::RecordInvalid.new @reference
     end
     params[:reference][:publisher] = publisher

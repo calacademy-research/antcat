@@ -4,6 +4,11 @@ require 'reference_utility'
 require 'reference_has_document'
 
 class Reference < ActiveRecord::Base
+  # virtual attributes
+  # this holds the combination of the publisher name
+  # and the place
+  attr_accessor :publisher_string
+
   # associations
   has_many    :reference_author_names, :order => :position
   has_many    :author_names, :through => :reference_author_names, :order => :position,
