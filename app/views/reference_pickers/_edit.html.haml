@@ -1,7 +1,6 @@
 -#This is pretty much a copy of references/_edit
-- reference ||= Reference.new
 - reference.publisher_string ||= reference.respond_to?(:publisher) ? (reference.publisher && reference.publisher.to_s) : ''
-- journal_name = reference.respond_to?(:journal) ? (reference.journal && reference.journal.name) : ''
+- reference.journal_name ||= reference.respond_to?(:journal) ? (reference.journal && reference.journal.name) : ''
 - selected_tab = [ArticleReference, BookReference, NestedReference, UnknownReference].index(reference.class) || 0
 
 .edit.ui-corner-all.ui-widget-content.ui-widget
