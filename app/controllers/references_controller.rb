@@ -63,19 +63,23 @@ EOS
         set_pagination
         # kludge around Rails 3 behavior that uses the type to look up a record - so you can't update the type!
         Reference.connection.execute "UPDATE `references` SET type = '#{@reference.type}' WHERE id = '#{@reference.id}'" unless new
-        @reference.update_attributes params[:reference]
 
-        @possible_duplicate = @reference.check_for_duplicate unless params[:possible_duplicate].present?
-        unless @possible_duplicate
-          @reference.save!
-          set_document_host
+        unless @reference.errors.present?
+          @reference.update_attributes params[:reference]
+
+          @possible_duplicate = @reference.check_for_duplicate unless params[:possible_duplicate].present?
+          unless @possible_duplicate
+            @reference.save!
+            set_document_host
+          end
         end
 
-        raise ActiveRecord::RecordInvalid.new @reference unless @reference.errors.empty?
+        raise ActiveRecord::RecordInvalid.new @reference if @reference.errors.present?
       end
     rescue ActiveRecord::RecordInvalid
       @reference[:id] = nil if new
       @reference.instance_variable_set :@new_record, new
+
     end
     render_json new
   end
@@ -116,13 +120,13 @@ EOS
   end
 
   def set_publisher
-    publisher_string = params[:publisher_string]
-    publisher = Publisher.import_string publisher_string
-    if publisher.nil? and publisher_string.present?
-      @reference.errors.add :publisher_string, "Publisher string couldn't be parsed. In general, use the format 'Place: Publisher'. Otherwise, please post a message on http://groups.google.com/group/antcat/, and we'll see what we can do!"
-      raise ActiveRecord::RecordInvalid.new @reference
+    @reference.publisher_string = params[:reference][:publisher_string]
+    publisher = Publisher.import_string @reference.publisher_string
+    if publisher.nil? and @reference.publisher_string.present?
+      @reference.errors.add :publisher_string, "couldn't be parsed. In general, use the format 'Place: Publisher'. Otherwise, please post a message on http://groups.google.com/group/antcat/, and we'll see what we can do!"
+    else
+      params[:reference][:publisher] = publisher
     end
-    params[:reference][:publisher] = publisher
   end
 
   def clear_nested_reference_id
