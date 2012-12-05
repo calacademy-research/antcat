@@ -1,6 +1,5 @@
-- reference ||= Reference.new
 - reference.publisher_string ||= reference.respond_to?(:publisher) ? (reference.publisher && reference.publisher.to_s) : ''
-- journal_name = reference.respond_to?(:journal) ? (reference.journal && reference.journal.name) : ''
+- reference.journal_name ||= reference.respond_to?(:journal) ? (reference.journal && reference.journal.name) : ''
 - selected_tab = [ArticleReference, BookReference, NestedReference, UnknownReference].index(reference.class) || 0
 
 .reference_edit.ui-corner-all.ui-widget-content.ui-widget
@@ -39,8 +38,8 @@
               %a{:class => 'unknown-tab', :href => "#tabs-unknown-#{reference.id}"}Other
 
           %div{:class => 'article-tab-section', :id => "tabs-article-#{reference.id}"}
-            = label_tag :journal_name, 'Journal'
-            = text_field_tag :journal_name, journal_name, :class => 'journal'
+            = label_tag :reference_journal_name, 'Journal'
+            = f.text_field :journal_name, class: 'journal'
             = label_tag :reference_series_volume_issue, 'Series volume issue'
             = f.text_field :series_volume_issue, :class => 'series_volume_issue'
             = label_tag :article_pagination, 'Pagination'
@@ -48,7 +47,7 @@
 
           %div{:class => 'book-tab-section', :id => "tabs-book-#{reference.id}"}
             = label_tag :reference_publisher_string, 'Publisher'
-            = f.text_field :publisher_string, :class => 'publisher'
+            = f.text_field :publisher_string, class: 'publisher'
             = label_tag :book_pagination, 'Pagination'
             = text_field_tag :book_pagination, reference.pagination, :class => 'pages'
 
