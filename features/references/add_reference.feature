@@ -23,7 +23,7 @@ Feature: Add reference
     When I follow "add"
     And in the new edit form I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
     And in the new edit form I fill in "reference_title" with "Between Pacific Tides"
-    And in the new edit form I fill in "journal_name" with "Ants"
+    And in the new edit form I fill in "reference_journal_name" with "Ants"
     And in the new edit form I fill in "reference_series_volume_issue" with "2"
     And in the new edit form I fill in "article_pagination" with "1"
     And in the new edit form I fill in "reference_citation_year" with "1992"
@@ -41,7 +41,7 @@ Feature: Add reference
     #And I wait for a bit
     #And in the new edit form I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
     #And in the new edit form I fill in "reference_title" with "Between Pacific Tides"
-    #And in the new edit form I fill in "journal_name" with "Ants"
+    #And in the new edit form I fill in "reference_journal_name" with "Ants"
     #And in the new edit form I fill in "reference_series_volume_issue" with "2"
     #And in the new edit form I fill in "article_pagination" with "1"
     #And in the new edit form I fill in "reference_citation_year" with "1992"
@@ -79,7 +79,7 @@ Feature: Add reference
     And in the new edit form I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
     And in the new edit form I fill in "reference_title" with "A reference title"
     And in the new edit form I fill in "reference_citation_year" with "1981"
-    And in the new edit form I fill in "journal_name" with "Ant Journal"
+    And in the new edit form I fill in "reference_journal_name" with "Ant Journal"
     And in the new edit form I fill in "reference_series_volume_issue" with "1"
     And in the new edit form I fill in "article_pagination" with "2"
     And in the new edit form I press the "Save" button
@@ -149,7 +149,7 @@ Feature: Add reference
     When in the new edit form I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B. (eds.)"
     And in the new edit form I fill in "reference_title" with "A reference title"
     And in the new edit form I fill in "reference_citation_year" with "1981"
-    And in the new edit form I fill in "journal_name" with "Ant Journal"
+    And in the new edit form I fill in "reference_journal_name" with "Ant Journal"
     And in the new edit form I fill in "reference_series_volume_issue" with "1"
     And in the new edit form I fill in "article_pagination" with "2"
     And in the new edit form I press the "Save" button
@@ -171,7 +171,7 @@ Feature: Add reference
     When I follow "add"
     And in the new edit form I fill in "reference_author_names_string" with " ; "
     And in the new edit form I fill in "reference_title" with "A reference title"
-    And in the new edit form I fill in "journal_name" with "Ants"
+    And in the new edit form I fill in "reference_journal_name" with "Ants"
     And in the new edit form I fill in "reference_series_volume_issue" with "2"
     And in the new edit form I fill in "article_pagination" with "1"
     And in the new edit form I fill in "reference_citation_year" with "1981"
@@ -182,7 +182,7 @@ Feature: Add reference
     When I follow "add"
     And in the new edit form I fill in "reference_author_names_string" with "...asdf sdf dsfdsf"
     And in the new edit form I fill in "reference_title" with "A reference title"
-    And in the new edit form I fill in "journal_name" with "Ants"
+    And in the new edit form I fill in "reference_journal_name" with "Ants"
     And in the new edit form I fill in "reference_series_volume_issue" with "2"
     And in the new edit form I fill in "article_pagination" with "1"
     And in the new edit form I fill in "reference_citation_year" with "1981"
@@ -202,23 +202,11 @@ Feature: Add reference
     Then I should see "Publisher string couldn't be parsed. In general, use the format 'Place: Publisher'. Otherwise, please post a message on http://groups.google.com/group/antcat/, and we'll see what we can do!"
     And in the new edit form the "reference_publisher_string" field should contain "Pensoft, Sophia"
 
-  Scenario: When adding with an error, the publisher string the user entered should not change
-    When I follow "add"
-    And in the new edit form I fill in "reference_author_names_string" with "Ward, B.L"
-    And in the new edit form I fill in "reference_title" with "A reference title"
-    And in the new edit form I follow "Book"
-    And in the new edit form I fill in "reference_publisher_string" with "Pensoft, Sophia"
-    And in the new edit form I fill in "book_pagination" with "1"
-    And in the new edit form I fill in "reference_citation_year" with "1981"
-    And in the new edit form I press the "Save" button
-    Then I should see "Publisher string couldn't be parsed. In general, use the format 'Place: Publisher'. Otherwise, please post a message on http://groups.google.com/group/antcat/, and we'll see what we can do!"
-    And in the new edit form the "reference_publisher_string" field should contain "Pensoft, Sophia"
-
   Scenario: Very long author string
     When I follow "add"
     And in the new edit form I fill in "reference_author_names_string" with a very long author names string
     And in the new edit form I fill in "reference_title" with "A reference title"
-    And in the new edit form I fill in "journal_name" with "Ants"
+    And in the new edit form I fill in "reference_journal_name" with "Ants"
     And in the new edit form I fill in "reference_series_volume_issue" with "2"
     And in the new edit form I fill in "article_pagination" with "1"
     And in the new edit form I fill in "reference_citation_year" with "1981"

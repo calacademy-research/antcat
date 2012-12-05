@@ -88,7 +88,7 @@ When /^I add a reference by Brian Fisher$/ do
   step 'I press "Add"'
   step %{I fill in "reference[author_names_string]" with "Fisher, B.L."}
   step %{I fill in "reference[title]" with "Between Pacific Tides"}
-  step %{I fill in "journal_name" with "Ants"}
+  step %{I fill in "reference_journal_name" with "Ants"}
   step %{I fill in "reference[series_volume_issue]" with "2"}
   step %{I fill in "article_pagination" with "1"}
   step %{I fill in "reference[citation_year]" with "1992"}
