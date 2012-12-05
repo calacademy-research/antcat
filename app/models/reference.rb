@@ -5,8 +5,7 @@ require 'reference_has_document'
 
 class Reference < ActiveRecord::Base
   # virtual attributes
-  # this holds the combination of the publisher name
-  # and the place
+  # this holds the combination of the publisher name and place
   attr_accessor :publisher_string
 
   # associations
