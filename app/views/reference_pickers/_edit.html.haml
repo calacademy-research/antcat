@@ -21,9 +21,9 @@
       %col{:width => '100px'}
       %tr
         %td= label_tag :reference_author_names_string, 'Authors'
-        %td.authors= text_field_tag :author_names_string, reference.author_names_string, :class => 'authors', name: 'reference[author_names_string]'
+        %td.authors= text_field_tag 'reference[author_names_string]', reference.author_names_string, :class => 'authors'
         %td{:style => 'padding-right: 5px'}= label_tag :reference_citation_year, 'Year'
-        %td{:class => :right_side_field}= text_field_tag :citation_year, reference.citation_year, name: 'reference[citation_year]'
+        %td{:class => :right_side_field}= text_field_tag 'reference[citation_year]', reference.citation_year
       %tr
         %td= label_tag :reference_title, 'Title'
         %td{:colspan => 3, :class => :right_side_field}= text_area_tag 'reference[title]', reference.title, :rows => 2
@@ -31,24 +31,24 @@
         %td.tabs{:colspan => 4}
 
           .tabbable{'data-title' => 'Article'}
-            = label_tag :journal_name, 'Journal'
-            = text_field_tag :journal_name, journal_name, :class => 'journal'
+            = label_tag :reference_journal_name, 'Journal'
+            = text_field_tag 'reference[journal_name]', reference.journal_name, class: 'journal'
             = label_tag :reference_series_volume_issue, 'Series volume issue'
-            = text_field_tag :series_volume_issue, reference.series_volume_issue, :class => 'series_volume_issue', name: 'reference[series_volume_issue]'
+            = text_field_tag 'reference[series_volume_issue]', reference.series_volume_issue, :class => 'series_volume_issue'
             = label_tag :article_pagination, 'Pagination'
             = text_field_tag :article_pagination, reference.pagination, :class => 'pages'
 
           .tabbable{'data-title' => 'Book'}
             = label_tag :publisher_string, 'Publisher'
-            = text_field_tag :publisher_string, reference.publisher_string, :class => 'publisher'
+            = text_field_tag 'reference[publisher_string]', reference.publisher_string, :class => 'publisher'
             = label_tag :book_pagination, 'Pagination'
             = text_field_tag :book_pagination, reference.pagination, :class => 'pages'
 
           .tabbable{'data-title' => 'Nested'}
             = label_tag :reference_pages_in, 'Pages in'
-            = text_field_tag :pages_in, reference.pages_in, :class => 'pages', name: 'reference[pages_in]'
+            = text_field_tag 'reference[pages_in]', reference.pages_in, :class => 'pages'
             = label_tag :reference_nested_reference_id, 'Nested reference ID'
-            = text_field_tag :nested_reference_id, reference.nested_reference_id, :class => 'pages', name: 'reference[nested_reference_id]'
+            = text_field_tag 'reference[nested_reference_id]', reference.nested_reference_id, :class => 'pages'
             %p.help
               %span.help= raw "To find, edit or add the nested reference in a new browser window, click #{link_to 'here', references_path(:q => reference.nested_reference_id), :target => '_blank'}"
 
@@ -83,11 +83,11 @@
           %table.small_fields
             %tr
               %td{:style => 'padding-right: 5px'}= label_tag :reference_cite_code, 'Cite code'
-              %td.cite_code= text_field_tag :cite_code, reference.cite_code, name: 'reference[cite_code]'
+              %td.cite_code= text_field_tag 'reference[cite_code]', reference.cite_code
               %td= label_tag :reference_possess, 'Possess'
-              %td.possess= text_field_tag :possess, reference.possess, name: 'reference[possess]'
+              %td.possess= text_field_tag 'reference[possess]', reference.possess
               %td= label_tag :reference_date, 'Date'
-              %td.date= text_field_tag :date, reference.date, name: 'reference[date]'
+              %td.date= text_field_tag 'reference[date]', reference.date
               %td= label_tag :reference_id, 'ID'
               %td= reference.id
       %tr.buttons
