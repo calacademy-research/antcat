@@ -142,16 +142,15 @@ EOS
     end
 
     json = {
-      :isNew => new,
-      :content => render_to_string(:partial => template,
-                                   :locals => {:reference => @reference, :publisher_string => @publisher_string, :css_class => 'reference'}),
-      :id => @reference.id,
-      :success => @reference.errors.empty?
+      isNew: new,
+      content: render_to_string(partial: template, locals: {reference: @reference, css_class: 'reference'}),
+      id: @reference.id,
+      success: @reference.errors.empty?
     }.to_json
 
     json = '<textarea>' + json + '</textarea>' unless
       params[:picker].present? || params[:field].present? || Rails.env.test?
-    render :json => json, :content_type => 'text/html'
+    render json: json, content_type: 'text/html'
   end
 
   def new_reference
