@@ -1,15 +1,9 @@
 class AntCat.TagTypeSelector extends AntCat.NestedForm
-  initialize: (@element, @options = {}) ->
+
+  constructor: (@element, @options = {}) ->
     @options.button_container = @element.find('.buttons')
+    @options.modal = true
     super
-
-  open: =>
-    super
-    @element.show()
-
-  close: =>
-    super
-    @element.hide()
 
   submit: =>
     @close()
