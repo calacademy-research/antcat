@@ -75,7 +75,7 @@ class AntCat.TaxtEditor
     @replace_simulation_with_text_area()
 
   cancel_tag_type_selector: =>
-    handle_tag_type_selector_result()
+    @handle_tag_type_selector_result()
 
   open_picker: =>
     @options.on_open_picker() if @options.on_open_picker
