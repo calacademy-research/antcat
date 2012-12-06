@@ -22,10 +22,13 @@ class AntCat.Form
         #false
 
   open: =>
+    @element.show() if @options.modal
     @element.find('input[type=text]:visible:first').focus()
     @options.on_open() if @options.on_open
 
-  close: => @options.on_close() if @options.on_close
+  close: =>
+    @element.hide() if @options.modal
+    @options.on_close() if @options.on_close
 
   submit: =>
     @start_spinning()
