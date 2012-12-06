@@ -1,15 +1,18 @@
 window.AntCat or= {}
 
-# A TaxtEditor is a textarea with associated reference_picker
-# and taxon pickers:
+# A TaxtEditor is a textarea with associated tag type selector, reference_picker and taxon picker
 #
 # identify the container (can be anything)
 # .taxt_editor
 #    the textarea (can be anything)
 #    = text_area_tag :taxt_editor, Taxt.to_editable(item.taxt), rows: 1, class: 'taxt_edit_box'
 #    the reference picker (must be .antcat_reference_picker)
+#    .antcat_tag_type_selector
+#      = render 'tag_type_selectors/show'
 #    .antcat_reference_picker
 #      = render 'reference_pickers/show', references: nil, current_reference: nil
+#    .antcat_taxon_picker
+#      = render 'taxon_pickers/show', current_taxon: nil
 
 $.fn.taxt_editor = (options = {}) ->
   return this.each -> new AntCat.TaxtEditor $(this), options
@@ -19,25 +22,29 @@ class AntCat.TaxtEditor
     @element.addClass 'taxt_editor'
     @control = @element.find 'textarea'
     @control.addClass 'taxt_edit_box'
+    @tag_type_selector = new AntCat.TagTypeSelector(@element.find('.antcat_tag_type_selector'),
+      on_done: @handle_tag_type_selector_result, on_cancel: @cancel_tag_type_selector)
     @reference_picker = @element.find_topmost '.antcat_reference_picker'
+    @taxon_picker = @element.find_topmost '.antcat_taxon_picker'
     @dashboard = new TaxtEditor.DebugDashboard @ if @options.show_debug_dashboard
     @dashboard?.show_status 'before'
     @value @control.val()
     @last_value @control.val()
     @control.bind 'keyup keydown mouseup dblclick', @handle_event
+    @open_tag_type_selector()
     @
 
   handle_event: (event) =>
     if not @is_tag_selected() and @is_new_tag_event event
       @tag_start = @start()
       @tag_end = @end()
-      @open_reference_picker()
+      @open_tag_type_selector()
       return false
 
     if @is_tag_selected() and @is_tag_opening_event event
       @tag_start = @start()
       @tag_end = @end()
-      @open_reference_picker()
+      @open_picker()
       return false
 
     if event.type is 'keyup' or event.type is 'mouseup'
@@ -60,11 +67,21 @@ class AntCat.TaxtEditor
     @value new_value if new_value isnt current_value
     @set_position current_position
 
-  open_reference_picker: =>
-    @options.on_open_reference_picker() if @options.on_open_reference_picker
+  open_tag_type_selector: =>
+    @replace_text_area_with_simulation()
+    @tag_type_selector.open()
+
+  handle_tag_type_selector_result: (type) =>
+    @replace_simulation_with_text_area()
+
+  cancel_tag_type_selector: =>
+    handle_tag_type_selector_result()
+
+  open_picker: =>
+    @options.on_open_picker() if @options.on_open_picker
     @replace_text_area_with_simulation()
     id = if @is_tag_selected() then TaxtEditor.extract_id_from_editable_taxt @selection() else null
-    new AntCat.ReferencePicker @reference_picker, id: id, on_done: @handle_reference_picker_result, modal: true
+    new AntCat.ReferencePicker @reference_picker, id: id, on_done: @handle_picker_result, modal: true
 
   replace_text_area_with_simulation: =>
     # We need to indicate the selected tag in the taxt edit box
@@ -87,8 +104,8 @@ class AntCat.TaxtEditor
     @control.siblings('.antcat_taxt_simulation').remove()
     @control.show()
  
-  handle_reference_picker_result: (taxt) =>
-    @options.on_close_reference_picker() if @options.on_close_reference_picker
+  handle_picker_result: (taxt) =>
+    @options.on_close_picker() if @options.on_close_picker
 
     if taxt
       new_value = @value()[...@tag_start] + taxt + @value()[@tag_end...]
