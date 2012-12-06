@@ -1,10 +1,7 @@
 .nested_form.ui-corner-all.ui-widget-content.ui-widget
-  .radio_buttons
-    Insert taxon
-    = radio_button_tag 'tag_type', 'taxon', checked: 'checked'
-    or reference
-    = radio_button_tag 'tag_type', 'reference'
   .buttons
-    %button.ui-priority-primary.submit OK
+    Insert
+    %button.ui-priority-primary.submit Taxon
+    or
+    %button.ui-priority-primary.submit Reference
     %button.ui-priority-secondary.cancel Cancel
-
