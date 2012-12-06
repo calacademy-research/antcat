@@ -7,9 +7,7 @@ class AntCat.TagTypeSelector extends AntCat.NestedForm
 
   submit: =>
     @close()
-    @options.on_submit() if @options.on_submit
+    @options.on_ok()
 
   cancel: =>
     @close()
-    @options.on_cancel() if @options.on_cancel
-
