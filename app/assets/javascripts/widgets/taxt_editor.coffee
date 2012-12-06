@@ -32,11 +32,10 @@ class AntCat.TaxtEditor
     @value @control.val()
     @last_value @control.val()
     @control.bind 'keyup keydown mouseup dblclick', @handle_event
-    #@open_tag_type_selector() unless AntCat.testing
     @
 
   handle_event: (event) =>
-    if not @is_tag_selected() and @is_new_tag_event event
+    if not @is_tag_selected() and @is_new_tag_event(event)
       @tag_start = @start()
       @tag_end = @end()
       @open_tag_type_selector()
