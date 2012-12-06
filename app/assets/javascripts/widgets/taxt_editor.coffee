@@ -23,7 +23,7 @@ class AntCat.TaxtEditor
     @control = @element.find 'textarea'
     @control.addClass 'taxt_edit_box'
     @tag_type_selector = new AntCat.TagTypeSelector(@element.find('.antcat_tag_type_selector'),
-      on_done: @handle_tag_type_selector_result, on_cancel: @cancel_tag_type_selector)
+      on_ok: @handle_tag_type_selector_result, on_close: @handle_tag_type_selector_close)
     @reference_picker = @element.find_topmost '.antcat_reference_picker'
     @taxon_picker = @element.find_topmost '.antcat_taxon_picker'
     @dashboard = new TaxtEditor.DebugDashboard @ if @options.show_debug_dashboard
