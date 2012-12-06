@@ -35,7 +35,9 @@ class AntCat.Form
       error: @handle_error
       dataType: 'json'
     false
+
   form: => @element
+
   before_serialize: ($form, options) =>
     return @options.before_serialize($form, options) if @options.before_serialize
     true
