@@ -25,13 +25,14 @@ class AntCat.TaxtEditor
     @tag_type_selector = new AntCat.TagTypeSelector(@element.find('.antcat_tag_type_selector'),
       on_ok: @handle_tag_type_selector_result, on_close: @handle_tag_type_selector_close)
     @reference_picker = @element.find_topmost '.antcat_reference_picker'
+    @parent_buttons = @element.siblings().find(':button')
     @taxon_picker = @element.find_topmost '.antcat_taxon_picker'
     @dashboard = new TaxtEditor.DebugDashboard @ if @options.show_debug_dashboard
     @dashboard?.show_status 'before'
     @value @control.val()
     @last_value @control.val()
     @control.bind 'keyup keydown mouseup dblclick', @handle_event
-    @open_tag_type_selector() unless AntCat.testing
+    #@open_tag_type_selector() unless AntCat.testing
     @
 
   handle_event: (event) =>
@@ -69,17 +70,20 @@ class AntCat.TaxtEditor
 
   open_tag_type_selector: =>
     @replace_text_area_with_simulation()
+    @parent_buttons.disable()
     @tag_type_selector.open()
 
   handle_tag_type_selector_result: (type) =>
-    @replace_simulation_with_text_area()
+    @open_picker()
 
-  cancel_tag_type_selector: =>
-    @handle_tag_type_selector_result()
+  handle_tag_type_selector_close: =>
+    @parent_buttons.undisable()
+    @replace_simulation_with_text_area()
 
   open_picker: =>
     @options.on_open_picker() if @options.on_open_picker
     @replace_text_area_with_simulation()
+    @parent_buttons.disable()
     id = if @is_tag_selected() then TaxtEditor.extract_id_from_editable_taxt @selection() else null
     new AntCat.ReferencePicker @reference_picker, id: id, on_done: @handle_picker_result, modal: true
 
@@ -106,7 +110,7 @@ class AntCat.TaxtEditor
  
   handle_picker_result: (taxt) =>
     @options.on_close_picker() if @options.on_close_picker
-
+    @parent_buttons.undisable()
     if taxt
       new_value = @value()[...@tag_start] + taxt + @value()[@tag_end...]
       @value new_value
