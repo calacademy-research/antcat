@@ -1,7 +1,9 @@
 .nested_form{'data-action' =>  '/tag_type_selectors', 'data-method' => 'put'}
-  Insert
-  = radio_button_tag 'tag_type', 'Taxon'
-  = radio_button_tag 'tag_type', 'Reference'
+  .radio_buttons
+    Insert taxon
+    = radio_button_tag 'tag_type', 'taxon', checked: 'checked'
+    or reference
+    = radio_button_tag 'tag_type', 'reference'
   .buttons
     %button.ui-priority-primary.submit OK
     %button.ui-priority-secondary.cancel Cancel
