@@ -22,11 +22,10 @@ class AntCat.TaxtEditor
     @element.addClass 'taxt_editor'
     @control = @element.find 'textarea'
     @control.addClass 'taxt_edit_box'
-    @tag_type_selector = new AntCat.TagTypeSelector(@element.find('.antcat_tag_type_selector'),
-      on_ok: @handle_tag_type_selector_result, on_close: @handle_tag_type_selector_close)
+    @tag_type_selector = new AntCat.TagTypeSelector(@element.find('.antcat_tag_type_selector'), on_ok: @handle_tag_type_selector_result, on_cancel: @after_form_closes)
     @reference_picker = @element.find_topmost '.antcat_reference_picker'
     @parent_buttons = @element.siblings().find(':button')
-    @taxon_picker = @element.find_topmost '.antcat_taxon_picker'
+    @taxon_picker = new AntCat.TaxonPicker(@element.find('.antcat_taxon_picker'), on_ok: @handle_picker_result, on_close: @after_form_closes)
     @dashboard = new TaxtEditor.DebugDashboard @ if @options.show_debug_dashboard
     @dashboard?.show_status 'before'
     @value @control.val()
