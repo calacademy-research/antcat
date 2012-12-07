@@ -32,7 +32,7 @@ class AntCat.TaxtEditor
     @value @control.val()
     @last_value @control.val()
     @control.bind 'keyup keydown mouseup dblclick', @handle_event
-    @tag_type_selector.open() unless AntCat.testing
+    #@tag_type_selector.open() unless AntCat.testing
     @
 
   handle_event: (event) =>
@@ -45,7 +45,7 @@ class AntCat.TaxtEditor
     if @is_tag_selected() and @is_tag_opening_event event
       @tag_start = @start()
       @tag_end = @end()
-      @open_picker()
+      @open_picker_for_existing_tag()
       return false
 
     if event.type is 'keyup' or event.type is 'mouseup'
@@ -74,18 +74,31 @@ class AntCat.TaxtEditor
     @tag_type_selector.open()
 
   handle_tag_type_selector_result: (type) =>
-    @open_picker()
+    @open_picker_for_new_tag(type)
 
   handle_tag_type_selector_close: =>
     @parent_buttons.undisable()
     @replace_simulation_with_text_area()
 
-  open_picker: =>
+  open_picker_for_new_tag: (type) =>
     @options.on_open_picker() if @options.on_open_picker
     @replace_text_area_with_simulation()
     @parent_buttons.disable()
-    id = if @is_tag_selected() then TaxtEditor.extract_id_from_editable_taxt @selection() else null
-    new AntCat.ReferencePicker @reference_picker, id: id, on_done: @handle_picker_result, modal: true
+    if type == 'reference_button'
+      new AntCat.ReferencePicker @reference_picker, id: null, on_done: @handle_picker_result, modal: true
+    else
+      new AntCat.TaxonPicker @taxon_picker, id: null, on_done: @handle_picker_result, modal: true
+
+  open_picker_for_existing_tag: =>
+    @options.on_open_picker() if @options.on_open_picker
+    @replace_text_area_with_simulation()
+    @parent_buttons.disable()
+    id = TaxtEditor.extract_id_from_editable_taxt @selection()
+    type = TaxtEditor.extract_type_from_editable_taxt @selection()
+    if type == 1
+      new AntCat.ReferencePicker @reference_picker, id: id, on_done: @handle_picker_result, modal: true
+    else
+      new AntCat.TaxonPicker @taxon_picker, id: id, on_done: @handle_picker_result, modal: true
 
   replace_text_area_with_simulation: =>
     # We need to indicate the selected tag in the taxt edit box
@@ -124,8 +137,12 @@ class AntCat.TaxtEditor
 
   # this value is duplicated in lib/taxt.rb
   @EDITABLE_ID_DIGITS = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
   @extract_id_from_editable_taxt: (taxt) ->
     TaxtEditor.id_from_editable taxt.match("{((.*?)? )?([#{@EDITABLE_ID_DIGITS}]+)}")[3]
+
+  @extract_type_from_editable_taxt: (taxt) ->
+    TaxtEditor.type_from_editable taxt.match("{((.*?)? )?([#{@EDITABLE_ID_DIGITS}]+)}")[3]
 
   # this code is duplicated in lib/taxt.rb
   @id_from_editable: (id) ->
@@ -140,6 +157,18 @@ class AntCat.TaxtEditor
       multiplier *= base
       index += 1
       return result / 10 if index >= id.length
+  @type_from_editable: (id) ->
+    result = 0
+    base = @EDITABLE_ID_DIGITS.length
+    multiplier = 1
+    index = 0
+    while true
+      digit = id.charAt index
+      digit_value = @EDITABLE_ID_DIGITS.indexOf digit
+      result += digit_value * multiplier
+      multiplier *= base
+      index += 1
+      return result % 10 if index >= id.length
 
   select_tag_if_caret_inside: =>
     tag_indexes = TaxtEditor.enclosing_tag_indexes @value(), @start()
