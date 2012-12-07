@@ -46,12 +46,15 @@ class Taxon < ActiveRecord::Base
     query.all
   end
 
-  def self.names_and_authorships
-    Taxon.select("CONCAT(name_html, ' ', principal_author_last_name_cache, ', ', year) AS name_and_authorship, taxa.*").joins(:protonym).joins('JOIN citations ON protonyms.authorship_id = citations.id').joins('JOIN `references` ON `references`.id = citations.reference_id').joins(:name).map do |e|
+  def self.names_and_authorships letters_in_name = nil
+    query = Taxon.select("CONCAT(name_html, ' ', principal_author_last_name_cache, ', ', year) AS name_and_authorship, taxa.*").joins(:protonym).joins('JOIN citations ON protonyms.authorship_id = citations.id').joins('JOIN `references` ON `references`.id = citations.reference_id').joins(:name)
+    if letters_in_name
+      search_term = letters_in_name.split('').join('%') + '%'
+      query = query.where("name LIKE '#{search_term}'")
+    end
+    query.map do |e|
       e.name_and_authorship
     end
-  rescue Exception => e
-    puts e
   end
 
   ###############################################
