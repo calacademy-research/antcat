@@ -13,3 +13,4 @@ class AntCat.TagTypeSelector extends AntCat.NestedForm
 
   cancel: =>
     @close()
+    @options.on_cancel()
