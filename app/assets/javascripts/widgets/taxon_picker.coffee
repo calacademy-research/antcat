@@ -1,10 +1,10 @@
 class AntCat.TaxonPicker extends AntCat.NestedForm
 
-  constructor: (@element, @options = {}) ->
-    @options.button_container = @element.find('.buttons')
-    @options.modal = true
-    @element.find('.buttons :button').unbutton().button()
-    super
+  constructor: (element, options = {}) ->
+    options.button_container = element.find('.buttons')
+    options.modal = true
+    # shouldn't be necessary to pass arguments
+    super element, options
 
   # returns the value of the taxon
   submit: (eventObject) =>
