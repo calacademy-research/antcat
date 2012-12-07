@@ -1,0 +1,9 @@
+- @title = 'Taxon Picker Test'
+
+- content_for :head do
+  = javascript_include_tag 'widgets/panel', 'widgets/form', 'widgets/nested_form', 'widgets/taxon_picker'
+  = javascript_include_tag 'widget_tests/taxon_picker'
+
+- content_for :page_contents do
+  #taxon_picker.antcat_taxon_picker.ui-widget.ui-widget-content.ui-corner-all
+    = render 'taxon_pickers/show'

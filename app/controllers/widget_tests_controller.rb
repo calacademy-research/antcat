@@ -1,6 +1,10 @@
 # coding: UTF-8
 class WidgetTestsController < ApplicationController
 
+  def taxon_picker
+    @taxon = Family.first if params[:id]
+  end
+
   def reference_picker
     @reference = Reference.first if params[:id]
   end
