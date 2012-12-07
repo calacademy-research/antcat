@@ -67,37 +67,37 @@ class AntCat.TaxtEditor
     @value new_value if new_value isnt current_value
     @set_position current_position
 
-  open_tag_type_selector: =>
+  # opening and closing subdialogs
+
+  before_form_opens: =>
     @replace_text_area_with_simulation()
     @parent_buttons.disable()
+
+  open_tag_type_selector: =>
+    @before_form_opens()
     @tag_type_selector.open()
 
   handle_tag_type_selector_result: (type) =>
     @open_picker_for_new_tag(type)
 
-  handle_tag_type_selector_close: =>
+  after_form_closes: =>
     @parent_buttons.undisable()
     @replace_simulation_with_text_area()
 
   open_picker_for_new_tag: (type) =>
-    @options.on_open_picker() if @options.on_open_picker
-    @replace_text_area_with_simulation()
-    @parent_buttons.disable()
     if type == 'reference_button'
-      new AntCat.ReferencePicker @reference_picker, id: null, on_done: @handle_picker_result, modal: true
+      new AntCat.ReferencePicker @reference_picker, id: null, on_done: @handle_picker_result, on_close: @after_form_closes, modal: true
     else
-      new AntCat.TaxonPicker @taxon_picker, id: null, on_done: @handle_picker_result, modal: true
+      @taxon_picker.open()
 
   open_picker_for_existing_tag: =>
-    @options.on_open_picker() if @options.on_open_picker
-    @replace_text_area_with_simulation()
-    @parent_buttons.disable()
+    @before_form_opens()
     id = TaxtEditor.extract_id_from_editable_taxt @selection()
     type = TaxtEditor.extract_type_from_editable_taxt @selection()
     if type == 1
-      new AntCat.ReferencePicker @reference_picker, id: id, on_done: @handle_picker_result, modal: true
+      new AntCat.ReferencePicker @reference_picker, id: id, on_done: @handle_picker_result, on_close: @after_form_closes, modal: true
     else
-      new AntCat.TaxonPicker @taxon_picker, id: id, on_done: @handle_picker_result, modal: true
+      @taxon_picker.open()
 
   replace_text_area_with_simulation: =>
     # We need to indicate the selected tag in the taxt edit box
@@ -117,17 +117,16 @@ class AntCat.TaxtEditor
     @control.hide()
 
   replace_simulation_with_text_area: =>
-    @control.siblings('.antcat_taxt_simulation').remove()
+    @element.find('.antcat_taxt_simulation').remove()
     @control.show()
  
   handle_picker_result: (taxt) =>
     @options.on_close_picker() if @options.on_close_picker
-    @parent_buttons.undisable()
     if taxt
       new_value = @value()[...@tag_start] + taxt + @value()[@tag_end...]
       @value new_value
 
-    @replace_simulation_with_text_area()
+    @after_form_closes()
 
     if taxt
       @set_selection @tag_start, @tag_start + taxt.length - 1
