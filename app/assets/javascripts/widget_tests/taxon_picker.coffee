@@ -1,1 +1,1 @@
-$ -> new AntCat.TaxonPicker $('#genus_picker'), modal: true
+$ -> new AntCat.TaxonPicker $('#taxon_picker')
