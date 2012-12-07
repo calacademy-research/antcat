@@ -6,9 +6,10 @@ class AntCat.TagTypeSelector extends AntCat.NestedForm
     @element.find('.buttons :button').unbutton().button()
     super
 
-  submit: =>
+  # returns taxon_button or reference_button
+  submit: (eventObject) =>
     @close()
-    @options.on_ok()
+    @options.on_ok($(eventObject.currentTarget).attr('id'))
 
   cancel: =>
     @close()
