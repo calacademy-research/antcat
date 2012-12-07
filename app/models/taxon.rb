@@ -46,6 +46,14 @@ class Taxon < ActiveRecord::Base
     query.all
   end
 
+  def self.names_and_authorships
+    Taxon.select("CONCAT(name_html, ' ', principal_author_last_name_cache, ', ', year) AS name_and_authorship, taxa.*").joins(:protonym).joins('JOIN citations ON protonyms.authorship_id = citations.id').joins('JOIN `references` ON `references`.id = citations.reference_id').joins(:name).map do |e|
+      e.name_and_authorship
+    end
+  rescue Exception => e
+    puts e
+  end
+
   ###############################################
   # synonym
   def synonym?; status == 'synonym' end
@@ -62,7 +70,6 @@ class Taxon < ActiveRecord::Base
     senior.update_attribute :status, 'valid'
     update_attribute :status, 'synonym'
   end
-
   ###############################################
   # homonym
   belongs_to  :homonym_replaced_by, class_name: 'Taxon'
