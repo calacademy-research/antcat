@@ -53,7 +53,9 @@ AntCat::Application.routes.draw do
   end
 
   resource :reference_picker, only: :show
+  resource :taxon_picker, only: :show
 
+  match '/widget_tests/taxon_picker', to: 'widget_tests#taxon_picker'
   match '/widget_tests/reference_picker', to: 'widget_tests#reference_picker'
   match '/widget_tests/reference_field', to: 'widget_tests#reference_field'
   match '/widget_tests/taxt_editor', to: 'widget_tests#taxt_editor'

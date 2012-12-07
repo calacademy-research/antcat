@@ -33,6 +33,8 @@ module NavigationHelpers
       '/widget_tests/reference_field'
     when /the taxt editor test page/
       '/widget_tests/taxt_editor'
+    when /the taxon picker test page/
+      '/widget_tests/taxon_picker'
     else
       raise "#{page_name} not found"
     end
