@@ -20,7 +20,7 @@ $.fn.taxt_editor = (options = {}) ->
 class AntCat.TaxtEditor
   constructor: (@element, @options = {}) ->
     @element.addClass 'taxt_editor'
-    @control = @element.find 'textarea'
+    @control = @element.find '> textarea'
     @control.addClass 'taxt_edit_box'
     @tag_type_selector = new AntCat.TagTypeSelector(@element.find('.antcat_tag_type_selector'), on_ok: @handle_tag_type_selector_result, on_cancel: @after_form_closes)
     @reference_picker = @element.find_topmost '.antcat_reference_picker'
