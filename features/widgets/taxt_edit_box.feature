@@ -1,13 +1,13 @@
 @javascript @editing
 Feature: Taxt edit box
 
-  Scenario: Inserting a reference
+  Scenario: Bringing up the reference picker
     When I go to the taxt editor test page
     And I fill in "taxt_edit_box" with "{"
     And I press "Reference"
     Then I should see the reference picker
 
-  Scenario: Inserting a taxon
+  Scenario: Bringing up the taxon picker
     When I go to the taxt editor test page
     And I fill in "taxt_edit_box" with "{"
     And I press "Taxon"
