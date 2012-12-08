@@ -397,16 +397,6 @@ describe Taxon do
     it "should join the name, the principal author of the protonym and its year" do
       Taxon.names_and_authorships.should == []
     end
-    it "should put together the component parts" do
-      name = create_name "Atta"
-      name.update_attribute :name_html, "<i>Atta</i>"
-      reference = FactoryGirl.create(:reference, author_names: [FactoryGirl.create(:author_name, name: 'Fisher, B.L.')],
-                                    principal_author_last_name_cache: 'Fisher', citation_year: '2003')
-      citation = FactoryGirl.create :citation, reference: reference
-      protonym = FactoryGirl.create :protonym, authorship: citation
-      genus = create_genus name: name, protonym: protonym, tribe: nil, subfamily: nil
-      Taxon.names_and_authorships.should == ['<i>Atta</i> Fisher, 2003']
-    end
     it "find fuzzily" do
       name = create_name "Atta"
       name.update_attribute :name_html, "<i>Atta</i>"
@@ -414,8 +404,10 @@ describe Taxon do
                                     principal_author_last_name_cache: 'Fisher', citation_year: '2003')
       citation = FactoryGirl.create :citation, reference: reference
       protonym = FactoryGirl.create :protonym, authorship: citation
-      genus = create_genus name: name, protonym: protonym, tribe: nil, subfamily: nil
-      Taxon.names_and_authorships('ata').should == ['<i>Atta</i> Fisher, 2003']
+      genus = create_genus name: name, protonym: protonym, tribe: nil, subfamily: nil, name_cache: 'Atta', name_html_cache: '<i>Atta</i>'
+      Taxon.names_and_authorships('ata').should == [
+        {label: '<b><i>Atta</i></b> <span class=authorship>Fisher, 2003</span>', value: 'Atta Fisher, 2003', id: genus.id}
+      ]
     end
   end
 
