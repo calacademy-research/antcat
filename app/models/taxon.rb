@@ -46,19 +46,18 @@ class Taxon < ActiveRecord::Base
     query.all
   end
 
-  def self.names_and_authorships letters_in_name = nil
-    query = Taxon.select(
-      "name, name_html, principal_author_last_name_cache, year, " +
-      "taxa.id AS taxon_id, " +
-      "taxa.*").joins(:protonym).joins('JOIN citations ON protonyms.authorship_id = citations.id').joins('JOIN `references` ON `references`.id = citations.reference_id').joins(:name).where('name_html IS NOT NULL AND principal_author_last_name_cache IS NOT NULL AND year IS NOT NULL')
-    if letters_in_name
-      search_term = letters_in_name.split('').join('%') + '%'
-      query = query.where("name LIKE '#{search_term}'")
-    end
+  def self.names_and_authorships letters_in_name
+    search_term = letters_in_name.split('').join('%') + '%'
+    query = Taxon.select('taxa.id AS taxon_id, name_cache, name_html_cache, principal_author_last_name_cache, year').
+      joins(:protonym).
+      joins('JOIN citations ON protonyms.authorship_id = citations.id').
+      joins('JOIN `references` ON `references`.id = citations.reference_id').
+      where("name_cache LIKE '#{search_term}' AND name_html_cache IS NOT NULL AND principal_author_last_name_cache IS NOT NULL AND year IS NOT NULL")
     query.map do |e|
       result = {}
-      result[:label] = "<b>#{e.name_html}</b> <span class=authorship>#{e.principal_author_last_name_cache}, #{e.year}"
-      result[:value] = "#{e.name} #{e.principal_author_last_name_cache}, #{e.year}"
+      result[:label] = "<b>#{e.name_html_cache}</b> <span class=authorship>#{e.principal_author_last_name_cache}, #{e.year}</span>"
+      result[:value] = "#{e.name_cache} #{e.principal_author_last_name_cache}, #{e.year}"
+      result[:name] = e.name_cache
       result[:id] = e.taxon_id
       result
     end.sort_by do |a|
@@ -119,11 +118,11 @@ class Taxon < ActiveRecord::Base
     raise NotImplementedError
   end
 
-  def inspect
-    string = "#{name} (#{status} #{type.downcase} #{id})"
-    string << " incertae sedis in #{incertae_sedis_in}" if incertae_sedis_in.present?
-    string
-  end
+  #def inspect
+    #string = "#{name} (#{status} #{type.downcase} #{id})"
+    #string << " incertae sedis in #{incertae_sedis_in}" if incertae_sedis_in.present?
+    #string
+  #end
 
   ###############################################
   # statistics
