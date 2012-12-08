@@ -48,8 +48,7 @@ class Taxon < ActiveRecord::Base
 
   def self.names_and_authorships letters_in_name = nil
     query = Taxon.select(
-      "CONCAT(name,      ' ', principal_author_last_name_cache, ', ', year) AS name_and_authorship, " +
-      "CONCAT(name_html, ' ', principal_author_last_name_cache, ', ', year) AS name_html_and_authorship, " +
+      "name, name_html, principal_author_last_name_cache, year, " +
       "taxa.id AS taxon_id, " +
       "taxa.*").joins(:protonym).joins('JOIN citations ON protonyms.authorship_id = citations.id').joins('JOIN `references` ON `references`.id = citations.reference_id').joins(:name).where('name_html IS NOT NULL AND principal_author_last_name_cache IS NOT NULL AND year IS NOT NULL')
     if letters_in_name
@@ -57,7 +56,13 @@ class Taxon < ActiveRecord::Base
       query = query.where("name LIKE '#{search_term}'")
     end
     query.map do |e|
-      {label: e.name_html_and_authorship, value: e.name_and_authorship, id: e.taxon_id}
+      result = {}
+      result[:label] = "<b>#{e.name_html}</b> <span class=authorship>#{e.principal_author_last_name_cache}, #{e.year}"
+      result[:value] = "#{e.name} #{e.principal_author_last_name_cache}, #{e.year}"
+      result[:id] = e.taxon_id
+      result
+    end.sort_by do |a|
+      a[:value]
     end
   end
 
