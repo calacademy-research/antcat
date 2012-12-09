@@ -1,11 +1,10 @@
 class AntCat.TaxonPicker extends AntCat.NestedForm
 
-  constructor: (@element, @options = {}) ->
-    @control = @element.find('input[type=text]')
-    @setup_autocomplete @element.find('input[type=text]')
-    @options.button_container = element.find('.buttons')
-    @options.modal = true
-    super
+  constructor: (element, options = {}) ->
+    @control = element.find('input[type=text]')
+    @setup_autocomplete @control
+    options.button_container = element.find('.buttons')
+    super element, options
 
   setup_autocomplete: ($textbox) =>
     $textbox.autocomplete(
