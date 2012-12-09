@@ -2,6 +2,13 @@ class Name < ActiveRecord::Base
 
   validates :name, presence: true, uniqueness: true
 
+  after_save :set_taxon_caches
+
+  def set_taxon_caches
+    Taxon.update_all ['name_cache = ?', name], name_id: id
+    Taxon.update_all ['name_html_cache = ?', name_html], name_id: id
+  end
+
   def self.import data
     SubspeciesName.import_data(data) or
     SpeciesName.import_data(data)    or

@@ -3,6 +3,13 @@ class Taxon < ActiveRecord::Base
 
   set_table_name :taxa
 
+  before_save :set_name_caches
+
+  def set_name_caches
+    self.name_cache = name.name
+    self.name_html_cache = name.name_html
+  end
+
   ###############################################
   # name
   belongs_to :name; validates :name, presence: true
