@@ -66,6 +66,7 @@ class Taxon < ActiveRecord::Base
       result[:value] = "#{e.name_cache} #{e.principal_author_last_name_cache}, #{e.year}"
       result[:name] = e.name_cache
       result[:id] = e.taxon_id
+      result[:taxt] = Taxt.to_editable_taxon Taxon.find(e.taxon_id)
       result
     end.sort_by do |a|
       a[:value]
