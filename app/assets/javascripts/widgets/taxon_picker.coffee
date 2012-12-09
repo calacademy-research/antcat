@@ -8,11 +8,12 @@ class AntCat.TaxonPicker extends AntCat.NestedForm
 
   setup_autocomplete: ($textbox) =>
     $textbox.autocomplete(
-      autoFocus: true,
-      source: "/taxon_pickers",
-      minLength: 3,
-      select: @select)
-    .data( "autocomplete" )._renderItem = @render_item
+          autoFocus: true,
+          source: "/taxon_pickers",
+          minLength: 3,
+          select: @select)
+      .data('autocomplete')
+      ._renderItem = @render_item
 
   render_item: (ul, item) =>
     $("<li>")
