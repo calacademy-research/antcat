@@ -15,6 +15,7 @@ class AntCat.TaxonPicker extends AntCat.NestedForm
       .data('autocomplete')
       ._renderItem = @render_item
 
+  # this is required to display HTML in the list
   render_item: (ul, item) =>
     $("<li>")
       .data("item.autocomplete", item)
