@@ -1,6 +1,7 @@
 class AntCat.TaxonPicker extends AntCat.NestedForm
 
   constructor: (@element, @options = {}) ->
+    @control = @element.find('input[type=text]')
     @setup_autocomplete @element.find('input[type=text]')
     @options.button_container = element.find('.buttons')
     @options.modal = true
@@ -18,6 +19,10 @@ class AntCat.TaxonPicker extends AntCat.NestedForm
       .data("item.autocomplete", item)
       .append("<a>" + item.label + "</a>")
       .appendTo(ul)
+
+  open: =>
+    @control.val ''
+    super
 
   # returns the value of the taxon
   submit: (eventObject) =>
