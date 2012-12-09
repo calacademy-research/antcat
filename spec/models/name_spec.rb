@@ -23,4 +23,43 @@ describe Name do
     SpeciesName.new(name_html: '<i>Atta major</i>').to_html_with_fossil(true).should == '<i>&dagger;</i><i>Atta major</i>'
   end
 
+  describe "Updating taxon cache" do
+    before do
+      @atta = create_name 'Atta'
+      @atta.update_attribute :name_html, '<i>Atta</i>'
+    end
+
+    it "should set the name_cache and name_html_cache in the taxon when assigned" do
+      taxon = create_genus 'Eciton'
+      taxon.name_cache.should == 'Eciton'
+      taxon.name_html_cache.should == '<i>Eciton</i>'
+
+      taxon.name = @atta
+      taxon.save!
+      taxon.name_cache.should == 'Atta'
+      taxon.name_html_cache.should == '<i>Atta</i>'
+    end
+
+    it "should change the cache when the contents of the name change" do
+      taxon = create_genus name: @atta
+      taxon.name_cache.should == 'Atta'
+      taxon.name_html_cache.should == '<i>Atta</i>'
+      @atta.update_attributes name: 'Betta', name_html: '<i>Betta</i>'
+      taxon.reload
+      taxon.name_cache.should == 'Betta'
+      taxon.name_html_cache.should == '<i>Betta</i>'
+    end
+
+    it "should change the cache when a different name is assigned" do
+      betta = create_name 'Betta'
+      betta.update_attribute :name_html, '<i>Betta</i>'
+
+      taxon = create_genus name: @atta
+      taxon.update_attribute :name, betta
+      taxon.name_cache.should == 'Betta'
+      taxon.name_html_cache.should == '<i>Betta</i>'
+    end
+
+  end
+
 end
