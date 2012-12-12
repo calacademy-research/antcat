@@ -89,6 +89,12 @@ class Taxon < ActiveRecord::Base
     senior.update_attribute :status, 'valid'
     update_attribute :status, 'synonym'
   end
+
+  def become_not_a_junior_synonym_of senior
+    Synonym.where('junior_synonym_id = ? AND senior_synonym_id = ?', id, senior).destroy_all
+    update_attribute :status, 'valid' if senior_synonyms.empty?
+  end
+
   ###############################################
   # homonym
   belongs_to  :homonym_replaced_by, class_name: 'Taxon'

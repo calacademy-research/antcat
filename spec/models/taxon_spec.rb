@@ -378,7 +378,7 @@ describe Taxon do
         atta.should_not be_synonym_of attaboi
       end
 
-      it "should not create dupliate synonym in case of synonym cycle" do
+      it "should not create duplicate synonym in case of synonym cycle" do
         atta = create_genus 'Atta', status: 'synonym'
         attaboi = create_genus 'Attaboi', status: 'synonym'
         Synonym.create! junior_synonym: atta, senior_synonym: attaboi
@@ -391,6 +391,26 @@ describe Taxon do
         attaboi.should_not be_synonym_of atta
       end
     end
+
+    describe "Removing synonymy" do
+      it "should remove all synonymies for the taxon" do
+        atta = create_genus 'Atta'
+        attaboi = create_genus 'Attaboi'
+        attaboi.become_junior_synonym_of atta
+        atta.junior_synonyms.all.include?(attaboi).should be_true
+        atta.should_not be_synonym
+        attaboi.should be_synonym
+        attaboi.senior_synonyms.all.include?(atta).should be_true
+
+        attaboi.become_not_a_junior_synonym_of atta
+
+        atta.junior_synonyms.all.include?(attaboi).should be_false
+        atta.should_not be_synonym
+        attaboi.should_not be_synonym
+        attaboi.senior_synonyms.all.include?(atta).should be_false
+      end
+    end
+
   end
 
   describe "taxon list" do
