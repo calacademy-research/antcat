@@ -52,7 +52,8 @@ AntCat::Application.routes.draw do
     resources :taxon_history_items
   end
 
-  resources :taxon_pickers, only: [:index]
+  resources :taxon_pickers, only: [:index, :lookup]
+  match 'taxon_pickers/lookup' => 'taxon_pickers#lookup', as: :taxon_picker, via: :get
   resource :reference_picker, only: :show
 
   match '/widget_tests/taxon_picker', to: 'widget_tests#taxon_picker'
