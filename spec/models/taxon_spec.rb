@@ -422,8 +422,14 @@ describe Taxon do
       citation = FactoryGirl.create :citation, reference: reference
       protonym = FactoryGirl.create :protonym, authorship: citation
       genus = create_genus name: name, protonym: protonym, tribe: nil, subfamily: nil, name_cache: 'Atta', name_html_cache: '<i>Atta</i>'
+      editable_taxt = Taxt.to_editable_taxon Taxon.find genus
       Taxon.names_and_authorships('ata').should == [
-        {label: '<b><i>Atta</i></b> <span class=authorship>Fisher, 2003</span>', value: 'Atta Fisher, 2003', id: genus.id}
+        {label: '<b><i>Atta</i></b> <span class=authorship>Fisher, 2003</span>',
+         value: 'Atta Fisher, 2003',
+         id:    genus.id,
+         taxt:  editable_taxt,
+         name:  'Atta',
+        }
       ]
     end
   end
