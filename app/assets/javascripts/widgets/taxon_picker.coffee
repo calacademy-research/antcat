@@ -4,6 +4,8 @@ class AntCat.TaxonPicker extends AntCat.NestedForm
     @control = element.find('input[type=text]')
     @setup_autocomplete @control
     options.button_container = element.find('.buttons')
+    options.modal = true
+    # should not be necessary to pass these arguments explicitly
     super element, options
 
   setup_autocomplete: ($textbox) =>
@@ -21,19 +23,3 @@ class AntCat.TaxonPicker extends AntCat.NestedForm
       .data("item.autocomplete", item)
       .append("<a>" + item.label + "</a>")
       .appendTo(ul)
-
-  select: (event, ui) =>
-    # snaffle away the selected menu item's data
-    @element.data 'taxt', ui.item.taxt
-
-  open: =>
-    @control.val ''
-    super
-
-  # returns the value of the taxon
-  submit: (eventObject) =>
-    @close()
-    @options.on_ok @element.data('taxt')
-
-  cancel: =>
-    @close()
