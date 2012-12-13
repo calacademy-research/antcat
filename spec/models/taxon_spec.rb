@@ -414,9 +414,6 @@ describe Taxon do
   end
 
   describe "taxon list" do
-    it "should join the name, the principal author of the protonym and its year" do
-      Taxon.names_and_authorships.should == []
-    end
     it "find fuzzily" do
       name = create_name "Atta"
       name.update_attribute :name_html, "<i>Atta</i>"
