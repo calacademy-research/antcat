@@ -12,4 +12,11 @@ class ApplicationController < ActionController::Base
     session[:user_return_to] = request.url unless request.url =~ %r{/users/}
   end
 
+  def send_back_json
+    json = yield.to_json
+    json = '<textarea>' + json + '</textarea>' unless
+      params[:picker].present? || params[:field].present? || Rails.env.test?
+    render json: json, content_type: 'text/html'
+  end
+
 end
