@@ -16,6 +16,8 @@ class AntCat.Form
         .find(':button.submit').click(@submit).end()
         .find(':button.cancel').click(@cancel).end()
         .end()
+      # commented out until can figure out why pressing Enter
+      # in an autocomplete field triggers this
       #.keypress (event) =>
         #return true unless event.which is $.ui.keyCode.ENTER
         #@submit()
