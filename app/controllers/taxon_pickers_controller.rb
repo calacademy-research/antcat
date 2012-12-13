@@ -8,10 +8,9 @@ class TaxonPickersController < ApplicationController
   end
 
   def lookup
-    json = {taxt: "Mark's the best", success: true}.to_json
-    json = '<textarea>' + json + '</textarea>' unless
-      params[:picker].present? || params[:field].present? || Rails.env.test?
-    render json: json, content_type: 'text/html'
+    send_back_json do
+      {taxt: "Mark's the best", success: true}
+    end
   end
 
 end
