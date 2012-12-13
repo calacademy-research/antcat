@@ -1,12 +1,11 @@
 window.AntCat or= {}
 
 # <form> elements can't be nested, but they need to be
-# for AntCat's UI model, which involved drilling down
-# and display inline forms
+# for AntCat's UI model, which involves drilling down
+# and displaying inline forms
 #
-# This code simulates nested forms by 1) assuming there's
-# a top-level <form> element somewhere, and 2) creating
-# <div class=nested_form> elements for the nested 'forms'
+# This code simulates nested forms by converting
+# <div class=nested_form> elements to <form>s
 
 $.fn.nested_form = (options = {}) ->
   this.each -> new AntCat.NestedForm $(this), options
