@@ -8,6 +8,10 @@ class AntCat.TaxonPicker extends AntCat.NestedForm
     # should not be necessary to pass these arguments explicitly
     super element, options
 
+  submit: =>
+    return false if @control.val().length == 0
+    super
+
   setup_autocomplete: ($textbox) =>
     $textbox.autocomplete(
           autoFocus: true,
