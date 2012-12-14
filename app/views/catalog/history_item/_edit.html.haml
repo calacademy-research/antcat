@@ -6,15 +6,9 @@
 
     .taxt_editor
       = text_area_tag :taxt_editor, Taxt.to_editable(item.taxt), rows: 1, class: 'taxt_edit_box'
-
-      .antcat_tag_type_selector
-        = render 'tag_type_selectors/show'
-
-      .antcat_reference_picker.ui-widget.ui-widget-content.ui-corner-all
-        = render 'reference_pickers/show', references: nil, current_reference: nil
-
-      .antcat_taxon_picker.ui-widget.ui-widget-content.ui-corner-all
-        = render 'taxon_pickers/show', taxon: nil
+      = render 'tag_type_selectors/show'
+      = render 'reference_pickers/show', references: nil, current_reference: nil
+      = render 'taxon_pickers/show', taxon: nil
 
     .buttons
       %button.submit.ui-priority-primary Save
