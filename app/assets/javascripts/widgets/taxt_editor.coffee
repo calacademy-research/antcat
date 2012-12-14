@@ -6,13 +6,9 @@ window.AntCat or= {}
 # .taxt_editor
 #    the textarea (can be anything)
 #    = text_area_tag :taxt_editor, Taxt.to_editable(item.taxt), rows: 1, class: 'taxt_edit_box'
-#    the reference picker (must be .antcat_reference_picker)
-#    .antcat_tag_type_selector
-#      = render 'tag_type_selectors/show'
-#    .antcat_reference_picker
-#      = render 'reference_pickers/show', references: nil, current_reference: nil
-#    .antcat_taxon_picker
-#      = render 'taxon_pickers/show', current_taxon: nil
+#    = render 'tag_type_selectors/show'
+#    = render 'reference_pickers/show', references: nil, current_reference: nil
+#    = render 'taxon_pickers/show', current_taxon: nil
 
 $.fn.taxt_editor = (options = {}) ->
   return this.each -> new AntCat.TaxtEditor $(this), options
