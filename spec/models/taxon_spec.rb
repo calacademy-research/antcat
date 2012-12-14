@@ -425,10 +425,7 @@ describe Taxon do
       editable_taxt = Taxt.to_editable_taxon Taxon.find genus
       Taxon.names_and_authorships('ata').should == [
         {label: '<b><i>Atta</i></b> <span class=authorship>Fisher, 2003</span>',
-         value: 'Atta Fisher, 2003',
-         id:    genus.id,
-         taxt:  editable_taxt,
-         name:  'Atta',
+         value: 'Atta',
         }
       ]
     end
