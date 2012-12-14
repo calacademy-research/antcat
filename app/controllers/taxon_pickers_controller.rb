@@ -3,7 +3,7 @@ class TaxonPickersController < ApplicationController
 
   def index
     respond_to do |format|
-      format.json {render :json => Taxon.names_and_authorships(params[:term]).to_json}
+      format.json {render :json => Taxon.picklist_matching(params[:term]).to_json}
     end
   end
 

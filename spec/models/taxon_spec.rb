@@ -423,7 +423,7 @@ describe Taxon do
       protonym = FactoryGirl.create :protonym, authorship: citation
       genus = create_genus name: name, protonym: protonym, tribe: nil, subfamily: nil, name_cache: 'Atta', name_html_cache: '<i>Atta</i>'
       editable_taxt = Taxt.to_editable_taxon Taxon.find genus
-      Taxon.names_and_authorships('ata').should == [
+      Taxon.picklist_matching('ata').should == [
         {label: '<b><i>Atta</i></b> <span class=authorship>Fisher, 2003</span>',
          value: 'Atta',
         }
