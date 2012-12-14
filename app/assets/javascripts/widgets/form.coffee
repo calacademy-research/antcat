@@ -58,6 +58,11 @@ class AntCat.Form
     if data.success
       @options.on_done data if @options.on_done
       @close()
+    else
+      @handle_application_error(data.error_message)
+
+  handle_application_error: (error_message) =>
+    @options.on_application_error error_message if @options.on_application_error
 
   handle_error: (jq_xhr, text_status, error_thrown) =>
     @stop_spinning()
