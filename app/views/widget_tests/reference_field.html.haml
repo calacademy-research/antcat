@@ -22,13 +22,13 @@
       %tr
         %td.authorship= label_tag 'Authorship'
         %td
-          #authorship_picker.antcat_reference_picker.ui-widget.ui-widget-content.ui-corner-all
+          #authorship_picker
             = render 'reference_pickers/show', references: nil, current_reference: Reference.first
 
       %tr
         %td.authorship= label_tag 'Authorship'
         %td
-          #other_authorship_field.antcat_reference_picker.ui-widget.ui-widget-content.ui-corner-all
+          #other_authorship_field
             = render 'reference_pickers/show', references: nil, current_reference: nil
 
       %tr.buttons
