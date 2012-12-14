@@ -146,3 +146,6 @@ Given /^there is a subspecies "([^"]*)" which is a subspecies of "([^"]*)" in th
   species = create_species species, genus: genus
   subspecies = create_subspecies subspecies, species: species, genus: genus
 end
+Given /^there is a genus called "([^"]*)"$/ do |name|
+  create_genus name
+end
