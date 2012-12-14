@@ -23,7 +23,7 @@ class AntCat.TaxonPicker extends AntCat.NestedForm
           minLength: 3,
           select: @select)
       .data('autocomplete')
-      ._renderItem = @render_item
+        ._renderItem = @render_item
 
   # this is required to display HTML in the list
   render_item: (ul, item) =>
