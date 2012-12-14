@@ -109,4 +109,3 @@ Then /in the output section I should see the editable taxt for "([^"]*)"/ do |te
     step %{I should see "#{Taxt.to_editable_taxon(Taxon.find_by_name(text))}"}
   end
 end
-

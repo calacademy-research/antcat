@@ -10,7 +10,11 @@ class AntCat.TaxonPicker extends AntCat.NestedForm
 
   submit: =>
     return false if @control.val().length == 0
+    @element.find('.error_messages').text('')
     super
+
+  handle_application_error: (error_message) =>
+    @element.find('.error_messages').text(error_message)
 
   setup_autocomplete: ($textbox) =>
     $textbox.autocomplete(
