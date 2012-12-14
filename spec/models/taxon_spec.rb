@@ -422,11 +422,37 @@ describe Taxon do
       citation = FactoryGirl.create :citation, reference: reference
       protonym = FactoryGirl.create :protonym, authorship: citation
       genus = create_genus name: name, protonym: protonym, tribe: nil, subfamily: nil, name_cache: 'Atta', name_html_cache: '<i>Atta</i>'
-      editable_taxt = Taxt.to_editable_taxon Taxon.find genus
       Taxon.picklist_matching('ata').should == [
         {label: '<b><i>Atta</i></b> <span class=authorship>Fisher, 2003</span>',
          value: 'Atta',
         }
+      ]
+    end
+
+    it "put prefix matches at beginning" do
+      reference = FactoryGirl.create(:reference, author_names: [FactoryGirl.create(:author_name, name: 'Fisher, B.L.')],
+                                    principal_author_last_name_cache: 'Fisher', citation_year: '2003')
+      citation = FactoryGirl.create :citation, reference: reference
+      protonym = FactoryGirl.create :protonym, authorship: citation
+
+      acropyga = create_species protonym: protonym, name_cache: 'Acropyga dubitata', name_html_cache: '<i>Acropyga dubitata</i>'
+      acropyga.name.name = 'Acropyga dubitata'
+      acropyga.name.name_html = '<i>Acropyga dubitata</i>'
+      acropyga.name.save!
+
+      genus_name = create_name "Atta"
+      genus_name.update_attribute :name_html, "<i>Atta</i>"
+      genus = create_genus name: genus_name, protonym: protonym, tribe: nil, subfamily: nil, name_cache: 'Atta', name_html_cache: '<i>Atta</i>'
+
+      acanthognatus = create_species protonym: protonym, name_cache: 'Acanthognatus laevigatus', name_html_cache: '<i>Acanthognatus laevigatus</i>'
+      acanthognatus.name.name = 'Acanthognathus laevigatus'
+      acanthognatus.name.name_html = '<i>Acanthognathus laevigatus</i>'
+      acanthognatus.name.save!
+
+      Taxon.picklist_matching('atta').should == [
+        {label: '<b><i>Atta</i></b> <span class=authorship>Fisher, 2003</span>', value: 'Atta'},
+        {label: '<b><i>Acanthognathus laevigatus</i></b> <span class=authorship>Fisher, 2003</span>', value: 'Acanthognathus laevigatus'},
+        {label: '<b><i>Acropyga dubitata</i></b> <span class=authorship>Fisher, 2003</span>', value: 'Acropyga dubitata'},
       ]
     end
   end
