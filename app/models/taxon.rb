@@ -53,7 +53,7 @@ class Taxon < ActiveRecord::Base
     query.all
   end
 
-  def self.names_and_authorships letters_in_name
+  def self.picklist_matching letters_in_name
     search_term = letters_in_name.split('').join('%') + '%'
     query = Taxon.select('taxa.id AS taxon_id, name_cache, name_html_cache, principal_author_last_name_cache, year').
       joins(:protonym).
