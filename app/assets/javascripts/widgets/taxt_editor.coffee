@@ -21,7 +21,7 @@ class AntCat.TaxtEditor
     @tag_type_selector = new AntCat.TagTypeSelector(@element.find('.antcat_tag_type_selector'), on_ok: @handle_tag_type_selector_result, on_cancel: @after_form_closes)
     @reference_picker = @element.find_topmost '.antcat_reference_picker'
     @parent_buttons = @element.siblings().find(':button')
-    @taxon_picker = new AntCat.TaxonPicker(@element.find('.antcat_taxon_picker'), on_ok: @handle_picker_result, on_close: @after_form_closes)
+    @taxon_picker = new AntCat.TaxonPicker(@element.find('.antcat_taxon_picker'), on_done: @handle_taxon_picker_result, on_close: @after_form_closes)
     @dashboard = new TaxtEditor.DebugDashboard @ if @options.show_debug_dashboard
     @dashboard?.show_status 'before'
     @value @control.val()
@@ -116,6 +116,9 @@ class AntCat.TaxtEditor
     @element.find('.antcat_taxt_simulation').remove()
     @control.show()
  
+  handle_taxon_picker_result: (data) =>
+    @handle_picker_result data.taxt
+
   handle_picker_result: (taxt) =>
     @options.on_close_picker() if @options.on_close_picker
     if taxt
