@@ -63,10 +63,7 @@ class Taxon < ActiveRecord::Base
     query.map do |e|
       result = {}
       result[:label] = "<b>#{e.name_html_cache}</b> <span class=authorship>#{e.principal_author_last_name_cache}, #{e.year}</span>"
-      result[:value] = "#{e.name_cache} #{e.principal_author_last_name_cache}, #{e.year}"
-      result[:name] = e.name_cache
-      result[:id] = e.taxon_id
-      result[:taxt] = Taxt.to_editable_taxon Taxon.find(e.taxon_id)
+      result[:value] = "#{e.name_cache}"
       result
     end.sort_by do |a|
       a[:value]
