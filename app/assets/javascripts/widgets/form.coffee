@@ -16,12 +16,12 @@ class AntCat.Form
         .find(':button.submit').click(@submit).end()
         .find(':button.cancel').click(@cancel).end()
         .end()
-      # commented out until can figure out why pressing Enter
-      # in an autocomplete field triggers this
-      #.keypress (event) =>
-        #return true unless event.which is $.ui.keyCode.ENTER
-        #@submit()
-        #false
+      .find('input[type=text]')
+        .keypress (event) =>
+          return true unless event.which is $.ui.keyCode.ENTER
+          @submit()
+          false
+        .end()
 
   open: =>
     @element.show() if @options.modal
