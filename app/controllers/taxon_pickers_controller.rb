@@ -8,9 +8,15 @@ class TaxonPickersController < ApplicationController
   end
 
   def lookup
-    send_back_json do
-      {taxt: "Mark's the best", success: true}
+    taxon = Taxon.find_by_name params[:taxon_name]
+    if taxon
+      taxt = Taxt.to_editable_taxon taxon
+      success = true
+    else
+      taxt = nil
+      success = false
     end
+    send_back_json {{taxt: taxt, success: success}}
   end
 
 end
