@@ -53,6 +53,7 @@ class Taxon < ActiveRecord::Base
   end
 
   def self.picklist_matching letters_in_name
+    # I do not see why the code beginning with Taxon.select can't be factored out, but it can't
     search_term = letters_in_name + '%'
     prefix_matches =
       Taxon.select('taxa.id AS taxon_id, name_cache, name_html_cache, principal_author_last_name_cache, year').
@@ -70,25 +71,17 @@ class Taxon < ActiveRecord::Base
       where("name_cache LIKE '#{search_term}' AND name_html_cache IS NOT NULL AND principal_author_last_name_cache IS NOT NULL AND year IS NOT NULL")
       order(:name_cache)
 
-    results = []
-    prefix_match_results = prefix_matches.map do |e|
-      {label: "<b>#{e.name_html_cache}</b> <span class=authorship>#{e.principal_author_last_name_cache}, #{e.year}</span>",
-       value: "#{e.name_cache}"
-      }
-    end.sort_by do |a|
-      a[:value]
-    end
-    results.concat prefix_match_results
-    any_letter_matches_results = any_letter_matches.map do |e|
-      {label: "<b>#{e.name_html_cache}</b> <span class=authorship>#{e.principal_author_last_name_cache}, #{e.year}</span>",
-       value: "#{e.name_cache}"
-      }
-    end.sort_by do |a|
-      a[:value]
-    end
+    [picklist_matching_format(prefix_matches), picklist_matching_format(any_letter_matches)].flatten.uniq
+  end
 
-    results.concat any_letter_matches_results
-    results.uniq
+  def self.picklist_matching_format matches
+    matches.map do |e|
+      {label: "<b>#{e.name_html_cache}</b> <span class=authorship>#{e.principal_author_last_name_cache}, #{e.year}</span>",
+       value: "#{e.name_cache}"
+      }
+    end.sort_by do |a|
+      a[:value]
+    end
   end
 
   ###############################################
