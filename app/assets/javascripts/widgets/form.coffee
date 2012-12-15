@@ -13,6 +13,7 @@ class AntCat.Form
       .addClass(AntCat.Form.css_class)
       .find(@options.button_container)
         .find(':button').unbutton().button().end()
+        .find('input[type="submit"]').unbutton().button().end()
         .find(':button.submit').click(@submit).end()
         .find(':button.cancel').click(@cancel).end()
         .end()
