@@ -3,26 +3,15 @@ window.AntCat or= {}
 class AntCat.Form
   @css_class = 'antcat_form'
 
-  constructor: ($element, @options = {}) ->
+  constructor: (@element, @options = {}) ->
     @options.button_container or= '> .buttons'
-    @initialize $element
-
-  initialize: ($element) =>
-    @element = $element
-    @element
-      .addClass(AntCat.Form.css_class)
-      .find(@options.button_container)
-        .find(':button').unbutton().button().end()
-        .find('input[type="submit"]').unbutton().button().end()
-        .find(':button.submit').click(@submit).end()
-        .find(':button.cancel').click(@cancel).end()
-        .end()
-      .find('input[type=text]')
-        .keypress (event) =>
-          return true unless event.which is $.ui.keyCode.ENTER
-          @submit()
-          false
-        .end()
+    @element.addClass(AntCat.Form.css_class)
+    @buttons = @element.find(@options.button_container)
+    @buttons
+      .find(':button, :submit').unbutton().button().end()
+      .find('.submit').click(@submit).end()
+      .find('.cancel').click(@cancel).end()
+      .end()
 
   open: =>
     @element.show() if @options.modal
