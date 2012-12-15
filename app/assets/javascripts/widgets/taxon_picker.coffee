@@ -1,4 +1,4 @@
-class AntCat.TaxonPicker extends AntCat.NestedForm
+class AntCat.TaxonPicker extends AntCat.Form
 
   constructor: (element, options = {}) ->
     @control = element.find('input[type=text]')
