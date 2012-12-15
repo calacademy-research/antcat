@@ -82,7 +82,7 @@ class AntCat.TaxtEditor
 
   open_picker_for_new_tag: (type) =>
     if type == 'reference_button'
-      new AntCat.ReferencePicker @reference_picker, id: null, on_done: @handle_picker_result, on_close: @after_form_closes, modal: true
+      new AntCat.ReferencePicker @reference_picker.parent(), id: null, on_done: @handle_picker_result, on_close: @after_form_closes, modal: true
     else
       @taxon_picker.open()
 
@@ -91,7 +91,7 @@ class AntCat.TaxtEditor
     id = TaxtEditor.extract_id_from_editable_taxt @selection()
     type = TaxtEditor.extract_type_from_editable_taxt @selection()
     if type == 1
-      new AntCat.ReferencePicker @reference_picker, id: id, on_done: @handle_picker_result, on_close: @after_form_closes, modal: true
+      new AntCat.ReferencePicker @reference_picker.parent(), id: id, on_done: @handle_picker_result, on_close: @after_form_closes, modal: true
     else
       @taxon_picker.open()
 

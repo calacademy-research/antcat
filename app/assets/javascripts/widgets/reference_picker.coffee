@@ -1,7 +1,7 @@
 class AntCat.ReferencePicker
 
-  constructor: (@selector, @options = {}) ->
-    @element = $(@selector)
+  constructor: (@parent_element, @options = {}) ->
+    @element = @parent_element.find('.antcat_reference_picker')
     @current_reference_id = @options.id
     if @current_reference_id
       @load()
@@ -23,12 +23,12 @@ class AntCat.ReferencePicker
       dataType: 'html'
       success: (data) =>
         @element.replaceWith data
+        @element = @parent_element.find('.antcat_reference_picker')
         @initialize()
       error: (xhr) => debugger
     0)
 
   initialize: =>
-    @element = $(@selector)
     @element.addClass 'modal' if @options.modal
     @template = @element.find '> .template'
     @current = @element.find '> .current'
