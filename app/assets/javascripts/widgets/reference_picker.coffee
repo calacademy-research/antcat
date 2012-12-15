@@ -21,7 +21,7 @@ class AntCat.ReferencePicker
       url: url
       dataType: 'html'
       success: (data) =>
-        @element.html data
+        @element.replaceWith data
         @initialize()
       error: (xhr) => debugger
     0)
