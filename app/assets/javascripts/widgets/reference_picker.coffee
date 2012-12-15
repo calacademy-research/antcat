@@ -1,6 +1,7 @@
 class AntCat.ReferencePicker
 
-  constructor: (@element, @options = {}) ->
+  constructor: (@selector, @options = {}) ->
+    @element = $(@selector)
     @current_reference_id = @options.id
     if @current_reference_id
       @load()
@@ -27,6 +28,7 @@ class AntCat.ReferencePicker
     0)
 
   initialize: =>
+    @element = $(@selector)
     @element.addClass 'modal' if @options.modal
     @template = @element.find '> .template'
     @current = @element.find '> .current'
