@@ -3,8 +3,12 @@ window.AntCat or= {}
 class AntCat.Form
   @css_class = 'antcat_form'
 
-  constructor: (@element, @options = {}) ->
+  constructor: ($element, @options = {}) ->
     @options.button_container or= '> .buttons'
+    @initialize $element
+
+  initialize: ($element) =>
+    @element = $element
     @element.addClass(AntCat.Form.css_class)
     @buttons = @element.find(@options.button_container)
     @buttons
