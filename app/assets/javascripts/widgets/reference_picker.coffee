@@ -37,7 +37,7 @@ class AntCat.ReferencePicker
     @search_selector = @search_form.find '.search_selector'
     @textbox = @search_form.find '.q'
     @search_results = @element.find '> .expansion > .search_results'
-    @expansion = @element.find '.expansion'
+    @expansion = @element.find '> .expansion'
 
     @setup_search()
     @setup_references()
