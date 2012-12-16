@@ -34,7 +34,7 @@ When /I wait for a bit(?: more)?/ do
   sleep 1
 end
 
-And /wait to let me look at the page/ do
+And /I wait for a while/ do
   sleep 10
 end
 
