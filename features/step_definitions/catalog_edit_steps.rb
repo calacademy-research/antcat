@@ -45,9 +45,9 @@ When /^I search for "([^"]*)"$/ do |search_term|
   step %{In the search box, I press "Go"}
 end
 
-When /^I search for the authors "([^"]*)"$/ do |authors|
+When /^I search for the authors? "([^"]*)"$/ do |authors|
   step %{I follow "Search for author(s)"}
-  step %{I fill in the search box with "Bolton, B.;Fisher, B."}
+  step %{I fill in the search box with "#{authors}"}
   step %{In the search box, I press "Go"}
 end
 
