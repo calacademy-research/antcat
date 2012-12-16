@@ -26,6 +26,10 @@ When /^I press the "([^"]+)" button/ do |button|
   click_button button
 end
 
+When /^I click "([^"]*)"$/ do |selector|
+  find(selector).click
+end
+
 When /I wait for a bit(?: more)?/ do
   sleep 1
 end
