@@ -44,8 +44,9 @@ class AntCat.ReferencePicker
     @handle_new_selection()
 
     @element.show()
-    @show_expansion() if @options.modal
-    @textbox.focus()
+    if @options.modal or AntCat.testing
+      @show_expansion()
+      @textbox.focus()
 
   find_search_form: => @element.find '> .expansion > .search_form'
 
