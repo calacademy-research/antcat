@@ -72,7 +72,7 @@ def create_reference type, hash
     end
   end
 
-  hash[:citation_year] = hash.delete 'year'
+  hash[:citation_year] = hash.delete('year').to_s
   reference = Factory type, hash.merge(:author_names => author_names, :author_names_suffix => author_names_suffix)
   @reference ||= reference
   set_timestamps reference, hash
@@ -262,3 +262,12 @@ end
 And /^I should not see the missing reference$/ do
   step 'I should not see "Adventures among Ants"'
 end
+
+Given /^there is a reference by Brian Fisher$/ do
+  create_reference :article_reference, HashWithIndifferentAccess.new(author: 'Fisher, B.', year: 2000, title: 'Ants of Madagascar')
+end
+
+Given /^there is a reference by Barry Bolton$/ do
+  create_reference :article_reference, HashWithIndifferentAccess.new(author: 'Bolton, B.', year: 1995, title: 'New General Catalog')
+end
+
