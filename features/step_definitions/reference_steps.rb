@@ -271,3 +271,6 @@ Given /^there is a reference by Barry Bolton$/ do
   create_reference :article_reference, HashWithIndifferentAccess.new(author: 'Bolton, B.', year: 1995, title: 'New General Catalog')
 end
 
+Given /there are no references/ do
+  Reference.delete_all
+end
