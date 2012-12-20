@@ -7,7 +7,7 @@ window.AntCat or= {}
 #    the textarea (can be anything)
 #    = text_area_tag :taxt_editor, Taxt.to_editable(item.taxt), rows: 1, class: 'taxt_edit_box'
 #    = render 'tag_type_selectors/show'
-#    = render 'reference_pickers/show', references: nil, current_reference: nil
+#    = render 'reference_pickers/show', references: nil, reference: nil
 #    = render 'taxon_pickers/show', current_taxon: nil
 
 $.fn.taxt_editor = (options = {}) ->
