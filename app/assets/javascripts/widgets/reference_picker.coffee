@@ -1,15 +1,20 @@
 class AntCat.ReferencePicker
 
   constructor: (@parent_element, @options = {}) ->
-    @element = @parent_element.find('.antcat_reference_picker')
-    @current_reference_id = @options.id
-    if @current_reference_id
-      @load()
+    @element = @parent_element.find('> .antcat_reference_picker')
+    if @options.modal
+      @current_reference_id = @options.id
     else
-      @initialize()
+      @current_reference_id = @element.find('.value').val()
+    @original_reference_id = @current_reference_id
+    expanded_or_collapsed = @options.modal ? 'expanded' : 'collapsed'
+    if @current_reference_id
+      @load('', expanded_or_collapsed)
+    else
+      @initialize(expanded_or_collapsed)
     @
 
-  load: (url = '') =>
+  load: (url = '', expanded_or_collapsed = 'expanded') =>
     if url.indexOf('/reference_picker') is -1
       url = '/reference_picker?' + url
     url = url + '&' + $.param id: @current_reference_id if @current_reference_id
@@ -24,15 +29,15 @@ class AntCat.ReferencePicker
       success: (data) =>
         @element.replaceWith data
         @element = @parent_element.find('.antcat_reference_picker')
-        @initialize()
+        @initialize(expanded_or_collapsed)
       error: (xhr) => debugger
     0)
 
-  initialize: =>
+  initialize: (expanded_or_collapsed = 'expanded') =>
     @element.addClass 'modal' if @options.modal
     @template = @element.find '> .template'
     @current = @element.find '> .current'
-    @current.click => @toggle_expansion() unless @options.modal
+    @current.click => @toggle_expansion() unless @options.modal or @editing()
     @search_form = @find_search_form()
     @search_selector = @search_form.find '.search_selector'
     @textbox = @search_form.find '.q'
@@ -44,11 +49,13 @@ class AntCat.ReferencePicker
     @handle_new_selection()
 
     @element.show()
-    if @options.modal or AntCat.testing
+    if expanded_or_collapsed == 'expanded' or AntCat.testing
       @show_expansion()
       @textbox.focus()
 
   find_search_form: => @element.find '> .expansion > .search_form'
+
+  editing: => @element.find('.edit:visible .nested_form').length > 0
 
   show_expansion: =>
     @element.find('.expand_collapse_icon img').attr 'src', AntCat.expanded_image_path
@@ -73,10 +80,14 @@ class AntCat.ReferencePicker
 
   close: (cancel = false) =>
     taxt = if not cancel and @current_reference() then @current_reference().data 'taxt' else null
-    @element.slideUp 'fast', =>
-      @options.on_done taxt if @options.on_done
+    if @options.modal
+      @element.slideUp 'fast', =>
+    @options.on_done taxt if @options.on_done
 
   cancel: =>
+    @current_reference_id = @original_reference_id
+    @load()
+    @hide_expansion()
     @close true
 
   setup_search: =>
@@ -92,7 +103,11 @@ class AntCat.ReferencePicker
 
       .find(':button.ok')
         .click =>
-          @close()
+          @element.find('.value').val @current_reference_id
+          if @options.modal
+            @close()
+          else
+            @hide_expansion()
           false
         .end()
 
