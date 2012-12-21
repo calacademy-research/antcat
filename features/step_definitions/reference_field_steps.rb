@@ -12,5 +12,5 @@ Then /^the field should contain "([^"]*)"$/ do |contents|
 end
 
 When /^I click the expand icon$/ do
-  step 'I click ".current .display"'
+  step 'I click ".current .expand_collapse_icon"'
 end
