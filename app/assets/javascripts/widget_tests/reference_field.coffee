@@ -1,5 +1,5 @@
 reference_changed = (id) ->
-  $('#selected_reference').text id
+  $('#selected_reference').text $('#authorship_picker .value').val()
 
 $ ->
   new AntCat.Form $('#taxon_form'), button_container: '> table td.buttons'
