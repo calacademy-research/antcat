@@ -86,7 +86,7 @@ class AntCat.ReferencePicker
 
   cancel: =>
     @current_reference_id = @original_reference_id
-    @load()
+    @load('', 'collapsed')
     @hide_expansion()
     @close true
 
