@@ -6,7 +6,7 @@
   = stylesheet_link_tag 'catalog/taxon_form'
 
 - content_for :page_contents do
-  %form#taxon_form.antcat_form.ui-corner-all.ui-widget-content.ui-widget
+  %form#taxon_form.antcat_form.ui-corner-all.ui-widget-content.ui-widget{method: :post}
     %table
       %col{:width => '50px'}
       %col{:width => '*'}
