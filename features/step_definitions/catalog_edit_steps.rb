@@ -92,6 +92,7 @@ When /^I add a reference by Brian Fisher$/ do
   step %{I fill in "reference[series_volume_issue]" with "2"}
   step %{I fill in "article_pagination" with "1"}
   step %{I fill in "reference[citation_year]" with "1992"}
+  step %{I save my changes}
 end
 
 Then /I should (not )?see the reference picker/ do |should_not|
