@@ -49,7 +49,7 @@ class AntCat.ReferencePicker
     @handle_new_selection()
 
     @element.show()
-    if expanded_or_collapsed == 'expanded' or AntCat.testing
+    if expanded_or_collapsed == 'expanded'
       @show_expansion()
       @textbox.focus()
 
