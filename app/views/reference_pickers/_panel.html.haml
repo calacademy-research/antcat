@@ -18,8 +18,5 @@
           %a.icon.edit{title: 'edit', href: '#'}
             = image_tag 'edit_off.png', alt: 'edit'
       %td.reference_item
-        - if reference
-          = render 'reference_pickers/display', reference: reference if !reference.new_record? && reference.errors.empty?
-          = render 'reference_pickers/edit', reference: reference
-        - else
-          (none)
+        = render 'reference_pickers/display', reference: reference if !reference || !reference.new_record? && reference.errors.empty?
+        = render 'reference_pickers/edit', reference: reference if reference
