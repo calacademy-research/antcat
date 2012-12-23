@@ -13,7 +13,6 @@
     .search_form.nested_form
 
       = hidden_field_tag 'value', reference.try(:id), class: 'value'
-      = hidden_field_tag 'original_value', reference.try(:id), class: 'original_value'
 
       -# this table is to provide a fixed-width column for the throbber beside
       -# a variable width and height column for the controls
