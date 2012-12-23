@@ -1,5 +1,26 @@
 class SubspeciesName < SpeciesGroupName
 
+  def self.parse_words words
+    return unless words.size > 2
+    words = words.dup
+    genus = words.shift
+    species = words.shift
+    epithets = species
+    while not words.empty?
+      epithet = words.shift
+      epithets << ' ' << epithet
+    end
+    attributes = {
+      name: "#{genus} #{epithets}",
+      name_html: "<i>#{genus} #{epithets}</i>",
+      epithet: epithet,
+      epithet_html: "<i>#{epithet}</i>",
+      epithets: epithets,
+      protonym_html: "<i>#{epithets}</i>",
+    }
+    create! attributes
+  end
+
   def self.get_name data
     data[:subspecies]
   end

@@ -9,6 +9,14 @@ class Name < ActiveRecord::Base
     Taxon.update_all ['name_html_cache = ?', name_html], name_id: id
   end
 
+  def self.parse string
+    words = string.split ' '
+    GenusName.parse_words(words)  or
+    SpeciesName.parse_words(words) or
+    SubspeciesName.parse_words(words) or
+    raise "No Name subclass wanted the string: #{string}"
+  end
+
   def self.import data
     SubspeciesName.import_data(data) or
     SpeciesName.import_data(data)    or

@@ -62,4 +62,47 @@ describe Name do
 
   end
 
+  describe "Parsing" do
+    it "should parse a genus name" do
+      name = Name.parse('Atta')
+      name.should be_kind_of GenusName
+      name.name.should == 'Atta'
+      name.name_html.should == '<i>Atta</i>'
+      name.epithet.should == 'Atta'
+      name.epithet_html.should == '<i>Atta</i>'
+      name.protonym_html.should == '<i>Atta</i>'
+    end
+    it "should parse a species name" do
+      name = Name.parse('Atta major')
+      name.should be_kind_of SpeciesName
+      name.name.should == 'Atta major'
+      name.name_html.should == '<i>Atta major</i>'
+      name.epithet.should == 'major'
+      name.epithet_html.should == '<i>major</i>'
+      name.protonym_html.should == '<i>major</i>'
+    end
+    describe "Parsing subspecies names" do
+      it "should handle one with two epithets, no type" do
+        name = Name.parse('Atta major minor')
+        name.should be_kind_of SubspeciesName
+        name.name.should == 'Atta major minor'
+        name.name_html.should == '<i>Atta major minor</i>'
+        name.epithet.should == 'minor'
+        name.epithet_html.should == '<i>minor</i>'
+        name.epithets.should == 'major minor'
+        name.protonym_html.should == '<i>major minor</i>'
+      end
+      it "should handle one with two epithets, including a type" do
+        name = Name.parse('Atta major var. minor')
+        name.should be_kind_of SubspeciesName
+        name.name.should == 'Atta major var. minor'
+        name.name_html.should == '<i>Atta major var. minor</i>'
+        name.epithet.should == 'minor'
+        name.epithet_html.should == '<i>minor</i>'
+        name.epithets.should == 'major var. minor'
+        name.protonym_html.should == '<i>major var. minor</i>'
+      end
+    end
+
+  end
 end
