@@ -1,10 +1,15 @@
 class GenusName < GenusGroupName
 
+  def self.parse_words words
+    return unless words.size == 1
+    create! make_import_attributes words[0]
+  end
+
   def self.get_name data
     data[:genus_name]
   end
 
-  def self.make_import_attributes name, data
+  def self.make_import_attributes name, _ = nil
     name_html = Formatters::Formatter.italicize name
     {
       name:         name,

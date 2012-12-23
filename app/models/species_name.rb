@@ -1,5 +1,19 @@
 class SpeciesName < SpeciesGroupName
 
+  def self.parse_words words
+    return unless words.size == 2
+    genus = words[0]
+    species = words[1]
+    attributes = {
+      name: "#{genus} #{species}",
+      name_html: "<i>#{genus} #{species}</i>",
+      epithet: species,
+      epithet_html: "<i>#{species}</i>",
+      protonym_html: "<i>#{species}</i>",
+    }
+    create! attributes
+  end
+
   def self.get_name data
     data[:species_epithet] || data[:species_group_epithet]
   end
