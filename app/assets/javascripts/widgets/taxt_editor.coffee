@@ -5,9 +5,10 @@ window.AntCat or= {}
 # identify the container (can be anything)
 # .taxt_editor
 #    the textarea (can be anything)
-#    = text_area_tag :taxt_editor, Taxt.to_editable(item.taxt), rows: 1, class: 'taxt_edit_box'
+#    = text_area_tag :taxt_editor, '', rows: 1, class: 'taxt_edit_box'
 #    = render 'tag_type_selectors/show'
-#    = render 'reference_pickers/show', references: nil, reference: nil
+#    = .reference_picker (use the parent to anchor the picker)
+#    =   render 'reference_pickers/show', references: nil, reference: nil
 #    = render 'taxon_pickers/show', current_taxon: nil
 
 $.fn.taxt_editor = (options = {}) ->
