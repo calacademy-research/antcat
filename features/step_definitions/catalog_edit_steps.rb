@@ -26,7 +26,7 @@ When /^I save the form$/ do
 end
 
 When /In the search box, I press "Go"/ do
-  step 'I press "Go" within ".search_form"'
+  step 'I press "Go" within ".control_form"'
 end
 
 Given /^there is a reference for "Bolton, 2005"$/ do
@@ -58,7 +58,7 @@ When /^I edit the reference$/ do
 end
 
 When /^I add a reference$/ do
-  within ".search_form" do
+  within ".control_form" do
     step 'I follow "Add"'
   end
 end
