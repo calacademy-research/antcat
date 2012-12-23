@@ -33,13 +33,13 @@ class AntCat.ReferencePicker
     @template = @element.find '> .template'
     @current = @element.find '> .current'
     @current.click => @toggle_expansion() unless @options.modal or @editing()
-    @search_form = @find_search_form()
-    @search_selector = @search_form.find '.search_selector'
-    @textbox = @search_form.find '.q'
+    @control_form = @find_control_form()
+    @search_selector = @control_form.find '.search_selector'
+    @textbox = @control_form.find '.q'
     @search_results = @element.find '> .expansion > .search_results'
     @expansion = @element.find '> .expansion'
 
-    @setup_search()
+    @setup_control_form()
     @setup_references()
     @handle_new_selection()
 
@@ -50,9 +50,9 @@ class AntCat.ReferencePicker
 
   start_throbbing: =>
     @element.find('.throbber img').show()
-    @find_search_form().find('.controls').disable()
+    @find_control_form().find('.controls').disable()
 
-  find_search_form: => @element.find '> .expansion > .search_form'
+  find_control_form: => @element.find '> .expansion > .control_form'
 
   editing: => @element.find('.edit:visible .nested_form').length > 0
 
@@ -69,12 +69,12 @@ class AntCat.ReferencePicker
   toggle_expansion: => if @expansion.is ':hidden' then @show_expansion() else @hide_expansion()
 
   search: =>
-    @load @get_search_form_parameters()
+    @load @get_search_parameters()
 
   load_clicked_page: (link) =>
-    @load $(link).attr('href') + '&' + @get_search_form_parameters()
+    @load $(link).attr('href') + '&' + @get_search_parameters()
 
-  get_search_form_parameters: =>
+  get_search_parameters: =>
     $.param q: @textbox.val(), search_selector: @search_selector.val()
 
   close: (cancel = false) =>
@@ -89,9 +89,9 @@ class AntCat.ReferencePicker
     @hide_expansion()
     @close true
 
-  setup_search: =>
+  setup_control_form: =>
     self = @
-    @search_form
+    @control_form
       .find('.controls')
         .undisable()
         .find(':button')
@@ -156,8 +156,8 @@ class AntCat.ReferencePicker
           @enable_search_author_autocomplete()
         @textbox.focus()
 
-  enable_search_controls: => @search_form.find('.controls').undisable()
-  disable_search_controls: => @search_form.find('.controls').disable()
+  enable_controls: => @control_form.find('.controls').undisable()
+  disable_controls: => @control_form.find('.controls').disable()
 
   # -----------------------------------------
   add_reference: =>
@@ -192,14 +192,14 @@ class AntCat.ReferencePicker
     $(event.target).addClass('ui-selected')
     @handle_new_selection()
 
-  on_reference_form_open: => @disable_search_controls()
-  on_reference_form_close: => @enable_search_controls()
+  on_reference_form_open: => @disable_controls()
+  on_reference_form_close: => @enable_controls()
   on_reference_form_done: ($panel) =>
     id = $panel.data 'id'
     $(".item_#{id}").each -> $(@).replaceWith $panel.clone()
     @setup_references()
 
-  # 'current' is the reference panel at the top of the picker, above the search controls
+  # 'current' is the reference panel at the top of the picker, above the controls
   make_current: ($panel, edit = false) =>
     $current_contents = @current.find '> tbody > tr > td'
     $new_contents = $panel.clone()
