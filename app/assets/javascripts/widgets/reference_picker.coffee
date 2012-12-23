@@ -18,20 +18,15 @@ class AntCat.ReferencePicker
     if url.indexOf('/reference_picker') is -1
       url = '/reference_picker?' + url
     url = url + '&' + $.param id: @current_reference_id if @current_reference_id
-
-    @element.find('.throbber img').show()
-    @find_search_form().find('.controls').disable()
-
-    # debug code to leave throbber up for a little while
-    setTimeout(=> $.ajax
+    @start_throbbing()
+    $.ajax
       url: url
       dataType: 'html'
       success: (data) =>
         @element.replaceWith data
-        @element = @parent_element.find('.antcat_reference_picker')
+        @element = @parent_element.find('> .antcat_reference_picker')
         @initialize(expanded_or_collapsed)
       error: (xhr) => debugger
-    0)
 
   initialize: (expanded_or_collapsed = 'expanded') =>
     @element.addClass 'modal' if @options.modal
@@ -52,6 +47,10 @@ class AntCat.ReferencePicker
     if expanded_or_collapsed == 'expanded'
       @show_expansion()
       @textbox.focus()
+
+  start_throbbing: =>
+    @element.find('.throbber img').show()
+    @find_search_form().find('.controls').disable()
 
   find_search_form: => @element.find '> .expansion > .search_form'
 
