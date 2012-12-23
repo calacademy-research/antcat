@@ -78,17 +78,25 @@ class AntCat.ReferencePicker
   get_search_parameters: =>
     $.param q: @textbox.val(), search_selector: @search_selector.val()
 
-  close: (cancel = false) =>
-    taxt = if not cancel and @current_reference() then @current_reference().data 'taxt' else null
-    if @options.modal
-      @element.slideUp 'fast', =>
-    @options.on_done taxt if @options.on_done
+  ok: =>
+    @element.find('.value').val(@current_reference_id)
+    taxt = if @current_reference() then @current_reference().data 'taxt' else null
+    @options.on_ok(taxt) if @options.on_ok
+    @close()
 
   cancel: =>
     @current_reference_id = @original_reference_id
+    @element.find('.value').val(@current_reference_id)
     @load('', 'collapsed')
-    @hide_expansion()
-    @close true
+    @options.on_cancel if @options.on_cancel
+    @close()
+
+  close: =>
+    if @options.modal
+      @element.slideUp 'fast', =>
+    else
+      @hide_expansion()
+    @options.on_close if @options.on_close
 
   setup_control_form: =>
     self = @
@@ -103,11 +111,7 @@ class AntCat.ReferencePicker
 
       .find(':button.ok')
         .click =>
-          @element.find('.value').val @current_reference_id
-          if @options.modal
-            @close()
-          else
-            @hide_expansion()
+          @ok()
           false
         .end()
 
