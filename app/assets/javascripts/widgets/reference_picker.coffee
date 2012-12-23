@@ -32,12 +32,13 @@ class AntCat.ReferencePicker
     @element.addClass 'modal' if @options.modal
     @template = @element.find '> .template'
     @current = @element.find '> .current'
-    @current.click => @toggle_expansion() unless @options.modal or @editing()
     @control_form = @find_control_form()
     @search_selector = @control_form.find '.search_selector'
     @textbox = @control_form.find '.q'
     @search_results = @element.find '> .expansion > .search_results'
     @expansion = @element.find '> .expansion'
+
+    @current.click => @toggle_expansion() unless @options.modal or @editing()
 
     @setup_control_form()
     @setup_references()
