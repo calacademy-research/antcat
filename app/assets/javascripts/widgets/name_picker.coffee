@@ -94,17 +94,6 @@ class AntCat.NamePicker extends AntCat.Form
       @element.slideUp 'fast', =>
     @options.on_close if @options.on_close
 
-  setup_controls: =>
-    self = @
-    @expansion
-      .find('.controls')
-        .undisable()
-        .find(':button')
-          .unbutton()
-          .button()
-          .end()
-        .end()
-
   enable_controls: => @expansion.find('.controls').undisable()
   disable_controls: => @expansion.find('.controls').disable()
 
