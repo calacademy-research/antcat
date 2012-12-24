@@ -6,9 +6,6 @@ class AntCat.Form
   constructor: ($element, @options = {}) ->
     @options.field = true unless @options.field?
     @options.button_container or= '> .buttons'
-    @initialize $element
-
-  initialize: ($element) =>
     @element = $element
     @element.addClass(AntCat.Form.css_class)
     @initialize_buttons()
