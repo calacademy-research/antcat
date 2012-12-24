@@ -106,7 +106,7 @@ Then /I should (not )?see the name picker/ do |should_not|
 end
 
 Then /in the output section I should see the editable taxt for "([^"]*)"/ do |text|
-  within "#taxt" do
+  within "#taxt .display" do
     step %{I should see "#{Taxt.to_editable_taxon(Taxon.find_by_name(text))}"}
   end
 end
