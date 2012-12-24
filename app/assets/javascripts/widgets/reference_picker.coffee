@@ -3,12 +3,12 @@ class AntCat.ReferencePicker
   constructor: (@parent_element, @options = {}) ->
     @element = @parent_element.find('> .antcat_reference_picker')
     if @options.modal
-      @current_reference_id = @options.id
+      @current_id = @options.id
     else
-      @current_reference_id = @element.find('.value').val()
-    @original_reference_id = @current_reference_id
+      @current_id = @element.find('.value').val()
+    @original_id = @current_id
     expanded_or_collapsed = @options.modal ? 'expanded' : 'collapsed'
-    if @current_reference_id
+    if @current_id
       @load('', expanded_or_collapsed)
     else
       @initialize(expanded_or_collapsed)
@@ -17,7 +17,7 @@ class AntCat.ReferencePicker
   load: (url = '', expanded_or_collapsed = 'expanded') =>
     if url.indexOf('/reference_picker') is -1
       url = '/reference_picker?' + url
-    url = url + '&' + $.param id: @current_reference_id if @current_reference_id
+    url = url + '&' + $.param id: @current_id if @current_id
     @start_throbbing()
     $.ajax
       url: url
@@ -79,14 +79,14 @@ class AntCat.ReferencePicker
     $.param q: @textbox.val(), search_selector: @search_selector.val()
 
   ok: =>
-    @element.find('.value').val(@current_reference_id)
+    @element.find('.value').val(@current_id)
     taxt = if @current_reference() then @current_reference().data 'taxt' else null
     @options.on_ok(taxt) if @options.on_ok
     @close()
 
   cancel: =>
-    @current_reference_id = @original_reference_id
-    @element.find('.value').val(@current_reference_id)
+    @current_id = @original_id
+    @element.find('.value').val(@current_id)
     @load('', 'collapsed')
     @options.on_cancel if @options.on_cancel
     @close()
@@ -177,7 +177,7 @@ class AntCat.ReferencePicker
         .end()
 
     @search_results
-      .find(".reference .item_#{@current_reference_id} div.display")
+      .find(".reference .item_#{@current_id} div.display")
         .addClass('ui-selected')
         .end()
 
@@ -223,13 +223,13 @@ class AntCat.ReferencePicker
     $selected_reference = @selected_reference()
     @make_current $selected_reference if $selected_reference
 
-    @current_reference_id = if @current_reference() then @current_reference().data 'id' else null
+    @current_id = if @current_reference() then @current_reference().data 'id' else null
     @element.toggleClass 'has_no_current_reference', not @current_reference()
     @update_help_banner()
     @options.on_change(@value()) if @options.on_change
 
   value: =>
-    @current_reference_id
+    @current_id
 
   selected_reference: =>
     results = @search_results.find 'div.display.ui-selected'
