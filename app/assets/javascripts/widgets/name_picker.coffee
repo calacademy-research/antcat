@@ -1,15 +1,3 @@
-  #constructor: (element, options = {}) ->
-    ## should not be necessary to pass these arguments explicitly
-    #super element, options
-
-  #submit: =>
-    #return false if @control.val().length == 0
-    #@element.find('.error_messages').text('')
-    #super
-
-  #handle_application_error: (error_message) =>
-    #@element.find('.error_messages').text(error_message)
-
 class AntCat.NamePicker extends AntCat.Form
 
   constructor: (@parent_element, @options = {}) ->
@@ -78,11 +66,19 @@ class AntCat.NamePicker extends AntCat.Form
 
   toggle_expansion: => if @expansion.is ':hidden' then @show_expansion() else @hide_expansion()
 
+  submit: =>
+    return false if @control.val().length == 0
+    @element.find('.error_messages').text('')
+    super
+
   ok: =>
     @element.find('.value').val(@current_id)
     taxt = if @current_name() then @current_name().data 'taxt' else null
     @options.on_ok(taxt) if @options.on_ok
     @close()
+
+  handle_application_error: (error_message) =>
+    @element.find('.error_messages').text error_message
 
   cancel: =>
     @current_id = @original_id
