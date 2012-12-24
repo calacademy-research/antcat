@@ -33,58 +33,57 @@ $antcat_reference_picker_gutter_size: 20px
 
   .expansion
     display: none
-    .control_form
-      background: $antcat_reference_picker_color_form_background
-      min-height: 23px
+    background: $antcat_reference_picker_color_form_background
+    min-height: 23px
+    width: 100%
+
+    table
       width: 100%
 
-      table
-        width: 100%
-
-        td.throbber
-          width: $antcat_reference_picker_gutter_size
-          img
-            vertical-align: middle
-            margin-bottom: 2px
-            display: none
-
-      .ok_cancel_controls
-        display: inline-block
-        margin-right: 10px
-
-      .add_controls
-        display: inline-block
-        margin-right: 10px
-
-      .search_controls
-        display: inline-block
-        margin-right: 10px
-        .q
-          width: 200px
-        button.close
+      td.throbber
+        width: $antcat_reference_picker_gutter_size
+        img
+          vertical-align: middle
+          margin-bottom: 2px
           display: none
 
-      .pagination
-        display: inline-block
-        margin-right: 10px
-        padding-bottom: 0
-        &, span, a
-          color: $antcat_reference_picker_color_help
-          font-size: 12px
-          font-weight: normal
-          a, a:active, a:focus, a:visited
-            color: white
-            &:hover
-              color: $color_site_header_link_highlight
-              background-color: $antcat_reference_picker_color_form_background
+    .ok_cancel_controls
+      display: inline-block
+      margin-right: 10px
 
-      .help_banner
-        display: inline-block
-        margin-right: 10px
-        font-style: italic
-        .help_banner_text
-          color: $antcat_reference_picker_color_help
-          font-size: 12px
+    .add_controls
+      display: inline-block
+      margin-right: 10px
+
+    .search_controls
+      display: inline-block
+      margin-right: 10px
+      .q
+        width: 200px
+      button.close
+        display: none
+
+    .pagination
+      display: inline-block
+      margin-right: 10px
+      padding-bottom: 0
+      &, span, a
+        color: $antcat_reference_picker_color_help
+        font-size: 12px
+        font-weight: normal
+        a, a:active, a:focus, a:visited
+          color: white
+          &:hover
+            color: $color_site_header_link_highlight
+            background-color: $antcat_reference_picker_color_form_background
+
+    .help_banner
+      display: inline-block
+      margin-right: 10px
+      font-style: italic
+      .help_banner_text
+        color: $antcat_reference_picker_color_help
+        font-size: 12px
 
     .search_results
 

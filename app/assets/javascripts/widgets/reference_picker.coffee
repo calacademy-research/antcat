@@ -34,15 +34,13 @@ class AntCat.ReferencePicker
     @expansion = @element.find '> .expansion'
     @template = @element.find '> .template'
     @current = @element.find '> .current'
-    @control_form = @find_control_form()
-    @search_selector = @control_form.find '.search_selector'
-    @textbox = @control_form.find '.q'
+    @search_selector = @expansion.find '.search_selector'
+    @textbox = @expansion.find '.q'
     @search_results = @element.find '> .expansion > .search_results'
-    @expansion = @element.find '> .expansion'
 
     @current.click => @toggle_expansion() if @options.field and not @editing()
 
-    @setup_control_form()
+    @setup_controls()
     @setup_references()
     @handle_new_selection()
 
@@ -53,9 +51,7 @@ class AntCat.ReferencePicker
 
   start_throbbing: =>
     @element.find('.throbber img').show()
-    @find_control_form().find('.controls').disable()
-
-  find_control_form: => @element.find '> .expansion > .control_form'
+    @element.find('> .expansion .controls').disable()
 
   editing: => @element.find('.edit:visible .nested_form').length > 0
 
@@ -100,9 +96,9 @@ class AntCat.ReferencePicker
       @element.slideUp 'fast', =>
     @options.on_close if @options.on_close
 
-  setup_control_form: =>
+  setup_controls: =>
     self = @
-    @control_form
+    @expansion
       .find('.controls')
         .undisable()
         .find(':button')
@@ -163,8 +159,8 @@ class AntCat.ReferencePicker
           @enable_search_author_autocomplete()
         @textbox.focus()
 
-  enable_controls: => @control_form.find('.controls').undisable()
-  disable_controls: => @control_form.find('.controls').disable()
+  enable_controls: => @expansion.find('.controls').undisable()
+  disable_controls: => @expansion.find('.controls').disable()
 
   # -----------------------------------------
   add_reference: =>
