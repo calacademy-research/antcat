@@ -54,7 +54,7 @@ class AntCat.NamePicker extends AntCat.Form
     @display = @element.find('.display')
 
     @setup_autocomplete @control
-
+    @initialize_buttons()
     @element.show()
     if expanded_or_collapsed == 'expanded'
       @show_expansion()
