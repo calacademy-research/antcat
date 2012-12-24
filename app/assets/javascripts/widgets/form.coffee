@@ -33,17 +33,12 @@ class AntCat.Form
   submit: =>
     @start_throbbing()
     @form().ajaxSubmit
-      beforeSerialize: @before_serialize
-      success: @update
-      error: @handle_error
+      success: => @update()
+      error: => @handle_error()
       dataType: 'json'
     false
 
-  form: => @element
-
-  before_serialize: ($form, options) =>
-    return @options.before_serialize($form, options) if @options.before_serialize
-    true
+  form: => @element.find('form')
 
   cancel: =>
     @options.on_cancel() if @options.on_cancel
