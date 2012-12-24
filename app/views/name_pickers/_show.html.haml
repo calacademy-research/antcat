@@ -1,10 +1,17 @@
-- url = '/name_pickers/lookup?picker=true'
-- method = 'get'
-%form#name_picker.antcat_name_picker.ui-corner-all.ui-widget-content.ui-widget{action: url, method: method}
-  %ul.error_messages
-  .buttons
-    .help Type the name, or type characters in the name then choose a taxon from the drop-down list
-    = text_field_tag :taxon_name, @taxon_name
-    = submit_tag 'OK', class: 'ui-priority-primary submit'
-    %input{type: 'button', class: 'ui-priority-secondary cancel', value: 'Cancel'}
-    = image_tag 'ui-anim_basic_16x16.gif', class: 'throbber'
+-#Locals: name
+
+.antcat_name_picker.ui-corner-all.ui-widget-content.ui-widget
+  .display
+    = name || '(none)'
+
+  .edit
+    - url = '/name_pickers/lookup'
+    - method = 'get'
+    %form#name_picker.antcat_name_picker.ui-corner-all.ui-widget-content.ui-widget{action: url, method: method}
+      %ul.error_messages
+      .buttons
+        .help Type the name, or type characters in the name then choose a name from the drop-down list
+        = text_field_tag :name, name
+        = submit_tag 'OK', class: 'ui-priority-primary submit'
+        %input{type: 'button', class: 'ui-priority-secondary cancel', value: 'Cancel'}
+        = image_tag 'ui-anim_basic_16x16.gif', class: 'throbber'
