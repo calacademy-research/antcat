@@ -52,11 +52,11 @@ AntCat::Application.routes.draw do
     resources :taxon_history_items
   end
 
-  resources :taxon_pickers, only: [:index, :lookup]
-  match 'taxon_pickers/lookup' => 'taxon_pickers#lookup', as: :taxon_picker, via: :get
+  resources :name_pickers, only: [:index, :lookup]
+  match 'name_pickers/lookup' => 'name_pickers#lookup', as: :name_picker, via: :get
   resource :reference_picker, only: :show
 
-  match '/widget_tests/taxon_picker', to: 'widget_tests#taxon_picker'
+  match '/widget_tests/name_picker', to: 'widget_tests#name_picker'
   match '/widget_tests/reference_picker', to: 'widget_tests#reference_picker'
   match '/widget_tests/reference_field', to: 'widget_tests#reference_field'
   match '/widget_tests/taxt_editor', to: 'widget_tests#taxt_editor'

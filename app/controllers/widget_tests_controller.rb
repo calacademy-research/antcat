@@ -1,7 +1,7 @@
 # coding: UTF-8
 class WidgetTestsController < ApplicationController
 
-  def taxon_picker
+  def name_picker
     @taxon = Family.first if params[:id]
   end
 
