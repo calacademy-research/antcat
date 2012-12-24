@@ -4,6 +4,7 @@ class AntCat.Form
   @css_class = 'antcat_form'
 
   constructor: ($element, @options = {}) ->
+    @options.field = true unless @options.field?
     @options.button_container or= '> .buttons'
     @initialize $element
 
@@ -18,12 +19,12 @@ class AntCat.Form
       .end()
 
   open: =>
-    @element.show() if @options.modal
+    @element.show() unless @options.field
     @element.find('input[type=text]:visible:first').focus()
     @options.on_open() if @options.on_open
 
   close: =>
-    @element.hide() if @options.modal
+    @element.hide() unless @options.field
     @options.on_close() if @options.on_close
 
   submit: =>
