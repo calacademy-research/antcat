@@ -11,6 +11,9 @@ class AntCat.Form
   initialize: ($element) =>
     @element = $element
     @element.addClass(AntCat.Form.css_class)
+    @initialize_buttons()
+
+  initialize_buttons: =>
     @buttons = @element.find(@options.button_container)
     @buttons
       .find(':button, :submit').unbutton().button().end()
