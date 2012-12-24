@@ -9,7 +9,7 @@ window.AntCat or= {}
 #    = render 'tag_type_selectors/show'
 #    = .reference_picker (use the parent to anchor the picker)
 #    =   render 'reference_pickers/show', references: nil, reference: nil
-#    = render 'taxon_pickers/show', current_taxon: nil
+#    = render 'name_pickers/show', current_taxon: nil
 
 $.fn.taxt_editor = (options = {}) ->
   return this.each -> new AntCat.TaxtEditor $(this), options
@@ -22,7 +22,7 @@ class AntCat.TaxtEditor
     @tag_type_selector = new AntCat.TagTypeSelector(@element.find('.antcat_tag_type_selector'), on_ok: @handle_tag_type_selector_result, on_cancel: @after_form_closes)
     @reference_picker = @element.find_topmost '.antcat_reference_picker'
     @parent_buttons = @element.siblings().find(':button')
-    @taxon_picker = new AntCat.TaxonPicker(@element.find('.antcat_taxon_picker'), on_done: @handle_taxon_picker_result, on_close: @after_form_closes)
+    @name_picker = new AntCat.TaxonPicker(@element.find('.antcat_name_picker'), on_done: @handle_name_picker_result, on_close: @after_form_closes)
     @dashboard = new TaxtEditor.DebugDashboard @ if @options.show_debug_dashboard
     @dashboard?.show_status 'before'
     @value @control.val()
@@ -84,7 +84,7 @@ class AntCat.TaxtEditor
     if type == 'reference_button'
       new AntCat.ReferencePicker @reference_picker.parent(), id: null, on_done: @handle_picker_result, on_close: @after_form_closes, modal: true
     else
-      @taxon_picker.open()
+      @name_picker.open()
 
   open_picker_for_existing_tag: =>
     @before_form_opens()
@@ -93,7 +93,7 @@ class AntCat.TaxtEditor
     if type == 1
       new AntCat.ReferencePicker @reference_picker.parent(), id: id, on_done: @handle_picker_result, on_close: @after_form_closes, modal: true
     else
-      @taxon_picker.open()
+      @name_picker.open()
 
   replace_text_area_with_simulation: =>
     # We need to indicate the selected tag in the taxt edit box
@@ -116,7 +116,7 @@ class AntCat.TaxtEditor
     @element.find('.antcat_taxt_simulation').remove()
     @control.show()
  
-  handle_taxon_picker_result: (data) =>
+  handle_name_picker_result: (data) =>
     @handle_picker_result data.taxt
 
   handle_picker_result: (taxt) =>

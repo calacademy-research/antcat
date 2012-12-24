@@ -34,7 +34,7 @@ module NavigationHelpers
     when /the taxt editor test page/
       '/widget_tests/taxt_editor'
     when /the taxon picker test page/
-      '/widget_tests/taxon_picker'
+      '/widget_tests/name_picker'
     else
       raise "#{page_name} not found"
     end

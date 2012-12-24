@@ -1,5 +1,5 @@
 # coding: UTF-8
-class TaxonPickersController < ApplicationController
+class NamePickersController < ApplicationController
 
   def index
     respond_to do |format|

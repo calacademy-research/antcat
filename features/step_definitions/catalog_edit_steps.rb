@@ -102,7 +102,7 @@ end
 
 Then /I should (not )?see the taxon picker/ do |should_not|
   selector = should_not ? :should_not : :should
-  find('.antcat_taxon_picker').send(selector, be_visible)
+  find('.antcat_name_picker').send(selector, be_visible)
 end
 
 Then /in the output section I should see the editable taxt for "([^"]*)"/ do |text|

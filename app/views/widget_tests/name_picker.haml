@@ -1,0 +1,9 @@
+- @title = 'Name Picker Test'
+
+- content_for :head do
+  = javascript_include_tag 'widgets/panel', 'widgets/form', 'widgets/nested_form', 'widgets/name_picker'
+  = javascript_include_tag 'widget_tests/name_picker'
+
+- content_for :page_contents do
+  #taxt
+    = render 'name_pickers/show'

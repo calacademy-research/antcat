@@ -1,4 +1,4 @@
-class AntCat.TaxonPicker extends AntCat.Form
+class AntCat.NamePicker extends AntCat.Form
 
   constructor: (element, options = {}) ->
     @control = element.find('input[type=text]')
@@ -19,7 +19,7 @@ class AntCat.TaxonPicker extends AntCat.Form
   setup_autocomplete: ($textbox) =>
     $textbox.autocomplete(
         autoFocus: true,
-        source: "/taxon_pickers",
+        source: "/name_pickers",
         minLength: 3)
       .data('autocomplete')._renderItem = @render_item
 
