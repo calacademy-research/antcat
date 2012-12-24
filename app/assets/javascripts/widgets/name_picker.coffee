@@ -4,7 +4,7 @@ class AntCat.NamePicker extends AntCat.Form
     @control = element.find('input[type=text]')
     @setup_autocomplete @control
     options.button_container = element.find('.buttons')
-    options.modal = true
+    options.field = false
     # should not be necessary to pass these arguments explicitly
     super element, options
 

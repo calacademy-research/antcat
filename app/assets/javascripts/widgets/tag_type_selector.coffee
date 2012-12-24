@@ -2,7 +2,7 @@ class AntCat.TagTypeSelector extends AntCat.NestedForm
 
   constructor: (@element, @options = {}) ->
     @options.button_container = @element.find('.buttons')
-    @options.modal = true
+    @options.field = false
     @element.find('.buttons :button').unbutton().button()
     super
 

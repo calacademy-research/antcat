@@ -1,13 +1,14 @@
 class AntCat.ReferencePicker
 
   constructor: (@parent_element, @options = {}) ->
+    @options.field = true unless @options.field?
     @element = @parent_element.find('> .antcat_reference_picker')
-    if @options.modal
-      @current_id = @options.id
-    else
+    if @options.field
       @current_id = @element.find('.value').val()
+    else
+      @current_id = @options.id
     @original_id = @current_id
-    expanded_or_collapsed = @options.modal ? 'expanded' : 'collapsed'
+    expanded_or_collapsed = @options.field ? 'collapsed' : 'expanded'
     if @current_id
       @load('', expanded_or_collapsed)
     else
@@ -29,7 +30,8 @@ class AntCat.ReferencePicker
       error: (xhr) => debugger
 
   initialize: (expanded_or_collapsed = 'expanded') =>
-    @element.addClass 'modal' if @options.modal
+    @element.addClass 'modal' unless @options.field
+    @expansion = @element.find '> .expansion'
     @template = @element.find '> .template'
     @current = @element.find '> .current'
     @control_form = @find_control_form()
@@ -38,7 +40,7 @@ class AntCat.ReferencePicker
     @search_results = @element.find '> .expansion > .search_results'
     @expansion = @element.find '> .expansion'
 
-    @current.click => @toggle_expansion() unless @options.modal or @editing()
+    @current.click => @toggle_expansion() if @options.field and not @editing()
 
     @setup_control_form()
     @setup_references()
@@ -92,10 +94,10 @@ class AntCat.ReferencePicker
     @close()
 
   close: =>
-    if @options.modal
-      @element.slideUp 'fast', =>
-    else
+    if @options.field
       @hide_expansion()
+    else
+      @element.slideUp 'fast', =>
     @options.on_close if @options.on_close
 
   setup_control_form: =>
@@ -303,7 +305,7 @@ class AntCat.ReferencePicker
         other_verb = 'choose'
       else
         other_verb = 'search for'
-      help = if @options.modal then "Click OK to use" else "Use"
+        help = if @options.field then "Use" else "Click OK to use"
       help += " this reference, or add or #{other_verb} a different one"
     else
       if any_search_results
