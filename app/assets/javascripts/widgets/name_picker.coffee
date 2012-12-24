@@ -105,18 +105,6 @@ class AntCat.NamePicker extends AntCat.Form
           .end()
         .end()
 
-      .find(':button.ok')
-        .click =>
-          @ok()
-          false
-        .end()
-
-      .find(':button.close')
-        .click =>
-          @cancel()
-          false
-        .end()
-
   enable_controls: => @expansion.find('.controls').undisable()
   disable_controls: => @expansion.find('.controls').disable()
 
