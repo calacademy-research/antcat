@@ -223,7 +223,7 @@ class AntCat.ReferencePicker
 
     @current_id = if @current_reference() then @current_reference().data 'id' else null
     @element.toggleClass 'has_no_current_reference', not @current_reference()
-    @update_help_banner()
+    @update_help()
     @options.on_change(@value()) if @options.on_change
 
   value: =>
@@ -294,7 +294,7 @@ class AntCat.ReferencePicker
     {string: string, position: position}
 
   # -----------------------------------------
-  update_help_banner: =>
+  update_help: =>
     any_search_results = @search_results.find('.reference').length > 0
     if @current_reference()
       if any_search_results
