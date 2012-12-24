@@ -100,7 +100,7 @@ Then /I should (not )?see the reference picker/ do |should_not|
   find('.antcat_reference_picker').send(selector, be_visible)
 end
 
-Then /I should (not )?see the taxon picker/ do |should_not|
+Then /I should (not )?see the name picker/ do |should_not|
   selector = should_not ? :should_not : :should
   find('.antcat_name_picker').send(selector, be_visible)
 end

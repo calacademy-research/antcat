@@ -1,6 +1,6 @@
 window.AntCat or= {}
 
-# A TaxtEditor is a textarea with associated tag type selector, reference_picker and taxon picker
+# A TaxtEditor is a textarea with associated tag type selector, reference_picker and name picker
 #
 # identify the container (can be anything)
 # .taxt_editor
