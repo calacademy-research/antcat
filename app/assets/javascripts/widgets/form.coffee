@@ -35,7 +35,7 @@ class AntCat.Form
       dataType: 'json'
     false
 
-  form: => @element.find('form')
+  form: => @element
 
   cancel: =>
     @options.on_cancel() if @options.on_cancel
