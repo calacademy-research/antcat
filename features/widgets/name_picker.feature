@@ -18,4 +18,4 @@ Feature: Name picker
     When I go to the name picker test page
     And I fill in "name" with "Atta"
     And I press "OK"
-    Then I should see "The taxon 'Atta' was not found"
+    Then I should see "The name 'Atta' was not found"
