@@ -47,8 +47,6 @@ class AntCat.NamePicker extends AntCat.Form
   start_throbbing: =>
     @element.find('.throbber img').show()
 
-  editing: => @element.find('.edit:visible .nested_form').length > 0
-
   go_into_edit_mode: =>
     @edit.show()
     @display.hide()
