@@ -45,10 +45,14 @@ class AntCat.Form
     @stop_throbbing()
     @options.on_response data if @options.on_response
     if data.success
-      @options.on_done data if @options.on_done
-      @close()
+      @handle_success()
     else
       @handle_application_error(data.error_message)
+
+  handle_success: =>
+    console.log 'form handle_success'
+    @options.on_success data if @options.on_success
+    @close()
 
   handle_application_error: (error_message) =>
     @options.on_application_error error_message if @options.on_application_error
