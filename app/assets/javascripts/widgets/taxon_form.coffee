@@ -20,12 +20,12 @@ class AntCat.TaxonForm extends AntCat.Form
   submit: =>
     @start_spinning()
     @element.ajaxSubmit
-      success: @update
+      success: @handle_response
       error: @handle_error
       dataType: 'json'
     false
 
-  update: (data, statusText, xhr, $form) =>
+  handle_response: (data, statusText, xhr, $form) =>
     if data.success
       location.reload true
       return

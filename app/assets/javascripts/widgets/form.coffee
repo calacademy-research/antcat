@@ -41,9 +41,9 @@ class AntCat.Form
     @close()
     false
 
-  update: (data, statusText, xhr, $form) =>
+  handle_response: (data, statusText, xhr, $form) =>
     @stop_throbbing()
-    @options.on_update data if @options.on_update
+    @options.on_response data if @options.on_response
     if data.success
       @options.on_done data if @options.on_done
       @close()

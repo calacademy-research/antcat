@@ -18,6 +18,6 @@ class AntCat.ReferencePanel extends AntCat.Panel
     @_form or= @create_form @element.find('.nested_form'),
       on_open: @on_form_open
       on_close: @on_form_close
-      on_update: @on_form_update
+      on_response: @on_form_response
       on_success: @on_form_success
       on_cancel: @on_form_cancel
