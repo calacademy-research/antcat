@@ -7,19 +7,19 @@ class AntCat.NamePicker extends AntCat.Form
     if @options.field
       @current_id = @element.find('.value').val()
       @current_taxon_id = @element.find('.taxon_id').val()
-      expanded_or_collapsed = 'collapsed'
+      displaying_or_editing = 'displaying'
     else
       @current_id = @options.id
       @current_taxon_id = @options.taxon_id
-      expanded_or_collapsed = 'expanded'
+      displaying_or_editing = 'editing'
     @original_id = @current_id
     if @current_id
-      @load '', expanded_or_collapsed
+      @load '', displaying_or_editing
     else
-      @initialize expanded_or_collapsed
+      @initialize displaying_or_editing
     @
 
-  load: (url = '', expanded_or_collapsed = 'expanded') =>
+  load: (url = '', displaying_or_editing = 'editing') =>
     if url.indexOf('/name_picker') is -1
       url = '/name_picker?' + url
     url = url + '&' + $.param id: @current_id if @current_id
@@ -30,10 +30,10 @@ class AntCat.NamePicker extends AntCat.Form
       success: (data) =>
         @element.replaceWith data
         @element = @parent_element.find '> .antcat_name_picker'
-        @initialize expanded_or_collapsed
+        @initialize displaying_or_editing
       error: (xhr) => debugger
 
-  initialize: (expanded_or_collapsed = 'expanded') =>
+  initialize: (displaying_or_editing = 'editing') =>
     @element.addClass 'modal' unless @options.field
     @expansion = @element.find '> .expansion'
     @control = @element.find('.edit input[type=text]')
@@ -44,7 +44,7 @@ class AntCat.NamePicker extends AntCat.Form
     @setup_autocomplete @control
     @initialize_buttons()
     @element.show()
-    if expanded_or_collapsed == 'expanded'
+    if displaying_or_editing == 'editing'
       @go_into_edit_mode()
 
   start_throbbing: =>
@@ -79,9 +79,9 @@ class AntCat.NamePicker extends AntCat.Form
   cancel: =>
     @current_id = @original_id
     if @current_id
-      @load '', 'collapsed'
+      @load '', 'displaying'
     else
-      @initialize 'collapsed'
+      @initialize 'displaying'
     @element.find('.value').val(@current_id)
     super
 
