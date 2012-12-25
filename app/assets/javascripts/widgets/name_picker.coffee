@@ -71,11 +71,11 @@ class AntCat.NamePicker extends AntCat.Form
     @element.find('.error_messages').text('')
     super
 
-  ok: =>
+  handle_success: =>
     @element.find('.value').val(@current_id)
-    taxt = if @current_name() then @current_name().data 'taxt' else null
-    @options.on_ok(taxt) if @options.on_ok
-    @close()
+    #taxt = if @current_name() then @current_name().data 'taxt' else null
+    # then send data back on_success(name_id, taxon_id, taxt)
+    super
 
   handle_application_error: (error_message) =>
     @element.find('.error_messages').text error_message
