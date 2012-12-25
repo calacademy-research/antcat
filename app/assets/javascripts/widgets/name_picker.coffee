@@ -96,24 +96,6 @@ class AntCat.NamePicker extends AntCat.Form
   disable_controls: => @expansion.find('.controls').disable()
 
   # -----------------------------------------
-  update_help: =>
-    any_search_results = @search_results.find('.name').length > 0
-    if @current_name()
-      if any_search_results
-        other_verb = 'choose'
-      else
-        other_verb = 'search for'
-        help = if @options.field then "Use" else "Click OK to use"
-      help += " this name, or add or #{other_verb} a different one"
-    else
-      if any_search_results
-        help = "Choose a name to use"
-      else
-        help = "Find a name to use"
-      help += ', or add one'
-    @element.find('.help_banner_text').text help
-
-  # -----------------------------------------
   setup_autocomplete: ($textbox) =>
     $textbox.autocomplete(
         autoFocus: true,
