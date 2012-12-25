@@ -5,7 +5,7 @@
     = name ||= '(none)'
 
   .edit
-    - url = '/name_pickers/lookup'
+    - url = '/name_pickers/lookup?picker=true'
     - method = 'get'
     %form.antcat_name_picker.ui-corner-all.ui-widget-content.ui-widget{action: url, method: method}
       %table
