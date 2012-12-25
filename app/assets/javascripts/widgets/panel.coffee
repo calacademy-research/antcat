@@ -21,7 +21,7 @@ class AntCat.Panel
 
   on_form_close: =>
 
-  on_form_update: (data) =>
+  on_form_response: (data) =>
     @replace_panel data.content
     if data.success then @hide_form() else @show_form()
 
@@ -47,7 +47,7 @@ class AntCat.Panel
     @_form or= @create_form @element.find_topmost('div.edit > .nested_form'),
       on_open: @on_form_open
       on_close: @on_form_close
-      on_update: @on_form_update
+      on_response: @on_form_response
       on_success: @on_form_success
       on_cancel: @on_form_cancel
 
