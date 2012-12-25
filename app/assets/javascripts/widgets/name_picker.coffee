@@ -35,13 +35,10 @@ class AntCat.NamePicker extends AntCat.Form
 
   initialize: (displaying_or_editing = 'editing') =>
     @element.addClass 'modal' unless @options.field
-    @expansion = @element.find '> .expansion'
-    @control = @element.find('.edit input[type=text]')
-
     @edit = @element.find('.edit')
     @display = @element.find('.display')
-
-    @setup_autocomplete @control
+    @textbox = @edit.find('input[type=text]')
+    @setup_autocomplete @textbox
     @initialize_buttons()
     @element.show()
     if displaying_or_editing == 'editing'
@@ -49,21 +46,20 @@ class AntCat.NamePicker extends AntCat.Form
 
   start_throbbing: =>
     @element.find('.throbber img').show()
-    @element.find('> .expansion .controls').disable()
 
   editing: => @element.find('.edit:visible .nested_form').length > 0
 
   go_into_edit_mode: =>
     @edit.show()
     @display.hide()
-    @control.focus()
+    @textbox.focus()
 
   go_into_display_mode: =>
     @edit.hide()
     @display.hide()
 
   submit: =>
-    return false if @control.val().length == 0
+    return false if @textbox.val().length == 0
     @element.find('.error_messages').text('')
     super
 
