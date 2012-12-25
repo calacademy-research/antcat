@@ -1,4 +1,4 @@
 $ -> new AntCat.NamePicker $('#taxt'),
   field: false,
-  on_success: (id) ->
-    $('#results').text id
+  on_success: (data) ->
+    $('#results').text data.id
