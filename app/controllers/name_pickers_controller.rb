@@ -15,7 +15,7 @@ class NamePickersController < ApplicationController
       success = true
     else
       taxt = nil
-      error_message = "The taxon '#{params[:name]}' was not found"
+      error_message = "The name '#{params[:name]}' was not found"
       success = false
     end
     send_back_json {{taxt: taxt, success: success, error_message: error_message}}
