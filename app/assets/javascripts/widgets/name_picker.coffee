@@ -85,16 +85,12 @@ class AntCat.NamePicker extends AntCat.Form
     else
       @initialize 'collapsed'
     @element.find('.value').val(@current_id)
-    @load('', 'collapsed')
-    @options.on_cancel if @options.on_cancel
-    @close()
+    super
 
   close: =>
     if @options.field
-      @hide_expansion()
-    else
-      @element.slideUp 'fast', =>
-    @options.on_close if @options.on_close
+      @go_into_display_mode()
+    super
 
   enable_controls: => @expansion.find('.controls').undisable()
   disable_controls: => @expansion.find('.controls').disable()
