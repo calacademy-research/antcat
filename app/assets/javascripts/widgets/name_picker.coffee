@@ -91,9 +91,6 @@ class AntCat.NamePicker extends AntCat.Form
     @go_into_display_mode() if @options.field
     super
 
-  enable_controls: => @expansion.find('.controls').undisable()
-  disable_controls: => @expansion.find('.controls').disable()
-
   # -----------------------------------------
   setup_autocomplete: ($textbox) =>
     $textbox.autocomplete(
