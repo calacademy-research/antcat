@@ -47,7 +47,6 @@ class AntCat.Form
       @handle_application_error(data.error_message)
 
   handle_success: =>
-    console.log 'form handle_success'
     @options.on_success data if @options.on_success
     @close()
 
