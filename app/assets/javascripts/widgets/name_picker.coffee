@@ -64,9 +64,9 @@ class AntCat.NamePicker extends AntCat.Form
     false
 
   handle_success: (data) =>
+    @current_id = data.id
     @element.find('.value').val(@current_id)
     #taxt = if @current_name() then @current_name().data 'taxt' else null
-    # then send data back on_success(name_id, taxon_id, taxt)
     super
 
   handle_application_error: (error_message) =>
