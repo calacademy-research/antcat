@@ -88,8 +88,7 @@ class AntCat.NamePicker extends AntCat.Form
     super
 
   close: =>
-    if @options.field
-      @go_into_display_mode()
+    @go_into_display_mode() if @options.field
     super
 
   enable_controls: => @expansion.find('.controls').undisable()
