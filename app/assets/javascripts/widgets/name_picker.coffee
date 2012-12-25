@@ -14,9 +14,9 @@ class AntCat.NamePicker extends AntCat.Form
       expanded_or_collapsed = 'expanded'
     @original_id = @current_id
     if @current_id
-      @load('', expanded_or_collapsed)
+      @load '', expanded_or_collapsed
     else
-      @initialize(expanded_or_collapsed)
+      @initialize expanded_or_collapsed
     @
 
   load: (url = '', expanded_or_collapsed = 'expanded') =>
@@ -29,8 +29,8 @@ class AntCat.NamePicker extends AntCat.Form
       dataType: 'html'
       success: (data) =>
         @element.replaceWith data
-        @element = @parent_element.find('> .antcat_name_picker')
-        @initialize(expanded_or_collapsed)
+        @element = @parent_element.find '> .antcat_name_picker'
+        @initialize expanded_or_collapsed
       error: (xhr) => debugger
 
   initialize: (expanded_or_collapsed = 'expanded') =>
