@@ -80,6 +80,10 @@ class AntCat.NamePicker extends AntCat.Form
 
   cancel: =>
     @current_id = @original_id
+    if @current_id
+      @load '', 'collapsed'
+    else
+      @initialize 'collapsed'
     @element.find('.value').val(@current_id)
     @load('', 'collapsed')
     @options.on_cancel if @options.on_cancel
