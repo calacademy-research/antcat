@@ -22,7 +22,7 @@ class AntCat.Form
     @options.on_open() if @options.on_open
 
   close: =>
-    @element.hide() unless @options.field
+    @element.slideUp('fast', =>) unless @options.field
     @options.on_close() if @options.on_close
 
   submit: =>
