@@ -5,15 +5,15 @@ class AntCat.NamePicker extends AntCat.Form
     @element = @parent_element.find('> .antcat_name_picker')
     @options.button_container = @element.find('.buttons')
     if @options.field
-      @current_id = @element.find('.value').val()
-      @current_taxon_id = @element.find('.taxon_id').val()
+      @id = @element.find('.value').val()
+      @taxon_id = @element.find('.taxon_id').val()
       displaying_or_editing = 'displaying'
     else
-      @current_id = @options.id
-      @current_taxon_id = @options.taxon_id
+      @id = @options.id
+      @taxon_id = @options.taxon_id
       displaying_or_editing = 'editing'
-    @original_id = @current_id
-    if @current_id
+    @original_id = @id
+    if @id
       @load '', displaying_or_editing
     else
       @initialize displaying_or_editing
@@ -22,7 +22,7 @@ class AntCat.NamePicker extends AntCat.Form
   load: (url = '', displaying_or_editing = 'editing') =>
     if url.indexOf('/name_picker') is -1
       url = '/name_picker?' + url
-    url = url + '&' + $.param id: @current_id if @current_id
+    url = url + '&' + $.param id: @id if @id
     @start_throbbing()
     $.ajax
       url: url
@@ -64,8 +64,8 @@ class AntCat.NamePicker extends AntCat.Form
     false
 
   handle_success: (data) =>
-    @current_id = data.id
-    @element.find('.value').val(@current_id)
+    @id = data.id
+    @element.find('.value').val(@id)
     #taxt = if @current_name() then @current_name().data 'taxt' else null
     super
 
@@ -73,12 +73,12 @@ class AntCat.NamePicker extends AntCat.Form
     @element.find('.error_messages').text error_message
 
   cancel: =>
-    @current_id = @original_id
-    if @current_id
+    @id = @original_id
+    if @id
       @load '', 'displaying'
     else
       @initialize 'displaying'
-    @element.find('.value').val(@current_id)
+    @element.find('.value').val(@id)
     super
 
   close: =>
