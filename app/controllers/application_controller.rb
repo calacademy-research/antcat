@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
   def send_back_json
     json = yield.to_json
     json = '<textarea>' + json + '</textarea>' unless
-      params[:picker].present? || params[:field].present? || Rails.env.test?
+      params[:picker].present? || Rails.env.test?
     render json: json, content_type: 'text/html'
   end
 
