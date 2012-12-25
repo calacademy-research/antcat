@@ -1,12 +1,11 @@
 window.AntCat or= {}
 
 class AntCat.Form
-  @css_class = 'antcat_form'
 
   constructor: (@element, @options = {}) ->
     @options.field = true unless @options.field?
     @options.button_container or= '> .buttons'
-    @element.addClass(AntCat.Form.css_class)
+    @element.addClass 'antcat_form'
     @initialize_buttons()
 
   initialize_buttons: =>
