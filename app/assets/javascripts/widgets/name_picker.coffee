@@ -45,7 +45,7 @@ class AntCat.NamePicker extends AntCat.Form
     @initialize_buttons()
     @element.show()
     if expanded_or_collapsed == 'expanded'
-      @show_expansion()
+      @go_into_edit_mode()
 
   start_throbbing: =>
     @element.find('.throbber img').show()
@@ -53,18 +53,16 @@ class AntCat.NamePicker extends AntCat.Form
 
   editing: => @element.find('.edit:visible .nested_form').length > 0
 
-  show_expansion: =>
+  go_into_edit_mode: =>
     @element.find('.expand_collapse_icon img').attr 'src', AntCat.expanded_image_path
     @edit.show()
     @display.hide()
     @control.focus()
 
-  hide_expansion: =>
+  go_into_display_mode: =>
     @edit.hide()
     @display.hide()
     @element.find('.expand_collapse_icon img').attr 'src', AntCat.collapsed_image_path
-
-  toggle_expansion: => if @expansion.is ':hidden' then @show_expansion() else @hide_expansion()
 
   submit: =>
     return false if @control.val().length == 0
