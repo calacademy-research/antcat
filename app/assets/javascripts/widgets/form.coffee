@@ -42,11 +42,11 @@ class AntCat.Form
     @stop_throbbing()
     @options.on_response data if @options.on_response
     if data.success
-      @handle_success()
+      @handle_success data
     else
       @handle_application_error(data.error_message)
 
-  handle_success: =>
+  handle_success: (data) =>
     @options.on_success data if @options.on_success
     @close()
 
