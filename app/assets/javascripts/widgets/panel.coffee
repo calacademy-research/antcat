@@ -48,7 +48,7 @@ class AntCat.Panel
       on_open: @on_form_open
       on_close: @on_form_close
       on_update: @on_form_update
-      on_done: @on_form_done
+      on_success: @on_form_success
       on_cancel: @on_form_cancel
 
   show_form: =>
