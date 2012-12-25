@@ -28,8 +28,8 @@ class AntCat.Form
 
   submit: =>
     @start_throbbing()
-    @form().ajaxSubmit
-      success: (data, statusText, xhr, $form) => @update(data, statusText, xhr, $form)
+    @element.find('.edit form').ajaxSubmit
+      success: (data, statusText, xhr, $form) => @handle_response(data, statusText, xhr, $form)
       error: (jq_xhr, text_status, error_thrown) => @handle_error(jq_xhr, text_status, error_thrown)
       dataType: 'json'
     false

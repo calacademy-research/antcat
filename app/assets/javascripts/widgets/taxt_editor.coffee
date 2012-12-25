@@ -22,7 +22,7 @@ class AntCat.TaxtEditor
     @tag_type_selector = new AntCat.TagTypeSelector(@element.find('.antcat_tag_type_selector'), on_ok: @handle_tag_type_selector_result, on_cancel: @after_form_closes)
     @reference_picker = @element.find_topmost '.antcat_reference_picker'
     @parent_buttons = @element.siblings().find(':button')
-    @name_picker = new AntCat.TaxonPicker(@element.find('.antcat_name_picker'), on_done: @handle_name_picker_result, on_close: @after_form_closes)
+    @name_picker = new AntCat.TaxonPicker(@element.find('.antcat_name_picker'), on_success: @handle_name_picker_result, on_close: @after_form_closes)
     @dashboard = new TaxtEditor.DebugDashboard @ if @options.show_debug_dashboard
     @dashboard?.show_status 'before'
     @value @control.val()
@@ -82,7 +82,7 @@ class AntCat.TaxtEditor
 
   open_picker_for_new_tag: (type) =>
     if type == 'reference_button'
-      new AntCat.ReferencePicker @reference_picker.parent(), id: null, on_done: @handle_picker_result, on_close: @after_form_closes
+      new AntCat.ReferencePicker @reference_picker.parent(), id: null, on_success: @handle_picker_result, on_close: @after_form_closes
     else
       @name_picker.open()
 
@@ -91,7 +91,7 @@ class AntCat.TaxtEditor
     id = TaxtEditor.extract_id_from_editable_taxt @selection()
     type = TaxtEditor.extract_type_from_editable_taxt @selection()
     if type == 1
-      new AntCat.ReferencePicker @reference_picker.parent(), id: id, on_done: @handle_picker_result, on_close: @after_form_closes
+      new AntCat.ReferencePicker @reference_picker.parent(), id: id, on_success: @handle_picker_result, on_close: @after_form_closes
     else
       @name_picker.open()
 
