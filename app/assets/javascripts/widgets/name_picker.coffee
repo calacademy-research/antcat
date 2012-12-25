@@ -54,7 +54,7 @@ class AntCat.NamePicker extends AntCat.Form
 
   go_into_display_mode: =>
     @edit.hide()
-    @display.hide()
+    @display.show()
 
   submit: =>
     return false if @textbox.val().length == 0
