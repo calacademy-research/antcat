@@ -54,7 +54,6 @@ class AntCat.NamePicker extends AntCat.Form
   editing: => @element.find('.edit:visible .nested_form').length > 0
 
   go_into_edit_mode: =>
-    @element.find('.expand_collapse_icon img').attr 'src', AntCat.expanded_image_path
     @edit.show()
     @display.hide()
     @control.focus()
@@ -62,7 +61,6 @@ class AntCat.NamePicker extends AntCat.Form
   go_into_display_mode: =>
     @edit.hide()
     @display.hide()
-    @element.find('.expand_collapse_icon img').attr 'src', AntCat.collapsed_image_path
 
   submit: =>
     return false if @control.val().length == 0
