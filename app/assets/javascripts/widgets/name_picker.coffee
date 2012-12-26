@@ -43,8 +43,14 @@ class AntCat.NamePicker extends AntCat.Form
     @element.show()
     if displaying_or_editing == 'editing'
       @go_into_edit_mode()
-    @element.find_topmost('.expand_collapse_icon').click =>
-      @toggle_editing_and_display() if @options.field
+    else
+      @go_into_display_mode()
+    if @options.field
+      # on/off is necessary to avoid triggering multiple times after Cancel
+      @element.find('.display').off('click')
+      @element.find('.display').on('click', @toggle_editing_and_display)
+      @element.find('.expand_collapse_icon').off('click')
+      @element.find('.expand_collapse_icon').on('click', @toggle_editing_and_display)
 
   start_throbbing: =>
     @element.find('.throbber img').show()
