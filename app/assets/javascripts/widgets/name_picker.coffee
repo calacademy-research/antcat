@@ -43,19 +43,31 @@ class AntCat.NamePicker extends AntCat.Form
     @element.show()
     if displaying_or_editing == 'editing'
       @go_into_edit_mode()
+    @element.find_topmost('.expand_collapse_icon').click =>
+      @toggle_editing_and_display() if @options.field
 
   start_throbbing: =>
     @element.find('.throbber img').show()
     @element.find('> .controls').disable()
 
+  editing: => @edit.is ':visible'
+
+  toggle_editing_and_display: =>
+    if @editing()
+      @go_into_display_mode()
+    else
+      @go_into_edit_mode()
+
   go_into_edit_mode: =>
     @edit.show()
     @display.hide()
     @textbox.focus()
+    @element.find('.expand_collapse_icon img').attr 'src', AntCat.expanded_image_path
 
   go_into_display_mode: =>
     @edit.hide()
     @display.show()
+    @element.find('.expand_collapse_icon img').attr 'src', AntCat.collapsed_image_path
 
   submit: =>
     return false if @textbox.val().length == 0
