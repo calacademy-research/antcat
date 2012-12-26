@@ -12,7 +12,7 @@ Feature: Name picker
     When I go to the name picker test page
     And I fill in "name" with "Atta"
     And I press "OK"
-    Then in the output section I should see the editable taxt for "Atta"
+    Then in the results section I should see the id for "Atta"
 
   Scenario: Can't find taxon
     When I go to the name picker test page

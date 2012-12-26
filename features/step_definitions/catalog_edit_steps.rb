@@ -105,8 +105,14 @@ Then /I should (not )?see the name picker/ do |should_not|
   find('.antcat_name_picker').send(selector, be_visible)
 end
 
-Then /in the output section I should see the editable taxt for "([^"]*)"/ do |text|
-  within "#taxt .display" do
+Then /in the results section I should see the editable taxt for "([^"]*)"/ do |text|
+  within "#results" do
     step %{I should see "#{Taxt.to_editable_taxon(Taxon.find_by_name(text))}"}
+  end
+end
+
+Then /in the results section I should see the id for "([^"]*)"/ do |text|
+  within "#results" do
+    step %{I should see "#{Taxon.find_by_name(text).id}"}
   end
 end
