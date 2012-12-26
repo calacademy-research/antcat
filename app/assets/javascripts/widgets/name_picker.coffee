@@ -103,11 +103,11 @@ class AntCat.NamePicker extends AntCat.Form
         autoFocus: true,
         source: "/name_pickers",
         minLength: 3)
-      .data('autocomplete')._renderItem = @render_item
+      #.data('autocomplete')._renderItem = @render_item
 
   # this is required to display HTML in the list
   render_item: (ul, item) =>
     $("<li>")
-      .data("item.autocomplete", item)
-      .append("<a>" + item.label + "</a>")
-      .appendTo(ul)
+      .data('item.autocomplete', item)
+      .append('<a>' + item.label + '</a>')
+      .appendTo ul
