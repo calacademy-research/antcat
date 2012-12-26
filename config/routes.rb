@@ -57,6 +57,7 @@ AntCat::Application.routes.draw do
   resource :reference_picker, only: :show
 
   match '/widget_tests/name_picker', to: 'widget_tests#name_picker'
+  match '/widget_tests/name_field', to: 'widget_tests#name_field'
   match '/widget_tests/reference_picker', to: 'widget_tests#reference_picker'
   match '/widget_tests/reference_field', to: 'widget_tests#reference_field'
   match '/widget_tests/taxt_editor', to: 'widget_tests#taxt_editor'

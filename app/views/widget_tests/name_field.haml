@@ -1,0 +1,23 @@
+- @title = 'Name Field Test'
+
+- content_for :head do
+  = javascript_include_tag 'widgets/panel', 'widgets/form', 'widgets/nested_form', 'widgets/name_picker'
+  = javascript_include_tag 'widget_tests/name_field'
+  = stylesheet_link_tag 'catalog/taxon_form'
+
+- content_for :page_contents do
+  %form#taxon_form.antcat_form.ui-corner-all.ui-widget-content.ui-widget{method: :post}
+    %table
+      %col{:width => '50px'}
+      %col{:width => '*'}
+
+      %tr
+        %td= label_tag :name
+        %td
+          #picker
+            = render 'name_pickers/show', taxon_id: params[:id]
+
+      %tr.buttons
+        %td.buttons{:colspan => 4}
+          %button.ui-priority-primary.submit= 'Save'
+          %button.ui-priority-secondary.cancel Cancel
