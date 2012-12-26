@@ -18,7 +18,7 @@ class NamePickersController < ApplicationController
       error_message = "The name '#{params[:name]}' was not found"
       success = false
     end
-    send_back_json {{id: taxon.id, taxt: taxt, success: success, error_message: error_message}}
+    send_back_json id: id, taxt: taxt, success: success, error_message: error_message
   end
 
 end
