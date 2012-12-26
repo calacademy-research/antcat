@@ -10,11 +10,12 @@ class NamePickersController < ApplicationController
   def lookup
     taxon = Taxon.find_by_name params[:name]
     if taxon
+      id = taxon.id
       taxt = Taxt.to_editable_taxon taxon
       error_message = nil
       success = true
     else
-      taxt = nil
+      id = taxt = nil
       error_message = "The name '#{params[:name]}' was not found"
       success = false
     end
