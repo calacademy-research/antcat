@@ -77,6 +77,7 @@ class AntCat.NamePicker extends AntCat.Form
 
   submit: =>
     return false if @textbox.val().length == 0
+    @element.find('.display').text(@id)
     @element.find('.error_messages').text('')
     super
     false
