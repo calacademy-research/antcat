@@ -99,6 +99,7 @@ class AntCat.NamePicker extends AntCat.Form
       @initialize 'displaying'
     @element.find('.value').val(@id)
     super
+    false
 
   close: =>
     @go_into_display_mode() if @options.field
