@@ -14,7 +14,7 @@ Feature: Name field
     And I click the expand icon
     And I fill in "name" with "Atta"
     And I press "OK"
-    Then in the results section I should see the id for "Atta"
+    Then in the name picker field display I should see "Atta"
 
   Scenario: Can't find taxon
     When I go to the name field test page
