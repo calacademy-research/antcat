@@ -15,7 +15,7 @@
         %td= label_tag :name
         %td
           #picker
-            = render 'name_pickers/show', taxon_id: params[:id]
+            = render 'name_pickers/show', id: params[:id], taxon_id: params[:taxon_id]
 
       %tr.buttons
         %td.buttons{:colspan => 4}

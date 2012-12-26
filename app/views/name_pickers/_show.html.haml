@@ -1,6 +1,7 @@
--#Locals: name
+-#Locals: id, taxon_id
 
-- name ||= nil
+- name = id ? Taxon.find(id).name : nil
+
 .antcat_name_picker.ui-corner-all.ui-widget-content.ui-widget
   %table
     %tr
