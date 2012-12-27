@@ -22,7 +22,7 @@
       %tr
         %td.authorship= label_tag 'Authorship'
         %td
-          #authorship_picker
+          #picker
             = render 'reference_pickers/show', references: nil, reference: params[:id].present? ? Reference.first : nil
 
       %tr
