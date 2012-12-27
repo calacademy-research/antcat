@@ -1,1 +1,1 @@
-$ -> new AntCat.ReferencePicker $('#authorship_picker'), field: false
+$ -> new AntCat.ReferencePicker $('#picker'), field: false
