@@ -146,13 +146,11 @@ EOS
       else 'references/reference'
     end
 
-    send_back_json do
-      {isNew: new,
-       content: render_to_string(partial: template, locals: {reference: @reference, css_class: 'reference'}),
-       id: @reference.id,
-       success: @reference.errors.empty?
-      }
-    end
+    send_back_json(
+      isNew: new,
+      content: render_to_string(partial: template, locals: {reference: @reference, css_class: 'reference'}),
+      id: @reference.id,
+      success: @reference.errors.empty?)
   end
 
   def new_reference
