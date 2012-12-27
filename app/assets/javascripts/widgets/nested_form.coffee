@@ -23,8 +23,8 @@ class AntCat.NestedForm extends AntCat.Form
     $target_form.find('.nested_form').remove()
     $form = $('<form/>')
     $form.html $target_form
-    $form.attr 'action', $target_form.data 'action'
-    $form.attr 'method', $target_form.data 'method'
+    $form.attr 'action', $source.data 'action'
+    $form.attr 'method', $source.data 'method'
     $form
 
   @copy_text_area_values: ($source, $target) ->
