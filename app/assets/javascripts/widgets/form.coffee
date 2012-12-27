@@ -9,6 +9,8 @@ class AntCat.Form
 
   needs_to_initialize_buttons_in_constructor: => true
 
+  form: => @element
+
   initialize_buttons: =>
     @options.button_container or= '> .buttons'
     @buttons = @element.find(@options.button_container)
@@ -29,7 +31,7 @@ class AntCat.Form
 
   submit: =>
     @start_throbbing()
-    @element.find('.edit form').ajaxSubmit
+    @form().ajaxSubmit
       success: (data, statusText, xhr, $form) => @handle_response(data, statusText, xhr, $form)
       error: (jq_xhr, text_status, error_thrown) => @handle_error(jq_xhr, text_status, error_thrown)
       dataType: 'json'
