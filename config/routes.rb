@@ -55,6 +55,7 @@ AntCat::Application.routes.draw do
   resources :name_pickers, only: [:index, :lookup]
   match 'name_pickers/lookup' => 'name_pickers#lookup', as: :name_picker, via: :get
   resource :reference_picker, only: :show
+  resource :name_picker, only: :show
 
   match '/widget_tests/name_picker', to: 'widget_tests#name_picker'
   match '/widget_tests/name_field', to: 'widget_tests#name_field'
