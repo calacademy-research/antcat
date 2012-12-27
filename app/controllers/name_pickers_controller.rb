@@ -7,6 +7,11 @@ class NamePickersController < ApplicationController
     end
   end
 
+  def show
+    name = Name.find params[:id] if params[:id].present?
+    render partial: 'show', locals: {name: name}
+  end
+
   def lookup
     taxon = Taxon.find_by_name params[:name]
     if taxon
