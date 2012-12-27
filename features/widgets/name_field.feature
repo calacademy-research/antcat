@@ -1,6 +1,13 @@
 @javascript @editing
 Feature: Name field
 
+  Scenario: Existing data
+    When I go to the name field test page for a name
+    And I click the expand icon
+    And I press "OK"
+    # blank entry is simply ignored
+    Then I should not see "Name can't be blank"
+
   Scenario: Blank name
     When I go to the name field test page
     And I click the expand icon
