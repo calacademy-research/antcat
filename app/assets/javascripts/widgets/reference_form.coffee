@@ -1,8 +1,11 @@
 class AntCat.ReferenceForm extends AntCat.NestedForm
 
-  initialize: ($element) ->
-    @options.button_container = '> table > tbody > tr.buttons > td.buttons'
+  constructor: (@element, @options = {}) ->
+    @options.button_container = '> table > tbody > tr > td.buttons'
     super
+    @initialize()
+
+  initialize: =>
     @setup_author_autocomplete()
     @setup_journal_autocomplete()
     @setup_publisher_autocomplete()
