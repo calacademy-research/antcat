@@ -17,7 +17,7 @@
           #picker
             = render 'name_pickers/show', name: params[:id].present? ? Name.first : nil
 
-      %tr.buttons
+      %tr
         %td.buttons{:colspan => 4}
           %button.ui-priority-primary.submit= 'Save'
           %button.ui-priority-secondary.cancel Cancel
