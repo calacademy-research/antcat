@@ -105,6 +105,12 @@ Then /I should (not )?see the name picker/ do |should_not|
   find('.antcat_name_picker').send(selector, be_visible)
 end
 
+Then /in the name picker field display I should see the first name/ do
+  within "#picker .display" do
+    step %{I should see "#{Name.first.name}"}
+  end
+end
+
 Then /in the name picker field display I should see "([^"]*)"/ do |text|
   within "#picker .display" do
     step %{I should see "#{text}"}
