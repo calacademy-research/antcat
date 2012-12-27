@@ -1,6 +1,7 @@
--#Locals: id, taxon_id
+-#Locals: name
 
-- name = id ? Taxon.find(id).name : nil
+- id ||= name.try(:id)
+- name ||= name.try(:name)
 
 .antcat_name_picker.ui-corner-all.ui-widget-content.ui-widget
   %table
@@ -15,6 +16,8 @@
           - url = '/name_pickers/lookup?picker=true'
           - method = 'get'
           %form.ui-corner-all.ui-widget-content.ui-widget{action: url, method: method}
+            = hidden_field_tag 'hidden_id', id
+            = hidden_field_tag 'hidden_name', name
             %table
               %tr
                 %td
@@ -22,7 +25,7 @@
               %tr
                 %td
                   .buttons
-                    = text_field_tag :name, name
+                    = text_field_tag :name, ''
                     = submit_tag 'OK', class: 'ui-priority-primary submit'
                     %input{type: 'button', class: 'ui-priority-secondary cancel', value: 'Cancel'}
                     = image_tag 'ui-anim_basic_16x16.gif', class: 'throbber'
