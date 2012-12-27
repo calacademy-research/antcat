@@ -4,11 +4,13 @@ class AntCat.Form
 
   constructor: (@element, @options = {}) ->
     @options.field = true unless @options.field?
-    @options.button_container or= '> .buttons'
     @element.addClass 'antcat_form'
-    @initialize_buttons()
+    @initialize_buttons() if @needs_to_initialize_buttons_in_constructor()
+
+  needs_to_initialize_buttons_in_constructor: => true
 
   initialize_buttons: =>
+    @options.button_container or= '> .buttons'
     @buttons = @element.find(@options.button_container)
     @buttons
       .find(':button, :submit').unbutton().button().end()

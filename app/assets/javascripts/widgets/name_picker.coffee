@@ -19,6 +19,8 @@ class AntCat.NamePicker extends AntCat.Form
       @initialize displaying_or_editing
     @
 
+  needs_to_initialize_buttons_in_constructor: => false
+
   load: (url = '', displaying_or_editing = 'editing') =>
     if url.indexOf('/name_picker') is -1
       url = '/name_picker?' + url
