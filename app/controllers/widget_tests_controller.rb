@@ -2,7 +2,6 @@
 class WidgetTestsController < ApplicationController
 
   def name_picker
-    @taxon = Family.first if params[:id]
   end
 
   def reference_picker
@@ -10,6 +9,9 @@ class WidgetTestsController < ApplicationController
   end
 
   def reference_field
+  end
+
+  def name_field
   end
 
   def taxt_editor
