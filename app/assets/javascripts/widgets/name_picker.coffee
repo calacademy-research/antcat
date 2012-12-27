@@ -3,7 +3,7 @@ class AntCat.NamePicker extends AntCat.Form
   constructor: (@parent_element, @options = {}) ->
     @options.field = true unless @options.field?
     @element = @parent_element.find('> .antcat_name_picker')
-    @options.button_container = @element.find('.buttons')
+    @options.button_container = '.buttons'
     if @options.field
       @id = @element.find('.edit #hidden_id').val()
       @name = @element.find('.edit #hidden_name').val()
