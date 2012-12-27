@@ -37,6 +37,8 @@ module NavigationHelpers
       '/widget_tests/name_picker'
     when /the name field test page/
       '/widget_tests/name_field'
+    when /the name field test page for a name/
+      "/widget_tests/name_field?id=#{Name.first.id}"
     else
       raise "#{page_name} not found"
     end
