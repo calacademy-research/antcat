@@ -16,15 +16,16 @@ class NamePickersController < ApplicationController
     taxon = Taxon.find_by_name params[:name]
     if taxon
       id = taxon.id
+      name = taxon.name.name
       taxt = Taxt.to_editable_taxon taxon
       error_message = nil
       success = true
     else
-      id = taxt = nil
+      id = taxt = name = nil
       error_message = "The name '#{params[:name]}' was not found"
       success = false
     end
-    send_back_json id: id, taxt: taxt, success: success, error_message: error_message
+    send_back_json id: id, name: name, taxt: taxt, success: success, error_message: error_message
   end
 
 end

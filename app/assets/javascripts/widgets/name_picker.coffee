@@ -10,7 +10,7 @@ class AntCat.NamePicker extends AntCat.Form
       displaying_or_editing = 'displaying'
     else
       @id = @options.id
-      @taxon_id = @options.taxon_id
+      @name = @options.name
       displaying_or_editing = 'editing'
     @original_id = @id
     if @id
@@ -78,14 +78,16 @@ class AntCat.NamePicker extends AntCat.Form
 
   submit: =>
     return false if @textbox.val().length == 0
-    @element.find('.display').text(@id)
     @element.find('.error_messages').text('')
     super
     false
 
   handle_success: (data) =>
     @id = data.id
+    @name = data.name
     @edit.find('#hidden_id').val @id
+    @edit.find('#hidden_name').val @name
+    @display.text @name
     #taxt = if @current_name() then @current_name().data 'taxt' else null
     super
 
