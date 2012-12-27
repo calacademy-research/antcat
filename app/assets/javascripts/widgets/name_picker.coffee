@@ -5,8 +5,8 @@ class AntCat.NamePicker extends AntCat.Form
     @element = @parent_element.find('> .antcat_name_picker')
     @options.button_container = @element.find('.buttons')
     if @options.field
-      @id = @element.find('.value').val()
-      @taxon_id = @element.find('.taxon_id').val()
+      @id = @element.find('.edit #hidden_id').val()
+      @name = @element.find('.edit #hidden_name').val()
       displaying_or_editing = 'displaying'
     else
       @id = @options.id
@@ -31,6 +31,7 @@ class AntCat.NamePicker extends AntCat.Form
         @element.replaceWith data
         @element = @parent_element.find '> .antcat_name_picker'
         @initialize displaying_or_editing
+        @edit.find('#hidden_id').val(@id)
       error: (xhr) => debugger
 
   initialize: (displaying_or_editing = 'editing') =>
@@ -84,7 +85,7 @@ class AntCat.NamePicker extends AntCat.Form
 
   handle_success: (data) =>
     @id = data.id
-    @element.find('.value').val(@id)
+    @edit.find('#hidden_id').val @id
     #taxt = if @current_name() then @current_name().data 'taxt' else null
     super
 
@@ -97,7 +98,6 @@ class AntCat.NamePicker extends AntCat.Form
       @load '', 'displaying'
     else
       @initialize 'displaying'
-    @element.find('.value').val(@id)
     super
     false
 
