@@ -15,7 +15,7 @@
         .edit
           - url = '/name_pickers/lookup?picker=true'
           - method = 'get'
-          %form.ui-corner-all.ui-widget-content.ui-widget{action: url, method: method}
+          .nested_form.ui-corner-all.ui-widget-content.ui-widget{'data-action' => url, 'data-method' => method}
             = hidden_field_tag 'hidden_id', id
             = hidden_field_tag 'hidden_name', name
             %table

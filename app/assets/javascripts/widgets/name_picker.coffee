@@ -1,4 +1,4 @@
-class AntCat.NamePicker extends AntCat.Form
+class AntCat.NamePicker extends AntCat.NestedForm
 
   constructor: (@parent_element, @options = {}) ->
     @options.field = true unless @options.field?
@@ -20,6 +20,9 @@ class AntCat.NamePicker extends AntCat.Form
     @
 
   needs_to_initialize_buttons_in_constructor: => false
+
+  form: =>
+    AntCat.NestedForm.create_form_from @element.find '.nested_form'
 
   load: (url = '', displaying_or_editing = 'editing') =>
     if url.indexOf('/name_picker') is -1
