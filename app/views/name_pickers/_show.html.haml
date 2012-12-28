@@ -1,7 +1,7 @@
--#Locals: name
+-#Locals: id, name
 
-- id ||= name.try(:id)
-- name ||= name.try(:name)
+- id ||= nil
+- name ||= nil
 
 .antcat_name_picker.ui-corner-all.ui-widget-content.ui-widget
   %table
@@ -17,7 +17,9 @@
           - method = 'get'
           .nested_form.ui-corner-all.ui-widget-content.ui-widget{'data-action' => url, 'data-method' => method}
             = hidden_field_tag 'id', id
-            = hidden_field_tag 'name', name
+            = hidden_field_tag 'name', ''
+            = hidden_field_tag 'taxt', ''
+            = hidden_field_tag 'taxon_id', ''
             %table
               %tr
                 %td
