@@ -16,8 +16,8 @@
           - url = '/name_pickers/lookup?picker=true'
           - method = 'get'
           .nested_form.ui-corner-all.ui-widget-content.ui-widget{'data-action' => url, 'data-method' => method}
-            = hidden_field_tag 'hidden_id', id
-            = hidden_field_tag 'hidden_name', name
+            = hidden_field_tag 'id', id
+            = hidden_field_tag 'name', name
             %table
               %tr
                 %td
@@ -25,7 +25,7 @@
               %tr
                 %td
                   .buttons
-                    = text_field_tag :name, ''
+                    = text_field_tag :name_string, ''
                     = submit_tag 'OK', class: 'ui-priority-primary submit'
                     %input{type: 'button', class: 'ui-priority-secondary cancel', value: 'Cancel'}
                     = image_tag 'ui-anim_basic_16x16.gif', class: 'throbber'
