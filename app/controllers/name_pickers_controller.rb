@@ -3,7 +3,7 @@ class NamePickersController < ApplicationController
 
   def index
     respond_to do |format|
-      format.json {render json: Taxon.picklist_matching(params[:term]).to_json}
+      format.json {render json: Name.picklist_matching(params[:term]).to_json}
     end
   end
 
@@ -13,11 +13,11 @@ class NamePickersController < ApplicationController
   end
 
   def lookup
-    taxon = Taxon.find_by_name params[:name]
-    if taxon
-      id = taxon.id
-      name = taxon.name.name
-      taxt = Taxt.to_editable_taxon taxon
+    name = Name.find_by_name params[:name]
+    if name
+      id = name.id
+      name = name.name
+      #taxt = Taxt.to_editable_taxon name
       error_message = nil
       success = true
     else

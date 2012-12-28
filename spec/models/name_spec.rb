@@ -105,4 +105,41 @@ describe Name do
     end
 
   end
+
+  describe "Name picker list" do
+
+    it "should return empty values if no match" do
+      Name.picklist_matching('ata').should == []
+    end
+
+    it "should find one prefix match" do
+      name = create_name 'Atta'
+      name.update_attributes name_html:  '<i>Atta</i>'
+      Name.picklist_matching('att').should == [id: name.id, name: name.name, label: '<b><i>Atta</i></b>']
+    end
+
+    it "should find one fuzzy match" do
+      name = create_name 'Gesomyrmex'
+      name.update_attributes name_html:  '<i>Gesomyrmex</i>'
+      Name.picklist_matching('gyx').should == [id: name.id, name: name.name, label: '<b><i>Gesomyrmex</i></b>']
+    end
+
+    it "put prefix matches at beginning" do
+      acropyga = create_name 'Acropyga dubitata'
+      acropyga.update_attributes name_html: '<i>Acropyga dubitata</i>'
+
+      atta = create_name 'Atta'
+      atta.update_attribute :name_html, "<i>Atta</i>"
+
+      acanthognathus = create_name 'Acanthognathus laevigatus'
+      acanthognathus.update_attributes name_html: '<i>Acanthognathus laevigatus</i>'
+
+      Name.picklist_matching('atta').should == [
+        {id: atta.id, name: 'Atta', label: '<b><i>Atta</i></b>'},
+        {id: acanthognathus.id, name: 'Acanthognathus laevigatus', label: '<b><i>Acanthognathus laevigatus</i></b>'},
+        {id: acropyga.id, name: 'Acropyga dubitata', label: '<b><i>Acropyga dubitata</i></b>'},
+      ]
+    end
+  end
+
 end

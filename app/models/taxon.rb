@@ -52,38 +52,6 @@ class Taxon < ActiveRecord::Base
     query.all
   end
 
-  def self.picklist_matching letters_in_name
-    # I do not see why the code beginning with Taxon.select can't be factored out, but it can't
-    search_term = letters_in_name + '%'
-    prefix_matches =
-      Taxon.select('taxa.id AS taxon_id, name_cache, name_html_cache, principal_author_last_name_cache, year').
-        joins(:protonym).
-        joins('JOIN citations ON protonyms.authorship_id = citations.id').
-        joins('JOIN `references` ON `references`.id = citations.reference_id').
-        where("name_cache LIKE '#{search_term}' AND name_html_cache IS NOT NULL AND principal_author_last_name_cache IS NOT NULL AND year IS NOT NULL")
-        order(:name_cache)
-
-    search_term = letters_in_name.split('').join('%') + '%'
-    any_letter_matches = Taxon.select('taxa.id AS taxon_id, name_cache, name_html_cache, principal_author_last_name_cache, year').
-      joins(:protonym).
-      joins('JOIN citations ON protonyms.authorship_id = citations.id').
-      joins('JOIN `references` ON `references`.id = citations.reference_id').
-      where("name_cache LIKE '#{search_term}' AND name_html_cache IS NOT NULL AND principal_author_last_name_cache IS NOT NULL AND year IS NOT NULL")
-      order(:name_cache)
-
-    [picklist_matching_format(prefix_matches), picklist_matching_format(any_letter_matches)].flatten.uniq
-  end
-
-  def self.picklist_matching_format matches
-    matches.map do |e|
-      {label: "<b>#{e.name_html_cache}</b> <span class=authorship>#{e.principal_author_last_name_cache}, #{e.year}</span>",
-       value: "#{e.name_cache}"
-      }
-    end.sort_by do |a|
-      a[:value]
-    end
-  end
-
   ###############################################
   # synonym
   def synonym?; status == 'synonym' end

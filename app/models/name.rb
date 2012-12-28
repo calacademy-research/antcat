@@ -17,6 +17,27 @@ class Name < ActiveRecord::Base
     raise "No Name subclass wanted the string: #{string}"
   end
 
+  def self.picklist_matching letters_in_name
+    # I do not see why the code beginning with Name.select can't be factored out, but it can't
+    search_term = letters_in_name + '%'
+    prefix_matches =
+      Name.select('names.id AS id, name, name_html').where("name LIKE '#{search_term}'")
+
+    search_term = letters_in_name.split('').join('%') + '%'
+    first_then_any_letter_matches =
+      Name.select('names.id AS id, name, name_html').where("name LIKE '#{search_term}'")
+
+    [picklist_matching_format(prefix_matches), picklist_matching_format(first_then_any_letter_matches)].flatten.uniq
+  end
+
+  def self.picklist_matching_format matches
+    matches.map do |e|
+      {id: e.id.to_i, name: e.name, label: "<b>#{e.name_html}</b>"}
+    end.sort_by do |a|
+      a[:name]
+    end
+  end
+
   def self.import data
     SubspeciesName.import_data(data) or
     SpeciesName.import_data(data)    or
