@@ -145,6 +145,16 @@ describe Name do
         {id: acropyga.id, name: 'Acropyga dubitata', label: '<b><i>Acropyga dubitata</i></b>', value: acropyga.name},
       ]
     end
+
+    it "should require the first letter to match either the name or the epithet" do
+      dubitata = create_name 'Acropyga dubitata'
+      indubitata = create_name 'Acropyga indubitata'
+
+      results = Name.picklist_matching('dubitata')
+      results.should have(1).item
+      results.first[:name].should == 'Acropyga dubitata'
+    end
+
   end
 
 end
