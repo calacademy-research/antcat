@@ -3,4 +3,4 @@ $ ->
   new AntCat.NamePicker $('#picker'),
     field: true,
     on_success: (data) ->
-      $('#results').text data.id
+      $('#results').text(data.id) + ' ' + data.taxt
