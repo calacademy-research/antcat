@@ -13,7 +13,7 @@ class NamePickersController < ApplicationController
   end
 
   def lookup
-    name = Name.find_by_name params[:name]
+    name = Name.find_by_name params[:name_string]
     if name
       id = name.id
       name = name.name
@@ -22,7 +22,7 @@ class NamePickersController < ApplicationController
       success = true
     else
       id = taxt = name = nil
-      error_message = "The name '#{params[:name]}' was not found"
+      error_message = "The name '#{params[:name_string]}' was not found"
       success = false
     end
     send_back_json id: id, name: name, success: success, error_message: error_message

@@ -5,8 +5,8 @@ class AntCat.NamePicker extends AntCat.NestedForm
     @element = @parent_element.find('> .antcat_name_picker')
     @options.button_container = '.buttons'
     if @options.field
-      @id = @element.find('.edit #hidden_id').val()
-      @name = @element.find('.edit #hidden_name').val()
+      @id = @element.find('.edit #id').val()
+      @name = @element.find('.edit #name').val()
       displaying_or_editing = 'displaying'
     else
       @id = @options.id
@@ -36,7 +36,7 @@ class AntCat.NamePicker extends AntCat.NestedForm
         @element.replaceWith data
         @element = @parent_element.find '> .antcat_name_picker'
         @initialize displaying_or_editing
-        @edit.find('#hidden_id').val(@id)
+        @edit.find('#id').val(@id)
       error: (xhr) => debugger
 
   initialize: (displaying_or_editing = 'editing') =>
@@ -90,8 +90,8 @@ class AntCat.NamePicker extends AntCat.NestedForm
   handle_success: (data) =>
     @id = data.id
     @name = data.name
-    @edit.find('#hidden_id').val @id
-    @edit.find('#hidden_name').val @name
+    @edit.find('#id').val @id
+    @edit.find('#name').val @name
     @display.text @name
     #taxt = if @current_name() then @current_name().data 'taxt' else null
     super
