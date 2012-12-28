@@ -16,7 +16,7 @@
         %td
           #picker
             - taxon = params[:id].present? ? Taxon.first : nil
-            = render 'name_pickers/show', id: taxon.name.id, name: taxon.name.name
+            = render 'name_pickers/show', id: taxon ? taxon.name.id : nil, name: taxon ? taxon.name.name : nil
 
       %tr
         %td.buttons{:colspan => 4}
