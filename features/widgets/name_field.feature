@@ -6,7 +6,7 @@ Feature: Name field
     When I go to the name field test page for a name
     Then in the name picker field display I should see the first name
     And I click the expand icon
-    And I fill in "name" with "Atta"
+    And I fill in "name_string" with "Atta"
     And I press "OK"
     Then in the name picker field display I should see "Atta"
 
@@ -15,7 +15,7 @@ Feature: Name field
     When I go to the name field test page for a name
     Then in the name picker field display I should see the first name
     And I click the expand icon
-    And I fill in "name" with "Atta"
+    And I fill in "name_string" with "Atta"
     And I press "OK"
     Then in the name picker field display I should see "Atta"
     When I click the expand icon
@@ -34,13 +34,13 @@ Feature: Name field
     Given there is a genus called "Atta"
     When I go to the name field test page
     And I click the expand icon
-    And I fill in "name" with "Atta"
+    And I fill in "name_string" with "Atta"
     And I press "OK"
     Then in the name picker field display I should see "Atta"
 
   Scenario: Can't find taxon
     When I go to the name field test page
     And I click the expand icon
-    And I fill in "name" with "Atta"
+    And I fill in "name_string" with "Atta"
     And I press "OK"
     Then I should see "The name 'Atta' was not found"
