@@ -9,7 +9,7 @@ window.AntCat or= {}
 #    = render 'tag_type_selectors/show'
 #    = .reference_picker (use the parent to anchor the picker)
 #    =   render 'reference_pickers/show', references: nil, reference: nil
-#    = render 'name_pickers/show', name: nil
+#    = render 'name_pickers/show'
 
 $.fn.taxt_editor = (options = {}) ->
   return this.each -> new AntCat.TaxtEditor $(this), options
