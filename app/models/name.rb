@@ -21,18 +21,20 @@ class Name < ActiveRecord::Base
     # I do not see why the code beginning with Name.select can't be factored out, but it can't
     search_term = letters_in_name + '%'
     prefix_matches =
-      Name.select('names.id AS id, name, name_html').where("name LIKE '#{search_term}'")
+      Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id').joins('LEFT OUTER JOIN taxa ON taxa.name_id = names.id').where("name LIKE '#{search_term}'")
 
     search_term = letters_in_name.split('').join('%') + '%'
     first_then_any_letter_matches =
-      Name.select('names.id AS id, name, name_html').where("name LIKE '#{search_term}'")
+      Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id').joins('LEFT OUTER JOIN taxa ON taxa.name_id = names.id').where("name LIKE '#{search_term}'")
 
     [picklist_matching_format(prefix_matches), picklist_matching_format(first_then_any_letter_matches)].flatten.uniq
   end
 
   def self.picklist_matching_format matches
     matches.map do |e|
-      {id: e.id.to_i, name: e.name, label: "<b>#{e.name_html}</b>"}
+      result = {id: e.id.to_i, name: e.name, label: "<b>#{e.name_html}</b>", value: e.name}
+      result[:taxon_id] = e.taxon_id.to_i if e.taxon_id
+      result
     end.sort_by do |a|
       a[:name]
     end
