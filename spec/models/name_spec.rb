@@ -110,13 +110,23 @@ describe Name do
     it "should find one prefix match" do
       name = create_name 'Atta'
       name.update_attributes name_html:  '<i>Atta</i>'
-      Name.picklist_matching('att').should == [id: name.id, name: name.name, label: '<b><i>Atta</i></b>']
+      Name.picklist_matching('att').should == [id: name.id, name: name.name, label: '<b><i>Atta</i></b>', value: name.name]
     end
 
     it "should find one fuzzy match" do
       name = create_name 'Gesomyrmex'
       name.update_attributes name_html:  '<i>Gesomyrmex</i>'
-      Name.picklist_matching('gyx').should == [id: name.id, name: name.name, label: '<b><i>Gesomyrmex</i></b>']
+      Name.picklist_matching('gyx').should == [id: name.id, name: name.name, label: '<b><i>Gesomyrmex</i></b>', value: name.name]
+    end
+
+    it "should return the taxon_id, if there is one" do
+      bothroponera = create_name 'Bothroponera'
+      bothroponera.update_attributes name_html: '<i>Bothroponera</i>'
+      brachyponera = create_genus 'Brachyponera'
+      Name.picklist_matching('bera').should == [
+        {id: bothroponera.id,      name: bothroponera.name,      label: '<b><i>Bothroponera</i></b>', value: bothroponera.name},
+        {id: brachyponera.name.id, name: brachyponera.name.name, label: '<b><i>Brachyponera</i></b>', taxon_id: brachyponera.id, value: brachyponera.name.name},
+      ]
     end
 
     it "put prefix matches at beginning" do
@@ -130,9 +140,9 @@ describe Name do
       acanthognathus.update_attributes name_html: '<i>Acanthognathus laevigatus</i>'
 
       Name.picklist_matching('atta').should == [
-        {id: atta.id, name: 'Atta', label: '<b><i>Atta</i></b>'},
-        {id: acanthognathus.id, name: 'Acanthognathus laevigatus', label: '<b><i>Acanthognathus laevigatus</i></b>'},
-        {id: acropyga.id, name: 'Acropyga dubitata', label: '<b><i>Acropyga dubitata</i></b>'},
+        {id: atta.id, name: 'Atta', label: '<b><i>Atta</i></b>', value: atta.name},
+        {id: acanthognathus.id, name: 'Acanthognathus laevigatus', label: '<b><i>Acanthognathus laevigatus</i></b>', value: acanthognathus.name},
+        {id: acropyga.id, name: 'Acropyga dubitata', label: '<b><i>Acropyga dubitata</i></b>', value: acropyga.name},
       ]
     end
   end
