@@ -1,6 +1,6 @@
 class Name < ActiveRecord::Base
 
-  validates :name, presence: true, uniqueness: true
+  validates :name, presence: true
 
   after_save :set_taxon_caches
 
