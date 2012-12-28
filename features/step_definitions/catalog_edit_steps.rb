@@ -125,6 +125,6 @@ end
 
 Then /in the results section I should see the id for "([^"]*)"/ do |text|
   within "#results" do
-    step %{I should see "#{Taxon.find_by_name(text).id}"}
+    step %{I should see "#{Name.find_by_name(text).id}"}
   end
 end
