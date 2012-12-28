@@ -3,14 +3,14 @@
 @import 'ext/jquery.ui.selectmenu'
 
 $expand_collapse_width: 16px
-$antcat_reference_picker_color_background: desaturate(#98FB98, 50%) // palegreen
-$antcat_reference_picker_color_form_background: desaturate(#006400, 50%) // darkgreen
-$antcat_reference_picker_color_help: lightgray
 $antcat_reference_picker_gutter_size: 20px
+
+$dark_green: desaturate(#006400, 50%) // darkgreen
+$antcat_reference_picker_color_help: lightgray
+$pale_green: desaturate(#98FB98, 50%) // palegreen
 
 .antcat_reference_picker
 
-  background: $antcat_reference_picker_color_background
   border: solid 1px black
   margin-top: 4px
   margin-bottom: 4px
@@ -33,11 +33,12 @@ $antcat_reference_picker_gutter_size: 20px
 
   .expansion
     display: none
-    background: $antcat_reference_picker_color_form_background
+    background: $pale_green
     min-height: 23px
     width: 100%
 
-    table
+    > table
+      background: $dark_green
       width: 100%
 
       td.throbber
@@ -46,6 +47,9 @@ $antcat_reference_picker_gutter_size: 20px
           vertical-align: middle
           margin-bottom: 2px
           display: none
+
+    .controls
+      background: $dark_green
 
     .ok_cancel_controls
       display: inline-block
@@ -75,7 +79,7 @@ $antcat_reference_picker_gutter_size: 20px
           color: white
           &:hover
             color: $color_site_header_link_highlight
-            background-color: $antcat_reference_picker_color_form_background
+            background-color: $dark_green
 
     .help_banner
       display: inline-block
@@ -86,6 +90,7 @@ $antcat_reference_picker_gutter_size: 20px
         font-size: 12px
 
     .search_results
+      background: $pale_green
 
     .no_results_found
       padding: 2px 40px 0 26px
