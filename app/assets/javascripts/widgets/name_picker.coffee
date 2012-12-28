@@ -6,11 +6,9 @@ class AntCat.NamePicker extends AntCat.NestedForm
     @options.button_container = '.buttons'
     if @options.field
       @id = @element.find('.edit #id').val()
-      @name = @element.find('.edit #name').val()
       displaying_or_editing = 'displaying'
     else
       @id = @options.id
-      @name = @options.name
       displaying_or_editing = 'editing'
     @original_id = @id
     if @id
@@ -89,11 +87,11 @@ class AntCat.NamePicker extends AntCat.NestedForm
 
   handle_success: (data) =>
     @id = data.id
-    @name = data.name
     @edit.find('#id').val @id
-    @edit.find('#name').val @name
-    @display.text @name
-    #taxt = if @current_name() then @current_name().data 'taxt' else null
+    @edit.find('#name').val data.name
+    @edit.find('#taxt').val data.taxt
+    @edit.find('#taxon_id').val data.taxon_id
+    @display.text data.name
     super
 
   handle_application_error: (error_message) =>
