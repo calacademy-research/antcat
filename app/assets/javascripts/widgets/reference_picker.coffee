@@ -302,7 +302,7 @@ class AntCat.ReferencePicker
         other_verb = 'choose'
       else
         other_verb = 'search for'
-        help = if @options.field then "Use" else "Click OK to use"
+      help = "Click OK to use"
       help += " this reference, or add or #{other_verb} a different one"
     else
       if any_search_results
