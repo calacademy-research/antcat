@@ -25,6 +25,7 @@ class NamePickersController < ApplicationController
         taxt = Taxt.to_editable_taxon taxon
       else
         taxon_id = taxt = nil
+        taxt = Taxt.to_editable_name name
       end
     else
       id = taxt = name = taxon_id = nil
