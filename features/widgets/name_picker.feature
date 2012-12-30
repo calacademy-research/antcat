@@ -15,6 +15,14 @@ Feature: Name picker
     Then in the results section I should see the id for "Atta"
     And in the results section I should see the editable taxt for "Atta"
 
+  Scenario: Find typed name
+    Given there is a species name "Eciton major"
+    When I go to the name picker test page
+    And I fill in "name_string" with "Eciton major"
+    And I press "OK"
+    Then in the results section I should see the id for the name "Eciton major"
+    And in the results section I should see the editable taxt for the name "Eciton major"
+
   Scenario: Can't find taxon
     When I go to the name picker test page
     And I fill in "name_string" with "Atta"
