@@ -97,6 +97,13 @@ describe Taxt do
           Taxt.to_editable("{tax #{genus.id}}").should == "{Atta #{editable_key}}"
         end
       end
+      describe "Names" do
+        it "should use the name followed by its id" do
+          genus = create_genus 'Atta'
+          editable_key = Taxt.id_for_editable genus.name.id, 3
+          Taxt.to_editable("{nam #{genus.name.id}}").should == "{Atta #{editable_key}}"
+        end
+      end
     end
 
     describe "From editable taxt" do
