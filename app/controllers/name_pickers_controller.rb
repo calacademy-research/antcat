@@ -17,8 +17,8 @@ class NamePickersController < ApplicationController
     if name
       id = name.id
       name = name.name
-      error_message = nil
       success = true
+      error_message = nil
       taxon = Taxon.find_by_name name
       if taxon
         taxon_id = taxon.id
@@ -29,8 +29,12 @@ class NamePickersController < ApplicationController
       end
     else
       id = taxt = name = taxon_id = nil
-      error_message = "The name '#{params[:name_string]}' was not found"
       success = false
+      if params[:confirmed_add_name]
+        error_message = "#{params[:name_string]}? has been added. You can attach it to a taxon later, if desired."
+      else
+        error_message = "Do you want to add the name #{params[:name_string]}? You can attach it to a taxon later, if desired."
+      end
     end
     send_back_json id: id, name: name, taxt: taxt, taxon_id: taxon_id, success: success, error_message: error_message
   end
