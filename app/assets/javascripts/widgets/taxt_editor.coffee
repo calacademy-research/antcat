@@ -8,8 +8,9 @@ window.AntCat or= {}
 #    = text_area_tag :taxt_editor, '', rows: 1, class: 'taxt_edit_box'
 #    = render 'tag_type_selectors/show'
 #    = .reference_picker (use the parent to anchor the picker)
-#    =   render 'reference_pickers/show', references: nil, reference: nil
-#    = render 'name_pickers/show'
+#    =   render 'reference_pickers/show'
+#    = .name_picker (use the parent to anchor the picker)
+#    =  render 'name_pickers/show'
 
 $.fn.taxt_editor = (options = {}) ->
   return this.each -> new AntCat.TaxtEditor $(this), options
@@ -22,7 +23,7 @@ class AntCat.TaxtEditor
     @tag_type_selector = new AntCat.TagTypeSelector(@element.find('.antcat_tag_type_selector'), on_ok: @handle_tag_type_selector_result, on_cancel: @after_form_closes)
     @reference_picker = @element.find_topmost '.antcat_reference_picker'
     @parent_buttons = @element.siblings().find(':button')
-    @name_picker = new AntCat.TaxonPicker(@element.find('.antcat_name_picker'), on_success: @handle_name_picker_result, on_close: @after_form_closes)
+    @name_picker = new AntCat.NamePicker(@element.find('#name_picker'), on_success: @handle_name_picker_result, on_close: @after_form_closes)
     @dashboard = new TaxtEditor.DebugDashboard @ if @options.show_debug_dashboard
     @dashboard?.show_status 'before'
     @value @control.val()
