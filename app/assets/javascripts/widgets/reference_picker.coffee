@@ -204,6 +204,7 @@ class AntCat.ReferencePicker
     @setup_references()
 
   # 'current' is the reference panel at the top of the picker, above the controls
+  # too much duplication between this and setup_references
   make_current: ($panel, edit = false) =>
     $current_contents = @current.find '> tbody > tr > td'
     $new_contents = $panel.clone()
@@ -216,6 +217,8 @@ class AntCat.ReferencePicker
           on_form_close: @on_reference_form_close
           on_form_done: @on_reference_form_done
           edit: edit)
+    @element.find('div.display').bind 'click', @handle_click
+    @element.find('div.display').hover(@hover, @unhover)
     @element.removeClass 'has_no_current_reference'
 
   handle_new_selection: =>
