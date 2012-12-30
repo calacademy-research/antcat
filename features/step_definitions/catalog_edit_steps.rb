@@ -123,7 +123,19 @@ Then /in the results section I should see the editable taxt for "([^"]*)"/ do |t
   end
 end
 
+Then /in the results section I should see the editable taxt for the name "([^"]*)"/ do |text|
+  within "#results" do
+    step %{I should see "#{Taxt.to_editable_name(Name.find_by_name(text))}"}
+  end
+end
+
 Then /in the results section I should see the id for "([^"]*)"/ do |text|
+  within "#results" do
+    step %{I should see "#{Name.find_by_name(text).id}"}
+  end
+end
+
+Then /in the results section I should see the id for the name "([^"]*)"/ do |text|
   within "#results" do
     step %{I should see "#{Name.find_by_name(text).id}"}
   end
