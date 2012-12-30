@@ -150,5 +150,5 @@ Given /^there is a genus called "([^"]*)"$/ do |name|
   create_genus name
 end
 Given /^there is a species name "([^"]*)"$/ do |name|
-  Factory.create :species_name
+  create_name name
 end
