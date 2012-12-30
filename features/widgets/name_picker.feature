@@ -27,4 +27,9 @@ Feature: Name picker
     When I go to the name picker test page
     And I fill in "name_string" with "Atta wildensis"
     And I press "OK"
-    Then I should see "The name 'Atta wildensis' was not found"
+    Then I should see "Do you want to add the name Atta wildensis? You can attach it to a taxon later, if desired."
+    And I press "Add this name"
+    Then in the results section I should see the id for the name "Atta wildensis"
+    And in the results section I should see the editable taxt for the name "Atta wildensis"
+
+  Scenario: Not adding a name

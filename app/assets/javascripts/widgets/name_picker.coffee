@@ -95,6 +95,7 @@ class AntCat.NamePicker extends AntCat.NestedForm
     super
 
   handle_application_error: (error_message) =>
+    @element.find('.buttons [value=OK]').val('Add this name')
     @element.find('.error_messages').text error_message
 
   cancel: =>
