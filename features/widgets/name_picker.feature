@@ -23,8 +23,8 @@ Feature: Name picker
     Then in the results section I should see the id for the name "Eciton major"
     And in the results section I should see the editable taxt for the name "Eciton major"
 
-  Scenario: Can't find taxon
+  Scenario: Adding a name
     When I go to the name picker test page
-    And I fill in "name_string" with "Atta"
+    And I fill in "name_string" with "Atta wildensis"
     And I press "OK"
-    Then I should see "The name 'Atta' was not found"
+    Then I should see "The name 'Atta wildensis' was not found"
