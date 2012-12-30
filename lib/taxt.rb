@@ -34,6 +34,13 @@ module Taxt
       end
     end
 
+    if taxt =~ /{nam/
+      taxt.gsub! /{nam (\d+)}/ do |nam|
+        editable_id = id_for_editable $1, 3
+        to_editable_name Name.find($1) rescue "{#{editable_id}}"
+      end
+    end
+
     taxt
   end
 
@@ -45,6 +52,11 @@ module Taxt
   def self.to_editable_taxon taxon
     editable_id = id_for_editable taxon.id, 2
     "{#{taxon.name} #{editable_id}}"
+  end
+
+  def self.to_editable_name name
+    editable_id = id_for_editable name.id, 3
+    "{#{name.name} #{editable_id}}"
   end
 
   # this value is duplicated in taxt_editor.coffee
