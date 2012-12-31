@@ -37,10 +37,3 @@ Feature: Name field
     And I fill in "name_string" with "Atta"
     And I press "OK"
     Then in the name picker field display I should see "Atta"
-
-  Scenario: Can't find taxon
-    When I go to the name field test page
-    And I click the expand icon
-    And I fill in "name_string" with "Atta"
-    And I press "OK"
-    Then I should see "The name 'Atta' was not found"
