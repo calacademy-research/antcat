@@ -17,15 +17,18 @@ class NamePickersController < ApplicationController
     if params[:add_name] == 'true'
       add_name params[:name_string], data
     else
-      name = Name.find_by_name params[:name_string]
-      if name
-        send_back_successful_search name, data
-      else
-        data[:success] = false
-        data[:error_message] = "Do you want to add the name #{params[:name_string]}? You can attach it to a taxon later, if desired."
-      end
+      find_name params[:name_string], data
     end
     send_back_json data
+  end
+
+  def find_name name_string, data
+    name = Name.find_by_name name_string
+    if name
+      reply_with_successful_search name, data
+    else
+      ask_whether_to_add_name name_string, data
+    end
   end
 
   def add_name name_string, data
@@ -36,7 +39,12 @@ class NamePickersController < ApplicationController
     data[:success] = true
   end
 
-  def send_back_successful_search name, data
+  def ask_whether_to_add_name name_string, data
+    data[:success] = false
+    data[:error_message] = "Do you want to add the name #{:name_string}? You can attach it to a taxon later, if desired."
+  end
+
+  def reply_with_successful_search name, data
     data[:id] = name.id
     data[:name] = name.name
     taxon = Taxon.find_by_name data[:name]
