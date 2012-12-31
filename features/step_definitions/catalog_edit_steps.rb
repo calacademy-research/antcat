@@ -95,28 +95,15 @@ When /^I add a reference by Brian Fisher$/ do
   step %{I save my changes}
 end
 
+##########################
+# Reference picker
 Then /I should (not )?see the reference picker/ do |should_not|
   selector = should_not ? :should_not : :should
   find('.antcat_reference_picker').send(selector, be_visible)
 end
 
-Then /I should (not )?see the name picker/ do |should_not|
-  selector = should_not ? :should_not : :should
-  find('.antcat_name_picker').send(selector, be_visible)
-end
-
-Then /in the name picker field display I should see the first name/ do
-  within "#picker .display" do
-    step %{I should see "#{Name.first.name}"}
-  end
-end
-
-Then /in the name picker field display I should see "([^"]*)"/ do |text|
-  within "#picker .display" do
-    step %{I should see "#{text}"}
-  end
-end
-
+##########################
+# Name picker
 Then /in the results section I should see the editable taxt for "([^"]*)"/ do |text|
   within "#results" do
     step %{I should see "#{Taxt.to_editable_taxon(Taxon.find_by_name(text))}"}
@@ -139,4 +126,26 @@ Then /in the results section I should see the id for the name "([^"]*)"/ do |tex
   within "#results" do
     step %{I should see "#{Name.find_by_name(text).id}"}
   end
+end
+
+Then /in the name picker field display I should see the first name/ do
+  within "#picker .display" do
+    step %{I should see "#{Name.first.name}"}
+  end
+end
+
+Then /in the name picker field display I should see "([^"]*)"/ do |text|
+  within "#picker .display" do
+    step %{I should see "#{text}"}
+  end
+end
+
+Then /^I should (not )?see the name picker edit interface$/ do |should_not|
+  selector = should_not ? :should_not : :should
+  find('#picker .edit').send(selector, be_visible)
+end
+
+Then /^I should (not )?see the name picker$/ do |should_not|
+  selector = should_not ? :should_not : :should
+  find('.antcat_name_picker').send(selector, be_visible)
 end
