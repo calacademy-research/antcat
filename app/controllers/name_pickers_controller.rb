@@ -13,30 +13,40 @@ class NamePickersController < ApplicationController
   end
 
   def lookup
-    name = Name.find_by_name params[:name_string]
-    if name
-      id = name.id
-      name_string = name.name
-      success = true
-      error_message = nil
-      taxon = Taxon.find_by_name name_string
-      if taxon
-        taxon_id = taxon.id
-        taxt = Taxt.to_editable_taxon taxon
-      else
-        taxon_id = taxt = nil
-        taxt = Taxt.to_editable_name name
-      end
+    data = {}
+    if params[:add_name] == 'true'
+      add_name params[:name_string], data
     else
-      id = taxt = name_string = taxon_id = nil
-      success = false
-      if params[:confirmed_add_name]
-        error_message = "#{params[:name_string]}? has been added. You can attach it to a taxon later, if desired."
+      name = Name.find_by_name params[:name_string]
+      if name
+        send_back_successful_search name, data
       else
-        error_message = "Do you want to add the name #{params[:name_string]}? You can attach it to a taxon later, if desired."
+        data[:success] = false
+        data[:error_message] = "Do you want to add the name #{params[:name_string]}? You can attach it to a taxon later, if desired."
       end
     end
-    send_back_json id: id, name: name_string, taxt: taxt, taxon_id: taxon_id, success: success, error_message: error_message
+    send_back_json data
+  end
+
+  def add_name name_string, data
+    name = Name.parse name_string
+    data[:id] = name.id
+    data[:name] = name.name
+    data[:taxt] = Taxt.to_editable_name name
+    data[:success] = true
+  end
+
+  def send_back_successful_search name, data
+    data[:id] = name.id
+    data[:name] = name.name
+    taxon = Taxon.find_by_name data[:name]
+    if taxon
+      data[:taxon_id] = taxon.id
+      data[:taxt] = Taxt.to_editable_taxon taxon
+    else
+      data[:taxt] = Taxt.to_editable_name name
+    end
+    data[:success] = true
   end
 
 end

@@ -85,7 +85,17 @@ class AntCat.NamePicker extends AntCat.NestedForm
     super
     false
 
+  before_submit: (form, options) =>
+    # form is an array of name-value pairs (from jQuery Form)
+    alert '4th element is not add_name' unless form[4].name == 'add_name'
+    if @deciding_whether_to_add_name
+      form[4].value = 'true'
+    else
+      form[4].value = ''
+    true
+
   handle_success: (data) =>
+    @element.find('.buttons [value="Add this name"]').val('OK')
     @id = data.id
     @edit.find('#id').val @id
     @edit.find('#name').val data.name
@@ -97,6 +107,7 @@ class AntCat.NamePicker extends AntCat.NestedForm
   handle_application_error: (error_message) =>
     @element.find('.buttons [value=OK]').val('Add this name')
     @element.find('.error_messages').text error_message
+    @deciding_whether_to_add_name = true
 
   cancel: =>
     @id = @original_id
