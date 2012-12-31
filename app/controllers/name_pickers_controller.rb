@@ -41,7 +41,7 @@ class NamePickersController < ApplicationController
 
   def ask_whether_to_add_name name_string, data
     data[:success] = false
-    data[:error_message] = "Do you want to add the name #{:name_string}? You can attach it to a taxon later, if desired."
+    data[:error_message] = "Do you want to add the name #{name_string}? You can attach it to a taxon later, if desired."
   end
 
   def reply_with_successful_search name, data

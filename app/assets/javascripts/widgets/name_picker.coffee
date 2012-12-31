@@ -110,12 +110,17 @@ class AntCat.NamePicker extends AntCat.NestedForm
     @deciding_whether_to_add_name = true
 
   cancel: =>
+    displaying_or_editing = 'displaying'
+    if @deciding_whether_to_add_name
+      @element.find('.buttons [value="Add this name"]').val('OK')
+      displaying_or_editing = 'editing'
     @id = @original_id
     if @id
-      @load '', 'displaying'
+      @load '', displaying_or_editing
     else
-      @initialize 'displaying'
-    super
+      @initialize displaying_or_editing
+    super unless @deciding_whether_to_add_name
+    @deciding_whether_to_add_name = false
     false
 
   close: =>
