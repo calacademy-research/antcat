@@ -35,4 +35,14 @@ Feature: Name picker
     Then in the results section I should see the id for the name "Atta wildensis"
     And in the results section I should see the editable taxt for the name "Atta wildensis"
 
+  Scenario: Entering a new name, but cancelling instead of adding it
+    When I go to the name picker test page
+    Then I should see the name picker edit interface
+    And I fill in "name_string" with "Atta wildensis"
+    And I press "OK"
+    Then I should see "Do you want to add the name Atta wildensis? You can attach it to a taxon later, if desired."
+    And I press "Cancel"
+    And I wait for a bit
+    Then I should see the name picker edit interface
+
   Scenario: Not adding a name
