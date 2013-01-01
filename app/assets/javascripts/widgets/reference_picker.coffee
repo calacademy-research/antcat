@@ -231,8 +231,7 @@ class AntCat.ReferencePicker
     @update_help()
     @options.on_change(@value()) if @options.on_change
 
-  value: =>
-    @id
+  value: => @id
 
   selected_reference: =>
     results = @search_results.find 'div.display.ui-selected'
