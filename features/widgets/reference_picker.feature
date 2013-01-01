@@ -28,25 +28,8 @@ Feature: Reference picker
     And I should not see "Fisher's book"
     And I should not see "Bolton's book"
 
-  Scenario: Editing the selected reference
-    Given I am logged in
-    When I go to the reference picker widget test page, opened to the first reference
-    And I edit the reference
-    When I set the authors to "Ward, B.L.; Bolton, B."
-    And I set the title to "Ant Title"
-    And I save my changes
-    Then I should see "Ward, B.L.; Bolton, B. 1995b. Ant Title"
-
   Scenario: Adding a selected reference
     Given I am logged in
     When I go to the reference picker widget test page
     And I add a reference by Brian Fisher
     Then I should see "Fisher, B.L. 1992. Between Pacific Tides. Ants 2:1."
-
-  Scenario: Error when editing reference
-    Given I am logged in
-    When I go to the reference picker widget test page, opened to the first reference
-    And I edit the reference
-    When I set the title to ""
-    And I save my changes
-    And I should see "Title can't be blank"
