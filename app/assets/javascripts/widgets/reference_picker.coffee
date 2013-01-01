@@ -8,9 +8,9 @@ class AntCat.ReferencePicker
       @current_id = @element.find('.value').val()
     else
       @current_id = @options.id
-    @original_id = @current_id
+    @original_id = @id
     expanded_or_collapsed = @options.field ? 'collapsed' : 'expanded'
-    if @current_id
+    if @id
       @load '', expanded_or_collapsed
     else
       @initialize expanded_or_collapsed
@@ -19,7 +19,7 @@ class AntCat.ReferencePicker
   load: (url = '', expanded_or_collapsed = 'expanded') =>
     if url.indexOf('/reference_picker') is -1
       url = '/reference_picker?' + url
-    url = url + '&' + $.param id: @current_id if @current_id
+    url = url + '&' + $.param id: @id if @id
     @start_throbbing()
     $.ajax
       url: url
@@ -78,7 +78,7 @@ class AntCat.ReferencePicker
     $.param q: @textbox.val(), search_selector: @search_selector.val()
 
   ok: =>
-    @element.find('.value').val(@current_id)
+    @element.find('.value').val(@id)
     taxt = if @current_reference() then @current_reference().data 'taxt' else null
     @options.on_ok(taxt) if @options.on_ok
     @close()
@@ -176,7 +176,7 @@ class AntCat.ReferencePicker
         .end()
 
     @search_results
-      .find(".reference .item_#{@current_id} div.display")
+      .find(".reference .item_#{@id} div.display")
         .addClass('ui-selected')
         .end()
 
@@ -225,13 +225,13 @@ class AntCat.ReferencePicker
     $selected_reference = @selected_reference()
     @make_current $selected_reference if $selected_reference
 
-    @current_id = if @current_reference() then @current_reference().data 'id' else null
+    @id = if @current_reference() then @current_reference().data 'id' else null
     @element.toggleClass 'has_no_current_reference', not @current_reference()
     @update_help()
     @options.on_change(@value()) if @options.on_change
 
   value: =>
-    @current_id
+    @id
 
   selected_reference: =>
     results = @search_results.find 'div.display.ui-selected'
