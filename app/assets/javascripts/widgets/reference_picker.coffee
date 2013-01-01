@@ -3,10 +3,12 @@ class AntCat.ReferencePicker
   constructor: (@parent_element, @options = {}) ->
     @options.field = true unless @options.field?
     @element = @parent_element.find('> .antcat_reference_picker')
-    if @options.field
-      @current_id = @element.find('.value').val()
+
+    if @options.id
+      @id = @options.id
     else
-      @current_id = @options.id
+      @id = @element.find('#id').val()
+
     @original_id = @id
     expanded_or_collapsed = @options.field ? 'collapsed' : 'expanded'
     if @id
