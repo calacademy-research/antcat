@@ -3,7 +3,6 @@ class AntCat.ReferencePicker
   constructor: (@parent_element, @options = {}) ->
     @options.field = true unless @options.field?
     @element = @parent_element.find('> .antcat_reference_picker')
-    @options.button_container = @element.find('.controls')
     if @options.field
       @current_id = @element.find('.value').val()
     else
