@@ -14,7 +14,7 @@
 
   .expansion.nested_form
 
-    = hidden_field_tag 'value', reference.try(:id), class: 'value'
+    = hidden_field_tag 'id', reference.try(:id)
 
     %table
       %tr
