@@ -86,7 +86,7 @@ class AntCat.ReferencePicker
 
   cancel: =>
     @id = @original_id
-    @element.find(#id').val(@id)
+    @element.find('#id').val(@id)
     if @id
       @load '', 'collapsed'
     else
