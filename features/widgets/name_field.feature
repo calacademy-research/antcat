@@ -1,15 +1,6 @@
 @javascript @editing
 Feature: Name field
 
-  Scenario: Existing data
-    Given there is a genus called "Atta"
-    When I go to the name field test page for a name
-    Then in the name picker field display I should see the first name
-    And I click the expand icon
-    And I fill in "name_string" with "Atta"
-    And I press "OK"
-    Then in the name picker field display I should see "Atta"
-
   Scenario: Cancelling after changing existing data
     Given there is a genus called "Atta"
     When I go to the name field test page for a name
@@ -37,3 +28,4 @@ Feature: Name field
     And I fill in "name_string" with "Atta"
     And I press "OK"
     Then in the name picker field display I should see "Atta"
+
