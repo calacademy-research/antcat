@@ -11,9 +11,9 @@ class AntCat.ReferencePicker
     @original_id = @current_id
     expanded_or_collapsed = @options.field ? 'collapsed' : 'expanded'
     if @current_id
-      @load('', expanded_or_collapsed)
+      @load '', expanded_or_collapsed
     else
-      @initialize(expanded_or_collapsed)
+      @initialize expanded_or_collapsed
     @
 
   load: (url = '', expanded_or_collapsed = 'expanded') =>
