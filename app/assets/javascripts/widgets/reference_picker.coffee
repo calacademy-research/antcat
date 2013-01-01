@@ -79,7 +79,7 @@ class AntCat.ReferencePicker
     $.param q: @textbox.val(), search_selector: @search_selector.val()
 
   ok: =>
-    @element.find('.value').val(@id)
+    @element.find('#id').val(@id)
     taxt = if @current_reference() then @current_reference().data 'taxt' else null
     @options.on_ok(taxt) if @options.on_ok
     @close()
