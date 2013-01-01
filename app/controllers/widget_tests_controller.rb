@@ -4,7 +4,7 @@ class WidgetTestsController < ApplicationController
   def name_picker
   end
 
-  def reference_picker
+  def reference_picker_test
     @reference = Reference.first if params[:id]
   end
 
