@@ -85,6 +85,7 @@ class AntCat.ReferencePicker
     @close()
 
   cancel: =>
+    @clear_current()
     @id = @original_id
     @element.find('#id').val(@id)
     if @id
@@ -242,10 +243,15 @@ class AntCat.ReferencePicker
     results.closest '.reference'
 
   current_reference: =>
-    references = @current.find('.reference')
-    return if references.length is 0
-    return unless references.data 'id'
-    references
+    reference = @current.find('.reference')
+    return if reference.length is 0
+    return unless reference.data 'id'
+    reference
+
+  clear_current: =>
+    $('.ui-selected').removeClass('ui-selected')
+    @current = @element.find '> .current'
+    @current.find(".item_#{@id} .reference_item").replaceWith('<div class="reference"><table class="reference_table"><tr><td class="reference_item"><div class="display">(none)</div></td></tr></table></div>')
 
   # -----------------------------------------
   enable_search_author_autocomplete: =>
