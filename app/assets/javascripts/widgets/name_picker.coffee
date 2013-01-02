@@ -130,6 +130,7 @@ class AntCat.NamePicker extends AntCat.NestedForm
 
   # -----------------------------------------
   setup_autocomplete: ($textbox) =>
+    return if AntCat.testing
     $textbox.autocomplete(
         autoFocus: true,
         source: "/name_pickers",
