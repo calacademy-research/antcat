@@ -45,12 +45,14 @@ class AntCat.ReferenceForm extends AntCat.NestedForm
         false
 
   setup_journal_autocomplete: =>
+    return if AntCat.testing
     @element.find('.journal').autocomplete
       autoFocus: true,
       source: "/journals",
       minLength: 3
 
   setup_publisher_autocomplete: =>
+    return if AntCat.testing
     @element.find('.publisher').autocomplete
       autoFocus: true,
       source: "/publishers",
