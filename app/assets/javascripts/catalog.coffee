@@ -27,7 +27,7 @@ set_height = (taxon_area_height = 'fixed') ->
 set_auto_height = ->
   $('#page').css 'overflow', 'auto'
   $(".antcat_taxon").height 'auto'
-  $(".antcat_taxon").css 'min-height', calculate_content_height
+  $(".antcat_taxon").css 'min-height', calculate_taxon_height
   $('#catalog .index').css 'height', ''
 
 set_height_from_splitter = (top) ->
@@ -39,12 +39,12 @@ set_height_from_splitter = (top) ->
 
 set_fixed_height = ->
   $('#page').css 'overflow', 'inherit'
-  $(".antcat_taxon").height calculate_content_height
+  $(".antcat_taxon").height calculate_taxon_height
   $(".antcat_taxon").css 'min-height', ''
 
 set_catalog_height = (height) ->
   $("#catalog").height height
-  $("#catalog .index").height height - $("#catalog .content").height()
+  $("#catalog .index").height height - $("#catalog .taxon").height()
 
 calculate_catalog_height = ->
   $('#page').height() -
@@ -56,12 +56,12 @@ calculate_catalog_height = ->
   $('#taxon_key').height() - 2 -
   $('#site_footer').height() - 8
 
-calculate_content_height = ->
   return $('#splitter').top if using_user
+calculate_taxon_height = ->
   page_height = $('#page').height()
   return 200 if page_height > 800
   return 90 if page_height > 600
   30
 
 set_width = ->
-  $("#catalog .content, #catalog .new_taxon_form").width $('#page').width()
+  $("#catalog .taxon, #catalog .new_taxon_form").width $('#page').width()

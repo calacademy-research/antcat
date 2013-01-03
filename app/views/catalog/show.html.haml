@@ -6,7 +6,7 @@
   = stylesheet_link_tag 'ext/jquery.ui.selectmenu.css'
 
 #catalog
-  .content
+  .taxon
     - if user_can_edit_catalog
       - editing_buttons_content = editing_buttons @taxon, @parameters
       - if editing_buttons_content.present?
