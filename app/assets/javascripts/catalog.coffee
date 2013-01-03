@@ -1,16 +1,14 @@
-using_user = true
-
 $ ->
   splitter = new AntCat.Splitter $('#splitter'), on_splitter_change
   set_dimensions()
-  $(window).resize set_dimensions unless 200
+  $(window).resize set_dimensions
   $('.history_item').history_item_panel
     on_form_open: -> set_height 'auto'
     on_form_close: -> set_height 'fixed'
   $('.icon.edit').show() if AntCat.testing
 
 on_splitter_change = (top) ->
-  set_height_from_splitter top
+  #set_height_from_splitter top
 
 set_dimensions = ->
   set_height()
@@ -29,13 +27,6 @@ set_auto_height = ->
   $(".antcat_taxon").height 'auto'
   $(".antcat_taxon").css 'min-height', calculate_taxon_height
   $('#catalog .index').css 'height', ''
-
-set_height_from_splitter = (top) ->
-  $('#page').css 'overflow', 'inherit'
-  $('.antcat_taxon').css 'overflow', 'hidden'
-  $(".antcat_taxon").height top
-  $(".antcat_taxon").css 'min-height', ''
-  set_catalog_height top
 
 set_fixed_height = ->
   $('#page').css 'overflow', 'inherit'
@@ -56,7 +47,6 @@ calculate_catalog_height = ->
   $('#taxon_key').height() - 2 -
   $('#site_footer').height() - 8
 
-  return $('#splitter').top if using_user
 calculate_taxon_height = ->
   page_height = $('#page').height()
   return 200 if page_height > 800
