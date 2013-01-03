@@ -14,7 +14,8 @@ set_dimensions = ->
 set_height = (taxon_area_height = 'fixed') ->
   if taxon_area_height is 'fixed'
     set_fixed_height()
-    set_catalog_height()
+    height = calculate_catalog_height()
+    set_catalog_height(height)
   else
     set_auto_height()
 
@@ -29,8 +30,7 @@ set_fixed_height = ->
   $(".antcat_taxon").height calculate_content_height
   $(".antcat_taxon").css 'min-height', ''
 
-set_catalog_height = ->
-  height = calculate_catalog_height()
+set_catalog_height = (height) ->
   $("#catalog").height height
   $("#catalog .index").height height - $("#catalog .content").height()
 
