@@ -37,19 +37,19 @@ class Importers::Bolton::Bibliography::Importer
     line.length < 20
   end
 
+  def reference? string
+    string.match(/^Note: /).blank?
+  end
+
   def import_reference string
     string = pre_parse! string
-    original = string.dup
     return unless reference? string
+    original = string.dup
     attributes = Importers::Bolton::Bibliography::Grammar.parse(string, consume: false).value
     post_parse attributes
     attributes.merge! original: original
     ::Bolton::Reference.import attributes
   rescue Citrus::ParseError => e
-  end
-
-  def reference? string
-    string.match(/^Note: /).blank?
   end
 
   def pre_parse! string
