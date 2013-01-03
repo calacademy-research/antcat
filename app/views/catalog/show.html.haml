@@ -1,12 +1,11 @@
 - @title = "#{@taxon.name.epithet}"
 
 - content_for :head do
-  = javascript_include_tag 'catalog', 'qtip'
+  = javascript_include_tag 'qtip'
   = javascript_include_tag 'ext/jquery.ui.selectmenu.js', 'ext/jquery.spinner.js'
   = stylesheet_link_tag 'ext/jquery.ui.selectmenu.css'
 
 #catalog
-  - can_add_genus = @tribe && @tribe != 'none'
   .content
     - if user_can_edit_catalog
       - editing_buttons_content = editing_buttons @taxon, @parameters
@@ -15,8 +14,6 @@
     = render 'catalog/taxon', taxon: @taxon
     %hr
 
-  .new_taxon_form
-    = render 'catalog/taxon_form', tribe: @tribe if can_add_genus
   %hr#splitter
 
   .index
