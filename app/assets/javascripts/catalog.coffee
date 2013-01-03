@@ -5,12 +5,7 @@ $ ->
     on_form_open: -> set_height 'auto'
     on_form_close: -> set_height 'fixed'
   $('.icon.edit').show() if AntCat.testing
-  #$('.icon.edit').click() if AntCat.environment is 'development'
-  $('.rank .genera .add a').click add_genus
 
-add_genus = -> new AntCat.TaxonForm $('.taxon_form form'),
-  on_open: -> set_height 'auto'
-  on_close: -> set_height 'fixed'
 
 set_dimensions = ->
   set_height()
