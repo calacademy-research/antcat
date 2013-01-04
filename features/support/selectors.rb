@@ -17,7 +17,7 @@ module HtmlSelectorsHelpers
     when /the (\w*) index/
       "#catalog .index .#{$1}"
     when /the content/
-      "#catalog .taxon"
+      "#catalog .antcat_taxon"
     when /the search results/
       "#search_results"
 
