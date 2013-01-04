@@ -10,6 +10,7 @@ $ ->
   $('.icon.edit').show() if AntCat.testing
   splitter_top = $('#splitter').position().top
   splitter = new AntCat.Splitter $('#splitter'), on_splitter_change
+  $('#hide_all').remove();
 
 on_splitter_change = (top) ->
   top = $('#splitter').position().top
