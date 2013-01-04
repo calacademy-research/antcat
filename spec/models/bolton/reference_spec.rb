@@ -332,7 +332,7 @@ describe Bolton::Reference do
       reference.title.should == 'Atta'
     end
     it "should update an existing record if the authors and title are the same, but should log the year change" do
-      attributes = {:authors => 'Fisher, B. L.', :citation_year => '1981', :title => 'Dolichoderinae', :reference_type => 'ArticleReference', :series_volume_issue => '1(2)', :pagination => '22-54'}
+      attributes = {authors: 'Fisher, B. L.', citation_year: '1981', title: 'Dolichoderinae', reference_type: 'ArticleReference', series_volume_issue: '1(2)', pagination: '22-54'}
       reference = Bolton::Reference.create! attributes
 
       attributes[:citation_year] = '1981a'
@@ -341,6 +341,34 @@ describe Bolton::Reference do
       reference.year.should == 1981
       reference.citation_year.should == '1981a'
     end
+    it "should update an existing record if the authors and title are the same, but should log the year change" do
+      attributes = {
+        authors: 'Xu, Z. & Liu, X.',
+        citation_year: '2011',
+        title: 'Three new species of the ant genus Myopias from China, with a key to the known Chinese species',
+        reference_type: 'ArticleReference',
+        journal: 'Sociobiology',
+        series_volume_issue: '58',
+        pagination: ' 819-834 [not seen]'
+      }
+      existing_reference = Bolton::Reference.create! attributes
+
+      attributes = {
+        authors: 'Xu, Z. & Liu, X.',
+        citation_year: '2012',
+        title: 'Three new species of the ant genus Myopias from China, with a key to the known Chinese species',
+        reference_type: 'UnknownReference',
+        journal: nil,
+        series_volume_issue: nil,
+        pagination: ' 819-834 [not seen]'
+      }
+
+      reference = Bolton::Reference.import attributes
+      reference.reload.import_result.should == 'updated_year'
+      reference.year.should == 2012
+      reference.citation_year.should == '2012'
+    end
+
     it "should update an existing record if the title and year are the same, but should log the author change" do
       attributes = {:authors => 'Fisher, B. L.', :citation_year => '1981', :title => 'Dolichoderinae', :reference_type => 'ArticleReference', :series_volume_issue => '1(2)', :pagination => '22-54'}
       reference = Bolton::Reference.create! attributes

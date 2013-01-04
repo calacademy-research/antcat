@@ -137,7 +137,7 @@ class Importers::Bolton::Bibliography::Importer
     Progress.puts "#{::Bolton::Reference.where(import_result: 'updated_year').count.to_s.rjust(4)} updated year"
     Progress.puts "#{::Bolton::Reference.where(import_result: 'updated').count.to_s.rjust(4)} updated other"
     Progress.puts "#{::Bolton::Reference.where(import_result: 'updated_spans_removed').count.to_s.rjust(4)} updated (minor changes)"
-    Progress.puts "#{::Bolton::Reference.where(import_result: nil).count.to_s.rjust(4)} not seen"
+    Progress.puts "#{::Bolton::Reference.where(import_result: nil).count.to_s.rjust(4)} deleted"
   end
 
   def self.display_reference reference
