@@ -6,13 +6,12 @@
   = stylesheet_link_tag 'ext/jquery.ui.selectmenu.css'
 
 #catalog
-  .taxon
-    - if user_can_edit_catalog
-      - editing_buttons_content = editing_buttons @taxon, @parameters
-      - if editing_buttons_content.present?
-        #editing_buttons= editing_buttons_content
-    = render 'catalog/taxon', taxon: @taxon
     %hr
+  - if user_can_edit_catalog
+    - editing_buttons_content = editing_buttons @taxon, @parameters
+    - if editing_buttons_content.present?
+      #editing_buttons= editing_buttons_content
+  = render 'catalog/taxon', taxon: @taxon
 
   %hr#splitter
 

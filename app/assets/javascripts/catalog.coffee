@@ -32,10 +32,11 @@ set_fixed_height = ->
   $('#page').css 'overflow', 'inherit'
   $(".antcat_taxon").height calculate_taxon_height
   $(".antcat_taxon").css 'min-height', ''
+  $('.antcat_taxon').css 'overflow', 'hidden'
 
 set_catalog_height = (height) ->
   $("#catalog").height height
-  $("#catalog .index").height height - $("#catalog .taxon").height()
+  $("#catalog .index").height height - $("#catalog .antcat_taxon").height()
 
 calculate_catalog_height = ->
   $('#page').height() -
@@ -54,4 +55,5 @@ calculate_taxon_height = ->
   30
 
 set_width = ->
-  $("#catalog .taxon, #catalog .new_taxon_form").width $('#page').width()
+  $("#catalog .antcat_taxon, #catalog .new_taxon_form").width $('#page').width()
+
