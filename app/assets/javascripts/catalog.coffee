@@ -2,7 +2,6 @@ splitter_top = 0
 taxon_height = null
 
 $ ->
-  splitter = new AntCat.Splitter $('#splitter'), on_splitter_change
   set_dimensions()
   $(window).resize set_dimensions
   $('.history_item').history_item_panel
@@ -10,7 +9,7 @@ $ ->
     on_form_close: -> set_height 'fixed'
   $('.icon.edit').show() if AntCat.testing
   splitter_top = $('#splitter').position().top
-  $('#page_contents').show()
+  splitter = new AntCat.Splitter $('#splitter'), on_splitter_change
 
 on_splitter_change = (top) ->
   top = $('#splitter').position().top
@@ -35,12 +34,13 @@ set_height = (taxon_area_height = 'fixed') ->
 set_auto_height = ->
   $('#page').css 'overflow', 'auto'
   $(".antcat_taxon").height 'auto'
-  $(".antcat_taxon").css 'min-height', calculate_taxon_height
+  $(".antcat_taxon").css 'min-height', calculate_taxon_height()
   $('#catalog .index').css 'height', ''
 
 set_fixed_height = ->
   $('#page').css 'overflow', 'inherit'
-  $(".antcat_taxon").height calculate_taxon_height
+  taxon_height = calculate_taxon_height()
+  $(".antcat_taxon").height taxon_height
   $(".antcat_taxon").css 'min-height', ''
   $('.antcat_taxon').css 'overflow', ''
 
@@ -59,7 +59,7 @@ calculate_catalog_height = ->
   $('#site_footer').height() - 8
 
 calculate_taxon_height = ->
-  return taxon_height if taxon_height
+  return taxon_height if taxon_height?
   #session_height = $('.antcat_taxon').data 'taxon-window-height'
   #if session_height
     #taxon_height = session_height
