@@ -1,5 +1,5 @@
 splitter_top = 0
-taxon_height = 200
+taxon_height = null
 
 $ ->
   splitter = new AntCat.Splitter $('#splitter'), on_splitter_change
@@ -60,6 +60,10 @@ calculate_catalog_height = ->
 
 calculate_taxon_height = ->
   return taxon_height if taxon_height
+  #session_height = $('.antcat_taxon').data 'taxon-window-height'
+  #if session_height
+    #taxon_height = session_height
+    #return taxon_height
   page_height = $('#page').height()
   return 200 if page_height > 800
   return 90 if page_height > 600
