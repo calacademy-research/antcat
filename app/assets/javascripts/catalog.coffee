@@ -41,7 +41,7 @@ set_fixed_height = ->
   $('#page').css 'overflow', 'inherit'
   $(".antcat_taxon").height calculate_taxon_height
   $(".antcat_taxon").css 'min-height', ''
-  $('.antcat_taxon').css 'overflow', 'hidden'
+  $('.antcat_taxon').css 'overflow', ''
 
 set_catalog_height = (height) ->
   $("#catalog").height height
