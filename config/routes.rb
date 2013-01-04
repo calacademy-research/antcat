@@ -52,6 +52,8 @@ AntCat::Application.routes.draw do
     resources :taxon_history_items
   end
 
+  resource :taxon_window_height, only: [:update]
+
   resources :name_pickers, only: [:index, :lookup]
   match 'name_pickers/lookup' => 'name_pickers#lookup', as: :name_picker, via: :get
   resource :reference_picker, only: :show
