@@ -25,7 +25,7 @@ class Importers::Bolton::Bibliography::Importer
       line = p.inner_html
       next if header? line
       next if blank? line
-      reference = import_reference line
+      import_reference line
     end
   end
 
