@@ -1,3 +1,6 @@
+splitter_top = 0
+taxon_height = 200
+
 $ ->
   splitter = new AntCat.Splitter $('#splitter'), on_splitter_change
   set_dimensions()
@@ -6,9 +9,15 @@ $ ->
     on_form_open: -> set_height 'auto'
     on_form_close: -> set_height 'fixed'
   $('.icon.edit').show() if AntCat.testing
+  splitter_top = $('#splitter').position().top
 
 on_splitter_change = (top) ->
-  #set_height_from_splitter top
+  top = $('#splitter').position().top
+  delta = parseInt(top, 10) - splitter_top
+  splitter_top = top
+  taxon_height += delta
+  set_height()
+  $('#splitter').css 'top', 0
 
 set_dimensions = ->
   set_height()
@@ -49,6 +58,7 @@ calculate_catalog_height = ->
   $('#site_footer').height() - 8
 
 calculate_taxon_height = ->
+  return taxon_height if taxon_height
   page_height = $('#page').height()
   return 200 if page_height > 800
   return 90 if page_height > 600
