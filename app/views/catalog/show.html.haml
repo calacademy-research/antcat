@@ -5,6 +5,9 @@
   = javascript_include_tag 'ext/jquery.ui.selectmenu.js', 'ext/jquery.spinner.js'
   = stylesheet_link_tag 'ext/jquery.ui.selectmenu.css'
 
+#hide_all
+  &nbsp;
+
 #catalog
   - if user_can_edit_catalog
     - editing_buttons_content = editing_buttons @taxon, @parameters
