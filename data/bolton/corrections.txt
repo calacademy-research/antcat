@@ -1,2 +1,15 @@
-  03. FORMICOMORPHS     '.Type' -> '. Type'
-                        Insert '(pending)' as page number for 'online only version'
+03. FORMICOMORPHS           '.Type' -> '. Type'
+                            Insert '(pending)' as page number for 'online only version'
+08. MYRMICOMORPHS 2         For 'OCYMYRMEX', switch italics and red so that <i> is inside
+NGC-SPECIES CAMPONOTUS a-j  'var ' -> 'var.'
+NGC-SPECIES A-AN            '*Afropone </i>(?)' removed '?' and extra <i> tag
+                            Remove '>&nbsp; </span>' in punctiventris
+NGC-SPECIES AP-CAM          Remove '[sic]' and its extra <i>
+NGC-SPECIES CAMPONOTUS a-j  In baynei, unitalicize 'r.'
+NGC-SPECIES CRET-DON        Unitalicize 'Wilson' in dibolius
+NGC-SPECIES MO-MYO          Remove '[sic]' after Cyphomyrmex (Mycetoritis
+NGC-SPECIES MYR             Remove 'f. ' from 'f. sulcinodolobicornis'
+NGC-SPECIES PHI-PO          Italicize 'Ponera pilosula'
+NGC-SPECIES SH-STI          Remove '?' from 'Simopone ? mayri'
+                            Remove '?' from '?Amblyopone'
+NGC-SPECIES TET-Z           Don't italicize 'Forel' in 'Sima birmana Forel'
