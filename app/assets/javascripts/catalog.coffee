@@ -10,6 +10,7 @@ $ ->
     on_form_close: -> set_height 'fixed'
   $('.icon.edit').show() if AntCat.testing
   splitter_top = $('#splitter').position().top
+  $('#page_contents').show()
 
 on_splitter_change = (top) ->
   top = $('#splitter').position().top
@@ -66,4 +67,3 @@ calculate_taxon_height = ->
 
 set_width = ->
   $("#catalog .antcat_taxon, #catalog .new_taxon_form").width $('#page').width()
-
