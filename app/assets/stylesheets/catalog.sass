@@ -5,7 +5,9 @@
 @import 'widgets/tag_type_selector'
 @import 'catalog/taxon'
 @import 'catalog/history_item'
-@import 'catalog/taxon_form'
+
+html, body, #page, .rank
+  height: 100%
 
 #navigation_bar
   .actions.catalog_view_selector
@@ -30,6 +32,47 @@
 
 #page_contents
   padding: 0
+  padding-bottom: 3px
+
+#catalog
+  margin-top: 2px
+  min-width: 1500px
+
+  #splitter
+    height: 4px
+    width: 100%
+    background: gray
+    color: gray
+    cursor: row-resize
+
+  #editing_buttons
+    margin-top: 6px
+    margin-left: 17px
+
+  .rank
+    overflow-y: auto
+    overflow-x: hidden
+    border-right: solid 1px black
+    float: left
+    .header
+      height: 45px
+      padding-left: $left_margin
+      padding-top: 4px
+      text-align: left
+      vertical-align: top
+      font-size: 1.5em
+      border-bottom: solid black 1px
+      .hide_show
+        height: 11px
+        font-size: 10px
+        margin-left: 4px
+      .add
+        font-size: 10px
+        margin-left: 16px
+
+  td.taxon_item
+    padding-right: 13px
+    padding-left: $left_margin
 
 #taxon_key
   width: 100%
@@ -47,45 +90,6 @@
     font-weight: bold
     font-style: normal
     margin-left: 10px
-
-html, body, #page, .rank
-  height: 100%
-
-#page_contents
-  padding-bottom: 3px
-
-#catalog
-  margin-top: 2px
-  min-width: 1500px
-
-#editing_buttons
-  margin-top: 6px
-  margin-left: 17px
-
-.rank
-  overflow-y: auto
-  overflow-x: hidden
-  border-right: solid 1px black
-  float: left
-  .header
-    height: 45px
-    padding-left: $left_margin
-    padding-top: 4px
-    text-align: left
-    vertical-align: top
-    font-size: 1.5em
-    border-bottom: solid black 1px
-    .hide_show
-      height: 11px
-      font-size: 10px
-      margin-left: 4px
-    .add
-      font-size: 10px
-      margin-left: 16px
-
-td.taxon_item
-  padding-right: 13px
-  padding-left: $left_margin
 
 .reference_key_and_expansion
   &:hover
@@ -119,13 +123,3 @@ td.taxon_item
   .antcat_taxt_simulated_selection
     color: $color_current_reference_being_edited_by_reference_picker
     background: $color_current_reference_being_edited_by_reference_picker_background
-
-.taxon_form
-  display: none
-
-#splitter
-  height: 9px
-  width: 100%
-  background: grey
-  color: gray
-  cursor: row-resize
