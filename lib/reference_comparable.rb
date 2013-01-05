@@ -1,5 +1,12 @@
 # coding: UTF-8
 module ReferenceComparable
+  # requires that the client have:
+  #   type, author, title
+  # compares using these fields:
+  #   type, author, title, year, pagination, series_volume_issue
+  # ignores:
+  #   :journal, :place, :publisher
+
   def <=> rhs
     return 0.00 unless type == rhs.type
     return 0.00 unless normalize_author(author) == normalize_author(rhs.author)
@@ -44,8 +51,7 @@ module ReferenceComparable
   def match_article rhs
     return unless rhs.type == 'ArticleReference' && type == 'ArticleReference' &&
       rhs.series_volume_issue.present? && series_volume_issue.present? &&
-      rhs.pagination.present? && pagination.present? &&
-      rhs.pagination == pagination
+      rhs.pagination.present? && pagination.present? && rhs.pagination == pagination
 
     return 0.90 if normalize_series_volume_issue(rhs.series_volume_issue) ==
                  normalize_series_volume_issue(series_volume_issue)
