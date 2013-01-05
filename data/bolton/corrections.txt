@@ -1,14 +1,23 @@
-03. FORMICOMORPHS           '.Type' -> '. Type'
+03. FORMICOMORPHS           Change '.Type' to '. Type'
                             Insert '(pending)' as page number for 'online only version'
+04. MYRMECIOMORPHS          Add 'Taxonomic history' header to entry for Myrmeciites
 08. MYRMICOMORPHS 2         For 'OCYMYRMEX', switch italics and red so that <i> is inside
+                            Fix ',,' in entry for Acrocoelia
+                            Unitalicize 'in' in entry for Enneamerus
 NGC-SPECIES CAMPONOTUS a-j  'var ' -> 'var.'
+NGC-SPECIES CAMPONOTUS k-z  Deleted problematic "am Schiffe gefunden"
 NGC-SPECIES A-AN            '*Afropone </i>(?)' removed '?' and extra <i> tag
                             Remove '>&nbsp; </span>' in punctiventris
 NGC-SPECIES AP-CAM          Remove '[sic]' and its extra <i>
+                            In entry for shanwangensis, italicize parenthesis after 'Sinaphaenogaster'
 NGC-SPECIES CAMPONOTUS a-j  In baynei, unitalicize 'r.'
 NGC-SPECIES CRET-DON        Unitalicize 'Wilson' in dibolius
+NGC-SPECIES GA-LAS          In the entry for interjectus, don't italicize 'in'
+                            In the entry for striatula, unitalicize parenthesis
+NGC-SPECIES LEU-MI          In entry for decipiens, don't italicize 'of'
 NGC-SPECIES MO-MYO          Remove '[sic]' after Cyphomyrmex (Mycetoritis
 NGC-SPECIES MYR             Remove 'f. ' from 'f. sulcinodolobicornis'
+NGC-SPECIES PHI-PO          Italicize 'Ponera pilosula'
 NGC-SPECIES PHI-PO          Italicize 'Ponera pilosula'
 NGC-SPECIES SH-STI          Remove '?' from 'Simopone ? mayri'
                             Remove '?' from '?Amblyopone'
