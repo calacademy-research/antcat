@@ -1,6 +1,5 @@
 module Taxt
   class ReferenceNotFound < StandardError; end
-  class ReferenceNotFound < StandardError; end
   class TaxonNotFound < StandardError; end
   class NameNotFound < StandardError; end
   class IdNotFound < StandardError; end
@@ -91,6 +90,7 @@ module Taxt
     return id, type_number
   end
 
+  ################################
   def self.decode taxt, user = nil, options = {}
     return '' unless taxt
     taxt.gsub(/{ref (\d+)}/) do |whole_match|
