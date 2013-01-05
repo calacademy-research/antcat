@@ -82,7 +82,7 @@ describe Importers::Bolton::Catalog::TextToTaxt do
         [{:phrase=>"online"}, {:bracketed=>true}],
         [{:phrase=>"diagnosis"}]
       ]
-      @converter.notes(data).should == " [online] (diagnosis)"
+      @converter.notes_item(data).should == " [online] (diagnosis)"
     end
 
   end

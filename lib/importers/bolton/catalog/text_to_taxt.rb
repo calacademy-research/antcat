@@ -8,21 +8,21 @@ module Importers::Bolton::Catalog::TextToTaxt
   end
 
   def self.convert_text_to_taxt item
-    nested(item) or
-    phrase(item)  or
-    citation(item)  or
-    taxon_name(item)  or
-    brackets(item) or
-    unparseable(item) or
-    delimiter(item) or
+    nested_item(item) or
+    phrase_item(item)  or
+    citation_item(item)  or
+    taxon_name_item(item)  or
+    bracket_item(item) or
+    unparseable_item(item) or
+    delimiter_item(item) or
     raise "Couldn't convert #{item} to taxt"
   end
 
-  def self.nested item
+  def self.nested_item item
     return unless item[:text]
     prefix = item.delete :text_prefix
     suffix = item.delete :text_suffix
-    delimiter = item[:text].delete :delimiter
+    delimiter_item = item[:text].delete :delimiter_item
     taxt = convert item[:text], @genus_name
     add_delimiter taxt, item
     taxt = prefix + taxt if prefix
@@ -30,24 +30,24 @@ module Importers::Bolton::Catalog::TextToTaxt
     taxt
   end
 
-  def self.phrase item
+  def self.phrase_item item
     return unless item[:phrase]
     taxt = item[:phrase]
     add_delimiter taxt, item
   end
 
-  def self.citation item
+  def self.citation_item item
     return unless item[:author_names]
     taxt = ''
     taxt << item[:author_names].join(' & ') << ', in ' if item[:in]
     taxt << Taxt.encode_reference(::Reference.find_by_bolton_key item)
     taxt << ": #{item[:pages]}" if item[:pages]
     taxt << " (#{item[:forms]})" if item[:forms]
-    taxt << notes(item[:notes]) if item[:notes]
+    taxt << notes_item(item[:notes]) if item[:notes]
     add_delimiter taxt, item
   end
 
-  def self.taxon_name item
+  def self.taxon_name_item item
     keys = [:order_name, :family_name, :family_or_subfamily_name, :tribe_name, :subtribe_name, :collective_group_name, :genus_name, :subgenus_epithet, :genus_abbreviation, :subgenus_name, :species_name, :subspecies_name, :species_epithet, :species_group_epithet, :subspecies_epithet]
     key, name = find_one_of(keys, item)
     return unless key
@@ -59,7 +59,7 @@ module Importers::Bolton::Catalog::TextToTaxt
     taxt = Taxt.encode_taxon_name name_item
 
     authorship = item[:authorship]
-    taxt << ' ' << citation(item[:authorship].first) if authorship
+    taxt << ' ' << citation_item(item[:authorship].first) if authorship
     taxt << ': ' << item[:pages] if item[:pages]
     taxt << convert(items[:notes].first, @genus_name) if item[:notes]
     add_delimiter taxt, item
@@ -86,23 +86,23 @@ module Importers::Bolton::Catalog::TextToTaxt
     end
   end
 
-  def self.brackets item
+  def self.bracket_item item
     keys = [:opening_bracket, :closing_bracket, :opening_parenthesis, :closing_parenthesis]
     key, value = find_one_of(keys, item)
     return unless key
     add_delimiter value, item
   end
 
-  def self.unparseable item
+  def self.unparseable_item item
     return unless item[:unparseable]
     Taxt.encode_unparseable item[:unparseable]
   end
 
-  def self.delimiter item
+  def self.delimiter_item item
     item[:delimiter] or return
   end
 
-  def self.notes items
+  def self.notes_item items
     items.inject('') do |taxt, item|
       bracketed_item = item.find {|i| i[:bracketed]}
       item.delete bracketed_item if bracketed_item
