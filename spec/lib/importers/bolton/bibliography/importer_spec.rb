@@ -399,6 +399,12 @@ France </i><b style='mso-bidi-font-weight:normal'>1918</b>: 182-185.
 
   end
 
+  describe "Getting new references and seeing if they exist in AntCat" do
+    it "should return nothing if there is nothing" do
+      @bibliography.get_new_references.should == []
+    end
+  end
+
   def make_contents content
     "<html>
         <body>

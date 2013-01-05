@@ -104,7 +104,6 @@ class Importers::Bolton::Bibliography::Importer
     string
   end
 
-  #################
   def self.show_results
     show_changed_references
     show_totals
@@ -144,4 +143,8 @@ class Importers::Bolton::Bibliography::Importer
     "#{reference.to_s} #{reference.id}"
   end
 
+  ########################################
+  def get_new_references
+    []
+  end
 end
