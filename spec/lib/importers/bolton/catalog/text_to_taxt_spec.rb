@@ -156,12 +156,12 @@ describe Importers::Bolton::Catalog::TextToTaxt do
       data = [{family_or_subfamily_name: 'Mutillidae', delimiter: ': '}]
       @converter.convert(data, current_genus.name.to_s).should == "{nam #{Name.find_by_name('Mutillidae').id}}: "
     end
-    #it "should handle fossil family/order" do
-      #Taxt.should_receive(:encode_taxon_name).and_return '{nam 1234}'
-      #@converter.convert([
-        #{:family_or_subfamily_name=>"Myrmiciidae", :fossil=>true, :suborder_name=>"Symphyta", :delimiter=>": "}
-      #]).should == '&dagger;Myrmiciidae (Symphyta): '
-    #end
+    it "should handle fossil family/order" do
+      Taxt.should_receive(:encode_taxon_name).and_return '{nam 1234}'
+      @converter.convert([
+        {:family_or_subfamily_name=>"Myrmiciidae", :fossil=>true, :suborder_name=>"Symphyta", :delimiter=>": "}
+      ]).should == '{nam 1234}: '
+    end
     it "should handle taxon names with other text" do
       Taxt.should_receive(:encode_taxon_name).and_return '{nam 1234}'
       Taxt.should_receive(:encode_taxon_name).and_return '{nam 5678}'
