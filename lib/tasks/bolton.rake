@@ -28,6 +28,11 @@ namespace :bolton do
 
     desc 'Import and match Bolton references'
     task import_and_match: ['bolton:import:references', 'bolton:references:match']
+
+    desc "Show new Bolton references that aren't in AntCat"
+    task show_new: :environment do
+      new_references = Importers::Bolton::Bibliography::Importer.new.get_new_references
+    end
   end
 
 end
