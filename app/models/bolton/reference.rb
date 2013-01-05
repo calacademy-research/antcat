@@ -142,6 +142,24 @@ class Bolton::Reference < ActiveRecord::Base
     string
   end
 
+  def self.import attributes
+    attributes[:title] = attributes[:title][0, 255]
+    if reference = where(attributes).first
+      reference.update_attribute :import_result, 'identical'
+    elsif reference = where(:authors => attributes[:authors], :citation_year => attributes[:citation_year], :title => attributes[:title]).first
+      import_update reference, attributes
+    elsif reference = where(:authors => attributes[:authors], :citation_year => attributes[:citation_year]).first
+      import_updated_title reference, attributes
+    elsif reference = where(:authors => attributes[:authors], :title => attributes[:title]).first
+      import_updated_year reference, attributes
+    elsif reference = where(:citation_year => attributes[:citation_year], :title => attributes[:title]).first
+      import_updated_authors reference, attributes
+    else
+      reference = create! attributes.merge(:import_result => 'added')
+    end
+    reference
+  end
+
   def self.import_update reference, attributes
     nothing_important_changed = normalize_to_see_if_anything_important_changed(reference.original) == normalize_to_see_if_anything_important_changed(attributes[:original])
     Progress.puts "Changed: #{reference.original}" unless nothing_important_changed
@@ -171,24 +189,6 @@ class Bolton::Reference < ActiveRecord::Base
     Progress.puts "From #{reference.citation_year} to #{attributes[:citation_year]}"
     Progress.puts
     reference.update_attributes attributes.merge(:import_result => 'updated_year')
-  end
-
-  def self.import attributes
-    attributes[:title] = attributes[:title][0, 255]
-    if reference = where(attributes).first
-      reference.update_attribute :import_result, 'identical'
-    elsif reference = where(:authors => attributes[:authors], :citation_year => attributes[:citation_year], :title => attributes[:title]).first
-      import_update reference, attributes
-    elsif reference = where(:authors => attributes[:authors], :citation_year => attributes[:citation_year]).first
-      import_updated_title reference, attributes
-    elsif reference = where(:authors => attributes[:authors], :title => attributes[:title]).first
-      import_updated_year reference, attributes
-    elsif reference = where(:citation_year => attributes[:citation_year], :title => attributes[:title]).first
-      import_updated_authors reference, attributes
-    else
-      reference = create! attributes.merge(:import_result => 'added')
-    end
-    reference
   end
 
 end
