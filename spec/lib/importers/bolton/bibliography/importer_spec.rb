@@ -3,7 +3,7 @@ require 'spec_helper'
 
 describe Importers::Bolton::Bibliography::Importer do
   before do
-    @bibliography = Importers::Bolton::Bibliography::Importer.new
+    @importer = Importers::Bolton::Bibliography::Importer.new
   end
 
   def diff a, b
@@ -14,8 +14,8 @@ describe Importers::Bolton::Bibliography::Importer do
 
   it "importing a file should call #import_html" do
    File.should_receive(:read).with('file_name').and_return('contents')
-   @bibliography.should_receive(:import_html).with('contents')
-   @bibliography.import_files ['file_name']
+   @importer.should_receive(:import_html).with('contents')
+   @importer.import_files ['file_name']
    Bolton::Reference.all.should be_empty
   end
 
@@ -24,7 +24,7 @@ describe Importers::Bolton::Bibliography::Importer do
       contents = make_contents "Abe, M. &amp; Smith, D.R. 1991d. The genus-group names of Symphyta and their type
 species. <i style='mso-bidi-font-style:normal'>Esakia</i> <b style='mso-bidi-font-weight:
 normal'>31</b>: 1-115. [31.vii.1991.]"
-      @bibliography.import_html contents
+      @importer.import_html contents
       reference = Bolton::Reference.first
       reference.authors.should == 'Abe, M. & Smith, D.R.'
       reference.citation_year.should == '1991d'
@@ -42,7 +42,7 @@ normal'>31</b>: 1-115. [31.vii.1991.]"
 J. 1934b. New Australian ants. <i style='mso-bidi-font-style:normal'>Memoirs of
 the National Museum, Victoria</i> <b style='mso-bidi-font-weight:normal'>8</b>:
 21-47, [(30).ix.1934.]"
-     @bibliography.import_html contents
+     @importer.import_html contents
      reference = Bolton::Reference.first
      reference.authors.should == 'Clark, J.'
      reference.citation_year.should == '1934b'
@@ -63,7 +63,7 @@ normal'>Camponotus (Karavaievia) hoelldobleri</i> Dumpert, 2006. <i
 style='mso-bidi-font-style:normal'>Myrmecologische Nachrichten</i> <b
 style='mso-bidi-font-weight:normal'>9</b>: 89. [1.2.1934.]
      }
-     @bibliography.import_html contents
+     @importer.import_html contents
      reference = Bolton::Reference.first
      reference.authors.should == 'Dumpert, K.'
      reference.citation_year.should == '2006'
@@ -84,7 +84,7 @@ normal'>Camponotus (Karavaievia) hoelldobleri</i> Dumpert, 2006. <i
 style='mso-bidi-font-style:normal'>Myrmecologische Nachrichten</i> <b
 style='mso-bidi-font-weight:normal'>9</b>: 89.
      }
-     @bibliography.import_html contents
+     @importer.import_html contents
      reference = Bolton::Reference.first
      reference.authors.should == 'Dumpert, K.'
      reference.citation_year.should == '2006'
@@ -103,7 +103,7 @@ style='mso-bidi-font-style:normal'>Annals of the Natal Museum</i> <b
 style='mso-bidi-font-weight:normal'>15</b>: 79-87. [8.xii.1960.]
      }
 
-     @bibliography.import_html contents
+     @importer.import_html contents
      reference = Bolton::Reference.first
      reference.authors.should == 'Arnold, G.'
      reference.citation_year.should == '1960a'
@@ -119,7 +119,7 @@ style='mso-bidi-font-weight:normal'>15</b>: 79-87. [8.xii.1960.]
      contents = make_contents %s{
 <p><span>Brown, W.L.,Jr. 2010. </span><span>The venom. <i>Martialis</i> <b>50</b>:413-423.</span></p> 
      }
-     @bibliography.import_html contents
+     @importer.import_html contents
      reference = Bolton::Reference.first
      reference.authors.should == 'Brown, W.L.,Jr.'
    end
@@ -130,7 +130,7 @@ Brown, W.L.,Jr.1948a. A new <i style='mso-bidi-font-style:normal'>Stictoponera</
 with notes on the genus. <i style='mso-bidi-font-style:normal'>Psyche</i> <b
 style='mso-bidi-font-weight:normal'>54</b>: 263-264. [17.ii.1948.]
      }
-     @bibliography.import_html contents
+     @importer.import_html contents
      reference = Bolton::Reference.first
      reference.authors.should == 'Brown, W.L.,Jr.'
      reference.citation_year.should == '1948a'
@@ -148,7 +148,7 @@ Brown, W.L.,Jr.1948a. A new <i style='mso-bidi-font-style:normal'>Stictoponera</
 with notes on the genus. <i style='mso-bidi-font-style:normal'>Psyche</i> <b
 style='mso-bidi-font-weight:normal'>54</b> (1947): 263-264. [17.ii.1948.]
      }
-     @bibliography.import_html contents
+     @importer.import_html contents
      reference = Bolton::Reference.first
      reference.authors.should == 'Brown, W.L.,Jr.'
      reference.citation_year.should == '1948a'
@@ -167,7 +167,7 @@ smithi</i> from New Mexico. <i style='mso-bidi-font-style:normal'>Journal of
 the Tennessee Academy of Science</i> <b style='mso-bidi-font-weight:normal'>27</b>:
 159-162. [(30).iv.1952.]
      }
-     @bibliography.import_html contents
+     @importer.import_html contents
      reference = Bolton::Reference.first
      reference.authors.should == 'Cole, A.C.,Jr.'
      reference.citation_year.should == '1952a'
@@ -183,7 +183,7 @@ the Tennessee Academy of Science</i> <b style='mso-bidi-font-weight:normal'>27</
      contents = make_contents %s{
 Dumpert, K., Maschwitz, U. & Weissflog, A. 2006. Description of five new weaver ant species of<span style="mso-spacerun: yes"> </span><i style="mso-bidi-font-style: normal">Camponotus</i> subgenus <i style="mso-bidi-font-style:normal">Karavaievia</i> Emery, 1925 from Malaysia and Thailand, with contribution to their biology, especially to colony foundation. <i style="mso-bidi-font-style:normal">Myrmecologische Nachrichten</i> <b style="mso-bidi-font-weight:normal">8</b>: 69-82. 
      }
-     @bibliography.import_html contents
+     @importer.import_html contents
      reference = Bolton::Reference.first
      expected = 'Description of five new weaver ant species of Camponotus subgenus Karavaievia Emery, 1925 from Malaysia and Thailand, with contribution to their biology, especially to colony foundation'
      actual = reference.title
@@ -194,7 +194,7 @@ Dumpert, K., Maschwitz, U. & Weissflog, A. 2006. Description of five new weaver 
      contents = make_contents %s{
 Douwes, P., Jessen, K. & Buschinger, A. 1988. <i style="mso-bidi-font-style:normal">Epimyrma adlerzi</i> sp. n. from Greece: morphology and life history. <i style="mso-bidi-font-style:normal">Entomologica Scandinavica</i> <b style="mso-bidi-font-weight:normal">19</b>: 239-249. [28.ix.1988.]
      }
-     @bibliography.import_html contents
+     @importer.import_html contents
      reference = Bolton::Reference.first
      reference.title.should == 'Epimyrma adlerzi sp. n. from Greece: morphology and life history' 
    end
@@ -203,7 +203,7 @@ Douwes, P., Jessen, K. & Buschinger, A. 1988. <i style="mso-bidi-font-style:norm
      contents = make_contents %s{
 Dupuis, C. 1986. Dates de publication de l'Histoire Naturelle Générale et Particulière des Crustacés et des Insectes (1802-1805) par Latreille dans le "Buffon de Sonnini." <i style="mso-bidi-font-style:normal">Annales de la Société Entomologique de France</i> (N.S.) <b style="mso-bidi-font-weight:normal">22</b>: 205-210. [30.vi.1986.]
      }
-     @bibliography.import_html contents
+     @importer.import_html contents
      reference = Bolton::Reference.first
      reference.series_volume_issue.should == '(N.S.) 22' 
    end
@@ -212,7 +212,7 @@ Dupuis, C. 1986. Dates de publication de l'Histoire Naturelle Générale et Part
      contents = make_contents %s{
 DuBois, M.B. 1998a. The first fossil Dorylinae, with notes on fossil Ecitoninae. <i style="mso-bidi-font-style:normal">Entomological News </i><b style="mso-bidi-font-weight: normal">109</b>: 136-142. [1998.]
      }
-     @bibliography.import_html contents
+     @importer.import_html contents
      reference = Bolton::Reference.first
      reference.title.should == 'The first fossil Dorylinae, with notes on fossil Ecitoninae'
    end
@@ -221,7 +221,7 @@ DuBois, M.B. 1998a. The first fossil Dorylinae, with notes on fossil Ecitoninae.
      contents = make_contents %s{
 DuBois, M.B. 1993. What's in a name? A clarification of <i style="mso-bidi-font-style: normal">Stenamma westwoodi, S. debile</i>, and <i style="mso-bidi-font-style: normal">S. lippulum. Sociobiology</i> <b style="mso-bidi-font-weight:normal">21</b>: 299- 334. [(31.xii).1993.]
      }
-     @bibliography.import_html contents
+     @importer.import_html contents
      reference = Bolton::Reference.first
      reference.pagination.should == '299- 334'
    end
@@ -230,7 +230,7 @@ DuBois, M.B. 1993. What's in a name? A clarification of <i style="mso-bidi-font-
      contents = make_contents %s{
 Dorow, W.H.O. & Kohout, R.J. 1995. A review of the subgenus <i style="mso-bidi-font-style: normal">Hemioptica</i> Roger of the genus <i style="mso-bidi-font-style:normal">Polyrhachis</i> Fr. Smith with description of a new species. <i style="mso-bidi-font-style: normal">Zoologische Mededelingen</i> <b style="mso-bidi-font-weight:normal">69</b>: 93 - 104. [(31.xii).1995.]
      }
-     @bibliography.import_html contents
+     @importer.import_html contents
      reference = Bolton::Reference.first
      reference.pagination.should == '93 - 104'
    end
@@ -239,7 +239,7 @@ Dorow, W.H.O. & Kohout, R.J. 1995. A review of the subgenus <i style="mso-bidi-f
      contents = make_contents %s{
 Dorow, W.H.O. & Kohout, R.J. 1995. Paleogene ants of the genus <i style="mso-bidi-font-style:normal">Archimyrmex</i> Cockerell, 1923. <i style="mso-bidi-font-style:normal">Paleontological Journal</i> <b style=''>37</b>: 39-47. [English translation of <i style="mso-bidi-font-style:normal">Paleontologicheskii Zhurnal</i> 2003 (No. 1): 40-49.] 
      }
-     @bibliography.import_html contents
+     @importer.import_html contents
      reference = Bolton::Reference.first
      reference.authors.should == "Dorow, W.H.O. & Kohout, R.J."
      reference.reference_type.should == 'ArticleReference'
@@ -253,13 +253,13 @@ Dorow, W.H.O. & Kohout, R.J. 1995. Paleogene ants of the genus <i style="mso-bid
   it 'should skip over a note' do
     contents = make_contents %s{Note: in publications the following name appears as either Dubovikoff or Dubovikov; the latter is used here throughout.  }
     Importers::Bolton::Bibliography::Importer.should_not_receive(:parse)
-    @bibliography.import_html contents
+    @importer.import_html contents
   end
 
   describe 'importing book references' do
     it "should import a book reference" do
       contents = make_contents "Dixon, F. 1940. <i style='mso-bidi-font-style:normal'>The geology and fossils of the Tertiary and Cretaceous formation of Sussex</i>: 422 pp. London. [(31).xii.1850.]"
-      @bibliography.import_html contents
+      @importer.import_html contents
       reference = Bolton::Reference.first
       reference.authors.should == 'Dixon, F.'
       reference.citation_year.should == '1940'
@@ -275,7 +275,7 @@ Dorow, W.H.O. & Kohout, R.J. 1995. Paleogene ants of the genus <i style="mso-bid
       contents = make_contents %s{
   Dumpert, K. 1994. <i style='mso-bidi-font-style:normal'>Das Sozialleben der Ameisen</i>. <b style='mso-bidi-font-weight:normal'>2</b>., neubearbeitete Auflage: 257 pp.  Berlin &amp; Hamburg. [(31.xii).1994.]
       }
-      @bibliography.import_html contents
+      @importer.import_html contents
       reference = Bolton::Reference.first
       reference.authors.should == 'Dumpert, K.'
       reference.citation_year.should == '1994'
@@ -290,7 +290,7 @@ Dorow, W.H.O. & Kohout, R.J. 1995. Paleogene ants of the genus <i style="mso-bid
       contents = make_contents %s{
   Drury, D. 1773. <i style="mso-bidi-font-style:normal">Illustrations of Natural History</i>. Wherein are exhibited upwards of two hundred and twenty figures of exotic insects. <b style="mso-bidi-font-weight:normal">2</b>: 90 pp. London. [(31.xii).1773.]
       }
-      @bibliography.import_html contents
+      @importer.import_html contents
       reference = Bolton::Reference.first
       reference.title.should == 'Illustrations of Natural History. Wherein are exhibited upwards of two hundred and twenty figures of exotic insects. 2' 
     end
@@ -299,7 +299,7 @@ Dorow, W.H.O. & Kohout, R.J. 1995. Paleogene ants of the genus <i style="mso-bid
       contents = make_contents %s{
   Donisthorpe, H. 1927b. <i style="mso-bidi-font-style:normal">British Ants, their life-history and classification</i> (2nd. edition): 436 pp. London. [(31.xii).1927.]
       }
-      @bibliography.import_html contents
+      @importer.import_html contents
       reference = Bolton::Reference.first
       reference.title.should == 'British Ants, their life-history and classification (2nd. edition)' 
     end
@@ -308,7 +308,7 @@ Dorow, W.H.O. & Kohout, R.J. 1995. Paleogene ants of the genus <i style="mso-bid
       contents = make_contents %s{
   Don, W. 2007. <i style="mso-bidi-font-style:normal">Ants of New Zealand</i>: 239 pp. Otago University Press. 
       }
-      @bibliography.import_html contents
+      @importer.import_html contents
       reference = Bolton::Reference.first
       reference.note.should be_nil
     end
@@ -320,7 +320,7 @@ Dorow, W.H.O. & Kohout, R.J. 1995. Paleogene ants of the genus <i style="mso-bid
       contents = make_contents %s{
   Dlussky, G.M. & Zabelin, S.I. 1985. Fauna murav'ev Basseina R. Sumbar (Yugo-zapadnyi Kopetdag) (pp. 208-246). In Nechaevaya, N.T. <i style="mso-bidi-font-style: normal">Rastitel'nost i Zhivotnyi Mir Zaladnogo Kopetdaga</i>: 277 pp. Ashkhabad, Ylym. [22.x.1985.]
       }
-      @bibliography.import_html contents
+      @importer.import_html contents
       reference = Bolton::Reference.first
       reference.title.should == "Fauna murav'ev Basseina R. Sumbar (Yugo-zapadnyi Kopetdag)"
       reference.citation_year.should == "1985"
@@ -334,7 +334,7 @@ Dorow, W.H.O. & Kohout, R.J. 1995. Paleogene ants of the genus <i style="mso-bid
       contents = make_contents %s{
   Abe, M. &amp; Smith, D.R. 1991d. The genus-group names of Symphyta and their type species. <i style='mso-bidi-font-style:normal'>Esakia</i> <b style='mso-bidi-font-weight: normal'>31</b>: 1-115. [English translation of <i style="mso-bidi-font-style:normal">Paleontologicheskii Zhurnal</i> 2003 (No. 1): 40-49.]"
       }
-      @bibliography.import_html contents
+      @importer.import_html contents
       reference = Bolton::Reference.first
       reference.reference_type.should == 'ArticleReference'
       reference.note.should == 'English translation of Paleontologicheskii Zhurnal 2003 (No. 1): 40-49'
@@ -346,7 +346,7 @@ Dorow, W.H.O. & Kohout, R.J. 1995. Paleogene ants of the genus <i style="mso-bid
       contents = make_contents %s{
   Dlussky, G.M. & Perfilieva, K.S. 2003. Paleogene ants of the genus <i style="mso-bidi-font-style:normal">Archimyrmex</i> Cockerell, 1923. <i style="mso-bidi-font-style:normal">Paleontological Journal</i> 37: 39-47. [English translation of <i style="mso-bidi-font-style:normal">Paleontologicheskii Zhurnal</i> 2003 (No. 1): 40-49.] 
       }
-      @bibliography.import_html contents
+      @importer.import_html contents
       reference = Bolton::Reference.first
       reference.reference_type.should == 'UnknownReference'
       reference.citation_year.should == '2003'
@@ -358,7 +358,7 @@ Dorow, W.H.O. & Kohout, R.J. 1995. Paleogene ants of the genus <i style="mso-bid
     contents = make_contents %s{
 <p>Wheeler, G.C. &amp; Wheeler, J. 1991a. The larva of <i>Blepharidatta.<span>&nbsp; </span>Journal of the New York Entomological Society</i> <b>99</b>: 132-137.<span>&nbsp; </span>[14.ii.1991.]</p>
     }
-    @bibliography.import_html contents
+    @importer.import_html contents
     reference = Bolton::Reference.first
     reference.title.should == 'The larva of Blepharidatta'
   end
@@ -366,7 +366,7 @@ Dorow, W.H.O. & Kohout, R.J. 1995. Paleogene ants of the genus <i style="mso-bid
   describe 'saving the original' do
     it "should simplify the HTML markup" do
       contents = make_contents "Abe, M. &amp; Smith, D.R. 1991d. The genus-group names of Symphyta and their type species. <i style='mso-bidi-font-style:normal'>Esakia</i> <b style='mso-bidi-font-weight: normal'>31</b>: 1-115. [31.vii.1991.]"
-      @bibliography.import_html contents
+      @importer.import_html contents
       Bolton::Reference.first.original.should == "Abe, M. & Smith, D.R. 1991d. The genus-group names of Symphyta and their type species. <i>Esakia</i> <b>31</b>: 1-115. [31.vii.1991.]"
     end
   end
@@ -376,7 +376,7 @@ Dorow, W.H.O. & Kohout, R.J. 1995. Paleogene ants of the genus <i style="mso-bid
       contents = make_contents "Abe, M. &amp; Smith, D.R. 1991d. The genus. <i>Esakia</i> <b>31</b>: 1-115. [31.vii.1991.]"
       reference = FactoryGirl.create :bolton_reference
       Bolton::Reference.should_receive(:import).and_return reference
-      @bibliography.import_html contents
+      @importer.import_html contents
     end
     it "should clear the import result" do
       seen = FactoryGirl.create :bolton_reference, :import_result => 'added'
@@ -392,7 +392,7 @@ style="mso-spacerun: yes">&nbsp; </span>Bulletin de la Société Entomologique d
 France </i><b style='mso-bidi-font-weight:normal'>1918</b>: 182-185.
 [27.viii.1918.]</p>
       }
-      @bibliography.import_html contents
+      @importer.import_html contents
       reference = Bolton::Reference.first
       reference.original.should == %{Santschi, F. 1918d. Sous-genres et synonymies de <i>Cremastogaster</i>.<i>  Bulletin de la Société Entomologique de France </i><b>1918</b>: 182-185. [27.viii.1918.]}
     end
