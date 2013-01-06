@@ -146,7 +146,6 @@ class Importers::Bolton::Bibliography::Importer
   ########################################
   def get_new_references
     ::Bolton::Reference.where(import_result: 'added').select do |reference|
-      puts "#{reference.year} #{reference.authors} #{reference.title}"
       not Reference.find_bolton reference
     end
   end
