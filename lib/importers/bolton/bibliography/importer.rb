@@ -6,10 +6,10 @@
 class Importers::Bolton::Bibliography::Importer
   def initialize show_progress = false
     Progress.init show_progress, nil, self.class.name
-    ::Bolton::Reference.update_all import_result: nil
   end
 
   def import_files filenames
+    ::Bolton::Reference.update_all import_result: nil
     filenames.each do |filename|
       @filename = filename
       Progress.puts "Importing #{@filename}..."
