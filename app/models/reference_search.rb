@@ -174,4 +174,22 @@ class Reference < ActiveRecord::Base
     reference
   end
 
+  def self.find_bolton bolton_reference
+    bolton_key = bolton_reference.key.to_s :db
+
+    reference = find_by_bolton_key_cache bolton_key
+    return reference if reference
+
+    bolton_reference = Bolton::Reference.find_by_key_cache bolton_key
+    if !bolton_reference
+      reference = nil
+    else
+      reference = bolton_reference.match
+    end
+
+    reference.update_attribute :bolton_key_cache, bolton_key if reference
+
+    reference
+  end
+
 end
