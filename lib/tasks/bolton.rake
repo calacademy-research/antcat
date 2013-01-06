@@ -31,7 +31,10 @@ namespace :bolton do
 
     desc "Show new Bolton references that aren't in AntCat"
     task show_new: :environment do
-      new_references = Importers::Bolton::Bibliography::Importer.new.get_new_references
+      references = Importers::Bolton::Bibliography::Importer.new.get_new_references
+      references.each do |reference|
+        puts reference.to_s
+      end
     end
   end
 

@@ -401,7 +401,25 @@ France </i><b style='mso-bidi-font-weight:normal'>1918</b>: 182-185.
 
   describe "Getting new references and seeing if they exist in AntCat" do
     it "should return nothing if there is nothing" do
-      @bibliography.get_new_references.should == []
+      @importer.get_new_references.should == []
+    end
+    it "should return a new reference in Bolton" do
+      antcat_reference = Factory.create :book_reference
+      new_bolton_reference = Factory.create :bolton_reference, import_result: 'added'
+      bolton_key = new_bolton_reference.key
+      @importer.get_new_references.should == [new_bolton_reference]
+    end
+    it "should not return a new reference in Bolton that is already in AntCat" do
+      new_bolton_reference = Factory.create :bolton_reference, import_result: 'added'
+      bolton_key = new_bolton_reference.key
+      antcat_reference = Factory.create :book_reference, bolton_key_cache: bolton_key
+      @importer.get_new_references.should == [new_bolton_reference]
+    end
+    it "should not return a reference that's not new" do
+      old_bolton_reference = Factory.create :bolton_reference, import_result: nil
+      bolton_key = old_bolton_reference.key
+      antcat_reference = Factory.create :book_reference, bolton_key_cache: bolton_key
+      @importer.get_new_references.should == []
     end
   end
 
