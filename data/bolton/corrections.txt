@@ -1,4 +1,5 @@
 01. FORMICIDAE              Put AFROTROPICAL AND MALaGASY on its own line
+02. DOLICHODEROMORPHS       Remove italicized
 03. FORMICOMORPHS           Change '.Type' to '. Type'
                             Insert '(pending)' as page number for 'online only version'
 04. MYRMECIOMORPHS          Add 'Taxonomic history' header to entry for Myrmeciites
