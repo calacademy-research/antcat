@@ -2,7 +2,7 @@
 02. DOLICHODEROMORPHS       Remove italicized
 03. FORMICOMORPHS           Change '.Type' to '. Type'
                             Insert '(pending)' as page number for 'online only version'
-04. MYRMECIOMORPHS          Add 'Taxonomic history' header to entry for Myrmeciites
+04. MYRMECIOMORPHS          Add 'Taxonomic history' header to entry for Myrmeciites after protonym
 08. MYRMICOMORPHS 2         For 'OCYMYRMEX', switch italics and red so that <i> is inside
                             Fix ',,' in entry for Acrocoelia
                             Unitalicize 'in' in entry for Enneamerus
