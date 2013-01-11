@@ -172,9 +172,9 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
 
   def get_file_names _
     if AntCat::ImportAllFiles
-      super Dir.glob("#{$BOLTON_DATA_DIRECTORY}/NGC-Sp*.htm")
+      super Dir.glob("#{$BOLTON_DATA_DIRECTORY}/NGC-SPECIES *.htm")
     else
-      ['g-las'].map {|e| "#{$BOLTON_DATA_DIRECTORY}/NGC-Sp#{e}.htm"}
+      ['MO-MYO'].map {|e| "#{$BOLTON_DATA_DIRECTORY}/NGC-SPECIES #{e}.htm"}
     end
   end
 
