@@ -11,6 +11,7 @@ NGC-SPECIES CAMPONOTUS k-z  Deleted problematic "am Schiffe gefunden"
 NGC-SPECIES A-AN            '*Afropone </i>(?)' removed '?' and extra <i> tag
                             Remove '>&nbsp; </span>' in punctiventris
 NGC-SPECIES AP-CAM          Remove '[sic]' and its extra <i>
+                            Add paren after 'Attomyrmex' in '(Attomyrmex exploitus'
                             In entry for shanwangensis, italicize parenthesis after 'Sinaphaenogaster'
 NGC-SPECIES CAMPONOTUS a-j  In baynei, unitalicize 'r.'
 NGC-SPECIES CRET-DON        Unitalicize 'Wilson' in dibolius
