@@ -26,7 +26,7 @@ describe Importers::Bolton::Catalog::Importer do
 
   describe "normalization" do
     it "should do normalization in the right order" do
-      @importer.normalize("<b><i><span style='color:red'>stefanschoedli</span></i></b><i>.[<span style='color:red'> </span><span style='color:black'>Forelophilus stefanschoedli </span></i><span style='color:black'>Zettel &amp; Zimmermann et al., 2007: 22, figs. 1, 2, 4-9 (s.w.) PHILIPPINES (Mindanao).<o:p></o:p></span>").should == %{<i>stefanschoedli</i>. <i>Forelophilus stefanschoedli</i> Zettel & Zimmermann, <i>et al</i>., 2007: 22, figs. 1, 2, 4-9 (s.w.) PHILIPPINES (Mindanao).}
+      @importer.normalize("<b><i><span style='color:red'>stefanschoedli</span></i></b><i>.[<span style='color:red'> </span><span style='color:black'>Forelophilus stefanschoedli </span></i><span style='color:black'>Zettel &amp; Zimmermann et al., 2007: 22, figs. 1, 2, 4-9 (s.w.) PHILIPPINES (Mindanao).<o:p></o:p></span>").should == %{<i>stefanschoedli</i>. <i>Forelophilus stefanschoedli</i> Zettel & Zimmermann, <i>et al.</i>, 2007: 22, figs. 1, 2, 4-9 (s.w.) PHILIPPINES (Mindanao).}
     end
 
     it "should do ending punctuation fix in the right order" do
