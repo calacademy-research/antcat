@@ -26,7 +26,7 @@ describe Importers::Bolton::Catalog::Importer do
 
   describe "normalization" do
     it "should do normalization in the right order" do
-      @importer.normalize("<b><i><span style='color:red'>stefanschoedli</span></i></b><i>.[<span style='color:red'> </span><span style='color:black'>Forelophilus stefanschoedli </span></i><span style='color:black'>Zettel &amp; Zimmermann et al., 2007: 22, figs. 1, 2, 4-9 (s.w.) PHILIPPINES (Mindanao).<o:p></o:p></span>").should == %{<i>stefanschoedli</i>. <i>Forelophilus stefanschoedli</i> Zettel & Zimmermann, <i>et al.</i>, 2007: 22, figs. 1, 2, 4-9 (s.w.) PHILIPPINES (Mindanao).}
+      @importer.normalize("<b><i><span style='color:red'>stefanschoedli</span></i></b><i>.[<span style='color:red'> </span><span style='color:black'>Forelophilus stefanschoedli </span></i><span style='color:black'>Zettel &amp; Zimmermann et al., 2007: 22, figs. 1, 2, 4-9 (s.w.) PHILIPPINES (Mindanao).<o:p></o:p></span>").should == %{<i>stefanschoedli</i>. <i>Forelophilus stefanschoedli</i> Zettel & Zimmermann, <i>et al</i>., 2007: 22, figs. 1, 2, 4-9 (s.w.) PHILIPPINES (Mindanao).}
     end
 
     it "should do ending punctuation fix in the right order" do
@@ -268,6 +268,12 @@ describe Importers::Bolton::Catalog::Importer do
       end
     end
 
+  end
+
+  it "should remove empty italics even in this mess" do
+ @importer.normalize(
+%{<b style="mso-bidi-font-weight:normal"><i style="mso-bidi-font-style:normal"><span style='font-size:12.0pt;font-family: "Times New Roman";mso-bidi-font-family:"Times New Roman";color:red'>caniophanoides</span></i></b><b style="mso-bidi-font-weight:normal"><i style="mso-bidi-font-style:normal"><span style='font-size:12.0pt;font-family:"Times New Roman";mso-bidi-font-family: "Times New Roman";color:black'>. </span></i></b><i style="mso-bidi-font-style: normal"><span style='font-size:12.0pt;font-family:"Times New Roman";mso-bidi-font-family: "Times New Roman";color:black'>Strumigenys caniophanoides</span></i><span style='font-size:12.0pt;font-family:"Times New Roman";mso-bidi-font-family: "Times New Roman";color:black'> De Andrade, in Baroni Urbani & De Andrade, 2007: 153, fig. 53 (w.) BHUTAN.<p></p></span>}).should == 
+"<i>caniophanoides</i>. <i>Strumigenys caniophanoides</i> De Andrade, in Baroni Urbani & De Andrade, 2007: 153, fig. 53 (w.) BHUTAN." 
   end
 
 end
