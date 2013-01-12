@@ -21,8 +21,11 @@ NGC-SPECIES LEU-MI          In entry for decipiens, don't italicize 'of'
 NGC-SPECIES MO-MYO          Remove '[sic]' after Cyphomyrmex (Mycetoritis
                             Make protonym inside one set of <i>
 NGC-SPECIES MYR             Remove 'f. ' from 'f. sulcinodolobicornis'
+NGC-SPECIES ON-PHA          Remove ? after Pachycondyla
 NGC-SPECIES PHI-PO          Italicize 'Ponera pilosula'
-NGC-SPECIES PHI-PO          Italicize 'Ponera pilosula'
+NGC-SPECIES PON-PSE         Remove ? from Protopone
 NGC-SPECIES SH-STI          Remove '?' from 'Simopone ? mayri'
                             Remove '?' from '?Amblyopone'
+NGC-SPECIES STRUMIGENYS     Remove extraneous <b> and <i> around Strumigenys aduncomala
+                            Remove extraneous <b> and <i> around Strumigenys aequinoctialis
 NGC-SPECIES TET-Z           Don't italicize 'Forel' in 'Sima birmana Forel'
