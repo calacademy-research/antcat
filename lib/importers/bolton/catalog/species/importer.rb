@@ -174,7 +174,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     if AntCat::ImportAllFiles
       super Dir.glob("#{$BOLTON_DATA_DIRECTORY}/NGC-SPECIES *.htm")
     else
-      ['MO-MYO'].map {|e| "#{$BOLTON_DATA_DIRECTORY}/NGC-SPECIES #{e}.htm"}
+      ['TET-Z', 'TETRAMORIUM'].map {|e| "#{$BOLTON_DATA_DIRECTORY}/NGC-SPECIES #{e}.htm"}
     end
   end
 
