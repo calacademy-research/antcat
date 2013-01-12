@@ -161,6 +161,7 @@ class Importers::Bolton::Catalog::Importer
   ###################################################################################################
 
   def normalize string
+    remove_empty_italics(
     fix_ending_punctuation(
     fix_et_al(
     fix_u_s_a(
@@ -175,7 +176,7 @@ class Importers::Bolton::Catalog::Importer
     remove_mismatched_brackets(
     replace_character_entities(
     fix_utf_characters(
-      string))))))))))))))
+      string)))))))))))))))
   end
 
   def fix_no_space_after_semicolon string
