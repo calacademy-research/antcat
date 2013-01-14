@@ -246,7 +246,7 @@ describe Family do
       end
 
       describe "Protonym" do
-        it "should call to compare protonyms" do
+        it "should handle value fields" do
           data = @data.merge(
             protonym: {
               family_or_subfamily_name: 'Formicadiae',
