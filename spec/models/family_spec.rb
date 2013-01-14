@@ -78,11 +78,21 @@ describe Family do
         atta = create_genus 'Atta'
         @nam_taxt = "{nam #{atta.name.id}}"
 
+        citation = Citation.create! reference: reference, pages: '12'
+        @protonym = Protonym.create!(
+          name:         Name.import(family_or_subfamily_name: 'Formicariae'),
+          sic:          false,
+          fossil:       false,
+          authorship:   citation,
+          locality:     'CANADA'
+        )
+
         # create a Family
         name = FamilyName.create! name: 'Formicidae'
         @family = Family.create!(
           name: name,
           status: 'valid',
+          protonym: @protonym,
           headline_notes_taxt: @ref_taxt,
           type_taxt: @ref_taxt,
           type_fossil: false,
@@ -93,6 +103,13 @@ describe Family do
         @data = {
           fossil: false,
           status: 'valid',
+          protonym: {
+            family_or_subfamily_name: "Formicariae",
+            sic: false,
+            fossil: false,
+            authorship: [{author_names: ["Latreille"], year: "1809", pages: '12'}],
+            locality: 'CANADA',
+          },
           note: [{author_names: ["Latreille"], year: "1809"}],
           type_genus: {
             genus_name: 'Eciton',
@@ -227,6 +244,47 @@ describe Family do
           family.history_items.count.should == 0
         end
       end
+
+      describe "Protonym" do
+        it "should call to compare protonyms" do
+          data = @data.merge(
+            protonym: {
+              family_or_subfamily_name: 'Formicadiae',
+              sic: true,
+              fossil: true,
+              authorship: [{author_names: ["Bolton, B."], year: "2003", pages: '35'}],
+              locality: 'U.S.A.',
+            }
+          )
+          family = Family.import data
+
+          Update.count.should == 3
+
+          update = Update.find_by_field_name 'sic'
+          update.class_name.should == 'Protonym'
+          update.record_id.should == @protonym.id
+          update.before.should == '0'
+          update.after.should == '1'
+          family.protonym.sic.should be_true
+
+          update = Update.find_by_field_name 'fossil'
+          update.class_name.should == 'Protonym'
+          update.record_id.should == @protonym.id
+          update.before.should == '0'
+          update.after.should == '1'
+          family.protonym.fossil.should be_true
+
+          update = Update.find_by_field_name 'locality'
+          update.class_name.should == 'Protonym'
+          update.record_id.should == @protonym.id
+          update.before.should == 'CANADA'
+          update.after.should == 'U.S.A.'
+          family.protonym.locality.should be_true
+
+        end
+
+      end
+
     end
   end
 

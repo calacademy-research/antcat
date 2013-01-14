@@ -62,6 +62,60 @@ describe Protonym do
 
   end
 
+  describe "Updating" do
+    before do
+      reference = FactoryGirl.create :article_reference,
+        author_names: [Factory(:author_name, name: "Latreille")],
+        citation_year: '1809', bolton_key_cache: 'Latreille 1809'
+      citation = Citation.create! reference: reference, pages: '12'
+      @protonym = Protonym.create!(
+        name:         Name.import(family_or_subfamily_name: 'Formicariae'),
+        sic:          false,
+        fossil:       false,
+        authorship:   citation,
+        locality:     'CANADA'
+      )
+      @data = {
+        family_or_subfamily_name: "Formicariae",
+        sic: false,
+        fossil: false,
+        authorship: [{author_names: ["Latreille"], year: "1809", pages: '12'}],
+        locality: 'CANADA',
+      }
+    end
+
+    it "should compare, update and record changes to value fields" do
+      data = @data.merge sic: true, fossil: true, locality: 'U.S.A.'
+      @protonym.update_data data
+      Update.count.should == 3
+
+      update = Update.find_by_field_name 'sic'
+      update.class_name.should == 'Protonym'
+      update.field_name.should == 'sic'
+      update.record_id.should == @protonym.id
+      update.before.should == '0'
+      update.after.should == '1'
+      @protonym.reload.sic.should be_true
+
+      update = Update.find_by_field_name 'fossil'
+      update.class_name.should == 'Protonym'
+      update.field_name.should == 'fossil'
+      update.record_id.should == @protonym.id
+      update.before.should == '0'
+      update.after.should == '1'
+      @protonym.reload.fossil.should be_true
+
+      update = Update.find_by_field_name 'locality'
+      update.class_name.should == 'Protonym'
+      update.field_name.should == 'locality'
+      update.record_id.should == @protonym.id
+      update.before.should == 'CANADA'
+      update.after.should == 'U.S.A.'
+      @protonym.reload.locality.should == 'U.S.A.'
+
+    end
+  end
+
   describe "Cascading delete" do
     it "should delete the citation when the protonym is deleted" do
       genus = FactoryGirl.create :genus, tribe: nil, subfamily: nil

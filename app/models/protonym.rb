@@ -16,4 +16,12 @@ class Protonym < ActiveRecord::Base
     end
   end
 
+  def update_data data
+    attributes = {}
+    update_field 'sic', data[:sic], attributes
+    update_field 'fossil', data[:fossil], attributes
+    update_field 'locality', data[:locality], attributes
+    update_attributes attributes
+  end
+
 end
