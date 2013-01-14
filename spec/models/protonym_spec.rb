@@ -67,12 +67,12 @@ describe Protonym do
       reference = FactoryGirl.create :article_reference,
         author_names: [Factory(:author_name, name: "Latreille")],
         citation_year: '1809', bolton_key_cache: 'Latreille 1809'
-      citation = Citation.create! reference: reference, pages: '12'
+      @citation = Citation.create! reference: reference, pages: '12'
       @protonym = Protonym.create!(
         name:         Name.import(family_or_subfamily_name: 'Formicariae'),
         sic:          false,
         fossil:       false,
-        authorship:   citation,
+        authorship:   @citation,
         locality:     'CANADA'
       )
       @data = {
@@ -113,6 +113,13 @@ describe Protonym do
       update.after.should == 'U.S.A.'
       @protonym.reload.locality.should == 'U.S.A.'
 
+    end
+
+    it "should compare Citations" do
+      data = @data.dup
+      data[:authorship][0][:pages] = '36'
+      @protonym.update_data data
+      Update.count.should == 1
     end
   end
 
