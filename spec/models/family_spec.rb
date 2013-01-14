@@ -68,35 +68,44 @@ describe Family do
     end
 
     describe "When the family exists" do
-      it "should update the record" do
-        reference = FactoryGirl.create :article_reference
-        ref_taxt = "{ref #{reference.id}}"
-        atta = create_genus 'Atta'
-        nam_taxt = "{nam #{atta.name.id}}"
+      before do
+        @eciton_name = create_name 'Eciton'
+        @bolla_name = create_name 'Bolla'
 
-        eciton_name = create_name 'Eciton'
-        bolla_name = create_name 'Bolla'
+        reference = FactoryGirl.create :article_reference,
+          author_names: [Factory(:author_name, name: "Latreille")], citation_year: '1809', bolton_key_cache: 'Latreille 1809'
+        @ref_taxt = "{ref #{reference.id}}"
+        atta = create_genus 'Atta'
+        @nam_taxt = "{nam #{atta.name.id}}"
 
         # create a Family
         name = FamilyName.create! name: 'Formicidae'
         family = Family.create!(
           name: name,
           status: 'valid',
-          headline_notes_taxt: ref_taxt,
-          type_taxt: ref_taxt,
+          headline_notes_taxt: @ref_taxt,
+          type_taxt: @ref_taxt,
           type_fossil: false,
-          type_name: eciton_name
+          type_name: @eciton_name
         )
-        # change fields in data and re-import
-        data = {}
-        data[:fossil] = true
-        data[:status] = 'synonym'
-        data[:note] = [{genus_name: 'Atta'}]
-        data[:type_genus] = {genus_name: 'Bolla', fossil: true, texts: [{genus_name: 'Atta'}]}
+        @data = {
+          fossil: false,
+          status: 'valid',
+          note: [{author_names: ["Latreille"], year: "1809"}],
+          type_genus: {
+            genus_name: 'Eciton',
+            fossil: false,
+            texts: [{author_names: ["Latreille"], year: "1809"}],
+          }
+        }
+      end
+
+      it "should compare, update and record value fields" do
+        data = @data.merge fossil: true, status: 'synonym'
 
         family = Family.import data
 
-        Update.count.should == 6
+        Update.count.should == 2
 
         update = Update.find_by_field_name 'fossil'
         update.class_name.should == 'Family'
@@ -110,16 +119,48 @@ describe Family do
         update.before.should == 'valid'
         update.after.should == 'synonym'
         family.status.should == 'synonym'
+      end
+
+      it "should compare, update and record taxt" do
+        data = @data.merge(
+          note: [{genus_name: 'Atta'}],
+          type_genus: {
+            genus_name: 'Eciton',
+            fossil: false,
+            texts: [{genus_name: 'Atta'}],
+          }
+        )
+
+        family = Family.import data
+
+        Update.count.should == 2
 
         update = Update.find_by_field_name 'headline_notes_taxt'
-        update.before.should == ref_taxt
-        update.after.should == nam_taxt
-        family.headline_notes_taxt.should == nam_taxt
+        update.before.should == @ref_taxt
+        update.after.should == @nam_taxt
+        family.headline_notes_taxt.should == @nam_taxt
 
         update = Update.find_by_field_name 'type_taxt'
-        update.before.should == ref_taxt
-        update.after.should == nam_taxt
-        family.type_taxt.should == nam_taxt
+        update.before.should == @ref_taxt
+        update.after.should == @nam_taxt
+        family.type_taxt.should == @nam_taxt
+      end
+
+      it "should handle the type fields" do
+        data = @data.merge(
+          type_genus: {
+            genus_name: 'Bolla',
+            fossil: true,
+            texts: [{genus_name: 'Atta'}]
+          }
+        )
+        family = Family.import data
+        Update.count.should == 3
+
+        update = Update.find_by_field_name 'type_taxt'
+        update.before.should == @ref_taxt
+        update.after.should == @nam_taxt
+        family.type_taxt.should == @nam_taxt
 
         update = Update.find_by_field_name 'type_fossil'
         update.before.should == '0'
@@ -129,9 +170,9 @@ describe Family do
         update = Update.find_by_field_name 'type_name'
         update.before.should == 'Eciton'
         update.after.should == 'Bolla'
-        family.type_name.should == bolla_name
-
+        family.type_name.should == @bolla_name
       end
+
     end
   end
 
