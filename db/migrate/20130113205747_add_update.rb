@@ -2,7 +2,7 @@ class AddUpdate < ActiveRecord::Migration
   def up
     create_table :updates, force: true do |t|
       t.string  :class_name
-      t.integer :taxon_id
+      t.integer :record_id
       t.string  :field_name
       t.string  :before
       t.string  :after

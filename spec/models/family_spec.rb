@@ -80,7 +80,7 @@ describe Family do
 
         # create a Family
         name = FamilyName.create! name: 'Formicidae'
-        family = Family.create!(
+        @family = Family.create!(
           name: name,
           status: 'valid',
           headline_notes_taxt: @ref_taxt,
@@ -88,6 +88,8 @@ describe Family do
           type_fossil: false,
           type_name: @eciton_name
         )
+        @history_item = @family.history_items.create! taxt: "1st history item"
+        # and data that matches it
         @data = {
           fossil: false,
           status: 'valid',
@@ -96,7 +98,8 @@ describe Family do
             genus_name: 'Eciton',
             fossil: false,
             texts: [{author_names: ["Latreille"], year: "1809"}],
-          }
+          },
+          history: ['1st history item'],
         }
       end
 
@@ -110,7 +113,7 @@ describe Family do
         update = Update.find_by_field_name 'fossil'
         update.class_name.should == 'Family'
         update.field_name.should == 'fossil'
-        update.taxon_id.should == family.id
+        update.record_id.should == family.id
         update.before.should == '0'
         update.after.should == '1'
         family.fossil.should be_true
@@ -173,6 +176,57 @@ describe Family do
         family.type_name.should == @bolla_name
       end
 
+      describe "Taxon history" do
+        it "should replace existing items when the count is the same" do
+          data = @data.merge(
+            history: ['1st history item with change']
+          )
+          family = Family.import data
+
+          Update.count.should == 1
+
+          update = Update.find_by_field_name 'taxt'
+          update.class_name.should == 'TaxonHistoryItem'
+          update.field_name.should == 'taxt'
+          update.record_id.should == family.history_items.first.id
+          update.before.should == '1st history item'
+          update.after.should == '1st history item with change'
+          family.history_items.count.should == 1
+          family.history_items.first.taxt.should == '1st history item with change'
+        end
+        it "should append new items" do
+          data = @data.merge(
+            history: ['1st history item', '2nd history item']
+          )
+          family = Family.import data
+
+          Update.count.should == 1
+
+          update = Update.find_by_field_name 'taxt'
+          update.class_name.should == 'TaxonHistoryItem'
+          update.record_id.should == family.history_items.second.id
+          update.before.should == nil
+          update.after.should == '2nd history item'
+          family.history_items.count.should == 2
+          family.history_items.first.taxt.should == '1st history item'
+          family.history_items.second.taxt.should == '2nd history item'
+        end
+        it "should delete deleted ones" do
+          data = @data.merge(history: [])
+          original_id = @family.history_items.first.id
+
+          family = Family.import data
+
+          Update.count.should == 1
+
+          update = Update.find_by_field_name 'taxt'
+          update.class_name.should == 'TaxonHistoryItem'
+          update.record_id.should == original_id
+          update.before.should == nil
+          update.after.should == nil
+          family.history_items.count.should == 0
+        end
+      end
     end
   end
 
