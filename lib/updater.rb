@@ -38,7 +38,7 @@ module Updater
     before = self.send field_name.to_sym
     after = new_name
     if before != after
-      Update.create! class_name: 'Family', record_id: id, field_name: field_name,
+      Update.create! class_name: self.class.to_s, record_id: id, field_name: field_name,
         before: before.try(:name), after: after.name
       attributes[field_name] = after
     end
@@ -48,7 +48,7 @@ module Updater
     before = self[field_name]
     after = new_value
     if before != after
-      Update.create! class_name: 'Family', record_id: id, field_name: field_name,
+      Update.create! class_name: self.class.to_s, record_id: id, field_name: field_name,
         before: before, after: after
       attributes[field_name] = after
     end
