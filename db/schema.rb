@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121228011608) do
+ActiveRecord::Schema.define(:version => 20130113205747) do
 
   create_table "antwiki_valid_taxa", :id => false, :force => true do |t|
     t.string   "name"
@@ -297,6 +297,19 @@ ActiveRecord::Schema.define(:version => 20121228011608) do
 
   add_index "taxon_history_items", ["taxon_id"], :name => "index_taxonomic_history_items_on_taxon_id"
 
+<<<<<<< HEAD
+=======
+  create_table "updates", :force => true do |t|
+    t.string   "class_name"
+    t.integer  "taxon_id"
+    t.string   "field_name"
+    t.string   "before"
+    t.string   "after"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+>>>>>>> Remove unused code
   create_table "users", :force => true do |t|
     t.string   "email",                              :default => "", :null => false
     t.string   "encrypted_password",                 :default => ""

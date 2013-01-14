@@ -4,65 +4,134 @@ require 'spec_helper'
 describe Family do
 
   describe "Importing" do
-    it "should create the Family, Protonym, and Citation, and should link to the right Genus and Reference" do
-      reference = FactoryGirl.create :article_reference, :bolton_key_cache => 'Latreille 1809'
-      data =  {
-        :protonym => {
-          :family_or_subfamily_name => "Formicariae",
-          :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
-        },
-        :type_genus => {
-          :genus_name => 'Formica',
-          :texts => [{:text => [{:phrase => ', by monotypy'}]}]
-        },
-        :history => ["Formicidae as family"]
-      }
+    describe "When the database is empty" do
+      it "should create the Family, Protonym, and Citation, and should link to the right Genus and Reference" do
+        reference = FactoryGirl.create :article_reference, :bolton_key_cache => 'Latreille 1809'
+        data =  {
+          :protonym => {
+            :family_or_subfamily_name => "Formicariae",
+            :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
+          },
+          :type_genus => {
+            :genus_name => 'Formica',
+            :texts => [{:text => [{:phrase => ', by monotypy'}]}]
+          },
+          :history => ["Formicidae as family"]
+        }
 
-      family = Family.import(data).reload
-      family.name.to_s.should == 'Formicidae'
-      family.should_not be_invalid
-      family.should_not be_fossil
-      family.history_items.map(&:taxt).should == ['Formicidae as family']
+        family = Family.import(data).reload
+        family.name.to_s.should == 'Formicidae'
+        family.should_not be_invalid
+        family.should_not be_fossil
+        family.history_items.map(&:taxt).should == ['Formicidae as family']
 
-      family.type_name.to_s.should == 'Formica'
-      family.type_name.rank.should == 'genus'
-      family.type_taxt.should == ', by monotypy'
+        family.type_name.to_s.should == 'Formica'
+        family.type_name.rank.should == 'genus'
+        family.type_taxt.should == ', by monotypy'
 
-      protonym = family.protonym
-      protonym.name.to_s.should == 'Formicariae'
+        protonym = family.protonym
+        protonym.name.to_s.should == 'Formicariae'
 
-      authorship = protonym.authorship
-      authorship.pages.should == '124'
+        authorship = protonym.authorship
+        authorship.pages.should == '124'
 
-      authorship.reference.should == reference
+        authorship.reference.should == reference
+      end
+      it "should save the note (when there's not a type taxon note)" do
+        reference = FactoryGirl.create :article_reference, :bolton_key_cache => 'Latreille 1809'
+        data =  {
+          :protonym => {
+            :family_or_subfamily_name => "Formicariae",
+            :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
+          },
+          :type_genus => {:genus_name => 'Formica'},
+          :note => [{:phrase=>"[Note.]"}],
+          :history => ["Formicidae as family"]
+        }
+
+        family = Family.import(data).reload
+        family.name.to_s.should == 'Formicidae'
+        family.should_not be_invalid
+        family.should_not be_fossil
+        family.history_items.map(&:taxt).should == ['Formicidae as family']
+
+        family.headline_notes_taxt.should == '[Note.]'
+
+        protonym = family.protonym
+        protonym.name.to_s.should == 'Formicariae'
+
+        authorship = protonym.authorship
+        authorship.pages.should == '124'
+
+        authorship.reference.should == reference
+      end
     end
-    it "should save the note (when there's not a type taxon note)" do
-      reference = FactoryGirl.create :article_reference, :bolton_key_cache => 'Latreille 1809'
-      data =  {
-        :protonym => {
-          :family_or_subfamily_name => "Formicariae",
-          :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
-        },
-        :type_genus => {:genus_name => 'Formica'},
-        :note => [{:phrase=>"[Note.]"}],
-        :history => ["Formicidae as family"]
-      }
 
-      family = Family.import(data).reload
-      family.name.to_s.should == 'Formicidae'
-      family.should_not be_invalid
-      family.should_not be_fossil
-      family.history_items.map(&:taxt).should == ['Formicidae as family']
+    describe "When the family exists" do
+      it "should update the record" do
+        reference = FactoryGirl.create :article_reference
+        ref_taxt = "{ref #{reference.id}}"
+        atta = create_genus 'Atta'
+        nam_taxt = "{nam #{atta.name.id}}"
 
-      family.headline_notes_taxt.should == '[Note.]'
+        eciton_name = create_name 'Eciton'
+        bolla_name = create_name 'Bolla'
 
-      protonym = family.protonym
-      protonym.name.to_s.should == 'Formicariae'
+        # create a Family
+        name = FamilyName.create! name: 'Formicidae'
+        family = Family.create!(
+          name: name,
+          status: 'valid',
+          headline_notes_taxt: ref_taxt,
+          type_taxt: ref_taxt,
+          type_fossil: false,
+          type_name: eciton_name
+        )
+        # change fields in data and re-import
+        data = {}
+        data[:fossil] = true
+        data[:status] = 'synonym'
+        data[:note] = [{genus_name: 'Atta'}]
+        data[:type_genus] = {genus_name: 'Bolla', fossil: true, texts: [{genus_name: 'Atta'}]}
 
-      authorship = protonym.authorship
-      authorship.pages.should == '124'
+        family = Family.import data
 
-      authorship.reference.should == reference
+        Update.count.should == 6
+
+        update = Update.find_by_field_name 'fossil'
+        update.class_name.should == 'Family'
+        update.field_name.should == 'fossil'
+        update.taxon_id.should == family.id
+        update.before.should == '0'
+        update.after.should == '1'
+        family.fossil.should be_true
+
+        update = Update.find_by_field_name 'status'
+        update.before.should == 'valid'
+        update.after.should == 'synonym'
+        family.status.should == 'synonym'
+
+        update = Update.find_by_field_name 'headline_notes_taxt'
+        update.before.should == ref_taxt
+        update.after.should == nam_taxt
+        family.headline_notes_taxt.should == nam_taxt
+
+        update = Update.find_by_field_name 'type_taxt'
+        update.before.should == ref_taxt
+        update.after.should == nam_taxt
+        family.type_taxt.should == nam_taxt
+
+        update = Update.find_by_field_name 'type_fossil'
+        update.before.should == '0'
+        update.after.should == '1'
+        family.type_fossil.should be_true
+
+        update = Update.find_by_field_name 'type_name'
+        update.before.should == 'Eciton'
+        update.after.should == 'Bolla'
+        family.type_name.should == bolla_name
+
+      end
     end
   end
 
