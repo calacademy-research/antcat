@@ -283,6 +283,20 @@ describe Family do
 
         end
 
+        it "should compare, record and update its name" do
+          data = @data.dup
+          data[:protonym][:family_or_subfamily_name] = 'Formicadiae'
+
+          family = Family.import data
+
+          Update.count.should == 1
+
+          update = Update.find_by_field_name 'name'
+          update.before.should == 'Formicariae'
+          update.after.should == 'Formicadiae'
+          family.protonym.name.name.should == 'Formicadiae'
+        end
+
       end
 
     end

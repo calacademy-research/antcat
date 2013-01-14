@@ -18,6 +18,7 @@ class Protonym < ActiveRecord::Base
 
   def update_data data
     attributes = {}
+    update_name_field 'name', Name.import(data), attributes
     update_field 'sic', data[:sic], attributes
     update_field 'fossil', data[:fossil], attributes
     update_field 'locality', data[:locality], attributes
