@@ -99,6 +99,17 @@ describe Family do
           type_name: @eciton_name
         )
         @history_item = @family.history_items.create! taxt: "1st history item"
+
+        ants_reference_for_title = FactoryGirl.create :article_reference,
+          author_names: [Factory(:author_name, name: "Fisher")], citation_year: '2001', bolton_key_cache: 'Fisher 2001'
+        @ants_title_taxt = "{ref #{ants_reference_for_title.id}}"
+        ants_reference_for_subtitle = FactoryGirl.create :article_reference,
+          author_names: [Factory(:author_name, name: "Shattuck")], citation_year: '2009', bolton_key_cache: 'Shattuck 2009'
+        @ants_subtitle_taxt = "{ref #{ants_reference_for_subtitle.id}}"
+        ants_reference_for_references = FactoryGirl.create :article_reference,
+          author_names: [Factory(:author_name, name: "Ward")], citation_year: '1995', bolton_key_cache: 'Ward 1995'
+        ants_references_taxt = "{ref #{ants_reference_for_references.id}}"
+        #@reference_section = @family.reference_sections.create! title_taxt: @ants_title_taxt, subtitle_taxt: @ants_subtitle_taxt, references_taxt: ants_references_taxt
         @reference_section = @family.reference_sections.create! title_taxt: 'References', subtitle_taxt: 'of New Guinea', references_taxt: 'References go here'
 
         # and data that matches it
@@ -247,9 +258,9 @@ describe Family do
       end
 
       describe "Reference sections" do
-        it "should replace existing items when the count is the same" do
+        it "should replace existing items when the count is the same, and not convert incoming taxt" do
           reference_sections = [
-            {title_taxt: '1st reference section', subtitle_taxt: '1st subtitle', references_taxt: '1st references'},
+            {title_taxt: @ants_title_taxt, subtitle_taxt: @ants_subtitle_taxt, references_taxt: @ants_references_taxt},
           ]
 
           @family.import_reference_sections reference_sections
@@ -260,10 +271,16 @@ describe Family do
           update.class_name.should == 'ReferenceSection'
           update.record_id.should == @family.reference_sections.first.id
           update.before.should == 'References'
-          update.after.should == '1st reference section'
+          update.after.should == @ants_title_taxt
+
+          update = Update.find_by_field_name 'subtitle_taxt'
+          update.before.should == 'of New Guinea'
+          update.after.should == @ants_subtitle_taxt
+
           @family.reference_sections.count.should == 1
-          @family.reference_sections.first.title_taxt.should == '1st reference section'
+          @family.reference_sections.first.title_taxt.should == @ants_title_taxt
         end
+
         it "should append new items" do
           reference_sections = [
             {title_taxt: 'References', subtitle_taxt: 'of New Guinea', references_taxt: 'References go here'},
