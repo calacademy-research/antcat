@@ -265,23 +265,26 @@ describe Family do
           @family.reference_sections.count.should == 1
           @family.reference_sections.first.title.should == '1st reference section'
         end
-        #it "should append new items" do
-          #data = @data.merge(
-            #history: ['1st history item', '2nd history item']
-          #)
-          #family = Family.import data
+        it "should append new items" do
+          reference_sections = [
+            {title: 'References', subtitle: 'of New Guinea', references: 'References go here'},
+            {title: '2nd reference section', subtitle: '2nd subtitle', references: '2nd references'},
+          ]
 
-          #Update.count.should == 1
+          @family.import_reference_sections reference_sections
 
-          #update = Update.find_by_field_name 'taxt'
-          #update.class_name.should == 'TaxonHistoryItem'
-          #update.record_id.should == family.history_items.second.id
-          #update.before.should == nil
-          #update.after.should == '2nd history item'
-          #family.history_items.count.should == 2
-          #family.history_items.first.taxt.should == '1st history item'
-          #family.history_items.second.taxt.should == '2nd history item'
-        #end
+          Update.count.should == 3
+
+          update = Update.find_by_field_name 'title'
+          update.class_name.should == 'ReferenceSection'
+          update.record_id.should == @family.reference_sections.second.id
+          update.before.should == nil
+          update.after.should == '2nd reference section'
+          @family.reference_sections.count.should == 2
+          @family.reference_sections.first.title.should == 'References'
+          @family.reference_sections.second.title.should == '2nd reference section'
+        end
+
         #it "should delete deleted ones" do
           #data = @data.merge(history: [])
           #original_id = @family.history_items.first.id
