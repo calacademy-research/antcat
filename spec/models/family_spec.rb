@@ -75,8 +75,8 @@ describe Family do
         reference = FactoryGirl.create :article_reference,
           author_names: [Factory(:author_name, name: "Latreille")], citation_year: '1809', bolton_key_cache: 'Latreille 1809'
         @ref_taxt = "{ref #{reference.id}}"
-        atta = create_genus 'Atta'
-        @nam_taxt = "{nam #{atta.name.id}}"
+        @atta = create_genus 'Atta'
+        @nam_taxt = "{nam #{@atta.name.id}}"
 
         citation = Citation.create! reference: reference, pages: '12'
         @protonym = Protonym.create!(
@@ -247,15 +247,11 @@ describe Family do
 
       describe "Protonym" do
         it "should handle value fields" do
-          data = @data.merge(
-            protonym: {
-              family_or_subfamily_name: 'Formicadiae',
-              sic: true,
-              fossil: true,
-              authorship: [{author_names: ["Bolton, B."], year: "2003", pages: '35'}],
-              locality: 'U.S.A.',
-            }
-          )
+          data = @data.dup
+          data[:protonym][:sic] = true
+          data[:protonym][:fossil] = true
+          data[:protonym][:locality] = 'U.S.A.'
+
           family = Family.import data
 
           Update.count.should == 3
@@ -297,6 +293,19 @@ describe Family do
           family.protonym.name.name.should == 'Formicadiae'
         end
 
+      end
+
+      describe "Citation" do
+        it "should record changes in notes_taxt" do
+          data = @data.dup
+          data[:protonym][:authorship][0][:notes] = [[{genus_name: 'Atta'}]]
+          family = Family.import data
+          update = Update.find_by_field_name 'notes_taxt'
+          update.class_name.should == 'Citation'
+          update.before.should == nil
+          update.after.should == " (#{@nam_taxt})"
+          family.protonym.authorship.notes_taxt.should == " (#{@nam_taxt})"
+        end
       end
 
     end
