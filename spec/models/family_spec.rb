@@ -99,6 +99,8 @@ describe Family do
           type_name: @eciton_name
         )
         @history_item = @family.history_items.create! taxt: "1st history item"
+        @reference_section = @family.reference_sections.create! title: 'References', subtitle: 'of New Guinea', references: 'References go here'
+
         # and data that matches it
         @data = {
           fossil: false,
@@ -204,7 +206,6 @@ describe Family do
 
           update = Update.find_by_field_name 'taxt'
           update.class_name.should == 'TaxonHistoryItem'
-          update.field_name.should == 'taxt'
           update.record_id.should == family.history_items.first.id
           update.before.should == '1st history item'
           update.after.should == '1st history item with change'
@@ -243,6 +244,59 @@ describe Family do
           update.after.should == nil
           family.history_items.count.should == 0
         end
+      end
+
+      describe "Reference sections" do
+        it "should replace existing items when the count is the same" do
+          reference_sections = [
+            {title: '1st reference section', subtitle: '1st subtitle', references: '1st references'},
+          ]
+
+        #@reference_section = @family.reference_sections.create! title: 'References', subtitle: 'of New Guinea', references: 'References go here'
+          @family.import_reference_sections reference_sections
+
+          Update.count.should == 3
+
+          update = Update.find_by_field_name 'title'
+          update.class_name.should == 'ReferenceSection'
+          update.record_id.should == @family.reference_sections.first.id
+          update.before.should == 'References'
+          update.after.should == '1st reference section'
+          @family.reference_sections.count.should == 1
+          @family.reference_sections.first.title.should == '1st reference section'
+        end
+        #it "should append new items" do
+          #data = @data.merge(
+            #history: ['1st history item', '2nd history item']
+          #)
+          #family = Family.import data
+
+          #Update.count.should == 1
+
+          #update = Update.find_by_field_name 'taxt'
+          #update.class_name.should == 'TaxonHistoryItem'
+          #update.record_id.should == family.history_items.second.id
+          #update.before.should == nil
+          #update.after.should == '2nd history item'
+          #family.history_items.count.should == 2
+          #family.history_items.first.taxt.should == '1st history item'
+          #family.history_items.second.taxt.should == '2nd history item'
+        #end
+        #it "should delete deleted ones" do
+          #data = @data.merge(history: [])
+          #original_id = @family.history_items.first.id
+
+          #family = Family.import data
+
+          #Update.count.should == 1
+
+          #update = Update.find_by_field_name 'taxt'
+          #update.class_name.should == 'TaxonHistoryItem'
+          #update.record_id.should == original_id
+          #update.before.should == nil
+          #update.after.should == nil
+          #family.history_items.count.should == 0
+        #end
       end
 
       describe "Protonym" do

@@ -25,6 +25,49 @@ class Family < Taxon
     end
   end
 
+  def import_reference_sections sections
+    # compare and update common subset
+    i = 0
+    while i < reference_sections.count && i < sections.count
+      item = reference_sections.all[i]
+      update_reference_section_field 'title', item, sections[i]
+      update_reference_section_field 'subtitle', item, sections[i]
+      update_reference_section_field 'references', item, sections[i]
+      i += 1
+    end
+    # add new ones
+    while i < sections.count
+      new_section = sections[i]
+      new_item = reference_sections.create! new_section
+      Update.create! class_name: 'ReferenceSection', record_id: new_item.id,
+        field_name: 'title', before: nil, after: new_section[:title]
+      Update.create! class_name: 'ReferenceSection', record_id: new_item.id,
+        field_name: 'subtitle', before: nil, after: new_section[:subtitle]
+      Update.create! class_name: 'ReferenceSection', record_id: new_item.id,
+        field_name: 'references', before: nil, after: new_section[:references]
+      i += 1
+    end
+    # delete deleted ones
+    items_to_delete = []
+    while i < history_items.count
+      items_to_delete << reference_sections[i].id
+      Update.create! class_name: 'ReferenceSection', record_id: reference_sections[i].id,
+        field_name: nil, before: nil, after: nil
+      i += 1
+    end
+    items_to_delete.each {|item| ReferenceSection.delete item}
+  end
+
+  def update_reference_section_field field_name, old_section, new_section
+    before = old_section[field_name.to_sym]
+    after = new_section[field_name.to_sym]
+    if before != after
+      Update.create! class_name: 'ReferenceSection', record_id: old_section.id, field_name: field_name,
+        before: before, after: after
+      old_section.update_attributes field_name => after
+    end
+  end
+
   def update_data data
     attributes = {}
     update_field 'fossil', data[:fossil], attributes
