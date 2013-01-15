@@ -314,6 +314,8 @@ describe Family do
 
           family = Family.import data
 
+          Update.count.should == 2
+
           update = Update.find_by_field_name 'pages'
           update.class_name.should == 'Citation'
           update.before.should == '12'
