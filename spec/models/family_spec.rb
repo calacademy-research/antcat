@@ -19,7 +19,7 @@ describe Family do
           :history => ["Formicidae as family"]
         }
 
-        family = Family.import(data).reload
+        family = Family.import data
         family.name.to_s.should == 'Formicidae'
         family.should_not be_invalid
         family.should_not be_fossil
