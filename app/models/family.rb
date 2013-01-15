@@ -12,7 +12,7 @@ class Family < Taxon
           name:                name,
           fossil:              false,
           status:              'valid',
-          #protonym:            Protonym.import(data[:protonym]),
+          protonym:            Protonym.import(data[:protonym]),
           headline_notes_taxt: Importers::Bolton::Catalog::TextToTaxt.convert(data[:note]),
         }
         attributes.merge! get_type_attributes :type_genus, data
