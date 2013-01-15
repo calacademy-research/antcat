@@ -318,7 +318,7 @@ class Formatters::TaxonFormatter
 
   def reference_section section
     content_tag :div, class: 'section' do
-      [:title, :subtitle, :references].inject(''.html_safe) do |content, field|
+      [:title_taxt, :subtitle_taxt, :references_taxt].inject(''.html_safe) do |content, field|
         if section[field].present?
           content << content_tag(:div, detaxt(section[field]), class: field)
         end

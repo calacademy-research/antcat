@@ -83,7 +83,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
   def parse_family_reference_sections_with_inline_headings family, title, reference_sections
     while @type == :texts
       references = convert_line_to_taxt @line
-      reference_sections << {title: title, references: references}
+      reference_sections << {title_taxt: title, references_taxt: references}
       parse_next_line
       title = nil
     end
@@ -92,7 +92,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
   def parse_family_reference_section family, title, subtitle, reference_sections
     parse_next_line :text
     references = convert_line_to_taxt @line
-    reference_sections << {title: title, subtitle: subtitle, references: references}
+    reference_sections << {title_taxt: title, subtitle_taxt: subtitle, references_taxt: references}
     parse_next_line
   end
 

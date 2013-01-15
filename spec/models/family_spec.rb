@@ -99,7 +99,7 @@ describe Family do
           type_name: @eciton_name
         )
         @history_item = @family.history_items.create! taxt: "1st history item"
-        @reference_section = @family.reference_sections.create! title: 'References', subtitle: 'of New Guinea', references: 'References go here'
+        @reference_section = @family.reference_sections.create! title_taxt: 'References', subtitle_taxt: 'of New Guinea', references_taxt: 'References go here'
 
         # and data that matches it
         @data = {
@@ -249,39 +249,39 @@ describe Family do
       describe "Reference sections" do
         it "should replace existing items when the count is the same" do
           reference_sections = [
-            {title: '1st reference section', subtitle: '1st subtitle', references: '1st references'},
+            {title_taxt: '1st reference section', subtitle_taxt: '1st subtitle', references_taxt: '1st references'},
           ]
 
           @family.import_reference_sections reference_sections
 
           Update.count.should == 3
 
-          update = Update.find_by_field_name 'title'
+          update = Update.find_by_field_name 'title_taxt'
           update.class_name.should == 'ReferenceSection'
           update.record_id.should == @family.reference_sections.first.id
           update.before.should == 'References'
           update.after.should == '1st reference section'
           @family.reference_sections.count.should == 1
-          @family.reference_sections.first.title.should == '1st reference section'
+          @family.reference_sections.first.title_taxt.should == '1st reference section'
         end
         it "should append new items" do
           reference_sections = [
-            {title: 'References', subtitle: 'of New Guinea', references: 'References go here'},
-            {title: '2nd reference section', subtitle: '2nd subtitle', references: '2nd references'},
+            {title_taxt: 'References', subtitle_taxt: 'of New Guinea', references_taxt: 'References go here'},
+            {title_taxt: '2nd reference section', subtitle_taxt: '2nd subtitle', references_taxt: '2nd references'},
           ]
 
           @family.import_reference_sections reference_sections
 
           Update.count.should == 3
 
-          update = Update.find_by_field_name 'title'
+          update = Update.find_by_field_name 'title_taxt'
           update.class_name.should == 'ReferenceSection'
           update.record_id.should == @family.reference_sections.second.id
           update.before.should == nil
           update.after.should == '2nd reference section'
           @family.reference_sections.count.should == 2
-          @family.reference_sections.first.title.should == 'References'
-          @family.reference_sections.second.title.should == '2nd reference section'
+          @family.reference_sections.first.title_taxt.should == 'References'
+          @family.reference_sections.second.title_taxt.should == '2nd reference section'
         end
         it "should delete deleted ones" do
           reference_sections = []

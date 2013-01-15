@@ -144,7 +144,7 @@ module Taxt
   def self.replace replace_what, replace_with
     TaxonHistoryItem
     [[Taxon,            [:type_taxt, :headline_notes_taxt, :genus_species_header_notes_taxt]],
-     [ReferenceSection, [:title, :subtitle, :references]],
+     [ReferenceSection, [:title_taxt, :subtitle_taxt, :references_taxt]],
      [TaxonHistoryItem, [:taxt]],
     ].each do |klass, fields|
       for record in klass.send :all

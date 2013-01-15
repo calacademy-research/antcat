@@ -78,7 +78,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
         title = ''
       end
 
-      genus.reference_sections.create! title: title, references: references
+      genus.reference_sections.create! title_taxt: title, references_taxt: references
       
       parse_next_line
 

@@ -81,7 +81,7 @@ class Family < Taxon
     i = 0
     while i < reference_sections.count && i < sections.count
       item = reference_sections.all[i]
-      for field_name in ['title', 'subtitle', 'references']
+      for field_name in ['title_taxt', 'subtitle_taxt', 'references_taxt']
         update_reference_section_field field_name, item, sections[i]
       end
       i += 1
@@ -90,9 +90,9 @@ class Family < Taxon
     while i < sections.count
       new_section = sections[i]
       new_item = reference_sections.create! new_section
-      for field_name in ['title', 'subtitle', 'references']
+      for field_name in ['title_taxt', 'subtitle_taxt', 'references_taxt']
         Update.create! class_name: 'ReferenceSection', record_id: new_item.id,
-          field_name: field_name, before: nil, after: new_section[:title]
+          field_name: field_name, before: nil, after: new_section[:title_taxt]
       end
       i += 1
     end

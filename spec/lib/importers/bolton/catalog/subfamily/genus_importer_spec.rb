@@ -44,8 +44,8 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
       genus.type_name.to_s.should == "Condylodon audouini"
       genus.type_taxt.should == ", by monotypy."
       genus.type_name.rank.should == 'species'
-      genus.reference_sections.map(&:title).should == ['Genus references']
-      genus.reference_sections.map(&:references).should == ["{ref #{baroni.id}}: 482 (review of genus)."]
+      genus.reference_sections.map(&:title_taxt).should == ['Genus references']
+      genus.reference_sections.map(&:references_taxt).should == ["{ref #{baroni.id}}: 482 (review of genus)."]
 
       protonym = genus.protonym
       protonym.name.to_s.should == 'Condylodon'
@@ -141,7 +141,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
         }
         sphinctomyrmex = Genus.find_by_name 'Sphinctomyrmex'
         sphinctomyrmex.history_items.map(&:taxt).should == ['Sphinctomyrmex history']
-        sphinctomyrmex.reference_sections.map(&:references).should == [
+        sphinctomyrmex.reference_sections.map(&:references_taxt).should == [
           "[Note. Entries prior to {ref #{bolton.id}}: 44, refer to genus as {nam #{Name.find_by_name('Acantholepis').id}}.]",
           "{nam #{Name.find_by_name('Sphinctomyrmex').id}} references",
         ]
@@ -189,9 +189,9 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
         <p>Another note</p>
       </div>}
       @importer.parse_genus_references genus
-      genus.reference_sections.map(&:title).should ==
+      genus.reference_sections.map(&:title_taxt).should ==
         ["Genus {nam #{Name.find_by_name('Lepisiota').id}} references", ""]
-      genus.reference_sections.map(&:references).should == ["Note", "Another note"]
+      genus.reference_sections.map(&:references_taxt).should == ["Note", "Another note"]
     end
 
     describe "Genus reference sections with abbreviated genus names" do

@@ -88,19 +88,19 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
 
     family.should have(3).reference_sections
     reference_section = family.reference_sections.first
-    reference_section.title.should == 'FAMILY FORMICIDAE REFERENCES, WORLD'
-    reference_section.subtitle.should == 'WORLD CATALOGUES'
-    reference_section.references.should == "{ref #{roger.id}}: 1 ({nam #{Name.find_by_name('Formicidae').id}})"
+    reference_section.title_taxt.should == 'FAMILY FORMICIDAE REFERENCES, WORLD'
+    reference_section.subtitle_taxt.should == 'WORLD CATALOGUES'
+    reference_section.references_taxt.should == "{ref #{roger.id}}: 1 ({nam #{Name.find_by_name('Formicidae').id}})"
 
     reference_section = family.reference_sections.second
-    reference_section.title.should == 'Regional catalogues and checklists'
-    reference_section.subtitle.should be_blank
-    reference_section.references.should == "NEARCTIC: {ref #{latreille.id}}: 778"
+    reference_section.title_taxt.should == 'Regional catalogues and checklists'
+    reference_section.subtitle_taxt.should be_blank
+    reference_section.references_taxt.should == "NEARCTIC: {ref #{latreille.id}}: 778"
 
     reference_section = family.reference_sections.third
-    reference_section.title.should == 'Regional and national faunas with keys'
-    reference_section.subtitle.should == 'PALAEARCTIC'
-    reference_section.references.should == "{ref #{mayr.id}}: 299"
+    reference_section.title_taxt.should == 'Regional and national faunas with keys'
+    reference_section.subtitle_taxt.should == 'PALAEARCTIC'
+    reference_section.references_taxt.should == "{ref #{mayr.id}}: 299"
 
     genus = Genus.find_by_name 'Condylodon'
     genus.should_not be_invalid
@@ -112,8 +112,8 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
     ]
     genus.type_name.to_s.should == "Condylodon audouini"
     genus.type_taxt.should == ", by monotypy. [{ref #{lund.id}}: 25 says no.]"
-    genus.reference_sections.map(&:title).should == ["Genus references"]
-    genus.reference_sections.map(&:references).should == ["{ref #{baroni.id}}: 482 (review of genus)."]
+    genus.reference_sections.map(&:title_taxt).should == ["Genus references"]
+    genus.reference_sections.map(&:references_taxt).should == ["{ref #{baroni.id}}: 482 (review of genus)."]
 
     genus = Genus.find_by_name 'Promyrmicium'
     genus.should be_fossil
