@@ -111,12 +111,6 @@ class Taxon < ActiveRecord::Base
     raise NotImplementedError
   end
 
-  #def inspect
-    #string = "#{name} (#{status} #{type.downcase} #{id})"
-    #string << " incertae sedis in #{incertae_sedis_in}" if incertae_sedis_in.present?
-    #string
-  #end
-
   ###############################################
   # statistics
 
