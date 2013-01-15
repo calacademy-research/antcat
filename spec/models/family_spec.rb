@@ -324,7 +324,23 @@ describe Family do
           update.before.should == 'w.'
           update.after.should == 'q.'
           family.protonym.authorship.forms.should == 'q.'
+        end
+        it "should record a different reference than before" do
+          new_reference = FactoryGirl.create :article_reference,
+            author_names: [Factory(:author_name, name: 'Bolton')], citation_year: '2005', bolton_key_cache: 'Bolton 2005'
+          data = @data.dup
+          data[:protonym][:authorship].first[:author_names] = ['Bolton, B.']
+          data[:protonym][:authorship].first[:year] = '2005'
 
+          family = Family.import data
+
+          Update.count.should == 1
+
+          update = Update.find_by_field_name 'reference'
+          update.class_name.should == 'Citation'
+          update.before.should == 'Latreille, 1809'
+          update.after.should == 'Bolton, 2005'
+          family.protonym.authorship.reference.principal_author_last_name.should == 'Bolton'
         end
       end
 
