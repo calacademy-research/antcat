@@ -252,7 +252,6 @@ describe Family do
             {title: '1st reference section', subtitle: '1st subtitle', references: '1st references'},
           ]
 
-        #@reference_section = @family.reference_sections.create! title: 'References', subtitle: 'of New Guinea', references: 'References go here'
           @family.import_reference_sections reference_sections
 
           Update.count.should == 3
@@ -284,22 +283,20 @@ describe Family do
           @family.reference_sections.first.title.should == 'References'
           @family.reference_sections.second.title.should == '2nd reference section'
         end
+        it "should delete deleted ones" do
+          reference_sections = []
+          original_id = @family.reference_sections.first.id
 
-        #it "should delete deleted ones" do
-          #data = @data.merge(history: [])
-          #original_id = @family.history_items.first.id
+          @family.import_reference_sections reference_sections
 
-          #family = Family.import data
+          Update.count.should == 1
 
-          #Update.count.should == 1
-
-          #update = Update.find_by_field_name 'taxt'
-          #update.class_name.should == 'TaxonHistoryItem'
-          #update.record_id.should == original_id
-          #update.before.should == nil
-          #update.after.should == nil
-          #family.history_items.count.should == 0
-        #end
+          update = Update.find_by_class_name_and_record_id 'ReferenceSection', original_id
+          update.field_name.should be_nil
+          update.before.should be_nil
+          update.after.should be_nil
+          @family.reference_sections.count.should == 0
+        end
       end
 
       describe "Protonym" do
