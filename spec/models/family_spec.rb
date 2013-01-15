@@ -78,7 +78,7 @@ describe Family do
         @atta = create_genus 'Atta'
         @nam_taxt = "{nam #{@atta.name.id}}"
 
-        citation = Citation.create! reference: reference, pages: '12'
+        citation = Citation.create! reference: reference, pages: '12', forms: 'w.'
         @protonym = Protonym.create!(
           name:         Name.import(family_or_subfamily_name: 'Formicariae'),
           sic:          false,
@@ -107,7 +107,7 @@ describe Family do
             family_or_subfamily_name: "Formicariae",
             sic: false,
             fossil: false,
-            authorship: [{author_names: ["Latreille"], year: "1809", pages: '12'}],
+            authorship: [{author_names: ["Latreille"], year: "1809", pages: '12', forms: 'w.'}],
             locality: 'CANADA',
           },
           note: [{author_names: ["Latreille"], year: "1809"}],
@@ -305,6 +305,26 @@ describe Family do
           update.before.should == nil
           update.after.should == " (#{@nam_taxt})"
           family.protonym.authorship.notes_taxt.should == " (#{@nam_taxt})"
+        end
+        it "should record changes in value fields" do
+          data = @data.dup
+          citation = data[:protonym][:authorship][0]
+          citation[:forms] = 'q.'
+          citation[:pages] = '100'
+
+          family = Family.import data
+
+          update = Update.find_by_field_name 'pages'
+          update.class_name.should == 'Citation'
+          update.before.should == '12'
+          update.after.should == '100'
+          family.protonym.authorship.pages.should == '100'
+
+          update = Update.find_by_field_name 'forms'
+          update.before.should == 'w.'
+          update.after.should == 'q.'
+          family.protonym.authorship.forms.should == 'q.'
+
         end
       end
 
