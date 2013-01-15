@@ -28,4 +28,14 @@ class Citation < ActiveRecord::Base
     end
   end
 
+  def update_notes_taxt data, attributes
+    before = self['notes_taxt']
+    after = data[:notes] ? Importers::Bolton::Catalog::TextToTaxt.notes_item(data[:notes]) : nil
+    if before != after
+      Update.create! class_name: self.class.to_s, record_id: id, field_name: 'notes_taxt',
+        before: before, after: after
+      attributes['notes_taxt'] = after
+    end
+  end
+
 end
