@@ -12,9 +12,9 @@ class Citation < ActiveRecord::Base
   def update_data data
     attributes = {}
     update_field 'pages', data[:pages], attributes
+    update_field 'forms', data[:forms], attributes
     update_notes_taxt data, attributes
     update_attributes attributes
-    #forms
   end
 
 end
