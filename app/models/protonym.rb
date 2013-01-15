@@ -21,7 +21,7 @@ class Protonym < ActiveRecord::Base
     update_name_field 'name', Name.import(data), attributes
     update_field 'sic', data[:sic], attributes
     update_field 'fossil', data[:fossil], attributes
-    authorship.update_data data
+    authorship.update_data data[:authorship].first
     update_field 'locality', data[:locality], attributes
     update_attributes attributes
   end
