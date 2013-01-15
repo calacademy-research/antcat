@@ -290,17 +290,17 @@ describe Taxon do
     it "should have some" do
       taxon = FactoryGirl.create :family
       taxon.reference_sections.should be_empty
-      taxon.reference_sections.create! references: 'foo'
-      taxon.reload.reference_sections.map(&:references).should == ['foo']
+      taxon.reference_sections.create! references_taxt: 'foo'
+      taxon.reload.reference_sections.map(&:references_taxt).should == ['foo']
     end
     it "should show the items in the order in which they were added to the taxon" do
       taxon = FactoryGirl.create :family
-      taxon.reference_sections.create! references: '1'
-      taxon.reference_sections.create! references: '2'
-      taxon.reference_sections.create! references: '3'
-      taxon.reference_sections.map(&:references).should == ['1','2','3']
+      taxon.reference_sections.create! references_taxt: '1'
+      taxon.reference_sections.create! references_taxt: '2'
+      taxon.reference_sections.create! references_taxt: '3'
+      taxon.reference_sections.map(&:references_taxt).should == ['1','2','3']
       taxon.reference_sections.first.move_to_bottom
-      taxon.reference_sections(true).map(&:references).should == ['2','3','1']
+      taxon.reference_sections(true).map(&:references_taxt).should == ['2','3','1']
     end
   end
 
@@ -342,7 +342,7 @@ describe Taxon do
       ReferenceSection.count.should be_zero
 
       genus = FactoryGirl.create :genus, tribe: nil, subfamily: nil
-      genus.reference_sections.create! title: 'title', references: 'references'
+      genus.reference_sections.create! title_taxt: 'title', references_taxt: 'references'
       ReferenceSection.count.should == 1
 
       genus.destroy

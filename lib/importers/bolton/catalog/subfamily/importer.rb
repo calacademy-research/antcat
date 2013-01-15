@@ -136,7 +136,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     title = convert_line_to_taxt @line
     parse_next_line
     references = Importers::Bolton::Catalog::TextToTaxt.convert @parse_result[:texts], taxon.name.to_s
-    taxon.reference_sections.create! title: title, references: references
+    taxon.reference_sections.create! title_taxt: title, references_taxt: references
   end
 
   def do_manual_fixups

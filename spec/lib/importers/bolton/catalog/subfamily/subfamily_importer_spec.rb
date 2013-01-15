@@ -120,8 +120,8 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
       tribe.history_items.map(&:taxt).should == ["history"]
       tribe.type_name.to_s.should == 'Aneuretus'
       tribe.type_name.rank.should == 'genus'
-      tribe.reference_sections.map(&:title).should == ["Subfamily, tribe {nam #{Name.find_by_name('Aneuretini').id}} and genus {nam #{Name.find_by_name('Aneuretus').id}} references"]
-      tribe.reference_sections.map(&:references).should == ["{ref #{emery.id}}: 461 (diagnosis)"]
+      tribe.reference_sections.map(&:title_taxt).should == ["Subfamily, tribe {nam #{Name.find_by_name('Aneuretini').id}} and genus {nam #{Name.find_by_name('Aneuretus').id}} references"]
+      tribe.reference_sections.map(&:references_taxt).should == ["{ref #{emery.id}}: 461 (diagnosis)"]
 
       junior_synonym = Tribe.find_by_name 'Anonychomyrmini' 
       junior_synonym.should be_synonym
@@ -130,7 +130,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
       aneuretus = Genus.find_by_name 'Aneuretus'
       aneuretus.tribe.should == tribe
       aneuretus.subfamily.should == subfamily
-      aneuretus.reference_sections.map(&:references).should == ["{nam #{Name.find_by_name('Aneuretus').id}} reference"]
+      aneuretus.reference_sections.map(&:references_taxt).should == ["{nam #{Name.find_by_name('Aneuretus').id}} reference"]
 
       junior_synonym = Genus.find_by_name 'Odontomyrmex'
       junior_synonym.should be_synonym_of aneuretus
