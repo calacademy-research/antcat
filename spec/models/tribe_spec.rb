@@ -79,4 +79,48 @@ describe Tribe do
     end
   end
 
+  describe "Updating" do
+    it "should record a change in synonymy" do
+      fisher_reference = FactoryGirl.create :article_reference, author_names: [Factory(:author_name, name: 'Fisher')], bolton_key_cache: 'Fisher 2004'
+      senior_tribe = create_tribe
+      newer_senior_tribe = create_tribe
+      data = {
+        tribe_name: 'Aneuretinae',
+        status: 'synonym',
+        synonym_of: senior_tribe,
+        protonym: {
+          tribe_name: "Aneurestini",
+          authorship: [{author_names: ['Fisher'], year: '2004', pages: '7'}],
+        },
+        type_genus: {genus_name: 'Eciton'},
+        history: []
+      }
+      tribe = Tribe.import data
+
+      tribe.should be_synonym_of senior_tribe
+      tribe.should_not be_synonym_of newer_senior_tribe
+
+      data[:synonym_of] = newer_senior_tribe
+      Tribe.import data
+      tribe.should_not be_synonym_of senior_tribe
+      tribe.should be_synonym_of newer_senior_tribe
+
+      # make sure the deleted synonymy is deleted
+      update = Update.find_by_record_id_and_field_name tribe.id, 'senior_synonym_of'
+      update.before.should == junior_tribe.name.name
+      update.after.should be_nil
+      update = Update.find_by_record_id_and_field_name senior_tribe.id, 'senior_synonym_of'
+      update.before.should == tribe.name.name
+      update.after.should be_nil
+
+      ## make sure the new synonymy is added
+      #update = Update.find_by_record_id_and_field_name tribe.id, 'junior_synonym_of'
+      #update.before.should be_nil
+      #update.after.should == new_senior_tribe.name.name
+      #update = Update.find_by_record_id_and_field_name newer_senior_tribe.id, 'senior_synonym_of'
+      #update.before.should be_nil
+      #update.after.should == tribe.name.name
+
+    end
+  end
 end
