@@ -1,6 +1,6 @@
 # coding: UTF-8
 class Family < Taxon
-  include Updater
+  include Importers::Bolton::Catalog::Updater
 
   def self.import data
     name = Name.import family_name: 'Formicidae'

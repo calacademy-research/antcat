@@ -1,5 +1,5 @@
 # coding: UTF-8
-module Updater
+module Importers::Bolton::Catalog::Updater
 
   def update_field field_name, new_value, attributes
     before = self[field_name]
@@ -76,7 +76,7 @@ module Updater
     items_to_delete.each {|item| TaxonHistoryItem.delete item}
   end
 
-  def update_family_or_subfamily data
+  def update_family_or_subfamily_or_tribe data
     attributes = {}
 
     update_boolean_field  'fossil',              data[:fossil], attributes
@@ -92,6 +92,9 @@ module Updater
 
     protonym.update_data data[:protonym]
     update_history data[:history]
+  end
+
+  def update_synonyms
   end
 
 end

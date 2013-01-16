@@ -1,5 +1,6 @@
 # coding: UTF-8
 class Tribe < Taxon
+  include Importers::Bolton::Catalog::Updater
   belongs_to :subfamily
   has_many :genera
 
