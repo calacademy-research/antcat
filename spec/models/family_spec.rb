@@ -75,8 +75,8 @@ describe Family do
         reference = FactoryGirl.create :article_reference,
           author_names: [Factory(:author_name, name: "Latreille")], citation_year: '1809', bolton_key_cache: 'Latreille 1809'
         @ref_taxt = "{ref #{reference.id}}"
-        @atta = create_genus 'Atta'
-        @nam_taxt = "{nam #{@atta.name.id}}"
+        @atta_name = create_name 'Atta'
+        @nam_taxt = "{nam #{@atta_name.id}}"
 
         citation = Citation.create! reference: reference, pages: '12', forms: 'w.'
         @protonym = Protonym.create!(
