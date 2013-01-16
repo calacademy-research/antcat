@@ -93,7 +93,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
         <p>*<i>Myrmeciites incertae sedis</i> in Hymenoptera: Baroni Urbani, 2008: 7.</p>
       }
 
-      Taxon.count.should == 9
+      Taxon.count.should == 10
 
       subfamily = Subfamily.find_by_name 'Aneuretinae'
       subfamily.should_not be_invalid
@@ -120,7 +120,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
       tribe.history_items.map(&:taxt).should == ["history"]
       tribe.type_name.to_s.should == 'Aneuretus'
       tribe.type_name.rank.should == 'genus'
-      tribe.reference_sections.map(&:title_taxt).should == ["Subfamily, tribe {nam #{Name.find_by_name('Aneuretini').id}} and genus {nam #{Name.find_by_name('Aneuretus').id}} references"]
+      tribe.reference_sections.map(&:title_taxt).should == ["Subfamily, tribe {tax #{Taxon.find_by_name('Aneuretini').id}} and genus {nam #{Name.find_by_name('Aneuretus').id}} references"]
       tribe.reference_sections.map(&:references_taxt).should == ["{ref #{emery.id}}: 461 (diagnosis)"]
 
       junior_synonym = Tribe.find_by_name 'Anonychomyrmini' 
@@ -130,7 +130,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
       aneuretus = Genus.find_by_name 'Aneuretus'
       aneuretus.tribe.should == tribe
       aneuretus.subfamily.should == subfamily
-      aneuretus.reference_sections.map(&:references_taxt).should == ["{nam #{Name.find_by_name('Aneuretus').id}} reference"]
+      aneuretus.reference_sections.map(&:references_taxt).should == ["{tax #{aneuretus.id}} reference"]
 
       junior_synonym = Genus.find_by_name 'Odontomyrmex'
       junior_synonym.should be_synonym_of aneuretus
