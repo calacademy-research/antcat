@@ -229,7 +229,7 @@ describe Importers::Bolton::Catalog::TextToTaxt do
             pages: "400",
             matched_text: "Gray, J.E. 1841: 400 (Mammalia)"}],
         delimiter: "."}]).should ==
-          "{nam #{genus.name.id}} {ref #{reference.id}}: 400."
+          "{tax #{genus.id}} {ref #{reference.id}}: 400."
     end
   end
 
