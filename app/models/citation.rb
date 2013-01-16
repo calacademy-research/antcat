@@ -1,6 +1,6 @@
 # coding: UTF-8
 class Citation < ActiveRecord::Base
-  include Updater
+  include Importers::Bolton::Catalog::Updater
   belongs_to :reference
 
   def self.import data

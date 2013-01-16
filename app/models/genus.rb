@@ -1,5 +1,6 @@
 # coding: UTF-8
 class Genus < GenusGroupTaxon
+  include Importers::Bolton::Catalog::Updater
   belongs_to :tribe
   has_many :species
   has_many :subspecies

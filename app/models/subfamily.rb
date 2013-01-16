@@ -1,6 +1,6 @@
 # coding: UTF-8
 class Subfamily < Taxon
-  include Updater
+  include Importers::Bolton::Catalog::Updater
   has_many :tribes
   has_many :genera
   has_many :species

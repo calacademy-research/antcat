@@ -1,6 +1,6 @@
 # coding: UTF-8
 class Protonym < ActiveRecord::Base
-  include Updater
+  include Importers::Bolton::Catalog::Updater
   belongs_to :authorship, class_name: 'Citation', dependent: :destroy
   belongs_to  :name
   validates   :name, presence: true
