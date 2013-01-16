@@ -24,7 +24,7 @@ class Family < Taxon
   end
 
   def update_data data
-    update_family_or_subfamily_or_tribe data
+    update_taxon data
   end
 
   def import_reference_sections sections
