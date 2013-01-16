@@ -25,6 +25,24 @@ class Family < Taxon
     end
   end
 
+  def normalize_boolean boolean
+    case boolean
+    when '1', true then '1'
+    when '0', true, nil then '-'
+    else raise
+    end
+  end
+
+  def update_boolean_field field_name, new_value, attributes
+    before = normalize_boolean self[field_name]
+    after = normalize_boolean new_value
+    if before != after
+      Update.create! class_name: self.class.to_s, record_id: id, field_name: field_name,
+        before: before, after: after
+      attributes[field_name] = after
+    end
+  end
+
   def update_data data
     attributes = {}
 
