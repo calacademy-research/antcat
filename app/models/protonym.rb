@@ -18,11 +18,11 @@ class Protonym < ActiveRecord::Base
 
   def update_data data
     attributes = {}
-    update_name_field 'name', Name.import(data), attributes
-    update_field 'sic', data[:sic], attributes
-    update_field 'fossil', data[:fossil], attributes
+    update_name_field     'name', Name.import(data), attributes
+    update_boolean_field  'sic', data[:sic], attributes
+    update_boolean_field  'fossil', data[:fossil], attributes
+    update_field          'locality', data[:locality], attributes
     authorship.update_data data[:authorship].first
-    update_field 'locality', data[:locality], attributes
     update_attributes attributes
   end
 
