@@ -231,21 +231,6 @@ describe Reference do
     end
   end
 
-  describe "versioning" do
-    it "should work" do
-      reference = UnknownReference.create! :title => 'title', :citation_year => '2010', :citation => 'citation'
-      reference.versions.last.event.should == 'create'
-
-      reference.update_attribute :title, 'new title'
-      version = reference.versions.last
-      version.event.should == 'update'
-
-      reference = version.reify
-      reference.save!
-      reference.reload.title.should == 'title' 
-    end
-  end
-
   describe 'with principal author last name' do
     it 'should return references with a matching principal author last name' do
       not_possible_reference = FactoryGirl.create :book_reference, :author_names => [FactoryGirl.create(:author_name, :name => 'Bolton, B.')]
