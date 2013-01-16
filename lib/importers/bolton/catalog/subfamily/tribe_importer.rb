@@ -40,7 +40,6 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     headline = consume :family_group_headline
     name = headline[:protonym][:tribe_name] || headline[:protonym][:subtribe_name] || headline[:protonym][:family_or_subfamily_name]
     fossil = headline[:protonym][:fossil]
-
     history = parse_history
 
     tribe = Tribe.import(
