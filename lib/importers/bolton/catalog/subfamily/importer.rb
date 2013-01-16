@@ -23,9 +23,9 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     Update.delete_all
 
     parse_family
-    #parse_supersubfamilies
+    parse_supersubfamilies
 
-    #do_manual_fixups
+    do_manual_fixups
 
     #resolve_parent_synonyms
 
