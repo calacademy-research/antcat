@@ -161,4 +161,10 @@ class Taxon < ActiveRecord::Base
     attributes
   end
 
+  def import_history history
+    history.each do |item|
+      history_items.create! taxt: item
+    end
+  end
+
 end

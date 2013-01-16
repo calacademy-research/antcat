@@ -22,9 +22,7 @@ class Subfamily < Taxon
         }
         attributes.merge! get_type_attributes :type_genus, data
         subfamily = create! attributes
-        data[:history].each do |item|
-          subfamily.history_items.create! taxt: item
-        end
+        subfamily.import_history data[:history]
       end
       subfamily
     end
