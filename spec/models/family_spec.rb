@@ -179,6 +179,13 @@ describe Family do
         family.type_taxt.should == @nam_taxt
       end
 
+      it "should set status to valid when updating by default" do
+        data = @data.dup
+        data.delete :status
+        Family.import data
+        Update.count.should == 0
+      end
+
       it "should handle the type fields" do
         data = @data.merge(
           type_genus: {
