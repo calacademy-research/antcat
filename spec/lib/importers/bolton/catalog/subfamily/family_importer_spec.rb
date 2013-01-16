@@ -90,7 +90,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
     reference_section = family.reference_sections.first
     reference_section.title_taxt.should == 'FAMILY FORMICIDAE REFERENCES, WORLD'
     reference_section.subtitle_taxt.should == 'WORLD CATALOGUES'
-    reference_section.references_taxt.should == "{ref #{roger.id}}: 1 ({nam #{Name.find_by_name('Formicidae').id}})"
+    reference_section.references_taxt.should == "{ref #{roger.id}}: 1 ({tax #{Taxon.find_by_name('Formicidae').id}})"
 
     reference_section = family.reference_sections.second
     reference_section.title_taxt.should == 'Regional catalogues and checklists'

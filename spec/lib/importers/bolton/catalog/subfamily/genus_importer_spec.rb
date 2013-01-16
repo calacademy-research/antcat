@@ -143,7 +143,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
         sphinctomyrmex.history_items.map(&:taxt).should == ['Sphinctomyrmex history']
         sphinctomyrmex.reference_sections.map(&:references_taxt).should == [
           "[Note. Entries prior to {ref #{bolton.id}}: 44, refer to genus as {nam #{Name.find_by_name('Acantholepis').id}}.]",
-          "{nam #{Name.find_by_name('Sphinctomyrmex').id}} references",
+          "{tax #{sphinctomyrmex.id}} references",
         ]
         aethiopopone = Genus.find_by_name 'Aethiopopone'
         aethiopopone.history_items.map(&:taxt).should == ["{nam #{aethiopopone.name.id}} history"]
@@ -190,7 +190,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
       </div>}
       @importer.parse_genus_references genus
       genus.reference_sections.map(&:title_taxt).should ==
-        ["Genus {nam #{Name.find_by_name('Lepisiota').id}} references", ""]
+        ["Genus {tax #{genus.id}} references", ""]
       genus.reference_sections.map(&:references_taxt).should == ["Note", "Another note"]
     end
 
