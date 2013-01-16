@@ -17,7 +17,6 @@ gem 'rails', '3.1.10'
 gem 'rake'
 gem 'sunspot_rails'
 gem 'paperclip'
-gem 'paper_trail'
 gem 'will_paginate'
 gem 'xml-simple'
 
