@@ -16,9 +16,7 @@ class Tribe < Taxon
       senior = data.delete :synonym_of
       tribe = create! attributes
       tribe.import_synonyms senior
-      data[:history].each do |item|
-        tribe.history_items.create! taxt: item
-      end
+      tribe.import_history data[:history]
       tribe
     end
   end
