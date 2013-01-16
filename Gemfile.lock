@@ -142,8 +142,6 @@ GEM
     options (2.3.0)
       fattr
     orm_adapter (0.0.5)
-    paper_trail (2.5.0)
-      rails (~> 3)
     paperclip (2.4.5)
       activerecord (>= 2.3.0)
       activesupport (>= 2.3.2)
@@ -277,7 +275,6 @@ DEPENDENCIES
   launchy
   mysql2
   nokogiri
-  paper_trail
   paperclip
   progress_bar
   rack

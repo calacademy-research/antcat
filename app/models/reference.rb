@@ -21,7 +21,6 @@ class Reference < ActiveRecord::Base
   scope :non_missing, where('type IS NULL OR type != "MissingReference"')
 
   # Other plugins and mixins
-  has_paper_trail
   include ReferenceComparable; def author; principal_author_last_name; end
 
   # validation and callbacks
