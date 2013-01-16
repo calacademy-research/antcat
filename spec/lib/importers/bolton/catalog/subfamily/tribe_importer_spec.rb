@@ -41,7 +41,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
         <p>Aneuretini history</p>
       }
 
-      Taxon.count.should == 2
+      Taxon.count.should == 3
 
       tribe = Tribe.find_by_name 'Aneuretini'
       tribe.subfamily.name.to_s.should == 'Aneuretinae'
@@ -64,7 +64,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
         <p>Paleosminthuridae as tribe of Dolichoderinae: Donisthorpe, 1947c: 588.</p>
       }
 
-      Taxon.count.should == 3
+      Taxon.count.should == 4
 
       senior_synonym = Tribe.find_by_name 'Aneuretini'
       junior_synonym = Tribe.find_by_name 'Paleosminthuridae'
