@@ -25,35 +25,17 @@ class Family < Taxon
     end
   end
 
-  def normalize_boolean boolean
-    case boolean
-    when '1', true then '1'
-    when '0', true, nil then '-'
-    else raise
-    end
-  end
-
-  def update_boolean_field field_name, new_value, attributes
-    before = normalize_boolean self[field_name]
-    after = normalize_boolean new_value
-    if before != after
-      Update.create! class_name: self.class.to_s, record_id: id, field_name: field_name,
-        before: before, after: after
-      attributes[field_name] = after
-    end
-  end
-
   def update_data data
     attributes = {}
 
-    update_field      'fossil',              data[:fossil], attributes
-    update_field      'status',              data[:status] || 'valid', attributes
-    update_taxt_field 'headline_notes_taxt', data[:note], attributes
+    update_boolean_field  'fossil',              data[:fossil], attributes
+    update_field          'status',              data[:status] || 'valid', attributes
+    update_taxt_field     'headline_notes_taxt', data[:note], attributes
 
     type_attributes = self.class.get_type_attributes :type_genus, data
-    update_name_field 'type_name',    type_attributes[:type_name], attributes
-    update_field      'type_taxt',    type_attributes[:type_taxt], attributes
-    update_field      'type_fossil',  type_attributes[:type_fossil], attributes
+    update_name_field     'type_name',    type_attributes[:type_name], attributes
+    update_field          'type_taxt',    type_attributes[:type_taxt], attributes
+    update_boolean_field  'type_fossil',  type_attributes[:type_fossil], attributes
 
     update_attributes attributes
 
