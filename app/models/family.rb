@@ -29,7 +29,7 @@ class Family < Taxon
     attributes = {}
 
     update_field      'fossil',              data[:fossil], attributes
-    update_field      'status',              data[:status], attributes
+    update_field      'status',              data[:status] || 'valid', attributes
     update_taxt_field 'headline_notes_taxt', data[:note], attributes
 
     type_attributes = self.class.get_type_attributes :type_genus, data
