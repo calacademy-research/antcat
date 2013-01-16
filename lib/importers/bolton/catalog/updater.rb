@@ -76,7 +76,7 @@ module Importers::Bolton::Catalog::Updater
     items_to_delete.each {|item| TaxonHistoryItem.delete item}
   end
 
-  def update_family_or_subfamily_or_tribe data
+  def update_taxon data
     attributes = {}
 
     update_boolean_field  'fossil',              data[:fossil], attributes

@@ -32,7 +32,7 @@ class Tribe < Taxon
       previous_junior_synonyms = junior_synonyms
       previous_senior_synonyms = senior_synonyms
 
-      update_family_or_subfamily_or_tribe data
+      update_taxon data
 
       current_junior_synonyms = junior_synonyms
       current_senior_synonyms = senior_synonyms
