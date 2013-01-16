@@ -129,34 +129,88 @@ describe Subfamily do
   end
 
   describe "Importing" do
-    it "should work" do
-      reference = FactoryGirl.create :article_reference, :bolton_key_cache => 'Emery 1913a'
-      subfamily = Subfamily.import(
-        subfamily_name: 'Aneuretinae',
-        fossil: true,
-        protonym: {tribe_name: "Aneuretini",
-                   authorship: [{author_names: ["Emery"], year: "1913a", pages: "6"}]},
-        type_genus: {genus_name: 'Atta'},
-        history: ["Aneuretinae as subfamily", "Aneuretini as tribe"]
-      )
-      
-      subfamily.reload
-      subfamily.name.to_s.should == 'Aneuretinae'
-      subfamily.should_not be_invalid
-      subfamily.should be_fossil
-      subfamily.history_items.map(&:taxt).should == ['Aneuretinae as subfamily', 'Aneuretini as tribe']
+    describe "When the subfamily doesn't exist" do
+      it "should create the subfamily" do
+        reference = FactoryGirl.create :article_reference, :bolton_key_cache => 'Emery 1913a'
+        subfamily = Subfamily.import(
+          subfamily_name: 'Aneuretinae',
+          fossil: true,
+          protonym: {tribe_name: "Aneuretini",
+                    authorship: [{author_names: ["Emery"], year: "1913a", pages: "6"}]},
+          type_genus: {genus_name: 'Atta'},
+          history: ["Aneuretinae as subfamily", "Aneuretini as tribe"]
+        )
 
-      subfamily.type_name.to_s.should == 'Atta'
-      subfamily.type_name.rank.should == 'genus'
+        subfamily.reload
+        subfamily.name.to_s.should == 'Aneuretinae'
+        subfamily.should_not be_invalid
+        subfamily.should be_fossil
+        subfamily.history_items.map(&:taxt).should == ['Aneuretinae as subfamily', 'Aneuretini as tribe']
 
-      protonym = subfamily.protonym
-      protonym.name.to_s.should == 'Aneuretini'
+        subfamily.type_name.to_s.should == 'Atta'
+        subfamily.type_name.rank.should == 'genus'
 
-      authorship = protonym.authorship
-      authorship.pages.should == '6'
+        protonym = subfamily.protonym
+        protonym.name.to_s.should == 'Aneuretini'
 
-      authorship.reference.should == reference
+        authorship = protonym.authorship
+        authorship.pages.should == '6'
+
+        authorship.reference.should == reference
+      end
     end
-  end
 
+    describe "When the subfamily does exist" do
+      before do
+        @emery_reference = FactoryGirl.create :article_reference, :bolton_key_cache => 'Emery 1913a'
+        @data = {
+          subfamily_name: 'Aneuretinae',
+          fossil: true,
+          protonym: {tribe_name: "Aneuretini",
+                    authorship: [{author_names: ["Emery"], year: "1913a", pages: "6"}]},
+          type_genus: {genus_name: 'Atta'},
+          history: ["Aneuretinae as subfamily", "Aneuretini as tribe"]
+        }
+        @subfamily = Subfamily.import @data
+      end
+
+      it "should update the subfamily" do
+        fisher_reference = FactoryGirl.create :article_reference, author_names: [Factory(:author_name, name: 'Fisher')], bolton_key_cache: 'Fisher 2004'
+        data = @data.merge({
+          subfamily_name: 'Aneuretinae',
+          fossil: false,
+          status: 'synonym',
+          note: [{phrase: 'Headline notes'}],
+          protonym: {tribe_name: "Aneurestini",
+                    authorship: [{author_names: ['Fisher'], year: '2004', pages: '7'}],
+                    fossil: true, sic: true, locality: 'Canada'},
+          type_genus: {genus_name: 'Eciton', fossil: true, texts: [{phrase: 'Doggedly'}]},
+          history: ["Aneuretinae as a big subfamily", "Aneuretini as big tribe"],
+        })
+
+        subfamily = Subfamily.import data
+        subfamily.should == @subfamily
+        subfamily.fossil.should be_false
+        subfamily.status.should == 'synonym'
+        subfamily.headline_notes_taxt.should == 'Headline notes'
+
+
+        subfamily.type_name.name.should == 'Eciton'
+        subfamily.type_fossil.should be_true
+        subfamily.type_taxt.should == 'Doggedly'
+
+        protonym = subfamily.protonym
+        protonym.name.name.should == 'Aneurestini'
+        protonym.sic.should be_true
+        protonym.fossil.should be_true
+        protonym.authorship.reference.principal_author_last_name.should == 'Fisher'
+        protonym.locality.should == 'Canada'
+
+        subfamily.should have(2).history_items
+        subfamily.history_items.first.taxt.should == 'Aneuretinae as a big subfamily'
+        subfamily.history_items.second.taxt.should == 'Aneuretini as big tribe'
+      end
+    end
+
+  end
 end
