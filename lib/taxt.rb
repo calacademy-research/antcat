@@ -134,7 +134,13 @@ module Taxt
   def self.encode_taxon_name data
     epithet = data[:species_group_epithet] || data[:species_epithet]
     if data[:genus_name] or not epithet
-      "{nam #{Name.import(data).id}}"
+      name = Name.import data
+      taxon = Taxon.find_by_name_id name.id
+      if taxon
+        "{tax #{taxon.id}}"
+      else
+        "{nam #{name.id}}"
+      end
     else
       "{epi #{epithet}}"
     end

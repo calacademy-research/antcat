@@ -30,6 +30,11 @@ describe Taxt do
         end
       end
 
+      it "should create a {tax} if the taxon is found" do
+        genus = create_genus 'Atta'
+        Taxt.encode_taxon_name(genus_name: 'Atta').should == "{tax #{genus.id}}"
+      end
+
       it "should create a {nam 1234} tag, pointing to the Name" do
         name = create_name 'Atta'
         Taxt.encode_taxon_name(genus_name: 'Atta').should == "{nam #{name.id}}"
