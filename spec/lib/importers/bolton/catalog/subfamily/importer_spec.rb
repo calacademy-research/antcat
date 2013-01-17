@@ -33,30 +33,4 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
     end
 
   end
-
-  #describe "Fixing up synonyms" do
-    #it "should fix up a genus to point to the senior synonym" do
-      #senior_synonym = create_tribe 'Leptomyrmecini'
-      #junior_synonym = create_tribe 'Iridomyrmecina', status: 'synonym'
-      #Synonym.create! junior_synonym: junior_synonym, senior_synonym: senior_synonym
-      #synonym_of_junior_synonym = create_tribe 'Anatellina', status: 'synonym'
-      #Synonym.create! junior_synonym: synonym_of_junior_synonym, senior_synonym: junior_synonym
-      #genus_of_synonym_of_junior_synonym = create_genus 'Iridomyrmex', tribe: synonym_of_junior_synonym
-
-      #@importer.resolve_parent_synonyms
-
-      #genus_of_synonym_of_junior_synonym.reload.tribe.name.to_s.should == 'Leptomyrmecini'
-    #end
-    #it "should fixup the species of a subgenus to point to the senior synonym" do
-      #genus = FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Camponotus')
-      #senior_synonym = FactoryGirl.create :subgenus, name: FactoryGirl.create(:name, name: 'Mayria'), genus: genus
-      #junior_synonym = FactoryGirl.create :subgenus, name: FactoryGirl.create(:name, name: 'Myrmosega'), status: 'synonym', synonym_of: senior_synonym
-      #species_of_junior_synonym = FactoryGirl.create :species, subgenus: junior_synonym, genus: genus
-
-      #@importer.resolve_parent_synonyms
-
-      #species_of_junior_synonym.reload.subgenus.name.to_s.should == 'Mayria'
-    #end
-  #end
-
 end
