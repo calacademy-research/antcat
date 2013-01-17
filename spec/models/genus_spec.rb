@@ -254,4 +254,45 @@ describe Genus do
     end
 
   end
+
+  describe "Updating" do
+    it "should record a change in parent taxon" do
+      dolichoderinae = create_subfamily 'Dolichoderinae'
+      dolichoderini = create_tribe 'Dolichoderini'
+      fisher_reference = FactoryGirl.create :article_reference, author_names: [Factory(:author_name, name: 'Fisher')], bolton_key_cache: 'Fisher 2004'
+      data = {
+        genus_name: 'Atta',
+        protonym: {genus_name: 'Atta', authorship: [{author_names: ['Fisher'], year: '2004', pages: '7'}]},
+        type_species: {genus_name: 'Atta', species_epithet: 'Atta major'},
+        history: [],
+        subfamily: dolichoderinae,
+        tribe: dolichoderini,
+      }
+      genus = Genus.import data
+      genus.subfamily.should == dolichoderinae
+      genus.tribe.should == dolichoderini
+
+      aectinae = create_subfamily 'Aectinae'
+      aectini = create_tribe 'Aectini'
+      data[:subfamily] = aectinae
+      data[:tribe] = aectini
+
+      genus = Genus.import data
+
+      genus.subfamily.should == aectinae
+      genus.tribe.should == aectini
+
+      Update.count.should == 2
+
+      #update = Update.find_by_record_id_and_field_name genus, :subfamily_id
+      #update.before.should == 'Dolichoderinae'
+      #update.after.should == 'Aectinae'
+
+      #update = Update.find_by_record_id_and_field_name genus, :subfamily_id
+      #update.before.should == 'Dolichoderinae'
+      #update.after.should == 'Aectinae'
+
+    end
+  end
+
 end
