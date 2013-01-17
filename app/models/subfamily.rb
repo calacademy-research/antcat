@@ -20,7 +20,7 @@ class Subfamily < Taxon
           protonym:            Protonym.import(data[:protonym]),
           headline_notes_taxt: data[:headline_notes_taxt],
         }
-        attributes.merge! get_type_attributes :type_genus, data
+        attributes.merge! get_type_attributes data
         subfamily = create! attributes
         subfamily.import_history data[:history]
       end
@@ -30,6 +30,10 @@ class Subfamily < Taxon
 
   def update_data data
     update_taxon data
+  end
+
+  def self.get_type_key
+    :type_genus
   end
 
   #########

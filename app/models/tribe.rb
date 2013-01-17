@@ -17,7 +17,7 @@ class Tribe < Taxon
           protonym:   Protonym.import(data[:protonym]),
           subfamily:  data[:subfamily],
         }
-        attributes.merge! get_type_attributes :type_genus, data
+        attributes.merge! get_type_attributes data
         senior = data.delete :synonym_of
         tribe = create! attributes
         tribe.import_synonyms senior
@@ -38,6 +38,10 @@ class Tribe < Taxon
   def update_taxon_fields data, attributes
     super
     update_taxon_field :subfamily_id, data[:subfamily].id, attributes
+  end
+
+  def self.get_type_key
+    :type_genus
   end
 
   #########

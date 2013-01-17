@@ -15,12 +15,16 @@ class Family < Taxon
           protonym:            Protonym.import(data[:protonym]),
           headline_notes_taxt: Importers::Bolton::Catalog::TextToTaxt.convert(data[:note]),
         }
-        attributes.merge! get_type_attributes :type_genus, data
+        attributes.merge! get_type_attributes data
         family = create! attributes
         family.import_history data[:history]
       end
       family
     end
+  end
+
+  def self.get_type_key
+    :type_genus
   end
 
   def update_data data
