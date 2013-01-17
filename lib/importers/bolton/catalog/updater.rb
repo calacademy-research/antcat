@@ -107,11 +107,11 @@ module Importers::Bolton::Catalog::Updater
     current_junior_synonyms = junior_synonyms(true).to_a
     current_senior_synonyms = senior_synonyms(true).to_a
 
-    #new_junior_synonyms = current_junior_synonyms - prior_junior_synonyms
-    #for junior_synonym in new_junior_synonyms
-      #Update.create! class_name: 'Tribe', record_id: id, field_name: 'senior_synonym_of',
-        #before: nil, after: junior_synonym.name.name
-    #end
+    new_junior_synonyms = current_junior_synonyms - prior_junior_synonyms
+    for junior_synonym in new_junior_synonyms
+      Update.create! class_name: 'Tribe', record_id: id, field_name: 'senior_synonym_of',
+        before: nil, after: junior_synonym.name.name
+    end
 
     new_senior_synonyms = current_senior_synonyms.to_a - prior_senior_synonyms.to_a
 
