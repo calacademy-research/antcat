@@ -120,19 +120,17 @@ module Importers::Bolton::Catalog::Updater
         before: nil, after: senior_synonym.name.name
     end
 
-    #deleted_junior_synonyms = prior_junior_synonyms.to_a - current_junior_synonyms.to_a
-    #for junior_synonym in deleted_junior_synonyms
-      #Update.create! class_name: 'Tribe', record_id: id, field_name: 'senior_synonym_of',
-        #before: junior_synonym.name.name, after: nil
-      #Synonym.where([junior_synonym_id: junior_synonym, senior_synonym_id: id]).destroy_all
-    #end
+    deleted_junior_synonyms = prior_junior_synonyms.to_a - current_junior_synonyms.to_a
+    for junior_synonym in deleted_junior_synonyms
+      Update.create! class_name: 'Tribe', record_id: id, field_name: 'senior_synonym_of',
+        before: junior_synonym.name.name, after: nil
+    end
 
-    #deleted_senior_synonyms = prior_senior_synonyms - current_senior_synonyms
-    #for senior_synonym in deleted_senior_synonyms
-      #Update.create! class_name: 'Tribe', record_id: id, field_name: 'junior_synonym_of',
-        #before: senior_synonym.name.name, after: nil
-      #Synonym.where([senior_synonym_id: senior_synonym, junior_synonym_id: id]).destroy_all
-    #end
+    deleted_senior_synonyms = prior_senior_synonyms - current_senior_synonyms
+    for senior_synonym in deleted_senior_synonyms
+      Update.create! class_name: 'Tribe', record_id: id, field_name: 'junior_synonym_of',
+        before: senior_synonym.name.name, after: nil
+    end
 
   end
 end

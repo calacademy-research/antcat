@@ -40,6 +40,31 @@ describe Importers::Bolton::Catalog::Updater do
       update.after.should == 'Baserosini'
 
     end
+
+    describe "Unit test" do
+      it "should record when a junior synonymy is removed" do
+        @attini.become_junior_synonym_of @bacerosini
+        @attini.update_synonyms do
+          @attini.become_not_a_junior_synonym_of @bacerosini
+        end
+        Update.count.should == 1
+        update = Update.find_by_record_id_and_field_name @attini.id, 'junior_synonym_of'
+        update.before.should == 'Baserosini'
+        update.after.should == nil
+      end
+
+      it "should record when a senior synonymy is removed" do
+        @bacerosini.become_junior_synonym_of @attini
+        @attini.update_synonyms do
+          @bacerosini.become_not_a_junior_synonym_of @attini
+        end
+        Update.count.should == 1
+        update = Update.find_by_record_id_and_field_name @attini.id, 'senior_synonym_of'
+        update.before.should == 'Baserosini'
+        update.after.should == nil
+      end
+
+    end
   end
 
 end
