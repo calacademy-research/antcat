@@ -4,12 +4,14 @@ require 'spec_helper'
 describe Importers::Bolton::Catalog::Updater do
   before do
     reference = FactoryGirl.create :article_reference, bolton_key_cache: 'Emery 1913a'
+    subfamily = create_subfamily
     @data = {
       tribe_name: 'Attini',
       protonym: {tribe_name: 'Attini',
                  authorship: [{author_names: ['Emery'], year: '1913a', pages: '6'}]},
       type_genus: {genus_name: 'Atta'},
       history: ['Attini history'],
+      subfamily: subfamily
     }
     # create the tribe from scratch
     @attini = Tribe.import @data

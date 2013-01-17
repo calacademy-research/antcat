@@ -15,6 +15,16 @@ module Importers::Bolton::Catalog::Updater
     value.present? ? value : nil
   end
 
+  def update_taxon_field field_name, new_value, attributes
+    before = normalize_field self[field_name]
+    after = normalize_field new_value
+    if before != after
+      Update.create! class_name: self.class.to_s, record_id: id, field_name: field_name,
+        before: Taxon.find(before).name.name, after: Taxon.find(after).name.name
+      attributes[field_name] = after
+    end
+  end
+
   def update_name_field field_name, new_name, attributes
     before = self.send field_name.to_sym
     after = new_name
@@ -82,7 +92,13 @@ module Importers::Bolton::Catalog::Updater
 
   def update_taxon data
     attributes = {}
+    update_taxon_fields data, attributes
+    update_attributes attributes
+    protonym.update_data data[:protonym]
+    update_history data[:history]
+  end
 
+  def update_taxon_fields data, attributes
     update_boolean_field  'fossil',              data[:fossil], attributes
     update_field          'status',              data[:status] || 'valid', attributes
     update_taxt_field     'headline_notes_taxt', data[:note], attributes
@@ -91,11 +107,6 @@ module Importers::Bolton::Catalog::Updater
     update_name_field     'type_name',    type_attributes[:type_name], attributes
     update_field          'type_taxt',    type_attributes[:type_taxt], attributes
     update_boolean_field  'type_fossil',  type_attributes[:type_fossil], attributes
-
-    update_attributes attributes
-
-    protonym.update_data data[:protonym]
-    update_history data[:history]
   end
 
   def update_synonyms
