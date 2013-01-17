@@ -95,6 +95,26 @@ module Importers::Bolton::Catalog::Updater
   end
 
   def update_synonyms
-  end
+    prior_junior_synonyms = junior_synonyms
+    prior_senior_synonyms = senior_synonyms
 
+    yield
+
+    current_junior_synonyms = junior_synonyms
+    current_senior_synonyms = senior_synonyms
+
+    new_junior_synonyms = current_junior_synonyms - prior_junior_synonyms
+    for junior_synonym in new_junior_synonyms
+      Update.create! class_name: 'Tribe', record_id: id, field_name: 'senior_synonym_of',
+        before: nil, after: junior_synonym.name.name
+    end
+
+    deleted_junior_synonyms = prior_junior_synonyms - current_junior_synonyms
+    for junior_synonym in deleted_junior_synonyms
+      Update.create! class_name: 'Tribe', record_id: id, field_name: 'senior_synonym_of',
+        before: junior_synonym.name.name, after: nil
+      Synonym.where([junior_synonym_id: junior_synonym, senior_synonym_id: id]).destroy_all
+    end
+
+  end
 end
