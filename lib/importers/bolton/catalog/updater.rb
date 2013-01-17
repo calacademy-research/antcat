@@ -2,13 +2,17 @@
 module Importers::Bolton::Catalog::Updater
 
   def update_field field_name, new_value, attributes
-    before = self[field_name]
-    after = new_value
+    before = normalize_field self[field_name]
+    after = normalize_field new_value
     if before != after
       Update.create! class_name: self.class.to_s, record_id: id, field_name: field_name,
         before: before, after: after
       attributes[field_name] = after
     end
+  end
+
+  def normalize_field value
+    value.present? ? value : nil
   end
 
   def update_name_field field_name, new_name, attributes
@@ -95,26 +99,40 @@ module Importers::Bolton::Catalog::Updater
   end
 
   def update_synonyms
-    prior_junior_synonyms = junior_synonyms
-    prior_senior_synonyms = senior_synonyms
+    prior_junior_synonyms = junior_synonyms.to_a
+    prior_senior_synonyms = senior_synonyms.to_a
 
     yield
 
-    current_junior_synonyms = junior_synonyms
-    current_senior_synonyms = senior_synonyms
+    current_junior_synonyms = junior_synonyms(true).to_a
+    current_senior_synonyms = senior_synonyms(true).to_a
 
-    new_junior_synonyms = current_junior_synonyms - prior_junior_synonyms
-    for junior_synonym in new_junior_synonyms
-      Update.create! class_name: 'Tribe', record_id: id, field_name: 'senior_synonym_of',
-        before: nil, after: junior_synonym.name.name
+    #new_junior_synonyms = current_junior_synonyms - prior_junior_synonyms
+    #for junior_synonym in new_junior_synonyms
+      #Update.create! class_name: 'Tribe', record_id: id, field_name: 'senior_synonym_of',
+        #before: nil, after: junior_synonym.name.name
+    #end
+
+    new_senior_synonyms = current_senior_synonyms.to_a - prior_senior_synonyms.to_a
+
+    for senior_synonym in new_senior_synonyms
+      Update.create! class_name: 'Tribe', record_id: id, field_name: 'junior_synonym_of',
+        before: nil, after: senior_synonym.name.name
     end
 
-    deleted_junior_synonyms = prior_junior_synonyms - current_junior_synonyms
-    for junior_synonym in deleted_junior_synonyms
-      Update.create! class_name: 'Tribe', record_id: id, field_name: 'senior_synonym_of',
-        before: junior_synonym.name.name, after: nil
-      Synonym.where([junior_synonym_id: junior_synonym, senior_synonym_id: id]).destroy_all
-    end
+    #deleted_junior_synonyms = prior_junior_synonyms.to_a - current_junior_synonyms.to_a
+    #for junior_synonym in deleted_junior_synonyms
+      #Update.create! class_name: 'Tribe', record_id: id, field_name: 'senior_synonym_of',
+        #before: junior_synonym.name.name, after: nil
+      #Synonym.where([junior_synonym_id: junior_synonym, senior_synonym_id: id]).destroy_all
+    #end
+
+    #deleted_senior_synonyms = prior_senior_synonyms - current_senior_synonyms
+    #for senior_synonym in deleted_senior_synonyms
+      #Update.create! class_name: 'Tribe', record_id: id, field_name: 'junior_synonym_of',
+        #before: senior_synonym.name.name, after: nil
+      #Synonym.where([senior_synonym_id: senior_synonym, junior_synonym_id: id]).destroy_all
+    #end
 
   end
 end
