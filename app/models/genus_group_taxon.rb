@@ -26,6 +26,10 @@ class GenusGroupTaxon < Taxon
     {subfamily: data[:subfamily], tribe: data[:tribe]}
   end
 
+  def self.get_type_key
+    :type_species
+  end
+
   ###########
   def children
     species

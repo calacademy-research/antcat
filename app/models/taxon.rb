@@ -153,7 +153,8 @@ class Taxon < ActiveRecord::Base
     Synonym.create! junior_synonym: self, senior_synonym: senior if senior
   end
 
-  def self.get_type_attributes key, data
+  def self.get_type_attributes data
+    key = get_type_key
     attributes = {}
     if data[key]
       attributes[:type_name] = Name.import data[key]
