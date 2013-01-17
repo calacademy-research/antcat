@@ -24,8 +24,8 @@ describe Importers::Bolton::Catalog::Updater do
       @data[:synonym_of] = @bacerosini
       # update the existing tribe
       Tribe.import @data
-      @attini.reload.should be_junior_synonym_of @bacerosini
-      @bacerosini.reload.should be_senior_synonym_of @attini
+      @attini.should be_junior_synonym_of @bacerosini
+      @bacerosini.should be_senior_synonym_of @attini
 
       Update.count.should == 2
 
