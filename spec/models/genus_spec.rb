@@ -284,13 +284,13 @@ describe Genus do
 
       Update.count.should == 2
 
-      #update = Update.find_by_record_id_and_field_name genus, :subfamily_id
-      #update.before.should == 'Dolichoderinae'
-      #update.after.should == 'Aectinae'
+      update = Update.find_by_record_id_and_field_name genus, :subfamily_id
+      update.before.should == 'Dolichoderinae'
+      update.after.should == 'Aectinae'
 
-      #update = Update.find_by_record_id_and_field_name genus, :subfamily_id
-      #update.before.should == 'Dolichoderinae'
-      #update.after.should == 'Aectinae'
+      update = Update.find_by_record_id_and_field_name genus, :subfamily_id
+      update.before.should == 'Dolichoderinae'
+      update.after.should == 'Aectinae'
 
     end
   end
