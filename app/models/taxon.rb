@@ -55,7 +55,9 @@ class Taxon < ActiveRecord::Base
   ###############################################
   # synonym
   def synonym?; status == 'synonym' end
-  def synonym_of? taxon; senior_synonyms.include? taxon end
+  def junior_synonym_of? taxon; senior_synonyms.include? taxon end
+  def senior_synonym_of? taxon; junior_synonyms.include? taxon end
+  alias synonym_of? junior_synonym_of?
   has_many :synonyms_as_junior, foreign_key: :junior_synonym_id, class_name: 'Synonym'
   has_many :synonyms_as_senior, foreign_key: :senior_synonym_id, class_name: 'Synonym'
   has_many :junior_synonyms, through: :synonyms_as_senior
