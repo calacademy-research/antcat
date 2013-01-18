@@ -32,23 +32,6 @@ class GenusGroupTaxon < Taxon
     {subfamily: data[:subfamily], tribe: data[:tribe]}
   end
 
-  def update_data data
-    update_synonyms do
-      senior = data.delete :synonym_of
-      update_taxon data
-      import_synonyms senior
-    end
-  end
-
-  def update_taxon_fields data, attributes
-    super
-    if data[:attributes] && data[:attributes][:incertae_sedis_in]
-      update_field :incertae_sedis_in, data[:attributes][:incertae_sedis_in], attributes
-    end
-    update_taxon_field :subfamily_id, data[:subfamily].id, attributes
-    update_taxon_field :tribe_id, data[:tribe].id, attributes
-  end
-
   def self.get_type_key
     :type_species
   end

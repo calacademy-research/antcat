@@ -28,10 +28,6 @@ class Subfamily < Taxon
     end
   end
 
-  def update_data data
-    update_taxon data
-  end
-
   def self.get_type_key
     :type_genus
   end
