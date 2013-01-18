@@ -256,13 +256,16 @@ describe Genus do
   end
 
   describe "Updating" do
+    before do
+      FactoryGirl.create :article_reference, bolton_key_cache: 'Latreille 1809'
+    end
+
     it "should record a change in parent taxon" do
       dolichoderinae = create_subfamily 'Dolichoderinae'
       dolichoderini = create_tribe 'Dolichoderini'
-      fisher_reference = FactoryGirl.create :article_reference, author_names: [Factory(:author_name, name: 'Fisher')], bolton_key_cache: 'Fisher 2004'
       data = {
         genus_name: 'Atta',
-        protonym: {genus_name: 'Atta', authorship: [{author_names: ['Fisher'], year: '2004', pages: '7'}]},
+        protonym: {genus_name: 'Atta', authorship: [{author_names: ['Latreille'], year: '1809', pages: '7'}]},
         type_species: {genus_name: 'Atta', species_epithet: 'Atta major'},
         history: [],
         subfamily: dolichoderinae,
@@ -291,7 +294,27 @@ describe Genus do
       update = Update.find_by_record_id_and_field_name genus, :subfamily_id
       update.before.should == 'Dolichoderinae'
       update.after.should == 'Aectinae'
+    end
 
+    it "should record a change in incertae sedis" do
+      data = {
+        genus_name: 'Atta',
+        protonym: {genus_name: 'Atta',
+                   authorship:
+                   [{author_names: ['Latreille'], year: '1809', pages: '7'}]},
+        type_species: {genus_name: 'Atta', species_epithet: 'Atta major'},
+        history: [],
+        subfamily: create_subfamily,
+        tribe: create_tribe,
+      }
+      genus = Genus.import data
+      genus.incertae_sedis_in.should be_nil
+
+      data[:attributes] = {}
+      data[:attributes][:incertae_sedis_in] = 'subfamily'
+      genus = Genus.import data
+
+      genus.incertae_sedis_in.should == 'subfamily'
     end
   end
 
