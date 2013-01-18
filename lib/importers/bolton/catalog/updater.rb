@@ -115,11 +115,12 @@ module Importers::Bolton::Catalog::Updater
     tribe = data[:tribe] ? data[:tribe].id : nil
     update_taxon_id_field :subfamily_id, subfamily, attributes
     update_taxon_id_field :tribe_id, tribe, attributes
+    incertae_sedis_in = data[:attributes] && data[:attributes][:incertae_sedis_in]
 
     update_boolean_field  'fossil',               data[:fossil], attributes
     update_field          'status',               data[:status] || 'valid', attributes
     update_taxt_field     'headline_notes_taxt',  data[:note], attributes
-    update_field          :incertae_sedis_in,     data[:incertae_sedis_in], attributes
+    update_field          :incertae_sedis_in,     incertae_sedis_in, attributes
 
     type_attributes = self.class.get_type_attributes data
     update_name_field     'type_name',            type_attributes[:type_name], attributes
