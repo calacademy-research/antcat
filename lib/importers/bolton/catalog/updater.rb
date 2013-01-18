@@ -23,7 +23,7 @@ module Importers::Bolton::Catalog::Updater
       after = after_id ? Taxon.find(after_id).name.name : nil
       update = Update.create! class_name: self.class.to_s, record_id: id, field_name: field_name,
         before: before, after: after
-      attributes[field_name[0..-4]] = Taxon.find after_id
+      attributes[field_name[0..-4]] = after_id ? Taxon.find(after_id) : nil
     end
   end
 
