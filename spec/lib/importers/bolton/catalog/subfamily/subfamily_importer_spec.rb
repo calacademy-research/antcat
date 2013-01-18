@@ -156,7 +156,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
       genus.incertae_sedis_in.should == 'subfamily'
       genus.subfamily.should == subfamily
       genus.should be_hong
-      genus.status.should == Status['unresolved homonym'].to_s
+      genus.status.should == Status['valid'].to_s
 
       collective_group_name = Genus.find_by_name 'Myrmeciites'
       collective_group_name.should be_collective_group_name
