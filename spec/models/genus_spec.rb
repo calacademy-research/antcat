@@ -216,10 +216,14 @@ describe Genus do
     end
 
     it "should create synonyms" do
+      reference = FactoryGirl.create :article_reference, author_names: [FactoryGirl.create(:author_name, name: 'Latreille')], citation_year: '1809', bolton_key_cache: 'Latreille 1809'
       senior = create_genus 'Aneuretus'
       junior = Genus.import(
         genus_name: 'Eciton',
-        protonym: {genus_name: 'Eciton'},
+        protonym: {
+          genus_name: 'Eciton',
+          :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
+        },
         attributes: {synonym_of: senior},
         history: []
       )
@@ -257,7 +261,8 @@ describe Genus do
 
   describe "Updating" do
     before do
-      FactoryGirl.create :article_reference, bolton_key_cache: 'Latreille 1809'
+      FactoryGirl.create :article_reference, bolton_key_cache: 'Latreille 1809' 
+      FactoryGirl.create :article_reference, bolton_key_cache: 'Fisher 2004'
     end
 
     it "should record a change in parent taxon" do
@@ -294,6 +299,41 @@ describe Genus do
       update = Update.find_by_record_id_and_field_name genus, :subfamily_id
       update.before.should == 'Dolichoderinae'
       update.after.should == 'Aectinae'
+    end
+
+    it "should distinguish among homonyms" do
+      protonym = {genus_name: 'Atta', authorship: [{author_names: ['Latreille'], year: '1809', pages: '7'}]}
+      data = {genus_name: 'Atta', protonym: protonym, history: []}
+      genus = Genus.import data
+      Taxon.count.should == 1
+
+      # import another Atta, with different authorship
+      protonym[:authorship] = [{author_names: ['Fisher'], year: 2004, pages: '8'}]
+      genus = Genus.import data
+      Taxon.count.should == 2
+
+      #genus.subfamily.should == dolichoderinae
+      #genus.tribe.should == dolichoderini
+
+      #aectinae = create_subfamily 'Aectinae'
+      #aectini = create_tribe 'Aectini'
+      #data[:subfamily] = aectinae
+      #data[:tribe] = aectini
+
+      #genus = Genus.import data
+
+      #genus.subfamily.should == aectinae
+      #genus.tribe.should == aectini
+
+      #Update.count.should == 2
+
+      #update = Update.find_by_record_id_and_field_name genus, :subfamily_id
+      #update.before.should == 'Dolichoderinae'
+      #update.after.should == 'Aectinae'
+
+      #update = Update.find_by_record_id_and_field_name genus, :subfamily_id
+      #update.before.should == 'Dolichoderinae'
+      #update.after.should == 'Aectinae'
     end
 
     it "should record a change in incertae sedis" do

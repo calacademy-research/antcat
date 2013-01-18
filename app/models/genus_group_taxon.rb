@@ -4,14 +4,21 @@ class GenusGroupTaxon < Taxon
   belongs_to :subfamily
   belongs_to :tribe
 
+  def self.find_taxon_to_update data
+
+  end
   def self.import data, attributes = {}
     name = Name.import data
+    taxon = find_taxon_to_update data
+    principal_author_last_name = data[:protonym][:authorship].first[:author_names]
+    year = data[:protonym][:authorship].first[:year]
+    taxon = find_by_name_and_authorship name, principal_author_last_name, year
     transaction do
-      if taxon = find_by_name(name.name)
+      if taxon
         taxon.update_data data
       else
         attributes.merge!(
-          name:                 Name.import(data),
+          name:                 name,
           fossil:               data[:fossil] || false,
           status:               data[:status] || 'valid',
           protonym:             Protonym.import(data[:protonym]),
@@ -24,8 +31,8 @@ class GenusGroupTaxon < Taxon
         taxon.import_synonyms senior
         taxon.import_history data[:history]
       end
-      taxon
     end
+    taxon
   end
 
   def self.parent_attributes data, attributes
