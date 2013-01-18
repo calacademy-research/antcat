@@ -216,10 +216,10 @@ describe Genus do
     end
 
     it "should create synonyms" do
-      senior = create_genus
+      senior = create_genus 'Aneuretus'
       junior = Genus.import(
-        genus_name: 'Atta',
-        protonym: {genus_name: "Atta"},
+        genus_name: 'Eciton',
+        protonym: {genus_name: 'Eciton'},
         attributes: {synonym_of: senior},
         history: []
       )
