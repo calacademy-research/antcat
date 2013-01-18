@@ -8,24 +8,24 @@ class Subfamily < Taxon
   has_many :collective_group_names, class_name: 'Genus', conditions: 'status = "collective group name"'
 
   def self.import data
-    name = Name.import data
+    taxon, name = get_taxon_to_update data
     transaction do
-      if subfamily = find_by_name(name.name)
-        subfamily.update_data data
+      if taxon
+        taxon.update_data data
       else
         attributes = {
           name:                name,
           fossil:              data[:fossil] || false,
           status:              data[:status] ||'valid',
           protonym:            Protonym.import(data[:protonym]),
-          headline_notes_taxt: data[:headline_notes_taxt],
+          headline_notes_taxt: Importers::Bolton::Catalog::TextToTaxt.convert(data[:note]),
         }
         attributes.merge! get_type_attributes data
-        subfamily = create! attributes
-        subfamily.import_history data[:history]
+        taxon = create! attributes
+        taxon.import_history data[:history]
       end
-      subfamily
     end
+    taxon
   end
 
   def self.get_type_key
