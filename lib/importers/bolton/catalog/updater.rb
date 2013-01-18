@@ -15,13 +15,15 @@ module Importers::Bolton::Catalog::Updater
     value.present? ? value : nil
   end
 
-  def update_taxon_field field_name, new_value, attributes
-    before = normalize_field self[field_name]
-    after = normalize_field new_value
-    if before != after
-      Update.create! class_name: self.class.to_s, record_id: id, field_name: field_name,
-        before: Taxon.find(before).name.name, after: Taxon.find(after).name.name
-      attributes[field_name] = after
+  def update_taxon_id_field field_name, new_value, attributes
+    before_id = normalize_field self[field_name]
+    after_id = normalize_field new_value
+    if before_id != after_id
+      before = before_id ? Taxon.find(before_id).name.name : nil
+      after = after_id ? Taxon.find(after_id).name.name : nil
+      update = Update.create! class_name: self.class.to_s, record_id: id, field_name: field_name,
+        before: before, after: after
+      attributes[field_name[0..-4]] = Taxon.find after_id
     end
   end
 
@@ -90,23 +92,39 @@ module Importers::Bolton::Catalog::Updater
     items_to_delete.each {|item| TaxonHistoryItem.delete item}
   end
 
+  def update_data data
+    update_synonyms do
+      senior = data.delete :synonym_of
+      update_taxon data
+      import_synonyms senior
+    end
+  end
+
   def update_taxon data
     attributes = {}
     update_taxon_fields data, attributes
+
     update_attributes attributes
+
     protonym.update_data data[:protonym]
     update_history data[:history]
   end
 
   def update_taxon_fields data, attributes
-    update_boolean_field  'fossil',              data[:fossil], attributes
-    update_field          'status',              data[:status] || 'valid', attributes
-    update_taxt_field     'headline_notes_taxt', data[:note], attributes
+    subfamily = data[:subfamily] ? data[:subfamily].id : nil
+    tribe = data[:tribe] ? data[:tribe].id : nil
+    update_taxon_id_field :subfamily_id, subfamily, attributes
+    update_taxon_id_field :tribe_id, tribe, attributes
+
+    update_boolean_field  'fossil',               data[:fossil], attributes
+    update_field          'status',               data[:status] || 'valid', attributes
+    update_taxt_field     'headline_notes_taxt',  data[:note], attributes
+    update_field          :incertae_sedis_in,     data[:incertae_sedis_in], attributes
 
     type_attributes = self.class.get_type_attributes data
-    update_name_field     'type_name',    type_attributes[:type_name], attributes
-    update_field          'type_taxt',    type_attributes[:type_taxt], attributes
-    update_boolean_field  'type_fossil',  type_attributes[:type_fossil], attributes
+    update_name_field     'type_name',            type_attributes[:type_name], attributes
+    update_field          'type_taxt',            type_attributes[:type_taxt], attributes
+    update_boolean_field  'type_fossil',          type_attributes[:type_fossil], attributes
   end
 
   def update_synonyms

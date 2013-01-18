@@ -27,10 +27,6 @@ class Family < Taxon
     :type_genus
   end
 
-  def update_data data
-    update_taxon data
-  end
-
   def import_reference_sections sections
     # compare and update common subset
     i = 0

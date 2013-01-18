@@ -27,19 +27,6 @@ class Tribe < Taxon
     end
   end
 
-  def update_data data
-    update_synonyms do
-      senior = data.delete :synonym_of
-      update_taxon data
-      import_synonyms senior
-    end
-  end
-
-  def update_taxon_fields data, attributes
-    super
-    update_taxon_field :subfamily_id, data[:subfamily].id, attributes
-  end
-
   def self.get_type_key
     :type_genus
   end
