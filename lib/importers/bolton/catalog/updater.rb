@@ -1,6 +1,20 @@
 # coding: UTF-8
 module Importers::Bolton::Catalog::Updater
 
+  module ClassMethods
+    def get_taxon_to_update data
+      name = Name.import data
+      principal_author_last_name = data[:protonym][:authorship].first[:author_names]
+      year = data[:protonym][:authorship].first[:year]
+      taxon = find_by_name_and_authorship name.name, principal_author_last_name, year
+      return taxon, name
+    end
+  end
+
+  def self.included receiver
+    receiver.extend ClassMethods
+  end
+
   def update_field field_name, new_value, attributes
     before = normalize_field self[field_name]
     after = normalize_field new_value
