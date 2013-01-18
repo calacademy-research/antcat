@@ -16,7 +16,8 @@ class Bolton::ReferenceKey
     key.gsub! /[,&]/, ''
     # collapse spaces
     key.squish!
-    key << ' ' << @citation_year if @citation_year
+    key << ' ' << @citation_year.to_s if @citation_year
+    key
   end
 
 end
