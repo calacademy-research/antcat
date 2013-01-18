@@ -316,6 +316,25 @@ describe Genus do
 
       genus.incertae_sedis_in.should == 'subfamily'
     end
+
+    it "should record a change in hong" do
+      data = {
+        genus_name: 'Atta',
+        protonym: {genus_name: 'Atta',
+                   authorship:
+                   [{author_names: ['Latreille'], year: '1809', pages: '7'}]},
+        type_species: {genus_name: 'Atta', species_epithet: 'Atta major'},
+        history: [],
+        subfamily: create_subfamily,
+        tribe: create_tribe,
+      }
+      genus = Genus.import data
+      genus.hong.should be_false
+
+      data[:hong] = true
+      genus = Genus.import data
+      genus.hong.should be_true
+    end
   end
 
 end

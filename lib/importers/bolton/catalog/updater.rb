@@ -127,6 +127,7 @@ module Importers::Bolton::Catalog::Updater
     update_field          'status',               data[:status] || 'valid', attributes
     update_taxt_field     'headline_notes_taxt',  data[:note], attributes
     update_field          :incertae_sedis_in,     data[:incertae_sedis_in], attributes
+    update_boolean_field  'hong',                 data[:hong], attributes
 
     update_name_field     'type_name',            type_attributes[:type_name], attributes
     update_field          'type_taxt',            type_attributes[:type_taxt], attributes
