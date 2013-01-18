@@ -192,7 +192,7 @@ describe Taxon do
       @genus = create_genus 'Atta', protonym: @protonym
     end
     it "should find a taxon matching the name and authorship ID" do
-      Taxon.find_by_name_and_authorship(@genus.name, [@reference.principal_author_last_name_cache], @reference.year).should == @genus
+      Taxon.find_by_name_and_authorship(@genus.name.name, [@reference.principal_author_last_name_cache], @reference.year).should == @genus
     end
     it "should distinguish between homonyms by using the authorship" do
       homonym_reference = FactoryGirl.create :article_reference, author_names: [FactoryGirl.create(:author_name, name: 'Fisher')], citation_year: '2005', bolton_key_cache: 'Fisher 2005'
@@ -200,7 +200,11 @@ describe Taxon do
       homonym_protonym = FactoryGirl.create :protonym, authorship: homonym_authorship
       homonym_genus = create_genus 'Atta', protonym: homonym_protonym
 
-      Taxon.find_by_name_and_authorship(homonym_genus.name, ['Latreille'], @reference.year).should == @genus
+      Taxon.find_by_name_and_authorship(homonym_genus.name.name, ['Latreille'], @reference.year).should == @genus
+    end
+    it "should distinguish between ones with same authorship by using the name" do
+      other_genus = create_genus 'Dolichoderus', protonym: @protonym
+      Taxon.find_by_name_and_authorship(other_genus.name.name, ['Latreille'], @reference.year).should == other_genus
     end
   end
 

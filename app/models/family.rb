@@ -8,6 +8,7 @@ class Family < Taxon
       if family = find_by_name(name.name)
         family.update_data data
       else
+        lll{%q{data[:note]}}
         attributes = {
           name:                name,
           fossil:              false,
