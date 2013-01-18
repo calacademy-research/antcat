@@ -42,6 +42,9 @@ class GenusGroupTaxon < Taxon
 
   def update_taxon_fields data, attributes
     super
+    if data[:attributes] && data[:attributes][:incertae_sedis_in]
+      update_field :incertae_sedis_in, data[:attributes][:incertae_sedis_in], attributes
+    end
     update_taxon_field :subfamily_id, data[:subfamily].id, attributes
     update_taxon_field :tribe_id, data[:tribe].id, attributes
   end
