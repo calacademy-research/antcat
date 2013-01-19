@@ -4,9 +4,6 @@ class GenusGroupTaxon < Taxon
   belongs_to :subfamily
   belongs_to :tribe
 
-  def self.find_taxon_to_update data
-
-  end
   def self.import data, attributes = {}
     taxon, name = get_taxon_to_update data
     transaction do
