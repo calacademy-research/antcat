@@ -22,7 +22,7 @@ class Citation < ActiveRecord::Base
     before = reference
     after = Reference.find_by_bolton_key data
     if before != after
-      Update.create! class_name: self.class.to_s, record_id: id, field_name: 'reference',
+      Update.create! name: 'Citation', class_name: self.class.to_s, record_id: id, field_name: 'reference',
         before: before.key.to_s, after: after.key.to_s
       self.reference = after
     end
@@ -32,7 +32,7 @@ class Citation < ActiveRecord::Base
     before = self['notes_taxt']
     after = data[:notes] ? Importers::Bolton::Catalog::TextToTaxt.notes_item(data[:notes]) : nil
     if before != after
-      Update.create! class_name: self.class.to_s, record_id: id, field_name: 'notes_taxt',
+      Update.create! name: 'Citation', class_name: self.class.to_s, record_id: id, field_name: 'notes_taxt',
         before: before, after: after
       attributes['notes_taxt'] = after
     end

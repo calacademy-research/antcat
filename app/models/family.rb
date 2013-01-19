@@ -42,7 +42,7 @@ class Family < Taxon
       new_section = sections[i]
       new_item = reference_sections.create! new_section
       for field_name in ['title_taxt', 'subtitle_taxt', 'references_taxt']
-        Update.create! class_name: 'ReferenceSection', record_id: new_item.id,
+        Update.create! name: name.name, class_name: 'ReferenceSection', record_id: new_item.id,
           field_name: field_name, before: nil, after: new_section[:title_taxt]
       end
       i += 1
@@ -51,7 +51,7 @@ class Family < Taxon
     items_to_delete = []
     while i < history_items.count
       items_to_delete << reference_sections[i].id
-      Update.create! class_name: 'ReferenceSection', record_id: reference_sections[i].id,
+      Update.create! name: name.name, class_name: 'ReferenceSection', record_id: reference_sections[i].id,
         field_name: nil, before: nil, after: nil
       i += 1
     end
@@ -62,7 +62,7 @@ class Family < Taxon
     before = old_section[field_name.to_sym]
     after = new_section[field_name.to_sym]
     if before != after
-      Update.create! class_name: 'ReferenceSection', record_id: old_section.id, field_name: field_name,
+      Update.create! name: name.name, class_name: 'ReferenceSection', record_id: old_section.id, field_name: field_name,
         before: before, after: after
       old_section.update_attributes field_name => after
     end
