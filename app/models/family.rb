@@ -5,8 +5,8 @@ class Family < Taxon
   def self.import data
     name = Name.import family_name: 'Formicidae'
     transaction do
-      if family = find_by_name(name.name)
-        family.update_data data
+      if taxon = find_by_name(name.name)
+        taxon.update_data data
       else
         attributes = {
           name:                name,
@@ -16,10 +16,10 @@ class Family < Taxon
           headline_notes_taxt: Importers::Bolton::Catalog::TextToTaxt.convert(data[:note]),
         }
         attributes.merge! get_type_attributes data
-        family = create! attributes
-        family.import_history data[:history]
+        taxon = create! attributes
+        taxon.import_history data[:history]
       end
-      family
+      taxon
     end
   end
 
