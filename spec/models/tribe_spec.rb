@@ -76,6 +76,8 @@ describe Tribe do
       authorship.pages.should == '6'
 
       authorship.reference.should == reference
+
+      Update.count.should == 1
     end
   end
 
@@ -104,7 +106,10 @@ describe Tribe do
 
       tribe.subfamily.should == aectinae
 
-      Update.count.should == 1
+      Update.count.should == 3
+      update = Update.find_by_field_name('add')
+      update.should_not be_nil
+
       update = Update.find_by_record_id_and_field_name tribe, :subfamily_id
       update.before.should == 'Dolichoderinae'
       update.after.should == 'Aectinae'

@@ -36,6 +36,8 @@ describe Family do
         authorship.pages.should == '124'
 
         authorship.reference.should == reference
+
+        Update.count.should == 1
       end
       it "should save the note (when there's not a type taxon note)" do
         reference = FactoryGirl.create :article_reference, :bolton_key_cache => 'Latreille 1809'

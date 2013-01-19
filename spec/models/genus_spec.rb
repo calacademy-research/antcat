@@ -188,6 +188,13 @@ describe Genus do
       authorship.pages.should == '124'
 
       authorship.reference.should == reference
+
+      Update.count.should == 1
+      update = Update.find_by_record_id genus.id
+      update.name.should == 'Atta'
+      update.class_name.should == 'Genus'
+      update.field_name.should == 'add'
+      update.name.should == 'Atta'
     end
 
     it "save the subgenus part correctly" do
@@ -296,7 +303,7 @@ describe Genus do
         genus.subfamily.should == aectinae
         genus.tribe.should == aectini
 
-        Update.count.should == 2
+        Update.count.should == 3
 
         update = Update.find_by_record_id_and_field_name genus, :subfamily_id
         update.before.should == 'Dolichoderinae'

@@ -23,6 +23,7 @@ class GenusGroupTaxon < Taxon
         taxon = create! attributes
         taxon.import_synonyms senior
         taxon.import_history data[:history]
+        create_update name, taxon.id, self.name
       end
     end
     taxon

@@ -22,6 +22,7 @@ class Tribe < Taxon
         taxon = create! attributes
         taxon.import_synonyms senior
         taxon.import_history data[:history]
+        create_update name, taxon.id, self.name
       end
       taxon
     end
