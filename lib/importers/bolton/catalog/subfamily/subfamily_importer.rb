@@ -84,7 +84,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
 
     parse_next_line :unavailable_family_group_name_detail
     protonym = @parse_result[:protonym]
-    headline_notes_taxt = Importers::Bolton::Catalog::TextToTaxt.convert(@parse_result[:additional_notes])
+    headline_notes_taxt = @parse_result[:additional_notes]
     history = []
     loop do
       parse_next_line
