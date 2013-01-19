@@ -10,7 +10,7 @@ module Importers::Bolton::Catalog::Updater
       return taxon, name
     end
     def create_update name, record_id, class_name
-      Update.create! name: name, record_id: record_id, class_name: self.name, field_name: 'add'
+      Update.create! name: name.name, record_id: record_id, class_name: self.name, field_name: 'add'
     end
   end
 
