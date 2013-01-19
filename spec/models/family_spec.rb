@@ -141,6 +141,7 @@ describe Family do
         Update.count.should == 2
 
         update = Update.find_by_field_name 'fossil'
+        update.name.should == 'Formicidae'
         update.class_name.should == 'Family'
         update.field_name.should == 'fossil'
         update.record_id.should == family.id
