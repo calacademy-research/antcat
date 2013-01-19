@@ -18,7 +18,7 @@ class Subfamily < Taxon
           fossil:              data[:fossil] || false,
           status:              data[:status] ||'valid',
           protonym:            Protonym.import(data[:protonym]),
-          headline_notes_taxt: data[:headline_notes_taxt],
+          headline_notes_taxt: Importers::Bolton::Catalog::TextToTaxt.convert(data[:headline_notes_taxt]),
         }
         attributes.merge! get_type_attributes data
         taxon = create! attributes
