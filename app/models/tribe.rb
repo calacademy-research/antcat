@@ -5,10 +5,10 @@ class Tribe < Taxon
   has_many :genera
 
   def self.import data
-    name = Name.import data
+    taxon, name = get_taxon_to_update data
     transaction do
-      if tribe = find_by_name(name.name)
-        tribe.update_data data
+      if taxon
+        taxon.update_data data
       else
         attributes = {
           name:       name,
