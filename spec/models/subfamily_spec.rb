@@ -191,7 +191,6 @@ describe Subfamily do
         subfamily = Subfamily.import data
         subfamily.fossil.should be_false
         subfamily.status.should == 'synonym'
-        subfamily.headline_notes_taxt.should == 'Headline notes'
 
         subfamily.type_name.name.should == 'Eciton'
         subfamily.type_fossil.should be_true
