@@ -139,7 +139,7 @@ module Importers::Bolton::Catalog::Updater
 
     update_boolean_field  'fossil',               data[:fossil], attributes
     update_field          'status',               data[:status] || 'valid', attributes
-    update_taxt_field     'headline_notes_taxt',  data[:note], attributes
+    update_taxt_field     'headline_notes_taxt',  data[:headline_notes_taxt] || data[:note], attributes
     update_field          :incertae_sedis_in,     data[:incertae_sedis_in], attributes
     update_boolean_field  'hong',                 data[:hong], attributes
 
