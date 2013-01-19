@@ -106,7 +106,7 @@ describe Tribe do
 
       tribe.subfamily.should == aectinae
 
-      Update.count.should == 3
+      Update.count.should == 2
       update = Update.find_by_field_name('add')
       update.should_not be_nil
 
