@@ -19,11 +19,11 @@ class Tribe < Taxon
         }
         attributes.merge! get_type_attributes data
         senior = data.delete :synonym_of
-        tribe = create! attributes
-        tribe.import_synonyms senior
-        tribe.import_history data[:history]
+        taxon = create! attributes
+        taxon.import_synonyms senior
+        taxon.import_history data[:history]
       end
-      tribe
+      taxon
     end
   end
 
