@@ -18,6 +18,7 @@ class Family < Taxon
         attributes.merge! get_type_attributes data
         taxon = create! attributes
         taxon.import_history data[:history]
+        create_update name, taxon.id, self.name
       end
       taxon
     end

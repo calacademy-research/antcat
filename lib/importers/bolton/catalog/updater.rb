@@ -9,6 +9,9 @@ module Importers::Bolton::Catalog::Updater
       taxon = find_by_name_and_authorship name.name, principal_author_last_name, year
       return taxon, name
     end
+    def create_update name, record_id, class_name
+      Update.create! name: name, record_id: record_id, class_name: self.name, field_name: 'add'
+    end
   end
 
   def self.included receiver
@@ -187,4 +190,5 @@ module Importers::Bolton::Catalog::Updater
     end
 
   end
+
 end

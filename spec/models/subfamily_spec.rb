@@ -157,6 +157,12 @@ describe Subfamily do
         authorship.pages.should == '6'
 
         authorship.reference.should == reference
+
+        Update.count.should == 1
+        update = Update.find_by_record_id subfamily.id
+        update.name.should == 'Aneuretinae'
+        update.class_name.should == 'Subfamily'
+        update.field_name.should == 'add'
       end
     end
 

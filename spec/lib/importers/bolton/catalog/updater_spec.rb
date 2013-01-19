@@ -15,6 +15,7 @@ describe Importers::Bolton::Catalog::Updater do
     }
     # create the tribe from scratch
     @attini = Tribe.import @data
+    Update.count.should == 1
     @ecitonini = create_tribe 'Ecitonini'
     @bacerosini = create_tribe 'Baserosini'
     @formicini = create_tribe 'Formicini'
@@ -29,7 +30,7 @@ describe Importers::Bolton::Catalog::Updater do
       @attini.should be_junior_synonym_of @bacerosini
       @bacerosini.should be_senior_synonym_of @attini
 
-      Update.count.should == 2
+      Update.count.should == 3
 
       update = Update.find_by_record_id_and_field_name @attini.id, 'status'
       update.class_name.should == 'Tribe'
@@ -40,7 +41,6 @@ describe Importers::Bolton::Catalog::Updater do
       update.class_name.should == 'Tribe'
       update.before.should == nil
       update.after.should == 'Baserosini'
-
     end
 
     describe "Unit test" do
@@ -49,7 +49,7 @@ describe Importers::Bolton::Catalog::Updater do
         @attini.update_synonyms do
           @attini.become_not_a_junior_synonym_of @bacerosini
         end
-        Update.count.should == 1
+        Update.count.should == 2
         update = Update.find_by_record_id_and_field_name @attini.id, 'junior_synonym_of'
         update.before.should == 'Baserosini'
         update.after.should == nil
@@ -59,7 +59,7 @@ describe Importers::Bolton::Catalog::Updater do
         @attini.update_synonyms do
           @attini.become_junior_synonym_of @bacerosini
         end
-        Update.count.should == 1
+        Update.count.should == 2
         update = Update.find_by_record_id_and_field_name @attini.id, 'junior_synonym_of'
         update.before.should == nil
         update.after.should == 'Baserosini'
@@ -70,7 +70,7 @@ describe Importers::Bolton::Catalog::Updater do
         @attini.update_synonyms do
           @bacerosini.become_not_a_junior_synonym_of @attini
         end
-        Update.count.should == 1
+        Update.count.should == 2
         update = Update.find_by_record_id_and_field_name @attini.id, 'senior_synonym_of'
         update.before.should == 'Baserosini'
         update.after.should == nil
@@ -80,7 +80,7 @@ describe Importers::Bolton::Catalog::Updater do
         @attini.update_synonyms do
           @bacerosini.become_junior_synonym_of @attini
         end
-        Update.count.should == 1
+        Update.count.should == 2
         update = Update.find_by_record_id_and_field_name @attini.id, 'senior_synonym_of'
         update.before.should == nil
         update.after.should == 'Baserosini'
