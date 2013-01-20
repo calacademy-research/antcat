@@ -5,7 +5,7 @@ class GenusGroupTaxon < Taxon
   belongs_to :tribe
 
   def self.import data, attributes = {}
-    taxon, name = get_taxon_to_update data
+    taxon, name = find_taxon_to_update data
     transaction do
       if taxon
         taxon.update_data data

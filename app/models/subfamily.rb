@@ -8,7 +8,7 @@ class Subfamily < Taxon
   has_many :collective_group_names, class_name: 'Genus', conditions: 'status = "collective group name"'
 
   def self.import data
-    taxon, name = get_taxon_to_update data
+    taxon, name = find_taxon_to_update data
     transaction do
       if taxon
         taxon.update_data data
