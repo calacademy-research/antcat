@@ -107,7 +107,7 @@ describe Tribe do
       tribe.subfamily.should == aectinae
 
       Update.count.should == 2
-      update = Update.find_by_field_name('add')
+      update = Update.find_by_field_name('create')
       update.should_not be_nil
 
       update = Update.find_by_record_id_and_field_name tribe, :subfamily_id
