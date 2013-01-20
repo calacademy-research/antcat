@@ -4,13 +4,16 @@ module Importers::Bolton::Catalog::Updater
   module ClassMethods
     def get_taxon_to_update data
       name = Name.import data
-      principal_author_last_name = data[:protonym][:authorship].first[:author_names]
+      author_names = data[:protonym][:authorship].first[:author_names]
       year = data[:protonym][:authorship].first[:year]
-      taxon = find_by_name_and_authorship name.name, principal_author_last_name, year
+      if not year and data[:protonym][:authorship].try(:first)
+        year = data[:protonym][:authorship].first[:in][:year]
+      end
+      taxon = Taxon.find_by_name_and_authorship name.name, author_names, year
       return taxon, name
     end
     def create_update name, record_id, class_name
-      Update.create! name: name.name, record_id: record_id, class_name: self.name, field_name: 'add'
+      Update.create! name: name.name, record_id: record_id, class_name: self.name, field_name: 'create'
     end
   end
 
