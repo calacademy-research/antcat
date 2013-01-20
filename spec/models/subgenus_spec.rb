@@ -71,4 +71,33 @@ describe Subgenus do
     end
 
   end
+
+  describe "Elevating to genus" do
+    it "should turn the record into a Genus" do
+      taxon = create_subgenus 'Eciton (Atta)'
+      taxon.should be_kind_of Subgenus
+      taxon.elevate_to_genus
+      taxon = Genus.find taxon.id
+      taxon.should be_kind_of Genus
+    end
+    it "should form the new genus name from the epithet" do
+      subgenus_name = SubgenusName.create!({
+        name:           'Eciton (Atta)',
+        name_html:      '<i>Eciton (Atta)>',
+        epithet:        'Atta',
+        epithet_html:   '<i>Atta</i>',
+        epithets:       nil,
+        protonym_html:  '<i>Eciton (Atta)</i>',
+      })
+      taxon = create_subgenus name: subgenus_name, genus: create_genus('Formica')
+      taxon.elevate_to_genus
+      taxon = Genus.find taxon.id
+      taxon.name.name.should == 'Atta'
+      taxon.name.name_html.should == '<i>Atta</i>'
+      taxon.name.epithet.should == 'Atta'
+      taxon.name.epithet_html.should == '<i>Atta</i>'
+      taxon.name.epithets.should be_nil
+      taxon.name.protonym_html.should == '<i>Atta</i>'
+    end
+  end
 end
