@@ -5,7 +5,7 @@ class Tribe < Taxon
   has_many :genera
 
   def self.import data
-    taxon, name = get_taxon_to_update data
+    taxon, name = find_taxon_to_update data
     transaction do
       if taxon
         taxon.update_data data
