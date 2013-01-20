@@ -113,20 +113,6 @@ describe Importers::Bolton::Catalog::Updater do
       taxon, name = UpdaterTest.find_taxon_to_update(data)
       taxon.should == genus
     end
-
-    it "should find a subgenus, if searching for a genus epithet" do
-      atta_subgenus = create_subgenus 'Eciton (Atta)'
-
-      data = {genus_name: 'Atta',
-              protonym: {genus_name: 'Formicina', authorship:
-                [{author_names: ['Shuckard'],
-                  in: {author_names: ['Swainson', 'Shuckard'], year: '1840'},
-                  pages: '172'}]},
-      }
-
-      taxon, name = UpdaterTest.find_taxon_to_update(data)
-      taxon.should == genus
-    end
   end
 
 end
