@@ -54,7 +54,7 @@ class Taxon < ActiveRecord::Base
 
   def self.find_by_name_and_authorship name, author_names, year
     bolton_key = Bolton::ReferenceKey.new(author_names.join(' '), year).to_s :db
-    results = joins(protonym: [{authorship: :reference}]).joins(:name).where('names.name = ? AND references.bolton_key_cache = ?', name, bolton_key)
+    results = joins(protonym: [{authorship: :reference}]).where('name_cache = ? AND references.bolton_key_cache = ?', name, bolton_key)
     if results.size > 1
       raise 'Duplicate name + authorships'
     end
