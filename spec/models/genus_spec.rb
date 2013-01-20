@@ -193,7 +193,7 @@ describe Genus do
       update = Update.find_by_record_id genus.id
       update.name.should == 'Atta'
       update.class_name.should == 'Genus'
-      update.field_name.should == 'add'
+      update.field_name.should == 'create'
       update.name.should == 'Atta'
     end
 

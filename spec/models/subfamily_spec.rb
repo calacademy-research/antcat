@@ -162,7 +162,7 @@ describe Subfamily do
         update = Update.find_by_record_id subfamily.id
         update.name.should == 'Aneuretinae'
         update.class_name.should == 'Subfamily'
-        update.field_name.should == 'add'
+        update.field_name.should == 'create'
       end
     end
 
