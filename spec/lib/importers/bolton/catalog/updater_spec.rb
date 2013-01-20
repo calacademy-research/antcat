@@ -98,13 +98,25 @@ describe Importers::Bolton::Catalog::Updater do
   describe "Looking up to see if a taxon already exists" do
     it "should look in the nester, if can't find the year in nestee" do
       nestee = FactoryGirl.create :reference, year: '2006', author_names: [FactoryGirl.create(:author_name, name: 'Swainson')], pages_in: 'Pp 2 in:', bolton_key_cache: 'Swainson 1840'
-      reference = NestedReference.create! title: 'Ants', citation_year: '1840', author_names: [FactoryGirl.create(:author_name, name: 'Shuckard')], nested_reference: nestee, bolton_key_cache: 'Shuckard 1840', pages_in: '22'
+      reference = NestedReference.create! title: 'Ants', citation_year: '1840', author_names: [FactoryGirl.create(:author_name, name: 'Shuckard')], nested_reference: nestee, bolton_key_cache: 'Swainson Shuckard 1840', pages_in: '22'
       authorship = FactoryGirl.create :citation, reference: reference
       protonym = FactoryGirl.create :protonym, authorship: authorship
       genus = create_genus 'Atta', protonym: protonym
 
-      reference.bolton_key_cache.should == 'Shuckard 1840'
-      nestee.bolton_key_cache.should == 'Swainson 1840'
+      data = {genus_name: 'Atta',
+              protonym: {genus_name: 'Formicina', authorship:
+                [{author_names: ['Shuckard'],
+                  in: {author_names: ['Swainson', 'Shuckard'], year: '1840'},
+                  pages: '172'}]},
+      }
+
+      taxon, name = UpdaterTest.find_taxon_to_update(data)
+      taxon.should == genus
+    end
+
+    it "should find a subgenus, if searching for a genus epithet" do
+      atta_subgenus = create_subgenus 'Eciton (Atta)'
+
       data = {genus_name: 'Atta',
               protonym: {genus_name: 'Formicina', authorship:
                 [{author_names: ['Shuckard'],
