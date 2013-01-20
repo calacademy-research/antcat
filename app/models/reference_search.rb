@@ -151,9 +151,14 @@ class Reference < ActiveRecord::Base
     end
   end
 
-  def self.find_by_bolton_key data
+  def self.get_author_names_and_year data
     year = data[:year] || data[:in] && data[:in][:year]
     author_names = data[:in] && data[:in][:author_names] || data[:author_names]
+    return author_names, year
+  end
+
+  def self.find_by_bolton_key data
+    author_names, year = get_author_names_and_year data
 
     return MissingReference.import 'no year', data unless year
 
