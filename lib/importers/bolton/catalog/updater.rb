@@ -10,6 +10,7 @@ module Importers::Bolton::Catalog::Updater
         year = data[:protonym][:authorship].first[:in][:year]
       end
       taxon = Taxon.find_by_name_and_authorship name.name, author_names, year
+      Progress.log "get_taxon_to_update name: #{name}, author_names: #{author_names}, year: #{year} #{taxon ? 'found' : 'not found'}"
       return taxon, name
     end
     def create_update name, record_id, class_name
