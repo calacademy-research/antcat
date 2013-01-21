@@ -22,7 +22,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
 
     Update.delete_all
 
-    self.class.do_manual_prefixups
+    self.class.do_manual_prefixups unless Rails.env.test?
 
     parse_family
     parse_supersubfamilies
@@ -142,7 +142,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
   end
 
   def self.fix_reference id, bolton_key_cache
-    reference = Reference.find id
+    reference = Reference.find_by_id id
     return unless reference
     reference.bolton_key_cache = bolton_key_cache
     reference.save!
@@ -157,9 +157,9 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     delete_subgenus 'Nematocrema'
     delete_subgenus 'Paracrema'
     delete_subgenus 'Sphaerocrema'
-    #set_status_manually 'Wilsonia', 'unresolved homonym'
-    #set_status_manually 'Hypochira', 'unidentifiable'
-    #set_status_manually 'Formicium', 'collective group name'
+    set_status_manually 'Wilsonia', 'unresolved homonym'
+    set_status_manually 'Hypochira', 'unidentifiable'
+    set_status_manually 'Formicium', 'collective group name'
     #Genus.import_formicites unless Rails.env.test?
   end
 
