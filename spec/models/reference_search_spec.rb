@@ -392,8 +392,14 @@ describe Reference, slow:true do
       reference = Reference.find_by_bolton_key data
       reference.reason_missing.should == 'no year'
     end
+    it "reuses a MissingReference, even with no year" do
+      missing_reference = MissingReference.create! title: '(missing)', citation: 'Fabricius'
+      data = {author_names: ['Fabricius'], matched_text: 'Fabricius'}
+      reference = Reference.find_by_bolton_key data
+      reference.should == missing_reference
+    end
     it "reuses a MissingReference" do
-      data = {:author_names => ['Bolton'], :year => '1920', :matched_text => 'Bolton, 1920'}
+      data = {author_names: ['Bolton'], year: '1920', matched_text: 'Bolton, 1920'}
       reference = Reference.find_by_bolton_key data
       other_reference = Reference.find_by_bolton_key data
       reference.should == other_reference
