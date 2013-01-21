@@ -9,10 +9,7 @@ class MissingReference < Reference
     reference_key = reference_key[0, first_colon_index] if first_colon_index
 
     missing_reference = find_by_citation reference_key
-    if missing_reference
-      Progress.puts "Found an existing missing_reference"
-      return missing_reference
-    end
+    return missing_reference missing_reference
 
     create! title: '(missing)', reason_missing: reason, citation: reference_key, citation_year: year
   end
