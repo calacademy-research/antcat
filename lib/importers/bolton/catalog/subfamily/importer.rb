@@ -22,10 +22,12 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
 
     Update.delete_all
 
+    self.class.do_manual_prefixups
+
     parse_family
     parse_supersubfamilies
 
-    do_manual_fixups
+    do_manual_fixups unless Rails.env.test?
 
     #resolve_parent_synonyms
 
@@ -133,11 +135,39 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     taxon.reference_sections.create! title_taxt: title, references_taxt: references
   end
 
+  ###########
+  def self.do_manual_prefixups
+    fix_reference 123310, 'Buckley 1866'
+    fix_reference 133054, 'Bolton Fisher 2012'
+  end
+
+  def self.fix_reference id, bolton_key_cache
+    reference = Reference.find id
+    return unless reference
+    reference.bolton_key_cache = bolton_key_cache
+    reference.save!
+  end
+
   def do_manual_fixups
+    delete_subgenus 'Atopogyne'
+    delete_subgenus 'Colobocrema'
+    delete_subgenus 'Oxygyne'
+    delete_subgenus 'Physocrema'
+    delete_subgenus 'Xiphocrema'
+    delete_subgenus 'Nematocrema'
+    delete_subgenus 'Paracrema'
+    delete_subgenus 'Sphaerocrema'
     #set_status_manually 'Wilsonia', 'unresolved homonym'
     #set_status_manually 'Hypochira', 'unidentifiable'
     #set_status_manually 'Formicium', 'collective group name'
     #Genus.import_formicites unless Rails.env.test?
+  end
+
+  def delete_subgenus name
+    subgenus = Subgenus.where("name_cache LIKE '%(#{name})'").first
+    return unless subgenus.present?
+    subgenus.destroy
+    Progress.log "Deleted subgenus '#{subgenus.name}'"
   end
 
 end
