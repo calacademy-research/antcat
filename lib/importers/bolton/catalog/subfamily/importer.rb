@@ -85,7 +85,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
       if AntCat::ImportAllFiles
         numeric_prefix
       else
-        numeric_prefix #&& (number = numeric_prefix[1].to_i) && (number == 1 || number > 8)
+        numeric_prefix #&& (number = numeric_prefix[1].to_i) && (number == 1 || number == 7 || number == 8)
       end
     end
     super selected
