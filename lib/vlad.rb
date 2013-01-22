@@ -167,9 +167,7 @@ class Vlad
       ).map {|e| Name.find e['id']}
     end
     def self.display
-      display_results_section query do |name|
-        name.name
-      end
+      display_result_count query.size
     end
   end
 
@@ -209,9 +207,18 @@ class Vlad
       Taxon.find_by_sql "SELECT taxa.id FROM taxa LEFT OUTER JOIN synonyms on taxa.id = synonyms.junior_synonym_id WHERE status = 'synonym' AND synonyms.id IS NULL"
     end
     def self.display
-      display_results_section query, reverse_order: true do |taxon|
-        Taxon.find(taxon).name
+      display_results_section query do |taxon|
+        Taxon.find(taxon).name.name
       end
+    end
+  end
+
+  class DuplicateSynonyms < Problem
+    def self.query
+      Taxon.find_by_sql "SELECT junior_synonym_id FROM synonyms GROUP by senior_synonym_id, junior_synonym_id HAVING COUNT(*) > 1"
+    end
+    def self.display
+      display_section_header query.size
     end
   end
 

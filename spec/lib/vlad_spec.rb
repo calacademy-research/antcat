@@ -56,6 +56,18 @@ describe Vlad do
     results.map(&:id).should =~ [no_synonym.id]
   end
 
+  it "should show duplicate synonyms" do
+    senior = create_genus
+    junior = create_genus
+    synonym = Synonym.create! senior_synonym: senior, junior_synonym: junior
+    Synonym.create! senior_synonym: senior, junior_synonym: junior
+    another_senior = create_genus
+    another_junior = create_genus
+    Synonym.create! senior_synonym: another_senior, junior_synonym: another_junior
+    results = Vlad::DuplicateSynonyms.query
+    results.map(&:junior_synonym_id).should =~ [junior.id]
+  end
+
   describe "Duplicate checking" do
     it "should show duplicate valid names" do
       create_genus 'Eciton'
