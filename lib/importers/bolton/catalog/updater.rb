@@ -166,26 +166,26 @@ module Importers::Bolton::Catalog::Updater
 
     new_junior_synonyms = current_junior_synonyms - prior_junior_synonyms
     for junior_synonym in new_junior_synonyms
-      Update.create! name: name.name, class_name: 'Tribe', record_id: id, field_name: 'senior_synonym_of',
+      Update.create! name: name.name, class_name: self.class.to_s, record_id: id, field_name: 'senior_synonym_of',
         before: nil, after: junior_synonym.name.name
     end
 
     new_senior_synonyms = current_senior_synonyms.to_a - prior_senior_synonyms.to_a
 
     for senior_synonym in new_senior_synonyms
-      Update.create! name: name.name, class_name: 'Tribe', record_id: id, field_name: 'junior_synonym_of',
+      Update.create! name: name.name, class_name: self.class.to_s, record_id: id, field_name: 'junior_synonym_of',
         before: nil, after: senior_synonym.name.name
     end
 
     deleted_junior_synonyms = prior_junior_synonyms.to_a - current_junior_synonyms.to_a
     for junior_synonym in deleted_junior_synonyms
-      Update.create! name: name.name, class_name: 'Tribe', record_id: id, field_name: 'senior_synonym_of',
+      Update.create! name: name.name, class_name: self.class.to_s, record_id: id, field_name: 'senior_synonym_of',
         before: junior_synonym.name.name, after: nil
     end
 
     deleted_senior_synonyms = prior_senior_synonyms - current_senior_synonyms
     for senior_synonym in deleted_senior_synonyms
-      Update.create! name: name.name, class_name: 'Tribe', record_id: id, field_name: 'junior_synonym_of',
+      Update.create! name: name.name, class_name: self.class.to_s, record_id: id, field_name: 'junior_synonym_of',
         before: senior_synonym.name.name, after: nil
     end
 
