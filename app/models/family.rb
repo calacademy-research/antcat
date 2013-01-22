@@ -29,6 +29,7 @@ class Family < Taxon
   end
 
   def import_reference_sections sections
+    Progress.method
     # compare and update common subset
     i = 0
     while i < reference_sections.count && i < sections.count
@@ -50,7 +51,7 @@ class Family < Taxon
     end
     # delete deleted ones
     items_to_delete = []
-    while i < history_items.count
+    while i < reference_sections.count
       items_to_delete << reference_sections[i].id
       Update.create! name: name.name, class_name: 'ReferenceSection', record_id: reference_sections[i].id,
         field_name: nil, before: nil, after: nil
