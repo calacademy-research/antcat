@@ -437,4 +437,34 @@ describe Taxon do
 
   end
 
+  describe "Import synonyms" do
+    it "should create a new synonym if it doesn't exist" do
+      senior = create_genus
+      junior = create_genus
+      junior.import_synonyms senior
+      Synonym.count.should == 1
+      synonym = Synonym.first
+      synonym.junior_synonym.should == junior
+      synonym.senior_synonym.should == senior
+    end
+    it "should not create a new synonym if it exists" do
+      senior = create_genus
+      junior = create_genus
+      Synonym.create! junior_synonym: junior, senior_synonym: senior
+      Synonym.count.should == 1
+
+      junior.import_synonyms senior
+      Synonym.count.should == 1
+      synonym = Synonym.first
+      synonym.junior_synonym.should == junior
+      synonym.senior_synonym.should == senior
+    end
+    it "should not try to create a synonym if the senior is nil" do
+      senior = nil
+      junior = create_genus
+      junior.import_synonyms senior
+      Synonym.count.should be_zero
+    end
+  end
+
 end
