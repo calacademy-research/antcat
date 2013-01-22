@@ -153,6 +153,17 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     set_status_manually 'Wilsonia', 'unresolved homonym'
     set_status_manually 'Hypochira', 'unidentifiable'
     set_status_manually 'Formicium', 'collective group name'
+    set_synonym_of_orthocrema 'Apterocrema'
+    set_synonym_of_orthocrema 'Eucrema'
+    set_synonym_of_orthocrema 'Mesocrema'
+    set_synonym_of_orthocrema 'Neocrema'
+    set_synonym_of_orthocrema 'Rhachiocrema'
+  end
+
+  def set_synonym_of_orthocrema subgenus
+    junior = Taxon.find_name "Crematogaster (#{subgenus})"
+    senior = Taxon.find_name "Crematogaster (Orthocrema)"
+    junior.first.become_junior_synonym_of senior.first
   end
 
   def self.fix_reference id, bolton_key_cache
