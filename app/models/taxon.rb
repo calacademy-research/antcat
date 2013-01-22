@@ -160,7 +160,10 @@ class Taxon < ActiveRecord::Base
   # import
 
   def import_synonyms senior
-    Synonym.create! junior_synonym: self, senior_synonym: senior if senior
+    return unless senior
+    synonyms = Synonym.where 'junior_synonym_id = ? AND senior_synonym_id = ?', self.id, senior.id
+    return unless synonyms.empty?
+    Synonym.create! junior_synonym: self, senior_synonym: senior
   end
 
   def self.get_type_attributes data
