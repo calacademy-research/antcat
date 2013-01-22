@@ -141,13 +141,6 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     fix_reference 133054, 'Bolton Fisher 2012'
   end
 
-  def self.fix_reference id, bolton_key_cache
-    reference = Reference.find_by_id id
-    return unless reference
-    reference.bolton_key_cache = bolton_key_cache
-    reference.save!
-  end
-
   def do_manual_fixups
     delete_subgenus 'Atopogyne'
     delete_subgenus 'Colobocrema'
@@ -160,7 +153,13 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     set_status_manually 'Wilsonia', 'unresolved homonym'
     set_status_manually 'Hypochira', 'unidentifiable'
     set_status_manually 'Formicium', 'collective group name'
-    #Genus.import_formicites unless Rails.env.test?
+  end
+
+  def self.fix_reference id, bolton_key_cache
+    reference = Reference.find_by_id id
+    return unless reference
+    reference.bolton_key_cache = bolton_key_cache
+    reference.save!
   end
 
   def delete_subgenus name
