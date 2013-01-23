@@ -298,7 +298,7 @@ end
 def create_taxon_object name_or_attributes, taxon_factory, name_factory, attributes = {}
   if name_or_attributes.kind_of? String
     name, epithet, epithets = get_name_parts name_or_attributes
-    attributes = attributes.reverse_merge name: FactoryGirl.create(name_factory, name: name, epithet: epithet, epithets: epithets)
+    attributes = attributes.reverse_merge name: FactoryGirl.create(name_factory, name: name, epithet: epithet, epithets: epithets), name_cache: name
   else
     attributes = name_or_attributes
   end
