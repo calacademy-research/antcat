@@ -12,6 +12,7 @@ NGC-SPECIES A-AN            '*Afropone </i>(?)' removed '?' and extra <i> tag
                             Remove '>&nbsp; </span>' in punctiventris
 NGC-SPECIES AP-CAM          Remove '[sic]' and its extra <i>
                             Remove [sic] in Aph schwammerdami
+                            Add period after var in guianae
                             Add paren after 'Attomyrmex' in '(Attomyrmex exploitus'
                             In entry for shanwangensis, italicize parenthesis after 'Sinaphaenogaster'
 NGC-SPECIES CAMPONOTUS a-j  In baynei, unitalicize 'r.'
