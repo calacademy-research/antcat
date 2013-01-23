@@ -724,7 +724,7 @@ grammar Importers::Bolton::Catalog::Grammar
   end
 
   rule subspecies_type
-    'var.' | 'subsp.' | 'r.' | 'st.' | 'ab.' | 'form.' | 'natio' | 'nat.'
+    'var.' | 'subsp.' | 'r.' | 'st.' | 'ab.' | 'form.' | 'natio' | 'nat.' | 'forma'
   end
 
   ####################################
