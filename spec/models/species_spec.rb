@@ -179,13 +179,15 @@ describe Species do
       it "should update instead of create, if necessary" do
         genus = create_genus 'Crematogaster'
         existing_species = create_species 'Crematogaster major'
+        existing_species.protonym.authorship.reference = @reference
+        existing_species.protonym.authorship.save!
         old_count = Taxon.count
         taxon = Species.import(
           genus:                  genus,
-          species_group_epithet:  'tricolor',
+          species_group_epithet:  'major',
           protonym: {
             genus_name:           'Crematogaster',
-            species_epithet:      'tricolor',
+            species_epithet:      'major',
             authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]
           },
           raw_history: [{revived_from_synonymy: {references:[], subspecies_of: {species_epithet: 'castanea'}}}]
