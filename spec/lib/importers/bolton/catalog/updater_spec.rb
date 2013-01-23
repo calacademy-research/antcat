@@ -110,7 +110,7 @@ describe Importers::Bolton::Catalog::Updater do
                   pages: '172'}]},
       }
 
-      taxon, name = UpdaterTest.find_taxon_to_update(data)
+      taxon, name = Genus.find_taxon_to_update(data)
       taxon.should == genus
     end
   end
