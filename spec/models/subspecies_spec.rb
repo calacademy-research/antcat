@@ -106,7 +106,7 @@ describe Subspecies do
     end
   end
 
-  describe "Importing" do
+  describe "Importing and updating" do
     before do
       @reference = FactoryGirl.create :article_reference, bolton_key_cache: 'Latreille 1809'
     end
@@ -129,6 +129,26 @@ describe Subspecies do
       ref.fixee.should == subspecies
       ref.genus.should == genus
       ref.epithet.should == 'gilviventris'
+    end
+
+    it "when updating, should use the the subspecies" do
+      genus = create_genus 'Camponotus'
+      data = {
+        genus:                  genus,
+        species_group_epithet:  'refectus',
+        protonym: {
+          authorship:           [{author_names: ["Latreille"], year: "1809", pages: "124"}],
+          genus_name:           'Camponotus',
+          subgenus_epithet:     'Myrmeurynota',
+          species_epithet:      'gilviventris',
+          subspecies: [{type:   'var.',
+            subspecies_epithet: 'refectus'}]}}
+      subspecies = Subspecies.import data
+      subspecies = Subspecies.find subspecies
+      subspecies.name.to_s.should == 'Camponotus gilviventris refectus'
+
+      updated_subspecies = Subspecies.import data
+      updated_subspecies.should == subspecies
     end
 
     describe "When the protonym has a different species" do
