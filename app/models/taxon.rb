@@ -183,4 +183,8 @@ class Taxon < ActiveRecord::Base
     end
   end
 
+  def self.import_name data
+    Name.import data
+  end
+
 end
