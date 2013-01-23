@@ -14,6 +14,14 @@ module Importers::Bolton::Catalog::Updater
     end
   end
 
+  def update_data data
+    update_synonyms do
+      senior = data.delete :synonym_of
+      update_taxon data
+      import_synonyms senior
+    end
+  end
+
   def self.included receiver
     receiver.extend ClassMethods
   end
@@ -108,14 +116,6 @@ module Importers::Bolton::Catalog::Updater
       i += 1
     end
     items_to_delete.each {|item| TaxonHistoryItem.delete item}
-  end
-
-  def update_data data
-    update_synonyms do
-      senior = data.delete :synonym_of
-      update_taxon data
-      import_synonyms senior
-    end
   end
 
   def update_taxon data
