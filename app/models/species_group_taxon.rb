@@ -74,10 +74,6 @@ class SpeciesGroupTaxon < Taxon
     taxon
   end
 
-  def self.import_name data
-    Name.import data
-  end
-
   def self.after_creating taxon, data
     taxon.create_history_items data[:history]
     taxon.set_status_from_history data[:raw_history]
