@@ -39,6 +39,7 @@ class SpeciesGroupTaxon < Taxon
   end
 
   def update_data data
+    self
   end
 
   def self.import_protonym data
