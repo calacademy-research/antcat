@@ -724,8 +724,23 @@ grammar Importers::Bolton::Catalog::Grammar
   end
 
   rule subspecies_type
-    'var.' | 'var' | 'subsp.' | 'r.' | 'st.' | 'ab.' | 'form.' | 'natio' | 'nat.' | 'forma' | 'morpha' | 'subp.' | 'v.' |
-      'f.interm.'
+      'ab.'
+    | 'forma'
+    | 'form.'
+    | 'form'
+    | 'f.interm.'
+    | 'nat.'
+    | 'natio'
+    | 'morpha'
+    | 'morph'
+    | 'r.'
+    | 'st.'
+    | 'subsp.'
+    | 'subp.'
+    | 'ssp.'
+    | 'v.'
+    | 'var.'
+    | 'var'
   end
 
   ####################################

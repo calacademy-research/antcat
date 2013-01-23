@@ -331,6 +331,10 @@ describe Importers::Bolton::Catalog::Species::Grammar do
     }
   end
 
+  it "should handle 'morph'" do
+    @grammar.parse(%{<i>pallens</i>. <i>Leptothorax nylanderi</i> morph <i>pallens</i> Plateaux, 1981: 64.}).value_with_matched_text_removed[:protonym][:authorship].should_not be_nil
+  end
+
   it "should handle these nested parentheses after a quoted passage" do
     @grammar.parse(%{<i>antillana</i>. <i>Prenolepis guatemalensis</i> r. <i>antillana</i> Forel, 1893g: 340 (w.q.m.) ANTILLES. Combination in <i>Pr. (Nylanderia)</i>: Forel, 1912i: 66; in <i>Paratrechina (Nylanderia)</i>: Emery, 1925b: 223; in <i>Nylanderia</i>: Kempf, 1972a: 168; in <i>Paratrechina</i>: Brandão, 1991: 368; in <i>Nylanderia</i>: LaPolla, Brady & Shattuck, 2010a: 127. Currently subspecies of <i>vividula</i>: Forel, 1912i: 66.}).value
   end
