@@ -14,69 +14,12 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
   end
 
   def import
-    @genus_headers_count =
-      @genera_not_found_count =
-      @duplicate_genera_that_need_resolving_count =
-    @species_count =
-    @error_count =
-    @ignored_count =
-    0
-
-    while @line
-      case @type
-
-      when :not_understood
-        @error_count += 1
-
-      when :note
-        @genus.update_attribute :genus_species_header_notes_taxt, convert_line_to_taxt(@parse_result[:text]) if @genus
-
-      when :catalog_header, :genus_see_under, :species_see_under
-        @ignored_count += 1
-
-      when :genus_header
-        @genus_headers_count += 1
-        find_matching_genus_names
-
-      when :species_record
-        if @genus
-          begin
-            species = ::Species.import species_epithet: @parse_result[:species_group_epithet],
-                                       fossil: @parse_result[:fossil] || false,
-                                       status: @parse_result[:status] || 'valid',
-                                       genus: @genus,
-                                       protonym: @parse_result[:protonym],
-                                       raw_history: @parse_result[:history],
-                                       history: self.class.convert_history_to_taxts(@parse_result[:history], @genus.name, @parse_result[:species_group_epithet])
-            Progress.info "Imported #{species.inspect}"
-            @species_count += 1
-          end
-
-        elsif @parse_result[:species_group_epithet] != 'heerii'
-          Progress.error "Species with no active genus: #{@line}"
-        end
-
-      else raise "Unexpected type: #{@type}"
-      end
-
-      parse_next_line
-    end
-
+    @genus_headers_count = @genera_not_found_count = @duplicate_genera_that_need_resolving_count =
+      @species_count = @error_count = @ignored_count = 0
+    import_lines
     do_manual_fixups unless Rails.env.test?
-
     finish_importing
-
-    Progress.puts
-    Progress.show_results
-    unignored_lines_count = Progress.processed_count - @ignored_count
-    Progress.puts "#{unignored_lines_count} unignored lines"
-    Progress.puts "#{@ignored_count} see-unders (ignored)"
-    Progress.puts "#{@genus_headers_count} genus headers"
-    Progress.puts "#{@species_count} species"
-    Progress.puts "#{@genera_not_found_count} genera not found" unless @genera_not_found_count.zero?
-    Progress.puts "#{@duplicate_genera_that_need_resolving_count} duplicate genera that need resolving" unless @duplicate_genera_that_need_resolving_count.zero?
-    Progress.puts "#{@error_count} could not understand" unless @error_count.zero?
-    Progress.puts
+    show_results
   end
 
   def find_matching_genus_names
@@ -91,6 +34,44 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
       @duplicate_genera_that_need_resolving_count += 1
     else
       @genus = matching_genus_names.first
+    end
+  end
+
+  def import_taxon
+    ::Species.import(
+      species_epithet: @parse_result[:species_group_epithet],
+      fossil: @parse_result[:fossil] || false,
+      status: @parse_result[:status] || 'valid',
+      genus: @genus,
+      protonym: @parse_result[:protonym],
+      raw_history: @parse_result[:history],
+      history: self.class.convert_history_to_taxts(@parse_result[:history], @genus.name, @parse_result[:species_group_epithet])
+    )
+  end
+
+  def import_lines
+    while @line
+      case @type
+      when :not_understood
+        @error_count += 1
+      when :note
+        @genus.update_attribute :genus_species_header_notes_taxt, convert_line_to_taxt(@parse_result[:text]) if @genus
+      when :catalog_header, :genus_see_under, :species_see_under
+        @ignored_count += 1
+      when :genus_header
+        @genus_headers_count += 1
+        find_matching_genus_names
+      when :species_record
+        if @genus
+          species = import_taxon
+          Progress.info "Imported #{species.inspect}"
+          @species_count += 1
+        elsif @parse_result[:species_group_epithet] != 'heerii'
+          Progress.error "Species with no active genus: #{@line}"
+        end
+      else raise "Unexpected type: #{@type}"
+      end
+      parse_next_line
     end
   end
 
@@ -172,6 +153,20 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
         change_key subobject, from, to
       end
     end
+  end
+
+  def show_results
+    Progress.puts
+    Progress.show_results
+    unignored_lines_count = Progress.processed_count - @ignored_count
+    Progress.puts "#{unignored_lines_count} unignored lines"
+    Progress.puts "#{@ignored_count} see-unders (ignored)"
+    Progress.puts "#{@genus_headers_count} genus headers"
+    Progress.puts "#{@species_count} species"
+    Progress.puts "#{@genera_not_found_count} genera not found" unless @genera_not_found_count.zero?
+    Progress.puts "#{@duplicate_genera_that_need_resolving_count} duplicate genera that need resolving" unless @duplicate_genera_that_need_resolving_count.zero?
+    Progress.puts "#{@error_count} could not understand" unless @error_count.zero?
+    Progress.puts
   end
 
   def get_file_names _
