@@ -16,7 +16,13 @@ NGC-SPECIES AP-CAM          Remove '[sic]' and its extra <i>
                             Add paren after 'Attomyrmex' in '(Attomyrmex exploitus'
                             In entry for shanwangensis, italicize parenthesis after 'Sinaphaenogaster'
 NGC-SPECIES CAMPONOTUS a-j  In baynei, unitalicize 'r.'
+NGC-SPECIES CAN-CREL        Fix typo: 'susbp'
+NGC-SPECIES CREMATOGASTER   Had to remove bracketed phrase in name: solenopsisoides
+                            Had to remove bracketed phrase in name: zavathari
+                            Had to remove bracketed phrase in name: mancocapaci
+                            Italicize regilla in its protonym
 NGC-SPECIES CRET-DON        Unitalicize 'Wilson' in dibolius
+                            Space after subsp.japanensis
 NGC-SPECIES GA-LAS          In the entry for interjectus, don't italicize 'in'
                             In the entry for striatula, unitalicize parenthesis
 NGC-SPECIES LEU-MI          In entry for decipiens, don't italicize 'of'
