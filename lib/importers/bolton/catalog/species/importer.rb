@@ -36,18 +36,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
 
       when :genus_header
         @genus_headers_count += 1
-        @genus = nil
-        matching_genus_names = Genus.with_names.where "name = '#{@parse_result[:name]}'"
-        matching_genus_names.keep_if {|e| not e.invalid?} if matching_genus_names.count > 1
-        if matching_genus_names.empty? and @parse_result[:name] != 'Myrmicium'
-          Progress.error "Genus '#{@parse_result[:name]}' did not exist"
-          @genera_not_found_count += 1
-        elsif matching_genus_names.size > 1
-          Progress.error "More than one genus '#{@parse_result[:name]}'"
-          @duplicate_genera_that_need_resolving_count += 1
-        else
-          @genus = matching_genus_names.first
-        end
+        find_matching_genus_names
 
       when :species_record
         if @genus
@@ -88,6 +77,21 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     Progress.puts "#{@duplicate_genera_that_need_resolving_count} duplicate genera that need resolving" unless @duplicate_genera_that_need_resolving_count.zero?
     Progress.puts "#{@error_count} could not understand" unless @error_count.zero?
     Progress.puts
+  end
+
+  def find_matching_genus_names
+    @genus = nil
+    matching_genus_names = Genus.with_names.where "name = '#{@parse_result[:name]}'"
+    matching_genus_names.keep_if {|e| not e.invalid?} if matching_genus_names.count > 1
+    if matching_genus_names.empty? and @parse_result[:name] != 'Myrmicium'
+      Progress.error "Genus '#{@parse_result[:name]}' did not exist"
+      @genera_not_found_count += 1
+    elsif matching_genus_names.size > 1
+      Progress.error "More than one genus '#{@parse_result[:name]}'"
+      @duplicate_genera_that_need_resolving_count += 1
+    else
+      @genus = matching_genus_names.first
+    end
   end
 
   def finish_importing
