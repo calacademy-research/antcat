@@ -107,13 +107,16 @@ describe Subspecies do
   end
 
   describe "Importing" do
-
+    before do
+      @reference = FactoryGirl.create :article_reference, bolton_key_cache: 'Latreille 1809'
+    end
     it "should create the subspecies and the forward ref" do
       genus = create_genus 'Camponotus'
       subspecies = Subspecies.import(
         genus:                  genus,
         species_group_epithet:  'refectus',
         protonym: {
+          authorship:           [{author_names: ["Latreille"], year: "1809", pages: "124"}],
           genus_name:           'Camponotus',
           subgenus_epithet:     'Myrmeurynota',
           species_epithet:      'gilviventris',
@@ -137,6 +140,7 @@ describe Subspecies do
             genus:                  genus,
             species_group_epithet:  'radamae',
             protonym: {
+              authorship:           [{author_names: ["Latreille"], year: "1809", pages: "124"}],
               genus_name:           'Camponotus',
               species_epithet:      'maculatus',
               subspecies: [{type:   'r.', subspecies_epithet: 'radamae'}]
@@ -151,6 +155,7 @@ describe Subspecies do
             genus:                  genus,
             species_group_epithet:  'boliviensis',
             protonym: {
+              authorship:           [{author_names: ["Latreille"], year: "1809", pages: "124"}],
               genus_name:           'Acromyrmex',
               species_epithet:      'boliviensis',
             },
@@ -166,6 +171,7 @@ describe Subspecies do
             genus:                  genus,
             species_group_epithet:  'mosis',
             protonym: {
+              authorship:           [{author_names: ["Latreille"], year: "1809", pages: "124"}],
               genus_name:           'Camponotus',
               species_epithet:      'auberti',
               subspecies: [{type:   'var.', subspecies_epithet: 'mosis'}]
@@ -184,6 +190,7 @@ describe Subspecies do
           genus:                  genus,
           species_group_epithet:  'mediorufa',
           protonym: {
+            authorship:           [{author_names: ["Latreille"], year: "1809", pages: "124"}],
             genus_name:           'Crematogaster',
             species_epithet:      'tricolor',
             subspecies: [{type:   'var.', subspecies_epithet: 'mediorufa'}]
@@ -197,7 +204,9 @@ describe Subspecies do
     it "should use the right epithet when the protonym differs" do
       subspecies = Species.import(
         species_group_epithet:  'brunneus',
-        protonym: { genus_name: 'Aenictus',
+        protonym: {
+          genus_name:           'Aenictus',
+          authorship:           [{author_names: ["Latreille"], year: "1809", pages: "124"}],
           species_epithet:      'soudanicus',
           subspecies: [{type:   'var.', subspecies_epithet: 'brunnea'}]
         },

@@ -2,6 +2,10 @@
 require 'spec_helper'
 
 describe Species do
+  before do
+    @reference = FactoryGirl.create :article_reference, bolton_key_cache: 'Latreille 1809'
+  end
+
   it "should have subspecies, which are its children" do
     species = create_species 'Atta chilensis'
     create_subspecies 'Atta chilensis robusta', species: species
@@ -75,14 +79,14 @@ describe Species do
     it "should import a species" do
       subfamily = create_subfamily
       genus = create_genus 'Fiona', subfamily: subfamily
-      reference = FactoryGirl.create :article_reference, bolton_key_cache: 'Latreille 1809'
 
       species = Species.import(
         genus: genus,
         species_epithet: 'major',
         fossil: true,
-        protonym: {genus_name: "Atta", species_epithet: 'major',
-                   authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]},
+        protonym: {
+          genus_name: "Atta", species_epithet: 'major',
+          authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]},
         history: ['Atta major as species', 'Atta major as subspecies']
       )
       species = Species.find species
@@ -99,7 +103,7 @@ describe Species do
       authorship = protonym.authorship
       authorship.pages.should == '124'
 
-      authorship.reference.should == reference
+      authorship.reference.should == @reference
     end
 
     describe "Importing species that look like subspecies" do
@@ -109,6 +113,7 @@ describe Species do
           genus:                  genus,
           species_group_epithet:  'alluaudi',
           protonym: {
+            authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}],
             genus_name:           'Aenictus',
             species_epithet:      'bottegoi',
             subspecies: [{type:   'var.',
@@ -126,6 +131,7 @@ describe Species do
           genus:                  genus,
           species_group_epithet:  'malandana',
           protonym: {
+            authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}],
             genus_name:           'Iridomyrmex',
             species_epithet:      'innocens',
             subspecies: [{type:   'r.',
@@ -143,6 +149,7 @@ describe Species do
           genus:                  genus,
           species_group_epithet:  'malandana',
           protonym: {
+            authorship:           [{author_names: ["Latreille"], year: "1809", pages: "124"}],
             genus_name:           'Iridomyrmex',
             species_epithet:      'innocens',
             subspecies: [{type:   'r.',
@@ -160,6 +167,7 @@ describe Species do
           genus:                  genus,
           species_group_epithet:  'tricolor',
           protonym: {
+            authorship:           [{author_names: ["Latreille"], year: "1809", pages: "124"}],
             genus_name:           'Crematogaster',
             species_epithet:      'tricolor',
           },
@@ -167,6 +175,24 @@ describe Species do
         )
         Subspecies.find_by_name('Crematogaster castanea tricolor').should_not be_nil
       end
+
+      it "should update instead of create, if necessary" do
+        genus = create_genus 'Crematogaster'
+        existing_species = create_species 'Crematogaster major'
+        old_count = Taxon.count
+        taxon = Species.import(
+          genus:                  genus,
+          species_group_epithet:  'tricolor',
+          protonym: {
+            genus_name:           'Crematogaster',
+            species_epithet:      'tricolor',
+            authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]
+          },
+          raw_history: [{revived_from_synonymy: {references:[], subspecies_of: {species_epithet: 'castanea'}}}]
+        )
+        Taxon.count.should == old_count
+      end
+
     end
 
   end

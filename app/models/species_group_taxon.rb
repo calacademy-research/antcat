@@ -1,5 +1,6 @@
 # coding: UTF-8
 class SpeciesGroupTaxon < Taxon
+  include Importers::Bolton::Catalog::Updater
   belongs_to :subfamily
   belongs_to :genus; validates :genus, presence: true
   belongs_to :subgenus
@@ -26,10 +27,18 @@ class SpeciesGroupTaxon < Taxon
   ##################################################
   def self.import data
     transaction do
-      protonym = import_protonym data
-      taxon_class = get_taxon_class protonym, data[:raw_history]
-      taxon_class.import_data protonym, data
+      taxon, name = find_taxon_to_update data
+      if taxon
+        taxon.update_data data
+      else
+        protonym = import_protonym data
+        taxon_class = get_taxon_class protonym, data[:raw_history]
+        taxon_class.import_data protonym, data
+      end
     end
+  end
+
+  def update_data data
   end
 
   def self.import_protonym data
