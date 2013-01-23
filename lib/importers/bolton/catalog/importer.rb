@@ -192,7 +192,7 @@ class Importers::Bolton::Catalog::Importer
     string.gsub!(/<i>et al<\/i>\./, et_al)
     string.gsub!(/([^>])et al\./, '\1' + et_al)
 
-    string.gsub!(/([^,]) <i>et/, '\1, <i>et')
+    string.gsub!(/([^,]) <i>et\b/, '\1, <i>et')
     string
   end
 

@@ -242,6 +242,9 @@ describe Importers::Bolton::Catalog::Importer do
         @importer.fix_et_al('Bolton et al. Ward et al. Fisher et al. Blum <i>et al</i>.').should ==
               'Bolton, <i>et al.</i> Ward, <i>et al.</i> Fisher, <i>et al.</i> Blum, <i>et al.</i>'
       end
+      it "should not get fooled by et- prefix" do
+        @importer.fix_et_al('subsp. <i>etrusca</i>').should == 'subsp. <i>etrusca</i>'
+      end
     end
 
     describe "Add space after semicolon" do
