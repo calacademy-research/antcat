@@ -2,8 +2,6 @@
 class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog::Importer
 
   def initialize options = {}
-    Species.delete_all
-    Subspecies.delete_all
     ForwardRef.delete_all
 
     @options = options.reverse_merge show_progress: false
