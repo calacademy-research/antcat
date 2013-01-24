@@ -26,6 +26,7 @@ NGC-SPECIES CRET-DON        Unitalicize 'Wilson' in dibolius
 NGC-SPECIES GA-LAS          In the entry for interjectus, don't italicize 'in'
                             In the entry for striatula, unitalicize parenthesis
 NGC-SPECIES LEU-MI          In entry for decipiens, don't italicize 'of'
+                            Fix sjosted</i>ti
 NGC-SPECIES MO-MYO          Remove '[sic]' after Cyphomyrmex (Mycetoritis
                             Make protonym inside one set of <i>
 NGC-SPECIES MYR             Remove 'f. ' from 'f. sulcinodolobicornis'
