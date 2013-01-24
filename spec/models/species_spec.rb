@@ -199,13 +199,21 @@ describe Species do
       taxon = Species.import data
 
       data[:fossil] = true
+      homonym_species = create_species 'Eciton major'
+      data[:homonym_replaced_by] = homonym_species
       taxon = Species.import data
 
-      Update.count.should == 1
+      Update.count.should == 2
+
       update = Update.find_by_field_name 'fossil'
       update.before.should == '0'
       update.after.should == '1'
       taxon.fossil.should be_true
+
+      update = Update.find_by_field_name 'homonym_replaced_by_id'
+      update.before.should be_nil
+      update.after.should == 'Eciton major'
+      taxon.homonym_replaced_by.should == homonym_species
     end
   end
 
