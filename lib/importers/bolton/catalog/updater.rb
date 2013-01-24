@@ -2,11 +2,11 @@
 module Importers::Bolton::Catalog::Updater
 
   module ClassMethods
-    def find_taxon_to_update data
+    def find_taxon_to_update data, taxon_class
       unless data[:protonym] and data[:protonym][:authorship]
         raise SpeciesGroupTaxon::NoProtonymError
       end
-      name = import_name data
+      name = taxon_class.send(:import_name, data)
       author_names, year = Reference.get_author_names_and_year data[:protonym][:authorship].first
       pages = data[:protonym][:authorship].first[:pages]
       taxon = Taxon.find_by_name_and_authorship name.name, author_names, year, pages
