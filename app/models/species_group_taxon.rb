@@ -68,6 +68,7 @@ class SpeciesGroupTaxon < Taxon
       protonym:   protonym,
     )
     after_creating taxon, data
+    create_update name, taxon.id, self.name
     taxon
   end
 

@@ -224,6 +224,28 @@ describe Species do
       taxon.protonym.authorship.pages.should == '23'
 
     end
+
+    it "should record creations" do
+      tribe = create_tribe
+      genus = create_genus 'Atta', tribe: tribe
+      data = {
+        genus:                  genus,
+        species_group_epithet:  'minor',
+        protonym: {
+          genus_name:           'Atta',
+          species_epithet:      'minor',
+          authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]
+        }, history: [], raw_history: [],
+      }
+
+      taxon = Species.import data
+
+      Update.count.should == 1
+      update = Update.find_by_record_id taxon.id
+      update.name.should == 'Atta minor'
+      update.class_name.should == 'Species'
+      update.field_name.should == 'create'
+    end
   end
 
   describe "A manual import" do
