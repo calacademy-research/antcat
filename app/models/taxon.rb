@@ -52,11 +52,14 @@ class Taxon < ActiveRecord::Base
     query.all
   end
 
-  def self.find_by_name_and_authorship name, author_names, year
+  def self.find_by_name_and_authorship name, author_names, year, pages = nil
     bolton_key = Bolton::ReferenceKey.new(author_names.join(' '), year).to_s :db
     results = joins(protonym: [{authorship: :reference}]).where('name_cache = ? AND references.bolton_key_cache = ?', name, bolton_key)
     if results.size > 1
-      raise 'Duplicate name + authorships'
+      results = results.to_a.select {|result| result.protonym.authorship.pages == pages}
+      if results.size > 1
+        raise 'Duplicate name + authorships'
+      end
     end
     return nil if results.size == 0
     find results.first.id
