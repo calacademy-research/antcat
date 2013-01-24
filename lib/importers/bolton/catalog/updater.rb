@@ -15,6 +15,9 @@ module Importers::Bolton::Catalog::Updater
       Update.create! name: name.name, record_id: record_id, class_name: self.name, field_name: 'create'
     end
   end
+  def self.included receiver
+    receiver.extend ClassMethods
+  end
 
   def update_data data
     update_synonyms do
@@ -22,10 +25,6 @@ module Importers::Bolton::Catalog::Updater
       update_taxon data
       import_synonyms senior
     end
-  end
-
-  def self.included receiver
-    receiver.extend ClassMethods
   end
 
   def update_field field_name, new_value, attributes
