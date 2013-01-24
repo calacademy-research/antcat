@@ -43,10 +43,10 @@ module Importers::Bolton::Catalog::Updater
       data.merge! data[:attributes]
       data.delete :attributes
     end
-    subfamily = data[:subfamily] ? data[:subfamily].id : nil
-    tribe = data[:tribe] ? data[:tribe].id : nil
+    subfamily_id = data[:subfamily] ? data[:subfamily].id : nil
+    tribe_id = data[:tribe] ? data[:tribe].id : nil
     genus = data[:genus]
-    subfamily_id = genus.subfamily.id if genus && genus.subfamily
+    subfamily_id ||= genus.subfamily.id if genus && genus.subfamily
     genus_id = genus.id if genus
 
     update_taxon_id_field :subfamily_id, subfamily_id, attributes
