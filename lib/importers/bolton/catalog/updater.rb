@@ -9,7 +9,6 @@ module Importers::Bolton::Catalog::Updater
       name = import_name data
       author_names, year = Reference.get_author_names_and_year data[:protonym][:authorship].first
       taxon = Taxon.find_by_name_and_authorship name.name, author_names, year
-      Progress.log "find_taxon_to_update name: #{name}, author_names: #{author_names}, year: #{year} #{taxon ? 'found' : 'not found'}"
       return taxon, name
     end
     def create_update name, record_id, class_name
@@ -139,7 +138,6 @@ module Importers::Bolton::Catalog::Updater
     end
     subfamily = data[:subfamily] ? data[:subfamily].id : nil
     tribe = data[:tribe] ? data[:tribe].id : nil
-    type_attributes = self.class.get_type_attributes data
 
     update_taxon_id_field :subfamily_id, subfamily, attributes
     update_taxon_id_field :tribe_id, tribe, attributes
@@ -153,9 +151,12 @@ module Importers::Bolton::Catalog::Updater
     update_field          :incertae_sedis_in,     data[:incertae_sedis_in], attributes
     update_boolean_field  'hong',                 data[:hong], attributes
 
-    update_name_field     'type_name',            type_attributes[:type_name], attributes
-    update_field          'type_taxt',            type_attributes[:type_taxt], attributes
-    update_boolean_field  'type_fossil',          type_attributes[:type_fossil], attributes
+    unless kind_of? Species or kind_of? Subspecies
+      type_attributes = self.class.get_type_attributes data
+      update_name_field     'type_name',            type_attributes[:type_name], attributes
+      update_field          'type_taxt',            type_attributes[:type_taxt], attributes
+      update_boolean_field  'type_fossil',          type_attributes[:type_fossil], attributes
+    end
   end
 
   def update_synonyms
