@@ -8,7 +8,7 @@ class ForwardRefToSeniorSynonym < SpeciesGroupForwardRef
         Progress.error "Couldn't find species #{epithet} in genus #{genus.name} when fixing up senior synonym of #{fixee.junior_synonym.inspect}"
       end
     elsif specieses.count > 1
-      Progress.error "Found multiple valid targets among #{specieses.map(&:name).map(&:to_s).join(', ')}"
+      Progress.error "Found multiple valid targets among senior synonyms #{specieses.map(&:name).map(&:to_s).join(', ')}"
     else
       species = specieses.first
       fixee.update_attributes fixee_attribute.to_sym => species
