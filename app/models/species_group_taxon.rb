@@ -27,12 +27,12 @@ class SpeciesGroupTaxon < Taxon
   ##################################################
   def self.import data
     transaction do
-      taxon, name = find_taxon_to_update data
+      protonym = import_protonym data
+      taxon_class = get_taxon_class protonym, data[:raw_history]
+      taxon, name = find_taxon_to_update data, taxon_class
       if taxon
         taxon.update_data data
       else
-        protonym = import_protonym data
-        taxon_class = get_taxon_class protonym, data[:raw_history]
         taxon = taxon_class.import_data protonym, data
       end
       taxon
