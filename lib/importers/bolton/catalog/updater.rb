@@ -8,7 +8,8 @@ module Importers::Bolton::Catalog::Updater
       end
       name = import_name data
       author_names, year = Reference.get_author_names_and_year data[:protonym][:authorship].first
-      taxon = Taxon.find_by_name_and_authorship name.name, author_names, year
+      pages = data[:protonym][:authorship].first[:pages]
+      taxon = Taxon.find_by_name_and_authorship name.name, author_names, year, pages
       return taxon, name
     end
     def create_update name, record_id, class_name

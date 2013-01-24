@@ -206,6 +206,16 @@ describe Taxon do
       other_genus = create_genus 'Dolichoderus', protonym: @protonym
       Taxon.find_by_name_and_authorship(other_genus.name.name, ['Latreille'], @reference.year).should == other_genus
     end
+    it "should distinguish between ones with same name and authorship by using the page" do
+      reference = FactoryGirl.create :article_reference, author_names: [FactoryGirl.create(:author_name, name: 'Latreille')], citation_year: '1809', bolton_key_cache: 'Latreille 1809'
+      genus_100_authorship = FactoryGirl.create :citation, reference: reference, pages: '100'
+      genus_200_authorship = FactoryGirl.create :citation, reference: reference, pages: '200'
+      genus_100_protonym = FactoryGirl.create :protonym, authorship: genus_100_authorship
+      genus_200_protonym = FactoryGirl.create :protonym, authorship: genus_200_authorship
+      genus_100 = create_genus 'Dolichoderus', protonym: genus_100_protonym
+      genus_200 = create_genus 'Dolichoderus', protonym: genus_200_protonym
+      Taxon.find_by_name_and_authorship('Dolichoderus', ['Latreille'], '1809', '100').should == genus_100
+    end
   end
 
   describe ".rank" do
