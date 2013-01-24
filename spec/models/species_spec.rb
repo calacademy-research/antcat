@@ -201,9 +201,12 @@ describe Species do
       data[:fossil] = true
       homonym_species = create_species 'Eciton major'
       data[:homonym_replaced_by] = homonym_species
+      FactoryGirl.create :article_reference, bolton_key_cache: 'Fisher 2005'
+      data[:protonym][:authorship].first[:pages] = '23'
+
       taxon = Species.import data
 
-      Update.count.should == 2
+      Update.count.should == 3
 
       update = Update.find_by_field_name 'fossil'
       update.before.should == '0'
@@ -214,6 +217,12 @@ describe Species do
       update.before.should be_nil
       update.after.should == 'Eciton major'
       taxon.homonym_replaced_by.should == homonym_species
+
+      update = Update.find_by_field_name 'pages'
+      update.before.should == '124'
+      update.after.should == '23'
+      taxon.protonym.authorship.pages.should == '23'
+
     end
   end
 
