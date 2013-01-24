@@ -48,10 +48,12 @@ module Importers::Bolton::Catalog::Updater
     genus = data[:genus]
     subfamily_id ||= genus.subfamily.id if genus && genus.subfamily
     genus_id = genus.id if genus
+    homonym_replaced_by_id = data[:homonym_replaced_by] ? data[:homonym_replaced_by].id : nil
 
     update_taxon_id_field :subfamily_id, subfamily_id, attributes
     update_taxon_id_field :tribe_id, tribe_id, attributes
     update_taxon_id_field :genus_id, genus_id, attributes
+    update_taxon_id_field :homonym_replaced_by_id, homonym_replaced_by_id, attributes
 
     update_boolean_field  'fossil',               data[:fossil], attributes
     update_field          'status',               data[:status] || 'valid', attributes
