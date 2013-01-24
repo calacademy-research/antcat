@@ -27,6 +27,49 @@ module Importers::Bolton::Catalog::Updater
     end
   end
 
+  def update_taxon data
+    attributes = {}
+    update_taxon_fields data, attributes
+
+    update_attributes! attributes
+
+    protonym.update_data data[:protonym]
+    update_history data[:history]
+  end
+
+  def update_taxon_fields data, attributes
+    if data[:attributes]
+      data = data.dup
+      data.merge! data[:attributes]
+      data.delete :attributes
+    end
+    subfamily = data[:subfamily] ? data[:subfamily].id : nil
+    tribe = data[:tribe] ? data[:tribe].id : nil
+    genus = data[:genus]
+    subfamily_id = genus.subfamily.id if genus && genus.subfamily
+    genus_id = genus.id if genus
+
+    update_taxon_id_field :subfamily_id, subfamily_id, attributes
+    update_taxon_id_field :tribe_id, tribe_id, attributes
+    update_taxon_id_field :genus_id, genus_id, attributes
+
+    update_boolean_field  'fossil',               data[:fossil], attributes
+    update_field          'status',               data[:status] || 'valid', attributes
+
+    update_field          :incertae_sedis_in,     data[:incertae_sedis_in], attributes
+    update_boolean_field  'hong',                 data[:hong], attributes
+
+    unless kind_of? Species or kind_of? Subspecies
+      headline_notes_taxt = data[:headline_notes_taxt] || data[:note] || data[:additional_notes]
+      update_taxt_field     'headline_notes_taxt',  headline_notes_taxt, attributes
+      type_attributes = self.class.get_type_attributes data
+      update_name_field     'type_name',            type_attributes[:type_name], attributes
+      update_field          'type_taxt',            type_attributes[:type_taxt], attributes
+      update_boolean_field  'type_fossil',          type_attributes[:type_fossil], attributes
+    end
+  end
+
+
   def update_field field_name, new_value, attributes
     before = normalize_field self[field_name]
     after = normalize_field new_value
@@ -117,48 +160,6 @@ module Importers::Bolton::Catalog::Updater
       i += 1
     end
     items_to_delete.each {|item| TaxonHistoryItem.delete item}
-  end
-
-  def update_taxon data
-    attributes = {}
-    update_taxon_fields data, attributes
-
-    update_attributes! attributes
-
-    protonym.update_data data[:protonym]
-    update_history data[:history]
-  end
-
-  def update_taxon_fields data, attributes
-    if data[:attributes]
-      data = data.dup
-      data.merge! data[:attributes]
-      data.delete :attributes
-    end
-    subfamily = data[:subfamily] ? data[:subfamily].id : nil
-    tribe = data[:tribe] ? data[:tribe].id : nil
-    genus = data[:genus]
-    subfamily_id = genus.subfamily.id if genus && genus.subfamily
-    genus_id = genus.id if genus
-
-    update_taxon_id_field :subfamily_id, subfamily_id, attributes
-    update_taxon_id_field :tribe_id, tribe_id, attributes
-    update_taxon_id_field :genus_id, genus_id, attributes
-
-    update_boolean_field  'fossil',               data[:fossil], attributes
-    update_field          'status',               data[:status] || 'valid', attributes
-
-    update_field          :incertae_sedis_in,     data[:incertae_sedis_in], attributes
-    update_boolean_field  'hong',                 data[:hong], attributes
-
-    unless kind_of? Species or kind_of? Subspecies
-      headline_notes_taxt = data[:headline_notes_taxt] || data[:note] || data[:additional_notes]
-      update_taxt_field     'headline_notes_taxt',  headline_notes_taxt, attributes
-      type_attributes = self.class.get_type_attributes data
-      update_name_field     'type_name',            type_attributes[:type_name], attributes
-      update_field          'type_taxt',            type_attributes[:type_taxt], attributes
-      update_boolean_field  'type_fossil',          type_attributes[:type_fossil], attributes
-    end
   end
 
   def update_synonyms
