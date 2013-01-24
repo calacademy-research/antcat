@@ -35,6 +35,7 @@ class SpeciesGroupTaxon < Taxon
         taxon_class = get_taxon_class protonym, data[:raw_history]
         taxon_class.import_data protonym, data
       end
+      taxon
     end
   end
 
