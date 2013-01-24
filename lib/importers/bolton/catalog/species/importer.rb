@@ -170,11 +170,8 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
   end
 
   def get_file_names _
-    if AntCat::ImportAllFiles
-      super Dir.glob("#{$BOLTON_DATA_DIRECTORY}/NGC-SPECIES *.htm")
-    else
-      ['AP-CAM'].map {|e| "#{$BOLTON_DATA_DIRECTORY}/NGC-SPECIES #{e}.htm"}
-    end
+    super Dir.glob("#{$BOLTON_DATA_DIRECTORY}/NGC-SPECIES *.htm")
+    #['TETRAMORIUM'].map {|e| "#{$BOLTON_DATA_DIRECTORY}/NGC-SPECIES #{e}.htm"}
   end
 
 end
