@@ -175,28 +175,38 @@ describe Species do
         )
         Subspecies.find_by_name('Crematogaster castanea tricolor').should_not be_nil
       end
-
-      it "should update instead of create, if necessary" do
-        genus = create_genus 'Crematogaster'
-        existing_species = create_species 'Crematogaster major'
-        existing_species.protonym.authorship.reference = @reference
-        existing_species.protonym.authorship.save!
-        old_count = Taxon.count
-        taxon = Species.import(
-          genus:                  genus,
-          species_group_epithet:  'major',
-          protonym: {
-            genus_name:           'Crematogaster',
-            species_epithet:      'major',
-            authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]
-          },
-          raw_history: [{revived_from_synonymy: {references:[], subspecies_of: {species_epithet: 'castanea'}}}]
-        )
-        Taxon.count.should == old_count
-      end
-
     end
 
+  end
+
+  describe "Updating" do
+    it "should update value fields" do
+      tribe = create_tribe
+      genus = create_genus 'Crematogaster', tribe: tribe
+      data = {
+        genus:                  genus,
+        fossil:                 false,
+        status:                 'valid',
+        incertae_sedis_in:      nil,
+        species_group_epithet:  'major',
+        protonym: {
+          genus_name:           'Crematogaster',
+          species_epithet:      'major',
+          authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]
+        },
+        history: [], raw_history: [],
+      }
+      taxon = Species.import data
+
+      data[:fossil] = true
+      taxon = Species.import data
+
+      Update.count.should == 1
+      update = Update.find_by_field_name 'fossil'
+      update.before.should == '0'
+      update.after.should == '1'
+      taxon.fossil.should be_true
+    end
   end
 
   describe "A manual import" do
