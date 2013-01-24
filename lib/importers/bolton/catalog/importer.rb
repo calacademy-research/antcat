@@ -128,7 +128,7 @@ class Importers::Bolton::Catalog::Importer
 
   def preprocess line
     line.replace CGI.unescapeHTML line
-    line.gsub! %r{<span style="mso-spacerun: yes">.*?</span>}, ''
+    line.gsub! %r{<span style="mso-spacerun: yes">.*?</span>}, ' '
     restore_quot_character_entity line.gsub(/\n/, ' ').strip
   end
 
