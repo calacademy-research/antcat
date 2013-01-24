@@ -38,10 +38,6 @@ class SpeciesGroupTaxon < Taxon
     end
   end
 
-  def update_data data
-    self
-  end
-
   def self.import_protonym data
     protonym = Protonym.import data[:protonym] if data[:protonym]
     protonym or raise NoProtonymError
