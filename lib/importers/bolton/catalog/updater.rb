@@ -123,7 +123,7 @@ module Importers::Bolton::Catalog::Updater
     attributes = {}
     update_taxon_fields data, attributes
 
-    update_attributes attributes
+    update_attributes! attributes
 
     protonym.update_data data[:protonym]
     update_history data[:history]
