@@ -137,20 +137,23 @@ module Importers::Bolton::Catalog::Updater
     end
     subfamily = data[:subfamily] ? data[:subfamily].id : nil
     tribe = data[:tribe] ? data[:tribe].id : nil
+    genus = data[:genus]
+    subfamily_id = genus.subfamily.id if genus && genus.subfamily
+    genus_id = genus.id if genus
 
-    update_taxon_id_field :subfamily_id, subfamily, attributes
-    update_taxon_id_field :tribe_id, tribe, attributes
+    update_taxon_id_field :subfamily_id, subfamily_id, attributes
+    update_taxon_id_field :tribe_id, tribe_id, attributes
+    update_taxon_id_field :genus_id, genus_id, attributes
 
     update_boolean_field  'fossil',               data[:fossil], attributes
     update_field          'status',               data[:status] || 'valid', attributes
-
-    headline_notes_taxt = data[:headline_notes_taxt] || data[:note] || data[:additional_notes]
-    update_taxt_field     'headline_notes_taxt',  headline_notes_taxt, attributes
 
     update_field          :incertae_sedis_in,     data[:incertae_sedis_in], attributes
     update_boolean_field  'hong',                 data[:hong], attributes
 
     unless kind_of? Species or kind_of? Subspecies
+      headline_notes_taxt = data[:headline_notes_taxt] || data[:note] || data[:additional_notes]
+      update_taxt_field     'headline_notes_taxt',  headline_notes_taxt, attributes
       type_attributes = self.class.get_type_attributes data
       update_name_field     'type_name',            type_attributes[:type_name], attributes
       update_field          'type_taxt',            type_attributes[:type_taxt], attributes
