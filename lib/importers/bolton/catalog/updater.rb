@@ -57,7 +57,7 @@ module Importers::Bolton::Catalog::Updater
     update_taxon_id_field :homonym_replaced_by_id, homonym_replaced_by_id, attributes
 
     update_boolean_field  'fossil',               data[:fossil], attributes
-    update_field          'status',               data[:status] || 'valid', attributes
+    update_field_no_record 'status',               data[:status] || 'valid', attributes
 
     update_field          :incertae_sedis_in,     data[:incertae_sedis_in], attributes
     update_boolean_field  'hong',                 data[:hong], attributes
@@ -76,10 +76,18 @@ module Importers::Bolton::Catalog::Updater
   def update_field field_name, new_value, attributes
     before = normalize_field self[field_name]
     after = normalize_field new_value
-    taxon_name = self.respond_to?(:name) ? name.name : nil
     if before != after
+      taxon_name = self.respond_to?(:name) ? name.name : nil
       Update.create! name: taxon_name, class_name: self.class.to_s, record_id: id, field_name: field_name,
         before: before, after: after
+      attributes[field_name] = after
+    end
+  end
+
+  def update_field_no_record field_name, new_value, attributes
+    before = normalize_field self[field_name]
+    after = normalize_field new_value
+    if before != after
       attributes[field_name] = after
     end
   end
@@ -167,7 +175,9 @@ module Importers::Bolton::Catalog::Updater
 
   def update_status
     before = status
+
     yield
+
     reload
     after = status
     if before != after
