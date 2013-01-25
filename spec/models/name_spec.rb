@@ -157,4 +157,18 @@ describe Name do
 
   end
 
+  describe "Replacing {nam}s with words" do
+    it "should replace it" do
+      america = create_name 'America'
+      item = TaxonHistoryItem.create! taxt: "{nam #{america.id}}"
+      Name.replace_names_with_words
+      item.reload.taxt.should == 'America'
+    end
+    it "should quote the value" do
+      item = TaxonHistoryItem.create! taxt: "'--'"
+      Name.replace_names_with_words
+      item.reload.taxt.should == "'--'"
+    end
+  end
+
 end
