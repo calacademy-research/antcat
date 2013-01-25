@@ -212,4 +212,48 @@ describe Taxt do
     end
   end
 
+  describe "Cleanup" do
+    before do
+      @america = create_name 'America'
+      @america.update_attribute :spurious, true
+      @genus = create_genus
+    end
+    it "should change these fields in these tables" do
+      taxon = FactoryGirl.create :genus,
+                         type_taxt: "{nam #{@america.id}}",
+                         headline_notes_taxt: "{nam #{@america.id}}",
+                         genus_species_header_notes_taxt: "{nam #{@america.id}}"
+      reference_section = ReferenceSection.create! title_taxt: "{nam #{@america.id}}",
+                               subtitle_taxt: "{nam #{@america.id}}",
+                               references_taxt: "{nam #{@america.id}}"
+      history_item = TaxonHistoryItem.create! taxt: "{nam #{@america.id}}"
+
+      Taxt.cleanup
+
+      taxon.reload
+      taxon.type_taxt.should == 'America'
+      taxon.headline_notes_taxt.should ==  'America'
+      taxon.genus_species_header_notes_taxt.should == 'America'
+
+      reference_section.reload
+      reference_section.title_taxt.should == 'America'
+      reference_section.subtitle_taxt.should ==  'America'
+      reference_section.references_taxt.should == 'America'
+
+      history_item.reload
+      history_item.taxt.should == 'America'
+    end
+
+    it "should replace spurious {nam}s with the word" do
+      Taxt.cleanup_field("{nam #{@america.id}}").should == 'America'
+    end
+
+    it "should replace {nam}s with {tax}s where possible" do
+      Taxt.cleanup_field("{nam #{@genus.name.id}}").should == "{tax #{@genus.id}}"
+    end
+    it "should handle more than one replacement in same string" do
+      Taxt.cleanup_field("{nam #{@america.id}}, {nam #{@genus.name.id}}").should == "America, {tax #{@genus.id}}"
+    end
+  end
+
 end

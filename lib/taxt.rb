@@ -163,4 +163,47 @@ module Taxt
     end
   end
 
+  ####################################
+  def self.cleanup
+    TaxonHistoryItem
+    [[Taxon,            [:type_taxt, :headline_notes_taxt, :genus_species_header_notes_taxt]],
+     [ReferenceSection, [:title_taxt, :subtitle_taxt, :references_taxt]],
+     [TaxonHistoryItem, [:taxt]],
+    ].each do |klass, fields|
+      for record in klass.send :all
+        for field in fields
+          next unless record[field]
+          record[field] = cleanup_field record[field] if record[field]
+        end
+        record.save!
+      end
+    end
+  end
+
+  def self.cleanup_field taxt
+    taxt.gsub /{nam (\d+)}/ do |match|
+      taxa = Taxon.where name_id: $1
+      if taxa.present?
+        if taxa.count > 1
+          Progress.error "Taxt: found multiple valid targets among #{taxa.map(&:name).map(&:to_s).join(', ')}"
+          match
+        else
+          "{tax #{taxa.first.id}}"
+        end
+      else
+        name = Name.find $1
+        if name.present?
+          if name.spurious
+            name.name
+          else
+            match
+          end
+        else
+          Progress.error "Taxt: couldn't even find name record for #{taxt}"
+          match
+        end
+      end
+    end
+  end
+
 end
