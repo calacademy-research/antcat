@@ -32,6 +32,7 @@ class SpeciesGroupTaxon < Taxon
       taxon, name = find_taxon_to_update data, taxon_class
       if taxon
         taxon.update_data data
+        after_creating taxon, data
       else
         taxon = taxon_class.import_data protonym, data
       end
@@ -87,7 +88,13 @@ class SpeciesGroupTaxon < Taxon
   def set_status_from_history history
     return unless history.present?
     status_record = get_status_from_history history
-    update_attributes status: status_record[:status]
+    before = normalize_field status
+    after = normalize_field status_record[:status]
+    if before != after
+      Update.create! name: name.name, class_name: self.class.to_s, record_id: id, field_name: :status,
+        before: before, after: after
+      update_attributes status: status_record[:status]
+    end
     check_synonym_status status_record
   end
 
