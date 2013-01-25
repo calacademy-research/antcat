@@ -237,7 +237,7 @@ describe Species do
           authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]
         }, history: [], raw_history: [],
       }
-
+      Species.import data
       taxon = Species.import data
 
       Update.count.should == 1
