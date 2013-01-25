@@ -177,6 +177,46 @@ describe Species do
       end
     end
 
+    it "should handle going through twice without changing the data!" do
+      atta = create_genus 'Atta'
+      data =
+      {:type=>:species_record,
+       genus: atta,
+      :species_group_epithet=>"major",
+      :protonym=>
+        {:genus_name=>"Atta",
+        :species_epithet=>"major",
+        :authorship=>
+          [{:author_names=>["Latreille"],
+            :year=>"1809",
+            :pages=>"152",
+            :notes=>
+            [[{:phrase=>"w", :delimiter=>"."},
+              {:phrase=>", not m", :delimiter=>". "},
+              {:phrase=>"as stated"}]],
+            :matched_text=>"Santschi, 1925c: 152 (w., not m. as stated)"}],
+        :locality=>"Tanzania"},
+      :history=>
+        [{:text=>
+          [{:opening_bracket=>"["},
+            {:genus_name=>"Atta",
+            :species_epithet=>"major",
+            :authorship=>
+              [{:author_names=>["Latreille"],
+                :year=>"1809",
+                :pages=>"116",
+                :matched_text=>""}],
+            :delimiter=>". "},
+            {:genus_name=>"Nomen", :species_epithet=>"nudum"},
+            {:phrase=>", attributed to Stitz", :delimiter=>"."},
+            {:closing_bracket=>"]"}],
+          :matched_text=>
+          ""}]}
+      taxon = Species.import data
+      taxon.protonym.authorship.notes_taxt.should == ' (w., not m. as stated)'
+      taxon = Species.import data
+      taxon.protonym.authorship.notes_taxt.should == ' (w., not m. as stated)'
+    end
   end
 
   describe "Updating" do

@@ -32,7 +32,7 @@ module Importers::Bolton::Catalog::TextToTaxt
 
   def self.phrase_item item
     return unless item[:phrase]
-    taxt = item[:phrase]
+    taxt = item[:phrase].dup
     add_delimiter taxt, item
   end
 
