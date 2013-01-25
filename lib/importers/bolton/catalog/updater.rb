@@ -183,7 +183,6 @@ module Importers::Bolton::Catalog::Updater
     if before != after
       Update.create! name: name.name, class_name: self.class.to_s, record_id: id, field_name: :status,
         before: before, after: after
-      update_attributes status: after
     end
   end
 
