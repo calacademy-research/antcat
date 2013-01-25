@@ -21,33 +21,6 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     show_results
   end
 
-  def find_matching_genus_names
-    @genus = nil
-    matching_genus_names = Genus.with_names.where "name = '#{@parse_result[:name]}'"
-    matching_genus_names.keep_if {|e| not e.invalid?} if matching_genus_names.count > 1
-    if matching_genus_names.empty? and @parse_result[:name] != 'Myrmicium'
-      Progress.error "Genus '#{@parse_result[:name]}' did not exist"
-      @genera_not_found_count += 1
-    elsif matching_genus_names.size > 1
-      Progress.error "More than one genus '#{@parse_result[:name]}'"
-      @duplicate_genera_that_need_resolving_count += 1
-    else
-      @genus = matching_genus_names.first
-    end
-  end
-
-  def import_taxon
-    ::Species.import(
-      species_epithet: @parse_result[:species_group_epithet],
-      fossil: @parse_result[:fossil] || false,
-      status: @parse_result[:status] || 'valid',
-      genus: @genus,
-      protonym: @parse_result[:protonym],
-      raw_history: @parse_result[:history],
-      history: self.class.convert_history_to_taxts(@parse_result[:history], @genus.name, @parse_result[:species_group_epithet])
-    )
-  end
-
   def import_lines
     while @line
       case @type
@@ -71,6 +44,33 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
       else raise "Unexpected type: #{@type}"
       end
       parse_next_line
+    end
+  end
+
+  def import_taxon
+    ::Species.import(
+      species_epithet: @parse_result[:species_group_epithet],
+      fossil: @parse_result[:fossil] || false,
+      status: @parse_result[:status] || 'valid',
+      genus: @genus,
+      protonym: @parse_result[:protonym],
+      raw_history: @parse_result[:history],
+      history: self.class.convert_history_to_taxts(@parse_result[:history], @genus.name, @parse_result[:species_group_epithet])
+    )
+  end
+
+  def find_matching_genus_names
+    @genus = nil
+    matching_genus_names = Genus.with_names.where "name = '#{@parse_result[:name]}'"
+    matching_genus_names.keep_if {|e| not e.invalid?} if matching_genus_names.count > 1
+    if matching_genus_names.empty? and @parse_result[:name] != 'Myrmicium'
+      Progress.error "Genus '#{@parse_result[:name]}' did not exist"
+      @genera_not_found_count += 1
+    elsif matching_genus_names.size > 1
+      Progress.error "More than one genus '#{@parse_result[:name]}'"
+      @duplicate_genera_that_need_resolving_count += 1
+    else
+      @genus = matching_genus_names.first
     end
   end
 
