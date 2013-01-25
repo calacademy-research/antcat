@@ -3,6 +3,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
 
   def initialize options = {}
     ForwardRef.delete_all
+    Update.delete_all
 
     @options = options.reverse_merge show_progress: false
     @continue_after_parse_error = true
@@ -166,12 +167,13 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     Progress.puts "#{@genera_not_found_count} genera not found" unless @genera_not_found_count.zero?
     Progress.puts "#{@duplicate_genera_that_need_resolving_count} duplicate genera that need resolving" unless @duplicate_genera_that_need_resolving_count.zero?
     Progress.puts "#{@error_count} could not understand" unless @error_count.zero?
+    Progress.puts "#{Update.count} updates"
     Progress.puts
   end
 
   def get_file_names _
-    #super Dir.glob("#{$BOLTON_DATA_DIRECTORY}/NGC-SPECIES *.htm")
-    ['PHI-PO'].map {|e| "#{$BOLTON_DATA_DIRECTORY}/NGC-SPECIES #{e}.htm"}
+    super Dir.glob("#{$BOLTON_DATA_DIRECTORY}/NGC-SPECIES *.htm")
+    #['PHI-PO'].map {|e| "#{$BOLTON_DATA_DIRECTORY}/NGC-SPECIES #{e}.htm"}
   end
 
 end
