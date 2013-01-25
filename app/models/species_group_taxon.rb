@@ -31,8 +31,10 @@ class SpeciesGroupTaxon < Taxon
       taxon_class = get_taxon_class protonym, data[:raw_history]
       taxon, name = find_taxon_to_update data, taxon_class
       if taxon
-        taxon.update_data data
-        after_creating taxon, data
+        taxon.update_status do
+          taxon.update_data data
+          after_creating taxon, data
+        end
       else
         taxon = taxon_class.import_data protonym, data
       end
@@ -91,9 +93,7 @@ class SpeciesGroupTaxon < Taxon
     before = normalize_field status
     after = normalize_field status_record[:status]
     if before != after
-      Update.create! name: name.name, class_name: self.class.to_s, record_id: id, field_name: :status,
-        before: before, after: after
-      update_attributes status: status_record[:status]
+      update_attributes! status: status_record[:status]
     end
     check_synonym_status status_record
   end
