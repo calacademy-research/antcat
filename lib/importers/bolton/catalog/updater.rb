@@ -2,7 +2,7 @@
 module Importers::Bolton::Catalog::Updater
 
   module ClassMethods
-    def find_taxon_to_update data, taxon_class
+    def find_taxon_to_update data, taxon_class = self
       unless data[:protonym] and data[:protonym][:authorship]
         raise SpeciesGroupTaxon::NoProtonymError
       end
