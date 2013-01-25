@@ -115,35 +115,4 @@ class Name < ActiveRecord::Base
     '&dagger;'.html_safe
   end
 
-  def self.replace_names_with_words
-    [[Taxon,            'taxa',  [:type_taxt, :headline_notes_taxt, :genus_species_header_notes_taxt]],
-     [ReferenceSection, 'reference_sections', [:title_taxt, :subtitle_taxt, :references_taxt]],
-     [TaxonHistoryItem, 'taxon_history_items', [:taxt]],
-    ].each do |klass, table_name, fields|
-      for record in klass.send :all
-        for field in fields
-          value = replace_names_with_words_in_field(record[field]) if record[field]
-          # this doesn't work - nothing happens in the database
-          #record.update_attribute field, value
-          # this works
-          connection.execute("UPDATE #{table_name} SET #{field} = #{connection.quote value} WHERE id = #{record.id}")
-        end
-      end
-    end
-  end
-
-  def self.replace_names_with_words_in_field taxt
-    return unless taxt
-    for word in [
-      'America', 'New Haven'
-      ]
-      name = Name.find_by_name word
-      next unless name
-      taxt.gsub! /{nam #{name.id}}/ do |match|
-        word
-      end
-    end
-    taxt
-  end
-
 end
