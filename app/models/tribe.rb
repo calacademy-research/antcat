@@ -8,7 +8,9 @@ class Tribe < Taxon
     taxon, name = find_taxon_to_update data
     transaction do
       if taxon
-        taxon.update_data data
+        taxon.update_status do
+          taxon.update_data data
+        end
       else
         attributes = {
           name:       name,

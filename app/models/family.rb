@@ -6,7 +6,9 @@ class Family < Taxon
     name = Name.import family_name: 'Formicidae'
     transaction do
       if taxon = find_by_name(name.name)
-        taxon.update_data data
+        taxon.update_status do
+          taxon.update_data data
+        end
       else
         attributes = {
           name:                name,
