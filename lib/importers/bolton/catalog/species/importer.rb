@@ -79,9 +79,11 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
 
     do_manual_fixups_after_fixups unless Rails.env.test?
 
-    #Progress.puts
-    #Progress.print 'Replacing {nam} with {tax}...'
-    #Importers::Bolton::Catalog::TextToTaxt.replace_names_with_taxa
+    if Rails.env.test?
+      Progress.puts
+      Progress.print 'Replacing {nam} with {tax}...'
+      Importers::Bolton::Catalog::TextToTaxt.replace_names_with_taxa
+    end
     Progress.puts
   end
 
