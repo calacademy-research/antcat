@@ -104,6 +104,31 @@ describe SpeciesGroupTaxon do
       ref.genus.should == genus
       ref.epithet.should == 'xerox'
     end
+    it "should create an Update only if status changes" do
+      genus = create_genus 'Atta'
+      ferox = create_species 'Atta ferox', genus: genus
+      species = create_species 'Atta dyak', genus: genus
+      history = []
+      species.set_status_from_history history
+      species = Species.find species
+      species.should be_valid
+      Update.count.should be_zero
+
+      history = [{synonym_ofs: [
+        {species_epithet: 'ferox'},
+        {species_epithet: 'xerox'},
+      ]}]
+      species.set_status_from_history history
+      species = Species.find species
+      species.should be_synonym
+      Update.count.should == 1
+      update = Update.first
+      update.name.should == species.name.name
+      update.class_name.should == species.class.to_s
+      update.record_id.should == species.id
+      update.before.should == 'valid'
+      update.after.should == 'synonym'
+    end
   end
 
 end
