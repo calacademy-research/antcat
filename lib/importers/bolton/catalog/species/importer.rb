@@ -79,9 +79,9 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
 
     do_manual_fixups_after_fixups unless Rails.env.test?
 
-    Progress.puts
-    Progress.print 'Replacing {nam} with {tax}...'
-    Importers::Bolton::Catalog::TextToTaxt.replace_names_with_taxa
+    #Progress.puts
+    #Progress.print 'Replacing {nam} with {tax}...'
+    #Importers::Bolton::Catalog::TextToTaxt.replace_names_with_taxa
     Progress.puts
   end
 
@@ -168,8 +168,8 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
   end
 
   def get_file_names _
-    super Dir.glob("#{$BOLTON_DATA_DIRECTORY}/NGC-SPECIES *.htm")
-    #['TETRAMORIUM'].map {|e| "#{$BOLTON_DATA_DIRECTORY}/NGC-SPECIES #{e}.htm"}
+    #super Dir.glob("#{$BOLTON_DATA_DIRECTORY}/NGC-SPECIES *.htm")
+    ['PHI-PO'].map {|e| "#{$BOLTON_DATA_DIRECTORY}/NGC-SPECIES #{e}.htm"}
   end
 
 end

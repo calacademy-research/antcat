@@ -145,10 +145,10 @@ module Importers::Bolton::Catalog::TextToTaxt
       taxa = Taxon.where(name_id: $1)
 
       if taxa.blank?
-        Progress.error "Couldn't find taxon that has name: #{Name.find $1}, taxt: #{taxt}"
+        Progress.error "TextToTaxt: couldn't find taxon that has name: #{Name.find $1}, taxt: #{taxt}"
         match
       elsif taxa.count > 1
-        Progress.error "Found multiple valid targets among #{taxa.map(&:name).map(&:to_s).join(', ')}"
+        Progress.error "TextToTaxt: found multiple valid targets among #{taxa.map(&:name).map(&:to_s).join(', ')}"
         match
       else
         "{tax #{taxa.first.id}}"
