@@ -165,6 +165,18 @@ module Importers::Bolton::Catalog::Updater
     items_to_delete.each {|item| TaxonHistoryItem.delete item}
   end
 
+  def update_status
+    before = status
+    yield
+    reload
+    after = status
+    if before != after
+      Update.create! name: name.name, class_name: self.class.to_s, record_id: id, field_name: :status,
+        before: before, after: after
+      update_attributes status: after
+    end
+  end
+
   def update_synonyms
     prior_junior_synonyms = junior_synonyms.to_a
     prior_senior_synonyms = senior_synonyms.to_a

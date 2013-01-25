@@ -246,6 +246,34 @@ describe Species do
       update.class_name.should == 'Species'
       update.field_name.should == 'create'
     end
+
+    it "should create an Update only if status changes" do
+      genus = create_genus 'Atta'
+      data = {
+        genus:                  genus,
+        species_group_epithet:  'dyak',
+        protonym: {
+          genus_name:           'Atta',
+          species_epithet:      'dyak',
+          authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]
+        }, history: [], raw_history: [],
+      }
+      species = Species.import data
+      species.should be_valid
+      Update.count.should == 1
+      Update.first.field_name.should == 'create'
+
+      data[:raw_history] = [{synonym_ofs: [
+        {species_epithet: 'ferox'},
+        {species_epithet: 'xerox'},
+      ]}]
+      Species.import data
+      species.reload.should be_synonym
+      Update.count.should == 2
+      update = Update.find_by_field_name 'status'
+      update.before.should == 'valid'
+      update.after.should == 'synonym'
+    end
   end
 
   describe "A manual import" do
