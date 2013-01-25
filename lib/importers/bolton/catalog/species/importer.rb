@@ -48,7 +48,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
   end
 
   def import_taxon
-    ::Species.import(
+    Species.import(
       species_epithet: @parse_result[:species_group_epithet],
       fossil: @parse_result[:fossil] || false,
       status: @parse_result[:status] || 'valid',
