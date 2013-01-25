@@ -261,7 +261,7 @@ describe Family do
           update = Update.find_by_field_name 'taxt'
           update.class_name.should == 'TaxonHistoryItem'
           update.record_id.should == original_id
-          update.before.should == nil
+          update.before.should == '1st history item'
           update.after.should == nil
           family.history_items.count.should == 0
         end
