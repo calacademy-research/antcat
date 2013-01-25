@@ -5,7 +5,7 @@ class ForwardRefToSeniorSynonym < SpeciesGroupForwardRef
     specieses = SpeciesGroupTaxon.find_validest_for_epithet_in_genus epithet, genus
     if specieses.blank?
       unless we_dont_care_about? epithet, genus
-        Progress.error "Couldn't find species #{epithet} in genus #{genus.name} when fixing up senior synonym of #{fixee.junior_synonym.inspect}"
+        Progress.error "Couldn't find species #{epithet} in genus #{genus.name} when fixing up senior synonym of #{fixee.junior_synonym.name}"
       end
     elsif specieses.count > 1
       Progress.error "Found multiple valid targets among senior synonyms #{specieses.map(&:name).map(&:to_s).join(', ')}"
