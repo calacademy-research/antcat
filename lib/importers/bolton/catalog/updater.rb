@@ -167,7 +167,7 @@ module Importers::Bolton::Catalog::Updater
     while i < history_items.count
       items_to_delete << history_items[i].id
       Update.create! name: 'History', class_name: 'TaxonHistoryItem', record_id: history_items[i].id,
-        field_name: 'taxt', before: nil, after: nil
+        field_name: 'taxt', before: history_items[i].taxt, after: nil
       i += 1
     end
     items_to_delete.each {|item| TaxonHistoryItem.delete item}
