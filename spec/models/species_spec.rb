@@ -206,7 +206,7 @@ describe Species do
 
       taxon = Species.import data
 
-      Update.count.should == 3
+      Update.count.should == 4
 
       update = Update.find_by_field_name 'fossil'
       update.before.should == '0'
