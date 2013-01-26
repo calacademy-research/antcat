@@ -233,46 +233,4 @@ describe Importers::Bolton::Catalog::TextToTaxt do
     end
   end
 
-  describe "Fixing up the {nam} tags to {tax} tags, where possible" do
-
-    describe "Fixing up a lot" do
-      it "should change the record" do
-        taxon = create_genus
-        name = taxon.name
-        history_item = FactoryGirl.create :history_item, taxt: "{nam #{name.id}}"
-        @converter.replace_names_with_taxa
-        history_item.reload.taxt.should == "{tax #{taxon.id}}"
-      end
-    end
-
-    describe "Fixing up one" do
-      it "handle if the field is empty" do
-        @converter.replace_names_with_taxa_in_field(nil).should == nil
-      end
-      it "should be OK if there are no tags" do
-        @converter.replace_names_with_taxa_in_field('text').should == 'text'
-      end
-      it "should find the taxon matching the name" do
-        taxon = create_genus
-        name = taxon.name
-        @converter.replace_names_with_taxa_in_field("{nam #{name.id}}").should == "{tax #{taxon.id}}"
-      end
-      it "should leave it as a {nam} if it can't be found" do
-        name = create_name 'Eciton'
-        @converter.replace_names_with_taxa_in_field("{nam #{name.id}}").should == "{nam #{name.id}}"
-      end
-      it "should log an error if it can't be found" do
-        name = create_name 'Eciton'
-        Progress.should_receive :error
-        @converter.replace_names_with_taxa_in_field "{nam #{name.id}}"
-      end
-      it "should log an error if more than one is found" do
-        name = create_name 'Atta'
-        2.times {|i| create_genus name: name}
-        Progress.should_receive :error
-        @converter.replace_names_with_taxa_in_field "{nam #{name.id}}"
-      end
-    end
-  end
-
 end

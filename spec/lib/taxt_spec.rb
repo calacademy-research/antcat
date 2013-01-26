@@ -215,7 +215,6 @@ describe Taxt do
   describe "Cleanup" do
     before do
       @america = create_name 'America'
-      @america.update_attribute :spurious, true
       @genus = create_genus
     end
     it "should change these fields in these tables" do
