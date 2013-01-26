@@ -14,7 +14,7 @@ class SpeciesGroupTaxon < Taxon
       if taxon
         taxon.update_status do
           taxon.update_data data
-          after_creating taxon, data
+          after_updating taxon, data
         end
       else
         taxon = taxon_class.import_data protonym, data
@@ -58,6 +58,10 @@ class SpeciesGroupTaxon < Taxon
 
   def self.after_creating taxon, data
     taxon.create_history_items data[:history]
+    taxon.set_status_from_history data[:raw_history]
+  end
+
+  def self.after_updating taxon, data
     taxon.set_status_from_history data[:raw_history]
   end
 
