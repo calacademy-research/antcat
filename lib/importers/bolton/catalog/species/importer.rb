@@ -82,8 +82,8 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
 
     if Rails.env.test?
       Progress.puts
-      Progress.print 'Replacing {nam} with {tax}...'
-      Importers::Bolton::Catalog::TextToTaxt.replace_names_with_taxa
+      Progress.print 'Cleaning up {nam}s'
+      Taxt.cleanup
     end
     Progress.puts
   end

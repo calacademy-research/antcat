@@ -125,35 +125,4 @@ module Importers::Bolton::Catalog::TextToTaxt
     return key, item[key]
   end
 
-  def self.replace_names_with_taxa
-    [[Taxon,            [:type_taxt, :headline_notes_taxt, :genus_species_header_notes_taxt]],
-     [ReferenceSection, [:title_taxt, :subtitle_taxt, :references_taxt]],
-     [TaxonHistoryItem, [:taxt]],
-    ].each do |klass, fields|
-      for record in klass.send :all
-        for field in fields
-          record[field] = replace_names_with_taxa_in_field record[field] if record[field]
-        end
-        record.save!
-      end
-    end
-  end
-
-  def self.replace_names_with_taxa_in_field taxt
-    return unless taxt
-    taxt.gsub /{nam (\d+)}/ do |match|
-      taxa = Taxon.where(name_id: $1)
-
-      if taxa.blank?
-        Progress.error "TextToTaxt: couldn't find taxon that has name: #{Name.find $1}, taxt: #{taxt}"
-        match
-      elsif taxa.count > 1
-        Progress.error "TextToTaxt: found multiple valid targets among #{taxa.map(&:name).map(&:to_s).join(', ')}"
-        match
-      else
-        "{tax #{taxa.first.id}}"
-      end
-    end
-  end
-
 end

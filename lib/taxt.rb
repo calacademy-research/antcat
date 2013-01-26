@@ -164,6 +164,27 @@ module Taxt
   end
 
   ####################################
+  SpuriousNames = [
+    'America', 'Africa', 'Algeria', 'Arabia', 'Argentina', 'Armenia', 'Asia',
+    'Bolivia', 'Bulgaria', 'Burma',
+    'Caledonia', 'California', 'Canada', 'China', 'Corsica', 'Costa', 'Crimea', 'Cuba',
+    'Dakota',
+    'Florida',
+    'Ghana', 'Guatemala', 'Guinea', 'Guyana',
+    'Himalaya',
+    '<i>incertae sedis</i>', '<i>incertae</i>', 'India', 'Indonesia', 'Iowa',
+    'Korea',
+    'Lanka',
+    'Malta', 'Mongolia',
+    'Nevada', '<i>Nomen dubium</i>', '<i>Nomen nudum</i>', '<i>Nomen oblitum</i>', '<i>Nomina</i>', '<i>Nomina nuda</i>',
+    'Oceania', 'Polynesia',
+    'Rica', 'Ritsema', 'Russia',
+    'Samoa', 'Siberia', 'Slovakia', 'Somalia', 'Sumatra', 'Syria',
+    'Tonga',
+    'Venezuela',
+    'Yoshimura',
+  ]
+
   def self.cleanup
     TaxonHistoryItem
     [[Taxon,            [:type_taxt, :headline_notes_taxt, :genus_species_header_notes_taxt]],
@@ -193,7 +214,7 @@ module Taxt
       else
         name = Name.find $1
         if name.present?
-          if name.spurious
+          if SpuriousNames.find name.name
             name.name
           else
             match
