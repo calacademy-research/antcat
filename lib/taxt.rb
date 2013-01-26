@@ -135,11 +135,15 @@ module Taxt
     epithet = data[:species_group_epithet] || data[:species_epithet]
     if data[:genus_name] or not epithet
       name = Name.import data
-      taxon = Taxon.find_by_name_id name.id
-      if taxon
-        "{tax #{taxon.id}}"
+      if spurious? name.name
+        name.name
       else
-        "{nam #{name.id}}"
+        taxon = Taxon.find_by_name_id name.id
+        if taxon
+          "{tax #{taxon.id}}"
+        else
+          "{nam #{name.id}}"
+        end
       end
     else
       "{epi #{epithet}}"
@@ -184,6 +188,10 @@ module Taxt
     'Venezuela',
     'Yoshimura',
   ]
+
+  def self.spurious? name
+    SpuriousNames.index name
+  end
 
   def self.cleanup
     TaxonHistoryItem

@@ -21,6 +21,9 @@ describe Taxt do
           Name.count.should == 1
           taxt.should == "{nam #{Name.first.id}}"
         end
+        it "should not use a word from the spurious list" do
+          Taxt.encode_taxon_name(genus_name: '<i>Nomen', species_epithet: 'nudum</i>').should == "<i>Nomen nudum</i>"
+        end
         it "should reuse a name if possible" do
           create_name 'Atta'
           Name.count.should == 1
