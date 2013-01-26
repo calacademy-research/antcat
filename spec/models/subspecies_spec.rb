@@ -241,6 +241,25 @@ describe Subspecies do
       updated_subspecies = Subspecies.import data
       updated_subspecies.should == subspecies
     end
-  end
 
+    it "should replace special cases" do
+      subspecies = create_subspecies 'Philidris cordata protensa'
+      subspecies.protonym.authorship.update_attribute :reference, @reference
+      data = {
+        :genus => create_genus('Philidris'),
+        :species_group_epithet=>"protensa",
+        :protonym=>
+          {:genus_name=>"Iridomyrmex",
+          :species_epithet=>"cordatus",
+          :subspecies=>[{:subspecies_epithet=>"protensus", :type=>"subsp."}],
+          :authorship=>
+            [{:author_names=>["Latreille"], :year=>"1809", :pages=>"47",}],
+          :locality=>"Borneo"},
+        :history=>[]
+          }
+      subspecies = Subspecies.import data
+      subspecies.name.name.should == 'Philidris cordata protensa'
+    end
+
+  end
 end
