@@ -38,6 +38,7 @@ class SubspeciesName < SpeciesGroupName
       else
         epithet = subspecies[:species_group_epithet] || subspecies[:subspecies_epithet]
       end
+      # strip types ("subsp.", "var.") in the name, but leave them in for the protonym
       type = subspecies[:type]
       if type
         epithets_with_subspecies_types_html << type << ' '
