@@ -6,7 +6,8 @@ module Importers::Bolton::Catalog::Updater
       unless data[:protonym] and data[:protonym][:authorship]
         raise SpeciesGroupTaxon::NoProtonymError
       end
-      name = taxon_class.send(:import_name, data)
+      name = taxon_class.send :import_name, data
+      name = check_special_cases name
       author_names, year = Reference.get_author_names_and_year data[:protonym][:authorship].first
       pages = data[:protonym][:authorship].first[:pages]
       taxon = Taxon.find_by_name_and_authorship name.name, author_names, year, pages
@@ -14,6 +15,14 @@ module Importers::Bolton::Catalog::Updater
     end
     def create_update name, record_id, class_name
       Update.create! name: name.name, record_id: record_id, class_name: self.name, field_name: 'create'
+    end
+    def check_special_cases name
+      case name.name
+      when 'Philidris cordatus protensa'
+        Name.find_by_name 'Philidris cordata protensa'
+      else
+        name
+      end
     end
   end
   def self.included receiver
@@ -71,7 +80,6 @@ module Importers::Bolton::Catalog::Updater
       update_boolean_field  'type_fossil',          type_attributes[:type_fossil], attributes
     end
   end
-
 
   def update_field field_name, new_value, attributes
     before = normalize_field self[field_name]
