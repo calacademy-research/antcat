@@ -135,8 +135,8 @@ module Taxt
     epithet = data[:species_group_epithet] || data[:species_epithet]
     if data[:genus_name] or not epithet
       name = Name.import data
-      if spurious? name.name
-        name.name
+      if name_string = translate_spurious(name.name)
+        name_string
       else
         taxon = Taxon.find_by_name_id name.id
         if taxon
@@ -176,11 +176,11 @@ module Taxt
     'Florida',
     'Ghana', 'Guatemala', 'Guinea', 'Guyana',
     'Himalaya',
-    '<i>incertae sedis</i>', '<i>incertae</i>', 'India', 'Indonesia', 'Iowa',
+    'incertae sedis', 'incertae', 'India', 'Indonesia', 'Iowa',
     'Korea',
     'Lanka',
     'Malta', 'Mongolia',
-    'Nevada', '<i>Nomen dubium</i>', '<i>Nomen nudum</i>', '<i>Nomen oblitum</i>', '<i>Nomina</i>', '<i>Nomina nuda</i>',
+    'Nevada', 'Nomen dubium', 'Nomen nudum', 'Nomen oblitum', 'Nomina', 'Nomina nuda',
     'Oceania', 'Polynesia',
     'Rica', 'Ritsema', 'Russia',
     'Samoa', 'Siberia', 'Slovakia', 'Somalia', 'Sumatra', 'Syria',
@@ -188,6 +188,21 @@ module Taxt
     'Venezuela',
     'Yoshimura',
   ]
+
+  NamesToItalicize = [
+    'incertae sedis', 'incertae',
+    'Nomen dubium', 'Nomen nudum', 'Nomen oblitum', 'Nomina', 'Nomina nuda'
+  ]
+
+  def self.translate_spurious name
+    if spurious? name
+      if NamesToItalicize.index name
+        return "<i>#{name}</i>"
+      else
+        return name
+      end
+    end
+  end
 
   def self.spurious? name
     SpuriousNames.index name
