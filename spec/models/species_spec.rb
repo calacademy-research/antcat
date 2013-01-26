@@ -246,6 +246,31 @@ describe Species do
       taxon = Species.import data
       taxon.history_items.count.should == 1
     end
+    it "should not change the protonym name when going through twice" do
+      pheidologeton = create_genus 'Pheidologeton'
+      data = {
+        :type=>:species_record,
+        genus: pheidologeton,
+        :species_group_epithet=>"fictus",
+        :protonym=>
+          {:genus_name=>"Pheidologeton",
+          :species_epithet=>"diversus",
+          :subspecies=>[{:subspecies_epithet=>"ficta", :type=>"var."}],
+          :authorship=>
+            [{:author_names=>["Forel"],
+              :year=>"1911d",
+              :pages=>"386",
+              :forms=>"w.",
+              :matched_text=>"Forel, 1911d: 386 (w.)"}],
+          :locality=>"Vietnam"},
+          history: [], raw_history: [],
+      }
+      taxon = Species.import data
+      protonym_name = taxon.protonym.name.name
+      taxon = Species.import data
+      taxon.protonym.name.name.should == protonym_name
+    end
+
     it "should update value fields" do
       tribe = create_tribe
       genus = create_genus 'Crematogaster', tribe: tribe

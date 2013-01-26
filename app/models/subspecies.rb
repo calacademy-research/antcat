@@ -26,7 +26,7 @@ class Subspecies < SpeciesGroupTaxon
   # import
 
   def self.import_name data
-    name_data = data[:protonym]
+    name_data = data[:protonym].dup
     name_data[:genus] = data[:genus]
     name_data[:subspecies_epithet] = data[:species_group_epithet] || data[:species_epithet]
     adjust_species_when_differs_from_protonym name_data, data[:raw_history]
