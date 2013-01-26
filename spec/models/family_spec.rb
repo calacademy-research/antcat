@@ -258,7 +258,7 @@ describe Family do
 
           Update.count.should == 1
 
-          update = Update.find_by_field_name 'taxt'
+          update = Update.find_by_field_name 'delete'
           update.class_name.should == 'TaxonHistoryItem'
           update.record_id.should == original_id
           update.before.should == '1st history item'
