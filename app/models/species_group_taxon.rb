@@ -12,6 +12,7 @@ class SpeciesGroupTaxon < Taxon
       taxon_class = get_taxon_class protonym, data[:raw_history]
       taxon, name = find_taxon_to_update data, taxon_class
       if taxon
+        protonym.destroy
         taxon.update_status do
           taxon.update_data data
           after_updating taxon, data
