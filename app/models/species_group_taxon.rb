@@ -96,13 +96,19 @@ class SpeciesGroupTaxon < Taxon
 
   def create_forward_refs_to_senior_synonyms epithets
     for epithet in epithets
-      synonym = Synonym.create! junior_synonym: self
-      ForwardRefToSeniorSynonym.create!(
-        fixee:            synonym,
-        fixee_attribute: 'senior_synonym',
-        genus:            genus,
-        epithet:          epithet,
-      )
+      if senior = ForwardRefToSeniorSynonym.find_species_for_fixup(genus, epithet, name.name)
+        Synonym.where(junior_synonym_id: senior, senior_synonym_id: self).destroy_all
+        Synonym.where(senior_synonym_id: senior, junior_synonym_id: self).destroy_all
+        synonym = Synonym.create! junior_synonym: self, senior_synonym: senior
+      else
+        synonym = Synonym.create! junior_synonym: self
+        ForwardRefToSeniorSynonym.create!(
+          fixee:            synonym,
+          fixee_attribute: 'senior_synonym',
+          genus:            genus,
+          epithet:          epithet,
+        )
+      end
     end
   end
 
