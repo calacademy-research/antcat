@@ -273,7 +273,10 @@ describe Species do
     end
 
     it "should not create duplicate synonyms" do
+      atta = create_genus 'Atta'
+      xerox = create_species 'Atta xerox', genus: atta
       data = {
+        genus: xerox.genus,
         :type=>:species_record,
         :species_group_epithet=>"butteli",
         :protonym=>
@@ -292,6 +295,13 @@ describe Species do
         :history=>[],
         raw_history: [{synonym_ofs: [{species_epithet: 'xerox'}]}]
       }
+      taxon = Species.import data
+      ForwardRef.fixup
+      taxon.should be_synonym_of xerox
+      Synonym.count.should == 1
+
+      taxon = Species.import data
+      Synonym.count.should == 1
     end
 
     it "should not change the protonym name when going through twice" do
