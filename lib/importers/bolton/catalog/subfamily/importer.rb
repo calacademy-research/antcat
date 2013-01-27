@@ -34,6 +34,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
   ensure
     super
     Progress.puts "#{::Subfamily.count} subfamilies, #{::Tribe.count} tribes, #{::Genus.count} genera, #{::Subgenus.count} subgenera, #{::Species.count} species"
+    Progress.puts "#{Update.count} updates"
   end
 
   def parse_supersubfamilies
