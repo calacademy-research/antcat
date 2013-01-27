@@ -56,7 +56,31 @@ class Taxon < ActiveRecord::Base
     Progress.log "Name: #{name.name} Author names: #{author_names} year: #{year}, pages: #{pages}"
     bolton_key = Bolton::ReferenceKey.new(author_names.join(' '), year).to_s :db
     Progress.log "Bolton key: #{bolton_key}"
-    results = joins(protonym: [{authorship: :reference}]).where('name_cache = ? AND references.bolton_key_cache = ?', name.name, bolton_key)
+
+    found_taxon = nil
+    Species; Subspecies
+    if name.kind_of? SpeciesGroupName
+      name_parts = name.name.split ' '
+      name_parts[2] ||= ''
+      name_parts[3] ||= ''
+      for first_word in EpithetSearchSet.new(name_parts[1]).epithets
+        for second_word in EpithetSearchSet.new(name_parts[2]).epithets
+          for third_word in EpithetSearchSet.new(name_parts[3]).epithets
+            name = name_parts[0] + ' ' + first_word + ' ' + second_word + ' ' + third_word
+            name.strip!
+            found_taxon = do_search(name, bolton_key, pages)
+            return found_taxon if found_taxon
+          end
+        end
+      end
+    else
+      found_taxon = do_search(name.name, bolton_key, pages)
+    end
+    found_taxon
+  end
+
+  def self.do_search name, bolton_key, pages
+    results = joins(protonym: [{authorship: :reference}]).where('name_cache = ? AND references.bolton_key_cache = ?', name, bolton_key)
     if results.size > 1
       Progress.log "Results.size > 1"
       results = results.to_a.select {|result| result.protonym.authorship.pages == pages}
@@ -65,11 +89,10 @@ class Taxon < ActiveRecord::Base
       end
     end
     if results.size == 0
-      Progress.log 'No results'
-      return nil
+      return
     end
     Progress.log 'Found it'
-    find results.first.id
+    return find results.first.id
   end
 
   ###############################################
