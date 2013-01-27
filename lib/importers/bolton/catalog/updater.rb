@@ -195,7 +195,7 @@ module Importers::Bolton::Catalog::Updater
     while i < history_data.count
       new_taxt = history_data[i]
       new_item = history_items.create! taxt: new_taxt
-      Update.create! name: item.taxon.name.name, class_name: 'TaxonHistoryItem', record_id: new_item.id,
+      Update.create! name: new_item.taxon.name.name, class_name: 'TaxonHistoryItem', record_id: new_item.id,
         field_name: 'taxt', before: nil, after: new_taxt
       i += 1
     end
