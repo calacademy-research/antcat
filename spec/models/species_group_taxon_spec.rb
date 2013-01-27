@@ -83,7 +83,7 @@ describe SpeciesGroupTaxon do
   end
 
   describe "Setting status from history" do
-    it "should recognize a synonym_of and set the status accordingly" do
+    it "should recognize a synonym_of and set the status accordingly, and should not create ForwardRefs unless necessary" do
       genus = create_genus 'Atta'
       ferox = create_species 'Atta ferox', genus: genus
       species = create_species 'Atta dyak', genus: genus
@@ -91,16 +91,16 @@ describe SpeciesGroupTaxon do
         {species_epithet: 'ferox'},
         {species_epithet: 'xerox'},
       ]}]
+
       species.set_status_from_history history
       species = Species.find species
-      species.should be_synonym
-      ref = ForwardRefToSeniorSynonym.all.first
+      species.should be_synonym_of ferox
+
+      ForwardRefToSeniorSynonym.count.should == 1
+
+      ref = ForwardRefToSeniorSynonym.first
       ref.fixee.junior_synonym.should == species
       ref.fixee_attribute.should == 'senior_synonym'
-      ref.genus.should == genus
-      ref.epithet.should == 'ferox'
-      ref = ForwardRefToSeniorSynonym.all.second
-      ref.fixee.junior_synonym.should == species
       ref.genus.should == genus
       ref.epithet.should == 'xerox'
     end
