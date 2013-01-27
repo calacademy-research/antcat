@@ -42,9 +42,6 @@ module Importers::Bolton::Catalog::Updater
         when 'Plagiolepis schmitzi tingitana' then
              'Plagiolepis schmitzii tingitana'
 
-        when 'Plagiolepis breviscapa' then
-             'Plagiolepis breviscapa'
-
         else return name; end
       Name.find_by_name name_string
     end
