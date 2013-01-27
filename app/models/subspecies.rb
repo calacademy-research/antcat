@@ -45,6 +45,11 @@ class Subspecies < SpeciesGroupTaxon
     taxon.create_forward_ref_to_parent_species data
   end
 
+  def self.after_updating taxon, data
+    super
+    taxon.create_forward_ref_to_parent_species data
+  end
+
   def create_forward_ref_to_parent_species data
     epithet = self.class.get_currently_subspecies_of_from_history data[:raw_history]
     epithet ||= data[:protonym][:species_epithet]
