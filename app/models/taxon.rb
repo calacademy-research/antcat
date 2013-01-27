@@ -64,12 +64,11 @@ class Taxon < ActiveRecord::Base
         raise 'Duplicate name + authorships'
       end
     end
-    return nil if results.size == 0
     if results.size == 0
       Progress.log 'No results'
-      return nil if results.size == 0
+      return nil
     end
-      Progress.log 'Found it'
+    Progress.log 'Found it'
     find results.first.id
   end
 
