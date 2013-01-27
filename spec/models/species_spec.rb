@@ -246,6 +246,54 @@ describe Species do
       taxon = Species.import data
       taxon.history_items.count.should == 1
     end
+
+    it "should not change the protonym name when going through twice" do
+      pheidologeton = create_genus 'Pheidologeton'
+      data = {
+        :type=>:species_record,
+        genus: pheidologeton,
+        :species_group_epithet=>"fictus",
+        :protonym=>
+          {:genus_name=>"Pheidologeton",
+          :species_epithet=>"diversus",
+          :subspecies=>[{:subspecies_epithet=>"ficta", :type=>"var."}],
+          :authorship=>
+            [{:author_names=>["Forel"],
+              :year=>"1911d",
+              :pages=>"386",
+              :forms=>"w.",
+              :matched_text=>"Forel, 1911d: 386 (w.)"}],
+          :locality=>"Vietnam"},
+          history: [], raw_history: [],
+      }
+      taxon = Species.import data
+      protonym_name = taxon.protonym.name.name
+      taxon = Species.import data
+      taxon.protonym.name.name.should == protonym_name
+    end
+
+    it "should not create duplicate synonyms" do
+      data = {
+        :type=>:species_record,
+        :species_group_epithet=>"butteli",
+        :protonym=>
+          {:genus_name=>"Iridomyrmex",
+          :species_epithet=>"cordatus",
+          :subspecies=>
+            [{:subspecies_epithet=>"protensus", :type=>"r."},
+            {:subspecies_epithet=>"butteli", :type=>"var."}],
+          :authorship=>
+            [{:author_names=>["Forel"],
+              :year=>"1913k",
+              :pages=>"90",
+              :forms=>"w.q.",
+              :matched_text=>"Forel, 1913k: 90 (w.q.)"}],
+          :locality=>"Indonesia (Sumatra)"},
+        :history=>[],
+        raw_history: [{synonym_ofs: [{species_epithet: 'xerox'}]}]
+      }
+    end
+
     it "should not change the protonym name when going through twice" do
       pheidologeton = create_genus 'Pheidologeton'
       data = {
