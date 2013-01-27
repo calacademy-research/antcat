@@ -10,7 +10,7 @@ module Importers::Bolton::Catalog::Updater
       name = check_special_cases name
       author_names, year = Reference.get_author_names_and_year data[:protonym][:authorship].first
       pages = data[:protonym][:authorship].first[:pages]
-      taxon = check_special_taxa(name) || Taxon.find_by_name_and_authorship(name.name, author_names, year, pages)
+      taxon = check_special_taxa(name) || Taxon.find_by_name_and_authorship(name, author_names, year, pages)
       return taxon, name
     end
     def check_special_taxa name

@@ -53,10 +53,10 @@ class Taxon < ActiveRecord::Base
   end
 
   def self.find_by_name_and_authorship name, author_names, year, pages = nil
-    Progress.log "Name: #{name} Author names: #{author_names} year: #{year}, pages: #{pages}"
+    Progress.log "Name: #{name.name} Author names: #{author_names} year: #{year}, pages: #{pages}"
     bolton_key = Bolton::ReferenceKey.new(author_names.join(' '), year).to_s :db
     Progress.log "Bolton key: #{bolton_key}"
-    results = joins(protonym: [{authorship: :reference}]).where('name_cache = ? AND references.bolton_key_cache = ?', name, bolton_key)
+    results = joins(protonym: [{authorship: :reference}]).where('name_cache = ? AND references.bolton_key_cache = ?', name.name, bolton_key)
     if results.size > 1
       Progress.log "Results.size > 1"
       results = results.to_a.select {|result| result.protonym.authorship.pages == pages}
