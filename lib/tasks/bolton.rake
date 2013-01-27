@@ -16,6 +16,11 @@ namespace :bolton do
     task species: :environment do
       Importers::Bolton::Catalog::Species::Importer.new(show_progress: true).import_files('.')
     end
+    desc "Import Bolton species, wiping prior Updates first"
+    task species_clear: :environment do
+      Update.delete_all
+      Importers::Bolton::Catalog::Species::Importer.new(show_progress: true).import_files('.')
+    end
     desc "Import all taxa"
     task taxa: ['bolton:import:subfamilies', 'bolton:import:species']
   end
