@@ -166,14 +166,13 @@ class Taxon < ActiveRecord::Base
     children
   end
 
+
   ###############################################
   # import
 
   def import_synonyms senior
     return unless senior
-    synonyms = Synonym.where 'junior_synonym_id = ? AND senior_synonym_id = ?', self.id, senior.id
-    return unless synonyms.empty?
-    Synonym.create! junior_synonym: self, senior_synonym: senior
+    Synonym.find_or_create self, senior
   end
 
   def self.get_type_attributes data
