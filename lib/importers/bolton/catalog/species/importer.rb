@@ -3,7 +3,6 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
 
   def initialize options = {}
     ForwardRef.delete_all
-    Update.delete_all
     DedupeSynonyms.dedupe
 
     @options = options.reverse_merge show_progress: false
