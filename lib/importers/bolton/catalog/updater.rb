@@ -10,19 +10,48 @@ module Importers::Bolton::Catalog::Updater
       name = check_special_cases name
       author_names, year = Reference.get_author_names_and_year data[:protonym][:authorship].first
       pages = data[:protonym][:authorship].first[:pages]
-      taxon = Taxon.find_by_name_and_authorship name.name, author_names, year, pages
+      taxon = check_special_taxa(name) || Taxon.find_by_name_and_authorship(name.name, author_names, year, pages)
       return taxon, name
+    end
+    def check_special_taxa name
+      if name.name == 'Plagiolepis breviscapa'
+        Taxon.find_by_name 'Plagiolepis breviscapa'
+      end
     end
     def create_update name, record_id, class_name
       Update.create! name: name.name, record_id: record_id, class_name: self.name, field_name: 'create'
     end
     def check_special_cases name
-      case name.name
-      when 'Philidris cordatus protensa'
-        Name.find_by_name 'Philidris cordata protensa'
-      else
-        name
-      end
+      name_string = case name.name
+        when 'Philidris cordatus protensa' then
+             'Philidris cordata protensa'
+
+        when 'Philidris cordatus protensus butteli' then
+             'Philidris cordata protensus butteli'
+
+        when 'Philidris cordatus fuscus jactans' then
+             'Philidris cordata fuscus jactans'
+
+        when 'Philidris cordatus fuscus simalurana' then
+             'Philidris cordata fuscus simalurana'
+
+        when 'Philidris cordatus fuscus waldoi' then
+             'Philidris cordata fuscus waldoi'
+
+        when 'Plagiolepis schmitzi crossi gaetula' then
+             'Plagiolepis schmitzii crossi gaetula'
+
+        when 'Platythyrea wroughtoni sechellensis' then
+             'Platythyrea wroughtonii sechellensis'
+
+        when 'Plagiolepis schmitzi tingitana' then
+             'Plagiolepis schmitzii tingitana'
+
+        when 'Plagiolepis breviscapa' then
+             'Plagiolepis breviscapa'
+
+        else return name; end
+      Name.find_by_name name_string
     end
   end
   def self.included receiver
