@@ -216,6 +216,28 @@ describe Taxon do
       genus_200 = create_genus 'Dolichoderus', protonym: genus_200_protonym
       Taxon.find_by_name_and_authorship(Name.import(genus_name: 'Dolichoderus'), ['Latreille'], '1809', '100').should == genus_100
     end
+
+    describe "Searching for other forms of the epithet(s)" do
+      before do
+        @reference = FactoryGirl.create :article_reference, bolton_key_cache: 'Fisher 2005'
+      end
+      it "should find one form of the species epithet when searching for the other" do
+        cordatus_name = Name.create! name: 'Philidris cordatus protensa'
+        cordatus = FactoryGirl.create :subspecies, name: cordatus_name
+        cordatus.protonym.authorship.update_attribute :reference, @reference
+        search_name = Name.import genus_name: 'Philidris', species_epithet: 'cordata', subspecies: [{subspecies_epithet: 'protensa'}]
+        taxon = Taxon.find_by_name_and_authorship search_name, ['Fisher'], 2005
+        taxon.name.name.should == 'Philidris cordatus protensa'
+      end
+      it "should find the taxon even when two components need changing" do
+        protensus_name = Name.create! name: 'Philidris cordatus protensus'
+        protensus = FactoryGirl.create :subspecies, name: protensus_name
+        protensus.protonym.authorship.update_attribute :reference, @reference
+        search_name = Name.import genus_name: 'Philidris', species_epithet: 'cordata', subspecies: [{subspecies_epithet: 'protensa'}]
+        taxon = Taxon.find_by_name_and_authorship search_name, ['Fisher'], 2005
+        taxon.name.name.should == 'Philidris cordatus protensus'
+      end
+    end
   end
 
   describe ".rank" do
