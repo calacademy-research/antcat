@@ -15,14 +15,6 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     Progress.total_count = 25870
   end
 
-  def do_manual_prefixups
-    good_reference = Reference.find_by_id 123814
-    return unless good_reference
-    taxon_with_bad_reference = Taxon.find_by_name_cache 'Plagiolepis breviscapa'
-    return unless taxon_with_bad_reference
-    taxon_with_bad_reference.protonym.authorship.update_attribute :reference, good_reference
-  end
-
   def import
     @genus_headers_count = @genera_not_found_count = @duplicate_genera_that_need_resolving_count =
       @species_count = @error_count = @ignored_count = 0
@@ -85,17 +77,24 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     end
   end
 
+  #############
+  def do_manual_prefixups
+    good_reference = Reference.find_by_id 123814
+    return unless good_reference
+    taxon_with_bad_reference = Taxon.find_by_name_cache 'Plagiolepis breviscapa'
+    return unless taxon_with_bad_reference
+    taxon_with_bad_reference.protonym.authorship.update_attribute :reference, good_reference
+  end
+
   def finish_importing
     Progress.print 'Fixing up names...'
     ForwardRef.fixup
 
     do_manual_fixups_after_fixups unless Rails.env.test?
 
-    if Rails.env.test?
-      Progress.puts
-      Progress.print 'Cleaning up {nam}s'
-      Taxt.cleanup
-    end
+    Progress.puts
+    Progress.print 'Cleaning up {nam}s...'
+    Taxt.cleanup
     Progress.puts
   end
 
@@ -104,7 +103,63 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     set_status_manually 'Camponotus (Camponotus) herculeanus var. rubens', 'synonym'
     self.class.set_synonym 'Camponotus (Camponotus) herculeanus rubens', 'Camponotus novaeboracensis'
     self.class.set_synonym 'Formica occidua', 'Formica moki'
+    self.class.set_synonym 'Solenopsis wagneri', 'Solenopsis invicta'
+    self.class.set_synonym 'Prionopelta poultoni', 'Prionopelta majuscula'
     set_status_manually 'Camponotus pallens', 'homonym', 1
+    fix_nomen_nudum_in_brackets
+    fix_formica_whymperi
+    fix_diacamma_sculpta
+    fix_guppyi
+    fix_spinipes
+  end
+
+  def make_species_into_subspecies
+    species = Species.find_by_name 'Crematogaster smithi'
+    new_parent_species = Species.find_by_name 'Crematogaster minutissima'
+    species.become_subspecies_of new_parent_species
+
+    set_status_manually 'Formica rufa ravida', 'valid'
+  end
+
+  def fix_guppyi
+    guppyi = Taxon.find_by_name('Camponotus guppyi') or raise
+    correct_reference = Reference.find_by_bolton_key_cache('Mann 1919') or raise
+    guppyi.protonym.authorship.update_attribute :reference, correct_reference
+  end
+
+  def fix_spinipes
+    spinipes = Taxon.find_by_name 'Aphaenogaster spinipes'
+    return unless spinipes
+
+    # set name
+    correct_name = Name.find_by_name 'Aphaenogaster swammerdami spinipes'
+    spinipes.update_attribute :name_id, correct_name.id
+
+    # delete first 3 history items
+    3.times {|i| spinipes.history_items.first.destroy}
+
+    # set type
+    Taxon.connection.execute %{UPDATE taxa SET type = 'Subspecies' WHERE id = '#{spinipes.id}'}
+    spinipes = Taxon.find spinipes.id
+
+    # set species
+    species = Taxon.find_by_name 'Aphaenogaster swammerdami'
+    spinipes.update_attribute :species_id, species.id
+
+    # change protonym name
+    protonym_name = spinipes.protonym.name
+    new_protonym_html = protonym_name.protonym_html + '[sic] var. <i>spinipes</i>'
+    protonym_name.update_attribute :protonym_html, new_protonym_html
+
+    # fix locality
+    protonym = spinipes.protonym
+    protonym.locality = 'Madagascar'
+    protonym.save!
+
+    # fix authorship
+    reference = Reference.find_by_bolton_key_cache 'Santschi 1911e'
+    protonym.authorship = Citation.create! reference: reference, pages: '123', forms: 'w.'
+    protonym.save!
   end
 
   def self.set_synonym junior, senior
@@ -112,6 +167,24 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     senior = Taxon.find_by_name senior
     junior.become_junior_synonym_of senior
   rescue
+  end
+
+  def self.fix_formica_whymperi
+    whymperi = Taxon.find_by_name 'Formica whymperi'
+    return unless whymperi
+    adamsi_whymperi_name = Name.find_by_name 'Formica adamsi whymperi'
+    return unless adamsi_whymperi_name
+    adamsi = Taxon.find_by_name 'Formica adamsi'
+    whymperi.update_attributes species_id: adamsi.id, name_id: adamsi_whymperi_name.id
+  end
+
+  def self.fix_diacamma_sculpta
+    sculpta = Taxon.find_by_name 'Diacamma sculpta'
+    return unless sculpta
+    rugosum_sculptum_name = Name.find_by_name 'Diacamma rugosum sculptum'
+    return unless rugosum_sculptum_name
+    rugosum = Taxon.find_by_name 'Diacamma rugosum'
+    sculpta.update_attributes species_id: rugosum.id, name_id: rugosum_sculptum_name.id
   end
 
   def do_manual_fixups
@@ -127,7 +200,25 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     set_status_manually 'Myrmeciites herculeanus', 'collective group name'
     set_status_manually 'Myrmeciites tabanifluviensis', 'collective group name'
     set_status_manually 'Paraprionopelta minima', 'valid'
+    set_status_manually 'Formica strangulata', 'valid'
+    set_status_manually 'Aphaenogaster picena', 'valid'
+    execute "UPDATE citations SET reference_id = 130850 WHERE id = 174187"
+    make_species_into_subspecies
     Species.import_myrmicium_heerii
+    fix_creightonidris
+  end
+
+  def self.fix_creightonidris
+    ceratobasis = Taxon.find_by_name 'Ceratobasis'
+    basiceros = Taxon.find_by_name 'Basiceros'
+    creightonidris = Taxon.find_by_name 'Creightonidris'
+    aspididris = Taxon.find_by_name 'Aspididris'
+
+    creightonidris.become_not_a_junior_synonym_of ceratobasis
+    creightonidris.become_junior_synonym_of basiceros
+
+    aspididris.become_not_a_junior_synonym_of ceratobasis
+    aspididris.become_junior_synonym_of basiceros
   end
 
   def grammar
@@ -148,6 +239,17 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     end
     texts.inject([]) do |taxts, text|
       taxts << Importers::Bolton::Catalog::TextToTaxt.convert(text[:text], genus_name, species_name)
+    end
+  end
+
+  def self.fix_nomen_nudum_in_brackets
+    Taxon.where(status: 'nomen nudum').all.each do |taxon|
+      for history in taxon.history_items
+        if history.taxt =~ /\[.*Nomen nudum.*\]/
+          taxon.update_attribute :status, 'valid'
+          next
+        end
+      end
     end
   end
 
