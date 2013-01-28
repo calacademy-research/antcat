@@ -22,7 +22,7 @@ class Protonym < ActiveRecord::Base
     update_boolean_field  'sic', data[:sic], attributes
     update_boolean_field  'fossil', data[:fossil], attributes
     update_field          'locality', data[:locality], attributes
-    authorship.update_data data[:authorship].first
+    authorship.update_data data[:authorship].first if authorship
     update_attributes attributes
   end
 
