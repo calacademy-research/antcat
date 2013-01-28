@@ -46,7 +46,7 @@ class Subspecies < SpeciesGroupTaxon
   end
 
   def link_to_or_delete_parent_species data
-    species = Taxon.find_by_name genus.name.name + ' ' + name.epithet
+    species = Species.find_by_name genus.name.name + ' ' + name.epithet
     if species and species.subspecies.count.zero?
       Update.create! name: species.name.name, class_name: self.class.to_s, record_id: species.id, field_name: 'delete',
         before: nil, after: nil
