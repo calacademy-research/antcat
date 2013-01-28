@@ -93,9 +93,9 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     do_manual_fixups_after_fixups unless Rails.env.test?
 
     Progress.puts
-    Progress.print 'Cleaning up {nam}s...'
-    Taxt.cleanup
-    Progress.puts
+    #Progress.print 'Cleaning up {nam}s...'
+    #Taxt.cleanup
+    #Progress.puts
   end
 
   def do_manual_fixups_after_fixups
@@ -289,8 +289,8 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
   end
 
   def get_file_names _
-    super Dir.glob("#{$BOLTON_DATA_DIRECTORY}/NGC-SPECIES *.htm")
-    #['LAT-LEP'].map {|e| "#{$BOLTON_DATA_DIRECTORY}/NGC-SPECIES #{e}.htm"}
+    #super Dir.glob("#{$BOLTON_DATA_DIRECTORY}/NGC-SPECIES *.htm")
+    ['LAT-LEP'].map {|e| "#{$BOLTON_DATA_DIRECTORY}/NGC-SPECIES #{e}.htm"}
   end
 
 end
