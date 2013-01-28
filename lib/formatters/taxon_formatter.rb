@@ -55,7 +55,7 @@ class Formatters::TaxonFormatter
           string << ' '.html_safe
           string << header_link(@taxon, @taxon.name.epithet_html.html_safe)
         else
-          string << header_link(@taxon, @taxon.name.epithets.html_safe)
+          string << header_link(@taxon, italicize(@taxon.name.epithets).html_safe)
         end
       end
     else
