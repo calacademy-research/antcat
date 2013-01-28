@@ -315,24 +315,6 @@ describe Genus do
       end
     end
 
-    describe "Updating homonyms" do
-      it "should distinguish among homonyms" do
-        protonym = {genus_name: 'Atta', authorship: [{author_names: ['Latreille'], year: '1809', pages: '7'}]}
-        data = {genus_name: 'Atta', protonym: protonym, history: []}
-        genus = Genus.import data
-        Taxon.count.should == 1
-
-        # import another Atta, with different authorship - different taxon
-        protonym[:authorship] = [{author_names: ['Fisher'], year: 2004, pages: '8'}]
-        genus = Genus.import data
-        Taxon.count.should == 2
-
-        # import the last one again - same taxon
-        genus = Genus.import data
-        Taxon.count.should == 2
-      end
-    end
-
     it "should record a change in incertae sedis" do
       data = {
         genus_name: 'Atta',
