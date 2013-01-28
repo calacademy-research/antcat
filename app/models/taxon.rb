@@ -53,46 +53,46 @@ class Taxon < ActiveRecord::Base
   end
 
   def self.find_by_name_and_authorship name, author_names, year, pages = nil
-    Progress.log "Name: #{name.name} Author names: #{author_names} year: #{year}, pages: #{pages}"
     bolton_key = Bolton::ReferenceKey.new(author_names.join(' '), year).to_s :db if author_names
-    Progress.log "Bolton key: #{bolton_key}"
-
-    found_taxon = nil
+    Progress.log "Name: #{name.name} Author names: #{author_names} year: #{year}, pages: #{pages} Bolton key: #{bolton_key}"
     Species; Subspecies
     if name.kind_of? SpeciesGroupName
-      name_parts = name.name.split ' '
-      name_parts[2] ||= ''
-      name_parts[3] ||= ''
-      if name_parts[1] =~ /\(.*?\)/
-        name_parts[0] << ' ' << name_parts[1]
-        name_parts[1..-2] = name_parts[2..-1]
-      end
-      for first_word in EpithetSearchSet.new(name_parts[1]).epithets
-        for second_word in EpithetSearchSet.new(name_parts[2]).epithets
-          for third_word in EpithetSearchSet.new(name_parts[3]).epithets
-            name = name_parts[0] + ' ' + first_word + ' ' + second_word + ' ' + third_word
-            name.strip!
-            found_taxon = do_search(name, bolton_key, pages)
-            return found_taxon if found_taxon
-          end
-        end
-      end
+      taxon = find_species_group_taxon_by_name_and_authorship name, bolton_key, pages
     else
-      found_taxon = do_search(name.name, bolton_key, pages)
+      taxon = search_for_name_and_authorship name.name, bolton_key, pages
     end
-    Progress.log "Not found" unless found_taxon
-    found_taxon
+    Progress.log "Not found" unless taxon
+    taxon
   end
 
-  def self.do_search name, bolton_key, pages
+  def self.find_species_group_taxon_by_name_and_authorship name, bolton_key, pages
+    name_parts = name.name.split ' '
+    name_parts[2] ||= ''
+    name_parts[3] ||= ''
+    # elide subgenus
+    if name_parts[1] =~ /\(.*?\)/
+      name_parts[0] << ' ' << name_parts[1]
+      name_parts[1..-2] = name_parts[2..-1]
+    end
+    for first_word in EpithetSearchSet.new(name_parts[1]).epithets
+      for second_word in EpithetSearchSet.new(name_parts[2]).epithets
+        for third_word in EpithetSearchSet.new(name_parts[3]).epithets
+          name = name_parts[0] + ' ' + first_word + ' ' + second_word + ' ' + third_word
+          name.strip!
+          taxon = search_for_name_and_authorship name, bolton_key, pages
+          return taxon if taxon
+        end
+      end
+    end
+    nil
+  end
+
+  def self.search_for_name_and_authorship name, bolton_key, pages
     results = where name_cache: name
-    return if results.size == 0
     if results.size > 1
       results = joins(protonym: [{authorship: :reference}]).where 'name_cache = ? AND references.bolton_key_cache = ?', name, bolton_key
-      return if results.size == 0
       if results.size > 1
         results = results.to_a.select {|result| result.protonym.authorship.pages == pages}
-        return if results.size == 0
         if results.size > 1
           raise 'Duplicate name + authorships'
         end
