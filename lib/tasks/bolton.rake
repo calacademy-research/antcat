@@ -21,6 +21,11 @@ namespace :bolton do
       Update.delete_all
       Importers::Bolton::Catalog::Species::Importer.new(show_progress: true).import_files('.')
     end
+    desc "Clean up {nam}s"
+    task cleanup: :environment do
+      puts 'Cleaning up {nam}s...'
+      Taxt.cleanup
+    end
     desc "Import all taxa"
     task taxa: ['bolton:import:subfamilies', 'bolton:import:species']
   end
