@@ -242,7 +242,7 @@ describe Subspecies do
       updated_subspecies.should == subspecies
     end
 
-    it "should replace special cases" do
+    it "should handle variants" do
       subspecies = create_subspecies 'Philidris cordata protensa'
       subspecies.protonym.authorship.update_attribute :reference, @reference
       data = {
