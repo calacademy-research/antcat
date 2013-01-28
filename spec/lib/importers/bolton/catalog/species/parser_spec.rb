@@ -343,4 +343,16 @@ describe Importers::Bolton::Catalog::Species::Grammar do
     #@grammar.parse('<i>nura</i>. <i>Crematogaster longispina</i> <i>nura</i> Ozdikmen, 2010c: 989.').value
   end
 
+  it "should handle these author names" do
+    @grammar.parse(%{<i>breviscapa</i>. <i>Plagiolepis breviscapa</i> Collingwood & van Harten, 2005: 77, fig. 8 (w.).}).value_with_matched_text_removed.should == {
+      type: :species_record,
+      species_group_epithet: 'breviscapa',
+      protonym: {
+        genus_name: 'Plagiolepis',
+        species_epithet: 'breviscapa',
+        authorship:[{author_names: ['Collingwood', 'van Harten'], year: '2005', pages: '77, fig. 8', forms: 'w.'}]
+      },
+    }
+  end
+
 end
