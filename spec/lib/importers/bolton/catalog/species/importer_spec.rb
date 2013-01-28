@@ -54,7 +54,7 @@ describe Importers::Bolton::Catalog::Species::Importer do
     species = Species.find_by_name 'Camponotus gilviventris'
     subspecies = Subspecies.find_by_name 'Camponotus gilviventris refectus'
     subspecies.history_items.first.taxt.should == %{Currently subspecies of {tax #{species.id}}}
-    species.history_items.first.taxt.should == %{Current subspecies: {tax #{subspecies.id}}}
+    species.history_items.first.taxt.should == %{Current subspecies: {nam #{subspecies.name.id}}}
   end
 
   it "should link species to existing genera" do
