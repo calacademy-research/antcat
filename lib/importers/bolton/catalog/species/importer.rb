@@ -115,8 +115,12 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
 
   def make_species_into_subspecies
     species = Species.find_by_name 'Crematogaster smithi'
-    new_parent_species = Species.find_by_name 'Crematogaster minutissima'
-    species.become_subspecies_of new_parent_species
+    if species
+      new_parent_species = Species.find_by_name 'Crematogaster minutissima'
+      if new_parent_species
+        species.become_subspecies_of new_parent_species
+      end
+    end
 
     set_status_manually 'Formica rufa ravida', 'valid'
   end
@@ -169,7 +173,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
   rescue
   end
 
-  def self.fix_formica_whymperi
+  def fix_formica_whymperi
     whymperi = Taxon.find_by_name 'Formica whymperi'
     return unless whymperi
     adamsi_whymperi_name = Name.find_by_name 'Formica adamsi whymperi'
@@ -178,7 +182,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     whymperi.update_attributes species_id: adamsi.id, name_id: adamsi_whymperi_name.id
   end
 
-  def self.fix_diacamma_sculpta
+  def fix_diacamma_sculpta
     sculpta = Taxon.find_by_name 'Diacamma sculpta'
     return unless sculpta
     rugosum_sculptum_name = Name.find_by_name 'Diacamma rugosum sculptum'
@@ -202,13 +206,13 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     set_status_manually 'Paraprionopelta minima', 'valid'
     set_status_manually 'Formica strangulata', 'valid'
     set_status_manually 'Aphaenogaster picena', 'valid'
-    execute "UPDATE citations SET reference_id = 130850 WHERE id = 174187"
+    Citation.connection.execute "UPDATE citations SET reference_id = 130850 WHERE id = 174187"
     make_species_into_subspecies
     Species.import_myrmicium_heerii
     fix_creightonidris
   end
 
-  def self.fix_creightonidris
+  def fix_creightonidris
     ceratobasis = Taxon.find_by_name 'Ceratobasis'
     basiceros = Taxon.find_by_name 'Basiceros'
     creightonidris = Taxon.find_by_name 'Creightonidris'
@@ -242,7 +246,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     end
   end
 
-  def self.fix_nomen_nudum_in_brackets
+  def fix_nomen_nudum_in_brackets
     Taxon.where(status: 'nomen nudum').all.each do |taxon|
       for history in taxon.history_items
         if history.taxt =~ /\[.*Nomen nudum.*\]/
