@@ -76,11 +76,12 @@ class Taxon < ActiveRecord::Base
     else
       found_taxon = do_search(name.name, bolton_key, pages)
     end
+    Progress.log "Not found" unless found_taxon
     found_taxon
   end
 
   def self.do_search name, bolton_key, pages
-    results = joins(protonym: [{authorship: :reference}]).where('name_cache = ? AND references.bolton_key_cache = ?', name, bolton_key)
+    results = joins(protonym: [{authorship: :reference}]).where 'name_cache = ? AND references.bolton_key_cache = ?', name, bolton_key
     if results.size > 1
       Progress.log "Results.size > 1"
       results = results.to_a.select {|result| result.protonym.authorship.pages == pages}
