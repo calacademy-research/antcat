@@ -284,6 +284,7 @@ grammar Importers::Bolton::Catalog::Grammar
   rule ref_author_name
     'Lepeletier de Saint-Fargeau' |
     'Rossi de Garcia' |
+    'van Harten' |
     ('do ' | 'de '|'De '|'Le ')? ref_author_name_word (' ' ref_author_name_word)* (/, ?/ ref_author_name_initial+)?
   end
 
