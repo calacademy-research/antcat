@@ -5,6 +5,8 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     ForwardRef.delete_all
     DedupeSynonyms.dedupe
 
+Update.destroy_all
+
     @options = options.reverse_merge show_progress: false
     @continue_after_parse_error = true
     @return_blank_lines = false
