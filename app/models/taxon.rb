@@ -54,7 +54,7 @@ class Taxon < ActiveRecord::Base
 
   def self.find_by_name_and_authorship name, author_names, year, pages = nil
     Progress.log "Name: #{name.name} Author names: #{author_names} year: #{year}, pages: #{pages}"
-    bolton_key = Bolton::ReferenceKey.new(author_names.join(' '), year).to_s :db
+    bolton_key = Bolton::ReferenceKey.new(author_names.join(' '), year).to_s :db if author_names
     Progress.log "Bolton key: #{bolton_key}"
 
     found_taxon = nil
@@ -63,6 +63,10 @@ class Taxon < ActiveRecord::Base
       name_parts = name.name.split ' '
       name_parts[2] ||= ''
       name_parts[3] ||= ''
+      if name_parts[1] =~ /\(.*?\)/
+        name_parts[0] << ' ' << name_parts[1]
+        name_parts[1..-2] = name_parts[2..-1]
+      end
       for first_word in EpithetSearchSet.new(name_parts[1]).epithets
         for second_word in EpithetSearchSet.new(name_parts[2]).epithets
           for third_word in EpithetSearchSet.new(name_parts[3]).epithets
@@ -81,17 +85,20 @@ class Taxon < ActiveRecord::Base
   end
 
   def self.do_search name, bolton_key, pages
-    results = joins(protonym: [{authorship: :reference}]).where 'name_cache = ? AND references.bolton_key_cache = ?', name, bolton_key
+    results = where name_cache: name
+    return if results.size == 0
     if results.size > 1
-      Progress.log "Results.size > 1"
-      results = results.to_a.select {|result| result.protonym.authorship.pages == pages}
+      results = joins(protonym: [{authorship: :reference}]).where 'name_cache = ? AND references.bolton_key_cache = ?', name, bolton_key
+      return if results.size == 0
       if results.size > 1
-        raise 'Duplicate name + authorships'
+        results = results.to_a.select {|result| result.protonym.authorship.pages == pages}
+        return if results.size == 0
+        if results.size > 1
+          raise 'Duplicate name + authorships'
+        end
       end
     end
-    if results.size == 0
-      return
-    end
+    return if results.size == 0
     Progress.log 'Found it'
     return find results.first.id
   end
