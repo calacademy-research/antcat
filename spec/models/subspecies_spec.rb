@@ -261,5 +261,54 @@ describe Subspecies do
       subspecies.name.name.should == 'Philidris cordata protensa'
     end
 
+    it "should delete the species if it looks like the species has been lowered to subspecies" do
+      genus = create_genus 'Leptothorax'
+      old_species = create_species 'Leptothorax euxanthus', genus: genus
+      Taxon.find_by_id(old_species.id).should_not be_blank
+      data = {
+        genus:                  old_species.genus,
+        species_group_epithet:  'euxanthus',
+        history:                [],
+        protonym: {
+          authorship:           [{author_names: ["Latreille"], year: "1809", pages: "124"}],
+          genus_name:           'Leptothorax',
+          species_epithet:      'nylanderi',
+          subspecies: [{type:   'form', subspecies_epithet: 'euxanthus'}]
+        }
+      }
+      taxon = Subspecies.import data
+      taxon.name.name.should == 'Leptothorax nylanderi euxanthus'
+      Taxon.find_by_id(old_species.id).should be_blank
+      Update.count.should == 2
+
+      update = Update.find_by_name 'Leptothorax euxanthus'
+      update.field_name.should == 'delete'
+      update = Update.find_by_name 'Leptothorax nylanderi euxanthus'
+      update.field_name.should == 'create'
+    end
+
+    it "should not delete the species if it has any other subspecies" do
+      genus = create_genus 'Leptothorax'
+      old_species = create_species 'Leptothorax euxanthus', genus: genus
+      create_subspecies 'Leptothorax minor major', species: old_species, genus: genus
+      data = {
+        genus:                  old_species.genus,
+        species_group_epithet:  'euxanthus',
+        history:                [],
+        protonym: {
+          authorship:           [{author_names: ["Latreille"], year: "1809", pages: "124"}],
+          genus_name:           'Leptothorax',
+          species_epithet:      'nylanderi',
+          subspecies: [{type:   'form', subspecies_epithet: 'euxanthus'}]
+        }
+      }
+      taxon = Subspecies.import data
+      taxon.name.name.should == 'Leptothorax nylanderi euxanthus'
+      Taxon.find_by_id(old_species.id).should_not be_blank
+      Update.count.should == 1
+
+      update = Update.find_by_name 'Leptothorax nylanderi euxanthus'
+      update.field_name.should == 'create'
+    end
   end
 end
