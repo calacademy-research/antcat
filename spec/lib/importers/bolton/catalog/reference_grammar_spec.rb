@@ -150,6 +150,9 @@ describe Importers::Bolton::Catalog::Grammar do
     it "should parse author names with particles" do
       @grammar.parse('De Groot & Le Torquet', :root => :ref_author_names).value_with_matched_text_removed.should == ['De Groot', 'Le Torquet']
     end
+    it "should parse author names where the second one has the particle" do
+      @grammar.parse('Collingwood & van Harten', root: :ref_author_names).value_with_matched_text_removed.should == ['Collingwood', 'van Harten']
+    end
     it "should parse three authors with et al." do
       @grammar.parse('Imai, Baroni Urbani, Kubota, <i>et al.</i>', :root => :ref_author_names).value_with_matched_text_removed.should == ['Imai', 'Baroni Urbani', 'Kubota', '<i>et al.</i>']
     end
