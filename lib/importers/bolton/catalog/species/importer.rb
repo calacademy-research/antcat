@@ -89,13 +89,8 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
   def finish_importing
     Progress.print 'Fixing up names...'
     ForwardRef.fixup
-
     do_manual_fixups_after_fixups unless Rails.env.test?
-
     Progress.puts
-    #Progress.print 'Cleaning up {nam}s...'
-    #Taxt.cleanup
-    #Progress.puts
   end
 
   def do_manual_fixups_after_fixups
