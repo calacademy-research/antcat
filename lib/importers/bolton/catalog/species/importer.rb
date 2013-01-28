@@ -207,6 +207,20 @@ Update.destroy_all
     make_species_into_subspecies
     Species.import_myrmicium_heerii
     fix_creightonidris
+    replace_references
+  end
+
+  def replace_reference old_bolton_key_cache, new_key_cache
+    reference = Reference.find_by_bolton_key_cache old_bolton_key_cache
+    return unless reference
+    replacement = Reference.find_by_key_cache new_key_cache
+    return unless replacement
+    reference.replace_with replacement
+  end
+
+  def replace_references
+    replace_reference 'Sarnat Economo 2012', 'Marcus, 1953'
+    replace_reference 'Willey Brown 1983', 'Willey, R. B.; Brown, W. L., Jr.'
   end
 
   def fix_creightonidris
@@ -287,7 +301,7 @@ Update.destroy_all
 
   def get_file_names _
     super Dir.glob("#{$BOLTON_DATA_DIRECTORY}/NGC-SPECIES *.htm")
-    #['CRET-DON'].map {|e| "#{$BOLTON_DATA_DIRECTORY}/NGC-SPECIES #{e}.htm"}
+    #['CREMATOGASTER'].map {|e| "#{$BOLTON_DATA_DIRECTORY}/NGC-SPECIES #{e}.htm"}
   end
 
 end
