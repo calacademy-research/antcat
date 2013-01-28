@@ -10,12 +10,12 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     @return_blank_lines = false
     super @options[:show_progress]
  
-    prefix
+    do_manual_prefixups
 
     Progress.total_count = 25870
   end
 
-  def prefix
+  def do_manual_prefixups
     good_reference = Reference.find_by_id 123814
     return unless good_reference
     taxon_with_bad_reference = Taxon.find_by_name_cache 'Plagiolepis breviscapa'
@@ -184,7 +184,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
 
   def get_file_names _
     super Dir.glob("#{$BOLTON_DATA_DIRECTORY}/NGC-SPECIES *.htm")
-    #['CAMPONOTUS a-j'].map {|e| "#{$BOLTON_DATA_DIRECTORY}/NGC-SPECIES #{e}.htm"}
+    #['LAT-LEP'].map {|e| "#{$BOLTON_DATA_DIRECTORY}/NGC-SPECIES #{e}.htm"}
   end
 
 end
