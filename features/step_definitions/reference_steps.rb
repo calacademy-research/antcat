@@ -4,7 +4,7 @@ Given /^(?:this|these) references? exists?$/ do |table|
   table.hashes.each do |hash|
     citation = hash.delete 'citation'
     matches = citation.match /(\w+) (\d+):([\d\-]+)/
-    hash.merge! :journal => Factory(:journal, :name => matches[1]), :series_volume_issue => matches[2],
+    hash.merge! :journal => FactoryGirl.create(:journal, :name => matches[1]), :series_volume_issue => matches[2],
       :pagination => matches[3]
     create_reference :article_reference, hash
   end
@@ -13,14 +13,14 @@ end
 Given /(?:these|this) Bolton references? exists?/ do |table|
   table.hashes.each do |hash|
     hash.delete('match_status') if hash['match_status'].blank?
-    @bolton_reference = Factory :bolton_reference, hash
+    @bolton_reference = FactoryGirl.create :bolton_reference, hash
   end
 end
 
 Given /^the following references? match(?:es)? that Bolton reference$/ do |table|
   table.hashes.each do |hash|
     similarity = hash.delete 'similarity'
-    Factory :bolton_match, :reference => Factory(:article_reference, hash), :bolton_reference => @bolton_reference, :similarity => similarity
+    FactoryGirl.create :bolton_match, :reference => FactoryGirl.create(:article_reference, hash), :bolton_reference => @bolton_reference, :similarity => similarity
   end
 end
 
@@ -45,8 +45,8 @@ Given /(?:these|this) book references? exists?/ do |table|
   table.hashes.each do |hash|
     citation = hash.delete 'citation'
     matches = citation.match /([^:]+): (\w+), (.*)/
-    hash.merge! :publisher => Factory(:publisher, :name => matches[2],
-                                      :place => Factory(:place, :name => matches[1])),
+    hash.merge! :publisher => FactoryGirl.create(:publisher, :name => matches[2],
+                                      :place => FactoryGirl.create(:place, :name => matches[1])),
                 :pagination => matches[3]
     create_reference :book_reference, hash
   end
@@ -61,19 +61,19 @@ end
 def create_reference type, hash
   author = hash.delete('author')
   if author
-    author_names = [Factory(:author_name, :name => author)]
+    author_names = [FactoryGirl.create(:author_name, :name => author)]
   else
     authors = hash.delete('authors')
     author_names = Parsers::AuthorParser.parse(authors)[:names]
     author_names_suffix = Parsers::AuthorParser.parse(authors)[:suffix]
     author_names = author_names.inject([]) do |author_names, author_name|
-      author_name = AuthorName.find_by_name(author_name) || Factory(:author_name, :name => author_name)
+      author_name = AuthorName.find_by_name(author_name) || FactoryGirl.create(:author_name, :name => author_name)
       author_names << author_name
     end
   end
 
   hash[:citation_year] = hash.delete('year').to_s
-  reference = Factory type, hash.merge(:author_names => author_names, :author_names_suffix => author_names_suffix)
+  reference = FactoryGirl.create type, hash.merge(:author_names => author_names, :author_names_suffix => author_names_suffix)
   @reference ||= reference
   set_timestamps reference, hash
 end
@@ -86,7 +86,7 @@ end
 Given /the following entry nests it/ do |table|
   data = table.hashes.first
   @nestee_reference = @reference
-  @reference = NestedReference.create! :author_names => [Factory(:author_name, :name => data[:authors])],
+  @reference = NestedReference.create! :author_names => [FactoryGirl.create(:author_name, :name => data[:authors])],
     :citation_year => data[:year], :title => data[:title], :pages_in => data[:pages_in],
     :nested_reference => @nestee_reference
 end
@@ -250,13 +250,13 @@ Given /^I will enter the ID of "Arbitrary Match" in the following dialog$/ do
 end
 
 Given "there is a reference with ID 50000 for Dolerichoderinae" do
-  reference = Factory :unknown_reference, :title => 'Dolerichoderinae'
+  reference = FactoryGirl.create :unknown_reference, :title => 'Dolerichoderinae'
   sql = "UPDATE `references` SET id = 50000 WHERE id = #{reference.id}"
   ActiveRecord::Base.connection.execute sql
 end
 
 Given /^there is a missing reference$/ do
-  Factory :missing_reference, :citation => 'Adventures among Ants'
+  FactoryGirl.create :missing_reference, :citation => 'Adventures among Ants'
 end
 
 And /^I should not see the missing reference$/ do
