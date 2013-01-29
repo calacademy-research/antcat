@@ -65,7 +65,7 @@ describe Protonym do
   describe "Updating" do
     before do
       reference = FactoryGirl.create :article_reference,
-        author_names: [Factory(:author_name, name: "Latreille")],
+        author_names: [FactoryGirl.create(:author_name, name: "Latreille")],
         citation_year: '1809', bolton_key_cache: 'Latreille 1809'
       @citation = Citation.create! reference: reference, pages: '12'
       @protonym = Protonym.create!(

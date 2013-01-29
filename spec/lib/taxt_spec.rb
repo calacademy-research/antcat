@@ -173,7 +173,7 @@ describe Taxt do
 
     describe "Name" do
       it "should return the HTML version of the name" do
-        name = Factory.create :subspecies_name, name_html: '<i>Atta major minor</i>'
+        name = FactoryGirl.create :subspecies_name, name_html: '<i>Atta major minor</i>'
         Taxt.to_string("{nam #{name.id}}").should == '<i>Atta major minor</i>'
       end
       it "should not freak if the name can't be found" do

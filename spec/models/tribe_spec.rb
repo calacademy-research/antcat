@@ -84,7 +84,7 @@ describe Tribe do
   describe "Updating" do
     it "should record a change in parent taxon" do
       dolichoderinae = create_subfamily 'Dolichoderinae'
-      fisher_reference = FactoryGirl.create :article_reference, author_names: [Factory(:author_name, name: 'Fisher')], bolton_key_cache: 'Fisher 2004'
+      fisher_reference = FactoryGirl.create :article_reference, author_names: [FactoryGirl.create(:author_name, name: 'Fisher')], bolton_key_cache: 'Fisher 2004'
       data = {
         tribe_name: 'Aneuretinae',
         protonym: {

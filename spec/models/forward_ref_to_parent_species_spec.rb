@@ -21,7 +21,7 @@ describe ForwardRefToParentSpecies do
 
     it "should adjust the species epithet when the gender has changed" do
       species = create_species 'Atta perpa', genus: @genus
-      subspecies_name = Factory.create :subspecies_name, name: 'Atta perpus rufa', epithets: 'perpus rufa'
+      subspecies_name = FactoryGirl.create :subspecies_name, name: 'Atta perpus rufa', epithets: 'perpus rufa'
       subspecies = create_subspecies genus: @genus, name: subspecies_name
       forward_ref = ForwardRefToParentSpecies.create!({
         fixee: subspecies, fixee_attribute: 'species',

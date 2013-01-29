@@ -75,7 +75,7 @@ describe Family do
         @bolla_name = create_name 'Bolla'
 
         reference = FactoryGirl.create :article_reference,
-          author_names: [Factory(:author_name, name: "Latreille")], citation_year: '1809', bolton_key_cache: 'Latreille 1809'
+          author_names: [FactoryGirl.create(:author_name, name: "Latreille")], citation_year: '1809', bolton_key_cache: 'Latreille 1809'
         @ref_taxt = "{ref #{reference.id}}"
         @atta_name = create_name 'Atta'
         @nam_taxt = "{nam #{@atta_name.id}}"
@@ -103,13 +103,13 @@ describe Family do
         @history_item = @family.history_items.create! taxt: "1st history item"
 
         ants_reference_for_title = FactoryGirl.create :article_reference,
-          author_names: [Factory(:author_name, name: "Fisher")], citation_year: '2001', bolton_key_cache: 'Fisher 2001'
+          author_names: [FactoryGirl.create(:author_name, name: "Fisher")], citation_year: '2001', bolton_key_cache: 'Fisher 2001'
         @ants_title_taxt = "{ref #{ants_reference_for_title.id}}"
         ants_reference_for_subtitle = FactoryGirl.create :article_reference,
-          author_names: [Factory(:author_name, name: "Shattuck")], citation_year: '2009', bolton_key_cache: 'Shattuck 2009'
+          author_names: [FactoryGirl.create(:author_name, name: "Shattuck")], citation_year: '2009', bolton_key_cache: 'Shattuck 2009'
         @ants_subtitle_taxt = "{ref #{ants_reference_for_subtitle.id}}"
         ants_reference_for_references = FactoryGirl.create :article_reference,
-          author_names: [Factory(:author_name, name: "Ward")], citation_year: '1995', bolton_key_cache: 'Ward 1995'
+          author_names: [FactoryGirl.create(:author_name, name: "Ward")], citation_year: '1995', bolton_key_cache: 'Ward 1995'
         ants_references_taxt = "{ref #{ants_reference_for_references.id}}"
         #@reference_section = @family.reference_sections.create! title_taxt: @ants_title_taxt, subtitle_taxt: @ants_subtitle_taxt, references_taxt: ants_references_taxt
         @reference_section = @family.reference_sections.create! title_taxt: 'References', subtitle_taxt: 'of New Guinea', references_taxt: 'References go here'
@@ -410,7 +410,7 @@ describe Family do
         end
         it "should record a different reference than before" do
           new_reference = FactoryGirl.create :article_reference,
-            author_names: [Factory(:author_name, name: 'Bolton')], citation_year: '2005', bolton_key_cache: 'Bolton 2005'
+            author_names: [FactoryGirl.create(:author_name, name: 'Bolton')], citation_year: '2005', bolton_key_cache: 'Bolton 2005'
           data = @data.dup
           data[:protonym][:authorship].first[:author_names] = ['Bolton, B.']
           data[:protonym][:authorship].first[:year] = '2005'

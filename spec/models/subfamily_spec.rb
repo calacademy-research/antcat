@@ -181,7 +181,7 @@ describe Subfamily do
       end
 
       it "should update the subfamily" do
-        fisher_reference = FactoryGirl.create :article_reference, author_names: [Factory(:author_name, name: 'Fisher')], bolton_key_cache: 'Fisher 2004'
+        fisher_reference = FactoryGirl.create :article_reference, author_names: [FactoryGirl.create(:author_name, name: 'Fisher')], bolton_key_cache: 'Fisher 2004'
         data = @data.merge({
           subfamily_name: 'Aneuretinae',
           fossil: false,

@@ -15,6 +15,20 @@ Spork.prefork do
     config.mock_with :rspec
     config.use_transactional_fixtures = true
     config.fail_fast = false
+
+    config.before(:suite) do
+      DatabaseCleaner.strategy = :transaction
+      DatabaseCleaner.clean_with(:truncation)
+    end
+
+    config.before(:each) do
+      DatabaseCleaner.start
+    end
+
+    config.after(:each) do
+      DatabaseCleaner.clean
+    end
+
   end
 end
 

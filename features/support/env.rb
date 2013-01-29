@@ -1,6 +1,8 @@
 # coding: UTF-8
 require 'spork'
 
+require 'factory_girl'
+
 Spork.prefork do
   ENV["RAILS_ENV"] ||= "test"
   require_relative '../../config/environment'
@@ -19,8 +21,6 @@ Spork.prefork do
 
   require 'webmock/cucumber'
   WebMock.disable_net_connect! allow_localhost: true
-
-  require 'factory_girl/step_definitions'
 end
 
 Spork.each_run{FactoryGirl.reload}
