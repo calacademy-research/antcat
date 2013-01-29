@@ -4,7 +4,7 @@ class ForwardRefToParentSpecies < SpeciesGroupForwardRef
   def fixup
     specieses = SpeciesGroupTaxon.find_validest_for_epithet_in_genus epithet, genus
     if specieses.blank?
-      Progress.error "Couldn't find species #{epithet} in genus #{genus.name} when fixing up parent species for #{fixee.inspect}"
+      Progress.error "Couldn't find species #{epithet} in genus #{genus.name} when fixing up parent species for #{fixee.name}"
     elsif specieses.count > 1
       Progress.error "Found multiple valid targets for parent species among #{specieses.map(&:name).map(&:to_s).join(', ')}"
     else
