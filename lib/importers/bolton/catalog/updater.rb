@@ -18,30 +18,10 @@ module Importers::Bolton::Catalog::Updater
     end
     def check_special_cases name
       name_string = case name.name
-        when 'Philidris cordatus protensa' then
-             'Philidris cordata protensa'
-
-        when 'Philidris cordatus protensus butteli' then
-             'Philidris cordata protensus butteli'
-
-        when 'Philidris cordatus fuscus jactans' then
-             'Philidris cordata fuscus jactans'
-
-        when 'Philidris cordatus fuscus simalurana' then
-             'Philidris cordata fuscus simalurana'
-
-        when 'Philidris cordatus fuscus waldoi' then
-             'Philidris cordata fuscus waldoi'
-
-        when 'Plagiolepis schmitzi crossi gaetula' then
-             'Plagiolepis schmitzii crossi gaetula'
-
-        when 'Platythyrea wroughtoni sechellensis' then
-             'Platythyrea wroughtonii sechellensis'
-
-        when 'Plagiolepis schmitzi tingitana' then
-             'Plagiolepis schmitzii tingitana'
-
+        when 'Diacamma sculpta' then
+             'Diacamma rugosum sculptum'
+        when 'Formica whymperi' then
+             'Formica adamsi whymperi'
         else return name; end
       Name.find_by_name name_string
     end
