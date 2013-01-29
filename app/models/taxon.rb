@@ -87,11 +87,11 @@ class Taxon < ActiveRecord::Base
     nil
   end
 
-  def self.search_for_name_and_authorship name, bolton_key, pages
+  def self.search_for_name_and_authorship name, bolton_key, pages = nil
     results = where name_cache: name
     if results.size > 1
       results = joins(protonym: [{authorship: :reference}]).where 'name_cache = ? AND references.bolton_key_cache = ?', name, bolton_key
-      if results.size > 1
+      if results.size > 1 and pages
         results = results.to_a.select {|result| result.protonym.authorship.pages == pages}
         if results.size > 1
           raise 'Duplicate name + authorships'
