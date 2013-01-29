@@ -5,7 +5,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     ForwardRef.delete_all
     DedupeSynonyms.dedupe
 
-Update.destroy_all
+#Update.destroy_all
 
     @options = options.reverse_merge show_progress: false
     @continue_after_parse_error = true
@@ -208,6 +208,31 @@ Update.destroy_all
     Species.import_myrmicium_heerii
     fix_creightonidris
     replace_references
+    self.class.fix_pheidole_longipes
+    self.class.fix_polyrhachis
+    set_status_manually 'Strongylognathus kratochvili', 'valid'
+  end
+
+  def self.fix_pheidole_longipes
+    update_status 'Pheidole longipes', 'Pergande 1896', 'homonym'
+  end
+
+  def self.become_subspecies_of subspecies, species
+    taxon = Taxon.find_by_name subspecies
+    species = Taxon.find_by_name species
+    taxon.become_subspecies_of species
+  end
+
+  def self.fix_polyrhachis
+    become_subspecies_of 'Polyrhachis overbecki', 'Polyrhachis thrinax'
+    become_subspecies_of 'Polyrhachis javaniana', 'Polyrhachis sculpurata'
+    become_subspecies_of 'Polyrhachis exflavicornis', 'Polyrhachis bicolor'
+  end
+
+  def self.update_status name, bolton_key_cache, status
+    taxon = Taxon.search_for_name_and_authorship name, bolton_key_cache
+    taxon.update_attribute :status, status if taxon
+    taxon
   end
 
   def replace_reference old_bolton_key_cache, new_key_cache
