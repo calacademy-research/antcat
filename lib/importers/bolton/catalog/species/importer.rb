@@ -219,13 +219,15 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
 
   def self.become_subspecies_of subspecies, species
     taxon = Taxon.find_by_name subspecies
+    return unless taxon
     species = Taxon.find_by_name species
+    return unless species
     taxon.become_subspecies_of species
   end
 
   def self.fix_polyrhachis
     become_subspecies_of 'Polyrhachis overbecki', 'Polyrhachis thrinax'
-    become_subspecies_of 'Polyrhachis javaniana', 'Polyrhachis sculpurata'
+    become_subspecies_of 'Polyrhachis javaniana', 'Polyrhachis sculpturata'
     become_subspecies_of 'Polyrhachis exflavicornis', 'Polyrhachis bicolor'
   end
 
