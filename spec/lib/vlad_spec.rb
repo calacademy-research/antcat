@@ -56,6 +56,22 @@ describe Vlad do
     results.map(&:id).should =~ [no_synonym.id]
   end
 
+  it "should show protonyms without authorships" do
+    protonym_with_authorship = FactoryGirl.create :protonym
+    protonym_without_authorship = FactoryGirl.create :protonym
+    # simply doing protonym_without_authorship.update_attribute(:authorship_id, nil)
+    # does nothing
+    Protonym.update_all 'authorship_id = NULL',  id: protonym_without_authorship.id
+    protonym_without_authorship.reload.authorship_id.should be_nil
+
+    create_genus protonym: protonym_with_authorship
+    create_genus protonym: protonym_without_authorship
+
+    results = Vlad::ProtonymsWithoutAuthorships.query
+    results.size.should == 1
+    results.first.should == protonym_without_authorship
+  end
+
   it "should show duplicate synonyms" do
     senior = create_genus
     junior = create_genus

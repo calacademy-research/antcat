@@ -222,6 +222,17 @@ class Vlad
     end
   end
 
+  class ProtonymsWithoutAuthorships < Problem
+    def self.query
+      Protonym.where authorship_id: nil
+    end
+    def self.display
+      display_results_section query do |protonym|
+        Taxon.where(protonym_id: protonym).first.name.name
+      end
+    end
+  end
+
   class DuplicateValids < Problem
     def self.query
      Taxon.select('names.name AS name, COUNT(names.name) AS count').
