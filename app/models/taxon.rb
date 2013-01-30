@@ -148,9 +148,7 @@ class Taxon < ActiveRecord::Base
   def unavailable?;           status == 'unavailable' end
   def available?;             !unavailable? end
   def invalid?;               status != 'valid' end
-  def unidentifiable?;        status == 'unidentifiable' end
   def ichnotaxon?;            status == 'ichnotaxon' end
-  def unresolved_homonym?;    status == 'unresolved homonym' end
   def excluded?;              status == 'excluded' end
   def incertae_sedis_in?      rank; incertae_sedis_in == rank end
   def collective_group_name?; status == 'collective group name' end
@@ -192,7 +190,7 @@ class Taxon < ActiveRecord::Base
     incertae_sedis_in = conditions[:incertae_sedis_in]
     children = children.where incertae_sedis_in: incertae_sedis_in if incertae_sedis_in
     children = children.where hong: !!conditions[:hong] if conditions.key? :hong
-    children = children.where "status = 'valid' OR status = 'unresolved homonym'"
+    children = children.where status: 'valid'
     children = children.ordered_by_name
     children
   end

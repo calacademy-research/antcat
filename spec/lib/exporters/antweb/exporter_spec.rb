@@ -46,9 +46,9 @@ describe Exporters::Antweb::Exporter do
       tribe = create_tribe subfamily: @ponerinae
       valid_genus = create_genus subfamily: @ponerinae, tribe: tribe
       invalid_genus = create_genus subfamily: @ponerinae, tribe: tribe, status: 'synonym'
-      unidentifiable_genus = create_genus subfamily: @ponerinae, tribe: tribe, status: 'unidentifiable'
-      @exporter.export_taxon(valid_genus).should == [@ponerinae.name.to_s, tribe.name.to_s, valid_genus.name.to_s, nil, nil, nil, 'TRUE', 'TRUE', nil, nil, 'FALSE', 'history']
-      @exporter.export_taxon(unidentifiable_genus).should == [@ponerinae.name.to_s, tribe.name.to_s, unidentifiable_genus.name.to_s, nil, nil, nil, 'FALSE', 'FALSE', nil, nil, 'FALSE', 'history']
+      unidentifiable_genus = create_genus subfamily: @ponerinae, tribe: tribe, status: 'valid', unidentifiable: true
+      @exporter.export_taxon(valid_genus).should =~ [@ponerinae.name.to_s, tribe.name.to_s, valid_genus.name.to_s, nil, nil, nil, 'TRUE', 'TRUE', nil, nil, 'FALSE', 'history']
+      @exporter.export_taxon(unidentifiable_genus).should == [@ponerinae.name.to_s, tribe.name.to_s, unidentifiable_genus.name.to_s, nil, nil, nil, 'TRUE', 'TRUE', nil, nil, 'FALSE', 'history']
       @exporter.export_taxon(invalid_genus).should == nil
     end
 
