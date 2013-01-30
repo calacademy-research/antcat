@@ -1,4 +1,7 @@
 # coding: UTF-8
+# To get data from AntWiki to compare with AntCat:
+# 1. Download http://ants.csiro.au/Ant_Wiki/images/9/9e/AntWiki_Valid_Species.txt
+# 2. In MySql, run "load data infile '<download directory>/AntWiki_Valid_Species.txt' into table antwiki_valid_taxa;"
 module Antwiki
 
   def self.compare_valid show_progress = false
