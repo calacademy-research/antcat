@@ -95,6 +95,12 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     Progress.puts
   end
 
+  def set_unidentifiable name
+    taxon = Taxon.find_by_name name
+    return unless taxon.present?
+    taxon.update_attribute :unidentifiable, true
+  end
+
   def do_manual_fixups_after_fixups
     set_status_manually 'Camponotus abdominalis', 'homonym'
     set_status_manually 'Camponotus (Camponotus) herculeanus var. rubens', 'synonym'

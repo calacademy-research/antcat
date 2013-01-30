@@ -139,6 +139,12 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     fix_reference 133054, 'Bolton Fisher 2012'
   end
 
+  def set_unresolved_homonym name
+    taxon = Taxon.find_by_name name
+    return unless taxon.present?
+    taxon.update_attribute :unresolved_homonym, true
+  end
+
   def do_manual_fixups
     delete_subgenus 'Atopogyne'
     delete_subgenus 'Colobocrema'
@@ -149,7 +155,9 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
     delete_subgenus 'Paracrema'
     delete_subgenus 'Sphaerocrema'
     set_status_manually 'Wilsonia', 'unresolved homonym'
-    set_status_manually 'Hypochira', 'unidentifiable'
+
+    set_unresolved_homonym 'Hypochira'
+
     set_status_manually 'Formicium', 'collective group name'
     set_synonym_of_orthocrema 'Apterocrema'
     set_synonym_of_orthocrema 'Eucrema'
