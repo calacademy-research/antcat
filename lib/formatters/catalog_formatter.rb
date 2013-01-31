@@ -11,11 +11,9 @@ module Formatters::CatalogFormatter
   extend Formatters::Formatter
 
   def self.taxon_label_span taxon, options = {}
-    content = content_tag :span, class: taxon_css_classes(taxon, options) do
+    content_tag :span, class: taxon_css_classes(taxon, options) do
       taxon_label(taxon, options).html_safe
     end
-    content << ' (unresolved junior homonym)' if Status[taxon.status] == Status['unresolved homonym'] && options[:indicate_unresolved_junior_homonym]
-    content
   end
 
   def self.taxon_label taxon, options = {}
