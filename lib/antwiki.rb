@@ -1,7 +1,13 @@
 # coding: UTF-8
 # To get data from AntWiki to compare with AntCat:
 # 1. Download http://ants.csiro.au/Ant_Wiki/images/9/9e/AntWiki_Valid_Species.txt
-# 2. In MySql, run "load data infile '<download directory>/AntWiki_Valid_Species.txt' into table antwiki_valid_taxa;"
+# 2. Delete header row
+# 3. Save it in Excel as Tab-Delimited Text
+# 3. Truncate antwiki_valid_taxa
+# 3. In MySql, run "LOAD DATA LOCAL INFILE '/Users/mwilden/antcat/data/antwiki/AntWiki_Valid_Species.txt' REPLACE INTO TABLE antwiki_valid_taxa FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\r' IGNORE 1 LINES;
+# 4. Add VARCHAR column 'result'
+# 4. Add PRIMARY KEY AUTOINCREMENT column 'result'
+
 module Antwiki
 
   def self.compare_valid show_progress = false
