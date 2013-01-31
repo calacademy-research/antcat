@@ -11,9 +11,9 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130130011034) do
+ActiveRecord::Schema.define(:version => 20130131012013) do
 
-  create_table "antwiki_valid_taxa", :id => false, :force => true do |t|
+  create_table "antwiki_valid_taxa", :force => true do |t|
     t.string   "name"
     t.string   "subfamilia"
     t.string   "tribus"
@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(:version => 20130130011034) do
     t.string   "images"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "result"
   end
 
   create_table "author_names", :force => true do |t|
@@ -272,8 +273,8 @@ ActiveRecord::Schema.define(:version => 20130130011034) do
     t.boolean  "type_fossil"
     t.string   "name_cache"
     t.string   "name_html_cache"
-    t.boolean  "unidentifiable"
-    t.boolean  "unresolved_homonym"
+    t.boolean  "unidentifiable",                  :default => false, :null => false
+    t.boolean  "unresolved_homonym",              :default => false, :null => false
   end
 
   add_index "taxa", ["genus_id"], :name => "taxa_genus_id_idx"
