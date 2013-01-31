@@ -50,9 +50,9 @@ Feature: Edit reference
       | authors             | citation   | cite_code | created_at | date     | possess | title | updated_at | year |
       | Ward, P.;Bolton, B. | Psyche 5:3 | CiteCode  | today      | 20100712 | Possess | title | today      | 2010 |
     When I go to the references page
-    When I follow "edit"
-    When I fill in "reference_author_names_string" with "Ward, P.; Fisher, B.; Bolton, B."
-    And I press the "Save" button
+    When I click the "edit" link beside the reference
+    When in the edit form I fill in "reference_author_names_string" with "Ward, P.; Fisher, B.; Bolton, B."
+    And In the edit form, I press the "Save" button
     Then I should see "Ward, P.; Fisher, B.; Bolton, B."
 
   Scenario: Change a reference's year
