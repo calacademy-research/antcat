@@ -52,6 +52,24 @@ describe Exporters::Antweb::Exporter do
       @exporter.export_taxon(invalid_genus).should == nil
     end
 
+    it "should export unidentifiable and unresolved junior homonyms" do
+      valid_genus = create_genus
+      unidentifiable_genus = create_genus unidentifiable: true
+      unresolved_homonym_genus = create_genus unresolved_homonym: true
+      @exporter.export_taxon(valid_genus).should_not be_nil
+      @exporter.export_taxon(unidentifiable_genus).should_not be_nil
+      @exporter.export_taxon(unresolved_homonym_genus).should_not be_nil
+    end
+
+    it "should not export unidentifiable and unresolved junior homonyms if there is a taxon with the same name that is not unidentifiable or an unresolved junior homonym" do
+      valid = create_genus 'Atta'
+      unidentifiable = create_genus 'Atta', unidentifiable: true
+      unresolved_homonym = create_genus 'Atta', unresolved_homonym: true
+      @exporter.export_taxon(valid).should_not be_nil
+      @exporter.export_taxon(unidentifiable).should be_nil
+      @exporter.export_taxon(unresolved_homonym).should be_nil
+    end
+
     describe "Exporting species" do
       it "should export one correctly" do
         atta = create_genus 'Atta', tribe: @attini
