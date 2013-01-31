@@ -111,6 +111,12 @@ Then /I should see these entries (with a header )?in this order:/ do |with_heade
   end
 end
 
+Then 'there should be just the existing reference' do
+  all('.reference').size.should == 1
+end
+
+##################
+
 Then /I (#{SHOULD_OR_SHOULD_NOT}) see the edit form/ do |should_selector|
   css_selector = "#reference_"
   css_selector << @reference.id.to_s if @reference
@@ -127,10 +133,6 @@ end
 
 Then 'I should not see the reference' do
   find("#reference_#{@reference.id} .reference_display").should_not be_visible
-end
-
-Then 'there should be just the existing reference' do
-  all('.reference').size.should == 1
 end
 
 When /in the new edit form I fill in "(.*?)" with "(.*?)"/ do |field, value|
@@ -163,10 +165,6 @@ end
 
 Then 'the "Delete" button should not be visible' do
   find_button('Delete').should_not be_visible
-end
-
-Then 'I should not see the "Delete" button' do
-  page.should_not have_css "button", :text => 'Delete'
 end
 
 Then 'all the buttons should be disabled' do
@@ -239,8 +237,25 @@ When /in the new edit form I fill in "reference_author_names_string" with a very
   end
 end
 
+When /in the edit form I fill in "([^"]*)" with "([^"]*)"/ do |field, text|
+  within "#reference_#{@reference.id}" do
+    step %{I fill in "#{field}" with "#{text}"}
+  end
+end
 Then /I should see a very long author names string/ do
   step %{I should see "#{very_long_author_names_string}"}
+end
+
+When /^I click the "edit" link beside the reference$/ do
+  within "#reference_#{@reference.id}" do
+    step %{I follow "edit"}
+  end
+end
+
+When /^In the edit form, I press the "Save" button$/ do
+  within "#reference_#{@reference.id}" do
+    step %{I press the "Save" button}
+  end
 end
 
 Given /^I will enter the ID of "Arbitrary Match" in the following dialog$/ do
