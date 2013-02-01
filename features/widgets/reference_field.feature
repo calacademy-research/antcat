@@ -27,11 +27,13 @@ Feature: Reference field
     And I press "OK"
     Then the field should contain the reference by Bolton
 
-  #Scenario: Adding a reference
-    #Given there are no references
-    #When I go to the reference field widget test page
-    #And I click the expand icon
-    #And I add a reference by Brian Fisher
+  Scenario: Adding a reference
+    Given there are no references
+    When I go to the reference field widget test page
+    And I click the expand icon
+    # "Save" appears to be getting clicked, but
+    # the form stays up
+    And I add a reference by Brian Fisher
     #Then the field should contain the reference by Fisher
 
   Scenario: Cancelling
