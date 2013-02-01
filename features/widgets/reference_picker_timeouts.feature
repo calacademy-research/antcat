@@ -9,6 +9,8 @@ Feature: Reference picker
       #| Fisher, B.; Bolton, B.  | 1995b         | Fisher Bolton book    | Ants 1:1-2 |
       #| Hölldobler, B.          | 1995b         | Bert's book           | Ants 1:1-2 |
 
+  # For both, get 'element is not currently visible'
+
   # Works for real - fails in Cucumber
   #Scenario: Editing the selected reference
     #Given I am logged in
