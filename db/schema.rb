@@ -300,8 +300,6 @@ ActiveRecord::Schema.define(:version => 20130131012013) do
 
   add_index "taxon_history_items", ["taxon_id"], :name => "index_taxonomic_history_items_on_taxon_id"
 
-<<<<<<< HEAD
-=======
   create_table "updates", :force => true do |t|
     t.string   "class_name"
     t.integer  "record_id"
@@ -313,7 +311,6 @@ ActiveRecord::Schema.define(:version => 20130131012013) do
     t.string   "name"
   end
 
->>>>>>> Remove unused code
   create_table "users", :force => true do |t|
     t.string   "email",                              :default => "", :null => false
     t.string   "encrypted_password",                 :default => ""
