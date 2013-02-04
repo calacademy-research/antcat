@@ -1,14 +1,14 @@
 source :rubygems
 
 gem 'acts_as_list'
-gem 'aws-s3',           :require => 'aws/s3', :git => 'git://github.com/emk/aws-s3.git'
+gem 'aws-s3',           require: 'aws/s3',  git: 'git://github.com/emk/aws-s3.git'
 gem 'citrus'
-gem 'curb',             :require => 'curl'
+gem 'curb',             require: 'curl'
 gem 'devise'
 gem 'devise_invitable'
 gem 'haml'
 gem 'high_voltage'
-gem 'jquery-rails'
+gem 'jquery-rails',     '~> 1'
 gem 'mysql2'
 gem 'nokogiri'
 gem 'progress_bar'
