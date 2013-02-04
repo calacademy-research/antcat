@@ -14,12 +14,12 @@ module ApplicationHelper
     $ReleaseType.user_can_edit? current_user
   end
 
-  def user_can_edit_catalog
+  def user_can_edit_catalog?
     current_user && session[:mode] == 'edit'
   end
 
   def user_can_not_edit?
-    !user_can_edit?
+    not user_can_edit?
   end
 
   def make_title title

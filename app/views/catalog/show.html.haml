@@ -9,7 +9,7 @@
   &nbsp;
 
 #catalog
-  - if user_can_edit_catalog
+  - if user_can_edit_catalog?
     - editing_buttons_content = editing_buttons @taxon, @parameters
     - if editing_buttons_content.present?
       #editing_buttons= editing_buttons_content
