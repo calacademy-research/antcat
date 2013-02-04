@@ -10,7 +10,7 @@ Feature: Editing a history item
     And I am logged in as an editor and have editing turned on
 
   Scenario: Editing a history item
-    When I go to the catalog
+    When I go to the catalog with editing mode turned on
     Then the history should be "Taxonomic history"
     * I click the edit icon
     * I edit the history item to "(none)"

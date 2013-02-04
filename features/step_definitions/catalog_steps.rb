@@ -49,8 +49,12 @@ Then /^I should (not )?see the editing buttons$/ do |should_not|
   page.send selector, have_css('input[value="Reverse synonymy"]')
 end
 
-And /^I turn on editing mode/ do
+And /^I turn on editing mode$/ do
   visit '/catalog?mode=edit'
+end
+
+And /^I visit the catalog with editing mode turned on$/ do
+  step 'I turn on editing mode'
 end
 
 And /^I turn off editing mode/ do
