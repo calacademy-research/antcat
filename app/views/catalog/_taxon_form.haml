@@ -1,64 +1,59 @@
--#Locals: genus, tribe
--#Members: @possible_duplicate
 
-.taxon_form.ui-corner-all.ui-widget-content.ui-widget
-  - genus ||= Genus.new
+.taxon_form#taxon_form
+  - genus = Genus.first
   = form_for genus do |f|
-    %span.creating_taxon_message= creating_taxon_message :genus, tribe
-    = render 'shared/errors_for', resource: genus
+    .name_section.section
+      %table.section_contents.ui-dialog-content.ui-widget-content.ui-corner-all
+        %tr
+          %td.label= label_tag :name
+          %td#taxon_name_picker.name
+            = render 'name_pickers/show'
+          %td.ancestry
+            = "Genus < Tapinomini < Dolichoderinae"
+        %tr
+          %td.label= label_tag :status
+          %td
+            Selector
+            Radio buttons
 
-    -#%input{type: 'hidden', name: 'subfamily_id', value: subfamily_id}
-    %input{type: 'hidden', name: 'genus[tribe]', value: tribe.id}
+    .protonym_section.section.ui-corner-all
+      .section_header.ui-widget-header.ui-corner-top
+        Protonym
+      .section_contents.ui-dialog-content.ui-widget-content.ui-corner-bottom
+        Protonym fields
 
-    %table{style: 'width:100%'}
-      %col{:width => '50px'}
-      %col{:width => '*'}
-      %col{:align => 'right', :width => '34px'}
-      %col{:width => '100px'}
+    .type_section.section.ui-corner-all
+      .section_header.ui-widget-header.ui-corner-top
+        Type
+      .section_contents.ui-dialog-content.ui-widget-content.ui-corner-bottom
+        Type fields
 
-      %tr
-        %td= label_tag :name
-        %td= f.text_field :name
+    .history_section.section.ui-corner-all
+      .section_header.ui-widget-header.ui-corner-top
+        History
+      .section_contents.ui-dialog-content.ui-widget-content.ui-corner-bottom
+        History items
 
-      %tr
-        %td
-        %td
-          .ui-dialog-titlebar.ui-widget-header.ui-corner-all
-            %span.ui-dialog-title Protonym
-          .ui-dialog-content.ui-widget-content
-            %table{style: 'width:100%'}
-              %tr
-                %td= label_tag :name
-                %td= f.text_field :name
-              %tr
-                %td{colspan:2}
-                  .ui-dialog-titlebar.ui-widget-header.ui-corner-all
-                    %span.ui-dialog-title Authorship
-                  .ui-dialog-content.ui-widget-content
-                    (picker)
+    .references_section.section.ui-corner-all
+      .section_header.ui-widget-header.ui-corner-top
+        References
+      .section_contents.ui-dialog-content.ui-widget-content.ui-corner-bottom
+        Reference items
 
-      %tr
-        %td
-        %td
-          .ui-dialog-titlebar.ui-widget-header.ui-corner-all
-            %span.ui-dialog-title Type
-          .ui-dialog-content.ui-widget-content
-
-      %tr
-        %td
-        %td
-          .ui-dialog-titlebar.ui-widget-header.ui-corner-all
-            %span.ui-dialog-title History
-          .ui-dialog-content.ui-widget-content
-
+    %table.synonym_homonym_section.section.ui-corner-all
       %tr
         %td
-        %td
-          .ui-dialog-titlebar.ui-widget-header.ui-corner-all
-            %span.ui-dialog-title References
-          .ui-dialog-content.ui-widget-content
+          .synonym_section.subsection
+            .section_header.ui-widget-header.ui-corner-top
+              Synonyms
+            .section_contents.ui-dialog-content.ui-widget-content.ui-corner-bottom
+              Synonym items
 
-      %tr
-        %td.spinner_container{:colspan => 4}
-          %button.ui-priority-primary.submit= @possible_duplicate ? 'Save Anyway' : 'Save'
-          %button.ui-priority-secondary.cancel Cancel
+        %td
+          .homonym_section.subsection.ui-corner-all
+            .section_header.ui-widget-header.ui-corner-top
+              Homonym
+            .section_contents.ui-dialog-content.ui-widget-content.ui-corner-bottom
+              Homonym fields
+
+    .buttons_section
