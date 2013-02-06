@@ -13,14 +13,18 @@
           %td.label= label_tag :status
           %td
             = f.select :status, Status.statuses
+
             = f.check_box :fossil
-            = label_tag :fossil, 'Fossil'
+            = label_tag :fossil
+
             = f.check_box :unidentifiable
-            = label_tag :unidentifiable, 'Unidentifiable'
+            = label_tag :unidentifiable
+
             = f.check_box :unresolved_homonym
-            = label_tag :unresolved_homonym, 'Unresolved homonym'
+            = label_tag :unresolved_homonym, 'Unresolved junior homonym'
+
             = f.check_box :hong
-            = label_tag :hong, 'Hong'
+            = label_tag :hong
 
     .protonym_section.section
       .section_header.ui-widget-header.ui-corner-top
