@@ -1,9 +1,5 @@
 class AntCat.TaxonForm extends AntCat.NestedForm
 
-  constructor: ->
-    super
-    new AntCat.NamePicker $('#taxon_name_picker'), field: true
-
   open: =>
     @element.closest('.taxon_form').show 'slidedown'
     super
