@@ -1,41 +1,59 @@
 
 .taxon_form#taxon_form.ui-widget{style: {display: 'none'}}
-  = form_for @taxon do |f|
+  = form_for @taxon do |taxon_form|
 
     .name_section.section
       %table.ui-dialog-content.ui-widget-content.ui-corner-all
         %tr
-          %td.label= label_tag :name
+          %td.label= taxon_form.label :name
           %td
-            %span.name= f.text_field :input_name
+            %span.name= taxon_form.text_field :input_name
             %span.ancestry= "Genus < Tapinomini < Dolichoderinae"
         %tr
-          %td.label= label_tag :status
+          %td.label= taxon_form.label :status
           %td
-            = f.select :status, Status.statuses
+            = taxon_form.select :status, Status.statuses
 
-            = f.check_box :fossil
-            = label_tag :fossil
+            = taxon_form.check_box :fossil
+            = taxon_form.label :fossil
 
-            = f.check_box :unidentifiable
-            = label_tag :unidentifiable
+            = taxon_form.check_box :unidentifiable
+            = taxon_form.label :unidentifiable
 
-            = f.check_box :unresolved_homonym
-            = label_tag :unresolved_homonym, 'Unresolved junior homonym'
+            = taxon_form.check_box :unresolved_homonym
+            = taxon_form.label :unresolved_homonym, 'Unresolved junior homonym'
 
-            = f.check_box :hong
-            = label_tag :hong
+            = taxon_form.check_box :hong
+            = taxon_form.label :hong
 
         %tr
-          %td.label= label_tag :notes
+          %td.label= taxon_form.label :notes
           %td
-            %span.notes= f.text_area :headline_notes_taxt, rows: 1
+            %span.notes= taxon_form.text_area :headline_notes_taxt, rows: 1
 
     .protonym_section.section
       .section_header.ui-widget-header.ui-corner-top
         Protonym
-      .ui-dialog-content.ui-widget-content.ui-corner-bottom
-        Protonym fields
+      = taxon_form.fields_for :protonym do |protonym_form|
+        %table.ui-dialog-content.ui-widget-content.ui-corner-bottom
+          %tr
+            %td.label= protonym_form.label :protonym_name, 'Name'
+            %td
+              %span.name= protonym_form.text_field :name
+
+              = protonym_form.check_box :fossil
+              = protonym_form.label :fossil
+
+              = protonym_form.check_box :sic
+              = protonym_form.label :sic
+
+          %tr
+            = protonym_form.fields_for :authorship do |authorship_form|
+              %td.label= protonym_form.label :authorship
+              %td
+                %span.authorship= authorship_form.text_field :reference
+                = protonym_form.label :pages
+                %span.pages= authorship_form.text_field :pages
 
     .type_section.section
       .section_header.ui-widget-header.ui-corner-top
