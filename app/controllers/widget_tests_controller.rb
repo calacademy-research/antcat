@@ -19,7 +19,7 @@ class WidgetTestsController < ApplicationController
   end
 
   def taxon_form_test
-    @taxon = Genus.where('headline_notes_taxt != ""').first
+    @taxon = Genus.where('type_taxt != ""').first
   end
 
 end

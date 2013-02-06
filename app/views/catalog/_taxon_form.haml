@@ -58,8 +58,6 @@
     .type_section.section
       .section_header.ui-widget-header.ui-corner-top
         Type
-      .ui-dialog-content.ui-widget-content.ui-corner-bottom
-        Type fields
 
     .history_section.section
       .section_header.ui-widget-header.ui-corner-top
@@ -88,5 +86,9 @@
               Homonym
             .ui-dialog-content.ui-widget-content.ui-corner-bottom
               Homonym fields
+        %tr
+          %td.label= taxon_form.label :type_taxt, 'Notes'
+          %td
+            %span.taxt= taxon_form.text_area :type_taxt, rows: 1
 
     .buttons_section
