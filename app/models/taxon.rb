@@ -2,12 +2,17 @@
 class Taxon < ActiveRecord::Base
   set_table_name :taxa
 
-  attr_accessor :input_name
-  def input_name
-    name ? name.name : ''
-  end
-
+  belongs_to :name; validates :name, presence: true
   before_save :set_name_caches
+
+  ###############################################
+  # other associations
+  belongs_to  :protonym, dependent: :destroy
+  belongs_to  :type_name, class_name: 'Name', foreign_key: :type_name_id
+  has_many    :history_items, class_name: 'TaxonHistoryItem', order: :position, dependent: :destroy
+  has_many    :reference_sections, order: :position, dependent: :destroy
+
+  accepts_nested_attributes_for :name, :protonym
 
   def set_name_caches
     self.name_cache = name.name
@@ -16,7 +21,6 @@ class Taxon < ActiveRecord::Base
 
   ###############################################
   # name
-  belongs_to :name; validates :name, presence: true
   scope :with_names, joins(:name).readonly(false)
   scope :ordered_by_name, with_names.order('names.name').includes(:name)
 
@@ -137,13 +141,6 @@ class Taxon < ActiveRecord::Base
   has_one     :homonym_replaced, class_name: 'Taxon', foreign_key: :homonym_replaced_by_id
   def homonym?; status == 'homonym' end
   def homonym_replaced_by? taxon; homonym_replaced_by == taxon end
-
-  ###############################################
-  # other associations
-  belongs_to  :protonym, dependent: :destroy
-  belongs_to  :type_name, class_name: 'Name', foreign_key: :type_name_id
-  has_many    :history_items, class_name: 'TaxonHistoryItem', order: :position, dependent: :destroy
-  has_many    :reference_sections, order: :position, dependent: :destroy
 
   ###############################################
   # statuses, fossil

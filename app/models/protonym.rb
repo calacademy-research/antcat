@@ -5,6 +5,8 @@ class Protonym < ActiveRecord::Base
   belongs_to  :name
   validates   :name, presence: true
 
+  accepts_nested_attributes_for :name, :authorship
+
   def self.import data
     transaction do
       authorship = Citation.import data[:authorship].first if data[:authorship]
