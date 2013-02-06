@@ -1,6 +1,11 @@
 @import 'common'
 
+// Structure
 .taxon_form
+  padding: 10px
+
+  &.ui-widget
+    font-size: 14px
 
   .section
     margin-bottom: 10px
@@ -8,34 +13,31 @@
     .section_header
       padding-left: 6px
 
-    .section_contents
+  .name_section .name input
+    width: 150px
 
-    .subsection
+  .synonym_section
+    padding-right: 3px
 
-    .synonym_section
-      padding-right: 3px
+  .homonym_section
+    padding-left: 3px
 
-    .homonym_section
-      padding-left: 3px
+//elements
+.label
+  font-style: italic
+  font-size: 14px
+  width: 62px
 
-  table
-    width: 100%
+table
+  width: 100%
 
-  .ui-dialog-titlebar, .ui-dialog-content
-    padding: 6px
+// jQuery UI
+.ui-dialog-titlebar, .ui-dialog-content
+  padding: 6px
 
-  .ui-dialog-titlebar, .label
-    font-style: italic
-    font-size: 16px
+.ui-dialog-titlebar
+  font-style: italic
+  font-size: 16px
 
-  .label
-    width: 80px
-
-  .ui-dialog-content
-    margin-bottom: 6px
-
-  .name
-    .antcat_name_picker
-      width: 300px
-
-  padding: 10px
+.ui-dialog-content
+  margin-bottom: 6px

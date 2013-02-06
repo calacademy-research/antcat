@@ -1,15 +1,14 @@
 
-.taxon_form#taxon_form
+.taxon_form#taxon_form.ui-widget{style: {display: 'none'}}
   - genus = Genus.first
   = form_for genus do |f|
     .name_section.section
-      %table.section_contents.ui-dialog-content.ui-widget-content.ui-corner-all
+      %table.ui-dialog-content.ui-widget-content.ui-corner-all
         %tr
           %td.label= label_tag :name
-          %td#taxon_name_picker.name
-            = render 'name_pickers/show'
-          %td.ancestry
-            = "Genus < Tapinomini < Dolichoderinae"
+          %td
+            %span.name= text_field :genus, :input_name
+            %span.ancestry= "Genus < Tapinomini < Dolichoderinae"
         %tr
           %td.label= label_tag :status
           %td
@@ -19,41 +18,41 @@
     .protonym_section.section.ui-corner-all
       .section_header.ui-widget-header.ui-corner-top
         Protonym
-      .section_contents.ui-dialog-content.ui-widget-content.ui-corner-bottom
+      .ui-dialog-content.ui-widget-content.ui-corner-bottom
         Protonym fields
 
     .type_section.section.ui-corner-all
       .section_header.ui-widget-header.ui-corner-top
         Type
-      .section_contents.ui-dialog-content.ui-widget-content.ui-corner-bottom
+      .ui-dialog-content.ui-widget-content.ui-corner-bottom
         Type fields
 
     .history_section.section.ui-corner-all
       .section_header.ui-widget-header.ui-corner-top
         History
-      .section_contents.ui-dialog-content.ui-widget-content.ui-corner-bottom
+      .ui-dialog-content.ui-widget-content.ui-corner-bottom
         History items
 
     .references_section.section.ui-corner-all
       .section_header.ui-widget-header.ui-corner-top
         References
-      .section_contents.ui-dialog-content.ui-widget-content.ui-corner-bottom
+      .ui-dialog-content.ui-widget-content.ui-corner-bottom
         Reference items
 
     %table.synonym_homonym_section.section.ui-corner-all
       %tr
         %td
-          .synonym_section.subsection
+          .synonym_section
             .section_header.ui-widget-header.ui-corner-top
               Synonyms
-            .section_contents.ui-dialog-content.ui-widget-content.ui-corner-bottom
+            .ui-dialog-content.ui-widget-content.ui-corner-bottom
               Synonym items
 
         %td
-          .homonym_section.subsection.ui-corner-all
+          .homonym_section.ui-corner-all
             .section_header.ui-widget-header.ui-corner-top
               Homonym
-            .section_contents.ui-dialog-content.ui-widget-content.ui-corner-bottom
+            .ui-dialog-content.ui-widget-content.ui-corner-bottom
               Homonym fields
 
     .buttons_section
