@@ -1,7 +1,6 @@
 
 .taxon_form#taxon_form.ui-widget{style: {display: 'none'}}
-  - genus = Genus.first
-  = form_for genus do |f|
+  = form_for @taxon do |f|
     .name_section.section
       %table.ui-dialog-content.ui-widget-content.ui-corner-all
         %tr

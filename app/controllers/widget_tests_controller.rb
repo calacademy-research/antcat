@@ -19,6 +19,7 @@ class WidgetTestsController < ApplicationController
   end
 
   def taxon_form_test
+    @taxon = Genus.first
   end
 
 end
