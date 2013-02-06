@@ -1,7 +1,11 @@
 # coding: UTF-8
 class Taxon < ActiveRecord::Base
-
   set_table_name :taxa
+
+  attr_accessor :input_name
+  def input_name
+    name ? name.name : ''
+  end
 
   before_save :set_name_caches
 
