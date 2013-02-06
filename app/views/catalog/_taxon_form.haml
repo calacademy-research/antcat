@@ -1,6 +1,7 @@
 
 .taxon_form#taxon_form.ui-widget{style: {display: 'none'}}
   = form_for @taxon do |f|
+
     .name_section.section
       %table.ui-dialog-content.ui-widget-content.ui-corner-all
         %tr
@@ -11,7 +12,7 @@
         %tr
           %td.label= label_tag :status
           %td
-            Selector
+            = f.select :status, ['valid', 'synonym']
             Radio buttons
 
     .protonym_section.section
