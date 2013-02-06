@@ -26,6 +26,11 @@
             = f.check_box :hong
             = label_tag :hong
 
+        %tr
+          %td.label= label_tag :notes
+          %td
+            %span.notes= f.text_area :headline_notes_taxt, rows: 1
+
     .protonym_section.section
       .section_header.ui-widget-header.ui-corner-top
         Protonym
