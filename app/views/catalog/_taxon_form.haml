@@ -12,8 +12,15 @@
         %tr
           %td.label= label_tag :status
           %td
-            = f.select :status, ['valid', 'synonym']
-            Radio buttons
+            = f.select :status, Status.statuses
+            = f.check_box :fossil
+            = label_tag :fossil, 'Fossil'
+            = f.check_box :unidentifiable
+            = label_tag :unidentifiable, 'Unidentifiable'
+            = f.check_box :unresolved_homonym
+            = label_tag :unresolved_homonym, 'Unresolved homonym'
+            = f.check_box :hong
+            = label_tag :hong, 'Hong'
 
     .protonym_section.section
       .section_header.ui-widget-header.ui-corner-top
