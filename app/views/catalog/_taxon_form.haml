@@ -1,5 +1,7 @@
+- url = url_for @taxon
+- method = @taxon.persisted? ? 'put' : 'post'
+.taxon_form#taxon_form.ui-widget{style: {display: 'none'}, 'data-action' => url, 'data-method' => method}
 
-.taxon_form#taxon_form.ui-widget{style: {display: 'none'}}
   = fields_for @taxon do |taxon_form|
 
     .name_section.section
