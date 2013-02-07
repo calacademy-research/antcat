@@ -14,6 +14,7 @@ class AntCat.Form
   initialize_buttons: =>
     @options.button_container or= '> .buttons'
     @buttons = @element.find(@options.button_container)
+    console.log 'initialize_buttons: @buttons is nil' unless @buttons
     @buttons
       .find(':button, :submit').unbutton().button().end()
       .find('.submit').click(@submit).end()
