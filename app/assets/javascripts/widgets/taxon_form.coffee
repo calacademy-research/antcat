@@ -1,1 +1,5 @@
-class AntCat.TaxonForm extends AntCat.NestedForm
+class AntCat.TaxonForm extends AntCat.Form
+
+  submit: =>
+    @start_throbbing()
+    @form().submit()
