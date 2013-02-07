@@ -8,6 +8,11 @@ class CatalogController < ApplicationController
     setup_taxon_and_index
   end
 
+  def update
+    show
+    render :show
+  end
+
   def search
     if params[:commit] == 'Clear'
       clear_search
