@@ -32,7 +32,6 @@ group :development, :test do
 end
 
 group :development do
-  gem 'engineyard'
   gem 'wirble'
 end
 
