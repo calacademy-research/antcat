@@ -72,4 +72,4 @@ calculate_taxon_height = ->
   30
 
 set_width = ->
-  $("#catalog .antcat_taxon, #catalog .new_taxon_form").width $('#page').width()
+  $('#catalog .antcat_taxon, #catalog').width $('#page').width()
