@@ -14,7 +14,7 @@ class AntCat.AjaxForm
   initialize_buttons: =>
     @options.button_container or= '> .buttons'
     @buttons = @element.find(@options.button_container)
-    console.log 'initialize_buttons: @buttons is nil' unless @buttons
+    console.log 'initialize_buttons: @buttons is nil' unless @buttons.size() == 1
     @buttons
       .find(':button, :submit').unbutton().button().end()
       .find('.submit').click(@submit).end()
