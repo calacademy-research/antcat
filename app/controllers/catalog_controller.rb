@@ -8,11 +8,6 @@ class CatalogController < ApplicationController
     setup_taxon_and_index
   end
 
-  def update
-    show
-    render :show
-  end
-
   def search
     if params[:commit] == 'Clear'
       clear_search
@@ -172,24 +167,6 @@ class CatalogController < ApplicationController
 
   def translate_search_selector_value_to_english value
     {'m' => 'matching', 'bw' => 'beginning with', 'c' => 'containing'}[value]
-  end
-
-  ##########################
-  def create
-    tribe = Tribe.find params[:genus][:tribe]
-    genus = Genus.new(
-      name: params[:genus][:name],
-      status: 'valid',
-      tribe: tribe)
-    genus.save
-
-    json = {
-      isNew: true,
-      content: render_to_string(partial: 'catalog/taxon_form', locals: {genus: genus, tribe: tribe}),
-      success: genus.errors.empty?
-    }.to_json
-
-    render json: json, content_type: 'text/html'
   end
 
   ##########################
