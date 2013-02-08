@@ -289,3 +289,8 @@ end
 Given /there are no references/ do
   Reference.delete_all
 end
+
+Given /^there is a reference for "Bolton, 2005"$/ do
+  @reference = FactoryGirl.create :article_reference, :author_names => [FactoryGirl.create(:author_name, :name => 'Bolton')], :citation_year => '2005'
+end
+
