@@ -44,7 +44,7 @@ class AntCat.NamePicker extends AntCat.NestedForm
     @textbox = @edit.find('input[type=text]')
     @setup_autocomplete @textbox
     @initialize_buttons()
-    @element.show()
+    @element.show() unless @options.hide_initially
     if displaying_or_editing == 'editing'
       @go_into_edit_mode()
     else
