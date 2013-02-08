@@ -40,8 +40,11 @@
 
         %tr
           %td.label= taxon_form.label :headline_notes_taxt, 'Notes'
-          %td
-            %span.notes= taxon_form.text_area :headline_notes_taxt, rows: 1
+          %td#headline_notes_taxt_editor.taxt_editor
+            %span.notes= taxon_form.text_area :headline_notes_taxt, rows: 1, class: 'taxt_edit_box'
+            = render 'tag_type_selectors/show'
+            = render 'reference_pickers/show'
+            = render 'name_pickers/show'
 
     .protonym_section.section
       .section_header.ui-widget-header.ui-corner-top
