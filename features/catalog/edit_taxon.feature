@@ -1,7 +1,7 @@
 @javascript @editing
-Feature: Adding a taxon
+Feature: Editing a taxon
   As an editor of AntCat
-  I want to add taxa
+  I want to edit taxa
   So that information is kept accurate
   So people use AntCat
 
@@ -10,7 +10,9 @@ Feature: Adding a taxon
     #And a subfamily exists with a name of "Dolichoderinae" and a taxonomic history of "Dolichoderinae history"
     #And a tribe exists with a name of "Dolichoderini" and a subfamily of "Dolichoderinae" and a taxonomic history of "Dolichoderini history"
 
-  #Scenario: Adding a genus
+  Scenario: Editing a genus
+    Given there is a genus called "Calyptites"
+    When I go to the edit page for the genus
     #When I go to the catalog
     #* I follow "Dolichoderinae" in the subfamilies index
     #* I follow "Dolichoderini" in the tribes index
