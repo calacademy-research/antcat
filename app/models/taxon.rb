@@ -6,7 +6,8 @@ class Taxon < ActiveRecord::Base
   # nested attributes
   belongs_to :name; validates :name, presence: true
   belongs_to :protonym, dependent: :destroy
-  accepts_nested_attributes_for :name, :protonym
+  belongs_to  :type_name, class_name: 'Name', foreign_key: :type_name_id
+  accepts_nested_attributes_for :name, :protonym, :type_name
 
   before_save :set_name_caches
   def set_name_caches
@@ -139,7 +140,6 @@ class Taxon < ActiveRecord::Base
 
   ###############################################
   # other associations
-  belongs_to  :type_name, class_name: 'Name', foreign_key: :type_name_id
   has_many    :history_items, class_name: 'TaxonHistoryItem', order: :position, dependent: :destroy
   has_many    :reference_sections, order: :position, dependent: :destroy
 
