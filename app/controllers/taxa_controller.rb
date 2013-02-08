@@ -17,7 +17,8 @@ class TaxaController < ApplicationController
     rescue
       render :edit and return
     end
-    redirect_to catalog_path @taxon
+    render :edit and return
+    #redirect_to catalog_path @taxon
   end
 
   ###################
@@ -25,6 +26,7 @@ class TaxaController < ApplicationController
     Taxon.transaction do
       protonym_attributes = attributes.delete :protonym_attributes
       type_name_attributes = attributes.delete :type_name_attributes
+
       update_name_status_flags attributes
       update_protonym protonym_attributes
       update_type_name type_name_attributes
