@@ -154,6 +154,7 @@ class Taxon < ActiveRecord::Base
   def excluded?;              status == 'excluded' end
   def incertae_sedis_in?      rank; incertae_sedis_in == rank end
   def collective_group_name?; status == 'collective group name' end
+  def nomen_nudum?;           status == 'nomen nudum' end
 
   ###############################################
   def rank
