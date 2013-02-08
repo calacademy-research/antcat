@@ -21,9 +21,11 @@ class AntCat.TaxtEditor
     @control = @element.find '> textarea'
     @control.addClass 'taxt_edit_box'
     @tag_type_selector = new AntCat.TagTypeSelector(@element.find('.antcat_tag_type_selector'), on_ok: @handle_tag_type_selector_result, on_cancel: @after_form_closes)
-    @reference_picker = @element.find_topmost '.antcat_reference_picker'
-    @parent_buttons = @element.siblings().find(':button')
-    @name_picker = new AntCat.NamePicker(@element.find('#name_picker'), on_success: @handle_name_picker_result, on_close: @after_form_closes)
+    @reference_picker = @element.find '.antcat_reference_picker'
+    console.log 'TaxtEditor ctor: no @reference_picker' unless @reference_picker.size() == 1
+    #@parent_buttons = @element.siblings().find(':button')
+    #console.log 'TaxtEditor ctor: no @parent_buttons' unless @parent_buttons.size() == 1
+    @name_picker = new AntCat.NamePicker(@element.find('.antcat_name_picker').parent(), on_success: @handle_name_picker_result, on_close: @after_form_closes, hide_initially: true)
     @dashboard = new TaxtEditor.DebugDashboard @ if @options.show_debug_dashboard
     @dashboard?.show_status 'before'
     @value @control.val()
@@ -68,7 +70,7 @@ class AntCat.TaxtEditor
 
   before_form_opens: =>
     @replace_text_area_with_simulation()
-    @parent_buttons.disable()
+    #@parent_buttons.disable()
 
   open_tag_type_selector: =>
     @before_form_opens()
@@ -78,7 +80,7 @@ class AntCat.TaxtEditor
     @open_picker_for_new_tag(type)
 
   after_form_closes: =>
-    @parent_buttons.undisable()
+    #@parent_buttons.undisable()
     @replace_simulation_with_text_area()
 
   open_picker_for_new_tag: (type) =>
