@@ -73,6 +73,8 @@ class Formatters::TaxonFormatter
       labels << 'unidentifiable'
     elsif @taxon.unresolved_homonym?
       labels << "unresolved junior homonym"
+    elsif @taxon.nomen_nudum?
+      labels << "<i>nomen nudum</i>"
     elsif @taxon.invalid?
       label = Status[@taxon].to_s.dup
       label << senior_synonym_list
