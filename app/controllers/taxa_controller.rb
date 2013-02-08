@@ -34,14 +34,8 @@ class TaxaController < ApplicationController
   end
 
   def update_name_status_flags attributes
-    update_name attributes[:name_attributes]
-    @taxon.update_attributes status: attributes[:status],
-                             fossil: attributes[:fossil],
-                             unidentifiable: attributes[:unidentifiable],
-                             unresolved_homonym: attributes[:unresolved_homonym],
-                             hong: attributes[:hong],
-                             type_fossil: attributes[:type_fossil],
-                             type_taxt: attributes[:type_taxt],
+    update_name attributes.delete :name_attributes
+    @taxon.update_attributes attributes
   end
 
   def update_name attributes
@@ -58,12 +52,15 @@ class TaxaController < ApplicationController
   def update_protonym attributes
     update_protonym_name attributes.delete :name_attributes
     update_protonym_authorship attributes.delete :authorship_attributes
+    @taxon.protonym.update_attributes attributes
   end
 
   def update_protonym_name attributes
   end
 
   def update_protonym_authorship attributes
+    attributes.delete :reference
+    @taxon.protonym.authorship.update_attributes attributes
   end
 
   def update_type_name attributes
