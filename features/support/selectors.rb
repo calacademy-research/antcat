@@ -36,6 +36,9 @@ module HtmlSelectorsHelpers
     when /the catalog search box/
       "#qq"
 
+    when /the header/
+      ".header"
+
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
     #
