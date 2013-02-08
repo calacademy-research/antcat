@@ -1,6 +1,5 @@
 # coding: UTF-8
 class TaxaController < ApplicationController
-
   def new
   end
 
@@ -18,8 +17,7 @@ class TaxaController < ApplicationController
     rescue
       render :edit and return
     end
-    render :edit and return
-    #redirect_to catalog_path @taxon
+    redirect_to catalog_path @taxon
   end
 
   ###################
