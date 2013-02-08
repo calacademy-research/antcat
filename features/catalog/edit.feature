@@ -12,11 +12,9 @@ Feature: Editing a taxon
     And I save the form
     Then I should see "Atta" in the header
 
-  #Scenario: Trying to add a genus with a blank name
-    #When I go to the catalog
-    #* I follow "Dolichoderinae" in the subfamilies index
-    #* I follow "Dolichoderini" in the tribes index
-    #* I follow "add" in the genera index
-    #* I set the genus name to ""
-    #* I save my changes
-    #Then I should see "Name can't be blank"
+  Scenario: Trying to add a genus with a blank name
+    Given there is a genus called "Calyptites"
+    When I go to the edit page for the genus
+    And I set the genus name to ""
+    And I save the form
+    Then I should see "Name can't be blank"
