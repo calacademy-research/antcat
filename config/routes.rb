@@ -30,25 +30,25 @@ AntCat::Application.routes.draw do
   match     '/antcat_references.utf8.endnote_import', to: 'references#index', format: :endnote_import, as: :endnote_import
   resources :styles, only: [:index]
 
-  resources :families, controller: :catalog do
+  resources :families, controller: :taxa do
     resources :taxon_history_items
   end
-  resources :subfamilies, controller: :catalog do
+  resources :subfamilies, controller: :taxa do
     resources :taxon_history_items
   end
-  resources :tribes, controller: :catalog do
+  resources :tribes, controller: :taxa do
     resources :taxon_history_items
   end
-  resources :genera, controller: :catalog do
+  resources :genera, controller: :taxa do
     resources :taxon_history_items
   end
-  resources :subgenera, controller: :catalog do
+  resources :subgenera, controller: :taxa do
     resources :taxon_history_items
   end
-  resources :species, controller: :catalog do
+  resources :species, controller: :taxa do
     resources :taxon_history_items
   end
-  resources :subspecies, controller: :catalog do
+  resources :subspecies, controller: :taxa do
     resources :taxon_history_items
   end
 
@@ -64,7 +64,6 @@ AntCat::Application.routes.draw do
   match '/widget_tests/reference_picker_test', to: 'widget_tests#reference_picker_test'
   match '/widget_tests/reference_field', to: 'widget_tests#reference_field'
   match '/widget_tests/taxt_editor', to: 'widget_tests#taxt_editor'
-  match '/widget_tests/taxon_form_test', to: 'widget_tests#taxon_form_test'
 
   devise_for :users
 

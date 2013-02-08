@@ -18,8 +18,4 @@ class WidgetTestsController < ApplicationController
     @taxon = Family.first
   end
 
-  def taxon_form_test
-    @taxon = Genus.where('type_taxt != ""').first
-  end
-
 end

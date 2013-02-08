@@ -3,7 +3,6 @@
 - content_for :head do
   = javascript_include_tag 'widgets/panel', 'widgets/form', 'widgets/ajax_form', 'widgets/nested_form', 'widgets/reference_panel', 'widgets/reference_picker', 'widgets/reference_form', 'widgets/tag_type_selector', 'widgets/name_picker'
   = javascript_include_tag 'widget_tests/reference_field_test'
-  = stylesheet_link_tag 'catalog/taxon_form'
 
 - content_for :page_contents do
   .nested_form#taxon_form.antcat_form.ui-corner-all.ui-widget-content.ui-widget{method: :post}
