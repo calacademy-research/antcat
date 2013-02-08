@@ -3,6 +3,7 @@ class AntCat.NamePicker extends AntCat.NestedForm
   constructor: (@parent_element, @options = {}) ->
     @options.field = true unless @options.field?
     @element = @parent_element.find('> .antcat_name_picker')
+    console.log 'NamePicker ctor: no @element' unless @element.size() == 1
     @options.button_container = '.buttons'
     if @options.field
       @id = @element.find('.edit #id').val()
@@ -40,8 +41,11 @@ class AntCat.NamePicker extends AntCat.NestedForm
   initialize: (displaying_or_editing = 'editing') =>
     @element.addClass 'modal' unless @options.field
     @edit = @element.find('.edit')
+    console.log 'NamePicker initialize: no @edit' unless @edit.size() == 1
     @display = @element.find('.display')
+    console.log 'NamePicker initialize: no @display' unless @display.size() == 1
     @textbox = @edit.find('input[type=text]')
+    console.log 'NamePicker initialize: no @textbox' unless @textbox.size() == 1
     @setup_autocomplete @textbox
     @initialize_buttons()
     @element.show() unless @options.hide_initially
@@ -130,6 +134,7 @@ class AntCat.NamePicker extends AntCat.NestedForm
 
   # -----------------------------------------
   setup_autocomplete: ($textbox) =>
+    console.log 'NamePicker setup_autocomplete: no $textbox' unless $textbox.size() == 1
     return if AntCat.testing
     $textbox.autocomplete(
         autoFocus: true,

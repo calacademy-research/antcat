@@ -3,6 +3,7 @@ class AntCat.ReferencePicker
   constructor: (@parent_element, @options = {}) ->
     @options.field = true unless @options.field?
     @element = @parent_element.find('> .antcat_reference_picker')
+    console.log 'ReferencePicker ctor: no @element' unless @element.size() == 1
 
     if @options.id
       @id = @options.id
