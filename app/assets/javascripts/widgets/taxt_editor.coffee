@@ -28,7 +28,7 @@ class AntCat.TaxtEditor
     else
       @parent_buttons = @element.siblings().find(':button')
     console.log 'TaxtEditor ctor: no @parent_buttons' unless @parent_buttons.size() == 1
-    @name_picker = new AntCat.NamePicker(@element.find('.antcat_name_picker').parent(), on_success: @handle_name_picker_result, on_close: @after_form_closes, hide_initially: true)
+    @name_picker = new AntCat.NamePicker(@element.find('.antcat_name_picker').parent(), on_success: @handle_name_picker_result, on_close: @after_form_closes, field: false, hide_initially: true)
     @dashboard = new TaxtEditor.DebugDashboard @ if @options.show_debug_dashboard
     @dashboard?.show_status 'before'
     @value @control.val()
