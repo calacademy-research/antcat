@@ -16,6 +16,7 @@ class AntCat.TaxtEditor
   constructor: (@element, @options = {}) ->
     @element.addClass 'taxt_editor'
     @control = @element.find '> textarea'
+    console.log 'TaxtEditor ctor: no @control' unless @control.size() == 1
     @control.addClass 'taxt_edit_box'
     @tag_type_selector = new AntCat.TagTypeSelector(@element.find('.antcat_tag_type_selector'), on_ok: @handle_tag_type_selector_result, on_cancel: @after_form_closes)
     @reference_picker = @element.find '.antcat_reference_picker'
