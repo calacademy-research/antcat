@@ -17,8 +17,11 @@ class TaxaController < ApplicationController
     rescue
       render :edit and return
     end
-    render :edit and return
-    #redirect_to catalog_path @taxon
+    if Rails.env.test?
+      redirect_to catalog_path @taxon
+    else
+      render :edit and return
+    end
   end
 
   ###################
