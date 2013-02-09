@@ -126,7 +126,6 @@ class AntCat.TaxtEditor
     @handle_picker_result data.taxt
 
   handle_picker_result: (taxt) =>
-    @options.on_close_picker() if @options.on_close_picker
     if taxt
       new_value = @value()[...@tag_start] + taxt + @value()[@tag_end...]
       @value new_value
