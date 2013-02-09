@@ -10,7 +10,9 @@ class AntCat.TagTypeSelector extends AntCat.NestedForm
   submit: (eventObject) =>
     @close()
     @options.on_ok($(eventObject.currentTarget).attr('id'))
+    false
 
   cancel: =>
     @close()
     @options.on_cancel()
+    false
