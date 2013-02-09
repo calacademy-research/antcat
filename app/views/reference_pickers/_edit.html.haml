@@ -8,7 +8,6 @@
   - method = reference.new_record? ? 'post' : 'put'
   - data_multipart = Rails.env.test? ? '' : 'true'
   .nested_form{'data-action' => url, 'data-method' => method, 'data-multipart' => data_multipart}
-    %input{:type => 'hidden', :name => '_method', :value => method}
     %input{type: :hidden, name: :selected_tab, id: :selected_tab, class: :selected_tab, value: selected_tab}
     %input{type: 'hidden', name: 'possible_duplicate', id: 'possible_duplicate', value: @possible_duplicate ? 'true' : nil}
     = render 'shared/errors_for', :resource => reference
