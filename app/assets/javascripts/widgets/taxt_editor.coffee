@@ -2,12 +2,13 @@ window.AntCat or= {}
 
 # A TaxtEditor is a textarea with associated tag type selector, reference_picker and name picker
 #
-# identify the container (can be anything)
-# .taxt_editor
-#   = text_area_tag :taxt_editor, '', rows: 1, class: 'taxt_edit_box'
+# #taxt
+#   = text_area_tag :taxt_editor, '', Taxt.to_editable(taxt), rows: 1, class: 'taxt_edit_box'
 #   = render 'tag_type_selectors/show'
 #   = render 'reference_pickers/show'
 #   = render 'name_pickers/show'
+# In the page's CoffeeScript:
+#   new AntCat.TaxtEditor $('#taxt'), parent_buttons: '.buttons_section'
 
 $.fn.taxt_editor = (options = {}) ->
   return this.each -> new AntCat.TaxtEditor $(this), options
