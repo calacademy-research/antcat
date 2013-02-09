@@ -1,6 +1,7 @@
 class AntCat.NamePicker extends AntCat.NestedForm
 
   constructor: (@parent_element, @options = {}) ->
+    @options.keep_expanded_while_open = true
     @options.field = true unless @options.field?
     @element = @parent_element.find('> .antcat_name_picker')
     console.log 'NamePicker ctor: no @element' unless @element.size() == 1
@@ -119,6 +120,9 @@ class AntCat.NamePicker extends AntCat.NestedForm
     if @deciding_whether_to_add_name
       @element.find('.buttons [value="Add this name"]').val('OK')
       displaying_or_editing = 'editing'
+    else
+      if @options.keep_expanded_while_open
+        displaying_or_editing = 'editing'
     @id = @original_id
     if @id
       @load '', displaying_or_editing
