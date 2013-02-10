@@ -13,14 +13,22 @@ class TaxaController < ApplicationController
   def update
     @taxon = Taxon.find params[:id] 
     begin
-      update_taxon params.dup[:genus]
-    rescue
-      render :edit and return
+      key = get_name_key params
+      update_taxon params.dup[key]
+    #rescue
+      #render :edit and return
     end
     if Rails.env.test?
       redirect_to catalog_path @taxon
     else
       render :edit and return
+    end
+  end
+
+  def get_name_key params
+    params.keys.map(&:to_sym).find do |e|
+      [:family, :subfamily, :tribe, :genus, :subgenus, :species, :subspecies].
+        include? e
     end
   end
 
@@ -30,13 +38,13 @@ class TaxaController < ApplicationController
       protonym_attributes = attributes.delete :protonym_attributes
       type_name_attributes = attributes.delete :type_name_attributes
 
-      update_name_status_flags attributes
+      update_epithet_status_flags attributes
       update_protonym protonym_attributes
       update_type_name type_name_attributes
     end
   end
 
-  def update_name_status_flags attributes
+  def update_epithet_status_flags attributes
     update_name attributes.delete :name_attributes
     @taxon.attributes = attributes
     # apparently can't just assign this value to the attribute in attributes
@@ -46,13 +54,17 @@ class TaxaController < ApplicationController
 
   def update_name attributes
     begin
-      name = Name.import genus_name: attributes[:name]
+      name = Name.import get_name_attributes attributes
     rescue ActiveRecord::RecordInvalid
-      @taxon.name.name = attributes[:name]
+      @taxon.name.epithet = attributes[:epithet]
       @taxon.errors.add :base, "Name can't be blank"
       raise
     end
     @taxon.update_attributes name: name
+  end
+
+  def get_name_attributes attributes
+    {genus_name: attributes[:epithet]}
   end
 
   def update_protonym attributes
