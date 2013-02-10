@@ -191,4 +191,10 @@ describe Formatters::TaxonFormatter do
     end
   end
 
+  describe "Ancestry string" do
+    it "should handle the family" do
+      @formatter.new(Family.first).ancestry_string.should == 'Family'
+    end
+  end
+
 end
