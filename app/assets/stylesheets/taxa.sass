@@ -25,7 +25,7 @@
       width: 100%
     table
       padding-bottom: 0
-      td
+      > tr > td
         padding-bottom: 4px
 
   .protonym_section .pages input
@@ -61,10 +61,16 @@ table
   width: 100%
 
 .antcat_tag_type_selector
-  margin-top: 6px
 
-.antcat_name_picker input[type=text]
-  width: 250px
+.antcat_name_picker
+  padding: 0
+  .help
+    margin: 0
+  input[type=text]
+    width: 250px
+
+.antcat_taxt_simulation
+  padding: 6px
 
 // jQuery UI
 .ui-dialog-titlebar, .ui-dialog-content
