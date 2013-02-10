@@ -9,5 +9,5 @@ When /^I save the form$/ do
 end
 
 When /^I set the genus name to "([^"]*)"$/ do |name|
-  step %{I fill in "genus[name_attributes][name]" with "#{name}"}
+  step %{I fill in "genus[name_attributes][epithet]" with "#{name}"}
 end
