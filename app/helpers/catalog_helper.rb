@@ -106,8 +106,4 @@ module CatalogHelper
     return items.snake(column_count), css_class
   end
 
-  def creating_taxon_message rank, parent
-    "Adding #{rank} to #{parent.name}"
-  end
-
 end

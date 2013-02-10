@@ -50,12 +50,6 @@ describe CatalogHelper do
     end
   end
 
-  describe "Making the 'Creating... message'" do
-    it "should look like this" do
-      helper.creating_taxon_message(:genus, FactoryGirl.create(:subfamily, name: FactoryGirl.create(:name, name: 'Formicinae'))).should =~ /.*?ing genus .*? Formicinae/
-    end
-  end
-
   describe "Index column link" do
     it "should work" do
       helper.index_column_link(:subfamily, 'none', 'none', nil).should == '<a href="/catalog?child=none" class="valid selected">(no subfamily)</a>' 
