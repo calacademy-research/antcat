@@ -339,4 +339,9 @@ class Formatters::TaxonFormatter
     Taxt.to_string taxt, @user, expansion: expand_references?, formatter: self.class
   end
 
+  ############
+  def ancestry_string
+    'Family'
+  end
+
 end
