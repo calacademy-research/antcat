@@ -7,7 +7,7 @@
 - content_for :page_contents do
   #results
 
-  .nested_form#taxon_form.antcat_form.ui-corner-all.ui-widget-content.ui-widget{method: :post}
+  .nested_form#taxon_form.antcat_form.ui-corner-all.ui-widget-content.ui-widget
     %table
       %col{:width => '50px'}
       %col{:width => '*'}
@@ -20,6 +20,6 @@
             = render 'name_pickers/show', id: taxon ? taxon.name.id : nil, name: taxon ? taxon.name.name : nil
 
       %tr
-        %td.buttons{:colspan => 4}
-          %button.ui-priority-primary.submit= 'Save'
+        %td.buttons{colspan: 4}
+          %button.ui-priority-primary.submit Save
           %button.ui-priority-secondary.cancel Cancel
