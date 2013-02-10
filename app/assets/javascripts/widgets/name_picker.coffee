@@ -100,7 +100,7 @@ class AntCat.NamePicker extends AntCat.NestedForm
     true
 
   handle_success: (data) =>
-    @element.find('.buttons [value="Add this name"]').val('OK')
+    @element.find('.buttons .submit').val('OK')
     @id = data.id
     @edit.find('#id').val @id
     @edit.find('#name').val data.name
@@ -110,7 +110,7 @@ class AntCat.NamePicker extends AntCat.NestedForm
     super
 
   handle_application_error: (error_message) =>
-    @element.find('.buttons [value=OK]').val('Add this name')
+    @element.find('.buttons .submit').val('Add this name')
     @element.find('.error_messages').text error_message
     @deciding_whether_to_add_name = true
 
@@ -118,7 +118,7 @@ class AntCat.NamePicker extends AntCat.NestedForm
     @element.find('.error_messages').text ''
     displaying_or_editing = 'displaying'
     if @deciding_whether_to_add_name
-      @element.find('.buttons [value="Add this name"]').val('OK')
+      @element.find('.buttons .submit').val('OK')
       displaying_or_editing = 'editing'
     else
       if @options.keep_expanded_while_open
