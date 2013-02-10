@@ -13,14 +13,14 @@
 - content_for :page_contents do
   = form_for @taxon, html: {class: 'taxon_form ui-widget', style: {display: 'none'}} do |taxon_form|
     = render 'shared/errors_for', resource: @taxon
-    .name_status_flags_section.section
+    .epithet_status_flags_section.section
       %table.ui-dialog-content.ui-widget-content.ui-corner-all
         %tr
           = taxon_form.fields_for :name do |name_form|
-            %td.label= name_form.label :name
+            %td.label= name_form.label :name, 'Epithet'
             %td
-              %span.name= name_form.text_field :name
               %span.ancestry= "Genus < Tapinomini < Dolichoderinae"
+              %span.name= name_form.text_field :epithet
         %tr
           %td.label= taxon_form.label :status
           %td
