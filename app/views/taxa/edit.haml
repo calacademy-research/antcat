@@ -19,8 +19,9 @@
           = taxon_form.fields_for :name do |name_form|
             %td.label= name_form.label :name, 'Epithet'
             %td
-              %span.ancestry= "Genus < Tapinomini < Dolichoderinae"
               %span.name= name_form.text_field :epithet
+              %span.ancestry= Formatters::TaxonFormatter.new(@taxon).ancestry_string
+
         %tr
           %td.label= taxon_form.label :status
           %td
