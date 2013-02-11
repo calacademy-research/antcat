@@ -28,3 +28,11 @@ Feature: Editing a taxon
     Then I should see "This name is in use by another taxon"
     When I press "Save Homonym"
     Then there should be two genera with the name "Calyptites"
+
+  Scenario: Leaving a genus name alone when there are already two homonyms
+    Given there is a genus called "Calyptites"
+    And there is a genus called "Calyptites"
+    When I go to the edit page for "Calyptites"
+    And I save the form
+    Then I should not see "This name is in use by another taxon"
+    Then I should see "Calyptites" in the header
