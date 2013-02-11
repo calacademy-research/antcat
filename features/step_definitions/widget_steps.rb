@@ -68,7 +68,7 @@ end
 
 Then /^I should (not )?see the name popup edit interface$/ do |should_not|
   selector = should_not ? :should_not : :should
-  find('#popup .edit').send(selector, be_visible)
+  find('#popup .buttons').send(selector, be_visible)
 end
 
 Then /^I should (not )?see the name popup$/ do |should_not|
