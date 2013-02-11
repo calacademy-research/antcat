@@ -119,4 +119,5 @@
     .buttons_section
       = taxon_form.submit 'Save', class: 'ui-priority-primary submit'
       %input{type: 'button', class: 'ui-priority-secondary cancel', value: 'Cancel'}
+      = link_to 'Show', catalog_path(@taxon)
       = image_tag 'ui-anim_basic_16x16.gif', class: 'throbber'
