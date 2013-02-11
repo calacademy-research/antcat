@@ -30,6 +30,8 @@ Then /in the results section I should see the id for the name "([^"]*)"/ do |tex
   end
 end
 
+
+
 Then /in the name picker field display I should see the first name/ do
   within "#picker .display" do
     step %{I should see "#{Name.first.name}"}
@@ -51,6 +53,29 @@ Then /^I should (not )?see the name picker$/ do |should_not|
   selector = should_not ? :should_not : :should
   find('.antcat_name_picker').send(selector, be_visible)
 end
+
+Then /in the name popup display I should see the first name/ do
+  within "#popup .display" do
+    step %{I should see "#{Name.first.name}"}
+  end
+end
+
+Then /in the name popup display I should see "([^"]*)"/ do |text|
+  within "#popup .display" do
+    step %{I should see "#{text}"}
+  end
+end
+
+Then /^I should (not )?see the name popup edit interface$/ do |should_not|
+  selector = should_not ? :should_not : :should
+  find('#popup .edit').send(selector, be_visible)
+end
+
+Then /^I should (not )?see the name popup$/ do |should_not|
+  selector = should_not ? :should_not : :should
+  find('.antcat_name_popup').send(selector, be_visible)
+end
+
 
 When /^I edit the reference$/ do
   within ".current" do

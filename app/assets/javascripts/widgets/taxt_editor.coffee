@@ -1,12 +1,12 @@
 window.AntCat or= {}
 
-# A TaxtEditor is a textarea with associated tag type selector, reference_picker and name picker
+# A TaxtEditor is a textarea with associated tag type selector, reference_picker and name popup
 #
 # #taxt
 #   = text_area_tag :taxt_editor, '', Taxt.to_editable(taxt), rows: 1, class: 'taxt_edit_box'
 #   = render 'tag_type_selectors/show'
 #   = render 'reference_pickers/show'
-#   = render 'name_pickers/show'
+#   = render 'name_popups/show'
 # In the page's CoffeeScript:
 #   new AntCat.TaxtEditor $('#taxt'), parent_buttons: '.buttons_section'
 
@@ -28,8 +28,8 @@ class AntCat.TaxtEditor
     else
       @parent_buttons = @element.siblings().find(':button')
     console.log 'TaxtEditor ctor: no @parent_buttons' unless @parent_buttons.size() == 1
-    @name_picker = new AntCat.NamePicker(@element.find('.antcat_name_picker').parent(),
-      on_success: @handle_name_picker_result,
+    @name_popup = new AntCat.NamePopup(@element.find('.antcat_name_popup').parent(),
+      on_success: @handle_name_popup_result,
       on_close: @after_form_closes,
       field: false)
     @dashboard = new TaxtEditor.DebugDashboard @ if @options.show_debug_dashboard
@@ -93,7 +93,7 @@ class AntCat.TaxtEditor
     if type == 'reference_button'
       new AntCat.ReferencePicker @reference_picker.parent(), id: null, on_success: @handle_picker_result, on_close: @after_form_closes
     else
-      @name_picker.open()
+      @name_popup.open()
 
   open_picker_for_existing_tag: =>
     @before_form_opens()
@@ -102,7 +102,7 @@ class AntCat.TaxtEditor
     if type == 1
       new AntCat.ReferencePicker @reference_picker.parent(), id: id, on_success: @handle_picker_result, on_close: @after_form_closes
     else
-      @name_picker.open()
+      @name_popup.open()
 
   replace_text_area_with_simulation: =>
     # We need to indicate the selected tag in the taxt edit box
@@ -125,7 +125,7 @@ class AntCat.TaxtEditor
     @element.find('.antcat_taxt_simulation').remove()
     @control.show()
  
-  handle_name_picker_result: (data) =>
+  handle_name_popup_result: (data) =>
     @handle_picker_result data.taxt
 
   handle_picker_result: (taxt) =>
