@@ -35,7 +35,6 @@ class AntCat.NamePopup extends AntCat.NestedForm
   initialize: =>
     @textbox = @element.find('input[type=text]')
     console.log 'NamePopup initialize: no @textbox' unless @textbox.size() == 1
-    console.log @textbox
     @setup_autocomplete @textbox
     @textbox.focus()
 
