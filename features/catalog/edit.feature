@@ -7,14 +7,14 @@ Feature: Editing a taxon
 
   Scenario: Editing a genus
     Given there is a genus called "Calyptites"
-    When I go to the edit page for the genus
+    When I go to the edit page for "Calyptites"
     And I set the genus name to "Atta"
     And I save the form
     Then I should see "Atta" in the header
 
-  Scenario: Trying to add a genus with a blank name
+  Scenario: Trying to enter a blank name
     Given there is a genus called "Calyptites"
-    When I go to the edit page for the genus
+    When I go to the edit page for "Calyptites"
     And I set the genus name to ""
     And I save the form
     Then I should see "Name can't be blank"
