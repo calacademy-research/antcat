@@ -15,7 +15,7 @@ class TaxaController < ApplicationController
     begin
       key = get_name_key params
       update_taxon params.dup[key]
-    rescue
+    rescue ActiveRecord::RecordInvalid
       render :edit and return
     end
     redirect_to catalog_url @taxon
