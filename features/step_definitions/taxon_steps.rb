@@ -152,3 +152,7 @@ end
 Given /^there is a species name "([^"]*)"$/ do |name|
   create_name name
 end
+
+Then /^there should be two genera with the name "(.*)"$/ do |name|
+  Genus.where(name_cache: name).count.should == 2
+end

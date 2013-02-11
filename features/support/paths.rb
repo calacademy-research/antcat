@@ -41,8 +41,8 @@ module NavigationHelpers
       "/widget_tests/name_field?id=#{Name.first.id}"
     when /the name field test page/
       '/widget_tests/name_field'
-    when /the edit page for/
-      "/taxa/#{Genus.first.id}/edit"
+    when /the edit page for "(.*)"/
+      "/taxa/#{Taxon.find_by_name($1).id}/edit"
     else
       raise "#{page_name} not found"
     end

@@ -51,6 +51,12 @@ class TaxaController < ApplicationController
   def update_name attributes
     begin
       name = Name.import get_name_attributes attributes
+      @possible_homonym = @taxon.would_be_homonym_if_name_changed_to? name unless params[:possible_homonym].present?
+      if @possible_homonym
+        @taxon.errors.add :base, "This name is in use by another taxon. To create a homonym, click \"Save Homonym\"".html_safe
+        @taxon.name.epithet = attributes[:epithet]
+        raise
+      end
     rescue ActiveRecord::RecordInvalid
       @taxon.name.epithet = attributes[:epithet]
       @taxon.errors.add :base, "Name can't be blank"

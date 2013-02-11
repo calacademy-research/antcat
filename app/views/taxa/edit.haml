@@ -12,6 +12,7 @@
 
 - content_for :page_contents do
   = form_for @taxon, html: {class: 'taxon_form ui-widget', style: {display: 'none'}} do |taxon_form|
+    %input{type: :hidden, name: 'possible_homonym', id: 'possible_homonym', value: @possible_homonym ? 'true' : nil}
     = render 'shared/errors_for', resource: @taxon
     .epithet_status_flags_section.section
       %table.ui-dialog-content.ui-widget-content.ui-corner-all
@@ -117,7 +118,8 @@
               -#Homonym fields
 
     .buttons_section
-      = taxon_form.submit 'Save', class: 'ui-priority-primary submit'
+      - save_text = @possible_homonym ? 'Save Homonym' : 'Save'
+      = taxon_form.submit save_text, class: 'ui-priority-primary submit'
       %input{type: 'button', class: 'ui-priority-secondary cancel', value: 'Cancel'}
       = link_to 'Show', catalog_path(@taxon)
       = image_tag 'ui-anim_basic_16x16.gif', class: 'throbber'
