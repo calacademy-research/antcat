@@ -15,14 +15,10 @@ class TaxaController < ApplicationController
     begin
       key = get_name_key params
       update_taxon params.dup[key]
-    #rescue
-      #render :edit and return
-    end
-    if Rails.env.test?
-      redirect_to catalog_path @taxon
-    else
+    rescue
       render :edit and return
     end
+    redirect_to catalog_url @taxon
   end
 
   def get_name_key params
