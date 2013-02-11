@@ -117,7 +117,6 @@ class AntCat.TaxtEditor
     after_selection = text[@end()...]
     text = before_selection + selection + after_selection
     simulation = $("<p class='antcat_taxt_simulation ui-corner-all ui-widget-content ui-widget'>#{text}</p>")
-    simulation.height @control.height()
     simulation.insertAfter @control
     @control.hide()
 
