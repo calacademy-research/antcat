@@ -55,11 +55,15 @@ AntCat::Application.routes.draw do
   resource :taxon_window_height, only: [:update]
 
   resources :name_pickers, only: [:index, :lookup]
+  resources :name_popups, only: [:index, :lookup]
   match 'name_pickers/lookup' => 'name_pickers#lookup', as: :name_picker, via: :get
+  match 'name_popups/lookup' => 'name_popups#lookup', as: :name_popup, via: :get
   resource :reference_picker, only: :show
   resource :name_picker, only: :show
+  resource :name_popup, only: :show
 
   match '/widget_tests/name_picker', to: 'widget_tests#name_picker'
+  match '/widget_tests/name_popup', to: 'widget_tests#name_popup'
   match '/widget_tests/name_field', to: 'widget_tests#name_field'
   match '/widget_tests/reference_picker_test', to: 'widget_tests#reference_picker_test'
   match '/widget_tests/reference_field', to: 'widget_tests#reference_field'

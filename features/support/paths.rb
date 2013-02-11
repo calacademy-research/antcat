@@ -35,6 +35,8 @@ module NavigationHelpers
       '/widget_tests/taxt_editor'
     when /the name picker test page/
       '/widget_tests/name_picker'
+    when /the name popup test page/
+      '/widget_tests/name_popup'
     when /the name field test page for a name/
       "/widget_tests/name_field?id=#{Name.first.id}"
     when /the name field test page/

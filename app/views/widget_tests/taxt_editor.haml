@@ -1,7 +1,7 @@
 - @title = 'Taxt Edit Box Test'
 
 - content_for :head do
-  = javascript_include_tag 'widgets/panel', 'widgets/form', 'widgets/ajax_form', 'widgets/nested_form', 'widgets/reference_panel', 'widgets/reference_picker', 'widgets/reference_form', 'widgets/tag_type_selector', 'widgets/name_picker'
+  = javascript_include_tag 'widgets/panel', 'widgets/form', 'widgets/ajax_form', 'widgets/nested_form', 'widgets/reference_panel', 'widgets/reference_picker', 'widgets/reference_form', 'widgets/tag_type_selector', 'widgets/name_popup'
   = javascript_include_tag 'widgets/taxt_editor'
   = javascript_include_tag 'widget_tests/taxt_editor_test'
 
@@ -11,5 +11,5 @@
     = render 'tag_type_selectors/show'
     #reference_picker
       = render 'reference_pickers/show'
-    #name_picker
-      = render 'name_pickers/show'
+    #name_popup
+      = render 'name_popups/show'

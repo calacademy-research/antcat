@@ -4,7 +4,7 @@
   = javascript_include_tag 'qtip'
   = javascript_include_tag 'ext/jquery.ui.selectmenu.js', 'ext/jquery.spinner.js'
   = javascript_include_tag 'widgets/panel', 'widgets/form', 'widgets/ajax_form', 'widgets/nested_form', 'widgets/reference_panel',
-                           'widgets/reference_picker', 'widgets/reference_form', 'widgets/tag_type_selector', 'widgets/name_picker',
+                           'widgets/reference_picker', 'widgets/reference_form', 'widgets/tag_type_selector', 'widgets/name_popup',
                            'widgets/taxt_editor'
   = javascript_include_tag 'taxa'
 
@@ -45,7 +45,7 @@
             = text_area_tag 'genus[headline_notes_taxt]', Taxt.to_editable(@taxon.headline_notes_taxt), rows: 1, class: 'taxt_edit_box'
             = render 'tag_type_selectors/show'
             = render 'reference_pickers/show'
-            = render 'name_pickers/show'
+            = render 'name_popups/show'
 
     .protonym_section.section
       .section_header.ui-widget-header.ui-corner-top
