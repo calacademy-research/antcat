@@ -19,10 +19,12 @@ Feature: Editing a taxon
     And I save the form
     Then I should see "Name can't be blank"
 
-  Scenario: Trying to set a genus's name to an existing one
+  Scenario: Setting a genus's name to an existing one
     Given there is a genus called "Calyptites"
     And there is a genus called "Atta"
-    When I go to the edit page for "Calyptites"
+    When I go to the edit page for "Atta"
     And I set the genus name to "Calyptites"
     And I save the form
-    #Then I should see "Do you want to create a homonym?"
+    Then I should see "This name is in use by another taxon"
+    When I press "Save Homonym"
+    Then there should be two genera with the name "Calyptites"
