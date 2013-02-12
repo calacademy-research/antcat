@@ -42,6 +42,9 @@ module HtmlSelectorsHelpers
     when /the tag type selector/
       '.antcat_tag_type_selector'
 
+    when /the first reference/
+      first '.reference'
+
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
     #

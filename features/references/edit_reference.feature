@@ -19,13 +19,12 @@ Feature: Edit reference
     When I log in
     And I go to the references page
     And I should not be editing
-    When I follow "edit"
+    When I follow "edit" in the first reference
     Then I should see the edit form
     And I should not see the reference
-    When I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
-    And I fill in "reference_title" with "Ant Title"
-    And I press the "Save" button
-    And I wait for a bit
+    When I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B." in the first reference
+    And I fill in "reference_title" with "Ant Title" in the first reference
+    And I save my changes to the first reference
     Then I should be on the references page
     And I should see "Ward, B.L.; Bolton, B. 2010. Ant Title"
 
@@ -36,11 +35,10 @@ Feature: Edit reference
       | authors | Psyche 5:3 | CiteCode  | today      | 20100712 | Possess | title | today      | 2010 |
     Given I am not logged in
     When I go to the references page
-    * I follow "edit"
-    * I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
-    * I fill in "reference_title" with "Ant Title"
-    * I press the "Save" button
-    * I wait for a bit
+    * I follow "edit" in the first reference
+    * I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B." in the first reference
+    * I fill in "reference_title" with "Ant Title" in the first reference
+    * I save my changes to the first reference
     Then I should be on the references page
     And I should see "Ward, B.L.; Bolton, B. 2010. Ant Title"
 
@@ -55,18 +53,18 @@ Feature: Edit reference
     And In the edit form, I press the "Save" button
     Then I should see "Ward, P.; Fisher, B.; Bolton, B."
 
-  Scenario: Change a reference's year
-    Given I am logged in
-    And these references exist
-      | authors      | title | citation   | year |
-      | Fisher, B.L. | Ants  | Psyche 6:4 | 2010 |
-    When I go to the references page
-    When I follow "edit"
-    And I fill in "reference_citation_year" with "1910a"
-    And I press the "Save" button
-    And I fill in the search box with "1910"
-    And I press "Go" by the search box
-    Then I should see "Fisher, B.L. 1910a"
+  #Scenario: Change a reference's year
+    #Given I am logged in
+    #And these references exist
+      #| authors      | title | citation   | year |
+      #| Fisher, B.L. | Ants  | Psyche 6:4 | 2010 |
+    #When I go to the references page
+    #When I follow "edit" in the first reference
+    #And I fill in "reference_citation_year" with "1910a" in the first reference
+    #And I save my changes to the first reference
+    #And I fill in the search box with "1910"
+    #And I press "Go" by the search box
+    #Then I should see "Fisher, B.L. 1910a"
 
   Scenario: Change a reference's type
     Given I am logged in
@@ -74,11 +72,11 @@ Feature: Edit reference
       | authors    | title | citation   | year |
       | Fisher, B. | Ants  | Psyche 6:4 | 2010 |
     When I go to the references page
-    When I follow "edit"
-    And I follow "Book"
-    And I fill in "reference_publisher_string" with "New York: Wiley"
-    And I fill in "book_pagination" with "22 pp."
-    And I press the "Save" button
+    When I follow "edit" in the first reference
+    And I follow "Book" in the first reference
+    And I fill in "reference_publisher_string" with "New York: Wiley" in the first reference
+    And I fill in "book_pagination" with "22 pp." in the first reference
+    And I save my changes to the first reference
     Then I should see "Fisher, B. 2010. Ants. New York: Wiley, 22 pp."
 
   Scenario: See the correct tab initially
@@ -87,9 +85,9 @@ Feature: Edit reference
       | authors    | title | citation                | year |
       | Fisher, B. | Ants  | New York: Wiley, 22 pp. | 2010 |
     When I go to the references page
-    When I follow "edit"
-    And I fill in "reference_publisher_string" with "New York: Harcourt"
-    And I press the "Save" button
+    When I follow "edit" in the first reference
+    And I fill in "reference_publisher_string" with "New York: Harcourt" in the first reference
+    And I save my changes to the first reference
     Then I should see "Fisher, B. 2010. Ants. New York: Harcourt, 22 pp."
 
   Scenario: See the correct tab initially
@@ -98,9 +96,9 @@ Feature: Edit reference
       | authors    | title | citation | year |
       | Fisher, B. | Ants  | New York | 2010 |
     When I go to the references page
-    When I follow "edit"
-    And I fill in "reference_citation" with "New Jersey"
-    And I press the "Save" button
+    When I follow "edit" in the first reference
+    And I fill in "reference_citation" with "New Jersey" in the first reference
+    And I save my changes to the first reference
     Then I should see "Fisher, B. 2010. Ants. New Jersey."
 
   Scenario: Clearing a book reference's fields
@@ -109,14 +107,13 @@ Feature: Edit reference
       | authors    | citation                | year  | title |
       | Ward, P.S. | New York: Wiley, 36 pp. | 2010a | Ants  |
     When I go to the references page
-    When I follow "edit"
-    When I fill in "reference_author_names_string" with ""
-    And I fill in "reference_title" with ""
-    And I fill in "reference_citation_year" with ""
-    And I fill in "reference_publisher_string" with ""
-    And I fill in "book_pagination" with ""
-    And I press the "Save" button
-    And I wait for a bit
+    When I follow "edit" in the first reference
+    When I fill in "reference_author_names_string" with "" in the first reference
+    And I fill in "reference_title" with "" in the first reference
+    And I fill in "reference_citation_year" with "" in the first reference
+    And I fill in "reference_publisher_string" with "" in the first reference
+    And I fill in "book_pagination" with "" in the first reference
+    And I save my changes to the first reference
     Then I should see the edit form
     And I should see "Year can't be blank"
     And I should see "Title can't be blank"
@@ -129,15 +126,14 @@ Feature: Edit reference
       | authors    | citation   | year  | title |
       | Ward, P.S. | Psyche 1:2 | 2010a | Ants  |
     When I go to the references page
-    When I follow "edit"
-    When I fill in "reference_author_names_string" with ""
-    And I fill in "reference_title" with ""
-    And I fill in "reference_citation_year" with ""
-    And I fill in "reference_journal_name" with ""
-    And I fill in "reference_series_volume_issue" with ""
-    And I fill in "article_pagination" with ""
-    And I press the "Save" button
-    And I wait for a bit
+    When I follow "edit" in the first reference
+    When I fill in "reference_author_names_string" with "" in the first reference
+    And I fill in "reference_title" with "" in the first reference
+    And I fill in "reference_citation_year" with "" in the first reference
+    And I fill in "reference_journal_name" with "" in the first reference
+    And I fill in "reference_series_volume_issue" with "" in the first reference
+    And I fill in "article_pagination" with "" in the first reference
+    And I save my changes to the first reference
     Then I should see the edit form
     And I should see "Title can't be blank"
     And I should see "Year can't be blank"
@@ -151,13 +147,12 @@ Feature: Edit reference
       | authors    | citation | year  | title |
       | Ward, P.S. | New York | 2010a | Ants  |
     When I go to the references page
-    When I follow "edit"
-    When I fill in "reference_author_names_string" with ""
-    And I fill in "reference_title" with ""
-    And I fill in "reference_citation_year" with ""
-    And I fill in "reference_citation" with ""
-    And I press the "Save" button
-    And I wait for a bit
+    When I follow "edit" in the first reference
+    When I fill in "reference_author_names_string" with "" in the first reference
+    And I fill in "reference_title" with "" in the first reference
+    And I fill in "reference_citation_year" with "" in the first reference
+    And I fill in "reference_citation" with "" in the first reference
+    And I save my changes to the first reference
     Then I should see the edit form
     And I should see "Title can't be blank"
     And I should see "Year can't be blank"
@@ -169,10 +164,9 @@ Feature: Edit reference
       | authors    | citation   | year  | title |
       | Ward, P.S. | Psyche 1:1 | 2010a | Ants  |
     When I go to the references page
-    When I follow "edit"
+    When I follow "edit" in the first reference
     And I fill in "reference_document_attributes_url" with a URL to a document that exists
-    And I press the "Save" button
-    And I wait for a bit
+    And I save my changes to the first reference
     Then I should see a "PDF" link
 
   Scenario: Setting a document's publicness
@@ -184,9 +178,9 @@ Feature: Edit reference
     Then I should see a "PDF" link
     When I log in
     And I go to the references page
-    And I follow "edit"
-    And I check "reference_document_attributes_public"
-    And I press the "Save" button
+    And I follow "edit" in the first reference
+    And I check "reference_document_attributes_public" in the first reference
+    And I save my changes to the first reference
     And I log out
     And I go to the references page
     Then I should see a "PDF" link
@@ -197,9 +191,9 @@ Feature: Edit reference
       | authors    | citation   | year  | title |
       | Ward, P.S. | Psyche 1:1 | 2010a | Ants  |
     When I go to the references page
-    When I follow "edit"
-    When I fill in "reference_author_names_string" with "Ward, P.S. (ed.)"
-    And I press the "Save" button
+    When I follow "edit" in the first reference
+    When I fill in "reference_author_names_string" with "Ward, P.S. (ed.)" in the first reference
+    And I save my changes to the first reference
     Then I should see "Ward, P.S. (ed.)"
 
   Scenario: Removing the authors' role
@@ -209,9 +203,9 @@ Feature: Edit reference
       | Ward, P.S. (ed.) | Psyche 1:1 | 2010a | Ants  |
     When I go to the references page
     Then I should see "Ward, P.S. (ed.)"
-    When I follow "edit"
-    When I fill in "reference_author_names_string" with "Ward, P.S."
-    And I press the "Save" button
+    When I follow "edit" in the first reference
+    When I fill in "reference_author_names_string" with "Ward, P.S." in the first reference
+    And I save my changes to the first reference
     Then I should see "Ward, P.S."
 
   Scenario: Specifying the document URL when it doesn't exist
@@ -220,9 +214,9 @@ Feature: Edit reference
       | authors    | citation   | year  | title |
       | Ward, P.S. | Psyche 1:1 | 2010a | Ants  |
     When I go to the references page
-    When I follow "edit"
-    When I fill in "reference_document_attributes_url" with a URL to a document that doesn't exist
-    And I press the "Save" button
+    When I follow "edit" in the first reference
+    When I fill in "reference_document_attributes_url" with a URL to a document that doesn't exist in the first reference
+    And I save my changes to the first reference
     Then I should see the edit form
     And I should see "Document url was not found"
 
@@ -232,7 +226,7 @@ Feature: Edit reference
       | authors | citation   | cite_code | created_at | date     | possess | title | updated_at | year |
       | authors | Psyche 5:3 | CiteCode  | today      | 20100712 | Possess | title | today      | 2010 |
     When I go to the references page
-    When I follow "edit"
+    When I follow "edit" in the first reference
     Then I should see the edit form
     And I should see the reference's ID beside its label
 
@@ -246,9 +240,9 @@ Feature: Edit reference
       | Bolton, B. | Ants are my life | 2001 | In:      |
     When I go to the references page
     Then I should see "Bolton, B. 2001. Ants are my life. In: Ward, P.S. 2001. Ants. Psyche 5:3"
-    When I follow "edit"
-    And I fill in "reference_pages_in" with "Pp. 32 in:"
-    And I press the "Save" button
+    When I follow "edit" in the first reference
+    And I fill in "reference_pages_in" with "Pp. 32 in:" in the first reference
+    And I save my changes to the first reference
     Then I should see "Bolton, B. 2001. Ants are my life. Pp. 32 in: Ward, P.S. 2001. Ants. Psyche 5:3"
 
   Scenario: Edit a nested reference and changing its nestee to itself
@@ -261,32 +255,30 @@ Feature: Edit reference
       | Bolton, B. | Ants are my life | 2001 | In:      |
     When I go to the references page
     Then I should see "Bolton, B. 2001. Ants are my life. In: Ward, P.S. 2001. Ants. Psyche 5:3"
-    When I follow "edit"
+    When I follow "edit" in the first reference
     And I fill in "reference_nested_reference_id" with its own ID
-    And I press the "Save" button
+    And I save my changes to the first reference
     Then I should see "Nested reference can't point to itself"
 
-  Scenario: Edit a nested reference to remove its nestedness, delete the nestee, go back to the first one and set it as nested
-    Given I am logged in
-    And these references exist
-      | authors    | citation   | year | title |
-      | Ward, P.S. | Psyche 5:3 | 2001 | Ants  |
-    And the following entry nests it
-      | authors    | title            | year | pages_in |
-      | Bolton, B. | Ants are my life | 2001 | In:      |
-    When I go to the references page
-    And I edit "Bolton"
-    And I follow "Article"
-    And I fill in "reference_journal_name" with "Ant Journal"
-    And I fill in "reference_series_volume_issue" with "1"
-    And I fill in "article_pagination" with "2"
-    And I press the "Save" button
-    And I wait for a bit
-    And I will confirm on the next step
-    And I delete "Ward"
-    And I wait for a bit
-    And I edit "Bolton"
-    And I follow "Nested"
-    And I press the "Save" button
-    Then I should see "Nested reference can't be blank"
-
+  #Scenario: Edit a nested reference to remove its nestedness, delete the nestee, go back to the first one and set it as nested
+    #Given I am logged in
+    #And these references exist
+      #| authors    | citation   | year | title |
+      #| Ward, P.S. | Psyche 5:3 | 2001 | Ants  |
+    #And the following entry nests it
+      #| authors    | title            | year | pages_in |
+      #| Bolton, B. | Ants are my life | 2001 | In:      |
+    #When I go to the references page
+    #And I edit "Bolton"
+    #And I follow "Article" in the first reference
+    #And I fill in "reference_journal_name" with "Ant Journal" in the first reference
+    #And I fill in "reference_series_volume_issue" with "1" in the first reference
+    #And I fill in "article_pagination" with "2" in the first reference
+    #And I save my changes to the first reference
+    #And I will confirm on the next step
+    #And I delete "Ward"
+    #And I wait for a bit
+    #And I edit "Bolton"
+    #And I follow "Nested" in the first reference
+    #And I save my changes to the first reference
+    #Then I should see "Nested reference can't be blank"
