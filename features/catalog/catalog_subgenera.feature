@@ -15,20 +15,20 @@ Feature: Using the catalog
 
   Scenario: Subgenera are initially hidden
     When I go to the catalog
-    And I follow "Dolichoderinae"
+    And I follow "Dolichoderinae" in the index
     And I follow "Dolichoderus"
     Then I should not see "Subdolichoderus"
 
   Scenario: Showing subgenera
     When I go to the catalog
-    And I follow "Dolichoderinae"
+    And I follow "Dolichoderinae" in the index
     And I follow "Dolichoderus"
     And I follow "show subgenera"
     Then I should see "Subdolichoderus"
 
   Scenario: Selecting a subgenus
     When I go to the catalog
-    And I follow "Dolichoderinae"
+    And I follow "Dolichoderinae" in the index
     And I follow "Dolichoderus"
     And I follow "show subgenera"
     And I follow "Subdolichoderus"
@@ -37,7 +37,7 @@ Feature: Using the catalog
 
   Scenario: Hiding subgenera after selecting a subgenus
     When I go to the catalog
-    And I follow "Dolichoderinae"
+    And I follow "Dolichoderinae" in the index
     And I follow "Dolichoderus"
     And I follow "show subgenera"
     And I follow "Subdolichoderus"

@@ -90,7 +90,7 @@ Feature: Searching the catalog
 
   Scenario: Finding a tribe when tribes are hidden
     When I go to the catalog
-    And I follow "Dolichoderinae"
+    And I follow "Dolichoderinae" in the index
     And I fill in the catalog search box with "Dolichoderini"
     And I press "Go" by the search box
     Then I should see "Dolichoderini" in the tribes index

@@ -43,14 +43,14 @@ Feature: Using the catalog
   Scenario: Selecting a genus without a subfamily
     When I go to the catalog
     * I follow "(no subfamily)"
-    * I follow "Atta"
+    * I follow "Atta" in the index
     Then "(no subfamily)" should be selected
     And "Atta" should be selected
     And I should see "Atta history"
 
   Scenario: Selecting a subfamily
     When I go to the catalog
-    And I follow "Dolichoderinae"
+    And I follow "Dolichoderinae" in the index
     Then "Dolichoderinae" should be selected
     And I should see "Dolichoderinae history"
     And I should see "Extant: 1 valid tribe, 2 valid genera, 2 valid species, 1 valid subspecies"
@@ -59,8 +59,8 @@ Feature: Using the catalog
   Scenario: Selecting a tribe
     When I go to the catalog
     And I follow "show tribes"
-    And I follow "Dolichoderinae"
-    And I follow "Dolichoderini"
+    And I follow "Dolichoderinae" in the index
+    And I follow "Dolichoderini" in the index
     Then "Dolichoderinae" should be selected
     And I should see "Dolichoderini" in the contents
     And "Dolichoderini" should be selected
@@ -69,7 +69,7 @@ Feature: Using the catalog
 
   Scenario: Selecting a genus
     When I go to the catalog
-    And I follow "Dolichoderinae"
+    And I follow "Dolichoderinae" in the index
     And I follow "Dolichoderus"
     Then "Dolichoderinae" should be selected
     And "Dolichoderus" should be selected
@@ -80,7 +80,7 @@ Feature: Using the catalog
 
   Scenario: Selecting a species
     When I go to the catalog
-    And I follow "Dolichoderinae"
+    And I follow "Dolichoderinae" in the index
     And I follow "Dolichoderus"
     And I follow "abruptus"
     Then "Dolichoderinae" should be selected
@@ -90,7 +90,7 @@ Feature: Using the catalog
 
   Scenario: Selecting a subspecies from the species list
     When I go to the catalog
-    And I follow "Dolichoderinae"
+    And I follow "Dolichoderinae" in the index
     And I follow "Dolichoderus"
     Then I should see "abruptus" in the index
     And I should see "minor" in the index
@@ -102,7 +102,7 @@ Feature: Using the catalog
   Scenario: Showing the "no tribe" tribe
     Given a genus exists with a name of "Cariridris" and a subfamily of "Dolichoderinae"
     When I go to the catalog
-    And I follow "Dolichoderinae"
+    And I follow "Dolichoderinae" in the index
     And I follow "show tribes"
     And I follow "(no tribe)" in the tribes index
     Then I should see "Cariridris" in the genera index

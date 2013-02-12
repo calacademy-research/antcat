@@ -18,7 +18,7 @@ Feature: Hiding and showing tribes in the index
 
   Scenario: Not showing tribes initially
     When I go to the catalog
-    And I follow "Dolichoderinae"
+    And I follow "Dolichoderinae" in the index
     Then "Dolichoderinae" should be selected
     And I should not see "Dolichoderini" in the index
     And I should see "Dolichoderus" in the index
@@ -34,14 +34,14 @@ Feature: Hiding and showing tribes in the index
   Scenario: Showing tribes
     When I go to the catalog
     Then I should not see "Dolichoderini" in the index
-    When I follow "Dolichoderinae"
+    When I follow "Dolichoderinae" in the index
     And I follow "show tribes"
     Then I should see "Dolichoderini" in the index
 
   Scenario: Hiding tribes
     When I go to the catalog
     And I follow "show tribes"
-    And I follow "Dolichoderinae"
+    And I follow "Dolichoderinae" in the index
     Then I should see "Dolichoderini" in the index
     And I should not see "show tribes"
     When I follow "hide"
@@ -51,7 +51,7 @@ Feature: Hiding and showing tribes in the index
   Scenario: Selecting a genus after hiding tribes
     When I go to the catalog
     And I follow "show tribes"
-    And I follow "Dolichoderinae"
+    And I follow "Dolichoderinae" in the index
     And I follow "hide"
     Then I should see "Dolichoderus" in the index
     And I should see "Atta" in the index
@@ -63,7 +63,7 @@ Feature: Hiding and showing tribes in the index
   Scenario: Selecting a species after hiding tribes
     When I go to the catalog
     And I follow "show tribes"
-    And I follow "Dolichoderinae"
+    And I follow "Dolichoderinae" in the index
     When I follow "hide"
     And I follow "Atta"
     And I follow "rufa"
@@ -74,7 +74,7 @@ Feature: Hiding and showing tribes in the index
   Scenario: Showing tribes after selecting a genus with a tribe
     When I go to the catalog
     And I follow "show tribes"
-    And I follow "Dolichoderinae"
+    And I follow "Dolichoderinae" in the index
     And I follow "hide"
     And I follow "Dolichoderus"
     And I follow "show tribes"
@@ -84,7 +84,7 @@ Feature: Hiding and showing tribes in the index
   Scenario: Showing tribes after selecting a genus without a tribe
     When I go to the catalog
     And I follow "show tribes"
-    And I follow "Dolichoderinae"
+    And I follow "Dolichoderinae" in the index
     And I follow "hide"
     And I follow "Atta"
     And I follow "show tribes"
@@ -94,7 +94,7 @@ Feature: Hiding and showing tribes in the index
 
   Scenario: Seeing different genera for 'no tribe' as for a tribe
     When I go to the catalog
-    And I follow "Dolichoderinae"
+    And I follow "Dolichoderinae" in the index
     And I follow "show tribes"
     And I follow "(no tribe)"
     Then I should see "Atta" in the index
@@ -106,7 +106,7 @@ Feature: Hiding and showing tribes in the index
   Scenario: Hiding tribes after selecting a tribe
     When I go to the catalog
     And I follow "show tribes"
-    And I follow "Dolichoderinae"
+    And I follow "Dolichoderinae" in the index
     And I follow "Dolichoderini"
     And I follow "hide" in the tribes index
     Then I should not see the tribes index
@@ -116,7 +116,7 @@ Feature: Hiding and showing tribes in the index
   Scenario: Hiding tribes after selecting a genus
     When I go to the catalog
     And I follow "show tribes"
-    And I follow "Dolichoderinae"
+    And I follow "Dolichoderinae" in the index
     And I follow "Dolichoderini"
     And I follow "Dolichoderus"
     And I follow "hide" in the tribes index
@@ -126,7 +126,7 @@ Feature: Hiding and showing tribes in the index
 
   Scenario: Hiding tribes after selecting "no tribe" tribe
     When I go to the catalog
-    And I follow "Dolichoderinae"
+    And I follow "Dolichoderinae" in the index
     And I follow "show tribes"
     And I follow "(no tribe)" in the tribes index
     And I follow "hide" in the tribes index
