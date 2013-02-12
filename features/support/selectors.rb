@@ -39,6 +39,9 @@ module HtmlSelectorsHelpers
     when /the header/
       ".header"
 
+    when /the tag type selector/
+      '.antcat_tag_type_selector'
+
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
     #
