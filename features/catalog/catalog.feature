@@ -16,6 +16,7 @@ Feature: Using the catalog
     And a genus exists with a name of "Camponotus" and a subfamily of "Dolichoderinae" and a taxonomic history of "Campononotus history"
     And a species exists with a name of "abruptus" and a genus of "Camponotus" and a taxonomic history of "abruptus history"
 
+  @javascript
   Scenario: Seeing the family
     When I go to the catalog
     Then I should see "Formicidae" in the contents
