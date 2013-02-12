@@ -18,5 +18,5 @@ Feature: Taxt editor
     When I go to the taxt editor test page
     And I fill in "taxt_edit_box" with "{"
     Then I should see "{Inserting...}"
-    And I press "Cancel"
+    And I press "Cancel" in the tag type selector
     Then I should not see "{Inserting...}"
