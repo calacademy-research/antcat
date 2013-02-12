@@ -1,0 +1,9 @@
+- css_class = 'display'
+- css_class << ' downloadable' if reference && reference.downloadable_by?(current_user)
+%div{:class => css_class}
+  - if reference
+    = raw format_reference reference
+    - document_link = format_reference_document_link reference
+    = raw document_link if document_link
+  - else
+    (none)

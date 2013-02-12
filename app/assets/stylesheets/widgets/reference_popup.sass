@@ -1,0 +1,126 @@
+@import 'common'
+@import 'reference'
+@import 'ext/jquery.ui.selectmenu'
+
+$expand_collapse_width: 16px
+$antcat_reference_popup_gutter_size: 20px
+
+$dark_green: desaturate(#006400, 50%) // darkgreen
+$antcat_reference_popup_color_help: lightgray
+$pale_green: desaturate(#98FB98, 50%) // palegreen
+
+.antcat_reference_popup
+
+  border: solid 1px black
+  margin-top: 4px
+  margin-bottom: 4px
+
+  .expand_collapse_icon
+    width: $expand_collapse_width !important
+    img
+      display: none
+
+  .icons
+    width: $antcat_reference_popup_gutter_size !important
+
+  .template
+    display: none
+
+  .current
+    width: 100%
+    .expand_collapse_icon img
+      display: inline
+
+  .expansion
+    display: none
+    background: $pale_green
+    min-height: 23px
+    width: 100%
+
+    > table
+      background: $dark_green
+      width: 100%
+
+      td.throbber
+        width: $antcat_reference_popup_gutter_size
+        img
+          vertical-align: middle
+          margin-bottom: 2px
+          display: none
+
+    .controls
+      background: $dark_green
+
+    .ok_cancel_controls
+      display: inline-block
+      margin-right: 10px
+
+    .add_controls
+      display: inline-block
+      margin-right: 10px
+
+    .search_controls
+      display: inline-block
+      margin-right: 10px
+      .q
+        width: 200px
+      button.close
+        display: none
+
+    .pagination
+      display: inline-block
+      margin-right: 10px
+      padding-bottom: 0
+      &, span, a
+        color: $antcat_reference_popup_color_help
+        font-size: 12px
+        font-weight: normal
+        a, a:active, a:focus, a:visited
+          color: white
+          &:hover
+            color: $color_site_header_link_highlight
+            background-color: $dark_green
+
+    .help_banner
+      display: inline-block
+      margin-right: 10px
+      font-style: italic
+      .help_banner_text
+        color: $antcat_reference_popup_color_help
+        font-size: 12px
+
+    .search_results
+      background: $pale_green
+
+    .no_results_found
+      padding: 2px 40px 0 26px
+
+  .help_icon
+    vertical-align: middle
+    margin-left: 3px
+
+  .has_no_current_reference
+    display: none
+
+  &.has_no_current_reference
+    .has_no_current_reference
+      display: block
+    .has_current_reference
+      display: none
+    .search_controls
+      button.close
+        display: inline
+
+  &.modal
+    .expansion
+      display: block
+    .expand_collapse_icon img
+      display: none
+
+  .current, .reference_item .ui-selected
+    color: $color_current_reference_being_edited_by_reference_popup !important
+    background-color: $color_current_reference_being_edited_by_reference_popup_background !important
+
+  .reference_item .ui-selecting
+    color: black !important
+    background-color: lighten(green, 10%)
