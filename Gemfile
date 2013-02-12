@@ -2,6 +2,7 @@ source :rubygems
 
 gem 'acts_as_list'
 gem 'aws-s3',           require: 'aws/s3',  git: 'git://github.com/emk/aws-s3.git'
+gem 'aws-sdk'
 gem 'citrus'
 gem 'curb',             require: 'curl'
 gem 'devise'
@@ -37,7 +38,7 @@ group :development do
 end
 
 group :test do
-  gem 'capybara',       '1.1.2'
+  gem 'capybara'
   gem 'database_cleaner'
   gem 'factory_girl_rails'
   gem 'selenium-webdriver'
