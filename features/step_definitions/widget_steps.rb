@@ -32,13 +32,15 @@ end
 
 When /^I add a reference by Brian Fisher$/ do
   step 'I press "Add"'
-  step %{I fill in "reference[author_names_string]" with "Fisher, B.L."}
-  step %{I fill in "reference[title]" with "Between Pacific Tides"}
-  step %{I fill in "reference_journal_name" with "Ants"}
-  step %{I fill in "reference[series_volume_issue]" with "2"}
-  step %{I fill in "article_pagination" with "1"}
-  step %{I fill in "reference[citation_year]" with "1992"}
-  step %{I save my changes}
+  within '.current' do
+    step %{I fill in "reference[author_names_string]" with "Fisher, B.L."}
+    step %{I fill in "reference[title]" with "Between Pacific Tides"}
+    step %{I fill in "reference_journal_name" with "Ants"}
+    step %{I fill in "reference[series_volume_issue]" with "2"}
+    step %{I fill in "article_pagination" with "1"}
+    step %{I fill in "reference[citation_year]" with "1992"}
+    step %{I save my changes}
+  end
 end
 
 When /In the search box, I press "Go"/ do
@@ -47,14 +49,18 @@ end
 
 When /^I search for "([^"]*)"$/ do |search_term|
   # this is to make the selectmenu work
-  step %{I follow "Search for"}
-  step %{I follow "Search for"}
-  step "I fill in the search box with \"#{search_term}\""
-  step %{In the search box, I press "Go"}
+  within '.expansion' do
+    step %{I follow "Search for"}
+    step %{I follow "Search for"}
+    step "I fill in the search box with \"#{search_term}\""
+    step %{In the search box, I press "Go"}
+  end
 end
 
 When /^I search for the authors? "([^"]*)"$/ do |authors|
-  step %{I follow "Search for author(s)"}
+  within '.expansion' do
+    step %{I follow "Search for author(s)"}
+  end
   step %{I fill in the search box with "#{authors}"}
   step %{In the search box, I press "Go"}
 end
