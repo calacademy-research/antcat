@@ -44,13 +44,13 @@ GEM
       uuidtools (~> 2.1)
     bcrypt-ruby (3.0.1)
     builder (3.0.4)
-    capybara (2.0.2)
+    capybara (1.1.2)
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       selenium-webdriver (~> 2.0)
-      xpath (~> 1.0.0)
+      xpath (~> 0.1.4)
     childprocess (0.3.8)
       ffi (~> 1.0, >= 1.0.11)
     chunky_png (1.2.7)
@@ -236,7 +236,7 @@ GEM
     will_paginate (3.0.4)
     wirble (0.1.3)
     xml-simple (1.1.2)
-    xpath (1.0.0)
+    xpath (0.1.4)
       nokogiri (~> 1.3)
 
 PLATFORMS
@@ -246,7 +246,7 @@ DEPENDENCIES
   acts_as_list
   aws-s3!
   aws-sdk
-  capybara
+  capybara (= 1.1.2)
   citrus
   coffee-rails
   compass-rails
