@@ -62,6 +62,7 @@ AntCat::Application.routes.draw do
   match 'name_pickers/lookup' => 'name_pickers#lookup', as: :name_picker, via: :get
   match 'name_popups/lookup' => 'name_popups#lookup', as: :name_popup, via: :get
   resource :reference_picker, only: :show
+  resource :reference_popup, only: :show
   resource :name_picker, only: :show
   resource :name_popup, only: :show
 
@@ -69,6 +70,7 @@ AntCat::Application.routes.draw do
   match '/widget_tests/name_popup', to: 'widget_tests#name_popup'
   match '/widget_tests/name_field', to: 'widget_tests#name_field'
   match '/widget_tests/reference_picker_test', to: 'widget_tests#reference_picker_test'
+  match '/widget_tests/reference_popup_test', to: 'widget_tests#reference_popup_test'
   match '/widget_tests/reference_field', to: 'widget_tests#reference_field'
   match '/widget_tests/taxt_editor', to: 'widget_tests#taxt_editor'
 

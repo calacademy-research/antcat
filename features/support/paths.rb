@@ -27,8 +27,12 @@ module NavigationHelpers
       '/users/sign_in'
     when /the reference picker widget test page, opened to the first reference/
       "/widget_tests/reference_picker_test?id=#{Reference.first.id}"
+    when /the reference popup widget test page, opened to the first reference/
+      "/widget_tests/reference_popup_test?id=#{Reference.first.id}"
     when /the reference picker widget test page/
       '/widget_tests/reference_picker_test'
+    when /the reference popup widget test page/
+      '/widget_tests/reference_popup_test'
     when /the reference field widget test page/
       '/widget_tests/reference_field'
     when /the taxt editor test page/
