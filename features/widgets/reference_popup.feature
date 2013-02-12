@@ -40,7 +40,7 @@ Feature: Reference popup
     And I edit the reference
     When I set the authors to "Ward, B.L.; Bolton, B."
     And I set the title to "Ant Title"
-    And I save my changes
+    And I save my changes to the current reference
     Then I should see "Ward, B.L.; Bolton, B. 1995b. Ant Title"
 
   Scenario: Error when editing reference
