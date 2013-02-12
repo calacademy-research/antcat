@@ -1,10 +1,10 @@
 # coding: UTF-8
 class WidgetTestsController < ApplicationController
 
-  def name_picker
+  def name_picker_test
   end
 
-  def name_popup
+  def name_popup_test
   end
 
   def reference_picker_test
@@ -15,13 +15,13 @@ class WidgetTestsController < ApplicationController
     @reference = Reference.first if params[:id]
   end
 
-  def reference_field
+  def reference_field_test
   end
 
-  def name_field
+  def name_field_test
   end
 
-  def taxt_editor
+  def taxt_editor_test
     @taxon = Family.first
   end
 
