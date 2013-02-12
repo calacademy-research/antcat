@@ -130,7 +130,9 @@ Then /I should not be editing/ do
 end
 
 Then /I should see a new edit form/ do
-  find("#reference_ .reference_edit").should be_visible
+  within first("#reference_") do
+    find(".reference_edit").should be_visible
+  end
 end
 
 Then 'I should not see the reference' do
@@ -138,23 +140,27 @@ Then 'I should not see the reference' do
 end
 
 When /in the new edit form I fill in "(.*?)" with "(.*?)"/ do |field, value|
-  within "#reference_" do
+  within first("#reference_") do
     step "I fill in \"#{field}\" with \"#{value}\""
   end
 end
 
 Then /in the new edit form the "(.*?)" field (#{SHOULD_OR_SHOULD_NOT}) contain "(.*?)"/ do |field, should_or_should_not, value|
-  within "#reference_" do
+  within first("#reference_") do
     step %{the "#{field}" field #{should_or_should_not} contain "#{value}"}
   end
 end
 
 When /in the new edit form I follow "(.*?)"/ do |value|
-  step "I follow \"#{value}\" within \"#reference_\""
+  within first("#reference_") do
+    step "I follow \"#{value}\""
+  end
 end
 
 When /in the new edit form I press the "(.*?)" button/ do |button|
-  step "I press \"#{button}\" within \"#reference_\""
+  within first("#reference_") do
+    step "I press \"#{button}\""
+  end
 end
 
 Then /there should not be an edit form/ do
@@ -162,7 +168,9 @@ Then /there should not be an edit form/ do
 end
 
 When /in the new edit form I fill in "(.*?)" with the existing reference's ID/ do |field|
-  step "in the new edit form I fill in \"#{field}\" with \"#{@reference.id}\""
+  within first("#reference_") do
+    step "in the new edit form I fill in \"#{field}\" with \"#{@reference.id}\""
+  end
 end
 
 Then 'the "Delete" button should not be visible' do
@@ -240,7 +248,7 @@ end
 very_long_author_names_string = (0...26).inject([]) {|a, n| a << "AuthorWithVeryVeryVeryLongName#{(?A.ord + n).chr}, A."}.join('; ')
 
 When /in the new edit form I fill in "reference_author_names_string" with a very long author names string/ do
-  within "#reference_" do
+  within first("#reference_") do
     step %{I fill in "reference_author_names_string" with "#{very_long_author_names_string}"}
   end
 end
@@ -300,4 +308,16 @@ end
 
 Given /^there is a reference for "Bolton, 2005"$/ do
   @reference = FactoryGirl.create :article_reference, :author_names => [FactoryGirl.create(:author_name, :name => 'Bolton')], :citation_year => '2005'
+end
+
+And /^the "Delete" button should not be visible in the first reference$/ do
+  within first('.reference') do
+    step 'the "Delete" button should not be visible in the first reference'
+  end
+end
+
+And /I check "reference_document_attributes_public" in the first reference/ do
+  within first('.reference') do
+    step 'I check "reference_document_attributes_public" in the first reference'
+  end
 end
