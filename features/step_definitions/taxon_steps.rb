@@ -156,3 +156,8 @@ end
 Then /^there should be two genera with the name "(.*)"$/ do |name|
   Genus.where(name_cache: name).count.should == 2
 end
+
+Given /^there are two genera called "(.*)"$/ do |name|
+  create_genus name
+  create_genus name, status: 'nomen nudum'
+end
