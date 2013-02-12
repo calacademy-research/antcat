@@ -1,6 +1,6 @@
 # coding: UTF-8
 class EditingHistory < ActiveRecord::Base
-  set_table_name 'editing_history'
+  self.table_name = 'editing_history'
   belongs_to :user; validates :user, presence: true
   belongs_to :taxon
 end

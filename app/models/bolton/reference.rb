@@ -1,7 +1,7 @@
 # coding: UTF-8
 class Bolton::Reference < ActiveRecord::Base
   include ReferenceComparable
-  set_table_name :bolton_references
+  self.table_name = :bolton_references
 
   belongs_to :match, :class_name => '::Reference'
   has_many :matches, :class_name => 'Bolton::Match', :foreign_key => :bolton_reference_id

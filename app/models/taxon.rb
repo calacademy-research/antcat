@@ -1,6 +1,6 @@
 # coding: UTF-8
 class Taxon < ActiveRecord::Base
-  set_table_name :taxa
+  self.table_name = :taxa
 
   ###############################################
   # nested attributes
