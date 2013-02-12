@@ -11,6 +11,10 @@ class WidgetTestsController < ApplicationController
     @reference = Reference.first if params[:id]
   end
 
+  def reference_popup_test
+    @reference = Reference.first if params[:id]
+  end
+
   def reference_field
   end
 

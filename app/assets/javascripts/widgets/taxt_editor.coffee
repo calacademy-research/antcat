@@ -1,11 +1,11 @@
 window.AntCat or= {}
 
-# A TaxtEditor is a textarea with associated tag type selector, reference_picker and name popup
+# A TaxtEditor is a textarea with associated tag type selector, reference_popup and name popup
 #
 # #taxt
 #   = text_area_tag :taxt_editor, '', Taxt.to_editable(taxt), rows: 1, class: 'taxt_edit_box'
 #   = render 'tag_type_selectors/show'
-#   = render 'reference_pickers/show'
+#   = render 'reference_popups/show'
 #   = render 'name_popups/show'
 # In the page's CoffeeScript:
 #   new AntCat.TaxtEditor $('#taxt'), parent_buttons: '.buttons_section'
@@ -20,8 +20,8 @@ class AntCat.TaxtEditor
     console.log 'TaxtEditor ctor: no @control' unless @control.size() == 1
     @control.addClass 'taxt_edit_box'
     @tag_type_selector = new AntCat.TagTypeSelector(@element.find('.antcat_tag_type_selector'), on_ok: @handle_tag_type_selector_result, on_cancel: @after_form_closes)
-    @reference_picker = @element.find '.antcat_reference_picker'
-    console.log 'TaxtEditor ctor: no @reference_picker' unless @reference_picker.size() == 1
+    @reference_popup = @element.find '.antcat_reference_popup'
+    console.log 'TaxtEditor ctor: no @reference_popup' unless @reference_popup.size() == 1
     @parent_buttons = $(@options.parent_buttons)
     if @options.parent_buttons
       @parent_buttons = @element.closest('form').find $(@options.parent_buttons)
@@ -49,7 +49,7 @@ class AntCat.TaxtEditor
     if @is_tag_selected() and @is_tag_opening_event event
       @tag_start = @start()
       @tag_end = @end()
-      @open_picker_for_existing_tag()
+      @open_popup_for_existing_tag()
       return false
 
     if event.type is 'keyup' or event.type is 'mouseup'
@@ -83,30 +83,30 @@ class AntCat.TaxtEditor
     @tag_type_selector.open()
 
   handle_tag_type_selector_result: (type) =>
-    @open_picker_for_new_tag(type)
+    @open_popup_for_new_tag(type)
 
   after_form_closes: =>
     @parent_buttons.undisable()
     @replace_simulation_with_text_area()
 
-  open_picker_for_new_tag: (type) =>
+  open_popup_for_new_tag: (type) =>
     if type == 'reference_button'
-      new AntCat.ReferencePicker @reference_picker.parent(), id: null, on_success: @handle_picker_result, on_close: @after_form_closes
+      new AntCat.ReferencePopup @reference_popup.parent(), id: null, on_success: @handle_popup_result, on_close: @after_form_closes
     else
       @name_popup.open()
 
-  open_picker_for_existing_tag: =>
+  open_popup_for_existing_tag: =>
     @before_form_opens()
     id = TaxtEditor.extract_id_from_editable_taxt @selection()
     type = TaxtEditor.extract_type_from_editable_taxt @selection()
     if type == 1
-      new AntCat.ReferencePicker @reference_picker.parent(), id: id, on_success: @handle_picker_result, on_close: @after_form_closes
+      new AntCat.ReferencePopup @reference_popup.parent(), id: id, on_success: @handle_popup_result, on_close: @after_form_closes
     else
       @name_popup.open()
 
   replace_text_area_with_simulation: =>
     # We need to indicate the selected tag in the taxt edit box
-    # when the focus has moved to the reference picker, so the user can see
+    # when the focus has moved to the reference popup, so the user can see
     # what they're editing. So replace the text area (and its selection) with
     # a paragraph that has a highlighted span
     @control.siblings('.antcat_taxt_simulation').remove()
@@ -125,9 +125,9 @@ class AntCat.TaxtEditor
     @control.show()
  
   handle_name_popup_result: (data) =>
-    @handle_picker_result data.taxt
+    @handle_popup_result data.taxt
 
-  handle_picker_result: (taxt) =>
+  handle_popup_result: (taxt) =>
     if taxt
       new_value = @value()[...@tag_start] + taxt + @value()[@tag_end...]
       @value new_value

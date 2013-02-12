@@ -1,37 +1,18 @@
 # coding: UTF-8
+
 # Reference picker
 Then /I should (not )?see the reference picker/ do |should_not|
   selector = should_not ? :should_not : :should
   find('.antcat_reference_picker').send(selector, be_visible)
 end
 
+# Reference popup
+Then /I should (not )?see the reference popup/ do |should_not|
+  selector = should_not ? :should_not : :should
+  find('.antcat_reference_popup').send(selector, be_visible)
+end
+
 # Name picker
-Then /in the results section I should see the editable taxt for "([^"]*)"/ do |text|
-  within "#results" do
-    step %{I should see "#{Taxt.to_editable_taxon(Taxon.find_by_name(text))}"}
-  end
-end
-
-Then /in the results section I should see the editable taxt for the name "([^"]*)"/ do |text|
-  within "#results" do
-    step %{I should see "#{Taxt.to_editable_name(Name.find_by_name(text))}"}
-  end
-end
-
-Then /in the results section I should see the id for "([^"]*)"/ do |text|
-  within "#results" do
-    step %{I should see "#{Name.find_by_name(text).id}"}
-  end
-end
-
-Then /in the results section I should see the id for the name "([^"]*)"/ do |text|
-  within "#results" do
-    step %{I should see "#{Name.find_by_name(text).id}"}
-  end
-end
-
-
-
 Then /in the name picker field display I should see the first name/ do
   within "#picker .display" do
     step %{I should see "#{Name.first.name}"}
@@ -75,7 +56,6 @@ Then /^I should (not )?see the name popup$/ do |should_not|
   selector = should_not ? :should_not : :should
   find('.antcat_name_popup').send(selector, be_visible)
 end
-
 
 When /^I edit the reference$/ do
   within ".current" do
@@ -130,3 +110,27 @@ When /^I search for the authors? "([^"]*)"$/ do |authors|
   step %{In the search box, I press "Go"}
 end
 
+# Results section
+Then /in the results section I should see the editable taxt for the name "([^"]*)"/ do |text|
+  within "#results" do
+    step %{I should see "#{Taxt.to_editable_name(Name.find_by_name(text))}"}
+  end
+end
+
+Then /in the results section I should see the id for "([^"]*)"/ do |text|
+  within "#results" do
+    step %{I should see "#{Name.find_by_name(text).id}"}
+  end
+end
+
+Then /in the results section I should see the id for the name "([^"]*)"/ do |text|
+  within "#results" do
+    step %{I should see "#{Name.find_by_name(text).id}"}
+  end
+end
+
+Then /in the results section I should see the editable taxt for "([^"]*)"/ do |text|
+  within "#results" do
+    step %{I should see "#{Taxt.to_editable_taxon(Taxon.find_by_name(text))}"}
+  end
+end

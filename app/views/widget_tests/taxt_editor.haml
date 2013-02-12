@@ -1,7 +1,7 @@
 - @title = 'Taxt Edit Box Test'
 
 - content_for :head do
-  = javascript_include_tag 'widgets/panel', 'widgets/form', 'widgets/ajax_form', 'widgets/nested_form', 'widgets/reference_panel', 'widgets/reference_picker', 'widgets/reference_form', 'widgets/tag_type_selector', 'widgets/name_popup'
+  = javascript_include_tag 'widgets/panel', 'widgets/form', 'widgets/ajax_form', 'widgets/nested_form', 'widgets/reference_panel', 'widgets/reference_popup', 'widgets/name_popup', 'widgets/reference_form', 'widgets/tag_type_selector'
   = javascript_include_tag 'widgets/taxt_editor'
   = javascript_include_tag 'widget_tests/taxt_editor_test'
 
@@ -9,7 +9,7 @@
   #taxt_editor
     = text_area_tag :taxt_edit_box, "", rows: 1, class: 'taxt_edit_box'
     = render 'tag_type_selectors/show'
-    #reference_picker
-      = render 'reference_pickers/show'
+    #reference_popup
+      = render 'reference_popups/show'
     #name_popup
       = render 'name_popups/show'
