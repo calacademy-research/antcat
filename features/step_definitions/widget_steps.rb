@@ -6,57 +6,6 @@ Then /I should (not )?see the reference picker/ do |should_not|
   find('.antcat_reference_picker').send(selector, be_visible)
 end
 
-# Reference popup
-Then /I should (not )?see the reference popup/ do |should_not|
-  selector = should_not ? :should_not : :should
-  find('.antcat_reference_popup').send(selector, be_visible)
-end
-
-# Name picker
-Then /in the name picker field display I should see the first name/ do
-  within "#picker .display" do
-    step %{I should see "#{Name.first.name}"}
-  end
-end
-
-Then /in the name picker field display I should see "([^"]*)"/ do |text|
-  within "#picker .display" do
-    step %{I should see "#{text}"}
-  end
-end
-
-Then /^I should (not )?see the name picker edit interface$/ do |should_not|
-  selector = should_not ? :should_not : :should
-  find('#picker .edit').send(selector, be_visible)
-end
-
-Then /^I should (not )?see the name picker$/ do |should_not|
-  selector = should_not ? :should_not : :should
-  find('.antcat_name_picker').send(selector, be_visible)
-end
-
-Then /in the name popup display I should see the first name/ do
-  within "#popup .display" do
-    step %{I should see "#{Name.first.name}"}
-  end
-end
-
-Then /in the name popup display I should see "([^"]*)"/ do |text|
-  within "#popup .display" do
-    step %{I should see "#{text}"}
-  end
-end
-
-Then /^I should (not )?see the name popup edit interface$/ do |should_not|
-  selector = should_not ? :should_not : :should
-  find('#popup .buttons').send(selector, be_visible)
-end
-
-Then /^I should (not )?see the name popup$/ do |should_not|
-  selector = should_not ? :should_not : :should
-  find('.antcat_name_popup').send(selector, be_visible)
-end
-
 When /^I edit the reference$/ do
   within ".current" do
     step 'I follow "edit"'
@@ -108,6 +57,58 @@ When /^I search for the authors? "([^"]*)"$/ do |authors|
   step %{I follow "Search for author(s)"}
   step %{I fill in the search box with "#{authors}"}
   step %{In the search box, I press "Go"}
+end
+
+# Reference popup
+Then /I should (not )?see the reference popup/ do |should_not|
+  selector = should_not ? :should_not : :should
+  find('.antcat_reference_popup').send(selector, be_visible)
+end
+
+# Name picker
+Then /in the name picker field display I should see the first name/ do
+  within "#picker .display" do
+    step %{I should see "#{Name.first.name}"}
+  end
+end
+
+Then /in the name picker field display I should see "([^"]*)"/ do |text|
+  within "#picker .display" do
+    step %{I should see "#{text}"}
+  end
+end
+
+Then /^I should (not )?see the name picker edit interface$/ do |should_not|
+  selector = should_not ? :should_not : :should
+  find('#picker .edit').send(selector, be_visible)
+end
+
+Then /^I should (not )?see the name picker$/ do |should_not|
+  selector = should_not ? :should_not : :should
+  find('.antcat_name_picker').send(selector, be_visible)
+end
+
+# Name popup
+Then /in the name popup display I should see the first name/ do
+  within "#popup .display" do
+    step %{I should see "#{Name.first.name}"}
+  end
+end
+
+Then /in the name popup display I should see "([^"]*)"/ do |text|
+  within "#popup .display" do
+    step %{I should see "#{text}"}
+  end
+end
+
+Then /^I should (not )?see the name popup edit interface$/ do |should_not|
+  selector = should_not ? :should_not : :should
+  find('#popup .buttons').send(selector, be_visible)
+end
+
+Then /^I should (not )?see the name popup$/ do |should_not|
+  selector = should_not ? :should_not : :should
+  find('.antcat_name_popup').send(selector, be_visible)
 end
 
 # Results section
