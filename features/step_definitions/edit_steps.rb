@@ -16,3 +16,10 @@ end
 When /^I set the genus name to "([^"]*)"$/ do |name|
   step %{I fill in "genus[name_attributes][epithet]" with "#{name}"}
 end
+
+When /^I save my changes to the first reference$/ do
+  within first('.reference') do
+    step 'I save my changes'
+  end
+end
+

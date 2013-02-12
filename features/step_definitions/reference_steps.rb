@@ -124,7 +124,9 @@ Then /I (#{SHOULD_OR_SHOULD_NOT}) see the edit form/ do |should_selector|
 end
 
 Then /I should not be editing/ do
-  step %{I should see "edit"}
+  within first('.icons') do
+    page.should have_css('img[alt=edit]')
+  end
 end
 
 Then /I should see a new edit form/ do
@@ -194,18 +196,24 @@ Then "I should see the reference's ID beside its label" do
   step "I should see \"ID #{@reference.id}\""
 end
 
-When /I fill in "reference_nested_reference_id" with its own ID/ do
-  step "I fill in \"reference_nested_reference_id\" with \"#{@reference.id}\""
+When /I fill in "reference_nested_reference_id" with its own ID$/ do
+  within first('.reference') do
+    step "I fill in \"reference_nested_reference_id\" with \"#{@reference.id}\""
+  end
 end
 
 When /I fill in "([^"]*)" with a URL to a document that exists/ do |field|
   stub_request :any, "google.com/foo"
-  step "I fill in \"#{field}\" with \"google\.com/foo\""
+  within first('.reference') do
+    step "I fill in \"#{field}\" with \"google\.com/foo\""
+  end
 end
 
 When /I fill in "([^"]*)" with a URL to a document that doesn't exist/ do |field|
   stub_request(:any, "google.com/foo").to_return :status => 404
-  step "I fill in \"#{field}\" with \"google\.com/foo\""
+  within first('.reference') do
+    step "I fill in \"#{field}\" with \"google\.com/foo\""
+  end
 end
 
 When 'I choose a file to upload' do
@@ -293,4 +301,3 @@ end
 Given /^there is a reference for "Bolton, 2005"$/ do
   @reference = FactoryGirl.create :article_reference, :author_names => [FactoryGirl.create(:author_name, :name => 'Bolton')], :citation_year => '2005'
 end
-
