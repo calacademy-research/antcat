@@ -45,6 +45,8 @@ AntCat::Application.configure do
   config.assets.compress = false
   config.assets.debug = false
   config.assets.digest = false
+
+  config.active_record.mass_assigment_sanitizer :strict
 end
 
 require 'lll'
