@@ -169,21 +169,21 @@ Feature: Edit reference
     And I save my changes to the first reference
     Then I should see a "PDF" link
 
-  Scenario: Setting a document's publicness
-    Given these references exist
-      | authors    | year  | title     | citation |
-      | Ward, P.S. | 2010d | Ant Facts | Ants 1:1 |
-    And that the entry has a URL that's on our site
-    When I go to the references page
-    Then I should see a "PDF" link
-    When I log in
-    And I go to the references page
-    And I follow "edit" in the first reference
-    And I check "reference_document_attributes_public" in the first reference
-    And I save my changes to the first reference
-    And I log out
-    And I go to the references page
-    Then I should see a "PDF" link
+  #Scenario: Setting a document's publicness
+    #Given these references exist
+      #| authors    | year  | title     | citation |
+      #| Ward, P.S. | 2010d | Ant Facts | Ants 1:1 |
+    #And that the entry has a URL that's on our site
+    #When I go to the references page
+    #Then I should see a "PDF" link
+    #When I log in
+    #And I go to the references page
+    #And I follow "edit" in the first reference
+    #And I check "reference_document_attributes_public" in the first reference
+    #And I save my changes to the first reference
+    #And I log out
+    #And I go to the references page
+    #Then I should see a "PDF" link
 
   Scenario: Adding the authors' role
     Given I am logged in
