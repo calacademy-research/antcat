@@ -48,6 +48,8 @@ class TaxaController < ApplicationController
     @taxon.save!
   end
 
+  class PossibleHomonymSituation < NameError; end
+
   def update_name attributes
     begin
       original_name = @taxon.name
@@ -57,13 +59,15 @@ class TaxaController < ApplicationController
         if @possible_homonym
           @taxon.errors.add :base, "This name is in use by another taxon. To create a homonym, click \"Save Homonym\".".html_safe
           @taxon.name.epithet = attributes[:epithet]
-          raise
+          raise PossibleHomonymSituation
         end
       end
     rescue ActiveRecord::RecordInvalid
       @taxon.name.epithet = attributes[:epithet]
       @taxon.errors.add :base, "Name can't be blank"
       raise
+    rescue PossibleHomonymSituation
+      raise ActiveRecord::RecordInvalid.new @taxon
     end
     @taxon.update_attributes name: name
   end
