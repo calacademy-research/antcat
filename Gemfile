@@ -26,7 +26,7 @@ gem 'xml-simple'
 group :development, :test do
   gem 'cucumber-rails'
   gem 'launchy'
-  gem 'rspec',          '2.12.0'
+  gem 'rspec'
   gem 'rspec-rails'
   gem 'ruby-debug19'
   gem 'spork'

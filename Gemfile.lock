@@ -268,7 +268,7 @@ DEPENDENCIES
   rack
   rails
   rake
-  rspec (= 2.12.0)
+  rspec
   rspec-rails
   ruby-debug19
   sass
