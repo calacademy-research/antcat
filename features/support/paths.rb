@@ -34,13 +34,13 @@ module NavigationHelpers
     when /the reference popup widget test page/
       '/widget_tests/reference_popup_test'
     when /the reference field widget test page/
-      '/widget_tests/reference_field'
+      '/widget_tests/reference_field_test'
     when /the taxt editor test page/
-      '/widget_tests/taxt_editor'
+      '/widget_tests/taxt_editor_test'
     when /the name picker test page/
-      '/widget_tests/name_picker'
+      '/widget_tests/name_picker_test'
     when /the name popup test page/
-      '/widget_tests/name_popup'
+      '/widget_tests/name_popup_test'
     when /the name field test page for a name/
       "/widget_tests/name_field_test?id=#{Name.first.id}"
     when /the name field test page/
