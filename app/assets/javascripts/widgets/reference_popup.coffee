@@ -41,8 +41,6 @@ class AntCat.ReferencePopup
     console.log 'ReferencePopup initialize: no @search_selector' unless @search_selector.size() == 1
     @textbox = @expansion.find '.q'
     console.log 'ReferencePopup initialize: no @textbox' unless @textbox.size() == 1
-    @search_results = @element.find '> .expansion > .search_results'
-    console.log 'ReferencePopup initialize: no @search_results' unless @search_results.size() == 1
 
     @setup_controls()
     @setup_references()
@@ -50,6 +48,9 @@ class AntCat.ReferencePopup
 
     @show()
     @textbox.focus()
+
+  search_results: =>
+    @element.find '> .expansion > .search_results'
 
   start_throbbing: =>
     @element.find('.throbber img').show()
@@ -89,6 +90,10 @@ class AntCat.ReferencePopup
       @initialize 'collapsed'
     @options.on_cancel if @options.on_cancel
     @close()
+
+  close: =>
+    @element.hide()
+    @options.on_close if @options.on_close
 
   setup_controls: =>
     self = @
@@ -168,16 +173,18 @@ class AntCat.ReferencePopup
           on_form_done: @on_reference_form_done)
         .end()
 
-    @search_results
-      .find(".reference .item_#{@id} div.display")
-        .addClass('ui-selected')
-        .end()
+    if @search_results()
+      @search_results()
+        .find(".reference .item_#{@id} div.display")
+          .addClass('ui-selected')
+          .end()
 
     @element.find('div.display').bind 'click', @handle_click
     @element.find('div.display').hover(@hover, @unhover)
 
   hover: (event) =>
-    @search_results.find('.display').removeClass('ui-selecting')
+    if @search_results()
+      @search_results().find('.display').removeClass('ui-selecting')
     $target = $(event.target)
     $target = $target.closest('.display') unless $target.hasClass('display')
     $target.addClass('ui-selecting')
@@ -226,7 +233,8 @@ class AntCat.ReferencePopup
   value: => @id
 
   selected_reference: =>
-    results = @search_results.find 'div.display.ui-selected'
+    return unless @search_results()
+    results = @search_results().find 'div.display.ui-selected'
     return if results.length is 0
     results.closest '.reference'
 
@@ -296,7 +304,7 @@ class AntCat.ReferencePopup
 
   # -----------------------------------------
   update_help: =>
-    any_search_results = @search_results.find('.reference').length > 0
+    any_search_results = @search_results() && @search_results().find('.reference').length > 0
     if @current_reference()
       if any_search_results
         other_verb = 'choose'
