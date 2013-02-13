@@ -22,7 +22,7 @@ class AntCat.Form
       .end()
 
   open: =>
-    @element.show() unless @options.field
+    @element.show()
     @element.find('input[type=text]:visible:first').focus()
     @options.on_open() if @options.on_open
 
