@@ -42,9 +42,9 @@ module NavigationHelpers
     when /the name popup test page/
       '/widget_tests/name_popup'
     when /the name field test page for a name/
-      "/widget_tests/name_field?id=#{Name.first.id}"
+      "/widget_tests/name_field_test?id=#{Name.first.id}"
     when /the name field test page/
-      '/widget_tests/name_field'
+      '/widget_tests/name_field_test'
     when /the edit page for "(.*)"/
       "/taxa/#{Taxon.find_by_name($1).id}/edit"
     else
