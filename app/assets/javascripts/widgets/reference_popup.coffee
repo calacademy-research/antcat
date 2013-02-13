@@ -179,8 +179,8 @@ class AntCat.ReferencePopup
           .addClass('ui-selected')
           .end()
 
-    @element.find('div.display').bind 'click', @handle_click
-    @element.find('div.display').hover(@hover, @unhover)
+    @element.find('.search_results div.display').bind 'click', @handle_click
+    @element.find('.search_results div.display').hover(@hover, @unhover)
 
   hover: (event) =>
     if @search_results()
