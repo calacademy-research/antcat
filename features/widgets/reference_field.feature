@@ -42,6 +42,5 @@ Feature: Reference field
     And I search for the author "Fisher, B."
     And I click the first search result
     And I press "Cancel"
-    And I wait for a bit
     Then the field should contain "(none)"
 
