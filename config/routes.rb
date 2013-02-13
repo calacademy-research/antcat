@@ -66,13 +66,13 @@ AntCat::Application.routes.draw do
   resource :name_picker, only: :show
   resource :name_popup, only: :show
 
-  match '/widget_tests/name_picker', to: 'widget_tests#name_picker_test'
-  match '/widget_tests/name_popup', to: 'widget_tests#name_popup_test'
-  match '/widget_tests/name_field', to: 'widget_tests#name_field_test'
+  match '/widget_tests/name_picker_test', to: 'widget_tests#name_picker_test'
+  match '/widget_tests/name_popup_test', to: 'widget_tests#name_popup_test'
+  match '/widget_tests/name_field_test', to: 'widget_tests#name_field_test'
   match '/widget_tests/reference_picker_test', to: 'widget_tests#reference_picker_test'
   match '/widget_tests/reference_popup_test', to: 'widget_tests#reference_popup_test'
-  match '/widget_tests/reference_field', to: 'widget_tests#reference_field_test'
-  match '/widget_tests/taxt_editor', to: 'widget_tests#taxt_editor_test'
+  match '/widget_tests/reference_field_test', to: 'widget_tests#reference_field_test'
+  match '/widget_tests/taxt_editor_test', to: 'widget_tests#taxt_editor_test'
 
   devise_for :users
 
