@@ -1,7 +1,6 @@
 class AntCat.ReferencePopup
 
   constructor: (@parent_element, @options = {}) ->
-    @options.field = true unless @options.field?
     @element = @parent_element.find('> .antcat_reference_popup')
     console.log 'ReferencePopup ctor: no @element' unless @element.size() == 1
 
@@ -11,14 +10,13 @@ class AntCat.ReferencePopup
       @id = @element.find('#id').val()
 
     @original_id = @id
-    expanded_or_collapsed = @options.field ? 'collapsed' : 'expanded'
     if @id
-      @load '', expanded_or_collapsed
+      @load ''
     else
-      @initialize expanded_or_collapsed
+      @initialize()
     @
 
-  load: (url = '', expanded_or_collapsed = 'expanded') =>
+  load: (url = '') =>
     if url.indexOf('/reference_popup') is -1
       url = '/reference_popup?' + url
     url = url + '&' + $.param id: @id if @id
@@ -29,28 +27,30 @@ class AntCat.ReferencePopup
       success: (data) =>
         @element.replaceWith data
         @element = @parent_element.find('> .antcat_reference_popup')
-        @initialize(expanded_or_collapsed)
+        @initialize()
       error: (xhr) => debugger
 
-  initialize: (expanded_or_collapsed = 'expanded') =>
-    @element.addClass 'modal' unless @options.field
+  initialize: =>
+    @element.addClass 'modal'
     @expansion = @element.find '> .expansion'
+    console.log 'ReferencePopup initialize: no @expansion' unless @expansion.size() == 1
     @template = @element.find '> .template'
+    console.log 'ReferencePopup initialize: no @template' unless @template.size() == 1
     @current = @element.find '> .current'
+    console.log 'ReferencePopup initialize: no @current' unless @current.size() == 1
     @search_selector = @expansion.find '.search_selector'
+    console.log 'ReferencePopup initialize: no @search_selector' unless @search_selector.size() == 1
     @textbox = @expansion.find '.q'
+    console.log 'ReferencePopup initialize: no @textbox' unless @textbox.size() == 1
     @search_results = @element.find '> .expansion > .search_results'
-
-    @current.click => @toggle_expansion() if @options.field and not @editing()
+    console.log 'ReferencePopup initialize: no @search_results' unless @search_results.size() == 1
 
     @setup_controls()
     @setup_references()
     @handle_new_selection()
 
-    @element.show()
-    if expanded_or_collapsed == 'expanded'
-      @show_expansion()
-      @textbox.focus()
+    @show()
+    @textbox.focus()
 
   start_throbbing: =>
     @element.find('.throbber img').show()
@@ -58,17 +58,12 @@ class AntCat.ReferencePopup
 
   editing: => @element.find('.edit:visible .nested_form').length > 0
 
-  show_expansion: =>
+  show: =>
+    @element.show()
     @element.find('.expand_collapse_icon img').attr 'src', AntCat.expanded_image_path
     @expansion.show()
     # apparently, can't setup selectmenu unless it's visible
     @setup_search_selector()
-    @textbox.focus()
-
-  hide_expansion: =>
-    @expansion.hide()
-    @element.find('.expand_collapse_icon img').attr 'src', AntCat.collapsed_image_path
-  toggle_expansion: => if @expansion.is ':hidden' then @show_expansion() else @hide_expansion()
 
   search: =>
     @load @get_search_parameters()
@@ -95,13 +90,6 @@ class AntCat.ReferencePopup
       @initialize 'collapsed'
     @options.on_cancel if @options.on_cancel
     @close()
-
-  close: =>
-    if @options.field
-      @hide_expansion()
-    else
-      @element.slideUp 'fast', =>
-    @options.on_close if @options.on_close
 
   setup_controls: =>
     self = @
