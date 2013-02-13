@@ -30,8 +30,7 @@ class AntCat.TaxtEditor
     console.log 'TaxtEditor ctor: no @parent_buttons' unless @parent_buttons.size() == 1
     @name_popup = new AntCat.NamePopup(@element.find('.antcat_name_popup').parent(),
       on_success: @handle_name_popup_result,
-      on_close: @after_form_closes,
-      field: false)
+      on_close: @after_form_closes)
     @dashboard = new TaxtEditor.DebugDashboard @ if @options.show_debug_dashboard
     @dashboard?.show_status 'before'
     @value @control.val()
@@ -91,7 +90,7 @@ class AntCat.TaxtEditor
 
   open_popup_for_new_tag: (type) =>
     if type == 'reference_button'
-      new AntCat.ReferencePopup @reference_popup.parent(), id: null, on_success: @handle_popup_result, on_close: @after_form_closes
+      new AntCat.ReferencePopup @reference_popup.parent(), id: null, on_ok: @handle_popup_result, on_close: @after_form_closes
     else
       @name_popup.open()
 
@@ -100,7 +99,7 @@ class AntCat.TaxtEditor
     id = TaxtEditor.extract_id_from_editable_taxt @selection()
     type = TaxtEditor.extract_type_from_editable_taxt @selection()
     if type == 1
-      new AntCat.ReferencePopup @reference_popup.parent(), id: id, on_success: @handle_popup_result, on_close: @after_form_closes
+      new AntCat.ReferencePopup @reference_popup.parent(), id: id, on_ok: @handle_popup_result, on_close: @after_form_closes
     else
       @name_popup.open()
 
