@@ -31,7 +31,6 @@ class AntCat.ReferencePopup
       error: (xhr) => debugger
 
   initialize: =>
-    @element.addClass 'modal'
     @expansion = @element.find '> .expansion'
     console.log 'ReferencePopup initialize: no @expansion' unless @expansion.size() == 1
     @template = @element.find '> .template'
