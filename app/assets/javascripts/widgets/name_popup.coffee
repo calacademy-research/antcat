@@ -3,6 +3,7 @@ class AntCat.NamePopup extends AntCat.NestedForm
   constructor: (@parent_element, @options = {}) ->
     @element = @parent_element.find('> .antcat_name_popup')
     @options.button_container = '.buttons'
+    @options.field = false
     super @element, @options
     console.log 'NamePopup ctor: no @element' unless @element.size() == 1
 
