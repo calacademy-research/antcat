@@ -49,4 +49,5 @@ group :assets do
   gem 'compass-rails'
   gem 'sass-rails'
   gem 'uglifier'
+  gem 'yui-compressor'
 end
