@@ -1,7 +1,6 @@
 source :rubygems
 
 gem 'acts_as_list'
-gem 'aws-s3',           require: 'aws/s3',  git: 'git://github.com/emk/aws-s3.git'
 gem 'aws-sdk'
 gem 'citrus'
 gem 'curb',             require: 'curl'
