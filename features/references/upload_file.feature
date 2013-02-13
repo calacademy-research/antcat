@@ -13,8 +13,6 @@ Feature: Upload a file
     #And I follow "edit"
     #And I choose a file to upload
     #And I press the "Save" button
-    #And I wait for a bit
-    #And I wait for a bit more
     #Then I should see a link to that file
 
   Scenario: Clearing the URL after uploading the file
@@ -28,6 +26,5 @@ Feature: Upload a file
     And I fill in "reference_title" with "My Life with the Ants"
     And I fill in "reference_document_attributes_url" with ""
     And I press the "Save" button
-    And I wait for a bit
     Then I should not see a "PDF" link
 

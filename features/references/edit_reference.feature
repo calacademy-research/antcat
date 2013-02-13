@@ -277,7 +277,6 @@ Feature: Edit reference
     #And I save my changes to the first reference
     #And I will confirm on the next step
     #And I delete "Ward"
-    #And I wait for a bit
     #And I edit "Bolton"
     #And I follow "Nested" in the first reference
     #And I save my changes to the first reference

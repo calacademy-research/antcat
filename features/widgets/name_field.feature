@@ -11,7 +11,6 @@ Feature: Name field
     Then in the name picker field display I should see "Atta"
     When I click the expand icon
     And I press "Cancel"
-    And I wait for a bit
     Then in the name picker field display I should see the first name
 
   Scenario: Blank name
