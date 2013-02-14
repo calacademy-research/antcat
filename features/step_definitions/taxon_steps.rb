@@ -90,7 +90,7 @@ Given /a species exists with a name of "(.*?)" and a subgenus of "(.*?)"(?: and 
 end
 
 Given /a subspecies exists for that species with a name of "(.*?)" and an epithet of "(.*?)" and a taxonomic history of "(.*?)"/ do |name, epithet, history|
-  subspecies = FactoryGirl.create :subspecies, name: FactoryGirl.create(:subspecies_name, name: name, epithet: epithet), species: @species, genus: @species.genus
+  subspecies = FactoryGirl.create :subspecies, name: FactoryGirl.create(:subspecies_name, name: name, epithet: epithet, epithets: epithet), species: @species, genus: @species.genus
   history = 'none' unless history.present?
   subspecies.history_items.create! taxt: history
 end
