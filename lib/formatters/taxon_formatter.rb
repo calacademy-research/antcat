@@ -108,15 +108,11 @@ class Formatters::TaxonFormatter
       string = headline_protonym + ' ' + headline_type
       notes = headline_notes
       string << ' ' << notes if notes
-      string << ' ' << edit_link unless Rails.env.production?
+      string << ' ' << link_to_edit_taxon if link_to_edit_taxon
       string << ' ' << link_to_other_site if link_to_other_site
       string << ' ' << link_to_antwiki if link_to_antwiki
       string
     end
-  end
-
-  def edit_link
-    link 'Edit', "/taxa/#{@taxon.id}/edit", target: nil
   end
 
   def headline_protonym
@@ -191,6 +187,11 @@ class Formatters::TaxonFormatter
 
   def link_to_antwiki
     Formatters::Formatter.link_to_external_site 'AntWiki', "http://www.antwiki.org/#{@taxon.name.to_s.gsub(/ /, '_')}"
+  end
+
+  def link_to_edit_taxon
+    return if Rails.env.production?
+    link 'Edit', "/taxa/#{@taxon.id}/edit", target: nil
   end
 
   ###########
