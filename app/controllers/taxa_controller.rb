@@ -13,19 +13,11 @@ class TaxaController < ApplicationController
   def update
     @taxon = Taxon.find params[:id] 
     begin
-      key = get_name_key params
-      update_taxon params.dup[key]
+      update_taxon params.dup['taxon']
     rescue ActiveRecord::RecordInvalid
       render :edit and return
     end
     redirect_to catalog_url @taxon
-  end
-
-  def get_name_key params
-    params.keys.map(&:to_sym).find do |e|
-      [:family, :subfamily, :tribe, :genus, :subgenus, :species, :subspecies].
-        include? e
-    end
   end
 
   ###################

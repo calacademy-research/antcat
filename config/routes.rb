@@ -31,13 +31,6 @@ AntCat::Application.routes.draw do
   resources :styles, only: [:index]
 
   resources :taxa, controller: :taxa
-  resources :families, controller: :taxa
-  resources :subfamilies, controller: :taxa
-  resources :tribes, controller: :taxa
-  resources :genera, controller: :taxa
-  resources :subgenera, controller: :taxa
-  resources :species, controller: :taxa
-  resources :subspecies, controller: :taxa
 
   resource :taxon_window_height, only: [:update]
 
