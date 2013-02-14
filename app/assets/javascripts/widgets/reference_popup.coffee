@@ -37,7 +37,7 @@ class AntCat.ReferencePopup
     console.log 'ReferencePopup initialize: no @template' unless @template.size() == 1
     @current = @element.find '> .current'
     console.log 'ReferencePopup initialize: no @current' unless @current.size() == 1
-    @search_selector = @expansion.find '.search_selector'
+    @search_selector = @expansion.find '#search_selector.search_selector'
     console.log 'ReferencePopup initialize: no @search_selector' unless @search_selector.size() == 1
     @textbox = @expansion.find '.q'
     console.log 'ReferencePopup initialize: no @textbox' unless @textbox.size() == 1
