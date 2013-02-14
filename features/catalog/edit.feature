@@ -8,9 +8,16 @@ Feature: Editing a taxon
   Scenario: Editing a genus
     Given there is a genus called "Calyptites"
     When I go to the edit page for "Calyptites"
-    And I set the genus name to "Atta"
+    And I set the name to "Atta"
     And I save the form
     Then I should see "Atta" in the header
+
+  Scenario: Editing a family
+    Given there is a family called "Formicidae"
+    When I go to the edit page for "Formicidae"
+    And I set the name to "Formica"
+    And I save the form
+    Then I should see "Formica" in the header
 
   Scenario: Trying to enter a blank name
     Given there is a genus called "Calyptites"
