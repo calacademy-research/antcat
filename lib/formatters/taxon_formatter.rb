@@ -124,13 +124,18 @@ class Formatters::TaxonFormatter
   end
 
   def headline_type
-    return '' unless @taxon.type_name
     taxt = @taxon.type_taxt
-    rank = @taxon.type_name.rank
-    rank = 'genus' if rank == 'subgenus'
-    content_tag :span, class: 'type' do
+    if not @taxon.type_name and taxt
+      string = headline_type_taxt taxt
+    else
+      return if not @taxon.type_name
+      rank = @taxon.type_name.rank
+      rank = 'genus' if rank == 'subgenus'
       string = "Type-#{rank}: ".html_safe
       string << headline_type_name + headline_type_taxt(taxt)
+      string
+    end
+    content_tag :span, class: 'type' do
       string
     end
   end
