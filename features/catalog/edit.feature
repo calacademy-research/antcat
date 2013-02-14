@@ -22,7 +22,7 @@ Feature: Editing a taxon
   Scenario: Trying to enter a blank name
     Given there is a genus called "Calyptites"
     When I go to the edit page for "Calyptites"
-    And I set the genus name to ""
+    And I set the name to ""
     And I save the form
     Then I should see "Name can't be blank"
 
@@ -30,7 +30,7 @@ Feature: Editing a taxon
     Given there is a genus called "Calyptites"
     And there is a genus called "Atta"
     When I go to the edit page for "Atta"
-    And I set the genus name to "Calyptites"
+    And I set the name to "Calyptites"
     And I save the form
     Then I should see "This name is in use by another taxon"
     When I press "Save Homonym"
