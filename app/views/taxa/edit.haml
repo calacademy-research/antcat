@@ -11,7 +11,7 @@
   = stylesheet_link_tag 'ext/jquery.ui.selectmenu.css'
 
 - content_for :page_contents do
-  = form_for @taxon, html: {class: 'taxon_form ui-widget', style: {display: 'none'}} do |taxon_form|
+  = form_for @taxon, as: :taxon, url: "/taxa/#{@taxon.id}", html: {class: 'taxon_form ui-widget', style: {display: 'none'}} do |taxon_form|
     %input{type: :hidden, name: 'possible_homonym', id: 'possible_homonym', value: @possible_homonym ? 'true' : nil}
     = render 'shared/errors_for', resource: @taxon
     .epithet_status_flags_section.section
@@ -43,7 +43,7 @@
         %tr
           %td.label= taxon_form.label :headline_notes_taxt, 'Notes'
           %td#headline_notes_taxt_editor.taxt_editor
-            = text_area_tag 'genus[headline_notes_taxt]', Taxt.to_editable(@taxon.headline_notes_taxt), rows: 1, class: 'taxt_edit_box'
+            = text_area_tag 'taxon[headline_notes_taxt]', Taxt.to_editable(@taxon.headline_notes_taxt), rows: 1, class: 'taxt_edit_box'
             = render 'tag_type_selectors/show'
             = render 'reference_popups/show'
             = render 'name_popups/show'
@@ -87,7 +87,7 @@
         %tr
           %td.label= taxon_form.label :type_taxt, 'Notes'
           %td#type_notes_taxt_editor.taxt_editor
-            = text_area_tag 'genus[type_taxt]', Taxt.to_editable(@taxon.type_taxt), rows: 1, class: 'taxt_edit_box'
+            = text_area_tag 'taxon[type_taxt]', Taxt.to_editable(@taxon.type_taxt), rows: 1, class: 'taxt_edit_box'
             = render 'tag_type_selectors/show'
             = render 'reference_popups/show'
             = render 'name_popups/show'
