@@ -86,8 +86,11 @@
 
         %tr
           %td.label= taxon_form.label :type_taxt, 'Notes'
-          %td
-            %span.taxt= taxon_form.text_area :type_taxt, rows: 1
+          %td#type_notes_taxt_editor.taxt_editor
+            = text_area_tag 'genus[type_taxt]', Taxt.to_editable(@taxon.type_taxt), rows: 1, class: 'taxt_edit_box'
+            = render 'tag_type_selectors/show'
+            = render 'reference_popups/show'
+            = render 'name_popups/show'
 
     -#.history_section.section
       -#.section_header.ui-widget-header.ui-corner-top
