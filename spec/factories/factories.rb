@@ -160,6 +160,7 @@ FactoryGirl.define do
     sequence(:name) {|n| "Atta species subspecies#{n}"}
     name_html       {"<i>#{name}</i>"}
     epithet         {name.split(' ').last}
+    epithets        {name.split(' ')[-2..-1].join(' ')}
     epithet_html    {"<i>#{epithet}</i>"}
     protonym_html   {name_html}
   end
