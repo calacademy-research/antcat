@@ -149,6 +149,9 @@ end
 Given /^there is a genus called "([^"]*)"$/ do |name|
   create_genus name
 end
+Given /^there is a family called "Formicidae"$/ do
+  create_family
+end
 Given /^there is a species name "([^"]*)"$/ do |name|
   create_name name
 end
