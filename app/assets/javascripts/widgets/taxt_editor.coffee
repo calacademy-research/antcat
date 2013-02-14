@@ -87,6 +87,7 @@ class AntCat.TaxtEditor
   after_form_closes: =>
     @parent_buttons.undisable()
     @replace_simulation_with_text_area()
+    @control.focus()
 
   open_popup_for_new_tag: (type) =>
     if type == 'reference_button'
