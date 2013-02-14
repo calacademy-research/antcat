@@ -12,6 +12,23 @@ describe Formatters::TaxonFormatter do
     end
   end
 
+  describe "Header formatting" do
+    describe "Header name" do
+      it "should format a subspecies with > 3 epithets" do
+        formica = create_genus 'Formica'
+        rufa = create_species 'rufa', genus: formica
+        major_name = Name.create! name: 'Formica rufa pratensis major',
+                                  epithet_html: '<i>major</i>',
+                                  epithets: 'rufa pratensis major'
+        major = create_subspecies name: major_name, species: rufa, genus: rufa.genus
+        @formatter.new(major).header_name.should ==
+          %{<a href=\"http://www.antcat.org/catalog/#{formica.id}\"><i>Formica</i></a> } +
+          %{<a href=\"http://www.antcat.org/catalog/#{rufa.id}\"><i>rufa</i></a> } +
+          %{<a href=\"http://www.antcat.org/catalog/#{major.id}\"><i>pratensis major</i></a>}
+      end
+    end
+  end
+
   describe "Headline formatting" do
 
     describe "Protonym" do
