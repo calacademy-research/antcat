@@ -108,10 +108,15 @@ class Formatters::TaxonFormatter
       string = headline_protonym + ' ' + headline_type
       notes = headline_notes
       string << ' ' << notes if notes
+      string << ' ' << edit_link unless Rails.env.production?
       string << ' ' << link_to_other_site if link_to_other_site
       string << ' ' << link_to_antwiki if link_to_antwiki
       string
     end
+  end
+
+  def edit_link
+    link 'Edit', "/taxa/#{@taxon.id}/edit", target: nil
   end
 
   def headline_protonym
