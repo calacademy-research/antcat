@@ -45,6 +45,7 @@ class TaxaController < ApplicationController
     @taxon.attributes = attributes
     # apparently can't just assign this value to the attribute in attributes
     @taxon.headline_notes_taxt = Taxt.from_editable attributes.delete :headline_notes_taxt
+    @taxon.type_taxt = Taxt.from_editable attributes.delete :type_taxt
     @taxon.save!
   end
 
