@@ -1,13 +1,13 @@
 @javascript @editing
 Feature: Editing a history item
-  As an editor of AntCat
-  I want to change previously entered taxonomic history items
-  So that information is kept accurate and mistakes are fixed
-  So people use AntCat
+  #As an editor of AntCat
+  #I want to change previously entered taxonomic history items
+  #So that information is kept accurate and mistakes are fixed
+  #So people use AntCat
 
-  Background:
-    Given the Formicidae family exists
-    And I am logged in as an editor and have editing turned on
+  #Background:
+    #Given the Formicidae family exists
+    #And I am logged in as an editor and have editing turned on
 
   #Scenario: Editing a history item
     #When I go to the catalog with editing mode turned on
@@ -37,26 +37,26 @@ Feature: Editing a history item
     #* I press "Save"
     #Then I should see an error message about the unfound reference
 
-  Scenario: Changing a history item, but cancelling
-    When I go to the catalog
-    Then the history should be "Taxonomic history."
-    * I click the edit icon
-    * I edit the history item to "(none)"
-    * I press "Cancel"
-    Then the history should be "Taxonomic history."
+  #Scenario: Changing a history item, but cancelling
+    #When I go to the catalog
+    #Then the history should be "Taxonomic history."
+    #* I click the edit icon
+    #* I edit the history item to "(none)"
+    #* I press "Cancel"
+    #Then the history should be "Taxonomic history."
 
-  Scenario: Having an error with the item (because it's blank)
-    When I go to the catalog
-    * I click the edit icon
-    * I edit the history item to ""
-    * I save my changes
-    Then I should see "Taxt can't be blank"
+  #Scenario: Having an error with the item (because it's blank)
+    #When I go to the catalog
+    #* I click the edit icon
+    #* I edit the history item to ""
+    #* I save my changes
+    #Then I should see "Taxt can't be blank"
 
-  Scenario: Having an error then cancelling
-    When I go to the catalog
-    * I click the edit icon
-    * I edit the history item to ""
-    * I save my changes
-    Then I should see "Taxt can't be blank"
-    * I press "Cancel"
-    Then the history should be "Taxonomic history."
+  #Scenario: Having an error then cancelling
+    #When I go to the catalog
+    #* I click the edit icon
+    #* I edit the history item to ""
+    #* I save my changes
+    #Then I should see "Taxt can't be blank"
+    #* I press "Cancel"
+    #Then the history should be "Taxonomic history."
