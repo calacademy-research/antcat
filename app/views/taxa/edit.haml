@@ -86,7 +86,7 @@
 
         %tr
           %td.label= taxon_form.label :type_taxt, 'Notes'
-          %td#type_notes_taxt_editor.taxt_editor
+          %td#type_taxt_editor.taxt_editor
             = text_area_tag 'taxon[type_taxt]', Taxt.to_editable(@taxon.type_taxt), rows: 1, class: 'taxt_edit_box'
             = render 'tag_type_selectors/show'
             = render 'reference_popups/show'
