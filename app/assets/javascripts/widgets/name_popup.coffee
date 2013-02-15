@@ -30,7 +30,7 @@ class AntCat.NamePopup extends AntCat.NestedForm
       success: (data) =>
         @element.replaceWith data
         @element = @parent_element.find '> .antcat_name_popup'
-        @initialize
+        @initialize()
         @element.find('#id').val(@id)
       error: (xhr) => debugger
 
@@ -83,7 +83,7 @@ class AntCat.NamePopup extends AntCat.NestedForm
     if @id
       @load '',
     else
-      @initialize
+      @initialize()
     super unless @deciding_whether_to_add_name
     @deciding_whether_to_add_name = false
     false
