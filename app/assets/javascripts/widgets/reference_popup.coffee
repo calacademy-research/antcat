@@ -89,7 +89,7 @@ class AntCat.ReferencePopup
 
   close: =>
     @element.hide()
-    @options.on_close if @options.on_close
+    @options.on_close() if @options.on_close
 
   setup_controls: =>
     self = @

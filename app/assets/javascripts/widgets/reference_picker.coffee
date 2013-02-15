@@ -101,7 +101,7 @@ class AntCat.ReferencePicker
       @hide_expansion()
     else
       @element.slideUp 'fast', =>
-    @options.on_close if @options.on_close
+    @options.on_close() if @options.on_close
 
   setup_controls: =>
     self = @
