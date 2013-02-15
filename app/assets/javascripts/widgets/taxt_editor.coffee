@@ -91,18 +91,24 @@ class AntCat.TaxtEditor
 
   open_popup_for_new_tag: (type) =>
     if type == 'reference_button'
-      new AntCat.ReferencePopup @reference_popup.parent(), id: null, on_ok: @handle_popup_result, on_close: @after_form_closes
+      @open_reference_popup()
     else
-      @name_popup.open()
+      @open_name_popup()
+
+  open_name_popup: =>
+    @name_popup.open()
+
+  open_reference_popup: =>
+    new AntCat.ReferencePopup @reference_popup.parent(), id: null, on_ok: @handle_popup_result, on_close: @after_form_closes
 
   open_popup_for_existing_tag: =>
     @before_form_opens()
     id = TaxtEditor.extract_id_from_editable_taxt @selection()
     type = TaxtEditor.extract_type_from_editable_taxt @selection()
     if type == 1
-      new AntCat.ReferencePopup @reference_popup.parent(), id: id, on_ok: @handle_popup_result, on_close: @after_form_closes
+      @open_reference_popup()
     else
-      @name_popup.open()
+      @open_name_popup()
 
   replace_text_area_with_simulation: =>
     # We need to indicate the selected tag in the taxt edit box
