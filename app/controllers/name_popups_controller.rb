@@ -1,7 +1,7 @@
 # coding: UTF-8
 class NamePopupsController < ApplicationController
 
-  def index
+  def search
     respond_to do |format|
       format.json {render json: Name.picklist_matching(params[:term]).to_json}
     end
@@ -12,7 +12,7 @@ class NamePopupsController < ApplicationController
     render partial: 'show', locals: {name: name}
   end
 
-  def lookup
+  def find
     data = {}
     if params[:add_name] == 'true'
       add_name params[:name_string], data
@@ -21,6 +21,8 @@ class NamePopupsController < ApplicationController
     end
     send_back_json data
   end
+
+  ##########
 
   def find_name name_string, data
     name = Name.find_by_name name_string
