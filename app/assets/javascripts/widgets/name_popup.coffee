@@ -10,7 +10,7 @@ class AntCat.NamePopup extends AntCat.NestedForm
     @id = @element.find('#id').val()
     @original_id = @id
     if @id
-      @load ''
+      @load()
     else
       @initialize()
     @
