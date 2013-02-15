@@ -20,8 +20,6 @@ class AntCat.TaxtEditor
     console.log 'TaxtEditor ctor: no @control' unless @control.size() == 1
     @control.addClass 'taxt_edit_box'
     @tag_type_selector = new AntCat.TagTypeSelector(@element.find('.antcat_tag_type_selector'), on_ok: @handle_tag_type_selector_result, on_cancel: @after_form_closes)
-    @reference_popup = @element.find '.antcat_reference_popup'
-    console.log 'TaxtEditor ctor: no @reference_popup' unless @reference_popup.size() == 1
     @parent_buttons = $(@options.parent_buttons)
     if @options.parent_buttons
       @parent_buttons = @element.closest('form').find $(@options.parent_buttons)
@@ -94,10 +92,13 @@ class AntCat.TaxtEditor
 
   open_name_popup: (id, type) =>
     name_popup = @element.find '.antcat_name_popup'
+    console.log 'TaxtEditor open_name_popup: no name_popup' unless name_popup.size() == 1
     new AntCat.NamePopup name_popup.parent(), id: id, type: type, on_success: @handle_name_popup_result, on_close: @after_form_closes
 
   open_reference_popup: (id) =>
-    new AntCat.ReferencePopup @reference_popup.parent(), id: id, on_ok: @handle_popup_result, on_close: @after_form_closes
+    reference_popup = @element.find '.antcat_reference_popup'
+    console.log 'TaxtEditor open_reference_popup: no reference_popup' unless reference_popup.size() == 1
+    new AntCat.ReferencePopup reference_popup.parent(), id: id, on_ok: @handle_popup_result, on_close: @after_form_closes
 
   open_popup_for_existing_tag: =>
     @before_form_opens()
