@@ -25,6 +25,7 @@ class AntCat.NamePopup extends AntCat.NestedForm
     @start_throbbing()
     $.ajax
       url: url
+      url: "/name_popups/#{@id}"
       dataType: 'html'
       success: (data) =>
         @element.replaceWith data
@@ -93,7 +94,7 @@ class AntCat.NamePopup extends AntCat.NestedForm
     return if AntCat.testing
     $textbox.autocomplete(
         autoFocus: true,
-        source: "/name_popups",
+        source: "/name_popups/search",
         minLength: 3)
       .data('autocomplete')._renderItem = @render_item
 
