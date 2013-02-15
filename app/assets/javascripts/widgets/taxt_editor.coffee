@@ -93,8 +93,8 @@ class AntCat.TaxtEditor
     else
       @open_name_popup()
 
-  open_name_popup: (id) =>
-    new AntCat.NamePopup @name_popup.parent(), id: id, on_success: @handle_name_popup_result, on_close: @after_form_closes
+  open_name_popup: (id, type) =>
+    new AntCat.NamePopup @name_popup.parent(), id: id, type: type, on_success: @handle_name_popup_result, on_close: @after_form_closes
 
   open_reference_popup: (id) =>
     new AntCat.ReferencePopup @reference_popup.parent(), id: id, on_ok: @handle_popup_result, on_close: @after_form_closes
@@ -106,7 +106,7 @@ class AntCat.TaxtEditor
     if type == 1
       @open_reference_popup id
     else
-      @open_name_popup id
+      @open_name_popup id, type
 
   replace_text_area_with_simulation: =>
     # We need to indicate the selected tag in the taxt edit box
