@@ -164,7 +164,7 @@ class AntCat.TaxtEditor
       result += digit_value * multiplier
       multiplier *= base
       index += 1
-      return result / 10 if index >= id.length
+      return Math.floor(result / 10) if index >= id.length
   @type_from_editable: (id) ->
     result = 0
     base = @EDITABLE_ID_DIGITS.length
