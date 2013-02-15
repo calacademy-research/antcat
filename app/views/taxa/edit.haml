@@ -15,7 +15,7 @@
     %input{type: :hidden, name: 'possible_homonym', id: 'possible_homonym', value: @possible_homonym ? 'true' : nil}
     = render 'shared/errors_for', resource: @taxon
     .epithet_status_flags_section.section
-      %table.ui-dialog-content.ui-widget-content.ui-corner-all
+      %table.fields.ui-dialog-content.ui-widget-content.ui-corner-all
         %tr
           = taxon_form.fields_for :name do |name_form|
             %td.label= name_form.label :name, 'Epithet'
@@ -52,7 +52,7 @@
       .section_header.ui-widget-header.ui-corner-top
         Protonym
       = taxon_form.fields_for :protonym do |protonym_form|
-        %table.ui-dialog-content.ui-widget-content.ui-corner-bottom
+        %table.fields.ui-dialog-content.ui-widget-content.ui-corner-bottom
           %tr
             = protonym_form.fields_for :name do |name_form|
               %td.label= name_form.label :name, 'Name'
@@ -75,7 +75,7 @@
     .type_section.section
       .section_header.ui-widget-header.ui-corner-top
         Type
-      %table.ui-dialog-content.ui-widget-content.ui-corner-bottom
+      %table.fields.ui-dialog-content.ui-widget-content.ui-corner-bottom
         %tr
           = taxon_form.fields_for :type_name do |type_name_form|
             %td.label= type_name_form.label :name
@@ -104,7 +104,7 @@
       -#.ui-dialog-content.ui-widget-content.ui-corner-bottom
         -#Reference items
 
-    -#%table.synonym_homonym_section.section
+    -#%table.fields.synonym_homonym_section.section
       -#%tr
         -#%td
           -#.synonym_section
