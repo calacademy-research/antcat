@@ -79,11 +79,6 @@ class AntCat.NamePopup extends AntCat.NestedForm
     @element.find('.error_messages').text ''
     if @deciding_whether_to_add_name
       @element.find('.buttons .submit').val('OK')
-    @id = @original_id
-    if @id
-      @load '',
-    else
-      @initialize()
     super unless @deciding_whether_to_add_name
     @deciding_whether_to_add_name = false
     false
