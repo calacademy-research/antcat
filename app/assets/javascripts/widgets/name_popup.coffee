@@ -1,44 +1,45 @@
 class AntCat.NamePopup extends AntCat.NestedForm
 
   constructor: (@parent_element, @options = {}) ->
-    @element = @parent_element.find '> .antcat_name_popup'
-    @options.button_container = '.buttons'
     @options.field = false
-    super @element, @options
+
+    @element = @parent_element.find '> .antcat_name_popup'
     console.log 'NamePopup ctor: no @element' unless @element.size() == 1
 
-    @id = @element.find('#id').val()
-    @original_id = @id
+    @id = @options.id
+    @type = @options.type
+
     if @id
       @load()
     else
       @initialize()
     @
 
-  form: =>
-    AntCat.NestedForm.create_form_from @element.find '.nested_form'
-
-  load: (url = '') =>
-    if url.indexOf('/name_popup') is -1
-      url = '/name_popup?' + url
-    url = url + '&' + $.param id: @id if @id
+  load: =>
     @start_throbbing()
     $.ajax
-      url: url
-      url: "/name_popups/#{@id}"
+      url: "/name_popups/#{@type}/#{@id}"
       dataType: 'html'
       success: (data) =>
         @element.replaceWith data
         @element = @parent_element.find '> .antcat_name_popup'
         @initialize()
-        @element.find('#id').val(@id)
       error: (xhr) => debugger
 
   initialize: =>
+    @element.addClass 'antcat_form'
+    @options.button_container = '.buttons'
     @textbox = @element.find('input[type=text]')
     console.log 'NamePopup initialize: no @textbox' unless @textbox.size() == 1
+
     @setup_autocomplete @textbox
+    @initialize_buttons()
+
+    @element.show()
     @textbox.focus()
+
+  form: =>
+    AntCat.NestedForm.create_form_from @element.find '.nested_form'
 
   start_throbbing: =>
     @element.find('.throbber img').show()
