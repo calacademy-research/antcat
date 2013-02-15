@@ -41,7 +41,7 @@
             = taxon_form.label :hong
 
         %tr
-          %td.label= taxon_form.label :headline_notes_taxt, 'Notes'
+          %td.label.top_aligned= taxon_form.label :headline_notes_taxt, 'Notes'
           %td#headline_notes_taxt_editor.taxt_editor
             = text_area_tag 'taxon[headline_notes_taxt]', Taxt.to_editable(@taxon.headline_notes_taxt), rows: 1, class: 'taxt_edit_box'
             = render 'tag_type_selectors/show'
@@ -85,7 +85,7 @@
               = taxon_form.label :type_fossil, 'Fossil'
 
         %tr
-          %td.label= taxon_form.label :type_taxt, 'Notes'
+          %td.label.top_aligned= taxon_form.label :type_taxt, 'Notes'
           %td#type_taxt_editor.taxt_editor
             = text_area_tag 'taxon[type_taxt]', Taxt.to_editable(@taxon.type_taxt), rows: 1, class: 'taxt_edit_box'
             = render 'tag_type_selectors/show'
