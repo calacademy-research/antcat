@@ -7,7 +7,7 @@
   %table
     %tr
       %td
-        - url = '/name_popups/find'
+        - url = '/name_popups/find?popup=true'
         - method = 'get'
         .nested_form{'data-action' => url, 'data-method' => method}
           = hidden_field_tag 'id', id
