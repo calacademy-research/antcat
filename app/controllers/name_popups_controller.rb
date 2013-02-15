@@ -8,8 +8,16 @@ class NamePopupsController < ApplicationController
   end
 
   def show
-    name = Name.find params[:id] if params[:id].present?
-    render partial: 'show', locals: {name: name}
+    if params[:type] == '2'
+      taxon = Taxon.find params[:id]
+      name = taxon.name
+      id = taxon.id
+    else
+      taxon = nil
+      name = Name.find params[:id]
+      id = name.id
+    end
+    render partial: 'show', locals: {id: id, name: name.name}
   end
 
   def find
