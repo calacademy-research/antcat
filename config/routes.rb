@@ -38,7 +38,7 @@ AntCat::Application.routes.draw do
 
   get 'name_popups/search'
   get 'name_popups/find'
-  match 'name_popups/:id' => 'name_popups#show'
+  match 'name_popups/:id' => 'name_popups#show', via: :get
 
   match 'name_pickers/lookup' => 'name_pickers#lookup', as: :name_picker, via: :get
   resource :reference_picker, only: :show
