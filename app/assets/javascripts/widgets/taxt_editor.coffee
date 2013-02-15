@@ -28,7 +28,6 @@ class AntCat.TaxtEditor
     else
       @parent_buttons = @element.siblings().find(':button')
     console.log 'TaxtEditor ctor: no @parent_buttons' unless @parent_buttons.size() == 1
-    @name_popup = @element.find '.antcat_name_popup'
     @dashboard = new TaxtEditor.DebugDashboard @ if @options.show_debug_dashboard
     @dashboard?.show_status 'before'
     @value @control.val()
@@ -94,7 +93,8 @@ class AntCat.TaxtEditor
       @open_name_popup()
 
   open_name_popup: (id, type) =>
-    new AntCat.NamePopup @name_popup.parent(), id: id, type: type, on_success: @handle_name_popup_result, on_close: @after_form_closes
+    name_popup = @element.find '.antcat_name_popup'
+    new AntCat.NamePopup name_popup.parent(), id: id, type: type, on_success: @handle_name_popup_result, on_close: @after_form_closes
 
   open_reference_popup: (id) =>
     new AntCat.ReferencePopup @reference_popup.parent(), id: id, on_ok: @handle_popup_result, on_close: @after_form_closes
