@@ -13,7 +13,7 @@ class TaxaController < ApplicationController
   def update
     @taxon = Taxon.find params[:id] 
     begin
-      update_taxon params.dup['taxon']
+      update_taxon params.dup[:taxon]
     rescue ActiveRecord::RecordInvalid
       render :edit and return
     end
