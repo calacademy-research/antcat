@@ -17,9 +17,12 @@ class AntCat.Form
     console.log 'initialize_buttons: @buttons is nil' unless @buttons.size() == 1
     @buttons
       .find(':button, :submit').unbutton().button().end()
-      .find('.submit').click(@submit).end()
-      .find('.cancel').click(@cancel).end()
-      .end()
+      .find('.submit')
+        .off('click')
+        .on('click', @submit).end()
+      .find('.cancel')
+        .off('click')
+        .on('click', @cancel).end()
 
   open: =>
     @element.show()
