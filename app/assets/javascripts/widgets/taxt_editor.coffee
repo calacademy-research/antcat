@@ -9,7 +9,7 @@ class AntCat.TaxtEditor
   NAME_TAG_TYPE      = 3
 
   constructor: (@element, @options = {}) ->
-    @element.addClass 'taxt_editor not_focused'
+    @element.addClass 'taxt_editor'
     @control = @element.find '> textarea'
     console.log 'TaxtEditor ctor: no @control' unless @control.size() == 1
     @control.addClass 'taxt_edit_box'
@@ -27,9 +27,9 @@ class AntCat.TaxtEditor
     @initialize_tag_buttons()
 
     @control.focusin =>
-      @element.addClass('focused').removeClass('not_focused')
+      @show_tag_buttons()
     @control.focusout =>
-      @element.addClass('not_focused').removeClass('focused')
+      @hide_tag_buttons()
 
   initialize_tag_buttons: =>
     @element.find('.insert_tag_buttons')
