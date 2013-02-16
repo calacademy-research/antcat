@@ -16,7 +16,6 @@ class AntCat.TaxtEditor
     @control = @element.find '> textarea'
     console.log 'TaxtEditor ctor: no @control' unless @control.size() == 1
     @control.addClass 'taxt_edit_box'
-    @tag_type_selector = new AntCat.TagTypeSelector(@element.find('.antcat_tag_type_selector'), on_ok: @handle_tag_type_selector_result, on_cancel: @after_form_closes)
     @parent_buttons = $(@options.parent_buttons)
     if @options.parent_buttons
       @parent_buttons = @element.closest('form').find $(@options.parent_buttons)
@@ -34,7 +33,6 @@ class AntCat.TaxtEditor
     if not @is_tag_selected() and @is_new_tag_event(event)
       @tag_start = @start()
       @tag_end = @end()
-      @open_tag_type_selector()
       return false
 
     if @is_tag_selected() and @is_tag_opening_event event
@@ -68,13 +66,6 @@ class AntCat.TaxtEditor
   before_form_opens: =>
     @replace_text_area_with_simulation()
     @parent_buttons.disable()
-
-  open_tag_type_selector: =>
-    @before_form_opens()
-    @tag_type_selector.open()
-
-  handle_tag_type_selector_result: (type) =>
-    @open_popup_for_new_tag(type)
 
   after_form_closes: =>
     @parent_buttons.undisable()

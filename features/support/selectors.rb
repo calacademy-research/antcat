@@ -39,9 +39,6 @@ module HtmlSelectorsHelpers
     when /the header/
       ".header"
 
-    when /the tag type selector/
-      '.antcat_tag_type_selector'
-
     when /the first reference/
       first '.reference'
 
