@@ -1,12 +1,5 @@
 window.AntCat or= {}
 
-# A TaxtEditor is a textarea with associated tag type selector, reference_popup and name popup
-#
-# #taxt
-#   = render 'taxt_editors/show'
-# In the page's CoffeeScript:
-#   new AntCat.TaxtEditor $('#taxt'), parent_buttons: '.buttons_section'
-
 $.fn.taxt_editor = (options = {}) ->
   return this.each -> new AntCat.TaxtEditor $(this), options
 
