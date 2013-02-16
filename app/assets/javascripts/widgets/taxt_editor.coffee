@@ -4,6 +4,10 @@ $.fn.taxt_editor = (options = {}) ->
   return this.each -> new AntCat.TaxtEditor $(this), options
 
 class AntCat.TaxtEditor
+  REFERENCE_TAG_TYPE = 1
+  TAXON_TAG_TYPE     = 2
+  NAME_TAG_TYPE      = 3
+
   constructor: (@element, @options = {}) ->
     @element.addClass 'taxt_editor'
     @control = @element.find '> textarea'
@@ -85,7 +89,7 @@ class AntCat.TaxtEditor
     @before_form_opens()
     id = TaxtEditor.extract_id_from_editable_taxt @selection()
     type = TaxtEditor.extract_type_from_editable_taxt @selection()
-    if type == 1
+    if type == REFERENCE_TAG_TYPE
       @open_reference_popup id
     else
       @open_name_popup id, type
