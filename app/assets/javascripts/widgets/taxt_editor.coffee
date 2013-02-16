@@ -27,7 +27,7 @@ class AntCat.TaxtEditor
     @initialize_tag_buttons()
 
   initialize_tag_buttons: =>
-    $('.insert_tag_buttons')
+    @element.find('.insert_tag_buttons')
       .find(':button, :submit').unbutton().button().end()
       .find('.taxon_button')
         .off('click')
