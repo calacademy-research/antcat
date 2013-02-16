@@ -16,7 +16,6 @@ class AntCat.ReferencePicker
       @load '', expanded_or_collapsed
     else
       @initialize expanded_or_collapsed
-    @
 
   load: (url = '', expanded_or_collapsed = 'expanded') =>
     if url.indexOf('/reference_picker') is -1
