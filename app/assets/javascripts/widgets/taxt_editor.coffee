@@ -24,14 +24,32 @@ class AntCat.TaxtEditor
     @value @control.val()
     @last_value @control.val()
     @control.bind 'keyup keydown mouseup dblclick', @handle_event
-    @
+    @initialize_tag_buttons()
+
+  initialize_tag_buttons: =>
+    $('.insert_tag_buttons')
+      .find(':button, :submit').unbutton().button().end()
+      .find('.taxon_button')
+        .off('click')
+        .on('click', @insert_taxon).end()
+      .find('.reference_button')
+        .off('click')
+        .on('click', @insert_reference).end()
+
+  insert_taxon: =>
+    @insert_tag TAXON_TAG_TYPE
+    false
+
+  insert_reference: =>
+    @insert_tag REFERENCE_TAG_TYPE
+    false
+
+  insert_tag: (type) =>
+    @tag_start = @start()
+    @tag_end = @end()
+    @open_popup_for_new_tag type
 
   handle_event: (event) =>
-    if not @is_tag_selected() and @is_new_tag_event(event)
-      @tag_start = @start()
-      @tag_end = @end()
-      return false
-
     if @is_tag_selected() and @is_tag_opening_event event
       @tag_start = @start()
       @tag_end = @end()
@@ -67,13 +85,22 @@ class AntCat.TaxtEditor
   after_form_closes: =>
     @parent_buttons.undisable()
     @replace_simulation_with_text_area()
+    @show_tag_buttons()
     @control.focus()
 
   open_popup_for_new_tag: (type) =>
-    if type == 'reference_button'
+    @before_form_opens()
+    @hide_tag_buttons()
+    if type == REFERENCE_TAG_TYPE
       @open_reference_popup()
     else
       @open_name_popup()
+
+  show_tag_buttons: =>
+    @element.find('.insert_tag_buttons').show()
+
+  hide_tag_buttons: =>
+    @element.find('.insert_tag_buttons').hide()
 
   open_name_popup: (id, type) =>
     name_popup = @element.find '.antcat_name_popup'
@@ -129,6 +156,8 @@ class AntCat.TaxtEditor
     else
       @set_selection @tag_start, @tag_end
 
+    show_tag_buttons()
+
   # this value is duplicated in lib/taxt.rb
   @EDITABLE_ID_DIGITS = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
@@ -178,14 +207,8 @@ class AntCat.TaxtEditor
     @value().charAt(@end() - 1) is '}'
 
   is_tag_opening_event: (event) =>
-    @is_new_tag_event(event) or
     event.type is 'keydown' and event.which is $.ui.keyCode.ENTER or
     event.type is 'dblclick'
-
-  is_new_tag_event: (event) =>
-    event.type is 'keydown' and
-    event.which is @LEFT_BRACKET and
-    event.shiftKey
 
   value:      => @control.val arguments...
   last_value: => @control.data 'last_value', arguments...
