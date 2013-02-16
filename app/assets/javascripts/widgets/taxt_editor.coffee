@@ -19,6 +19,8 @@ class AntCat.TaxtEditor
     else
       @parent_buttons = @element.siblings().find(':button')
     console.log 'TaxtEditor ctor: no @parent_buttons' unless @parent_buttons.size() == 1
+    @tag_buttons = @element.find('.insert_tag_buttons')
+    console.log 'TaxtEditor ctor: no @tag_buttons' unless @tag_buttons.size() == 1
     @dashboard = new TaxtEditor.DebugDashboard @ if @options.show_debug_dashboard
     @dashboard?.show_status 'before'
     @value @control.val()
@@ -32,7 +34,7 @@ class AntCat.TaxtEditor
       @hide_tag_buttons()
 
   initialize_tag_buttons: =>
-    @element.find('.insert_tag_buttons')
+    @tag_buttons
       .find(':button, :submit').unbutton().button().end()
       .find('.taxon_button')
         .off('click')
@@ -102,10 +104,9 @@ class AntCat.TaxtEditor
       @open_name_popup()
 
   show_tag_buttons: =>
-    @element.find('.insert_tag_buttons').show()
+    @tag_buttons.show()
 
   hide_tag_buttons: =>
-    @element.find('.insert_tag_buttons').hide()
 
   open_name_popup: (id, type) =>
     name_popup = @element.find '.antcat_name_popup'
@@ -145,6 +146,7 @@ class AntCat.TaxtEditor
   replace_simulation_with_text_area: =>
     @element.find('.antcat_taxt_simulation').remove()
     @control.show()
+    @tag_buttons.hide()
  
   handle_name_popup_result: (data) =>
     @handle_popup_result data.taxt
