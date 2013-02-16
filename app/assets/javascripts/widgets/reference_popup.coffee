@@ -14,7 +14,6 @@ class AntCat.ReferencePopup
       @load ''
     else
       @initialize()
-    @
 
   load: (url = '') =>
     if url.indexOf('/reference_popup') is -1
