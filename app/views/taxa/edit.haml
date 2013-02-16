@@ -43,8 +43,7 @@
         %tr
           %td.label.top_aligned= taxon_form.label :headline_notes_taxt, 'Notes'
           %td#headline_notes_taxt_editor.taxt_editor
-            = text_area_tag 'taxon[headline_notes_taxt]', Taxt.to_editable(@taxon.headline_notes_taxt), rows: 1, class: 'taxt_edit_box'
-            = render 'tag_type_selectors/show'
+            = render 'taxt_editors/show', name: 'taxon[headline_notes_taxt]', value: Taxt.to_editable(@taxon.headline_notes_taxt)
             = render 'reference_popups/show'
             = render 'name_popups/show'
 
@@ -87,7 +86,7 @@
         %tr
           %td.label.top_aligned= taxon_form.label :type_taxt, 'Notes'
           %td#type_taxt_editor.taxt_editor
-            = render 'taxt_editors/show'
+            = render 'taxt_editors/show', name: 'taxon[type_taxt]', value: Taxt.to_editable(@taxon.type_taxt)
 
     -#.history_section.section
       -#.section_header.ui-widget-header.ui-corner-top

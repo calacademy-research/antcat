@@ -7,9 +7,4 @@
 
 - content_for :page_contents do
   #taxt_editor
-    = text_area_tag :taxt_edit_box, "", rows: 1, class: 'taxt_edit_box'
-    = render 'tag_type_selectors/show'
-    #reference_popup
-      = render 'reference_popups/show'
-    #name_popup
-      = render 'name_popups/show'
+    = render 'taxt_editors/show', name: 'name', value: 'value'
