@@ -16,11 +16,8 @@ module NavigationHelpers
       journals_path
     when /the Authors page/
       authors_path
-    when /the catalog entry for "([^"]*)"/
-      taxon = Taxon.find_by_name $1
-      "/catalog/#{taxon.id}"
-    when /the page for "([^"]*)"/
-      taxon = Taxon.find_by_name $1
+    when /the (catalog entry|page) for "([^"]*)"/
+      taxon = Taxon.find_by_name $2
       "/catalog/#{taxon.id}"
     when /the catalog/
       catalog_path
