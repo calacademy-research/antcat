@@ -11,16 +11,16 @@ class AntCat.TaxtEditor
   constructor: (@element, @options = {}) ->
     @element.addClass 'taxt_editor'
     @control = @element.find '> textarea'
-    console.log 'TaxtEditor ctor: no @control' unless @control.size() == 1
+    @log 'TaxtEditor ctor: no @control' unless @control.size() == 1
     @control.addClass 'taxt_edit_box'
     @parent_buttons = $(@options.parent_buttons)
     if @options.parent_buttons
       @parent_buttons = @element.closest('form').find $(@options.parent_buttons)
     else
       @parent_buttons = @element.siblings().find(':button')
-    console.log 'TaxtEditor ctor: no @parent_buttons' unless @parent_buttons.size() == 1
+    @log 'TaxtEditor ctor: no @parent_buttons' unless @parent_buttons.size() == 1
     @tag_buttons = @element.find('.insert_tag_buttons')
-    console.log 'TaxtEditor ctor: no @tag_buttons' unless @tag_buttons.size() == 1
+    @log 'TaxtEditor ctor: no @tag_buttons' unless @tag_buttons.size() == 1
     @dashboard = new TaxtEditor.DebugDashboard @ if @options.show_debug_dashboard
     @dashboard?.show_status 'before'
     @value @control.val()
@@ -110,12 +110,12 @@ class AntCat.TaxtEditor
 
   open_name_popup: (id, type) =>
     name_popup = @element.find '.antcat_name_popup'
-    console.log 'TaxtEditor open_name_popup: no name_popup' unless name_popup.size() == 1
+    @log 'TaxtEditor open_name_popup: no name_popup' unless name_popup.size() == 1
     new AntCat.NamePopup name_popup.parent(), id: id, type: type, on_success: @handle_name_popup_result, on_close: @after_form_closes
 
   open_reference_popup: (id) =>
     reference_popup = @element.find '.antcat_reference_popup'
-    console.log 'TaxtEditor open_reference_popup: no reference_popup' unless reference_popup.size() == 1
+    @log 'TaxtEditor open_reference_popup: no reference_popup' unless reference_popup.size() == 1
     new AntCat.ReferencePopup reference_popup.parent(), id: id, on_ok: @handle_popup_result, on_close: @after_form_closes
 
   open_popup_for_existing_tag: =>
@@ -274,6 +274,9 @@ class AntCat.TaxtEditor
             ++i
     text = text[0...start] if in_tag
     text
+
+  log: (message) =>
+    console.log message
 
 class AntCat.TaxtEditor.DebugDashboard
   @dashboard_id: 'antcat_taxteditbox_dashboard'
