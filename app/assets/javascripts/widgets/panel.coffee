@@ -1,5 +1,3 @@
-window.AntCat or= {}
-
 class AntCat.Panel
   constructor: ($element, @options = {}) -> @initialize $element
 

@@ -1,5 +1,3 @@
-window.AntCat or= {}
-
 class AntCat.AjaxForm extends AntCat.Form
 
   submit: =>

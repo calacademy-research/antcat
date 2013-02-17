@@ -1,5 +1,3 @@
-window.AntCat or= {}
-
 $.fn.taxt_editor = (options = {}) ->
   return this.each -> new AntCat.TaxtEditor $(this), options
 

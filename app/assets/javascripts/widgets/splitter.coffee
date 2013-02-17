@@ -1,5 +1,3 @@
-window.AntCat or= {}
-
 class AntCat.Splitter
 
   constructor: (@element, @on_change) ->
