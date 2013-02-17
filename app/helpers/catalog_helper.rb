@@ -67,7 +67,7 @@ module CatalogHelper
     end
     if show_elevate_subspecies
       contents << form_tag("/catalog/#{taxon.id}/elevate_subspecies#{parameters_string}", method: :get) do
-        submit_tag 'Elevate to species' if show_elevate_subspecies
+        submit_tag 'Elevate to species'
       end
     end
     contents
