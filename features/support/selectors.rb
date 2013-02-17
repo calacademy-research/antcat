@@ -42,6 +42,9 @@ module HtmlSelectorsHelpers
     when /the first reference/
       first '.reference'
 
+    when /the headline/
+      '.headline'
+
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
     #
