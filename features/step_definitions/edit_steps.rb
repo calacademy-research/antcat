@@ -30,4 +30,3 @@ end
 When /^I fill in the name with "([^"]*)"$/ do |value|
   step %{I fill in "name_string" with "#{value}"}
 end
-
