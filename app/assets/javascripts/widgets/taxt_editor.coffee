@@ -166,7 +166,7 @@ class AntCat.TaxtEditor
     else
       @set_selection @tag_start, @tag_end
 
-    show_tag_buttons()
+    @show_tag_buttons()
 
   # this value is duplicated in lib/taxt.rb
   @EDITABLE_ID_DIGITS = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
