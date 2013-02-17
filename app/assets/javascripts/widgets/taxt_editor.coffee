@@ -106,9 +106,10 @@ class AntCat.TaxtEditor
       @open_name_popup()
 
   show_tag_buttons: =>
-    @tag_buttons.show()
+    @tag_buttons.addClass 'focused'
 
   hide_tag_buttons: =>
+    @tag_buttons.removeClass 'focused'
 
   open_name_popup: (id, type) =>
     name_popup = @element.find '.antcat_name_popup'
