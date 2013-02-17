@@ -42,3 +42,19 @@ Feature: Editing a taxon
     And I save the form
     Then I should not see "This name is in use by another taxon"
     Then I should see "Calyptites" in the header
+
+  Scenario: Changing taxt
+    Given there is a genus called "Atta"
+    And there is a genus called "Eciton"
+    When I go to the page for "Atta"
+    Then I should not see "Eciton"
+
+    When I follow "Edit"
+    And I put the cursor in the headline notes edit box
+    And I press "Insert Taxon"
+    And I fill in the name with "Eciton"
+    And I press "OK"
+
+    And I press "Save"
+    Then I should be on the page for "Atta"
+    And I should see "Eciton" in the headline

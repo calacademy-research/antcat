@@ -23,3 +23,11 @@ When /^I save my changes to the first reference$/ do
   end
 end
 
+When /^I put the cursor in the headline notes edit box$/ do
+  find('#taxon_headline_notes_taxt').click
+end
+
+When /^I fill in the name with "([^"]*)"$/ do |value|
+  step %{I fill in "name_string" with "#{value}"}
+end
+
