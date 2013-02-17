@@ -59,7 +59,6 @@ class AntCat.ReferencePopup
 
   show: =>
     @element.show()
-    @element.find('.expand_collapse_icon img').attr 'src', AntCat.expanded_image_path
     @expansion.show()
     # apparently, can't setup selectmenu unless it's visible
     @setup_search_selector()
