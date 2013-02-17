@@ -141,6 +141,7 @@ class AntCat.TaxtEditor
     after_selection = text[@end()...]
     text = before_selection + selection + after_selection
     simulation = $("<p class='antcat_taxt_simulation #{@control.attr("class")}'>#{text}</p>")
+    simulation.height(@control.height())
     simulation.insertAfter @control
     @control.hide()
 
