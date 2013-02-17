@@ -1,5 +1,3 @@
-window.AntCat or= {}
-
 # <form> elements can't be nested, but they need to be
 # for AntCat's UI model, which involves drilling down
 # and displaying inline forms

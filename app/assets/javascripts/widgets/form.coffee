@@ -1,5 +1,3 @@
-window.AntCat or= {}
-
 class AntCat.Form
 
   constructor: (@element, @options = {}) ->
