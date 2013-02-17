@@ -57,3 +57,11 @@ Feature: Editing a taxon
     #And I save my changes
     #Then I should be on the page for "Atta"
     #And I should see "Eciton" in the headline
+
+  Scenario: Cancelling
+    Given there is a genus called "Calyptites"
+    When I go to the edit page for "Calyptites"
+    And I set the name to "Atta"
+    And I press "Cancel"
+    Then I should not see "Atta" in the header
+
