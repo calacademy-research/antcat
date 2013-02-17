@@ -39,11 +39,11 @@ class AntCat.TaxtEditor
     @tag_buttons
       .find(':button, :submit').unbutton().button().end()
       .find('.taxon_button')
-        .off('click')
-        .on('click', @insert_taxon).end()
+        .off('mousedown')
+        .on('mousedown', @insert_taxon).end()
       .find('.reference_button')
-        .off('click')
-        .on('click', @insert_reference).end()
+        .off('mousedown')
+        .on('mousedown', @insert_reference).end()
 
   insert_taxon: =>
     @insert_tag TAXON_TAG_TYPE
