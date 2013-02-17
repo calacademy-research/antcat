@@ -11,6 +11,7 @@
   = stylesheet_link_tag 'ext/jquery.ui.selectmenu.css'
 
 - content_for :page_contents do
+  = editing_buttons @taxon, {}
   = form_for @taxon, as: :taxon, url: "/taxa/#{@taxon.id}", html: {class: 'taxon_form ui-widget', style: {display: 'none'}} do |taxon_form|
     %input{type: :hidden, name: 'possible_homonym', id: 'possible_homonym', value: @possible_homonym ? 'true' : nil}
     = render 'shared/errors_for', resource: @taxon
