@@ -22,6 +22,10 @@ AntCat.spinner_path = '<%= image_path 'ui-anim_basic_16x16.gif' %>'
 AntCat.collapsed_image_path = '<%= image_path 'collapsed.png' %>'
 AntCat.expanded_image_path = '<%= image_path 'expanded.png' %>'
 
+AntCat.log = (message) ->
+  unless typeof console == 'undefined'
+    console.log message
+
 space_out_images = ->
   total_image_width = 103 + 50 + 31 + 118 + 103 + 108
   image_count = 6
