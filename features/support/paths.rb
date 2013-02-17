@@ -19,6 +19,9 @@ module NavigationHelpers
     when /the catalog entry for "([^"]*)"/
       taxon = Taxon.find_by_name $1
       "/catalog/#{taxon.id}"
+    when /the page for "([^"]*)"/
+      taxon = Taxon.find_by_name $1
+      "/catalog/#{taxon.id}"
     when /the catalog/
       catalog_path
     when /the forgot password page/
