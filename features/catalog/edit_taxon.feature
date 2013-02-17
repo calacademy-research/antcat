@@ -53,7 +53,7 @@ Feature: Editing a taxon
     And I press "Insert Taxon"
     And I fill in the name with "Eciton"
     # This step submits the form (but not in real)
-    And I click the OK button
+    And I press "OK"
     #And I save my changes
     #Then I should be on the page for "Atta"
     #And I should see "Eciton" in the headline
