@@ -72,7 +72,9 @@ class AntCat.NamePopup extends AntCat.NestedForm
   handle_application_error: (error_message) =>
     # an error means that the name the user entered doesn't exist
     # we ask if they want to add it
-    @element.find('.buttons .submit').val('Add this name')
+    submit_button = @element.find('.buttons .submit span')
+    @log 'TaxtEditor ctor: submit button' unless submit_button.size() == 1
+    submit_button.text('Add this name')
     @element.find('.error_messages').text error_message
     @deciding_whether_to_add_name = true
 
@@ -83,6 +85,9 @@ class AntCat.NamePopup extends AntCat.NestedForm
     super unless @deciding_whether_to_add_name
     @deciding_whether_to_add_name = false
     false
+
+  log: (message) =>
+    console.log message
 
   # -----------------------------------------
   setup_autocomplete: ($textbox) =>
