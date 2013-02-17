@@ -30,8 +30,10 @@ class AntCat.TaxtEditor
 
     @control.focusin =>
       @show_tag_buttons()
+      false
     @control.focusout =>
       @hide_tag_buttons()
+      false
 
   initialize_tag_buttons: =>
     @tag_buttons
