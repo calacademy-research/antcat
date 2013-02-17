@@ -16,11 +16,11 @@ class AntCat.Form
     @buttons
       .find(':button, :submit').unbutton().button().end()
       .find('.submit')
-        .off('click')
-        .on('click', @submit).end()
+        .off('mousedown')
+        .on('mousedown', @submit).end()
       .find('.cancel')
-        .off('click')
-        .on('click', @cancel).end()
+        .off('mousedown')
+        .on('mousedown', @cancel).end()
 
   open: =>
     @element.show()
