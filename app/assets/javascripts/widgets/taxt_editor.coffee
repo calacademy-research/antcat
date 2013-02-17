@@ -149,7 +149,6 @@ class AntCat.TaxtEditor
   replace_simulation_with_text_area: =>
     @element.find('.antcat_taxt_simulation').remove()
     @control.show()
-    @tag_buttons.hide()
  
   handle_name_popup_result: (data) =>
     @handle_popup_result data.taxt
@@ -165,8 +164,6 @@ class AntCat.TaxtEditor
       @set_selection @tag_start, @tag_start + taxt.length - 1
     else
       @set_selection @tag_start, @tag_end
-
-    @show_tag_buttons()
 
   # this value is duplicated in lib/taxt.rb
   @EDITABLE_ID_DIGITS = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
