@@ -5,7 +5,7 @@ Feature: Editing a taxon
   So that information is kept accurate
   So people use AntCat
 
-  Scenario: Trying to editing without being logged in
+  Scenario: Trying to edit without being logged in
     Given there is a genus called "Calyptites"
     When I go to the edit page for "Calyptites"
     And I set the name to "Atta"
