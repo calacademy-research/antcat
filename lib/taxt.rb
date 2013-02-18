@@ -44,18 +44,20 @@ module Taxt
   end
 
   def self.to_editable_reference reference
-    editable_id = id_for_editable reference.id, 1
-    "{#{reference.key.to_s} #{editable_id}}"
+    to_editable_tag reference.id, reference.key.to_s, 1
   end
 
   def self.to_editable_taxon taxon
-    editable_id = id_for_editable taxon.id, 2
-    "{#{taxon.name} #{editable_id}}"
+    to_editable_tag taxon.id, taxon.name, 2
   end
 
   def self.to_editable_name name
-    editable_id = id_for_editable name.id, 3
-    "{#{name.name} #{editable_id}}"
+    to_editable_tag name.id, name.name, 3
+  end
+
+  def self.to_editable_tag id, text, type
+    editable_id = id_for_editable id, type
+    "{#{text} #{editable_id}}"
   end
 
   # this value is duplicated in taxt_editor.coffee
