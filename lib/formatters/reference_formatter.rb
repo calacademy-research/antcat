@@ -106,4 +106,7 @@ class Formatters::MissingReferenceFormatter < Formatters::ReferenceFormatter
   def format_inline_citation reference = nil, user = nil, options = nil
     @reference.citation
   end
+  def format_citation
+    @reference.citation
+  end
 end
