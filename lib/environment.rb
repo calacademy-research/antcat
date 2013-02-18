@@ -4,8 +4,8 @@ class Environment
     @server = server.try(:to_sym) || :production
   end
 
-  def production?; @server = :production end
-  def preview?; @server = :preview end
+  def production?; @server == :production end
+  def preview?; @server == :preview end
 
   def user_can_edit_references? user
     user_is_editor? user
