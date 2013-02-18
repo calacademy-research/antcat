@@ -11,7 +11,6 @@
   = stylesheet_link_tag 'ext/jquery.ui.selectmenu.css'
 
 - content_for :page_contents do
-  = editing_buttons @taxon, {}
   = form_for @taxon, as: :taxon, url: "/taxa/#{@taxon.id}", html: {class: 'taxon_form ui-widget', style: {display: 'none'}} do |taxon_form|
     %input{type: :hidden, name: 'possible_homonym', id: 'possible_homonym', value: @possible_homonym ? 'true' : nil}
     = render 'shared/errors_for', resource: @taxon
@@ -116,8 +115,11 @@
               -#Homonym fields
 
     .buttons_section
-      - save_text = @possible_homonym ? 'Save Homonym' : 'Save'
-      = taxon_form.submit save_text, class: 'ui-priority-primary submit'
-      %input{type: 'button', class: 'ui-priority-secondary cancel', value: 'Cancel'}
-      = link_to 'Show', catalog_path(@taxon)
-      = image_tag 'ui-anim_basic_16x16.gif', class: 'throbber'
+      .left_buttons
+        - save_text = @possible_homonym ? 'Save Homonym' : 'Save'
+        = taxon_form.submit save_text, class: 'ui-priority-primary submit'
+        = image_tag 'ui-anim_basic_16x16.gif', class: 'throbber'
+        %input{type: 'button', class: 'ui-priority-secondary cancel', value: 'Cancel'}
+      .right_buttons
+        = editing_buttons @taxon, {}
+        = button_to 'Show', catalog_path(@taxon)
