@@ -1,3 +1,4 @@
+@javascript
 Feature: Reversing synonymy
   As a user of AntCat
   I want change the direction of a synonymy
@@ -10,7 +11,7 @@ Feature: Reversing synonymy
     And I am logged in as an editor and have editing turned on
     When I go to the catalog entry for "Solenopsis invicta"
     Then I should see that "Solenopsis invicta" is a synonym of "Solenopsis wagneri"
-    When I press "Edit"
+    When I follow "Edit"
     And I press "Reverse synonymy"
     Then I should see the catalog entry for "Solenopsis invicta"
     Then I should not see that "Solenopsis invicta" is a synonym of "Solenopsis wagneri"
@@ -23,7 +24,8 @@ Feature: Reversing synonymy
     And I am logged in as an editor and have editing turned on
     When I go to the catalog entry for "Solenopsis wagneri"
     Then I should not see that "Solenopsis wagneri" is a synonym of "Solenopsis invicta"
-    When I press "Reverse synonymy"
+    When I follow "Edit"
+    And I press "Reverse synonymy"
     Then I should see the catalog entry for "Solenopsis wagneri"
     Then I should see that "Solenopsis wagneri" is a synonym of "Solenopsis invicta"
     When I go to the catalog entry for "Solenopsis invicta"
