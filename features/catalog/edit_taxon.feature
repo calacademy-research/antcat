@@ -5,15 +5,17 @@ Feature: Editing a taxon
   So that information is kept accurate
   So people use AntCat
 
-  Scenario: Editing a genus
+  Scenario: Trying to editing without being logged in
     Given there is a genus called "Calyptites"
     When I go to the edit page for "Calyptites"
     And I set the name to "Atta"
     And I save the form
-    Then I should see "Atta" in the header
+    Then I should be on the login page
+    And I should see "Please log in before continuing"
 
   Scenario: Editing a family
     Given there is a family called "Formicidae"
+    And I log in
     When I go to the edit page for "Formicidae"
     And I set the name to "Formica"
     And I save the form
@@ -21,6 +23,7 @@ Feature: Editing a taxon
 
   Scenario: Trying to enter a blank name
     Given there is a genus called "Calyptites"
+    And I log in
     When I go to the edit page for "Calyptites"
     And I set the name to ""
     And I save the form
@@ -29,6 +32,7 @@ Feature: Editing a taxon
   Scenario: Setting a genus's name to an existing one
     Given there is a genus called "Calyptites"
     And there is a genus called "Atta"
+    And I log in
     When I go to the edit page for "Atta"
     And I set the name to "Calyptites"
     And I save the form
@@ -38,6 +42,7 @@ Feature: Editing a taxon
 
   Scenario: Leaving a genus name alone when there are already two homonyms
     Given there are two genera called "Calyptites"
+    And I log in
     When I go to the edit page for "Calyptites"
     And I save the form
     Then I should not see "This name is in use by another taxon"
@@ -47,6 +52,7 @@ Feature: Editing a taxon
   Scenario: Changing taxt
     Given there is a genus called "Atta"
     And there is a genus called "Eciton"
+    And I log in
     When I go to the page for "Atta"
     Then I should not see "Eciton"
     When I follow "Edit"
@@ -62,6 +68,7 @@ Feature: Editing a taxon
 
   Scenario: Cancelling
     Given there is a genus called "Calyptites"
+    And I log in
     When I go to the edit page for "Calyptites"
     And I set the name to "Atta"
     And I press "Cancel"
