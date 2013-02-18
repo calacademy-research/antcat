@@ -43,6 +43,7 @@ Feature: Editing a taxon
     Then I should not see "This name is in use by another taxon"
     Then I should see "Calyptites" in the header
 
+  @flickerer
   Scenario: Changing taxt
     Given there is a genus called "Atta"
     And there is a genus called "Eciton"
@@ -50,6 +51,7 @@ Feature: Editing a taxon
     Then I should not see "Eciton"
     When I follow "Edit"
     And I put the cursor in the headline notes edit box
+    And I wait for a bit
     And I press "Insert Taxon"
     And I fill in the name with "Eciton"
     # This step submits the form (but not in real)
