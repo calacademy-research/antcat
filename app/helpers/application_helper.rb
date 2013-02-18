@@ -1,25 +1,14 @@
 # coding: UTF-8
 module ApplicationHelper
-  require 'release_type'
-
-  def preview?
-    $ReleaseType.preview?
+  require 'environment'
+  def user_can_edit_references?
+    $Environment.user_can_edit_references? current_user
   end
-
-  def user_is_editor?
-    user_signed_in?
-  end
-
-  def user_can_edit?
-    $ReleaseType.user_can_edit? current_user
-  end
-
   def user_can_edit_catalog?
-    current_user && session[:mode] == 'edit'
+    $Environment.user_can_edit_catalog? current_user
   end
-
-  def user_can_not_edit?
-    not user_can_edit?
+  def user_is_editor?
+    $Environment.user_is_editor? current_user
   end
 
   def make_title title
@@ -40,8 +29,7 @@ module ApplicationHelper
   end
 
   def previewize string
-    return string + ' (preview)' if preview?
-    string
+    $Environment.previewize string
   end
 
   def feedback_link

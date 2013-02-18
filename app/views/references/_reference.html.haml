@@ -16,6 +16,6 @@
           = image_tag 'delete_off.png', :alt => 'delete'
       %td.reference_item
         = render 'display', :reference => reference if !reference.new_record? && reference.errors.empty?
-        - if user_can_edit?
+        - if user_can_edit_references?
           = render 'edit', :reference => reference
         = render 'shared/coins', :reference => reference if !reference.new_record? && reference.errors.empty?
