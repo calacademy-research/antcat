@@ -7,7 +7,7 @@ Feature: Editing a history item
 
   #Background:
     #Given the Formicidae family exists
-    #And I am logged in as an editor and have editing turned on
+    #And I am logged in as an editor
 
   #Scenario: Editing a history item
     #When I go to the catalog with editing mode turned on
