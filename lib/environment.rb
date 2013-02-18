@@ -6,17 +6,17 @@ class Environment
 
   def production?; @server = :production end
   def preview?; @server = :preview end
-  def sandbox?; true; end
-  def restricted?; true; end
 
   def user_can_edit_references? user
-    user_is_editor?(user) || sandbox?
+    user_is_editor? user
   end
+
   def user_can_edit_catalog? user
-    user_is_editor?(user) || sandbox?
+    user_is_editor? user
   end
+
   def user_is_editor? user
-    user
+    user || sandbox?
   end
 
   def previewize string
