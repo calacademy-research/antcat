@@ -1,5 +1,5 @@
 # coding: UTF-8
-require 'release_type'
+require 'environment'
 
 AntCat::Application.routes.draw do
 

@@ -25,7 +25,7 @@ module ApplicationHelper
   def make_title title
     string = ''.html_safe
     string << "#{title} - " if title
-    string << $ReleaseType.title
+    string << $Environment.title
     string << (Rails.env.production? ? '' : " (#{Rails.env})")
     string
   end
@@ -55,8 +55,8 @@ http://antcat.org
       EOS
   end
 
-  def release_type_indicator
-    $ReleaseType.preview? ? (content_tag :div, 'preview', class: :preview) : ''
+  def environment_indicator
+    $Environment.preview? ? (content_tag :div, 'preview', class: :preview) : ''
   end
 
   def add_period_if_necessary string
