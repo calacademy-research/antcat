@@ -2,15 +2,15 @@
 Before do
   Family.destroy_all
   FactoryGirl.create :family, protonym: nil
-  $Environment = ProductionEnvironment.new
+  $Environment = RestrictedEnvironment.new
 end
 
 Before('@preview') do
-  $Environment = PreviewEnvironment.new
+  $Environment = SandboxEnvironment.new
 end
 
 After('@preview') do
-  $Environment = ProductionEnvironment.new
+  $Environment = RestrictedEnvironment.new
 end
 
 After {Sunspot.remove_all!}
