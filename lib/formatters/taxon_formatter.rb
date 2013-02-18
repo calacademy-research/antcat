@@ -190,7 +190,7 @@ class Formatters::TaxonFormatter
   end
 
   def link_to_edit_taxon
-    return if Rails.env.production?
+    return unless $Environment.user_can_edit_catalog? @user
     link 'Edit', "/taxa/#{@taxon.id}/edit", target: nil
   end
 
