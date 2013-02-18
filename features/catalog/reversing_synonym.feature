@@ -8,7 +8,7 @@
 
   #Scenario: Reversing synonym from the junior side
     #Given there is a species "Solenopsis invicta" which is a junior synonym of "Solenopsis wagneri"
-    #And I am logged in as an editor and have editing turned on
+    #And I am logged in
     #When I go to the catalog entry for "Solenopsis invicta"
     #Then I should see that "Solenopsis invicta" is a synonym of "Solenopsis wagneri"
     #When I follow "Edit"
@@ -21,7 +21,7 @@
 
   #Scenario: Reversing synonym from the senior side
     #Given there is a species "Solenopsis invicta" which is a junior synonym of "Solenopsis wagneri"
-    #And I am logged in as an editor and have editing turned on
+    #And I am logged in
     #When I go to the catalog entry for "Solenopsis wagneri"
     #Then I should not see that "Solenopsis wagneri" is a synonym of "Solenopsis invicta"
     #When I follow "Edit"
