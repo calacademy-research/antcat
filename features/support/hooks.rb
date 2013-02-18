@@ -6,7 +6,7 @@ Before do
 end
 
 Before('@preview') do
-  $Environment = SandboxEnvironment.new
+  $Environment = SandboxEnvironment.new :preview
 end
 
 After('@preview') do
