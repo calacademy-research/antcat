@@ -10,8 +10,8 @@ Feature: Reversing synonymy
     And I am logged in as an editor and have editing turned on
     When I go to the catalog entry for "Solenopsis invicta"
     Then I should see that "Solenopsis invicta" is a synonym of "Solenopsis wagneri"
-    Then I should see the editing buttons
-    When I press "Reverse synonymy"
+    When I press "Edit"
+    And I press "Reverse synonymy"
     Then I should see the catalog entry for "Solenopsis invicta"
     Then I should not see that "Solenopsis invicta" is a synonym of "Solenopsis wagneri"
     When I go to the catalog entry for "Solenopsis wagneri"
