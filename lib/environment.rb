@@ -1,7 +1,7 @@
 # coding: UTF-8
 class Environment 
-  def initialize server = :production
-    @server = server.try :to_sym
+  def initialize server = nil
+    @server = server.try(:to_sym) || :production
   end
 
   def production?; @server = :production end
@@ -12,11 +12,7 @@ class Environment
   end
 
   def user_can_edit_catalog? user
-    user_is_editor? user
-  end
-
-  def user_is_editor? user
-    user || sandbox?
+    user_is_editor?(user) and @server != :production
   end
 
   def previewize string
@@ -30,7 +26,7 @@ class Environment
     when 'preview'
       SandboxEnvironment.new contents
     else
-      ProductionEnvironment.new contents
+      RestrictedEnvironment.new contents
     end
   end
 
@@ -42,20 +38,28 @@ class Environment
 
 end
 
-class ProductionEnvironment < Environment
+class RestrictedEnvironment < Environment
   def sandbox?; false; end
-  def restricted?; true; end
 
   def title; 'AntCat' end
   def can_upload_pdfs?; true end
+
+  def user_is_editor? user
+    user
+  end
+
 end
 
-class PreviewEnvironment < Environment
+class SandboxEnvironment < Environment
   def sandbox?; true; end
-  def restricted?; false; end
 
   def title; 'Preview of AntCat' end
   def can_upload_pdfs?; false end
+
+  def user_is_editor? _
+    true
+  end
+
 end
 
 $Environment = Environment.create
