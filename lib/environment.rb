@@ -1,6 +1,7 @@
 # coding: UTF-8
 class Environment 
   def initialize server = nil
+    server = :local if server.nil? and Rails.env.test?
     @server = server.try(:to_sym) || :production
   end
 
