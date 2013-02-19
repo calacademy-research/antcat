@@ -14,3 +14,4 @@ mind maps
 data/pdfs
 .sass-cache
 backups/*.tmp
+server.yml
