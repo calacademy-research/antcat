@@ -118,8 +118,8 @@
       .left_buttons
         - save_text = previewize @possible_homonym ? 'Save Homonym' : 'Save'
         = taxon_form.submit save_text, class: 'ui-priority-primary submit'
-        = image_tag 'ui-anim_basic_16x16.gif', class: 'throbber'
         %input{type: 'button', class: 'ui-priority-secondary cancel', value: 'Cancel'}
+        = image_tag 'ui-anim_basic_16x16.gif', class: 'throbber'
       .right_buttons
         = editing_buttons @taxon, {}
         = button_to 'Show', catalog_path(@taxon)
