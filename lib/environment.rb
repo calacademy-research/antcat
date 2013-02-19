@@ -33,8 +33,8 @@ class Environment
 
   def self.read_server_config_file
     directory = Rails.env.production? ? '/data/antcat/shared/config/' : Rails.root + 'config/'
-    file_name = "#{directory}/server.config"
-    File.read file_name rescue nil
+    file_name = "#{directory}/server.yml"
+    YAML.load_file file_name
   end
 
 end
