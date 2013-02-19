@@ -11,7 +11,7 @@
     #And I am logged in
     #When I go to the catalog entry for "Solenopsis invicta"
     #Then I should see that "Solenopsis invicta" is a synonym of "Solenopsis wagneri"
-    #When I follow "Edit"
+    #When I press "Edit"
     #And I press "Reverse synonymy"
     #Then I should see the catalog entry for "Solenopsis invicta"
     #Then I should not see that "Solenopsis invicta" is a synonym of "Solenopsis wagneri"
@@ -24,7 +24,7 @@
     #And I am logged in
     #When I go to the catalog entry for "Solenopsis wagneri"
     #Then I should not see that "Solenopsis wagneri" is a synonym of "Solenopsis invicta"
-    #When I follow "Edit"
+    #When I press "Edit"
     #And I press "Reverse synonymy"
     #Then I should see the catalog entry for "Solenopsis wagneri"
     #Then I should see that "Solenopsis wagneri" is a synonym of "Solenopsis invicta"
