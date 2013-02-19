@@ -108,9 +108,9 @@ class Formatters::TaxonFormatter
       string = headline_protonym + ' ' + headline_type
       notes = headline_notes
       string << ' ' << notes if notes
-      string << ' ' << link_to_edit_taxon if link_to_edit_taxon
       string << ' ' << link_to_other_site if link_to_other_site
       string << ' ' << link_to_antwiki if link_to_antwiki
+      string << ' ' << link_to_edit_taxon if link_to_edit_taxon
       string
     end
   end
@@ -191,7 +191,7 @@ class Formatters::TaxonFormatter
 
   def link_to_edit_taxon
     return unless $Environment.user_can_edit_catalog? @user
-    link 'Edit', "/taxa/#{@taxon.id}/edit", target: nil
+    content_tag :button, 'Edit', type: 'button', id: 'edit_button', 'data-edit-location' => "/taxa/#{@taxon.id}/edit"
   end
 
   ###########
