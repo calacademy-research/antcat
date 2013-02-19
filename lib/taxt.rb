@@ -1,4 +1,8 @@
 module Taxt
+  REFERENCE_TAG_TYPE = 1
+  TAXON_TAG_TYPE     = 2
+  NAME_TAG_TYPE      = 3
+
   class ReferenceNotFound < StandardError; end
   class TaxonNotFound < StandardError; end
   class NameNotFound < StandardError; end
@@ -21,21 +25,21 @@ module Taxt
 
     if taxt =~ /{ref/
       taxt.gsub! /{ref (\d+)}/ do |ref|
-        editable_id = id_for_editable $1, 1
+        editable_id = id_for_editable $1, REFERENCE_TAG_TYPE
         to_editable_reference Reference.find($1) rescue "{#{editable_id}}"
       end
     end
 
     if taxt =~ /{tax/
       taxt.gsub! /{tax (\d+)}/ do |tax|
-        editable_id = id_for_editable $1, 2
+        editable_id = id_for_editable $1, TAXON_TAG_TYPE
         to_editable_taxon Taxon.find($1) rescue "{#{editable_id}}"
       end
     end
 
     if taxt =~ /{nam/
       taxt.gsub! /{nam (\d+)}/ do |nam|
-        editable_id = id_for_editable $1, 3
+        editable_id = id_for_editable $1, NAME_TAG_TYPE
         to_editable_name Name.find($1) rescue "{#{editable_id}}"
       end
     end
@@ -44,15 +48,15 @@ module Taxt
   end
 
   def self.to_editable_reference reference
-    to_editable_tag reference.id, reference.key.to_s, 1
+    to_editable_tag reference.id, reference.key.to_s, REFERENCE_TAG_TYPE
   end
 
   def self.to_editable_taxon taxon
-    to_editable_tag taxon.id, taxon.name, 2
+    to_editable_tag taxon.id, taxon.name, TAXON_TAG_TYPE
   end
 
   def self.to_editable_name name
-    to_editable_tag name.id, name.name, 3
+    to_editable_tag name.id, name.name, NAME_TAG_TYPE
   end
 
   def self.to_editable_tag id, text, type
@@ -67,13 +71,13 @@ module Taxt
     editable_taxt.gsub /{((.*?)? )?([#{Regexp.escape EDITABLE_ID_DIGITS}]+)}/ do |string|
       id, type_number = id_from_editable $3
       case type_number
-      when 1
+      when REFERENCE_TAG_TYPE
         raise ReferenceNotFound.new(string) unless Reference.find_by_id id
         "{ref #{id}}"
-      when 2
+      when TAXON_TAG_TYPE
         raise TaxonNotFound.new(string) unless Taxon.find id
         "{tax #{id}}"
-      when 3
+      when NAME_TAG_TYPE
         raise NameNotFound.new(string) unless Name.find id
         "{nam #{id}}"
       end
