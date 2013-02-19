@@ -1,9 +1,5 @@
 class AntCat.TaxonForm extends AntCat.Form
 
-  constructor: ->
-    super
-    $('#type_taxt_editor .taxt_edit_box').focus()
-
   submit: =>
     @start_throbbing()
     @form().submit()
