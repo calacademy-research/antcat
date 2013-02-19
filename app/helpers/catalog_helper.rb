@@ -62,12 +62,12 @@ module CatalogHelper
     parameters_string = parameters.empty? ? '' : "?#{parameters.to_query}"
     if show_elevate_subspecies
       contents << form_tag("/catalog/#{taxon.id}/elevate_subspecies#{parameters_string}", method: :get) do
-        submit_tag 'Elevate to species'
+        submit_tag previewize 'Elevate to species'
       end
     end
     if show_reverse_synonymy
       contents << form_tag("/catalog/#{taxon.id}/reverse_synonymy#{parameters_string}", method: :get) do
-        submit_tag 'Reverse synonymy'
+        submit_tag previewize 'Reverse synonymy'
       end
     end
     contents
