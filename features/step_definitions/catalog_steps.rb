@@ -61,3 +61,7 @@ Then /^there should be an editing history record showing that the taxon is "([^"
   editing_history.old_species.name.to_s.should == old_species
   editing_history.user.should_not be_blank
 end
+
+Then /^I should not be on (.+)$/ do |page_name|
+  current_path.should_not == path_to(page_name)
+end

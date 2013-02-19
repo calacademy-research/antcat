@@ -49,21 +49,32 @@ Feature: Editing a taxon
     Then I should see "Calyptites" in the header
 
   @flickerer
-  Scenario: Changing taxt
+  Scenario: Changing taxt (regression)
     Given there is a genus called "Atta"
     And there is a genus called "Eciton"
     And I log in
     When I go to the page for "Atta"
     Then I should not see "Eciton"
-    When I follow "Edit"
+    When I press "Edit"
     And I put the cursor in the headline notes edit box
-    And I wait for a bit
     And I press "Insert Taxon"
+    Then I should not be on the page for "Atta"
     And I fill in the name with "Eciton"
+    And I press "OK"
+    Then I should not be on the page for "Atta"
+
+  #@flickerer
+  #Scenario: Changing reference in taxt (regression)
+    #Given there is a genus called "Atta"
+    #And there is a genus called "Eciton"
+    #And I log in
+    #When I go to the page for "Atta"
+    #Then I should not see "Eciton"
+    #When I press "Edit"
+    #And I put the cursor in the headline notes edit box
+    #And I press "Insert Reference"
     #And I press "OK"
-    #And I save my changes
-    #Then I should be on the page for "Atta"
-    #And I should see "Eciton" in the headline
+    #Then I should not be on the page for "Atta"
 
   Scenario: Cancelling
     Given there is a genus called "Calyptites"
