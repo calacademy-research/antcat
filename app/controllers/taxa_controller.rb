@@ -14,6 +14,7 @@ class TaxaController < ApplicationController
   end
 
   def update
+    lll 'taxa update'
     @taxon = Taxon.find params[:id] 
     begin
       update_taxon params.dup[:taxon]
