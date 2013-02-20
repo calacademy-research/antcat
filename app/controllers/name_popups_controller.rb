@@ -8,7 +8,7 @@ class NamePopupsController < ApplicationController
   end
 
   def show
-    if params[:type] == '2'
+    if params[:type] == Taxt.TAXON_TAG_TYPE
       taxon = Taxon.find params[:id]
       name = taxon.name
       id = taxon.id
