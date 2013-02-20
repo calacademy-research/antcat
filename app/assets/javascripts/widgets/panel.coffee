@@ -1,8 +1,7 @@
 class AntCat.Panel
   constructor: ($element, @options = {}) -> @initialize $element
 
-  initialize: ($element) =>
-    @element = $element
+  initialize: (@element) =>
     @element
       .addClass(@element_class)
       .mouseenter(=> @element.find('.icon').show() unless @is_editing())
