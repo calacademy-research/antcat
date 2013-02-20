@@ -1,3 +1,5 @@
+-#Locals: item
+
 .edit.ui-widget-content
   - url = url_for [item.taxon, item]
   - method = item.persisted? ? 'put' : 'post'
