@@ -20,18 +20,13 @@
       %tr
         %td.throbber= image_tag 'ui-anim_basic_16x16.gif'
         %td.controls
-          .ok_cancel_controls
-            = button_tag 'OK', class: 'ok ui-priority-primary'
-            = button_tag 'Cancel', class: 'close ui-priority-secondary'
-
-          .add_controls
-            = button_tag 'Add', class: 'add ui-priority-primary'
-
-          .search_controls
-            = select_tag "search_selector", options_for_select(["Search for author(s)", "Search for"], params[:search_selector]), class: 'search_selector'
-            = text_field_tag "q", params[:q], class: 'q'
-            = button_tag 'Go', class: 'go ui-priority-primary'
-            = button_tag 'Cancel', class: 'close ui-priority-secondary'
+          = button_tag 'OK', class: 'ok ui-priority-primary'
+          = button_tag 'Cancel', class: 'close ui-priority-secondary'
+          = button_tag 'Add', class: 'add ui-priority-primary'
+          = select_tag "search_selector", options_for_select(["Search for author(s)", "Search for"], params[:search_selector]), class: 'search_controls search_selector'
+          = text_field_tag "q", params[:q], class: 'search_controls q'
+          = button_tag 'Go', class: 'search_controls go ui-priority-primary'
+          = button_tag 'Cancel', class: 'search_controls close ui-priority-secondary'
 
           = will_paginate references if references
 
