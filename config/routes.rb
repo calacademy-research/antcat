@@ -38,7 +38,6 @@ AntCat::Application.routes.draw do
 
   get 'name_popups/search'
   get 'name_popups/find'
-  match 'name_popups/:type/:id' => 'name_popups#show', via: :get
 
   get 'name_fields/search'
   get 'name_fields/find'
