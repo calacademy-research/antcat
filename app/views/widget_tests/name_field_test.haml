@@ -14,10 +14,7 @@
 
       %tr
         %td= label_tag :name
-        %td
-          #picker
-            - taxon = params[:id].present? ? Taxon.first : nil
-            = render 'name_pickers/show', id: taxon ? taxon.name.id : nil, name: taxon ? taxon.name.name : nil
+        %td= render 'name_fields/panel', item: Name.first
 
       %tr
         %td.buttons{colspan: 4}
