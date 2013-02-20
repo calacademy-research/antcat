@@ -50,6 +50,8 @@ module HtmlSelectorsHelpers
     #
     #  when /the (notice|error|info) flash/
     #    ".flash.#{$1}"
+    when /the name field/
+      '.antcat_name_picker .display'
 
     # You can also return an array to use a different selector
     # type, like:

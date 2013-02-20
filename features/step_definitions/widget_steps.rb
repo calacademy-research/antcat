@@ -71,14 +71,13 @@ Then /I should (not )?see the reference popup/ do |should_not|
   find('.antcat_reference_popup').send(selector, be_visible)
 end
 
-# Name picker
-Then /in the name picker field display I should see the first name/ do
-  within "#picker .display" do
-    step %{I should see "#{Name.first.name}"}
-  end
+# Name field
+Then /I should see the first name in the name field/  do
+  step %{I should see "#{Name.first.name}" in the name field}
 end
 
-Then /in the name picker field display I should see "([^"]*)"/ do |text|
+# Name picker
+Then /in the name picker display I should see "([^"]*)"/ do |text|
   within "#picker .display" do
     step %{I should see "#{text}"}
   end
