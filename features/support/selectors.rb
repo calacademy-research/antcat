@@ -40,7 +40,7 @@ module HtmlSelectorsHelpers
       '.headline'
 
     when /the name field/
-      '.antcat_name_picker .display'
+      '.antcat_name_field .display'
 
     when /"(.+)"/
       $1
