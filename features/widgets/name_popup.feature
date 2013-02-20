@@ -40,5 +40,3 @@ Feature: Name popup
     Then I should see "Do you want to add the name Atta wildensis? You can attach it to a taxon later, if desired."
     And I press "Cancel"
     Then I should see the name popup edit interface
-
-  Scenario: Not adding a name
