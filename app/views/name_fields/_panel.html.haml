@@ -1,4 +1,4 @@
--#Locals: item
+-#Locals: name
 
 %table.antcat_name_field
   %tr
@@ -6,5 +6,5 @@
       %a.icon.edit{title: 'edit', href: '#'}
         = image_tag 'edit_off.png', alt: 'edit'
     %td
-      = render 'name_fields/display', item: item
-      = render 'name_fields/edit', item: item
+      = render 'name_fields/display', name: name
+      = render 'name_fields/edit', name: name
