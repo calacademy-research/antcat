@@ -1,4 +1,4 @@
-@javascript @editing
+@javascript
 Feature: Name picker
 
   Scenario: Blank name

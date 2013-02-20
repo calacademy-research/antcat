@@ -1,4 +1,4 @@
-@javascript @editing
+@javascript
 Feature: Editing a taxon
   As an editor of AntCat
   I want to edit taxa

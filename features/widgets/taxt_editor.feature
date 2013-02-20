@@ -1,4 +1,4 @@
-@javascript @editing
+@javascript
 Feature: Taxt editor
 
   Scenario: Bringing up the reference popup
