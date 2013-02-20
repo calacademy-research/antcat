@@ -7,12 +7,6 @@ class NameFieldsController < ApplicationController
     end
   end
 
-  def show
-    id = params[:id]
-    name = Name.find params[:id]
-    render partial: 'show', locals: {name: name}
-  end
-
   def find
     data = {}
     if params[:add_name] == 'true'
