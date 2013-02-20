@@ -1,13 +1,13 @@
+@javascript
 Feature: Name field
 
   Scenario: Find typed taxon
     Given there is a genus called "Atta"
     When I go to the name field test page
     And I click the edit icon
-    #And I click the expand icon
-    #And I fill in "name_string" with "Atta"
-    #And I press "OK"
-    #Then I should see "Atta" in the name field
+    And I fill in "name_string" with "Atta"
+    And I press "OK"
+    Then I should see "Atta" in the name field
 
   #Scenario: Find typed name
     #Given there is a species name "Eciton major"
