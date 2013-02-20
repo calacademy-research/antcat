@@ -1,4 +1,4 @@
-@javascript @editing
+@javascript
 Feature: Name field
 
   Scenario: Cancelling after changing existing data

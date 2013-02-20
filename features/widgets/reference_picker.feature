@@ -1,4 +1,4 @@
-@javascript @editing
+@javascript
 Feature: Reference picker
 
   Background:

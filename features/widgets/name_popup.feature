@@ -1,4 +1,4 @@
-@javascript @editing
+@javascript
 Feature: Name popup
 
   Scenario: Blank name
