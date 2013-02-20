@@ -1,3 +1,4 @@
+@javascript
 Feature: Elevating subspecies
   As an editor of AntCat
   I want to make a subspecies a species
@@ -8,8 +9,15 @@ Feature: Elevating subspecies
     And I am logged in
     When I go to the catalog entry for "Solenopsis speccus subbus"
     And I press "Edit"
-    And I press "Elevate to species"
+    Given I will confirm on the next step
+    Then I should see "Elevate to species"
+    And I follow "Elevate to species"
     Then I should see the catalog entry for "Solenopsis subbus"
     And there should be an editing history record showing that the taxon is "Solenopsis subbus" and the old species was "Solenopsis speccus"
 
   Scenario: Only show button if showing a subspecies
+    Given there is a species called "Atta"
+    And I am logged in
+    When I go to the catalog entry for "Atta"
+    And I press "Edit"
+    Then I should not see "Elevate to species"
