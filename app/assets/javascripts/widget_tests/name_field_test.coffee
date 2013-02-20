@@ -1,9 +1,9 @@
 $ ->
-  new AntCat.NestedForm $('#taxon_form'), button_container: '> table td.buttons'
-  new AntCat.NamePicker $('#picker'),
+  new AntCat.NestedForm $('.antcat_form'), button_container: '> table td.buttons'
+  new AntCat.NameField $('.antcat_name_field'),
     field: true,
     on_success: (data) ->
       $('#results').text data.id + ' ' + data.taxt
     on_cancel: ->
-      id = $('#picker #id').val()
+      id = $('.antcat_name_field #id').val()
       $('#results').text 'Cancelled: ' + id
