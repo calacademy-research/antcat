@@ -1,5 +1,9 @@
 # coding: UTF-8
 
+When /^I click the edit icon$/ do
+  step 'I follow "edit"'
+end
+
 # Reference picker
 Then /I should (not )?see the reference picker/ do |should_not|
   selector = should_not ? :should_not : :should

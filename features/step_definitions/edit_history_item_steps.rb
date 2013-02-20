@@ -3,10 +3,6 @@
   #page.find('div.display').text.should =~ /#{history}\.?/
 #end
 
-#When /^I click the edit icon$/ do
-  #step 'I follow "edit"'
-#end
-
 #When /^I edit the history item to "([^"]*)"$/ do |history|
   #step %{I fill in "taxt_editor" with "#{history}"}
 #end
