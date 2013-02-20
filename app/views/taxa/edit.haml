@@ -116,10 +116,15 @@
 
     .buttons_section
       .left_buttons
-        - save_text = previewize @possible_homonym ? 'Save Homonym' : 'Save'
-        = taxon_form.submit save_text, class: 'ui-priority-primary submit'
+        - save_button_text = previewize @possible_homonym ? 'Save Homonym' : 'Save'
+        = taxon_form.submit save_button_text, class: 'ui-priority-primary submit'
         %input{type: 'button', class: 'ui-priority-secondary cancel', value: 'Cancel'}
         = image_tag 'ui-anim_basic_16x16.gif', class: 'throbber'
       .right_buttons
-        = editing_buttons @taxon, {}
-        = button_to 'Show', catalog_path(@taxon)
+        - if @show_reverse_synonymy_button
+          = link_to previewize('Reverse synonymy'), "/catalog/#{@taxon.id}/reverse_synonymy",
+              confirm: 'Are you sure you want to reverse the synonymy?', method: :put
+        - if @show_elevate_to_species_button
+          = link_to previewize('Elevate to species'), "/catalog/#{@taxon.id}/elevate_subspecies",
+              confirm: 'Are you sure you want to elevate this subspecies to species?', method: :put
+        = link_to 'Show', catalog_path(@taxon)
