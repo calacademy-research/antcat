@@ -164,3 +164,7 @@ Given /^there are two genera called "(.*)"$/ do |name|
   create_genus name
   create_genus name, status: 'nomen nudum'
 end
+
+Given /^there is a species called "(.*)"$/ do |name|
+  create_species name
+end
