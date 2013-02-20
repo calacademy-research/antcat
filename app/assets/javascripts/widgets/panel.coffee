@@ -2,11 +2,10 @@ class AntCat.Panel
   constructor: ($element, @options = {}) -> @initialize $element
 
   initialize: (@element) =>
+    AntCat.log 'Panel ctor: no @element' unless @element.size() == 1
     @element
       .addClass(@element_class)
-      .mouseenter(=> @element.find('.icon').show() unless @is_editing())
-      .mouseleave(=> @element.find('.icon').hide())
-      .find('.icon.edit').click(@edit)
+      .find('.display').click(@edit)
     if AntCat.testing then $('.icon').show() else $('.icon').hide()
 
   edit: =>
