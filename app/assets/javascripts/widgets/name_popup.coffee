@@ -4,7 +4,7 @@ class AntCat.NamePopup extends AntCat.NestedForm
     @options.field = false
 
     @element = @parent_element.find '> .antcat_name_popup'
-    console.log 'NamePopup ctor: no @element' unless @element.size() == 1
+    AntCat.log 'NamePopup ctor: no @element' unless @element.size() == 1
 
     @id = @options.id
     @type = @options.type
@@ -30,7 +30,7 @@ class AntCat.NamePopup extends AntCat.NestedForm
     @element.addClass 'antcat_form'
     @options.button_container = '.buttons'
     @textbox = @element.find('input[type=text]')
-    console.log 'NamePopup initialize: no @textbox' unless @textbox.size() == 1
+    AntCat.log 'NamePopup initialize: no @textbox' unless @textbox.size() == 1
 
     @setup_autocomplete @textbox
     @initialize_buttons()
@@ -86,13 +86,9 @@ class AntCat.NamePopup extends AntCat.NestedForm
     @deciding_whether_to_add_name = false
     false
 
-  log: (message) =>
-    unless typeof console == 'undefined'
-      console.log message
-
   # -----------------------------------------
   setup_autocomplete: ($textbox) =>
-    console.log 'NamePopup setup_autocomplete: no $textbox' unless $textbox.size() == 1
+    AntCat.log 'NamePopup setup_autocomplete: no $textbox' unless $textbox.size() == 1
     return if AntCat.testing
     $textbox.autocomplete(
         autoFocus: true,
