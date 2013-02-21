@@ -137,3 +137,6 @@ class AntCat.NameField extends AntCat.Panel
 
 
 class AntCat.NameFieldForm extends AntCat.NestedForm
+  constructor: (@element, @options = {}) ->
+    @options.button_container = '.buttons'
+    super
