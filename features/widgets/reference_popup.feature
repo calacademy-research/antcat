@@ -32,7 +32,6 @@ Feature: Reference popup
     Given I am logged in
     When I go to the reference popup widget test page, opened to the first reference
     And I edit the reference
-    And I wait for a bit
     When I set the authors to "Ward, B.L.; Bolton, B."
     And I set the title to "Ant Title"
     And I save my changes to the current reference
