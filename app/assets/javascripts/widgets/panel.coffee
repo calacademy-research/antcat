@@ -4,9 +4,18 @@ class AntCat.Panel
 
   initialize: (@element) =>
     AntCat.log 'Panel initialize: no @element' unless @element.size() == 1
-    @element
-      .addClass(@element_class)
-      .find('.display').click(@edit)
+    @element.addClass(@element_class)
+    @setup_edit()
+
+  setup_edit: =>
+    $edit_icon = @element.find '.icon.edit'
+    if $edit_icon.size() == 0
+      @element.find('.display').click @edit
+    else
+      @element
+        .mouseenter(=> @element.find('.icon').show() unless @is_editing())
+        .mouseleave(=> @element.find('.icon').hide())
+        .find('.icon.edit').click(@edit)
 
   edit: =>
     @save_panel()
