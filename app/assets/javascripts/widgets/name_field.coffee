@@ -1,7 +1,7 @@
 class AntCat.NameField extends AntCat.Panel
 
   constructor: ($parent_element, @options = {}) ->
-    @html_id = @options.id
+    @value_id = @options.value_id
     super $parent_element.find('> .antcat_name_field'), @options
 
   create_form: ($element, options) =>
@@ -53,8 +53,9 @@ class AntCat.NameField extends AntCat.Panel
 
   handle_success: (data) =>
     @element.find('.buttons .submit').val('OK')
-    @id = data.id
-    $("#{@html_id}").val @id
+    $value_field = $ "##{@value_id}"
+    AntCat.log 'NameField handle_success: $value_field.size() != 1' unless $value_field.size() == 1
+    $value_field.val data.id
 
   #handle_application_error: (error_message) =>
     ## an error means that the name the user entered doesn't exist
