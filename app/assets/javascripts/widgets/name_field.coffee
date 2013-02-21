@@ -32,10 +32,6 @@ class AntCat.NameField extends AntCat.Panel
   #form: =>
     #AntCat.NestedForm.create_form_from @element.find '.nested_form'
 
-  #start_throbbing: =>
-    #@element.find('.throbber img').show()
-    #@element.find('> .controls').disable()
-
   #submit: =>
     #return false if @textbox.val().length == 0
     #@element.find('.error_messages').text('')
