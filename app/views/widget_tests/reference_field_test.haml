@@ -5,7 +5,7 @@
   = javascript_include_tag 'widget_tests/reference_field_test'
 
 - content_for :page_contents do
-  .nested_form#taxon_form.antcat_form.ui-corner-all.ui-widget-content.ui-widget{method: :post}
+  %form{id: 'taxon_form', class: 'antcat_form ui-corner-all ui-widget-content ui-widget'}
     %table
       %col{:width => '50px'}
       %col{:width => '*'}
