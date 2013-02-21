@@ -1,12 +1,8 @@
 class AntCat.NameField extends AntCat.Panel
 
-  create_form: ($element, options) => new AntCat.NameFieldForm $element, options
-
-  constructor: (@element, @options = {}) ->
-    super
-    #@options.field = false
-
-    #@element = @parent_element.find '> .antcat_name_field'
+  constructor: ($parent_element, @options = {}) ->
+    @options.field = false
+    super $parent_element.find('> .antcat_name_field'), @options
     console.log 'NameField ctor: no @element' unless @element.size() == 1
 
     #@id = @options.id
@@ -16,6 +12,10 @@ class AntCat.NameField extends AntCat.Panel
       #@load()
     #else
       #@initialize()
+
+  create_form: ($element, options) =>
+    options.button_container = @options.parent_buttons
+    new AntCat.NameFieldForm $element, options
 
   form: =>
     @_form or= @create_form @element.find('.nested_form'),
