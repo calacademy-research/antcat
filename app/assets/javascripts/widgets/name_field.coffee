@@ -1,9 +1,7 @@
 class AntCat.NameField extends AntCat.Panel
 
   constructor: ($parent_element, @options = {}) ->
-    @options.field = false
     super $parent_element.find('> .antcat_name_field'), @options
-    console.log 'NameField ctor: no @element' unless @element.size() == 1
 
     #@id = @options.id
     #@type = @options.type
@@ -22,19 +20,8 @@ class AntCat.NameField extends AntCat.Panel
       on_open: @on_form_open
       on_close: @on_form_close
       on_response: @on_form_response
-      on_success: @on_form_success
+      on_success: @handle_success
       on_cancel: @on_form_cancel
-
-  #load: =>
-    #@start_throbbing()
-    #$.ajax
-      #url: "/name_fields/#{@type}/#{@id}"
-      #dataType: 'html'
-      #success: (data) =>
-        #@element.replaceWith data
-        #@element = @parent_element.find '> .antcat_name_field'
-        #@initialize()
-      #error: (xhr) => debugger
 
   #initialize: =>
     #@element.addClass 'antcat_form'
@@ -70,14 +57,12 @@ class AntCat.NameField extends AntCat.Panel
       #form[4].value = ''
     #true
 
-  #handle_success: (data) =>
-    #@element.find('.buttons .submit').val('OK')
-    #@id = data.id
-    #@element.find('#id').val @id
-    #@element.find('#name').val data.name
-    #@element.find('#taxt').val data.taxt
-    #@element.find('#taxon_id').val data.taxon_id
-    #super
+  handle_success: (data) =>
+    console.log data
+    @element.find('.buttons .submit').val('OK')
+    @id = data.id
+    @element.find('#id').val @id
+    super
 
   #handle_application_error: (error_message) =>
     ## an error means that the name the user entered doesn't exist
