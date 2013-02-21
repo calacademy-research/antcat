@@ -21,7 +21,7 @@ class AntCat.NameField extends AntCat.Panel
     @element.addClass 'antcat_name_field'
     #@options.button_container = '.buttons'
     #@textbox = @element.find('input[type=text]')
-    #console.log 'NameField initialize: no @textbox' unless @textbox.size() == 1
+    #AntCat.log 'NameField initialize: no @textbox' unless @textbox.size() == 1
 
     #@setup_autocomplete @textbox
     #@initialize_buttons()
@@ -75,10 +75,6 @@ class AntCat.NameField extends AntCat.Panel
     #@deciding_whether_to_add_name = false
     #false
 
-  #log: (message) =>
-    #unless typeof console == 'undefined'
-      #console.log message
-
   #cancel: =>
     #@element.find('.error_messages').text ''
     #displaying_or_editing = 'displaying'
@@ -99,7 +95,7 @@ class AntCat.NameField extends AntCat.Panel
 
   ## -----------------------------------------
   #setup_autocomplete: ($textbox) =>
-    #console.log 'NameField setup_autocomplete: no $textbox' unless $textbox.size() == 1
+    #AntCat.log 'NameField setup_autocomplete: no $textbox' unless $textbox.size() == 1
     #return if AntCat.testing
     #$textbox.autocomplete(
         #autoFocus: true,
