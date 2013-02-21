@@ -4,7 +4,6 @@ class AntCat.Panel
 
   initialize: (@element) =>
     AntCat.log 'Panel initialize: no @element' unless @element.size() == 1
-    @element.addClass(@element_class)
     @setup_edit()
 
   setup_edit: =>
