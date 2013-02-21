@@ -6,6 +6,7 @@ class AntCat.Panel
     @element
       .addClass(@element_class)
       .find('.display').click(@edit)
+    @parent_form = new AntCat.Form @element.closest('form'), button_container: '> .buttons_section'
     if AntCat.testing then $('.icon').show() else $('.icon').hide()
 
   edit: =>
@@ -14,8 +15,11 @@ class AntCat.Panel
     false
 
   on_form_open: =>
+    @parent_form.disable_buttons()
 
   on_form_close: =>
+    @parent_form.undisable_buttons()
+
 
   on_form_response: (data) =>
     @replace_panel data.content
