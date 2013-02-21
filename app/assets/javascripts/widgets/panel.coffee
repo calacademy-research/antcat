@@ -1,12 +1,12 @@
 class AntCat.Panel
-  constructor: ($element, @options = {}) -> @initialize $element
+  constructor: ($element, @parent_form, @options = {}) ->
+    @initialize $element
 
   initialize: (@element) =>
-    AntCat.log 'Panel ctor: no @element' unless @element.size() == 1
+    AntCat.log 'Panel initialize: no @element' unless @element.size() == 1
     @element
       .addClass(@element_class)
       .find('.display').click(@edit)
-    @parent_form = new AntCat.Form @element.closest('form'), button_container: '> .buttons_section'
 
   edit: =>
     @save_panel()

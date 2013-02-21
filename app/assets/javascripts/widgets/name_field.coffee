@@ -1,8 +1,8 @@
 class AntCat.NameField extends AntCat.Panel
 
-  constructor: ($parent_element, @options = {}) ->
+  constructor: ($parent_element, @parent_form, @options = {}) ->
     @html_id = @options.id
-    super $parent_element.find('> .antcat_name_field'), @options
+    super $parent_element.find('> .antcat_name_field'), @parent_form, @options
 
   create_form: ($element, options) =>
     options.button_container = @options.parent_buttons
