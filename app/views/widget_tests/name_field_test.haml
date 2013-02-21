@@ -14,7 +14,8 @@
 
       %tr
         %td= label_tag :name
-        %td= render 'name_fields/panel', name: 'name_field', value: Name.first.id, name_string: Name.first.name
+        %td#test_name_field
+          = render 'name_fields/panel', id: 'name_field', value: Name.first.id, name_string: Name.first.name
 
       %tr
         %td.buttons{colspan: 4}
