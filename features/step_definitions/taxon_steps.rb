@@ -146,8 +146,9 @@ Given /^there is a subspecies "([^"]*)" which is a subspecies of "([^"]*)" in th
   species = create_species species, genus: genus
   subspecies = create_subspecies subspecies, species: species, genus: genus
 end
-Given /^there is a genus called "([^"]*)"$/ do |name|
-  create_genus name
+Given /^there is a genus called "([^"]*)"(?: with a protonym name of "(.*?)")?$/ do |name, protonym_name|
+  genus = create_genus name
+  genus.protonym.name = Name.find_by_name protonym_name if protonym_name
 end
 Given /^there is a family called "Formicidae"$/ do
   create_family
