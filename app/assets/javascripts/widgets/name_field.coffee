@@ -1,6 +1,7 @@
 class AntCat.NameField extends AntCat.Panel
 
   constructor: ($parent_element, @options = {}) ->
+    @html_id = @options.id
     super $parent_element.find('> .antcat_name_field'), @options
 
     #@id = @options.id
@@ -61,8 +62,8 @@ class AntCat.NameField extends AntCat.Panel
     console.log data
     @element.find('.buttons .submit').val('OK')
     @id = data.id
-    @element.find('#id').val @id
     super
+    $("#{@html_id}").val @id
 
   #handle_application_error: (error_message) =>
     ## an error means that the name the user entered doesn't exist
