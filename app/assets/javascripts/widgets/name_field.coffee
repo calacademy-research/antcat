@@ -52,10 +52,8 @@ class AntCat.NameField extends AntCat.Panel
     #true
 
   handle_success: (data) =>
-    console.log data
     @element.find('.buttons .submit').val('OK')
     @id = data.id
-    super
     $("#{@html_id}").val @id
 
   #handle_application_error: (error_message) =>
