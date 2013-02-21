@@ -75,6 +75,7 @@ class TaxaController < ApplicationController
   end
 
   def update_protonym attributes
+    attributes[:name_id] = attributes.delete(:name_attributes)[:id]
     update_protonym_authorship attributes.delete :authorship_attributes
     @taxon.protonym.update_attributes attributes
   end
