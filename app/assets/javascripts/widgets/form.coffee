@@ -49,3 +49,9 @@ class AntCat.Form
     @buttons.find(':button, :input[type=submit]').undisable()
     @element.find('img.throbber').hide()
 
+  enable_buttons: =>
+    @buttons.find(':button, :input[type=submit]').undisable()
+
+  disable_buttons: =>
+    @buttons.find(':button, input[type=submit]').disable()
+
