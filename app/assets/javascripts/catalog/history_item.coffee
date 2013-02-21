@@ -1,6 +1,4 @@
 class AntCat.HistoryItemPanel extends AntCat.Panel
-  element_class: 'history_item'
-  @element_class: 'history_item'
   create_form: ($element, options) -> new AntCat.HistoryItemForm $element, options
   initialize: ($element) =>
     super
