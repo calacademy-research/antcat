@@ -1,5 +1,5 @@
 class AntCat.Panel
-  constructor: ($element, @parent_form, @options = {}) ->
+  constructor: ($element, @options = {}) ->
     @initialize $element
 
   initialize: (@element) =>
@@ -14,10 +14,10 @@ class AntCat.Panel
     false
 
   on_form_open: =>
-    @parent_form.disable_buttons()
+    @options.parent_form.disable_buttons() if @options.parent_form
 
   on_form_close: =>
-    @parent_form.enable_buttons()
+    @options.parent_form.enable_buttons() if @options.parent_form
 
   on_form_response: (data) =>
     @replace_panel data.content
