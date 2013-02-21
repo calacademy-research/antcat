@@ -20,10 +20,10 @@ class AntCat.NameField extends AntCat.Panel
     super
     @element.addClass 'antcat_name_field'
     #@options.button_container = '.buttons'
-    #@textbox = @element.find('input[type=text]')
-    #AntCat.log 'NameField initialize: no @textbox' unless @textbox.size() == 1
+    @textbox = @element.find('input[type=text]')
+    AntCat.log 'NameField initialize: no @textbox' unless @textbox.size() == 1
 
-    #@setup_autocomplete @textbox
+    @setup_autocomplete @textbox
     #@initialize_buttons()
 
     #@element.show()
@@ -91,23 +91,22 @@ class AntCat.NameField extends AntCat.Panel
     #@deciding_whether_to_add_name = false
     #false
 
-  ## -----------------------------------------
-  #setup_autocomplete: ($textbox) =>
-    #AntCat.log 'NameField setup_autocomplete: no $textbox' unless $textbox.size() == 1
-    #return if AntCat.testing
-    #$textbox.autocomplete(
-        #autoFocus: true,
-        #source: "/name_fields/search",
-        #minLength: 3)
-      #.data('autocomplete')._renderItem = @render_item
+  # -----------------------------------------
+  setup_autocomplete: ($textbox) =>
+    AntCat.log 'NameField setup_autocomplete: no $textbox' unless $textbox.size() == 1
+    return if AntCat.testing
+    $textbox.autocomplete(
+        autoFocus: true,
+        source: "/name_fields/search",
+        minLength: 3)
+      .data('autocomplete')._renderItem = @render_item
 
-  ## this is required to display HTML in the list
-  #render_item: (ul, item) =>
-    #$("<li>")
-      #.data('item.autocomplete', item)
-      #.append('<a>' + item.label + '</a>')
-      #.appendTo ul
-
+  # this is required to display HTML in the list
+  render_item: (ul, item) =>
+    $("<li>")
+      .data('item.autocomplete', item)
+      .append('<a>' + item.label + '</a>')
+      .appendTo ul
 
 class AntCat.NameFieldForm extends AntCat.NestedForm
   constructor: (@element, @options = {}) ->
