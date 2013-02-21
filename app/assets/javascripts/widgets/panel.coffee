@@ -19,7 +19,6 @@ class AntCat.Panel
   on_form_close: =>
     @parent_form.enable_buttons()
 
-
   on_form_response: (data) =>
     @replace_panel data.content
     if data.success then @hide_form() else @show_form()
