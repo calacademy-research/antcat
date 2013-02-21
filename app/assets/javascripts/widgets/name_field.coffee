@@ -24,7 +24,8 @@ class AntCat.NameField extends AntCat.Panel
       on_success: @handle_success
       on_cancel: @on_form_cancel
 
-  #initialize: =>
+  initialize: =>
+    super
     @element.addClass 'antcat_name_field'
     #@options.button_container = '.buttons'
     #@textbox = @element.find('input[type=text]')
