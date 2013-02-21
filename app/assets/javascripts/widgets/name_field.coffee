@@ -25,7 +25,7 @@ class AntCat.NameField extends AntCat.Panel
       on_cancel: @on_form_cancel
 
   #initialize: =>
-    #@element.addClass 'antcat_form'
+    @element.addClass 'antcat_name_field'
     #@options.button_container = '.buttons'
     #@textbox = @element.find('input[type=text]')
     #console.log 'NameField initialize: no @textbox' unless @textbox.size() == 1
