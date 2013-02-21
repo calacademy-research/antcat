@@ -1,10 +1,5 @@
--#Locals: name, value, name_string
+-#Locals: id, value, name_string
 
-%table.antcat_name_field.antcat_panel
-  %tr
-    %td.icons
-      %a.icon.edit{title: 'edit', href: '#'}
-        = image_tag 'edit_off.png', alt: 'edit'
-    %td
-      = render 'name_fields/display', name: name_string
-      = render 'name_fields/edit', name: name, value: value, name_string: name_string
+.antcat_name_field.antcat_panel
+  = render 'name_fields/display', name: name_string
+  = render 'name_fields/edit', id: id, value: value, name_string: name_string
