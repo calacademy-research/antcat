@@ -15,7 +15,7 @@ class NameFieldsController < ApplicationController
       name = find_name params[:name_string], data
     end
     data.merge!(
-      content: render_to_string(partial: 'name_fields/panel', locals: {name: 'taxon[protonym][name_id]', value: name.id, name_string: name.name}),
+      content: render_to_string(partial: 'name_fields/panel', locals: {id: 'taxon_protonym_attributes_name_attributes_id', value: name.id, name_string: name.name}),
       success: name.errors.empty?)
     json = data.to_json
 
