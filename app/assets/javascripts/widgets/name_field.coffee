@@ -2,14 +2,6 @@ class AntCat.NameField extends AntCat.Panel
 
   create_form: ($element, options) => new AntCat.NameFieldForm $element, options
 
-  form: =>
-    @_form or= @create_form @element.find('.nested_form'),
-      on_open: @on_form_open
-      on_close: @on_form_close
-      on_response: @on_form_response
-      on_success: @on_form_success
-      on_cancel: @on_form_cancel
-
   constructor: (@element, @options = {}) ->
     super
     #@options.field = false
@@ -24,6 +16,14 @@ class AntCat.NameField extends AntCat.Panel
       #@load()
     #else
       #@initialize()
+
+  form: =>
+    @_form or= @create_form @element.find('.nested_form'),
+      on_open: @on_form_open
+      on_close: @on_form_close
+      on_response: @on_form_response
+      on_success: @on_form_success
+      on_cancel: @on_form_cancel
 
   #load: =>
     #@start_throbbing()
