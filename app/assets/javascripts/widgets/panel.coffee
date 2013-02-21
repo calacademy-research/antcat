@@ -13,8 +13,8 @@ class AntCat.Panel
       @element.find('.display').click @edit
     else
       @element
-        .mouseenter(=> @element.find('.icon').show() unless @is_editing())
-        .mouseleave(=> @element.find('.icon').hide())
+        #.mouseenter(=> @element.find('.icon').show() unless @is_editing())
+        #.mouseleave(=> @element.find('.icon').hide())
         .find('.icon.edit').click(@edit)
 
   edit: =>
