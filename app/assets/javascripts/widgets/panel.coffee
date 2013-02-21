@@ -18,7 +18,7 @@ class AntCat.Panel
     @parent_form.disable_buttons()
 
   on_form_close: =>
-    @parent_form.undisable_buttons()
+    @parent_form.enable_buttons()
 
 
   on_form_response: (data) =>
