@@ -83,3 +83,13 @@ Feature: Editing a taxon
     And I press "Cancel"
     Then I should not see "Atta" in the header
 
+  Scenario: Changing the protonym name
+    Given there is a genus called "Atta" with a protonym name of "Atta"
+    And there is a genus called "Eciton"
+    And I log in
+    When I go to the edit page for "Atta"
+    And I click the name field
+    And I set the protonym name to "Eciton"
+    And I press "OK"
+    And I save the form
+    Then I should see "Eciton" in the headline

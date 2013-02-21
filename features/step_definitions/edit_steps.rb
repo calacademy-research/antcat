@@ -17,6 +17,10 @@ When /^I set the name to "([^"]*)"$/ do |name|
   step %{I fill in "taxon[name_attributes][epithet]" with "#{name}"}
 end
 
+When /^I set the protonym name to "([^"]*)"$/ do |name|
+  step %{I fill in "name_string" with "#{name}"}
+end
+
 When /^I save my changes to the first reference$/ do
   within first('.reference') do
     step 'I save my changes'
