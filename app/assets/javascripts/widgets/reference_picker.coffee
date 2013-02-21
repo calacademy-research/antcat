@@ -175,9 +175,9 @@ class AntCat.ReferencePicker
   setup_references: =>
     @element
       .find('.reference').reference_panel(
-          on_form_open: @on_reference_form_open
+          on_form_open:  @on_reference_form_open
           on_form_close: @on_reference_form_close
-          on_form_done: @on_reference_form_done)
+          on_form_done:  @on_reference_form_done)
         .end()
 
     @search_results
