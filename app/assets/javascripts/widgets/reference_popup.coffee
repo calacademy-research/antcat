@@ -2,7 +2,7 @@ class AntCat.ReferencePopup
 
   constructor: (@parent_element, @options = {}) ->
     @element = @parent_element.find('> .antcat_reference_popup')
-    console.log 'ReferencePopup ctor: no @element' unless @element.size() == 1
+    AntCat.log 'ReferencePopup ctor: no @element' unless @element.size() == 1
 
     if @options.id
       @id = @options.id
@@ -31,15 +31,15 @@ class AntCat.ReferencePopup
 
   initialize: =>
     @expansion = @element.find '> .expansion'
-    console.log 'ReferencePopup initialize: no @expansion' unless @expansion.size() == 1
+    AntCat.log 'ReferencePopup initialize: no @expansion' unless @expansion.size() == 1
     @template = @element.find '> .template'
-    console.log 'ReferencePopup initialize: no @template' unless @template.size() == 1
+    AntCat.log 'ReferencePopup initialize: no @template' unless @template.size() == 1
     @current = @element.find '> .current'
-    console.log 'ReferencePopup initialize: no @current' unless @current.size() == 1
+    AntCat.log 'ReferencePopup initialize: no @current' unless @current.size() == 1
     @search_selector = @expansion.find '#search_selector.search_selector'
-    console.log 'ReferencePopup initialize: no @search_selector' unless @search_selector.size() == 1
+    AntCat.log 'ReferencePopup initialize: no @search_selector' unless @search_selector.size() == 1
     @textbox = @expansion.find '.q'
-    console.log 'ReferencePopup initialize: no @textbox' unless @textbox.size() == 1
+    AntCat.log 'ReferencePopup initialize: no @textbox' unless @textbox.size() == 1
 
     @setup_controls()
     @setup_references()
