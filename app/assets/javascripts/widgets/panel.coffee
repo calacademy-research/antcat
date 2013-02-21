@@ -7,7 +7,6 @@ class AntCat.Panel
       .addClass(@element_class)
       .find('.display').click(@edit)
     @parent_form = new AntCat.Form @element.closest('form'), button_container: '> .buttons_section'
-    if AntCat.testing then $('.icon').show() else $('.icon').hide()
 
   edit: =>
     @save_panel()
@@ -52,7 +51,6 @@ class AntCat.Panel
       on_cancel: @on_form_cancel
 
   show_form: =>
-    $('.icon').hide() unless AntCat.testing
     @element.find_topmost('div.display').hide()
     @element.find_topmost('div.edit').show()
     @form().open()
