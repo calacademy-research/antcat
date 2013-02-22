@@ -9,15 +9,6 @@ class AntCat.NameField extends AntCat.Panel
     options.button_container = @options.parent_buttons
     new AntCat.NameFieldForm $element, options
 
-  form: =>
-    @_form or= @create_form @element.find('.nested_form'),
-      on_close:             @on_form_close
-      on_response:          @on_form_response
-      on_success:           @on_form_success
-      on_cancel:            @on_form_cancel
-      on_application_error: @on_application_error
-      before_submit:        @before_submit
-
   before_submit: =>
     @show_error ''
     @set_add_name_field()
