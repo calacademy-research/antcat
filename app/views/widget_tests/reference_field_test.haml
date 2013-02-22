@@ -26,12 +26,6 @@
           #authorship_field
             = render 'reference_fields/show', references: nil, reference: params[:id].present? ? Reference.first : nil
 
-      %tr
-        %td.authorship= label_tag 'Authorship'
-        %td
-          #other_authorship_field
-            = render 'reference_fields/show', references: nil, reference: nil
-
       %tr.buttons
         %td.buttons{:colspan => 4}
           %button.ui-priority-primary.submit= previewize @possible_duplicate ? 'Save Anyway' : 'Save'
