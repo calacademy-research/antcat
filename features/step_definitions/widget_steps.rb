@@ -69,6 +69,11 @@ When /^I search for the authors? "([^"]*)"$/ do |authors|
   step %{In the search box, I press "Go"}
 end
 
+# Reference field
+And /^I click the reference field$/ do
+  step %{I click ".display_button"}
+end
+
 # Reference popup
 Then /I should (not )?see the reference popup/ do |should_not|
   selector = should_not ? :should_not : :should

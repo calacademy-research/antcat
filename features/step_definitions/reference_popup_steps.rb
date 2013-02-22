@@ -10,7 +10,3 @@ end
 Then /^the field should contain "([^"]*)" in the popup$/ do |contents|
   page.find('#popup .display').text.should == contents
 end
-
-When /^I click the expand icon in the popup$/ do
-  step 'I click "#popup .expand_collapse_icon"'
-end
