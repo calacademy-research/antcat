@@ -32,3 +32,12 @@ Feature: Name field
     And I press "OK"
     # blank entry is simply ignored
     Then I should not see "Name can't be blank"
+
+  Scenario: Cancelling an add
+    When I go to the name field test page
+    And I click the name field
+    And I fill in "name_string" with "Atta wildensis"
+    And I press "OK"
+    Then I should see "Do you want to add the name Atta wildensis? You can attach it to a taxon later, if desired."
+    And I press "Cancel"
+    Then I should not see "Add this name"
