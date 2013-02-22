@@ -3,6 +3,7 @@ class AntCat.NameField extends AntCat.Panel
   constructor: ($parent_element, @options = {}) ->
     @value_id = @options.value_id
     super $parent_element.find('> .antcat_name_field'), @options
+    @element.addClass 'antcat_name_field'
 
   create_form: ($element, options) =>
     options.button_container = @options.parent_buttons
@@ -18,8 +19,29 @@ class AntCat.NameField extends AntCat.Panel
       before_submit:        @before_submit
 
   before_submit: =>
-    return false if @textbox.val().length == 0
-    @element.find('.error_messages').text('')
+    @show_error ''
+    @set_add_name_field()
+
+  on_form_success: (data) =>
+    @set_value data.id
+    @set_submit_button_text 'OK'
+    @deciding_whether_to_add_name = false
+
+  on_form_cancel: =>
+    @show_error ''
+    @set_submit_button_text 'OK'
+    super unless @deciding_whether_to_add_name
+    @deciding_whether_to_add_name = false
+
+  on_application_error: (error_message) =>
+    # an 'error' means that the name the user entered doesn't exist
+    # we ask if they want to add it
+    @set_submit_button_text 'Add this name'
+    @show_error error_message
+    @deciding_whether_to_add_name = true
+
+  #------------
+  set_add_name_field: =>
     $add_name_field = @element.find('#add_name')
     AntCat.log 'NameField before_submit: $add_name_field.size() != 1' unless $add_name_field.size() == 1
     if @deciding_whether_to_add_name
@@ -27,46 +49,37 @@ class AntCat.NameField extends AntCat.Panel
     else
       $add_name_field.val ''
 
-  initialize: =>
-    super
-    @element.addClass 'antcat_name_field'
-    @textbox = @element.find('input[type=text]')
-    AntCat.log 'NameField initialize: no @textbox' unless @textbox.size() == 1
+  set_submit_button_text: (text) =>
+    $submit_button = @element.find('.buttons .submit span')
+    AntCat.log 'NameField on_application_error: $submit_button' unless $submit_button.size() == 1
+    $submit_button.text text
 
-    @setup_autocomplete @textbox
-    #@initialize_buttons()
-
-    #@element.show()
-    #@textbox.focus()
-
-  on_form_success: (data) =>
-    @element.find('.buttons .submit').val('OK')
+  set_value: (value) =>
     $value_field = $('#' + @value_id)
     AntCat.log 'NameField on_form_success: $value_field.size() != 1' unless $value_field.size() == 1
     $value_field.val data.id
-    @deciding_whether_to_add_name = false
 
-  on_application_error: (error_message) =>
-    # an 'error' means that the name the user entered doesn't exist
-    # we ask if they want to add it
-    $submit_button = @element.find('.buttons .submit span')
-    AntCat.log 'NameField on_application_error: $submit_button' unless $submit_button.size() == 1
-    $submit_button.text 'Add this name'
-    @element.find('.error_messages').text error_message
-    @deciding_whether_to_add_name = true
+  show_error: (message) =>
+    $error_messages = @element.find('.error_messages')
+    AntCat.log 'NameField show_error: $error_messages.size() != 1' unless $error_messages.size() == 1
+    $error_messages.text message
 
-  on_form_cancel: =>
-    @element.find('.error_messages').text ''
-    if @deciding_whether_to_add_name
-      $submit_button = @element.find('.buttons .submit span')
-      AntCat.log 'NameField on_form_cancel: $submit_button' unless $submit_button.size() == 1
-      $submit_button.text 'OK'
-    super unless @deciding_whether_to_add_name
-    @deciding_whether_to_add_name = false
+# -----------------------------------------
+class AntCat.NameFieldForm extends AntCat.NestedForm
+  constructor: (@element, @options = {}) ->
+    @options.button_container = '.buttons'
+    @textbox = @element.find('input[type=text]')
+    AntCat.log 'NameFieldForm ctor: no @textbox' unless @textbox.size() == 1
+    @setup_autocomplete @textbox
+    super
 
-  # -----------------------------------------
+  submit: =>
+    return false if @textbox.val().length == 0
+    @options.before_submit() if @options.before_submit
+    super
+    false
+
   setup_autocomplete: ($textbox) =>
-    AntCat.log 'NameField setup_autocomplete: no $textbox' unless $textbox.size() == 1
     return if AntCat.testing
     $textbox.autocomplete(
         autoFocus: true,
@@ -80,14 +93,3 @@ class AntCat.NameField extends AntCat.Panel
       .data('item.autocomplete', item)
       .append('<a>' + item.label + '</a>')
       .appendTo ul
-
-# -----------------------------------------
-class AntCat.NameFieldForm extends AntCat.NestedForm
-  constructor: (@element, @options = {}) ->
-    @options.button_container = '.buttons'
-    super
-
-  submit: =>
-    @options.before_submit() if @options.before_submit
-    super
-    false
