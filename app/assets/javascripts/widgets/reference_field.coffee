@@ -1,6 +1,7 @@
 class AntCat.ReferenceField extends AntCat.Panel
 
   constructor: (@parent_element, @options = {}) ->
+    @value_id = @options.value_id
     @options.field = true unless @options.field?
     @element = @parent_element.find('> .antcat_reference_field')
     AntCat.log 'ReferenceField ctor: no @element' unless @element.size() == 1
