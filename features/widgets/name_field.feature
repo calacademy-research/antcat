@@ -17,15 +17,14 @@ Feature: Name field
     And I press "OK"
     Then I should see "Eciton major" in the name field
 
-
-  #Scenario: Adding a name
-    #When I go to the name field test page
-    #And I click the expand icon
-    #And I fill in "name_string" with "Atta wildensis"
-    #And I press "OK"
-    #Then I should see "Do you want to add the name Atta wildensis? You can attach it to a taxon later, if desired."
-    #And I press "Add this name"
-    #Then I should see "Atta wildensis" in the name field
+  Scenario: Adding a name
+    When I go to the name field test page
+    And I click the name field
+    And I fill in "name_string" with "Atta wildensis"
+    And I press "OK"
+    Then I should see "Do you want to add the name Atta wildensis? You can attach it to a taxon later, if desired."
+    And I press "Add this name"
+    Then I should see "Atta wildensis" in the name field
 
   Scenario: Blank name
     When I go to the name field test page
