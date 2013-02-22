@@ -44,14 +44,13 @@ AntCat::Application.routes.draw do
   match 'name_fields/:type/:id' => 'name_fields#show', via: :get
 
   match 'name_pickers/lookup' => 'name_pickers#lookup', as: :name_picker, via: :get
-  resource :reference_picker, only: :show
+  resource :reference_field, only: :show
   resource :reference_popup, only: :show
   resource :name_picker, only: :show
 
   match '/widget_tests/name_picker_test', to: 'widget_tests#name_picker_test'
   match '/widget_tests/name_popup_test', to: 'widget_tests#name_popup_test'
   match '/widget_tests/name_field_test', to: 'widget_tests#name_field_test'
-  match '/widget_tests/reference_picker_test', to: 'widget_tests#reference_picker_test'
   match '/widget_tests/reference_popup_test', to: 'widget_tests#reference_popup_test'
   match '/widget_tests/reference_field_test', to: 'widget_tests#reference_field_test'
   match '/widget_tests/taxt_editor_test', to: 'widget_tests#taxt_editor_test'

@@ -3,14 +3,14 @@
 - references ||= nil
 - reference ||= nil
 
-.antcat_reference_picker.ui-widget.ui-widget-content.ui-corner-all
+.antcat_reference_field.ui-widget.ui-widget-content.ui-corner-all
   .template
-    = render 'reference_pickers/panel', reference: Reference.new
+    = render 'reference_fields/panel', reference: Reference.new
 
   %table.references.current
     %tr
       %td
-        = render 'reference_pickers/panel', reference: reference
+        = render 'reference_fields/panel', reference: reference
 
   .expansion.nested_form
 
@@ -18,8 +18,6 @@
 
     %table
       %tr
-        %td.expand_collapse_icon
-          = image_tag 'expanded.png', alt: ''
         %td.throbber= image_tag 'ui-anim_basic_16x16.gif'
         %td.controls
           .ok_cancel_controls
@@ -48,6 +46,6 @@
       %table.references.search_results
         - for reference in references
           %tr
-            %td= render 'reference_pickers/panel', reference: reference
+            %td= render 'reference_fields/panel', reference: reference
 
     = render 'shared/qtip'

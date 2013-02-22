@@ -32,14 +32,14 @@ class AntCat.ReferenceForm extends AntCat.NestedForm
       autoFocus: true
       minLength: 3
       source: (request, result_handler) ->
-        search_term = AntCat.ReferencePicker.extract_author_search_term(@element.val(), $(@element).getSelection().start)
+        search_term = AntCat.ReferenceField.extract_author_search_term(@element.val(), $(@element).getSelection().start)
         if search_term.length >= 3
           $.getJSON "/authors/all", term: search_term, result_handler
         else
           result_handler []
       focus: -> false # don't update the search textbox when the autocomplete item changes
       select: (event, data) ->
-        value_and_position = AntCat.ReferencePicker.insert_author($(@).val(), $(@).getSelection().start, data.item.value)
+        value_and_position = AntCat.ReferenceField.insert_author($(@).val(), $(@).getSelection().start, data.item.value)
         $(@).val value_and_position.string
         $(@).setCaretPos value_and_position.position + 1
         false

@@ -1,9 +1,9 @@
-class AntCat.ReferencePicker
+class AntCat.ReferenceField
 
   constructor: (@parent_element, @options = {}) ->
     @options.field = true unless @options.field?
-    @element = @parent_element.find('> .antcat_reference_picker')
-    AntCat.log 'ReferencePicker ctor: no @element' unless @element.size() == 1
+    @element = @parent_element.find('> .antcat_reference_field')
+    AntCat.log 'ReferenceField ctor: no @element' unless @element.size() == 1
 
     if @options.id
       @id = @options.id
@@ -18,8 +18,8 @@ class AntCat.ReferencePicker
       @initialize expanded_or_collapsed
 
   load: (url = '', expanded_or_collapsed = 'expanded') =>
-    if url.indexOf('/reference_picker') is -1
-      url = '/reference_picker?' + url
+    if url.indexOf('/reference_field') is -1
+      url = '/reference_field?' + url
     url = url + '&' + $.param id: @id if @id
     @start_throbbing()
     $.ajax
@@ -27,7 +27,7 @@ class AntCat.ReferencePicker
       dataType: 'html'
       success: (data) =>
         @element.replaceWith data
-        @element = @parent_element.find('> .antcat_reference_picker')
+        @element = @parent_element.find('> .antcat_reference_field')
         @initialize(expanded_or_collapsed)
       error: (xhr) => debugger
 
@@ -58,7 +58,6 @@ class AntCat.ReferencePicker
   editing: => @element.find('.edit:visible .nested_form').length > 0
 
   show_expansion: =>
-    @element.find('.expand_collapse_icon img').attr 'src', AntCat.expanded_image_path
     @expansion.show()
     # apparently, can't setup selectmenu unless it's visible
     @setup_search_selector()
@@ -66,7 +65,6 @@ class AntCat.ReferencePicker
 
   hide_expansion: =>
     @expansion.hide()
-    @element.find('.expand_collapse_icon img').attr 'src', AntCat.collapsed_image_path
   toggle_expansion: => if @expansion.is ':hidden' then @show_expansion() else @hide_expansion()
 
   search: =>
@@ -208,7 +206,7 @@ class AntCat.ReferencePicker
     $(".item_#{id}").each -> $(@).replaceWith $panel.clone()
     @setup_references()
 
-  # 'current' is the reference panel at the top of the picker, above the controls
+  # 'current' is the reference panel at the top of the field, above the controls
   # too much duplication between this and setup_references
   make_current: ($panel, edit = false) =>
     $current_contents = @current.find '> tbody > tr > td'
@@ -261,7 +259,7 @@ class AntCat.ReferencePicker
       autoFocus: true
       minLength: 3
       source: (request, result_handler) ->
-        search_term = AntCat.ReferencePicker.extract_author_search_term(@element.val(), $(@element).getSelection().start)
+        search_term = AntCat.ReferenceField.extract_author_search_term(@element.val(), $(@element).getSelection().start)
         if search_term.length >= 3
           $.getJSON "/authors/all", term: search_term, result_handler
         else
@@ -269,7 +267,7 @@ class AntCat.ReferencePicker
     # don't update the search textbox when the autocomplete item changes
     focus: -> false
     select: (event, data) ->
-      value_and_position = AntCat.ReferencePicker.insert_author(@element.val(), @element.getSelection().start, data.item.value)
+      value_and_position = AntCat.ReferenceField.insert_author(@element.val(), @element.getSelection().start, data.item.value)
       @element.val value_and_position.string
       @element.setCaretPos value_and_position.position + 1
       false

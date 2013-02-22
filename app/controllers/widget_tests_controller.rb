@@ -7,15 +7,12 @@ class WidgetTestsController < ApplicationController
   def name_popup_test
   end
 
-  def reference_picker_test
+  def reference_field_test
     @reference = Reference.first if params[:id]
   end
 
   def reference_popup_test
     @reference = Reference.first if params[:id]
-  end
-
-  def reference_field_test
   end
 
   def name_field_test

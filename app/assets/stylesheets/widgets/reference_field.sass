@@ -2,34 +2,26 @@
 @import 'reference'
 @import 'ext/jquery.ui.selectmenu'
 
-$expand_collapse_width: 16px
-$antcat_reference_picker_gutter_size: 20px
+$antcat_reference_field_gutter_size: 20px
 
 $dark_green: desaturate(#006400, 50%) // darkgreen
-$antcat_reference_picker_color_help: lightgray
+$antcat_reference_field_color_help: lightgray
 $pale_green: desaturate(#98FB98, 50%) // palegreen
 
-.antcat_reference_picker
+.antcat_reference_field
 
   border: solid 1px black
   margin-top: 4px
   margin-bottom: 4px
 
-  .expand_collapse_icon
-    width: $expand_collapse_width !important
-    img
-      display: none
-
   .icons
-    width: $antcat_reference_picker_gutter_size !important
+    width: $antcat_reference_field_gutter_size !important
 
   .template
     display: none
 
   .current
     width: 100%
-    .expand_collapse_icon img
-      display: inline
 
   .expansion
     display: none
@@ -42,7 +34,7 @@ $pale_green: desaturate(#98FB98, 50%) // palegreen
       width: 100%
 
       td.throbber
-        width: $antcat_reference_picker_gutter_size
+        width: $antcat_reference_field_gutter_size
         img
           vertical-align: middle
           margin-bottom: 2px
@@ -72,7 +64,7 @@ $pale_green: desaturate(#98FB98, 50%) // palegreen
       margin-right: 10px
       padding-bottom: 0
       &, span, a
-        color: $antcat_reference_picker_color_help
+        color: $antcat_reference_field_color_help
         font-size: 12px
         font-weight: normal
         a, a:active, a:focus, a:visited
@@ -86,7 +78,7 @@ $pale_green: desaturate(#98FB98, 50%) // palegreen
       margin-right: 10px
       font-style: italic
       .help_banner_text
-        color: $antcat_reference_picker_color_help
+        color: $antcat_reference_field_color_help
         font-size: 12px
 
     .search_results
@@ -114,12 +106,10 @@ $pale_green: desaturate(#98FB98, 50%) // palegreen
   &.modal
     .expansion
       display: block
-    .expand_collapse_icon img
-      display: none
 
   .current, .reference_item .ui-selected
-    color: $color_current_reference_being_edited_by_reference_picker !important
-    background-color: $color_current_reference_being_edited_by_reference_picker_background !important
+    color: $color_current_reference_being_edited_by_reference_field !important
+    background-color: $color_current_reference_being_edited_by_reference_field_background !important
 
   .reference_item .ui-selecting
     color: black !important
