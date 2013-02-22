@@ -1,6 +1,7 @@
 $ ->
   form = new AntCat.NestedForm $('.antcat_form'), button_container: '> table td.buttons'
   new AntCat.NameField $('#test_name_field'),
+    value_id: 'test_name_field_value',
     parent_form: form,
     field: true,
     on_success: (data) ->

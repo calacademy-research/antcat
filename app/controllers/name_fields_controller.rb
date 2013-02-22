@@ -14,10 +14,18 @@ class NameFieldsController < ApplicationController
     else
       name = find_name params[:name_string], data
     end
+    id = name.try :id
+    value = name.try :id
+    name_string = name.try(:name) || params[:name_string]
+    if name
+      success = name.errors.empty?
+    else
+      success = false
+    end
     data.merge!(
-      content: render_to_string(partial: 'name_fields/panel', locals: {id: 'taxon_protonym_attributes_name_attributes_id', value: name.id, name_string: name.name}),
-      success: name.errors.empty?,
-      id: name.id)
+      content: render_to_string(partial: 'name_fields/panel', locals: {value_id: 'taxon_protonym_attributes_name_attributes_id', value: id, name_string: name_string}),
+      success: success,
+      id: id)
     json = data.to_json
 
     render json: json, content_type: 'text/html'
