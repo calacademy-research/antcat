@@ -1,27 +1,40 @@
 class AntCat.ReferenceField extends AntCat.Panel
 
-  constructor: (@parent_element, @options = {}) ->
+  constructor: ($parent_element, @options = {}) ->
+    @options.click_on_display = true
     @value_id = @options.value_id
-    @options.field = true unless @options.field?
-    @element = @parent_element.find('> .antcat_reference_field')
-    AntCat.log 'ReferenceField ctor: no @element' unless @element.size() == 1
+    super $parent_element.find('> .antcat_reference_field'), @options
 
-    if @options.id
-      @id = @options.id
-    else
-      @id = @element.find('#id').val()
+  initialize: =>
+    super
 
-    @original_id = @id
-    expanded_or_collapsed = @options.field ? 'collapsed' : 'expanded'
-    if @id
-      @load '', expanded_or_collapsed
-    else
-      @initialize expanded_or_collapsed
+    @element.addClass 'modal' unless @options.field
+
+    @edit = @element.find '> .edit'
+    AntCat.log 'ReferenceField initialize: @edit.size() != 1' unless @edit.size() == 1
+    @expansion = @edit.find '> .expansion'
+    AntCat.log 'ReferenceField initialize: @expansion.size() != 1' unless @expansion.size() == 1
+    @display = @element.find '> .display'
+    AntCat.log 'ReferenceField initialize: @display.size() != 1' unless @display.size() == 1
+    @template = @element.find '> .template'
+    AntCat.log 'ReferenceField initialize: @template.size() != 1' unless @template.size() == 1
+    @current = @edit.find '> .current'
+    AntCat.log 'ReferenceField initialize: @current.size() != 1' unless @current.size() == 1
+    @search_selector = @expansion.find '.search_selector'
+    AntCat.log 'ReferenceField initialize: @search_selector.size() != 1' unless @search_selector.size() == 1
+    @textbox = @expansion.find '.q'
+    AntCat.log 'ReferenceField initialize: @textbox.size() != 1' unless @textbox.size() == 1
+    @search_results = @element.find '> .expansion > .search_results'
+
+    @setup_controls()
+    @setup_references()
+    @handle_new_selection()
+    @setup_search_selector()
 
   on_form_success: (data) =>
     @set_value data.id
 
-  load: (url = '', expanded_or_collapsed = 'expanded') =>
+  load: (url = '') =>
     if url.indexOf('/reference_field') is -1
       url = '/reference_field?' + url
     url = url + '&' + $.param id: @id if @id
@@ -32,45 +45,20 @@ class AntCat.ReferenceField extends AntCat.Panel
       success: (data) =>
         @element.replaceWith data
         @element = @parent_element.find('> .antcat_reference_field')
-        @initialize(expanded_or_collapsed)
+        @initialize()
       error: (xhr) => debugger
-
-  initialize: (expanded_or_collapsed = 'expanded') =>
-    @element.addClass 'modal' unless @options.field
-    @expansion = @element.find '> .expansion'
-    @template = @element.find '> .template'
-    @current = @element.find '> .current'
-    @search_selector = @expansion.find '.search_selector'
-    @textbox = @expansion.find '.q'
-    @search_results = @element.find '> .expansion > .search_results'
-
-    @current.click => @toggle_expansion() if @options.field and not @editing()
-
-    @setup_controls()
-    @setup_references()
-    @handle_new_selection()
-
-    @element.show()
-    if expanded_or_collapsed == 'expanded'
-      @show_expansion()
-      @textbox.focus()
 
   start_throbbing: =>
     @element.find('.throbber img').show()
     @element.find('> .expansion .controls').disable()
 
-  editing: => @element.find('.edit:visible .nested_form').length > 0
+  #show_expansion: =>
+    #@expansion.show()
+    ## apparently, can't setup selectmenu unless it's visible
+    #@setup_search_selector()
+    #@textbox.focus()
 
-  show_expansion: =>
-    @expansion.show()
-    # apparently, can't setup selectmenu unless it's visible
-    @setup_search_selector()
-    @textbox.focus()
-
-  hide_expansion: =>
-    @expansion.hide()
-  toggle_expansion: => if @expansion.is ':hidden' then @show_expansion() else @hide_expansion()
-
+  #---------------------------------
   search: =>
     @load @get_search_parameters()
 
@@ -81,28 +69,26 @@ class AntCat.ReferenceField extends AntCat.Panel
     $.param q: @textbox.val(), search_selector: @search_selector.val()
 
   ok: =>
-    @element.find('#id').val(@id)
-    taxt = if @current_reference() then @current_reference().data 'taxt' else null
-    @options.on_ok(taxt) if @options.on_ok
+    set_value @id
     @close()
 
-  cancel: =>
-    @clear_current()
-    @id = @original_id
-    @element.find('#id').val(@id)
-    if @id
-      @load '', 'collapsed'
-    else
-      @initialize 'collapsed'
-    @options.on_cancel if @options.on_cancel
-    @close()
+  #cancel: =>
+    #@clear_current()
+    #@id = @original_id
+    #@element.find('#id').val(@id)
+    #if @id
+      #@load '', 'collapsed'
+    #else
+      #@initialize 'collapsed'
+    #@options.on_cancel if @options.on_cancel
+    #@close()
 
-  close: =>
-    if @options.field
-      @hide_expansion()
-    else
-      @element.slideUp 'fast', =>
-    @options.on_close() if @options.on_close
+  #close: =>
+    #if @options.field
+      #@hide_expansion()
+    #else
+      #@element.slideUp 'fast', =>
+    #@options.on_close() if @options.on_close
 
   setup_controls: =>
     self = @
