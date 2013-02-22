@@ -17,17 +17,6 @@ Feature: Name field
     #And I press "OK"
     #Then I should see "Eciton major" in the name field
 
-  #Scenario: Cancelling after changing existing data
-    #Given there is a genus called "Atta"
-    #When I go to the name field test page for a name
-    #Then I should see the first name in the name field
-    #And I click the expand icon
-    #And I fill in "name_string" with "Atta"
-    #And I press "OK"
-    #Then I should see "Atta" in the name field
-    #When I click the expand icon
-    #And I press "Cancel"
-    #Then I should see the first name in the name field
 
   #Scenario: Adding a name
     #When I go to the name field test page
