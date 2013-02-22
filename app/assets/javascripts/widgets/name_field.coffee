@@ -1,6 +1,7 @@
 class AntCat.NameField extends AntCat.Panel
 
   constructor: ($parent_element, @options = {}) ->
+    @options.click_on_display = true
     @value_id = @options.value_id
     super $parent_element.find('> .antcat_name_field'), @options
 
