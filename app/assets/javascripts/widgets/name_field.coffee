@@ -18,7 +18,7 @@ class AntCat.NameField extends AntCat.Panel
       before_submit:        @before_submit
 
   before_submit: =>
-    #return false if @textbox.val().length == 0
+    return false if @textbox.val().length == 0
     @element.find('.error_messages').text('')
     $add_name_field = @element.find('#add_name')
     AntCat.log 'NameField before_submit: $add_name_field.size() != 1' unless $add_name_field.size() == 1
