@@ -1,4 +1,6 @@
 $ ->
   new AntCat.NestedForm $('#taxon_form'), button_container: '> table > tbody > tr.buttons > td.buttons'
-  new AntCat.ReferenceField $('#picker')
-  new AntCat.ReferenceField $('#other_authorship_field')
+  new AntCat.ReferenceField $('#authorship_field'),
+    value_id: 'authorship_value',
+  new AntCat.ReferenceField $('#other_authorship_field'),
+    value_id: 'other_authorship_value',
