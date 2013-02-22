@@ -15,6 +15,18 @@ class AntCat.NameField extends AntCat.Panel
       on_response: @on_form_response
       on_success: @handle_success
       on_cancel: @on_form_cancel
+      on_application_error: @handle_application_error
+      before_submit: @before_submit
+
+  before_submit: =>
+    #return false if @textbox.val().length == 0
+    @element.find('.error_messages').text('')
+    $add_name_field = @element.find('#add_name')
+    AntCat.log 'NameField before_submit: $add_name_field.size() != 1' unless $add_name_field.size() == 1
+    if @deciding_whether_to_add_name
+      $add_name_field.val 'true'
+    else
+      $add_name_field.val ''
 
   initialize: =>
     super
@@ -29,64 +41,21 @@ class AntCat.NameField extends AntCat.Panel
     #@element.show()
     #@textbox.focus()
 
-  #form: =>
-    #AntCat.NestedForm.create_form_from @element.find '.nested_form'
-
-  #submit: =>
-    #return false if @textbox.val().length == 0
-    #@element.find('.error_messages').text('')
-    #super
-    #false
-
-  #before_submit: (form, options) =>
-    ## form is an array of name-value pairs (from jQuery Form)
-    #alert '4th element is not add_name' unless form[4].name == 'add_name'
-    #if @deciding_whether_to_add_name
-      #form[4].value = 'true'
-    #else
-      #form[4].value = ''
-    #true
-
   handle_success: (data) =>
     @element.find('.buttons .submit').val('OK')
-    $value_field = $ "##{@value_id}"
+    $value_field = $('#' + @value_id)
     AntCat.log 'NameField handle_success: $value_field.size() != 1' unless $value_field.size() == 1
     $value_field.val data.id
+    @deciding_whether_to_add_name = false
 
-  #handle_application_error: (error_message) =>
-    ## an error means that the name the user entered doesn't exist
-    ## we ask if they want to add it
-    #submit_button = @element.find('.buttons .submit span')
-    #AntCat.log 'TaxtEditor ctor: submit button' unless submit_button.size() == 1
-    #submit_button.text('Add this name')
-    #@element.find('.error_messages').text error_message
-    #@deciding_whether_to_add_name = true
-
-  #cancel: =>
-    #@element.find('.error_messages').text ''
-    #if @deciding_whether_to_add_name
-      #@element.find('.buttons .submit').val('OK')
-    #super unless @deciding_whether_to_add_name
-    #@deciding_whether_to_add_name = false
-    #false
-
-  #cancel: =>
-    #@element.find('.error_messages').text ''
-    #displaying_or_editing = 'displaying'
-    #if @deciding_whether_to_add_name
-      #@element.find('.buttons .submit').val('OK')
-      #displaying_or_editing = 'editing'
-    #else
-      #if @options.keep_expanded_while_open
-        #displaying_or_editing = 'editing'
-    #@id = @original_id
-    #if @id
-      #@load '', displaying_or_editing
-    #else
-      #@initialize displaying_or_editing
-    #super unless @deciding_whether_to_add_name
-    #@deciding_whether_to_add_name = false
-    #false
+  handle_application_error: (error_message) =>
+    # an 'error' means that the name the user entered doesn't exist
+    # we ask if they want to add it
+    submit_button = @element.find('.buttons .submit span')
+    AntCat.log 'NameField handle_application_error: submit button' unless submit_button.size() == 1
+    submit_button.text('Add this name')
+    @element.find('.error_messages').text error_message
+    @deciding_whether_to_add_name = true
 
   # -----------------------------------------
   setup_autocomplete: ($textbox) =>
@@ -105,7 +74,13 @@ class AntCat.NameField extends AntCat.Panel
       .append('<a>' + item.label + '</a>')
       .appendTo ul
 
+# -----------------------------------------
 class AntCat.NameFieldForm extends AntCat.NestedForm
   constructor: (@element, @options = {}) ->
     @options.button_container = '.buttons'
     super
+
+  submit: =>
+    @options.before_submit() if @options.before_submit
+    super
+    false
