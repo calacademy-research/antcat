@@ -32,6 +32,7 @@ Feature: Name field
     And I press "OK"
     # blank entry is simply ignored
     Then I should not see "Name can't be blank"
+    And I should not see "Do you want to add the name?"
 
   Scenario: Cancelling an add
     When I go to the name field test page
