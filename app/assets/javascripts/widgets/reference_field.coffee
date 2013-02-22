@@ -1,4 +1,4 @@
-class AntCat.ReferenceField
+class AntCat.ReferenceField extends AntCat.Panel
 
   constructor: (@parent_element, @options = {}) ->
     @options.field = true unless @options.field?
