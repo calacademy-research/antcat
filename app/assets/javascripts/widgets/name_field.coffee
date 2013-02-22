@@ -47,7 +47,7 @@ class AntCat.NameField extends AntCat.Panel
 
   set_value: (value) =>
     $value_field = $('#' + @value_id)
-    AntCat.log 'NameField on_form_success: $value_field.size() != 1' unless $value_field.size() == 1
+    AntCat.log 'NameField set_value: $value_field.size() != 1' unless $value_field.size() == 1
     $value_field.val value
 
   show_error: (message) =>
