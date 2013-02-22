@@ -1,5 +1,5 @@
 # coding: UTF-8
-class ReferencePickersController < ApplicationController
+class ReferenceFieldsController < ApplicationController
 
   def show
     params[:search_selector] ||= 'Search for author(s)'

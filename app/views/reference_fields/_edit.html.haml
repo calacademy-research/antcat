@@ -4,7 +4,7 @@
 - selected_tab = [ArticleReference, BookReference, NestedReference, UnknownReference].index(reference.class) || 0
 
 .edit.ui-corner-all.ui-widget-content.ui-widget
-  - url = reference.new_record? ? references_path(picker: true) : reference_path(reference, picker: true)
+  - url = reference.new_record? ? references_path(field: true) : reference_path(reference, field: true)
   - method = reference.new_record? ? 'post' : 'put'
   - data_multipart = Rails.env.test? ? '' : 'true'
   .nested_form{'data-action' => url, 'data-method' => method, 'data-multipart' => data_multipart}

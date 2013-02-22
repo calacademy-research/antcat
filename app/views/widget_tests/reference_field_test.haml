@@ -1,7 +1,7 @@
 - @title = 'Reference Field Test'
 
 - content_for :head do
-  = javascript_include_tag 'widgets/panel', 'widgets/form', 'widgets/ajax_form', 'widgets/nested_form', 'widgets/reference_panel', 'widgets/reference_picker', 'widgets/reference_form', 'widgets/name_picker'
+  = javascript_include_tag 'widgets/panel', 'widgets/form', 'widgets/ajax_form', 'widgets/nested_form', 'widgets/reference_panel', 'widgets/reference_field', 'widgets/reference_form', 'widgets/name_picker'
   = javascript_include_tag 'widget_tests/reference_field_test'
 
 - content_for :page_contents do
@@ -22,13 +22,13 @@
         %td.authorship= label_tag 'Authorship'
         %td
           #picker
-            = render 'reference_pickers/show', references: nil, reference: params[:id].present? ? Reference.first : nil
+            = render 'reference_fields/show', references: nil, reference: params[:id].present? ? Reference.first : nil
 
       %tr
         %td.authorship= label_tag 'Authorship'
         %td
           #other_authorship_field
-            = render 'reference_pickers/show', references: nil, reference: nil
+            = render 'reference_fields/show', references: nil, reference: nil
 
       %tr.buttons
         %td.buttons{:colspan => 4}
