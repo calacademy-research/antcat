@@ -10,13 +10,12 @@ class AntCat.NameField extends AntCat.Panel
 
   form: =>
     @_form or= @create_form @element.find('.nested_form'),
-      on_open: @on_form_open
-      on_close: @on_form_close
-      on_response: @on_form_response
-      on_success: @handle_success
-      on_cancel: @on_form_cancel
-      on_application_error: @handle_application_error
-      before_submit: @before_submit
+      on_close:             @on_form_close
+      on_response:          @on_form_response
+      on_success:           @on_form_success
+      on_cancel:            @on_form_cancel
+      on_application_error: @on_application_error
+      before_submit:        @before_submit
 
   before_submit: =>
     #return false if @textbox.val().length == 0
@@ -41,18 +40,18 @@ class AntCat.NameField extends AntCat.Panel
     #@element.show()
     #@textbox.focus()
 
-  handle_success: (data) =>
+  on_form_success: (data) =>
     @element.find('.buttons .submit').val('OK')
     $value_field = $('#' + @value_id)
-    AntCat.log 'NameField handle_success: $value_field.size() != 1' unless $value_field.size() == 1
+    AntCat.log 'NameField on_form_success: $value_field.size() != 1' unless $value_field.size() == 1
     $value_field.val data.id
     @deciding_whether_to_add_name = false
 
-  handle_application_error: (error_message) =>
+  on_application_error: (error_message) =>
     # an 'error' means that the name the user entered doesn't exist
     # we ask if they want to add it
     submit_button = @element.find('.buttons .submit span')
-    AntCat.log 'NameField handle_application_error: submit button' unless submit_button.size() == 1
+    AntCat.log 'NameField on_application_error: submit button' unless submit_button.size() == 1
     submit_button.text('Add this name')
     @element.find('.error_messages').text error_message
     @deciding_whether_to_add_name = true
