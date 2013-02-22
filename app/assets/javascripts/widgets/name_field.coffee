@@ -30,7 +30,6 @@ class AntCat.NameField extends AntCat.Panel
   initialize: =>
     super
     @element.addClass 'antcat_name_field'
-    #@options.button_container = '.buttons'
     @textbox = @element.find('input[type=text]')
     AntCat.log 'NameField initialize: no @textbox' unless @textbox.size() == 1
 
