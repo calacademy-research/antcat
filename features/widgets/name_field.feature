@@ -27,9 +27,9 @@ Feature: Name field
     #And I press "Add this name"
     #Then I should see "Atta wildensis" in the name field
 
-  #Scenario: Blank name
-    #When I go to the name field test page
-    #And I click the expand icon
-    #And I press "OK"
-    ## blank entry is simply ignored
-    #Then I should not see "Name can't be blank"
+  Scenario: Blank name
+    When I go to the name field test page
+    And I click the name field
+    And I press "OK"
+    # blank entry is simply ignored
+    Then I should not see "Name can't be blank"
