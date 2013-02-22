@@ -58,7 +58,9 @@ class AntCat.NameField extends AntCat.Panel
   on_form_cancel: =>
     @element.find('.error_messages').text ''
     if @deciding_whether_to_add_name
-      @element.find('.buttons .submit').val('OK')
+      $submit_button = @element.find('.buttons .submit span')
+      AntCat.log 'NameField on_form_cancel: $submit_button' unless $submit_button.size() == 1
+      $submit_button.text 'OK'
     super unless @deciding_whether_to_add_name
     @deciding_whether_to_add_name = false
 
