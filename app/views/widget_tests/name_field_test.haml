@@ -16,6 +16,7 @@
         %td= label_tag :name
         %td#test_name_field
           = render 'name_fields/panel', id: 'name_field', value: @name.try(:id), name_string: @name.try(:name)
+          = hidden_field_tag 'test_name_field_value', '', id: 'test_name_field_value'
 
       %tr
         %td.buttons{colspan: 4}
