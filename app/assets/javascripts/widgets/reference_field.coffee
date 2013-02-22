@@ -18,6 +18,9 @@ class AntCat.ReferenceField extends AntCat.Panel
     else
       @initialize expanded_or_collapsed
 
+  on_form_success: (data) =>
+    @set_value data.id
+
   load: (url = '', expanded_or_collapsed = 'expanded') =>
     if url.indexOf('/reference_field') is -1
       url = '/reference_field?' + url
@@ -235,6 +238,11 @@ class AntCat.ReferenceField extends AntCat.Panel
     @options.on_change(@value()) if @options.on_change
 
   value: => @id
+
+  set_value: (value) =>
+    $value_field = $('#' + @value_id)
+    AntCat.log 'ReferenceField set_value: $value_field.size() != 1' unless $value_field.size() == 1
+    $value_field.val value
 
   selected_reference: =>
     results = @search_results.find 'div.display.ui-selected'
