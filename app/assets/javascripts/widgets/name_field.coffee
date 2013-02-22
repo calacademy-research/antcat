@@ -56,6 +56,13 @@ class AntCat.NameField extends AntCat.Panel
     @element.find('.error_messages').text error_message
     @deciding_whether_to_add_name = true
 
+  on_form_cancel: =>
+    @element.find('.error_messages').text ''
+    if @deciding_whether_to_add_name
+      @element.find('.buttons .submit').val('OK')
+    super unless @deciding_whether_to_add_name
+    @deciding_whether_to_add_name = false
+
   # -----------------------------------------
   setup_autocomplete: ($textbox) =>
     AntCat.log 'NameField setup_autocomplete: no $textbox' unless $textbox.size() == 1
