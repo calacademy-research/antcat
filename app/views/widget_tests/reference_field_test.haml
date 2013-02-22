@@ -6,6 +6,8 @@
 
 - content_for :page_contents do
   %form{id: 'taxon_form', class: 'antcat_form ui-corner-all ui-widget-content ui-widget'}
+    = hidden_field_tag 'authorship_value'
+    = hidden_field_tag 'other_authorship_value'
     %table
       %col{:width => '50px'}
       %col{:width => '*'}
@@ -21,7 +23,7 @@
       %tr
         %td.authorship= label_tag 'Authorship'
         %td
-          #picker
+          #authorship_field
             = render 'reference_fields/show', references: nil, reference: params[:id].present? ? Reference.first : nil
 
       %tr
