@@ -4,7 +4,7 @@ taxon_height = null
 $ ->
   set_dimensions()
   $(window).resize set_dimensions
-  $('.icon.edit').show() if AntCat.testing
+  $('.edit_icon').show() if AntCat.testing
   splitter_top = $('#splitter').position().top
   splitter = new AntCat.Splitter $('#splitter'), on_splitter_change
   $('#edit_button').click -> window.location = $(@).data('edit-location')
