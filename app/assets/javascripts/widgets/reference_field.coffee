@@ -38,11 +38,13 @@ class AntCat.ReferenceField extends AntCat.ReferenceFieldPanel
     AntCat.log 'ReferenceField initialize: @search_selector.size() != 1' unless @search_selector.size() == 1
     @textbox = @expansion.find '.q'
     AntCat.log 'ReferenceField initialize: @textbox.size() != 1' unless @textbox.size() == 1
-    @search_results = @element.find '> .expansion > .search_results'
 
     @setup_controls()
     @setup_references()
     @handle_new_selection()
+
+  search_results: =>
+    @expansion.find '> .search_results'
 
   show_form: =>
     super
@@ -188,7 +190,7 @@ class AntCat.ReferenceField extends AntCat.ReferenceFieldPanel
           on_form_done:  @on_reference_form_done)
         .end()
 
-    @search_results
+    @search_results()
       .find(".reference .item_#{@id} div.display")
         .addClass('ui-selected')
         .end()
@@ -197,7 +199,7 @@ class AntCat.ReferenceField extends AntCat.ReferenceFieldPanel
     @element.find('div.display').hover(@hover, @unhover)
 
   hover: (event) =>
-    @search_results.find('.display').removeClass('ui-selecting')
+    @search_results().find('.display').removeClass('ui-selecting')
     $target = $(event.target)
     $target = $target.closest('.display') unless $target.hasClass('display')
     $target.addClass('ui-selecting')
@@ -253,7 +255,7 @@ class AntCat.ReferenceField extends AntCat.ReferenceFieldPanel
     $value_field.val value
 
   selected_reference: =>
-    results = @search_results.find 'div.display.ui-selected'
+    results = @search_results().find 'div.display.ui-selected'
     return if results.length is 0
     results.closest '.reference'
 
@@ -323,7 +325,7 @@ class AntCat.ReferenceField extends AntCat.ReferenceFieldPanel
 
   # -----------------------------------------
   update_help: =>
-    any_search_results = @search_results.find('.reference').length > 0
+    any_search_results = @search_results().find('.reference').length > 0
     if @current_reference()
       if any_search_results
         other_verb = 'choose'
