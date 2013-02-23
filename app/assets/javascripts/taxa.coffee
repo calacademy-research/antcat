@@ -9,7 +9,7 @@ class AntCat.TaxonForm extends AntCat.Form
     window.location = "/catalog/#{id}"
 
 $ ->
-  new AntCat.TaxonForm $('.taxon_form'), button_container: '> .buttons_section'
+  form = new AntCat.TaxonForm $('.taxon_form'), button_container: '> .buttons_section'
   new AntCat.TaxtEditor $('#headline_notes_taxt_editor'), parent_buttons: '.buttons_section'
-  new AntCat.NameField $('#protonym_name_field'), parent_buttons: '.buttons_section', value_id: 'taxon_protonym_attributes_name_attributes_id'
+  new AntCat.NameField $('#protonym_name_field'), value_id: 'taxon_protonym_attributes_name_attributes_id', parent_form: form
   new AntCat.TaxtEditor $('#type_taxt_editor'), parent_buttons: '.buttons_section'
