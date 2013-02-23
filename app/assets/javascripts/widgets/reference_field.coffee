@@ -106,8 +106,6 @@ class AntCat.ReferenceField extends AntCat.ReferenceFieldPanel
       .find('.controls')
         .undisable()
         .find(':button')
-          # there is an unknown handler, that must be turned off
-          .off('click')
           .unbutton()
           .button()
           .end()
