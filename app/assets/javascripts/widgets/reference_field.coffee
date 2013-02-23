@@ -90,25 +90,15 @@ class AntCat.ReferenceField extends AntCat.ReferenceFieldPanel
 
   ok: =>
     @set_value @id
+    @close()
+
+  cancel: =>
+    @clear_current()
+    @close()
+
+  close: =>
     @hide_form()
-
-  #cancel: =>
-    #@clear_current()
-    #@id = @original_id
-    #@element.find('#id').val(@id)
-    #if @id
-      #@load '', 'collapsed'
-    #else
-      #@initialize 'collapsed'
-    #@options.on_cancel if @options.on_cancel
-    #@close()
-
-  #close: =>
-    #if @options.field
-      #@hide_expansion()
-    #else
-      #@element.slideUp 'fast', =>
-    #@options.on_close() if @options.on_close
+    @options.on_close() if @options.on_close
 
   setup_controls: =>
     self = @
