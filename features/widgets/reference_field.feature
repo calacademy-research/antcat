@@ -73,13 +73,11 @@ Feature: Reference field
     #* I should not see "Fisher's book"
 
   #Scenario: Adding a selected reference
-    #Given I am logged in
     #When I go to the reference picker test page
     #And I add a reference by Brian Fisher
     #Then I should see "Fisher, B.L. 1992. Between Pacific Tides. Ants 2:1."
 
   #Scenario: Editing the selected reference
-    #Given I am logged in
     #When I go to the reference picker test page, opened to the first reference
     #And I edit the reference
     #When I set the authors to "Ward, B.L.; Bolton, B."
@@ -88,7 +86,6 @@ Feature: Reference field
     #Then I should see "Ward, B.L.; Bolton, B. 1995b. Ant Title"
 
   #Scenario: Error when editing reference
-    #Given I am logged in
     #When I go to the reference picker test page, opened to the first reference
     #And I edit the reference
     #When I set the title to ""
