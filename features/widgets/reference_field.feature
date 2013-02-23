@@ -2,8 +2,18 @@
 Feature: Reference field
 
   Background:
-    Given there is a reference by Brian Fisher
-    And there is a reference by Barry Bolton
+    Given these references exist
+      | authors                 | year          | title                 | citation   |
+      | Fisher, B.              | 1995b         | Fisher's book         | Ants 1:1-2 |
+      | Bolton, B.              | 2010 ("2011") | Bolton's book         | Ants 2:1-2 |
+      | Fisher, B.; Bolton, B.  | 1995b         | Fisher Bolton book    | Ants 1:1-2 |
+      | Hölldobler, B.          | 1995b         | Bert's book           | Ants 1:1-2 |
+    #And there is a reference by Brian Fisher
+    #And there is a reference by Barry Bolton
+
+  Scenario: Seeing the picker
+    When I go to the reference field test page, opened to the first reference
+    Then I should see "Fisher, B. 1995b. Fisher's book. Ants 1:1-2."
 
   Scenario: Setting a reference when there wasn't one before
     When I go to the reference field test page
@@ -12,6 +22,13 @@ Feature: Reference field
     And I click the first search result
     And I press "OK"
     Then the field should contain the reference by Fisher
+
+  Scenario: Searching for multiple authors
+    When I go to the reference field test page
+    And I search for the authors "Bolton, B.;Fisher, B."
+    Then I should see "Fisher Bolton book"
+    And I should not see "Fisher's book"
+    And I should not see "Bolton's book"
 
   Scenario: Changing the reference
     When I go to the reference field test page
@@ -45,32 +62,15 @@ Feature: Reference field
     Then the field should contain "(none)"
 
   #Background:
-    #Given these references exist
-      #| authors                 | year          | title                 | citation   |
-      #| Fisher, B.              | 1995b         | Fisher's book         | Ants 1:1-2 |
-      #| Bolton, B.              | 2010 ("2011") | Bolton's book         | Ants 2:1-2 |
-      #| Fisher, B.; Bolton, B.  | 1995b         | Fisher Bolton book    | Ants 1:1-2 |
-      #| Hölldobler, B.          | 1995b         | Bert's book           | Ants 1:1-2 |
-
-  #Scenario: Seeing the picker
-    #When I go to the reference picker widget test page, opened to the first reference
-    #Then I should see "Fisher, B. 1995b. Fisher's book. Ants 1:1-2."
 
   ## There's a problem getting the search type selector to pick the right one
   ##Scenario: Searching
-    ##When I go to the reference picker widget test page
-    ##And I search for "bolton"
-    ##Then I should see "Bolton's book"
-    ##* I should see "Fisher Bolton book"
-    ##* I should not see "Bert's book"
-    ##* I should not see "Fisher's book"
-
-  #Scenario: Searching for multiple authors
-    #When I go to the reference picker widget test page
-    #And I search for the authors "Bolton, B.;Fisher, B."
-    #Then I should see "Fisher Bolton book"
-    #And I should not see "Fisher's book"
-    #And I should not see "Bolton's book"
+    #When I go to the reference picker test page
+    #And I search for "bolton"
+    #Then I should see "Bolton's book"
+    #* I should see "Fisher Bolton book"
+    #* I should not see "Bert's book"
+    #* I should not see "Fisher's book"
 
   #Scenario: Adding a selected reference
     #Given I am logged in
