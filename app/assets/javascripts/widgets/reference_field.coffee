@@ -1,11 +1,25 @@
 class AntCat.ReferenceField extends AntCat.Panel
 
-  constructor: ($parent_element, @options = {}) ->
+  constructor: (@parent_element, @options = {}) ->
     @options.click_on_display = true
     @value_id = @options.value_id
-    super $parent_element.find('> .antcat_reference_field'), @options
+    super @parent_element.find('> .antcat_reference_field'), @options
 
-  initialize: =>
+  create_form: ($element, options) =>
+    options.button_container = '.controls'
+    new AntCat.ReferenceFieldForm $element, options
+
+  form: =>
+    @_form or= @create_form @expansion,
+      on_open:              @on_form_open
+      on_close:             @on_form_close
+      on_response:          @on_form_response
+      on_success:           @on_form_success
+      on_cancel:            @on_form_cancel
+      on_application_error: @on_application_error
+      before_submit:        @before_submit
+
+  initialize: ($element) =>
     super
 
     @element.addClass 'modal' unless @options.field
@@ -29,6 +43,10 @@ class AntCat.ReferenceField extends AntCat.Panel
     @setup_controls()
     @setup_references()
     @handle_new_selection()
+
+
+  show_form: =>
+    super
     @setup_search_selector()
 
   on_form_success: (data) =>
@@ -44,8 +62,8 @@ class AntCat.ReferenceField extends AntCat.Panel
       dataType: 'html'
       success: (data) =>
         @element.replaceWith data
-        @element = @parent_element.find('> .antcat_reference_field')
-        @initialize()
+        $element = @parent_element.find('> .antcat_reference_field')
+        @initialize $element
       error: (xhr) => debugger
 
   start_throbbing: =>
@@ -320,3 +338,5 @@ class AntCat.ReferenceField extends AntCat.Panel
   set_help_banner: (text) =>
     @element.find('.help_banner_text').text text
 
+# -----------------------------------------
+class AntCat.ReferenceFieldForm extends AntCat.NestedForm
