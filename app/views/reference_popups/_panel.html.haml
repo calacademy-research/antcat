@@ -13,7 +13,7 @@
     %tr
       %td.icons
         - if reference
-          %a.icon.edit{title: 'edit', href: '#'}
+          %a.icon.edit_icon{title: 'edit', href: '#'}
             = image_tag 'edit_off.png', alt: 'edit'
       %td.reference_item
         = render 'reference_popups/display', reference: reference if !reference || !reference.new_record? && reference.errors.empty?

@@ -7,7 +7,7 @@ class AntCat.Panel
     @setup_edit()
 
   setup_edit: =>
-    $edit_icon = @element.find '.icon.edit'
+    $edit_icon = @element.find '.edit_icon'
     if @options.click_on_display
       @element.find('.display').click @edit
     else
