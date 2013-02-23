@@ -52,16 +52,6 @@ class AntCat.ReferenceFieldPanel
   restore_panel: =>
     @replace_panel @saved_content
 
-  form: =>
-    @_form or= @create_form @element.find('.nested_form'),
-      on_open:              @on_form_open
-      on_close:             @on_form_close
-      on_response:          @on_form_response
-      on_success:           @on_form_success
-      on_cancel:            @on_form_cancel
-      on_application_error: @on_application_error
-      before_submit:        @before_submit
-
   show_form: =>
     @display.hide()
     @edit.show()
