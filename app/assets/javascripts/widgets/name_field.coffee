@@ -6,7 +6,6 @@ class AntCat.NameField extends AntCat.Panel
     super $parent_element.find('> .antcat_name_field'), @options
 
   create_form: ($element, options) =>
-    options.button_container = @options.parent_buttons
     new AntCat.NameFieldForm $element, options
 
   before_submit: =>
