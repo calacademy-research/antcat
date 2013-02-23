@@ -44,7 +44,6 @@ class AntCat.ReferenceField extends AntCat.Panel
     @setup_references()
     @handle_new_selection()
 
-
   show_form: =>
     super
     @setup_search_selector()
@@ -64,6 +63,7 @@ class AntCat.ReferenceField extends AntCat.Panel
         @element.replaceWith data
         $element = @parent_element.find('> .antcat_reference_field')
         @initialize $element
+        @show_form()
       error: (xhr) => debugger
 
   start_throbbing: =>
