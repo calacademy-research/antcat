@@ -8,7 +8,7 @@
     = render 'reference_fields/panel', reference: Reference.new
 
   .display
-    = button_tag(reference ? format_reference(reference) : '(none)', class: :display_button)
+    %button.display_button= reference ? format_reference(reference) : '(none)'
 
   .edit
     %table.references.current
@@ -25,17 +25,17 @@
           %td.throbber= image_tag 'ui-anim_basic_16x16.gif'
           %td.controls
             .ok_cancel_controls
-              = button_tag 'OK', class: 'ok ui-priority-primary'
-              = button_tag 'Cancel', class: 'close ui-priority-secondary'
+              %button.ok.ui-priority-primary OK
+              %button.close.ui-priority-secondary Cancel
 
             .add_controls
-              = button_tag 'Add', class: 'add ui-priority-primary'
+              %button.add.ui-priority-primary Add
 
             .search_controls
               = select_tag "search_selector", options_for_select(["Search for author(s)", "Search for"], params[:search_selector]), class: 'search_selector'
               = text_field_tag "q", params[:q], class: 'q'
-              = button_tag 'Go', class: 'go ui-priority-primary'
-              = button_tag 'Cancel', class: 'close ui-priority-secondary'
+              %button.go.ui-priority-primary Go
+              %button.close.ui-priority-secondary Cancel
 
             = will_paginate references if references
 
