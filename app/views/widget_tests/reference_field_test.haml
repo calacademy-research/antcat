@@ -24,7 +24,7 @@
         %td.authorship= label_tag 'Authorship'
         %td
           #authorship_field
-            = render 'reference_fields/show', references: nil, reference: params[:id].present? ? Reference.first : nil
+            = render 'reference_fields/show', references: @references, reference: @reference
 
       %tr.buttons
         %td.buttons{:colspan => 4}
