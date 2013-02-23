@@ -8,8 +8,6 @@ Feature: Reference field
       | Bolton, B.              | 2010 ("2011") | Bolton's book         | Ants 2:1-2 |
       | Fisher, B.; Bolton, B.  | 1995b         | Fisher Bolton book    | Ants 1:1-2 |
       | Hölldobler, B.          | 1995b         | Bert's book           | Ants 1:1-2 |
-    #And there is a reference by Brian Fisher
-    #And there is a reference by Barry Bolton
 
   Scenario: Seeing the picker
     When I go to the reference field test page, opened to the first reference
