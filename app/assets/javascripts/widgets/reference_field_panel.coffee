@@ -17,17 +17,9 @@ class AntCat.ReferenceFieldPanel
     AntCat.log 'ReferenceFieldPanel setup_sections: no @display' unless @display.size() == 1
 
   setup_edit: =>
-    $edit_icon = @element.find '.icon.edit'
-    if @options.click_on_display
-      console.log 'display click'
-      @display.click @edit
-    else
-      @element
-        .mouseenter(=> $edit_icon.show() unless @is_editing())
-        .mouseleave(=> $edit_icon.hide())
-      $edit_icon.click(@edit)
+    @display.click @start_editing
 
-  edit: =>
+  start_editing: =>
     @save_panel()
     @show_form()
     false
