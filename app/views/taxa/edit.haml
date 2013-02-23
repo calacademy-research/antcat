@@ -69,8 +69,11 @@
             = protonym_form.fields_for :authorship do |authorship_form|
               %td.label= authorship_form.label :reference
               %td
-                %span.authorship= authorship_form.text_field :reference
-                = authorship_form.label :pages
+                #authorship_field
+                  = render 'reference_fields/show',
+                    id: 'taxon_protonym_attributes_authorship_attributes_reference_attributes_id',
+                    value: @taxon.protonym.authorship.reference_id
+                %span.label= authorship_form.label :taxon_protonym_attributes_authorship_attributes_pages, 'Pages'
                 %span.pages= authorship_form.text_field :pages
 
     .type_section.section
