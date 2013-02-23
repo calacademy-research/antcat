@@ -1,12 +1,12 @@
 # coding: UTF-8
 When /^I click the first search result$/ do
-  step 'I click "#picker .search_results .display:first"'
+  step 'I click "#authorship_field .search_results .display:first"'
 end
 
 Then /^the field should contain the reference by (\w+)$/ do |author|
-  page.find('#picker .current .display').text.should =~ /#{author}.*/
+  page.find('#authorship_field .current .display').text.should =~ /#{author}.*/
 end
 
 Then /^the field should contain "([^"]*)"$/ do |contents|
-  page.find('#picker .display').text.should == contents
+  page.find('#authorship_field .display').text.should == contents
 end
