@@ -87,8 +87,8 @@ class AntCat.ReferenceField extends AntCat.ReferenceFieldPanel
     $.param q: @textbox.val(), search_selector: @search_selector.val()
 
   ok: =>
-    @close()
     @set_value @id
+    @hide_form()
 
   #cancel: =>
     #@clear_current()
