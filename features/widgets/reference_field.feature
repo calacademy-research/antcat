@@ -6,7 +6,7 @@ Feature: Reference field
     And there is a reference by Barry Bolton
 
   Scenario: Setting a reference when there wasn't one before
-    When I go to the reference field widget test page
+    When I go to the reference field test page
     And I click the reference field
     And I search for the author "Fisher, B."
     And I click the first search result
@@ -14,7 +14,7 @@ Feature: Reference field
     Then the field should contain the reference by Fisher
 
   Scenario: Changing the reference
-    When I go to the reference field widget test page
+    When I go to the reference field test page
     And I click the reference field
     And I search for the author "Fisher, B."
     And I click the first search result
@@ -29,7 +29,7 @@ Feature: Reference field
 
   Scenario: Adding a reference
     Given there are no references
-    When I go to the reference field widget test page
+    When I go to the reference field test page
     And I click the reference field
     # "Save" appears to be getting clicked, but
     # the form stays up
@@ -37,7 +37,7 @@ Feature: Reference field
     #Then the field should contain the reference by Fisher
 
   Scenario: Cancelling
-    When I go to the reference field widget test page
+    When I go to the reference field test page
     And I click the reference field
     And I search for the author "Fisher, B."
     And I click the first search result
@@ -74,13 +74,13 @@ Feature: Reference field
 
   #Scenario: Adding a selected reference
     #Given I am logged in
-    #When I go to the reference picker widget test page
+    #When I go to the reference picker test page
     #And I add a reference by Brian Fisher
     #Then I should see "Fisher, B.L. 1992. Between Pacific Tides. Ants 2:1."
 
   #Scenario: Editing the selected reference
     #Given I am logged in
-    #When I go to the reference picker widget test page, opened to the first reference
+    #When I go to the reference picker test page, opened to the first reference
     #And I edit the reference
     #When I set the authors to "Ward, B.L.; Bolton, B."
     #And I set the title to "Ant Title"
@@ -89,7 +89,7 @@ Feature: Reference field
 
   #Scenario: Error when editing reference
     #Given I am logged in
-    #When I go to the reference picker widget test page, opened to the first reference
+    #When I go to the reference picker test page, opened to the first reference
     #And I edit the reference
     #When I set the title to ""
     #And I save my changes to the current reference
