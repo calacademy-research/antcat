@@ -21,7 +21,7 @@ Feature: Reference field
     And I search for the author "Fisher, B."
     And I click the first search result
     And I press "OK"
-    Then the field should contain the reference by Fisher
+    Then the authorship field should contain the reference by Fisher
 
   Scenario: Searching for multiple authors
     When I go to the reference field test page
@@ -36,13 +36,13 @@ Feature: Reference field
     And I search for the author "Fisher, B."
     And I click the first search result
     And I press "OK"
-    Then the field should contain the reference by Fisher
+    Then the authorship field should contain the reference by Fisher
     And I click the reference field
     And I search for the author "Bolton, B."
     And I wait for a bit
     And I click the first search result
     And I press "OK"
-    Then the field should contain the reference by Bolton
+    Then the authorship field should contain the reference by Bolton
 
   Scenario: Adding a reference
     Given there are no references
@@ -51,7 +51,7 @@ Feature: Reference field
     # "Save" appears to be getting clicked, but
     # the form stays up
     And I add a reference by Brian Fisher
-    #Then the field should contain the reference by Fisher
+    #Then the authorship field should contain the reference by Fisher
 
   Scenario: Cancelling
     When I go to the reference field test page
@@ -59,7 +59,7 @@ Feature: Reference field
     And I search for the author "Fisher, B."
     And I click the first search result
     And I press "Cancel"
-    Then the field should contain "(none)"
+    Then the authorship field should contain "(none)"
 
   #Background:
 
