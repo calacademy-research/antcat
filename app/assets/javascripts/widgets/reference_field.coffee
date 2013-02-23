@@ -1,4 +1,4 @@
-class AntCat.ReferenceField extends AntCat.Panel
+class AntCat.ReferenceField extends AntCat.ReferenceFieldPanel
 
   constructor: (@parent_element, @options = {}) ->
     @options.click_on_display = true
@@ -241,8 +241,10 @@ class AntCat.ReferenceField extends AntCat.Panel
     @update_help()
     @options.on_change(@value()) if @options.on_change
 
-  value: => @id
-
+  value: =>
+    $value_field = $('#' + @value_id)
+    AntCat.log 'ReferenceField get_value: $value_field.size() != 1' unless $value_field.size() == 1
+    $value_field.val
   set_value: (value) =>
     $value_field = $('#' + @value_id)
     AntCat.log 'ReferenceField set_value: $value_field.size() != 1' unless $value_field.size() == 1
