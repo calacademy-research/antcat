@@ -3,7 +3,7 @@ class AntCat.Panel
     @initialize $element
 
   initialize: (@element) =>
-    AntCat.log 'Panel initialize: no @element' unless @element.size() == 1
+    AntCat.log 'Panel initialize: no @element' unless @element && @element.size() == 1
     @setup_edit()
 
   setup_edit: =>
