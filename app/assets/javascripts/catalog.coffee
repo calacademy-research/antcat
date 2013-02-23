@@ -4,9 +4,6 @@ taxon_height = null
 $ ->
   set_dimensions()
   $(window).resize set_dimensions
-  $('.history_item').history_item_panel
-    on_form_open: -> set_height 'auto'
-    on_form_close: -> set_height 'fixed'
   $('.icon.edit').show() if AntCat.testing
   splitter_top = $('#splitter').position().top
   splitter = new AntCat.Splitter $('#splitter'), on_splitter_change
