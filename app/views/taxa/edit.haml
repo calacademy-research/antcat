@@ -69,7 +69,7 @@
 
           %tr
             = protonym_form.fields_for :authorship do |authorship_form|
-              %td.label= authorship_form.label :reference
+              %td.label.top_aligned= authorship_form.label :reference, 'Authorship'
               %td
                 #authorship_field
                 %span.label= authorship_form.label :taxon_protonym_attributes_authorship_attributes_pages, 'Pages'
