@@ -20,7 +20,7 @@
       %table.fields.ui-dialog-content.ui-widget-content.ui-corner-all
         %tr
           = taxon_form.fields_for :name do |name_form|
-            %td.label= name_form.label :name, 'Epithet'
+            %td.label= name_form.label :epithet
             %td
               %span.epithet= name_form.text_field :epithet
               %span.ancestry= Formatters::TaxonFormatter.new(@taxon).ancestry_string
@@ -54,7 +54,7 @@
         %table.fields.ui-dialog-content.ui-widget-content.ui-corner-bottom
           %tr
             = protonym_form.fields_for :name do |name_form|
-              %td.label= name_form.label :name, 'Name'
+              %td.label= name_form.label :name
               %td
                 #protonym_name_field
                   = render 'name_fields/panel',
@@ -72,9 +72,10 @@
               %td.label.top_aligned= authorship_form.label :reference, 'Authorship'
               %td
                 #authorship_field
-                %span.label= authorship_form.label :taxon_protonym_attributes_authorship_attributes_pages, 'Pages'
-                %span.pages= authorship_form.text_field :pages
                   = render 'reference_fields/show', references: nil, reference: authorship_form.object.reference
+              %tr
+                %td.label= authorship_form.label :pages
+                %td.pages= authorship_form.text_field :pages
 
     .type_section.section
       .section_header.ui-widget-header.ui-corner-top
@@ -83,10 +84,9 @@
         %tr
           = taxon_form.fields_for :type_name do |type_name_form|
             %td.label= type_name_form.label :name
-            %td
-              %span.name= type_name_form.text_field :name
-              = taxon_form.check_box :type_fossil
-              = taxon_form.label :type_fossil, 'Fossil'
+            %td= type_name_form.text_field :name
+            = taxon_form.check_box :type_fossil
+            = taxon_form.label :type_fossil, 'Fossil'
 
         %tr
           %td.label.top_aligned= taxon_form.label :type_taxt, 'Notes'
