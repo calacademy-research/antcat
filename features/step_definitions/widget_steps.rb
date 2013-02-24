@@ -58,8 +58,8 @@ When /In the search box, I press "Go"/ do
 end
 
 When /^I search for "([^"]*)"$/ do |search_term|
-  # this is to make the selectmenu work
   within '.expansion' do
+    # this is to make the selectmenu work
     step %{I follow "Search for"}
     step %{I follow "Search for"}
     step "I fill in the search box with \"#{search_term}\""
