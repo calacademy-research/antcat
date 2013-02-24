@@ -23,6 +23,7 @@ Feature: Reference field
 
   Scenario: Searching for multiple authors
     When I go to the reference field test page
+    And I click the reference field
     And I search for the authors "Bolton, B.;Fisher, B."
     Then I should see "Fisher Bolton book"
     And I should not see "Fisher's book"
