@@ -93,3 +93,18 @@ Feature: Editing a taxon
     And I press "OK"
     And I save the form
     Then I should see "Eciton" in the headline
+
+  Scenario: Changing the authorship
+    Given these references exist
+      | authors | citation   | title | year |
+      | Fisher  | Psyche 3:3 | Ants  | 2004 |
+    Given there is a genus called "Eciton"
+    And I log in
+    When I go to the edit page for "Eciton"
+    And I click the authorship field
+    And I search for the author "Fisher"
+    And I click the first search result
+    And I press "OK"
+    Then the authorship field should contain "Fisher 2004. Ants. Psyche 3:3."
+    When I save the form
+    Then I should see "Fisher 2004. Ants. Psyche 3:3." in the headline
