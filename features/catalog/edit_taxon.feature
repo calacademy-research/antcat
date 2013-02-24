@@ -56,7 +56,7 @@ Feature: Editing a taxon
     #Then I should not see "Eciton"
     #When I press "Edit"
     #And I put the cursor in the headline notes edit box
-    #And I press "Insert Taxon"
+    #And I press "Insert Name"
     #Then I should not be on the page for "Atta"
     #And I fill in the name with "Eciton"
     #And I press "OK"
