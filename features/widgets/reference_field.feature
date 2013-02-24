@@ -71,14 +71,17 @@ Feature: Reference field
     Then the authorship field should contain "(none)"
 
   Scenario: Editing the selected reference
-    When I go to the reference field test page, opened to the first reference
+    When I log in
+    And I go to the reference field test page, opened to the first reference
     And I click the reference field
     And I edit the reference
+    Then I should see the reference field edit form
     When I set the authors to "Ward, B.L.; Bolton, B."
     And I set the title to "Ant Title"
     And I save my changes to the current reference
-    Then I should see "Ward, B.L.; Bolton, B. 1995b. Ant Title"
-    And I should not see the edit form
+    And I wait for a bit
+    Then I should not see the reference field edit form
+    And I should see "Ward, B.L.; Bolton, B. 1995b. Ant Title"
 
   #Scenario: Error when editing reference
     #When I go to the reference picker test page, opened to the first reference

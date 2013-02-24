@@ -4,8 +4,13 @@ When /^I click the edit icon$/ do
   step 'I follow "edit"'
 end
 
+Then /^I should (not )?see the reference field edit form$/ do |should_not|
+  selector = should_not ? :should_not : :should
+  find('.current .reference_item > .edit').send(selector, be_visible)
+end
+
 # Reference field/popup
-Then /I should (not )?see the reference field/ do |should_not|
+Then /I should (not )?see the reference field$/ do |should_not|
   selector = should_not ? :should_not : :should
   find('.antcat_reference_field').send(selector, be_visible)
 end
@@ -18,7 +23,7 @@ end
 
 When /^I save my changes to the current reference$/ do
   within first('.current') do
-    step 'I save my changes'
+    step 'I press "Save"'
   end
 end
 
