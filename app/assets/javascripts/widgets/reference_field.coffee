@@ -72,12 +72,6 @@ class AntCat.ReferenceField extends AntCat.ReferenceFieldPanel
     @element.find('.throbber img').show()
     @element.find('> .expansion .controls').disable()
 
-  #show_expansion: =>
-    #@expansion.show()
-    ## apparently, can't setup selectmenu unless it's visible
-    #@setup_search_selector()
-    #@textbox.focus()
-
   #---------------------------------
   search: =>
     @load @get_search_parameters()
