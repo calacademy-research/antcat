@@ -18,6 +18,10 @@ class AntCat.ReferenceFieldPanel
 
   setup_edit: =>
     @display.click @start_editing
+    $edit_icon = @element.find '.edit_icon'
+    @element
+      .mouseenter(=> $edit_icon.show() unless @is_editing())
+      .mouseleave(=> $edit_icon.hide())
 
   start_editing: =>
     @save_panel()
