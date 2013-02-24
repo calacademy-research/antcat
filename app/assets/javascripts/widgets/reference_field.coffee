@@ -80,7 +80,9 @@ class AntCat.ReferenceField extends AntCat.ReferenceFieldPanel
     $.param q: @textbox.val(), search_selector: @search_selector.val()
 
   ok: =>
+    console.log 'ok'
     @set_value @id
+    @set_display_text()
     @close()
 
   cancel: =>
@@ -228,10 +230,15 @@ class AntCat.ReferenceField extends AntCat.ReferenceFieldPanel
     $value_field = $('#' + @value_id)
     AntCat.log 'ReferenceField get_value: $value_field.size() != 1' unless $value_field.size() == 1
     $value_field.val
+
   set_value: (value) =>
     $value_field = $('#' + @value_id)
     AntCat.log 'ReferenceField set_value: $value_field.size() != 1' unless $value_field.size() == 1
     $value_field.val value
+
+  set_display_text: =>
+    reference_text = @current_reference().find('.display').text()
+    @display.find('.display_button').text reference_text
 
   selected_reference: =>
     results = @search_results().find 'div.display.ui-selected'
