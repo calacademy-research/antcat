@@ -80,7 +80,6 @@ class AntCat.ReferenceField extends AntCat.ReferenceFieldPanel
     $.param q: @textbox.val(), search_selector: @search_selector.val()
 
   ok: =>
-    console.log 'ok'
     @set_value @id
     @set_display_text()
     @close()
