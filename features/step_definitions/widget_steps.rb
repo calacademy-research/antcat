@@ -89,6 +89,10 @@ And /^I click the name field$/ do
   step %{I click ".display_button"}
 end
 
+And /^I click the authorship field$/ do
+  step %{I click "#authorship_field .display_button"}
+end
+
 # Name picker
 Then /in the name picker display I should see "([^"]*)"/ do |text|
   within "#picker .display" do
