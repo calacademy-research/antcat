@@ -81,7 +81,7 @@ class TaxaController < ApplicationController
   end
 
   def update_protonym_authorship attributes
-    attributes.delete :reference
+    attributes[:reference_id] = attributes.delete(:reference_attributes)[:id]
     @taxon.protonym.authorship.update_attributes attributes
   end
 
