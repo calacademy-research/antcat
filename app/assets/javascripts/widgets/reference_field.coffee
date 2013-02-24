@@ -50,9 +50,6 @@ class AntCat.ReferenceField extends AntCat.ReferenceFieldPanel
     super
     @setup_search_selector()
 
-  on_form_success: (data) =>
-    @set_value data.id
-
   load: (url = '') =>
     if url.indexOf('/reference_field') is -1
       url = '/reference_field?' + url
