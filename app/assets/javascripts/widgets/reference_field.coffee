@@ -175,8 +175,8 @@ class AntCat.ReferenceField extends AntCat.ReferenceFieldPanel
         .addClass('ui-selected')
         .end()
 
-    @element.find('div.display').bind 'click', @handle_click
-    @element.find('div.display').hover(@hover, @unhover)
+    @element.find('.search_results div.display').bind 'click', @handle_click
+    @element.find('.search_results div.display').hover(@hover, @unhover)
 
   hover: (event) =>
     @search_results().find('.display').removeClass('ui-selecting')
