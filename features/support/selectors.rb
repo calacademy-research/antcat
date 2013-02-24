@@ -42,6 +42,9 @@ module HtmlSelectorsHelpers
     when /the name field/
       '.antcat_name_field .display'
 
+    when /the edit form/
+      '.edit'
+
     when /"(.+)"/
       $1
 
