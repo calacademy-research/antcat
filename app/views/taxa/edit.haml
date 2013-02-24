@@ -72,11 +72,9 @@
               %td.label= authorship_form.label :reference
               %td
                 #authorship_field
-                  = render 'reference_fields/show',
-                    id: 'taxon_protonym_attributes_authorship_attributes_reference_attributes_id',
-                    value: @taxon.protonym.authorship.reference_id
                 %span.label= authorship_form.label :taxon_protonym_attributes_authorship_attributes_pages, 'Pages'
                 %span.pages= authorship_form.text_field :pages
+                  = render 'reference_fields/show', references: nil, reference: authorship_form.object.reference
 
     .type_section.section
       .section_header.ui-widget-header.ui-corner-top
