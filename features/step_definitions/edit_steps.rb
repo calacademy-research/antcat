@@ -3,12 +3,6 @@ When /^I save my changes$/ do
   step 'I press "Save"'
 end
 
-When /^I save my changes to the current reference$/ do
-  within first('.current') do
-    step 'I save my changes'
-  end
-end
-
 When /^I save the form$/ do
   step 'I save my changes'
 end
