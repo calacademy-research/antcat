@@ -142,6 +142,7 @@ EOS
   def render_json new = false
     template =
     case
+      when params[:field].present? then 'reference_fields/panel'
       when params[:picker].present? then 'reference_fields/panel'
       when params[:popup].present? then 'reference_popups/panel'
       else 'references/reference'
