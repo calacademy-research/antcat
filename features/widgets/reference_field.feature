@@ -76,13 +76,15 @@ Feature: Reference field
     #And I add a reference by Brian Fisher
     #Then I should see "Fisher, B.L. 1992. Between Pacific Tides. Ants 2:1."
 
-  #Scenario: Editing the selected reference
-    #When I go to the reference picker test page, opened to the first reference
-    #And I edit the reference
-    #When I set the authors to "Ward, B.L.; Bolton, B."
-    #And I set the title to "Ant Title"
-    #And I save my changes to the current reference
-    #Then I should see "Ward, B.L.; Bolton, B. 1995b. Ant Title"
+  Scenario: Editing the selected reference
+    When I go to the reference field test page, opened to the first reference
+    And I click the reference field
+    And I edit the reference
+    When I set the authors to "Ward, B.L.; Bolton, B."
+    And I set the title to "Ant Title"
+    And I save my changes to the current reference
+    Then I should see "Ward, B.L.; Bolton, B. 1995b. Ant Title"
+    And I should not see the edit form
 
   #Scenario: Error when editing reference
     #When I go to the reference picker test page, opened to the first reference
