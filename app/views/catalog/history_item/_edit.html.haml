@@ -9,7 +9,7 @@
     .taxt_editor
       = text_area_tag :taxt_editor, Taxt.to_editable(item.taxt), rows: 1, class: 'taxt_edit_box'
       = render 'reference_fields/show', references: nil, reference: nil
-      = render 'name_pickers/show'
+      = render 'name_popups/show'
 
     .buttons
       %button.submit.ui-priority-primary Save

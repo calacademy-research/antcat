@@ -19,8 +19,6 @@ module NavigationHelpers
     when /the taxt editor test page/
       '/widget_tests/taxt_editor_test'
 
-    when /the name picker test page/
-      '/widget_tests/name_picker_test'
     when /the name popup test page/
       '/widget_tests/name_popup_test'
     when /the name field test page for a name/
