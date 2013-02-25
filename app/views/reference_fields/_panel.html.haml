@@ -16,7 +16,7 @@
             = image_tag 'edit_off.png', alt: 'edit'
       %td.reference_item
         - if reference
-          = render 'reference_fields/display', reference: reference
+          = render 'reference_fields/display', reference: reference if !reference.new_record? && reference.errors.empty?
           = render 'reference_fields/edit', reference: reference
         - else
           (none)
