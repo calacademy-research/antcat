@@ -104,23 +104,6 @@ And /^I click the authorship field$/ do
   step %{I click "#authorship_field .display_button"}
 end
 
-# Name picker
-Then /in the name picker display I should see "([^"]*)"/ do |text|
-  within "#picker .display" do
-    step %{I should see "#{text}"}
-  end
-end
-
-Then /^I should (not )?see the name picker edit interface$/ do |should_not|
-  selector = should_not ? :should_not : :should
-  find('#picker .edit').send(selector, be_visible)
-end
-
-Then /^I should (not )?see the name picker$/ do |should_not|
-  selector = should_not ? :should_not : :should
-  find('.antcat_name_picker').send(selector, be_visible)
-end
-
 # Name popup
 Then /in the name popup display I should see the first name/ do
   within "#popup .display" do
