@@ -15,6 +15,10 @@ When /^I set the protonym name to "([^"]*)"$/ do |name|
   step %{I fill in "name_string" with "#{name}"}
 end
 
+When /^I set the type name to "([^"]*)"$/ do |name|
+  step %{I fill in "name_string" with "#{name}"}
+end
+
 When /^I save my changes to the first reference$/ do
   within first('.reference') do
     step 'I save my changes'
@@ -27,4 +31,20 @@ end
 
 When /^I fill in the name with "([^"]*)"$/ do |value|
   step %{I fill in "name_string" with "#{value}"}
+end
+
+And /^I click the authorship field$/ do
+  step %{I click "#authorship_field .display_button"}
+end
+
+When /I click the name field/ do
+  step %{I click "#test_name_field .display_button"}
+end
+
+When /I click the protonym name field/ do
+  find('#protonym_name_field .display_button').click
+end
+
+When /I click the type name field/ do
+  find('#type_name_field .display_button').click
 end

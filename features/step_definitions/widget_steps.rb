@@ -96,14 +96,6 @@ Then /I should see the first name in the name field/  do
   step %{I should see "#{Name.first.name}" in the name field}
 end
 
-And /^I click the name field$/ do
-  step %{I click ".display_button"}
-end
-
-And /^I click the authorship field$/ do
-  step %{I click "#authorship_field .display_button"}
-end
-
 # Name popup
 Then /in the name popup display I should see the first name/ do
   within "#popup .display" do
