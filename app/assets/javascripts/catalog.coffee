@@ -7,7 +7,11 @@ $ ->
   $('.edit_icon').show() if AntCat.testing
   splitter_top = $('#splitter').position().top
   splitter = new AntCat.Splitter $('#splitter'), on_splitter_change
-  $('#edit_button').click -> window.location = $(@).data('edit-location')
+  console.log '#edit_button'
+  $('#edit_button')
+    .unbutton()
+    .button()
+    .click -> window.location = $(@).data('edit-location')
   $('#hide_all').remove()
 
 on_splitter_change = (top) ->
