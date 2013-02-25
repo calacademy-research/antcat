@@ -88,7 +88,7 @@ Feature: Editing a taxon
     And there is a genus called "Eciton"
     And I log in
     When I go to the edit page for "Atta"
-    And I click the name field
+    And I click the protonym name field
     And I set the protonym name to "Eciton"
     And I press "OK"
     And I save the form
