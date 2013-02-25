@@ -33,7 +33,6 @@
               = select_tag "search_selector", options_for_select(["Search for author(s)", "Search for"], params[:search_selector]), class: 'search_selector'
               = text_field_tag "q", params[:q], class: 'q'
               %button.go.ui-priority-primary Go
-              %button.close.ui-priority-secondary Cancel
 
             = will_paginate references if references
 
