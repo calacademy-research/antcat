@@ -82,6 +82,7 @@
         Type
       %table.fields.ui-dialog-content.ui-widget-content.ui-corner-bottom
         %tr
+          - taxon_form.object.type_name ||= Name.new
           = taxon_form.fields_for :type_name do |type_name_form|
             %td.label= type_name_form.label :name
             = taxon_form.check_box :type_fossil
