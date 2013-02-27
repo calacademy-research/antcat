@@ -108,3 +108,14 @@ Feature: Editing a taxon
     Then the authorship field should contain "Fisher 2004. Ants. Psyche 3:3."
     When I save the form
     Then I should see "Fisher 2004. Ants. Psyche 3:3." in the headline
+
+  Scenario: Changing the type name
+    Given there is a genus called "Atta" with a type name of "Atta major"
+    And there is a species called "Atta major"
+    And I log in
+    When I go to the edit page for "Atta"
+    And I click the type name field
+    And I set the type name to "Atta major"
+    And I press "OK"
+    And I save the form
+    Then I should see "Atta major" in the headline
