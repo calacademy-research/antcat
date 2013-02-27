@@ -86,6 +86,8 @@ class TaxaController < ApplicationController
   end
 
   def update_type_name attributes
+    attributes[:type_name_id] = attributes.delete :id
+    @taxon.update_attributes attributes
   end
 
 end

@@ -150,6 +150,10 @@ Given /^there is a genus called "([^"]*)"(?: with a protonym name of "(.*?)")?$/
   genus = create_genus name
   genus.protonym.name = Name.find_by_name protonym_name if protonym_name
 end
+Given /^there is a genus called "([^"]*)" with a type name of "(.*?)"$/ do |name, type_name|
+  genus = create_genus name
+  genus.type_name = Name.find_by_name type_name
+end
 Given /^there is a family called "Formicidae"$/ do
   create_family
 end
