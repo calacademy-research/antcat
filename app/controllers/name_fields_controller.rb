@@ -23,7 +23,7 @@ class NameFieldsController < ApplicationController
       success = false
     end
     data.merge!(
-      content: render_to_string(partial: 'name_fields/panel', locals: {value_id: 'taxon_protonym_attributes_name_attributes_id', value: id, name_string: name_string}),
+      content: render_to_string(partial: 'name_fields/panel', locals: {name_string: name_string}),
       success: success,
       id: id)
     json = data.to_json

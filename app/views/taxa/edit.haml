@@ -56,9 +56,7 @@
               %td.label= name_form.label :name
               %td
                 #protonym_name_field
-                  = render 'name_fields/panel',
-                    id: 'taxon_protonym_attributes_name_attributes_id',
-                    value: @taxon.protonym.name_id, name_string: @taxon.protonym.name.try(:name)
+                  = render 'name_fields/panel', name_string: @taxon.protonym.name.try(:name)
 
                 = protonym_form.check_box :fossil
                 = protonym_form.label :fossil
