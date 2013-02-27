@@ -38,7 +38,7 @@ class TaxaController < ApplicationController
   end
 
   def update_epithet_status_flags attributes
-    update_name attributes.delete :name_attributes
+    add_name_or_create_homonym attributes.delete :name_attributes
     @taxon.attributes = attributes
     # apparently can't just assign this value to the attribute in attributes
     @taxon.headline_notes_taxt = Taxt.from_editable attributes.delete :headline_notes_taxt
@@ -48,7 +48,7 @@ class TaxaController < ApplicationController
 
   class PossibleHomonymSituation < NameError; end
 
-  def update_name attributes
+  def add_name_or_create_homonym attributes
     begin
       original_name = @taxon.name
       name = Name.import get_name_attributes attributes
