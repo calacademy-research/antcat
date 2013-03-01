@@ -29,17 +29,23 @@
           %td
             = taxon_form.select :status, Status.statuses
 
-            = taxon_form.check_box :fossil
-            = taxon_form.label :fossil
+          %tr
+            %td
+            %td
+              = taxon_form.label :incertae_sedis_in
+              = taxon_form.select :incertae_sedis_in, [['(none)', nil], 'family', 'subfamily', 'tribe']
 
-            = taxon_form.check_box :unidentifiable
-            = taxon_form.label :unidentifiable
+              = taxon_form.check_box :fossil
+              = taxon_form.label :fossil
 
-            = taxon_form.check_box :unresolved_homonym
-            = taxon_form.label :unresolved_homonym, 'Unresolved junior homonym'
+              = taxon_form.check_box :unidentifiable
+              = taxon_form.label :unidentifiable
 
-            = taxon_form.check_box :hong
-            = taxon_form.label :hong
+              = taxon_form.check_box :unresolved_homonym
+              = taxon_form.label :unresolved_homonym, 'Unresolved junior homonym'
+
+              = taxon_form.check_box :hong
+              = taxon_form.label :hong
 
         %tr
           %td.label.top_aligned= taxon_form.label :headline_notes_taxt, 'Notes'
