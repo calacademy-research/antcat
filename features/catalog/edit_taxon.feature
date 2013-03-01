@@ -119,3 +119,14 @@ Feature: Editing a taxon
     And I press "OK"
     And I save the form
     Then I should see "Atta major" in the headline
+
+  Scenario: Changing incertae sedis
+    Given there is a genus called "Atta" that is incertae sedis in the subfamily
+    When I log in
+    And I go to the catalog page for "Atta"
+    Then I should see "incertae sedis in subfamily"
+    When I go to the edit page for "Atta"
+    And I select "(none)" from "taxon_incertae_sedis_in"
+    And I save the form
+    Then I should be on the catalog page for "Atta"
+    Then I should not see "incertae sedis in subfamily"

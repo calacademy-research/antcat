@@ -154,6 +154,10 @@ Given /^there is a genus called "([^"]*)" with a type name of "(.*?)"$/ do |name
   genus = create_genus name
   genus.type_name = Name.find_by_name type_name
 end
+Given /^there is a genus called "([^"]*)" that is incertae sedis in the subfamily$/ do |name|
+  genus = create_genus name
+  genus.update_attribute :incertae_sedis_in, 'subfamily'
+end
 Given /^there is a family called "Formicidae"$/ do
   create_family
 end
