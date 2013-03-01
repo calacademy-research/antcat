@@ -3,16 +3,21 @@ taxon_height = null
 
 $ ->
   set_dimensions()
+  setup_throbber()
   $(window).resize set_dimensions
   $('.edit_icon').show() if AntCat.testing
   splitter_top = $('#splitter').position().top
   splitter = new AntCat.Splitter $('#splitter'), on_splitter_change
-  console.log '#edit_button'
   $('#edit_button')
     .unbutton()
     .button()
     .click -> window.location = $(@).data('edit-location')
   $('#hide_all').remove()
+
+setup_throbber = ->
+  $('#navigation_bar form').submit ->
+    $('#navigation_bar .submit').hide()
+    $('#navigation_bar .throbber').show()
 
 on_splitter_change = (top) ->
   top = $('#splitter').position().top
