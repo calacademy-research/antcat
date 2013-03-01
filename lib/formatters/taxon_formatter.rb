@@ -363,7 +363,7 @@ class Formatters::TaxonFormatter
     when Genus
       parts = ['Genus']
       parts << @taxon.tribe.name if @taxon.tribe
-      parts << @taxon.subfamily.name if @taxon.subfamily
+      parts << (@taxon.subfamily ? @taxon.subfamily.name : '(no subfamily)')
       parts.join ' < '
     when Subgenus
       parts = ['Subgenus']

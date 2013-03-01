@@ -234,8 +234,8 @@ describe Formatters::TaxonFormatter do
     end
     it "should handle a genus without a subfamily" do
       subfamily = create_subfamily
-      genus = create_genus subfamily: subfamily, tribe: nil
-      @formatter.new(genus).ancestry_string.should == "Genus < #{subfamily.name}"
+      genus = create_genus subfamily: nil, tribe: nil
+      @formatter.new(genus).ancestry_string.should == "Genus < (no subfamily)"
     end
     it "should handle a subgenus" do
       subfamily = create_subfamily
