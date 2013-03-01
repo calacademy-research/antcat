@@ -84,6 +84,8 @@
         %tr
           - taxon_form.object.type_name ||= Name.new
           = taxon_form.fields_for :type_name do |type_name_form|
+            - if @taxon.type_name.new_record?
+              = hidden_field_tag 'taxon[type_name_attributes][id]'
             %td.label= type_name_form.label :name
             = taxon_form.check_box :type_fossil
             = taxon_form.label :type_fossil, 'Fossil'
