@@ -42,10 +42,10 @@ module NavigationHelpers
     when /the Authors page/
       authors_path
 
-    when /the (catalog entry|page) for "([^"]*)"/
+    when /^the catalog (entry|page) for "([^"]*)"$/
       taxon = Taxon.find_by_name $2
       "/catalog/#{taxon.id}"
-    when /the catalog/
+    when /^the catalog$/
       catalog_path
 
     when /the edit user page/
