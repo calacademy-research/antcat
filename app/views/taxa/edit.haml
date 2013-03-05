@@ -73,6 +73,8 @@
                   = protonym_form.label :sic
 
           %tr
+            - protonym_form.object.authorship ||= Citation.new
+            - protonym_form.object.authorship.reference ||= Reference.new
             = protonym_form.fields_for :authorship do |authorship_form|
               %td.label.top_aligned= authorship_form.label :reference, 'Authorship'
               %td
