@@ -82,7 +82,9 @@ class TaxaController < ApplicationController
   end
 
   def update_protonym_authorship attributes
+    return unless @taxon.protonym.authorship
     attributes[:reference_id] = attributes.delete(:reference_attributes)[:id]
+    return if attributes[:reference_id].blank? and @taxon.protonym.authorship.reference.blank?
     @taxon.protonym.authorship.update_attributes attributes
   end
 
