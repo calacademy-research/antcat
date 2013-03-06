@@ -146,6 +146,11 @@ describe Taxt do
       string.should == 'foo'
       string.should be_html_safe
     end
+    #it "should escape its input" do
+      #string = Taxt.to_string '<script>'
+      #string.should == '&lt;script&gt;'
+      #string.should be_html_safe
+    #end
     it "should handle nil" do
       Taxt.to_string(nil).should == ''
     end
@@ -169,6 +174,10 @@ describe Taxt do
         reference = FactoryGirl.create :missing_reference, :citation => 'Latreille, 1809'
         Taxt.to_string("{ref #{reference.id}}", nil).should == 'Latreille, 1809'
       end
+      #it "should escape input" do
+        #reference = FactoryGirl.create :missing_reference, citation: 'Latreille, 1809 <script>'
+        #Taxt.to_string("{ref #{reference.id}}", nil).should == 'Latreille, 1809 &lt;script&gt;'
+      #end
     end
 
     describe "Name" do
