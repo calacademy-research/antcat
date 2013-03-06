@@ -53,8 +53,12 @@ describe Formatters::Formatter do
       string.should be_html_safe
     end
     it "should unitalicize" do
-      string = @formatter.unitalicize('Attini <i>Atta major</i> r.')
+      string = @formatter.unitalicize('Attini <i>Atta major</i> r.'.html_safe)
       string.should == 'Attini Atta major r.'
+      string.should be_html_safe
+    end
+    it "should raise if unitalicize is called on an unsafe string" do
+      -> {@formatter.unitalicize('Attini <i>Atta major</i> r.')}.should raise_error
     end
   end
 
