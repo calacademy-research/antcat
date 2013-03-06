@@ -21,16 +21,20 @@ describe Formatters::Formatter do
 
   describe "Formatting a list, with conjunction" do
     it "should handle two items" do
-      @formatter.pluralize_with_delimiters(2, 'bear').should == '2 bears'
       @formatter.conjuncted_list(['a', 'b'], 'item').should ==
         %{<span class="item">a</span> and <span class="item">b</span>}
     end
-    it "should use the provided plural" do
-      @formatter.pluralize_with_delimiters(2, 'genus', 'genera').should == '2 genera'
     end
     it "should handle four items" do
       @formatter.conjuncted_list(['a', 'b', 'c', 'd'], 'item').should ==
         %{<span class="item">a</span>, <span class="item">b</span>, <span class="item">c</span> and <span class="item">d</span>}
+    end
+  describe "Pluralizing, with commas" do
+    it "should pluralize" do
+      @formatter.pluralize_with_delimiters(2, 'bear').should == '2 bears'
+    end
+    it "should use the provided plural" do
+      @formatter.pluralize_with_delimiters(2, 'genus', 'genera').should == '2 genera'
     end
     it "should use commas" do
       @formatter.pluralize_with_delimiters(2000, 'bear').should == '2,000 bears'
