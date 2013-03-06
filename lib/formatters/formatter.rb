@@ -46,6 +46,7 @@ module Formatters::Formatter
   end
 
   def unitalicize string
+    raise "Can't unitalicize an unsafe string" unless string.html_safe?
     string.gsub(%r{<i>(.*)</i>}, '\1').html_safe
   end
 
