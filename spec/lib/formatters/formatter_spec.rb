@@ -21,14 +21,19 @@ describe Formatters::Formatter do
 
   describe "Formatting a list, with conjunction" do
     it "should handle two items" do
-      @formatter.conjuncted_list(['a', 'b'], 'item').should ==
-        %{<span class="item">a</span> and <span class="item">b</span>}
-    end
+      result = @formatter.conjuncted_list(['a', 'b'], 'item')
+      result.should == %{<span class="item">a</span> and <span class="item">b</span>}
+      result.should be_html_safe
     end
     it "should handle four items" do
       @formatter.conjuncted_list(['a', 'b', 'c', 'd'], 'item').should ==
         %{<span class="item">a</span>, <span class="item">b</span>, <span class="item">c</span> and <span class="item">d</span>}
     end
+    it "should escape the items" do
+      @formatter.conjuncted_list(['<script>'], 'item').should == %{<span class="item">&lt;script&gt;</span>}
+    end
+  end
+
   describe "Pluralizing, with commas" do
     it "should pluralize" do
       @formatter.pluralize_with_delimiters(2, 'bear').should == '2 bears'

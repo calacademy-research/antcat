@@ -21,7 +21,7 @@ module Formatters::Formatter
   end
 
   def conjuncted_list items, css_class
-    items = items.flatten.uniq.map{|item| %{<span class="#{css_class}">#{item}</span>}}.sort
+    items = items.flatten.uniq.map{|item| %{<span class="#{css_class}">}.html_safe + item + %{</span>}.html_safe}.sort
     case
     when items.count == 0
       ''
