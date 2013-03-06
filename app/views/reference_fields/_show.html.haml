@@ -8,7 +8,7 @@
     = render 'reference_fields/panel', reference: Reference.new
 
   .display
-    %button.display_button= reference ? format_reference(reference) : '(none)'
+    %button.display_button= reference && reference.id ? format_reference(reference) : '(none)'
 
   .edit
     %table.references.current
