@@ -352,38 +352,22 @@ class Formatters::TaxonFormatter
   end
 
   ############
-  def ancestry_string
+  def parentage_string
     case @taxon
     when Family
       'Family'
     when Subfamily
       'Subfamily'
     when Tribe
-       "Tribe < #{@taxon.subfamily.name}"
+       'Tribe'
     when Genus
-      parts = ['Genus']
-      parts << @taxon.tribe.name if @taxon.tribe
-      parts << (@taxon.subfamily ? @taxon.subfamily.name : '(no subfamily)')
-      parts.join ' < '
+       'Genus'
     when Subgenus
-      parts = ['Subgenus']
-      parts << @taxon.genus.name
-      parts << @taxon.genus.tribe.name if @taxon.genus.tribe
-      parts << @taxon.genus.subfamily.name
-      parts.join ' < '
+      @taxon.genus.name.name_html.html_safe
     when Species
-      parts = ['Species']
-      parts << @taxon.genus.name
-      parts << @taxon.genus.tribe.name if @taxon.genus.tribe
-      parts << @taxon.genus.subfamily.name if @taxon.genus.subfamily
-      parts.join ' < '
+      @taxon.genus.name.name_html.html_safe
     when Subspecies
-      parts = ['Subspecies']
-      parts << @taxon.species.name.epithet
-      parts << @taxon.genus.name
-      parts << @taxon.genus.tribe.name if @taxon.genus.tribe
-      parts << @taxon.genus.subfamily.name if @taxon.genus.subfamily
-      parts.join ' < '
+      @taxon.species.name.name_html.html_safe
     else
       raise
     end

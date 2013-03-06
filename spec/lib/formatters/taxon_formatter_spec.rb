@@ -208,48 +208,48 @@ describe Formatters::TaxonFormatter do
     end
   end
 
-  describe "Ancestry string" do
+  describe "Parentage string" do
     it "should handle the family" do
-      @formatter.new(create_family).ancestry_string.should == 'Family'
+      @formatter.new(create_family).parentage_string.should == 'Family'
     end
     it "should handle a subfamily" do
       subfamily = create_subfamily
-      @formatter.new(subfamily).ancestry_string.should == 'Subfamily'
+      @formatter.new(subfamily).parentage_string.should == 'Subfamily'
     end
     it "should handle a tribe" do
       subfamily = create_subfamily
       tribe = create_tribe subfamily: subfamily
-      @formatter.new(tribe).ancestry_string.should == "Tribe < #{subfamily.name}"
+      @formatter.new(tribe).parentage_string.should == 'Tribe'
     end
     it "should handle a genus" do
       subfamily = create_subfamily
       tribe = create_tribe subfamily: subfamily
       genus = create_genus tribe: tribe, subfamily: subfamily
-      @formatter.new(genus).ancestry_string.should == "Genus < #{tribe.name} < #{subfamily.name}"
+      @formatter.new(genus).parentage_string.should == 'Genus'
     end
     it "should handle a genus without a tribe" do
       subfamily = create_subfamily
       genus = create_genus subfamily: subfamily, tribe: nil
-      @formatter.new(genus).ancestry_string.should == "Genus < #{subfamily.name}"
+      @formatter.new(genus).parentage_string.should == 'Genus'
     end
     it "should handle a genus without a subfamily" do
       subfamily = create_subfamily
       genus = create_genus subfamily: nil, tribe: nil
-      @formatter.new(genus).ancestry_string.should == "Genus < (no subfamily)"
+      @formatter.new(genus).parentage_string.should == 'Genus'
     end
     it "should handle a subgenus" do
       subfamily = create_subfamily
       tribe = create_tribe subfamily: subfamily
       genus = create_genus tribe: tribe, subfamily: subfamily
       subgenus = create_subgenus genus: genus
-      @formatter.new(subgenus).ancestry_string.should == "Subgenus < #{genus.name} < #{tribe.name} < #{subfamily.name}"
+      @formatter.new(subgenus).parentage_string.should == genus.name.name_html
     end
     it "should handle a species" do
       subfamily = create_subfamily
       tribe = create_tribe subfamily: subfamily
       genus = create_genus tribe: tribe, subfamily: subfamily
       species = create_species genus: genus
-      @formatter.new(species).ancestry_string.should == "Species < #{genus.name} < #{tribe.name} < #{subfamily.name}"
+      @formatter.new(species).parentage_string.should == genus.name.name_html
     end
     it "should handle a subspecies" do
       subfamily = create_subfamily
@@ -257,7 +257,7 @@ describe Formatters::TaxonFormatter do
       genus = create_genus tribe: tribe, subfamily: subfamily
       species = create_species genus: genus
       subspecies = create_subspecies species: species, genus: genus
-      @formatter.new(subspecies).ancestry_string.should == "Subspecies < #{species.name.epithet} < #{genus.name} < #{tribe.name} < #{subfamily.name}"
+      @formatter.new(subspecies).parentage_string.should == species.name.name_html
     end
   end
 
