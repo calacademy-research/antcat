@@ -19,10 +19,10 @@
       %table.fields.ui-dialog-content.ui-widget-content.ui-corner-all
         %tr
           = taxon_form.fields_for :name do |name_form|
-            %td.label= name_form.label :epithet
+            %td.label= name_form.label :epithet, 'Name'
             %td
+              %span.parentage= Formatters::TaxonFormatter.new(@taxon).parentage_string
               %span.epithet= name_form.text_field :epithet
-              %span.ancestry= Formatters::TaxonFormatter.new(@taxon).ancestry_string
 
         %tr
           %td.label= taxon_form.label :status
