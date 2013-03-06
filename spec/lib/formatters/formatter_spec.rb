@@ -76,6 +76,10 @@ describe Formatters::Formatter do
         @formatter.link('Atta', 'www.antcat.org/1', title: '1').should ==
           %{<a href="www.antcat.org/1" target="_blank" title="1">Atta</a>}
       end
+      it "should escape the name" do
+        @formatter.link('<script>', 'www.antcat.org/1', title: '1').should ==
+          %{<a href="www.antcat.org/1" target="_blank" title="1">&lt;script&gt;</a>}
+      end
     end
     describe "link_to_external_site" do
       it "should make a link with the right class" do
