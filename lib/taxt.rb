@@ -1,4 +1,5 @@
 module Taxt
+  # These values are duplicated in taxt_editor.coffee
   REFERENCE_TAG_TYPE = 1
   TAXON_TAG_TYPE     = 2
   NAME_TAG_TYPE      = 3

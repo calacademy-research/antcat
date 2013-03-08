@@ -2,6 +2,7 @@ $.fn.taxt_editor = (options = {}) ->
   return this.each -> new AntCat.TaxtEditor $(this), options
 
 class AntCat.TaxtEditor
+  # These values are duplicated in taxt.rb
   REFERENCE_TAG_TYPE = 1
   TAXON_TAG_TYPE     = 2
   NAME_TAG_TYPE      = 3
