@@ -105,9 +105,9 @@ class CatalogController < ApplicationController
       @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
       setup_genus_parent_columns
       unless session[:show_subgenera]
-        @specieses = @genus.species_group_descendants.ordered_by_name
+        @specieses = @genus.species_group_descendants
       else
-        @subgenera = @genus.subgenera.ordered_by_name.ordered_by_name
+        @subgenera = @genus.subgenera.ordered_by_name
       end
 
     when Subgenus
@@ -117,21 +117,21 @@ class CatalogController < ApplicationController
       session[:show_subgenera] = true
       @subgenera = @genus.subgenera.ordered_by_name
       setup_genus_parent_columns
-      @specieses = @subgenus.species_group_descendants.ordered_by_name
+      @specieses = @subgenus.species_group_descendants
 
     when Species
       @species = @taxon
       @genus = @species.genus
       @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
       setup_genus_parent_columns
-      @specieses = @genus.species_group_descendants.ordered_by_name
+      @specieses = @genus.species_group_descendants
 
     when Subspecies
       @species = @taxon
       @genus = @species.genus
       @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
       setup_genus_parent_columns
-      @specieses = @genus.species_group_descendants.ordered_by_name
+      @specieses = @genus.species_group_descendants
 
     end
   end

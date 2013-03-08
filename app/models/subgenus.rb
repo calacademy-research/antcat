@@ -5,7 +5,7 @@ class Subgenus < GenusGroupTaxon
   has_many :species
 
   def species_group_descendants
-    Taxon.where(subgenus_id: id).where('taxa.type != ?', 'subgenus').joins(:name).order('names.epithet')
+    Taxon.where(subgenus_id: id).where('taxa.type != ?', 'subgenus').includes(:name).order('names.epithet')
   end
 
   def self.parent_attributes data, attributes
