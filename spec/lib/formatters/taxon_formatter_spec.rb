@@ -242,14 +242,14 @@ describe Formatters::TaxonFormatter do
       tribe = create_tribe subfamily: subfamily
       genus = create_genus tribe: tribe, subfamily: subfamily
       subgenus = create_subgenus genus: genus
-      @formatter.new(subgenus).parentage_string.should == genus.name.name_html
+      @formatter.new(subgenus).parentage_string.should == genus.name.name
     end
     it "should handle a species" do
       subfamily = create_subfamily
       tribe = create_tribe subfamily: subfamily
       genus = create_genus tribe: tribe, subfamily: subfamily
       species = create_species genus: genus
-      @formatter.new(species).parentage_string.should == genus.name.name_html
+      @formatter.new(species).parentage_string.should == genus.name.name
     end
     it "should handle a subspecies" do
       subfamily = create_subfamily
@@ -257,7 +257,7 @@ describe Formatters::TaxonFormatter do
       genus = create_genus tribe: tribe, subfamily: subfamily
       species = create_species genus: genus
       subspecies = create_subspecies species: species, genus: genus
-      @formatter.new(subspecies).parentage_string.should == species.name.name_html
+      @formatter.new(subspecies).parentage_string.should == species.name.name
     end
   end
 
