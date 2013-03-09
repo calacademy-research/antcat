@@ -21,11 +21,11 @@ class Taxon < ActiveRecord::Base
   scope :ordered_by_name, with_names.order('names.name').includes(:name)
 
   def self.find_by_name name
-    where(['name_cache = ?', name]).first
+    where(name_cache: name).first
   end
 
   def self.find_all_by_name name
-    where ['name_cache = ?', name]
+    where name_cache: name
   end
 
   def self.find_by_epithet epithet
