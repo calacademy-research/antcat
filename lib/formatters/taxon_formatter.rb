@@ -363,11 +363,11 @@ class Formatters::TaxonFormatter
     when Genus
        'Genus'
     when Subgenus
-      @taxon.genus.name.name_html.html_safe
+      @taxon.genus.name.name
     when Species
-      @taxon.genus.name.name_html.html_safe
+      @taxon.genus.name.name
     when Subspecies
-      @taxon.species.name.name_html.html_safe
+      @taxon.species.name.name
     else
       raise
     end
