@@ -17,7 +17,7 @@ gem 'rack'
 gem 'rails'
 gem 'rake'
 gem 'sass'
-gem 'sunspot_rails',    '~> 1'
+gem 'sunspot_rails'
 gem 'paperclip'
 gem 'will_paginate'
 gem 'xml-simple'
@@ -29,7 +29,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'ruby-debug19'
   gem 'spork'
-  gem 'sunspot_solr',   '~> 1'
+  gem 'sunspot_solr'
 end
 
 group :development do
