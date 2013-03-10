@@ -36,9 +36,9 @@ class AntCat.TaxtEditor
 
   # delay, otherwise the target of the click doesn't get an event
   show_tag_buttons: =>
-    setTimeout (=> @tag_buttons.show()), 200
+    setTimeout (=> @tag_buttons.show()), 50
   hide_tag_buttons: =>
-    setTimeout (=> @tag_buttons.hide()), 200
+    setTimeout (=> @tag_buttons.hide()), 50
 
   initialize_tag_buttons: =>
     @tag_buttons.show() if AntCat.testing
