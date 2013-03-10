@@ -11,7 +11,7 @@
   - if taxon.history_items.present?
     .history
       - for history_item in taxon.history_items do
-        = render 'catalog/history_item/panel', item: history_item
+        = render 'history_item/panel', item: history_item
 
   = formatter.child_lists
   = formatter.references
