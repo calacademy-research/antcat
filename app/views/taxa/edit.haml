@@ -109,11 +109,7 @@
           %td#type_taxt_editor.taxt_editor
             = render 'taxt_editors/show', name: 'taxon[type_taxt]', value: Taxt.to_editable(@taxon.type_taxt)
 
-    -#.history_section.section
-      -#.section_header.ui-widget-header.ui-corner-top
-        -#History
-      -#.ui-dialog-content.ui-widget-content.ui-corner-bottom
-        -#History items
+    = render 'history_section', taxon: @taxon
 
     -#.references_section.section
       -#.section_header.ui-widget-header.ui-corner-top
