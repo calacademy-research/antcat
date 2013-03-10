@@ -41,6 +41,7 @@ class AntCat.TaxtEditor
     setTimeout (=> @tag_buttons.hide()), 200
 
   initialize_tag_buttons: =>
+    @tag_buttons.show() if AntCat.testing
     @tag_buttons
       .find(':button, :submit').unbutton().button().end()
       .find('.taxon_button')
