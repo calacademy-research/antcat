@@ -156,57 +156,89 @@ describe Taxt do
     end
 
     describe "Reference" do
-      it "should format a ref" do
-        reference = FactoryGirl.create :article_reference
-        Reference.should_receive(:find).with(reference.id.to_s).and_return reference
-        key_stub = stub
-        reference.should_receive(:key).and_return key_stub
-        key_stub.should_receive(:to_link).and_return('foo')
-        Taxt.to_string("{ref #{reference.id}}", nil).should == 'foo'
+      describe "Linked" do
+        it "should format a ref" do
+          reference = FactoryGirl.create :article_reference
+          Reference.should_receive(:find).with(reference.id.to_s).and_return reference
+          key_stub = stub
+          reference.should_receive(:key).and_return key_stub
+          key_stub.should_receive(:to_link).and_return('foo')
+          Taxt.to_string("{ref #{reference.id}}", nil).should == 'foo'
+        end
+        it "should not freak if the ref is malformed" do
+          Taxt.to_string("{ref sdf}", nil).should == '{ref sdf}'
+        end
+        it "should not freak if the ref points to a reference that doesn't exist" do
+          Taxt.to_string("{ref 12345}", nil).should == '{ref 12345}'
+        end
+        it "should handle a MissingReference" do
+          reference = FactoryGirl.create :missing_reference, :citation => 'Latreille, 1809'
+          Taxt.to_string("{ref #{reference.id}}", nil).should == 'Latreille, 1809'
+        end
+        #it "should escape input" do
+          #reference = FactoryGirl.create :missing_reference, citation: 'Latreille, 1809 <script>'
+          #Taxt.to_string("{ref #{reference.id}}", nil).should == 'Latreille, 1809 &lt;script&gt;'
+        #end
       end
-      it "should not freak if the ref is malformed" do
-        Taxt.to_string("{ref sdf}", nil).should == '{ref sdf}'
+      describe "Display" do
+        it "should format a ref" do
+          reference = FactoryGirl.create :article_reference
+          Reference.should_receive(:find).with(reference.id.to_s).and_return reference
+          key_stub = stub
+          reference.should_receive(:key).and_return key_stub
+          key_stub.should_receive(:to_s).and_return('foo')
+          Taxt.to_display_string("{ref #{reference.id}}", nil).should == 'foo'
+        end
       end
-      it "should not freak if the ref points to a reference that doesn't exist" do
-        Taxt.to_string("{ref 12345}", nil).should == '{ref 12345}'
-      end
-      it "should handle a MissingReference" do
-        reference = FactoryGirl.create :missing_reference, :citation => 'Latreille, 1809'
-        Taxt.to_string("{ref #{reference.id}}", nil).should == 'Latreille, 1809'
-      end
-      #it "should escape input" do
-        #reference = FactoryGirl.create :missing_reference, citation: 'Latreille, 1809 <script>'
-        #Taxt.to_string("{ref #{reference.id}}", nil).should == 'Latreille, 1809 &lt;script&gt;'
-      #end
     end
 
     describe "Name" do
-      it "should return the HTML version of the name" do
-        name = FactoryGirl.create :subspecies_name, name_html: '<i>Atta major minor</i>'
-        Taxt.to_string("{nam #{name.id}}").should == '<i>Atta major minor</i>'
+      describe "Links" do
+        it "should return the HTML version of the name" do
+          name = FactoryGirl.create :subspecies_name, name_html: '<i>Atta major minor</i>'
+          Taxt.to_string("{nam #{name.id}}").should == '<i>Atta major minor</i>'
+        end
+        it "should not freak if the name can't be found" do
+          Taxt.to_string("{nam 12345}").should == '{nam 12345}'
+        end
       end
-      it "should not freak if the name can't be found" do
-        Taxt.to_string("{nam 12345}").should == '{nam 12345}'
+      describe "Display" do
+        it "should return the HTML version of the name" do
+          name = FactoryGirl.create :subspecies_name, name_html: '<i>Atta major minor</i>'
+          Taxt.to_display_string("{nam #{name.id}}").should == '<i>Atta major minor</i>'
+        end
       end
     end
 
     describe "Taxon" do
-      it "should use the HTML version of the taxon's name" do
-        genus = create_genus name: FactoryGirl.create(:genus_name, name_html: '<i>Atta</i>')
-        Taxt.to_string("{tax #{genus.id}}").should == %{<a href="/catalog/#{genus.id}"><i>Atta</i></a>}
+      describe "Linked" do
+        it "should use the HTML version of the taxon's name" do
+          genus = create_genus name: FactoryGirl.create(:genus_name, name_html: '<i>Atta</i>')
+          Taxt.to_string("{tax #{genus.id}}").should == %{<a href="/catalog/#{genus.id}"><i>Atta</i></a>}
+        end
+        it "should be able to use a different link formatter" do
+          genus = create_genus name: FactoryGirl.create(:genus_name, name_html: '<i>Atta</i>')
+          formatter = mock
+          formatter.should_receive :link_to_taxon
+          Taxt.to_string("{tax #{genus.id}}", nil, formatter: formatter)
+        end
+        it "should include the fossil symbol if applicable" do
+          genus = create_genus name: FactoryGirl.create(:genus_name, name_html: '<i>Atta</i>'), fossil: true
+          Taxt.to_string("{tax #{genus.id}}").should == %{<a href="/catalog/#{genus.id}"><i>&dagger;</i><i>Atta</i></a>}
+        end
+        it "should not freak if the taxon can't be found" do
+          Taxt.to_string("{tax 12345}").should == '{tax 12345}'
+        end
+        it "should use the HTML version of the taxon's name" do
+          genus = create_genus name: FactoryGirl.create(:genus_name, name_html: '<i>Atta</i>')
+          Taxt.to_string("{tax #{genus.id}}").should == %{<a href="/catalog/#{genus.id}"><i>Atta</i></a>}
+        end
       end
-      it "should be able to use a different link formatter" do
-        genus = create_genus name: FactoryGirl.create(:genus_name, name_html: '<i>Atta</i>')
-        formatter = mock
-        formatter.should_receive :link_to_taxon
-        Taxt.to_string("{tax #{genus.id}}", nil, formatter: formatter)
-      end
-      it "should include the fossil symbol if applicable" do
-        genus = create_genus name: FactoryGirl.create(:genus_name, name_html: '<i>Atta</i>'), fossil: true
-        Taxt.to_string("{tax #{genus.id}}").should == %{<a href="/catalog/#{genus.id}"><i>&dagger;</i><i>Atta</i></a>}
-      end
-      it "should not freak if the taxon can't be found" do
-        Taxt.to_string("{tax 12345}").should == '{tax 12345}'
+      describe "Display" do
+        it "should use the HTML version of the taxon's name" do
+          genus = create_genus name: FactoryGirl.create(:genus_name, name_html: '<i>Atta</i>')
+          Taxt.to_display_string("{tax #{genus.id}}").should == %{<i>Atta</i>}
+        end
       end
     end
 

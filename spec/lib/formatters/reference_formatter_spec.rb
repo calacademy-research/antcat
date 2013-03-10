@@ -224,36 +224,34 @@ describe Formatters::ReferenceFormatter do
   end
 
   describe "inline_citation" do
-    it "nonmissing references should defer to the key" do
-      key = mock
-      reference = FactoryGirl.create :article_reference
-      reference.should_receive(:key).and_return key
-      key.should_receive(:to_link)
+    describe "with links" do
+      it "nonmissing references should defer to the key" do
+        key = mock
+        reference = FactoryGirl.create :article_reference
+        reference.should_receive(:key).and_return key
+        key.should_receive(:to_link)
 
-      @formatter.format_inline_citation reference
+        @formatter.format_inline_citation reference
+      end
+      it "should just output the citation for a MissingReference" do
+        @formatter.format_inline_citation(FactoryGirl.create(:missing_reference, :citation => 'foo')).should == 'foo'
+      end
     end
-    it "should just output the citation for a MissingReference" do
-      @formatter.format_inline_citation(FactoryGirl.create(:missing_reference, :citation => 'foo')).should == 'foo'
+    describe "without links" do
+      it "nonmissing references should defer to the key" do
+        key = mock
+        reference = FactoryGirl.create :article_reference
+        reference.should_receive(:key).and_return key
+        key.should_receive(:to_s)
+
+        @formatter.format_inline_citation_without_links reference
+      end
     end
   end
 
   describe "formatting a timestamp" do
     it "should use a short format" do
       @formatter.format_timestamp(Time.parse('2001-1-2')).should == '2001-01-02'
-    end
-  end
-
-  describe "inline_citation" do
-    it "nonmissing references should defer to the key" do
-      key = mock
-      reference = FactoryGirl.create :article_reference
-      reference.should_receive(:key).and_return key
-      key.should_receive(:to_link)
-
-      @formatter.format_inline_citation reference
-    end
-    it "should just output the citation for a MissingReference" do
-      @formatter.format_inline_citation(FactoryGirl.create(:missing_reference, :citation => 'foo')).should == 'foo'
     end
   end
 
