@@ -50,7 +50,7 @@ When /I click the type name field/ do
 end
 
 Then /^the history should be "(.*)"$/ do |history|
-  page.find('div.display').text.should =~ /#{history}\.?/
+  page.find('.history_item:first div.display').text.should =~ /#{history}\.?/
 end
 
 When /^I edit the history item to "([^"]*)"$/ do |history|
