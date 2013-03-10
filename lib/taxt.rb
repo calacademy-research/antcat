@@ -14,9 +14,19 @@ module Taxt
     decode taxt, user, options
   end
 
-  def self.to_sentence taxt, user
-    string = decode taxt, user
+  def self.to_display_string taxt, user = nil, options = {}
+    options[:display] = true
+    to_string taxt, user, options
+  end
+
+  def self.to_sentence taxt, user, options = {}
+    string = decode taxt, user, options
     Formatters::Formatter.add_period_if_necessary string
+  end
+
+  def self.to_display_sentence taxt, user, options = {}
+    options[:display] = true
+    to_sentence taxt, user, options
   end
 
   ################################
@@ -111,7 +121,11 @@ module Taxt
   end
 
   def self.decode_reference whole_match, reference_id_match, user, options
-    Formatters::ReferenceFormatter.format_inline_citation(Reference.find(reference_id_match), user, options) rescue whole_match
+    if options[:display]
+      Formatters::ReferenceFormatter.format_inline_citation_without_links(Reference.find(reference_id_match), user, options) #rescue whole_match
+    else
+      Formatters::ReferenceFormatter.format_inline_citation(Reference.find(reference_id_match), user, options) rescue whole_match
+    end
   end
 
   def self.decode_name whole_match, name_id_match
@@ -119,8 +133,12 @@ module Taxt
   end
 
   def self.decode_taxon whole_match, taxon_id_match, options
-    taxon = Taxon.find taxon_id_match
-    (options[:formatter] || Formatters::TaxonFormatter).link_to_taxon taxon
+    if options[:display]
+      Taxon.find(taxon_id_match).name.to_html
+    else
+      taxon = Taxon.find taxon_id_match
+      (options[:formatter] || Formatters::TaxonFormatter).link_to_taxon taxon
+    end
   rescue
     whole_match
   end

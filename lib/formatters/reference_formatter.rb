@@ -12,6 +12,10 @@ class Formatters::ReferenceFormatter
     make_formatter(reference).format_inline_citation user, options
   end
 
+  def self.format_inline_citation_without_links reference, user = nil, options = {}
+    make_formatter(reference).format_inline_citation_without_links user, options
+  end
+
   def self.italicize string
     return unless string
     raise "Can't italicize an unsafe string" unless string.html_safe?
@@ -53,6 +57,10 @@ class Formatters::ReferenceFormatter
 
   def format_inline_citation user, options = {}
     @reference.key.to_link user, options
+  end
+
+  def format_inline_citation_without_links user, options = {}
+    @reference.key.to_s
   end
 
   private
