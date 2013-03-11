@@ -1,7 +1,7 @@
 class AntCat.HistoryItemPanel extends AntCat.Panel
   constructor: (@element, @options) ->
-    @options.click_on_icon = true
     @options.click_on_display = true
+    @options.highlight = true
     super
   create_form: ($element, options) -> new AntCat.HistoryItemForm $element, options
   initialize: ($element) =>

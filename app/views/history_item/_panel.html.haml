@@ -4,10 +4,6 @@
 %div{class: css_class, 'data-id' => item.id}
   %table
     %tr
-      %td.icons
-        - if user_can_edit_catalog?
-          %a.icon.edit_icon{title: 'edit', href: '#'}
-            = image_tag 'edit_off.png', alt: 'edit'
       %td.history_item_body
         = render 'history_item/display', item: item
         - if user_can_edit_catalog?
