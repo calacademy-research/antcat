@@ -7,19 +7,23 @@ class AntCat.Panel
     @setup_edit()
 
   setup_edit: =>
-    $edit_icon = @element.find '.edit_icon'
     if @options.click_on_display
       @element.find('.display').click @edit
-    else
+    if @options.click_on_icon
+      $edit_icon = @element.find '.edit_icon'
+      AntCat.log 'Panel setup_edit: no $edit_icon' unless $edit_icon && $edit_icon.size() >= 1
+      $edit_icon.click @edit
       @element
-        .mouseenter(=> $edit_icon.show() unless @is_editing())
-        .mouseleave(=> $edit_icon.hide())
-      $edit_icon.click(@edit)
+        .mouseenter(@show_edit_icon)
+        .mouseleave(@hide_edit_icon)
 
   edit: =>
     @save_panel()
     @show_form()
     false
+
+  show_edit_icon: => @element.find('.edit_icon').show() unless @is_editing()
+  hide_edit_icon: => @element.find('.edit_icon').hide()
 
   on_form_open: =>
     @options.parent_form.disable_buttons() if @options.parent_form
@@ -70,4 +74,4 @@ class AntCat.Panel
     @form().close()
 
   is_editing: =>
-    @element.find_topmost('div.edit').is ':visible'
+    @element.find('div.edit').is ':visible'
