@@ -2,7 +2,8 @@ $.fn.reference_panel = (options = {}) ->
   this.each -> new AntCat.ReferencePanel $(this), options
 
 class AntCat.ReferencePanel extends AntCat.Panel
-  constructor: ->
+  constructor: (@element, @options = {}) ->
+    @options.click_on_icon = true
     super
     @edit() if @options.edit
 
