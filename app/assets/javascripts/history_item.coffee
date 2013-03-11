@@ -21,6 +21,6 @@ $.fn.history_item_panel = (options = {}) ->
   this.each -> new AntCat.HistoryItemPanel $(this), options
 
 class AntCat.HistoryItemForm extends AntCat.NestedForm
-  initialize: ($element) ->
+  constructor: (@element, @options = {}) ->
     super
     @element.find('.taxt_editor').taxt_editor()
