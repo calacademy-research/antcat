@@ -1,4 +1,5 @@
 -# Locals: taxon
+
 - height = session[:taxon_window_height]
 .antcat_taxon{'data-taxon-window-height' => height ? height : ""}
 
@@ -11,7 +12,7 @@
   - if taxon.history_items.present?
     .history
       - for history_item in taxon.history_items do
-        = render 'history_item/panel', item: history_item
+        = Taxt.to_sentence history_item.taxt, current_user
 
   = formatter.child_lists
   = formatter.references
