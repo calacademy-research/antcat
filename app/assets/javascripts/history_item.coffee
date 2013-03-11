@@ -6,11 +6,11 @@ class AntCat.HistoryItemPanel extends AntCat.Panel
     display_height = @element.find('div.display').height()
     @element.find('.taxt_edit_box').height display_height unless display_height is 0
   on_form_open: =>
-    @options.on_form_open()
+    @options.on_form_open() if @options.on_form_open
     @element.find('textarea').focus()
     super
   on_form_close: =>
-    @options.on_form_close()
+    @options.on_form_close() if @options.on_form_close
     super
 
 $.fn.history_item_panel = (options = {}) ->
