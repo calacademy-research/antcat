@@ -16,6 +16,11 @@ class AntCat.Panel
       @element
         .mouseenter(@show_edit_icon)
         .mouseleave(@hide_edit_icon)
+    if @options.highlight
+      @element.find('.display').hover(
+        (event) => $(event.target).addClass('ui-selecting'),
+        (event) => $(event.target).removeClass('ui-selecting')
+      )
 
   edit: =>
     @save_panel()
