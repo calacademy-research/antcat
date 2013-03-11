@@ -7,9 +7,7 @@
     = render 'shared/errors_for', resource: item
 
     .taxt_editor
-      = text_area_tag :taxt_editor, Taxt.to_editable(item.taxt), rows: 1, class: 'taxt_edit_box'
-      = render 'reference_popups/show', references: nil, reference: nil
-      = render 'name_popups/show'
+      = render 'taxt_editors/show', name: 'foo', value: Taxt.to_editable(item.taxt)
 
     .buttons
       %button.submit.ui-priority-primary Save
