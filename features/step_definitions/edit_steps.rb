@@ -49,6 +49,10 @@ When /I click the type name field/ do
   find('#type_name_field .display_button').click
 end
 
+When /^I click the history item$/ do
+  find('.history_item:first div.display').click
+end
+
 Then /^the history should be "(.*)"$/ do |history|
   page.find('.history_item:first div.display').text.should =~ /#{history}\.?/
 end
