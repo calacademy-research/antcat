@@ -59,7 +59,7 @@ class AntCat.Panel
     @replace_panel @saved_content
 
   form: =>
-    @_form or= @create_form @element.find('.nested_form'),
+    @_form or= @create_form @element.find('.nested_form:visible'),
       on_open:              @on_form_open
       on_close:             @on_form_close
       on_response:          @on_form_response
