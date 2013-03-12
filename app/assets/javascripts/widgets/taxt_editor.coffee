@@ -14,10 +14,10 @@ class AntCat.TaxtEditor
     @control.addClass 'taxt_edit_box'
     @parent_buttons = $(@options.parent_buttons)
     if @options.parent_buttons
-      @parent_buttons = @element.closest('form').find $(@options.parent_buttons)
+      @parent_buttons = @element.closest('form:visible').find @options.parent_buttons
+      AntCat.log 'TaxtEditor ctor: no @parent_buttons' unless @parent_buttons.size() == 1
     else
       @parent_buttons = @element.siblings().find(':button')
-    AntCat.log 'TaxtEditor ctor: no @parent_buttons' unless @parent_buttons.size() == 1
     @tag_buttons = @element.find('.insert_tag_buttons')
     AntCat.log 'TaxtEditor ctor: no @tag_buttons' unless @tag_buttons.size() == 1
     @dashboard = new TaxtEditor.DebugDashboard @ if @options.show_debug_dashboard
