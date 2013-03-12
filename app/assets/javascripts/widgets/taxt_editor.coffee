@@ -93,18 +93,18 @@ class AntCat.TaxtEditor
 
   # opening and closing subdialogs
 
-  before_form_opens: =>
+  before_popup_opens: =>
     @replace_text_area_with_simulation()
     @parent_buttons.disable()
 
-  after_form_closes: =>
+  after_popup_closes: =>
     @parent_buttons.undisable()
     @replace_simulation_with_text_area()
     @show_tag_buttons()
     @control.focus()
 
   open_popup_for_new_tag: (type) =>
-    @before_form_opens()
+    @before_popup_opens()
     @hide_tag_buttons()
     if type == REFERENCE_TAG_TYPE
       @open_reference_popup()
@@ -114,15 +114,15 @@ class AntCat.TaxtEditor
   open_name_popup: (id, type) =>
     name_popup = @element.find '.antcat_name_popup'
     AntCat.log 'TaxtEditor open_name_popup: no name_popup' unless name_popup.size() == 1
-    new AntCat.NamePopup name_popup.parent(), id: id, type: type, on_success: @handle_name_popup_result, on_close: @after_form_closes
+    new AntCat.NamePopup name_popup.parent(), id: id, type: type, on_success: @handle_name_popup_result, on_close: @after_popup_closes
 
   open_reference_popup: (id) =>
     reference_popup = @element.find '.antcat_reference_popup'
     AntCat.log 'TaxtEditor open_reference_popup: no reference_popup' unless reference_popup.size() == 1
-    new AntCat.ReferencePopup reference_popup.parent(), id: id, on_ok: @handle_popup_result, on_close: @after_form_closes
+    new AntCat.ReferencePopup reference_popup.parent(), id: id, on_ok: @handle_popup_result, on_close: @after_popup_closes
 
   open_popup_for_existing_tag: =>
-    @before_form_opens()
+    @before_popup_opens()
     id = TaxtEditor.extract_id_from_editable_taxt @selection()
     type = TaxtEditor.extract_type_from_editable_taxt @selection()
     if type == REFERENCE_TAG_TYPE
@@ -159,7 +159,7 @@ class AntCat.TaxtEditor
       new_value = @value()[...@tag_start] + taxt + @value()[@tag_end...]
       @value new_value
 
-    @after_form_closes()
+    @after_popup_closes()
 
     if taxt
       @set_selection @tag_start, @tag_start + taxt.length - 1
