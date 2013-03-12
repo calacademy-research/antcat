@@ -66,6 +66,12 @@ Given /^I edit the history item to include that reference$/ do
   step %{I edit the history item to "{#{key}}"}
 end
 
+When /^I press that history item's "Insert Name" button$/ do
+  within '.history_item:first' do
+    click_button 'Insert Name'
+  end
+end
+
 Then /^I should see an error message about the unfound reference$/ do
   step %{I should see "The reference '{123}' could not be found. Was the ID changed?"}
 end
