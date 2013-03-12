@@ -36,7 +36,10 @@ class AntCat.NamePopup extends AntCat.NestedForm
     @initialize_buttons()
 
     @element.show()
-    @textbox.focus()
+    @focus_initial_control()
+
+  initial_control_to_focus: =>
+    @textbox
 
   form: =>
     AntCat.NestedForm.create_form_from @element.find '.nested_form'

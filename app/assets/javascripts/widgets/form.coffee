@@ -25,13 +25,19 @@ class AntCat.Form
 
   open: =>
     @element.show()
-    @focus_control()
+    @focus_initial_control()
     @options.on_open() if @options.on_open
 
-  focus_control: =>
-    $first_control = @element.find('input[type=text]:visible:first,textarea:visible:first')
-    AntCat.log 'focus_control: $first_control.size() != 1' unless $first_control.size() == 1
-    @element.find $first_control
+  focus_initial_control: =>
+    $control = @initial_control_to_focus()
+    if $control.size() == 1
+      $control.focus()
+    else
+      AntCat.log 'Form focus_initial_control: $control.size() != 1'
+      AntCat.log $control
+
+  initial_control_to_focus: =>
+    @element.find('input[type=text]:visible:first, textarea:visible:first').first()
 
   close: =>
     @element.hide() unless @options.field
