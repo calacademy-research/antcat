@@ -222,7 +222,6 @@ class AntCat.TaxtEditor
   last_value: => @control.data 'last_value', arguments...
   start:      => @control.getSelection().start
   end:        => @control.getSelection().end
-  focus:      => @control.focus()
 
   set_position:  (position)    => @control.setCaretPos position + 1
   set_selection: (left, right) => @control.setSelection left, right + 1
