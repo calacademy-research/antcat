@@ -268,13 +268,14 @@ class AntCat.ReferenceField extends AntCat.ReferenceFieldPanel
           $.getJSON "/authors/all", term: search_term, result_handler
         else
           result_handler []
-    # don't update the search textbox when the autocomplete item changes
-    focus: -> false
-    select: (event, data) ->
-      value_and_position = AntCat.ReferenceField.insert_author(@element.val(), @element.getSelection().start, data.item.value)
-      @element.val value_and_position.string
-      @element.setCaretPos value_and_position.position + 1
-      false
+      # don't update the search textbox when the autocomplete item changes
+      focus: -> false
+      select: (event, data) ->
+        $this = $(@)
+        value_and_position = AntCat.ReferenceField.insert_author($this.val(), $this.getSelection().start, data.item.value)
+        $this.val value_and_position.string
+        $this.setCaretPos value_and_position.position + 1
+        false
 
   disable_search_author_autocomplete: =>
     @textbox.autocomplete 'destroy'
