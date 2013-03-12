@@ -19,7 +19,7 @@ class AntCat.Panel
     if @options.highlight
       @element.find('.display').hover(
         (event) => $(event.target).addClass('ui-selecting'),
-        (event) => $(event.target).removeClass('ui-selecting')
+        (event) => $('.ui-selecting').removeClass('ui-selecting')
       )
 
   edit: =>
