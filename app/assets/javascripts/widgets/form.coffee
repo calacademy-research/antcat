@@ -24,8 +24,13 @@ class AntCat.Form
 
   open: =>
     @element.show()
-    @element.find('input[type=text]:visible:first').focus()
+    @focus_control()
     @options.on_open() if @options.on_open
+
+  focus_control: =>
+    $first_control = @element.find('input[type=text]:visible:first,textarea:visible:first')
+    AntCat.log 'focus_control: $first_control.size() != 1' unless $first_control.size() == 1
+    @element.find $first_control
 
   close: =>
     @element.hide() unless @options.field
