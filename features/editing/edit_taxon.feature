@@ -13,7 +13,7 @@ Feature: Editing a taxon
     Then I should be on the login page
     And I should see "Please log in before continuing"
 
-  Scenario: Editing a family
+  Scenario: Editing a family's name
     Given there is a family called "Formicidae"
     And I log in
     When I go to the edit page for "Formicidae"
@@ -48,32 +48,30 @@ Feature: Editing a taxon
     Then I should not see "This name is in use by another taxon"
     Then I should see "Calyptites" in the header
 
-  #Scenario: Changing taxt (regression)
-    #Given there is a genus called "Atta"
-    #And there is a genus called "Eciton"
-    #And I log in
-    #When I go to the page for "Atta"
-    #Then I should not see "Eciton"
-    #When I press "Edit"
-    #And I put the cursor in the headline notes edit box
-    #And I press "Insert Name"
-    #Then I should not be on the page for "Atta"
-    #And I fill in the name with "Eciton"
-    #And I press "OK"
-    #Then I should not be on the page for "Atta"
+  Scenario: Changing taxt
+    Given there is a genus called "Atta"
+    And there is a genus called "Eciton"
+    And I log in
+    When I go to the catalog page for "Atta"
+    Then I should not see "Eciton"
+    When I press "Edit"
+    And I put the cursor in the headline notes edit box
+    And I press "Insert Name"
+    Then I should not be on the catalog page for "Atta"
+    And I fill in the name with "Eciton"
+    And I press "OK"
+    Then I should not be on the catalog page for "Atta"
 
-  #@flickerer
-  #Scenario: Changing reference in taxt (regression)
-    #Given there is a genus called "Atta"
-    #And there is a genus called "Eciton"
-    #And I log in
-    #When I go to the page for "Atta"
-    #Then I should not see "Eciton"
-    #When I press "Edit"
-    #And I put the cursor in the headline notes edit box
-    #And I press "Insert Reference"
-    #And I press "OK"
-    #Then I should not be on the page for "Atta"
+  Scenario: Changing reference in taxt
+    Given there is a genus called "Atta"
+    And there is a genus called "Eciton"
+    And I log in
+    When I go to the catalog page for "Atta"
+    And I press "Edit"
+    And I put the cursor in the headline notes edit box
+    And I press "Insert Reference"
+    And I press "OK"
+    Then I should not be on the catalog page for "Atta"
 
   Scenario: Cancelling
     Given there is a genus called "Calyptites"
