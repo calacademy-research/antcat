@@ -55,12 +55,11 @@ Feature: Reference field
 
   Scenario: Adding a reference
     Given there are no references
-    When I go to the reference field test page
+    When I log in
+    And I go to the reference field test page
     And I click the reference field
-    # "Save" appears to be getting clicked, but
-    # the form stays up
     And I add a reference by Brian Fisher
-    #Then the authorship field should contain the reference by Fisher
+    Then the authorship field should contain the reference by Fisher
 
   Scenario: Cancelling
     When I go to the reference field test page
@@ -79,13 +78,14 @@ Feature: Reference field
     When I set the authors to "Ward, B.L.; Bolton, B."
     And I set the title to "Ant Title"
     And I save my changes to the current reference
-    And I wait for a bit
     Then I should not see the reference field edit form
     And I should see "Ward, B.L.; Bolton, B. 1995b. Ant Title"
 
-  #Scenario: Error when editing reference
-    #When I go to the reference picker test page, opened to the first reference
-    #And I edit the reference
-    #When I set the title to ""
-    #And I save my changes to the current reference
-    #And I should see "Title can't be blank"
+  Scenario: Error when editing reference
+    When I log in
+    And I go to the reference field test page, opened to the first reference
+    And I click the reference field
+    And I edit the reference
+    When I set the title to ""
+    And I save my changes to the current reference
+    And I should see "Title can't be blank"
