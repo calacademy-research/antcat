@@ -24,6 +24,7 @@ end
 When /^I save my changes to the current reference$/ do
   within first('.current') do
     step 'I press "Save"'
+    step 'I wait for a bit'
   end
 end
 
@@ -54,7 +55,8 @@ When /^I add a reference by Brian Fisher$/ do
     step %{I fill in "reference[series_volume_issue]" with "2"}
     step %{I fill in "article_pagination" with "1"}
     step %{I fill in "reference[citation_year]" with "1992"}
-    step %{I save my changes}
+    step %{I press "Save"}
+    step %{I wait for a bit}
   end
 end
 
