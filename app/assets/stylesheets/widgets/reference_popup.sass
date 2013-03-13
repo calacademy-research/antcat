@@ -2,7 +2,6 @@
 @import 'reference'
 @import 'ext/jquery.ui.selectmenu'
 
-$expand_collapse_width: 16px
 $antcat_reference_popup_gutter_size: 20px
 
 $dark_green: desaturate(#006400, 50%) // darkgreen
@@ -13,11 +12,6 @@ $pale_green: desaturate(#98FB98, 50%) // palegreen
 
   margin-top: 4px
   margin-bottom: 4px
-
-  .expand_collapse_icon
-    width: $expand_collapse_width !important
-    img
-      display: none
 
   .icons
     width: $antcat_reference_popup_gutter_size !important
@@ -32,8 +26,6 @@ $pale_green: desaturate(#98FB98, 50%) // palegreen
   .current
     background-color: $color_current_reference_being_edited_by_reference_field_background !important
     width: 100%
-    .expand_collapse_icon img
-      display: inline
 
   .expansion
     display: none
