@@ -67,3 +67,7 @@ $.fn.unbutton = ->
     button_text = $(@).find '.ui-button-text'
     return if button_text.length is 0
     $(@).text button_text.text()
+
+$.fn.select = -> @.addClass 'ui-selecting'
+
+AntCat.deselect = -> $('.ui-selecting').removeClass('ui-selecting')

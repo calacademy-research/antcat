@@ -18,8 +18,8 @@ class AntCat.Panel
         .mouseleave(@hide_edit_icon)
     if @options.highlight
       @element.find('.display').hover(
-        (event) => $(event.target).addClass('ui-selecting'),
-        (event) => $('.ui-selecting').removeClass('ui-selecting')
+        (event) => $(event.target).select(),
+        (event) => AntCat.deselect()
       )
 
   edit: =>

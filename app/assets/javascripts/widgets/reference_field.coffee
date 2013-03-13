@@ -179,15 +179,16 @@ class AntCat.ReferenceField extends AntCat.ReferenceFieldPanel
     @element.find('.search_results div.display').hover(@hover, @unhover)
 
   hover: (event) =>
-    @search_results().find('.display').removeClass('ui-selecting')
+    AntCat.deselect()
     $target = $(event.target)
     $target = $target.closest('.display') unless $target.hasClass('display')
-    $target.addClass('ui-selecting')
+    $target.select()
   unhover: (event) =>
-    $(event.target).removeClass('ui-selecting')
+    AntCat.deselect()
 
   handle_click: (event) =>
-    @element.find('div.display').removeClass('ui-selected').removeClass('ui-selecting')
+    @element.find('div.display').removeClass('ui-selected')
+    AntCat.deselect()
     $(event.target).addClass('ui-selected')
     @handle_new_selection()
 
