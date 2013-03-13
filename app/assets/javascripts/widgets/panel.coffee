@@ -4,6 +4,7 @@ class AntCat.Panel
 
   initialize: (@element) =>
     AntCat.log 'Panel initialize: no @element' unless @element && @element.size() == 1
+    @_form = null
     @setup_edit()
 
   setup_edit: =>
@@ -49,7 +50,6 @@ class AntCat.Panel
   replace_panel: (content) =>
     $content = $(content)
     @element.replaceWith $content
-    @_form = null
     @initialize $content
 
   save_panel: =>
