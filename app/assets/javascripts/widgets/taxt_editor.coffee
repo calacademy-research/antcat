@@ -34,22 +34,19 @@ class AntCat.TaxtEditor
       @hide_tag_buttons()
       false
 
-  # delay, otherwise the target of the click doesn't get an event
-  show_tag_buttons: =>
-    setTimeout (=> @tag_buttons.show()), 50
-  hide_tag_buttons: =>
-    setTimeout (=> @tag_buttons.hide()), 50
+  show_tag_buttons: => @tag_buttons.show()
+  hide_tag_buttons: => @tag_buttons.hide()
 
   initialize_tag_buttons: =>
     @tag_buttons.show() if AntCat.testing
     @tag_buttons
       .find(':button, :submit').unbutton().button().end()
       .find('.taxon_button')
-        .off('click')
-        .on('click', @insert_taxon).end()
+        .off('mousedown')
+        .on('mousedown', @insert_taxon).end()
       .find('.reference_button')
-        .off('click')
-        .on('click', @insert_reference).end()
+        .off('mousedown')
+        .on('mousedown', @insert_reference).end()
 
   insert_taxon: =>
     @insert_tag TAXON_TAG_TYPE
