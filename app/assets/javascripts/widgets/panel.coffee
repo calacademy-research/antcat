@@ -11,6 +11,14 @@ class AntCat.Panel
     AntCat.log 'Panel initialize: no @element' unless @element && @element.size() == 1
     @_form = null
     @setup_edit()
+    @setup_sections()
+
+  setup_sections: =>
+    @edit_section = @element.find @options.edit_selector || '> .edit'
+    AntCat.log 'Panel setup_sections: no @edit_section' unless @edit_section.size() == 1
+
+    @display_section = @element.find @options.display_selector || '> .display'
+    AntCat.log 'Panel setup_sections: no @display_section' unless @display_section.size() == 1
 
   setup_edit: =>
     if @options.click_on_display
