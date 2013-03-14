@@ -1,6 +1,7 @@
-class AntCat.ReferenceFieldPanel
-  constructor: ($element, @options = {}) ->
-    @initialize $element
+# Options: edit_selector, display_selector
+# Panel options: click_on_display, click_on_icon, highlight, parent_form
+
+class AntCat.ReferenceFieldPanel extends AntCat.Panel
 
   initialize: (@element) =>
     AntCat.log 'ReferenceFieldPanel initialize: no @element' unless @element && @element.size() == 1
@@ -27,34 +28,6 @@ class AntCat.ReferenceFieldPanel
     @save_panel()
     @show_form()
     false
-
-  on_form_open: =>
-    @options.parent_form.disable_buttons() if @options.parent_form
-
-  on_form_close: =>
-    @options.parent_form.enable_buttons() if @options.parent_form
-
-  on_form_response: (data) =>
-    @replace_panel data.content
-    if data.success then @hide_form() else @show_form()
-
-  on_form_done: (data) =>
-
-  on_form_cancel: =>
-    @restore_panel()
-    @hide_form()
-
-  replace_panel: (content) =>
-    $content = $(content)
-    @element.replaceWith $content
-    @_form = null
-    @initialize $content
-
-  save_panel: =>
-    @saved_content = @element.get(0).outerHTML
-
-  restore_panel: =>
-    @replace_panel @saved_content
 
   show_form: =>
     @display.hide()
