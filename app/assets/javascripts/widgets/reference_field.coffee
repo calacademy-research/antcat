@@ -1,4 +1,4 @@
-class AntCat.ReferenceField extends AntCat.ReferenceFieldPanel
+class AntCat.ReferenceField extends AntCat.FieldPanel
 
   constructor: (@parent_element, @options = {}) ->
     @options.click_on_display = true
