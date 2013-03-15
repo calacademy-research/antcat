@@ -24,15 +24,15 @@ class AntCat.ReferenceField extends AntCat.FieldPanel
 
     @element.addClass 'modal' unless @options.field
 
-    @edit = @element.find '> .edit'
-    AntCat.log 'ReferenceField initialize: @edit.size() != 1' unless @edit.size() == 1
-    @expansion = @edit.find '> .expansion'
+    @edit_section = @element.find '> .edit'
+    AntCat.log 'ReferenceField initialize: @edit_section.size() != 1' unless @edit_section.size() == 1
+    @expansion = @edit_section.find '> .expansion'
     AntCat.log 'ReferenceField initialize: @expansion.size() != 1' unless @expansion.size() == 1
     @display = @element.find '> .display'
     AntCat.log 'ReferenceField initialize: @display.size() != 1' unless @display.size() == 1
     @template = @element.find '> .template'
     AntCat.log 'ReferenceField initialize: @template.size() != 1' unless @template.size() == 1
-    @current = @edit.find '> .current'
+    @current = @edit_section.find '> .current'
     AntCat.log 'ReferenceField initialize: @current.size() != 1' unless @current.size() == 1
     @search_selector = @expansion.find '.search_selector'
     AntCat.log 'ReferenceField initialize: @search_selector.size() != 1' unless @search_selector.size() == 1
