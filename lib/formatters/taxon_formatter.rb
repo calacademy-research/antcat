@@ -161,7 +161,7 @@ class Formatters::TaxonFormatter
   def headline_authorship authorship
     return '' unless authorship
     string = reference_link(authorship.reference) + ": #{authorship.pages}"
-    string << " (#{authorship.forms})" if authorship.forms
+    string << " (#{authorship.forms})" if authorship.forms.present?
     string << ' ' << detaxt(authorship.notes_taxt) if authorship.notes_taxt
     content_tag :span, string, class: :authorship
   end
