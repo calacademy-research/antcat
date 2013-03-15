@@ -41,13 +41,13 @@ Feature: Editing a history item
     And I press "Cancel"
     Then the history should be "Taxonomic history."
 
-  Scenario: Cancelling, then editing again
-    When I go to the edit page for "Formicidae"
-    And I click the history item
-    And I press "Cancel"
-    And I click the history item
-    And I press that history item's "Insert Name" button
-    Then I should see the name popup
+  #Scenario: Cancelling, then editing again
+    #When I go to the edit page for "Formicidae"
+    #And I click the history item
+    #And I press "Cancel"
+    #And I click the history item
+    #And I press that history item's "Insert Name" button
+    #Then I should see the name popup
 
   #Scenario: Having an error with the item (because it's blank)
     #When I go to the catalog
