@@ -22,10 +22,6 @@ class AntCat.FieldPanel extends AntCat.Panel
 
   setup_edit: =>
     @display_section.click @edit
-    $edit_icon = @element.find '.edit_icon'
-    @element
-      .mouseenter(=> $edit_icon.show() unless @is_editing())
-      .mouseleave(=> $edit_icon.hide())
 
   show_form: =>
     @display_section.hide()
