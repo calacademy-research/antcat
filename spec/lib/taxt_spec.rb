@@ -294,6 +294,12 @@ describe Taxt do
     it "should replace {nam}s with {tax}s where possible" do
       Taxt.cleanup_field("{nam #{@genus.name.id}}").should == "{tax #{@genus.id}}"
     end
+
+    it "should leave {nam}s alone that don't match a taxt" do
+      name = create_name 'Atta'
+      Taxt.cleanup_field("{nam #{name.id}}").should == "{nam #{name.id}}"
+    end
+
     it "should handle more than one replacement in same string" do
       Taxt.cleanup_field("{nam #{@america.id}}, {nam #{@genus.name.id}}").should == "America, {tax #{@genus.id}}"
     end
