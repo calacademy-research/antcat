@@ -233,20 +233,24 @@ module Taxt
     SpuriousNames.index name
   end
 
-  def self.cleanup
-    TaxonHistoryItem
-    [[Taxon,            [:type_taxt, :headline_notes_taxt, :genus_species_header_notes_taxt]],
-     [ReferenceSection, [:title_taxt, :subtitle_taxt, :references_taxt]],
-     [TaxonHistoryItem, [:taxt]],
-    ].each do |klass, fields|
+  def self.cleanup show_progress = false
+    table_fields = [[Taxon,            [:type_taxt, :headline_notes_taxt, :genus_species_header_notes_taxt]],
+                    [ReferenceSection, [:title_taxt, :subtitle_taxt, :references_taxt]],
+                    [TaxonHistoryItem, [:taxt]]]
+    count = 0
+    table_fields.each {|table, field| count += table.count}
+    Progress.new_init show_progress: true, total_count: count, show_errors: true
+    table_fields.each do |klass, fields|
       for record in klass.send :all
         for field in fields
           next unless record[field]
           record[field] = cleanup_field record[field] if record[field]
         end
         record.save!
+        Progress.tally_and_show_progress 1000
       end
     end
+    Progress.show_results
   end
 
   def self.cleanup_field taxt
