@@ -2,6 +2,9 @@
 # Panel options: click_on_display, click_on_icon, highlight, parent_form
 
 class AntCat.FieldPanel extends AntCat.Panel
+  constructor: (@element, @options = {}) ->
+    @options.click_on_display = true
+    super
 
   initialize: (@element) =>
     AntCat.log 'FieldPanel initialize: no @element' unless @element && @element.size() == 1
