@@ -61,7 +61,7 @@
         %table.fields.ui-dialog-content.ui-widget-content.ui-corner-bottom
           %tr
             = protonym_form.fields_for :name do |name_form|
-              %td.label= name_form.label :name
+              %td.label.top_aligned= name_form.label :name
               %td
                 #protonym_name_field
                   = render 'name_fields/panel', name_string: @taxon.protonym.name.try(:name)
@@ -98,7 +98,7 @@
           = taxon_form.fields_for :type_name do |type_name_form|
             - if @taxon.type_name.new_record?
               = hidden_field_tag 'taxon[type_name_attributes][id]'
-            %td.label= type_name_form.label :name
+            %td.label.top_aligned= type_name_form.label :name
             %td
               #type_name_field
                 = render 'name_fields/panel', name_string: @taxon.type_name.try(:name)
