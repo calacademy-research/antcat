@@ -21,16 +21,11 @@ class AntCat.FieldPanel extends AntCat.Panel
     AntCat.log 'FieldPanel setup_sections: no @display_section' unless @display_section.size() == 1
 
   setup_edit: =>
-    @display_section.click @start_editing
+    @display_section.click @edit
     $edit_icon = @element.find '.edit_icon'
     @element
       .mouseenter(=> $edit_icon.show() unless @is_editing())
       .mouseleave(=> $edit_icon.hide())
-
-  start_editing: =>
-    @save_panel()
-    @show_form()
-    false
 
   show_form: =>
     @display_section.hide()
