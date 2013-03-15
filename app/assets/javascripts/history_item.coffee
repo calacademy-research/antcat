@@ -4,7 +4,7 @@ class AntCat.HistoryItemPanel extends AntCat.Panel
     @options.highlight = true
     super
   create_form: ($element, options) -> new AntCat.HistoryItemForm $element, options
-  initialize: ($element) =>
+  initialize: (@element) =>
     super
     # make the textarea of the form the same height as the item it's editing
     display_height = @element.find('div.display').height() + 24
