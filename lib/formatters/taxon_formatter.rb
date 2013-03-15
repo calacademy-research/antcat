@@ -367,7 +367,7 @@ class Formatters::TaxonFormatter
     when Species
       @taxon.genus.name.name
     when Subspecies
-      @taxon.species.name.name
+      @taxon.species.try(:name).try(:name) || '(no species)'
     else
       raise
     end
