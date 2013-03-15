@@ -27,6 +27,7 @@ class AntCat.TaxtEditor
     @control.bind 'keyup keydown mouseup dblclick', @handle_event
     @initialize_tag_buttons()
 
+  initialize_tag_buttons: =>
     @control.focusin =>
       @show_tag_buttons()
       false
@@ -34,10 +35,6 @@ class AntCat.TaxtEditor
       @hide_tag_buttons()
       false
 
-  show_tag_buttons: => @tag_buttons.show()
-  hide_tag_buttons: => @tag_buttons.hide()
-
-  initialize_tag_buttons: =>
     @tag_buttons.show() if AntCat.testing
     @tag_buttons
       .find(':button, :submit').unbutton().button().end()
@@ -47,6 +44,16 @@ class AntCat.TaxtEditor
       .find('.reference_button')
         .off('mousedown')
         .on('mousedown', @insert_reference).end()
+
+  delay_before_showing_or_hiding = 100
+  show_tag_buttons: =>
+    setTimeout ( =>
+      @tag_buttons.show()
+    ), delay_before_showing_or_hiding
+  hide_tag_buttons: =>
+    setTimeout ( =>
+      @tag_buttons.hide()
+    ), delay_before_showing_or_hiding
 
   insert_taxon: =>
     @insert_tag TAXON_TAG_TYPE
