@@ -266,7 +266,7 @@ module Taxt
       else
         name = Name.find $1
         if name.present?
-          if SpuriousNames.find name.name
+          if SpuriousNames.include? name.name
             name.name
           else
             match
