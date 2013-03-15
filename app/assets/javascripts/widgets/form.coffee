@@ -1,7 +1,7 @@
 class AntCat.Form
 
   constructor: (@element, @options = {}) ->
-    AntCat.log 'constructor: @element.size() != 1' unless @element.size() == 1
+    AntCat.log 'Form constructor: @element.size() != 1' unless @element.size() == 1
     @options.field = true unless @options.field?
     @element.addClass 'antcat_form'
     @initialize_buttons() if @needs_to_initialize_buttons_in_constructor()
