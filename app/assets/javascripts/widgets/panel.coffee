@@ -18,7 +18,6 @@ class AntCat.Panel
       @element.find('.display').click @edit
     if @options.click_on_icon
       $edit_icon = @element.find '.edit_icon'
-      AntCat.log 'Panel setup_edit: no $edit_icon' unless $edit_icon && $edit_icon.size() >= 1
       $edit_icon.click @edit
       @element
         .mouseenter(@show_edit_icon)
