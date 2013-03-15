@@ -13,15 +13,15 @@ class AntCat.FieldPanel extends AntCat.Panel
 
   setup_sections: =>
     edit_selector = @options.edit_selector || '> .edit'
-    @edit = @element.find edit_selector
-    AntCat.log 'FieldPanel setup_sections: no @edit' unless @edit.size() == 1
+    @edit_section = @element.find edit_selector
+    AntCat.log 'FieldPanel setup_sections: no @edit_section' unless @edit_section.size() == 1
 
     display_selector = @options.display_selector || '> .display'
-    @display = @element.find display_selector
-    AntCat.log 'FieldPanel setup_sections: no @display' unless @display.size() == 1
+    @display_section = @element.find display_selector
+    AntCat.log 'FieldPanel setup_sections: no @display_section' unless @display_section.size() == 1
 
   setup_edit: =>
-    @display.click @start_editing
+    @display_section.click @start_editing
     $edit_icon = @element.find '.edit_icon'
     @element
       .mouseenter(=> $edit_icon.show() unless @is_editing())
@@ -33,14 +33,14 @@ class AntCat.FieldPanel extends AntCat.Panel
     false
 
   show_form: =>
-    @display.hide()
-    @edit.show()
+    @display_section.hide()
+    @edit_section.show()
     @form().open()
 
   hide_form: =>
-    @edit.hide()
-    @display.show()
+    @edit_section.hide()
+    @display_section.show()
     @form().close()
 
   is_editing: =>
-    @edit.is ':visible'
+    @edit_section.is ':visible'
