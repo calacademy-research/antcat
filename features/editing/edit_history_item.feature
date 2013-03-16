@@ -18,6 +18,13 @@ Feature: Editing a history item
     And I save my changes
     Then the history should be "(none)"
 
+  Scenario: Changing a history item, but cancelling
+    When I go to the edit page for "Formicidae"
+    And I click the history item
+    And I edit the history item to "(none)"
+    And I press "Cancel"
+    Then the history should be "Taxonomic history."
+
   #Scenario: Editing a history item with a reference in it
     #Given there is a reference for "Bolton, 2005"
     #When I go to the catalog
@@ -33,13 +40,6 @@ Feature: Editing a history item
     #* I edit the history item to "{123}"
     #* I press "Save"
     #Then I should see an error message about the unfound reference
-
-  Scenario: Changing a history item, but cancelling
-    When I go to the edit page for "Formicidae"
-    And I click the history item
-    And I edit the history item to "(none)"
-    And I press "Cancel"
-    Then the history should be "Taxonomic history."
 
   #Scenario: Cancelling, then editing again
     #When I go to the edit page for "Formicidae"
