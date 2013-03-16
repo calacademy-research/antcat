@@ -2,7 +2,11 @@
 
 .history_section.section
   .section_header.ui-widget-header.ui-corner-top
-    History
+    .left
+      History
+    .right.history_section_buttons
+      %button.submit.ui-priority-primary Add
+    .clear
   .ui-dialog-content.ui-widget-content.ui-corner-bottom
     - for history_item in taxon.history_items do
       = render 'history_item/panel', item: history_item
