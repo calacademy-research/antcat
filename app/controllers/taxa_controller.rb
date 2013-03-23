@@ -1,6 +1,6 @@
 # coding: UTF-8
 class TaxaController < ApplicationController
-  before_filter :authenticate_user!, only: :update
+  before_filter :authenticate_user!
   skip_before_filter :authenticate_user!, if: :preview?
 
   def new
