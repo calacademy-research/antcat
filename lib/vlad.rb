@@ -191,16 +191,14 @@ class Vlad
     end
   end
 
-  #class SubspeciesWithoutSpecies < Problem
-    #def self.display
-      #display_results_section query, reverse_order: true do |taxon|
-        #"#{taxon.name} (#{taxon.status})"
-      #end
-    #end
-    #def self.query
-      #Subspecies.where "species_id IS NULL"
-    #end
-  #end
+  class SubspeciesWithoutSpecies < Problem
+    def self.display
+      display_result_count query.size
+    end
+    def self.query
+      Subspecies.where "species_id IS NULL"
+    end
+  end
 
   class SynonymsWithoutSeniors < Problem
     def self.query
@@ -218,7 +216,7 @@ class Vlad
       Taxon.find_by_sql "SELECT junior_synonym_id FROM synonyms GROUP by senior_synonym_id, junior_synonym_id HAVING COUNT(*) > 1"
     end
     def self.display
-      display_section_header query.size
+      display_result_count query.size
     end
   end
 
