@@ -32,8 +32,8 @@ AntCat::Application.routes.draw do
 
   resources :taxa, controller: :taxa
 
-  match     '/taxa/:taxon_id/taxonomic_history_items', to: 'taxonomic_history_items#update'
-  match     '/taxa/:taxon_id/taxonomic_history_items', method: :post, to: 'taxon_history_items#create'
+  match     '/taxa/:taxon_id/taxon_history_items', method: :post, to: 'taxon_history_items#create'
+  match     '/taxa/:taxon_id/taxon_history_items/:id', method: :put, to: 'taxon_history_items#update'
 
   resource :taxon_window_height, only: [:update]
 
