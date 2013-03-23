@@ -2,7 +2,7 @@ class AntCat.TaxonForm extends AntCat.Form
   constructor: (@element, @options = {}) ->
     @add_history_item_button = @element.find '.history_section_buttons button'
     AntCat.log 'TaxonForm constructor: @add_history_item_button.size() != 1' unless @add_history_item_button.size() == 1
-    @add_history_item_button.click -> @add_history_item(); false
+    @add_history_item_button.click => @add_history_item(); false
     super
 
   submit: =>
@@ -14,6 +14,10 @@ class AntCat.TaxonForm extends AntCat.Form
     window.location = "/catalog/#{id}"
 
   add_history_item: =>
+    AntCat.HistoryItemPanel.add_history_item @
+
+  add_history_item_panel: ($panel) =>
+    @element.find('.history_items').append $panel
 
 $ ->
   form = new AntCat.TaxonForm $('.taxon_form'), button_container: '> .buttons_section'

@@ -30,30 +30,10 @@ AntCat::Application.routes.draw do
   match     '/antcat_references.utf8.endnote_import', to: 'references#index', format: :endnote_import, as: :endnote_import
   resources :styles, only: [:index]
 
-  resources :taxa, controller: :taxa do
-    resources :taxon_history_items
-  end
-  resources :families, controller: :taxa do
-    resources :taxon_history_items
-  end
-  resources :subfamilies, controller: :taxa do
-    resources :taxon_history_items
-  end
-  resources :tribes, controller: :taxa do
-    resources :taxon_history_items
-  end
-  resources :genera, controller: :taxa do
-    resources :taxon_history_items
-  end
-  resources :subgenera, controller: :taxa do
-    resources :taxon_history_items
-  end
-  resources :species, controller: :taxa do
-    resources :taxon_history_items
-  end
-  resources :subspecies, controller: :taxa do
-    resources :taxon_history_items
-  end
+  resources :taxa, controller: :taxa
+
+  match     '/taxa/:taxon_id/taxonomic_history_items', to: 'taxonomic_history_items#update'
+  match     '/taxa/:taxon_id/taxonomic_history_items', method: :post, to: 'taxon_history_items#create'
 
   resource :taxon_window_height, only: [:update]
 

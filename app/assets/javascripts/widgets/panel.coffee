@@ -7,6 +7,8 @@ class AntCat.Panel
   constructor: ($element, @options = {}) ->
     @initialize $element
     $('.edit_icon').show() if AntCat.testing
+    if @options.open_immediately
+      @edit()
 
   initialize: (@element) =>
     AntCat.log 'Panel initialize: no @element' unless @element && @element.size() == 1
