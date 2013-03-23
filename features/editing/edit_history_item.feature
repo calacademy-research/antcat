@@ -35,6 +35,13 @@ Feature: Editing a history item
     And I save my changes
     Then the history should be "Abc"
 
+  Scenario: Adding a history item with blank taxt
+    When I go to the edit page for "Atta"
+    Then the history should be empty
+    When I click the "Add History" button
+    And I save my changes
+    Then I should see "Taxt can't be blank"
+
   #Scenario: Editing a history item with a reference in it
     #Given there is a reference for "Bolton, 2005"
     #When I go to the catalog
@@ -59,12 +66,14 @@ Feature: Editing a history item
     #And I press that history item's "Insert Name" button
     #Then I should see the name popup
 
-  #Scenario: Having an error with the item (because it's blank)
-    #When I go to the catalog
-    #* I click the edit icon
-    #* I edit the history item to ""
-    #* I save my changes
-    #Then I should see "Taxt can't be blank"
+  Scenario: Editing an item so it's blank
+    When I go to the edit page for "Formicidae"
+    And I click the history item
+    And I edit the history item to ""
+    And I save my changes
+    Then I should see "Taxt can't be blank"
+
+  Scenario: Adding a history item, with blank taxt
 
   #Scenario: Having an error then cancelling
     #When I go to the catalog
