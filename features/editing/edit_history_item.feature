@@ -8,6 +8,7 @@ Feature: Editing a history item
   Background:
     Given the Formicidae family exists
     And a subfamily exists with a name of "Dolichoderinae" and a taxonomic history of "Taxonomic history"
+    And there is a genus called "Atta"
     And I log in
 
   Scenario: Editing a history item
@@ -24,6 +25,14 @@ Feature: Editing a history item
     And I edit the history item to "(none)"
     And I press "Cancel"
     Then the history should be "Taxonomic history."
+
+  Scenario: Adding a history item
+    When I go to the edit page for "Atta"
+    Then the history should be empty
+    When I click the "Add History" button
+    And I edit the history item to "Abc"
+    And I save my changes
+    Then the history should be "Abc"
 
   #Scenario: Editing a history item with a reference in it
     #Given there is a reference for "Bolton, 2005"
