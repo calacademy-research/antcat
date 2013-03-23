@@ -17,6 +17,7 @@ Feature: Editing a history item
     When I click the history item
     And I edit the history item to "(none)"
     And I save my changes
+    And I wait for a bit
     Then the history should be "(none)"
 
   Scenario: Changing a history item, but cancelling
