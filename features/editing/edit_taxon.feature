@@ -8,10 +8,7 @@ Feature: Editing a taxon
   Scenario: Trying to edit without being logged in
     Given there is a genus called "Calyptites"
     When I go to the edit page for "Calyptites"
-    And I set the name to "Atta"
-    And I save the form
-    Then I should be on the login page
-    And I should see "Please log in before continuing"
+    And I should be on the login page
 
   Scenario: Editing a family's name
     Given there is a family called "Formicidae"
