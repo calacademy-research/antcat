@@ -239,7 +239,7 @@ module Taxt
                     [TaxonHistoryItem, [:taxt]]]
     count = 0
     table_fields.each {|table, field| count += table.count}
-    Progress.new_init show_progress: true, total_count: count, show_errors: true
+    Progress.new_init show_progress: show_progress, total_count: count, show_errors: true
     table_fields.each do |klass, fields|
       for record in klass.send :all
         for field in fields
