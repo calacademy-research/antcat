@@ -54,7 +54,17 @@ When /^I click the history item$/ do
 end
 
 Then /^the history should be "(.*)"$/ do |history|
-  page.find('.history_item:first div.display').text.should =~ /#{history}\.?/
+  page.find('.not_history_item_template div.display').text.should =~ /#{history}\.?/
+end
+
+Then /^the history should be empty$/ do
+  page.should_not have_css '.not_history_item_template'
+end
+
+When /^I click the "Add History" button$/ do
+  within '.history_section' do
+    click_button 'Add'
+  end
 end
 
 When /^I edit the history item to "([^"]*)"$/ do |history|
