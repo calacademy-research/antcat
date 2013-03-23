@@ -45,15 +45,8 @@ class AntCat.TaxtEditor
         .off('mousedown')
         .on('mousedown', @insert_reference).end()
 
-  delay_before_showing_or_hiding = 100
-  show_tag_buttons: =>
-    setTimeout ( =>
-      @tag_buttons.show()
-    ), delay_before_showing_or_hiding
-  hide_tag_buttons: =>
-    setTimeout ( =>
-      @tag_buttons.hide()
-    ), delay_before_showing_or_hiding
+  show_tag_buttons: => @tag_buttons.show()
+  hide_tag_buttons: => #@tag_buttons.hide()
 
   insert_taxon: =>
     @insert_tag TAXON_TAG_TYPE
