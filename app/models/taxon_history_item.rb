@@ -11,7 +11,7 @@ class TaxonHistoryItem < ActiveRecord::Base
   end
 
   def self.create_taxt_from_editable taxon, editable_taxt
-    TaxonHistoryItem.create! taxon: taxon, taxt: Taxt.from_editable(editable_taxt)
+    TaxonHistoryItem.create taxon: taxon, taxt: Taxt.from_editable(editable_taxt)
   rescue Taxt::ReferenceNotFound => e
     errors.add :base, "The reference '#{e}' could not be found. Was the ID changed?"
   end
