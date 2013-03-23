@@ -15,6 +15,7 @@ Feature: Editing a history item
     When I go to the edit page for "Formicidae"
     Then the history should be "Taxonomic history"
     When I click the history item
+    And I wait for a while
     And I edit the history item to "(none)"
     And I save my changes
     And I wait for a bit
@@ -41,6 +42,13 @@ Feature: Editing a history item
     When I click the "Add History" button
     And I save my changes
     Then I should see "Taxt can't be blank"
+
+  Scenario: Adding a history item, but cancelling
+    When I go to the edit page for "Atta"
+    Then the history should be empty
+    When I click the "Add History" button
+    And I press "Cancel"
+    Then the history should be empty
 
   #Scenario: Editing a history item with a reference in it
     #Given there is a reference for "Bolton, 2005"
