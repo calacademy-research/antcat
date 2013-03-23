@@ -46,7 +46,7 @@ class AntCat.TaxtEditor
         .on('mousedown', @insert_reference).end()
 
   show_tag_buttons: => @tag_buttons.show()
-  hide_tag_buttons: => #@tag_buttons.hide()
+  hide_tag_buttons: =>
 
   insert_taxon: =>
     @insert_tag TAXON_TAG_TYPE
