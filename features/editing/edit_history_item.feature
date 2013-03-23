@@ -15,7 +15,6 @@ Feature: Editing a history item
     When I go to the edit page for "Formicidae"
     Then the history should be "Taxonomic history"
     When I click the history item
-    And I wait for a while
     And I edit the history item to "(none)"
     And I save my changes
     And I wait for a bit
