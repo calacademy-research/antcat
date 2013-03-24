@@ -7,7 +7,7 @@
     = render 'shared/errors_for', resource: item
 
     .taxt_editor
-      = render 'taxt_editors/show', name: 'taxt_editor', value: Taxt.to_editable(item.taxt)
+      = render 'taxt_editors/show', name: 'taxt', value: Taxt.to_editable(item.taxt)
 
     .buttons
       %button.submit.ui-priority-primary Save
