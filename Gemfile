@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+ruby '1.9.2'
 
 gem 'acts_as_list'
 gem 'aws-sdk'
@@ -22,7 +23,8 @@ gem 'will_paginate'
 gem 'xml-simple'
 
 group :development, :test do
-  gem 'cucumber-rails'
+  # see https://github.com/cucumber/cucumber-rails/issues/187#issuecomment-4160160
+  gem 'cucumber-rails', require: false
   gem 'launchy'
   gem 'rspec'
   gem 'rspec-rails'
