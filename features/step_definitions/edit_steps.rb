@@ -50,7 +50,7 @@ When /I click the type name field/ do
 end
 
 When /^I click the history item$/ do
-  find('.history_item:first div.display').click
+  find('.not_history_item_template div.display').click
 end
 
 Then /^the history should be "(.*)"$/ do |history|
@@ -69,11 +69,6 @@ end
 
 When /^I edit the history item to "([^"]*)"$/ do |history|
   step %{I fill in "taxt_editor" with "#{history}"}
-end
-
-Given /^I edit the history item to include that reference$/ do
-  key = Taxt.id_for_editable @reference.id
-  step %{I edit the history item to "{#{key}}"}
 end
 
 When /^I press that history item's "Insert Name" button$/ do
