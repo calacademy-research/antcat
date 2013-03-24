@@ -259,6 +259,13 @@ describe Formatters::TaxonFormatter do
       subspecies = create_subspecies species: species, genus: genus
       @formatter.new(subspecies).parentage_string.should == species.name.name
     end
+    it "should handle a subspecies without a species" do
+      subfamily = create_subfamily
+      tribe = create_tribe subfamily: subfamily
+      genus = create_genus tribe: tribe, subfamily: subfamily
+      subspecies = create_subspecies species: nil, genus: genus
+      @formatter.new(subspecies).parentage_string.should == "#{genus.name} (no species)"
+    end
   end
 
 end
