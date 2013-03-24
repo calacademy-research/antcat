@@ -22,7 +22,7 @@ Feature: Editing a history item
     Then the history should be "(none)"
 
   # This doesn't work because of inserting a {
-  Scenario: Editing a history item to include a reference
+  #Scenario: Editing a history item to include a reference
     #Given there is a reference for "Bolton, 2005"
     #And I go to the edit page for "Formicidae"
     #Then I should not see "Bolton, 2005"
@@ -45,18 +45,13 @@ Feature: Editing a history item
     And I save my changes
     Then I should see "Taxt can't be blank"
 
-  #Scenario: Editing a history item and including an unparseable or unknown reference id
-    #When I go to the catalog
-    #* I click the edit icon
-    #* I edit the history item to "{123}"
-    #* I press "Save"
-    #Then I should see an error message about the unfound reference
-
+  # Pressing Insert Name seems to submit or cancel whole form (only in test)
   #Scenario: Editing, cancelling, then editing again
     #When I go to the edit page for "Formicidae"
     #And I click the history item
     #And I press "Cancel"
     #And I click the history item
+    #And I click the history item taxt editor field
     #And I press that history item's "Insert Name" button
     #Then I should see the name popup
 
