@@ -68,7 +68,7 @@ When /^I click the "Add History" button$/ do
 end
 
 When /^I edit the history item to "([^"]*)"$/ do |history|
-  step %{I fill in "taxt_editor" with "#{history}"}
+  step %{I fill in "taxt" with "#{history}"}
 end
 
 When /^I press that history item's "Insert Name" button$/ do
