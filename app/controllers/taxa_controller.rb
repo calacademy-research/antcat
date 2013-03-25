@@ -52,25 +52,25 @@ class TaxaController < ApplicationController
   class PossibleHomonymSituation < NameError; end
 
   def add_name_or_create_homonym attributes
-    begin
-      original_name = @taxon.name
-      name = Name.import get_name_attributes attributes
-      if name != original_name
-        @possible_homonym = @taxon.would_be_homonym_if_name_changed_to? name unless params[:possible_homonym].present?
-        if @possible_homonym
-          @taxon.errors.add :base, "This name is in use by another taxon. To create a homonym, click \"Save Homonym\".".html_safe
-          @taxon.name.epithet = attributes[:epithet]
-          raise PossibleHomonymSituation
-        end
-      end
-    rescue ActiveRecord::RecordInvalid
-      @taxon.name.epithet = attributes[:epithet]
-      @taxon.errors.add :base, "Name can't be blank"
-      raise
-    rescue PossibleHomonymSituation
-      raise ActiveRecord::RecordInvalid.new @taxon
-    end
-    @taxon.update_attributes name: name
+    #begin
+      #original_name = @taxon.name
+      #name = Name.import get_name_attributes attributes
+      #if name != original_name
+        #@possible_homonym = @taxon.would_be_homonym_if_name_changed_to? name unless params[:possible_homonym].present?
+        #if @possible_homonym
+          #@taxon.errors.add :base, "This name is in use by another taxon. To create a homonym, click \"Save Homonym\".".html_safe
+          #@taxon.name.epithet = attributes[:epithet]
+          #raise PossibleHomonymSituation
+        #end
+      #end
+    #rescue ActiveRecord::RecordInvalid
+      #@taxon.name.epithet = attributes[:epithet]
+      #@taxon.errors.add :base, "Name can't be blank"
+      #raise
+    #rescue PossibleHomonymSituation
+      #raise ActiveRecord::RecordInvalid.new @taxon
+    #end
+    #@taxon.update_attributes name: name
   end
 
   def get_name_attributes attributes
