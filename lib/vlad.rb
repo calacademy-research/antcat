@@ -192,10 +192,10 @@ class Vlad
   end
 
   class SubspeciesWithoutSpecies < Problem
-    def self.display
-    end
     def self.query
-      Subspecies.where "species_id IS NULL"
+      Subspecies.where 'species_id IS NULL'
+    end
+    def self.display
       display_results_section query do |subspecies|
         subspecies.name.to_s
       end
