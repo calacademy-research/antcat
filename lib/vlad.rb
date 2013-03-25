@@ -224,14 +224,14 @@ class Vlad
 
   class SynonymCycles < Problem
     def self.query
-      Taxon.find_by_sql(
-        "SELECT a.senior_synonym_id AS taxon_a, a.junior_synonym_id AS taxon_b " +
-        "FROM synonyms a JOIN synonyms b ON " +
-          "a.senior_synonym_id = b.junior_synonym_id AND " +
-          "b.senior_synonym_id = a.junior_synonym_id " +
-        "WHERE a.id < b.id " +
-        "ORDER BY a.senior_synonym_id "
-      ).map do |row|
+      Taxon.find_by_sql('
+        SELECT a.senior_synonym_id AS taxon_a, a.junior_synonym_id AS taxon_b
+        FROM synonyms a JOIN synonyms b ON
+          a.senior_synonym_id = b.junior_synonym_id AND
+          b.senior_synonym_id = a.junior_synonym_id
+        WHERE a.id < b.id
+        ORDER BY a.senior_synonym_id
+      ').map do |row|
         [Taxon.find(row["taxon_a"]).name_cache,
          Taxon.find(row["taxon_b"]).name_cache]
       end
