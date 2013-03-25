@@ -33,7 +33,7 @@ class TaxaController < ApplicationController
 
       update_epithet_status_flags attributes
       update_protonym protonym_attributes
-      update_type_name type_name_attributes
+      update_type_name type_name_attributes if type_name_attributes
     end
   end
 
@@ -43,7 +43,9 @@ class TaxaController < ApplicationController
     @taxon.attributes = attributes
     # apparently can't just assign this value to the attribute in attributes
     @taxon.headline_notes_taxt = Taxt.from_editable attributes.delete :headline_notes_taxt
-    @taxon.type_taxt = Taxt.from_editable attributes.delete :type_taxt
+    if attributes[:type_taxt]
+      @taxon.type_taxt = Taxt.from_editable attributes.delete :type_taxt
+    end
     @taxon.save!
   end
 
