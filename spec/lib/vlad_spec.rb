@@ -56,6 +56,21 @@ describe Vlad do
     results.map(&:id).should =~ [no_synonym.id]
   end
 
+  it "should show synonym cycles" do
+    genus = create_genus 'Atta'
+    another_genus = create_genus 'Betta'
+    synonym_a = Synonym.create! senior_synonym: genus, junior_synonym: another_genus
+    another_genus.should be_synonym_of genus
+    Vlad::SynonymCycles.query.should be_blank
+
+    synonym_b = Synonym.create! senior_synonym: another_genus, junior_synonym: genus
+    genus.should be_synonym_of another_genus
+    results = Vlad::SynonymCycles.query
+    Vlad::SynonymCycles.query.should_not be_blank
+    results.should have(1).item
+    results.should == [['Atta', 'Betta']]
+  end
+
   it "should show protonyms without authorships" do
     protonym_with_authorship = FactoryGirl.create :protonym
     protonym_without_authorship = FactoryGirl.create :protonym
