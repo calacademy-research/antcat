@@ -39,14 +39,14 @@ describe Vlad do
     results.first.to_s.should == 'Atta'
   end
 
-  #it "should show subspecies without species" do
-    #species = create_species
-    #subspecies_with_species = create_subspecies 'Atta major minor', species: species
-    #subspecies_without_species = create_subspecies 'Atta major minor', species: nil
-    #results = Vlad::SubspeciesWithoutSpecies.query
-    #results.count.should == 1
-    #results.first.should == subspecies_without_species
-  #end
+  it "should show subspecies without species" do
+    species = create_species
+    subspecies_with_species = create_subspecies 'Atta major minor', species: species
+    subspecies_without_species = create_subspecies 'Atta major minor', species: nil
+    results = Vlad::SubspeciesWithoutSpecies.query
+    results.count.should == 1
+    results.first.should == subspecies_without_species
+  end
 
   it "should show taxa with synonym status, but no synonyms" do
     genus = create_genus
