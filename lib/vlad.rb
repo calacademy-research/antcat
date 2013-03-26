@@ -196,9 +196,10 @@ class Vlad
       Subspecies.where 'species_id IS NULL'
     end
     def self.display
-      display_results_section query do |subspecies|
-        subspecies.name.to_s
-      end
+      display_result_count query.size
+      #display_results_section query do |subspecies|
+        #subspecies.name.to_s
+      #end
     end
   end
 
