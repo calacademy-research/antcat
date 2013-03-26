@@ -152,9 +152,9 @@
         = image_tag 'ui-anim_basic_16x16.gif', class: 'throbber'
       .right_buttons
         - if @show_reverse_synonymy_button
-          = link_to previewize('Reverse synonymy'), "/catalog/#{@taxon.id}/reverse_synonymy",
+          = link_to previewize('Reverse synonymy'), "/taxa/#{@taxon.id}/reverse_synonymy",
               confirm: 'Are you sure you want to reverse the synonymy?', method: :put
         - if @show_elevate_to_species_button
-          = link_to previewize('Elevate to species'), "/catalog/#{@taxon.id}/elevate_subspecies",
+          = link_to previewize('Elevate to species'), "/taxa/#{@taxon.id}/elevate_subspecies",
               confirm: 'Are you sure you want to elevate this subspecies to species?', method: :put
         = link_to 'Show', catalog_path(@taxon)
