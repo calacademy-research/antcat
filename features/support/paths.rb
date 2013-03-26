@@ -48,11 +48,19 @@ module NavigationHelpers
     when /^the catalog$/
       catalog_path
 
+    when /^the reverse synonymy page for "([^"]*)"$/
+      taxon = Taxon.find_by_name $1
+      "/taxa/#{taxon.id}/reverse_synonymy"
+
+    when /^the elevate subspecies page for "([^"]*)"$/
+      taxon = Taxon.find_by_name $1
+      "/taxa/#{taxon.id}/elevate_subspecies"
+
     when /the edit user page/
       '/users/edit'
     when /the forgot password page/
       '/users/password/new'
-    when /the login page/
+    when /the login (page|form)/
       '/users/sign_in'
 
     else

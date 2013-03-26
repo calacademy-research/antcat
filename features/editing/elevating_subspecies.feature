@@ -21,3 +21,8 @@ Feature: Elevating subspecies
     When I go to the catalog entry for "Atta"
     And I press "Edit"
     Then I should not see "Elevate to species"
+
+  Scenario: Trying to mess with this when not logged in
+    Given there is a species "Solenopsis invicta" which is a junior synonym of "Solenopsis wagneri"
+    When I go to the elevate subspecies page for "Solenopsis wagneri"
+    Then I should be on the login form
