@@ -22,6 +22,16 @@ class Subspecies < SpeciesGroupTaxon
     Subspecies.connection.execute "UPDATE taxa SET type = 'Species' WHERE id = '#{id}'"
   end
 
+  def fix_missing_species
+    return if species
+    epithet = name.epithets.split(' ').first
+    results = Species.find_epithet_in_genus epithet, genus
+    return unless results
+    self.species = results.first
+    save!
+  end
+  def self.fix_missing_species; all.each {|e| e.fix_missing_species} end
+
   ############################
   # import
 

@@ -106,6 +106,49 @@ describe Subspecies do
     end
   end
 
+  describe "Fixing subspecies without species" do
+    before do
+      @genus = create_genus 'Atta'
+    end
+    it "should find the species that's the first word of epithets in same genus" do
+      species = create_species 'Atta major', genus: @genus
+      name = FactoryGirl.create :subspecies_name, name: "Atta major minor", epithets: 'major minor'
+      subspecies = FactoryGirl.create :subspecies, name: name, species: nil, genus: @genus
+      subspecies.species.should_not == species
+      subspecies.fix_missing_species
+      subspecies.species.should == species
+    end
+    it "should find the species that's the first word of epithets when there's more than one subspecies epithet" do
+      species = create_species 'Atta major', genus: @genus
+      name = FactoryGirl.create :subspecies_name, name: "Atta major minor minimus", epithets: 'major minor minimus'
+      subspecies = FactoryGirl.create :subspecies, name: name, species: nil, genus: @genus
+      subspecies.species.should_not == species
+      subspecies.fix_missing_species
+      subspecies.reload.species.should == species
+    end
+    it "should not croak if the species can't be found" do
+      name = FactoryGirl.create :subspecies_name, name: "Atta blanco negro", epithets: 'blanco negro'
+      subspecies = FactoryGirl.create :subspecies, name: name, species: nil, genus: @genus
+      subspecies.fix_missing_species
+      subspecies.reload.species.should be_nil
+    end
+    it "should not find a species in a different genus" do
+      different_genus = create_genus 'Eciton'
+      species = create_species 'Atta major', genus: different_genus
+      name = FactoryGirl.create :subspecies_name, name: "Atta major minor", epithets: 'major minor'
+      subspecies = FactoryGirl.create :subspecies, name: name, species: nil, genus: @genus
+      subspecies.fix_missing_species
+      subspecies.species.should be_nil
+    end
+    it "should find a species with a different ending" do
+      species = create_species 'Atta perversus', genus: @genus
+      name = FactoryGirl.create :subspecies_name, name: 'Atta perversa minor', epithets: 'perversa minor'
+      subspecies = FactoryGirl.create :subspecies, name: name, species: nil, genus: @genus
+      subspecies.fix_missing_species
+      subspecies.species.should == species
+    end
+  end
+
   describe "Importing" do
     before do
       @reference = FactoryGirl.create :article_reference, bolton_key_cache: 'Latreille 1809'
