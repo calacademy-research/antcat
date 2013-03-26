@@ -19,9 +19,6 @@ AntCat::Application.routes.draw do
   match     'catalog/hide_subgenera' => 'catalog#hide_subgenera', as: :catalog, via: :get
   match     'catalog/(:id)' => 'catalog#show', as: :catalog, via: :get
 
-  match     '/catalog/:id/reverse_synonymy' => 'catalog#reverse_synonymy'
-  match     '/catalog/:id/elevate_subspecies' => 'catalog#elevate_subspecies'
-
   resources :bolton_references
   match     '/documents/:id/:file_name', to: 'references#download', file_name: /.+/, via: :get
   resources :journals
@@ -31,6 +28,8 @@ AntCat::Application.routes.draw do
   resources :styles, only: [:index]
 
   resources :taxa, controller: :taxa
+  match     '/taxa/:id/reverse_synonymy' => 'taxa#reverse_synonymy'
+  match     '/taxa/:id/elevate_subspecies' => 'taxa#elevate_subspecies'
 
   match     '/taxa/:taxon_id/taxon_history_items', method: :post, to: 'taxon_history_items#create'
   match     '/taxa/:taxon_id/taxon_history_items/:id', method: :put, to: 'taxon_history_items#update'

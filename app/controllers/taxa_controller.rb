@@ -25,6 +25,28 @@ class TaxaController < ApplicationController
     redirect_to catalog_url @taxon
   end
 
+  def reverse_synonymy
+    taxon = Taxon.find params[:id]
+    if taxon.synonym?
+      new_junior = taxon.senior_synonyms.first
+      new_senior = taxon
+    else
+      new_senior = taxon.junior_synonyms.first
+      new_junior = taxon
+    end
+    new_junior.become_junior_synonym_of new_senior
+    ReverseSynonymyEdit.create! new_junior: new_junior, new_senior: new_senior, user: current_user
+    redirect_to catalog_url taxon
+  end
+
+  def elevate_subspecies
+    subspecies = Subspecies.find params[:id]
+    old_species = subspecies.species
+    subspecies.elevate_to_species
+    ElevateSubspeciesEdit.create! taxon: subspecies, old_species: old_species, user: current_user
+    redirect_to catalog_url subspecies
+  end
+
   ###################
   def update_taxon attributes
     Taxon.transaction do
