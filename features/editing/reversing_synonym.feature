@@ -32,3 +32,8 @@ Feature: Reversing synonymy
     Then I should see that "Solenopsis wagneri" is a synonym of "Solenopsis invicta"
     When I go to the catalog entry for "Solenopsis invicta"
     Then I should not see that "Solenopsis invicta" is a synonym of "Solenopsis wagneri"
+
+  Scenario: Trying to mess with this when not logged in
+    Given there is a species "Solenopsis invicta" which is a junior synonym of "Solenopsis wagneri"
+    When I go to the reverse synonymy page for "Solenopsis wagneri"
+    Then I should be on the login form
