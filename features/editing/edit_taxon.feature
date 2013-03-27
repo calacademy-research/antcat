@@ -10,6 +10,12 @@ Feature: Editing a taxon
     When I go to the edit page for "Calyptites"
     And I should be on the login page
 
+  Scenario: Trying to edit without catalog editing rights
+    Given there is a genus called "Calyptites"
+    And I log in as a bibliography editor
+    When I go to the catalog page for "Calyptites"
+    Then I should not see "Edit"
+
   # Don't allow changing the name for now
   #Scenario: Editing a family's name
     #Given there is a family called "Formicidae"
