@@ -16,6 +16,12 @@ Feature: Editing a taxon
     When I go to the catalog page for "Calyptites"
     Then I should not see "Edit"
 
+  @preview
+  Scenario: Trying to edit without catalog editing rights on preview server
+    Given there is a genus called "Calyptites"
+    When I go to the edit page for "Calyptites"
+    Then I should be on the edit page for "Calyptites"
+
   # Don't allow changing the name for now
   #Scenario: Editing a family's name
     #Given there is a family called "Formicidae"
