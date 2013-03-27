@@ -1,7 +1,11 @@
 # coding: UTF-8
 class TaxaController < ApplicationController
-  before_filter :authenticate_user!
-  skip_before_filter :authenticate_user!, if: :preview?
+  before_filter :authenticate
+  skip_before_filter :authenticate, if: :preview?
+
+  def authenticate
+    authenticate_user! && $Environment.user_can_edit_catalog?(current_user)
+  end
 
   def new
   end

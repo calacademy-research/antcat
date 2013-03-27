@@ -18,14 +18,23 @@ end
 Given 'I am not logged in' do
 end
 
-Given 'I log in' do
+def login can_edit_catalog
   step 'I go to the main page'
   User.delete_all
-  @user = FactoryGirl.create :user, email: 'mark@example.com'
+  attributes = {email: 'mark@example.com'}
+  attributes[:can_edit_catalog] = true if can_edit_catalog
+  @user = FactoryGirl.create :user, attributes
   click_link "Login"
   step %{I fill in "user_email" with "#{@user.email}"}
   step %{I fill in "user_password" with "#{@user.password}"}
   step %{I press "Go" within "#login"}
+end
+
+Given /^I log in$/ do
+  login true
+end
+Given /^I log in as a bibliography editor$/ do
+  login false
 end
 
 Given 'I log out' do

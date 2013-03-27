@@ -13,7 +13,7 @@ class Environment
   end
 
   def user_can_edit_catalog? user
-    user_is_editor?(user) and @server != :production
+    user && user.can_edit_catalog?
   end
 
   def previewize string
