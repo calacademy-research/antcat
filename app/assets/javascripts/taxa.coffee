@@ -8,13 +8,8 @@ class AntCat.TaxonForm extends AntCat.Form
     AntCat.log 'TaxonForm constructor: @add_history_item_button.size() != 1' unless @add_history_item_button.size() == 1
     @add_history_item_button.click => @add_history_item(); false
 
-    reverse_synonymy_button = @element.find '#reverse_synonymy'
-    AntCat.log 'TaxonForm constructor: reverse_synonymy_button.size() != 1' unless reverse_synonymy_button.size() == 1
-    reverse_synonymy_button.click => @reverse_synonymy(); false
-
-    elevate_to_species_button = @element.find '#elevate_to_species'
-    AntCat.log 'TaxonForm constructor: elevate_to_species_button.size() != 1' unless elevate_to_species_button.size() == 1
-    elevate_to_species_button.click => @elevate_to_species(); false
+    @element.find('#reverse_synonymy').click => @reverse_synonymy(); false
+    @element.find('#elevate_to_species').click => @elevate_to_species(); false
 
     super
 
