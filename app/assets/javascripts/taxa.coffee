@@ -3,11 +3,30 @@ class AntCat.TaxonForm extends AntCat.Form
     @add_history_item_button = @element.find '.history_section_buttons button'
     AntCat.log 'TaxonForm constructor: @add_history_item_button.size() != 1' unless @add_history_item_button.size() == 1
     @add_history_item_button.click => @add_history_item(); false
+
+    @add_history_item_button = @element.find '.history_section_buttons button'
+    AntCat.log 'TaxonForm constructor: @add_history_item_button.size() != 1' unless @add_history_item_button.size() == 1
+    @add_history_item_button.click => @add_history_item(); false
+
+    reverse_synonymy_button = @element.find '#reverse_synonymy'
+    AntCat.log 'TaxonForm constructor: reverse_synonymy_button.size() != 1' unless reverse_synonymy_button.size() == 1
+    reverse_synonymy_button.click => @reverse_synonymy(); false
+
+    elevate_to_species_button = @element.find '#elevate_to_species'
+    AntCat.log 'TaxonForm constructor: elevate_to_species_button.size() != 1' unless elevate_to_species_button.size() == 1
+    elevate_to_species_button.click => @elevate_to_species(); false
+
     super
 
-  submit: =>
-    @start_throbbing()
-    @form().submit()
+  reverse_synonymy: =>
+    return unless confirm 'Are you sure you want to reverse the synonymy?'
+    $('#task_button_command').val('reverse_synonymy')
+    @submit()
+
+  elevate_to_species: =>
+    return unless confirm 'Are you sure you want to elevate this subspecies to species?'
+    $('#task_button_command').val('elevate_to_species')
+    @submit()
 
   cancel: =>
     id = @form().attr('action').match(/\d+/)[0]

@@ -13,7 +13,7 @@ Feature: Reversing synonymy
     Then I should see that "Solenopsis invicta" is a synonym of "Solenopsis wagneri"
     When I press "Edit"
     Given I will confirm on the next step
-    And I follow "Reverse synonymy"
+    And I press "Reverse synonymy"
     Then I should see the catalog entry for "Solenopsis invicta"
     Then I should not see that "Solenopsis invicta" is a synonym of "Solenopsis wagneri"
     When I go to the catalog entry for "Solenopsis wagneri"
@@ -27,7 +27,7 @@ Feature: Reversing synonymy
     Then I should not see that "Solenopsis wagneri" is a synonym of "Solenopsis invicta"
     When I press "Edit"
     Given I will confirm on the next step
-    When I follow "Reverse synonymy"
+    When I press "Reverse synonymy"
     Then I should see the catalog entry for "Solenopsis wagneri"
     Then I should see that "Solenopsis wagneri" is a synonym of "Solenopsis invicta"
     When I go to the catalog entry for "Solenopsis invicta"
