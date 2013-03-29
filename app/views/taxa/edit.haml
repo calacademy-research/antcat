@@ -151,10 +151,8 @@
         %input{type: 'button', class: 'ui-priority-secondary cancel', value: 'Cancel'}
         = image_tag 'ui-anim_basic_16x16.gif', class: 'throbber'
       .right_buttons
+        %input{type: :hidden, name: 'task_button_command', id: 'task_button_command'}
         - if @show_reverse_synonymy_button
-          = link_to previewize('Reverse synonymy'), "/taxa/#{@taxon.id}/reverse_synonymy",
-              confirm: 'Are you sure you want to reverse the synonymy?', method: :put
+          %input{type: 'button', class: 'ui-priority-primary', id: 'reverse_synonymy', value: previewize('Reverse synonymy')}
         - if @show_elevate_to_species_button
-          = link_to previewize('Elevate to species'), "/taxa/#{@taxon.id}/elevate_subspecies",
-              confirm: 'Are you sure you want to elevate this subspecies to species?', method: :put
-        = link_to 'Show', catalog_path(@taxon)
+          %input{type: 'button', class: 'ui-priority-primary', id: 'elevate_to_species', value: previewize('Elevate to species')}

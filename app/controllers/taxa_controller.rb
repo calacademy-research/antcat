@@ -20,6 +20,9 @@ class TaxaController < ApplicationController
   end
 
   def update
+    return reverse_synonymy if params[:task_button_command] == 'reverse_synonymy'
+    return elevate_to_species if params[:task_button_command] == 'elevate_to_species'
+
     @taxon = Taxon.find params[:id] 
     begin
       update_taxon params.dup[:taxon]
