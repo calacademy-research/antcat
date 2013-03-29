@@ -13,6 +13,7 @@ class AntCat.NamePopup extends AntCat.NestedForm
       @load()
     else
       @initialize()
+      @textbox.val(@options.initial_value) if @options.initial_value
     @
 
   load: =>
