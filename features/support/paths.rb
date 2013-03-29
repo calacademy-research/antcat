@@ -54,7 +54,7 @@ module NavigationHelpers
 
     when /^the elevate subspecies page for "([^"]*)"$/
       taxon = Taxon.find_by_name $1
-      "/taxa/#{taxon.id}/elevate_subspecies"
+      "/taxa/#{taxon.id}/elevate_to_species"
 
     when /the edit user page/
       '/users/edit'
