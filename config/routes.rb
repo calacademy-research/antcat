@@ -29,7 +29,7 @@ AntCat::Application.routes.draw do
 
   resources :taxa, controller: :taxa
   match     '/taxa/:id/reverse_synonymy' => 'taxa#reverse_synonymy'
-  match     '/taxa/:id/elevate_subspecies' => 'taxa#elevate_subspecies'
+  match     '/taxa/:id/elevate_to_species' => 'taxa#elevate_to_species'
 
   match     '/taxa/:taxon_id/taxon_history_items', method: :post, to: 'taxon_history_items#create'
   match     '/taxa/:taxon_id/taxon_history_items/:id', method: :put, to: 'taxon_history_items#update'

@@ -1,10 +1,10 @@
 @javascript
-Feature: Elevating subspecies
+Feature: Elevating subspecies to species
   As an editor of AntCat
   I want to make a subspecies a species
   So the data is correct
 
-  Scenario: Elevating subspecies
+  Scenario: Elevating subspecies to species
     Given there is a subspecies "Solenopsis speccus subbus" which is a subspecies of "Solenopsis speccus" in the genus "Solenopsis"
     And I am logged in
     When I go to the catalog entry for "Solenopsis speccus subbus"

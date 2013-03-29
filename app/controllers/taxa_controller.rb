@@ -43,7 +43,7 @@ class TaxaController < ApplicationController
     redirect_to catalog_url taxon
   end
 
-  def elevate_subspecies
+  def elevate_to_species
     subspecies = Subspecies.find params[:id]
     old_species = subspecies.species
     subspecies.elevate_to_species
