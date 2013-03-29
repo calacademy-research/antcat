@@ -4,8 +4,6 @@
 
 $antcat_reference_popup_gutter_size: 20px
 
-$dark_green: desaturate(#006400, 50%) // darkgreen
-$antcat_reference_popup_color_help: lightgray
 $pale_green: desaturate(#98FB98, 50%) // palegreen
 
 .antcat_reference_popup
@@ -34,7 +32,7 @@ $pale_green: desaturate(#98FB98, 50%) // palegreen
     width: 100%
 
     > table
-      background: $dark_green
+      background: $color_picker_background
       width: 100%
 
       td.throbber
@@ -45,7 +43,7 @@ $pale_green: desaturate(#98FB98, 50%) // palegreen
           display: none
 
     .controls
-      background: $dark_green
+      background: $color_site_header_link_highlight
 
     .q.search_controls
       width: 200px
@@ -57,21 +55,21 @@ $pale_green: desaturate(#98FB98, 50%) // palegreen
       margin-right: 10px
       padding-bottom: 0
       &, span, a
-        color: $antcat_reference_popup_color_help
+        color: $color_picker_help
         font-size: 12px
         font-weight: normal
         a, a:active, a:focus, a:visited
           color: white
           &:hover
             color: $color_site_header_link_highlight
-            background-color: $dark_green
+            background-color: $color_site_header_link_highlight
 
     .help_banner
       display: inline-block
       margin-right: 10px
       font-style: italic
       .help_banner_text
-        color: $antcat_reference_popup_color_help
+        color: $color_picker_help
         font-size: 12px
 
     .search_results
