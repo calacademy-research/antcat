@@ -157,4 +157,13 @@ describe Name do
 
   end
 
+  describe "Duplicates" do
+    it "should return the records with same name but different ID" do
+      first_atta_name = FactoryGirl.create :name, name: 'Atta'
+      second_atta_name = FactoryGirl.create :name, name: 'Atta'
+      not_atta_name = FactoryGirl.create :name, name: 'Notatta'
+      Name.duplicates.should =~ [first_atta_name, second_atta_name]
+    end
+  end
+
 end
