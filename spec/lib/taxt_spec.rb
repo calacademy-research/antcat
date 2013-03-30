@@ -266,6 +266,10 @@ describe Taxt do
                          type_taxt: "{nam #{@america.id}}",
                          headline_notes_taxt: "{nam #{@america.id}}",
                          genus_species_header_notes_taxt: "{nam #{@america.id}}"
+
+      taxon.protonym.authorship.notes_taxt = "{nam #{@america.id}}"
+      taxon.protonym.authorship.save!
+
       reference_section = ReferenceSection.create! title_taxt: "{nam #{@america.id}}",
                                subtitle_taxt: "{nam #{@america.id}}",
                                references_taxt: "{nam #{@america.id}}"
@@ -277,6 +281,8 @@ describe Taxt do
       taxon.type_taxt.should == 'America'
       taxon.headline_notes_taxt.should ==  'America'
       taxon.genus_species_header_notes_taxt.should == 'America'
+
+      taxon.protonym.authorship.notes_taxt.should == 'America'
 
       reference_section.reload
       reference_section.title_taxt.should == 'America'
