@@ -166,4 +166,33 @@ describe Name do
     end
   end
 
+
+  describe "Duplicates and references" do
+    it "should return the references to the duplicate names" do
+      first_atta_name = FactoryGirl.create :name, name: 'Atta'
+      first_atta = create_genus name: first_atta_name
+      second_atta_name = FactoryGirl.create :name, name: 'Atta'
+      second_atta = create_genus name: second_atta_name
+
+      results = Name.duplicates_with_references
+      results.should have(2).items
+
+      result = results[first_atta_name.id]
+      result.should_not be_nil
+      result.should have(1).item
+      result = result.first
+      result[:table].should == 'taxa'
+      result[:field].should == 'name_id'
+
+      result = results[second_atta_name.id]
+      result.should_not be_nil
+      result.should have(1).item
+      result = result.first
+      result[:table].should == 'taxa'
+      result[:field].should == 'name_id'
+
+    end
+  end
+
+
 end
