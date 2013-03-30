@@ -1,7 +1,7 @@
 # coding: UTF-8
 desc "Show duplicate names and their references"
 task show_duplicate_names_with_references: :environment do
-  duplicates = Name.duplicates_with_references
+  duplicates = Name.duplicates_with_references show_progress: true
   duplicates.each do |name, duplicates|
     puts
     puts name
