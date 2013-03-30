@@ -188,6 +188,19 @@ describe Name do
     end
   end
 
+  describe "Deleting duplicate names" do
+    it "should delete duplicate names" do
+      first_atta_name = FactoryGirl.create :name, name: 'Atta'
+      genus = create_genus name: first_atta_name
+      second_atta_name = FactoryGirl.create :name, name: 'Atta'
+      not_atta_name = FactoryGirl.create :name, name: 'Notatta'
+      Name.destroy_duplicates
+      Name.find_by_id(first_atta_name).should_not be_nil
+      Name.find_by_id(second_atta_name).should be_nil
+      Name.find_by_id(not_atta_name).should_not be_nil
+    end
+  end
+
   describe "References" do
     it "should return references in fields" do
       atta = create_genus 'Atta'

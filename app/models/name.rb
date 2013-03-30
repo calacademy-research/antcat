@@ -189,4 +189,12 @@ class Name < ActiveRecord::Base
     references
   end
 
+  def self.destroy_duplicates options = {}
+    duplicates_with_references(options).each do |name, duplicate|
+      duplicate.each do |id, references|
+        Name.find(id).destroy unless references.present?
+      end
+    end
+  end
+
 end
