@@ -225,7 +225,7 @@ class Vlad
 
   class DuplicateNames < Problem
     def self.query
-      Name.find_by_sql "SELECT name FROM names GROUP by name HAVING COUNT(*) > 1"
+      Name.duplicates
     end
     def self.display
       display_result_count query.size

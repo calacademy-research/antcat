@@ -115,4 +115,9 @@ class Name < ActiveRecord::Base
     '&dagger;'.html_safe
   end
 
+  def self.duplicates
+    name_strings = Name.find_by_sql("SELECT * FROM names GROUP by name HAVING COUNT(*) > 1").map(&:name)
+    Name.where name: name_strings
+  end
+
 end
