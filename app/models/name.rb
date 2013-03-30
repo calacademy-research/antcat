@@ -131,6 +131,13 @@ class Name < ActiveRecord::Base
 
   def references
     references = []
+    references.concat references_in_fields
+    references.concat references_in_taxt
+    references
+  end
+
+  def references_in_fields
+    references = []
     references.concat references_to_taxon_name
     references.concat references_to_taxon_type_name
     references.concat references_to_protonym_name
@@ -156,6 +163,25 @@ class Name < ActiveRecord::Base
       references << {table: 'protonyms', field: 'name_id', id: protonym.id}
       references
     end
+  end
+
+  def references_in_taxt
+    references = []
+    table_fields = [[Taxon,            [:type_taxt, :headline_notes_taxt, :genus_species_header_notes_taxt]],
+                    [Citation,         [:notes_taxt]],
+                    [ReferenceSection, [:title_taxt, :subtitle_taxt, :references_taxt]],
+                    [TaxonHistoryItem, [:taxt]]]
+    table_fields.each do |klass, fields|
+      for record in klass.send :all
+        for field in fields
+          next unless record[field]
+          if record[field] =~ /{nam #{id}}/
+            references << {table: klass.table_name, field: field, id: record[:id]}
+          end
+        end
+      end
+    end
+    references
   end
 
 end
