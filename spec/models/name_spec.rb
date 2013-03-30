@@ -200,7 +200,15 @@ describe Name do
         {table: 'protonyms', field: 'name_id', id: protonym.id},
       ]
     end
+    it "should return references in taxt" do
+      atta = create_genus 'Atta'
+      eciton = create_genus 'Eciton'
+      eciton.update_attribute :type_taxt, "{nam #{atta.name.id}}"
+      atta.name.references.should =~ [
+        {table: 'taxa', field: 'name_id', id: atta.id},
+        {table: 'taxa', field: 'type_taxt', id: eciton.id},
+      ]
+    end
   end
-
 
 end
