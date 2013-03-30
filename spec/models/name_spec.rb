@@ -166,7 +166,6 @@ describe Name do
     end
   end
 
-
   describe "Duplicates and references" do
     it "should return the references to the duplicate names" do
       first_atta_name = FactoryGirl.create :name, name: 'Atta'
@@ -175,22 +174,31 @@ describe Name do
       second_atta = create_genus name: second_atta_name
 
       results = Name.duplicates_with_references
-      results.should have(2).items
 
-      result = results[first_atta_name.id]
-      result.should_not be_nil
-      result.should have(1).item
-      result = result.first
-      result[:table].should == 'taxa'
-      result[:field].should == 'name_id'
+      results.should == {
+        'Atta' => {
+          first_atta_name.id => [
+            {table: 'taxa', field: 'name_id', id: first_atta.id},
+          ],
+          second_atta_name.id => [
+            {table: 'taxa', field: 'name_id', id: second_atta.id},
+          ],
+        }
+      }
+    end
+  end
 
-      result = results[second_atta_name.id]
-      result.should_not be_nil
-      result.should have(1).item
-      result = result.first
-      result[:table].should == 'taxa'
-      result[:field].should == 'name_id'
-
+  describe "References" do
+    it "should return references in fields" do
+      atta = create_genus 'Atta'
+      protonym = FactoryGirl.create :protonym, name: atta.name
+      atta.update_attribute :protonym, protonym
+      atta.update_attribute :type_name, atta.name
+      atta.name.references.should =~ [
+        {table: 'taxa', field: 'name_id', id: atta.id},
+        {table: 'taxa', field: 'type_name_id', id: atta.id},
+        {table: 'protonyms', field: 'name_id', id: protonym.id},
+      ]
     end
   end
 

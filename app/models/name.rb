@@ -117,18 +117,45 @@ class Name < ActiveRecord::Base
 
   def self.duplicates
     name_strings = Name.find_by_sql("SELECT * FROM names GROUP by name HAVING COUNT(*) > 1").map(&:name)
-    Name.where name: name_strings
+    Name.where(name: name_strings).order(:name)
   end
 
   def self.duplicates_with_references
-    duplicates.inject({}) do |duplicates, duplicate|
-      duplicates[duplicate.id] = duplicate.references
-      duplicates
+    results = {}
+    duplicates.each do |duplicate|
+      results[duplicate.name] ||= {}
+      results[duplicate.name][duplicate.id] = duplicate.references
     end
+    results
   end
 
   def references
-    [{table: 'taxa', field: 'name_id'}]
+    references = []
+    references.concat references_to_taxon_name
+    references.concat references_to_taxon_type_name
+    references.concat references_to_protonym_name
+    references
+  end
+
+  def references_to_taxon_name
+    Taxon.where(name_id: id).inject([]) do |references, taxon|
+      references << {table: 'taxa', field: 'name_id', id: taxon.id}
+      references
+    end
+  end
+
+  def references_to_taxon_type_name
+    Taxon.where(type_name_id: id).inject([]) do |references, taxon|
+      references << {table: 'taxa', field: 'type_name_id', id: taxon.id}
+      references
+    end
+  end
+
+  def references_to_protonym_name
+    Protonym.where(name_id: id).inject([]) do |references, protonym|
+      references << {table: 'protonyms', field: 'name_id', id: protonym.id}
+      references
+    end
   end
 
 end
