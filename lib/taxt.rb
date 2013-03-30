@@ -235,6 +235,7 @@ module Taxt
 
   def self.cleanup show_progress = false
     table_fields = [[Taxon,            [:type_taxt, :headline_notes_taxt, :genus_species_header_notes_taxt]],
+                    [Citation,         [:notes_taxt]],
                     [ReferenceSection, [:title_taxt, :subtitle_taxt, :references_taxt]],
                     [TaxonHistoryItem, [:taxt]]]
     count = 0
