@@ -130,6 +130,7 @@ class Name < ActiveRecord::Base
       results[duplicate.name] ||= {}
       results[duplicate.name][duplicate.id] = duplicate.references
     end
+    Progress.show_results
     results
   end
 
