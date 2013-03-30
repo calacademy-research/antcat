@@ -120,4 +120,15 @@ class Name < ActiveRecord::Base
     Name.where name: name_strings
   end
 
+  def self.duplicates_with_references
+    duplicates.inject({}) do |duplicates, duplicate|
+      duplicates[duplicate.id] = duplicate.references
+      duplicates
+    end
+  end
+
+  def references
+    [{table: 'taxa', field: 'name_id'}]
+  end
+
 end
