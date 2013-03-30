@@ -120,9 +120,13 @@ class Name < ActiveRecord::Base
     Name.where(name: name_strings).order(:name)
   end
 
-  def self.duplicates_with_references
+  def self.duplicates_with_references options = {}
     results = {}
-    duplicates.each do |duplicate|
+    dupes = duplicates
+    Progress.new_init show_progress: options[:show_progress], total_count: dupes.size, show_errors: true
+    dupes.each do |duplicate|
+      Progress.puts duplicate.name
+      Progress.tally_and_show_progress 1
       results[duplicate.name] ||= {}
       results[duplicate.name][duplicate.id] = duplicate.references
     end
