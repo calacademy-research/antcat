@@ -3,8 +3,8 @@ production:
     hostname: index.websolr.com
     port: 80
     path: <%=
-      require 'environment'
-      $Environment.preview? ? '/solr/86db0cc797f' : '/solr/da3c57802d4'
+      require 'milieu'
+      $Milieu.preview? ? '/solr/86db0cc797f' : '/solr/da3c57802d4'
     %>
     log_level: WARNING
 

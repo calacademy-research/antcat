@@ -1,5 +1,5 @@
 # coding: UTF-8
-class Environment 
+class Milieu
   def initialize server = nil
     server = :local if server.nil? and Rails.env.test?
     @server = server.try(:to_sym) || :production
@@ -17,9 +17,9 @@ class Environment
     contents = read_server_config_file
     case contents
     when 'preview'
-      SandboxEnvironment.new contents
+      SandboxMilieu.new contents
     else
-      RestrictedEnvironment.new contents
+      RestrictedMilieu.new contents
     end
   end
 
@@ -31,7 +31,7 @@ class Environment
 
 end
 
-class RestrictedEnvironment < Environment
+class RestrictedMilieu < Milieu
   def sandbox?; false; end
 
   def title; 'AntCat' end
@@ -51,7 +51,7 @@ class RestrictedEnvironment < Environment
 
 end
 
-class SandboxEnvironment < Environment
+class SandboxMilieu < Milieu
   def sandbox?; true; end
 
   def title; 'Preview of AntCat' end
@@ -71,4 +71,4 @@ class SandboxEnvironment < Environment
 
 end
 
-$Environment = Environment.create
+$Milieu = Milieu.create

@@ -18,7 +18,7 @@
       AntCat.user_can_edit_catalog = #{!!user_can_edit_catalog?};
       AntCat.delete_confirmation_message = "#{previewize('Do you want to delete this reference?')}";
 
-    = javascript_include_tag 'google_analytics' if Rails.env == 'production' && $Environment.production?
+    = javascript_include_tag 'google_analytics' if Rails.env == 'production' && $Milieu.production?
     = javascript_include_tag 'application'
 
     = stylesheet_link_tag 'blueprint/screen', media: 'screen, projection'

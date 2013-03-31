@@ -1,21 +1,21 @@
 # coding: UTF-8
 module ApplicationHelper
-  require 'environment'
+  require 'milieu'
 
   def user_can_edit_references?
-    $Environment.user_can_edit_references? current_user
+    $Milieu.user_can_edit_references? current_user
   end
   def user_can_edit_catalog?
-    $Environment.user_can_edit_catalog? current_user
+    $Milieu.user_can_edit_catalog? current_user
   end
   def user_is_editor?
-    $Environment.user_is_editor? current_user
+    $Milieu.user_is_editor? current_user
   end
 
   def make_title title
     string = ''.html_safe
     string << "#{title} - " if title
-    string << $Environment.title
+    string << $Milieu.title
     string << (Rails.env.production? ? '' : " (#{Rails.env})")
     string
   end
@@ -30,7 +30,7 @@ module ApplicationHelper
   end
 
   def previewize string
-    $Environment.previewize string
+    $Milieu.previewize string
   end
 
   def feedback_link
@@ -44,8 +44,8 @@ http://antcat.org
       EOS
   end
 
-  def environment_indicator
-    $Environment.preview? ? (content_tag :div, 'preview', class: :preview) : ''
+  def milieu_indicator
+    $Milieu.preview? ? (content_tag :div, 'preview', class: :preview) : ''
   end
 
   def add_period_if_necessary string
