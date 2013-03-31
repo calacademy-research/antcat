@@ -6,15 +6,7 @@ class Environment
   end
 
   def production?; @server == :production end
-  def preview?; @server == :preview end
-
-  def user_can_edit_references? user
-    user_is_editor? user
-  end
-
-  def user_can_edit_catalog? user
-    user && user.can_edit_catalog?
-  end
+  def preview?;    @server == :preview end
 
   def previewize string
     return string + ' (preview)' if preview?
@@ -49,6 +41,14 @@ class RestrictedEnvironment < Environment
     user
   end
 
+  def user_can_edit_references? user
+    user
+  end
+
+  def user_can_edit_catalog? user
+    user && user.can_edit_catalog?
+  end
+
 end
 
 class SandboxEnvironment < Environment
@@ -57,7 +57,15 @@ class SandboxEnvironment < Environment
   def title; 'Preview of AntCat' end
   def can_upload_pdfs?; false end
 
-  def user_is_editor? _
+  def user_is_editor? user
+    true
+  end
+
+  def user_can_edit_references? _
+    true
+  end
+
+  def user_can_edit_catalog? _
     true
   end
 
