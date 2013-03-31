@@ -21,6 +21,7 @@ Feature: Editing a taxon
     Given there is a genus called "Calyptites"
     When I go to the catalog page for "Calyptites"
     And I press "Edit"
+    Then I should be on the edit page for "Calyptites"
 
   # Don't allow changing the name for now
   #Scenario: Editing a family's name
