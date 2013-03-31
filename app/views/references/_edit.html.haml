@@ -70,7 +70,7 @@
             = document_form.text_field :url
             = label_tag :document_public, 'Internal but public?'
             = document_form.check_box :public
-        - unless $Environment.preview?
+        - if $Environment.can_upload_pdfs?
           %tr
             %td= label_tag :document_file, 'Upload'
             %td= document_form.file_field :file
