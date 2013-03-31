@@ -1,6 +1,7 @@
 # coding: UTF-8
 module ApplicationHelper
   require 'environment'
+
   def user_can_edit_references?
     $Environment.user_can_edit_references? current_user
   end
