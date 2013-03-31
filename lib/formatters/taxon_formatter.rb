@@ -190,7 +190,7 @@ class Formatters::TaxonFormatter
   end
 
   def link_to_edit_taxon
-    return unless $Environment.user_can_edit_catalog? @user
+    return unless $Milieu.user_can_edit_catalog? @user
     content_tag :button, 'Edit', type: 'button', id: 'edit_button', 'data-edit-location' => "/taxa/#{@taxon.id}/edit"
   end
 

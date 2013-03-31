@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   before_filter :save_location
 
   def preview?
-    $Environment.preview?
+    $Milieu.preview?
   end
 
   def save_location

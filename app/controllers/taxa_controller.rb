@@ -4,7 +4,7 @@ class TaxaController < ApplicationController
   skip_before_filter :authenticate, if: :preview?
 
   def authenticate
-    authenticate_user! && $Environment.user_can_edit_catalog?(current_user)
+    authenticate_user! && $Milieu.user_can_edit_catalog?(current_user)
   end
 
   def new

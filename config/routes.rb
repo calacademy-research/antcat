@@ -1,6 +1,4 @@
 # coding: UTF-8
-require 'environment'
-
 AntCat::Application.routes.draw do
 
   root to: 'catalog#show'
