@@ -4,4 +4,9 @@ class User < ActiveRecord::Base
          :rememberable, :trackable, :validatable, :invitable
 
   attr_accessible :email, :password, :password_confirmation
+
+  def is_editor?
+    true
+  end
+
 end
