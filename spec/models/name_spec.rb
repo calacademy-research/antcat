@@ -178,10 +178,10 @@ describe Name do
       results.should == {
         'Atta' => {
           first_atta_name.id => [
-            {table: 'taxa', field: 'name_id', id: first_atta.id},
+            {table: 'taxa', field: :name_id, id: first_atta.id},
           ],
           second_atta_name.id => [
-            {table: 'taxa', field: 'name_id', id: second_atta.id},
+            {table: 'taxa', field: :name_id, id: second_atta.id},
           ],
         }
       }
@@ -208,9 +208,9 @@ describe Name do
       atta.update_attribute :protonym, protonym
       atta.update_attribute :type_name, atta.name
       atta.name.references.should =~ [
-        {table: 'taxa', field: 'name_id', id: atta.id},
-        {table: 'taxa', field: 'type_name_id', id: atta.id},
-        {table: 'protonyms', field: 'name_id', id: protonym.id},
+        {table: 'taxa', field: :name_id, id: atta.id},
+        {table: 'taxa', field: :type_name_id, id: atta.id},
+        {table: 'protonyms', field: :name_id, id: protonym.id},
       ]
     end
     it "should return references in taxt" do
@@ -218,8 +218,8 @@ describe Name do
       eciton = create_genus 'Eciton'
       eciton.update_attribute :type_taxt, "{nam #{atta.name.id}}"
       atta.name.references.should =~ [
-        {table: 'taxa', field: 'name_id', id: atta.id},
-        {table: 'taxa', field: 'type_taxt', id: eciton.id},
+        {table: 'taxa', field: :name_id, id: atta.id},
+        {table: 'taxa', field: :type_taxt, id: eciton.id},
       ]
     end
   end

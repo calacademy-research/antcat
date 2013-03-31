@@ -151,21 +151,21 @@ class Name < ActiveRecord::Base
 
   def references_to_taxon_name
     Taxon.where(name_id: id).inject([]) do |references, taxon|
-      references << {table: 'taxa', field: 'name_id', id: taxon.id}
+      references << {table: 'taxa', field: :name_id, id: taxon.id}
       references
     end
   end
 
   def references_to_taxon_type_name
     Taxon.where(type_name_id: id).inject([]) do |references, taxon|
-      references << {table: 'taxa', field: 'type_name_id', id: taxon.id}
+      references << {table: 'taxa', field: :type_name_id, id: taxon.id}
       references
     end
   end
 
   def references_to_protonym_name
     Protonym.where(name_id: id).inject([]) do |references, protonym|
-      references << {table: 'protonyms', field: 'name_id', id: protonym.id}
+      references << {table: 'protonyms', field: :name_id, id: protonym.id}
       references
     end
   end
