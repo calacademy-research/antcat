@@ -38,7 +38,7 @@ Feature: Editing a taxon
     Then I should see "Atta major" in the header
     When I go to the edit page for "Atta major"
     And I save the form
-    And I wait for a while
+    And I wait for a bit
     Then I should see "Atta major" in the header
 
   #Scenario: Trying to enter a blank name
