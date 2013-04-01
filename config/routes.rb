@@ -7,15 +7,15 @@ AntCat::Application.routes.draw do
   match     '/authors/all', to: 'authors#all', via: :get
   match     '/authors/merge', to: 'authors#merge', via: :post
 
-  match     'catalog/index/(:id)' => 'catalog#show', as: :catalog, via: :get # for compatibility
-  match     'catalog/search' => 'catalog#search', as: :catalog, via: :get
-  match     'catalog/show_unavailable_subfamilies', as: :catalog, via: :get
-  match     'catalog/hide_unavailable_subfamilies', as: :catalog, via: :get
-  match     'catalog/show_tribes' => 'catalog#show_tribes', as: :catalog, via: :get
-  match     'catalog/hide_tribes' => 'catalog#hide_tribes', as: :catalog, via: :get
+  match     'catalog/index/(:id)'    => 'catalog#show',           as: :catalog, via: :get # for compatibility
+  match     'catalog/search'         => 'catalog#search',         as: :catalog, via: :get
+  match     'catalog/show_unavailable_subfamilies',               as: :catalog, via: :get
+  match     'catalog/hide_unavailable_subfamilies',               as: :catalog, via: :get
+  match     'catalog/show_tribes'    => 'catalog#show_tribes',    as: :catalog, via: :get
+  match     'catalog/hide_tribes'    => 'catalog#hide_tribes',    as: :catalog, via: :get
   match     'catalog/show_subgenera' => 'catalog#show_subgenera', as: :catalog, via: :get
   match     'catalog/hide_subgenera' => 'catalog#hide_subgenera', as: :catalog, via: :get
-  match     'catalog/(:id)' => 'catalog#show', as: :catalog, via: :get
+  match     'catalog/(:id)'          => 'catalog#show',           as: :catalog, via: :get
 
   resources :bolton_references
   match     '/documents/:id/:file_name', to: 'references#download', file_name: /.+/, via: :get
@@ -23,11 +23,10 @@ AntCat::Application.routes.draw do
   resources :publishers, only: [:index]
   resources :references, only: [:index, :update, :create, :destroy]
   match     '/antcat_references.utf8.endnote_import', to: 'references#index', format: :endnote_import, as: :endnote_import
-  resources :styles, only: [:index]
 
   resources :taxa, controller: :taxa
-  match     '/taxa/:id/reverse_synonymy' => 'taxa#reverse_synonymy'
-  match     '/taxa/:id/elevate_to_species' => 'taxa#elevate_to_species'
+  match     '/taxa/:id/reverse_synonymy'    => 'taxa#reverse_synonymy'
+  match     '/taxa/:id/elevate_to_species'  => 'taxa#elevate_to_species'
 
   match     '/taxa/:taxon_id/taxon_history_items', method: :post, to: 'taxon_history_items#create'
   match     '/taxa/:taxon_id/taxon_history_items/:id', method: :put, to: 'taxon_history_items#update'
