@@ -3,7 +3,10 @@ class CatalogController < ApplicationController
   before_filter :get_parameters
 
   def show
-    @parameters[:id] = Family.first.id if @parameters[:id].blank?
+    if @parameters[:id].blank?
+      @parameters[:id] = Family.first.id
+      @show_short_taxon = true
+    end
     do_search
     setup_taxon_and_index
   end
