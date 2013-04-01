@@ -7,7 +7,7 @@ Feature: Expanding reference keys
 
   Scenario: Expanding a reference key in the catalog
     Given the Formicidae family exists
-    When I go to the catalog
+    When I go to the catalog page for "Formicidae"
     Then I should see the reference key "Latreille, 1809"
       And I should not see the reference key expansion
     When I click the reference key

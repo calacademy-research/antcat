@@ -1,4 +1,4 @@
--# Locals: taxon
+-# Locals: taxon, show_short_taxon
 
 - height = session[:taxon_window_height]
 .antcat_taxon{'data-taxon-window-height' => height ? height : ""}
@@ -6,13 +6,14 @@
   - formatter = Formatters::TaxonFormatter.new taxon, current_user
   = formatter.header
   = formatter.statistics
-  = formatter.genus_species_header_notes_taxt
-  = formatter.headline
+  - unless show_short_taxon
+    = formatter.genus_species_header_notes_taxt
+    = formatter.headline
 
-  - if taxon.history_items.present?
-    .history
-      - for history_item in taxon.history_items do
-        = Taxt.to_sentence history_item.taxt, current_user
+    - if taxon.history_items.present?
+      .history
+        - for history_item in taxon.history_items do
+          = Taxt.to_sentence history_item.taxt, current_user
 
-  = formatter.child_lists
-  = formatter.references
+    = formatter.child_lists
+    = formatter.references

@@ -17,8 +17,16 @@ Feature: Using the catalog
     And a species exists with a name of "abruptus" and a genus of "Camponotus" and a taxonomic history of "abruptus history"
 
   @javascript
-  Scenario: Seeing the family
+  Scenario: Going to the root
     When I go to the catalog
+    Then I should see "Formicidae" in the contents
+    And I should see "Extant: 1 valid subfamily, 1 valid tribe, 3 valid genera, 2 valid species, 1 valid subspecies"
+    And I should see "Fossil: 1 valid genus"
+    And I should not see "Subfamily of Formicidae: Dolichoderinae."
+
+  @javascript
+  Scenario: Seeing the family when it's been explicitly requested
+    When I go to the catalog page for "Formicidae"
     Then I should see "Formicidae" in the contents
     And I should see "valid" in the contents
     And I should see "Extant: 1 valid subfamily, 1 valid tribe, 3 valid genera, 2 valid species, 1 valid subspecies"
