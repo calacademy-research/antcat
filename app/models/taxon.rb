@@ -9,10 +9,14 @@ class Taxon < ActiveRecord::Base
   belongs_to  :type_name, class_name: 'Name', foreign_key: :type_name_id
   accepts_nested_attributes_for :name, :protonym, :type_name
 
-  before_save :set_name_caches
+  before_save :set_name_caches, :delete_synonyms
   def set_name_caches
     self.name_cache = name.name
     self.name_html_cache = name.name_html
+  end
+  def delete_synonyms
+    return unless changes['status'].try(:first) == 'synonym'
+    synonyms_as_junior.destroy_all if synonyms_as_junior.present?
   end
 
   ###############################################
@@ -122,13 +126,13 @@ class Taxon < ActiveRecord::Base
     Synonym.where(junior_synonym_id: senior, senior_synonym_id: self).destroy_all
     Synonym.where(senior_synonym_id: senior, junior_synonym_id: self).destroy_all
     Synonym.create! junior_synonym: self, senior_synonym: senior
-    senior.update_attribute :status, 'valid'
-    update_attribute :status, 'synonym'
+    senior.update_attributes! status: 'valid'
+    update_attributes! status: 'synonym'
   end
 
   def become_not_a_junior_synonym_of senior
     Synonym.where('junior_synonym_id = ? AND senior_synonym_id = ?', id, senior).destroy_all
-    update_attribute :status, 'valid' if senior_synonyms.empty?
+    update_attributes! status: 'valid' if senior_synonyms.empty?
   end
 
   ###############################################

@@ -512,4 +512,21 @@ describe Taxon do
     end
   end
 
+  describe "Deleting synonyms when status changed" do
+    it "should delete synonyms when the status changes from 'synonym'" do
+      atta = create_genus
+      eciton = create_genus
+      atta.become_junior_synonym_of eciton
+      atta.should be_synonym
+      atta.should have(1).senior_synonym
+      eciton.should have(1).junior_synonym
+
+      atta.update_attribute :status, 'valid'
+
+      atta.should_not be_synonym
+      atta.should have(0).senior_synonyms
+      eciton.should have(0).junior_synonyms
+    end
+  end
+
 end
