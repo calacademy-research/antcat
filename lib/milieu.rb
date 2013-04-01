@@ -32,8 +32,6 @@ class Milieu
 end
 
 class RestrictedMilieu < Milieu
-  def sandbox?; false; end
-
   def title; 'AntCat' end
   def can_upload_pdfs?; true end
 
@@ -52,8 +50,6 @@ class RestrictedMilieu < Milieu
 end
 
 class SandboxMilieu < Milieu
-  def sandbox?; true; end
-
   def title; 'Preview of AntCat' end
   def can_upload_pdfs?; false end
 
