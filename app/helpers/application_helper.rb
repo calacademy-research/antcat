@@ -11,6 +11,9 @@ module ApplicationHelper
   def user_is_editor?
     $Milieu.user_is_editor? current_user
   end
+  def user_can_upload_pdfs?
+    $Milieu.user_can_upload_pdfs? current_user
+  end
 
   def make_title title
     string = ''.html_safe
