@@ -21,6 +21,7 @@ Spork.prefork do
 
   require 'webmock/cucumber'
   WebMock.disable_net_connect! allow_localhost: true
+  WebMock.stub_request :put, 'https://antcat.s3.amazonaws.com/1/21105.pdf'
 end
 
 Spork.each_run{FactoryGirl.reload}
