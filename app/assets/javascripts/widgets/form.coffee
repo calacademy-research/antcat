@@ -2,7 +2,6 @@ class AntCat.Form
 
   constructor: (@element, @options = {}) ->
     AntCat.log 'Form constructor: @element.size() != 1' unless @element.size() == 1
-    @options.field = true unless @options.field?
     @element.addClass 'antcat_form'
     @initialize_buttons() if @needs_to_initialize_buttons_in_constructor()
 
@@ -40,7 +39,7 @@ class AntCat.Form
     @element.find('input[type=text]:visible:first, textarea:visible:first').first()
 
   close: =>
-    @element.hide() unless @options.field
+    @element.hide()
     @options.on_close() if @options.on_close
 
   submit: =>
