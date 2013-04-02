@@ -75,3 +75,13 @@ Feature: Editing a history item
     When I click the "Add History" button
     And I press "Cancel"
     Then the history should be empty
+
+  Scenario: Deleting a history item
+    Given a genus exists with a name of "Eciton" and a taxonomic history of "Eciton history"
+    When I go to the edit page for "Eciton"
+    Then I should see "Eciton history"
+    When I click the history item
+    And I will confirm on the next step
+    And I press "Delete"
+    Then I should be on the edit page for "Eciton"
+    And the history should be empty
