@@ -33,6 +33,11 @@ Given /a subfamily exists with a name of "(.*?)" and a taxonomic history of "(.*
   taxon.history_items.create! taxt: history
 end
 
+Given /a genus exists with a name of "(.*?)" and a taxonomic history of "(.*?)"/ do |name, history|
+  genus = create_genus name
+  genus.history_items.create! taxt: history
+end
+
 Given /a tribe exists with a name of "(.*?)"(?: and a subfamily of "(.*?)")?(?: and a taxonomic history of "(.*?)")?/ do |taxon_name, parent_name, history|
   subfamily = parent_name && (Subfamily.find_by_name(parent_name) || FactoryGirl.create(:subfamily, name: FactoryGirl.create(:name, name: parent_name)))
   taxon = FactoryGirl.create :tribe, name: FactoryGirl.create(:name, name: taxon_name), subfamily: subfamily
