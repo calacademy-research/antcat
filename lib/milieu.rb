@@ -33,7 +33,8 @@ end
 
 class RestrictedMilieu < Milieu
   def title; 'AntCat' end
-  def can_upload_pdfs?; true end
+
+  def user_can_upload_pdfs? _; true end
 
   def user_is_editor? user
     user
@@ -51,7 +52,8 @@ end
 
 class SandboxMilieu < Milieu
   def title; 'Preview of AntCat' end
-  def can_upload_pdfs?; false end
+
+  def user_can_upload_pdfs? _; false end
 
   def user_is_editor? user
     true
