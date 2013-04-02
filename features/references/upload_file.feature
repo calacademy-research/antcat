@@ -13,7 +13,6 @@ Feature: Upload a file
     And I follow "edit"
     And I choose a file to upload
     And I press the "Save" button
-    And I wait for a while
     Then I should see a link to that file
 
   Scenario: Clearing the URL after uploading the file
