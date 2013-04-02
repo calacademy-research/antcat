@@ -4,10 +4,6 @@ class AntCat.TaxonForm extends AntCat.Form
     AntCat.log 'TaxonForm constructor: @add_history_item_button.size() != 1' unless @add_history_item_button.size() == 1
     @add_history_item_button.click => @add_history_item(); false
 
-    @add_history_item_button = @element.find '.history_section_buttons button'
-    AntCat.log 'TaxonForm constructor: @add_history_item_button.size() != 1' unless @add_history_item_button.size() == 1
-    @add_history_item_button.click => @add_history_item(); false
-
     @element.find('#reverse_synonymy').click => @reverse_synonymy(); false
     @element.find('#elevate_to_species').click => @elevate_to_species(); false
 
