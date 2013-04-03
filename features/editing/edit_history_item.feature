@@ -50,7 +50,6 @@ Feature: Editing a history item
     #And I click the history item
     #And I press "Cancel"
     #And I click the history item
-    #And I click the history item taxt editor field
     #And I press that history item's "Insert Name" button
     #Then I should see the name popup
 
@@ -58,6 +57,7 @@ Feature: Editing a history item
     When I go to the edit page for "Atta"
     Then the history should be empty
     When I click the "Add History" button
+    Then I should not see the "Delete" button for the history item
     And I edit the history item to "Abc"
     And I save my changes
     Then the history should be "Abc"
@@ -81,6 +81,7 @@ Feature: Editing a history item
     When I go to the edit page for "Eciton"
     Then I should see "Eciton history"
     When I click the history item
+    Then I should see the "Delete" button for the history item
     And I will confirm on the next step
     And I press "Delete"
     Then I should be on the edit page for "Eciton"
