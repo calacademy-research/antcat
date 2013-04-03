@@ -33,9 +33,17 @@ Given /a subfamily exists with a name of "(.*?)" and a taxonomic history of "(.*
   taxon.history_items.create! taxt: history
 end
 
-Given /a genus exists with a name of "(.*?)" and a taxonomic history of "(.*?)"/ do |name, history|
+Given /^there is a genus with a name of "(.*?)" and a taxonomic history of "(.*?)"$/ do |name, history|
   genus = create_genus name
   genus.history_items.create! taxt: history
+end
+
+Given /^a genus exists with a name of "(.*?)" and a subfamily of "(.*?)"(?: and a taxonomic history of "(.*?)")?(?: and a status of "(.*?)")?$/ do |taxon_name, parent_name, history, status|
+  status ||= 'valid'
+  subfamily = parent_name && (Subfamily.find_by_name(parent_name) || FactoryGirl.create(:subfamily, name: FactoryGirl.create(:name, name: parent_name)))
+  taxon =FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: taxon_name), subfamily: subfamily, tribe: nil, status: status
+  history = 'none' unless history.present?
+  taxon.history_items.create! taxt: history 
 end
 
 Given /a tribe exists with a name of "(.*?)"(?: and a subfamily of "(.*?)")?(?: and a taxonomic history of "(.*?)")?/ do |taxon_name, parent_name, history|
@@ -43,14 +51,6 @@ Given /a tribe exists with a name of "(.*?)"(?: and a subfamily of "(.*?)")?(?: 
   taxon = FactoryGirl.create :tribe, name: FactoryGirl.create(:name, name: taxon_name), subfamily: subfamily
   history = 'none' unless history.present?
   taxon.history_items.create! taxt: history
-end
-
-Given /a genus exists with a name of "(.*?)" and a subfamily of "(.*?)"(?: and a taxonomic history of "(.*?)")?(?: and a status of "(.*?)")?/ do |taxon_name, parent_name, history, status|
-  status ||= 'valid'
-  subfamily = parent_name && (Subfamily.find_by_name(parent_name) || FactoryGirl.create(:subfamily, name: FactoryGirl.create(:name, name: parent_name)))
-  taxon =FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: taxon_name), subfamily: subfamily, tribe: nil, status: status
-  history = 'none' unless history.present?
-  taxon.history_items.create! taxt: history 
 end
 
 Given /a genus exists with a name of "(.*?)" and no subfamily(?: and a taxonomic history of "(.*?)")?/ do |taxon_name, history|

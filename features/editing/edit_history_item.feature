@@ -77,7 +77,7 @@ Feature: Editing a history item
     Then the history should be empty
 
   Scenario: Deleting a history item
-    Given a genus exists with a name of "Eciton" and a taxonomic history of "Eciton history"
+    Given there is a genus with a name of "Eciton" and a taxonomic history of "Eciton history"
     When I go to the edit page for "Eciton"
     Then I should see "Eciton history"
     When I click the history item
