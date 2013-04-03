@@ -80,3 +80,8 @@ end
 Then /^I should see an error message about the unfound reference$/ do
   step %{I should see "The reference '{123}' could not be found. Was the ID changed?"}
 end
+
+Then /^I should (not )?see the "Delete" button for the history item$/ do |should_not|
+  selector = should_not ? :should_not : :should
+  page.send selector, have_css('button.delete')
+end

@@ -12,4 +12,5 @@
     .buttons
       %button.submit.ui-priority-primary Save
       %button.cancel.ui-priority-secondary Cancel
-      %button.delete.ui-priority-secondary{'data-history-id' => item.id} Delete
+      - if item.persisted?
+        %button.delete.ui-priority-secondary Delete
