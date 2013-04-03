@@ -40,7 +40,7 @@ class AntCat.HistoryItemForm extends AntCat.NestedForm
       .on('click', @delete).end()
 
   delete: =>
-    #return false unless confirm 'Do you want to delete this history item?'
+    return false unless confirm 'Do you want to delete this history item?'
     @start_throbbing()
     url = @form().attr('action')
     $.post url, {_method: 'delete'}, null, 'json'
