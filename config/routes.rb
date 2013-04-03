@@ -21,15 +21,18 @@ AntCat::Application.routes.draw do
   match     '/documents/:id/:file_name', to: 'references#download', file_name: /.+/, via: :get
   resources :journals
   resources :publishers, only: [:index]
+
   resources :references, only: [:index, :update, :create, :destroy]
+
   match     '/antcat_references.utf8.endnote_import', to: 'references#index', format: :endnote_import, as: :endnote_import
 
-  resources :taxa, controller: :taxa
-  match     '/taxa/:id/reverse_synonymy'    => 'taxa#reverse_synonymy'
-  match     '/taxa/:id/elevate_to_species'  => 'taxa#elevate_to_species'
-
-  match     '/taxa/:taxon_id/taxon_history_items', method: :post, to: 'taxon_history_items#create'
-  match     '/taxa/:taxon_id/taxon_history_items/:id', method: :put, to: 'taxon_history_items#update'
+  resources 'taxa' do
+    resources 'taxon_history_items', only: [:update, :create, :destroy]
+    member do
+      get 'reverse_synonymy'
+      get 'elevate_to_species'
+    end
+  end
 
   resource :taxon_window_height, only: [:update]
 
