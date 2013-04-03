@@ -46,6 +46,7 @@ class AntCat.HistoryItemForm extends AntCat.NestedForm
     $.post url, {_method: 'delete'}, null, 'json'
     @close()
     @options.on_delete() if @options.on_delete
+    @element.closest('.history_item').remove()
     false
 
       #success: =>
