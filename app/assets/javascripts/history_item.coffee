@@ -32,3 +32,24 @@ class AntCat.HistoryItemForm extends AntCat.NestedForm
   constructor: (@element, @options = {}) ->
     super
     @element.find('.taxt_editor').taxt_editor()
+
+  initialize_buttons: =>
+    super
+    @buttons.find('.delete')
+      .off('click')
+      .on('click', @delete).end()
+
+  delete: =>
+    #return false unless confirm 'Do you want to delete this history item?'
+    @start_throbbing()
+    url = @form().attr('action')
+    $.post url, {_method: 'delete'}, null, 'json'
+    @close()
+    @options.on_delete() if @options.on_delete
+    false
+
+      #success: =>
+        #@stop_throbbing()
+      #error: (jq_xhr, text_status, error_thrown) =>
+        #@stop_throbbing()
+        #alert "Oh, shoot. It looks like a bug prevented this item from being saved.\n\nPlease report this situation to Mark Wilden (mark@mwilden.com) and we'll fix it.\n\n#{error_thrown}" unless AntCat.testing

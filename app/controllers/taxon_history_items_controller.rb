@@ -13,6 +13,13 @@ class TaxonHistoryItemsController < ApplicationController
     render_json true
   end
 
+  def destroy
+    @item = TaxonHistoryItem.find params[:id]
+    @item.destroy
+    json = {success: true}.to_json
+    render json: json, content_type: 'text/html'
+  end
+
   ###
 
   def render_json is_new
