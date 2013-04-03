@@ -48,9 +48,3 @@ class AntCat.HistoryItemForm extends AntCat.NestedForm
     @options.on_delete() if @options.on_delete
     @element.closest('.history_item').remove()
     false
-
-      #success: =>
-        #@stop_throbbing()
-      #error: (jq_xhr, text_status, error_thrown) =>
-        #@stop_throbbing()
-        #alert "Oh, shoot. It looks like a bug prevented this item from being saved.\n\nPlease report this situation to Mark Wilden (mark@mwilden.com) and we'll fix it.\n\n#{error_thrown}" unless AntCat.testing
