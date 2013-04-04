@@ -7,8 +7,8 @@ Feature: Editing a history item
 
   Background:
     Given the Formicidae family exists
-    And a subfamily exists with a name of "Dolichoderinae" and a taxonomic history of "Taxonomic history"
-    And there is a genus called "Atta"
+    And there is a subfamily "Dolichoderinae" with taxonomic history "Taxonomic history"
+    And there is a genus "Atta"
     And I log in
 
   Scenario: Editing a history item
@@ -77,7 +77,7 @@ Feature: Editing a history item
     Then the history should be empty
 
   Scenario: Deleting a history item
-    Given there is a genus with a name of "Eciton" and a taxonomic history of "Eciton history"
+    Given there is a genus "Eciton" with taxonomic history "Eciton history"
     When I go to the edit page for "Eciton"
     Then I should see "Eciton history"
     When I click the history item

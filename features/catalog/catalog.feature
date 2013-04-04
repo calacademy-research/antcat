@@ -6,7 +6,7 @@ Feature: Using the catalog
 
   Background: 
     Given the Formicidae family exists
-    And a subfamily exists with a name of "Dolichoderinae" and a taxonomic history of "Dolichoderinae history"
+    And there is a subfamily "Dolichoderinae" with taxonomic history "Dolichoderinae history"
     And a tribe exists with a name of "Dolichoderini" and a subfamily of "Dolichoderinae" and a taxonomic history of "Dolichoderini history"
     And a genus exists with a name of "Dolichoderus" and a tribe of "Dolichoderini" and a taxonomic history of "Dolichoderus history"
     And a genus exists with a name of "Atta" and no subfamily and a taxonomic history of "Atta history"
