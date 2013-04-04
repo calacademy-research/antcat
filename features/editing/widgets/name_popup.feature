@@ -8,7 +8,7 @@ Feature: Name popup
     Then I should not see "Name can't be blank"
 
   Scenario: Find typed taxon
-    Given there is a genus called "Atta"
+    Given there is a genus "Atta"
     When I go to the name popup test page
     And I fill in "name_string" with "Atta"
     And I press "OK"

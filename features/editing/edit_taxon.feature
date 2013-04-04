@@ -6,26 +6,26 @@ Feature: Editing a taxon
   So people use AntCat
 
   Scenario: Trying to edit without being logged in
-    Given there is a genus called "Calyptites"
+    Given there is a genus "Calyptites"
     When I go to the edit page for "Calyptites"
     And I should be on the login page
 
   Scenario: Trying to edit without catalog editing rights
-    Given there is a genus called "Calyptites"
+    Given there is a genus "Calyptites"
     And I log in as a bibliography editor
     When I go to the catalog page for "Calyptites"
     Then I should not see "Edit"
 
   @preview
   Scenario: Trying to edit without catalog editing rights on preview server
-    Given there is a genus called "Calyptites"
+    Given there is a genus "Calyptites"
     When I go to the catalog page for "Calyptites"
     And I press "Edit"
     Then I should be on the edit page for "Calyptites"
 
   # Don't allow changing the name for now
   #Scenario: Editing a family's name
-    #Given there is a family called "Formicidae"
+    #Given there is a family "Formicidae"
     #And I log in
     #When I go to the edit page for "Formicidae"
     #And I set the name to "Formica"
@@ -43,7 +43,7 @@ Feature: Editing a taxon
     Then I should see "Atta major" in the header
 
   #Scenario: Trying to enter a blank name
-    #Given there is a genus called "Calyptites"
+    #Given there is a genus "Calyptites"
     #And I log in
     #When I go to the edit page for "Calyptites"
     #And I set the name to ""
@@ -51,8 +51,8 @@ Feature: Editing a taxon
     #Then I should see "Name can't be blank"
 
   #Scenario: Setting a genus's name to an existing one
-    #Given there is a genus called "Calyptites"
-    #And there is a genus called "Atta"
+    #Given there is a genus "Calyptites"
+    #And there is a genus "Atta"
     #And I log in
     #When I go to the edit page for "Atta"
     #And I set the name to "Calyptites"
@@ -72,8 +72,8 @@ Feature: Editing a taxon
   # These scenarios both bring up the name popup when Insert Name
   # is clicked, but also submits the form
   #Scenario: Changing taxt
-    #Given there is a genus called "Atta"
-    #And there is a genus called "Eciton"
+    #Given there is a genus "Atta"
+    #And there is a genus "Eciton"
     #And I log in
     #When I go to the catalog page for "Atta"
     #Then I should not see "Eciton"
@@ -86,8 +86,8 @@ Feature: Editing a taxon
     #Then I should not be on the catalog page for "Atta"
 
   #Scenario: Changing reference in taxt
-    #Given there is a genus called "Atta"
-    #And there is a genus called "Eciton"
+    #Given there is a genus "Atta"
+    #And there is a genus "Eciton"
     #And I log in
     #When I go to the catalog page for "Atta"
     #And I press "Edit"
@@ -97,7 +97,7 @@ Feature: Editing a taxon
     #Then I should not be on the catalog page for "Atta"
 
   Scenario: Cancelling
-    Given there is a genus called "Calyptites"
+    Given there is a genus "Calyptites"
     And I log in
     When I go to the edit page for "Calyptites"
     And I select "subfamily" from "taxon_incertae_sedis_in"
@@ -105,8 +105,8 @@ Feature: Editing a taxon
     Then I should not see "incertae sedis" in the header
 
   Scenario: Changing the protonym name
-    Given there is a genus called "Atta" with a protonym name of "Atta"
-    And there is a genus called "Eciton"
+    Given there is a genus "Atta" with protonym name "Atta"
+    And there is a genus "Eciton"
     And I log in
     When I go to the edit page for "Atta"
     And I click the protonym name field
@@ -119,7 +119,7 @@ Feature: Editing a taxon
     Given these references exist
       | authors | citation   | title | year |
       | Fisher  | Psyche 3:3 | Ants  | 2004 |
-    Given there is a genus called "Eciton"
+    Given there is a genus "Eciton"
     And I log in
     When I go to the edit page for "Eciton"
     And I click the authorship field
@@ -131,7 +131,7 @@ Feature: Editing a taxon
     Then I should see "Fisher 2004. Ants. Psyche 3:3." in the headline
 
   Scenario: Changing the type name
-    Given there is a genus called "Atta" with a type name of "Atta major"
+    Given there is a genus "Atta" with type name "Atta major"
     And there is a species called "Atta major"
     And I log in
     When I go to the edit page for "Atta"
@@ -142,7 +142,7 @@ Feature: Editing a taxon
     Then I should see "Atta major" in the headline
 
   Scenario: Changing incertae sedis
-    Given there is a genus called "Atta" that is incertae sedis in the subfamily
+    Given there is a genus "Atta" that is incertae sedis in the subfamily
     When I log in
     And I go to the catalog page for "Atta"
     Then I should see "incertae sedis in subfamily"

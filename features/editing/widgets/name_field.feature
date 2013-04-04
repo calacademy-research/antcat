@@ -2,7 +2,7 @@
 Feature: Name field
 
   Scenario: Find typed taxon
-    Given there is a genus called "Atta"
+    Given there is a genus "Atta"
     When I go to the name field test page
     And I click the name field
     And I fill in "name_string" with "Atta"
