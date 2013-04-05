@@ -1,3 +1,4 @@
+# coding: UTF-8
 class SubgenusName < GenusGroupName
 
   def self.get_name data

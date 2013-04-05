@@ -1,3 +1,4 @@
+# coding: UTF-8
 class GenusName < GenusGroupName
 
   def self.parse_words words
