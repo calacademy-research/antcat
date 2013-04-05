@@ -529,4 +529,11 @@ describe Taxon do
     end
   end
 
+  describe "Versioning" do
+    it "should record versions" do
+      taxon = create_genus
+      taxon.versions.last.event.should == 'create'
+    end
+  end
+
 end

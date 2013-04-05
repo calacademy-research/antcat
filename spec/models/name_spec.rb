@@ -224,4 +224,11 @@ describe Name do
     end
   end
 
+  describe "Versioning" do
+    it "should record versions" do
+      genus = create_genus
+      genus.name.versions.last.event.should == 'create'
+    end
+  end
+
 end

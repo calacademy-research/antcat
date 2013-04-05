@@ -5,6 +5,8 @@ class Protonym < ActiveRecord::Base
   belongs_to  :name
   validates   :name, presence: true
 
+  has_paper_trail
+
   accepts_nested_attributes_for :name, :authorship
 
   def self.import data

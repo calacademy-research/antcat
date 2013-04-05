@@ -7,6 +7,7 @@ class Reference < ActiveRecord::Base
   attr_accessor :publisher_string
   attr_accessor :journal_name
 
+  has_paper_trail
 
   # associations
   has_many    :reference_author_names, :order => :position

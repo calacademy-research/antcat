@@ -37,4 +37,12 @@ describe Synonym do
       Synonym.where(junior_synonym_id: @junior, senior_synonym_id: @senior).count.should == 1
     end
   end
+
+  describe "Versioning" do
+    it "should record versions" do
+      synonym = FactoryGirl.create :synonym
+      synonym.versions.last.event.should == 'create'
+    end
+  end
+
 end

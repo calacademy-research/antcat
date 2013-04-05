@@ -135,4 +135,11 @@ describe Protonym do
     end
   end
 
+  describe "Versioning" do
+    it "should record versions" do
+      protonym = FactoryGirl.create :protonym
+      protonym.versions.last.event.should == 'create'
+    end
+  end
+
 end
