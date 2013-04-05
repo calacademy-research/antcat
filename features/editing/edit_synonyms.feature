@@ -1,9 +1,8 @@
 @javascript
 Feature: Editing the synonyms section
 
-  #Scenario: Seeing the synonyms section
-    #Given there is a genus "Atta"
-    #And "Eciton" is a junior synonym of "Atta"
-    #When I go to the edit page for "Atta"
-    #Then I should see "Eciton" in the synonyms section
-    #And I should see "Eciton" in the junior synonyms section
+  Scenario: Seeing the synonyms section
+    Given I log in
+    And there is a species "Atta major" which is a junior synonym of "Eciton minor"
+    When I go to the edit page for "Eciton minor"
+    And I should see "Atta major" in the junior synonyms section

@@ -128,15 +128,10 @@
       -#.ui-dialog-content.ui-widget-content.ui-corner-bottom
         -#Reference items
 
+    = render 'synonyms_section', taxon: @taxon
+
     -#%table.fields.synonym_homonym_section.section
       -#%tr
-        -#%td
-          -#.synonym_section
-            -#.section_header.ui-widget-header.ui-corner-top
-              -#Synonyms
-            -#.ui-dialog-content.ui-widget-content.ui-corner-bottom
-              -#Synonym items
-
         -#%td
           -#.homonym_section.ui-corner-all
             -#.section_header.ui-widget-header.ui-corner-top
