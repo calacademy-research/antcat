@@ -1,3 +1,4 @@
+# coding: UTF-8
 class SubfamilyName < FamilyOrSubfamilyName
 
   def self.get_name data

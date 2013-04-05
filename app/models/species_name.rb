@@ -1,3 +1,4 @@
+# coding: UTF-8
 class SpeciesName < SpeciesGroupName
 
   def self.parse_words words

@@ -1,3 +1,4 @@
+# coding: UTF-8
 class SpeciesGroupName < Name
 
   def dagger_html

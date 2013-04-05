@@ -1,3 +1,4 @@
+# coding: UTF-8
 class Name < ActiveRecord::Base
 
   validates :name, presence: true
