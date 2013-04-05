@@ -164,12 +164,6 @@ Given /^subspecies "(.*?)" exists in that species$/ do |name|
   @subspecies = FactoryGirl.create :subspecies, subfamily: @subfamily, genus: @genus, species: @species, name: FactoryGirl.create(:subspecies_name, name: name)
   @subspecies.history_items.create! taxt: "#{name} history"
 end
-Given /^there is a species "([^"]*)" which is a junior synonym of "([^"]*)"$/ do |junior, senior|
-  genus = create_genus 'Solenopsis'
-  senior = create_species senior, genus: genus
-  junior = create_species junior, status: 'synonym', genus: genus
-  Synonym.create! senior_synonym: senior, junior_synonym: junior
-end
 Given /^there is a subspecies "([^"]*)" which is a subspecies of "([^"]*)" in the genus "([^"]*)"/ do |subspecies, species, genus|
   genus = create_genus genus
   species = create_species species, genus: genus
@@ -184,4 +178,13 @@ end
 
 Given /^there is a species called "(.*)"$/ do |name|
   create_species name
+end
+
+#################################################
+# synonyms
+Given /^there is a species "([^"]*)" which is a junior synonym of "([^"]*)"$/ do |junior, senior|
+  genus = create_genus 'Solenopsis'
+  senior = create_species senior, genus: genus
+  junior = create_species junior, status: 'synonym', genus: genus
+  Synonym.create! senior_synonym: senior, junior_synonym: junior
 end

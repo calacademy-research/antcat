@@ -6,6 +6,9 @@ module HtmlSelectorsHelpers
     when /the page/
       "html > body"
 
+    when /^the junior synonyms section$/
+      '.junior_synonyms_section'
+
     when /the index/
       "#catalog .index"
     when /the (\w*) index/

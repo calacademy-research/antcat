@@ -1,0 +1,33 @@
+-#Locals: taxon
+
+.synonyms_section.section
+  .section_header.ui-widget-header.ui-corner-top
+    .left
+      Synonyms
+    .clear
+  .ui-dialog-content.ui-widget-content.ui-corner-bottom
+    .senior_synonyms_style_container
+      .senior_synonyms_section.section.left
+        .section_header.ui-widget-header.ui-corner-top
+          .left
+            Senior synonyms
+            - for synonym in taxon.senior_synonyms
+              %ul
+                %li= synonym.name.name_html.html_safe
+          .right.senior_synonyms_section_buttons
+            %button.submit.ui-priority-primary Add
+          .clear
+    .senior_synonyms_style_container
+      .senior_synonyms_section_style_container
+        .section_header.ui-widget-header.ui-corner-top
+          .left
+            Junior synonyms
+          .right.junior_synonyms_section_buttons
+            %button.submit.ui-priority-primary Add
+          .clear
+        .clear
+        .ui-dialog-content.ui-widget-content.ui-corner-bottom
+          - for synonym in taxon.junior_synonyms
+            %ul
+              %li= synonym.name.name_html.html_safe
+    .clear
