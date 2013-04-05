@@ -91,6 +91,16 @@ FactoryGirl.define do
   factory :reference_document do
   end
 
+  factory :synonym do
+    association :junior_synonym, factory: :genus
+    association :senior_synonym, factory: :genus
+  end
+
+  factory :reference_author_name do
+    association :reference
+    association :author_name
+  end
+
   ####################################################
   factory :name do
     sequence(:name) {|n| raise; "Name#{n}"}
@@ -254,12 +264,18 @@ FactoryGirl.define do
     association :name, factory: :genus_name
   end
 
-  factory :history_item, class: TaxonHistoryItem do
+  factory :taxon_history_item, class: TaxonHistoryItem do
     taxt 'Taxonomic history'
   end
 
   ####################################################
   factory :antwiki_valid_taxon do
+  end
+
+  ####################################################
+  factory :reference_section do
+    association :taxon
+    sequence(:position) {|n| n}
   end
 
 end
