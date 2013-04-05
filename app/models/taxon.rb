@@ -2,6 +2,8 @@
 class Taxon < ActiveRecord::Base
   self.table_name = :taxa
 
+  has_paper_trail
+
   ###############################################
   # nested attributes
   belongs_to :name; validates :name, presence: true

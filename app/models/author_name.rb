@@ -6,6 +6,8 @@ class AuthorName < ActiveRecord::Base
   belongs_to :author
   validates_presence_of :author
 
+  has_paper_trail
+
   def last_name
     name_parts[:last]
   end

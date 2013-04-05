@@ -8,6 +8,7 @@ class ReferenceDocument < ActiveRecord::Base
                     s3_credentials: (Rails.env.production? ? '/data/antcat/shared/config/' : Rails.root + 'config/') + 's3.yml',
                     s3_permissions: 'authenticated-read',
                     s3_protocol: 'http'
+  has_paper_trail
 
   before_validation :add_protocol_to_url
   belongs_to :reference

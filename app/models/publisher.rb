@@ -5,6 +5,8 @@ class Publisher < ActiveRecord::Base
 
   validates_presence_of :name
 
+  has_paper_trail
+
   def self.import data
     return unless data[:name].present?
     place = Place.import data[:place]

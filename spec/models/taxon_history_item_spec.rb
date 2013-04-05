@@ -51,4 +51,12 @@ describe TaxonHistoryItem do
     end
 
   end
+
+  describe "Versioning" do
+    it "should record versions" do
+      history_item = FactoryGirl.create :taxon_history_item
+      history_item.versions.last.event.should == 'create'
+    end
+  end
+
 end

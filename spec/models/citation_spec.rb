@@ -9,6 +9,13 @@ describe Citation do
     citation.reload.reference.should == reference
   end
 
+  describe "Versioning" do
+    it "should record versions" do
+      citation = FactoryGirl.create :citation
+      citation.versions.last.event.should == 'create'
+    end
+  end
+
   describe "Importing" do
 
     it "should create the Citation, which is linked to an existing Reference" do

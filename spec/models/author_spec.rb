@@ -42,4 +42,12 @@ describe Author do
       AuthorName.count.should == 2
     end
   end
+
+  describe "Versioning" do
+    it "should record versions" do
+      author = FactoryGirl.create :author
+      author.versions.last.event.should == 'create'
+    end
+  end
+
 end

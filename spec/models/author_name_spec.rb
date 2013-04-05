@@ -279,4 +279,11 @@ describe AuthorName do
     end
   end
 
+  describe "Versioning" do
+    it "should record versions" do
+      author_name = FactoryGirl.create :author_name
+      author_name.versions.last.event.should == 'create'
+    end
+  end
+
 end

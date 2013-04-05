@@ -27,4 +27,11 @@ describe Place do
     end
   end
 
+  describe "Versioning" do
+    it "should record versions" do
+      place = FactoryGirl.create :place
+      place.versions.last.event.should == 'create'
+    end
+  end
+
 end
