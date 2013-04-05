@@ -11,8 +11,10 @@ describe Citation do
 
   describe "Versioning" do
     it "should record versions" do
-      citation = FactoryGirl.create :citation
-      citation.versions.last.event.should == 'create'
+      with_versioning do
+        citation = FactoryGirl.create :citation
+        citation.versions.last.event.should == 'create'
+      end
     end
   end
 

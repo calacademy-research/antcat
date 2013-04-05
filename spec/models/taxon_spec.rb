@@ -531,13 +531,17 @@ describe Taxon do
 
   describe "Versioning" do
     it "should record versions" do
-      taxon = create_genus
-      taxon.versions.last.event.should == 'create'
+      with_versioning do
+        taxon = create_genus
+        taxon.versions.last.event.should == 'create'
+      end
     end
     it "should record the changes" do
-      genus = create_genus
-      genus.update_attributes! status: 'synonym'
-      genus.versions.last.changeset.should == {'status' => ['valid', 'synonym']}
+      with_versioning do
+        genus = create_genus
+        genus.update_attributes! status: 'synonym'
+        genus.versions.last.changeset.should == {'status' => ['valid', 'synonym']}
+      end
     end
   end
 

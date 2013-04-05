@@ -40,8 +40,10 @@ describe Synonym do
 
   describe "Versioning" do
     it "should record versions" do
-      synonym = FactoryGirl.create :synonym
-      synonym.versions.last.event.should == 'create'
+      with_versioning do
+        synonym = FactoryGirl.create :synonym
+        synonym.versions.last.event.should == 'create'
+      end
     end
   end
 

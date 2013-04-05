@@ -52,8 +52,10 @@ describe Journal do
 
   describe "Versioning" do
     it "should record versions" do
-      journal = FactoryGirl.create :journal
-      journal.versions.last.event.should == 'create'
+      with_versioning do
+        journal = FactoryGirl.create :journal
+        journal.versions.last.event.should == 'create'
+      end
     end
   end
 

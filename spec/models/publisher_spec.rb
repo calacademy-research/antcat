@@ -68,8 +68,10 @@ describe Publisher do
 
   describe "Versioning" do
     it "should record versions" do
-      publisher = FactoryGirl.create :publisher
-      publisher.versions.last.event.should == 'create'
+      with_versioning do
+        publisher = FactoryGirl.create :publisher
+        publisher.versions.last.event.should == 'create'
+      end
     end
   end
 

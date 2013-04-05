@@ -150,8 +150,10 @@ describe ReferenceDocument do
 
   describe "Versioning" do
     it "should record versions" do
-      reference_document = FactoryGirl.create :reference_document
-      reference_document.versions.last.event.should == 'create'
+      with_versioning do
+        reference_document = FactoryGirl.create :reference_document
+        reference_document.versions.last.event.should == 'create'
+      end
     end
   end
 
