@@ -270,6 +270,7 @@ class Vlad
            with_names.
            group('names.name', :genus_id).
            where(status: 'valid').
+           where(unresolved_homonym: false).
            having('COUNT(names.name) > 1').
            all.
            map {|row| {name: row['name'], count: row['count']}}

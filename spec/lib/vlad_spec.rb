@@ -115,8 +115,14 @@ describe Vlad do
     it "should be cool with same species name if status is different" do
       genus = create_genus
       species = create_species 'Atta major', genus: genus
-      create_species name: species.name, genus: genus
-      Vlad::DuplicateValids.query.should_not be_empty
+      create_species name: species.name, genus: genus, status: 'synonym'
+      Vlad::DuplicateValids.query.should be_empty
+    end
+    it "should be cool with same name if both statuses are valid, but one is an unresolved junior homonym" do
+      genus = create_genus
+      species = create_species 'Atta major', genus: genus
+      create_species name: species.name, genus: genus, unresolved_homonym: true
+      Vlad::DuplicateValids.query.should be_empty
     end
   end
 
