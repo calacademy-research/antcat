@@ -534,6 +534,11 @@ describe Taxon do
       taxon = create_genus
       taxon.versions.last.event.should == 'create'
     end
+    it "should record the changes" do
+      genus = create_genus
+      genus.update_attributes! status: 'synonym'
+      genus.versions.last.changeset.should == {status: ['valid', 'synonym']}
+    end
   end
 
 end
