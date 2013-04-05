@@ -5,29 +5,29 @@
     .left
       Synonyms
     .clear
-  .ui-dialog-content.ui-widget-content.ui-corner-bottom
-    .senior_synonyms_style_container
-      .senior_synonyms_section.section.left
-        .section_header.ui-widget-header.ui-corner-top
-          .left
-            Senior synonyms
-            - for synonym in taxon.senior_synonyms
-              %ul
-                %li= synonym.name.name_html.html_safe
-          .right.senior_synonyms_section_buttons
-            %button.submit.ui-priority-primary Add
-          .clear
-    .senior_synonyms_style_container
-      .senior_synonyms_section_style_container
+  .section_contents.ui-dialog-content.ui-widget-content.ui-corner-bottom
+    .container.left
+      .junior_synonyms_section
         .section_header.ui-widget-header.ui-corner-top
           .left
             Junior synonyms
-          .right.junior_synonyms_section_buttons
+          .buttons.right
             %button.submit.ui-priority-primary Add
           .clear
-        .clear
-        .ui-dialog-content.ui-widget-content.ui-corner-bottom
+        .section_contents.ui-dialog-content.ui-widget-content.ui-corner-bottom
           - for synonym in taxon.junior_synonyms
+            %ul
+              %li= synonym.name.name_html.html_safe
+    .container.right
+      .senior_synonyms_section
+        .section_header.ui-widget-header.ui-corner-top
+          .left
+            Senior synonyms
+          .buttons.right
+            %button.submit.ui-priority-primary Add
+          .clear
+        .section_contents.ui-dialog-content.ui-widget-content.ui-corner-bottom
+          - for synonym in taxon.senior_synonyms
             %ul
               %li= synonym.name.name_html.html_safe
     .clear
