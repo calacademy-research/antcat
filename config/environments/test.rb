@@ -16,6 +16,8 @@ AntCat::Application.configure do
   config.assets.digest = false
 
   config.active_record.mass_assigment_sanitizer :strict
+
+  PaperTrail.enabled = false
 end
 
 require 'lll'

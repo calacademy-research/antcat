@@ -298,17 +298,19 @@ describe Reference do
 
   describe "Versioning" do
     it "should record events and allow restoring a prior version" do
-      reference = UnknownReference.create! title: 'title', citation_year: '2010', citation: 'citation'
-      reference.versions.last.event.should == 'create'
+      with_versioning do
+        reference = UnknownReference.create! title: 'title', citation_year: '2010', citation: 'citation'
+        reference.versions.last.event.should == 'create'
 
-      reference.update_attribute :title, 'new title'
-      version = reference.versions.last
-      version.event.should == 'update'
+        reference.update_attribute :title, 'new title'
+        version = reference.versions.last
+        version.event.should == 'update'
 
-      reference = version.reify
-      reference.title.should == 'title'
-      reference.save!
-      reference.title.should == 'title'
+        reference = version.reify
+        reference.title.should == 'title'
+        reference.save!
+        reference.title.should == 'title'
+      end
     end
   end
 
