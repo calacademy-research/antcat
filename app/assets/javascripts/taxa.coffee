@@ -1,13 +1,36 @@
 class AntCat.TaxonForm extends AntCat.Form
   constructor: (@element, @options = {}) ->
+    @initialize_add_button()
+    @initialize_task_buttons()
+    @initialize_synonyms()
+    super
+
+  initialize_add_button: =>
     @add_history_item_button = @element.find '.history_section_buttons button'
     AntCat.log 'TaxonForm constructor: @add_history_item_button.size() != 1' unless @add_history_item_button.size() == 1
     @add_history_item_button.click => @add_history_item(); false
 
+  initialize_task_buttons: =>
     @element.find('#reverse_synonymy').click => @reverse_synonymy(); false
     @element.find('#elevate_to_species').click => @elevate_to_species(); false
 
-    super
+  initialize_synonyms: =>
+    $delete_buttons = @element.find '.synonyms_section button.delete'
+    AntCat.log 'TaxonForm initialize_synonyms: $delete_buttons.size() < 1' unless $delete_buttons.size() >= 1
+    $delete_buttons.show() if AntCat.testing
+    $delete_buttons.click => @delete_synonym(); false
+    @element.find('.synonym_row').hover(
+      (event) =>
+        $(event.target).closest('.synonym_row')
+          .select()
+          .find('.delete').show().end()
+      (event) =>
+        AntCat.deselect()
+        $delete_buttons.hide()
+    )
+
+  delete_synonym: =>
+    alert 'asdf'
 
   reverse_synonymy: =>
     return unless confirm 'Are you sure you want to reverse the synonymy?'
