@@ -12,22 +12,25 @@
           .left
             Junior synonyms
           .buttons.right
-            %button.submit.ui-priority-primary.section_header_button Add
+            %button.submit.ui-priority-primary.small_button Add
           .clear
         .section_contents.ui-dialog-content.ui-widget-content.ui-corner-bottom
           - for synonym in taxon.junior_synonyms
-            %ul
-              %li= synonym.name.name_html.html_safe
+            .synonym_row
+              =synonym.name.name_html.html_safe
+              %button.submit.ui-priority-primary.small_button.delete Delete
+
     .container.right
       .senior_synonyms_section
         .section_header.ui-widget-header.ui-corner-top
           .left
             Senior synonyms
           .buttons.right
-            %button.submit.ui-priority-primary.section_header_button Add
+            %button.submit.ui-priority-primary.small_button Add
           .clear
         .section_contents.ui-dialog-content.ui-widget-content.ui-corner-bottom
           - for synonym in taxon.senior_synonyms
-            %ul
-              %li= synonym.name.name_html.html_safe
+            .synonym_row
+              =synonym.name.name_html.html_safe
+              %button.submit.ui-priority-primary.small_button.delete Delete
     .clear
