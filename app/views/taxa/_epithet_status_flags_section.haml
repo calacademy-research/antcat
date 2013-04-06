@@ -1,0 +1,38 @@
+-#Locals: taxon, form
+
+.epithet_status_flags_section.section
+  %table.fields.ui-dialog-content.ui-widget-content.ui-corner-all
+    %tr
+      = form.fields_for :name do |name_form|
+        %td.label= name_form.label :epithet, 'Name'
+        %td
+          %span.parentage= Formatters::TaxonFormatter.new(@taxon).parentage_string
+          %span.epithet= name_form.text_field :epithet, readonly: true
+
+    %tr
+      %td.label= form.label :status
+      %td
+        = form.select :status, Status.statuses
+
+      %tr
+        %td
+        %td
+          = form.label :incertae_sedis_in
+          = form.select :incertae_sedis_in, [['(none)', nil], 'family', 'subfamily', 'tribe']
+
+          = form.check_box :fossil
+          = form.label :fossil
+
+          = form.check_box :unidentifiable
+          = form.label :unidentifiable
+
+          = form.check_box :unresolved_homonym
+          = form.label :unresolved_homonym, 'Unresolved junior homonym'
+
+          = form.check_box :hong
+          = form.label :hong
+
+    %tr
+      %td.label.top_aligned= form.label :headline_notes_taxt, 'Notes'
+      %td#headline_notes_taxt_editor.taxt_editor
+        = render 'taxt_editors/show', name: 'taxon[headline_notes_taxt]', value: Taxt.to_editable(@taxon.headline_notes_taxt)
