@@ -15,9 +15,9 @@ class AntCat.TaxonForm extends AntCat.Form
     @element.find('#elevate_to_species').click => @elevate_to_species(); false
 
   initialize_synonyms: =>
+    @element.find('button.delete').show() if AntCat.testing
     $delete_buttons = @element.find '.synonyms_section button.delete'
     AntCat.log 'TaxonForm initialize_synonyms: $delete_buttons.size() < 1' unless $delete_buttons.size() >= 1
-    $delete_buttons.show() if AntCat.testing
     $delete_buttons.click (event) => @delete_synonym(event.target); false
     @element.find('.synonym_row').hover(
       (event) =>
