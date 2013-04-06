@@ -18,7 +18,7 @@ class AntCat.TaxonForm extends AntCat.Form
     $delete_buttons = @element.find '.synonyms_section button.delete'
     AntCat.log 'TaxonForm initialize_synonyms: $delete_buttons.size() < 1' unless $delete_buttons.size() >= 1
     $delete_buttons.show() if AntCat.testing
-    $delete_buttons.click => @delete_synonym(); false
+    $delete_buttons.click (event) => @delete_synonym(event.target); false
     @element.find('.synonym_row').hover(
       (event) =>
         $(event.target).closest('.synonym_row')
@@ -29,8 +29,13 @@ class AntCat.TaxonForm extends AntCat.Form
         $delete_buttons.hide()
     )
 
-  delete_synonym: =>
-    alert 'asdf'
+  delete_synonym: (target) =>
+    id = $(target).data('id')
+    console.log id
+    return unless confirm 'Are you sure you want to delete this synonym?'
+    url = "/synonyms/#{id}"
+    $.post url, {_method: 'delete'}, null, 'json'
+    $(target).closest('.synonym_row').remove()
 
   reverse_synonymy: =>
     return unless confirm 'Are you sure you want to reverse the synonymy?'

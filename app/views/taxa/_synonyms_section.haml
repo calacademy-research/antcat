@@ -15,10 +15,10 @@
             %button.submit.ui-priority-primary.small_button Add
           .clear
         .section_contents.ui-dialog-content.ui-widget-content.ui-corner-bottom
-          - for synonym in taxon.junior_synonyms
+          - for synonym in taxon.synonyms_as_senior
             .synonym_row
-              =synonym.name.name_html.html_safe
-              %button.submit.ui-priority-primary.small_button.delete Delete
+              =synonym.junior_synonym.name.name_html.html_safe
+              %button.submit.ui-priority-primary.small_button.delete{'data-id' => synonym.id} Delete
 
     .container.right
       .senior_synonyms_section
@@ -29,8 +29,8 @@
             %button.submit.ui-priority-primary.small_button Add
           .clear
         .section_contents.ui-dialog-content.ui-widget-content.ui-corner-bottom
-          - for synonym in taxon.senior_synonyms
+          - for synonym in taxon.synonyms_as_junior
             .synonym_row
-              =synonym.name.name_html.html_safe
-              %button.submit.ui-priority-primary.small_button.delete Delete
+              =synonym.senior_synonym.name.name_html.html_safe
+              %button.submit.ui-priority-primary.small_button.delete{'data-id' => synonym.id} Delete
     .clear
