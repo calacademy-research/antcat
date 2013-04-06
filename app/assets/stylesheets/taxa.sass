@@ -75,12 +75,17 @@
           background: $color_current_reference_being_edited_by_reference_field_background
 
   .synonyms_section
+    font-size: 15px
+    line-height: 1.2
     .container
       width: 50%
     .junior_synonyms_section
       margin-right: 6px
-    ul
-      list-style-type: none
+    .synonym_row
+      &.ui-selecting
+        background: $color_current_reference_being_edited_by_reference_field_background
+      button
+        margin-left: 10px
 
   .homonym_section
     padding-left: 3px
@@ -105,10 +110,13 @@
     form
       display: inline-block
 
-  .section_header_button
+  .small_button
     font-size: 12px
     line-height: 12px
     height: 10px
+
+  button.delete
+    display: none
 
 //elements
 ul.error_messages
