@@ -1,0 +1,24 @@
+-#Locals: taxon, form
+
+- unless taxon.kind_of? SpeciesGroupTaxon
+  .type_section.section
+    .section_header.ui-widget-header.ui-corner-top
+      Type
+    %table.fields.ui-dialog-content.ui-widget-content.ui-corner-bottom
+      %tr
+        - form.object.type_name ||= Name.new
+        = form.fields_for :type_name do |type_name_form|
+          - if taxon.type_name.new_record?
+            = hidden_field_tag 'taxon[type_name_attributes][id]'
+          %td.label.top_aligned= type_name_form.label :name
+          %td
+            #type_name_field
+              = render 'name_fields/panel', name_string: taxon.type_name.try(:name)
+      %tr
+        %td.label= form.label :type_fossil, 'Fossil'
+        %td= form.check_box :type_fossil
+
+      %tr
+        %td.label.top_aligned= form.label :type_taxt, 'Notes'
+        %td#type_taxt_editor.taxt_editor
+          = render 'taxt_editors/show', name: 'taxon[type_taxt]', value: Taxt.to_editable(taxon.type_taxt)

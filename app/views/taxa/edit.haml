@@ -1,4 +1,4 @@
-- @title = "#{@taxon.name.epithet}"
+- @title = @taxon.name.epithet
 
 - content_for :head do
   = javascript_include_tag  'qtip',
@@ -11,143 +11,17 @@
                             'widgets/reference_popup', 'widgets/name_popup', 'widgets/taxt_editor',
                             'taxa', 'history_item'
 
-  = stylesheet_link_tag 'ext/jquery.ui.selectmenu.css'
-
 - content_for :page_contents do
-  = form_for @taxon, as: :taxon, url: "/taxa/#{@taxon.id}", html: {class: 'taxon_form ui-widget', style: {display: 'none'}} do |taxon_form|
+  = form_for @taxon, as: :taxon, url: "/taxa/#{@taxon.id}", html: {class: 'taxon_form ui-widget', style: {display: 'none'}} do |form|
     %input{type: :hidden, name: 'possible_homonym', id: 'possible_homonym', value: @possible_homonym ? 'true' : nil}
     = render 'shared/errors_for', resource: @taxon
-    .epithet_status_flags_section.section
-      %table.fields.ui-dialog-content.ui-widget-content.ui-corner-all
-        %tr
-          = taxon_form.fields_for :name do |name_form|
-            %td.label= name_form.label :epithet, 'Name'
-            %td
-              %span.parentage= Formatters::TaxonFormatter.new(@taxon).parentage_string
-              %span.epithet= name_form.text_field :epithet, readonly: true
 
-        %tr
-          %td.label= taxon_form.label :status
-          %td
-            = taxon_form.select :status, Status.statuses
+    = render 'epithet_status_flags_section',  taxon: @taxon, form: form
+    = render 'protonym_section',              taxon: @taxon, form: form
+    = render 'type_section',                  taxon: @taxon, form: form
+    = render 'history_section',               taxon: @taxon, form: form
+    = render 'synonyms_section',              taxon: @taxon, form: form
+    = render 'homonym_section',               taxon: @taxon, form: form
+    = render 'references_section',            taxon: @taxon, form: form
 
-          %tr
-            %td
-            %td
-              = taxon_form.label :incertae_sedis_in
-              = taxon_form.select :incertae_sedis_in, [['(none)', nil], 'family', 'subfamily', 'tribe']
-
-              = taxon_form.check_box :fossil
-              = taxon_form.label :fossil
-
-              = taxon_form.check_box :unidentifiable
-              = taxon_form.label :unidentifiable
-
-              = taxon_form.check_box :unresolved_homonym
-              = taxon_form.label :unresolved_homonym, 'Unresolved junior homonym'
-
-              = taxon_form.check_box :hong
-              = taxon_form.label :hong
-
-        %tr
-          %td.label.top_aligned= taxon_form.label :headline_notes_taxt, 'Notes'
-          %td#headline_notes_taxt_editor.taxt_editor
-            = render 'taxt_editors/show', name: 'taxon[headline_notes_taxt]', value: Taxt.to_editable(@taxon.headline_notes_taxt)
-
-    .protonym_section.section
-      .section_header.ui-widget-header.ui-corner-top
-        Protonym
-      = taxon_form.fields_for :protonym do |protonym_form|
-        %table.fields.ui-dialog-content.ui-widget-content.ui-corner-bottom
-          %tr
-            = protonym_form.fields_for :name do |name_form|
-              %td.label.top_aligned= name_form.label :name
-              %td
-                #protonym_name_field
-                  = render 'name_fields/panel', name_string: @taxon.protonym.name.try(:name)
-              %tr
-                %td
-                %td
-                  = protonym_form.check_box :fossil
-                  = protonym_form.label :fossil
-
-                  = protonym_form.check_box :sic
-                  = protonym_form.label :sic
-
-          %tr
-            - protonym_form.object.authorship ||= Citation.new
-            - protonym_form.object.authorship.reference ||= Reference.new
-            = protonym_form.fields_for :authorship do |authorship_form|
-              %td.label.top_aligned= authorship_form.label :reference, 'Authorship'
-              %td
-                #authorship_field
-                  = render 'reference_fields/show', references: nil, reference: authorship_form.object.reference
-                = hidden_field_tag 'taxon[protonym_attributes][authorship_attributes][reference_attributes][id]', authorship_form.object.reference.id,
-                    id: 'taxon_protonym_attributes_authorship_attributes_reference_attributes_id'
-
-              %tr
-                %td.label= authorship_form.label :pages
-                %td.pages= authorship_form.text_field :pages
-
-              %tr
-                %td.label= authorship_form.label :forms
-                %td.forms= authorship_form.text_field :forms
-
-              %tr
-                %td.label= protonym_form.label :locality
-                %td.locality= protonym_form.text_field :locality
-
-    - unless @taxon.kind_of? SpeciesGroupTaxon
-      .type_section.section
-        .section_header.ui-widget-header.ui-corner-top
-          Type
-        %table.fields.ui-dialog-content.ui-widget-content.ui-corner-bottom
-          %tr
-            - taxon_form.object.type_name ||= Name.new
-            = taxon_form.fields_for :type_name do |type_name_form|
-              - if @taxon.type_name.new_record?
-                = hidden_field_tag 'taxon[type_name_attributes][id]'
-              %td.label.top_aligned= type_name_form.label :name
-              %td
-                #type_name_field
-                  = render 'name_fields/panel', name_string: @taxon.type_name.try(:name)
-          %tr
-            %td.label= taxon_form.label :type_fossil, 'Fossil'
-            %td= taxon_form.check_box :type_fossil
-
-          %tr
-            %td.label.top_aligned= taxon_form.label :type_taxt, 'Notes'
-            %td#type_taxt_editor.taxt_editor
-              = render 'taxt_editors/show', name: 'taxon[type_taxt]', value: Taxt.to_editable(@taxon.type_taxt)
-
-    = render 'history_section', taxon: @taxon
-
-    -#.references_section.section
-      -#.section_header.ui-widget-header.ui-corner-top
-        -#References
-      -#.ui-dialog-content.ui-widget-content.ui-corner-bottom
-        -#Reference items
-
-    = render 'synonyms_section', taxon: @taxon
-
-    -#%table.fields.synonym_homonym_section.section
-      -#%tr
-        -#%td
-          -#.homonym_section.ui-corner-all
-            -#.section_header.ui-widget-header.ui-corner-top
-              -#Homonym
-            -#.ui-dialog-content.ui-widget-content.ui-corner-bottom
-              -#Homonym fields
-
-    .buttons_section
-      .left_buttons
-        - save_button_text = previewize @possible_homonym ? 'Save Homonym' : 'Save'
-        = taxon_form.submit save_button_text, class: 'ui-priority-primary submit'
-        %input{type: 'button', class: 'ui-priority-secondary cancel', value: 'Cancel'}
-        = image_tag 'ui-anim_basic_16x16.gif', class: 'throbber'
-      .right_buttons
-        %input{type: :hidden, name: 'task_button_command', id: 'task_button_command'}
-        - if @show_reverse_synonymy_button
-          %input{type: 'button', class: 'ui-priority-primary', id: 'reverse_synonymy', value: previewize('Reverse synonymy')}
-        - if @show_elevate_to_species_button
-          %input{type: 'button', class: 'ui-priority-primary', id: 'elevate_to_species', value: previewize('Elevate to species')}
+    = render 'buttons_section', form: form, possible_homonym: @possible_homonym, show_reverse_synonymy_button: @show_reverse_synonymy_button, show_elevate_to_species_button: @show_elevate_to_species_button

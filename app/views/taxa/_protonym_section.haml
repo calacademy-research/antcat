@@ -1,0 +1,44 @@
+-#Locals: taxon, form
+
+.protonym_section.section
+  .section_header.ui-widget-header.ui-corner-top
+    Protonym
+  = form.fields_for :protonym do |protonym_form|
+    %table.fields.ui-dialog-content.ui-widget-content.ui-corner-bottom
+      %tr
+        = protonym_form.fields_for :name do |name_form|
+          %td.label.top_aligned= name_form.label :name
+          %td
+            #protonym_name_field
+              = render 'name_fields/panel', name_string: taxon.protonym.name.try(:name)
+          %tr
+            %td
+            %td
+              = protonym_form.check_box :fossil
+              = protonym_form.label :fossil
+
+              = protonym_form.check_box :sic
+              = protonym_form.label :sic
+
+      %tr
+        - protonym_form.object.authorship ||= Citation.new
+        - protonym_form.object.authorship.reference ||= Reference.new
+        = protonym_form.fields_for :authorship do |authorship_form|
+          %td.label.top_aligned= authorship_form.label :reference, 'Authorship'
+          %td
+            #authorship_field
+              = render 'reference_fields/show', references: nil, reference: authorship_form.object.reference
+            = hidden_field_tag 'taxon[protonym_attributes][authorship_attributes][reference_attributes][id]', authorship_form.object.reference.id,
+                id: 'taxon_protonym_attributes_authorship_attributes_reference_attributes_id'
+
+          %tr
+            %td.label= authorship_form.label :pages
+            %td.pages= authorship_form.text_field :pages
+
+          %tr
+            %td.label= authorship_form.label :forms
+            %td.forms= authorship_form.text_field :forms
+
+          %tr
+            %td.label= protonym_form.label :locality
+            %td.locality= protonym_form.text_field :locality
