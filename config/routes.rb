@@ -34,6 +34,8 @@ AntCat::Application.routes.draw do
     end
   end
 
+  resources 'synonyms', only: [:destroy]
+
   resource :taxon_window_height, only: [:update]
 
   get 'name_popups/search'
