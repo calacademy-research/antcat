@@ -107,7 +107,7 @@ Given /^species "(.*?)" exists in that genus$/ do |name|
   @species = FactoryGirl.create :species, subfamily: @subfamily, genus: @genus, name: FactoryGirl.create(:species_name, name: name)
   @species.history_items.create! taxt: "#{name} history"
 end
-Given /^there is a species called "(.*)"$/ do |name|
+Given /^there is a species "(.*)"$/ do |name|
   create_species name
 end
 
@@ -168,7 +168,7 @@ Given /^there is a subspecies "([^"]*)" which is a subspecies of "([^"]*)" in th
   species = create_species species, genus: genus
   subspecies = create_subspecies subspecies, species: species, genus: genus
 end
-Given /^there is a family called "Formicidae"$/ do
+Given /^there is a family "Formicidae"$/ do
   create_family
 end
 Given /^there is a species name "([^"]*)"$/ do |name|
