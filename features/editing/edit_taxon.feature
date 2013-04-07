@@ -62,7 +62,7 @@ Feature: Editing a taxon
     #Then there should be two genera with the name "Calyptites"
 
   #Scenario: Leaving a genus name alone when there are already two homonyms
-    #Given there are two genera called "Calyptites"
+    #Given there are two genera "Calyptites"
     #And I log in
     #When I go to the edit page for "Calyptites"
     #And I save the form
@@ -132,7 +132,7 @@ Feature: Editing a taxon
 
   Scenario: Changing the type name
     Given there is a genus "Atta" with type name "Atta major"
-    And there is a species called "Atta major"
+    And there is a species "Atta major"
     And I log in
     When I go to the edit page for "Atta"
     And I click the type name field
