@@ -9,7 +9,7 @@
                             'widgets/reference_field',
                             'widgets/name_field',
                             'widgets/reference_popup', 'widgets/name_popup', 'widgets/taxt_editor',
-                            'taxa', 'history_item'
+                            'taxa', 'history_item', 'synonyms_section'
 
 - content_for :page_contents do
   = form_for @taxon, as: :taxon, url: "/taxa/#{@taxon.id}", html: {class: 'taxon_form ui-widget', style: {display: 'none'}} do |form|
