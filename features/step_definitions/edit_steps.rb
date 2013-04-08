@@ -91,3 +91,9 @@ When /^I click "(.*?)" beside the first junior synonym$/ do |button|
     step %{I press "#{button}"}
   end
 end
+
+When /^I fill in the junior synonym name with "([^"]*)"$/ do |name|
+  within '.junior_synonyms_section .edit' do
+    step %{I fill in "name" with "#{name}"}
+  end
+end
