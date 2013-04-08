@@ -7,7 +7,7 @@ Feature: Editing the synonyms section
   Scenario: Seeing the synonyms section
     Given there is a species "Atta major" which is a junior synonym of "Eciton minor"
     When I go to the edit page for "Eciton minor"
-    And I should see "Atta major" in the junior synonyms section
+    Then I should see "Atta major" in the junior synonyms section
 
   Scenario: Adding a synonym
     Given there is a species "Atta major"
@@ -23,8 +23,8 @@ Feature: Editing the synonyms section
   Scenario: Deleting a synonym
     Given there is a species "Atta major" which is a junior synonym of "Eciton minor"
     When I go to the edit page for "Eciton minor"
-    And I should see "Atta major" in the junior synonyms section
+    Then I should see "Atta major" in the junior synonyms section
     Given I will confirm on the next step
     When I click "Delete" beside the first junior synonym
-    When I go to the edit page for "Eciton minor"
-    And I should not see "Atta minor" in the junior synonyms section
+    And I go to the edit page for "Eciton minor"
+    Then I should not see "Atta minor" in the junior synonyms section
