@@ -1,7 +1,7 @@
 -#Locals: taxon
 
 - url = "/taxa/#{taxon.id}/synonyms"
-.nested_form{'data-action' => url, 'data-method' => 'post'}
+.nested_form.edit{'data-action' => url, 'data-method' => 'post'}
   %ul.error_messages
     %li#error_message
 
