@@ -15,27 +15,8 @@ class AntCat.TaxonForm extends AntCat.Form
     @element.find('#elevate_to_species').click => @elevate_to_species(); false
 
   initialize_synonyms: =>
-    @element.find('button.delete').show() if AntCat.testing
-    $delete_buttons = @element.find '.junior_and_senior_synonyms_section button.delete'
-    AntCat.log 'TaxonForm initialize_synonyms: $delete_buttons.size() < 1' unless $delete_buttons.size() >= 1
-    $delete_buttons.click (event) => @delete_synonym(event.target); false
-    @element.find('.synonym_row').hover(
-      (event) =>
-        $(event.target).closest('.synonym_row')
-          .select()
-          .find('.delete').show().end()
-      (event) =>
-        AntCat.deselect()
-        $delete_buttons.hide()
-    )
-
-  delete_synonym: (target) =>
-    return unless confirm 'Are you sure you want to delete this synonym?'
-    taxon_id = $(target).data('taxon-id')
-    synonym_id = $(target).data('synonym-id')
-    url = "/taxa/#{taxon_id}/synonyms/#{synonym_id}"
-    $.post url, {_method: 'delete'}, null, 'json'
-    $(target).closest('.synonym_row').remove()
+    new AntCat.SynonymsSection @element.find('.junior_synonyms_section')
+    new AntCat.SynonymsSection @element.find('.senior_synonyms_section')
 
   reverse_synonymy: =>
     return unless confirm 'Are you sure you want to reverse the synonymy?'
@@ -66,5 +47,3 @@ $ ->
     new AntCat.TaxtEditor $('#type_taxt_editor'), parent_buttons: '.buttons_section'
   new AntCat.ReferenceField $('#authorship_field'), parent_form: form, value_id: 'taxon_protonym_attributes_authorship_attributes_reference_attributes_id'
   $('.history_item').history_item_panel(click_on_display: true, parent_form: form)
-  new AntCat.SynonymsSection $('.junior_synonyms_section')
-  new AntCat.SynonymsSection $('.senior_synonyms_section')

@@ -1,14 +1,37 @@
 class AntCat.SynonymsSection
-  constructor: ($element) ->
-    @element = $element.parent()
+  constructor: (@element) ->
     AntCat.log 'SynonymsSection constructor: @element.size() != 1' unless @element.size() == 1
-    @form = new AntCat.SynonymsSectionForm @element.find('.nested_form')
+    @initialize()
+
+  initialize: =>
+    @form = new AntCat.SynonymsSectionForm @element.find('.nested_form'), on_success: @handle_success
     $add_button = @element.find 'button.add'
     AntCat.log 'SynonymsSection constructor: $add_button.size() != 1' unless $add_button.size() == 1
     $add_button.click => @add(); false
+    @element.find('button.delete').show() if AntCat.testing
+    $delete_buttons = @element.find 'button.delete'
+    AntCat.log 'SynonymsSection initialize: $delete_buttons.size() < 1' unless $delete_buttons.size() >= 1
+    $delete_buttons.click (event) => @delete(event.target); false
+    @element.find('.synonym_row').hover(
+      (event) =>
+        $(event.target).closest('.synonym_row')
+          .select()
+          .find('.delete').show().end()
+      (event) =>
+        AntCat.deselect()
+        $delete_buttons.hide()
+    )
 
   add: =>
     @form.open()
+
+  delete: (target) =>
+    return unless confirm 'Are you sure you want to delete this synonym?'
+    taxon_id = $(target).data('taxon-id')
+    synonym_id = $(target).data('synonym-id')
+    url = "/taxa/#{taxon_id}/synonyms/#{synonym_id}"
+    $.post url, {_method: 'delete'}, null, 'json'
+    $(target).closest('.synonym_row').remove()
 
 class AntCat.SynonymsSectionForm extends AntCat.NestedForm
   constructor: ->
