@@ -9,4 +9,4 @@
   - for synonym in taxon.send association_selector
     .synonym_row
       =synonym.send(synonym_field_selector).name.name_html.html_safe
-      %button.submit.ui-priority-primary.small_button.delete{'data-id' => synonym.id} Delete
+      %button.submit.ui-priority-primary.small_button.delete{'data-taxon-id' => taxon.id, 'data-synonym-id' => synonym.id} Delete

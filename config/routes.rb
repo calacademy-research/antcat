@@ -28,13 +28,12 @@ AntCat::Application.routes.draw do
 
   resources 'taxa' do
     resources 'taxon_history_items', only: [:update, :create, :destroy]
+    resources 'synonyms', only: [:destroy]
     member do
       get 'reverse_synonymy'
       get 'elevate_to_species'
     end
   end
-
-  resources 'synonyms', only: [:destroy]
 
   resource :taxon_window_height, only: [:update]
 

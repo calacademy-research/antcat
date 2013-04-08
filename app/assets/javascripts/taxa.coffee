@@ -30,10 +30,10 @@ class AntCat.TaxonForm extends AntCat.Form
     )
 
   delete_synonym: (target) =>
-    id = $(target).data('id')
-    console.log id
     return unless confirm 'Are you sure you want to delete this synonym?'
-    url = "/synonyms/#{id}"
+    taxon_id = $(target).data('taxon-id')
+    synonym_id = $(target).data('synonym-id')
+    url = "/taxa/#{synonym_id}/synonyms/#{synonym_id}"
     $.post url, {_method: 'delete'}, null, 'json'
     $(target).closest('.synonym_row').remove()
 
