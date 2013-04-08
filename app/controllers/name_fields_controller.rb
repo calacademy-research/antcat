@@ -1,11 +1,5 @@
 # coding: UTF-8
-class NameFieldsController < ApplicationController
-
-  def search
-    respond_to do |format|
-      format.json {render json: Name.picklist_matching(params[:term]).to_json}
-    end
-  end
+class NameFieldsController < NamePickersController
 
   def find
     data = {}

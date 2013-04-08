@@ -37,11 +37,11 @@ AntCat::Application.routes.draw do
 
   resource :taxon_window_height, only: [:update]
 
-  get 'name_popups/search'
+  get 'name_pickers/search'
+
   get 'name_popups/find'
   match 'name_popups/:type/:id' => 'name_popups#show', via: :get
 
-  get 'name_fields/search'
   get 'name_fields/find'
   match 'name_fields/:type/:id' => 'name_fields#show', via: :get
 
