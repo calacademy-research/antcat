@@ -34,6 +34,14 @@ Feature: Editing the synonyms section
     Then I should see "Atta minor" in the junior synonyms section
     Then I should see "Atta inbetween" in the junior synonyms section
 
+  Scenario: Trying to add a duplicate synonym
+    Given there is a species "Atta major" which is a junior synonym of "Eciton minor"
+    When I go to the edit page for "Eciton minor"
+    And I press "Add" in the junior synonyms section
+    And I fill in the junior synonym name with "Atta major"
+    And I press "Save"
+    Then I should see "This taxon is already a junior synonym"
+
   Scenario: Deleting a synonym
     Given there is a species "Atta major" which is a junior synonym of "Eciton minor"
     When I go to the edit page for "Eciton minor"
