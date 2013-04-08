@@ -13,8 +13,11 @@ class AntCat.SynonymsSectionForm extends AntCat.NestedForm
 
   submit: =>
     #return false if @textbox.val().length == 0
-    @element.find('.error_messages').text('')
+    @element.find('#error_message').text('')
     super
+
+  handle_application_error: (error_message) =>
+    @element.find('#error_message').text error_message
 
   setup_autocomplete: ($textbox) =>
     AntCat.log 'SynonymsSection setup_autocomplete: no $textbox' unless $textbox.size() == 1
