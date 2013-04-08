@@ -73,7 +73,7 @@ class AntCat.NameFieldForm extends AntCat.NestedForm
     return if AntCat.testing
     $textbox.autocomplete(
         autoFocus: true,
-        source: "/name_fields/search",
+        source: "/name_pickers/search",
         minLength: 3)
       .data('autocomplete')._renderItem = @render_item
 

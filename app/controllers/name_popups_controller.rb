@@ -1,11 +1,5 @@
 # coding: UTF-8
-class NamePopupsController < ApplicationController
-
-  def search
-    respond_to do |format|
-      format.json {render json: Name.picklist_matching(params[:term]).to_json}
-    end
-  end
+class NamePopupsController < NamePickersController
 
   def show
     if params[:type].to_i == Taxt::TAXON_TAG_TYPE
