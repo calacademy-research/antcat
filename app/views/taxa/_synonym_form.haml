@@ -1,0 +1,12 @@
+-#Locals: taxon
+
+- url = "/taxa/#{taxon.id}/synonyms"
+.nested_form{'data-action' => url, 'data-method' => 'post'}
+  %ul.error_messages
+    %li#error_message
+
+  = text_field_tag :name
+
+  .buttons
+    %button.submit.ui-priority-primary Save
+    %button.cancel.ui-priority-secondary Cancel
