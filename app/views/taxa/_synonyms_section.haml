@@ -1,14 +1,16 @@
 -#Locals: taxon, title, association_selector, synonym_field_selector
 
-.section_header.ui-widget-header.ui-corner-top
-  .left= title
-  .buttons.right
-    %button.submit.add.ui-priority-primary.small_button Add
-  .clear
+.synonyms_section
 
-.section_contents.ui-dialog-content.ui-widget-content.ui-corner-bottom
-  = render 'synonym_form', taxon: taxon
-  - for synonym in taxon.send association_selector
-    .synonym_row
-      =synonym.send(synonym_field_selector).name.name_html.html_safe
-      %button.submit.ui-priority-primary.small_button.delete{'data-taxon-id' => taxon.id, 'data-synonym-id' => synonym.id} Delete
+  .section_header.ui-widget-header.ui-corner-top
+    .left= title
+    .buttons.right
+      %button.submit.add.ui-priority-primary.small_button Add
+    .clear
+
+  .section_contents.ui-dialog-content.ui-widget-content.ui-corner-bottom
+    = render 'taxa/synonym_form', taxon: taxon
+    - for synonym in taxon.send association_selector
+      .synonym_row
+        =synonym.send(synonym_field_selector).name.name_html.html_safe
+        %button.submit.ui-priority-primary.small_button.delete{'data-taxon-id' => taxon.id, 'data-synonym-id' => synonym.id} Delete
