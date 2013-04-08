@@ -26,4 +26,6 @@ Feature: Editing the synonyms section
     And I should see "Atta major" in the junior synonyms section
     Given I will confirm on the next step
     When I click "Delete" beside the first junior synonym
-    Then I should not see "Atta major" in the junior synonyms section
+    When I go to the edit page for "Atta minor"
+    When I go to the edit page for "Eciton minor"
+    And I should not see "Atta minor" in the junior synonyms section
