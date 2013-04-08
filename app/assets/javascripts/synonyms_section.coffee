@@ -33,6 +33,10 @@ class AntCat.SynonymsSection
     $.post url, {_method: 'delete'}, null, 'json'
     $(target).closest('.synonym_row').remove()
 
+  handle_success: (data) =>
+    @element.find('.synonyms_section').replaceWith data.content
+    @initialize()
+
 class AntCat.SynonymsSectionForm extends AntCat.NestedForm
   constructor: ->
     super
@@ -46,6 +50,7 @@ class AntCat.SynonymsSectionForm extends AntCat.NestedForm
     super
 
   handle_application_error: (error_message) =>
+    super
     @element.find('#error_message').text error_message
 
   setup_autocomplete: ($textbox) =>
