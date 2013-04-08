@@ -3,6 +3,12 @@ class AntCat.SynonymsSection
     @element = $element.parent()
     AntCat.log 'SynonymsSection constructor: @element.size() != 1' unless @element.size() == 1
     @form = new AntCat.SynonymsSectionForm @element.find('.nested_form')
+    $add_button = @element.find 'button.add'
+    AntCat.log 'SynonymsSection constructor: $add_button.size() != 1' unless $add_button.size() == 1
+    $add_button.click => @add(); false
+
+  add: =>
+    @form.open()
 
 class AntCat.SynonymsSectionForm extends AntCat.NestedForm
   constructor: ->
