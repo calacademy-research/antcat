@@ -18,7 +18,7 @@ class AntCat.SynonymsSectionForm extends AntCat.NestedForm
     @setup_autocomplete @textbox
 
   submit: =>
-    #return false if @textbox.val().length == 0
+    return false if @textbox.val().length == 0
     @element.find('#error_message').text('')
     super
 
