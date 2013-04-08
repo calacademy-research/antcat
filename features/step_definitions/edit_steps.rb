@@ -87,7 +87,7 @@ Then /^I should (not )?see the "Delete" button for the history item$/ do |should
 end
 
 When /^I click "(.*?)" beside the first junior synonym$/ do |button|
-  within '.junior_synonyms_section .synonym_row:first' do
+  within '.junior_synonyms_section .synonym_row' do
     step %{I press "#{button}"}
   end
 end
