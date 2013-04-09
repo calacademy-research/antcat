@@ -47,7 +47,6 @@ class SynonymsController < ApplicationController
 
     content = render_to_string(partial: 'taxa/junior_and_senior_synonyms_section', locals: {taxon: taxon})
     json = {content: content, success: true, error_message: ''}.to_json
-    #send_back_json content: content, success: true, error_message: ''
     render json: json, content_type: 'text/html'
   end
 
