@@ -4,13 +4,17 @@ class AntCat.SynonymsSection
     @initialize()
 
   initialize: =>
-    @form = new AntCat.SynonymsSectionForm @element.find('.nested_form'), on_success: @handle_success
+    @setup_add_buttons()
+    @setup_delete_buttons()
+
+  setup_add_buttons: =>
     $add_button = @element.find 'button.add'
     AntCat.log 'SynonymsSection constructor: $add_button.size() != 1' unless $add_button.size() == 1
     $add_button.click => @add(); false
-    @element.find('button.delete').show() if AntCat.testing
+
+  setup_delete_buttons: =>
     $delete_buttons = @element.find 'button.delete'
-    AntCat.log 'SynonymsSection initialize: $delete_buttons.size() < 1' unless $delete_buttons.size() >= 1
+    $delete_buttons.show() if AntCat.testing
     $delete_buttons.click (event) => @delete(event.target); false
     @element.find('.synonym_row').hover(
       (event) =>
@@ -23,7 +27,12 @@ class AntCat.SynonymsSection
     )
 
   add: =>
-    @form.open()
+    form = new AntCat.SynonymsSectionForm @element.find('.nested_form'), on_success: @handle_success
+    form.open()
+
+  handle_success: (data) =>
+    @element.find('.synonyms_section').replaceWith data.content
+    @initialize()
 
   delete: (target) =>
     return unless confirm 'Are you sure you want to delete this synonym?'
@@ -33,30 +42,27 @@ class AntCat.SynonymsSection
     $.post url, {_method: 'delete'}, null, 'json'
     $(target).closest('.synonym_row').remove()
 
-  handle_success: (data) =>
-    @element.find('.synonyms_section').replaceWith data.content
-    @initialize()
-
 class AntCat.SynonymsSectionForm extends AntCat.NestedForm
   constructor: ->
     super
     @textbox = @element.find('input[type=text]')
     AntCat.log 'SynonymsSectionForm initialize: no @textbox' unless @textbox.size() == 1
-    @setup_autocomplete @textbox
+    @error_message = @element.find('#error_message')
+    AntCat.log 'SynonymsSectionForm initialize: no @textbox' unless @textbox.size() == 1
+    @setup_autocomplete()
 
   submit: =>
     return false if @textbox.val().length == 0
-    @element.find('#error_message').text('')
+    @error_message.text ''
     super
 
   handle_application_error: (error_message) =>
     super
-    @element.find('#error_message').text error_message
+    @error_message.text error_message
 
-  setup_autocomplete: ($textbox) =>
-    AntCat.log 'SynonymsSection setup_autocomplete: no $textbox' unless $textbox.size() == 1
+  setup_autocomplete: =>
     return if AntCat.testing
-    $textbox.autocomplete(
+    @textbox.autocomplete(
         autoFocus: true,
         source: "/name_pickers/search",
         minLength: 3)
