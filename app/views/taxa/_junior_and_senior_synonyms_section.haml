@@ -11,5 +11,5 @@
         = render 'taxa/synonyms_section', taxon: taxon, title: 'Junior synonyms', synonyms: taxon.junior_synonyms_with_names
     .container.right
       .senior_synonyms_section
-        = render 'taxa/synonyms_section', taxon: taxon, title: 'Senior synonyms', synonyms: []
+        = render 'taxa/synonyms_section', taxon: taxon, title: 'Senior synonyms', synonyms: taxon.senior_synonyms_with_names
     .clear
