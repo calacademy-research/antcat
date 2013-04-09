@@ -64,7 +64,7 @@ class AntCat.SynonymsSectionForm extends AntCat.NestedForm
     return if AntCat.testing
     @textbox.autocomplete(
         autoFocus: true,
-        source: "/name_pickers/search",
+        source: "/name_pickers/search?taxa_only=true",
         minLength: 3)
       .data('autocomplete')._renderItem = @render_item
 
