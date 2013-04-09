@@ -52,16 +52,11 @@ class SynonymsController < ApplicationController
   end
 
   def reverse_synonymy
-    taxon = Taxon.find params[:taxa_id]
     synonym = Synonym.find params[:id]
+    taxon = Taxon.find params[:taxa_id]
 
-    if taxon.synonym?
-      new_junior = synonym.senior_synonym
-      new_senior = taxon
-    else
-      new_senior = synonym.junior_synonym
-      new_junior = taxon
-    end
+    new_junior = synonym.senior_synonym
+    new_senior = synonym.junior_synonym
     new_junior.become_junior_synonym_of new_senior
     ReverseSynonymyEdit.create! new_junior: new_junior, new_senior: new_senior, user: current_user
 
