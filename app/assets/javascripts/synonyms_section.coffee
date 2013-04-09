@@ -1,6 +1,8 @@
 class AntCat.SynonymsSection
-  constructor: (@element) ->
+  constructor: (@element, @options = {}) ->
     AntCat.log 'SynonymsSection constructor: @element.size() != 1' unless @element.size() == 1
+    @parent_form = @options.parent_form
+    AntCat.log 'SynonymsSection constructor: !@parent_form' unless @parent_form
     @initialize()
 
   initialize: =>
@@ -41,6 +43,12 @@ class AntCat.SynonymsSection
     url = "/taxa/#{taxon_id}/synonyms/#{synonym_id}"
     $.post url, {_method: 'delete'}, null, 'json'
     $(target).closest('.synonym_row').remove()
+
+  on_form_open: =>
+    @options.parent_form.disable_buttons() if @options.parent_form
+
+  on_form_close: =>
+    @options.parent_form.enable_buttons() if @options.parent_form
 
 class AntCat.SynonymsSectionForm extends AntCat.NestedForm
   constructor: ->

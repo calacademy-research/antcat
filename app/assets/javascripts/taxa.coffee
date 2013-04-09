@@ -15,8 +15,8 @@ class AntCat.TaxonForm extends AntCat.Form
     @element.find('#elevate_to_species').click => @elevate_to_species(); false
 
   initialize_synonyms: =>
-    new AntCat.SynonymsSection @element.find('.junior_synonyms_section')
-    new AntCat.SynonymsSection @element.find('.senior_synonyms_section')
+    new AntCat.SynonymsSection @element.find('.junior_synonyms_section'), parent_form: @
+    new AntCat.SynonymsSection @element.find('.senior_synonyms_section'), parent_form: @
 
   reverse_synonymy: =>
     return unless confirm 'Are you sure you want to reverse the synonymy?'
