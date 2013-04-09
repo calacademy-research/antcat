@@ -19,4 +19,8 @@ class ApplicationController < ActionController::Base
     render json: json, content_type: 'text/html'
   end
 
+  def authenticate_catalog_editor
+    authenticate_user! && $Milieu.user_can_edit_catalog?(current_user)
+  end
+
 end
