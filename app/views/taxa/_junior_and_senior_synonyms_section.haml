@@ -8,8 +8,8 @@
   .section_contents.ui-dialog-content.ui-widget-content.ui-corner-bottom
     .container.left
       .junior_synonyms_section
-        = render 'synonyms_section', taxon: taxon, title: 'Junior synonyms', association_selector: :synonyms_as_senior, synonym_field_selector: :junior_synonym
+        = render 'synonyms_section', taxon: taxon, title: 'Junior synonyms', synonyms: taxon.junior_synonyms_with_names
     .container.right
       .senior_synonyms_section
-        = render 'synonyms_section', taxon: taxon, title: 'Senior synonyms', association_selector: :synonyms_as_junior, synonym_field_selector: :senior_synonym
+        = render 'synonyms_section', taxon: taxon, title: 'Senior synonyms', synonyms: []
     .clear
