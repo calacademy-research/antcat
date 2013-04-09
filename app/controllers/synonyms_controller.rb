@@ -57,8 +57,10 @@ class SynonymsController < ApplicationController
 
     new_junior = synonym.senior_synonym
     new_senior = synonym.junior_synonym
-    new_junior.become_junior_synonym_of new_senior
-    ReverseSynonymyEdit.create! new_junior: new_junior, new_senior: new_senior, user: current_user
+
+    Synonym.where(junior_synonym_id: new_junior, senior_synonym_id: new_senior).destroy_all
+    Synonym.where(senior_synonym_id: new_junior, junior_synonym_id: new_senior).destroy_all
+    Synonym.create! junior_synonym: new_junior, senior_synonym: new_senior
 
     content = render_to_string(partial: 'taxa/junior_and_senior_synonyms_section', locals: {taxon: taxon})
     json = {content: content, success: true, error_message: ''}.to_json
