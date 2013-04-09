@@ -8,6 +8,8 @@ module HtmlSelectorsHelpers
 
     when /^the junior synonyms section$/
       '.junior_synonyms_section'
+    when /^the senior synonyms section$/
+      '.senior_synonyms_section'
 
     when /the index/
       "#catalog .index"
