@@ -155,6 +155,14 @@ describe Name do
       results.first[:name].should == 'Acropyga dubitata'
     end
 
+    it "should only return names attached to taxa, if that option is sent" do
+      atta = create_genus 'Atta'
+      atta_nudum = create_name 'Attanuda'
+      results = Name.picklist_matching('atta', taxa_only: true)
+      results.should have(1).item
+      results.first[:name].should == 'Atta'
+    end
+
   end
 
   describe "Duplicates" do
