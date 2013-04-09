@@ -44,11 +44,6 @@ Then /^I should see the catalog entry for "([^"]*)"$/ do |taxon|
   page.should have_css('.header .taxon', text: taxon)
 end
 
-Then /^I should (not )?see the editing buttons$/ do |should_not|
-  selector = should_not ? :should_not : :should
-  page.send selector, have_css('input[value="Reverse synonymy"]')
-end
-
 And /^there should be an editing history record showing that the new junior synonym is "([^"]*)" and the new senior synonym is "([^"]*)"/ do |junior, senior|
   editing_history = ReverseSynonymyEdit.first
   editing_history.new_junior.name.to_s.should == junior
