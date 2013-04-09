@@ -31,4 +31,24 @@ class SynonymsController < ApplicationController
     render json: json, content_type: 'text/html'
   end
 
+  def reverse_synonymy
+    taxon = Taxon.find params[:taxa_id]
+    synonym = Synonym.find params[:id]
+
+    if taxon.synonym?
+      new_junior = synonym.senior_synonym
+      new_senior = taxon
+    else
+      new_senior = synonym.junior_synonym
+      new_junior = taxon
+    end
+    new_junior.become_junior_synonym_of new_senior
+    ReverseSynonymyEdit.create! new_junior: new_junior, new_senior: new_senior, user: current_user
+
+    content = render_to_string(partial: 'taxa/junior_and_senior_synonyms_section', locals: {taxon: taxon})
+    json = {content: content, success: true, error_message: ''}.to_json
+    #send_back_json content: content, success: true, error_message: ''
+    render json: json, content_type: 'text/html'
+  end
+
 end

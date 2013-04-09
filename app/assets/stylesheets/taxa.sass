@@ -84,13 +84,15 @@
     .synonym_row
       &.ui-selecting
         background: $color_current_reference_being_edited_by_reference_field_background
-      button
+      button.delete
         margin-left: 10px
+        display: none
+      button.reverse_synonymy
+        margin-left: 0
+        display: none
     img.throbber
       display: none
     .edit
-      display: none
-    button.delete
       display: none
 
   .homonym_section

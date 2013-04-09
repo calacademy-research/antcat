@@ -2,7 +2,7 @@ class AntCat.TaxonForm extends AntCat.Form
   constructor: (@element, @options = {}) ->
     @initialize_add_button()
     @initialize_task_buttons()
-    @initialize_synonyms()
+    @initialize_junior_and_senior_synonyms_section()
     super
 
   initialize_add_button: =>
@@ -14,9 +14,13 @@ class AntCat.TaxonForm extends AntCat.Form
     @element.find('#reverse_synonymy').click => @reverse_synonymy(); false
     @element.find('#elevate_to_species').click => @elevate_to_species(); false
 
-  initialize_synonyms: =>
+  initialize_junior_and_senior_synonyms_section: =>
     new AntCat.SynonymsSection @element.find('.junior_synonyms_section'), parent_form: @
     new AntCat.SynonymsSection @element.find('.senior_synonyms_section'), parent_form: @
+
+  replace_junior_and_senior_synonyms_section: (content) =>
+    $('.junior_and_senior_synonyms_section').replaceWith content
+    @initialize_junior_and_senior_synonyms_section()
 
   reverse_synonymy: =>
     return unless confirm 'Are you sure you want to reverse the synonymy?'
