@@ -20,6 +20,17 @@ Feature: Editing the synonyms section
     Then I should be on the edit page for "Atta major"
     And I should see "Atta minor" in the junior synonyms section
 
+  Scenario: Adding a senior synonym
+    Given there is a species "Atta major"
+    And there is a species "Atta minor"
+    When I go to the edit page for "Atta major"
+    Then I should not see "Atta minor" in the senior synonyms section
+    When I press "Add" in the senior synonyms section
+    And I fill in the senior synonym name with "Atta minor"
+    And I press "Save"
+    Then I should be on the edit page for "Atta major"
+    And I should see "Atta minor" in the senior synonyms section
+
   Scenario: Adding two synonyms
     Given there is a species "Atta major"
     And there is a species "Atta minor"
@@ -40,7 +51,7 @@ Feature: Editing the synonyms section
     And I press "Add" in the junior synonyms section
     And I fill in the junior synonym name with "Atta major"
     And I press "Save"
-    Then I should see "This taxon is already a junior synonym"
+    Then I should see "This taxon is already a synonym"
 
   Scenario: Deleting a synonym
     Given there is a species "Atta major" which is a junior synonym of "Eciton minor"

@@ -14,18 +14,14 @@ Feature: Reversing synonymy
     Given I will confirm on the next step
     When I click "Reverse synonymy" beside the first junior synonym
     Then I should not see "Solenopsis invicta" in the junior synonyms section
-    #And I should see "Solenopsis invicta" in the senior synonyms section
+    And I should see "Solenopsis invicta" in the senior synonyms section
 
-  #Scenario: Reversing synonym from the junior side
-    #Given there is a species "Solenopsis invicta" which is a junior synonym of "Solenopsis wagneri"
-    #And I am logged in
-    #When I go to the catalog entry for "Solenopsis invicta"
-    #Then I should see that "Solenopsis invicta" is a synonym of "Solenopsis wagneri"
-    #When I press "Edit"
-    #Given I will confirm on the next step
-    #And I press "Reverse synonymy"
-    #Then I should see the catalog entry for "Solenopsis invicta"
-    #Then I should not see that "Solenopsis invicta" is a synonym of "Solenopsis wagneri"
-    #When I go to the catalog entry for "Solenopsis wagneri"
-    #Then I should see that "Solenopsis wagneri" is a synonym of "Solenopsis invicta"
-    #And there should be an editing history record showing that the new junior synonym is "Solenopsis wagneri" and the new senior synonym is "Solenopsis invicta"
+  Scenario: Reversing synonym from the junior side
+    Given there is a species "Solenopsis invicta" which is a junior synonym of "Solenopsis wagneri"
+    And I am logged in
+    When I go to the edit page for "Solenopsis invicta"
+    Then I should see "Solenopsis wagneri" in the senior synonyms section
+    Given I will confirm on the next step
+    When I click "Reverse synonymy" beside the first senior synonym
+    Then I should not see "Solenopsis wagneri" in the senior synonyms section
+    Then I should see "Solenopsis wagneri" in the junior synonyms section
