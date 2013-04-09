@@ -1,4 +1,4 @@
--#Locals: form, possible_homonym, show_reverse_synonymy_button, show_elevate_to_species_button
+-#Locals: form, possible_homonym, show_elevate_to_species_button
 
 .buttons_section
   .left_buttons
@@ -8,7 +8,5 @@
     = image_tag 'ui-anim_basic_16x16.gif', class: 'throbber'
   .right_buttons
     %input{type: :hidden, name: 'task_button_command', id: 'task_button_command'}
-    - if show_reverse_synonymy_button
-      %input{type: 'button', class: 'ui-priority-primary', id: 'reverse_synonymy', value: previewize('Reverse synonymy')}
     - if show_elevate_to_species_button
       %input{type: 'button', class: 'ui-priority-primary', id: 'elevate_to_species', value: previewize('Elevate to species')}

@@ -11,7 +11,6 @@ class AntCat.TaxonForm extends AntCat.Form
     @add_history_item_button.click => @add_history_item(); false
 
   initialize_task_buttons: =>
-    @element.find('#reverse_synonymy').click => @reverse_synonymy(); false
     @element.find('#elevate_to_species').click => @elevate_to_species(); false
 
   initialize_junior_and_senior_synonyms_section: =>
@@ -21,11 +20,6 @@ class AntCat.TaxonForm extends AntCat.Form
   replace_junior_and_senior_synonyms_section: (content) =>
     $('.junior_and_senior_synonyms_section').replaceWith content
     @initialize_junior_and_senior_synonyms_section()
-
-  reverse_synonymy: =>
-    return unless confirm 'Are you sure you want to reverse the synonymy?'
-    $('#task_button_command').val('reverse_synonymy')
-    @submit()
 
   elevate_to_species: =>
     return unless confirm 'Are you sure you want to elevate this subspecies to species?'

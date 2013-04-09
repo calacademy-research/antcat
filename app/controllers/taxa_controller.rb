@@ -11,12 +11,10 @@ class TaxaController < ApplicationController
 
   def edit
     @taxon = Taxon.find params[:id]
-    @show_reverse_synonymy_button = @taxon.junior_synonyms.present? || @taxon.senior_synonyms.present?
     @show_elevate_to_species_button = @taxon.kind_of? Subspecies
   end
 
   def update
-    return reverse_synonymy if params[:task_button_command] == 'reverse_synonymy'
     return elevate_to_species if params[:task_button_command] == 'elevate_to_species'
 
     @taxon = Taxon.find params[:id] 
