@@ -1,5 +1,7 @@
 # coding: UTF-8
 class TaxonHistoryItemsController < ApplicationController
+  before_filter :authenticate_catalog_editor
+  skip_before_filter :authenticate_catalog_editor, if: :preview?
 
   def update
     @item = TaxonHistoryItem.find params[:id]
