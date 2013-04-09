@@ -16,11 +16,10 @@ class SynonymsController < ApplicationController
     end
 
     json = {
-      content: render_to_string(partial: 'taxa/synonyms_section', locals: {
-        taxon: taxon, title: 'Junior synonyms', association_selector: :synonyms_as_senior,
-        synonym_field_selector: :junior_synonym}),
+      content: render_to_string(partial: 'taxa/synonyms_section',
+        locals: {taxon: taxon, title: 'Junior synonyms', synonyms: taxon.junior_synonyms_with_names}),
       success: error_message.blank?,
-      error_message: error_message
+      error_message: error_message,
     }.to_json
 
     render json: json, content_type: 'text/html'

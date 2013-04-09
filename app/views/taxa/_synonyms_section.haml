@@ -1,4 +1,4 @@
--#Locals: taxon, title, association_selector, synonym_field_selector
+-#Locals: taxon, title, synonyms
 
 .synonyms_section
 
@@ -10,7 +10,7 @@
 
   .section_contents.ui-dialog-content.ui-widget-content.ui-corner-bottom
     = render 'taxa/synonym_form', taxon: taxon
-    - for synonym in taxon.send association_selector
+    - for synonym in synonyms
       .synonym_row
-        =synonym.send(synonym_field_selector).name.name_html.html_safe
-        %button.submit.ui-priority-primary.small_button.delete{'data-taxon-id' => taxon.id, 'data-synonym-id' => synonym.id} Delete
+        =synonym[:name].html_safe
+        %button.submit.ui-priority-primary.small_button.delete{'data-taxon-id' => taxon.id, 'data-synonym-id' => synonym[:id]} Delete
