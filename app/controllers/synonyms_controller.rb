@@ -5,21 +5,39 @@ class SynonymsController < ApplicationController
 
   def create
     taxon = Taxon.find params[:taxa_id]
-    synonym = Taxon.find_by_name params[:name]
+    synonym_taxon = Taxon.find_by_name params[:name]
+    is_junior = params[:junior].present?
+
+    title = ''
     error_message = ''
-    if synonym
-      if Synonym.find_by_senior_synonym_id_and_junior_synonym_id taxon.id, synonym.id
-        error_message = 'This taxon is already a junior synonym'
+    synonyms = []
+
+    if synonym_taxon
+      if is_junior
+        junior = synonym_taxon
+        senior = taxon
+        title = 'Junior synonyms'
       else
-        Synonym.create! senior_synonym_id: taxon.id, junior_synonym_id: synonym.id
+        junior = taxon
+        senior = synonym_taxon
+        title = 'Senior synonyms'
+      end
+      if Synonym.find_by_senior_synonym_id_and_junior_synonym_id senior.id, junior.id
+        error_message = 'This taxon is already a synonym'
+      else
+        Synonym.create! senior_synonym_id: senior.id, junior_synonym_id: junior.id
+        if is_junior
+          synonyms = taxon.junior_synonyms_with_names
+        else
+          synonyms = taxon.senior_synonyms_with_names
+        end
       end
     else
       error_message = 'Taxon not found'
     end
 
     json = {
-      content: render_to_string(partial: 'taxa/synonyms_section',
-        locals: {taxon: taxon, title: 'Junior synonyms', synonyms: taxon.junior_synonyms_with_names}),
+      content: render_to_string(partial: 'taxa/synonyms_section', locals: {taxon: taxon, title: title, synonyms: synonyms}),
       success: error_message.blank?,
       error_message: error_message,
     }.to_json
