@@ -6,10 +6,11 @@ class SynonymsController < ApplicationController
   def create
     taxon = Taxon.find params[:taxa_id]
     synonym_taxon = Taxon.find_by_name params[:name]
-    is_junior = params[:junior].present?
+    is_junior = params[:junior]
 
     title = ''
     error_message = ''
+    junior_or_senior = ''
     synonyms = []
 
     if synonym_taxon
@@ -17,10 +18,12 @@ class SynonymsController < ApplicationController
         junior = synonym_taxon
         senior = taxon
         title = 'Junior synonyms'
+        junior_or_senior = 'junior'
       else
         junior = taxon
         senior = synonym_taxon
         title = 'Senior synonyms'
+        junior_or_senior = 'senior'
       end
       if Synonym.find_by_senior_synonym_id_and_junior_synonym_id senior.id, junior.id
         error_message = 'This taxon is already a synonym'
@@ -37,7 +40,9 @@ class SynonymsController < ApplicationController
     end
 
     json = {
-      content: render_to_string(partial: 'taxa/synonyms_section', locals: {taxon: taxon, title: title, synonyms: synonyms}),
+      content: render_to_string(partial: 'taxa/synonyms_section', locals: {
+        taxon: taxon, title: title, synonyms: synonyms, junior_or_senior: junior_or_senior
+      }),
       success: error_message.blank?,
       error_message: error_message,
     }.to_json
