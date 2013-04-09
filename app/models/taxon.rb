@@ -120,6 +120,17 @@ class Taxon < ActiveRecord::Base
   def senior_synonym_of? taxon; junior_synonyms.include? taxon end
   alias synonym_of? junior_synonym_of?
   has_many :synonyms_as_junior, foreign_key: :junior_synonym_id, class_name: 'Synonym'
+
+  def junior_synonyms_with_names
+    self.class.find_by_sql %{
+      SELECT synonyms.id, taxa.name_html_cache AS name
+      FROM synonyms JOIN taxa ON synonyms.junior_synonym_id = taxa.id
+      JOIN names ON taxa.name_id = names.id
+      WHERE senior_synonym_id = #{id}
+      ORDER BY name
+    }
+  end
+
   has_many :synonyms_as_senior, foreign_key: :senior_synonym_id, class_name: 'Synonym'
   has_many :junior_synonyms, through: :synonyms_as_senior
   has_many :senior_synonyms, through: :synonyms_as_junior
