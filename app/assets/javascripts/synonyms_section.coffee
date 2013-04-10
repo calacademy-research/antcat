@@ -52,7 +52,7 @@ class AntCat.SynonymsSection
     @initialize()
 
   delete: (target) =>
-    return unless confirm 'Are you sure you want to delete this synonym?'
+    return unless @confirm target, 'Are you sure you want to delete this synonym?'
     taxon_id = $(target).data('taxon-id')
     synonym_id = $(target).data('synonym-id')
     url = "/taxa/#{taxon_id}/synonyms/#{synonym_id}"
@@ -60,7 +60,7 @@ class AntCat.SynonymsSection
     $(target).closest('.synonym_row').remove()
 
   reverse_synonymy: (target) =>
-    return unless confirm 'Are you sure you want to reverse this synonymy?'
+    return unless @confirm target, 'Are you sure you want to reverse this synonymy?'
     taxon_id = $(target).data('taxon-id')
     synonym_id = $(target).data('synonym-id')
     url = "/taxa/#{taxon_id}/synonyms/#{synonym_id}/reverse_synonymy"
@@ -71,6 +71,13 @@ class AntCat.SynonymsSection
       success: (data) =>
         @parent_form.replace_junior_and_senior_synonyms_section data.content
       error: (xhr) => debugger
+
+  confirm: (button, question) =>
+    $row = $(button).closest '.synonym_row'
+    $row.addClass 'ui-selected'
+    result = confirm question
+    $row.removeClass 'ui-selected'
+    result
 
   on_form_open: =>
     @options.parent_form.disable_buttons() if @options.parent_form
