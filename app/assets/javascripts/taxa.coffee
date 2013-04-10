@@ -3,7 +3,12 @@ class AntCat.TaxonForm extends AntCat.Form
     @initialize_add_button()
     @initialize_task_buttons()
     @initialize_junior_and_senior_synonyms_section()
+    @element.bind 'keydown', @handle_event
     super
+
+  handle_event: (event) =>
+    if event.type is 'keydown' and event.which is $.ui.keyCode.ENTER
+      return false
 
   initialize_add_button: =>
     @add_history_item_button = @element.find '.history_section_buttons button'
