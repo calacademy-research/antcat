@@ -42,7 +42,7 @@ class AntCat.TaxonForm extends AntCat.Form
     @element.find('.history_items').append $panel
 
 $ ->
-  form = new AntCat.TaxonForm $('.taxon_form'), button_container: '> .buttons_section'
+  form = new AntCat.TaxonForm $('.taxon_form'), button_container: '> .fields_section .buttons_section'
   new AntCat.TaxtEditor $('#headline_notes_taxt_editor'), parent_buttons: '.buttons_section'
   new AntCat.NameField $('#protonym_name_field'), value_id: 'taxon_protonym_attributes_name_attributes_id', parent_form: form
   if $('#type_name_field').size() == 1
