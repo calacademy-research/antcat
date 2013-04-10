@@ -74,9 +74,9 @@ class AntCat.SynonymsSection
 
   confirm: (button, question) =>
     $row = $(button).closest '.synonym_row'
-    $row.addClass 'ui-selected'
+    $row.addClass 'confirming'
     result = confirm question
-    $row.removeClass 'ui-selected'
+    $row.removeClass 'confirming'
     result
 
   on_form_open: =>
