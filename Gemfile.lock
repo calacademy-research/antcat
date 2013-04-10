@@ -133,6 +133,11 @@ GEM
     paper_trail (2.6.3)
       activerecord (~> 3.0)
       railties (~> 3.0)
+    paper_trail_manager (0.2.0)
+      paper_trail (~> 2.0)
+      rails (~> 3.0)
+      rake
+      will_paginate (~> 3.0.pre2)
     paperclip (3.4.1)
       activemodel (>= 3.0.0)
       activerecord (>= 3.0.0)
@@ -265,6 +270,7 @@ DEPENDENCIES
   mysql2
   nokogiri
   paper_trail
+  paper_trail_manager
   paperclip
   rack
   rails (~> 3.2.13)
