@@ -545,4 +545,30 @@ describe Taxon do
     end
   end
 
+  describe "Junior synonyms with names" do
+    it "should work" do
+      atta = create_genus 'Atta'
+      eciton = create_genus 'Eciton'
+      eciton.become_junior_synonym_of atta
+      results = atta.junior_synonyms_with_names
+      results.should have(1).item
+      record = results.first
+      record['id'].should == Synonym.find_by_junior_synonym_id(eciton.id).id
+      record['name'].should == eciton.name.to_html
+    end
+  end
+
+  describe "Senior synonyms with names" do
+    it "should work" do
+      atta = create_genus 'Atta'
+      eciton = create_genus 'Eciton'
+      eciton.become_junior_synonym_of atta
+      results = eciton.senior_synonyms_with_names
+      results.should have(1).item
+      record = results.first
+      record['id'].should == Synonym.find_by_senior_synonym_id(atta.id).id
+      record['name'].should == atta.name.to_html
+    end
+  end
+
 end
