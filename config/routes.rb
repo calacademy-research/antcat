@@ -57,6 +57,8 @@ AntCat::Application.routes.draw do
   match '/widget_tests/reference_field_test', to: 'widget_tests#reference_field_test'
   match '/widget_tests/taxt_editor_test', to: 'widget_tests#taxt_editor_test'
 
+  resources :changes, controller: 'paper_trail_manager/changes'
+
   devise_for :users
 
 end
