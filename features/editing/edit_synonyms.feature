@@ -53,6 +53,14 @@ Feature: Editing the synonyms section
     And I press "Save"
     Then I should see "This taxon is already a synonym"
 
+  Scenario: Trying to add a senior synonym when it's already a junior synonym
+    Given there is a species "Atta major" which is a junior synonym of "Eciton minor"
+    When I go to the edit page for "Eciton minor"
+    And I press "Add" in the senior synonyms section
+    And I fill in the senior synonym name with "Atta major"
+    And I press "Save"
+    Then I should see "This taxon is already a synonym"
+
   Scenario: Deleting a synonym
     Given there is a species "Atta major" which is a junior synonym of "Eciton minor"
     When I go to the edit page for "Eciton minor"
