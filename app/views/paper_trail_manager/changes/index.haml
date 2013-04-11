@@ -1,0 +1,22 @@
+- @title = 'Changes'
+
+- content_for :page_contents do
+
+  %p.changes_feed= link_to 'Changes feed', changes_path(format: 'atom')
+
+  %p
+    Show:
+    = ([link_to('All', changes_path)] + change_item_types.map {|type| link_to(type.pluralize, changes_path(type: type))}).join(' | ').html_safe
+
+  %table.changes_table
+    %tfoot
+      %tr
+        %td{colspan: '2'}
+          = will_paginate @versions
+    %tbody
+      - if @versions.any?
+        - @versions.each do |version|
+          = render 'version', version: version
+      - else
+        %td{rowspan: '2'} &mdash; No changes found &mdash;
+
