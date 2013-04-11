@@ -11,6 +11,7 @@ class AntCat.TaxonForm extends AntCat.Form
       return false
 
   initialize_add_button: =>
+    new AntCat.HistoryItemsSection @element.find('.history_items_section'), parent_form: @
     @add_history_item_button = @element.find '.history_section_buttons button'
     AntCat.log 'TaxonForm constructor: @add_history_item_button.size() != 1' unless @add_history_item_button.size() == 1
     @add_history_item_button.click => @add_history_item(); false
