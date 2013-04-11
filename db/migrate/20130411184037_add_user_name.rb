@@ -25,7 +25,7 @@ class AddUserName < ActiveRecord::Migration
   end
 
   def set_name email, name
-    User.find_by_email(email).update_attributes name: name
+    User.find_by_email(email).update_attributes! name: name
   end
 
   def down
