@@ -3,10 +3,6 @@ When /^I save my changes$/ do
   step 'I press "Save"'
 end
 
-When /^I save the form$/ do
-  step 'I save my changes'
-end
-
 # section
 When /^I save the (\w+)(?: item)?$/ do |section|
   step %{I press the #{section} item "Save" button}

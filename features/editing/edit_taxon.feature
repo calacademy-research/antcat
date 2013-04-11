@@ -29,7 +29,7 @@ Feature: Editing a taxon
     #And I log in
     #When I go to the edit page for "Formicidae"
     #And I set the name to "Formica"
-    #And I save the form
+    #And I save my changes
     #Then I should see "Formica" in the header
 
   Scenario: Editing a species
@@ -38,7 +38,7 @@ Feature: Editing a taxon
     When I go to the catalog page for "Atta major"
     Then I should see "Atta major" in the header
     When I go to the edit page for "Atta major"
-    And I save the form
+    And I save my changes
     And I wait for a bit
     Then I should see "Atta major" in the header
 
@@ -47,7 +47,7 @@ Feature: Editing a taxon
     #And I log in
     #When I go to the edit page for "Calyptites"
     #And I set the name to ""
-    #And I save the form
+    #And I save my changes
     #Then I should see "Name can't be blank"
 
   #Scenario: Setting a genus's name to an existing one
@@ -56,7 +56,7 @@ Feature: Editing a taxon
     #And I log in
     #When I go to the edit page for "Atta"
     #And I set the name to "Calyptites"
-    #And I save the form
+    #And I save my changes
     #Then I should see "This name is in use by another taxon"
     #When I press "Save Homonym"
     #Then there should be two genera with the name "Calyptites"
@@ -65,7 +65,7 @@ Feature: Editing a taxon
     #Given there are two genera "Calyptites"
     #And I log in
     #When I go to the edit page for "Calyptites"
-    #And I save the form
+    #And I save my changes
     #Then I should not see "This name is in use by another taxon"
     #Then I should see "Calyptites" in the header
 
@@ -112,7 +112,7 @@ Feature: Editing a taxon
     And I click the protonym name field
     And I set the protonym name to "Eciton"
     And I press "OK"
-    And I save the form
+    And I save my changes
     Then I should see "Eciton" in the headline
 
   Scenario: Changing the authorship
@@ -127,7 +127,7 @@ Feature: Editing a taxon
     And I click the first search result
     And I press "OK"
     Then the authorship field should contain "Fisher 2004. Ants. Psyche 3:3."
-    When I save the form
+    When I save my changes
     Then I should see "Fisher 2004. Ants. Psyche 3:3." in the headline
 
   Scenario: Changing the type name
@@ -138,7 +138,7 @@ Feature: Editing a taxon
     And I click the type name field
     And I set the type name to "Atta major"
     And I press "OK"
-    And I save the form
+    And I save my changes
     Then I should see "Atta major" in the headline
 
   Scenario: Changing incertae sedis
@@ -148,6 +148,6 @@ Feature: Editing a taxon
     Then I should see "incertae sedis in subfamily"
     When I go to the edit page for "Atta"
     And I select "(none)" from "taxon_incertae_sedis_in"
-    And I save the form
+    And I save my changes
     Then I should be on the catalog page for "Atta"
     Then I should not see "incertae sedis in subfamily"
