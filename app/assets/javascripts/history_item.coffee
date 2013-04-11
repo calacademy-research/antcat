@@ -1,3 +1,5 @@
+class AntCat.HistoryItemsSection
+
 class AntCat.HistoryItemPanel extends AntCat.Panel
   constructor: (@element, @options) ->
     @options.click_on_display = true
