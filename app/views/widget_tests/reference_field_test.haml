@@ -1,11 +1,12 @@
 - @title = 'Reference Field Test'
 
 - content_for :head do
-  = javascript_include_tag  'widgets/form', 'widgets/ajax_form', 'widgets/nested_form',
-                            'widgets/panel', 'widgets/field_panel',
-                            'widgets/reference_panel', 'widgets/reference_form',
-                            'widgets/reference_field',
-                            'widget_tests/reference_field_test'
+  = javascript_include_tag  'widgets/form', 'widgets/ajax_form', 'widgets/nested_form'
+  = javascript_include_tag  'widgets/panel', 'widgets/field_panel'
+  = javascript_include_tag  'widgets/reference_panel', 'widgets/reference_form'
+  = javascript_include_tag  'widgets/reference_field'
+  = javascript_include_tag  'widget_tests/reference_field_test'
+
   = stylesheet_link_tag 'taxa'
 
 - content_for :page_contents do

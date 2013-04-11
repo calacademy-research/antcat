@@ -1,15 +1,15 @@
 - @title = @taxon.name.epithet
 
 - content_for :head do
-  = javascript_include_tag  'qtip',
-                            'ext/jquery.ui.selectmenu.js', 'ext/jquery.spinner.js',
-                            'widgets/panel', 'widgets/field_panel',
-                            'widgets/form', 'widgets/ajax_form', 'widgets/nested_form',
-                            'widgets/reference_panel', 'widgets/reference_form',
-                            'widgets/reference_field',
-                            'widgets/name_field',
-                            'widgets/reference_popup', 'widgets/name_popup', 'widgets/taxt_editor',
-                            'taxa', 'history_items_section', 'synonyms_section'
+  = javascript_include_tag  'qtip'
+  = javascript_include_tag  'ext/jquery.ui.selectmenu.js', 'ext/jquery.spinner.js'
+  = javascript_include_tag  'widgets/panel', 'widgets/field_panel'
+  = javascript_include_tag  'widgets/form', 'widgets/ajax_form', 'widgets/nested_form'
+  = javascript_include_tag  'widgets/reference_panel', 'widgets/reference_form'
+  = javascript_include_tag  'widgets/reference_field'
+  = javascript_include_tag  'widgets/name_field'
+  = javascript_include_tag  'widgets/reference_popup', 'widgets/name_popup', 'widgets/taxt_editor'
+  = javascript_include_tag  'taxa', 'history_items_section', 'synonyms_section'
 
 - content_for :page_contents do
   = form_for @taxon, as: :taxon, url: "/taxa/#{@taxon.id}", html: {class: 'taxon_form ui-widget', style: {display: 'none'}} do |form|
