@@ -16,7 +16,7 @@ Feature: Editing a history item
     Then the history should be "Taxonomic history"
     When I click the history item
     And I edit the history item to "(none)"
-    And I save my changes
+    And I save the history item
     Then I should not see "Taxonomic history"
     Then the history should be "(none)"
 
@@ -34,14 +34,14 @@ Feature: Editing a history item
     When I go to the edit page for "Formicidae"
     And I click the history item
     And I edit the history item to "(none)"
-    And I press "Cancel"
+    And I cancel the history item's changes
     Then the history should be "Taxonomic history."
 
   Scenario: Editing an item so it's blank
     When I go to the edit page for "Formicidae"
     And I click the history item
     And I edit the history item to ""
-    And I save my changes
+    And I save the history item
     Then I should see "Taxt can't be blank"
 
   # Pressing Insert Name seems to submit or cancel whole form (only in test)
@@ -59,21 +59,21 @@ Feature: Editing a history item
     When I click the "Add History" button
     Then I should not see the "Delete" button for the history item
     And I edit the history item to "Abc"
-    And I save my changes
+    And I save the history item
     Then the history should be "Abc"
 
   Scenario: Adding a history item with blank taxt
     When I go to the edit page for "Atta"
     Then the history should be empty
     When I click the "Add History" button
-    And I save my changes
+    And I save the history item
     Then I should see "Taxt can't be blank"
 
   Scenario: Adding a history item, but cancelling
     When I go to the edit page for "Atta"
     Then the history should be empty
     When I click the "Add History" button
-    And I press "Cancel"
+    And I cancel the history item's changes
     Then the history should be empty
 
   Scenario: Deleting a history item
@@ -83,6 +83,6 @@ Feature: Editing a history item
     When I click the history item
     Then I should see the "Delete" button for the history item
     And I will confirm on the next step
-    And I press "Delete"
+    And I delete the history item
     Then I should be on the edit page for "Eciton"
     And the history should be empty
