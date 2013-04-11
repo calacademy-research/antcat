@@ -1,6 +1,6 @@
 class AntCat.TaxonForm extends AntCat.Form
   constructor: (@element, @options = {}) ->
-    @initialize_add_button()
+    @initialize_history_section()
     @initialize_task_buttons()
     @initialize_junior_and_senior_synonyms_section()
     @element.bind 'keydown', @handle_event
@@ -10,18 +10,15 @@ class AntCat.TaxonForm extends AntCat.Form
     if event.type is 'keydown' and event.which is $.ui.keyCode.ENTER
       return false
 
-  initialize_add_button: =>
+  initialize_history_section: =>
     new AntCat.HistoryItemsSection @element.find('.history_items_section'), parent_form: @
-    @add_history_item_button = @element.find '.history_section_buttons button'
-    AntCat.log 'TaxonForm constructor: @add_history_item_button.size() != 1' unless @add_history_item_button.size() == 1
-    @add_history_item_button.click => @add_history_item(); false
-
-  initialize_task_buttons: =>
-    @element.find('#elevate_to_species').click => @elevate_to_species(); false
 
   initialize_junior_and_senior_synonyms_section: =>
     new AntCat.SynonymsSection @element.find('.junior_synonyms_section'), parent_form: @
     new AntCat.SynonymsSection @element.find('.senior_synonyms_section'), parent_form: @
+
+  initialize_task_buttons: =>
+    @element.find('#elevate_to_species').click => @elevate_to_species(); false
 
   replace_junior_and_senior_synonyms_section: (content) =>
     $('.junior_and_senior_synonyms_section').replaceWith content
@@ -35,9 +32,6 @@ class AntCat.TaxonForm extends AntCat.Form
   cancel: =>
     id = @form().attr('action').match(/\d+/)[0]
     window.location = "/catalog/#{id}"
-
-  add_history_item: =>
-    AntCat.HistoryItemPanel.add_history_item @
 
   add_history_item_panel: ($panel) =>
     @element.find('.history_items').append $panel
