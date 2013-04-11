@@ -3,9 +3,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :recoverable, :registerable,
          :rememberable, :trackable, :validatable, :invitable
 
-  has_paper_trail
-
-  attr_accessible :email, :password, :password_confirmation
+  attr_accessible :email, :name, :password, :password_confirmation
 
   def is_editor?
     true
