@@ -8,7 +8,7 @@ When /^I save the form$/ do
 end
 
 # section
-When /^I save the (\w+) item$/ do |section|
+When /^I save the (\w+)(?: item)?$/ do |section|
   step %{I press the #{section} item "Save" button}
 end
 When /^I cancel the (\w+) item's changes$/ do |section|
@@ -21,6 +21,21 @@ end
 # history item section
 When /^I press the history item "([^"]*)" button$/ do |button|
   within '.not_history_item_template' do
+    step %{I press "#{button}"}
+  end
+end
+
+# synonym section
+When /^I save the senior synonym$/ do
+  step %{I press the senior synonym item "Save" button}
+end
+When /^I press the senior synonym item "([^"]*)" button$/ do |button|
+  within '.senior_synonyms_section' do
+    step %{I press "#{button}"}
+  end
+end
+When /^I press the (?:junior )?synonym item "([^"]*)" button$/ do |button|
+  within '.junior_synonyms_section' do
     step %{I press "#{button}"}
   end
 end
