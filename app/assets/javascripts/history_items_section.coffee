@@ -69,3 +69,4 @@ class AntCat.HistoryItemForm extends AntCat.NestedForm
 
   close: =>
     $('.added_history_item').removeClass('.added_history_item')
+    super
