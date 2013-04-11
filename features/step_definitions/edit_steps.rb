@@ -91,7 +91,7 @@ Then /^the history should be empty$/ do
 end
 
 When /^I click the "Add History" button$/ do
-  within '.history_section' do
+  within '.history_items_section' do
     click_button 'Add'
   end
 end
