@@ -16,7 +16,7 @@ Feature: Editing the synonyms section
     Then I should not see "Atta minor" in the junior synonyms section
     When I press "Add" in the junior synonyms section
     And I fill in the junior synonym name with "Atta minor"
-    And I press "Save"
+    And I save the synonym
     Then I should be on the edit page for "Atta major"
     And I should see "Atta minor" in the junior synonyms section
 
@@ -27,7 +27,7 @@ Feature: Editing the synonyms section
     Then I should not see "Atta minor" in the senior synonyms section
     When I press "Add" in the senior synonyms section
     And I fill in the senior synonym name with "Atta minor"
-    And I press "Save"
+    And I save the senior synonym
     Then I should be on the edit page for "Atta major"
     And I should see "Atta minor" in the senior synonyms section
 
@@ -38,10 +38,10 @@ Feature: Editing the synonyms section
     When I go to the edit page for "Atta major"
     And I press "Add" in the junior synonyms section
     And I fill in the junior synonym name with "Atta minor"
-    And I press "Save"
+    And I save the synonym
     And I press "Add" in the junior synonyms section
     And I fill in the junior synonym name with "Atta inbetween"
-    And I press "Save"
+    And I save the synonym
     Then I should see "Atta minor" in the junior synonyms section
     Then I should see "Atta inbetween" in the junior synonyms section
 
@@ -50,7 +50,7 @@ Feature: Editing the synonyms section
     When I go to the edit page for "Eciton minor"
     And I press "Add" in the junior synonyms section
     And I fill in the junior synonym name with "Atta major"
-    And I press "Save"
+    And I save the synonym
     Then I should see "This taxon is already a synonym"
 
   Scenario: Trying to add a senior synonym when it's already a junior synonym
@@ -58,7 +58,7 @@ Feature: Editing the synonyms section
     When I go to the edit page for "Eciton minor"
     And I press "Add" in the senior synonyms section
     And I fill in the senior synonym name with "Atta major"
-    And I press "Save"
+    And I save the senior synonym
     Then I should see "This taxon is already a synonym"
 
   Scenario: Deleting a synonym
