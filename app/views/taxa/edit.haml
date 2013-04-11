@@ -16,7 +16,7 @@
     %input{type: :hidden, name: 'possible_homonym', id: 'possible_homonym', value: @possible_homonym ? 'true' : nil}
     = render 'shared/errors_for', resource: @taxon
 
-    .fields_section.ui-widget-content
+    .fields_section.ui-widget-content.ui-corner-all
       = render 'epithet_status_flags_section',      taxon: @taxon, form: form
       = render 'protonym_section',                  taxon: @taxon, form: form
       = render 'type_section',                      taxon: @taxon, form: form
