@@ -7,16 +7,18 @@ When /^I save the form$/ do
   step 'I save my changes'
 end
 
+# section
+When /^I save the (\w+) item$/ do |section|
+  step %{I press the #{section} item "Save" button}
+end
+When /^I cancel the (\w+) item's changes$/ do |section|
+  step %{I press the #{section} item "Cancel" button}
+end
+When /^I delete the (\w+) item$/ do |section|
+  step %{I press the #{section} item "Delete" button}
+end
+
 # history item section
-When /^I save the history item$/ do
-  step %{I press the history item "Save" button}
-end
-When /^I cancel the history item's changes$/ do
-  step %{I press the history item "Cancel" button}
-end
-When /^I delete the history item$/ do
-  step %{I press the history item "Delete" button}
-end
 When /^I press the history item "([^"]*)" button$/ do |button|
   within '.not_history_item_template' do
     step %{I press "#{button}"}
