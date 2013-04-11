@@ -44,4 +44,3 @@ $ ->
     new AntCat.NameField $('#type_name_field'), value_id: 'taxon_type_name_attributes_id', parent_form: form
     new AntCat.TaxtEditor $('#type_taxt_editor'), parent_buttons: '.buttons_section'
   new AntCat.ReferenceField $('#authorship_field'), parent_form: form, value_id: 'taxon_protonym_attributes_authorship_attributes_reference_attributes_id'
-  $('.history_item').history_item_panel(click_on_display: true, parent_form: form)
