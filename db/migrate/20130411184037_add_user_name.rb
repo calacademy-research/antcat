@@ -1,7 +1,7 @@
 # coding: UTF-8
 class AddUserName < ActiveRecord::Migration
   def up
-    add_column :users, :name, :string
+    add_column :users, :name, :string rescue nil
 
     set_name 'mark@mwilden.com',          'Mark Wilden'
     set_name 'sblum@calacademy.org',      'Stan Blum'
@@ -25,7 +25,7 @@ class AddUserName < ActiveRecord::Migration
   end
 
   def set_name email, name
-    User.find_by_email(email).update_attributes! name: name
+    User.find_by_email(email).update_attributes! name: name rescue nil
   end
 
   def down
