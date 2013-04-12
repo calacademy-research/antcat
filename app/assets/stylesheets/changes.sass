@@ -1,32 +1,38 @@
 @import 'common'
 
-td
-  vertical-align: top
-  padding-right: 14px
+.changes_feed
 
-tr.even
-  background: red
+.changes_float_container
+  padding: 10px 0 10px 0
 
-.change_time
-  text-align: right
-  width: 70px
-
-.change_row
+.changes_table
+  width: 100%
   td
-    padding-bottom: 10px
-    font-weight: bold
+    vertical-align: top
 
-.change_details_table
-  td
-    font-weight: normal
-    font-style: italic
-    padding-top: 0px
-    line-height: 12px
+  .change_row
+    td
+      padding-bottom: 10px
+      font-weight: bold
 
-.change_details_description
-  margin-bottom: 2px
+    .change_time
+      width: 70px
+      padding-right: 10px
 
-.rollback
-  font-size: 14px
-  font-weight: normal
-  margin-left: 10px
+    .change_user
+
+    .change_details
+      .change_details_description
+        padding-bottom: 2px
+
+      .change_details_table
+        td
+          padding-bottom: 2px
+          font-weight: normal
+          font-style: italic
+          line-height: 14px
+
+    .rollback
+      font-size: 14px
+      font-weight: normal
+      text-align: right

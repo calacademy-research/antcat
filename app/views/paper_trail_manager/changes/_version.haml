@@ -4,7 +4,7 @@
 %tr{class: "change_row #{"change_event_#{version.event} #{version.event} #{version.event}, #{version.item_type.downcase}"}"}
   %td.change_time
     = "#{time_ago_in_words version.created_at} ago"
-  %td.user
+  %td.change_user
     - user = User.find(version.whodunnit) rescue nil
     = user && user.name || '(unknown)'
   %td.change_details
