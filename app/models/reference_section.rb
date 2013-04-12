@@ -6,4 +6,11 @@ class ReferenceSection < ActiveRecord::Base
 
   has_paper_trail
 
+  def self.dedupe
+    all.each do |reference_section|
+      where('references_taxt = ? AND position > ?',
+        reference_section.references_taxt, reference_section.position).destroy_all
+    end
+  end
+
 end
