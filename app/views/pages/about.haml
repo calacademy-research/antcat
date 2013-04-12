@@ -1,0 +1,15 @@
+- @title = 'About'
+
+%div{style: 'margin-top: 10px; margin-bottom: 10px'}
+  AntCat is a catalog and bibliography of the taxonomy of the world's ants.
+
+%div
+  To cite AntCat:
+
+%div{style: 'margin-top: 4px; margin-left: 30px'}
+  Bolton, B. 2013. An online catalog of the ants of the world. Available
+  from http://antcat.org. (accessed [date])
+
+- if user_is_editor?
+  %div{style: 'margin-top: 10px'}
+    = link_to 'Editing guidelines', page_path('editing_guidelines')
