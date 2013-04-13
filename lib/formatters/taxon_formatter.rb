@@ -37,7 +37,7 @@ class Formatters::TaxonFormatter
   end
 
   def header_link taxon, label
-    link label, %{http://www.antcat.org/catalog/#{taxon.id}}, target: nil
+    link label, %{/catalog/#{taxon.id}}, target: nil
   end
 
   def header_name
