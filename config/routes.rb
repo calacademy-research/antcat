@@ -26,6 +26,7 @@ AntCat::Application.routes.draw do
 
   match     '/antcat_references.utf8.endnote_import', to: 'references#index', format: :endnote_import, as: :endnote_import
 
+  match '/taxa/:id' => redirect('/catalog/%{id}')
   resources :taxa do
     resources 'taxon_history_items', only: [:update, :create, :destroy]
     resources 'synonyms', only: [:create, :destroy] do
