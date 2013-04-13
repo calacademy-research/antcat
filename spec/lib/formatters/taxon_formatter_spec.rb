@@ -22,9 +22,9 @@ describe Formatters::TaxonFormatter do
                                   epithets: 'rufa pratensis major'
         major = create_subspecies name: major_name, species: rufa, genus: rufa.genus
         @formatter.new(major).header_name.should ==
-          %{<a href=\"http://www.antcat.org/catalog/#{formica.id}\"><i>Formica</i></a> } +
-          %{<a href=\"http://www.antcat.org/catalog/#{rufa.id}\"><i>rufa</i></a> } +
-          %{<a href=\"http://www.antcat.org/catalog/#{major.id}\"><i>pratensis major</i></a>}
+          %{<a href=\"/catalog/#{formica.id}\"><i>Formica</i></a> } +
+          %{<a href=\"/catalog/#{rufa.id}\"><i>rufa</i></a> } +
+          %{<a href=\"/catalog/#{major.id}\"><i>pratensis major</i></a>}
       end
     end
   end
