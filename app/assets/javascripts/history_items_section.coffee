@@ -51,9 +51,7 @@ class AntCat.HistoryItemForm extends AntCat.NestedForm
 
   initialize_buttons: =>
     super
-    @buttons.find('.delete')
-      .off('click')
-      .on('click', @delete).end()
+    @buttons.find('.delete').off('click').on('click', @delete)
 
   delete: =>
     return false unless confirm 'Do you want to delete this history item?'
