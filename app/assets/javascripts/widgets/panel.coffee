@@ -43,6 +43,7 @@ class AntCat.Panel
 
   on_form_close: =>
     @options.parent_form.enable_buttons() if @options.parent_form
+    @options.on_form_close() if @options.on_form_close
 
   on_form_response: (data) =>
     @replace_panel data.content

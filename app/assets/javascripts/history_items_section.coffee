@@ -34,10 +34,6 @@ class AntCat.HistoryItemPanel extends AntCat.Panel
     @element.find('textarea').focus()
     super
 
-  on_form_close: =>
-    @options.on_form_close() if @options.on_form_close
-    super
-
   @add_history_item: (form) =>
     $template = $('.history_item_template').clone()
     AntCat.log 'HistoryItemPanel add_history_item: no $template' unless $template && $template.size() == 1
