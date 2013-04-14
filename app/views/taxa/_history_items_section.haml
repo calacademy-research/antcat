@@ -8,7 +8,7 @@
       %button.submit.ui-priority-primary.small_button Add
     .clear
   .history_items.ui-dialog-content.ui-widget-content.ui-corner-bottom
-    .history_item_template
-      = render 'history_item/panel', item: TaxonHistoryItem.new(taxon_id: taxon.id), is_template: true
     - for history_item in taxon.history_items do
-      = render 'history_item/panel', item: history_item, is_template: false
+      = render 'history_item/panel', item: history_item
+  .history_item_template
+    = render 'history_item/panel', item: TaxonHistoryItem.new(taxon_id: taxon.id)
