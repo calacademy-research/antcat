@@ -11,21 +11,29 @@ class AntCat.HistoryItemsSection
   add: =>
     AntCat.HistoryItemPanel.add_history_item @options.parent_form
 
+#####
+$.fn.history_item_panel = (options = {}) ->
+  this.each -> new AntCat.HistoryItemPanel $(this), options
+
 class AntCat.HistoryItemPanel extends AntCat.Panel
   constructor: (@element, @options) ->
     @options.click_on_display = true
     @options.highlight = true
     super
-  create_form: ($element, options) -> new AntCat.HistoryItemForm $element, options
+
   initialize: (@element) =>
     super
     # make the textarea of the form the same height as the item it's editing
     display_height = @element.find('div.display').height() + 24
-    @element.find('.taxt_edit_box').height display_height unless display_height is 0
+    @element.find('.taxt_edit_box').height(display_height) unless display_height is 0
+
+  create_form: ($element, options) -> new AntCat.HistoryItemForm $element, options
+
   on_form_open: =>
     @options.on_form_open() if @options.on_form_open
     @element.find('textarea').focus()
     super
+
   on_form_close: =>
     @options.on_form_close() if @options.on_form_close
     super
@@ -39,9 +47,7 @@ class AntCat.HistoryItemPanel extends AntCat.Panel
     form.add_history_item_panel $item
     $item.history_item_panel(click_on_display: true, parent_form: form, open_immediately: true)
 
-$.fn.history_item_panel = (options = {}) ->
-  this.each -> new AntCat.HistoryItemPanel $(this), options
-
+#####
 class AntCat.HistoryItemForm extends AntCat.NestedForm
   constructor: (@element, @options = {}) ->
     super
