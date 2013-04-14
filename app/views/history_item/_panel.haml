@@ -1,11 +1,6 @@
--#Locals: item, is_template
+-#Locals: item
 
-- is_template ||= false
-
-- css_classes = "history_item item_#{item.id} antcat_panel"
-- css_classes << ' not_history_item_template' unless is_template
-
-%div{class: css_classes, 'data-id' => item.id}
+%div{class: "history_item item_#{item.id} antcat_panel", 'data-id' => item.id}
   %table
     %tr
       %td.history_item_body

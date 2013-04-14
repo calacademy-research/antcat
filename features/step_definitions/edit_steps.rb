@@ -16,7 +16,7 @@ end
 
 # history item section
 When /^I press the history item "([^"]*)" button$/ do |button|
-  within '.not_history_item_template' do
+  within '.history_items .history_item' do
     step %{I press "#{button}"}
   end
 end
@@ -79,15 +79,15 @@ When /I click the type name field/ do
 end
 
 When /^I click the history item$/ do
-  find('.not_history_item_template div.display').click
+  find('.history_items .history_item div.display').click
 end
 
 Then /^the history should be "(.*)"$/ do |history|
-  page.find('.not_history_item_template div.display').text.should =~ /#{history}\.?/
+  page.find('.history_items .history_item:first div.display').text.should =~ /#{history}\.?/
 end
 
 Then /^the history should be empty$/ do
-  page.should_not have_css '.not_history_item_template'
+  page.should_not have_css '.history_items .history_item'
 end
 
 When /^I click the "Add History" button$/ do
@@ -101,7 +101,7 @@ When /^I edit the history item to "([^"]*)"$/ do |history|
 end
 
 When /^I press that history item's "Insert Name" button$/ do
-  within '.history_item:first' do
+  within '.history_items .history_item:first' do
     click_button 'Insert Name'
   end
 end
