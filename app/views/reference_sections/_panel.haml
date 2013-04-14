@@ -4,6 +4,6 @@
   %table
     %tr
       %td.references_section
-        = render 'references_section/display', item: item
+        = render 'reference_sections/display', item: item
         - if user_can_edit_catalog?
-          = render 'references_section/edit', item: item
+          = render 'reference_sections/edit', item: item
