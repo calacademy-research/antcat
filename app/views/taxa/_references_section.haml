@@ -3,12 +3,12 @@
 .references_section.section
   .section_header.ui-widget-header.ui-corner-top
     .left
-      History
+      References
     .right.references_section_buttons
       %button.submit.ui-priority-primary.small_button Add
     .clear
   .references.ui-dialog-content.ui-widget-content.ui-corner-bottom
-    - for reference in taxon.references do
-      = render 'reference_sections/panel', item: reference
+    - for reference_section in taxon.reference_sections do
+      = render 'reference_sections/panel', item: reference_section
   .reference_template
     = render 'reference_sections/panel', item: ReferenceSection.new(taxon_id: taxon.id)
