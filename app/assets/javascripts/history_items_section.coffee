@@ -3,12 +3,12 @@ class AntCat.HistoryItemsSection
     @initialize()
 
   initialize: =>
-    $add_history_item_button = @element.find '.history_items_section_buttons button'
-    AntCat.log 'HistoryItemsSection constructor: $add_history_item_button.size() != 1' unless $add_history_item_button.size() == 1
-    $add_history_item_button.click => @add_history_item(); false
+    $add_button = @element.find '.history_items_section_buttons button'
+    AntCat.log 'HistoryItemsSection constructor: $add_button.size() != 1' unless $add_button.size() == 1
+    $add_button.click => @add(); false
     @element.find('.history_item').history_item_panel(click_on_display: true, parent_form: @options.parent_form)
 
-  add_history_item: =>
+  add: =>
     AntCat.HistoryItemPanel.add_history_item @options.parent_form
 
 class AntCat.HistoryItemPanel extends AntCat.Panel
