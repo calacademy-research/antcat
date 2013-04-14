@@ -6,10 +6,10 @@ Feature: Editing references sections
   So people use AntCat
 
   Background:
-    #Given the Formicidae family exists
+    Given the Formicidae family exists
     #And there is a subfamily "Dolichoderinae" with taxonomic history "Taxonomic history"
     #And there is a genus "Atta"
-    #And I log in
+    And I log in
 
   Scenario: Editing a reference section item
     When I go to the edit page for "Formicidae"

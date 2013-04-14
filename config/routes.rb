@@ -29,6 +29,7 @@ AntCat::Application.routes.draw do
   match '/taxa/:id' => redirect('/catalog/%{id}'), via: :get
   resources :taxa do
     resources 'taxon_history_items', only: [:update, :create, :destroy]
+    resources 'reference_sections', only: [:update, :create, :destroy]
     resources 'synonyms', only: [:create, :destroy] do
       member do
         put 'reverse_synonymy'

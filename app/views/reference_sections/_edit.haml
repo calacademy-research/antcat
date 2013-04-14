@@ -1,0 +1,16 @@
+-#Locals: item
+
+.edit.ui-widget-content
+  - url = "/taxa/#{item.taxon.id}/taxon_reference_sections/#{item.id}"
+  - method = item.persisted? ? 'put' : 'post'
+  .nested_form{'data-action' => url, 'data-method' => method}
+    = render 'shared/errors_for', resource: item
+
+    -#.taxt_editor
+      -#= render 'taxt_editors/show', name: 'taxt', value: Taxt.to_editable(item.taxt)
+
+    .buttons
+      %button.submit.ui-priority-primary Save
+      %button.cancel.ui-priority-secondary Cancel
+      - if item.persisted?
+        %button.delete.ui-priority-secondary Delete

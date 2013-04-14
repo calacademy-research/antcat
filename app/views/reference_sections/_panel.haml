@@ -1,0 +1,9 @@
+-#Locals: item
+
+%div{class: "references_section item_#{item.id} antcat_panel", 'data-id' => item.id}
+  %table
+    %tr
+      %td.references_section
+        = render 'references_section/display', item: item
+        - if user_can_edit_catalog?
+          = render 'references_section/edit', item: item
