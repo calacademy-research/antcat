@@ -9,7 +9,7 @@
   = javascript_include_tag  'widgets/reference_field'
   = javascript_include_tag  'widgets/name_field'
   = javascript_include_tag  'widgets/reference_popup', 'widgets/name_popup', 'widgets/taxt_editor'
-  = javascript_include_tag  'taxa', 'history_items_section', 'synonyms_section'
+  = javascript_include_tag  'taxa', 'history_items_section', 'synonyms_section', 'references_section'
 
 - content_for :page_contents do
   = form_for @taxon, as: :taxon, url: "/taxa/#{@taxon.id}", html: {class: 'taxon_form ui-widget', style: {display: 'none'}} do |form|
@@ -22,6 +22,7 @@
       = render 'type_section',                      taxon: @taxon, form: form
       = render 'buttons_section', form: form, possible_homonym: @possible_homonym, show_elevate_to_species_button: @show_elevate_to_species_button
 
-    = render 'history_items_section',                taxon: @taxon
+    = render 'references_section',                  taxon: @taxon
+    = render 'history_items_section',               taxon: @taxon
     = render 'junior_and_senior_synonyms_section',  taxon: @taxon
 

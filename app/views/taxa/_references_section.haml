@@ -1,0 +1,14 @@
+-#Locals: taxon
+
+.references_section.section
+  .section_header.ui-widget-header.ui-corner-top
+    .left
+      History
+    .right.references_section_buttons
+      %button.submit.ui-priority-primary.small_button Add
+    .clear
+  .references.ui-dialog-content.ui-widget-content.ui-corner-bottom
+    - for reference in taxon.references do
+      = render 'reference_sections/panel', item: reference
+  .reference_template
+    = render 'reference_sections/panel', item: ReferenceSection.new(taxon_id: taxon.id)
