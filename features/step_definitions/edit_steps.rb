@@ -76,6 +76,45 @@ Then /^I should (not )?see the "Delete" button for the history item$/ do |should
   page.send selector, have_css('button.delete')
 end
 
+# references section
+Then /^the reference section should be "(.*)"$/ do |reference|
+  page.find('.reference_sections .reference_section:first div.display').text.should =~ /#{reference}\.?/
+end
+When /^I click the first reference section/ do
+  find('.reference_sections .reference_section:first div.display').click
+end
+When /^I fill in the references field with "([^"]*)"$/ do |references|
+  step %{I fill in "references_taxt" with "#{references}"}
+end
+When /^I save the reference section$/ do
+  within '.reference_sections .reference_section:first' do
+    step %{I press "Save"}
+  end
+end
+
+When /^I press the reference "([^"]*)" button$/ do |button|
+  within '.reference_sections .reference_section' do
+    step %{I press "#{button}"}
+  end
+end
+Then /^the reference should be empty$/ do
+  page.should_not have_css '.reference_sections .reference_section'
+end
+When /^I click the "Add reference" button$/ do
+  within '.references_section' do
+    click_button 'Add'
+  end
+end
+When /^I press that reference's "Insert Name" button$/ do
+  within '.reference_sections .reference_section:first' do
+    click_button 'Insert Name'
+  end
+end
+Then /^I should (not )?see the "Delete" button for the reference/ do |should_not|
+  selector = should_not ? :should_not : :should
+  page.send selector, have_css('button.delete')
+end
+
 # synonym section
 When /^I save the senior synonym$/ do
   step %{I press the senior synonym item "Save" button}

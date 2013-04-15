@@ -7,18 +7,18 @@ Feature: Editing references sections
 
   Background:
     Given the Formicidae family exists
-    #And there is a subfamily "Dolichoderinae" with taxonomic history "Taxonomic history"
+    And there is a subfamily "Dolichoderinae" with a reference section "References from Bolton"
     #And there is a genus "Atta"
     And I log in
 
-  Scenario: Editing a reference section item
-    When I go to the edit page for "Formicidae"
-    Then the references section should be "References"
-    When I click the reference section
-    And I edit the reference section to "(none)"
-    And I save the reference_section
-    Then I should not see "References"
-    Then the reference section should be "(none)"
+  Scenario: Editing a reference section
+    When I go to the edit page for "Dolichoderinae"
+    Then the reference section should be "References from Bolton"
+    When I click the first reference section
+    And I fill in the references field with "(none)"
+    And I save the reference section
+    Then I should not see "References from Bolton"
+    And the reference section should be "(none)"
 
   #Scenario: Saving the fields after editing history (regression)
     #When I go to the edit page for "Formicidae"
