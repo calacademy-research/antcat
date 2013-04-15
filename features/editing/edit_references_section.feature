@@ -13,12 +13,12 @@ Feature: Editing references sections
 
   Scenario: Editing a reference section item
     When I go to the edit page for "Formicidae"
-    Then the history should be "Taxonomic history"
-    When I click the history item
-    And I edit the history item to "(none)"
-    And I save the history item
-    Then I should not see "Taxonomic history"
-    Then the history should be "(none)"
+    Then the references section should be "References"
+    When I click the reference section
+    And I edit the reference section to "(none)"
+    And I save the reference_section
+    Then I should not see "References"
+    Then the reference section should be "(none)"
 
   #Scenario: Saving the fields after editing history (regression)
     #When I go to the edit page for "Formicidae"
