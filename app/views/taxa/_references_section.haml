@@ -7,7 +7,7 @@
     .right.references_section_buttons
       %button.submit.ui-priority-primary.small_button Add
     .clear
-  .references.ui-dialog-content.ui-widget-content.ui-corner-bottom
+  .reference_items.ui-dialog-content.ui-widget-content.ui-corner-bottom
     - for reference_section in taxon.reference_sections do
       = render 'reference_sections/panel', item: reference_section
   .reference_template
