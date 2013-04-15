@@ -321,3 +321,10 @@ And /I check "reference_document_attributes_public" in the first reference/ do
     step 'I check "reference_document_attributes_public" in the first reference'
   end
 end
+
+When /^I save my changes to the first reference$/ do
+  within first('.reference') do
+    step 'I save my changes'
+  end
+end
+
