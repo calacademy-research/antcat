@@ -42,7 +42,7 @@ class AntCat.TaxonForm extends AntCat.Form
     @element.find('.history_items').append $panel
 
   add_reference_panel: ($panel) =>
-    @element.find('.reference_items').append $panel
+    @element.find('.reference_sections').append $panel
 
 $ ->
   form = new AntCat.TaxonForm $('.taxon_form'), button_container: '> .fields_section .buttons_section'
