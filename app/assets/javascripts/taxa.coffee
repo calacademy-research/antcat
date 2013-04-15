@@ -1,8 +1,9 @@
 class AntCat.TaxonForm extends AntCat.Form
   constructor: (@element, @options = {}) ->
     @initialize_history_section()
-    @initialize_task_buttons()
     @initialize_junior_and_senior_synonyms_section()
+    @initialize_references_section()
+    @initialize_task_buttons()
     @element.bind 'keydown', @handle_event
     super
 
@@ -16,6 +17,10 @@ class AntCat.TaxonForm extends AntCat.Form
   initialize_junior_and_senior_synonyms_section: =>
     new AntCat.SynonymsSection @element.find('.junior_synonyms_section'), parent_form: @
     new AntCat.SynonymsSection @element.find('.senior_synonyms_section'), parent_form: @
+
+  initialize_references_section: =>
+    new AntCat.ReferencesSection @element.find('.references_section'), parent_form: @
+
 
   initialize_task_buttons: =>
     @element.find('#elevate_to_species').click => @elevate_to_species(); false
@@ -35,6 +40,9 @@ class AntCat.TaxonForm extends AntCat.Form
 
   add_history_item_panel: ($panel) =>
     @element.find('.history_items').append $panel
+
+  add_reference_panel: ($panel) =>
+    @element.find('.reference_items').append $panel
 
 $ ->
   form = new AntCat.TaxonForm $('.taxon_form'), button_container: '> .fields_section .buttons_section'
