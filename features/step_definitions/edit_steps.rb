@@ -91,14 +91,19 @@ When /^I save the reference section$/ do
     step %{I press "Save"}
   end
 end
+When /^I delete the reference section$/ do
+  within '.reference_section:first' do
+    step %{I press "Delete"}
+  end
+end
+Then /^the reference section should be empty$/ do
+  page.should_not have_css '.reference_sections .reference_section'
+end
 
 When /^I press the reference "([^"]*)" button$/ do |button|
   within '.reference_sections .reference_section' do
     step %{I press "#{button}"}
   end
-end
-Then /^the reference should be empty$/ do
-  page.should_not have_css '.reference_sections .reference_section'
 end
 When /^I click the "Add reference" button$/ do
   within '.references_section' do

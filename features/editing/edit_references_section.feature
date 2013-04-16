@@ -8,7 +8,6 @@ Feature: Editing references sections
   Background:
     Given the Formicidae family exists
     And there is a subfamily "Dolichoderinae" with a reference section "References from Bolton"
-    #And there is a genus "Atta"
     And I log in
 
   Scenario: Editing a reference section
@@ -84,13 +83,10 @@ Feature: Editing references sections
     #And I cancel the history item's changes
     #Then the history should be empty
 
-  #Scenario: Deleting a history item
-    #Given there is a genus "Eciton" with taxonomic history "Eciton history"
-    #When I go to the edit page for "Eciton"
-    #Then I should see "Eciton history"
-    #When I click the history item
-    #Then I should see the "Delete" button for the history item
-    #And I will confirm on the next step
-    #And I delete the history item
-    #Then I should be on the edit page for "Eciton"
-    #And the history should be empty
+  Scenario: Deleting a reference section
+    When I go to the edit page for "Dolichoderinae"
+    And I click the first reference section
+    Then I should see the "Delete" button for the reference section
+    Given I will confirm on the next step
+    When I delete the reference section
+    And the reference section should be empty
