@@ -19,14 +19,6 @@ Feature: Editing references sections
     Then I should not see "References from Bolton"
     And the reference section should be "(none)"
 
-  #Scenario: Saving the fields after editing history (regression)
-    #When I go to the edit page for "Formicidae"
-    #And I click the history item
-    #And I edit the history item to "(none)"
-    #And I save the history item
-    #And I save my changes
-    #Then I should be on the catalog page for "Formicidae"
-
   ## This doesn't work because of inserting a {
   ##Scenario: Editing a history item to include a reference
     ##Given there is a reference for "Bolton, 2005"
