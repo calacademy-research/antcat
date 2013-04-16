@@ -4,19 +4,25 @@ class ReferenceSectionsController < ApplicationController
   skip_before_filter :authenticate_catalog_editor, if: :preview?
 
   def update
-    @item = ReferenceSections.find params[:id]
-    #@item.update_taxt_from_editable params[:taxt]
+    @item = ReferenceSection.find params[:id]
+    title_taxt = Taxt.from_editable params[:title_taxt]
+    subtitle_taxt = Taxt.from_editable params[:subtitle_taxt]
+    references_taxt = Taxt.from_editable params[:references_taxt]
+    @item.update_attributes! title_taxt: title_taxt, subtitle_taxt: subtitle_taxt, references_taxt: references_taxt
     render_json false
   end
 
   def create
     taxon = Taxon.find params[:taxa_id]
-    #@item = ReferenceSections.create_taxt_from_editable taxon, params[:taxt]
+    title_taxt = Taxt.from_editable params[:title_taxt]
+    subtitle_taxt = Taxt.from_editable params[:subtitle_taxt]
+    references_taxt = Taxt.from_editable params[:references_taxt]
+    @item = ReferenceSection.create! taxon: taxon, title_taxt: title_taxt, subtitle_taxt: subtitle_taxt, references_taxt: references_taxt
     render_json true
   end
 
   def destroy
-    @item = ReferenceSections.find params[:id]
+    @item = ReferenceSection.find params[:id]
     @item.destroy
     json = {success: true}.to_json
     render json: json, content_type: 'text/html'
