@@ -29,6 +29,7 @@ class AntCat.Form
 
   focus_initial_control: =>
     $control = @initial_control_to_focus()
+    return unless $control
     if $control.size() == 1
       $control.focus()
     else
