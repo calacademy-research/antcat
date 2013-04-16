@@ -6,8 +6,16 @@
   .nested_form{'data-action' => url, 'data-method' => method}
     = render 'shared/errors_for', resource: item
 
-    -#.taxt_editor
-      -#= render 'taxt_editors/show', name: 'taxt', value: Taxt.to_editable(item.taxt)
+    %table
+      %tr
+        %td.label Title
+        %td.title_taxt.taxt_editor= render 'taxt_editors/show', name: 'title_taxt', value: Taxt.to_editable(item.title_taxt)
+      %tr
+        %td.label Subtitle
+        %td.title_taxt.taxt_editor= render 'taxt_editors/show', name: 'title_taxt', value: Taxt.to_editable(item.title_taxt)
+      %tr
+        %td.label References
+        %td.references_taxt.taxt_editor= render 'taxt_editors/show', name: 'references_taxt',value: Taxt.to_editable(item.references_taxt)
 
     .buttons
       %button.submit.ui-priority-primary Save
