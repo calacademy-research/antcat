@@ -10,5 +10,5 @@
   .reference_sections.ui-dialog-content.ui-widget-content.ui-corner-bottom
     - for reference_section in taxon.reference_sections do
       = render 'reference_sections/panel', item: reference_section
-  .reference_template
+  .template
     = render 'reference_sections/panel', item: ReferenceSection.new(taxon_id: taxon.id)
