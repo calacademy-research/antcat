@@ -31,7 +31,7 @@ class AntCat.ReferencePanel extends AntCat.Panel
 
   on_form_open: =>
     @options.on_form_open() if @options.on_form_open
-    @element.find('textarea').focus()
+    @element.find('textarea:first').focus()
     super
 
   @add_reference: (form) =>
