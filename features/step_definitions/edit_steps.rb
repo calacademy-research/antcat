@@ -80,7 +80,7 @@ end
 Then /^the reference section should be "(.*)"$/ do |reference|
   page.find('.reference_sections .reference_section:first div.display').text.should =~ /#{reference}\.?/
 end
-When /^I click the first reference section/ do
+When /^I click the reference section/ do
   find('.reference_sections .reference_section:first div.display').click
 end
 When /^I fill in the references field with "([^"]*)"$/ do |references|
@@ -98,6 +98,11 @@ When /^I delete the reference section$/ do
 end
 Then /^the reference section should be empty$/ do
   page.should_not have_css '.reference_sections .reference_section'
+end
+When /^I cancel the reference section's changes$/ do
+  within '.reference_sections .reference_section:first' do
+    step %{I press the "Cancel" button}
+  end
 end
 
 When /^I press the reference "([^"]*)" button$/ do |button|

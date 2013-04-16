@@ -7,37 +7,27 @@ Feature: Editing references sections
 
   Background:
     Given the Formicidae family exists
-    And there is a subfamily "Dolichoderinae" with a reference section "References from Bolton"
+    And there is a subfamily "Dolichoderinae" with a reference section "Original reference"
     And I log in
 
   Scenario: Editing a reference section
     When I go to the edit page for "Dolichoderinae"
-    Then the reference section should be "References from Bolton"
-    When I click the first reference section
+    Then the reference section should be "Original reference"
+    When I click the reference section
     And I fill in the references field with "(none)"
     And I save the reference section
-    Then I should not see "References from Bolton"
+    Then I should not see "Original reference"
     And the reference section should be "(none)"
 
-  ## This doesn't work because of inserting a {
-  ##Scenario: Editing a history item to include a reference
-    ##Given there is a reference for "Bolton, 2005"
-    ##And I go to the edit page for "Formicidae"
-    ##Then I should not see "Bolton, 2005"
-    ##When I click the history item
-    ##And I edit the history item to include that reference
-    ##And I save my changes
-    ##Then the history should be "Bolton, 2005."
-
-  #Scenario: Editing a history item, but cancelling
-    #When I go to the edit page for "Formicidae"
-    #And I click the history item
-    #And I edit the history item to "(none)"
-    #And I cancel the history item's changes
-    #Then the history should be "Taxonomic history."
+  Scenario: Editing a reference section, but cancelling
+    When I go to the edit page for "Dolichoderinae"
+    And I click the reference section
+    And I fill in the references field with "(none)"
+    And I cancel the reference section's changes
+    Then the reference section should be "Original reference"
 
   #Scenario: Editing an item so it's blank
-    #When I go to the edit page for "Formicidae"
+    #When I go to the edit page for "Dolichoderinae"
     #And I click the history item
     #And I edit the history item to ""
     #And I save the history item
@@ -45,7 +35,7 @@ Feature: Editing references sections
 
   ## Pressing Insert Name seems to submit or cancel whole form (only in test)
   ##Scenario: Editing, cancelling, then editing again
-    ##When I go to the edit page for "Formicidae"
+    ##When I go to the edit page for "Dolichoderinae"
     ##And I click the history item
     ##And I press "Cancel"
     ##And I click the history item
