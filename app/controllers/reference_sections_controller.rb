@@ -8,7 +8,7 @@ class ReferenceSectionsController < ApplicationController
     title_taxt = Taxt.from_editable params[:title_taxt]
     subtitle_taxt = Taxt.from_editable params[:subtitle_taxt]
     references_taxt = Taxt.from_editable params[:references_taxt]
-    @item.update_attributes! title_taxt: title_taxt, subtitle_taxt: subtitle_taxt, references_taxt: references_taxt
+    @item.update_attributes title_taxt: title_taxt, subtitle_taxt: subtitle_taxt, references_taxt: references_taxt
     render_json false
   end
 
@@ -17,7 +17,7 @@ class ReferenceSectionsController < ApplicationController
     title_taxt = Taxt.from_editable params[:title_taxt]
     subtitle_taxt = Taxt.from_editable params[:subtitle_taxt]
     references_taxt = Taxt.from_editable params[:references_taxt]
-    @item = ReferenceSection.create! taxon: taxon, title_taxt: title_taxt, subtitle_taxt: subtitle_taxt, references_taxt: references_taxt
+    @item = ReferenceSection.create taxon: taxon, title_taxt: title_taxt, subtitle_taxt: subtitle_taxt, references_taxt: references_taxt
     render_json true
   end
 
