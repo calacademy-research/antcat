@@ -53,6 +53,8 @@ class AntCat.ReferenceForm extends AntCat.NestedForm
     super
     @buttons.find('.delete').off('click').on('click', @delete)
 
+  initial_control_to_focus: => null
+
   delete: =>
     return false unless confirm 'Do you want to delete this reference section?'
     @start_throbbing()
