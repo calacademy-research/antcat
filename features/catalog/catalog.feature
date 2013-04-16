@@ -16,7 +16,6 @@ Feature: Using the catalog
     And a genus exists with a name of "Camponotus" and a subfamily of "Dolichoderinae" and a taxonomic history of "Campononotus history"
     And a species exists with a name of "abruptus" and a genus of "Camponotus" and a taxonomic history of "abruptus history"
 
-  @javascript
   Scenario: Going to the root
     When I go to the catalog
     Then I should see "Formicidae" in the contents
@@ -24,7 +23,6 @@ Feature: Using the catalog
     And I should see "Fossil: 1 valid genus"
     And I should not see "Subfamily of Formicidae: Dolichoderinae."
 
-  @javascript
   Scenario: Seeing the family when it's been explicitly requested
     When I go to the catalog page for "Formicidae"
     Then I should see "Formicidae" in the contents
