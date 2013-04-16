@@ -8,13 +8,13 @@
 
     %table
       %tr
-        %td.label Title
+        %td.label.top_aligned= label_tag :title_taxt, 'Title'
         %td.title_taxt.taxt_editor= render 'taxt_editors/show', name: 'title_taxt', value: Taxt.to_editable(item.title_taxt)
       %tr
-        %td.label Subtitle
-        %td.title_taxt.taxt_editor= render 'taxt_editors/show', name: 'title_taxt', value: Taxt.to_editable(item.title_taxt)
+        %td.label.top_aligned= label_tag :subtitle_taxt, 'Subtitle'
+        %td.subtitle_taxt.taxt_editor= render 'taxt_editors/show', name: 'subtitle_taxt', value: Taxt.to_editable(item.subtitle_taxt)
       %tr
-        %td.label References
+        %td.label.top_aligned= label_tag :references_taxt, 'References'
         %td.references_taxt.taxt_editor= render 'taxt_editors/show', name: 'references_taxt',value: Taxt.to_editable(item.references_taxt)
 
     .buttons
