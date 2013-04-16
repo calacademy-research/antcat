@@ -1,6 +1,6 @@
 -#Locals: item
 
 .display
-  = Taxt.to_display_sentence item.title_taxt, current_user
-  = Taxt.to_display_sentence item.subtitle_taxt, current_user
-  = Taxt.to_display_sentence item.references_taxt, current_user
+  .title_taxt=      Taxt.to_display_sentence item.title_taxt, current_user
+  .subtitle_taxt=   Taxt.to_display_sentence item.subtitle_taxt, current_user
+  .references_taxt= Taxt.to_display_sentence item.references_taxt, current_user
