@@ -1,7 +1,7 @@
 -#Locals: item
 
 .edit.ui-widget-content
-  - url = "/taxa/#{item.taxon.id}/taxon_reference_sections/#{item.id}"
+  - url = "/taxa/#{item.taxon.id}/reference_sections/#{item.id}"
   - method = item.persisted? ? 'put' : 'post'
   .nested_form{'data-action' => url, 'data-method' => method}
     = render 'shared/errors_for', resource: item
