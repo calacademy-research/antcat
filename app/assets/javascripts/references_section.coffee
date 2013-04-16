@@ -35,7 +35,7 @@ class AntCat.ReferencePanel extends AntCat.Panel
     super
 
   @add_reference: (form) =>
-    $template = @element.find('.template').clone()
+    $template = $('.reference_section_template').clone()
     AntCat.log 'ReferencePanel add_reference: no $template' unless $template && $template.size() == 1
     $item = $template.find('.reference_section')
     AntCat.log 'ReferencePanel add_reference: no $item' unless $item && $item.size() == 1
