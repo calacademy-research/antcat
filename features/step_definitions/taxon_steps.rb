@@ -23,15 +23,15 @@ end
 
 #############################
 # subfamily
-Given /there is a subfamily "(.*?)" with taxonomic history "(.*?)"/ do |taxon_name, history|
+Given /there is a subfamily "(.*?)" with taxonomic history "(.*?)$"/ do |taxon_name, history|
   name = FactoryGirl.create :subfamily_name, name: taxon_name
   taxon = FactoryGirl.create :subfamily, name: name
   taxon.history_items.create! taxt: history
 end
-Given /there is a subfamily "(.*?)" with a reference section "(.*?)"/ do |taxon_name, references|
+Given /there is a subfamily "(.*?)"(?: with a reference section "(.*?)")?/ do |taxon_name, references|
   name = FactoryGirl.create :subfamily_name, name: taxon_name
   taxon = FactoryGirl.create :subfamily, name: name
-  taxon.reference_sections.create! references_taxt: references
+  taxon.reference_sections.create! references_taxt: references if references
 end
 
 #############################
