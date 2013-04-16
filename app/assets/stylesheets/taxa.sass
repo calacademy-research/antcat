@@ -80,6 +80,40 @@
         &.ui-selecting
           background: $color_current_reference_being_edited_by_reference_field_background
 
+  .references_section
+    font-size: 15px
+    padding-left: 0
+    line-height: 1.2
+    .template
+      display: none
+    .section_header
+      .right
+        margin-right: 4px
+    .reference_section
+      margin-top: 0
+      table
+        border-spacing: 0
+      .edit
+        display: none
+        .taxt_editor
+          margin-bottom: 4px
+        .buttons
+          margin-bottom: 4px
+          .delete
+            margin-left: 16px
+      .display
+        padding-left: 10px
+        text-indent: -10px
+        max-height: 160px
+        overflow: auto
+        &.ui-selecting
+          background: $color_current_reference_being_edited_by_reference_field_background
+        .title_taxt, .subtitle_taxt
+          font-weight: bold
+
+  .reference_section + .reference_section
+    margin-top: 6px
+
   .junior_and_senior_synonyms_section
     font-size: 15px
     line-height: 1.2
@@ -171,3 +205,4 @@ td.top_aligned
 .ui-dialog-titlebar
   font-style: italic
   font-size: 16px
+
