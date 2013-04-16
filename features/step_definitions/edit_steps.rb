@@ -110,7 +110,7 @@ When /^I press the reference "([^"]*)" button$/ do |button|
     step %{I press "#{button}"}
   end
 end
-When /^I click the "Add reference" button$/ do
+When /^I click the "Add" reference section button$/ do
   within '.references_section' do
     click_button 'Add'
   end
