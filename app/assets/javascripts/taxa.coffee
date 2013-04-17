@@ -21,7 +21,6 @@ class AntCat.TaxonForm extends AntCat.Form
   initialize_references_section: =>
     new AntCat.ReferencesSection @element.find('.references_section'), parent_form: @
 
-
   initialize_task_buttons: =>
     @element.find('#elevate_to_species').click => @elevate_to_species(); false
 
@@ -51,8 +50,4 @@ $ ->
   if $('#type_name_field').size() == 1
     new AntCat.NameField $('#type_name_field'), value_id: 'taxon_type_name_attributes_id', parent_form: form
     new AntCat.TaxtEditor $('#type_taxt_editor'), parent_buttons: '.buttons_section'
-  if $('#references_taxt').size() == 1
-    new AntCat.TaxtEditor $('#title_taxt'), parent_buttons: '.buttons_section'
-    new AntCat.TaxtEditor $('#subtitle_taxt'), parent_buttons: '.buttons_section'
-    new AntCat.TaxtEditor $('#references_taxt'), parent_buttons: '.buttons_section'
   new AntCat.ReferenceField $('#authorship_field'), parent_form: form, value_id: 'taxon_protonym_attributes_authorship_attributes_reference_attributes_id'
