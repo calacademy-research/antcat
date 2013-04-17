@@ -6,17 +6,19 @@ class AntCat.ReferencesSection
     $add_button = @element.find '.references_section_buttons button'
     AntCat.log 'ReferencesSection constructor: $add_button.size() != 1' unless $add_button.size() == 1
     $add_button.click => @add(); false
-    @element.find('.reference_section').reference_panel(click_on_display: true, parent_form: @options.parent_form)
+    @element.find('.reference_section').references_section_panel(click_on_display: true, parent_form: @options.parent_form)
 
   add: =>
-    AntCat.ReferencePanel.add_reference @options.parent_form
+    AntCat.ReferencesSectionPanel.add_reference @options.parent_form
 
 #####
-$.fn.reference_panel = (options = {}) ->
-  this.each -> new AntCat.ReferencePanel $(this), options
+$.fn.references_section_panel = (options = {}) ->
+  this.each -> new AntCat.ReferencesSectionPanel $(this), options
 
-class AntCat.ReferencePanel extends AntCat.Panel
+class AntCat.ReferencesSectionPanel extends AntCat.Panel
   constructor: (@element, @options) ->
+    if @element.hasClass 'reference'
+      debugger
     @options.click_on_display = true
     @options.highlight = true
     super
@@ -25,9 +27,11 @@ class AntCat.ReferencePanel extends AntCat.Panel
     super
     # make the textarea of the form the same height as the item it's editing
     display_height = @element.find('div.display').height() + 24
-    @element.find('.taxt_edit_box').height(display_height) unless display_height is 0
+    $tall_field = $('#references_taxt')
+    AntCat.log 'ReferencesSectionPanel initialize: no $tall_field' unless $tall_field && $tall_field.size() == 1
+    @element.find('#references_taxt').height(display_height) unless display_height is 0
 
-  create_form: ($element, options) -> new AntCat.ReferenceForm $element, options
+  create_form: ($element, options) -> new AntCat.ReferencesSectionForm $element, options
 
   on_form_open: =>
     @options.on_form_open() if @options.on_form_open
@@ -36,15 +40,15 @@ class AntCat.ReferencePanel extends AntCat.Panel
 
   @add_reference: (form) =>
     $template = $('.reference_section_template').clone()
-    AntCat.log 'ReferencePanel add_reference: no $template' unless $template && $template.size() == 1
+    AntCat.log 'ReferencesSectionPanel add_reference: no $template' unless $template && $template.size() == 1
     $item = $template.find('.reference_section')
-    AntCat.log 'ReferencePanel add_reference: no $item' unless $item && $item.size() == 1
+    AntCat.log 'ReferencesSectionPanel add_reference: no $item' unless $item && $item.size() == 1
     $item.removeClass('template').addClass('added_reference')
     form.add_reference_panel $item
-    $item.reference_panel(click_on_display: true, parent_form: form, open_immediately: true)
+    $item.references_section_panel click_on_display: true, parent_form: form, open_immediately: true
 
 #####
-class AntCat.ReferenceForm extends AntCat.NestedForm
+class AntCat.ReferencesSectionForm extends AntCat.NestedForm
   constructor: (@element, @options = {}) ->
     super
     @element.find('.taxt_editor').taxt_editor()
