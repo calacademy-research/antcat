@@ -3,11 +3,12 @@ class AntCat.ReferencesSection
     @initialize()
 
   initialize: =>
-    $add_button = @element.find '.references_section_buttons button'
-    AntCat.log 'ReferencesSection constructor: $add_button.size() != 1' unless $add_button.size() == 1
-    $add_button.click => @add(); false
+    @initialize_add_button()
     @element.find('.reference_section').references_section_panel(click_on_display: true, parent_form: @options.parent_form)
 
+  initialize_add_button: =>
+    $add_button = @element.find '.references_section_buttons button'; AntCat.log 'ReferencesSection constructor: $add_button.size() != 1' unless $add_button.size() == 1
+    $add_button.click => @add(); false
   add: =>
     AntCat.ReferencesSectionPanel.add_reference @options.parent_form
 
