@@ -18,8 +18,6 @@ $.fn.references_section_panel = (options = {}) ->
 
 class AntCat.ReferencesSectionPanel extends AntCat.Panel
   constructor: (@element, @options) ->
-    if @element.hasClass 'reference'
-      debugger
     @options.click_on_display = true
     @options.highlight = true
     super
