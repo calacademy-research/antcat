@@ -1,6 +1,8 @@
+# Usage: <parent-of-textarea>.taxt_editor options = parent_buttons, show_debug_dashboard
 $.fn.taxt_editor = (options = {}) ->
   return this.each -> new AntCat.TaxtEditor $(this), options
 
+# Usage: new AntCat.TaxtEditor(<parent-of-textarea>, options = parent_buttons, show_debug_dashboard)
 class AntCat.TaxtEditor
   # These values are duplicated in taxt.rb
   REFERENCE_TAG_TYPE = 1
