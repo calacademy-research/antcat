@@ -1,6 +1,8 @@
--# Locals: name, value
+-# Locals: name, value, rows
 
-= text_area_tag name, value, rows: 2, class: 'taxt_edit_box'
+- rows ||= 2
+
+= text_area_tag name, value, rows: rows, class: 'taxt_edit_box'
 = render 'reference_popups/show'
 = render 'name_popups/show'
 
