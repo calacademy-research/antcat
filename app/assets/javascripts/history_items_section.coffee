@@ -3,13 +3,18 @@ class AntCat.HistoryItemsSection
     @initialize()
 
   initialize: =>
-    $add_button = @element.find '.history_items_section_buttons button'
-    AntCat.log 'HistoryItemsSection constructor: $add_button.size() != 1' unless $add_button.size() == 1
+    @initialize_add_button()
+    @initialize_panels()
+
+  initialize_add_button: =>
+    $add_button = @element.find '.history_items_section_buttons button'; AntCat.log 'HistoryItemsSection constructor: $add_button.size() != 1' unless $add_button.size() == 1
     $add_button.click => @add(); false
-    @element.find('.history_item').history_item_panel(click_on_display: true, parent_form: @options.parent_form)
 
   add: =>
     AntCat.HistoryItemPanel.add_history_item @options.parent_form
+
+  initialize_panels: =>
+    @element.find('.history_item').history_item_panel(click_on_display: true, parent_form: @options.parent_form)
 
 #####
 $.fn.history_item_panel = (options = {}) ->
@@ -23,7 +28,9 @@ class AntCat.HistoryItemPanel extends AntCat.Panel
 
   initialize: (@element) =>
     super
-    # make the textarea of the form the same height as the item it's editing
+    @make_edit_field_same_height_as_when_displayed()
+
+  make_edit_field_same_height_as_when_displayed: =>
     display_height = @element.find('div.display').height() + 24
     @element.find('.taxt_edit_box').height(display_height) unless display_height is 0
 
@@ -35,10 +42,8 @@ class AntCat.HistoryItemPanel extends AntCat.Panel
     super
 
   @add_history_item: (form) =>
-    $template = $('.history_item_template').clone()
-    AntCat.log 'HistoryItemPanel add_history_item: no $template' unless $template && $template.size() == 1
-    $item = $template.find('.history_item')
-    AntCat.log 'HistoryItemPanel add_history_item: no $item' unless $item && $item.size() == 1
+    $template = $('.history_item_template').clone(); AntCat.log 'HistoryItemPanel add_history_item: no $template' unless $template && $template.size() == 1
+    $item = $template.find('.history_item'); AntCat.log 'HistoryItemPanel add_history_item: no $item' unless $item && $item.size() == 1
     $item.removeClass('history_item_template').addClass('added_history_item')
     form.add_history_item_panel $item
     $item.history_item_panel(click_on_display: true, parent_form: form, open_immediately: true)
