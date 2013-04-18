@@ -27,7 +27,7 @@ class TaxonHistoryItemsController < ApplicationController
   def render_json is_new
     json = {
       isNew: is_new,
-      content: render_to_string(partial: 'history_item/panel', locals: {item: @item}),
+      content: render_to_string(partial: 'history_items/panel', locals: {item: @item}),
       id: @item.id,
       success: @item.errors.empty?
     }.to_json
