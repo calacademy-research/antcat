@@ -13,10 +13,7 @@
 
 - content_for :page_contents do
   = form_for @taxon, as: :taxon, url: "/taxa/#{@taxon.id}", html: {class: 'taxon_form ui-widget', style: {display: 'none'}} do |form|
-    %input{type: :hidden, name: 'possible_homonym', id: 'possible_homonym', value: @possible_homonym ? 'true' : nil}
     = render 'shared/errors_for', resource: @taxon
-
-    = render 'references_section',                  taxon: @taxon
 
     .fields_section.section.ui-widget-content.ui-corner-all
       = render 'epithet_status_flags_section',      taxon: @taxon, form: form
@@ -26,3 +23,5 @@
 
     = render 'history_items_section',               taxon: @taxon
     = render 'junior_and_senior_synonyms_section',  taxon: @taxon
+    = render 'references_section',                  taxon: @taxon
+
