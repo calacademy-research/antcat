@@ -81,39 +81,42 @@
           background: $color_current_reference_being_edited_by_reference_field_background
 
   .references_section
-    font-size: 15px
-    padding-left: 0
-    line-height: 1.2
-    .template
+    .reference_section_template
       display: none
-    .section_header
-      .right
-        margin-right: 4px
-    .reference_section
-      margin-top: 0
-      table
-        border-spacing: 0
-      .edit
+    .reference_sections
+      font-size: 15px
+      padding-left: 0
+      line-height: 1.2
+      .template
         display: none
-        padding: 6px
-        .taxt_editor
-          margin-bottom: 4px
-        .buttons
-          margin-bottom: 4px
-          margin-top: 4px
-          margin-left: 77px
-          .delete
-            margin-left: 16px
-      .display
-        padding: 6px
-        padding-left: 16px
-        text-indent: -10px
-        max-height: 48px
-        overflow: auto
-        &.ui-selecting
-          background: $color_current_reference_being_edited_by_reference_field_background
-        .title_taxt, .subtitle_taxt
-          font-weight: bold
+      .section_header
+        .right
+          margin-right: 4px
+      .reference_section
+        margin-top: 0
+        table
+          border-spacing: 0
+        .edit
+          display: none
+          padding: 6px
+          .taxt_editor
+            margin-bottom: 4px
+          .buttons
+            margin-bottom: 4px
+            margin-top: 4px
+            margin-left: 77px
+            .delete
+              margin-left: 16px
+        .display
+          padding: 6px
+          padding-left: 16px
+          text-indent: -10px
+          max-height: 48px
+          overflow: auto
+          &.ui-selecting
+            background: $color_current_reference_being_edited_by_reference_field_background
+          .title_taxt, .subtitle_taxt
+            font-weight: bold
 
   .reference_section + .reference_section
     margin-top: 6px
