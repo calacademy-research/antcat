@@ -43,10 +43,8 @@ class AntCat.ReferencesSectionPanel extends AntCat.Panel
     super
 
   @add_reference: (form) =>
-    $template = $('.reference_section_template').clone()
-    AntCat.log 'ReferencesSectionPanel add_reference: no $template' unless $template && $template.size() == 1
-    $item = $template.find('.reference_section')
-    AntCat.log 'ReferencesSectionPanel add_reference: no $item' unless $item && $item.size() == 1
+    $template = $('.reference_section_template').clone(); AntCat.log 'ReferencesSectionPanel add_reference: no $template' unless $template && $template.size() == 1
+    $item = $template.find('.reference_section');         AntCat.log 'ReferencesSectionPanel add_reference: no $item' unless $item && $item.size() == 1
     $item.removeClass('template').addClass('added_reference')
     form.add_reference_panel $item
     $item.references_section_panel click_on_display: true, parent_form: form, open_immediately: true
@@ -55,7 +53,9 @@ class AntCat.ReferencesSectionPanel extends AntCat.Panel
 class AntCat.ReferencesSectionForm extends AntCat.NestedForm
   constructor: (@element, @options = {}) ->
     super
-    @element.find('.taxt_editor').taxt_editor()
+    @element.find('#title_taxt').parent().taxt_editor(parent_buttons: '.buttons_section')
+    @element.find('#subtitle_taxt').parent().taxt_editor(parent_buttons: '.buttons_section')
+    @element.find('#references_taxt').parent().taxt_editor(parent_buttons: '.buttons_section')
 
   initialize_buttons: =>
     super
