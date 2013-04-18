@@ -9,6 +9,7 @@ class AntCat.ReferencesSection
   initialize_add_button: =>
     $add_button = @element.find '.references_section_buttons button'; AntCat.log 'ReferencesSection constructor: $add_button.size() != 1' unless $add_button.size() == 1
     $add_button.click => @add(); false
+
   add: =>
     AntCat.ReferencesSectionPanel.add_reference @options.parent_form
 
@@ -45,7 +46,7 @@ class AntCat.ReferencesSectionPanel extends AntCat.Panel
   @add_reference: (form) =>
     $template = $('.reference_section_template').clone(); AntCat.log 'ReferencesSectionPanel add_reference: no $template' unless $template && $template.size() == 1
     $item = $template.find('.reference_section');         AntCat.log 'ReferencesSectionPanel add_reference: no $item' unless $item && $item.size() == 1
-    $item.removeClass('template').addClass('added_reference')
+    $item.removeClass('reference_section_template').addClass('added_reference')
     form.add_reference_panel $item
     $item.references_section_panel click_on_display: true, parent_form: form, open_immediately: true
 
