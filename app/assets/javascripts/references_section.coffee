@@ -27,11 +27,13 @@ class AntCat.ReferencesSectionPanel extends AntCat.Panel
 
   initialize: (@element) =>
     super
-    # make the textarea of the form the same height as the item it's editing
-    display_height = @element.find('div.display').height() + 24
-    $tall_field = $('#references_taxt')
-    AntCat.log 'ReferencesSectionPanel initialize: no $tall_field' unless $tall_field && $tall_field.size() == 1
-    @element.find('#references_taxt').height(display_height) unless display_height is 0
+    @make_references_edit_field_same_height_as_when_displayed()
+
+  make_references_edit_field_same_height_as_when_displayed: =>
+    $display_field = @element.find '.display > .references_taxt'; AntCat.log 'ReferencesSectionPanel initialize: no $display_field' unless $display_field && $display_field.size() == 1
+    edit_height = $display_field.height() + 24
+    $edit_field = @element.find('#references_taxt'); AntCat.log 'ReferencesSectionPanel initialize: no $edit_field' unless $edit_field && $edit_field.size() == 1
+    $edit_field.height edit_height unless edit_height is 0
 
   create_form: ($element, options) -> new AntCat.ReferencesSectionForm $element, options
 
