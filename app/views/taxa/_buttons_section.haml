@@ -1,6 +1,7 @@
 -#Locals: form, possible_homonym, show_elevate_to_species_button
 
 .buttons_section
+  %input{type: :hidden, name: 'possible_homonym', id: 'possible_homonym', value: possible_homonym ? 'true' : nil}
   .left_buttons
     - save_button_text = previewize possible_homonym ? 'Save Homonym' : 'Save'
     = form.submit save_button_text, class: 'ui-priority-primary submit'
