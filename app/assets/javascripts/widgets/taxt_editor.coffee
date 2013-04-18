@@ -11,17 +11,14 @@ class AntCat.TaxtEditor
 
   constructor: (@element, @options = {}) ->
     @element.addClass 'taxt_editor'
-    @control = @element.find '> textarea'
-    AntCat.log 'TaxtEditor ctor: no @control' unless @control.size() == 1
+    @control = @element.find '> textarea'; AntCat.log 'TaxtEditor ctor: no @control' unless @control.size() == 1
     @control.addClass 'taxt_edit_box'
     @parent_buttons = $(@options.parent_buttons)
     if @options.parent_buttons
-      @parent_buttons = @element.closest('form:visible').find @options.parent_buttons
-      AntCat.log 'TaxtEditor ctor: no @parent_buttons' unless @parent_buttons.size() == 1
+      @parent_buttons = @element.closest('form:visible').find @options.parent_buttons; AntCat.log 'TaxtEditor ctor: no @parent_buttons' unless @parent_buttons.size() == 1
     else
       @parent_buttons = @element.siblings().find(':button')
-    @tag_buttons = @element.find('.insert_tag_buttons')
-    AntCat.log 'TaxtEditor ctor: no @tag_buttons' unless @tag_buttons.size() == 1
+    @tag_buttons = @element.find('.insert_tag_buttons'); AntCat.log 'TaxtEditor ctor: no @tag_buttons' unless @tag_buttons.size() == 1
     @dashboard = new TaxtEditor.DebugDashboard @ if @options.show_debug_dashboard
     @dashboard?.show_status 'before'
     @value @control.val()
