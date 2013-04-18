@@ -31,7 +31,7 @@ class AntCat.ReferencesSectionPanel extends AntCat.Panel
 
   make_references_edit_field_same_height_as_when_displayed: =>
     $display_field = @element.find '.display > .references_taxt'; AntCat.log 'ReferencesSectionPanel initialize: no $display_field' unless $display_field && $display_field.size() == 1
-    edit_height = $display_field.height() + 24
+    edit_height = Math.max($display_field.height() + 24, 100)
     $edit_field = @element.find('#references_taxt'); AntCat.log 'ReferencesSectionPanel initialize: no $edit_field' unless $edit_field && $edit_field.size() == 1
     $edit_field.height edit_height unless edit_height is 0
 
