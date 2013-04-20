@@ -38,9 +38,11 @@ class TaxaController < ApplicationController
   def update_taxon attributes
     Taxon.transaction do
       protonym_attributes = attributes.delete :protonym_attributes
+      homonym_replaced_by_name_attributes = attributes.delete :homonym_replaced_by_name_attributes
       type_name_attributes = attributes.delete :type_name_attributes
 
       update_epithet_status_flags attributes
+      update_homonym_replaced_by homonym_replaced_by_name_attributes
       update_protonym protonym_attributes
       update_type_name type_name_attributes if type_name_attributes
     end
@@ -84,6 +86,12 @@ class TaxaController < ApplicationController
 
   def get_name_attributes attributes
     {genus_name: attributes[:epithet]}
+  end
+
+  def update_homonym_replaced_by attributes
+    replacement_id = attributes[:id]
+    replacement = replacement_id ? Taxon.find_by_name_id(replacement_id) : nil
+    @taxon.update_attributes homonym_replaced_by: replacement
   end
 
   def update_protonym attributes

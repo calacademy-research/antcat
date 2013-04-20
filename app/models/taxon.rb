@@ -164,6 +164,7 @@ class Taxon < ActiveRecord::Base
   has_one     :homonym_replaced, class_name: 'Taxon', foreign_key: :homonym_replaced_by_id
   def homonym?; status == 'homonym' end
   def homonym_replaced_by? taxon; homonym_replaced_by == taxon end
+  attr_accessor :homonym_replaced_by_name
 
   ###############################################
   # other associations
