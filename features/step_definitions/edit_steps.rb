@@ -104,25 +104,10 @@ When /^I cancel the reference section's changes$/ do
     step %{I press the "Cancel" button}
   end
 end
-
-When /^I press the reference "([^"]*)" button$/ do |button|
-  within '.reference_sections .reference_section' do
-    step %{I press "#{button}"}
-  end
-end
 When /^I click the "Add" reference section button$/ do
   within '.references_section' do
     click_button 'Add'
   end
-end
-When /^I press that reference's "Insert Name" button$/ do
-  within '.reference_sections .reference_section:first' do
-    click_button 'Insert Name'
-  end
-end
-Then /^I should (not )?see the "Delete" button for the reference/ do |should_not|
-  selector = should_not ? :should_not : :should
-  page.send selector, have_css('button.delete')
 end
 
 # synonym section
