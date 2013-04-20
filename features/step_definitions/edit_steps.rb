@@ -21,6 +21,9 @@ end
 When /^I set the protonym name to "([^"]*)"$/ do |name|
   step %{I fill in "name_string" with "#{name}"}
 end
+When /^I set the homonym replaced by name to "([^"]*)"$/ do |name|
+  step %{I fill in "name_string" with "#{name}"}
+end
 When /^I set the type name to "([^"]*)"$/ do |name|
   step %{I fill in "name_string" with "#{name}"}
 end
@@ -39,8 +42,14 @@ end
 When /I click the protonym name field/ do
   find('#protonym_name_field .display_button').click
 end
+When /I click the homonym replaced by name field/ do
+  find('#homonym_replaced_by_name_field .display_button').click
+end
 When /I click the type name field/ do
   find('#type_name_field .display_button').click
+end
+Then /the status should be "([^"]*)"/ do |status|
+  page.should have_css "select#taxon_status option[selected=selected][value=#{status}]"
 end
 
 # history section

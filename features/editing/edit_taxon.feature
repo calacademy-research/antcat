@@ -116,6 +116,31 @@ Feature: Editing a taxon
     And I save my changes
     Then I should see "Eciton" in the headline
 
+  Scenario: Changing the homonym replaced by name
+    Given there is a genus "Atta"
+    And there is a genus "Eciton"
+    And I log in
+    When I go to the edit page for "Atta"
+    When I click the homonym replaced by name field
+    And I set the homonym replaced by name to "Eciton"
+    And I press "OK"
+    When I save my changes
+    Then I should see "Eciton" in the header
+
+  Scenario: Setting the homonym replaced by name doesn't affect status
+    Given there is a genus "Atta"
+    And there is a genus "Eciton"
+    And I log in
+    When I go to the edit page for "Atta"
+    Then the status should be "valid"
+    When I click the homonym replaced by name field
+    And I set the homonym replaced by name to "Eciton"
+    And I press "OK"
+    Then the status should be "valid"
+    When I save my changes
+    And I go to the edit page for "Atta"
+    Then the status should be "valid"
+
   Scenario: Changing the authorship
     Given these references exist
       | authors | citation   | title | year |
