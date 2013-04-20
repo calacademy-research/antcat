@@ -85,14 +85,15 @@ Feature: Editing a taxon
     #And I press "OK"
     #Then I should not be on the catalog page for "Atta"
 
-  #Scenario: Changing reference in taxt
+  # When 'Insert Reference' clicked, goes back to catalog page
+  ##Scenario: Changing reference in taxt
     #Given there is a genus "Atta"
     #And there is a genus "Eciton"
     #And I log in
-    #When I go to the catalog page for "Atta"
-    #And I press "Edit"
+    #When I go to the edit page for "Atta"
     #And I put the cursor in the headline notes edit box
     #And I press "Insert Reference"
+    #And I wait for a while
     #And I press "OK"
     #Then I should not be on the catalog page for "Atta"
 
