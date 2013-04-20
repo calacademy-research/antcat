@@ -124,6 +124,7 @@ Feature: Editing a taxon
     When I click the homonym replaced by name field
     And I set the homonym replaced by name to "Eciton"
     And I press "OK"
+    And I set the status to "homonym"
     When I save my changes
     Then I should see "Eciton" in the header
 
