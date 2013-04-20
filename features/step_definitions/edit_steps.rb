@@ -121,6 +121,10 @@ When /^I click the "Add" reference section button$/ do
     click_button 'Add'
   end
 end
+Then /^I should (not )?see the "Delete" button for the reference/ do |should_not|
+  selector = should_not ? :should_not : :should
+  page.send selector, have_css('button.delete')
+end
 
 # synonym section
 When /^I save the senior synonym$/ do
