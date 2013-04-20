@@ -51,6 +51,9 @@ end
 Then /the status should be "([^"]*)"/ do |status|
   page.should have_css "select#taxon_status option[selected=selected][value=#{status}]"
 end
+Then /I set the status to "([^"]*)"/ do |status|
+  step %{I select "#{status}" from "taxon_status"}
+end
 
 # history section
 When /^I press the history item "([^"]*)" button$/ do |button|
