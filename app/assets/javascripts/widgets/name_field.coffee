@@ -6,6 +6,7 @@ class AntCat.NameField extends AntCat.Panel
     super $parent_element.find('> .antcat_name_field'), @options
 
   create_form: ($element, options) =>
+    options.taxa_only = @options.taxa_only
     new AntCat.NameFieldForm $element, options
 
   before_submit: =>
@@ -71,10 +72,9 @@ class AntCat.NameFieldForm extends AntCat.NestedForm
 
   setup_autocomplete: ($textbox) =>
     return if AntCat.testing
-    $textbox.autocomplete(
-        autoFocus: true,
-        source: "/name_pickers/search",
-        minLength: 3)
+    url = '/name_pickers/search'
+    url += '?taxa_only=1' if @options.taxa_only
+    $textbox.autocomplete(autoFocus: true, source: url, minLength: 3)
       .data('autocomplete')._renderItem = @render_item
 
   # this is required to display HTML in the list
