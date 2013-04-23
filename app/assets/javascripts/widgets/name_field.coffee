@@ -34,7 +34,6 @@ class AntCat.NameField extends AntCat.Panel
   #------------
   set_add_name_field: =>
     $add_name_field = @element.find('#add_name')
-    AntCat.log 'NameField before_submit: $add_name_field.size() != 1' unless $add_name_field.size() == 1
     if @deciding_whether_to_add_name
       $add_name_field.val 'true'
     else
@@ -42,17 +41,14 @@ class AntCat.NameField extends AntCat.Panel
 
   set_submit_button_text: (text) =>
     $submit_button = @element.find('.buttons .submit span')
-    AntCat.log 'NameField on_application_error: $submit_button' unless $submit_button.size() == 1
     $submit_button.text text
 
   set_value: (value) =>
     $value_field = $('#' + @value_id)
-    AntCat.log 'NameField set_value: $value_field.size() != 1' unless $value_field.size() == 1
     $value_field.val value
 
   show_error: (message) =>
     $error_messages = @element.find('.error_messages')
-    AntCat.log 'NameField show_error: $error_messages.size() != 1' unless $error_messages.size() == 1
     $error_messages.text message
 
 # -----------------------------------------
@@ -60,7 +56,6 @@ class AntCat.NameFieldForm extends AntCat.NestedForm
   constructor: (@element, @options = {}) ->
     @options.button_container = '.buttons'
     @textbox = @element.find('input[type=text]')
-    AntCat.log 'NameFieldForm ctor: no @textbox' unless @textbox.size() == 1
     @setup_autocomplete @textbox
     super
 
