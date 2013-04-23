@@ -90,7 +90,7 @@ class TaxaController < ApplicationController
 
   def update_homonym_replaced_by attributes
     replacement_id = attributes[:id]
-    replacement = replacement_id ? Taxon.find_by_name_id(replacement_id) : nil
+    replacement = replacement_id.present? ? Taxon.find_by_name_id(replacement_id) : nil
     @taxon.update_attributes homonym_replaced_by: replacement
   end
 
