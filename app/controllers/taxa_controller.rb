@@ -52,7 +52,6 @@ class TaxaController < ApplicationController
     add_name_or_create_homonym attributes.delete :name_attributes
     attributes[:incertae_sedis_in] = nil unless attributes[:incertae_sedis_in].present?
     @taxon.attributes = attributes
-    # apparently can't just assign this value to the attribute in attributes
     @taxon.headline_notes_taxt = Taxt.from_editable attributes.delete :headline_notes_taxt
     if attributes[:type_taxt]
       @taxon.type_taxt = Taxt.from_editable attributes.delete :type_taxt
