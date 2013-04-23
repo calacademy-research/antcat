@@ -3,16 +3,24 @@ class NameFieldsController < NamePickersController
 
   def find
     data = {}
+    clearing_name = false
+
     if params[:add_name] == 'true'
       name = add_name params[:name_string], data
+    elsif params[:name_string].empty? and params[:allow_blank].present?
+      clearing_name = true
     else
       name = find_name params[:name_string], data
     end
+
     id = name.try :id
     value = name.try :id
     name_string = name.try(:name) || params[:name_string]
+
     if name
       success = name.errors.empty?
+    elsif clearing_name
+      success = true
     else
       success = false
     end

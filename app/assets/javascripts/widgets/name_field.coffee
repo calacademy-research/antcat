@@ -7,6 +7,7 @@ class AntCat.NameField extends AntCat.Panel
 
   create_form: ($element, options) =>
     options.taxa_only = @options.taxa_only
+    options.allow_blank = @options.allow_blank
     new AntCat.NameFieldForm $element, options
 
   before_submit: =>
@@ -60,7 +61,7 @@ class AntCat.NameFieldForm extends AntCat.NestedForm
     super
 
   submit: =>
-    return false if @textbox.val().length == 0
+    return false if @textbox.val().length == 0 and not @options.allow_blank
     @options.before_submit() if @options.before_submit
     super
     false
