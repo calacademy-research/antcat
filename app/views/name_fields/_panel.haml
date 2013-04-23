@@ -1,5 +1,7 @@
--#Locals: name_string
+-#Locals: name_string, allow_blank
+
+- allow_blank ||= true
 
 .antcat_name_picker.antcat_name_field.antcat_panel
   = render 'name_fields/display', name: name_string
-  = render 'name_fields/edit', name: name_string
+  = render 'name_fields/edit', name: name_string, allow_blank: allow_blank

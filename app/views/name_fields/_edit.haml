@@ -1,10 +1,12 @@
--#Locals: name
+-#Locals: name, allow_blank
+
+- allow_blank ||= false
 
 .edit
   %table
     %tr
       %td
-        .nested_form{'data-action' => '/name_fields/find?field=true', 'data-method' => 'get'}
+        .nested_form{'data-action' => "/name_fields/find?field=true&allow_blank=#{allow_blank}", 'data-method' => 'get'}
           = hidden_field_tag 'add_name', ''
           %table
             %tr
