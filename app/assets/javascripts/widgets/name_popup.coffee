@@ -73,7 +73,7 @@ class AntCat.NamePopup extends AntCat.NestedForm
     @element.find('#taxon_id').val data.taxon_id
     super
 
-  handle_application_error: (error_message) =>
+  handle_application_error: (error_message, data) =>
     # an error means that the name the user entered doesn't exist
     # we ask if they want to add it
     submit_button = @element.find('.buttons .submit span')

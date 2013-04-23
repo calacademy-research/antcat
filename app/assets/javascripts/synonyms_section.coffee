@@ -99,7 +99,7 @@ class AntCat.SynonymsSectionForm extends AntCat.NestedForm
     @error_message.text ''
     super
 
-  handle_application_error: (error_message) =>
+  handle_application_error: (error_message, data) =>
     super
     @error_message.text error_message
 
