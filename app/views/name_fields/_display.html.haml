@@ -1,4 +1,4 @@
 -#Locals: name
 
 .display
-  %button.display_button= name || '(none)'
+  %button.display_button= name.present? ? name : '(none)'
