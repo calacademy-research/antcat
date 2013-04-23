@@ -24,6 +24,9 @@ end
 When /^I set the homonym replaced by name to "([^"]*)"$/ do |name|
   step %{I fill in "name_string" with "#{name}"}
 end
+When /the homonym replaced by name should be "([^"]*)"$/ do |name|
+  page.find('#homonym_replaced_by_name_field div.display').text.should == name
+end
 When /^I set the type name to "([^"]*)"$/ do |name|
   step %{I fill in "name_string" with "#{name}"}
 end
