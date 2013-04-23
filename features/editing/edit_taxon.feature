@@ -142,6 +142,24 @@ Feature: Editing a taxon
     And I go to the edit page for "Atta"
     Then the status should be "valid"
 
+  Scenario: The homonym replaced by can be cleared
+    Given there is a genus "Atta"
+    And there is a genus "Eciton"
+    And I log in
+    When I go to the edit page for "Atta"
+    Then the homonym replaced by name should be "(none)"
+    When I click the homonym replaced by name field
+    And I set the homonym replaced by name to "Eciton"
+    And I press "OK"
+    And I save my changes
+    And I go to the edit page for "Atta"
+    When I click the homonym replaced by name field
+    And I set the homonym replaced by name to ""
+    And I press "OK"
+    When I save my changes
+    And I go to the edit page for "Atta"
+    Then the homonym replaced by name should be "(none)"
+
   Scenario: Changing the authorship
     Given these references exist
       | authors | citation   | title | year |
