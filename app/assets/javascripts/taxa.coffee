@@ -15,7 +15,6 @@ class AntCat.TaxonForm extends AntCat.Form
   initialize_fields_section: =>
     new AntCat.TaxtEditor $('#headline_notes_taxt_editor'), parent_buttons: '.buttons_section'
     new AntCat.NameField $('#protonym_name_field'), value_id: 'taxon_protonym_attributes_name_attributes_id', parent_form: @
-    new AntCat.NameField $('#homonym_replaced_by_name_field'), value_id: 'taxon_homonym_replaced_by_name_attributes_id', parent_form: @, taxa_only: true, allow_blank: true
     if $('#type_name_field').size() == 1
       new AntCat.NameField $('#type_name_field'), value_id: 'taxon_type_name_attributes_id', parent_form: @
       new AntCat.TaxtEditor $('#type_taxt_editor'), parent_buttons: '.buttons_section'
@@ -32,10 +31,15 @@ class AntCat.TaxonForm extends AntCat.Form
     new AntCat.ReferencesSection @element.find('.references_section'), parent_form: @
 
   initialize_homonym_replaced_by_name_field: =>
+    new AntCat.NameField $('#homonym_replaced_by_name_field'),
+      value_id: 'taxon_homonym_replaced_by_name_attributes_id', parent_form: @, taxa_only: true, allow_blank: true
     @status_selector = $ '#taxon_status'
     @homonym_replaced_by_name_column = $ 'tr#homonym_replaced_by'
     @hide_or_show_homonym_replaced_by()
     @status_selector.change => @hide_or_show_homonym_replaced_by()
+    @homonym_replaced_by_name_column.find('.help').text(
+      'Type the name, or type characters in the name then choose a name from the drop-down list, or delete the name'
+    )
 
   hide_or_show_homonym_replaced_by: =>
     if @status_selector.val() == 'homonym'
