@@ -20,7 +20,7 @@
           %td.label.top_aligned= homonym_replaced_by_name_form.label :name
           %td
             #homonym_replaced_by_name_field
-              = render 'name_fields/panel', name_string: taxon.homonym_replaced_by_name.name, allow_blank: true
+              = render 'name_fields/panel', name_string: taxon.homonym_replaced_by_name.name, allow_blank: true, disallow_add: true
 
     %tr
       %td

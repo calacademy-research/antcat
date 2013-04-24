@@ -160,6 +160,15 @@ Feature: Editing a taxon
     And I go to the edit page for "Atta"
     Then the homonym replaced by name should be "(none)"
 
+  Scenario: Trying to set the homonym to a name that doesn't exist
+    Given there is a genus "Atta"
+    And I log in
+    When I go to the edit page for "Atta"
+    When I click the homonym replaced by name field
+    And I set the homonym replaced by name to "Eciton"
+    And I press "OK"
+    Then I should see "This must be the name of an existing taxon"
+
   Scenario: Changing the authorship
     Given these references exist
       | authors | citation   | title | year |

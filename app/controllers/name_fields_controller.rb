@@ -39,6 +39,10 @@ class NameFieldsController < NamePickersController
     name = Name.find_by_name name_string
     if name
       data[:success] = true
+    elsif params[:disallow_add]
+      data[:success] = false
+      data[:error_message] = 'This must be the name of an existing taxon'
+      data[:reason_for_error] = 'taxon not found'
     else
       ask_whether_to_add_name name_string, data
     end
