@@ -6,6 +6,7 @@ class AntCat.TaxonForm extends AntCat.Form
     @initialize_history_section()
     @initialize_junior_and_senior_synonyms_section()
     @initialize_references_section()
+    @initialize_homonym_replaced_by_name_field()
     @initialize_task_buttons()
     @initialize_events()
     super
@@ -29,6 +30,18 @@ class AntCat.TaxonForm extends AntCat.Form
 
   initialize_references_section: =>
     new AntCat.ReferencesSection @element.find('.references_section'), parent_form: @
+
+  initialize_homonym_replaced_by_name_field: =>
+    @status_selector = $ '#taxon_status'
+    @homonym_replaced_by_name_column = $ 'tr#homonym_replaced_by'
+    @hide_or_show_homonym_replaced_by()
+    @status_selector.change => @hide_or_show_homonym_replaced_by()
+
+  hide_or_show_homonym_replaced_by: =>
+    if @status_selector.val() == 'homonym'
+      @homonym_replaced_by_name_column.show()
+    else
+      @homonym_replaced_by_name_column.hide()
 
   initialize_task_buttons: =>
     @element.find('#elevate_to_species').click => @elevate_to_species(); false
