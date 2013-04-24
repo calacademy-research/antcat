@@ -121,10 +121,10 @@ Feature: Editing a taxon
     And there is a genus "Eciton"
     And I log in
     When I go to the edit page for "Atta"
-    When I click the homonym replaced by name field
+    And I set the status to "homonym"
+    And I click the homonym replaced by name field
     And I set the homonym replaced by name to "Eciton"
     And I press "OK"
-    And I set the status to "homonym"
     When I save my changes
     Then I should see "Eciton" in the header
 
@@ -143,10 +143,11 @@ Feature: Editing a taxon
     And I log in
     When I go to the edit page for "Atta"
     Then the status should be "valid"
-    When I click the homonym replaced by name field
+    When I set the status to "homonym"
+    And I click the homonym replaced by name field
     And I set the homonym replaced by name to "Eciton"
     And I press "OK"
-    Then the status should be "valid"
+    When I set the status to "valid"
     When I save my changes
     And I go to the edit page for "Atta"
     Then the status should be "valid"
@@ -156,6 +157,7 @@ Feature: Editing a taxon
     And there is a genus "Eciton"
     And I log in
     When I go to the edit page for "Atta"
+    And I set the status to "homonym"
     Then the homonym replaced by name should be "(none)"
     When I click the homonym replaced by name field
     And I set the homonym replaced by name to "Eciton"
@@ -173,7 +175,8 @@ Feature: Editing a taxon
     Given there is a genus "Atta"
     And I log in
     When I go to the edit page for "Atta"
-    When I click the homonym replaced by name field
+    And I set the status to "homonym"
+    And I click the homonym replaced by name field
     And I set the homonym replaced by name to "Eciton"
     And I press "OK"
     Then I should see "This must be the name of an existing taxon"
