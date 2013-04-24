@@ -25,12 +25,13 @@ class AntCat.NameField extends AntCat.Panel
     super unless @deciding_whether_to_add_name
     @deciding_whether_to_add_name = false
 
-  on_application_error: (error_message) =>
-    # an 'error' means that the name the user entered doesn't exist
-    # we ask if they want to add it
-    @set_submit_button_text 'Add this name'
+  on_application_error: (error_message, data) =>
+    unless data.reason_for_error == 'taxon not found'
+      # the 'error' means that the name the user entered doesn't exist
+      # we ask if they want to add it
+      @set_submit_button_text 'Add this name'
+      @deciding_whether_to_add_name = true
     @show_error error_message
-    @deciding_whether_to_add_name = true
 
   #------------
   set_add_name_field: =>

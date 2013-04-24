@@ -1,12 +1,18 @@
--#Locals: name, allow_blank
+-#Locals: name, allow_blank, disallow_add
 
 - allow_blank ||= false
+- disallow_add ||= false
+
+- parameters = ['field=true']
+- parameters << 'allow_blank=true' if allow_blank
+- parameters << 'disallow_add=true' if disallow_add
+- url = "/name_fields/find?" + parameters.join('&')
 
 .edit
   %table
     %tr
       %td
-        .nested_form{'data-action' => "/name_fields/find?field=true&allow_blank=#{allow_blank}", 'data-method' => 'get'}
+        .nested_form{'data-action' => url, 'data-method' => 'get'}
           = hidden_field_tag 'add_name', ''
           %table
             %tr
