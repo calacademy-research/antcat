@@ -68,4 +68,3 @@ class AntCat.Form
 
   disable_buttons: =>
     @buttons.find(button_selector).disable()
-
