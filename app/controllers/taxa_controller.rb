@@ -37,14 +37,14 @@ class TaxaController < ApplicationController
   ###################
   def update_taxon attributes
     Taxon.transaction do
-      protonym_attributes = attributes.delete :protonym_attributes
+      protonym_attributes                 = attributes.delete :protonym_attributes
       homonym_replaced_by_name_attributes = attributes.delete :homonym_replaced_by_name_attributes
-      type_name_attributes = attributes.delete :type_name_attributes
+      type_name_attributes                = attributes.delete :type_name_attributes
 
       update_epithet_status_flags attributes
-      update_homonym_replaced_by homonym_replaced_by_name_attributes
-      update_protonym protonym_attributes
-      update_type_name type_name_attributes if type_name_attributes
+      update_homonym_replaced_by  homonym_replaced_by_name_attributes
+      update_protonym             protonym_attributes
+      update_type_name            type_name_attributes if type_name_attributes
     end
   end
 
