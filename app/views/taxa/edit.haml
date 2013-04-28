@@ -9,7 +9,7 @@
   = javascript_include_tag  'widgets/reference_field'
   = javascript_include_tag  'widgets/name_field'
   = javascript_include_tag  'widgets/reference_popup', 'widgets/name_popup', 'widgets/taxt_editor'
-  = javascript_include_tag  'taxa', 'history_items_section', 'synonyms_section', 'references_section'
+  = javascript_include_tag  'taxa', 'history_items_section', 'synonyms_section', 'references_section', 'homonym_replaced_by_section'
 
 - content_for :page_contents do
   = form_for @taxon, as: :taxon, url: "/taxa/#{@taxon.id}", html: {class: 'taxon_form ui-widget', style: {display: 'none'}} do |form|
