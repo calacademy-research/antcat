@@ -26,7 +26,7 @@ class NameFieldsController < NamePickersController
     end
     options = {}
     options[:allow_blank] = true if params[:allow_blank].present?
-    options[:disallow_add] = true if params[:disallow_add].present?
+    options[:require_existing] = true if params[:require_existing].present?
     data.merge!(
       content: render_to_string(partial: 'name_fields/panel', locals: {name_string: name_string, options: options}),
       success: success,
@@ -42,7 +42,7 @@ class NameFieldsController < NamePickersController
     name = Name.find_by_name name_string
     if name
       data[:success] = true
-    elsif params[:disallow_add]
+    elsif params[:require_existing]
       data[:success] = false
       data[:error_message] = 'This must be the name of an existing taxon'
       data[:reason_for_error] = 'taxon not found'
