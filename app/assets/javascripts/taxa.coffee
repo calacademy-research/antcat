@@ -2,11 +2,13 @@ $ -> new AntCat.TaxonForm $('.taxon_form'), button_container: '> .fields_section
 
 class AntCat.TaxonForm extends AntCat.Form
   constructor: (@element, @options = {}) ->
+    @status_selector = $ '#taxon_status'
+    @homonym_replaced_by_name_column = $ 'tr#homonym_replaced_by'
     @initialize_fields_section()
     @initialize_history_section()
     @initialize_junior_and_senior_synonyms_section()
     @initialize_references_section()
-    @initialize_homonym_replaced_by_name_field()
+    @initialize_homonym_replaced_by_section()
     @initialize_task_buttons()
     @initialize_events()
     super
@@ -30,16 +32,10 @@ class AntCat.TaxonForm extends AntCat.Form
   initialize_references_section: =>
     new AntCat.ReferencesSection @element.find('.references_section'), parent_form: @
 
-  initialize_homonym_replaced_by_name_field: =>
-    new AntCat.NameField $('#homonym_replaced_by_name_field'),
-      value_id: 'taxon_homonym_replaced_by_name_attributes_id', parent_form: @, taxa_only: true, allow_blank: true
-    @status_selector = $ '#taxon_status'
-    @homonym_replaced_by_name_column = $ 'tr#homonym_replaced_by'
-    @hide_or_show_homonym_replaced_by()
+  initialize_homonym_replaced_by_section: =>
     @status_selector.change => @hide_or_show_homonym_replaced_by()
-    @homonym_replaced_by_name_column.find('.help').text(
-      'Type the name, or type characters in the name then choose a name from the drop-down list, or delete the name'
-    )
+    new AntCat.HomonymReplacedBySection $('#homonym_replaced_by_name_field'),
+      value_id: 'taxon_homonym_replaced_by_name_attributes_id', parent_form: @, taxa_only: true, allow_blank: true
 
   hide_or_show_homonym_replaced_by: =>
     if @status_selector.val() == 'homonym'
@@ -74,4 +70,3 @@ class AntCat.TaxonForm extends AntCat.Form
 
   add_reference_panel: ($panel) =>
     @element.find('.reference_sections').append $panel
-
