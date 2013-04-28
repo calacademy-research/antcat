@@ -68,8 +68,4 @@ class NameFieldsController < NamePickersController
     data[:error_message] = "Do you want to add the name #{name_string}? You can attach it to a taxon later, if desired."
   end
 
-  def reply_with_successful_search name, data
-    data[:success] = true
-  end
-
 end
