@@ -24,8 +24,11 @@ class NameFieldsController < NamePickersController
     else
       success = false
     end
+    options = {}
+    options[:allow_blank] = true if params[:allow_blank].present?
+    options[:disallow_add] = true if params[:disallow_add].present?
     data.merge!(
-      content: render_to_string(partial: 'name_fields/panel', locals: {name_string: name_string}),
+      content: render_to_string(partial: 'name_fields/panel', locals: {name_string: name_string, options: options}),
       success: success,
       id: id)
     json = data.to_json
