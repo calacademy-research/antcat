@@ -1,7 +1,7 @@
 # coding: UTF-8
 class Vlad
 
-  def self.idate show_progress = false
+  def Vlad.idate show_progress = false
     Progress.new_init show_progress: show_progress
     Progress.puts
     Statistic.descendants.each &:display
