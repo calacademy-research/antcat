@@ -99,9 +99,9 @@ class AntCat.SynonymsSectionForm extends AntCat.NestedForm
     @error_message.text ''
     super
 
-  handle_application_error: (error_message, data) =>
+  handle_application_error: (data) =>
     super
-    @error_message.text error_message
+    @error_message.text data.error_message
 
   setup_autocomplete: =>
     return if AntCat.testing

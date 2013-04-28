@@ -20,14 +20,14 @@ class AntCat.AjaxForm extends AntCat.Form
     if data.success
       @handle_success data
     else
-      @handle_application_error(data.error_message, data)
+      @handle_application_error data
 
   handle_success: (data) =>
     @options.on_success data if @options.on_success
     @close()
 
-  handle_application_error: (error_message, data) =>
-    @options.on_application_error error_message, data if @options.on_application_error
+  handle_application_error: (data) =>
+    @options.on_application_error data if @options.on_application_error
 
   handle_error: (jq_xhr, text_status, error_thrown) =>
     @stop_throbbing()
