@@ -19,7 +19,10 @@
       = render 'epithet_status_flags_section',      taxon: @taxon, form: form
       = render 'protonym_section',                  taxon: @taxon, form: form
       = render 'type_section',                      taxon: @taxon, form: form
-      = render 'buttons_section', form: form, possible_homonym: @possible_homonym, show_elevate_to_species_button: @show_elevate_to_species_button
+      = render 'buttons_section',                   form: form,                                                      |
+                                                    possible_homonym:               @possible_homonym,               |
+                                                    show_elevate_to_species_button: @show_elevate_to_species_button, |
+                                                    add_taxon_button_text:          @add_taxon_button_text           |
 
     = render 'history_items_section',               taxon: @taxon
     = render 'junior_and_senior_synonyms_section',  taxon: @taxon
