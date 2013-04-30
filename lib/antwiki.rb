@@ -17,7 +17,7 @@ module Antwiki
       antwiki_name = antwiki_taxon.name
       antcat_taxon = Taxon.find_by_name antwiki_name
       if antcat_taxon.blank?
-        if antwiki_taxon.year == '2012'
+        if antwiki_taxon.year == '2013'
           antwiki_taxon.update_attribute :result, 'new'
         else
           antwiki_taxon.update_attribute :result, 'missing'

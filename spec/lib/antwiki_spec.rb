@@ -23,7 +23,7 @@ describe Antwiki do
     end
     it "should report a taxon that's not found, but probably because it's new" do
       old_antwiki_genus = FactoryGirl.create :antwiki_valid_taxon, name: 'Atta', year: '1900'
-      new_antwiki_genus = FactoryGirl.create :antwiki_valid_taxon, name: 'Eciton', year: '2012'
+      new_antwiki_genus = FactoryGirl.create :antwiki_valid_taxon, name: 'Eciton', year: '2013'
       results = Antwiki.compare_valid
       AntwikiValidTaxon.find_by_name('Atta').result.should == 'missing'
       AntwikiValidTaxon.find_by_name('Eciton').result.should == 'new'
