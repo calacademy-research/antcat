@@ -13,7 +13,7 @@
 
 ActiveRecord::Schema.define(:version => 20130413002903) do
 
-  create_table "antwiki_valid_taxa", :force => true do |t|
+  create_table "antwiki_valid_taxa", :id => false, :force => true do |t|
     t.string   "name"
     t.string   "subfamilia"
     t.string   "tribus"
@@ -32,7 +32,6 @@ ActiveRecord::Schema.define(:version => 20130413002903) do
     t.string   "images"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "result"
   end
 
   create_table "author_names", :force => true do |t|
