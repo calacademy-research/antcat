@@ -34,7 +34,6 @@ Given /there is a subfamily "([^"]*)" with a reference section "(.*?)"$/ do |tax
   taxon.reference_sections.create! references_taxt: references
 end
 Given /there is a subfamily "([^"]*)"$/ do |taxon_name|
-  raise
   name = FactoryGirl.create :subfamily_name, name: taxon_name
   taxon = FactoryGirl.create :subfamily, name: name
 end
