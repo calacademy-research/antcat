@@ -3,6 +3,7 @@
 .protonym_section.section
   .section_header.ui-widget-header.ui-corner-top
     Protonym
+  - form.object.protonym ||= Protonym.new
   = form.fields_for :protonym do |protonym_form|
     %table.fields.ui-dialog-content.ui-widget-content.ui-corner-bottom
       %tr
