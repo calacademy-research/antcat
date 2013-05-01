@@ -4,8 +4,6 @@ class TaxaController < ApplicationController
   skip_before_filter :authenticate_catalog_editor, if: :preview?
 
   def new
-    @taxon = Genus.new
-    render :edit and return
   end
 
   def create
@@ -14,12 +12,18 @@ class TaxaController < ApplicationController
   def edit
     @taxon = Taxon.find params[:id]
     @show_elevate_to_species_button = @taxon.kind_of? Subspecies
-    @add_taxon_button_text = 'Add Genus'
   end
 
   def update
-    raise if params[:task_button_command] == 'add_taxon'
-    render :edit and return
+    return elevate_to_species if params[:task_button_command] == 'elevate_to_species'
+
+    @taxon = Taxon.find params[:id] 
+    begin
+      update_taxon params.dup[:taxon]
+    rescue ActiveRecord::RecordInvalid
+      render :edit and return
+    end
+    redirect_to catalog_url @taxon
   end
 
   def elevate_to_species
@@ -30,26 +34,20 @@ class TaxaController < ApplicationController
     redirect_to catalog_url subspecies
   end
 
-  def update_taxon id, taxon
-    @taxon = Taxon.find
-    begin
-      update_taxon taxon.dup
-      Taxon.transaction do
-        protonym_attributes                 = attributes.delete :protonym_attributes
-        homonym_replaced_by_name_attributes = attributes.delete :homonym_replaced_by_name_attributes
-        type_name_attributes                = attributes.delete :type_name_attributes
+  ###################
+  def update_taxon attributes
+    Taxon.transaction do
+      protonym_attributes                 = attributes.delete :protonym_attributes
+      homonym_replaced_by_name_attributes = attributes.delete :homonym_replaced_by_name_attributes
+      type_name_attributes                = attributes.delete :type_name_attributes
 
-        update_epithet_status_flags attributes
-        update_homonym_replaced_by  homonym_replaced_by_name_attributes
-        update_protonym             protonym_attributes
-        update_type_name            type_name_attributes if type_name_attributes
-      end
-    rescue ActiveRecord::RecordInvalid
-      render :edit and return
+      update_epithet_status_flags attributes
+      update_homonym_replaced_by  homonym_replaced_by_name_attributes
+      update_protonym             protonym_attributes
+      update_type_name            type_name_attributes if type_name_attributes
     end
   end
 
-  ###################
   def update_epithet_status_flags attributes
     add_name_or_create_homonym attributes.delete :name_attributes
     attributes[:incertae_sedis_in] = nil unless attributes[:incertae_sedis_in].present?

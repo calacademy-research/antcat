@@ -44,19 +44,16 @@ class AntCat.TaxonForm extends AntCat.Form
       @homonym_replaced_by_name_column.hide()
 
   initialize_task_buttons: =>
-    @element.find('#add_taxon').click => @add_taxon(); false
     @element.find('#elevate_to_species').click => @elevate_to_species(); false
 
   initialize_events: =>
     @element.bind 'keydown', (event) ->
       return false if event.type is 'keydown' and event.which is $.ui.keyCode.ENTER
 
-  taxon_id: =>
-    @form().attr('action').match(/\d+/)[0]
-
   ###### overrides
   cancel: =>
-    window.location = "/catalog/#{@taxon_id()}"
+    id = @form().attr('action').match(/\d+/)[0]
+    window.location = "/catalog/#{id}"
 
   ###### client functions
   replace_junior_and_senior_synonyms_section: (content) =>
@@ -67,9 +64,6 @@ class AntCat.TaxonForm extends AntCat.Form
     return unless confirm 'Are you sure you want to elevate this subspecies to species?'
     $('#task_button_command').val('elevate_to_species')
     @submit()
-
-  add_taxon: =>
-    @submit("/taxa/new?subfamily_id=#{@taxon_id()}")
 
   add_history_item_panel: ($panel) =>
     @element.find('.history_items').append $panel
