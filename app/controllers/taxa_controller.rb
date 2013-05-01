@@ -4,8 +4,6 @@ class TaxaController < ApplicationController
   skip_before_filter :authenticate_catalog_editor, if: :preview?
 
   def new
-    @taxon = Genus.new
-    render :edit and return
   end
 
   def create
