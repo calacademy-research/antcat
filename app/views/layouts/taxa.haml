@@ -1,0 +1,26 @@
+- content_for :head do
+  = javascript_include_tag  'widgets/panel', 'widgets/form', 'widgets/ajax_form', 'widgets/nested_form'
+  = javascript_include_tag  'widgets/reference_form', 'widgets/reference_panel'
+  = javascript_include_tag  'widgets/splitter'
+  = javascript_include_tag  'catalog', 'taxon_key'
+
+- content_for :page_header do
+  #navigation_bar
+    = form_tag '/catalog/search', method: :get do
+      = hidden_field_tag 'id', @parameters[:id]
+      .search
+        Search for name
+        = search_selector @parameters[:st]
+        = text_field_tag 'qq', @parameters[:qq]
+        = submit_tag  'Go', class: 'submit'
+        = image_tag 'ui-anim_basic_16x16.gif', class: 'throbber'
+        = submit_tag 'Clear' if (@search_results.present? && @search_results.size > 1) || @search_results_message
+  = render 'shared/catalog_title'
+
+- content_for :page_contents do
+  = render 'search_results', search_results: @search_results, search_results_message: @search_results_message, taxon: @taxon
+  = yield
+  .clear
+  = render 'taxon_key'
+
+= render file: 'layouts/application'
