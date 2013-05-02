@@ -16,7 +16,7 @@ module NavigationHelpers
       "/taxa/#{Taxon.find_by_name($1).id}/edit"
 
     when /^the new genus edit page$/
-      "/taxa/#{Subfamily.first.id}/genera/new"
+      '/taxa/new'
 
     when /^the elevate subspecies page for "([^"]*)"$/
       taxon = Taxon.find_by_name $1
