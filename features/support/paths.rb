@@ -18,6 +18,9 @@ module NavigationHelpers
     when /^the new genus edit page$/
       '/taxa/new'
 
+    when /^the add taxon page$/
+      '/taxa/new'
+
     when /^the elevate subspecies page for "([^"]*)"$/
       taxon = Taxon.find_by_name $1
       "/taxa/#{taxon.id}/elevate_to_species"
