@@ -28,6 +28,7 @@
                                                     show_elevate_to_species_button: @show_elevate_to_species_button, |
                                                     add_taxon_button_text:          @add_taxon_button_text           |
 
-    = render 'history_items_section',               taxon: @taxon
-    = render 'junior_and_senior_synonyms_section',  taxon: @taxon
-    = render 'references_section',                  taxon: @taxon
+    - unless @taxon.new_record?
+      = render 'history_items_section',               taxon: @taxon
+      = render 'junior_and_senior_synonyms_section',  taxon: @taxon
+      = render 'references_section',                  taxon: @taxon
