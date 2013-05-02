@@ -38,6 +38,7 @@ AntCat::Application.routes.draw do
       get 'elevate_to_species'
     end
   end
+  match '/genera/new' => redirect('/taxa/new'), via: :get
 
   resource :taxon_window_height, only: [:update]
 
