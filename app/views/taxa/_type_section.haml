@@ -6,7 +6,6 @@
       Type
     %table.fields.ui-dialog-content.ui-widget-content.ui-corner-bottom
       %tr
-        - form.object.type_name ||= Name.new
         = form.fields_for :type_name do |type_name_form|
           - if taxon.type_name.new_record?
             = hidden_field_tag 'taxon[type_name_attributes][id]'

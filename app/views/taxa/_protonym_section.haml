@@ -3,11 +3,12 @@
 .protonym_section.section
   .section_header.ui-widget-header.ui-corner-top
     Protonym
-  - form.object.protonym ||= Protonym.new
   = form.fields_for :protonym do |protonym_form|
     %table.fields.ui-dialog-content.ui-widget-content.ui-corner-bottom
       %tr
         = protonym_form.fields_for :name do |name_form|
+          - if name_form.object.new_record?
+            = hidden_field_tag 'taxon[protonym_attributes][name_attributes][id]'
           %td.label.top_aligned= name_form.label :name
           %td
             #protonym_name_field
@@ -22,8 +23,6 @@
               = protonym_form.label :sic
 
       %tr
-        - protonym_form.object.authorship ||= Citation.new
-        - protonym_form.object.authorship.reference ||= Reference.new
         = protonym_form.fields_for :authorship do |authorship_form|
           %td.label.top_aligned= authorship_form.label :reference, 'Authorship'
           %td
