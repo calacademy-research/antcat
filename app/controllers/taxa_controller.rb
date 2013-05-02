@@ -81,7 +81,6 @@ class TaxaController < ApplicationController
     if attributes[:type_taxt]
       @taxon.type_taxt = Taxt.from_editable attributes.delete :type_taxt
     end
-    @taxon.save!
   end
 
   class PossibleHomonymSituation < NameError; end
@@ -115,25 +114,25 @@ class TaxaController < ApplicationController
   def update_homonym_replaced_by attributes
     replacement_id = attributes[:id]
     replacement = replacement_id.present? ? Taxon.find_by_name_id(replacement_id) : nil
-    @taxon.update_attributes homonym_replaced_by: replacement
+    @taxon.homonym_replaced_by = replacement
   end
 
   def update_protonym attributes
     attributes[:name_id] = attributes.delete(:name_attributes)[:id]
     update_protonym_authorship attributes.delete :authorship_attributes
-    @taxon.protonym.update_attributes attributes
+    @taxon.protonym.attributes = attributes
   end
 
   def update_protonym_authorship attributes
     return unless @taxon.protonym.authorship
     attributes[:reference_id] = attributes.delete(:reference_attributes)[:id]
     return if attributes[:reference_id].blank? and @taxon.protonym.authorship.reference.blank?
-    @taxon.protonym.authorship.update_attributes attributes
+    @taxon.protonym.authorship.attributes = attributes
   end
 
   def update_type_name attributes
     attributes[:type_name_id] = attributes.delete :id
-    @taxon.update_attributes attributes
+    @taxon.attributes = attributes
   end
 
 end
