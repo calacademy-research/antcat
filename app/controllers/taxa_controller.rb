@@ -4,9 +4,30 @@ class TaxaController < ApplicationController
   skip_before_filter :authenticate_catalog_editor, if: :preview?
 
   def new
+    @taxon = Genus.new
+    create_object_web
+    render :edit
+  end
+
+  def create_object_web
+    @taxon.build_name unless @taxon.name
+    @taxon.build_type_name unless @taxon.type_name
+    @taxon.build_protonym unless @taxon.protonym
+    @taxon.protonym.build_name unless @taxon.protonym.name
+    @taxon.protonym.build_authorship unless @taxon.protonym.authorship
+    @taxon.protonym.authorship.build_reference unless @taxon.protonym.authorship.reference
+    @taxon
   end
 
   def create
+    @taxon = Genus.new
+    begin
+      create_object_web
+      update_taxon params.dup[:taxon]
+    rescue ActiveRecord::RecordInvalid
+      render :edit and return
+    end
+    redirect_to catalog_url @taxon
   end
 
   def edit
