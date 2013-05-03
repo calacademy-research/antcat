@@ -1,3 +1,9 @@
+#%span#name_field
+  #= render 'name_fields/panel', name_string: taxon.name.try(:name)
+#new NameField $('#name_field'), value_id: <id-without-#>, parent_form: <form>,
+# click_on_display,
+# taxa_only, allow_blank, new_or_homonym
+
 class AntCat.NameField extends AntCat.Panel
 
   constructor: ($parent_element, @options = {}) ->
