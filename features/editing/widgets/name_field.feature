@@ -42,3 +42,18 @@ Feature: Name field
     Then I should see "Do you want to add the name Atta wildensis? You can attach it to a taxon later, if desired."
     And I press "Cancel"
     Then I should not see "Add this name"
+
+  Scenario: Adding a name with a new_or_homonym field
+    When I go to the name field test page
+    And I click the new_or_homonym field
+    And I fill in "name_string" with "Atta wildensis"
+    And I press "OK"
+    Then I should see "Atta wildensis" in the name field
+
+  Scenario: Adding a homonym with a new_or_homonym field
+    When I go to the name field test page
+    And I click the new_or_homonym field
+    Given there is a genus "Atta"
+    And I fill in "name_string" with "Atta"
+    And I press "OK"
+    Then I should see "This name is in use by another taxon. To create a homonym, click \"Save Homonym\"."
