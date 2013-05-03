@@ -15,11 +15,11 @@ module NavigationHelpers
     when /^the edit page for "(.*)"$/
       "/taxa/#{Taxon.find_by_name($1).id}/edit"
 
-    when /^the new genus edit page$/
+    when /^the new taxon page$/
       '/taxa/new'
 
-    when /^the add taxon page$/
-      '/taxa/new'
+    when /^the create taxon page$/
+      '/taxa'
 
     when /^the elevate subspecies page for "([^"]*)"$/
       taxon = Taxon.find_by_name $1
