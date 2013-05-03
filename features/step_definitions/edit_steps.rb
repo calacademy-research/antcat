@@ -21,6 +21,9 @@ end
 When /^I set the protonym name to "([^"]*)"$/ do |name|
   step %{I fill in "name_string" with "#{name}"}
 end
+When /^the protonym name field should contain "([^"]*)"$/ do |name|
+  find('.protonym_name_field button').text.should == name
+end
 When /^I set the homonym replaced by name to "([^"]*)"$/ do |name|
   step %{I fill in "name_string" with "#{name}"}
 end
@@ -45,6 +48,15 @@ And /^I click the authorship field$/ do
 end
 When /I click the name field/ do
   step %{I click "#test_name_field .display_button"}
+end
+When /I click the new_or_homonym field/ do
+  step %{I click "#test_new_or_homonym_field .display_button"}
+end
+When /I click the taxon name field/ do
+  step %{I click "#name_field .display_button"}
+end
+When /^I set the taxon name to "([^"]*)"$/ do |name|
+  step %{I fill in "name_string" with "#{name}"}
 end
 When /I click the protonym name field/ do
   find('#protonym_name_field .display_button').click
