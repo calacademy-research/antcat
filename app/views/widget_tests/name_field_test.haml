@@ -9,6 +9,7 @@
 
 - content_for :page_contents do
   #results
+  #new_or_homonym_results
 
   #taxon_form.nested_form.antcat_form.ui-corner-all.ui-widget-content.ui-widget
     %table
@@ -20,6 +21,11 @@
         %td#test_name_field
           = render 'name_fields/panel', name_string: @name.try(:name)
           = hidden_field_tag 'test_name_field_value', ''
+      %tr
+        %td= label_tag :new_or_homonym
+        %td#test_new_or_homonym_field
+          = render 'name_fields/panel', name_string: @name.try(:name)
+          = hidden_field_tag 'test_new_or_homonym_field_value', ''
 
       %tr
         %td.buttons{colspan: 4}
