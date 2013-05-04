@@ -25,6 +25,7 @@ class AntCat.NameField extends AntCat.Panel
     action  = "?field=true"
     action += "&allow_blank=true" if @options.allow_blank
     action += "&require_existing=true" if @options.require_existing
+    action += "&new_or_homonym=true" if @options.new_or_homonym
     action
 
   on_form_success: (data) =>

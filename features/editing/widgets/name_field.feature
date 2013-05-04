@@ -50,11 +50,12 @@ Feature: Name field
     And I press "OK"
     Then I should see "(none)" in the allow_blank name field
 
-    #When I go to the name field test page
-    #And I click the new_or_homonym field
-    #And I fill in "name_string" with "Atta wildensis"
-    #And I press "OK"
-    #Then I should see "Atta wildensis" in the name field
+  Scenario: Picking a new name in a 'new or 'homomym' field
+    When I go to the name field test page
+    And I click the new_or_homonym field
+    And I fill in "name_string" with "Atta"
+    And I press "OK"
+    Then I should see "Atta" in the new_or_homonym name field
 
   #Scenario: Adding a homonym with a new_or_homonym field
     #When I go to the name field test page

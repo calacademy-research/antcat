@@ -15,3 +15,9 @@ $ ->
     parent_form: form,
     field: true,
     allow_blank: true
+
+  new AntCat.NameField $('#test_new_or_homonym_name_field'),
+    value_id: 'test_new_or_homonym_name_field_value',
+    parent_form: form,
+    field: true,
+    new_or_homonym: true
