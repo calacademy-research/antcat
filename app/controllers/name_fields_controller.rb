@@ -5,9 +5,18 @@ class NameFieldsController < NamePickersController
     data = {}
     name_string = params[:name_string]
     allow_blank = params[:allow_blank].present?
+    new_or_homonym = params[:new_or_homonym].present?
+
     if name_string.empty? and allow_blank
       success = true
       id = nil
+    elsif new_or_homonym
+      name = Name.find_by_name name_string
+      if !name
+        name = add_name name_string, data
+        success = true
+        id = name.id
+      end
     else
       adding_name = params[:add_name] == 'true'
       require_existing = params[:require_existing].present?
