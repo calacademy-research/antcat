@@ -1,18 +1,10 @@
--#Locals: name_string, options {allow_blank, require_existing, help}
-
-- options ||= {}
-- options[:help] ||= 'Type the name, or type characters in the name then choose a name from the drop-down list, or type a new name'
-
-- parameters = ['field=true']
-- parameters << 'allow_blank=true' if options[:allow_blank]
-- parameters << 'require_existing=true' if options[:require_existing]
-- url = "/name_fields/find?" + parameters.join('&')
+-#Locals: name_string
 
 .edit
   %table
     %tr
       %td
-        .nested_form{'data-action' => url, 'data-method' => 'get'}
+        .nested_form{'data-action' => '/name_fields/find', 'data-method' => 'get'}
           = hidden_field_tag 'add_name', ''
           %table
             %tr
@@ -25,4 +17,4 @@
                   %button.ui-priority-primary.submit OK
                   %button.ui-priority-secondary.cancel Cancel
                   = image_tag 'ui-anim_basic_16x16.gif', class: 'throbber'
-                .help= options[:help]
+                .help
