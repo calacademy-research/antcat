@@ -17,8 +17,15 @@ class AntCat.NameField extends AntCat.Panel
     new AntCat.NameFieldForm $element, options
 
   before_submit: =>
+    @form().add_to_url @construct_parameters()
     @show_error ''
     @set_add_name_field()
+
+  construct_parameters: =>
+    action  = "?field=true"
+    action += "&allow_blank=true" if @options.allow_blank
+    action += "&require_existing=true" if @options.require_existing
+    action
 
   on_form_success: (data) =>
     @set_value data.id
@@ -66,6 +73,10 @@ class AntCat.NameFieldForm extends AntCat.NestedForm
     @textbox = @element.find('input[type=text]')
     @setup_autocomplete @textbox
     super
+
+  add_to_url: (parameters) =>
+    @element.data 'action', @element.data('action') + parameters
+    console.log @element.data 'action'
 
   submit: =>
     return false if @textbox.val().length == 0 and not @options.allow_blank
