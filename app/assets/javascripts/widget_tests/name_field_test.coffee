@@ -10,14 +10,8 @@ $ ->
       id = $('.antcat_name_field #id').val()
       $('#results').text 'Cancelled: ' + id
 
-  new AntCat.NameField $('#test_new_or_homonym_field'),
-    value_id: 'test_new_or_homonym_field_value',
-    parent_form: form,
-    field: true,
-    new_or_homonym: true,
-
-  new AntCat.NameField $('#test_allow_blank_field'),
-    value_id: 'test_allow_blank_field_value',
+  new AntCat.NameField $('#test_allow_blank_name_field'),
+    value_id: 'test_allow_blank_name_field_value',
     parent_form: form,
     field: true,
     allow_blank: true
