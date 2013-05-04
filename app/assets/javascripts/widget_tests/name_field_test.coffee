@@ -15,8 +15,9 @@ $ ->
     parent_form: form,
     field: true,
     new_or_homonym: true,
-    on_success: (data) ->
-      $('#new_or_homonym_results').text data.id + ' ' + data.taxt
-    on_cancel: ->
-      id = $('.antcat_name_field #id').val()
-      $('#new_or_homonym_results').text 'Cancelled: ' + id
+
+  new AntCat.NameField $('#test_allow_blank_field'),
+    value_id: 'test_allow_blank_field_value',
+    parent_form: form,
+    field: true,
+    allow_blank: true
