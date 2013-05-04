@@ -3,37 +3,33 @@ class NameFieldsController < NamePickersController
 
   def find
     data = {}
-    clearing_name = false
-
-    adding_name = params[:add_name] == 'true'
     name_string = params[:name_string]
     allow_blank = params[:allow_blank].present?
-    require_existing = params[:require_existing].present?
-
-    if adding_name
-      name = add_name name_string, data
-    elsif name_string.empty? and allow_blank
-      clearing_name = true
-    else
-      name = find_name name_string, require_existing, data
-    end
-
-    id = name.try :id
-    value = name.try :id
-    name_string = name.try(:name) || name_string
-
-    if name
-      success = name.errors.empty?
-    elsif clearing_name
+    if name_string.empty? and allow_blank
       success = true
+      id = nil
     else
-      success = false
+      adding_name = params[:add_name] == 'true'
+      require_existing = params[:require_existing].present?
+
+      if adding_name
+        name = add_name name_string, data
+      else
+        name = find_name name_string, require_existing, data
+      end
+
+      id = name.try :id
+      name_string = name.try(:name) || name_string
+
+      if name
+        success = name.errors.empty?
+      else
+        success = false
+      end
     end
-    options = {}
-    options[:allow_blank] = true if allow_blank
-    options[:require_existing] = true if require_existing
+
     data.merge!(
-      content: render_to_string(partial: 'name_fields/panel', locals: {name_string: name_string, options: options}),
+      content: render_to_string(partial: 'name_fields/panel', locals: {name_string: name_string}),
       success: success,
       id: id)
     json = data.to_json
