@@ -14,7 +14,6 @@ class WidgetTestsController < ApplicationController
 
   def name_field_test
     @name = Name.first if params[:id]
-    lll{%q{@name}}
   end
 
   def taxt_editor_test
