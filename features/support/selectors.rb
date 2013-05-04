@@ -47,9 +47,6 @@ module HtmlSelectorsHelpers
     when /the name field/
       '#test_name_field .display'
 
-    when /the new_or_homonym_field/
-      '#test_new_or_homonym_field .display'
-
     when /"(.+)"/
       $1
 
