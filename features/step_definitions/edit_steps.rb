@@ -49,6 +49,9 @@ end
 When /I click the name field/ do
   step %{I click "#test_name_field .display_button"}
 end
+When /I click the allow_blank name field/ do
+  step %{I click "#test_allow_blank_name_field .display_button"}
+end
 When /I click the new_or_homonym field/ do
   step %{I click "#test_new_or_homonym_field .display_button"}
 end

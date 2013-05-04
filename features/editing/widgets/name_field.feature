@@ -43,10 +43,9 @@ Feature: Name field
     And I press "Cancel"
     Then I should not see "Add this name"
 
-  Scenario: Adding a name with a new_or_homonym field
   Scenario: Clearing the name
     When I go to the name field test page for a name
-    And I click the allow_blank field
+    And I click the allow_blank name field
     And I fill in "name_string" with ""
     And I press "OK"
     Then I should see "(none)" in the name field
