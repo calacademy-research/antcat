@@ -47,6 +47,9 @@ module HtmlSelectorsHelpers
     when /the name field/
       '#test_name_field .display'
 
+    when /the allow_blank name field/
+      '#test_allow_blank_name_field .display'
+
     when /"(.+)"/
       $1
 
