@@ -92,7 +92,7 @@ class TaxaController < ApplicationController
       #if name != original_name
         #@possible_homonym = @taxon.would_be_homonym_if_name_changed_to? name unless params[:possible_homonym].present?
         #if @possible_homonym
-          #@taxon.errors.add :base, "This name is in use by another taxon. To create a homonym, click \"Save Homonym\".".html_safe
+          #@taxon.errors.add :base, "This name is in use by another taxon. To create a homonym, click \"Save homonym\".".html_safe
           #@taxon.name.epithet = attributes[:epithet]
           #raise PossibleHomonymSituation
         #end
