@@ -49,11 +49,11 @@ class AntCat.NameField extends AntCat.Panel
 
   #------------
   set_add_name_field: =>
-    $add_name_field = @element.find('#add_name')
+    $confirm_add_name_field = @element.find('#confirm_add_name')
     if @deciding_whether_to_add_name
-      $add_name_field.val 'true'
+      $confirm_add_name_field.val 'true'
     else
-      $add_name_field.val ''
+      $confirm_add_name_field.val ''
 
   set_submit_button_text: (text) =>
     $submit_button = @element.find('.buttons .submit span')
