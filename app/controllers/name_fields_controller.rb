@@ -22,7 +22,7 @@ class NameFieldsController < NamePickersController
     elsif new_or_homonym
       name = Name.find_by_name name_string
       if !name
-        name = add_name name_string, data
+        name = Name.parse name_string
         data[:success] = true
         data[:id] = name.id
       else
@@ -57,30 +57,6 @@ class NameFieldsController < NamePickersController
     data[:content] = render_to_string(partial: 'name_fields/panel', locals: {name_string: name_string})
     json = data.to_json
     render json: json, content_type: 'text/html'
-  end
-
-  ##########
-
-  def find_name name_string, require_existing, data
-    name = Name.find_by_name name_string
-    if name
-      data[:success] = true
-    elsif require_existing
-    else
-      ask_whether_to_add_name name_string, data
-    end
-    name
-  end
-
-  def add_name name_string, data
-    name = Name.parse name_string
-    data[:success] = true
-    name
-  end
-
-  def ask_whether_to_add_name name_string, data
-    data[:success] = false
-    data[:error_message] = "Do you want to add the name #{name_string}? You can attach it to a taxon later, if desired."
   end
 
 end
