@@ -57,11 +57,11 @@ Feature: Name field
     And I press "OK"
     Then I should see "Atta" in the new_or_homonym name field
 
-  #Scenario: Adding a homonym with a new_or_homonym field
-    #When I go to the name field test page
-    #And I click the new_or_homonym field
-    #Given there is a genus "Atta"
-    #And I fill in "name_string" with "Atta"
-    #And I press "OK"
-    #Then I should see "This name is in use by another taxon. To create a homonym, click "
-    #And I should see "Save Homonym"
+  Scenario: Picking an existing name in a 'new or homonym' field, and choosing to create a homonym
+    Given there is a genus "Atta"
+    When I go to the name field test page
+    And I click the new_or_homonym field
+    And I fill in "name_string" with "Atta"
+    And I press "OK"
+    Then I should see "This name is in use by another taxon. To create a homonym, click "
+    And I should see "Save Homonym"

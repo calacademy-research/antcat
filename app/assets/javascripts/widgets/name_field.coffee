@@ -26,6 +26,7 @@ class AntCat.NameField extends AntCat.Panel
     action += "&allow_blank=true" if @options.allow_blank
     action += "&require_existing=true" if @options.require_existing
     action += "&new_or_homonym=true" if @options.new_or_homonym
+    action += "&confirm_add_name=true" if @deciding_whether_to_add_name
     action
 
   on_form_success: (data) =>
@@ -40,12 +41,9 @@ class AntCat.NameField extends AntCat.Panel
     @deciding_whether_to_add_name = false
 
   on_application_error: (data) =>
-    unless data.reason_for_error == 'taxon not found'
-      # the 'error' means that the name the user entered doesn't exist
-      # we ask if they want to add it
-      @set_submit_button_text 'Add this name'
-      @deciding_whether_to_add_name = true
+    @set_submit_button_text data.submit_button_text
     @show_error data.error_message
+    @deciding_whether_to_add_name = true
 
   #------------
   set_add_name_field: =>
