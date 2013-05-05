@@ -55,8 +55,7 @@ class NameFieldsController < NamePickersController
     end
   
     data[:content] = render_to_string(partial: 'name_fields/panel', locals: {name_string: name_string})
-    json = data.to_json
-    render json: json, content_type: 'text/html'
+    render json: data.to_json, content_type: 'text/html'
   end
 
 end
