@@ -77,7 +77,6 @@ class AntCat.NameFieldForm extends AntCat.NestedForm
 
   add_to_url: (parameters) =>
     @element.data 'action', @element.data('action') + parameters
-    console.log @element.data 'action'
 
   submit: =>
     return false if @textbox.val().length == 0 and not @options.allow_blank
