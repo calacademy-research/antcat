@@ -64,4 +64,4 @@ Feature: Name field
     And I fill in "name_string" with "Atta"
     And I press "OK"
     Then I should see "This name is in use by another taxon. To create a homonym, click "
-    And I should see "Save Homonym"
+    And I should see "Save homonym"

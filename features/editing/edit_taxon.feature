@@ -58,7 +58,7 @@ Feature: Editing a taxon
     #And I set the name to "Calyptites"
     #And I save my changes
     #Then I should see "This name is in use by another taxon"
-    #When I press "Save Homonym"
+    #When I press "Save homonym"
     #Then there should be two genera with the name "Calyptites"
 
   #Scenario: Leaving a genus name alone when there are already two homonyms
