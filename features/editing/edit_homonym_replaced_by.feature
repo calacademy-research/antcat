@@ -10,7 +10,7 @@ Feature: Editing a taxon's homonym replaced by
     And I log in
 
   Scenario: Changing the homonym replaced by name
-    And there is a genus "Eciton"
+    Given there is a genus "Eciton"
     When I go to the edit page for "Atta"
     And I set the status to "homonym"
     And I click the homonym replaced by name field
@@ -20,14 +20,14 @@ Feature: Editing a taxon's homonym replaced by
     Then I should see "Eciton" in the header
 
   Scenario: Homonym replaced by field visibility
-    And there is a genus "Eciton"
+    Given there is a genus "Eciton"
     When I go to the edit page for "Atta"
     Then I should not see the homonym replaced by field
     When I set the status to "homonym"
     Then I should see the homonym replaced by field
 
   Scenario: Setting the homonym replaced by name doesn't affect status
-    And there is a genus "Eciton"
+    Given there is a genus "Eciton"
     When I go to the edit page for "Atta"
     Then the status should be "valid"
     When I set the status to "homonym"
@@ -40,7 +40,7 @@ Feature: Editing a taxon's homonym replaced by
     Then the status should be "valid"
 
   Scenario: The homonym replaced by can be cleared
-    And there is a genus "Eciton"
+    Given there is a genus "Eciton"
     When I go to the edit page for "Atta"
     And I set the status to "homonym"
     Then the homonym replaced by name should be "(none)"
