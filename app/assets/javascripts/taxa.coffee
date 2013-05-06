@@ -3,7 +3,7 @@ $ -> new AntCat.TaxonForm $('.taxon_form'), button_container: '> .fields_section
 class AntCat.TaxonForm extends AntCat.Form
   constructor: (@element, @options = {}) ->
     @status_selector = $ '#taxon_status'
-    @homonym_replaced_by_name_column = $ 'tr#homonym_replaced_by'
+    @homonym_replaced_by_name_row = $ 'tr#homonym_replaced_by'
     @initialize_fields_section()
     @initialize_history_section()
     @initialize_junior_and_senior_synonyms_section()
@@ -39,9 +39,9 @@ class AntCat.TaxonForm extends AntCat.Form
 
   hide_or_show_homonym_replaced_by: =>
     if @status_selector.val() == 'homonym'
-      @homonym_replaced_by_name_column.show()
+      @homonym_replaced_by_name_row.show()
     else
-      @homonym_replaced_by_name_column.hide()
+      @homonym_replaced_by_name_row.hide()
 
   initialize_task_buttons: =>
     @element.find('#add_taxon').click => @add_taxon(); false
