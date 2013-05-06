@@ -2,7 +2,7 @@ class AntCat.HomonymReplacedBySection
   constructor: (@element, @options) ->
     AntCat.log 'HomonymReplacedByNameSection constructor: @element.size() != 1' unless @element.size() == 1
     @parent_form = @options.parent_form; AntCat.log 'HomonymReplacedByNameSection constructor: !@parent_form' unless @parent_form
-    @initialize
+    @initialize()
 
   initialize: ->
     @homonym_replaced_by_name_row = $ 'tr#homonym_replaced_by'
