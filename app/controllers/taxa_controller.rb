@@ -9,16 +9,6 @@ class TaxaController < ApplicationController
     render :edit
   end
 
-  def create_object_web
-    @taxon.build_name unless @taxon.name
-    @taxon.build_type_name unless @taxon.type_name
-    @taxon.build_protonym unless @taxon.protonym
-    @taxon.protonym.build_name unless @taxon.protonym.name
-    @taxon.protonym.build_authorship unless @taxon.protonym.authorship
-    @taxon.protonym.authorship.build_reference unless @taxon.protonym.authorship.reference
-    @taxon
-  end
-
   def create
     @taxon = Genus.new
     begin
@@ -38,7 +28,6 @@ class TaxaController < ApplicationController
 
   def update
     return elevate_to_species if params[:task_button_command] == 'elevate_to_species'
-    return new if params[:task_button_command] == 'add_taxon'
 
     @taxon = Taxon.find params[:id]
     begin
@@ -58,6 +47,16 @@ class TaxaController < ApplicationController
   end
 
   ###################
+  def create_object_web
+    @taxon.build_name unless @taxon.name
+    @taxon.build_type_name unless @taxon.type_name
+    @taxon.build_protonym unless @taxon.protonym
+    @taxon.protonym.build_name unless @taxon.protonym.name
+    @taxon.protonym.build_authorship unless @taxon.protonym.authorship
+    @taxon.protonym.authorship.build_reference unless @taxon.protonym.authorship.reference
+    @taxon
+  end
+
   def update_taxon attributes
     Taxon.transaction do
       protonym_attributes                 = attributes.delete :protonym_attributes
