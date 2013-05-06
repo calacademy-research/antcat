@@ -73,3 +73,4 @@ Feature: Editing a taxon's homonym replaced by
     Then I should see "This must be the name of an existing taxon"
     When I press "OK"
     Then I should see "This must be the name of an existing taxon"
+
