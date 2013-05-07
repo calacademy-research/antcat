@@ -41,9 +41,12 @@ class AntCat.NameField extends AntCat.Panel
     @deciding_whether_to_add_name = false
 
   on_application_error: (data) =>
-    @set_submit_button_text data.submit_button_text
     @show_error data.error_message
-    @deciding_whether_to_add_name = true
+    if data.reason == 'not found' and @options.require_existing
+      @deciding_whether_to_add_name = false
+    else
+      @set_submit_button_text data.submit_button_text
+      @deciding_whether_to_add_name = true
 
   #------------
   set_add_name_field: =>
