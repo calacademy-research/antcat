@@ -7,7 +7,7 @@
         %td.label= name_form.label :epithet, 'Name'
         %td
           %span.parentage= Formatters::TaxonFormatter.new(@taxon).parentage_string
-          %span.epithet= name_form.text_field :epithet, readonly: true
+          %span.epithet= name_form.text_field :epithet
 
     %tr
       %td.label= form.label :status

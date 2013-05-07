@@ -67,6 +67,12 @@ end
 When /I click the homonym replaced by name field/ do
   find('#homonym_replaced_by_name_field .display_button').click
 end
+When /I click the epithet field/ do
+  find('#epithet_field .display_button').click
+end
+When /^I set the epithet to "([^"]*)"$/ do |name|
+  step %{I fill in "name_string" with "#{name}"}
+end
 When /I click the type name field/ do
   find('#type_name_field .display_button').click
 end
