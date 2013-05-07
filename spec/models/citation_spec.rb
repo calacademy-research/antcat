@@ -9,6 +9,12 @@ describe Citation do
     citation.reload.reference.should == reference
   end
 
+  it "does require a Reference" do
+    citation = Citation.create
+    citation.reference.should be_nil
+    citation.should_not be_valid
+  end
+
   describe "Versioning" do
     it "should record versions" do
       with_versioning do

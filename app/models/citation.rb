@@ -2,9 +2,11 @@
 class Citation < ActiveRecord::Base
   include Importers::Bolton::Catalog::Updater
   belongs_to :reference
+  validates :reference, presence: true
 
   has_paper_trail
 
+  #######
   def self.import data
     reference = Reference.find_by_bolton_key data
     notes_taxt = data[:notes] ? Importers::Bolton::Catalog::TextToTaxt.notes_item(data[:notes]) : nil
