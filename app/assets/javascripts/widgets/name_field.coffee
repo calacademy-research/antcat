@@ -10,6 +10,7 @@ class AntCat.NameField extends AntCat.Panel
     @options.click_on_display = true
     @value_id = @options.value_id
     super $parent_element.find('> .antcat_name_field'), @options
+    @element.find('.help').text @construct_help()
 
   create_form: ($element, options) =>
     options.taxa_only = @options.taxa_only
@@ -20,6 +21,13 @@ class AntCat.NameField extends AntCat.Panel
     @form().add_to_url @construct_parameters()
     @show_error ''
     @set_add_name_field()
+
+  construct_help: =>
+    help = "Type the name, or type characters in the name then choose a name from the drop-down list, or type a new name"
+    help = "Type the name, or type characters in the name then choose a name from the drop-down list, or type a new name, or clear this name" if @options.allow_blank
+    help = "Type the name, or type characters in the name then choose a name from the drop-down list, or type a new name, or choose a homonym" if @options.new_or_homonym
+    help = "Click \"Add name\", or \"Cancel\"" if @deciding_whether_to_add_name
+    help
 
   construct_parameters: =>
     action  = "?field=true"
