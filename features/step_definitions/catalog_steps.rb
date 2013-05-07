@@ -43,6 +43,3 @@ end
 Then /^I should see the catalog entry for "([^"]*)"$/ do |taxon|
   page.should have_css('.header .taxon', text: taxon)
 end
-Then /^I should not be on (.+)$/ do |page_name|
-  current_path.should_not == path_to(page_name)
-end
