@@ -2,13 +2,7 @@
 
 .epithet_status_flags_section.section
   %table.fields
-    %tr
-      = form.fields_for :name do |name_form|
-        %td.label= name_form.label :epithet, 'Name'
-        %td
-          %span.parentage= Formatters::TaxonFormatter.new(@taxon).parentage_string
-          %span.epithet= name_form.text_field :epithet
-
+    %tr= render 'epithet_section', taxon: taxon, form: form
     %tr
       %td.label= form.label :status
       %td
