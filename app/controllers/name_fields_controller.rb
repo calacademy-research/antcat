@@ -2,7 +2,7 @@
 class NameFieldsController < NamePickersController
 
   def find
-    data = {success: true}
+    data = {}
 
     name_string = params[:name_string]
     allow_blank = params[:allow_blank].present?
@@ -47,8 +47,8 @@ class NameFieldsController < NamePickersController
           data[:error_message] = "Do you want to add the name #{name_string}? You can attach it to a taxon later, if desired."
         end
       else
-          data[:id] = name.id
-          data[:success] = true
+        data[:success] = true
+        data[:id] = name.id
       end
     end
   
