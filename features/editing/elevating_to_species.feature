@@ -12,7 +12,6 @@ Feature: Elevating subspecies to species
     Given I will confirm on the next step
     And I press "Elevate to species"
     Then I should see the catalog entry for "Solenopsis subbus"
-    And there should be an editing history record showing that the taxon is "Solenopsis subbus" and the old species was "Solenopsis speccus"
 
   Scenario: Only show button if showing a subspecies
     Given there is a species "Atta"
