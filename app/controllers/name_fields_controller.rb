@@ -27,18 +27,12 @@ class NameFieldsController < NamePickersController
     else
       name = Name.find_by_name name_string
       if name
-        data[:success] = true
-        data[:id] = name.id
+        accept_success name, data
       else
         if require_existing
-          data[:success] = false
-          data[:error_message] = 'This must be the name of an existing taxon'
-          data[:reason] = 'not found'
+          tell_existing_required data
         else
-          data[:success] = false
-          data[:reason] = 'not found'
-          data[:submit_button_text] = 'Add this name'
-          data[:error_message] = "Do you want to add the name #{name_string}? You can attach it to a taxon later, if desired."
+          ask_about_adding name_string, data
         end
       end
     end
@@ -64,6 +58,24 @@ class NameFieldsController < NamePickersController
     data[:reason] = 'homonym'
     data[:submit_button_text] = 'Save homonym'
     data[:error_message] = "This name is in use by another taxon. To create a homonym, click \"Save homonym\"."
+  end
+
+  def accept_success name, data
+    data[:success] = true
+    data[:id] = name.id
+  end
+
+  def tell_existing_required data
+    data[:success] = false
+    data[:error_message] = 'This must be the name of an existing taxon'
+    data[:reason] = 'not found'
+  end
+
+  def ask_about_adding name_string, data
+    data[:success] = false
+    data[:reason] = 'not found'
+    data[:submit_button_text] = 'Add this name'
+    data[:error_message] = "Do you want to add the name #{name_string}? You can attach it to a taxon later, if desired."
   end
 
 end
