@@ -37,7 +37,7 @@ class AntCat.NameField extends AntCat.Panel
   on_form_cancel: =>
     @show_error ''
     @set_submit_button_text 'OK'
-    super unless @deciding_whether_to_add_name
+    super
     @deciding_whether_to_add_name = false
 
   on_application_error: (data) =>
