@@ -47,10 +47,8 @@ class NameFieldsController < NamePickersController
           data[:error_message] = "Do you want to add the name #{name_string}? You can attach it to a taxon later, if desired."
         end
       else
-        if require_existing
           data[:id] = name.id
           data[:success] = true
-        end
       end
     end
   
