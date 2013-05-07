@@ -57,10 +57,12 @@ class TaxaController < ApplicationController
 
   def update_taxon attributes
     Taxon.transaction do
+      name_attributes                     = attributes.delete :name_attributes
       protonym_attributes                 = attributes.delete :protonym_attributes
       homonym_replaced_by_name_attributes = attributes.delete :homonym_replaced_by_name_attributes
       type_name_attributes                = attributes.delete :type_name_attributes
 
+      update_name                 name_attributes
       update_epithet_status_flags attributes
       update_homonym_replaced_by  homonym_replaced_by_name_attributes
       update_protonym             protonym_attributes
@@ -71,7 +73,6 @@ class TaxaController < ApplicationController
   end
 
   def update_epithet_status_flags attributes
-    add_name_or_create_homonym attributes.delete :name_attributes
     attributes[:incertae_sedis_in] = nil unless attributes[:incertae_sedis_in].present?
     @taxon.attributes = attributes
     @taxon.headline_notes_taxt = Taxt.from_editable attributes.delete :headline_notes_taxt
@@ -80,32 +81,13 @@ class TaxaController < ApplicationController
     end
   end
 
-  class PossibleHomonymSituation < NameError; end
-
-  def add_name_or_create_homonym attributes
-    #begin
-      #original_name = @taxon.name
-      #name = Name.import get_name_attributes attributes
-      #if name != original_name
-        #@possible_homonym = @taxon.would_be_homonym_if_name_changed_to? name unless params[:possible_homonym].present?
-        #if @possible_homonym
-          #@taxon.errors.add :base, "This name is in use by another taxon. To create a homonym, click \"Save homonym\".".html_safe
-          #@taxon.name.epithet = attributes[:epithet]
-          #raise PossibleHomonymSituation
-        #end
-      #end
-    #rescue ActiveRecord::RecordInvalid
-      #@taxon.name.epithet = attributes[:epithet]
-      #@taxon.errors.add :base, "Name can't be blank"
-      #raise
-    #rescue PossibleHomonymSituation
-      #raise ActiveRecord::RecordInvalid.new @taxon
-    #end
-    #@taxon.update_attributes name: name
-  end
-
   def get_name_attributes attributes
     {genus_name: attributes[:epithet]}
+  end
+
+  def update_name attributes
+    attributes[:name_id] = attributes.delete :id
+    @taxon.attributes = attributes
   end
 
   def update_homonym_replaced_by attributes
@@ -124,6 +106,7 @@ class TaxaController < ApplicationController
     return unless @taxon.protonym.authorship
     attributes[:reference_id] = attributes.delete(:reference_attributes)[:id]
     return if attributes[:reference_id].blank? and @taxon.protonym.authorship.reference.blank?
+    @taxon.protonym.authorship.attributes = attributes
     @taxon.protonym.authorship.attributes = attributes
   end
 
