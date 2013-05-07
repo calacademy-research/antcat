@@ -52,7 +52,6 @@ class TaxaController < ApplicationController
     @taxon.build_protonym unless @taxon.protonym
     @taxon.protonym.build_name unless @taxon.protonym.name
     @taxon.protonym.build_authorship unless @taxon.protonym.authorship
-    @taxon.protonym.authorship.build_reference unless @taxon.protonym.authorship.reference
     @taxon
   end
 
