@@ -11,6 +11,16 @@ Feature: Adding a taxon
     When I go to the edit page for "Formicinae"
     And I press "Add Genus"
     Then I should be on the new taxon page
+    When I click the epithet field
+    And I set the epithet to "Atta"
+    And I press "OK"
+    And I click the protonym name field
+    And I set the protonym name to "Eciton"
+    And I press "OK"
+    And I click the type name field
+    And I set the type name to "Atta major"
+    And I press "OK"
+    And I save my changes
 
   Scenario: Having an error, but leave fields as user entered them
     When I log in
