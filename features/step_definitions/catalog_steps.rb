@@ -43,20 +43,6 @@ end
 Then /^I should see the catalog entry for "([^"]*)"$/ do |taxon|
   page.should have_css('.header .taxon', text: taxon)
 end
-
-And /^there should be an editing history record showing that the new junior synonym is "([^"]*)" and the new senior synonym is "([^"]*)"/ do |junior, senior|
-  editing_history = ReverseSynonymyEdit.first
-  editing_history.new_junior.name.to_s.should == junior
-  editing_history.new_senior.name.to_s.should == senior
-  editing_history.user.should_not be_blank
-end
-Then /^there should be an editing history record showing that the taxon is "([^"]*)" and the old species was "([^"]*)"$/ do |taxon, old_species|
-  editing_history = ElevateSubspeciesEdit.first
-  editing_history.taxon.name.to_s.should == taxon
-  editing_history.old_species.name.to_s.should == old_species
-  editing_history.user.should_not be_blank
-end
-
 Then /^I should not be on (.+)$/ do |page_name|
   current_path.should_not == path_to(page_name)
 end

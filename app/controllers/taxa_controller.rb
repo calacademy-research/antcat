@@ -42,7 +42,6 @@ class TaxaController < ApplicationController
     subspecies = Subspecies.find params[:id]
     old_species = subspecies.species
     subspecies.elevate_to_species
-    ElevateSubspeciesEdit.create! taxon: subspecies, old_species: old_species, user: current_user
     redirect_to catalog_url subspecies
   end
 
