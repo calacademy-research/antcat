@@ -25,12 +25,14 @@ Feature: Adding a taxon
       And I search for the author "Fisher"
       And I click the first search result
       And I press "OK"
-    #And I click the type name field
-      #And I set the type name to "Atta major"
-      #And I press "OK"
-      #And I press "Add this name"
-    #Then the authorship field should contain "Fisher 2004. Ants. Psyche 3:3."
-    #And I save my changes
+    And I click the type name field
+      And I set the type name to "Atta major"
+      And I press "OK"
+      And I press "Add this name"
+    And I save my changes
+    Then I should be on the catalog page for "Atta"
+    When I go to the catalog page for "Formicinae"
+    And I should see "Atta" in the index
 
   Scenario: Adding a genus without setting authorship reference
     Given there is a subfamily "Formicinae"
