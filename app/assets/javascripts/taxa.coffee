@@ -71,7 +71,7 @@ class AntCat.TaxonForm extends AntCat.Form
     @submit()
 
   add_taxon: =>
-    document.location = "/genera/new?subfamily_id=#{@subfamily_id}"
+    document.location = "/taxa/new?subfamily_id=#{@subfamily_id}"
 
   add_history_item_panel: ($panel) =>
     @element.find('.history_items').append $panel
