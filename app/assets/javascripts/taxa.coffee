@@ -2,6 +2,7 @@ $ -> new AntCat.TaxonForm $('.taxon_form'), button_container: '> .fields_section
 
 class AntCat.TaxonForm extends AntCat.Form
   constructor: (@element, @options = {}) ->
+    @subfamily_id = $('#subfamily_id').val()
     @status_selector = $ '#taxon_status'
     @homonym_replaced_by_name_row = $ 'tr#homonym_replaced_by'
     @initialize_fields_section()
@@ -70,7 +71,7 @@ class AntCat.TaxonForm extends AntCat.Form
     @submit()
 
   add_taxon: =>
-    document.location = '/genera/new'
+    document.location = "/genera/new?subfamily_id=#{@subfamily_id}"
 
   add_history_item_panel: ($panel) =>
     @element.find('.history_items').append $panel
