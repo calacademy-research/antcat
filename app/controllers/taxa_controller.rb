@@ -79,7 +79,7 @@ class TaxaController < ApplicationController
   end
 
   def update_parent_taxon subfamily_id
-    @taxon.subfamily_id = subfamily_id
+    @taxon.subfamily_id = subfamily_id if @taxon.new_record?
   end
 
   def update_epithet_status_flags attributes
