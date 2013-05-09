@@ -80,6 +80,8 @@ class Formatters::TaxonFormatter
       label = Status[@taxon].to_s.dup
       label << senior_synonym_list
       labels << label
+    else
+      labels << 'valid'
     end
     labels.join(', ').html_safe
   end
