@@ -54,11 +54,16 @@ class AntCat.TaxonForm extends AntCat.Form
       return false if event.type is 'keydown' and event.which is $.ui.keyCode.ENTER
 
   taxon_id: =>
-    @form().attr('action').match(/\d+/)[0]
+    match = @form().attr('action').match /\d+/
+    match and match[0]
 
   ###### overrides
   cancel: =>
-    window.location = "/catalog/#{@taxon_id()}"
+    taxon_id = @taxon_id()
+    if taxon_id
+      window.location = "/catalog/#{taxon_id}"
+    else
+      window.location = "/taxa/#{@subfamily_id}/edit"
 
   ###### client functions
   replace_junior_and_senior_synonyms_section: (content) =>

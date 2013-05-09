@@ -63,3 +63,9 @@ Feature: Adding a taxon
     Then I should be on the create taxon page
     And I should see "Name name can't be blank"
     And the "taxon_type_taxt" field should contain "Notes"
+
+  Scenario: Cancelling
+    And I go to the edit page for "Formicinae"
+    And I press "Add Genus"
+    And I press "Cancel"
+    Then I should be on the edit page for "Formicinae"
