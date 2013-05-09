@@ -13,6 +13,7 @@ class TaxaController < ApplicationController
 
   def create
     @taxon = Genus.new
+    @subfamily_id = params[:subfamily_id]
     raise unless @subfamily_id
     begin
       create_object_web
@@ -25,6 +26,7 @@ class TaxaController < ApplicationController
 
   def edit
     @taxon = Taxon.find params[:id]
+    @subfamily_id = @taxon.id
     @show_elevate_to_species_button = @taxon.kind_of? Subspecies
     @add_taxon_button_text = 'Add Genus'
   end
