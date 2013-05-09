@@ -128,9 +128,9 @@ describe Formatters::TaxonFormatter do
   end
 
   describe "Status" do
-    it "should return nothing if the status is valid" do
+    it "should return 'valid' if the status is valid" do
       taxon = create_genus
-      @formatter.new(taxon).status.should == ''
+      @formatter.new(taxon).status.should == 'valid'
     end
     it "should show the status if there is one" do
       taxon = create_genus status: 'homonym'
@@ -158,7 +158,7 @@ describe Formatters::TaxonFormatter do
     it "should show where it is incertae sedis" do
       taxon = create_genus incertae_sedis_in: 'family'
       result = @formatter.new(taxon).status
-      result.should == '<i>incertae sedis</i> in family'
+      result.should == '<i>incertae sedis</i> in family, valid'
       result.should be_html_safe
     end
   end
