@@ -17,7 +17,7 @@ module NavigationHelpers
 
     when /^the new taxon page$/
       subfamily = Subfamily.first
-      "/taxa/new?subfamily_id=#{subfamily.id}"
+      "/taxa/new"
 
     when /^the create taxon page$/
       '/taxa'

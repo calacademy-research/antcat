@@ -5,14 +5,17 @@ Feature: Adding a taxon
   So that information is kept up-to-date
   So people use AntCat
 
-  Scenario: Adding a genus
+  Background:
     Given these references exist
       | authors | citation   | title | year |
       | Fisher  | Psyche 3:3 | Ants  | 2004 |
-    Given there is a subfamily "Formicinae"
-    And there is a genus "Eciton"
+    And there is a subfamily "Formicinae"
     And I log in
-    And I go to the edit page for "Formicinae"
+
+  Scenario: Adding a genus
+    Given there is a genus "Eciton"
+    When I go to the catalog page for "Formicinae"
+    And I press "Edit"
     And I press "Add Genus"
     Then I should be on the new taxon page
     When I click the epithet field
@@ -35,9 +38,7 @@ Feature: Adding a taxon
     And I should see "Atta" in the index
 
   Scenario: Adding a genus without setting authorship reference
-    Given there is a subfamily "Formicinae"
     And there is a genus "Eciton"
-    When I log in
     And I go to the edit page for "Formicinae"
     And I press "Add Genus"
     Then I should be on the new taxon page
@@ -55,11 +56,10 @@ Feature: Adding a taxon
     Then I should see "Protonym authorship reference can't be blank"
 
   Scenario: Having an error, but leave fields as user entered them
-    When I log in
-    And I go to the new taxon page
+    And I go to the edit page for "Formicinae"
+    And I press "Add Genus"
     And I fill in "taxon_type_taxt" with "Notes"
     And I save my changes
     Then I should be on the create taxon page
     And I should see "Name name can't be blank"
     And the "taxon_type_taxt" field should contain "Notes"
-
