@@ -91,10 +91,6 @@ class TaxaController < ApplicationController
     end
   end
 
-  def get_name_attributes attributes
-    {genus_name: attributes[:epithet]}
-  end
-
   def update_name attributes
     attributes[:name_id] = attributes.delete :id
     @taxon.attributes = attributes
