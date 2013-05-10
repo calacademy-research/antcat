@@ -1,4 +1,4 @@
--#Locals: taxon, form
+-#Locals: taxon, parent, form
 
 %tr
   = form.fields_for :name do |name_form|
@@ -8,3 +8,5 @@
     %td
       #epithet_field
         = render 'name_fields/panel', name_string: taxon.name.try(:name)
+      .name_description
+        = Formatters::TaxonFormatter.new(taxon).name_description(parent, taxon.new_record?)

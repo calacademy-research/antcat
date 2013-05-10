@@ -354,29 +354,15 @@ class Formatters::TaxonFormatter
   end
 
   ############
-  def parentage_string
-    case @taxon
-    when Family
-      'Family'
+  def name_description parent = nil, new = false
+    string = case @taxon
     when Subfamily
-      'Subfamily'
-    when Tribe
-       'Tribe'
+      'subfamily'
     when Genus
-       'Genus'
-    when Subgenus
-      @taxon.genus.name.name
-    when Species
-      @taxon.genus.name.name
-    when Subspecies
-      if @taxon.species
-        @taxon.species.name.name
-      else
-        "#{@taxon.genus.name.name} (no species)"
-      end
-    else
-      raise
+       "genus of #{parent.name.to_html}"
     end
+    string = 'new ' + string if new
+    string.html_safe
   end
 
 end
