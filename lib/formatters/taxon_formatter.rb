@@ -359,7 +359,8 @@ class Formatters::TaxonFormatter
     when Subfamily
       'subfamily'
     when Genus
-       "genus of #{parent.name.to_html}"
+      string = "genus of "
+      string << (parent ? parent.name.to_html : '(no subfamily)')
     end
     string = 'new ' + string if new
     string.html_safe
