@@ -134,6 +134,18 @@ Feature: Editing a taxon
   Scenario: Changing the type name
     Given there is a genus "Atta" with type name "Atta major"
     And there is a species "Atta major"
+    And there is a species "Atta minor"
+    And I log in
+    When I go to the edit page for "Atta"
+    And I click the type name field
+    And I set the type name to "Atta minor"
+    And I press "OK"
+    And I save my changes
+    Then I should see "Atta minor" in the headline
+
+  Scenario: Setting the type name after it was blank
+    Given there is a genus "Atta"
+    And there is a species "Atta major"
     And I log in
     When I go to the edit page for "Atta"
     And I click the type name field
@@ -141,6 +153,18 @@ Feature: Editing a taxon
     And I press "OK"
     And I save my changes
     Then I should see "Atta major" in the headline
+
+  Scenario: Clearing the type name
+    Given there is a genus "Atta" with type name "Atta major"
+    And I log in
+    When I go to the catalog page for "Atta"
+    Then I should not see "Atta major" in the headline
+    When I press "Edit"
+    And I click the type name field
+    And I set the type name to ""
+    And I press "OK"
+    And I save my changes
+    Then I should not see "Atta major" in the headline
 
   Scenario: Changing incertae sedis
     Given there is a genus "Atta" that is incertae sedis in the subfamily
