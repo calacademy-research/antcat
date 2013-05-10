@@ -20,7 +20,7 @@ class AntCat.TaxonForm extends AntCat.Form
     new AntCat.TaxtEditor $('#headline_notes_taxt_editor'), parent_buttons: '.buttons_section'
     new AntCat.NameField $('#protonym_name_field'), value_id: 'taxon_protonym_attributes_name_attributes_id', parent_form: @
     if $('#type_name_field').size() == 1
-      new AntCat.NameField $('#type_name_field'), value_id: 'taxon_type_name_attributes_id', parent_form: @
+      new AntCat.NameField $('#type_name_field'), value_id: 'taxon_type_name_attributes_id', parent_form: @, allow_blank: true
       new AntCat.TaxtEditor $('#type_taxt_editor'), parent_buttons: '.buttons_section'
     new AntCat.ReferenceField $('#authorship_field'), parent_form: @, value_id: 'taxon_protonym_attributes_authorship_attributes_reference_attributes_id'
 

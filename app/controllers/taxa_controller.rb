@@ -26,6 +26,7 @@ class TaxaController < ApplicationController
 
   def edit
     @taxon = Taxon.find params[:id]
+    create_object_web
     @subfamily_id = @taxon.id
     @show_elevate_to_species_button = @taxon.kind_of? Subspecies
     @add_taxon_button_text = 'Add Genus'
