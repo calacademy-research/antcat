@@ -18,6 +18,9 @@ end
 When /^I set the name to "([^"]*)"$/ do |name|
   step %{I fill in "taxon[name_attributes][epithet]" with "#{name}"}
 end
+Then /^I should still see the epithet field$/ do
+  page.find('#epithet_field .edit').should be_visible
+end
 When /^the name field should contain "([^"]*)"$/ do |name|
   find('#epithet_field button').text.should == name
 end

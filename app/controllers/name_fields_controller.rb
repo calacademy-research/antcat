@@ -7,6 +7,7 @@ class NameFieldsController < NamePickersController
     name_string = params[:name_string]
     allow_blank = params[:allow_blank].present?
     new_or_homonym = params[:new_or_homonym].present?
+    require_new = params[:require_new].present?
     confirming_adding_name = params[:confirm_add_name].present?
     require_existing = params[:require_existing].present?
 
@@ -20,6 +21,14 @@ class NameFieldsController < NamePickersController
       name = Name.find_by_name name_string
       if name
         ask_about_homonym name, data
+      else
+        add_name name_string, data
+      end
+
+    elsif require_new
+      name = Name.find_by_name name_string
+      if name
+        tell_about_existing name, data
       else
         add_name name_string, data
       end
@@ -50,6 +59,12 @@ class NameFieldsController < NamePickersController
   def clear_name data
     data[:success] = true
     data[:id] = nil
+  end
+
+  def tell_about_existing name, data
+    data[:success] = false
+    data[:error_message] = "This name is in use by another taxon."
+    data[:reason] = 'homonym'
   end
 
   def ask_about_homonym name, data
