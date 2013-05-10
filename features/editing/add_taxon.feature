@@ -38,8 +38,8 @@ Feature: Adding a taxon
     And I should see "Atta" in the index
 
   Scenario: Adding a genus without setting authorship reference
-    And there is a genus "Eciton"
-    And I go to the edit page for "Formicinae"
+    Given there is a genus "Eciton"
+    When I go to the edit page for "Formicinae"
     And I press "Add Genus"
     Then I should be on the new taxon page
     When I click the epithet field
@@ -56,13 +56,17 @@ Feature: Adding a taxon
     Then I should see "Protonym authorship reference can't be blank"
 
   Scenario: Having an error, but leave fields as user entered them
-    And I go to the edit page for "Formicinae"
+    When I go to the edit page for "Formicinae"
     And I press "Add Genus"
+    And I click the epithet field
+      And I set the epithet to "Atta"
+      And I press "OK"
     And I fill in "taxon_type_taxt" with "Notes"
     And I save my changes
     Then I should be on the create taxon page
-    And I should see "Name name can't be blank"
+    And I should see "Protonym name name can't be blank"
     And the "taxon_type_taxt" field should contain "Notes"
+    And the name field should contain "Atta"
 
   Scenario: Cancelling
     And I go to the edit page for "Formicinae"

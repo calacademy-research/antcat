@@ -18,6 +18,9 @@ end
 When /^I set the name to "([^"]*)"$/ do |name|
   step %{I fill in "taxon[name_attributes][epithet]" with "#{name}"}
 end
+When /^the name field should contain "([^"]*)"$/ do |name|
+  find('#epithet_field button').text.should == name
+end
 When /^I set the protonym name to "([^"]*)"$/ do |name|
   step %{I fill in "name_string" with "#{name}"}
 end
