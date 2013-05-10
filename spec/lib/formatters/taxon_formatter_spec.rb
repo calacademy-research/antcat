@@ -218,6 +218,10 @@ describe Formatters::TaxonFormatter do
       genus = create_genus subfamily: subfamily
       @formatter.new(genus).name_description(subfamily).should == "genus of #{subfamily.name}"
     end
+    it "should handle a genus without a subfamily" do
+      genus = create_genus subfamily: nil
+      @formatter.new(genus).name_description(genus.subfamily).should == "genus of (no subfamily)"
+    end
     it "should handle a new genus" do
       subfamily = create_subfamily
       genus = create_genus subfamily: subfamily
