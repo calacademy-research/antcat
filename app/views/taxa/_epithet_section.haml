@@ -7,4 +7,4 @@
     %td.label.top_aligned= name_form.label :name
     %td
       #epithet_field
-        = render 'name_fields/panel', name_string: taxon.protonym.name.try(:name)
+        = render 'name_fields/panel', name_string: taxon.name.try(:name)
