@@ -1,6 +1,6 @@
 -#Locals: taxon, form
 
-%tr#epithet_field
+%tr
   = form.fields_for :name do |name_form|
     - if name_form.object.new_record?
       = hidden_field_tag 'taxon[name_attributes][id]'
