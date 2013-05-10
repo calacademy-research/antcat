@@ -23,14 +23,24 @@ Feature: Editing a taxon
     And I press "Edit"
     Then I should be on the edit page for "Calyptites"
 
-  # Don't allow changing the name for now
-  #Scenario: Editing a family's name
-    #Given there is a family "Formicidae"
-    #And I log in
-    #When I go to the edit page for "Formicidae"
-    #And I set the name to "Formica"
-    #And I save my changes
-    #Then I should see "Formica" in the header
+  Scenario: Editing a family's name
+    Given there is a family "Formicidae"
+    And I log in
+    When I go to the edit page for "Formicidae"
+    And I click the epithet field
+    And I set the epithet to "Wildencidae"
+    And I press "OK"
+    And I save my changes
+    Then I should see "Wildencidae" in the header
+
+  Scenario: Trying to enter a blank name
+    Given there is a family "Formicidae"
+    And I log in
+    When I go to the edit page for "Formicidae"
+    And I click the epithet field
+    And I set the epithet to ""
+    And I press "OK"
+    Then I should still see the epithet field
 
   Scenario: Editing a species
     Given a species exists with a name of "major" and a genus of "Atta"
@@ -42,24 +52,17 @@ Feature: Editing a taxon
     And I wait for a bit
     Then I should see "Atta major" in the header
 
-  #Scenario: Trying to enter a blank name
-    #Given there is a genus "Calyptites"
-    #And I log in
-    #When I go to the edit page for "Calyptites"
-    #And I set the name to ""
-    #And I save my changes
-    #Then I should see "Name can't be blank"
-
-  #Scenario: Setting a genus's name to an existing one
-    #Given there is a genus "Calyptites"
-    #And there is a genus "Atta"
-    #And I log in
-    #When I go to the edit page for "Atta"
-    #And I set the name to "Calyptites"
-    #And I save my changes
-    #Then I should see "This name is in use by another taxon"
-    #When I press "Save homonym"
-    #Then there should be two genera with the name "Calyptites"
+  Scenario: Setting a genus's name to an existing one
+    Given there is a genus "Calyptites"
+    And there is a genus "Atta"
+    And I log in
+    When I go to the edit page for "Atta"
+    And I click the epithet field
+    And I set the epithet to "Calyptites"
+    And I press "OK"
+    Then I should see "This name is in use by another taxon"
+    And I press "OK"
+    Then I should see "This name is in use by another taxon"
 
   #Scenario: Leaving a genus name alone when there are already two homonyms
     #Given there are two genera "Calyptites"

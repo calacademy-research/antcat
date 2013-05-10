@@ -2,7 +2,7 @@
   #= render 'name_fields/panel', name_string: taxon.name.try(:name)
 #new NameField $('#name_field'), value_id: <id-without-#>, parent_form: <form>,
 # click_on_display,
-# taxa_only, allow_blank, new_or_homonym
+# taxa_only, allow_blank, new_or_homonym, require_new
 
 class AntCat.NameField extends AntCat.Panel
 
@@ -23,9 +23,9 @@ class AntCat.NameField extends AntCat.Panel
     @set_add_name_field()
 
   construct_help: =>
-    help = "Type the name, or type characters in the name then choose a name from the drop-down list, or type a new name"
-    help = "Type the name, or type characters in the name then choose a name from the drop-down list, or type a new name, or clear this name" if @options.allow_blank
-    help = "Type the name, or type characters in the name then choose a name from the drop-down list, or type a new name, or choose a homonym" if @options.new_or_homonym
+    help = "Type the name, or type characters in the name then choose a name from the drop-down list, or type a new name, or clear this name." if @options.allow_blank
+    help = "Type the name, or type characters in the name then choose a name from the drop-down list, or type a new name, or choose a homonym." if @options.new_or_homonym
+    help = "Type a new taxon name" if @options.require_new
     help = "Click \"Add name\", or \"Cancel\"" if @deciding_whether_to_add_name
     help
 
@@ -34,6 +34,7 @@ class AntCat.NameField extends AntCat.Panel
     action += "&allow_blank=true" if @options.allow_blank
     action += "&require_existing=true" if @options.require_existing
     action += "&new_or_homonym=true" if @options.new_or_homonym
+    action += "&require_new=true" if @options.require_new
     action += "&confirm_add_name=true" if @deciding_whether_to_add_name
     action
 
@@ -54,7 +55,7 @@ class AntCat.NameField extends AntCat.Panel
       @deciding_whether_to_add_name = false
     else
       @set_submit_button_text data.submit_button_text
-      @deciding_whether_to_add_name = true
+      @deciding_whether_to_add_name = not @options.require_new
 
   #------------
   set_add_name_field: =>
