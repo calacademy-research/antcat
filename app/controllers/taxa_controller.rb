@@ -29,7 +29,7 @@ class TaxaController < ApplicationController
     create_object_web
     @subfamily_id = @taxon.id
     @show_elevate_to_species_button = @taxon.kind_of? Subspecies
-    @add_taxon_button_text = 'Add Genus'
+    @add_taxon_button_text = 'Add Genus' if @taxon.kind_of? Subfamily
   end
 
   def update
