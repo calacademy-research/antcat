@@ -208,63 +208,21 @@ describe Formatters::TaxonFormatter do
     end
   end
 
-  describe "Parentage string" do
-    it "should handle the family" do
-      @formatter.new(create_family).parentage_string.should == 'Family'
-    end
+  describe "name_description" do
     it "should handle a subfamily" do
       subfamily = create_subfamily
-      @formatter.new(subfamily).parentage_string.should == 'Subfamily'
-    end
-    it "should handle a tribe" do
-      subfamily = create_subfamily
-      tribe = create_tribe subfamily: subfamily
-      @formatter.new(tribe).parentage_string.should == 'Tribe'
+      @formatter.new(subfamily).name_description.should == 'subfamily'
     end
     it "should handle a genus" do
       subfamily = create_subfamily
-      tribe = create_tribe subfamily: subfamily
-      genus = create_genus tribe: tribe, subfamily: subfamily
-      @formatter.new(genus).parentage_string.should == 'Genus'
+      genus = create_genus subfamily: subfamily
+      @formatter.new(genus).name_description(subfamily).should == "genus of #{subfamily.name}"
     end
-    it "should handle a genus without a tribe" do
+    it "should handle a new genus" do
       subfamily = create_subfamily
-      genus = create_genus subfamily: subfamily, tribe: nil
-      @formatter.new(genus).parentage_string.should == 'Genus'
-    end
-    it "should handle a genus without a subfamily" do
-      subfamily = create_subfamily
-      genus = create_genus subfamily: nil, tribe: nil
-      @formatter.new(genus).parentage_string.should == 'Genus'
-    end
-    it "should handle a subgenus" do
-      subfamily = create_subfamily
-      tribe = create_tribe subfamily: subfamily
-      genus = create_genus tribe: tribe, subfamily: subfamily
-      subgenus = create_subgenus genus: genus
-      @formatter.new(subgenus).parentage_string.should == genus.name.name
-    end
-    it "should handle a species" do
-      subfamily = create_subfamily
-      tribe = create_tribe subfamily: subfamily
-      genus = create_genus tribe: tribe, subfamily: subfamily
-      species = create_species genus: genus
-      @formatter.new(species).parentage_string.should == genus.name.name
-    end
-    it "should handle a subspecies" do
-      subfamily = create_subfamily
-      tribe = create_tribe subfamily: subfamily
-      genus = create_genus tribe: tribe, subfamily: subfamily
-      species = create_species genus: genus
-      subspecies = create_subspecies species: species, genus: genus
-      @formatter.new(subspecies).parentage_string.should == species.name.name
-    end
-    it "should handle a subspecies without a species" do
-      subfamily = create_subfamily
-      tribe = create_tribe subfamily: subfamily
-      genus = create_genus tribe: tribe, subfamily: subfamily
-      subspecies = create_subspecies species: nil, genus: genus
-      @formatter.new(subspecies).parentage_string.should == "#{genus.name} (no species)"
+      genus = create_genus subfamily: subfamily
+      description = @formatter.new(genus).name_description subfamily, true
+      description.should be_html_safe
     end
   end
 
