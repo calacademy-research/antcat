@@ -104,7 +104,10 @@ FactoryGirl.define do
   ####################################################
   factory :name do
     sequence(:name) {|n| raise}
-  end
+    name_html       {name}
+    epithet         {name}
+    epithet_html    {name_html}
+   end
 
   factory :family_or_subfamily_name do
     name 'FamilyOrSubfamily'
