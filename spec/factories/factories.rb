@@ -318,8 +318,8 @@ def create_taxon_object name_or_attributes, taxon_factory, name_factory, attribu
     attributes = name_or_attributes
   end
 
-  build = attributes.delete :build
-  FactoryGirl.send(build ? :build : :create, taxon_factory, attributes)
+  build_stubbed = attributes.delete :build_stubbed
+  FactoryGirl.send(build_stubbed ? :build_stubbed : :create, taxon_factory, attributes)
 end
 
 def get_name_parts name
