@@ -210,21 +210,21 @@ describe Formatters::TaxonFormatter do
 
   describe "name_description" do
     it "should handle a subfamily" do
-      subfamily = create_subfamily
+      subfamily = create_subfamily build_stubbed: true
       @formatter.new(subfamily).name_description.should == 'subfamily'
     end
     it "should handle a genus" do
-      subfamily = create_subfamily
+      subfamily = create_subfamily build_stubbed: true
       genus = create_genus subfamily: subfamily
       @formatter.new(genus).name_description(subfamily).should == "genus of #{subfamily.name}"
     end
     it "should handle a genus without a subfamily" do
-      genus = create_genus subfamily: nil
+      genus = create_genus subfamily: nil, build_stubbed: true
       @formatter.new(genus).name_description(genus.subfamily).should == "genus of (no subfamily)"
     end
     it "should handle a new genus" do
-      subfamily = create_subfamily
-      genus = create_genus subfamily: subfamily
+      subfamily = create_subfamily build_stubbed: true
+      genus = create_genus subfamily: subfamily, build_stubbed: true
       description = @formatter.new(genus).name_description subfamily, true
       description.should be_html_safe
     end
