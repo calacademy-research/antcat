@@ -319,6 +319,8 @@ def create_taxon_object name_or_attributes, taxon_factory, name_factory, attribu
   end
 
   build_stubbed = attributes.delete :build_stubbed
+  build = attributes.delete :build
+  build_stubbed ||= build
   FactoryGirl.send(build_stubbed ? :build_stubbed : :create, taxon_factory, attributes)
 end
 
