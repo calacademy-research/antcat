@@ -5,9 +5,9 @@ class TaxaController < ApplicationController
 
   def new
     @taxon = Genus.new
-    @subfamily_id = params[:subfamily_id]
+    @parent_id = params[:parent_id]
     create_object_web
-    @taxon.subfamily_id = @subfamily_id
+    @taxon.subfamily_id = @parent_id
     render :edit
   end
 
@@ -19,7 +19,7 @@ class TaxaController < ApplicationController
   def edit
     @taxon = Taxon.find params[:id]
     create_object_web
-    @subfamily_id = @taxon.id
+    @parent_id = @taxon.id
     @show_elevate_to_species_button = @taxon.kind_of? Subspecies
     @add_taxon_button_text = 'Add Genus' if @taxon.kind_of? Subfamily
   end
@@ -39,7 +39,7 @@ class TaxaController < ApplicationController
 
   ###################
   def save do_create_object_web
-    @subfamily_id = params[:subfamily_id]
+    @parent_id = params[:parent_id]
     begin
       create_object_web if do_create_object_web
       update_taxon params[:taxon]
@@ -65,7 +65,7 @@ class TaxaController < ApplicationController
       homonym_replaced_by_name_attributes = attributes.delete :homonym_replaced_by_name_attributes
       type_name_attributes                = attributes.delete :type_name_attributes
 
-      update_parent_taxon         @subfamily_id
+      update_parent_taxon         @parent_id
       update_name                 name_attributes
       update_epithet_status_flags attributes
       update_homonym_replaced_by  homonym_replaced_by_name_attributes
@@ -76,8 +76,8 @@ class TaxaController < ApplicationController
     end
   end
 
-  def update_parent_taxon subfamily_id
-    @taxon.subfamily_id = subfamily_id if @taxon.new_record?
+  def update_parent_taxon parent_id
+    @taxon.subfamily_id = parent_id if @taxon.new_record?
   end
 
   def update_epithet_status_flags attributes
