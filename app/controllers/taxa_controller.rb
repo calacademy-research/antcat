@@ -43,7 +43,7 @@ class TaxaController < ApplicationController
     raise unless @subfamily_id
     begin
       create_object_web if do_create_object_web
-      update_taxon params.dup[:taxon]
+      update_taxon params[:taxon]
     rescue ActiveRecord::RecordInvalid
       render :edit and return
     end
