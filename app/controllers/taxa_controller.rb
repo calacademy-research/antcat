@@ -13,6 +13,7 @@ class TaxaController < ApplicationController
 
   def create
     @taxon = Genus.new
+    @taxon.subfamily_id = @parent_id
     save true
   end
 
@@ -65,7 +66,6 @@ class TaxaController < ApplicationController
       homonym_replaced_by_name_attributes = attributes.delete :homonym_replaced_by_name_attributes
       type_name_attributes                = attributes.delete :type_name_attributes
 
-      update_parent_taxon         @parent_id
       update_name                 name_attributes
       update_epithet_status_flags attributes
       update_homonym_replaced_by  homonym_replaced_by_name_attributes
@@ -74,10 +74,6 @@ class TaxaController < ApplicationController
 
       @taxon.save!
     end
-  end
-
-  def update_parent_taxon parent_id
-    @taxon.subfamily_id = parent_id if @taxon.new_record?
   end
 
   def update_epithet_status_flags attributes
