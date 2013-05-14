@@ -3,10 +3,6 @@ class TaxaController < ApplicationController
   before_filter :authenticate_catalog_editor
   skip_before_filter :authenticate_catalog_editor, if: :preview?
 
-  def new_taxon
-    Genus.new
-  end
-
   def new
     @taxon = new_taxon
     create_object_web
@@ -44,6 +40,10 @@ class TaxaController < ApplicationController
   end
 
   ###################
+  def new_taxon
+    Genus.new
+  end
+
   def save do_create_object_web
     @parent_id = params[:parent_id]
     begin
