@@ -9,4 +9,4 @@
       #epithet_field
         = render 'name_fields/panel', name_string: taxon.name.try(:name)
       .name_description
-        = Formatters::TaxonFormatter.new(taxon).name_description(parent, taxon.new_record?)
+        = name_description taxon
