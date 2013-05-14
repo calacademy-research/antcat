@@ -1,8 +1,8 @@
--#Locals: taxon, parent, form
+-#Locals: taxon, form
 
 .epithet_status_flags_section.section
   %table.fields
-    =render 'epithet_section', taxon: taxon, form: form, parent: Taxon.find(@subfamily_id)
+    = render 'epithet_section', taxon: taxon, form: form
 
     %tr
       %td.label= form.label :status
