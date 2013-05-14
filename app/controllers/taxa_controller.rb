@@ -13,10 +13,14 @@ class TaxaController < ApplicationController
 
   def create
     @taxon = Genus.new
+    save true
+  end
+
+  def save do_create_object_web
     @subfamily_id = params[:subfamily_id]
     raise unless @subfamily_id
     begin
-      create_object_web
+      create_object_web if do_create_object_web
       update_taxon params.dup[:taxon]
     rescue ActiveRecord::RecordInvalid
       render :edit and return
@@ -34,14 +38,8 @@ class TaxaController < ApplicationController
 
   def update
     return elevate_to_species if params[:task_button_command] == 'elevate_to_species'
-
     @taxon = Taxon.find params[:id]
-    begin
-      update_taxon params.dup[:taxon]
-    rescue ActiveRecord::RecordInvalid
-      render :edit and return
-    end
-    redirect_to catalog_url @taxon
+    save false
   end
 
   def elevate_to_species
