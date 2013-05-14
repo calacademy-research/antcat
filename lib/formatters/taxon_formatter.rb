@@ -354,17 +354,18 @@ class Formatters::TaxonFormatter
   end
 
   ############
-  def name_description parent = nil, new = false
+  def name_description
     string = case @taxon
     when Subfamily
       'subfamily'
     when Genus
       string = "genus of "
+      parent = @taxon.subfamily
       string << (parent ? parent.name.to_html : '(no subfamily)')
     else
       ''
     end
-    string = 'new ' + string if new
+    string = 'new ' + string if @taxon.new_record?
     string.html_safe
   end
 
