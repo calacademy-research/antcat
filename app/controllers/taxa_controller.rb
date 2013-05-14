@@ -8,6 +8,7 @@ class TaxaController < ApplicationController
     @subfamily_id = params[:subfamily_id]
     raise unless @subfamily_id
     create_object_web
+    @taxon.subfamily_id = @subfamily_id
     render :edit
   end
 
