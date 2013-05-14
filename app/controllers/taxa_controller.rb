@@ -6,7 +6,6 @@ class TaxaController < ApplicationController
   def new
     @taxon = Genus.new
     @subfamily_id = params[:subfamily_id]
-    raise unless @subfamily_id
     create_object_web
     @taxon.subfamily_id = @subfamily_id
     render :edit
@@ -41,7 +40,6 @@ class TaxaController < ApplicationController
   ###################
   def save do_create_object_web
     @subfamily_id = params[:subfamily_id]
-    raise unless @subfamily_id
     begin
       create_object_web if do_create_object_web
       update_taxon params[:taxon]
