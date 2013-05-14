@@ -29,6 +29,7 @@ class TaxaController < ApplicationController
   def update
     return elevate_to_species if params[:task_button_command] == 'elevate_to_species'
     @taxon = Taxon.find params[:id]
+    @parent_id = params[:parent_id]
     save false
   end
 
@@ -45,7 +46,6 @@ class TaxaController < ApplicationController
   end
 
   def save do_create_object_web
-    @parent_id = params[:parent_id]
     begin
       create_object_web if do_create_object_web
       update_taxon params[:taxon]
