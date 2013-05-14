@@ -16,18 +16,6 @@ class TaxaController < ApplicationController
     save true
   end
 
-  def save do_create_object_web
-    @subfamily_id = params[:subfamily_id]
-    raise unless @subfamily_id
-    begin
-      create_object_web if do_create_object_web
-      update_taxon params.dup[:taxon]
-    rescue ActiveRecord::RecordInvalid
-      render :edit and return
-    end
-    redirect_to catalog_url @taxon
-  end
-
   def edit
     @taxon = Taxon.find params[:id]
     create_object_web
@@ -50,6 +38,18 @@ class TaxaController < ApplicationController
   end
 
   ###################
+  def save do_create_object_web
+    @subfamily_id = params[:subfamily_id]
+    raise unless @subfamily_id
+    begin
+      create_object_web if do_create_object_web
+      update_taxon params.dup[:taxon]
+    rescue ActiveRecord::RecordInvalid
+      render :edit and return
+    end
+    redirect_to catalog_url @taxon
+  end
+
   def create_object_web
     @taxon.build_name unless @taxon.name
     @taxon.build_protonym unless @taxon.protonym
