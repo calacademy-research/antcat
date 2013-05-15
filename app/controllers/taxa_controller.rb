@@ -8,7 +8,7 @@ class TaxaController < ApplicationController
     @taxon = new_taxon
     create_object_web
     @parent_id = params[:parent_id]
-    @taxon.subfamily_id = @parent_id
+    assign_parent_id
     render :edit
   end
 
@@ -16,7 +16,7 @@ class TaxaController < ApplicationController
     @new_taxon_rank = params[:new_taxon_rank]
     @taxon = new_taxon
     @parent_id = params[:parent_id]
-    @taxon.subfamily_id = @parent_id
+    assign_parent_id
     save true
   end
 
@@ -55,6 +55,14 @@ class TaxaController < ApplicationController
     when 'genus' then Genus
     when 'species' then Species
     end.new
+  end
+
+  def assign_parent_id
+    parent_fields = {
+      Genus => :subfamily_id=,
+      Species => :genus_id=
+    }
+    @taxon.send parent_fields[@taxon.class], @parent_id
   end
 
   def save do_create_object_web
