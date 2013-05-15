@@ -4,6 +4,7 @@ class TaxaController < ApplicationController
   skip_before_filter :authenticate_catalog_editor, if: :preview?
 
   def new
+    @new_taxon_rank = params[:new_taxon_rank]
     @taxon = new_taxon
     create_object_web
     @parent_id = params[:parent_id]
@@ -12,6 +13,7 @@ class TaxaController < ApplicationController
   end
 
   def create
+    @new_taxon_rank = params[:new_taxon_rank]
     @taxon = new_taxon
     @parent_id = params[:parent_id]
     @taxon.subfamily_id = @parent_id
@@ -24,6 +26,13 @@ class TaxaController < ApplicationController
     @parent_id = @taxon.id
     @show_elevate_to_species_button = @taxon.kind_of? Subspecies
     @add_taxon_button_text = 'Add Genus' if @taxon.kind_of? Subfamily
+    set_new_taxon_rank
+  def set_new_taxon_rank
+    @new_taxon_rank =
+    case @taxon
+    when Subfamily then 'genus'
+    when Genus then 'species'
+    end
   end
 
   def update
@@ -42,7 +51,10 @@ class TaxaController < ApplicationController
 
   ###################
   def new_taxon
-    Genus.new
+    case params[:new_taxon_rank]
+    when 'genus' then Genus
+    when 'species' then Species
+    end.new
   end
 
   def save do_create_object_web
