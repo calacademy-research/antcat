@@ -6,8 +6,8 @@ class TaxaController < ApplicationController
   def new
     @new_taxon_rank = params[:new_taxon_rank]
     @taxon = new_taxon
-    create_object_web
     @parent_id = params[:parent_id]
+    create_object_web
     assign_parent_id
     render :edit
   end
@@ -22,11 +22,12 @@ class TaxaController < ApplicationController
 
   def edit
     @taxon = Taxon.find params[:id]
-    create_object_web
     @parent_id = @taxon.id
-    @show_elevate_to_species_button = @taxon.kind_of? Subspecies
-    @add_taxon_button_text = 'Add Genus' if @taxon.kind_of? Subfamily
     set_new_taxon_rank
+    create_object_web
+    setup_edit_buttons
+  end
+
   def set_new_taxon_rank
     @new_taxon_rank =
     case @taxon
@@ -88,7 +89,6 @@ class TaxaController < ApplicationController
     @taxon.protonym.build_name unless @taxon.protonym.name
     @taxon.protonym.build_authorship unless @taxon.protonym.authorship
     @taxon.build_type_name unless @taxon.type_name
-    @taxon
   end
 
   def update_taxon attributes
