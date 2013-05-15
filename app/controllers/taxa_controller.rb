@@ -65,6 +65,13 @@ class TaxaController < ApplicationController
     @taxon.send parent_fields[@taxon.class], @parent_id
   end
 
+  def setup_edit_buttons
+    @show_elevate_to_species_button = @taxon.kind_of? Subspecies
+    @add_taxon_button_text = 'Add Genus' if @taxon.kind_of? Subfamily
+    @add_taxon_button_text = 'Add Species' if @taxon.kind_of? Genus
+  end
+
+  ###################
   def save do_create_object_web
     begin
       create_object_web if do_create_object_web
