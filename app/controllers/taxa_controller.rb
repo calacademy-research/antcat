@@ -102,7 +102,7 @@ class TaxaController < ApplicationController
       update_epithet_status_flags attributes
       update_homonym_replaced_by  homonym_replaced_by_name_attributes
       update_protonym             protonym_attributes
-      update_type_name            type_name_attributes if type_name_attributes
+      update_type_name            type_name_attributes
 
       @taxon.save!
     end
@@ -143,6 +143,12 @@ class TaxaController < ApplicationController
   end
 
   def update_type_name attributes
+    # ugly way to handle optional, but possibly pre-built, subobject
+    if @taxon.type_name && @taxon.type_name.new_record? && !attributes
+      @taxon.type_name = nil
+      return
+    end
+    return unless attributes
     attributes[:type_name_id] = attributes.delete :id
     @taxon.attributes = attributes
   end
