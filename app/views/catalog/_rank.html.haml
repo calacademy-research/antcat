@@ -15,9 +15,6 @@
             - showing_child = "show_#{options[:hideable_child_name]}".to_sym
             - unless session[showing_child]
               = show_child_link options[:hideable_child_name], @parameters[:id], @parameters
-        - if options[:addable]
-          .add
-            %a{href: '#'} add
     %tr
       %td
         - if items
