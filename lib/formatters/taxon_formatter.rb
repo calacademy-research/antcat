@@ -362,6 +362,10 @@ class Formatters::TaxonFormatter
       string = "genus of "
       parent = @taxon.subfamily
       string << (parent ? parent.name.to_html : '(no subfamily)')
+    when Species
+      string = "species of "
+      parent = @taxon.genus
+      string << parent.name.to_html
     else
       ''
     end
