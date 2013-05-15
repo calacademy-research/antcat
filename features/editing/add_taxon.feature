@@ -73,3 +73,26 @@ Feature: Adding a taxon
     And I press "Add Genus"
     And I press "Cancel"
     Then I should be on the edit page for "Formicinae"
+
+  Scenario: Adding a species
+    Given there is a genus "Eciton"
+    When I go to the catalog page for "Eciton"
+    And I press "Edit"
+    And I press "Add Species"
+    Then I should be on the new taxon page
+    And I should see "new species of "
+    And I should see "Eciton"
+    When I click the epithet field
+      And I set the epithet to "Eciton major"
+      And I press "OK"
+    And I click the protonym name field
+      And I set the protonym name to "Eciton major"
+      And I press "OK"
+    And I click the authorship field
+      And I search for the author "Fisher"
+      And I click the first search result
+      And I press "OK"
+    And I save my changes
+    Then I should be on the catalog page for "Eciton major"
+    When I go to the catalog page for "Eciton"
+    And I should see "major" in the index
