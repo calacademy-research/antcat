@@ -224,6 +224,11 @@ describe Reference, slow:true do
         reference = FactoryGirl.create :article_reference
         Reference.perform_search(:fulltext => '', :filter => :no_missing_references).should == [reference]
       end
+      it "should apply the :nested_references_only filter that's passed" do
+        nested = FactoryGirl.create :nested_reference
+        unnested = FactoryGirl.create :unknown_reference
+        Reference.perform_search(:fulltext => '', :filter => :nested_references_only).should == [nested]
+      end
     end
 
   end

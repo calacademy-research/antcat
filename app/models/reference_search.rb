@@ -39,6 +39,8 @@ class Reference < ActiveRecord::Base
         case options[:filter]
         when :unknown_references_only
           with :type, 'UnknownReference'
+        when :nested_references_only
+          with :type, 'NestedReference'
         when :no_missing_references
           without :type, 'MissingReference'
         end
@@ -77,6 +79,8 @@ class Reference < ActiveRecord::Base
       case options[:filter]
       when :unknown_references_only
         query = query.where 'type == "UnknownReference"'
+      when :nested_references_only
+        query = query.where 'type == "NestedReference"'
       when :no_missing_references, nil
         query = query.where 'type != "MissingReference" OR type IS NULL'
       end
@@ -85,7 +89,6 @@ class Reference < ActiveRecord::Base
   end
 
   def self.do_search options = {}
-
     search_options = {}
     if options[:format] != :endnote_import
       search_options[:page] = options[:page] || 1
@@ -148,6 +151,12 @@ class Reference < ActiveRecord::Base
       string[question_mark_index] = ''
       string.strip!
       return :unknown_references_only
+    end
+    hash_index = string.index '#'
+    if hash_index
+      string[hash_index] = ''
+      string.strip!
+      return :nested_references_only
     end
   end
 
