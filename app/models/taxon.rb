@@ -189,7 +189,7 @@ class Taxon < ActiveRecord::Base
   def authorship_string
     return unless protonym
     string = protonym.authorship_string
-    if self.kind_of?(Species) && name != protonym.name
+    if (kind_of?(Species) || kind_of?(Subspecies)) && name != protonym.name
       string = '(' + string + ')'
     end
     string
