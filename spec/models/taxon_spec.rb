@@ -581,7 +581,12 @@ describe Taxon do
       genus = create_genus protonym: nil
       genus.authorship_string.should be_nil
     end
-    it "should surround in parentheses, if a recombination"
+    it "should surround in parentheses, if a recombination" do
+      species = create_species
+      species.protonym.should_receive(:name).and_return create_name 'Atta'
+      species.protonym.should_receive(:authorship_string).and_return 'Bolton, 2005'
+      species.authorship_string.should == '(Bolton, 2005)'
+    end
   end
 
 end
