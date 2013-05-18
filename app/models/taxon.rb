@@ -187,7 +187,12 @@ class Taxon < ActiveRecord::Base
   ###############################################
   # delegations
   def authorship_string
-    protonym and protonym.authorship_string
+    return unless protonym
+    string = protonym.authorship_string
+    if self.kind_of?(Species) && name != protonym.name
+      string = '(' + string + ')'
+    end
+    string
   end
 
   ###############################################
