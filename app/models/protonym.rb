@@ -9,6 +9,10 @@ class Protonym < ActiveRecord::Base
 
   accepts_nested_attributes_for :name, :authorship
 
+  def authorship_string
+    authorship.authorship_string
+  end
+
   def self.import data
     transaction do
       authorship = Citation.import data[:authorship].first if data[:authorship]

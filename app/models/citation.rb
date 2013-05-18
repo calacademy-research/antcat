@@ -6,6 +6,10 @@ class Citation < ActiveRecord::Base
 
   has_paper_trail
 
+  def authorship_string
+    'Hölldobler, 2001'
+  end
+
   #######
   def self.import data
     reference = Reference.find_by_bolton_key data

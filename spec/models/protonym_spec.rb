@@ -9,6 +9,16 @@ describe Protonym do
     Protonym.find(protonym).authorship.should == authorship
   end
 
+  describe "Authorship string" do
+    it "should handle it if there is no citation"
+    it "should delegate to the citation" do
+      citation = FactoryGirl.build_stubbed :citation
+      protonym = FactoryGirl.build_stubbed :protonym, authorship: citation
+      citation.should_receive(:authorship_string).and_return 'Bolton 2005'
+      protonym.authorship_string.should == 'Bolton 2005'
+    end
+  end
+
   describe "Importing" do
     before do @reference = FactoryGirl.create :article_reference, bolton_key_cache: 'Latreille 1809' end
 
