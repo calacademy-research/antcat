@@ -7,7 +7,7 @@ class Citation < ActiveRecord::Base
   has_paper_trail
 
   def authorship_string
-    author_names_string + ', 2001'
+    "#{author_names_string}, #{reference.year}"
   end
 
   def author_names_string
