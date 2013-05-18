@@ -7,7 +7,7 @@ class Citation < ActiveRecord::Base
   has_paper_trail
 
   def authorship_string
-    'Hölldobler, 2001'
+    'Bolton, 2001'
   end
 
   #######

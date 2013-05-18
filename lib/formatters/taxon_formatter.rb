@@ -30,8 +30,8 @@ class Formatters::TaxonFormatter
     content_tag :div, class: 'header' do
       content = ''.html_safe
       content << content_tag(:span, header_name, class: Formatters::CatalogFormatter.css_classes_for_rank(@taxon))
-      content << ' '
-      content << content_tag(:span, status, class: 'status')
+      content << content_tag(:span, header_authorship, class: :authorship)
+      content << content_tag(:span, status, class: :status)
       content
     end
   end
@@ -63,6 +63,10 @@ class Formatters::TaxonFormatter
       string << header_link(@taxon, @taxon.name.to_html_with_fossil(@taxon.fossil?))
     end
     string
+  end
+
+  def header_authorship
+    @taxon.authorship_string
   end
 
   def status
