@@ -187,7 +187,7 @@ class Taxon < ActiveRecord::Base
   ###############################################
   # delegations
   def authorship_string
-    protonym.authorship_string
+    protonym and protonym.authorship_string
   end
 
   ###############################################
