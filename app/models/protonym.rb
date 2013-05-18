@@ -10,7 +10,7 @@ class Protonym < ActiveRecord::Base
   accepts_nested_attributes_for :name, :authorship
 
   def authorship_string
-    authorship.authorship_string
+    authorship and authorship.authorship_string
   end
 
   def self.import data

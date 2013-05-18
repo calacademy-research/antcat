@@ -10,7 +10,10 @@ describe Protonym do
   end
 
   describe "Authorship string" do
-    it "should handle it if there is no citation"
+    it "should handle it if there is no citation" do
+      protonym = FactoryGirl.build_stubbed :protonym, authorship: nil
+      protonym.authorship_string.should be_nil
+    end
     it "should delegate to the citation" do
       citation = FactoryGirl.build_stubbed :citation
       protonym = FactoryGirl.build_stubbed :protonym, authorship: citation
