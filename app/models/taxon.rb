@@ -185,6 +185,12 @@ class Taxon < ActiveRecord::Base
   def nomen_nudum?;           status == 'nomen nudum' end
 
   ###############################################
+  # delegations
+  def authorship_string
+    protonym.authorship_string
+  end
+
+  ###############################################
   def rank
     Rank[self].to_s
   end

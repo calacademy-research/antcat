@@ -83,4 +83,14 @@ describe Citation do
     end
 
   end
+
+  describe "Authorship string" do
+    it "should show the author and year" do
+      reference = reference_factory author_name: 'Bolton', citation_year: '2001'
+      citation = FactoryGirl.build_stubbed :citation, reference: reference
+      citation.authorship_string.should == 'Bolton, 2001'
+    end
+    it "should handle multiple authors"
+    it "should not include the year ordinal"
+  end
 end

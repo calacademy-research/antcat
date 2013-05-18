@@ -571,4 +571,13 @@ describe Taxon do
     end
   end
 
+  describe "Authorship string" do
+    it "should delegate to the protonym" do
+      genus = create_genus
+      genus.protonym.should_receive(:authorship_string).and_return 'Bolton 2005'
+      genus.authorship_string.should == 'Bolton 2005'
+    end
+    it "should surround in parentheses, if a recombination"
+  end
+
 end
