@@ -92,5 +92,13 @@ describe Citation do
     end
     it "should handle multiple authors"
     it "should not include the year ordinal"
+    it "should handle multiple authors" do
+      reference = FactoryGirl.build_stubbed(:article_reference, author_names: [
+        FactoryGirl.create(:author_name, :name => 'Bolton, B.'),
+        FactoryGirl.create(:author_name, :name => 'Fisher, R.'),
+      ], citation_year: '2001')
+      citation = FactoryGirl.build_stubbed :citation, reference: reference
+      citation.authorship_string.should == 'Bolton & Fisher, 2001'
+    end
   end
 end

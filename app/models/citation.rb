@@ -7,7 +7,22 @@ class Citation < ActiveRecord::Base
   has_paper_trail
 
   def authorship_string
-    'Bolton, 2001'
+    author_names_string + ', 2001'
+  end
+
+  def author_names_string
+    names = reference.author_names.map &:last_name
+    case
+    when names.size == 0
+      '[no authors]'
+    when names.size == 1
+      "#{names.first}"
+    when names.size == 2
+      "#{names.first} & #{names.second}"
+    else
+      string = names[0..-2].join ', '
+      string << " & " << names[-1]
+    end
   end
 
   #######
