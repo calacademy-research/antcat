@@ -577,6 +577,10 @@ describe Taxon do
       genus.protonym.should_receive(:authorship_string).and_return 'Bolton 2005'
       genus.authorship_string.should == 'Bolton 2005'
     end
+    it "handle when there's no protonym" do
+      genus = create_genus protonym: nil
+      genus.authorship_string.should be_nil
+    end
     it "should surround in parentheses, if a recombination"
   end
 
