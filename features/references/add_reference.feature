@@ -36,6 +36,7 @@ Feature: Add reference
   Scenario: Adding when not logged in, but in preview environment
     When I log out
     And I go to the references page
+    And I wait for a bit
     When I follow "add" in the first reference
     And in the new edit form I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
     And in the new edit form I fill in "reference_title" with "Between Pacific Tides"
