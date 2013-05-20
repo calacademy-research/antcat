@@ -267,8 +267,4 @@ class Taxon < ActiveRecord::Base
     Name.import data
   end
 
-  ###############################################
-  def would_be_homonym_if_name_changed_to? name
-    Taxon.where('name_cache = ? AND id != ?', name.name, id).count != 0
-  end
 end
