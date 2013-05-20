@@ -568,11 +568,40 @@ describe Taxon do
       genus = create_genus protonym: nil
       genus.authorship_string.should be_nil
     end
-    it "should surround in parentheses, if a recombination" do
-      species = create_species
-      species.protonym.should_receive(:name).and_return create_name 'Atta'
+    it "should surround in parentheses, if a recombination in a different genus" do
+      species = create_species 'Atta minor'
+      protonym_name = create_name 'Eciton minor'
+      species.protonym.should_receive(:name).and_return protonym_name
       species.protonym.should_receive(:authorship_string).and_return 'Bolton, 2005'
       species.authorship_string.should == '(Bolton, 2005)'
+    end
+    it "should not surround in parentheses, if the name simply differs" do
+      species = create_species 'Atta minor maxus'
+      protonym_name = create_name 'Atta minor minus'
+      species.protonym.should_receive(:name).and_return protonym_name
+      species.protonym.should_receive(:authorship_string).and_return 'Bolton, 2005'
+      species.authorship_string.should == 'Bolton, 2005'
+    end
+  end
+
+  describe "Recombination" do
+    it "should not think it's a recombination if name is same as protonym" do
+      species = create_species 'Atta major'
+      protonym_name = create_name 'Atta major'
+      species.protonym.should_receive(:name).and_return protonym_name
+      species.should_not be_recombination
+    end
+    it "should think it's a recombination if genus part of name is different than genus part of protonym" do
+      species = create_species 'Atta minor'
+      protonym_name = create_name 'Eciton minor'
+      species.protonym.should_receive(:name).and_return protonym_name
+      species.should be_recombination
+    end
+    it "should not think it's a recombination if genus part of name is same as genus part of protonym" do
+      species = create_species 'Atta minor maxus'
+      protonym_name = create_name 'Atta minor minus'
+      species.protonym.should_receive(:name).and_return protonym_name
+      species.should_not be_recombination
     end
   end
 

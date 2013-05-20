@@ -104,4 +104,5 @@ describe Citation do
       citation.authorship_string.should == 'Bolton, 1885'
     end
   end
+
 end
