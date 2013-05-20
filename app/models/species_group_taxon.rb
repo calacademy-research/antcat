@@ -6,6 +6,13 @@ class SpeciesGroupTaxon < Taxon
   belongs_to :subgenus
   before_create :set_subfamily
 
+  def recombination?
+    genus_epithet = name.genus_epithet
+    protonym_genus_epithet = protonym.name.genus_epithet
+    genus_epithet != protonym_genus_epithet
+  end
+
+  ###########
   def self.import data
     transaction do
       protonym = import_protonym data

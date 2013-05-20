@@ -185,14 +185,17 @@ class Taxon < ActiveRecord::Base
   def nomen_nudum?;           status == 'nomen nudum' end
 
   ###############################################
-  # delegations
   def authorship_string
     return unless protonym
     string = protonym.authorship_string
-    if (kind_of?(Species) || kind_of?(Subspecies)) && name != protonym.name
+    if recombination?
       string = '(' + string + ')'
     end
     string
+  end
+
+  def recombination?
+    false
   end
 
   ###############################################
