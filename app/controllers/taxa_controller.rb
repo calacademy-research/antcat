@@ -44,10 +44,15 @@ class TaxaController < ApplicationController
   end
 
   def elevate_to_species
-    subspecies = Subspecies.find params[:id]
-    old_species = subspecies.species
-    subspecies.elevate_to_species
-    redirect_to catalog_url subspecies
+    begin
+      @taxon = Subspecies.find params[:id]
+      old_species = @taxon.species
+      @taxon.elevate_to_species
+    rescue Subspecies::NoSpeciesForSubspeciesError
+      @taxon.errors[:base] = "This subspecies doesn't have a species. Use the \"Assign species to subspecies\" button to fix, then you can elevate the subspecies to the species."
+      render :edit and return
+    end
+    redirect_to catalog_url @taxon
   end
 
   ###################

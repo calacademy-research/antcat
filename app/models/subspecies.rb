@@ -6,6 +6,8 @@ class Subspecies < SpeciesGroupTaxon
   end
 
   def elevate_to_species
+    raise NoSpeciesForSubspeciesError unless species
+
     new_name_string = species.genus.name.to_s + ' ' + name.epithet
     raise if Species.find_by_name new_name_string
     new_name = SpeciesName.find_by_name new_name_string
@@ -93,5 +95,7 @@ class Subspecies < SpeciesGroupTaxon
     end
     parent_species
   end
+
+  class NoSpeciesForSubspeciesError < StandardError; end
 
 end
