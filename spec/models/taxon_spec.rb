@@ -499,19 +499,6 @@ describe Taxon do
     end
   end
 
-  describe "Checking for homonyms" do
-    it "should detect when a name change would create a homonym" do
-      atta = create_genus 'Atta'
-      eciton = create_genus 'Eciton'
-      atta.would_be_homonym_if_name_changed_to?(eciton.name).should be_true
-    end
-    it "should not detect a homonym if this is the only record with the name" do
-      atta = create_genus 'Atta'
-      eciton_name = create_name 'Eciton'
-      atta.would_be_homonym_if_name_changed_to?(eciton_name).should be_false
-    end
-  end
-
   describe "Deleting synonyms when status changed" do
     it "should delete synonyms when the status changes from 'synonym'" do
       atta = create_genus
