@@ -1,4 +1,4 @@
--#Locals: form, possible_homonym, show_elevate_to_species_button, add_taxon_button_text
+-#Locals: form, possible_homonym, show_elevate_to_species_button, add_taxon_button_text, show_convert_to_subspecies_button
 
 .buttons_section
   %input{type: :hidden, name: 'possible_homonym', id: 'possible_homonym', value: possible_homonym ? 'true' : nil}
@@ -11,5 +11,7 @@
     %input{type: :hidden, name: 'task_button_command', id: 'task_button_command'}
     - if add_taxon_button_text
       %input{type: 'button', class: 'ui-priority-primary', id: 'add_taxon', value: previewize(add_taxon_button_text)}
+    - if show_convert_to_subspecies_button
+      %input{type: 'button', class: 'ui-priority-primary', id: 'convert_to_subspecies', value: previewize('Convert to subspecies')}
     - if show_elevate_to_species_button
       %input{type: 'button', class: 'ui-priority-primary', id: 'elevate_to_species', value: previewize('Elevate to species')}

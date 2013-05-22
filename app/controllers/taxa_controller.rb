@@ -73,6 +73,7 @@ class TaxaController < ApplicationController
 
   def setup_edit_buttons
     @show_elevate_to_species_button = @taxon.kind_of? Subspecies
+    @show_convert_to_subspecies_button = @taxon.kind_of? Species
     @add_taxon_button_text = 'Add Genus' if @taxon.kind_of? Subfamily
     @add_taxon_button_text = 'Add Species' if @taxon.kind_of? Genus
   end
