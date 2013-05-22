@@ -22,6 +22,9 @@ module NavigationHelpers
     when /^the create taxon page$/
       '/taxa'
 
+    when /^%convert to subspecies page$/
+      '/convert_to_subspecies'
+
     when /^the elevate subspecies page for "([^"]*)"$/
       taxon = Taxon.find_by_name $1
       "/taxa/#{taxon.id}/elevate_to_species"
