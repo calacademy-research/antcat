@@ -10,7 +10,7 @@ Feature: Converting a species to a subspecies
     And I am logged in
     When I go to the edit page for "Camponotus dallatorei"
     And I press "Convert to subspecies"
-    Then I should be on the "Convert to subspecies" page
+    Then I should be on the "Convert to subspecies" page for "Camponotus dallatorei"
 
   Scenario: Converting a species to a subspecies when it already exists
 

@@ -5,10 +5,10 @@ class ConvertToSubspeciesController < ApplicationController
 
   def new
     @taxon = Taxon.find params[:taxa_id]
-    render :edit
   end
 
   def create
+    @taxon = Taxon.find params[:taxa_id]
   end
 
 end
