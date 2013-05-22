@@ -22,7 +22,7 @@ module NavigationHelpers
     when /^the create taxon page$/
       '/taxa'
 
-    when /^%convert to subspecies page$/
+    when /^the "Convert to subspecies" page$/
       '/convert_to_subspecies'
 
     when /^the elevate subspecies page for "([^"]*)"$/
