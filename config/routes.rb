@@ -37,6 +37,7 @@ AntCat::Application.routes.draw do
     member do
       get 'elevate_to_species'
     end
+    resource 'convert_to_subspecies', only: [:new, :create]
   end
 
   resource :taxon_window_height, only: [:update]
