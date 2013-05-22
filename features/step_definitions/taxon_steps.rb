@@ -125,6 +125,17 @@ Given /^there is a species "([^"]*)" which is a junior synonym of "([^"]*)"$/ do
   junior = create_species junior, status: 'synonym', genus: genus
   Synonym.create! senior_synonym: senior, junior_synonym: junior
 end
+###########################
+# subspecies
+Given /^there is a subspecies "([^"]*)"$/ do |name|
+  create_subspecies name
+end
+Given /a subspecies exists for that species with a name of "(.*?)" and an epithet of "(.*?)" and a taxonomic history of "(.*?)"/ do |name, epithet, history|
+  subspecies = FactoryGirl.create :subspecies, name: FactoryGirl.create(:subspecies_name, name: name, epithet: epithet, epithets: epithet), species: @species, genus: @species.genus
+  history = 'none' unless history.present?
+  subspecies.history_items.create! taxt: history
+end
+
 
 ###########################
 # tribe
@@ -144,12 +155,6 @@ Given /a subgenus exists with a name of "(.*?)"(?: and a genus of "(.*?)")?(?: a
 end
 
 ###########################
-Given /a subspecies exists for that species with a name of "(.*?)" and an epithet of "(.*?)" and a taxonomic history of "(.*?)"/ do |name, epithet, history|
-  subspecies = FactoryGirl.create :subspecies, name: FactoryGirl.create(:subspecies_name, name: name, epithet: epithet, epithets: epithet), species: @species, genus: @species.genus
-  history = 'none' unless history.present?
-  subspecies.history_items.create! taxt: history
-end
-
 Given /a (\w+) exists with a name of "([^"]+)" and a parent of "([^"]+)"/ do |rank, name, parent_name|
   Given %{a #{rank} exists with a name of "#{name}"}
   Taxon.find_by_name(name).update_attribute :parent, Taxon.find_by_name(parent_name)
