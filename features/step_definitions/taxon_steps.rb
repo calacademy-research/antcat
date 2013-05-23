@@ -127,6 +127,10 @@ Given /^there is a species "([^"]*)" with genus "([^"]*)"$/ do |species_name, ge
   genus = create_genus genus_name
   create_species species_name, genus: genus
 end
+Given /^there is a subspecies "([^"]*)" with genus "([^"]*)" and no species$/ do |subspecies_name, genus_name|
+  genus = create_genus genus_name
+  create_subspecies subspecies_name, genus: genus, species: nil
+end
 Given /^there is a species "([^"]*)" which is a junior synonym of "([^"]*)"$/ do |junior, senior|
   genus = create_genus 'Solenopsis'
   senior = create_species senior, genus: genus
