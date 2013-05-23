@@ -66,6 +66,7 @@ describe Species do
       taxon.name.epithets.should == 'major minor'
       taxon.should be_kind_of Subspecies
       taxon.name.should be_kind_of SubspeciesName
+      taxon.name_cache.should == 'Atta major minor'
     end
 
     it "should set the species, genus and subfamily" do
