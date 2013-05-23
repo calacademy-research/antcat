@@ -4,7 +4,7 @@
   .type_section.section
     .section_header.ui-widget-header.ui-corner-top
       Type
-    %table.fields.ui-dialog-content.ui-widget-content.ui-corner-bottom
+    %table.ui-dialog-content.ui-widget-content.ui-corner-bottom
       %tr
         = form.fields_for :type_name do |type_name_form|
           - if taxon.type_name.new_record?
