@@ -76,6 +76,12 @@ end
 When /I click the epithet field/ do
   find('#epithet_field .display_button').click
 end
+When /I click the new species field/ do
+  find('#new_species_id_field .display_button').click
+end
+When /^I set the new species field to "([^"]*)"$/ do |name|
+  step %{I fill in "name_string" with "#{name}"}
+end
 When /^I set the epithet to "([^"]*)"$/ do |name|
   step %{I fill in "name_string" with "#{name}"}
 end

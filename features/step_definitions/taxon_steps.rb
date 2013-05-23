@@ -116,8 +116,16 @@ Given /^species "(.*?)" exists in that genus$/ do |name|
   @species = FactoryGirl.create :species, subfamily: @subfamily, genus: @genus, name: FactoryGirl.create(:species_name, name: name)
   @species.history_items.create! taxt: "#{name} history"
 end
+Given /^there is a species "([^"]*)" with protonym name "(.*?)"$/ do |name, protonym_name|
+  species = create_species name
+  species.protonym.name = Name.find_by_name protonym_name if protonym_name
+end
 Given /^there is a species "([^"]*)"$/ do |name|
   create_species name
+end
+Given /^there is a species "([^"]*)" with genus "([^"]*)"$/ do |species_name, genus_name|
+  genus = create_genus genus_name
+  create_species species_name, genus: genus
 end
 Given /^there is a species "([^"]*)" which is a junior synonym of "([^"]*)"$/ do |junior, senior|
   genus = create_genus 'Solenopsis'
