@@ -270,4 +270,5 @@ class Taxon < ActiveRecord::Base
     Name.import data
   end
 
+  class TaxonExists < StandardError; end
 end
