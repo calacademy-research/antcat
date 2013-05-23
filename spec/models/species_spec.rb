@@ -56,13 +56,36 @@ describe Species do
       @genus = create_genus 'Atta'
     end
     it "should turn the record into a Subspecies" do
-      major = create_species 'Atta major', genus: @genus
       taxon = create_species 'Atta minor', genus: @genus
-      taxon.should be_kind_of Species
-      taxon.become_subspecies_of major
+      new_species = create_species 'Atta major', genus: @genus
+
+      taxon.become_subspecies_of new_species
+
       taxon = Subspecies.find taxon.id
+      taxon.name.name.should == 'Atta major minor'
+      taxon.name.epithets.should == 'major minor'
       taxon.should be_kind_of Subspecies
+      taxon.name.should be_kind_of SubspeciesName
     end
+
+    it "should handle when the new subspecies exists" do
+      taxon = create_species 'Camponotus dallatorrei', genus: @genus
+      new_species = create_species 'Camponotus alii', genus: @genus
+      exisiting_subspecies = create_species 'Atta alii dallatorrei', genus: @genus
+      -> {taxon.become_subspecies_of new_species}.should_raise Taxon::TaxonExists
+    end
+
+    it "should handle when the new subspecies exists, but just as the protonym of the new subspecies" do
+      taxon = create_species 'Atta minor', genus: @genus
+      taxon.protonym.name.name = 'Atta alii dallatorrei'
+      new_species = create_species 'Atta major', genus: @genus
+
+      taxon.become_subspecies_of new_species
+
+      taxon = Subspecies.find taxon.id
+      taxon.name.name.should == 'Atta major minor'
+    end
+
   end
 
   describe "Siblings" do
