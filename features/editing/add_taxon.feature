@@ -16,7 +16,7 @@ Feature: Adding a taxon
     Given there is a genus "Eciton"
     When I go to the catalog page for "Formicinae"
     And I press "Edit"
-    And I press "Add Genus"
+    And I press "Add genus"
     Then I should be on the new taxon page
     When I click the epithet field
       And I set the epithet to "Atta"
@@ -40,7 +40,7 @@ Feature: Adding a taxon
   Scenario: Adding a genus without setting authorship reference
     Given there is a genus "Eciton"
     When I go to the edit page for "Formicinae"
-    And I press "Add Genus"
+    And I press "Add genus"
     Then I should be on the new taxon page
     When I click the epithet field
       And I set the epithet to "Atta"
@@ -57,7 +57,7 @@ Feature: Adding a taxon
 
   Scenario: Having an error, but leave fields as user entered them
     When I go to the edit page for "Formicinae"
-    And I press "Add Genus"
+    And I press "Add genus"
     And I click the epithet field
       And I set the epithet to "Atta"
       And I press "OK"
@@ -70,7 +70,7 @@ Feature: Adding a taxon
 
   Scenario: Cancelling
     And I go to the edit page for "Formicinae"
-    And I press "Add Genus"
+    And I press "Add genus"
     And I press "Cancel"
     Then I should be on the edit page for "Formicinae"
 
@@ -78,7 +78,7 @@ Feature: Adding a taxon
     Given there is a genus "Eciton"
     When I go to the catalog page for "Eciton"
     And I press "Edit"
-    And I press "Add Species"
+    And I press "Add species"
     Then I should be on the new taxon page
     And I should see "new species of "
     And I should see "Eciton"
@@ -96,3 +96,37 @@ Feature: Adding a taxon
     Then I should be on the catalog page for "Eciton major"
     When I go to the catalog page for "Eciton"
     And I should see "major" in the index
+
+  Scenario: Using a genus's type-species for the name of a species
+    When I go to the catalog page for "Formicinae"
+    And I press "Edit"
+    And I press "Add genus"
+    And I click the epithet field
+      And I set the epithet to "Atta"
+      And I press "OK"
+    And I click the protonym name field
+      And I set the protonym name to "Atta"
+      And I press "OK"
+    And I click the authorship field
+      And I search for the author "Fisher"
+      And I click the first search result
+      And I press "OK"
+    And I click the type name field
+      And I set the type name to "Atta major"
+      And I press "OK"
+      And I press "Add this name"
+    And I save my changes
+    And I press "Edit"
+    And I press "Add species"
+    When I click the epithet field
+      And I set the epithet to "Atta major"
+      And I press "OK"
+    And I click the protonym name field
+      And I set the protonym name to "Atta major"
+      And I press "OK"
+    And I click the authorship field
+      And I search for the author "Fisher"
+      And I click the first search result
+      And I press "OK"
+    And I save my changes
+    Then I should be on the catalog page for "Atta major"
