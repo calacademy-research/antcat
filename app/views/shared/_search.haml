@@ -1,0 +1,9 @@
+= form_tag '/catalog/search', method: :get do
+  = hidden_field_tag 'id', params[:id]
+  .search
+    Search for name
+    = search_selector params[:st]
+    = text_field_tag 'qq', params[:qq]
+    = submit_tag  'Go', class: 'submit'
+    = image_tag 'ui-anim_basic_16x16.gif', class: 'throbber'
+    = submit_tag 'Clear' if (@search_results.present? && @search_results.size > 1) || @search_results_message
