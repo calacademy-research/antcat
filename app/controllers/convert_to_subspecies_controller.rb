@@ -10,6 +10,12 @@ class ConvertToSubspeciesController < ApplicationController
 
   def create
     @taxon = Taxon.find params[:taxa_id]
+
+    unless params[:new_species_id].present?
+      @taxon.errors.add :base, 'Please select a species.'
+      render :new and return
+    end
+
     @new_species = Taxon.find_by_name_id params[:new_species_id]
 
     begin

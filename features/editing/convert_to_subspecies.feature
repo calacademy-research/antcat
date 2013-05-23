@@ -30,6 +30,15 @@ Feature: Converting a species to a subspecies
     And I press "OK"
     Then I should see "The subspecies 'Camponotus alii dallatorei' already exists. Please tell Mark."
 
+  Scenario: Leaving the species blank
+    Given there is a species "Camponotus dallatorei" with genus "Camponotus"
+    And there is a species "Camponotus alii" with genus "Camponotus"
+    And I am logged in
+    When I go to the edit page for "Camponotus dallatorei"
+    And I press "Convert to subspecies"
+    And I press "OK"
+    Then I should see "Please select a species"
+
   Scenario: Only show button if showing a species
     Given there is a subspecies "Camponotus dallatorei alii"
     And I am logged in
