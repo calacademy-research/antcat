@@ -29,7 +29,11 @@ class NameFieldsController < NamePickersController
     elsif require_new
       name = Name.find_by_name name_string
       if name
-        tell_about_existing name, data
+        if Taxon.find_by_name_id name.id
+          tell_about_existing name, data
+        else
+          add_name name_string, data
+        end
       else
         add_name name_string, data
       end
