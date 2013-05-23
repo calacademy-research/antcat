@@ -16,7 +16,9 @@ class Species < SpeciesGroupTaxon
 
   def become_subspecies_of species
     new_name_string = species.genus.name.to_s + ' ' + species.name.epithet + ' ' + name.epithet
-    raise TaxonExists if Subspecies.find_by_name new_name_string
+    if Subspecies.find_by_name new_name_string
+      raise TaxonExists.new "The subspecies '#{new_name_string}' already exists. Please tell Mark."
+    end
     new_name = SubspeciesName.find_by_name new_name_string
     new_name ||= SubspeciesName.new
     new_name.update_attributes({
