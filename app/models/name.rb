@@ -42,7 +42,7 @@ class Name < ActiveRecord::Base
     [picklist_matching_format(prefix_matches),
      picklist_matching_format(epithet_matches),
      picklist_matching_format(first_then_any_letter_matches),
-    ].flatten.uniq {|item| item[:name]}
+    ].flatten.uniq {|item| item[:name]}[0,300]
   end
 
   def self.picklist_matching_format matches
