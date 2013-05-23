@@ -7,3 +7,11 @@ class AntCat.ConvertToSubspeciesForm extends AntCat.Form
     @element.bind 'keydown', (event) ->
       return false if event.type is 'keydown' and event.which is $.ui.keyCode.ENTER
     super
+
+  taxon_id: =>
+    match = @form().attr('action').match /\d+/
+    match and match[0]
+
+  cancel: =>
+    window.location = "/catalog/#{@taxon_id()}"
+
