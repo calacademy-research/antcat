@@ -12,9 +12,14 @@ class ConvertToSubspeciesController < ApplicationController
     @taxon = Taxon.find params[:taxa_id]
     @new_species = Taxon.find_by_name_id params[:new_species_id]
 
-    @taxon.become_subspecies_of @new_species
+    begin
+      @taxon.become_subspecies_of @new_species
+    rescue Taxon::TaxonExists => e
+      @taxon.errors.add :base, e.message
+      render :new and return
+    end
 
-    render :new
+    redirect_to catalog_url @taxon
   end
 
 end

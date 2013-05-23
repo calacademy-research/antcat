@@ -24,6 +24,10 @@ module NavigationHelpers
 
     when /^the "Convert to subspecies" page for "([^"]*)"$/
       taxon = Taxon.find_by_name $1
+      "/taxa/#{taxon.id}/convert_to_subspecies"
+
+    when /^the new "Convert to subspecies" page for "([^"]*)"$/
+      taxon = Taxon.find_by_name $1
       "/taxa/#{taxon.id}/convert_to_subspecies/new"
 
     when /^the elevate subspecies page for "([^"]*)"$/
