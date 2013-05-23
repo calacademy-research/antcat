@@ -68,11 +68,21 @@ describe Species do
       taxon.name.should be_kind_of SubspeciesName
     end
 
+    it "should set the species, genus and subfamily" do
+      taxon = create_species 'Atta minor', genus: @genus
+      new_species = create_species 'Atta major', genus: @genus
+      taxon.become_subspecies_of new_species
+      taxon = Subspecies.find taxon.id
+      taxon.species.should == new_species
+      taxon.genus.should == new_species.genus
+      taxon.subfamily.should == new_species.subfamily
+    end
+
     it "should handle when the new subspecies exists" do
       taxon = create_species 'Camponotus dallatorrei', genus: @genus
       new_species = create_species 'Camponotus alii', genus: @genus
-      exisiting_subspecies = create_species 'Atta alii dallatorrei', genus: @genus
-      -> {taxon.become_subspecies_of new_species}.should_raise Taxon::TaxonExists
+      existing_subspecies = create_subspecies 'Atta alii dallatorrei', genus: @genus
+      -> {taxon.become_subspecies_of new_species}.should raise_error Taxon::TaxonExists
     end
 
     it "should handle when the new subspecies exists, but just as the protonym of the new subspecies" do
