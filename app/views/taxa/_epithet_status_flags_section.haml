@@ -6,8 +6,7 @@
 
     %tr
       %td.label= form.label :status
-      %td
-        = form.select :status, Status.statuses
+      %td= form.select :status, Status.statuses
 
     = render 'homonym_replaced_by_section', taxon: taxon, form: form
 
