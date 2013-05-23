@@ -8,8 +8,9 @@ class NameFieldsController < NamePickersController
     allow_blank = params[:allow_blank].present?
     new_or_homonym = params[:new_or_homonym].present?
     require_new = params[:require_new].present?
-    confirming_adding_name = params[:confirm_add_name].present?
     require_existing = params[:require_existing].present?
+
+    confirming_adding_name = params[:confirm_add_name].present?
 
     if confirming_adding_name
       add_name name_string, data
