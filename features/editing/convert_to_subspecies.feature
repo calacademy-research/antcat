@@ -24,13 +24,11 @@ Feature: Converting a species to a subspecies
     And I am logged in
     When I go to the edit page for "Camponotus dallatorei"
     And I press "Convert to subspecies"
-    Then I should be on the new "Convert to subspecies" page for "Camponotus dallatorei"
-    When I click the new species field
+    And I click the new species field
     And I set the new species field to "Camponotus alii"
     And I press "OK"
     And I press "OK"
-    Then I should be on the "Convert to subspecies" page for "Camponotus dallatorei"
-    And I should see "The subspecies 'Camponotus alii dallatorei' already exists. Please tell Mark."
+    Then I should see "The subspecies 'Camponotus alii dallatorei' already exists. Please tell Mark."
 
   Scenario: Only show button if showing a species
     Given there is a subspecies "Camponotus dallatorei alii"
