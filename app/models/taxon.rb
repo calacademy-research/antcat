@@ -184,6 +184,7 @@ class Taxon < ActiveRecord::Base
   def incertae_sedis_in?      rank; incertae_sedis_in == rank end
   def collective_group_name?; status == 'collective group name' end
   def nomen_nudum?;           status == 'nomen nudum' end
+  def original_combination?;  status == 'original combination' end
 
   ###############################################
   def authorship_string
