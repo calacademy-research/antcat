@@ -45,6 +45,13 @@ describe Genus do
       genus.statistics.should == {:extant => {:species => {'valid' => 1}}}
     end
 
+    it "should ignore original combinations" do
+      genus = create_genus
+      FactoryGirl.create :species, genus: genus
+      FactoryGirl.create :species, status: 'original combination', genus: genus
+      genus.statistics.should == {:extant => {:species => {'valid' => 1}}}
+    end
+
     it "should handle 1 valid species and 2 synonyms" do
       genus = FactoryGirl.create :genus
       FactoryGirl.create :species, :genus => genus
