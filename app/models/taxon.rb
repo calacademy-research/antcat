@@ -168,6 +168,7 @@ class Taxon < ActiveRecord::Base
 
   ###############################################
   # other associations
+  belongs_to  :current_valid_taxon, class_name: 'Taxon'
   has_many    :history_items, class_name: 'TaxonHistoryItem', order: :position, dependent: :destroy
   has_many    :reference_sections, order: :position, dependent: :destroy
 
