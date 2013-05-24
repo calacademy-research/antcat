@@ -216,9 +216,15 @@ class Taxon < ActiveRecord::Base
     statistics = {}
     ranks.each do |rank|
       count = send(rank).count :group => [:fossil, :status]
+      delete_original_combinations count
       self.class.massage_count count, rank, statistics
     end
     statistics
+  end
+
+  def delete_original_combinations count
+    count.delete [true, 'original combination']
+    count.delete [false, 'original combination']
   end
 
   def self.massage_count count, rank, statistics
