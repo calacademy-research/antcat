@@ -50,6 +50,8 @@ class Status
                                              plural_label: 'ichnotaxa'),
       Status.new(string: 'collective group name',   label: 'Collective group name',
                                              plural_label: 'Collective group names'),
+      Status.new(string: 'original combination',    label: 'original combination',
+                                             plural_label: 'original combinations'),
     ]
     end
 end
