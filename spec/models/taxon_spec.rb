@@ -605,4 +605,29 @@ describe Taxon do
     end
   end
 
+  describe "Extracting original combinations" do
+    it "should create an 'original combination' taxon when genus doesn't match protonym's genus" do
+      nylanderia = create_genus 'Nylanderia'
+      paratrechina = create_genus 'Paratrechina'
+
+      recombined_protonym = FactoryGirl.create :protonym, name: create_name('Paratrechina minutula')
+      recombined = create_species 'Nylanderia minutula', genus: nylanderia, protonym: recombined_protonym
+
+      not_recombined_protonym = FactoryGirl.create :protonym, name: create_name('Nylanderia illustra')
+      not_recombined = create_species 'Nylanderia illustra', genus: nylanderia, protonym: not_recombined_protonym
+
+      taxon_count = Taxon.count
+
+      Taxon.extract_original_combinations
+
+      Taxon.count.should == taxon_count + 1
+      original_combinations = Taxon.where status: 'original combination'
+      original_combinations.size.should == 1
+      original_combination = original_combinations.first
+      original_combination.name.name.should == 'Paratrechina minutula'
+      original_combination.genus.should == paratrechina
+      original_combination.current_valid_taxon.should == recombined
+    end
+  end
+
 end
