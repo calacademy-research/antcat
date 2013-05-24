@@ -3,6 +3,8 @@
 # Progress.puts 'Importing...'
 # ...
 # Progress.tally_and_show_progress increment
+# ...
+# Progress.show_results
 
 class Progress
 
