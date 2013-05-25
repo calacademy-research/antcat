@@ -1,8 +1,6 @@
 # coding: UTF-8
 class Publisher < ActiveRecord::Base
   belongs_to :place
-  has_many :books
-
   validates_presence_of :name
 
   has_paper_trail
