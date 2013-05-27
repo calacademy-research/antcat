@@ -60,7 +60,6 @@ module Formatters::Formatter
     attributes.delete(:target) if attributes[:target].nil?
     attributes[:href] = href
     attributes_string = attributes.keys.sort.inject(''.html_safe) do |string, key|
-      term = %{#{key}="#{attributes[key]}" }
       string << "#{key}=\"#{h attributes[key]}\" ".html_safe
     end.strip.html_safe
     '<a '.html_safe + attributes_string + '>'.html_safe + contents + '</a>'.html_safe
