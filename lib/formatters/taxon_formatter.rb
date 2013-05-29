@@ -305,7 +305,7 @@ class Formatters::TaxonFormatter
     label << 'Hong (2002) ' if conditions[:hong]
 
     if conditions[:collective_group_names]
-      label << Status['collective group name'].to_s(children.count, :capitalized)
+      label << Status['collective group name'].to_s(children.count).humanize
     else
       label << Rank[children].to_s(children.count, conditions[:hong] ? nil : :capitalized)
     end
