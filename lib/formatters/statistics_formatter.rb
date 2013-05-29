@@ -45,15 +45,27 @@ module Formatters::StatisticsFormatter
   def self.rank_statistics statistics, rank, include_invalid
     statistics = statistics[rank]
     return unless statistics
+    statistics_strings = []
+    string = valid_statistics statistics, rank, include_invalid
+    statistics_strings << string if string.present?
+    if include_invalid
+      string = invalid_statistics statistics
+      statistics_strings << string if string.present?
+    end
+    statistics_strings.join ' '
+  end
 
+  def self.valid_statistics statistics, rank, include_invalid
     string = ''
 
     if statistics['valid']
       string << rank_status_count(rank, 'valid', statistics['valid'], include_invalid)
       statistics.delete 'valid'
     end
+    string
 
     return string unless include_invalid
+  def self.invalid_statistics statistics
 
     status_strings = statistics.keys.sort_by do |key|
       Status.ordered_statuses.index key
