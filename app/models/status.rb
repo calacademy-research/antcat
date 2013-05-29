@@ -32,6 +32,14 @@ class Status
   end
   class << self; alias_method :[], :find end
 
+  def self.options_for_select
+    statuses.map {|status| status.option_for_select}
+  end
+
+  def option_for_select
+    [@hash[:label], @hash[:string]]
+  end
+
   def self.statuses
     @_statuses ||= [
       Status.new(string: 'valid',                   label: 'valid',
