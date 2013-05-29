@@ -113,7 +113,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
   def parse_genera_excluded_from_family
     consume :genera_excluded_from_family_header
     consume :genera_excluded_from_family_note
-    while parse_genus(:status => 'excluded'); end
+    while parse_genus(:status => 'excluded from Formicidae'); end
   end
 
   def parse_unavailable_family_group_names_in_family
