@@ -99,7 +99,7 @@ describe Formatters::StatisticsFormatter do
     end
 
     it "should not pluralize certain statuses" do
-      @formatter.statistics(:extant => {:species => {'valid' => 2, 'synonym' => 2, 'homonym' => 2, 'unavailable' => 2, 'excluded' => 2, 'nomen nudum' => 2}}).should == "<p class=\"taxon_statistics\">2 valid species (2 synonyms, 2 homonyms, 2 unavailable, 2 excluded, 2 nomina nuda)</p>"
+      @formatter.statistics(:extant => {:species => {'valid' => 2, 'synonym' => 2, 'homonym' => 2, 'unavailable' => 2, 'excluded from Formicidae' => 2, 'nomen nudum' => 2}}).should == "<p class=\"taxon_statistics\">2 valid species (2 synonyms, 2 homonyms, 2 unavailable, 2 excluded from Formicidae, 2 nomina nuda)</p>"
     end
 
     it "should leave out invalid status if desired" do

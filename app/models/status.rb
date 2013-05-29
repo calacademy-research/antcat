@@ -50,6 +50,7 @@ class Status
       Status.new(string: 'unavailable',             label: 'unavailable',
                                              plural_label: 'unavailable'),
       Status.new(string: 'excluded from Formicidae',label: 'excluded from Formicidae',
+                                             plural_label: 'excluded from Formicidae'),
       Status.new(string: 'nomen nudum',             label: 'nomen nudum',
                                              plural_label: 'nomina nuda'),
       Status.new(string: 'ichnotaxon',              label: 'ichnotaxon',
