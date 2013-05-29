@@ -66,7 +66,7 @@ module Formatters::StatisticsFormatter
 
   def self.invalid_statistics statistics
     sorted_keys = statistics.keys.sort_by do |key|
-      Status.ordered_labels.index key
+      Status.ordered_statuses.index key
     end
 
     status_strings = sorted_keys.inject([]) do |status_strings, status|
