@@ -38,7 +38,7 @@ module Formatters::CatalogFormatter
 
   def self.taxon_css_classes taxon, options = {}
     css_classes = css_classes_for_rank taxon
-    css_classes << taxon.status.gsub(/ /, '_') unless options[:ignore_status]
+    css_classes << taxon.status.downcase.gsub(/ /, '_') unless options[:ignore_status]
     css_classes << 'selected' if options[:selected]
     css_classes.sort.join ' '
   end
