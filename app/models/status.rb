@@ -32,7 +32,11 @@ class Status
   class << self; alias_method :[], :find end
 
   def self.options_for_select
-    statuses.map {|status| status.option_for_select}
+    statuses.reject(&:internal?).map {|status| status.option_for_select}
+  end
+
+  def internal?
+    @hash[:internal]
   end
 
   def option_for_select
@@ -58,7 +62,7 @@ class Status
       Status.new(string: 'collective group name',   label: 'collective group name',
                                              plural_label: 'collective group names'),
       Status.new(string: 'original combination',    label: 'original combination',
-                                             plural_label: 'original combinations'),
+                                             plural_label: 'original combinations', internal: true),
     ]
     end
 end
