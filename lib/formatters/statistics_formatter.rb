@@ -57,28 +57,29 @@ module Formatters::StatisticsFormatter
 
   def self.valid_statistics statistics, rank, include_invalid
     string = ''
-
     if statistics['valid']
       string << rank_status_count(rank, 'valid', statistics['valid'], include_invalid)
       statistics.delete 'valid'
     end
     string
+  end
 
-    return string unless include_invalid
   def self.invalid_statistics statistics
+    sorted_keys = statistics.keys.sort_by do |key|
+      Status.ordered_labels.index key
+    end
 
-    status_strings = statistics.keys.sort_by do |key|
-      Status.ordered_statuses.index key
-    end.inject([]) do |status_strings, status|
+    status_strings = sorted_keys.inject([]) do |status_strings, status|
       status_strings << rank_status_count(:genera, status, statistics[status])
     end
 
+    string = ''
     if status_strings.present?
       string << ' ' if string.present?
       string << "(#{status_strings.join(', ')})"
     end
 
-    string.present? && string
+    string
   end
 
   def self.rank_status_count rank, status, count, label_statuses = true
