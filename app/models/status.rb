@@ -11,7 +11,6 @@ class Status
     options << :plural if numeric_argument && numeric_argument > 1
 
     string = (options.include?(:plural) ? @hash[:plural_label] : @hash[:label]).dup
-    string.downcase! unless options.include? :capitalized
     string
   end
 
@@ -55,8 +54,8 @@ class Status
                                              plural_label: 'nomina nuda'),
       Status.new(string: 'ichnotaxon',              label: 'ichnotaxon',
                                              plural_label: 'ichnotaxa'),
-      Status.new(string: 'collective group name',   label: 'Collective group name',
-                                             plural_label: 'Collective group names'),
+      Status.new(string: 'collective group name',   label: 'collective group name',
+                                             plural_label: 'collective group names'),
       Status.new(string: 'original combination',    label: 'original combination',
                                              plural_label: 'original combinations'),
     ]
