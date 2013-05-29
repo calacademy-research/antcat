@@ -212,7 +212,7 @@ describe Importers::Bolton::Catalog::Species::History do
   end
 
   it "should a taxon excluded from Formicidae" do
-    @klass.new([{text: [], matched_text: 'Excluded from Formicidae'}]).status.should == 'excluded'
+    @klass.new([{text: [], matched_text: 'Excluded from Formicidae'}]).status.should == 'excluded from Formicidae'
   end
 
   it "should handle it when information is in matched_text" do

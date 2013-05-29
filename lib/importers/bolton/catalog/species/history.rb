@@ -21,7 +21,7 @@ class Importers::Bolton::Catalog::Species::History
       check_unavailable_name or
       check_unidentifiable or
       check_nomen_nudum or
-      check_excluded
+      check_excluded_from_formicidae
     end
   end
 
@@ -134,9 +134,9 @@ class Importers::Bolton::Catalog::Species::History
     end
   end
 
-  def check_excluded
+  def check_excluded_from_formicidae
     if text_matches? /Excluded from Formicidae/i
-      @status = 'excluded'
+      @status = 'excluded from Formicidae'
       return true
     end
   end

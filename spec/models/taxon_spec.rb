@@ -48,9 +48,9 @@ describe Taxon do
   end
   it "should be able to be excluded" do
     taxon = FactoryGirl.build :taxon
-    taxon.should_not be_excluded
-    taxon.update_attribute :status, 'excluded'
-    taxon.should be_excluded
+    taxon.should_not be_excluded_from_formicidae
+    taxon.update_attribute :status, 'excluded from Formicidae'
+    taxon.should be_excluded_from_formicidae
     taxon.should be_invalid
   end
   it "should be able to be a synonym" do
