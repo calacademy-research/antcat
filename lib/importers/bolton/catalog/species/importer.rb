@@ -98,7 +98,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
   def set_unidentifiable name
     taxon = Taxon.find_by_name name
     return unless taxon.present?
-    taxon.update_attribute :unidentifiable, true
+    taxon.update_attribute :status, 'unidentifiable'
   end
 
   def do_manual_fixups_after_fixups

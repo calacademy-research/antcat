@@ -185,6 +185,7 @@ class Taxon < ActiveRecord::Base
   def collective_group_name?; status == 'collective group name' end
   def nomen_nudum?;           status == 'nomen nudum' end
   def original_combination?;  status == 'original combination' end
+  def unidentifiable?;        status == 'unidentifiable' end
 
   ###############################################
   def authorship_string

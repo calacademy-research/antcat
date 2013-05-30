@@ -19,9 +19,9 @@ describe Taxon do
   it "should be able to be unidentifiable" do
     taxon = FactoryGirl.build :taxon
     taxon.should_not be_unidentifiable
-    taxon.update_attribute :unidentifiable, true
+    taxon.update_attribute :status, 'unidentifiable'
     taxon.should be_unidentifiable
-    taxon.should_not be_invalid
+    taxon.should be_invalid
   end
   it "should be able to be a collective group name" do
     taxon = FactoryGirl.build :taxon
