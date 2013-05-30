@@ -51,6 +51,8 @@ class Status
                                              plural_label: 'synonyms'),
       Status.new(string: 'homonym',                 label: 'homonym',
                                              plural_label: 'homonyms'),
+      Status.new(string: 'unidentifiable',          label: 'unidentifiable',
+                                             plural_label: 'unidentifiable'),
       Status.new(string: 'unavailable',             label: 'unavailable',
                                              plural_label: 'unavailable'),
       Status.new(string: 'excluded from Formicidae',label: 'excluded from Formicidae',

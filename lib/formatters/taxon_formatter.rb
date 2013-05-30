@@ -89,7 +89,7 @@ class Formatters::TaxonFormatter
     labels << "<i>incertae sedis</i> in #{Rank[@taxon.incertae_sedis_in].to_s}" if @taxon.incertae_sedis_in
     if @taxon.homonym? && @taxon.homonym_replaced_by
       labels << "homonym replaced by #{self.class.link_to_taxon(@taxon.homonym_replaced_by)}"
-    elsif @taxon.unidentifiable
+    elsif @taxon.unidentifiable?
       labels << 'unidentifiable'
     elsif @taxon.unresolved_homonym?
       labels << "unresolved junior homonym"

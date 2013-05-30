@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130529211935) do
+ActiveRecord::Schema.define(:version => 20130530004309) do
 
   create_table "antwiki_valid_taxa", :id => false, :force => true do |t|
     t.string   "name"
@@ -261,7 +261,6 @@ ActiveRecord::Schema.define(:version => 20130529211935) do
     t.boolean  "type_fossil"
     t.string   "name_cache"
     t.string   "name_html_cache"
-    t.boolean  "unidentifiable",                  :default => false, :null => false
     t.boolean  "unresolved_homonym",              :default => false, :null => false
     t.integer  "current_valid_taxon_id"
   end

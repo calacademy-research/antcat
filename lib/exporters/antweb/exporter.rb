@@ -55,12 +55,12 @@ class Exporters::Antweb::Exporter
     homonyms = Taxon.where "name_cache = ? AND status = 'valid'", taxon.name_cache
     return true if homonyms.size == 1
     selection = homonyms.select do |homonym|
-      not homonym.unidentifiable and not homonym.unresolved_homonym
+      not homonym.unidentifiable? and not homonym.unresolved_homonym
     end
     return selection.first == taxon if selection.size == 1
     raise if selection.size > 1
     selection = homonyms.select do |homonym|
-      homonym.unidentifiable
+      homonym.unidentifiable?
     end
     return selection.first == taxon if selection.size == 1
     raise
