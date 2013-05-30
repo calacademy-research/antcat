@@ -55,14 +55,16 @@ class Status
                                              plural_label: 'unavailable'),
       Status.new(string: 'excluded from Formicidae',label: 'excluded from Formicidae',
                                              plural_label: 'excluded from Formicidae'),
+
+      Status.new(string: 'original combination',    label: 'original combination',
+                                             plural_label: 'original combinations', internal: true),
+
       Status.new(string: 'nomen nudum',             label: 'nomen nudum',
                                              plural_label: 'nomina nuda'),
       Status.new(string: 'ichnotaxon',              label: 'ichnotaxon',
                                              plural_label: 'ichnotaxa'),
       Status.new(string: 'collective group name',   label: 'collective group name',
                                              plural_label: 'collective group names'),
-      Status.new(string: 'original combination',    label: 'original combination',
-                                             plural_label: 'original combinations', internal: true),
     ]
     end
 end
