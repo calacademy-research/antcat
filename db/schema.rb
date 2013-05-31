@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130530004309) do
+ActiveRecord::Schema.define(:version => 20130531014548) do
 
   create_table "antwiki_valid_taxa", :id => false, :force => true do |t|
     t.string   "name"
@@ -264,6 +264,7 @@ ActiveRecord::Schema.define(:version => 20130530004309) do
     t.boolean  "unresolved_homonym",              :default => false, :null => false
     t.integer  "current_valid_taxon_id"
     t.boolean  "ichnotaxon"
+    t.boolean  "nomen_nudum"
   end
 
   add_index "taxa", ["genus_id"], :name => "taxa_genus_id_idx"

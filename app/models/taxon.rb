@@ -182,7 +182,6 @@ class Taxon < ActiveRecord::Base
   def excluded_from_formicidae?; status == 'excluded from Formicidae' end
   def incertae_sedis_in?      rank; incertae_sedis_in == rank end
   def collective_group_name?; status == 'collective group name' end
-  def nomen_nudum?;           status == 'nomen nudum' end
   def original_combination?;  status == 'original combination' end
   def unidentifiable?;        status == 'unidentifiable' end
 
