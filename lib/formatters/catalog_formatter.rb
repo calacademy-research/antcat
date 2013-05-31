@@ -40,6 +40,7 @@ module Formatters::CatalogFormatter
     css_classes = css_classes_for_rank taxon
     css_classes << taxon.status.downcase.gsub(/ /, '_') unless options[:ignore_status]
     css_classes << 'nomen_nudum' if taxon.nomen_nudum? unless options[:ignore_status]
+    css_classes << 'collective_group_name' if taxon.collective_group_name? unless options[:ignore_status]
     css_classes << 'selected' if options[:selected]
     css_classes.sort.join ' '
   end
