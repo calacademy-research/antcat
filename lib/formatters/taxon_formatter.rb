@@ -267,7 +267,7 @@ class Formatters::TaxonFormatter
     content << child_lists_for_rank(@taxon, :subfamilies)
     content << child_lists_for_rank(@taxon, :tribes)
     content << child_lists_for_rank(@taxon, :genera)
-    content << collective_group_name_child_list(@taxon)
+    #content << collective_group_name_child_list(@taxon)
     return unless content.present?
     content_tag :div, class: 'child_lists' do
       content
@@ -285,11 +285,11 @@ class Formatters::TaxonFormatter
     end
   end
 
-  def collective_group_name_child_list parent
-    children_selector = :collective_group_names
-    return '' unless parent.respond_to?(children_selector) && parent.send(children_selector).present?
-    child_list parent, parent.send(children_selector), false, collective_group_names: true
-  end
+  #def collective_group_name_child_list parent
+    #children_selector = :collective_group_names
+    #return '' unless parent.respond_to?(children_selector) && parent.send(children_selector).present?
+    #child_list parent, parent.send(children_selector), false, collective_group_names: true
+  #end
 
   def child_list_fossil_pairs parent, children_selector, conditions = {}
     extant_conditions = conditions.merge fossil: false
@@ -308,11 +308,11 @@ class Formatters::TaxonFormatter
 
     label << 'Hong (2002) ' if conditions[:hong]
 
-    if conditions[:collective_group_names]
-      label << Status['collective group name'].to_s(children.count).humanize
-    else
+    #if conditions[:collective_group_names]
+      #label << Status['collective group name'].to_s(children.count).humanize
+    #else
       label << Rank[children].to_s(children.count, conditions[:hong] ? nil : :capitalized)
-    end
+    #end
 
     if specify_extinct_or_extant
       label << ' ('
@@ -322,8 +322,8 @@ class Formatters::TaxonFormatter
 
     if conditions[:incertae_sedis_in]
       label << ' <i>incertae sedis</i> in '.html_safe
-    elsif conditions[:collective_group_names]
-      label << ' in '
+    #elsif conditions[:collective_group_names]
+      #label << ' in '
     else
       label << ' of '
     end
