@@ -33,9 +33,9 @@ describe Taxon do
   it "should be able to be an ichnotaxon" do
     taxon = FactoryGirl.build :taxon
     taxon.should_not be_ichnotaxon
-    taxon.update_attribute :status, 'ichnotaxon'
+    taxon.update_attribute :ichnotaxon, true
     taxon.should be_ichnotaxon
-    taxon.should be_invalid
+    taxon.should_not be_invalid
   end
   it "should be able to be unavailable" do
     taxon = FactoryGirl.build :taxon

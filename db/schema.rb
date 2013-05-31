@@ -263,6 +263,7 @@ ActiveRecord::Schema.define(:version => 20130530004309) do
     t.string   "name_html_cache"
     t.boolean  "unresolved_homonym",              :default => false, :null => false
     t.integer  "current_valid_taxon_id"
+    t.boolean  "ichnotaxon"
   end
 
   add_index "taxa", ["genus_id"], :name => "taxa_genus_id_idx"
