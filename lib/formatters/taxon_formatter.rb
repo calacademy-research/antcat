@@ -102,6 +102,9 @@ class Formatters::TaxonFormatter
     else
       labels << 'valid'
     end
+
+    labels << 'ichnotaxon' if @taxon.ichnotaxon?
+
     labels.join(', ').html_safe
   end
 
