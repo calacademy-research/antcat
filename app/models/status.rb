@@ -60,9 +60,6 @@ class Status
 
       Status.new(string: 'original combination',    label: 'original combination',
                                              plural_label: 'original combinations', internal: true),
-
-      Status.new(string: 'collective group name',   label: 'collective group name',
-                                             plural_label: 'collective group names'),
     ]
     end
 end
