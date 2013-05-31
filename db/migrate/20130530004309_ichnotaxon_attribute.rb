@@ -1,11 +1,11 @@
 class IchnotaxonAttribute < ActiveRecord::Migration
   def up
     add_column :taxa, :ichnotaxon, :boolean
-    Taxon.update_all 'status = "ichnotaxon"', 'ichnotaxon = "1"'
+    Taxon.where(status: 'ichnotaxon').update_all ichnotaxon: true, status: 'valid'
   end
 
   def down
-    Taxon.update_all 'ichnotaxon = "1"', 'status = "ichnotaxon"'
+    Taxon.where(ichnotaxon: true).update_all status: 'ichnotaxon'
     remove_column :taxa, :ichnotaxon
   end
 end
