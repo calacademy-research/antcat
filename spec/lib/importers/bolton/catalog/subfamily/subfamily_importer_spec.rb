@@ -158,8 +158,8 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
       genus.should be_hong
       genus.status.should == Status['valid'].to_s
 
-      #collective_group_name = Genus.find_by_name 'Myrmeciites'
-      #collective_group_name.should be_collective_group_name
+      collective_group_name = Genus.find_by_name 'Myrmeciites'
+      collective_group_name.should be_collective_group_name
     end
   end
 end
