@@ -73,23 +73,23 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
       junior_synonym.subfamily.should == senior_synonym.subfamily
     end
 
-    it "should import an ichnotaxon" do
-      FactoryGirl.create :article_reference, bolton_key_cache: 'Emery 1913a'
-      FactoryGirl.create :article_reference, bolton_key_cache: 'Laza 1982'
-      @importer.import_html make_contents %{
-        <p>Tribe ATTINI</P>
-        <p>Attini Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.</p>
+    #it "should import an ichnotaxon" do
+      #FactoryGirl.create :article_reference, bolton_key_cache: 'Emery 1913a'
+      #FactoryGirl.create :article_reference, bolton_key_cache: 'Laza 1982'
+      #@importer.import_html make_contents %{
+        #<p>Tribe ATTINI</P>
+        #<p>Attini Emery, 1913a: 6. Type-genus: <i>Aneuretus</i>.</p>
 
-        <p>Ichnotaxon attached to Attini</p>
-        <p>Ichnogenus *<i>ATTAICHNUS</i></p>
-        <p>*<i>Attaichnus</i> Laza, 1982: 112. Included ichnospecies: *<i>Attaichnus kuenzelii</i>. [Ichnofossil, purportedly fossil traces of workings attributable
-to attine ants.]</p>
-      }
-      attaichnus = Genus.find_by_name 'Attaichnus'
-      attaichnus.should be_ichnotaxon
-      attaichnus.tribe.name.to_s.should == 'Attini'
-      attaichnus.subfamily.should == attaichnus.tribe.subfamily
-    end
+        #<p>Ichnotaxon attached to Attini</p>
+        #<p>Ichnogenus *<i>ATTAICHNUS</i></p>
+        #<p>*<i>Attaichnus</i> Laza, 1982: 112. Included ichnospecies: *<i>Attaichnus kuenzelii</i>. [Ichnofossil, purportedly fossil traces of workings attributable
+#to attine ants.]</p>
+      #}
+      #attaichnus = Genus.find_by_name 'Attaichnus'
+      #attaichnus.should be_ichnotaxon
+      #attaichnus.tribe.name.to_s.should == 'Attini'
+      #attaichnus.subfamily.should == attaichnus.tribe.subfamily
+    #end
 
   end
 end
