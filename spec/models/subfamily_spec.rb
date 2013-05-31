@@ -13,7 +13,7 @@ describe Subfamily do
 
   it "should have collective group names" do
     subfamily = create_subfamily
-    collective_group_name = create_genus collective_group_name: true, subfamily: subfamily
+    collective_group_name = create_genus status: 'collective group name', subfamily: subfamily
     create_genus subfamily: subfamily
     subfamily.reload.collective_group_names.should == [collective_group_name]
   end

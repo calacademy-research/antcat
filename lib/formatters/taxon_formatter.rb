@@ -104,7 +104,6 @@ class Formatters::TaxonFormatter
     end
 
     labels << 'ichnotaxon' if @taxon.ichnotaxon?
-    labels << 'collective group name' if @taxon.collective_group_name?
 
     labels.join(', ').html_safe
   end
