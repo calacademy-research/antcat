@@ -57,6 +57,8 @@ describe Species do
     end
     it "should turn the record into a Subspecies" do
       taxon = create_species 'Atta minor', genus: @genus
+      taxon.protonym.name.protonym_html = 'Atta (Myrma) minor'
+      taxon.protonym.name.save!
       new_species = create_species 'Atta major', genus: @genus
 
       taxon.become_subspecies_of new_species
@@ -64,6 +66,7 @@ describe Species do
       taxon = Subspecies.find taxon.id
       taxon.name.name.should == 'Atta major minor'
       taxon.name.epithets.should == 'major minor'
+      taxon.name.protonym_html.should be_nil
       taxon.should be_kind_of Subspecies
       taxon.name.should be_kind_of SubspeciesName
       taxon.name_cache.should == 'Atta major minor'
@@ -86,15 +89,16 @@ describe Species do
       -> {taxon.become_subspecies_of new_species}.should raise_error Taxon::TaxonExists
     end
 
-    it "should handle when the new subspecies exists, but just as the protonym of the new subspecies" do
-      taxon = create_species 'Atta minor', genus: @genus
-      taxon.protonym.name.name = 'Atta alii dallatorrei'
+    it "should handle when the new subspecies name exists, but just as the protonym of the new subspecies" do
+      subspecies_name = FactoryGirl.create :subspecies_name, name: 'Atta major minor', protonym_html: '<i>Atta major minor</i>'
+      taxon = create_species 'Atta minor', genus: @genus, protonym: FactoryGirl.create(:protonym, name: subspecies_name)
       new_species = create_species 'Atta major', genus: @genus
 
       taxon.become_subspecies_of new_species
 
       taxon = Subspecies.find taxon.id
       taxon.name.name.should == 'Atta major minor'
+      taxon.protonym.name.protonym_html.should == '<i>Atta major minor</i>'
     end
 
   end

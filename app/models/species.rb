@@ -27,7 +27,6 @@ class Species < SpeciesGroupTaxon
       epithet:        name.epithet,
       epithet_html:   name.epithet_html,
       epithets:       species.name.epithet + ' ' + name.epithet,
-      protonym_html:  name.protonym_html,
     })
     Species.connection.execute "UPDATE taxa SET type = 'Subspecies' WHERE id = '#{id}'"
     Subspecies.find(id).update_attributes name: new_name, species: species
