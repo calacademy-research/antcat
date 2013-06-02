@@ -1,6 +1,11 @@
 # coding: UTF-8
 class Subspecies < SpeciesGroupTaxon
   belongs_to :species
+  before_validation :set_genus
+
+  def set_genus
+    self.genus = species.genus if species
+  end
 
   def statistics
   end
