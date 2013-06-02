@@ -29,12 +29,7 @@ class TaxaController < ApplicationController
   end
 
   def set_rank_that_would_be_created_if_button_clicked
-    @new_taxon_rank =
-    case @taxon
-    when Subfamily then 'genus'
-    when Genus then 'species'
-    when Species then 'subspecies'
-    end
+    @new_taxon_rank = child_rank @taxon.class
   end
 
   def update
@@ -88,14 +83,11 @@ class TaxaController < ApplicationController
   def setup_edit_buttons
     @show_elevate_to_species_button = @taxon.kind_of? Subspecies
     @show_convert_to_subspecies_button = @taxon.kind_of? Species
-    @add_taxon_button_text = case @taxon
-                             when Subfamily then 'Add genus'
-                             when Genus then 'Add species'
-                             when Species then 'Add subspecies'
-                             end
+
+    string = child_rank @taxon.class
+    @add_taxon_button_text = "Add #{string}" if string
   end
 
-  ###################
   def save do_create_object_web
     begin
       create_object_web if do_create_object_web
