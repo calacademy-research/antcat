@@ -58,11 +58,7 @@ class TaxaController < ApplicationController
 
   ###################
   def new_taxon
-    case params[:new_taxon_rank]
-    when 'genus' then Genus
-    when 'species' then Species
-    when 'subspecies' then Subspecies
-    end.new
+    params[:new_taxon_rank].titlecase.constantize.new
   end
 
   def assign_parent_id
