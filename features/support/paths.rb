@@ -16,7 +16,6 @@ module NavigationHelpers
       "/taxa/#{Taxon.find_by_name($1).id}/edit"
 
     when /^the new taxon page$/
-      subfamily = Subfamily.first
       "/taxa/new"
 
     when /^the create taxon page$/
