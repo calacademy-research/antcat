@@ -73,9 +73,18 @@ class TaxaController < ApplicationController
       species = Species.find @parent_id
       @taxon.genus_id = species.genus.id
     end
-
   end
 
+  def child_rank rank
+    rank = rank.to_s
+    case rank
+    when 'Subfamily' then 'genus'
+    when 'Genus'     then 'species'
+    when 'Species'   then 'subspecies'
+    end
+  end
+
+  ###################
   def setup_edit_buttons
     @show_elevate_to_species_button = @taxon.kind_of? Subspecies
     @show_convert_to_subspecies_button = @taxon.kind_of? Species
