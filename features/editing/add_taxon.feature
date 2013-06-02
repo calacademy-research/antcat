@@ -130,3 +130,25 @@ Feature: Adding a taxon
       And I press "OK"
     And I save my changes
     Then I should be on the catalog page for "Atta major"
+
+  Scenario: Adding a subspecies
+    Given there is a genus "Eciton"
+    And there is a species "Eciton major" with genus "Eciton"
+    When I go to the catalog page for "Eciton major"
+    And I press "Edit"
+    And I press "Add subspecies"
+    Then I should be on the new taxon page
+    And I should see "new subspecies of Eciton major"
+    When I click the epithet field
+      And I set the epithet to "Eciton major infra"
+      And I press "OK"
+    And I click the protonym name field
+      And I set the protonym name to "Eciton major infra"
+      And I press "OK"
+    And I click the authorship field
+      And I search for the author "Fisher"
+      And I click the first search result
+      And I press "OK"
+    And I save my changes
+    Then I should be on the catalog page for "Eciton major infra"
+    And I should see "infra" in the index
