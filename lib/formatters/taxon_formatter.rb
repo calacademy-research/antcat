@@ -179,7 +179,7 @@ class Formatters::TaxonFormatter
   end
   
   def protonym_name protonym
-    content_tag :b, Formatters::CatalogFormatter.protonym_label(protonym)
+    content_tag :b, content_tag(:span, Formatters::CatalogFormatter.protonym_label(protonym), class: 'protonym_name')
   end
 
   def headline_authorship authorship
