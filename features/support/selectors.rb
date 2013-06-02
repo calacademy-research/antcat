@@ -6,6 +6,8 @@ module HtmlSelectorsHelpers
     when /the page/
       "html > body"
 
+    when /the protonym/
+      "#catalog .protonym_name"
     when /^the junior synonyms section$/
       '.junior_synonyms_section'
     when /^the senior synonyms section$/

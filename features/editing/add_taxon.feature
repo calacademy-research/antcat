@@ -155,3 +155,4 @@ Feature: Adding a taxon
     And I save my changes
     Then I should be on the catalog page for "Eciton major infra"
     And I should see "infra" in the index
+    And I should see "Eciton major infra" in the protonym
