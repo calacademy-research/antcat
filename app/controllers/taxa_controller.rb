@@ -33,6 +33,7 @@ class TaxaController < ApplicationController
     case @taxon
     when Subfamily then 'genus'
     when Genus then 'species'
+    when Species then 'subspecies'
     end
   end
 
@@ -60,22 +61,33 @@ class TaxaController < ApplicationController
     case params[:new_taxon_rank]
     when 'genus' then Genus
     when 'species' then Species
+    when 'subspecies' then Subspecies
     end.new
   end
 
   def assign_parent_id
     parent_fields = {
       Genus => :subfamily_id=,
-      Species => :genus_id=
+      Species => :genus_id=,
+      Subspecies => :species_id=,
     }
     @taxon.send parent_fields[@taxon.class], @parent_id
+
+    if @taxon.kind_of? Subspecies
+      species = Species.find @parent_id
+      @taxon.genus_id = species.genus.id
+    end
+
   end
 
   def setup_edit_buttons
     @show_elevate_to_species_button = @taxon.kind_of? Subspecies
     @show_convert_to_subspecies_button = @taxon.kind_of? Species
-    @add_taxon_button_text = 'Add genus' if @taxon.kind_of? Subfamily
-    @add_taxon_button_text = 'Add species' if @taxon.kind_of? Genus
+    @add_taxon_button_text = case @taxon
+                             when Subfamily then 'Add genus'
+                             when Genus then 'Add species'
+                             when Species then 'Add subspecies'
+                             end
   end
 
   ###################

@@ -388,6 +388,10 @@ class Formatters::TaxonFormatter
       string = "species of "
       parent = @taxon.genus
       string << parent.name.to_html
+    when Subspecies
+      string = "subspecies of "
+      parent = @taxon.species
+      string << parent.name.to_html
     else
       ''
     end
