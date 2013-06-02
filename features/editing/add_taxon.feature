@@ -36,6 +36,7 @@ Feature: Adding a taxon
     Then I should be on the catalog page for "Atta"
     When I go to the catalog page for "Formicinae"
     And I should see "Atta" in the index
+    And I should see "Eciton" in the protonym
 
   Scenario: Adding a genus without setting authorship reference
     Given there is a genus "Eciton"
@@ -96,6 +97,7 @@ Feature: Adding a taxon
     Then I should be on the catalog page for "Eciton major"
     When I go to the catalog page for "Eciton"
     And I should see "major" in the index
+    And I should see "Eciton major" in the protonym
 
   Scenario: Using a genus's type-species for the name of a species
     When I go to the catalog page for "Formicinae"
@@ -130,6 +132,7 @@ Feature: Adding a taxon
       And I press "OK"
     And I save my changes
     Then I should be on the catalog page for "Atta major"
+    And I should see "Atta major" in the protonym
 
   Scenario: Adding a subspecies
     Given there is a genus "Eciton"
