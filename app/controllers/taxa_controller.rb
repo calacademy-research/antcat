@@ -23,12 +23,12 @@ class TaxaController < ApplicationController
   def edit
     @taxon = Taxon.find params[:id]
     @parent_id = @taxon.id
-    set_new_taxon_rank
+    set_rank_that_would_be_created_if_button_clicked
     create_object_web
     setup_edit_buttons
   end
 
-  def set_new_taxon_rank
+  def set_rank_that_would_be_created_if_button_clicked
     @new_taxon_rank =
     case @taxon
     when Subfamily then 'genus'
