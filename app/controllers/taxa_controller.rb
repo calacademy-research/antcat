@@ -63,11 +63,6 @@ class TaxaController < ApplicationController
       Subspecies => :species_id=,
     }
     @taxon.send parent_fields[@taxon.class], @parent_id
-
-    if @taxon.kind_of? Subspecies
-      species = Species.find @parent_id
-      @taxon.genus_id = species.genus.id
-    end
   end
 
   def child_rank rank

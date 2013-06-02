@@ -21,8 +21,21 @@ describe Subspecies do
   end
 
   it "has its subfamily assigned from its genus" do
-    subspecies = create_subspecies 'Atta major colobopsis', genus: @genus
+    subspecies = create_subspecies 'Atta major colobopsis', species: nil, genus: @genus
     subspecies.subfamily.should == @genus.subfamily
+  end
+
+  it "has its genus assigned from its species, if there is one" do
+    genus = create_genus
+    species = create_species genus: genus
+    subspecies = create_subspecies 'Atta major colobopsis', genus: nil, species: species
+    subspecies.genus.should == genus
+  end
+
+  it "does not have its genus assigned from its species, if there is not one" do
+    genus = create_genus
+    subspecies = create_subspecies 'Atta major colobopsis', genus: genus, species: nil
+    subspecies.genus.should == genus
   end
 
   describe "Elevating to species" do
