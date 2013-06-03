@@ -307,6 +307,13 @@ describe Taxon do
       taxon.protonym.should be_nil
       taxon.build_protonym name: FactoryGirl.create(:name, name: 'Formicariae')
     end
+    it "should not destroy the protonym when the taxon it's attached to is destroyed" do
+      protonym = FactoryGirl.create :protonym
+      atta = create_genus protonym: protonym
+      eciton = create_genus protonym: protonym
+      atta.destroy
+      eciton.protonym.reload.should == protonym
+    end
   end
 
   describe "Type name" do
