@@ -589,6 +589,12 @@ describe Taxon do
       species.protonym.should_receive(:authorship_string).and_return 'Bolton, 2005'
       species.authorship_string.should == 'Bolton, 2005'
     end
+    it "should handle it if there simply isn't a protonym authorship" do
+      species = create_species 'Atta minor maxus'
+      protonym_name = create_name 'Eciton minor maxus'
+      species.protonym.should_receive(:authorship_string).and_return nil
+      species.authorship_string.should be_nil
+    end
   end
 
   describe "Recombination" do

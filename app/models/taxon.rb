@@ -189,7 +189,7 @@ class Taxon < ActiveRecord::Base
   def authorship_string
     return unless protonym
     string = protonym.authorship_string
-    if recombination?
+    if string && recombination?
       string = '(' + string + ')'
     end
     string
