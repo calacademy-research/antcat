@@ -5,12 +5,14 @@ class SpeciesName < SpeciesGroupName
     return unless words.size == 2
     genus = words[0]
     species = words[1]
+    name = "#{genus} #{species}"
+    name_html = Formatters::Formatter.italicize name
     attributes = {
-      name: "#{genus} #{species}",
-      name_html: "<i>#{genus} #{species}</i>",
+      name: name,
+      name_html: name_html,
       epithet: species,
-      epithet_html: "<i>#{species}</i>",
-      protonym_html: "<i>#{species}</i>",
+      epithet_html: Formatters::Formatter.italicize(species),
+      protonym_html: name_html,
     }
     create! attributes
   end
