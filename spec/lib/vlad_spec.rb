@@ -71,6 +71,14 @@ describe Vlad do
     results.should == [['Atta', 'Betta']]
   end
 
+  it "should show taxa without protonyms" do
+    create_genus
+    genus = create_genus protonym: nil
+    results = Vlad::TaxaWithoutProtonyms.query
+    results.size.should == 1
+    results.first.should == genus
+  end
+
   it "should show protonyms without authorships" do
     protonym_with_authorship = FactoryGirl.create :protonym
     protonym_without_authorship = FactoryGirl.create :protonym

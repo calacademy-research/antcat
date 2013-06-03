@@ -171,6 +171,15 @@ class Vlad
     end
   end
 
+  class TaxaWithoutProtonyms < Problem
+    def self.query
+      Taxon.find_by_sql(%{SELECT taxa.id FROM taxa WHERE protonym_id IS NULL}).map {|e| Taxon.find e}
+    end
+    def self.display
+      display_result_count query.size
+    end
+  end
+
   class TaxaWithMismatchedHomonymAndStatus #< Problem
     def self.query
       Taxon.where "(status = 'homonym') = (homonym_replaced_by_id IS NULL)"
