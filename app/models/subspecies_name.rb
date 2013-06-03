@@ -3,21 +3,19 @@ class SubspeciesName < SpeciesGroupName
 
   def self.parse_words words
     return unless words.size > 2
-    words = words.dup
-    genus = words.shift
-    species = words.shift
-    epithets = species
-    while not words.empty?
-      epithet = words.shift
-      epithets << ' ' << epithet
-    end
+    genus   = words[0]
+    species = words[1]
+    epithets= words[1..-1].join ' '
+    epithet = words[-1]
+    name = "#{genus} #{epithets}"
+    name_html = Formatters::Formatter.italicize name
     attributes = {
-      name: "#{genus} #{epithets}",
-      name_html: "<i>#{genus} #{epithets}</i>",
-      epithet: epithet,
-      epithet_html: "<i>#{epithet}</i>",
-      epithets: epithets,
-      protonym_html: "<i>#{epithets}</i>",
+      name:         name,
+      name_html:    name_html,
+      epithet:      epithet,
+      epithet_html: Formatters::Formatter.italicize(epithet),
+      epithets:     epithets,
+      protonym_html:name_html,
     }
     create! attributes
   end

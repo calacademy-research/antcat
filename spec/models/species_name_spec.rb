@@ -3,6 +3,17 @@ require 'spec_helper'
 
 describe SpeciesName do
 
+  describe "Parsing words" do
+    it "should parse words into a species name" do
+      name = SpeciesName.parse_words ['Atta', 'major']
+      name.name.should == 'Atta major'
+      name.name_html.should == '<i>Atta major</i>'
+      name.epithet.should == 'major'
+      name.epithet_html.should == '<i>major</i>'
+      name.protonym_html.should ==ajor</i>'
+    end
+  end
+
   describe "Importing" do
 
     it "should recognize its key and set its name appropriately" do
