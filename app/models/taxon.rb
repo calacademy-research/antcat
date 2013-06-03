@@ -261,7 +261,7 @@ class Taxon < ActiveRecord::Base
           Progress.puts "Original genus #{genus_epithet} not found when creating original combination for #{taxon.name}"
           next
         end
-        taxon.class.create! name: taxon.protonym.name, status: 'original combination',
+        taxon.class.create! name: taxon.protonym.name, status: 'original combination', protonym: taxon.protonym,
                             genus: original_genus, current_valid_taxon: taxon
         Progress.tally_and_show_progress 100
       end

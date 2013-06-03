@@ -10,7 +10,7 @@ describe SpeciesName do
       name.name_html.should == '<i>Atta major</i>'
       name.epithet.should == 'major'
       name.epithet_html.should == '<i>major</i>'
-      name.protonym_html.should ==ajor</i>'
+      name.protonym_html.should =='<i>Atta major</i>'
     end
   end
 
