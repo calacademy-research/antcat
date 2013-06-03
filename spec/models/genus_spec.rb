@@ -24,6 +24,13 @@ describe Genus do
     genus.should have(1).subspecies
   end
 
+  it "should use the species's' genus, if nec." do
+    genus = FactoryGirl.create :genus
+    species = FactoryGirl.create :species, genus: genus
+    FactoryGirl.create :subspecies, species: species, genus: nil
+    genus.should have(1).subspecies
+  end
+
   it "should have subgenera" do
     atta = FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Atta')
     FactoryGirl.create :subgenus, name: FactoryGirl.create(:name, name: 'robusta'), :genus => atta
