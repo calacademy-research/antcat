@@ -34,15 +34,15 @@ describe Formatters::TaxonFormatter do
     describe "Protonym" do
       it "should format a family name in the protonym" do
         protonym = FactoryGirl.create :protonym, name: FactoryGirl.create(:family_or_subfamily_name, name: 'Dolichoderinae')
-        @formatter.new(nil).protonym_name(protonym).should == '<b>Dolichoderinae</b>'
+        @formatter.new(nil).protonym_name(protonym).should == '<b><span class="protonym_name">Dolichoderinae</span></b>'
       end
       it "should format a genus name in the protonym" do
         protonym = FactoryGirl.create :protonym, name: FactoryGirl.create(:genus_name, name: 'Atari')
-        @formatter.new(nil).protonym_name(protonym).should == '<b><i>Atari</i></b>'
+        @formatter.new(nil).protonym_name(protonym).should == '<b><span class="protonym_name"><i>Atari</i></span></b>'
       end
       it "should format a fossil" do
         protonym = FactoryGirl.create :protonym, name: FactoryGirl.create(:genus_name, name: 'Atari'), fossil: true
-        @formatter.new(nil).protonym_name(protonym).should == '<b><i>&dagger;</i><i>Atari</i></b>'
+        @formatter.new(nil).protonym_name(protonym).should == '<b><span class="protonym_name"><i>&dagger;</i><i>Atari</i></span></b>'
       end
     end
 
