@@ -388,7 +388,7 @@ describe Taxon do
   end
 
   describe "Cascading delete" do
-    it "should delete the protonym when the taxon is deleted" do
+    it "should not delete the protonym when the taxon is deleted" do
       Taxon.count.should be_zero
       Protonym.count.should be_zero
 
@@ -398,7 +398,7 @@ describe Taxon do
 
       genus.destroy
       Taxon.count.should be_zero
-      Protonym.count.should be_zero
+      Protonym.count.should == 1
     end
     it "should delete history and reference sections when the taxon is deleted" do
       Taxon.count.should be_zero
