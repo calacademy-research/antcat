@@ -4,7 +4,7 @@ class Subspecies < SpeciesGroupTaxon
   before_validation :set_genus
 
   def set_genus
-    self.genus = species.genus if species
+    self.genus = species.genus if species and not genus
   end
 
   def statistics
