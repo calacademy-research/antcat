@@ -17,7 +17,7 @@ class TaxaController < ApplicationController
     @taxon = new_taxon
     @parent_id = params[:parent_id]
     assign_parent_id
-    save true
+    save
   end
 
   def edit
@@ -36,7 +36,7 @@ class TaxaController < ApplicationController
     return elevate_to_species if params[:task_button_command] == 'elevate_to_species'
     @taxon = Taxon.find params[:id]
     @parent_id = params[:parent_id]
-    save false
+    save
   end
 
   def elevate_to_species
@@ -83,9 +83,9 @@ class TaxaController < ApplicationController
     @add_taxon_button_text = "Add #{string}" if string
   end
 
-  def save do_create_object_web
+  def save
     begin
-      create_object_web if do_create_object_web
+      create_object_web
       update_taxon params[:taxon]
     rescue ActiveRecord::RecordInvalid
       render :edit and return
@@ -148,7 +148,6 @@ class TaxaController < ApplicationController
     return unless @taxon.protonym.authorship
     attributes[:reference_id] = attributes.delete(:reference_attributes)[:id]
     return if attributes[:reference_id].blank? and @taxon.protonym.authorship.reference.blank?
-    @taxon.protonym.authorship.attributes = attributes
     @taxon.protonym.authorship.attributes = attributes
   end
 
