@@ -98,6 +98,20 @@ Feature: Editing a taxon
     When I save my changes
     Then I should see "Fisher 2004. Ants. Psyche 3:3." in the headline
 
+  Scenario: Supplying the authorship when there wasn't one before
+    Given these references exist
+      | authors | citation   | title | year |
+      | Fisher  | Psyche 3:3 | Ants  | 2004 |
+    Given there is a genus "Eciton" without protonym authorship
+    And I log in
+    And I go to the edit page for "Eciton"
+    And I click the authorship field
+    And I search for the author "Fisher"
+    And I click the first search result
+    And I press "OK"
+    And I save my changes
+    Then I should see "Fisher 2004. Ants. Psyche 3:3." in the headline
+
   Scenario: Changing the type name
     Given there is a genus "Atta" with type name "Atta major"
     And there is a species "Atta major"
