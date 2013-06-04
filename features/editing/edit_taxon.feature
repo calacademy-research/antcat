@@ -5,6 +5,16 @@ Feature: Editing a taxon
   So that information is kept accurate
   So people use AntCat
 
+  Scenario: Editing a family's name
+    Given there is a family "Formicidae"
+    And I log in
+    When I go to the edit page for "Formicidae"
+    And I click the epithet field
+    And I set the epithet to "Wildencidae"
+    And I press "OK"
+    And I save my changes
+    Then I should see "Wildencidae" in the header
+
   Scenario: Trying to edit without being logged in
     Given there is a genus "Calyptites"
     When I go to the edit page for "Calyptites"
@@ -22,16 +32,6 @@ Feature: Editing a taxon
     When I go to the catalog page for "Calyptites"
     And I press "Edit"
     Then I should be on the edit page for "Calyptites"
-
-  Scenario: Editing a family's name
-    Given there is a family "Formicidae"
-    And I log in
-    When I go to the edit page for "Formicidae"
-    And I click the epithet field
-    And I set the epithet to "Wildencidae"
-    And I press "OK"
-    And I save my changes
-    Then I should see "Wildencidae" in the header
 
   Scenario: Trying to enter a blank name
     Given there is a family "Formicidae"
