@@ -30,3 +30,14 @@ Sunspot.session = Sunspot.session.original_session if ENV['DRB'] != 'true'
 at_exit do
   Sunspot.session = Sunspot::Rails::StubSessionProxy.new(Sunspot.session) if ENV['DRB'] != 'true'
 end
+
+include Warden::Test::Helpers
+Warden.test_mode!
+
+Warden::Manager.serialize_into_session do |user|
+  user.email
+end
+
+Warden::Manager.serialize_from_session do |email|
+  User.find_by_email email
+end
