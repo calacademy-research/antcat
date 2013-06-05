@@ -1,4 +1,5 @@
 # coding: UTF-8
+
 Given /this user exists/ do |table|
   table.hashes.each {|hash| User.create! hash}
 end
@@ -18,12 +19,21 @@ end
 Given 'I am not logged in' do
 end
 
-def login can_edit_catalog
+def login can_edit_catalog, use_web_interface = false
   step 'I go to the main page'
   User.delete_all
   attributes = {email: 'mark@example.com'}
   attributes[:can_edit_catalog] = true if can_edit_catalog
   @user = FactoryGirl.create :user, attributes
+
+  use_web_interface ? login_through_web_page : login_programmatically
+end
+
+def login_programmatically
+  login_as @user
+end
+
+def login_through_web_page
   click_link "Login"
   step %{I fill in "user_email" with "#{@user.email}"}
   step %{I fill in "user_password" with "#{@user.password}"}
@@ -35,6 +45,9 @@ Given /^I log in$/ do
 end
 Given /^I log in as a bibliography editor$/ do
   login false
+end
+Given /^I log in through the web interface/ do
+  login true, true
 end
 
 Given 'I log out' do
