@@ -28,11 +28,11 @@ describe Vlad do
     results.first.should == genus_with_tribe_but_not_subfamily
   end
 
-  it "should show names without taxa, protonyms or type names" do
+  it "should show names without taxa or type names" do
     eciton = create_name 'Eciton'
     formica = create_name 'Formica'
     atta = create_name 'Atta'
-    create_subfamily type_name: eciton, protonym: nil
+    create_subfamily type_name: eciton
     create_subfamily type_name: nil, protonym: FactoryGirl.create(:protonym, name: formica)
     results = Vlad::NamesWithoutTaxa.query
     results.count.should == 1
@@ -69,14 +69,6 @@ describe Vlad do
     Vlad::SynonymCycles.query.should_not be_blank
     results.should have(1).item
     results.should == [['Atta', 'Betta']]
-  end
-
-  it "should show taxa without protonyms" do
-    create_genus
-    genus = create_genus protonym: nil
-    results = Vlad::TaxaWithoutProtonyms.query
-    results.size.should == 1
-    results.first.should == genus
   end
 
   it "should show protonyms without authorships" do
