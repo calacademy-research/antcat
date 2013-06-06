@@ -6,6 +6,11 @@ class TaxonHistoryItem < ActiveRecord::Base
 
   has_paper_trail
 
+  def title
+    # for PaperTrailManager's RSS output
+    taxt
+  end
+
   def update_taxt_from_editable editable_taxt
     update_attributes taxt: Taxt.from_editable(editable_taxt)
   rescue Taxt::ReferenceNotFound => e
