@@ -1,4 +1,5 @@
 # coding: UTF-8
+
 module ApplicationHelper
   require 'milieu'
 
@@ -55,4 +56,13 @@ http://antcat.org
     Formatters::Formatter.add_period_if_necessary string
   end
 
+end
+
+PaperTrailManager::ChangesHelper
+
+module PaperTrailManager::ChangesHelper
+  def change_item_types
+    item_types = ActiveRecord::Base.connection.select_values('SELECT DISTINCT(item_type) FROM versions ORDER BY item_type')
+    item_types - ['Author', 'ReferenceAuthorName']
+  end
 end
