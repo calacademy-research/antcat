@@ -12,7 +12,7 @@ class Citation < ActiveRecord::Base
   end
 
   def authorship_string
-    "#{author_names_string}, #{reference.year}"
+    reference and "#{author_names_string}, #{reference.year}"
   end
 
   def author_names_string

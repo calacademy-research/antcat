@@ -53,18 +53,16 @@ Feature: Edit reference
     And In the edit form, I press the "Save" button
     Then I should see "Ward, P.; Fisher, B.; Bolton, B."
 
-  #Scenario: Change a reference's year
-    #Given I am logged in
-    #And these references exist
-      #| authors      | title | citation   | year |
-      #| Fisher, B.L. | Ants  | Psyche 6:4 | 2010 |
-    #When I go to the references page
-    #When I follow "edit" in the first reference
-    #And I fill in "reference_citation_year" with "1910a" in the first reference
-    #And I save my changes to the first reference
-    #And I fill in the search box with "1910"
-    #And I press "Go" by the search box
-    #Then I should see "Fisher, B.L. 1910a"
+  Scenario: Change a reference's year
+    Given I am logged in
+    And these references exist
+      | authors      | title | citation   | year |
+      | Aho, B.L.    | Ants  | Psyche 6:4 | 2010 |
+    When I go to the references page
+    When I follow "edit" in the first reference
+    And I fill in "reference_citation_year" with "1910a" in the first reference
+    And I save my changes to the first reference
+    Then I should see "Aho, B.L. 1910a"
 
   Scenario: Change a reference's type
     Given I am logged in
@@ -105,7 +103,7 @@ Feature: Edit reference
     Given I am logged in
     And these book references exist
       | authors    | citation                | year  | title |
-      | Ward, P.S. | New York: Wiley, 36 pp. | 2010a | Ants  |
+      | Aho, P.S.  | New York: Wiley, 36 pp. | 2010a | Ants  |
     When I go to the references page
     When I follow "edit" in the first reference
     When I fill in "reference_author_names_string" with "" in the first reference
@@ -124,7 +122,7 @@ Feature: Edit reference
     Given I am logged in
     And these references exist
       | authors    | citation   | year  | title |
-      | Ward, P.S. | Psyche 1:2 | 2010a | Ants  |
+      | Aho, P.S.  | Psyche 1:2 | 2010a | Ants  |
     When I go to the references page
     When I follow "edit" in the first reference
     When I fill in "reference_author_names_string" with "" in the first reference
@@ -145,9 +143,10 @@ Feature: Edit reference
     Given I am logged in
     And these unknown references exist
       | authors    | citation | year  | title |
-      | Ward, P.S. | New York | 2010a | Ants  |
+      | Aho, P.S. | New York | 2010a | Ants  |
     When I go to the references page
     When I follow "edit" in the first reference
+    And I follow "Other"
     When I fill in "reference_author_names_string" with "" in the first reference
     And I fill in "reference_title" with "" in the first reference
     And I fill in "reference_citation_year" with "" in the first reference
