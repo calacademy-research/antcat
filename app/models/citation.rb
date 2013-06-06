@@ -6,6 +6,11 @@ class Citation < ActiveRecord::Base
 
   has_paper_trail
 
+  def title
+    # for PaperTrailManager's RSS output
+    id.to_s
+  end
+
   def authorship_string
     "#{author_names_string}, #{reference.year}"
   end
