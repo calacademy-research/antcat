@@ -11,6 +11,11 @@ class ConvertToSubspeciesController < ApplicationController
   def create
     @taxon = Taxon.find params[:taxa_id]
 
+    if @taxon.kind_of? SpeciesGroupTaxon and @taxon.subspecies.present?
+      @taxon.errors.add :base, "This species has subspecies of its own, so it can't be converted to a subspecies"
+      render :new and return
+    end
+
     unless params[:new_species_id].present?
       @taxon.errors.add :base, 'Please select a species.'
       render :new and return
