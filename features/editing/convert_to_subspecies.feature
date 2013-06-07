@@ -30,6 +30,18 @@ Feature: Converting a species to a subspecies
     And I press "OK"
     Then I should see "The subspecies 'Camponotus alii dallatorei' already exists. Please tell Mark."
 
+  Scenario: Converting a species to a subspecies when the species has subspecies
+    Given there is a species "Camponotus alii"
+    And there is a subspecies "Camponotus alii major" which is a subspecies of "Camponotus alii"
+    And I am logged in
+    When I go to the edit page for "Camponotus alii"
+    And I press "Convert to subspecies"
+    And I click the new species field
+    And I set the new species field to "Camponotus alii"
+    And I press "OK"
+    And I press "OK"
+    Then I should see "This species has subspecies of its own"
+
   Scenario: Leaving the species blank
     Given there is a species "Camponotus dallatorei" with genus "Camponotus"
     And there is a species "Camponotus alii" with genus "Camponotus"
