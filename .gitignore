@@ -1,18 +1,17 @@
-coverage
-log
-pids
-tmp
-public/assets
-solr/data
 .rspec
-database.yml
-s3.yml
-tags
-screencasts
-selenium
-mind maps
-data/pdfs
 .sass-cache
 backups/*.tmp
-server.yml
+coverage
+data/pdfs
+database.yml
 etc
+log
+mind maps
+pids
+public/assets
+s3.yml
+selenium
+server.yml
+solr/data
+tmp
+tags
