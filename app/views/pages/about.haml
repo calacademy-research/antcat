@@ -1,26 +1,30 @@
 - @title = 'About'
 
-%div{style: 'margin-top: 10px; margin-bottom: 10px'}
-  AntCat is a catalog and bibliography of the taxonomy of the world's ants.
+%div.about
+  %div.section
+    AntCat is a catalog and bibliography of the taxonomy of the world's ants.
 
-%div
-  To cite AntCat:
+  %div.section
+    %h2 To cite AntCat:
 
-%div{style: 'margin-top: 4px; margin-left: 30px'}
-  Bolton, B. 2013. An online catalog of the ants of the world. Available
-  from http://antcat.org. (accessed [date])
+  %div.cite
+    %b Bolton, B. 2013. An online catalog of the ants of the world. Available from http://antcat.org. (accessed [date])
 
-- if user_is_editor?
-  %div{style: 'margin-top: 10px'}
-    = link_to 'Editing guidelines', page_path('editing_guidelines')
+  %div.section
+    %h2 Tutorial videos
+    %ul
+      %li= link_to 'Fix missing authorship (2:25)', 'https://vimeo.com/67913100'
+      %li= link_to 'Merging author names (3:05)', 'https://vimeo.com/36291084'
+      %li= link_to 'Editing demo (6:06)', 'https://vimeo.com/40688187'
 
-%div
-  = link_to 'Source code', 'https://github.com/calacademy/antcat'
+  %div.section
+    %h2
+      Other links
+    %ul
+      - if user_is_editor?
+        %li= link_to 'Editing guidelines', page_path('editing_guidelines')
+      %li= link_to 'Source code', 'https://github.com/calacademy/antcat'
+      %li= link_to 'Project plan', 'https://www.pivotaltracker.com/s/projects/97176'
+      %li= link_to 'Contact us ', 'mailto:mark@mwilden.com'
 
-%div
-  = link_to 'Project plan', 'https://www.pivotaltracker.com/s/projects/97176'
-
-%div
-  = link_to 'Contact us ', 'mailto:mark@mwilden.com'
-
-%div{style: 'margin-top: 10px'}
+  %div.last_section
