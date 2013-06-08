@@ -24,9 +24,6 @@ end
 When /^the name field should contain "([^"]*)"$/ do |name|
   find('#epithet_field button').text.should == name
 end
-When /^the protonym name field should contain "([^"]*)"$/ do |name|
-  find('.protonym_name_field button').text.should == name
-end
 When /^I set the homonym replaced by name to "([^"]*)"$/ do |name|
   step %{I fill in "name_string" with "#{name}"}
 end
@@ -64,14 +61,21 @@ end
 When /^I set the taxon name to "([^"]*)"$/ do |name|
   step %{I fill in "name_string" with "#{name}"}
 end
+
+### epithet field
 When /I click the epithet field/ do
   find('#epithet_field .display_button').click
 end
 When /the epithet field should contain "([^"]*)"/ do |name|
   find('#name_string').value.should == name
 end
+
+### protonym name field
 When /I click the protonym name field/ do
   find('#protonym_name_field .display_button').click
+end
+When /^the protonym name field should contain "([^"]*)"$/ do |name|
+  find('.protonym_name_field button').text.should == name
 end
 When /^I set the protonym name to "([^"]*)"$/ do |name|
   step %{I fill in "name_string" with "#{name}"}
