@@ -84,7 +84,8 @@ Feature: Adding a taxon
     And I should see "new species of "
     And I should see "Eciton"
     When I click the epithet field
-      And I set the epithet to "Eciton major"
+    Then the epithet field should contain "Eciton "
+    When I set the epithet to "Eciton major"
       And I press "OK"
     And I click the protonym name field
       And I set the protonym name to "Eciton major"
@@ -141,7 +142,8 @@ Feature: Adding a taxon
     Then I should be on the new taxon page
     And I should see "new subspecies of Eciton major"
     When I click the epithet field
-      And I set the epithet to "Eciton major infra"
+    Then the epithet field should contain "Eciton major "
+    When I set the epithet to "Eciton major infra"
       And I press "OK"
     And I click the protonym name field
       And I set the protonym name to "Eciton major infra"

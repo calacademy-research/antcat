@@ -1,4 +1,6 @@
--#Locals: taxon, parent, form
+-#Locals: taxon, parent, form, default_name
+
+- default_name ||= nil
 
 %tr
   = form.fields_for :name do |name_form|
@@ -7,6 +9,7 @@
     %td.label.top_aligned= name_form.label :name
     %td
       #epithet_field
+        = hidden_field_tag 'default_name', default_name && "#{default_name} "
         = render 'name_fields/panel', name_string: taxon.name.try(:name)
       .name_description
         = name_description taxon
