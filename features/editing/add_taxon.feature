@@ -15,8 +15,8 @@ Feature: Adding a taxon
   Scenario: Adding a genus
     Given there is a genus "Eciton"
     When I go to the catalog page for "Formicinae"
-    And I press "Edit"
-    And I press "Add genus"
+      And I press "Edit"
+      And I press "Add genus"
     Then I should be on the new taxon page
     When I click the epithet field
       And I set the epithet to "Atta"
@@ -24,19 +24,19 @@ Feature: Adding a taxon
     And I click the protonym name field
       And I set the protonym name to "Eciton"
       And I press "OK"
-    And I click the authorship field
+    When I click the authorship field
       And I search for the author "Fisher"
       And I click the first search result
       And I press "OK"
-    And I click the type name field
+    When I click the type name field
       And I set the type name to "Atta major"
       And I press "OK"
       And I press "Add this name"
-    And I save my changes
-    Then I should be on the catalog page for "Atta"
-    And I should see "Eciton" in the protonym
+    When I save my changes
+      Then I should be on the catalog page for "Atta"
+      And I should see "Eciton" in the protonym
     When I go to the catalog page for "Formicinae"
-    Then I should see "Atta" in the index
+      Then I should see "Atta" in the index
 
   Scenario: Adding a genus without setting authorship reference
     Given there is a genus "Eciton"
