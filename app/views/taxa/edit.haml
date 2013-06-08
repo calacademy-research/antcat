@@ -25,7 +25,7 @@
     = render 'shared/errors_for', resource: @taxon
 
     .fields_section.section.ui-widget-content.ui-corner-all
-      = render 'epithet_status_flags_section',      taxon: @taxon, form: form
+      = render 'epithet_status_flags_section',      taxon: @taxon, form: form, default_name: @default_name
       = render 'protonym_section',                  taxon: @taxon, form: form
       = render 'type_section',                      taxon: @taxon, form: form
       = render 'buttons_section',                   form: form,                                                            |

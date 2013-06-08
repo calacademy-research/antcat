@@ -76,6 +76,9 @@ end
 When /I click the epithet field/ do
   find('#epithet_field .display_button').click
 end
+When /the epithet field should contain "([^"]*)"/ do |name|
+  find('#name_string').value.should == name
+end
 When /I click the new species field/ do
   find('#new_species_id_field .display_button').click
 end

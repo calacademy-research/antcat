@@ -9,6 +9,12 @@ class TaxaController < ApplicationController
     @parent_id = params[:parent_id]
     create_object_web
     assign_parent_id
+
+    if @taxon.kind_of? SpeciesGroupTaxon
+      parent = Taxon.find params[:parent_id]
+      @default_name = parent.name.name
+    end
+
     render :edit
   end
 
