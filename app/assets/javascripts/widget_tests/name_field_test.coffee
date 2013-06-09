@@ -21,3 +21,8 @@ $ ->
     parent_form: form,
     field: true,
     new_or_homonym: true
+
+  new AntCat.NameField $('#test_default_name_string_name_field'),
+    value_id: 'test_default_name_string_name_field_value',
+    parent_form: form,
+    field: true,

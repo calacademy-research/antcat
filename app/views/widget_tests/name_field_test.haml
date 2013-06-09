@@ -35,6 +35,12 @@
           = hidden_field_tag 'test_new_or_homonym_name_field_value', ''
 
       %tr
+        %td= label_tag :default_name_string
+        %td#test_default_name_string_name_field
+          = render 'name_fields/panel', name_string: @name.try(:name), default_name_string: @default_name_string
+          = hidden_field_tag 'test_default_name_string_name_field', ''
+
+      %tr
         %td.buttons{colspan: 4}
           %button.ui-priority-primary.submit= previewize 'Save'
           %button.ui-priority-secondary.cancel Cancel
