@@ -12,12 +12,12 @@ class AntCat.NameField extends AntCat.Panel
     super $parent_element.find('> .antcat_name_field'), @options
     @element.find('.help').text @construct_help()
 
-  create_form: ($element, options) =>
-    options.taxa_only = @options.taxa_only
-    options.species_only = @options.species_only
-    options.allow_blank = @options.allow_blank
-    options.default_name_string = @get_default_name_string()
-    new AntCat.NameFieldForm $element, options
+  create_form: ($element, form_options) =>
+    form_options.taxa_only = @options.taxa_only
+    form_options.species_only = @options.species_only
+    form_options.allow_blank = @options.allow_blank
+    form_options.default_name_string = @get_default_name_string()
+    new AntCat.NameFieldForm $element, form_options
 
   get_default_name_string: =>
     default_name_string_field = @element.find '#default_name_string'
