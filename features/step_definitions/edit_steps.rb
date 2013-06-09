@@ -46,6 +46,10 @@ end
 When /I click the name field/ do
   step %{I click "#test_name_field .display_button"}
 end
+
+# test fields
+
+# name fields
 When /I click the allow_blank name field/ do
   step %{I click "#test_allow_blank_name_field .display_button"}
 end
@@ -57,6 +61,12 @@ When /I click the taxon name field/ do
 end
 When /^I set the taxon name to "([^"]*)"$/ do |name|
   step %{I fill in "name_string" with "#{name}"}
+end
+When /the default_name_string field should contain "([^"]*)"/ do |name|
+  find('#test_default_name_string_name_field #name_string').value.should == name
+end
+When /I click the default_name_string field/ do
+  step %{I click "#test_default_name_string_name_field .display_button"}
 end
 
 ### epithet field

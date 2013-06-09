@@ -65,3 +65,8 @@ Feature: Name field
     And I press "OK"
     Then I should see "This name is in use by another taxon. To create a homonym, click "
     And I should see "Save homonym"
+
+  Scenario: Opening a field with a default value
+    When I go to the name field test page
+    And I click the default_name_string field
+    Then the default_name_string field should contain "Default"
