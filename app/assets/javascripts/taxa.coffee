@@ -3,12 +3,13 @@ $ -> new AntCat.TaxonForm $('.taxon_form'), button_container: '> .fields_section
 class AntCat.ProtonymField extends AntCat.NameField
   constructor: ($parent_element, @epithet_field, @options = {}) ->
     super $parent_element, @options
-  get_default: => @epithet_field.string_value()
+  get_default_name_string: =>
+    @epithet_field.string_value()
 
 class AntCat.TypeNameField extends AntCat.NameField
   constructor: ($parent_element, @protonym_field, @options = {}) ->
     super $parent_element, @options
-  get_default: =>
+  get_default_name_string: =>
     string = @protonym_field.string_value()
     return unless string
     string + ' '
