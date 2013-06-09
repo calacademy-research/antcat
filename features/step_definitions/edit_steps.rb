@@ -76,6 +76,9 @@ end
 When /the epithet field should contain "([^"]*)"/ do |name|
   find('#name_string').value.should == name
 end
+When /^I set the epithet to "([^"]*)"$/ do |name|
+  step %{I fill in "name_string" with "#{name}"}
+end
 
 ### protonym name field
 When /I click the protonym name field/ do
@@ -103,13 +106,14 @@ When /I click the homonym replaced by name field/ do
   find('#homonym_replaced_by_name_field .display_button').click
 end
 
+# convert species to subspecies
 When /I click the new species field/ do
   find('#new_species_id_field .display_button').click
 end
-When /^I set the new species field to "([^"]*)"$/ do |name|
-  step %{I fill in "name_string" with "#{name}"}
+When /^the new species field should contain "([^"]*)"$/ do |name|
+  find('#name_string').value.should == name
 end
-When /^I set the epithet to "([^"]*)"$/ do |name|
+When /^I set the new species field to "([^"]*)"$/ do |name|
   step %{I fill in "name_string" with "#{name}"}
 end
 

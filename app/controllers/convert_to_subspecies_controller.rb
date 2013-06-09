@@ -6,6 +6,7 @@ class ConvertToSubspeciesController < ApplicationController
   def new
     @taxon = Taxon.find params[:taxa_id]
     @new_species = nil
+    @default_name_string = @taxon.genus.name.name + ' '
   end
 
   def create

@@ -12,6 +12,7 @@ Feature: Converting a species to a subspecies
     And I press "Convert to subspecies"
     Then I should be on the new "Convert to subspecies" page for "Camponotus dallatorei"
     When I click the new species field
+    Then the new species field should contain "Camponotus "
     And I set the new species field to "Camponotus alii"
     And I press "OK"
     And I press "OK"
