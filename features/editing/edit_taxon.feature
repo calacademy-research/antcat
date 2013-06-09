@@ -9,8 +9,8 @@ Feature: Editing a taxon
     Given there is a family "Formicidae"
     And I log in
     When I go to the edit page for "Formicidae"
-    And I click the epithet field
-    And I set the epithet to "Wildencidae"
+    And I click the name field
+    And I set the name to "Wildencidae"
     And I press "OK"
     And I save my changes
     Then I should see "Wildencidae" in the header
@@ -37,10 +37,10 @@ Feature: Editing a taxon
     Given there is a family "Formicidae"
     And I log in
     When I go to the edit page for "Formicidae"
-    And I click the epithet field
-    And I set the epithet to ""
+    And I click the name field
+    And I set the name to ""
     And I press "OK"
-    Then I should still see the epithet field
+    Then I should still see the name field
 
   Scenario: Editing a species
     Given a species exists with a name of "major" and a genus of "Atta"
@@ -57,8 +57,8 @@ Feature: Editing a taxon
     And there is a genus "Atta"
     And I log in
     When I go to the edit page for "Atta"
-    And I click the epithet field
-    And I set the epithet to "Calyptites"
+    And I click the name field
+    And I set the name to "Calyptites"
     And I press "OK"
     Then I should see "This name is in use by another taxon"
     And I press "OK"

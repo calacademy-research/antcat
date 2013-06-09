@@ -4,29 +4,36 @@ When /^I save my changes$/ do
 end
 
 # section
-When /^I save the (\w+)(?: item)?$/ do |section|
-  step %{I press the #{section} item "Save" button}
-end
-When /^I cancel the (\w+) item's changes$/ do |section|
-  step %{I press the #{section} item "Cancel" button}
-end
-When /^I delete the (\w+) item$/ do |section|
-  step %{I press the #{section} item "Delete" button}
-end
+#When /^I save the (\w+)(?: item)?$/ do |section|
+  #step %{I press the #{section} item "Save" button}
+#end
+#When /^I cancel the (\w+) item's changes$/ do |section|
+  #step %{I press the #{section} item "Cancel" button}
+#end
+#When /^I delete the (\w+) item$/ do |section|
+  #step %{I press the #{section} item "Delete" button}
+#end
 
 # fields section
-When /^I set the name to "([^"]*)"$/ do |name|
-  step %{I fill in "taxon[name_attributes][epithet]" with "#{name}"}
+
+### name field
+And /^I click the name field$/ do
+  step %{I click "#name_field .display_button"}
 end
-Then /^I should still see the epithet field$/ do
-  page.find('#epithet_field .edit').should be_visible
+When /^I set the name to "([^"]*)"$/ do |name|
+  step %{I fill in "name_string" with "#{name}"}
+end
+Then /^I should still see the name field$/ do
+  page.find('#name_field .edit').should be_visible
 end
 When /^the name field should contain "([^"]*)"$/ do |name|
-  find('#epithet_field button').text.should == name
+  find('#name_string').value.should == name
 end
 When /^I set the homonym replaced by name to "([^"]*)"$/ do |name|
   step %{I fill in "name_string" with "#{name}"}
 end
+
+### homonym replaced by field
 Then /^I should (not )?see the homonym replaced by field$/ do |should_not|
   selector = should_not ? :should_not : :should
   find("#homonym_replaced_by").send(selector, be_visible)
@@ -34,50 +41,18 @@ end
 When /the homonym replaced by name should be "([^"]*)"$/ do |name|
   page.find('#homonym_replaced_by_name_field div.display').text.should == name
 end
+When /I click the homonym replaced by name field/ do
+  find('#homonym_replaced_by_name_field .display_button').click
+end
+
+### headline notes
 When /^I put the cursor in the headline notes edit box$/ do
   find('#taxon_headline_notes_taxt').click
 end
-When /^I fill in the name with "([^"]*)"$/ do |value|
-  step %{I fill in "name_string" with "#{value}"}
-end
+
+### authorship
 And /^I click the authorship field$/ do
   step %{I click "#authorship_field .display_button"}
-end
-When /I click the name field/ do
-  step %{I click "#test_name_field .display_button"}
-end
-
-# test fields
-
-# name fields
-When /I click the allow_blank name field/ do
-  step %{I click "#test_allow_blank_name_field .display_button"}
-end
-When /I click the new_or_homonym field/ do
-  step %{I click "#test_new_or_homonym_name_field .display_button"}
-end
-When /I click the taxon name field/ do
-  step %{I click "#name_field .display_button"}
-end
-When /^I set the taxon name to "([^"]*)"$/ do |name|
-  step %{I fill in "name_string" with "#{name}"}
-end
-When /the default_name_string field should contain "([^"]*)"/ do |name|
-  find('#test_default_name_string_name_field #name_string').value.should == name
-end
-When /I click the default_name_string field/ do
-  step %{I click "#test_default_name_string_name_field .display_button"}
-end
-
-### epithet field
-When /I click the epithet field/ do
-  find('#epithet_field .display_button').click
-end
-When /the epithet field should contain "([^"]*)"/ do |name|
-  find('#name_string').value.should == name
-end
-When /^I set the epithet to "([^"]*)"$/ do |name|
-  step %{I fill in "name_string" with "#{name}"}
 end
 
 ### protonym name field
@@ -100,10 +75,6 @@ When /^I set the type name to "([^"]*)"$/ do |name|
 end
 When /^the type name field should contain "([^"]*)"$/ do |name|
   find('#name_string').value.should == name
-end
-
-When /I click the homonym replaced by name field/ do
-  find('#homonym_replaced_by_name_field .display_button').click
 end
 
 # convert species to subspecies

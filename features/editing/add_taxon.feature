@@ -18,8 +18,8 @@ Feature: Adding a taxon
       And I press "Edit"
       And I press "Add genus"
     Then I should be on the new taxon page
-    When I click the epithet field
-      And I set the epithet to "Atta"
+    When I click the name field
+      And I set the name to "Atta"
       And I press "OK"
     When I click the protonym name field
       Then the protonym name field should contain "Atta"
@@ -46,8 +46,8 @@ Feature: Adding a taxon
     When I go to the edit page for "Formicinae"
     And I press "Add genus"
     Then I should be on the new taxon page
-    When I click the epithet field
-      And I set the epithet to "Atta"
+    When I click the name field
+      And I set the name to "Atta"
       And I press "OK"
     And I click the protonym name field
       And I set the protonym name to "Eciton"
@@ -62,8 +62,8 @@ Feature: Adding a taxon
   Scenario: Having an error, but leave fields as user entered them
     When I go to the edit page for "Formicinae"
     And I press "Add genus"
-    And I click the epithet field
-      And I set the epithet to "Atta"
+    And I click the name field
+      And I set the name to "Atta"
       And I press "OK"
     And I fill in "taxon_type_taxt" with "Notes"
     And I save my changes
@@ -86,9 +86,9 @@ Feature: Adding a taxon
     Then I should be on the new taxon page
     And I should see "new species of "
     And I should see "Eciton"
-    When I click the epithet field
-    Then the epithet field should contain "Eciton "
-    When I set the epithet to "Eciton major"
+    When I click the name field
+    Then the name field should contain "Eciton "
+    When I set the name to "Eciton major"
       And I press "OK"
     And I click the protonym name field
       And I set the protonym name to "Eciton major"
@@ -105,8 +105,8 @@ Feature: Adding a taxon
     When I go to the catalog page for "Formicinae"
     And I press "Edit"
     And I press "Add genus"
-    And I click the epithet field
-      And I set the epithet to "Atta"
+    And I click the name field
+      And I set the name to "Atta"
       And I press "OK"
     And I click the protonym name field
       And I set the protonym name to "Atta"
@@ -122,8 +122,8 @@ Feature: Adding a taxon
     And I save my changes
     And I press "Edit"
     And I press "Add species"
-    When I click the epithet field
-      And I set the epithet to "Atta major"
+    When I click the name field
+      And I set the name to "Atta major"
       And I press "OK"
     And I click the protonym name field
       And I set the protonym name to "Atta major"
@@ -144,9 +144,9 @@ Feature: Adding a taxon
     And I press "Add subspecies"
     Then I should be on the new taxon page
     And I should see "new subspecies of Eciton major"
-    When I click the epithet field
-    Then the epithet field should contain "Eciton major "
-    When I set the epithet to "Eciton major infra"
+    When I click the name field
+    Then the name field should contain "Eciton major "
+    When I set the name to "Eciton major infra"
       And I press "OK"
     And I click the protonym name field
       And I set the protonym name to "Eciton major infra"
