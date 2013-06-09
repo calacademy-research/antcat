@@ -75,7 +75,7 @@ When /I click the protonym name field/ do
   find('#protonym_name_field .display_button').click
 end
 When /^the protonym name field should contain "([^"]*)"$/ do |name|
-  find('.protonym_name_field button').text.should == name
+  find('#name_string').value.should == name
 end
 When /^I set the protonym name to "([^"]*)"$/ do |name|
   step %{I fill in "name_string" with "#{name}"}
