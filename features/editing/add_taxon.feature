@@ -21,7 +21,9 @@ Feature: Adding a taxon
     When I click the epithet field
       And I set the epithet to "Atta"
       And I press "OK"
-      And I click the protonym name field
+    When I click the protonym name field
+      Then the protonym name field should contain "Atta"
+    When I set the protonym name to "Eciton"
       And I set the protonym name to "Eciton"
       And I press "OK"
     When I click the authorship field
