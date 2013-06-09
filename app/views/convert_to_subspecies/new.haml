@@ -29,7 +29,7 @@
             %td
               #new_species_id_field
                 = hidden_field_tag 'new_species_id', @new_species.try(:id)
-                = render 'name_fields/panel', name_string: @new_species.try(:name).try(:name)
+                = render 'name_fields/panel', name_string: @new_species.try(:name).try(:name), default_name_string: @default_name_string
 
       .buttons_section
         .left_buttons
