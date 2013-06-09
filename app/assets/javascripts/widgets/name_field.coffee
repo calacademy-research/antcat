@@ -13,17 +13,16 @@ class AntCat.NameField extends AntCat.Panel
     super $parent_element.find('> .antcat_name_field'), @options
     @element.find('.help').text @construct_help()
 
-  get_default: =>
-    default_value_field = $('#' + @options.default_value_id)
-    if default_value_field.size() == 1
-      default_value_field.val()
-
   create_form: ($element, options) =>
     options.taxa_only = @options.taxa_only
     options.species_only = @options.species_only
     options.allow_blank = @options.allow_blank
-    options.default = @get_default()
+    options.default_name_string = @get_default_name_string()
     new AntCat.NameFieldForm $element, options
+
+  get_default_name_string: =>
+    default_name_string_field = @element.find '#default_name_string'
+    default_name_string_field.val()
 
   before_submit: =>
     @form().add_to_url @construct_parameters()
@@ -90,14 +89,14 @@ class AntCat.NameFieldForm extends AntCat.NestedForm
   constructor: (@element, @options = {}) ->
     @options.button_container = '.buttons'
     @textbox = @element.find('input[type=text]')
-    @default = @options.default
+    @default_name_string = @options.default_name_string
     @setup_autocomplete @textbox
     super
 
   open: =>
-    unless @textbox.val() or not @default
-      @textbox.val @default
-      @textbox.setCaretPos @default.length + 1
+    unless @textbox.val() or not @default_name_string
+      @textbox.val @default_name_string
+      @textbox.setCaretPos @default_name_string.length + 1
     super
 
   add_to_url: (parameters) =>

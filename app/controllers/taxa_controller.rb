@@ -12,7 +12,7 @@ class TaxaController < ApplicationController
 
     if @taxon.kind_of? SpeciesGroupTaxon
       parent = Taxon.find params[:parent_id]
-      @default_name = parent.name.name
+      @default_name_string = parent.name.name
     end
 
     render :edit
