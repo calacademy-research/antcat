@@ -30,6 +30,9 @@ class AntCat.Panel
         (event) => AntCat.deselect()
       )
 
+  string_value: =>
+    @element.find('#name_string').val()
+
   edit: =>
     @save_panel()
     @show_form()
