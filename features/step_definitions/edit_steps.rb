@@ -34,9 +34,6 @@ end
 When /the homonym replaced by name should be "([^"]*)"$/ do |name|
   page.find('#homonym_replaced_by_name_field div.display').text.should == name
 end
-When /^I set the type name to "([^"]*)"$/ do |name|
-  step %{I fill in "name_string" with "#{name}"}
-end
 When /^I put the cursor in the headline notes edit box$/ do
   find('#taxon_headline_notes_taxt').click
 end
@@ -81,6 +78,17 @@ When /^I set the protonym name to "([^"]*)"$/ do |name|
   step %{I fill in "name_string" with "#{name}"}
 end
 
+# type name field
+When /I click the type name field/ do
+  find('#type_name_field .display_button').click
+end
+When /^I set the type name to "([^"]*)"$/ do |name|
+  step %{I fill in "name_string" with "#{name}"}
+end
+When /^the type name field should contain "([^"]*)"$/ do |name|
+  find('#name_string').value.should == name
+end
+
 When /I click the homonym replaced by name field/ do
   find('#homonym_replaced_by_name_field .display_button').click
 end
@@ -94,9 +102,7 @@ end
 When /^I set the epithet to "([^"]*)"$/ do |name|
   step %{I fill in "name_string" with "#{name}"}
 end
-When /I click the type name field/ do
-  find('#type_name_field .display_button').click
-end
+
 Then /the status should be "([^"]*)"/ do |status|
   page.should have_css "select#taxon_status option[selected=selected][value=#{status}]"
 end

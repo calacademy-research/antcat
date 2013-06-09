@@ -31,7 +31,8 @@ Feature: Adding a taxon
       And I click the first search result
       And I press "OK"
     When I click the type name field
-      And I set the type name to "Atta major"
+      Then the type name field should contain "Eciton "
+    When I set the type name to "Atta major"
       And I press "OK"
       And I press "Add this name"
     When I save my changes

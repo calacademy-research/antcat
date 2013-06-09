@@ -3,8 +3,15 @@ $ -> new AntCat.TaxonForm $('.taxon_form'), button_container: '> .fields_section
 class AntCat.ProtonymField extends AntCat.NameField
   constructor: ($parent_element, @epithet_field, @options = {}) ->
     super $parent_element, @options
-
   get_default: => @epithet_field.string_value()
+
+class AntCat.TypeNameField extends AntCat.NameField
+  constructor: ($parent_element, @protonym_field, @options = {}) ->
+    super $parent_element, @options
+  get_default: =>
+    string = @protonym_field.string_value()
+    return unless string
+    string + ' '
 
 class AntCat.TaxonForm extends AntCat.Form
   constructor: (@element, @options = {}) ->
@@ -23,9 +30,9 @@ class AntCat.TaxonForm extends AntCat.Form
   initialize_fields_section: =>
     epithet_field = new AntCat.NameField $('#epithet_field'), value_id: 'taxon_name_attributes_id', parent_form: @, require_new: true, default_value_id: 'default_name'
     new AntCat.TaxtEditor $('#headline_notes_taxt_editor'), parent_buttons: '.buttons_section'
-    new AntCat.ProtonymField $('#protonym_name_field'), epithet_field, value_id: 'taxon_protonym_attributes_name_attributes_id', parent_form: @
+    protonym_field = new AntCat.ProtonymField $('#protonym_name_field'), epithet_field, value_id: 'taxon_protonym_attributes_name_attributes_id', parent_form: @
     if $('#type_name_field').size() == 1
-      new AntCat.NameField $('#type_name_field'), value_id: 'taxon_type_name_attributes_id', parent_form: @, allow_blank: true
+      new AntCat.TypeNameField $('#type_name_field'), protonym_field, value_id: 'taxon_type_name_attributes_id', parent_form: @, allow_blank: true
       new AntCat.TaxtEditor $('#type_taxt_editor'), parent_buttons: '.buttons_section'
     new AntCat.ReferenceField $('#authorship_field'), parent_form: @, value_id: 'taxon_protonym_attributes_authorship_attributes_reference_attributes_id'
 
