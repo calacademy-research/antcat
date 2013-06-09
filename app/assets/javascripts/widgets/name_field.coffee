@@ -10,17 +10,19 @@ class AntCat.NameField extends AntCat.Panel
   constructor: ($parent_element, @options = {}) ->
     @options.click_on_display = true
     @value_id = @options.value_id
-    default_value_field = $('#' + @options.default_value_id)
-    if default_value_field.size() == 1
-      @default = default_value_field.val()
     super $parent_element.find('> .antcat_name_field'), @options
     @element.find('.help').text @construct_help()
+
+  get_default: =>
+    default_value_field = $('#' + @options.default_value_id)
+    if default_value_field.size() == 1
+      default_value_field.val()
 
   create_form: ($element, options) =>
     options.taxa_only = @options.taxa_only
     options.species_only = @options.species_only
     options.allow_blank = @options.allow_blank
-    options.default = @default
+    options.default = @get_default()
     new AntCat.NameFieldForm $element, options
 
   before_submit: =>
