@@ -9,7 +9,7 @@
     %td.label.top_aligned= name_form.label :name
     %td
       #epithet_field
-        = hidden_field_tag 'default_name_string', default_name_string && "#{default_name_string} "
-        = render 'name_fields/panel', name_string: taxon.name.try(:name)
+        = render 'name_fields/panel', name_string: taxon.name.try(:name),
+                                      default_name_string: default_name_string && "#{default_name_string} "
       .name_description
         = name_description taxon
