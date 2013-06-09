@@ -15,6 +15,7 @@
               %td
                 .buttons
                   = text_field_tag :name_string, name_string
+                  = hidden_field_tag :default_name_string, default_name_string
                   %button.ui-priority-primary.submit OK
                   %button.ui-priority-secondary.cancel Cancel
                   = image_tag 'ui-anim_basic_16x16.gif', class: 'throbber'

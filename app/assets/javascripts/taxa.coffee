@@ -28,7 +28,7 @@ class AntCat.TaxonForm extends AntCat.Form
 
   ###### initialization
   initialize_fields_section: =>
-    epithet_field = new AntCat.NameField $('#epithet_field'), value_id: 'taxon_name_attributes_id', parent_form: @, require_new: true, default_value_id: 'default_name'
+    epithet_field = new AntCat.NameField $('#epithet_field'), value_id: 'taxon_name_attributes_id', parent_form: @, require_new: true
     new AntCat.TaxtEditor $('#headline_notes_taxt_editor'), parent_buttons: '.buttons_section'
     protonym_field = new AntCat.ProtonymField $('#protonym_name_field'), epithet_field, value_id: 'taxon_protonym_attributes_name_attributes_id', parent_form: @
     if $('#type_name_field').size() == 1
