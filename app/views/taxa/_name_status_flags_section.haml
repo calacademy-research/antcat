@@ -1,8 +1,8 @@
 -#Locals: taxon, form, default_name_string
 
-.epithet_status_flags_section.section
+.name_status_flags_section.section
   %table
-    = render 'epithet_section', taxon: taxon, form: form, default_name_string: default_name_string
+    = render 'name_section', taxon: taxon, form: form, default_name_string: default_name_string
 
     %tr
       %td.label= form.label :status

@@ -115,7 +115,7 @@ class TaxaController < ApplicationController
       type_name_attributes                = attributes.delete :type_name_attributes
 
       update_name                 name_attributes
-      update_epithet_status_flags attributes
+      update_name_status_flags    attributes
       update_homonym_replaced_by  homonym_replaced_by_name_attributes
       update_protonym             protonym_attributes
       update_type_name            type_name_attributes
@@ -124,7 +124,7 @@ class TaxaController < ApplicationController
     end
   end
 
-  def update_epithet_status_flags attributes
+  def update_name_status_flags attributes
     attributes[:incertae_sedis_in] = nil unless attributes[:incertae_sedis_in].present?
     @taxon.attributes = attributes
     @taxon.headline_notes_taxt = Taxt.from_editable attributes.delete :headline_notes_taxt
