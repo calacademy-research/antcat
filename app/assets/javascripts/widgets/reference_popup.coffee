@@ -31,15 +31,10 @@ class AntCat.ReferencePopup
 
   initialize: =>
     @expansion = @element.find '> .expansion'
-    AntCat.log 'ReferencePopup initialize: no @expansion' unless @expansion.size() == 1
     @template = @element.find '> .template'
-    AntCat.log 'ReferencePopup initialize: no @template' unless @template.size() == 1
     @current = @element.find '> .current'
-    AntCat.log 'ReferencePopup initialize: no @current' unless @current.size() == 1
     @search_selector = @expansion.find '#search_selector.search_selector'
-    AntCat.log 'ReferencePopup initialize: no @search_selector' unless @search_selector.size() == 1
     @textbox = @expansion.find '.q'
-    AntCat.log 'ReferencePopup initialize: no @textbox' unless @textbox.size() == 1
 
     @setup_controls()
     @setup_references()

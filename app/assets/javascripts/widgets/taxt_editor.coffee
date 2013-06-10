@@ -114,7 +114,6 @@ class AntCat.TaxtEditor
 
   open_reference_popup: (id) =>
     reference_popup = @element.find '.antcat_reference_popup'
-    AntCat.log 'TaxtEditor open_reference_popup: no reference_popup' unless reference_popup.size() == 1
     new AntCat.ReferencePopup reference_popup.parent(), id: id, on_ok: @handle_popup_result, on_close: @after_popup_closes
 
   open_popup_for_existing_tag: =>
