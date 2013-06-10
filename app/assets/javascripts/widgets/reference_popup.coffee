@@ -1,4 +1,4 @@
-class AntCat.ReferencePopup
+class AntCat.ReferencePopup extends AntCat.FieldPanel
 
   constructor: (@parent_element, @options = {}) ->
     @element = @parent_element.find('> .antcat_reference_popup')
