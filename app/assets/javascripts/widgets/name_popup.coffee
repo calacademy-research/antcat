@@ -29,7 +29,7 @@ class AntCat.NamePopup extends AntCat.NestedForm
 
   initialize: =>
     @element.addClass 'antcat_form'
-    @options.button_container = '.buttons'
+    @options.button_container = '.controls'
     @textbox = @element.find('input[type=text]')
     AntCat.log 'NamePopup initialize: no @textbox' unless @textbox.size() == 1
 
@@ -65,7 +65,7 @@ class AntCat.NamePopup extends AntCat.NestedForm
     true
 
   handle_success: (data) =>
-    @element.find('.buttons .submit').val('OK')
+    @element.find('.controls .submit').val('OK')
     @id = data.id
     @element.find('#id').val @id
     @element.find('#name').val data.name
@@ -76,7 +76,7 @@ class AntCat.NamePopup extends AntCat.NestedForm
   handle_application_error: (data) =>
     # an error means that the name the user entered doesn't exist
     # we ask if they want to add it
-    submit_button = @element.find('.buttons .submit span')
+    submit_button = @element.find('.controls .submit span')
     AntCat.log 'NamePopup handle_application_error: submit button' unless submit_button.size() == 1
     submit_button.text('Add this name')
     @element.find('.error_messages').text data.error_message
@@ -85,7 +85,7 @@ class AntCat.NamePopup extends AntCat.NestedForm
   cancel: =>
     @element.find('.error_messages').text ''
     if @deciding_whether_to_add_name
-      @element.find('.buttons .submit').val('OK')
+      @element.find('.controls .submit').val('OK')
     super unless @deciding_whether_to_add_name
     @deciding_whether_to_add_name = false
     false

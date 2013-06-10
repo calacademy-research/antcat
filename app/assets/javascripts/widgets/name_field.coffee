@@ -72,7 +72,7 @@ class AntCat.NameField extends AntCat.Panel
       $confirm_add_name_field.val ''
 
   set_submit_button_text: (text) =>
-    $submit_button = @element.find('.buttons .submit span')
+    $submit_button = @element.find('.controls .submit span')
     $submit_button.text text
 
   set_value: (value) =>
@@ -86,7 +86,7 @@ class AntCat.NameField extends AntCat.Panel
 # -----------------------------------------
 class AntCat.NameFieldForm extends AntCat.NestedForm
   constructor: (@element, @options = {}) ->
-    @options.button_container = '.buttons'
+    @options.button_container = '.controls'
     @textbox = @element.find('input[type=text]')
     @default_name_string = @options.default_name_string
     @setup_autocomplete @textbox
