@@ -4,15 +4,15 @@ When /^I save my changes$/ do
 end
 
 # section
-#When /^I save the (\w+)(?: item)?$/ do |section|
-  #step %{I press the #{section} item "Save" button}
-#end
-#When /^I cancel the (\w+) item's changes$/ do |section|
-  #step %{I press the #{section} item "Cancel" button}
-#end
-#When /^I delete the (\w+) item$/ do |section|
-  #step %{I press the #{section} item "Delete" button}
-#end
+When /^I save the (\w+)(?: item)?$/ do |section|
+  step %{I press the #{section} item "Save" button}
+end
+When /^I cancel the (\w+) item's changes$/ do |section|
+  step %{I press the #{section} item "Cancel" button}
+end
+When /^I delete the (\w+) item$/ do |section|
+  step %{I press the #{section} item "Delete" button}
+end
 
 # fields section
 
