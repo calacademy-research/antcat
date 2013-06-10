@@ -10,7 +10,7 @@ class AntCat.NameField extends AntCat.Panel
     @options.click_on_display = true
     @value_id = @options.value_id
     super $parent_element.find('> .antcat_name_field'), @options
-    @element.find('.help').text @construct_help()
+    @set_help()
 
   create_form: ($element, form_options) =>
     form_options.taxa_only = @options.taxa_only
@@ -28,12 +28,18 @@ class AntCat.NameField extends AntCat.Panel
     @show_error ''
     @set_add_name_field()
 
-  construct_help: =>
-    help = "Type the name, or type characters in the name then choose a name from the drop-down list, or type a new name, or clear this name." if @options.allow_blank
-    help = "Type the name, or type characters in the name then choose a name from the drop-down list, or type a new name, or choose a homonym." if @options.new_or_homonym
-    help = "Type a new taxon name" if @options.require_new
-    help = "Click \"Add name\", or \"Cancel\"" if @deciding_whether_to_add_name
-    help
+  set_help: =>
+    text = if @deciding_whether_to_add_name
+      "Click Add this name, or Cancel"
+    else if @options.allow_blank
+      "Type the name, or type characters in the name then choose a name from the drop-down list, or type a new name, or clear this name."
+    else if @options.new_or_homonym
+      "Type the name, or type characters in the name then choose a name from the drop-down list, or type a new name, or choose a homonym."
+    else if @options.require_new
+      "Type a new taxon name"
+    else
+      "Type the name, or type characters in the name then choose a name from the drop-down list."
+    @element.find('.help').text text
 
   construct_parameters: =>
     action  = "?field=true"
@@ -48,12 +54,14 @@ class AntCat.NameField extends AntCat.Panel
     @set_value data.id
     @set_submit_button_text 'OK'
     @deciding_whether_to_add_name = false
+    @set_help()
 
   on_form_cancel: =>
     @show_error ''
     @set_submit_button_text 'OK'
     super
     @deciding_whether_to_add_name = false
+    @set_help()
 
   on_application_error: (data) =>
     @show_error data.error_message
@@ -62,6 +70,7 @@ class AntCat.NameField extends AntCat.Panel
     else
       @set_submit_button_text data.submit_button_text
       @deciding_whether_to_add_name = not @options.require_new
+    @set_help()
 
   #------------
   set_add_name_field: =>
