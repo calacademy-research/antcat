@@ -19,8 +19,8 @@ Feature: Security for editing taxa
     And I go to the catalog page for "Formicinae"
     And I press "Edit"
     And I press "Add genus"
-    When I click the epithet field
-      And I set the epithet to "Atta"
+    When I click the name field
+      And I set the name to "Atta"
       And I press "OK"
     And I click the protonym name field
       And I set the protonym name to "Eciton"
