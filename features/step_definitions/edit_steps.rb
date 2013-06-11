@@ -127,6 +127,13 @@ Then /^I should (not )?see the "Delete" button for the history item$/ do |should
   selector = should_not ? :should_not : :should
   page.send selector, have_css('button.delete')
 end
+And /^I add a history item$/ do
+  step %{I go to the edit page for "Atta"}
+  step %{the history should be empty}
+  step %{I click the "Add History" button}
+  step %{I edit the history item to "Abc"}
+  step %{I save the history item}
+end
 
 # references section
 Then /^the reference section should be "(.*)"$/ do |reference|
