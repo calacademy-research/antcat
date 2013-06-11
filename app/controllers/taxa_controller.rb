@@ -30,6 +30,7 @@ class TaxaController < ApplicationController
     @taxon = Taxon.find params[:id]
     @parent_id = @taxon.id
     set_rank_that_would_be_created_if_button_clicked
+    @show_delete_taxon_button = deleting_allowed?
     create_object_web
     setup_edit_buttons
   end
@@ -38,8 +39,13 @@ class TaxaController < ApplicationController
     @new_taxon_rank = child_rank @taxon.class
   end
 
+  def deleting_allowed?
+    true
+  end
+
   def update
     return elevate_to_species if params[:task_button_command] == 'elevate_to_species'
+    return delete_taxon if params[:task_button_command] == 'delete_taxon'
     @taxon = Taxon.find params[:id]
     @parent_id = params[:parent_id]
     save
@@ -57,6 +63,12 @@ class TaxaController < ApplicationController
     redirect_to catalog_url @taxon
   end
 
+  def delete_taxon
+    @taxon = Taxon.find params[:id]
+    @taxon.destroy
+    redirect_to catalog_url get_parent_id
+  end
+
   ###################
   def new_taxon
     params[:new_taxon_rank].titlecase.constantize.new
@@ -69,6 +81,16 @@ class TaxaController < ApplicationController
       Subspecies => :species_id=,
     }
     @taxon.send parent_fields[@taxon.class], @parent_id
+  end
+
+  def get_parent_id
+    parent_fields = {
+      Genus => :subfamily_id,
+      Species => :genus_id,
+      Subspecies => :species_id,
+    }
+    return Family.first if @taxon.kind_of? Subfamily
+    @taxon.send parent_fields[@taxon.class]
   end
 
   def child_rank rank
