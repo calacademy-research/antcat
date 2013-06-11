@@ -28,6 +28,10 @@ class Formatters::ReferenceFormatter
     timestamp.strftime '%Y-%m-%d'
   end
 
+  def self.format_review_status review_status
+    review_status
+  end
+
   ##################
   def initialize reference
     @reference = reference

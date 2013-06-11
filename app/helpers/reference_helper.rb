@@ -19,4 +19,8 @@ module ReferenceHelper
   def format_timestamp timestamp
     Formatters::ReferenceFormatter.format_timestamp timestamp
   end
+
+  def format_review_status review_status
+    Formatters::ReferenceFormatter.format_review_status review_status
+  end
 end
