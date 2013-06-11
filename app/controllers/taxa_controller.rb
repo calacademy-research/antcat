@@ -40,7 +40,11 @@ class TaxaController < ApplicationController
   end
 
   def deleting_allowed?
-    true
+    @taxon.history_items.blank? &&
+    @taxon.reference_sections.blank? &&
+    @taxon.junior_synonyms.blank? &&
+    @taxon.senior_synonyms.blank? &&
+    @taxon.homonym_replaced_by.blank?
   end
 
   def update
@@ -65,8 +69,13 @@ class TaxaController < ApplicationController
 
   def delete_taxon
     @taxon = Taxon.find params[:id]
-    @taxon.destroy
-    redirect_to catalog_url get_parent_id
+    if deleting_allowed?
+      @taxon.destroy
+      redirect_to catalog_url get_parent_id
+    else
+      @taxon.errors[:base] = "This taxon already has additional information attached to it. Please see Mark."
+      render :edit and return
+    end
   end
 
   ###################

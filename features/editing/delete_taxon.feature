@@ -9,12 +9,10 @@ Feature: Deleting a taxon
     Given these references exist
       | authors | citation   | title | year |
       | Fisher  | Psyche 3:3 | Ants  | 2004 |
-    And there is a subfamily "Formicinae"
-    And I log in
-
-  Scenario: Deleting a taxon that was just added
-    Given there is a genus "Eciton"
-    When I go to the catalog page for "Formicinae"
+      * there is a subfamily "Formicinae"
+      * I log in
+      * there is a genus "Eciton"
+      * I go to the catalog page for "Formicinae"
       * I press "Edit"
       * I press "Add genus"
       * I click the name field
@@ -32,6 +30,8 @@ Feature: Deleting a taxon
       * I press "OK"
       * I press "Add this name"
       * I save my changes
+
+  Scenario: Deleting a taxon that was just added
     When I press "Edit"
     And I will confirm on the next step
     And I press "Delete"
@@ -58,3 +58,8 @@ Feature: Deleting a taxon
       Then I should see "Atta" in the index
 
   Scenario: Can't delete if taxon has stuff hanging off of it
+    When I press "Edit"
+    And I add a history item
+    And I will confirm on the next step
+    And I press "Delete"
+    Then I should see "This taxon already has additional information attached to it."
