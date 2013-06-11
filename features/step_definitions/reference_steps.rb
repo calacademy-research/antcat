@@ -3,9 +3,10 @@ Given /^(?:this|these) references? exists?$/ do |table|
   Reference.delete_all
   table.hashes.each do |hash|
     citation = hash.delete 'citation'
+    review_status = hash.delete 'status'
     matches = citation.match /(\w+) (\d+):([\d\-]+)/
     hash.merge! :journal => FactoryGirl.create(:journal, :name => matches[1]), :series_volume_issue => matches[2],
-      :pagination => matches[3]
+      :pagination => matches[3], review_status: review_status
     create_reference :article_reference, hash
   end
 end
@@ -108,6 +109,7 @@ Then /I should see these entries (with a header )?in this order:/ do |with_heade
   entries.hashes.each_with_index do |e, i|
     page.should have_css "table.references tr:nth-of-type(#{i + offset}) td", :text => e['entry']
     page.should have_css "table.references tr:nth-of-type(#{i + offset}) td", :text => e['date']
+    page.should have_css "table.references tr:nth-of-type(#{i + offset}) td", :text => e['status']
   end
 end
 
