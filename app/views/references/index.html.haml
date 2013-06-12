@@ -53,7 +53,7 @@
         %td.date
           = format_timestamp reference.created_at
         %td.review_status
-          = format_review_status reference.review_status
+          = format_review_status ReviewStatus[reference.review_status]
 
   - if user_can_edit_references?
     %tr.reference_template_row
