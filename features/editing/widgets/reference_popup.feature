@@ -13,13 +13,12 @@ Feature: Reference popup
     When I go to the reference popup widget test page, opened to the first reference
     Then I should see "Fisher, B. 1995b. Fisher's book. Ants 1:1-2."
 
-  Scenario: Setting a reference
+  Scenario: Selecting a reference from search results
     Given I am logged in
     When I go to the reference popup widget test page
     And I search for the author "Fisher, B."
     And I click the first search result
-    And I press "OK"
-    Then I should see "Fisher, B.L. 1992. Between Pacific Tides. Ants 2:1."
+    Then the current reference should be "Fisher, B. 1995b. Fisher's book. Ants 1:1-2."
 
   # There's a problem getting the search type selector to pick the right one
   #Scenario: Searching

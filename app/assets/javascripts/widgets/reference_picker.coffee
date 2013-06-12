@@ -150,7 +150,7 @@ class AntCat.ReferencePicker extends AntCat.FieldPanel
           .addClass('ui-selected')
           .end()
 
-    @element.find('.search_results div.display').bind 'click', @handle_click
+    @element.find('.search_results div.display').bind 'click', (event) => @handle_click(event); false
     @element.find('.search_results div.display').hover(@hover, @unhover)
 
   hover: (event) =>
@@ -188,7 +188,7 @@ class AntCat.ReferencePicker extends AntCat.FieldPanel
           on_form_close: @on_reference_form_close
           on_form_done: @on_reference_form_done
           edit: edit)
-    @element.find('div.display').bind 'click', @handle_click
+    @element.find('div.display').bind 'click', (event) => @handle_click(event); false
     @element.find('div.display').hover(@hover, @unhover)
     @element.removeClass 'has_no_current_reference'
 
