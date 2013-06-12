@@ -6,7 +6,7 @@ class ReviewStatus
   end
 
   def value
-    @attributes[:string]
+    @attributes[:value]
   end
 
   def display_string
@@ -23,8 +23,10 @@ class ReviewStatus
 
   def self.review_statuses
     @_review_statuses ||= [
-      ReviewStatus.new(string: 'None', display_string: 'None'),
-      ReviewStatus.new(string: 'Reviewing',  display_string: 'Reviewing'),
+      ReviewStatus.new(value: 'None', display_string: 'None'),
+      ReviewStatus.new(value: 'Reviewing',  display_string: 'Reviewing'),
+      ReviewStatus.new(value: '',  display_string: ''),
+      ReviewStatus.new(value: nil,  display_string: nil),
     ]
   end
 
