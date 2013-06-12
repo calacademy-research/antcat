@@ -3,7 +3,7 @@ require 'spec_helper'
 
 describe ReviewStatus do
 
-  describe "Ddisplay string" do
+  describe "Display string" do
     it "should return the display string for a review status" do
       ReviewStatus['None'].value.should == 'None'
       ReviewStatus['None'].display_string.should == 'None'
