@@ -29,7 +29,7 @@ class Formatters::ReferenceFormatter
   end
 
   def self.format_review_status review_status
-    review_status
+    review_status.display_string
   end
 
   ##################
