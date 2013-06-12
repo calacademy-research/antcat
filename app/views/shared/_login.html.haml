@@ -2,7 +2,7 @@
   - items = []
   .link
     - if user_signed_in?
-      - items << link_to(current_user.email, edit_user_registration_path)
+      - items << link_to(current_user.name || current_user.email, edit_user_registration_path)
       - items << link_to('Logout', destroy_user_session_path)
     - else
       - items << link_to('Login', '#', class: :link)
