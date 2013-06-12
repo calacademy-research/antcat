@@ -12,4 +12,20 @@ describe ReviewStatus do
     end
   end
 
+  describe "reviewing?" do
+    it "should only consider as 'reviewing' when review status is explicitly set" do
+      review_status = ReviewStatus['']
+      review_status.should_not be_reviewing
+
+      review_status = ReviewStatus[nil]
+      review_status.should_not be_reviewing
+
+      review_status = ReviewStatus['None']
+      review_status.should_not be_reviewing
+
+      review_status = ReviewStatus['Reviewing']
+      review_status.should be_reviewing
+    end
+  end
+
 end

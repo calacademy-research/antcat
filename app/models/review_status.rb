@@ -13,6 +13,9 @@ class ReviewStatus
     @attributes[:display_string]
   end
 
+  def reviewing?
+    @attributes[:value] == 'Reviewing' end
+
   def self.find string
     review_statuses.find {|review_status| review_status.value == string} or raise "Couldn't find #{string}"
   end
