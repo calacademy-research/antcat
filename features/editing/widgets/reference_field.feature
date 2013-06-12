@@ -9,7 +9,7 @@ Feature: Reference field
       | Fisher, B.; Bolton, B.  | 1995b         | Fisher Bolton book    | Ants 1:1-2 |
       | Hölldobler, B.          | 1995b         | Bert's book           | Ants 1:1-2 |
 
-  Scenario: Seeing the picker
+  Scenario: Seeing the field
     When I go to the reference field test page, opened to the first reference
     Then I should see "Fisher, B. 1995b. Fisher's book. Ants 1:1-2."
 
