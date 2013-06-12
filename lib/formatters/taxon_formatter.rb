@@ -392,7 +392,7 @@ class Formatters::TaxonFormatter
     when Subspecies
       string = "subspecies of "
       parent = @taxon.species
-      string << parent.name.to_html
+      string << (parent ? parent.name.to_html : '(no species)')
     else
       ''
     end
