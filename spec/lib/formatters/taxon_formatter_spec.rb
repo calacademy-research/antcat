@@ -232,6 +232,17 @@ describe Formatters::TaxonFormatter do
       species = FactoryGirl.build :species, genus: genus
       @formatter.new(species).name_description.should == "new species of <i>#{genus.name}</i>"
     end
+    it "should handle a subspecies" do
+      genus = create_genus 'Atta'
+      species = FactoryGirl.build :species, genus: genus
+      subspecies = FactoryGirl.build :subspecies, species: species, genus: genus
+      @formatter.new(subspecies).name_description.should == "new subspecies of <i>#{species.name}</i>"
+    end
+    it "should handle a subspecies without a species" do
+      genus = create_genus 'Atta'
+      subspecies = FactoryGirl.build :subspecies, genus: genus, species: nil
+      @formatter.new(subspecies).name_description.should == "new subspecies of (no species)"
+    end
     it "should be html_safe" do
       subfamily = create_subfamily build_stubbed: true
       genus = create_genus subfamily: subfamily, build_stubbed: true
