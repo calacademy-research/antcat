@@ -35,6 +35,14 @@ class TaxaController < ApplicationController
     setup_edit_buttons
   end
 
+  def update
+    return elevate_to_species if params[:task_button_command] == 'elevate_to_species'
+    return delete_taxon if params[:task_button_command] == 'delete_taxon'
+    @taxon = Taxon.find params[:id]
+    @parent_id = params[:parent_id]
+    save
+  end
+
   def set_rank_that_would_be_created_if_button_clicked
     @new_taxon_rank = child_rank @taxon.class
   end
@@ -45,14 +53,6 @@ class TaxaController < ApplicationController
     @taxon.junior_synonyms.blank? &&
     @taxon.senior_synonyms.blank? &&
     @taxon.homonym_replaced_by.blank?
-  end
-
-  def update
-    return elevate_to_species if params[:task_button_command] == 'elevate_to_species'
-    return delete_taxon if params[:task_button_command] == 'delete_taxon'
-    @taxon = Taxon.find params[:id]
-    @parent_id = params[:parent_id]
-    save
   end
 
   def elevate_to_species
