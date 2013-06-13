@@ -2,7 +2,7 @@
 # Panel options: click_on_display, click_on_icon, highlight, parent_form
 
 class AntCat.FieldPanel extends AntCat.Panel
-  constructor: (@element, @options = {}) ->
+  post_constructor: ($element, @options = {}) =>
     @options.click_on_display = true
     super
 
