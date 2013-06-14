@@ -2,9 +2,9 @@ class AntCat.ReferencePopup extends AntCat.ReferencePicker
 
   constructor: (@parent_element, @options = {}) ->
     @element = @parent_element.find('> .antcat_reference_popup')
-    @post_constructor @element, @options
+    @_post_constructor @element, @options
 
-  post_constructor: (@element, @options) =>
+  _post_constructor: (@element, @options) =>
     if @options.id
       @id = @options.id
     else
