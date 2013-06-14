@@ -4,11 +4,11 @@
 # Options: click_on_display, click_on_icon, highlight, parent_form
 
 class AntCat.Panel
-  constructor: ($element, @options = {}) ->
-    @post_constructor($element, @options)
+  constructor: (@element, @options = {}) ->
+    @_post_constructor(@element, @options)
 
-  post_constructor: ($element, @options = {}) =>
-    @initialize $element
+  _post_constructor: (@element) =>
+    @initialize @element
     $('.edit_icon').show() if AntCat.testing
     if @options.open_immediately
       @edit()
