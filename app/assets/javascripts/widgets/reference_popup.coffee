@@ -1,10 +1,5 @@
 class AntCat.ReferencePopup extends AntCat.ReferencePicker
 
-  constructor: (@parent_element, @options = {}) ->
-    @element = @parent_element.find('> .antcat_reference_popup')
-    @_post_constructor @element, @options
-    # not calling super here is a sign of bad design
-
   _post_constructor: (@element, @options) =>
     if @options.id
       @id = @options.id
