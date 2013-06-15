@@ -1,7 +1,8 @@
 # A Panel comprises two sections: a read-only display section,
 # and an edit section with a form. One section is visible at a
 # time.
-# Options: click_on_display, click_on_icon, highlight, parent_form
+# Options: open_immediately, click_on_display, click_on_icon, highlight, parent_form
+# on_form_close
 
 class AntCat.Panel
   constructor: (@element, @options = {}) ->
