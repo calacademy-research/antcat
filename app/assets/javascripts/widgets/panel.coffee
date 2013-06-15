@@ -7,7 +7,7 @@ class AntCat.Panel
   constructor: (@element, @options = {}) ->
     @_post_constructor(@element, @options)
 
-  _post_constructor: (@element) =>
+  _post_constructor: (@element, @options) =>
     @initialize @element
     $('.edit_icon').show() if AntCat.testing
     if @options.open_immediately
