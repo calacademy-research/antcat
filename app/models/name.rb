@@ -182,11 +182,7 @@ class Name < ActiveRecord::Base
 
   def references_in_taxt
     references = []
-    table_fields = [[Taxon,            [:type_taxt, :headline_notes_taxt, :genus_species_header_notes_taxt]],
-                    [Citation,         [:notes_taxt]],
-                    [ReferenceSection, [:title_taxt, :subtitle_taxt, :references_taxt]],
-                    [TaxonHistoryItem, [:taxt]]]
-    table_fields.each do |klass, fields|
+    Taxt.taxt_fields.each do |klass, fields|
       for record in klass.send :all
         for field in fields
           next unless record[field]
