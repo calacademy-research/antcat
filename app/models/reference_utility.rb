@@ -19,11 +19,7 @@ class Reference < ActiveRecord::Base
   end
 
   def replace_with reference
-    TaxonHistoryItem
-    [[Taxon,            [:type_taxt, :headline_notes_taxt, :genus_species_header_notes_taxt]],
-     [ReferenceSection, [:title_taxt, :subtitle_taxt, :references_taxt]],
-     [TaxonHistoryItem, [:taxt]],
-    ].each do |klass, fields|
+    Taxt.taxt_fields.each do |klass, fields|
       for record in klass.send :all
         for field in fields
           next unless record[field]

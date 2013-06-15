@@ -177,11 +177,7 @@ module Taxt
 
   ################################
   def self.replace replace_what, replace_with
-    TaxonHistoryItem
-    [[Taxon,            [:type_taxt, :headline_notes_taxt, :genus_species_header_notes_taxt]],
-     [ReferenceSection, [:title_taxt, :subtitle_taxt, :references_taxt]],
-     [TaxonHistoryItem, [:taxt]],
-    ].each do |klass, fields|
+    taxt_fields.each do |klass, fields|
       for record in klass.send :all
         for field in fields
           next unless record[field]
@@ -233,15 +229,20 @@ module Taxt
     SpuriousNames.index name
   end
 
+  def self.taxt_fields
+    [
+     [Taxon, [:type_taxt, :headline_notes_taxt, :genus_species_header_notes_taxt]],
+     [Citation, [:notes_taxt]],
+     [ReferenceSection, [:title_taxt, :subtitle_taxt, :references_taxt]],
+     [TaxonHistoryItem, [:taxt]]
+    ]
+  end
+
   def self.cleanup show_progress = false
-    table_fields = [[Taxon,            [:type_taxt, :headline_notes_taxt, :genus_species_header_notes_taxt]],
-                    [Citation,         [:notes_taxt]],
-                    [ReferenceSection, [:title_taxt, :subtitle_taxt, :references_taxt]],
-                    [TaxonHistoryItem, [:taxt]]]
     count = 0
-    table_fields.each {|table, field| count += table.count}
+    taxt_fields.each {|table, field| count += table.count}
     Progress.new_init show_progress: show_progress, total_count: count, show_errors: true
-    table_fields.each do |klass, fields|
+    taxt_fields.each do |klass, fields|
       for record in klass.send :all
         for field in fields
           next unless record[field]
