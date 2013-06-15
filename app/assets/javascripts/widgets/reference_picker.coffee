@@ -1,7 +1,7 @@
 class AntCat.ReferencePicker extends AntCat.FieldPanel
 
   constructor: (@parent_element, @options = {}) ->
-    super @parent_element.find('> .antcat_reference_field'), @options
+    super @parent_element.find('> .antcat_reference_picker'), @options
 
   create_form: ($element, options) =>
     options.button_container = '.controls'
