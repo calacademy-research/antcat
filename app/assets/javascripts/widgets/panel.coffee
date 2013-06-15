@@ -14,7 +14,6 @@ class AntCat.Panel
       @edit()
 
   initialize: (@element) =>
-    AntCat.log 'Panel initialize: no @element' unless @element && @element.size() == 1
     @_form = null
     @setup_edit()
 
