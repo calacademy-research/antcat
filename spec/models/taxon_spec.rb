@@ -338,6 +338,13 @@ describe Taxon do
       taxon.history_items.create! taxt: 'foo'
       taxon.reload.history_items.map(&:taxt).should == ['foo']
     end
+    it "should cascade to delete history items when it's deleted" do
+      taxon = FactoryGirl.create :family
+      history_item = taxon.history_items.create! taxt: 'taxt'
+      TaxonHistoryItem.find_by_id(history_item.id).should_not be_nil
+      taxon.destroy
+      TaxonHistoryItem.find_by_id(history_item.id).should be_nil
+    end
     it "should show the items in the order in which they were added to the taxon" do
       taxon = FactoryGirl.create :family
       taxon.history_items.create! taxt: '1'
@@ -358,9 +365,9 @@ describe Taxon do
     end
     it "should cascade to delete the reference sections when it's deleted" do
       taxon = FactoryGirl.create :family
-      taxon.reference_sections.should be_empty
-      taxon.reference_sections.create! references_taxt: 'foo'
-      taxon.reload.reference_sections.map(&:references_taxt).should == ['foo']
+      reference_section = taxon.reference_sections.create! references_taxt: 'foo'
+      taxon.destroy
+      ReferenceSection.find_by_id(reference_section.id).should be_nil
     end
     it "should show the items in the order in which they were added to the taxon" do
       taxon = FactoryGirl.create :family
