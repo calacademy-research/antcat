@@ -1,4 +1,4 @@
-class AntCat.ReferencePicker extends AntCat.FieldPanel
+class AntCat.ReferencePicker extends AntCat.Panel
 
   constructor: (@parent_element, @options = {}) ->
     @options.click_on_display = true
