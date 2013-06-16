@@ -18,7 +18,10 @@ class AntCat.ReferencePicker extends AntCat.FieldPanel
       on_application_error: @on_application_error
       before_submit:        @before_submit
 
-  initialize: ($element) =>
+  initialize: (@element) =>
+    @setup_sections()
+    @setup_edit()
+
     super
 
     @element.addClass 'modal' unless @options.field
@@ -35,12 +38,32 @@ class AntCat.ReferencePicker extends AntCat.FieldPanel
     @setup_references()
     @handle_new_selection()
 
+  setup_sections: =>
+    edit_selector = @options.edit_selector || '> .edit'
+    @edit_section = @element.find edit_selector
+
+    display_selector = @options.display_selector || '> .display'
+    @display_section = @element.find display_selector
+
+  setup_edit: =>
+    @display_section.click @edit
+
   search_results: =>
     @expansion.find '> .search_results'
 
   show_form: =>
-    super
+    @display_section.hide()
+    @edit_section.show()
+    @form().open()
     @setup_search_selector()
+
+  hide_form: =>
+    @edit_section.hide()
+    @display_section.show()
+    @form().close()
+
+  is_editing: =>
+    @edit_section.is ':visible'
 
   start_throbbing: =>
     @element.find('.throbber img').show()
