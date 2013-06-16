@@ -1,7 +1,6 @@
 class AntCat.ReferencePicker extends AntCat.Panel
 
   constructor: (@parent_element, @options = {}) ->
-    @options.click_on_display = true
     super @parent_element.find('> .antcat_reference_picker'), @options
 
   create_form: ($element, options) =>
