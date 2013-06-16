@@ -19,16 +19,18 @@ class AntCat.ReferencePicker extends AntCat.Panel
       before_submit:        @before_submit
 
   initialize: (@element) =>
-    @setup_sections()
-    @setup_edit()
+    edit_selector = @options.edit_selector || '> .edit'
+    @edit_section = @element.find edit_selector
+
+    display_selector = @options.display_selector || '> .display'
+    @display_section = @element.find display_selector
 
     super
 
     @element.addClass 'modal' unless @options.field
 
-    @edit_section = @element.find '> .edit'
     @expansion = @edit_section.find '> .expansion'
-    @display = @element.find '> .display'
+    @display = @display_section
     @template = @element.find '> .template'
     @current = @edit_section.find '> .current'
     @search_selector = @expansion.find '.search_selector'
@@ -37,13 +39,6 @@ class AntCat.ReferencePicker extends AntCat.Panel
     @setup_controls()
     @setup_references()
     @handle_new_selection()
-
-  setup_sections: =>
-    edit_selector = @options.edit_selector || '> .edit'
-    @edit_section = @element.find edit_selector
-
-    display_selector = @options.display_selector || '> .display'
-    @display_section = @element.find display_selector
 
   setup_edit: =>
     @display_section.click @edit
