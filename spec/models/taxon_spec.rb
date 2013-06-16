@@ -356,6 +356,12 @@ describe Taxon do
       taxon.reference_sections.create! references_taxt: 'foo'
       taxon.reload.reference_sections.map(&:references_taxt).should == ['foo']
     end
+    it "should cascade to delete the reference sections when it's deleted" do
+      taxon = FactoryGirl.create :family
+      taxon.reference_sections.should be_empty
+      taxon.reference_sections.create! references_taxt: 'foo'
+      taxon.reload.reference_sections.map(&:references_taxt).should == ['foo']
+    end
     it "should show the items in the order in which they were added to the taxon" do
       taxon = FactoryGirl.create :family
       taxon.reference_sections.create! references_taxt: '1'

@@ -10,9 +10,6 @@ class AntCat.Panel
 
   initialize: (@element) =>
     @_form = null
-    @setup_edit()
-
-  setup_edit: =>
     if @options.click_on_display
       @element.find('.display').click @edit
     if @options.click_on_icon
