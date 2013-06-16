@@ -18,12 +18,6 @@ class AntCat.ReferencePicker extends AntCat.Panel
       before_submit:        @before_submit
 
   initialize: (@element) =>
-    edit_selector = @options.edit_selector || '> .edit'
-    @edit_section = @element.find edit_selector
-
-    display_selector = @options.display_selector || '> .display'
-    @display_section = @element.find display_selector
-
     super
 
     @element.addClass 'modal' unless @options.field
