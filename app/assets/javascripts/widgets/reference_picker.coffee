@@ -29,7 +29,6 @@ class AntCat.ReferencePicker extends AntCat.Panel
     @element.addClass 'modal' unless @options.field
 
     @expansion = @edit_section.find '> .expansion'
-    @display = @display_section
     @template = @element.find '> .template'
     @current = @edit_section.find '> .current'
     @search_selector = @expansion.find '.search_selector'

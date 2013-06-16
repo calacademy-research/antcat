@@ -16,7 +16,7 @@ class AntCat.ReferenceField extends AntCat.ReferencePicker
 
   set_display_text: =>
     reference_text = @current_reference().find('.display').text()
-    @display.find('.display_button').text reference_text
+    @display_section.find('.display_button').text reference_text
 
   load: (url = '') =>
     if url.indexOf('/reference_field') is -1
