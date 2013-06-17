@@ -3,11 +3,13 @@ Feature: Seeing what's new
   I want to see recently added references
   So I can keep up with the state of the literature
 
-  Scenario: See features in order of addition
+  Background:
     Given these references exist
       | authors    | citation   | created_at | title             | created_at | updated_at | year | status    |
       | Ward, P.   | Psyche 5:3 | today      | Ward's World      | 2010-2-2   | 2010-1-1   | 2010 | None      |
       | Bolton, B. | Psyche 4:2 | yesterday  | Bolton's Bulletin | 2010-1-1   | 2010-2-2   | 2010 | Reviewing |
+
+  Scenario: See features in order of addition
     When I go to the references page
     And I follow "Latest additions"
     Then I should see these entries with a header in this order:
@@ -15,3 +17,12 @@ Feature: Seeing what's new
       | 2010-02-02 | Ward, P. 2010. Ward's World. Psyche 5:3.        | None     |
       | 2010-01-01 | Bolton, B. 2010. Bolton's Bulletin. Psyche 4:2. | Reviewing|
 
+  Scenario: Start reviewing
+    When I go to the new references page
+    And I click "Start review" on the Ward reference
+    Then the review status on the Ward reference should change to "Reviewing"
+
+  Scenario: Stop reviewing
+    When I go to the new references page
+    And I click "Finish review" on the Ward reference
+    Then the review status on the Ward reference should change to ""
