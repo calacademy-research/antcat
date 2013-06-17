@@ -22,7 +22,12 @@ AntCat::Application.routes.draw do
   resources :journals
   resources :publishers, only: [:index]
 
-  resources :references, only: [:index, :update, :create, :destroy]
+  resources :references, only: [:index, :update, :create, :destroy] do
+    member do
+      post 'start_reviewing'
+      post 'finish_reviewing'
+    end
+  end
 
   match     '/antcat_references.utf8.endnote_import', to: 'references#index', format: :endnote_import, as: :endnote_import
 
