@@ -26,3 +26,7 @@ Feature: Seeing what's new
     When I go to the new references page
     And I click "Finish review" on the Ward reference
     Then the review status on the Ward reference should change to ""
+
+  Scenario: Not a catalog editor
+    When I go to the new references page
+    Then I should not see a "Start reviewing" button
