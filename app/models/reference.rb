@@ -38,6 +38,7 @@ class Reference < ActiveRecord::Base
   def author_names_string=(string)  self.author_names_string_cache = string end
   def principal_author_last_name()  principal_author_last_name_cache end
   def being_reviewed?()             ReviewStatus[review_status].being_reviewed? end
+  def reviewed?()                   ReviewStatus[review_status].reviewed? end
 
   def short_citation_year
     citation_year.gsub %r{ .*$}, ''

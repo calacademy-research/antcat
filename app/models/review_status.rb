@@ -9,8 +9,16 @@ class ReviewStatus
     @attributes[:value] == 'being reviewed'
   end
 
+  def reviewed?
+    @attributes[:value] == 'reviewed'
+  end
+
   def value
     @attributes[:value]
+  end
+
+  def to_s
+    value
   end
 
   def display_string
@@ -24,10 +32,10 @@ class ReviewStatus
 
   def self.review_statuses
     @_review_statuses ||= [
-      ReviewStatus.new(value: 'None',           display_string: 'None'),
+      ReviewStatus.new(value: 'reviewed',       display_string: 'Reviewed'),
       ReviewStatus.new(value: 'being reviewed', display_string: 'Being reviewed'),
       ReviewStatus.new(value: '',               display_string: ''),
-      ReviewStatus.new(value: nil,              display_string: nil),
+      ReviewStatus.new(value: nil,              display_string: ''),
     ]
   end
 
