@@ -330,3 +330,14 @@ When /^I save my changes to the first reference$/ do
   end
 end
 
+# New references list
+When /^I click "(.*?)" on the Ward reference$/ do |button|
+  within find(".reference_row", :text => 'Ward') do
+    step %{I press "#{button}"}
+  end
+end
+Then /^the review status on the Ward reference should change to "(.*?)"$/ do |status|
+  within find(".reference_row", :text => 'Ward') do
+    step %{I should see "#{status}"}
+  end
+end
