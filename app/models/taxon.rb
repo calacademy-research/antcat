@@ -302,6 +302,10 @@ class Taxon < ActiveRecord::Base
     references = []
     Taxt.taxt_fields.each do |klass, fields|
       for record in klass.send :all
+        # don't include the taxt in this or child records
+        next if klass == Taxon && record.id == id
+        next if klass == Protonym && record.id == protonym_id
+        next if klass == Citation && record.id == protonym.authorship.id
         for field in fields
           next unless record[field]
           if record[field] =~ /{tax #{id}}/
