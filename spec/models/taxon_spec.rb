@@ -684,6 +684,12 @@ describe Taxon do
           {table: 'taxa', field: :type_taxt, id: eciton.id},
         ]
       end
+      it "should not return references in its own taxt" do
+        eciton = create_genus 'Eciton'
+        eciton.update_attribute :type_taxt, "{tax #{eciton.id}}"
+        eciton.references.should be_empty
+      end
+
     end
 
     describe "references as synonym" do
