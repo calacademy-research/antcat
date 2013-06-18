@@ -3,6 +3,13 @@ require 'spec_helper'
 
 describe GenusName do
 
+  describe "epithet count" do
+    it "should have none" do
+      genus = create_genus 'Crematogaster (Lambaster)'
+      genus.name.epithet_count.should be_zero
+    end
+  end
+
   describe "Importing" do
 
     it "should recognize its key and set its name appropriately" do

@@ -12,6 +12,10 @@ class Name < ActiveRecord::Base
     Taxon.update_all ['name_html_cache = ?', name_html], name_id: id
   end
 
+  def epithet_count
+    0
+  end
+
   def genus_epithet
     name.split(' ')[0]
   end
