@@ -5,5 +5,9 @@ class SpeciesGroupName < Name
     Formatters::Formatter.italicize super
   end
 
+  def epithet_count
+    name.split(' ').size - 1
+  end
+
 end
 
