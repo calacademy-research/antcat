@@ -36,7 +36,7 @@ describe Exporters::Antweb::Formatter do
             %{ } +
             %{<a class="link_to_external_site" href="http://www.antcat.org/catalog/#{genus.id}" target="_blank">AntCat</a>} +
             %{ } +
-            %{<a class="link_to_external_site" href="http://www.antwiki.org/Atta" target="_blank">AntWiki</a>} +
+            %{<a class="link_to_external_site" href="http://www.antwiki.org/wiki/Atta" target="_blank">AntWiki</a>} +
           %{</div>} +
           %{<p><b>Taxonomic history</b></p>} +
           %{<div class="history"><div class="history_item item_#{item.id}" data-id="#{item.id}">} +
