@@ -211,7 +211,7 @@ class Formatters::TaxonFormatter
   end
 
   def link_to_antwiki
-    Formatters::Formatter.link_to_external_site 'AntWiki', "http://www.antwiki.org/#{@taxon.name.to_s.gsub(/ /, '_')}"
+    Formatters::Formatter.link_to_external_site 'AntWiki', "http://www.antwiki.org/wiki/#{@taxon.name.to_s.gsub(/ /, '_')}"
   end
 
   def link_to_edit_taxon
