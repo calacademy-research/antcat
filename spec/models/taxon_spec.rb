@@ -692,6 +692,14 @@ describe Taxon do
 
     end
 
+    describe "Reference in its authorship taxt" do
+      it "should not consider this an external reference" do
+        eciton = create_genus 'Eciton'
+        eciton.protonym.authorship.update_attribute :notes_taxt, "{tax #{eciton.id}}"
+        eciton.references.should be_empty
+      end
+    end
+
     describe "references as synonym" do
       it "should work" do
         atta = create_genus 'Atta'
