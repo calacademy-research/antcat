@@ -12,6 +12,13 @@ describe Taxt do
       Taxt.encode_reference(reference).should == "{ref #{reference.id}}"
     end
 
+    describe "Encoding a taxon" do
+      it "should encode a taxon" do
+        genus = create_genus
+        Taxt.encode_taxon(genus).should == "{tax #{genus.id}}"
+      end
+    end
+
     describe "Encoding a taxon name" do
 
       describe "Creating/using Names" do
