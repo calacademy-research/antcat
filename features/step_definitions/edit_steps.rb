@@ -127,12 +127,15 @@ Then /^I should (not )?see the "Delete" button for the history item$/ do |should
   selector = should_not ? :should_not : :should
   page.send selector, have_css('button.delete')
 end
-And /^I add a history item$/ do
-  step %{I go to the edit page for "Atta"}
-  step %{the history should be empty}
-  step %{I click the "Add History" button}
-  step %{I edit the history item to "Abc"}
-  step %{I save the history item}
+And /^I add a history item to "([^"]*)"(?: that includes a tag for "([^"]*)"?$)?/ do |taxon_name, tag_taxon_name|
+  taxon = Taxon.find_by_name taxon_name
+  if tag_taxon_name
+    tag_taxon = Taxon.find_by_name tag_taxon_name
+    taxt = Taxt.encode_taxon tag_taxon
+  else
+    taxt = 'Tag'
+  end
+  taxon.history_items.create! taxt: taxt
 end
 
 # references section

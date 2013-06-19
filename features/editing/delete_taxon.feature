@@ -6,13 +6,14 @@ Feature: Deleting a taxon
   So people use AntCat
 
   Background:
+    Given the Formicidae family exists
     Given these references exist
       | authors | citation   | title | year |
       | Fisher  | Psyche 3:3 | Ants  | 2004 |
-      * there is a subfamily "Formicinae"
+      * there is a subfamily "Dolichoderinae"
       * I log in
       * there is a genus "Eciton"
-      * I go to the catalog page for "Formicinae"
+      * I go to the catalog page for "Dolichoderinae"
       * I press "Edit"
       * I press "Add genus"
       * I click the name field
@@ -35,11 +36,22 @@ Feature: Deleting a taxon
     When I press "Edit"
     And I will confirm on the next step
     And I press "Delete"
-    Then I should be on the catalog page for "Formicinae"
+    Then I should be on the catalog page for "Dolichoderinae"
 
-  Scenario: Can't delete if taxon has stuff hanging off of it
+  Scenario: Can delete even if taxon is referred to by child records
+    Given I add a history item to "Dolichoderinae"
     When I press "Edit"
-    And I add a history item
     And I will confirm on the next step
     And I press "Delete"
-    Then I should see "This taxon already has additional information attached to it."
+    Then I should not see "This taxon already has additional information attached to it."
+    And I should be on the catalog page for "Dolichoderinae"
+
+  Scenario: If taxon has only references from others taxt, still show the Delete button, but don't let them delete
+    Given there is a genus "Formica"
+    And there is a genus "Eciton"
+    And I add a history item to "Eciton" that includes a tag for "Formica"
+    When I go to the catalog page for "Formica"
+    And I press "Edit"
+    And I will confirm on the next step
+    And I press "Delete"
+    Then I should see "This taxon has additional information attached to it."
