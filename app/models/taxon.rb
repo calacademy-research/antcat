@@ -270,11 +270,15 @@ class Taxon < ActiveRecord::Base
   end
 
   ###############################################
-  def references
+  def references options = {}
     references = []
     references.concat references_in_taxa
-    references.concat references_in_taxt
+    references.concat references_in_taxt unless options[:omit_taxt]
     references.concat references_in_synonyms
+  end
+
+  def nontaxt_references
+    references omit_taxt: true
   end
 
   def references_in_taxa

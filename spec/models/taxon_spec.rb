@@ -714,6 +714,17 @@ describe Taxon do
       end
     end
 
+    describe "Nontaxt references" do
+      it "should return only nontaxt references" do
+        atta = create_genus 'Atta'
+        eciton = create_genus 'Eciton'
+        eciton.update_attribute :type_taxt, "{tax #{atta.id}}"
+        eciton.update_attribute :homonym_replaced_by, atta
+        atta.nontaxt_references.should =~ [
+          {table: 'taxa', field: :homonym_replaced_by_id, id: eciton.id},
+        ]
+      end
+    end
   end
 
 end
