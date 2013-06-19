@@ -207,4 +207,19 @@ class Name < ActiveRecord::Base
     end
   end
 
+  def self.find_trinomials_like_quadrinomials
+    Name.all.inject([]) do |names, name|
+      if name.quadrinomial?
+        if trinomial = Name.find_by_name("#{name.at(0)} #{name.at(1)} #{name.at(3)}")
+          if taxon = Taxon.find_by_name(trinomial.name)
+            unless taxon.unavailable?
+              names << trinomial.name
+            end
+          end
+        end
+      end
+      names
+    end
+  end
+
 end
