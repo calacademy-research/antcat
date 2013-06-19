@@ -7,6 +7,9 @@ class Name < ActiveRecord::Base
 
   has_paper_trail
 
+  def quadrinomial?
+    name.split(' ').size == 4
+  end
 
   def at index
     name.split(' ')[index]

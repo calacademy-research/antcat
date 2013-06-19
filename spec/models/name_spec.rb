@@ -260,6 +260,38 @@ describe Name do
     end
   end
 
+  describe "Quadrinomial?" do
+    it "should just consider quadrinomials quadrinomials - nothing else" do
+      name = SubfamilyName.new name: 'Acidinae', name_html: 'Acidinae', epithet: 'Acidinae',
+        epithet_html: 'Acidinae', epithets: nil, protonym_html: 'Acidinae'
+      name.should_not be_quadrinomial
+
+      name = TribeName.new name: 'Acidini', name_html: 'Acidini', epithet: 'Acidini',
+        epithet_html: 'Acidini', epithets: nil, protonym_html: 'Acidini'
+      name.should_not be_quadrinomial
+
+      name = GenusName.new name: 'Acus', name_html: '<i>Acus</i>', epithet: 'Acus',
+        epithet_html: '<i>Acus</i>', epithets: nil, protonym_html: '<i>Acus</i>'
+      name.should_not be_quadrinomial
+
+      name = SubgenusName.new name: 'Acus (Rex)', name_html: '<i>Acus (Rex)</i>', epithet: 'Rex',
+        epithet_html: '<i>Rex</i>', epithets: nil, protonym_html: '<i>Acus (Rex)</i>'
+      name.should_not be_quadrinomial
+
+      name = SpeciesName.new name: 'Acus major', name_html: '<i>Acus major</i>', epithet: 'major',
+        epithet_html: '<i>major</i>', epithets: 'major', protonym_html: '<i>Acus major</i>'
+      name.should_not be_quadrinomial
+
+      name = SubspeciesName.new name: 'Acus major minor', name_html: '<i>Acus major minor</i>', epithet: 'major minor',
+        epithet_html: '<i>major minor</i>', epithets: 'major minor', protonym_html: '<i>Acus major minor</i>'
+      name.should_not be_quadrinomial
+
+      name = SubspeciesName.new name: 'Acus major minor medium', name_html: '<i>Acus major minor medium</i>', epithet: 'medium',
+        epithet_html: '<i>medium</i>', epithets: 'major minor medium', protonym_html: '<i>Acus major minor medium</i>'
+      name.should be_quadrinomial
+
+    end
+  end
 
   describe "Indexing" do
     it "should work as expected" do
