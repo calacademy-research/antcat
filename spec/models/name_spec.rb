@@ -260,4 +260,23 @@ describe Name do
     end
   end
 
+
+  describe "Indexing" do
+    it "should work as expected" do
+      name = SubspeciesName.new name: 'Acus major minor medium', name_html: '<i>Acus major minor medium</i>', epithet: 'medium',
+        epithet_html: '<i>medium</i>', epithets: 'major minor medium', protonym_html: '<i>Acus major minor medium</i>'
+      name.at(0).should == 'Acus'
+      name.at(1).should == 'major'
+      name.at(2).should == 'minor'
+      name.at(3).should == 'medium'
+
+      name = GenusName.new name: 'Acus', name_html: '<i>Acus</i>', epithet: 'Acus',
+        epithet_html: '<i>Acus</i>', epithets: nil, protonym_html: '<i>Acus</i>'
+      name.at(0).should == 'Acus'
+      name.at(1).should be_nil
+      name.at(2).should be_nil
+      name.at(3).should be_nil
+    end
+  end
+
 end
