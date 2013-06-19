@@ -175,6 +175,10 @@ module Taxt
     end
   end
 
+  def self.encode_taxon taxon
+    "{tax #{taxon.id}}"
+  end
+
   ################################
   def self.replace replace_what, replace_with
     taxt_fields.each do |klass, fields|
