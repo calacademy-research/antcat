@@ -249,4 +249,15 @@ describe Name do
     end
   end
 
+  describe "Finding trinomials that are like quadronimals" do
+    it "should return those taxa with names that differ in this way" do
+      create_subspecies 'Camponotus maculatus georgei'
+      create_subspecies 'Camponotus maculatus arnoldius georgei'
+      create_subspecies 'Camponotus maculatus alpaca'
+      Name.find_trinomials_like_quadrinomials.should =~ [
+        'Camponotus maculatus georgei'
+      ]
+    end
+  end
+
 end
