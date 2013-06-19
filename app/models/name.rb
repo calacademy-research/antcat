@@ -7,6 +7,11 @@ class Name < ActiveRecord::Base
 
   has_paper_trail
 
+
+  def at index
+    name.split(' ')[index]
+  end
+
   def set_taxon_caches
     Taxon.update_all ['name_cache = ?', name], name_id: id
     Taxon.update_all ['name_html_cache = ?', name_html], name_id: id
