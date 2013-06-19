@@ -30,7 +30,7 @@ class TaxaController < ApplicationController
     @taxon = Taxon.find params[:id]
     @parent_id = @taxon.id
     set_rank_that_would_be_created_if_button_clicked
-    @show_delete_taxon_button = deleting_allowed?
+    @show_delete_taxon_button = @taxon.nontaxt_references.empty?
     create_object_web
     setup_edit_buttons
   end
@@ -47,14 +47,6 @@ class TaxaController < ApplicationController
     @new_taxon_rank = child_rank @taxon.class
   end
 
-  def deleting_allowed?
-    @taxon.history_items.blank? &&
-    @taxon.reference_sections.blank? &&
-    @taxon.junior_synonyms.blank? &&
-    @taxon.senior_synonyms.blank? &&
-    @taxon.homonym_replaced_by.blank?
-  end
-
   def elevate_to_species
     begin
       @taxon = Subspecies.find params[:id]
@@ -69,11 +61,11 @@ class TaxaController < ApplicationController
 
   def delete_taxon
     @taxon = Taxon.find params[:id]
-    if deleting_allowed?
+    if @taxon.references.empty?
       @taxon.destroy
       redirect_to catalog_url get_parent_id
     else
-      @taxon.errors[:base] = "This taxon already has additional information attached to it. Please see Mark."
+      @taxon.errors[:base] = "This taxon has additional information attached to it. Please see Mark."
       render :edit and return
     end
   end
