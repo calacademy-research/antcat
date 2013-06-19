@@ -305,7 +305,10 @@ class Taxon < ActiveRecord::Base
         # don't include the taxt in this or child records
         next if klass == Taxon && record.id == id
         next if klass == Protonym && record.id == protonym_id
-        next if klass == Citation && record.id == protonym.authorship.id
+        if klass == Citation
+          authorship_id = protonym.try(:authorship).try(:id)
+          next if authorship_id == record.id
+        end
         for field in fields
           next unless record[field]
           if record[field] =~ /{tax #{id}}/
