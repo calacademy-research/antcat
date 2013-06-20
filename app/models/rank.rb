@@ -20,8 +20,8 @@ class Rank
     parent
   end
 
-  def write_id_selector
-    (@hash[:string] + '_id=').to_sym
+  def write_selector
+    "#{@hash[:string]}=".to_sym
   end
 
   def to_sym *options
