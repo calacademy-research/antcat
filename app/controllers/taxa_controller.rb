@@ -6,12 +6,7 @@ class TaxaController < ApplicationController
   def new
     create_object_web
     set_parent
-
-    if @taxon.kind_of? SpeciesGroupTaxon
-      parent = Taxon.find @parent_id
-      @default_name_string = parent.name.name
-    end
-
+    set_default_name_string
     render :edit
   end
 
@@ -40,7 +35,6 @@ class TaxaController < ApplicationController
 
   def elevate_to_species
     begin
-      @taxon = Subspecies.find params[:id]
       old_species = @taxon.species
       @taxon.elevate_to_species
     rescue Subspecies::NoSpeciesForSubspeciesError
@@ -51,14 +45,13 @@ class TaxaController < ApplicationController
   end
 
   def delete_taxon
-    @taxon = Taxon.find params[:id]
     if @taxon.references.empty?
       @taxon.destroy
-      redirect_to catalog_url get_parent
     else
       @taxon.errors[:base] = "This taxon has additional information attached to it. Please see Mark."
       render :edit and return
     end
+    redirect_to catalog_url @taxon.parent
   end
 
   ###################
@@ -70,16 +63,19 @@ class TaxaController < ApplicationController
     @taxon.parent = @parent_id
   end
 
-  def get_parent
-    @taxon.parent
-  end
-
   def child_rank rank
     rank = rank.to_s
     case rank
     when 'Subfamily' then 'genus'
     when 'Genus'     then 'species'
     when 'Species'   then 'subspecies'
+    end
+  end
+
+  def set_default_name_string
+    if @taxon.kind_of? SpeciesGroupTaxon
+      parent = Taxon.find @parent_id
+      @default_name_string = parent.name.name
     end
   end
 
