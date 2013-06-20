@@ -24,6 +24,10 @@ class Rank
     "#{@hash[:string]}=".to_sym
   end
 
+  def read_selector
+    "#{@hash[:string]}".to_sym
+  end
+
   def to_sym *options
     options.include?(:plural) ? @hash[:plural_symbol] : @hash[:symbol]
   end
