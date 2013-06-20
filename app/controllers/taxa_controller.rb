@@ -11,7 +11,7 @@ class TaxaController < ApplicationController
     assign_parent_id
 
     if @taxon.kind_of? SpeciesGroupTaxon
-      parent = Taxon.find params[:parent_id]
+      parent = Taxon.find @parent_id
       @default_name_string = parent.name.name
     end
 
