@@ -39,7 +39,7 @@ class TaxaController < ApplicationController
   end
 
   def set_rank_that_would_be_created_if_button_clicked
-    @new_taxon_rank = child_rank @taxon.class
+    @new_taxon_rank = Rank[@taxon].child
   end
 
   def elevate_to_species
@@ -67,7 +67,7 @@ class TaxaController < ApplicationController
 
   ###################
   def new_taxon
-    params[:new_taxon_rank].titlecase.constantize.new
+    @new_taxon_rank.titlecase.constantize.new
   end
 
   def set_parent
