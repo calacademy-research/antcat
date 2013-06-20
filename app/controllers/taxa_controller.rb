@@ -76,12 +76,7 @@ class TaxaController < ApplicationController
   end
 
   def assign_parent_id
-    parent_fields = {
-      Genus => :subfamily_id=,
-      Species => :genus_id=,
-      Subspecies => :species_id=,
-    }
-    @taxon.send parent_fields[@taxon.class], @parent_id
+    @taxon.send Rank[@taxon].parent.write_id_selector, @parent_id
   end
 
   def get_parent_id
