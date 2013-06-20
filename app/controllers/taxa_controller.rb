@@ -6,6 +6,8 @@ class TaxaController < ApplicationController
   def load_parms
     @new_taxon_rank = params[:new_taxon_rank]
     @parent_id = params[:parent_id]
+    @elevate_to_species = params[:task_button_command] == 'elevate_to_species'
+    @delete_taxon = params[:task_button_command] == 'delete_taxon'
   end
 
   def new
@@ -37,8 +39,8 @@ class TaxaController < ApplicationController
   end
 
   def update
-    return elevate_to_species if params[:task_button_command] == 'elevate_to_species'
-    return delete_taxon if params[:task_button_command] == 'delete_taxon'
+    return elevate_to_species if @elevate_to_species
+    return delete_taxon if @delete_taxon
     @taxon = Taxon.find params[:id]
     save
   end
