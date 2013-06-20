@@ -8,7 +8,7 @@ class TaxaController < ApplicationController
     @taxon = new_taxon
     @parent_id = params[:parent_id]
     create_object_web
-    set_parent_id
+    set_parent
 
     if @taxon.kind_of? SpeciesGroupTaxon
       parent = Taxon.find @parent_id
@@ -22,7 +22,7 @@ class TaxaController < ApplicationController
     @new_taxon_rank = params[:new_taxon_rank]
     @taxon = new_taxon
     @parent_id = params[:parent_id]
-    set_parent_id
+    set_parent
     save
   end
 
@@ -75,7 +75,7 @@ class TaxaController < ApplicationController
     params[:new_taxon_rank].titlecase.constantize.new
   end
 
-  def set_parent_id
+  def set_parent
     @taxon.set_parent_id @parent_id
   end
 
