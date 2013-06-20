@@ -55,10 +55,6 @@ class TaxaController < ApplicationController
   end
 
   ###################
-  def new_taxon
-    @new_taxon_rank.titlecase.constantize.new
-  end
-
   def save
     begin
       create_object_web
@@ -147,7 +143,7 @@ class TaxaController < ApplicationController
     if params[:id].present?
       @taxon = Taxon.find params[:id]
     else
-      @taxon = new_taxon
+      @taxon = @rank.titlecase.constantize.new
     end
   end
 
