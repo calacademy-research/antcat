@@ -76,7 +76,7 @@ class TaxaController < ApplicationController
   end
 
   def set_parent
-    @taxon.set_parent_id @parent_id
+    @taxon.set_parent @parent_id
   end
 
   def get_parent_id
