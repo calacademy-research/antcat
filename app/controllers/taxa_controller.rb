@@ -4,7 +4,6 @@ class TaxaController < ApplicationController
   skip_before_filter :authenticate_catalog_editor, if: :preview?
 
   def new
-    @taxon = new_taxon
     create_object_web
     set_parent
 
@@ -17,13 +16,11 @@ class TaxaController < ApplicationController
   end
 
   def create
-    @taxon = new_taxon
     set_parent
     save
   end
 
   def edit
-    @taxon = Taxon.find params[:id]
     @parent_id = @taxon.id
     set_rank_that_would_be_created_if_button_clicked
     @show_delete_taxon_button = @taxon.nontaxt_references.empty?
@@ -34,7 +31,6 @@ class TaxaController < ApplicationController
   def update
     return elevate_to_species if @elevate_to_species
     return delete_taxon if @delete_taxon
-    @taxon = Taxon.find params[:id]
     save
   end
 
