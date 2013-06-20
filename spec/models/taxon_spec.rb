@@ -735,6 +735,11 @@ describe Taxon do
       genus.save!
       genus.subfamily.should == subfamily
     end
+    it "should be able to get the parent id, too" do
+      subfamily = FactoryGirl.create :subfamily
+      genus = FactoryGirl.create :genus, subfamily: subfamily
+      genus.get_parent.should == subfamily
+    end
   end
 
 end

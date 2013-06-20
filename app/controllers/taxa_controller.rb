@@ -63,7 +63,7 @@ class TaxaController < ApplicationController
     @taxon = Taxon.find params[:id]
     if @taxon.references.empty?
       @taxon.destroy
-      redirect_to catalog_url get_parent_id
+      redirect_to catalog_url get_parent
     else
       @taxon.errors[:base] = "This taxon has additional information attached to it. Please see Mark."
       render :edit and return
@@ -79,14 +79,8 @@ class TaxaController < ApplicationController
     @taxon.set_parent @parent_id
   end
 
-  def get_parent_id
-    parent_fields = {
-      Genus => :subfamily_id,
-      Species => :genus_id,
-      Subspecies => :species_id,
-    }
-    return Family.first if @taxon.kind_of? Subfamily
-    @taxon.send parent_fields[@taxon.class]
+  def get_parent
+    @taxon.get_parent
   end
 
   def child_rank rank
