@@ -269,6 +269,10 @@ class Taxon < ActiveRecord::Base
     Progress.show_results
   end
 
+  def set_parent_id id
+    send Rank[self].parent.write_selector, Taxon.find(id)
+  end
+
   ###############################################
   def references options = {}
     references = []

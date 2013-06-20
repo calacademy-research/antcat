@@ -75,8 +75,8 @@ class TaxaController < ApplicationController
     params[:new_taxon_rank].titlecase.constantize.new
   end
 
-    @taxon.send Rank[@taxon].parent.write_id_selector, @parent_id
   def set_parent_id
+    @taxon.set_parent_id @parent_id
   end
 
   def get_parent_id
