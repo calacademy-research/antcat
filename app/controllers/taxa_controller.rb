@@ -59,35 +59,6 @@ class TaxaController < ApplicationController
     @new_taxon_rank.titlecase.constantize.new
   end
 
-  def set_parent
-    @taxon.parent = @parent_id
-  end
-
-  def child_rank rank
-    rank = rank.to_s
-    case rank
-    when 'Subfamily' then 'genus'
-    when 'Genus'     then 'species'
-    when 'Species'   then 'subspecies'
-    end
-  end
-
-  def set_default_name_string
-    if @taxon.kind_of? SpeciesGroupTaxon
-      parent = Taxon.find @parent_id
-      @default_name_string = parent.name.name
-    end
-  end
-
-  ###################
-  def setup_edit_buttons
-    @show_elevate_to_species_button = @taxon.kind_of? Subspecies
-    @show_convert_to_subspecies_button = @taxon.kind_of? Species
-
-    string = child_rank @taxon.class
-    @add_taxon_button_text = "Add #{string}" if string
-  end
-
   def save
     begin
       create_object_web
@@ -177,6 +148,25 @@ class TaxaController < ApplicationController
     else
       @taxon = new_taxon
     end
+  end
+
+  def set_parent
+    @taxon.parent = @parent_id
+  end
+
+  def set_default_name_string
+    if @taxon.kind_of? SpeciesGroupTaxon
+      parent = Taxon.find @parent_id
+      @default_name_string = parent.name.name
+    end
+  end
+
+  def setup_edit_buttons
+    @show_elevate_to_species_button = @taxon.kind_of? Subspecies
+    @show_convert_to_subspecies_button = @taxon.kind_of? Species
+
+    string = Rank[@taxon].child.try :string
+    @add_taxon_button_text = "Add #{string}" if string
   end
 
 end
