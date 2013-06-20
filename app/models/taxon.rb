@@ -269,7 +269,7 @@ class Taxon < ActiveRecord::Base
     Progress.show_results
   end
 
-  def set_parent_id id
+  def set_parent id
     send Rank[self].parent.write_selector, Taxon.find(id)
   end
 
