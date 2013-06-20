@@ -727,4 +727,14 @@ describe Taxon do
     end
   end
 
+  describe "Setting parent ID" do
+    it "should be able to do it" do
+      genus = FactoryGirl.create :genus
+      subfamily = FactoryGirl.create :subfamily
+      genus.set_parent subfamily.id
+      genus.save!
+      genus.subfamily.should == subfamily
+    end
+  end
+
 end
