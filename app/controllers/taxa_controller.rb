@@ -1,6 +1,7 @@
 # coding: UTF-8
 class TaxaController < ApplicationController
-  before_filter :authenticate_catalog_editor, :load_parms
+  before_filter :authenticate_catalog_editor
+  before_filter :load_parms
   skip_before_filter :authenticate_catalog_editor, if: :preview?
 
   def new
