@@ -138,6 +138,7 @@ class TaxaController < ApplicationController
     @taxon.attributes = attributes
   end
 
+  ###################
   def load_parms
     @rank = params[:rank]
     @parent_id = params[:parent_id]
