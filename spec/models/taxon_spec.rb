@@ -727,18 +727,25 @@ describe Taxon do
     end
   end
 
-  describe "Setting parent ID" do
-    it "should be able to do it" do
+  describe "Setting and getting parent virtual field" do
+    it "should be able to assign from an object" do
       genus = FactoryGirl.create :genus
       subfamily = FactoryGirl.create :subfamily
-      genus.set_parent subfamily.id
+      genus.parent = subfamily
       genus.save!
-      genus.subfamily.should == subfamily
+      genus.reload.subfamily.should == subfamily
+    end
+    it "should be able to assign from an id" do
+      genus = FactoryGirl.create :genus
+      subfamily = FactoryGirl.create :subfamily
+      genus.parent = subfamily.id
+      genus.save!
+      genus.reload.subfamily.should == subfamily
     end
     it "should be able to get the parent id, too" do
       subfamily = FactoryGirl.create :subfamily
       genus = FactoryGirl.create :genus, subfamily: subfamily
-      genus.get_parent.should == subfamily
+      genus.parent.should == subfamily
     end
   end
 

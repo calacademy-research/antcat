@@ -76,11 +76,11 @@ class TaxaController < ApplicationController
   end
 
   def set_parent
-    @taxon.set_parent @parent_id
+    @taxon.parent = @parent_id
   end
 
   def get_parent
-    @taxon.get_parent
+    @taxon.parent
   end
 
   def child_rank rank
