@@ -20,6 +20,14 @@ class Rank
     parent
   end
 
+  def child
+    child_index = index + 1
+    return nil if child_index >= self.class.ranks.size
+    child = at child_index
+    child = child.child if child.uncommon?
+    child
+  end
+
   def write_selector
     "#{@hash[:string]}=".to_sym
   end
