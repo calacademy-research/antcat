@@ -59,4 +59,8 @@ describe Rank do
     Rank[create_subfamily].parent.should == Rank[:family]
     Rank[create_family].parent.should be_nil
   end
+  it "should understand its child" do
+    Rank[create_subspecies('Atta major minor')].child.should be_nil
+    Rank[create_family].child.should == Rank[:subfamily]
+  end
 end
