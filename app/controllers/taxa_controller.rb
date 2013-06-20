@@ -1,10 +1,13 @@
 # coding: UTF-8
 class TaxaController < ApplicationController
-  before_filter :authenticate_catalog_editor
+  before_filter :authenticate_catalog_editor, :load_parms
   skip_before_filter :authenticate_catalog_editor, if: :preview?
 
-  def new
+  def load_parms
     @new_taxon_rank = params[:new_taxon_rank]
+  end
+
+  def new
     @taxon = new_taxon
     @parent_id = params[:parent_id]
     create_object_web
@@ -19,7 +22,6 @@ class TaxaController < ApplicationController
   end
 
   def create
-    @new_taxon_rank = params[:new_taxon_rank]
     @taxon = new_taxon
     @parent_id = params[:parent_id]
     set_parent
