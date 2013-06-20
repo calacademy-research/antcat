@@ -269,8 +269,14 @@ class Taxon < ActiveRecord::Base
     Progress.show_results
   end
 
-  def set_parent id
-    send Rank[self].parent.write_selector, Taxon.find(id)
+  def parent= id_or_object
+    parent = id_or_object.kind_of?(Taxon) ? id_or_object : Taxon.find(id_or_object)
+    send Rank[self].parent.write_selector, parent
+  end
+
+  def parent
+    return Family.first if kind_of? Subfamily
+    send Rank[self].parent.read_selector
   end
 
   ###############################################
