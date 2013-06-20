@@ -5,11 +5,11 @@ class TaxaController < ApplicationController
 
   def load_parms
     @new_taxon_rank = params[:new_taxon_rank]
+    @parent_id = params[:parent_id]
   end
 
   def new
     @taxon = new_taxon
-    @parent_id = params[:parent_id]
     create_object_web
     set_parent
 
@@ -23,7 +23,6 @@ class TaxaController < ApplicationController
 
   def create
     @taxon = new_taxon
-    @parent_id = params[:parent_id]
     set_parent
     save
   end
@@ -41,7 +40,6 @@ class TaxaController < ApplicationController
     return elevate_to_species if params[:task_button_command] == 'elevate_to_species'
     return delete_taxon if params[:task_button_command] == 'delete_taxon'
     @taxon = Taxon.find params[:id]
-    @parent_id = params[:parent_id]
     save
   end
 
