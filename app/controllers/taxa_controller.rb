@@ -139,7 +139,7 @@ class TaxaController < ApplicationController
   end
 
   def load_parms
-    @new_taxon_rank = params[:new_taxon_rank]
+    @rank = params[:rank]
     @parent_id = params[:parent_id]
     @elevate_to_species = params[:task_button_command] == 'elevate_to_species'
     @delete_taxon = params[:task_button_command] == 'delete_taxon'

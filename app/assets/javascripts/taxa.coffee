@@ -75,8 +75,8 @@ class AntCat.TaxonForm extends AntCat.Form
   parent_id: =>
     $('#parent_id').val()
 
-  new_taxon_rank: =>
-    $('#new_taxon_rank').val()
+  rank: =>
+    $('#rank').val()
 
   ###### overrides
   cancel: =>
@@ -105,7 +105,7 @@ class AntCat.TaxonForm extends AntCat.Form
     document.location = "/taxa/#{@taxon_id()}/convert_to_subspecies/new"
 
   add_taxon: =>
-    document.location = "/taxa/new?new_taxon_rank=#{@new_taxon_rank()}&parent_id=#{@taxon_id()}"
+    document.location = "/taxa/new?rank=#{@rank()}&parent_id=#{@taxon_id()}"
 
   add_history_item_panel: ($panel) =>
     @element.find('.history_items').append $panel
