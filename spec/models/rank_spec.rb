@@ -49,6 +49,9 @@ describe Rank do
   it "should understand write_selector" do
     Rank[create_genus].write_selector.should == :genus=
   end
+  it "should understand read_selector" do
+    Rank[create_species].read_selector.should == :species
+  end
   it "should understand its parent" do
     Rank[create_subspecies('Atta major minor')].parent.should == Rank[:species]
     Rank[create_species].parent.should == Rank[:genus]
