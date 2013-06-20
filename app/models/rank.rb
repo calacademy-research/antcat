@@ -4,6 +4,26 @@ class Rank
     @hash = hash
   end
 
+  def string
+    @hash[:string]
+  end
+
+  def uncommon?
+    @hash[:uncommon]
+  end
+
+  def parent
+    parent_index = index - 1
+    return nil if parent_index < 0
+    parent = at parent_index
+    parent = parent.parent if parent.uncommon?
+    parent
+  end
+
+  def write_id_selector
+    (@hash[:string] + '_id=').to_sym
+  end
+
   def to_sym *options
     options.include?(:plural) ? @hash[:plural_symbol] : @hash[:symbol]
   end
@@ -25,6 +45,16 @@ class Rank
     @hash.values.include? identifier
   end
 
+  def index
+    self.class.ranks.index do |rank|
+      @hash[:string] == rank.string
+    end
+  end
+
+  def at index
+    self.class.ranks[index]
+  end
+
   def self.find identifier
     identifier = identifier.class if identifier.kind_of? Taxon
     identifier = identifier.first.class if identifier.kind_of? Enumerable
@@ -39,11 +69,12 @@ class Rank
     @_ranks ||= [
       Rank.new(string: 'family',     plural_string: 'families',     symbol: :family,     plural_symbol: :families,    klass: Family),
       Rank.new(string: 'subfamily',  plural_string: 'subfamilies',  symbol: :subfamily,  plural_symbol: :subfamilies, klass: Subfamily),
-      Rank.new(string: 'tribe',      plural_string: 'tribes',       symbol: :tribe,      plural_symbol: :tribes,      klass: Tribe),
+      Rank.new(string: 'tribe',      plural_string: 'tribes',       symbol: :tribe,      plural_symbol: :tribes,      klass: Tribe, uncommon: true),
       Rank.new(string: 'genus',      plural_string: 'genera',       symbol: :genus,      plural_symbol: :genera,      klass: Genus),
-      Rank.new(string: 'subgenus',   plural_string: 'subgenera',    symbol: :subgenus,   plural_symbol: :subgenera,   klass: Subgenus),
+      Rank.new(string: 'subgenus',   plural_string: 'subgenera',    symbol: :subgenus,   plural_symbol: :subgenera,   klass: Subgenus, uncommon: true),
       Rank.new(string: 'species',    plural_string: 'species',      symbol: :species,    plural_symbol: :species,     klass: Species),
       Rank.new(string: 'subspecies', plural_string: 'subspecies',   symbol: :subspecies, plural_symbol: :subspecies,  klass: Subspecies),
     ]
   end
+
 end
