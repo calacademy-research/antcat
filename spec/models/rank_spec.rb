@@ -46,8 +46,8 @@ describe Rank do
   it "should raise an error if it doesn't understand the input" do
     lambda {Rank['asdf']}.should raise_error
   end
-  it "should understand write_id_selector" do
-    Rank[create_genus].write_id_selector.should == :genus_id=
+  it "should understand write_selector" do
+    Rank[create_genus].write_selector.should == :genus=
   end
   it "should understand its parent" do
     Rank[create_subspecies('Atta major minor')].parent.should == Rank[:species]
