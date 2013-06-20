@@ -31,7 +31,7 @@ class TaxaController < ApplicationController
   end
 
   def set_rank_that_would_be_created_if_button_clicked
-    @new_taxon_rank = Rank[@taxon].child
+    @rank = @rank.child
   end
 
   def elevate_to_species
@@ -136,13 +136,14 @@ class TaxaController < ApplicationController
 
   ###################
   def load_parms
-    @rank = params[:rank]
     @parent_id = params[:parent_id]
     @elevate_to_species = params[:task_button_command] == 'elevate_to_species'
     @delete_taxon = params[:task_button_command] == 'delete_taxon'
     if params[:id].present?
       @taxon = Taxon.find params[:id]
+      @rank = Rank[@taxon]
     else
+      @rank = params[:rank]
       @taxon = @rank.titlecase.constantize.new
     end
   end
