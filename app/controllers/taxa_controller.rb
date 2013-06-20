@@ -3,13 +3,6 @@ class TaxaController < ApplicationController
   before_filter :authenticate_catalog_editor, :load_parms
   skip_before_filter :authenticate_catalog_editor, if: :preview?
 
-  def load_parms
-    @new_taxon_rank = params[:new_taxon_rank]
-    @parent_id = params[:parent_id]
-    @elevate_to_species = params[:task_button_command] == 'elevate_to_species'
-    @delete_taxon = params[:task_button_command] == 'delete_taxon'
-  end
-
   def new
     @taxon = new_taxon
     create_object_web
@@ -180,6 +173,18 @@ class TaxaController < ApplicationController
     return unless attributes
     attributes[:type_name_id] = attributes.delete :id
     @taxon.attributes = attributes
+  end
+
+  def load_parms
+    @new_taxon_rank = params[:new_taxon_rank]
+    @parent_id = params[:parent_id]
+    @elevate_to_species = params[:task_button_command] == 'elevate_to_species'
+    @delete_taxon = params[:task_button_command] == 'delete_taxon'
+    if params[:id].present?
+      @taxon = Taxon.find params[:id]
+    else
+      @taxon = new_taxon
+    end
   end
 
 end
