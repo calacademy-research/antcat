@@ -36,7 +36,7 @@ class TaxaController < ApplicationController
       @taxon.errors[:base] = "This subspecies doesn't have a species. Use the \"Assign species to subspecies\" button to fix, then you can elevate the subspecies to the species."
       render :edit and return
     end
-    redirect_to catalog_url @taxon
+    redirect_to catalog_path @taxon
   end
 
   def delete_taxon
@@ -46,7 +46,7 @@ class TaxaController < ApplicationController
       @taxon.errors[:base] = "This taxon has additional information attached to it. Please see Mark."
       render :edit and return
     end
-    redirect_to catalog_url @taxon.parent
+    redirect_to catalog_path @taxon.parent
   end
 
   ###################
@@ -57,7 +57,7 @@ class TaxaController < ApplicationController
     rescue ActiveRecord::RecordInvalid
       render :edit and return
     end
-    redirect_to catalog_url @taxon
+    redirect_to catalog_path @taxon
   end
 
   def create_object_web
@@ -138,9 +138,12 @@ class TaxaController < ApplicationController
       @taxon = Taxon.find params[:id]
       @rank = Rank[@taxon].child
       @add_taxon_path = "/taxa/new?rank=#{@rank}&parent_id=#{@taxon.id}"
+      @cancel_existing_taxon_path = "/catalog/#{@taxon.id}"
+      @convert_to_subspecies_path = "/taxa/#{@taxon.id}/convert_to_subspecies/new"
     else
       @rank = Rank[params[:rank]]
       @taxon = @rank.string.titlecase.constantize.new
+      @cancel_new_taxon_path = "/taxa/#{@taxon.parent.id}/edit"
     end
   end
 

@@ -72,16 +72,13 @@ class AntCat.TaxonForm extends AntCat.Form
     match = @form().attr('action').match /\d+/
     match and match[0]
 
-  parent_id: =>
-    $('#parent_id').val()
-
   ###### overrides
   cancel: =>
     taxon_id = @taxon_id()
     if taxon_id
-      window.location = "/catalog/#{taxon_id}"
+      window.location = $('#cancel_existing_taxon_url').val()
     else
-      window.location = "/taxa/#{@parent_id()}/edit"
+      window.location = $('#cancel_new_taxon_url').val()
 
   ###### client functions
   replace_junior_and_senior_synonyms_section: (content) =>
@@ -99,10 +96,10 @@ class AntCat.TaxonForm extends AntCat.Form
     @submit()
 
   convert_to_subspecies: =>
-    document.location = "/taxa/#{@taxon_id()}/convert_to_subspecies/new"
+    window.location = $('#convert_to_subspecies_path').val()
 
   add_taxon: =>
-    document.location = $('#add_taxon_path').val()
+    window.location = $('#add_taxon_path').val()
 
   add_history_item_panel: ($panel) =>
     @element.find('.history_items').append $panel
