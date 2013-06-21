@@ -136,12 +136,12 @@ class TaxaController < ApplicationController
     @delete_taxon = params[:task_button_command] == 'delete_taxon'
     if params[:id].present?
       @taxon = Taxon.find params[:id]
-      @rank = Rank[@taxon]
+      rank = Rank[@taxon]
     else
-      @rank = params[:rank]
-      @taxon = @rank.titlecase.constantize.new
+      rank = params[:rank]
+      @taxon = rank.titlecase.constantize.new
     end
-    @add_taxon_path = "/taxa/new?rank=#{@rank}&parent_id=#{@taxon.id}"
+    @add_taxon_path = "/taxa/new?rank=#{rank}&parent_id=#{@taxon.id}"
   end
 
   def set_parent
