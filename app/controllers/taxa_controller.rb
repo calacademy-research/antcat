@@ -1,7 +1,7 @@
 # coding: UTF-8
 class TaxaController < ApplicationController
   before_filter :authenticate_catalog_editor
-  before_filter :load_parms
+  before_filter :setup
   skip_before_filter :authenticate_catalog_editor, if: :preview?
 
   def new
@@ -135,7 +135,7 @@ class TaxaController < ApplicationController
   end
 
   ###################
-  def load_parms
+  def setup
     @parent_id = params[:parent_id]
     @elevate_to_species = params[:task_button_command] == 'elevate_to_species'
     @delete_taxon = params[:task_button_command] == 'delete_taxon'
