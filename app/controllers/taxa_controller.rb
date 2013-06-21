@@ -17,7 +17,6 @@ class TaxaController < ApplicationController
   end
 
   def edit
-    @parent_id = @taxon.id
     @show_delete_taxon_button = @taxon.nontaxt_references.empty?
     create_object_web
     setup_edit_buttons
@@ -143,7 +142,7 @@ class TaxaController < ApplicationController
     else
       @rank = Rank[params[:rank]]
       @taxon = @rank.string.titlecase.constantize.new
-      @cancel_new_taxon_path = "/taxa/#{@taxon.parent.id}/edit"
+      @cancel_new_taxon_path = "/taxa/#{@parent_id}/edit"
     end
   end
 
