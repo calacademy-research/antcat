@@ -17,7 +17,6 @@ class TaxaController < ApplicationController
   end
 
   def edit
-    @show_delete_taxon_button = @taxon.nontaxt_references.empty?
     create_object_web
     setup_edit_buttons
   end
@@ -156,6 +155,7 @@ class TaxaController < ApplicationController
   def setup_edit_buttons
     @show_elevate_to_species_button = @taxon.kind_of? Subspecies
     @show_convert_to_subspecies_button = @taxon.kind_of? Species
+    @show_delete_taxon_button = @taxon.nontaxt_references.empty?
 
     string = Rank[@taxon].child.try :string
     @add_taxon_button_text = "Add #{string}" if string
