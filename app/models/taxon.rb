@@ -270,8 +270,8 @@ class Taxon < ActiveRecord::Base
   end
 
   def parent= id_or_object
-    parent = id_or_object.kind_of?(Taxon) ? id_or_object : Taxon.find(id_or_object)
-    send Rank[self].parent.write_selector, parent
+    parent_taxon = id_or_object.kind_of?(Taxon) ? id_or_object : Taxon.find(id_or_object)
+    send Rank[self].parent.write_selector, parent_taxon
   end
 
   def parent
