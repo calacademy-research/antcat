@@ -146,6 +146,7 @@ class TaxaController < ApplicationController
       @rank = params[:rank]
       @taxon = @rank.titlecase.constantize.new
     end
+    @add_taxon_path = "/taxa/new?rank=#{@rank}&parent_id=#{@taxon.id}"
   end
 
   def set_parent
