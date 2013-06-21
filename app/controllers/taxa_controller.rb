@@ -7,7 +7,7 @@ class TaxaController < ApplicationController
   def new
     create_object_web
     set_parent
-    set_default_name_string
+    get_default_name_string
     render :edit
   end
 
@@ -150,7 +150,7 @@ class TaxaController < ApplicationController
     @taxon.parent = @parent_id
   end
 
-  def set_default_name_string
+  def get_default_name_string
     if @taxon.kind_of? SpeciesGroupTaxon
       parent = Taxon.find @parent_id
       @default_name_string = parent.name.name
