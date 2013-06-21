@@ -74,17 +74,20 @@ describe Vlad do
   it "should show protonyms without authorships" do
     protonym_with_authorship = FactoryGirl.create :protonym
     protonym_without_authorship = FactoryGirl.create :protonym
-    # simply doing protonym_without_authorship.update_attribute(:authorship_id, nil)
-    # does nothing
-    Protonym.update_all 'authorship_id = NULL',  id: protonym_without_authorship.id
-    protonym_without_authorship.reload.authorship_id.should be_nil
+    protonym_without_authorship.update_attribute :authorship, nil
+
+    protonym_without_authorship_or_taxon = FactoryGirl.create :protonym
+    protonym_without_authorship_or_taxon.update_attribute :authorship, nil
+
+    protonym_without_authorship.reload.authorship.should be_nil
 
     create_genus protonym: protonym_with_authorship
     create_genus protonym: protonym_without_authorship
 
     results = Vlad::ProtonymsWithoutAuthorships.query
-    results.size.should == 1
-    results.first.should == protonym_without_authorship
+    results.should =~ [protonym_without_authorship, protonym_without_authorship_or_taxon]
+
+    -> {Vlad::ProtonymsWithoutAuthorships.display}.should_not raise_error
   end
 
   it "should show duplicate synonyms" do
