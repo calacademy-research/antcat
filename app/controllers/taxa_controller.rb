@@ -129,13 +129,13 @@ class TaxaController < ApplicationController
     @elevate_to_species = params[:task_button_command] == 'elevate_to_species'
     @delete_taxon = params[:task_button_command] == 'delete_taxon'
     if params[:id].present?
-      load
+      load_taxon
     else
-      create
+      create_taxon
     end
   end
 
-  def load
+  def load_taxon
     @taxon = Taxon.find params[:id]
     @rank = Rank[@taxon].child
     @add_taxon_path = "/taxa/new?rank=#{@rank}&parent_id=#{@taxon.id}"
@@ -143,7 +143,7 @@ class TaxaController < ApplicationController
     @convert_to_subspecies_path = "/taxa/#{@taxon.id}/convert_to_subspecies/new"
   end
 
-  def create
+  def create_taxon
     @rank = Rank[params[:rank]]
     @taxon = @rank.string.titlecase.constantize.new
     @cancel_path = "/taxa/#{@parent_id}/edit"
