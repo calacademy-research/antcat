@@ -259,7 +259,12 @@ class Vlad
     end
     def self.display
       display_results_section query do |protonym|
-        Taxon.where(protonym_id: protonym).first.name.name
+        taxon = Taxon.where(protonym_id: protonym).first
+        if taxon
+          taxon.name.name
+        else
+          "Orphan protonym: " + protonym.name.name
+        end
       end
     end
   end
