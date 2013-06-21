@@ -73,12 +73,7 @@ class AntCat.TaxonForm extends AntCat.Form
     match and match[0]
 
   ###### overrides
-  cancel: =>
-    taxon_id = @taxon_id()
-    if taxon_id
-      window.location = $('#cancel_existing_taxon_url').val()
-    else
-      window.location = $('#cancel_new_taxon_url').val()
+  cancel: => window.location = $('#cancel_path').val()
 
   ###### client functions
   replace_junior_and_senior_synonyms_section: (content) =>
