@@ -49,15 +49,14 @@ class Taxon < ActiveRecord::Base
   def self.find_name name, search_type = 'matching'
     name = name.dup.strip
     query = ordered_by_name
-    column = name.split(' ').size > 1 ?  'name' : 'epithet'
-    types_sought = ['Subfamily', 'Tribe', 'Genus', 'Subgenus', 'Species', 'Subspecies']
+    column = name.split(' ').size > 1 ? 'name' : 'epithet'
     case search_type
     when 'matching'
-      query = query.where ["names.#{column} = ?    AND taxa.type IN (?)", name, types_sought]
+      query = query.where ["names.#{column} = ?", name]
     when 'beginning with'
-      query = query.where ["names.#{column} LIKE ? AND taxa.type IN (?)", name + '%', types_sought]
+      query = query.where ["names.#{column} LIKE ?", name + '%']
     when 'containing'
-      query = query.where ["names.#{column} LIKE ? AND taxa.type IN (?)", '%' + name + '%', types_sought]
+      query = query.where ["names.#{column} LIKE ?", '%' + name + '%']
     end
     query.all
   end
