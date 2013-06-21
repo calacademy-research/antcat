@@ -129,16 +129,24 @@ class TaxaController < ApplicationController
     @elevate_to_species = params[:task_button_command] == 'elevate_to_species'
     @delete_taxon = params[:task_button_command] == 'delete_taxon'
     if params[:id].present?
-      @taxon = Taxon.find params[:id]
-      @rank = Rank[@taxon].child
-      @add_taxon_path = "/taxa/new?rank=#{@rank}&parent_id=#{@taxon.id}"
-      @cancel_path = "/catalog/#{@taxon.id}"
-      @convert_to_subspecies_path = "/taxa/#{@taxon.id}/convert_to_subspecies/new"
+      load
     else
-      @rank = Rank[params[:rank]]
-      @taxon = @rank.string.titlecase.constantize.new
-      @cancel_path = "/taxa/#{@parent_id}/edit"
+      create
     end
+  end
+
+  def load
+    @taxon = Taxon.find params[:id]
+    @rank = Rank[@taxon].child
+    @add_taxon_path = "/taxa/new?rank=#{@rank}&parent_id=#{@taxon.id}"
+    @cancel_path = "/catalog/#{@taxon.id}"
+    @convert_to_subspecies_path = "/taxa/#{@taxon.id}/convert_to_subspecies/new"
+  end
+
+  def create
+    @rank = Rank[params[:rank]]
+    @taxon = @rank.string.titlecase.constantize.new
+    @cancel_path = "/taxa/#{@parent_id}/edit"
   end
 
   def set_parent
