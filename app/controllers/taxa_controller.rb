@@ -18,7 +18,6 @@ class TaxaController < ApplicationController
 
   def edit
     @parent_id = @taxon.id
-    set_rank_that_would_be_created_if_button_clicked
     @show_delete_taxon_button = @taxon.nontaxt_references.empty?
     create_object_web
     setup_edit_buttons
@@ -28,10 +27,6 @@ class TaxaController < ApplicationController
     return elevate_to_species if @elevate_to_species
     return delete_taxon if @delete_taxon
     save
-  end
-
-  def set_rank_that_would_be_created_if_button_clicked
-    @rank = @rank.child
   end
 
   def elevate_to_species
