@@ -75,9 +75,6 @@ class AntCat.TaxonForm extends AntCat.Form
   parent_id: =>
     $('#parent_id').val()
 
-  rank: =>
-    $('#rank').val()
-
   ###### overrides
   cancel: =>
     taxon_id = @taxon_id()
