@@ -133,12 +133,12 @@ class TaxaController < ApplicationController
       @taxon = Taxon.find params[:id]
       @rank = Rank[@taxon].child
       @add_taxon_path = "/taxa/new?rank=#{@rank}&parent_id=#{@taxon.id}"
-      @cancel_existing_taxon_path = "/catalog/#{@taxon.id}"
+      @cancel_path = "/catalog/#{@taxon.id}"
       @convert_to_subspecies_path = "/taxa/#{@taxon.id}/convert_to_subspecies/new"
     else
       @rank = Rank[params[:rank]]
       @taxon = @rank.string.titlecase.constantize.new
-      @cancel_new_taxon_path = "/taxa/#{@parent_id}/edit"
+      @cancel_path = "/taxa/#{@parent_id}/edit"
     end
   end
 
