@@ -29,13 +29,11 @@ class TaxaController < ApplicationController
   end
 
   def elevate_to_species
-    begin
-      @taxon.elevate_to_species
-    rescue Subspecies::NoSpeciesForSubspeciesError
-      @taxon.errors[:base] = "This subspecies doesn't have a species. Use the \"Assign species to subspecies\" button to fix, then you can elevate the subspecies to the species."
-      render :edit and return
-    end
+    @taxon.elevate_to_species
     redirect_to catalog_path @taxon
+  rescue Subspecies::NoSpeciesForSubspeciesError
+    @taxon.errors[:base] = "This subspecies doesn't have a species. Use the \"Assign species to subspecies\" button to fix, then you can elevate the subspecies to the species."
+    render :edit and return
   end
 
   def delete_taxon
@@ -50,13 +48,11 @@ class TaxaController < ApplicationController
 
   ###################
   def save
-    begin
-      create_object_web
-      update_taxon params[:taxon]
-    rescue ActiveRecord::RecordInvalid
-      render :edit and return
-    end
+    create_object_web
+    update_taxon params[:taxon]
     redirect_to catalog_path @taxon
+  rescue ActiveRecord::RecordInvalid
+    render :edit and return
   end
 
   def create_object_web
