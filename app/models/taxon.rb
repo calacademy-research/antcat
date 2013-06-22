@@ -152,7 +152,7 @@ class Taxon < ActiveRecord::Base
     update_attributes! status: 'synonym'
   end
 
-  def become_not_a_junior_synonym_of senior
+  def become_not_junior_synonym_of senior
     Synonym.where('junior_synonym_id = ? AND senior_synonym_id = ?', id, senior).destroy_all
     update_attributes! status: 'valid' if senior_synonyms.empty?
   end

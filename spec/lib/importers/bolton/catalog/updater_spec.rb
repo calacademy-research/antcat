@@ -52,7 +52,7 @@ describe Importers::Bolton::Catalog::Updater do
         it "should record when a junior synonymy is removed" do
           @attini.become_junior_synonym_of @bacerosini
           @attini.update_synonyms do
-            @attini.become_not_a_junior_synonym_of @bacerosini
+            @attini.become_not_junior_synonym_of @bacerosini
           end
           Update.count.should == 2
           update = Update.find_by_record_id_and_field_name @attini.id, 'junior_synonym_of'
@@ -73,7 +73,7 @@ describe Importers::Bolton::Catalog::Updater do
         it "should record when a senior synonymy is removed" do
           @bacerosini.become_junior_synonym_of @attini
           @attini.update_synonyms do
-            @bacerosini.become_not_a_junior_synonym_of @attini
+            @bacerosini.become_not_junior_synonym_of @attini
           end
           Update.count.should == 2
           update = Update.find_by_record_id_and_field_name @attini.id, 'senior_synonym_of'

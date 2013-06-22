@@ -478,7 +478,7 @@ describe Taxon do
         attaboi.should be_synonym
         attaboi.senior_synonyms.all.include?(atta).should be_true
 
-        attaboi.become_not_a_junior_synonym_of atta
+        attaboi.become_not_junior_synonym_of atta
 
         atta.junior_synonyms.all.include?(attaboi).should be_false
         atta.should_not be_synonym

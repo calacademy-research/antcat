@@ -262,10 +262,10 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     creightonidris = Taxon.find_by_name 'Creightonidris'
     aspididris = Taxon.find_by_name 'Aspididris'
 
-    creightonidris.become_not_a_junior_synonym_of ceratobasis
+    creightonidris.become_not_junior_synonym_of ceratobasis
     creightonidris.become_junior_synonym_of basiceros
 
-    aspididris.become_not_a_junior_synonym_of ceratobasis
+    aspididris.become_not_junior_synonym_of ceratobasis
     aspididris.become_junior_synonym_of basiceros
   end
 
