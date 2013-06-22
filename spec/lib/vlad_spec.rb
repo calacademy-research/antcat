@@ -90,6 +90,14 @@ describe Vlad do
     -> {Vlad::ProtonymsWithoutAuthorships.display}.should_not raise_error
   end
 
+  it "should show taxa without protonyms" do
+    genus = create_genus
+    genus_without_protonym = create_genus protonym: nil
+    results = Vlad::TaxaWithoutProtonyms.query
+    results.should == [genus_without_protonym]
+    -> {Vlad::TaxaWithoutProtonyms.display}.should_not raise_error
+  end
+
   it "should show orphan protonyms" do
     genus = create_genus
     orphan_protonym = FactoryGirl.create :protonym
