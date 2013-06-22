@@ -172,6 +172,25 @@ class Taxon < ActiveRecord::Base
   has_many    :reference_sections, order: :position, dependent: :destroy
 
   ###############################################
+  def parent= id_or_object
+    parent_taxon = id_or_object.kind_of?(Taxon) ? id_or_object : Taxon.find(id_or_object)
+    send Rank[self].parent.write_selector, parent_taxon
+  end
+
+  def parent
+    return Family.first if kind_of? Subfamily
+    send Rank[self].parent.read_selector
+  end
+
+  def children
+    raise NotImplementedError
+  end
+
+  def rank
+    Rank[self].to_s
+  end
+
+  ###############################################
   # statuses, fossil
   scope :valid,               where(status: 'valid')
   scope :extant,              where(fossil: false)
@@ -199,17 +218,7 @@ class Taxon < ActiveRecord::Base
   end
 
   ###############################################
-  def rank
-    Rank[self].to_s
-  end
-
-  def children
-    raise NotImplementedError
-  end
-
-  ###############################################
   # statistics
-
   def get_statistics ranks
     statistics = {}
     ranks.each do |rank|
@@ -266,16 +275,6 @@ class Taxon < ActiveRecord::Base
       end
     end
     Progress.show_results
-  end
-
-  def parent= id_or_object
-    parent_taxon = id_or_object.kind_of?(Taxon) ? id_or_object : Taxon.find(id_or_object)
-    send Rank[self].parent.write_selector, parent_taxon
-  end
-
-  def parent
-    return Family.first if kind_of? Subfamily
-    send Rank[self].parent.read_selector
   end
 
   ###############################################
