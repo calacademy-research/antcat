@@ -307,13 +307,13 @@ describe Taxon do
       taxon.protonym.should be_nil
       taxon.build_protonym name: FactoryGirl.create(:name, name: 'Formicariae')
     end
-    it "should destroy the protonym when the taxon it's attached to is destroyed" do
+    it "should destroy the protonym when the taxon it's attached to is destroyed, even if another taxon is using it, because they shouldn't" do
       protonym = FactoryGirl.create :protonym
       atta = create_genus protonym: protonym
       eciton = create_genus protonym: protonym
       protonym_count = Protonym.count
       atta.destroy
-      protonym_count.should == Protonym.count - 1
+      Protonym.count.should == protonym_count -1
     end
   end
 
@@ -402,7 +402,7 @@ describe Taxon do
   end
 
   describe "Cascading delete" do
-    it "should not delete the protonym when the taxon is deleted" do
+    it "should delete the protonym when the taxon is deleted" do
       Taxon.count.should be_zero
       Protonym.count.should be_zero
 
@@ -412,7 +412,7 @@ describe Taxon do
 
       genus.destroy
       Taxon.count.should be_zero
-      Protonym.count.should == 1
+      Protonym.count.should == 0
     end
     it "should delete history and reference sections when the taxon is deleted" do
       Taxon.count.should be_zero
