@@ -82,7 +82,8 @@ describe Vlad do
     protonym_without_authorship.reload.authorship.should be_nil
 
     create_genus protonym: protonym_with_authorship
-    create_genus protonym: protonym_without_authorship
+    genus = create_genus
+    genus.update_attribute :protonym, protonym_without_authorship
 
     results = Vlad::ProtonymsWithoutAuthorships.query
     results.should =~ [protonym_without_authorship, protonym_without_authorship_or_taxon]
