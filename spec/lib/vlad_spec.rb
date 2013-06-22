@@ -90,6 +90,12 @@ describe Vlad do
     -> {Vlad::ProtonymsWithoutAuthorships.display}.should_not raise_error
   end
 
+  it "should show orphan protonyms" do
+    genus = create_genus
+    orphan_protonym = FactoryGirl.create :protonym
+    Vlad::OrphanProtonyms.query.should =~ [orphan_protonym]
+  end
+
   it "should show duplicate synonyms" do
     senior = create_genus
     junior = create_genus

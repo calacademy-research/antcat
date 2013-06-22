@@ -13,8 +13,6 @@ class Vlad
     def self.display_result_count count
       return if count.zero?
       display_section_header count
-
-      Progress.puts
     end
     def self.display_results_section results, options = {}
       return unless results.present?
@@ -265,6 +263,17 @@ class Vlad
         else
           "Orphan protonym: " + protonym.name.name
         end
+      end
+    end
+  end
+
+  class OrphanProtonyms < Problem
+    def self.query
+      Protonym.includes(:taxon).where('taxa.id IS NULL')
+    end
+    def self.display
+      display_results_section query do |protonym|
+        protonym
       end
     end
   end
