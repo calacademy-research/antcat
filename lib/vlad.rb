@@ -23,8 +23,6 @@ class Vlad
       lines.reverse! if options[:reverse_order]
       lines.each {|line| Progress.puts '  ' + line}
       display_section_header results.count if results.count > 100
-
-      Progress.puts
     end
     def self.display_section_header count
       Progress.puts "#{self.name.demodulize.titleize.capitalize}: #{count}"
@@ -38,6 +36,173 @@ class Vlad
   end
 
   ###########
+  class ProtonymsWithoutAuthorships < Problem
+    def self.query
+      Protonym.where authorship_id: nil
+    end
+    def self.display
+      display_results_section query do |protonym|
+        taxon = Taxon.where(protonym_id: protonym).first
+        if taxon
+          taxon.name.name
+        else
+          "Orphan protonym: " + protonym.name.name
+        end
+      end
+    end
+  end
+
+  class TaxaWithoutProtonyms < Problem
+    def self.query
+      Taxon.where protonym_id: nil
+    end
+    def self.display
+      display_results_section query do |taxon|
+        taxon.name.name
+      end
+    end
+  end
+
+  class OrphanProtonyms < Problem
+    def self.query
+      Protonym.includes(:taxon).where('taxa.id IS NULL')
+    end
+    def self.display
+      display_results_section query do |protonym|
+        protonym
+      end
+    end
+  end
+
+  class DuplicateValids < Problem
+    def self.query
+     Taxon.select('names.name AS name, COUNT(names.name) AS count').
+           with_names.
+           group('names.name', :genus_id).
+           where(status: 'valid').
+           where(unresolved_homonym: false).
+           having('COUNT(names.name) > 1').
+           all.
+           map {|row| {name: row['name'], count: row['count']}}
+    end
+    def self.display
+      display_results_section query do |duplicate|
+        "#{duplicate[:name]} #{duplicate[:count]}"
+      end
+    end
+  end
+
+  class NamesWithoutTaxa < Problem
+    def self.query
+      Name.find_by_sql(
+        %{SELECT names.id FROM names } +
+          %{LEFT OUTER JOIN taxa taxa_name_id      ON taxa_name_id.name_id = names.id } +
+          %{LEFT OUTER JOIN taxa taxa_type_name_id ON taxa_type_name_id.type_name_id = names.id } +
+          %{LEFT OUTER JOIN protonyms              ON protonyms.name_id = names.id } +
+          %{WHERE } +
+            %{taxa_name_id.id IS null AND } +
+            %{taxa_type_name_id.id IS null AND } +
+            %{protonyms.id IS null }
+      ).map {|e| Name.find e['id']}
+    end
+    def self.display
+      display_result_count query.size
+    end
+  end
+
+  class SubspeciesWithoutSpecies < Problem
+    def self.query
+      Subspecies.where 'species_id IS NULL'
+    end
+    def self.display
+      display_result_count query.size
+      #display_results_section query do |subspecies|
+        #subspecies.name.to_s
+      #end
+    end
+  end
+
+  class SynonymsWithoutSeniors < Problem
+    def self.query
+      Taxon.find_by_sql "SELECT taxa.id FROM taxa LEFT OUTER JOIN synonyms on taxa.id = synonyms.junior_synonym_id WHERE status = 'synonym' AND synonyms.id IS NULL"
+    end
+    def self.display
+      display_results_section query do |taxon|
+        Taxon.find(taxon).name.name
+      end
+    end
+  end
+
+  class DuplicateSynonyms < Problem
+    def self.query
+      Taxon.find_by_sql "SELECT junior_synonym_id FROM synonyms GROUP by senior_synonym_id, junior_synonym_id HAVING COUNT(*) > 1"
+    end
+    def self.display
+      display_result_count query.size
+    end
+  end
+
+  class DuplicateNames < Problem
+    def self.query
+      Name.duplicates
+    end
+    def self.display
+      display_result_count query.size
+    end
+  end
+
+  class AuthorsWithoutNames < Problem
+    def self.query
+      Author.find_by_sql "SELECT authors.id FROM authors LEFT OUTER JOIN author_names on authors.id = author_names.author_id WHERE author_names.id IS NULL"
+    end
+    def self.display
+      display_result_count query.size
+    end
+  end
+
+  class GeneraWithTribesButNotSubfamilies < Problem
+    def self.query
+      Genus.where "tribe_id IS NOT NULL AND subfamily_id IS NULL"
+    end
+    def self.display
+      display_results_section query do |genus|
+        "#{genus.name} (tribe #{genus.tribe.name})"
+      end
+    end
+  end
+
+  class TaxaWithMismatchedHomonymAndStatus #< Problem
+    def self.query
+      Taxon.where "(status = 'homonym') = (homonym_replaced_by_id IS NULL)"
+    end
+    def self.display
+      display_results_section query do |taxon|
+        "#{taxon.name} (#{taxon.status}) #{taxon.homonym_replaced_by_id}"
+      end
+    end
+  end
+
+  class SynonymCycles < Problem
+    def self.query
+      Taxon.find_by_sql('
+        SELECT a.senior_synonym_id AS taxon_a, a.junior_synonym_id AS taxon_b
+        FROM synonyms a JOIN synonyms b ON
+          a.senior_synonym_id = b.junior_synonym_id AND
+          b.senior_synonym_id = a.junior_synonym_id
+        WHERE a.id < b.id
+        ORDER BY a.senior_synonym_id
+      ').map do |row|
+        [Taxon.find(row["taxon_a"]).name_cache,
+         Taxon.find(row["taxon_b"]).name_cache]
+      end
+    end
+    def self.display
+      display_results_section query do |names|
+        "#{names[0]}, #{names[1]}"
+      end
+    end
+  end
+
   class TaxonCounts < Statistic
     def self.query
       Taxon.select('type, COUNT(*) AS count').group(:type).map do |result|
@@ -136,163 +301,6 @@ class Vlad
         Progress.puts "  #{result.second.to_s.rjust(7)} #{result.first}"
       end
       Progress.puts
-    end
-  end
-
-  ###########
-  class GeneraWithTribesButNotSubfamilies < Problem
-    def self.query
-      Genus.where "tribe_id IS NOT NULL AND subfamily_id IS NULL"
-    end
-    def self.display
-      display_results_section query do |genus|
-        "#{genus.name} (tribe #{genus.tribe.name})"
-      end
-    end
-  end
-
-  class NamesWithoutTaxa < Problem
-    def self.query
-      Name.find_by_sql(
-        %{SELECT names.id FROM names } +
-          %{LEFT OUTER JOIN taxa taxa_name_id      ON taxa_name_id.name_id = names.id } +
-          %{LEFT OUTER JOIN taxa taxa_type_name_id ON taxa_type_name_id.type_name_id = names.id } +
-          %{LEFT OUTER JOIN protonyms              ON protonyms.name_id = names.id } +
-          %{WHERE } +
-            %{taxa_name_id.id IS null AND } +
-            %{taxa_type_name_id.id IS null AND } +
-            %{protonyms.id IS null }
-      ).map {|e| Name.find e['id']}
-    end
-    def self.display
-      display_result_count query.size
-    end
-  end
-
-  class TaxaWithMismatchedHomonymAndStatus #< Problem
-    def self.query
-      Taxon.where "(status = 'homonym') = (homonym_replaced_by_id IS NULL)"
-    end
-    def self.display
-      display_results_section query do |taxon|
-        "#{taxon.name} (#{taxon.status}) #{taxon.homonym_replaced_by_id}"
-      end
-    end
-  end
-
-  class AuthorsWithoutNames < Problem
-    def self.query
-      Author.find_by_sql "SELECT authors.id FROM authors LEFT OUTER JOIN author_names on authors.id = author_names.author_id WHERE author_names.id IS NULL"
-    end
-    def self.display
-      display_result_count query.size
-    end
-  end
-
-  class SubspeciesWithoutSpecies < Problem
-    def self.query
-      Subspecies.where 'species_id IS NULL'
-    end
-    def self.display
-      display_result_count query.size
-      #display_results_section query do |subspecies|
-        #subspecies.name.to_s
-      #end
-    end
-  end
-
-  class SynonymsWithoutSeniors < Problem
-    def self.query
-      Taxon.find_by_sql "SELECT taxa.id FROM taxa LEFT OUTER JOIN synonyms on taxa.id = synonyms.junior_synonym_id WHERE status = 'synonym' AND synonyms.id IS NULL"
-    end
-    def self.display
-      display_results_section query do |taxon|
-        Taxon.find(taxon).name.name
-      end
-    end
-  end
-
-  class DuplicateSynonyms < Problem
-    def self.query
-      Taxon.find_by_sql "SELECT junior_synonym_id FROM synonyms GROUP by senior_synonym_id, junior_synonym_id HAVING COUNT(*) > 1"
-    end
-    def self.display
-      display_result_count query.size
-    end
-  end
-
-  class DuplicateNames < Problem
-    def self.query
-      Name.duplicates
-    end
-    def self.display
-      display_result_count query.size
-    end
-  end
-
-  class SynonymCycles < Problem
-    def self.query
-      Taxon.find_by_sql('
-        SELECT a.senior_synonym_id AS taxon_a, a.junior_synonym_id AS taxon_b
-        FROM synonyms a JOIN synonyms b ON
-          a.senior_synonym_id = b.junior_synonym_id AND
-          b.senior_synonym_id = a.junior_synonym_id
-        WHERE a.id < b.id
-        ORDER BY a.senior_synonym_id
-      ').map do |row|
-        [Taxon.find(row["taxon_a"]).name_cache,
-         Taxon.find(row["taxon_b"]).name_cache]
-      end
-    end
-    def self.display
-      display_results_section query do |names|
-        "#{names[0]}, #{names[1]}"
-      end
-    end
-  end
-
-  class ProtonymsWithoutAuthorships < Problem
-    def self.query
-      Protonym.where authorship_id: nil
-    end
-    def self.display
-      display_results_section query do |protonym|
-        taxon = Taxon.where(protonym_id: protonym).first
-        if taxon
-          taxon.name.name
-        else
-          "Orphan protonym: " + protonym.name.name
-        end
-      end
-    end
-  end
-
-  class OrphanProtonyms < Problem
-    def self.query
-      Protonym.includes(:taxon).where('taxa.id IS NULL')
-    end
-    def self.display
-      display_results_section query do |protonym|
-        protonym
-      end
-    end
-  end
-
-  class DuplicateValids < Problem
-    def self.query
-     Taxon.select('names.name AS name, COUNT(names.name) AS count').
-           with_names.
-           group('names.name', :genus_id).
-           where(status: 'valid').
-           where(unresolved_homonym: false).
-           having('COUNT(names.name) > 1').
-           all.
-           map {|row| {name: row['name'], count: row['count']}}
-    end
-    def self.display
-      display_results_section query do |duplicate|
-        "#{duplicate[:name]} #{duplicate[:count]}"
-      end
     end
   end
 
