@@ -22,6 +22,43 @@ describe Protonym do
     end
   end
 
+  describe "Cascading delete" do
+    it "should delete the citation when the protonym is deleted" do
+      protonym = FactoryGirl.create :protonym
+      Protonym.count.should == 1
+      Citation.count.should == 1
+
+      protonym.destroy
+
+      Protonym.count.should be_zero
+      Citation.count.should be_zero
+    end
+  end
+
+  describe "Versioning" do
+    it "should record versions" do
+      with_versioning do
+        protonym = FactoryGirl.create :protonym
+        protonym.versions.last.event.should == 'create'
+      end
+    end
+  end
+
+  describe "Orphans" do
+    it "should delete the orphaned protonym(s) when the taxon is deleted" do
+      genus = create_genus
+      original_protonym_count = Protonym.count
+
+      orphan_protonym = FactoryGirl.create :protonym
+      Protonym.count.should == original_protonym_count + 1
+
+      Protonym.destroy_orphans
+
+      Protonym.count.should == original_protonym_count
+      Protonym.all.should_not include(orphan_protonym)
+    end
+  end
+
   describe "Importing" do
     before do @reference = FactoryGirl.create :article_reference, bolton_key_cache: 'Latreille 1809' end
 
@@ -133,43 +170,6 @@ describe Protonym do
       data[:authorship][0][:pages] = '36'
       @protonym.update_data data
       Update.count.should == 1
-    end
-  end
-
-  describe "Cascading delete" do
-    it "should delete the citation when the protonym is deleted" do
-      protonym = FactoryGirl.create :protonym
-      Protonym.count.should == 1
-      Citation.count.should == 1
-
-      protonym.destroy
-
-      Protonym.count.should be_zero
-      Citation.count.should be_zero
-    end
-  end
-
-  describe "Versioning" do
-    it "should record versions" do
-      with_versioning do
-        protonym = FactoryGirl.create :protonym
-        protonym.versions.last.event.should == 'create'
-      end
-    end
-  end
-
-  describe "Orphans" do
-    it "should be able to delete the orphans" do
-      genus = create_genus
-      original_protonym_count = Protonym.count
-
-      orphan_protonym = FactoryGirl.create :protonym
-      Protonym.count.should == original_protonym_count + 1
-
-      Protonym.destroy_orphans
-
-      Protonym.count.should == original_protonym_count
-      Protonym.all.should_not include(orphan_protonym)
     end
   end
 
