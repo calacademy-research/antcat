@@ -3,8 +3,8 @@ class Protonym < ActiveRecord::Base
   include Importers::Bolton::Catalog::Updater
   has_one    :taxon
   belongs_to :authorship, class_name: 'Citation', dependent: :destroy
-  belongs_to :name
-  validates  :name, presence: true
+   validates :authorship, presence: true
+  belongs_to :name; validates :name, presence: true
 
   has_paper_trail
 
