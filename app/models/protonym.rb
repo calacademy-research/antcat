@@ -1,6 +1,7 @@
 # coding: UTF-8
 class Protonym < ActiveRecord::Base
   include Importers::Bolton::Catalog::Updater
+  has_one    :taxon
   belongs_to :authorship, class_name: 'Citation', dependent: :destroy
   belongs_to :name
   validates  :name, presence: true
@@ -13,6 +14,14 @@ class Protonym < ActiveRecord::Base
     authorship and authorship.authorship_string
   end
 
+  def self.destroy_orphans
+    orphans = Protonym.includes(:taxon).where('taxa.id IS NULL')
+    orphans.each do |orphan|
+      orphan.destroy
+    end
+  end
+
+  ################################################################
   def self.import data
     transaction do
       authorship = Citation.import data[:authorship].first if data[:authorship]

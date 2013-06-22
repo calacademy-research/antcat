@@ -158,4 +158,19 @@ describe Protonym do
     end
   end
 
+  describe "Orphans" do
+    it "should be able to delete the orphans" do
+      genus = create_genus
+      original_protonym_count = Protonym.count
+
+      orphan_protonym = FactoryGirl.create :protonym
+      Protonym.count.should == original_protonym_count + 1
+
+      Protonym.destroy_orphans
+
+      Protonym.count.should == original_protonym_count
+      Protonym.all.should_not include(orphan_protonym)
+    end
+  end
+
 end
