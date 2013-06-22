@@ -3,10 +3,18 @@ require 'spec_helper'
 
 describe Protonym do
 
-  it "has an authorship" do
-    authorship = FactoryGirl.create :citation
-    protonym = Protonym.create! name: FactoryGirl.create(:name, name: 'Protonym'), authorship: authorship
-    Protonym.find(protonym).authorship.should == authorship
+  describe "Authorship" do
+    it "has an authorship" do
+      authorship = FactoryGirl.create :citation
+      protonym = Protonym.create! name: FactoryGirl.create(:name, name: 'Protonym'), authorship: authorship
+      Protonym.find(protonym).authorship.should == authorship
+    end
+    it "requires an authorship" do
+      protonym = Protonym.new name: FactoryGirl.create(:name, name: 'Protonym')
+      protonym.should_not be_valid
+      protonym.update_attribute :authorship, FactoryGirl.create(:citation)
+      protonym.should be_valid
+    end
   end
 
   describe "Authorship string" do
