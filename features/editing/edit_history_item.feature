@@ -68,6 +68,7 @@ Feature: Editing a history item
     Then I should not see the "Delete" button for the history item
     And I edit the history item to "Abc"
     And I save the history item
+    And I wait for a bit
     Then the history should be "Abc"
 
   Scenario: Adding a history item with blank taxt
