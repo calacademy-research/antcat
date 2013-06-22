@@ -92,7 +92,8 @@ describe Vlad do
 
   it "should show taxa without protonyms" do
     genus = create_genus
-    genus_without_protonym = create_genus protonym: nil
+    genus_without_protonym = create_genus
+    genus_without_protonym.update_attribute :protonym, nil
     results = Vlad::TaxaWithoutProtonyms.query
     results.should == [genus_without_protonym]
     -> {Vlad::TaxaWithoutProtonyms.display}.should_not raise_error
