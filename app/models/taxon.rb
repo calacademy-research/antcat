@@ -166,12 +166,8 @@ class Taxon < ActiveRecord::Base
   attr_accessor :homonym_replaced_by_name
 
   ###############################################
-  # other associations
-  belongs_to  :current_valid_taxon, class_name: 'Taxon'
-  has_many    :history_items, class_name: 'TaxonHistoryItem', order: :position, dependent: :destroy
-  has_many    :reference_sections, order: :position, dependent: :destroy
-
-  ###############################################
+  # parent
+  attr_accessor :parent_name
   def parent= id_or_object
     parent_taxon = id_or_object.kind_of?(Taxon) ? id_or_object : Taxon.find(id_or_object)
     send Rank[self].parent.write_selector, parent_taxon
@@ -189,6 +185,12 @@ class Taxon < ActiveRecord::Base
   def rank
     Rank[self].to_s
   end
+
+  ###############################################
+  # other associations
+  belongs_to  :current_valid_taxon, class_name: 'Taxon'
+  has_many    :history_items, class_name: 'TaxonHistoryItem', order: :position, dependent: :destroy
+  has_many    :reference_sections, order: :position, dependent: :destroy
 
   ###############################################
   # statuses, fossil
