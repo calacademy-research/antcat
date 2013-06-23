@@ -1,6 +1,10 @@
 # coding: UTF-8
 class SubspeciesName < SpeciesGroupName
 
+  def subspecies_epithets
+    words[2..-1].join ' '
+  end
+
   def self.parse_words words
     return unless words.size > 2
     genus   = words[0]

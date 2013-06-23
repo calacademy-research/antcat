@@ -3,6 +3,15 @@ require 'spec_helper'
 
 describe SubspeciesName do
 
+  describe "Name parts" do
+    it "should know its species epithet" do
+      name = SubspeciesName.new name: 'Atta major minor', epithet: 'minor', epithets: 'major minor'
+      name.genus_epithet.should == 'Atta'
+      name.species_epithet.should == 'major'
+      name.subspecies_epithets.should == 'minor'
+    end
+  end
+
   describe "Parsing words" do
     it "should parse words into a subspecies name" do
       name = SubspeciesName.parse_words ['Atta', 'major', 'minor']
@@ -14,6 +23,33 @@ describe SubspeciesName do
       name.protonym_html.should == '<i>Atta major minor</i>'
     end
   end
+
+  describe "Changing the species of a subspecies name" do
+    it "should replace the species part of the name and fix all the other parts, too" do
+      subspecies_name = SubspeciesName.new(
+        name: 'Atta major minor medii',
+        name_html: '<i>Atta major minor medii</i>',
+        epithet: 'medii',
+        epithet_html: '<i>medii</i>',
+        epithets: 'major minor medii')
+
+      species_name = SpeciesName.new(
+        name: 'Eciton niger',
+        name_html: '<i>Eciton niger</i>',
+        epithet: 'niger',
+        epithet_html: '<i>niger</i>')
+
+      subspecies_name.change_species species_name
+
+      subspecies_name.name.should == 'Eciton niger minor medii'
+
+      subspecies_name.name_html.should == '<i>Eciton niger minor medii</i>'
+      subspecies_name.epithet.should == 'medii'
+      subspecies_name.epithet_html.should == '<i>medii</i>'
+      subspecies_name.epithets.should == 'niger minor medii'
+    end
+  end
+
   describe "Importing" do
 
     it "should recognize its key and set its name appropriately" do
