@@ -1,6 +1,6 @@
 -#Locals: taxon, form
 
-%tr#homonym_replaced_by
+%tr#homonym_replaced_by_row
   - form.object.homonym_replaced_by_name ||= form.object.homonym_replaced_by.try(:name)
   - form.object.homonym_replaced_by_name ||= Name.new
   = form.fields_for :homonym_replaced_by_name do |homonym_replaced_by_name_form|

@@ -3,14 +3,13 @@
 .name_status_flags_section.section
   %table
     = render 'name_section', taxon: taxon, form: form, default_name_string: default_name_string
-
-    %tr
+    %tr.status_row
       %td.label= form.label :status
       %td= form.select :status, Status.options_for_select
-
+    = render 'parent_section', taxon: taxon, form: form
     = render 'homonym_replaced_by_section', taxon: taxon, form: form
 
-    %tr
+    %tr.flags_row
       %td
       %td
         = form.label :incertae_sedis_in
@@ -31,7 +30,7 @@
         = form.check_box :hong
         = form.label :hong
 
-    %tr
+    %tr.headline_notes_taxt_row
       %td.label.top_aligned= form.label :headline_notes_taxt, 'Notes'
       %td#headline_notes_taxt_editor.taxt_editor
         = render 'taxt_editors/show', name: 'taxon[headline_notes_taxt]', value: Taxt.to_editable(@taxon.headline_notes_taxt)
