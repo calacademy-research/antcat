@@ -7,7 +7,7 @@ class AntCat.ReferencesSection
     @initialize_panels()
 
   initialize_add_button: =>
-    $add_button = @element.find '.references_section_buttons button'; AntCat.log 'ReferencesSection constructor: $add_button.size() != 1' unless $add_button.size() == 1
+    $add_button = @element.find '.references_section_buttons button'
     $add_button.click => @add(); false
 
   add: =>
@@ -31,9 +31,9 @@ class AntCat.ReferencesSectionPanel extends AntCat.Panel
     @make_references_edit_field_same_height_as_when_displayed()
 
   make_references_edit_field_same_height_as_when_displayed: =>
-    $display_field = @element.find '.display > .references_taxt'; AntCat.log 'ReferencesSectionPanel initialize: no $display_field' unless $display_field && $display_field.size() == 1
+    $display_field = @element.find '.display > .references_taxt'
     edit_height = Math.max($display_field.height() + 24, 100)
-    $edit_field = @element.find('#references_taxt'); AntCat.log 'ReferencesSectionPanel initialize: no $edit_field' unless $edit_field && $edit_field.size() == 1
+    $edit_field = @element.find('#references_taxt')
     $edit_field.height edit_height unless edit_height is 0
 
   create_form: ($element, options) -> new AntCat.ReferencesSectionForm $element, options
@@ -44,8 +44,8 @@ class AntCat.ReferencesSectionPanel extends AntCat.Panel
     super
 
   @add_reference: (form) =>
-    $template = $('.reference_section_template').clone(); AntCat.log 'ReferencesSectionPanel add_reference: no $template' unless $template && $template.size() == 1
-    $item = $template.find('.reference_section');         AntCat.log 'ReferencesSectionPanel add_reference: no $item' unless $item && $item.size() == 1
+    $template = $('.reference_section_template').clone()
+    $item = $template.find('.reference_section')
     $item.removeClass('reference_section_template').addClass('added_reference')
     form.add_reference_panel $item
     $item.references_section_panel click_on_display: true, parent_form: form, open_immediately: true
