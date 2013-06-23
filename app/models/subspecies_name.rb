@@ -24,6 +24,17 @@ class SubspeciesName < SpeciesGroupName
     create! attributes
   end
 
+  def change_species species_name
+    new_name_string = [species_name.genus_epithet, species_name.species_epithet, subspecies_epithets].join ' '
+    raise if SubspeciesName.find_by_name new_name_string
+    update_attributes!({
+      name:           new_name_string,
+      name_html:      Formatters::Formatter.italicize(new_name_string),
+      epithets:       species_name.epithet + ' ' + subspecies_epithets,
+      protonym_html:  nil,
+    })
+  end
+
   def self.get_name data
     data[:subspecies]
   end
