@@ -2,264 +2,96 @@
 require 'spec_helper'
 
 describe Taxon do
-  it "should require a name" do
-    FactoryGirl.build(:taxon, name: nil).should_not be_valid
-    taxon = FactoryGirl.create :taxon, name: FactoryGirl.create(:name, name: 'Cerapachynae')
-    taxon.name.to_s.should == 'Cerapachynae'
-    taxon.should be_valid
-  end
-  it "should be (Rails) valid with a nil status" do
-    FactoryGirl.build(:taxon).should be_valid
-    FactoryGirl.build(:taxon, status: 'valid').should be_valid
-  end
-  it "when status 'valid', should not be invalid" do
-    taxon = FactoryGirl.build :taxon
-    taxon.should_not be_invalid
-  end
-  it "should be able to be unidentifiable" do
-    taxon = FactoryGirl.build :taxon
-    taxon.should_not be_unidentifiable
-    taxon.update_attribute :status, 'unidentifiable'
-    taxon.should be_unidentifiable
-    taxon.should be_invalid
-  end
-  it "should be able to be a collective group name" do
-    taxon = FactoryGirl.build :taxon
-    taxon.should_not be_collective_group_name
-    taxon.update_attribute :status, 'collective group name'
-    taxon.should be_collective_group_name
-    taxon.should be_invalid
-  end
-  it "should be able to be an ichnotaxon" do
-    taxon = FactoryGirl.build :taxon
-    taxon.should_not be_ichnotaxon
-    taxon.update_attribute :ichnotaxon, true
-    taxon.should be_ichnotaxon
-    taxon.should_not be_invalid
-  end
-  it "should be able to be unavailable" do
-    taxon = FactoryGirl.build :taxon
-    taxon.should_not be_unavailable
-    taxon.should be_available
-    taxon.update_attribute :status, 'unavailable'
-    taxon.should be_unavailable
-    taxon.should_not be_available
-    taxon.should be_invalid
-  end
-  it "should be able to be excluded" do
-    taxon = FactoryGirl.build :taxon
-    taxon.should_not be_excluded_from_formicidae
-    taxon.update_attribute :status, 'excluded from Formicidae'
-    taxon.should be_excluded_from_formicidae
-    taxon.should be_invalid
-  end
-  it "should be able to be a synonym" do
-    taxon = FactoryGirl.build :taxon
-    taxon.should_not be_synonym
-    taxon.update_attribute :status, 'synonym'
-    taxon.should be_synonym
-    taxon.should be_invalid
-  end
-  it "should be able to be a fossil" do
-    taxon = FactoryGirl.build :taxon
-    taxon.should_not be_fossil
-    taxon.fossil.should == false
-    taxon.update_attribute :fossil, true
-    taxon.should be_fossil
-  end
-  it "should raise if anyone calls #children directly" do
-    lambda {Taxon.new.children}.should raise_error NotImplementedError
-  end
-  it "should be able to be a homonym of something else" do
-    neivamyrmex = FactoryGirl.create :taxon
-    acamatus = FactoryGirl.create :taxon, status: 'homonym', homonym_replaced_by: neivamyrmex
-    acamatus.reload
-    acamatus.should be_homonym
-    acamatus.homonym_replaced_by.should == neivamyrmex
-  end
-  it "should be able to have an incertae_sedis_in" do
-    myanmyrma = FactoryGirl.create :taxon, incertae_sedis_in: 'family'
-    myanmyrma.reload
-    myanmyrma.incertae_sedis_in.should == 'family'
-    myanmyrma.should_not be_invalid
-  end
-  it "should be able to say whether it is incertae sedis in a particular rank" do
-    myanmyrma = FactoryGirl.create :taxon, incertae_sedis_in: 'family'
-    myanmyrma.reload
-    myanmyrma.should be_incertae_sedis_in('family')
-  end
 
-  describe "Find by name" do
-    it "should return nil if nothing matches" do
-      Taxon.find_by_name('sdfsdf').should == nil
+  describe "Fields and validations" do
+    it "should require a name" do
+      FactoryGirl.build(:taxon, name: nil).should_not be_valid
+      taxon = FactoryGirl.create :taxon, name: FactoryGirl.create(:name, name: 'Cerapachynae')
+      taxon.name.to_s.should == 'Cerapachynae'
+      taxon.should be_valid
     end
-    it "should return one of the items if there are more than one (bad!)" do
-      name = FactoryGirl.create :genus_name, name: 'Monomorium'
-      2.times {FactoryGirl.create :genus, name: name}
-      Taxon.find_by_name('Monomorium').name.name.should == 'Monomorium'
+    it "should be (Rails) valid with a nil status" do
+      FactoryGirl.build(:taxon).should be_valid
+      FactoryGirl.build(:taxon, status: 'valid').should be_valid
+    end
+    it "when status 'valid', should not be invalid" do
+      taxon = FactoryGirl.build :taxon
+      taxon.should_not be_invalid
+    end
+    it "should be able to be unidentifiable" do
+      taxon = FactoryGirl.build :taxon
+      taxon.should_not be_unidentifiable
+      taxon.update_attribute :status, 'unidentifiable'
+      taxon.should be_unidentifiable
+      taxon.should be_invalid
+    end
+    it "should be able to be a collective group name" do
+      taxon = FactoryGirl.build :taxon
+      taxon.should_not be_collective_group_name
+      taxon.update_attribute :status, 'collective group name'
+      taxon.should be_collective_group_name
+      taxon.should be_invalid
+    end
+    it "should be able to be an ichnotaxon" do
+      taxon = FactoryGirl.build :taxon
+      taxon.should_not be_ichnotaxon
+      taxon.update_attribute :ichnotaxon, true
+      taxon.should be_ichnotaxon
+      taxon.should_not be_invalid
+    end
+    it "should be able to be unavailable" do
+      taxon = FactoryGirl.build :taxon
+      taxon.should_not be_unavailable
+      taxon.should be_available
+      taxon.update_attribute :status, 'unavailable'
+      taxon.should be_unavailable
+      taxon.should_not be_available
+      taxon.should be_invalid
+    end
+    it "should be able to be excluded" do
+      taxon = FactoryGirl.build :taxon
+      taxon.should_not be_excluded_from_formicidae
+      taxon.update_attribute :status, 'excluded from Formicidae'
+      taxon.should be_excluded_from_formicidae
+      taxon.should be_invalid
+    end
+    it "should be able to be a fossil" do
+      taxon = FactoryGirl.build :taxon
+      taxon.should_not be_fossil
+      taxon.fossil.should == false
+      taxon.update_attribute :fossil, true
+      taxon.should be_fossil
+    end
+    it "should raise if anyone calls #children directly" do
+      lambda {Taxon.new.children}.should raise_error NotImplementedError
+    end
+    it "should be able to be a homonym of something else" do
+      neivamyrmex = FactoryGirl.create :taxon
+      acamatus = FactoryGirl.create :taxon, status: 'homonym', homonym_replaced_by: neivamyrmex
+      acamatus.reload
+      acamatus.should be_homonym
+      acamatus.homonym_replaced_by.should == neivamyrmex
+    end
+    it "should be able to have an incertae_sedis_in" do
+      myanmyrma = FactoryGirl.create :taxon, incertae_sedis_in: 'family'
+      myanmyrma.reload
+      myanmyrma.incertae_sedis_in.should == 'family'
+      myanmyrma.should_not be_invalid
+    end
+    it "should be able to say whether it is incertae sedis in a particular rank" do
+      myanmyrma = FactoryGirl.create :taxon, incertae_sedis_in: 'family'
+      myanmyrma.reload
+      myanmyrma.should be_incertae_sedis_in('family')
     end
   end
 
-  describe "Find by epithet" do
-    it "should return nil if nothing matches" do
-      Taxon.find_by_epithet('sdfsdf').should be_empty
-    end
-    it "should return all the items if there is more than one" do
-      FactoryGirl.create :species, name: FactoryGirl.create(:species_name, name: 'Monomorium alta', epithet: 'alta')
-      FactoryGirl.create :species, name: FactoryGirl.create(:species_name, name: 'Atta alta', epithet: 'alta')
-      Taxon.find_by_epithet('alta').map(&:name).map(&:to_s).should =~ ['Monomorium alta', 'Atta alta']
-    end
-  end
-
-  describe "Find an epithet in a genus" do
-    it "should return nil if nothing matches" do
-      Taxon.find_epithet_in_genus('sdfsdf', create_genus).should == nil
-    end
-    it "should return the one item" do
-      species = create_species 'Atta serratula'
-      Taxon.find_epithet_in_genus('serratula', species.genus).should == [species]
-    end
-    describe "Finding mandatory spelling changes" do
-      it "should find -a when asked to find -us" do
-        species = create_species 'Atta serratula'
-        Taxon.find_epithet_in_genus('serratulus', species.genus).should == [species]
-      end
-    end
-  end
-
-  describe "Find name" do
-    before do
-      FactoryGirl.create :genus, name: FactoryGirl.create(:genus_name, name: 'Monomorium')
-      @monoceros = FactoryGirl.create :genus, name: FactoryGirl.create(:genus_name, name: 'Monoceros')
-      species_name = FactoryGirl.create(:species_name, name: 'Monoceros rufa', epithet: 'rufa')
-      @rufa = FactoryGirl.create :species, genus: @monoceros, name: species_name
-    end
-    it "should return [] if nothing matches" do
-      Taxon.find_name('sdfsdf').should == []
-    end
-    it "should return an exact match" do
-      Taxon.find_name('Monomorium').first.name.to_s.should == 'Monomorium'
-    end
-    it "should return a prefix match" do
-      Taxon.find_name('Monomor', 'beginning with').first.name.to_s.should == 'Monomorium'
-    end
-    it "should return a substring match" do
-      Taxon.find_name('iu', 'containing').first.name.to_s.should == 'Monomorium'
-    end
-    it "should return multiple matches" do
-      results = Taxon.find_name('Mono', 'containing')
-      results.size.should == 2
-    end
-    it "should not return anything but subfamilies, tribes, genera, subgenera, species,and subspecies" do
-      create_subfamily 'Lepto'
-      create_tribe 'Lepto1'
-      create_genus 'Lepto2'
-      create_subgenus 'Lepto3'
-      create_species 'Lepto4'
-      create_subspecies 'Lepto5'
-      results = Taxon.find_name 'Lepto', 'beginning with'
-      results.size.should == 6
-    end
-    it "should sort results by name" do
-      FactoryGirl.create :subfamily, name: FactoryGirl.create(:name, name: 'Lepti')
-      FactoryGirl.create :subfamily, name: FactoryGirl.create(:name, name: 'Lepta')
-      FactoryGirl.create :subfamily, name: FactoryGirl.create(:name, name: 'Lepte')
-      results = Taxon.find_name 'Lept', 'beginning with'
-      results.map(&:name).map(&:to_s).should == ['Lepta', 'Lepte', 'Lepti']
-    end
-
-    describe "Finding full species name" do
-      it "should search for full species name" do
-        results = Taxon.find_name 'Monoceros rufa '
-        results.first.should == @rufa
-      end
-      it "should search for whole name, even when using beginning with, even with trailing space" do
-        results = Taxon.find_name 'Monoceros rufa ', 'beginning with'
-        results.first.should == @rufa
-      end
-      it "should search for partial species name" do
-        results = Taxon.find_name 'Monoceros ruf', 'beginning with'
-        results.first.should == @rufa
-      end
-    end
-  end
-
-  describe "Finding by name and authorship" do
-    before do
-      @reference = FactoryGirl.create :article_reference, author_names: [FactoryGirl.create(:author_name, name: 'Latreille')], citation_year: '1809', bolton_key_cache: 'Latreille 1809'
-      authorship = FactoryGirl.create :citation, reference: @reference
-      @protonym = FactoryGirl.create :protonym, authorship: authorship
-      @genus = create_genus 'Atta', protonym: @protonym
-    end
-    it "should find a taxon matching the name and authorship ID" do
-      Taxon.find_by_name_and_authorship(@genus.name, [@reference.principal_author_last_name_cache], @reference.year).should == @genus
-    end
-    it "should distinguish between homonyms by using the authorship" do
-      homonym_reference = FactoryGirl.create :article_reference, author_names: [FactoryGirl.create(:author_name, name: 'Fisher')], citation_year: '2005', bolton_key_cache: 'Fisher 2005'
-      homonym_authorship = FactoryGirl.create :citation, reference: homonym_reference
-      homonym_protonym = FactoryGirl.create :protonym, authorship: homonym_authorship
-      homonym_genus = create_genus 'Atta', protonym: homonym_protonym
-
-      Taxon.find_by_name_and_authorship(homonym_genus.name, ['Latreille'], @reference.year).should == @genus
-    end
-    it "should distinguish between ones with same authorship by using the name" do
-      other_genus = create_genus 'Dolichoderus', protonym: @protonym
-      Taxon.find_by_name_and_authorship(other_genus.name, ['Latreille'], @reference.year).should == other_genus
-    end
-    it "should distinguish between ones with same name and authorship by using the page" do
-      reference = FactoryGirl.create :article_reference, author_names: [FactoryGirl.create(:author_name, name: 'Latreille')], citation_year: '1809', bolton_key_cache: 'Latreille 1809'
-      genus_100_authorship = FactoryGirl.create :citation, reference: reference, pages: '100'
-      genus_200_authorship = FactoryGirl.create :citation, reference: reference, pages: '200'
-      genus_100_protonym = FactoryGirl.create :protonym, authorship: genus_100_authorship
-      genus_200_protonym = FactoryGirl.create :protonym, authorship: genus_200_authorship
-      genus_100 = create_genus 'Dolichoderus', protonym: genus_100_protonym
-      genus_200 = create_genus 'Dolichoderus', protonym: genus_200_protonym
-      Taxon.find_by_name_and_authorship(Name.import(genus_name: 'Dolichoderus'), ['Latreille'], '1809', '100').should == genus_100
-    end
-
-    describe "Searching for other forms of the epithet(s)" do
-      before do
-        @reference = FactoryGirl.create :article_reference, bolton_key_cache: 'Fisher 2005'
-      end
-      it "should find one form of the species epithet when searching for the other" do
-        cordatus_name = Name.create! name: 'Philidris cordatus protensa'
-        cordatus = FactoryGirl.create :subspecies, name: cordatus_name
-        cordatus.protonym.authorship.update_attribute :reference, @reference
-        search_name = Name.import genus_name: 'Philidris', species_epithet: 'cordata', subspecies: [{subspecies_epithet: 'protensa'}]
-        taxon = Taxon.find_by_name_and_authorship search_name, ['Fisher'], 2005
-        taxon.name.name.should == 'Philidris cordatus protensa'
-      end
-      it "should find the taxon even when two components need changing" do
-        protensus_name = Name.create! name: 'Philidris cordatus protensus'
-        protensus = FactoryGirl.create :subspecies, name: protensus_name
-        protensus.protonym.authorship.update_attribute :reference, @reference
-        search_name = Name.import genus_name: 'Philidris', species_epithet: 'cordata', subspecies: [{subspecies_epithet: 'protensa'}]
-        taxon = Taxon.find_by_name_and_authorship search_name, ['Fisher'], 2005
-        taxon.name.name.should == 'Philidris cordatus protensus'
-      end
-    end
-  end
-
-  describe ".rank" do
+  describe "Rank" do
     it "should return a lowercase version" do
       FactoryGirl.create(:subfamily).name.rank.should == 'subfamily'
     end
   end
 
-  describe "being a synonym of" do
-    it "should not think it's a synonym of something when it's not" do
-      genus = FactoryGirl.create :genus
-      another_genus = FactoryGirl.create :genus
-      genus.should_not be_synonym_of another_genus
-    end
-    it "should think it's a synonym of something when it is" do
-      senior = FactoryGirl.create :genus
-      junior = create_synonym senior
-      junior.should be_synonym_of senior
-    end
-  end
-
-  describe "being a homonym replaced by something" do
+  describe "Being a homonym replaced by something" do
     it "should not think it's a homonym replaced by something when it's not" do
       genus = FactoryGirl.create :genus
       another_genus = FactoryGirl.create :genus
@@ -271,33 +103,6 @@ describe Taxon do
       homonym = FactoryGirl.create :genus, homonym_replaced_by: replacement, status: 'homonym'
       homonym.should be_homonym_replaced_by replacement
       replacement.homonym_replaced.should == homonym
-    end
-  end
-
-  describe "the 'valid' scope" do
-    it "should only include valid taxa" do
-      subfamily = FactoryGirl.create :subfamily
-      replacement = FactoryGirl.create :genus, subfamily: subfamily
-      homonym = FactoryGirl.create :genus, homonym_replaced_by: replacement, status: 'homonym', subfamily: subfamily
-      synonym = create_synonym replacement, subfamily: subfamily
-      subfamily.genera.valid.should == [replacement]
-    end
-  end
-
-  describe "the 'extant' scope" do
-    it "should only include extant taxa" do
-      subfamily = FactoryGirl.create :subfamily
-      extant_genus = FactoryGirl.create :genus, subfamily: subfamily
-      FactoryGirl.create :genus, subfamily: subfamily, fossil: true
-      subfamily.genera.extant.should == [extant_genus]
-    end
-  end
-
-  describe "ordered by name" do
-    it "should order by name" do
-      zymacros = FactoryGirl.create :subfamily, name: FactoryGirl.create(:name, name: 'Zymacros')
-      atta = FactoryGirl.create :subfamily, name: FactoryGirl.create(:name, name: 'Atta')
-      Taxon.ordered_by_name.should == [atta, zymacros]
     end
   end
 
@@ -381,6 +186,57 @@ describe Taxon do
     end
   end
 
+  describe "Other attributes" do
+    describe "Authorship string" do
+      it "should delegate to the protonym" do
+        genus = create_genus
+        genus.protonym.should_receive(:authorship_string).and_return 'Bolton 2005'
+        genus.authorship_string.should == 'Bolton 2005'
+      end
+      it "should surround in parentheses, if a recombination in a different genus" do
+        species = create_species 'Atta minor'
+        protonym_name = create_species_name 'Eciton minor'
+        species.protonym.stub(:name).and_return protonym_name
+        species.protonym.stub(:authorship_string).and_return 'Bolton, 2005'
+        species.authorship_string.should == '(Bolton, 2005)'
+      end
+      it "should not surround in parentheses, if the name simply differs" do
+        species = create_species 'Atta minor maxus'
+        protonym_name = create_subspecies_name 'Atta minor minus'
+        species.protonym.should_receive(:name).and_return protonym_name
+        species.protonym.should_receive(:authorship_string).and_return 'Bolton, 2005'
+        species.authorship_string.should == 'Bolton, 2005'
+      end
+      it "should handle it if there simply isn't a protonym authorship" do
+        species = create_species 'Atta minor maxus'
+        protonym_name = create_subspecies_name 'Eciton minor maxus'
+        species.protonym.should_receive(:authorship_string).and_return nil
+        species.authorship_string.should be_nil
+      end
+    end
+  end
+
+  describe "Recombination" do
+    it "should not think it's a recombination if name is same as protonym" do
+      species = create_species 'Atta major'
+      protonym_name = create_species_name 'Atta major'
+      species.protonym.should_receive(:name).and_return protonym_name
+      species.should_not be_recombination
+    end
+    it "should think it's a recombination if genus part of name is different than genus part of protonym" do
+      species = create_species 'Atta minor'
+      protonym_name = create_species_name 'Eciton minor'
+      species.protonym.should_receive(:name).and_return protonym_name
+      species.should be_recombination
+    end
+    it "should not think it's a recombination if genus part of name is same as genus part of protonym" do
+      species = create_species 'Atta minor maxus'
+      protonym_name = create_subspecies_name 'Atta minor minus'
+      species.protonym.should_receive(:name).and_return protonym_name
+      species.should_not be_recombination
+    end
+  end
+
   describe "Child list queries" do
     before do
       @subfamily = FactoryGirl.create :subfamily, name: FactoryGirl.create(:name, name: 'Dolichoderinae')
@@ -427,307 +283,6 @@ describe Taxon do
     end
   end
 
-  describe "Synonyms" do
-    it "should have junior and senior synonyms" do
-      senior = create_genus 'Atta'
-      junior = create_genus 'Eciton'
-      Synonym.create! junior_synonym: junior, senior_synonym: senior
-      senior.should have(1).junior_synonym
-      senior.should have(0).senior_synonyms
-      junior.should have(1).senior_synonym
-      junior.should have(0).junior_synonyms
-    end
-
-    describe "Reversing synonymy" do
-      it "should make one the synonym of the other and set statuses" do
-        atta = create_genus 'Atta'
-        attaboi = create_genus 'Attaboi'
-
-        atta.become_junior_synonym_of attaboi
-        atta.reload; attaboi.reload
-        atta.should be_synonym_of attaboi
-
-        attaboi.become_junior_synonym_of atta
-        atta.reload; attaboi.reload
-        attaboi.status.should == 'synonym'
-        attaboi.should be_synonym_of atta
-        atta.status.should == 'valid'
-        atta.should_not be_synonym_of attaboi
-      end
-
-      it "should not create duplicate synonym in case of synonym cycle" do
-        atta = create_genus 'Atta', status: 'synonym'
-        attaboi = create_genus 'Attaboi', status: 'synonym'
-        Synonym.create! junior_synonym: atta, senior_synonym: attaboi
-        Synonym.create! junior_synonym: attaboi, senior_synonym: atta
-        Synonym.count.should == 2
-
-        atta.become_junior_synonym_of attaboi
-        Synonym.count.should == 1
-        atta.should be_synonym_of attaboi
-        attaboi.should_not be_synonym_of atta
-      end
-    end
-
-    describe "Removing synonymy" do
-      it "should remove all synonymies for the taxon" do
-        atta = create_genus 'Atta'
-        attaboi = create_genus 'Attaboi'
-        attaboi.become_junior_synonym_of atta
-        atta.junior_synonyms.all.include?(attaboi).should be_true
-        atta.should_not be_synonym
-        attaboi.should be_synonym
-        attaboi.senior_synonyms.all.include?(atta).should be_true
-
-        attaboi.become_not_junior_synonym_of atta
-
-        atta.junior_synonyms.all.include?(attaboi).should be_false
-        atta.should_not be_synonym
-        attaboi.should_not be_synonym
-        attaboi.senior_synonyms.all.include?(atta).should be_false
-      end
-    end
-
-  end
-
-  describe "Import synonyms" do
-    it "should create a new synonym if it doesn't exist" do
-      senior = create_genus
-      junior = create_genus
-      junior.import_synonyms senior
-      Synonym.count.should == 1
-      synonym = Synonym.first
-      synonym.junior_synonym.should == junior
-      synonym.senior_synonym.should == senior
-    end
-    it "should not create a new synonym if it exists" do
-      senior = create_genus
-      junior = create_genus
-      Synonym.create! junior_synonym: junior, senior_synonym: senior
-      Synonym.count.should == 1
-
-      junior.import_synonyms senior
-      Synonym.count.should == 1
-      synonym = Synonym.first
-      synonym.junior_synonym.should == junior
-      synonym.senior_synonym.should == senior
-    end
-    it "should not try to create a synonym if the senior is nil" do
-      senior = nil
-      junior = create_genus
-      junior.import_synonyms senior
-      Synonym.count.should be_zero
-    end
-  end
-
-  describe "Deleting synonyms when status changed" do
-    it "should delete synonyms when the status changes from 'synonym'" do
-      atta = create_genus
-      eciton = create_genus
-      atta.become_junior_synonym_of eciton
-      atta.should be_synonym
-      atta.should have(1).senior_synonym
-      eciton.should have(1).junior_synonym
-
-      atta.update_attribute :status, 'valid'
-
-      atta.should_not be_synonym
-      atta.should have(0).senior_synonyms
-      eciton.should have(0).junior_synonyms
-    end
-  end
-
-  describe "Versioning" do
-    it "should record versions" do
-      with_versioning do
-        taxon = create_genus
-        taxon.versions.last.event.should == 'create'
-      end
-    end
-    it "should record the changes" do
-      with_versioning do
-        genus = create_genus
-        genus.update_attributes! status: 'synonym'
-        genus.versions.last.changeset.should == {'status' => ['valid', 'synonym']}
-      end
-    end
-  end
-
-  describe "Junior synonyms with names" do
-    it "should work" do
-      atta = create_genus 'Atta'
-      eciton = create_genus 'Eciton'
-      eciton.become_junior_synonym_of atta
-      results = atta.junior_synonyms_with_names
-      results.should have(1).item
-      record = results.first
-      record['id'].should == Synonym.find_by_junior_synonym_id(eciton.id).id
-      record['name'].should == eciton.name.to_html
-    end
-  end
-
-  describe "Senior synonyms with names" do
-    it "should work" do
-      atta = create_genus 'Atta'
-      eciton = create_genus 'Eciton'
-      eciton.become_junior_synonym_of atta
-      results = eciton.senior_synonyms_with_names
-      results.should have(1).item
-      record = results.first
-      record['id'].should == Synonym.find_by_senior_synonym_id(atta.id).id
-      record['name'].should == atta.name.to_html
-    end
-  end
-
-  describe "Authorship string" do
-    it "should delegate to the protonym" do
-      genus = create_genus
-      genus.protonym.should_receive(:authorship_string).and_return 'Bolton 2005'
-      genus.authorship_string.should == 'Bolton 2005'
-    end
-    it "should surround in parentheses, if a recombination in a different genus" do
-      species = create_species 'Atta minor'
-      protonym_name = create_name 'Eciton minor'
-      species.protonym.should_receive(:name).and_return protonym_name
-      species.protonym.should_receive(:authorship_string).and_return 'Bolton, 2005'
-      species.authorship_string.should == '(Bolton, 2005)'
-    end
-    it "should not surround in parentheses, if the name simply differs" do
-      species = create_species 'Atta minor maxus'
-      protonym_name = create_name 'Atta minor minus'
-      species.protonym.should_receive(:name).and_return protonym_name
-      species.protonym.should_receive(:authorship_string).and_return 'Bolton, 2005'
-      species.authorship_string.should == 'Bolton, 2005'
-    end
-    it "should handle it if there simply isn't a protonym authorship" do
-      species = create_species 'Atta minor maxus'
-      protonym_name = create_name 'Eciton minor maxus'
-      species.protonym.should_receive(:authorship_string).and_return nil
-      species.authorship_string.should be_nil
-    end
-  end
-
-  describe "Recombination" do
-    it "should not think it's a recombination if name is same as protonym" do
-      species = create_species 'Atta major'
-      protonym_name = create_name 'Atta major'
-      species.protonym.should_receive(:name).and_return protonym_name
-      species.should_not be_recombination
-    end
-    it "should think it's a recombination if genus part of name is different than genus part of protonym" do
-      species = create_species 'Atta minor'
-      protonym_name = create_name 'Eciton minor'
-      species.protonym.should_receive(:name).and_return protonym_name
-      species.should be_recombination
-    end
-    it "should not think it's a recombination if genus part of name is same as genus part of protonym" do
-      species = create_species 'Atta minor maxus'
-      protonym_name = create_name 'Atta minor minus'
-      species.protonym.should_receive(:name).and_return protonym_name
-      species.should_not be_recombination
-    end
-  end
-
-  describe "Extracting original combinations" do
-    it "should create an 'original combination' taxon when genus doesn't match protonym's genus" do
-      nylanderia = create_genus 'Nylanderia'
-      paratrechina = create_genus 'Paratrechina'
-
-      recombined_protonym = FactoryGirl.create :protonym, name: create_name('Paratrechina minutula')
-      recombined = create_species 'Nylanderia minutula', genus: nylanderia, protonym: recombined_protonym
-
-      not_recombined_protonym = FactoryGirl.create :protonym, name: create_name('Nylanderia illustra')
-      not_recombined = create_species 'Nylanderia illustra', genus: nylanderia, protonym: not_recombined_protonym
-
-      taxon_count = Taxon.count
-
-      Taxon.extract_original_combinations
-
-      Taxon.count.should == taxon_count + 1
-      original_combinations = Taxon.where status: 'original combination'
-      original_combinations.size.should == 1
-      original_combination = original_combinations.first
-      original_combination.name.name.should == 'Paratrechina minutula'
-      original_combination.genus.should == paratrechina
-      original_combination.current_valid_taxon.should == recombined
-    end
-  end
-
-  describe "References" do
-    it "should have no references, if alone" do
-      taxon = create_genus
-      taxon.should have(0).references
-    end
-
-    describe "references in Taxon fields" do
-      it "should have a reference if it's a taxon's genus" do
-        genus = create_genus
-        species = create_species genus: genus
-        genus.references.should =~ [
-          {table: 'taxa', field: :genus_id, id: species.id},
-        ]
-      end
-      it "should have a reference if it's a taxon's subfamily" do
-        genus = create_genus
-        genus.subfamily.references.should =~ [
-          {table: 'taxa', field: :subfamily_id, id: genus.id},
-          {table: 'taxa', field: :subfamily_id, id: genus.tribe.id},
-        ]
-      end
-    end
-
-    describe "references in taxt" do
-      it "should return references in taxt" do
-        atta = create_genus 'Atta'
-        eciton = create_genus 'Eciton'
-        eciton.update_attribute :type_taxt, "{tax #{atta.id}}"
-        atta.references.should =~ [
-          {table: 'taxa', field: :type_taxt, id: eciton.id},
-        ]
-      end
-      it "should not return references in its own taxt" do
-        eciton = create_genus 'Eciton'
-        eciton.update_attribute :type_taxt, "{tax #{eciton.id}}"
-        eciton.references.should be_empty
-      end
-
-    end
-
-    describe "Reference in its authorship taxt" do
-      it "should not consider this an external reference" do
-        eciton = create_genus 'Eciton'
-        eciton.protonym.authorship.update_attribute :notes_taxt, "{tax #{eciton.id}}"
-        eciton.references.should be_empty
-      end
-    end
-
-    describe "references as synonym" do
-      it "should work" do
-        atta = create_genus 'Atta'
-        eciton = create_genus 'Eciton'
-        eciton.become_junior_synonym_of atta
-        atta.references.should =~ [
-          {table: 'synonyms', field: :senior_synonym_id, id: eciton.id},
-        ]
-        eciton.references.should =~ [
-          {table: 'synonyms', field: :junior_synonym_id, id: atta.id},
-        ]
-      end
-    end
-
-    describe "Nontaxt references" do
-      it "should return only nontaxt references" do
-        atta = create_genus 'Atta'
-        eciton = create_genus 'Eciton'
-        eciton.update_attribute :type_taxt, "{tax #{atta.id}}"
-        eciton.update_attribute :homonym_replaced_by, atta
-        atta.nontaxt_references.should =~ [
-          {table: 'taxa', field: :homonym_replaced_by_id, id: eciton.id},
-        ]
-      end
-    end
-  end
-
   describe "Setting and getting parent virtual field" do
     it "should be able to assign from an object" do
       genus = FactoryGirl.create :genus
@@ -747,6 +302,33 @@ describe Taxon do
       subfamily = FactoryGirl.create :subfamily
       genus = FactoryGirl.create :genus, subfamily: subfamily
       genus.parent.should == subfamily
+    end
+  end
+
+  describe "Scopes" do
+    describe "the 'valid' scope" do
+      it "should only include valid taxa" do
+        subfamily = FactoryGirl.create :subfamily
+        replacement = FactoryGirl.create :genus, subfamily: subfamily
+        homonym = FactoryGirl.create :genus, homonym_replaced_by: replacement, status: 'homonym', subfamily: subfamily
+        synonym = create_synonym replacement, subfamily: subfamily
+        subfamily.genera.valid.should == [replacement]
+      end
+    end
+    describe "the 'extant' scope" do
+      it "should only include extant taxa" do
+        subfamily = FactoryGirl.create :subfamily
+        extant_genus = FactoryGirl.create :genus, subfamily: subfamily
+        FactoryGirl.create :genus, subfamily: subfamily, fossil: true
+        subfamily.genera.extant.should == [extant_genus]
+      end
+    end
+    describe "ordered by name" do
+      it "should order by name" do
+        zymacros = FactoryGirl.create :subfamily, name: FactoryGirl.create(:name, name: 'Zymacros')
+        atta = FactoryGirl.create :subfamily, name: FactoryGirl.create(:name, name: 'Atta')
+        Taxon.ordered_by_name.should == [atta, zymacros]
+      end
     end
   end
 
