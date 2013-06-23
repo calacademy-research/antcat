@@ -101,6 +101,9 @@ end
 
 ###########################
 # species
+Given /^there is a species "([^"]*)"$/ do |name|
+  create_species name
+end
 Given /a species exists with a name of "(.*?)" and a genus of "(.*?)"(?: and a taxonomic history of "(.*?)")?/ do |taxon_name, parent_name, history|
   genus = Genus.find_by_name(parent_name) || FactoryGirl.create(:genus, name: FactoryGirl.create(:genus_name, name: parent_name))
   @species = FactoryGirl.create :species, name: FactoryGirl.create(:species_name, name: "#{parent_name} #{taxon_name}"), genus: genus
@@ -124,9 +127,6 @@ end
 Given /^there is a species "([^"]*)" with protonym name "(.*?)"$/ do |name, protonym_name|
   species = create_species name
   species.protonym.name = Name.find_by_name protonym_name if protonym_name
-end
-Given /^there is a species "([^"]*)"$/ do |name|
-  create_species name
 end
 Given /^there is a species "([^"]*)" with genus "([^"]*)"$/ do |species_name, genus_name|
   genus = create_genus genus_name

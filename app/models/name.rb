@@ -1,10 +1,7 @@
 # coding: UTF-8
 class Name < ActiveRecord::Base
-
   validates :name, presence: true
-
   after_save :set_taxon_caches
-
   has_paper_trail
 
   def quadrinomial?
