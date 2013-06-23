@@ -1,6 +1,14 @@
 # coding: UTF-8
 class GenusName < GenusGroupName
 
+  def genus_name
+    words[0]
+  end
+
+  def genus_epithet
+    genus_name
+  end
+
   def self.parse_words words
     return unless words.size == 1
     create! make_import_attributes words[0]
