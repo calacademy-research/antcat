@@ -21,8 +21,8 @@ class Name < ActiveRecord::Base
     0
   end
 
-  def genus_epithet
-    name.split(' ')[0]
+  def words
+    @_words ||= name.split ' '
   end
 
   def self.parse string
