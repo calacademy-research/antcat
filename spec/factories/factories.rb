@@ -339,6 +339,16 @@ def create_name name
   FactoryGirl.create :name, name: name, epithet: epithet, epithets: epithets
 end
 
+def create_species_name name
+  name, epithet, epithets = get_name_parts name
+  FactoryGirl.create :species_name, name: name, epithet: epithet, epithets: epithets
+end
+
+def create_subspecies_name name
+  name, epithet, epithets = get_name_parts name
+  FactoryGirl.create :subspecies_name, name: name, epithet: epithet, epithets: epithets
+end
+
 def create_synonym senior, attributes = {}
   junior = create_genus attributes.merge status: 'synonym'
   synonym = Synonym.create! senior_synonym: senior, junior_synonym: junior
