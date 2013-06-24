@@ -8,11 +8,6 @@ describe GenusName do
       name = GenusName.new name: 'Atta', epithet: 'Atta'
       name.genus_name.should == 'Atta'
     end
-    it "should have no epithet counts" do
-      genus = create_genus 'Crematogaster (Lambaster)'
-      genus.name.epithet_count.should be_zero
-    end
-
   end
 
   describe "Importing" do
