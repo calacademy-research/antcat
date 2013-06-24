@@ -29,7 +29,12 @@ end
 When /^the name field should contain "([^"]*)"$/ do |name|
   find('#name_string').value.should == name
 end
-When /^I set the homonym replaced by name to "([^"]*)"$/ do |name|
+
+### parent field
+When /I click the parent name field/ do
+  find('#parent_name_field .display_button').click
+end
+When /^I set the parent name to "([^"]*)"$/ do |name|
   step %{I fill in "name_string" with "#{name}"}
 end
 
@@ -43,6 +48,9 @@ When /the homonym replaced by name should be "([^"]*)"$/ do |name|
 end
 When /I click the homonym replaced by name field/ do
   find('#homonym_replaced_by_name_field .display_button').click
+end
+When /^I set the homonym replaced by name to "([^"]*)"$/ do |name|
+  step %{I fill in "name_string" with "#{name}"}
 end
 
 ### headline notes
