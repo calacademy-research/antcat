@@ -36,7 +36,7 @@ end
 ### homonym replaced by field
 Then /^I should (not )?see the homonym replaced by field$/ do |should_not|
   selector = should_not ? :should_not : :should
-  find("#homonym_replaced_by").send(selector, be_visible)
+  find("#homonym_replaced_by_row").send(selector, be_visible)
 end
 When /the homonym replaced by name should be "([^"]*)"$/ do |name|
   page.find('#homonym_replaced_by_name_field div.display').text.should == name

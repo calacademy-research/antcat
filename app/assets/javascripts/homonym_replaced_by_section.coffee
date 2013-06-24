@@ -4,7 +4,7 @@ class AntCat.HomonymReplacedBySection
     @initialize()
 
   initialize: ->
-    @homonym_replaced_by_name_row = $ 'tr#homonym_replaced_by'
+    @homonym_replaced_by_name_row = $ 'tr#homonym_replaced_by_row'
     new AntCat.NameField $('#homonym_replaced_by_name_field'),
       value_id: 'taxon_homonym_replaced_by_name_attributes_id', parent_form: @parent_form, require_existing: true, taxa_only: true, allow_blank: true
     @parent_form.hide_or_show_homonym_replaced_by()
