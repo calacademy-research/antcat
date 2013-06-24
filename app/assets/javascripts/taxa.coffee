@@ -17,7 +17,7 @@ class AntCat.TypeNameField extends AntCat.NameField
 class AntCat.TaxonForm extends AntCat.Form
   constructor: (@element, @options = {}) ->
     @status_selector = $ '#taxon_status'
-    @homonym_replaced_by_name_row = $ 'tr#homonym_replaced_by'
+    @homonym_replaced_by_name_row = $ 'tr#homonym_replaced_by_row'
     @initialize_fields_section()
     @initialize_history_section()
     @initialize_junior_and_senior_synonyms_section()
