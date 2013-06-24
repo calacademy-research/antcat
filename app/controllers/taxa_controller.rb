@@ -65,12 +65,14 @@ class TaxaController < ApplicationController
   def update_taxon attributes
     Taxon.transaction do
       name_attributes                     = attributes.delete :name_attributes
+      parent_name_attributes              = attributes.delete :parent_name_attributes
       protonym_attributes                 = attributes.delete :protonym_attributes
       homonym_replaced_by_name_attributes = attributes.delete :homonym_replaced_by_name_attributes
       type_name_attributes                = attributes.delete :type_name_attributes
 
       update_name                 name_attributes
       update_name_status_flags    attributes
+      update_parent               parent_name_attributes
       update_homonym_replaced_by  homonym_replaced_by_name_attributes
       update_protonym             protonym_attributes
       update_type_name            type_name_attributes
@@ -91,6 +93,14 @@ class TaxaController < ApplicationController
   def update_name attributes
     attributes[:name_id] = attributes.delete :id
     @taxon.attributes = attributes
+  end
+
+  def update_parent attributes
+    new_parent_id = attributes[:id]
+    new_parent = Taxon.find_by_name_id new_parent_id
+    return if @taxon.parent == new_parent
+    @taxon.name.change_species new_parent.name
+    @taxon.parent = new_parent
   end
 
   def update_homonym_replaced_by attributes

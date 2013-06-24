@@ -142,6 +142,7 @@ Given /^there is a species "([^"]*)" which is a junior synonym of "([^"]*)"$/ do
   junior = create_species junior, status: 'synonym', genus: genus
   Synonym.create! senior_synonym: senior, junior_synonym: junior
 end
+
 ###########################
 # subspecies
 Given /^there is a subspecies "([^"]*)"$/ do |name|
