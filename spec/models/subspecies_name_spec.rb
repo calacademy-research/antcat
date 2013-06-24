@@ -27,6 +27,28 @@ describe SubspeciesName do
   describe "Changing the species of a subspecies name" do
     it "should replace the species part of the name and fix all the other parts, too" do
       subspecies_name = SubspeciesName.new(
+        name: 'Atta major minor',
+        name_html: '<i>Atta major minor</i>',
+        epithet: 'minor',
+        epithet_html: '<i>minor</i>',
+        epithets: 'major minor')
+
+      species_name = SpeciesName.new(
+        name: 'Eciton niger',
+        name_html: '<i>Eciton niger</i>',
+        epithet: 'niger',
+        epithet_html: '<i>niger</i>')
+
+      subspecies_name.change_species species_name
+
+      subspecies_name.name.should == 'Eciton niger minor'
+      subspecies_name.name_html.should == '<i>Eciton niger minor</i>'
+      subspecies_name.epithet.should == 'minor'
+      subspecies_name.epithet_html.should == '<i>minor</i>'
+      subspecies_name.epithets.should == 'niger minor'
+    end
+    it "should handle more than one subspecies epithet" do
+      subspecies_name = SubspeciesName.new(
         name: 'Atta major minor medii',
         name_html: '<i>Atta major minor medii</i>',
         epithet: 'medii',
