@@ -305,7 +305,7 @@ describe Taxon do
     end
   end
 
-  describe "Changing the parent" do
+  describe "Updating the parent" do
     before do
       @atta = create_genus 'Atta'
       @eciton = create_genus 'Eciton'
@@ -318,18 +318,29 @@ describe Taxon do
     end
 
     it "should do nothing if the parent doesn't actually change" do
-      @subspecies.change_parent @old_parent
+      @subspecies.update_parent @old_parent
       @subspecies.species.should == @old_parent
       @subspecies.name.name.should == 'Atta major medius minor'
     end
 
     it "should change the species of a subspecies" do
-      @subspecies.change_parent @new_parent
+      @subspecies.update_parent @new_parent
       @subspecies.species.should == @new_parent
     end
 
+    it "should change the genus of a subspecies" do
+      @subspecies.update_parent @new_parent
+      @subspecies.species.should == @new_parent
+      @subspecies.genus.should == @new_parent.genus
+    end
+
+    it "should change the subfamily of a subspecies" do
+      @subspecies.update_parent @new_parent
+      @subspecies.subfamily.should == @new_parent.subfamily
+    end
+
     it "should change the name, etc., of a subspecies" do
-      @subspecies.change_parent @new_parent
+      @subspecies.update_parent @new_parent
       name = @subspecies.name
       name.name.should == 'Eciton nigrus medius minor'
       name.name_html.should == '<i>Eciton nigrus medius minor</i>'
@@ -337,6 +348,12 @@ describe Taxon do
       name.epithet_html.should == '<i>minor</i>'
       name.epithets.should == 'nigrus medius minor'
       name.protonym_html.should == '<i>Atta major medius minor</i>'
+    end
+
+    it "should change the cached name, etc., of a subspecies" do
+      @subspecies.update_parent @new_parent
+      @subspecies.name_cache.should == 'Eciton nigrus medius minor'
+      @subspecies.name_html_cache.should == '<i>Eciton nigrus medius minor</i>'
     end
 
   end

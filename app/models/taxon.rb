@@ -178,9 +178,12 @@ class Taxon < ActiveRecord::Base
     send Rank[self].parent.read_selector
   end
 
-  def change_parent new_parent
+  def update_parent new_parent
     return if self.parent == new_parent
     self.name.change_species new_parent.name
+    set_name_caches
+    self.subfamily = new_parent.subfamily
+    self.genus = new_parent.genus
     self.parent = new_parent
   end
 
