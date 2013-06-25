@@ -31,7 +31,6 @@ class SubspeciesName < SpeciesGroupName
       name:           new_name_string,
       name_html:      Formatters::Formatter.italicize(new_name_string),
       epithets:       species_name.epithet + ' ' + subspecies_epithets,
-      protonym_html:  nil,
     })
   end
 
