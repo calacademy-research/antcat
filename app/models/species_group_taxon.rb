@@ -6,6 +6,13 @@ class SpeciesGroupTaxon < Taxon
   belongs_to :subgenus
   before_create :set_subfamily
 
+  def update_parent new_parent
+    super
+    self.subfamily = new_parent.subfamily
+    self.genus = new_parent.genus
+    self.subgenus = new_parent.subgenus
+  end
+
   def recombination?
     genus_epithet = name.genus_epithet
     protonym_genus_epithet = protonym.name.genus_epithet
