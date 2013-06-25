@@ -10,15 +10,15 @@ Feature: Changing species
 
   Scenario: Changing a subspecies's species
     Given there is a species "Atta major" with genus "Atta"
-    And there is a species "Eciton major" with genus "Eciton"
+    And there is a species "Eciton nigra" with genus "Eciton"
     And there is a subspecies "Atta major minor" which is a subspecies of "Atta major"
     When I go to the edit page for "Atta major minor"
     And I click the parent name field
-    And I set the parent name to "Eciton major"
+    And I set the parent name to "Eciton nigra"
     And I press "OK"
     When I save my changes
-    Then I should be on the catalog page for "Eciton major minor"
-    And the name in the header should be "Eciton major minor"
+    Then I should be on the catalog page for "Eciton nigra minor"
+    And the name in the header should be "Eciton nigra minor"
 
   Scenario: Parent field not visible for the family
     Given there is a family "Formicidae"
