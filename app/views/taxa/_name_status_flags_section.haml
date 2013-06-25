@@ -6,7 +6,9 @@
     %tr.status_row
       %td.label= form.label :status
       %td= form.select :status, Status.options_for_select
-    = render 'parent_section', taxon: taxon, form: form if taxon.kind_of? Subspecies
+
+    = render 'parent_section', taxon: taxon, form: form if taxon.kind_of? Subspecies unless taxon.new_record?
+
     = render 'homonym_replaced_by_section', taxon: taxon, form: form
 
     %tr.flags_row
