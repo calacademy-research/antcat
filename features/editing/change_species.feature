@@ -5,8 +5,10 @@ Feature: Changing species
   So that information is kept accurate
   So people use AntCat
 
-  Scenario: Changing a subspecies's species
+  Background:
     Given I am logged in
+
+  Scenario: Changing a subspecies's species
     And there is a species "Atta major" with genus "Atta"
     And there is a species "Eciton major" with genus "Eciton"
     And there is a subspecies "Atta major minor" which is a subspecies of "Atta major"
@@ -20,6 +22,14 @@ Feature: Changing species
 
   Scenario: Parent field not visible for the family
     Given there is a family "Formicidae"
-    And I log in
     When I go to the edit page for "Formicidae"
+    Then I should not see the parent name field
+
+  Scenario: Parent field not visible while adding
+    Given there is a species "Eciton major" with genus "Eciton"
+    When I go to the catalog page for "Eciton major"
+    And I press "Edit"
+    And I press "Add subspecies"
+    And I wait for a bit
+    Then I should be on the new taxon page
     Then I should not see the parent name field
