@@ -96,12 +96,7 @@ class TaxaController < ApplicationController
   end
 
   def update_parent attributes
-    return unless attributes
-    new_parent_id = attributes[:id]
-    new_parent = Taxon.find_by_name_id new_parent_id
-    return if @taxon.parent == new_parent
-    @taxon.name.change_species new_parent.name
-    @taxon.parent = new_parent
+    @taxon.update_parent Taxon.find(attributes[:id]) if attributes
   end
 
   def update_homonym_replaced_by attributes

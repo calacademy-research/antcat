@@ -178,6 +178,12 @@ class Taxon < ActiveRecord::Base
     send Rank[self].parent.read_selector
   end
 
+  def change_parent new_parent
+    return if self.parent == new_parent
+    self.name.change_species new_parent.name
+    self.parent = new_parent
+  end
+
   def children
     raise NotImplementedError
   end
