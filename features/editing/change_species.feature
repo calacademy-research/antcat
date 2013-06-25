@@ -9,7 +9,7 @@ Feature: Changing species
     Given I am logged in
 
   Scenario: Changing a subspecies's species
-    And there is a species "Atta major" with genus "Atta"
+    Given there is a species "Atta major" with genus "Atta"
     And there is a species "Eciton major" with genus "Eciton"
     And there is a subspecies "Atta major minor" which is a subspecies of "Atta major"
     When I go to the edit page for "Atta major minor"
@@ -17,8 +17,8 @@ Feature: Changing species
     And I set the parent name to "Eciton major"
     And I press "OK"
     When I save my changes
-    And I wait for a bit
     Then I should be on the catalog page for "Eciton major minor"
+    And the name in the header should be "Eciton major minor"
 
   Scenario: Parent field not visible for the family
     Given there is a family "Formicidae"

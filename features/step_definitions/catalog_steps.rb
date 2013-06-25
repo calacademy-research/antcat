@@ -43,3 +43,7 @@ end
 Then /^I should see the catalog entry for "([^"]*)"$/ do |taxon|
   page.should have_css('.header .taxon', text: taxon)
 end
+
+And /^the name in the header should be "([^"]*)"/ do |name|
+  page.should have_css('.header .taxon', text: name)
+end
