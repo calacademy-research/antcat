@@ -3,6 +3,11 @@ class Subspecies < SpeciesGroupTaxon
   belongs_to :species
   before_validation :set_genus
 
+  def update_parent new_parent
+    super
+    set_genus
+  end
+
   def set_genus
     self.genus = species.genus if species and not genus
   end
