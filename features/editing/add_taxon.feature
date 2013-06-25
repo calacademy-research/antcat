@@ -137,7 +137,6 @@ Feature: Adding a taxon
     And I should see "Atta major" in the protonym
 
   Scenario: Adding a subspecies
-    Given there is a genus "Eciton"
     And there is a species "Eciton major" with genus "Eciton"
     When I go to the catalog page for "Eciton major"
     And I press "Edit"
