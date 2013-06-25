@@ -37,6 +37,9 @@ end
 When /^I set the parent name to "([^"]*)"$/ do |name|
   step %{I fill in "name_string" with "#{name}"}
 end
+Then /^I should not see the parent name field/ do
+  page.should_not have_css "#parent_row"
+end
 
 ### homonym replaced by field
 Then /^I should (not )?see the homonym replaced by field$/ do |should_not|

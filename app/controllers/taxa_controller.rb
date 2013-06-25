@@ -96,6 +96,7 @@ class TaxaController < ApplicationController
   end
 
   def update_parent attributes
+    return unless attributes
     new_parent_id = attributes[:id]
     new_parent = Taxon.find_by_name_id new_parent_id
     return if @taxon.parent == new_parent

@@ -5,7 +5,7 @@ Feature: Changing species
   So that information is kept accurate
   So people use AntCat
 
-  Scenario: Editing a family's name
+  Scenario: Changing a subspecies's species
     Given I am logged in
     And there is a species "Atta major" with genus "Atta"
     And there is a species "Eciton major" with genus "Eciton"
@@ -17,3 +17,9 @@ Feature: Changing species
     When I save my changes
     And I wait for a bit
     Then I should be on the catalog page for "Eciton major minor"
+
+  Scenario: Parent field not visible for the family
+    Given there is a family "Formicidae"
+    And I log in
+    When I go to the edit page for "Formicidae"
+    Then I should not see the parent name field

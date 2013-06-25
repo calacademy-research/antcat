@@ -16,9 +16,8 @@ class AntCat.TypeNameField extends AntCat.NameField
 
 class AntCat.TaxonForm extends AntCat.Form
   constructor: (@element, @options = {}) ->
-    @status_selector = $ '#taxon_status'
-    @homonym_replaced_by_name_row = $ 'tr#homonym_replaced_by_row'
     @initialize_fields_section()
+    @initialize_parent_section()
     @initialize_history_section()
     @initialize_junior_and_senior_synonyms_section()
     @initialize_references_section()
@@ -30,7 +29,6 @@ class AntCat.TaxonForm extends AntCat.Form
   ###### initialization
   initialize_fields_section: =>
     name_field = new AntCat.NameField $('#name_field'), value_id: 'taxon_name_attributes_id', parent_form: @, require_new: true
-    new AntCat.NameField $('#parent_name_field'), value_id: 'taxon_parent_name_attributes_id', parent_form: @, species_only: true
     new AntCat.TaxtEditor $('#headline_notes_taxt_editor'), parent_buttons: '.buttons_section'
     protonym_field = new AntCat.ProtonymField $('#protonym_name_field'), name_field, value_id: 'taxon_protonym_attributes_name_attributes_id', parent_form: @
     if $('#type_name_field').size() == 1
@@ -48,16 +46,15 @@ class AntCat.TaxonForm extends AntCat.Form
   initialize_references_section: =>
     new AntCat.ReferencesSection @element.find('.references_section'), parent_form: @
 
-  initialize_homonym_replaced_by_section: =>
-    @status_selector.change => @hide_or_show_homonym_replaced_by()
-    new AntCat.HomonymReplacedBySection $('#homonym_replaced_by_name_field'),
-      value_id: 'taxon_homonym_replaced_by_name_attributes_id', parent_form: @, taxa_only: true, allow_blank: true
+  initialize_parent_section: =>
+    new AntCat.ParentSection $('#parent_name_field'), parent_form: @
 
-  hide_or_show_homonym_replaced_by: =>
-    if @status_selector.val() == 'homonym'
-      @homonym_replaced_by_name_row.show()
-    else
-      @homonym_replaced_by_name_row.hide()
+  initialize_homonym_replaced_by_section: =>
+    @homonym_replaced_by_name_row = $ 'tr#homonym_replaced_by_row'
+    @status_selector = $ '#taxon_status'
+    @status_selector.change => @hide_or_show_homonym_replaced_by()
+    new AntCat.HomonymReplacedBySection $('#homonym_replaced_by_name_field'), parent_form: @
+    @hide_or_show_homonym_replaced_by()
 
   initialize_task_buttons: =>
     @element.find('#add_taxon').click => @add_taxon(); false
@@ -72,6 +69,12 @@ class AntCat.TaxonForm extends AntCat.Form
   taxon_id: =>
     match = @form().attr('action').match /\d+/
     match and match[0]
+
+  hide_or_show_homonym_replaced_by: =>
+    if @status_selector.val() == 'homonym'
+      @homonym_replaced_by_name_row.show()
+    else
+      @homonym_replaced_by_name_row.hide()
 
   ###### overrides
   cancel: => window.location = $('#cancel_path').val()
