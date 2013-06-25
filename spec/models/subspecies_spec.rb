@@ -38,6 +38,18 @@ describe Subspecies do
     subspecies.genus.should == genus
   end
 
+  describe "Updating the parent" do
+    it "should set all the parent fields" do
+      subspecies = create_subspecies 'Atta beta kappa'
+      species = create_species
+      subspecies.update_parent species
+      subspecies.species.should == species
+      subspecies.genus.should == species.genus
+      subspecies.subgenus.should == species.subgenus
+      subspecies.subfamily.should == species.subfamily
+    end
+  end
+
   describe "Elevating to species" do
     it "should turn the record into a Species" do
       taxon = create_subspecies 'Atta major colobopsis'
