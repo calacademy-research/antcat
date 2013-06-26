@@ -1,12 +1,24 @@
 @javascript
-Feature: Changing species
+Feature: Changing parent genus or species
   As an editor of AntCat
-  I want to change a subspecies's species
+  I want to change a taxon's parent
   So that information is kept accurate
   So people use AntCat
 
   Background:
     Given I am logged in
+
+  Scenario: Changing a species's genus
+    Given there is a genus "Atta"
+    And there is a genus "Eciton"
+    And there is a species "Atta major" with genus "Atta"
+    When I go to the edit page for "Atta major"
+    And I click the parent name field
+    And I set the parent name to "Eciton"
+    And I press "OK"
+    When I save my changes
+    Then I should be on the catalog page for "Eciton major"
+    And the name in the header should be "Eciton major"
 
   Scenario: Changing a subspecies's species
     Given there is a species "Atta major" with genus "Atta"
