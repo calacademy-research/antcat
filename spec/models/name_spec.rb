@@ -171,6 +171,14 @@ describe Name do
       results.first[:name].should == 'Atta major'
     end
 
+    it "should only return names attached to genera, if that option is sent" do
+      atta = create_genus 'Atta'
+      atta_minor = create_species 'Atta major'
+      results = Name.picklist_matching('atta', genera_only: true)
+      results.should have(1).item
+      results.first[:name].should == 'Atta'
+    end
+
   end
 
   describe "Duplicates" do

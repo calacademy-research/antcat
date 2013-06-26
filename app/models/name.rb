@@ -40,20 +40,25 @@ class Name < ActiveRecord::Base
 
   def self.picklist_matching letters_in_name, options = {}
     join = options[:taxa_only] || options[:species_only] ? 'JOIN' : 'LEFT OUTER JOIN'
-    species_filter = options[:species_only] ? 'AND taxa.type = "Species"' : ''
+    rank_filter =
+      case
+      when options[:species_only] then 'AND taxa.type = "Species"'
+      when options[:genera_only] then 'AND taxa.type = "Genus"'
+      else ''
+      end
 
     # I do not see why the code beginning with Name.select can't be factored out, but it can't
     search_term = letters_in_name + '%'
     prefix_matches =
-      Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id').joins("#{join} taxa ON taxa.name_id = names.id").where("name LIKE '#{search_term}' #{species_filter}").order(:name)
+      Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id').joins("#{join} taxa ON taxa.name_id = names.id").where("name LIKE '#{search_term}' #{rank_filter}").order(:name)
 
     search_term = letters_in_name.split('').join('%') + '%'
     epithet_matches =
-      Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id').joins("#{join} taxa ON taxa.name_id = names.id").where("epithet LIKE '#{search_term}' #{species_filter}").order(:epithet)
+      Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id').joins("#{join} taxa ON taxa.name_id = names.id").where("epithet LIKE '#{search_term}' #{rank_filter}").order(:epithet)
 
     search_term = letters_in_name.split('').join('%') + '%'
     first_then_any_letter_matches =
-      Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id').joins("#{join} taxa ON taxa.name_id = names.id").where("name LIKE '#{search_term}' #{species_filter}").order(:name)
+      Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id').joins("#{join} taxa ON taxa.name_id = names.id").where("name LIKE '#{search_term}' #{rank_filter}").order(:name)
 
     [picklist_matching_format(prefix_matches),
      picklist_matching_format(epithet_matches),
