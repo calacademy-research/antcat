@@ -70,6 +70,14 @@ describe SubspeciesName do
       subspecies_name.epithet_html.should == '<i>medii</i>'
       subspecies_name.epithets.should == 'niger minor medii'
     end
+    it "should raise an error if the new name already exists for a different taxon" do
+      existing_subspecies_name = SubspeciesName.create! name: 'Eciton niger minor', epithet: 'minor', epithets: 'niger minor'
+      subspecies_name = SubspeciesName.create! name: 'Atta major minor', epithet: 'minor', epithets: 'major minor'
+      species_name = SpeciesName.create! name: 'Eciton niger', epithet: 'niger'
+      protonym_name = SpeciesName.create! name: 'Eciton niger', epithet: 'niger'
+
+      -> {subspecies_name.change_species species_name}.should raise_error
+    end
   end
 
   describe "Importing" do
