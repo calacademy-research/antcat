@@ -16,6 +16,9 @@ describe Rank do
   it "should return a string" do
     Rank[:tribes].to_s.should == 'tribe'
   end
+  it "should have a display string" do
+    Rank[:tribes].display_string.should == 'Tribe'
+  end
   it "should do caps" do
     Rank[:tribes].to_s(:capitalized).should == 'Tribe'
   end
