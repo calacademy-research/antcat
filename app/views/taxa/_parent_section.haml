@@ -5,6 +5,6 @@
   - form.object.parent_name ||= Name.new
   = form.fields_for :parent_name do |parent_name_form|
     = hidden_field_tag 'taxon[parent_name_attributes][id]', form.object.parent_name.id
-    %td.label= parent_name_form.label :name, 'Species'
+    %td.label.top_aligned= parent_name_form.label :name, Rank[taxon].parent.display_string
     %td#parent_name_field
       = render 'name_fields/panel', name_string: taxon.parent_name.name
