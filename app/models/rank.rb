@@ -8,6 +8,9 @@ class Rank
     @hash[:string]
   end
 
+  def display_string
+    string.titlecase
+  end
   def uncommon?
     @hash[:uncommon]
   end
