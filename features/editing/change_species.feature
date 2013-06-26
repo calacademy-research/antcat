@@ -33,3 +33,13 @@ Feature: Changing species
     And I wait for a bit
     Then I should be on the new taxon page
     Then I should not see the parent name field
+
+  Scenario: Fixing a subspecies without a species
+    Given there is a species "Crematogaster menilekii"
+    And there is a subspecies "Crematogaster menilekii proserpina" without a species
+    When I go to the edit page for "Crematogaster menilekii proserpina"
+    And I click the parent name field
+    And I set the parent name to "Crematogaster menilekii"
+    And I press "OK"
+    When I save my changes
+    Then I should be on the catalog page for "Crematogaster menilekii proserpina"
