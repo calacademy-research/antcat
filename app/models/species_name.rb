@@ -1,6 +1,12 @@
 # coding: UTF-8
 class SpeciesName < SpeciesGroupName
 
+  def change_parent parent_name
+    name_string = [parent_name.genus_epithet, species_epithet].join ' '
+    change name_string
+    update_attributes! epithets: epithet
+  end
+
   def self.parse_words words
     return unless words.size == 2
     genus = words[0]

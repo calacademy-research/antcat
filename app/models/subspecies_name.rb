@@ -5,6 +5,12 @@ class SubspeciesName < SpeciesGroupName
     words[2..-1].join ' '
   end
 
+  def change_parent species_name
+    name_string = [species_name.genus_epithet, species_name.species_epithet, subspecies_epithets].join ' '
+    change name_string
+    update_attributes! epithets: species_name.epithet + ' ' + subspecies_epithets
+  end
+
   def self.parse_words words
     return unless words.size > 2
     genus   = words[0]
@@ -22,18 +28,6 @@ class SubspeciesName < SpeciesGroupName
       protonym_html:name_html,
     }
     create! attributes
-  end
-
-  def change_species species_name
-    new_name_string = [species_name.genus_epithet, species_name.species_epithet, subspecies_epithets].join ' '
-    existing_names = SubspeciesName.where('id != ?', id).find_all_by_name(new_name_string)
-    nonorphan_names = existing_names.select {|name| not name.references.empty?}
-    raise if nonorphan_names.present?
-    update_attributes!({
-      name:           new_name_string,
-      name_html:      Formatters::Formatter.italicize(new_name_string),
-      epithets:       species_name.epithet + ' ' + subspecies_epithets,
-    })
   end
 
   def self.get_name data
