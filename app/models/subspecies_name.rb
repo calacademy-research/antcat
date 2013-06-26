@@ -26,7 +26,8 @@ class SubspeciesName < SpeciesGroupName
 
   def change_species species_name
     new_name_string = [species_name.genus_epithet, species_name.species_epithet, subspecies_epithets].join ' '
-    raise if SubspeciesName.find_by_name new_name_string
+    existing_names = SubspeciesName.where('id != ?', id).find_all_by_name(new_name_string)
+    raise if existing_names.present?
     update_attributes!({
       name:           new_name_string,
       name_html:      Formatters::Formatter.italicize(new_name_string),
