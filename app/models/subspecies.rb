@@ -5,7 +5,8 @@ class Subspecies < SpeciesGroupTaxon
 
   def update_parent new_parent
     super
-    set_genus
+    self.genus = new_parent.genus
+    self.subgenus = new_parent.subgenus
   end
 
   def set_genus
