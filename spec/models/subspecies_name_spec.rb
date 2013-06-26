@@ -39,7 +39,7 @@ describe SubspeciesName do
         epithet: 'niger',
         epithet_html: '<i>niger</i>')
 
-      subspecies_name.change_species species_name
+      subspecies_name.change_parent species_name
 
       subspecies_name.name.should == 'Eciton niger minor'
       subspecies_name.name_html.should == '<i>Eciton niger minor</i>'
@@ -61,7 +61,7 @@ describe SubspeciesName do
         epithet: 'niger',
         epithet_html: '<i>niger</i>')
 
-      subspecies_name.change_species species_name
+      subspecies_name.change_parent species_name
 
       subspecies_name.name.should == 'Eciton niger minor medii'
 
@@ -77,14 +77,14 @@ describe SubspeciesName do
       species_name = SpeciesName.create! name: 'Eciton niger', epithet: 'niger'
       protonym_name = SpeciesName.create! name: 'Eciton niger', epithet: 'niger'
 
-      -> {subspecies_name.change_species species_name}.should raise_error
+      -> {subspecies_name.change_parent species_name}.should raise_error
     end
     it "should not raise an error if the new name already exists, but is an orphan" do
       orphan_subspecies_name = SubspeciesName.create! name: 'Eciton niger minor', epithet: 'minor', epithets: 'niger minor'
       subspecies_name = SubspeciesName.create! name: 'Atta major minor', epithet: 'minor', epithets: 'major minor'
       species_name = SpeciesName.create! name: 'Eciton niger', epithet: 'niger'
       protonym_name = SpeciesName.create! name: 'Eciton niger', epithet: 'niger'
-      -> {subspecies_name.change_species species_name}.should_not raise_error
+      -> {subspecies_name.change_parent species_name}.should_not raise_error
     end
   end
 

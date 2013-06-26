@@ -4,6 +4,15 @@ class Name < ActiveRecord::Base
   after_save :set_taxon_caches
   has_paper_trail
 
+  def change name_string
+    existing_names = Name.where('id != ?', id).find_all_by_name(name_string)
+    raise if existing_names.any? {|name| not name.references.empty?}
+    update_attributes!({
+      name:           name_string,
+      name_html:      Formatters::Formatter.italicize(name_string),
+    })
+  end
+
   def quadrinomial?
     name.split(' ').size == 4
   end
