@@ -8,6 +8,7 @@ class AntCat.NameField extends AntCat.Panel
 
   create_form: ($element, form_options) =>
     form_options.taxa_only = @options.taxa_only
+    form_options.genera_only = @options.genera_only
     form_options.species_only = @options.species_only
     form_options.allow_blank = @options.allow_blank
     form_options.default_name_string = @get_default_name_string()
@@ -118,6 +119,7 @@ class AntCat.NameFieldForm extends AntCat.NestedForm
     url = '/name_pickers/search'
     url += '?taxa_only=1' if @options.taxa_only
     url += '?species_only=1' if @options.species_only
+    url += '?genera_only=1' if @options.genera_only
     $textbox.autocomplete(autoFocus: true, source: url, minLength: 3)
       .data('autocomplete')._renderItem = @render_item
 
