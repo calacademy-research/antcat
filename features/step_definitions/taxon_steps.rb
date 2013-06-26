@@ -151,6 +151,9 @@ end
 Given /^there is a subspecies "([^"]*)" which is a subspecies of "([^"]*)"$/ do |subspecies_name, species_name|
   create_subspecies subspecies_name, species: Species.find_by_name(species_name)
 end
+Given /^there is a subspecies "([^"]*)" without a species/ do |subspecies_name|
+  create_subspecies subspecies_name, species: nil
+end
 Given /a subspecies exists for that species with a name of "(.*?)" and an epithet of "(.*?)" and a taxonomic history of "(.*?)"/ do |name, epithet, history|
   subspecies = FactoryGirl.create :subspecies, name: FactoryGirl.create(:subspecies_name, name: name, epithet: epithet, epithets: epithet), species: @species, genus: @species.genus
   history = 'none' unless history.present?
