@@ -4,9 +4,9 @@ class NamePickersController < ApplicationController
   def search
     respond_to do |format|
       options = {}
-      options = params[:taxa_only] ? {taxa_only: true} : {}
-      options = params[:species_only] ? {species_only: true} : {}
-      options = params[:genera_only] ? {genera_only: true} : {}
+      options[:taxa_only] = true if params[:taxa_only].present?
+      options[:species_only] = true if params[:species_only].present?
+      options[:genera_only] = true if params[:genera_only].present?
       format.json {render json: Name.picklist_matching(params[:term], options).to_json}
     end
   end
