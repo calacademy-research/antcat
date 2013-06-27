@@ -6,7 +6,7 @@ class Name < ActiveRecord::Base
 
   def change name_string
     existing_names = Name.where('id != ?', id).find_all_by_name(name_string)
-    raise if existing_names.any? {|name| not name.references.empty?}
+    raise Taxon::TaxonExists if existing_names.any? {|name| not name.references.empty?}
     update_attributes!({
       name:           name_string,
       name_html:      Formatters::Formatter.italicize(name_string),
