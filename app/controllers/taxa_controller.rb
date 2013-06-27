@@ -151,6 +151,11 @@ class TaxaController < ApplicationController
     @add_taxon_path = "/taxa/new?rank=#{@rank}&parent_id=#{@taxon.id}"
     @cancel_path = "/catalog/#{@taxon.id}"
     @convert_to_subspecies_path = "/taxa/#{@taxon.id}/convert_to_subspecies/new"
+    @parent_rank_selector =
+      case @taxon
+      when Species then :genera_only
+      when Genus then :species_only
+      end
   end
 
   def create_taxon
