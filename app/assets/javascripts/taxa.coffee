@@ -47,7 +47,7 @@ class AntCat.TaxonForm extends AntCat.Form
     new AntCat.ReferencesSection @element.find('.references_section'), parent_form: @
 
   initialize_parent_section: =>
-    new AntCat.ParentSection $('#parent_name_field'), parent_form: @
+    new AntCat.ParentSection()
 
   initialize_homonym_replaced_by_section: =>
     @homonym_replaced_by_name_row = $ 'tr#homonym_replaced_by_row'

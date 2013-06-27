@@ -1,4 +1,6 @@
 class AntCat.ParentSection
-  constructor: (@element, @options) ->
-    @parent_form = @options.parent_form
-    new AntCat.NameField $('#parent_name_field'), value_id: 'taxon_parent_name_attributes_id', parent_form: @parent_form, species_only: true
+  constructor: ->
+    rank_selector = $('#parent_rank_selector').val()
+    options = {value_id: 'taxon_parent_name_attributes_id'}
+    options[rank_selector] = true
+    new AntCat.NameField $('#parent_name_field'), options
