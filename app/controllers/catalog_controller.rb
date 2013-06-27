@@ -29,8 +29,10 @@ class CatalogController < ApplicationController
 
   def hide_tribes
     session[:show_tribes] = false
-    taxon = Taxon.find @parameters[:id]
-    set_id_parameter taxon.subfamily.id if taxon.kind_of? Tribe
+    if @parameters[:id].present?
+      taxon = Taxon.find @parameters[:id]
+      set_id_parameter taxon.subfamily.id if taxon.kind_of? Tribe
+    end
     redirect_to_id
   end
 
@@ -52,8 +54,10 @@ class CatalogController < ApplicationController
 
   def hide_subgenera
     session[:show_subgenera] = false
-    taxon = Taxon.find @parameters[:id]
-    set_id_parameter taxon.genus.id if taxon.kind_of? Subgenus
+    if @parameters[:id].present?
+      taxon = Taxon.find @parameters[:id]
+      set_id_parameter taxon.genus.id if taxon.kind_of? Subgenus
+    end
     redirect_to_id
   end
 
