@@ -50,7 +50,7 @@ class TaxaController < ApplicationController
     create_object_web
     update_taxon params[:taxon]
     redirect_to catalog_path @taxon
-  rescue ActiveRecord::RecordInvalid
+  rescue ActiveRecord::RecordInvalid, Taxon::TaxonExists
     render :edit and return
   end
 
@@ -98,6 +98,9 @@ class TaxaController < ApplicationController
   def update_parent attributes
     return unless attributes
     @taxon.update_parent Taxon.find_by_name_id attributes[:id]
+  rescue Taxon::TaxonExists
+    @taxon.errors[:base] = "This name is in use by another taxon"
+    raise
   end
 
   def update_homonym_replaced_by attributes
