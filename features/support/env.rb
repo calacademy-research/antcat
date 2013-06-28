@@ -2,6 +2,7 @@
 require 'spork'
 
 require 'factory_girl'
+require 'cucumber/rspec/doubles'
 
 Spork.prefork do
   ENV["RAILS_ENV"] ||= "test"

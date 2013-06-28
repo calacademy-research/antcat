@@ -8,6 +8,7 @@ class TaxaController < ApplicationController
     create_object_web
     set_parent
     get_default_name_string
+    set_authorship_reference
     render :edit
   end
 
@@ -173,6 +174,10 @@ class TaxaController < ApplicationController
       parent = Taxon.find @parent_id
       @default_name_string = parent.name.name
     end
+  end
+
+  def set_authorship_reference
+    @taxon.protonym.authorship.reference = DefaultReference.get session
   end
 
   def setup_edit_buttons
