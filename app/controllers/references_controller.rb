@@ -81,6 +81,7 @@ EOS
       @reference.instance_variable_set :@new_record, new
 
     end
+    DefaultReference.set session, @reference
     render_json new
   end
 

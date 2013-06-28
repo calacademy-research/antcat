@@ -341,3 +341,7 @@ Then /^the review status on the Ward reference should change to "(.*?)"$/ do |st
     step %{I should see "#{status}"}
   end
 end
+
+And /^I'll pretend that the session contains "([^"]*)" as the default reference$/ do |key|
+  DefaultReference.stub(:get).and_return Reference.do_search(q: key).first
+end
