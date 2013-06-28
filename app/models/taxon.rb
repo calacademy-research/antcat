@@ -287,6 +287,13 @@ class Taxon < ActiveRecord::Base
     Progress.show_results
   end
 
+  def self.report_counts_for_genera
+    for genus in Genus.order(:name_cache).all
+      puts "#{genus.name_cache},#{genus.species.valid.count},#{genus.subspecies.valid.count}"
+    end
+    nil
+  end
+
   ###############################################
   def references options = {}
     references = []
