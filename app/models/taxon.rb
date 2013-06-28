@@ -120,22 +120,23 @@ class Taxon < ActiveRecord::Base
   alias synonym_of? junior_synonym_of?
   has_many :synonyms_as_junior, foreign_key: :junior_synonym_id, class_name: 'Synonym'
 
-  def junior_synonyms_with_names
-    self.class.find_by_sql %{
-      SELECT synonyms.id, taxa.name_html_cache AS name
-      FROM synonyms JOIN taxa ON synonyms.junior_synonym_id = taxa.id
-      JOIN names ON taxa.name_id = names.id
-      WHERE senior_synonym_id = #{id}
-      ORDER BY name
-    }
-  end
+  def junior_synonyms_with_names; synonyms_with_names :junior end
+  def senior_synonyms_with_names; synonyms_with_names :senior end
 
-  def senior_synonyms_with_names
+  def synonyms_with_names junior_or_senior
+    if junior_or_senior == :junior
+      join_column = 'junior_synonym_id'
+      where_column = 'senior_synonym_id'
+    else
+      join_column = 'senior_synonym_id'
+      where_column = 'junior_synonym_id'
+    end
+
     self.class.find_by_sql %{
       SELECT synonyms.id, taxa.name_html_cache AS name
-      FROM synonyms JOIN taxa ON synonyms.senior_synonym_id = taxa.id
+      FROM synonyms JOIN taxa ON synonyms.#{join_column} = taxa.id
       JOIN names ON taxa.name_id = names.id
-      WHERE junior_synonym_id = #{id}
+      WHERE #{where_column} = #{id}
       ORDER BY name
     }
   end
