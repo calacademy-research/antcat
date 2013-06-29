@@ -1,9 +1,10 @@
--#Locals: references, reference
+-#Locals: references, reference, picker_type
 
+- picker_type = 'field'
 - references ||= nil
 - reference ||= nil
-
-.antcat_reference_field.antcat_reference_picker.antcat_panel
+- css_class = "antcat_reference_#{picker_type}"
+.antcat_reference_picker.antcat_panel{class: css_class}
   .template
     = render 'reference_fields/panel', reference: Reference.new
 
