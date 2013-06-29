@@ -42,8 +42,10 @@ class AntCat.HistoryItemPanel extends AntCat.Panel
     super
 
   @add_history_item: (form) =>
-    $template = $('.history_item_template').clone(); AntCat.log 'HistoryItemPanel add_history_item: no $template' unless $template && $template.size() == 1
-    $item = $template.find('.history_item'); AntCat.log 'HistoryItemPanel add_history_item: no $item' unless $item && $item.size() == 1
+    $template = $('.history_item_template').clone()
+    AntCat.check 'HistoryItemPanel.add_history_item', '$template', $template
+    $item = $template.find('.history_item')
+    AntCat.check 'HistoryItemPanel.add_history_item', '$item', $item
     $item.removeClass('history_item_template').addClass('added_history_item')
     form.add_history_item_panel $item
     $item.history_item_panel(click_on_display: true, parent_form: form, open_immediately: true)

@@ -4,7 +4,7 @@ class AntCat.NamePopup extends AntCat.NestedForm
     @options.field = false
 
     @element = @parent_element.find '> .antcat_name_popup'
-    AntCat.log 'NamePopup ctor: no @element' unless @element.size() == 1
+    AntCat.check 'NamePopup', '@element', @element
 
     @id = @options.id
     @type = @options.type
@@ -31,7 +31,7 @@ class AntCat.NamePopup extends AntCat.NestedForm
     @element.addClass 'antcat_form'
     @options.button_container = '.controls'
     @textbox = @element.find('input[type=text]')
-    AntCat.log 'NamePopup initialize: no @textbox' unless @textbox.size() == 1
+    AntCat.check 'NamePopup.initialize', '@textbox', @textbox
 
     @setup_autocomplete @textbox
     @initialize_buttons()
@@ -77,7 +77,7 @@ class AntCat.NamePopup extends AntCat.NestedForm
     # an error means that the name the user entered doesn't exist
     # we ask if they want to add it
     submit_button = @element.find('.controls .submit span')
-    AntCat.log 'NamePopup handle_application_error: submit button' unless submit_button.size() == 1
+    AntCat.check 'NamePopup.handle_application_error', '@submit_button', @submit_button
     submit_button.text('Add this name')
     @element.find('.error_messages').text data.error_message
     @deciding_whether_to_add_name = true
@@ -92,7 +92,7 @@ class AntCat.NamePopup extends AntCat.NestedForm
 
   # -----------------------------------------
   setup_autocomplete: ($textbox) =>
-    AntCat.log 'NamePopup setup_autocomplete: no $textbox' unless $textbox.size() == 1
+    AntCat.check 'NamePopup.setup_autocomplete', '@textbox', @textbox
     return if AntCat.testing
     $textbox.autocomplete(
         autoFocus: true,
