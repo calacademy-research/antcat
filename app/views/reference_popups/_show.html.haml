@@ -1,46 +1,35 @@
--#Locals: references, reference
+-#Locals: references, reference, picker_type
 
+- picker_type = 'popup'
 - references ||= nil
 - reference ||= nil
 
-.antcat_reference_popup.antcat_reference_picker.antcat_panel.ui-widget.ui-widget-content.ui-corner-all
+- css_class = "antcat_reference_#{picker_type}"
+.antcat_reference_popup.antcat_reference_picker.antcat_panel.ui-widget.ui-widget-content.ui-corner-all{class: css_class}
   .template
-    = render 'reference_popups/panel', reference: Reference.new
+    = render "reference_#{picker_type}s/panel", reference: Reference.new
 
   %table.references.current
     %tr
       %td
-        = render 'reference_popups/panel', reference: reference
+        = render "reference_#{picker_type}s/panel", reference: reference
 
   .expansion.nested_form
-
-    = hidden_field_tag 'id', reference.try(:id)
-
     %table
       %tr
         %td.throbber= image_tag 'ui-anim_basic_16x16.gif'
         %td.controls
-          %button.ok.ui-priority-primary OK
-          %button.close.ui-priority-secondary Cancel
-          %button.add.ui-priority-primary Add
-          = select_tag "search_selector", options_for_select(["Search for author(s)", "Search for"], params[:search_selector]), class: 'search_controls search_selector'
-          = text_field_tag "q", params[:q], class: 'search_controls q'
-          %button.search_controls.go.ui-priority-primary Go
-          %button.search_controls.close.ui-priority-secondary Cancel
-
+          = render "reference_#{picker_type}s/controls", reference: reference
           = will_paginate references if references
-
           .help_banner
             %span.help_banner_text
 
     - if references && (references.first != reference || references.size != 1 || params[:q].present?)
-
       -if references.empty?
         .no_results_found No results found
-
       %table.references.search_results
         - for reference in references
           %tr
-            %td= render 'reference_popups/panel', reference: reference
+            %td= render "reference_#{picker_type}s/panel", reference: reference
 
     = render 'shared/qtip'

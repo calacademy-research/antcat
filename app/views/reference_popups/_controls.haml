@@ -1,0 +1,9 @@
+-#Locals: reference
+
+= hidden_field_tag 'id', reference.try(:id)
+%button.ok.ui-priority-primary OK
+%button.close.ui-priority-secondary Cancel
+%button.add.ui-priority-primary Add
+= select_tag "search_selector", options_for_select(["Search for author(s)", "Search for"], params[:search_selector]), class: 'search_controls search_selector'
+= text_field_tag 'q', params[:q], class: 'search_controls q'
+%button.search_controls.go.ui-priority-primary Go
