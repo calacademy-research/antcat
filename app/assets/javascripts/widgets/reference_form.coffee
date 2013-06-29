@@ -1,6 +1,7 @@
 class AntCat.ReferenceForm extends AntCat.NestedForm
 
   constructor: (@element, @options = {}) ->
+    AntCat.check 'ReferenceForm', '@element', @element
     @options.button_container = '> table > tbody > tr > td.buttons'
     super
     @initialize()
