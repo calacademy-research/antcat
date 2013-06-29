@@ -29,6 +29,10 @@ AntCat.check = (caller, object_name, object) ->
   return if object and object.size() == 1
   AntCat.log "#{caller}: #{object_name}.size() != 1"
 
+AntCat.check_nil = (caller, object_name, object) ->
+  return if object
+  AntCat.log "#{caller}: #{object_name} == nil"
+
 space_out_images = ->
   total_image_width = 103 + 50 + 31 + 118 + 103 + 108
   image_count = 6
