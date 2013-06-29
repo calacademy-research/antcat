@@ -1,10 +1,12 @@
+-#Locals: reference, submit_parameters
+
 -#This is pretty much a copy of references/_edit
 - reference.publisher_string ||= reference.respond_to?(:publisher) ? (reference.publisher && reference.publisher.to_s) : ''
 - reference.journal_name ||= reference.respond_to?(:journal) ? (reference.journal && reference.journal.name) : ''
 - selected_tab = [ArticleReference, BookReference, NestedReference, UnknownReference].index(reference.class) || 0
 
 .edit.ui-corner-all.ui-widget-content.ui-widget
-  - url = reference.new_record? ? references_path(field: true) : reference_path(reference, field: true)
+  - url = reference.new_record? ? references_path(submit_parameters) : reference_path(reference, submit_parameters)
   - method = reference.new_record? ? 'post' : 'put'
   - data_multipart = Rails.env.test? ? '' : 'true'
   .nested_form{'data-action' => url, 'data-method' => method, 'data-multipart' => data_multipart}
