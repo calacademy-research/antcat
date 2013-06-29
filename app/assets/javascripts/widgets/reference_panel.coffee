@@ -7,7 +7,9 @@ class AntCat.ReferencePanel extends AntCat.Panel
     super
     @edit() if @options.edit
 
-  create_form: ($element, options) => new AntCat.ReferenceForm $element, options
+  create_form: ($element, options) =>
+    AntCat.check 'ReferencePanel.create_form', '$element', $element
+    new AntCat.ReferenceForm $element, options
 
   on_form_open:        => @options.on_form_open()
   on_form_close:       => @options.on_form_close()
