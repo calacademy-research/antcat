@@ -11,14 +11,17 @@ class AntCat.TaxtEditor
 
   constructor: (@element, @options = {}) ->
     @element.addClass 'taxt_editor'
-    @control = @element.find '> textarea'; AntCat.log 'TaxtEditor ctor: no @control' unless @control.size() == 1
+    @control = @element.find '> textarea'
+    AntCat.check 'TaxtEditor', '@control', @control
     @control.addClass 'taxt_edit_box'
     @parent_buttons = $(@options.parent_buttons)
     if @options.parent_buttons
-      @parent_buttons = @element.closest('form:visible').find @options.parent_buttons; AntCat.log 'TaxtEditor ctor: no @parent_buttons' unless @parent_buttons.size() == 1
+      @parent_buttons = @element.closest('form:visible').find @options.parent_buttons
+      AntCat.check 'TaxtEditor', '@parent_buttons', @parent_buttons
     else
       @parent_buttons = @element.siblings().find(':button')
-    @tag_buttons = @element.find('.insert_tag_buttons'); AntCat.log 'TaxtEditor ctor: no @tag_buttons' unless @tag_buttons.size() == 1
+    @tag_buttons = @element.find('.insert_tag_buttons')
+    AntCat.check 'TaxtEditor', '@tag_buttons', @tag_buttons
     @dashboard = new TaxtEditor.DebugDashboard @ if @options.show_debug_dashboard
     @dashboard?.show_status 'before'
     @value @control.val()
@@ -109,7 +112,7 @@ class AntCat.TaxtEditor
 
   open_name_popup: (id, type) =>
     name_popup = @element.find '.antcat_name_popup'
-    AntCat.log 'TaxtEditor open_name_popup: no name_popup' unless name_popup.size() == 1
+    AntCat.check 'TaxtEditor.open_name_popup', 'name_popup', name_popup
     new AntCat.NamePopup name_popup.parent(), id: id, type: type, initial_value: @selection(), on_success: @handle_name_popup_result, on_close: @after_popup_closes
 
   open_reference_popup: (id) =>

@@ -1,8 +1,8 @@
 class AntCat.SynonymsSection
   constructor: (@element, @options = {}) ->
-    AntCat.log 'SynonymsSection constructor: @element.size() != 1' unless @element.size() == 1
+    AntCat.check 'SynonymsSection', '@element', @element
     @parent_form = @options.parent_form
-    AntCat.log 'SynonymsSection constructor: !@parent_form' unless @parent_form
+    AntCat.check 'SynonymsSection', '@parent_form', @parent_form
     @initialize()
 
   initialize: =>
@@ -12,7 +12,7 @@ class AntCat.SynonymsSection
 
   setup_add_buttons: =>
     $add_button = @element.find 'button.add'
-    AntCat.log 'SynonymsSection constructor: $add_button.size() != 1' unless $add_button.size() == 1
+    AntCat.check 'SynonymsSection', '$add_button', $add_button
     $add_button.click => @add(); false
 
   setup_delete_buttons: =>
@@ -89,9 +89,8 @@ class AntCat.SynonymsSectionForm extends AntCat.NestedForm
   constructor: ->
     super
     @textbox = @element.find('input[type=text]')
-    AntCat.log 'SynonymsSectionForm initialize: no @textbox' unless @textbox.size() == 1
+    AntCat.check 'SynonymsSectionForm', '@textbox', @textbox
     @error_message = @element.find('#error_message')
-    AntCat.log 'SynonymsSectionForm initialize: no @textbox' unless @textbox.size() == 1
     @setup_autocomplete()
 
   submit: =>
