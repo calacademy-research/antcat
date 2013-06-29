@@ -92,7 +92,7 @@ class AntCat.NamePopup extends AntCat.NestedForm
 
   # -----------------------------------------
   setup_autocomplete: ($textbox) =>
-    AntCat.check 'NamePopup.setup_autocomplete', '@textbox', @textbox
+    AntCat.check 'NamePopup.setup_autocomplete', '$textbox', $textbox
     return if AntCat.testing
     $textbox.autocomplete(
         autoFocus: true,

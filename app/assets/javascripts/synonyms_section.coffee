@@ -2,7 +2,7 @@ class AntCat.SynonymsSection
   constructor: (@element, @options = {}) ->
     AntCat.check 'SynonymsSection', '@element', @element
     @parent_form = @options.parent_form
-    AntCat.check 'SynonymsSection', '@parent_form', @parent_form
+    AntCat.check_nil 'SynonymsSection', '@parent_form', @parent_form
     @initialize()
 
   initialize: =>
@@ -12,7 +12,7 @@ class AntCat.SynonymsSection
 
   setup_add_buttons: =>
     $add_button = @element.find 'button.add'
-    AntCat.check 'SynonymsSection', '$add_button', $add_button
+    AntCat.check 'SynonymsSection.setup_add_buttons', '$add_button', $add_button
     $add_button.click => @add(); false
 
   setup_delete_buttons: =>
