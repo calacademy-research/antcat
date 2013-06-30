@@ -3,8 +3,8 @@
 - picker_type = 'popup'
 - references ||= nil
 - reference ||= nil
-
 - css_class = "antcat_reference_#{picker_type}"
+
 .antcat_reference_popup.antcat_reference_picker.antcat_panel.ui-widget.ui-widget-content.ui-corner-all{class: css_class}
   .template
     = render "reference_#{picker_type}s/panel", reference: Reference.new
