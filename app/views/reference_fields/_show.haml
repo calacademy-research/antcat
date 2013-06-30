@@ -25,28 +25,14 @@
           %tr
             %td.throbber= image_tag 'ui-anim_basic_16x16.gif'
             %td.controls
-              .ok_cancel_controls
-                %button.ok.ui-priority-primary OK
-                %button.close.ui-priority-secondary Cancel
-
-              .add_controls
-                %button.add.ui-priority-primary Add
-
-              .search_controls
-                = select_tag "search_selector", options_for_select(["Search for author(s)", "Search for"], params[:search_selector]), class: 'search_selector'
-                = text_field_tag "q", params[:q], class: 'q'
-                %button.go.ui-priority-primary Go
-
+              = render "reference_#{picker_type}s/controls", reference: reference
               = will_paginate references if references
-
               .help_banner
                 %span.help_banner_text
 
         - if references && (references.first != reference || references.size != 1 || params[:q].present?)
-
           -if references.empty?
             .no_results_found No results found
-
           %table.references.search_results
             - for reference in references
               %tr
