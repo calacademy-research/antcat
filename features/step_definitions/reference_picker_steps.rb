@@ -12,5 +12,5 @@ Then /^the authorship field should contain "([^"]*)"$/ do |contents|
 end
 
 Then /^the current reference should be "([^"]*)"$/ do |contents|
-  page.find('#popup .display').text.should == contents
+  page.find('#popup .current .display').text.should == contents
 end
