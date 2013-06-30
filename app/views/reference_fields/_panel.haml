@@ -1,22 +1,3 @@
 -#Locals: reference
 
-- css_class = 'reference'
-- if reference
-  - css_class << " item_#{reference.id}"
-  - id = reference.id
-- else
-  - id = nil
-
-%div{class: css_class, 'data-id' => id}
-  %table.reference_table
-    %tr
-      %td.icons
-        - if reference
-          %a.icon.edit_icon{title: 'edit', href: '#'}
-            = image_tag 'edit_off.png', alt: 'edit'
-      %td.reference_item
-        - if reference
-          = render 'reference_fields/display', reference: reference if !reference.new_record? && reference.errors.empty?
-          = render 'reference_fields/edit', reference: reference
-        - else
-          (none)
+= render 'reference_pickers/panel', reference: reference, picker_type: 'field'
