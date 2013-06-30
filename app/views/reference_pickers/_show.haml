@@ -1,40 +1,56 @@
--#Locals: references, reference, picker_type
+-#Locals: references, reference, picker_type, default_reference
 
-- picker_type = 'popup'
 - references ||= nil
 - reference ||= nil
+- default_reference ||= nil
 - css_class = "antcat_reference_#{picker_type}"
 
 .antcat_reference_picker.antcat_panel{class: css_class}
   .template
     = render "reference_#{picker_type}s/panel", reference: Reference.new
 
-  - if picker_type == 'field'
-    .display
+  .display
+    - if picker_type == 'field'
       %button.display_button= reference && reference.id ? format_reference(reference) : '(none)'
-    .edit
 
-  %table.references.current
-    %tr
-      %td
-        = render "reference_#{picker_type}s/panel", reference: reference
-
-  .expansion.nested_form
-    %table
+  .edit
+    %table.references.current
       %tr
-        %td.throbber= image_tag 'ui-anim_basic_16x16.gif'
-        %td.controls
-          = render "reference_#{picker_type}s/controls", reference: reference
-          = will_paginate references if references
-          .help_banner
-            %span.help_banner_text
+        %td
+          = render "reference_#{picker_type}s/panel", reference: reference
 
-    - if references && (references.first != reference || references.size != 1 || params[:q].present?)
-      -if references.empty?
-        .no_results_found No results found
-      %table.references.search_results
-        - for reference in references
-          %tr
-            %td= render "reference_#{picker_type}s/panel", reference: reference
+    .expansion.nested_form
+      %table
+        %tr
+          %td.throbber= image_tag 'ui-anim_basic_16x16.gif'
+          %td.controls
+            %button.default_reference.ui-priority-primary Fisher, 1995
+            = hidden_field_tag 'id', reference.try(:id)
+            = hidden_field_tag 'default_reference_id', default_reference.try(:id)
+            = hidden_field_tag 'default_reference_string', default_reference ? Formatters::ReferenceFormatter.format(default_reference) : ''
+            = hidden_field_tag 'default_reference_key', default_reference.try(:key).try(:to_s)
 
-        = render 'shared/qtip'
+            .ok_cancel_controls
+              %button.ok.ui-priority-primary OK
+              %button.close.ui-priority-secondary Cancel
+
+            .add_controls
+              %button.add.ui-priority-primary Add
+
+            .search_controls
+              = select_tag "search_selector", options_for_select(["Search for author(s)", "Search for"], params[:search_selector]), class: 'search_controls search_selector'
+              = text_field_tag 'q', params[:q], class: 'search_controls q'
+              %button.search_controls.go.ui-priority-primary Go
+            = will_paginate references if references
+            .help_banner
+              %span.help_banner_text
+
+      - if references && (references.first != reference || references.size != 1 || params[:q].present?)
+        -if references.empty?
+          .no_results_found No results found
+        %table.references.search_results
+          - for reference in references
+            %tr
+              %td= render "reference_#{picker_type}s/panel", reference: reference
+
+          = render 'shared/qtip'
