@@ -1,6 +1,7 @@
 class AntCat.ReferencePopup extends AntCat.ReferencePicker
 
   _post_constructor: (@element, @options) =>
+    AntCat.check 'ReferencePopup._post_constructor', '@element', @element
     if @options.id
       @id = @options.id
     else
@@ -27,11 +28,11 @@ class AntCat.ReferencePopup extends AntCat.ReferencePicker
       error: (xhr) => debugger
 
   initialize: =>
-    @expansion = @element.find '> .expansion'
-    @template = @element.find '> .template'
-    @current = @element.find '> .current'
-    @search_selector = @expansion.find '#search_selector.search_selector'
-    @textbox = @expansion.find '.q'
+    @expansion = @element.find '> .edit .expansion'; AntCat.check 'ReferencePopup._initialize', '@expansion', @expansion
+    @template = @element.find '> .template'; AntCat.check 'ReferencePopup._initialize', '@template', @template
+    @current = @element.find '> .edit .current'; AntCat.check 'ReferencePopup._initialize', '@current', @current
+    @search_selector = @expansion.find '#search_selector.search_selector'; AntCat.check 'ReferencePopup._initialize', '@search_selector', @search_selector
+    @textbox = @expansion.find '.q'; AntCat.check 'ReferencePopup._initialize', '@textbox', @textbox
 
     @setup_controls()
     @setup_references()
