@@ -24,7 +24,7 @@ class AntCat.ReferencePicker extends AntCat.Panel
 
     @expansion = @element.find '> .edit .expansion'; AntCat.check 'ReferencePopup._initialize', '@expansion', @expansion
     @template = @element.find '> .template'; AntCat.check 'ReferencePopup._initialize', '@template', @template
-    @current = @element.find '> .edit .current'; AntCat.check 'ReferencePopup._initialize', '@current', @current
+    @current = @element.find '> .edit table.current'; AntCat.check 'ReferencePopup._initialize', '@current', @current
     #@search_selector = @expansion.find '#search_selector.search_selector'; AntCat.check 'ReferencePopup._initialize', '@search_selector', @search_selector
     @search_selector = @expansion.find '.search_selector'; AntCat.check 'ReferencePicker.initialize', '@search_selector', @search_selector
     @textbox = @expansion.find '.q'; AntCat.check 'ReferencePopup._initialize', '@textbox', @textbox
@@ -230,7 +230,7 @@ class AntCat.ReferencePicker extends AntCat.Panel
 
   clear_current: =>
     $('.ui-selected').removeClass('ui-selected')
-    @current = @element.find '> .current'
+    @current = @element.find '> .edit > table.current'
     @current.find(".item_#{@id} .reference_item").replaceWith('<div class="reference"><table class="reference_table"><tr><td class="reference_item"><div class="display">(none)</div></td></tr></table></div>')
 
   # -----------------------------------------

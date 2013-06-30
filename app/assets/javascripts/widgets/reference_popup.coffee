@@ -31,10 +31,9 @@ class AntCat.ReferencePopup extends AntCat.ReferencePicker
     @expansion = @element.find '> .edit .expansion'; AntCat.check 'ReferencePopup._initialize', '@expansion', @expansion
     @edit = @element.find '> .edit'; AntCat.check 'ReferencePopup._initialize', '@edit', @edit
     @template = @element.find '> .template'; AntCat.check 'ReferencePopup._initialize', '@template', @template
-    @current = @element.find '> .edit .current'; AntCat.check 'ReferencePopup._initialize', '@current', @current
     @search_selector = @expansion.find '#search_selector.search_selector'; AntCat.check 'ReferencePopup._initialize', '@search_selector', @search_selector
     @textbox = @expansion.find '.q'; AntCat.check 'ReferencePopup._initialize', '@textbox', @textbox
-
+    @current = @element.find '> .edit table.current'; AntCat.check 'ReferencePopup._initialize', '@current', @current
     @setup_controls()
     @setup_references()
     @handle_new_selection()
