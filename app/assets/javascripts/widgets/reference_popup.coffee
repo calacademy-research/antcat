@@ -29,6 +29,7 @@ class AntCat.ReferencePopup extends AntCat.ReferencePicker
 
   initialize: =>
     @expansion = @element.find '> .edit .expansion'; AntCat.check 'ReferencePopup._initialize', '@expansion', @expansion
+    @edit = @element.find '> .edit'; AntCat.check 'ReferencePopup._initialize', '@edit', @edit
     @template = @element.find '> .template'; AntCat.check 'ReferencePopup._initialize', '@template', @template
     @current = @element.find '> .edit .current'; AntCat.check 'ReferencePopup._initialize', '@current', @current
     @search_selector = @expansion.find '#search_selector.search_selector'; AntCat.check 'ReferencePopup._initialize', '@search_selector', @search_selector
@@ -45,6 +46,7 @@ class AntCat.ReferencePopup extends AntCat.ReferencePicker
 
   show: =>
     @element.show()
+    @edit.show()
     @expansion.show()
     # apparently, can't setup selectmenu unless it's visible
     @setup_search_selector()
