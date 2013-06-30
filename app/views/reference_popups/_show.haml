@@ -5,14 +5,19 @@
 - reference ||= nil
 - css_class = "antcat_reference_#{picker_type}"
 
-.antcat_reference_popup.antcat_reference_picker.antcat_panel.ui-widget.ui-widget-content.ui-corner-all{class: css_class}
+.antcat_reference_picker.antcat_panel{class: css_class}
   .template
-    = render "reference_#{picker_type}s/panel", reference: Reference.new
+    = render 'reference_fields/panel', reference: Reference.new
+
+  - if picker_type == 'field'
+    .display
+      %button.display_button= reference && reference.id ? format_reference(reference) : '(none)'
+    .edit
 
   %table.references.current
     %tr
       %td
-        = render "reference_#{picker_type}s/panel", reference: reference
+        = render 'reference_fields/panel', reference: reference
 
   .expansion.nested_form
     %table
@@ -30,6 +35,6 @@
       %table.references.search_results
         - for reference in references
           %tr
-            %td= render "reference_#{picker_type}s/panel", reference: reference
+            %td= render 'reference_fields/panel', reference: reference
 
-    = render 'shared/qtip'
+        = render 'shared/qtip'
