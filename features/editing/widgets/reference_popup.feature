@@ -11,7 +11,7 @@ Feature: Reference popup
 
   Scenario: Seeing the popup
     When I go to the reference popup widget test page, opened to the first reference
-    Then I should see "Fisher, B. 1995b. Fisher's book. Ants 1:1-2."
+    Then the current reference should be "Fisher, B. 1995b. Fisher's book. Ants 1:1-2."
 
   Scenario: Selecting a reference from search results
     Given I am logged in
@@ -33,7 +33,7 @@ Feature: Reference popup
     Given I am logged in
     When I go to the reference popup widget test page
     And I add a reference by Brian Fisher
-    Then I should see "Fisher, B.L. 1992. Between Pacific Tides. Ants 2:1."
+    Then the current reference should be "Fisher, B.L. 1992. Between Pacific Tides. Ants 2:1."
 
   Scenario: Editing the selected reference
     Given I am logged in
@@ -42,7 +42,7 @@ Feature: Reference popup
     When I set the authors to "Ward, B.L.; Bolton, B."
     And I set the title to "Ant Title"
     And I save my changes to the current reference
-    Then I should see "Ward, B.L.; Bolton, B. 1995b. Ant Title"
+    Then the current reference should be "Ward, B.L.; Bolton, B. 1995b. Ant Title. Ants 1:1-2."
 
   Scenario: Error when editing reference
     Given I am logged in
