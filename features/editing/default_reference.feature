@@ -19,7 +19,7 @@ Feature: Using the default reference
     And in the new edit form I fill in "reference_citation_year" with "1992"
     And in the new edit form I press the "Save" button
     And I wait for a bit
-    When I'll pretend that the session contains "Ward Bolton 1992" as the default reference
+    When the default reference is "Ward Bolton 1992"
     And I go to the catalog page for "Atta"
     And I press "Edit"
     And I press "Add species"
