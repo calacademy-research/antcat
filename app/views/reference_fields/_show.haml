@@ -4,50 +4,52 @@
 - references ||= nil
 - reference ||= nil
 - css_class = "antcat_reference_#{picker_type}"
+
 .antcat_reference_picker.antcat_panel{class: css_class}
   .template
     = render 'reference_fields/panel', reference: Reference.new
 
-  .display
-    %button.display_button= reference && reference.id ? format_reference(reference) : '(none)'
+  - if picker_type == 'field'
+    .display
+      %button.display_button= reference && reference.id ? format_reference(reference) : '(none)'
+    .edit
 
-  .edit
-    %table.references.current
-      %tr
-        %td
-          = render 'reference_fields/panel', reference: reference
-
-    .expansion.nested_form
-
-      %table
+      %table.references.current
         %tr
-          %td.throbber= image_tag 'ui-anim_basic_16x16.gif'
-          %td.controls
-            .ok_cancel_controls
-              %button.ok.ui-priority-primary OK
-              %button.close.ui-priority-secondary Cancel
+          %td
+            = render 'reference_fields/panel', reference: reference
 
-            .add_controls
-              %button.add.ui-priority-primary Add
+      .expansion.nested_form
 
-            .search_controls
-              = select_tag "search_selector", options_for_select(["Search for author(s)", "Search for"], params[:search_selector]), class: 'search_selector'
-              = text_field_tag "q", params[:q], class: 'q'
-              %button.go.ui-priority-primary Go
+        %table
+          %tr
+            %td.throbber= image_tag 'ui-anim_basic_16x16.gif'
+            %td.controls
+              .ok_cancel_controls
+                %button.ok.ui-priority-primary OK
+                %button.close.ui-priority-secondary Cancel
 
-            = will_paginate references if references
+              .add_controls
+                %button.add.ui-priority-primary Add
 
-            .help_banner
-              %span.help_banner_text
+              .search_controls
+                = select_tag "search_selector", options_for_select(["Search for author(s)", "Search for"], params[:search_selector]), class: 'search_selector'
+                = text_field_tag "q", params[:q], class: 'q'
+                %button.go.ui-priority-primary Go
 
-      - if references && (references.first != reference || references.size != 1 || params[:q].present?)
+              = will_paginate references if references
 
-        -if references.empty?
-          .no_results_found No results found
+              .help_banner
+                %span.help_banner_text
 
-        %table.references.search_results
-          - for reference in references
-            %tr
-              %td= render 'reference_fields/panel', reference: reference
+        - if references && (references.first != reference || references.size != 1 || params[:q].present?)
 
-      = render 'shared/qtip'
+          -if references.empty?
+            .no_results_found No results found
+
+          %table.references.search_results
+            - for reference in references
+              %tr
+                %td= render 'reference_fields/panel', reference: reference
+
+        = render 'shared/qtip'
