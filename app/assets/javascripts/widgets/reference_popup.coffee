@@ -59,7 +59,7 @@ class AntCat.ReferencePopup extends AntCat.ReferencePicker
     @clear_current()
     @id = @original_id
     @element.find('#id').val(@id)
-    @options.on_cancel if @options.on_cancel
+    @options.on_cancel() if @options.on_cancel
     @close()
 
   close: =>
