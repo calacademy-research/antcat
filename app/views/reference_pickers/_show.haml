@@ -24,7 +24,6 @@
         %tr
           %td.throbber= image_tag 'ui-anim_basic_16x16.gif'
           %td.controls
-            %button.default_reference.ui-priority-primary Fisher, 1995
             = hidden_field_tag 'id', reference.try(:id)
             = hidden_field_tag 'default_reference_id', default_reference.try(:id)
             = hidden_field_tag 'default_reference_string', default_reference ? Formatters::ReferenceFormatter.format(default_reference) : ''
@@ -36,6 +35,9 @@
 
             .add_controls
               %button.add.ui-priority-primary Add
+
+            .default_reference_controls
+              %button.default_reference.ui-priority-primary Fisher, 1995
 
             .search_controls
               = select_tag "search_selector", options_for_select(["Search for author(s)", "Search for"], params[:search_selector]), class: 'search_controls search_selector'
