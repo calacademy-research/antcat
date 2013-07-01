@@ -32,9 +32,6 @@ class AntCat.ReferencePicker extends AntCat.Panel
     @search_selector = @expansion.find '.search_selector'; AntCat.check 'ReferencePicker.initialize', '@search_selector', @search_selector
     @textbox = @expansion.find '.q'; AntCat.check 'ReferencePopup._initialize', '@textbox', @textbox
 
-  setup_edit: =>
-    @display_section.click @edit
-
   search_results: =>
     @expansion.find '> .search_results'
 
