@@ -51,3 +51,10 @@ Feature: Reference popup
     When I set the title to ""
     And I save my changes to the current reference
     And I should see "Title can't be blank"
+
+    #Scenario: Using the default reference
+    #Given the default reference is "Fisher 1995"
+    #And I am logged in
+    #When I go to the reference popup widget test page
+    #And I press "Fisher, 1995"
+    #Then the current reference should be "Fisher, B. 1995b. Fisher's book. Ants 1:1-2."
