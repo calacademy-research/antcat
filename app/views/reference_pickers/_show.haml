@@ -32,11 +32,13 @@
 
             .add_controls
               %button.add.ui-priority-primary Add
+
             .default_reference_controls
-              %button.default_reference.ui-priority-primary= default_reference.try(:key).try(:to_s)
               = hidden_field_tag 'default_reference_id', default_reference.try(:id)
               = hidden_field_tag 'default_reference_string', default_reference ? Formatters::ReferenceFormatter.format(default_reference) : ''
               = hidden_field_tag 'default_reference_key', default_reference.try(:key).try(:to_s)
+              - if default_reference
+                %button.default_reference.ui-priority-primary= default_reference.try(:key).try(:to_s)
 
             .search_controls
               = select_tag "search_selector", options_for_select(["Search for author(s)", "Search for"], params[:search_selector]), class: 'search_controls search_selector'

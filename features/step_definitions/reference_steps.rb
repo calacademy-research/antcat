@@ -345,3 +345,6 @@ end
 And /^the default reference is "([^"]*)"$/ do |key|
   DefaultReference.stub(:get).and_return Reference.do_search(q: key).first
 end
+And /^there is no default reference$/ do
+  DefaultReference.stub(:get).and_return nil
+end
