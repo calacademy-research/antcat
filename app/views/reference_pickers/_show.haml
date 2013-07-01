@@ -3,6 +3,7 @@
 - references ||= nil
 - reference ||= nil
 - default_reference = DefaultReference.get session
+- default_reference ||= Reference.last if Rails.env.development?
 - css_class = "antcat_reference_#{picker_type}"
 
 .antcat_reference_picker.antcat_panel{class: css_class}
