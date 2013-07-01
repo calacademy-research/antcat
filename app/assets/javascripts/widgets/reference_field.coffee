@@ -32,4 +32,3 @@ class AntCat.ReferenceField extends AntCat.ReferencePicker
         @initialize $element
         @show_form()
       error: (xhr) => debugger
-
