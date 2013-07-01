@@ -113,6 +113,7 @@ class AntCat.ReferencePicker extends AntCat.Panel
         .click =>
           @use_default_reference()
           false
+        .attr('title', @get_default_reference_string())
         .end()
 
       .find(':button.go')
@@ -136,6 +137,9 @@ class AntCat.ReferencePicker extends AntCat.Panel
 
     @setup_search_selector()
     @enable_search_author_autocomplete()
+
+  get_default_reference_string: =>
+    @controls.find('#default_reference_string').val()
 
   setup_search_selector: =>
     @search_selector
