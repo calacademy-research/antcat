@@ -42,6 +42,7 @@ Feature: Reference popup
     When I set the authors to "Ward, B.L.; Bolton, B."
     And I set the title to "Ant Title"
     And I save my changes to the current reference
+    # potential flickerer
     Then the current reference should be "Ward, B.L.; Bolton, B. 1995b. Ant Title. Ants 1:1-2."
 
   Scenario: Error when editing reference
