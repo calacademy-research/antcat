@@ -26,11 +26,13 @@ class AntCat.ReferencePicker extends AntCat.Panel
     @handle_new_selection()
 
   setup_cached_elements: =>
-    @expansion = @element.find '> .edit .expansion'; AntCat.check 'ReferencePopup._initialize', '@expansion', @expansion
-    @template = @element.find '> .template'; AntCat.check 'ReferencePopup._initialize', '@template', @template
-    @current = @element.find '> .edit table.current'; AntCat.check 'ReferencePopup._initialize', '@current', @current
-    @search_selector = @expansion.find '.search_selector'; AntCat.check 'ReferencePicker.initialize', '@search_selector', @search_selector
-    @textbox = @expansion.find '.q'; AntCat.check 'ReferencePopup._initialize', '@textbox', @textbox
+    @template = @element.find '> .template';          AntCat.check 'ReferencePicker.setup_cached_elements', '@template', @template
+    @edit_section = @element.find '> .edit';          AntCat.check 'ReferencePicker.setup_cached_elements', '@edit_section', @edit_section
+    @expansion = @element.find '> .edit .expansion';  AntCat.check 'ReferencePicker.setup_cached_elements', '@expansion', @expansion
+    @current = @element.find '> .edit table.current'; AntCat.check 'ReferencePicker.setup_cached_elements', '@current', @current
+    @search_selector = @expansion.find '.search_selector'; AntCat.check 'ReferencePicker.setup_cached_elements', '@search_selector', @search_selector
+    @textbox = @expansion.find '.q';                  AntCat.check 'ReferencePicker.setup_cached_elements', '@textbox', @textbox
+    @controls = @expansion.find '.controls';          AntCat.check 'ReferencePicker.setup_cached_elements', '@controls', @controls
 
   search_results: =>
     @expansion.find '> .search_results'

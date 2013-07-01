@@ -35,19 +35,11 @@ class AntCat.ReferencePopup extends AntCat.ReferencePicker
     @show()
     @textbox.focus()
 
-  setup_cached_elements: =>
-    @expansion = @element.find '> .edit .expansion'; AntCat.check 'ReferencePopup._initialize', '@expansion', @expansion
-    @edit = @element.find '> .edit'; AntCat.check 'ReferencePopup._initialize', '@edit', @edit
-    @template = @element.find '> .template'; AntCat.check 'ReferencePopup._initialize', '@template', @template
-    @search_selector = @expansion.find '#search_selector.search_selector'; AntCat.check 'ReferencePopup._initialize', '@search_selector', @search_selector
-    @textbox = @expansion.find '.q'; AntCat.check 'ReferencePopup._initialize', '@textbox', @textbox
-    @current = @element.find '> .edit table.current'; AntCat.check 'ReferencePopup._initialize', '@current', @current
-
   editing: => @element.find('.edit:visible .nested_form').length > 0
 
   show: =>
     @element.show()
-    @edit.show()
+    @edit_section.show()
     @expansion.show()
     # apparently, can't setup selectmenu unless it's visible
     @setup_search_selector()
