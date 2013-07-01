@@ -74,6 +74,10 @@ class AntCat.ReferencePicker extends AntCat.Panel
     @hide_form()
     @options.on_close() if @options.on_close
 
+  use_default_reference: =>
+    @id = @controls.find('#default_reference_id').val()
+    @load()
+
   setup_controls: =>
     self = @
     @expansion
@@ -100,6 +104,12 @@ class AntCat.ReferencePicker extends AntCat.Panel
       .find(':button.add')
         .click =>
           @add_reference()
+          false
+        .end()
+
+      .find(':button.default_reference')
+        .click =>
+          @use_default_reference()
           false
         .end()
 
