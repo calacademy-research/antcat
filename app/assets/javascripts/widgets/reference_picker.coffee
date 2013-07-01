@@ -25,7 +25,6 @@ class AntCat.ReferencePicker extends AntCat.Panel
     @expansion = @element.find '> .edit .expansion'; AntCat.check 'ReferencePopup._initialize', '@expansion', @expansion
     @template = @element.find '> .template'; AntCat.check 'ReferencePopup._initialize', '@template', @template
     @current = @element.find '> .edit table.current'; AntCat.check 'ReferencePopup._initialize', '@current', @current
-    #@search_selector = @expansion.find '#search_selector.search_selector'; AntCat.check 'ReferencePopup._initialize', '@search_selector', @search_selector
     @search_selector = @expansion.find '.search_selector'; AntCat.check 'ReferencePicker.initialize', '@search_selector', @search_selector
     @textbox = @expansion.find '.q'; AntCat.check 'ReferencePopup._initialize', '@textbox', @textbox
 
