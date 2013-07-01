@@ -14,3 +14,7 @@ end
 Then /^the current reference should be "([^"]*)"$/ do |contents|
   page.find('#popup .current .display').text.should == contents
 end
+
+Then /^I should not see the default reference button$/ do
+  page.should_not have_css('button.default_reference')
+end

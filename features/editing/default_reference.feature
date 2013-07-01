@@ -31,3 +31,9 @@ Feature: Using the default reference
     When I go to the reference popup widget test page
     And I press "Ward, 2010"
     Then the current reference should be "Ward, P.S. 2010. Annals of Ants. Psyche 1:1."
+
+    Scenario: Don't show the button if there's no default
+    Given there is no default reference
+    And I am logged in
+    When I go to the reference popup widget test page
+    Then I should not see the default reference button
