@@ -1,9 +1,8 @@
--#Locals: references, reference, picker_type, default_reference
+-#Locals: references, reference, picker_type
 
-- default_reference ||= Reference.last
 - references ||= nil
 - reference ||= nil
-- default_reference ||= nil
+- default_reference = DefaultReference.get session
 - css_class = "antcat_reference_#{picker_type}"
 
 .antcat_reference_picker.antcat_panel{class: css_class}
