@@ -24,3 +24,10 @@ Feature: Using the default reference
     And I press "Edit"
     And I press "Add species"
     Then the authorship field should contain "Ward, B.L.; Bolton, B. 1992. Between Pacific Tides. Ants 2:1."
+
+    Scenario: Using the default reference in the reference popup
+    Given the default reference is "Ward 2010"
+    And I am logged in
+    When I go to the reference popup widget test page
+    And I press "Ward, 2010"
+    Then the current reference should be "Ward, P.S. 2010. Annals of Ants. Psyche 1:1."
