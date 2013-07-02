@@ -1,10 +1,10 @@
 # coding: UTF-8
 class TaxaController < ApplicationController
   before_filter :authenticate_catalog_editor
-  before_filter :setup
   skip_before_filter :authenticate_catalog_editor, if: :preview?
 
   def new
+    setup true
     create_object_web
     set_parent
     get_default_name_string
@@ -13,16 +13,19 @@ class TaxaController < ApplicationController
   end
 
   def create
+    setup true
     set_parent
     save
   end
 
   def edit
+    setup false
     create_object_web
     setup_edit_buttons
   end
 
   def update
+    setup false
     return elevate_to_species if @elevate_to_species
     return delete_taxon if @delete_taxon
     save
@@ -135,14 +138,14 @@ class TaxaController < ApplicationController
   end
 
   ###################
-  def setup
+  def setup is_new
     @parent_id = params[:parent_id]
     @elevate_to_species = params[:task_button_command] == 'elevate_to_species'
     @delete_taxon = params[:task_button_command] == 'delete_taxon'
-    if params[:id].present?
-      load_taxon
-    else
+    if is_new
       create_taxon
+    else
+      load_taxon
     end
   end
 
