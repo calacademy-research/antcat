@@ -19,11 +19,11 @@ Feature: Using the default reference
     And in the new edit form I fill in "reference_citation_year" with "1992"
     And in the new edit form I press the "Save" button
     And I wait for a bit
-    When the default reference is "Ward Bolton 1992"
+    When the default reference is "Ward 2010"
     And I go to the catalog page for "Atta"
     And I press "Edit"
     And I press "Add species"
-    Then the authorship field should contain "Ward, B.L.; Bolton, B. 1992. Between Pacific Tides. Ants 2:1."
+    Then the authorship field should contain "Ward, P.S. 2010. Annals of Ants. Psyche 1:1."
 
     Scenario: Using the default reference in the reference popup
     Given the default reference is "Ward 2010"
