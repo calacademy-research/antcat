@@ -40,7 +40,7 @@ Feature: Using the default reference
   Given the default reference is "Ward 2010"
   When I go to the taxt editor test page
   And I press "Ward, 2010"
-  Then the taxt editor should contain the editable taxt for "Ward, 2010"
+  Then the taxt editor should contain the editable taxt for "Ward 2010 "
 
   Scenario: Saving a reference makes it the default
   # I can't write a scenario that uses session
