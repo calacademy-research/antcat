@@ -11,9 +11,4 @@
 .insert_tag_buttons
   %button.taxon_button.ui-priority-primary.submit Insert Name
   %button.reference_button.ui-priority-primary.submit Insert Reference
-  - if default_reference
-    = hidden_field_tag 'default_reference_id', default_reference.id
-    = hidden_field_tag 'default_reference_string', Formatters::ReferenceFormatter.format(default_reference)
-    = hidden_field_tag 'default_reference_key', default_reference.key.to_s
-    = hidden_field_tag 'default_reference_taxt', Taxt.to_editable_reference(default_reference)
-    %button.default_reference_button.ui-priority-primary= 'Insert ' + default_reference.key.to_s
+  = render partial: 'references/default_reference'

@@ -1,0 +1,8 @@
+- default_reference = DefaultReference.get session
+- default_reference ||= Reference.last if Rails.env.development?
+- if default_reference
+  = hidden_field_tag 'default_reference_id', default_reference.id
+  = hidden_field_tag 'default_reference_string', Formatters::ReferenceFormatter.format(default_reference)
+  = hidden_field_tag 'default_reference_key', default_reference.key.to_s
+  = hidden_field_tag 'default_reference_taxt', Taxt.to_editable_reference(default_reference)
+  %button.default_reference.ui-priority-primary= default_reference.key.to_s
