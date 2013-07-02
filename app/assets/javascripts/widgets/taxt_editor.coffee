@@ -43,9 +43,22 @@ class AntCat.TaxtEditor
       .find('.reference_button')
         .off('mousedown')
         .on('mousedown', @insert_reference).end()
+      .find('.default_reference_button')
+        .off('mousedown')
+        .on('mousedown', @insert_default_reference).end()
 
   show_tag_buttons: => @tag_buttons.show()
   hide_tag_buttons: => # hiding the buttons makes you have to click Save twice
+
+  insert_default_reference: =>
+    @tag_start = @start()
+    @tag_end = @end()
+    taxt = @tag_buttons.find('#default_reference_taxt').val()
+    new_value = @value()[...@tag_start] + taxt + @value()[@tag_end...]
+    @value new_value
+    @set_selection @tag_start, @tag_start + taxt.length - 1
+
+    false
 
   insert_taxon: =>
     @insert_tag TAXON_TAG_TYPE
