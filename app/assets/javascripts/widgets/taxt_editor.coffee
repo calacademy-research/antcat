@@ -54,10 +54,10 @@ class AntCat.TaxtEditor
     @tag_start = @start()
     @tag_end = @end()
     taxt = @tag_buttons.find('#default_reference_taxt').val()
-    new_value = @value()[...@tag_start] + taxt + @value()[@tag_end...]
+    new_value = @value()[...@tag_start] + taxt + ' ' + @value()[@tag_end...]
     @value new_value
-    @set_selection @tag_start, @tag_start + taxt.length - 1
-
+    after_space = @tag_start + taxt.length + 1
+    @set_selection after_space, after_space - 1
     false
 
   insert_taxon: =>
