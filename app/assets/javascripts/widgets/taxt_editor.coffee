@@ -43,7 +43,7 @@ class AntCat.TaxtEditor
       .find('.reference_button')
         .off('mousedown')
         .on('mousedown', @insert_reference).end()
-      .find('.default_reference_button')
+      .find('.default_reference')
         .off('click')
         .on('click', @insert_default_reference).end()
 

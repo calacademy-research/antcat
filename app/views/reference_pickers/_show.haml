@@ -2,8 +2,6 @@
 
 - references ||= nil
 - reference ||= nil
-- default_reference = DefaultReference.get session
-- default_reference ||= Reference.last if Rails.env.development?
 - css_class = "antcat_reference_#{picker_type}"
 
 .antcat_reference_picker.antcat_panel{class: css_class}
@@ -35,11 +33,7 @@
               %button.add.ui-priority-primary Add
 
             .default_reference_controls
-              - if default_reference
-                = hidden_field_tag 'default_reference_id', default_reference.id
-                = hidden_field_tag 'default_reference_string', Formatters::ReferenceFormatter.format(default_reference)
-                = hidden_field_tag 'default_reference_key', default_reference.key.to_s
-                %button.default_reference.ui-priority-primary= default_reference.key.to_s
+              = render partial: 'references/default_reference'
 
             .search_controls
               = select_tag "search_selector", options_for_select(["Search for author(s)", "Search for"], params[:search_selector]), class: 'search_controls search_selector'
