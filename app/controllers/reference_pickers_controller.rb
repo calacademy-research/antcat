@@ -15,7 +15,7 @@ class ReferencePickersController < ApplicationController
       references = Reference.do_search params
     end
 
-    render partial: 'show', references: references, reference: reference
+    render partial: 'show', locals: {references: references, reference: reference}
   end
 
 end
