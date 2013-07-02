@@ -342,9 +342,16 @@ Then /^the review status on the Ward reference should change to "(.*?)"$/ do |st
   end
 end
 
+def find_reference_by_key key
+  parts = key.split(' ')
+  last_name = parts[0]
+  year = parts[1]
+  Reference.where(principal_author_last_name_cache: last_name, year: year.to_i).first
+end
+
 And /^the default reference is "([^"]*)"$/ do |key|
-  default_reference = Reference.where(principal_author_last_name_cache: 'Ward', year: 2010).first
-  DefaultReference.stub(:get).and_return default_reference
+  reference = find_reference_by_key key
+  DefaultReference.stub(:get).and_return reference
 end
 And /^there is no default reference$/ do
   DefaultReference.stub(:get).and_return nil
