@@ -5,7 +5,7 @@ class AntCat.ReferencePopup extends AntCat.ReferencePicker
     if @options.id
       @id = @options.id
     else
-      @id = @element.find('#id').val()
+      @id = @element.find('#reference_picker_id').val()
 
     @original_id = @id
     if @id
@@ -45,7 +45,7 @@ class AntCat.ReferencePopup extends AntCat.ReferencePicker
     @setup_search_selector()
 
   ok: =>
-    @element.find('#id').val(@id)
+    @element.find('#reference_picker_id').val(@id)
     taxt = if @current_reference() then @current_reference().data 'taxt' else null
     @options.on_ok(taxt) if @options.on_ok
     @close()
@@ -53,7 +53,7 @@ class AntCat.ReferencePopup extends AntCat.ReferencePicker
   cancel: =>
     @clear_current()
     @id = @original_id
-    @element.find('#id').val(@id)
+    @element.find('#reference_picker_id').val(@id)
     @options.on_cancel() if @options.on_cancel
     @close()
 

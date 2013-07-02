@@ -46,6 +46,7 @@ AntCat::Application.routes.draw do
     resource 'convert_to_subspecies', only: [:new, :create]
   end
 
+  resource :default_reference, only: [:update]
   resource :taxon_window_height, only: [:update]
 
   get 'name_pickers/search'

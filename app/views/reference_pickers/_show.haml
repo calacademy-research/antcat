@@ -23,7 +23,7 @@
         %tr
           %td.throbber= image_tag 'ui-anim_basic_16x16.gif'
           %td.controls
-            = hidden_field_tag 'id', reference.try(:id)
+            = hidden_field_tag 'reference_picker_id', reference.try(:id)
 
             .ok_cancel_controls
               %button.ok.ui-priority-primary OK

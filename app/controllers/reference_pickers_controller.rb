@@ -4,10 +4,7 @@ class ReferencePickersController < ApplicationController
   def show
     params[:search_selector] ||= 'Search for author(s)'
 
-    if params[:id].present?
-      reference = Reference.find params[:id]
-      DefaultReference.set session, reference
-    end
+    reference = Reference.find params[:id] if params[:id].present?
 
     if params[:q].present?
       params[:q].strip!

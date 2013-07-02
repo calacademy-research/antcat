@@ -215,6 +215,14 @@ class AntCat.ReferencePicker extends AntCat.Panel
     @element.find('div.display').bind 'click', (event) => @handle_click(event); false
     @element.find('div.display').hover(@hover, @unhover)
     @element.removeClass 'has_no_current_reference'
+    @tell_server_about_the_reference_that_was_chosen()
+
+  tell_server_about_the_reference_that_was_chosen: =>
+    url = '/default_reference'
+    id = if @current_reference() then @current_reference().data 'id' else null
+    if id and id != ''
+      data = {id: @current_reference().data 'id'}
+      $.ajax url: url, data: data, type: 'put'
 
   handle_new_selection: =>
     $selected_reference = @selected_reference()
@@ -227,7 +235,7 @@ class AntCat.ReferencePicker extends AntCat.Panel
 
   value: =>
     $value_field = $('#' + @value_id)
-    $value_field.val
+    $value_field.val()
 
   selected_reference: =>
     results = @search_results().find 'div.display.ui-selected'
