@@ -1,7 +1,5 @@
 -# Locals: name, value, rows
 
-- default_reference = DefaultReference.get session
-- default_reference ||= Reference.last if Rails.env.development?
 - rows ||= 2
 
 = text_area_tag name, value, rows: rows, class: 'taxt_edit_box'
