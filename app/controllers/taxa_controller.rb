@@ -4,7 +4,7 @@ class TaxaController < ApplicationController
   skip_before_filter :authenticate_catalog_editor, if: :preview?
 
   def new
-    setup true
+    setup :create
     create_object_web
     set_parent
     get_default_name_string
@@ -13,19 +13,19 @@ class TaxaController < ApplicationController
   end
 
   def create
-    setup true
+    setup :create
     set_parent
     save
   end
 
   def edit
-    setup false
+    setup :update
     create_object_web
     setup_edit_buttons
   end
 
   def update
-    setup false
+    setup :update
     return elevate_to_species if @elevate_to_species
     return delete_taxon if @delete_taxon
     save
@@ -138,11 +138,11 @@ class TaxaController < ApplicationController
   end
 
   ###################
-  def setup is_new
+  def setup create_or_update
     @parent_id = params[:parent_id]
     @elevate_to_species = params[:task_button_command] == 'elevate_to_species'
     @delete_taxon = params[:task_button_command] == 'delete_taxon'
-    if is_new
+    if create_or_update == :create
       create_taxon
     else
       load_taxon
