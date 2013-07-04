@@ -142,11 +142,13 @@ class TaxaController < ApplicationController
     @parent_id = params[:parent_id]
     @elevate_to_species = params[:task_button_command] == 'elevate_to_species'
     @delete_taxon = params[:task_button_command] == 'delete_taxon'
-    if create_or_update == :create
-      create_taxon
-    else
-      load_taxon
-    end
+    create_or_update == :create ? create_taxon : load_taxon
+  end
+
+  def create_taxon
+    @rank = Rank[params[:rank]]
+    @taxon = @rank.string.titlecase.constantize.new
+    @cancel_path = "/taxa/#{@parent_id}/edit"
   end
 
   def load_taxon
@@ -162,14 +164,12 @@ class TaxaController < ApplicationController
       end
   end
 
-  def create_taxon
-    @rank = Rank[params[:rank]]
-    @taxon = @rank.string.titlecase.constantize.new
-    @cancel_path = "/taxa/#{@parent_id}/edit"
-  end
-
   def set_parent
     @taxon.parent = @parent_id
+  end
+
+  def set_authorship_reference
+    @taxon.protonym.authorship.reference = DefaultReference.get session
   end
 
   def get_default_name_string
@@ -177,10 +177,6 @@ class TaxaController < ApplicationController
       parent = Taxon.find @parent_id
       @default_name_string = parent.name.name
     end
-  end
-
-  def set_authorship_reference
-    @taxon.protonym.authorship.reference = DefaultReference.get session
   end
 
   def setup_edit_buttons
