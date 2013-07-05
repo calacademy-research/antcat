@@ -154,9 +154,9 @@ class TaxaController < ApplicationController
   def load_taxon
     @taxon = Taxon.find params[:id]
     @rank = Rank[@taxon].child
-    @add_taxon_path = "/taxa/new?rank=#{@rank}&parent_id=#{@taxon.id}"
-    @cancel_path = "/catalog/#{@taxon.id}"
-    @convert_to_subspecies_path = "/taxa/#{@taxon.id}/convert_to_subspecies/new"
+    @add_taxon_path = new_taxa_path rank: @rank, parent_id: @taxon.id
+    @cancel_path = catalog_path @taxon
+    @convert_to_subspecies_path = new_taxa_convert_to_subspecies_path @taxon.id
     @parent_rank_selector =
       case @taxon
       when Species then :genera_only
