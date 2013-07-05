@@ -1,6 +1,6 @@
 $ -> new AntCat.ReferencePopup $('#popup'),
   field: false,
-  on_success: (data) ->
+  on_ok: (data) ->
     $('#results').text data.id
-  on_cancel: ->
-    $('#results').text data.id
+  on_cancel: (id) ->
+    $('#results').text id
