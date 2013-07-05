@@ -39,10 +39,6 @@ AntCat::Application.routes.draw do
         put 'reverse_synonymy'
       end
     end
-    member do
-      get 'elevate_to_species'
-      get 'delete_taxon'
-    end
     resource 'convert_to_subspecies', only: [:new, :create]
   end
 
