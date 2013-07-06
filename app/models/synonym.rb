@@ -2,7 +2,6 @@
 class Synonym < ActiveRecord::Base
   belongs_to :junior_synonym, class_name: 'Taxon'; validates :junior_synonym, presence: true
   belongs_to :senior_synonym, class_name: 'Taxon' # in the process of fixing up, an incomplete Synonym can be created
-
   has_paper_trail
 
   def self.find_or_create junior, senior
