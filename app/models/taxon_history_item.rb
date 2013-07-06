@@ -3,7 +3,6 @@ class TaxonHistoryItem < ActiveRecord::Base
   belongs_to :taxon
   acts_as_list scope: :taxon
   validates_presence_of :taxt
-
   has_paper_trail
 
   def title

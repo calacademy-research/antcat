@@ -1,9 +1,7 @@
 # coding: UTF-8
 class Journal < ActiveRecord::Base
-
   validates_presence_of :name
   scope :list, order(:name)
-
   has_paper_trail
 
   def self.import name

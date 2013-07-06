@@ -6,7 +6,6 @@ require 'reference_has_document'
 class Reference < ActiveRecord::Base
   attr_accessor :publisher_string
   attr_accessor :journal_name
-
   has_paper_trail
 
   # associations

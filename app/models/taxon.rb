@@ -1,7 +1,6 @@
 # coding: UTF-8
 class Taxon < ActiveRecord::Base
   self.table_name = :taxa
-
   has_paper_trail
 
   ###############################################

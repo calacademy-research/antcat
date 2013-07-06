@@ -3,7 +3,6 @@ class Citation < ActiveRecord::Base
   include Importers::Bolton::Catalog::Updater
   belongs_to :reference
   validates :reference, presence: true
-
   has_paper_trail
 
   def title

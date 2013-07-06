@@ -2,7 +2,6 @@
 class Publisher < ActiveRecord::Base
   belongs_to :place
   validates_presence_of :name
-
   has_paper_trail
 
   def self.import data
