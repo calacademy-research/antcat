@@ -29,6 +29,7 @@ Spork.each_run{FactoryGirl.reload}
 
 Sunspot.session = Sunspot.session.original_session if ENV['DRB'] != 'true'
 at_exit do
+  PaperTrail.enabled = false
   Sunspot.session = Sunspot::Rails::StubSessionProxy.new(Sunspot.session) if ENV['DRB'] != 'true'
 end
 

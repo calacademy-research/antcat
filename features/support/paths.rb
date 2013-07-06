@@ -38,6 +38,9 @@ module NavigationHelpers
     when /^the Bolton references page$/
       bolton_references_path
 
+    when /^the changes page$/
+      changes_path
+
     when /^the "Edit journals" page$/
       journals_path
 

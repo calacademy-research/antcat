@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130622022516) do
+ActiveRecord::Schema.define(:version => 20130707005150) do
 
   create_table "antwiki_valid_taxa", :id => false, :force => true do |t|
     t.string   "name"
@@ -194,6 +194,18 @@ ActiveRecord::Schema.define(:version => 20130622022516) do
   end
 
   add_index "reference_sections", ["taxon_id", "position"], :name => "index_reference_sections_on_taxon_id_and_position"
+
+  create_table "reference_snapshots", :force => true do |t|
+    t.integer  "reference_id"
+    t.integer  "reference_version_id"
+    t.integer  "journal_version_id"
+    t.integer  "publisher_version_id"
+    t.integer  "place_version_id"
+    t.integer  "nested_reference_version_id"
+    t.text     "author_versions"
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
+  end
 
   create_table "references", :force => true do |t|
     t.integer  "year"
