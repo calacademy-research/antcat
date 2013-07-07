@@ -279,12 +279,6 @@ FactoryGirl.define do
     sequence(:references_taxt) {|n| "Reference #{n}"}
   end
 
-  ####################################################
-  factory :version do
-    event 'create'
-    association :item, factory: :article_reference
-  end
-
 end
 
 def create_family

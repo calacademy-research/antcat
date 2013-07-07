@@ -92,6 +92,3 @@ Then /^the page title should have "([^"]*)" in it$/ do |title|
   page.should have_css('title', text: /#{title}/)
 end
 
-Given /^we are (not )?tracking changes$/ do |are_not|
-  PaperTrail.enabled = are_not != 'not '
-end
