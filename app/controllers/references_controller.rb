@@ -92,7 +92,7 @@ EOS
     else
       json = {:success => false, :message => @reference.errors[:base]}.to_json
     end
-    render :json => json
+    render json: json
   end
 
   def start_reviewing
