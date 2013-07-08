@@ -5,9 +5,9 @@
   .changes_float_container
     .changes_type_menu.left
       Show:
-      = ([link_to('All', changes_path)] + change_item_types.map {|type| link_to(type == 'Taxon' ? 'Taxa' : type.pluralize, changes_path(type: type))}).join(' | ').html_safe
+      = ([link_to('All', paper_trail_path)] + change_item_types.map {|type| link_to(type == 'Taxon' ? 'Taxa' : type.pluralize, paper_trail_path(type: type))}).join(' | ').html_safe
     .changes_feed.right
-      = link_to changes_path(format: 'atom') do
+      = link_to paper_trail_path(format: 'atom') do
         Changes feed
         = image_tag 'rss-icon.png'
     .clear

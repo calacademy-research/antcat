@@ -3,6 +3,8 @@ AntCat::Application.routes.draw do
 
   root to: 'catalog#show'
 
+  resources :changes
+
   resources :authors, only: [:index, :all, :merge]
   match     '/authors/all', to: 'authors#all', via: :get
   match     '/authors/merge', to: 'authors#merge', via: :post
@@ -62,7 +64,7 @@ AntCat::Application.routes.draw do
   match '/widget_tests/reference_field_test', to: 'widget_tests#reference_field_test'
   match '/widget_tests/taxt_editor_test', to: 'widget_tests#taxt_editor_test'
 
-  resources :changes, controller: 'paper_trail_manager/changes'
+  match '/paper_trail', to: 'paper_trail_manager/changes#index'
 
   devise_for :users
 
