@@ -6,6 +6,9 @@ module NavigationHelpers
     when /^the main page$/
       root_path
 
+    when /^the changes page$/
+      '/changes'
+
     when /^the catalog (entry|page) for "([^"]*)"$/
       taxon = Taxon.find_by_name $2
       "/catalog/#{taxon.id}"
