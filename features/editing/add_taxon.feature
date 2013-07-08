@@ -24,7 +24,6 @@ Feature: Adding a taxon
     When I click the protonym name field
       Then the protonym name field should contain "Atta"
     When I set the protonym name to "Eciton"
-      And I set the protonym name to "Eciton"
       And I press "OK"
     When I click the authorship field
       And I search for the author "Fisher"
