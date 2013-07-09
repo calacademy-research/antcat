@@ -297,9 +297,9 @@ def create_taxon name_or_attributes = 'Atta', attributes = {}
   create_taxon_object name_or_attributes, :genus, :genus_name, attributes
 end
 
-#def create_genus name_or_attributes = 'Atta', attributes = {}
-  #create_taxon_object name_or_attributes, :genus, :genus_name, attributes
-#end
+def create_genus name_or_attributes = 'Atta', attributes = {}
+  create_taxon_object name_or_attributes, :genus, :genus_name, attributes
+end
 
 def create_subgenus name_or_attributes = 'Atta (Subatta)', attributes = {}
   create_taxon_object name_or_attributes, :subgenus, :subgenus_name, attributes
@@ -325,11 +325,6 @@ def create_taxon_object name_or_attributes, taxon_factory, name_factory, attribu
   build = attributes.delete :build
   build_stubbed ||= build
   FactoryGirl.send(build_stubbed ? :build_stubbed : :create, taxon_factory, attributes)
-end
-
-def create_genus name, attributes = {}
-  attributes = attributes.dup
-  genus = FactoryGirl.create :genus, name: FactoryGirl.create(:genus_name, name: name)
 end
 
 def get_name_parts name
