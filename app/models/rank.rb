@@ -71,6 +71,7 @@ class Rank
   end
 
   def self.find identifier
+    return nil if identifier.blank?
     identifier = identifier.class if identifier.kind_of? Taxon
     identifier = identifier.first.class if identifier.kind_of? Enumerable
     identifier = identifier.first.class if identifier.kind_of? ActiveRecord::Relation

@@ -66,4 +66,8 @@ describe Rank do
     Rank[create_subspecies('Atta major minor')].child.should be_nil
     Rank[create_family].child.should == Rank[:subfamily]
   end
+  it "should handle nil and blank OK" do
+    Rank[''].should be_nil
+    Rank[nil].should be_nil
+  end
 end
