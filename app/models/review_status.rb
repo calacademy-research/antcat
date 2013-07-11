@@ -26,7 +26,7 @@ class ReviewStatus
   end
 
   def self.find string
-    review_statuses.find {|review_status| review_status.value == string} or raise "Couldn't find #{string}"
+    review_statuses.find {|review_status| review_status.value == string} or raise "Couldn't find review status for '#{string}'"
   end
   class << self; alias_method :[], :find end
 
