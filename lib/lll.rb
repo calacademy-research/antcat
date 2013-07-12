@@ -40,7 +40,7 @@ module Lll
   end
 
   def self.format output_string, colorize = true
-    string = output_string
+    string = "\n" + output_string
     string =  "\e[7m" + string + "\e[0m" if colorize
     string + "lll: #{caller[2].to_s} #{Time.now.strftime('%X')} #{$using_dumb_terminal}"
   end
