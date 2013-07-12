@@ -36,3 +36,26 @@ Feature: Seeing what's new
     Given I log in as a bibliography editor
     When I go to the new references page
     Then I should not see a "Start reviewing" button
+
+  Scenario: Seeing the default reference button on the new references page
+    Given these references exist
+      | author     | title          | year | citation   |
+      | Ward, P.S. | Annals of Ants | 2010 | Psyche 1:1 |
+      | Fisher, B. | Ants Monthly   | 1995 | Science 3:4|
+    Given the default reference is "Ward 2010"
+    When I go to the new references page
+    Then it should show "Ward 2010" as the default
+    And it should not show "Fisher 1995" as the default
+
+  Scenario: Changing the default reference button on the new references page
+    Given I am logged in
+    And these references exist
+      | author     | title          | year | citation   |
+      | Ward, P.S. | Annals of Ants | 2010 | Psyche 1:1 |
+      | Fisher, B. | Ants Monthly   | 1995 | Science 3:4|
+    And there is no default reference
+    When I go to the new references page
+    And I click "Make default" on the Ward reference
+    Given the default reference is "Ward 2010"
+    And I go to the new references page
+    Then it should show "Ward 2010" as the default
