@@ -30,6 +30,7 @@ group :development, :test do
   # see https://github.com/cucumber/cucumber-rails/issues/187#issuecomment-4160160
   gem 'cucumber-rails', require: false
   gem 'launchy'
+  gem 'progress_bar'
   gem 'rspec'
   gem 'rspec-rails'
   gem 'ruby-debug19'
