@@ -107,6 +107,9 @@ EOS
     redirect_to '/references?commit=new'
   end
 
+  def restart_reviewing
+    @reference = Reference.find(params[:id])
+    @reference.restart_reviewing!
     redirect_to '/references?commit=new'
   end
 
