@@ -33,14 +33,7 @@
       %td.date_header
         Changed
 
-  - if params[:whats_new]
-    %tr
-      %td
-      %td.date_header
-        Created
-
-      %td.review_status_header
-        Review status
+  = render 'references/whats_new_headings' if params[:whats_new]
 
   - for reference in @references
     %tr.reference_row
@@ -49,17 +42,8 @@
       - if params[:review]
         %td.date
           = format_timestamp reference.updated_at
-      - if params[:whats_new]
-        %td.date
-          = format_timestamp reference.created_at
-        %td.review_status
-          = format_review_status ReviewStatus[reference.review_status]
-        %td.review_buttons
-          - if user_can_edit_catalog? and not reference.reviewed?
-            - if reference.being_reviewed?
-              = button_to 'Finish reviewing', finish_reviewing_reference_path(reference.id), confirm: 'Have you finished reviewing this reference?'
-            - else
-              = button_to 'Start reviewing', start_reviewing_reference_path(reference.id), confirm: 'Are you ready to start reviewing this reference?'
+
+      = render 'references/whats_new_controls', reference: reference if params[:whats_new]
 
   - if user_can_edit_references?
     %tr.reference_template_row
