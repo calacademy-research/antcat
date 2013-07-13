@@ -29,7 +29,9 @@ class Formatters::ReferenceFormatter
   end
 
   def self.format_review_status review_status
-    review_status.display_string
+    return 'Being reviewed' if review_status == 'reviewing'
+    return '' if review_status == 'none'
+    review_status.present? ? review_status.capitalize : ''
   end
 
   ##################
