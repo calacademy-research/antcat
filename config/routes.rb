@@ -28,6 +28,7 @@ AntCat::Application.routes.draw do
     member do
       post 'start_reviewing'
       post 'finish_reviewing'
+      post 'restart_reviewing'
     end
   end
 
