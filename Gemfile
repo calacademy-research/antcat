@@ -25,6 +25,7 @@ gem 'sass'
 gem 'sunspot_rails'
 gem 'paperclip'
 gem 'will_paginate'
+gem 'workflow'
 gem 'xml-simple'
 
 group :development, :test do
