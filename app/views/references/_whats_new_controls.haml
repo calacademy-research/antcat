@@ -1,0 +1,24 @@
+-#Locals: reference
+
+%td.date
+  = format_timestamp reference.created_at
+
+- if user_can_edit_catalog?
+
+  %td.review_status
+    = format_review_status ReviewStatus[reference.review_status]
+
+  %td.review_buttons
+    - if reference.being_reviewed?
+      = button_to 'Finish reviewing', finish_reviewing_reference_path(reference.id), confirm: 'Have you finished reviewing this reference?'
+    - elsif not reference.reviewed?
+      = button_to 'Start reviewing', start_reviewing_reference_path(reference.id), confirm: 'Are you ready to start reviewing this reference?'
+    - else
+      = button_to 'Restart reviewing', start_reviewing_reference_path(reference.id), confirm: 'Do you want to start reviewing this reference again?'
+
+  %td.default_reference_status
+    - if reference == DefaultReference.get(session)
+      Default
+    - else
+      = button_to 'Make default', default_reference_path(id: reference.id), method: :put
+
