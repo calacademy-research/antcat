@@ -97,13 +97,16 @@ EOS
 
   def start_reviewing
     @reference = Reference.find(params[:id])
-    @reference.update_attribute :review_status, ReviewStatus['being reviewed'].to_s
+    @reference.start_reviewing!
     redirect_to '/references?commit=new'
   end
 
   def finish_reviewing
     @reference = Reference.find(params[:id])
-    @reference.update_attribute :review_status, ReviewStatus['reviewed'].to_s
+    @reference.finish_reviewing!
+    redirect_to '/references?commit=new'
+  end
+
     redirect_to '/references?commit=new'
   end
 

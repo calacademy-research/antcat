@@ -314,40 +314,4 @@ describe Reference do
     end
   end
 
-  describe "being_reviewed?" do
-    it "should only consider as 'reviewing' when review status is explicitly set" do
-      reference = FactoryGirl.create :article_reference
-
-      reference.review_status = ''
-      reference.should_not be_being_reviewed
-
-      reference.review_status = nil
-      reference.should_not be_being_reviewed
-
-      reference.review_status = 'reviewed'
-      reference.should_not be_being_reviewed
-
-      reference.review_status = 'being reviewed'
-      reference.should be_being_reviewed
-    end
-  end
-
-  describe "being_reviewed?" do
-    it "should only consider as 'reviewing' when review status is explicitly set" do
-      reference = FactoryGirl.create :article_reference
-
-      reference.review_status = ''
-      reference.should_not be_reviewed
-
-      reference.review_status = nil
-      reference.should_not be_reviewed
-
-      reference.review_status = 'being reviewed'
-      reference.should_not be_reviewed
-
-      reference.review_status = 'reviewed'
-      reference.should be_reviewed
-    end
-  end
-
 end
