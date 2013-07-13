@@ -32,13 +32,23 @@ Feature: Seeing what's new
     And I click "Finish reviewing" on the Ward reference
     Then the review status on the Ward reference should change to "Reviewed"
 
+  Scenario: Restart reviewing
+    Given I am logged in
+    When I go to the new references page
+    And I click "Start reviewing" on the Ward reference
+    And I click "Finish reviewing" on the Ward reference
+    And I click "Restart reviewing" on the Ward reference
+    When I go to the new references page
+    Then the review status on the Ward reference should change to "Being reviewed"
+
   Scenario: Not a logged-in catalog editor
     Given I log in as a bibliography editor
     When I go to the new references page
     Then I should not see a "Start reviewing" button
 
   Scenario: Seeing the default reference button on the new references page
-    Given these references exist
+    Given I am logged in
+    And these references exist
       | author     | title          | year | citation   |
       | Ward, P.S. | Annals of Ants | 2010 | Psyche 1:1 |
       | Fisher, B. | Ants Monthly   | 1995 | Science 3:4|
