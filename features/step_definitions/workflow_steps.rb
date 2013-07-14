@@ -4,7 +4,7 @@ Then /^I should not see a change for "(.*?)"$/ do |name|
 end
 
 Then /^I should see a change for "(.*?)"$/ do |name|
-  pending # express the regexp above with the code you wish you had
+  page.should have_css('.name', text: name)
 end
 
 When /^I add the genus "(.*?)"$/ do |name|
