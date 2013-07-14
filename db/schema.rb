@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130622022516) do
+ActiveRecord::Schema.define(:version => 20130713235737) do
 
   create_table "antwiki_valid_taxa", :id => false, :force => true do |t|
     t.string   "name"
@@ -81,6 +81,12 @@ ActiveRecord::Schema.define(:version => 20130622022516) do
     t.string   "match_status"
     t.string   "key_cache"
     t.string   "import_result"
+  end
+
+  create_table "changes", :force => true do |t|
+    t.integer  "version_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "citations", :force => true do |t|
