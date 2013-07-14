@@ -1,8 +1,61 @@
-%h1 Listing changes
-
-%table
-  %tr
-    %th Version
 - @changes.each do |change|
-  %tr
-    %td= render 'change', change: change
+  %div.entry_header 3 days ago Mark Wilden added <b>Pachycondylus arreteria</b>
+  %table
+    %tr
+      %td
+
+        %table
+          %tr
+            %td.label Name
+            %td.value <i>Pachocondylus arreteria</i>
+          %tr
+            %td.label Genus
+            %td.value <i>Pachocondylus</i>
+          %tr
+            %td.label Status
+            %td.value valid
+          %tr
+            %td.label Incertae sedis in
+            %td.value species
+          %tr
+            %td.label Attributes
+            %td.value= ['Fossil', 'Hong', '<i>nomen nudum</i>'].join(', ').html_safe
+          %tr
+            %td.label Notes
+            %td.value Something with taxt in it
+
+        %table
+          %tr
+            %td.header{colspan: 100}Protonym
+          %tr
+            %td.label Name
+            %td.value Cerylus arreteria
+          %tr
+            %td.label Attributes
+            %td.value= ['Fossil', '<i>sic</i>'].join(', ').html_safe
+          %tr
+            %td.label Authorship
+            %td.value
+              Abe, T. 1974. Notes on the fauna of ants in Iriomote Island. [In Japanese.]. Pp. 105-111 in: Ikehara, S. (ed.) 1974. Ecological studies of nature conservation of the Ryukyu Islands (1). Report for the fiscal year of 1973. [In Japanese.]. Naha, Okinawa: University of the Ryukyus, 278 pp. [1974-03-30] 122100
+          %tr
+            %td.label Page
+            %td.value 260
+          %tr
+            %td.label Forms
+            %td.value m.
+          %tr
+            %td.label Locality
+            %td.value Australia
+
+        %table
+          %tr
+            %td.header{colspan: 100}Type
+          %tr
+            %td.label Name
+            %td.value Cerylus arreteria
+          %tr
+            %td.label Attributes
+            %td.value= ['Fossil'].join(', ')
+          %tr
+            %td.label Notes
+            %td.value Something with taxt in it
