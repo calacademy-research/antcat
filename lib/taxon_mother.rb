@@ -21,21 +21,23 @@ class TaxonMother
   end
 
   def save_taxon taxon, params
-    @taxon = taxon
-    name_attributes                     = params.delete :name_attributes
-    parent_name_attributes              = params.delete :parent_name_attributes
-    protonym_attributes                 = params.delete :protonym_attributes
-    homonym_replaced_by_name_attributes = params.delete :homonym_replaced_by_name_attributes
-    type_name_attributes                = params.delete :type_name_attributes
+    Taxon.transaction do
+      @taxon = taxon
+      name_attributes                     = params.delete :name_attributes
+      parent_name_attributes              = params.delete :parent_name_attributes
+      protonym_attributes                 = params.delete :protonym_attributes
+      homonym_replaced_by_name_attributes = params.delete :homonym_replaced_by_name_attributes
+      type_name_attributes                = params.delete :type_name_attributes
 
-    update_name                 name_attributes
-    update_name_status_flags    params
-    update_parent               parent_name_attributes
-    update_homonym_replaced_by  homonym_replaced_by_name_attributes
-    update_protonym             protonym_attributes
-    update_type_name            type_name_attributes
+      update_name                 name_attributes
+      update_name_status_flags    params
+      update_parent               parent_name_attributes
+      update_homonym_replaced_by  homonym_replaced_by_name_attributes
+      update_protonym             protonym_attributes
+      update_type_name            type_name_attributes
 
-    @taxon.save!
+      @taxon.save!
+    end
   end
 
   ####################################
