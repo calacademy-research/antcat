@@ -158,6 +158,8 @@ describe TaxonMother do
         taxon = @mother.create_taxon Rank[:species], create_genus
         params = @genus_params
         @mother.save_taxon taxon, params
+        change = Change.first
+        change.version.should be_nil
       end
     end
 
