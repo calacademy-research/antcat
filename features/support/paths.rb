@@ -9,6 +9,9 @@ module NavigationHelpers
     when /^the changes page$/
       '/changes'
 
+    when /^the paper trail page$/
+      '/paper_trail'
+
     when /^the catalog (entry|page) for "([^"]*)"$/
       taxon = Taxon.find_by_name $2
       "/catalog/#{taxon.id}"

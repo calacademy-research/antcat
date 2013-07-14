@@ -37,8 +37,14 @@ class TaxonMother
       update_type_name            type_name_attributes
 
       @taxon.save!
-      Change.create! version: @taxon.version
+      save_change @taxon
     end
+  end
+
+  def save_change object
+    change = Change.new
+    change.version = object.version
+    change.save!
   end
 
   ####################################
