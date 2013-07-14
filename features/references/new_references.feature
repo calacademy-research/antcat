@@ -38,7 +38,7 @@ Feature: Seeing what's new
     And I click "Start reviewing" on the Ward reference
     And I click "Finish reviewing" on the Ward reference
     And I click "Restart reviewing" on the Ward reference
-    When I go to the new references page
+    And I go to the new references page
     Then the review status on the Ward reference should change to "Being reviewed"
 
   Scenario: Not a logged-in catalog editor
