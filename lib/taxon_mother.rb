@@ -37,6 +37,7 @@ class TaxonMother
       update_type_name            type_name_attributes
 
       @taxon.save!
+      Change.create! version: @taxon.version
     end
   end
 
