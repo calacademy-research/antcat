@@ -1,0 +1,33 @@
+-#Locals: change
+
+%tr
+  %td{colspan: 100}
+    - version = change.version
+    - unless version
+      .name Atta
+    - else
+      %hr
+      %tr{class: "change_row #{"change_event_#{version.event} #{version.event} #{version.event}, #{version.item_type.downcase}"}"}
+        %td.change_time
+          = "#{time_ago_in_words version.created_at} ago"
+        %td.change_user
+          - user = User.find(version.whodunnit) rescue nil
+          = user && user.name || '(unknown)'
+        %td.change_details
+          %p.change_details_description
+            - verb = version.event.dup
+            - verb = verb == 'destroy' ? 'deleted' : "#{verb}d"
+            %span.verb= verb
+            %span.item_type= version.item_type
+            %span.item_id= version.item_id
+          - if version.event == 'update' or version.event == 'create'
+            - changes = changes_for(version)
+            %table.change_details_table
+              - changes.keys.sort.each do |key|
+                %tr
+                  %td.change_detail_key.previous= key
+                  %td.change_detail_value.previous= text_or_nil(changes[key][:previous])
+                  %td.change_detail_spacer →
+                  %td.change_detail_value.current= text_or_nil(changes[key][:current])
+        %td.rollback
+          %span.rollback= link_to 'Rollback', '#'
