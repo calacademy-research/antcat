@@ -31,10 +31,10 @@ gem 'xml-simple'
 group :development, :test do
   # see https://github.com/cucumber/cucumber-rails/issues/187#issuecomment-4160160
   gem 'cucumber-rails', require: false
+  gem 'debugger'
   gem 'launchy'
   gem 'rspec'
   gem 'rspec-rails'
-  gem 'ruby-debug19'
   gem 'spork'
   gem 'sunspot_solr'
 end

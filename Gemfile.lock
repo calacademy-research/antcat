@@ -35,7 +35,6 @@ GEM
     acts_as_list (0.2.0)
       activerecord (>= 3.0)
     addressable (2.3.5)
-    archive-tar-minitar (0.5.2)
     arel (3.0.2)
     aws-sdk (1.11.1)
       json (~> 1.4)
@@ -87,6 +86,12 @@ GEM
       rails (~> 3.0)
     curb (0.8.4)
     database_cleaner (1.0.1)
+    debugger (1.6.1)
+      columnize (>= 0.3.1)
+      debugger-linecache (~> 1.2.0)
+      debugger-ruby_core_source (~> 1.2.3)
+    debugger-linecache (1.2.0)
+    debugger-ruby_core_source (1.2.3)
     devise (2.2.4)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
@@ -124,8 +129,6 @@ GEM
     json (1.8.0)
     launchy (2.3.0)
       addressable (~> 2.3)
-    linecache19 (0.5.12)
-      ruby_core_source (>= 0.1.4)
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
@@ -206,17 +209,7 @@ GEM
       rspec-core (~> 2.13.0)
       rspec-expectations (~> 2.13.0)
       rspec-mocks (~> 2.13.0)
-    ruby-debug-base19 (0.11.25)
-      columnize (>= 0.3.1)
-      linecache19 (>= 0.5.11)
-      ruby_core_source (>= 0.1.4)
-    ruby-debug19 (0.11.6)
-      columnize (>= 0.3.1)
-      linecache19 (>= 0.5.11)
-      ruby-debug-base19 (>= 0.11.19)
     ruby-graphviz (1.0.9)
-    ruby_core_source (0.1.5)
-      archive-tar-minitar (>= 0.5.2)
     rubyzip (0.9.9)
     safe_yaml (0.9.3)
     sass (3.2.7)
@@ -280,6 +273,7 @@ DEPENDENCIES
   cucumber-rails
   curb
   database_cleaner
+  debugger
   devise
   devise_invitable
   diff-lcs
@@ -302,7 +296,6 @@ DEPENDENCIES
   rake
   rspec
   rspec-rails
-  ruby-debug19
   sass
   sass-rails
   selenium-webdriver
