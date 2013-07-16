@@ -41,9 +41,9 @@ class TaxonMother
     end
   end
 
-  def save_change object
+  def save_change taxon
     change = Change.new
-    change.version = object.version
+    change.version = taxon.versions.last
     change.save!
   end
 
