@@ -300,10 +300,16 @@ describe Reference do
     it "should record events and allow restoring a prior version" do
       with_versioning do
         reference = UnknownReference.create! title: 'title', citation_year: '2010', citation: 'citation'
-        reference.versions.last.event.should == 'create'
 
-        reference.update_attribute :title, 'new title'
-        version = reference.versions.last
+        versions = reference.versions
+        version = versions.last
+        version.event.should == 'create'
+
+        reference.title = 'new title'
+        reference.save!
+
+        versions = reference.versions true
+        version = versions.last
         version.event.should == 'update'
 
         reference = version.reify
