@@ -18,9 +18,10 @@
           %tr
             %td.label Status
             %td.value.status= Status[taxon.status].to_s
-          -#%tr
-            -#%td.label Incertae sedis in
-            -#%td.value species
+          - if taxon.incertae_sedis_in.present?
+            %tr
+              %td.label Incertae sedis in
+              %td.value.incertae_sedis= taxon.incertae_sedis_in
           -#%tr
             -#%td.label Attributes
             -#%td.value= ['Fossil', 'Hong', '<i>nomen nudum</i>'].join(', ').html_safe
