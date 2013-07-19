@@ -12,5 +12,23 @@ describe Change do
     change.paper_trail_version.should == genus.version
     change.paper_trail_version.should be_nil
   end
+
+  it "should be able to be reified after being created" do
+    with_versioning do
+      genus = create_genus
+
+      change = Change.new paper_trail_version: genus.versions(true).last
+      taxon = change.reify
+      taxon.should == genus
+      taxon.class.should == Genus
+
+      genus.update_attributes name_cache: 'Atta'
+
+      change = Change.new paper_trail_version: genus.versions(true).last
+      taxon = change.reify
+      taxon.should == genus
+      taxon.class.should == Genus
+
+    end
   end
 end
