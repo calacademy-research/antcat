@@ -22,12 +22,15 @@
             %tr
               %td.label Incertae sedis in
               %td.value.incertae_sedis= taxon.incertae_sedis_in
-          -#%tr
-            -#%td.label Attributes
-            -#%td.value= ['Fossil', 'Hong', '<i>nomen nudum</i>'].join(', ').html_safe
-          -#%tr
-            -#%td.label Notes
-            -#%td.value Something with taxt in it
+          - attributes = format_change_attributes taxon
+          - if attributes.present?
+            %tr
+              %td.label Attributes
+              %td.value.attributes= attributes
+          - if taxon.headline_notes_taxt.present?
+            %tr
+              %td.label Notes
+              %td.value.notes= format_taxt taxon.headline_notes_taxt
 
         -#%table
           -#%tr

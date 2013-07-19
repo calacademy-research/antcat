@@ -18,6 +18,8 @@ Feature: Workflow
     And I set the name to "Atta"
     And I press "OK"
     And I select "subfamily" from "taxon_incertae_sedis_in"
+    And I check "Hong"
+    And I fill in "taxon_headline_notes_taxt" with "Notes"
     And I click the protonym name field
     And I set the protonym name to "Eciton"
     And I press "OK"
@@ -35,8 +37,8 @@ Feature: Workflow
     And I should see the subfamily "Formicinae" in the changes
     And I should see the status "valid" in the changes
     And I should see the incertae sedis status of "subfamily" in the changes
-    #And I should see the attribute "Hong" checked in the changes
-    #And I should see the note "Note" in the changes
+    And I should see the attribute "Hong" in the changes
+    And I should see the note "Notes" in the changes
     #And I should see the protonym name "Eciton" in the changes
     #And I should see the protonym attribute "Fossil" checked in the changes
     #And I should see the authorship reference "Fisher 2004. Ants. Psyche 3:3." in the changes
