@@ -249,10 +249,48 @@ describe Name do
   end
 
   describe "Versioning" do
-    it "should record versions" do
+    it "should record an add" do
       with_versioning do
-        genus = create_genus
-        genus.name.versions.last.event.should == 'create'
+        name = Name.create! name: 'Atta'
+        versions = name.versions
+        version = versions.last
+        version.event.should == 'create'
+      end
+    end
+    it "should record an update" do
+      name = Name.create! name: 'Atta'
+      with_versioning do
+        name.update_attribute :name, 'Eciton'
+        versions = name.versions
+        version = versions.last
+        version.event.should == 'update'
+      end
+    end
+    it "should record a create" do
+      name = Name.new name: 'Atta'
+      with_versioning do
+        name['name'] = 'Eciton'
+        name.save!
+        versions = name.versions
+        version = versions.last
+        version.event.should == 'create'
+      end
+    end
+    it "should record an add followed by an update" do
+      with_versioning do
+        name = Name.create! name: 'Atta'
+        version = name.versions(true).last
+        version.event.should == 'create'
+
+        name['name'] = 'Eciton'
+        name.save!
+
+        versions = name.versions(true)
+        name.should have(2).versions
+        version = versions.first
+        version.event.should == 'create'
+        version = versions.last
+        version.event.should == 'update'
       end
     end
   end
