@@ -19,3 +19,9 @@ end
 Then /^I should see the incertae sedis status of "(.*?)" in the changes$/ do |value|
   should_see_in_changes '.incertae_sedis', value
 end
+Then /^I should see the attribute "(.*?)" in the changes$/ do |value|
+  should_see_in_changes '.attributes', value
+end
+Then /^I should see the note "(.*?)" in the changes$/ do |value|
+  should_see_in_changes '.notes', value
+end
