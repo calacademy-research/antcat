@@ -43,7 +43,7 @@ class TaxonMother
 
   def save_change taxon
     change = Change.new
-    change.version = taxon.versions.last
+    change.paper_trail_version = taxon.versions(true).last
     change.save!
   end
 
