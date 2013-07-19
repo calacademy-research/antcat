@@ -16,3 +16,6 @@ end
 Then /^I should see the status "(.*?)" in the changes$/ do |value|
   should_see_in_changes '.status', value
 end
+Then /^I should see the incertae sedis status of "(.*?)" in the changes$/ do |value|
+  should_see_in_changes '.incertae_sedis', value
+end

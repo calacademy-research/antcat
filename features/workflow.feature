@@ -17,6 +17,7 @@ Feature: Workflow
     And I click the name field
     And I set the name to "Atta"
     And I press "OK"
+    And I select "subfamily" from "taxon_incertae_sedis_in"
     And I click the protonym name field
     And I set the protonym name to "Eciton"
     And I press "OK"
@@ -33,7 +34,7 @@ Feature: Workflow
     Then I should see the name "Atta" in the changes
     And I should see the subfamily "Formicinae" in the changes
     And I should see the status "valid" in the changes
-    #And I should see the incertae sedis status of "species" in the changes
+    And I should see the incertae sedis status of "subfamily" in the changes
     #And I should see the attribute "Hong" checked in the changes
     #And I should see the note "Note" in the changes
     #And I should see the protonym name "Eciton" in the changes
