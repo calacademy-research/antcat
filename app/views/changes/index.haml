@@ -1,6 +1,7 @@
 -#Instance variables: @changes
 
 - @changes.each do |change|
+  - taxon = change.reify
   -#%div.entry_header 3 days ago Mark Wilden added <i><b>Pachycondylus arreteria</b></i>
 
   %table
@@ -10,7 +11,7 @@
         %table
           %tr
             %td.label Name
-            %td.value.name Atta
+            %td.value.name= taxon.name.name_html.html_safe
           -#%tr
             -#%td.label Genus
             -#%td.value <i>Pachocondylus</i>
