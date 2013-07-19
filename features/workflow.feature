@@ -30,7 +30,7 @@ Feature: Workflow
     And I press "Add this name"
     And I save my changes
     When I go to the changes page
-    #Then I should see the name "Atta" in the changes
+    Then I should see the name "Atta" in the changes
     #And I should see the subfamily "Formicinae" in the changes
     #And I should see the status "valid" in the changes
     #And I should see the incertae sedis status of "species" in the changes
