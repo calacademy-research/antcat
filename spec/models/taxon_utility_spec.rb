@@ -69,7 +69,7 @@ describe Taxon do
       with_versioning do
         genus = create_genus
         genus.update_attributes! status: 'synonym'
-        genus.versions.last.changeset.should == {'status' => ['valid', 'synonym']}
+        genus.versions(true).last.changeset.should == {'status' => ['valid', 'synonym']}
       end
     end
   end
