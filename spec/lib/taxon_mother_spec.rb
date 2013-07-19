@@ -159,7 +159,7 @@ describe TaxonMother do
         params = @genus_params
         @mother.save_taxon taxon, params
         change = Change.first
-        change.version.should be_nil
+        change.paper_trail_version.should be_nil
       end
     end
 
