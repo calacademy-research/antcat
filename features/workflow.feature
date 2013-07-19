@@ -32,7 +32,7 @@ Feature: Workflow
     When I go to the changes page
     Then I should see the name "Atta" in the changes
     And I should see the subfamily "Formicinae" in the changes
-    #And I should see the status "valid" in the changes
+    And I should see the status "valid" in the changes
     #And I should see the incertae sedis status of "species" in the changes
     #And I should see the attribute "Hong" checked in the changes
     #And I should see the note "Note" in the changes
