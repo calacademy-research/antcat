@@ -12,9 +12,9 @@
           %tr
             %td.label Name
             %td.value.name= taxon.name.name_html.html_safe
-          -#%tr
-            -#%td.label Genus
-            -#%td.value <i>Pachocondylus</i>
+          %tr
+            %td.label.parent_rank= Rank[taxon.rank].parent.display_string
+            %td.value.parent= taxon.parent.name.name_html.html_safe
           -#%tr
             -#%td.label Status
             -#%td.value valid
