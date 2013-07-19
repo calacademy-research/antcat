@@ -52,7 +52,6 @@ describe Taxon do
       original_combinations = Taxon.where status: 'original combination'
       original_combinations.size.should == 1
       original_combination = original_combinations.first
-      original_combination.name.name.should == 'Paratrechina minutula'
       original_combination.genus.should == paratrechina
       original_combination.current_valid_taxon.should == recombined
     end
