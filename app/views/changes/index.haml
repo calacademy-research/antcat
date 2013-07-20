@@ -2,7 +2,7 @@
 
 - @changes.each do |change|
   - taxon = change.reify
-  -#%div.entry_header 3 days ago Mark Wilden added <i><b>Pachycondylus arreteria</b></i>
+  %div.entry_header #{User.find(change.whodunnit).name} added <b>#{taxon.name.name_html.html_safe}</b> #{change.human_time_ago}
 
   %table
     %tr
