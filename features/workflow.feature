@@ -22,6 +22,7 @@ Feature: Workflow
     And I fill in "taxon_headline_notes_taxt" with "Notes"
     And I click the protonym name field
     And I set the protonym name to "Eciton"
+    And I check "Sic"
     And I press "OK"
     And I click the authorship field
     And I search for the author "Fisher"
@@ -40,7 +41,7 @@ Feature: Workflow
     And I should see the attribute "Hong" in the changes
     And I should see the note "Notes" in the changes
     #And I should see the protonym name "Eciton" in the changes
-    #And I should see the protonym attribute "Fossil" checked in the changes
+    And I should see the protonym attribute "sic" in the changes
     #And I should see the authorship reference "Fisher 2004. Ants. Psyche 3:3." in the changes
     #And I should see the page "260" in the changes
     #And I should see the forms "m." in the changes

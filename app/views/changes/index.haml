@@ -54,6 +54,11 @@
           -#%tr
             -#%td.label Locality
             -#%td.value Australia
+          - protonym_attributes = format_change_protonym_attributes taxon
+          - if protonym_attributes.present?
+            %tr
+              %td.label Attributes
+              %td.value.protonym_attributes= protonym_attributes
 
         -#%table
           -#%tr
