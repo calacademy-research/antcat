@@ -25,3 +25,6 @@ end
 Then /^I should see the note "(.*?)" in the changes$/ do |value|
   should_see_in_changes '.notes', value
 end
+Then /^I should see the protonym attribute "(.*?)" in the changes$/ do |value|
+  should_see_in_changes '.protonym_attributes', value
+end
