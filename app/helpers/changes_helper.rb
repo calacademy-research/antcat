@@ -19,6 +19,12 @@ module ChangesHelper
     string.join(', ').html_safe
   end
 
+  def format_change_type_attributes taxon
+    string = []
+    string << 'Fossil' if taxon.type_fossil?
+    string.join(', ').html_safe
+  end
+
   def format_taxt taxt
     Taxt.to_string taxt, current_user
   end
