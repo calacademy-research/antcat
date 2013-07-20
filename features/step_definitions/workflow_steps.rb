@@ -22,7 +22,7 @@ end
 Then /^I should see the attribute "(.*?)" in the changes$/ do |value|
   should_see_in_changes '.attributes', value
 end
-Then /^I should see the note "(.*?)" in the changes$/ do |value|
+Then /^I should see the notes "(.*?)" in the changes$/ do |value|
   should_see_in_changes '.notes', value
 end
 Then /^I should see the protonym name "(.*?)" in the changes$/ do |value|
@@ -42,4 +42,13 @@ Then /^I should see the forms "(.*?)" in the changes$/ do |value|
 end
 Then /^I should see the locality "(.*?)" in the changes$/ do |value|
   should_see_in_changes '.locality', value
+end
+Then /^I should see the type name "(.*?)" in the changes$/ do |value|
+  should_see_in_changes '.type_name', value
+end
+Then /^I should see the type attribute "(.*?)" in the changes$/ do |value|
+  should_see_in_changes '.type_attributes', value
+end
+Then /^I should see the type notes "(.*?)" in the changes$/ do |value|
+  should_see_in_changes '.type_notes', value
 end
