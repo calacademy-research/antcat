@@ -32,28 +32,9 @@
               %td.label Notes
               %td.value.notes= format_taxt taxon.headline_notes_taxt
 
-        -#%table
-          -#%tr
-            -#%td.header{colspan: 100}Protonym
-          -#%tr
-            -#%td.label Name
-            -#%td.value Cerylus arreteria
-          -#%tr
-            -#%td.label Attributes
-            -#%td.value= ['Fossil', '<i>sic</i>'].join(', ').html_safe
-          -#%tr
-            -#%td.label Authorship
-            -#%td.value
-              -#Abe, T. 1974. Notes on the fauna of ants in Iriomote Island. [In Japanese.]. Pp. 105-111 in: Ikehara, S. (ed.) 1974. Ecological studies of nature conservation of the Ryukyu Islands (1). Report for the fiscal year of 1973. [In Japanese.]. Naha, Okinawa: University of the Ryukyus, 278 pp. [1974-03-30] 122100
-          -#%tr
-            -#%td.label Page
-            -#%td.value 260
-          -#%tr
-            -#%td.label Forms
-            -#%td.value m.
-          -#%tr
-            -#%td.label Locality
-            -#%td.value Australia
+          %tr
+            %td.label Name
+            %td.value.protonym_name= taxon.protonym.name.name_html.html_safe
           - protonym_attributes = format_change_protonym_attributes taxon
           - if protonym_attributes.present?
             %tr
