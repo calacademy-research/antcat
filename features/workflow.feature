@@ -40,7 +40,7 @@ Feature: Workflow
     And I should see the incertae sedis status of "subfamily" in the changes
     And I should see the attribute "Hong" in the changes
     And I should see the note "Notes" in the changes
-    #And I should see the protonym name "Eciton" in the changes
+    And I should see the protonym name "Eciton" in the changes
     And I should see the protonym attribute "sic" in the changes
     #And I should see the authorship reference "Fisher 2004. Ants. Psyche 3:3." in the changes
     #And I should see the page "260" in the changes
