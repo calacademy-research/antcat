@@ -1,6 +1,9 @@
 # coding: UTF-8
 class Change < ActiveRecord::Base
+  include ActionView::Helpers::DateHelper
   belongs_to :paper_trail_version, class_name: 'PaperTrail::Version'
+
+  delegate :whodunnit, to: :paper_trail_version
 
   def reify
     # this dodgy code is from paper_trail_manager's changes_helper.rb
@@ -11,6 +14,10 @@ class Change < ActiveRecord::Base
     rescue ActiveRecord::RecordNotFound
       previous || current
     end
+  end
+
+  def human_time_ago
+    "#{time_ago_in_words paper_trail_version.created_at} ago"
   end
 
 end
