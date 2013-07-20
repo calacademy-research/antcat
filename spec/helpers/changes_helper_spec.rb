@@ -16,5 +16,10 @@ describe ChangesHelper do
       helper.format_change_protonym_attributes(genus).should == 'Fossil, <i>sic</i>'
     end
 
+    it "should include the one type attribute" do
+      genus = create_genus type_fossil: true
+      helper.format_change_type_attributes(genus).should == 'Fossil'
+    end
+
   end
 end

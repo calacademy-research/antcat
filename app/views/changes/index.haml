@@ -63,9 +63,13 @@
             %tr
               %td.label Name
               %td.value.type_name= taxon.type_name.name_html.html_safe
-            %tr
-              %td.label Attributes
-              %td.value= ['Fossil'].join(', ')
-            %tr
-              %td.label Notes
-              %td.value Something with taxt in it
+            - type_attributes = format_change_type_attributes taxon
+            - if type_attributes.present?
+              %tr
+                %td.label Attributes
+                %td.value.type_attributes= type_attributes
+            - if taxon.type_taxt.present?
+              %tr
+                %td.label Notes
+                %td.value.type_notes= format_taxt taxon.type_taxt
+              %tr
