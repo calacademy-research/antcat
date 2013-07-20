@@ -31,3 +31,15 @@ end
 Then /^I should see the protonym attribute "(.*?)" in the changes$/ do |value|
   should_see_in_changes '.protonym_attributes', value
 end
+Then /^I should see the authorship reference "(.*?)" in the changes$/ do |value|
+  should_see_in_changes '.authorship_reference', value
+end
+Then /^I should see the page "(.*?)" in the changes$/ do |value|
+  should_see_in_changes '.page', value
+end
+Then /^I should see the forms "(.*?)" in the changes$/ do |value|
+  should_see_in_changes '.forms', value
+end
+Then /^I should see the locality "(.*?)" in the changes$/ do |value|
+  should_see_in_changes '.locality', value
+end

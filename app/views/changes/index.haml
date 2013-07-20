@@ -32,6 +32,9 @@
               %td.label Notes
               %td.value.notes= format_taxt taxon.headline_notes_taxt
 
+        %table
+          %tr
+            %td.header{colspan: 100}Protonym
           %tr
             %td.label Name
             %td.value.protonym_name= taxon.protonym.name.name_html.html_safe
@@ -40,16 +43,29 @@
             %tr
               %td.label Attributes
               %td.value.protonym_attributes= protonym_attributes
+          %tr
+            %td.label Authorship
+            %td.value.authorship_reference= Formatters::ReferenceFormatter.format taxon.protonym.authorship.reference
+          %tr
+            %td.label Page
+            %td.value.page= taxon.protonym.authorship.pages
+          %tr
+            %td.label Forms
+            %td.value.forms= taxon.protonym.authorship.forms
+          %tr
+            %td.label Locality
+            %td.value.locality= taxon.protonym.locality
 
-        -#%table
-          -#%tr
-            -#%td.header{colspan: 100}Type
-          -#%tr
-            -#%td.label Name
-            -#%td.value Cerylus arreteria
-          -#%tr
-            -#%td.label Attributes
-            -#%td.value= ['Fossil'].join(', ')
-          -#%tr
-            -#%td.label Notes
-            -#%td.value Something with taxt in it
+        - if taxon.type_name.present?
+          %table
+            %tr
+              %td.header{colspan: 100}Type
+            %tr
+              %td.label Name
+              %td.value.type_name= taxon.type_name.name_html.html_safe
+            %tr
+              %td.label Attributes
+              %td.value= ['Fossil'].join(', ')
+            %tr
+              %td.label Notes
+              %td.value Something with taxt in it
