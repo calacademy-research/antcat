@@ -205,11 +205,11 @@ class Importers::Bolton::Catalog::Importer
   end
 
   def fix_double_periods string
-    string.gsub /\.\./, '.' 
+    string.gsub /\.\./, '.'
   end
 
   def fix_utf_characters string
-    string = string.gsub /’/, "'" 
+    string = string.gsub /’/, "'"
     string = string.gsub /”/, '"'
     string = string.gsub /“/, '"'
     string = string.gsub /–/, '-'

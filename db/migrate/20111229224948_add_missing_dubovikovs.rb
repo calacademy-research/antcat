@@ -11,7 +11,7 @@ class AddMissingDubovikovs < ActiveRecord::Migration
       :series_volume_issue => '1',
       :pagination => '189-191',
       :reference_type => 'ArticleReference',
-      :original => 
+      :original =>
 %{Dubovikov, D.A. 2005b. A new species of the genus Proformica Ruzsky, 1902 from North Ossetia and key to the identification of Proformica species of the Caucasian Isthmus. Caucasian Entomological Bulletin [Kavkazskii Entomolicheskii Byulleten’] 1: 189-191.}
     raise unless b.valid?
 

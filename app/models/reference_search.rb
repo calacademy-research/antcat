@@ -61,7 +61,7 @@ class Reference < ActiveRecord::Base
         .having("COUNT(`references`.id) = #{authors.length}")
         .order(:author_names_string_cache, :citation_year)
       query = query.paginate page: page if page
-      query 
+      query
 
     when options[:id]
       query = where id: options[:id]

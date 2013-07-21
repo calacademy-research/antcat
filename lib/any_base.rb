@@ -19,12 +19,12 @@ module AnyBase
     base = digits.length
     multiplier = 1
     index = number.length - 1
-    raise unless index >= 0 
-     
+    raise unless index >= 0
+
     begin
       digit = number[index]
       digit_value = digits.index digit
-      raise unless digit_value 
+      raise unless digit_value
       result += digit_value * multiplier
       multiplier *= base
       index -= 1
