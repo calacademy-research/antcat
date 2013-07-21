@@ -86,6 +86,9 @@ class TaxonMother
     return unless @taxon.protonym.authorship
     attributes[:reference_id] = attributes.delete(:reference_attributes)[:id]
     return if attributes[:reference_id].blank? and @taxon.protonym.authorship.reference.blank?
+    if attributes[:notes_taxt]
+      @taxon.protonym.authorship.notes_taxt = Taxt.from_editable attributes.delete :notes_taxt
+    end
     @taxon.protonym.authorship.attributes = attributes
   end
 
