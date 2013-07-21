@@ -43,6 +43,9 @@ end
 Then /^I should see the locality "(.*?)" in the changes$/ do |value|
   should_see_in_changes '.locality', value
 end
+Then /^I should see the authorship notes "(.*?)" in the changes$/ do |value|
+  should_see_in_changes '.authorship_notes', value
+end
 Then /^I should see the type name "(.*?)" in the changes$/ do |value|
   should_see_in_changes '.type_name', value
 end

@@ -58,6 +58,11 @@
           %tr
             %td.label Locality
             %td.value.locality= taxon.protonym.locality
+          - authorship_notes = taxon.protonym.authorship.notes_taxt
+          - if authorship_notes.present?
+            %tr
+              %td.label Notes
+              %td.value.authorship_notes= format_taxt authorship_notes
 
         - if taxon.type_name.present?
           %table
