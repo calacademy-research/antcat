@@ -1,7 +1,7 @@
 # coding: UTF-8
 class Change < ActiveRecord::Base
   include ActionView::Helpers::DateHelper
-  belongs_to :paper_trail_version, class_name: 'PaperTrail::Version'
+  belongs_to :paper_trail_version, class_name: 'Version'
 
   delegate :whodunnit, to: :paper_trail_version
 
