@@ -67,7 +67,7 @@ module Importers::Bolton::Catalog::TextToTaxt
 
   def self.fill_in_genus_if_necessary item
     if item[:genus_abbreviation]
-      item.delete :genus_abbreviation 
+      item.delete :genus_abbreviation
       item[:genus_name] = @genus_name
     elsif item[:subgenus_epithet] || item[:species_epithet] || item[:species_group_epithet] || item[:subspecies_epithet]
       unless item[:genus] || item[:genus_name]
