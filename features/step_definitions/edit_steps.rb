@@ -65,6 +65,9 @@ end
 And /^I click the authorship field$/ do
   step %{I click "#authorship_field .display_button"}
 end
+When /^I fill in the authorship notes with "([^"]*)"$/ do |notes|
+  step %{I fill in "taxon_protonym_attributes_authorship_attributes_notes_taxt" with "#{notes}"}
+end
 
 ### protonym name field
 When /I click the protonym name field/ do

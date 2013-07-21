@@ -65,6 +65,7 @@ describe TaxonMother do
             reference_attributes: {id: @reference.id},
             pages: '',
             forms: '',
+            notes_taxt: '',
           },
         }
       )
@@ -138,6 +139,20 @@ describe TaxonMother do
       taxon.should be_ichnotaxon
       taxon.headline_notes_taxt.should == "{ref #{headline_reference.id}}"
       taxon.type_taxt.should ==  "{ref #{taxt_reference.id}}"
+    end
+
+    it "should set authorship taxt" do
+      reference = FactoryGirl.create :article_reference
+      taxon = @mother.create_taxon Rank[:species], create_genus
+      params = @taxon_params.deep_dup
+      params[:name_attributes][:id] = FactoryGirl.create(:species_name, name: 'Atta major').id
+      params[:protonym_attributes][:name_attributes][:id] = FactoryGirl.create(:species_name, name: 'Betta major').id
+      params[:protonym_attributes][:authorship_attributes][:notes_taxt] = Taxt.to_editable "{ref #{reference.id}}"
+
+      @mother.save_taxon taxon, params
+
+      taxon.reload
+      taxon.protonym.authorship.notes_taxt.should == "{ref #{reference.id}}"
     end
 
     it "should set homonym replaced by" do
