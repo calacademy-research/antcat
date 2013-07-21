@@ -349,8 +349,4 @@ ActiveRecord::Schema.define(:version => 20130719013410) do
 
   add_index "versions", ["item_type", "item_id"], :name => "index_versions_on_item_type_and_item_id"
 
-  create_table "widgets", :force => true do |t|
-    t.string "name", :limit => 256
-  end
-
 end
