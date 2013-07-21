@@ -25,6 +25,10 @@ module ChangesHelper
     string.join(', ').html_safe
   end
 
+  def format_time_ago time
+    content_tag :span, "#{time_ago_in_words time} ago", title: time
+  end
+
   def format_taxt taxt
     Taxt.to_string taxt, current_user
   end
