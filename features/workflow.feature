@@ -30,6 +30,7 @@ Feature: Workflow
     And I press "OK"
     And I fill in "taxon_protonym_attributes_authorship_attributes_pages" with "260"
     And I fill in "taxon_protonym_attributes_authorship_attributes_forms" with "m."
+    And I fill in "taxon_protonym_attributes_authorship_attributes_notes_taxt" with "Authorship notes"
     And I fill in "taxon_protonym_attributes_locality" with "Africa"
     And I click the type name field
     And I set the type name to "Atta major"
@@ -50,6 +51,7 @@ Feature: Workflow
     And I should see the authorship reference "Fisher 2004. Ants. Psyche 3:3." in the changes
     And I should see the page "260" in the changes
     And I should see the forms "m." in the changes
+    And I should see the authorship notes "Authorship notes" in the changes
     And I should see the locality "Africa" in the changes
     And I should see the type name "Atta major" in the changes
     And I should see the type attribute "Fossil" in the changes
