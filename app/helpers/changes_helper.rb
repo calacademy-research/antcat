@@ -1,11 +1,11 @@
 # coding: UTF-8
 module ChangesHelper
 
-  def format_change_header change, taxon
+  def format_header change, taxon
     "#{User.find(change.whodunnit).name} added <b>#{taxon.name.name_html.html_safe}</b> #{format_time_ago(change.created_at)}".html_safe
   end
 
-  def format_change_attributes taxon
+  def format_attributes taxon
     string = []
     string << 'Fossil' if taxon.fossil?
     string << 'Hong' if taxon.hong?
@@ -15,7 +15,7 @@ module ChangesHelper
     string.join(', ').html_safe
   end
 
-  def format_change_protonym_attributes taxon
+  def format_protonym_attributes taxon
     protonym = taxon.protonym
     string = []
     string << 'Fossil' if protonym.fossil?
@@ -23,7 +23,7 @@ module ChangesHelper
     string.join(', ').html_safe
   end
 
-  def format_change_type_attributes taxon
+  def format_type_attributes taxon
     string = []
     string << 'Fossil' if taxon.type_fossil?
     string.join(', ').html_safe
