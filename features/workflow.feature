@@ -39,7 +39,7 @@ Feature: Workflow
     And I check "taxon_type_fossil"
     And I fill in "taxon_type_taxt" with "Type notes"
     And I save my changes
-    When I go to the changes page
+    And I go to the changes page
     Then I should see the name "Atta" in the changes
     And I should see the subfamily "Formicinae" in the changes
     And I should see the status "valid" in the changes
