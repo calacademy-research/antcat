@@ -88,9 +88,9 @@ describe Taxt do
     describe "To editable taxt" do
       describe "References" do
         it "should use the inline citation format followed by the id, with type number" do
-          key = mock 'key'
+          key = double 'key'
           key.should_receive(:to_s).and_return 'Fisher, 1922'
-          reference = mock 'reference', id: 36
+          reference = double 'reference', id: 36
           Reference.should_receive(:find).and_return reference
           reference.stub(:key).and_return key
           editable_key = Taxt.id_for_editable reference.id, 1
@@ -167,7 +167,7 @@ describe Taxt do
         it "should format a ref" do
           reference = FactoryGirl.create :article_reference
           Reference.should_receive(:find).with(reference.id.to_s).and_return reference
-          key_stub = stub
+          key_stub = double
           reference.should_receive(:key).and_return key_stub
           key_stub.should_receive(:to_link).and_return('foo')
           Taxt.to_string("{ref #{reference.id}}", nil).should == 'foo'
@@ -191,7 +191,7 @@ describe Taxt do
         it "should format a ref" do
           reference = FactoryGirl.create :article_reference
           Reference.should_receive(:find).with(reference.id.to_s).and_return reference
-          key_stub = stub
+          key_stub = double
           reference.should_receive(:key).and_return key_stub
           key_stub.should_receive(:to_s).and_return('foo')
           Taxt.to_display_string("{ref #{reference.id}}", nil).should == 'foo'
@@ -225,7 +225,7 @@ describe Taxt do
         end
         it "should be able to use a different link formatter" do
           genus = create_genus name: FactoryGirl.create(:genus_name, name_html: '<i>Atta</i>')
-          formatter = mock
+          formatter = double
           formatter.should_receive :link_to_taxon
           Taxt.to_string("{tax #{genus.id}}", nil, formatter: formatter)
         end

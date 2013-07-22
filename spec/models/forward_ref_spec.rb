@@ -27,8 +27,8 @@ describe ForwardRef do
 
   describe "Fixing up all forward references" do
     it "should call each's fixup method" do
-      first = mock
-      second = mock
+      first = double
+      second = double
       ForwardRef.should_receive(:all).and_return [first, second]
       first.should_receive :fixup
       second.should_receive :fixup

@@ -8,7 +8,7 @@ describe Importers::Bolton::Catalog::Importer do
 
   describe "Parsing" do
     before do
-      @grammar = mock
+      @grammar = double
       @importer.stub(:grammar).and_return @grammar
     end
 
@@ -19,7 +19,7 @@ describe Importers::Bolton::Catalog::Importer do
 
     it "should work when the specific rule matches" do
       @grammar.stub(:parse).with("specific rule match", :root => :specific_rule).
-        and_return stub(:value => :success)
+        and_return double(:value => :success)
       @importer.parse("specific rule match", :specific_rule).should == :success
     end
   end

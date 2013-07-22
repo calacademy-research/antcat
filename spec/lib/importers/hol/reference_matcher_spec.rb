@@ -8,7 +8,7 @@ describe Importers::Hol::ReferenceMatcher do
 
   describe "No matching authors" do
     it "should return :no_entries_for_author" do
-      Importers::Hol::Bibliography.stub!(:read_references).and_return []
+      Importers::Hol::Bibliography.stub(:read_references).and_return []
       reference = FactoryGirl.build :reference
       @matcher.match(reference).should == :no_entries_for_author
     end
@@ -16,10 +16,10 @@ describe Importers::Hol::ReferenceMatcher do
 
   describe "Returning just one match" do
     it "should return the best match" do
-      best_match = mock
-      good_match = mock
+      best_match = double
+      good_match = double
       reference = FactoryGirl.build :article_reference
-      Importers::Hol::Bibliography.stub!(:read_references).and_return [good_match, best_match]
+      Importers::Hol::Bibliography.stub(:read_references).and_return [good_match, best_match]
       reference.should_receive(:<=>).with(best_match).and_return 0.9
       reference.should_receive(:<=>).with(good_match).and_return 0.8
       @matcher.match(reference).should == best_match
@@ -30,7 +30,7 @@ describe Importers::Hol::ReferenceMatcher do
     it "should return nil" do
       reference = FactoryGirl.build :article_reference
       hol_reference = Hol::Reference.new
-      @matcher.stub!(:candidates_for).and_return [hol_reference]
+      @matcher.stub(:candidates_for).and_return [hol_reference]
       reference.stub(:<=>).and_return 0.0
       @matcher.match(reference).should be_nil
     end
@@ -40,7 +40,7 @@ describe Importers::Hol::ReferenceMatcher do
     it "should return that match" do
       reference = FactoryGirl.build :article_reference
       hol_reference = Hol::Reference.new
-      @matcher.stub!(:candidates_for).and_return [hol_reference]
+      @matcher.stub(:candidates_for).and_return [hol_reference]
       reference.stub(:<=>).and_return 1.0
       @matcher.match(reference).should == hol_reference
     end
