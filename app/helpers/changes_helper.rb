@@ -1,6 +1,10 @@
 # coding: UTF-8
 module ChangesHelper
 
+  def format_change_header change, taxon
+    "#{User.find(change.whodunnit).name} added <b>#{taxon.name.name_html.html_safe}</b> #{format_time_ago(change.created_at)}".html_safe
+  end
+
   def format_change_attributes taxon
     string = []
     string << 'Fossil' if taxon.fossil?
