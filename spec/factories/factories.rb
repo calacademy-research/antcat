@@ -269,14 +269,25 @@ FactoryGirl.define do
   end
 
   ####################################################
-  factory :antwiki_valid_taxon do
-  end
-
-  ####################################################
   factory :reference_section do
     association :taxon
     sequence(:position) {|n| n}
     sequence(:references_taxt) {|n| "Reference #{n}"}
+  end
+
+  ####################################################
+  factory :antwiki_valid_taxon do
+  end
+
+  ####################################################
+  factory :version do
+    item_type 'Taxon'
+    event     'create'
+    association :whodunnit, factory: :user
+  end
+
+  factory :change do
+    association :paper_trail_version, factory: :version
   end
 
 end
