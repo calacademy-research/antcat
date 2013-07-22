@@ -2,7 +2,7 @@
 
 - taxon = change.reify
 
-%div.change_header= format_change_header change, taxon
+%div.change_header= format_header change, taxon
 
 %table
   %tr
@@ -22,7 +22,7 @@
           %tr
             %td.label Incertae sedis in
             %td.value.incertae_sedis= taxon.incertae_sedis_in
-        - attributes = format_change_attributes taxon
+        - attributes = format_attributes taxon
         - if attributes.present?
           %tr
             %td.label Attributes
@@ -38,7 +38,7 @@
         %tr
           %td.label Name
           %td.value.protonym_name= taxon.protonym.name.name_html.html_safe
-        - protonym_attributes = format_change_protonym_attributes taxon
+        - protonym_attributes = format_protonym_attributes taxon
         - if protonym_attributes.present?
           %tr
             %td.label Attributes
@@ -68,7 +68,7 @@
           %tr
             %td.label Name
             %td.value.type_name= taxon.type_name.name_html.html_safe
-          - type_attributes = format_change_type_attributes taxon
+          - type_attributes = format_type_attributes taxon
           - if type_attributes.present?
             %tr
               %td.label Attributes
