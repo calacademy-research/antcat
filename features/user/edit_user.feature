@@ -8,7 +8,7 @@ Feature: Editing a user
   Scenario: Changing my password
     Given I am logged in
     When I go to the main page
-    And I follow "mark@example.com"
+    And I follow "Mark Wilden"
     Then I should be on the edit user page
     When I fill in "user_password" with "new password" within "#page_contents"
     And I fill in "user_password_confirmation" with "new password" within "#page_contents"
@@ -16,12 +16,25 @@ Feature: Editing a user
     And I press "Update"
     Then I should be on the main page
     And I should see "Your account has been updated"
+  #Scenario: Logging in with changed password
     When I follow "Logout"
-    Then I should not see "mark@example.com"
+    Then I should not see "Mark Wilden"
     When I follow "Login"
     And I fill in "user_email" with "mark@example.com"
     And I fill in "user_password" with "new password"
     And I press "Go" within "#login"
     Then I should be on the main page
-    And I should see "mark@example.com"
+    And I should see "Mark Wilden"
 
+  Scenario: Changing my user name
+    Given I am logged in
+    When I go to the main page
+    Then I should see "Mark Wilden"
+    And I should not see "Brian Fisher"
+    When I follow "Mark Wilden"
+    And I fill in "user_name" with "Brian Fisher" within "#page_contents"
+    And I fill in "user_current_password" with "secret" within "#page_contents"
+    And I press "Update"
+    Then I should be on the main page
+    And I should see "Brian Fisher"
+    And I should not see "Mark Wilden"
