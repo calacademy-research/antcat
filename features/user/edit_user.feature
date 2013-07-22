@@ -13,7 +13,7 @@ Feature: Editing a user
     When I fill in "user_password" with "new password" within "#page_contents"
     And I fill in "user_password_confirmation" with "new password" within "#page_contents"
     And I fill in "user_current_password" with "secret" within "#page_contents"
-    And I press "Update"
+    And I press "Save"
     Then I should be on the main page
     And I should see "Your account has been updated"
   #Scenario: Logging in with changed password
@@ -34,7 +34,7 @@ Feature: Editing a user
     When I follow "Mark Wilden"
     And I fill in "user_name" with "Brian Fisher" within "#page_contents"
     And I fill in "user_current_password" with "secret" within "#page_contents"
-    And I press "Update"
+    And I press "Save"
     Then I should be on the main page
     And I should see "Brian Fisher"
     And I should not see "Mark Wilden"
