@@ -6,6 +6,7 @@ end
 def should_see_in_changes selector, value
   page.should have_css selector, text: value
 end
+
 Then /^I should see the name "(.*?)" in the changes$/ do |value|
   should_see_in_changes '.name', value
 end
