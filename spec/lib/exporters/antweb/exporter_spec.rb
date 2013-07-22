@@ -4,7 +4,7 @@ require 'spec_helper'
 describe Exporters::Antweb::Exporter do
   before do
     @exporter = Exporters::Antweb::Exporter.new
-    stub = mock format: 'history'
+    stub = double format: 'history'
     Exporters::Antweb::Formatter.stub(:new).and_return stub
   end
 

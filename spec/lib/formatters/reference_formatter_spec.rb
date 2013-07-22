@@ -226,7 +226,7 @@ describe Formatters::ReferenceFormatter do
   describe "inline_citation" do
     describe "with links" do
       it "nonmissing references should defer to the key" do
-        key = mock
+        key = double
         reference = FactoryGirl.create :article_reference
         reference.should_receive(:key).and_return key
         key.should_receive(:to_link)
@@ -239,7 +239,7 @@ describe Formatters::ReferenceFormatter do
     end
     describe "without links" do
       it "nonmissing references should defer to the key" do
-        key = mock
+        key = double
         reference = FactoryGirl.create :article_reference
         reference.should_receive(:key).and_return key
         key.should_receive(:to_s)

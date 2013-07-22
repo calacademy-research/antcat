@@ -165,14 +165,14 @@ describe Formatters::TaxonFormatter do
 
   describe 'Taxon statistics' do
     it "should get the statistics, then format them" do
-      subfamily = mock
+      subfamily = double
       subfamily.should_receive(:statistics).and_return extant: :foo
       formatter = Formatters::TaxonFormatter.new subfamily
       Formatters::StatisticsFormatter.should_receive(:statistics).with({extant: :foo}, {})
       formatter.statistics
     end
     it "should just return nil if there are no statistics" do
-      subfamily = mock
+      subfamily = double
       subfamily.should_receive(:statistics).and_return nil
       formatter = Formatters::TaxonFormatter.new subfamily
       Formatters::StatisticsFormatter.should_not_receive :statistics

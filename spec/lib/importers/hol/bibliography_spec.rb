@@ -5,7 +5,7 @@ describe Importers::Hol::Bibliography do
   describe "getting an author's bibliography" do
     before do
       @hol = Importers::Hol::Bibliography
-      @curl_result = mock
+      @curl_result = double
       @curl_result.stub(:body_str).and_return ''
     end
 
