@@ -5,6 +5,22 @@ module ChangesHelper
     "#{User.find(change.whodunnit).name} added <b>#{taxon.name.name_html.html_safe}</b> #{format_time_ago(change.created_at)}".html_safe
   end
 
+  def format_name name
+    name.name_html.html_safe
+  end
+
+  def format_rank rank
+    rank.display_string
+  end
+
+  def format_status status
+    Status[status].to_s
+  end
+
+  def format_reference reference
+    Formatters::ReferenceFormatter.format reference
+  end
+
   def format_attributes taxon
     string = []
     string << 'Fossil' if taxon.fossil?
@@ -36,4 +52,5 @@ module ChangesHelper
   def format_taxt taxt
     Taxt.to_string taxt, current_user
   end
+
 end

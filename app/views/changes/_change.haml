@@ -7,26 +7,31 @@
 %table
   %tr
     %td
-
       %table
+
         %tr
           %td.label Name
-          %td.value.name= taxon.name.name_html.html_safe
+          %td.value.name= format_name taxon.name
+
         %tr
-          %td.label.parent_rank= Rank[taxon.rank].parent.display_string
-          %td.value.parent= taxon.parent.name.name_html.html_safe
+          %td.label.parent_rank= format_rank Rank[taxon.rank].parent
+          %td.value.parent= format_name taxon.parent.name
+
         %tr
           %td.label Status
-          %td.value.status= Status[taxon.status].to_s
+          %td.value.status= format_status taxon.status
+
         - if taxon.incertae_sedis_in.present?
           %tr
             %td.label Incertae sedis in
             %td.value.incertae_sedis= taxon.incertae_sedis_in
+
         - attributes = format_attributes taxon
         - if attributes.present?
           %tr
             %td.label Attributes
             %td.value.attributes= attributes
+
         - if taxon.headline_notes_taxt.present?
           %tr
             %td.label Notes
@@ -34,28 +39,37 @@
 
       %table
         %tr
-          %td.header{colspan: 100}Protonym
+          - protonym = taxon.protonym
+          %td.header Protonym
+
         %tr
           %td.label Name
-          %td.value.protonym_name= taxon.protonym.name.name_html.html_safe
-        - protonym_attributes = format_protonym_attributes taxon
-        - if protonym_attributes.present?
+          %td.value.protonym_name= format_name protonym.name
+
+        - attributes = format_protonym_attributes taxon
+        - if attributes.present?
           %tr
             %td.label Attributes
-            %td.value.protonym_attributes= protonym_attributes
+            %td.value.protonym_attributes= attributes
+
         %tr
+          - authorship = protonym.authorship
           %td.label Authorship
-          %td.value.authorship_reference= Formatters::ReferenceFormatter.format taxon.protonym.authorship.reference
+          %td.value.authorship_reference= format_reference authorship.reference
+
         %tr
           %td.label Page
-          %td.value.page= taxon.protonym.authorship.pages
+          %td.value.page= authorship.pages
+
         %tr
           %td.label Forms
-          %td.value.forms= taxon.protonym.authorship.forms
+          %td.value.forms= authorship.forms
+
         %tr
           %td.label Locality
-          %td.value.locality= taxon.protonym.locality
-        - authorship_notes = taxon.protonym.authorship.notes_taxt
+          %td.value.locality= protonym.locality
+
+        - authorship_notes = authorship.notes_taxt
         - if authorship_notes.present?
           %tr
             %td.label Notes
@@ -64,17 +78,19 @@
       - if taxon.type_name.present?
         %table
           %tr
-            %td.header{colspan: 100}Type
+            %td.header Type
+
           %tr
             %td.label Name
-            %td.value.type_name= taxon.type_name.name_html.html_safe
-          - type_attributes = format_type_attributes taxon
-          - if type_attributes.present?
+            %td.value.type_name= format_name taxon.type_name
+
+          - attributes = format_type_attributes taxon
+          - if attributes.present?
             %tr
               %td.label Attributes
-              %td.value.type_attributes= type_attributes
+              %td.value.type_attributes= attributes
+
           - if taxon.type_taxt.present?
             %tr
               %td.label Notes
               %td.value.type_notes= format_taxt taxon.type_taxt
-            %tr
