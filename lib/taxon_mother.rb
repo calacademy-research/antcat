@@ -36,6 +36,8 @@ class TaxonMother
       update_protonym             protonym_attributes
       update_type_name            type_name_attributes
 
+      set_initial_review_status
+
       @taxon.save!
       save_change @taxon
     end
@@ -45,6 +47,10 @@ class TaxonMother
     change = Change.new
     change.paper_trail_version = taxon.versions(true).last
     change.save!
+  end
+
+  def set_initial_review_status
+    @taxon.review_status = :waiting
   end
 
   ####################################
