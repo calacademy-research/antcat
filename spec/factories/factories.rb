@@ -77,6 +77,18 @@ FactoryGirl.define do
     password  'secret'
   end
 
+  factory :editor, class: User do
+    name      'Brian Fisher'
+    sequence(:email) {|n| "brian#{n}@example.com"}
+    password  'secret'
+  end
+
+  factory :approver, class: User do
+    name      'Barry Bolton'
+    sequence(:email) {|n| "barry#{n}@example.com"}
+    password  'secret'
+  end
+
   factory :bolton_reference, :class => Bolton::Reference do
     title 'New General Catalog'
     citation_year '2011'

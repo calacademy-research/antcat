@@ -43,6 +43,9 @@ end
 Given /^I log in$/ do
   login true
 end
+Given /^I log in as a catalog editor$/ do
+  login true
+end
 Given /^I log in as a bibliography editor$/ do
   login false
 end
