@@ -15,24 +15,6 @@ Feature: Editing a taxon
     And I save my changes
     Then I should see "Wildencidae" in the header
 
-  Scenario: Trying to edit without being logged in
-    Given there is a genus "Calyptites"
-    When I go to the edit page for "Calyptites"
-    And I should be on the login page
-
-  Scenario: Trying to edit without catalog editing rights
-    Given there is a genus "Calyptites"
-    And I log in as a bibliography editor
-    When I go to the catalog page for "Calyptites"
-    Then I should not see "Edit"
-
-  @preview
-  Scenario: Trying to edit without catalog editing rights on preview server
-    Given there is a genus "Calyptites"
-    When I go to the catalog page for "Calyptites"
-    And I press "Edit"
-    Then I should be on the edit page for "Calyptites"
-
   Scenario: Trying to enter a blank name
     Given there is a family "Formicidae"
     And I log in
