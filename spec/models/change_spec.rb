@@ -36,4 +36,16 @@ describe Change do
     taxon.class.should == Genus
   end
 
+  describe "Scopes" do
+    it "should return creations" do
+      item = create_genus
+      version = FactoryGirl.create :version, event: 'create', item_id: item.id
+      creation = Change.create paper_trail_version: version
+      another_version = FactoryGirl.create :version, event: 'update', item_id: item.id
+      updation = Change.create paper_trail_version: another_version
+
+      Change.creations.should == [creation]
+    end
+  end
+
 end
