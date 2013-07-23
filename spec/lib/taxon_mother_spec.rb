@@ -95,6 +95,18 @@ describe TaxonMother do
       taxon.type_name.name.should == 'Betta major'
     end
 
+    it "should set the new taxon's state" do
+      taxon = @mother.create_taxon Rank[:genus], create_subfamily
+      params = @genus_params.deep_dup
+      params[:type_fossil] = 0
+      params[:type_taxt] = ''
+      @mother.save_taxon taxon, params
+      taxon.reload
+
+      taxon.should be_waiting
+      taxon.can_approve?.should be_true
+    end
+
     it "should create a new species" do
       taxon = @mother.create_taxon Rank[:species], create_genus
       params = @species_params.deep_dup
