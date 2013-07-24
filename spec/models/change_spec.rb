@@ -13,11 +13,11 @@ describe Change do
   it "has a version" do
     genus = create_genus
     change = Change.new
-    change.paper_trail_version = genus.version
+    genus_version = genus.versions(true).last
+    change.paper_trail_version = genus_version
     change.save!
     change.reload
-    change.paper_trail_version.should == genus.version
-    change.paper_trail_version.should be_nil
+    change.paper_trail_version.should == genus_version
   end
 
   it "should be able to be reified after being created" do
