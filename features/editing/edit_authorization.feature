@@ -19,12 +19,6 @@ Feature: Editing a taxon with authorization constraints
     Then I should not see "Edit"
     And I should see "Review change"
 
-  Scenario: Trying to edit a taxon that's waiting for approval
-    Given there is a genus "Calyptites" that's waiting for approval
-    And I log in as a catalog editor
-    When I go to the catalog page for "Calyptites"
-    Then I should not see "Edit"
-
   @preview
   Scenario: Trying to edit without catalog editing rights on preview server
     Given there is a genus "Calyptites"
