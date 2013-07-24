@@ -2,7 +2,7 @@
 class Reference < ActiveRecord::Base
 
   include Workflow
-  workflow_column :review_status
+  workflow_column :review_state
   workflow do
     state :none do
       event :start_reviewing, transitions_to: :reviewing

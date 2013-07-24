@@ -1,4 +1,5 @@
 # coding: UTF-8
+require 'taxon_workflow'
 class Taxon < ActiveRecord::Base
   self.table_name = :taxa
   has_paper_trail

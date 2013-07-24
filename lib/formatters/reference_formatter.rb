@@ -28,10 +28,10 @@ class Formatters::ReferenceFormatter
     timestamp.strftime '%Y-%m-%d'
   end
 
-  def self.format_review_status review_status
-    return 'Being reviewed' if review_status == 'reviewing'
-    return '' if review_status == 'none'
-    review_status.present? ? review_status.capitalize : ''
+  def self.format_review_state review_state
+    return 'Being reviewed' if review_state == 'reviewing'
+    return '' if review_state == 'none'
+    review_state.present? ? review_state.capitalize : ''
   end
 
   ##################

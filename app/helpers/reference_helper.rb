@@ -20,7 +20,7 @@ module ReferenceHelper
     Formatters::ReferenceFormatter.format_timestamp timestamp
   end
 
-  def format_review_status review_status
-    Formatters::ReferenceFormatter.format_review_status review_status
+  def format_review_state review_state
+    Formatters::ReferenceFormatter.format_review_state review_state
   end
 end
