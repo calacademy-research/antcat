@@ -12,6 +12,10 @@ $ ->
     .unbutton()
     .button()
     .click -> window.location = $(@).data('edit-location')
+  $('#review_button')
+    .unbutton()
+    .button()
+    .click -> window.location = $(@).data('review-location')
   $('#hide_all').remove()
 
 setup_throbber = ->

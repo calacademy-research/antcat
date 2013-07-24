@@ -31,8 +31,9 @@ class Exporters::Antweb::Formatter < Formatters::TaxonFormatter
     Formatters::TaxonFormatter.link_to_antcat @taxon
   end
 
-  def link_to_edit_taxon
-  end
+  def link_to_edit_taxon; end
+
+  def link_to_review_change; end
 
   def self.link_to_antweb_taxon taxon
     return if taxon.kind_of? Family

@@ -4,6 +4,7 @@ class Formatters::TaxonFormatter
   extend ActionView::Helpers::TagHelper
   include ActionView::Context
   include Formatters::Formatter
+  include Rails.application.routes.url_helpers
 
   def initialize taxon, user = nil
     @taxon, @user = taxon, user
@@ -135,6 +136,7 @@ class Formatters::TaxonFormatter
       string << ' ' << link_to_other_site if link_to_other_site
       string << ' ' << link_to_antwiki if link_to_antwiki
       string << ' ' << link_to_edit_taxon if link_to_edit_taxon
+      string << ' ' << link_to_review_change if link_to_review_change
       string
     end
   end
@@ -215,8 +217,13 @@ class Formatters::TaxonFormatter
   end
 
   def link_to_edit_taxon
-    return unless $Milieu.user_can_edit_catalog? @user
-    content_tag :button, 'Edit', type: 'button', id: 'edit_button', 'data-edit-location' => "/taxa/#{@taxon.id}/edit"
+    return unless $Milieu.user_can_edit_catalog?(@user) && @taxon.can_be_edited?
+    content_tag :button, 'Edit', type: 'button', id: 'edit_button', 'data-edit-location' => edit_taxa_path(@taxon.id)
+  end
+
+  def link_to_review_change
+    return unless @taxon.waiting?
+    content_tag :button, 'Review change', type: 'button', id: 'review_button', 'data-review-location' => change_path(@taxon.last_change)
   end
 
   ###########
