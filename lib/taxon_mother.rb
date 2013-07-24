@@ -36,7 +36,7 @@ class TaxonMother
       update_protonym             protonym_attributes
       update_type_name            type_name_attributes
 
-      set_initial_review_status
+      set_initial_review_state
 
       @taxon.save!
       save_change @taxon
@@ -49,8 +49,8 @@ class TaxonMother
     change.save!
   end
 
-  def set_initial_review_status
-    @taxon.review_status = :waiting
+  def set_initial_review_state
+    @taxon.review_state = :waiting
   end
 
   ####################################
