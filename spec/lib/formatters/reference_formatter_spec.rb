@@ -257,11 +257,11 @@ describe Formatters::ReferenceFormatter do
 
   describe "Formatting review status" do
     it "should return the display string for a review status" do
-      @formatter.format_review_status('reviewed').should == 'Reviewed'
-      @formatter.format_review_status('reviewing').should == 'Being reviewed'
-      @formatter.format_review_status('none').should == ''
-      @formatter.format_review_status('').should == ''
-      @formatter.format_review_status(nil).should == ''
+      @formatter.format_review_state('reviewed').should == 'Reviewed'
+      @formatter.format_review_state('reviewing').should == 'Being reviewed'
+      @formatter.format_review_state('none').should == ''
+      @formatter.format_review_state('').should == ''
+      @formatter.format_review_state(nil).should == ''
     end
   end
 
