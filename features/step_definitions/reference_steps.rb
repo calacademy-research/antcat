@@ -109,7 +109,7 @@ Then /I should see these entries (with a header )?in this order:/ do |with_heade
   entries.hashes.each_with_index do |e, i|
     page.should have_css "table.references tr:nth-of-type(#{i + offset}) td", :text => e['entry']
     page.should have_css "table.references tr:nth-of-type(#{i + offset}) td", :text => e['date']
-    page.should have_css "table.references tr:nth-of-type(#{i + offset}) td", :text => e['review_status']
+    page.should have_css "table.references tr:nth-of-type(#{i + offset}) td", :text => e['review_state']
   end
 end
 
