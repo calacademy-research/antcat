@@ -17,7 +17,7 @@ class Exporters::TaxonList::Exporter
       data = get_data taxon
       rows << data if data
       rows
-    end
+    end.sort
   end
 
   def write_rows file, rows
@@ -40,9 +40,13 @@ class Exporters::TaxonList::Exporter
 
   def get_data taxon
     Progress.tally_and_show_progress 1000
-    case taxon
-    when Species then [taxon.name.to_s, 1840, 'Shuckard', 'valid']
-    end
+
+    return unless taxon.kind_of? Species
+    return unless !taxon.invalid? || taxon.synonym? || taxon.homonym?
+
+    authors = taxon.protonym.authorship.author_names_string
+    year = taxon.protonym.authorship.reference.year
+    [taxon.name.to_s, authors, year, !taxon.invalid? ? 'valid' : 'invalid']
   end
 
 end
