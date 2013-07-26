@@ -17,46 +17,27 @@ describe Exporters::TaxonList::Exporter do
       File.stub(:open).and_yield @file
     end
 
-    it "should include the correct header" do
-      @file.should_receive(:puts).with "name\tauthors\tyear\tvalid"
-      @exporter.export
+    def create_taxon author_name, year
+      reference = FactoryGirl.create(:article_reference, citation_year: year, author_names: [author_name])
+      authorship = FactoryGirl.create :citation, reference: reference
+      name = FactoryGirl.create :species_name
+      protonym = FactoryGirl.create :protonym, authorship: authorship, name: name
+      species = create_species name: name, protonym: protonym
     end
 
     describe "Outputting taxa" do
-      before do
-        reference = FactoryGirl.create(:article_reference, citation_year: '1840', author_names: [FactoryGirl.create(:author_name, name: 'Shuckard')])
-        authorship = FactoryGirl.create :citation, reference: reference
-        name = FactoryGirl.create :species_name, name: 'Atta robusta'
-        @protonym = FactoryGirl.create :protonym, authorship: authorship, name: name
-        @species = create_species name: name, protonym: @protonym
-        @homonym = create_species 'Atta major', status: 'homonym', protonym: @protonym
-        @synonym = create_species 'Eciton major', status: 'synonym', protonym: @protonym
-        @original_combination = create_species 'Furris major', status: 'original combination', protonym: @protonym
+      it "should work" do
+        fisher = FactoryGirl.create :author_name, name: 'Fisher, B.L.'
+        bolton = FactoryGirl.create :author_name, name: 'Bolton, B.'
+        3.times {|i| create_taxon fisher, '2013'}
+        2.times {|i| create_taxon fisher, '2011'}
+        1.times {|i| create_taxon bolton, '2000'}
+        @exporter.should_receive(:write).with(@file, "Bolton, B.\t" + "2000\t" + '1').ordered
+        @exporter.should_receive(:write).with(@file, "Fisher, B.L.\t" + "2011\t" + '2').ordered
+        @exporter.should_receive(:write).with(@file, "Fisher, B.L.\t" + "2013\t" + '3').ordered
+        @exporter.export
       end
 
-      it "should export a valid species correctly" do
-        @exporter.get_data(@species).should == ['Atta robusta', 'Shuckard', 1840, 'valid']
-      end
-
-      it "should export an invalid species correctly" do
-        @exporter.get_data(@synonym).should == ['Eciton major', 'Shuckard', 1840, 'invalid']
-      end
-
-      describe "Outputting a number of taxa" do
-        it "should sort its output by names in ranks" do
-          file = double
-          File.stub(:open).and_yield file
-
-          @exporter.should_receive(:write).with(file, "name\tauthors\tyear\tvalid").ordered
-          @exporter.should_receive(:write).with(file, "Atta robusta\t" + "Shuckard\t" + "1840\t" + "valid").ordered
-          @exporter.should_receive(:write).with(file, "Atta major\t"   + "Shuckard\t" + "1840\t" + "invalid").ordered
-          @exporter.should_receive(:write).with(file, "Eciton major\t" + "Shuckard\t" + "1840\t" + "invalid").ordered
-          @exporter.should_not_receive(:write).with(file, "Furris major\t" + "Shuckard\t" + "1840\t" + "valid").ordered
-
-          @exporter.export
-        end
-      end
     end
-
   end
 end

@@ -1,33 +1,19 @@
 # coding: UTF-8
 class Exporters::TaxonList::Exporter
-  def initialize show_progress = false
-    Progress.init show_progress
-  end
-
   def export directory = 'data/output'
     File.open "#{directory}/antcat_taxon_list.txt", 'w' do |file|
-      write_header file
       write_rows file, get_rows
     end
-    Progress.show_results
   end
 
   def get_rows
-    Taxon.all.inject [] do |rows, taxon|
-      data = get_data taxon
-      rows << data if data
-      rows
-    end.sort
+    Taxon.find_by_sql %{select name, year, count(*) count from taxa join protonyms on protonym_id = protonyms.id join citations on authorship_id = citations.id join `references` on reference_id = `references`.id join reference_author_names ran on ran.reference_id = references.id and position = 1 join author_names an on ran.author_name_id = an.id where taxa.type = 'Species' and status = 'valid' or status = 'synonym' or status = 'homonym' group by name, year order by name, year}
   end
 
   def write_rows file, rows
     for row in rows
-      write file, join(row)
+      write file, join(row['name'], row['year'], row['count'])
     end
-  end
-
-  def write_header file
-    write file, join('name', 'authors', 'year', 'valid')
   end
 
   def write file, line
@@ -36,17 +22,6 @@ class Exporters::TaxonList::Exporter
 
   def join *values
     values.join "\t"
-  end
-
-  def get_data taxon
-    Progress.tally_and_show_progress 1000
-
-    return unless taxon.kind_of? Species
-    return unless !taxon.invalid? || taxon.synonym? || taxon.homonym?
-
-    authors = taxon.protonym.authorship.author_names_string
-    year = taxon.protonym.authorship.reference.year
-    [taxon.name.to_s, authors, year, !taxon.invalid? ? 'valid' : 'invalid']
   end
 
 end
