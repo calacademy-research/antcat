@@ -2,5 +2,5 @@
 
 desc "Export taxonomy list"
 task taxon_list: :environment do
-  Exporters::TaxonList::Exporter.new(true).export
+  Exporters::TaxonList::Exporter.new.export
 end
