@@ -8,6 +8,8 @@ module HtmlSelectorsHelpers
 
     when /the protonym/
       "#catalog .protonym_name"
+    when /the type name/
+      "#catalog .type"
     when /^the junior synonyms section$/
       '.junior_synonyms_section'
     when /^the senior synonyms section$/
