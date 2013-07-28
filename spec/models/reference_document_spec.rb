@@ -86,8 +86,8 @@ describe ReferenceDocument do
       document.should be_downloadable_by FactoryGirl.create :user
       document.should be_downloadable_by nil
     end
-    it "should be downloadable by anyone if it is/was on http://128.146.250.117" do
-      ReferenceDocument.new(:url => 'http://128.146.250.117').should be_downloadable_by FactoryGirl.create :user
+    it "should not be downloadable if it is on http://128.146.250.117" do
+      ReferenceDocument.new(url: 'http://128.146.250.117/pdfs/4096/4096.pdf').should_not be_downloadable_by FactoryGirl.create :user
     end
     it "should not consider antbase PDFs downloadable by anybody" do
       document = ReferenceDocument.new(url: 'http://antbase.org/ants/publications/4495/4495.pdf', file_file_name: 'bar')
