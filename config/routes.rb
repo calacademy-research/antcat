@@ -3,7 +3,7 @@ AntCat::Application.routes.draw do
 
   root to: 'catalog#show'
 
-  resources :changes, only: [:index]
+  resources :changes, only: [:show, :index]
 
   resources :authors, only: [:index, :all, :merge]
   match     '/authors/all', to: 'authors#all', via: :get
