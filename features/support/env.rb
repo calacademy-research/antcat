@@ -2,6 +2,7 @@
 require 'spork'
 
 require 'factory_girl'
+require 'cucumber/formatter/progress'
 require 'cucumber/rspec/doubles'
 
 Spork.prefork do
