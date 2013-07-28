@@ -19,4 +19,9 @@ class Taxon < ActiveRecord::Base
     Change.joins(:paper_trail_version).where('versions.item_id = ? AND versions.item_type = ?', id, 'Taxon').first
   end
 
+  def last_version
+    # it seems to be necessary to reload the association and get its last element
+    versions(true).last
+  end
+
 end

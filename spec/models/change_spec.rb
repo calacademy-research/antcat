@@ -13,7 +13,7 @@ describe Change do
   it "has a version" do
     genus = create_genus
     change = Change.new
-    genus_version = genus.versions(true).last
+    genus_version = genus.last_version
     change.paper_trail_version = genus_version
     change.save!
     change.reload
@@ -23,14 +23,14 @@ describe Change do
   it "should be able to be reified after being created" do
     genus = create_genus
 
-    change = Change.new paper_trail_version: genus.versions(true).last
+    change = Change.new paper_trail_version: genus.last_version
     taxon = change.reify
     taxon.should == genus
     taxon.class.should == Genus
 
     genus.update_attributes name_cache: 'Atta'
 
-    change = Change.new paper_trail_version: genus.versions(true).last
+    change = Change.new paper_trail_version: genus.last_version
     taxon = change.reify
     taxon.should == genus
     taxon.class.should == Genus
