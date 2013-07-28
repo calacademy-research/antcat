@@ -39,7 +39,7 @@ describe Parsers::CitationGrammar do
     @parser.parse(string).should be_true
     string.should  be_empty
   end
-  
+
   it "should handle a nested citation, and an author with two last names" do
     string = 'De Andrade, in Baroni Urbani & De Andrade, 2007'
     @parser.parse(string).should be_true

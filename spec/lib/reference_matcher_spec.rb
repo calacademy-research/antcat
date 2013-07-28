@@ -19,7 +19,7 @@ describe ReferenceMatcher do
     results = @matcher.match @target
     results.should == [{:similarity => 0.10, :target => @target, :match => @match}]
   end
-    
+
   it "should handle an author last name with an apostrophe in it (regression)" do
     @match.update_attributes :author_names => [FactoryGirl.create(:author_name, :name => "Arnol'di, G.")]
     @target.author = "Arnol'di"

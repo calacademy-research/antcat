@@ -57,7 +57,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
 
   def resolve_parent_synonyms
     any_changes = true
-    while any_changes 
+    while any_changes
       any_changes = false
       Taxon.all.each do |taxon|
         if taxon.respond_to? :tribe

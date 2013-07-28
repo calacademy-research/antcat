@@ -48,7 +48,7 @@ describe Importers::Hol::Bibliography do
 <a href="http://holBibliography.osu.edu/agent-full.html?id=493">Bolton, B.</a> and <a href="http://holbibliography.osu.edu/agent-full.html?id=4746">B. L. Fisher</a>.
  2008. Afrotropical ants of the ponerine genera Centromyrmex Mayr, Promyopias Santschi gen. rev. and Feroponera gen. n., with a revised key to genera of African Ponerinae (Hymenoptera: Formicidae). Zootaxa <strong>1929</strong>: 1-37.
 <A HREF="http://osuc.biosci.ohio-state.edu/hymDB/nomenclator.hlviewer?id=22169" TARGET="_blank">Browse</A>
- or download 
+ or download
 <A HREF="http://antbase.org/ants/publications/22169/22169.pdf" TARGET="_blank"> entire file (514K)</A>
 
 <IMG SRC="http://osuc.biosci.ohio-state.edu/images/pdf.gif">
@@ -64,11 +64,11 @@ describe Importers::Hol::Bibliography do
 <a href="http://holBibliography.osu.edu/agent-full.html?id=493">Bolton, B.</a> and <a href="http://holbibliography.osu.edu/agent-full.html?id=4746">B. L. Fisher</a>.
  2008. The Afrotropical ponerine ant genus Phrynoponera Wheeler (Hymenoptera: Formicidae). Zootaxa <strong>1892</strong>: 35-52.
 <A HREF="http://osuc.biosci.ohio-state.edu/hymDB/nomenclator.hlviewer?id=22424" TARGET="_blank">Browse</A>
- or download 
+ or download
 <A HREF="http://antbase.org/ants/publications/22424/22424.pdf" TARGET="_blank"> entire file (771K)</A>
 
 <IMG SRC="http://osuc.biosci.ohio-state.edu/images/pdf.gif">
- or download 
+ or download
 <P>
 <CENTER>
 <a href="http://osuc.biosci.ohio-state.edu/hymDB/hym_utilities.site_stats">
@@ -93,7 +93,7 @@ See Site Statistics</a><p>
 <a href="http://hol.osu.edu/agent-full.html?id=2767">Adlerz, G.</a>
  1896. Stridulationsorgan och ljudf"ornimmelser hos myror. Öfversigt af Kongliga Ventenskaps-Akadamiens Förhandlingar <strong>52</strong>: 769-782.
 <A HREF="http://osuc.biosci.ohio-state.edu/hymDB/nomenclator.hlviewer?id=22662" TARGET="_blank">Browse</A>
- or download 
+ or download
 <A HREF="http://128.146.250.117/pdfs/22662/22662.pdf" TARGET="_blank"> entire file (557k)</A>
 <IMG SRC="http://osuc.biosci.ohio-state.edu/images/pdf.gif">
       LI
@@ -106,7 +106,7 @@ See Site Statistics</a><p>
 <a href="http://hol.osu.edu/agent-full.html?id=2767">Adlerz, G.</a>
  1846. Nomenclatoris zoologici index universalis, continens nomina systematica classium, ordinum, familiarum, et generum animalium omnium.... Soloduri, .
 <A HREF="http://osuc.biosci.ohio-state.edu/hymDB/nomenclator.hlviewer?id=22662" TARGET="_blank">Browse</A>
- or download 
+ or download
 <A HREF="http://128.146.250.117/pdfs/22662/22662.pdf" TARGET="_blank"> entire file (557k)</A>
 <IMG SRC="http://osuc.biosci.ohio-state.edu/images/pdf.gif">
       LI
@@ -119,7 +119,7 @@ See Site Statistics</a><p>
 <a href="http://holBibliography.osu.edu/agent-full.html?id=493">Bolton, B.</a> and <a href="http://holbibliography.osu.edu/agent-full.html?id=4746">B. L. Fisher</a>.
  2008. Afrotropical ants of the ponerine genera Centromyrmex Mayr, Promyopias Santschi gen. rev. and Feroponera gen. n., with a revised key to genera of African Ponerinae (Hymenoptera: Formicidae). Zootaxa <strong>1929</strong>(1): 1-37.
 <A HREF="http://osuc.biosci.ohio-state.edu/hymDB/nomenclator.hlviewer?id=22169" TARGET="_blank">Browse</A>
- or download 
+ or download
 <A HREF="http://antbase.org/ants/publications/22169/22169.pdf" TARGET="_blank"> entire file (514K)</A>
 
 <IMG SRC="http://osuc.biosci.ohio-state.edu/images/pdf.gif">
@@ -138,7 +138,7 @@ See Site Statistics</a><p>
 <a href="http://hol.osu.edu/agent-full.html?id=2767">Adlerz, G.</a>
  1887. Myrmecologiska notiser. Entomologisk Tidskrift <strong>8</strong>: 41-50.
 <A HREF="http://osuc.biosci.ohio-state.edu/hymDB/nomenclator.hlviewer?id=22497" TARGET="_blank">Browse</A>
- or download 
+ or download
 <A HREF="http://128.146.250.117/pdfs/22497/22497.pdf" TARGET="_blank"> entire file (583k)</A>
 <IMG SRC="http://osuc.biosci.ohio-state.edu/images/pdf.gif">
       LI
@@ -161,12 +161,12 @@ See Site Statistics</a><p>
                 <a href="http://hol.osu.edu/agent-full.html?id=2767">Adlerz, G.</a>
                  1887. Myrmecologiska notiser. Entomologisk Tidskrift <strong>8</strong>: 41-50.
                  <A HREF="http://osuc.biosci.ohio-state.edu/hymDB/nomenclator.hlviewer?id=22497" TARGET="_blank">Browse</A>
-                  or download 
+                  or download
                   <A HREF="http://128.146.250.117/pdfs/22497/22497.pdf" TARGET="_blank"> entire file (583k)</A>
                   <IMG SRC="http://osuc.biosci.ohio-state.edu/images/pdf.gif">
       LI
 
-      result.document_url.should == "http://128.146.250.117/pdfs/22497/22497.pdf" 
+      result.document_url.should == "http://128.146.250.117/pdfs/22497/22497.pdf"
     end
 
     it "should set the author" do
@@ -175,7 +175,7 @@ See Site Statistics</a><p>
                   <a href="http://hol.osu.edu/agent-full.html?id=2767">Adlerz, G.</a>
                   1887. Myrmecologiska notiser. Entomologisk Tidskrift <strong>8</strong>: 41-50.
                   <A HREF="http://osuc.biosci.ohio-state.edu/hymDB/nomenclator.hlviewer?id=22497" TARGET="_blank">Browse</A>
-                    or download 
+                    or download
                     <A HREF="http://128.146.250.117/pdfs/22497/22497.pdf" TARGET="_blank"> entire file (583k)</A>
                     <IMG SRC="http://osuc.biosci.ohio-state.edu/images/pdf.gif">
         LI

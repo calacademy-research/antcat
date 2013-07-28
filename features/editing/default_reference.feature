@@ -1,7 +1,7 @@
 @javascript
 Feature: Using the default reference
 
-  Background: 
+  Background:
     Given I am logged in
     And there is a genus "Atta"
     And these references exist

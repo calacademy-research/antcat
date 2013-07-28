@@ -4,7 +4,7 @@ Feature: Add reference
   I want to add new references
   So that the bibliography continues to be up-to-date
 
-  Background: 
+  Background:
     Given I am logged in
     And these references exist
       | author     | title          | year | citation   |

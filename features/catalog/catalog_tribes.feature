@@ -4,7 +4,7 @@ Feature: Hiding and showing tribes in the index
   Since I may not care about that rank
   And I don't want to have to choose from the tribes
 
-  Background: 
+  Background:
     Given the Formicidae family exists
     And there is a subfamily "Dolichoderinae" with taxonomic history "asdf"
     And a tribe exists with a name of "Dolichoderini" and a subfamily of "Dolichoderinae"

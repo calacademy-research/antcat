@@ -323,7 +323,7 @@ describe Importers::Bolton::Catalog::Grammar do
 
   it "should save the leading whitespace/delimiters" do
     @grammar.parse(" Start here", :root => :text).value_with_matched_text_removed.should == {
-      text: [{phrase: 'Start here'}], text_prefix: ' ' 
+      text: [{phrase: 'Start here'}], text_prefix: ' '
     }
   end
 

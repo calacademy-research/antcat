@@ -5,11 +5,11 @@ describe CatalogHelper do
 
   describe "search selector" do
     it "should return the HTML for the selector with a default selected" do
-      helper.search_selector(nil).should == 
+      helper.search_selector(nil).should ==
 %{<select id="st" name="st"><option value="m">matching</option>\n<option value="bw" selected="selected">beginning with</option>\n<option value="c">containing</option></select>}
     end
     it "should return the HTML for the selector with the specified one selected" do
-      helper.search_selector('c').should == 
+      helper.search_selector('c').should ==
 %{<select id="st" name="st"><option value="m">matching</option>\n<option value="bw">beginning with</option>\n<option value="c" selected="selected">containing</option></select>}
     end
   end
@@ -52,7 +52,7 @@ describe CatalogHelper do
 
   describe "Index column link" do
     it "should work" do
-      helper.index_column_link(:subfamily, 'none', 'none', nil).should == '<a href="/catalog?child=none" class="valid selected">(no subfamily)</a>' 
+      helper.index_column_link(:subfamily, 'none', 'none', nil).should == '<a href="/catalog?child=none" class="valid selected">(no subfamily)</a>'
     end
   end
 

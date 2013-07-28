@@ -187,7 +187,7 @@ describe Reference, slow:true do
 
         Reference.perform_search(:order => :created_at).should == [created_today, created_yesterday, created_last_week]
       end
-     
+
       describe "Default sort order" do
         it "should sort by author_name plus year plus letter" do
           fisher1910b = reference_factory(:author_name => 'Fisher', :citation_year => '1910b')
@@ -204,7 +204,7 @@ describe Reference, slow:true do
         end
 
         it "should sort by multiple author_names using their order in each reference" do
-          a = FactoryGirl.create(:article_reference, :author_names => AuthorName.import_author_names_string('Abdalla, F. C.; Cruz-Landim, C. da.')[:author_names]) 
+          a = FactoryGirl.create(:article_reference, :author_names => AuthorName.import_author_names_string('Abdalla, F. C.; Cruz-Landim, C. da.')[:author_names])
           m = FactoryGirl.create(:article_reference, :author_names => AuthorName.import_author_names_string('Mueller, U. G.; Mikheyev, A. S.; Abbot, P.')[:author_names])
           v = FactoryGirl.create(:article_reference, :author_names => AuthorName.import_author_names_string("Vinson, S. B.; MacKay, W. P.; Rebeles M.; A.; Arredondo B.; H. C.; Rodríguez R.; A. D.; González, D. A.")[:author_names])
           Reference.perform_search.should == [a, m, v]

@@ -4,7 +4,7 @@ Feature: Editing authors and author names
   I want to edit/add/assign authors to names and vice versa
   So that they are correct
 
-  Background: 
+  Background:
     Given the following names exist for an author
       | Bolton, B. |
       | Bolton,B.  |

@@ -17,7 +17,7 @@ module EnableSunspot
     end
 
     after do
-      Sunspot.remove_all! 
+      Sunspot.remove_all!
     end
 
     after(:all) do
@@ -37,7 +37,7 @@ module Sunspot
         def solr_index
           solr_index!
         end
-        
+
         def solr_remove_from_index
           solr_remove_from_index!
         end

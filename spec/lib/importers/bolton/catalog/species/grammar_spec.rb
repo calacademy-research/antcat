@@ -652,7 +652,7 @@ describe Importers::Bolton::Catalog::Species::Grammar do
         }]}
       end
     end
-    
+
     describe "Subspecies ofs" do
       it "should parse a 'subspecies of' clause" do
         @grammar.parse('Subspecies of <i>neorufibarbis</i> Forel: Creighton, 1950a: 537',

@@ -3,7 +3,7 @@ Feature: Searching the catalog
   I want to search the catalog in index view
   So that I can find taxa with their parents and siblings
 
-  Background: 
+  Background:
     Given the Formicidae family exists
     And subfamily "Dolichoderinae" exists
     And tribe "Dolichoderini" exists in that subfamily

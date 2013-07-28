@@ -12,7 +12,7 @@ describe Author do
     it "should work" do
       ward = FactoryGirl.create :author_name, :name => 'Ward'
       fisher_b_l = FactoryGirl.create :author_name, :name => 'Fisher, B. L.'
-      fisher = FactoryGirl.create :author_name, :name => 'Fisher', :author => fisher_b_l.author 
+      fisher = FactoryGirl.create :author_name, :name => 'Fisher', :author => fisher_b_l.author
       bolton = FactoryGirl.create :author_name, :name => 'Bolton'
       Author.sorted_by_name.should == [bolton.author, fisher.author, ward.author]
     end

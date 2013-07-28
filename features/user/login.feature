@@ -3,7 +3,7 @@ Feature: Logging in
   I want to be able to log in
   So I can edit references
 
-  Background: 
+  Background:
     Given this user exists
       | email             | password | password_confirmation |
       | email@example.com | secret   | secret                |
@@ -47,7 +47,7 @@ Feature: Logging in
     Then I should be on the forgot password page
 
   @javascript
-  Scenario: Returning to previous page 
+  Scenario: Returning to previous page
     Given I am not logged in
     * I go to the references page
     * I follow "Login"

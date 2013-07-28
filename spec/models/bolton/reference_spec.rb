@@ -271,7 +271,7 @@ describe Bolton::Reference do
     end
   end
 
-  describe "Match status counts" do 
+  describe "Match status counts" do
     it "should work" do
       2.times {|i| FactoryGirl.create :bolton_reference, :match_status => nil}
       3.times {|i| FactoryGirl.create :bolton_reference, :match_status => 'auto'}

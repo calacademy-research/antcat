@@ -26,7 +26,7 @@ describe Parsers::PaginationGrammar do
     end
   end
 
-  it "shouldn't consider '4th' a pagination" do 
+  it "shouldn't consider '4th' a pagination" do
     @parser.parse('4th', :consume => false).should == '4'
   end
 

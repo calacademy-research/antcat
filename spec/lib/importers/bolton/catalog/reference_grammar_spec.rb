@@ -110,14 +110,14 @@ describe Importers::Bolton::Catalog::Grammar do
       ]}
     end
     it "should parse this reference with complicated forms" do
-      @grammar.parse('Eguchi, 2008: 238 (s.w.ergatoid q.)', :root => :reference).value_with_matched_text_removed.should == 
+      @grammar.parse('Eguchi, 2008: 238 (s.w.ergatoid q.)', :root => :reference).value_with_matched_text_removed.should ==
         {:author_names => ['Eguchi'], :year => '2008', :pages => '238', :forms => 's.w.ergatoid q.'}
     end
   end
 
   describe "Author names" do
     it "should handle 'do'" do
-      @grammar.parse('Fernández, Delabie & do Nascimento', :root => :ref_author_names).value_with_matched_text_removed.should == ['Fernández', 'Delabie', 'do Nascimento'] 
+      @grammar.parse('Fernández, Delabie & do Nascimento', :root => :ref_author_names).value_with_matched_text_removed.should == ['Fernández', 'Delabie', 'do Nascimento']
     end
     it "should handle this name" do
       name = 'Lepeletier de Saint-Fargeau'
@@ -404,9 +404,9 @@ describe Importers::Bolton::Catalog::Grammar do
 
   it "should return the text of what was parsed" do
     string = 'Eguchi, 2008: 238 (s.w.ergatoid q.)'
-    @grammar.parse(string, :root => :reference).value_with_matched_text_removed.should == 
+    @grammar.parse(string, :root => :reference).value_with_matched_text_removed.should ==
       {:author_names => ['Eguchi'], :year => '2008', :pages => '238', :forms => 's.w.ergatoid q.'}
-    @grammar.parse(string, :root => :reference).value.should == 
+    @grammar.parse(string, :root => :reference).value.should ==
       {:author_names => ['Eguchi'], :year => '2008', :pages => '238', :forms => 's.w.ergatoid q.',
        :matched_text => string}
   end

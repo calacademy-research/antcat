@@ -3,7 +3,7 @@ Feature: Using the catalog
   I want choose whether or not to take up screen space with unavailable subfamilies
   So I can see more useful information
 
-  Background: 
+  Background:
     Given the Formicidae family exists
     And subfamily "Availabledae" exists
     And the unavailable subfamily "Unavailabledae" exists

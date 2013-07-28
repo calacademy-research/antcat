@@ -10,7 +10,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
 
     before do
       FactoryGirl.create :article_reference, :author_names => [FactoryGirl.create(:author_name, :name => 'Latreille, I.')], :citation_year => '1809', :title => 'Ants', :bolton_key_cache => 'Latreille 1809'
-      Family.import( 
+      Family.import(
         :protonym => {
           :family_or_subfamily_name => "Formicariae",
           :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],

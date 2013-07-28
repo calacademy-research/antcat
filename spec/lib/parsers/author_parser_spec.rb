@@ -115,7 +115,7 @@ describe Parsers::AuthorParser do
    it "should handle authors separated by commas" do
      @parser.parse("Breed, M. D., Page, R. E., Ward, P.S.")[:names].should == ['Breed, M. D.', 'Page, R. E.', 'Ward, P.S.']
    end
-    
+
    it "should handle 'Jr.'" do
      string = 'Brown, W. L., Jr.; Kempf, W. W.'
      @parser.parse!(string)[:names].should == ['Brown, W. L., Jr.', 'Kempf, W. W.']

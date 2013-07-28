@@ -79,7 +79,7 @@ class Importers::Bolton::Catalog::Subfamily::Importer < Importers::Bolton::Catal
       end
 
       genus.reference_sections.create! title_taxt: title, references_taxt: references
-      
+
       parse_next_line
 
       break unless @type == :texts

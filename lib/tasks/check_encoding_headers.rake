@@ -11,7 +11,7 @@ task :check_encoding_headers do
   files.each do |file|
     content = File.read(file)
     next if content[0..16] == "# coding: UTF-8\n"
-    
+
     ["\n\n", "\n"].each do |file_end|
       content = content.gsub(/(# encoding: UTF-8#{file_end})|(# coding: UTF-8#{file_end})|(# -*- coding: UTF-8 -*-#{file_end})/i, "")
     end
