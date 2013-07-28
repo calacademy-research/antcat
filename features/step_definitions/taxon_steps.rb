@@ -6,7 +6,7 @@ Given /^the Formicidae family exists$/ do
 
   FactoryGirl.create :article_reference, author_names: [FactoryGirl.create(:author_name, name: 'Latreille, I.')], citation_year: '1809', title: 'Ants', bolton_key_cache: 'Latreille 1809'
 
-  family = Family.import( 
+  family = Family.import(
     protonym: {
       family_or_subfamily_name: "Formicariae",
       authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}],
@@ -69,7 +69,7 @@ Given /^a genus exists with a name of "(.*?)" and a subfamily of "(.*?)"(?: and 
   subfamily = parent_name && (Subfamily.find_by_name(parent_name) || FactoryGirl.create(:subfamily, name: FactoryGirl.create(:name, name: parent_name)))
   taxon =FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: taxon_name), subfamily: subfamily, tribe: nil, status: status
   history = 'none' unless history.present?
-  taxon.history_items.create! taxt: history 
+  taxon.history_items.create! taxt: history
 end
 Given /a genus exists with a name of "(.*?)" and no subfamily(?: and a taxonomic history of "(.*?)")?/ do |taxon_name, history|
   genus = FactoryGirl.create :genus, name: FactoryGirl.create(:genus_name, name: taxon_name), subfamily: nil, tribe: nil

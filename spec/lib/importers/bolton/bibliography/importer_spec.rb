@@ -95,7 +95,7 @@ style='mso-bidi-font-weight:normal'>9</b>: 89.
      reference.pagination.should == "89"
      reference.note.should be_nil
    end
-    
+
    it "should handle missing space after note" do
      contents = make_contents %s{
 Arnold, G. 1960a.Aculeate Hymenoptera from the Drakensberg Mountains, Natal. <i
@@ -117,7 +117,7 @@ style='mso-bidi-font-weight:normal'>15</b>: 79-87. [8.xii.1960.]
 
    it "should handle these extra spans" do
      contents = make_contents %s{
-<p><span>Brown, W.L.,Jr. 2010. </span><span>The venom. <i>Martialis</i> <b>50</b>:413-423.</span></p> 
+<p><span>Brown, W.L.,Jr. 2010. </span><span>The venom. <i>Martialis</i> <b>50</b>:413-423.</span></p>
      }
      @importer.import_html contents
      reference = Bolton::Reference.first
@@ -181,7 +181,7 @@ the Tennessee Academy of Science</i> <b style='mso-bidi-font-weight:normal'>27</
 
    it "should handle a <span> in the title" do
      contents = make_contents %s{
-Dumpert, K., Maschwitz, U. & Weissflog, A. 2006. Description of five new weaver ant species of<span style="mso-spacerun: yes"> </span><i style="mso-bidi-font-style: normal">Camponotus</i> subgenus <i style="mso-bidi-font-style:normal">Karavaievia</i> Emery, 1925 from Malaysia and Thailand, with contribution to their biology, especially to colony foundation. <i style="mso-bidi-font-style:normal">Myrmecologische Nachrichten</i> <b style="mso-bidi-font-weight:normal">8</b>: 69-82. 
+Dumpert, K., Maschwitz, U. & Weissflog, A. 2006. Description of five new weaver ant species of<span style="mso-spacerun: yes"> </span><i style="mso-bidi-font-style: normal">Camponotus</i> subgenus <i style="mso-bidi-font-style:normal">Karavaievia</i> Emery, 1925 from Malaysia and Thailand, with contribution to their biology, especially to colony foundation. <i style="mso-bidi-font-style:normal">Myrmecologische Nachrichten</i> <b style="mso-bidi-font-weight:normal">8</b>: 69-82.
      }
      @importer.import_html contents
      reference = Bolton::Reference.first
@@ -196,7 +196,7 @@ Douwes, P., Jessen, K. & Buschinger, A. 1988. <i style="mso-bidi-font-style:norm
      }
      @importer.import_html contents
      reference = Bolton::Reference.first
-     reference.title.should == 'Epimyrma adlerzi sp. n. from Greece: morphology and life history' 
+     reference.title.should == 'Epimyrma adlerzi sp. n. from Greece: morphology and life history'
    end
 
    it "should handle a series indicator" do
@@ -205,7 +205,7 @@ Dupuis, C. 1986. Dates de publication de l'Histoire Naturelle Générale et Part
      }
      @importer.import_html contents
      reference = Bolton::Reference.first
-     reference.series_volume_issue.should == '(N.S.) 22' 
+     reference.series_volume_issue.should == '(N.S.) 22'
    end
 
    it "should handle when the bold volume immediately follows the italic title" do
@@ -237,7 +237,7 @@ Dorow, W.H.O. & Kohout, R.J. 1995. A review of the subgenus <i style="mso-bidi-f
 
    it "should handle big ol' note at the end" do
      contents = make_contents %s{
-Dorow, W.H.O. & Kohout, R.J. 1995. Paleogene ants of the genus <i style="mso-bidi-font-style:normal">Archimyrmex</i> Cockerell, 1923. <i style="mso-bidi-font-style:normal">Paleontological Journal</i> <b style=''>37</b>: 39-47. [English translation of <i style="mso-bidi-font-style:normal">Paleontologicheskii Zhurnal</i> 2003 (No. 1): 40-49.] 
+Dorow, W.H.O. & Kohout, R.J. 1995. Paleogene ants of the genus <i style="mso-bidi-font-style:normal">Archimyrmex</i> Cockerell, 1923. <i style="mso-bidi-font-style:normal">Paleontological Journal</i> <b style=''>37</b>: 39-47. [English translation of <i style="mso-bidi-font-style:normal">Paleontologicheskii Zhurnal</i> 2003 (No. 1): 40-49.]
      }
      @importer.import_html contents
      reference = Bolton::Reference.first
@@ -292,7 +292,7 @@ Dorow, W.H.O. & Kohout, R.J. 1995. Paleogene ants of the genus <i style="mso-bid
       }
       @importer.import_html contents
       reference = Bolton::Reference.first
-      reference.title.should == 'Illustrations of Natural History. Wherein are exhibited upwards of two hundred and twenty figures of exotic insects. 2' 
+      reference.title.should == 'Illustrations of Natural History. Wherein are exhibited upwards of two hundred and twenty figures of exotic insects. 2'
     end
 
     it "should handle an edition" do
@@ -301,12 +301,12 @@ Dorow, W.H.O. & Kohout, R.J. 1995. Paleogene ants of the genus <i style="mso-bid
       }
       @importer.import_html contents
       reference = Bolton::Reference.first
-      reference.title.should == 'British Ants, their life-history and classification (2nd. edition)' 
+      reference.title.should == 'British Ants, their life-history and classification (2nd. edition)'
     end
 
     it "should handle a missing note" do
       contents = make_contents %s{
-  Don, W. 2007. <i style="mso-bidi-font-style:normal">Ants of New Zealand</i>: 239 pp. Otago University Press. 
+  Don, W. 2007. <i style="mso-bidi-font-style:normal">Ants of New Zealand</i>: 239 pp. Otago University Press.
       }
       @importer.import_html contents
       reference = Bolton::Reference.first
@@ -344,7 +344,7 @@ Dorow, W.H.O. & Kohout, R.J. 1995. Paleogene ants of the genus <i style="mso-bid
   describe "importing references where we can't tell what it is" do
     it "should work" do
       contents = make_contents %s{
-  Dlussky, G.M. & Perfilieva, K.S. 2003. Paleogene ants of the genus <i style="mso-bidi-font-style:normal">Archimyrmex</i> Cockerell, 1923. <i style="mso-bidi-font-style:normal">Paleontological Journal</i> 37: 39-47. [English translation of <i style="mso-bidi-font-style:normal">Paleontologicheskii Zhurnal</i> 2003 (No. 1): 40-49.] 
+  Dlussky, G.M. & Perfilieva, K.S. 2003. Paleogene ants of the genus <i style="mso-bidi-font-style:normal">Archimyrmex</i> Cockerell, 1923. <i style="mso-bidi-font-style:normal">Paleontological Journal</i> 37: 39-47. [English translation of <i style="mso-bidi-font-style:normal">Paleontologicheskii Zhurnal</i> 2003 (No. 1): 40-49.]
       }
       @importer.import_html contents
       reference = Bolton::Reference.first

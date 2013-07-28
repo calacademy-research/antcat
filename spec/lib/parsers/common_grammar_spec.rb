@@ -137,16 +137,16 @@ describe Parsers::CommonGrammar do
 
     it "should be strict, if the close_tags_required rule is used" do
       lambda {@parser.parse(%{ }, :root => :close_tags_required)}.should raise_error
-      @parser.parse(%{</p>}, :root => :close_tags_required).should_not be_nil 
-      @parser.parse(%{ </p> }, :root => :close_tags_required).should_not be_nil 
-      @parser.parse(%{ </p> </i> }, :root => :close_tags_required).should_not be_nil 
+      @parser.parse(%{</p>}, :root => :close_tags_required).should_not be_nil
+      @parser.parse(%{ </p> }, :root => :close_tags_required).should_not be_nil
+      @parser.parse(%{ </p> </i> }, :root => :close_tags_required).should_not be_nil
     end
 
     it "should be loose" do
       lambda {@parser.parse(%{ }, :root => :close_tags)}.should_not raise_error
-      @parser.parse(%{</p>}, :root => :close_tags).should_not be_nil 
-      @parser.parse(%{ </p> }, :root => :close_tags).should_not be_nil 
-      @parser.parse(%{ </p> </i> }, :root => :close_tags).should_not be_nil 
+      @parser.parse(%{</p>}, :root => :close_tags).should_not be_nil
+      @parser.parse(%{ </p> }, :root => :close_tags).should_not be_nil
+      @parser.parse(%{ </p> </i> }, :root => :close_tags).should_not be_nil
     end
 
   end

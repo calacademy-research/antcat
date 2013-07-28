@@ -48,13 +48,13 @@ describe Importers::Bolton::Catalog::Importer do
     end
 
     it "should change ending comma to period" do
-      @importer.normalize("foo,").should == 'foo.' 
+      @importer.normalize("foo,").should == 'foo.'
     end
     it "should change ending semicolon to period" do
-      @importer.normalize("foo;").should == 'foo.' 
+      @importer.normalize("foo;").should == 'foo.'
     end
     it "should remove spaces before periods" do
-      @importer.normalize("foo . bar.").should == 'foo. bar.' 
+      @importer.normalize("foo . bar.").should == 'foo. bar.'
     end
     it "should convert character entities to characters" do
       @importer.normalize("&quot; &amp;").should == %{" &}
@@ -191,7 +191,7 @@ describe Importers::Bolton::Catalog::Importer do
                                       '<i>foo</i>. <i>Nomen nudum</i>. <i>F. rufibarbis</i> var. <i>occidentalis</i>'
         end
       end
-  
+
       it "should not put /i at end of name outside parentheses" do
         text = "(junior synonym of <i>Monomorium (Adlerzia) froggatti</i>)"
         @importer.normalize_italics(text).should == text
@@ -275,8 +275,8 @@ describe Importers::Bolton::Catalog::Importer do
 
   it "should remove empty italics even in this mess" do
  @importer.normalize(
-%{<b style="mso-bidi-font-weight:normal"><i style="mso-bidi-font-style:normal"><span style='font-size:12.0pt;font-family: "Times New Roman";mso-bidi-font-family:"Times New Roman";color:red'>caniophanoides</span></i></b><b style="mso-bidi-font-weight:normal"><i style="mso-bidi-font-style:normal"><span style='font-size:12.0pt;font-family:"Times New Roman";mso-bidi-font-family: "Times New Roman";color:black'>. </span></i></b><i style="mso-bidi-font-style: normal"><span style='font-size:12.0pt;font-family:"Times New Roman";mso-bidi-font-family: "Times New Roman";color:black'>Strumigenys caniophanoides</span></i><span style='font-size:12.0pt;font-family:"Times New Roman";mso-bidi-font-family: "Times New Roman";color:black'> De Andrade, in Baroni Urbani & De Andrade, 2007: 153, fig. 53 (w.) BHUTAN.<p></p></span>}).should == 
-"<i>caniophanoides</i>. <i>Strumigenys caniophanoides</i> De Andrade, in Baroni Urbani & De Andrade, 2007: 153, fig. 53 (w.) BHUTAN." 
+%{<b style="mso-bidi-font-weight:normal"><i style="mso-bidi-font-style:normal"><span style='font-size:12.0pt;font-family: "Times New Roman";mso-bidi-font-family:"Times New Roman";color:red'>caniophanoides</span></i></b><b style="mso-bidi-font-weight:normal"><i style="mso-bidi-font-style:normal"><span style='font-size:12.0pt;font-family:"Times New Roman";mso-bidi-font-family: "Times New Roman";color:black'>. </span></i></b><i style="mso-bidi-font-style: normal"><span style='font-size:12.0pt;font-family:"Times New Roman";mso-bidi-font-family: "Times New Roman";color:black'>Strumigenys caniophanoides</span></i><span style='font-size:12.0pt;font-family:"Times New Roman";mso-bidi-font-family: "Times New Roman";color:black'> De Andrade, in Baroni Urbani & De Andrade, 2007: 153, fig. 53 (w.) BHUTAN.<p></p></span>}).should ==
+"<i>caniophanoides</i>. <i>Strumigenys caniophanoides</i> De Andrade, in Baroni Urbani & De Andrade, 2007: 153, fig. 53 (w.) BHUTAN."
   end
 
 end

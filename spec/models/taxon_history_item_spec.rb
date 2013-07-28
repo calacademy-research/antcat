@@ -16,7 +16,7 @@ describe TaxonHistoryItem do
   it "can belong to a taxon" do
     taxon = FactoryGirl.create :family
     item = taxon.history_items.create! :taxt => 'foo'
-    item.reload.taxon.should == taxon 
+    item.reload.taxon.should == taxon
   end
 
   describe "Updating taxt from editable taxt" do

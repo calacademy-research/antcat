@@ -5,7 +5,7 @@ Feature: Searching references
   So that I can use one in my paper
     Or see if I have already added it
 
-  Background: 
+  Background:
     Given these references exist
       | authors        | year          | title                 | citation   |
       | Fisher, B.     | 1995b         | Anthill               | Ants 1:1-2 |

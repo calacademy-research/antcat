@@ -114,9 +114,9 @@ describe Importers::Hol::DocumentUrlImporter do
   describe "importing document URL for one reference" do
 
     it "save the url" do
-      reference = FactoryGirl.create :reference 
+      reference = FactoryGirl.create :reference
       @matcher.stub(:match).with(reference).and_return Hol::Reference.new(:document_url => 'url.com/foo')
-      @importer.import_document_url_for reference 
+      @importer.import_document_url_for reference
       reference.reload.document(true).url.should == 'http://url.com/foo'
     end
 

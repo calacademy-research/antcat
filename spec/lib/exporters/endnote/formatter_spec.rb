@@ -76,7 +76,7 @@ describe Exporters::Endnote::Formatter do
       :pagination => '3-4'
     reference.create_document :url => 'http://antcat.org/article.pdf'
     string = @formatter.format([reference])
-    string.should == 
+    string.should ==
 %{%0 Journal Article
 %A MacKay, W.
 %D 1941

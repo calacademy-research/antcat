@@ -214,9 +214,9 @@ describe AuthorName do
       FactoryGirl.create :author_name, :name => 'Martínez-Ibañez, D.'
       AuthorName.alias false, "Martínez Ibáñez, M. D.", "Martínez-Ibañez, D.", "Martínez-Ibáñez, M. D."
       Author.count.should == 1
-      author = AuthorName.find_by_name("Martínez Ibáñez, M. D.").author 
-      author.should == AuthorName.find_by_name("Martínez-Ibañez, D.").author 
-      author.should == AuthorName.find_by_name("Martínez-Ibáñez, M. D.").author 
+      author = AuthorName.find_by_name("Martínez Ibáñez, M. D.").author
+      author.should == AuthorName.find_by_name("Martínez-Ibañez, D.").author
+      author.should == AuthorName.find_by_name("Martínez-Ibáñez, M. D.").author
     end
   end
 

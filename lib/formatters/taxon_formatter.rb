@@ -179,7 +179,7 @@ class Formatters::TaxonFormatter
     name = @taxon.type_name.to_html_with_fossil @taxon.type_fossil
     content_tag :span, name, class: "#{rank} taxon"
   end
-  
+
   def protonym_name protonym
     content_tag :b, content_tag(:span, Formatters::CatalogFormatter.protonym_label(protonym), class: 'protonym_name')
   end
@@ -334,7 +334,7 @@ class Formatters::TaxonFormatter
     else
       label << ' of '
     end
-    
+
     label << Formatters::CatalogFormatter.taxon_label_span(parent, ignore_status: true)
 
     content_tag :div, class: :child_list do

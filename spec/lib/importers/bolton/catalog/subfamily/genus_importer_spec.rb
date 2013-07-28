@@ -58,7 +58,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
       it "should work" do
         @importer.import_html make_contents %{
           <p>Genus <i>SPHINCTOMYRMEX</i></p>
-          <p><i>Sphinctomyrmex</i> Mayr, 1866b: 895. Type-species: <i>Sphinctomyrmex stali</i>, by monotypy.</p> 
+          <p><i>Sphinctomyrmex</i> Mayr, 1866b: 895. Type-species: <i>Sphinctomyrmex stali</i>, by monotypy.</p>
           <p>Taxonomic history</p>
           <p>Sphinctomyrmex history</p>
 

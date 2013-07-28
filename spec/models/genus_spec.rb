@@ -282,7 +282,7 @@ describe Genus do
 
   describe "Updating" do
     before do
-      FactoryGirl.create :article_reference, bolton_key_cache: 'Latreille 1809' 
+      FactoryGirl.create :article_reference, bolton_key_cache: 'Latreille 1809'
       FactoryGirl.create :article_reference, bolton_key_cache: 'Fisher 2004'
     end
 

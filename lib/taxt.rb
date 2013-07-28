@@ -101,7 +101,7 @@ module Taxt
 
   # this code is duplicated in taxt_editor.coffee
   def self.id_from_editable editable_id
-    number = AnyBase.base_x_to_base_10(editable_id.reverse, EDITABLE_ID_DIGITS) 
+    number = AnyBase.base_x_to_base_10(editable_id.reverse, EDITABLE_ID_DIGITS)
     id = number / 10
     type_number = number % 10
     return id, type_number

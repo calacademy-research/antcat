@@ -273,7 +273,7 @@ FactoryGirl.define do
   end
 
   factory :protonym do
-    authorship factory: :citation 
+    authorship factory: :citation
     association :name, factory: :genus_name
   end
 

@@ -195,7 +195,7 @@ describe Formatters::ReferenceFormatter do
     end
     it "should handle missing date" do
       make ''; check ''
-    end 
+    end
     it "should handle dates with other symbols/characters" do
       make '201012>'; check ' [2010-12&gt;]'
     end

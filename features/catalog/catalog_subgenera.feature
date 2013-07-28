@@ -4,7 +4,7 @@ Feature: Using the catalog
   So that I can choose a taxon easily
     And view its parents and siblings
 
-  Background: 
+  Background:
     Given the Formicidae family exists
     And subfamily "Dolichoderinae" exists
     And tribe "Dolichoderini" exists in that subfamily

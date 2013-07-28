@@ -58,7 +58,7 @@ describe Tribe do
         type_genus: {genus_name: 'Atta'},
         history: ["Aneuretini history"]
       )
-      
+
       tribe.reload
 
       tribe.name.to_s.should == 'Aneuretini'

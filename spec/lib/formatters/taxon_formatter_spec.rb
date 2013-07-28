@@ -101,22 +101,22 @@ describe Formatters::TaxonFormatter do
     describe "Child lists" do
       it "should format a tribes list" do
         attini = create_tribe 'Attini', subfamily: @subfamily
-        @formatter.new(nil).child_list(@subfamily, @subfamily.tribes, true).should == 
+        @formatter.new(nil).child_list(@subfamily, @subfamily.tribes, true).should ==
 %{<div class="child_list"><span class="label">Tribe (extant) of <span class="name subfamily taxon">Dolichoderinae</span></span>: <a href="/catalog/#{attini.id}">Attini</a>.</div>}
       end
       it "should format a child list, specifying extinctness" do
         atta = create_genus 'Atta', subfamily: @subfamily
-        @formatter.new(nil).child_list(@subfamily, Genus.all, true).should == 
+        @formatter.new(nil).child_list(@subfamily, Genus.all, true).should ==
 %{<div class="child_list"><span class="label">Genus (extant) of <span class="name subfamily taxon">Dolichoderinae</span></span>: <a href="/catalog/#{atta.id}"><i>Atta</i></a>.</div>}
       end
       it "should format a genera list, not specifying extinctness" do
         atta = create_genus 'Atta', subfamily: @subfamily
-        @formatter.new(nil).child_list(@subfamily, Genus.all, false).should == 
+        @formatter.new(nil).child_list(@subfamily, Genus.all, false).should ==
 %{<div class="child_list"><span class="label">Genus of <span class="name subfamily taxon">Dolichoderinae</span></span>: <a href="/catalog/#{atta.id}"><i>Atta</i></a>.</div>}
       end
       it "should format an incertae sedis genera list" do
         genus = create_genus 'Atta', subfamily: @subfamily, incertae_sedis_in: 'subfamily'
-        @formatter.new(nil).child_list(@subfamily, [genus], false, incertae_sedis_in: 'subfamily').should == 
+        @formatter.new(nil).child_list(@subfamily, [genus], false, incertae_sedis_in: 'subfamily').should ==
 %{<div class="child_list"><span class="label">Genus <i>incertae sedis</i> in <span class="name subfamily taxon">Dolichoderinae</span></span>: <a href="/catalog/#{genus.id}"><i>Atta</i></a>.</div>}
       end
       it "should format a list of collective group names" do

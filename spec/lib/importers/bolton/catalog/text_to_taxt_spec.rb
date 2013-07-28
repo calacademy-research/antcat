@@ -223,7 +223,7 @@ describe Importers::Bolton::Catalog::TextToTaxt do
       genus = create_genus 'Diabolus'
       @converter.convert([{
         genus_name: "Diabolus",
-        authorship: 
+        authorship:
           [{author_names: ["Gray, J.E."],
             year: "1841",
             pages: "400",

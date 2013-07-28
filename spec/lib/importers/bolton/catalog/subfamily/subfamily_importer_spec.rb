@@ -10,7 +10,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
 
     before do
       FactoryGirl.create :article_reference, :author_names => [FactoryGirl.create(:author_name, :name => 'Latreille, I.')], :citation_year => '1809', :title => 'Ants', :bolton_key_cache => 'Latreille 1809'
-      Family.import( 
+      Family.import(
         :protonym => {
           :family_or_subfamily_name => "Formicariae",
           :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
@@ -123,7 +123,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
       tribe.reference_sections.map(&:title_taxt).should == ["Subfamily, tribe {tax #{Taxon.find_by_name('Aneuretini').id}} and genus {nam #{Name.find_by_name('Aneuretus').id}} references"]
       tribe.reference_sections.map(&:references_taxt).should == ["{ref #{emery.id}}: 461 (diagnosis)"]
 
-      junior_synonym = Tribe.find_by_name 'Anonychomyrmini' 
+      junior_synonym = Tribe.find_by_name 'Anonychomyrmini'
       junior_synonym.should be_synonym
       junior_synonym.should be_synonym_of tribe
 

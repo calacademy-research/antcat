@@ -11,7 +11,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     @continue_after_parse_error = true
     @return_blank_lines = false
     super @options[:show_progress]
- 
+
     do_manual_prefixups
 
     Progress.total_count = 25870

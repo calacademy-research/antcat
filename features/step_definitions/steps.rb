@@ -4,7 +4,7 @@ Then /^I (#{SHOULD_OR_SHOULD_NOT}) see a "([^"]*)" button$/ do |should_selector,
 end
 
 And 'I debug' do
-end 
+end
 
 Then /^there should be the HTML "(.*)"$/ do |html|
   body.should =~ /#{html}/

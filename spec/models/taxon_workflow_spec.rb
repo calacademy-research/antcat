@@ -6,7 +6,7 @@ describe Taxon do
     taxon = FactoryGirl.create :genus
     taxon.should be_old
     taxon.can_approve?.should be_false
-  end 
+  end
 
   it "should be able to transition from waiting to approved" do
     taxon = FactoryGirl.create :genus, review_state: :waiting
@@ -15,21 +15,21 @@ describe Taxon do
     taxon.approve!
     taxon.should be_approved
     taxon.should_not be_waiting
-  end 
+  end
 
   describe "Ability to be edited" do
     it "should manage an old record's 'can be edited' status" do
       taxon = FactoryGirl.create :genus, review_state: nil
       taxon.can_be_edited?.should be_true
-    end 
+    end
     it "should manage a record with a Change's 'can be edited' status" do
       taxon = FactoryGirl.create :genus, review_state: :approved
       taxon.can_be_edited?.should be_true
-    end 
+    end
     it "should manage a waiting record with a Change's 'can be edited' status" do
       taxon = FactoryGirl.create :genus, review_state: :waiting
       taxon.can_be_edited?.should be_false
-    end 
+    end
   end
 
   describe "Last change and version" do

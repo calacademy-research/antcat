@@ -30,7 +30,7 @@ describe NestedReference do
     it "should not point to something that points to itself" do
       inner_most = FactoryGirl.create :book_reference
       middle = FactoryGirl.create :nested_reference, :nested_reference => inner_most
-      top = FactoryGirl.create :nested_reference, :nested_reference => middle 
+      top = FactoryGirl.create :nested_reference, :nested_reference => middle
       middle.nested_reference = top
       middle.should_not be_valid
     end

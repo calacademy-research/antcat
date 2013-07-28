@@ -72,7 +72,7 @@ describe Subfamily do
       subfamily = FactoryGirl.create :subfamily
       genus = FactoryGirl.create :genus, :subfamily => subfamily
       2.times {FactoryGirl.create :genus, :subfamily => subfamily, :status => 'synonym'}
-      subfamily.statistics.should == {:extant => {:genera => {'valid' => 1, 'synonym' => 2}}} 
+      subfamily.statistics.should == {:extant => {:genera => {'valid' => 1, 'synonym' => 2}}}
     end
 
     it "should handle 1 valid genus with 2 valid species" do
