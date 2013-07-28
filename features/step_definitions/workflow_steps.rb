@@ -2,6 +2,13 @@
 When /^(?:that )?version tracking is (not)?enabled$/ do |is_not|
   PaperTrail.enabled = !is_not
 end
+When /^the changes are approved$/ do
+  Taxon.update_all review_state: :approved
+end
+Given /^there is a genus "([^"]*)" that's waiting for approval$/ do |name|
+  genus = create_genus name, review_state: :waiting
+  FactoryGirl.create :change, paper_trail_version: genus.last_version
+end
 
 def should_see_in_changes selector, value
   page.should have_css selector, text: value

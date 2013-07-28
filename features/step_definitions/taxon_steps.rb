@@ -43,9 +43,6 @@ end
 Given /^there is a genus "([^"]*)"$/ do |name|
   create_genus name
 end
-Given /^there is a genus "([^"]*)" that's waiting for approval$/ do |name|
-  create_genus name, review_state: :waiting
-end
 Given /^there is a genus "([^"]*)" with taxonomic history "(.*?)"$/ do |name, history|
   genus = create_genus name
   genus.history_items.create! taxt: history
