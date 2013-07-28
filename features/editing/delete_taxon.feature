@@ -32,6 +32,8 @@ Feature: Deleting a taxon
       * I press "OK"
       * I press "Add this name"
       * I save my changes
+      * the changes are approved
+      * I go to the catalog page for "Atta"
 
   Scenario: Deleting a taxon that was just added
     When I press "Edit"
