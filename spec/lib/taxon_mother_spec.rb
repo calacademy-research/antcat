@@ -187,7 +187,7 @@ describe TaxonMother do
           params = @genus_params
           @mother.save_taxon taxon, params
           change = Change.first
-          change.paper_trail_version.should == taxon.versions(true).last
+          change.paper_trail_version.should == taxon.last_version
         end
       end
     end
