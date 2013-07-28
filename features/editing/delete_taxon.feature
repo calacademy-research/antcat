@@ -39,6 +39,7 @@ Feature: Deleting a taxon
     When I press "Edit"
     And I will confirm on the next step
     And I press "Delete"
+    And I will confirm on the next step
     Then I should be on the catalog page for "Dolichoderinae"
 
   Scenario: Can delete even if taxon is referred to by child records
@@ -46,6 +47,7 @@ Feature: Deleting a taxon
     When I press "Edit"
     And I will confirm on the next step
     And I press "Delete"
+    And I will confirm on the next step
     Then I should not see "This taxon already has additional information attached to it."
     And I should be on the catalog page for "Dolichoderinae"
 
@@ -57,4 +59,5 @@ Feature: Deleting a taxon
     And I press "Edit"
     And I will confirm on the next step
     And I press "Delete"
+    And I will confirm on the next step
     Then I should see "This taxon has additional information attached to it."

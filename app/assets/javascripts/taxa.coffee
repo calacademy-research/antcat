@@ -92,6 +92,7 @@ class AntCat.TaxonForm extends AntCat.Form
 
   delete_taxon: =>
     return unless confirm 'Are you sure you want to delete this taxon?'
+    return unless confirm "Note: It may take a few moments to check that this taxon isn't being referenced."
     $('#task_button_command').val('delete_taxon')
     @submit()
 
