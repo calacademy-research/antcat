@@ -6,7 +6,8 @@ Feature: Adding a taxon
   So people use AntCat
 
   Background:
-    Given these references exist
+    Given that version tracking is enabled
+    And these references exist
       | authors | citation   | title | year |
       | Fisher  | Psyche 3:3 | Ants  | 2004 |
     And there is a subfamily "Formicinae"

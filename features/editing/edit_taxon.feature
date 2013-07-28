@@ -5,6 +5,9 @@ Feature: Editing a taxon
   So that information is kept accurate
   So people use AntCat
 
+  Background:
+    Given version tracking is enabled
+
   Scenario: Editing a family's name
     Given there is a family "Formicidae"
     And I log in

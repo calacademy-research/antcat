@@ -7,6 +7,7 @@ Feature: Deleting a taxon
 
   Background:
     Given the Formicidae family exists
+    And that version tracking is enabled
     Given these references exist
       | authors | citation   | title | year |
       | Fisher  | Psyche 3:3 | Ants  | 2004 |
