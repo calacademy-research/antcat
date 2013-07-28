@@ -32,12 +32,27 @@ describe Taxon do
     end 
   end
 
-  describe "Last change" do
-    it "should return the last change" do
-      with_versioning do
+  describe "Last change and version" do
+    around do |example|
+      with_versioning &example
+    end
+    describe "Last change" do
+      it "should return nil if no Changes have been created for it" do
         taxon = create_genus
-        change = Change.create! paper_trail_version: taxon.versions(true).last
+        taxon.last_change.should be_nil
+      end
+      it "should return the Change, if any" do
+        taxon = create_genus
+        change = Change.create! paper_trail_version: taxon.last_version
         taxon.last_change.should == change
+      end
+    end
+    describe "Last version" do
+      it "should return the most recent Version" do
+        genus = create_genus
+        last_version = genus.last_version
+        genus.reload
+        last_version.should == genus.versions(true).last
       end
     end
   end
