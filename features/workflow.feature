@@ -40,6 +40,7 @@ Feature: Workflow
     * I fill in "taxon_type_taxt" with "Type notes"
     * I save my changes
     Then I should be on the catalog page for "Atta"
+    And I should see "This taxon has been changed and is awaiting approval"
     When I press "Review change"
     * I should see the name "Atta" in the changes
     * I should see the subfamily "Formicinae" in the changes

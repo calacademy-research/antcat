@@ -34,6 +34,7 @@ class Formatters::TaxonFormatter
       content << content_tag(:span, header_name, class: Formatters::CatalogFormatter.css_classes_for_rank(@taxon))
       content << content_tag(:span, header_authorship, class: :authorship)
       content << content_tag(:span, status, class: :status)
+      content << content_tag(:span, review_state, class: :review_state)
       content
     end
   end
@@ -107,6 +108,12 @@ class Formatters::TaxonFormatter
     labels << 'ichnotaxon' if @taxon.ichnotaxon?
 
     labels.join(', ').html_safe
+  end
+
+  def review_state
+    if @taxon.waiting?
+      "This taxon has been changed and is awaiting approval"
+    end
   end
 
   def senior_synonym_list
