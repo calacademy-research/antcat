@@ -1,0 +1,5 @@
+# This is used to identify the server (machine) to the Milieu class
+# Legal values: local, production, preview
+# On Engine Yard (production, preview) this file goes in /data/antcat/shared/config
+# For development, put it in config
+--- local
