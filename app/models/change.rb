@@ -5,6 +5,10 @@ class Change < ActiveRecord::Base
 
   delegate :whodunnit, to: :paper_trail_version
 
+  scope :creations, -> {joins(:paper_trail_version).
+                        where('versions.event' => 'create').
+                        order('created_at DESC')}
+
   def reify
     # this dodgy code is from paper_trail_manager's changes_helper.rb
     current = paper_trail_version.next.try :reify
@@ -16,12 +20,9 @@ class Change < ActiveRecord::Base
     end
   end
 
-  scope :creations, -> {joins(:paper_trail_version).
-                        where('versions.event' => 'create').
-                        order('created_at DESC')}
-
   def taxon
     return unless paper_trail_version
     Taxon.find paper_trail_version.item_id
   end
+
 end
