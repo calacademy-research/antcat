@@ -16,10 +16,6 @@ class Change < ActiveRecord::Base
     end
   end
 
-  def human_time_ago
-    "#{time_ago_in_words paper_trail_version.created_at} ago"
-  end
-
   scope :creations, -> {joins(:paper_trail_version).
                         where('versions.event' => 'create').
                         order('created_at DESC')}
