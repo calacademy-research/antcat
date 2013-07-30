@@ -2,7 +2,7 @@
 class Change < ActiveRecord::Base
   include ActionView::Helpers::DateHelper
   belongs_to :paper_trail_version, class_name: 'Version'
-
+  belongs_to :approver, class_name: 'User'
   delegate :whodunnit, to: :paper_trail_version
 
   scope :creations, -> {joins(:paper_trail_version).
