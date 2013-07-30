@@ -17,6 +17,13 @@ describe Taxon do
     taxon.should_not be_waiting
   end
 
+  def create_taxon_version_and_change review_state
+    taxon = FactoryGirl.create :genus, review_state: review_state
+    taxon.last_version.update_attributes! whodunnit: @user
+    Change.create! paper_trail_version: taxon.last_version
+    taxon
+  end
+
   describe "Ability to be edited" do
     around do |example|
       with_versioning &example
@@ -25,24 +32,39 @@ describe Taxon do
       @user = FactoryGirl.create :user
     end
     it "should allow an old record to be edited" do
-      taxon = FactoryGirl.create :genus, review_state: nil
-      taxon.last_version.update_attributes! whodunnit: @user
-      change = Change.create! paper_trail_version: taxon.last_version
+      taxon = create_taxon_version_and_change nil
       taxon.can_be_edited_by?(@user).should be_true
     end
     it "should allow an approved record to be edited" do
-      taxon = FactoryGirl.create :genus, review_state: :approved
-      taxon.last_version.update_attributes! whodunnit: @user
-      change = Change.create! paper_trail_version: taxon.last_version
+      taxon = create_taxon_version_and_change :approved
       taxon.can_be_edited_by?(@user).should be_true
     end
     it "should not allow anyone not the editor to edit a waiting record" do
-      taxon = FactoryGirl.create :genus, review_state: :waiting
-      taxon.last_version.update_attributes! whodunnit: @user
-      change = Change.create! paper_trail_version: taxon.last_version
+      taxon = create_taxon_version_and_change :waiting
       another_user = FactoryGirl.create :user
       taxon.can_be_edited_by?(@user).should be_true
       taxon.can_be_edited_by?(another_user).should be_false
+    end
+  end
+
+  describe "Ability to be reviewed" do
+    around do |example|
+      with_versioning &example
+    end
+    before do
+      @user = FactoryGirl.create :user
+    end
+    it "should not allow an old record to be reviewed" do
+      taxon = create_taxon_version_and_change nil
+      taxon.can_be_reviewed_by?(@user).should be_false
+    end
+    it "should allow an waiting record to be reviewed" do
+      taxon = create_taxon_version_and_change :waiting
+      taxon.can_be_edited_by?(@user).should be_true
+    end
+    it "should not allow an approved record to be reviewed" do
+      taxon = create_taxon_version_and_change :approved
+      taxon.can_be_edited_by?(@user).should be_true
     end
   end
 

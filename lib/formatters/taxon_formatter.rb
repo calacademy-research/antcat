@@ -230,8 +230,9 @@ class Formatters::TaxonFormatter
   end
 
   def link_to_review_change
-    return unless @taxon.waiting?
-    content_tag :button, 'Review change', type: 'button', id: 'review_button', 'data-review-location' => change_path(@taxon.last_change)
+    if @taxon.can_be_reviewed_by? @user
+      content_tag :button, 'Review change', type: 'button', id: 'review_button', 'data-review-location' => change_path(@taxon.last_change)
+    end
   end
 
   ###########

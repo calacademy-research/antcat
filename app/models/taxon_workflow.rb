@@ -16,6 +16,7 @@ class Taxon < ActiveRecord::Base
   end
 
   def can_be_reviewed_by? user
+    waiting?
   end
 
   def last_change
