@@ -36,6 +36,12 @@ describe Change do
     taxon.class.should == Genus
   end
 
+  it "has a taxon" do
+    taxon = create_genus
+    change = Change.new paper_trail_version: taxon.last_version
+    change.taxon.should == taxon
+  end
+
   describe "Scopes" do
     it "should return creations" do
       item = create_genus

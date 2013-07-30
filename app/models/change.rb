@@ -23,4 +23,9 @@ class Change < ActiveRecord::Base
   scope :creations, -> {joins(:paper_trail_version).
                         where('versions.event' => 'create').
                         order('created_at DESC')}
+
+  def taxon
+    return unless paper_trail_version
+    Taxon.find paper_trail_version.item_id
+  end
 end
