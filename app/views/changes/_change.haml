@@ -2,7 +2,17 @@
 
 - taxon = change.reify
 
-%div.change_header= format_header change, taxon
+%div.change_header
+  %div.change_description
+    %div.name.left= "#{User.find(change.whodunnit).name} added"
+    %div.taxon.left= taxon.name.name_html.html_safe
+    %div.time.right= format_time_ago change.created_at
+    %div.clear
+  - if change.approver
+    %div.change_status
+      %div.approver.left "#{User.find(change.approver).name} approved this change"
+      %div.approval_time.right format_time_ago change.approved_at
+      %div.clear
 
 %table
   %tr
