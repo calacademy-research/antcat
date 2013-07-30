@@ -18,17 +18,31 @@ describe Taxon do
   end
 
   describe "Ability to be edited" do
-    it "should manage an old record's 'can be edited' status" do
+    around do |example|
+      with_versioning &example
+    end
+    before do
+      @user = FactoryGirl.create :user
+    end
+    it "should allow an old record to be edited" do
       taxon = FactoryGirl.create :genus, review_state: nil
-      taxon.can_be_edited?.should be_true
+      taxon.last_version.update_attributes! whodunnit: @user
+      change = Change.create! paper_trail_version: taxon.last_version
+      taxon.can_be_edited_by?(@user).should be_true
     end
-    it "should manage a record with a Change's 'can be edited' status" do
+    it "should allow an approved record to be edited" do
       taxon = FactoryGirl.create :genus, review_state: :approved
-      taxon.can_be_edited?.should be_true
+      taxon.last_version.update_attributes! whodunnit: @user
+      change = Change.create! paper_trail_version: taxon.last_version
+      taxon.can_be_edited_by?(@user).should be_true
     end
-    it "should manage a waiting record with a Change's 'can be edited' status" do
+    it "should not allow anyone not the editor to edit a waiting record" do
       taxon = FactoryGirl.create :genus, review_state: :waiting
-      taxon.can_be_edited?.should be_false
+      taxon.last_version.update_attributes! whodunnit: @user
+      change = Change.create! paper_trail_version: taxon.last_version
+      another_user = FactoryGirl.create :user
+      taxon.can_be_edited_by?(@user).should be_true
+      taxon.can_be_edited_by?(another_user).should be_false
     end
   end
 

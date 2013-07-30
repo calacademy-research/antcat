@@ -224,8 +224,9 @@ class Formatters::TaxonFormatter
   end
 
   def link_to_edit_taxon
-    return unless $Milieu.user_can_edit_catalog?(@user) && @taxon.can_be_edited?
-    content_tag :button, 'Edit', type: 'button', id: 'edit_button', 'data-edit-location' => edit_taxa_path(@taxon.id)
+    if @taxon.can_be_edited_by? @user
+      content_tag :button, 'Edit', type: 'button', id: 'edit_button', 'data-edit-location' => edit_taxa_path(@taxon.id)
+    end
   end
 
   def link_to_review_change

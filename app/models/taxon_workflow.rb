@@ -11,8 +11,11 @@ class Taxon < ActiveRecord::Base
     state :approved
   end
 
-  def can_be_edited?
-    old? || approved?
+  def can_be_edited_by? user
+    old? || approved? || user == User.find(last_version.whodunnit)
+  end
+
+  def can_be_reviewed_by? user
   end
 
   def last_change
