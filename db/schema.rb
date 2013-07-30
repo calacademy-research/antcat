@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130729181313) do
+ActiveRecord::Schema.define(:version => 20130730032544) do
 
   create_table "antwiki_valid_taxa", :id => false, :force => true do |t|
     t.string   "name"
@@ -87,6 +87,8 @@ ActiveRecord::Schema.define(:version => 20130729181313) do
     t.integer  "paper_trail_version_id"
     t.datetime "created_at",             :null => false
     t.datetime "updated_at",             :null => false
+    t.integer  "approver_id"
+    t.datetime "approved_at"
   end
 
   create_table "citations", :force => true do |t|
@@ -332,6 +334,7 @@ ActiveRecord::Schema.define(:version => 20130729181313) do
     t.integer  "invited_by_id"
     t.string   "invited_by_type"
     t.string   "name"
+    t.boolean  "can_approve_changes"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
