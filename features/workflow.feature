@@ -39,8 +39,11 @@ Feature: Workflow
     * I check "taxon_type_fossil"
     * I fill in "taxon_type_taxt" with "Type notes"
     * I save my changes
-    Then I should be on the catalog page for "Atta"
-    And I should see "This taxon has been changed and is awaiting approval"
+    * I press "Edit"
+    * I add a history item "History item"
+    * I add a reference section "Reference section"
+    * I go to the catalog page for "Atta"
+    Then I should see "This taxon has been changed and is awaiting approval"
     When I press "Review change"
     * I should see the name "Atta" in the changes
     * I should see the subfamily "Formicinae" in the changes
@@ -58,3 +61,5 @@ Feature: Workflow
     * I should see the type name "Atta major" in the changes
     * I should see the type attribute "Fossil" in the changes
     * I should see the type notes "Type notes" in the changes
+    * I should see a history item "History item" in the changes
+    * I should see a reference section "Reference section" in the changes

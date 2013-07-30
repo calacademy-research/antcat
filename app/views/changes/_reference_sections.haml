@@ -1,0 +1,13 @@
+-#Local variables: taxon
+
+%table
+  - for item in taxon.reference_sections
+    %tr.reference_section
+      %td.label
+      %td.value.title_taxt= Taxt.to_display_sentence item.title_taxt, current_user
+    %tr
+      %td.label
+      %td.value.subtitle_taxt= Taxt.to_display_sentence item.subtitle_taxt, current_user
+    %tr
+      %td.label
+      %td.value.references_taxt= Taxt.to_display_sentence item.references_taxt, current_user
