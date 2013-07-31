@@ -14,7 +14,7 @@ class Milieu
   end
 
   def self.create
-    contents = read_server_config_file
+    contents = read_server_config_file rescue 'preview'
     case contents
     when 'preview'
       SandboxMilieu.new contents
