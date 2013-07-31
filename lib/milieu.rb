@@ -37,11 +37,11 @@ class RestrictedMilieu < Milieu
   def user_can_upload_pdfs? _; true end
 
   def user_is_editor? user
-    user
+    user && user.is_editor?
   end
 
   def user_can_edit_references? user
-    user
+    user && user.is_editor?
   end
 
   def user_can_edit_catalog? user
