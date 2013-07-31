@@ -40,6 +40,16 @@ describe ApplicationHelper do
       helper.user_can_edit_catalog?
     end
 
+    specify "reviewing changes authorization depends on the milieu and current user" do
+      $Milieu.should_receive(:user_can_review_changes?).with @current_user
+      helper.user_can_review_changes?
+    end
+
+    specify "approving changes authorization depends on the milieu and current user" do
+      $Milieu.should_receive(:user_can_approve_changes?).with @current_user
+      helper.user_can_approve_changes?
+    end
+
   end
 
 end
