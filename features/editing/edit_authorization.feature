@@ -1,6 +1,9 @@
 @javascript
 Feature: Editing a taxon with authorization constraints
 
+  Background:
+    Given that version tracking is enabled
+
   Scenario: Trying to edit without being logged in
     Given there is a genus "Calyptites"
     When I go to the edit page for "Calyptites"
