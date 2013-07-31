@@ -184,8 +184,7 @@ describe TaxonMother do
       it "should create a Change pointing to the version of Taxon" do
         with_versioning do
           taxon = @mother.create_taxon Rank[:species], create_genus
-          params = @genus_params
-          @mother.save_taxon taxon, params
+          @mother.save_taxon taxon, @genus_params
           change = Change.first
           change.paper_trail_version.should == taxon.last_version
         end
