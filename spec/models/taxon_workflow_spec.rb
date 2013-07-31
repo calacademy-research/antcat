@@ -17,54 +17,87 @@ describe Taxon do
     taxon.should_not be_waiting
   end
 
-  def create_taxon_version_and_change review_state
-    taxon = FactoryGirl.create :genus, review_state: review_state
-    taxon.last_version.update_attributes! whodunnit: @user
-    Change.create! paper_trail_version: taxon.last_version
-    taxon
-  end
-
-  describe "Ability to be edited" do
+  describe "Authorization" do
     around do |example|
       with_versioning &example
     end
     before do
+      @editor = FactoryGirl.create :user, can_edit_catalog: true
       @user = FactoryGirl.create :user
     end
-    it "should allow an old record to be edited" do
-      taxon = create_taxon_version_and_change nil
-      taxon.can_be_edited_by?(@user).should be_true
-    end
-    it "should allow an approved record to be edited" do
-      taxon = create_taxon_version_and_change :approved
-      taxon.can_be_edited_by?(@user).should be_true
-    end
-    it "should not allow anyone not the editor to edit a waiting record" do
-      taxon = create_taxon_version_and_change :waiting
-      another_user = FactoryGirl.create :user
-      taxon.can_be_edited_by?(@user).should be_true
-      taxon.can_be_edited_by?(another_user).should be_false
-    end
-  end
 
-  describe "Ability to be reviewed" do
-    around do |example|
-      with_versioning &example
+    def create_taxon_version_and_change review_state, user = @user
+      taxon = FactoryGirl.create :genus, review_state: review_state
+      taxon.last_version.update_attributes! whodunnit: user
+      Change.create! paper_trail_version: taxon.last_version
+      taxon
     end
-    before do
-      @user = FactoryGirl.create :user
+
+    describe "An old record" do
+      before do
+        @taxon = create_taxon_version_and_change nil
+      end
+      it "should allow it to be edited by any user that can edit the catalog" do
+        @taxon.can_be_edited_by?(nil).should be_false
+        @taxon.can_be_edited_by?(@editor).should be_true
+        @taxon.can_be_edited_by?(@user).should be_false
+      end
+      it "should not allow it to be reviewed" do
+        @taxon.can_be_reviewed_by?(nil).should be_false
+        @taxon.can_be_reviewed_by?(@editor).should be_false
+        @taxon.can_be_reviewed_by?(@user).should be_false
+      end
+      it "should not allow it to be approved" do
+        @taxon.can_be_reviewed_by?(nil).should be_false
+        @taxon.can_be_reviewed_by?(@editor).should be_false
+        @taxon.can_be_reviewed_by?(@user).should be_false
+      end
     end
-    it "should not allow an old record to be reviewed" do
-      taxon = create_taxon_version_and_change nil
-      taxon.can_be_reviewed_by?(@user).should be_false
+
+    describe "An waiting record" do
+      before do
+        @changer = FactoryGirl.create :user, can_edit_catalog: true
+        @approver = FactoryGirl.create :user, can_approve_changes: true
+        @taxon = create_taxon_version_and_change :waiting, @changer
+      end
+      it "should only allow the user who made the change to edit a waiting record" do
+        @taxon.can_be_edited_by?(nil).should be_false
+        @taxon.can_be_edited_by?(@user).should be_false
+        @taxon.can_be_edited_by?(@editor).should be_false
+        @taxon.can_be_edited_by?(@changer).should be_true
+      end
+      it "should allow it to be reviewed by a catalog editor" do
+        @taxon.can_be_reviewed_by?(nil).should be_false
+        @taxon.can_be_reviewed_by?(@editor).should be_true
+        @taxon.can_be_reviewed_by?(@user).should be_false
+      end
+      it "should allow it to be approved by an approver" do
+        @taxon.can_be_approved_by?(nil).should be_false
+        @taxon.can_be_approved_by?(@approver).should be_true
+        @taxon.can_be_approved_by?(@user).should be_false
+      end
     end
-    it "should allow an waiting record to be reviewed" do
-      taxon = create_taxon_version_and_change :waiting
-      taxon.can_be_edited_by?(@user).should be_true
-    end
-    it "should not allow an approved record to be reviewed" do
-      taxon = create_taxon_version_and_change :approved
-      taxon.can_be_edited_by?(@user).should be_true
+
+    describe "An approved record" do
+      before do
+        @taxon = create_taxon_version_and_change :approved
+        @approver = FactoryGirl.create :user, can_edit_catalog: true, can_approve_changes: true
+      end
+      it "should allow it to be edited by any user that can edit the catalog" do
+        @taxon.can_be_edited_by?(nil).should be_false
+        @taxon.can_be_edited_by?(@editor).should be_true
+        @taxon.can_be_edited_by?(@user).should be_false
+      end
+      it "should not allow it to be reviewed" do
+        @taxon.can_be_reviewed_by?(nil).should be_false
+        @taxon.can_be_reviewed_by?(@editor).should be_false
+        @taxon.can_be_reviewed_by?(@user).should be_false
+      end
+      it "should not allow it to be approved" do
+        @taxon.can_be_reviewed_by?(nil).should be_false
+        @taxon.can_be_reviewed_by?(@editor).should be_false
+        @taxon.can_be_reviewed_by?(@user).should be_false
+      end
     end
   end
 

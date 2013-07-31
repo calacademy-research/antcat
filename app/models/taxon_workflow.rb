@@ -12,11 +12,19 @@ class Taxon < ActiveRecord::Base
   end
 
   def can_be_edited_by? user
-    old? || approved? || user == User.find(last_version.whodunnit)
+    return false unless $Milieu.user_can_edit_catalog?(user)
+    return true if old?
+    return true if approved?
+    raise unless waiting?
+    is_user_last_editor? user
   end
 
   def can_be_reviewed_by? user
-    waiting?
+    $Milieu.user_can_review_changes?(user) && waiting?
+  end
+
+  def can_be_approved_by? user
+    $Milieu.user_can_approve_changes?(user) && waiting?
   end
 
   def last_change
@@ -26,6 +34,10 @@ class Taxon < ActiveRecord::Base
   def last_version
     # it seems to be necessary to reload the association and get its last element
     versions(true).last
+  end
+
+  def is_user_last_editor? user
+    user == User.find(last_version.whodunnit)
   end
 
 end
