@@ -40,10 +40,10 @@ describe Milieu do
 
       specify "Reviewing changes" do
         @milieu.user_can_review_changes?(nil).should be_false
-        @user.should_receive(:can_approve_changes?).and_return true
-        @milieu.user_can_approve_changes?(@user).should be_true
-        @user.should_receive(:can_approve_changes?).and_return false
-        @milieu.user_can_approve_changes?(@user).should be_false
+        @user.should_receive(:can_review_changes?).and_return true
+        @milieu.user_can_review_changes?(@user).should be_true
+        @user.should_receive(:can_review_changes?).and_return false
+        @milieu.user_can_review_changes?(@user).should be_false
       end
 
       specify "Approving changes" do

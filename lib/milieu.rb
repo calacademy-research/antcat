@@ -49,7 +49,7 @@ class RestrictedMilieu < Milieu
   end
 
   def user_can_review_changes? user
-    user && user.can_approve_changes?
+    user && user.can_review_changes?
   end
 
   def user_can_approve_changes? user
