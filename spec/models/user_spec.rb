@@ -11,6 +11,11 @@ describe User do
     User.new(can_edit_catalog: true).can_edit_catalog.should be_true
   end
 
+  it "knows whether it can review changes" do
+    User.new.can_review_changes?.should be_false
+    User.new(can_edit_catalog: true).can_review_changes?.should be_true
+  end
+
   it "knows whether it can approve changes" do
     User.new.can_approve_changes.should be_false
     User.new(can_approve_changes: true).can_approve_changes.should be_true

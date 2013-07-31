@@ -9,4 +9,8 @@ class User < ActiveRecord::Base
     true
   end
 
+  def can_review_changes?
+    can_edit_catalog
+  end
+
 end
