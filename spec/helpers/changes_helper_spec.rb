@@ -3,18 +3,6 @@ require 'spec_helper'
 
 describe ChangesHelper do
 
-  describe "Formatting the header" do
-    it "should include the person, taxon name and how long ago" do
-      taxon = create_genus 'Atta'
-      user = FactoryGirl.create :user, name: 'Mark Wilden'
-      version = FactoryGirl.create :version, item_id: taxon.id, whodunnit: user
-      change = FactoryGirl.create :change, paper_trail_version: version
-      header = helper.format_header change, taxon
-      header.should =~ %r{Mark Wilden added <b><i>Atta</i></b> <span title=[^<]+less than a minute ago</span>}
-      header.should be_html_safe
-    end
-  end
-
   describe "Formatting attributes" do
     it "should concatenate attributes into a comma-separated list" do
       genus = create_genus hong: true, nomen_nudum: true
