@@ -1,4 +1,7 @@
-# coding: UTF-8
+j coding: UTF-8
+Given /^there is a family "Formicidae"$/ do
+  create_family
+end
 Given /^the Formicidae family exists$/ do
   Taxon.destroy_all
   ForwardRef.destroy_all
@@ -36,6 +39,42 @@ end
 Given /there is a subfamily "([^"]*)"$/ do |taxon_name|
   name = FactoryGirl.create :subfamily_name, name: taxon_name
   taxon = FactoryGirl.create :subfamily, name: name
+end
+Given /^subfamily "(.*?)" exists$/ do |name|
+  @subfamily = FactoryGirl.create :subfamily, name: FactoryGirl.create(:subfamily_name, name: name)
+  @subfamily.history_items.create! taxt: "#{name} history"
+end
+Given /^the unavailable subfamily "(.*?)" exists$/ do |name|
+  @subfamily = FactoryGirl.create :subfamily, status: 'unavailable', name: FactoryGirl.create(:subfamily_name, name: name)
+end
+
+###########################
+# tribe
+Given /a tribe exists with a name of "(.*?)"(?: and a subfamily of "(.*?)")?(?: and a taxonomic history of "(.*?)")?/ do |taxon_name, parent_name, history|
+  subfamily = parent_name && (Subfamily.find_by_name(parent_name) || FactoryGirl.create(:subfamily, name: FactoryGirl.create(:name, name: parent_name)))
+  taxon = FactoryGirl.create :tribe, name: FactoryGirl.create(:name, name: taxon_name), subfamily: subfamily
+  history = 'none' unless history.present?
+  taxon.history_items.create! taxt: history
+end
+Given /^tribe "(.*?)" exists in that subfamily$/ do |name|
+  @tribe = FactoryGirl.create :tribe, subfamily: @subfamily, name: FactoryGirl.create(:tribe_name, name: name)
+  @tribe.history_items.create! taxt: "#{name} history"
+end
+
+###########################
+# subgenus
+Given /a subgenus exists with a name of "(.*?)"(?: and a genus of "(.*?)")?(?: and a taxonomic history of "(.*?)")?/ do |epithet, parent_name, history|
+  genus = parent_name && (Genus.find_by_name(parent_name) || FactoryGirl.create(:genus, name: FactoryGirl.create(:genus_name, name: parent_name)))
+  name = parent_name + ' (' + epithet + ')'
+  subgenus = FactoryGirl.create :subgenus, name: FactoryGirl.create(:subgenus_name, name: name, epithet: epithet), genus: genus
+  history = 'none' unless history.present?
+  subgenus.history_items.create! taxt: history
+end
+Given /^subgenus "(.*?)" exists in that genus$/ do |name|
+  epithet = name.match(/\((.*?)\)/)[1]
+  name = FactoryGirl.create :subgenus_name, name: name, epithet: epithet
+  @subgenus = FactoryGirl.create :subgenus, subfamily: @subfamily, tribe: @tribe, genus: @genus, name: name
+  @subgenus.history_items.create! taxt: "#{name} history"
 end
 
 #############################
@@ -159,23 +198,14 @@ Given /a subspecies exists for that species with a name of "(.*?)" and an epithe
   history = 'none' unless history.present?
   subspecies.history_items.create! taxt: history
 end
-
-
-###########################
-# tribe
-Given /a tribe exists with a name of "(.*?)"(?: and a subfamily of "(.*?)")?(?: and a taxonomic history of "(.*?)")?/ do |taxon_name, parent_name, history|
-  subfamily = parent_name && (Subfamily.find_by_name(parent_name) || FactoryGirl.create(:subfamily, name: FactoryGirl.create(:name, name: parent_name)))
-  taxon = FactoryGirl.create :tribe, name: FactoryGirl.create(:name, name: taxon_name), subfamily: subfamily
-  history = 'none' unless history.present?
-  taxon.history_items.create! taxt: history
+Given /^subspecies "(.*?)" exists in that species$/ do |name|
+  @subspecies = FactoryGirl.create :subspecies, subfamily: @subfamily, genus: @genus, species: @species, name: FactoryGirl.create(:subspecies_name, name: name)
+  @subspecies.history_items.create! taxt: "#{name} history"
 end
-
-Given /a subgenus exists with a name of "(.*?)"(?: and a genus of "(.*?)")?(?: and a taxonomic history of "(.*?)")?/ do |epithet, parent_name, history|
-  genus = parent_name && (Genus.find_by_name(parent_name) || FactoryGirl.create(:genus, name: FactoryGirl.create(:genus_name, name: parent_name)))
-  name = parent_name + ' (' + epithet + ')'
-  subgenus = FactoryGirl.create :subgenus, name: FactoryGirl.create(:subgenus_name, name: name, epithet: epithet), genus: genus
-  history = 'none' unless history.present?
-  subgenus.history_items.create! taxt: history
+Given /^there is a subspecies "([^"]*)" which is a subspecies of "([^"]*)" in the genus "([^"]*)"/ do |subspecies, species, genus|
+  genus = create_genus genus
+  species = create_species species, genus: genus
+  subspecies = create_subspecies subspecies, species: species, genus: genus
 end
 
 ###########################
@@ -186,35 +216,6 @@ end
 
 ##################################################
 
-Given /^subfamily "(.*?)" exists$/ do |name|
-  @subfamily = FactoryGirl.create :subfamily, name: FactoryGirl.create(:subfamily_name, name: name)
-  @subfamily.history_items.create! taxt: "#{name} history"
-end
-Given /^the unavailable subfamily "(.*?)" exists$/ do |name|
-  @subfamily = FactoryGirl.create :subfamily, status: 'unavailable', name: FactoryGirl.create(:subfamily_name, name: name)
-end
-Given /^tribe "(.*?)" exists in that subfamily$/ do |name|
-  @tribe = FactoryGirl.create :tribe, subfamily: @subfamily, name: FactoryGirl.create(:tribe_name, name: name)
-  @tribe.history_items.create! taxt: "#{name} history"
-end
-Given /^subgenus "(.*?)" exists in that genus$/ do |name|
-  epithet = name.match(/\((.*?)\)/)[1]
-  name = FactoryGirl.create :subgenus_name, name: name, epithet: epithet
-  @subgenus = FactoryGirl.create :subgenus, subfamily: @subfamily, tribe: @tribe, genus: @genus, name: name
-  @subgenus.history_items.create! taxt: "#{name} history"
-end
-Given /^subspecies "(.*?)" exists in that species$/ do |name|
-  @subspecies = FactoryGirl.create :subspecies, subfamily: @subfamily, genus: @genus, species: @species, name: FactoryGirl.create(:subspecies_name, name: name)
-  @subspecies.history_items.create! taxt: "#{name} history"
-end
-Given /^there is a subspecies "([^"]*)" which is a subspecies of "([^"]*)" in the genus "([^"]*)"/ do |subspecies, species, genus|
-  genus = create_genus genus
-  species = create_species species, genus: genus
-  subspecies = create_subspecies subspecies, species: species, genus: genus
-end
-Given /^there is a family "Formicidae"$/ do
-  create_family
-end
 Given /^there is a species name "([^"]*)"$/ do |name|
   create_name name
 end
