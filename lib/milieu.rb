@@ -48,6 +48,14 @@ class RestrictedMilieu < Milieu
     user && user.can_edit_catalog?
   end
 
+  def user_can_review_changes? user
+    user && user.can_approve_changes?
+  end
+
+  def user_can_approve_changes? user
+    user && user.can_approve_changes?
+  end
+
 end
 
 class SandboxMilieu < Milieu
@@ -64,6 +72,14 @@ class SandboxMilieu < Milieu
   end
 
   def user_can_edit_catalog? _
+    true
+  end
+
+  def user_can_review_changes? user
+    true
+  end
+
+  def user_can_approve_changes? _
     true
   end
 
