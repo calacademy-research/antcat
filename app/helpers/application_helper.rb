@@ -2,8 +2,12 @@
 require 'milieu'
 module ApplicationHelper
 
+  ### authorization methods
   def user_can_edit_references?
     $Milieu.user_can_edit_references? current_user
+  end
+  def user_can_upload_pdfs?
+    $Milieu.user_can_upload_pdfs? current_user
   end
   def user_can_edit_catalog?
     $Milieu.user_can_edit_catalog? current_user
@@ -11,10 +15,14 @@ module ApplicationHelper
   def user_is_editor?
     $Milieu.user_is_editor? current_user
   end
-  def user_can_upload_pdfs?
-    $Milieu.user_can_upload_pdfs? current_user
+  def user_can_approve_changes?
+    $Milieu.user_can_approve_changes? current_user
+  end
+  def user_can_review_changes?
+    $Milieu.user_can_review_changes? current_user
   end
 
+  ###
   def make_title title
     string = ''.html_safe
     string << "#{title} - " if title
