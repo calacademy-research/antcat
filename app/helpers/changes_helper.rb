@@ -5,8 +5,8 @@ module ChangesHelper
     name.name_html.html_safe
   end
 
-  def format_adder_name user
-    "#{user ? user.name : 'Someone'} added"
+  def format_adder_name user_id
+    "#{user_id ? User.find(user_id).name : 'Someone'} added"
   end
 
   def format_rank rank
