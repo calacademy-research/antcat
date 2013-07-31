@@ -5,6 +5,10 @@ module ChangesHelper
     name.name_html.html_safe
   end
 
+  def format_adder_name user
+    "#{user ? user.name : 'Someone'} added"
+  end
+
   def format_rank rank
     rank.display_string
   end
