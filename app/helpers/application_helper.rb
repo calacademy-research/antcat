@@ -1,7 +1,6 @@
 # coding: UTF-8
-
+require 'milieu'
 module ApplicationHelper
-  require 'milieu'
 
   def user_can_edit_references?
     $Milieu.user_can_edit_references? current_user
