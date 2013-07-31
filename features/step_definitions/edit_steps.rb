@@ -151,6 +151,18 @@ And /^I add a history item to "([^"]*)"(?: that includes a tag for "([^"]*)"?$)?
   end
   taxon.history_items.create! taxt: taxt
 end
+When /^I add a history item "(.*?)"/ do |text|
+  step %{I click the "Add History" button}
+  step %{I edit the history item to "#{text}"}
+  step %{I save the history item}
+end
+
+Then /^I add a reference section "(.*?)"/ do |text|
+  step %{I click the "Add" reference section button}
+  step %{I fill in the references field with "#{text}"}
+  step %{I save the reference section}
+end
+
 
 # references section
 Then /^the reference section should be "(.*)"$/ do |reference|

@@ -10,18 +10,6 @@ Given /^there is a genus "([^"]*)" that's waiting for approval$/ do |name|
   FactoryGirl.create :change, paper_trail_version: genus.last_version
 end
 
-Then /^I add a history item "(.*?)"/ do |text|
-  step %{I click the "Add History" button}
-  step %{I edit the history item to "#{text}"}
-  step %{I save the history item}
-end
-
-Then /^I add a reference section "(.*?)"/ do |text|
-  step %{I click the "Add" reference section button}
-  step %{I fill in the references field with "#{text}"}
-  step %{I save the reference section}
-end
-
 ####
 def should_see_in_changes selector, value
   page.should have_css selector, text: value
