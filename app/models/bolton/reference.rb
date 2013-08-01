@@ -136,9 +136,6 @@ class Bolton::Reference < ActiveRecord::Base
     original_string = string.dup
     string = string.gsub /<span.*?>.*?<\/span>/, ''
     string = string.gsub /\s/, ''
-    if string =~ /<\/?span/
-      require 'ruby-debug';debugger;'';
-    end
     string
   end
 
