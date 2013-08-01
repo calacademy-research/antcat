@@ -53,4 +53,8 @@ module ChangesHelper
     Taxt.to_string taxt, current_user
   end
 
+  def approve_button taxon
+    button_to 'Approve', approve_change_path(taxon.last_change), confirm: 'Are you sure you want to approve this change?'
+  end
+
 end

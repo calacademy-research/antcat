@@ -3,6 +3,10 @@
 %div.change_header
 
   %div.change_description
+
+    - if taxon.can_be_approved_by? current_user
+      %div.approve_button.left= approve_button taxon
+
     %div.name.left= format_adder_name change.whodunnit
     %div.taxon.left= taxon.name.name_html.html_safe
     %div.time.right= format_time_ago change.created_at
