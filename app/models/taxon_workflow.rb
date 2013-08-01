@@ -37,8 +37,9 @@ class Taxon < ActiveRecord::Base
   end
 
   def is_user_last_editor? user
-    user_id = last_version.try :whodunnit
-    User.find(user_id) rescue nil
+    last_editor_id = last_version.try :whodunnit
+    last_editor = User.find(last_editor_id) rescue nil
+    user == last_editor
   end
 
 end
