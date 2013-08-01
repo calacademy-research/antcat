@@ -6,7 +6,12 @@ module ChangesHelper
   end
 
   def format_adder_name user_id
+    user = user_id ? User.find(user_id).name : 'Someone'
     "#{user_id ? User.find(user_id).name : 'Someone'} added"
+  end
+
+  def format_approver_name user
+    "#{user ? user.name : 'Someone'} approved this change"
   end
 
   def format_rank rank

@@ -14,6 +14,6 @@
 
   - if change.approver
     %div.change_status
-      %div.approver.left "#{User.find(change.approver).name} approved this change"
-      %div.approval_time.right format_time_ago change.approved_at
+      %div.approver.left= format_approver_name change.approver
+      %div.approval_time.right= format_time_ago change.approved_at
       %div.clear
