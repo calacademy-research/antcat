@@ -65,7 +65,7 @@ Feature: Workflow
     * I should see a reference section "Reference section" in the changes
 
   Scenario: Approving a change
-    When I add a taxon
+    When I add the genus "Atta"
     And I go to the changes page
     And I will confirm on the next step
     And I press "Approve"

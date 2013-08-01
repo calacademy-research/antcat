@@ -73,7 +73,7 @@ end
 
 #############################
 # editing
-When /^I add a taxon$/ do
+When /^I add the genus "Atta"$/ do
   mother = TaxonMother.new
   reference = FactoryGirl.create :article_reference
 
@@ -106,8 +106,7 @@ When /^I add a taxon$/ do
   genus_params[:protonym_attributes][:name_attributes][:id] = FactoryGirl.create(:genus_name, name: 'Betta').id
   genus_params[:type_name_attributes] = {id: FactoryGirl.create(:species_name, name: 'Betta major').id}
 
-  taxon = mother.create_taxon Rank[:species], create_genus
+  taxon = mother.create_taxon Rank[:genus], create_subfamily
   mother.save_taxon taxon, genus_params
-
   taxon.last_change.paper_trail_version.update_attributes whodunnit: @user
 end
