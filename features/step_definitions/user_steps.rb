@@ -19,11 +19,12 @@ end
 Given 'I am not logged in' do
 end
 
-def login can_edit_catalog, use_web_interface = false
+def login can_edit_catalog, use_web_interface = false, can_approve_changes = true
   step 'I go to the main page'
   User.delete_all
   attributes = {email: 'mark@example.com'}
   attributes[:can_edit_catalog] = true if can_edit_catalog
+  attributes[:can_approve_changes] = true if can_approve_changes
   @user = FactoryGirl.create :user, attributes
 
   use_web_interface ? login_through_web_page : login_programmatically
@@ -45,6 +46,9 @@ Given /^I log in$/ do
 end
 Given /^I log in as a catalog editor$/ do
   login true
+end
+Given /^I log in as an approver$/ do
+  login true, false, true
 end
 Given /^I log in as a bibliography editor$/ do
   login false

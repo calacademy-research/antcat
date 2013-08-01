@@ -8,7 +8,7 @@ Feature: Workflow
     And there is a subfamily "Formicinae"
     And there is a genus "Eciton"
     And version tracking is enabled
-    And I log in
+    And I log in as an approver
 
   Scenario: Adding a taxon and seeing it on the Changes page
     When I go to the catalog page for "Formicinae"
@@ -63,3 +63,13 @@ Feature: Workflow
     * I should see the type notes "Type notes" in the changes
     * I should see a history item "History item" in the changes
     * I should see a reference section "Reference section" in the changes
+
+  Scenario: Approving a change
+    When I add a taxon
+    And I go to the changes page
+    And I will confirm on the next step
+    And I press "Approve"
+    Then I should not see "Approve"
+    And I should see "Mark Wilden approved"
+    When I go to the catalog page for "Atta"
+    Then I should see "Approved by Mark Wilden"

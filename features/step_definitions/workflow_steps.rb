@@ -70,3 +70,44 @@ end
 Then /^I should see a reference section "(.*?)" in the changes$/ do |value|
   should_see_in_changes '.references_taxt', value
 end
+
+#############################
+# editing
+When /^I add a taxon$/ do
+  mother = TaxonMother.new
+  reference = FactoryGirl.create :article_reference
+
+  taxon_params = HashWithIndifferentAccess.new(
+    name_attributes:     {id: ''},
+    status:              'valid',
+    incertae_sedis_in:   '',
+    fossil:              '0',
+    nomen_nudum:         '0',
+    unresolved_homonym:  '0',
+    ichnotaxon:          '0',
+    hong:                '0',
+    headline_notes_taxt: '',
+    homonym_replaced_by_name_attributes: {id: ''},
+    protonym_attributes: {
+      name_attributes:  {id: ''},
+      fossil:           '0',
+      sic:              '0',
+      locality:         '',
+      authorship_attributes: {
+        reference_attributes: {id: reference.id},
+        pages: '',
+        forms: '',
+        notes_taxt: '',
+      },
+    }
+  )
+  genus_params = taxon_params.deep_dup
+  genus_params[:name_attributes][:id] = FactoryGirl.create(:genus_name, name: 'Atta').id
+  genus_params[:protonym_attributes][:name_attributes][:id] = FactoryGirl.create(:genus_name, name: 'Betta').id
+  genus_params[:type_name_attributes] = {id: FactoryGirl.create(:species_name, name: 'Betta major').id}
+
+  taxon = mother.create_taxon Rank[:species], create_genus
+  mother.save_taxon taxon, genus_params
+
+  taxon.last_change.paper_trail_version.update_attributes whodunnit: @user
+end
