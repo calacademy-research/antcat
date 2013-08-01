@@ -78,6 +78,7 @@ Feature: Reference field
     When I set the authors to "Ward, B.L.; Bolton, B."
     And I set the title to "Ant Title"
     And I save my changes to the current reference
+    And I wait for a bit
     Then I should not see the reference field edit form
     And I should see "Ward, B.L.; Bolton, B. 1995b. Ant Title"
 
