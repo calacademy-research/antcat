@@ -25,4 +25,9 @@ class Change < ActiveRecord::Base
     Taxon.find paper_trail_version.item_id
   end
 
+  def user
+    user_id = paper_trail_version.whodunnit
+    user_id ? User.find(user_id) : nil
+  end
+
 end

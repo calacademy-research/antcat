@@ -20,6 +20,14 @@ describe Change do
     change.paper_trail_version.should == genus_version
   end
 
+  it "has a user (the changer)" do
+    user = FactoryGirl.create :user
+    genus = create_genus
+    genus.last_version.update_attributes whodunnit: user.id
+    change = Change.new paper_trail_version: genus.last_version
+    change.user.should == user
+  end
+
   it "should be able to be reified after being created" do
     genus = create_genus
 
