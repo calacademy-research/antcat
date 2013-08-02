@@ -1,3 +1,4 @@
+@dormant
 Feature: View bibliography
   As a researcher
   I want to see what the literature is for ant taxonomy
@@ -112,7 +113,6 @@ Feature: View bibliography
     Then I should not see the missing reference
     And I should see "Ward, P.S. 2010d. Ant Facts. Ants 1:1."
 
-  @dormant
   Scenario: Not logged in
     Given these references exist
       | authors | citation   | title | year | public_notes | editor_notes | taxonomic_notes |
@@ -123,7 +123,6 @@ Feature: View bibliography
     And I should not see "Editor"
     And I should not see "Taxonomy"
 
-  @dormant
   Scenario: Logged in
     Given these references exist
       | authors | citation   | title | year | public_notes | editor_notes | taxonomic_notes |
