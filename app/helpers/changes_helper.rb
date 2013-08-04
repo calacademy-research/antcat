@@ -1,6 +1,11 @@
 # coding: UTF-8
 module ChangesHelper
 
+  def link_to_taxon taxon
+    label = taxon.name.to_html_with_fossil(taxon.fossil?)
+    content_tag :a, label, href: %{/catalog/#{taxon.id}}
+  end
+
   def format_name name
     name.name_html.html_safe
   end
@@ -8,10 +13,6 @@ module ChangesHelper
   def format_adder_name user_id
     user = user_id ? User.find(user_id).name : 'Someone'
     "#{user_id ? User.find(user_id).name : 'Someone'} added"
-  end
-
-  def format_approver_name user
-    "#{user ? user.name : 'Someone'} approved this change"
   end
 
   def format_rank rank
@@ -48,10 +49,6 @@ module ChangesHelper
     string = []
     string << 'Fossil' if taxon.type_fossil?
     string.join(', ').html_safe
-  end
-
-  def format_time_ago time
-    content_tag :span, "#{time_ago_in_words time} ago", title: time
   end
 
   def format_taxt taxt

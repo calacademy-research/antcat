@@ -63,6 +63,14 @@ http://antcat.org
     Formatters::Formatter.add_period_if_necessary string
   end
 
+  def format_time_ago time
+    Formatters::Formatter.format_time_ago time
+  end
+
+  def format_approver_name user
+    Formatters::CatalogFormatter.format_approver_name user
+  end
+
 end
 
 PaperTrailManager::ChangesHelper

@@ -52,4 +52,20 @@ describe ApplicationHelper do
 
   end
 
+  describe "Formatting time ago" do
+    it "should call Formatters::Formatter" do
+      time = Time.now - 1.hour
+      Formatters::Formatter.should_receive(:format_time_ago).with(time).and_return '1 hour ago'
+      helper.format_time_ago(time).should == '1 hour ago'
+    end
+  end
+
+  describe "Formatting approver name" do
+    it "should call Formatters::CatalogFormatter" do
+      approver = stub name: 'Mark'
+      Formatters::CatalogFormatter.should_receive(:format_approver_name).with(approver).and_return 'Mark approved it'
+      helper.format_approver_name(approver).should == 'Mark approved it'
+    end
+  end
+
 end
