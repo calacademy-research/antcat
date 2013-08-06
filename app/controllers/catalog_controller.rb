@@ -181,7 +181,8 @@ class CatalogController < ApplicationController
     @parameters = HashWithIndifferentAccess.new
     @parameters[:id] = params[:id] if params[:id].present?
     @parameters[:child] = params[:child] if params[:child].present?
-    @parameters[:qq] = params[:qq].strip if params[:qq].present?
+    # We get invalid UTF-8 sometimes. #present crashes in that case so first test nility, then validity
+    @parameters[:qq] = params[:qq].strip if params[:qq] && params[:qq].valid_encoding?
     @parameters[:st] = params[:st] if params[:st].present?
   end
 
