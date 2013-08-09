@@ -169,16 +169,6 @@ Then /there should not be an edit form/ do
   page.should have_no_css "#reference_#{@reference.id} .reference_edit"
 end
 
-When /in the new edit form I fill in "(.*?)" with the existing reference's ID/ do |field|
-  within first("#reference_") do
-    step "in the new edit form I fill in \"#{field}\" with \"#{@reference.id}\""
-  end
-end
-
-Then 'the "Delete" button should not be visible' do
-  find_button('Delete').should_not be_visible
-end
-
 Then 'all the buttons should be disabled' do
   disabled = page.all('.margin .button_to input[disabled=disabled][type=submit]')
   all = page.all('.margin .button_to input[type=submit]')
@@ -224,17 +214,6 @@ When /I fill in "([^"]*)" with a URL to a document that doesn't exist/ do |field
   within first('.reference') do
     step "I fill in \"#{field}\" with \"google\.com/foo\""
   end
-end
-
-When 'I choose a file to upload' do
-  stub_request(:put, "http://s3.amazonaws.com/antcat/1/21105.pdf")
-  attach_file 'reference_document_attributes_file', Rails.root + 'features/support/21105.pdf'
-end
-
-Then 'I should see a link to that file' do
-  @reference.should_not be_nil
-  @reference.reload.document.should_not be_nil
-  page.should have_css("a[href='http://127.0.0.1/documents/#{@reference.document.id}/21105.pdf']", :text => 'PDF')
 end
 
 And /I (edit|delete|copy) "(.*?)"/ do |verb, author|
@@ -296,32 +275,8 @@ And /^I should not see the missing reference$/ do
   step 'I should not see "Adventures among Ants"'
 end
 
-Given /^there is a reference by Brian Fisher$/ do
-  create_reference :article_reference, HashWithIndifferentAccess.new(author: 'Fisher, B.', year: 2000, title: 'Ants of Madagascar')
-end
-
-Given /^there is a reference by Barry Bolton$/ do
-  create_reference :article_reference, HashWithIndifferentAccess.new(author: 'Bolton, B.', year: 1995, title: 'New General Catalog')
-end
-
 Given /there are no references/ do
   Reference.delete_all
-end
-
-Given /^there is a reference for "Bolton, 2005"$/ do
-  @reference = FactoryGirl.create :article_reference, :author_names => [FactoryGirl.create(:author_name, :name => 'Bolton')], :citation_year => '2005'
-end
-
-And /^the "Delete" button should not be visible in the first reference$/ do
-  within first('.reference') do
-    step 'the "Delete" button should not be visible in the first reference'
-  end
-end
-
-And /I check "reference_document_attributes_public" in the first reference/ do
-  within first('.reference') do
-    step 'I check "reference_document_attributes_public" in the first reference'
-  end
 end
 
 When /^I save my changes to the first reference$/ do

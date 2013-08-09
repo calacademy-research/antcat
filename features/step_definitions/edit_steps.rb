@@ -56,11 +56,6 @@ When /^I set the homonym replaced by name to "([^"]*)"$/ do |name|
   step %{I fill in "name_string" with "#{name}"}
 end
 
-### headline notes
-When /^I put the cursor in the headline notes edit box$/ do
-  find('#taxon_headline_notes_taxt').click
-end
-
 ### authorship
 And /^I click the authorship field$/ do
   step %{I click "#authorship_field .display_button"}
@@ -131,11 +126,6 @@ When /^I click the "Add History" button$/ do
 end
 When /^I edit the history item to "([^"]*)"$/ do |history|
   step %{I fill in "taxt" with "#{history}"}
-end
-When /^I press that history item's "Insert Name" button$/ do
-  within '.history_items .history_item:first' do
-    click_button 'Insert Name'
-  end
 end
 Then /^I should (not )?see the "Delete" button for the history item$/ do |should_not|
   selector = should_not ? :should_not : :should
@@ -215,9 +205,6 @@ When /^I press the (?:junior )?synonym item "([^"]*)" button$/ do |button|
   within '.junior_synonyms_section' do
     step %{I press "#{button}"}
   end
-end
-Then /^I should see an error message about the unfound reference$/ do
-  step %{I should see "The reference '{123}' could not be found. Was the ID changed?"}
 end
 When /^I click "(.*?)" beside the first junior synonym$/ do |button|
   within '.junior_synonyms_section .synonym_row' do

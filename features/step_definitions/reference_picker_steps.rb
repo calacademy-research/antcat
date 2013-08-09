@@ -24,17 +24,9 @@ Then /^the widget results should be the ID for "([^"]*)"$/ do |key|
   step %{the widget results should be "#{reference.id.to_s}"}
 end
 
-Then /^the widget results should be 0$/ do
-  step %{the widget results should be "0"}
-end
-
 Then /^the widget results should be the taxt for "Fisher 1995"$/ do
   reference = find_reference_by_key 'Fisher 1995'
   step %{the widget results should be "{Fisher, 1995b v}"}
-end
-
-Then /^the current reference should be the first reference$/ do
-  page.should have_css '#popup .current .display', text: ''
 end
 
 Then /^I should not see the default reference button$/ do

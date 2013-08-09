@@ -1,19 +1,10 @@
 # coding: UTF-8
-
-When /^I click the edit icon$/ do
-  step 'I follow "edit"'
-end
-
 Then /^I should (not )?see the reference field edit form$/ do |should_not|
   selector = should_not ? :should_not : :should
   find('.current .reference_item > .edit').send(selector, be_visible)
 end
 
 # Reference field/popup
-Then /I should (not )?see the reference field$/ do |should_not|
-  selector = should_not ? :should_not : :should
-  find('.antcat_reference_field').send(selector, be_visible)
-end
 When /^I edit the reference$/ do
   within ".current" do
     step 'I follow "edit"'
@@ -23,11 +14,6 @@ When /^I save my changes to the current reference$/ do
   within first('.current') do
     step 'I press "Save"'
     step 'I wait for a bit'
-  end
-end
-When /^I add a reference$/ do
-  within ".expansion" do
-    step 'I follow "Add"'
   end
 end
 When /^I set the authors to "([^"]*)"$/ do |names|
@@ -57,15 +43,6 @@ end
 # Search
 When /In the search box, I press "Go"/ do
   step 'I press "Go" within ".expansion"'
-end
-When /^I search for "([^"]*)"$/ do |search_term|
-  within '.expansion' do
-    # this is to make the selectmenu work
-    step %{I follow "Search for"}
-    step %{I follow "Search for"}
-    step "I fill in the search box with \"#{search_term}\""
-    step %{In the search box, I press "Go"}
-  end
 end
 When /^I search for the authors? "([^"]*)"$/ do |authors|
   within '.expansion' do
@@ -104,16 +81,6 @@ When /I click the test name field/ do
 end
 
 # Name popup
-Then /in the name popup display I should see the first name/ do
-  within "#popup .display" do
-    step %{I should see "#{Name.first.name}"}
-  end
-end
-Then /in the name popup display I should see "([^"]*)"/ do |text|
-  within "#popup .display" do
-    step %{I should see "#{text}"}
-  end
-end
 Then /^I should (not )?see the name popup edit interface$/ do |should_not|
   selector = should_not ? :should_not : :should
   find('#popup .controls').send(selector, be_visible)
