@@ -62,8 +62,8 @@ describe ApplicationHelper do
 
   describe "Formatting approver name" do
     it "should call Formatters::CatalogFormatter" do
-      approver = stub name: 'Mark'
-      Formatters::CatalogFormatter.should_receive(:format_approver_name).with(approver).and_return 'Mark approved it'
+      approver = double name: 'Mark'
+      Formatters::Formatter.should_receive(:format_approver_name).with(approver).and_return 'Mark approved it'
       helper.format_approver_name(approver).should == 'Mark approved it'
     end
   end
