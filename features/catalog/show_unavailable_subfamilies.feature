@@ -1,4 +1,4 @@
-Feature: Using the catalog
+Feature: Showing/hiding unavailable subfamilies
   As a user of AntCat
   I want choose whether or not to take up screen space with unavailable subfamilies
   So I can see more useful information
