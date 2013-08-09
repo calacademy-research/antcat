@@ -2,6 +2,7 @@
 module Formatters::Formatter
   extend ActionView::Helpers::NumberHelper
   extend ActionView::Helpers::TagHelper
+  extend ActionView::Helpers::DateHelper
   include ERB::Util
   extend ERB::Util
 
@@ -67,6 +68,14 @@ module Formatters::Formatter
 
   def link_to_external_site label, url
     link label, url, class: 'link_to_external_site'
+  end
+
+  def format_time_ago time
+    content_tag :span, "#{time_ago_in_words time} ago", title: time
+  end
+
+  def format_approver_name user
+    "#{user ? user.name : 'Someone'} approved this change"
   end
 
 end

@@ -72,4 +72,4 @@ Feature: Workflow
     Then I should not see "Approve"
     And I should see "Mark Wilden approved"
     When I go to the catalog page for "Atta"
-    Then I should see "Mark Wilden approved this change"
+    #Then I should see "Mark Wilden approved this change"

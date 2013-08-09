@@ -68,7 +68,7 @@ http://antcat.org
   end
 
   def format_approver_name user
-    Formatters::CatalogFormatter.format_approver_name user
+    Formatters::Formatter.format_approver_name user
   end
 
 end
