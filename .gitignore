@@ -1,3 +1,4 @@
+.ackrc
 .rspec
 .sass-cache
 backups/*.tmp
