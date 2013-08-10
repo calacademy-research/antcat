@@ -2,7 +2,17 @@
 class Exporters::Antweb::Formatter < Formatters::TaxonFormatter
 
   def include_invalid; false end
+  def expand_references?; false end
 
+  def link_to_other_site
+    Formatters::CatalogTaxonFormatter.link_to_antcat @taxon
+  end
+
+  def link_to_edit_taxon; end
+
+  def link_to_review_change; end
+
+  # overrides to stub stuff out
   def header
   end
 
@@ -21,19 +31,9 @@ class Exporters::Antweb::Formatter < Formatters::TaxonFormatter
     string
   end
 
-  def expand_references?; false end
-
   def history_item_body_attributes
     {style: 'font-size: 13px'}
   end
-
-  def link_to_other_site
-    Formatters::CatalogTaxonFormatter.link_to_antcat @taxon
-  end
-
-  def link_to_edit_taxon; end
-
-  def link_to_review_change; end
 
   def self.link_to_antweb_taxon taxon
     return if taxon.kind_of? Family
