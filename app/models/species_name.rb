@@ -1,5 +1,6 @@
 # coding: UTF-8
 class SpeciesName < SpeciesGroupName
+  extend Formatters::Formatter
 
   def change_parent parent_name
     name_string = [parent_name.genus_epithet, species_epithet].join ' '

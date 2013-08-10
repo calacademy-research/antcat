@@ -1,5 +1,6 @@
 # coding: UTF-8
 class SubgenusName < GenusGroupName
+  extend Formatters::Formatter
 
   def self.get_name data
     data[:subgenus_epithet]

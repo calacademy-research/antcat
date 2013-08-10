@@ -1,5 +1,6 @@
 # coding: UTF-8
 class SubspeciesName < SpeciesGroupName
+  extend Formatters::Formatter
 
   def subspecies_epithets
     words[2..-1].join ' '

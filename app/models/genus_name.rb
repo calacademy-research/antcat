@@ -1,6 +1,6 @@
 # coding: UTF-8
 class GenusName < GenusGroupName
-  include Formatters::Formatter
+  extend Formatters::Formatter
 
   def genus_name
     words[0]
