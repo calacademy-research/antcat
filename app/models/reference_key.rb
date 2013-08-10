@@ -4,6 +4,7 @@ class ReferenceKey
   include ActionView::Context
   include Sprockets::Helpers::RailsHelper
   include Sprockets::Helpers::IsolatedHelper
+  include Formatters::Formatter
 
   def initialize reference
     @reference = reference
@@ -63,7 +64,7 @@ class ReferenceKey
   end
 
   def make_to_link_title string
-    Formatters::Formatter.unitalicize string
+    unitalicize string
   end
 
   def reference_key_expansion_text reference_string, reference_key_string
