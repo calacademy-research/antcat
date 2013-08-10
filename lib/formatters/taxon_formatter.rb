@@ -6,6 +6,7 @@ class Formatters::TaxonFormatter
   include Formatters::Formatter
   extend Formatters::Formatter
   include Formatters::LinkFormatter
+  extend Formatters::LinkFormatter
 
   def initialize taxon, user = nil
     @taxon, @user = taxon, user
