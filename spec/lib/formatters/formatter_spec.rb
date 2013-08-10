@@ -1,9 +1,13 @@
 # coding: UTF-8
 require 'spec_helper'
 
+class FormattersFormatterTestClass
+  include Formatters::Formatter
+end
+
 describe Formatters::Formatter do
   before do
-    @formatter = Formatters::Formatter
+    @formatter = FormattersFormatterTestClass.new
   end
 
  describe "Pluralizing with commas" do

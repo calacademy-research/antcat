@@ -2,7 +2,6 @@
 module Formatters::LinkFormatter
   include ActionView::Helpers::TagHelper
   include ERB::Util
-  extend self
 
   def link contents, href, attributes = {}
     attributes = attributes.dup

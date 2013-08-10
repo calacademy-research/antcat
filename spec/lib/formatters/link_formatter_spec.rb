@@ -1,9 +1,13 @@
 # coding: UTF-8
 require 'spec_helper'
 
+class FormattersLinkFormatterTestClass
+  include Formatters::LinkFormatter
+end
+
 describe Formatters::LinkFormatter do
   before do
-    @formatter = Formatters::LinkFormatter
+    @formatter = FormattersLinkFormatterTestClass.new
   end
 
   describe "Link creation" do

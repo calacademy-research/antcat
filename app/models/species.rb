@@ -1,5 +1,7 @@
 # coding: UTF-8
 class Species < SpeciesGroupTaxon
+  include Formatters::Formatter
+
   has_many :subspecies
 
   def siblings

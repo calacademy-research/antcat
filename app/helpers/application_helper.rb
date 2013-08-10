@@ -1,6 +1,7 @@
 # coding: UTF-8
 require 'milieu'
 module ApplicationHelper
+  include Formatters::Formatter
   include Formatters::LinkFormatter
 
   ### authorization methods

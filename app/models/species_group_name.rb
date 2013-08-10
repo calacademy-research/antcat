@@ -1,5 +1,6 @@
 # coding: UTF-8
 class SpeciesGroupName < Name
+  include Formatters::Formatter
 
   def genus_epithet
     words[0]

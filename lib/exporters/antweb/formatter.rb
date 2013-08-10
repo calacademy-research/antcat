@@ -1,5 +1,6 @@
 # coding: UTF-8
 class Exporters::Antweb::Formatter < Formatters::TaxonFormatter
+  extend Formatters::LinkFormatter
 
   def include_invalid; false end
   def expand_references?; false end
@@ -50,7 +51,7 @@ class Exporters::Antweb::Formatter < Formatters::TaxonFormatter
       %{name=#{taxon.name.to_s.downcase}&rank=subfamily}
     end
     url << %{&project=worldants}
-    Formatters::LinkFormatter.link_to_external_site 'AntWeb', url.html_safe
+    link_to_external_site 'AntWeb', url.html_safe
   end
 
   def self.link_to_taxon taxon

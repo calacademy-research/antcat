@@ -1,5 +1,7 @@
 # coding: UTF-8
 class Subspecies < SpeciesGroupTaxon
+  include Formatters::Formatter
+
   belongs_to :species
   before_validation :set_genus
 

@@ -4,7 +4,6 @@ module Formatters::Formatter
   include ActionView::Helpers::TagHelper
   include ActionView::Helpers::DateHelper
   include ERB::Util
-  extend self
 
   def pluralize_with_delimiters count, word, plural = nil
     if count != 1

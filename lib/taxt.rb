@@ -1,4 +1,7 @@
 module Taxt
+  include Formatters::Formatter
+  extend Formatters::Formatter
+
   # These values are duplicated in taxt_editor.coffee
   REFERENCE_TAG_TYPE = 1
   TAXON_TAG_TYPE     = 2
@@ -21,7 +24,7 @@ module Taxt
 
   def self.to_sentence taxt, user, options = {}
     string = decode taxt, user, options
-    Formatters::Formatter.add_period_if_necessary string
+    add_period_if_necessary string
   end
 
   def self.to_display_sentence taxt, user, options = {}
@@ -139,8 +142,8 @@ module Taxt
       taxon = Taxon.find taxon_id_match
       (options[:formatter] || Formatters::CatalogTaxonFormatter).link_to_taxon taxon
     end
-  rescue
-    whole_match
+  #rescue
+    #whole_match
   end
 
   def self.decode_epithet epithet

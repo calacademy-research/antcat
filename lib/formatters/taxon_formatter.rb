@@ -4,7 +4,8 @@ class Formatters::TaxonFormatter
   extend ActionView::Helpers::TagHelper
   include ActionView::Context
   include Formatters::Formatter
-  include Rails.application.routes.url_helpers
+  extend Formatters::Formatter
+  include Formatters::LinkFormatter
 
   def initialize taxon, user = nil
     @taxon, @user = taxon, user
@@ -214,12 +215,12 @@ class Formatters::TaxonFormatter
   end
 
   def link_to_antwiki
-    Formatters::LinkFormatter.link_to_external_site 'AntWiki', "http://www.antwiki.org/wiki/#{@taxon.name.to_s.gsub(/ /, '_')}"
+    link_to_external_site 'AntWiki', "http://www.antwiki.org/wiki/#{@taxon.name.to_s.gsub(/ /, '_')}"
   end
 
   ###########
   def self.link_to_antcat taxon, label = 'AntCat'
-    Formatters::LinkFormatter.link_to_external_site label, "http://www.antcat.org/catalog/#{taxon.id}"
+    link_to_external_site label, "http://www.antcat.org/catalog/#{taxon.id}"
   end
 
   def self.link_to_taxon taxon

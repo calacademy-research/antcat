@@ -1,6 +1,7 @@
 # coding: UTF-8
 class ReferenceKey
   include ActionView::Helpers::TagHelper
+  include ActionView::Helpers::AssetTagHelper
   include ActionView::Context
   include Sprockets::Helpers::RailsHelper
   include Sprockets::Helpers::IsolatedHelper
@@ -59,7 +60,7 @@ class ReferenceKey
 
   def to_link_without_expansion reference_key_string, reference_string, user
     url = "http://antcat.org/references?q=#{@reference.id}"
-    content = Formatters::LinkFormatter.link reference_key_string, url, title: make_to_link_title(reference_string)
+    content = link reference_key_string, url, title: make_to_link_title(reference_string)
     content << document_link(user)
     content
   end
@@ -79,7 +80,7 @@ class ReferenceKey
   end
 
   def goto_reference_link
-    Formatters::LinkFormatter.link image_tag('external_link.png'), "/references?q=#{@reference.id}", class: :goto_reference_link
+    link image_tag('external_link.png'), "/references?q=#{@reference.id}", class: :goto_reference_link
   end
 
 end
