@@ -142,8 +142,8 @@ module Taxt
       taxon = Taxon.find taxon_id_match
       (options[:formatter] || Formatters::CatalogTaxonFormatter).link_to_taxon taxon
     end
-  #rescue
-    #whole_match
+  rescue
+    whole_match
   end
 
   def self.decode_epithet epithet
