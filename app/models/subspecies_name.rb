@@ -18,12 +18,12 @@ class SubspeciesName < SpeciesGroupName
     epithets= words[1..-1].join ' '
     epithet = words[-1]
     name = "#{genus} #{epithets}"
-    name_html = Formatters::Formatter.italicize name
+    name_html = italicize name
     attributes = {
       name:         name,
       name_html:    name_html,
       epithet:      epithet,
-      epithet_html: Formatters::Formatter.italicize(epithet),
+      epithet_html: italicize(epithet),
       epithets:     epithets,
       protonym_html:name_html,
     }
@@ -52,7 +52,7 @@ class SubspeciesName < SpeciesGroupName
       if type
         epithets_with_subspecies_types_html << type << ' '
       end
-      epithet_html = Formatters::Formatter.italicize epithet
+      epithet_html = italicize epithet
       attributes[:epithets]               << "#{epithet} "
       epithets_html                       << epithet_html << ' '
       epithets_with_subspecies_types_html << epithet_html << ' '

@@ -1,5 +1,6 @@
 # coding: UTF-8
 class GenusGroupTaxon < Taxon
+  include Formatters::Formatter
   include Importers::Bolton::Catalog::Updater
   belongs_to :subfamily
   belongs_to :tribe
@@ -45,7 +46,7 @@ class GenusGroupTaxon < Taxon
   end
 
   def label
-    Formatters::Formatter.italicize name
+    italicize name
   end
 
   def inspect

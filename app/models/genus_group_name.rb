@@ -2,7 +2,7 @@
 class GenusGroupName < Name
 
   def dagger_html
-    Formatters::Formatter.italicize super
+    italicize super
   end
 
 end

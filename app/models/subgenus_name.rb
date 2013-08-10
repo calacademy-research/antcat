@@ -17,8 +17,8 @@ class SubgenusName < GenusGroupName
 
   def self.make_import_attributes name, data
     parent_name = get_parent_name data
-    epithet_html = Formatters::Formatter.italicize name
-    name_html = "#{parent_name.to_html} #{Formatters::Formatter.italicize "(#{name})"}"
+    epithet_html = italicize name
+    name_html = "#{parent_name.to_html} #{italicize "(#{name})"}"
     {
       epithet:      name,
       epithet_html: epithet_html,

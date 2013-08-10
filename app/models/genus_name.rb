@@ -1,5 +1,6 @@
 # coding: UTF-8
 class GenusName < GenusGroupName
+  include Formatters::Formatter
 
   def genus_name
     words[0]
@@ -19,7 +20,7 @@ class GenusName < GenusGroupName
   end
 
   def self.make_import_attributes name, _ = nil
-    name_html = Formatters::Formatter.italicize name
+    name_html = italicize name
     {
       name:         name,
       name_html:    name_html,

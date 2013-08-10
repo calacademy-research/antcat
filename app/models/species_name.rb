@@ -12,12 +12,12 @@ class SpeciesName < SpeciesGroupName
     genus = words[0]
     species = words[1]
     name = "#{genus} #{species}"
-    name_html = Formatters::Formatter.italicize name
+    name_html = italicize name
     attributes = {
       name: name,
       name_html: name_html,
       epithet: species,
-      epithet_html: Formatters::Formatter.italicize(species),
+      epithet_html: italicize(species),
       protonym_html: name_html,
     }
     create! attributes
@@ -49,7 +49,7 @@ class SpeciesName < SpeciesGroupName
   def self.make_import_attributes name, data
     attributes = {
       epithet:      name,
-      epithet_html: Formatters::Formatter.italicize(name),
+      epithet_html: italicize(name),
     }
     parent_name = get_parent_name data
     attributes[:name]          = "#{parent_name} #{attributes[:epithet]}"

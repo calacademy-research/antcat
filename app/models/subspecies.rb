@@ -25,7 +25,7 @@ class Subspecies < SpeciesGroupTaxon
     new_name ||= SpeciesName.new
     new_name.update_attributes({
       name:           new_name_string,
-      name_html:      Formatters::Formatter.italicize(new_name_string),
+      name_html:      italicize(new_name_string),
       epithet:        name.epithet,
       epithet_html:   name.epithet_html,
       epithets:       nil,

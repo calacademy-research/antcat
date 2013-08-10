@@ -10,7 +10,7 @@ class SpeciesGroupName < Name
   end
 
   def dagger_html
-    Formatters::Formatter.italicize super
+    italicize super
   end
 
 end

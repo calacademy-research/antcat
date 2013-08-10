@@ -1,5 +1,7 @@
 # coding: UTF-8
 class Name < ActiveRecord::Base
+  include Formatters::Formatter
+
   validates :name, presence: true
   after_save :set_taxon_caches
   has_paper_trail
@@ -9,7 +11,7 @@ class Name < ActiveRecord::Base
     raise Taxon::TaxonExists if existing_names.any? {|name| not name.references.empty?}
     update_attributes!({
       name:           name_string,
-      name_html:      Formatters::Formatter.italicize(name_string),
+      name_html:      italicize(name_string),
     })
   end
 
