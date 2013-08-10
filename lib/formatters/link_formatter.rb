@@ -30,4 +30,22 @@ module Formatters::LinkFormatter
     link_to_external_site 'AntWiki', "http://www.antwiki.org/wiki/#{taxon.name.to_s.gsub(/ /, '_')}"
   end
 
+  def link_to_antweb taxon
+    return if taxon.kind_of? Family
+    return unless Exporters::Antweb::Exporter.exportable? taxon
+    url = %{http://www.antweb.org/description.do?}
+    url << case taxon
+    when Species
+      %{name=#{taxon.name.epithet.to_s.downcase}&genus=#{taxon.genus.name.to_s.downcase}&rank=species}
+    when Subspecies
+      %{name=#{taxon.name.epithets.to_s.downcase}&genus=#{taxon.genus.name.to_s.downcase}&rank=species}
+    when Genus
+      %{name=#{taxon.name.to_s.downcase}&rank=genus}
+    when Subfamily
+      %{name=#{taxon.name.to_s.downcase}&rank=subfamily}
+    end
+    url << %{&project=worldants}
+    link_to_external_site 'AntWeb', url.html_safe
+  end
+
 end

@@ -1,11 +1,12 @@
 # coding: UTF-8
 class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
+  include Formatters::LinkFormatter
 
   def include_invalid; true end
   def expand_references?; true end
 
   def link_to_other_site
-    Exporters::Antweb::Formatter.link_to_antweb_taxon @taxon
+    link_to_antweb @taxon
   end
 
   def link_to_edit_taxon

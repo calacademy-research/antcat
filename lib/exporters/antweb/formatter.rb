@@ -37,24 +37,6 @@ class Exporters::Antweb::Formatter < Formatters::TaxonFormatter
     {style: 'font-size: 13px'}
   end
 
-  def self.link_to_antweb_taxon taxon
-    return if taxon.kind_of? Family
-    return unless Exporters::Antweb::Exporter.exportable? taxon
-    url = %{http://www.antweb.org/description.do?}
-    url << case taxon
-    when Species
-      %{name=#{taxon.name.epithet.to_s.downcase}&genus=#{taxon.genus.name.to_s.downcase}&rank=species}
-    when Subspecies
-      %{name=#{taxon.name.epithets.to_s.downcase}&genus=#{taxon.genus.name.to_s.downcase}&rank=species}
-    when Genus
-      %{name=#{taxon.name.to_s.downcase}&rank=genus}
-    when Subfamily
-      %{name=#{taxon.name.to_s.downcase}&rank=subfamily}
-    end
-    url << %{&project=worldants}
-    link_to_external_site 'AntWeb', url.html_safe
-  end
-
   def self.link_to_taxon taxon
     link_to_antcat taxon, taxon.name.to_html_with_fossil(taxon.fossil?).html_safe
   end
