@@ -208,47 +208,4 @@ describe Formatters::CatalogTaxonFormatter do
     end
   end
 
-  describe "name_description" do
-    it "should handle a subfamily" do
-      subfamily = create_subfamily build_stubbed: true
-      @formatter.new(subfamily).name_description.should == 'subfamily'
-    end
-    it "should handle a genus" do
-      subfamily = create_subfamily build_stubbed: true
-      genus = create_genus subfamily: subfamily
-      @formatter.new(genus).name_description.should == "genus of #{subfamily.name}"
-    end
-    it "should handle a genus without a subfamily" do
-      genus = create_genus subfamily: nil, build_stubbed: true
-      @formatter.new(genus).name_description.should == "genus of (no subfamily)"
-    end
-    it "should handle a new genus" do
-      subfamily = create_subfamily build_stubbed: true
-      genus = FactoryGirl.build :genus, subfamily: subfamily
-      @formatter.new(genus).name_description.should == "new genus of #{subfamily.name}"
-    end
-    it "should handle a new species" do
-      genus = create_genus 'Atta'
-      species = FactoryGirl.build :species, genus: genus
-      @formatter.new(species).name_description.should == "new species of <i>#{genus.name}</i>"
-    end
-    it "should handle a subspecies" do
-      genus = create_genus 'Atta'
-      species = FactoryGirl.build :species, genus: genus
-      subspecies = FactoryGirl.build :subspecies, species: species, genus: genus
-      @formatter.new(subspecies).name_description.should == "new subspecies of <i>#{species.name}</i>"
-    end
-    it "should handle a subspecies without a species" do
-      genus = create_genus 'Atta'
-      subspecies = FactoryGirl.build :subspecies, genus: genus, species: nil
-      @formatter.new(subspecies).name_description.should == "new subspecies of (no species)"
-    end
-    it "should be html_safe" do
-      subfamily = create_subfamily build_stubbed: true
-      genus = create_genus subfamily: subfamily, build_stubbed: true
-      description = @formatter.new(genus).name_description
-      description.should be_html_safe
-    end
-  end
-
 end
