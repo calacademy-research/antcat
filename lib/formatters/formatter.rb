@@ -56,8 +56,4 @@ module Formatters::Formatter
     content_tag :span, "#{time_ago_in_words time} ago", title: time
   end
 
-  def format_approver_name user
-    "#{user ? user.name : 'Someone'} approved this change"
-  end
-
 end
