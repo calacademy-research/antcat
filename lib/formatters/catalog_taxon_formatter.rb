@@ -21,6 +21,11 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
     end
   end
 
+  def self.link_to_taxon taxon
+    label = taxon.name.to_html_with_fossil(taxon.fossil?)
+    content_tag :a, label, href: %{/catalog/#{taxon.id}}
+  end
+
   def header
     return original_combination_header if @taxon.original_combination?
     content_tag :div, class: 'header' do

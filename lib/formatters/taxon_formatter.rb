@@ -116,12 +116,6 @@ class Formatters::TaxonFormatter
     detaxt @taxon.headline_notes_taxt
   end
 
-  ###########
-  def self.link_to_taxon taxon
-    label = taxon.name.to_html_with_fossil(taxon.fossil?)
-    content_tag :a, label, href: %{/catalog/#{taxon.id}}
-  end
-
   ##########
   def history
     if @taxon.history_items.present?
