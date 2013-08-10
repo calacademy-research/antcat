@@ -1,6 +1,7 @@
 # coding: UTF-8
 require 'milieu'
 module ApplicationHelper
+  include Formatters::LinkFormatter
 
   ### authorization methods
   def user_can_edit_references?
@@ -57,18 +58,6 @@ http://antcat.org
 
   def milieu_indicator
     $Milieu.preview? ? (content_tag :div, 'preview', class: :preview) : ''
-  end
-
-  def add_period_if_necessary string
-    Formatters::Formatter.add_period_if_necessary string
-  end
-
-  def format_time_ago time
-    Formatters::Formatter.format_time_ago time
-  end
-
-  def format_approver_name user
-    Formatters::Formatter.format_approver_name user
   end
 
 end
