@@ -82,16 +82,6 @@ describe Formatters::CatalogTaxonFormatter do
       end
     end
 
-    describe "Linking to AntWiki" do
-      it "should link to a subfamily" do
-        @formatter.new(create_subfamily 'Dolichoderinae').link_to_antwiki.should ==
-          %{<a class="link_to_external_site" href="http://www.antwiki.org/wiki/Dolichoderinae" target="_blank">AntWiki</a>}
-      end
-      it "should link to a species" do
-        @formatter.new(create_species 'Atta major').link_to_antwiki.should ==
-          %{<a class="link_to_external_site" href="http://www.antwiki.org/wiki/Atta_major" target="_blank">AntWiki</a>}
-      end
-    end
   end
 
   describe "Child lists" do
@@ -193,13 +183,6 @@ describe Formatters::CatalogTaxonFormatter do
   end
 
   describe "Taxon link class methods" do
-    describe "Creating a link from another site to a taxon on AntCat" do
-      it "should create the link" do
-        genus = create_genus
-        @formatter.link_to_antcat(genus).should ==
-          %{<a class="link_to_external_site" href="http://www.antcat.org/catalog/#{genus.id}" target="_blank">AntCat</a>}
-      end
-    end
     describe "Creating a link from AntCat to a taxon on AntCat" do
       it "should creat the link" do
         genus = create_genus 'Atta'

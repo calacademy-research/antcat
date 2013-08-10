@@ -29,4 +29,23 @@ describe Formatters::LinkFormatter do
     end
   end
 
+  describe "Creating a link from another site to a taxon on AntCat" do
+    it "should create the link" do
+      genus = create_genus
+      @formatter.link_to_antcat(genus).should ==
+        %{<a class="link_to_external_site" href="http://www.antcat.org/catalog/#{genus.id}" target="_blank">AntCat</a>}
+    end
+  end
+
+  describe "Linking to AntWiki" do
+    it "should link to a subfamily" do
+      @formatter.link_to_antwiki(create_subfamily 'Dolichoderinae').should ==
+        %{<a class="link_to_external_site" href="http://www.antwiki.org/wiki/Dolichoderinae" target="_blank">AntWiki</a>}
+    end
+    it "should link to a species" do
+      @formatter.link_to_antwiki(create_species 'Atta major').should ==
+        %{<a class="link_to_external_site" href="http://www.antwiki.org/wiki/Atta_major" target="_blank">AntWiki</a>}
+    end
+  end
+
 end

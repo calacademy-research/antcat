@@ -46,7 +46,7 @@ class Formatters::TaxonFormatter
       notes = headline_notes
       string << ' ' << notes if notes
       string << ' ' << link_to_other_site if link_to_other_site
-      string << ' ' << link_to_antwiki if link_to_antwiki
+      string << ' ' << link_to_antwiki(@taxon) if link_to_antwiki(@taxon)
       string << ' ' << link_to_edit_taxon if link_to_edit_taxon
       string << ' ' << link_to_review_change if link_to_review_change
       string
@@ -116,15 +116,7 @@ class Formatters::TaxonFormatter
     detaxt @taxon.headline_notes_taxt
   end
 
-  def link_to_antwiki
-    link_to_external_site 'AntWiki', "http://www.antwiki.org/wiki/#{@taxon.name.to_s.gsub(/ /, '_')}"
-  end
-
   ###########
-  def self.link_to_antcat taxon, label = 'AntCat'
-    link_to_external_site label, "http://www.antcat.org/catalog/#{taxon.id}"
-  end
-
   def self.link_to_taxon taxon
     label = taxon.name.to_html_with_fossil(taxon.fossil?)
     content_tag :a, label, href: %{/catalog/#{taxon.id}}
