@@ -43,7 +43,7 @@ class ReferenceKey
   def to_link_with_expansion reference_key_string, reference_string, user
     content_tag :span, class: :reference_key_and_expansion do
       content = ''.html_safe
-      content << Formatters::Formatter.link(reference_key_string, '#', title: make_to_link_title(reference_string), class: :reference_key, target: nil)
+      content << Formatters::LinkFormatter.link(reference_key_string, '#', title: make_to_link_title(reference_string), class: :reference_key, target: nil)
       content << content_tag(:span, class: :reference_key_expansion) do
         inner_content = ''.html_safe
         inner_content << reference_key_expansion_text(reference_string, reference_key_string)
@@ -57,7 +57,7 @@ class ReferenceKey
 
   def to_link_without_expansion reference_key_string, reference_string, user
     url = "http://antcat.org/references?q=#{@reference.id}"
-    content = Formatters::Formatter.link reference_key_string, url, title: make_to_link_title(reference_string)
+    content = Formatters::LinkFormatter.link reference_key_string, url, title: make_to_link_title(reference_string)
     content << document_link(user)
     content
   end
@@ -77,7 +77,7 @@ class ReferenceKey
   end
 
   def goto_reference_link
-    Formatters::Formatter.link image_tag('external_link.png'), "/references?q=#{@reference.id}", class: :goto_reference_link
+    Formatters::LinkFormatter.link image_tag('external_link.png'), "/references?q=#{@reference.id}", class: :goto_reference_link
   end
 
 end

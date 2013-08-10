@@ -214,12 +214,12 @@ class Formatters::TaxonFormatter
   end
 
   def link_to_antwiki
-    Formatters::Formatter.link_to_external_site 'AntWiki', "http://www.antwiki.org/wiki/#{@taxon.name.to_s.gsub(/ /, '_')}"
+    Formatters::LinkFormatter.link_to_external_site 'AntWiki', "http://www.antwiki.org/wiki/#{@taxon.name.to_s.gsub(/ /, '_')}"
   end
 
   ###########
   def self.link_to_antcat taxon, label = 'AntCat'
-    Formatters::Formatter.link_to_external_site label, "http://www.antcat.org/catalog/#{taxon.id}"
+    Formatters::LinkFormatter.link_to_external_site label, "http://www.antcat.org/catalog/#{taxon.id}"
   end
 
   def self.link_to_taxon taxon
