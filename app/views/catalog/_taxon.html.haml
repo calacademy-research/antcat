@@ -3,7 +3,7 @@
 - height = session[:taxon_window_height]
 .antcat_taxon{'data-taxon-window-height' => height ? height : ""}
 
-  - formatter = Formatters::TaxonFormatter.new taxon, current_user
+  - formatter = Formatters::CatalogTaxonFormatter.new taxon, current_user
   = formatter.header
   - unless taxon.original_combination?
     = formatter.statistics

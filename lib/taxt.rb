@@ -137,7 +137,7 @@ module Taxt
       Taxon.find(taxon_id_match).name.to_html
     else
       taxon = Taxon.find taxon_id_match
-      (options[:formatter] || Formatters::TaxonFormatter).link_to_taxon taxon
+      (options[:formatter] || Formatters::CatalogTaxonFormatter).link_to_taxon taxon
     end
   rescue
     whole_match

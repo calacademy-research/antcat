@@ -1,9 +1,9 @@
 # coding: UTF-8
 require 'spec_helper'
 
-describe Formatters::TaxonFormatter do
+describe Formatters::CatalogTaxonFormatter do
   before do
-    @formatter = Formatters::TaxonFormatter
+    @formatter = Formatters::CatalogTaxonFormatter
   end
 
   describe "Taxon" do
@@ -167,27 +167,27 @@ describe Formatters::TaxonFormatter do
     it "should get the statistics, then format them" do
       subfamily = double
       subfamily.should_receive(:statistics).and_return extant: :foo
-      formatter = Formatters::TaxonFormatter.new subfamily
+      formatter = Formatters::CatalogTaxonFormatter.new subfamily
       Formatters::StatisticsFormatter.should_receive(:statistics).with({extant: :foo}, {})
       formatter.statistics
     end
     it "should just return nil if there are no statistics" do
       subfamily = double
       subfamily.should_receive(:statistics).and_return nil
-      formatter = Formatters::TaxonFormatter.new subfamily
+      formatter = Formatters::CatalogTaxonFormatter.new subfamily
       Formatters::StatisticsFormatter.should_not_receive :statistics
       formatter.statistics.should == ''
     end
     it "should not leave a comma at the end if only showing valid taxa" do
       genus = create_genus
       genus.should_receive(:statistics).and_return extant: {species: {'valid' => 2}}
-      formatter = Formatters::TaxonFormatter.new genus
+      formatter = Formatters::CatalogTaxonFormatter.new genus
       formatter.statistics(include_invalid: false).should == "<div class=\"statistics\"><p class=\"taxon_statistics\">2 species</p></div>"
     end
     it "should not leave a comma at the end if only showing valid taxa" do
       genus = create_genus
       genus.should_receive(:statistics).and_return :extant => {:species => {'valid' => 2}}
-      formatter = Formatters::TaxonFormatter.new genus
+      formatter = Formatters::CatalogTaxonFormatter.new genus
       formatter.statistics(include_invalid: false).should == "<div class=\"statistics\"><p class=\"taxon_statistics\">2 species</p></div>"
     end
   end
