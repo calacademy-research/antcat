@@ -1,12 +1,10 @@
 # coding: UTF-8
 module Formatters::Formatter
-  extend ActionView::Helpers::NumberHelper
-  extend ActionView::Helpers::TagHelper
-  extend ActionView::Helpers::DateHelper
+  include ActionView::Helpers::NumberHelper
+  include ActionView::Helpers::TagHelper
+  include ActionView::Helpers::DateHelper
   include ERB::Util
-  extend ERB::Util
-
-  module_function
+  extend self
 
   def pluralize_with_delimiters count, word, plural = nil
     if count != 1
