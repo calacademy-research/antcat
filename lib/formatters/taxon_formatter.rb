@@ -99,14 +99,10 @@ class Formatters::TaxonFormatter
   def headline_authorship authorship
     return '' unless authorship
     return '' unless authorship.reference
-    string = reference_link(authorship.reference) + ": #{authorship.pages}"
+    string = link_to_reference(authorship.reference, @user) + ": #{authorship.pages}"
     string << " (#{authorship.forms})" if authorship.forms.present?
     string << ' ' << detaxt(authorship.notes_taxt) if authorship.notes_taxt
     content_tag :span, string, class: :authorship
-  end
-
-  def reference_link reference
-    reference.key.to_link @user, expansion: expand_references?
   end
 
   def locality locality
