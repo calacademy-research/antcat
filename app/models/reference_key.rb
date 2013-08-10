@@ -5,6 +5,7 @@ class ReferenceKey
   include Sprockets::Helpers::RailsHelper
   include Sprockets::Helpers::IsolatedHelper
   include Formatters::Formatter
+  include Formatters::LinkFormatter
 
   def initialize reference
     @reference = reference
@@ -44,7 +45,7 @@ class ReferenceKey
   def to_link_with_expansion reference_key_string, reference_string, user
     content_tag :span, class: :reference_key_and_expansion do
       content = ''.html_safe
-      content << Formatters::LinkFormatter.link(reference_key_string, '#', title: make_to_link_title(reference_string), class: :reference_key, target: nil)
+      content << link(reference_key_string, '#', title: make_to_link_title(reference_string), class: :reference_key, target: nil)
       content << content_tag(:span, class: :reference_key_expansion) do
         inner_content = ''.html_safe
         inner_content << reference_key_expansion_text(reference_string, reference_key_string)
