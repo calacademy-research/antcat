@@ -11,11 +11,11 @@
 
         %tr
           %td.label Name
-          %td.value.name= format_name taxon.name
+          %td.value.name= format_taxon_name taxon.name
 
         %tr
           %td.label.parent_rank= format_rank Rank[taxon.rank].parent
-          %td.value.parent= format_name taxon.parent.name
+          %td.value.parent= format_taxon_name taxon.parent.name
 
         %tr
           %td.label Status
@@ -44,7 +44,7 @@
 
         %tr
           %td.label Name
-          %td.value.protonym_name= format_name protonym.name
+          %td.value.protonym_name= format_taxon_name protonym.name
 
         - attributes = format_protonym_attributes taxon
         - if attributes.present?
@@ -82,7 +82,7 @@
 
           %tr
             %td.label Name
-            %td.value.type_name= format_name taxon.type_name
+            %td.value.type_name= format_taxon_name taxon.type_name
 
           - attributes = format_type_attributes taxon
           - if attributes.present?

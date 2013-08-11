@@ -12,6 +12,10 @@ module ChangesHelper
     format_doer_name user_id, 'added'
   end
 
+  def format_taxon_name name
+    name.name_html.html_safe
+  end
+
   def format_rank rank
     rank.display_string
   end
