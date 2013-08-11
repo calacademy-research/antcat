@@ -21,6 +21,8 @@ module HtmlSelectorsHelpers
       "#catalog .index .#{$1}"
     when /the content/
       "#catalog .antcat_taxon"
+    when /the change history/
+      "#catalog .antcat_taxon .change_history"
     when /the search results/
       "#search_results"
 

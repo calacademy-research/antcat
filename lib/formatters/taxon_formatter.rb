@@ -239,15 +239,6 @@ class Formatters::TaxonFormatter
   end
 
   ############
-  def approval_state
-    return unless @taxon.approved?
-    content_tag :div, class: 'approval_state' do
-      change = @taxon.last_change
-      "#{format_approver_name change.user} #{format_time_ago change.approved_at}"
-    end
-  end
-
-  ############
   def detaxt taxt
     return '' unless taxt.present?
     Taxt.to_string taxt, @user, expansion: expand_references?, formatter: self.class

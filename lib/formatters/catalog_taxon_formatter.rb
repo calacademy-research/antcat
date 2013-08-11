@@ -26,6 +26,7 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
     content_tag :a, label, href: %{/catalog/#{taxon.id}}
   end
 
+  #########
   def header
     return original_combination_header if @taxon.original_combination?
     content_tag :div, class: 'header' do
@@ -118,6 +119,24 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
   def senior_synonym_list
     return '' unless @taxon.senior_synonyms.count > 0
     ' of ' << @taxon.senior_synonyms.map {|e| self.class.link_to_taxon(e)}.join(', ')
+  end
+
+  #########
+  def change_history
+    return if @taxon.old?
+    content_tag :span, class: 'change_history' do
+      content = ''.html_safe
+      content << 'Added by Mark Wilden'
+      content
+    end
+  end
+
+  def approval_state
+    return unless @taxon.approved?
+    content_tag :div, class: 'approval_state' do
+      change = @taxon.last_change
+      "#{format_approver_name change.user} #{format_time_ago change.approved_at}"
+    end
   end
 
 end
