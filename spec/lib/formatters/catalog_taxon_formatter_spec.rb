@@ -6,12 +6,6 @@ describe Formatters::CatalogTaxonFormatter do
     @formatter = Formatters::CatalogTaxonFormatter
   end
 
-  describe "Taxon" do
-    it "should work" do
-      @formatter.new(create_genus, nil).format
-    end
-  end
-
   describe "Header formatting" do
     describe "Header name" do
       it "should format a subspecies with > 3 epithets" do

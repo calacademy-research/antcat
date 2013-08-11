@@ -12,34 +12,17 @@ class Formatters::TaxonFormatter
     @taxon, @user = taxon, user
   end
 
-  def format
-    content_tag :div, class: 'antcat_taxon' do
-      content = ''.html_safe
-      content << header
-      content << statistics(include_invalid: include_invalid)
-      content << genus_species_header_notes_taxt
-      content << headline
-      content << history
-      content << child_lists
-      content << references
-      content
-    end
-  end
-
-  ##########
   def statistics options = {}
     statistics = @taxon.statistics or return ''
     content_tag :div, Formatters::StatisticsFormatter.statistics(statistics, options), class: 'statistics'
   end
 
-  ##########
   def genus_species_header_notes_taxt
     if @taxon.genus_species_header_notes_taxt.present?
       content_tag :div, detaxt(@taxon.genus_species_header_notes_taxt), class: 'genus_species_header_notes_taxt'
     end
   end
 
-  ##########
   def headline
     content_tag :div, class: 'headline' do
       string = headline_protonym + ' ' + headline_type

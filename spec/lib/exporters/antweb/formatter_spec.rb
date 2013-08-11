@@ -6,6 +6,12 @@ describe Exporters::Antweb::Formatter do
     @formatter = Exporters::Antweb::Formatter
   end
 
+  describe "Taxon" do
+    it "should work" do
+      @formatter.new(create_genus, nil).format
+    end
+  end
+
   describe "formatting a genus" do
     it "should work" do
       bolton = FactoryGirl.create :author

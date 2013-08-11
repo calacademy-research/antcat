@@ -11,11 +11,19 @@ class Exporters::Antweb::Formatter < Formatters::TaxonFormatter
   end
 
   def link_to_edit_taxon; end
-
   def link_to_review_change; end
 
-  # overrides to stub stuff out
-  def header
+  def format
+    content_tag :div, class: 'antcat_taxon' do
+      content = ''.html_safe
+      content << statistics(include_invalid: include_invalid)
+      content << genus_species_header_notes_taxt
+      content << headline
+      content << history
+      content << child_lists
+      content << references
+      content
+    end
   end
 
   def history
