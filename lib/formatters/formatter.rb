@@ -56,4 +56,8 @@ module Formatters::Formatter
     content_tag :span, "#{time_ago_in_words time} ago", title: time
   end
 
+  def format_doer_name user_id, what_they_did
+    "#{user_id ? User.find(user_id).name : 'Someone'} #{what_they_did}"
+  end
+
 end

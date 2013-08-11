@@ -8,13 +8,8 @@ module ChangesHelper
     content_tag :a, label, href: %{/catalog/#{taxon.id}}
   end
 
-  def format_name name
-    name.name_html.html_safe
-  end
-
   def format_adder_name user_id
-    user = user_id ? User.find(user_id).name : 'Someone'
-    "#{user_id ? User.find(user_id).name : 'Someone'} added"
+    format_doer_name user_id, 'added'
   end
 
   def format_rank rank
