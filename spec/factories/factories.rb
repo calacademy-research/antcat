@@ -378,3 +378,11 @@ def create_synonym senior, attributes = {}
   synonym = Synonym.create! senior_synonym: senior, junior_synonym: junior
   junior
 end
+
+def create_taxon_version_and_change review_state, user = @user
+  taxon = FactoryGirl.create :genus, review_state: review_state
+  taxon.last_version.update_attributes! whodunnit: user
+  Change.create! paper_trail_version: taxon.last_version
+  taxon
+end
+
