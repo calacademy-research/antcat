@@ -131,12 +131,4 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
     end
   end
 
-  def approval_state
-    return unless @taxon.approved?
-    content_tag :div, class: 'approval_state' do
-      change = @taxon.last_change
-      "#{format_approver_name change.user} #{format_time_ago change.approved_at}"
-    end
-  end
-
 end
