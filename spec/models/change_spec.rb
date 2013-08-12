@@ -20,7 +20,7 @@ describe Change do
     change.paper_trail_version.should == genus_version
   end
 
-  it "has a user (the changer)" do
+  it "has a user (the editor)" do
     user = FactoryGirl.create :user
     genus = create_genus
     genus.last_version.update_attributes whodunnit: user.id

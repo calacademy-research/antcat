@@ -47,7 +47,7 @@ describe Taxon do
       end
     end
 
-    describe "An waiting record" do
+    describe "A waiting record" do
       before do
         @changer = FactoryGirl.create :user, can_edit_catalog: true
         @approver = FactoryGirl.create :user, can_approve_changes: true
@@ -73,8 +73,12 @@ describe Taxon do
 
     describe "An approved record" do
       before do
-        @taxon = create_taxon_version_and_change :approved
         @approver = FactoryGirl.create :user, can_edit_catalog: true, can_approve_changes: true
+        @taxon = create_taxon_version_and_change :approved, @editor, @approver
+      end
+      it "should have an approver and an approved_at" do
+        @taxon.approver.should == @approver
+        @taxon.approved_at.should be_within(7.hours).of(Time.now)
       end
       it "should allow it to be edited by any user that can edit the catalog" do
         @taxon.can_be_edited_by?(nil).should be_false

@@ -11,12 +11,14 @@ class Taxon < ActiveRecord::Base
     state :approved
   end
 
+  delegate :approver, :approved_at, to: :last_change
+
   def can_be_edited_by? user
     return false unless $Milieu.user_can_edit_catalog?(user)
     return true if old?
     return true if approved?
     raise unless waiting?
-    is_user_last_editor? user
+    last_editor == user
   end
 
   def can_be_reviewed_by? user
@@ -36,10 +38,9 @@ class Taxon < ActiveRecord::Base
     versions(true).last
   end
 
-  def is_user_last_editor? user
+  def last_editor
     last_editor_id = last_version.try :whodunnit
-    last_editor = User.find(last_editor_id) rescue nil
-    user == last_editor
+    User.find(last_editor_id) rescue nil
   end
 
 end

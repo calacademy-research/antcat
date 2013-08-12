@@ -379,9 +379,11 @@ def create_synonym senior, attributes = {}
   junior
 end
 
-def create_taxon_version_and_change review_state, user = @user
+def create_taxon_version_and_change review_state, user = @user, approver = nil
   taxon = FactoryGirl.create :genus, review_state: review_state
   taxon.last_version.update_attributes! whodunnit: user
-  Change.create! paper_trail_version: taxon.last_version
+  change = Change.create! paper_trail_version: taxon.last_version
+  change.update_attributes! approver: approver, approved_at: Time.now if approver
+
   taxon
 end
