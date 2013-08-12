@@ -68,10 +68,10 @@ Feature: Workflow
     When I add the genus "Atta"
     And I go to the catalog page for "Atta"
     Then I should see "Added by Mark Wilden" in the change history
-    #And I go to the changes page
-    #And I will confirm on the next step
-    #And I press "Approve"
-    #Then I should not see "Approve"
-    #And I should see "Mark Wilden approved"
-    #When I go to the catalog page for "Atta"
-    #Then I should see "Mark Wilden approved this change"
+    When I go to the changes page
+    And I will confirm on the next step
+    And I press "Approve"
+    Then I should not see "Approve"
+    And I should see "Mark Wilden approved"
+    When I go to the catalog page for "Atta"
+    Then I should see "approved by Mark Wilden"
