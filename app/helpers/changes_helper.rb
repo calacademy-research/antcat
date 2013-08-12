@@ -9,7 +9,7 @@ module ChangesHelper
   end
 
   def format_adder_name user_id
-    format_doer_name user_id, 'added'
+    "#{format_doer_name user_id} added"
   end
 
   def format_taxon_name name
