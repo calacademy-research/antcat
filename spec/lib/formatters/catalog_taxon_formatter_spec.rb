@@ -185,4 +185,34 @@ describe Formatters::CatalogTaxonFormatter do
     end
   end
 
+  describe "Change history" do
+    around do |example|
+      with_versioning &example
+    end
+    it "should show nothing for an old taxon" do
+      taxon = create_genus
+      @formatter.new(taxon).change_history.should be_nil
+    end
+    it "should show the adder for a waiting taxon" do
+      adder = FactoryGirl.create :user, can_edit_catalog: true
+      taxon = create_taxon_version_and_change :waiting, adder
+      change_history = @formatter.new(taxon).change_history
+      change_history.should =~ /Added by Mark Wilden/
+      change_history.should =~ /less than a minute ago/
+    end
+    it "should show the adder and the approver for an approved taxon" do
+      adder = FactoryGirl.create :user, can_edit_catalog: true
+      approver = FactoryGirl.create :user, can_approve_changes: true
+      taxon = create_taxon_version_and_change :waiting, adder
+      change = Change.find taxon.last_change
+      change.update_attributes! approver: approver, approved_at: Time.now
+      taxon.approve!
+      change_history = @formatter.new(taxon).change_history
+      change_history.should =~ /Added by #{adder.name}/
+      change_history.should =~ /less than a minute ago/
+      change_history.should =~ /approved by #{approver.name}/
+      change_history.should =~ /less than a minute ago/
+    end
+  end
+
 end

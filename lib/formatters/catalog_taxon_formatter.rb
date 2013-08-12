@@ -124,9 +124,18 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
   #########
   def change_history
     return if @taxon.old?
+    change = @taxon.last_change
     content_tag :span, class: 'change_history' do
       content = ''.html_safe
-      content << 'Added by Mark Wilden'
+
+      content << "Added by #{format_doer_name(change.whodunnit)} "
+      content << format_time_ago(change.created_at)
+
+      if change.approved_at?
+        content << "; approved by #{format_doer_name(change.approver)} "
+        content << format_time_ago(change.approved_at)
+      end
+
       content
     end
   end
