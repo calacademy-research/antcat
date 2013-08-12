@@ -385,4 +385,3 @@ def create_taxon_version_and_change review_state, user = @user
   Change.create! paper_trail_version: taxon.last_version
   taxon
 end
-
