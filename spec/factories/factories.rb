@@ -384,6 +384,5 @@ def create_taxon_version_and_change review_state, user = @user, approver = nil
   taxon.last_version.update_attributes! whodunnit: user
   change = Change.create! paper_trail_version: taxon.last_version
   change.update_attributes! approver: approver, approved_at: Time.now if approver
-
   taxon
 end

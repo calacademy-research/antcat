@@ -32,6 +32,7 @@ group :development, :test do
   # see https://github.com/cucumber/cucumber-rails/issues/187#issuecomment-4160160
   gem 'cucumber-rails', require: false
   gem 'debugger'
+  gem 'factory_girl_rails'
   gem 'launchy'
   gem 'rspec'
   gem 'rspec-rails'
@@ -47,7 +48,6 @@ end
 group :test do
   gem 'capybara',       '1.1.2'
   gem 'database_cleaner'
-  gem 'factory_girl_rails'
   gem 'selenium-webdriver'
   gem 'webmock'
 end
