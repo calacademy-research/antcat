@@ -125,6 +125,7 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
   def change_history
     return if @taxon.old?
     change = @taxon.last_change
+    return unless change
     content_tag :span, class: 'change_history' do
       content = ''.html_safe
 

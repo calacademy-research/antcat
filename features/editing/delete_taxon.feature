@@ -41,6 +41,7 @@ Feature: Deleting a taxon
     And I press "Delete"
     And I will confirm on the next step
     Then I should be on the catalog page for "Dolichoderinae"
+    And I should not see "Internal Server Error"
 
   Scenario: Can delete even if taxon is referred to by child records
     Given I add a history item to "Dolichoderinae"
@@ -50,6 +51,7 @@ Feature: Deleting a taxon
     And I will confirm on the next step
     Then I should not see "This taxon already has additional information attached to it."
     And I should be on the catalog page for "Dolichoderinae"
+    And I should not see "Internal Server Error"
 
   Scenario: If taxon has only references from others taxt, still show the Delete button, but don't let them delete
     Given there is a genus "Formica"

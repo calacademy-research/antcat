@@ -4,6 +4,7 @@ When /^(?:that )?version tracking is (not)?enabled$/ do |is_not|
 end
 When /^the changes are approved$/ do
   Taxon.update_all review_state: :approved
+  Change.update_all approver_id: @user.id, approved_at: Time.now
 end
 Given /^there is a genus "([^"]*)" that's waiting for approval$/ do |name|
   genus = create_genus name, review_state: :waiting
