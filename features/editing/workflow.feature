@@ -63,6 +63,8 @@ Feature: Workflow
     * I should see the type notes "Type notes" in the changes
     * I should see a history item "History item" in the changes
     * I should see a reference section "Reference section" in the changes
+    When I follow "Atta"
+    Then I should be on the catalog page for "Atta"
 
   Scenario: Approving a change
     When I add the genus "Atta"
