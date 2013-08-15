@@ -72,7 +72,7 @@ GEM
       sass (~> 3.1)
     compass-rails (1.0.3)
       compass (>= 0.12.2, < 0.14)
-    crack (0.4.0)
+    crack (0.4.1)
       safe_yaml (~> 0.9.0)
     cucumber (1.2.5)
       builder (>= 2.1.2)
