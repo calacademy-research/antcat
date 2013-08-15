@@ -9,6 +9,7 @@ gem 'devise'
 gem 'devise_invitable'
 gem 'diff-lcs'
 gem 'ey_config'
+gem 'factory_girl_rails'
 gem 'haml'
 gem 'high_voltage'
 gem 'jquery-rails',     '2.1.3'
@@ -32,7 +33,6 @@ group :development, :test do
   # see https://github.com/cucumber/cucumber-rails/issues/187#issuecomment-4160160
   gem 'cucumber-rails', require: false
   gem 'debugger'
-  gem 'factory_girl_rails'
   gem 'launchy'
   gem 'rspec'
   gem 'rspec-rails'
