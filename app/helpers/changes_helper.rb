@@ -57,7 +57,9 @@ module ChangesHelper
   end
 
   def approve_button taxon
-    button_to 'Approve', approve_change_path(taxon.last_change), confirm: 'Are you sure you want to approve this change?'
+    if taxon.can_be_approved_by? current_user
+      content_tag :button, 'Approve', type: 'button', id: 'approve_button', 'data-approve-location' => "/changes/#{taxon.last_change.id}/approve}"
+    end
   end
 
 end
