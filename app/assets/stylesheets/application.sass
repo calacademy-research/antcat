@@ -1,4 +1,5 @@
 @import 'common'
+@import "compass/utilities/links/hover-link"
 
 ///////////////////////////////////////////////////
 // tags
@@ -37,6 +38,9 @@ a, a:active, a:focus, a:visited
   &:hover
     color: $color_link_highlight
     background-color: $color_link_highlight_background
+
+a
+  @include hover-link
 
 hr
   padding: 0
