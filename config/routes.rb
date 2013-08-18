@@ -5,7 +5,7 @@ AntCat::Application.routes.draw do
 
   resources :changes, only: [:show, :index] do
     member do
-      post :approve
+      put :approve
     end
   end
 
