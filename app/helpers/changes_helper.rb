@@ -58,7 +58,7 @@ module ChangesHelper
 
   def approve_button taxon
     if taxon.can_be_approved_by? current_user
-      content_tag :button, 'Approve', type: 'button', id: 'approve_button', 'data-change-id' => taxon.last_change.id, class: 'approve_button'
+      content_tag :button, 'Approve', class: 'approve_button', 'data-change-id' => taxon.last_change.id, type: 'button'
     end
   end
 end
