@@ -1,4 +1,4 @@
-class AntCat.ChangeButtons
+class AntCat.ChangeButton
   constructor: (@element) ->
     self = this
     $('#approve_button')
@@ -24,5 +24,4 @@ class AntCat.ChangeButtons
     true
 
 $ ->
-  new AntCat.ChangeButtons($('.approve_button'))
-
+  $('.approve_button button').each -> new AntCat.ChangeButton($(this))
