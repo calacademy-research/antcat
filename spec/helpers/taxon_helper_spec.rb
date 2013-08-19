@@ -43,5 +43,11 @@ describe TaxonHelper do
       helper.name_description(genus).should be_html_safe
     end
   end
-end
 
+  describe "Creating a link from AntCat to a taxon on AntCat" do
+    it "should creat the link" do
+      genus = create_genus 'Atta'
+      helper.link_to_taxon(genus).should == %{<a href="/catalog/#{genus.id}"><i>Atta</i></a>}
+    end
+  end
+end

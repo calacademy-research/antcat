@@ -24,4 +24,19 @@ module TaxonHelper
     string.html_safe
   end
 
+  def link_to_taxon taxon
+    label = taxon.name.to_html.html_safe
+    content_tag :a, label, href: %{/catalog/#{taxon.id}}
+  end
+
+  def format_protonym taxon
+    formatter = Formatters::ReferenceFormatter
+    reference = taxon.protonym.authorship.reference
+    string = ''.html_safe
+    string << Formatters::ReferenceFormatter.format(reference)
+    string << reference.key.document_link(current_user)
+    string << reference.key.goto_reference_link
+    string
+  end
+
 end
