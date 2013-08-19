@@ -31,6 +31,10 @@ class TaxaController < ApplicationController
     save_taxon
   end
 
+  def advanced_search
+    render 'taxa/advanced_search/index'
+  end
+
   ###################
   def get_taxon create_or_update
     if create_or_update == :create

@@ -47,6 +47,9 @@ AntCat::Application.routes.draw do
       end
     end
     resource 'convert_to_subspecies', only: [:new, :create]
+    collection do
+      get 'advanced_search'
+    end
   end
 
   resource :default_reference, only: [:update]
