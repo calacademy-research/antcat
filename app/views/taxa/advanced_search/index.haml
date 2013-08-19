@@ -5,5 +5,24 @@
 
 - content_for :page_contents do
   .search_section
+    Find
+    = select_tag 'rank', options_for_select(['Species', 'Genus'], params['rank'])
+    described in the year
+    = text_field_tag :year, params[:year]
+    = image_tag 'help.png', class: 'help_icon'
+    = submit_tag "Go"
+
+  .hr
+
   .results_section
+    .result
+      .name
+        <i>Attamerxes zooligos</i>
+      .protonym
+        Yang, A. S.; Abouheif, E. 2011. Gynandromorphs as indicators of modularity and evolvability in ants. Journal of Experimental Zoology 316B:313-318. 
+      .references
+        .reference
+          Aenictinae as subfamily of Formicidae: Bolton, 1990c: 1358; Baroni Urbani, Bolton &amp; Ward, 1992: 315; Bolton, 1994: 12; Wu &amp; Wang, 1995a: 49; all subsequent authors. 
+        .reference
+          Aenictinae as dorylomorph subfamily of Formicidae: Bolton, 2003: 36, 146; Brady &amp; Ward, 2005: 593. 
 
