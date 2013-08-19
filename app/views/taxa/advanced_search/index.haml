@@ -20,9 +20,11 @@
 
     .result
       .name
-        = formatter.header_name_for_taxon taxon
+        = link_to_taxon taxon
+
       .protonym
-        = formatter.headline_authorship taxon.protonym.authorship
+        = format_protonym taxon
+
       .references
         .reference
           - reference = Reference.find 130629
