@@ -212,7 +212,7 @@ GEM
     ruby-graphviz (1.0.9)
     rubyzip (0.9.9)
     safe_yaml (0.9.5)
-    sass (3.2.7)
+    sass (3.2.10)
     sass-rails (3.2.6)
       railties (~> 3.2.0)
       sass (>= 3.1.10)
