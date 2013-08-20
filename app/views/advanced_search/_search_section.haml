@@ -1,5 +1,5 @@
 .search_section
-  = form_tag create_advanced_search_taxa_index_path do
+  = form_tag advanced_search_path, method: :get do
     Find
     = select_tag :rank, options_for_select(['Species', 'Genus'], params['rank'])
     described in the year

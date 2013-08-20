@@ -4,7 +4,7 @@
   = javascript_include_tag  'qtip'
 
 - content_for :page_contents do
-  = render 'taxa/advanced_search/search_section'
+  = render 'advanced_search/search_section'
   - if @taxa
     %hr
-    = render 'taxa/advanced_search/results_section', taxa: @taxa
+    = render 'advanced_search/results_section', taxa: @taxa

@@ -1,0 +1,17 @@
+-#Locals: taxa
+
+.results_section
+
+  - if taxa
+    - if taxa.size > 0
+      = "#{pluralize_with_delimiters(taxa.size, 'result')} found"
+      = will_paginate taxa
+      %hr
+    - else
+      No results found
+
+    - for taxon in taxa
+      .result
+        .name=     link_to_taxon taxon
+        .protonym= format_protonym taxon
+    %div= will_paginate taxa
