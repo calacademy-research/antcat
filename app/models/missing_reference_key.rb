@@ -13,4 +13,10 @@ class MissingReferenceKey
     @citation
   end
 
+  def document_link user
+  end
+
+  def goto_reference_link
+  end
+
 end

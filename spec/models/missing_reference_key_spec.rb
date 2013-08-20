@@ -10,4 +10,12 @@ describe MissingReferenceKey do
     end
   end
 
+  describe "Unapplicable methods" do
+    it "should just return nil from them" do
+      key = MissingReferenceKey.new('citation')
+      key.document_link(FactoryGirl.create :user).should be_nil
+      key.goto_reference_link.should be_nil
+    end
+  end
+
 end
