@@ -40,7 +40,7 @@ class Formatters::ReferenceFormatter
   end
 
   def format
-    string = format_author_names
+    string = format_author_names.dup
     string << ' ' unless string.empty?
     string << format_year << '. '
     string << format_title << ' '

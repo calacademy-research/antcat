@@ -265,4 +265,17 @@ describe Formatters::ReferenceFormatter do
     end
   end
 
+  describe "A regression where a string should've been duped" do
+    it "really should have been duped" do
+      journal = FactoryGirl.create :journal, name: 'Ants'
+      author_name = FactoryGirl.create :author_name, name: 'Forel, A.'
+      reference = FactoryGirl.create :article_reference,
+        author_names: [author_name], citation_year: '1874', title: 'Format',
+        journal: journal
+      expected = 'Forel, A. 1874. Format. Ants 1:1.'
+      @formatter.format(reference).should == expected
+      @formatter.format(reference).should == expected
+    end
+  end
+
 end
