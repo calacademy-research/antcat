@@ -5,5 +5,6 @@
 
 - content_for :page_contents do
   = render 'taxa/advanced_search/search_section'
-  %hr
-  = render 'taxa/advanced_search/results_section'
+  - if @taxa
+    %hr
+    = render 'taxa/advanced_search/results_section', taxa: @taxa
