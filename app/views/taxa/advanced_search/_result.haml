@@ -1,0 +1,13 @@
+-#Locals: taxon, result
+
+.result
+  .name
+    = link_to_taxon taxon
+
+  .protonym
+    = format_protonym taxon
+
+  .references
+    .reference
+      - reference = Reference.find result
+      = Formatters::ReferenceFormatter.format reference
