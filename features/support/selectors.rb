@@ -26,6 +26,9 @@ module HtmlSelectorsHelpers
     when /the search results/
       "#search_results"
 
+    when /the search section/
+      '.search_section'
+
     when /the author panel/, /the first author panel/
       ".author_panel:first-of-type"
     when /the last author panel/

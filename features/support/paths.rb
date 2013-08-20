@@ -12,6 +12,9 @@ module NavigationHelpers
     when /^the paper trail page$/
       '/paper_trail'
 
+    when /^the advanced search page$/
+      advanced_search_taxa_index_path
+
     when /^the catalog (entry|page) for "([^"]*)"$/
       taxon = Taxon.find_by_name $2
       "/catalog/#{taxon.id}"
