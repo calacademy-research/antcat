@@ -36,6 +36,7 @@ class TaxaController < ApplicationController
   end
 
   def create_advanced_search
+    @taxa = Taxon.advanced_search params[:rank], params[:year]
     render 'taxa/advanced_search/index'
   end
 
