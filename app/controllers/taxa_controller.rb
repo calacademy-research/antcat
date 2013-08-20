@@ -2,6 +2,7 @@
 class TaxaController < ApplicationController
   before_filter :authenticate_catalog_editor, :get_params, :create_mother
   skip_before_filter :authenticate_catalog_editor, if: :preview?
+  skip_before_filter :authenticate_catalog_editor, only: [:advanced_search, :create_advanced_search]
 
   def new
     get_taxon :create
