@@ -1,4 +1,4 @@
--#Locals: taxon, result
+-#Locals: taxon, references
 
 .result
   .name
@@ -8,6 +8,6 @@
     = format_protonym taxon
 
   .references
-    .reference
-      - reference = Reference.find result
-      = Formatters::ReferenceFormatter.format reference
+    - for reference in references
+      = render 'taxa/advanced_search/reference', reference: reference
+
