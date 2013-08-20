@@ -24,3 +24,12 @@ Feature: Searching the catalog
     And I press "Go" in the search section
     Then I should see "1 result found"
     And I should see the species described in 2010
+
+  Scenario: Searching for an invalid taxon
+    Given there is an invalid species described in 2010
+    When I go to the catalog
+    And I follow "Advanced Search"
+    And I fill in "year" with "2010"
+    And I check "valid_only"
+    And I press "Go" in the search section
+    Then I should see "No results found"

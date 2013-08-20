@@ -165,7 +165,29 @@ describe Taxon do
         betta.protonym.authorship.update_attributes! reference: reference1977
         gamma = create_genus
         gamma.protonym.authorship.update_attributes! reference: reference1988
-        Taxon.advanced_search('Genus', 1977).map(&:id).should =~ [atta.id, betta.id]
+        Taxon.advanced_search('Genus', 1977, true).map(&:id).should =~ [atta.id, betta.id]
+      end
+      it "should honor the validity flag" do
+        reference1977 = reference_factory author_name: 'Bolton', citation_year: '1977'
+        reference1988 = reference_factory author_name: 'Fisher', citation_year: '1988'
+        atta = create_genus
+        atta.protonym.authorship.update_attributes! reference: reference1977
+        betta = create_genus
+        betta.protonym.authorship.update_attributes! reference: reference1977
+        gamma = create_genus
+        gamma.protonym.authorship.update_attributes! reference: reference1988
+        delta = create_genus
+        delta.protonym.authorship.update_attributes! reference: reference1977
+        delta.update_attributes! status: 'synonym'
+        Taxon.advanced_search('Genus', 1977, true).map(&:id).should =~ [atta.id, betta.id]
+      end
+
+      it "should return all regardless of validity if that flag is false" do
+        reference1977 = reference_factory author_name: 'Bolton', citation_year: '1977'
+        atta = create_genus
+        atta.protonym.authorship.update_attributes! reference: reference1977
+        atta.update_attributes! status: 'synonym'
+        Taxon.advanced_search('Genus', 1977, false).map(&:id).should =~ [atta.id]
       end
     end
   end
