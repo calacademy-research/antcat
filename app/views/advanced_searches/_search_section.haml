@@ -4,7 +4,6 @@
     = select_tag :rank, options_for_select(['Species', 'Genus'], params['rank'])
     described in the year
     = text_field_tag :year, params[:year]
-    = image_tag 'help.png', class: 'help_icon'
     = submit_tag "Go"
     = label_tag 'Valid only?'
     = check_box_tag :valid_only
