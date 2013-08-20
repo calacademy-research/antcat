@@ -1,0 +1,8 @@
+.search_section
+  Find
+  = select_tag 'rank', options_for_select(['Species', 'Genus'], params['rank'])
+  described in the year
+  = text_field_tag :year, params[:year]
+  = image_tag 'help.png', class: 'help_icon'
+  = submit_tag "Go"
+

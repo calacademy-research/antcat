@@ -4,18 +4,6 @@
   = javascript_include_tag  'qtip'
 
 - content_for :page_contents do
-  .search_section
-    Find
-    = select_tag 'rank', options_for_select(['Species', 'Genus'], params['rank'])
-    described in the year
-    = text_field_tag :year, params[:year]
-    = image_tag 'help.png', class: 'help_icon'
-    = submit_tag "Go"
-
+  = render 'taxa/advanced_search/search_section'
   %hr
-
-  .results_section
-    - for result in [429496]
-      - taxon = Taxon.find result
-      - references = taxon.history_items
-      = render 'taxa/advanced_search/result', taxon: taxon, references: references
+  = render 'taxa/advanced_search/results_section'
