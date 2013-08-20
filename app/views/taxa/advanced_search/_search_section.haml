@@ -1,9 +1,8 @@
 .search_section
-  Find
   = form_tag create_advanced_search_taxa_index_path do
-    = select_tag 'rank', options_for_select(['Species', 'Genus'], params['rank'])
+    Find
+    = select_tag :rank, options_for_select(['Species', 'Genus'], params['rank'])
     described in the year
     = text_field_tag :year, params[:year]
     = image_tag 'help.png', class: 'help_icon'
     = submit_tag "Go"
-
