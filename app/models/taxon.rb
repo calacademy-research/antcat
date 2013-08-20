@@ -1,4 +1,5 @@
 # coding: UTF-8
+require 'taxon_advanced_search'
 require 'taxon_workflow'
 class Taxon < ActiveRecord::Base
   self.table_name = :taxa
