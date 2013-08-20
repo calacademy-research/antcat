@@ -2,7 +2,6 @@
 class TaxaController < ApplicationController
   before_filter :authenticate_catalog_editor, :get_params, :create_mother
   skip_before_filter :authenticate_catalog_editor, if: :preview?
-  skip_before_filter :authenticate_catalog_editor, only: [:advanced_search, :create_advanced_search]
 
   def new
     get_taxon :create
@@ -30,15 +29,6 @@ class TaxaController < ApplicationController
     return delete_taxon if @delete_taxon
     set_paths :update
     save_taxon
-  end
-
-  def advanced_search
-    render 'taxa/advanced_search/index'
-  end
-
-  def create_advanced_search
-    @taxa = Taxon.advanced_search(params[:rank], params[:year]).paginate page: params[:page]
-    render 'taxa/advanced_search/index'
   end
 
   ###################
