@@ -1,7 +1,13 @@
 -#Locals: taxa
 
 .results_section
-  - for taxon in taxa
-    .result
-      .name=     link_to_taxon taxon
-      .protonym= format_protonym taxon
+  - if taxa.present? && taxa.size > 0
+    = "#{pluralize_with_delimiters(taxa.size, 'result')} found"
+  - else
+    No results found
+  %hr
+  - if taxa.present?
+    - for taxon in taxa
+      .result
+        .name=     link_to_taxon taxon
+        .protonym= format_protonym taxon
