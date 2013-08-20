@@ -1,6 +1,7 @@
+-#Locals: taxa
+
 .results_section
-  - for result in [429496, 430014]
-    - taxon = Taxon.find result
+  - for taxon in taxa
     .result
       .name=     link_to_taxon taxon
       .protonym= format_protonym taxon
