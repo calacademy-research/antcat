@@ -232,10 +232,10 @@ describe Formatters::ReferenceFormatter do
 
   describe "italicizing" do
     it "should raise if its input isn't HTML safe" do
-      -> {@formatter.italicize "unsafe"}.should raise_error
+      -> {@formatter.format_italics "unsafe"}.should raise_error
     end
     it "should replace asterisks and bars with italics" do
-      string = @formatter.italicize "|Hymenoptera| *Formicidae*".html_safe
+      string = @formatter.format_italics "|Hymenoptera| *Formicidae*".html_safe
       string.should == "<i>Hymenoptera</i> <i>Formicidae</i>"
       string.should be_html_safe
     end

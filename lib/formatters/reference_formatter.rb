@@ -16,9 +16,9 @@ class Formatters::ReferenceFormatter
     make_formatter(reference).format_inline_citation_without_links user, options
   end
 
-  def self.italicize string
+  def self.format_italics string
     return unless string
-    raise "Can't italicize an unsafe string" unless string.html_safe?
+    raise "Can't format_italics an unsafe string" unless string.html_safe?
     string = string.gsub /\*(.*?)\*/, '<i>\1</i>'
     string = string.gsub /\|(.*?)\|/, '<i>\1</i>'
     string.html_safe
@@ -73,7 +73,7 @@ class Formatters::ReferenceFormatter
   end
 
   def format_title
-    self.class.italicize add_period_if_necessary h @reference.title
+    self.class.format_italics add_period_if_necessary h @reference.title
   end
 
   def format_inline_citation user, options = {}
@@ -109,25 +109,25 @@ end
 
 class Formatters::ArticleReferenceFormatter < Formatters::ReferenceFormatter
   def format_citation
-    self.class.italicize add_period_if_necessary "#{h @reference.journal.name} #{h @reference.series_volume_issue}:#{h @reference.pagination}".html_safe
+    self.class.format_italics add_period_if_necessary "#{h @reference.journal.name} #{h @reference.series_volume_issue}:#{h @reference.pagination}".html_safe
   end
 end
 
 class Formatters::BookReferenceFormatter < Formatters::ReferenceFormatter
   def format_citation
-    self.class.italicize add_period_if_necessary "#{h @reference.publisher}, #{h @reference.pagination}".html_safe
+    self.class.format_italics add_period_if_necessary "#{h @reference.publisher}, #{h @reference.pagination}".html_safe
   end
 end
 
 class Formatters::UnknownReferenceFormatter < Formatters::ReferenceFormatter
   def format_citation
-    self.class.italicize add_period_if_necessary h @reference.citation
+    self.class.format_italics add_period_if_necessary h @reference.citation
   end
 end
 
 class Formatters::NestedReferenceFormatter < Formatters::ReferenceFormatter
   def format_citation
-    self.class.italicize "#{h @reference.pages_in} #{Formatters::ReferenceFormatter.format(@reference.nested_reference)}".html_safe
+    self.class.format_italics "#{h @reference.pages_in} #{Formatters::ReferenceFormatter.format(@reference.nested_reference)}".html_safe
   end
 end
 

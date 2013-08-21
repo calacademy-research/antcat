@@ -8,8 +8,8 @@ module ReferenceHelper
     Formatters::CatalogFormatter.format_reference_document_link reference, current_user
   end
 
-  def italicize string
-    Formatters::ReferenceFormatter.italicize string
+  def format_italics string
+    Formatters::ReferenceFormatter.format_italics string
   end
 
   def format_timestamp timestamp

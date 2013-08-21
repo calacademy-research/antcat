@@ -13,9 +13,9 @@ describe ReferenceHelper do
     # problem with calling 'current_user' in the helper
     #helper.format_reference_document_link  FactoryGirl.create :reference
   #end
-  it "#italicize should delegate to the formatter" do
-    Formatters::ReferenceFormatter.should_receive :italicize
-    helper.italicize 'string'
+  it "#format_italics should delegate to the formatter" do
+    Formatters::ReferenceFormatter.should_receive :format_italics
+    helper.format_italics 'string'
   end
   it "#format_timestamp should delegate to the formatter" do
     Formatters::ReferenceFormatter.should_receive :format_timestamp

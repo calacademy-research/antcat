@@ -1,6 +1,6 @@
 # coding: UTF-8
 module BoltonReferenceHelper
-  def italicize string
-    Formatters::ReferenceFormatter.italicize string
+  def format_italics string
+    Formatters::ReferenceFormatter.format_italics string
   end
 end
