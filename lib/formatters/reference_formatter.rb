@@ -8,6 +8,10 @@ class Formatters::ReferenceFormatter
     make_formatter(reference).format
   end
 
+  def self.make_formatter reference
+    reference.to_class('Formatter', 'Formatters::').new reference
+  end
+
   def self.format_inline_citation reference, user = nil, options = {}
     make_formatter(reference).format_inline_citation user, options
   end
@@ -100,10 +104,6 @@ class Formatters::ReferenceFormatter
     return prefix + date + suffix if input.length < 8
     date << '-' << input[6, 2]
     h prefix + date + suffix
-  end
-
-  def self.make_formatter reference
-    reference.to_class('Formatter', 'Formatters::').new reference
   end
 end
 
