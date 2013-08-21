@@ -277,6 +277,9 @@ describe Formatters::ReferenceFormatter do
       string.should == "<i>Hymenoptera</i> <i>Formicidae</i>"
       string.should be_html_safe
     end
+    it "should raise if the string isn't html_safe already" do
+      -> {@formatter.format_italics 'roman'}.should raise_error
+    end
   end
 
   describe "inline_citation" do

@@ -22,7 +22,7 @@ class Formatters::ReferenceFormatter
 
   def self.format_italics string
     return unless string
-    raise "Can't format_italics an unsafe string" unless string.html_safe?
+    raise "Can't call format_italics on an unsafe string" unless string.html_safe?
     string = string.gsub /\*(.*?)\*/, '<i>\1</i>'
     string = string.gsub /\|(.*?)\|/, '<i>\1</i>'
     string.html_safe
@@ -77,7 +77,7 @@ class Formatters::ReferenceFormatter
   end
 
   def format_title
-    self.class.make_html_safe self.class.format_italics add_period_if_necessary @reference.title
+    self.class.format_italics add_period_if_necessary self.class.make_html_safe @reference.title
   end
 
   def format_inline_citation user, options = {}
