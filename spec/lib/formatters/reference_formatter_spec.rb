@@ -271,8 +271,8 @@ describe Formatters::ReferenceFormatter do
       author_name = FactoryGirl.create :author_name, name: 'Forel, A.'
       reference = FactoryGirl.create :article_reference,
         author_names: [author_name], citation_year: '1874', title: 'Format',
-        journal: journal
-      expected = 'Forel, A. 1874. Format. Ants 1:1.'
+        journal: journal, series_volume_issue: '1:1', pagination: '2'
+      expected = 'Forel, A. 1874. Format. Ants 1:1:2.'
       @formatter.format(reference).should == expected
       @formatter.format(reference).should == expected
     end
