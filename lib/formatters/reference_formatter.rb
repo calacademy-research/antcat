@@ -69,15 +69,15 @@ class Formatters::ReferenceFormatter
   end
 
   def format_author_names
-    h @reference.author_names_string
+    self.class.make_html_safe @reference.author_names_string
   end
 
   def format_year
-    h @reference.citation_year
+    self.class.make_html_safe @reference.citation_year
   end
 
   def format_title
-    self.class.format_italics add_period_if_necessary h @reference.title
+    self.class.make_html_safe self.class.format_italics add_period_if_necessary @reference.title
   end
 
   def format_inline_citation user, options = {}
@@ -121,7 +121,7 @@ end
 
 class Formatters::UnknownReferenceFormatter < Formatters::ReferenceFormatter
   def format_citation
-    self.class.format_italics add_period_if_necessary h @reference.citation
+    self.class.format_italics add_period_if_necessary self.class.make_html_safe(@reference.citation)
   end
 end
 
@@ -133,9 +133,9 @@ end
 
 class Formatters::MissingReferenceFormatter < Formatters::ReferenceFormatter
   def format_inline_citation reference = nil, user = nil, options = nil
-    @reference.citation
+    self.class.make_html_safe @reference.citation
   end
   def format_citation
-    @reference.citation
+    self.class.make_html_safe @reference.citation
   end
 end
