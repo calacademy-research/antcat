@@ -70,7 +70,7 @@ class ReferenceKey
   end
 
   def reference_key_expansion_text reference_string, reference_key_string
-    content = content_tag :span, reference_string, title: reference_key_string, class: :reference_key_expansion_text
+    content_tag :span, reference_string, title: reference_key_string, class: :reference_key_expansion_text
   end
 
   def document_link user
