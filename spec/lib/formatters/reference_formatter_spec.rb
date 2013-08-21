@@ -9,6 +9,24 @@ describe Formatters::ReferenceFormatter do
     @formatter = Formatters::ReferenceFormatter
   end
 
+  describe "Making a string HTML-safe" do
+    it "should not touch a string without HTML" do
+      @formatter.make_html_safe('string').should == 'string'
+    end
+    it "should leave italics alone" do
+      @formatter.make_html_safe('<i>string</i>').should == '<i>string</i>'
+    end
+    it "should leave quotes alone" do
+      @formatter.make_html_safe('"string"').should == '"string"'
+    end
+    it "should return an html_safe string" do
+      @formatter.make_html_safe('"string"').should be_html_safe
+    end
+    it "should escape other HTML" do
+      @formatter.make_html_safe('<script>danger</script>').should == '&lt;script&gt;danger&lt;/script&gt;'
+    end
+  end
+
   describe "formatting reference" do
     it "should format the reference" do
       reference = FactoryGirl.create(:article_reference, :author_names => [@author_name],

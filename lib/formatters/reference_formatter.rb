@@ -34,6 +34,21 @@ class Formatters::ReferenceFormatter
     review_state.present? ? review_state.capitalize : ''
   end
 
+  def self.make_html_safe string
+    string = string.dup
+    quote_code = 'xdjvs4'
+    begin_italics_code = '2rjsd4'
+    end_italics_code = '1rjsd4'
+    string.gsub! '<i>', begin_italics_code
+    string.gsub! '</i>', end_italics_code
+    string.gsub! '"', quote_code
+    string = h string
+    string.gsub! quote_code, '"'
+    string.gsub! end_italics_code, '</i>'
+    string.gsub! begin_italics_code, '<i>'
+    string.html_safe
+  end
+
   ##################
   def initialize reference
     @reference = reference
