@@ -1,5 +1,8 @@
 - @title = 'Advanced Search'
 
+- content_for :head do
+  = javascript_include_tag 'advanced_searches'
+
 - content_for :page_contents do
   = render 'search_section'
   - if @taxa
