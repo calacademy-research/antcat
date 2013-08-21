@@ -43,6 +43,10 @@ class Rank
     options.include?(:plural) ? @hash[:plural_symbol] : @hash[:symbol]
   end
 
+  def plural
+    @hash[:plural_string]
+  end
+
   def to_s *options
     numeric_argument = options.find {|option| option.kind_of? Numeric}
     options << :plural if numeric_argument && numeric_argument > 1

@@ -68,8 +68,8 @@ http://antcat.org
     string = ''.html_safe
     string << rank_option_for_select('All', value)
     for rank in Rank.ranks
-      next if rank.string.capitalize == 'Family'
-      string << rank_option_for_select(rank.string, value)
+      next if rank.plural.capitalize == 'Families'
+      string << rank_option_for_select(rank.plural, value)
       string
     end
     string
