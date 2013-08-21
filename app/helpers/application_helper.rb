@@ -61,6 +61,18 @@ http://antcat.org
     $Milieu.preview? ? (content_tag :div, 'preview', class: :preview) : ''
   end
 
+  def rank_options_for_select value
+    value = 'Species' unless value.present?
+    string = ''.html_safe
+    for rank in Rank.ranks
+      next if rank.string == 'Family'
+      options = {value: rank.string.capitalize}
+      options[:selected] = 'selected' if rank.string.capitalize == value
+      string << content_tag(:option, rank.string.capitalize, options)
+    end
+    string
+  end
+
 end
 
 PaperTrailManager::ChangesHelper
