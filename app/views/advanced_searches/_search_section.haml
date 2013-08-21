@@ -4,6 +4,9 @@
     = select_tag :rank, rank_options_for_select(params[:rank])
     described in the year
     = text_field_tag :year, params[:year]
-    = submit_tag "Go"
+
+    = submit_tag 'Go', id: 'submit_button', class: 'ui-priority-primary ui-button us-widget ui-state-default ui-corner-all ui-button-text-only'
+    = image_tag 'ui-anim_basic_16x16.gif', id: 'throbber', class: 'throbber'
+
     = label_tag 'Valid only?'
     = check_box_tag :valid_only
