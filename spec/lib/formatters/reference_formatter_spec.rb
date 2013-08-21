@@ -186,17 +186,58 @@ describe Formatters::ReferenceFormatter do
 
     end
 
-    it "should italicize the title and citation" do
-      reference = FactoryGirl.create :unknown_reference, :citation_year => '2010d', :author_names => [], :citation => '*Ants*', :title => '*Tapinoma*'
-      @formatter.format(reference).should == "2010d. <i>Tapinoma</i>. <i>Ants</i>."
+    describe "Italicizing title and citation" do
+      it "should return an html_safe string" do
+        reference = FactoryGirl.create :unknown_reference, :citation_year => '2010d', :author_names => [], :citation => '*Ants*', :title => '*Tapinoma*'
+        @formatter.format(reference).should be_html_safe
+      end
+      it "should italicize the title and citation" do
+        reference = FactoryGirl.create :unknown_reference, :citation_year => '2010d', :author_names => [], :citation => '*Ants*', :title => '*Tapinoma*'
+        @formatter.format(reference).should == "2010d. <i>Tapinoma</i>. <i>Ants</i>."
+      end
+      it "should allow existing italics in title and citation" do
+        reference = FactoryGirl.create :unknown_reference, :citation_year => '2010d', :author_names => [], :citation => '*Ants*', :title => '<i>Tapinoma</i>'
+        @formatter.format(reference).should == "2010d. <i>Tapinoma</i>. <i>Ants</i>."
+      end
+      it "should escape other HTML in title and citation" do
+        reference = FactoryGirl.create :unknown_reference, :citation_year => '2010d', :author_names => [], :citation => '*Ants*', :title => '<span>Tapinoma</span>'
+        @formatter.format(reference).should == "2010d. &lt;span&gt;Tapinoma&lt;/span&gt;. <i>Ants</i>."
+      end
+      it "should not escape et al. in citation" do
+        reference = FactoryGirl.create :unknown_reference, author_names: [], citation_year: '2010', citation: 'Ants <i>et al.</i>', title: 'Tapinoma'
+        @formatter.format(reference).should == "2010. Tapinoma. Ants <i>et al.</i>."
+      end
+      it "should not escape et al. in citation for a missing reference" do
+        reference = FactoryGirl.create :missing_reference, author_names: [], citation_year: '2010', citation: 'Ants <i>et al.</i>', title: 'Tapinoma'
+        @formatter.format(reference).should == "2010. Tapinoma. Ants <i>et al.</i>"
+      end
     end
 
-    it "should not have a space at the beginning when there are no authors" do
-      reference = FactoryGirl.create :unknown_reference, :citation_year => '2010d', :author_names => [], :citation => 'Ants', :title => 'Tapinoma'
-      @formatter.format(reference).should == "2010d. Tapinoma. Ants."
+    describe "Escaping in the year" do
+      it "should leave quotes (and italics) alone, but escape other HTML" do
+        reference = FactoryGirl.create :unknown_reference, citation_year: '2010 ("2011")', author_names: [], citation: 'Ants', title: 'Tapinoma'
+        string = Formatters::ReferenceFormatter.make_formatter(reference).format_year
+        string.should == '2010 ("2011")'
+        string.should be_html_safe
+      end
+    end
+
+    describe "Escaping in the author names" do
+      it "should not escape quotes and italics, should escape everything else" do
+        reference = FactoryGirl.create :unknown_reference, author_names: [@author_name], citation: 'Ants', title: 'Tapinoma', author_names_suffix: ' <i>et al.</i>'
+        string = Formatters::ReferenceFormatter.make_formatter(reference).format_author_names
+        string.should == 'Forel, A. <i>et al.</i>'
+        string.should be_html_safe
+      end
     end
 
   end
+
+  it "should not have a space at the beginning when there are no authors" do
+    reference = FactoryGirl.create :unknown_reference, :citation_year => '2010d', :author_names => [], :citation => 'Ants', :title => 'Tapinoma'
+    @formatter.format(reference).should == "2010d. Tapinoma. Ants."
+  end
+
 
   describe "formatting the date" do
     it "should use ISO 8601 format for calendar dates" do
@@ -231,9 +272,6 @@ describe Formatters::ReferenceFormatter do
   end
 
   describe "italicizing" do
-    it "should raise if its input isn't HTML safe" do
-      -> {@formatter.format_italics "unsafe"}.should raise_error
-    end
     it "should replace asterisks and bars with italics" do
       string = @formatter.format_italics "|Hymenoptera| *Formicidae*".html_safe
       string.should == "<i>Hymenoptera</i> <i>Formicidae</i>"
