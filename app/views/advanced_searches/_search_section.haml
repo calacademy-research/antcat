@@ -1,12 +1,17 @@
 .search_section
   = form_tag advanced_search_path, method: :get do
-    Find
-    = select_tag :rank, rank_options_for_select(params[:rank])
-    described in the year
-    = text_field_tag :year, params[:year]
+    .left
+      Find
+      = select_tag :rank, rank_options_for_select(params[:rank])
+      described in the year
+      = text_field_tag :year, params[:year]
 
-    = submit_tag 'Go', id: 'submit_button', class: 'ui-priority-primary ui-button us-widget ui-state-default ui-corner-all ui-button-text-only'
-    = image_tag 'ui-anim_basic_16x16.gif', id: 'throbber', class: 'throbber'
+    .left.valid_only
+      = label_tag 'Valid only?'
+      = check_box_tag :valid_only
 
-    = label_tag 'Valid only?'
-    = check_box_tag :valid_only
+    .go_and_throbber.left
+      = submit_tag 'Go', id: 'submit_button', class: 'ui-priority-primary ui-button us-widget ui-state-default ui-corner-all ui-button-text-only'
+      = image_tag 'ui-anim_basic_16x16.gif', id: 'throbber', class: 'throbber'
+
+    .clear
