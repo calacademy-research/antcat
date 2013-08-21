@@ -2,7 +2,6 @@
 module AdvancedSearchesHelper
 
   def format_protonym taxon
-    formatter = Formatters::ReferenceFormatter
     reference = taxon.protonym.authorship.reference
     string = ''.html_safe
     string << Formatters::ReferenceFormatter.format(reference)
