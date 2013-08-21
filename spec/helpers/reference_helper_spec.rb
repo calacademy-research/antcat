@@ -6,13 +6,13 @@ describe ReferenceHelper do
   end
   it "#format_reference should delegate to the formatter" do
     Formatters::ReferenceFormatter.should_receive :format
-    helper.format_reference  FactoryGirl.create :reference
+    helper.format_reference FactoryGirl.create :reference
   end
-  #it "#format_reference_document_link should delegate to the formatter" do
-    #Formatters::CatalogFormatter.should_receive :format_reference_document_link
-    # problem with calling 'current_user' in the helper
-    #helper.format_reference_document_link  FactoryGirl.create :reference
-  #end
+  it "#format_reference_document_link should delegate to the formatter" do
+    Formatters::CatalogFormatter.should_receive :format_reference_document_link
+    helper.stub(:current_user).and_return double
+    helper.format_reference_document_link FactoryGirl.create :reference
+  end
   it "#format_italics should delegate to the formatter" do
     Formatters::ReferenceFormatter.should_receive :format_italics
     helper.format_italics 'string'
