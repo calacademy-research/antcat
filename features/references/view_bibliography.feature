@@ -28,7 +28,6 @@ Feature: View bibliography
     When I go to the references page
     Then I should see "<script>"
     And I should see "<html>"
-    And I should see "<i>"
 
   Scenario: Viewing more than one entry, sorted by author + date (including slug)
     Given these references exist
