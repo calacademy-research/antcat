@@ -181,7 +181,6 @@ describe Taxon do
         delta.update_attributes! status: 'synonym'
         Taxon.advanced_search('Genus', 1977, true).map(&:id).should =~ [atta.id, betta.id]
       end
-
       it "should return all regardless of validity if that flag is false" do
         reference1977 = reference_factory author_name: 'Bolton', citation_year: '1977'
         atta = create_genus
@@ -189,6 +188,32 @@ describe Taxon do
         atta.update_attributes! status: 'synonym'
         Taxon.advanced_search('Genus', 1977, false).map(&:id).should =~ [atta.id]
       end
+
+      describe "Finding certain ranks" do
+        before do
+          taxa = []
+          taxa << @subfamily = create_subfamily
+          taxa << @tribe = create_tribe
+          taxa << @genus = create_genus
+          taxa << @subgenus = create_subgenus
+          taxa << @species = create_species
+          taxa << @subspecies = create_subspecies('Atta major minor')
+          reference = reference_factory author_name: 'Bolton', citation_year: '1977'
+          for taxon in taxa
+            taxon.protonym.authorship.update_attributes! reference: reference
+          end
+        end
+
+        it "should return just the requested rank, if asked" do
+          Taxon.advanced_search('Subfamily', 1977, false).map(&:id).should =~ [@subfamily.id]
+          Taxon.advanced_search('Tribe', 1977, false).map(&:id).should =~ [@tribe.id]
+          Taxon.advanced_search('Genus', 1977, false).map(&:id).should =~ [@genus.id]
+          Taxon.advanced_search('Subgenus', 1977, false).map(&:id).should =~ [@subgenus.id]
+          Taxon.advanced_search('Species', 1977, false).map(&:id).should =~ [@species.id]
+          Taxon.advanced_search('Subspecies', 1977, false).map(&:id).should =~ [@subspecies.id]
+        end
+      end
     end
+
   end
 end

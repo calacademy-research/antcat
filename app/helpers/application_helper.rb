@@ -64,13 +64,21 @@ http://antcat.org
   def rank_options_for_select value
     value = 'Species' unless value.present?
     string = ''.html_safe
+
+    string = ''.html_safe
+    string << rank_option_for_select('All', value)
     for rank in Rank.ranks
-      next if rank.string == 'Family'
-      options = {value: rank.string.capitalize}
-      options[:selected] = 'selected' if rank.string.capitalize == value
-      string << content_tag(:option, rank.string.capitalize, options)
+      next if rank.string.capitalize == 'Family'
+      string << rank_option_for_select(rank.string, value)
+      string
     end
     string
+  end
+
+  def rank_option_for_select rank_option, value
+    options = {value: rank_option.capitalize}
+    options[:selected] = 'selected' if rank_option.capitalize == value
+    content_tag :option, rank_option.capitalize, options
   end
 
 end
