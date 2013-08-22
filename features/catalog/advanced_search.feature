@@ -36,6 +36,16 @@ Feature: Searching the catalog
     #And show me the page
     #Then I should see "4 results found"
 
+  Scenario: Searching for subfamilies
+    Given there is a subfamily described in 2010
+    When I go to the catalog
+    And I follow "Advanced Search"
+    And I select "Subfamilies" from the rank selector
+    And I fill in "year" with "2010"
+    And I press "Go" in the search section
+    Then I should see "1 result found"
+    And I should see the species described in 2010
+
   Scenario: Searching for an invalid taxon
     Given there is an invalid species described in 2010
     When I go to the catalog

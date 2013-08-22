@@ -1,10 +1,10 @@
--#Locals: taxa
+-#Locals: taxa, taxa_count
 
 .results_section
 
   - if taxa
     - if taxa.size > 0
-      = "#{pluralize_with_delimiters(taxa.size, 'result')} found"
+      = "#{pluralize_with_delimiters(taxa_count, 'result')} found"
       = will_paginate taxa
       %hr
     - else
