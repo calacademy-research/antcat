@@ -165,7 +165,7 @@ describe Taxon do
         betta.protonym.authorship.update_attributes! reference: reference1977
         gamma = create_genus
         gamma.protonym.authorship.update_attributes! reference: reference1988
-        Taxon.advanced_search('Genus', 1977, true).map(&:id).should =~ [atta.id, betta.id]
+        Taxon.advanced_search(rank: 'Genus', year: 1977, valid_only: true).map(&:id).should =~ [atta.id, betta.id]
       end
       it "should honor the validity flag" do
         reference1977 = reference_factory author_name: 'Bolton', citation_year: '1977'
@@ -179,14 +179,14 @@ describe Taxon do
         delta = create_genus
         delta.protonym.authorship.update_attributes! reference: reference1977
         delta.update_attributes! status: 'synonym'
-        Taxon.advanced_search('Genus', 1977, true).map(&:id).should =~ [atta.id, betta.id]
+        Taxon.advanced_search(rank: 'Genus', year: 1977, valid_only: true).map(&:id).should =~ [atta.id, betta.id]
       end
       it "should return all regardless of validity if that flag is false" do
         reference1977 = reference_factory author_name: 'Bolton', citation_year: '1977'
         atta = create_genus
         atta.protonym.authorship.update_attributes! reference: reference1977
         atta.update_attributes! status: 'synonym'
-        Taxon.advanced_search('Genus', 1977, false).map(&:id).should =~ [atta.id]
+        Taxon.advanced_search(rank: 'Genus', year: 1977, valid_only: false).map(&:id).should =~ [atta.id]
       end
 
       describe "Finding certain ranks" do
@@ -205,12 +205,12 @@ describe Taxon do
         end
 
         it "should return just the requested rank, if asked" do
-          Taxon.advanced_search('Subfamily', 1977, false).map(&:id).should =~ [@subfamily.id]
-          Taxon.advanced_search('Tribe', 1977, false).map(&:id).should =~ [@tribe.id]
-          Taxon.advanced_search('Genus', 1977, false).map(&:id).should =~ [@genus.id]
-          Taxon.advanced_search('Subgenus', 1977, false).map(&:id).should =~ [@subgenus.id]
-          Taxon.advanced_search('Species', 1977, false).map(&:id).should =~ [@species.id]
-          Taxon.advanced_search('Subspecies', 1977, false).map(&:id).should =~ [@subspecies.id]
+          Taxon.advanced_search(rank: 'Subfamily', year: 1977).map(&:id).should =~ [@subfamily.id]
+          Taxon.advanced_search(rank: 'Tribe', year: 1977).map(&:id).should =~ [@tribe.id]
+          Taxon.advanced_search(rank: 'Genus', year: 1977).map(&:id).should =~ [@genus.id]
+          Taxon.advanced_search(rank: 'Subgenus', year: 1977).map(&:id).should =~ [@subgenus.id]
+          Taxon.advanced_search(rank: 'Species', year: 1977).map(&:id).should =~ [@species.id]
+          Taxon.advanced_search(rank: 'Subspecies', year: 1977).map(&:id).should =~ [@subspecies.id]
         end
       end
     end
