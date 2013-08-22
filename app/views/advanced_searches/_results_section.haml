@@ -5,7 +5,6 @@
   - if taxa
     - if taxa.size > 0
       = "#{pluralize_with_delimiters(taxa_count, 'result')} found"
-      = will_paginate taxa
       %hr
     - else
       No results found
@@ -14,4 +13,3 @@
       .result
         .name=     link_to_taxon taxon
         .protonym= format_protonym taxon
-    %div= will_paginate taxa
