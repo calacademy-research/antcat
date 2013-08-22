@@ -25,6 +25,17 @@ Feature: Searching the catalog
     Then I should see "1 result found"
     And I should see the species described in 2010
 
+  Scenario: Searching when more than one page of results
+  # This passes even after changing WillPaginate::per_page
+    #Given AntCat shows 3 species per page
+    #And there were 4 species described in 2010
+    #When I go to the catalog
+    #And I follow "Advanced Search"
+    #And I fill in "year" with "2010"
+    #And I press "Go" in the search section
+    #And show me the page
+    #Then I should see "4 results found"
+
   Scenario: Searching for an invalid taxon
     Given there is an invalid species described in 2010
     When I go to the catalog
