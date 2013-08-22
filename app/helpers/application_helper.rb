@@ -66,19 +66,19 @@ http://antcat.org
     string = ''.html_safe
 
     string = ''.html_safe
-    string << rank_option_for_select('All', value)
+    string << rank_option_for_select('All', 'All', value)
     for rank in Rank.ranks
       next if rank.plural.capitalize == 'Families'
-      string << rank_option_for_select(rank.plural, value)
+      string << rank_option_for_select(rank.plural.capitalize, rank.string.capitalize, value)
       string
     end
     string
   end
 
-  def rank_option_for_select rank_option, value
-    options = {value: rank_option.capitalize}
-    options[:selected] = 'selected' if rank_option.capitalize == value
-    content_tag :option, rank_option.capitalize, options
+  def rank_option_for_select label, value, current_value
+    options = {value: value}
+    options[:selected] = 'selected' if value == current_value
+    content_tag :option, label, options
   end
 
 end
