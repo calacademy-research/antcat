@@ -1,7 +1,12 @@
 # coding: UTF-8
 
-Given /^there is a(n invalid)? species described in (\d+)$/ do |invalid, year|
+Given /^there is a(n invalid)? species described in (\d+)(?: by "([^"]+)")?$/ do |invalid, year, author|
   reference = FactoryGirl.create :article_reference, citation_year: year
+  if author
+    bolton = FactoryGirl.create :author
+    author_name = FactoryGirl.create :author_name, name: author, author: bolton
+    reference.author_names = [author_name]
+  end
   taxon = FactoryGirl.create :species
   taxon.update_attributes! status: 'synonym' if invalid
   taxon.protonym.authorship.update_attributes! reference: reference
