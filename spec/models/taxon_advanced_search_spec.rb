@@ -64,5 +64,46 @@ describe Taxon do
       end
     end
 
+    describe "Finding by author name" do
+      it "should find the taxa for the author's references that are part of citations in the protonym" do
+        reference = reference_factory author_name: 'Bolton', citation_year: '1977'
+        atta = create_genus
+        atta.protonym.authorship.update_attributes! reference: reference
+        Taxon.advanced_search(rank: 'All', author_name: 'Bolton').map(&:id).should == [atta.id]
+      end
+
+      it "should find the taxa for the author's references that are part of citations in the protonym, even under different names" do
+        barry_bolton = FactoryGirl.create :author
+        barry = FactoryGirl.create :author_name, name: 'Barry', author: barry_bolton
+        bolton = FactoryGirl.create :author_name, name: 'Bolton', author: barry_bolton
+
+        barry_reference = FactoryGirl.create :article_reference, author_names: [barry], citation_year: '1977'
+        barry_atta = create_genus 'Barry_Atta'
+        barry_atta.protonym.authorship.update_attributes! reference: barry_reference
+
+        bolton_reference = FactoryGirl.create :article_reference, author_names: [bolton], citation_year: '1977'
+        bolton_atta = create_genus 'Bolton_Atta'
+        bolton_atta.protonym.authorship.update_attributes! reference: bolton_reference
+
+        Taxon.advanced_search(rank: 'All', author_name: 'Bolton').map(&:name_cache).should =~ [barry_atta.name_cache, bolton_atta.name_cache]
+      end
+
+      it "should handle year + author name" do
+        barry_bolton = FactoryGirl.create :author
+        barry = FactoryGirl.create :author_name, name: 'Barry', author: barry_bolton
+        bolton = FactoryGirl.create :author_name, name: 'Bolton', author: barry_bolton
+
+        barry_reference = FactoryGirl.create :article_reference, author_names: [barry], citation_year: '1977'
+        barry_atta = create_genus 'Barry_Atta'
+        barry_atta.protonym.authorship.update_attributes! reference: barry_reference
+
+        bolton_reference = FactoryGirl.create :article_reference, author_names: [bolton], citation_year: '1987'
+        bolton_atta = create_genus 'Bolton_Atta'
+        bolton_atta.protonym.authorship.update_attributes! reference: bolton_reference
+
+        Taxon.advanced_search(rank: 'All', author_name: 'Bolton', year: 1987).map(&:name_cache).should =~ [bolton_atta.name_cache]
+      end
+
+    end
   end
 end
