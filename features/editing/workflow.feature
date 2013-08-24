@@ -77,3 +77,15 @@ Feature: Workflow
     And I should see "Mark Wilden approved"
     When I go to the catalog page for "Atta"
     Then I should see "approved by Mark Wilden"
+
+  Scenario: Editing a taxon - no Change created
+    Given there is a family "Formicidae"
+    And I log in
+    When I go to the edit page for "Formicidae"
+    And I click the name field
+    And I set the name to "Wildencidae"
+    And I press "OK"
+    And I save my changes
+    And I wait for a while
+    Then I should see "Wildencidae" in the header
+    And I should not see "Added by Mark Wilden" in the change history

@@ -181,13 +181,29 @@ describe TaxonMother do
     end
 
     describe "Creating a Change" do
-      it "should create a Change pointing to the version of Taxon" do
+      it "should create a Change pointing to the version of Taxon when added" do
         with_versioning do
           taxon = @mother.create_taxon Rank[:species], create_genus
           @mother.save_taxon taxon, @genus_params
           change = Change.first
           change.paper_trail_version.should == taxon.last_version
         end
+      end
+
+      it "should not create a Change for an edit" do
+        genus = create_genus
+        with_versioning do
+          @mother.save_taxon genus, @genus_params
+        end
+        Change.count.should be_zero
+      end
+      it "should not change the review state after editing" do
+        genus = create_genus
+        with_versioning do
+          @mother.save_taxon genus, @genus_params
+        end
+        Change.count.should be_zero
+        genus.should be_old
       end
     end
 

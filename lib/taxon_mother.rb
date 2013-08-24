@@ -36,16 +36,19 @@ class TaxonMother
       update_protonym             protonym_attributes
       update_type_name            type_name_attributes
 
-      set_initial_review_state
-
-      @taxon.save!
-      save_change @taxon
+      if @taxon.new_record?
+        set_initial_review_state
+        @taxon.save!
+        save_change
+      else
+        @taxon.save!
+      end
     end
   end
 
-  def save_change taxon
+  def save_change
     change = Change.new
-    change.paper_trail_version = taxon.last_version
+    change.paper_trail_version = @taxon.last_version
     change.save!
   end
 
