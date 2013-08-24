@@ -59,11 +59,4 @@ describe ApplicationHelper do
     end
   end
 
-  describe "Formatting approver name" do
-    it "should call Formatters::CatalogFormatter" do
-      approver = double name: 'Mark'
-      helper.format_approver_name(approver).should == 'Mark approved this change'
-    end
-  end
-
 end
