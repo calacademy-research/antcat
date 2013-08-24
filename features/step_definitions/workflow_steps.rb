@@ -111,3 +111,7 @@ When /^I add the genus "Atta"$/ do
   mother.save_taxon taxon, genus_params
   taxon.last_change.paper_trail_version.update_attributes whodunnit: @user
 end
+
+Then /I should not see any change history/ do
+  page.should_not have_css '.change_history'
+end

@@ -86,6 +86,5 @@ Feature: Workflow
     And I set the name to "Wildencidae"
     And I press "OK"
     And I save my changes
-    And I wait for a while
     Then I should see "Wildencidae" in the header
-    And I should not see "Added by Mark Wilden" in the change history
+    And I should not see any change history
