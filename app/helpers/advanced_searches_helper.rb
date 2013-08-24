@@ -6,9 +6,29 @@ module AdvancedSearchesHelper
   end
 
   def format_status taxon
-    if taxon.original_combination?
-      format_original_combination_status taxon
+    return format_original_combination_status taxon if taxon.original_combination?
+    labels = []
+    labels << "<i>incertae sedis</i> in #{Rank[taxon.incertae_sedis_in].to_s}" if taxon.incertae_sedis_in
+    if taxon.homonym? && taxon.homonym_replaced_by
+      labels << "homonym replaced by #{self.class.link_to_taxon(taxon.homonym_replaced_by)}"
+    elsif taxon.unidentifiable?
+      labels << 'unidentifiable'
+    elsif taxon.unresolved_homonym?
+      labels << "unresolved junior homonym"
+    elsif taxon.nomen_nudum?
+      labels << "<i>nomen nudum</i>"
+    elsif taxon.invalid?
+      label = Status[taxon].to_s.dup
+      label << senior_synonym_list(taxon)
+      labels << label
     end
+    labels << 'ichnotaxon' if taxon.ichnotaxon?
+    labels.join(', ').html_safe
+  end
+
+  def senior_synonym_list taxon
+    return '' unless taxon.senior_synonyms.count > 0
+    ' of ' << taxon.senior_synonyms.map {|e| Formatters::CatalogTaxonFormatter.link_to_taxon(e)}.join(', ')
   end
 
   def format_original_combination_status taxon

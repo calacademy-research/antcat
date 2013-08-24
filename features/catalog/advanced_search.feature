@@ -60,3 +60,11 @@ Feature: Searching the catalog
     And I fill in "author_name" with "Bolton"
     And I press "Go" in the search section
     Then I should see "see Betta major"
+
+  Scenario: Finding a junior synonym
+    Given there is a species "Atta major" described by "Bolton" which is a junior synonym of "Betta minor"
+    When I go to the catalog
+    And I follow "Advanced Search"
+    And I fill in "author_name" with "Bolton"
+    And I press "Go" in the search section
+    Then I should see "synonym of Betta minor"

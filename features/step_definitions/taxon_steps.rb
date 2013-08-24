@@ -141,11 +141,19 @@ Given /^there is a subspecies "([^"]*)" with genus "([^"]*)" and no species$/ do
   genus = create_genus genus_name
   create_subspecies subspecies_name, genus: genus, species: nil
 end
-Given /^there is a species "([^"]*)" which is a junior synonym of "([^"]*)"$/ do |junior, senior|
+Given /^there is a species "([^"]*)"(?: described by "([^"]*)")? which is a junior synonym of "([^"]*)"$/ do |junior, author_name, senior|
   genus = create_genus 'Solenopsis'
   senior = create_species senior, genus: genus
   junior = create_species junior, status: 'synonym', genus: genus
   Synonym.create! senior_synonym: senior, junior_synonym: junior
+  make_author_of_taxon junior, author_name if author_name
+end
+
+def make_author_of_taxon taxon, author_name
+  author = FactoryGirl.create :author
+  author_name = FactoryGirl.create :author_name, name: author_name, author: author
+  reference = FactoryGirl.create :article_reference, author_names: [author_name]
+  taxon.protonym.authorship.update_attributes! reference: reference
 end
 
 ###########################
