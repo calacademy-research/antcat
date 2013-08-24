@@ -10,6 +10,4 @@
       No results found
 
     - for taxon in taxa
-      .result
-        .name=     link_to_taxon taxon
-        .protonym= format_protonym taxon
+      = render 'result', taxon: taxon
