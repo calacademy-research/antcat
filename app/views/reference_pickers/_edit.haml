@@ -1,4 +1,6 @@
--#Locals: reference, popup/field
+-#Locals: reference, popup/field, possible_duplicate
+
+- possible_duplicate ||= nil
 
 -#This is pretty much a copy of references/_edit
 - reference.publisher_string ||= reference.respond_to?(:publisher) ? (reference.publisher && reference.publisher.to_s) : ''
@@ -17,7 +19,7 @@
   - data_multipart = Rails.env.test? ? '' : 'true'
   .nested_form{'data-action' => url, 'data-method' => method, 'data-multipart' => data_multipart}
     %input{type: :hidden, name: :selected_tab, id: :selected_tab, class: :selected_tab, value: selected_tab}
-    %input{type: 'hidden', name: 'possible_duplicate', id: 'possible_duplicate', value: @possible_duplicate ? 'true' : nil}
+    %input{type: 'hidden', name: 'possible_duplicate', id: 'possible_duplicate', value: possible_duplicate ? 'true' : nil}
     = render 'shared/errors_for', :resource => reference
 
     %table
@@ -98,5 +100,5 @@
               %td= reference.id
       %tr
         %td.buttons{:colspan => 4}
-          %button.ui-priority-primary.submit= previewize @possible_duplicate ? 'Save Anyway' : 'Save'
+          %button.ui-priority-primary.submit= previewize possible_duplicate ? 'Save Anyway' : 'Save'
           %button.ui-priority-secondary.cancel Cancel

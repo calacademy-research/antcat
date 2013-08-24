@@ -1,3 +1,5 @@
+-#Locals: parameters, search_results, search_results_message
+
 - if (search_results && search_results.size > 1) || search_results_message
   #search_results
     - if search_results_message
@@ -9,5 +11,5 @@
           %tr
             - row.each do |item|
               - if item
-                %td= search_result_link item, @parameters
+                %td= search_result_link item, parameters
   %hr

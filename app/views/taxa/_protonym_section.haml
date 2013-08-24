@@ -46,4 +46,4 @@
           %tr
             %td.label.top_aligned= form.label :notes_taxt, 'Notes'
             %td#notes_taxt_editor.taxt_editor
-              = render 'taxt_editors/show', name: 'taxon[protonym_attributes][authorship_attributes][notes_taxt]', value: Taxt.to_editable(@taxon.protonym.authorship.notes_taxt)
+              = render 'taxt_editors/show', name: 'taxon[protonym_attributes][authorship_attributes][notes_taxt]', value: Taxt.to_editable(taxon.protonym.authorship.notes_taxt)

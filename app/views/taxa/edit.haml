@@ -13,7 +13,7 @@
 
 - content_for :page_header do
   #navigation_bar
-    = render 'shared/search'
+    = render 'shared/search', search_results: @search_results, search_results_message: @search_results_message
   = render 'shared/catalog_title'
 
 - content_for :page_contents do

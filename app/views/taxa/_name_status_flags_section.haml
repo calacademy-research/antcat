@@ -35,4 +35,4 @@
     %tr.headline_notes_taxt_row
       %td.label.top_aligned= form.label :headline_notes_taxt, 'Notes'
       %td#headline_notes_taxt_editor.taxt_editor
-        = render 'taxt_editors/show', name: 'taxon[headline_notes_taxt]', value: Taxt.to_editable(@taxon.headline_notes_taxt)
+        = render 'taxt_editors/show', name: 'taxon[headline_notes_taxt]', value: Taxt.to_editable(taxon.headline_notes_taxt)

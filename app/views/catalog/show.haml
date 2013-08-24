@@ -13,12 +13,12 @@
   #splitter
 
   .index
-    = render   'rank', rank: :subfamily,items: @subfamilies,selected_item: @subfamily, parent: nil,       options: {can_show_unavailable: true, show_none: 'none', hideable_child_name: 'tribes'}
+    = render   'rank', rank: :subfamily,items: @subfamilies,selected_item: @subfamily, parent: nil,       parameters: @parameters, options: {can_show_unavailable: true, show_none: 'none', hideable_child_name: 'tribes'}
     - if session[:show_tribes] and @subfamily != 'none'
-      = render 'rank', rank: :tribe,    items: @tribes,     selected_item: @tribe,     parent: @subfamily,options: {hideable_name: 'tribes', show_none: 'none'}
-    = render   'rank', rank: :genus,    items: @genera,     selected_item: @genus,     parent: nil,       options: {hideable_child_name: 'subgenera'}
+      = render 'rank', rank: :tribe,    items: @tribes,     selected_item: @tribe,     parent: @subfamily,parameters: @parameters, options: {hideable_name: 'tribes', show_none: 'none'}
+    = render   'rank', rank: :genus,    items: @genera,     selected_item: @genus,     parent: nil,       parameters: @parameters, options: {hideable_child_name: 'subgenera'}
     - if session[:show_subgenera]
-      = render'rank',  rank: :subgenus, items: @subgenera,  selected_item: @subgenus,  parent: nil,       options: {hideable_name: 'subgenera'}
-    = render  'rank',  rank: :species,  items: @specieses,  selected_item: @species,   parent: nil,       options: {}
+      = render'rank',  rank: :subgenus, items: @subgenera,  selected_item: @subgenus,  parent: nil,       parameters: @parameters, options: {hideable_name: 'subgenera'}
+    = render  'rank',  rank: :species,  items: @specieses,  selected_item: @species,   parent: nil,       parameters: @parameters, options: {}
 
 = render 'shared/qtip'

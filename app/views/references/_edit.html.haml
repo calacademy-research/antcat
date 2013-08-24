@@ -1,3 +1,5 @@
+- possible_duplicate ||= nil
+
 - reference.publisher_string ||= reference.respond_to?(:publisher) ? (reference.publisher && reference.publisher.to_s) : ''
 - reference.journal_name ||= reference.respond_to?(:journal) ? (reference.journal && reference.journal.name) : ''
 - selected_tab = [ArticleReference, BookReference, NestedReference, UnknownReference].index(reference.class) || 0
@@ -9,7 +11,7 @@
   = form_for reference, :as => :reference, :url => url, :html => html_options do |f|
     %input{:type => 'hidden', :name => '_method', :value => method}
     %input{type: :hidden, name: :selected_tab, id: :selected_tab, class: :selected_tab, value: selected_tab}
-    %input{type: :hidden, name: 'possible_duplicate', id: 'possible_duplicate', value: @possible_duplicate ? 'true' : nil}
+    %input{type: :hidden, name: 'possible_duplicate', id: 'possible_duplicate', value: possible_duplicate ? 'true' : nil}
     = render 'shared/errors_for', :resource => reference
 
     %table
@@ -99,6 +101,6 @@
               %td= reference.id
       %tr
         %td{:colspan => 4}
-          %button.submit= previewize @possible_duplicate ? 'Save Anyway' : 'Save'
+          %button.submit= previewize possible_duplicate ? 'Save Anyway' : 'Save'
           %button.cancel Cancel
           %button.delete= previewize 'Delete'
