@@ -1,7 +1,7 @@
 - if (search_results && search_results.size > 1) || search_results_message
   #search_results
     - if search_results_message
-     %span.no_results_found= search_results_message
+      %span.no_results_found= search_results_message
     - else
       %table
         - rows = make_catalog_search_results_columns search_results
