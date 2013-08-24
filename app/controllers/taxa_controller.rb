@@ -3,6 +3,8 @@ class TaxaController < ApplicationController
   before_filter :authenticate_catalog_editor, :get_params, :create_mother
   skip_before_filter :authenticate_catalog_editor, if: :preview?
 
+  helper ReferenceHelper
+
   def new
     get_taxon :create
     set_paths :create
