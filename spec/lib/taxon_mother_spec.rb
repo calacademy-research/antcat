@@ -202,7 +202,6 @@ describe TaxonMother do
         with_versioning do
           @mother.save_taxon genus, @genus_params
         end
-        Change.count.should be_zero
         genus.should be_old
       end
     end
