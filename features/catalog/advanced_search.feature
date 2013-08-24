@@ -52,3 +52,11 @@ Feature: Searching the catalog
     And I press "Go" in the search section
     Then I should see "1 result found"
     And I should see the species described in 2010
+
+  Scenario: Finding an original combination
+    Given there is an original combination of "Atta major" described by "Bolton" which was moved to "Betta major"
+    When I go to the catalog
+    And I follow "Advanced Search"
+    And I fill in "author_name" with "Bolton"
+    And I press "Go" in the search section
+    Then I should see "see Betta major"

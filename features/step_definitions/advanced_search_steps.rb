@@ -12,6 +12,19 @@ Given /^there is a(n invalid)? species described in (\d+)(?: by "([^"]+)")?$/ do
   taxon.protonym.authorship.update_attributes! reference: reference
 end
 
+Given /^there is an original combination of "([^"]+)" described by "([^"]+)" which was moved to "([^"]+)"$/ do |original_combination, author, current_valid_taxon|
+  reference = FactoryGirl.create :article_reference
+  bolton = FactoryGirl.create :author
+  author_name = FactoryGirl.create :author_name, name: author, author: bolton
+  reference.author_names = [author_name]
+  betta_major = create_species 'Betta major'
+  atta_major = create_species 'Atta major', status: 'original combination', current_valid_taxon: atta_major
+  atta_major.protonym.authorship.update_attributes! reference: reference
+  atta_major.update_attributes current_valid_taxon: betta_major
+  betta_major.protonym.authorship.update_attributes! reference: reference
+end
+
+
 Given /^AntCat shows (\d+) species per page$/ do |count|
   WillPaginate.per_page = count
 end
