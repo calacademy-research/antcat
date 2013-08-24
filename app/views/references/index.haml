@@ -41,7 +41,7 @@
         = render 'reference', reference: reference, css_class: 'reference'
       - if params[:review]
         %td.date
-          = format_timestamp reference.updated_at
+          = Formatters::ReferenceFormatter.format_timestamp reference.updated_at
 
       = render 'references/whats_new_controls', reference: reference if params[:whats_new]
 

@@ -4,4 +4,4 @@
 
 %h4 References using this journal
 - Reference.sorted_by_principal_author_last_name.all(:conditions => ['journal_id = ?', @journal.id]).each do |reference|
-  %p.reference_list= "#{format_reference(reference)} #{reference.id}"
+  %p.reference_list= "#{Formatters::ReferenceFormatter.format(reference)} #{reference.id}"

@@ -2,8 +2,8 @@
 - css_class << ' downloadable' if reference && reference.downloadable_by?(current_user)
 %div{:class => css_class}
   - if reference
-    = raw format_reference reference
-    - document_link = format_reference_document_link reference
+    = raw Formatters::ReferenceFormatter.format reference
+    - document_link = Formatters::CatalogFormatter.format_reference_document_link reference, current_user
     = raw document_link if document_link
   - else
     (none)
