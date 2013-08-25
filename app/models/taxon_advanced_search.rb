@@ -13,7 +13,7 @@ class Taxon < ActiveRecord::Base
     elsif params[:author_name].present?
       author_names = AuthorName.find_by_name(params[:author_name]).author.names
       query = query.where 'reference_author_names.author_name_id' => author_names
-      query = query.joins 'JOIN reference_author_names ON reference_author_names.reference_id = `references`.id AND reference_author_names.position = 1'
+      query = query.joins 'JOIN reference_author_names ON reference_author_names.reference_id = `references`.id'
       query = query.joins 'JOIN author_names ON author_names.id = reference_author_names.author_name_id'
       query = query.where 'references.year' => params[:year] if params[:year].present?
 

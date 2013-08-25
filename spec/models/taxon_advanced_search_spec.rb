@@ -72,6 +72,13 @@ describe Taxon do
         Taxon.advanced_search(rank: 'All', author_name: 'Bolton').map(&:id).should == [atta.id]
       end
 
+      it "should find the taxa for the author's references, even if he's not the principal author" do
+        reference = FactoryGirl.create :article_reference, author_names: [FactoryGirl.create(:author_name, name: 'Bolton'), FactoryGirl.create(:author_name, name: 'Fisher')], citation_year: '1977'
+        atta = create_genus
+        atta.protonym.authorship.update_attributes! reference: reference
+        Taxon.advanced_search(rank: 'All', author_name: 'Fisher').map(&:id).should == [atta.id]
+      end
+
       it "should find the taxa for the author's references that are part of citations in the protonym, even under different names" do
         barry_bolton = FactoryGirl.create :author
         barry = FactoryGirl.create :author_name, name: 'Barry', author: barry_bolton
