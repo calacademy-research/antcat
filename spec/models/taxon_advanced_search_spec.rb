@@ -79,6 +79,15 @@ describe Taxon do
         Taxon.advanced_search(rank: 'All', author_name: 'Fisher').map(&:id).should == [atta.id]
       end
 
+      it "should find the taxa for the author's references, even if he's nested inside the reference" do
+        nested_in = FactoryGirl.create :article_reference, author_names: [FactoryGirl.create(:author_name, name: 'Bolton')], year: 2010
+        reference = NestedReference.new title: 'Ants', author_names: [FactoryGirl.create(:author_name, name: 'Fisher')], year: 2011, nested_reference: nested_in, pages_in: 'Pp 2 in:'
+        atta = create_genus
+        atta.protonym.authorship.update_attributes! reference: reference
+        Taxon.advanced_search(rank: 'All', author_name: 'Fisher').map(&:id).should == [atta.id]
+        Taxon.advanced_search(rank: 'All', author_name: 'Bolton').map(&:id).should be_empty
+      end
+
       it "should find the taxa for the author's references that are part of citations in the protonym, even under different names" do
         barry_bolton = FactoryGirl.create :author
         barry = FactoryGirl.create :author_name, name: 'Barry', author: barry_bolton
