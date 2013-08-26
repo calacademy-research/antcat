@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130807001134) do
+ActiveRecord::Schema.define(:version => 20130826180317) do
 
   create_table "antwiki_valid_taxa", :id => false, :force => true do |t|
     t.string   "name"
@@ -83,6 +83,8 @@ ActiveRecord::Schema.define(:version => 20130807001134) do
     t.string   "import_result"
   end
 
+  add_index "bolton_references", ["match_id"], :name => "index_bolton_references_on_match_id"
+
   create_table "changes", :force => true do |t|
     t.integer  "paper_trail_version_id"
     t.datetime "created_at",             :null => false
@@ -90,6 +92,9 @@ ActiveRecord::Schema.define(:version => 20130807001134) do
     t.integer  "approver_id"
     t.datetime "approved_at"
   end
+
+  add_index "changes", ["approver_id"], :name => "index_changes_on_approver_id"
+  add_index "changes", ["paper_trail_version_id"], :name => "index_changes_on_paper_trail_version_id"
 
   create_table "citations", :force => true do |t|
     t.integer  "reference_id"
@@ -113,6 +118,9 @@ ActiveRecord::Schema.define(:version => 20130807001134) do
     t.string   "type"
     t.integer  "name_id"
   end
+
+  add_index "forward_refs", ["fixee_id", "fixee_type"], :name => "index_forward_refs_on_fixee_id_and_fixee_type"
+  add_index "forward_refs", ["name_id"], :name => "index_forward_refs_on_name_id"
 
   create_table "journals", :force => true do |t|
     t.string   "name"
@@ -339,6 +347,7 @@ ActiveRecord::Schema.define(:version => 20130807001134) do
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["invitation_token"], :name => "index_users_on_invitation_token"
+  add_index "users", ["invited_by_id", "invited_by_type"], :name => "index_users_on_invited_by_id_and_invited_by_type"
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
   create_table "versions", :force => true do |t|
