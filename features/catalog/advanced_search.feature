@@ -76,4 +76,3 @@ Feature: Searching the catalog
     And I fill in "author_name" with "Bolton"
     And I press "Go" in the search section
     Then I should see "No results found"
-
