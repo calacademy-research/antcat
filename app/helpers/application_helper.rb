@@ -62,7 +62,7 @@ http://antcat.org
   end
 
   def rank_options_for_select value
-    value = 'Species' unless value.present?
+    value = 'All' unless value.present?
     string = ''.html_safe
 
     string = ''.html_safe
