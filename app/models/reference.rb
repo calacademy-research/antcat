@@ -26,7 +26,8 @@ class Reference < ActiveRecord::Base
 
   # validation and callbacks
   before_validation :set_year_from_citation_year, :strip_text_fields
-  validates_presence_of :title
+  validates         :title, presence: true, if: Proc.new {|record| record.class.requires_title}
+  def self.requires_title; true end
   before_save       :set_author_names_caches
   before_destroy    :check_not_nested
 

@@ -6,6 +6,8 @@ class NestedReference < UnmissingReference
   validate :validate_nested_reference_exists
   validate :validate_nested_reference_doesnt_point_to_itself
 
+  def self.requires_title; false end
+
   def validate_nested_reference_exists
     errors.add(:nested_reference_id, 'does not exist') if nested_reference_id && !Reference.find_by_id(nested_reference_id)
   end

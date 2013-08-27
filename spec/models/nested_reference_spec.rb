@@ -15,6 +15,10 @@ describe NestedReference do
       @reference.nested_reference = nil
       @reference.should_not be_valid
     end
+    it "should be valid without a title" do
+      @reference.title = nil
+      @reference.should be_valid
+    end
     it "should not be valid without a pages in" do
       @reference.pages_in = nil
       @reference.should_not be_valid

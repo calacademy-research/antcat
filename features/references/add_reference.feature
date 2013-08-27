@@ -135,7 +135,6 @@ Feature: Add reference
     And in the new edit form I press the "Save" button
     Then I should see a new edit form
     And I should see "Year can't be blank"
-    And I should see "Title can't be blank"
     And I should see "Pages in can't be blank"
     And I should see "Nested reference can't be blank"
 
