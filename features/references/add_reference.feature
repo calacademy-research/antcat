@@ -85,16 +85,16 @@ Feature: Add reference
     And I should not be editing
     And I should see "Ward, B.L.; Bolton, B. 1981. A reference title. Ant Journal 1:2"
 
-  #Scenario: Adding a nested reference
-    #When I follow "add" in the first reference
-    #And in the new edit form I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
-    #And in the new edit form I fill in "reference_title" with "A reference title"
-    #And in the new edit form I fill in "reference_citation_year" with "1981"
-    #And in the new edit form I follow "Nested"
-    #And in the new edit form I fill in "reference_pages_in" with "Pp. 32-33 in:"
-    #And in the new edit form I fill in "reference_nested_reference_id" with the existing reference's ID
-    #And in the new edit form I press the "Save" button
-    #Then I should see "Ward, B.L.; Bolton, B. 1981. A reference title. Pp. 32-33 in: Ward, P.S. 2010. Annals of Ants. Psyche 1:1."
+  Scenario: Adding a nested reference
+    When I follow "add" in the first reference
+    And in the new edit form I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
+    And in the new edit form I fill in "reference_title" with "A reference title"
+    And in the new edit form I fill in "reference_citation_year" with "1981"
+    And in the new edit form I follow "Nested"
+    And in the new edit form I fill in "reference_pages_in" with "Pp. 32-33 in:"
+    And in the new edit form I fill in "reference_nested_reference_id" with the ID for "Annals of Ants"
+    And in the new edit form I press the "Save" button
+    Then I should see "Ward, B.L.; Bolton, B. 1981. A reference title. Pp. 32-33 in: Ward, P.S. 2010. Annals of Ants. Psyche 1:1."
 
   Scenario: Adding an 'Other' reference
     When I follow "add" in the first reference

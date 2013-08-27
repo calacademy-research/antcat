@@ -147,6 +147,13 @@ When /in the new edit form I fill in "(.*?)" with "(.*?)"/ do |field, value|
   end
 end
 
+When /in the new edit form I fill in "reference_nested_reference_id" with the ID for "(.*?)"$/ do |title|
+  reference = Reference.find_by_title title
+  within first("#reference_") do
+    step "I fill in \"reference_nested_reference_id\" with \"#{reference.id}\""
+  end
+end
+
 Then /in the new edit form the "(.*?)" field (#{SHOULD_OR_SHOULD_NOT}) contain "(.*?)"/ do |field, should_or_should_not, value|
   within first("#reference_") do
     step %{the "#{field}" field #{should_or_should_not} contain "#{value}"}
