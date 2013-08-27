@@ -1,12 +1,15 @@
 .search_section
   = form_tag advanced_search_path, method: :get do
     .left
+
       Find
       = select_tag :rank, rank_options_for_select(params[:rank])
-      described in the year
-      = text_field_tag :year, params[:year]
+
       by
       = text_field_tag :author_name, params[:author_name]
+
+      described in the year
+      = text_field_tag :year, params[:year]
 
     .left.valid_only
       = label_tag 'Valid only?'
