@@ -5,10 +5,10 @@
       Find
       = select_tag :rank, rank_options_for_select(params[:rank])
 
-      by
+      described by
       = text_field_tag :author_name, params[:author_name]
 
-      described in the year
+      in the year
       = text_field_tag :year, params[:year]
 
     .left.valid_only
