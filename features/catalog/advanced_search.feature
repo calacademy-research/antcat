@@ -69,10 +69,10 @@ Feature: Searching the catalog
     And I press "Go" in the search section
     Then I should see "synonym of Betta minor"
 
-  Scenario: Manually entering a name instead of using picklist
+  Scenario: Manually entering an unknown name instead of using picklist
     Given there is a species described in 2010 by "Bolton, B."
     When I go to the catalog
     And I follow "Advanced Search"
     And I fill in "author_name" with "Bolton"
     And I press "Go" in the search section
-    Then I should see "No results found"
+    Then I should see "No results found for author 'Bolton'. If you're choosing an author, make sure you pick the name from the dropdown list."

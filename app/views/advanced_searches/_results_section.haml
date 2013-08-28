@@ -1,13 +1,9 @@
--#Locals: taxa, taxa_count
+-#Locals: taxa, taxa_count, search_results_message
 
 .results_section
 
-  - if taxa
-    - if taxa.size > 0
-      = "#{pluralize_with_delimiters(taxa_count, 'result')} found"
-      %hr
-    - else
-      No results found
+  = search_results_message
 
+  - if taxa
     - for taxon in taxa
       = render 'result', taxon: taxon
