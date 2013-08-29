@@ -38,6 +38,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'spork'
   gem 'sunspot_solr'
+  gem 'thin'
 end
 
 group :development do
