@@ -11,7 +11,7 @@
   .right_buttons
     %input{type: :hidden, name: 'task_button_command', id: 'task_button_command'}
     - if add_taxon_button_text
-      %input{type: 'button', class: 'ui-priority-primary', id: 'add_taxon', value: previewize(add_taxon_button_text)}
+      = button previewize(add_taxon_button_text), :add_taxon
     - if show_convert_to_subspecies_button
       %input{type: 'button', class: 'ui-priority-primary', id: 'convert_to_subspecies', value: previewize('Convert to subspecies')}
     - if show_elevate_to_species_button

@@ -10,6 +10,13 @@ describe Formatters::ButtonFormatter do
     @formatter = FormattersButtonFormatterTestClass.new
   end
 
+  describe "Making a button" do
+    it "should handle a button" do
+      string = @formatter.button 'Button'
+      string.should == "<input class=\"ui-button ui-corner-all ui-priority-primary\" id=\"button_button\" type=\"button\" value=\"Button\"></input>"
+    end
+  end
+
   describe "Making a submit button" do
     it "should return an html_safe string" do
       string = @formatter.submit_button 'Go', 'submit_button'
@@ -33,7 +40,7 @@ describe Formatters::ButtonFormatter do
   describe "Making a cancel button" do
     it "should handle a cancel button" do
       string = @formatter.cancel_button
-      string.should == "<input class=\"ui-button ui-corner-all ui-priority-secondary\" id=\"cancel_button\" type=\"button\" value=\"Cancel\"></input>"
+      string.should == "<input class=\"cancel ui-button ui-corner-all ui-priority-secondary\" id=\"cancel_button\" type=\"button\" value=\"Cancel\"></input>"
     end
   end
 end
