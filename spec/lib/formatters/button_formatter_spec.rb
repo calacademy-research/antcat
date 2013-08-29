@@ -29,4 +29,11 @@ describe Formatters::ButtonFormatter do
       string.should == "<input class=\"ui-button ui-corner-all ui-priority-primary\" id=\"cancel_button\" type=\"submit\" value=\"Cancel\"></input>" 
     end
   end
+
+  describe "Making a cancel button" do
+    it "should handle a cancel button" do
+      string = @formatter.cancel_button
+      string.should == "<input class=\"ui-button ui-corner-all ui-priority-secondary\" id=\"cancel_button\" type=\"button\" value=\"Cancel\"></input>"
+    end
+  end
 end

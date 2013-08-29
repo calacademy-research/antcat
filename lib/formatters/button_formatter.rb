@@ -11,6 +11,21 @@ module Formatters::ButtonFormatter
     content_tag 'input', '', parameters
   end
 
+  def cancel_button label = 'Cancel', id = nil, parameters = {}
+    parameters = parameters.dup
+
+    classes = (parameters[:class] || '').split ' '
+    jquery_classes = %w{ui-button ui-corner-all ui-priority-secondary}
+    classes.concat jquery_classes
+    classes << 'cancel'
+    parameters[:class] = classes.sort.join ' '
+
+    parameters[:id] = id || (label + '_button').downcase
+    parameters[:type] = 'button'
+    parameters[:value] = label
+    content_tag 'input', '', parameters
+  end
+
   def set_jquery_css_classes parameters
     classes = (parameters[:class] || '').split ' '
     jquery_classes = %w{ui-button ui-corner-all}
