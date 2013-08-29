@@ -2,10 +2,10 @@
 module Formatters::ButtonFormatter
   include ActionView::Helpers::TagHelper
 
-  def submit_button label, id, parameters = {}
+  def submit_button label, id = nil, parameters = {}
     parameters = parameters.dup
     parameters[:class] = set_jquery_css_classes parameters
-    parameters[:id] = id
+    parameters[:id] = id || (label + '_button').downcase
     parameters[:type] = 'submit'
     parameters[:value] = label
     content_tag 'input', '', parameters

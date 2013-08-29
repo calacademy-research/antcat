@@ -1,8 +1,8 @@
 $ ->
-  $('#submit_button')
+  $('#go_button')
     .unbutton()
     .button()
-    .click -> $('#submit_button').hide(); $('#throbber').show()
+    .click -> $('#go_button').hide(); $('#throbber').show()
   setup_author_autocomplete()
 
 setup_author_autocomplete = ->
