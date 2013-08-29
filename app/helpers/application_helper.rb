@@ -3,6 +3,7 @@ require 'milieu'
 module ApplicationHelper
   include Formatters::Formatter
   include Formatters::LinkFormatter
+  include Formatters::ButtonFormatter
 
   ### authorization methods
   def user_can_edit_references?
