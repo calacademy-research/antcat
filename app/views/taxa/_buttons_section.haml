@@ -10,11 +10,7 @@
     = image_tag 'ui-anim_basic_16x16.gif', class: 'throbber'
   .right_buttons
     %input{type: :hidden, name: 'task_button_command', id: 'task_button_command'}
-    - if add_taxon_button_text
-      = button previewize(add_taxon_button_text), :add_taxon
-    - if show_convert_to_subspecies_button
-      %input{type: 'button', class: 'ui-priority-primary', id: 'convert_to_subspecies', value: previewize('Convert to subspecies')}
-    - if show_elevate_to_species_button
-      %input{type: 'button', class: 'ui-priority-primary', id: 'elevate_to_species', value: previewize('Elevate to species')}
-    - if show_delete_taxon_button
-      %input{type: 'button', class: 'ui-priority-primary', id: 'delete_taxon', value: previewize('Delete')}
+    = button previewize(add_taxon_button_text), :add_taxon if add_taxon_button_text
+    = button previewize(show_convert_to_subspecies_button), :convert_to_subspecies if show_convert_to_subspecies_button
+    = button previewize(show_elevate_to_species_button), :elevate_to_species if show_elevate_to_species_button
+    = button previewize(show_delete_taxon_button), :delete_taxon if show_delete_taxon_button
