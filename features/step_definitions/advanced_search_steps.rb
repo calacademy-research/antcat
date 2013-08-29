@@ -24,11 +24,6 @@ Given /^there is an original combination of "([^"]+)" described by "([^"]+)" whi
   betta_major.protonym.authorship.update_attributes! reference: reference
 end
 
-
-Given /^AntCat shows (\d+) species per page$/ do |count|
-  WillPaginate.per_page = count
-end
-
 Given /^there were (\d+) species described in (\d+)$/ do |count, year|
   Species.delete_all
   reference = FactoryGirl.create :article_reference, citation_year: year
