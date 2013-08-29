@@ -3,7 +3,8 @@
 .results_section
 
   = search_results_message
-
   - if taxa
-    - for taxon in taxa
-      = render 'result', taxon: taxon
+    - if taxa && taxa.count > 0
+      %hr
+      - for taxon in taxa
+        = render 'result', taxon: taxon
