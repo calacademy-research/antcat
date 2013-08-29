@@ -22,7 +22,7 @@ class AdvancedSearchesController < ApplicationController
   end
 
   def no_matching_authors? name
-    AuthorName.find_by_name(params[:author_name]).nil?
+    AuthorName.find_by_name(name).nil?
   end
 
 end
