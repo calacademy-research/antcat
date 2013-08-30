@@ -26,4 +26,4 @@ class AntCat.ChangeButton
     true
 
 $ ->
-  $('.approve_button button').each -> new AntCat.ChangeButton($(this))
+  $('.approve_button input[type=button]').each -> new AntCat.ChangeButton($(this))
