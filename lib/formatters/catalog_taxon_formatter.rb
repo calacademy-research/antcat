@@ -1,5 +1,6 @@
 # coding: UTF-8
 class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
+  include Formatters::ButtonFormatter
   include Formatters::LinkFormatter
 
   def include_invalid; true end
@@ -11,13 +12,13 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
 
   def link_to_edit_taxon
     if @taxon.can_be_edited_by? @user
-      content_tag :button, 'Edit', type: 'button', id: 'edit_button', 'data-edit-location' => "/taxa/#{@taxon.id}/edit"
+      button 'Edit', 'edit_button', 'data-edit-location' => "/taxa/#{@taxon.id}/edit"
     end
   end
 
   def link_to_review_change
     if @taxon.can_be_reviewed_by? @user
-      content_tag :button, 'Review change', type: 'button', id: 'review_button', 'data-review-location' => "/changes/#{@taxon.last_change.id}"
+      button_without_id 'Review change', 'review_button', 'data-review-location' => "/changes/#{@taxon.last_change.id}"
     end
   end
 
