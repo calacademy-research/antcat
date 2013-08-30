@@ -18,7 +18,7 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
 
   def link_to_review_change
     if @taxon.can_be_reviewed_by? @user
-      button_without_id 'Review change', 'review_button', 'data-review-location' => "/changes/#{@taxon.last_change.id}"
+      button 'Review change', 'review_button', 'data-review-location' => "/changes/#{@taxon.last_change.id}"
     end
   end
 
