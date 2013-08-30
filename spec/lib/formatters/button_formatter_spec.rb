@@ -43,4 +43,13 @@ describe Formatters::ButtonFormatter do
       string.should == "<input class=\"cancel ui-button ui-corner-all ui-priority-secondary\" id=\"cancel_button\" type=\"button\" value=\"Cancel\"></input>"
     end
   end
+
+  describe "Making a button without an id" do
+    it "should handle making a button without an id" do
+      string = @formatter.button_without_id 'Label', 'klass'
+      string.should == "<input class=\"ui-button ui-corner-all ui-priority-primary\" type=\"button\" value=\"Label\"></input>"
+      string.should be_html_safe
+    end
+  end
+
 end
