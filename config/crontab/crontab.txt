@@ -8,4 +8,4 @@
 # (/tmp/crontab.XXXX2bwTqE installed on Sun Jul 14 12:21:57 2013)
 # (Cron version V5.0 -- $Id: crontab.c,v 1.12 2004/01/23 18:56:42 vixie Exp $)
 MAILTO=mark@mwilden.com
-0 7 * * * cd /data/antcat/current && echo y | RAILS_ENV=production bundle exec rake sunspot:reindex > dev/null
+0 7 * * * cd /data/antcat/current && echo y | RAILS_ENV=production bundle exec rake sunspot:reindex > /dev/null
