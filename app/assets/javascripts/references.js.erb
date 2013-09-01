@@ -1,6 +1,7 @@
 $(function() {
   setupSearch();
   setupDisplays();
+  setupButtons();
   if (AntCat.user_can_edit_references) {
     setupEdits();
   }
@@ -32,6 +33,11 @@ function setupSearch() {
       removeAdvancedSearchAuthorAutocomplete();
     setupSearchBox(new_type);
   })
+}
+
+function setupButtons() {
+  $('.review_buttons input[type=submit]').button()
+  $('.default_reference_status input[type=submit]').button()
 }
 
 function setupSearchBox(selector_text) {
