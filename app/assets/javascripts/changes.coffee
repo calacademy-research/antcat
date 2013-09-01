@@ -17,13 +17,5 @@ class AntCat.ChangeButton
       success:  (data) => window.location = '/changes'
       error:    (xhr) => debugger
 
-  confirm: (question) =>
-    #$row = $(button).closest '.synonym_row'
-    #$row.addClass 'confirming'
-    #result = confirm question
-    #$row.removeClass 'confirming'
-    #result
-    true
-
 $ ->
   $('.approve_button input[type=button]').each -> new AntCat.ChangeButton($(this))
