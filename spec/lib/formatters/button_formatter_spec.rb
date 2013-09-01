@@ -15,7 +15,7 @@ describe Formatters::ButtonFormatter do
   end
 
   describe "Making a button" do
-    it "should handle a button" do
+    it "should handle a button with an id" do
       string = @formatter.button 'Button'
       string.should == "<input class=\"ui-button ui-corner-all ui-priority-primary\" id=\"button_button\" type=\"button\" value=\"Button\"></input>"
     end
@@ -28,16 +28,16 @@ describe Formatters::ButtonFormatter do
     end
     it "should handle a primary priority button" do
       string = @formatter.submit_button 'Go', 'submit_button'
-      string.should == "<input class=\"ui-button ui-corner-all ui-priority-primary\" id=\"submit_button\" type=\"submit\" value=\"Go\"></input>"
+      string.should == "<input class=\"submit ui-button ui-corner-all ui-priority-primary\" id=\"submit_button\" type=\"submit\" value=\"Go\"></input>"
     end
     it "should handle a secondary priority button" do
       string = @formatter.submit_button 'Cancel', 'cancel_button', secondary: true
-      string.should == "<input class=\"ui-button ui-corner-all ui-priority-secondary\" id=\"cancel_button\" type=\"submit\" value=\"Cancel\"></input>"
+      string.should == "<input class=\"submit ui-button ui-corner-all ui-priority-secondary\" id=\"cancel_button\" type=\"submit\" value=\"Cancel\"></input>"
       string.should be_html_safe
     end
     it "should default the ID" do
       string = @formatter.submit_button 'Cancel'
-      string.should == "<input class=\"ui-button ui-corner-all ui-priority-primary\" id=\"cancel_button\" type=\"submit\" value=\"Cancel\"></input>"
+      string.should == "<input class=\"submit ui-button ui-corner-all ui-priority-primary\" id=\"cancel_button\" type=\"submit\" value=\"Cancel\"></input>"
     end
   end
 
@@ -51,7 +51,7 @@ describe Formatters::ButtonFormatter do
   describe "Making a button to a path" do
     it "should handle making a button to a path" do
       string = @formatter.button_to_path 'Label', 'path'
-      string.should == "<form action=\"path\" class=\"button_to\" method=\"post\"><div><input class=\"ui-button ui-corner-all ui-priority-secondary\" type=\"submit\" value=\"Label\" /></div></form>"
+      string.should == "<form action=\"path\" class=\"button_to\" method=\"post\"><div><input class=\"ui-button ui-corner-all ui-priority-primary\" type=\"submit\" value=\"Label\" /></div></form>"
       string.should be_html_safe
     end
   end
