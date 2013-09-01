@@ -7,7 +7,7 @@ class AntCat.ChangeButton
       .click (target) => self.approve()
 
   approve: =>
-    return unless @confirm 'Are you sure you want to approve this change?'
+    return unless confirm 'Are you sure you want to approve this change?'
     change_id = @element.data('change-id')
     url = "/changes/#{change_id}/approve"
     $.ajax
