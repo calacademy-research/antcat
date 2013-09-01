@@ -48,14 +48,6 @@ describe Formatters::ButtonFormatter do
     end
   end
 
-  describe "Making a button without an id" do
-    it "should handle making a button without an id" do
-      string = @formatter.button_without_id 'Label', 'klass'
-      string.should == "<input class=\"ui-button ui-corner-all ui-priority-primary\" type=\"button\" value=\"Label\"></input>"
-      string.should be_html_safe
-    end
-  end
-
   describe "Making a button to a path" do
     it "should handle making a button to a path" do
       string = @formatter.button_to_path 'Label', 'path'

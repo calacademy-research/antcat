@@ -16,18 +16,6 @@ module Formatters::ButtonFormatter
     content_tag 'input', '', parameters
   end
 
-  def button_without_id label, klass = {}, parameters = {}
-    parameters = parameters.dup
-    classes = (parameters[:class] || '').split ' '
-    jquery_classes = %w{ui-button ui-corner-all ui-priority-primary}
-    classes.concat jquery_classes
-    parameters[:class] = classes.sort.join ' '
-
-    parameters[:type] = 'button'
-    parameters[:value] = label
-    content_tag 'input', '', parameters
-  end
-
   def submit_button label, id = nil, parameters = {}
     parameters = parameters.dup
     parameters[:class] = set_jquery_css_classes parameters
