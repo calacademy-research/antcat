@@ -76,7 +76,6 @@ describe ComparableReference do
       (@lhs <=> @rhs).should == 0.50
     end
 
-
     describe "year is within 1" do
       before do
         @lhs.year = '1979'

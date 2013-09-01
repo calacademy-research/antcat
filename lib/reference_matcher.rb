@@ -32,4 +32,3 @@ class ReferenceMatcher
   end
 
 end
-
