@@ -1,6 +1,7 @@
 # coding: UTF-8
 module Formatters::ButtonFormatter
   include ActionView::Helpers::TagHelper
+  include ActionView::Helpers::UrlHelper
 
   def button label, id = nil, parameters = {}
     parameters = parameters.dup
@@ -51,6 +52,14 @@ module Formatters::ButtonFormatter
     content_tag 'input', '', parameters
   end
 
+  def button_to_path label, path, parameters = {}
+    string = button_to label, path, parameters
+    jquery_classes = %{ui-button ui-corner-all ui-priority-secondary}
+    string.gsub! /<input /, "<input class=\"#{jquery_classes}\" "
+    string.html_safe
+  end
+
+  ###
   def set_jquery_css_classes parameters
     classes = (parameters[:class] || '').split ' '
     jquery_classes = %w{ui-button ui-corner-all}

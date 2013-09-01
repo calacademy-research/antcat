@@ -3,6 +3,10 @@ require 'spec_helper'
 
 class FormattersButtonFormatterTestClass
   include Formatters::ButtonFormatter
+
+  def protect_against_forgery?
+    false
+  end
 end
 
 describe Formatters::ButtonFormatter do
@@ -28,12 +32,12 @@ describe Formatters::ButtonFormatter do
     end
     it "should handle a secondary priority button" do
       string = @formatter.submit_button 'Cancel', 'cancel_button', secondary: true
-      string.should == "<input class=\"ui-button ui-corner-all ui-priority-secondary\" id=\"cancel_button\" type=\"submit\" value=\"Cancel\"></input>" 
+      string.should == "<input class=\"ui-button ui-corner-all ui-priority-secondary\" id=\"cancel_button\" type=\"submit\" value=\"Cancel\"></input>"
       string.should be_html_safe
     end
     it "should default the ID" do
       string = @formatter.submit_button 'Cancel'
-      string.should == "<input class=\"ui-button ui-corner-all ui-priority-primary\" id=\"cancel_button\" type=\"submit\" value=\"Cancel\"></input>" 
+      string.should == "<input class=\"ui-button ui-corner-all ui-priority-primary\" id=\"cancel_button\" type=\"submit\" value=\"Cancel\"></input>"
     end
   end
 
@@ -48,6 +52,14 @@ describe Formatters::ButtonFormatter do
     it "should handle making a button without an id" do
       string = @formatter.button_without_id 'Label', 'klass'
       string.should == "<input class=\"ui-button ui-corner-all ui-priority-primary\" type=\"button\" value=\"Label\"></input>"
+      string.should be_html_safe
+    end
+  end
+
+  describe "Making a button to a path" do
+    it "should handle making a button to a path" do
+      string = @formatter.button_to_path 'Label', 'path'
+      string.should == "<form action=\"path\" class=\"button_to\" method=\"post\"><div><input class=\"ui-button ui-corner-all ui-priority-secondary\" type=\"submit\" value=\"Label\" /></div></form>"
       string.should be_html_safe
     end
   end

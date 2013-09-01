@@ -10,15 +10,15 @@
 
   %td.review_buttons
     - if reference.can_finish_reviewing?
-      = button_to 'Finish reviewing', finish_reviewing_reference_path(reference.id), confirm: 'Have you finished reviewing this reference?'
+      = button_to_path 'Finish reviewing', finish_reviewing_reference_path(reference.id), class: 'finish_reviewing', confirm: 'Have you finished reviewing this reference?'
     - elsif reference.can_start_reviewing?
-      = button_to 'Start reviewing', start_reviewing_reference_path(reference.id), confirm: 'Are you ready to start reviewing this reference?'
+      = button_to_path 'Start reviewing', start_reviewing_reference_path(reference.id), class: 'start_reviewing', confirm: 'Are you ready to start reviewing this reference?'
     - elsif reference.can_restart_reviewing?
-      = button_to 'Restart reviewing', restart_reviewing_reference_path(reference.id), confirm: 'Do you want to start reviewing this reference again?'
+      = button_to_path 'Restart reviewing', restart_reviewing_reference_path(reference.id), class: 'restart_reviewing', confirm: 'Do you want to start reviewing this reference again?'
 
   %td.default_reference_status
     - if reference == DefaultReference.get(session)
       Default
     - else
-      = button_to 'Make default', default_reference_path(id: reference.id), method: :put
+      = button_to_path 'Make default', default_reference_path(id: reference.id), method: :put
 
