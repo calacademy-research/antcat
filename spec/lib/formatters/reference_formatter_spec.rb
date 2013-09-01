@@ -195,6 +195,11 @@ describe Formatters::ReferenceFormatter do
         reference = FactoryGirl.create :unknown_reference, :citation_year => '2010d', :author_names => [], :citation => '*Ants*', :title => '*Tapinoma*'
         @formatter.format(reference).should == "2010d. <i>Tapinoma</i>. <i>Ants</i>."
       end
+      it "should italicize the title even with two italicized words" do
+        reference = FactoryGirl.create :unknown_reference, :citation_year => '2010d',
+          :author_names => [], :citation => 'Ants', :title => '*Atta* *septentrionalis*.'
+        @formatter.format(reference).should == "2010d. <i>Atta</i> <i>septentrionalis</i>. Ants."
+      end
       it "should allow existing italics in title and citation" do
         reference = FactoryGirl.create :unknown_reference, :citation_year => '2010d', :author_names => [], :citation => '*Ants*', :title => '<i>Tapinoma</i>'
         @formatter.format(reference).should == "2010d. <i>Tapinoma</i>. <i>Ants</i>."
