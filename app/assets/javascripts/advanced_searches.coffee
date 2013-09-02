@@ -3,16 +3,17 @@ $ ->
   setup_author_autocomplete()
 
 setup_buttons = ->
-  $('#go_button')
-    .unbutton()
-    .button()
-    .click -> $('#go_button').hide(); $('#throbber').show()
-  $('#download_button')
-    .unbutton()
+  $('.search_section #go_button')
     .button()
     .click ->
-      $('#download_button').hide(); $('#throbber').show()
-      window.location = $('#download_button').data('location')
+      $('.search_section .go_button').hide()
+      $('.search_section .throbber').show()
+
+  $('.results_section #download_button')
+    .button()
+    .click ->
+      $('.results_section .download_button').hide()
+      window.location = $('.results_section #download_button').data('location')
 
 setup_author_autocomplete = ->
   return if AntCat.testing
