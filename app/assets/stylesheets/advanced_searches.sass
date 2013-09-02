@@ -14,6 +14,8 @@
     margin-left: 6px
     margin-right: 6px
     width: 90px
+  #author_name
+    width: 180px
   input[type=checkbox]
     vertical-align: middle
   label
@@ -21,11 +23,20 @@
     font-style: normal
     vertical-align: middle
     margin-left: 16px
-  .throbber
-    display: none
-    vertical-align: middle
+  .valid_only
+    label
+      margin-left: 6px
+      margin-right: 0
 
 .results_section
+  .results_header
+    margin-bottom: 6px
+    vertical-align: middle
+    .results_message
+      display: inline
+    .results_button
+      margin-left: 6px
+      display: inline
   .result
     margin-top: 6px !important
     margin-bottom: 6px !important
@@ -36,12 +47,9 @@
     .references
       .reference
 
-.go_and_throbber
-  width: 44px
+.buttons
+  margin-left: 6px
 
-.valid_only
-  label
-    margin-left: 6px
-    margin-right: 0
-  input[type=checkbox]
-    margin-right: 14px
+.throbber
+  display: none
+  vertical-align: middle

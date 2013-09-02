@@ -1,13 +1,14 @@
 .search_section
   = form_tag advanced_search_path, method: :get do
     .left
-
       Find
       = select_tag :rank, rank_options_for_select(params[:rank])
 
+    .left
       described by
       = text_field_tag :author_name, params[:author_name]
 
+    .left
       in the year
       = text_field_tag :year, params[:year]
 
@@ -15,8 +16,8 @@
       = label_tag 'Valid only?'
       = check_box_tag :valid_only
 
-    .go_and_throbber.left
-      = submit_button 'Go'
-      = image_tag 'ui-anim_basic_16x16.gif', id: 'throbber', class: 'throbber'
+    .left.buttons
+      .go_button= submit_button 'Go'
+      .throbber= image_tag 'ui-anim_basic_16x16.gif', id: 'throbber', class: 'throbber'
 
     .clear
