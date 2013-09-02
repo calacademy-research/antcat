@@ -7,7 +7,6 @@ class AdvancedSearchesController < ApplicationController
       @taxa = Taxon.advanced_search author_name: params[:author_name], rank: params[:rank], year: params[:year], valid_only: params[:valid_only]
       @taxa_count = @taxa.count
       set_search_results_message
-      @download_location = "/advanced_search.csv?" + make_search_params
     end
     respond_to do |format|
       format.json {render json: AuthorName.search(params[:term]).to_json}
