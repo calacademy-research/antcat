@@ -59,4 +59,10 @@ describe ApplicationHelper do
     end
   end
 
+  describe "Converting a hash to a parameter string" do
+    it "should work" do
+      helper.hash_to_params_string(a: 'b').should == 'a="b"'
+    end
+  end
+
 end
