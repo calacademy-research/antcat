@@ -12,14 +12,14 @@ class Taxon < ActiveRecord::Base
 
     elsif params[:author_name].present?
       author_name = AuthorName.find_by_name params[:author_name]
-      return [] unless author_name.present?
+      return where('1 = 0') unless author_name.present?
       query = query.where 'reference_author_names.author_name_id' => author_name.author.names
       query = query.joins 'JOIN reference_author_names ON reference_author_names.reference_id = `references`.id'
       query = query.joins 'JOIN author_names ON author_names.id = reference_author_names.author_name_id'
       query = query.where 'references.year' => params[:year] if params[:year].present?
 
     else
-      query = []
+      query = where('1 = 0')
 
     end
     query
