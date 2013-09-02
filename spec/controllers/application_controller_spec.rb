@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe ApplicationController do
+
   describe "Authentication and authorization" do
     before do
       @current_user = double
@@ -14,4 +15,5 @@ describe ApplicationController do
       end
     end
   end
+
 end
