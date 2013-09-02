@@ -10,7 +10,7 @@ class AdvancedSearchesController < ApplicationController
     end
     respond_to do |format|
       format.json {render json: AuthorName.search(params[:term]).to_json}
-      format.html
+      format.html {@taxa = @taxa.paginate page: params[:page] if @taxa}
       format.csv  {export_csv}
     end
   end

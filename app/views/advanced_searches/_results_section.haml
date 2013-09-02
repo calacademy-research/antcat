@@ -5,6 +5,8 @@
   .results_header
     .left.results_message
       = search_results_message
+    .left
+      = will_paginate taxa
     .left.buttons
       .download_button
         = button 'Download', nil, 'data-location' => "/advanced_search.csv?#{hash_to_params_string(request.parameters)}"
@@ -15,3 +17,6 @@
       %hr
       - for taxon in taxa
         = render 'result', taxon: taxon
+      %hr
+      .left
+        = will_paginate taxa
