@@ -76,3 +76,10 @@ Feature: Searching the catalog
     And I fill in "author_name" with "Bolton"
     And I press "Go" in the search section
     Then I should see "No results found for author 'Bolton'. If you're choosing an author, make sure you pick the name from the dropdown list."
+
+  #@javascript
+  Scenario: Downloading the results
+    Given I go to the advanced search page
+    And I search for and find a result
+    And I press "Download"
+    #Then I should be on the advanced search download page

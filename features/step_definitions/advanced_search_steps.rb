@@ -46,3 +46,9 @@ end
 And /^I select "([^"]+)" from the rank selector$/ do |value|
   step %{I select "#{value}" from "rank"}
 end
+
+Given /^I search for and find a result$/ do
+  step %{there is a species described in 2010 by "Bolton, B."}
+  step %{I fill in "author_name" with "Bolton, B."}
+  step %{I press "Go" in the search section}
+end
