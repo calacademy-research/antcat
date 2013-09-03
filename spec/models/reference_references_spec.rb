@@ -11,11 +11,6 @@ describe Reference do
 
     describe "References in reference fields" do
       it "should have a reference if it's a protonym's authorship's reference" do
-        genus = create_genus
-        species = create_species genus: genus
-        genus.references.should =~ [
-          {table: 'taxa', field: :genus_id, id: species.id},
-        ]
         reference = FactoryGirl.create :article_reference
         eciton = create_genus 'Eciton'
         eciton.protonym.authorship.update_attributes! reference_id: reference.id
