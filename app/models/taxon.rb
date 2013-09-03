@@ -7,7 +7,7 @@ class Taxon < ActiveRecord::Base
   has_paper_trail
 
   include CleanNewlines
-  before_save {|record| clean_newlines(record, :headline_notes_taxt, :type_taxt)}
+  before_save {|record| clean_newlines record, :headline_notes_taxt, :type_taxt}
 
   ###############################################
   # nested attributes
