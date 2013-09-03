@@ -11,9 +11,7 @@ setup_buttons = ->
 
   $('.results_section #download_button')
     .button()
-    .click ->
-      $('.results_section .download_button').hide()
-      window.location = $('.results_section #download_button').data('location')
+    .click -> window.location = $('.results_section #download_button').data('location')
 
 setup_author_autocomplete = ->
   return if AntCat.testing
