@@ -18,15 +18,18 @@ class Reference < ActiveRecord::Base
     refresh_author_names_caches
   end
 
-  def replace_with reference
+  def replace_with reference, options = {}
+    Progress.init options[:show_progress]
     Taxt.taxt_fields.each do |klass, fields|
       for record in klass.send :all
         for field in fields
           next unless record[field]
           record[field] = record[field].gsub /{ref #{id}}/, "{ref #{reference.id}}"
         end
+        Progress.tally_and_show_progress
         record.save!
       end
+      Progress.tally_and_show_results
     end
 
     for klass in [Citation, Bolton::Match]
