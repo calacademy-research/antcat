@@ -16,10 +16,15 @@ class AdvancedSearchesController < ApplicationController
   end
 
   def export_csv
-    filename = "taxa.csv"
-    content = "taxon\tauthorship\n"
-    content << "Atta\tFisher, 2001\n"
-    send_data content, filename: filename
+    send_data make_csv, filename: 'taxa.csv'
+  end
+
+  def make_csv
+    content = Formatters::AdvancedSearchCSVFormatter.header
+    for taxon in Taxon.limit(15).order(:name_cache).all
+      content << Formatters::AdvancedSearchCSVFormatter.format(taxon)
+    end
+    content
   end
 
   def set_search_results_message
