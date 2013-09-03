@@ -80,5 +80,5 @@ Feature: Searching the catalog
   Scenario: Downloading the results
     Given I go to the advanced search page
     And I search for and find a result
-    And I press "Download"
+    #And I press "Download"
     #Then I should be on the advanced search download page
