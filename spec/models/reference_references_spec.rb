@@ -15,7 +15,7 @@ describe Reference do
         eciton = create_genus 'Eciton'
         eciton.protonym.authorship.update_attributes! reference_id: reference.id
         reference.references.should =~ [
-          {table: 'citations', field: :reference_id, id: eciton.id},
+          {table: 'citations', field: :reference_id, id: eciton.protonym.authorship.id},
         ]
       end
     end
