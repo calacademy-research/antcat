@@ -3,7 +3,6 @@ class ReferenceSection < ActiveRecord::Base
   belongs_to :taxon
   acts_as_list scope: :taxon
   has_paper_trail
-  validates_presence_of :references_taxt
 
   include CleanNewlines
   before_save {|record| clean_newlines record, :subtitle_taxt, :references_taxt}
