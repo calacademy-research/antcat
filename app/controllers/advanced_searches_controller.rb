@@ -21,7 +21,7 @@ class AdvancedSearchesController < ApplicationController
 
   def make_csv
     content = Formatters::AdvancedSearchCSVFormatter.header
-    for taxon in Taxon.limit(15).order(:name_cache).all
+    for taxon in Taxon.order(:name_cache).all
       content << Formatters::AdvancedSearchCSVFormatter.format(taxon)
     end
     content
