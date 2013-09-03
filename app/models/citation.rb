@@ -5,6 +5,9 @@ class Citation < ActiveRecord::Base
   validates :reference, presence: true
   has_paper_trail
 
+  include CleanNewlines
+  before_save {|record| clean_newlines record, :notes_taxt}
+
   def title
     # for PaperTrailManager's RSS output
     id.to_s

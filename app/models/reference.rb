@@ -8,6 +8,8 @@ class Reference < ActiveRecord::Base
   attr_accessor :publisher_string
   attr_accessor :journal_name
   has_paper_trail
+  include CleanNewlines
+  before_save {|record| clean_newlines(record, :editor_notes, :public_notes, :taxonomic_notes, :title, :citation
 
   # associations
   has_many    :reference_author_names, :order => :position

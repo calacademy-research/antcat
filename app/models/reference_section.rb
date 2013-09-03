@@ -4,6 +4,8 @@ class ReferenceSection < ActiveRecord::Base
   acts_as_list scope: :taxon
   has_paper_trail
   validates_presence_of :references_taxt
+  include CleanNewlines
+  before_save {|record| clean_newlines(record, :subtitle_taxt, :references_taxt)}
 
   def self.dedupe
     all.each do |reference_section|
