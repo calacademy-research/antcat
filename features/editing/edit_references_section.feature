@@ -27,13 +27,6 @@ Feature: Editing references sections
     And I cancel the reference section's changes
     Then the reference section should be "Original reference"
 
-  Scenario: Editing a reference section so it's blank
-    When I go to the edit page for "Dolichoderinae"
-    And I click the reference section
-    And I fill in the references field with ""
-    And I save the reference section
-    Then I should see "References taxt can't be blank"
-
   Scenario: Adding a reference section
     When I go to the edit page for "Atta"
     Then the reference section should be empty
@@ -43,13 +36,6 @@ Feature: Editing references sections
     And I save the reference section
     And I wait for a bit
     Then the reference section should be "New reference"
-
-  Scenario: Adding a reference section with blank taxt
-    When I go to the edit page for "Atta"
-    Then the reference section should be empty
-    When I click the "Add" reference section button
-    And I save the reference section
-    Then I should see "References taxt can't be blank"
 
   Scenario: Adding a reference section, but cancelling
     When I go to the edit page for "Atta"
