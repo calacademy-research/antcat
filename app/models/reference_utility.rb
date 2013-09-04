@@ -19,7 +19,7 @@ class Reference < ActiveRecord::Base
   end
 
   def replace_with reference, options = {}
-    Progress.new_init show_progress: true, total_count: 27559
+    Progress.new_init show_progress: options[:show_progress], total_count: 27559
     Taxt.taxt_fields.each do |klass, fields|
       for record in klass.send :all
         for field in fields
