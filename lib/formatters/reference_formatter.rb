@@ -73,7 +73,7 @@ class Formatters::ReferenceFormatter
   end
 
   def format_year
-    self.class.make_html_safe @reference.citation_year
+    self.class.make_html_safe @reference.citation_year if @reference.citation_year.present?
   end
 
   def format_title
