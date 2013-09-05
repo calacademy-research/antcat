@@ -17,7 +17,7 @@ class AdvancedSearchesController < ApplicationController
   end
 
   def send_text
-    data = Exporters::AdvancedSearchExporter.new.export current_user
+    data = Exporters::AdvancedSearchExporter.new.export
     send_data data, filename: 'taxa.txt', type: 'text/plain'
   end
 

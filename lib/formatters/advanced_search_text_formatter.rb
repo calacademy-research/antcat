@@ -2,8 +2,15 @@
 module Formatters::AdvancedSearchTextFormatter
   include Formatters::AdvancedSearchFormatter
 
-  def format taxon, user
-    format_name(taxon) + ' ' + format_status(taxon) + ' ' + format_protonym(taxon, user)
+  def format taxon
+    string = format_name taxon
+    status = format_status taxon
+    protonym = format_protonym taxon, nil
+    string << ' ' + status if status.present?
+    string << "\n"
+    string << protonym if protonym.present?
+    string << "\n"
+    string
   end
 
   def format_name taxon

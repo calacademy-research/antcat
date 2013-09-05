@@ -2,10 +2,10 @@
 class Exporters::AdvancedSearchExporter
   include Formatters::AdvancedSearchTextFormatter
 
-  def export user
+  def export
     content = ''
     for taxon in Taxon.order(:name_cache).all
-      content << format(taxon, user)
+      content << format(taxon)
     end
     content
   end
