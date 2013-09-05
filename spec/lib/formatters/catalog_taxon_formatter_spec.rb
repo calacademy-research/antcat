@@ -202,7 +202,7 @@ describe Formatters::CatalogTaxonFormatter do
     end
     it "should show the adder and the approver for an approved taxon" do
       adder = FactoryGirl.create :user, can_edit_catalog: true
-      approver = FactoryGirl.create :user, can_approve_changes: true
+      approver = FactoryGirl.create :user, can_edit_catalog: true
       taxon = create_taxon_version_and_change :waiting, adder
       change = Change.find taxon.last_change
       change.update_attributes! approver: approver, approved_at: Time.now

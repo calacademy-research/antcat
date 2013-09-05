@@ -50,7 +50,7 @@ describe Taxon do
     describe "A waiting record" do
       before do
         @changer = FactoryGirl.create :user, can_edit_catalog: true
-        @approver = FactoryGirl.create :user, can_approve_changes: true
+        @approver = FactoryGirl.create :user, can_edit_catalog: true
         @taxon = create_taxon_version_and_change :waiting, @changer
       end
       it "should only allow the user who made the change to edit a waiting record" do
@@ -73,7 +73,7 @@ describe Taxon do
 
     describe "An approved record" do
       before do
-        @approver = FactoryGirl.create :user, can_edit_catalog: true, can_approve_changes: true
+        @approver = FactoryGirl.create :user, can_edit_catalog: true
         @taxon = create_taxon_version_and_change :approved, @editor, @approver
       end
       it "should have an approver and an approved_at" do

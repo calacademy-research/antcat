@@ -17,8 +17,8 @@ describe User do
   end
 
   it "knows whether it can approve changes" do
-    User.new.can_approve_changes.should be_false
-    User.new(can_approve_changes: true).can_approve_changes.should be_true
+    User.new.can_approve_changes?.should be_false
+    User.new(can_edit_catalog: true).can_approve_changes?.should be_true
   end
 
 end
