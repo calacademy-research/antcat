@@ -1,6 +1,7 @@
 # coding: UTF-8
 class AdvancedSearchesController < ApplicationController
   include Formatters::Formatter
+  include Formatters::AdvancedSearchTextFormatter
 
   def show
     if params[:rank].present?
@@ -11,20 +12,13 @@ class AdvancedSearchesController < ApplicationController
     respond_to do |format|
       format.json {render json: AuthorName.search(params[:term]).to_json}
       format.html {@taxa = @taxa.paginate page: params[:page] if @taxa}
-      format.csv  {export_csv}
+      format.txt  {send_text}
     end
   end
 
-  def export_csv
-    send_data make_csv, filename: 'taxa.csv'
-  end
-
-  def make_csv
-    content = Formatters::AdvancedSearchCSVFormatter.header
-    for taxon in Taxon.order(:name_cache).all
-      content << Formatters::AdvancedSearchCSVFormatter.format(taxon)
-    end
-    content
+  def send_text
+    data = Exporters::AdvancedSearchExporter.new.export current_user
+    send_data data, filename: 'taxa.txt', type: 'text/plain'
   end
 
   def set_search_results_message
