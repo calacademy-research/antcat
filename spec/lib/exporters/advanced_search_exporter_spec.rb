@@ -1,5 +1,5 @@
 # coding: UTF-8
-require 'exporters/advanced_search_exporter'
+require 'spec_helper'
 
 describe Exporters::AdvancedSearchExporter do
   it "should format a taxon" do
