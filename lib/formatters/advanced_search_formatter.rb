@@ -32,9 +32,17 @@ module Formatters::AdvancedSearchFormatter
     reference = taxon.protonym.authorship.reference
     string = ''.html_safe
     string << Formatters::ReferenceFormatter.format(reference)
-    string << reference.key.document_link(user)
-    string << reference.key.goto_reference_link
+    string << document_link(reference.key, user)
+    string << goto_reference_link(reference.key)
     string
+  end
+
+  def document_link reference_key, user
+    reference_key.document_link user
+  end
+
+  def goto_reference_link reference_key
+    reference_key.goto_reference_link
   end
 
   def senior_synonym_list taxon

@@ -17,4 +17,10 @@ module Formatters::AdvancedSearchTextFormatter
     taxon.name_cache
   end
 
+  def document_link _, __
+  end
+
+  def goto_reference_link _
+  end
+
 end
