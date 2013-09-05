@@ -22,11 +22,6 @@ module Formatters::AdvancedSearchFormatter
     labels.join(', ').html_safe
   end
 
-  def senior_synonym_list taxon
-    return '' unless taxon.senior_synonyms.count > 0
-    ' of ' << taxon.senior_synonyms.map {|e| format_name(e)}.join(', ')
-  end
-
   def format_original_combination_status taxon
     string = 'see '.html_safe
     string << format_name(taxon.current_valid_taxon)
@@ -40,6 +35,11 @@ module Formatters::AdvancedSearchFormatter
     string << reference.key.document_link(user)
     string << reference.key.goto_reference_link
     string
+  end
+
+  def senior_synonym_list taxon
+    return '' unless taxon.senior_synonyms.count > 0
+    ' of ' << taxon.senior_synonyms.map {|e| format_name(e)}.join(', ')
   end
 
 end
