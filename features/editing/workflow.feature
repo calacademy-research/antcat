@@ -81,6 +81,13 @@ Feature: Workflow
 
     When I log in as a catalog editor named "Stan Blum"
 
+  Scenario: Trying to approve one's own change
+    When I add the genus "Atta"
+    And I go to the catalog page for "Atta"
+    Then I should see "Added by Mark Wilden" in the change history
+    When I go to the changes page
+    Then I should not see an "Approve" button
+
   Scenario: Editing a taxon - no Change created
     Given there is a family "Formicidae"
     And I log in
