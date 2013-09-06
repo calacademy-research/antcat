@@ -8,7 +8,7 @@ Feature: Workflow
     And there is a subfamily "Formicinae"
     And there is a genus "Eciton"
     And version tracking is enabled
-    And I log in as an approver
+    And I log in as a catalog editor
 
   Scenario: Adding a taxon and seeing it on the Changes page
     When I go to the catalog page for "Formicinae"
@@ -70,6 +70,7 @@ Feature: Workflow
     When I add the genus "Atta"
     And I go to the catalog page for "Atta"
     Then I should see "Added by Mark Wilden" in the change history
+    When I log in as a catalog editor named "Stan Blum"
     When I go to the changes page
     And I will confirm on the next step
     And I press "Approve"
@@ -77,6 +78,7 @@ Feature: Workflow
     And I should see "Mark Wilden approved"
     When I go to the catalog page for "Atta"
     Then I should see "approved by Mark Wilden"
+    When I log in as a catalog editor named "Stan Blum"
 
   Scenario: Editing a taxon - no Change created
     Given there is a family "Formicidae"
