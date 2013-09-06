@@ -1,12 +1,16 @@
 class AntCat.ChangeButton
   constructor: (@element) ->
-    self = this
     @element
       .unbutton()
       .button()
-      .click (target) => self.approve()
+    self = @
+    @element.click => self.click()
 
-  approve: =>
+class AntCat.EditButton extends AntCat.ChangeButton
+  click: => window.location = @element.data 'edit-location'
+
+class AntCat.ApproveButton extends AntCat.ChangeButton
+  click: =>
     return unless confirm 'Are you sure you want to approve this change?'
     change_id = @element.data('change-id')
     url = "/changes/#{change_id}/approve"
@@ -18,4 +22,5 @@ class AntCat.ChangeButton
       error:    (xhr) => debugger
 
 $ ->
-  $('.approve_button input[type=button]').each -> new AntCat.ChangeButton($(this))
+  $('.edit_button input[type=button]').each -> new AntCat.EditButton($(this))
+  $('.approve_button input[type=button]').each -> new AntCat.ApproveButton($(this))

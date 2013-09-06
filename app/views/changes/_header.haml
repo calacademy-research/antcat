@@ -5,6 +5,7 @@
   %div.change_description
     %div.name.left= format_adder_name taxon.last_editor
     %div.taxon.left= link_to_taxon taxon
+    %div.edit_button.left= edit_button taxon
     %div.approve_button.left= approve_button taxon
     %div.time.right= format_time_ago change.created_at
     %div.clear

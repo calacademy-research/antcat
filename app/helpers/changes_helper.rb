@@ -56,9 +56,16 @@ module ChangesHelper
     Taxt.to_string taxt, current_user
   end
 
+  def edit_button taxon
+    if taxon.can_be_edited_by? current_user
+      button 'Edit', 'edit_button', 'data-edit-location' => edit_taxa_path(taxon)
+    end
+  end
+
   def approve_button taxon
     if taxon.can_be_approved_by? current_user
       button 'Approve', 'approve_button', 'data-change-id' => taxon.last_change.id
     end
   end
+
 end
