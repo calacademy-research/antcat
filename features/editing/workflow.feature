@@ -75,9 +75,10 @@ Feature: Workflow
     And I will confirm on the next step
     And I press "Approve"
     Then I should not see "Approve"
-    And I should see "Mark Wilden approved"
+    And I should see "Stan Blum approved"
     When I go to the catalog page for "Atta"
-    Then I should see "approved by Mark Wilden"
+    Then I should see "approved by Stan Blum"
+
     When I log in as a catalog editor named "Stan Blum"
 
   Scenario: Editing a taxon - no Change created
