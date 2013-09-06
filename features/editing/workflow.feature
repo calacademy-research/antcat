@@ -79,7 +79,23 @@ Feature: Workflow
     When I go to the catalog page for "Atta"
     Then I should see "approved by Stan Blum"
 
+  Scenario: Another editor editing a change that's waiting for approval
+    When I add the genus "Atta"
+    And I go to the changes page
+    Then I should see "Mark Wilden added"
     When I log in as a catalog editor named "Stan Blum"
+    And I go to the changes page
+    And I press "Edit"
+    And I select "genus" from "taxon_incertae_sedis_in"
+    And I save my changes
+    When I press "Review change"
+    Then I should see the incertae sedis status of "genus" in the changes
+    And I should see "Mark Wilden added"
+    Given I will confirm on the next step
+    And I press "Approve"
+    Then I should see "Stan Blum approved"
+    When I go to the catalog page for "Atta"
+    Then I should see "approved by Stan Blum"
 
   Scenario: Trying to approve one's own change
     When I add the genus "Atta"
