@@ -123,4 +123,25 @@ describe Taxon do
     end
   end
 
+  describe "Added by" do
+    around do |example|
+      with_versioning &example
+    end
+    it "should return the User who added the record, not a subsequent editor" do
+      taxon = create_genus
+
+      adder = FactoryGirl.create :user
+      taxon.last_version.update_attributes! whodunnit: adder
+      Change.create! paper_trail_version: taxon.last_version
+
+      editor = FactoryGirl.create :user
+      taxon.update_attributes! incertae_sedis_in: 'genus'
+      taxon.last_version.update_attributes! whodunnit: editor
+      Change.create! paper_trail_version: taxon.last_version
+
+      taxon.added_by.should == adder
+    end
+
+  end
+
 end

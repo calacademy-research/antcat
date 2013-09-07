@@ -18,7 +18,7 @@ class Taxon < ActiveRecord::Base
     return true if old?
     return true if approved?
     raise unless waiting?
-    last_editor == user
+    true
   end
 
   def can_be_reviewed_by? user
@@ -38,9 +38,8 @@ class Taxon < ActiveRecord::Base
     versions(true).last
   end
 
-  def last_editor
-    last_editor_id = last_version.try :whodunnit
-    User.find(last_editor_id) rescue nil
+  def added_by
+    last_change.user
   end
 
 end
