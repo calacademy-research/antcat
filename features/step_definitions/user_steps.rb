@@ -8,6 +8,11 @@ Given /^I fill in the email field with "([^"]+)"$/ do |string|
   step %{I fill in "user_email" with "#{string}"}
 end
 
+Given /^I fill in the email field with my email address$/ do
+  user = User.find_by_name 'Mark Wilden'
+  step %{I fill in "user_email" with "#{user.email}"}
+end
+
 Given /^I fill in the password field with "([^"]+)"$/ do |string|
   step %{I fill in "user_password" with "#{string}"}
 end
@@ -24,7 +29,7 @@ def login can_edit_catalog, use_web_interface = false, user_name = nil
   user = User.find_by_name 'user_name'
   user.destroy if user
   step 'I go to the main page'
-  attributes = {email: "mark@#{rand}example.com"}
+  attributes = {email: "mark@#{rand.to_s.gsub(/\D/, '')[1..5]}example.com"}
   attributes[:can_edit_catalog] = true if can_edit_catalog
   attributes[:name] = user_name if user_name
   @user = FactoryGirl.create :user, attributes
