@@ -74,6 +74,7 @@ class Reference < ActiveRecord::Base
     end
     author_names_and_suffix
   end
+
   def check_for_duplicate
     duplicates = DuplicateMatcher.new.match self
     return unless duplicates.present?
@@ -81,6 +82,7 @@ class Reference < ActiveRecord::Base
     errors.add :base, "This may be a duplicate of #{Formatters::ReferenceFormatter.format duplicate} #{duplicate.id}.<br>To save, click \"Save Anyway\"".html_safe
     true
   end
+
   def self.citation_year_to_year citation_year
     if citation_year.blank?
       nil
@@ -90,6 +92,7 @@ class Reference < ActiveRecord::Base
       citation_year.to_i
     end
   end
+
   def to_class suffix = '', prefix = ''
     class_name = self.class.name
     raise "Don't know what kind of reference this is: #{inspect}" unless
@@ -144,6 +147,7 @@ class Reference < ActiveRecord::Base
   def set_author_names_caches(*)
     self.author_names_string_cache, self.principal_author_last_name_cache = make_author_names_caches
   end
+
   def make_author_names_caches
     string = author_names.map(&:name).join('; ')
     string << author_names_suffix if author_names_suffix.present?
