@@ -19,7 +19,7 @@ Feature: Editing a taxon with authorization constraints
     Given there is a genus "Calyptites" that's waiting for approval
     And I log in as a catalog editor
     When I go to the catalog page for "Calyptites"
-    Then I should not see an "Edit" button
+    Then I should see an "Edit" button
     And I should see a "Review change" button
 
   @preview
