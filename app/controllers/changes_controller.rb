@@ -15,7 +15,7 @@ class ChangesController < ApplicationController
   def approve
     @change = Change.find params[:id]
     @change.taxon.approve!
-    @change.update_attributes! approver_id: current_user.id, approved_at: @change.updated_at
+    @change.update_attributes! approver_id: current_user.id, approved_at: Time.now
     json = {success: true}.to_json
     render json: json, content_type: 'text/html'
   end
