@@ -53,10 +53,10 @@ describe Taxon do
         @approver = FactoryGirl.create :user, can_edit_catalog: true
         @taxon = create_taxon_version_and_change :waiting, @changer
       end
-      it "should only allow the user who made the change to edit a waiting record" do
+      it "should allow any user to edit a waiting record" do
         @taxon.can_be_edited_by?(nil).should be_false
         @taxon.can_be_edited_by?(@user).should be_false
-        @taxon.can_be_edited_by?(@editor).should be_false
+        @taxon.can_be_edited_by?(@editor).should be_true
         @taxon.can_be_edited_by?(@changer).should be_true
       end
       it "should allow it to be reviewed by a catalog editor" do
