@@ -26,7 +26,7 @@ class Taxon < ActiveRecord::Base
   end
 
   def can_be_approved_by? user
-    $Milieu.user_can_approve_changes?(user) && waiting?
+    user != added_by && waiting? && $Milieu.user_can_approve_changes?(user)
   end
 
   def last_change
