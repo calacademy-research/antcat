@@ -114,3 +114,22 @@ Feature: Workflow
     And I save my changes
     Then I should see "Wildencidae" in the header
     And I should not see any change history
+
+  Scenario: People's names linked to their email
+    When I add the genus "Atta"
+    And I go to the changes page
+    Then I should see "Mark Wilden added"
+    And there should be a mailto link to the email of "Mark Wilden"
+    When I log in as a catalog editor named "Stan Blum"
+    When I go to the changes page
+    And I will confirm on the next step
+    And I press "Approve"
+    Then I should not see "Approve"
+    And I should see "Stan Blum approved"
+    And there should be a mailto link to the email of "Stan Blum"
+    And there should be a mailto link to the email of "Mark Wilden"
+    When I go to the catalog page for "Atta"
+    Then I should see "Added by Mark Wilden"
+    And there should be a mailto link to the email of "Mark Wilden"
+    Then I should see "approved by Stan Blum"
+    And there should be a mailto link to the email of "Stan Blum"

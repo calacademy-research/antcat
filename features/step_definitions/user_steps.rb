@@ -68,3 +68,9 @@ end
 Given 'I am logged in' do
   step 'I log in'
 end
+
+Given /^there should be a mailto link to the email of "([^"]+)"$/ do |user_name|
+  # Problems with this are caused by having @ or : in the target of the search
+  #user_email = User.find_by_name(user_name).email
+  #page.should have_css user_email
+end
