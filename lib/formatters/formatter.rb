@@ -56,8 +56,9 @@ module Formatters::Formatter
     content_tag :span, "#{time_ago_in_words time} ago", title: time
   end
 
-  def format_doer_name user_id
-    "#{user_id ? User.find(user_id).name : 'Someone'}"
+  def format_doer_name user
+    return "Someone" unless user
+    content_tag(:a, user.name, href: %{mailto:"#{user.email}"}).html_safe
   end
 
 end
