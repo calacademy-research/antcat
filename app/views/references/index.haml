@@ -38,7 +38,7 @@
   - for reference in @references
     %tr.reference_row
       %td
-        = render 'reference', reference: reference, css_class: 'reference'
+        = render 'reference', reference: reference, possible_duplicate: @possible_duplicate, css_class: 'reference'
       - if params[:review]
         %td.date
           = Formatters::ReferenceFormatter.format_timestamp reference.updated_at
