@@ -2,6 +2,6 @@
 module Formatters::ChangesFormatter
   extend self
   def format_approver_name user
-    "#{user ? user.name : 'Someone'} approved this change"
+    "#{format_doer_name(user)} approved this change".html_safe
   end
 end

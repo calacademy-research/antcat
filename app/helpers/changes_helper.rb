@@ -8,8 +8,8 @@ module ChangesHelper
     content_tag :a, label, href: %{/catalog/#{taxon.id}}
   end
 
-  def format_adder_name user_id
-    "#{format_doer_name user_id} added"
+  def format_adder_name user
+    "#{format_doer_name user} added".html_safe
   end
 
   def format_taxon_name name

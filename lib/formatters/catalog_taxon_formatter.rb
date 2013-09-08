@@ -130,12 +130,12 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
     content_tag :span, class: 'change_history' do
       content = ''.html_safe
 
-      content << "Added by #{format_doer_name(@taxon.added_by)} "
-      content << format_time_ago(change.created_at)
+      content << "Added by #{format_doer_name(@taxon.added_by)} ".html_safe
+      content << format_time_ago(change.created_at).html_safe
 
       if @taxon.approved?
-        content << "; approved by #{format_doer_name(@taxon.approver)} "
-        content << format_time_ago(change.approved_at)
+        content << "; approved by #{format_doer_name(@taxon.approver)} ".html_safe
+        content << format_time_ago(change.approved_at).html_safe
       end
 
       content
