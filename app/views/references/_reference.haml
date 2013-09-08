@@ -1,6 +1,4 @@
--#Locals: reference, possible_duplicate
-
-- possible_duplicate ||= nil
+-#Locals: reference
 
 - id = "reference_#{reference.id}"
 - css_class << ' ' << id
@@ -19,5 +17,5 @@
       %td.reference_item
         = render 'display', :reference => reference if !reference.new_record? && reference.errors.empty?
         - if user_can_edit_references?
-          = render 'edit', reference: reference, possible_duplicate: possible_duplicate
+          = render 'edit', reference: reference, possible_duplicate: @possible_duplicate
         = render 'shared/coins', :reference => reference if !reference.new_record? && reference.errors.empty?
