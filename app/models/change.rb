@@ -6,7 +6,7 @@ class Change < ActiveRecord::Base
 
   scope :creations, -> {joins(:paper_trail_version).
                         where('versions.event' => 'create').
-                        order('updated_at DESC')}
+                        order('changes.created_at DESC')}
 
   def reify
     # this dodgy code is from paper_trail_manager's changes_helper.rb
