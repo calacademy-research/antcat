@@ -197,7 +197,8 @@ describe Formatters::CatalogTaxonFormatter do
       adder = FactoryGirl.create :user, can_edit_catalog: true
       taxon = create_taxon_version_and_change :waiting, adder
       change_history = @formatter.new(taxon).change_history
-      change_history.should =~ /Added by Mark Wilden/
+      change_history.should =~ /Added by/
+      change_history.should =~ /Mark Wilden/
       change_history.should =~ /less than a minute ago/
     end
     it "should show the adder and the approver for an approved taxon" do
@@ -208,9 +209,11 @@ describe Formatters::CatalogTaxonFormatter do
       change.update_attributes! approver: approver, approved_at: Time.now
       taxon.approve!
       change_history = @formatter.new(taxon).change_history
-      change_history.should =~ /Added by #{adder.name}/
+      change_history.should =~ /Added by/
+      change_history.should =~ /#{adder.name}/
       change_history.should =~ /less than a minute ago/
-      change_history.should =~ /approved by #{approver.name}/
+      change_history.should =~ /approved by/
+      change_history.should =~ /#{approver.name}/
       change_history.should =~ /less than a minute ago/
     end
   end
