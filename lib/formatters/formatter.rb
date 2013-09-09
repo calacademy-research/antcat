@@ -53,12 +53,17 @@ module Formatters::Formatter
   end
 
   def format_time_ago time
+    return unless time
     content_tag :span, "#{time_ago_in_words time} ago", title: time
   end
 
   def format_doer_name user
     return "Someone" unless user
     content_tag(:a, user.name, href: %{mailto:"#{user.email}"}).html_safe
+  end
+
+  def format_name_linking_to_email name, email
+    content_tag(:a, name, href: %{mailto:"#{email}"}).html_safe
   end
 
 end

@@ -1,0 +1,76 @@
+<%= form_for @user do |f| %>
+  <%= f.error_messages %>
+  <p>
+    <%= f.label :email %><br />
+    <%= f.text_field :email %>
+  </p>
+  <p>
+    <%= f.label :reset_password_token %><br />
+    <%= f.text_field :reset_password_token %>
+  </p>
+  <p>
+    <%= f.label :remember_token %><br />
+    <%= f.text_field :remember_token %>
+  </p>
+  <p>
+    <%= f.label :remember_created_at %><br />
+    <%= f.datetime_select :remember_created_at %>
+  </p>
+  <p>
+    <%= f.label :sign_in_count %><br />
+    <%= f.number_field :sign_in_count %>
+  </p>
+  <p>
+    <%= f.label :current_sign_in_at %><br />
+    <%= f.datetime_select :current_sign_in_at %>
+  </p>
+  <p>
+    <%= f.label :last_sign_in_at %><br />
+    <%= f.datetime_select :last_sign_in_at %>
+  </p>
+  <p>
+    <%= f.label :current_sign_in_ip %><br />
+    <%= f.text_field :current_sign_in_ip %>
+  </p>
+  <p>
+    <%= f.label :last_sign_in_ip %><br />
+    <%= f.text_field :last_sign_in_ip %>
+  </p>
+  <p>
+    <%= f.label :invitation_token %><br />
+    <%= f.text_field :invitation_token %>
+  </p>
+  <p>
+    <%= f.label :invitation_sent_at %><br />
+    <%= f.datetime_select :invitation_sent_at %>
+  </p>
+  <p>
+    <%= f.label :reset_password_sent_at %><br />
+    <%= f.datetime_select :reset_password_sent_at %>
+  </p>
+  <p>
+    <%= f.label :can_edit_catalog %><br />
+    <%= f.check_box :can_edit_catalog %>
+  </p>
+  <p>
+    <%= f.label :invitation_accepted_at %><br />
+    <%= f.datetime_select :invitation_accepted_at %>
+  </p>
+  <p>
+    <%= f.label :invitation_limit %><br />
+    <%= f.number_field :invitation_limit %>
+  </p>
+  <p>
+    <%= f.label :invited_by_id %><br />
+    <%= f.number_field :invited_by_id %>
+  </p>
+  <p>
+    <%= f.label :invited_by_type %><br />
+    <%= f.text_field :invited_by_type %>
+  </p>
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p><%= f.submit %></p>
+<% end %>

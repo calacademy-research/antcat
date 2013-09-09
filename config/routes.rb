@@ -73,5 +73,6 @@ AntCat::Application.routes.draw do
   match '/paper_trail', to: 'paper_trail_manager/changes#index'
 
   devise_for :users
+  resources :users
 
 end
