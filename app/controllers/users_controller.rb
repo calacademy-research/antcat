@@ -16,7 +16,7 @@ class UsersController < ApplicationController
     if @user.save
       redirect_to @user, :notice => "Successfully created user."
     else
-      render :action => 'new'
+      render 'new'
     end
   end
 
@@ -29,7 +29,7 @@ class UsersController < ApplicationController
     if @user.update_attributes(params[:user])
       redirect_to @user, :notice  => "Successfully updated user."
     else
-      render :action => 'edit'
+      render 'edit'
     end
   end
 
