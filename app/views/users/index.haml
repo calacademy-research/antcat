@@ -5,13 +5,9 @@
     %th
     %th Name
     %th Email
-    %th.number Sign in #
-    %th.date Signed in
   - for user in @users
     %tr
       %td= user.can_edit_catalog? ? '*' : ' '
       %td= format_name_linking_to_email user.name, user.email
       %td= user.email
-      %td.number= user.sign_in_count
-      %td.date= format_time_ago user.current_sign_in_at
 * = editor
