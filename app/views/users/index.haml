@@ -1,23 +1,15 @@
+* = editor
 %table
   %tr
+    %th
     %th Name
-    %th Editor
     %th Email
-    %th Sign In #
-    %th Signed In At
-    %th Last Signed In At
-    %th Invitation Sent At
+    %th.number Sign in #
+    %th.date Signed in
   - for user in @users
     %tr
+      %td= user.can_edit_catalog? ? '*' : ' '
       %td= format_name_linking_to_email user.name, user.email
-      %td= user.can_edit_catalog
       %td= user.email
       %td.number= user.sign_in_count
-      %td= format_time_ago user.current_sign_in_at
-      %td= format_time_ago user.last_sign_in_at
-      %td= format_time_ago user.invitation_sent_at
-      %td= link_to "Show", user
-      %td= link_to "Edit", edit_user_path(user)
-      %td= link_to "Destroy", user, confirm: 'Are you sure?', method: :delete
-
-%p= link_to "New User", new_user_path
+      %td.date= format_time_ago user.current_sign_in_at
