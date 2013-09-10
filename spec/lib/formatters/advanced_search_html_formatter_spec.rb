@@ -1,13 +1,13 @@
 # coding: UTF-8
 require 'spec_helper'
 
-class FormattersAdvancedSearchFormatterTestClass
-  include Formatters::AdvancedSearchFormatter
+class FormattersAdvancedSearchHtmlFormatterTestClass
+  include Formatters::AdvancedSearchHtmlFormatter
 end
 
 describe Formatters::AdvancedSearchFormatter do
   before do
-    @formatter = FormattersAdvancedSearchFormatterTestClass.new
+    @formatter = FormattersAdvancedSearchHtmlFormatterTestClass.new
   end
 
   describe "Formatting search results" do
