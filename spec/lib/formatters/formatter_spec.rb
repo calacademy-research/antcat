@@ -61,6 +61,11 @@ describe Formatters::Formatter do
       string.should == 'Attini Atta major r.'
       string.should be_html_safe
     end
+    it "should two italicizations together" do
+      string = @formatter.unitalicize('Attini <i>Atta</i> <i>major</i> r.'.html_safe)
+      string.should == 'Attini Atta major r.'
+      string.should be_html_safe
+    end
     it "should raise if unitalicize is called on an unsafe string" do
       -> {@formatter.unitalicize('Attini <i>Atta major</i> r.')}.should raise_error
     end

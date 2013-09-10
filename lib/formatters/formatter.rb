@@ -45,7 +45,10 @@ module Formatters::Formatter
 
   def unitalicize string
     raise "Can't unitalicize an unsafe string" unless string.html_safe?
-    string.gsub(%r{<i>(.*)</i>}, '\1').html_safe
+    string = string.dup
+    string.gsub!('<i>', '')
+    string.gsub!('</i>', '')
+    string.html_safe
   end
 
   def embolden string
