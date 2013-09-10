@@ -8,7 +8,7 @@
     .left
       = will_paginate taxa
     .left.buttons
-      .download_button
+      .download_button= button 'Download', nil, 'data-location' => "/advanced_search.txt?#{hash_to_params_string(request.parameters)}"
     .clear
 
   .results_items
