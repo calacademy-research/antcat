@@ -6,4 +6,8 @@ module Formatters::AdvancedSearchHtmlFormatter
     Formatters::CatalogTaxonFormatter.link_to_taxon taxon
   end
 
+  def italicize string
+    Formatters::Formatter.italicize string
+  end
+
 end

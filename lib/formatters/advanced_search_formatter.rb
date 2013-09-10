@@ -1,10 +1,11 @@
 # coding: UTF-8
 module Formatters::AdvancedSearchFormatter
+  include ActionView::Helpers::TagHelper
 
   def format_status taxon
     return format_original_combination_status taxon if taxon.original_combination?
     labels = []
-    labels << "<i>incertae sedis</i> in #{Rank[taxon.incertae_sedis_in].to_s}" if taxon.incertae_sedis_in
+    labels << "#{italicize 'incertae sedis'} in #{Rank[taxon.incertae_sedis_in].to_s}" if taxon.incertae_sedis_in
     if taxon.homonym? && taxon.homonym_replaced_by
       labels << "homonym replaced by #{format_name taxon.homonym_replaced_by}"
     elsif taxon.unidentifiable?
@@ -12,14 +13,14 @@ module Formatters::AdvancedSearchFormatter
     elsif taxon.unresolved_homonym?
       labels << "unresolved junior homonym"
     elsif taxon.nomen_nudum?
-      labels << "<i>nomen nudum</i>"
+      labels << italicize('nomen nudum')
     elsif taxon.invalid?
       label = Status[taxon].to_s.dup
       label << senior_synonym_list(taxon)
       labels << label
     end
     labels << 'ichnotaxon' if taxon.ichnotaxon?
-    labels.join(', ').html_safe
+    labels.join(', ')
   end
 
   def format_original_combination_status taxon
@@ -34,7 +35,12 @@ module Formatters::AdvancedSearchFormatter
     string << Formatters::ReferenceFormatter.format(reference)
     string << document_link(reference.key, user)
     string << goto_reference_link(reference.key)
+    string << reference_id(reference)
     string
+  end
+
+  def reference_id reference
+    content_tag :span, reference.id.to_s, class: 'reference_id'
   end
 
   def document_link reference_key, user
