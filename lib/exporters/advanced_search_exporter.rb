@@ -2,12 +2,11 @@
 class Exporters::AdvancedSearchExporter
   include Formatters::AdvancedSearchTextFormatter
 
-  def export
-    content = ''
-    for taxon in Taxon.order(:name_cache).all
+  def export taxa
+    return unless taxa
+    taxa.inject('') do |content, taxon|
       content << format(taxon)
     end
-    content
   end
 
 end
