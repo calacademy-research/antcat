@@ -33,7 +33,7 @@ module Formatters::AdvancedSearchTextFormatter
   end
 
   def reference_id reference
-    "   #{reference.id.to_s}}"
+    "   #{reference.id.to_s}"
   end
 
 end
