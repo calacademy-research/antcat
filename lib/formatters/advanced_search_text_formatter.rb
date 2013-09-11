@@ -1,6 +1,5 @@
 # coding: UTF-8
 module Formatters::AdvancedSearchTextFormatter
-  include Formatters::Formatter
   include Formatters::AdvancedSearchFormatter
 
   def format_name taxon
