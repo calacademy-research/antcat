@@ -10,4 +10,8 @@ module Formatters::AdvancedSearchHtmlFormatter
     Formatters::Formatter.italicize string
   end
 
+  def reference_id reference
+    content_tag :span, reference.id.to_s, class: 'reference_id'
+  end
+
 end

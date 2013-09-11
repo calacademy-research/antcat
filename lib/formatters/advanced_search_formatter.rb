@@ -39,10 +39,6 @@ module Formatters::AdvancedSearchFormatter
     string
   end
 
-  def reference_id reference
-    content_tag :span, reference.id.to_s, class: 'reference_id'
-  end
-
   def document_link reference_key, user
     reference_key.document_link user
   end
