@@ -2,11 +2,12 @@
 
 %table
   %tr
-    %th
+    %th ID
     %th Name
     %th Email
   - for user in @users
     %tr
+      %td.id= user.id
       %td= user.can_edit_catalog? ? '*' : ' '
       %td= format_name_linking_to_email user.name, user.email
       %td= user.email
