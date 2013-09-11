@@ -22,7 +22,7 @@ describe Formatters::AdvancedSearchHtmlFormatter do
 "<i>incertae sedis</i> in genus, <i>nomen nudum</i>\n" +
 "Latreille, P. A. 1809. " +
 "<i>Atta</i>. Science (1):3." +
-"<a class=\"goto_reference_link\" href=\"/references?q=1\" target=\"_blank\">" +
+"<a class=\"goto_reference_link\" href=\"/references?q=#{reference.id}\" target=\"_blank\">" +
 "<img alt=\"External_link\" src=\"/assets/external_link.png\" /></a>" +
 "<span class=\"reference_id\">#{reference.id}</span>\n\n"
   end
