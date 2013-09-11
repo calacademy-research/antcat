@@ -109,15 +109,6 @@ http://antcat.org
     string.html_safe
   end
 
-  def hash_to_params_string hash
-    hash.keys.sort.inject(''.html_safe) do |string, key|
-      key_val = %{#{key}=#{h hash[key]}}
-      string << '&'.html_safe if string.length != 0
-      string << key_val.html_safe
-      string
-    end
-  end
-
 end
 
 PaperTrailManager::ChangesHelper
