@@ -25,7 +25,7 @@ class AdvancedSearchesController < ApplicationController
 
   def send_text
     text = Exporters::AdvancedSearchExporter.new.export @taxa
-    send_data text, filename: 'taxa.txt', type: 'text/plain'
+    send_data text, filename: @filename, type: 'text/plain'
   end
 
   def set_search_results_message
@@ -50,5 +50,6 @@ class AdvancedSearchesController < ApplicationController
                                   year: params[:year],
                                   valid_only: params[:valid_only]
     @taxa_count = @taxa.count
+    @filename = "#{params[:author_name]}-#{params[:rank]}-#{params[:year]}-#{params[:valid_only]}".parameterize + '.txt'
   end
 end
