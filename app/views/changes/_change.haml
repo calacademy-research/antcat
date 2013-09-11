@@ -4,7 +4,8 @@
 
 = render 'header', taxon: taxon, change: change
 
-%table
+- css_class = taxon.approved? ? 'approved' : ''
+%table.change{class: css_class}
   %tr
     %td
       %table
