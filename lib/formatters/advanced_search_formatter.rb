@@ -2,6 +2,17 @@
 module Formatters::AdvancedSearchFormatter
   include ActionView::Helpers::TagHelper
 
+  def format taxon
+    string = convert_to_text(format_name taxon)
+    status = convert_to_text(format_status taxon)
+    string << convert_to_text(' ' + status) if status.present?
+    string << "\n"
+    protonym = convert_to_text(format_protonym taxon, nil)
+    string << protonym if protonym.present?
+    string << "\n\n"
+    string
+  end
+
   def format_status taxon
     return format_original_combination_status taxon if taxon.original_combination?
     labels = []
@@ -50,6 +61,14 @@ module Formatters::AdvancedSearchFormatter
   def senior_synonym_list taxon
     return '' unless taxon.senior_synonyms.count > 0
     ' of ' << taxon.senior_synonyms.map {|e| format_name(e)}.join(', ')
+  end
+
+  def unitalicize string
+    raise "Can't unitalicize an unsafe string" unless string.html_safe?
+    string = string.dup
+    string.gsub!('<i>', '')
+    string.gsub!('</i>', '')
+    string.html_safe
   end
 
 end
