@@ -36,10 +36,10 @@ class TaxaController < ApplicationController
   ###################
   def get_taxon create_or_update
     if create_or_update == :create
-      @taxon = @mother.create_taxon @rank, Taxon.find(@parent_id)
+      @taxon = @mother.create_taxon @rank_to_create, Taxon.find(@parent_id)
     else
       @taxon = @mother.load_taxon
-      @rank = Rank[@taxon].child
+      @rank_to_create = Rank[@taxon].child
     end
   end
 
@@ -54,14 +54,9 @@ class TaxaController < ApplicationController
     if create_or_update == :create
       @cancel_path = edit_taxa_path @parent_id
     else
-      @add_taxon_path = new_taxa_path rank: @rank, parent_id: @taxon.id
+      @add_taxon_path = new_taxa_path rank_to_create: @rank_to_create, parent_id: @taxon.id
       @cancel_path = catalog_path @taxon
       @convert_to_subspecies_path = new_taxa_convert_to_subspecies_path @taxon.id
-      @parent_rank_selector =
-        case @taxon
-        when Species then :genera_only
-        when Genus then :species_only
-        end
     end
   end
 
@@ -106,7 +101,7 @@ class TaxaController < ApplicationController
   #####################
   def get_params
     @id = params[:id]
-    @rank = Rank[params[:rank]]
+    @rank_to_create = Rank[params[:rank_to_create]]
     @parent_id = params[:parent_id]
     @taxon_params = params[:taxon]
     @elevate_to_species = params[:task_button_command] == 'elevate_to_species'
