@@ -303,6 +303,17 @@ describe Taxon do
       genus = FactoryGirl.create :genus, subfamily: subfamily
       genus.parent.should == subfamily
     end
+    describe "Tribes, where a child can have multiple parents" do
+      it "should assign to both parents when assigning to one" do
+        subfamily = FactoryGirl.create :subfamily
+        tribe = FactoryGirl.create :tribe, subfamily: subfamily
+        protonym = FactoryGirl.create :protonym
+        genus = Genus.create! name: FactoryGirl.create(:name, name: 'Aneuretus'), protonym: protonym
+        genus.parent = tribe
+        genus.tribe.should == tribe
+        genus.subfamily.should == subfamily
+      end
+    end
   end
 
   describe "Updating the parent" do
