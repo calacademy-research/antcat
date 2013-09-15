@@ -96,11 +96,7 @@ http://antcat.org
       string << (parent ? parent.name.to_html : '(no subfamily)')
     when Genus
       string = "genus of "
-      if taxon.tribe
-        parent = taxon.tribe
-      else
-        parent = taxon.subfamily
-      end
+      parent = taxon.tribe ? taxon.tribe : taxon.subfamily
       string << (parent ? parent.name.to_html : '(no subfamily)')
     when Species
       string = "species of "
