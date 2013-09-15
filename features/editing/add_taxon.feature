@@ -41,6 +41,28 @@ Feature: Adding a taxon
     When I go to the catalog page for "Formicinae"
       Then I should see "Atta" in the index
 
+  Scenario: Adding a genus which has a tribe
+    Given tribe "Ecitonini" exists in that subfamily
+    When I go to the catalog page for "Ecitonini"
+      And I press "Edit"
+      And I press "Add genus"
+      And I click the name field
+      And I set the name to "Eciton"
+      And I press "OK"
+    When I click the protonym name field
+      And I set the protonym name to "Eciton"
+      And I press "OK"
+    When I click the authorship field
+      And I search for the author "Fisher"
+      And I click the first search result
+      And I press "OK"
+    When I click the type name field
+      And I set the type name to "Eciton major"
+      And I press "OK"
+      And I press "Add this name"
+    When I save my changes
+      Then I should be on the catalog page for "Eciton"
+
   Scenario: Adding a genus without setting authorship reference
     Given there is a genus "Eciton"
     When I go to the edit page for "Formicinae"

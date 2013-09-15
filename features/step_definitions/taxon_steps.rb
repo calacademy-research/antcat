@@ -33,7 +33,7 @@ Given /there is a subfamily "([^"]*)" with a reference section "(.*?)"$/ do |tax
 end
 Given /there is a subfamily "([^"]*)"$/ do |taxon_name|
   name = FactoryGirl.create :subfamily_name, name: taxon_name
-  taxon = FactoryGirl.create :subfamily, name: name
+  @subfamily = FactoryGirl.create :subfamily, name: name
 end
 Given /^subfamily "(.*?)" exists$/ do |name|
   @subfamily = FactoryGirl.create :subfamily, name: FactoryGirl.create(:subfamily_name, name: name)
@@ -44,6 +44,9 @@ Given /^the unavailable subfamily "(.*?)" exists$/ do |name|
 end
 
 ###########################
+Given /^there is a tribe "([^"]*)"$/ do |name|
+  create_tribe name
+end
 # tribe
 Given /a tribe exists with a name of "(.*?)"(?: and a subfamily of "(.*?)")?(?: and a taxonomic history of "(.*?)")?/ do |taxon_name, parent_name, history|
   subfamily = parent_name && (Subfamily.find_by_name(parent_name) || FactoryGirl.create(:subfamily, name: FactoryGirl.create(:name, name: parent_name)))
