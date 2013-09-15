@@ -90,9 +90,17 @@ http://antcat.org
     string = case taxon
     when Subfamily
       'subfamily'
+    when Tribe
+      string = "tribe of "
+      parent = taxon.subfamily
+      string << (parent ? parent.name.to_html : '(no subfamily)')
     when Genus
       string = "genus of "
-      parent = taxon.subfamily
+      if taxon.tribe
+        parent = taxon.tribe
+      else
+        parent = taxon.subfamily
+      end
       string << (parent ? parent.name.to_html : '(no subfamily)')
     when Species
       string = "species of "

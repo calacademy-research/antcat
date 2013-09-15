@@ -16,6 +16,12 @@ describe TaxonHelper do
       genus = create_genus subfamily: nil, build_stubbed: true
       helper.name_description(genus).should == "genus of (no subfamily)"
     end
+    it "should handle a genus with a tribe" do
+      subfamily = create_subfamily
+      tribe = create_tribe subfamily: subfamily
+      genus = create_genus tribe: tribe, build_stubbed: true
+      helper.name_description(genus).should == "genus of #{tribe.name}"
+    end
     it "should handle a new genus" do
       subfamily = create_subfamily build_stubbed: true
       genus = FactoryGirl.build :genus, subfamily: subfamily
