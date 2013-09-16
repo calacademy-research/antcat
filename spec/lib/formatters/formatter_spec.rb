@@ -81,7 +81,7 @@ describe Formatters::Formatter do
 
   describe "Converting a hash to a parameter string" do
     it "should work" do
-      @formatter.hash_to_params_string(a: 'b', c: 'd').should == 'a="b"&c="d"'
+      @formatter.hash_to_params_string(a: 'b', c: 'd').should == 'a=b&c=d'
     end
   end
 
