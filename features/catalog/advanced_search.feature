@@ -77,3 +77,13 @@ Feature: Searching the catalog
     And I fill in "author_name" with "Bolton"
     And I press "Go" in the search section
     Then I should see "No results found for author 'Bolton'. If you're choosing an author, make sure you pick the name from the dropdown list."
+
+  Scenario: Searching for locality
+    Given there is a genus located in "Africa"
+    And there is a genus located in "Zimbabwe"
+    When I go to the catalog
+    And I follow "Advanced Search"
+    And I fill in "locality" with "Africa"
+    And I press "Go" in the search section
+    Then I should see "1 result found"
+    And I should see "Africa" within ".results_section"

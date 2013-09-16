@@ -39,6 +39,14 @@ Given /^there is a subfamily described in (\d+)/ do |year|
   taxon.protonym.authorship.update_attributes! reference: reference
 end
 
+Given /^there is a genus located in "([^"]+)"$/ do |locality|
+  protonym = FactoryGirl.create :protonym, locality: locality
+  FactoryGirl.create :genus, protonym: protonym
+end
+Then /^I should see the genus located in "([^"]+)"$/ do |locality|
+  step %{I should see "#{locality}"}
+end
+
 Then /^I should see the species described in (\d+)$/ do |year|
   step %{I should see "#{year}"}
 end

@@ -128,5 +128,22 @@ describe Taxon do
       end
 
     end
+
+    describe "Searching for locality" do
+      before do
+        @indonesia = FactoryGirl.create :protonym, locality: 'Indonesia (Bhutan)'
+        @china = FactoryGirl.create :protonym, locality: 'China'
+      end
+      it "should only return taxa with that locality" do
+        atta = create_genus protonym: @indonesia
+        eciton = create_genus protonym: @china
+        Taxon.advanced_search(rank: 'All', locality: 'Indonesia').map(&:id).should == [atta.id]
+      end
+      it "should return taxa with search term at the beginning" do
+        atta = create_genus protonym: @indonesia
+        eciton = create_genus protonym: @china
+        Taxon.advanced_search(rank: 'All', locality: 'Indonesia').map(&:id).should == [atta.id]
+      end
+    end
   end
 end

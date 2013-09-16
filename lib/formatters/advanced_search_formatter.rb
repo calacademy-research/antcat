@@ -4,8 +4,9 @@ module Formatters::AdvancedSearchFormatter
 
   def format taxon
     string = convert_to_text(format_name taxon)
-    status = convert_to_text(format_status taxon)
+    status = format_status(taxon).html_safe
     string << convert_to_text(' ' + status) if status.present?
+    string << convert_to_text(' ' + format_locality(taxon))
     string << "\n"
     protonym = convert_to_text(format_protonym taxon, nil)
     string << protonym if protonym.present?
@@ -31,7 +32,7 @@ module Formatters::AdvancedSearchFormatter
       labels << label
     end
     labels << 'ichnotaxon' if taxon.ichnotaxon?
-    labels.join(', ')
+    labels.join(', ').html_safe
   end
 
   def format_original_combination_status taxon
@@ -48,6 +49,10 @@ module Formatters::AdvancedSearchFormatter
     string << goto_reference_link(reference.key)
     string << reference_id(reference)
     string
+  end
+
+  def format_locality taxon
+    taxon.protonym.locality
   end
 
   def document_link reference_key, user

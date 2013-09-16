@@ -7,22 +7,20 @@ class Taxon < ActiveRecord::Base
     query = query.where status: 'valid' if params[:valid_only].present?
     query = query.order :name_cache
 
-    if params[:year].present? && params[:author_name].blank?
-      query = query.where('references.year' => params[:year])
-
-    elsif params[:author_name].present?
+    if params[:author_name].present?
       author_name = AuthorName.find_by_name params[:author_name]
       return where('1 = 0') unless author_name.present?
       query = query.where 'reference_author_names.author_name_id' => author_name.author.names
       query = query.joins 'JOIN reference_author_names ON reference_author_names.reference_id = `references`.id'
       query = query.joins 'JOIN author_names ON author_names.id = reference_author_names.author_name_id'
-      query = query.where 'references.year' => params[:year] if params[:year].present?
-
-    else
-      query = where('1 = 0')
-
     end
+
+    query = query.where('references.year = ?', params[:year]) if params[:year].present?
+    search_term = "%#{params[:locality]}%"
+    query = query.where('protonyms.locality LIKE ?', search_term) if params[:locality].present?
+
     query
+
   end
 
 end

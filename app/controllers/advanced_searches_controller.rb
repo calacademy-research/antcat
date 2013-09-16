@@ -48,8 +48,9 @@ class AdvancedSearchesController < ApplicationController
     @taxa = Taxon.advanced_search author_name: params[:author_name],
                                   rank: params[:rank],
                                   year: params[:year],
+                                  locality: params[:locality],
                                   valid_only: params[:valid_only]
     @taxa_count = @taxa.count
-    @filename = "#{params[:author_name]}-#{params[:rank]}-#{params[:year]}-#{params[:valid_only]}".parameterize + '.txt'
+    @filename = "#{params[:author_name]}-#{params[:rank]}-#{params[:year]}-#{params[:locality]}-#{params[:valid_only]}".parameterize + '.txt'
   end
 end
