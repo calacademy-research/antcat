@@ -21,3 +21,10 @@
       .throbber= image_tag 'ui-anim_basic_16x16.gif', id: 'throbber', class: 'throbber'
 
     .clear
+
+    .left.location_field
+      where Location contains
+      = text_field_tag :location, params[:location]
+
+    .clear
+
