@@ -6,7 +6,8 @@ module Formatters::AdvancedSearchFormatter
     string = convert_to_text(format_name taxon)
     status = format_status(taxon).html_safe
     string << convert_to_text(' ' + status) if status.present?
-    string << convert_to_text(' ' + format_locality(taxon))
+    locality = format_locality(taxon)
+    string << convert_to_text(' ' + locality) if locality.present?
     string << "\n"
     protonym = convert_to_text(format_protonym taxon, nil)
     string << protonym if protonym.present?
