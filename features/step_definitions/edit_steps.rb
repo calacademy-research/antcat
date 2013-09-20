@@ -80,7 +80,9 @@ When /I click the type name field/ do
   find('#type_name_field .display_button').click
 end
 When /^I set the type name to "([^"]*)"$/ do |name|
-  step %{I fill in "name_string" with "#{name}"}
+  within '#type_name_field' do
+    step %{I fill in "name_string" with "#{name}"}
+  end
 end
 When /^the type name field should contain "([^"]*)"$/ do |name|
   find('#name_string').value.should == name
