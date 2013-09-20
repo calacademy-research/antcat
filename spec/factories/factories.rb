@@ -124,7 +124,7 @@ FactoryGirl.define do
   end
 
   factory :family_name do
-    name 'Family'
+    name            'Formicidae'
     name_html       {name}
     epithet         {name}
     epithet_html    {name_html}
