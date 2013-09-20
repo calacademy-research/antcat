@@ -111,7 +111,7 @@ Feature: Workflow
     And I click the name field
     And I set the name to "Wildencidae"
     And I press "OK"
-    And I save my changes
+    And I press "Save" within ".buttons_section"
     Then I should see "Wildencidae" in the header
     And I should not see any change history
 
