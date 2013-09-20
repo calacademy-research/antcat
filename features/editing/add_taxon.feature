@@ -182,3 +182,29 @@ Feature: Adding a taxon
     Then I should be on the catalog page for "Eciton major infra"
     And I should see "infra" in the index
     And I should see "Eciton major infra" in the protonym
+
+  Scenario: Adding a subfamily
+    When I go to the catalog page for "Formicidae"
+      And I press "Edit"
+      And I press "Add subfamily"
+    Then I should be on the new taxon page
+    When I click the name field
+      And I set the name to "Dorylinae"
+      And I press "OK"
+    When I click the protonym name field
+      Then the protonym name field should contain "Dorylinae"
+    When I press "OK"
+    And I click the authorship field
+      And I search for the author "Fisher"
+      And I click the first search result
+      And I press "OK"
+    When I click the type name field
+      Then the type name field should contain "Dorylinae"
+    When I set the type name to "Atta"
+      And I press "OK" in "#type_name_field"
+      And I press "Add this name"
+    When I save my changes
+      Then I should be on the catalog page for "Dorylinae"
+      And I should see "Dorylinae" in the protonym
+    When I go to the catalog page for "Formicinae"
+      Then I should see "Dorylinae" in the index
