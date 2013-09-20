@@ -2,6 +2,27 @@
 class Family < Taxon
   include Importers::Bolton::Catalog::Updater
 
+  def genera
+    Genus.without_subfamily.ordered_by_name
+  end
+
+  def subfamilies
+    Subfamily.ordered_by_name
+  end
+
+  def statistics
+    get_statistics Subfamily, Tribe, Genus, Species, Subspecies
+  end
+
+  def get_statistics *ranks
+    ranks.inject({}) do |statistics, klass|
+      count = klass.count group: [:fossil, :status]
+      self.class.massage_count count, Rank[klass].to_sym(:plural), statistics
+      statistics
+    end
+  end
+
+  ##########
   def self.import data
     name = Name.import family_name: 'Formicidae'
     transaction do
@@ -71,27 +92,4 @@ class Family < Taxon
       old_section.update_attributes field_name => after
     end
   end
-
-  ##########
-
-  def genera
-    Genus.without_subfamily.ordered_by_name
-  end
-
-  def subfamilies
-    Subfamily.ordered_by_name
-  end
-
-  def statistics
-    get_statistics Subfamily, Tribe, Genus, Species, Subspecies
-  end
-
-  def get_statistics *ranks
-    ranks.inject({}) do |statistics, klass|
-      count = klass.count group: [:fossil, :status]
-      self.class.massage_count count, Rank[klass].to_sym(:plural), statistics
-      statistics
-    end
-  end
-
 end

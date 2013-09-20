@@ -33,12 +33,12 @@
       = render 'name_status_flags_section',         taxon: @taxon, form: form, default_name_string: @default_name_string
       = render 'protonym_section',                  taxon: @taxon, form: form
       = render 'type_section',                      taxon: @taxon, form: form
-      = render 'buttons_section',                   form: form,                                                            |
-                                                    possible_homonym:                  @possible_homonym,                  |
-                                                    show_elevate_to_species_button:    @show_elevate_to_species_button,    |
-                                                    show_convert_to_subspecies_button: @show_convert_to_subspecies_button, |
-                                                    add_taxon_button_text:             @add_taxon_button_text,             |
-                                                    show_delete_taxon_button:          @show_delete_taxon_button           |
+      = render 'buttons_section',                   form: form,                                                              |
+                                                      possible_homonym:                  @possible_homonym,                  |
+                                                      show_elevate_to_species_button:    @show_elevate_to_species_button,    |
+                                                      show_convert_to_subspecies_button: @show_convert_to_subspecies_button, |
+                                                      add_taxon_button_text:             @add_taxon_button_text,             |
+                                                      show_delete_taxon_button:          @show_delete_taxon_button           |
 
     - unless @taxon.new_record?
       = render 'history_items_section',               taxon: @taxon
