@@ -2,15 +2,15 @@
 -# show_convert_to_subspecies_button, show_delete_taxon_button
 
 .buttons_section
-  %input{type: :hidden, name: 'possible_homonym', id: 'possible_homonym', value: possible_homonym ? 'true' : nil}
+  %input{type: :hidden, name: :possible_homonym, id: :possible_homonym, value: possible_homonym ? 'true' : nil}
   .left_buttons
     - save_button_text = previewize possible_homonym ? 'Save homonym' : 'Save'
     = submit_button save_button_text
     = cancel_button
     = image_tag 'ui-anim_basic_16x16.gif', class: 'throbber'
   .right_buttons
-    %input{type: :hidden, name: 'task_button_command', id: 'task_button_command'}
-    = button(previewize(add_taxon_button_text), :add_taxon)                  if add_taxon_button_text
+    %input{type: :hidden, name: :task_button_command, id: :task_button_command}
+    = button(previewize(add_taxon_button_text), :add_taxon)               if add_taxon_button_text
     = button(previewize('Convert to subspecies'), :convert_to_subspecies) if show_convert_to_subspecies_button
     = button(previewize('Elevate to species'), :elevate_to_species)       if show_elevate_to_species_button
-    = button(previewize('Delete'), :delete_taxon)                   if show_delete_taxon_button
+    = button(previewize('Delete'), :delete_taxon)                         if show_delete_taxon_button
