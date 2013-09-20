@@ -33,11 +33,29 @@ class Name < ActiveRecord::Base
   end
 
   def self.parse string
+    name_class = Name.parse_rank string
     words = string.split ' '
-    GenusName.parse_words(words)  or
-    SpeciesName.parse_words(words) or
-    SubspeciesName.parse_words(words) or
-    raise "No Name subclass wanted the string: #{string}"
+    name_class.parse_words(words)
+  rescue Exception => e
+    raise "No Name subclass wanted the string: #{string}:#{e}"
+  end
+
+  def self.parse_rank string
+    # extremely kludgey
+    word_count = string.split(' ').count
+    return SubspeciesName if word_count >= 3
+    for key in [:subfamily_name, :genus_name, :species_name]
+      begin
+        result = Importers::Bolton::Catalog::Grammar.parse(string, root: key).value
+        if key == :species_name && result.has_key?(:genus_name) && result.has_key?(:species_epithet)
+          return SpeciesName
+        end
+      rescue Citrus::ParseError => e
+        next
+      end
+      return key.to_s.camelize.constantize if result.has_key? key
+    end
+    nil
   end
 
   def self.picklist_matching letters_in_name, options = {}
@@ -88,7 +106,7 @@ class Name < ActiveRecord::Base
     FamilyName.import_data(data)     or
     FamilyOrSubfamilyName.import_data(data) or
     OrderName.import_data(data)      or
-    raise "No Name subclass wanted #{data}"
+    raise "No Name subclass wanted to import #{data}"
   end
 
   def self.import_data data

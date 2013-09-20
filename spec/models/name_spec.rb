@@ -57,7 +57,31 @@ describe Name do
 
   end
 
+  describe "Parse rank" do
+    it "should recognize a subfamily name" do
+      Name.parse_rank('Dorylinae').should == SubfamilyName
+    end
+    it "should recognize a genus name" do
+      Name.parse_rank('Atta').should == GenusName
+    end
+    it "should recognize a species name" do
+      Name.parse_rank('Atta major').should == SpeciesName
+    end
+    it "should recognize a subspecies name" do
+      Name.parse_rank('Atta major minor').should == SubspeciesName
+    end
+  end
+
   describe "Parsing" do
+    it "should parse a subfamily name" do
+      name = Name.parse('Dorylinae')
+      name.should be_kind_of SubfamilyName
+      name.name.should == 'Dorylinae'
+      name.name_html.should == 'Dorylinae'
+      name.epithet.should == 'Dorylinae'
+      name.epithet_html.should == 'Dorylinae'
+      name.protonym_html.should == 'Dorylinae'
+    end
     it "should parse a genus name" do
       name = Name.parse('Atta')
       name.should be_kind_of GenusName
