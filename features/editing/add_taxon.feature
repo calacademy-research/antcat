@@ -184,7 +184,7 @@ Feature: Adding a taxon
     And I should see "Eciton major infra" in the protonym
 
   Scenario: Adding a subfamily
-    When I go to the catalog page for "Formicidae"
+    When I go to the catalog page for "Family"
       And I press "Edit"
       And I press "Add subfamily"
     Then I should be on the new taxon page
@@ -199,7 +199,7 @@ Feature: Adding a taxon
       And I click the first search result
       And I press "OK"
     When I click the type name field
-      Then the type name field should contain "Dorylinae"
+      Then the type name field should contain "Dorylinae "
     When I set the type name to "Atta"
       And I press "OK" in "#type_name_field"
       And I press "Add this name"
