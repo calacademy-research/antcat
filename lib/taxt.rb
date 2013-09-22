@@ -125,7 +125,7 @@ module Taxt
 
   def self.decode_reference whole_match, reference_id_match, user, options
     if options[:display]
-      Formatters::ReferenceFormatter.format_inline_citation_without_links(Reference.find(reference_id_match), user, options) #rescue whole_match
+      Formatters::ReferenceFormatter.format_inline_citation_without_links(Reference.find(reference_id_match), user, options) rescue whole_match
     else
       Formatters::ReferenceFormatter.format_inline_citation(Reference.find(reference_id_match), user, options) rescue whole_match
     end

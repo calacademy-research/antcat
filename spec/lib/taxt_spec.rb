@@ -176,6 +176,7 @@ describe Taxt do
           Taxt.to_string("{ref sdf}", nil).should == '{ref sdf}'
         end
         it "should not freak if the ref points to a reference that doesn't exist" do
+          -> {Taxt.to_string("{ref 12345}", nil).should == '{ref 12345}'}.should_not raise_error
           Taxt.to_string("{ref 12345}", nil).should == '{ref 12345}'
         end
         it "should handle a MissingReference" do
