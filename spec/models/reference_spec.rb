@@ -320,4 +320,40 @@ describe Reference do
     end
   end
 
+  describe "References to a reference" do
+    it "should recognize a protonym's use of this reference" do
+      bolton = FactoryGirl.create :article_reference
+      hita = FactoryGirl.create :article_reference
+      fisher = FactoryGirl.create :citation, reference: bolton
+
+      results = bolton.references
+      results.should == [table: 'citations', field: :reference_id, id: fisher.id]
+    end
+
+    it "should recognize various uses of this reference in taxt" do
+      reference = FactoryGirl.create :article_reference
+      citation = FactoryGirl.create :citation, reference: reference, notes_taxt: "{ref #{reference.id}}"
+      protonym = FactoryGirl.create :protonym, authorship: citation
+      taxon = FactoryGirl.create :genus, protonym: protonym, type_taxt: "{ref #{reference.id}}", headline_notes_taxt: "{ref #{reference.id}}", genus_species_header_notes_taxt: "{ref #{reference.id}}"
+      history_item = taxon.history_items.create! taxt: "{ref #{reference.id}}"
+      bolton_match = FactoryGirl.create :bolton_match, reference: reference
+      reference_section = FactoryGirl.create :reference_section, title_taxt: "{ref #{reference.id}}", subtitle_taxt: "{ref #{reference.id}}", references_taxt: "{ref #{reference.id}}"
+      nested_reference = FactoryGirl.create :nested_reference, nested_reference: reference
+      results = reference.references
+      results.should =~ [
+        {table: 'taxa',               id: taxon.id,             field: :type_taxt},
+        {table: 'taxa',               id: taxon.id,             field: :headline_notes_taxt},
+        {table: 'taxa',               id: taxon.id,             field: :genus_species_header_notes_taxt},
+        {table: 'citations',          id: citation.id,          field: :notes_taxt},
+        {table: 'citations',          id: citation.id,          field: :reference_id},
+        {table: 'bolton_matches',     id: bolton_match.id,      field: :reference_id},
+        {table: 'reference_sections', id: reference_section.id, field: :title_taxt},
+        {table: 'reference_sections', id: reference_section.id, field: :subtitle_taxt},
+        {table: 'reference_sections', id: reference_section.id, field: :references_taxt},
+        {table: 'references',         id: nested_reference.id,  field: :nested_reference_id},
+        {table: 'taxon_history_items',id: history_item.id,      field: :taxt},
+      ]
+    end
+  end
+
 end
