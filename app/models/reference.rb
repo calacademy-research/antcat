@@ -109,15 +109,15 @@ class Reference < ActiveRecord::Base
         for field in fields
           next unless record[field]
           if record[field] =~ /{ref #{id}}/
-            references << {table: klass.table_name, field: field, id: record[:id]}
+            references << {table: klass.table_name, id: record[:id], field: field}
           end
         end
       end
     end
 
     for klass in [Citation, Bolton::Match]
-      for record in klass.where(reference_id: id)
-        references << {table: klass.table_name, field: :reference_id, id: record[:id]}
+      for record in klass.where(reference_id: id).all
+        references << {table: klass.table_name, id: record[:id], field: :reference_id}
       end
     end
     for record in NestedReference.where(nested_reference_id: id).all
