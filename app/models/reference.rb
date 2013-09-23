@@ -121,7 +121,7 @@ class Reference < ActiveRecord::Base
       end
     end
     for record in NestedReference.where(nested_reference_id: id).all
-      references << {table: klass.table_name, field: :nested_reference_id, id: record[:id]}
+      references << {table: 'references', id: record[:id], field: :nested_reference_id}
     end
     references
   end
