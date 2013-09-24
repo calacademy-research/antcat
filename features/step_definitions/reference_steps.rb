@@ -325,3 +325,9 @@ end
 And /^there is no default reference$/ do
   DefaultReference.stub(:get).and_return nil
 end
+
+Given /^there is a taxon with that reference as its protonym's reference$/ do
+  taxon = create_genus
+  taxon.protonym.authorship.reference = @reference
+  taxon.protonym.authorship.save!
+end

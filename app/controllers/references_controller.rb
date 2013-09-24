@@ -87,10 +87,10 @@ EOS
 
   def destroy
     @reference = Reference.find(params[:id])
-    if @reference.destroy
-      json = {:success => true}
+    if @reference.any_references? or not @reference.destroy
+      json = {success: false, message: "This reference can't be deleted, as there are other references to it."}.to_json
     else
-      json = {:success => false, :message => @reference.errors[:base]}.to_json
+      json = {:success => true}
     end
     render json: json
   end
