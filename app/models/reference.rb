@@ -110,6 +110,7 @@ class Reference < ActiveRecord::Base
           next unless record[field]
           if record[field] =~ /{ref #{id}}/
             references << {table: klass.table_name, id: record[:id], field: field}
+            return true if options[:any?]
           end
         end
       end
@@ -118,12 +119,19 @@ class Reference < ActiveRecord::Base
     for klass in [Citation, Bolton::Match]
       for record in klass.where(reference_id: id).all
         references << {table: klass.table_name, id: record[:id], field: :reference_id}
+        return true if options[:any?]
       end
     end
     for record in NestedReference.where(nested_reference_id: id).all
       references << {table: 'references', id: record[:id], field: :nested_reference_id}
+      return true if options[:any?]
     end
+    return false if options[:any?]
     references
+  end
+
+  def any_references?
+    self.references any?: true
   end
 
   ###############################################

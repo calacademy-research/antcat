@@ -321,14 +321,6 @@ describe Reference do
   end
 
   describe "References to a reference" do
-    it "should recognize a protonym's use of this reference" do
-      bolton = FactoryGirl.create :article_reference
-      hita = FactoryGirl.create :article_reference
-      fisher = FactoryGirl.create :citation, reference: bolton
-
-      results = bolton.references
-      results.should == [table: 'citations', field: :reference_id, id: fisher.id]
-    end
 
     it "should recognize various uses of this reference in taxt" do
       reference = FactoryGirl.create :article_reference
@@ -353,6 +345,13 @@ describe Reference do
         {table: 'references',         id: nested_reference.id,  field: :nested_reference_id},
         {table: 'taxon_history_items',id: history_item.id,      field: :taxt},
       ]
+    end
+
+    describe "Any references?" do
+      it "should return false if there are no references to this reference" do
+        reference = FactoryGirl.create :article_reference
+        reference.any_references?.should be_false
+      end
     end
   end
 
