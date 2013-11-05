@@ -41,6 +41,14 @@ Then /^I should not see the parent name field/ do
   page.should_not have_css "#parent_row"
 end
 
+# status
+Then /the status should be "([^"]*)"/ do |status|
+  page.should have_css "select#taxon_status option[selected=selected][value=#{status}]"
+end
+Then /I set the status to "([^"]*)"/ do |status|
+  step %{I select "#{status}" from "taxon_status"}
+end
+
 ### homonym replaced by field
 Then /^I should (not )?see the homonym replaced by field$/ do |should_not|
   selector = should_not ? :should_not : :should
@@ -97,13 +105,6 @@ When /^the new species field should contain "([^"]*)"$/ do |name|
 end
 When /^I set the new species field to "([^"]*)"$/ do |name|
   step %{I fill in "name_string" with "#{name}"}
-end
-
-Then /the status should be "([^"]*)"/ do |status|
-  page.should have_css "select#taxon_status option[selected=selected][value=#{status}]"
-end
-Then /I set the status to "([^"]*)"/ do |status|
-  step %{I select "#{status}" from "taxon_status"}
 end
 
 # history section
