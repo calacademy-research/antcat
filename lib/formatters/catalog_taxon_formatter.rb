@@ -35,6 +35,7 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
       content << content_tag(:span, header_name, class: Formatters::CatalogFormatter.css_classes_for_rank(@taxon))
       content << content_tag(:span, header_authorship, class: :authorship)
       content << content_tag(:span, status, class: :status)
+      content << content_tag(:span, gender, class: :gender)
       content << content_tag(:span, review_state, class: :review_state)
       content
     end
@@ -109,6 +110,10 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
     labels << 'ichnotaxon' if @taxon.ichnotaxon?
 
     labels.join(', ').html_safe
+  end
+
+  def gender
+    (@taxon.name.gender || '').html_safe
   end
 
   def review_state
