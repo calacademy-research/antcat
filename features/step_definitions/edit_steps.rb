@@ -30,6 +30,15 @@ When /^the name field should contain "([^"]*)"$/ do |name|
   find('#name_string').value.should == name
 end
 
+# gender
+Then /I set the name gender to "([^"]*)"/ do |gender|
+  step %{I select "#{gender}" from "taxon_name_attributes_gender"}
+end
+Then /^I should (not )?see the gender menu$/ do |should_not|
+  selector = should_not ? :should_not : :should
+  page.send selector, have_css('#taxon_name_attributes_gender')
+end
+
 ### parent field
 When /I click the parent name field/ do
   find('#parent_name_field .display_button').click

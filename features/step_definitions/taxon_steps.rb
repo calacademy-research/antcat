@@ -116,6 +116,10 @@ Given /^genus "(.*?)" exists in that tribe$/ do |name|
   @genus = FactoryGirl.create :genus, subfamily: @subfamily, tribe: @tribe, name: FactoryGirl.create(:genus_name, name: name)
   @genus.history_items.create! taxt: "#{name} history"
 end
+Given /^there is a genus "([^"]*)" with "([^"]*)" name$/ do |name, gender|
+  genus = create_genus name
+  genus.name.update_attributes! gender: gender
+end
 
 ###########################
 # species

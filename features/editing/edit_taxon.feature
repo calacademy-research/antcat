@@ -145,6 +145,18 @@ Feature: Editing a taxon
     And I save my changes
     Then I should be on the catalog page for "Atta"
     Then I should not see "incertae sedis in subfamily"
+
+  Scenario: Changing gender of genus-group name
+    Given there is a genus "Atta" with "masculine" name
+    When I log in
+    And I go to the catalog page for "Atta"
+    Then I should see "masculine"
+    When I go to the edit page for "Atta"
+    And I set the name gender to "neuter"
+    And I save my changes
+    Then I should be on the catalog page for "Atta"
+    And I should see "neuter"
+
   Scenario: Don't see gender field for species-group names
     Given a species exists with a name of "major" and a genus of "Atta"
     And I log in
