@@ -10,7 +10,7 @@
 
     %td.label.top_aligned= name_form.label :name
     %td
-      %table
+      %table.name_and_gender
         %tr
           %td#name_field
             = render 'name_fields/panel', name_string: taxon.name.try(:name),
