@@ -59,6 +59,8 @@ class TaxonMother
   ####################################
   def update_name attributes
     attributes[:name_id] = attributes.delete :id
+    gender = attributes.delete :gender
+    @taxon.name.gender = gender
     @taxon.attributes = attributes
   end
 
