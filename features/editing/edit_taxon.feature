@@ -164,3 +164,21 @@ Feature: Editing a taxon
     Then I should not see the gender menu
     When I go to the edit page for "Atta"
     Then I should see the gender menu
+
+  Given a species exists with a name of "major" and a genus of "Atta"
+    When I log in
+    And I go to the edit page for "Atta major"
+    And I set the verbatim type locality to "San Pedro"
+    And I save my changes
+    Then I should be on the catalog page for "Atta major"
+    And I should see "Verbatim type locality: San Pedro"
+    When I press "Edit"
+    Then the verbatim type locality should be "San Pedro"
+
+  Scenario: Don't see verbatim type locality field for genus-group name
+    Given a species exists with a name of "major" and a genus of "Atta"
+    And I log in
+    When I go to the edit page for "Atta"
+    Then I should not see the verbatim type locality
+    When I go to the edit page for "Atta major"
+    Then I should see the verbatim type locality

@@ -1,10 +1,16 @@
 -#Locals: taxon, form
 
-- unless taxon.kind_of? SpeciesGroupTaxon
-  .type_section.section
-    .section_header.ui-widget-header.ui-corner-top
-      Type
-    %table.ui-dialog-content.ui-widget-content.ui-corner-bottom
+.type_section.section
+  .section_header.ui-widget-header.ui-corner-top
+    Type
+  %table.ui-dialog-content.ui-widget-content.ui-corner-bottom
+
+    - if taxon.kind_of? SpeciesGroupTaxon
+      %tr
+        %td.label.top_aligned= form.label :verbatim_type_locality
+        %td.verbatim_type_locality.top_aligned= form.text_field :verbatim_type_locality
+
+    - else
       %tr
         = form.fields_for :type_name do |type_name_form|
           - if taxon.type_name.new_record?

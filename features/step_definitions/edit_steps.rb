@@ -39,6 +39,18 @@ Then /^I should (not )?see the gender menu$/ do |should_not|
   page.send selector, have_css('#taxon_name_attributes_gender')
 end
 
+# verbatim type locality
+Then /I set the verbatim type locality to "([^"]*)"/ do |locality|
+  step %{I fill in "taxon_verbatim_type_locality" with "San Pedro, CA"}
+end
+Then /^I should (not )?see the verbatim type locality$/ do |should_not|
+  selector = should_not ? :should_not : :should
+  page.send selector, have_css('#taxon_verbatim_type_locality')
+end
+Then /^the verbatim type locality should be "([^"]*)"/ do |locality|
+  step %{the "taxon_verbatim_type_locality" field should contain "#{locality}"}
+end
+
 ### parent field
 When /I click the parent name field/ do
   find('#parent_name_field .display_button').click
@@ -164,7 +176,6 @@ Then /^I add a reference section "(.*?)"/ do |text|
   step %{I fill in the references field with "#{text}"}
   step %{I save the reference section}
 end
-
 
 # references section
 Then /^the reference section should be "(.*)"$/ do |reference|
