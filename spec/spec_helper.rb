@@ -21,6 +21,14 @@ Spork.prefork do
       DatabaseCleaner.clean_with(:truncation)
     end
 
+    config.before(:all) do
+      DeferredGarbageCollection.start
+    end
+
+    config.after(:all) do
+      DeferredGarbageCollection.reconsider
+    end
+
     config.before(:each) do
       DatabaseCleaner.start
     end
