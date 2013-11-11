@@ -165,7 +165,8 @@ Feature: Editing a taxon
     When I go to the edit page for "Atta"
     Then I should see the gender menu
 
-  Given a species exists with a name of "major" and a genus of "Atta"
+  Scenario: Changing verbatim type locality
+    Given a species exists with a name of "major" and a genus of "Atta"
     When I log in
     And I go to the edit page for "Atta major"
     And I set the verbatim type locality to "San Pedro"
