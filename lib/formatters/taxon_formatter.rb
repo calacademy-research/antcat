@@ -42,10 +42,20 @@ class Formatters::TaxonFormatter
     string = protonym_name protonym
     string << ' ' << headline_authorship(protonym.authorship)
     string << locality(protonym.locality)
-    string
+    string || ''
   end
 
   def headline_type
+    string = ''
+    string << headline_type_without_verbatim_type_locality
+    @taxon.verbatim_type_locality = "Verbatim type locality: San Pedro"
+    unless @taxon.verbatim_type_locality.empty?
+      string << "Verbatim type locality: #{@taxon.verbatim_type_locality}"
+    end
+    string
+  end
+
+  def headline_type_without_verbatim_type_locality
     taxt = @taxon.type_taxt
     if not @taxon.type_name and taxt
       string = headline_type_taxt taxt
