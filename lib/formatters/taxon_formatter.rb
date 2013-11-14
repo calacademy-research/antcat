@@ -59,7 +59,7 @@ class Formatters::TaxonFormatter
     if not @taxon.type_name and taxt
       string = headline_type_taxt taxt
     else
-      return if not @taxon.type_name
+      return verbatim_type_locality if not @taxon.type_name
       rank = @taxon.type_name.rank
       rank = 'genus' if rank == 'subgenus'
       string = "Type-#{rank}: ".html_safe
@@ -67,7 +67,7 @@ class Formatters::TaxonFormatter
       string
     end
     content_tag :span, class: 'type' do
-      string
+      string + ' ' + verbatim_type_locality
     end
   end
 
