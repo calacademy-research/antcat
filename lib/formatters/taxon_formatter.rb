@@ -46,10 +46,11 @@ class Formatters::TaxonFormatter
   end
 
   def headline_type
-    string = ''
+    string = ''.html_safe
     string << headline_type_without_verbatim_type_locality
     unless @taxon.verbatim_type_locality.blank?
-      string << "Verbatim type locality: #{@taxon.verbatim_type_locality}"
+      string << "Verbatim type locality: "
+      string << @taxon.verbatim_type_locality.html_safe
     end
     string
   end
@@ -59,15 +60,16 @@ class Formatters::TaxonFormatter
     if not @taxon.type_name and taxt
       string = headline_type_taxt taxt
     else
-      return (@taxon.verbatim_type_locality || '') if not @taxon.type_name
+      return (@taxon.verbatim_type_locality.html_safe || ''.html_safe) if not @taxon.type_name
       rank = @taxon.type_name.rank
       rank = 'genus' if rank == 'subgenus'
       string = "Type-#{rank}: ".html_safe
       string << headline_type_name + headline_type_taxt(taxt)
       string
     end
+    string << ' ' << @taxon.verbatim_type_locality if @taxon.verbatim_type_locality
     content_tag :span, class: 'type' do
-      string + ' ' + @taxon.verbatim_type_locality
+      string
     end
   end
 
