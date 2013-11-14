@@ -48,7 +48,6 @@ class Formatters::TaxonFormatter
   def headline_type
     string = ''
     string << headline_type_without_verbatim_type_locality
-    @taxon.verbatim_type_locality = "Verbatim type locality: San Pedro"
     unless @taxon.verbatim_type_locality.empty?
       string << "Verbatim type locality: #{@taxon.verbatim_type_locality}"
     end
