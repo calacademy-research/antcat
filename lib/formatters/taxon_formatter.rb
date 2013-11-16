@@ -52,7 +52,7 @@ class Formatters::TaxonFormatter
       string << "Verbatim type locality: "
       string << @taxon.verbatim_type_locality.html_safe
     end
-    string
+    add_period_if_necessary string
   end
 
   def headline_type_without_verbatim_type_locality
