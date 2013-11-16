@@ -49,6 +49,7 @@ class Formatters::TaxonFormatter
     string = ''.html_safe
     string << headline_type_without_verbatim_type_locality
     unless @taxon.verbatim_type_locality.blank?
+      string << ' ' unless string.length.zero?
       string << "Verbatim type locality: "
       string << @taxon.verbatim_type_locality.html_safe
     end
@@ -60,7 +61,7 @@ class Formatters::TaxonFormatter
     if not @taxon.type_name and taxt
       string = headline_type_taxt taxt
     else
-      return (@taxon.verbatim_type_locality || '').html_safe if not @taxon.type_name
+      return ''.html_safe if not @taxon.type_name
       rank = @taxon.type_name.rank
       rank = 'genus' if rank == 'subgenus'
       string = "Type-#{rank}: ".html_safe
