@@ -47,12 +47,12 @@ describe Formatters::CatalogTaxonFormatter do
       it "should show the type taxon" do
         genus = create_genus 'Atta', type_name: @species_name
         @formatter.new(genus).headline_type.should ==
-%{<span class="type">Type-species: <span class="species taxon"><i>Atta major</i></span>.</span>.}
+%{<span class="type">Type-species: <span class="species taxon"><i>Atta major</i></span>.</span>}
       end
       it "should show the type taxon with extra Taxt" do
         genus = create_genus 'Atta', type_name: @species_name, type_taxt: ', by monotypy'
         @formatter.new(genus).headline_type.should ==
-%{<span class="type">Type-species: <span class="species taxon"><i>Atta major</i></span>, by monotypy</span>.}
+%{<span class="type">Type-species: <span class="species taxon"><i>Atta major</i></span>, by monotypy.</span>}
       end
     end
 

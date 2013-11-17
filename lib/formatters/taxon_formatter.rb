@@ -51,9 +51,11 @@ class Formatters::TaxonFormatter
     unless @taxon.verbatim_type_locality.blank?
       string << ' ' unless string.length.zero?
       string << "Verbatim type locality: "
-      string << @taxon.verbatim_type_locality.html_safe
+      periodized_string = add_period_if_necessary @taxon.verbatim_type_locality
+      string << periodized_string
+      string
     end
-    add_period_if_necessary string
+    string
   end
 
   def headline_type_without_verbatim_type_locality
@@ -68,9 +70,8 @@ class Formatters::TaxonFormatter
       string << headline_type_name + headline_type_taxt(taxt)
       string
     end
-    string << ' ' << @taxon.verbatim_type_locality if @taxon.verbatim_type_locality
     content_tag :span, class: 'type' do
-      string
+      add_period_if_necessary string
     end
   end
 
