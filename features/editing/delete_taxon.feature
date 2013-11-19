@@ -62,4 +62,4 @@ Feature: Deleting a taxon
     And I will confirm on the next step
     And I press "Delete"
     And I will confirm on the next step
-    Then I should see "This taxon has additional information attached to it."
+    Then I should see "Other taxa refer to this taxon, so it can't be deleted. "
