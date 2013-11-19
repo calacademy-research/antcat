@@ -93,7 +93,9 @@ class TaxaController < ApplicationController
     if references.empty?
       @taxon.destroy
     else
-      @taxon.errors[:base] = "Other taxa refer to this taxon, so it can't be deleted. Please talk to Mark (mark@mwilden.com) to determine a solution." + "The items referaing to this taxon are: #{references.to_s}."
+      @taxon.errors[:base] = "Other taxa refer to this taxon, so it can't be deleted. " +
+        "Please talk to Mark (mark@mwilden.com) to determine a solution. " +
+        "The items referring to this taxon are: #{references.to_s}."
       render :edit and return
     end
     redirect_to catalog_path @taxon.parent
