@@ -4,6 +4,11 @@ require 'spec_helper'
 describe Taxon do
 
   describe "Advanced search" do
+    describe "When no meaningful search parameters are given" do
+      it "should return an empty array" do
+        Taxon.advanced_search({year: ''}).should == []
+      end
+    end
     describe "Rank first described in given year" do
       it "should return the one match" do
         reference1977 = reference_factory author_name: 'Bolton', citation_year: '1977'
