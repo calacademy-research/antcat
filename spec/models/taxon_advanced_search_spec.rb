@@ -145,5 +145,23 @@ describe Taxon do
         Taxon.advanced_search(rank: 'All', locality: 'Indonesia').map(&:id).should == [atta.id]
       end
     end
+
+    describe "Searching for verbatim type locality" do
+      it "should only return taxa with that verbatim_type_locality" do
+        atta = create_genus verbatim_type_locality: 'Indonesia'
+        eciton = create_genus verbatim_type_locality: 'San Pedro'
+        Taxon.advanced_search(rank: 'All', verbatim_type_locality: 'San Pedro').map(&:id).should == [eciton.id]
+      end
+      it "should not only return anything if nothing has that verbatim_type_locality" do
+        atta = create_genus
+        Taxon.advanced_search(rank: 'All', verbatim_type_locality: 'San Pedro').map(&:id).should == []
+      end
+      it "should do substring search" do
+        atta = create_genus verbatim_type_locality: 'Indonesia'
+        eciton = create_genus verbatim_type_locality: 'San Pedro'
+        Taxon.advanced_search(rank: 'All', verbatim_type_locality: 'Pedro').map(&:id).should == [eciton.id]
+      end
+    end
+
   end
 end

@@ -87,3 +87,13 @@ Feature: Searching the catalog
     And I press "Go" in the search section
     Then I should see "1 result found"
     And I should see "Africa" within ".results_section"
+
+  Scenario: Searching for verbatim type locality
+    Given there is a genus with verbatim type locality "Africa"
+    And there is a genus with verbatim type locality "Zimbabwe"
+    When I go to the catalog
+    And I follow "Advanced Search"
+    And I fill in "verbatim_type_locality" with "Africa"
+    And I press "Go" in the search section
+    Then I should see "1 result found"
+    And I should see "Africa" within ".results_section"

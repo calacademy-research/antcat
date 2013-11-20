@@ -16,8 +16,12 @@ class Taxon < ActiveRecord::Base
     end
 
     query = query.where('references.year = ?', params[:year]) if params[:year].present?
+
     search_term = "%#{params[:locality]}%"
     query = query.where('protonyms.locality LIKE ?', search_term) if params[:locality].present?
+
+    search_term = "%#{params[:verbatim_type_locality]}%"
+    query = query.where('verbatim_type_locality LIKE ?', search_term) if params[:verbatim_type_locality].present?
 
     query
 
