@@ -52,8 +52,16 @@ module Formatters::AdvancedSearchFormatter
     string
   end
 
-  def format_locality taxon
-    taxon.protonym.locality
+  def format_type_localities taxon
+    string = ''
+    if taxon.protonym.locality.present?
+      string << add_period_if_necessary(taxon.protonym.locality)
+    end
+    if taxon.verbatim_type_locality.present?
+      string << " Verbatim type locality: " + taxon.verbatim_type_locality
+      string = add_period_if_necessary string
+    end
+    string
   end
 
   def document_link reference_key, user
