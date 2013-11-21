@@ -67,16 +67,15 @@ http://antcat.org
     string = ''.html_safe
 
     string = ''.html_safe
-    string << rank_option_for_select('All', 'All', value)
+    string << option_for_select('All', 'All', value)
     for rank in Rank.ranks
       next if rank.plural.capitalize == 'Families'
-      string << rank_option_for_select(rank.plural.capitalize, rank.string.capitalize, value)
+      string << option_for_select(rank.plural.capitalize, rank.string.capitalize, value)
       string
     end
     string
   end
 
-  def rank_option_for_select label, value, current_value
   def biogeographic_region_options_for_select value
     value = '' unless value.present?
     string = ''.html_safe
@@ -88,6 +87,7 @@ http://antcat.org
     string
   end
 
+  def option_for_select label, value, current_value
     options = {value: value}
     options[:selected] = 'selected' if value == current_value
     content_tag :option, label, options
