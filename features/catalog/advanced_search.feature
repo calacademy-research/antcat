@@ -89,11 +89,21 @@ Feature: Searching the catalog
     And I should see "Africa" within ".results_section"
 
   Scenario: Searching for verbatim type locality
-    Given there is a genus with verbatim type locality "Africa"
-    And there is a genus with verbatim type locality "Zimbabwe"
+    Given there is a species with verbatim type locality "Africa"
+    And there is a species with verbatim type locality "Zimbabwe"
     When I go to the catalog
     And I follow "Advanced Search"
     And I fill in "verbatim_type_locality" with "Africa"
     And I press "Go" in the search section
     Then I should see "1 result found"
     And I should see "Africa" within ".results_section"
+
+  Scenario: Searching for biogeographic_region
+    Given there is a species with biogeographic_region "Malagasy"
+    And there is a species with biogeographic_region "Afrotropic"
+    When I go to the catalog
+    And I follow "Advanced Search"
+    And I select "Afrotropic" from the biogeographic region selector
+    And I press "Go" in the search section
+    Then I should see "1 result found"
+    And I should see "Afrotropic" within ".results_section"

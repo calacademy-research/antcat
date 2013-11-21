@@ -61,6 +61,10 @@ module Formatters::AdvancedSearchFormatter
       string << " Verbatim type locality: " + taxon.verbatim_type_locality
       string = add_period_if_necessary string
     end
+    if taxon.biogeographic_region.present?
+      string << taxon.biogeographic_region
+      string = add_period_if_necessary string
+    end
     string
   end
 

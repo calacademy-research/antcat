@@ -3,7 +3,8 @@ class Taxon < ActiveRecord::Base
 
   def self.advanced_search params
     return where (1 == 0) unless params[:author_name].present? || params[:locality].present? ||
-                     params[:verbatim_type_locality].present? || params[:year].present?
+                     params[:verbatim_type_locality].present? || params[:year].present? ||
+                     params[:biogeographic_region].present?
 
     query = joins protonym: [{authorship: :reference}]
     query = query.where type: params[:rank] unless params[:rank] == 'All'
@@ -25,6 +26,9 @@ class Taxon < ActiveRecord::Base
 
     search_term = "%#{params[:verbatim_type_locality]}%"
     query = query.where('verbatim_type_locality LIKE ?', search_term) if params[:verbatim_type_locality].present?
+
+    search_term = "%#{params[:biogeographic_region]}%"
+    query = query.where('biogeographic_region LIKE ?', search_term) if params[:biogeographic_region].present?
 
     query
 

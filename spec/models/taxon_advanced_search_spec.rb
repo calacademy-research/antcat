@@ -153,18 +153,34 @@ describe Taxon do
 
     describe "Searching for verbatim type locality" do
       it "should only return taxa with that verbatim_type_locality" do
-        atta = create_genus verbatim_type_locality: 'Indonesia'
-        eciton = create_genus verbatim_type_locality: 'San Pedro'
+        atta = create_species verbatim_type_locality: 'Indonesia'
+        eciton = create_species verbatim_type_locality: 'San Pedro'
         Taxon.advanced_search(rank: 'All', verbatim_type_locality: 'San Pedro').map(&:id).should == [eciton.id]
       end
       it "should not only return anything if nothing has that verbatim_type_locality" do
-        atta = create_genus
+        atta = create_species
         Taxon.advanced_search(rank: 'All', verbatim_type_locality: 'San Pedro').map(&:id).should == []
       end
       it "should do substring search" do
-        atta = create_genus verbatim_type_locality: 'Indonesia'
-        eciton = create_genus verbatim_type_locality: 'San Pedro'
+        atta = create_species verbatim_type_locality: 'Indonesia'
+        eciton = create_species verbatim_type_locality: 'San Pedro'
         Taxon.advanced_search(rank: 'All', verbatim_type_locality: 'Pedro').map(&:id).should == [eciton.id]
+      end
+    end
+
+    describe "Searching for biogeographic region" do
+      it "should only return taxa with that biogeographic_region" do
+        atta = create_species biogeographic_region: 'Australasia'
+        eciton = create_species biogeographic_region: 'Indomalaya'
+        Taxon.advanced_search(rank: 'All', biogeographic_region: 'Indomalaya').map(&:id).should == [eciton.id]
+      end
+      it "should not only return anything if nothing has that biogeographic_region" do
+        atta = create_species
+        Taxon.advanced_search(rank: 'All', biogeographic_region: 'San Pedro').map(&:id).should == []
+      end
+      it "should not do substring search" do
+        atta = create_species biogeographic_region: 'Indonesia'
+        Taxon.advanced_search(rank: 'All', biogeographic_region: 'Indo').map(&:id).should_not == [eciton.id]
       end
     end
 

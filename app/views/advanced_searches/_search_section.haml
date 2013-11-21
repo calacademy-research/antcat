@@ -30,5 +30,9 @@
       where Verbatim type locality contains
       = text_field_tag :verbatim_type_locality, params[:verbatim_type_locality]
 
+    .left.biogeographic_region
+      where biogeographic region is
+      = select_tag :biogeographic_region, biogeographic_options_for_select(params[:biogeographic_region])
+
     .clear
 

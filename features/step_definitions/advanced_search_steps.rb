@@ -43,8 +43,11 @@ Given /^there is a genus located in "([^"]+)"$/ do |locality|
   protonym = FactoryGirl.create :protonym, locality: locality
   FactoryGirl.create :genus, protonym: protonym
 end
-Given /^there is a genus with verbatim type locality "([^"]+)"$/ do |locality|
-  FactoryGirl.create :genus, verbatim_type_locality: locality
+Given /^there is a species with verbatim type locality "([^"]+)"$/ do |locality|
+  FactoryGirl.create :species, verbatim_type_locality: locality
+end
+Given /^there is a species with biogeographic region "([^"]+)"$/ do |biogeographic_region|
+  FactoryGirl.create :species, biogeographic_region: biogeographic_region
 end
 Then /^I should see the genus located in "([^"]+)"$/ do |locality|
   step %{I should see "#{locality}"}
@@ -56,6 +59,9 @@ end
 
 And /^I select "([^"]+)" from the rank selector$/ do |value|
   step %{I select "#{value}" from "rank"}
+end
+And /^I select "([^"]+)" from the biogeographic region selector$/ do |value|
+  step %{I select "#{value}" from "biogeographic_region"}
 end
 
 Given /^I search for and find a result$/ do
