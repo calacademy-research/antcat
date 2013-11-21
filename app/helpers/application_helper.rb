@@ -77,6 +77,17 @@ http://antcat.org
   end
 
   def rank_option_for_select label, value, current_value
+  def biogeographic_region_options_for_select value
+    value = '' unless value.present?
+    string = ''.html_safe
+    string << option_for_select('', nil, value)
+    for biogeographic_region in BiogeographicRegion.instances
+      string << option_for_select(biogeographic_region.label, biogeographic_region.value, value)
+      string
+    end
+    string
+  end
+
     options = {value: value}
     options[:selected] = 'selected' if value == current_value
     content_tag :option, label, options
