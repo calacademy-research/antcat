@@ -180,7 +180,7 @@ describe Taxon do
       end
       it "should not do substring search" do
         atta = create_species biogeographic_region: 'Indonesia'
-        Taxon.advanced_search(rank: 'All', biogeographic_region: 'Indo').map(&:id).should_not == [eciton.id]
+        Taxon.advanced_search(rank: 'All', biogeographic_region: 'Indo').map(&:id).should_not == [atta.id]
       end
     end
 
