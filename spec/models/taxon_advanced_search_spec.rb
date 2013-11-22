@@ -47,11 +47,11 @@ describe Taxon do
         before do
           taxa = []
           taxa << @subfamily = create_subfamily
-          taxa << @tribe = create_tribe
-          taxa << @genus = create_genus
-          taxa << @subgenus = create_subgenus
-          taxa << @species = create_species
-          taxa << @subspecies = create_subspecies('Atta major minor')
+          taxa << @tribe = create_tribe(subfamily: @subfamily)
+          taxa << @genus = create_genus(tribe: @tribe)
+          taxa << @subgenus = create_subgenus(genus: @genus)
+          taxa << @species = create_species(genus: @genus)
+          taxa << @subspecies = create_subspecies('Atta major minor', species: @species, genus: @genus)
           reference = reference_factory author_name: 'Bolton', citation_year: '1977'
           for taxon in taxa
             taxon.protonym.authorship.update_attributes! reference: reference
@@ -65,6 +65,15 @@ describe Taxon do
           Taxon.advanced_search(rank: 'Subgenus', year: 1977).map(&:id).should =~ [@subgenus.id]
           Taxon.advanced_search(rank: 'Species', year: 1977).map(&:id).should =~ [@species.id]
           Taxon.advanced_search(rank: 'Subspecies', year: 1977).map(&:id).should =~ [@subspecies.id]
+        end
+
+        it "should return just the requested rank, even without any other parameters" do
+          Taxon.advanced_search(rank: 'Subfamily').map(&:id).should =~ [@subfamily.id]
+          Taxon.advanced_search(rank: 'Tribe').map(&:id).should =~ [@tribe.id]
+          Taxon.advanced_search(rank: 'Genus').map(&:id).should =~ [@genus.id]
+          Taxon.advanced_search(rank: 'Subgenus').map(&:id).should =~ [@subgenus.id]
+          Taxon.advanced_search(rank: 'Species').map(&:id).should =~ [@species.id]
+          Taxon.advanced_search(rank: 'Subspecies').map(&:id).should =~ [@subspecies.id]
         end
       end
     end

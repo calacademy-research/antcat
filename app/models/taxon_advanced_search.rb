@@ -2,9 +2,11 @@
 class Taxon < ActiveRecord::Base
 
   def self.advanced_search params
-    return where (1 == 0) unless params[:author_name].present? || params[:locality].present? ||
-                     params[:verbatim_type_locality].present? || params[:year].present? ||
-                     params[:biogeographic_region].present?
+    return where(false) unless
+      params[:author_name].present? || params[:locality].present? ||
+      params[:verbatim_type_locality].present? || params[:year].present? ||
+      params[:biogeographic_region].present? ||
+      params[:rank].present? && params[:rank] != 'All'
 
     query = joins protonym: [{authorship: :reference}]
     query = query.where type: params[:rank] unless params[:rank] == 'All'
