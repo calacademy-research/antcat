@@ -32,7 +32,7 @@ class AdvancedSearchesController < ApplicationController
     if @taxa.present?
       @search_results_message = "#{pluralize_with_delimiters(@taxa_count, 'result')} found"
     else
-      if no_matching_authors? params[:author_name]
+      if params[:author_name].present? && no_matching_authors?(params[:author_name])
         @search_results_message = "No results found for author '#{params[:author_name]}'. If you're choosing an author, make sure you pick the name from the dropdown list."
       else
         @search_results_message = "No results found."
