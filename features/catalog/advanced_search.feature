@@ -99,8 +99,8 @@ Feature: Searching the catalog
     And I should see "Africa" within ".results_section"
 
   Scenario: Searching for biogeographic_region
-    Given there is a species with biogeographic_region "Malagasy"
-    And there is a species with biogeographic_region "Afrotropic"
+    Given there is a species with biogeographic region "Malagasy"
+    And there is a species with biogeographic region "Afrotropic"
     When I go to the catalog
     And I follow "Advanced Search"
     And I select "Afrotropic" from the biogeographic region selector
