@@ -101,9 +101,10 @@ Feature: Searching the catalog
   Scenario: Searching for biogeographic_region
     Given there is a species with biogeographic region "Malagasy"
     And there is a species with biogeographic region "Afrotropic"
+    And there is a species with biogeographic region "Afrotropic"
     When I go to the catalog
     And I follow "Advanced Search"
     And I select "Afrotropic" from the biogeographic region selector
     And I press "Go" in the search section
-    Then I should see "1 result found"
+    Then I should see "2 results found"
     And I should see "Afrotropic" within ".results_section"
