@@ -8,7 +8,8 @@
     - if taxon.kind_of? SpeciesGroupTaxon
       %tr
         %td.label.top_aligned= form.label :biogeographic_region
-        %td.biogeographic_region.top_aligned= form.select :biogeographic_region, biogeographic_region_options_for_select(params[:biogeographic_region])
+        %td.biogeographic_region.top_aligned
+          = form.select :biogeographic_region, biogeographic_region_options_for_select(taxon.biogeographic_region)
 
       %tr
         %td.label.top_aligned= form.label :verbatim_type_locality
