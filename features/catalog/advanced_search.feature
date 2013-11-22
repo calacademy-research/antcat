@@ -108,6 +108,18 @@ Feature: Searching the catalog
     And I press "Go" in the search section
     Then I should see "2 results found"
     And I should see "Afrotropic" within ".results_section"
+
+  Scenario: Searching for 'Any' biogeographic_region
+    Given there is a species with biogeographic region "Malagasy"
+    And there is a species with biogeographic region "Afrotropic"
+    And there is a genus located in "Africa"
+    When I go to the catalog
+    And I follow "Advanced Search"
+    And I select "Any" from the biogeographic region selector
+    And I fill in "locality" with "Africa"
+    And I press "Go" in the search section
+    Then I should see "1 result found"
+
   Scenario: Searching for 'None' biogeographic_region
     Given there is a species with biogeographic region "Malagasy"
     And there is a species with biogeographic region "Afrotropic"
