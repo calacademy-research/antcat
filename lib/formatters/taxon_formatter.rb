@@ -45,20 +45,17 @@ class Formatters::TaxonFormatter
     string || ''
   end
 
+  ##########
   def headline_type
     string = ''.html_safe
-    string << headline_type_without_verbatim_type_locality
-    unless @taxon.verbatim_type_locality.blank?
-      string << ' ' unless string.length.zero?
-      string << "Verbatim type locality: "
-      periodized_string = add_period_if_necessary @taxon.verbatim_type_locality
-      string << periodized_string
-      string
-    end
+    string << headline_type_name_and_taxt
+    string << headline_biogeographic_region
+    string << ' ' unless string.length.zero?
+    string << headline_verbatim_type_locality
     string
   end
 
-  def headline_type_without_verbatim_type_locality
+  def headline_type_name_and_taxt
     taxt = @taxon.type_taxt
     if not @taxon.type_name and taxt
       string = headline_type_taxt taxt
@@ -75,12 +72,6 @@ class Formatters::TaxonFormatter
     end
   end
 
-  def headline_type_taxt taxt
-    string = detaxt taxt
-    string = '.' unless string.present?
-    string
-  end
-
   def headline_type_name
     rank = @taxon.type_name.rank
     rank = 'genus' if rank == 'subgenus'
@@ -88,6 +79,31 @@ class Formatters::TaxonFormatter
     content_tag :span, name, class: "#{rank} taxon"
   end
 
+  def headline_type_taxt taxt
+    string = detaxt taxt
+    string = '.' unless string.present?
+    string
+  end
+
+  def headline_biogeographic_region
+    string = ''
+    return string if @taxon.biogeographic_region.blank?
+    string << ' ' unless string.length.zero?
+    periodized_string = add_period_if_necessary @taxon.biogeographic_region
+    string << periodized_string
+    string
+  end
+
+  def headline_verbatim_type_locality
+    string = ''
+    return string if @taxon.verbatim_type_locality.blank?
+    string << "Verbatim type locality: "
+    periodized_string = add_period_if_necessary @taxon.verbatim_type_locality
+    string << periodized_string
+    string
+  end
+
+  #########
   def protonym_name protonym
     content_tag :b, content_tag(:span, Formatters::CatalogFormatter.protonym_label(protonym), class: 'protonym_name')
   end
