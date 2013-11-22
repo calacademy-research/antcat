@@ -202,3 +202,14 @@ Feature: Editing a taxon
     Then I should not see the biogeographic region
     When I go to the edit page for "Atta major"
     Then I should see the biogeographic region
+
+  Scenario: Clearing the biogeographic_region
+    Given a species exists with a name of "major" and a genus of "Atta"
+    When I log in
+    And I go to the edit page for "Atta major"
+    And I select "Malagasy" from "taxon_biogeographic_region"
+    And I save my changes
+    And I press "Edit"
+    And I select "" from "taxon_biogeographic_region"
+    And I save my changes
+    Then I should not see "Malagasy"

@@ -39,6 +39,12 @@ Then /^I should (not )?see the gender menu$/ do |should_not|
   page.send selector, have_css('#taxon_name_attributes_gender')
 end
 
+# biogeographic region
+Then /^I should (not )?see the biogeographic region$/ do |should_not|
+  selector = should_not ? :should_not : :should
+  page.send selector, have_css('#taxon_biogeographic_region')
+end
+
 # verbatim type locality
 Then /I set the verbatim type locality to "([^"]*)"/ do |locality|
   step %{I fill in "taxon_verbatim_type_locality" with "San Pedro, CA"}
