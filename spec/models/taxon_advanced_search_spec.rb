@@ -187,6 +187,11 @@ describe Taxon do
         atta = create_species
         Taxon.advanced_search(rank: 'All', biogeographic_region: 'San Pedro').map(&:id).should == []
       end
+      it "should only return taxa with no biogeographic_region if that's what's specified" do
+        atta = create_species biogeographic_region: 'Australasia'
+        eciton = create_species
+        Taxon.advanced_search(rank: 'Species', biogeographic_region: 'None').map(&:id).should == [eciton.id]
+      end
       it "should not do substring search" do
         atta = create_species biogeographic_region: 'Indonesia'
         Taxon.advanced_search(rank: 'All', biogeographic_region: 'Indo').map(&:id).should_not == [atta.id]

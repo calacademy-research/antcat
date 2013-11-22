@@ -30,7 +30,11 @@ class Taxon < ActiveRecord::Base
     query = query.where('verbatim_type_locality LIKE ?', search_term) if params[:verbatim_type_locality].present?
 
     search_term = params[:biogeographic_region]
-    query = query.where(biogeographic_region: search_term) if params[:biogeographic_region].present?
+    if search_term == 'None'
+      query = query.where biogeographic_region: nil
+    else
+      query = query.where(biogeographic_region: search_term) if search_term.present?
+    end
 
     query
 

@@ -76,10 +76,11 @@ http://antcat.org
     string
   end
 
-  def biogeographic_region_options_for_select value
+  def biogeographic_region_options_for_select value, first_label = '', second_label = nil
     value = '' unless value.present?
     string = ''.html_safe
-    string << option_for_select('', nil, value)
+    string << option_for_select(first_label, nil, value)
+    string << option_for_select(second_label, second_label, value) if second_label.present?
     for biogeographic_region in BiogeographicRegion.instances
       string << option_for_select(biogeographic_region.label, biogeographic_region.value, value)
       string

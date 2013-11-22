@@ -43,6 +43,10 @@ Given /^there is a genus located in "([^"]+)"$/ do |locality|
   protonym = FactoryGirl.create :protonym, locality: locality
   FactoryGirl.create :genus, protonym: protonym
 end
+Given /^there is a species located in "([^"]+)"$/ do |locality|
+  protonym = FactoryGirl.create :protonym, locality: locality
+  FactoryGirl.create :species, protonym: protonym
+end
 Given /^there is a species with verbatim type locality "([^"]+)"$/ do |locality|
   FactoryGirl.create :species, verbatim_type_locality: locality
 end
