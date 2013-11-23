@@ -1,5 +1,6 @@
 # coding: UTF-8
 module Formatters::AdvancedSearchFormatter
+  include Formatters::Formatter
   include ActionView::Helpers::TagHelper
 
   def format taxon
