@@ -51,7 +51,7 @@ AntCat::Application.routes.draw do
 
   resource :advanced_search, only: [:show]
   resource :default_reference, only: [:update]
-  resource :taxon_window_height, only: [:update]
+  resource :taxon_window_height, only: [:update, :show]
 
   get 'name_pickers/search'
 

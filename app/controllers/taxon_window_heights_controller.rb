@@ -6,4 +6,10 @@ class TaxonWindowHeightsController < ApplicationController
     render nothing: true
   end
 
+  # When a User logs in, sometimes the system does a GET on this resource.
+  # No idea why.
+  def show
+    redirect_to '/'
+  end
+
 end
