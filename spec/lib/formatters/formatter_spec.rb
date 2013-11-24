@@ -85,4 +85,20 @@ describe Formatters::Formatter do
     end
   end
 
+  describe "Formatting an email address + name" do
+    it "should format it correctly in the general case" do
+      string = @formatter.format_name_linking_to_email 'Stan Blum', 'sblum@example.com'
+      string.should == '<a href="mailto:sblum@example.com">Stan Blum</a>'
+    end
+    it "should format it correctly for 'doers'" do
+      user = FactoryGirl.create :user, name: 'Stan Blum', email: 'sblum@example.com'
+      string = @formatter.format_doer_name user
+      string.should == '<a href="mailto:sblum@example.com">Stan Blum</a>'
+    end
+    it "should format it correctly when the 'doer' is nil" do
+      string = @formatter.format_doer_name nil
+      string.should == 'Someone'
+    end
+  end
+
 end

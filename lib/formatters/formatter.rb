@@ -62,11 +62,11 @@ module Formatters::Formatter
 
   def format_doer_name user
     return "Someone" unless user
-    content_tag(:a, user.name, href: %{mailto:"#{user.email}"}).html_safe
+    format_name_linking_to_email user.name, user.email
   end
 
   def format_name_linking_to_email name, email
-    content_tag(:a, name, href: %{mailto:"#{email}"}).html_safe
+    content_tag(:a, name, href: %{mailto:#{email}}.html_safe)
   end
 
   def hash_to_params_string hash
