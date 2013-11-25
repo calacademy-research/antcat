@@ -21,10 +21,10 @@ class Exporters::Antweb::Exporter
     return unless self.class.exportable? taxon
 
     attributes = {
-      valid?: !taxon.invalid?,
+      valid?:     !taxon.invalid?,
       available?: !taxon.invalid?,
-      fossil?: taxon.fossil,
-      history: Exporters::Antweb::Formatter.new(taxon).format
+      fossil?:    taxon.fossil,
+      history:    Exporters::Antweb::Formatter.new(taxon).format,
     }
 
     case taxon
