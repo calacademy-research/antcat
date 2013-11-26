@@ -6,14 +6,11 @@ module ApplicationHelper
   include Formatters::ButtonFormatter
 
   ### authorization methods
-  def user_can_edit_references?
-    $Milieu.user_can_edit_references? current_user
+  def user_can_edit?
+    $Milieu.user_can_edit? current_user
   end
   def user_can_upload_pdfs?
     $Milieu.user_can_upload_pdfs? current_user
-  end
-  def user_can_edit_catalog?
-    $Milieu.user_can_edit_catalog? current_user
   end
   def user_is_editor?
     $Milieu.user_is_editor? current_user

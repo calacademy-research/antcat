@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131122182639) do
+ActiveRecord::Schema.define(:version => 20131125192812) do
 
   create_table "antwiki_valid_taxa", :id => false, :force => true do |t|
     t.string   "name"
@@ -341,7 +341,7 @@ ActiveRecord::Schema.define(:version => 20131122182639) do
     t.string   "invitation_token",       :limit => 20
     t.datetime "invitation_sent_at"
     t.datetime "reset_password_sent_at"
-    t.boolean  "can_edit_catalog"
+    t.boolean  "can_edit"
     t.datetime "invitation_accepted_at"
     t.integer  "invitation_limit"
     t.integer  "invited_by_id"

@@ -22,7 +22,7 @@ describe Taxon do
       with_versioning &example
     end
     before do
-      @editor = FactoryGirl.create :user, can_edit_catalog: true
+      @editor = FactoryGirl.create :user, can_edit: true
       @user = FactoryGirl.create :user
     end
 
@@ -49,8 +49,8 @@ describe Taxon do
 
     describe "A waiting record" do
       before do
-        @changer = FactoryGirl.create :user, can_edit_catalog: true
-        @approver = FactoryGirl.create :user, can_edit_catalog: true
+        @changer = FactoryGirl.create :user, can_edit: true
+        @approver = FactoryGirl.create :user, can_edit: true
         @taxon = create_taxon_version_and_change :waiting, @changer
       end
       it "should allow any user to edit a waiting record" do
@@ -73,7 +73,7 @@ describe Taxon do
 
     describe "An approved record" do
       before do
-        @approver = FactoryGirl.create :user, can_edit_catalog: true
+        @approver = FactoryGirl.create :user, can_edit: true
         @taxon = create_taxon_version_and_change :approved, @editor, @approver
       end
       it "should have an approver and an approved_at" do

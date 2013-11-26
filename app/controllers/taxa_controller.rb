@@ -1,7 +1,7 @@
 # coding: UTF-8
 class TaxaController < ApplicationController
-  before_filter :authenticate_catalog_editor, :get_params, :create_mother
-  skip_before_filter :authenticate_catalog_editor, if: :preview?
+  before_filter :authenticate_editor, :get_params, :create_mother
+  skip_before_filter :authenticate_editor, if: :preview?
 
   helper ReferenceHelper
 

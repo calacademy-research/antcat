@@ -5,5 +5,5 @@
     %tr
       %td.reference_section_body
         = render 'reference_sections/display', item: item
-        - if user_can_edit_catalog?
+        - if user_can_edit?
           = render 'reference_sections/edit', item: item

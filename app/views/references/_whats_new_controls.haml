@@ -3,7 +3,7 @@
 %td.date
   = Formatters::ReferenceFormatter.format_timestamp reference.created_at
 
-- if user_can_edit_catalog?
+- if user_can_edit?
 
   %td.review_state
     = Formatters::ReferenceFormatter.format_review_state reference.review_state

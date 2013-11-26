@@ -9,9 +9,9 @@ describe ApplicationController do
     end
     describe "Authentication and authorization to edit the catalog" do
       it "should ask the milieu" do
-        $Milieu.should_receive(:user_can_edit_catalog?).with @current_user
+        $Milieu.should_receive(:user_can_edit?).with @current_user
         controller.should_receive(:authenticate_user!).and_return true
-        controller.authenticate_catalog_editor
+        controller.authenticate_editor
       end
     end
   end

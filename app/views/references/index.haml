@@ -45,7 +45,7 @@
 
       = render 'references/whats_new_controls', reference: reference if params[:whats_new]
 
-  - if user_can_edit_references?
+  - if user_can_edit?
     %tr.reference_template_row
       %td
         = render 'reference', reference: Reference.new, css_class: 'reference_template'

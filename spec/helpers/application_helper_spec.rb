@@ -21,23 +21,23 @@ describe ApplicationHelper do
     end
 
     specify "reference editing authorization depends on the milieu and current user" do
-      $Milieu.should_receive(:user_can_edit_references?).with @current_user
-      helper.user_can_edit_references?
+      $Milieu.should_receive(:user_can_edit?).with @current_user
+      helper.user_can_edit?
     end
 
     specify "catalog editing authorization depends on the milieu and current user" do
-      $Milieu.should_receive(:user_can_edit_catalog?).with @current_user
-      helper.user_can_edit_catalog?
+      $Milieu.should_receive(:user_can_edit?).with @current_user
+      helper.user_can_edit?
     end
 
     specify "editing authorization depends on the milieu and current user" do
-      $Milieu.should_receive(:user_can_edit_catalog?).with @current_user
-      helper.user_can_edit_catalog?
+      $Milieu.should_receive(:user_can_edit?).with @current_user
+      helper.user_can_edit?
     end
 
     specify "updloading PDF authorization depends on the milieu and current user" do
-      $Milieu.should_receive(:user_can_edit_catalog?).with @current_user
-      helper.user_can_edit_catalog?
+      $Milieu.should_receive(:user_can_edit?).with @current_user
+      helper.user_can_edit?
     end
 
     specify "reviewing changes authorization depends on the milieu and current user" do

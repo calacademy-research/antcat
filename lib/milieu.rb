@@ -40,12 +40,8 @@ class RestrictedMilieu < Milieu
     user && user.is_editor?
   end
 
-  def user_can_edit_references? user
+  def user_can_edit? user
     user && user.is_editor?
-  end
-
-  def user_can_edit_catalog? user
-    user && user.can_edit_catalog?
   end
 
   def user_can_review_changes? user
@@ -67,11 +63,7 @@ class SandboxMilieu < Milieu
     true
   end
 
-  def user_can_edit_references? _
-    true
-  end
-
-  def user_can_edit_catalog? _
+  def user_can_edit? _
     true
   end
 

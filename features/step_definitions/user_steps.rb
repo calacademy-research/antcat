@@ -24,13 +24,13 @@ end
 Given 'I am not logged in' do
 end
 
-def login can_edit_catalog, use_web_interface = false, user_name = nil
+def login can_edit, use_web_interface = false, user_name = nil
   user_name ||= 'Mark Wilden'
   user = User.find_by_name 'user_name'
   user.destroy if user
   step 'I go to the main page'
   attributes = {email: "mark@#{rand.to_s.gsub(/\D/, '')[1..5]}example.com"}
-  attributes[:can_edit_catalog] = true if can_edit_catalog
+  attributes[:can_edit] = true if can_edit
   attributes[:name] = user_name if user_name
   @user = FactoryGirl.create :user, attributes
 

@@ -9,7 +9,7 @@
   - for user in @users
     %tr
       %td.id= user.id
-      %td= user.can_edit_catalog? ? '*' : ' '
+      %td= user.can_edit? ? '*' : ' '
       %td= format_name_linking_to_email user.name, user.email
       %td= user.email
 * = editor

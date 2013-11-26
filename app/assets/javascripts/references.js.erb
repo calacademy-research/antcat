@@ -2,7 +2,7 @@ $(function() {
   setupSearch();
   setupDisplays();
   setupButtons();
-  if (AntCat.user_can_edit_references) {
+  if (AntCat.user_can_edit) {
     setupEdits();
   }
 })
@@ -61,13 +61,13 @@ function setupDisplays() {
 
 function setupIcons() {
   setupIconVisibility()
-  if (AntCat.user_can_edit_references) {
+  if (AntCat.user_can_edit) {
     setupIconClickHandlers()
   }
 }
 
 function setupIconVisibility() {
-  if (!AntCat.user_can_edit_references)
+  if (!AntCat.user_can_edit)
     return
 
   if (AntCat.testing)

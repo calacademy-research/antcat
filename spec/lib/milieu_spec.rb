@@ -23,19 +23,19 @@ describe Milieu do
       end
 
       specify "Editing references" do
-        @milieu.user_can_edit_references?(nil).should be_false
+        @milieu.user_can_edit?(nil).should be_false
         @user.should_receive(:is_editor?).and_return true
-        @milieu.user_can_edit_references?(@user).should be_true
+        @milieu.user_can_edit?(@user).should be_true
         @user.should_receive(:is_editor?).and_return false
-        @milieu.user_can_edit_references?(@user).should be_false
+        @milieu.user_can_edit?(@user).should be_false
       end
 
       specify "Editing the catalog" do
-        @milieu.user_can_edit_catalog?(nil).should be_false
-        @user.should_receive(:can_edit_catalog?).and_return true
-        @milieu.user_can_edit_catalog?(@user).should be_true
-        @user.should_receive(:can_edit_catalog?).and_return false
-        @milieu.user_can_edit_catalog?(@user).should be_false
+        @milieu.user_can_edit?(nil).should be_false
+        @user.should_receive(:is_editor?).and_return true
+        @milieu.user_can_edit?(@user).should be_true
+        @user.should_receive(:is_editor?).and_return false
+        @milieu.user_can_edit?(@user).should be_false
       end
 
       specify "Reviewing changes" do
@@ -72,15 +72,15 @@ describe Milieu do
       end
 
       specify "Editing references" do
-        @milieu.user_can_edit_references?(nil).should be_true
-        @milieu.user_can_edit_references?(@user).should be_true
-        @milieu.user_can_edit_references?(@user).should be_true
+        @milieu.user_can_edit?(nil).should be_true
+        @milieu.user_can_edit?(@user).should be_true
+        @milieu.user_can_edit?(@user).should be_true
       end
 
       specify "Editing the catalog" do
-        @milieu.user_can_edit_catalog?(nil).should be_true
-        @milieu.user_can_edit_catalog?(@user).should be_true
-        @milieu.user_can_edit_catalog?(@user).should be_true
+        @milieu.user_can_edit?(nil).should be_true
+        @milieu.user_can_edit?(@user).should be_true
+        @milieu.user_can_edit?(@user).should be_true
       end
 
       specify "Reviewing changes" do
